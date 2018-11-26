@@ -217,7 +217,7 @@ static int cobalt_dive(void *param, int columns, char **data, char **column)
 
 
 int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
-			    struct dive_table *table)
+			    struct dive_table *table, struct trip_table *trips)
 {
 	UNUSED(buffer);
 	UNUSED(size);
@@ -228,6 +228,7 @@ int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, in
 
 	init_parser_state(&state);
 	state.target_table = table;
+	state.trips = trips;
 	state.sql_handle = handle;
 
 	char get_dives[] = "select Id,strftime('%s',DiveStartTime),LocationId,'buddy','notes',Units,(MaxDepthPressure*10000/SurfacePressure)-10000,DiveMinutes,SurfacePressure,SerialNumber,'model' from Dive where IsViewDeleted = 0";

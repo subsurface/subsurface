@@ -441,9 +441,10 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 	free(dive);
 }
 
-int try_to_open_liquivision(const char *filename, struct memblock *mem, struct dive_table *table)
+int try_to_open_liquivision(const char *filename, struct memblock *mem, struct dive_table *table, struct trip_table *trips)
 {
 	UNUSED(filename);
+	UNUSED(trips);
 	const unsigned char *buf = mem->buffer;
 	unsigned int buf_size = mem->size;
 	unsigned int ptr;

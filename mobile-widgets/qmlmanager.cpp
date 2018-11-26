@@ -271,7 +271,7 @@ void QMLManager::openLocalThenRemote(QString url)
 	QByteArray fileNamePrt = QFile::encodeName(url);
 	bool glo = git_local_only;
 	git_local_only = true;
-	int error = parse_file(fileNamePrt.data(), &dive_table);
+	int error = parse_file(fileNamePrt.data(), &dive_table, &trip_table);
 	git_local_only = glo;
 	if (error) {
 		appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
@@ -339,7 +339,7 @@ void QMLManager::mergeLocalRepo()
 {
 	char *filename = NOCLOUD_LOCALSTORAGE;
 	struct dive_table table = { 0 };
-	parse_file(filename, &table);
+	parse_file(filename, &table, &trip_table);
 	process_imported_dives(&table, false, false);
 }
 
@@ -404,7 +404,7 @@ void QMLManager::finishSetup()
 		QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_NOCLOUD);
 		saveCloudCredentials();
 		appendTextToLog(tr("working in no-cloud mode"));
-		int error = parse_file(existing_filename, &dive_table);
+		int error = parse_file(existing_filename, &dive_table, &trip_table);
 		if (error) {
 			// we got an error loading the local file
 			setNotificationText(tr("Error parsing local storage, giving up"));
@@ -664,7 +664,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		error = git_load_dives(git, branch);
 	} else {
 		appendTextToLog(QString("didn't receive valid git repo, try again"));
-		error = parse_file(fileNamePrt.data(), &dive_table);
+		error = parse_file(fileNamePrt.data(), &dive_table, &trip_table);
 	}
 	if (!error) {
 		report_error("filename is now %s", fileNamePrt.data());

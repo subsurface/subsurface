@@ -438,7 +438,7 @@ static int shearwater_cloud_dive(void *param, int columns, char **data, char **c
 }
 
 int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
-			    struct dive_table *table)
+			    struct dive_table *table, struct trip_table *trips)
 {
 	UNUSED(buffer);
 	UNUSED(size);
@@ -449,6 +449,7 @@ int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer
 
 	init_parser_state(&state);
 	state.target_table = table;
+	state.trips = trips;
 	state.sql_handle = handle;
 
 	// So far have not seen any sample rate in Shearwater Desktop
@@ -468,7 +469,7 @@ int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer
 }
 
 int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
-			    struct dive_table *table)
+			    struct dive_table *table, struct trip_table *trips)
 {
 	UNUSED(buffer);
 	UNUSED(size);
@@ -479,6 +480,7 @@ int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *
 
 	init_parser_state(&state);
 	state.target_table = table;
+	state.trips = trips;
 	state.sql_handle = handle;
 
 	char get_dives[] = "select l.number,strftime('%s', DiveDate),location||' / '||site,buddy,notes,imperialUnits,maxDepth,maxTime,startSurfacePressure,computerSerial,computerModel,d.diveId,l.sampleRateMs FROM dive_details AS d JOIN dive_logs AS l ON d.diveId=l.diveId";

@@ -397,7 +397,7 @@ static int divinglog_dive(void *param, int columns, char **data, char **column)
 
 
 int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
-			    struct dive_table *table)
+			    struct dive_table *table, struct trip_table *trips)
 {
 	UNUSED(buffer);
 	UNUSED(size);
@@ -408,6 +408,7 @@ int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer,
 
 	init_parser_state(&state);
 	state.target_table = table;
+	state.trips = trips;
 	state.sql_handle = handle;
 
 	char get_dives[] = "select Number,strftime('%s',Divedate || ' ' || ifnull(Entrytime,'00:00')),Country || ' - ' || City || ' - ' || Place,Buddy,Comments,Depth,Divetime,Divemaster,Airtemp,Watertemp,Weight,Divesuit,Computer,ID,Visibility,SupplyType from Logbook where UUID not in (select UUID from DeletedRecords)";
