@@ -42,9 +42,10 @@ void processByTrip(std::vector<std::pair<dive_trip *, dive *>> &dives, Function 
 
 
 // This helper function removes a dive, takes ownership of the dive and adds it to a DiveToAdd structure.
+// If the trip the dive belongs to becomes empty, it is removed and added to the tripsToAdd vector.
 // It is crucial that dives are added in reverse order of deletion, so the the indices are correctly
 // set and that the trips are added before they are used!
-DiveToAdd DiveListBase::removeDive(struct dive *d)
+DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<OwningTripPtr> &tripsToAdd)
 {
 	// If the dive to be removed is selected, we will inform the frontend
 	// later via a signal that the dive changed.
@@ -68,7 +69,7 @@ DiveToAdd DiveListBase::removeDive(struct dive *d)
 	res.trip = unregister_dive_from_trip(d);
 	if (res.trip && res.trip->dives.nr == 0) {
 		unregister_trip(res.trip);		// Remove trip from backend
-		res.tripToAdd.reset(res.trip);		// Take ownership of trip
+		tripsToAdd.emplace_back(res.trip);	// Take ownership of trip
 	}
 
 	res.dive.reset(unregister_dive(res.idx));	// Remove dive from backend
@@ -83,8 +84,6 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 {
 	if (d.trip)
 		add_dive_to_trip(d.dive.get(), d.trip);
-	if (d.tripToAdd)
-		insert_trip(d.tripToAdd.release()); // Return ownership to backend
 	dive *res = d.dive.release();		// Give up ownership of dive
 
 	// Set the filter flag according to current filter settings
@@ -104,67 +103,70 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 
 // This helper function calls removeDive() on a list of dives to be removed and
 // returns a vector of corresponding DiveToAdd objects, which can later be readded.
+// Moreover, a vector of deleted trips is returned, if trips became empty.
 // The passed in vector is cleared.
-std::vector<DiveToAdd> DiveListBase::removeDives(std::vector<dive *> &divesToDelete)
+DivesAndTripsToAdd DiveListBase::removeDives(std::vector<dive *> &divesToDelete)
 {
-	std::vector<DiveToAdd> res;
-	res.reserve(divesToDelete.size());
+	std::vector<DiveToAdd> divesToAdd;
+	std::vector<OwningTripPtr> tripsToAdd;
+	divesToAdd.reserve(divesToDelete.size());
 
 	for (dive *d: divesToDelete)
-		res.push_back(removeDive(d));
+		divesToAdd.push_back(removeDive(d, tripsToAdd));
 	divesToDelete.clear();
 
 	// We send one dives-deleted signal per trip (see comments in DiveListNotifier.h).
 	// Therefore, collect all dives in an array and sort by trip.
 	std::vector<std::pair<dive_trip *, dive *>> dives;
-	dives.reserve(res.size());
-	for (const DiveToAdd &entry: res)
+	dives.reserve(divesToAdd.size());
+	for (const DiveToAdd &entry: divesToAdd)
 		dives.push_back({ entry.trip, entry.dive.get() });
 
 	// Send signals.
 	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
-		// Now, let's check if this trip is supposed to be deleted, by checking if it was marked
-		// as "add it". We could be smarter here, but let's just check the whole array for brevity.
+		// Check if this trip is supposed to be deleted, by checking if it was marked as "add it".
 		bool deleteTrip = trip &&
-				  std::find_if(res.begin(), res.end(), [trip](const DiveToAdd &entry)
-					       { return entry.tripToAdd.get() == trip; }) != res.end();
+				  std::find_if(tripsToAdd.begin(), tripsToAdd.end(), [trip](const OwningTripPtr &ptr)
+					       { return ptr.get() == trip; }) != tripsToAdd.end();
 		emit diveListNotifier.divesDeleted(trip, deleteTrip, divesInTrip);
 	});
-	return res;
+	return { std::move(divesToAdd), std::move(tripsToAdd) };
 }
 
 // This helper function is the counterpart fo removeDives(): it calls addDive() on a list
 // of dives to be (re)added and returns a vector of the added dives. It does this in reverse
 // order, so that trips are created appropriately and indexing is correct.
 // The passed in vector is cleared.
-std::vector<dive *> DiveListBase::addDives(std::vector<DiveToAdd> &divesToAdd)
+std::vector<dive *> DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 {
 	std::vector<dive *> res;
-	res.resize(divesToAdd.size());
+	res.resize(toAdd.dives.size());
 
 	// First, tell the filters that new dives are added. We do this here
 	// instead of later by signals, so that the filter can set the
 	// checkboxes of the new rows to its liking. The added dives will
 	// then appear in the correct shown/hidden state.
 	QVector<dive *> divesForFilter;
-	for (const DiveToAdd &entry: divesToAdd)
+	for (const DiveToAdd &entry: toAdd.dives)
 		divesForFilter.push_back(entry.dive.get());
-
-	// At the end of the function, to send the proper dives-added signals,
-	// we the the list of added trips. Create this list now.
-	std::vector<dive_trip *> addedTrips;
-	for (const DiveToAdd &entry: divesToAdd) {
-		if (entry.tripToAdd)
-			addedTrips.push_back(entry.tripToAdd.get());
-	}
 
 	// Now, add the dives
 	// Note: the idiomatic STL-way would be std::transform, but let's use a loop since
 	// that is closer to classical C-style.
 	auto it2 = res.rbegin();
-	for (auto it = divesToAdd.rbegin(); it != divesToAdd.rend(); ++it, ++it2)
+	for (auto it = toAdd.dives.rbegin(); it != toAdd.dives.rend(); ++it, ++it2)
 		*it2 = addDive(*it);
-	divesToAdd.clear();
+	toAdd.dives.clear();
+
+	// If the dives belong to new trips, add these as well.
+	// Remember the pointers so that we can later check if a trip was newly added
+	std::vector<dive_trip *> addedTrips;
+	addedTrips.reserve(toAdd.trips.size());
+	for (OwningTripPtr &trip: toAdd.trips) {
+		addedTrips.push_back(trip.get());
+		insert_trip(trip.release()); // Return ownership to backend
+	}
+	toAdd.trips.clear();
 
 	// We send one dives-deleted signal per trip (see comments in DiveListNotifier.h).
 	// Therefore, collect all dives in a array and sort by trip.
@@ -175,8 +177,7 @@ std::vector<dive *> DiveListBase::addDives(std::vector<DiveToAdd> &divesToAdd)
 
 	// Send signals.
 	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
-		// Now, let's check if this trip is supposed to be created, by checking if it was marked
-		// as "add it". We could be smarter here, but let's just check the whole array for brevity.
+		// Now, let's check if this trip is supposed to be created, by checking if it was marked as "add it".
 		bool createTrip = trip && std::find(addedTrips.begin(), addedTrips.end(), trip) != addedTrips.end();
 		// Finally, emit the signal
 		emit diveListNotifier.divesAdded(trip, createTrip, divesInTrip);
@@ -515,7 +516,9 @@ AddDive::AddDive(dive *d, bool autogroup, bool newNumber)
 	if (newNumber)
 		divePtr->number = get_dive_nr_at_idx(idx);
 
-	divesToAdd.push_back({ std::move(divePtr), std::move(allocTrip), trip, idx });
+	divesToAdd.dives.push_back({ std::move(divePtr), trip, idx });
+	if (allocTrip)
+		divesToAdd.trips.push_back(std::move(allocTrip));
 }
 
 bool AddDive::workToBeDone()
@@ -584,8 +587,8 @@ void DeleteDive::redoit()
 
 	// Deselect all dives and select dive that was close to the first deleted dive
 	dive *newCurrent = nullptr;
-	if (!divesToAdd.empty()) {
-		timestamp_t when = divesToAdd[0].dive->when;
+	if (!divesToAdd.dives.empty()) {
+		timestamp_t when = divesToAdd.dives[0].dive->when;
 		newCurrent = find_next_visible_dive(when);
 	}
 	if (newCurrent)
@@ -772,13 +775,13 @@ SplitDives::SplitDives(dive *d, duration_t time)
 	new2->selected = false;
 
 	diveToSplit.push_back(d);
-	splitDives.resize(2);
-	splitDives[0].dive.reset(new1);
-	splitDives[0].trip = d->divetrip;
-	splitDives[0].idx = idx;
-	splitDives[1].dive.reset(new2);
-	splitDives[1].trip = d->divetrip;
-	splitDives[1].idx = idx + 1;
+	splitDives.dives.resize(2);
+	splitDives.dives[0].dive.reset(new1);
+	splitDives.dives[0].trip = d->divetrip;
+	splitDives.dives[0].idx = idx;
+	splitDives.dives[1].dive.reset(new2);
+	splitDives.dives[1].trip = d->divetrip;
+	splitDives.dives[1].idx = idx + 1;
 }
 
 bool SplitDives::workToBeDone()
@@ -882,16 +885,16 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 		}
 	}
 
-	mergedDive.resize(1);
-	mergedDive[0].dive = std::move(d);
-	mergedDive[0].idx = get_divenr(dives[0]);
-	mergedDive[0].trip = preferred_trip;
+	mergedDive.dives.resize(1);
+	mergedDive.dives[0].dive = std::move(d);
+	mergedDive.dives[0].idx = get_divenr(dives[0]);
+	mergedDive.dives[0].trip = preferred_trip;
 	divesToMerge = dives.toStdVector();
 }
 
 bool MergeDives::workToBeDone()
 {
-	return !mergedDive.empty();
+	return !mergedDive.dives.empty();
 }
 
 void MergeDives::redoit()
