@@ -696,12 +696,13 @@ void DiveTripModel::topLevelChanged(int idx)
 
 	// If that didn't change, try to move forward
 	if (newIdx == idx) {
-		while (newIdx <= (int)items.size() && !dive_or_trip_less_than(items[idx].d_or_t, items[newIdx + 1].d_or_t))
+		++newIdx;
+		while (newIdx < (int)items.size() && !dive_or_trip_less_than(items[idx].d_or_t, items[newIdx].d_or_t))
 			++newIdx;
 	}
 
 	// If index changed, move items
-	if (newIdx != idx) {
+	if (newIdx != idx && newIdx != idx + 1) {
 		beginMoveRows(QModelIndex(), idx, idx, QModelIndex(), newIdx);
 		moveInVector(items, idx, idx + 1, newIdx);
 		endMoveRows();
