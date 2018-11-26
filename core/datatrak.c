@@ -14,6 +14,7 @@
 #include "units.h"
 #include "device.h"
 #include "file.h"
+#include "ssrf.h"
 
 unsigned char lector_bytes[2], lector_word[4], tmp_1byte, *byte;
 unsigned int tmp_2bytes;
@@ -576,8 +577,9 @@ bail:
  * Main function call from file.c memblock is allocated (and freed) there.
  * If parsing is aborted due to errors, stores correctly parsed dives.
  */
-int datatrak_import(struct memblock *mem, struct dive_table *table)
+int datatrak_import(struct memblock *mem, struct dive_table *table, struct trip_table *trips)
 {
+	UNUSED(trips);
 	unsigned char *runner;
 	int i = 0, numdives = 0, rc = 0;
 

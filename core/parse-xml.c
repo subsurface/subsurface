@@ -1636,7 +1636,7 @@ static const char *preprocess_divelog_de(const char *buffer)
 }
 
 int parse_xml_buffer(const char *url, const char *buffer, int size,
-		     struct dive_table *table, const char **params)
+		     struct dive_table *table, struct trip_table *trips, const char **params)
 {
 	UNUSED(size);
 	xmlDoc *doc;
@@ -1646,6 +1646,7 @@ int parse_xml_buffer(const char *url, const char *buffer, int size,
 
 	init_parser_state(&state);
 	state.target_table = table;
+	state.trips = trips;
 	doc = xmlReadMemory(res, strlen(res), url, NULL, 0);
 	if (!doc)
 		doc = xmlReadMemory(res, strlen(res), url, "latin1", 0);
@@ -1687,7 +1688,7 @@ static timestamp_t parse_dlf_timestamp(unsigned char *buffer)
 	return offset + 946684800;
 }
 
-int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *table)
+int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *table, struct trip_table *trips)
 {
 	unsigned char *ptr = buffer;
 	unsigned char event;
@@ -1708,6 +1709,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 
 	init_parser_state(&state);
 	state.target_table = table;
+	state.trips = trips;
 
 	// Check for the correct file magic
 	if (ptr[0] != 'D' || ptr[1] != 'i' || ptr[2] != 'v' || ptr[3] != 'E')

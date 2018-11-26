@@ -59,6 +59,7 @@ struct parser_state {
 	struct extra_data cur_extra_data;
 	struct units xml_parsing_units;
 	struct dive_table *target_table;	/* non-owning */
+	struct trip_table *trips;		/* non-owning */
 
 	sqlite3 *sql_handle;			/* for SQL based parsers */
 	event_allocation_t event_allocation;

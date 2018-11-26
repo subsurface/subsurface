@@ -63,7 +63,7 @@ void TestParsePerformance::parseSsrf()
 		return;
 	}
 	QBENCHMARK {
-		parse_file(SUBSURFACE_TEST_DATA "/dives/large-anon.ssrf", &dive_table);
+		parse_file(SUBSURFACE_TEST_DATA "/dives/large-anon.ssrf", &dive_table, &trip_table);
 	}
 }
 
@@ -74,12 +74,12 @@ void TestParsePerformance::parseGit()
 
 	// first parse this once to populate the local cache - this way network
 	// effects don't dominate the parse time
-	parse_file(LARGE_TEST_REPO "[git]", &dive_table);
+	parse_file(LARGE_TEST_REPO "[git]", &dive_table, &trip_table);
 
 	cleanup();
 
 	QBENCHMARK {
-		parse_file(LARGE_TEST_REPO "[git]", &dive_table);
+		parse_file(LARGE_TEST_REPO "[git]", &dive_table, &trip_table);
 	}
 }
 

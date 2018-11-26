@@ -278,7 +278,7 @@ void trip_end(struct parser_state *state)
 {
 	if (!state->cur_trip)
 		return;
-	insert_trip(state->cur_trip, &trip_table);
+	insert_trip(state->cur_trip, state->trips);
 	state->cur_trip = NULL;
 }
 
