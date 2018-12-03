@@ -92,6 +92,7 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 	res->hidden_by_filter = !show;
 
 	add_single_dive(d.idx, res);		// Return ownership to backend
+	invalidate_dive_cache(res);		// Ensure that dive is written in git_save()
 
 	// If the dive to be removed is selected, we will inform the frontend
 	// later via a signal that the dive changed.
@@ -191,7 +192,7 @@ std::vector<dive *> DiveListBase::addDives(std::vector<DiveToAdd> &divesToAdd)
 
 // This helper function renumbers dives according to an array of id/number pairs.
 // The old numbers are stored in the array, thus calling this function twice has no effect.
-// TODO: switch from uniq-id to indexes once all divelist-actions are controlled by undo-able commands
+// TODO: switch from uniq-id to indices once all divelist-actions are controlled by undo-able commands
 static void renumberDives(QVector<QPair<dive *, int>> &divesToRenumber)
 {
 	for (auto &pair: divesToRenumber) {
@@ -199,6 +200,7 @@ static void renumberDives(QVector<QPair<dive *, int>> &divesToRenumber)
 		if (!d)
 			continue;
 		std::swap(d->number, pair.second);
+		invalidate_dive_cache(d);
 	}
 
 	// Emit changed signals per trip.
@@ -239,6 +241,7 @@ static OwningTripPtr moveDiveToTrip(DiveToTrip &diveToTrip)
 	// Store old trip and get new trip we should associate this dive with
 	std::swap(trip, diveToTrip.trip);
 	add_dive_to_trip(diveToTrip.dive, trip);
+	invalidate_dive_cache(diveToTrip.dive);		// Ensure that dive is written in git_save()
 	return res;
 }
 
