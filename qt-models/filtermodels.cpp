@@ -711,3 +711,9 @@ bool MultiFilterSortModel::lessThan(const QModelIndex &i1, const QModelIndex &i2
 	// Hand sorting down to the source model.
 	return model->lessThan(i1, i2);
 }
+
+void MultiFilterSortModel::filterDataChanged(const FilterData& data)
+{
+	filterData = data;
+	myInvalidate();
+}

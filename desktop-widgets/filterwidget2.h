@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "ui_filterwidget2.h"
+#include "qt-models/filtermodels.h"
 
 namespace Ui {
 	class FilterWidget2;
@@ -13,12 +14,13 @@ namespace Ui {
 
 class FilterWidget2 : public QWidget {
 	Q_OBJECT
+
 public:
 	explicit FilterWidget2(QWidget *parent = 0);
 	void updateFilter();
 
 signals:
-	void filterUpdated();
+	void filterDataChanged(const FilterData& data);
 
 private:
 	std::unique_ptr<Ui::FilterWidget2> ui;
