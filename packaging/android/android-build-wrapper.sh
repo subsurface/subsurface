@@ -83,6 +83,7 @@ if [ ! -d "$ANDROID_SDK"/build-tools/"${ANDROID_BUILDTOOLS_REVISION}" ] ; then
 		unzip -q ../"$SDK_TOOLS"
 		yes | tools/bin/sdkmanager --licenses > /dev/null 2>&1 || echo "d56f5187479451eabf01fb78af6dfcb131a6481e" > licenses/android-sdk-license
 		cat licenses/android-sdk-license
+		tools/bin/sdkmanager tools platform-tools 'platforms;'"${ANDROID_PLATFORMS}" 'build-tools;'"${ANDROID_BUILDTOOLS_REVISION}"
 		echo ""
 	else
 		pushd "$ANDROID_SDK"
