@@ -19,7 +19,6 @@
  * void insert_trip(dive_trip_t *dive_trip_p)
  * void unregister_trip(dive_trip_t *trip)
  * void free_trip(dive_trip_t *trip)
- * void remove_dive_from_trip(struct dive *dive)
  * void remove_dive_from_trip(struct dive *dive, bool was_autogen)
  * void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
  * dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
@@ -912,11 +911,14 @@ void remove_dive_from_trip(struct dive *dive, short was_autogen)
 		delete_trip(trip);
 }
 
+/* Add dive to a trip. Caller is responsible for removing dive
+ * from trip beforehand. */
 void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 {
 	if (dive->divetrip == trip)
 		return;
-	remove_dive_from_trip(dive, false);
+	if (dive->divetrip)
+		fprintf(stderr, "Warning: adding dive to trip that has trip set\n");
 	add_dive_to_table(&trip->dives, -1, dive);
 	dive->divetrip = trip;
 }
@@ -1522,10 +1524,8 @@ static bool try_to_merge_into(struct dive *dive_to_add, int idx, bool prefer_imp
 	merged->id = old_dive->id;
 	merged->selected = old_dive->selected;
 	dive_table.dives[idx] = merged;
-	if (trip) {
+	if (trip)
 		remove_dive_from_trip(old_dive, false);
-		add_dive_to_trip(merged, trip);
-	}
 	free_dive(old_dive);
 	remove_dive_from_trip(dive_to_add, false);
 	free_dive(dive_to_add);
