@@ -305,9 +305,12 @@ static void moveDivesBetweenTrips(DivesToTrip &dives)
 		for (size_t k = i; k < j; ++k)
 			divesInTrip[k - i] = divesMoved[k].d;
 
-		// Check if the from-trip was deleted: If yes, it was recorded in the tripsToAdd structure
+		// Check if the from-trip was deleted: If yes, it was recorded in the tripsToAdd structure.
+		// Only set the flag if this is that last time this trip is featured.
 		bool deleteFrom = from &&
-				  std::find_if(dives.tripsToAdd.begin(), dives.tripsToAdd.end(),
+				  std::find_if(divesMoved.begin() + j, divesMoved.end(), // Is this the last occurence of "from"?
+					       [from](const DiveMoved &entry) { return entry.from == from; }) == divesMoved.end() &&
+				  std::find_if(dives.tripsToAdd.begin(), dives.tripsToAdd.end(), // Is "from" in tripsToAdd?
 					       [from](const OwningTripPtr &trip) { return trip.get() == from; }) != dives.tripsToAdd.end();
 		// Check if the to-trip has to be created. For this purpose, we saved an array of trips to be created.
 		bool createTo = false;
