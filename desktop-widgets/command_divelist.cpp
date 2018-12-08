@@ -740,7 +740,7 @@ MergeTrips::MergeTrips(dive_trip *trip1, dive_trip *trip2)
 {
 	if (trip1 == trip2)
 		return;
-	dive_trip *newTrip = combine_trips_create(trip1, trip2);
+	dive_trip *newTrip = combine_trips(trip1, trip2);
 	divesToMove.tripsToAdd.emplace_back(newTrip);
 	for (int i = 0; i < trip1->dives.nr; ++i)
 		divesToMove.divesToMove.push_back( { trip1->dives.dives[i], newTrip } );
