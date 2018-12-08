@@ -1336,34 +1336,15 @@ void filter_dive(struct dive *d, bool shown)
 }
 
 
-/* This only gets called with non-NULL trips.
- * It does not combine notes or location, just picks the first one
- * (or the second one if the first one is empty */
-void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
-{
-	if (empty_string(trip_a->location) && trip_b->location) {
-		free(trip_a->location);
-		trip_a->location = strdup(trip_b->location);
-	}
-	if (empty_string(trip_a->notes) && trip_b->notes) {
-		free(trip_a->notes);
-		trip_a->notes = strdup(trip_b->notes);
-	}
-	/* this also removes the dives from trip_b and eventually
-	 * calls delete_trip(trip_b) when the last dive has been moved */
-	while (trip_b->dives.nr > 0)
-		add_dive_to_trip(trip_b->dives.dives[0], trip_a);
-}
-
 /* Out of two strings, copy the string that is not empty (if any). */
 static char *copy_non_empty_string(const char *a, const char *b)
 {
 	return copy_string(empty_string(b) ? a : b);
 }
 
-/* Combine trips new. This combines two trips, generating a
+/* This combines the information of two trips, generating a
  * new trip. To support undo, we have to preserve the old trips. */
-dive_trip_t *combine_trips_create(struct dive_trip *trip_a, struct dive_trip *trip_b)
+dive_trip_t *combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
 {
 	dive_trip_t *trip;
 
