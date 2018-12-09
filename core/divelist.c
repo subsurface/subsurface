@@ -32,7 +32,6 @@
  * void delete_single_dive(int idx)
  * void add_dive_to_table(struct dive_table *table, int idx, struct dive *dive)
  * void add_single_dive(int idx, struct dive *dive)
- * struct dive *merge_two_dives(struct dive *a, struct dive *b)
  * void select_dive(struct dive *dive)
  * void deselect_dive(struct dive *dive)
  * void mark_divelist_changed(int changed)
@@ -1181,87 +1180,6 @@ bool consecutive_selected()
 		}
 	}
 	return consecutive;
-}
-
-/*
- * Merge two dives. 'a' is always before 'b' in the dive list
- * (and thus in time).
- */
-struct dive *merge_two_dives(struct dive *a, struct dive *b)
-{
-	struct dive *res;
-	int i, j, nr, nrdiff;
-	int id;
-
-	if (!a || !b)
-		return NULL;
-
-	id = a->id;
-	i = get_divenr(a);
-	j = get_divenr(b);
-	if (i < 0 || j < 0)
-		// something is wrong with those dives. Bail
-		return NULL;
-	res = merge_dives(a, b, b->when - a->when, false, NULL);
-	if (!res)
-		return NULL;
-
-	/*
-	 * If 'a' and 'b' were numbered, and in proper order,
-	 * then the resulting dive will get the first number,
-	 * and the subsequent dives will be renumbered by the
-	 * difference.
-	 *
-	 * So if you had a dive list  1 3 6 7 8, and you
-	 * merge 1 and 3, the resulting numbered list will
-	 * be 1 4 5 6, because we assume that there were
-	 * some missing dives (originally dives 4 and 5),
-	 * that now will still be missing (dives 2 and 3
-	 * in the renumbered world).
-	 *
-	 * Obviously the normal case is that everything is
-	 * consecutive, and the difference will be 1, so the
-	 * above example is not supposed to be normal.
-	 */
-	nrdiff = 0;
-	nr = a->number;
-	if (a->number && b->number > a->number) {
-		res->number = nr;
-		nrdiff = b->number - nr;
-	}
-
-	add_single_dive(i, res);
-	delete_single_dive(i + 1);
-	delete_single_dive(j);
-	// now make sure that we keep the id of the first dive.
-	// why?
-	// because this way one of the previously selected ids is still around
-	res->id = id;
-
-	// renumber dives from merged one in advance by difference between
-	// merged dives numbers. Do not renumber if actual number is zero.
-	for (; j < dive_table.nr; j++) {
-		struct dive *dive = dive_table.dives[j];
-		int newnr;
-
-		if (!dive->number)
-			continue;
-		newnr = dive->number - nrdiff;
-
-		/*
-		 * Don't renumber stuff that isn't in order!
-		 *
-		 * So if the new dive number isn't larger than the
-		 * previous dive number, just stop here.
-		 */
-		if (newnr <= nr)
-			break;
-		dive->number = newnr;
-		nr = newnr;
-	}
-
-	mark_divelist_changed(true);
-	return res;
 }
 
 void select_dive(struct dive *dive)
