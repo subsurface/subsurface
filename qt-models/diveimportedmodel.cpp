@@ -4,7 +4,6 @@
 DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
 	firstIndex(0),
 	lastIndex(-1),
-	checkStates(nullptr),
 	diveTable(nullptr)
 {
 	// Defaults to downloadTable, can be changed later.
@@ -97,7 +96,7 @@ void DiveImportedModel::changeSelected(QModelIndex clickedIndex)
 
 void DiveImportedModel::selectAll()
 {
-	memset(checkStates, true, lastIndex - firstIndex + 1);
+	std::fill(checkStates.begin(), checkStates.end(), true);
 	dataChanged(index(0, 0), index(lastIndex - firstIndex, 0), QVector<int>() << Qt::CheckStateRole << Selected);
 }
 
@@ -109,7 +108,7 @@ void DiveImportedModel::selectRow(int row)
 
 void DiveImportedModel::selectNone()
 {
-	memset(checkStates, false, lastIndex - firstIndex + 1);
+	std::fill(checkStates.begin(), checkStates.end(), false);
 	dataChanged(index(0, 0), index(lastIndex - firstIndex,0 ), QVector<int>() << Qt::CheckStateRole << Selected);
 }
 
@@ -141,9 +140,8 @@ void DiveImportedModel::repopulate()
 
 	firstIndex = 0;
 	lastIndex = diveTable->nr - 1;
-	delete[] checkStates;
-	checkStates = new bool[diveTable->nr];
-	memset(checkStates, true, diveTable->nr);
+	checkStates.resize(diveTable->nr);
+	std::fill(checkStates.begin(), checkStates.end(), true);
 
 	endResetModel();
 }
