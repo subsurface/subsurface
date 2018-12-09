@@ -37,7 +37,6 @@
  * void deselect_dive(struct dive *dive)
  * void mark_divelist_changed(int changed)
  * int unsaved_changes()
- * void remove_autogen_trips()
  * bool dive_less_than(const struct dive *a, const struct dive *b)
  * bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b)
  * bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b)
@@ -1366,19 +1365,6 @@ void mark_divelist_changed(bool changed)
 int unsaved_changes()
 {
 	return dive_list_changed;
-}
-
-void remove_autogen_trips()
-{
-	int i;
-	struct dive *dive;
-
-	for_each_dive(i, dive) {
-		dive_trip_t *trip = dive->divetrip;
-
-		if (trip && trip->autogen)
-			remove_dive_from_trip(dive, true);
-	}
 }
 
 /*
