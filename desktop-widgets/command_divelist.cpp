@@ -758,8 +758,8 @@ SplitDives::SplitDives(dive *d, duration_t time)
 	// Split the dive
 	dive *new1, *new2;
 	int idx = time.seconds < 0 ?
-		split_dive_dont_insert(d, &new1, &new2) :
-		split_dive_at_time_dont_insert(d, time, &new1, &new2);
+		split_dive(d, &new1, &new2) :
+		split_dive_at_time(d, time, &new1, &new2);
 
 	// If this didn't work, simply return. Empty arrays indicate that nothing is to be done.
 	if (idx < 0)

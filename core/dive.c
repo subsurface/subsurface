@@ -3686,17 +3686,6 @@ static int split_dive_at(const struct dive *dive, int a, int b, struct dive **ou
 	return nr;
 }
 
-static void finish_split(int nr, struct dive *old, struct dive *d1, struct dive *d2)
-{
-	if (old->divetrip) {
-		add_dive_to_trip(d1, old->divetrip);
-		add_dive_to_trip(d2, old->divetrip);
-	}
-	delete_single_dive(nr);
-	add_single_dive(nr, d1);
-	add_single_dive(nr + 1, d2);
-}
-
 /* in freedive mode we split for as little as 10 seconds on the surface,
  * otherwise we use a minute */
 static bool should_split(const struct divecomputer *dc, int t1, int t2)
@@ -3716,7 +3705,7 @@ static bool should_split(const struct divecomputer *dc, int t1, int t2)
  *
  * In other words, this is a (simplified) reversal of the dive merging.
  */
-int split_dive_dont_insert(const struct dive *dive, struct dive **new1, struct dive **new2)
+int split_dive(const struct dive *dive, struct dive **new1, struct dive **new2)
 {
 	int i;
 	int at_surface, surface_start;
@@ -3758,16 +3747,7 @@ int split_dive_dont_insert(const struct dive *dive, struct dive **new1, struct d
 	return -1;
 }
 
-void split_dive(struct dive *dive)
-{
-	int nr;
-	struct dive *new1, *new2;
-
-	if ((nr = split_dive_dont_insert(dive, &new1, &new2)) >= 0)
-		finish_split(nr, dive, new1, new2);
-}
-
-int split_dive_at_time_dont_insert(const struct dive *dive, duration_t time, struct dive **new1, struct dive **new2)
+int split_dive_at_time(const struct dive *dive, duration_t time, struct dive **new1, struct dive **new2)
 {
 	int i = 0;
 	struct sample *sample = dive->dc.sample;
@@ -3781,15 +3761,6 @@ int split_dive_at_time_dont_insert(const struct dive *dive, duration_t time, str
 			return -1;
 	}
 	return split_dive_at(dive, i, i - 1, new1, new2);
-}
-
-void split_dive_at_time(struct dive *dive, duration_t time)
-{
-	int nr;
-	struct dive *new1, *new2;
-
-	if ((nr = split_dive_at_time_dont_insert(dive, time, &new1, &new2)) >= 0)
-		finish_split(nr, dive, new1, new2);
 }
 
 /*
