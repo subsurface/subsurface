@@ -2,6 +2,7 @@
 #define DIVEIMPORTEDMODEL_H
 
 #include <QAbstractTableModel>
+#include <vector>
 
 class DiveImportedModel : public QAbstractTableModel
 {
@@ -31,7 +32,7 @@ slots:
 private:
 	int firstIndex;
 	int lastIndex;
-	bool *checkStates;
+	std::vector<char> checkStates; // char instead of bool to avoid silly pessimization of std::vector.
 	struct dive_table *diveTable;
 };
 
