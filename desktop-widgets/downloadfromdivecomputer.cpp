@@ -492,10 +492,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 	}
 	ui.downloadCancelRetryButton->setText(tr("Retry download"));
 	ui.downloadCancelRetryButton->setEnabled(true);
-	// regardless, if we got dives, we should show them to the user
-	if (downloadTable.nr) {
-		diveImportedModel->setImportedDivesIndexes(0, downloadTable.nr - 1);
-	}
+	diveImportedModel->repopulate();
 }
 
 void DownloadFromDCWidget::on_cancel_clicked()

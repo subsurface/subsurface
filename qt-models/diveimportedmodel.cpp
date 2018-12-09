@@ -135,26 +135,17 @@ void DiveImportedModel::clearTable()
 	endRemoveRows();
 }
 
-void DiveImportedModel::setImportedDivesIndexes(int first, int last)
-{
-	if (lastIndex >= firstIndex) {
-		beginRemoveRows(QModelIndex(), 0, lastIndex - firstIndex);
-		endRemoveRows();
-	}
-	if (last >= first)
-		beginInsertRows(QModelIndex(), 0, last - first);
-	lastIndex = last;
-	firstIndex = first;
-	delete[] checkStates;
-	checkStates = new bool[last - first + 1];
-	memset(checkStates, true, last - first + 1);
-	if (last >= first)
-		endInsertRows();
-}
-
 void DiveImportedModel::repopulate()
 {
-	setImportedDivesIndexes(0, diveTable->nr-1);
+	beginResetModel();
+
+	firstIndex = 0;
+	lastIndex = diveTable->nr - 1;
+	delete[] checkStates;
+	checkStates = new bool[diveTable->nr];
+	memset(checkStates, true, diveTable->nr);
+
+	endResetModel();
 }
 
 void DiveImportedModel::recordDives()
