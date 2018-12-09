@@ -1075,16 +1075,15 @@ void delete_dive_from_table(struct dive_table *table, int idx)
 	unregister_dive_from_table(table, idx);
 }
 
-/* this removes a dive from the dive table and trip-list but doesn't
- * free the resources associated with the dive. It returns a pointer
- * to the unregistered dive. The returned dive has the selection-
- * and hidden-flags cleared. */
+/* This removes a dive from the global dive table but doesn't free the
+ * resources associated with the dive. The caller must removed the dive
+ * from the trip-list. Returns a pointer to the unregistered dive.
+ * The unregistered dive has the selection- and hidden-flags cleared. */
 struct dive *unregister_dive(int idx)
 {
 	struct dive *dive = get_dive(idx);
 	if (!dive)
 		return NULL; /* this should never happen */
-	remove_dive_from_trip(dive, false);
 	unregister_dive_from_table(&dive_table, idx);
 	if (dive->selected)
 		amount_selected--;
@@ -1092,8 +1091,8 @@ struct dive *unregister_dive(int idx)
 	return dive;
 }
 
-/* this implements the mechanics of removing the dive from the table,
- * but doesn't deal with updating dive trips, etc */
+/* this implements the mechanics of removing the dive from the global
+ * dive table and the trip, but doesn't deal with updating dive trips, etc */
 void delete_single_dive(int idx)
 {
 	struct dive *dive = get_dive(idx);
@@ -1101,8 +1100,8 @@ void delete_single_dive(int idx)
 		return; /* this should never happen */
 	if (dive->selected)
 		deselect_dive(dive);
-	dive = unregister_dive(idx);
-	free_dive(dive);
+	remove_dive_from_trip(dive, false);
+	delete_dive_from_table(&dive_table, idx);
 }
 
 struct dive **grow_dive_table(struct dive_table *table)
