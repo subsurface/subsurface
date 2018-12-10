@@ -51,7 +51,6 @@ public:
 	void setSaveDump(bool dumpMode);
 	void setSaveLog(bool saveLog);
 private:
-	static DCDeviceData *m_instance;
 	device_data_t data;
 
 	// Bluetooth name is managed outside of libdivecomputer

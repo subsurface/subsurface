@@ -24,7 +24,6 @@ static QString str_error(const char *fmt, ...)
 	return str;
 }
 
-
 static void updateRememberedDCs()
 {
 	QString current = qPrefDiveComputer::vendor() + " - " + qPrefDiveComputer::product() + " - " + qPrefDiveComputer::device();
@@ -254,7 +253,6 @@ void show_computer_list()
 		qDebug() << msg;
 	}
 }
-DCDeviceData *DCDeviceData::m_instance = NULL;
 
 DCDeviceData::DCDeviceData()
 {
@@ -276,18 +274,12 @@ DCDeviceData::DCDeviceData()
 #else
 	data.libdc_log = false;
 #endif
-	if (m_instance) {
-		qDebug() << "already have an instance of DCDevieData";
-		return;
-	}
-	m_instance = this;
 }
 
 DCDeviceData *DCDeviceData::instance()
 {
-	if (!m_instance)
-		m_instance = new DCDeviceData;
-	return m_instance;
+	static DCDeviceData self;
+	return &self;
 }
 
 QStringList DCDeviceData::getProductListFromVendor(const QString &vendor)
