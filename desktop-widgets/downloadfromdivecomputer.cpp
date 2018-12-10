@@ -29,14 +29,12 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	currentState(INITIAL)
 {
 	diveImportedModel = new DiveImportedModel(this);
-	diveImportedModel->setDiveTable(&downloadTable);
 	vendorModel.setStringList(vendorList);
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
 
 	int startingWidth = defaultModelFont().pointSize();
 
-	clear_table(&downloadTable);
 	ui.setupUi(this);
 	ui.progressBar->hide();
 	ui.progressBar->setMinimum(0);
@@ -254,7 +252,7 @@ void DownloadFromDCWidget::updateState(states state)
 			markChildrenAsEnabled();
 			progress_bar_text = "";
 		} else {
-			if (downloadTable.nr != 0)
+			if (thread.table()->nr != 0)
 				progress_bar_text = "";
 			ui.progressBar->setValue(100);
 			markChildrenAsEnabled();
@@ -349,7 +347,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 		// this means we are retrying - so we better clean out the partial
 		// list of downloaded dives from the last attempt
 		diveImportedModel->clearTable();
-		clear_table(&downloadTable);
+		clear_table(thread.table());
 	}
 	updateState(DOWNLOADING);
 
@@ -492,7 +490,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 	}
 	ui.downloadCancelRetryButton->setText(tr("Retry download"));
 	ui.downloadCancelRetryButton->setEnabled(true);
-	diveImportedModel->repopulate();
+	diveImportedModel->repopulate(thread.table());
 }
 
 void DownloadFromDCWidget::on_cancel_clicked()
@@ -501,7 +499,7 @@ void DownloadFromDCWidget::on_cancel_clicked()
 		return;
 
 	// now discard all the dives
-	clear_table(&downloadTable);
+	clear_table(thread.table());
 	done(-1);
 }
 
@@ -509,23 +507,24 @@ void DownloadFromDCWidget::on_ok_clicked()
 {
 	if (currentState != DONE && currentState != ERROR)
 		return;
+	struct dive_table *table = thread.table();
 
 	// delete non-selected dives
-	int total = downloadTable.nr;
+	int total = table->nr;
 	int j = 0;
 	for (int i = 0; i < total; i++) {
 		if (diveImportedModel->data(diveImportedModel->index(i, 0), Qt::CheckStateRole) == Qt::Checked)
 			j++;
 		else
-			delete_dive_from_table(&downloadTable, j);
+			delete_dive_from_table(thread.table(), j);
 	}
 
-	if (downloadTable.nr > 0) {
+	if (table->nr > 0) {
 		MainWindow::instance()->diveList->unselectDives();
 		// remember the last downloaded dive (on most dive computers this will be the chronologically
 		// first new dive) and select it again after processing all the dives
-		int uniqId = downloadTable.dives[downloadTable.nr - 1]->id;
-		process_imported_dives(&downloadTable, preferDownloaded(), true);
+		int uniqId = table->dives[table->nr - 1]->id;
+		process_imported_dives(table, preferDownloaded(), true);
 		autogroup_dives();
 		Command::clear();
 		// after process_imported_dives does any merging or resorting needed, we need
