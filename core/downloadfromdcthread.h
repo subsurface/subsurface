@@ -6,6 +6,7 @@
 #include <QHash>
 #include <QLoggingCategory>
 
+#include "dive.h"
 #include "libdivecomputer.h"
 #include "connectionlistmodel.h"
 #if BT_SUPPORT
@@ -59,15 +60,18 @@ private:
 
 class DownloadThread : public QThread {
 	Q_OBJECT
+	Q_PROPERTY(dive_table_t *table READ table CONSTANT)
 
 public:
 	DownloadThread();
 	void run() override;
 
 	DCDeviceData *data();
+	struct dive_table *table();
 	QString error;
 
 private:
+	struct dive_table downloadTable;
 	DCDeviceData *m_data;
 };
 

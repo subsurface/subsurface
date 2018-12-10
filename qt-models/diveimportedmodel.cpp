@@ -6,8 +6,6 @@ DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
 	lastIndex(-1),
 	diveTable(nullptr)
 {
-	// Defaults to downloadTable, can be changed later.
-	diveTable = &downloadTable;
 }
 
 int DiveImportedModel::columnCount(const QModelIndex&) const
@@ -43,11 +41,6 @@ QVariant DiveImportedModel::headerData(int section, Qt::Orientation orientation,
 		}
 	}
 	return QVariant();
-}
-
-void DiveImportedModel::setDiveTable(struct dive_table* table)
-{
-	diveTable = table;
 }
 
 QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
@@ -134,10 +127,11 @@ void DiveImportedModel::clearTable()
 	endRemoveRows();
 }
 
-void DiveImportedModel::repopulate()
+void DiveImportedModel::repopulate(dive_table_t *table)
 {
 	beginResetModel();
 
+	diveTable = table;
 	firstIndex = 0;
 	lastIndex = diveTable->nr - 1;
 	checkStates.resize(diveTable->nr);
@@ -159,7 +153,7 @@ void DiveImportedModel::recordDives()
 		if (checkStates[i])
 			j++;
 		else
-			delete_dive_from_table(&downloadTable, j);
+			delete_dive_from_table(diveTable, j);
 	}
 
 	process_imported_dives(diveTable, true, true);

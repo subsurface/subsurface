@@ -59,9 +59,9 @@ static void updateRememberedDCs()
 }
 
 
-DownloadThread::DownloadThread()
+DownloadThread::DownloadThread() : downloadTable({ 0 }),
+	m_data(DCDeviceData::instance())
 {
-	m_data = DCDeviceData::instance();
 }
 
 void DownloadThread::run()
@@ -80,7 +80,7 @@ void DownloadThread::run()
 		internalData->devname = "ftdi";
 #endif
 	qDebug() << "Starting download from " << (internalData->bluetooth_mode ? "BT" : internalData->devname);
-	downloadTable.nr = 0;
+	clear_table(&downloadTable);
 
 	Q_ASSERT(internalData->download_table != nullptr);
 	const char *errorText;
@@ -300,6 +300,11 @@ int DCDeviceData::getMatchingAddress(const QString &vendor, const QString &produ
 DCDeviceData *DownloadThread::data()
 {
 	return m_data;
+}
+
+struct dive_table *DownloadThread::table()
+{
+	return &downloadTable;
 }
 
 QString DCDeviceData::vendor() const

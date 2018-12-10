@@ -278,10 +278,10 @@ struct divecomputer {
 #define W_IDX_PRIMARY 0
 #define W_IDX_SECONDARY 1
 
-struct dive_table {
+typedef struct dive_table {
 	int nr, allocated;
 	struct dive **dives;
-};
+} dive_table_t;
 
 typedef struct dive_trip
 {
@@ -425,7 +425,7 @@ extern const struct units SI_units, IMPERIAL_units;
 extern const struct units *get_units(void);
 extern int run_survey, verbose, quit, force_root;
 
-extern struct dive_table dive_table, downloadTable;
+extern struct dive_table dive_table;
 extern struct dive displayed_dive;
 extern unsigned int dc_number;
 extern struct dive *current_dive;
@@ -759,10 +759,14 @@ extern void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_de
 #ifdef __cplusplus
 }
 
-/* Make pointers to dive and dive_trip "Qt metatypes" so that they can
- * be passed through QVariants. */
+/* Make pointers to dive, dive_trip and dive_table "Qt metatypes" so that they can
+ * be passed through QVariants and through QML.
+ * Note: we have to use the typedef "dive_table_t" instead of "struct dive_table",
+ * because MOC removes the "struct", but dive_table is already the name of a global
+ * variable, leading to compilation errors. */
 Q_DECLARE_METATYPE(struct dive *);
 Q_DECLARE_METATYPE(struct dive_trip *);
+Q_DECLARE_METATYPE(dive_table_t *);
 
 #endif
 
