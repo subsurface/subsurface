@@ -25,13 +25,15 @@ void TestPicture::addPicture()
 
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test44.xml", &dive_table), 0);
 	dive = get_dive(0);
+	// Pictures will be added to selected dives
+	dive->selected = true;
 	QVERIFY(dive != NULL);
 	pic1 = dive->picture_list;
 	// So far no picture in dive
 	QVERIFY(pic1 == NULL);
 
-	dive_create_picture(dive, SUBSURFACE_TEST_DATA "/dives/images/wreck.jpg", 0, false);
-	dive_create_picture(dive, SUBSURFACE_TEST_DATA "/dives/images/data_after_EOI.jpg", 0, false);
+	create_picture(SUBSURFACE_TEST_DATA "/dives/images/wreck.jpg", 0, false);
+	create_picture(SUBSURFACE_TEST_DATA "/dives/images/data_after_EOI.jpg", 0, false);
 	pic1 = dive->picture_list;
 	pic2 = pic1->next;
 	// Now there are two picture2

@@ -969,15 +969,8 @@ void DiveListView::matchImagesToDives(QStringList fileNames)
 		return;
 	updateLastImageTimeOffset(shiftDialog.amount());
 
-	Q_FOREACH (const QString &fileName, fileNames) {
-		int j = 0;
-		struct dive *dive;
-		for_each_dive (j, dive) {
-			if (!dive->selected)
-				continue;
-			dive_create_picture(dive, qPrintable(fileName), shiftDialog.amount(), shiftDialog.matchAll());
-		}
-	}
+	for (const QString &fileName: fileNames)
+		create_picture(qPrintable(fileName), shiftDialog.amount(), shiftDialog.matchAll());
 
 	mark_divelist_changed(true);
 	copy_dive(current_dive, &displayed_dive);
