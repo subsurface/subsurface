@@ -38,6 +38,7 @@ docker run -v $PWD/win32:/win/win32 -v $PWD/subsurface:/win/subsurface --name=bu
 
 # for some reason this package was installed but still isn't there?
 # hmmmm. The container doesn't seem to have libtool installed
+docker exec -t builder apt-get update
 docker exec -t builder apt-get install -y ca-certificates libtool
 
 # now set up our other dependencies
