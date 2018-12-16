@@ -1437,6 +1437,9 @@ void QMLManager::pasteDiveData(int id)
 	mark_divelist_changed(true);
 	changesNeedSaving();
 	setNotificationText("Paste");
+
+	int modelIdx = DiveListModel::instance()->getDiveIdx(id);
+	DiveListModel::instance()->updateDive(modelIdx, d);
 }
 
 void QMLManager::cancelDownloadDC()
