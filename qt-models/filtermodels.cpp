@@ -228,7 +228,7 @@ bool MultiFilterSortModel::lessThan(const QModelIndex &i1, const QModelIndex &i2
 	return DiveTripModelBase::instance()->lessThan(i1, i2);
 }
 
-void MultiFilterSortModel::filterDataChanged(const FilterData& data)
+void MultiFilterSortModel::filterDataChanged(const FilterData &data)
 {
 	filterData = data;
 	myInvalidate();
