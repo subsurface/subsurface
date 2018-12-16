@@ -68,27 +68,24 @@ FilterWidget2::FilterWidget2(QWidget* parent)
 
 void FilterWidget2::updateFilter()
 {
-	FilterData data;
+	filterData.validFilter = true;
+	filterData.minVisibility = ui->minVisibility->currentStars();
+	filterData.maxVisibility = ui->maxVisibility->currentStars();
+	filterData.minRating = ui->minRating->currentStars();
+	filterData.maxRating = ui->maxRating->currentStars();
+	filterData.minWaterTemp = ui->minWaterTemp->value();
+	filterData.maxWaterTemp = ui->maxWaterTemp->value();
+	filterData.minAirTemp = ui->minAirTemp->value();
+	filterData.maxWaterTemp = ui->maxWaterTemp->value();
+	filterData.from = ui->from->dateTime();
+	filterData.to = ui->to->dateTime();
+	filterData.tags = ui->tags->text().split(",", QString::SkipEmptyParts);
+	filterData.people = ui->people->text().split(",", QString::SkipEmptyParts);
+	filterData.location = ui->location->text().split(",", QString::SkipEmptyParts);
+	filterData.equipment = ui->equipment->text().split(",", QString::SkipEmptyParts);
+	filterData.invertFilter = ui->invertFilter->isChecked();
 
-	data.validFilter = true;
-	data.minVisibility = ui->minVisibility->currentStars();
-	data.maxVisibility = ui->maxVisibility->currentStars();
-	data.minRating = ui->minRating->currentStars();
-	data.maxRating = ui->maxRating->currentStars();
-	data.minWaterTemp = ui->minWaterTemp->value();
-	data.maxWaterTemp = ui->maxWaterTemp->value();
-	data.minAirTemp = ui->minAirTemp->value();
-	data.maxWaterTemp = ui->maxWaterTemp->value();
-	data.from = ui->from->dateTime();
-	data.to = ui->to->dateTime();
-	data.tags = ui->tags->text().split(",", QString::SkipEmptyParts);
-	data.people = ui->people->text().split(",", QString::SkipEmptyParts);
-	data.location = ui->location->text().split(",", QString::SkipEmptyParts);
-	data.equipment = ui->equipment->text().split(",", QString::SkipEmptyParts);
-	data.invertFilter = ui->invertFilter->isChecked();
-
-	filterData = data;
-	filterDataChanged(data);
+	filterDataChanged(filterData);
 }
 
 void FilterWidget2::showEvent(QShowEvent *event)

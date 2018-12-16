@@ -50,7 +50,7 @@ slots:
 	void stopFilterDiveSite();
 	void filterChanged(const QModelIndex &from, const QModelIndex &to, const QVector<int> &roles);
 	void setLayout(DiveTripModel::Layout layout);
-	void filterDataChanged(const FilterData& data);
+	void filterDataChanged(const FilterData &data);
 
 signals:
 	void filterFinished();
