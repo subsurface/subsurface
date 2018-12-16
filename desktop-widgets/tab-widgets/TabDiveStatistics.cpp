@@ -48,17 +48,13 @@ void TabDiveStatistics::updateData()
 	calculate_stats_selected(&stats_selection);
 	clear();
 	ui->depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, true));
-	if (amount_selected > 1)
+	if (amount_selected > 1) {
 		ui->depthLimits->setMinimum(get_depth_string(stats_selection.min_depth, true));
-	else
+		ui->depthLimits->setAverage(get_depth_string(stats_selection.combined_max_depth.mm / stats_selection.selection_size, true));
+	} else {
 		ui->depthLimits->setMinimum("");
-	// the overall average depth is really confusing when listed between the
-	// deepest and shallowest dive - let's just not set it
-	// ui->depthLimits->setAverage(get_depth_string(stats_selection.avg_depth, true));
-
-	// Also hide the avgIco, so its clear that its not there.
-	ui->depthLimits->overrideAvgToolTipText("");
-	ui->depthLimits->setAvgVisibility(false);
+		ui->depthLimits->setAverage("");
+	}
 
 	if (stats_selection.max_sac.mliter && (stats_selection.max_sac.mliter != stats_selection.avg_sac.mliter))
 		ui->sacLimits->setMaximum(get_volume_string(stats_selection.max_sac, true).append(tr("/min")));
