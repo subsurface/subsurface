@@ -24,11 +24,9 @@ protected:
 	void hideEvent(QHideEvent *event) override;
 	void showEvent(QShowEvent *event) override;
 
-signals:
-	void filterDataChanged(const FilterData& data);
-
 private:
 	std::unique_ptr<Ui::FilterWidget2> ui;
+	void filterDataChanged(const FilterData &data);
 	FilterData filterData;
 };
 

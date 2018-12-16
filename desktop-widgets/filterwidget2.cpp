@@ -88,18 +88,23 @@ void FilterWidget2::updateFilter()
 	data.invertFilter = ui->invertFilter->isChecked();
 
 	filterData = data;
-	emit filterDataChanged(data);
+	filterDataChanged(data);
 }
 
 void FilterWidget2::showEvent(QShowEvent *event)
 {
 	QWidget::showEvent(event);
-	emit filterDataChanged(filterData);
+	filterDataChanged(filterData);
 }
 
 void FilterWidget2::hideEvent(QHideEvent *event)
 {
 	QWidget::hideEvent(event);
 	FilterData data;
-	emit filterDataChanged(data);
+	filterDataChanged(data);
+}
+
+void FilterWidget2::filterDataChanged(const FilterData &data)
+{
+	MultiFilterSortModel::instance()->filterDataChanged(data);
 }
