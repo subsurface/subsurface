@@ -227,12 +227,7 @@ void taglist_cleanup(struct tag_entry **tag_list);
 
 void taglist_init_global();
 void taglist_free(struct tag_entry *tag_list);
-
 bool taglist_contains(struct tag_entry *tag_list, const char *tag);
-int count_dives_with_tag(const char *tag);
-int count_dives_with_person(const char *person);
-int count_dives_with_location(const char *location);
-int count_dives_with_suit(const char *suit);
 
 struct extra_data {
 	const char *key;
