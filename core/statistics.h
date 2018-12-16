@@ -24,6 +24,7 @@ typedef struct
 	depth_t max_depth;
 	depth_t min_depth;
 	depth_t avg_depth;
+	depth_t combined_max_depth;
 	volume_t max_sac;
 	volume_t min_sac;
 	volume_t avg_sac;
