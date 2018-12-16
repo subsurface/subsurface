@@ -362,20 +362,6 @@ extern "C" void copy_image_and_overwrite(const char *cfileName, const char *path
 		qDebug() << "copy of" << fileName << "to" << newName << "failed";
 }
 
-extern "C" bool string_sequence_contains(const char *string_sequence, const char *text)
-{
-	if (empty_string(text) || empty_string(string_sequence))
-		return false;
-
-	QString stringSequence(string_sequence);
-	QStringList strings = stringSequence.split(",", QString::SkipEmptyParts);
-	Q_FOREACH (const QString& string, strings) {
-		if (string.trimmed().compare(QString(text).trimmed(), Qt::CaseInsensitive) == 0)
-			return true;
-	}
-	return false;
-}
-
 static bool lessThan(const QPair<QString, int> &a, const QPair<QString, int> &b)
 {
 	return a.second < b.second;
