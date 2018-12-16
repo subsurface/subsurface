@@ -97,7 +97,7 @@ void FilterWidget2::updateFilter()
 	data.planned = ui->planned->isChecked();
 
 	filterData = data;
-	emit filterDataChanged(data);
+	filterDataChanged(data);
 }
 
 void FilterWidget2::updateLogged(int value) {
@@ -116,12 +116,17 @@ void FilterWidget2::updatePlanned(int value) {
 void FilterWidget2::showEvent(QShowEvent *event)
 {
 	QWidget::showEvent(event);
-	emit filterDataChanged(filterData);
+	filterDataChanged(filterData);
 }
 
 void FilterWidget2::hideEvent(QHideEvent *event)
 {
 	QWidget::hideEvent(event);
 	FilterData data;
-	emit filterDataChanged(data);
+	filterDataChanged(data);
+}
+
+void FilterWidget2::filterDataChanged(const FilterData &data)
+{
+	MultiFilterSortModel::instance()->filterDataChanged(data);
 }
