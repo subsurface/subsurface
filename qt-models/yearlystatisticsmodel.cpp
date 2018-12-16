@@ -15,6 +15,7 @@ public:
 		SHORTEST_TIME,
 		LONGEST_TIME,
 		AVG_DEPTH,
+		AVG_MAX_DEPTH,
 		MIN_DEPTH,
 		MAX_DEPTH,
 		AVG_SAC,
@@ -73,6 +74,10 @@ QVariant YearStatisticsItem::data(int column, int role) const
 		break;
 	case AVG_DEPTH:
 		ret = get_depth_string(stats_interval.avg_depth);
+		break;
+	case AVG_MAX_DEPTH:
+		if (stats_interval.selection_size)
+			ret = get_depth_string(stats_interval.combined_max_depth.mm / stats_interval.selection_size);
 		break;
 	case MIN_DEPTH:
 		ret = get_depth_string(stats_interval.min_depth);
@@ -142,6 +147,9 @@ QVariant YearlyStatisticsModel::headerData(int section, Qt::Orientation orientat
 			break;
 		case AVG_DEPTH:
 			val = QString(tr("Depth (%1)\n Average")).arg(get_depth_unit());
+			break;
+		case AVG_MAX_DEPTH:
+			val = tr("\nAverage maximum");
 			break;
 		case MIN_DEPTH:
 			val = tr("\nMinimum");

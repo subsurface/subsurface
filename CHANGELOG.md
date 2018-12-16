@@ -1,3 +1,4 @@
+- Include average max depth in statistics
 - Fix bug in cloud save after removing dives from a trip
 - Dive: Perform more accurate OTU calculations, and include
   OTU calculations for rebreather dives [#1851 & #1865].
