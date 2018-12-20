@@ -1,3 +1,4 @@
+- Core: shift dive time in correct direction [#1893]
 - Include average max depth in statistics
 - Fix bug in cloud save after removing dives from a trip
 - Dive: Perform more accurate OTU calculations, and include
