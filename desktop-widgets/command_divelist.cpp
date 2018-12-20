@@ -600,7 +600,7 @@ ShiftTime::ShiftTime(const QVector<dive *> &changedDives, int amount)
 void ShiftTime::redoit()
 {
 	for (dive *d: diveList)
-		d->when -= timeChanged;
+		d->when += timeChanged;
 
 	// Changing times may have unsorted the dive table
 	sort_table(&dive_table);
