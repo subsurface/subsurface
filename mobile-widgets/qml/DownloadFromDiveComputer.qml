@@ -167,18 +167,6 @@ Kirigami.Page {
 					elide: Text.ElideRight
 				}
 				onCurrentTextChanged: {
-					// pattern that matches BT addresses
-					var btAddr = /[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]/ ;
-
-					// On iOS we store UUID instead of device address.
-					if (Qt.platform.os === 'ios')
-						btAddr = /\{?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}/;
-
-					if (btAddr.test(currentText))
-						manager.DC_bluetoothMode = true
-					else
-						manager.DC_bluetoothMode = false
-					manager.DC_devName = currentText
 					dc1.enabled = dc2.enabled = dc3.enabled = dc4.enabled = true
 					for (var i = 1; i < 5; i++) {
 						if (comboProduct.currentIndex === -1 && currentText === "FTDI"){
@@ -198,7 +186,6 @@ Kirigami.Page {
 						}
 					}
 					download.text = qsTr("Download")
-
 				}
 			}
 		}
@@ -277,10 +264,28 @@ Kirigami.Page {
 					 comboConnection.currentIndex != -1
 				onClicked: {
 					text = qsTr("Retry")
-					// strip any BT Name from the address
-					var devName = manager.DC_devName
-					if (devName != qsTr("USB device"))
-						manager.DC_devName = devName.replace(/^(.*) /, "")
+
+					var connectionString = comboConnection.currentText
+					// separate BT address and BT name (if applicable)
+					// pattern that matches BT addresses
+					var btAddr = "(LE:)?([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}";
+
+					// On iOS we store UUID instead of device address.
+					if (Qt.platform.os === 'ios')
+						btAddr = "(LE:)?\{?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}";
+
+					var pattern = new RegExp(btAddr);
+					var devAddress = "";
+					devAddress = pattern.exec(connectionString);
+					if (devAddress !== null) {
+						manager.DC_bluetoothMode = true;
+						manager.DC_devName = devAddress[0]; // exec returns an array with the matched text in element 0
+						manager.retrieveBluetoothName();
+						manager.appendTextToLog("setting btName to " + manager.DC_devBluetoothName);
+					} else {
+						manager.DC_bluetoothMode = false;
+						manager.DC_devName = connectionString;
+					}
 					manager.appendTextToLog("DCDownloadThread started for " + manager.DC_vendor + " " + manager.DC_product + " on "+ manager.DC_devName)
 					progressBar.visible = true
 					downloadThread.start()
@@ -392,7 +397,7 @@ Kirigami.Page {
 				comboVendor.currentIndex = manager.getDetectedVendorIndex()
 				comboProduct.currentIndex = manager.getDetectedProductIndex(comboVendor.currentText)
 				comboConnection.currentIndex = manager.getMatchingAddress(comboVendor.currentText, comboProduct.currentText)
-				
+
 			}
 		}
 	}
