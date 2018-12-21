@@ -74,6 +74,11 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		product = "i770R";
 	}
 
+	if (btName.contains(QRegularExpression("^ER\\d{6}$"))) {
+		vendor = "Oceanic";
+		product = "Pro Plus X";
+	}
+
 	if (!vendor.isEmpty() && !product.isEmpty())
 		return descriptorLookup.value(vendor + product);
 
