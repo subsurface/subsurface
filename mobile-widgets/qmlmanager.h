@@ -62,6 +62,8 @@ public:
 	QString DC_devName() const;
 	void DC_setDevName(const QString& devName);
 
+	Q_INVOKABLE void retrieveBluetoothName();
+
 	QString DC_devBluetoothName() const;
 	void DC_setDevBluetoothName(const QString& devBluetoothName);
 

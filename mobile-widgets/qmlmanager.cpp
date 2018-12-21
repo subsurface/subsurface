@@ -1637,6 +1637,17 @@ void QMLManager::setStatusbarColor(QColor)
 
 #endif
 
+void QMLManager::retrieveBluetoothName()
+{
+	QString name = DC_devName();
+	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
+	foreach (BTDiscovery::btVendorProduct btDC, btDCs) {
+		qDebug() << "compare" <<name << btDC.btpdi.address;
+		if (name.contains(btDC.btpdi.address))
+			DC_setDevBluetoothName(btDC.btpdi.name);
+	}
+}
+
 QString QMLManager::DC_vendor() const
 {
 	return m_device_data->vendor();
