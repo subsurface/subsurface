@@ -17,6 +17,23 @@ exec 1> >(tee ./build.log) 2>&1
 
 USE_X=$(case $- in *x*) echo "-x" ;; esac)
 
+# deal with the command line arguments
+while [[ $# -gt 0 ]] ; do
+        arg="$1"
+        case $arg in
+                -prep-only)
+			# only download the dependencies, don't build
+			PREP_ONLY="1"
+			;;
+		*)
+			echo "Unknown command line argument $arg"
+			echo "Usage: $0 [-prep-only]"
+			exit 1
+			;;
+	esac
+	shift
+done
+
 # these are the current versions for Qt, Android SDK & NDK:
 source subsurface/packaging/android/variables.sh
 
@@ -110,6 +127,10 @@ fi
 
 # patch the cmake / Qt5.7.1 incompatibility mentioned above
 sed -i 's/set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/# set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/' Qt/"${LATEST_QT}"/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
+
+if [ ! -z $PREP_ONLY ] ; then
+	exit 0
+fi
 
 if [ ! -d subsurface/libdivecomputer/src ] ; then
 	pushd subsurface
