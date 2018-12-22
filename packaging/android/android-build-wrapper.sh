@@ -35,7 +35,8 @@ while [[ $# -gt 0 ]] ; do
 done
 
 # these are the current versions for Qt, Android SDK & NDK:
-source subsurface/packaging/android/variables.sh
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null && pwd )"
+source "$SCRIPTDIR"/variables.sh
 
 # avoid timeouts on Travis when downloads take a long time
 SLOW_PROG=""
@@ -51,9 +52,7 @@ fi
 
 PLATFORM=$(uname)
 
-pushd $(dirname "$0")/../../
-export SUBSURFACE_SOURCE=$PWD
-popd
+export SUBSURFACE_SOURCE="$SCRIPTDIR"/../..
 
 if [ "$PLATFORM" = Linux ] ; then
 	QT_BINARIES=qt-opensource-linux-x64-${LATEST_QT}.run
@@ -122,13 +121,13 @@ if [ ! -d Qt/"${LATEST_QT}"/android_armv7 ] ; then
 		$SLOW_PROG wget -q "${QT_DOWNLOAD_URL}"
 	fi
 	chmod +x ./"${QT_BINARIES}"
-	./"${QT_BINARIES}" --platform minimal --script "$SUBSURFACE_SOURCE"/qt-installer-noninteractive.qs --no-force-installations
+	./"${QT_BINARIES}" --platform minimal --script "$SCRIPTDIR"/qt-installer-noninteractive.qs --no-force-installations -v
 fi
 
 # patch the cmake / Qt5.7.1 incompatibility mentioned above
 sed -i 's/set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/# set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/' Qt/"${LATEST_QT}"/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
 
-if [ ! -z $PREP_ONLY ] ; then
+if [ ! -z ${PREP_ONLY+x} ] ; then
 	exit 0
 fi
 
