@@ -19,7 +19,6 @@
  * void insert_trip(dive_trip_t *dive_trip_p)
  * void unregister_trip(dive_trip_t *trip)
  * void free_trip(dive_trip_t *trip)
- * void remove_dive_from_trip(struct dive *dive)
  * void remove_dive_from_trip(struct dive *dive, bool was_autogen)
  * void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
  * dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
@@ -32,12 +31,10 @@
  * void delete_single_dive(int idx)
  * void add_dive_to_table(struct dive_table *table, int idx, struct dive *dive)
  * void add_single_dive(int idx, struct dive *dive)
- * struct dive *merge_two_dives(struct dive *a, struct dive *b)
  * void select_dive(struct dive *dive)
  * void deselect_dive(struct dive *dive)
  * void mark_divelist_changed(int changed)
  * int unsaved_changes()
- * void remove_autogen_trips()
  * bool dive_less_than(const struct dive *a, const struct dive *b)
  * bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b)
  * bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b)
@@ -76,9 +73,6 @@ bool autogroup = false;
 dive_trip_t *dive_trip_list;
 
 unsigned int amount_selected;
-
-// We need to stop using globals, really.
-struct dive_table downloadTable;
 
 #if DEBUG_SELECTION_TRACKING
 void dump_selection(void)
@@ -912,11 +906,14 @@ void remove_dive_from_trip(struct dive *dive, short was_autogen)
 		delete_trip(trip);
 }
 
+/* Add dive to a trip. Caller is responsible for removing dive
+ * from trip beforehand. */
 void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 {
 	if (dive->divetrip == trip)
 		return;
-	remove_dive_from_trip(dive, false);
+	if (dive->divetrip)
+		fprintf(stderr, "Warning: adding dive to trip that has trip set\n");
 	add_dive_to_table(&trip->dives, -1, dive);
 	dive->divetrip = trip;
 }
@@ -1075,16 +1072,15 @@ void delete_dive_from_table(struct dive_table *table, int idx)
 	unregister_dive_from_table(table, idx);
 }
 
-/* this removes a dive from the dive table and trip-list but doesn't
- * free the resources associated with the dive. It returns a pointer
- * to the unregistered dive. The returned dive has the selection-
- * and hidden-flags cleared. */
+/* This removes a dive from the global dive table but doesn't free the
+ * resources associated with the dive. The caller must removed the dive
+ * from the trip-list. Returns a pointer to the unregistered dive.
+ * The unregistered dive has the selection- and hidden-flags cleared. */
 struct dive *unregister_dive(int idx)
 {
 	struct dive *dive = get_dive(idx);
 	if (!dive)
 		return NULL; /* this should never happen */
-	remove_dive_from_trip(dive, false);
 	unregister_dive_from_table(&dive_table, idx);
 	if (dive->selected)
 		amount_selected--;
@@ -1092,8 +1088,8 @@ struct dive *unregister_dive(int idx)
 	return dive;
 }
 
-/* this implements the mechanics of removing the dive from the table,
- * but doesn't deal with updating dive trips, etc */
+/* this implements the mechanics of removing the dive from the global
+ * dive table and the trip, but doesn't deal with updating dive trips, etc */
 void delete_single_dive(int idx)
 {
 	struct dive *dive = get_dive(idx);
@@ -1101,8 +1097,8 @@ void delete_single_dive(int idx)
 		return; /* this should never happen */
 	if (dive->selected)
 		deselect_dive(dive);
-	dive = unregister_dive(idx);
-	free_dive(dive);
+	remove_dive_from_trip(dive, false);
+	delete_dive_from_table(&dive_table, idx);
 }
 
 struct dive **grow_dive_table(struct dive_table *table)
@@ -1184,87 +1180,6 @@ bool consecutive_selected()
 	return consecutive;
 }
 
-/*
- * Merge two dives. 'a' is always before 'b' in the dive list
- * (and thus in time).
- */
-struct dive *merge_two_dives(struct dive *a, struct dive *b)
-{
-	struct dive *res;
-	int i, j, nr, nrdiff;
-	int id;
-
-	if (!a || !b)
-		return NULL;
-
-	id = a->id;
-	i = get_divenr(a);
-	j = get_divenr(b);
-	if (i < 0 || j < 0)
-		// something is wrong with those dives. Bail
-		return NULL;
-	res = merge_dives(a, b, b->when - a->when, false, NULL);
-	if (!res)
-		return NULL;
-
-	/*
-	 * If 'a' and 'b' were numbered, and in proper order,
-	 * then the resulting dive will get the first number,
-	 * and the subsequent dives will be renumbered by the
-	 * difference.
-	 *
-	 * So if you had a dive list  1 3 6 7 8, and you
-	 * merge 1 and 3, the resulting numbered list will
-	 * be 1 4 5 6, because we assume that there were
-	 * some missing dives (originally dives 4 and 5),
-	 * that now will still be missing (dives 2 and 3
-	 * in the renumbered world).
-	 *
-	 * Obviously the normal case is that everything is
-	 * consecutive, and the difference will be 1, so the
-	 * above example is not supposed to be normal.
-	 */
-	nrdiff = 0;
-	nr = a->number;
-	if (a->number && b->number > a->number) {
-		res->number = nr;
-		nrdiff = b->number - nr;
-	}
-
-	add_single_dive(i, res);
-	delete_single_dive(i + 1);
-	delete_single_dive(j);
-	// now make sure that we keep the id of the first dive.
-	// why?
-	// because this way one of the previously selected ids is still around
-	res->id = id;
-
-	// renumber dives from merged one in advance by difference between
-	// merged dives numbers. Do not renumber if actual number is zero.
-	for (; j < dive_table.nr; j++) {
-		struct dive *dive = dive_table.dives[j];
-		int newnr;
-
-		if (!dive->number)
-			continue;
-		newnr = dive->number - nrdiff;
-
-		/*
-		 * Don't renumber stuff that isn't in order!
-		 *
-		 * So if the new dive number isn't larger than the
-		 * previous dive number, just stop here.
-		 */
-		if (newnr <= nr)
-			break;
-		dive->number = newnr;
-		nr = newnr;
-	}
-
-	mark_divelist_changed(true);
-	return res;
-}
-
 void select_dive(struct dive *dive)
 {
 	if (!dive)
@@ -1336,34 +1251,15 @@ void filter_dive(struct dive *d, bool shown)
 }
 
 
-/* This only gets called with non-NULL trips.
- * It does not combine notes or location, just picks the first one
- * (or the second one if the first one is empty */
-void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
-{
-	if (empty_string(trip_a->location) && trip_b->location) {
-		free(trip_a->location);
-		trip_a->location = strdup(trip_b->location);
-	}
-	if (empty_string(trip_a->notes) && trip_b->notes) {
-		free(trip_a->notes);
-		trip_a->notes = strdup(trip_b->notes);
-	}
-	/* this also removes the dives from trip_b and eventually
-	 * calls delete_trip(trip_b) when the last dive has been moved */
-	while (trip_b->dives.nr > 0)
-		add_dive_to_trip(trip_b->dives.dives[0], trip_a);
-}
-
 /* Out of two strings, copy the string that is not empty (if any). */
 static char *copy_non_empty_string(const char *a, const char *b)
 {
 	return copy_string(empty_string(b) ? a : b);
 }
 
-/* Combine trips new. This combines two trips, generating a
+/* This combines the information of two trips, generating a
  * new trip. To support undo, we have to preserve the old trips. */
-dive_trip_t *combine_trips_create(struct dive_trip *trip_a, struct dive_trip *trip_b)
+dive_trip_t *combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
 {
 	dive_trip_t *trip;
 
@@ -1385,19 +1281,6 @@ void mark_divelist_changed(bool changed)
 int unsaved_changes()
 {
 	return dive_list_changed;
-}
-
-void remove_autogen_trips()
-{
-	int i;
-	struct dive *dive;
-
-	for_each_dive(i, dive) {
-		dive_trip_t *trip = dive->divetrip;
-
-		if (trip && trip->autogen)
-			remove_dive_from_trip(dive, true);
-	}
 }
 
 /*
@@ -1522,10 +1405,8 @@ static bool try_to_merge_into(struct dive *dive_to_add, int idx, bool prefer_imp
 	merged->id = old_dive->id;
 	merged->selected = old_dive->selected;
 	dive_table.dives[idx] = merged;
-	if (trip) {
+	if (trip)
 		remove_dive_from_trip(old_dive, false);
-		add_dive_to_trip(merged, trip);
-	}
 	free_dive(old_dive);
 	remove_dive_from_trip(dive_to_add, false);
 	free_dive(dive_to_add);

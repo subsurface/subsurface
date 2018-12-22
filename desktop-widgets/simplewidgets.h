@@ -20,7 +20,6 @@ class FilterModelBase;
 #include "ui_urldialog.h"
 #include "ui_divecomponentselection.h"
 #include "ui_listfilter.h"
-#include "ui_filterwidget.h"
 #include "core/exif.h"
 #include "core/dive.h"
 
@@ -148,59 +147,6 @@ private:
 	Ui::DiveComponentSelectionDialog ui;
 	struct dive *targetDive;
 	struct dive_components *what;
-};
-
-namespace Ui{
-	class FilterWidget2;
-};
-
-class MultiFilter : public QWidget {
-	Q_OBJECT
-public
-slots:
-	void closeFilter();
-	void adjustHeight();
-	void filterFinished();
-
-public:
-	MultiFilter(QWidget *parent);
-	Ui::FilterWidget2 ui;
-};
-
-class FilterBase : public QWidget {
-	Q_OBJECT
-	void addContextMenuEntry(const QString &s, void (FilterModelBase::*)());
-protected:
-	FilterBase(FilterModelBase *model, QWidget *parent = 0);
-	FilterModelBase *model;
-	Ui::FilterWidget ui;
-	void showEvent(QShowEvent *) override;
-	void hideEvent(QHideEvent *) override;
-	friend class MultiFilter;
-};
-
-class TagFilter : public FilterBase {
-	Q_OBJECT
-public:
-	TagFilter(QWidget *parent = 0);
-};
-
-class BuddyFilter : public FilterBase {
-	Q_OBJECT
-public:
-	BuddyFilter(QWidget *parent = 0);
-};
-
-class SuitFilter : public FilterBase {
-	Q_OBJECT
-public:
-	SuitFilter(QWidget *parent = 0);
-};
-
-class LocationFilter : public FilterBase {
-	Q_OBJECT
-public:
-	LocationFilter(QWidget *parent = 0);
 };
 
 class TextHyperlinkEventFilter : public QObject {

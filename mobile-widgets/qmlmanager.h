@@ -62,6 +62,8 @@ public:
 	QString DC_devName() const;
 	void DC_setDevName(const QString& devName);
 
+	Q_INVOKABLE void retrieveBluetoothName();
+
 	QString DC_devBluetoothName() const;
 	void DC_setDevBluetoothName(const QString& devBluetoothName);
 
@@ -165,6 +167,16 @@ public slots:
 	void deleteDive(int id);
 	void copyDiveData(int id);
 	void pasteDiveData(int id);
+	bool toggleDiveSite(bool toggle);
+	bool toggleNotes(bool toggle);
+	bool toggleDiveMaster(bool toggle);
+	bool toggleBuddy(bool toggle);
+	bool toggleSuit(bool toggle);
+	bool toggleRating(bool toggle);
+	bool toggleVisibility(bool toggle);
+	bool toggleTags(bool toggle);
+	bool toggleCylinders(bool toggle);
+	bool toggleWeights(bool toggle);
 	bool undoDelete(int id);
 	QString addDive();
 	void addDiveAborted(int id);

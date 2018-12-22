@@ -232,6 +232,11 @@ Kirigami.ScrollablePage {
 							timer.stop()
 							manager.copyDiveData(dive.id)
 						}
+						onPressAndHold: {
+								globalDrawer.close()
+								manager.copyDiveData(dive.id)
+								pageStack.push(settingsCopyWindow)
+						}
 					}
 				}
 				Rectangle {

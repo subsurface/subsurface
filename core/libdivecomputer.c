@@ -1387,7 +1387,7 @@ const char *do_libdivecomputer_import(device_data_t *data)
 			/* TODO: Show the logfile to the user on error. */
 			dc_device_close(data->device);
 			data->device = NULL;
-			if (!downloadTable.nr)
+			if (!data->download_table->nr)
 				dev_info(data, translate("gettextFromC", "No new dives downloaded from dive computer"));
 		}
 		dc_iostream_close(data->iostream);

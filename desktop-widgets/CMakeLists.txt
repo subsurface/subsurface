@@ -33,7 +33,7 @@ set (SUBSURFACE_UI
 	diveplanner.ui
 	diveshareexportdialog.ui
 	downloadfromdivecomputer.ui
-	filterwidget.ui
+	filterwidget2.ui
 	findmovedimagesdialog.ui
 	listfilter.ui
 	locationInformation.ui
@@ -90,6 +90,7 @@ set(SUBSURFACE_INTERFACE
 	command_divelist.cpp
 	locationinformation.cpp
 	qtwaitingspinner.cpp
+	filterwidget2.cpp
 	tab-widgets/TabDiveStatistics.cpp
 	tab-widgets/TabDiveInformation.cpp
 	tab-widgets/TabDivePhotos.cpp

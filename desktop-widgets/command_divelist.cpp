@@ -92,6 +92,7 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 	res->hidden_by_filter = !show;
 
 	add_single_dive(d.idx, res);		// Return ownership to backend
+	invalidate_dive_cache(res);		// Ensure that dive is written in git_save()
 
 	// If the dive to be removed is selected, we will inform the frontend
 	// later via a signal that the dive changed.
@@ -108,11 +109,6 @@ std::vector<DiveToAdd> DiveListBase::removeDives(std::vector<dive *> &divesToDel
 {
 	std::vector<DiveToAdd> res;
 	res.reserve(divesToDelete.size());
-
-	// First, tell the filters that dives are removed. This could
-	// be done later using the emitted signals, but we do this here
-	// for symmetry with addDives()
-	MultiFilterSortModel::instance()->divesDeleted(QVector<dive *>::fromStdVector(divesToDelete));
 
 	for (dive *d: divesToDelete)
 		res.push_back(removeDive(d));
@@ -153,7 +149,6 @@ std::vector<dive *> DiveListBase::addDives(std::vector<DiveToAdd> &divesToAdd)
 	QVector<dive *> divesForFilter;
 	for (const DiveToAdd &entry: divesToAdd)
 		divesForFilter.push_back(entry.dive.get());
-	MultiFilterSortModel::instance()->divesAdded(divesForFilter);
 
 	// At the end of the function, to send the proper dives-added signals,
 	// we the the list of added trips. Create this list now.
@@ -191,7 +186,7 @@ std::vector<dive *> DiveListBase::addDives(std::vector<DiveToAdd> &divesToAdd)
 
 // This helper function renumbers dives according to an array of id/number pairs.
 // The old numbers are stored in the array, thus calling this function twice has no effect.
-// TODO: switch from uniq-id to indexes once all divelist-actions are controlled by undo-able commands
+// TODO: switch from uniq-id to indices once all divelist-actions are controlled by undo-able commands
 static void renumberDives(QVector<QPair<dive *, int>> &divesToRenumber)
 {
 	for (auto &pair: divesToRenumber) {
@@ -199,6 +194,7 @@ static void renumberDives(QVector<QPair<dive *, int>> &divesToRenumber)
 		if (!d)
 			continue;
 		std::swap(d->number, pair.second);
+		invalidate_dive_cache(d);
 	}
 
 	// Emit changed signals per trip.
@@ -239,6 +235,7 @@ static OwningTripPtr moveDiveToTrip(DiveToTrip &diveToTrip)
 	// Store old trip and get new trip we should associate this dive with
 	std::swap(trip, diveToTrip.trip);
 	add_dive_to_trip(diveToTrip.dive, trip);
+	invalidate_dive_cache(diveToTrip.dive);		// Ensure that dive is written in git_save()
 	return res;
 }
 
@@ -302,9 +299,12 @@ static void moveDivesBetweenTrips(DivesToTrip &dives)
 		for (size_t k = i; k < j; ++k)
 			divesInTrip[k - i] = divesMoved[k].d;
 
-		// Check if the from-trip was deleted: If yes, it was recorded in the tripsToAdd structure
+		// Check if the from-trip was deleted: If yes, it was recorded in the tripsToAdd structure.
+		// Only set the flag if this is that last time this trip is featured.
 		bool deleteFrom = from &&
-				  std::find_if(dives.tripsToAdd.begin(), dives.tripsToAdd.end(),
+				  std::find_if(divesMoved.begin() + j, divesMoved.end(), // Is this the last occurence of "from"?
+					       [from](const DiveMoved &entry) { return entry.from == from; }) == divesMoved.end() &&
+				  std::find_if(dives.tripsToAdd.begin(), dives.tripsToAdd.end(), // Is "from" in tripsToAdd?
 					       [from](const OwningTripPtr &trip) { return trip.get() == from; }) != dives.tripsToAdd.end();
 		// Check if the to-trip has to be created. For this purpose, we saved an array of trips to be created.
 		bool createTo = false;
@@ -600,7 +600,7 @@ ShiftTime::ShiftTime(const QVector<dive *> &changedDives, int amount)
 void ShiftTime::redoit()
 {
 	for (dive *d: diveList)
-		d->when -= timeChanged;
+		d->when += timeChanged;
 
 	// Changing times may have unsorted the dive table
 	sort_table(&dive_table);
@@ -737,7 +737,7 @@ MergeTrips::MergeTrips(dive_trip *trip1, dive_trip *trip2)
 {
 	if (trip1 == trip2)
 		return;
-	dive_trip *newTrip = combine_trips_create(trip1, trip2);
+	dive_trip *newTrip = combine_trips(trip1, trip2);
 	divesToMove.tripsToAdd.emplace_back(newTrip);
 	for (int i = 0; i < trip1->dives.nr; ++i)
 		divesToMove.divesToMove.push_back( { trip1->dives.dives[i], newTrip } );
@@ -752,8 +752,8 @@ SplitDives::SplitDives(dive *d, duration_t time)
 	// Split the dive
 	dive *new1, *new2;
 	int idx = time.seconds < 0 ?
-		split_dive_dont_insert(d, &new1, &new2) :
-		split_dive_at_time_dont_insert(d, time, &new1, &new2);
+		split_dive(d, &new1, &new2) :
+		split_dive_at_time(d, time, &new1, &new2);
 
 	// If this didn't work, simply return. Empty arrays indicate that nothing is to be done.
 	if (idx < 0)

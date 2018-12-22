@@ -10,6 +10,7 @@
 #include <QShortcut>
 #include <QSettings>
 #include <QMessageBox>
+#include <QDialogButtonBox>
 
 #define SETTINGS_GROUP "PrintDialog"
 

@@ -3357,70 +3357,6 @@ void dump_taglist(const char *intro, struct tag_entry *tl)
 	fprintf(stderr, "\n");
 }
 
-// count the dives where the tag list contains the given tag
-int count_dives_with_tag(const char *tag)
-{
-	int i, counter = 0;
-	struct dive *d;
-
-	for_each_dive (i, d) {
-		if (empty_string(tag)) {
-			// count dives with no tags
-			if (d->tag_list == NULL)
-				counter++;
-		} else if (taglist_contains(d->tag_list, tag)) {
-			counter++;
-		}
-	}
-	return counter;
-}
-
-extern bool string_sequence_contains(const char *string_sequence, const char *text);
-
-// count the dives where the person is included in the comma separated string sequences of buddies or divemasters
-int count_dives_with_person(const char *person)
-{
-	int i, counter = 0;
-	struct dive *d;
-
-	for_each_dive (i, d) {
-		if (empty_string(person)) {
-			// solo dive
-			if (empty_string(d->buddy) && empty_string(d->divemaster))
-				counter++;
-		} else if (string_sequence_contains(d->buddy, person) || string_sequence_contains(d->divemaster, person)) {
-			counter++;
-		}
-	}
-	return counter;
-}
-
-// count the dives with exactly the location
-int count_dives_with_location(const char *location)
-{
-	int i, counter = 0;
-	struct dive *d;
-
-	for_each_dive (i, d) {
-		if (same_string(get_dive_location(d), location))
-			counter++;
-	}
-	return counter;
-}
-
-// count the dives with exactly the suit
-int count_dives_with_suit(const char *suit)
-{
-	int i, counter = 0;
-	struct dive *d;
-
-	for_each_dive (i, d) {
-		if (same_string(d->suit, suit))
-			counter++;
-	}
-	return counter;
-}
-
 /*
  * Merging two dives can be subtle, because there's two different ways
  * of merging:
@@ -3686,17 +3622,6 @@ static int split_dive_at(const struct dive *dive, int a, int b, struct dive **ou
 	return nr;
 }
 
-static void finish_split(int nr, struct dive *old, struct dive *d1, struct dive *d2)
-{
-	if (old->divetrip) {
-		add_dive_to_trip(d1, old->divetrip);
-		add_dive_to_trip(d2, old->divetrip);
-	}
-	delete_single_dive(nr);
-	add_single_dive(nr, d1);
-	add_single_dive(nr + 1, d2);
-}
-
 /* in freedive mode we split for as little as 10 seconds on the surface,
  * otherwise we use a minute */
 static bool should_split(const struct divecomputer *dc, int t1, int t2)
@@ -3716,7 +3641,7 @@ static bool should_split(const struct divecomputer *dc, int t1, int t2)
  *
  * In other words, this is a (simplified) reversal of the dive merging.
  */
-int split_dive_dont_insert(const struct dive *dive, struct dive **new1, struct dive **new2)
+int split_dive(const struct dive *dive, struct dive **new1, struct dive **new2)
 {
 	int i;
 	int at_surface, surface_start;
@@ -3758,16 +3683,7 @@ int split_dive_dont_insert(const struct dive *dive, struct dive **new1, struct d
 	return -1;
 }
 
-void split_dive(struct dive *dive)
-{
-	int nr;
-	struct dive *new1, *new2;
-
-	if ((nr = split_dive_dont_insert(dive, &new1, &new2)) >= 0)
-		finish_split(nr, dive, new1, new2);
-}
-
-int split_dive_at_time_dont_insert(const struct dive *dive, duration_t time, struct dive **new1, struct dive **new2)
+int split_dive_at_time(const struct dive *dive, duration_t time, struct dive **new1, struct dive **new2)
 {
 	int i = 0;
 	struct sample *sample = dive->dc.sample;
@@ -3781,15 +3697,6 @@ int split_dive_at_time_dont_insert(const struct dive *dive, duration_t time, str
 			return -1;
 	}
 	return split_dive_at(dive, i, i - 1, new1, new2);
-}
-
-void split_dive_at_time(struct dive *dive, duration_t time)
-{
-	int nr;
-	struct dive *new1, *new2;
-
-	if ((nr = split_dive_at_time_dont_insert(dive, time, &new1, &new2)) >= 0)
-		finish_split(nr, dive, new1, new2);
 }
 
 /*
@@ -4004,20 +3911,51 @@ static bool new_picture_for_dive(struct dive *d, const char *filename)
 	return true;
 }
 
+/* Return distance of timestamp to time of dive. Result is always positive, 0 means during dive. */
+static timestamp_t time_from_dive(const struct dive *d, timestamp_t timestamp)
+{
+	timestamp_t end_time = dive_endtime(d);
+	if (timestamp < d->when)
+		return d->when - timestamp;
+	else if (timestamp > end_time)
+		return timestamp - end_time;
+	else
+		return 0;
+}
+
 // only add pictures that have timestamps between 30 minutes before the dive and
 // 30 minutes after the dive ends
 #define D30MIN (30 * 60)
-bool dive_check_picture_time(const struct dive *d, int shift_time, timestamp_t timestamp)
+static bool dive_check_picture_time(const struct dive *d, timestamp_t timestamp)
 {
-	offset_t offset;
-	if (timestamp) {
-		offset.seconds = timestamp - d->when + shift_time;
-		if (offset.seconds > -D30MIN && offset.seconds < dive_totaltime(d) + D30MIN) {
-			// this picture belongs to this dive
-			return true;
+	return time_from_dive(d, timestamp) < D30MIN;
+}
+
+/* Return dive closest selected dive to given timestamp or NULL if no dives are selected. */
+static struct dive *nearest_selected_dive(timestamp_t timestamp)
+{
+	struct dive *d, *res = NULL;
+	int i;
+	timestamp_t offset, min = 0;
+
+	for_each_dive(i, d) {
+		if (!d->selected)
+			continue;
+		offset = time_from_dive(d, timestamp);
+		if (!res || offset < min) {
+			res = d;
+			min = offset;
 		}
+
+		/* We suppose that dives are sorted chronologically. Thus
+		 * if the offset starts to increase, we can end. This ignores
+		 * pathological cases such as overlapping dives. In such a
+		 * case the user will have to add pictures manually.
+		 */
+		if (offset == 0 || offset > min)
+			break;
 	}
-	return false;
+	return res;
 }
 
 bool picture_check_valid_time(timestamp_t timestamp, int shift_time)
@@ -4026,18 +3964,26 @@ bool picture_check_valid_time(timestamp_t timestamp, int shift_time)
 	struct dive *dive;
 
 	for_each_dive (i, dive)
-		if (dive->selected && dive_check_picture_time(dive, shift_time, timestamp))
+		if (dive->selected && dive_check_picture_time(dive, timestamp + shift_time))
 			return true;
 	return false;
 }
 
-void dive_create_picture(struct dive *dive, const char *filename, int shift_time, bool match_all)
+void create_picture(const char *filename, int shift_time, bool match_all)
 {
 	struct metadata metadata;
+	struct dive *dive;
+	timestamp_t timestamp;
+
 	get_metadata(filename, &metadata);
+	timestamp = metadata.timestamp + shift_time;
+	dive = nearest_selected_dive(timestamp);
+
+	if (!dive)
+		return;
 	if (!new_picture_for_dive(dive, filename))
 		return;
-	if (!match_all && !dive_check_picture_time(dive, shift_time, metadata.timestamp))
+	if (!match_all && !dive_check_picture_time(dive, timestamp))
 		return;
 
 	struct picture *picture = alloc_picture();

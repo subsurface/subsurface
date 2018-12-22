@@ -227,12 +227,7 @@ void taglist_cleanup(struct tag_entry **tag_list);
 
 void taglist_init_global();
 void taglist_free(struct tag_entry *tag_list);
-
 bool taglist_contains(struct tag_entry *tag_list, const char *tag);
-int count_dives_with_tag(const char *tag);
-int count_dives_with_person(const char *person);
-int count_dives_with_location(const char *location);
-int count_dives_with_suit(const char *suit);
 
 struct extra_data {
 	const char *key;
@@ -278,10 +273,10 @@ struct divecomputer {
 #define W_IDX_PRIMARY 0
 #define W_IDX_SECONDARY 1
 
-struct dive_table {
+typedef struct dive_table {
 	int nr, allocated;
 	struct dive **dives;
-};
+} dive_table_t;
 
 typedef struct dive_trip
 {
@@ -376,8 +371,7 @@ struct picture {
 
 extern struct picture *alloc_picture();
 extern void free_picture(struct picture *picture);
-extern bool dive_check_picture_time(const struct dive *d, int shift_time, timestamp_t timestamp);
-extern void dive_create_picture(struct dive *d, const char *filename, int shift_time, bool match_all);
+extern void create_picture(const char *filename, int shift_time, bool match_all);
 extern void dive_add_picture(struct dive *d, struct picture *newpic);
 extern bool dive_remove_picture(struct dive *d, const char *filename);
 extern unsigned int dive_get_picture_count(struct dive *d);
@@ -425,7 +419,7 @@ extern const struct units SI_units, IMPERIAL_units;
 extern const struct units *get_units(void);
 extern int run_survey, verbose, quit, force_root;
 
-extern struct dive_table dive_table, downloadTable;
+extern struct dive_table dive_table;
 extern struct dive displayed_dive;
 extern unsigned int dc_number;
 extern struct dive *current_dive;
@@ -553,10 +547,8 @@ extern void fixup_dc_duration(struct divecomputer *dc);
 extern int dive_getUniqID();
 extern unsigned int dc_airtemp(const struct divecomputer *dc);
 extern unsigned int dc_watertemp(const struct divecomputer *dc);
-extern int split_dive_dont_insert(const struct dive *dive, struct dive **new1, struct dive **new2);
-extern void split_dive(struct dive *);
-extern int split_dive_at_time_dont_insert(const struct dive *dive, duration_t time, struct dive **new1, struct dive **new2);
-extern void split_dive_at_time(struct dive *dive, duration_t time);
+extern int split_dive(const struct dive *dive, struct dive **new1, struct dive **new2);
+extern int split_dive_at_time(const struct dive *dive, duration_t time, struct dive **new1, struct dive **new2);
 extern struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset, bool prefer_downloaded, struct dive_trip **trip);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded);
 extern struct event *clone_event(const struct event *src_ev);
@@ -759,10 +751,14 @@ extern void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_de
 #ifdef __cplusplus
 }
 
-/* Make pointers to dive and dive_trip "Qt metatypes" so that they can
- * be passed through QVariants. */
+/* Make pointers to dive, dive_trip and dive_table "Qt metatypes" so that they can
+ * be passed through QVariants and through QML.
+ * Note: we have to use the typedef "dive_table_t" instead of "struct dive_table",
+ * because MOC removes the "struct", but dive_table is already the name of a global
+ * variable, leading to compilation errors. */
 Q_DECLARE_METATYPE(struct dive *);
 Q_DECLARE_METATYPE(struct dive_trip *);
+Q_DECLARE_METATYPE(dive_table_t *);
 
 #endif
 

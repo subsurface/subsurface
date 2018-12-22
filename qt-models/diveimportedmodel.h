@@ -2,6 +2,8 @@
 #define DIVEIMPORTEDMODEL_H
 
 #include <QAbstractTableModel>
+#include <vector>
+#include "core/dive.h"
 
 class DiveImportedModel : public QAbstractTableModel
 {
@@ -10,7 +12,6 @@ public:
 	enum roleTypes { DateTime = Qt::UserRole + 1, Duration, Depth, Selected};
 
 	DiveImportedModel(QObject *parent = 0);
-	void setDiveTable(struct dive_table *table);
 	int columnCount(const QModelIndex& index = QModelIndex()) const;
 	int rowCount(const QModelIndex& index = QModelIndex()) const;
 	QVariant data(const QModelIndex& index, int role) const;
@@ -19,7 +20,7 @@ public:
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	Q_INVOKABLE void clearTable();
 	QHash<int, QByteArray> roleNames() const;
-	Q_INVOKABLE void repopulate();
+	Q_INVOKABLE void repopulate(dive_table_t *table);
 	Q_INVOKABLE void recordDives();
 public
 slots:
@@ -31,7 +32,7 @@ slots:
 private:
 	int firstIndex;
 	int lastIndex;
-	bool *checkStates;
+	std::vector<char> checkStates; // char instead of bool to avoid silly pessimization of std::vector.
 	struct dive_table *diveTable;
 };
 

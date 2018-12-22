@@ -53,6 +53,7 @@ static void process_dive(struct dive *dive, stats_t *stats)
 		stats->max_depth.mm = dive->maxdepth.mm;
 	if (stats->min_depth.mm == 0 || dive->maxdepth.mm < stats->min_depth.mm)
 		stats->min_depth.mm = dive->maxdepth.mm;
+	stats->combined_max_depth.mm += dive->maxdepth.mm;
 
 	process_temperatures(dive, stats);
 

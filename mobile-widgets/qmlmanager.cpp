@@ -144,7 +144,6 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_updateSelectedDive(-1),
 	m_selectedDiveTimestamp(0),
 	alreadySaving(false),
-	m_device_data(new DCDeviceData),
 	m_pluggedInDeviceName("")
 {
 	LOG_STP("qmlmgr starting");
@@ -225,6 +224,18 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	// make sure we know if the current cloud repo has been successfully synced
 	syncLoadFromCloud();
 	LOG_STP("qmlmgr sync load cloud");
+
+	memset(&m_copyPasteDive, 0, sizeof(m_copyPasteDive));
+	memset(&what, 0, sizeof(what));
+
+	// Let's set some defaults to be copied so users don't necessarily need
+	// to know how to configure this
+	what.divemaster = true;
+	what.buddy = true;
+	what.suit = true;
+	what.tags = true;
+	what.cylinders = true;
+	what.weights = true;
 }
 
 void QMLManager::applicationStateChanged(Qt::ApplicationState state)
@@ -1318,6 +1329,86 @@ void QMLManager::deleteDive(int id)
 	changesNeedSaving();
 }
 
+bool QMLManager::toggleDiveSite(bool toggle)
+{
+	if (toggle)
+		what.divesite = what.divesite ? false : true;
+
+	return what.divesite;
+}
+
+bool QMLManager::toggleNotes(bool toggle)
+{
+	if (toggle)
+		what.notes = what.notes ? false : true;
+
+	return what.notes;
+}
+
+bool QMLManager::toggleDiveMaster(bool toggle)
+{
+	if (toggle)
+		what.divemaster = what.divemaster ? false : true;
+
+	return what.divemaster;
+}
+
+bool QMLManager::toggleBuddy(bool toggle)
+{
+	if (toggle)
+		what.buddy = what.buddy ? false : true;
+
+	return what.buddy;
+}
+
+bool QMLManager::toggleSuit(bool toggle)
+{
+	if (toggle)
+		what.suit = what.suit ? false : true;
+
+	return what.suit;
+}
+
+bool QMLManager::toggleRating(bool toggle)
+{
+	if (toggle)
+		what.rating = what.rating ? false : true;
+
+	return what.rating;
+}
+
+bool QMLManager::toggleVisibility(bool toggle)
+{
+	if (toggle)
+		what.visibility = what.visibility ? false : true;
+
+	return what.visibility;
+}
+
+bool QMLManager::toggleTags(bool toggle)
+{
+	if (toggle)
+		what.tags = what.tags ? false : true;
+
+	return what.tags;
+}
+
+bool QMLManager::toggleCylinders(bool toggle)
+{
+	if (toggle)
+		what.cylinders = what.cylinders ? false : true;
+
+	return what.cylinders;
+}
+
+bool QMLManager::toggleWeights(bool toggle)
+{
+	if (toggle)
+		what.weights = what.weights ? false : true;
+
+	return what.weights;
+}
+
 void QMLManager::copyDiveData(int id)
 {
 	m_copyPasteDive = get_dive_by_uniq_id(id);
@@ -1325,14 +1416,6 @@ void QMLManager::copyDiveData(int id)
 		appendTextToLog("trying to copy non-existing dive");
 		return;
 	}
-
-	// TODO: selection dialog for the data to be copied
-	what.divemaster = true;
-	what.buddy = true;
-	what.suit = true;
-	what.tags = true;
-	what.cylinders = true;
-	what.weights = true;
 
 	setNotificationText("Copy");
 }
@@ -1354,6 +1437,9 @@ void QMLManager::pasteDiveData(int id)
 	mark_divelist_changed(true);
 	changesNeedSaving();
 	setNotificationText("Paste");
+
+	int modelIdx = DiveListModel::instance()->getDiveIdx(id);
+	DiveListModel::instance()->updateDive(modelIdx, d);
 }
 
 void QMLManager::cancelDownloadDC()
@@ -1671,119 +1757,130 @@ void QMLManager::setStatusbarColor(QColor)
 
 #endif
 
+void QMLManager::retrieveBluetoothName()
+{
+	QString name = DC_devName();
+	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
+	foreach (BTDiscovery::btVendorProduct btDC, btDCs) {
+		qDebug() << "compare" <<name << btDC.btpdi.address;
+		if (name.contains(btDC.btpdi.address))
+			DC_setDevBluetoothName(btDC.btpdi.name);
+	}
+}
+
 QString QMLManager::DC_vendor() const
 {
-	return m_device_data->vendor();
+	return DCDeviceData::instance()->vendor();
 }
 
 QString QMLManager::DC_product() const
 {
-	return m_device_data->product();
+	return DCDeviceData::instance()->product();
 }
 
 QString QMLManager::DC_devName() const
 {
-	return m_device_data->devName();
+	return DCDeviceData::instance()->devName();
 }
 
 QString QMLManager::DC_devBluetoothName() const
 {
-	return m_device_data->devBluetoothName();
+	return DCDeviceData::instance()->devBluetoothName();
 }
 
 QString QMLManager::DC_descriptor() const
 {
-	return m_device_data->descriptor();
+	return DCDeviceData::instance()->descriptor();
 }
 
 bool QMLManager::DC_forceDownload() const
 {
-	return m_device_data->forceDownload();
+	return DCDeviceData::instance()->forceDownload();
 }
 
 bool QMLManager::DC_bluetoothMode() const
 {
-	return m_device_data->bluetoothMode();
+	return DCDeviceData::instance()->bluetoothMode();
 }
 
 bool QMLManager::DC_createNewTrip() const
 {
-	return m_device_data->createNewTrip();
+	return DCDeviceData::instance()->createNewTrip();
 }
 
 bool QMLManager::DC_saveDump() const
 {
-	return m_device_data->saveDump();
+	return DCDeviceData::instance()->saveDump();
 }
 
 int QMLManager::DC_deviceId() const
 {
-	return m_device_data->deviceId();
+	return DCDeviceData::instance()->deviceId();
 }
 
 void QMLManager::DC_setDeviceId(int deviceId)
 {
-	m_device_data->setDeviceId(deviceId);
+	DCDeviceData::instance()->setDeviceId(deviceId);
 }
 
 void QMLManager::DC_setVendor(const QString& vendor)
 {
-	m_device_data->setVendor(vendor);
+	DCDeviceData::instance()->setVendor(vendor);
 }
 
 void QMLManager::DC_setProduct(const QString& product)
 {
-	m_device_data->setProduct(product);
+	DCDeviceData::instance()->setProduct(product);
 }
 
 void QMLManager::DC_setDevName(const QString& devName)
 {
-	m_device_data->setDevName(devName);
+	DCDeviceData::instance()->setDevName(devName);
 }
 
 void QMLManager::DC_setDevBluetoothName(const QString& devBluetoothName)
 {
-	m_device_data->setDevBluetoothName(devBluetoothName);
+	DCDeviceData::instance()->setDevBluetoothName(devBluetoothName);
 }
 
 void QMLManager::DC_setBluetoothMode(bool mode)
 {
-	m_device_data->setBluetoothMode(mode);
+	DCDeviceData::instance()->setBluetoothMode(mode);
 }
 
 void QMLManager::DC_setForceDownload(bool force)
 {
-	m_device_data->setForceDownload(force);
+	DCDeviceData::instance()->setForceDownload(force);
 }
 
 void QMLManager::DC_setCreateNewTrip(bool create)
 {
-	m_device_data->setCreateNewTrip(create);
+	DCDeviceData::instance()->setCreateNewTrip(create);
 }
 
 void QMLManager::DC_setSaveDump(bool dumpMode)
 {
-	m_device_data->setSaveDump(dumpMode);
+	DCDeviceData::instance()->setSaveDump(dumpMode);
 }
 
 QStringList QMLManager::getProductListFromVendor(const QString &vendor)
 {
-	return m_device_data->getProductListFromVendor(vendor);
+	return DCDeviceData::instance()->getProductListFromVendor(vendor);
 }
 
 int QMLManager::getMatchingAddress(const QString &vendor, const QString &product)
 {
-	return m_device_data->getMatchingAddress(vendor, product);
+	return DCDeviceData::instance()->getMatchingAddress(vendor, product);
 }
 
 int QMLManager::getDetectedVendorIndex()
 {
-	return m_device_data->getDetectedVendorIndex();
+	return DCDeviceData::instance()->getDetectedVendorIndex();
 }
 
 int QMLManager::getDetectedProductIndex(const QString &currentVendorText)
 {
-	return m_device_data->getDetectedProductIndex(currentVendorText);
+	return DCDeviceData::instance()->getDetectedProductIndex(currentVendorText);
 }
 
 int QMLManager::getConnectionIndex(const QString &deviceSubstr)

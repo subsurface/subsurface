@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
+
 #include "desktop-widgets/modeldelegates.h"
 #include "core/subsurface-string.h"
 #include "core/gettextfromc.h"
@@ -13,6 +14,7 @@
 #include "qt-models/divetripmodel.h"
 #include "qt-models/divelocationmodel.h"
 #include "core/qthelper.h"
+#include "desktop-widgets/simplewidgets.h"
 
 #include <QCompleter>
 #include <QKeyEvent>
@@ -22,6 +24,9 @@
 #include <QBrush>
 #include <QColor>
 #include <QAbstractProxyModel>
+#include <QLineEdit>
+#include <QAbstractItemView>
+#include <QSpinBox>
 
 QSize DiveListDelegate::sizeHint(const QStyleOptionViewItem&, const QModelIndex&) const
 {

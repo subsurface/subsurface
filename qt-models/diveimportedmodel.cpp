@@ -4,11 +4,8 @@
 DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
 	firstIndex(0),
 	lastIndex(-1),
-	checkStates(nullptr),
 	diveTable(nullptr)
 {
-	// Defaults to downloadTable, can be changed later.
-	diveTable = &downloadTable;
 }
 
 int DiveImportedModel::columnCount(const QModelIndex&) const
@@ -44,11 +41,6 @@ QVariant DiveImportedModel::headerData(int section, Qt::Orientation orientation,
 		}
 	}
 	return QVariant();
-}
-
-void DiveImportedModel::setDiveTable(struct dive_table* table)
-{
-	diveTable = table;
 }
 
 QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
@@ -97,7 +89,7 @@ void DiveImportedModel::changeSelected(QModelIndex clickedIndex)
 
 void DiveImportedModel::selectAll()
 {
-	memset(checkStates, true, lastIndex - firstIndex + 1);
+	std::fill(checkStates.begin(), checkStates.end(), true);
 	dataChanged(index(0, 0), index(lastIndex - firstIndex, 0), QVector<int>() << Qt::CheckStateRole << Selected);
 }
 
@@ -109,7 +101,7 @@ void DiveImportedModel::selectRow(int row)
 
 void DiveImportedModel::selectNone()
 {
-	memset(checkStates, false, lastIndex - firstIndex + 1);
+	std::fill(checkStates.begin(), checkStates.end(), false);
 	dataChanged(index(0, 0), index(lastIndex - firstIndex,0 ), QVector<int>() << Qt::CheckStateRole << Selected);
 }
 
@@ -135,26 +127,17 @@ void DiveImportedModel::clearTable()
 	endRemoveRows();
 }
 
-void DiveImportedModel::setImportedDivesIndexes(int first, int last)
+void DiveImportedModel::repopulate(dive_table_t *table)
 {
-	if (lastIndex >= firstIndex) {
-		beginRemoveRows(QModelIndex(), 0, lastIndex - firstIndex);
-		endRemoveRows();
-	}
-	if (last >= first)
-		beginInsertRows(QModelIndex(), 0, last - first);
-	lastIndex = last;
-	firstIndex = first;
-	delete[] checkStates;
-	checkStates = new bool[last - first + 1];
-	memset(checkStates, true, last - first + 1);
-	if (last >= first)
-		endInsertRows();
-}
+	beginResetModel();
 
-void DiveImportedModel::repopulate()
-{
-	setImportedDivesIndexes(0, diveTable->nr-1);
+	diveTable = table;
+	firstIndex = 0;
+	lastIndex = diveTable->nr - 1;
+	checkStates.resize(diveTable->nr);
+	std::fill(checkStates.begin(), checkStates.end(), true);
+
+	endResetModel();
 }
 
 void DiveImportedModel::recordDives()
@@ -170,7 +153,7 @@ void DiveImportedModel::recordDives()
 		if (checkStates[i])
 			j++;
 		else
-			delete_dive_from_table(&downloadTable, j);
+			delete_dive_from_table(diveTable, j);
 	}
 
 	process_imported_dives(diveTable, true, true);

@@ -24,7 +24,6 @@ static QString str_error(const char *fmt, ...)
 	return str;
 }
 
-
 static void updateRememberedDCs()
 {
 	QString current = qPrefDiveComputer::vendor() + " - " + qPrefDiveComputer::product() + " - " + qPrefDiveComputer::device();
@@ -60,9 +59,9 @@ static void updateRememberedDCs()
 }
 
 
-DownloadThread::DownloadThread()
+DownloadThread::DownloadThread() : downloadTable({ 0 }),
+	m_data(DCDeviceData::instance())
 {
-	m_data = DCDeviceData::instance();
 }
 
 void DownloadThread::run()
@@ -81,7 +80,7 @@ void DownloadThread::run()
 		internalData->devname = "ftdi";
 #endif
 	qDebug() << "Starting download from " << (internalData->bluetooth_mode ? "BT" : internalData->devname);
-	downloadTable.nr = 0;
+	clear_table(&downloadTable);
 
 	Q_ASSERT(internalData->download_table != nullptr);
 	const char *errorText;
@@ -254,7 +253,6 @@ void show_computer_list()
 		qDebug() << msg;
 	}
 }
-DCDeviceData *DCDeviceData::m_instance = NULL;
 
 DCDeviceData::DCDeviceData()
 {
@@ -276,18 +274,12 @@ DCDeviceData::DCDeviceData()
 #else
 	data.libdc_log = false;
 #endif
-	if (m_instance) {
-		qDebug() << "already have an instance of DCDevieData";
-		return;
-	}
-	m_instance = this;
 }
 
 DCDeviceData *DCDeviceData::instance()
 {
-	if (!m_instance)
-		m_instance = new DCDeviceData;
-	return m_instance;
+	static DCDeviceData self;
+	return &self;
 }
 
 QStringList DCDeviceData::getProductListFromVendor(const QString &vendor)
@@ -308,6 +300,11 @@ int DCDeviceData::getMatchingAddress(const QString &vendor, const QString &produ
 DCDeviceData *DownloadThread::data()
 {
 	return m_data;
+}
+
+struct dive_table *DownloadThread::table()
+{
+	return &downloadTable;
 }
 
 QString DCDeviceData::vendor() const

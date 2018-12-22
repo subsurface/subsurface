@@ -18,6 +18,7 @@
 #include "ui_plannerDetails.h"
 #include "desktop-widgets/notificationwidget.h"
 #include "core/gpslocation.h"
+#include "core/dive.h"
 
 #define NUM_RECENT_FILES 4
 
@@ -35,6 +36,7 @@ class ProfileWidget2;
 class PlannerDetails;
 class PlannerSettingsWidget;
 class LocationInformationWidget;
+class FilterWidget2;
 
 typedef std::pair<QByteArray, QVariant> WidgetProperty;
 typedef QVector<WidgetProperty> PropertyList;
