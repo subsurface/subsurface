@@ -307,6 +307,12 @@ struct dive_table *DownloadThread::table()
 	return &downloadTable;
 }
 
+struct trip_table *DownloadThread::trips()
+{
+	// TODO: Replace by local trip-table
+	return &trip_table;
+}
+
 QString DCDeviceData::vendor() const
 {
 	return data.vendor;

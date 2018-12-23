@@ -127,11 +127,12 @@ void DiveImportedModel::clearTable()
 	endRemoveRows();
 }
 
-void DiveImportedModel::repopulate(dive_table_t *table)
+void DiveImportedModel::repopulate(dive_table_t *table, trip_table_t *trips)
 {
 	beginResetModel();
 
 	diveTable = table;
+	tripTable = trips;
 	firstIndex = 0;
 	lastIndex = diveTable->nr - 1;
 	checkStates.resize(diveTable->nr);

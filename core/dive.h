@@ -288,10 +288,10 @@ typedef struct dive_trip
 	bool autogen;
 } dive_trip_t;
 
-struct trip_table {
+typedef struct trip_table {
 	int nr, allocated;
 	struct dive_trip **trips;
-};
+} trip_table_t;
 
 struct picture;
 struct dive {
@@ -762,10 +762,11 @@ extern void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_de
  * be passed through QVariants and through QML.
  * Note: we have to use the typedef "dive_table_t" instead of "struct dive_table",
  * because MOC removes the "struct", but dive_table is already the name of a global
- * variable, leading to compilation errors. */
+ * variable, leading to compilation errors. Likewise for "struct trip_table". */
 Q_DECLARE_METATYPE(struct dive *);
 Q_DECLARE_METATYPE(struct dive_trip *);
 Q_DECLARE_METATYPE(dive_table_t *);
+Q_DECLARE_METATYPE(trip_table_t *);
 
 #endif
 

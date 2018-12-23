@@ -490,7 +490,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 	}
 	ui.downloadCancelRetryButton->setText(tr("Retry download"));
 	ui.downloadCancelRetryButton->setEnabled(true);
-	diveImportedModel->repopulate(thread.table());
+	diveImportedModel->repopulate(thread.table(), thread.trips());
 }
 
 void DownloadFromDCWidget::on_cancel_clicked()

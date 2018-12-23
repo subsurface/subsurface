@@ -61,6 +61,7 @@ private:
 class DownloadThread : public QThread {
 	Q_OBJECT
 	Q_PROPERTY(dive_table_t *table READ table CONSTANT)
+	Q_PROPERTY(trip_table_t *trips READ trips CONSTANT)
 
 public:
 	DownloadThread();
@@ -68,6 +69,7 @@ public:
 
 	DCDeviceData *data();
 	struct dive_table *table();
+	struct trip_table *trips();
 	QString error;
 
 private:
