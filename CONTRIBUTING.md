@@ -25,7 +25,7 @@ If you want to change the commit message, "git commit --amend" is the way to go.
 `git format-patch master..devel`  
 Which creates a number of files that have names like 0001-Commit-title.patch, which you can then send to our developer mailing list.
 
-When sending code, please either send signed-off patches or a pull request with signed-off commits. If you don't sign off on them, we will not accept them. This means adding a line that says "Signed-off-by: Name " at the end of each commit, indicating that you wrote the code and have the right to pass it on as an open source patch.
+When sending code, please either send signed-off patches or a pull request with signed-off commits. If you don't sign off on them, we will not accept them. This means adding a line that says "Signed-off-by: Name \<Email\>" at the end of each commit, indicating that you wrote the code and have the right to pass it on as an open source patch.
 
 See: [Signed-off-by Lines][9]
 
@@ -43,7 +43,7 @@ please do proper word-wrap and keep columns shorter than about
 nicely even when it's indented.
 
 Reported-by: whoever-reported-it  
-Signed-off-by: Your Name
+Signed-off-by: Your Name \<you@example.com\>
 
 That header line really should be meaningful, and really should be just one line. The header line is what is shown by tools like gitk and shortlog, and should summarize the change in one readable line of text, independently of the longer explanation.
 
