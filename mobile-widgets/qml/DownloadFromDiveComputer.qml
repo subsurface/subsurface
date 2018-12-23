@@ -28,7 +28,7 @@ Kirigami.Page {
 		id: downloadThread
 
 		onFinished : {
-			importModel.repopulate(table)
+			importModel.repopulate(table, trips)
 			progressBar.visible = false
 			if (dcImportModel.rowCount() > 0) {
 				console.log(dcImportModel.rowCount() + " dive downloaded")
