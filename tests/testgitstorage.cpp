@@ -137,7 +137,7 @@ void TestGitStorage::testGitStorageCloudOfflineSync()
 	// read the local repo from the previous test and add dive 10
 	QCOMPARE(parse_file(qPrintable(localCacheRepo), &dive_table, &trip_table), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test10.xml", &dive_table, &trip_table), 0);
-	// calling process_loaded_dives() sorts the table, but calling process_imported_dives()
+	// calling process_loaded_dives() sorts the table, but calling add_imported_dives()
 	// causes it to try to update the window title... let's not do that
 	process_loaded_dives();
 	// now save only to the local cache but not to the remote server

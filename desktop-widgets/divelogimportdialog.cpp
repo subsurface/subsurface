@@ -1011,7 +1011,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 		}
 	}
 
-	process_imported_dives(&table, &trips, false, false, true);
+	add_imported_dives(&table, &trips, false, false, true);
 	Command::clear();
 	MainWindow::instance()->refreshDisplay();
 }
