@@ -1,6 +1,9 @@
 - Allow to filter for logged/planned dives
 - Core, Windows: fix a bug related to non-ASCII characters in user names
 - Shearwater import: add suppport for importing Shearwater Cloud logs
+- Core: Merge overlapping trips on import
+- Desktop: Make dive import and download undoable
+- Desktop: Add media to closest dive, not all selected dives
 - Core, Mobile: all controller states other than powered off are valid [#1903]
 - Core: shift dive time in correct direction [#1893]
 - Include average max depth in statistics
