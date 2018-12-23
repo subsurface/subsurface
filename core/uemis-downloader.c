@@ -859,7 +859,7 @@ static bool uemis_delete_dive(device_data_t *devdata, uint32_t diveid)
 	if (dive) {
 		devdata->download_table->dives[--devdata->download_table->nr] = NULL;
 		if (dive->notrip)
-			remove_dive_from_trip(dive, false);
+			remove_dive_from_trip(dive);
 
 		free(dive->dc.sample);
 		free((void *)dive->notes);

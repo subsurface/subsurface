@@ -19,7 +19,8 @@
  * void insert_trip(dive_trip_t *dive_trip_p)
  * void unregister_trip(dive_trip_t *trip)
  * void free_trip(dive_trip_t *trip)
- * void remove_dive_from_trip(struct dive *dive, bool was_autogen)
+ * void remove_dive_from_trip(struct dive *dive)
+ * struct dive_trip *unregister_dive_from_trip(struct dive *dive)
  * void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
  * dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
  * dive_trip_t *get_dives_to_autogroup(int start, int *from, int *to, bool *allocated)
@@ -884,7 +885,7 @@ static void unregister_dive_from_table(struct dive_table *table, int idx)
  * trip if this was the last dive in the trip. the caller is responsible
  * for removing the trip, if the trip->dives.nr went to 0.
  */
-struct dive_trip *unregister_dive_from_trip(struct dive *dive, short was_autogen)
+struct dive_trip *unregister_dive_from_trip(struct dive *dive)
 {
 	dive_trip_t *trip = dive->divetrip;
 	int idx;
@@ -899,9 +900,9 @@ struct dive_trip *unregister_dive_from_trip(struct dive *dive, short was_autogen
 	return trip;
 }
 
-void remove_dive_from_trip(struct dive *dive, short was_autogen)
+void remove_dive_from_trip(struct dive *dive)
 {
-	struct dive_trip *trip = unregister_dive_from_trip(dive, was_autogen);
+	struct dive_trip *trip = unregister_dive_from_trip(dive);
 	if (trip && trip->dives.nr == 0)
 		delete_trip(trip);
 }
@@ -1097,7 +1098,7 @@ void delete_single_dive(int idx)
 		return; /* this should never happen */
 	if (dive->selected)
 		deselect_dive(dive);
-	remove_dive_from_trip(dive, false);
+	remove_dive_from_trip(dive);
 	delete_dive_from_table(&dive_table, idx);
 }
 
@@ -1406,9 +1407,9 @@ static bool try_to_merge_into(struct dive *dive_to_add, int idx, bool prefer_imp
 	merged->selected = old_dive->selected;
 	dive_table.dives[idx] = merged;
 	if (trip)
-		remove_dive_from_trip(old_dive, false);
+		remove_dive_from_trip(old_dive);
 	free_dive(old_dive);
-	remove_dive_from_trip(dive_to_add, false);
+	remove_dive_from_trip(dive_to_add);
 	free_dive(dive_to_add);
 
 	return true;
