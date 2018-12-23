@@ -157,7 +157,7 @@ void DiveImportedModel::recordDives()
 			delete_dive_from_table(diveTable, j);
 	}
 
-	process_imported_dives(diveTable, tripTable, true, true);
+	process_imported_dives(diveTable, tripTable, true, true, false);
 }
 
 QHash<int, QByteArray> DiveImportedModel::roleNames() const {
