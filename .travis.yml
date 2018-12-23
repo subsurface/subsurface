@@ -9,8 +9,22 @@ matrix:
 
     - env: SUBSURFACE_PLATFORM='mac'
       os: osx
-      osx_image: xcode8
-      language: c++ ruby
+      osx_image: xcode10.1
+      language: c++
+      addons:
+        homebrew:
+          packages:
+            - xz
+            - hidapi
+            - libusb
+            - libxml2
+            - libxslt
+            - libzip
+            - openssl
+            - pkg-config
+            - libgit2
+            - libssh2
+          update: true
 
     - env: SUBSURFACE_PLATFORM='windows'
       os: linux

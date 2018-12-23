@@ -15,16 +15,6 @@ git fetch --unshallow
 git pull --tags
 git describe
 
-# for our build we need an updated Homebrew with a few more components
-# installed.
-#
-# in the past that was brutally slow, but now this is quite fast, so we
-# no longer bother with trying to cache the binaries - the raw download
-# takes longer than updating / installing from Homebrew
-brew update
-echo "Updated Homebrew, now get our dependencies brewed"
-brew install xz hidapi libusb libxml2 libxslt libzip openssl pkg-config libgit2 libssh2
-
 # libdivecomputer uses the wrong include path for libusb and hidapi
 # the pkgconfig file for libusb/hidapi already gives the include path as
 # ../include/libusb-1.0 (../include/hidapi) yet libdivecomputer wants to use
