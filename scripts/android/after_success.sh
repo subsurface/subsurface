@@ -12,4 +12,4 @@ ls -lh $TRAVIS_BUILD_DIR/apk/*.apk
 
 # get and run the upload script
 wget -c https://raw.githubusercontent.com/dirkhh/uploadtool/master/upload.sh
-bash ./upload.sh $TRAVIS_BUILD_DIR/apk/*.apk
+bash ./upload.sh $TRAVIS_BUILD_DIR/../subsurface-mobile-build-arm/build/outputs/apk/*.apk
