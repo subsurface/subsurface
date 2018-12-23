@@ -11,6 +11,13 @@ void addDive(dive *d, bool autogroup, bool newNumber)
 	execute(new AddDive(d, autogroup, newNumber));
 }
 
+void importDives(struct dive_table *dives, struct trip_table *trips,
+		 bool prefer_imported, bool downloaded, bool merge_all_trips,
+		 const QString &source)
+{
+	execute(new ImportDives(dives, trips, prefer_imported, downloaded, merge_all_trips, source));
+}
+
 void deleteDive(const QVector<struct dive*> &divesToDelete)
 {
 	execute(new DeleteDive(divesToDelete));

@@ -104,6 +104,26 @@ private:
 	dive *			currentDive;
 };
 
+class ImportDives : public DiveListBase {
+public:
+	// Note: dives and trips are consumed - after the call they will be empty.
+	ImportDives(struct dive_table *dives, struct trip_table *trips,
+		    bool prefer_imported, bool downloaded, bool merge_all_trips,
+		    const QString &source);
+private:
+	void undoit() override;
+	void redoit() override;
+	bool workToBeDone() override;
+
+	// For redo and undo
+	DivesAndTripsToAdd	divesToAdd;
+	std::vector<dive *>	divesToRemove;
+
+	// For undo
+	std::vector<dive *>	selection;
+	dive *			currentDive;
+};
+
 class DeleteDive : public DiveListBase {
 public:
 	DeleteDive(const QVector<dive *> &divesToDelete);
