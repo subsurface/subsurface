@@ -4082,17 +4082,17 @@ p, li { white-space: pre-wrap; }
     <name>DivelogsDeWebServices</name>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="157"/>
-        <source>no dives were selected</source>
+        <source>No dives were selected</source>
         <translation>nu a fost selectată nicio scufundare</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="167"/>
-        <source>stylesheet to export to divelogs.de is not found</source>
+        <source>Stylesheet to export to divelogs.de is not found</source>
         <translation>Fișierul style pentru export la divelogs.de nu a fost găsit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="177"/>
-        <source>failed to create zip file for upload: %s</source>
+        <source>Failed to create zip file for upload: %s</source>
         <translation>nu a reușit să se creeze fișierul zip pentru upload: %s</translation>
     </message>
     <message>

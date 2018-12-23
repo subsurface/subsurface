@@ -154,7 +154,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 {
 	static const char errPrefix[] = "divelog.de-upload:";
 	if (!amount_selected) {
-		report_error(tr("no dives were selected").toUtf8());
+		report_error(tr("No dives were selected").toUtf8());
 		return false;
 	}
 
@@ -164,7 +164,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 	xslt = get_stylesheet("divelogs-export.xslt");
 	if (!xslt) {
 		qDebug() << errPrefix << "missing stylesheet";
-		report_error(tr("stylesheet to export to divelogs.de is not found").toUtf8());
+		report_error(tr("Stylesheet to export to divelogs.de is not found").toUtf8());
 		return false;
 	}
 
@@ -174,7 +174,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 	if (!zip) {
 		char buffer[1024];
 		zip_error_to_str(buffer, sizeof buffer, error_code, errno);
-		report_error(tr("failed to create zip file for upload: %s").toUtf8(), buffer);
+		report_error(tr("Failed to create zip file for upload: %s").toUtf8(), buffer);
 		return false;
 	}
 
@@ -485,7 +485,7 @@ void DivelogsDeWebServices::prepareDivesForUpload(bool selected)
 	/* generate a random filename and create/open that file with zip_open */
 	QString filename = QDir::tempPath() + "/import-" + QString::number(qrand() % 99999999) + ".dld";
 	if (!amount_selected) {
-		report_error(tr("no dives were selected").toUtf8());
+		report_error(tr("No dives were selected").toUtf8());
 		return;
 	}
 	if (prepare_dives_for_divelogs(filename, selected)) {

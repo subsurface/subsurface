@@ -4084,17 +4084,17 @@ p, li { white-space: pre-wrap; }
     <name>DivelogsDeWebServices</name>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="157"/>
-        <source>no dives were selected</source>
+        <source>No dives were selected</source>
         <translation>未選取任何潛水</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="167"/>
-        <source>stylesheet to export to divelogs.de is not found</source>
+        <source>Stylesheet to export to divelogs.de is not found</source>
         <translation>輸出至 divelogs.de 的表格格式不存在</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="177"/>
-        <source>failed to create zip file for upload: %s</source>
+        <source>Failed to create zip file for upload: %s</source>
         <translation>建立 zip 壓縮檔上傳失敗: %s</translation>
     </message>
     <message>
