@@ -65,7 +65,7 @@ DiveToAdd DiveListBase::removeDive(struct dive *d)
 
 	// remove dive from trip - if this is the last dive in the trip
 	// remove the whole trip.
-	res.trip = unregister_dive_from_trip(d, false);
+	res.trip = unregister_dive_from_trip(d);
 	if (res.trip && res.trip->dives.nr == 0) {
 		unregister_trip(res.trip);		// Remove trip from backend
 		res.tripToAdd.reset(res.trip);		// Take ownership of trip
@@ -226,7 +226,7 @@ static OwningTripPtr moveDiveToTrip(DiveToTrip &diveToTrip)
 	OwningTripPtr res;
 
 	// Remove dive from trip - if this is the last dive in the trip, remove the whole trip.
-	dive_trip *trip = unregister_dive_from_trip(diveToTrip.dive, false);
+	dive_trip *trip = unregister_dive_from_trip(diveToTrip.dive);
 	if (trip && trip->dives.nr == 0) {
 		unregister_trip(trip);		// Remove trip from backend
 		res.reset(trip);
