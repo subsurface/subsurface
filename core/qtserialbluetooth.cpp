@@ -3,6 +3,7 @@
 
 #include <QtBluetooth/QBluetoothAddress>
 #include <QtBluetooth/QBluetoothSocket>
+#include <QBluetoothLocalDevice>
 #include <QEventLoop>
 #include <QTimer>
 #include <QDebug>
@@ -114,34 +115,6 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char* d
 	timer.setSingleShot(true);
 	loop.connect(&timer, SIGNAL(timeout()), SLOT(quit()));
 
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
-	// First try to connect on RFCOMM channel 1. This is the default channel for most devices
-	QBluetoothAddress remoteDeviceAddress(devaddr);
-	serial_port->socket->connectToService(remoteDeviceAddress, 1, QIODevice::ReadWrite | QIODevice::Unbuffered);
-	timer.start(msec);
-	loop.exec();
-
-	if (serial_port->socket->state() == QBluetoothSocket::ConnectingState) {
-		// It seems that the connection on channel 1 took more than expected. Wait another 15 seconds
-		qDebug() << "The connection on RFCOMM channel number 1 took more than expected. Wait another 15 seconds.";
-		timer.start(3 * msec);
-		loop.exec();
-	} else if (serial_port->socket->state() == QBluetoothSocket::UnconnectedState) {
-		// Try to connect on channel number 5. Maybe this is a Shearwater Petrel2 device.
-		qDebug() << "Connection on channel 1 failed. Trying on channel number 5.";
-		serial_port->socket->connectToService(remoteDeviceAddress, 5, QIODevice::ReadWrite | QIODevice::Unbuffered);
-		timer.start(msec);
-		loop.exec();
-
-		if (serial_port->socket->state() == QBluetoothSocket::ConnectingState) {
-			// It seems that the connection on channel 5 took more than expected. Wait another 15 seconds
-			qDebug() << "The connection on RFCOMM channel number 5 took more than expected. Wait another 15 seconds.";
-			timer.start(3 * msec);
-			loop.exec();
-		}
-	}
-#elif defined(Q_OS_ANDROID) || (QT_VERSION >= 0x050500 && defined(Q_OS_MAC))
-	// Try to connect to the device using the uuid of the Serial Port Profile service
 	QBluetoothAddress remoteDeviceAddress(devaddr);
 #if defined(Q_OS_ANDROID)
 	QBluetoothUuid uuid = QBluetoothUuid(QUuid("{00001101-0000-1000-8000-00805f9b34fb}"));
@@ -149,7 +122,10 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char* d
 	serial_port->socket->setPreferredSecurityFlags(QBluetooth::NoSecurity);
 	serial_port->socket->connectToService(remoteDeviceAddress, uuid, QIODevice::ReadWrite | QIODevice::Unbuffered);
 #else
-	serial_port->socket->connectToService(remoteDeviceAddress, 1, QIODevice::ReadWrite | QIODevice::Unbuffered);
+	QBluetoothLocalDevice dev;
+	QBluetoothUuid uuid = QBluetoothUuid(QUuid("{00001101-0000-1000-8000-00805f9b34fb}"));
+	qDebug() << "Linux Bluez connecting to Uuid" << uuid;
+	serial_port->socket->connectToService(remoteDeviceAddress, uuid, QIODevice::ReadWrite | QIODevice::Unbuffered);
 #endif
 	timer.start(msec);
 	loop.exec();
@@ -161,7 +137,7 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char* d
 		timer.start(4 * msec);
 		loop.exec();
 	}
-#endif
+
 	if (serial_port->socket->state() != QBluetoothSocket::ConnectedState) {
 
 		// Get the latest error and try to match it with one from libdivecomputer
