@@ -134,7 +134,7 @@ future self can read the patch, but might not understand why a
 particular solution was implemented.
 
 Reported-by: whoever-reported-it
-Signed-off-by: Your Name <youremail@yourhost.com>
+Signed-off-by: Your Name <you@example.com>
 ```
 
 where that header line really should be meaningful, and really should be
