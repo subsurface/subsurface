@@ -43,7 +43,7 @@ void processByTrip(std::vector<std::pair<dive_trip *, dive *>> &dives, Function 
 
 // This helper function removes a dive, takes ownership of the dive and adds it to a DiveToAdd structure.
 // If the trip the dive belongs to becomes empty, it is removed and added to the tripsToAdd vector.
-// It is crucial that dives are added in reverse order of deletion, so the the indices are correctly
+// It is crucial that dives are added in reverse order of deletion, so that the indices are correctly
 // set and that the trips are added before they are used!
 DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<OwningTripPtr> &tripsToAdd)
 {
@@ -556,6 +556,87 @@ void AddDive::undoit()
 	// Exit from edit mode, but don't recalculate dive list
 	// TODO: Remove edit mode
 	MainWindow::instance()->refreshDisplay(false);
+}
+
+ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips,
+			 bool prefer_imported, bool downloaded, bool merge_all_trips,
+			 const QString &source)
+{
+	setText(tr("import %n dive(s) from %1", "", dives->nr).arg(source));
+
+	struct dive_table dives_to_add = { 0 };
+	struct dive_table dives_to_remove = { 0 };
+	struct trip_table trips_to_add = { 0 };
+	process_imported_dives(dives, trips, prefer_imported, downloaded, merge_all_trips,
+			       &dives_to_add, &dives_to_remove, &trips_to_add);
+
+	// Add trips to the divesToAdd.trips structure
+	divesToAdd.trips.reserve(trips_to_add.nr);
+	for (int i = 0; i < trips_to_add.nr; ++i)
+		divesToAdd.trips.emplace_back(trips_to_add.trips[i]);
+
+	// Add dives to the divesToAdd.dives structure
+	divesToAdd.dives.reserve(dives_to_add.nr);
+	for (int i = 0; i < dives_to_add.nr; ++i) {
+		OwningDivePtr divePtr(dives_to_add.dives[i]);
+		divePtr->selected = false; // See above in AddDive::AddDive()
+		dive_trip *trip = divePtr->divetrip;
+		divePtr->divetrip = nullptr; // See above in AddDive::AddDive()
+		int idx = dive_table_get_insertion_index(&dive_table, divePtr.get());
+
+		// Note: The dives are added in reverse order of the divesToAdd array.
+		// This, and the fact that we populate the array in chronological order
+		// means that wo do *not* have to manipulated the indices.
+		// Yes, that's all horribly subtle.
+		divesToAdd.dives.push_back({ std::move(divePtr), trip, idx });
+	}
+
+	// Add dive to be deleted to the divesToRemove structure
+	divesToRemove.reserve(dives_to_remove.nr);
+	for (int i = 0; i < dives_to_remove.nr; ++i)
+		divesToRemove.push_back(dives_to_remove.dives[i]);
+}
+
+bool ImportDives::workToBeDone()
+{
+	return !divesToAdd.dives.empty();
+}
+
+void ImportDives::redoit()
+{
+	// Remember selection so that we can undo it
+	currentDive = current_dive;
+
+	// Add new dives
+	std::vector<dive *> divesToRemoveNew = addDives(divesToAdd);
+
+	// Remove old dives
+	divesToAdd = removeDives(divesToRemove);
+
+	// Select the newly added dives
+	restoreSelection(divesToRemoveNew, divesToRemoveNew.back());
+
+	// Remember dives to remove
+	divesToRemove = std::move(divesToRemoveNew);
+
+	mark_divelist_changed(true);
+}
+
+void ImportDives::undoit()
+{
+	// Add new dives
+	std::vector<dive *> divesToRemoveNew = addDives(divesToAdd);
+
+	// Remove old dives
+	divesToAdd = removeDives(divesToRemove);
+
+	// Remember dives to remove
+	divesToRemove = std::move(divesToRemoveNew);
+
+	// ...and restore the selection
+	restoreSelection(selection, currentDive);
+
+	mark_divelist_changed(true);
 }
 
 DeleteDive::DeleteDive(const QVector<struct dive*> &divesToDeleteIn) : divesToDelete(divesToDeleteIn.toStdVector())

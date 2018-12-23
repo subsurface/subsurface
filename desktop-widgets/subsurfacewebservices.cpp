@@ -4,6 +4,7 @@
 #include "core/webservice.h"
 #include "core/settings/qPrefCloudStorage.h"
 #include "desktop-widgets/mainwindow.h"
+#include "desktop-widgets/command.h"
 #include "desktop-widgets/usersurvey.h"
 #include "core/divelist.h"
 #include "desktop-widgets/mapwidget.h"
@@ -771,8 +772,7 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton *button)
 		struct dive_table table = { 0 };
 		struct trip_table trips = { 0 };
 		parse_file(QFile::encodeName(zipFile.fileName()), &table, &trips);
-		add_imported_dives(&table, &trips, false, false, true);
-		MainWindow::instance()->refreshDisplay();
+		Command::importDives(&table, &trips, false, false, true, QStringLiteral("divelogs.de"));
 
 		/* store last entered user/pass in config */
 		QSettings s;

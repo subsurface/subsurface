@@ -521,25 +521,12 @@ void DownloadFromDCWidget::on_ok_clicked()
 	}
 
 	if (table->nr > 0) {
-		MainWindow::instance()->diveList->unselectDives();
-		// remember the last downloaded dive (on most dive computers this will be the chronologically
-		// first new dive) and select it again after processing all the dives
-		int uniqId = table->dives[table->nr - 1]->id;
-		add_imported_dives(table, trips, preferDownloaded(), true, false);
-		Command::clear();
-		// after add_imported_dives does any merging or resorting needed, we need
-		// to recreate the model for the dive list so we can select the newest dive
-		MainWindow::instance()->recreateDiveList();
-		int idx = get_idx_by_uniq_id(uniqId);
-		// this shouldn't be necessary - but there are reports that somehow existing dives stay selected
-		// (but not visible as selected)
-		MainWindow::instance()->diveList->unselectDives();
-		MainWindow::instance()->diveList->selectDive(idx, true);
+		auto data = thread.data();
+		Command::importDives(table, trips, preferDownloaded(), true, false, data->devName());
 	}
 
-	if (ostcFirmwareCheck && currentState == DONE) {
+	if (ostcFirmwareCheck && currentState == DONE)
 		ostcFirmwareCheck->checkLatest(this, thread.data()->internalData());
-	}
 	accept();
 }
 

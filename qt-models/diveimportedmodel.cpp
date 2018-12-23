@@ -141,6 +141,7 @@ void DiveImportedModel::repopulate(dive_table_t *table, trip_table_t *trips)
 	endResetModel();
 }
 
+// Note: this function is only used from mobile - perhaps move it there or unify.
 void DiveImportedModel::recordDives()
 {
 	if (diveTable->nr == 0)
