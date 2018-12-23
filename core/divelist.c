@@ -1503,7 +1503,6 @@ static bool try_to_merge_into(struct dive *dive_to_add, int idx, struct dive_tab
 	if (!replace_in && old_dive->divetrip)
 		replace_in = &old_dive->divetrip->dives;
 
-	merged->id = old_dive->id;
 	merged->selected = old_dive->selected;
 	merged->divetrip = old_dive->divetrip;
 	old_dive->divetrip = NULL;
