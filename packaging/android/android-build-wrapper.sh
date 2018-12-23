@@ -121,7 +121,7 @@ if [ ! -d Qt/"${LATEST_QT}"/android_armv7 ] ; then
 		$SLOW_PROG wget -q "${QT_DOWNLOAD_URL}"
 	fi
 	chmod +x ./"${QT_BINARIES}"
-	./"${QT_BINARIES}" --platform minimal --script "$SCRIPTDIR"/qt-installer-noninteractive.qs --no-force-installations -v
+	./"${QT_BINARIES}" --platform minimal --script "$SCRIPTDIR"/qt-installer-noninteractive.qs --no-force-installations
 fi
 
 # patch the cmake / Qt5.7.1 incompatibility mentioned above
