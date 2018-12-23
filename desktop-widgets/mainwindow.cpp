@@ -1708,12 +1708,13 @@ void MainWindow::importFiles(const QStringList fileNames)
 
 	QByteArray fileNamePtr;
 	struct dive_table table = { 0 };
+	struct trip_table trips = { 0 };
 
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		parse_file(fileNamePtr.data(), &table, &trip_table);
+		parse_file(fileNamePtr.data(), &table, &trips);
 	}
-	process_imported_dives(&table, false, false);
+	process_imported_dives(&table, &trips, false, false);
 	Command::clear();
 	refreshDisplay();
 }

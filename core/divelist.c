@@ -783,6 +783,13 @@ timestamp_t trip_date(const struct dive_trip *trip)
 	return trip->dives.dives[0]->when;
 }
 
+static timestamp_t trip_enddate(const struct dive_trip *trip)
+{
+	if (!trip || trip->dives.nr == 0)
+		return 0;
+	return dive_endtime(trip->dives.dives[trip->dives.nr - 1]);
+}
+
 /* check if we have a trip right before / after this dive */
 bool is_trip_before_after(const struct dive *dive, bool before)
 {
@@ -968,6 +975,13 @@ static MAKE_GET_IDX(trip_table, struct dive_trip *, trips)
 MAKE_SORT(dive_table, struct dive *, dives, comp_dives)
 MAKE_SORT(trip_table, struct dive_trip *, trips, comp_trips)
 
+static void remove_dive(struct dive_table *table, const struct dive *dive)
+{
+	int idx = get_idx_in_dive_table(table, dive);
+	if (idx >= 0)
+		remove_from_dive_table(table, idx);
+}
+
 /* remove a dive from the trip it's associated to, but don't delete the
  * trip if this was the last dive in the trip. the caller is responsible
  * for removing the trip, if the trip->dives.nr went to 0.
@@ -975,14 +989,11 @@ MAKE_SORT(trip_table, struct dive_trip *, trips, comp_trips)
 struct dive_trip *unregister_dive_from_trip(struct dive *dive)
 {
 	dive_trip_t *trip = dive->divetrip;
-	int idx;
 
 	if (!trip)
 		return NULL;
 
-	idx = get_idx_in_dive_table(&trip->dives, dive);
-	if (idx >= 0)
-		remove_from_dive_table(&trip->dives, idx);
+	remove_dive(&trip->dives, dive);
 	dive->divetrip = NULL;
 	return trip;
 }
@@ -1468,27 +1479,173 @@ static void merge_imported_dives(struct dive_table *table)
 
 /*
  * Try to merge a new dive into the dive at position idx. Return
- * true on success. On success, the dive to add and the old dive
- * will be deleted. On failure, they are untouched.
+ * true on success. On success, the old dive will be deleted. On failure,
+ * it is unchanged.
+ * If replace_in is not NULL, the original dive will also be replaced
+ * by the merged dive in this dive table. If it is NULL it will be
+ * replaced in the dive table of its trip. This is used for merging dive
+ * in the trip table *and* the dive table.
  * If "prefer_imported" is true, use data of the new dive.
  */
-static bool try_to_merge_into(struct dive *dive_to_add, struct trip_table *dive_to_add_trip_table,
-			      int idx, bool prefer_imported)
+static bool try_to_merge_into(struct dive *dive_to_add, int idx, struct dive_table *table,
+			      struct dive_table *replace_in, bool prefer_imported)
 {
-	struct dive *old_dive = dive_table.dives[idx];
+	struct dive *old_dive = table->dives[idx];
 	struct dive *merged = try_to_merge(old_dive, dive_to_add, prefer_imported);
 	if (!merged)
 		return false;
 
+	/* Hack alert! If no replace_in table was passed, we are merging
+	 * a non-trip dive into a potentially in-trip dive. In this case
+	 * we also have to replace the merged dive for the old dive in the
+	 * trip list. This will be removed in a subsequent commit, when
+	 * the merging is done outside of processing */
+	if (!replace_in && old_dive->divetrip)
+		replace_in = &old_dive->divetrip->dives;
+
 	merged->id = old_dive->id;
 	merged->selected = old_dive->selected;
-	dive_table.dives[idx] = merged;
-	remove_dive_from_trip(old_dive, &trip_table);
+	merged->divetrip = old_dive->divetrip;
+	old_dive->divetrip = NULL;
+	table->dives[idx] = merged;
+	if (replace_in) {
+		int idx2 = get_idx_in_dive_table(replace_in, old_dive);
+		if (idx2 >= 0)
+			replace_in->dives[idx2] = merged;
+	}
 	free_dive(old_dive);
-	remove_dive_from_trip(dive_to_add, dive_to_add_trip_table);
-	free_dive(dive_to_add);
 
 	return true;
+}
+
+static bool trips_overlap(const struct dive_trip *t1, const struct dive_trip *t2)
+{
+	/* First, handle the empty-trip cases. */
+	if (t1->dives.nr == 0 || t2->dives.nr == 0)
+		return 0;
+
+	if (trip_date(t1) < trip_date(t2))
+		return trip_enddate(t1) >= trip_date(t2);
+	else
+		return trip_enddate(t2) >= trip_date(t1);
+}
+
+static bool insert_dive(struct dive_table *table, struct dive *d)
+{
+	int idx = dive_table_get_insertion_index(table, d);
+	add_to_dive_table(table, idx, d);
+	return idx == table->nr - 1;
+}
+
+/* Merge dives from dives_from into dives_to. Overlapping dives will be merged,
+ * non-overlapping dives will be moved. Optionally, if delete_from and add_to
+ * are non-null, dives will be removed / added to these tables. This supposes that
+ * all tables are sorted. */
+static bool merge_dive_tables(struct dive_table *dives_from, struct dive_table *delete_from,
+			      struct dive_table *dives_to, struct dive_table *add_to,
+			      bool prefer_imported, struct dive_trip *trip)
+{
+	int i, j;
+	bool sequence_changed = false;
+
+	/* Merge newly imported dives into the dive table.
+	 * Since both lists (old and new) are sorted, we can step
+	 * through them concurrently and locate the insertions points.
+	 * Once found, check if the new dive can be merged in the
+	 * previous or next dive.
+	 * Note that this doesn't consider pathological cases such as:
+	 *  - New dive "connects" two old dives (turn three into one).
+	 *  - New dive can not be merged into adjacent but some further dive.
+	 */
+	j = 0; /* Index in dives_to */
+	for (i = 0; i < dives_from->nr; i++) {
+		struct dive *dive_to_add = dives_from->dives[i];
+
+		if (delete_from)
+			remove_dive(delete_from, dive_to_add);
+
+		/* Find insertion point. */
+		while (j < dives_to->nr && dive_less_than(dives_to->dives[j], dive_to_add))
+			j++;
+
+		/* Try to merge into previous dive. */
+		if (j > 0 && dive_endtime(dives_to->dives[j - 1]) > dive_to_add->when) {
+			if (try_to_merge_into(dive_to_add, j - 1, dives_to, add_to, prefer_imported)) {
+				free_dive(dive_to_add);
+				continue;
+			}
+		}
+
+		/* That didn't merge into the previous dive. If we're
+		 * at the end of the dive table, quit the loop and add
+		 * all new dives at the end. */
+		if (j >= dives_to->nr)
+			break;
+
+		/* Try to merge into next dive. */
+		if (dive_endtime(dive_to_add) > dives_to->dives[j]->when) {
+			if (try_to_merge_into(dive_to_add, j, dives_to, add_to, prefer_imported)) {
+				free_dive(dive_to_add);
+				continue;
+			}
+		}
+
+		/* We couldnt merge dives, add at the given position. */
+		add_to_dive_table(dives_to, j, dive_to_add);
+		dive_to_add->divetrip = trip;
+		if (add_to)
+			insert_dive(add_to, dive_to_add);
+		j++;
+		sequence_changed = true;
+	}
+
+	/* If there are still dives to add, add them at the end of the dive table. */
+	for ( ; i <  dives_from->nr; i++) {
+		struct dive *dive_to_add = dives_from->dives[i];
+		if (delete_from)
+			remove_dive(delete_from, dive_to_add);
+
+		dive_to_add->divetrip = trip;
+		add_to_dive_table(dives_to, dives_to->nr, dive_to_add);
+		if (add_to)
+			sequence_changed |= !insert_dive(add_to, dive_to_add);
+	}
+
+	/* we took care of all dives, clean up the import table */
+	dives_from->nr = 0;
+
+	return sequence_changed;
+}
+
+/* Merge the dives of the trip "from" and the dive_table "dives_from" into the trip "to"
+ * and dive_table "dives_to". If "prefer_imported" is true, dive data of "from" takes
+ * precedence */
+static bool merge_trips(struct dive_trip *from, struct dive_table *dives_from,
+			struct dive_trip *to, struct dive_table *dives_to, bool prefer_imported)
+{
+	return merge_dive_tables(&from->dives, dives_from, &to->dives, dives_to, prefer_imported, to);
+}
+
+static bool add_trip_to_table(struct dive_trip *trip, struct dive_table *dives_from,
+			      struct trip_table *table, struct dive_table *dives_to)
+{
+	int i;
+	struct dive *d;
+	bool sequence_changed = false;
+	for (i = 0; i < trip->dives.nr; i++) {
+		d = trip->dives.dives[i];
+
+		/* Add dive to copy-to table */
+		sequence_changed |= !insert_dive(dives_to, d);
+
+		/* Remove dive from copy-from table */
+		remove_dive(dives_from, d);
+	}
+
+	/* Add trip to list */
+	insert_trip(trip, table);
+
+	return sequence_changed;
 }
 
 /*
@@ -1498,12 +1655,14 @@ static bool try_to_merge_into(struct dive *dive_to_add, struct trip_table *dive_
  * If downloaded is true, only the divecomputer of the first dive
  * will be considered, as it is assumed that all dives come from
  * the same computer.
- * Note: the dives in import_table are consumed! On return import_table
- * has size 0.
+ * Note: the dives in import_table and the trips in import_trip_table
+ * are consumed. On return both tables have size 0.
  */
-void process_imported_dives(struct dive_table *import_table, bool prefer_imported, bool downloaded)
+void process_imported_dives(struct dive_table *import_table, struct trip_table *import_trip_table,
+			    bool prefer_imported, bool downloaded)
 {
 	int i, j;
+	struct dive_trip *trip_import, *trip_old;
 	int preexisting;
 	bool sequence_changed = false;
 
@@ -1525,63 +1684,39 @@ void process_imported_dives(struct dive_table *import_table, bool prefer_importe
 	sort_dive_table(import_table);
 	merge_imported_dives(import_table);
 
-	/* Merge newly imported dives into the dive table.
-	 * Since both lists (old and new) are sorted, we can step
-	 * through them concurrently and locate the insertions points.
-	 * Once found, check if the new dive can be merged in the
-	 * previous or next dive.
-	 * Note that this doesn't consider pathological cases such as:
-	 *  - New dive "connects" two old dives (turn three into one).
-	 *  - New dive can not be merged into adjacent but some further dive.
-	 */
-	j = 0; /* Index in old dives */
+	/* Autogroup dives if desired by user. */
+	autogroup_dives(import_table, import_trip_table);
+
 	preexisting = dive_table.nr; /* Remember old size for renumbering */
-	for (i = 0; i < import_table->nr; i++) {
-		struct dive *dive_to_add = import_table->dives[i];
 
-		/* Find insertion point. */
-		while (j < dive_table.nr && dive_less_than(dive_table.dives[j], dive_to_add))
-			j++;
-
-		/* Try to merge into previous dive. */
-		if (j > 0 && dive_endtime(dive_table.dives[j - 1]) > dive_to_add->when) {
-			if (try_to_merge_into(dive_to_add, &trip_table, j - 1, prefer_imported))
-				continue;
+	/* Merge overlapping trips. Since both trip tables are sorted, we
+	 * could be smarter here, but realistically not a whole lot of trips
+	 * will be imported so do a simple n*m loop until someone complains.
+	 */
+	for (i = 0; i < import_trip_table->nr; i++) {
+		trip_import = import_trip_table->trips[i];
+		for (j = 0; j < trip_table.nr; j++) {
+			trip_old = trip_table.trips[j];
+			if (trips_overlap(trip_import, trip_old)) {
+				sequence_changed |= merge_trips(trip_import, import_table, trip_old, &dive_table, prefer_imported);
+				free_trip(trip_import); /* All dives in trip have been consumed -> free */
+				break;
+			}
 		}
-
-		/* That didn't merge into the previous dive. If we're
-		 * at the end of the dive table, quit the loop and add
-		 * all new dives at the end. */
-		if (j >= dive_table.nr)
-			break;
-
-		/* Try to merge into next dive. */
-		if (dive_endtime(dive_to_add) > dive_table.dives[j]->when) {
-			if (try_to_merge_into(dive_to_add, &trip_table, j, prefer_imported))
-				continue;
-		}
-
-		/* We couldnt merge dives, add at the given position. */
-		add_single_dive(j, dive_to_add);
-		j++;
-		sequence_changed = true;
+		/* If no trip to merge-into was found, add trip as-is. */
+		if (j == trip_table.nr)
+			sequence_changed |= add_trip_to_table(trip_import, import_table, &trip_table, &dive_table);
 	}
+	import_trip_table->nr = 0; /* All trips were consumed */
 
-	/* If there are still dives to add, add them at the end of the dive table. */
-	for ( ; i <  import_table->nr; i++)
-		add_single_dive(dive_table.nr, import_table->dives[i]);
-
-	/* we took care of all dives, clean up the import table */
-	import_table->nr = 0;
+	sequence_changed |= merge_dive_tables(import_table, NULL, &dive_table, NULL, prefer_imported, NULL);
 
 	/* If the sequence wasn't changed, renumber */
 	if (!sequence_changed)
 		try_to_renumber(preexisting);
 
-	/* Autogroup dives if desired by user. */
-	autogroup_dives(&dive_table, &trip_table);
-
-	/* Trips may have changed - make sure that they are still ordered */
+	/* Unlikely, but trip order may have changed owing to merging dives -
+	 * make sure that they are still ordered */
 	sort_trip_table(&trip_table);
 
 	/* We might have deleted the old selected dive.

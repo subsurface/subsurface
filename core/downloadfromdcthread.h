@@ -74,6 +74,7 @@ public:
 
 private:
 	struct dive_table downloadTable;
+	struct trip_table tripTable;
 	DCDeviceData *m_data;
 };
 
