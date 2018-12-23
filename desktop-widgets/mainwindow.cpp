@@ -1714,7 +1714,7 @@ void MainWindow::importFiles(const QStringList fileNames)
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
 		parse_file(fileNamePtr.data(), &table, &trips);
 	}
-	process_imported_dives(&table, &trips, false, false, true);
+	add_imported_dives(&table, &trips, false, false, true);
 	Command::clear();
 	refreshDisplay();
 }
