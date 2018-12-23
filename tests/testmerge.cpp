@@ -22,10 +22,11 @@ void TestMerge::testMergeEmpty()
 	 * check that we correctly merge mixed cylinder dives
 	 */
 	struct dive_table table = { 0 };
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &table, &trip_table), 0);
-	process_imported_dives(&table, false, false);
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test48.xml", &table, &trip_table), 0);
-	process_imported_dives(&table, false, false);
+	struct trip_table trips = { 0 };
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &table, &trips), 0);
+	process_imported_dives(&table, &trips, false, false);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test48.xml", &table, &trips), 0);
+	process_imported_dives(&table, &trips, false, false);
 	QCOMPARE(save_dives("./testmerge47+48.ssrf"), 0);
 	QFile org(SUBSURFACE_TEST_DATA "/dives/test47+48.xml");
 	org.open(QFile::ReadOnly);
@@ -46,10 +47,11 @@ void TestMerge::testMergeBackwards()
 	 * check that we correctly merge mixed cylinder dives
 	 */
 	struct dive_table table = { 0 };
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test48.xml", &table, &trip_table), 0);
-	process_imported_dives(&table, false, false);
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &table, &trip_table), 0);
-	process_imported_dives(&table, false, false);
+	struct trip_table trips = { 0 };
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test48.xml", &table, &trips), 0);
+	process_imported_dives(&table, &trips, false, false);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &table, &trips), 0);
+	process_imported_dives(&table, &trips, false, false);
 	QCOMPARE(save_dives("./testmerge47+48.ssrf"), 0);
 	QFile org(SUBSURFACE_TEST_DATA "/dives/test47+48.xml");
 	org.open(QFile::ReadOnly);

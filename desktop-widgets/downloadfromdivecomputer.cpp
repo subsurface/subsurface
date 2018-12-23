@@ -508,6 +508,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 	if (currentState != DONE && currentState != ERROR)
 		return;
 	struct dive_table *table = thread.table();
+	struct trip_table *trips = thread.trips();
 
 	// delete non-selected dives
 	int total = table->nr;
@@ -524,7 +525,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 		// remember the last downloaded dive (on most dive computers this will be the chronologically
 		// first new dive) and select it again after processing all the dives
 		int uniqId = table->dives[table->nr - 1]->id;
-		process_imported_dives(table, preferDownloaded(), true);
+		process_imported_dives(table, trips, preferDownloaded(), true);
 		Command::clear();
 		// after process_imported_dives does any merging or resorting needed, we need
 		// to recreate the model for the dive list so we can select the newest dive

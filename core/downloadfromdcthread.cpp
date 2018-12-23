@@ -60,6 +60,7 @@ static void updateRememberedDCs()
 
 
 DownloadThread::DownloadThread() : downloadTable({ 0 }),
+	tripTable({ 0 }),
 	m_data(DCDeviceData::instance())
 {
 }
@@ -81,6 +82,10 @@ void DownloadThread::run()
 #endif
 	qDebug() << "Starting download from " << (internalData->bluetooth_mode ? "BT" : internalData->devname);
 	clear_table(&downloadTable);
+	if (tripTable.nr > 0) {
+		qWarning() << "DownloadThread::run(): Trip table not empty after reset";
+		tripTable.nr = 0;
+	}
 
 	Q_ASSERT(internalData->download_table != nullptr);
 	const char *errorText;
@@ -309,8 +314,7 @@ struct dive_table *DownloadThread::table()
 
 struct trip_table *DownloadThread::trips()
 {
-	// TODO: Replace by local trip-table
-	return &trip_table;
+	return &tripTable;
 }
 
 QString DCDeviceData::vendor() const
