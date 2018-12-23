@@ -52,8 +52,6 @@ struct DivesToTrip
 // flag accordingly.
 class DiveListBase : public Base {
 protected:
-	DiveListBase();
-
 	// These are helper functions to add / remove dive from the C-core structures,
 	// which set the selectionChanged flag if the added / removed dive was selected.
 	DiveToAdd removeDive(struct dive *d, std::vector<OwningTripPtr> &tripsToAdd);
@@ -63,13 +61,6 @@ protected:
 
 	// Set the selection to a given state. Set the selectionChanged flag if anything changed.
 	void restoreSelection(const std::vector<dive *> &selection, dive *currentDive);
-
-	// On first execution, the selections before and after execution will
-	// be remembered. On all further executions, the selection will be reset to
-	// the remembered values.
-	// Note: Therefore, commands should manipulate the selection and send the
-	// corresponding signals only on first execution!
-	bool firstExecution;
 
 	// Commands set this flag if the selection changed on first execution.
 	// Only then, a new the divelist will be scanned again after the command.

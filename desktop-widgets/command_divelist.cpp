@@ -331,11 +331,6 @@ static void moveDivesBetweenTrips(DivesToTrip &dives)
 	std::reverse(dives.divesToMove.begin(), dives.divesToMove.end());
 }
 
-// When we initialize the command we don't have to roll-back any selection change
-DiveListBase::DiveListBase() : firstExecution(true)
-{
-}
-
 // Turn current selection into a vector.
 // TODO: This could be made much more efficient if we kept a sorted list of selected dives!
 static std::vector<dive *> getDiveSelection()
