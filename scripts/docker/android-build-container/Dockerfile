@@ -20,13 +20,14 @@ RUN apt-get update  && \
     openjdk-8-jdk
 
 RUN mkdir -p /android
-ADD qt-opensource-linux-x64-5.11.1.run /android/
-ADD android-ndk-r14b-linux-x86_64.zip /android/
+ADD qt-opensource-linux-x64-5.*.run /android/
+ADD android-ndk-r*-linux-x86_64.zip /android/
 ADD android-build-wrapper.sh variables.sh qt-installer-noninteractive.qs /android/
 
 RUN cd /android && bash -x /android/android-build-wrapper.sh -prep-only && \
-    rm -f qt-opensource-linux-x64-5.11.1.run android-ndk-r14b-linux-x86_64.zip && \
-    rm -rf android-sdk-linux/emulator Qt/Docs Qt/Tools  Qt/Examples && \
+    rm -f qt-opensource-linux-x64-*.run android-ndk-r*-linux-x86_64.zip && \
+    rm -rf android-sdk-linux/emulator Qt/[a-zA-Z]* && \
     rm -rf $( find android-ndk*/platforms -name arch-mips -o -name arch-x86 ) && \
+    rm -rf android-ndk*/toolchains/x86-* android-ndk*/toolchains/llvm/prebuilt/x86-* && \
     ls -l && \
     du -sh *
