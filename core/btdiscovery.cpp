@@ -102,10 +102,11 @@ BTDiscovery::BTDiscovery(QObject*) : m_btValid(false),
 void BTDiscovery::BTDiscoveryReDiscover()
 {
 #if !defined(Q_OS_IOS)
+	qDebug() << "BTDiscoveryReDiscover: localBtDevice.isValid()" << localBtDevice.isValid();
 	if (localBtDevice.isValid() &&
-	    localBtDevice.hostMode() == QBluetoothLocalDevice::HostConnectable) {
+	    localBtDevice.hostMode() != QBluetoothLocalDevice::HostPoweredOff) {
 		btPairedDevices.clear();
-		qDebug() <<  "localDevice " + localBtDevice.name() + " is valid, starting discovery";
+		qDebug() <<  "BTDiscoveryReDiscover: localDevice " + localBtDevice.name() + " is powered on, starting discovery";
 #else
 	// for iOS we can't use the localBtDevice as iOS is BLE only
 	// we need to find some other way to test if Bluetooth is enabled, though
