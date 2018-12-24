@@ -31,6 +31,10 @@ ADD android-build-wrapper.sh variables.sh qt-installer-noninteractive.qs /androi
 # run the build wrapper in prep mode
 RUN cd /android && bash -x /android/android-build-wrapper.sh -prep-only
 
+# uggly hack to work around some breakage in the NDK which makes our
+# compiles fail
+RUN sed -i '313,+13s/^using/\/\/using/' /android/android-ndk-r18b/sources/cxx-stl/llvm-libc++/include/cmath
+
 # clean up the files that we don't need to keep the container smaller
 RUN cd /android && \
     rm -rf qt-opensource-linux-x64-*.run \
