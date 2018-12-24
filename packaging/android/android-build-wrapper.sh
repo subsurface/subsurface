@@ -38,18 +38,6 @@ done
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null && pwd )"
 source "$SCRIPTDIR"/variables.sh
 
-# avoid timeouts on Travis when downloads take a long time
-SLOW_PROG=""
-if [ -n "${TRAVIS:-}" ]; then
-	source subsurface/scripts/travis-wait.sh
-	set -x # make debugging Travis easier
-	SLOW_PROG="travis_wait"
-	# since we are running on Travis, let's just get our minimal Qt install
-	mkdir -p Qt/"${LATEST_QT}"
-	$SLOW_PROG wget -q https://storage.googleapis.com/travis-cache/Qt-"${LATEST_QT}"-android.tar.xz
-	tar -xJ -C Qt/"${LATEST_QT}" -f Qt-"${LATEST_QT}"-android.tar.xz
-fi
-
 PLATFORM=$(uname)
 
 export SUBSURFACE_SOURCE="$SCRIPTDIR"/../..
@@ -84,7 +72,7 @@ fi
 # first we need to get the Android SDK and NDK
 if [ ! -d "$ANDROID_NDK" ] ; then
 	if [ ! -f "$NDK_BINARIES" ] ; then
-		$SLOW_PROG wget -q https://dl.google.com/android/repository/"$NDK_BINARIES"
+		wget -q https://dl.google.com/android/repository/"$NDK_BINARIES"
 	fi
 	unzip -q "$NDK_BINARIES"
 fi
@@ -92,7 +80,7 @@ fi
 if [ ! -d "$ANDROID_SDK"/build-tools/"${ANDROID_BUILDTOOLS_REVISION}" ] ; then
 	if [ ! -d "$ANDROID_SDK" ] ; then
 		if [ ! -f "$SDK_TOOLS" ] ; then
-			$SLOW_PROG wget -q https://dl.google.com/android/repository/"$SDK_TOOLS"
+			wget -q https://dl.google.com/android/repository/"$SDK_TOOLS"
 		fi
 		mkdir "$ANDROID_SDK"
 		pushd "$ANDROID_SDK"
@@ -118,7 +106,7 @@ if [ ! -d Qt/"${LATEST_QT}"/android_armv7 ] ; then
 		echo "Qt installation found, backing it up to Qt_OLD."
 	fi
 	if [ ! -f "${QT_BINARIES}" ] ; then
-		$SLOW_PROG wget -q "${QT_DOWNLOAD_URL}"
+		wget -q "${QT_DOWNLOAD_URL}"
 	fi
 	chmod +x ./"${QT_BINARIES}"
 	./"${QT_BINARIES}" --platform minimal --script "$SCRIPTDIR"/qt-installer-noninteractive.qs --no-force-installations
