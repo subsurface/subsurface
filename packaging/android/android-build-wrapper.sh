@@ -149,8 +149,10 @@ rm -df ./subsurface-mobile-build-arm/AndroidManifest.xml
 
 if [ "$USE_X" ] ; then
 	bash "$USE_X" "$SUBSURFACE_SOURCE"/packaging/android/build.sh -buildnr "$BUILDNR" arm "$@"
+	bash "$USE_X" "$SUBSURFACE_SOURCE"/packaging/android/build.sh -buildnr "$BUILDNR" arm64 "$@"
 else
 	bash "$SUBSURFACE_SOURCE"/packaging/android/build.sh -buildnr "$BUILDNR" arm "$@"
+	bash "$SUBSURFACE_SOURCE"/packaging/android/build.sh -buildnr "$BUILDNR" arm64 "$@"
 fi
 
 ls -l ./subsurface-mobile-build-arm/build/outputs/apk/*.apk
