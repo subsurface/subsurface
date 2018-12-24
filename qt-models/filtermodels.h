@@ -58,7 +58,6 @@ signals:
 private:
 	MultiFilterSortModel(QObject *parent = 0);
 	struct dive_site *curr_dive_site;
-	DiveTripModel *model;
 	FilterData filterData;
 };
 
