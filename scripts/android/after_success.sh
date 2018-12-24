@@ -8,8 +8,8 @@ fi
 source ${TRAVIS_BUILD_DIR}/scripts/release-message.sh
 
 echo "Submitting the folloing apk for continuous build release:"
-ls -lh $TRAVIS_BUILD_DIR/apk/*.apk
+ls -lh /android/subsurface-mobile-build-arm*/build/outputs/apk/*.apk
 
 # get and run the upload script
 wget -c https://raw.githubusercontent.com/dirkhh/uploadtool/master/upload.sh
-bash ./upload.sh $TRAVIS_BUILD_DIR/../subsurface-mobile-build-arm/build/outputs/apk/*.apk
+bash ./upload.sh /android/subsurface-mobile-build-arm*/build/outputs/apk/*.apk
