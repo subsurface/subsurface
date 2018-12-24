@@ -8,4 +8,4 @@ set -e
 # (but of course having the right things in place will save a ton of time)
 docker exec -e TRAVIS="$TRAVIS" -t builder subsurface/packaging/android/android-build-wrapper.sh
 
-ls -l ../subsurface-mobile-build-arm/build/outputs/apk/
+ls -l ../subsurface-mobile-build-arm*/build/outputs/apk/
