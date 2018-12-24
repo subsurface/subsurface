@@ -84,12 +84,11 @@ MultiFilterSortModel *MultiFilterSortModel::instance()
 
 MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent),
 	divesDisplayed(0),
-	curr_dive_site(NULL),
-	model(DiveTripModel::instance())
+	curr_dive_site(NULL)
 {
 	setFilterKeyColumn(-1); // filter all columns
 	setFilterCaseSensitivity(Qt::CaseInsensitive);
-	setSourceModel(model);
+	setSourceModel(DiveTripModel::instance());
 }
 
 void MultiFilterSortModel::setLayout(DiveTripModel::Layout layout)
@@ -219,7 +218,7 @@ void MultiFilterSortModel::stopFilterDiveSite()
 bool MultiFilterSortModel::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
 {
 	// Hand sorting down to the source model.
-	return model->lessThan(i1, i2);
+	return DiveTripModel::instance()->lessThan(i1, i2);
 }
 
 void MultiFilterSortModel::filterDataChanged(const FilterData& data)
