@@ -5,7 +5,23 @@
 #include "core/dive.h"
 #include <QAbstractItemModel>
 
-class DiveTripModel : public QAbstractItemModel {
+// There are two different representations of the dive list:
+// 1) Tree view: two-level model where dives are grouped by trips
+// 2) List view: one-level model where dives are sorted by one out
+//    of many keys (e.g. date, depth, etc.).
+//
+// These two representations are realized by two classe, viz.
+// DiveTripModelTree and DiveTripModelList. Both classes derive
+// from DiveTripModelBase, which implements common features (e.g.
+// definition of the column types, access of data from the core
+// structures) and a common interface.
+//
+// The currently active model is set via DiveTripModelBase::resetModel().
+// This will create a new model. The model can be accessed with
+// DiveTripModelBase::instance(). Any pointer obtained by instance()
+// is invalid after a call to resetModel()! Yes, this is surprising
+// behavior, so care must be taken.
+class DiveTripModelBase : public QAbstractItemModel {
 	Q_OBJECT
 public:
 	enum Column {
@@ -40,25 +56,28 @@ public:
 	enum Layout {
 		TREE,
 		LIST,
-		CURRENT
 	};
 
-	static DiveTripModel *instance();
+	// Functions implemented by base class
+	static DiveTripModelBase *instance();
+
+	// Reset the model using the given layout. After this call instance() will return
+	// a newly allocated object and the old model will have been destroyed! Thus, the
+	// caller is repsonsible of removing all references to any previous model obtained
+	// by insance().
+	static void resetModel(Layout layout);
+
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
-	DiveTripModel(QObject *parent = 0);
-	void setLayout(Layout layout);
-	QVariant data(const QModelIndex &index, int role) const;
+	DiveTripModelBase(QObject *parent = 0);
 	int columnCount(const QModelIndex&) const;
-	int rowCount(const QModelIndex &parent) const;
-	QModelIndex index(int row, int column, const QModelIndex &parent) const;
-	QModelIndex parent(const QModelIndex &index) const;
-	void filterFinished();
+	virtual void filterFinished() = 0;
 
 	// Used for sorting. This is a bit of a layering violation, as sorting should be performed
 	// by the higher-up QSortFilterProxyModel, but it makes things so much easier!
-	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const;
+	virtual bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const = 0;
+
 signals:
 	// The propagation of selection changes is complex.
 	// The control flow of dive-selection goes:
@@ -69,17 +88,44 @@ signals:
 	// perform the appropriate actions.
 	void selectionChanged(const QVector<QModelIndex> &indexes, bool select);
 	void newCurrentDive(QModelIndex index);
-private slots:
+protected slots:
+	void divesSelected(dive_trip *trip, const QVector<dive *> &dives);
+	void divesDeselected(dive_trip *trip, const QVector<dive *> &dives);
+protected:
+	// Access trip and dive data
+	static QVariant diveData(const struct dive *d, int column, int role);
+	static QVariant tripData(const dive_trip *trip, int column, int role);
+
+	// Select or deselect dives
+	virtual void changeDiveSelection(dive_trip *trip, const QVector<dive *> &dives, bool select) = 0;
+
+	virtual dive *diveOrNull(const QModelIndex &index) const = 0;	// Returns a dive if this index represents a dive, null otherwise
+};
+
+class DiveTripModelTree : public DiveTripModelBase
+{
+	Q_OBJECT
+public slots:
 	void divesAdded(dive_trip *trip, bool addTrip, const QVector<dive *> &dives);
 	void divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives);
 	void divesChanged(dive_trip *trip, const QVector<dive *> &dives);
 	void divesTimeChanged(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
 	void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
-	void divesSelected(dive_trip *trip, const QVector<dive *> &dives);
-	void divesDeselected(dive_trip *trip, const QVector<dive *> &dives);
 	void currentDiveChanged();
+
+public:
+	DiveTripModelTree(QObject *parent = nullptr);
 private:
-	// The model has up to two levels. At the top level, we have either trips or dives
+	int rowCount(const QModelIndex &parent) const override;
+	QModelIndex index(int row, int column, const QModelIndex &parent) const override;
+	QModelIndex parent(const QModelIndex &index) const override;
+	QVariant data(const QModelIndex &index, int role) const override;
+	void filterFinished() override;
+	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
+	void changeDiveSelection(dive_trip *trip, const QVector<dive *> &dives, bool select) override;
+	dive *diveOrNull(const QModelIndex &index) const override;
+
+	// The tree model has two levels. At the top level, we have either trips or dives
 	// that do not belong to trips. Such a top-level item is represented by the "Item"
 	// struct, which is based on the dive_or_trip structure.
 	// If it is a trip, additionally, the dives are collected in a vector.
@@ -97,8 +143,14 @@ private:
 		dive *getDive() const;				// Helper function: returns top-level-dive or null
 		timestamp_t when() const;			// Helper function: start time of dive *or* trip
 	};
-	// Comparison function between dive and arbitrary entry
-	static bool dive_before_entry(const dive *d, const Item &entry);
+	std::vector<Item> items;				// Use std::vector for convenience of emplace_back()
+
+	dive_or_trip tripOrDive(const QModelIndex &index) const;
+								// Returns either a pointer to a trip or a dive, or twice null of index is invalid
+								// null, something is really wrong
+	// Addition and deletion of dives
+	void addDivesToTrip(int idx, const QVector<dive *> &dives);
+	void topLevelChanged(int idx);
 
 	// Access trips and dives
 	int findTripIdx(const dive_trip *trip) const;
@@ -106,24 +158,35 @@ private:
 	int findDiveInTrip(int tripIdx, const dive *d) const;	// Find dive inside trip. Second parameter is index of trip
 	int findInsertionIndex(const dive_trip *trip) const;	// Where to insert trip
 
-	// Access trip and dive data
-	static QVariant diveData(const struct dive *d, int column, int role);
-	static QVariant tripData(const dive_trip *trip, int column, int role);
+	// Comparison function between dive and arbitrary entry
+	static bool dive_before_entry(const dive *d, const Item &entry);
+};
 
-	// Select or deselect dives
-	void changeDiveSelection(dive_trip *trip, const QVector<dive *> &dives, bool select);
+class DiveTripModelList : public DiveTripModelBase
+{
+	Q_OBJECT
+public slots:
+	void divesAdded(dive_trip *trip, bool addTrip, const QVector<dive *> &dives);
+	void divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives);
+	void divesChanged(dive_trip *trip, const QVector<dive *> &dives);
+	void divesTimeChanged(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
+	// Does nothing in list view.
+	//void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
+	void currentDiveChanged();
 
-	// Addition and deletion of dives
-	void addDivesToTrip(int idx, const QVector<dive *> &dives);
-	void topLevelChanged(int idx);
+public:
+	DiveTripModelList(QObject *parent = nullptr);
+private:
+	int rowCount(const QModelIndex &parent) const override;
+	QModelIndex index(int row, int column, const QModelIndex &parent) const override;
+	QModelIndex parent(const QModelIndex &index) const override;
+	QVariant data(const QModelIndex &index, int role) const override;
+	void filterFinished() override;
+	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
+	void changeDiveSelection(dive_trip *trip, const QVector<dive *> &dives, bool select) override;
+	dive *diveOrNull(const QModelIndex &index) const override;
 
-	dive *diveOrNull(const QModelIndex &index) const;	// Returns a dive if this index represents a dive, null otherwise
-	dive_or_trip tripOrDive(const QModelIndex &index) const;
-								// Returns either a pointer to a trip or a dive, or twice null of index is invalid
-								// null, something is really wrong
-	void setupModelData();
-	std::vector<Item> items;				// Use std::vector for convenience of emplace_back()
-	Layout currentLayout;
+	std::vector<dive *> items;				// TODO: access core data directly
 };
 
 #endif
