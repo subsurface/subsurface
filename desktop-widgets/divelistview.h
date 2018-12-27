@@ -68,7 +68,7 @@ slots:
 private:
 	bool mouseClickSelection;
 	QList<int> expandedRows;
-	DiveTripModel::Layout currentLayout;
+	DiveTripModelBase::Layout currentLayout;
 	QModelIndex contextMenuIndex;
 	bool dontEmitDiveChangedSignal;
 	bool selectionSaved;
@@ -77,6 +77,7 @@ private:
 
 	/* if dive_trip_t is null, there's no problem. */
 	QMultiHash<dive_trip_t *, int> selectedDives;
+	void resetModel();	// Call after model changed
 	void merge_trip(const QModelIndex &a, const int offset);
 	void setColumnWidths();
 	void calculateInitialColumnWidth(int col);

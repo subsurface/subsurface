@@ -88,13 +88,14 @@ MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyMo
 {
 	setFilterKeyColumn(-1); // filter all columns
 	setFilterCaseSensitivity(Qt::CaseInsensitive);
-	setSourceModel(DiveTripModel::instance());
 }
 
-void MultiFilterSortModel::setLayout(DiveTripModel::Layout layout)
+void MultiFilterSortModel::resetModel(DiveTripModelBase::Layout layout)
 {
-	DiveTripModel *tripModel = DiveTripModel::instance();
-	tripModel->setLayout(layout);	// Note: setLayout() resets the whole model
+	DiveTripModelBase::resetModel(layout);
+	// DiveTripModelBase::resetModel() generates a new instance.
+	// Thus, the source model must be reset.
+	setSourceModel(DiveTripModelBase::instance());
 }
 
 bool MultiFilterSortModel::showDive(const struct dive *d) const
@@ -143,14 +144,14 @@ bool MultiFilterSortModel::showDive(const struct dive *d) const
 bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
 	QModelIndex index0 = sourceModel()->index(source_row, 0, source_parent);
-	struct dive *d = sourceModel()->data(index0, DiveTripModel::DIVE_ROLE).value<struct dive *>();
+	struct dive *d = sourceModel()->data(index0, DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
 
 	// For dives, simply check the hidden_by_filter flag
 	if (d)
 		return !d->hidden_by_filter;
 
 	// Since this is not a dive, it must be a trip
-	dive_trip *trip = sourceModel()->data(index0, DiveTripModel::TRIP_ROLE).value<dive_trip *>();
+	dive_trip *trip = sourceModel()->data(index0, DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
 
 	if (!trip)
 		return false; // Oops. Neither dive nor trip, something is seriously wrong.
@@ -189,7 +190,7 @@ void MultiFilterSortModel::myInvalidate()
 	invalidateFilter();
 
 	// Tell the dive trip model to update the displayed-counts
-	DiveTripModel::instance()->filterFinished();
+	DiveTripModelBase::instance()->filterFinished();
 	emit filterFinished();
 
 #if !defined(SUBSURFACE_MOBILE)
@@ -218,7 +219,7 @@ void MultiFilterSortModel::stopFilterDiveSite()
 bool MultiFilterSortModel::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
 {
 	// Hand sorting down to the source model.
-	return DiveTripModel::instance()->lessThan(i1, i2);
+	return DiveTripModelBase::instance()->lessThan(i1, i2);
 }
 
 void MultiFilterSortModel::filterDataChanged(const FilterData& data)

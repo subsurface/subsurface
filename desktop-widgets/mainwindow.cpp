@@ -702,7 +702,7 @@ void MainWindow::cleanUpEmpty()
 	mainTab->updateDiveInfo(true);
 	graphics->setEmptyState();
 	diveList->reload();
-	diveList->setSortOrder(DiveTripModel::NR, Qt::DescendingOrder);
+	diveList->setSortOrder(DiveTripModelBase::NR, Qt::DescendingOrder);
 	MapWidget::instance()->reload();
 	if (!existing_filename)
 		setTitle();
