@@ -19,7 +19,6 @@ public:
 	Q_INVOKABLE QString tripTitle(const QVariant &trip);
 	Q_INVOKABLE QString tripShortDate(const QVariant &trip);
 public slots:
-	int getDiveId(int idx);
 	int getIdxForId(int id);
 	void setFilter(QString f);
 	void resetFilter();
@@ -53,7 +52,6 @@ public:
 	void updateDive(int i, dive *d);
 	void clear();
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
-	int getDiveId(int idx) const;
 	int getDiveIdx(int id) const;
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	QHash<int, QByteArray> roleNames() const;

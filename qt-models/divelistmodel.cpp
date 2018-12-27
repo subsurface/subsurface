@@ -61,12 +61,6 @@ int DiveListSortModel::shown()
 	return rowCount();
 }
 
-int DiveListSortModel::getDiveId(int idx)
-{
-	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
-	return mySourceModel->getDiveId(mapToSource(index(idx,0)).row());
-}
-
 int DiveListSortModel::getIdxForId(int id)
 {
 	for (int i = 0; i < rowCount(); i++) {
@@ -229,13 +223,6 @@ void DiveListModel::resetInternalData()
 int DiveListModel::rowCount(const QModelIndex &) const
 {
 	return m_dives.count();
-}
-
-int DiveListModel::getDiveId(int idx) const
-{
-	if (idx < 0 || idx >= m_dives.count())
-		return -1;
-	return m_dives[idx]->id();
 }
 
 int DiveListModel::getDiveIdx(int id) const
