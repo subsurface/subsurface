@@ -50,16 +50,20 @@ static char *utf16_to_utf8_fl(const wchar_t *utf16, char *file, int line)
 	assert(file != NULL);
 	assert(line);
 	/* estimate buffer size */
-	const int sz = wcslen(utf16) + 1;
+	const int sz = WideCharToMultiByte(CP_UTF8, 0, utf16, -1, NULL, 0, NULL, NULL);
+	if (!sz) {
+		fprintf(stderr, "%s:%d: cannot estimate buffer size\n", file, line);
+		return NULL;
+	}
 	char *utf8 = (char *)malloc(sz);
 	if (!utf8) {
-		fprintf(stderr, "%s:%d: %s %d.", file, line, "cannot allocate buffer of size", sz);
+		fprintf(stderr, "%s:%d: cannot allocate buffer of size: %d\n", file, line, sz);
 		return NULL;
 	}
 	if (WideCharToMultiByte(CP_UTF8, 0, utf16, -1, utf8, sz, NULL, NULL)) {
 		return utf8;
 	}
-	fprintf(stderr, "%s:%d: %s", file, line, "cannot convert string.");
+	fprintf(stderr, "%s:%d: cannot convert string\n", file, line);
 	free((void *)utf8);
 	return NULL;
 }
@@ -78,12 +82,12 @@ static wchar_t *utf8_to_utf16_fl(const char *utf8, char *file, int line)
 	const int sz = strlen(utf8) + 1;
 	wchar_t *utf16 = (wchar_t *)malloc(sizeof(wchar_t) * sz);
 	if (!utf16) {
-		fprintf(stderr, "%s:%d: %s %d.", file, line, "cannot allocate buffer of size", sz);
+		fprintf(stderr, "%s:%d: cannot allocate buffer of size: %d\n", file, line, sz);
 		return NULL;
 	}
 	if (MultiByteToWideChar(CP_UTF8, 0, utf8, -1, utf16, sz))
 		return utf16;
-	fprintf(stderr, "%s:%d: %s", file, line, "cannot convert string.");
+	fprintf(stderr, "%s:%d: cannot convert string\n", file, line);
 	free((void *)utf16);
 	return NULL;
 }
