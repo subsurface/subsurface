@@ -1,3 +1,4 @@
+- Core, Windows: fix a bug related to non-ASCII characters in user names
 - Core, Mobile: all controller states other than powered off are valid [#1903]
 - Core: shift dive time in correct direction [#1893]
 - Include average max depth in statistics
