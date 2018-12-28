@@ -81,6 +81,7 @@ set(SUBSURFACE_INTERFACE
 	command_base.cpp
 	command_divelist.cpp
 	locationinformation.cpp
+	textedit.cpp
 	qtwaitingspinner.cpp
 	filterwidget2.cpp
 	tab-widgets/TabDiveStatistics.cpp
