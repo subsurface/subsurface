@@ -454,7 +454,7 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QTextEdit" name="notes">
+                <widget class="TextEdit" name="notes">
                  <property name="readOnly">
                   <bool>false</bool>
                  </property>
@@ -600,6 +600,11 @@
    <class>DiveLocationLineEdit</class>
    <extends>QLineEdit</extends>
    <header>desktop-widgets/locationinformation.h</header>
+  </customwidget>
+  <customwidget>
+   <class>TextEdit</class>
+   <extends>QTextEdit</extends>
+   <header>desktop-widgets/textedit.h</header>
   </customwidget>
  </customwidgets>
  <resources>
