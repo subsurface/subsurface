@@ -126,6 +126,8 @@ set(SUBSURFACE_INTERFACE
 	tableview.h
 	tagwidget.cpp
 	tagwidget.h
+	textedit.cpp
+	textedit.h
 	updatemanager.cpp
 	updatemanager.h
 	usersurvey.cpp
