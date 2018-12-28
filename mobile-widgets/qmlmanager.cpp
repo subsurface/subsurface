@@ -876,11 +876,9 @@ bool QMLManager::checkLocation(DiveObjectHelper *myDive, struct dive *d, QString
 	qDebug() << "checkLocation" << location << "gps" << gps << "dive had" << myDive->location() << "gps" << myDive->gas();
 	if (myDive->location() != location) {
 		diveChanged = true;
-		if (!ds)
-			ds = get_dive_site_by_name(qPrintable(location));
-		if (!ds && !location.isEmpty()) {
+		ds = get_dive_site_by_name(qPrintable(location));
+		if (!ds && !location.isEmpty())
 			ds = create_dive_site(qPrintable(location), d->when);
-		}
 		d->dive_site = ds;
 	}
 	// now make sure that the GPS coordinates match - if the user changed the name but not
