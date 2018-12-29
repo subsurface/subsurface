@@ -313,6 +313,126 @@ static int shearwater_dive(void *param, int columns, char **data, char **column)
 	return SQLITE_OK;
 }
 
+static int shearwater_cloud_dive(void *param, int columns, char **data, char **column)
+{
+	UNUSED(columns);
+	UNUSED(column);
+
+	int retval = 0;
+	struct parser_state *state = (struct parser_state *)param;
+	sqlite3 *handle = state->sql_handle;
+	char *err = NULL;
+	char get_profile_template[] = "select currentTime/1000,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,firstStopDepth,firstStopTime from dive_log_records where diveLogId=%ld";
+	char get_profile_template_ai[] = "select currentTime/1000,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,aiSensor0_PressurePSI,aiSensor1_PressurePSI,firstStopDepth,firstStopTime from dive_log_records where diveLogId = %ld";
+	char get_cylinder_template[] = "select fractionO2 / 100,fractionHe / 100 from dive_log_records where diveLogId = %ld group by fractionO2,fractionHe";
+	char get_changes_template[] = "select a.currentTime/1000,a.fractionO2 / 100,a.fractionHe /100 from dive_log_records as a,dive_log_records as b where (a.id - 1) = b.id and (a.fractionO2 != b.fractionO2 or a.fractionHe != b.fractionHe) and a.diveLogId=b.divelogId and a.diveLogId = %ld";
+	char get_mode_template[] = "select distinct currentCircuitSetting from dive_log_records where diveLogId = %ld";
+	char get_buffer[1024];
+
+	dive_start(state);
+	state->cur_dive->number = atoi(data[0]);
+
+	state->cur_dive->when = (time_t)(atol(data[1]));
+
+	long int dive_id = atol(data[11]);
+
+	if (data[2])
+		add_dive_site(data[2], state->cur_dive, state);
+	if (data[3])
+		utf8_string(data[3], &state->cur_dive->buddy);
+	if (data[4])
+		utf8_string(data[4], &state->cur_dive->notes);
+
+	state->metric = atoi(data[5]) == 1 ? 0 : 1;
+
+	/* TODO: verify that metric calculation is correct */
+	if (data[6])
+		state->cur_dive->dc.maxdepth.mm = state->metric ? lrint(strtod_flags(data[6], NULL, 0) * 1000) : feet_to_mm(strtod_flags(data[6], NULL, 0));
+
+	if (data[7])
+		state->cur_dive->dc.duration.seconds = atoi(data[7]) * 60;
+
+	if (data[8])
+		state->cur_dive->dc.surface_pressure.mbar = atoi(data[8]);
+	/*
+	 * TODO: the deviceid hash should be calculated here.
+	 */
+	settings_start(state);
+	dc_settings_start(state);
+	if (data[9])
+		utf8_string(data[9], &state->cur_settings.dc.serial_nr);
+	if (data[10]) {
+		switch (atoi(data[10])) {
+		case 2:
+			state->cur_settings.dc.model = strdup("Shearwater Petrel/Perdix");
+			break;
+		case 4:
+			state->cur_settings.dc.model = strdup("Shearwater Predator");
+			break;
+		default:
+			state->cur_settings.dc.model = strdup("Shearwater import");
+			break;
+		}
+	}
+
+	state->cur_settings.dc.deviceid = atoi(data[9]);
+
+	dc_settings_end(state);
+	settings_end(state);
+
+	if (data[10]) {
+		switch (atoi(data[10])) {
+		case 2:
+			state->cur_dive->dc.model = strdup("Shearwater Petrel/Perdix");
+			break;
+		case 4:
+			state->cur_dive->dc.model = strdup("Shearwater Predator");
+			break;
+		default:
+			state->cur_dive->dc.model = strdup("Shearwater import");
+			break;
+		}
+	}
+
+	if (data[11]) {
+		snprintf(get_buffer, sizeof(get_buffer) - 1, get_mode_template, dive_id);
+		retval = sqlite3_exec(handle, get_buffer, &shearwater_mode, state, &err);
+		if (retval != SQLITE_OK) {
+			fprintf(stderr, "%s", "Database query shearwater_mode failed.\n");
+			return 1;
+		}
+	}
+
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, dive_id);
+	retval = sqlite3_exec(handle, get_buffer, &shearwater_cylinders, state, &err);
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, "%s", "Database query shearwater_cylinders failed.\n");
+		return 1;
+	}
+
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_changes_template, dive_id);
+	retval = sqlite3_exec(handle, get_buffer, &shearwater_changes, state, &err);
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, "%s", "Database query shearwater_changes failed.\n");
+		return 1;
+	}
+
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template_ai, dive_id);
+	retval = sqlite3_exec(handle, get_buffer, &shearwater_ai_profile_sample, state, &err);
+	if (retval != SQLITE_OK) {
+		snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, dive_id);
+		retval = sqlite3_exec(handle, get_buffer, &shearwater_profile_sample, state, &err);
+		if (retval != SQLITE_OK) {
+			fprintf(stderr, "%s", "Database query shearwater_profile_sample failed.\n");
+			return 1;
+		}
+	}
+
+	dive_end(state);
+
+	return SQLITE_OK;
+}
+
 int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
 			    struct dive_table *table)
 {
@@ -340,3 +460,29 @@ int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer
 	return 0;
 }
 
+int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
+			    struct dive_table *table)
+{
+	UNUSED(buffer);
+	UNUSED(size);
+
+	int retval;
+	char *err = NULL;
+	struct parser_state state;
+
+	init_parser_state(&state);
+	state.target_table = table;
+	state.sql_handle = handle;
+
+	char get_dives[] = "select l.number,startTimestamp,location||' / '||site,buddy,notes,imperialUnits,maxDepth,maxTime,startSurfacePressure,computerSerial,computerModel,d.diveId FROM dive_details AS d JOIN dive_logs AS l ON d.diveId=l.diveId";
+
+	retval = sqlite3_exec(handle, get_dives, &shearwater_cloud_dive, &state, &err);
+	free_parser_state(&state);
+
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, "Database query failed '%s'.\n", url);
+		return 1;
+	}
+
+	return 0;
+}
