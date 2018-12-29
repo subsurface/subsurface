@@ -202,11 +202,11 @@ static int shearwater_dive(void *param, int columns, char **data, char **column)
 	struct parser_state *state = (struct parser_state *)param;
 	sqlite3 *handle = state->sql_handle;
 	char *err = NULL;
-	char get_profile_template[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,firstStopDepth,firstStopTime from dive_log_records where diveLogId=%d";
-	char get_profile_template_ai[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,aiSensor0_PressurePSI,aiSensor1_PressurePSI,firstStopDepth,firstStopTime from dive_log_records where diveLogId = %d";
-	char get_cylinder_template[] = "select fractionO2,fractionHe from dive_log_records where diveLogId = %d group by fractionO2,fractionHe";
-	char get_changes_template[] = "select a.currentTime,a.fractionO2,a.fractionHe from dive_log_records as a,dive_log_records as b where (a.id - 1) = b.id and (a.fractionO2 != b.fractionO2 or a.fractionHe != b.fractionHe) and a.diveLogId=b.divelogId and a.diveLogId = %d";
-	char get_mode_template[] = "select distinct currentCircuitSetting from dive_log_records where diveLogId = %d";
+	char get_profile_template[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,firstStopDepth,firstStopTime from dive_log_records where diveLogId=%ld";
+	char get_profile_template_ai[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,aiSensor0_PressurePSI,aiSensor1_PressurePSI,firstStopDepth,firstStopTime from dive_log_records where diveLogId = %ld";
+	char get_cylinder_template[] = "select fractionO2,fractionHe from dive_log_records where diveLogId = %ld group by fractionO2,fractionHe";
+	char get_changes_template[] = "select a.currentTime,a.fractionO2,a.fractionHe from dive_log_records as a,dive_log_records as b where (a.id - 1) = b.id and (a.fractionO2 != b.fractionO2 or a.fractionHe != b.fractionHe) and a.diveLogId=b.divelogId and a.diveLogId = %ld";
+	char get_mode_template[] = "select distinct currentCircuitSetting from dive_log_records where diveLogId = %ld";
 	char get_buffer[1024];
 
 	dive_start(state);
@@ -214,7 +214,7 @@ static int shearwater_dive(void *param, int columns, char **data, char **column)
 
 	state->cur_dive->when = (time_t)(atol(data[1]));
 
-	int dive_id = atoi(data[11]);
+	long int dive_id = atol(data[11]);
 
 	if (data[2])
 		add_dive_site(data[2], state->cur_dive, state);
