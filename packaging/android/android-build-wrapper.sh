@@ -126,12 +126,12 @@ if [ ! -d subsurface/libdivecomputer/src ] ; then
 	popd
 fi
 
-if [ ! -f subsurface/libdivecomputer/configure ] ; then
-	pushd subsurface/libdivecomputer
-	autoreconf --install
-	autoreconf --install
-	popd
-fi
+# always reconfigure here
+rm -f subsurface/libdivecomputer/configure
+pushd subsurface/libdivecomputer
+autoreconf --install --force
+autoreconf --install --force
+popd
 
 # and now we need a monotonic build number...
 if [ ! -f ./buildnr.dat ] ; then
