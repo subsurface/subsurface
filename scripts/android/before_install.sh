@@ -17,7 +17,7 @@ PARENT="$( cd .. && pwd )"
 docker run -v $PWD:/android/subsurface \
 	   -v $PARENT/subsurface-mobile-build-arm:/android/subsurface-mobile-build-arm \
 	   -v $PARENT/subsurface-mobile-build-arm64:/android/subsurface-mobile-build-arm64 \
-	   --name=builder \
+	   --name=android-builder \
 	   -w /android \
 	   -d dirkhh/android-builder:5.12.02 \
 	   /bin/sleep 60m
