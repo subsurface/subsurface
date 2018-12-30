@@ -8,7 +8,6 @@ RUN apt-get update  && \
     git \
     libtool-bin \
     make \
-    cmake \
     wget \
     unzip \
     python \
@@ -28,6 +27,12 @@ ADD android-ndk-r*-linux-x86_64.zip /android/
 ADD sdk-tools-linux-*.zip /android/
 ADD android-build-wrapper.sh variables.sh qt-installer-noninteractive.qs /android/
 
+# install current cmake
+ADD cmake-3.13.2.tar.gz /android/
+RUN cd /android/cmake-3.13.2 && \
+    bash ./bootstrap && \
+    make -j6 && make install
+
 # run the build wrapper in prep mode
 RUN cd /android && bash -x /android/android-build-wrapper.sh -prep-only
 
@@ -43,7 +48,8 @@ RUN cd /android && \
 	   android-ndk-r*-linux-x86_64.zip \
            android-sdk-linux/emulator \
            $( find android-ndk*/platforms -name arch-mips -o -name arch-x86 ) \
-           android-ndk*/toolchains/x86-* android-ndk*/toolchains/llvm/prebuilt/x86-* && \
+           android-ndk*/toolchains/x86-* android-ndk*/toolchains/llvm/prebuilt/x86-* \
+           cmake-3.13* && \
     ls -l && \
     du -sh *
 RUN apt-get clean
