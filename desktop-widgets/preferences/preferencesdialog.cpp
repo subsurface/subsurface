@@ -39,6 +39,7 @@ PreferencesDialog::PreferencesDialog()
 	//s.endGroup();
 
 	setWindowIcon(QIcon(":subsurface-icon"));
+	setWindowTitle(tr("Preferences"));
 	pagesList = new QListWidget();
 	pagesStack = new QStackedWidget();
 	buttonBox = new QDialogButtonBox(
