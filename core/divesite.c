@@ -346,6 +346,23 @@ struct dive_site *find_or_create_dive_site_with_name(const char *name, timestamp
 	return create_dive_site(name, divetime);
 }
 
+void purge_empty_dive_sites()
+{
+	int i, j;
+	struct dive *d;
+	struct dive_site *ds;
+
+	for (i = 0; i < dive_site_table.nr; i++) {
+		ds = get_dive_site(i);
+		if (!dive_site_is_empty(ds))
+			continue;
+		for_each_dive(j, d) {
+			if (d->dive_site == ds)
+				d->dive_site = NULL;
+		}
+	}
+}
+
 static int compare_sites(const void *_a, const void *_b)
 {
 	const struct dive_site *a = (const struct dive_site *)*(void **)_a;
