@@ -3357,6 +3357,10 @@ void dump_taglist(const char *intro, struct tag_entry *tl)
 	fprintf(stderr, "\n");
 }
 
+bool is_dc_planner(const struct divecomputer *dc) {
+	return same_string(dc->model, "planned dive");
+}
+
 /*
  * Merging two dives can be subtle, because there's two different ways
  * of merging:
@@ -3401,7 +3405,7 @@ struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset,
 			offset = 0;
 	}
 
-	if (same_string(a->dc.model, "planned dive")) {
+	if (is_dc_planner(&a->dc)) {
 		const struct dive *tmp = a;
 		a = b;
 		b = tmp;
