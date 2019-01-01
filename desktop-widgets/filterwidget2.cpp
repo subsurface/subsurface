@@ -18,6 +18,8 @@ FilterWidget2::FilterWidget2(QWidget* parent)
 	ui->maxAirTemp->setValue(data.maxAirTemp);
 	ui->minWaterTemp->setValue(data.minWaterTemp);
 	ui->maxWaterTemp->setValue(data.maxWaterTemp);
+	ui->planned->setChecked(data.logged);
+	ui->planned->setChecked(data.planned);
 
 	// TODO: unhide this when we discover how to search for equipment.
 	ui->equipment->hide();
@@ -64,6 +66,11 @@ FilterWidget2::FilterWidget2(QWidget* parent)
 
 	connect(ui->location, &QLineEdit::textChanged,
 		this, &FilterWidget2::updateFilter);
+
+	connect(ui->logged, SIGNAL(stateChanged(int)), this, SLOT(updateLogged(int)));
+
+	connect(ui->planned, SIGNAL(stateChanged(int)), this, SLOT(updatePlanned(int)));
+
 }
 
 void FilterWidget2::updateFilter()
@@ -86,10 +93,25 @@ void FilterWidget2::updateFilter()
 	data.location = ui->location->text().split(",", QString::SkipEmptyParts);
 	data.equipment = ui->equipment->text().split(",", QString::SkipEmptyParts);
 	data.invertFilter = ui->invertFilter->isChecked();
+	data.logged = ui->logged->isChecked();
+	data.planned = ui->planned->isChecked();
 
 	filterData = data;
 	emit filterDataChanged(data);
 }
+
+void FilterWidget2::updateLogged(int value) {
+	if (value == Qt::Unchecked)
+		ui->planned->setChecked(true);
+	updateFilter();
+}
+
+void FilterWidget2::updatePlanned(int value) {
+	if (value == Qt::Unchecked)
+		ui->logged->setChecked(true);
+	updateFilter();
+}
+
 
 void FilterWidget2::showEvent(QShowEvent *event)
 {

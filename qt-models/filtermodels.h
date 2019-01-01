@@ -30,6 +30,8 @@ struct FilterData {
 	QStringList people;
 	QStringList location;
 	QStringList equipment;
+	bool logged = true;
+	bool planned = true;
 	bool invertFilter;
 };
 

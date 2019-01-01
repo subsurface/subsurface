@@ -138,6 +138,12 @@ bool MultiFilterSortModel::showDive(const struct dive *d) const
 	if (!hasEquipment(filterData.equipment, d))
 		return false;
 
+	// Planned/Logged
+	if (!filterData.logged && !has_planned(d, true))
+		return false;
+	if (!filterData.planned && !has_planned(d, false))
+		return false;
+
 	return true;
 }
 

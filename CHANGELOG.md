@@ -1,3 +1,4 @@
+- Allow to filter for logged/planned dives
 - Core, Windows: fix a bug related to non-ASCII characters in user names
 - Shearwater import: add suppport for importing Shearwater Cloud logs
 - Core, Mobile: all controller states other than powered off are valid [#1903]

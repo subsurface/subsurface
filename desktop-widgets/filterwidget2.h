@@ -27,6 +27,12 @@ protected:
 signals:
 	void filterDataChanged(const FilterData& data);
 
+public slots:
+	void updatePlanned(int value);
+	void updateLogged(int value);
+
+
+
 private:
 	std::unique_ptr<Ui::FilterWidget2> ui;
 	FilterData filterData;

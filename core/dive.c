@@ -3361,6 +3361,18 @@ bool is_dc_planner(const struct divecomputer *dc) {
 	return same_string(dc->model, "planned dive");
 }
 
+// Does this dive have a dive computer for which is_dc_planner has value planned
+bool has_planned(const struct dive *dive, bool planned) {
+	const struct divecomputer *dc = &dive->dc;
+
+	while (dc) {
+		if (is_dc_planner(&dive->dc) == planned)
+			return true;
+		dc = dc->next;
+	}
+	return false;
+}
+
 /*
  * Merging two dives can be subtle, because there's two different ways
  * of merging:
