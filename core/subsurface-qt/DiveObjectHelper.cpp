@@ -169,7 +169,7 @@ QString DiveObjectHelper::waterTemp() const
 QString DiveObjectHelper::notes() const
 {
 	QString tmp = m_dive->notes ? QString::fromUtf8(m_dive->notes) : QString();
-	if (same_string(m_dive->dc.model, "planned dive")) {
+	if (is_dc_planner(&m_dive->dc)) {
 		QTextDocument notes;
 	#define _NOTES_BR "&#92n"
 		tmp.replace("<thead>", "<thead>" _NOTES_BR)
