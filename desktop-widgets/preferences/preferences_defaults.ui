@@ -49,7 +49,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>Dives</string>
+      <string>Default file</string>
      </property>
      <layout class="QFormLayout" name="formLayout_2">
       <property name="horizontalSpacing">
