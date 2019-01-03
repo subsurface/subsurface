@@ -21,6 +21,7 @@ void init_parser_state(struct parser_state *state)
 	memset(state, 0, sizeof(*state));
 	state->metric = true;
 	state->cur_event.deleted = 1;
+	state->sample_rate = 0;
 }
 
 void free_parser_state(struct parser_state *state)

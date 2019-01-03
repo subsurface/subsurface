@@ -55,6 +55,7 @@ struct parser_state {
 	int cur_cylinder_index, cur_ws_index;
 	int lastcylinderindex, next_o2_sensor;
 	int o2pressure_sensor;
+	int sample_rate;
 	struct extra_data cur_extra_data;
 	struct units xml_parsing_units;
 	struct dive_table *target_table;	/* non-owning */
