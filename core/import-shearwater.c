@@ -13,8 +13,6 @@
 #include "membuffer.h"
 #include "gettext.h"
 
-static int sample_rate = 0;
-
 static int shearwater_cylinders(void *param, int columns, char **data, char **column)
 {
 	UNUSED(columns);
@@ -75,7 +73,7 @@ static int shearwater_changes(void *param, int columns, char **data, char **colu
 		i = state->cur_cylinder_index;
 	}
 
-	add_gas_switch_event(state->cur_dive, get_dc(state), sample_rate ? atoi(data[0]) / sample_rate * 10 : atoi(data[0]), i);
+	add_gas_switch_event(state->cur_dive, get_dc(state), state->sample_rate ? atoi(data[0]) / state->sample_rate * 10 : atoi(data[0]), i);
 	return 0;
 }
 
@@ -88,7 +86,7 @@ static int shearwater_profile_sample(void *param, int columns, char **data, char
 
 	sample_start(state);
 	if (data[0])
-		state->cur_sample->time.seconds = sample_rate ? atoi(data[0]) / sample_rate * 10 : atoi(data[0]);
+		state->cur_sample->time.seconds = state->sample_rate ? atoi(data[0]) / state->sample_rate * 10 : atoi(data[0]);
 	if (data[1])
 		state->cur_sample->depth.mm = state->metric ? lrint(strtod_flags(data[1], NULL, 0) * 1000) : feet_to_mm(strtod_flags(data[1], NULL, 0));
 	if (data[2])
@@ -139,7 +137,7 @@ static int shearwater_ai_profile_sample(void *param, int columns, char **data, c
 
 	sample_start(state);
 	if (data[0])
-		state->cur_sample->time.seconds = sample_rate ? atoi(data[0]) / sample_rate * 10 : atoi(data[0]);
+		state->cur_sample->time.seconds = state->sample_rate ? atoi(data[0]) / state->sample_rate * 10 : atoi(data[0]);
 	if (data[1])
 		state->cur_sample->depth.mm = state->metric ? lrint(strtod_flags(data[1], NULL, 0) * 1000) : feet_to_mm(strtod_flags(data[1], NULL, 0));
 	if (data[2])
@@ -338,9 +336,9 @@ static int shearwater_cloud_dive(void *param, int columns, char **data, char **c
 
 	long int dive_id = atol(data[11]);
 	if (data[12])
-		sample_rate = atoi(data[12]);
+		state->sample_rate = atoi(data[12]);
 	else
-		sample_rate = 0;
+		state->sample_rate = 0;
 
 	if (data[2])
 		add_dive_site(data[2], state->cur_dive, state);
@@ -454,7 +452,7 @@ int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer
 	state.sql_handle = handle;
 
 	// So far have not seen any sample rate in Shearwater Desktop
-	sample_rate = 0;
+	state.sample_rate = 0;
 
 	char get_dives[] = "select l.number,timestamp,location||' / '||site,buddy,notes,imperialUnits,maxDepth,maxTime,startSurfacePressure,computerSerial,computerModel,i.diveId FROM dive_info AS i JOIN dive_logs AS l ON i.diveId=l.diveId";
 
