@@ -94,6 +94,8 @@ void DiveLogExportDialog::showExplanation()
 		ui->description->setText(tr("Write depths of images to file."));
 	} else if (ui->exportTeX->isChecked()) {
 		ui->description->setText(tr("Write dive as TeX macros to file."));
+	} else if (ui->exportLaTeX->isChecked()) {
+		ui->description->setText(tr("Write dive as LaTeX macros to file."));
 	}
 }
 
@@ -163,10 +165,10 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 			filename = QFileDialog::getSaveFileName(this, tr("Save image depths"), lastDir);
 			if (!filename.isNull() && !filename.isEmpty())
 				export_depths(qPrintable(filename), ui->exportSelected->isChecked());
-		} else if (ui->exportTeX->isChecked()) {
+		} else if (ui->exportTeX->isChecked() || ui->exportLaTeX->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Export to TeX file"), lastDir, tr("TeX files") + " (*.tex)");
 			if (!filename.isNull() && !filename.isEmpty())
-				export_TeX(qPrintable(filename), ui->exportSelected->isChecked(), true);
+				export_TeX(qPrintable(filename), ui->exportSelected->isChecked(), ui->exportTeX->isChecked());
 		}
 		break;
 	case 1:
