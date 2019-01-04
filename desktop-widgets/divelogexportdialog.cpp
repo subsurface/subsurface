@@ -347,7 +347,14 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		dive->maxdepth.mm ? put_format(&buf, "\\def\\%smaximumdepth{%.1f\\%sdepthunit}\n", ssrf, get_depth_units(dive->maxdepth.mm, NULL, &unit), ssrf) : put_format(&buf, "\\def\\%smaximumdepth{}\n", ssrf);
 		dive->meandepth.mm ? put_format(&buf, "\\def\\%smeandepth{%.1f\\%sdepthunit}\n", ssrf, get_depth_units(dive->meandepth.mm, NULL, &unit), ssrf) : put_format(&buf, "\\def\\%smeandepth{}\n", ssrf);
 
-		put_format(&buf, "\\def\\%stype{%s}\n", ssrf, dive->tag_list ? dive->tag_list->tag->name : "");
+		struct tag_entry *tag = dive->tag_list;
+		QString tags;
+		if (tag) {
+			tags = tag->tag->name;
+			while ((tag = tag->next))
+				tags += QString(", ") + QString(tag->tag->name);
+		}
+		put_format(&buf, "\\def\\%stype{%s}\n", ssrf, qPrintable(tags));
 		put_format(&buf, "\\def\\%sviz{%s}\n", ssrf, qPrintable(viz));
 		put_format(&buf, "\\def\\%srating{%s}\n", ssrf, qPrintable(rating));
 		put_format(&buf, "\\def\\%splot{\\includegraphics[width=9cm,height=4cm]{profile%d}}\n", ssrf, dive->number);
