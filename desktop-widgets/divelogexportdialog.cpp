@@ -249,6 +249,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		put_format(&buf, "%% You will also need a subsurfacetemplate.tex in the current directory.\n");
 	} else {
 		ssrf = "ssrf";
+		put_format(&buf, "\\input subsurfacelatextemplate\n");
 		put_format(&buf, "%% This is a plain LaTeX file. Compile with pdflatex, not pdftex!\n");
 		put_format(&buf, "%% You will also need a subsurfacelatextemplate.tex in the current directory.\n");
 	}
@@ -315,9 +316,13 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		int qty_weight;
 		double total_weight;
 
-		if (need_pagebreak && plain)
-			put_format(&buf, "\\vfill\\eject\n");
+		if (need_pagebreak) {
+			if (plain)
+				put_format(&buf, "\\vfill\\eject\n");
 
+			else
+				put_format(&buf, "\\newpage\n");
+		}
 		need_pagebreak = true;
 		put_format(&buf, "\n%% Time, Date, and location:\n");
 		put_format(&buf, "\\def\\%sdate{%04u-%02u-%02u}\n", ssrf,
@@ -405,14 +410,14 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		put_format(&buf, "\\def\\%splace{%s}\n", ssrf, site ? site->name : "");
 		dive->maxdepth.mm ? put_format(&buf, "\\def\\%sdepth{%.1f\\%sdepthunit}\n", ssrf, get_depth_units(dive->maxdepth.mm, NULL, &unit), ssrf) : put_format(&buf, "\\def\\%sdepth{}\n", ssrf);
 
-		if (plain)
-			put_format(&buf, "\\%spage\n", ssrf);
+		put_format(&buf, "\\%spage\n", ssrf);
+
 	}
 
 	if (plain)
 		put_format(&buf, "\\bye\n");
 	else
-		put_format(&buf, "\\input subsurfacelatextemplate\n");
+		put_format(&buf, "\\end{document}\n");
 
 	f = subsurface_fopen(filename, "w+");
 	if (!f) {
