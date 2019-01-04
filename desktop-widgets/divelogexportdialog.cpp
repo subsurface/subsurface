@@ -327,6 +327,8 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		put_format(&buf, "\n%% Time, Date, and location:\n");
 		put_format(&buf, "\\def\\%sdate{%04u-%02u-%02u}\n", ssrf,
 		      tm.tm_year, tm.tm_mon+1, tm.tm_mday);
+		put_format(&buf, "\\def\\%shour{%02u}\n", ssrf, tm.tm_hour);
+		put_format(&buf, "\\def\\%sminute{%02u}\n", ssrf, tm.tm_min);
 		put_format(&buf, "\\def\\%snumber{%d}\n", ssrf, dive->number);
 		put_format(&buf, "\\def\\%splace{%s}\n", ssrf, site ? site->name : "");
 		put_format(&buf, "\\def\\%sspot{}\n", ssrf);
