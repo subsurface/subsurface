@@ -59,17 +59,13 @@ while [[ $# -gt 0 ]] ; do
 			# we are building an AppImage as by product
 			CREATE_APPDIR="1"
 			;;
-		-skip-googlemaps)
-			# hack for Travix Mac build
-			SKIP_GOOGLEMAPS="1"
-			;;
 		-release)
 			# don't build Debug binaries
 			DEBUGRELEASE="Release"
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-no-bt] [-build-deps] [-build-with-webkit] [-mobile] [-desktop] [-both] [-create-appdir] [-skip-googlemaps] [-release]"
+			echo "Usage: build.sh [-no-bt] [-build-deps] [-build-with-webkit] [-mobile] [-desktop] [-both] [-create-appdir] [-release]"
 			exit 1
 			;;
 	esac
@@ -421,27 +417,25 @@ else
 	PRINTING="-DNO_PRINTING=ON"
 fi
 
-if [ "$SKIP_GOOGLEMAPS" != "1" ] ; then
-	# build the googlemaps map plugin
+# build the googlemaps map plugin
 
-	cd $SRC
-	./subsurface/scripts/get-dep-lib.sh single . googlemaps
-	pushd googlemaps
-	mkdir -p build
-	mkdir -p J10build
-	cd build
-	$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" ../googlemaps.pro
-	# on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
-	# since things compile fine with c++11, let's just hack that away
-	# similarly, don't use -Wdata-time
-	if [ "$TRAVIS" = "true" ] ; then
-		mv Makefile Makefile.bak
-		cat Makefile.bak | sed -e 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' > Makefile
-	fi
-	make -j4
-	make install
-	popd
+cd $SRC
+./subsurface/scripts/get-dep-lib.sh single . googlemaps
+pushd googlemaps
+mkdir -p build
+mkdir -p J10build
+cd build
+$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" ../googlemaps.pro
+# on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
+# since things compile fine with c++11, let's just hack that away
+# similarly, don't use -Wdata-time
+if [ "$TRAVIS" = "true" ] ; then
+	mv Makefile Makefile.bak
+	cat Makefile.bak | sed -e 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' > Makefile
 fi
+make -j4
+make install
+popd
 
 # finally, build Subsurface
 
