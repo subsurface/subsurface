@@ -132,6 +132,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 	char dm4_test[] = "select count(*) from sqlite_master where type='table' and name='Dive' and sql like '%ProfileBlob%'";
 	char dm5_test[] = "select count(*) from sqlite_master where type='table' and name='Dive' and sql like '%SampleBlob%'";
 	char shearwater_test[] = "select count(*) from sqlite_master where type='table' and name='system' and sql like '%dbVersion%'";
+	char shearwater_cloud_test[] = "select count(*) from sqlite_master where type='table' and name='SyncV3MetadataDiveLog' and sql like '%CreatedDevice%'";
 	char cobalt_test[] = "select count(*) from sqlite_master where type='table' and name='TrackPoints' and sql like '%DepthPressure%'";
 	char divinglog_test[] = "select count(*) from sqlite_master where type='table' and name='DBInfo' and sql like '%PrgName%'";
 	int retval;
@@ -163,6 +164,14 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 	retval = sqlite3_exec(handle, shearwater_test, &db_test_func, 0, NULL);
 	if (!retval) {
 		retval = parse_shearwater_buffer(handle, filename, mem->buffer, mem->size, table);
+		sqlite3_close(handle);
+		return retval;
+	}
+
+	/* Testing if DB schema resembles Shearwater cloud database format */
+	retval = sqlite3_exec(handle, shearwater_cloud_test, &db_test_func, 0, NULL);
+	if (!retval) {
+		retval = parse_shearwater_cloud_buffer(handle, filename, mem->buffer, mem->size, table);
 		sqlite3_close(handle);
 		return retval;
 	}
