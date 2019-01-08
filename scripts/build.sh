@@ -197,7 +197,7 @@ else
 		LIBGIT=$(pkg-config --modversion libgit2 | cut -d. -f2)
 		LIBGIT2_FROM_PKGCONFIG="-DLIBGIT2_FROM_PKGCONFIG=ON"
 	fi
-	if [[ "$LIBGIT" < "24" ]] ; then
+	if [[ "$LIBGIT" < "26" ]] ; then
 		# maybe there's a system version that's new enough?
 		LIBGIT=$(ldconfig -p | grep libgit2\\.so\\. | awk -F. '{ print $NF }')
 	fi
@@ -237,7 +237,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	fi
 fi
 
-if [[ "$LIBGIT" < "24" ]] ; then
+if [[ "$LIBGIT" < "26" ]] ; then
 	LIBGIT_ARGS=" -DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include -DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT "
 
 	cd $SRC
