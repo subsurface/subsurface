@@ -18,4 +18,4 @@ docker exec -t builder zypper --non-interactive install \
 	libqt5-qtbase-devel libQt5WebKit5-devel libqt5-qtsvg-devel \
 	libqt5-qtscript-devel libqt5-qtdeclarative-devel \
 	libqt5-qtconnectivity-devel libqt5-qtlocation-devel libcurl-devel which \
-	libgit2-devel curl
+	openssl-devel curl
