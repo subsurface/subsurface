@@ -85,9 +85,11 @@ slots:
 	void setDecoPo2(double po2);
 	void setBestmixEND(int depth);
 	void setBackgasBreaks(bool dobreaks);
+	void setBailout(bool dobailout);
 	void disableDecoElements(int mode);
 	void disableBackgasBreaks(bool enabled);
 	void setDiveMode(int mode);
+	void setBailoutVisibility(int mode);
 
 private:
 	Ui::plannerSettingsWidget ui;

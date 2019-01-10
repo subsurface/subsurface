@@ -742,6 +742,10 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	printf("depth %5.2lfm \n", depth / 1000.0);
 	printf("current_cylinder %i\n", current_cylinder);
 #endif
+	if ((divemode == CCR || divemode == PSCR) && prefs.dobailout) {
+		divemode = OC;
+		po2 = 0;
+	}
 
 	best_first_ascend_cylinder = current_cylinder;
 	/* Find the gases available for deco */

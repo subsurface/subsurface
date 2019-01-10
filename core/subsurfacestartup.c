@@ -59,6 +59,7 @@ struct preferences default_prefs = {
 	.decopo2 = 1600,
 	.bestmixend.mm = 30000,
 	.doo2breaks = false,
+	.dobailout = false,
 	.drop_stone_mode = false,
 	.switch_at_req_stop = false,
 	.min_switch_duration = 60,
