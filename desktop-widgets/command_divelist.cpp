@@ -40,7 +40,6 @@ void processByTrip(std::vector<std::pair<dive_trip *, dive *>> &dives, Function 
 	}
 }
 
-
 // This helper function removes a dive, takes ownership of the dive and adds it to a DiveToAdd structure.
 // If the trip the dive belongs to becomes empty, it is removed and added to the tripsToAdd vector.
 // It is crucial that dives are added in reverse order of deletion, so that the indices are correctly
