@@ -70,6 +70,7 @@ void DownloadThread::run()
 	auto internalData = m_data->internalData();
 	internalData->descriptor = descriptorLookup[m_data->vendor() + m_data->product()];
 	internalData->download_table = &downloadTable;
+	internalData->trip_table = &tripTable;
 	internalData->btname = strdup(m_data->devBluetoothName().toUtf8());
 	if (!internalData->descriptor) {
 		qDebug() << "No download possible when DC type is unknown";
@@ -264,6 +265,7 @@ DCDeviceData::DCDeviceData()
 	memset(&data, 0, sizeof(data));
 	data.trip = nullptr;
 	data.download_table = nullptr;
+	data.trip_table = nullptr;
 	data.diveid = 0;
 	data.deviceid = 0;
 #if defined(BT_SUPPORT)
