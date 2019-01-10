@@ -1620,6 +1620,39 @@ void add_imported_dives(struct dive_table *import_table, struct trip_table *impo
 	mark_divelist_changed(true);
 }
 
+/* Helper function for process_imported_dives():
+ * Try to merge a trip into one of the existing trips.
+ * The bool pointed to by "sequence_changed" is set to true, if the sequence of
+ * the existing dives changes.
+ * The int pointed to by "start_renumbering_at" keeps track of the first dive
+ * to be renumbered.
+ * For other parameters see process_imported_dives()
+ * Returns true if trip was merged. In this case, the trip will be
+ * freed.
+ */
+bool try_to_merge_trip(struct dive_trip *trip_import, struct dive_table *import_table, bool prefer_imported,
+		       /* output parameters: */
+		       struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
+		       bool *sequence_changed, int *start_renumbering_at)
+{
+	int i;
+	struct dive_trip *trip_old;
+
+	for (i = 0; i < trip_table.nr; i++) {
+		trip_old = trip_table.trips[i];
+		if (trips_overlap(trip_import, trip_old)) {
+			*sequence_changed |= merge_dive_tables(&trip_import->dives, import_table, &trip_old->dives,
+							       prefer_imported, trip_old,
+							       dives_to_add, dives_to_remove,
+							       start_renumbering_at);
+			free_trip(trip_import); /* All dives in trip have been consumed -> free */
+			return true;
+		}
+	}
+
+	return false;
+}
+
 /* Process imported dives: take a table of dives to be imported and
  * generate three lists:
  *	1) Dives to be added
@@ -1649,8 +1682,8 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 			    struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
 			    struct trip_table *trips_to_add)
 {
-	int i, j, nr, start_renumbering_at = 0;
-	struct dive_trip *trip_import, *trip_old;
+	int i, nr, start_renumbering_at = 0;
+	struct dive_trip *trip_import;
 	int preexisting;
 	bool sequence_changed = false;
 	bool new_dive_has_number = false;
@@ -1699,36 +1732,27 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 	 */
 	for (i = 0; i < import_trip_table->nr; i++) {
 		trip_import = import_trip_table->trips[i];
-		if (!merge_all_trips && !trip_import->autogen)
-			continue;
-		for (j = 0; j < trip_table.nr; j++) {
-			trip_old = trip_table.trips[j];
-			if (trips_overlap(trip_import, trip_old)) {
-				sequence_changed |= merge_dive_tables(&trip_import->dives, import_table, &trip_old->dives,
-								      prefer_imported, trip_old,
-								      dives_to_add, dives_to_remove,
-								      &start_renumbering_at);
-				free_trip(trip_import); /* All dives in trip have been consumed -> free */
-				break;
-			}
+		if (merge_all_trips || trip_import->autogen) {
+			if (try_to_merge_trip(trip_import, import_table, prefer_imported, dives_to_add, dives_to_remove,
+					      &sequence_changed, &start_renumbering_at))
+				continue;
 		}
-		/* If no trip to merge-into was found, add trip as-is. */
-		if (j == trip_table.nr) {
-			/* Add dives to list of dives to add */
-			for (i = 0; i < trip_import->dives.nr; i++) {
-				struct dive *d = trip_import->dives.dives[i];
 
-				/* Add dive to list of dives to-be-added. */
-				insert_dive(dives_to_add, d);
-				sequence_changed |= !dive_is_after_last(d);
+		/* If no trip to merge-into was found, add trip as-is.
+		 * First, add dives to list of dives to add */
+		for (i = 0; i < trip_import->dives.nr; i++) {
+			struct dive *d = trip_import->dives.dives[i];
 
-				remove_dive(import_table, d);
-			}
+			/* Add dive to list of dives to-be-added. */
+			insert_dive(dives_to_add, d);
+			sequence_changed |= !dive_is_after_last(d);
 
-			/* Add trip to list of trips to add */
-			insert_trip(trip_import, trips_to_add);
-			trip_import->dives.nr = 0; /* Caller is responsible for adding dives to trip */
+			remove_dive(import_table, d);
 		}
+
+		/* Then, add trip to list of trips to add */
+		insert_trip(trip_import, trips_to_add);
+		trip_import->dives.nr = 0; /* Caller is responsible for adding dives to trip */
 	}
 	import_trip_table->nr = 0; /* All trips were consumed */
 
