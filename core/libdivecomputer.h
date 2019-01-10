@@ -47,6 +47,7 @@ typedef struct dc_user_device_t
 	bool bluetooth_mode;
 	FILE *libdc_logfile;
 	struct dive_table *download_table;
+	struct trip_table *trip_table;
 } device_data_t;
 
 const char *errmsg (dc_status_t rc);
