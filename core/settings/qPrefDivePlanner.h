@@ -22,6 +22,7 @@ class qPrefDivePlanner : public QObject {
 	Q_PROPERTY(bool display_transitions READ display_transitions WRITE set_display_transitions NOTIFY      display_transitionsChanged);
 	Q_PROPERTY(bool display_variations READ display_variations WRITE set_display_variations NOTIFY display_variationsChanged);
 	Q_PROPERTY(bool doo2breaks READ doo2breaks WRITE set_doo2breaks NOTIFY doo2breaksChanged);
+	Q_PROPERTY(bool dobailout READ dobailout WRITE set_dobailout NOTIFY dobailoutChanged);
 	Q_PROPERTY(bool drop_stone_mode READ drop_stone_mode WRITE set_drop_stone_mode NOTIFY drop_stone_modeChanged);
 	Q_PROPERTY(bool last_stop READ last_stop WRITE set_last_stop NOTIFY last_stopChanged);
 	Q_PROPERTY(int min_switch_duration READ min_switch_duration WRITE set_min_switch_duration NOTIFY min_switch_durationChanged);
@@ -58,6 +59,7 @@ public:
 	static bool display_transitions() { return prefs.display_transitions; }
 	static bool display_variations() { return prefs.display_variations; }
 	static bool doo2breaks() { return prefs.doo2breaks; }
+	static bool dobailout() { return prefs.dobailout; }
 	static bool drop_stone_mode() { return prefs.drop_stone_mode; }
 	static bool last_stop() { return prefs.last_stop; }
 	static int min_switch_duration() { return prefs.min_switch_duration; }
@@ -85,6 +87,7 @@ public slots:
 	static void set_display_transitions(bool value);
 	static void set_display_variations(bool value);
 	static void set_doo2breaks(bool value);
+	static void set_dobailout(bool value);
 	static void set_drop_stone_mode(bool value);
 	static void set_last_stop(bool value);
 	static void set_min_switch_duration(int value);
@@ -112,6 +115,7 @@ signals:
 	void display_transitionsChanged(bool value);
 	void display_variationsChanged(bool value);
 	void doo2breaksChanged(bool value);
+	void dobailoutChanged(bool value);
 	void drop_stone_modeChanged(bool value);
 	void last_stopChanged(bool value);
 	void min_switch_durationChanged(int value);
@@ -140,6 +144,7 @@ private:
 	static void disk_display_transitions(bool doSync);
 	static void disk_display_variations(bool doSync);
 	static void disk_doo2breaks(bool doSync);
+	static void disk_dobailout(bool doSync);
 	static void disk_drop_stone_mode(bool doSync);
 	static void disk_last_stop(bool doSync);
 	static void disk_min_switch_duration(bool doSync);

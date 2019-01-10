@@ -34,6 +34,7 @@ void qPrefDivePlanner::loadSync(bool doSync)
 	disk_display_transitions(doSync);
 	disk_display_variations(doSync);
 	disk_doo2breaks(doSync);
+	disk_dobailout(doSync);
 	disk_drop_stone_mode(doSync);
 	disk_last_stop(doSync);
 	disk_min_switch_duration(doSync);
@@ -74,6 +75,7 @@ HANDLE_PREFERENCE_BOOL(DivePlanner, "display_transitions", display_transitions);
 HANDLE_PREFERENCE_BOOL(DivePlanner, "display_variations", display_variations);
 
 HANDLE_PREFERENCE_BOOL(DivePlanner, "doo2breaks", doo2breaks);
+HANDLE_PREFERENCE_BOOL(DivePlanner, "dobailbout", dobailout);
 
 HANDLE_PREFERENCE_BOOL(DivePlanner, "drop_stone_mode", drop_stone_mode);
 

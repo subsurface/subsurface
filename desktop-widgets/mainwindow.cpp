@@ -1005,6 +1005,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 	// plan the dive in the same mode as the currently selected one
 	if (current_dive) {
 		divePlannerSettingsWidget->setDiveMode(current_dive->dc.divemode);
+		divePlannerSettingsWidget->setBailoutVisibility(current_dive->dc.divemode);
 		if (current_dive->salinity)
 			divePlannerWidget->setSalinity(current_dive->salinity);
 	}

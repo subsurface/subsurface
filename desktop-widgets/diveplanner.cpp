@@ -123,6 +123,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	ui.waterType->setItemData(1, SEAWATER_SALINITY);
 	ui.waterType->setItemData(2, EN13319_SALINITY);
 	waterTypeUpdateTexts();
+
 	QTableView *view = ui.cylinderTableWidget->view();
 	view->setColumnHidden(CylindersModel::START, true);
 	view->setColumnHidden(CylindersModel::END, true);
@@ -307,6 +308,10 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.backgasBreaks->blockSignals(true);
 		ui.backgasBreaks->setChecked(false);
 		ui.backgasBreaks->blockSignals(false);
+		ui.bailout->setDisabled(true);
+		ui.bailout->blockSignals(true);
+		ui.bailout->setChecked(false);
+		ui.bailout->blockSignals(false);
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(true);
 		ui.safetystop->setDisabled(false);
@@ -344,6 +349,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 			ui.backgasBreaks->setChecked(false);
 			ui.backgasBreaks->blockSignals(false);
 		}
+		ui.bailout->setDisabled(!(displayed_dive.dc.divemode == CCR || displayed_dive.dc.divemode == PSCR));
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(false);
 		ui.safetystop->setDisabled(true);
@@ -377,6 +383,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 			ui.backgasBreaks->setChecked(false);
 			ui.backgasBreaks->blockSignals(false);
 		}
+		ui.bailout->setDisabled(!(displayed_dive.dc.divemode == CCR || displayed_dive.dc.divemode == PSCR));
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(false);
 		ui.safetystop->setDisabled(true);
@@ -438,6 +445,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.bottompo2->setValue(prefs.bottompo2 / 1000.0);
 	ui.decopo2->setValue(prefs.decopo2 / 1000.0);
 	ui.backgasBreaks->setChecked(prefs.doo2breaks);
+	setBailout(false);
+	setBailoutVisibility(false);
 	ui.drop_stone_mode->setChecked(prefs.drop_stone_mode);
 	ui.switch_at_req_stop->setChecked(prefs.switch_at_req_stop);
 	ui.min_switch_duration->setValue(prefs.min_switch_duration / 60);
@@ -481,9 +490,11 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
 	connect(ui.vpmb_conservatism, SIGNAL(valueChanged(int)), plannerModel, SLOT(setVpmbConservatism(int)));
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
+	connect(ui.bailout, SIGNAL(toggled(bool)), this, SLOT(setBailout(bool)));
 	connect(ui.switch_at_req_stop, SIGNAL(toggled(bool)), plannerModel, SLOT(setSwitchAtReqStop(bool)));
 	connect(ui.min_switch_duration, SIGNAL(valueChanged(int)), plannerModel, SLOT(setMinSwitchDuration(int)));
 	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), plannerModel, SLOT(setRebreatherMode(int)));
+	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), this, SLOT(setBailoutVisibility(int)));
 
 	connect(ui.bottompo2, SIGNAL(valueChanged(double)), CylindersModel::instance(), SLOT(updateBestMixes()));
 	connect(ui.bestmixEND, SIGNAL(valueChanged(int)), CylindersModel::instance(), SLOT(updateBestMixes()));
@@ -654,6 +665,17 @@ void PlannerSettingsWidget::setBackgasBreaks(bool dobreaks)
 {
 	qPrefDivePlanner::instance()->set_doo2breaks(dobreaks);
 	plannerModel->emitDataChanged();
+}
+
+void PlannerSettingsWidget::setBailout(bool dobailout)
+{
+	qPrefDivePlanner::instance()->set_dobailout(dobailout);
+	plannerModel->emitDataChanged();
+}
+
+void PlannerSettingsWidget::setBailoutVisibility(int mode)
+{
+		ui.bailout->setDisabled(!(mode == CCR || mode == PSCR));
 }
 
 PlannerDetails::PlannerDetails(QWidget *parent) : QWidget(parent)
