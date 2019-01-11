@@ -70,10 +70,6 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	connect(&thread, SIGNAL(finished()),
 		this, SLOT(onDownloadThreadFinished()), Qt::QueuedConnection);
 
-	//TODO: Don't call mainwindow.
-	MainWindow *w = MainWindow::instance();
-	connect(&thread, SIGNAL(finished()), w, SLOT(refreshDisplay()));
-
 	if (!qPrefDiveComputer::vendor().isEmpty()) {
 		ui.vendor->setCurrentIndex(ui.vendor->findText(qPrefDiveComputer::vendor()));
 		productModel.setStringList(productList[qPrefDiveComputer::vendor()]);
