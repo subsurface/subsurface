@@ -1034,7 +1034,7 @@ static int get_authorship(git_repository *repo, git_signature **authorp)
 	/* try to fetch the user info from the OS, otherwise use default values. */
 	struct user_info user = { .name = NULL, .email = NULL };
 	subsurface_user_info(&user);
-	if (!user.name)
+	if (!user.name || !*user.name)
 		user.name = strdup("Subsurface");
 	if (!user.email)
 		user.email = strdup("subsurface-app-account@subsurface-divelog.org");
