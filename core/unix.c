@@ -38,8 +38,18 @@ void subsurface_user_info(struct user_info *user)
 	const char *username = getenv("USER");
 
 	if (pwd) {
-		if (!empty_string(pwd->pw_gecos))
+		if (!empty_string(pwd->pw_gecos)) {
 			user->name = strdup(pwd->pw_gecos);
+			// We only want the name, not the office or phone number
+			char *c = user->name;
+			while (*c) {
+				if (*c == ',') {
+					*c = '\0';
+					break;
+				}
+				++c;
+			}
+		}
 		if (!username)
 			username = pwd->pw_name;
 	}
