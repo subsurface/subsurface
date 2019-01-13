@@ -100,7 +100,7 @@ public:
 	// Note: dives and trips are consumed - after the call they will be empty.
 	ImportDives(struct dive_table *dives, struct trip_table *trips,
 		    bool prefer_imported, bool downloaded, bool merge_all_trips,
-		    const QString &source);
+		    bool add_to_new_trip, const QString &source);
 private:
 	void undoit() override;
 	void redoit() override;

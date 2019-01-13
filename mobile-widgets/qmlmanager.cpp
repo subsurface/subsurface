@@ -341,7 +341,7 @@ void QMLManager::mergeLocalRepo()
 	struct dive_table table = { 0 };
 	struct trip_table trips = { 0 };
 	parse_file(filename, &table, &trips);
-	add_imported_dives(&table, &trips, false, false, true);
+	add_imported_dives(&table, &trips, false, false, true, false);
 }
 
 void QMLManager::copyAppLogToClipboard()
