@@ -127,12 +127,11 @@ void DiveImportedModel::clearTable()
 	endRemoveRows();
 }
 
-void DiveImportedModel::repopulate(dive_table_t *table, trip_table_t *trips)
+void DiveImportedModel::repopulate(dive_table_t *table)
 {
 	beginResetModel();
 
 	diveTable = table;
-	tripTable = trips;
 	firstIndex = 0;
 	lastIndex = diveTable->nr - 1;
 	checkStates.resize(diveTable->nr);
@@ -159,7 +158,7 @@ void DiveImportedModel::recordDives()
 	}
 
 	// TODO: Might want to let the user select "add_to_new_trip"
-	add_imported_dives(diveTable, tripTable, true, true, false, false);
+	add_imported_dives(diveTable, nullptr, true, true, false, false);
 }
 
 QHash<int, QByteArray> DiveImportedModel::roleNames() const {

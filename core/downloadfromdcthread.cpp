@@ -60,7 +60,6 @@ static void updateRememberedDCs()
 
 
 DownloadThread::DownloadThread() : downloadTable({ 0 }),
-	tripTable({ 0 }),
 	m_data(DCDeviceData::instance())
 {
 }
@@ -70,7 +69,6 @@ void DownloadThread::run()
 	auto internalData = m_data->internalData();
 	internalData->descriptor = descriptorLookup[m_data->vendor() + m_data->product()];
 	internalData->download_table = &downloadTable;
-	internalData->trip_table = &tripTable;
 	internalData->btname = strdup(m_data->devBluetoothName().toUtf8());
 	if (!internalData->descriptor) {
 		qDebug() << "No download possible when DC type is unknown";
@@ -83,10 +81,6 @@ void DownloadThread::run()
 #endif
 	qDebug() << "Starting download from " << (internalData->bluetooth_mode ? "BT" : internalData->devname);
 	clear_table(&downloadTable);
-	if (tripTable.nr > 0) {
-		qWarning() << "DownloadThread::run(): Trip table not empty after reset";
-		tripTable.nr = 0;
-	}
 
 	Q_ASSERT(internalData->download_table != nullptr);
 	const char *errorText;
@@ -265,7 +259,6 @@ DCDeviceData::DCDeviceData()
 	memset(&data, 0, sizeof(data));
 	data.trip = nullptr;
 	data.download_table = nullptr;
-	data.trip_table = nullptr;
 	data.diveid = 0;
 	data.deviceid = 0;
 #if defined(BT_SUPPORT)
@@ -274,7 +267,6 @@ DCDeviceData::DCDeviceData()
 	data.bluetooth_mode = false;
 #endif
 	data.force_download = false;
-	data.create_new_trip = false;
 	data.libdc_dump = false;
 #if defined(SUBSURFACE_MOBILE)
 	data.libdc_log = true;
@@ -314,11 +306,6 @@ struct dive_table *DownloadThread::table()
 	return &downloadTable;
 }
 
-struct trip_table *DownloadThread::trips()
-{
-	return &tripTable;
-}
-
 QString DCDeviceData::vendor() const
 {
 	return data.vendor;
@@ -352,11 +339,6 @@ bool DCDeviceData::bluetoothMode() const
 bool DCDeviceData::forceDownload() const
 {
 	return data.force_download;
-}
-
-bool DCDeviceData::createNewTrip() const
-{
-	return data.create_new_trip;
 }
 
 int DCDeviceData::deviceId() const
@@ -413,11 +395,6 @@ void DCDeviceData::setBluetoothMode(bool mode)
 void DCDeviceData::setForceDownload(bool force)
 {
 	data.force_download = force;
-}
-
-void DCDeviceData::setCreateNewTrip(bool create)
-{
-	data.create_new_trip = create;
 }
 
 void DCDeviceData::setDeviceId(int deviceId)

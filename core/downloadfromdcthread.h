@@ -26,7 +26,6 @@ public:
 	QString devBluetoothName() const;
 	QString descriptor() const;
 	bool forceDownload() const;
-	bool createNewTrip() const;
 	bool saveLog() const;
 	int deviceId() const;
 	int diveId() const;
@@ -48,7 +47,6 @@ public:
 	void setDevBluetoothName(const QString& devBluetoothName);
 	void setBluetoothMode(bool mode);
 	void setForceDownload(bool force);
-	void setCreateNewTrip(bool create);
 	void setSaveDump(bool dumpMode);
 	void setSaveLog(bool saveLog);
 private:
@@ -61,7 +59,6 @@ private:
 class DownloadThread : public QThread {
 	Q_OBJECT
 	Q_PROPERTY(dive_table_t *table READ table CONSTANT)
-	Q_PROPERTY(trip_table_t *trips READ trips CONSTANT)
 
 public:
 	DownloadThread();
@@ -69,7 +66,6 @@ public:
 
 	DCDeviceData *data();
 	struct dive_table *table();
-	struct trip_table *trips();
 	QString error;
 
 private:

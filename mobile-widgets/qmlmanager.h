@@ -45,7 +45,6 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QString descriptor READ DC_descriptor)
 	Q_PROPERTY(bool DC_forceDownload READ DC_forceDownload WRITE DC_setForceDownload)
 	Q_PROPERTY(bool DC_bluetoothMode READ DC_bluetoothMode WRITE DC_setBluetoothMode)
-	Q_PROPERTY(bool DC_createNewTrip READ DC_createNewTrip WRITE DC_setCreateNewTrip)
 	Q_PROPERTY(bool DC_saveDump READ DC_saveDump WRITE DC_setSaveDump)
 	Q_PROPERTY(int DC_deviceId READ DC_deviceId WRITE DC_setDeviceId)
 	Q_PROPERTY(QString pluggedInDeviceName MEMBER m_pluggedInDeviceName NOTIFY pluggedInDeviceNameChanged)
@@ -74,9 +73,6 @@ public:
 
 	bool DC_bluetoothMode() const;
 	void DC_setBluetoothMode(bool mode);
-
-	bool DC_createNewTrip() const;
-	void DC_setCreateNewTrip(bool create);
 
 	bool DC_saveDump() const;
 	void DC_setSaveDump(bool dumpMode);
