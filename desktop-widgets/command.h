@@ -23,7 +23,7 @@ void addDive(dive *d, bool autogroup, bool newNumber); // If d->dive_trip is nul
 						       // insertion position.
 void importDives(struct dive_table *dives, struct trip_table *trips,
 		 bool prefer_imported, bool downloaded, bool merge_all_trips,
-		 const QString &source);
+		 bool add_to_new_trip, const QString &source);
 void deleteDive(const QVector<struct dive*> &divesToDelete);
 void shiftTime(const QVector<dive *> &changedDives, int amount);
 void renumberDives(const QVector<QPair<dive *, int>> &divesToRenumber);

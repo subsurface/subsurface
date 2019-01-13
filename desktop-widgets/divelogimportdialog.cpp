@@ -1012,7 +1012,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 	}
 
 	QString source = fileNames.size() == 1 ? fileNames[0] : tr("multiple files");
-	Command::importDives(&table, &trips, false, false, true, source);
+	Command::importDives(&table, &trips, false, false, true, false, source);
 }
 
 TagDragDelegate::TagDragDelegate(QObject *parent) : QStyledItemDelegate(parent)

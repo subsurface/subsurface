@@ -19,9 +19,9 @@ extern int init_decompression(struct deco_state *ds, struct dive *dive);
 /* divelist core logic functions */
 extern void process_loaded_dives();
 extern void add_imported_dives(struct dive_table *import_table, struct trip_table *import_trip_table,
-			       bool prefer_imported, bool downloaded, bool merge_all_trips);
+			       bool prefer_imported, bool downloaded, bool merge_all_trips, bool add_to_new_trip);
 extern void process_imported_dives(struct dive_table *import_table, struct trip_table *import_trip_table,
-				   bool prefer_imported, bool downloaded, bool merge_all_trips,
+				   bool prefer_imported, bool downloaded, bool merge_all_trips, bool add_to_new_trip,
 				   struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
 				   struct trip_table *trips_to_add);
 extern char *get_dive_gas_string(const struct dive *dive);

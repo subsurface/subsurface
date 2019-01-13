@@ -158,7 +158,8 @@ void DiveImportedModel::recordDives()
 			delete_dive_from_table(diveTable, j);
 	}
 
-	add_imported_dives(diveTable, tripTable, true, true, false);
+	// TODO: Might want to let the user select "add_to_new_trip"
+	add_imported_dives(diveTable, tripTable, true, true, false, false);
 }
 
 QHash<int, QByteArray> DiveImportedModel::roleNames() const {
