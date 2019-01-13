@@ -772,7 +772,7 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton *button)
 		struct dive_table table = { 0 };
 		struct trip_table trips = { 0 };
 		parse_file(QFile::encodeName(zipFile.fileName()), &table, &trips);
-		Command::importDives(&table, &trips, false, false, true, false, QStringLiteral("divelogs.de"));
+		Command::importDives(&table, &trips, IMPORT_MERGE_ALL_TRIPS, QStringLiteral("divelogs.de"));
 
 		/* store last entered user/pass in config */
 		QSettings s;

@@ -552,17 +552,14 @@ void AddDive::undoit()
 	MainWindow::instance()->refreshDisplay(false);
 }
 
-ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips,
-			 bool prefer_imported, bool downloaded, bool merge_all_trips,
-			 bool add_to_new_trip, const QString &source)
+ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, int flags, const QString &source)
 {
 	setText(tr("import %n dive(s) from %1", "", dives->nr).arg(source));
 
 	struct dive_table dives_to_add = { 0 };
 	struct dive_table dives_to_remove = { 0 };
 	struct trip_table trips_to_add = { 0 };
-	process_imported_dives(dives, trips, prefer_imported, downloaded, merge_all_trips,
-			       add_to_new_trip, &dives_to_add, &dives_to_remove, &trips_to_add);
+	process_imported_dives(dives, trips, flags, &dives_to_add, &dives_to_remove, &trips_to_add);
 
 	// Add trips to the divesToAdd.trips structure
 	divesToAdd.trips.reserve(trips_to_add.nr);

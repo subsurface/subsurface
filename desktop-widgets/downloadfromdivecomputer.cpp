@@ -520,7 +520,12 @@ void DownloadFromDCWidget::on_ok_clicked()
 
 	if (table->nr > 0) {
 		auto data = thread.data();
-		Command::importDives(table, nullptr, preferDownloaded(), true, false, ui.createNewTrip->isChecked(), data->devName());
+		int flags = IMPORT_IS_DOWNLOADED;
+		if (preferDownloaded())
+			flags |= IMPORT_IS_DOWNLOADED;
+		if (ui.createNewTrip->isChecked())
+			flags |= IMPORT_ADD_TO_NEW_TRIP;
+		Command::importDives(table, nullptr, flags, data->devName());
 	}
 
 	if (ostcFirmwareCheck && currentState == DONE)
