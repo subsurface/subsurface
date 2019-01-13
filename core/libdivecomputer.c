@@ -824,13 +824,6 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		dive->dc.sample[0].temperature.mkelvin = 0;
 	}
 
-	if (devdata->create_new_trip) {
-		if (!devdata->trip)
-			devdata->trip = create_and_hookup_trip_from_dive(dive, devdata->trip_table);
-		else
-			add_dive_to_trip(dive, devdata->trip);
-	}
-
 	record_dive_to_table(dive, devdata->download_table);
 	mark_divelist_changed(true);
 	return true;

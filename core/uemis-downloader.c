@@ -211,17 +211,6 @@ static struct dive *get_dive_by_uemis_diveid(device_data_t *devdata, uint32_t ob
 	return NULL;
 }
 
-static void record_uemis_dive(device_data_t *devdata, struct dive *dive)
-{
-	if (devdata->create_new_trip) {
-		if (!devdata->trip)
-			devdata->trip = create_and_hookup_trip_from_dive(dive, &trip_table);
-		else
-			add_dive_to_trip(dive, devdata->trip);
-	}
-	record_dive_to_table(dive, devdata->download_table);
-}
-
 /* send text to the importer progress bar */
 static void uemis_info(const char *fmt, ...)
 {
@@ -1024,14 +1013,14 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 		 * be a short read because of some error */
 		if (done && ++bp < endptr && *bp != '{' && strstr(bp, "{{")) {
 			done = false;
-			record_uemis_dive(devdata, dive);
+			record_dive_to_table(dive, devdata->download_table);
 			mark_divelist_changed(true);
 			dive = uemis_start_dive(deviceid);
 		}
 	}
 	if (is_log) {
 		if (dive->dc.diveid) {
-			record_uemis_dive(devdata, dive);
+			record_dive_to_table(dive, devdata->download_table);
 			mark_divelist_changed(true);
 		} else { /* partial dive */
 			free(dive);

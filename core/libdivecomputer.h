@@ -41,13 +41,11 @@ typedef struct dc_user_device_t
 	struct dive_trip *trip;
 	int preexisting;
 	bool force_download;
-	bool create_new_trip;
 	bool libdc_log;
 	bool libdc_dump;
 	bool bluetooth_mode;
 	FILE *libdc_logfile;
 	struct dive_table *download_table;
-	struct trip_table *trip_table;
 } device_data_t;
 
 const char *errmsg (dc_status_t rc);

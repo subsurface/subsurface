@@ -1803,11 +1803,6 @@ bool QMLManager::DC_bluetoothMode() const
 	return DCDeviceData::instance()->bluetoothMode();
 }
 
-bool QMLManager::DC_createNewTrip() const
-{
-	return DCDeviceData::instance()->createNewTrip();
-}
-
 bool QMLManager::DC_saveDump() const
 {
 	return DCDeviceData::instance()->saveDump();
@@ -1851,11 +1846,6 @@ void QMLManager::DC_setBluetoothMode(bool mode)
 void QMLManager::DC_setForceDownload(bool force)
 {
 	DCDeviceData::instance()->setForceDownload(force);
-}
-
-void QMLManager::DC_setCreateNewTrip(bool create)
-{
-	DCDeviceData::instance()->setCreateNewTrip(create);
 }
 
 void QMLManager::DC_setSaveDump(bool dumpMode)

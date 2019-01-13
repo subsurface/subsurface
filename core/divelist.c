@@ -1661,8 +1661,10 @@ bool try_to_merge_trip(struct dive_trip *trip_import, struct dive_table *import_
  *	3) Trips to be added
  * The dives to be added are owning (i.e. the caller is responsible
  * for freeing them).
- * The dives and trips in import_table and import_trip table are
+ * The dives and trips in "import_table" and "import_trip_table" are
  * consumed. On return, both tables have size 0.
+ * "import_trip_table" may be NULL if all dives are not associated
+ * with a trip.
  * The output parameters should be empty - if not, their content
  * will be cleared!
  *
@@ -1689,6 +1691,13 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 	int preexisting;
 	bool sequence_changed = false;
 	bool new_dive_has_number = false;
+
+	/* If the caller didn't pass an import_trip_table because all
+	 * dives are tripless, provide a local table. This may be
+	 * necessary if the trips are autogrouped */
+	struct trip_table local_trip_table = { 0 };
+	if (!import_trip_table)
+		import_trip_table = &local_trip_table;
 
 	/* Make sure that output parameters don't contain garbage */
 	clear_table(dives_to_add);
