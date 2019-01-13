@@ -1716,7 +1716,7 @@ void MainWindow::importFiles(const QStringList fileNames)
 		parse_file(fileNamePtr.data(), &table, &trips);
 	}
 	QString source = fileNames.size() == 1 ? fileNames[0] : tr("multiple files");
-	Command::importDives(&table, &trips, false, false, true, false, source);
+	Command::importDives(&table, &trips, IMPORT_MERGE_ALL_TRIPS, source);
 }
 
 void MainWindow::loadFiles(const QStringList fileNames)
