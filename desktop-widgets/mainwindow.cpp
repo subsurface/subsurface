@@ -53,7 +53,6 @@
 #include "desktop-widgets/tab-widgets/maintab.h"
 #include "desktop-widgets/updatemanager.h"
 #include "desktop-widgets/usersurvey.h"
-#include "desktop-widgets/filterwidget2.h"
 #include "desktop-widgets/simplewidgets.h"
 
 #include "profile-widget/profilewidget2.h"
@@ -146,7 +145,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	divePlannerSettingsWidget = new PlannerSettingsWidget(this);
 	divePlannerWidget = new DivePlannerWidget(this);
 	plannerDetails = new PlannerDetails(this);
-	auto *filterWidget2 = new FilterWidget2();
 
 	// what is a sane order for those icons? we should have the ones the user is
 	// most likely to want towards the top so they are always visible
@@ -195,7 +193,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	registerApplicationState("PlanDive", divePlannerWidget, profileContainer, divePlannerSettingsWidget, plannerDetails );
 	registerApplicationState("EditPlannedDive", divePlannerWidget, profileContainer, diveList, mapWidget );
 	registerApplicationState("EditDiveSite", diveSiteEdit, profileContainer, diveList, mapWidget);
-	registerApplicationState("FilterDive", mainTab, profileContainer, diveList, filterWidget2);
+	registerApplicationState("FilterDive", mainTab, profileContainer, diveList, &filterWidget2);
 
 	setStateProperties("Default", enabledList, enabledList, enabledList,enabledList);
 	setStateProperties("AddDive", enabledList, enabledList, enabledList,enabledList);
