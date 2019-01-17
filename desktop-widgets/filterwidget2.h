@@ -29,7 +29,7 @@ public slots:
 	void updateLogged(int value);
 
 private:
-	std::unique_ptr<Ui::FilterWidget2> ui;
+	Ui::FilterWidget2 ui;
 	void filterDataChanged(const FilterData &data);
 	FilterData filterData;
 };
