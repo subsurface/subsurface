@@ -3,112 +3,108 @@
 
 #include <QDoubleSpinBox>
 
-FilterWidget2::FilterWidget2(QWidget* parent)
-: QWidget(parent)
-, ui(new Ui::FilterWidget2())
+FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent)
 {
-	ui->setupUi(this);
+	ui.setupUi(this);
 
 	FilterData data;
-	ui->minRating->setCurrentStars(data.minRating);
-	ui->maxRating->setCurrentStars(data.maxRating);
-	ui->minVisibility->setCurrentStars(data.minVisibility);
-	ui->maxVisibility->setCurrentStars(data.maxVisibility);
-	ui->minAirTemp->setValue(data.minAirTemp);
-	ui->maxAirTemp->setValue(data.maxAirTemp);
-	ui->minWaterTemp->setValue(data.minWaterTemp);
-	ui->maxWaterTemp->setValue(data.maxWaterTemp);
-	ui->planned->setChecked(data.logged);
-	ui->planned->setChecked(data.planned);
+	ui.minRating->setCurrentStars(data.minRating);
+	ui.maxRating->setCurrentStars(data.maxRating);
+	ui.minVisibility->setCurrentStars(data.minVisibility);
+	ui.maxVisibility->setCurrentStars(data.maxVisibility);
+	ui.minAirTemp->setValue(data.minAirTemp);
+	ui.maxAirTemp->setValue(data.maxAirTemp);
+	ui.minWaterTemp->setValue(data.minWaterTemp);
+	ui.maxWaterTemp->setValue(data.maxWaterTemp);
+	ui.planned->setChecked(data.logged);
+	ui.planned->setChecked(data.planned);
 
 	// TODO: unhide this when we discover how to search for equipment.
-	ui->equipment->hide();
-	ui->labelEquipment->hide();
-	ui->invertFilter->hide();
+	ui.equipment->hide();
+	ui.labelEquipment->hide();
+	ui.invertFilter->hide();
 
-	ui->to->setDate(data.to.date());
+	ui.to->setDate(data.to.date());
 
-	connect(ui->maxRating, &StarWidget::valueChanged,
+	connect(ui.maxRating, &StarWidget::valueChanged,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui->minRating, &StarWidget::valueChanged,
+	connect(ui.minRating, &StarWidget::valueChanged,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui->maxVisibility, &StarWidget::valueChanged,
+	connect(ui.maxVisibility, &StarWidget::valueChanged,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui->minVisibility, &StarWidget::valueChanged,
+	connect(ui.minVisibility, &StarWidget::valueChanged,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui->maxAirTemp, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+	connect(ui.maxAirTemp, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui->minAirTemp, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+	connect(ui.minAirTemp, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui->maxWaterTemp, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+	connect(ui.maxWaterTemp, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui->minWaterTemp, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+	connect(ui.minWaterTemp, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui->from, &QDateTimeEdit::dateTimeChanged,
+	connect(ui.from, &QDateTimeEdit::dateTimeChanged,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui->to, &QDateTimeEdit::dateTimeChanged,
+	connect(ui.to, &QDateTimeEdit::dateTimeChanged,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui->tags, &QLineEdit::textChanged,
+	connect(ui.tags, &QLineEdit::textChanged,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui->people, &QLineEdit::textChanged,
+	connect(ui.people, &QLineEdit::textChanged,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui->location, &QLineEdit::textChanged,
+	connect(ui.location, &QLineEdit::textChanged,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui->logged, SIGNAL(stateChanged(int)), this, SLOT(updateLogged(int)));
+	connect(ui.logged, SIGNAL(stateChanged(int)), this, SLOT(updateLogged(int)));
 
-	connect(ui->planned, SIGNAL(stateChanged(int)), this, SLOT(updatePlanned(int)));
-
+	connect(ui.planned, SIGNAL(stateChanged(int)), this, SLOT(updatePlanned(int)));
 }
 
 void FilterWidget2::updateFilter()
 {
 	filterData.validFilter = true;
-	filterData.minVisibility = ui->minVisibility->currentStars();
-	filterData.maxVisibility = ui->maxVisibility->currentStars();
-	filterData.minRating = ui->minRating->currentStars();
-	filterData.maxRating = ui->maxRating->currentStars();
-	filterData.minWaterTemp = ui->minWaterTemp->value();
-	filterData.maxWaterTemp = ui->maxWaterTemp->value();
-	filterData.minAirTemp = ui->minAirTemp->value();
-	filterData.maxWaterTemp = ui->maxWaterTemp->value();
-	filterData.from = ui->from->dateTime();
-	filterData.to = ui->to->dateTime();
-	filterData.tags = ui->tags->text().split(",", QString::SkipEmptyParts);
-	filterData.people = ui->people->text().split(",", QString::SkipEmptyParts);
-	filterData.location = ui->location->text().split(",", QString::SkipEmptyParts);
-	filterData.equipment = ui->equipment->text().split(",", QString::SkipEmptyParts);
-	filterData.invertFilter = ui->invertFilter->isChecked();
-	filterData.logged = ui->logged->isChecked();
-	filterData.planned = ui->planned->isChecked();
+	filterData.minVisibility = ui.minVisibility->currentStars();
+	filterData.maxVisibility = ui.maxVisibility->currentStars();
+	filterData.minRating = ui.minRating->currentStars();
+	filterData.maxRating = ui.maxRating->currentStars();
+	filterData.minWaterTemp = ui.minWaterTemp->value();
+	filterData.maxWaterTemp = ui.maxWaterTemp->value();
+	filterData.minAirTemp = ui.minAirTemp->value();
+	filterData.maxWaterTemp = ui.maxWaterTemp->value();
+	filterData.from = ui.from->dateTime();
+	filterData.to = ui.to->dateTime();
+	filterData.tags = ui.tags->text().split(",", QString::SkipEmptyParts);
+	filterData.people = ui.people->text().split(",", QString::SkipEmptyParts);
+	filterData.location = ui.location->text().split(",", QString::SkipEmptyParts);
+	filterData.equipment = ui.equipment->text().split(",", QString::SkipEmptyParts);
+	filterData.invertFilter = ui.invertFilter->isChecked();
+	filterData.logged = ui.logged->isChecked();
+	filterData.planned = ui.planned->isChecked();
 
 	filterDataChanged(filterData);
 }
 
 void FilterWidget2::updateLogged(int value) {
 	if (value == Qt::Unchecked)
-		ui->planned->setChecked(true);
+		ui.planned->setChecked(true);
 	updateFilter();
 }
 
 void FilterWidget2::updatePlanned(int value) {
 	if (value == Qt::Unchecked)
-		ui->logged->setChecked(true);
+		ui.logged->setChecked(true);
 	updateFilter();
 }
-
 
 void FilterWidget2::showEvent(QShowEvent *event)
 {
