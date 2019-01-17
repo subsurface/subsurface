@@ -17,6 +17,7 @@
 #include "ui_mainwindow.h"
 #include "ui_plannerDetails.h"
 #include "desktop-widgets/notificationwidget.h"
+#include "desktop-widgets/filterwidget2.h"
 #include "core/gpslocation.h"
 #include "core/dive.h"
 
@@ -36,7 +37,6 @@ class ProfileWidget2;
 class PlannerDetails;
 class PlannerSettingsWidget;
 class LocationInformationWidget;
-class FilterWidget2;
 
 typedef std::pair<QByteArray, QVariant> WidgetProperty;
 typedef QVector<WidgetProperty> PropertyList;
@@ -186,6 +186,7 @@ slots:
 
 private:
 	Ui::MainWindow ui;
+	FilterWidget2 filterWidget2;
 	QAction *actionNextDive;
 	QAction *actionPreviousDive;
 	QAction *undoAction;
