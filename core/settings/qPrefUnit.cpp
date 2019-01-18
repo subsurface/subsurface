@@ -28,15 +28,63 @@ void qPrefUnits::loadSync(bool doSync)
 
 HANDLE_PREFERENCE_BOOL(Units, "coordinates", coordinates_traditional);
 
-HANDLE_PREFERENCE_ENUM_EXT(Units, units::DURATION, "duration_units", duration_units, units.);
+QString qPrefUnits::duration_units()
+{
+	return 	prefs.units.duration_units == units::DURATION::ALWAYS_HOURS ? QStringLiteral("hours") :
+			prefs.units.duration_units == units::DURATION::MINUTES_ONLY ? QStringLiteral("minutes") :
+											QStringLiteral("mixed");
+}
+void qPrefUnits::set_duration_units(const QString& value)
+{
+	prefs.units.duration_units = value == QStringLiteral("hours") ? units::DURATION::ALWAYS_HOURS :
+								 value == QStringLiteral("minutes")? units::DURATION::MINUTES_ONLY :
+																	 units::DURATION::MIXED;
+	disk_duration_units(true);
+	emit instance()->duration_unitsChanged(value);
+}
+SET_PREFERENCE_ENUM_EXT(Units, units::DURATION, duration_units, units.);
+DISK_LOADSYNC_ENUM_EXT(Units, "duration_units", units::DURATION, duration_units, units.);
 
-HANDLE_PREFERENCE_ENUM_EXT(Units, units::LENGTH, "length", length, units.);
+QString qPrefUnits::length()
+{
+	return 	prefs.units.length == units::LENGTH::METERS ? QStringLiteral("meters") : QStringLiteral("feet");
+}
+void qPrefUnits::set_length(const QString& value)
+{
+	prefs.units.length = value == QStringLiteral("meters") ? units::LENGTH::METERS : units::LENGTH::FEET;
+	disk_length(true);
+	emit instance()->lengthChanged(value);
+}
+SET_PREFERENCE_ENUM_EXT(Units, units::LENGTH, length, units.);
+DISK_LOADSYNC_ENUM_EXT(Units, "length", units::LENGTH, length, units.);
 
-HANDLE_PREFERENCE_ENUM_EXT(Units, units::PRESSURE, "pressure", pressure, units.);
+QString qPrefUnits::pressure()
+{
+	return 	prefs.units.pressure == units::PRESSURE::BAR ? QStringLiteral("bar") : QStringLiteral("psi");
+}
+void qPrefUnits::set_pressure(const QString& value)
+{
+	prefs.units.pressure = value == QStringLiteral("bar") ? units::PRESSURE::BAR : units::PRESSURE::PSI;
+	disk_pressure(true);
+	emit instance()->pressureChanged(value);
+}
+SET_PREFERENCE_ENUM_EXT(Units, units::PRESSURE, pressure, units.);
+DISK_LOADSYNC_ENUM_EXT(Units, "pressure", units::PRESSURE, pressure, units.);
 
 HANDLE_PREFERENCE_BOOL_EXT(Units, "show_units_table", show_units_table, units.);
 
-HANDLE_PREFERENCE_ENUM_EXT(Units, units::TEMPERATURE, "temperature", temperature, units.);
+QString qPrefUnits::temperature()
+{
+	return 	prefs.units.temperature == units::TEMPERATURE::CELSIUS ? QStringLiteral("celcius") : QStringLiteral("fahrenheit");
+}
+void qPrefUnits::set_temperature(const QString& value)
+{
+	prefs.units.temperature = value == QStringLiteral("celcius") ? units::TEMPERATURE::CELSIUS : units::TEMPERATURE::FAHRENHEIT;
+	disk_temperature(true);
+	emit instance()->temperatureChanged(value);
+}
+SET_PREFERENCE_ENUM_EXT(Units, units::TEMPERATURE, temperature, units.);
+DISK_LOADSYNC_ENUM_EXT(Units, "temperature", units::TEMPERATURE, temperature, units.);
 
 QString qPrefUnits::unit_system()
 {
@@ -63,8 +111,41 @@ void qPrefUnits::set_unit_system(const QString& value)
 }
 DISK_LOADSYNC_ENUM(Units, "unit_system", unit_system_values, unit_system);
 
-HANDLE_PREFERENCE_ENUM_EXT(Units, units::TIME, "vertical_speed_time", vertical_speed_time, units.);
+QString qPrefUnits::vertical_speed_time()
+{
+	return 	prefs.units.vertical_speed_time == units::TIME::MINUTES ? QStringLiteral("minutes") : QStringLiteral("seconds");
+}
+void qPrefUnits::set_vertical_speed_time(const QString& value)
+{
+	prefs.units.vertical_speed_time = value == QStringLiteral("minutes") ? units::TIME::MINUTES : units::TIME::SECONDS;
+	disk_vertical_speed_time(true);
+	emit instance()->vertical_speed_timeChanged(value);
+}
+SET_PREFERENCE_ENUM_EXT(Units, units::TIME, vertical_speed_time, units.);
+DISK_LOADSYNC_ENUM_EXT(Units, "vertical_speed_time", units::TIME, vertical_speed_time, units.);
 
-HANDLE_PREFERENCE_ENUM_EXT(Units, units::VOLUME, "volume", volume, units.);
+QString qPrefUnits::volume()
+{
+	return 	prefs.units.volume == units::VOLUME::LITER ? QStringLiteral("liter") : QStringLiteral("cuft");
+}
+void qPrefUnits::set_volume(const QString& value)
+{
+	prefs.units.volume = value == QStringLiteral("liter") ? units::VOLUME::LITER : units::VOLUME::CUFT;
+	disk_volume(true);
+	emit instance()->volumeChanged(value);
+}
+SET_PREFERENCE_ENUM_EXT(Units, units::VOLUME, volume, units.);
+DISK_LOADSYNC_ENUM_EXT(Units, "volume", units::VOLUME, volume, units.);
 
-HANDLE_PREFERENCE_ENUM_EXT(Units, units::WEIGHT, "weight", weight, units.);
+QString qPrefUnits::weight()
+{
+	return 	prefs.units.weight == units::WEIGHT::KG ? QStringLiteral("kg") : QStringLiteral("lbs");
+}
+void qPrefUnits::set_weight(const QString& value)
+{
+	prefs.units.weight = value == QStringLiteral("kg") ? units::WEIGHT::KG : units::WEIGHT::LBS;
+	disk_weight(true);
+	emit instance()->weightChanged(value);
+}
+SET_PREFERENCE_ENUM_EXT(Units, units::WEIGHT, weight, units.);
+DISK_LOADSYNC_ENUM_EXT(Units, "weight", units::WEIGHT, weight, units.);
