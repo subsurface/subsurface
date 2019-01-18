@@ -111,10 +111,12 @@ bool MultiFilterSortModel::showDive(const struct dive *d) const
 
 	// TODO: get the preferences for the imperial vs metric data.
 	// ignore the check if it doesn't makes sense.
-	if (d->watertemp.mkelvin < C_to_mkelvin(filterData.minWaterTemp) || d->watertemp.mkelvin > C_to_mkelvin((filterData.maxWaterTemp)))
+	if (d->watertemp.mkelvin &&
+	    (d->watertemp.mkelvin < C_to_mkelvin(filterData.minWaterTemp) || d->watertemp.mkelvin > C_to_mkelvin((filterData.maxWaterTemp))))
 		return false;
 
-	if (d->airtemp.mkelvin < C_to_mkelvin(filterData.minAirTemp) || d->airtemp.mkelvin > C_to_mkelvin(filterData.maxAirTemp))
+	if (d->airtemp.mkelvin &&
+	    (d->airtemp.mkelvin < C_to_mkelvin(filterData.minAirTemp) || d->airtemp.mkelvin > C_to_mkelvin(filterData.maxAirTemp)))
 		return false;
 
 	if (filterData.from.isValid() && d->when < filterData.from.toTime_t())
