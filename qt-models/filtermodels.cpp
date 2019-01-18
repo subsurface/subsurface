@@ -100,6 +100,10 @@ void MultiFilterSortModel::resetModel(DiveTripModelBase::Layout layout)
 
 bool MultiFilterSortModel::showDive(const struct dive *d) const
 {
+	// If curr_dive_site is set, we are in a special dive-site editing mode.
+	if (curr_dive_site)
+		return d->dive_site == curr_dive_site;
+
 	if (!filterData.validFilter)
 		return true;
 
