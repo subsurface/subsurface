@@ -16,57 +16,48 @@
 #include <algorithm>
 
 namespace {
-	bool hasTag(const QStringList tags, const struct dive *d)
+	// Check if a string-list contains at least one string containing the second argument.
+	// Comparison is non case sensitive and removes white space.
+	bool listContainsSuperstring(const QStringList &list, const QString &s)
 	{
-		if (!tags.isEmpty()) {
-			auto dive_tags = get_taglist_string(d->tag_list).split(",");
-			bool found_tag = false;
-			for (const auto& filter_tag : tags)
-				for (const auto& dive_tag : dive_tags)
-					if (dive_tag.trimmed().toUpper().contains(filter_tag.trimmed().toUpper()))
-						found_tag = true;
-
-			return found_tag;
-		}
-		return true;
+		return std::any_of(list.begin(), list.end(), [&s](const QString &s2)
+				   { return s2.trimmed().contains(s.trimmed(), Qt::CaseInsensitive); });
 	}
 
-	bool hasPerson(const QStringList people, const struct dive *d)
+	bool hasTags(const QStringList &tags, const struct dive *d)
 	{
-		if (!people.isEmpty()) {
-			QStringList dive_people = QString(d->buddy).split(",", QString::SkipEmptyParts)
-				+ QString(d->divemaster).split(",", QString::SkipEmptyParts);
+		if (tags.isEmpty())
+			return true;
+		QStringList dive_tags = get_taglist_string(d->tag_list).split(",");
 
-			bool found_person = false;
-			for(const auto& filter_person : people)
-				for(const auto& dive_person : dive_people)
-					if (dive_person.trimmed().toUpper().contains(filter_person.trimmed().toUpper()))
-						found_person = true;
-
-			return found_person;
-		}
-		return true;
+		return std::all_of(tags.begin(), tags.end(), [&dive_tags](const QString &tag)
+				   { return listContainsSuperstring(dive_tags, tag); });
 	}
 
-	bool hasLocation(const QStringList locations, const struct dive *d)
+	bool hasPersons(const QStringList &people, const struct dive *d)
 	{
-		if (!locations.isEmpty()) {
-			QStringList diveLocations;
-			if (d->divetrip)
-				diveLocations.push_back(QString(d->divetrip->location));
+		if (people.isEmpty())
+			return true;
+		QStringList dive_people = QString(d->buddy).split(",", QString::SkipEmptyParts)
+			+ QString(d->divemaster).split(",", QString::SkipEmptyParts);
 
-			if (d->dive_site)
-				diveLocations.push_back(QString(d->dive_site->name));
+		return std::all_of(people.begin(), people.end(), [&dive_people](const QString &person)
+				   { return listContainsSuperstring(dive_people, person); });
+	}
 
-			bool found_location = false;
-			for (const auto& filter_location : locations)
-				for (const auto& dive_location : diveLocations)
-					if (dive_location.trimmed().toUpper().contains(filter_location.trimmed().toUpper()))
-						found_location = true;
+	bool hasLocations(const QStringList &locations, const struct dive *d)
+	{
+		if (locations.isEmpty())
+			return true;
+		QStringList diveLocations;
+		if (d->divetrip)
+			diveLocations.push_back(QString(d->divetrip->location));
 
-			return found_location;
-		}
-		return true;
+		if (d->dive_site)
+			diveLocations.push_back(QString(d->dive_site->name));
+
+		return std::all_of(locations.begin(), locations.end(), [&diveLocations](const QString &location)
+				   { return listContainsSuperstring(diveLocations, location); });
 	}
 
 	// TODO: Finish this iimplementation.
@@ -130,15 +121,15 @@ bool MultiFilterSortModel::showDive(const struct dive *d) const
 		return false;
 
 	// tags.
-	if (!hasTag(filterData.tags, d))
+	if (!hasTags(filterData.tags, d))
 		return false;
 
 	// people
-	if (!hasPerson(filterData.people, d))
+	if (!hasPersons(filterData.people, d))
 		return false;
 
 	// Location
-	if (!hasLocation(filterData.location, d))
+	if (!hasLocations(filterData.location, d))
 		return false;
 
 	if (!hasEquipment(filterData.equipment, d))
