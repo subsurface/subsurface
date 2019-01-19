@@ -518,7 +518,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 		auto data = thread.data();
 		int flags = IMPORT_IS_DOWNLOADED;
 		if (preferDownloaded())
-			flags |= IMPORT_IS_DOWNLOADED;
+			flags |= IMPORT_PREFER_IMPORTED;
 		if (ui.createNewTrip->isChecked())
 			flags |= IMPORT_ADD_TO_NEW_TRIP;
 		Command::importDives(table, nullptr, flags, data->devName());
