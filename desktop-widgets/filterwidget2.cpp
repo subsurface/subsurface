@@ -24,7 +24,13 @@ FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent)
 	ui.labelEquipment->hide();
 	ui.invertFilter->hide();
 
-	ui.to->setDate(data.to.date());
+	ui.fromDate->setDisplayFormat(prefs.date_format);
+	ui.fromTime->setDisplayFormat(prefs.time_format);
+
+	ui.toDate->setDisplayFormat(prefs.date_format);
+	ui.toTime->setDisplayFormat(prefs.time_format);
+	ui.toDate->setDate(data.toDate.date());
+	ui.toTime->setTime(data.toTime);
 
 	connect(ui.maxRating, &StarWidget::valueChanged,
 		this, &FilterWidget2::updateFilter);
@@ -50,10 +56,16 @@ FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent)
 	connect(ui.minWaterTemp, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui.from, &QDateTimeEdit::dateTimeChanged,
+	connect(ui.fromDate, &QDateTimeEdit::dateChanged,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui.to, &QDateTimeEdit::dateTimeChanged,
+	connect(ui.fromTime, &QDateTimeEdit::timeChanged,
+		this, &FilterWidget2::updateFilter);
+
+	connect(ui.toDate, &QDateTimeEdit::dateChanged,
+		this, &FilterWidget2::updateFilter);
+
+	connect(ui.toTime, &QDateTimeEdit::timeChanged,
 		this, &FilterWidget2::updateFilter);
 
 	connect(ui.tags, &QLineEdit::textChanged,
@@ -81,8 +93,10 @@ void FilterWidget2::updateFilter()
 	filterData.maxWaterTemp = ui.maxWaterTemp->value();
 	filterData.minAirTemp = ui.minAirTemp->value();
 	filterData.maxWaterTemp = ui.maxWaterTemp->value();
-	filterData.from = ui.from->dateTime();
-	filterData.to = ui.to->dateTime();
+	filterData.fromDate = ui.fromDate->dateTime();
+	filterData.fromTime = ui.fromTime->time();
+	filterData.toDate = ui.toDate->dateTime();
+	filterData.toTime = ui.toTime->time();
 	filterData.tags = ui.tags->text().split(",", QString::SkipEmptyParts);
 	filterData.people = ui.people->text().split(",", QString::SkipEmptyParts);
 	filterData.location = ui.location->text().split(",", QString::SkipEmptyParts);

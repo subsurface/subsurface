@@ -160,18 +160,12 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="1" colspan="4">
-    <widget class="QDateTimeEdit" name="from"/>
-   </item>
    <item row="10" column="0">
     <widget class="QLabel" name="label_9">
      <property name="text">
       <string>Location</string>
      </property>
     </widget>
-   </item>
-   <item row="6" column="1" colspan="4">
-    <widget class="QDateTimeEdit" name="to"/>
    </item>
    <item row="4" column="0">
     <widget class="QLabel" name="label_2">
@@ -252,6 +246,26 @@
      </property>
     </widget>
    </item>
+   <item row="5" column="3">
+    <widget class="QTimeEdit" name="fromTime"/>
+   </item>
+   <item row="5" column="1" colspan="2">
+    <widget class="QDateTimeEdit" name="fromDate">
+     <property name="calendarPopup">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1" colspan="2">
+    <widget class="QDateTimeEdit" name="toDate">
+     <property name="calendarPopup">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="3">
+    <widget class="QTimeEdit" name="toTime"/>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -267,8 +281,12 @@
   <tabstop>maxRating</tabstop>
   <tabstop>minVisibility</tabstop>
   <tabstop>maxVisibility</tabstop>
-  <tabstop>from</tabstop>
-  <tabstop>to</tabstop>
+  <tabstop>fromDate</tabstop>
+  <tabstop>fromTime</tabstop>
+  <tabstop>toDate</tabstop>
+  <tabstop>toTime</tabstop>
+  <tabstop>logged</tabstop>
+  <tabstop>planned</tabstop>
   <tabstop>tags</tabstop>
   <tabstop>people</tabstop>
   <tabstop>location</tabstop>
