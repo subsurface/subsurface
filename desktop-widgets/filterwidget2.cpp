@@ -1,5 +1,7 @@
 #include "desktop-widgets/filterwidget2.h"
 #include "desktop-widgets/simplewidgets.h"
+#include "core/qthelper.h"
+#include "core/settings/qPrefUnit.h"
 
 #include <QDoubleSpinBox>
 
@@ -31,6 +33,9 @@ FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent)
 	ui.toTime->setDisplayFormat(prefs.time_format);
 	ui.toDate->setDate(data.toDate.date());
 	ui.toTime->setTime(data.toTime);
+
+	// Initialize temperature fields to display correct unit.
+	temperatureChanged();
 
 	connect(ui.maxRating, &StarWidget::valueChanged,
 		this, &FilterWidget2::updateFilter);
@@ -80,6 +85,19 @@ FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent)
 	connect(ui.logged, SIGNAL(stateChanged(int)), this, SLOT(updateLogged(int)));
 
 	connect(ui.planned, SIGNAL(stateChanged(int)), this, SLOT(updatePlanned(int)));
+
+	// Update temperature fields if user changes temperature-units in preferences.
+	connect(qPrefUnits::instance(), &qPrefUnits::temperatureChanged, this, &FilterWidget2::temperatureChanged);
+	connect(qPrefUnits::instance(), &qPrefUnits::unit_systemChanged, this, &FilterWidget2::temperatureChanged);
+}
+
+void FilterWidget2::temperatureChanged()
+{
+	QString temp = get_temp_unit();
+	ui.minAirTemp->setSuffix(temp);
+	ui.maxAirTemp->setSuffix(temp);
+	ui.minWaterTemp->setSuffix(temp);
+	ui.maxWaterTemp->setSuffix(temp);
 }
 
 void FilterWidget2::updateFilter()
