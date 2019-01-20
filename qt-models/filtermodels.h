@@ -20,10 +20,13 @@ struct FilterData {
 	int maxVisibility = 5;
 	int minRating = 0;
 	int maxRating = 5;
-	double minWaterTemp = 0;
-	double maxWaterTemp = 100;
-	double minAirTemp = 0;
-	double maxAirTemp = 100;
+	// The default minimum and maximum temperatures are set such that all
+	// physically reasonable dives are shown. Note that these values should
+	// work for both Celcius and Fahrenheit scales.
+	double minWaterTemp = -10;
+	double maxWaterTemp = 200;
+	double minAirTemp = -50;
+	double maxAirTemp = 200;
 	QDateTime fromDate;
 	QTime fromTime;
 	QDateTime toDate = QDateTime::currentDateTime();
