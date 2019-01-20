@@ -10,6 +10,13 @@ FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent)
 	ui.setupUi(this);
 
 	FilterData data;
+
+	// Use default values to set minimum and maximum air and water temperature.
+	ui.minAirTemp->setRange(data.minAirTemp, data.maxAirTemp);
+	ui.maxAirTemp->setRange(data.minAirTemp, data.maxAirTemp);
+	ui.minWaterTemp->setRange(data.minWaterTemp, data.maxWaterTemp);
+	ui.maxWaterTemp->setRange(data.minWaterTemp, data.maxWaterTemp);
+
 	ui.minRating->setCurrentStars(data.minRating);
 	ui.maxRating->setCurrentStars(data.maxRating);
 	ui.minVisibility->setCurrentStars(data.minVisibility);
