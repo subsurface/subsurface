@@ -77,7 +77,9 @@ if [ ! -d "$ANDROID_NDK" ] ; then
 	unzip -q "$NDK_BINARIES"
 fi
 
-if [ ! -d "$ANDROID_SDK"/build-tools/"${ANDROID_BUILDTOOLS_REVISION}" ] ; then
+if [ ! -d "$ANDROID_SDK"/build-tools/"${ANDROID_BUILDTOOLS_REVISION}" ] ||
+   [ ! -d "$ANDROID_SDK"/platforms/android-"${ANDROID_PLATFORMS}" ] ||
+   [ ! -d "$ANDROID_SDK"/platforms/android-"${ANDROID_PLATFORM}" ] ; then
 	if [ ! -d "$ANDROID_SDK" ] ; then
 		if [ ! -f "$SDK_TOOLS" ] ; then
 			wget -q https://dl.google.com/android/repository/"$SDK_TOOLS"
@@ -87,11 +89,11 @@ if [ ! -d "$ANDROID_SDK"/build-tools/"${ANDROID_BUILDTOOLS_REVISION}" ] ; then
 		unzip -q ../"$SDK_TOOLS"
 		yes | tools/bin/sdkmanager --licenses > /dev/null 2>&1 || echo "d56f5187479451eabf01fb78af6dfcb131a6481e" > licenses/android-sdk-license
 		cat licenses/android-sdk-license
-		tools/bin/sdkmanager tools platform-tools 'platforms;'"${ANDROID_PLATFORMS}" 'build-tools;'"${ANDROID_BUILDTOOLS_REVISION}"
+		yes | tools/bin/sdkmanager tools platform-tools 'platforms;'"${ANDROID_PLATFORM}" 'platforms;'"${ANDROID_PLATFORMS}" 'build-tools;'"${ANDROID_BUILDTOOLS_REVISION}" > /dev/null
 		echo ""
 	else
 		pushd "$ANDROID_SDK"
-		tools/bin/sdkmanager tools platform-tools 'platforms;'"${ANDROID_PLATFORMS}" 'build-tools;'"${ANDROID_BUILDTOOLS_REVISION}"
+		yes | tools/bin/sdkmanager tools platform-tools 'platforms;'"${ANDROID_PLATFORM}" 'platforms;'"${ANDROID_PLATFORMS}" 'build-tools;'"${ANDROID_BUILDTOOLS_REVISION}" > /dev/null
 	fi
 	popd
 fi
