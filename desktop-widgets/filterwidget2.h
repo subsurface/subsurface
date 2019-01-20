@@ -27,6 +27,8 @@ protected:
 public slots:
 	void updatePlanned(int value);
 	void updateLogged(int value);
+private slots:
+	void temperatureChanged();
 
 private:
 	Ui::FilterWidget2 ui;

@@ -104,14 +104,13 @@ bool MultiFilterSortModel::showDive(const struct dive *d) const
 	if (d->rating < filterData.minRating || d->rating > filterData.maxRating)
 		return false;
 
-	// TODO: get the preferences for the imperial vs metric data.
-	// ignore the check if it doesn't makes sense.
+	auto temp_comp = prefs.units.temperature == units::CELSIUS ? C_to_mkelvin : F_to_mkelvin;
 	if (d->watertemp.mkelvin &&
-	    (d->watertemp.mkelvin < C_to_mkelvin(filterData.minWaterTemp) || d->watertemp.mkelvin > C_to_mkelvin((filterData.maxWaterTemp))))
+	    (d->watertemp.mkelvin < (*temp_comp)(filterData.minWaterTemp) || d->watertemp.mkelvin > (*temp_comp)(filterData.maxWaterTemp)))
 		return false;
 
 	if (d->airtemp.mkelvin &&
-	    (d->airtemp.mkelvin < C_to_mkelvin(filterData.minAirTemp) || d->airtemp.mkelvin > C_to_mkelvin(filterData.maxAirTemp)))
+	    (d->airtemp.mkelvin < (*temp_comp)(filterData.minAirTemp) || d->airtemp.mkelvin > (*temp_comp)(filterData.maxAirTemp)))
 		return false;
 
 	QDateTime t = filterData.fromDate;
