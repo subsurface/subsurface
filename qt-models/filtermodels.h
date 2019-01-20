@@ -24,8 +24,10 @@ struct FilterData {
 	double maxWaterTemp = 100;
 	double minAirTemp = 0;
 	double maxAirTemp = 100;
-	QDateTime from;
-	QDateTime to = QDateTime::currentDateTime();
+	QDateTime fromDate;
+	QTime fromTime;
+	QDateTime toDate = QDateTime::currentDateTime();
+	QTime toTime = QTime::currentTime();
 	QStringList tags;
 	QStringList people;
 	QStringList location;

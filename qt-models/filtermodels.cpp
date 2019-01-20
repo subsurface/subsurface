@@ -114,10 +114,16 @@ bool MultiFilterSortModel::showDive(const struct dive *d) const
 	    (d->airtemp.mkelvin < C_to_mkelvin(filterData.minAirTemp) || d->airtemp.mkelvin > C_to_mkelvin(filterData.maxAirTemp)))
 		return false;
 
-	if (filterData.from.isValid() && d->when < filterData.from.toTime_t())
+	QDateTime t = filterData.fromDate;
+	t.setTime(filterData.fromTime);
+	if (filterData.fromDate.isValid() && filterData.fromTime.isValid() &&
+	    d->when < t.toMSecsSinceEpoch()/1000 + t.offsetFromUtc())
 		return false;
 
-	if (filterData.to.isValid() && d->when > filterData.to.toTime_t())
+	t = filterData.toDate;
+	t.setTime(filterData.toTime);
+	if (filterData.toDate.isValid() && filterData.toTime.isValid() &&
+	    d->when > t.toMSecsSinceEpoch()/1000 + t.offsetFromUtc())
 		return false;
 
 	// tags.
