@@ -1062,14 +1062,17 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 		break;
 	case DC_EVENT_DEVINFO:
 		if (dc_descriptor_get_model(devdata->descriptor) != devinfo->model) {
-			fprintf(stderr, "EVENT_DEVINFO gave us the correct detected product (model %d instead of %d)\n",
-				devinfo->model, dc_descriptor_get_model(devdata->descriptor));
 			dc_descriptor_t *better_descriptor = get_descriptor(dc_descriptor_get_type(devdata->descriptor), devinfo->model);
 			if (better_descriptor != NULL) {
+				fprintf(stderr, "EVENT_DEVINFO gave us a different detected product (model %d instead of %d), which we are using now.\n",
+					devinfo->model, dc_descriptor_get_model(devdata->descriptor));
 				devdata->descriptor = better_descriptor;
 				devdata->product = dc_descriptor_get_product(better_descriptor);
 				devdata->vendor = dc_descriptor_get_vendor(better_descriptor);
 				devdata->model = str_printf("%s %s", devdata->vendor, devdata->product);
+			} else {
+				fprintf(stderr, "EVENT_DEVINFO gave us a different detected product (model %d instead of %d), but that one is unknown.\n",
+					devinfo->model, dc_descriptor_get_model(devdata->descriptor));
 			}
 		}
 		dev_info(devdata, translate("gettextFromC", "model=%s firmware=%u serial=%u"),
