@@ -52,15 +52,18 @@ extern "C" {
 
 void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState newState)
 {
-	qDebug() << "serviceStateChanged";
+	if (verbose > 2 || debugCounter < DEBUG_THRESHOLD)
+		qDebug() << "serviceStateChanged";
 	auto service = qobject_cast<QLowEnergyService*>(sender());
 	if (service)
-		qDebug() << service->serviceUuid() << newState;
+		if (verbose > 2 || debugCounter < DEBUG_THRESHOLD)
+			qDebug() << service->serviceUuid() << newState;
 }
 
 void BLEObject::characteristcStateChanged(const QLowEnergyCharacteristic &c, const QByteArray &value)
 {
-	qDebug() << QTime::currentTime() << "packet RECV" << value.toHex();
+	if (verbose > 2 || debugCounter < DEBUG_THRESHOLD)
+		qDebug() << QTime::currentTime() << "packet RECV" << value.toHex();
 	if (IS_HW(device)) {
 		if (c.uuid() == hwAllCharacteristics[HW_OSTC_BLE_DATA_TX]) {
 			hw_credit--;
@@ -84,14 +87,15 @@ void BLEObject::characteristicWritten(const QLowEnergyCharacteristic &c, const Q
 			isCharacteristicWritten = true;
 		}
 	} else {
-		if (debugCounter < DEBUG_THRESHOLD)
+		if (verbose > 2 || debugCounter < DEBUG_THRESHOLD)
 			qDebug() << "BLEObject::characteristicWritten";
 	}
 }
 
 void BLEObject::writeCompleted(const QLowEnergyDescriptor&, const QByteArray&)
 {
-	qDebug() << "BLE write completed";
+	if (verbose > 2 || debugCounter < DEBUG_THRESHOLD)
+		qDebug() << "BLE write completed";
 	desc_written++;
 }
 
@@ -178,7 +182,8 @@ dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 			continue;
 
 		QByteArray bytes((const char *)data, (int) size);
-		qDebug() << QTime::currentTime() << "packet SEND" << bytes.toHex();
+		if (verbose > 2 || debugCounter < DEBUG_THRESHOLD)
+			qDebug() << QTime::currentTime() << "packet SEND" << bytes.toHex();
 
 		QLowEnergyService::WriteMode mode;
 		mode = (c.properties() & QLowEnergyCharacteristic::WriteNoResponse) ?
@@ -202,7 +207,8 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 		if (list.isEmpty())
 			return DC_STATUS_IO;
 
-		qDebug() << QTime::currentTime() << "packet WAIT";
+		if (verbose > 2 || debugCounter < DEBUG_THRESHOLD)
+			qDebug() << QTime::currentTime() << "packet WAIT";
 
 		WAITFOR(!receivedPackets.isEmpty(), timeout);
 		if (receivedPackets.isEmpty())
@@ -225,7 +231,8 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 	if (actual)
 		*actual += packet.size();
 
-	qDebug() << QTime::currentTime() << "packet READ" << packet.toHex();
+	if (verbose > 2 || debugCounter < DEBUG_THRESHOLD)
+		qDebug() << QTime::currentTime() << "packet READ" << packet.toHex();
 
 	return DC_STATUS_SUCCESS;
 }
