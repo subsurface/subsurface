@@ -47,6 +47,7 @@
 #      /grantlee               <- Grantlee 5.0.0 sources from git
 #      /subsurface             <- current subsurface git
 #      /googlemaps             <- Google Maps plugin for QtLocation from git
+#      /hidapi                 <- HIDAPI library for libdivecomputer
 #
 # ~/src/win32                  <- build directory
 #
@@ -152,6 +153,27 @@ if [[ ! -d grantlee || -f build.grantlee ]] ; then
 	make $JOBS
 	make install
 fi
+
+# hidapi for libdivecomputer (if available)
+
+if [[ -d "$BASEDIR"/hidapi ]] ; then
+	cd "$BUILDDIR"
+	if [[ ! -d hidapi || -f build.hidapi ]] ; then
+		rm -f build.hidapi
+		mkdir -p hidapi
+		pushd "$BASEDIR"/hidapi
+		bash ./bootstrap
+		popd
+		cd hidapi
+		"$BASEDIR"/hidapi/configure \
+			CC="$MXEBUILDTYPE"-gcc \
+			--host="$MXEBUILDTYPE" \
+			--prefix="$BASEDIR"/"$MXEDIR"/usr/"$MXEBUILDTYPE"
+		make $JOBS
+		make install
+	fi
+fi
+
 
 # libdivecomputer
 # ensure the git submodule is present and the autotools are set up
