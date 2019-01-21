@@ -358,6 +358,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		put_format(&buf, "\\def\\%sviz{%s}\n", ssrf, qPrintable(viz));
 		put_format(&buf, "\\def\\%srating{%s}\n", ssrf, qPrintable(rating));
 		put_format(&buf, "\\def\\%splot{\\includegraphics[width=9cm,height=4cm]{profile%d}}\n", ssrf, dive->number);
+		put_format(&buf, "\\def\\%sprofilename{profile%d}\n", ssrf, dive->number);
 		put_format(&buf, "\\def\\%scomment{%s}\n", ssrf, dive->notes ? dive->notes : "");
 		put_format(&buf, "\\def\\%sbuddy{%s}\n", ssrf, dive->buddy ? dive->buddy : "");
 		put_format(&buf, "\\def\\%sdivemaster{%s}\n", ssrf, dive->divemaster ? dive->divemaster : "");
