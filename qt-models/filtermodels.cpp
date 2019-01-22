@@ -18,10 +18,24 @@
 namespace {
 	// Check if a string-list contains at least one string containing the second argument.
 	// Comparison is non case sensitive and removes white space.
+	// This function has a small twist: if the second argument starts with a "~" character,
+	// that character is removed and the result is negated.
 	bool listContainsSuperstring(const QStringList &list, const QString &s)
 	{
-		return std::any_of(list.begin(), list.end(), [&s](const QString &s2)
-				   { return s2.trimmed().contains(s.trimmed(), Qt::CaseInsensitive); });
+		QString trimmed = s.trimmed();
+		bool negate = false;
+		if (trimmed.startsWith(QChar('~'))) {
+			// Remove '~' and additional whitespace
+			trimmed = trimmed.mid(1).trimmed();
+			negate = true;
+		}
+
+		// Don't bother with empty strings
+		if (trimmed.isEmpty())
+			return true;
+
+		return std::any_of(list.begin(), list.end(), [&trimmed](const QString &s2)
+				   { return s2.trimmed().contains(trimmed, Qt::CaseInsensitive); }) != negate;
 	}
 
 	bool hasTags(const QStringList &tags, const struct dive *d)
