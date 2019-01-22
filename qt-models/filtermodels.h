@@ -35,9 +35,12 @@ struct FilterData {
 	QStringList people;
 	QStringList location;
 	QStringList equipment;
+	bool tagsNegate = false;
+	bool peopleNegate = false;
+	bool locationNegate = false;
+	bool equipmentNegate = false;
 	bool logged = true;
 	bool planned = true;
-	bool invertFilter;
 };
 
 class MultiFilterSortModel : public QSortFilterProxyModel {

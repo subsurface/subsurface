@@ -20,8 +20,8 @@ FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent), ignoreSignal(fa
 
 	// TODO: unhide this when we discover how to search for equipment.
 	ui.equipment->hide();
+	ui.equipmentNegate->hide();
 	ui.labelEquipment->hide();
-	ui.invertFilter->hide();
 
 	ui.fromDate->setDisplayFormat(prefs.date_format);
 	ui.fromTime->setDisplayFormat(prefs.time_format);
@@ -77,10 +77,19 @@ FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent), ignoreSignal(fa
 	connect(ui.tags, &QLineEdit::textChanged,
 		this, &FilterWidget2::updateFilter);
 
+	connect(ui.tagsNegate, &QToolButton::toggled,
+		this, &FilterWidget2::updateFilter);
+
 	connect(ui.people, &QLineEdit::textChanged,
 		this, &FilterWidget2::updateFilter);
 
+	connect(ui.peopleNegate, &QToolButton::toggled,
+		this, &FilterWidget2::updateFilter);
+
 	connect(ui.location, &QLineEdit::textChanged,
+		this, &FilterWidget2::updateFilter);
+
+	connect(ui.locationNegate, &QToolButton::toggled,
 		this, &FilterWidget2::updateFilter);
 
 	connect(ui.logged, SIGNAL(stateChanged(int)), this, SLOT(updateLogged(int)));
@@ -121,6 +130,10 @@ void FilterWidget2::clearFilter()
 	ui.fromTime->setTime(filterData.fromTime);
 	ui.toDate->setDate(filterData.toDate.date());
 	ui.toTime->setTime(filterData.toTime);
+	ui.tagsNegate->setChecked(filterData.tagsNegate);
+	ui.peopleNegate->setChecked(filterData.peopleNegate);
+	ui.locationNegate->setChecked(filterData.locationNegate);
+	ui.equipmentNegate->setChecked(filterData.equipmentNegate);
 	ignoreSignal = false;
 
 	filterDataChanged(filterData);
@@ -162,7 +175,10 @@ void FilterWidget2::updateFilter()
 	filterData.people = ui.people->text().split(",", QString::SkipEmptyParts);
 	filterData.location = ui.location->text().split(",", QString::SkipEmptyParts);
 	filterData.equipment = ui.equipment->text().split(",", QString::SkipEmptyParts);
-	filterData.invertFilter = ui.invertFilter->isChecked();
+	filterData.tagsNegate = ui.tagsNegate->isChecked();
+	filterData.peopleNegate = ui.peopleNegate->isChecked();
+	filterData.locationNegate = ui.locationNegate->isChecked();
+	filterData.equipmentNegate = ui.equipmentNegate->isChecked();
 	filterData.logged = ui.logged->isChecked();
 	filterData.planned = ui.planned->isChecked();
 
