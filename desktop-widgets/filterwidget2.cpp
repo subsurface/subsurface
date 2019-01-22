@@ -21,7 +21,6 @@ FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent), ignoreSignal(fa
 	// TODO: unhide this when we discover how to search for equipment.
 	ui.equipment->hide();
 	ui.labelEquipment->hide();
-	ui.invertFilter->hide();
 
 	ui.fromDate->setDisplayFormat(prefs.date_format);
 	ui.fromTime->setDisplayFormat(prefs.time_format);
@@ -167,7 +166,6 @@ void FilterWidget2::updateFilter()
 	filterData.people = ui.people->text().split(",", QString::SkipEmptyParts);
 	filterData.location = ui.location->text().split(",", QString::SkipEmptyParts);
 	filterData.equipment = ui.equipment->text().split(",", QString::SkipEmptyParts);
-	filterData.invertFilter = ui.invertFilter->isChecked();
 	filterData.logged = ui.logged->isChecked();
 	filterData.planned = ui.planned->isChecked();
 

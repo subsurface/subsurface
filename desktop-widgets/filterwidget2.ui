@@ -62,16 +62,6 @@
    <item row="3" column="6">
     <widget class="QDoubleSpinBox" name="minWaterTemp"/>
    </item>
-   <item row="12" column="2" colspan="7">
-    <widget class="QCheckBox" name="invertFilter">
-     <property name="toolTip">
-      <string>Display dives that will not match the search, only applies to tags, people, location and equipment</string>
-     </property>
-     <property name="text">
-      <string>Invert filter</string>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="7">
     <widget class="QLabel" name="label_16">
      <property name="text">
@@ -326,7 +316,6 @@
   <tabstop>people</tabstop>
   <tabstop>location</tabstop>
   <tabstop>equipment</tabstop>
-  <tabstop>invertFilter</tabstop>
  </tabstops>
  <resources/>
  <connections/>

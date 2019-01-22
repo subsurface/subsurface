@@ -37,7 +37,6 @@ struct FilterData {
 	QStringList equipment;
 	bool logged = true;
 	bool planned = true;
-	bool invertFilter;
 };
 
 class MultiFilterSortModel : public QSortFilterProxyModel {
