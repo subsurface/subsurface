@@ -276,7 +276,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 	put_format(&buf, "\\def\\%sdepthunit{\\%sunit%s}", ssrf, ssrf, units->length == units::METERS ? "meter" : "ft");
 	put_format(&buf, "\\def\\%sweightunit{\\%sunit%s}",ssrf, ssrf, units->weight == units::KG ? "kg" : "lb");
 	put_format(&buf, "\\def\\%spressureunit{\\%sunit%s}", ssrf, ssrf, units->pressure == units::BAR ? "bar" : "psi");
-	put_format(&buf, "\\def\\%stemperatureunit{\\%sunit%s}", ssrf, ssrf, units->temperature == units::CELSIUS ? "celsius" : "fahrenheit");
+	put_format(&buf, "\\def\\%stemperatureunit{\\%sunit%s}", ssrf, ssrf, units->temperature == units::CELSIUS ? "centigrade" : "fahrenheit");
 	put_format(&buf, "\\def\\%svolumeunit{\\%sunit%s}", ssrf, ssrf, units->volume == units::LITER ? "liter" : "cuft");
 	put_format(&buf, "\\def\\%sverticalspeedunit{\\%sunit%s}", ssrf, ssrf, units->length == units::METERS ? "meterpermin" : "ftpermin");
 
