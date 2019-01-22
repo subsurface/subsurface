@@ -92,13 +92,18 @@ FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent), ignoreSignal(fa
 	connect(ui.locationNegate, &QToolButton::toggled,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui.logged, SIGNAL(stateChanged(int)), this, SLOT(updateLogged(int)));
+	connect(ui.logged, &QCheckBox::stateChanged,
+		this, &FilterWidget2::updateLogged);
 
-	connect(ui.planned, SIGNAL(stateChanged(int)), this, SLOT(updatePlanned(int)));
+	connect(ui.planned, &QCheckBox::stateChanged,
+		this, &FilterWidget2::updatePlanned);
 
 	// Update temperature fields if user changes temperature-units in preferences.
-	connect(qPrefUnits::instance(), &qPrefUnits::temperatureChanged, this, &FilterWidget2::temperatureChanged);
-	connect(qPrefUnits::instance(), &qPrefUnits::unit_systemChanged, this, &FilterWidget2::temperatureChanged);
+	connect(qPrefUnits::instance(), &qPrefUnits::temperatureChanged,
+		this, &FilterWidget2::temperatureChanged);
+
+	connect(qPrefUnits::instance(), &qPrefUnits::unit_systemChanged,
+		this, &FilterWidget2::temperatureChanged);
 
 	// Update counts if dives were added / removed
 	connect(MultiFilterSortModel::instance(), &MultiFilterSortModel::countsChanged,
