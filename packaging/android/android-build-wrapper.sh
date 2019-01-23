@@ -25,6 +25,9 @@ while [[ $# -gt 0 ]] ; do
 			# only download the dependencies, don't build
 			PREP_ONLY="1"
 			;;
+		release|Release)
+			# simply pass through to build.sh
+			;;
 		*)
 			echo "Unknown command line argument $arg"
 			echo "Usage: $0 [-prep-only]"
