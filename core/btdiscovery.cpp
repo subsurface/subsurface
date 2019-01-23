@@ -316,6 +316,12 @@ bool BTDiscovery::checkException(const char* method, const QAndroidJniObject *ob
 
 void BTDiscovery::discoverAddress(QString address)
 {
+	// if we have a discovery agent, check if we know about the address and if not
+	// make sure we are looking for it
+	// (if we don't have a discoveryAgent then likely BT is off or something else went wrong)
+	if (!discoveryAgent)
+		return;
+
 	// let's make sure there is no device name mixed in with the address
 	QString btAddress;
 	btAddress = extractBluetoothAddress(address);
