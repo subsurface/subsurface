@@ -11,4 +11,4 @@ rm -rf Subsurface.app/Contents/Frameworks/QtDBus.framework
 # remove anything codesign doesn't want us to sign
 find Subsurface.app/Contents/Frameworks/ \( -name Headers -o -name \*.prl -o -name \*_debug \) -print0 | xargs -0 rm -rf
 
-codesign --keychain $HOME/Library/Keychains/login.keychain -s "Developer ID Application: Dirk Hohndel" --deep Subsurface.app
+codesign --keychain $HOME/Library/Keychains/login.keychain -s "Developer ID Application: Dirk Hohndel" --deep --force Subsurface.app
