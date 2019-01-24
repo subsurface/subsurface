@@ -2,6 +2,19 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 4.8.5
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- Shearwater import: add suppport for importing Shearwater Cloud logs
+- Core, Mobile: all controller states other than powered off are valid [#1903]
+- Core: shift dive time in correct direction [#1893]
+- Desktop: translate trip date
+- Dive computer support:
+  - Fix support for Shearwater Teric with firmware v11
+  - Add support for Oceanic Pro Plus X over BLE
+  - Add support for the Cressi Goa and Cartesio
+  - Add support for the Ratio iDive Color series
+  - Add support for the Aqualung i300C
+
 New in _Subsurface_ 4.8.4
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - Windows: add experimental support for BTLE dive computers.
