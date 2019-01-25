@@ -29,6 +29,7 @@ public slots:
 	void updateLogged(int value);
 private slots:
 	void clearFilter();
+	void closeFilter();
 	void temperatureChanged();
 	void countsChanged();
 
