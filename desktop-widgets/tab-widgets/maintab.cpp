@@ -777,8 +777,6 @@ void MainTab::acceptChanges()
 		// were identical with the master dive shown (and mark the divelist as changed)
 		if (!same_string(displayed_dive.suit, cd->suit))
 			MODIFY_DIVES(selectedDives, EDIT_TEXT(suit));
-		if (!same_string(displayed_dive.notes, cd->notes))
-			MODIFY_DIVES(selectedDives, EDIT_TEXT(notes));
 		if (displayed_dive.rating != cd->rating)
 			MODIFY_DIVES(selectedDives, EDIT_VALUE(rating));
 		if (displayed_dive.visibility != cd->visibility)
@@ -1361,16 +1359,19 @@ void MainTab::on_notes_textChanged()
 			return;
 		free(displayedTrip.notes);
 		displayedTrip.notes = copy_qstring(ui.notes->toPlainText());
-	} else {
-		if (same_string(displayed_dive.notes, qPrintable(ui.notes->toPlainText())))
-			return;
-		free(displayed_dive.notes);
-		if (ui.notes->toHtml().indexOf("<div") != -1)
-			displayed_dive.notes = copy_qstring(ui.notes->toHtml());
-		else
-			displayed_dive.notes = copy_qstring(ui.notes->toPlainText());
+		markChangedWidget(ui.notes);
 	}
-	markChangedWidget(ui.notes);
+}
+
+void MainTab::on_notes_editingFinished()
+{
+	if (currentTrip || !current_dive)
+		return; // Trip-note editing is done via on_notes_textChanged()
+
+	QString notes = ui.notes->toHtml().indexOf("<div") != -1 ?
+		ui.notes->toHtml() : ui.notes->toPlainText();
+
+	Command::editNotes(getSelectedDivesCurrentLast(), notes, QString(current_dive->notes));
 }
 
 void MainTab::on_rating_valueChanged(int value)

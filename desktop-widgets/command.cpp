@@ -2,6 +2,7 @@
 
 #include "command.h"
 #include "command_divelist.h"
+#include "command_edit.h"
 
 namespace Command {
 
@@ -69,6 +70,12 @@ void splitDives(dive *d, duration_t time)
 void mergeDives(const QVector <dive *> &dives)
 {
 	execute(new MergeDives(dives));
+}
+
+// Dive editing related commands
+void editNotes(const QVector<dive *> dives, const QString &newValue, const QString &oldValue)
+{
+	execute(new EditNotes(dives, newValue, oldValue));
 }
 
 } // namespace Command

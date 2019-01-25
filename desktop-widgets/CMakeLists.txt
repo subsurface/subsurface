@@ -80,6 +80,7 @@ set(SUBSURFACE_INTERFACE
 	command.cpp
 	command_base.cpp
 	command_divelist.cpp
+	command_edit.cpp
 	locationinformation.cpp
 	textedit.cpp
 	qtwaitingspinner.cpp
