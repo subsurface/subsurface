@@ -1,5 +1,6 @@
 #include "desktop-widgets/filterwidget2.h"
 #include "desktop-widgets/simplewidgets.h"
+#include "desktop-widgets/mainwindow.h"
 #include "core/qthelper.h"
 #include "core/settings/qPrefUnit.h"
 
@@ -33,6 +34,9 @@ FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent), ignoreSignal(fa
 
 	connect(ui.clear, &QToolButton::clicked,
 		this, &FilterWidget2::clearFilter);
+
+	connect(ui.close, &QToolButton::clicked,
+		this, &FilterWidget2::closeFilter);
 
 	connect(ui.maxRating, &StarWidget::valueChanged,
 		this, &FilterWidget2::updateFilter);
@@ -122,6 +126,11 @@ void FilterWidget2::clearFilter()
 	filterDataChanged(filterData);
 }
 
+void FilterWidget2::closeFilter()
+{
+	MainWindow::instance()->setApplicationState("Default");
+}
+
 void FilterWidget2::temperatureChanged()
 {
 	QString temp = get_temp_unit();
@@ -181,8 +190,7 @@ void FilterWidget2::showEvent(QShowEvent *event)
 void FilterWidget2::hideEvent(QHideEvent *event)
 {
 	QWidget::hideEvent(event);
-	FilterData data;
-	filterDataChanged(data);
+	clearFilter();
 }
 
 void FilterWidget2::filterDataChanged(const FilterData &data)
