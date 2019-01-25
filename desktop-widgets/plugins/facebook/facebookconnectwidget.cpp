@@ -59,7 +59,7 @@ QUrl FacebookManager::albumListUrl()
 QUrl FacebookManager::connectUrl() {
 	return QUrl("https://www.facebook.com/dialog/oauth?"
 		    "client_id=427722490709000"
-		    "&redirect_uri=http://www.facebook.com/connect/login_success.html"
+		    "&redirect_uri=https://www.facebook.com/connect/login_success.html"
 		    "&response_type=token,granted_scopes"
 		    "&display=popup"
 		    "&scope=publish_actions,user_photos"
