@@ -3,6 +3,7 @@
 #include "command.h"
 #include "command_divelist.h"
 #include "command_divesite.h"
+#include "command_edit.h"
 
 namespace Command {
 
@@ -126,6 +127,12 @@ void mergeDiveSites(dive_site *ds, const QVector<dive_site *> &sites)
 void purgeUnusedDiveSites()
 {
 	execute(new PurgeUnusedDiveSites);
+}
+
+// Dive editing related commands
+void editNotes(const QVector<dive *> dives, const QString &newValue, const QString &oldValue)
+{
+	execute(new EditNotes(dives, newValue, oldValue));
 }
 
 } // namespace Command

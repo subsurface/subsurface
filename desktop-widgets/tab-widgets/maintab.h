@@ -75,6 +75,7 @@ slots:
 	void on_suit_textChanged(const QString &text);
 	void on_diveTripLocation_textEdited(const QString& text);
 	void on_notes_textChanged();
+	void on_notes_editingFinished();
 	void on_airtemp_textChanged(const QString &text);
 	void on_duration_textChanged(const QString &text);
 	void on_depth_textChanged(const QString &text);

@@ -10,7 +10,6 @@
 namespace Command {
 
 // 1) General commands
-
 void clear();				// Reset the undo stack. Delete all commands.
 QAction *undoAction(QObject *parent);	// Create an undo action.
 QAction *redoAction(QObject *parent);	// Create an redo action.
@@ -50,6 +49,10 @@ void editDiveSiteTaxonomy(dive_site *ds, taxonomy_data &value); // value is cons
 void addDiveSite(const QString &name);
 void mergeDiveSites(dive_site *ds, const QVector<dive_site *> &sites);
 void purgeUnusedDiveSites();
+
+// 4) Dive editing related commands
+
+void editNotes(const QVector<dive *> dives, const QString &newValue, const QString &oldValue);
 
 } // namespace Command
 
