@@ -141,14 +141,6 @@ std::vector<dive *> DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 	std::vector<dive *> res;
 	res.resize(toAdd.dives.size());
 
-	// First, tell the filters that new dives are added. We do this here
-	// instead of later by signals, so that the filter can set the
-	// checkboxes of the new rows to its liking. The added dives will
-	// then appear in the correct shown/hidden state.
-	QVector<dive *> divesForFilter;
-	for (const DiveToAdd &entry: toAdd.dives)
-		divesForFilter.push_back(entry.dive.get());
-
 	// Now, add the dives
 	// Note: the idiomatic STL-way would be std::transform, but let's use a loop since
 	// that is closer to classical C-style.

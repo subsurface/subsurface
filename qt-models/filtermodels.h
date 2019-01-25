@@ -57,9 +57,12 @@ slots:
 	void filterChanged(const QModelIndex &from, const QModelIndex &to, const QVector<int> &roles);
 	void resetModel(DiveTripModelBase::Layout layout);
 	void filterDataChanged(const FilterData &data);
+	void divesAdded(struct dive_trip *, bool, const QVector<dive *> &dives);
+	void divesDeleted(struct dive_trip *, bool, const QVector<dive *> &dives);
 
 signals:
 	void filterFinished();
+	void countsChanged();
 
 private:
 	MultiFilterSortModel(QObject *parent = 0);

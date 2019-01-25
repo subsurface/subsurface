@@ -79,6 +79,9 @@ MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyMo
 {
 	setFilterKeyColumn(-1); // filter all columns
 	setFilterCaseSensitivity(Qt::CaseInsensitive);
+
+	connect(&diveListNotifier, &DiveListNotifier::divesAdded, this, &MultiFilterSortModel::divesAdded);
+	connect(&diveListNotifier, &DiveListNotifier::divesDeleted, this, &MultiFilterSortModel::divesDeleted);
 }
 
 void MultiFilterSortModel::resetModel(DiveTripModelBase::Layout layout)
@@ -234,4 +237,22 @@ void MultiFilterSortModel::filterDataChanged(const FilterData &data)
 {
 	filterData = data;
 	myInvalidate();
+}
+
+void MultiFilterSortModel::divesAdded(dive_trip *, bool, const QVector<dive *> &dives)
+{
+	for (dive *d: dives) {
+		if (!d->hidden_by_filter)
+			++divesDisplayed;
+	}
+	emit countsChanged();
+}
+
+void MultiFilterSortModel::divesDeleted(dive_trip *, bool, const QVector<dive *> &dives)
+{
+	for (dive *d: dives) {
+		if (!d->hidden_by_filter)
+			--divesDisplayed;
+	}
+	emit countsChanged();
 }

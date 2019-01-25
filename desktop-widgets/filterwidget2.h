@@ -29,6 +29,7 @@ public slots:
 	void updateLogged(int value);
 private slots:
 	void temperatureChanged();
+	void countsChanged();
 
 private:
 	Ui::FilterWidget2 ui;
