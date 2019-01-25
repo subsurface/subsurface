@@ -28,10 +28,12 @@ public slots:
 	void updatePlanned(int value);
 	void updateLogged(int value);
 private slots:
+	void clearFilter();
 	void temperatureChanged();
 	void countsChanged();
 
 private:
+	bool ignoreSignal;
 	Ui::FilterWidget2 ui;
 	void filterDataChanged(const FilterData &data);
 	FilterData filterData;
