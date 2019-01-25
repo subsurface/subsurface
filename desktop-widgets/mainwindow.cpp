@@ -1869,11 +1869,6 @@ void MainWindow::on_actionFilterTags_triggered()
 	setApplicationState(getCurrentAppState() == "FilterDive" ? "Default" : "FilterDive");
 }
 
-void MainWindow::setCheckedActionFilterTags(bool checked)
-{
-	ui.actionFilterTags->setChecked(checked);
-}
-
 void MainWindow::registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *topRight, QWidget *bottomLeft, QWidget *bottomRight)
 {
 	applicationState[state] = WidgetForQuadrant(topLeft, topRight, bottomLeft, bottomRight);
