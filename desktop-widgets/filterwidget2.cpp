@@ -161,4 +161,7 @@ void FilterWidget2::hideEvent(QHideEvent *event)
 void FilterWidget2::filterDataChanged(const FilterData &data)
 {
 	MultiFilterSortModel::instance()->filterDataChanged(data);
+
+	ui.filterText->setText(tr("%L1/%L2 shown").arg(MultiFilterSortModel::instance()->divesDisplayed)
+						  .arg(dive_table.nr));
 }
