@@ -64,6 +64,8 @@ set(SUBSURFACE_INTERFACE
 	command_divelist.h
 	command_divesite.cpp
 	command_divesite.h
+	command_edit.cpp
+	command_edit.h
 	configuredivecomputerdialog.cpp
 	configuredivecomputerdialog.h
 	divecomputermanagementdialog.cpp
