@@ -96,6 +96,10 @@ FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent)
 	// Update temperature fields if user changes temperature-units in preferences.
 	connect(qPrefUnits::instance(), &qPrefUnits::temperatureChanged, this, &FilterWidget2::temperatureChanged);
 	connect(qPrefUnits::instance(), &qPrefUnits::unit_systemChanged, this, &FilterWidget2::temperatureChanged);
+
+	// Update counts if dives were added / removed
+	connect(MultiFilterSortModel::instance(), &MultiFilterSortModel::countsChanged,
+		this, &FilterWidget2::countsChanged);
 }
 
 void FilterWidget2::temperatureChanged()
@@ -161,7 +165,11 @@ void FilterWidget2::hideEvent(QHideEvent *event)
 void FilterWidget2::filterDataChanged(const FilterData &data)
 {
 	MultiFilterSortModel::instance()->filterDataChanged(data);
+	countsChanged();
+}
 
+void FilterWidget2::countsChanged()
+{
 	ui.filterText->setText(tr("%L1/%L2 shown").arg(MultiFilterSortModel::instance()->divesDisplayed)
 						  .arg(dive_table.nr));
 }
