@@ -27,8 +27,8 @@ struct FilterData {
 	double maxWaterTemp = 200;
 	double minAirTemp = -50;
 	double maxAirTemp = 200;
-	QDateTime fromDate;
-	QTime fromTime;
+	QDateTime fromDate = QDateTime(QDate(1980,1,1));
+	QTime fromTime = QTime(0,0);
 	QDateTime toDate = QDateTime::currentDateTime();
 	QTime toTime = QTime::currentTime();
 	QStringList tags;

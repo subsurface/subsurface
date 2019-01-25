@@ -5,7 +5,7 @@
 
 #include <QDoubleSpinBox>
 
-FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent)
+FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent), ignoreSignal(false)
 {
 	ui.setupUi(this);
 
@@ -17,17 +17,6 @@ FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent)
 	ui.minWaterTemp->setRange(data.minWaterTemp, data.maxWaterTemp);
 	ui.maxWaterTemp->setRange(data.minWaterTemp, data.maxWaterTemp);
 
-	ui.minRating->setCurrentStars(data.minRating);
-	ui.maxRating->setCurrentStars(data.maxRating);
-	ui.minVisibility->setCurrentStars(data.minVisibility);
-	ui.maxVisibility->setCurrentStars(data.maxVisibility);
-	ui.minAirTemp->setValue(data.minAirTemp);
-	ui.maxAirTemp->setValue(data.maxAirTemp);
-	ui.minWaterTemp->setValue(data.minWaterTemp);
-	ui.maxWaterTemp->setValue(data.maxWaterTemp);
-	ui.planned->setChecked(data.logged);
-	ui.planned->setChecked(data.planned);
-
 	// TODO: unhide this when we discover how to search for equipment.
 	ui.equipment->hide();
 	ui.labelEquipment->hide();
@@ -38,11 +27,12 @@ FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent)
 
 	ui.toDate->setDisplayFormat(prefs.date_format);
 	ui.toTime->setDisplayFormat(prefs.time_format);
-	ui.toDate->setDate(data.toDate.date());
-	ui.toTime->setTime(data.toTime);
 
 	// Initialize temperature fields to display correct unit.
 	temperatureChanged();
+
+	connect(ui.clear, &QToolButton::clicked,
+		this, &FilterWidget2::clearFilter);
 
 	connect(ui.maxRating, &StarWidget::valueChanged,
 		this, &FilterWidget2::updateFilter);
@@ -100,6 +90,36 @@ FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent)
 	// Update counts if dives were added / removed
 	connect(MultiFilterSortModel::instance(), &MultiFilterSortModel::countsChanged,
 		this, &FilterWidget2::countsChanged);
+
+	// Reset all fields.
+	clearFilter();
+}
+
+void FilterWidget2::clearFilter()
+{
+	ignoreSignal = true; // Prevent signals to force filter recalculation
+	filterData = FilterData();
+	ui.minRating->setCurrentStars(filterData.minRating);
+	ui.maxRating->setCurrentStars(filterData.maxRating);
+	ui.minVisibility->setCurrentStars(filterData.minVisibility);
+	ui.maxVisibility->setCurrentStars(filterData.maxVisibility);
+	ui.minAirTemp->setValue(filterData.minAirTemp);
+	ui.maxAirTemp->setValue(filterData.maxAirTemp);
+	ui.minWaterTemp->setValue(filterData.minWaterTemp);
+	ui.maxWaterTemp->setValue(filterData.maxWaterTemp);
+	ui.planned->setChecked(filterData.logged);
+	ui.planned->setChecked(filterData.planned);
+	ui.people->clear();
+	ui.location->clear();
+	ui.equipment->clear();
+	ui.tags->clear();
+	ui.fromDate->setDate(filterData.fromDate.date());
+	ui.fromTime->setTime(filterData.fromTime);
+	ui.toDate->setDate(filterData.toDate.date());
+	ui.toTime->setTime(filterData.toTime);
+	ignoreSignal = false;
+
+	filterDataChanged(filterData);
 }
 
 void FilterWidget2::temperatureChanged()
@@ -113,6 +133,9 @@ void FilterWidget2::temperatureChanged()
 
 void FilterWidget2::updateFilter()
 {
+	if (ignoreSignal)
+		return;
+
 	filterData.validFilter = true;
 	filterData.minVisibility = ui.minVisibility->currentStars();
 	filterData.maxVisibility = ui.maxVisibility->currentStars();
