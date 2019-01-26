@@ -20,7 +20,7 @@ FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent), ignoreSignal(fa
 
 	// TODO: unhide this when we discover how to search for equipment.
 	ui.equipment->hide();
-	ui.equipmentNegate->hide();
+	ui.equipmentMode->hide();
 	ui.labelEquipment->hide();
 
 	ui.fromDate->setDisplayFormat(prefs.date_format);
@@ -50,6 +50,11 @@ FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent), ignoreSignal(fa
 	connect(ui.minVisibility, &StarWidget::valueChanged,
 		this, &FilterWidget2::updateFilter);
 
+	// We need these insane casts because Qt decided to function-overload some of their signals(!).
+	// QDoubleSpinBox::valueChanged() sends double and QString using the same signal name.
+	// QComboBox::currentIndexChanged() sends int and QString using the same signal name.
+	// Qt 5.7 provides a "convenient" helper that hides this, but only if compiling in C++14
+	// or higher. One can then write: "QOverload<double>(&QDoubleSpinBox::valueChanged)", etc.
 	connect(ui.maxAirTemp, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
 		this, &FilterWidget2::updateFilter);
 
@@ -77,19 +82,19 @@ FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent), ignoreSignal(fa
 	connect(ui.tags, &QLineEdit::textChanged,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui.tagsNegate, &QToolButton::toggled,
+	connect(ui.tagsMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
 		this, &FilterWidget2::updateFilter);
 
 	connect(ui.people, &QLineEdit::textChanged,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui.peopleNegate, &QToolButton::toggled,
+	connect(ui.peopleMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
 		this, &FilterWidget2::updateFilter);
 
 	connect(ui.location, &QLineEdit::textChanged,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui.locationNegate, &QToolButton::toggled,
+	connect(ui.locationMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
 		this, &FilterWidget2::updateFilter);
 
 	connect(ui.logged, &QCheckBox::stateChanged,
@@ -135,10 +140,11 @@ void FilterWidget2::clearFilter()
 	ui.fromTime->setTime(filterData.fromTime);
 	ui.toDate->setDate(filterData.toDate.date());
 	ui.toTime->setTime(filterData.toTime);
-	ui.tagsNegate->setChecked(filterData.tagsNegate);
-	ui.peopleNegate->setChecked(filterData.peopleNegate);
-	ui.locationNegate->setChecked(filterData.locationNegate);
-	ui.equipmentNegate->setChecked(filterData.equipmentNegate);
+	ui.tagsMode->setCurrentIndex(filterData.tagsNegate ? 1 : 0);
+	ui.peopleMode->setCurrentIndex(filterData.peopleNegate ? 1 : 0);
+	ui.locationMode->setCurrentIndex(filterData.locationNegate ? 1 : 0);
+	ui.equipmentMode->setCurrentIndex(filterData.equipmentNegate ? 1 : 0);
+
 	ignoreSignal = false;
 
 	filterDataChanged(filterData);
@@ -180,10 +186,10 @@ void FilterWidget2::updateFilter()
 	filterData.people = ui.people->text().split(",", QString::SkipEmptyParts);
 	filterData.location = ui.location->text().split(",", QString::SkipEmptyParts);
 	filterData.equipment = ui.equipment->text().split(",", QString::SkipEmptyParts);
-	filterData.tagsNegate = ui.tagsNegate->isChecked();
-	filterData.peopleNegate = ui.peopleNegate->isChecked();
-	filterData.locationNegate = ui.locationNegate->isChecked();
-	filterData.equipmentNegate = ui.equipmentNegate->isChecked();
+	filterData.tagsNegate = ui.tagsMode->currentIndex() == 1;
+	filterData.peopleNegate = ui.peopleMode->currentIndex() == 1;
+	filterData.locationNegate = ui.locationMode->currentIndex() == 1;
+	filterData.equipmentNegate = ui.equipmentMode->currentIndex() == 1;
 	filterData.logged = ui.logged->isChecked();
 	filterData.planned = ui.planned->isChecked();
 
