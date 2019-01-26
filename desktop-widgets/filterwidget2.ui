@@ -291,44 +291,60 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="2" colspan="2">
-    <widget class="QToolButton" name="tagsNegate">
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="toolTip">
-      <string>Click to negate</string>
-     </property>
+   <item row="8" column="2">
+    <widget class="QComboBox" name="tagsMode">
+     <item>
+      <property name="text">
+       <string>All of</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>None of</string>
+      </property>
+     </item>
     </widget>
    </item>
-   <item row="9" column="2" colspan="2">
-    <widget class="QToolButton" name="peopleNegate">
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="toolTip">
-      <string>Click to negate</string>
-     </property>
+   <item row="9" column="2">
+    <widget class="QComboBox" name="peopleMode">
+     <item>
+      <property name="text">
+       <string>All of</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>None of</string>
+      </property>
+     </item>
     </widget>
    </item>
-   <item row="10" column="2" colspan="2">
-    <widget class="QToolButton" name="locationNegate">
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="toolTip">
-      <string>Click to negate</string>
-     </property>
+   <item row="10" column="2">
+    <widget class="QComboBox" name="locationMode">
+     <item>
+      <property name="text">
+       <string>Matches</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Doesn't match</string>
+      </property>
+     </item>
     </widget>
    </item>
-   <item row="11" column="2" colspan="2">
-    <widget class="QToolButton" name="equipmentNegate">
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="toolTip">
-      <string>Click to negate</string>
-     </property>
+   <item row="11" column="2">
+    <widget class="QComboBox" name="equipmentMode">
+     <item>
+      <property name="text">
+       <string>All of</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>None of</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item row="12" column="0">
