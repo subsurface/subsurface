@@ -5,6 +5,7 @@
 #define COMMAND_EDIT_H
 
 #include "command_base.h"
+#include "core/subsurface-qt/DiveListNotifier.h"
 
 #include <QVector>
 
@@ -43,6 +44,7 @@ protected:
 	virtual void set(struct dive *d, T) const = 0;
 	virtual T data(struct dive *d) const = 0;
 	virtual QString fieldName() const = 0;	// Name of the field, used to create the undo menu-entry
+	virtual DiveField fieldId() const = 0;
 };
 
 class EditNotes : public EditBase<QString> {
@@ -51,6 +53,7 @@ public:
 	void set(struct dive *d, QString s) const override;
 	QString data(struct dive *d) const override;
 	QString fieldName() const override;
+	DiveField fieldId() const override;
 };
 
 } // namespace Command
