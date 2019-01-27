@@ -114,8 +114,8 @@ FilterWidget2::FilterWidget2(QWidget* parent) :
 		this, &FilterWidget2::updatePlanned);
 
 	// Update temperature fields if user changes temperature-units in preferences.
-	connect(qPrefUnits::instance(), &qPrefUnits::temperatureChanged,
-		this, &FilterWidget2::temperatureChanged);
+	connect(qPrefUnits::instance(), SIGNAL(temperatureChanged(int)),
+		this, SLOT(temperatureChanged()));
 
 	connect(qPrefUnits::instance(), &qPrefUnits::unit_systemChanged,
 		this, &FilterWidget2::temperatureChanged);
