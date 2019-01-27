@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 
-// The DiveListNotifier emits signals when the dive-list changes (dives/trips created/deleted/moved)
+// The DiveListNotifier emits signals when the dive-list changes (dives/trips created/deleted/moved/edited)
 // Note that vectors are passed by reference, so this will only work for signals inside the UI thread!
 
 #ifndef DIVELISTNOTIFIER_H
@@ -9,6 +9,23 @@
 #include "core/dive.h"
 
 #include <QObject>
+
+// Dive fields that can be edited.
+// Use "enum class" to not polute the global name space.
+enum class DiveField {
+	DATETIME,
+	AIR_TEMP,
+	WATER_TEMP,
+	LOCATION,
+	DIVEMASTER,
+	BUDDY,
+	RATING,
+	VISIBILITY,
+	SUIT,
+	TAGS,
+	MODE,
+	NOTES,
+};
 
 class DiveListNotifier : public QObject {
 	Q_OBJECT
@@ -42,6 +59,9 @@ signals:
 	void divesDeselected(dive_trip *trip, const QVector<dive *> &dives);
 	void currentDiveChanged();
 	void selectionChanged();
+
+	// Signals emitted when dives are edited.
+	void divesEdited(const QVector<dive *> &dives, DiveField);
 public:
 	// Desktop uses the QTreeView class to present the list of dives. The layout
 	// of this class gives us a very fundamental problem, as we can not easily
@@ -53,7 +73,7 @@ public:
 	bool inCommand() const;
 
 	// The following class and function are used by divelist-modifying commands
-	// to signalize that are in-flight. If the returned object goes out of scope,
+	// to signal that they are in-flight. If the returned object goes out of scope,
 	// the command-in-flight status is reset to its previous value. Thus, the
 	// function can be called recursively.
 	class InCommandMarker {

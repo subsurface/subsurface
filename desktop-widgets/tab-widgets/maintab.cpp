@@ -79,6 +79,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.weights->setModel(weightModel);
 	closeMessage();
 
+	connect(&diveListNotifier, &DiveListNotifier::divesEdited, this, &MainTab::divesEdited);
+
 	connect(ui.editDiveSiteButton, SIGNAL(clicked()), MainWindow::instance(), SIGNAL(startDiveSiteEdit()));
 	connect(ui.location, &DiveLocationLineEdit::entered, MapWidget::instance(), &MapWidget::centerOnIndex);
 	connect(ui.location, &DiveLocationLineEdit::currentChanged, MapWidget::instance(), &MapWidget::centerOnIndex);
@@ -205,8 +207,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	acceptingEdit = false;
 
 	ui.diveTripLocation->hide();
-
-
 }
 
 MainTab::~MainTab()
@@ -259,7 +259,7 @@ void MainTab::closeMessage()
 {
 	hideMessage();
 	ui.diveNotesMessage->setCloseButtonVisible(false);
-	}
+}
 
 void MainTab::displayMessage(QString str)
 {
@@ -331,6 +331,23 @@ void MainTab::enableEdition(EditMode newEditMode)
 	}
 }
 
+// This function gets called if a field gets updated by an undo command.
+// Refresh the corresponding UI field.
+void MainTab::divesEdited(const QVector<dive *> &, DiveField field)
+{
+	// If there is no current dive, no point in updating anything
+	if (!current_dive)
+		return;
+
+	switch(field) {
+	case DiveField::NOTES:
+		updateNotes(current_dive);
+		break;
+	default:
+		break;
+	}
+}
+
 void MainTab::clearEquipment()
 {
 	cylindersModel->clear();
@@ -369,6 +386,17 @@ void MainTab::updateDepthDuration()
 	ui.depth->setText(get_depth_string(displayed_dive.maxdepth, true));
 }
 
+void MainTab::updateNotes(const struct dive *d)
+{
+	QString tmp(d->notes);
+	if (tmp.indexOf("<div") != -1) {
+		tmp.replace(QString("\n"), QString("<br>"));
+		ui.notes->setHtml(tmp);
+	} else {
+		ui.notes->setPlainText(tmp);
+	}
+}
+
 void MainTab::updateDiveInfo(bool clear)
 {
 	ui.location->refreshDiveSiteCache();
@@ -387,15 +415,8 @@ void MainTab::updateDiveInfo(bool clear)
 	}
 
 	ui.notes->setText(QString());
-	if (!clear) {
-		QString tmp(displayed_dive.notes);
-		if (tmp.indexOf("<div") != -1) {
-			tmp.replace(QString("\n"), QString("<br>"));
-			ui.notes->setHtml(tmp);
-		} else {
-			ui.notes->setPlainText(tmp);
-		}
-	}
+	if (!clear)
+		updateNotes(&displayed_dive);
 	UPDATE_TEXT(displayed_dive, suit);
 	UPDATE_TEXT(displayed_dive, divemaster);
 	UPDATE_TEXT(displayed_dive, buddy);
