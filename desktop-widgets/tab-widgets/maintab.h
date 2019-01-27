@@ -17,6 +17,7 @@
 #include "qt-models/completionmodels.h"
 #include "qt-models/divelocationmodel.h"
 #include "core/dive.h"
+#include "core/subsurface-qt/DiveListNotifier.h"
 
 class WeightModel;
 class CylindersModel;
@@ -62,9 +63,11 @@ signals:
 	void diveSiteChanged();
 public
 slots:
+	void divesEdited(const QVector<dive *> &dives, DiveField field);
 	void addCylinder_clicked();
 	void addWeight_clicked();
 	void updateDiveInfo(bool clear = false);
+	void updateNotes(const struct dive *d);
 	void updateDepthDuration();
 	void acceptChanges();
 	void rejectChanges();

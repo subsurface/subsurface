@@ -57,6 +57,8 @@ void EditBase<T>::undo()
 
 	std::swap(old, value);
 
+	emit diveListNotifier.divesEdited(QVector<dive *>::fromStdVector(dives), fieldId());
+
 	mark_divelist_changed(true);
 }
 
@@ -88,6 +90,11 @@ QString EditNotes::data(struct dive *d) const
 QString EditNotes::fieldName() const
 {
 	return tr("notes");
+}
+
+DiveField EditNotes::fieldId() const
+{
+	return DiveField::NOTES;
 }
 
 } // namespace Command
