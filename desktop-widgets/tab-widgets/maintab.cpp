@@ -815,7 +815,7 @@ void MainTab::acceptChanges()
 		saveTaggedStrings(selectedDives);
 		saveTags(selectedDives);
 
-		if (editMode != ADD && cylindersModel->changed) {
+		if (cylindersModel->changed) {
 			mark_divelist_changed(true);
 			MODIFY_DIVES(selectedDives,
 				for (int i = 0; i < MAX_CYLINDERS; i++) {
