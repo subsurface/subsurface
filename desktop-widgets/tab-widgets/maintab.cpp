@@ -340,6 +340,9 @@ void MainTab::divesEdited(const QVector<dive *> &, DiveField field)
 		return;
 
 	switch(field) {
+	case DiveField::SUIT:
+		ui.suit->setText(QString(current_dive->suit));
+		break;
 	case DiveField::NOTES:
 		updateNotes(current_dive);
 		break;
@@ -804,8 +807,6 @@ void MainTab::acceptChanges()
 		struct dive *cd = current_dive;
 		// now check if something has changed and if yes, edit the selected dives that
 		// were identical with the master dive shown (and mark the divelist as changed)
-		if (!same_string(displayed_dive.suit, cd->suit))
-			MODIFY_DIVES(selectedDives, EDIT_TEXT(suit));
 		if (displayed_dive.rating != cd->rating)
 			MODIFY_DIVES(selectedDives, EDIT_VALUE(rating));
 		if (displayed_dive.visibility != cd->visibility)
@@ -1360,13 +1361,12 @@ void MainTab::on_diveTripLocation_textEdited(const QString& text)
 	}
 }
 
-void MainTab::on_suit_textChanged(const QString &text)
+void MainTab::on_suit_editingFinished()
 {
-	if (editMode == IGNORE || acceptingEdit == true)
+	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
 		return;
-	free(displayed_dive.suit);
-	displayed_dive.suit = copy_qstring(text);
-	markChangedWidget(ui.suit);
+
+	Command::editSuit(getSelectedDivesCurrentLast(), ui.suit->text(), QString(current_dive->suit));
 }
 
 void MainTab::on_notes_textChanged()

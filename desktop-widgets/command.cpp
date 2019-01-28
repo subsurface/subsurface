@@ -83,4 +83,9 @@ void editMode(const QVector<dive *> dives, int index, int newValue, int oldValue
 	execute(new EditMode(dives, index, newValue, oldValue));
 }
 
+void editSuit(const QVector<dive *> dives, const QString &newValue, const QString &oldValue)
+{
+	execute(new EditSuit(dives, newValue, oldValue));
+}
+
 } // namespace Command
