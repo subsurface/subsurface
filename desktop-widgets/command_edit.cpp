@@ -66,6 +66,8 @@ void EditBase<T>::undo()
 // class by virtue of a "using" declaration.
 template
 EditBase<QString>::EditBase(const QVector<dive *> &dives, QString oldValue, QString newValue);
+template
+EditBase<int>::EditBase(const QVector<dive *> &dives, int oldValue, int newValue);
 
 // Undo and redo do the same as just the stored value is exchanged
 template<typename T>
@@ -118,6 +120,48 @@ QString EditSuit::fieldName() const
 DiveField EditSuit::fieldId() const
 {
 	return DiveField::SUIT;
+}
+
+// ***** Rating *****
+void EditRating::set(struct dive *d, int value) const
+{
+	d->rating = value;
+}
+
+int EditRating::data(struct dive *d) const
+{
+	return d->rating;
+}
+
+QString EditRating::fieldName() const
+{
+	return tr("rating");
+}
+
+DiveField EditRating::fieldId() const
+{
+	return DiveField::RATING;
+}
+
+// ***** Visibility ****
+void EditVisibility::set(struct dive *d, int value) const
+{
+	d->visibility = value;
+}
+
+int EditVisibility::data(struct dive *d) const
+{
+	return d->visibility;
+}
+
+QString EditVisibility::fieldName() const
+{
+	return tr("visibility");
+}
+
+DiveField EditVisibility::fieldId() const
+{
+	return DiveField::VISIBILITY;
 }
 
 // ***** Mode *****

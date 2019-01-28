@@ -36,6 +36,8 @@ void mergeDives(const QVector <dive *> &dives);
 void editNotes(const QVector<dive *> dives, const QString &newValue, const QString &oldValue);
 void editSuit(const QVector<dive *> dives, const QString &newValue, const QString &oldValue);
 void editMode(const QVector<dive *> dives, int index, int newValue, int oldValue);
+void editRating(const QVector<dive *> dives, int newValue, int oldValue);
+void editVisibility(const QVector<dive *> dives, int newValue, int oldValue);
 
 } // namespace Command
 

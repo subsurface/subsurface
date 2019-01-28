@@ -88,4 +88,14 @@ void editSuit(const QVector<dive *> dives, const QString &newValue, const QStrin
 	execute(new EditSuit(dives, newValue, oldValue));
 }
 
+void editRating(const QVector<dive *> dives, int newValue, int oldValue)
+{
+	execute(new EditRating(dives, newValue, oldValue));
+}
+
+void editVisibility(const QVector<dive *> dives, int newValue, int oldValue)
+{
+	execute(new EditVisibility(dives, newValue, oldValue));
+}
+
 } // namespace Command
