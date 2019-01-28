@@ -56,6 +56,15 @@ public:
 	DiveField fieldId() const override;
 };
 
+class EditSuit : public EditBase<QString> {
+public:
+	using EditBase<QString>::EditBase;	// Use constructor of base class.
+	void set(struct dive *d, QString s) const override;
+	QString data(struct dive *d) const override;
+	QString fieldName() const override;
+	DiveField fieldId() const override;
+};
+
 class EditMode : public EditBase<int> {
 	int index;
 public:

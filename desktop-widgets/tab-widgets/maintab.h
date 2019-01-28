@@ -76,7 +76,7 @@ slots:
 	void on_location_textChanged();
 	void on_divemaster_textChanged();
 	void on_buddy_textChanged();
-	void on_suit_textChanged(const QString &text);
+	void on_suit_editingFinished();
 	void on_diveTripLocation_textEdited(const QString& text);
 	void on_notes_textChanged();
 	void on_notes_editingFinished();
