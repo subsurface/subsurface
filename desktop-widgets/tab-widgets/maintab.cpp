@@ -342,6 +342,12 @@ void MainTab::divesEdited(const QVector<dive *> &, DiveField field)
 		return;
 
 	switch(field) {
+	case DiveField::RATING:
+		ui.rating->setCurrentStars(current_dive->rating);
+		break;
+	case DiveField::VISIBILITY:
+		ui.visibility->setCurrentStars(current_dive->visibility);
+		break;
 	case DiveField::SUIT:
 		ui.suit->setText(QString(current_dive->suit));
 		break;
@@ -813,10 +819,6 @@ void MainTab::acceptChanges()
 		struct dive *cd = current_dive;
 		// now check if something has changed and if yes, edit the selected dives that
 		// were identical with the master dive shown (and mark the divelist as changed)
-		if (displayed_dive.rating != cd->rating)
-			MODIFY_DIVES(selectedDives, EDIT_VALUE(rating));
-		if (displayed_dive.visibility != cd->visibility)
-			MODIFY_DIVES(selectedDives, EDIT_VALUE(visibility));
 		if (displayed_dive.airtemp.mkelvin != cd->airtemp.mkelvin)
 			MODIFY_DIVES(selectedDives, EDIT_VALUE(airtemp.mkelvin));
 		if (displayed_dive.watertemp.mkelvin != cd->watertemp.mkelvin)
@@ -1394,24 +1396,18 @@ void MainTab::on_notes_editingFinished()
 
 void MainTab::on_rating_valueChanged(int value)
 {
-	if (acceptingEdit == true)
+	if (acceptingEdit == true || !current_dive)
 		return;
-	if (displayed_dive.rating != value) {
-		displayed_dive.rating = value;
-		modified = true;
-		enableEdition();
-	}
+
+	Command::editRating(getSelectedDivesCurrentLast(), value, current_dive->rating);
 }
 
 void MainTab::on_visibility_valueChanged(int value)
 {
-	if (acceptingEdit == true)
+	if (acceptingEdit == true || !current_dive)
 		return;
-	if (displayed_dive.visibility != value) {
-		displayed_dive.visibility = value;
-		modified = true;
-		enableEdition();
-	}
+
+	Command::editVisibility(getSelectedDivesCurrentLast(), value, current_dive->visibility);
 }
 
 #undef MODIFY_DIVES
