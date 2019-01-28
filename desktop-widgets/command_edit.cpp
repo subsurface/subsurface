@@ -100,6 +100,28 @@ DiveField EditNotes::fieldId() const
 	return DiveField::NOTES;
 }
 
+// ***** Suit *****
+void EditSuit::set(struct dive *d, QString s) const
+{
+	free(d->suit);
+	d->suit = strdup(qPrintable(s));
+}
+
+QString EditSuit::data(struct dive *d) const
+{
+	return QString(d->suit);
+}
+
+QString EditSuit::fieldName() const
+{
+	return tr("suit");
+}
+
+DiveField EditSuit::fieldId() const
+{
+	return DiveField::SUIT;
+}
+
 // ***** Mode *****
 // Editing the dive mode has very peculiar semantics for historic reasons:
 // Since the dive-mode depends on the dive computer, the i-th dive computer

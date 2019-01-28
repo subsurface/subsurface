@@ -53,6 +53,7 @@ void purgeUnusedDiveSites();
 // 4) Dive editing related commands
 
 void editNotes(const QVector<dive *> dives, const QString &newValue, const QString &oldValue);
+void editSuit(const QVector<dive *> dives, const QString &newValue, const QString &oldValue);
 void editMode(const QVector<dive *> dives, int index, int newValue, int oldValue);
 
 } // namespace Command
