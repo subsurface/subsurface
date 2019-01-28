@@ -74,6 +74,9 @@ void EditBase<T>::redo()
 	undo();
 }
 
+// Implementation of virtual functions
+
+// ***** Notes *****
 void EditNotes::set(struct dive *d, QString s) const
 {
 	free(d->notes);
@@ -93,6 +96,45 @@ QString EditNotes::fieldName() const
 DiveField EditNotes::fieldId() const
 {
 	return DiveField::NOTES;
+}
+
+// ***** Mode *****
+// Editing the dive mode has very peculiar semantics for historic reasons:
+// Since the dive-mode depends on the dive computer, the i-th dive computer
+// of each dive will be edited. If the dive has less than i dive computers,
+// the default dive computer will be edited.
+// The index "i" will be stored as an additional payload with the command.
+// Thus, we need an explicit constructor. Since the actual handling is done
+// by the base class, which knows nothing about this index, it will not be
+// sent via signals. Currently this is not needed. Should it turn out to
+// become necessary, then we might either
+//	- Not derive EditMode from EditBase.
+//	- Change the semantics of the mode-editing.
+// The future will tell.
+EditMode::EditMode(const QVector<dive *> &dives, int indexIn, int newValue, int oldValue)
+	: EditBase(dives, newValue, oldValue), index(indexIn)
+{
+}
+
+void EditMode::set(struct dive *d, int i) const
+{
+	get_dive_dc(d, index)->divemode = (enum divemode_t)i;
+	update_setpoint_events(d, get_dive_dc(d, index));
+}
+
+int EditMode::data(struct dive *d) const
+{
+	return get_dive_dc(d, index)->divemode;
+}
+
+QString EditMode::fieldName() const
+{
+	return tr("dive mode");
+}
+
+DiveField EditMode::fieldId() const
+{
+	return DiveField::MODE;
 }
 
 } // namespace Command
