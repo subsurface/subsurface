@@ -68,6 +68,7 @@ slots:
 	void addWeight_clicked();
 	void updateDiveInfo(bool clear = false);
 	void updateNotes(const struct dive *d);
+	void updateMode(struct dive *d);
 	void updateDepthDuration();
 	void acceptChanges();
 	void rejectChanges();

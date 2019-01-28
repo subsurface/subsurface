@@ -345,6 +345,9 @@ void MainTab::divesEdited(const QVector<dive *> &, DiveField field)
 	case DiveField::NOTES:
 		updateNotes(current_dive);
 		break;
+	case DiveField::MODE:
+		updateMode(current_dive);
+		break;
 	default:
 		break;
 	}
@@ -399,6 +402,12 @@ void MainTab::updateNotes(const struct dive *d)
 	}
 }
 
+void MainTab::updateMode(struct dive *d)
+{
+	ui.DiveType->setCurrentIndex(get_dive_dc(d, dc_number)->divemode);
+	MainWindow::instance()->graphics->recalcCeiling();
+}
+
 void MainTab::updateDiveInfo(bool clear)
 {
 	ui.location->refreshDiveSiteCache();
@@ -424,7 +433,7 @@ void MainTab::updateDiveInfo(bool clear)
 	UPDATE_TEXT(displayed_dive, buddy);
 	UPDATE_TEMP(displayed_dive, airtemp);
 	UPDATE_TEMP(displayed_dive, watertemp);
-	ui.DiveType->setCurrentIndex(get_dive_dc(&displayed_dive, dc_number)->divemode);
+	updateMode(&displayed_dive);
 
 	if (!clear) {
 		struct dive_site *ds = NULL;
@@ -558,7 +567,6 @@ void MainTab::updateDiveInfo(bool clear)
 		}
 		ui.duration->setText(render_seconds_to_string(displayed_dive.duration.seconds));
 		ui.depth->setText(get_depth_string(displayed_dive.maxdepth, true));
-		ui.DiveType->setCurrentIndex(get_dive_dc(&displayed_dive, dc_number)->divemode);
 
 		volume_t gases[MAX_CYLINDERS] = {};
 		get_gas_used(&displayed_dive, gases);
@@ -810,14 +818,6 @@ void MainTab::acceptChanges()
 			MODIFY_DIVES(selectedDives, EDIT_VALUE(visibility));
 		if (displayed_dive.airtemp.mkelvin != cd->airtemp.mkelvin)
 			MODIFY_DIVES(selectedDives, EDIT_VALUE(airtemp.mkelvin));
-		if (displayed_dc->divemode != current_dc->divemode) {
-			MODIFY_DIVES(selectedDives,
-				if (get_dive_dc(mydive, dc_number)->divemode == current_dc->divemode || copyPaste)
-					get_dive_dc(mydive, dc_number)->divemode = displayed_dc->divemode;
-			);
-			MODIFY_DIVES(selectedDives, update_setpoint_events(mydive, get_dive_dc(mydive, dc_number)));
-			do_replot = true;
-		}
 		if (displayed_dive.watertemp.mkelvin != cd->watertemp.mkelvin)
 			MODIFY_DIVES(selectedDives, EDIT_VALUE(watertemp.mkelvin));
 
@@ -1114,12 +1114,10 @@ void MainTab::on_airtemp_textChanged(const QString &text)
 
 void MainTab::divetype_Changed(int index)
 {
-	if (editMode == IGNORE)
+	if (editMode == IGNORE || !current_dive)
 		return;
-	displayed_dc->divemode = (enum divemode_t) index;
-	update_setpoint_events(&displayed_dive, displayed_dc);
-	markChangedWidget(ui.DiveType);
-	MainWindow::instance()->graphics->recalcCeiling();
+	Command::editMode(getSelectedDivesCurrentLast(), dc_number, (enum divemode_t)index,
+			  get_dive_dc(current_dive, dc_number)->divemode);
 }
 
 void MainTab::on_watertemp_textChanged(const QString &text)

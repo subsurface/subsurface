@@ -56,6 +56,16 @@ public:
 	DiveField fieldId() const override;
 };
 
+class EditMode : public EditBase<int> {
+	int index;
+public:
+	EditMode(const QVector<dive *> &dives, int indexIn, int newValue, int oldValue);
+	void set(struct dive *d, int i) const override;
+	int data(struct dive *d) const override;
+	QString fieldName() const override;
+	DiveField fieldId() const override;
+};
+
 } // namespace Command
 
 #endif
