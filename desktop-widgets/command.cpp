@@ -135,4 +135,9 @@ void editNotes(const QVector<dive *> dives, const QString &newValue, const QStri
 	execute(new EditNotes(dives, newValue, oldValue));
 }
 
+void editMode(const QVector<dive *> dives, int index, int newValue, int oldValue)
+{
+	execute(new EditMode(dives, index, newValue, oldValue));
+}
+
 } // namespace Command
