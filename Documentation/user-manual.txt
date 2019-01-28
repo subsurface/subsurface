@@ -2091,7 +2091,9 @@ into the dive (indicated by a @), depth, cylinder pressure (P), temperature,
 ascent/descent rate, surface air consumption (SAC), oxygen partial pressure,
 maximum operating depth, equivalent air depth (EAD), equivalent narcotic depth
 (END), equivalent air density depth (EADD, also as gas density in g/l), decompression requirements at that
-instant in time (Deco), time to surface (TTS), the calculated ceiling, as well
+instant in time (Deco), the surface GF (a measure of inert gas loading of the diver's body defined as the excess
+over the surface pressure normalized such that the maximally allowed over pressure at the surface, the 
+M-value, corresponds to 100%), the time to surface (TTS), the calculated ceiling, as well
 as of the statistics in the Information Box, shown as four
 buttons on the left of the profile panel. These are:
 
