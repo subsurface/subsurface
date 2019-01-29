@@ -43,6 +43,7 @@ RUN apt-get update  &&  apt-get upgrade -y && \
     git checkout 9f6b9c6f58510bedfa0bf9f87de9a214abe6b653 ; \
     mv ../settings.mk . ; \
     make -j 6 2>&1 | tee build.log ; \
+    make MXE_TARGETS=i686-w64-mingw32.static glib -j 6 2>&1 |tee build.log ; \
     mkdir -p neolit ; cd neolit ; git clone -b wip/win http://code.qt.io/cgit/qt/qtconnectivity.git ; \
     cd qtconnectivity ; \
     PATH=/win/mxe/usr/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin /win/mxe/usr/i686-w64-mingw32.shared/qt5/bin/qmake qtconnectivity.pro ; \
