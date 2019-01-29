@@ -94,5 +94,6 @@
         <file alias="video-icon">icons/video.svg</file>
         <file alias="video-overlay">icons/video_overlay.svg</file>
         <file alias="unknown-icon">icons/unknown.svg</file>
+        <file alias="tissue-icon">icons/tissue.png</file>
     </qresource>
 </RCC>

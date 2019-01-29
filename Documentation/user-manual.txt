@@ -2117,6 +2117,11 @@ time. Even if the profile contains several gas
 switches, TTS at a specific moment during the dive is calculated using the current gas.
 TTS longer than 2 hours is not accurately calculated and Subsurface only indicates _TTS > 2h_.
 
+[icon="images/icons/tissue.png"]
+[NOTE]
+Show *Deco information*. When enabled, the information box shows the surface GF and the momentary
+ceilings for the individual tissue compartments.
+
 [icon="images/icons/SAC.jpg"]
 [NOTE]
 Show the *Surface Air Consumption (SAC)*, an indication of the surface-normalized respiration

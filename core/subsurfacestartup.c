@@ -34,6 +34,7 @@ struct preferences default_prefs = {
 	.calcceiling = false,
 	.calcceiling3m = false,
 	.calcndltts = false,
+	.decoinfo = true,
 	.gflow = 30,
 	.gfhigh = 75,
 	.animation_speed = 500,

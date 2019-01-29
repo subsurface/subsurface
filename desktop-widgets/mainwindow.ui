@@ -59,7 +59,7 @@
      <x>0</x>
      <y>0</y>
      <width>861</width>
-     <height>29</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -701,6 +701,21 @@
     <string>Cloud stora&amp;ge online</string>
    </property>
   </action>
+  <action name="profDeco">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../subsurface.qrc">
+     <normaloff>:/tissue-icon</normaloff>:/tissue-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle deco information</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle deco information</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -711,6 +726,7 @@
   </customwidget>
  </customwidgets>
  <resources>
+  <include location="../subsurface.qrc"/>
   <include location="../subsurface.qrc"/>
  </resources>
  <connections/>

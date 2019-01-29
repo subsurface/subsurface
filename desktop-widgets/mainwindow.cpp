@@ -147,7 +147,7 @@ MainWindow::MainWindow() : QMainWindow(),
 				ui.profPhe, ui.profPn2, ui.profPO2, // partial pressure graphs
 				ui.profRuler, ui.profScaled, // measuring and scaling
 				ui.profTogglePicture, ui.profTankbar,
-				ui.profMod, ui.profNdl_tts, // various values that a user is either interested in or not
+				ui.profMod, ui.profDeco, ui.profNdl_tts, // various values that a user is either interested in or not
 				ui.profEad, ui.profSAC,
 				ui.profHR, // very few dive computers support this
 				ui.profTissues}; // maybe less frequently used
@@ -293,6 +293,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(ui.profIncrement3m,    &QAction::triggered, tec, &qPrefTechnicalDetails::set_calcceiling3m);
 	connect(ui.profMod,            &QAction::triggered, tec, &qPrefTechnicalDetails::set_mod);
 	connect(ui.profNdl_tts,        &QAction::triggered, tec, &qPrefTechnicalDetails::set_calcndltts);
+	connect(ui.profDeco,           &QAction::triggered, tec, &qPrefTechnicalDetails::set_decoinfo);
 	connect(ui.profHR,             &QAction::triggered, tec, &qPrefTechnicalDetails::set_hrgraph);
 	connect(ui.profRuler,          &QAction::triggered, tec, &qPrefTechnicalDetails::set_rulergraph);
 	connect(ui.profSAC,            &QAction::triggered, tec, &qPrefTechnicalDetails::set_show_sac);
@@ -345,6 +346,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.profIncrement3m->setChecked(qPrefTechnicalDetails::calcceiling3m());
 	ui.profMod->setChecked(qPrefTechnicalDetails::mod());
 	ui.profNdl_tts->setChecked(qPrefTechnicalDetails::calcndltts());
+	ui.profDeco->setChecked(qPrefTechnicalDetails::decoinfo());
 	ui.profPhe->setChecked(pp_gas->phe());
 	ui.profPn2->setChecked(pp_gas->pn2());
 	ui.profPO2->setChecked(pp_gas->po2());
@@ -447,6 +449,7 @@ void MainWindow::configureToolbar() {
 		ui.profTankbar->setDisabled(freeDiveMode);
 		ui.profMod->setDisabled(freeDiveMode);
 		ui.profNdl_tts->setDisabled(freeDiveMode);
+		ui.profDeco->setDisabled(freeDiveMode);
 		ui.profEad->setDisabled(freeDiveMode);
 		ui.profSAC->setDisabled(freeDiveMode);
 		ui.profTissues->setDisabled(freeDiveMode);
