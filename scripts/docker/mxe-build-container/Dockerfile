@@ -1,5 +1,10 @@
-From ubuntu:18.04
+# Build the image using the --build-arg option, e.g.:
+# docker build -t boret/myimage:0.1 --build-arg=mxe_sha=123ABC456 .
+#
 
+From ubuntu:18.04
+ARG mxe_sha=master
+ENV _ver=${mxe_sha}
 RUN mkdir -p /win
 ADD settings.mk /win
 RUN apt-get update  &&  apt-get upgrade -y
@@ -40,12 +45,12 @@ RUN apt-get install -y \
     scons
 RUN cd /win ; git clone git://github.com/mxe/mxe ; \
     cd mxe ; \
-    git checkout 9f6b9c6f58510bedfa0bf9f87de9a214abe6b653 ;
+    git checkout ${_ver} ;
 RUN mv /win/settings.mk /win/mxe
 RUN cd /win/mxe ; \
     make -j 6 2>&1 | tee build.log ;
 RUN cd /win/mxe ; \
-    make MXE_TARGETS=i686-w64-mingw32.static glib -j 6 2>&1 |tee build.log ;
+    make MXE_TARGETS=i686-w64-mingw32.static glib -j 6 2>&1 | tee build.log ;
 RUN cd /win/mxe ; \
     mkdir -p neolit ; cd neolit ; git clone -b wip/win git://github.com/qt/qtconnectivity
 RUN cd /win/mxe/neolit/qtconnectivity ; \
