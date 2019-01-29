@@ -1504,17 +1504,19 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	}
 	if (entry->rbt)
 		put_format_loc(b, translate("gettextFromC", "RBT: %umin\n"), DIV_UP(entry->rbt, 60));
-	if (entry->surface_gf > 0)
-		put_format(b, translate("gettextFromC", "Surface GF %.0f%%\n"), entry->surface_gf);
-	if (entry->ceiling) {
-		depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
-		put_format_loc(b, translate("gettextFromC", "Calculated ceiling %.0f%s\n"), depthvalue, depth_unit);
-		if (prefs.calcalltissues) {
-			int k;
-			for (k = 0; k < 16; k++) {
-				if (entry->ceilings[k]) {
-					depthvalue = get_depth_units(entry->ceilings[k], NULL, &depth_unit);
-					put_format_loc(b, translate("gettextFromC", "Tissue %.0fmin: %.1f%s\n"), buehlmann_N2_t_halflife[k], depthvalue, depth_unit);
+	if (prefs.decoinfo) {
+		if (entry->surface_gf > 0)
+			put_format(b, translate("gettextFromC", "Surface GF %.0f%%\n"), entry->surface_gf);
+		if (entry->ceiling) {
+			depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
+			put_format_loc(b, translate("gettextFromC", "Calculated ceiling %.0f%s\n"), depthvalue, depth_unit);
+			if (prefs.calcalltissues) {
+				int k;
+				for (k = 0; k < 16; k++) {
+					if (entry->ceilings[k]) {
+						depthvalue = get_depth_units(entry->ceilings[k], NULL, &depth_unit);
+						put_format_loc(b, translate("gettextFromC", "Tissue %.0fmin: %.1f%s\n"), buehlmann_N2_t_halflife[k], depthvalue, depth_unit);
+					}
 				}
 			}
 		}

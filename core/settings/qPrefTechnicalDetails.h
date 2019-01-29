@@ -12,6 +12,7 @@ class qPrefTechnicalDetails : public QObject {
 	Q_PROPERTY(bool calcceiling READ calcceiling WRITE set_calcceiling NOTIFY calcceilingChanged);
 	Q_PROPERTY(bool calcceiling3m READ calcceiling3m WRITE set_calcceiling3m NOTIFY calcceiling3mChanged);
 	Q_PROPERTY(bool calcndltts READ calcndltts WRITE set_calcndltts NOTIFY calcndlttsChanged);
+	Q_PROPERTY(bool decoinfo READ decoinfo WRITE set_decoinfo NOTIFY decoinfoChanged);
 	Q_PROPERTY(bool dcceiling READ dcceiling WRITE set_dcceiling NOTIFY dcceilingChanged);
 	Q_PROPERTY(deco_mode display_deco_mode READ display_deco_mode WRITE set_display_deco_mode NOTIFY display_deco_modeChanged);
 	Q_PROPERTY(bool display_unused_tanks READ display_unused_tanks WRITE set_display_unused_tanks NOTIFY display_unused_tanksChanged);
@@ -50,6 +51,7 @@ public:
 	static bool calcceiling() { return prefs.calcceiling; }
 	static bool calcceiling3m() { return prefs.calcceiling3m; }
 	static bool calcndltts() { return prefs.calcndltts; }
+	static bool decoinfo() { return prefs.decoinfo; }
 	static bool dcceiling() { return prefs.dcceiling; }
 	static deco_mode display_deco_mode() { return prefs.display_deco_mode; }
 	static bool display_unused_tanks() { return prefs.display_unused_tanks; }
@@ -79,6 +81,7 @@ public slots:
 	static void set_calcceiling(bool value);
 	static void set_calcceiling3m(bool value);
 	static void set_calcndltts(bool value);
+	static void set_decoinfo(bool value);
 	static void set_dcceiling(bool value);
 	static void set_display_deco_mode(deco_mode value);
 	static void set_display_unused_tanks(bool value);
@@ -108,6 +111,7 @@ signals:
 	void calcceilingChanged(bool value);
 	void calcceiling3mChanged(bool value);
 	void calcndlttsChanged(bool value);
+	void decoinfoChanged(bool value);
 	void dcceilingChanged(bool value);
 	void display_deco_modeChanged(deco_mode value);
 	void display_unused_tanksChanged(bool value);
@@ -137,6 +141,7 @@ private:
 	static void disk_calcceiling(bool doSync);
 	static void disk_calcceiling3m(bool doSync);
 	static void disk_calcndltts(bool doSync);
+	static void disk_decoinfo(bool doSync);
 	static void disk_dcceiling(bool doSync);
 	static void disk_display_deco_mode(bool doSync);
 	static void disk_display_unused_tanks(bool doSync);

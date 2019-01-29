@@ -176,6 +176,7 @@ struct preferences {
 	bool                        calcceiling;
 	bool                        calcceiling3m;
 	bool                        calcndltts;
+	bool                        decoinfo; // Show deco info in infobox
 	bool                        dcceiling;
 	enum deco_mode              display_deco_mode;
 	bool                        display_unused_tanks;

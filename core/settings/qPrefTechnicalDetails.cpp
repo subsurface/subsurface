@@ -56,6 +56,8 @@ HANDLE_PREFERENCE_BOOL(TechnicalDetails, "calcceiling3m", calcceiling3m);
 
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "calcndltts", calcndltts);
 
+HANDLE_PREFERENCE_BOOL(TechnicalDetails, "decoinfo", decoinfo);
+
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "dcceiling", dcceiling);
 
 HANDLE_PREFERENCE_ENUM(TechnicalDetails, deco_mode, "display_deco_mode", display_deco_mode);
