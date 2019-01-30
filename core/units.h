@@ -106,12 +106,12 @@ typedef struct
 
 typedef struct
 {
-	uint32_t mkelvin; // up to 4 MdegK (temperatures in K are always positive)
+	uint32_t mkelvin; // up to 4 MK (temperatures in K are always positive)
 } temperature_t;
 
 typedef struct
 {
-	uint64_t mkelvin; // up to 18446744073 MdegK (temperatures in K are always positive)
+	uint64_t mkelvin; // up to 18446744073 MK (temperatures in K are always positive)
 } temperature_sum_t;
 
 typedef struct
