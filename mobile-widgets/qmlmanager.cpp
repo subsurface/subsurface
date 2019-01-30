@@ -1014,11 +1014,11 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 
 	if (myDive->airTemp() != airtemp) {
 		diveChanged = true;
-		d->airtemp.mkelvin = parseTemperatureToMkelvin(airtemp);
+		d->airtemp = parseTemperature(airtemp);
 	}
 	if (myDive->waterTemp() != watertemp) {
 		diveChanged = true;
-		d->watertemp.mkelvin = parseTemperatureToMkelvin(watertemp);
+		d->watertemp = parseTemperature(watertemp);
 	}
 	// not sure what we'd do if there was more than one weight system
 	// defined - for now just ignore that case

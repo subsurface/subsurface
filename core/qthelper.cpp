@@ -735,13 +735,13 @@ int parseLengthToMm(const QString &text)
 
 }
 
-int parseTemperatureToMkelvin(const QString &text)
+temperature_t parseTemperature(const QString &text)
 {
 	int mkelvin;
 	QString numOnly = text;
 	numOnly.replace(",", ".").remove(QRegExp("[^-0-9.]"));
 	if (numOnly.isEmpty())
-		return 0;
+		return temperature_t { 0 };
 	double number = numOnly.toDouble();
 	if (text.contains(gettextFromC::tr("C"), Qt::CaseInsensitive)) {
 		mkelvin = C_to_mkelvin(number);
@@ -759,7 +759,7 @@ int parseTemperatureToMkelvin(const QString &text)
 			mkelvin = 0;
 		}
 	}
-	return mkelvin;
+	return temperature_t { (uint32_t)mkelvin };
 }
 
 int parseWeightToGrams(const QString &text)

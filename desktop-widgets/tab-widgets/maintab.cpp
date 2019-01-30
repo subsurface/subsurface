@@ -1102,7 +1102,7 @@ void MainTab::on_airtemp_textChanged(const QString &text)
 {
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
-	displayed_dive.airtemp.mkelvin = parseTemperatureToMkelvin(text);
+	displayed_dive.airtemp = parseTemperature(text);
 	markChangedWidget(ui.airtemp);
 	validate_temp_field(ui.airtemp, text);
 }
@@ -1121,7 +1121,7 @@ void MainTab::on_watertemp_textChanged(const QString &text)
 {
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
-	displayed_dive.watertemp.mkelvin = parseTemperatureToMkelvin(text);
+	displayed_dive.watertemp = parseTemperature(text);
 	markChangedWidget(ui.watertemp);
 	validate_temp_field(ui.watertemp, text);
 }
