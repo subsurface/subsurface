@@ -83,6 +83,24 @@ public:
 	DiveField fieldId() const override;
 };
 
+class EditAirTemp : public EditBase<int> {
+public:
+	using EditBase<int>::EditBase;	// Use constructor of base class.
+	void set(struct dive *d, int value) const override;
+	int data(struct dive *d) const override;
+	QString fieldName() const override;
+	DiveField fieldId() const override;
+};
+
+class EditWaterTemp : public EditBase<int> {
+public:
+	using EditBase<int>::EditBase;	// Use constructor of base class.
+	void set(struct dive *d, int value) const override;
+	int data(struct dive *d) const override;
+	QString fieldName() const override;
+	DiveField fieldId() const override;
+};
+
 class EditMode : public EditBase<int> {
 	int index;
 public:

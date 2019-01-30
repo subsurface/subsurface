@@ -80,12 +80,11 @@ slots:
 	void on_diveTripLocation_textEdited(const QString& text);
 	void on_notes_textChanged();
 	void on_notes_editingFinished();
-	void on_airtemp_textChanged(const QString &text);
+	void on_airtemp_editingFinished();
 	void on_duration_textChanged(const QString &text);
 	void on_depth_textChanged(const QString &text);
 	void divetype_Changed(int);
-	void on_watertemp_textChanged(const QString &text);
-	void validate_temp_field(QLineEdit *tempField, const QString &text);
+	void on_watertemp_editingFinished();
 	void on_dateEdit_dateChanged(const QDate &date);
 	void on_timeEdit_timeChanged(const QTime & time);
 	void on_rating_valueChanged(int value);
