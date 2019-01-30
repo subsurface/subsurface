@@ -38,6 +38,8 @@ void editSuit(const QVector<dive *> dives, const QString &newValue, const QStrin
 void editMode(const QVector<dive *> dives, int index, int newValue, int oldValue);
 void editRating(const QVector<dive *> dives, int newValue, int oldValue);
 void editVisibility(const QVector<dive *> dives, int newValue, int oldValue);
+void editAirTemp(const QVector<dive *> dives, int newValue, int oldValue);
+void editWaterTemp(const QVector<dive *> dives, int newValue, int oldValue);
 
 } // namespace Command
 

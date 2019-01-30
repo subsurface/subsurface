@@ -340,6 +340,12 @@ void MainTab::divesEdited(const QVector<dive *> &, DiveField field)
 		return;
 
 	switch(field) {
+	case DiveField::AIR_TEMP:
+		ui.airtemp->setText(get_temperature_string(current_dive->airtemp, true));
+		break;
+	case DiveField::WATER_TEMP:
+		ui.watertemp->setText(get_temperature_string(current_dive->watertemp, true));
+		break;
 	case DiveField::RATING:
 		ui.rating->setCurrentStars(current_dive->rating);
 		break;
@@ -813,11 +819,6 @@ void MainTab::acceptChanges()
 		struct dive *cd = current_dive;
 		// now check if something has changed and if yes, edit the selected dives that
 		// were identical with the master dive shown (and mark the divelist as changed)
-		if (displayed_dive.airtemp.mkelvin != cd->airtemp.mkelvin)
-			MODIFY_DIVES(selectedDives, EDIT_VALUE(airtemp.mkelvin));
-		if (displayed_dive.watertemp.mkelvin != cd->watertemp.mkelvin)
-			MODIFY_DIVES(selectedDives, EDIT_VALUE(watertemp.mkelvin));
-
 		if (displayed_dive.dive_site != cd->dive_site)
 			MODIFY_DIVES(selectedDives, EDIT_VALUE(dive_site));
 
@@ -1107,13 +1108,12 @@ void MainTab::on_depth_textChanged(const QString &text)
 	MainWindow::instance()->graphics->plotDive();
 }
 
-void MainTab::on_airtemp_textChanged(const QString &text)
+void MainTab::on_airtemp_editingFinished()
 {
-	if (editMode == IGNORE || acceptingEdit == true)
+	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
 		return;
-	displayed_dive.airtemp.mkelvin = parseTemperatureToMkelvin(text);
-	markChangedWidget(ui.airtemp);
-	validate_temp_field(ui.airtemp, text);
+	Command::editAirTemp(getSelectedDivesCurrentLast(),
+			     parseTemperatureToMkelvin(ui.airtemp->text()), current_dive->airtemp.mkelvin);
 }
 
 void MainTab::divetype_Changed(int index)
@@ -1124,41 +1124,13 @@ void MainTab::divetype_Changed(int index)
 			  get_dive_dc(current_dive, dc_number)->divemode);
 }
 
-void MainTab::on_watertemp_textChanged(const QString &text)
+void MainTab::on_watertemp_editingFinished()
 {
-	if (editMode == IGNORE || acceptingEdit == true)
+	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
 		return;
-	displayed_dive.watertemp.mkelvin = parseTemperatureToMkelvin(text);
-	markChangedWidget(ui.watertemp);
-	validate_temp_field(ui.watertemp, text);
-}
-
-void MainTab::validate_temp_field(QLineEdit *tempField, const QString &text)
-{
-	static bool missing_unit = false;
-	static bool missing_precision = false;
-	if (!text.contains(QRegExp("^[-+]{0,1}[0-9]+([,.][0-9]+){0,1}(°[CF]){0,1}$")) &&
-	    !text.isEmpty() &&
-	    !text.contains(QRegExp("^[-+]$"))) {
-		if (text.contains(QRegExp("^[-+]{0,1}[0-9]+([,.][0-9]+){0,1}(°)$")) && !missing_unit) {
-			if (!missing_unit) {
-				missing_unit = true;
-				return;
-			}
-		}
-		if (text.contains(QRegExp("^[-+]{0,1}[0-9]+([,.]){0,1}(°[CF]){0,1}$")) && !missing_precision) {
-			if (!missing_precision) {
-				missing_precision = true;
-				return;
-			}
-		}
-		QPalette p;
-		p.setBrush(QPalette::Base, QColor(Qt::red).lighter());
-		tempField->setPalette(p);
-	} else {
-		missing_unit = false;
-		missing_precision = false;
-	}
+	Command::editWaterTemp(getSelectedDivesCurrentLast(),
+			       parseTemperatureToMkelvin(ui.watertemp->text()),
+			       current_dive->watertemp.mkelvin);
 }
 
 void MainTab::on_dateEdit_dateChanged(const QDate &date)

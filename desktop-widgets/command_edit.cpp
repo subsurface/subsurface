@@ -143,7 +143,7 @@ DiveField EditRating::fieldId() const
 	return DiveField::RATING;
 }
 
-// ***** Visibility ****
+// ***** Visibility *****
 void EditVisibility::set(struct dive *d, int value) const
 {
 	d->visibility = value;
@@ -162,6 +162,48 @@ QString EditVisibility::fieldName() const
 DiveField EditVisibility::fieldId() const
 {
 	return DiveField::VISIBILITY;
+}
+
+// ***** Air Temperature *****
+void EditAirTemp::set(struct dive *d, int value) const
+{
+	d->airtemp.mkelvin = value > 0 ? (uint32_t)value : 0u;
+}
+
+int EditAirTemp::data(struct dive *d) const
+{
+	return (int)d->airtemp.mkelvin;
+}
+
+QString EditAirTemp::fieldName() const
+{
+	return tr("air temperature");
+}
+
+DiveField EditAirTemp::fieldId() const
+{
+	return DiveField::AIR_TEMP;
+}
+
+// ***** Water Temperature *****
+void EditWaterTemp::set(struct dive *d, int value) const
+{
+	d->watertemp.mkelvin = value > 0 ? (uint32_t)value : 0u;
+}
+
+int EditWaterTemp::data(struct dive *d) const
+{
+	return (int)d->watertemp.mkelvin;
+}
+
+QString EditWaterTemp::fieldName() const
+{
+	return tr("water temperature");
+}
+
+DiveField EditWaterTemp::fieldId() const
+{
+	return DiveField::WATER_TEMP;
 }
 
 // ***** Mode *****
