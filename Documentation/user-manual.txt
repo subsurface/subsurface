@@ -2719,44 +2719,6 @@ There are two ways to export dive information from Subsurface:
 
 - xref:S_Export_other[Export dive information to other destinations or formats]
 
-[[S_Facebook]]
-=== Exporting dive information to _Facebook_
-
-Export of dives to _Facebook_ is handled differently from other types of export because
-a connection to _Facebook_ is required, needing a _Facebook_ userID and password.
-From the *Main Menu*, select _Share on -> Connect to -> Facebook_ (image *A* below)
-A _Facebook_ login screen appears (image *B* below). Provide a _Facebook_ userID and password.
-From the _Subsurface_ window it’s easy to determine whether _Subsurface_ has a valid connection to _Facebook_:
-from the *Main Menu*, select _Share on_ (image *A*, below). Normally, the _Facebook_ option is greyed out. But
-if there is a connection to _Facebook_, this option is active (i.e. in black color and can be selected).
-
-Once logged into to _Facebook_ , a panel is shown with a message:
-"_To disconnect Subsurface from your Facebook account, use the 'Share on' menu entry_."
-Close this message panel.
-
-image::images/facebook1.jpg["Figure: Facebook login",align="center"]
-
-Having established a login to _Facebook_, transferring a dive profile to a _Facebook_ timeline is easy.
-In the _Subsurface_ *Dive List* panel, highlight the dive to be transferred.
-Then, from the *Main Menu*, select _Share on -> Facebook_. A dialogue box
-is shown, determining the amount of additional information to be transferred
-with the dive profile (image *A*, below). To transfer a dive profile to _Facebook_, the name of a
-_Facebook_ album is needed. The checkboxes on the left hand side determine how much
-additional information is added to the dive profile, shown in the text box
-on the right hand side of the panel (image *A*, below). Customise the message that will be posted
-with the dive profile by editing any of the information. After specifying additional information
-and verifying the text, select the _OK_ button that triggers the transfer to _Facebook_. After the transfer
-is done, an acknowledgement dialogue appears, indicating it was successful.
-
-Both the album created and the post to your timeline are marked as
-private. In order for friends to be able to see the post,
-log into _Facebook_ using a browser or Facebook app and change its permissions.
-
-image::images/facebook2.jpg["Figure: Facebook data submission",align="center"]
-
-If required, then close the _Facebook_ connection by selecting, from the *Main Menu*,
-_Share on ->  Disconnect from -> Facebook_ (image *B* above).
-
 [[S_Export_other]]
 === Export dive information to other destinations or formats
 For non-_Facebook exports_, the export function can be found by selecting _File ->  Export_, which brings up

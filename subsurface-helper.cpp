@@ -25,7 +25,6 @@
 #include "mobile-widgets/qml/kirigami/src/kirigamiplugin.h"
 #else
 #include "desktop-widgets/mainwindow.h"
-#include "core/pluginmanager.h"
 #endif
 
 #ifndef SUBSURFACE_TEST_DATA
@@ -41,7 +40,6 @@ void init_ui()
 	register_meta_types();
 #ifndef SUBSURFACE_MOBILE
 	register_qml_types(NULL);
-	PluginManager::instance().loadPlugins();
 
 	MainWindow *window = new MainWindow();
 	window->setTitle();

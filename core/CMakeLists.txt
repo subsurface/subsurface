@@ -63,7 +63,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	git-access.c
 	gpslocation.cpp
 	imagedownloader.cpp
-	isocialnetworkintegration.cpp
 	libdivecomputer.c
 	liquivision.c
 	load-git.c
@@ -81,7 +80,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	import-csv.c
 	planner.c
 	plannernotes.c
-	pluginmanager.cpp
 	profile.c
 	qthelper.cpp
 	qt-init.cpp
@@ -108,7 +106,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	settings/qPrefDisplay.cpp
 	settings/qPrefDiveComputer.cpp
 	settings/qPrefDivePlanner.cpp
-	settings/qPrefFacebook.cpp
 	settings/qPrefGeneral.cpp
 	settings/qPrefGeocoding.cpp
 	settings/qPrefLanguage.cpp

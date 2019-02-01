@@ -40,7 +40,6 @@ option(NO_PRINTING "disable the printing support" OFF)
 option(NO_USERMANUAL "don't include a viewer for the user manual" OFF)
 
 #Options regarding enabling parts of subsurface
-option(FBSUPPORT "allow posting to Facebook" ON)
 option(BTSUPPORT "enable support for QtBluetooth (requires Qt5.4 or newer)" ON)
 option(FTDISUPPORT "enable support for libftdi based serial" OFF)
 option(USE_WEBENGINE "Use QWebEngine instead of QWebKit" OFF)
@@ -335,15 +334,10 @@ elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
                 add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
         endif()
 
-	if(FBSUPPORT)
-		set(FACEBOOK_INTEGRATION facebook_integration)
-		add_dependencies(facebook_integration subsurface_generated_ui)
-	endif()
 	target_link_libraries(
 		${SUBSURFACE_TARGET}
 		subsurface_generated_ui
 		subsurface_interface
-		${FACEBOOK_INTEGRATION}
 		subsurface_profile
 		subsurface_statistics
 		subsurface_models_desktop

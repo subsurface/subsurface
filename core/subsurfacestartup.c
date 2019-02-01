@@ -77,11 +77,6 @@ struct preferences default_prefs = {
 	.pscr_ratio = 100,
 	.show_pictures_in_profile = true,
 	.tankbar = false,
-	.facebook = {
-		.user_id = NULL,
-		.album_id = NULL,
-		.access_token = NULL
-	},
 	.defaultsetpoint = 1100,
 	.geocoding = {
 		.category = { 0 }
@@ -312,9 +307,6 @@ void copy_prefs(struct preferences *src, struct preferences *dest)
 	dest->cloud_storage_password = copy_string(src->cloud_storage_password);
 	dest->cloud_storage_email = copy_string(src->cloud_storage_email);
 	dest->cloud_storage_email_encoded = copy_string(src->cloud_storage_email_encoded);
-	dest->facebook.access_token = copy_string(src->facebook.access_token);
-	dest->facebook.user_id = copy_string(src->facebook.user_id);
-	dest->facebook.album_id = copy_string(src->facebook.album_id);
 	dest->ffmpeg_executable = copy_string(src->ffmpeg_executable);
 }
 
