@@ -1,3 +1,6 @@
+- Desktop: remove support for the "Share on Facebook" feature.
+  Rationale: It is fairly easy to share images on Facebook, thus it was decided
+  that this feature is redundant and should be removed from Subsurface.
 - Planner: Add UI element for bailout planning for rebreather dives
 - Allow to filter for logged/planned dives
 - New LaTeX export option
