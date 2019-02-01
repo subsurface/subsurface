@@ -2934,55 +2934,6 @@ Hay dos posibilidades de exportar información de buceo desde _Subsurface_:
 
 - xref:S_Export_other[Exportar información de buceo a otros destinos o formatos]
 
-[[S_Facebook]]
-=== Exportar información de buceo a _Facebook_
-
-La exportación de inmersiones a _Facebook_ se maneja de forma diferente a otros
-tipos de exportación porque se requiere una
-conexión a esta red social y se necesita un usuario de _Facebook_ y su password.
-Si, desde el menú principal, seleccionamos _Compartir -> Conectar a ->
-Facebook_ (imagen *A* siguiente), se nos presentará una pantalla de acceso
-(imagen *B* a continuación). Introducimos nuestro usuario y password de
-_Facebook_.
-Desde la ventana de _Subsurface_ es fácil saber si se tiene una conexión válida
-con _Facebook_. Desde el *Menú principal*, selecciona _Compartir_
-(ver imagen *A* a continuación). Normalmente la opción _Facebook_ está
-desactivada, pero, si hay una conexión establecida, la opción está activa y
-puede ser seleccionada.
-Tras haber establecido una conexión con _Facebook_, se mostrará un panel con
-un mensaje: "_Para desconectar Subsurface de tu cuenta de Facebook, utiliza la
-entrada del menú 'Compartir'_."
-Cierra este panel.
-
-image::images/facebook1.jpg["Figure: Facebook login",align="center"]
-
-Habiendo establecido una conexión a _Facebook_, transferir un perfil al
-historial es fácil.
-Selecciona en la *Lista de Inmersiones* de _Subsurface_ el buceo que quieras
-transferir; entonces, desde el *Menú* selecciona _Compartir -> Facebook_,
-aparecerá un diálogo en el que se definirá la cantidad de información
-adicional que se desea compartir en el historial junto con el perfil (ver imagen
-*A*, a continuación). Se necesita proporcionar el nombre de un álbum de _Facebook_
-para poder enviar el perfil de inmersión. Las casillas seleccionables de la
-izquierda nos permiten seleccionar la información que vamos a enviar. Esta
-información se muestra en la ventana de texto de la derecha (ver imagen *A*
-a continuación). El mensaje que se va a enviar se puede editar directamente en
-esta ventana de texto. Tras haber elegido la información y verificado lo que se va
-a subir, se selecciona el botón _OK_ lo que inicia la transferencia a _Facebook_.
-Unos momentos después aparecerá un mensaje indicando una transferencia correcta.
-
-El álbum creado y el post al historial se marcarán como privados. Para que
-los amigos puedan ver el post habrá que cambiar los permisos desde un acceso
-normal a _Facebook_ desde un navegador o desde la app de _Facebook_. Aunque
-esto suponga un paso de más, los desarrolladores entienden que esta es la mejor
-solución para evitar subidas no deseadas en el historial público.
-
-image::images/facebook2.jpg["Figure: Facebook data submission",align="center"]
-
-Si se considera necesario, cierra la conexión a _Facebook_, seleccionando
-desde el *Menú principal*, _Compartir -> Desconectar de -> Facebook_ (imagen
-*B* anterior).
-
 [[S_Export_other]]
 === Exportar información de buceo a otros destinos o formatos
 Para exportar a otros destinos,

@@ -29,9 +29,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/exif.cpp \
 	../../core/format.cpp \
 	../../core/gettextfromc.cpp \
-	../../core/isocialnetworkintegration.cpp \
 	../../core/metrics.cpp \
-	../../core/pluginmanager.cpp \
 	../../core/qt-init.cpp \
 	../../core/subsurfacesysinfo.cpp \
 	../../core/windowtitleupdate.cpp \
@@ -82,7 +80,6 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/settings/qPrefDisplay.cpp \
 	../../core/settings/qPrefDiveComputer.cpp \
 	../../core/settings/qPrefDivePlanner.cpp \
-	../../core/settings/qPrefFacebook.cpp \
 	../../core/settings/qPrefGeneral.cpp \
 	../../core/settings/qPrefGeocoding.cpp \
 	../../core/settings/qPrefLanguage.cpp \
@@ -178,10 +175,8 @@ HEADERS += \
 	../../core/gaspressures.h \
 	../../core/gettext.h \
 	../../core/gettextfromc.h \
-	../../core/isocialnetworkintegration.h \
 	../../core/membuffer.h \
 	../../core/metrics.h \
-	../../core/pluginmanager.h \
 	../../core/qt-gui.h \
 	../../core/sha1.h \
 	../../core/strndup.h \
@@ -202,7 +197,6 @@ HEADERS += \
 	../../core/settings/qPrefDisplay.h \
 	../../core/settings/qPrefDiveComputer.h \
 	../../core/settings/qPrefDivePlanner.h \
-	../../core/settings/qPrefFacebook.h \
 	../../core/settings/qPrefGeneral.h \
 	../../core/settings/qPrefGeocoding.h \
 	../../core/settings/qPrefLanguage.h \

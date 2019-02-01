@@ -5,7 +5,6 @@
 #include "qPrefDisplay.h"
 #include "qPrefDiveComputer.h"
 #include "qPrefDivePlanner.h"
-#include "qPrefFacebook.h"
 #include "qPrefGeneral.h"
 #include "qPrefGeocoding.h"
 #include "qPrefLanguage.h"
@@ -51,7 +50,6 @@ void qPref::loadSync(bool doSync)
 	qPrefDisplay::loadSync(doSync);
 	qPrefDiveComputer::loadSync(doSync);
 	qPrefDivePlanner::loadSync(doSync);
-	qPrefFacebook::loadSync(doSync);
 	qPrefGeneral::loadSync(doSync);
 	qPrefGeocoding::loadSync(doSync);
 	qPrefLanguage::loadSync(doSync);
@@ -76,7 +74,6 @@ void qPref::registerQML(QQmlEngine *engine)
 		ct->setContextProperty("PrefDisplay", qPrefDisplay::instance());
 		ct->setContextProperty("PrefDiveComputer", qPrefDiveComputer::instance());
 		ct->setContextProperty("PrefDivePlanner", qPrefDivePlanner::instance());
-		ct->setContextProperty("PrefFacebook", qPrefFacebook::instance());
 		ct->setContextProperty("PrefGeneral", qPrefGeneral::instance());
 		ct->setContextProperty("PrefGeocoding", qPrefGeocoding::instance());
 		ct->setContextProperty("PrefLanguage", qPrefLanguage::instance());

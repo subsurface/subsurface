@@ -23,12 +23,6 @@ typedef struct
 } partial_pressure_graphs_t;
 
 typedef struct {
-	const char *access_token;
-	const char *user_id;
-	const char *album_id;
-} facebook_prefs_t;
-
-typedef struct {
 	enum taxonomy_category category[3];
 } geocoding_prefs_t;
 
@@ -110,9 +104,6 @@ struct preferences {
 	double      font_size;
 	double      mobile_scale;
 	bool        show_developer;
-
-	// ********** Facebook **********
-	facebook_prefs_t facebook;
 
 	// ********** General **********
 	bool        auto_recalculate_thumbnails;

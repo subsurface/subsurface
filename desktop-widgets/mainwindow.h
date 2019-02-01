@@ -174,11 +174,6 @@ slots:
 	// should only be enabled when the profile's visible.
 	void disableShortcuts(bool disablePaste = true);
 	void enableShortcuts();
-
-	void socialNetworkRequestConnect();
-	void socialNetworkRequestUpload();
-	void facebookLoggedIn();
-	void facebookLoggedOut();
 	void updateVariations(QString);
 
 
