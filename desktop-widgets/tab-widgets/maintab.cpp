@@ -361,6 +361,15 @@ void MainTab::divesEdited(const QVector<dive *> &, DiveField field)
 	case DiveField::MODE:
 		updateMode(current_dive);
 		break;
+	case DiveField::DATETIME:
+		updateDateTime(current_dive);
+		MainWindow::instance()->graphics->dateTimeChanged();
+		DivePlannerPointsModel::instance()->getDiveplan().when = current_dive->when;
+		break;
+	case DiveField::DIVESITE:
+		updateDiveSite(current_dive);
+		emit diveSiteChanged();
+		break;
 	default:
 		break;
 	}
@@ -421,6 +430,35 @@ void MainTab::updateMode(struct dive *d)
 	MainWindow::instance()->graphics->recalcCeiling();
 }
 
+void MainTab::updateDateTime(struct dive *d)
+{
+	// Subsurface always uses "local time" as in "whatever was the local time at the location"
+	// so all time stamps have no time zone information and are in UTC
+	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000*d->when, Qt::UTC);
+	localTime.setTimeSpec(Qt::UTC);
+	ui.dateEdit->setDate(localTime.date());
+	ui.timeEdit->setTime(localTime.time());
+}
+
+void MainTab::updateDiveSite(struct dive *d)
+{
+	struct dive_site *ds = NULL;
+	ds = d->dive_site;
+	if (ds) {
+		ui.location->setCurrentDiveSite(ds);
+		ui.locationTags->setText(constructLocationTags(&ds->taxonomy, true));
+
+		if (ui.locationTags->text().isEmpty() && has_location(&ds->location)) {
+			const char *coords = printGPSCoords(&ds->location);
+			ui.locationTags->setText(coords);
+			free((void *)coords);
+		}
+	} else {
+		ui.location->clear();
+		ui.locationTags->clear();
+	}
+}
+
 void MainTab::updateDiveInfo(bool clear)
 {
 	ui.location->refreshDiveSiteCache();
@@ -449,28 +487,8 @@ void MainTab::updateDiveInfo(bool clear)
 	updateMode(&displayed_dive);
 
 	if (!clear) {
-		struct dive_site *ds = NULL;
-		ds = displayed_dive.dive_site;
-		if (ds) {
-			ui.location->setCurrentDiveSite(ds);
-			ui.locationTags->setText(constructLocationTags(&ds->taxonomy, true));
-
-			if (ui.locationTags->text().isEmpty() && has_location(&ds->location)) {
-				const char *coords = printGPSCoords(&ds->location);
-				ui.locationTags->setText(coords);
-				free((void *)coords);
-			}
-		} else {
-			ui.location->clear();
-			ui.locationTags->clear();
-		}
-
-		// Subsurface always uses "local time" as in "whatever was the local time at the location"
-		// so all time stamps have no time zone information and are in UTC
-		QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000*displayed_dive.when, Qt::UTC);
-		localTime.setTimeSpec(Qt::UTC);
-		ui.dateEdit->setDate(localTime.date());
-		ui.timeEdit->setTime(localTime.time());
+		updateDiveSite(&displayed_dive);
+		updateDateTime(&displayed_dive);
 		if (MainWindow::instance() && MainWindow::instance()->diveList->selectedTrips().count() == 1) {
 			// Remember the tab selected for last dive
 			if (lastSelectedDive)
@@ -615,7 +633,6 @@ void MainTab::updateDiveInfo(bool clear)
 		/* unset the special value text for date and time, just in case someone dove at midnight */
 		ui.dateEdit->setSpecialValueText(QString(""));
 		ui.timeEdit->setSpecialValueText(QString(""));
-
 	} else {
 		/* clear the fields */
 		clearTabs();
@@ -701,22 +718,18 @@ void MainTab::refreshDisplayedDiveSite()
 
 // when this is called we already have updated the current_dive and know that it exists
 // there is no point in calling this function if there is no current dive
-struct dive_site *MainTab::updateDiveSite(struct dive_site *pickedDs, dive *d)
+struct dive_site *MainTab::getDiveSite(struct dive_site *pickedDs, struct dive_site *origDs)
 {
-	if (!d)
-		return 0;
-
 	if (ui.location->text().isEmpty())
 		return 0;
 
 	if (!pickedDs)
 		return 0;
 
-	struct dive_site *origDs = d->dive_site;
-	bool createdNewDive = false;
-
 	if (pickedDs == origDs)
 		return origDs;
+
+	bool createdNewDive = false;
 
 	if (pickedDs == RECENTLY_ADDED_DIVESITE) {
 		QString name = ui.location->text().isEmpty() ? tr("New dive site") : ui.location->text();
@@ -738,7 +751,6 @@ struct dive_site *MainTab::updateDiveSite(struct dive_site *pickedDs, dive *d)
 		}
 	}
 
-	d->dive_site = pickedDs;
 	qDebug() << "Setting the dive site id on the dive:" << pickedDs->uuid;
 	return pickedDs;
 }
@@ -763,7 +775,7 @@ void MainTab::acceptChanges()
 	struct dive *d;
 	bool do_replot = false;
 
-	if(ui.location->hasFocus()) {
+	if (ui.location->hasFocus()) {
 		this->setFocus();
 	}
 
@@ -775,7 +787,7 @@ void MainTab::acceptChanges()
 	ui.equipmentTab->setEnabled(true);
 	if (editMode == ADD) {
 		// make sure that the dive site is handled as well
-		updateDiveSite(ui.location->currDiveSite(), &displayed_dive);
+		displayed_dive.dive_site = getDiveSite(ui.location->currDiveSite(), displayed_dive.dive_site);
 		copyTagsToDisplayedDive();
 
 		Command::addDive(&displayed_dive, autogroup, true);
@@ -816,11 +828,9 @@ void MainTab::acceptChanges()
 			copy_samples(&displayed_dive.dc, &current_dive->dc);
 			addedId = displayed_dive.id;
 		}
-		struct dive *cd = current_dive;
 		// now check if something has changed and if yes, edit the selected dives that
 		// were identical with the master dive shown (and mark the divelist as changed)
-		if (displayed_dive.dive_site != cd->dive_site)
-			MODIFY_DIVES(selectedDives, EDIT_VALUE(dive_site));
+		struct dive *cd = current_dive;
 
 		// three text fields are somewhat special and are represented as tags
 		// in the UI - they need somewhat smarter handling
@@ -887,25 +897,6 @@ void MainTab::acceptChanges()
 			}
 		}
 
-		// update the dive site for the selected dives that had the same dive site as the current dive
-		struct dive_site *oldDs = cd->dive_site;
-		struct dive_site *newDs = nullptr;
-		MODIFY_DIVES(selectedDives,
-			if (mydive->dive_site == current_dive->dive_site)
-				newDs = updateDiveSite(!newDs ? ui.location->currDiveSite() : newDs, mydive);
-		);
-		if (oldDs && !is_dive_site_used(oldDs, false)) {
-			if (verbose)
-				qDebug() << "delete now unused dive site" << (oldDs->name ? oldDs->name : "without name");
-			delete_dive_site(oldDs);
-			MapWidget::instance()->reload();
-		}
-		// the code above can change the correct uuid for the displayed dive site - and the
-		// code below triggers an update of the display without re-initializing displayed_dive
-		// so let's make sure here that our data is consistent now that we have handled the
-		// dive sites
-		displayed_dive.dive_site = current_dive->dive_site;
-
 		// each dive that was selected might have had the temperatures in its active divecomputer changed
 		// so re-populate the temperatures - easiest way to do this is by calling fixup_dive
 		for_each_dive (i, d) {
@@ -914,10 +905,6 @@ void MainTab::acceptChanges()
 				invalidate_dive_cache(d);
 			}
 		}
-
-		timestamp_t offset = displayed_dive.when - cd->when;
-		if (offset)
-			Command::shiftTime(selectedDives, (int)offset);
 	}
 	if (editMode == MANUALLY_ADDED_DIVE) {
 		// we just added or edited the dive, let fixup_dive() make
@@ -1133,28 +1120,35 @@ void MainTab::on_watertemp_editingFinished()
 			       current_dive->watertemp.mkelvin);
 }
 
+// Editing of the dive time is different. If multiple dives are edited,
+// all dives are shifted by an offset.
+static void shiftTime(QDateTime &dateTime)
+{
+	timestamp_t when = dateTime.toTime_t();
+	if (current_dive && current_dive->when != when) {
+		timestamp_t offset = current_dive->when - when;
+		Command::shiftTime(getSelectedDivesCurrentLast(), (int)offset);
+	}
+}
+
 void MainTab::on_dateEdit_dateChanged(const QDate &date)
 {
-	if (editMode == IGNORE || acceptingEdit == true)
+	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
 		return;
-	markChangedWidget(ui.dateEdit);
-	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*displayed_dive.when, Qt::UTC);
+	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*current_dive->when, Qt::UTC);
 	dateTime.setTimeSpec(Qt::UTC);
 	dateTime.setDate(date);
-	DivePlannerPointsModel::instance()->getDiveplan().when = displayed_dive.when = dateTime.toTime_t();
-	emit dateTimeChanged();
+	shiftTime(dateTime);
 }
 
 void MainTab::on_timeEdit_timeChanged(const QTime &time)
 {
-	if (editMode == IGNORE || acceptingEdit == true)
+	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
 		return;
-	markChangedWidget(ui.timeEdit);
-	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*displayed_dive.when, Qt::UTC);
+	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*current_dive->when, Qt::UTC);
 	dateTime.setTimeSpec(Qt::UTC);
 	dateTime.setTime(time);
-	DivePlannerPointsModel::instance()->getDiveplan().when = displayed_dive.when = dateTime.toTime_t();
-	emit dateTimeChanged();
+	shiftTime(dateTime);
 }
 
 void MainTab::copyTagsToDisplayedDive()
@@ -1291,39 +1285,13 @@ void MainTab::on_tagWidget_textChanged()
 	markChangedWidget(ui.tagWidget);
 }
 
-void MainTab::on_location_textChanged()
-{
-	if (editMode == IGNORE)
-		return;
-
-	// we don't want to act on the edit until editing is finished,
-	// but we want to mark the field so it's obvious it is being edited
-	QString currentLocation;
-	struct dive_site *ds = displayed_dive.dive_site;
-	if (ds)
-		currentLocation = ds->name;
-	if (ui.location->text() != currentLocation)
-		markChangedWidget(ui.location);
-}
-
 void MainTab::on_location_diveSiteSelected()
 {
-	if (editMode == IGNORE || acceptingEdit == true)
+	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
 		return;
 
-	if (ui.location->text().isEmpty()) {
-		displayed_dive.dive_site = nullptr;
-		markChangedWidget(ui.location);
-		emit diveSiteChanged();
-		return;
-	} else {
-		if (ui.location->currDiveSite() != displayed_dive.dive_site) {
-			markChangedWidget(ui.location);
-		} else {
-			QPalette p;
-			ui.location->setPalette(p);
-		}
-	}
+	struct dive_site *newDs = getDiveSite(ui.location->currDiveSite(), current_dive->dive_site);
+	Command::editDiveSite(getSelectedDivesCurrentLast(), newDs, current_dive->dive_site);
 }
 
 void MainTab::on_diveTripLocation_textEdited(const QString& text)

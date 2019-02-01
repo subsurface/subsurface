@@ -101,6 +101,15 @@ public:
 	DiveField fieldId() const override;
 };
 
+class EditDiveSite : public EditBase<struct dive_site *> {
+public:
+	using EditBase<struct dive_site *>::EditBase;	// Use constructor of base class.
+	void set(struct dive *d, struct dive_site *value) const override;
+	struct dive_site *data(struct dive *d) const override;
+	QString fieldName() const override;
+	DiveField fieldId() const override;
+};
+
 class EditMode : public EditBase<int> {
 	int index;
 public:

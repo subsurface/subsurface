@@ -68,6 +68,8 @@ template
 EditBase<QString>::EditBase(const QVector<dive *> &dives, QString oldValue, QString newValue);
 template
 EditBase<int>::EditBase(const QVector<dive *> &dives, int oldValue, int newValue);
+template
+EditBase<struct dive_site *>::EditBase(const QVector<dive *> &dives, struct dive_site *oldValue, struct dive_site *newValue);
 
 // Undo and redo do the same as just the stored value is exchanged
 template<typename T>
@@ -204,6 +206,27 @@ QString EditWaterTemp::fieldName() const
 DiveField EditWaterTemp::fieldId() const
 {
 	return DiveField::WATER_TEMP;
+}
+
+// ***** DiveSite *****
+void EditDiveSite::set(struct dive *d, struct dive_site *dive_site) const
+{
+	d->dive_site = dive_site;
+}
+
+struct dive_site *EditDiveSite::data(struct dive *d) const
+{
+	return d->dive_site;
+}
+
+QString EditDiveSite::fieldName() const
+{
+	return tr("dive site");
+}
+
+DiveField EditDiveSite::fieldId() const
+{
+	return DiveField::DIVESITE;
 }
 
 // ***** Mode *****

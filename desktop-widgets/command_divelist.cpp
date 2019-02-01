@@ -690,6 +690,7 @@ void ShiftTime::redoit()
 			sort_dive_table(&trip->dives); // Keep the trip-table in order
 		emit diveListNotifier.divesTimeChanged(trip, timeChanged, divesInTrip);
 	});
+	emit diveListNotifier.divesEdited(diveList, DiveField::DATETIME);
 
 	// Negate the time-shift so that the next call does the reverse
 	timeChanged = -timeChanged;

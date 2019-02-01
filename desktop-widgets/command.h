@@ -40,6 +40,7 @@ void editRating(const QVector<dive *> dives, int newValue, int oldValue);
 void editVisibility(const QVector<dive *> dives, int newValue, int oldValue);
 void editAirTemp(const QVector<dive *> dives, int newValue, int oldValue);
 void editWaterTemp(const QVector<dive *> dives, int newValue, int oldValue);
+void editDiveSite(const QVector<dive *> dives, struct dive_site *newValue, struct dive_site *oldValue);
 
 } // namespace Command
 
