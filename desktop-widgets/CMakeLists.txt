@@ -28,7 +28,7 @@ set (SUBSURFACE_UI
 	filterwidget2.ui
 	findmovedimagesdialog.ui
 	listfilter.ui
-	locationInformation.ui
+	locationinformation.ui
 	mainwindow.ui
 	plannerDetails.ui
 	plannerSettings.ui
