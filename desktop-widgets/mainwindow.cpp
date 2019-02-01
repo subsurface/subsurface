@@ -22,10 +22,8 @@
 #include "core/divesitehelpers.h"
 #include "core/gettextfromc.h"
 #include "core/git-access.h"
-#include "core/isocialnetworkintegration.h"
 #include "core/import-csv.h"
 #include "core/planner.h"
-#include "core/pluginmanager.h"
 #include "core/qthelper.h"
 #include "core/subsurface-string.h"
 #include "core/version.h"
@@ -74,11 +72,6 @@
 
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
-#endif
-
-#if defined(FBSUPPORT)
-#include "plugins/facebook/facebook_integration.h"
-#include "plugins/facebook/facebookconnectwidget.h"
 #endif
 
 namespace {
@@ -380,63 +373,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupSocialNetworkMenu()
 {
-#ifdef FBSUPPORT
-	connections = new QMenu(tr("Connect to"));
-	FacebookPlugin *facebookPlugin = new FacebookPlugin();
-	QAction *toggle_connection = new QAction(this);
-	QObject *obj = facebookPlugin;
-	toggle_connection->setText(facebookPlugin->socialNetworkName());
-	toggle_connection->setIcon(QIcon(facebookPlugin->socialNetworkIcon()));
-	toggle_connection->setData(QVariant::fromValue(obj));
-	connect(toggle_connection, SIGNAL(triggered()), this, SLOT(socialNetworkRequestConnect()));
-	FacebookManager *fb = FacebookManager::instance();
-	connect(fb, &FacebookManager::justLoggedIn, this, &MainWindow::facebookLoggedIn);
-	connect(fb, &FacebookManager::justLoggedOut, this, &MainWindow::facebookLoggedOut);
-	connect(fb, &FacebookManager::sendMessage, [this](const QString& msg) {
-		statusBar()->showMessage(msg, 10000); // show message for 10 secs on the statusbar.
-	});
-	share_on_fb = new QAction(this);
-	share_on_fb->setText(facebookPlugin->socialNetworkName());
-	share_on_fb->setIcon(QIcon(facebookPlugin->socialNetworkIcon()));
-	share_on_fb->setData(QVariant::fromValue(obj));
-	share_on_fb->setEnabled(false);
-	ui.menuShare_on->addAction(share_on_fb);
-	connections->addAction(toggle_connection);
-	connect(share_on_fb, SIGNAL(triggered()), this, SLOT(socialNetworkRequestUpload()));
-	ui.menuShare_on->addSeparator();
-	ui.menuShare_on->addMenu(connections);
-	ui.menubar->show();
-#endif
-}
-
-void MainWindow::facebookLoggedIn()
-{
-	connections->setTitle(tr("Disconnect from"));
-	share_on_fb->setEnabled(true);
-}
-
-void MainWindow::facebookLoggedOut()
-{
-	connections->setTitle(tr("Connect to"));
-	share_on_fb->setEnabled(false);
-}
-
-void MainWindow::socialNetworkRequestConnect()
-{
-	qDebug() << "Requesting connect on the social network";
-	QAction *action = qobject_cast<QAction*>(sender());
-	ISocialNetworkIntegration *plugin = qobject_cast<ISocialNetworkIntegration*>(action->data().value<QObject*>());
-	if (plugin->isConnected())
-		plugin->requestLogoff();
-	else
-		plugin->requestLogin();
-}
-
-void MainWindow::socialNetworkRequestUpload()
-{
-	QAction *action = qobject_cast<QAction*>(sender());
-	ISocialNetworkIntegration *plugin = action->data().value<ISocialNetworkIntegration*>();
-	plugin->requestUpload();
 }
 
 void MainWindow::setStateProperties(const QByteArray& state, const PropertyList& tl, const PropertyList& tr, const PropertyList& bl, const PropertyList& br)

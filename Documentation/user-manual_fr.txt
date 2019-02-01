@@ -2987,53 +2987,6 @@ Il y a deux façons d'exporter des informations de plongée depuis Subsurface:
 - xref:S_Export_other[Exporter des informations de plongée vers d'autres
   destinations ou formats]
 
-[[S_Facebook]]
-=== Export des informations de plongée vers _Facebook_
-
-L'export des plongées vers _Facebook_ est géré différemment des autres types
-d'export car une connexion vers _Facebook_ est nécessaire, nécessitant un
-identifiant et un mot de passe. À partir du menu principal, sélectionnez
-_Partager sur -> Connecter à -> Facebook_ (image *A* ci-dessous). Un écran
-de connexion s'affiche (image *B* ci dessous). Entrez l'identifiant et le
-mot de passe _Facebook_. Depuis la fenêtre _Subsurface_, il est facile de
-vérifier si _Subsurface_ a une connection valide vers _Facebook_ : Depuis le
-"Menu principal", sélectionnez _Partager sur_ (image *A*
-ci-dessous). Normalement, l'option _Facebook_ est grisée. Mais si une
-connection vers _Facebook_ existe, cette option est active (c'est à dire
-écrit en noir et sélectionnable).
-
-Once logged into to _Facebook_ , a panel is shown with a message: "_To
-disconnect Subsurface from your Facebook account, use the 'Share on' menu
-entry_." Close this message panel.
-
-image::images/facebook1.jpg["Figure: Facebook login", align="center"]
-
-Une fois qu'une connexion à _Facebook_ est établie, transférer un profil de
-plongée vers _Facebook_ est facile. Dans le panneau *Liste des plongées* de
-_Subsurface_, sélectionnez la plongée à transférer. Ensuite, à partir du
-*menu principal*, sélectionnez _Partager sur -> Facebook_. Une fenêtre
-s'affiche, pour déterminer quelles informations seront transférées avec le
-profil de plongée (image *A* ci-dessous). Pour transférer un profil de
-plongée vers _Facebook_, le nom d'un album _Facebook_ doit être fourni. Les
-cases à cocher sur la partie gauche permettent de sélectionner des
-informations supplémentaires à transférer avec le profil de plongée. Ces
-informations sont affichées dans le champs de texte sur la partie droite du
-panneau. (image *A* ci dessous). Personnalisez le message qui sera envoyé
-avec le profil de plongée en modifiant les informations. Une fois les
-informations supplémentaires ajoutées et vérifiées, sélectionner le bouton
-_OK_ qui effectue le transfert vers _Facebook_. Après le transfert, une
-fenêtre de confirmation apparait ,indiquant le succès du transfert.
-
-À la fois l'album créé et la publication sur votre ligne temporelle seront
-marquées comme privés. Pour que vos amis puissent la voir, connectez-vous à
-_Facebook_ depuis un navigateur ou l'application Facebook et modifiez les
-permissions.
-
-image::images/facebook2.jpg["Figure: Facebook data submission", align="center"]
-
-If required, then close the _Facebook_ connection by selecting, from the
-*Main Menu*, _Share on -> Disconnect from -> Facebook_ (image *B* above).
-
 [[S_Export_other]]
 === Exporter des informations de plongée vers d'autres destinations ou formats
 For non-_Facebook exports_, the export function can be found by selecting

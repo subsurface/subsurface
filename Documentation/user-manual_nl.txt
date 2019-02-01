@@ -2545,49 +2545,6 @@ Er zijn twee manieren om duik informatie uit _Subsurface_ te exporteren:
 
 - xref:S_Export_other[Exporteer duikinformatie naar andere bestemmingen of formaten]
 
-[[S_Facebook]]
-=== Exporteer duikinformatie naar _Facebook_
-
-Exporteren naar _Facebook_ werkt op een andere manier dan andere vormen van
-export, met name omdat er een verbinding met _Facebook_ aanwezig moet zijn die
-is ingelogd. Selecteer vanuit het hoofdmenu _Deel via -> Facebook_ (zie figuur
-*A* hieronder). Een inlogscherm voor _Facebook_  verschijnt (zie figuur
-*B* hieronder), en log in bij _Facebook_.
-
-Het is eenvoudig te zien in het hoofdmenu of er een verbinding met _Facebook_
-actief is. In het _Deel via_ menu is de _Facebook knop_ grijs en niet-selecteerbaar
-als er geen verbinding is (figuur *A* hieronder).
-
-Eenmaal ingelogd op _Facebook_ wordt er een paneel getoond met het bericht:
-"Gebruik het 'Deel via' menu om de verbinding van Subsurface met uw Facebook
-account te sluiten.". Sluit dit paneel.
-
-image::images/facebook1.jpg["Figuur: Facebook login",align="center"]
-
-Met de verbinding met _Facebook_ geactiveerd is het overdragen van een duik naar
-_Facebook_ eenvoudig. Selecteer eerst de duik in de *Duiklijst*. Selecteer dan
-uit het hoofdmenu _Deel via -> Facebook_. Er verschijnt een dialoog, waarin
-aangegeven kan worden welke informatie naast het duikprofiel, moet worden
-overgedragen naar _Facebook_ (zie figuur *A* hieronder).
-
-Om een duikprofiel naar _Facebook_ te exporteren is de naam van een (foto) album
-nodig. De keuzevakjes aan de linker zijde bepalen welke data uit het logboek
-eveneens wordt geëxporteerd. Deze verschijnen in het tekst veld aan de rechter zijde,
-welke verder handmatig kan worden aangepast. Nadat alles naar wens is ingevuld,
-kan via de _OK_ knop de feitelijke export worden gedaan. Als de export gereed is
-volgt een bevestiging.
-
-Zowel het album als de geëxporteerde profiel (met annotaties) is in _Facebook_ als
-privé aangemerkt, en de rechten van de geëxporteerde data moeten dus handmatig
-in _Facebook_ worden gezet zoals gewenst.
-
-image::images/facebook2.jpg["Figuur: Facebook data submission",align="center"]
-
-De verbinding met _Facebook_ kan nu worden afgesloten als dat gewenst is. Gebruik
-hiervoor uit het hoofdmenu _Deel via -> Verbinding verbreken met -> Facebook_ (
-figuur *B* hierboven).
-
-
 [[S_Export_other]]
 === Exporteer duikinformatie naar andere bestemmingen of formaten
 Andere dan _Facebook_ exports kunnen gevonden worden door in het hoofdmenu
