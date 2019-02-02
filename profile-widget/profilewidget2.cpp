@@ -827,7 +827,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures, 
 	if (doClearPictures)
 		clearPictures();
 	else
-		plotPicturesInternal(plotPicturesSynchronously);
+		plotPicturesInternal(d, plotPicturesSynchronously);
 
 	toolTipItem->refresh(mapToScene(mapFromGlobal(QCursor::pos())));
 #endif
@@ -2228,21 +2228,21 @@ void ProfileWidget2::updateThumbnailXPos(PictureEntry &e)
 // This function resets the picture thumbnails of the current dive.
 void ProfileWidget2::plotPictures()
 {
-	plotPicturesInternal(false);
+	plotPicturesInternal(current_dive, false);
 }
 
-void ProfileWidget2::plotPicturesInternal(bool synchronous)
+void ProfileWidget2::plotPicturesInternal(struct dive *d, bool synchronous)
 {
 	pictures.clear();
 	if (currentState == ADD || currentState == PLAN)
 		return;
 
-	// Fetch all pictures of the current dive, but consider only those that are within the dive time.
+	// Fetch all pictures of the dive, but consider only those that are within the dive time.
 	// For each picture, create a PictureEntry object in the pictures-vector.
 	// emplace_back() constructs an object at the end of the vector. The parameters are passed directly to the constructor.
-	// Note that FOR_EACH_PICTURE handles current_dive being null gracefully.
-	FOR_EACH_PICTURE(current_dive) {
-		if (picture->offset.seconds > 0 && picture->offset.seconds <= current_dive->duration.seconds)
+	// Note that FOR_EACH_PICTURE handles d being null gracefully.
+	FOR_EACH_PICTURE(d) {
+		if (picture->offset.seconds > 0 && picture->offset.seconds <= d->duration.seconds)
 			pictures.emplace_back(picture->offset, QString(picture->filename), scene(), synchronous);
 	}
 	if (pictures.empty())

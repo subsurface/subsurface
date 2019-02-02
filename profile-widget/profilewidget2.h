@@ -173,7 +173,7 @@ private: /*methods*/
 	void createPPGas(PartialPressureGasItem *item, int verticalColumn, color_index_t color, color_index_t colorAlert,
 			 const double *thresholdSettingsMin, const double *thresholdSettingsMax);
 	void clearPictures();
-	void plotPicturesInternal(bool synchronous);
+	void plotPicturesInternal(struct dive *d, bool synchronous);
 private:
 	DivePlotDataModel *dataModel;
 	int zoomLevel;
