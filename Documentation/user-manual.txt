@@ -2759,6 +2759,8 @@ A dive log or part of it can be saved in several formats:
 * _CSV dive profile_, that includes a large amount of detail for each dive, including
   the depth profile, temperature and pressure information of each dive.
 
+* _dive profile_, saves the Subsurface dive profile as a .png file
+
 * _HTML_ format, in which the dive(s) are stored in HTML files, readable
   with an Internet browser. Most modern web browsers are supported, but JavaScript
   must be enabled. The HTML export cannot be changed or edited.

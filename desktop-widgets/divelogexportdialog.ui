@@ -182,6 +182,16 @@
            </widget>
           </item>
           <item>
+           <widget class="QRadioButton" name="exportProfile">
+            <property name="text">
+             <string>dive profile</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">exportGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item>
            <widget class="QRadioButton" name="exportWorldMap">
             <property name="text">
              <string>Worldmap</string>
