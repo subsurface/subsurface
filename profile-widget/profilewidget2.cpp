@@ -165,7 +165,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	addActionShortcut(Qt::Key_Right, &ProfileWidget2::keyRightAction);
 
 	connect(Thumbnailer::instance(), &Thumbnailer::thumbnailChanged, this, &ProfileWidget2::updateThumbnail, Qt::QueuedConnection);
-	connect(DivePictureModel::instance(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(plotPictures()));
+	connect(DivePictureModel::instance(), &DivePictureModel::rowsInserted, this, &ProfileWidget2::plotPictures);
 	connect(DivePictureModel::instance(), &DivePictureModel::picturesRemoved, this, &ProfileWidget2::removePictures);
 	connect(DivePictureModel::instance(), &DivePictureModel::modelReset, this, &ProfileWidget2::plotPictures);
 #endif // SUBSURFACE_MOBILE
@@ -548,7 +548,7 @@ void ProfileWidget2::resetZoom()
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
-void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
+void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures, bool plotPicturesSynchronously)
 {
 	static bool firstCall = true;
 #ifndef SUBSURFACE_MOBILE
@@ -827,7 +827,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 	if (doClearPictures)
 		clearPictures();
 	else
-		plotPictures();
+		plotPicturesInternal(plotPicturesSynchronously);
 
 	toolTipItem->refresh(mapToScene(mapFromGlobal(QCursor::pos())));
 #endif
@@ -2153,7 +2153,7 @@ void ProfileWidget2::updateThumbnail(QString filename, QImage thumbnail, duratio
 }
 
 // Create a PictureEntry object and add its thumbnail to the scene if profile pictures are shown.
-ProfileWidget2::PictureEntry::PictureEntry(offset_t offsetIn, const QString &filenameIn, QGraphicsScene *scene) : offset(offsetIn),
+ProfileWidget2::PictureEntry::PictureEntry(offset_t offsetIn, const QString &filenameIn, QGraphicsScene *scene, bool synchronous) : offset(offsetIn),
 	duration(duration_t {0}),
 	filename(filenameIn),
 	thumbnail(new DivePictureItem)
@@ -2161,7 +2161,7 @@ ProfileWidget2::PictureEntry::PictureEntry(offset_t offsetIn, const QString &fil
 	int size = Thumbnailer::defaultThumbnailSize();
 	scene->addItem(thumbnail.get());
 	thumbnail->setVisible(prefs.show_pictures_in_profile);
-	QImage img = Thumbnailer::instance()->fetchThumbnail(filename).scaled(size, size, Qt::KeepAspectRatio);
+	QImage img = Thumbnailer::instance()->fetchThumbnail(filename, synchronous).scaled(size, size, Qt::KeepAspectRatio);
 	thumbnail->setPixmap(QPixmap::fromImage(img));
 	thumbnail->setFileUrl(filename);
 }
@@ -2228,6 +2228,11 @@ void ProfileWidget2::updateThumbnailXPos(PictureEntry &e)
 // This function resets the picture thumbnails of the current dive.
 void ProfileWidget2::plotPictures()
 {
+	plotPicturesInternal(false);
+}
+
+void ProfileWidget2::plotPicturesInternal(bool synchronous)
+{
 	pictures.clear();
 	if (currentState == ADD || currentState == PLAN)
 		return;
@@ -2238,7 +2243,7 @@ void ProfileWidget2::plotPictures()
 	// Note that FOR_EACH_PICTURE handles current_dive being null gracefully.
 	FOR_EACH_PICTURE(current_dive) {
 		if (picture->offset.seconds > 0 && picture->offset.seconds <= current_dive->duration.seconds)
-			pictures.emplace_back(picture->offset, QString(picture->filename), scene());
+			pictures.emplace_back(picture->offset, QString(picture->filename), scene(), synchronous);
 	}
 	if (pictures.empty())
 		return;
@@ -2346,7 +2351,7 @@ void ProfileWidget2::dropEvent(QDropEvent *event)
 				// The parameters are passed directly to the contructor.
 				// The call returns an iterator to the new element (which might differ from
 				// the old iterator, since the buffer might have been reallocated).
-				newPos = pictures.emplace(newPos, offset, filename, scene());
+				newPos = pictures.emplace(newPos, offset, filename, scene(), false);
 				updateThumbnailXPos(*newPos);
 				calculatePictureYPositions();
 			}

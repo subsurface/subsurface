@@ -75,7 +75,7 @@ public:
 	ProfileWidget2(QWidget *parent = 0);
 	void resetZoom();
 	void scale(qreal sx, qreal sy);
-	void plotDive(struct dive *d = 0, bool force = false, bool clearPictures = false);
+	void plotDive(struct dive *d = 0, bool force = false, bool clearPictures = false, bool plotPicturesSynchronously = false);
 	void setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *vAxis, int vData, int hData, int zValue);
 	void setPrintMode(bool mode, bool grayscale = false);
 	bool getPrintMode();
@@ -173,6 +173,7 @@ private: /*methods*/
 	void createPPGas(PartialPressureGasItem *item, int verticalColumn, color_index_t color, color_index_t colorAlert,
 			 const double *thresholdSettingsMin, const double *thresholdSettingsMax);
 	void clearPictures();
+	void plotPicturesInternal(bool synchronous);
 private:
 	DivePlotDataModel *dataModel;
 	int zoomLevel;
@@ -240,7 +241,7 @@ private:
 		std::unique_ptr<DivePictureItem> thumbnail;
 		// For videos with known duration, we represent the duration of the video by a line
 		std::unique_ptr<QGraphicsRectItem> durationLine;
-		PictureEntry (offset_t offsetIn, const QString &filenameIn, QGraphicsScene *scene);
+		PictureEntry (offset_t offsetIn, const QString &filenameIn, QGraphicsScene *scene, bool synchronous);
 		bool operator< (const PictureEntry &e) const;
 	};
 	void updateThumbnailXPos(PictureEntry &e);
