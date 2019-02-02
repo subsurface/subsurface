@@ -10,6 +10,7 @@
 #include <QAction>
 #include <QDesktopServices>
 #include <QToolTip>
+#include <QClipboard>
 
 #include "core/file.h"
 #include "desktop-widgets/mainwindow.h"
@@ -490,6 +491,50 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 		COMPONENT_FROM_UI(cylinders);
 		COMPONENT_FROM_UI(weights);
 		selective_copy_dive(&displayed_dive, targetDive, *what, true);
+		QClipboard *clipboard = QApplication::clipboard();
+		QTextStream text;
+		QString cliptext;
+		text.setString(&cliptext);
+		if (what->divesite)
+			text << tr("Dive site: ") << displayed_dive.dive_site->name << "\n";
+		if (what->divemaster)
+			text << tr("Dive master: ") << displayed_dive.divemaster << "\n";
+		if (what->buddy)
+			text << tr("Buddy: ") << displayed_dive.buddy << "\n";
+		if (what->rating)
+			text << tr("Rating: ") + QString("*").repeated(displayed_dive.rating) << "\n";
+		if (what->visibility)
+			text << tr("Visibility: ") + QString("*").repeated(displayed_dive.visibility) << "\n";
+		if (what->notes)
+			text << tr("Notes:\n") << displayed_dive.notes << "\n";
+		if (what->suit)
+			text << tr("Suit: ") << displayed_dive.suit << "\n";
+		if (what-> tags) {
+			text << tr("Tags: ");
+			tag_entry *entry = displayed_dive.tag_list;
+			while (entry) {
+				text << entry->tag->name << " ";
+				entry = entry->next;
+			}
+			text << "\n";
+		}
+		if (what->cylinders) {
+			int cyl;
+			text << tr("Cylinders:\n");
+			for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+				if (is_cylinder_used(&displayed_dive, cyl))
+					text << displayed_dive.cylinder[cyl].type.description << " " << gasname(displayed_dive.cylinder[cyl].gasmix) << "\n";
+			}
+		}
+		if (what->weights) {
+			int w;
+			text << tr("Weights:\n");
+			for (w = 0; w < MAX_WEIGHTSYSTEMS; w++) {
+				if (displayed_dive.weightsystem[w].weight.grams)
+					text << displayed_dive.weightsystem[w].description << displayed_dive.weightsystem[w].weight.grams / 1000 << "kg\n";
+			}
+		}
+		clipboard->setText(cliptext);
 	}
 }
 
