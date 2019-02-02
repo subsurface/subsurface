@@ -220,17 +220,6 @@ MainTab::~MainTab()
 	}
 }
 
-void MainTab::setCurrentLocationIndex()
-{
-	if (current_dive) {
-		struct dive_site *ds = current_dive->dive_site;
-		if (ds)
-			ui.location->setCurrentDiveSite(ds);
-		else
-			ui.location->clear();
-	}
-}
-
 void MainTab::toggleTriggeredColumn()
 {
 	QAction *action = qobject_cast<QAction *>(sender());
