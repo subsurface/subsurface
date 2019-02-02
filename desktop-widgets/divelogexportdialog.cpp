@@ -254,7 +254,7 @@ void DiveLogExportDialog::exportProfile(const QString filename, const bool selec
 void DiveLogExportDialog::saveProfile(const struct dive *dive, const QString filename)
 {
 	ProfileWidget2 *profile = MainWindow::instance()->graphics;
-	profile->plotDive(dive, true);
+	profile->plotDive(dive, true, false, true);
 	profile->setToolTipVisibile(false);
 	QPixmap pix = profile->grab();
 	profile->setToolTipVisibile(true);

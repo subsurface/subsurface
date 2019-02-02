@@ -31,9 +31,13 @@ public:
 	static Thumbnailer *instance();
 
 	// Schedule a thumbnail for fetching or calculation.
-	// Returns a placeholder thumbnail. The actual thumbnail will be sent
-	// via a signal later.
-	QImage fetchThumbnail(const QString &filename);
+	// If synchronous is false, returns a placeholder thumbnail.
+	// The actual thumbnail will be sent via a signal later.
+	// If synchronous is true, try to fetch the actual thumbnail.
+	// In this mode only precalculated thumbnails or thumbnails
+	// from pictures are returned. Video extraction and remote
+	// images are not supported.
+	QImage fetchThumbnail(const QString &filename, bool synchronous);
 
 	// Schedule multiple thumbnails for forced recalculation
 	void calculateThumbnails(const QVector<QString> &filenames);
