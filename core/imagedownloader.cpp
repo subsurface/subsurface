@@ -456,8 +456,23 @@ void Thumbnailer::imageDownloadFailed(QString filename)
 	workingOn.remove(filename);
 }
 
-QImage Thumbnailer::fetchThumbnail(const QString &filename)
+QImage Thumbnailer::fetchThumbnail(const QString &filename, bool synchronous)
 {
+	if (synchronous) {
+		// In synchronous mode, first try the thumbnail cache.
+		Thumbnail thumbnail = getThumbnailFromCache(filename);
+		if (!thumbnail.img.isNull())
+			return thumbnail.img;
+
+		// If that didn't work, try to thumbnail the image.
+		thumbnail = getHashedImage(filename, false);
+		if (thumbnail.type == MEDIATYPE_STILL_LOADING || thumbnail.img.isNull())
+			return failImage; // No support for delayed thumbnails (web).
+
+		int size = maxThumbnailSize();
+		return thumbnail.img.scaled(size, size, Qt::KeepAspectRatio);
+	}
+
 	QMutexLocker l(&lock);
 
 	// We are not currently fetching this thumbnail - add it to the list.

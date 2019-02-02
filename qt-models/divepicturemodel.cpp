@@ -42,7 +42,7 @@ void DivePictureModel::updateThumbnails()
 {
 	updateZoom();
 	for (PictureEntry &entry: pictures)
-		entry.image = Thumbnailer::instance()->fetchThumbnail(entry.filename);
+		entry.image = Thumbnailer::instance()->fetchThumbnail(entry.filename, false);
 }
 
 void DivePictureModel::updateDivePictures()
