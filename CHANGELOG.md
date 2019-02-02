@@ -3,6 +3,7 @@
 - Desktop: make sure cloud storage email addresses are lower case only
 - Desktop: Fix editing of dive-time [#1975]
 - Export option for profile picture
+- Export: fix picture thumbnails [#1963]
 - Desktop: remove support for the "Share on Facebook" feature.
   Rationale: It is fairly easy to share images on Facebook, thus it was decided
   that this feature is redundant and should be removed from Subsurface.
