@@ -548,7 +548,7 @@ void ProfileWidget2::resetZoom()
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
-void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
+void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPictures)
 {
 	static bool firstCall = true;
 #ifndef SUBSURFACE_MOBILE

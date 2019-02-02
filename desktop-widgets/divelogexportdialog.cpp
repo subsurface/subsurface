@@ -167,6 +167,10 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 			filename = QFileDialog::getSaveFileName(this, tr("Export to TeX file"), lastDir, tr("TeX files") + " (*.tex)");
 			if (!filename.isNull() && !filename.isEmpty())
 				export_TeX(qPrintable(filename), ui->exportSelected->isChecked());
+		} else if (ui->exportProfile->isChecked()) {
+			filename = QFileDialog::getSaveFileName(this, tr("Save image depths"), lastDir);
+			if (!filename.isNull() && !filename.isEmpty())
+				exportProfile(qPrintable(filename), ui->exportSelected->isChecked());
 		}
 		break;
 	case 1:
@@ -227,6 +231,34 @@ void DiveLogExportDialog::export_depths(const char *filename, const bool selecte
 	free_buffer(&buf);
 }
 
+void DiveLogExportDialog::exportProfile(const QString filename, const bool selected_only)
+{
+	struct dive *dive;
+	int i;
+	int count = 0;
+	QFileInfo fi(filename);
+
+	for_each_dive (i, dive) {
+		if (selected_only && !dive->selected)
+			continue;
+		if (count)
+			saveProfile(dive, fi.completeBaseName().append(QString("-%1.").arg(count)).append(fi.suffix()));
+		else
+			saveProfile(dive, filename);
+		++count;
+	}
+}
+
+void DiveLogExportDialog::saveProfile(const struct dive *dive, const QString filename)
+{
+	ProfileWidget2 *profile = MainWindow::instance()->graphics;
+	profile->plotDive(dive, true);
+	profile->setToolTipVisibile(false);
+	QPixmap pix = profile->grab();
+	profile->setToolTipVisibile(true);
+	pix.save(filename);
+}
+
 void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_only)
 {
 	FILE *f;
@@ -275,14 +307,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		if (selected_only && !dive->selected)
 			continue;
 
-		ProfileWidget2 *profile = MainWindow::instance()->graphics;
-		profile->plotDive(dive, true);
-		profile->setToolTipVisibile(false);
-		QPixmap pix = QPixmap::grabWidget(profile);
-		profile->setToolTipVisibile(true);
-		pix.save(texdir.filePath(QString("profile%1.png").arg(dive->number)));
-
-
+		saveProfile(dive, texdir.filePath(QString("profile%1.png").arg(dive->number)));
 		struct tm tm;
 		utc_mkdate(dive->when, &tm);
 
