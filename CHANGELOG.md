@@ -1,4 +1,4 @@
-- Export option for profile picture
+- Desktop: Add export option for profile picture [#1962]
 - Export: fix picture thumbnails [#1963]
 - Desktop: remove support for the "Share on Facebook" feature.
   Rationale: It is fairly easy to share images on Facebook, thus it was decided

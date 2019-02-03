@@ -96,6 +96,8 @@ void DiveLogExportDialog::showExplanation()
 		ui->description->setText(tr("Write dive as TeX macros to file."));
 	} else if (ui->exportLaTeX->isChecked()) {
 		ui->description->setText(tr("Write dive as LaTeX macros to file."));
+	} else if (ui->exportProfile->isChecked()) {
+		ui->description->setText(tr("Write the profile image as PNG file."));
 	}
 }
 
@@ -170,7 +172,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 			if (!filename.isNull() && !filename.isEmpty())
 				export_TeX(qPrintable(filename), ui->exportSelected->isChecked(), ui->exportTeX->isChecked());
 		} else if (ui->exportProfile->isChecked()) {
-			filename = QFileDialog::getSaveFileName(this, tr("Save image depths"), lastDir);
+			filename = QFileDialog::getSaveFileName(this, tr("Save profile image"), lastDir);
 			if (!filename.isNull() && !filename.isEmpty())
 				exportProfile(qPrintable(filename), ui->exportSelected->isChecked());
 		}
@@ -233,18 +235,20 @@ void DiveLogExportDialog::export_depths(const char *filename, const bool selecte
 	free_buffer(&buf);
 }
 
-void DiveLogExportDialog::exportProfile(const QString filename, const bool selected_only)
+void DiveLogExportDialog::exportProfile(QString filename, const bool selected_only)
 {
 	struct dive *dive;
 	int i;
 	int count = 0;
+	if (!filename.endsWith(".png", Qt::CaseInsensitive))
+		filename = filename.append(".png");
 	QFileInfo fi(filename);
 
 	for_each_dive (i, dive) {
 		if (selected_only && !dive->selected)
 			continue;
 		if (count)
-			saveProfile(dive, fi.completeBaseName().append(QString("-%1.").arg(count)).append(fi.suffix()));
+			saveProfile(dive, fi.path() + QDir::separator() + fi.completeBaseName().append(QString("-%1.").arg(count)) + fi.suffix());
 		else
 			saveProfile(dive, filename);
 		++count;
