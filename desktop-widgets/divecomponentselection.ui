@@ -49,7 +49,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Which components would you like to copy</string>
+      <string>Which components would you like to copy?</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <property name="leftMargin">
@@ -67,34 +67,6 @@
       <property name="spacing">
        <number>0</number>
       </property>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="divesite">
-        <property name="text">
-         <string>Dive site</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QCheckBox" name="suit">
-        <property name="text">
-         <string>Suit</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QCheckBox" name="visibility">
-        <property name="text">
-         <string>Visibility</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QCheckBox" name="notes">
-        <property name="text">
-         <string>Notes</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="1">
        <widget class="QCheckBox" name="tags">
         <property name="text">
@@ -109,10 +81,38 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="divesite">
+        <property name="text">
+         <string>Dive site</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QCheckBox" name="visibility">
+        <property name="text">
+         <string>Visibility</string>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="1">
        <widget class="QCheckBox" name="cylinders">
         <property name="text">
          <string>Cylinders</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="buddy">
+        <property name="text">
+         <string>Buddy</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QCheckBox" name="notes">
+        <property name="text">
+         <string>Notes</string>
         </property>
        </widget>
       </item>
@@ -123,10 +123,10 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QCheckBox" name="buddy">
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="suit">
         <property name="text">
-         <string>Buddy</string>
+         <string>Suit</string>
         </property>
        </widget>
       </item>
@@ -138,6 +138,19 @@
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>You can paste these to another dive or as text to another application.</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::PlainText</enum>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>

@@ -34,7 +34,7 @@ private:
 	void exportHtmlInit(const QString &filename);
 	void export_depths(const char *filename, const bool selected_only);
 	void export_TeX(const char *filename, const bool selected_only);
-	void exportProfile(const QString filename, const bool selected_only);
+	void exportProfile(QString filename, const bool selected_only);
 	void saveProfile(const struct dive *dive, const QString filename);
 };
 
