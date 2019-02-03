@@ -2231,7 +2231,7 @@ void ProfileWidget2::plotPictures()
 	plotPicturesInternal(current_dive, false);
 }
 
-void ProfileWidget2::plotPicturesInternal(struct dive *d, bool synchronous)
+void ProfileWidget2::plotPicturesInternal(const struct dive *d, bool synchronous)
 {
 	pictures.clear();
 	if (currentState == ADD || currentState == PLAN)
