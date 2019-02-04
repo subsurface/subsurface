@@ -281,21 +281,6 @@ void merge_dive_site(struct dive_site *a, struct dive_site *b)
 	}
 }
 
-void clear_dive_site(struct dive_site *ds)
-{
-	free(ds->name);
-	free(ds->notes);
-	free(ds->description);
-	ds->name = NULL;
-	ds->notes = NULL;
-	ds->description = NULL;
-	ds->location.lat.udeg = 0;
-	ds->location.lon.udeg = 0;
-	ds->uuid = 0;
-	ds->taxonomy.nr = 0;
-	free_taxonomy(&ds->taxonomy);
-}
-
 void merge_dive_sites(struct dive_site *ref, struct dive_site *dive_sites[], int count)
 {
 	int curr_dive, i;

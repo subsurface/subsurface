@@ -68,7 +68,6 @@ bool dive_site_is_empty(struct dive_site *ds);
 void copy_dive_site_taxonomy(struct dive_site *orig, struct dive_site *copy);
 void copy_dive_site(struct dive_site *orig, struct dive_site *copy);
 void merge_dive_site(struct dive_site *a, struct dive_site *b);
-void clear_dive_site(struct dive_site *ds);
 unsigned int get_distance(const location_t *loc1, const location_t *loc2);
 struct dive_site *find_or_create_dive_site_with_name(const char *name, timestamp_t divetime);
 void merge_dive_sites(struct dive_site *ref, struct dive_site *dive_sites[], int count);
