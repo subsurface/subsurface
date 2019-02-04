@@ -188,7 +188,7 @@ void delete_dive_site(struct dive_site *ds)
 	}
 }
 
-uint32_t create_divesite_uuid(const char *name, timestamp_t divetime)
+static uint32_t create_divesite_uuid(const char *name, timestamp_t divetime)
 {
 	if (name == NULL)
 		name ="";
