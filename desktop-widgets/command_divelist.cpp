@@ -108,12 +108,29 @@ DivesAndTripsToAdd DiveListBase::removeDives(std::vector<dive *> &divesToDelete)
 {
 	std::vector<DiveToAdd> divesToAdd;
 	std::vector<OwningTripPtr> tripsToAdd;
+	std::vector<OwningDiveSitePtr> diveSitesToAdd;
 	divesToAdd.reserve(divesToDelete.size());
 
 	for (dive *d: divesToDelete)
 		divesToAdd.push_back(removeDive(d, tripsToAdd));
-	divesToDelete.clear();
 
+	// Check if any dive site became unused. If this is the case,
+	// remove them from the core and take ownership
+	for (dive *d: divesToDelete)  {
+		// Check if no dive site or dive site already collected in list or
+		// dive site in use.
+		struct dive_site *ds = d->dive_site;
+		if (!ds ||
+		    std::find_if(diveSitesToAdd.begin(), diveSitesToAdd.end(),
+			        [ds](OwningDiveSitePtr &ptr) { return ptr.get() == ds; }
+			        ) != diveSitesToAdd.end() ||
+		    is_dive_site_used(d->dive_site, false))
+			continue;
+		unregister_dive_site(ds);
+		diveSitesToAdd.emplace_back(ds);
+	}
+
+	divesToDelete.clear();
 	// We send one dives-deleted signal per trip (see comments in DiveListNotifier.h).
 	// Therefore, collect all dives in an array and sort by trip.
 	std::vector<std::pair<dive_trip *, dive *>> dives;
@@ -129,7 +146,7 @@ DivesAndTripsToAdd DiveListBase::removeDives(std::vector<dive *> &divesToDelete)
 					       { return ptr.get() == trip; }) != tripsToAdd.end();
 		emit diveListNotifier.divesDeleted(trip, deleteTrip, divesInTrip);
 	});
-	return { std::move(divesToAdd), std::move(tripsToAdd) };
+	return { std::move(divesToAdd), std::move(tripsToAdd), std::move(diveSitesToAdd) };
 }
 
 // This helper function is the counterpart fo removeDives(): it calls addDive() on a list
@@ -158,6 +175,11 @@ std::vector<dive *> DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 		insert_trip(trip.release(), &trip_table); // Return ownership to backend
 	}
 	toAdd.trips.clear();
+
+	// Finally, add any necessary dive sites
+	for (OwningDiveSitePtr &ds: toAdd.diveSites)
+		register_dive_site(ds.release()); // Return ownership to backend
+	toAdd.diveSites.clear();
 
 	// We send one dives-deleted signal per trip (see comments in DiveListNotifier.h).
 	// Therefore, collect all dives in a array and sort by trip.

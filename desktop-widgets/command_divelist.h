@@ -19,10 +19,11 @@ struct DiveToAdd {
 	int		 idx;		// Position in divelist
 };
 
-// Multiple trips and dives that have to be added for a command
+// Multiple trips, dives and divesites that have to be added for a command
 struct DivesAndTripsToAdd {
 	std::vector<DiveToAdd> dives;
 	std::vector<OwningTripPtr> trips;
+	std::vector<OwningDiveSitePtr> diveSites;
 };
 
 // This helper structure describes a dive that should be moved to / removed from
