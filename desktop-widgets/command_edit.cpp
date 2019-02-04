@@ -2,14 +2,15 @@
 
 #include "command_edit.h"
 #include "core/divelist.h"
+#include "desktop-widgets/mapwidget.h" // TODO: Replace desktop-dependency by signal
 
 namespace Command {
 
 template<typename T>
 EditBase<T>::EditBase(const QVector<dive *> &divesIn, T newValue, T oldValue) :
+	dives(divesIn.toStdVector()),
 	value(std::move(newValue)),
-	old(std::move(oldValue)),
-	dives(divesIn.toStdVector())
+	old(std::move(oldValue))
 {
 	// If there is nothing to do, clear the dives vector.
 	// This signals that no action has to be taken.
@@ -227,6 +228,33 @@ QString EditDiveSite::fieldName() const
 DiveField EditDiveSite::fieldId() const
 {
 	return DiveField::DIVESITE;
+}
+
+void EditDiveSite::undo()
+{
+	bool diveSiteListChanged = false;
+
+	// If we had taken ownership of a dive site, readd it to the system
+	if (ownedDiveSite) {
+		register_dive_site(ownedDiveSite.release());
+		diveSiteListChanged = true;
+	}
+
+	// Call undo of base class
+	EditBase<struct dive_site *>::undo();
+
+	// If the old dive-site has no users anymore, remove it from the core,
+	// but keep an owning copy. Thus if this undo command is freed, the
+	// dive-site will be automatically deleted and on redo() it can be
+	// readded to the system
+	if (value && !is_dive_site_used(value, false)) {
+		unregister_dive_site(value);
+		ownedDiveSite.reset(value);
+		diveSiteListChanged = true;
+	}
+
+	if (diveSiteListChanged)
+		MapWidget::instance()->reload();
 }
 
 // ***** Mode *****

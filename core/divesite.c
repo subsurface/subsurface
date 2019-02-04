@@ -94,14 +94,8 @@ static uint32_t dive_site_getUniqId()
 	return id;
 }
 
-/* we never allow a second dive site with the same uuid */
-struct dive_site *alloc_or_get_dive_site(uint32_t uuid)
+void register_dive_site(struct dive_site *ds)
 {
-	struct dive_site *ds;
-
-	if (uuid && (ds = get_dive_site_by_uuid(uuid)) != NULL)
-		return ds;
-
 	int nr = dive_site_table.nr;
 	int allocated = dive_site_table.allocated;
 	struct dive_site **sites = dive_site_table.dive_sites;
@@ -114,11 +108,24 @@ struct dive_site *alloc_or_get_dive_site(uint32_t uuid)
 		dive_site_table.dive_sites = sites;
 		dive_site_table.allocated = allocated;
 	}
+	sites[nr] = ds;
+	dive_site_table.nr = nr + 1;
+}
+
+/* we never allow a second dive site with the same uuid */
+struct dive_site *alloc_or_get_dive_site(uint32_t uuid)
+{
+	struct dive_site *ds;
+
+	if (uuid && (ds = get_dive_site_by_uuid(uuid)) != NULL)
+		return ds;
+
 	ds = calloc(1, sizeof(*ds));
 	if (!ds)
 		exit(1);
-	sites[nr] = ds;
-	dive_site_table.nr = nr + 1;
+
+	register_dive_site(ds);
+
 	// we should always be called with a valid uuid except in the special
 	// case where we want to copy a dive site into the memory we allocated
 	// here - then we need to pass in 0 and create a temporary uuid here
@@ -172,12 +179,11 @@ void free_dive_site(struct dive_site *ds)
 	}
 }
 
-void delete_dive_site(struct dive_site *ds)
+void unregister_dive_site(struct dive_site *ds)
 {
 	int nr = dive_site_table.nr;
 	for (int i = 0; i < nr; i++) {
 		if (ds == get_dive_site(i)) {
-			free_dive_site(ds);
 			if (nr - 1 > i)
 				memmove(&dive_site_table.dive_sites[i],
 					&dive_site_table.dive_sites[i+1],
@@ -186,6 +192,14 @@ void delete_dive_site(struct dive_site *ds)
 			break;
 		}
 	}
+}
+
+void delete_dive_site(struct dive_site *ds)
+{
+	if (!ds)
+		return;
+	unregister_dive_site(ds);
+	free_dive_site(ds);
 }
 
 static uint32_t create_divesite_uuid(const char *name, timestamp_t divetime)

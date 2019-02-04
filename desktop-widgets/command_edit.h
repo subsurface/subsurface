@@ -25,11 +25,6 @@ namespace Command {
 
 template <typename T>
 class EditBase : public Base {
-	T value; // Value to be set
-	T old; // Previous value
-
-	void undo() override;
-	void redo() override;
 	bool workToBeDone() override;
 
 	// Dives to be edited. For historical reasons, the *last* entry was
@@ -40,6 +35,11 @@ public:
 	EditBase(const QVector<dive *> &dives, T newValue, T oldValue);
 
 protected:
+	T value; // Value to be set
+	T old; // Previous value
+	void undo() override;
+	void redo() override;
+
 	// Get and set functions to be overriden by sub-classes.
 	virtual void set(struct dive *d, T) const = 0;
 	virtual T data(struct dive *d) const = 0;
@@ -102,6 +102,8 @@ public:
 };
 
 class EditDiveSite : public EditBase<struct dive_site *> {
+	OwningDiveSitePtr ownedDiveSite;
+	void undo() override; // Dive site editing is more complex, therefore overide undo()
 public:
 	using EditBase<struct dive_site *>::EditBase;	// Use constructor of base class.
 	void set(struct dive *d, struct dive_site *value) const override;
