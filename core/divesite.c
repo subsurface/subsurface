@@ -214,19 +214,6 @@ struct dive_site *create_dive_site(const char *name, timestamp_t divetime)
 	return ds;
 }
 
-/* same as before, but with current time if no current_dive is present */
-struct dive_site *create_dive_site_from_current_dive(const char *name)
-{
-	if (current_dive != NULL) {
-		return create_dive_site(name, current_dive->when);
-	} else {
-		timestamp_t when;
-		time_t now = time(0);
-		when = utc_mktime(localtime(&now));
-		return create_dive_site(name, when);
-	}
-}
-
 /* same as before, but with GPS data */
 struct dive_site *create_dive_site_with_gps(const char *name, const location_t *loc, timestamp_t divetime)
 {
