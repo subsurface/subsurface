@@ -59,7 +59,6 @@ bool is_dive_site_used(struct dive_site *ds, bool select_only);
 void free_dive_site(struct dive_site *ds);
 void delete_dive_site(struct dive_site *ds);
 struct dive_site *create_dive_site(const char *name, timestamp_t divetime);
-struct dive_site *create_dive_site_from_current_dive(const char *name);
 struct dive_site *create_dive_site_with_gps(const char *name, const location_t *, timestamp_t divetime);
 struct dive_site *get_dive_site_by_name(const char *name);
 struct dive_site *get_dive_site_by_gps(const location_t *);
