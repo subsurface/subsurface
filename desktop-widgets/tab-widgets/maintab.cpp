@@ -736,9 +736,8 @@ void MainTab::acceptChanges()
 	struct dive *d;
 	bool do_replot = false;
 
-	if (ui.location->hasFocus()) {
-		this->setFocus();
-	}
+	if (ui.location->hasFocus())
+		setFocus();
 
 	acceptingEdit = true;
 	tabBar()->setTabIcon(0, QIcon()); // Notes
@@ -1353,8 +1352,12 @@ void MainTab::editWeightWidget(const QModelIndex &index)
 
 void MainTab::escDetected()
 {
+	// In edit mode, pressing escape cancels the current changes.
+	// In standard mode, remove focus of any active widget to
 	if (editMode != NONE)
 		rejectChanges();
+	else
+		setFocus();
 }
 
 void MainTab::clearTabs() {
