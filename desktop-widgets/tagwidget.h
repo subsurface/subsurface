@@ -28,6 +28,7 @@ slots:
 protected:
 	void keyPressEvent(QKeyEvent *e);
 private:
+	void focusOutEvent(QFocusEvent *ev) override;
 	QCompleter *m_completer;
 	bool lastFinishedTag;
 };

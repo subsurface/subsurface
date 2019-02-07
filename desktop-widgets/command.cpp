@@ -175,4 +175,9 @@ void editDiveSiteNew(const QVector<dive *> dives, const QString &newName, struct
 	execute(new EditDiveSiteNew(dives, newName, oldValue));
 }
 
+void editTags(const QVector<dive *> &dives, const QStringList &newList, struct dive *d)
+{
+	execute(new EditTags(dives, newList, d));
+}
+
 } // namespace Command
