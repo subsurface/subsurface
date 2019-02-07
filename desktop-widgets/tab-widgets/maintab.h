@@ -74,7 +74,7 @@ slots:
 	void acceptChanges();
 	void rejectChanges();
 	void on_location_diveSiteSelected();
-	void on_divemaster_textChanged();
+	void on_divemaster_editingFinished();
 	void on_buddy_editingFinished();
 	void on_suit_editingFinished();
 	void on_diveTripLocation_textEdited(const QString& text);
