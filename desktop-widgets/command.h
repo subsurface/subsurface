@@ -42,6 +42,7 @@ void editAirTemp(const QVector<dive *> dives, int newValue, int oldValue);
 void editWaterTemp(const QVector<dive *> dives, int newValue, int oldValue);
 void editDiveSite(const QVector<dive *> dives, struct dive_site *newValue, struct dive_site *oldValue);
 void editTags(const QVector<dive *> &dives, const QStringList &newList, struct dive *d);
+void editBuddies(const QVector<dive *> &dives, const QStringList &newList, struct dive *d);
 
 } // namespace Command
 

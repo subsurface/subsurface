@@ -159,6 +159,15 @@ public:
 	DiveField fieldId() const override;
 };
 
+class EditBuddies : public EditTagsBase {
+public:
+	using EditTagsBase::EditTagsBase;	// Use constructor of base class.
+	QStringList data(struct dive *d) const override;
+	void set(struct dive *d, const QStringList &v) const override;
+	QString fieldName() const override;
+	DiveField fieldId() const override;
+};
+
 } // namespace Command
 
 #endif
