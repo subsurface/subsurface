@@ -375,6 +375,9 @@ void MainTab::divesEdited(const QVector<dive *> &, DiveField field)
 	case DiveField::TAGS:
 		ui.tagWidget->setText(get_taglist_string(current_dive->tag_list));
 		break;
+	case DiveField::BUDDY:
+		ui.buddy->setText(current_dive->buddy);
+		break;
 	default:
 		break;
 	}
@@ -994,21 +997,20 @@ void MainTab::markChangedWidget(QWidget *w)
 	modified = true;
 }
 
-void MainTab::on_buddy_textChanged()
+static QStringList stringToList(const QString &s)
 {
-	if (editMode == IGNORE || acceptingEdit == true)
+	QStringList res = s.split(",", QString::SkipEmptyParts);
+	for (QString &str: res)
+		str = str.trimmed();
+	return res;
+}
+
+void MainTab::on_buddy_editingFinished()
+{
+	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
 		return;
 
-	if (same_string(displayed_dive.buddy, qPrintable(ui.buddy->toPlainText())))
-		return;
-
-	QStringList text_list = ui.buddy->toPlainText().split(",", QString::SkipEmptyParts);
-	for (int i = 0; i < text_list.size(); i++)
-		text_list[i] = text_list[i].trimmed();
-	QString text = text_list.join(", ");
-	free(displayed_dive.buddy);
-	displayed_dive.buddy = copy_qstring(text);
-	markChangedWidget(ui.buddy);
+	Command::editBuddies(getSelectedDivesCurrentLast(), stringToList(ui.buddy->toPlainText()), current_dive);
 }
 
 void MainTab::on_divemaster_textChanged()
