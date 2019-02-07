@@ -483,4 +483,27 @@ DiveField EditBuddies::fieldId() const
 	return DiveField::BUDDY;
 }
 
+// ***** DiveMaster *****
+QStringList EditDiveMaster::data(struct dive *d) const
+{
+	return stringToList(d->divemaster);
+}
+
+void EditDiveMaster::set(struct dive *d, const QStringList &v) const
+{
+	QString text = v.join(", ");
+	free(d->divemaster);
+	d->divemaster = copy_qstring(text);
+}
+
+QString EditDiveMaster::fieldName() const
+{
+	return tr("dive master");
+}
+
+DiveField EditDiveMaster::fieldId() const
+{
+	return DiveField::DIVEMASTER;
+}
+
 } // namespace Command

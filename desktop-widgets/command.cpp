@@ -185,4 +185,9 @@ void editBuddies(const QVector<dive *> &dives, const QStringList &newList, struc
 	execute(new EditBuddies(dives, newList, d));
 }
 
+void editDiveMaster(const QVector<dive *> &dives, const QStringList &newList, struct dive *d)
+{
+	execute(new EditDiveMaster(dives, newList, d));
+}
+
 } // namespace Command
