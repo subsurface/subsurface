@@ -3,6 +3,7 @@
 #include "command_edit.h"
 #include "core/divelist.h"
 #include "core/qthelper.h" // for copy_qstring
+#include "desktop-widgets/mapwidget.h" // TODO: Replace desktop-dependency by signal
 
 namespace Command {
 
@@ -448,6 +449,38 @@ QString EditTags::fieldName() const
 DiveField EditTags::fieldId() const
 {
 	return DiveField::TAGS;
+}
+
+// String list helper
+static QStringList stringToList(const QString &s)
+{
+	QStringList res = s.split(",", QString::SkipEmptyParts);
+	for (QString &str: res)
+		str = str.trimmed();
+	return res;
+}
+
+// ***** Buddies *****
+QStringList EditBuddies::data(struct dive *d) const
+{
+	return stringToList(d->buddy);
+}
+
+void EditBuddies::set(struct dive *d, const QStringList &v) const
+{
+	QString text = v.join(", ");
+	free(d->buddy);
+	d->buddy = copy_qstring(text);
+}
+
+QString EditBuddies::fieldName() const
+{
+	return tr("buddies");
+}
+
+DiveField EditBuddies::fieldId() const
+{
+	return DiveField::BUDDY;
 }
 
 } // namespace Command
