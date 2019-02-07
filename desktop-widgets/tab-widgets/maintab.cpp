@@ -376,6 +376,9 @@ void MainTab::divesEdited(const QVector<dive *> &, DiveField field)
 	case DiveField::BUDDY:
 		ui.buddy->setText(current_dive->buddy);
 		break;
+	case DiveField::DIVEMASTER:
+		ui.divemaster->setText(current_dive->divemaster);
+		break;
 	default:
 		break;
 	}
@@ -1044,21 +1047,12 @@ void MainTab::on_buddy_editingFinished()
 	Command::editBuddies(getSelectedDivesCurrentLast(), stringToList(ui.buddy->toPlainText()), current_dive);
 }
 
-void MainTab::on_divemaster_textChanged()
+void MainTab::on_divemaster_editingFinished()
 {
-	if (editMode == IGNORE || acceptingEdit == true)
+	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
 		return;
 
-	if (same_string(displayed_dive.divemaster, qPrintable(ui.divemaster->toPlainText())))
-		return;
-
-	QStringList text_list = ui.divemaster->toPlainText().split(",", QString::SkipEmptyParts);
-	for (int i = 0; i < text_list.size(); i++)
-		text_list[i] = text_list[i].trimmed();
-	QString text = text_list.join(", ");
-	free(displayed_dive.divemaster);
-	displayed_dive.divemaster = copy_qstring(text);
-	markChangedWidget(ui.divemaster);
+	Command::editDiveMaster(getSelectedDivesCurrentLast(), stringToList(ui.divemaster->toPlainText()), current_dive);
 }
 
 void MainTab::on_duration_textChanged(const QString &text)
