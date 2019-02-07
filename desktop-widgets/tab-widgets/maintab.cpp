@@ -370,6 +370,9 @@ void MainTab::divesEdited(const QVector<dive *> &, DiveField field)
 		updateDiveSite(current_dive);
 		emit diveSiteChanged();
 		break;
+	case DiveField::TAGS:
+		ui.tagWidget->setText(get_taglist_string(current_dive->tag_list));
+		break;
 	default:
 		break;
 	}
@@ -834,7 +837,6 @@ void MainTab::acceptChanges()
 		// three text fields are somewhat special and are represented as tags
 		// in the UI - they need somewhat smarter handling
 		saveTaggedStrings(selectedDives);
-		saveTags(selectedDives);
 
 		if (cylindersModel->changed) {
 			mark_divelist_changed(true);
@@ -1154,55 +1156,9 @@ void MainTab::copyTagsToDisplayedDive()
 {
 	taglist_free(displayed_dive.tag_list);
 	displayed_dive.tag_list = NULL;
-	Q_FOREACH (const QString& tag, ui.tagWidget->getBlockStringList())
+	Q_FOREACH (const QString &tag, ui.tagWidget->getBlockStringList())
 		taglist_add_tag(&displayed_dive.tag_list, qPrintable(tag));
 	taglist_cleanup(&displayed_dive.tag_list);
-}
-
-// changing the tags on multiple dives is semantically strange - what's the right thing to do?
-// here's what I think... add the tags that were added to the displayed dive and remove the tags
-// that were removed from it
-void MainTab::saveTags(const QVector<dive *> &selectedDives)
-{
-	struct dive *cd = current_dive;
-	struct tag_entry *added_list = NULL;
-	struct tag_entry *removed_list = NULL;
-	struct tag_entry *tl;
-
-	copyTagsToDisplayedDive();
-
-	// figure out which tags were added and which tags were removed
-	added_list = taglist_added(cd ? cd->tag_list : NULL, displayed_dive.tag_list);
-	removed_list = taglist_added(displayed_dive.tag_list, cd ? cd->tag_list : NULL);
-
-	// dump_taglist("added tags:", added_list);
-	// dump_taglist("removed tags:", removed_list);
-
-	// we need to check if the tags were changed before just overwriting them
-	if (added_list == NULL && removed_list == NULL)
-		return;
-
-	MODIFY_DIVES(selectedDives,
-		// create a new tag list and all the existing tags that were not
-		// removed and then all the added tags
-		struct tag_entry *new_tag_list;
-		new_tag_list = NULL;
-		tl = mydive->tag_list;
-		while (tl) {
-			if (!taglist_contains(removed_list, tl->tag->name))
-				taglist_add_tag(&new_tag_list, tl->tag->name);
-			tl = tl->next;
-		}
-		tl = added_list;
-		while (tl) {
-			taglist_add_tag(&new_tag_list, tl->tag->name);
-			tl = tl->next;
-		}
-		taglist_free(mydive->tag_list);
-		mydive->tag_list = new_tag_list;
-	);
-	taglist_free(added_list);
-	taglist_free(removed_list);
 }
 
 // buddy and divemaster are represented in the UI just like the tags, but the internal
@@ -1273,15 +1229,12 @@ int MainTab::diffTaggedStrings(QString currentString, QString displayedString, Q
 	return removedList.length() + addedList.length();
 }
 
-void MainTab::on_tagWidget_textChanged()
+void MainTab::on_tagWidget_editingFinished()
 {
-	if (editMode == IGNORE || acceptingEdit == true)
+	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
 		return;
 
-	if (get_taglist_string(displayed_dive.tag_list) == ui.tagWidget->toPlainText())
-		return;
-
-	markChangedWidget(ui.tagWidget);
+	Command::editTags(getSelectedDivesCurrentLast(), ui.tagWidget->getBlockStringList(), current_dive);
 }
 
 void MainTab::on_location_diveSiteSelected()

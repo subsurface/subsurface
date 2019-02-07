@@ -296,4 +296,128 @@ DiveField EditMode::fieldId() const
 	return DiveField::MODE;
 }
 
+// ***** Tag based commands *****
+EditTagsBase::EditTagsBase(const QVector<dive *> &divesIn, const QStringList &newListIn, struct dive *d):
+	dives(divesIn.toStdVector()),
+	newList(newListIn),
+	oldDive(d)
+{
+}
+
+// Two helper functions: returns true if first list contains any tag or
+// misses any tag of second list.
+static bool containsAny(const QStringList &tags1, const QStringList &tags2)
+{
+	return std::any_of(tags2.begin(), tags2.end(), [&tags1](const QString &tag)
+			   { return tags1.contains(tag); });
+}
+
+static bool missesAny(const QStringList &tags1, const QStringList &tags2)
+{
+	return std::any_of(tags2.begin(), tags2.end(), [&tags1](const QString &tag)
+			   { return !tags1.contains(tag); });
+}
+
+// This is quite hackish: we can't use virtual functions in the constructor and
+// therefore can't initialize the list of dives [the values of the dives are
+// accessed by virtual functions]. Therefore, we (mis)use the fact that workToBeDone()
+// is called exactly once before adding the Command to the system and perform this here.
+// To be more explicit about this, we might think about renaming workToBeDone() to init().
+bool EditTagsBase::workToBeDone()
+{
+	// changing the tags on multiple dives is semantically strange - what's the right thing to do?
+	// here's what I think... add the tags that were added to the displayed dive and remove the tags
+	// that were removed from it
+
+	// Calculate tags to add and tags to remove
+	QStringList oldList = data(oldDive);
+	for (const QString &s: newList) {
+		if (!oldList.contains(s))
+			tagsToAdd.push_back(s);
+	}
+	for (const QString &s: oldList) {
+		if (!newList.contains(s))
+			tagsToRemove.push_back(s);
+	}
+
+	// Now search for all dives that either
+	//	- miss a tag to be added
+	//	- have a tag to be removed
+	std::vector<dive *> divesNew;
+	divesNew.reserve(dives.size());
+	for (dive *d: dives) {
+		QStringList tags = data(d);
+		if (missesAny(tags, tagsToAdd) || containsAny(tags, tagsToRemove))
+			divesNew.push_back(d);
+	}
+	dives = std::move(divesNew);
+
+	// Create a text for the menu entry. In the case of multiple dives add the number
+	size_t num_dives = dives.size();
+	if (num_dives > 0)
+		//: remove the part in parantheses for %n = 1
+		setText(tr("Edit %1 (%n dive(s))", "", num_dives).arg(fieldName()));
+
+	return num_dives;
+}
+
+void EditTagsBase::undo()
+{
+	if (dives.empty()) {
+		qWarning("Edit command called with empty dives list (shouldn't happen)");
+		return;
+	}
+
+	for (dive *d: dives) {
+		QStringList tags = data(d);
+		for (const QString &tag: tagsToRemove)
+			tags.removeAll(tag);
+		for (const QString &tag: tagsToAdd) {
+			if (!tags.contains(tag))
+				tags.push_back(tag);
+		}
+		set(d, tags);
+	}
+
+	std::swap(tagsToAdd, tagsToRemove);
+
+	emit diveListNotifier.divesEdited(QVector<dive *>::fromStdVector(dives), fieldId());
+
+	mark_divelist_changed(true);
+}
+
+// Undo and redo do the same as just the stored value is exchanged
+void EditTagsBase::redo()
+{
+	undo();
+}
+
+// ***** Tags *****
+QStringList EditTags::data(struct dive *d) const
+{
+	QStringList res;
+	for (const struct tag_entry *tag = d->tag_list; tag; tag = tag->next)
+		res.push_back(tag->tag->name);
+	return res;
+}
+
+void EditTags::set(struct dive *d, const QStringList &v) const
+{
+	taglist_free(d->tag_list);
+	d->tag_list = NULL;
+	for (const QString &tag: v)
+		taglist_add_tag(&d->tag_list, qPrintable(tag));
+	taglist_cleanup(&d->tag_list);
+}
+
+QString EditTags::fieldName() const
+{
+	return tr("tags");
+}
+
+DiveField EditTags::fieldId() const
+{
+	return DiveField::TAGS;
+}
+
 } // namespace Command

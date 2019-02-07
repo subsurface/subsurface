@@ -210,3 +210,11 @@ void TagWidget::fixPopupPosition(int delta)
 		m_completer->popup()->setGeometry(toGlobal.x(), toGlobal.y() + delta +10, toGlobal.width(), toGlobal.height());
 	}
 }
+
+// Since we capture enter / return / tab, we never send an editingFinished() signal.
+// Therefore, override the focusOutEvent()
+void TagWidget::focusOutEvent(QFocusEvent *ev)
+{
+	GroupedLineEdit::focusOutEvent(ev);
+	emit editingFinished();
+}

@@ -122,6 +122,43 @@ public:
 	DiveField fieldId() const override;
 };
 
+// Fields that work with tag-lists (tags, buddies, divemasters) work differently and therefore
+// have their own base class. In this case, it's not a template, as all these lists are base
+// on strings.
+class EditTagsBase : public Base {
+	bool workToBeDone() override;
+
+	// Dives to be edited. For historical reasons, the *last* entry was
+	// the active dive when the user initialized the action. This dive
+	// will be made the current dive on redo / undo.
+	std::vector<dive *> dives;
+	QStringList newList;	// Temporary until initialized
+	struct dive *oldDive;	// Temporary until initialized
+public:
+	EditTagsBase(const QVector<dive *> &dives, const QStringList &newList, struct dive *d);
+
+protected:
+	QStringList tagsToAdd;
+	QStringList tagsToRemove;
+	void undo() override;
+	void redo() override;
+
+	// Getters, setters and parsers to be overriden by sub-classes.
+	virtual QStringList data(struct dive *d) const = 0;
+	virtual void set(struct dive *d, const QStringList &v) const = 0;
+	virtual QString fieldName() const = 0;	// Name of the field, used to create the undo menu-entry
+	virtual DiveField fieldId() const = 0;
+};
+
+class EditTags : public EditTagsBase {
+public:
+	using EditTagsBase::EditTagsBase;	// Use constructor of base class.
+	QStringList data(struct dive *d) const override;
+	void set(struct dive *d, const QStringList &v) const override;
+	QString fieldName() const override;
+	DiveField fieldId() const override;
+};
+
 } // namespace Command
 
 #endif
