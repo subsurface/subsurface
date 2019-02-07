@@ -89,7 +89,7 @@ slots:
 	void on_timeEdit_timeChanged(const QTime & time);
 	void on_rating_valueChanged(int value);
 	void on_visibility_valueChanged(int value);
-	void on_tagWidget_textChanged();
+	void on_tagWidget_editingFinished();
 	void editCylinderWidget(const QModelIndex &index);
 	void editWeightWidget(const QModelIndex &index);
 	void addDiveStarted();
@@ -119,7 +119,6 @@ private:
 	int lastTabSelectedDiveTrip;
 	void resetPallete();
 	void copyTagsToDisplayedDive();
-	void saveTags(const QVector<dive *> &selectedDives);
 	void saveTaggedStrings(const QVector<dive *> &selectedDives);
 	int diffTaggedStrings(QString currentString, QString displayedString, QStringList &addedList, QStringList &removedList);
 	void markChangedWidget(QWidget *w);
