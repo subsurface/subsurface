@@ -19,7 +19,7 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves,
 Stefan Fuchs
 
-[blue]#_Version 4.8, September 2018_#
+[blue]#_Version 4.9, February 2019_#
 
 Welcome as a user of _Subsurface_, an advanced dive logging program with
 extensive infrastructure to describe, organize, interpret and print scuba
@@ -115,7 +115,7 @@ Start Using the Program
 -----------------------
 
 The _Subsurface_ window is usually divided into four panels with a *Main
-Menu* (File Edit Import Log View Share Help) at the top of the window (for Windows
+Menu* (File Edit Import Log View Help) at the top of the window (for Windows
 and Linux) or the top of the screen (for Mac and Ubuntu Unity). The four panels are:
 
 1. The *Dive List* on the bottom left, showing all the dives in the
@@ -343,10 +343,10 @@ After this, the dive computer can be hooked up to the user's PC using these step
 
 3. In _Subsurface_, from the Main Menu, select _Import ->  Import
    From Dive Computer_.
-   Dialogue *A* in the figure below appears:
+   dialog *A* in the figure below appears:
 
 
-image::images/DC_import_f20.jpg["FIGURE: Download dialogue 1",align="center"]
+image::images/DC_import_f20.jpg["FIGURE: Download dialog 1",align="center"]
 
 Dive computers tend to keep a certain number of dives in memory, even
 though these dives have already been imported to _Subsurface_. For that reason, if
@@ -355,7 +355,7 @@ _Subsurface_ only imports dives that have not been downloaded before. This makes
 the download process faster on most dive computers and also saves battery power
 of the dive computer (at least for those not charging while connected via USB).
 
- - The dialogue has two drop-down lists, *Vendor* and *Dive Computer*. On the
+ - The dialog has two drop-down lists, *Vendor* and *Dive Computer*. On the
    *vendor* drop-down list select the make of the computer, e.g.
    Suunto, Oceanic,
    Uwatec, Mares. On the *Dive Computer* drop-down list, the model name of
@@ -401,24 +401,24 @@ of the dive computer (at least for those not charging while connected via USB).
  - The checkbox marked _Download into new trip_ ensures that, after upload, the downloaded dives
    are grouped together as a new trip(s) in the *Dive List*.
 
- - Do *not* check the checkboxes labelled _Save libdivecomputer logfile_ and
+ - Do *not* check the checkboxes labeled _Save libdivecomputer logfile_ and
    _Save libdivecomputer dumpfile_. These are only used as diagnostic tools
    when there are problems with downloads(see below).
  - Then select the _Download_ button.
    With communication established, you can see how the data are
    retrieved from the dive computer.
    Depending on the make of the dive computer and/or number of recorded dives, this
-   could take some time. Be patient. The _Download_ dialogue
+   could take some time. Be patient. The _Download_ dialog
    shows a
-   progress bar at the bottom of the dialogue. Remember for some dive computers
+   progress bar at the bottom of the dialog. Remember for some dive computers
    progress information could be inaccurate since _Subsurface_ doesn’t know how much
    downloadable data there are until the download is complete.
    After the dives have been downloaded, they appear in a tabular format on the right-hand
-   side of the dialogue (see image *B*, above). Each dive comprises a row in the table, showing the date, duration
+   side of the dialog (see image *B*, above). Each dive comprises a row in the table, showing the date, duration
    and depth. Next to each dive is a checkbox: check all the dives that need to
    be transferred to the *Dive List*. In the case of the image above, the last six dives are
    checked and will be transferred to the *Dive List*. Then
-   click the _OK_ button at the bottom of the dialogue. All the imported dives appear
+   click the _OK_ button at the bottom of the dialog. All the imported dives appear
    in the *Dive List*, sorted by date and time. Disconnect and
    switch off the dive
    computer to conserve its battery power.
@@ -454,11 +454,11 @@ Check the following:
 
 If the _Subsurface_ computer does not recognize the USB adapter by
 showing an appropriate device name next to the Mount Point, then there is a
-possibility the cable or USB adaptor is faulty. A faulty cable is the most
+possibility the cable or USB adapter is faulty. A faulty cable is the most
 common cause of communication failure between a dive computer and _Subsurface_.
 It’s also possible _Subsurface_ cannot interpret
 the data. Perform a download for diagnostic purposes with the following
-two boxes checked in the download dialogue discussed above:
+two boxes checked in the download dialog discussed above:
 
 	Save libdivecomputer logfile
 	Save libdivecomputer dumpfile
@@ -506,9 +506,9 @@ four steps:
 - Ensure the Bluetooth-enabled dive computer is Bluetooth-discoverable and in PC upload mode.
 - Ensure _Subsurface_ is paired with the Bluetooth-enabled dive computer.
 
-Select the Download dialogue by selecting
+Select the Download dialog by selecting
 _Import -> Import from dive computer_ from the *Main Menu*. After checking the
-box labeled _"Choose Bluetooth download mode"_, the dialogue below appears.
+box labeled _"Choose Bluetooth download mode"_, the dialog below appears.
 
 ===== On Linux or MacOS:
 
@@ -533,10 +533,10 @@ _bluetoothctl_ or _bluemoon_. This completes the first two steps above.
 Ensure the Bluetooth-enabled dive computer is in PC-upload mode and it
 is discoverable by other Bluetooth devices. Consult the manual of the dive
 computer for more information. Now the third item in the list above has been finished.
-Select the _Scan_ button towards the bottom left of the dialogue above. After
+Select the _Scan_ button towards the bottom left of the dialog above. After
 searching, the dive computer should be listed
 (perhaps as one of a number of Bluetooth devices) in the main list box on the
-lefthand side of the dialogue (see image above). If this does not work, select
+lefthand side of the dialog (see image above). If this does not work, select
 the _Clear_ button, then scan again for Bluetooth devices using the _Scan_
 button. After taking these actions _Subsurface_ should see the dive computer.
 On the left hand side, if the
@@ -574,10 +574,10 @@ One way to achieve this is to use +bluetoothctl+:
 	[agent] Enter PIN code: 0000
 ****
 
-After the devices are paired, press the _Save_ button of the dialogue.
-This closes the Bluetooth dialogue. Now select _Download_ in the _Download from
-dive computer_ dialogue which should still be open. The downloaded dives are
-shown on the righthand side of the download dialogue.
+After the devices are paired, press the _Save_ button of the dialog.
+This closes the Bluetooth dialog. Now select _Download_ in the _Download from
+dive computer_ dialog which should still be open. The downloaded dives are
+shown on the righthand side of the download dialog.
 
 ===== On Windows:
 image::images/DC_import_Bluetooth_Windows.png["FIGURE: Download Bluetooth on Windows",align="center"]
@@ -596,7 +596,7 @@ the download process. If the devices have never been paired the system will ask
 permission and put a message on the right side of the screen: _Add a
 device, Tap to set up your DC device_. Always allow this pairing. After a
 discovered item is selected, select the _Save_ button.
-Finally select the _Download_ button on the _Download_ dialogue and wait for the process to complete.
+Finally select the _Download_ button on the _Download_ dialog and wait for the process to complete.
 
 [icon="images/icons/important.png"]
 [IMPORTANT]
@@ -608,7 +608,7 @@ will not work. However, Bluetooth hardware/dongles from these manufacturers
 
 A log message on the bottom left of the _Remote Bluetooth device selection_
 shows details about the current status of the Bluetooth agent. To
-select another dive computer for download using the "Remote Bluetooth selection dialogue"
+select another dive computer for download using the "Remote Bluetooth selection dialog"
 press the three-dots button from the _"Choose Bluetooth download mode"_ option.
 
 [icon="images/icons/important.png"]
@@ -716,7 +716,7 @@ The dive information in the *Notes* and *Equipment* tabs can therefore NOT be ed
 time as the dive site information. Save all the other dive information (e.g.
 divemaster, buddy, protective gear, notes about the dive) by selecting _Apply changes_ on the
 *Notes* tab BEFORE editing the dive site information. Then supply a dive site name in the
-textbox labelled _Location_ on the *Notes* tab.
+textbox labeled _Location_ on the *Notes* tab.
 
 *Using existing dive locations:* Type in the name of the dive site, e.g. "Tihany, Lake Balaton, Hungary".
 If several dives are
@@ -860,10 +860,10 @@ cylinders and gases (entered here) determines the behavior of the *Dive profile*
 (top right-hand panel).
 
 [[cylinder_definitions]]
-*Cylinders*: The cylinder information is entered through a dialogue that looks
+*Cylinders*: The cylinder information is entered through a dialog that looks
 like this:
 
-image::images/DC_gas-dialogue1_f20.jpg["FIGURE: Initial cylinder dialogue",align="center"]
+image::images/DC_gas-dialogue1_f20.jpg["FIGURE: Initial cylinder dialog",align="center"]
 
 For hand-entered dives, this information needs to be typed in. For dive computers,
 _Subsurface_ often gets the gas used from the dive computer and
@@ -883,7 +883,7 @@ The drop-down list can then be used to select the cylinder type that was used
 for this dive, or just start typing in the box which shows the available
 options for the entered characters. The
 *Size* of the cylinder as well as its working pressure (_Work.press_) will
-automatically be shown in the dialogue.
+automatically be shown in the dialog.
 
 Next, indicate the starting pressure and the ending pressure of the
 specified gas during the dive. The unit of pressure (metric/imperial)
@@ -903,11 +903,11 @@ for a dive using two cylinders (air and EAN50):
 image::images/CylinderDataEntry3_f20.jpg["FIGURE: a completed cylinder dive information table",align="center"]
 
 *Weights*: Information about the weight system used can be entered
-using a dialogue similar to that of the cylinder information. If you click
-the + button on the top right of the weights dialogue, the table looks like
+using a dialog similar to that of the cylinder information. If you click
+the + button on the top right of the weights dialog, the table looks like
 this:
 
-image::images/WeightsDataEntry1_f20.jpg["FIGURE:The Weights dialogue",align="center"]
+image::images/WeightsDataEntry1_f20.jpg["FIGURE:The Weights dialog",align="center"]
 
 By clicking on the _Type_ field, a drop-down list becomes accessible through a
 down-arrow:
@@ -1035,18 +1035,19 @@ beginning time of the dives to be significantly different) _Subsurface_
 will not create duplicate entries. Below is more specific information
 to import data to _Subsurface_.
 
-==== Using the universal import dialogue
+==== Using the universal import dialog
 [[Unified_import]]
 
 Importing dives from other software is done through a universal interface
 activated by selecting _Import_ from the Main Menu, then clicking on
-_Import Log Files_. This brings up dialogue *A*, below.
+_Import Log Files_ to bring up dialog *A*, below. The exact appearance
+of this dialog differs between operating systems.
 
-image::images/Import1_f20.jpg["FIGURE: Import dialogue: step 1",align="center"]
+image::images/Import1_f20.jpg["FIGURE: Import dialog: step 1",align="center"]
 
 Towards the bottom right is a dropdown selector with a default label
 of _Dive Log Files_ which accesses different types of direct imports
-available, as in dialogue *B*, above. Currently these are:
+available, as in dialog *B*, above. Currently these are:
 
  - XML-formatted dive logs (DivingLog 5.0, MacDive and several other dive log systems)
  - Cochran dive logs
@@ -1065,17 +1066,30 @@ available, as in dialogue *B*, above. Currently these are:
  - Poseidon MK VI eCCR dive logs
  - CSV (text-based and spreadsheet-based) dive logs, including APD CCR logs
 
-Selecting the appropriate format and then the specific log file in the large window
-containing the file list on the right of the dialogue, opens
-the imported dive log in the _Subsurface_ *Dive List*. Some other formats not
-accessible through the Import dialogue are also supported, as explained below.
+Selecting the appropriate format from the dropdown list and then the specific log file in the main window
+containing the file list. Then select the _Open_ button near the bottom right. 
+
+If the dive log being imported is in CSV format, the user is given the
+opportunity to perform manual edits to the column headers before it is imported
+to _Subsurface_ (see image below).
+
+image::images/Import_csv.jpg["FIGURE: Import dialog: step 2",align="center"]
+
+For more information on configuring a CSV import, see
+xref:S_ImportingCSVDives[Importing data in CSV format].
+In many cases changes to the column headers are not required because
+they are pre-configured for the specific type of import and
+the CSV import screen can be bypassed by selecting the _OK_ button.
+This opens the imported dive log in the _Subsurface_ *Dive List*. 
+
+Some other formats not accessible through the Import dialog are also supported, as explained below.
 
 ==== Importing from  OSTCTools
 
 _OSTC Tools_ is a Microsoft-based suite of dive download and dive management tools for the OSTC
 family of dive computers. _OSTC Tools_ downloads dive data from the dive computer and stores it
 as a binary file with file extension _.dive_ . Subsurface can directly import these files when using
-the universal import dialogue. From the dropdown list at the bottom right select
+the universal import dialog. From the dropdown list at the bottom right select
 _OSTCTools Files (.dive .DIVE)_. This makes the _OSTC Tools_ dive logs visible in the file list
 panel. Select one or more dive, then click the _Open_ button. The OSTC dives are shown in the
 *Dive List* panel.
@@ -1088,7 +1102,6 @@ Please remember that OSTCTools is *not* true diving log software, but rather a u
 for analysis and management of OSTC devices. Only raw dive computer data will be
 imported to _Subsurface_; the rest of the
 data (buddies, equipment, notes, etc) need to be completed manually.
-
 
 ==== Importing from Mares Dive Organizer V2.1
 
@@ -1117,7 +1130,7 @@ using _www.divelogs.de_ as a gateway to extract the dive log information.
 
 _SmartTrak_ stores the raw data from a Uwatec/Scubapro dive computer along with a plethora
 of other data manually added by the user, ranging from dive points to buddies data or DAN survey
-info. However, this is Microsoft Windows-based propietary software by Uwatec (today Scubapro)
+info. However, this is Microsoft Windows-based proprietary software by Uwatec (today Scubapro)
 using Microsoft Access databases, preventing the integration the importer into the _Subsurface_
 core application.
 
@@ -1130,7 +1143,7 @@ The application is not currently supported on Mac.
 It can also be built for Linux systems. Two dependencies need to be met in your
 system before building: _glib2.0_ and _mdbtools_ (see below).
 
-In addition, a web service is available for divelog convertions from SmartTrak to _Subsurface_ (see below).
+In addition, a web service is available for divelog conversions from SmartTrak to _Subsurface_ (see below).
 
 Feel free to contact the _Subsurface_ development team on mailto:subsurface@subsurface-divelog.org[our mailing list]
 for assistance in importing _SmartTrak_ dive logs.
@@ -1147,7 +1160,7 @@ have been installed and the _Subsurface_ source tree is in the directory _~/src/
 - You can run it from this directory, copy it to another one, e.g. _~/bin_ or
   simply run "sudo make install", and the binary will be installed in
   /usr/local/bin (which is commonly included in every $PATH).
-- The script has some options mostly useful for development pourposes. If you
+- The script has some options mostly useful for development purposes. If you
   think you may need them, please read comments on script header itself.
 - *WARNING*: While building smtk2ssrf, a light version of _Subsurface_ is
   built (usable but lacking a lot of features). So, if you commonly use the
@@ -1210,13 +1223,13 @@ the dives] for instructions on this topic.
 ==== Importing dives from *divelogs.de*
 
 Importing dive information from _divelogs.de_ is simple, using a single
-dialogue box. The _Import ->  Import from Divelogs.de_ option should be selected
+dialog box. The _Import ->  Import from Divelogs.de_ option should be selected
 from the Main Menu. This
-brings up a dialogue box (see image *A* below). Enter a
+brings up a dialog box (see image *A* below). Enter a
 user-ID and password for _divelogs.de_  and then
 select
 the _Download_ button. Download from _divelogs.de_ starts immediately,
-displaying a progress bar in the dialogue box. At the end of the download, the
+displaying a progress bar in the dialog box. At the end of the download, the
 success status is shown (see image *B*, below). The
 _Apply_ button should then be selected, after which the imported dives appear in the
 _Subsurface_ *Dive List* panel.
@@ -1284,7 +1297,7 @@ selection menu, select _CSV files_ (towards the bottom right). This shows all .C
 directory. Select the file that needs to be imported. A configuration panel
 appears as depicted below:
 
-image::images/csv_import1_f20.jpg["FIGURE: CSV download dialogue 1",align="center"]
+image::images/csv_import1_f20.jpg["FIGURE: CSV download dialog 1",align="center"]
 
 At the top left, there is a dropdown list containing pre- configured
 settings for common dive computers and software packages.
@@ -1304,15 +1317,15 @@ instance, _Subsurface_ expects the column heading for Dive number (" # ") to be 
 the column heading that _Subsurface_ expects is not in the blue row, drag the
 appropriate balloon from the upper area and drop it in the appropriate blue
 cell at the top of the table. For example, to indicate the correct column for "Dive #", drag
-the ballooned item labelled "Dive # " and drop it in the blue
+the ballooned item labeled "Dive # " and drop it in the blue
 cell immediately above the white cell containing " # ", depicted in
 the image below.
 
-image::images/csv_import2_f20.jpg["FIGURE: CSV download dialogue 2",align="center"]
+image::images/csv_import2_f20.jpg["FIGURE: CSV download dialog 2",align="center"]
 
 Continue in this way to ensure all the column headings in the blue row of
-cells correspond to the headings listed in the top part of the dialogue.
-When finished, select the _OK_ button on the bottom right of the dialogue.
+cells correspond to the headings listed in the top part of the dialog.
+When finished, select the _OK_ button on the bottom right of the dialog.
 The data from the _CSV_ file are imported and shown in the *Dive List* panel.
 
 [[S_CSV_Intro]]
@@ -1404,7 +1417,7 @@ automatically collecting dive site coordinate information.
 
 2) Adding collected coordinate information to the dives using the _Subsurface-mobile_ app.
 
-3) Syncronising the logbook with the _Subsurface_ cloud using the _Subsurface-mobile_ app.
+3) Synchronizing the logbook with the _Subsurface_ cloud using the _Subsurface-mobile_ app.
 
 Existing users might still be using the legacy _Companion app_. However, the Companion App
 hasn't been under development in several years and has now been removed from both Android
@@ -1777,7 +1790,7 @@ image::images/pSCR_profile.jpg["FIGURE: pSCR profile",align="center"]
 _Visualising the pO~2~ drop_: The difference between the pO~2~ of the fresh cylinder gas and the pO~2~
 in the loop can be visualised in _Subsurface_ by opening the _Profile_
 panel in the _File -> Preferences_ menu item and then providing suitable information in the section
-labelled _pSCR options_. The _pSCR metabolic rate_ is your rate of oxygen metabolism in liters/min (commonly
+labeled _pSCR options_. The _pSCR metabolic rate_ is your rate of oxygen metabolism in liters/min (commonly
 between 0.5 and 2.5). The _Dilution ratio_ is the ratio indicating how much gas in the loop is replaced with
 fresh gas, relative to the gas being breathed (common values are between 1:3 and 1:10). These values are also
 used when planning pSCR dives. If the oxygen content of the loop is not recorded by an oxygen sensor, _Subsurface_
@@ -1785,13 +1798,13 @@ estimates the pO~2~ in the loop using the information supplied above. This pO~2~
 representing the oxygen partial pressure in the dive profile. If the oxygen pressure in the loop is measured using
 an oxygen sensor connected to a dive computer, this information is probably recorded by the dive computer and these
 measured pO~2~ values are shown on the dive profile. In addition, the _Preferences_ panel allows one to activate
-a checkbox labelled _Show equivalent OC pO~2~ with pSCR pO~2~_. This activates display of the pO~2~ in the
+a checkbox labeled _Show equivalent OC pO~2~ with pSCR pO~2~_. This activates display of the pO~2~ in the
 fresh gas from the cylinder (an orange line). The vertical distance between the orange graph and the green graph
 indicates the "pO~2~ drop over the mouthpiece". Much of pSCR diving involves managing this pO~2~ difference.
 
 [icon="images/DiveModeChange.jpg"]
 [NOTE]
-_pSCR and bailout_: Gases used in pSCR often yield very low pO~2~ values in shallow water. For this reason the diver
+_pSCR and bailout_: Gases used in pSCR often yield very low pO~2~ values in shallow water. For this reason one
 often completes the shallow sections of a dive using open circuit (OC) rather than the rebreather. In this case
 parts of the dive are
 performed OC, while the rest of the dive is performed on the pSCR loop. To indicate such changes in divemode,
@@ -1836,15 +1849,15 @@ provided when purchasing CCR dive equipment. See the section dealing with xref:S
 digital sources] and <<_appendix_b_dive_computer_specific_information_for_importing_dive_information,Appendix B>>
 for more complete information. Use that software to download the dive data into
 a known directory. From the main menu of _Subsurface_, select _Import ->  Import
-log files_ to bring up the xref:Unified_import[universal import dialogue]. As
+log files_ to bring up the xref:Unified_import[universal import dialog]. As
 explained in that section, the bottom right
-hand of the import dialogue contains a dropdown list (labeled _Filter:_) of appropriate devices
+hand of the import dialog contains a dropdown list (labeled _Filter:_) of appropriate devices
 that currently include (Poseidon) MkVI or APD log viewer files. Import for other
 CCR equipment is under active development. Having selected the appropriate CCR format and
 the directory where the original dive logs have been stored from the CCR dive
 computer, select a particular dive log file (in the case of the MkVI
 it is a file with a .txt extension). After selecting the appropriate dive log,
-click the _Open_ button at the bottom right hand of the universal import dialogue.
+click the _Open_ button at the bottom right hand of the universal import dialog.
 The selected dive is imported to the _Subsurface_ dive list.
 
 ===== Displayed information for a CCR dive
@@ -2117,10 +2130,12 @@ time. Even if the profile contains several gas
 switches, TTS at a specific moment during the dive is calculated using the current gas.
 TTS longer than 2 hours is not accurately calculated and Subsurface only indicates _TTS > 2h_.
 
-[icon="images/icons/tissue.png"]
+[icon="images/icons/GFLow.jpg"]
 [NOTE]
 Show *Deco information*. When enabled, the information box shows the surface GF and the momentary
-ceilings for the individual tissue compartments.
+ceilings for the individual tissue compartments. The surface GF is an indication of to what degree
+the partial pressure of nitrogen in the blood exceeds the partial pressure required for safely
+reaching the surface. Surface GF > 100% means that it is unsafe to surface.
 
 [icon="images/icons/SAC.jpg"]
 [NOTE]
@@ -2331,7 +2346,7 @@ and amount of data available (and other factors taken into consideration at the 
 of the calculation) it’s unlikely that ceilings from dive computers and from _Subsurface_
 are the same, even if the same algorithm and _gradient factors_ (see below) are used.
 It’s also quite common that _Subsurface_ calculates a ceiling for
-non-decompression dives when the dive computer stayed in non-deco mode during
+non-decompression dives when the dive computer stayed in no-deco mode during
 the whole dive (represented by the [green]#dark green# section in the profile
 at the beginning of this section). This is because _Subsurface’s_
 calculations describe the deco obligation at each moment during a dive,
@@ -2425,7 +2440,7 @@ translated to colors. The colors represent three ranges of tissue inert gas pres
     because the gradient of inert gas pressure from tissue to the environment is relatively small
     and indicated by dark green areas of the heat map.
 
- -  The top range in *B* (marked _Off-gassing_) includes colors from light green to red and white, repesenting tissue gas
+ -  The top range in *B* (marked _Off-gassing_) includes colors from light green to red and white, representing tissue gas
     pressures above that of the total ambient pressure (top of light green area of *A*). The measurement
     unit is the % of inert gas pressure above ambient pressure, relative to the Bühlmann M-value gradient (bottom of red area
     in *A*). These tissue pressures are normally reached while ascending to a shallower depth.
@@ -2460,7 +2475,7 @@ applicable when using the VPM-B decompression model.
 
 The image below compares the profiles and heat maps for two planned decompression dives to 60m:
 the first using the Bühlmann decompression model, the second using the VPM-B decompression model.
-Both profiles have the same total decompression time, but the VPM-B model requires deeper stops early in the acent phase.
+Both profiles have the same total decompression time, but the VPM-B model requires deeper stops early in the ascent phase.
 
 In both profiles, the inert gas pressures in the faster tissues rise much more rapidly than the slower tissues during
 the descent and bottom phase, with the colors transitioning from light blue through blue and purple to black.
@@ -2687,48 +2702,33 @@ _Edit_. This brings up the possibility to _Undo_ or _Redo_ an action.
 === Filtering the dive list
 
 The dives in the *Dive List* panel can be filtered, selecting only some
-of the dives based on their attributes, e.g. dive tags, dive site, divemaster, buddy or protective
-clothing. For instance, filtering lets you list the deep dives at a particular
+of the dives based on their attributes, e.g. dive tags, dive site, divemaster or buddy.
+For instance, filtering lets you list the dives during a particular year at a specific
 dive site, or otherwise the cave dives with a particular buddy.
 
-To open the filter, select _Log ->  Filter divelist_ from the main menu. This opens the
-_Filter Panel_ at the top of the _Subsurface_ window. Three icons are located at the top
-right hand of the filter panel (see image below). The _Filter Panel_ can be reset
-(i.e. all current filters cleared) by selecting the *yellow angled arrow*. The _Filter Panel_ may also be
-minimized by selecting the *green up-arrow*. When minimized, only these three icons are shown.
-The panel can be maximized by clicking the same icon that minimized it. The filter may also be
-reset and closed by selecting the *red button* with the white cross.
+To open the filter, select _Log ->  Filter divelist_ from the main menu. This replaces the
+_Dive Map_ with a filter panel. The top line contains the number of dives that satisfy the
+current selections of the filter, a *yellow up-arrow* for resetting the filter to show all dives,
+and a *red button* with white cross to close the filter panel. When opened, the filter
+contains default values that include all the dives in the _Dive list_. Filter the
+_Dive list_ by either changing some of the default values in the panel, or by typing specific
+values or words in any of the text boxes. For instance, in the image below the dives for
+a specific location (Simonstad) are shown in the _Dive list_. There is no button to
+perform the filter action: The action of typing text into a textbox or specifying a range
+in any of the fields automatically performs the filtering. 
+
+In our case, below, the top lefthand shows that the _Dive list_ contains 39 dives at that location
+and all trips and dives to that location are shown in the _Dive list_.
 
 image::images/Filterpanel.jpg["Figure: Filter panel",align="center"]
 
-Four filter criteria may be used to filter the dive list: dive tags, person (buddy / divemaster), dive site
-and dive suit.  Each of these is represented by a check list with check boxes. Above
-each check list is a second-level filter tool, allowing the listing of only some
-attributes within that check list. For instance, typing "_ca_" in the filter
-text box above the tags check list, results in the list being reduced
-to "_cave_" and "_cavern_". Filtering the check list helps to rapidly find
-search terms for filtering the dive list.
-
-To activate filtering of the dive list, check at least one check box in one of
-the four check lists. The dive list is then shortened to include
-only the dives that pertain to the criteria specified in the check lists.
-The four check lists work as a filter with _AND_ operators. Subsurface
-filters therefore  for _cave_ as a tag AND _Joe Smith_ as a buddy. But the
-filters within a category are inclusive - filtering for _cave_ and _boat_
-shows those dives that have either one OR both of these tags.
+Filter criteria can be inverted by selecting, in the appropriate dropdown list, "None of" instead of "All of", or
+"Doesn't match" instead of "Matches". 
 
 [[S_ExportLog]]
 == Exporting the dive log or parts of the dive log
 
-There are two ways to export dive information from Subsurface:
-
-- Export dive information to _Facebook_
-
-- xref:S_Export_other[Export dive information to other destinations or formats]
-
-[[S_Export_other]]
-=== Export dive information to other destinations or formats
-For non-_Facebook exports_, the export function can be found by selecting _File ->  Export_, which brings up
+The export function can be found by selecting _File ->  Export_, which brings up
 the Export dialog. This dialog always gives two options: save ALL dives, or save only
 the dives selected in *Dive List* panel of _Subsurface_. Click the appropriate
 radio button (see images below).
@@ -2759,7 +2759,14 @@ A dive log or part of it can be saved in several formats:
 * _CSV dive profile_, that includes a large amount of detail for each dive, including
   the depth profile, temperature and pressure information of each dive.
 
-* _dive profile_, saves the Subsurface dive profile as a .png file
+* _Dive profile_, which enables easy sharing of the dive profile using social media.
+  This option writes the image of the dive profile(s) in a _.png_ graphics
+  format to the folder specified in the _File save_ dialog. The saved image
+  looks exactly like the on-screen profile, so ensure that all the appropriate
+  profile toolbar options are activated. If several dives are
+  selected, the images are written as separate graphics files. Selecting the
+  _Dive profile_ option opens a window to name the file(s) to which the profile(s)
+  is written. Provide a filename and select _Save_ to create the graphics output.
 
 * _HTML_ format, in which the dive(s) are stored in HTML files, readable
   with an Internet browser. Most modern web browsers are supported, but JavaScript
@@ -2791,6 +2798,8 @@ image::images/mapview_f20.jpg["Figure: HTML Map export view",align="center"]
 
 image::images/texexample.png["Figure: Export to TeX", align="center"]
 
+* _LaTeX_. Write the dive(s) to a LaTeX document of which the typesetting is done automatically
+  using TeX. LaTeX handles page content and layout while TeX handles typesetting.
 
 * _Image depths_, which creates a text file that contains the file names of all
   photos or videos attached
@@ -2956,10 +2965,10 @@ Some decisions need to be made before printing:
 - If the dive profiles are printed, what gas partial pressure information should be shown? Select
   the appropriate toggle-buttons on the button bar to the left of the *Dive Profile* panel.
 
-If _File ->  Print_ is selected from the Main menu, the dialogue below (image *A*) appears. Three
+If _File ->  Print_ is selected from the Main menu, the dialog below (image *A*) appears. Three
 specifications are needed to get the desired information and page layout:
 
-image::images/Print1_f22.jpg["FIGURE: Print dialogue",align="center"]
+image::images/Print1_f22.jpg["FIGURE: Print dialog",align="center"]
 
 1. Under _Print type_ select one of two options:
 
@@ -2969,7 +2978,7 @@ image::images/Print1_f22.jpg["FIGURE: Print dialogue",align="center"]
 2. Under _Print options_ select:
 
 - Printing only the dives selected from the dive list before
-  activating the print dialogue by checking the box _Print only selected dives_. If this
+  activating the print dialog by checking the box _Print only selected dives_. If this
   check box is *not* checked ALL dives in
   the *Dive List* panel are printed.
 - Printing in color, done by checking the box with _Print in color_. If this check box
@@ -2996,11 +3005,11 @@ image::images/print2_f22.jpg["FIGURE: Print one dive / page",align="center"]
 - _Six Dives_: Print six dives per page, also showing the dive profiles.
 
 You can _Preview_ the printed page by selecting the _Preview_ button on the
-dialogue (see image *A* at the start of this section). After preview, you can change
-the options in the print dialogue, so the layout fits personal taste.
+dialog (see image *A* at the start of this section). After preview, you can change
+the options in the print dialog, so the layout fits personal taste.
 
 Next, select the _Print_ button (see image *A* at the start of this section). This activates the regular print
-dialogue used by the operating system,
+dialog used by the operating system,
 letting you choose a printer and set its properties (see image below):
 
 image::images/Print_print_f22.jpg["FIGURE: Print dialog",align="center"]
@@ -3015,7 +3024,7 @@ image::images/Printpreview.jpg["FIGURE: Print preview page",align="center"]
 
 Writing a custom template is an effective way to produce highly customized printouts. Subsurface uses HTML templates
 to render printing. You can create a template, export a new template, import an existing template and delete an existing template by using
-the appropriate buttons under the _Template_ dropdown list in the print dialogue. See <<S_APPENDIX_E,APPENDIX E>> for information on how
+the appropriate buttons under the _Template_ dropdown list in the print dialog. See <<S_APPENDIX_E,APPENDIX E>> for information on how
 to write or modify a template.
 
 [[S_Configure]]
@@ -3185,7 +3194,7 @@ image::images/Pref4_f23.jpg["FIGURE: Preferences Graph page",align="center"]
 
 [[GradientFactors_Ref]]
 
-*** Bühlmann: Set the _gradient factors_ (GFLow and GFHigh) for calculcating the deco ceiling following
+*** Bühlmann: Set the _gradient factors_ (GFLow and GFHigh) for calculating the deco ceiling following
    the ZH-L16 algorithm. GF_Low is the gradient factor at depth and GF_High is used at the surface.
    At intermediate depths gradient factors between GF_Low and GF_High are used.
    Gradient factors add conservatism to nitrogen and helium exposure during a dive, in a
@@ -3234,7 +3243,7 @@ services such as Cloud storage, or when you want to communicate through a proxy.
 
 image::images/Pref5_f23.jpg["FIGURE: Preferences Network page",align="center"]
 
-This dialogue has three sections:
+This dialog has three sections:
 
 ** _Proxy_:
 If a proxy server is used for Internet access, the type of proxy needs to be selected from the dropdown list,
@@ -3311,7 +3320,7 @@ image::images/PlannerWindow1.jpg["FIGURE: Dive planner startup window",align="ce
 
 === Open circuit dives
 
--  Towards the center bottom of the planner (circled in blue in the image above) is a dropbox with three options. Select the appropriate one of these:
+-  Towards the center bottom of the planner (circled in blue in the image above) is a dropdown list with three options. Select the appropriate one of these:
  ** Open Circuit (the default)
  ** CCR
  ** pSCR
@@ -3322,16 +3331,16 @@ image::images/PlannerWindow1.jpg["FIGURE: Dive planner startup window",align="ce
   above sea level of the dive site. The atmospheric pressure can also be entered as an altitude
   in meters, assuming a sea-level atmospheric pressure of 1.013 bar.
 
-- In the table labelled _Available Gases_, add the information of the cylinders to be used
+- In the table labeled _Available Gases_, add the information of the cylinders to be used
   as well as the gas composition within that cylinder. This is done in a similar way as for
   <<cylinder_definitions,providing cylinder data for dive logs>>. Choose the cylinder type by
   double clicking the cylinder type and using the dropdown list, then specify the start
   pressure of this cylinder. By leaving the oxygen concentration (O~2~%) field empty,
   the cylinder is assumed to contain air. Otherwise enter the oxygen and/or helium
-  concentration in the boxes provided in this dialogue. Add additional cylinders by using the
-  "+" icon to the top right-hand of the dialogue.
+  concentration in the boxes provided in this dialog. Add additional cylinders by using the
+  "+" icon to the top right-hand of the dialog.
 
-- The _Available Gases_ table includes three gas depth fields, labelled:
+- The _Available Gases_ table includes three gas depth fields, labeled:
  ** Deco switch at: the switch depth for deco gases. Unless overridden by the user, this will be
     automatically calculated based on the Deco pO~2~ preference (default 1.6 bar)
  ** Bot. MOD: the gas Maximum Operating Depth (MOD) if it is used as a bottom mix. Automatically
@@ -3426,7 +3435,7 @@ the nitrogen load incurred during previous dives.
   duration of the dive. This is the price of a larger safety margin. Reasons for using gradient factors less than 100
   may be the age of the diver, the health of a diver, or unusual conditions such as cold water or strong currents.
   Realistic conservative values for the gradient factors are GFLow=40% and GFHigh=80%. This allows you to
-  create a cusom dive plan, suited to yourself as well as the dive conditions.
+  create a custom dive plan, suited to yourself as well as the dive conditions.
 
 Below is an image of a dive plan for a recreational dive at 30 meters with gradient factors of 100. Because the no-deco limit (NDL) is 22
 minutes, there remains a significant amount of air in the cylinder at the end of the dive.
@@ -3546,7 +3555,7 @@ Add new waypoints until the main features of the dive have been completed, e.g. 
 bottom time segment and deep stops (if these are implemented). In most cases _Subsurface_
 computes additional way points in order to fulfill decompression requirements for that
 dive. A waypoint can also be moved by selecting it and by using the arrow keys.
-The waypoints listed in the _Dive Planner Points_ dialogue can be edited by hand in
+The waypoints listed in the _Dive Planner Points_ dialog can be edited by hand in
 order to get a precise presentation of the dive plan. In fact, it is sometimes more easy to create the
 whole dive profile by editing the _Dive Planner Points_ dialog.
 
@@ -3613,12 +3622,12 @@ where the dive duration is indicated. The information is intended to be used if 
 modify the ascent "on the fly" in the case of unexpected deviations from the dive plan during the dive.
 For example, if it says "Runtime: 123min, Stop times + 2:49 /m + 1:30 /min" this means: if you dive deeper
 than planned, you should add almost 3 minutes per meter you go deeper to your decompression (and
-you can substract 3 minutes per meter that you stay shallower). If you overstay your bottom
+you can subtract 3 minutes per meter that you stay shallower). If you overstay your bottom
 time, you need to add one and a half minutes to the stops for each minutes you overstay
 and similarly, you can shorten your deco time by one and a half minute for each minute
 you stay shorter. These variations of depth and time are based on the last manually entered segment of the
 dive (not necessarily the deepest). The additional minutes should be distributed
-over the differnent stops in a way proportional to the stop length, i.e. add more of the
+over the different stops in a way proportional to the stop length, i.e. add more of the
 additional minutes to the longer, shallower stops. The given times refer to the
 duration of the decompression phase and do not include the extended bottom time!
 This way of altering dive plans becomes inaccurate for large deviations from the original
@@ -3714,9 +3723,13 @@ image::images/Planner_pSCR.jpg["FIGURE: Planning a pSCR dive: setup",align="cent
 [NOTE]
 Open circuit diving is often part of a pSCR dive because, at shallow depths, the pO~2~ in the loop is often
 too low for breathing and the shallow parts of a pSCR dive are often done on OC. The change
-from rebreather mode to OC or _vice versa_ is indicated using bailout events. The image on the
+from rebreather mode to OC or _vice versa_ is indicated using bailout events. There are two ways to plan
+bailout in rebreather dives: 1) Check the _Bailout_ checkbox in the _Dive mode_ section of the planner. In this
+case, bailout requirements will be calculated starting at the last segment of the dive specified in the _Dive planner points_ table. 2) If
+bailout takes place at another point in the dive (see example of cave dive below) then bailout is planned
+by manipulating the *Dive mode* column of the *Dive planner points* table. The image on the
 left shows a pSCR dive plan (using three cylinders) where the shallow parts of the dive are performed using EAN50 in
-order to have a sufficient pO~2~. The bottom part of the dive is perfomed with EAN31 (Cyl. 2 in the
+order to have a sufficient pO~2~. The bottom part of the dive is performed with EAN31 (Cyl. 2 in the
 *Available gases* table, also indicated in the *Dive planner points* table). The third cylinder,
 also EAN31, is a bailout cylinder which is, initially, not used.
 In this case the plan is for a cave dive with a bottom time of 20 minutes
@@ -3726,7 +3739,7 @@ the dive and the green pO~2~ indicates the estimated pO~2~ in the loop, the
 whole dive being performed in rebreather mode. We wish to plan
 for a worst-case scenario with bailout at the turning point (i.e. the furthest point into
 the cave). In the *Dive planner points* table, change the *Dive mode* of the last two segments
-to *OC* (indicated in the left-hand image, labled *A*, below). In this case the existing EAN31
+to *OC* (indicated in the left-hand image, labeled *A*, below). In this case the existing EAN31
 cylinder (Cyl.2 in the *Dive planner points* table is used for bailout (i.e. the bailout
 cylinder [Cyl. 3] has not been used yet). Note that the pO~2~ graph now indicates the appropriate
 pO~2~ values, since the gas breathed now has the pO~2~ of an OC configuration. In order to switch
@@ -3738,8 +3751,9 @@ pO~2~ values are shown in the pO~2~ graphs. The volumes of gas required can be o
 
 image::images/pscr_b2.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
 
-In the case of a pSCR dive plan for open water, the worst-case scenario is probably bailout at the end of the deepest part of the dive.
-Create a 1-minute segment at the end of the deepest part of the dive plan. This
+In the case of a pSCR dive plan for open water, the worst-case scenario is probably bailout at the end of the deepest part of the dive
+and this could be achieved using the _Bailout_ checkbox of the planner.
+Alternatively create a 1-minute segment at the end of the deepest part of the dive plan. This
 last segment (represented by the bottom row of the *Dive planner points* table) is then manipulated using the *Dive mode* and *Used gas*
 columns, as in the cave example, above. See the example of bailout for a CCR dive, below, that uses this approach.
 
@@ -3774,14 +3788,17 @@ so gas consumptions of 0 liters are the norm.
 [icon="images/CCR_b1.jpg"]
 [NOTE]
 It is often necessary to plan for a worst-case bailout event in order to ensure sufficient bailout gas to reach the
-surface, taking into account decompression. This is done by defining a 1-minute segment at the end of the bottom part
-of the dive, as in the image on the left where a CCR dive to 40m for 21 minutes is planned.
+surface, taking into account decompression. This is done by 1) checking the _Bailout_ checkbox of the dive planner
+(bailout will be calculated starting at the last segment of the dive specified in the _Dive planner points_ table);
+2) defining a 1-minute segment at the end of the bottom part
+of the dive, as in the image on the left where a CCR dive to 40m for 21 minutes is planned;
+3) changing to an OC-gas during any segment in the _Dive planner points_ table.
 
 
 [icon="images/CCR_b2.jpg"]
 [NOTE]
-In the dive planner points
-table, change the _Dive mode_ of this 1-minute segment to _OC_. This signifies bailout. In this case there is bailout to
+In the _Dive planner points
+table_, change the _Dive mode_ of this 1-minute segment to _OC_. This signifies bailout. In this case there is bailout to
 the existing diluent cylinder (assuming this cylinder has sufficient gas). The appropriate pO~2~ and cylinder pressure
 graphs are shown in the dive profile, as in the image on the left. Note that the setpoint drops to zero after bailout, since
 this value does not apply to breathed bailout gas.
@@ -3951,9 +3968,6 @@ dealing with the appropriate operations.
   Saving an uploaded dive with its dive plan>>.
 - _Next DC_ - Switch to next dive computer.
 - _Full Screen_ - Toggles Full Screen mode.
-
-=== Share on
-- <<S_Facebook,_Facebook_>> - Share the currently selected dive on your Facebook timeline.
 
 === Help
 - _About Subsurface_ - Show a panel with the version number of _Subsurface_ as
@@ -4422,10 +4436,10 @@ APD inspiration dive logs are imported into _Subsurface_ as follows:
 - Open a text editor, e.g. Notepad (Windows) or TextWrangler (Mac).
 - Copy the contents of the clipboard into the text editor and save the text file
   with a filename extension of _.apd_.
-- Within _Subsurface_, select _Import ->  Import log files_ to open the xref:Unified_import[universal import dialogue].
-- In the dropdown list towards the bottom right of the dialogue (labeled 'Filter:'), select "APD log viewer".
+- Within _Subsurface_, select _Import ->  Import log files_ to open the xref:Unified_import[universal import dialog].
+- In the dropdown list towards the bottom right of the dialog (labeled 'Filter:'), select "APD log viewer".
 - On the list of file names select the _.apd_ file  created. An import
-  dialogue opens showing the default settings for the data in the
+  dialog opens showing the default settings for the data in the
 _.apd_ file. If changes are required,
   do this as for xref:S_ImportingCSVDives[CSV imports].
 
@@ -4448,7 +4462,7 @@ by the APD equipment but can be manually entered in the _Equipment_ Tab.
 
 The import of dive log data from external dive log software is mostly performed
 using
-the dialogue found by selecting _Import_ from the Main Menu, then clicking on
+the dialog found by selecting _Import_ from the Main Menu, then clicking on
 _Import Log Files_. This is a single-step process, more information about which
 can be found
 xref:Unified_import[here.]
@@ -4606,7 +4620,7 @@ In Libreoffice Calc the time format should be set to minutes:seconds - [mm]:ss a
 
 image::images/LOffice_spreadsheetdata.jpg["FIGURE: Spreadsheet data",align="center"]
 
-To export the data as a .CSV file from within LibreOffice click _File ->  Save As_. On the dialogue that comes up, select the _Text CSV (.csv)_ as the file type and select the option _Edit filter settings_.
+To export the data as a .CSV file from within LibreOffice click _File ->  Save As_. On the dialog that comes up, select the _Text CSV (.csv)_ as the file type and select the option _Edit filter settings_.
 
 image::images/LOffice_save_as_options.jpg["FIGURE: Save as options",align="center"]
 
@@ -4640,12 +4654,12 @@ With the dive log opened in _Excel_, select the round Windows button at the top 
 
 image::images/Win_SaveCSV1.jpg["FIGURE: Excel save as option",align="center"]
 
-Click on the left-hand part of the _Save as_ option, NOT on the arrow on the right-hand. This brings up a dialogue for saving the
+Click on the left-hand part of the _Save as_ option, NOT on the arrow on the right-hand. This brings up a dialog for saving the
 spreadsheet in an alternative format. From the dropdown list at the
-bottom of the dialogue, marked _Save as Type:_, select _CSV(Comma delimited) (*.CSV)_. Be sure the appropriate folder has been
+bottom of the dialog, marked _Save as Type:_, select _CSV(Comma delimited) (*.CSV)_. Be sure the appropriate folder has been
 selected to save the CSV file into.
 
-image::images/Win_SaveCSV3.jpg["FIGURE: Excel save CSV dialogue",align="center"]
+image::images/Win_SaveCSV3.jpg["FIGURE: Excel save CSV dialog",align="center"]
 
 Select the _Save_ button. The CSV-formatted file is saved into the
 folder that was selected. You can double check the .CSV file by
@@ -4658,19 +4672,19 @@ _Subsurface_ has a way to create or modify templates for printing dive logs to
 produce customized printouts of them. Templates written in HTML, as well as a simple
 Grantlee instruction set, are rendered to the print device by _Subsurface_.
 
-Templates are accessed using the print dialogue (see image *B* below).
+Templates are accessed using the print dialog (see image *B* below).
 
-image::images/Print1_f22.jpg["FIGURE: Print dialogue",align="center"]
+image::images/Print1_f22.jpg["FIGURE: Print dialog",align="center"]
 
 The buttons under the _Template_ dropdown box lets you _Edit_, _Delete_,
 _Import_ and  _Export_ templates (see image *A* above). New or modified templates are stored as HTML
 files in the same directory as the dive log being processed. In order to create or modify
-a template, select one of the templates from the template dropdown list in the print dialogue
+a template, select one of the templates from the template dropdown list in the print dialog
 (see image *B* above). Choose an existing template that resembles the final desired printout. Then select _Edit_.
 
 The Edit Panel has three tabs:
 
-image::images/Template1_f22.jpg["FIGURE: template edit dialogue",align="center"]
+image::images/Template1_f22.jpg["FIGURE: template edit dialog",align="center"]
 
 1) The _Style_ tab (image *A* above) controls the font, line spacing and color template used for printing the dive log.
    The style attributes are editable. Choose one of the four color palettes used for color printing.
@@ -4692,7 +4706,7 @@ image::images/Template2_f22.jpg["FIGURE:Template tab",align="center"]
 
 You can adapt any of the existing templates and save it to the dive log directory. The standard templates (e.g. One dive, Six dives,
 Table) can be modified in this way. After completing the edits, use the _Export_ button in the print
-dialogue to save the new template using a new template name.
+dialog to save the new template using a new template name.
 
 To write a custom template, the following elements must exist so  the template will be correctly handled and rendered.
 
