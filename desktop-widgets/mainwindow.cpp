@@ -188,11 +188,11 @@ MainWindow::MainWindow() : QMainWindow(),
 	registerApplicationState("EditDiveSite", diveSiteEdit, profileContainer, diveList, mapWidget);
 	registerApplicationState("FilterDive", mainTab, profileContainer, diveList, &filterWidget2);
 
-	setStateProperties("Default", enabledList, enabledList, enabledList,enabledList);
-	setStateProperties("AddDive", enabledList, enabledList, enabledList,enabledList);
-	setStateProperties("EditDive", enabledList, enabledList, enabledList,enabledList);
-	setStateProperties("PlanDive", enabledList, enabledList, enabledList,enabledList);
-	setStateProperties("EditPlannedDive", enabledList, enabledList, enabledList,enabledList);
+	setStateProperties("Default", enabledList, enabledList, enabledList, enabledList);
+	setStateProperties("AddDive", enabledList, enabledList, enabledList, enabledList);
+	setStateProperties("EditDive", enabledList, enabledList, enabledList, enabledList);
+	setStateProperties("PlanDive", enabledList, enabledList, enabledList, enabledList);
+	setStateProperties("EditPlannedDive", enabledList, enabledList, enabledList, enabledList);
 	setStateProperties("EditDiveSite", enabledList, disabledList, disabledList, enabledList);
 	setStateProperties("FilterDive", enabledList, enabledList, enabledList, enabledList);
 	setApplicationState("Default");
