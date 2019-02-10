@@ -81,8 +81,8 @@ slots:
 	void on_notes_textChanged();
 	void on_notes_editingFinished();
 	void on_airtemp_editingFinished();
-	void on_duration_textChanged(const QString &text);
-	void on_depth_textChanged(const QString &text);
+	void on_duration_editingFinished();
+	void on_depth_editingFinished();
 	void divetype_Changed(int);
 	void on_watertemp_editingFinished();
 	void on_dateEdit_dateChanged(const QDate &date);
