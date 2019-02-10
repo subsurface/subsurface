@@ -216,6 +216,19 @@
       </layout>
      </item>
      <item>
+      <widget class="QCheckBox" name="showNonDivecomputers">
+       <property name="toolTip">
+        <string>even if not recognized as dive computer</string>
+       </property>
+       <property name="text">
+        <string>Show all BT devices</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
       <layout class="QVBoxLayout" name="scanningControls">
        <item>
         <widget class="QPushButton" name="scan">
