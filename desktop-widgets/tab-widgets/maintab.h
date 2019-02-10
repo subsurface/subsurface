@@ -124,7 +124,6 @@ private:
 	void markChangedWidget(QWidget *w);
 	dive_trip_t *currentTrip;
 	dive_trip_t displayedTrip;
-	bool acceptingEdit;
 	struct dive_site *getDiveSite(struct dive_site *pickedDs, struct dive_site *origDs);
 	QList<TabBase*> extraWidgets;
 };
