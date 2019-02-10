@@ -207,6 +207,7 @@ private:
 	void beginChangeState(CurrentState s);
 	void saveSplitterSizes();
 	void toggleCollapsible(bool toggle);
+	void showFilterIfEnabled();
 	void updateLastUsedDir(const QString &s);
 	void registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *topRight, QWidget *bottomLeft, QWidget *bottomRight);
 	void enterState(CurrentState);
