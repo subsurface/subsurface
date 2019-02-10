@@ -215,6 +215,54 @@ DiveField EditWaterTemp::fieldId() const
 	return DiveField::WATER_TEMP;
 }
 
+// ***** Duration *****
+void EditDuration::set(struct dive *d, int value) const
+{
+	d->dc.duration.seconds = value;
+	d->duration = d->dc.duration;
+	d->dc.meandepth.mm = 0;
+	d->dc.samples = 0;
+}
+
+int EditDuration::data(struct dive *d) const
+{
+	return d->duration.seconds;
+}
+
+QString EditDuration::fieldName() const
+{
+	return tr("duration");
+}
+
+DiveField EditDuration::fieldId() const
+{
+	return DiveField::DURATION;
+}
+
+// ***** Depth *****
+void EditDepth::set(struct dive *d, int value) const
+{
+	d->dc.maxdepth.mm = value;
+	d->maxdepth = d->dc.maxdepth;
+	d->dc.meandepth.mm = 0;
+	d->dc.samples = 0;
+}
+
+int EditDepth::data(struct dive *d) const
+{
+	return d->maxdepth.mm;
+}
+
+QString EditDepth::fieldName() const
+{
+	return tr("depth");
+}
+
+DiveField EditDepth::fieldId() const
+{
+	return DiveField::DEPTH;
+}
+
 // ***** DiveSite *****
 void EditDiveSite::set(struct dive *d, struct dive_site *dive_site) const
 {
