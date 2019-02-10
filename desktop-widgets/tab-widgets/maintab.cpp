@@ -331,6 +331,13 @@ void MainTab::enableEdition(EditMode newEditMode)
 	}
 }
 
+static void profileFromDive(struct dive *d)
+{
+	DivePlannerPointsModel::instance()->loadFromDive(d);
+	MainWindow::instance()->graphics->setReplot(true);
+	MainWindow::instance()->graphics->plotDive(current_dive, true);
+}
+
 // This function gets called if a field gets updated by an undo command.
 // Refresh the corresponding UI field.
 void MainTab::divesEdited(const QVector<dive *> &, DiveField field)
@@ -340,6 +347,14 @@ void MainTab::divesEdited(const QVector<dive *> &, DiveField field)
 		return;
 
 	switch(field) {
+	case DiveField::DURATION:
+		ui.duration->setText(render_seconds_to_string(current_dive->duration.seconds));
+		profileFromDive(current_dive);
+		break;
+	case DiveField::DEPTH:
+		ui.depth->setText(get_depth_string(current_dive->maxdepth, true));
+		profileFromDive(current_dive);
+		break;
 	case DiveField::AIR_TEMP:
 		ui.airtemp->setText(get_temperature_string(current_dive->airtemp, true));
 		break;
@@ -778,6 +793,13 @@ static QVector<dive *> getSelectedDivesCurrentLast()
 	return res;
 }
 
+// When editing depth and duration, we only edit a single dive. Therefore, return the current dive as a list
+static QVector<dive *> getCurrentAsList()
+{
+	return current_dive ? QVector<dive *> { current_dive }
+			    : QVector<dive *> { };
+}
+
 void MainTab::acceptChanges()
 {
 	int i, addedId = -1;
@@ -1055,41 +1077,22 @@ void MainTab::on_divemaster_editingFinished()
 	Command::editDiveMaster(getSelectedDivesCurrentLast(), stringToList(ui.divemaster->toPlainText()), current_dive);
 }
 
-void MainTab::on_duration_textChanged(const QString &text)
+void MainTab::on_duration_editingFinished()
 {
-	if (editMode == IGNORE || acceptingEdit == true)
+	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
 		return;
-	// parse this
-	MainWindow::instance()->graphics->setReplot(false);
-	if (!isEditing())
-		enableEdition();
-	displayed_dive.dc.duration.seconds = parseDurationToSeconds(text);
-	displayed_dive.duration = displayed_dive.dc.duration;
-	displayed_dive.dc.meandepth.mm = 0;
-	displayed_dive.dc.samples = 0;
-	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive);
-	markChangedWidget(ui.duration);
-	MainWindow::instance()->graphics->setReplot(true);
-	MainWindow::instance()->graphics->plotDive();
 
+	// Duration editing is special: we only edit the current dive.
+	Command::editDuration(getCurrentAsList(), parseDurationToSeconds(ui.duration->text()), displayed_dive.dc.duration.seconds);
 }
 
-void MainTab::on_depth_textChanged(const QString &text)
+void MainTab::on_depth_editingFinished()
 {
-	if (editMode == IGNORE || acceptingEdit == true)
+	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
 		return;
-	// don't replot until we set things up the way we want them
-	MainWindow::instance()->graphics->setReplot(false);
-	if (!isEditing())
-		enableEdition();
-	displayed_dive.dc.maxdepth.mm = parseLengthToMm(text);
-	displayed_dive.maxdepth = displayed_dive.dc.maxdepth;
-	displayed_dive.dc.meandepth.mm = 0;
-	displayed_dive.dc.samples = 0;
-	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive);
-	markChangedWidget(ui.depth);
-	MainWindow::instance()->graphics->setReplot(true);
-	MainWindow::instance()->graphics->plotDive();
+
+	// Depth editing is special: we only edit the current dive.
+	Command::editDepth(getCurrentAsList(),  parseLengthToMm(ui.depth->text()), current_dive->dc.maxdepth.mm);
 }
 
 void MainTab::on_airtemp_editingFinished()

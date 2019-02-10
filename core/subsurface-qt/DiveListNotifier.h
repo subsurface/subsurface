@@ -14,6 +14,8 @@
 // Use "enum class" to not polute the global name space.
 enum class DiveField {
 	DATETIME,
+	DEPTH,
+	DURATION,
 	AIR_TEMP,
 	WATER_TEMP,
 	DIVESITE,

@@ -101,6 +101,24 @@ public:
 	DiveField fieldId() const override;
 };
 
+class EditDuration : public EditBase<int> {
+public:
+	using EditBase<int>::EditBase;	// Use constructor of base class.
+	void set(struct dive *d, int value) const override;
+	int data(struct dive *d) const override;
+	QString fieldName() const override;
+	DiveField fieldId() const override;
+};
+
+class EditDepth : public EditBase<int> {
+public:
+	using EditBase<int>::EditBase;	// Use constructor of base class.
+	void set(struct dive *d, int value) const override;
+	int data(struct dive *d) const override;
+	QString fieldName() const override;
+	DiveField fieldId() const override;
+};
+
 class EditDiveSite : public EditBase<struct dive_site *> {
 	OwningDiveSitePtr ownedDiveSite;
 	void undo() override; // Dive site editing is more complex, therefore overide undo()
