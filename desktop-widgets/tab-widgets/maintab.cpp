@@ -206,8 +206,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	// enable URL clickability in notes:
 	new TextHyperlinkEventFilter(ui.notes);//destroyed when ui.notes is destroyed
 
-	acceptingEdit = false;
-
 	ui.diveTripLocation->hide();
 }
 
@@ -770,13 +768,14 @@ void MainTab::acceptChanges()
 	if (ui.location->hasFocus())
 		setFocus();
 
-	acceptingEdit = true;
+	EditMode lastMode = editMode;
+	editMode = IGNORE;
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	ui.dateEdit->setEnabled(true);
 	hideMessage();
 	ui.equipmentTab->setEnabled(true);
-	if (editMode == ADD) {
+	if (lastMode == ADD) {
 		// Handle dive site
 		struct dive_site *pickedDs = ui.location->currDiveSite();
 		QString newDiveSiteName;
@@ -796,7 +795,6 @@ void MainTab::acceptChanges()
 		cylindersModel->changed = false;
 		weightModel->changed = false;
 		MainWindow::instance()->setEnabledToolbar(true);
-		acceptingEdit = false;
 		ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 		emit addDiveFinished();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
@@ -821,7 +819,7 @@ void MainTab::acceptChanges()
 		// this is required in case the invocation wants to compare things
 		// to the original value in current_dive like it should
 		QVector<dive *> selectedDives = getSelectedDivesCurrentLast();
-		if (editMode == MANUALLY_ADDED_DIVE) {
+		if (lastMode == MANUALLY_ADDED_DIVE) {
 			// preserve any changes to the profile
 			free(current_dive->dc.sample);
 			copy_samples(&displayed_dive.dc, &current_dive->dc);
@@ -904,7 +902,7 @@ void MainTab::acceptChanges()
 			}
 		}
 	}
-	if (editMode == MANUALLY_ADDED_DIVE) {
+	if (lastMode == MANUALLY_ADDED_DIVE) {
 		// we just added or edited the dive, let fixup_dive() make
 		// sure we get the max. depth right
 		current_dive->maxdepth.mm = current_dc->maxdepth.mm = 0;
@@ -916,16 +914,14 @@ void MainTab::acceptChanges()
 	}
 	int scrolledBy = MainWindow::instance()->diveList->verticalScrollBar()->sliderPosition();
 	resetPallete();
-	if (editMode == MANUALLY_ADDED_DIVE) {
+	if (lastMode == MANUALLY_ADDED_DIVE) {
 		MainWindow::instance()->diveList->reload();
 		int newDiveNr = get_divenr(get_dive_by_uniq_id(addedId));
 		MainWindow::instance()->diveList->unselectDives();
 		MainWindow::instance()->diveList->selectDive(newDiveNr, true);
-		editMode = NONE;
 		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->graphics->replot();
 	} else {
-		editMode = NONE;
 		if (do_replot)
 			MainWindow::instance()->graphics->replot();
 		MainWindow::instance()->diveList->rememberSelection();
@@ -939,8 +935,8 @@ void MainTab::acceptChanges()
 	cylindersModel->changed = false;
 	weightModel->changed = false;
 	MainWindow::instance()->setEnabledToolbar(true);
-	acceptingEdit = false;
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
+	editMode = NONE;
 }
 
 void MainTab::resetPallete()
@@ -1032,7 +1028,7 @@ static QStringList stringToList(const QString &s)
 
 void MainTab::on_buddy_editingFinished()
 {
-	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
+	if (editMode == IGNORE || !current_dive)
 		return;
 
 	Command::editBuddies(getSelectedDivesCurrentLast(), stringToList(ui.buddy->toPlainText()), current_dive);
@@ -1040,7 +1036,7 @@ void MainTab::on_buddy_editingFinished()
 
 void MainTab::on_divemaster_editingFinished()
 {
-	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
+	if (editMode == IGNORE || !current_dive)
 		return;
 
 	Command::editDiveMaster(getSelectedDivesCurrentLast(), stringToList(ui.divemaster->toPlainText()), current_dive);
@@ -1048,7 +1044,7 @@ void MainTab::on_divemaster_editingFinished()
 
 void MainTab::on_duration_editingFinished()
 {
-	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
+	if (editMode == IGNORE || !current_dive)
 		return;
 
 	// Duration editing is special: we only edit the current dive.
@@ -1057,7 +1053,7 @@ void MainTab::on_duration_editingFinished()
 
 void MainTab::on_depth_editingFinished()
 {
-	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
+	if (editMode == IGNORE || !current_dive)
 		return;
 
 	// Depth editing is special: we only edit the current dive.
@@ -1066,7 +1062,7 @@ void MainTab::on_depth_editingFinished()
 
 void MainTab::on_airtemp_editingFinished()
 {
-	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
+	if (editMode == IGNORE || !current_dive)
 		return;
 	Command::editAirTemp(getSelectedDivesCurrentLast(),
 			     parseTemperatureToMkelvin(ui.airtemp->text()), current_dive->airtemp.mkelvin);
@@ -1082,7 +1078,7 @@ void MainTab::divetype_Changed(int index)
 
 void MainTab::on_watertemp_editingFinished()
 {
-	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
+	if (editMode == IGNORE || !current_dive)
 		return;
 	Command::editWaterTemp(getSelectedDivesCurrentLast(),
 			       parseTemperatureToMkelvin(ui.watertemp->text()),
@@ -1102,7 +1098,7 @@ static void shiftTime(QDateTime &dateTime)
 
 void MainTab::on_dateEdit_dateChanged(const QDate &date)
 {
-	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
+	if (editMode == IGNORE || !current_dive)
 		return;
 	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*current_dive->when, Qt::UTC);
 	dateTime.setTimeSpec(Qt::UTC);
@@ -1112,7 +1108,7 @@ void MainTab::on_dateEdit_dateChanged(const QDate &date)
 
 void MainTab::on_timeEdit_timeChanged(const QTime &time)
 {
-	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
+	if (editMode == IGNORE || !current_dive)
 		return;
 	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*current_dive->when, Qt::UTC);
 	dateTime.setTimeSpec(Qt::UTC);
@@ -1199,7 +1195,7 @@ int MainTab::diffTaggedStrings(QString currentString, QString displayedString, Q
 
 void MainTab::on_tagWidget_editingFinished()
 {
-	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
+	if (editMode == IGNORE || !current_dive)
 		return;
 
 	Command::editTags(getSelectedDivesCurrentLast(), ui.tagWidget->getBlockStringList(), current_dive);
@@ -1207,7 +1203,7 @@ void MainTab::on_tagWidget_editingFinished()
 
 void MainTab::on_location_diveSiteSelected()
 {
-	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
+	if (editMode == IGNORE || !current_dive)
 		return;
 
 	struct dive_site *newDs = ui.location->currDiveSite();
@@ -1228,7 +1224,7 @@ void MainTab::on_diveTripLocation_textEdited(const QString& text)
 
 void MainTab::on_suit_editingFinished()
 {
-	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
+	if (editMode == IGNORE || !current_dive)
 		return;
 
 	Command::editSuit(getSelectedDivesCurrentLast(), ui.suit->text(), QString(current_dive->suit));
@@ -1236,7 +1232,7 @@ void MainTab::on_suit_editingFinished()
 
 void MainTab::on_notes_textChanged()
 {
-	if (editMode == IGNORE || acceptingEdit == true)
+	if (editMode == IGNORE)
 		return;
 	if (currentTrip) {
 		if (same_string(displayedTrip.notes, qPrintable(ui.notes->toPlainText())))
@@ -1260,7 +1256,7 @@ void MainTab::on_notes_editingFinished()
 
 void MainTab::on_rating_valueChanged(int value)
 {
-	if (acceptingEdit == true || !current_dive)
+	if (editMode == IGNORE || !current_dive)
 		return;
 
 	Command::editRating(getSelectedDivesCurrentLast(), value, current_dive->rating);
@@ -1268,7 +1264,7 @@ void MainTab::on_rating_valueChanged(int value)
 
 void MainTab::on_visibility_valueChanged(int value)
 {
-	if (acceptingEdit == true || !current_dive)
+	if (editMode == IGNORE || !current_dive)
 		return;
 
 	Command::editVisibility(getSelectedDivesCurrentLast(), value, current_dive->visibility);
