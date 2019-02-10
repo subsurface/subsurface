@@ -1033,7 +1033,7 @@ void MainWindow::on_actionViewList_triggered()
 	toggleCollapsible(true);
 	beginChangeState(LIST_MAXIMIZED);
 	ui.mainSplitter->setSizes({ COLLAPSED, EXPANDED });
-	ui.bottomSplitter->setSizes({ EXPANDED, COLLAPSED });
+	showFilterIfEnabled();
 }
 
 void MainWindow::on_actionViewProfile_triggered()
@@ -1806,8 +1806,20 @@ void MainWindow::on_paste_triggered()
 void MainWindow::on_actionFilterTags_triggered()
 {
 	setApplicationState(getCurrentAppState() == "FilterDive" ? "Default" : "FilterDive");
+	if (state == LIST_MAXIMIZED)
+		showFilterIfEnabled();
 }
 
+void MainWindow::showFilterIfEnabled()
+{
+	if (getCurrentAppState() == "FilterDive") {
+		const int appW = qApp->desktop()->size().width();
+		QList<int> profileFilterSizes = { round_int(appW * 0.7), round_int(appW * 0.3) };
+		ui.bottomSplitter->setSizes(profileFilterSizes);
+	} else {
+		ui.bottomSplitter->setSizes({ EXPANDED, COLLAPSED });
+	}
+}
 void MainWindow::registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *topRight, QWidget *bottomLeft, QWidget *bottomRight)
 {
 	applicationState[state] = WidgetForQuadrant(topLeft, topRight, bottomLeft, bottomRight);
