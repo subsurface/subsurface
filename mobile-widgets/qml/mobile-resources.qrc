@@ -4,6 +4,7 @@
 		<file>TemplateCheckBox.qml</file>
 		<file>TemplateComboBox.qml</file>
 		<file>TemplateLabel.qml</file>
+		<file>TemplateLine.qml</file>
 		<file>TemplateRadioButton.qml</file>
 		<file>TemplateSection.qml</file>
 		<file>TemplateSpinBox.qml</file>
