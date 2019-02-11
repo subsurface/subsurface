@@ -2,6 +2,7 @@
 	<qresource prefix="/qml">
 		<!-- ********** Templates ********** -->
 		<file>TemplateLabel.qml</file>
+		<file>TemplateRadioButton.qml</file>
 		<file>TemplateSection.qml</file>
 		<file>TemplateSpinBox.qml</file>
 
