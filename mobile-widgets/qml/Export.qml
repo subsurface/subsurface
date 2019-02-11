@@ -249,7 +249,7 @@ Kirigami.ScrollablePage {
 			Layout.fillWidth: true
 			text: qsTr("Anonymize")
 		}
-		SsrfButton {
+		TemplateButton {
 			text: qsTr("Next")
 			onClicked: {
 				if (selectedExport === ExportType.EX_DIVELOGS_DE) {

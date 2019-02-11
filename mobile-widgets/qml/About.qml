@@ -56,7 +56,7 @@ Kirigami.ScrollablePage {
 			anchors.horizontalCenter: parent.Center
 			horizontalAlignment: Text.AlignHCenter
 		}
-		SsrfButton {
+		TemplateButton {
 			id: copyAppLogToClipboard
 			Layout.alignment: Qt.AlignHCenter
 			text: qsTr("Copy logs to clipboard")
