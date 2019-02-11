@@ -7,6 +7,7 @@
 		<file>TemplateRadioButton.qml</file>
 		<file>TemplateSection.qml</file>
 		<file>TemplateSpinBox.qml</file>
+		<file>TemplateTextField.qml</file>
 
 		<!-- ********** qml ********** -->
 		<file>About.qml</file>
