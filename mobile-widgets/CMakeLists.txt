@@ -3,6 +3,7 @@
 set(SUBSURFACE_MOBILE_SRCS
 	qmlinterface.cpp
 	qmlmanager.cpp
+	themeinterface.cpp
 	qml/kirigami/src/columnview.cpp
 	qml/kirigami/src/delegaterecycler.cpp
 	qml/kirigami/src/enums.cpp
