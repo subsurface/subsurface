@@ -7,19 +7,19 @@
 
 class qPrefGeneral : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(bool auto_recalculate_thumbnails READ auto_recalculate_thumbnails WRITE set_auto_recalculate_thumbnails NOTIFY auto_recalculate_thumbnailsChanged);
-	Q_PROPERTY(QString default_cylinder READ default_cylinder WRITE set_default_cylinder NOTIFY default_cylinderChanged);
-	Q_PROPERTY(QString default_filename READ default_filename WRITE set_default_filename NOTIFY default_filenameChanged);
-	Q_PROPERTY(enum def_file_behavior default_file_behavior READ default_file_behavior WRITE set_default_file_behavior NOTIFY default_file_behaviorChanged);
-	Q_PROPERTY(int defaultsetpoint READ defaultsetpoint WRITE set_defaultsetpoint NOTIFY defaultsetpointChanged);
-	Q_PROPERTY(bool extract_video_thumbnails READ extract_video_thumbnails WRITE set_extract_video_thumbnails NOTIFY extract_video_thumbnailsChanged);
-	Q_PROPERTY(int extract_video_thumbnails_position READ extract_video_thumbnails_position WRITE set_extract_video_thumbnails_position NOTIFY extract_video_thumbnails_positionChanged);
-	Q_PROPERTY(QString ffmpeg_executable READ ffmpeg_executable WRITE set_ffmpeg_executable  NOTIFY ffmpeg_executableChanged);
-	Q_PROPERTY(int o2consumption READ o2consumption WRITE set_o2consumption NOTIFY o2consumptionChanged);
-	Q_PROPERTY(int pscr_ratio READ pscr_ratio WRITE set_pscr_ratio NOTIFY pscr_ratioChanged);
-	Q_PROPERTY(bool use_default_file READ use_default_file WRITE set_use_default_file NOTIFY use_default_fileChanged);
-	Q_PROPERTY(QString diveshareExport_uid READ diveshareExport_uid WRITE set_diveshareExport_uid NOTIFY diveshareExport_uidChanged);
-	Q_PROPERTY(bool diveshareExport_private READ diveshareExport_private WRITE set_diveshareExport_private NOTIFY diveshareExport_privateChanged);
+	Q_PROPERTY(bool auto_recalculate_thumbnails READ auto_recalculate_thumbnails WRITE set_auto_recalculate_thumbnails NOTIFY auto_recalculate_thumbnailsChanged)
+	Q_PROPERTY(QString default_cylinder READ default_cylinder WRITE set_default_cylinder NOTIFY default_cylinderChanged)
+	Q_PROPERTY(QString default_filename READ default_filename WRITE set_default_filename NOTIFY default_filenameChanged)
+	Q_PROPERTY(enum def_file_behavior default_file_behavior READ default_file_behavior WRITE set_default_file_behavior NOTIFY default_file_behaviorChanged)
+	Q_PROPERTY(int defaultsetpoint READ defaultsetpoint WRITE set_defaultsetpoint NOTIFY defaultsetpointChanged)
+	Q_PROPERTY(bool extract_video_thumbnails READ extract_video_thumbnails WRITE set_extract_video_thumbnails NOTIFY extract_video_thumbnailsChanged)
+	Q_PROPERTY(int extract_video_thumbnails_position READ extract_video_thumbnails_position WRITE set_extract_video_thumbnails_position NOTIFY extract_video_thumbnails_positionChanged)
+	Q_PROPERTY(QString ffmpeg_executable READ ffmpeg_executable WRITE set_ffmpeg_executable  NOTIFY ffmpeg_executableChanged)
+	Q_PROPERTY(int o2consumption READ o2consumption WRITE set_o2consumption NOTIFY o2consumptionChanged)
+	Q_PROPERTY(int pscr_ratio READ pscr_ratio WRITE set_pscr_ratio NOTIFY pscr_ratioChanged)
+	Q_PROPERTY(bool use_default_file READ use_default_file WRITE set_use_default_file NOTIFY use_default_fileChanged)
+	Q_PROPERTY(QString diveshareExport_uid READ diveshareExport_uid WRITE set_diveshareExport_uid NOTIFY diveshareExport_uidChanged)
+	Q_PROPERTY(bool diveshareExport_private READ diveshareExport_private WRITE set_diveshareExport_private NOTIFY diveshareExport_privateChanged)
 	Q_PROPERTY(bool filterFullTextNotes READ filterFullTextNotes WRITE set_filterFullTextNotes NOTIFY filterFullTextNotesChanged)
 	Q_PROPERTY(bool filterCaseSensitive READ filterCaseSensitive WRITE set_filterCaseSensitive NOTIFY filterCaseSensitiveChanged)
 	Q_PROPERTY(bool extraEnvironmentalDefault READ extraEnvironmentalDefault WRITE set_extraEnvironmentalDefault NOTIFY extraEnvironmentalDefaultChanged);

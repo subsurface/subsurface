@@ -8,16 +8,16 @@
 
 class qPrefUnits : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(bool coordinates_traditional READ coordinates_traditional WRITE set_coordinates_traditional NOTIFY coordinates_traditionalChanged);
-	Q_PROPERTY(units::DURATION duration_units READ duration_units WRITE set_duration_units NOTIFY duration_unitsChanged);
-	Q_PROPERTY(units::LENGTH length READ length WRITE set_length NOTIFY lengthChanged);
-	Q_PROPERTY(units::PRESSURE pressure READ pressure WRITE set_pressure NOTIFY pressureChanged);
-	Q_PROPERTY(bool show_units_table READ show_units_table WRITE set_show_units_table NOTIFY show_units_tableChanged);
-	Q_PROPERTY(units::TEMPERATURE temperature READ temperature WRITE set_temperature NOTIFY temperatureChanged);
-	Q_PROPERTY(QString unit_system READ unit_system WRITE set_unit_system NOTIFY unit_systemChanged);
-	Q_PROPERTY(units::TIME vertical_speed_time READ vertical_speed_time WRITE set_vertical_speed_time NOTIFY vertical_speed_timeChanged);
-	Q_PROPERTY(units::VOLUME volume READ volume WRITE set_volume NOTIFY volumeChanged);
-	Q_PROPERTY(units::WEIGHT weight READ weight WRITE set_weight NOTIFY weightChanged);
+	Q_PROPERTY(bool coordinates_traditional READ coordinates_traditional WRITE set_coordinates_traditional NOTIFY coordinates_traditionalChanged)
+	Q_PROPERTY(units::DURATION duration_units READ duration_units WRITE set_duration_units NOTIFY duration_unitsChanged)
+	Q_PROPERTY(units::LENGTH length READ length WRITE set_length NOTIFY lengthChanged)
+	Q_PROPERTY(units::PRESSURE pressure READ pressure WRITE set_pressure NOTIFY pressureChanged)
+	Q_PROPERTY(bool show_units_table READ show_units_table WRITE set_show_units_table NOTIFY show_units_tableChanged)
+	Q_PROPERTY(units::TEMPERATURE temperature READ temperature WRITE set_temperature NOTIFY temperatureChanged)
+	Q_PROPERTY(QString unit_system READ unit_system WRITE set_unit_system NOTIFY unit_systemChanged)
+	Q_PROPERTY(units::TIME vertical_speed_time READ vertical_speed_time WRITE set_vertical_speed_time NOTIFY vertical_speed_timeChanged)
+	Q_PROPERTY(units::VOLUME volume READ volume WRITE set_volume NOTIFY volumeChanged)
+	Q_PROPERTY(units::WEIGHT weight READ weight WRITE set_weight NOTIFY weightChanged)
 
 public:
 	static qPrefUnits *instance();

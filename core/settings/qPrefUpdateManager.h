@@ -8,11 +8,11 @@
 
 class qPrefUpdateManager : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(bool dont_check_for_updates READ dont_check_for_updates WRITE set_dont_check_for_updates NOTIFY dont_check_for_updatesChanged);
-	Q_PROPERTY(bool dont_check_exists READ dont_check_exists WRITE set_dont_check_exists NOTIFY dont_check_existsChanged);
-	Q_PROPERTY(const QString last_version_used READ last_version_used WRITE set_last_version_used NOTIFY last_version_usedChanged);
-	Q_PROPERTY(const QDate next_check READ next_check WRITE set_next_check NOTIFY next_checkChanged);
-	Q_PROPERTY(const QString uuidString READ uuidString WRITE set_uuidString NOTIFY uuidStringChanged);
+	Q_PROPERTY(bool dont_check_for_updates READ dont_check_for_updates WRITE set_dont_check_for_updates NOTIFY dont_check_for_updatesChanged)
+	Q_PROPERTY(bool dont_check_exists READ dont_check_exists WRITE set_dont_check_exists NOTIFY dont_check_existsChanged)
+	Q_PROPERTY(const QString last_version_used READ last_version_used WRITE set_last_version_used NOTIFY last_version_usedChanged)
+	Q_PROPERTY(const QDate next_check READ next_check WRITE set_next_check NOTIFY next_checkChanged)
+	Q_PROPERTY(const QString uuidString READ uuidString WRITE set_uuidString NOTIFY uuidStringChanged)
 
 public:
 	static qPrefUpdateManager *instance();

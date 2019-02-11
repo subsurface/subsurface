@@ -8,23 +8,23 @@
 
 class qPrefDisplay : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(int animation_speed READ animation_speed WRITE set_animation_speed NOTIFY animation_speedChanged);
-	Q_PROPERTY(QString divelist_font READ divelist_font WRITE set_divelist_font NOTIFY divelist_fontChanged);
-	Q_PROPERTY(double font_size READ font_size WRITE set_font_size NOTIFY font_sizeChanged);
-	Q_PROPERTY(double mobile_scale READ mobile_scale WRITE set_mobile_scale NOTIFY mobile_scaleChanged);
-	Q_PROPERTY(bool display_invalid_dives READ display_invalid_dives WRITE set_display_invalid_dives NOTIFY display_invalid_divesChanged);
-	Q_PROPERTY(QString lastDir READ lastDir WRITE set_lastDir NOTIFY lastDirChanged);
-	Q_PROPERTY(bool show_developer READ show_developer WRITE set_show_developer NOTIFY show_developerChanged);
-	Q_PROPERTY(QString theme READ theme WRITE set_theme NOTIFY themeChanged);
-	Q_PROPERTY(QPointF tooltip_position READ tooltip_position WRITE set_tooltip_position NOTIFY tooltip_positionChanged);
-	Q_PROPERTY(QString userSurvey READ userSurvey WRITE set_userSurvey NOTIFY userSurveyChanged);
-	Q_PROPERTY(QByteArray mainSplitter READ mainSplitter WRITE set_mainSplitter NOTIFY mainSplitterChanged);
-	Q_PROPERTY(QByteArray topSplitter READ topSplitter WRITE set_topSplitter NOTIFY topSplitterChanged);
-	Q_PROPERTY(QByteArray bottomSplitter READ bottomSplitter WRITE set_bottomSplitter NOTIFY bottomSplitterChanged);
-	Q_PROPERTY(bool maximized READ maximized WRITE set_maximized NOTIFY maximizedChanged);
-	Q_PROPERTY(QByteArray geometry READ geometry WRITE set_geometry NOTIFY geometryChanged);
-	Q_PROPERTY(QByteArray windowState READ windowState WRITE set_windowState NOTIFY windowStateChanged);
-	Q_PROPERTY(int lastState READ lastState WRITE set_lastState NOTIFY lastStateChanged);
+	Q_PROPERTY(int animation_speed READ animation_speed WRITE set_animation_speed NOTIFY animation_speedChanged)
+	Q_PROPERTY(QString divelist_font READ divelist_font WRITE set_divelist_font NOTIFY divelist_fontChanged)
+	Q_PROPERTY(double font_size READ font_size WRITE set_font_size NOTIFY font_sizeChanged)
+	Q_PROPERTY(double mobile_scale READ mobile_scale WRITE set_mobile_scale NOTIFY mobile_scaleChanged)
+	Q_PROPERTY(bool display_invalid_dives READ display_invalid_dives WRITE set_display_invalid_dives NOTIFY display_invalid_divesChanged)
+	Q_PROPERTY(QString lastDir READ lastDir WRITE set_lastDir NOTIFY lastDirChanged)
+	Q_PROPERTY(bool show_developer READ show_developer WRITE set_show_developer NOTIFY show_developerChanged)
+	Q_PROPERTY(QString theme READ theme WRITE set_theme NOTIFY themeChanged)
+	Q_PROPERTY(QPointF tooltip_position READ tooltip_position WRITE set_tooltip_position NOTIFY tooltip_positionChanged)
+	Q_PROPERTY(QString userSurvey READ userSurvey WRITE set_userSurvey NOTIFY userSurveyChanged)
+	Q_PROPERTY(QByteArray mainSplitter READ mainSplitter WRITE set_mainSplitter NOTIFY mainSplitterChanged)
+	Q_PROPERTY(QByteArray topSplitter READ topSplitter WRITE set_topSplitter NOTIFY topSplitterChanged)
+	Q_PROPERTY(QByteArray bottomSplitter READ bottomSplitter WRITE set_bottomSplitter NOTIFY bottomSplitterChanged)
+	Q_PROPERTY(bool maximized READ maximized WRITE set_maximized NOTIFY maximizedChanged)
+	Q_PROPERTY(QByteArray geometry READ geometry WRITE set_geometry NOTIFY geometryChanged)
+	Q_PROPERTY(QByteArray windowState READ windowState WRITE set_windowState NOTIFY windowStateChanged)
+	Q_PROPERTY(int lastState READ lastState WRITE set_lastState NOTIFY lastStateChanged)
 
 public:
 	static qPrefDisplay *instance();

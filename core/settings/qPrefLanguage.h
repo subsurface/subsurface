@@ -7,14 +7,14 @@
 
 class qPrefLanguage : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(QString date_format READ date_format WRITE set_date_format NOTIFY date_formatChanged);
-	Q_PROPERTY(bool date_format_override READ date_format_override WRITE set_date_format_override NOTIFY date_format_overrideChanged);
-	Q_PROPERTY(QString date_format_short READ date_format_short WRITE set_date_format_short NOTIFY date_format_shortChanged);
-	Q_PROPERTY(QString language READ language WRITE set_language NOTIFY languageChanged);
-	Q_PROPERTY(QString lang_locale READ lang_locale WRITE set_lang_locale NOTIFY lang_localeChanged);
-	Q_PROPERTY(QString time_format READ time_format WRITE set_time_format NOTIFY time_formatChanged);
-	Q_PROPERTY(bool time_format_override READ time_format_override WRITE set_time_format_override NOTIFY time_format_overrideChanged);
-	Q_PROPERTY(bool use_system_language READ use_system_language WRITE set_use_system_language NOTIFY use_system_languageChanged);
+	Q_PROPERTY(QString date_format READ date_format WRITE set_date_format NOTIFY date_formatChanged)
+	Q_PROPERTY(bool date_format_override READ date_format_override WRITE set_date_format_override NOTIFY date_format_overrideChanged)
+	Q_PROPERTY(QString date_format_short READ date_format_short WRITE set_date_format_short NOTIFY date_format_shortChanged)
+	Q_PROPERTY(QString language READ language WRITE set_language NOTIFY languageChanged)
+	Q_PROPERTY(QString lang_locale READ lang_locale WRITE set_lang_locale NOTIFY lang_localeChanged)
+	Q_PROPERTY(QString time_format READ time_format WRITE set_time_format NOTIFY time_formatChanged)
+	Q_PROPERTY(bool time_format_override READ time_format_override WRITE set_time_format_override NOTIFY time_format_overrideChanged)
+	Q_PROPERTY(bool use_system_language READ use_system_language WRITE set_use_system_language NOTIFY use_system_languageChanged)
 
 public:
 	static qPrefLanguage *instance();
