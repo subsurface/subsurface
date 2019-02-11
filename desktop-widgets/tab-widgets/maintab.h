@@ -62,7 +62,7 @@ signals:
 	void diveSiteChanged();
 public
 slots:
-	void divesEdited(const QVector<dive *> &dives, DiveField field);
+	void divesChanged(dive_trip *trip, const QVector<dive *> &dives, DiveField field);
 	void addCylinder_clicked();
 	void addWeight_clicked();
 	void updateDiveInfo(bool clear = false);
