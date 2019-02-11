@@ -13,6 +13,7 @@
 // Dive fields that can be edited.
 // Use "enum class" to not polute the global name space.
 enum class DiveField {
+	NR,
 	DATETIME,
 	DEPTH,
 	DURATION,
@@ -46,7 +47,7 @@ signals:
 	// - The "trip" arguments are null for top-level-dives.
 	void divesAdded(dive_trip *trip, bool addTrip, const QVector<dive *> &dives);
 	void divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives);
-	void divesChanged(dive_trip *trip, const QVector<dive *> &dives);
+	void divesChanged(dive_trip *trip, const QVector<dive *> &dives, DiveField field);
 	void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
 	void divesTimeChanged(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
 
@@ -61,9 +62,6 @@ signals:
 	void divesDeselected(dive_trip *trip, const QVector<dive *> &dives);
 	void currentDiveChanged();
 	void selectionChanged();
-
-	// Signals emitted when dives are edited.
-	void divesEdited(const QVector<dive *> &dives, DiveField);
 public:
 	// Desktop uses the QTreeView class to present the list of dives. The layout
 	// of this class gives us a very fundamental problem, as we can not easily

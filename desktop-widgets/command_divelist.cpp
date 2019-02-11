@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "command_divelist.h"
+#include "command_private.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/divelistview.h"
 #include "core/divelist.h"
@@ -9,36 +10,6 @@
 #include "qt-models/filtermodels.h"
 
 namespace Command {
-
-// Generally, signals are sent in batches per trip. To avoid writing the same loop
-// again and again, this template takes a vector of trip / dive pairs, sorts it
-// by trip and then calls a function-object with trip and a QVector of dives in that trip.
-// Input parameters:
-//	- dives: a vector of trip,dive pairs, which will be sorted and processed in batches by trip.
-//	- action: a function object, taking a trip-pointer and a QVector of dives, which will be called for each batch.
-template<typename Function>
-void processByTrip(std::vector<std::pair<dive_trip *, dive *>> &dives, Function action)
-{
-	// Use std::tie for lexicographical sorting of trip, then start-time
-	std::sort(dives.begin(), dives.end(),
-		  [](const std::pair<dive_trip *, dive *> &e1, const std::pair<dive_trip *, dive *> &e2)
-		  { return std::tie(e1.first, e1.second->when) < std::tie(e2.first, e2.second->when); });
-
-	// Then, process the dives in batches by trip
-	size_t i, j; // Begin and end of batch
-	for (i = 0; i < dives.size(); i = j) {
-		dive_trip *trip = dives[i].first;
-		for (j = i + 1; j < dives.size() && dives[j].first == trip; ++j)
-			; // pass
-		// Copy dives into a QVector. Some sort of "range_view" would be ideal, but Qt doesn't work this way.
-		QVector<dive *> divesInTrip(j - i);
-		for (size_t k = i; k < j; ++k)
-			divesInTrip[k - i] = dives[k].second;
-
-		// Finally, emit the signal
-		action(trip, divesInTrip);
-	}
-}
 
 // This helper function removes a dive, takes ownership of the dive and adds it to a DiveToAdd structure.
 // If the trip the dive belongs to becomes empty, it is removed and added to the tripsToAdd vector.
@@ -181,15 +152,8 @@ std::vector<dive *> DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 		register_dive_site(ds.release()); // Return ownership to backend
 	toAdd.diveSites.clear();
 
-	// We send one dives-deleted signal per trip (see comments in DiveListNotifier.h).
-	// Therefore, collect all dives in a array and sort by trip.
-	std::vector<std::pair<dive_trip *, dive *>> dives;
-	dives.reserve(res.size());
-	for (dive *d: res)
-		dives.push_back({ d->divetrip, d });
-
-	// Send signals.
-	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
+	// Send signals by trip.
+	processByTrip(res, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
 		// Now, let's check if this trip is supposed to be created, by checking if it was marked as "add it".
 		bool createTrip = trip && std::find(addedTrips.begin(), addedTrips.end(), trip) != addedTrips.end();
 		// Finally, emit the signal
@@ -222,7 +186,7 @@ static void renumberDives(QVector<QPair<dive *, int>> &divesToRenumber)
 
 	// Send signals.
 	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
-		emit diveListNotifier.divesChanged(trip, divesInTrip);
+		emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::NR);
 	});
 }
 
@@ -699,20 +663,13 @@ void ShiftTime::redoit()
 	sort_dive_table(&dive_table);
 	sort_trip_table(&trip_table);
 
-	// We send one time changed signal per trip (see comments in DiveListNotifier.h).
-	// Therefore, collect all dives in an array and sort by trip.
-	std::vector<std::pair<dive_trip *, dive *>> dives;
-	dives.reserve(diveList.size());
-	for (dive *d: diveList)
-		dives.push_back({ d->divetrip, d });
-
-	// Send signals and sort tables.
-	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
+	// Send signals per trip (see comments in DiveListNotifier.h) and sort tables.
+	processByTrip(diveList, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
 		if (trip)
 			sort_dive_table(&trip->dives); // Keep the trip-table in order
 		emit diveListNotifier.divesTimeChanged(trip, timeChanged, divesInTrip);
+		emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::DATETIME);
 	});
-	emit diveListNotifier.divesEdited(diveList, DiveField::DATETIME);
 
 	// Negate the time-shift so that the next call does the reverse
 	timeChanged = -timeChanged;

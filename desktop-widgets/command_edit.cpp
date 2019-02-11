@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "command_edit.h"
+#include "command_private.h"
 #include "core/divelist.h"
 #include "core/qthelper.h"
 #include "desktop-widgets/mapwidget.h" // TODO: Replace desktop-dependency by signal
@@ -57,7 +58,11 @@ void EditBase<T>::undo()
 
 	std::swap(old, value);
 
-	emit diveListNotifier.divesEdited(QVector<dive *>::fromStdVector(dives), fieldId());
+	// Send signals.
+	DiveField id = fieldId();
+	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
+		emit diveListNotifier.divesChanged(trip, divesInTrip, id);
+	});
 
 	mark_divelist_changed(true);
 }
@@ -430,7 +435,11 @@ void EditTagsBase::undo()
 
 	std::swap(tagsToAdd, tagsToRemove);
 
-	emit diveListNotifier.divesEdited(QVector<dive *>::fromStdVector(dives), fieldId());
+	// Send signals.
+	DiveField id = fieldId();
+	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
+		emit diveListNotifier.divesChanged(trip, divesInTrip, id);
+	});
 
 	mark_divelist_changed(true);
 }
