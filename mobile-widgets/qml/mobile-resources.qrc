@@ -1,6 +1,7 @@
 <RCC>
 	<qresource prefix="/qml">
 		<!-- ********** Templates ********** -->
+		<file>TemplateLabel.qml</file>
 		<file>TemplateSection.qml</file>
 
 		<!-- ********** qml ********** -->
