@@ -6,6 +6,7 @@
 		<file>TemplateLabel.qml</file>
 		<file>TemplateLine.qml</file>
 		<file>TemplateRadioButton.qml</file>
+		<file>TemplatePage.qml</file>
 		<file>TemplateSection.qml</file>
 		<file>TemplateSpinBox.qml</file>
 		<file>TemplateTextField.qml</file>
