@@ -3,6 +3,7 @@
 		<!-- ********** Templates ********** -->
 		<file>TemplateLabel.qml</file>
 		<file>TemplateSection.qml</file>
+		<file>TemplateSpinBox.qml</file>
 
 		<!-- ********** qml ********** -->
 		<file>About.qml</file>
