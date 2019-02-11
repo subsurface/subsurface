@@ -95,7 +95,7 @@ Item {
 			Layout.margins: Kirigami.Units.smallSpacing
 			spacing: Kirigami.Units.smallSpacing
 			visible: showPin
-			SsrfButton {
+			TemplateButton {
 				id: registerpin
 				text: qsTr("Register")
 				onClicked: {
@@ -106,7 +106,7 @@ Item {
 				text: ""  // Spacer between 2 button groups
 				Layout.fillWidth: true
 			}
-			SsrfButton {
+			TemplateButton {
 				id: cancelpin
 				text: qsTr("Cancel")
 				onClicked: {
@@ -122,7 +122,7 @@ Item {
 			spacing: Kirigami.Units.smallSpacing
 			visible: !showPin
 
-			SsrfButton {
+			TemplateButton {
 				id: signin_register_normal
 				text: qsTr("Sign-in or Register")
 				onClicked: {
@@ -133,7 +133,7 @@ Item {
 				text: ""  // Spacer between 2 button groups
 				Layout.fillWidth: true
 			}
-			SsrfButton {
+			TemplateButton {
 				id: toNoCloudMode
 				text: qsTr("No cloud mode")
 				onClicked: {
@@ -146,7 +146,7 @@ Item {
 				}
 			}
 		}
-		SsrfButton {
+		TemplateButton {
 			id: signin_forgot_password
 			text: qsTr("Forgot password?")
 			onClicked: {

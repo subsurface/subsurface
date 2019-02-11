@@ -1,6 +1,7 @@
 <RCC>
 	<qresource prefix="/qml">
 		<!-- ********** Templates ********** -->
+		<file>TemplateButton.qml</file>
 		<file>TemplateCheckBox.qml</file>
 		<file>TemplateComboBox.qml</file>
 		<file>TemplateLabel.qml</file>
@@ -36,7 +37,6 @@
 		<file>CopySettings.qml</file>
 		<file>ThemeTest.qml</file>
 		<file>StartPage.qml</file>
-		<file>SsrfButton.qml</file>
 		<file>SsrfCheckBox.qml</file>
 		<file>SsrfSwitch.qml</file>
 		<file>SsrfTextField.qml</file>

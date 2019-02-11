@@ -245,7 +245,7 @@ Kirigami.Page {
 				}
 			}
 
-			SsrfButton {
+			TemplateButton {
 				id: dc1
 				visible: PrefDiveComputer.vendor1 !== ""
 				text: PrefDiveComputer.vendor1 + " - " + PrefDiveComputer.product1
@@ -254,7 +254,7 @@ Kirigami.Page {
 					rememberedDCsGrid.setDC(PrefDiveComputer.vendor1, PrefDiveComputer.product1, PrefDiveComputer.device1)
 				}
 			}
-			SsrfButton {
+			TemplateButton {
 				id: dc2
 				visible: PrefDiveComputer.vendor2 !== ""
 				text: PrefDiveComputer.vendor2 + " - " + PrefDiveComputer.product2
@@ -263,7 +263,7 @@ Kirigami.Page {
 					rememberedDCsGrid.setDC(PrefDiveComputer.vendor2, PrefDiveComputer.product2, PrefDiveComputer.device2)
 				}
 			}
-			SsrfButton {
+			TemplateButton {
 				id: dc3
 				visible: PrefDiveComputer.vendor3 !== ""
 				text: PrefDiveComputer.vendor3 + " - " + PrefDiveComputer.product3
@@ -272,7 +272,7 @@ Kirigami.Page {
 					rememberedDCsGrid.setDC(PrefDiveComputer.vendor3, PrefDiveComputer.product3, PrefDiveComputer.device3)
 				}
 			}
-			SsrfButton {
+			TemplateButton {
 				id: dc4
 				visible: PrefDiveComputer.vendor4 !== ""
 				text: PrefDiveComputer.vendor4 + " - " + PrefDiveComputer.product4
@@ -296,7 +296,7 @@ Kirigami.Page {
 			Layout.fillWidth: true
 			Layout.topMargin: Kirigami.Units.smallSpacing
 			spacing: Kirigami.Units.smallSpacing
-			SsrfButton {
+			TemplateButton {
 				id: download
 				text: qsTr("Download")
 				enabled: comboVendor.currentIndex != -1 && comboProduct.currentIndex != -1 &&
@@ -332,7 +332,7 @@ Kirigami.Page {
 					importModel.startDownload()
 				}
 			}
-			SsrfButton {
+			TemplateButton {
 				id:quitbutton
 				text: progressBar.visible ? qsTr("Cancel") : qsTr("Quit")
 				onClicked: {
@@ -346,7 +346,7 @@ Kirigami.Page {
 					manager.appendTextToLog("exit DCDownload screen")
 				}
 			}
-			SsrfButton {
+			TemplateButton {
 				id:rescanbutton
 				text: qsTr("Rescan")
 				enabled: manager.btEnabled
@@ -421,7 +421,7 @@ Kirigami.Page {
 				text: ""  // Spacer on the left for hamburger menu
 				width: Kirigami.Units.gridUnit * 2.5
 			}
-			SsrfButton {
+			TemplateButton {
 				id: acceptButton
 				property bool busy: false
 				enabled: divesDownloaded
@@ -456,7 +456,7 @@ Kirigami.Page {
 				text: ""  // Spacer between 2 button groups
 				Layout.fillWidth: true
 			}
-			SsrfButton {
+			TemplateButton {
 				id: select
 				enabled: divesDownloaded
 				text: qsTr("Select All")
@@ -465,7 +465,7 @@ Kirigami.Page {
 					importModel.selectAll()
 				}
 			}
-			SsrfButton {
+			TemplateButton {
 				id: unselect
 				enabled: divesDownloaded
 				text: qsTr("Unselect All")

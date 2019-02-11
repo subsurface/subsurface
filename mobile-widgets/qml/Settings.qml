@@ -50,7 +50,7 @@ Kirigami.ScrollablePage {
 					text: Backend.cloud_verification_status === Enums.CS_NOCLOUD ? qsTr("Not applicable") : PrefCloudStorage.cloud_storage_email
 					Layout.preferredWidth: gridWidth * 0.60
 				}
-				SsrfButton {
+				TemplateButton {
 					id: changeCloudSettings
 					text: qsTr("Change")
 					onClicked: {
@@ -120,7 +120,7 @@ Kirigami.ScrollablePage {
 					text: qsTr("Forget remembered dive computers")
 					Layout.preferredWidth: gridWidth * 0.75
 				}
-				SsrfButton {
+				TemplateButton {
 					id: forgetDCButton
 					text: qsTr("Forget")
 					enabled: PrefDiveComputer.vendor1 !== ""
@@ -310,21 +310,21 @@ Kirigami.ScrollablePage {
 					Layout.preferredWidth: gridWidth * 0.8
 					Layout.columnSpan: 3
 					spacing: Kirigami.Units.largeSpacing
-					SsrfButton {
+					TemplateButton {
 						text: qsTr("smaller")
 						enabled: ThemeNew.currentScale !== 0.85
 						onClicked: {
 							ThemeNew.currentScale = 0.85
 						}
 					}
-					SsrfButton {
+					TemplateButton {
 						text: qsTr("regular")
 						enabled: ThemeNew.currentScale !== 1.0
 						onClicked: {
 							ThemeNew.currentScale = 1.0
 						}
 					}
-					SsrfButton {
+					TemplateButton {
 						text: qsTr("larger")
 						enabled: ThemeNew.currentScale !== 1.15
 						onClicked: {

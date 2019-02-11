@@ -56,7 +56,7 @@ Item {
 				}
 			}
 		}
-		SsrfButton {
+		TemplateButton {
 			id: gpsButton
 			anchors.right: parent.right
 			enabled: gps !== ""
