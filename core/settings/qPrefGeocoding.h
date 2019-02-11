@@ -8,9 +8,9 @@
 
 class qPrefGeocoding : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(taxonomy_category first_taxonomy_category READ first_taxonomy_category WRITE set_first_taxonomy_category NOTIFY first_taxonomy_categoryChanged);
-	Q_PROPERTY(taxonomy_category second_taxonomy_category READ second_taxonomy_category WRITE set_second_taxonomy_category NOTIFY second_taxonomy_categoryChanged);
-	Q_PROPERTY(taxonomy_category third_taxonomy_category READ third_taxonomy_category WRITE set_third_taxonomy_category NOTIFY third_taxonomy_categoryChanged);
+	Q_PROPERTY(taxonomy_category first_taxonomy_category READ first_taxonomy_category WRITE set_first_taxonomy_category NOTIFY first_taxonomy_categoryChanged)
+	Q_PROPERTY(taxonomy_category second_taxonomy_category READ second_taxonomy_category WRITE set_second_taxonomy_category NOTIFY second_taxonomy_categoryChanged)
+	Q_PROPERTY(taxonomy_category third_taxonomy_category READ third_taxonomy_category WRITE set_third_taxonomy_category NOTIFY third_taxonomy_categoryChanged)
 
 public:
 	static qPrefGeocoding *instance();

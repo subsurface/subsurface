@@ -8,12 +8,12 @@
 
 class qPrefProxy : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(bool proxy_auth READ proxy_auth WRITE set_proxy_auth NOTIFY proxy_authChanged);
-	Q_PROPERTY(QString proxy_host READ proxy_host WRITE set_proxy_host NOTIFY proxy_hostChanged);
-	Q_PROPERTY(QString proxy_pass READ proxy_pass WRITE set_proxy_pass NOTIFY proxy_passChanged);
-	Q_PROPERTY(int proxy_port READ proxy_port WRITE set_proxy_port NOTIFY proxy_portChanged);
-	Q_PROPERTY(int proxy_type READ proxy_type WRITE set_proxy_type NOTIFY proxy_typeChanged);
-	Q_PROPERTY(QString proxy_user READ proxy_user WRITE set_proxy_user NOTIFY proxy_userChanged);
+	Q_PROPERTY(bool proxy_auth READ proxy_auth WRITE set_proxy_auth NOTIFY proxy_authChanged)
+	Q_PROPERTY(QString proxy_host READ proxy_host WRITE set_proxy_host NOTIFY proxy_hostChanged)
+	Q_PROPERTY(QString proxy_pass READ proxy_pass WRITE set_proxy_pass NOTIFY proxy_passChanged)
+	Q_PROPERTY(int proxy_port READ proxy_port WRITE set_proxy_port NOTIFY proxy_portChanged)
+	Q_PROPERTY(int proxy_type READ proxy_type WRITE set_proxy_type NOTIFY proxy_typeChanged)
+	Q_PROPERTY(QString proxy_user READ proxy_user WRITE set_proxy_user NOTIFY proxy_userChanged)
 
 public:
 	static qPrefProxy *instance();

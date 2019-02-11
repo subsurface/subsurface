@@ -8,8 +8,8 @@
 
 class qPrefLocationService : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(int distance_threshold READ distance_threshold WRITE set_distance_threshold NOTIFY distance_thresholdChanged);
-	Q_PROPERTY(int time_threshold READ time_threshold WRITE set_time_threshold NOTIFY time_thresholdChanged);
+	Q_PROPERTY(int distance_threshold READ distance_threshold WRITE set_distance_threshold NOTIFY distance_thresholdChanged)
+	Q_PROPERTY(int time_threshold READ time_threshold WRITE set_time_threshold NOTIFY time_thresholdChanged)
 
 public:
 	static qPrefLocationService *instance();
