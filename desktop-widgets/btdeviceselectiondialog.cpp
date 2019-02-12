@@ -172,6 +172,9 @@ void BtDeviceSelectionDialog::hostModeStateChanged(QBluetoothLocalDevice::HostMo
 
 void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remoteDeviceInfo)
 {
+	// are we supposed to show all devices or just dive computers?
+	if (!ui->showNonDivecomputers->isChecked() && !matchesKnownDiveComputerNames(remoteDeviceInfo.name()))
+		return;
 #if defined(Q_OS_WIN)
 	// On Windows we cannot obtain the pairing status so we set only the name and the address of the device
 	QString deviceLabel = QString("%1 (%2)").arg(remoteDeviceInfo.name(),

@@ -18,6 +18,7 @@
 
 void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo);
 bool isBluetoothAddress(const QString &address);
+bool matchesKnownDiveComputerNames(QString btName);
 QString extractBluetoothAddress(const QString &address);
 QString extractBluetoothNameAddress(const QString &address, QString &name);
 QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr);
