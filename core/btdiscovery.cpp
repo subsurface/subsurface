@@ -82,7 +82,12 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	if (!vendor.isEmpty() && !product.isEmpty())
 		return descriptorLookup.value(vendor + product);
 
-	return NULL;
+	return nullptr;
+}
+
+bool matchesKnownDiveComputerNames(QString btName)
+{
+	return getDeviceType(btName) != nullptr;
 }
 
 BTDiscovery::BTDiscovery(QObject*) : m_btValid(false),
