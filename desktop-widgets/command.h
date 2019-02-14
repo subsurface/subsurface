@@ -33,19 +33,19 @@ void splitDives(dive *d, duration_t time);
 void mergeDives(const QVector <dive *> &dives);
 
 // 3) Dive editing related commands
-void editNotes(const QVector<dive *> dives, const QString &newValue, const QString &oldValue);
-void editSuit(const QVector<dive *> dives, const QString &newValue, const QString &oldValue);
-void editMode(const QVector<dive *> dives, int index, int newValue, int oldValue);
-void editRating(const QVector<dive *> dives, int newValue, int oldValue);
-void editVisibility(const QVector<dive *> dives, int newValue, int oldValue);
-void editAirTemp(const QVector<dive *> dives, int newValue, int oldValue);
-void editWaterTemp(const QVector<dive *> dives, int newValue, int oldValue);
-void editDepth(const QVector<dive *> dives, int newValue, int oldValue);
-void editDuration(const QVector<dive *> dives, int newValue, int oldValue);
-void editDiveSite(const QVector<dive *> dives, struct dive_site *newValue, struct dive_site *oldValue);
-void editTags(const QVector<dive *> &dives, const QStringList &newList, struct dive *d);
-void editBuddies(const QVector<dive *> &dives, const QStringList &newList, struct dive *d);
-void editDiveMaster(const QVector<dive *> &dives, const QStringList &newList, struct dive *d);
+void editNotes(const QString &newValue, bool currentDiveOnly);
+void editSuit(const QString &newValue, bool currentDiveOnly);
+void editMode(int index, int newValue, bool currentDiveOnly);
+void editRating(int newValue, bool currentDiveOnly);
+void editVisibility(int newValue, bool currentDiveOnly);
+void editAirTemp(int newValue, bool currentDiveOnly);
+void editWaterTemp(int newValue, bool currentDiveOnly);
+void editDepth(int newValue, bool currentDiveOnly);
+void editDuration(int newValue, bool currentDiveOnly);
+void editDiveSite(struct dive_site *newValue, bool currentDiveOnly);
+void editTags(const QStringList &newList, bool currentDiveOnly);
+void editBuddies(const QStringList &newList, bool currentDiveOnly);
+void editDiveMaster(const QStringList &newList, bool currentDiveOnly);
 
 } // namespace Command
 
