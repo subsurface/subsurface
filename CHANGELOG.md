@@ -1,4 +1,5 @@
 - Desktop: Fix editing of dive-time [#1975]
+- Bluetooth: only show recognized dive computers by default
 - Desktop: Add export option for profile picture [#1962]
 - Export: fix picture thumbnails [#1963]
 - Desktop: remove support for the "Share on Facebook" feature.
