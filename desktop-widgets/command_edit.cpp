@@ -8,16 +8,28 @@
 
 namespace Command {
 
-template<typename T>
-EditBase<T>::EditBase(const QVector<dive *> &divesIn, T newValue, T oldValue) :
-	value(std::move(newValue)),
-	old(std::move(oldValue)),
-	dives(divesIn.toStdVector())
+static std::vector<dive *> getSelectedDives(bool currentDiveOnly)
 {
-	// If there is nothing to do, clear the dives vector.
-	// This signals that no action has to be taken.
-	if (old == value)
-		dives.clear();
+	if (currentDiveOnly)
+		return current_dive ? std::vector<dive *> { current_dive }
+				    : std::vector<dive *> { };
+
+	std::vector<dive *> res;
+	struct dive *d;
+	int i;
+	for_each_dive (i, d) {
+		if (d->selected)
+			res.push_back(d);
+	}
+	return res;
+}
+
+template<typename T>
+EditBase<T>::EditBase(T newValue, bool currentDiveOnly) :
+	value(std::move(newValue)),
+	dives(getSelectedDives(currentDiveOnly)),
+	current(current_dive)
+{
 }
 
 // This is quite hackish: we can't use virtual functions in the constructor and
@@ -28,6 +40,16 @@ EditBase<T>::EditBase(const QVector<dive *> &divesIn, T newValue, T oldValue) :
 template<typename T>
 bool EditBase<T>::workToBeDone()
 {
+	// First, let's fetch the old value, i.e. the value of the current dive.
+	// If no current dive exists, bail.
+	if (!current)
+		return false;
+	old = data(current);
+
+	// If there is no change - do nothing.
+	if (old == value)
+		return false;
+
 	std::vector<dive *> divesNew;
 	divesNew.reserve(dives.size());
 	for (dive *d: dives) {
@@ -42,7 +64,7 @@ bool EditBase<T>::workToBeDone()
 		//: remove the part in parantheses for %n = 1
 		setText(tr("Edit %1 (%n dive(s))", "", num_dives).arg(fieldName()));
 
-	return num_dives;
+	return num_dives > 0;
 }
 
 template<typename T>
@@ -74,11 +96,11 @@ void EditBase<T>::undo()
 // don't have their own constructor. They simply delegate to the base
 // class by virtue of a "using" declaration.
 template
-EditBase<QString>::EditBase(const QVector<dive *> &dives, QString oldValue, QString newValue);
+EditBase<QString>::EditBase(QString newValue, bool currentDiveOnly);
 template
-EditBase<int>::EditBase(const QVector<dive *> &dives, int oldValue, int newValue);
+EditBase<int>::EditBase(int newValue, bool currentDiveOnly);
 template
-EditBase<struct dive_site *>::EditBase(const QVector<dive *> &dives, struct dive_site *oldValue, struct dive_site *newValue);
+EditBase<struct dive_site *>::EditBase(struct dive_site *newValue, bool currentDiveOnly);
 
 // Undo and redo do the same as just the stored value is exchanged
 template<typename T>
@@ -305,9 +327,10 @@ void EditDiveSite::redo()
 	EditDiveSite::undo(); // Undo and redo do the same
 }
 
-static struct dive_site *createDiveSite(const QString &name, struct dive_site *old)
+static struct dive_site *createDiveSite(const QString &name)
 {
 	struct dive_site *ds = alloc_dive_site();
+	struct dive_site *old = current_dive ? current_dive->dive_site : nullptr;
 	if (old) {
 		copy_dive_site(old, ds);
 		free(ds->name); // Free name, as we will overwrite it with our own version
@@ -316,8 +339,8 @@ static struct dive_site *createDiveSite(const QString &name, struct dive_site *o
 	return ds;
 }
 
-EditDiveSiteNew::EditDiveSiteNew(const QVector<dive *> &dives, const QString &newName, struct dive_site *oldValue) :
-	EditDiveSite(dives, createDiveSite(newName, oldValue), oldValue),
+EditDiveSiteNew::EditDiveSiteNew(const QString &newName, bool currentDiveOnly) :
+	EditDiveSite(createDiveSite(newName), currentDiveOnly),
 	diveSiteToAdd(value),
 	diveSiteToRemove(nullptr)
 {
@@ -353,8 +376,8 @@ void EditDiveSiteNew::redo()
 //	- Not derive EditMode from EditBase.
 //	- Change the semantics of the mode-editing.
 // The future will tell.
-EditMode::EditMode(const QVector<dive *> &dives, int indexIn, int newValue, int oldValue)
-	: EditBase(dives, newValue, oldValue), index(indexIn)
+EditMode::EditMode(int indexIn, int newValue, bool currentDiveOnly)
+	: EditBase(newValue, currentDiveOnly), index(indexIn)
 {
 }
 
@@ -380,10 +403,10 @@ DiveField EditMode::fieldId() const
 }
 
 // ***** Tag based commands *****
-EditTagsBase::EditTagsBase(const QVector<dive *> &divesIn, const QStringList &newListIn, struct dive *d):
-	dives(divesIn.toStdVector()),
-	newList(newListIn),
-	oldDive(d)
+EditTagsBase::EditTagsBase(const QStringList &newListIn, bool currentDiveOnly) :
+	dives(getSelectedDives(currentDiveOnly)),
+	current(current_dive),
+	newList(newListIn)
 {
 }
 
@@ -412,8 +435,12 @@ bool EditTagsBase::workToBeDone()
 	// here's what I think... add the tags that were added to the displayed dive and remove the tags
 	// that were removed from it
 
+	// If there is no current dive, bail.
+	if (!current)
+		return false;
+
 	// Calculate tags to add and tags to remove
-	QStringList oldList = data(oldDive);
+	QStringList oldList = data(current);
 	for (const QString &s: newList) {
 		if (!oldList.contains(s))
 			tagsToAdd.push_back(s);
@@ -441,7 +468,7 @@ bool EditTagsBase::workToBeDone()
 		//: remove the part in parantheses for %n = 1
 		setText(tr("Edit %1 (%n dive(s))", "", num_dives).arg(fieldName()));
 
-	return num_dives;
+	return num_dives != 0;
 }
 
 void EditTagsBase::undo()
