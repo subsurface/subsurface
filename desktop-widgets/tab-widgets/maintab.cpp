@@ -752,13 +752,6 @@ static QVector<dive *> getSelectedDivesCurrentLast()
 	return res;
 }
 
-// When editing depth and duration, we only edit a single dive. Therefore, return the current dive as a list
-static QVector<dive *> getCurrentAsList()
-{
-	return current_dive ? QVector<dive *> { current_dive }
-			    : QVector<dive *> { };
-}
-
 void MainTab::acceptChanges()
 {
 	int i, addedId = -1;
@@ -1031,7 +1024,7 @@ void MainTab::on_buddy_editingFinished()
 	if (editMode == IGNORE || !current_dive)
 		return;
 
-	Command::editBuddies(getSelectedDivesCurrentLast(), stringToList(ui.buddy->toPlainText()), current_dive);
+	Command::editBuddies(stringToList(ui.buddy->toPlainText()), false);
 }
 
 void MainTab::on_divemaster_editingFinished()
@@ -1039,7 +1032,7 @@ void MainTab::on_divemaster_editingFinished()
 	if (editMode == IGNORE || !current_dive)
 		return;
 
-	Command::editDiveMaster(getSelectedDivesCurrentLast(), stringToList(ui.divemaster->toPlainText()), current_dive);
+	Command::editDiveMaster(stringToList(ui.divemaster->toPlainText()), false);
 }
 
 void MainTab::on_duration_editingFinished()
@@ -1048,7 +1041,7 @@ void MainTab::on_duration_editingFinished()
 		return;
 
 	// Duration editing is special: we only edit the current dive.
-	Command::editDuration(getCurrentAsList(), parseDurationToSeconds(ui.duration->text()), displayed_dive.dc.duration.seconds);
+	Command::editDuration(parseDurationToSeconds(ui.duration->text()), true);
 }
 
 void MainTab::on_depth_editingFinished()
@@ -1057,32 +1050,28 @@ void MainTab::on_depth_editingFinished()
 		return;
 
 	// Depth editing is special: we only edit the current dive.
-	Command::editDepth(getCurrentAsList(),  parseLengthToMm(ui.depth->text()), current_dive->dc.maxdepth.mm);
+	Command::editDepth(parseLengthToMm(ui.depth->text()), true);
 }
 
 void MainTab::on_airtemp_editingFinished()
 {
 	if (editMode == IGNORE || !current_dive)
 		return;
-	Command::editAirTemp(getSelectedDivesCurrentLast(),
-			     parseTemperatureToMkelvin(ui.airtemp->text()), current_dive->airtemp.mkelvin);
+	Command::editAirTemp(parseTemperatureToMkelvin(ui.airtemp->text()), false);
 }
 
 void MainTab::divetype_Changed(int index)
 {
 	if (editMode == IGNORE || !current_dive)
 		return;
-	Command::editMode(getSelectedDivesCurrentLast(), dc_number, (enum divemode_t)index,
-			  get_dive_dc(current_dive, dc_number)->divemode);
+	Command::editMode(dc_number, (enum divemode_t)index, false);
 }
 
 void MainTab::on_watertemp_editingFinished()
 {
 	if (editMode == IGNORE || !current_dive)
 		return;
-	Command::editWaterTemp(getSelectedDivesCurrentLast(),
-			       parseTemperatureToMkelvin(ui.watertemp->text()),
-			       current_dive->watertemp.mkelvin);
+	Command::editWaterTemp(parseTemperatureToMkelvin(ui.watertemp->text()), false);
 }
 
 // Editing of the dive time is different. If multiple dives are edited,
@@ -1198,7 +1187,7 @@ void MainTab::on_tagWidget_editingFinished()
 	if (editMode == IGNORE || !current_dive)
 		return;
 
-	Command::editTags(getSelectedDivesCurrentLast(), ui.tagWidget->getBlockStringList(), current_dive);
+	Command::editTags(ui.tagWidget->getBlockStringList(), false);
 }
 
 void MainTab::on_location_diveSiteSelected()
@@ -1208,9 +1197,9 @@ void MainTab::on_location_diveSiteSelected()
 
 	struct dive_site *newDs = ui.location->currDiveSite();
 	if (newDs == RECENTLY_ADDED_DIVESITE)
-		Command::editDiveSiteNew(getSelectedDivesCurrentLast(), ui.location->text(), current_dive->dive_site);
+		Command::editDiveSiteNew(ui.location->text(), false);
 	else
-		Command::editDiveSite(getSelectedDivesCurrentLast(), newDs, current_dive->dive_site);
+		Command::editDiveSite(newDs, false);
 }
 
 void MainTab::on_diveTripLocation_textEdited(const QString& text)
@@ -1227,7 +1216,7 @@ void MainTab::on_suit_editingFinished()
 	if (editMode == IGNORE || !current_dive)
 		return;
 
-	Command::editSuit(getSelectedDivesCurrentLast(), ui.suit->text(), QString(current_dive->suit));
+	Command::editSuit(ui.suit->text(), false);
 }
 
 void MainTab::on_notes_textChanged()
@@ -1251,7 +1240,7 @@ void MainTab::on_notes_editingFinished()
 	QString notes = ui.notes->toHtml().indexOf("<div") != -1 ?
 		ui.notes->toHtml() : ui.notes->toPlainText();
 
-	Command::editNotes(getSelectedDivesCurrentLast(), notes, QString(current_dive->notes));
+	Command::editNotes(notes, false);
 }
 
 void MainTab::on_rating_valueChanged(int value)
@@ -1259,7 +1248,7 @@ void MainTab::on_rating_valueChanged(int value)
 	if (editMode == IGNORE || !current_dive)
 		return;
 
-	Command::editRating(getSelectedDivesCurrentLast(), value, current_dive->rating);
+	Command::editRating(value, false);
 }
 
 void MainTab::on_visibility_valueChanged(int value)
@@ -1267,7 +1256,7 @@ void MainTab::on_visibility_valueChanged(int value)
 	if (editMode == IGNORE || !current_dive)
 		return;
 
-	Command::editVisibility(getSelectedDivesCurrentLast(), value, current_dive->visibility);
+	Command::editVisibility(value, false);
 }
 
 #undef MODIFY_DIVES

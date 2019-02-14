@@ -130,74 +130,74 @@ void purgeUnusedDiveSites()
 }
 
 // Dive editing related commands
-void editNotes(const QVector<dive *> dives, const QString &newValue, const QString &oldValue)
+void editNotes(const QString &newValue, bool currentDiveOnly)
 {
-	execute(new EditNotes(dives, newValue, oldValue));
+	execute(new EditNotes(newValue, currentDiveOnly));
 }
 
-void editMode(const QVector<dive *> dives, int index, int newValue, int oldValue)
+void editMode(int index, int newValue, bool currentDiveOnly)
 {
-	execute(new EditMode(dives, index, newValue, oldValue));
+	execute(new EditMode(index, newValue, currentDiveOnly));
 }
 
-void editSuit(const QVector<dive *> dives, const QString &newValue, const QString &oldValue)
+void editSuit(const QString &newValue, bool currentDiveOnly)
 {
-	execute(new EditSuit(dives, newValue, oldValue));
+	execute(new EditSuit(newValue, currentDiveOnly));
 }
 
-void editRating(const QVector<dive *> dives, int newValue, int oldValue)
+void editRating(int newValue, bool currentDiveOnly)
 {
-	execute(new EditRating(dives, newValue, oldValue));
+	execute(new EditRating(newValue, currentDiveOnly));
 }
 
-void editVisibility(const QVector<dive *> dives, int newValue, int oldValue)
+void editVisibility(int newValue, bool currentDiveOnly)
 {
-	execute(new EditVisibility(dives, newValue, oldValue));
+	execute(new EditVisibility(newValue, currentDiveOnly));
 }
 
-void editAirTemp(const QVector<dive *> dives, int newValue, int oldValue)
+void editAirTemp(int newValue, bool currentDiveOnly)
 {
-	execute(new EditAirTemp(dives, newValue, oldValue));
+	execute(new EditAirTemp(newValue, currentDiveOnly));
 }
 
-void editWaterTemp(const QVector<dive *> dives, int newValue, int oldValue)
+void editWaterTemp(int newValue, bool currentDiveOnly)
 {
-	execute(new EditWaterTemp(dives, newValue, oldValue));
+	execute(new EditWaterTemp(newValue, currentDiveOnly));
 }
 
-void editDepth(const QVector<dive *> dives, int newValue, int oldValue)
+void editDepth(int newValue, bool currentDiveOnly)
 {
-	execute(new EditDepth(dives, newValue, oldValue));
+	execute(new EditDepth(newValue, currentDiveOnly));
 }
 
-void editDuration(const QVector<dive *> dives, int newValue, int oldValue)
+void editDuration(int newValue, bool currentDiveOnly)
 {
-	execute(new EditDuration(dives, newValue, oldValue));
+	execute(new EditDuration(newValue, currentDiveOnly));
 }
 
-void editDiveSite(const QVector<dive *> dives, struct dive_site *newValue, struct dive_site *oldValue)
+void editDiveSite(struct dive_site *newValue, bool currentDiveOnly)
 {
-	execute(new EditDiveSite(dives, newValue, oldValue));
+	execute(new EditDiveSite(newValue, currentDiveOnly));
 }
 
-void editDiveSiteNew(const QVector<dive *> dives, const QString &newName, struct dive_site *oldValue)
+void editDiveSiteNew(const QString &newName, bool currentDiveOnly)
 {
-	execute(new EditDiveSiteNew(dives, newName, oldValue));
+	execute(new EditDiveSiteNew(newName, currentDiveOnly));
 }
 
-void editTags(const QVector<dive *> &dives, const QStringList &newList, struct dive *d)
+void editTags(const QStringList &newList, bool currentDiveOnly)
 {
-	execute(new EditTags(dives, newList, d));
+	execute(new EditTags(newList, currentDiveOnly));
 }
 
-void editBuddies(const QVector<dive *> &dives, const QStringList &newList, struct dive *d)
+void editBuddies(const QStringList &newList, bool currentDiveOnly)
 {
-	execute(new EditBuddies(dives, newList, d));
+	execute(new EditBuddies(newList, currentDiveOnly));
 }
 
-void editDiveMaster(const QVector<dive *> &dives, const QStringList &newList, struct dive *d)
+void editDiveMaster(const QStringList &newList, bool currentDiveOnly)
 {
-	execute(new EditDiveMaster(dives, newList, d));
+	execute(new EditDiveMaster(newList, currentDiveOnly));
 }
 
 } // namespace Command

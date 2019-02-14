@@ -33,12 +33,10 @@ protected:
 	void redo() override;
 	bool workToBeDone() override;
 
-	// Dives to be edited. For historical reasons, the *last* entry was
-	// the active dive when the user initialized the action. This dive
-	// will be made the current dive on redo / undo.
-	std::vector<dive *> dives;
+	std::vector<dive *> dives; // Dives to be edited.
+	struct dive *current; // On undo, we set the current dive at the time of the operation.
 public:
-	EditBase(const QVector<dive *> &dives, T newValue, T oldValue);
+	EditBase(T newValue, bool currentDiveOnly);
 
 protected:
 	// Get and set functions to be overriden by sub-classes.
@@ -139,7 +137,7 @@ class EditDiveSiteNew : public EditDiveSite {
 public:
 	OwningDiveSitePtr diveSiteToAdd;
 	struct dive_site *diveSiteToRemove;
-	EditDiveSiteNew(const QVector<dive *> &dives, const QString &newName, struct dive_site *oldValue);
+	EditDiveSiteNew(const QString &newName, bool currentDiveOnly);
 	void undo() override;
 	void redo() override;
 };
@@ -147,7 +145,7 @@ public:
 class EditMode : public EditBase<int> {
 	int index;
 public:
-	EditMode(const QVector<dive *> &dives, int indexIn, int newValue, int oldValue);
+	EditMode(int indexIn, int newValue, bool currentDiveOnly);
 	void set(struct dive *d, int i) const override;
 	int data(struct dive *d) const override;
 	QString fieldName() const override;
@@ -164,10 +162,10 @@ class EditTagsBase : public Base {
 	// the active dive when the user initialized the action. This dive
 	// will be made the current dive on redo / undo.
 	std::vector<dive *> dives;
+	struct dive *current;
 	QStringList newList;	// Temporary until initialized
-	struct dive *oldDive;	// Temporary until initialized
 public:
-	EditTagsBase(const QVector<dive *> &dives, const QStringList &newList, struct dive *d);
+	EditTagsBase(const QStringList &newList, bool currentDiveOnly);
 
 protected:
 	QStringList tagsToAdd;
