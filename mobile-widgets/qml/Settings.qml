@@ -531,6 +531,41 @@ Kirigami.ScrollablePage {
 		}
 
 		GridLayout {
+			id: whichBluetoothDevices
+			columns: 2
+			Controls.Label {
+				text: qsTr("Bluetooth")
+				font.pointSize: subsurfaceTheme.headingPointSize
+				font.weight: Font.Light
+				color: subsurfaceTheme.textColor
+				Layout.topMargin: Kirigami.Units.largeSpacing
+				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+				Layout.columnSpan: 2
+			}
+
+			Controls.Label {
+				text: qsTr("Show all bluetooth devices \neven if not recognized as dive computers")
+				font.pointSize: subsurfaceTheme.regularPointSize
+				Layout.preferredWidth: gridWidth * 0.75
+			}
+			SsrfSwitch {
+				id: nonDCButton
+				checked: manager.showNonDiveComputers
+				Layout.preferredWidth: gridWidth * 0.25
+				onClicked: {
+					manager.showNonDiveComputers = checked
+				}
+			}
+		}
+
+		Rectangle {
+			color: subsurfaceTheme.darkerPrimaryColor
+			height: 1
+			opacity: 0.5
+			Layout.fillWidth: true
+		}
+
+		GridLayout {
 			id: developer
 			columns: 2
 			Controls.Label {

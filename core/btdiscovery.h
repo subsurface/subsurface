@@ -46,6 +46,8 @@ public:
 	void btDeviceDiscovered(const QBluetoothDeviceInfo &device);
 	void btDeviceDiscoveredMain(const btPairedDevice &device);
 	bool btAvailable() const;
+	void showNonDiveComputers(bool show);
+
 #if defined(Q_OS_ANDROID)
 	void getBluetoothDevices();
 #endif
@@ -57,6 +59,7 @@ public:
 private:
 	static BTDiscovery *m_instance;
 	bool m_btValid;
+	bool m_showNonDiveComputers;
 
 	QList<struct btVendorProduct> btDCs;		// recognized DCs
 	QList<struct btVendorProduct> btAllDevices;	// all paired BT stuff

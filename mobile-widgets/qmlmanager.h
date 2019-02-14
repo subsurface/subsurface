@@ -48,6 +48,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(bool DC_saveDump READ DC_saveDump WRITE DC_setSaveDump)
 	Q_PROPERTY(int DC_deviceId READ DC_deviceId WRITE DC_setDeviceId)
 	Q_PROPERTY(QString pluggedInDeviceName MEMBER m_pluggedInDeviceName NOTIFY pluggedInDeviceNameChanged)
+	Q_PROPERTY(bool showNonDiveComputers MEMBER m_showNonDiveComputers WRITE setShowNonDiveComputers NOTIFY showNonDiveComputersChanged)
 public:
 	QMLManager();
 	~QMLManager();
@@ -125,6 +126,8 @@ public:
 
 	bool btEnabled() const;
 	void setBtEnabled(bool value);
+
+	void setShowNonDiveComputers(bool show);
 
 	DiveListSortModel *dlSortModel;
 
@@ -234,6 +237,7 @@ private:
 	bool m_btEnabled;
 	void updateAllGlobalLists();
 	QString m_pluggedInDeviceName;
+	bool m_showNonDiveComputers;
 	struct dive *m_copyPasteDive = NULL;
 	struct dive_components what;
 
@@ -262,6 +266,7 @@ signals:
 	void locationListChanged();
 	void waitingForPositionChanged();
 	void pluggedInDeviceNameChanged();
+	void showNonDiveComputersChanged();
 };
 
 #endif

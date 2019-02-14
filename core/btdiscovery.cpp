@@ -91,6 +91,7 @@ bool matchesKnownDiveComputerNames(QString btName)
 }
 
 BTDiscovery::BTDiscovery(QObject*) : m_btValid(false),
+	m_showNonDiveComputers(false),
 	discoveryAgent(nullptr)
 {
 	if (m_instance) {
@@ -102,6 +103,11 @@ BTDiscovery::BTDiscovery(QObject*) : m_btValid(false),
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
 	BTDiscoveryReDiscover();
 #endif
+}
+
+void BTDiscovery::showNonDiveComputers(bool show)
+{
+	m_showNonDiveComputers = show;
 }
 
 void BTDiscovery::BTDiscoveryReDiscover()
@@ -232,7 +238,9 @@ void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device)
 		connectionListModel.addAddress(newDevice + " " + device.address);
 		return;
 	}
-	connectionListModel.addAddress(device.address);
+	// Do we want only devices we recognize as dive computers?
+	if (m_showNonDiveComputers)
+		connectionListModel.addAddress(device.address);
 	qDebug() << "Not recognized as dive computer";
 }
 
