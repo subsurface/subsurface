@@ -144,7 +144,8 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_updateSelectedDive(-1),
 	m_selectedDiveTimestamp(0),
 	alreadySaving(false),
-	m_pluggedInDeviceName("")
+	m_pluggedInDeviceName(""),
+	m_showNonDiveComputers(false)
 {
 	LOG_STP("qmlmgr starting");
 	m_instance = this;
@@ -1977,6 +1978,12 @@ void QMLManager::setFilter(const QString filterText)
 				dlSortModel->setFilter(filterText);
 				QMetaObject::invokeMethod(qmlWindow, "hideBusy");
 			  });
+}
+
+void QMLManager::setShowNonDiveComputers(bool show)
+{
+	m_showNonDiveComputers = show;
+	BTDiscovery::instance()->showNonDiveComputers(show);
 }
 
 #if defined(Q_OS_ANDROID)
