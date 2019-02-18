@@ -6,7 +6,9 @@
 
 #include <QDoubleSpinBox>
 
-FilterWidget2::FilterWidget2(QWidget* parent) : QWidget(parent), ignoreSignal(false)
+FilterWidget2::FilterWidget2(QWidget* parent) :
+	QWidget(parent),
+	ignoreSignal(false)
 {
 	ui.setupUi(this);
 
@@ -230,4 +232,9 @@ void FilterWidget2::countsChanged()
 {
 	ui.filterText->setText(tr("%L1/%L2 shown").arg(MultiFilterSortModel::instance()->divesDisplayed)
 						  .arg(dive_table.nr));
+}
+
+bool FilterWidget2::isActive() const
+{
+	return filterData.validFilter;
 }
