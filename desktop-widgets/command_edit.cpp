@@ -8,7 +8,7 @@
 
 namespace Command {
 
-static std::vector<dive *> getSelectedDives(bool currentDiveOnly)
+static std::vector<dive *> getDives(bool currentDiveOnly)
 {
 	if (currentDiveOnly)
 		return current_dive ? std::vector<dive *> { current_dive }
@@ -27,7 +27,8 @@ static std::vector<dive *> getSelectedDives(bool currentDiveOnly)
 template<typename T>
 EditBase<T>::EditBase(T newValue, bool currentDiveOnly) :
 	value(std::move(newValue)),
-	dives(getSelectedDives(currentDiveOnly)),
+	dives(getDives(currentDiveOnly)),
+	selectedDives(getDiveSelection()),
 	current(current_dive)
 {
 }
@@ -87,6 +88,9 @@ void EditBase<T>::undo()
 	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
 		emit diveListNotifier.divesChanged(trip, divesInTrip, id);
 	});
+
+	if (setSelection(selectedDives, current))
+		emit diveListNotifier.selectionChanged(); // If the selection changed -> tell the frontend
 
 	mark_divelist_changed(true);
 }
@@ -404,7 +408,8 @@ DiveField EditMode::fieldId() const
 
 // ***** Tag based commands *****
 EditTagsBase::EditTagsBase(const QStringList &newListIn, bool currentDiveOnly) :
-	dives(getSelectedDives(currentDiveOnly)),
+	dives(getDives(currentDiveOnly)),
+	selectedDives(getDiveSelection()),
 	current(current_dive),
 	newList(newListIn)
 {
@@ -497,6 +502,9 @@ void EditTagsBase::undo()
 	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
 		emit diveListNotifier.divesChanged(trip, divesInTrip, id);
 	});
+
+	if (setSelection(selectedDives, current))
+		emit diveListNotifier.selectionChanged(); // If the selection changed -> tell the frontend
 
 	mark_divelist_changed(true);
 }
