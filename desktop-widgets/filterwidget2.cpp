@@ -219,7 +219,6 @@ void FilterWidget2::showEvent(QShowEvent *event)
 void FilterWidget2::hideEvent(QHideEvent *event)
 {
 	QWidget::hideEvent(event);
-	clearFilter();
 }
 
 void FilterWidget2::filterDataChanged(const FilterData &data)
