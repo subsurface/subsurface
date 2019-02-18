@@ -903,11 +903,9 @@ void MainTab::acceptChanges()
 			}
 		}
 
-		if (displayed_dive.when != cd->when) {
-			timestamp_t offset = cd->when - displayed_dive.when;
-			if (offset)
-				Command::shiftTime(selectedDives, (int)offset);
-		}
+		timestamp_t offset = displayed_dive.when - cd->when;
+		if (offset)
+			Command::shiftTime(selectedDives, (int)offset);
 	}
 	if (editMode != TRIP && current_dive->divetrip) {
 		current_dive->divetrip->when = current_dive->when;
