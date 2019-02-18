@@ -35,6 +35,7 @@ private slots:
 
 private:
 	bool ignoreSignal;
+	bool isActive() const;
 	Ui::FilterWidget2 ui;
 	void filterDataChanged(const FilterData &data);
 	FilterData filterData;
