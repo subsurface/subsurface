@@ -28,7 +28,9 @@ class EditBase : public Base {
 	bool workToBeDone() override;
 
 	std::vector<dive *> dives; // Dives to be edited.
-	struct dive *current; // On undo, we set the current dive at the time of the operation.
+	// On undo, we set the selection and current dive at the time of the operation.
+	std::vector<dive *> selectedDives;
+	struct dive *current;
 public:
 	EditBase(T newValue, bool currentDiveOnly);
 
@@ -148,6 +150,8 @@ class EditTagsBase : public Base {
 	// the active dive when the user initialized the action. This dive
 	// will be made the current dive on redo / undo.
 	std::vector<dive *> dives;
+	// On undo, we set the selection and current dive at the time of the operation.
+	std::vector<dive *> selectedDives;
 	struct dive *current;
 	QStringList newList;	// Temporary until initialized
 public:
