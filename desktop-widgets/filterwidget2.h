@@ -20,6 +20,8 @@ class FilterWidget2 : public QWidget {
 public:
 	explicit FilterWidget2(QWidget *parent = 0);
 	void updateFilter();
+	QString shownText();
+
 protected:
 	void hideEvent(QHideEvent *event) override;
 	void showEvent(QShowEvent *event) override;

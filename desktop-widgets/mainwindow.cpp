@@ -1636,7 +1636,8 @@ void MainWindow::setTitle()
 	}
 
 	QString unsaved = (unsaved_changes() ? " *" : "");
-	setWindowTitle("Subsurface: " + displayedFilename(existing_filename) + unsaved);
+	QString shown = QString(" (%1)").arg(filterWidget2.shownText());
+	setWindowTitle("Subsurface: " + displayedFilename(existing_filename) + unsaved + shown);
 }
 
 void MainWindow::importFiles(const QStringList fileNames)
