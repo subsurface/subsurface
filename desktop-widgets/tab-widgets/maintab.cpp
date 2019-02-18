@@ -892,11 +892,9 @@ void MainTab::acceptChanges()
 			}
 		}
 
-		if (displayed_dive.when != cd->when) {
-			timestamp_t offset = cd->when - displayed_dive.when;
-			if (offset)
-				Command::shiftTime(selectedDives, (int)offset);
-		}
+		timestamp_t offset = displayed_dive.when - cd->when;
+		if (offset)
+			Command::shiftTime(selectedDives, (int)offset);
 	}
 	if (editMode == MANUALLY_ADDED_DIVE) {
 		// we just added or edited the dive, let fixup_dive() make
