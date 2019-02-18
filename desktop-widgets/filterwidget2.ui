@@ -15,9 +15,9 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QLabel" name="filterText">
+    <widget class="QLabel" name="filterButtonExplanation">
      <property name="text">
-      <string/>
+      <string>Reset / close</string>
      </property>
     </widget>
    </item>
