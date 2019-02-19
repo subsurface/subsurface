@@ -15,6 +15,13 @@ struct dive;
 struct dive_trip;
 
 struct FilterData {
+	// The mode ids are chosen such that they can be directly converted from / to combobox indices.
+	enum class Mode {
+		ALL_OF = 0,
+		ANY_OF = 1,
+		NONE_OF = 2
+	};
+
 	bool validFilter = false;
 	int minVisibility = 0;
 	int maxVisibility = 5;
@@ -35,10 +42,10 @@ struct FilterData {
 	QStringList people;
 	QStringList location;
 	QStringList equipment;
-	bool tagsNegate = false;
-	bool peopleNegate = false;
-	bool locationNegate = false;
-	bool equipmentNegate = false;
+	Mode tagsMode = Mode::ALL_OF;
+	Mode peopleMode = Mode::ALL_OF;
+	Mode locationMode = Mode::ALL_OF;
+	Mode equipmentMode = Mode::ALL_OF;
 	bool logged = true;
 	bool planned = true;
 };

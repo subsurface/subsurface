@@ -300,6 +300,11 @@
      </item>
      <item>
       <property name="text">
+       <string>Any of</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
        <string>None of</string>
       </property>
      </item>
@@ -314,6 +319,11 @@
      </item>
      <item>
       <property name="text">
+       <string>Any of</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
        <string>None of</string>
       </property>
      </item>
@@ -323,12 +333,17 @@
     <widget class="QComboBox" name="locationMode">
      <item>
       <property name="text">
-       <string>Matches</string>
+       <string>All of</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Doesn't match</string>
+       <string>Any of</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>None of</string>
       </property>
      </item>
     </widget>
@@ -338,6 +353,11 @@
      <item>
       <property name="text">
        <string>All of</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Any of</string>
       </property>
      </item>
      <item>
