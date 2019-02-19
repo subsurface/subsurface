@@ -24,28 +24,37 @@ namespace {
 				   { return s2.trimmed().contains(s.trimmed(), Qt::CaseInsensitive); } );
 	}
 
-	bool hasTags(const QStringList &tags, const struct dive *d, bool negate)
+	// Check whether either all, any or none of the items of the first list is
+	// in the second list as a super string.
+	// The mode is controlled by the second argument
+	bool check(const QStringList &items, const QStringList &list, FilterData::Mode mode)
+	{
+		bool negate = mode == FilterData::Mode::NONE_OF;
+		bool any_of = mode == FilterData::Mode::ANY_OF;
+		auto fun = [&list, negate](const QString &item)
+			   { return listContainsSuperstring(list, item) != negate; };
+		return any_of ? std::any_of(items.begin(), items.end(), fun)
+			      : std::all_of(items.begin(), items.end(), fun);
+	}
+
+	bool hasTags(const QStringList &tags, const struct dive *d, FilterData::Mode mode)
 	{
 		if (tags.isEmpty())
 			return true;
 		QStringList dive_tags = get_taglist_string(d->tag_list).split(",");
-
-		return std::all_of(tags.begin(), tags.end(), [&dive_tags, negate](const QString &tag)
-				   { return listContainsSuperstring(dive_tags, tag) != negate; } );
+		return check(tags, dive_tags, mode);
 	}
 
-	bool hasPersons(const QStringList &people, const struct dive *d, bool negate)
+	bool hasPersons(const QStringList &people, const struct dive *d, FilterData::Mode mode)
 	{
 		if (people.isEmpty())
 			return true;
 		QStringList dive_people = QString(d->buddy).split(",", QString::SkipEmptyParts)
 			+ QString(d->divemaster).split(",", QString::SkipEmptyParts);
-
-		return std::all_of(people.begin(), people.end(), [&dive_people, negate](const QString &person)
-				   { return listContainsSuperstring(dive_people, person) != negate; } );
+		return check(people, dive_people, mode);
 	}
 
-	bool hasLocations(const QStringList &locations, const struct dive *d, bool negate)
+	bool hasLocations(const QStringList &locations, const struct dive *d, FilterData::Mode mode)
 	{
 		if (locations.isEmpty())
 			return true;
@@ -56,12 +65,11 @@ namespace {
 		if (d->dive_site)
 			diveLocations.push_back(QString(d->dive_site->name));
 
-		return std::all_of(locations.begin(), locations.end(), [&diveLocations, negate](const QString &location)
-				   { return listContainsSuperstring(diveLocations, location) != negate; } );
+		return check(locations, diveLocations, mode);
 	}
 
-	// TODO: Finish this iimplementation.
-	bool hasEquipment(const QStringList &, const struct dive *, bool)
+	// TODO: Finish this implementation.
+	bool hasEquipment(const QStringList &, const struct dive *, FilterData::Mode)
 	{
 		return true;
 	}
@@ -129,18 +137,18 @@ bool MultiFilterSortModel::showDive(const struct dive *d) const
 		return false;
 
 	// tags.
-	if (!hasTags(filterData.tags, d, filterData.tagsNegate))
+	if (!hasTags(filterData.tags, d, filterData.tagsMode))
 		return false;
 
 	// people
-	if (!hasPersons(filterData.people, d, filterData.peopleNegate))
+	if (!hasPersons(filterData.people, d, filterData.peopleMode))
 		return false;
 
 	// Location
-	if (!hasLocations(filterData.location, d, filterData.locationNegate))
+	if (!hasLocations(filterData.location, d, filterData.locationMode))
 		return false;
 
-	if (!hasEquipment(filterData.equipment, d, filterData.equipmentNegate))
+	if (!hasEquipment(filterData.equipment, d, filterData.equipmentMode))
 		return false;
 
 	// Planned/Logged

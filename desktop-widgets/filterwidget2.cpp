@@ -140,10 +140,10 @@ void FilterWidget2::clearFilter()
 	ui.fromTime->setTime(filterData.fromTime);
 	ui.toDate->setDate(filterData.toDate.date());
 	ui.toTime->setTime(filterData.toTime);
-	ui.tagsMode->setCurrentIndex(filterData.tagsNegate ? 1 : 0);
-	ui.peopleMode->setCurrentIndex(filterData.peopleNegate ? 1 : 0);
-	ui.locationMode->setCurrentIndex(filterData.locationNegate ? 1 : 0);
-	ui.equipmentMode->setCurrentIndex(filterData.equipmentNegate ? 1 : 0);
+	ui.tagsMode->setCurrentIndex((int)filterData.tagsMode);
+	ui.peopleMode->setCurrentIndex((int)filterData.peopleMode);
+	ui.locationMode->setCurrentIndex((int)filterData.locationMode);
+	ui.equipmentMode->setCurrentIndex((int)filterData.equipmentMode);
 
 	ignoreSignal = false;
 
@@ -186,10 +186,10 @@ void FilterWidget2::updateFilter()
 	filterData.people = ui.people->text().split(",", QString::SkipEmptyParts);
 	filterData.location = ui.location->text().split(",", QString::SkipEmptyParts);
 	filterData.equipment = ui.equipment->text().split(",", QString::SkipEmptyParts);
-	filterData.tagsNegate = ui.tagsMode->currentIndex() == 1;
-	filterData.peopleNegate = ui.peopleMode->currentIndex() == 1;
-	filterData.locationNegate = ui.locationMode->currentIndex() == 1;
-	filterData.equipmentNegate = ui.equipmentMode->currentIndex() == 1;
+	filterData.tagsMode = (FilterData::Mode)ui.tagsMode->currentIndex();
+	filterData.peopleMode = (FilterData::Mode)ui.peopleMode->currentIndex();
+	filterData.locationMode = (FilterData::Mode)ui.locationMode->currentIndex();
+	filterData.equipmentMode = (FilterData::Mode)ui.equipmentMode->currentIndex();
 	filterData.logged = ui.logged->isChecked();
 	filterData.planned = ui.planned->isChecked();
 
