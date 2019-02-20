@@ -822,10 +822,6 @@ void MainTab::acceptChanges()
 		// were identical with the master dive shown (and mark the divelist as changed)
 		struct dive *cd = current_dive;
 
-		// three text fields are somewhat special and are represented as tags
-		// in the UI - they need somewhat smarter handling
-		saveTaggedStrings(selectedDives);
-
 		if (cylindersModel->changed) {
 			mark_divelist_changed(true);
 			MODIFY_DIVES(selectedDives,
@@ -1112,74 +1108,6 @@ void MainTab::copyTagsToDisplayedDive()
 	Q_FOREACH (const QString &tag, ui.tagWidget->getBlockStringList())
 		taglist_add_tag(&displayed_dive.tag_list, qPrintable(tag));
 	taglist_cleanup(&displayed_dive.tag_list);
-}
-
-// buddy and divemaster are represented in the UI just like the tags, but the internal
-// representation is just a string (with commas as delimiters). So we need to do the same
-// thing we did for tags, just differently
-void MainTab::saveTaggedStrings(const QVector<dive *> &selectedDives)
-{
-	QStringList addedList, removedList;
-	struct dive *cd = current_dive;
-
-	if (diffTaggedStrings(cd->buddy, displayed_dive.buddy, addedList, removedList))
-		MODIFY_DIVES(selectedDives,
-			QStringList oldList = QString(mydive->buddy).split(QRegExp("\\s*,\\s*"), QString::SkipEmptyParts);
-			QString newString;
-			QString comma;
-			Q_FOREACH (const QString tag, oldList) {
-				if (!removedList.contains(tag, Qt::CaseInsensitive)) {
-					newString += comma + tag;
-					comma = ", ";
-				}
-			}
-			Q_FOREACH (const QString tag, addedList) {
-				if (!oldList.contains(tag, Qt::CaseInsensitive)) {
-					newString += comma + tag;
-					comma = ", ";
-				}
-			}
-			free(mydive->buddy);
-			mydive->buddy = copy_qstring(newString);
-		);
-	addedList.clear();
-	removedList.clear();
-	if (diffTaggedStrings(cd->divemaster, displayed_dive.divemaster, addedList, removedList))
-		MODIFY_DIVES(selectedDives,
-			QStringList oldList = QString(mydive->divemaster).split(QRegExp("\\s*,\\s*"), QString::SkipEmptyParts);
-			QString newString;
-			QString comma;
-			Q_FOREACH (const QString tag, oldList) {
-				if (!removedList.contains(tag, Qt::CaseInsensitive)) {
-					newString += comma + tag;
-					comma = ", ";
-				}
-			}
-			Q_FOREACH (const QString tag, addedList) {
-				if (!oldList.contains(tag, Qt::CaseInsensitive)) {
-					newString += comma + tag;
-					comma = ", ";
-				}
-			}
-			free(mydive->divemaster);
-			mydive->divemaster = copy_qstring(newString);
-		);
-}
-
-int MainTab::diffTaggedStrings(QString currentString, QString displayedString, QStringList &addedList, QStringList &removedList)
-{
-	QStringList displayedList, currentList;
-	currentList = currentString.split(',', QString::SkipEmptyParts);
-	displayedList = displayedString.split(',', QString::SkipEmptyParts);
-	Q_FOREACH ( const QString tag, currentList) {
-		if (!displayedList.contains(tag, Qt::CaseInsensitive))
-			removedList << tag.trimmed();
-	}
-	Q_FOREACH (const QString tag, displayedList) {
-		if (!currentList.contains(tag, Qt::CaseInsensitive))
-			addedList << tag.trimmed();
-	}
-	return removedList.length() + addedList.length();
 }
 
 void MainTab::on_tagWidget_editingFinished()
