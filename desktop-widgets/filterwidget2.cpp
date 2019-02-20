@@ -99,6 +99,18 @@ FilterWidget2::FilterWidget2(QWidget* parent) :
 	connect(ui.locationMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
 		this, &FilterWidget2::updateFilter);
 
+	connect(ui.suit, &QLineEdit::textChanged,
+		this, &FilterWidget2::updateFilter);
+
+	connect(ui.suitMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+		this, &FilterWidget2::updateFilter);
+
+	connect(ui.dnotes, &QLineEdit::textChanged,
+		this, &FilterWidget2::updateFilter);
+
+	connect(ui.dnotesMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+		this, &FilterWidget2::updateFilter);
+
 	connect(ui.logged, &QCheckBox::stateChanged,
 		this, &FilterWidget2::updateLogged);
 
@@ -136,6 +148,8 @@ void FilterWidget2::clearFilter()
 	ui.planned->setChecked(filterData.planned);
 	ui.people->clear();
 	ui.location->clear();
+	ui.suit->clear();
+	ui.dnotes->clear();
 	ui.equipment->clear();
 	ui.tags->clear();
 	ui.fromDate->setDate(filterData.fromDate.date());
@@ -145,6 +159,8 @@ void FilterWidget2::clearFilter()
 	ui.tagsMode->setCurrentIndex((int)filterData.tagsMode);
 	ui.peopleMode->setCurrentIndex((int)filterData.peopleMode);
 	ui.locationMode->setCurrentIndex((int)filterData.locationMode);
+	ui.suitMode->setCurrentIndex((int)filterData.suitMode);
+	ui.dnotesMode->setCurrentIndex((int)filterData.dnotesMode);
 	ui.equipmentMode->setCurrentIndex((int)filterData.equipmentMode);
 
 	ignoreSignal = false;
@@ -187,10 +203,12 @@ void FilterWidget2::updateFilter()
 	filterData.tags = ui.tags->text().split(",", QString::SkipEmptyParts);
 	filterData.people = ui.people->text().split(",", QString::SkipEmptyParts);
 	filterData.location = ui.location->text().split(",", QString::SkipEmptyParts);
+	filterData.suit = ui.suit->text().split(",", QString::SkipEmptyParts);
+	filterData.dnotes = ui.dnotes->text().split(",", QString::SkipEmptyParts);
 	filterData.equipment = ui.equipment->text().split(",", QString::SkipEmptyParts);
 	filterData.tagsMode = (FilterData::Mode)ui.tagsMode->currentIndex();
 	filterData.peopleMode = (FilterData::Mode)ui.peopleMode->currentIndex();
-	filterData.locationMode = (FilterData::Mode)ui.locationMode->currentIndex();
+	filterData.suitMode = (FilterData::Mode)ui.suitMode->currentIndex();
 	filterData.equipmentMode = (FilterData::Mode)ui.equipmentMode->currentIndex();
 	filterData.logged = ui.logged->isChecked();
 	filterData.planned = ui.planned->isChecked();
