@@ -119,8 +119,6 @@ private:
 	int lastTabSelectedDiveTrip;
 	void resetPallete();
 	void copyTagsToDisplayedDive();
-	void saveTaggedStrings(const QVector<dive *> &selectedDives);
-	int diffTaggedStrings(QString currentString, QString displayedString, QStringList &addedList, QStringList &removedList);
 	void markChangedWidget(QWidget *w);
 	dive_trip_t *currentTrip;
 	dive_trip_t displayedTrip;
