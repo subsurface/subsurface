@@ -42,6 +42,21 @@ for i in libgit2 libGrantlee_TextDocument.dylib libGrantlee_Templates.dylib; do
 	fi
 done
 
+# ensure libpng and libjpeg inside the bundle are referenced in QtWebKit libraries
+QTWEBKIT=Subsurface.app/Contents/Frameworks/QtWebKit.framework/QtWebKit
+for i in libjpeg.8.dylib libpng16.16.dylib; do
+	OLD=$(otool -L ${QTWEBKIT} | grep $i | cut -d\  -f1 | tr -d "\t")
+        if [[ ! -z ${OLD} ]] ; then
+                # copy the library into the bundle and make sure its id and the reference to it are correct
+		if [[ ! -f Subsurface.app/Contents/Frameworks/$(basename ${OLD}) ]] ; then
+			cp ${OLD} Subsurface.app/Contents/Frameworks
+		fi
+                SONAME=$(basename $OLD)
+                install_name_tool -change ${OLD} @executable_path/../Frameworks/${SONAME} ${QTWEBKIT}
+                install_name_tool -id @executable_path/../Frameworks/${SONAME} Subsurface.app/Contents/Frameworks/${SONAME}
+        fi
+done
+
 # next, copy libssh2.1
 # cp ${DIR}/install-root/lib/libssh2.1.dylib Subsurface.app/Contents/Frameworks
 
