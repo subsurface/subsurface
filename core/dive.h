@@ -227,6 +227,7 @@ void taglist_cleanup(struct tag_entry **tag_list);
 
 void taglist_init_global();
 void taglist_free(struct tag_entry *tag_list);
+struct tag_entry *taglist_copy(struct tag_entry *s);
 bool taglist_contains(struct tag_entry *tag_list, const char *tag);
 
 struct extra_data {
