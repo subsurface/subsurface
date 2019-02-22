@@ -667,7 +667,7 @@ void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_compo
 		add_dive_to_dive_site(d, s->dive_site);
 	}
 	if (what.tags)
-		STRUCTURED_LIST_COPY(struct tag_entry, s->tag_list, d->tag_list, copy_tl);
+		d->tag_list = taglist_copy(s->tag_list);
 	if (what.cylinders)
 		copy_cylinders(s, d, false);
 	if (what.weights)
@@ -3304,6 +3304,13 @@ struct divetag *taglist_add_tag(struct tag_entry **tag_list, const char *tag)
 void taglist_free(struct tag_entry *entry)
 {
 	STRUCTURED_LIST_FREE(struct tag_entry, entry, free)
+}
+
+struct tag_entry *taglist_copy(struct tag_entry *s)
+{
+	struct tag_entry *res;
+	STRUCTURED_LIST_COPY(struct tag_entry, s, res, copy_tl);
+	return res;
 }
 
 /* Merge src1 and src2, write to *dst */
