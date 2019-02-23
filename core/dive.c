@@ -636,6 +636,15 @@ struct dive *clone_dive(struct dive *s)
 	if (what._component)                \
 		d->_component = copy_string(s->_component)
 
+void copy_weights(const struct dive *s, struct dive *d)
+{
+	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
+		free((void *)d->weightsystem[i].description);
+		d->weightsystem[i] = s->weightsystem[i];
+		d->weightsystem[i].description = copy_string(s->weightsystem[i].description);
+	}
+}
+
 // copy elements, depending on bits in what that are set
 void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear)
 {
@@ -656,11 +665,7 @@ void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_compo
 	if (what.cylinders)
 		copy_cylinders(s, d, false);
 	if (what.weights)
-		for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-			free((void *)d->weightsystem[i].description);
-			d->weightsystem[i] = s->weightsystem[i];
-			d->weightsystem[i].description = copy_string(s->weightsystem[i].description);
-		}
+		copy_weights(s, d);
 }
 #undef CONDITIONAL_COPY_STRING
 
