@@ -46,7 +46,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	weightModel(new WeightModel(this)),
 	cylindersModel(new CylindersModel(this)),
 	editMode(NONE),
-	copyPaste(false),
 	lastSelectedDive(true),
 	lastTabSelectedDive(0),
 	lastTabSelectedDiveTrip(0),
@@ -286,7 +285,6 @@ void MainTab::enableEdition(EditMode newEditMode)
 	if (((newEditMode == DIVE || newEditMode == NONE) && current_dive == NULL) || editMode != NONE)
 		return;
 	modified = false;
-	copyPaste = false;
 	if ((newEditMode == DIVE || newEditMode == NONE) &&
 	    !isTripEdit &&
 	    current_dive->dc.model &&
@@ -847,7 +845,7 @@ void MainTab::acceptChanges()
 			MODIFY_DIVES(selectedDives,
 				for (int i = 0; i < MAX_CYLINDERS; i++) {
 					if (mydive != cd) {
-						if (same_string(mydive->cylinder[i].type.description, cd->cylinder[i].type.description) || copyPaste) {
+						if (same_string(mydive->cylinder[i].type.description, cd->cylinder[i].type.description)) {
 							// if we started out with the same cylinder description (for multi-edit) or if we do copt & paste
 							// make sure that we have the same cylinder type and copy the gasmix, but DON'T copy the start
 							// and end pressures (those are per dive after all)
@@ -890,7 +888,7 @@ void MainTab::acceptChanges()
 			mark_divelist_changed(true);
 			MODIFY_DIVES(selectedDives,
 				for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-					if (mydive != cd && (copyPaste || same_string(mydive->weightsystem[i].description, cd->weightsystem[i].description))) {
+					if (mydive != cd && (same_string(mydive->weightsystem[i].description, cd->weightsystem[i].description))) {
 						mydive->weightsystem[i] = displayed_dive.weightsystem[i];
 						mydive->weightsystem[i].description = copy_string(displayed_dive.weightsystem[i].description);
 					}
@@ -1245,44 +1243,4 @@ void MainTab::clearTabs() {
 		widget->clear();
 	}
 	clearEquipment();
-}
-
-#define SHOW_SELECTIVE(_component) \
-	if (what._component)       \
-		ui._component->setText(displayed_dive._component);
-
-void MainTab::showAndTriggerEditSelective(struct dive_components what)
-{
-	// take the data in our copyPasteDive and apply it to selected dives
-	enableEdition();
-	copyPaste = true;
-	SHOW_SELECTIVE(buddy);
-	SHOW_SELECTIVE(divemaster);
-	SHOW_SELECTIVE(suit);
-	if (what.notes) {
-		QString tmp(displayed_dive.notes);
-		if (tmp.contains("<div")) {
-			tmp.replace(QString("\n"), QString("<br>"));
-			ui.notes->setHtml(tmp);
-		} else {
-			ui.notes->setPlainText(tmp);
-		}
-	}
-	if (what.rating)
-		ui.rating->setCurrentStars(displayed_dive.rating);
-	if (what.visibility)
-		ui.visibility->setCurrentStars(displayed_dive.visibility);
-	if (what.divesite)
-		ui.location->setCurrentDiveSite(displayed_dive.dive_site);
-	if (what.tags) {
-		ui.tagWidget->setText(get_taglist_string(displayed_dive.tag_list));
-	}
-	if (what.cylinders) {
-		cylindersModel->updateDive();
-		cylindersModel->changed = true;
-	}
-	if (what.weights) {
-		weightModel->updateDive();
-		weightModel->changed = true;
-	}
 }

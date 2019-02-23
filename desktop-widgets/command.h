@@ -46,6 +46,7 @@ void editDiveSite(struct dive_site *newValue, bool currentDiveOnly);
 void editTags(const QStringList &newList, bool currentDiveOnly);
 void editBuddies(const QStringList &newList, bool currentDiveOnly);
 void editDiveMaster(const QStringList &newList, bool currentDiveOnly);
+void pasteDives(const dive *d, dive_components what);
 
 } // namespace Command
 

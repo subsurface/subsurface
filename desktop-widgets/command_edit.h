@@ -197,6 +197,38 @@ public:
 	DiveField fieldId() const override;
 };
 
+// Fields we have to remember to undo paste
+struct PasteState {
+	dive *d;
+	dive_site *divesite;
+	QString notes;
+	QString divemaster;
+	QString buddy;
+	QString suit;
+	int rating;
+	int visibility;
+	tag_entry *tags;
+	cylinder_t cylinders[MAX_CYLINDERS];
+	weightsystem_t weightsystems[MAX_WEIGHTSYSTEMS];
+
+	PasteState(dive *d, const dive *data, dive_components what); // Read data from dive data for dive d
+	~PasteState();
+	void swap(dive_components what); // Exchange values here and in dive
+};
+
+class PasteDives  : public Base {
+	dive_components what;
+	std::vector<PasteState> dives;
+	std::vector<OwningDiveSitePtr> ownedDiveSites;
+	dive *current;
+public:
+	PasteDives(const dive *d, dive_components what);
+private:
+	void undo() override;
+	void redo() override;
+	bool workToBeDone() override;
+};
+
 } // namespace Command
 
 #endif
