@@ -4,6 +4,7 @@
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
 #include "core/qthelper.h"
+#include "core/subsurface-qt/DiveListNotifier.h"
 #include "qt-models/weightsysteminfomodel.h"
 
 WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
@@ -12,6 +13,7 @@ WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
 {
 	//enum Column {REMOVE, TYPE, WEIGHT};
 	setHeaderDataStrings(QStringList() << tr("") << tr("Type") << tr("Weight"));
+	connect(&diveListNotifier, &DiveListNotifier::weightsystemsReset, this, &WeightModel::weightsystemsReset);
 }
 
 weightsystem_t *WeightModel::weightSystemAt(const QModelIndex &index)
@@ -172,4 +174,18 @@ void WeightModel::updateDive()
 		beginInsertRows(QModelIndex(), 0, rows - 1);
 		endInsertRows();
 	}
+}
+
+void WeightModel::weightsystemsReset(dive_trip *trip, const QVector<dive *> &dives)
+{
+	// This model only concerns the currently displayed dive. If this is not among the
+	// dives that had their cylinders reset, exit.
+	if (!current_dive || std::find(dives.begin(), dives.end(), current_dive) == dives.end())
+		return;
+
+	// Copy the cylinders from the current dive to the displayed dive.
+	copy_weights(current_dive, &displayed_dive);
+
+	// And update the model..
+	updateDive();
 }

@@ -546,6 +546,7 @@ extern void copy_events(const struct divecomputer *s, struct divecomputer *d);
 extern void free_events(struct event *ev);
 extern void copy_cylinders(const struct dive *s, struct dive *d, bool used_only);
 extern void copy_samples(const struct divecomputer *s, struct divecomputer *d);
+extern void copy_weights(const struct dive *s, struct dive *d);
 extern bool is_cylinder_used(const struct dive *dive, int idx);
 extern bool is_cylinder_prot(const struct dive *dive, int idx);
 extern void fill_default_cylinder(cylinder_t *cyl);
