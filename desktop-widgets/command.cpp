@@ -200,4 +200,9 @@ void editDiveMaster(const QStringList &newList, bool currentDiveOnly)
 	execute(new EditDiveMaster(newList, currentDiveOnly));
 }
 
+void pasteDives(const dive *d, dive_components what)
+{
+	execute(new PasteDives(d, what));
+}
+
 } // namespace Command

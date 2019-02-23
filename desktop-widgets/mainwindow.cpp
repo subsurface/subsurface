@@ -1802,9 +1802,7 @@ void MainWindow::on_copy_triggered()
 
 void MainWindow::on_paste_triggered()
 {
-	// take the data in our copyPasteDive and apply it to selected dives
-	selective_copy_dive(&copyPasteDive, &displayed_dive, what, false);
-	mainTab->showAndTriggerEditSelective(what);
+	Command::pasteDives(&copyPasteDive, what);
 }
 
 void MainWindow::on_actionFilterTags_triggered()

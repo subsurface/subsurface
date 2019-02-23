@@ -4,6 +4,7 @@
 #include "command_private.h"
 #include "core/divelist.h"
 #include "core/qthelper.h" // for copy_qstring
+#include "core/subsurface-string.h"
 #include "desktop-widgets/mapwidget.h" // TODO: Replace desktop-dependency by signal
 
 namespace Command {
@@ -596,6 +597,179 @@ QString EditDiveMaster::fieldName() const
 DiveField EditDiveMaster::fieldId() const
 {
 	return DiveField::DIVEMASTER;
+}
+
+// Helper function to copy cylinders. This supposes that the destination
+// cylinder is uninitialized. I.e. the old description is not freed!
+static void copy_cylinder(const cylinder_t &s, cylinder_t &d)
+{
+	d.type.description = copy_string(s.type.description);
+	d.type.size = s.type.size;
+	d.type.workingpressure = s.type.workingpressure;
+	d.gasmix = s.gasmix;
+	d.cylinder_use = s.cylinder_use;
+	d.depth = s.depth;
+}
+
+static void swapCandQString(QString &q, char *&c)
+{
+	QString tmp(c);
+	free(c);
+	c = copy_qstring(q);
+	q = std::move(tmp);
+}
+
+PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dIn),
+	tags(nullptr)
+{
+	memset(&cylinders[0], 0, sizeof(cylinders));
+	memset(&weightsystems[0], 0, sizeof(weightsystems));
+	if (what.notes)
+		notes = data->notes;
+	if (what.divemaster)
+		divemaster = data->divemaster;
+	if (what.buddy)
+		buddy = data->buddy;
+	if (what.suit)
+		suit = data->suit;
+	if (what.rating)
+		rating = data->rating;
+	if (what.visibility)
+		visibility = data->visibility;
+	if (what.divesite)
+		divesite = data->dive_site;
+	if (what.tags)
+		tags = taglist_copy(data->tag_list);
+	if (what.cylinders) {
+		for (int i = 0; i < MAX_CYLINDERS; ++i)
+			copy_cylinder(data->cylinder[i], cylinders[i]);
+	}
+	if (what.weights) {
+		for (int i = 0; i < MAX_WEIGHTSYSTEMS; ++i) {
+			weightsystems[i] = data->weightsystem[i];
+			weightsystems[i].description = copy_string(data->weightsystem[i].description);
+		}
+	}
+}
+
+PasteState::~PasteState()
+{
+	taglist_free(tags);
+	for (cylinder_t &c: cylinders)
+		free((void *)c.type.description);
+	for (weightsystem_t &w: weightsystems)
+		free((void *)w.description);
+}
+
+void PasteState::swap(dive_components what)
+{
+	if (what.notes)
+		swapCandQString(notes, d->notes);
+	if (what.divemaster)
+		swapCandQString(divemaster, d->divemaster);
+	if (what.buddy)
+		swapCandQString(buddy, d->buddy);
+	if (what.suit)
+		swapCandQString(suit, d->suit);
+	if (what.rating)
+		std::swap(rating, d->rating);
+	if (what.visibility)
+		std::swap(visibility, d->visibility);
+	if (what.divesite)
+		std::swap(divesite, d->dive_site);
+	if (what.tags)
+		std::swap(tags, d->tag_list);
+	if (what.cylinders)
+		std::swap(cylinders, d->cylinder);
+	if (what.weights)
+		std::swap(weightsystems, d->weightsystem);
+}
+
+// ***** Paste *****
+PasteDives::PasteDives(const dive *data, dive_components whatIn) : what(whatIn),
+	current(current_dive)
+{
+	std::vector<dive *> selection = getDiveSelection();
+	dives.reserve(selection.size());
+	for (dive *d: selection)
+		dives.emplace_back(d, data, what);
+
+	setText(tr("Paste onto %n dive(s)", "", dives.size()));
+}
+
+bool PasteDives::workToBeDone()
+{
+	return !dives.empty();
+}
+
+void PasteDives::undo()
+{
+	bool diveSiteListChanged = false;
+
+	// If we had taken ownership of dive sites, readd them to the system
+	for (OwningDiveSitePtr &ds: ownedDiveSites) {
+		register_dive_site(ds.release());
+		diveSiteListChanged = true;
+	}
+	ownedDiveSites.clear();
+
+	std::vector<dive *> divesToNotify; // Remember dives so that we can send signals later
+	divesToNotify.reserve(dives.size());
+	for (PasteState &state: dives) {
+		divesToNotify.push_back(state.d);
+		state.swap(what);
+		invalidate_dive_cache(state.d); // Ensure that dive is written in git_save()
+	}
+
+	// If dive sites were pasted, collect all overwritten dive sites
+	// and remove those which don't have users anymore from the core.
+	// But keep an owning pointer. Thus if this undo command is freed, the
+	// dive-site will be automatically deleted and on redo() it can be
+	// readded to the system
+	if (what.divesite) {
+		std::vector<dive_site *> divesites;
+		for (const PasteState &d: dives) {
+			if (std::find(divesites.begin(), divesites.end(), d.divesite) == divesites.end())
+				divesites.push_back(d.divesite);
+		}
+		for (dive_site *ds: divesites) {
+			unregister_dive_site(ds);
+			ownedDiveSites.emplace_back(ds);
+			diveSiteListChanged = true;
+		}
+	}
+
+	// Send signals.
+	// TODO: We send one signal per changed field. This means that the dive list may
+	// update the entry numerous times. Perhaps change the field-id into flags?
+	// There seems to be a number of enums / flags describing dive fields. Perhaps unify them all?
+	processByTrip(divesToNotify, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
+		if (what.notes)
+			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::NOTES);
+		if (what.divemaster)
+			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::DIVEMASTER);
+		if (what.buddy)
+			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::BUDDY);
+		if (what.suit)
+			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::SUIT);
+		if (what.rating)
+			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::RATING);
+		if (what.visibility)
+			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::VISIBILITY);
+		if (what.divesite)
+			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::DIVESITE);
+		if (what.tags)
+			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::TAGS);
+	});
+
+	if (diveSiteListChanged)
+		MapWidget::instance()->reload();
+}
+
+// Redo and undo do the same
+void PasteDives::redo()
+{
+	undo();
 }
 
 } // namespace Command
