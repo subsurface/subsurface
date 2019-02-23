@@ -128,7 +128,8 @@ void UserManual::linkClickedSlot(const QUrl& url)
 }
 
 #ifdef Q_OS_MAC
-void UserManual::showEvent(QShowEvent *e) {
+void UserManual::showEvent(QShowEvent *e)
+{
 	filterAction = NULL;
 	closeAction = NULL;
 	MainWindow *m = MainWindow::instance();
@@ -142,7 +143,9 @@ void UserManual::showEvent(QShowEvent *e) {
 		}
 	}
 }
-void UserManual::hideEvent(QHideEvent *e) {
+
+void UserManual::hideEvent(QHideEvent *e)
+{
 	if (closeAction != NULL)
 		closeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_W));
 	if (filterAction != NULL)

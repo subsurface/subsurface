@@ -26,6 +26,7 @@ int report_error(const char *fmt, ...)
 	return -1;
 }
 
-void set_error_cb(void(*cb)(char *)) {
+void set_error_cb(void(*cb)(char *))
+{
 	error_cb = cb;
 }

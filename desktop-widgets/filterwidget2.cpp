@@ -218,13 +218,15 @@ void FilterWidget2::updateFilter()
 	filterDataChanged(filterData);
 }
 
-void FilterWidget2::updateLogged(int value) {
+void FilterWidget2::updateLogged(int value)
+{
 	if (value == Qt::Unchecked)
 		ui.planned->setChecked(true);
 	updateFilter();
 }
 
-void FilterWidget2::updatePlanned(int value) {
+void FilterWidget2::updatePlanned(int value)
+{
 	if (value == Qt::Unchecked)
 		ui.logged->setChecked(true);
 	updateFilter();

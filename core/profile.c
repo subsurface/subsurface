@@ -124,7 +124,8 @@ int evn_allocated;
 int evn_used;
 
 #if WE_DONT_USE_THIS /* we need to implement event filters in Qt */
-int evn_foreach (void (*callback)(const char *, bool *, void *), void *data) {
+int evn_foreach (void (*callback)(const char *, bool *, void *), void *data)
+{
 	int i;
 
 	for (i = 0; i < evn_used; i++) {
