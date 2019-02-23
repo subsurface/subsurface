@@ -1195,9 +1195,9 @@ void MainTab::escDetected()
 		setFocus();
 }
 
-void MainTab::clearTabs() {
-	for (auto widget : extraWidgets) {
+void MainTab::clearTabs()
+{
+	for (auto widget: extraWidgets)
 		widget->clear();
-	}
 	clearEquipment();
 }

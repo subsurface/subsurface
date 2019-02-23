@@ -242,7 +242,8 @@ ColumnNameResult::ColumnNameResult(QObject *parent) : QAbstractTableModel(parent
 
 }
 
-void ColumnNameResult::swapValues(int firstIndex, int secondIndex) {
+void ColumnNameResult::swapValues(int firstIndex, int secondIndex)
+{
 	QString one = columnNames[firstIndex];
 	QString two = columnNames[secondIndex];
 	setData(index(0, firstIndex), QVariant(two), Qt::EditRole);
