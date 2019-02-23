@@ -42,6 +42,7 @@ namespace {
 		if (tags.isEmpty())
 			return true;
 		QStringList dive_tags = get_taglist_string(d->tag_list).split(",");
+		dive_tags.append(gettextFromC::tr(divemode_text_ui[d->dc.divemode]));
 		return check(tags, dive_tags, mode);
 	}
 
