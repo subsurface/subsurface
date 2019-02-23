@@ -760,6 +760,10 @@ void PasteDives::undo()
 			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::DIVESITE);
 		if (what.tags)
 			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::TAGS);
+		if (what.cylinders)
+			emit diveListNotifier.cylindersReset(trip, divesInTrip);
+		if (what.weights)
+			emit diveListNotifier.weightsystemsReset(trip, divesInTrip);
 	});
 
 	if (diveSiteListChanged)

@@ -32,6 +32,7 @@ public:
 public
 slots:
 	void remove(const QModelIndex &index);
+	void weightsystemsReset(dive_trip *trip, const QVector<dive *> &dives);
 
 private:
 	int rows;
