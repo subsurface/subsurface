@@ -55,7 +55,6 @@ public:
 	void updateCoordinatesText(qreal lat, qreal lon);
 	void refreshDisplayedDiveSite();
 	void nextInputField(QKeyEvent *event);
-	void showAndTriggerEditSelective(struct dive_components what);
 
 signals:
 	void addDiveFinished();
@@ -113,7 +112,6 @@ private:
 	TagCompletionModel tagModel;
 	Completers completers;
 	bool modified;
-	bool copyPaste;
 	bool lastSelectedDive;
 	int lastTabSelectedDive;
 	int lastTabSelectedDiveTrip;
