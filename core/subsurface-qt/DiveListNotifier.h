@@ -51,6 +51,9 @@ signals:
 	void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
 	void divesTimeChanged(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
 
+	void cylindersReset(dive_trip *trip, const QVector<dive *> &dives);
+	void weightsystemsReset(dive_trip *trip, const QVector<dive *> &dives);
+
 	// Selection-signals come in two kinds:
 	//  - divesSelected, divesDeselected and currentDiveChanged are finer grained and are
 	//    called batch-wise per trip (except currentDiveChanged, of course). These signals

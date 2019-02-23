@@ -6,6 +6,7 @@
 #include "core/color.h"
 #include "qt-models/diveplannermodel.h"
 #include "core/gettextfromc.h"
+#include "core/subsurface-qt/DiveListNotifier.h"
 
 CylindersModel::CylindersModel(QObject *parent) :
 	CleanerTableModel(parent),
@@ -16,6 +17,7 @@ CylindersModel::CylindersModel(QObject *parent) :
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << tr("O₂%") << tr("He%")
 						 << tr("Deco switch at") <<tr("Bot. MOD") <<tr("MND") << tr("Use"));
 
+	connect(&diveListNotifier, &DiveListNotifier::cylindersReset, this, &CylindersModel::cylindersReset);
 }
 
 QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -629,4 +631,18 @@ bool CylindersModel::updateBestMixes()
 	if (gasUpdated)
 		emit dataChanged(createIndex(0, 0), createIndex(MAX_CYLINDERS - 1, COLUMNS - 1));
 	return gasUpdated;
+}
+
+void CylindersModel::cylindersReset(dive_trip *trip, const QVector<dive *> &dives)
+{
+	// This model only concerns the currently displayed dive. If this is not among the
+	// dives that had their cylinders reset, exit.
+	if (!current_dive || std::find(dives.begin(), dives.end(), current_dive) == dives.end())
+		return;
+
+	// Copy the cylinders from the current dive to the displayed dive.
+	copy_cylinders(current_dive, &displayed_dive, false);
+
+	// And update the model..
+	updateDive();
 }
