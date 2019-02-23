@@ -638,7 +638,8 @@ void DiveMeanDepthItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*
 	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_average_depthChanged, this, &DiveAmbPressureItem::setVisible);
 }
 
-void DiveMeanDepthItem::createTextItem() {
+void DiveMeanDepthItem::createTextItem()
+{
 	plot_data *entry = dataModel->data().entry;
 	int sec = entry[dataModel->rowCount()-1].sec;
 	qDeleteAll(texts);

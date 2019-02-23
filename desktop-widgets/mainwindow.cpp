@@ -400,11 +400,11 @@ void MainWindow::enableDisableOtherDCsActions()
 	ui.actionPreviousDC->setEnabled(nr);
 }
 
-void MainWindow::setDefaultState() {
+void MainWindow::setDefaultState()
+{
 	setApplicationState("Default");
-	if (mainTab->getEditMode() != MainTab::NONE) {
+	if (mainTab->getEditMode() != MainTab::NONE)
 		ui.bottomLeft->currentWidget()->setEnabled(false);
-	}
 }
 
 MainWindow *MainWindow::instance()
@@ -434,7 +434,8 @@ void MainWindow::recreateDiveList()
 	MultiFilterSortModel::instance()->myInvalidate();
 }
 
-void MainWindow::configureToolbar() {
+void MainWindow::configureToolbar()
+{
 	if (current_dive) {
 		bool freeDiveMode = current_dive->dc.divemode == FREEDIVE;
 		ui.profCalcCeiling->setDisabled(freeDiveMode);
@@ -1835,7 +1836,8 @@ void MainWindow::registerApplicationState(const QByteArray& state, QWidget *topL
 	}
 }
 
-void MainWindow::setApplicationState(const QByteArray& state) {
+void MainWindow::setApplicationState(const QByteArray &state)
+{
 	if (!applicationState.keys().contains(state))
 		return;
 

@@ -645,7 +645,8 @@ static struct types_list *smtk_index_list(MdbHandle *mdb, char *table_name, char
  * Buddy table format:
  * | Idx | Text (nickname) | Name | Firstname | Middlename | Title | Picture | Phone | ...
  */
-static void smtk_build_buddies(MdbHandle *mdb, char *array[]) {
+static void smtk_build_buddies(MdbHandle *mdb, char *array[])
+{
 	MdbTableDef *table;
 	MdbColumn *col[MDB_MAX_COLS];
 	char *bound_values[MDB_MAX_COLS], *fullname = NULL, *str = NULL;

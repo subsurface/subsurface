@@ -526,7 +526,8 @@ void dump_tissues(struct deco_state *ds)
 }
 #endif
 
-void clear_vpmb_state(struct deco_state *ds) {
+void clear_vpmb_state(struct deco_state *ds)
+{
 	int ci;
 	for (ci = 0; ci < 16; ci++) {
 		ds->max_n2_crushing_pressure[ci] = 0.0;
