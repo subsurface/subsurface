@@ -128,7 +128,8 @@ void UserManual::linkClickedSlot(const QUrl& url)
 }
 
 #ifdef Q_OS_MAC
-void UserManual::showEvent(QShowEvent *e) {
+void UserManual::showEvent(QShowEvent *e)
+{
 	MainWindow *m = MainWindow::instance();
 	filterAction = m->findChild<QAction *>(QLatin1String("actionFilterTags"), Qt::FindDirectChildrenOnly);
 	if (filterAction != nullptr)
@@ -137,7 +138,9 @@ void UserManual::showEvent(QShowEvent *e) {
 	if (closeAction != nullptr)
 		closeAction->setShortcut(QKeySequence());
 }
-void UserManual::hideEvent(QHideEvent *e) {
+
+void UserManual::hideEvent(QHideEvent *e)
+{
 	if (closeAction != NULL)
 		closeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_W));
 	if (filterAction != NULL)
