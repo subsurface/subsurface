@@ -715,21 +715,10 @@ void MainTab::reload()
 		mark_divelist_changed(true);                 \
 	} while (0)
 
-#define EDIT_TEXT(what)                                          \
-	if (same_string(mydive->what, cd->what) || copyPaste) {  \
-		free(mydive->what);                              \
-		mydive->what = copy_string(displayed_dive.what); \
-	}
-
 MainTab::EditMode MainTab::getEditMode() const
 {
 	return editMode;
 }
-
-#define EDIT_VALUE(what)                             \
-	if (mydive->what == cd->what || copyPaste) { \
-		mydive->what = displayed_dive.what;  \
-	}
 
 void MainTab::refreshDisplayedDiveSite()
 {
@@ -1216,8 +1205,6 @@ void MainTab::on_visibility_valueChanged(int value)
 }
 
 #undef MODIFY_DIVES
-#undef EDIT_TEXT
-#undef EDIT_VALUE
 
 void MainTab::editCylinderWidget(const QModelIndex &index)
 {
