@@ -819,7 +819,6 @@ void MainTab::acceptChanges()
 		emit addDiveFinished();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 		MainWindow::instance()->diveList->setFocus();
-		resetPallete();
 		displayed_dive.divetrip = nullptr; // Should not be necessary, just in case!
 		return;
 	} else {
@@ -917,7 +916,6 @@ void MainTab::acceptChanges()
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	}
 	int scrolledBy = MainWindow::instance()->diveList->verticalScrollBar()->sliderPosition();
-	resetPallete();
 	if (lastMode == MANUALLY_ADDED_DIVE) {
 		MainWindow::instance()->diveList->reload();
 		int newDiveNr = get_divenr(get_dive_by_uniq_id(addedId));
@@ -943,25 +941,6 @@ void MainTab::acceptChanges()
 	editMode = NONE;
 }
 
-void MainTab::resetPallete()
-{
-	QPalette p;
-	ui.buddy->setPalette(p);
-	ui.notes->setPalette(p);
-	ui.location->setPalette(p);
-	ui.divemaster->setPalette(p);
-	ui.suit->setPalette(p);
-	ui.airtemp->setPalette(p);
-	ui.DiveType->setPalette(p);
-	ui.watertemp->setPalette(p);
-	ui.dateEdit->setPalette(p);
-	ui.timeEdit->setPalette(p);
-	ui.tagWidget->setPalette(p);
-	ui.diveTripLocation->setPalette(p);
-	ui.duration->setPalette(p);
-	ui.depth->setPalette(p);
-}
-
 void MainTab::rejectChanges()
 {
 	EditMode lastMode = editMode;
@@ -981,7 +960,6 @@ void MainTab::rejectChanges()
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	hideMessage();
-	resetPallete();
 	// no harm done to call cancelPlan even if we were not in ADD or PLAN mode...
 	DivePlannerPointsModel::instance()->cancelPlan();
 	if(lastMode == ADD)
@@ -1009,17 +987,6 @@ void MainTab::rejectChanges()
 	cylindersModel->updateDive();
 	weightModel->updateDive();
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
-}
-
-void MainTab::markChangedWidget(QWidget *w)
-{
-	QPalette p;
-	qreal h, s, l, a;
-	enableEdition();
-	qApp->palette().color(QPalette::Text).getHslF(&h, &s, &l, &a);
-	p.setBrush(QPalette::Base, (l <= 0.3) ? QColor(Qt::yellow).lighter() : (l <= 0.6) ? QColor(Qt::yellow).light() : /* else */ QColor(Qt::yellow).darker(300));
-	w->setPalette(p);
-	modified = true;
 }
 
 static QStringList stringToList(const QString &s)

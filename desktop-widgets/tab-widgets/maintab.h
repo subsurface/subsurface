@@ -114,9 +114,7 @@ private:
 	bool lastSelectedDive;
 	int lastTabSelectedDive;
 	int lastTabSelectedDiveTrip;
-	void resetPallete();
 	void copyTagsToDisplayedDive();
-	void markChangedWidget(QWidget *w);
 	dive_trip_t *currentTrip;
 	dive_trip_t displayedTrip;
 	struct dive_site *getDiveSite(struct dive_site *pickedDs, struct dive_site *origDs);
