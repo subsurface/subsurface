@@ -225,6 +225,11 @@ DiveField EditAirTemp::fieldId() const
 void EditWaterTemp::set(struct dive *d, int value) const
 {
 	d->watertemp.mkelvin = value > 0 ? (uint32_t)value : 0u;
+
+	// re-populate the temperatures - easiest way to do this is by calling fixup_dive
+	// TODO: Is this necessary?
+	fixup_dive(d);
+	invalidate_dive_cache(d);
 }
 
 int EditWaterTemp::data(struct dive *d) const

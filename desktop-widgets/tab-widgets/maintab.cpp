@@ -895,15 +895,6 @@ void MainTab::acceptChanges()
 				cd->weightsystem[i].description = copy_string(displayed_dive.weightsystem[i].description);
 			}
 		}
-
-		// each dive that was selected might have had the temperatures in its active divecomputer changed
-		// so re-populate the temperatures - easiest way to do this is by calling fixup_dive
-		for_each_dive (i, d) {
-			if (d->selected) {
-				fixup_dive(d);
-				invalidate_dive_cache(d);
-			}
-		}
 	}
 	if (lastMode == MANUALLY_ADDED_DIVE) {
 		// we just added or edited the dive, let fixup_dive() make
