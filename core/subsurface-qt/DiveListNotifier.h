@@ -10,7 +10,7 @@
 
 #include <QObject>
 
-// Dive fields that can be edited.
+// Dive and trip fields that can be edited.
 // Use "enum class" to not polute the global name space.
 enum class DiveField {
 	NR,
@@ -28,6 +28,10 @@ enum class DiveField {
 	TAGS,
 	MODE,
 	NOTES,
+};
+enum class TripField {
+	LOCATION,
+	NOTES
 };
 
 class DiveListNotifier : public QObject {
@@ -53,6 +57,9 @@ signals:
 
 	void cylindersReset(dive_trip *trip, const QVector<dive *> &dives);
 	void weightsystemsReset(dive_trip *trip, const QVector<dive *> &dives);
+
+	// Trip edited signal
+	void tripChanged(dive_trip *trip, TripField field);
 
 	// Selection-signals come in two kinds:
 	//  - divesSelected, divesDeselected and currentDiveChanged are finer grained and are

@@ -81,6 +81,7 @@ set(SUBSURFACE_INTERFACE
 	command_base.cpp
 	command_divelist.cpp
 	command_edit.cpp
+	command_edit_trip.cpp
 	command_private.cpp
 	locationinformation.cpp
 	textedit.cpp

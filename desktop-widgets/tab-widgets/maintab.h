@@ -39,7 +39,6 @@ public:
 	enum EditMode {
 		NONE,
 		DIVE,
-		TRIP,
 		ADD,
 		MANUALLY_ADDED_DIVE,
 		IGNORE
@@ -62,6 +61,7 @@ signals:
 public
 slots:
 	void divesChanged(dive_trip *trip, const QVector<dive *> &dives, DiveField field);
+	void tripChanged(dive_trip *trip, TripField field);
 	void addCylinder_clicked();
 	void addWeight_clicked();
 	void updateDiveInfo(bool clear = false);
@@ -76,8 +76,7 @@ slots:
 	void on_divemaster_editingFinished();
 	void on_buddy_editingFinished();
 	void on_suit_editingFinished();
-	void on_diveTripLocation_textEdited(const QString& text);
-	void on_notes_textChanged();
+	void on_diveTripLocation_editingFinished();
 	void on_notes_editingFinished();
 	void on_airtemp_editingFinished();
 	void on_duration_editingFinished();

@@ -3,6 +3,7 @@
 #include "command.h"
 #include "command_divelist.h"
 #include "command_edit.h"
+#include "command_edit_trip.h"
 
 namespace Command {
 
@@ -141,6 +142,16 @@ void editDiveMaster(const QStringList &newList, bool currentDiveOnly)
 void pasteDives(const dive *d, dive_components what)
 {
 	execute(new PasteDives(d, what));
+}
+
+void editTripLocation(dive_trip *trip, const QString &s)
+{
+	execute(new EditTripLocation(trip, s));
+}
+
+void editTripNotes(dive_trip *trip, const QString &s)
+{
+	execute(new EditTripNotes(trip, s));
 }
 
 } // namespace Command
