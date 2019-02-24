@@ -68,6 +68,10 @@ void editBuddies(const QStringList &newList, bool currentDiveOnly);
 void editDiveMaster(const QStringList &newList, bool currentDiveOnly);
 void pasteDives(const dive *d, dive_components what);
 
+// 4) Trip editing commands
+void editTripLocation(dive_trip *trip, const QString &s);
+void editTripNotes(dive_trip *trip, const QString &s);
+
 } // namespace Command
 
 #endif // COMMAND_H
