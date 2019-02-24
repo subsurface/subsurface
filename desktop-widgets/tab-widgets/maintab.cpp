@@ -69,7 +69,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.timeEdit->setDisplayFormat(prefs.time_format);
 
 	memset(&displayed_dive, 0, sizeof(displayed_dive));
-	memset(&displayedTrip, 0, sizeof(displayedTrip));
 
 	// This makes sure we only delete the models
 	// after the destructor of the tables,
@@ -82,6 +81,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	closeMessage();
 
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &MainTab::divesChanged);
+	connect(&diveListNotifier, &DiveListNotifier::tripChanged, this, &MainTab::tripChanged);
+
 	connect(ui.editDiveSiteButton, &QToolButton::clicked, MainWindow::instance(), &MainWindow::startDiveSiteEdit);
 	connect(ui.location, &DiveLocationLineEdit::entered, MapWidget::instance(), &MapWidget::centerOnIndex);
 	connect(ui.location, &DiveLocationLineEdit::currentChanged, MapWidget::instance(), &MapWidget::centerOnIndex);
@@ -281,14 +282,10 @@ void MainTab::updateTextLabels(bool showUnits)
 
 void MainTab::enableEdition(EditMode newEditMode)
 {
-	const bool isTripEdit = MainWindow::instance() &&
-		MainWindow::instance()->diveList->selectedTrips().count() == 1;
-
 	if (((newEditMode == DIVE || newEditMode == NONE) && current_dive == NULL) || editMode != NONE)
 		return;
 	modified = false;
 	if ((newEditMode == DIVE || newEditMode == NONE) &&
-	    !isTripEdit &&
 	    current_dive->dc.model &&
 	    strcmp(current_dive->dc.model, "manually added dive") == 0) {
 		// editCurrentDive will call enableEdition with newEditMode == MANUALLY_ADDED_DIVE
@@ -312,21 +309,13 @@ void MainTab::enableEdition(EditMode newEditMode)
 	ui.tabWidget->setTabEnabled(3, false);
 	ui.tabWidget->setTabEnabled(5, false);
 
-	if (isTripEdit) {
-		// we are editing trip location and notes
-		displayMessage(tr("This trip is being edited."));
-		currentTrip = current_dive->divetrip;
-		ui.dateEdit->setEnabled(false);
-		editMode = TRIP;
+	ui.dateEdit->setEnabled(true);
+	if (amount_selected > 1) {
+		displayMessage(tr("Multiple dives are being edited."));
 	} else {
-		ui.dateEdit->setEnabled(true);
-		if (amount_selected > 1) {
-			displayMessage(tr("Multiple dives are being edited."));
-		} else {
-			displayMessage(tr("This dive is being edited."));
-		}
-		editMode = newEditMode != NONE ? newEditMode : DIVE;
+		displayMessage(tr("This dive is being edited."));
 	}
+	editMode = newEditMode != NONE ? newEditMode : DIVE;
 }
 
 static void profileFromDive(struct dive *d)
@@ -391,6 +380,26 @@ void MainTab::divesChanged(dive_trip *trip, const QVector<dive *> &dives, DiveFi
 		break;
 	case DiveField::DIVEMASTER:
 		ui.divemaster->setText(current_dive->divemaster);
+		break;
+	default:
+		break;
+	}
+}
+
+// This function gets called if a trip-field gets updated by an undo command.
+// Refresh the corresponding UI field.
+void MainTab::tripChanged(dive_trip *trip, TripField field)
+{
+	// If the current dive is not in list of changed dives, do nothing
+	if (currentTrip != trip)
+		return;
+
+	switch(field) {
+	case TripField::NOTES:
+		ui.notes->setText(currentTrip->notes);
+		break;
+	case TripField::LOCATION:
+		ui.diveTripLocation->setText(currentTrip->location);
 		break;
 	default:
 		break;
@@ -782,18 +791,6 @@ void MainTab::acceptChanges()
 		resetPallete();
 		displayed_dive.divetrip = nullptr; // Should not be necessary, just in case!
 		return;
-	} else if (MainWindow::instance() && MainWindow::instance()->diveList->selectedTrips().count() == 1) {
-		/* now figure out if things have changed */
-		if (displayedTrip.notes && !same_string(displayedTrip.notes, currentTrip->notes)) {
-			currentTrip->notes = copy_string(displayedTrip.notes);
-			mark_divelist_changed(true);
-		}
-		if (displayedTrip.location && !same_string(displayedTrip.location, currentTrip->location)) {
-			currentTrip->location = copy_string(displayedTrip.location);
-			mark_divelist_changed(true);
-		}
-		currentTrip = NULL;
-		ui.dateEdit->setEnabled(true);
 	} else {
 		// Get list of selected dives, but put the current dive last;
 		// this is required in case the invocation wants to compare things
@@ -1117,13 +1114,11 @@ void MainTab::on_location_diveSiteSelected()
 		Command::editDiveSite(newDs, false);
 }
 
-void MainTab::on_diveTripLocation_textEdited(const QString& text)
+void MainTab::on_diveTripLocation_editingFinished()
 {
-	if (currentTrip) {
-		free(displayedTrip.location);
-		displayedTrip.location = copy_qstring(text);
-		markChangedWidget(ui.diveTripLocation);
-	}
+	if (!currentTrip)
+		return;
+	Command::editTripLocation(currentTrip, ui.diveTripLocation->text());
 }
 
 void MainTab::on_suit_editingFinished()
@@ -1134,28 +1129,18 @@ void MainTab::on_suit_editingFinished()
 	Command::editSuit(ui.suit->text(), false);
 }
 
-void MainTab::on_notes_textChanged()
-{
-	if (editMode == IGNORE)
-		return;
-	if (currentTrip) {
-		if (same_string(displayedTrip.notes, qPrintable(ui.notes->toPlainText())))
-			return;
-		free(displayedTrip.notes);
-		displayedTrip.notes = copy_qstring(ui.notes->toPlainText());
-		markChangedWidget(ui.notes);
-	}
-}
-
 void MainTab::on_notes_editingFinished()
 {
-	if (currentTrip || !current_dive)
-		return; // Trip-note editing is done via on_notes_textChanged()
+	if (!currentTrip && !current_dive)
+		return;
 
 	QString notes = ui.notes->toHtml().indexOf("<div") != -1 ?
 		ui.notes->toHtml() : ui.notes->toPlainText();
 
-	Command::editNotes(notes, false);
+	if (currentTrip)
+		Command::editTripNotes(currentTrip, notes);
+	else
+		Command::editNotes(notes, false);
 }
 
 void MainTab::on_rating_valueChanged(int value)
