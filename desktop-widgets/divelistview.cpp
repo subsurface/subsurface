@@ -24,7 +24,6 @@
 #include "desktop-widgets/divelistview.h"
 #include "qt-models/divepicturemodel.h"
 #include "core/metrics.h"
-#include "core/subsurface-qt/DiveListNotifier.h"
 #include "desktop-widgets/simplewidgets.h"
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false),
@@ -45,6 +44,8 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 
 	// Update selection if all selected dives were hidden by filter
 	connect(MultiFilterSortModel::instance(), &MultiFilterSortModel::filterFinished, this, &DiveListView::filterFinished);
+
+	connect(&diveListNotifier, &DiveListNotifier::tripChanged, this, &DiveListView::tripChanged);
 
 	header()->setStretchLastSection(true);
 	header()->setSortIndicatorShown(true);
@@ -292,6 +293,23 @@ void DiveListView::restoreSelection()
 	}
 }
 
+// This is a bit ugly: we hook directly into the tripChanged signal to
+// select the trip if it was edited. This feels like a layering violation:
+// Shouldn't the core-layer call us?
+void DiveListView::tripChanged(dive_trip *trip, TripField)
+{
+	// First check if the trip is already selected (and only
+	// this trip, as only then is it displayed). Is so, then do nothing.
+	QList<dive_trip *> selected = selectedTrips();
+	if (selected.size() == 1 && selected[0] == trip)
+		return;
+
+	dontEmitDiveChangedSignal = true;
+	unselectDives();
+	dontEmitDiveChangedSignal = false;
+	selectTrip(trip);
+}
+
 void DiveListView::selectTrip(dive_trip_t *trip)
 {
 	if (!trip)
@@ -318,7 +336,7 @@ void DiveListView::selectTrip(dive_trip_t *trip)
 void DiveListView::clearTripSelection()
 {
 	// This marks the selection change as being internal - ie. we don't process it further.
-	// TODO: This should probably be sold differently.
+	// TODO: This should probably be done differently.
 	auto marker = diveListNotifier.enterCommand();
 
 	// we want to make sure no trips are selected

@@ -16,6 +16,7 @@
 #include <QLineEdit>
 #include <QNetworkAccessManager>
 #include "qt-models/divetripmodel.h"
+#include "core/subsurface-qt/DiveListNotifier.h"
 
 class DiveListView : public QTreeView {
 	Q_OBJECT
@@ -65,6 +66,7 @@ slots:
 	void diveSelectionChanged(const QVector<QModelIndex> &indexes, bool select);
 	void currentDiveChanged(QModelIndex index);
 	void filterFinished();
+	void tripChanged(dive_trip *trip, TripField);
 private:
 	bool mouseClickSelection;
 	QList<int> expandedRows;
