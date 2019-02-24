@@ -114,9 +114,7 @@ private:
 	bool lastSelectedDive;
 	int lastTabSelectedDive;
 	int lastTabSelectedDiveTrip;
-	void resetPallete();
 	void copyTagsToDisplayedDive();
-	void markChangedWidget(QWidget *w);
 	dive_trip_t *currentTrip;
 	QList<TabBase*> extraWidgets;
 };
