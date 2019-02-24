@@ -3,6 +3,7 @@
 #define DIVETRIPMODEL_H
 
 #include "core/dive.h"
+#include "core/subsurface-qt/DiveListNotifier.h"
 #include <QAbstractItemModel>
 
 // There are two different representations of the dive list:
@@ -112,6 +113,7 @@ public slots:
 	void divesTimeChanged(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
 	void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
 	void currentDiveChanged();
+	void tripChanged(dive_trip *trip, TripField);
 
 public:
 	DiveTripModelTree(QObject *parent = nullptr);

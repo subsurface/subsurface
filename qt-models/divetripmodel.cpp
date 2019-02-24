@@ -6,7 +6,6 @@
 #include "core/divelist.h"
 #include "core/qthelper.h"
 #include "core/subsurface-string.h"
-#include "core/subsurface-qt/DiveListNotifier.h"
 #include <QIcon>
 #include <QDebug>
 #include <memory>
@@ -560,6 +559,7 @@ DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelTree::divesSelected);
 	connect(&diveListNotifier, &DiveListNotifier::divesDeselected, this, &DiveTripModelTree::divesDeselected);
 	connect(&diveListNotifier, &DiveListNotifier::currentDiveChanged, this, &DiveTripModelTree::currentDiveChanged);
+	connect(&diveListNotifier, &DiveListNotifier::tripChanged, this, &DiveTripModelTree::tripChanged);
 
 	// Fill model
 	for (int i = 0; i < dive_table.nr ; ++i) {
@@ -911,6 +911,19 @@ void DiveTripModelTree::divesChanged(dive_trip *trip, const QVector<dive *> &div
 		// If necessary, move the trip
 		topLevelChanged(idx);
 	}
+}
+
+void DiveTripModelTree::tripChanged(dive_trip *trip, TripField)
+{
+	int idx = findTripIdx(trip);
+	if (idx < 0) {
+		// We don't know the trip - this shouldn't happen. We seem to have
+		// missed some signals!
+		qWarning() << "DiveTripModelTree::divesChanged(): unknown trip";
+		return;
+	}
+
+	dataChanged(createIndex(idx, 0, noParent), createIndex(idx, COLUMNS - 1, noParent));
 }
 
 static QVector<dive *> filterSelectedDives(const QVector<dive *> &dives)
