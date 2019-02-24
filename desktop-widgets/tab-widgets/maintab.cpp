@@ -750,8 +750,7 @@ static QVector<dive *> getSelectedDivesCurrentLast()
 
 void MainTab::acceptChanges()
 {
-	int i, addedId = -1;
-	struct dive *d;
+	int addedId = -1;
 	bool do_replot = false;
 
 	if (ui.location->hasFocus())
@@ -862,15 +861,6 @@ void MainTab::acceptChanges()
 			for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
 				cd->weightsystem[i] = displayed_dive.weightsystem[i];
 				cd->weightsystem[i].description = copy_string(displayed_dive.weightsystem[i].description);
-			}
-		}
-
-		// each dive that was selected might have had the temperatures in its active divecomputer changed
-		// so re-populate the temperatures - easiest way to do this is by calling fixup_dive
-		for_each_dive (i, d) {
-			if (d->selected) {
-				fixup_dive(d);
-				invalidate_dive_cache(d);
 			}
 		}
 	}
