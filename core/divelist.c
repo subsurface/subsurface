@@ -512,19 +512,6 @@ int get_divenr(const struct dive *dive)
 	return -1;
 }
 
-int get_divesite_idx(const struct dive_site *ds)
-{
-	int i;
-	const struct dive_site *d;
-	// tempting as it may be, don't die when called with dive=NULL
-	if (ds)
-		for_each_dive_site(i, d) {
-			if (d->uuid == ds->uuid) // don't compare pointers, we could be passing in a copy of the dive
-				return i;
-		}
-	return -1;
-}
-
 static struct gasmix air = { .o2.permille = O2_IN_AIR, .he.permille = 0 };
 
 /* take into account previous dives until there is a 48h gap between dives */

@@ -42,6 +42,7 @@ static inline struct dive_site *get_dive_site(int nr)
 #define for_each_dive_site(_i, _x) \
 	for ((_i) = 0; ((_x) = get_dive_site(_i)) != NULL; (_i)++)
 
+int get_divesite_idx(const struct dive_site *ds);
 struct dive_site *get_dive_site_by_uuid(uint32_t uuid);
 void dive_site_table_sort();
 struct dive_site *alloc_or_get_dive_site(uint32_t uuid);
