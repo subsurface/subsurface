@@ -378,7 +378,6 @@ extern void dive_add_picture(struct dive *d, struct picture *newpic);
 extern bool dive_remove_picture(struct dive *d, const char *filename);
 extern unsigned int dive_get_picture_count(struct dive *d);
 extern bool picture_check_valid_time(timestamp_t timestamp, int shift_time);
-extern void dive_set_geodata_from_picture(struct dive *d, struct picture *pic);
 extern void picture_free(struct picture *picture);
 
 extern bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc, int idx);
