@@ -70,7 +70,7 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 	if (!index.isValid())
 		return QVariant();
 
-	struct dive_site *ds = get_dive_site(index.row());
+	struct dive_site *ds = get_dive_site(index.row(), &dive_site_table);
 	return getDiveSiteData(ds, index.column(), role);
 }
 
@@ -95,9 +95,9 @@ bool LocationInformationModel::removeRows(int row, int, const QModelIndex&)
 		return false;
 
 	beginRemoveRows(QModelIndex(), row, row);
-	struct dive_site *ds = get_dive_site(row);
+	struct dive_site *ds = get_dive_site(row, &dive_site_table);
 	if (ds)
-		delete_dive_site(ds);
+		delete_dive_site(ds, &dive_site_table);
 	endRemoveRows();
 	return true;
 }

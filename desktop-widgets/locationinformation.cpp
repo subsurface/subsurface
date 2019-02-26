@@ -198,7 +198,7 @@ void LocationInformationWidget::acceptChanges()
 	if (!ui.diveSiteCoordinates->text().isEmpty())
 		parseGpsText(ui.diveSiteCoordinates->text(), diveSite->location);
 	if (dive_site_is_empty(diveSite)) {
-		LocationInformationModel::instance()->removeRow(get_divesite_idx(diveSite));
+		LocationInformationModel::instance()->removeRow(get_divesite_idx(diveSite, &dive_site_table));
 		displayed_dive.dive_site = nullptr;
 		diveSite = nullptr;
 	}
@@ -388,7 +388,7 @@ QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 	}
 
 	// The dive sites are -2 because of the first two items.
-	struct dive_site *ds = get_dive_site(index.row() - 2);
+	struct dive_site *ds = get_dive_site(index.row() - 2, &dive_site_table);
 	return LocationInformationModel::getDiveSiteData(ds, index.column(), role);
 }
 
@@ -522,7 +522,7 @@ static struct dive_site *get_dive_site_name_start_which_str(const QString &str)
 {
 	struct dive_site *ds;
 	int i;
-	for_each_dive_site (i, ds) {
+	for_each_dive_site (i, ds, &dive_site_table) {
 		QString dsName(ds->name);
 		if (dsName.toLower().startsWith(str.toLower())) {
 			return ds;

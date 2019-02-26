@@ -879,10 +879,10 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 	subdir = new_directory(repo, tree, &dirname);
 	free_buffer(&dirname);
 
-	purge_empty_dive_sites();
+	purge_empty_dive_sites(&dive_site_table);
 	for (int i = 0; i < dive_site_table.nr; i++) {
 		struct membuffer b = { 0 };
-		struct dive_site *ds = get_dive_site(i);
+		struct dive_site *ds = get_dive_site(i, &dive_site_table);
 		/* Only write used dive sites */
 		if (!is_dive_site_used(ds, false))
 			continue;
