@@ -676,7 +676,7 @@ struct dive_site *MainTab::updateDiveSite(struct dive_site *pickedDs, dive *d)
 
 	if (pickedDs == RECENTLY_ADDED_DIVESITE) {
 		QString name = ui.location->text().isEmpty() ? tr("New dive site") : ui.location->text();
-		pickedDs = create_dive_site(qPrintable(name), displayed_dive.when);
+		pickedDs = create_dive_site(qPrintable(name), displayed_dive.when, &dive_site_table);
 		createdNewDive = true;
 	}
 
@@ -874,7 +874,7 @@ void MainTab::acceptChanges()
 		if (oldDs && !is_dive_site_used(oldDs, false)) {
 			if (verbose)
 				qDebug() << "delete now unused dive site" << (oldDs->name ? oldDs->name : "without name");
-			delete_dive_site(oldDs);
+			delete_dive_site(oldDs, &dive_site_table);
 			MapWidget::instance()->reload();
 		}
 		// the code above can change the correct uuid for the displayed dive site - and the

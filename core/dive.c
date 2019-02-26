@@ -3958,14 +3958,14 @@ bool picture_check_valid_time(timestamp_t timestamp, int shift_time)
 	return false;
 }
 
-static void dive_set_geodata_from_picture(struct dive *dive, struct picture *picture)
+static void dive_set_geodata_from_picture(struct dive *dive, struct picture *picture, struct dive_site_table *table)
 {
 	struct dive_site *ds = dive->dive_site;
 	if (!dive_site_has_gps_location(ds) && has_location(&picture->location)) {
 		if (ds) {
 			ds->location = picture->location;
 		} else {
-			dive->dive_site = create_dive_site_with_gps("", &picture->location, dive->when);
+			dive->dive_site = create_dive_site_with_gps("", &picture->location, dive->when, table);
 			invalidate_dive_cache(dive);
 		}
 	}
@@ -3994,7 +3994,7 @@ void create_picture(const char *filename, int shift_time, bool match_all)
 	picture->location = metadata.location;
 
 	dive_add_picture(dive, picture);
-	dive_set_geodata_from_picture(dive, picture);
+	dive_set_geodata_from_picture(dive, picture, &dive_site_table);
 	invalidate_dive_cache(dive);
 }
 
