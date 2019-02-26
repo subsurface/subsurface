@@ -10,6 +10,16 @@
 
 struct dive_site_table dive_site_table;
 
+struct dive_site *get_dive_site_by_uuid(uint32_t uuid)
+{
+	int i;
+	struct dive_site *ds;
+	for_each_dive_site (i, ds)
+		if (ds->uuid == uuid)
+			return get_dive_site(i);
+	return NULL;
+}
+
 /* there could be multiple sites of the same name - return the first one */
 struct dive_site *get_dive_site_by_name(const char *name)
 {
