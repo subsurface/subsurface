@@ -157,9 +157,9 @@ static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 
 	parse_location(line, &location);
 	if (!ds) {
-		ds = get_dive_site_by_gps(&location);
+		ds = get_dive_site_by_gps(&location, &dive_site_table);
 		if (!ds)
-			dive->dive_site = create_dive_site_with_gps("", &location, dive->when);
+			dive->dive_site = create_dive_site_with_gps("", &location, dive->when, &dive_site_table);
 		else
 			dive->dive_site = ds;
 	} else {
@@ -181,9 +181,9 @@ static void parse_dive_location(char *line, struct membuffer *str, void *_dive)
 	struct dive *dive = _dive;
 	struct dive_site *ds = get_dive_site_for_dive(dive);
 	if (!ds) {
-		ds = get_dive_site_by_name(name);
+		ds = get_dive_site_by_name(name, &dive_site_table);
 		if (!ds)
-			dive->dive_site = create_dive_site(name, dive->when);
+			dive->dive_site = create_dive_site(name, dive->when, &dive_site_table);
 		else
 			dive->dive_site = ds;
 	} else {
@@ -212,7 +212,7 @@ static void parse_dive_notes(char *line, struct membuffer *str, void *_dive)
 { UNUSED(line); struct dive *dive = _dive; dive->notes = get_utf8(str); }
 
 static void parse_dive_divesiteid(char *line, struct membuffer *str, void *_dive)
-{ UNUSED(str); struct dive *dive = _dive; dive->dive_site = get_dive_site_by_uuid(get_hex(line)); }
+{ UNUSED(str); struct dive *dive = _dive; dive->dive_site = get_dive_site_by_uuid(get_hex(line), &dive_site_table); }
 
 /*
  * We can have multiple tags in the membuffer. They are separated by
@@ -1504,7 +1504,7 @@ static int parse_site_entry(git_repository *repo, const git_tree_entry *entry, c
 	if (*suffix == '\0')
 		return report_error("Dive site without uuid");
 	uint32_t uuid = strtoul(suffix, NULL, 16);
-	struct dive_site *ds = alloc_or_get_dive_site(uuid);
+	struct dive_site *ds = alloc_or_get_dive_site(uuid, &dive_site_table);
 	git_blob *blob = git_tree_entry_blob(repo, entry);
 	if (!blob)
 		return report_error("Unable to read dive site file");

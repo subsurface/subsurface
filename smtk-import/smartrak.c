@@ -373,12 +373,12 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, timestamp_t when, str
 		str = smtk_concat_str(str, ", ", "%s", col[1]->bind_ptr); // Locality
 	str =  smtk_concat_str(str, ", ", "%s", site);
 
-	ds = get_dive_site_by_name(str);
+	ds = get_dive_site_by_name(str, &dive_site_table);
 	if (!ds) {
 		if (!has_location(&loc))
-			ds = create_dive_site(str, when);
+			ds = create_dive_site(str, when, &dive_site_table);
 		else
-			ds = create_dive_site_with_gps(str, &loc, when);
+			ds = create_dive_site_with_gps(str, &loc, when, &dive_site_table);
 	}
 	*location = ds;
 	smtk_free(bound_values, table->num_cols);

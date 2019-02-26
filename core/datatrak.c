@@ -193,10 +193,10 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 	 * Locality and Dive points.
 	 */
 	snprintf(buffer, sizeof(buffer), "%s, %s", locality, dive_point);
-	ds = get_dive_site_by_name(buffer);
+	ds = get_dive_site_by_name(buffer, &dive_site_table);
 	dt_dive->dive_site = ds;
 	if (!dt_dive->dive_site)
-		dt_dive->dive_site = create_dive_site(buffer, dt_dive->when);
+		dt_dive->dive_site = create_dive_site(buffer, dt_dive->when, &dive_site_table);
 	free(locality);
 	locality = NULL;
 	free(dive_point);
