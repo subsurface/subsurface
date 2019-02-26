@@ -883,24 +883,9 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 	for (int i = 0; i < dive_site_table.nr; i++) {
 		struct membuffer b = { 0 };
 		struct dive_site *ds = get_dive_site(i);
-		if (!is_dive_site_used(ds, false)) {
-			/* Only write used dive sites */
+		/* Only write used dive sites */
+		if (!is_dive_site_used(ds, false))
 			continue;
-		} else if (ds->name &&
-			   (strncmp(ds->name, "Auto-created dive", 17) == 0 ||
-			    strncmp(ds->name, "New Dive", 8) == 0)) {
-			fprintf(stderr, "found an auto divesite %s\n", ds->name);
-			// these are the two default names for sites from
-			// the web service; if the site isn't used in any
-			// dive (really? you didn't rename it?), delete it
-			if (!is_dive_site_used(ds, false)) {
-				if (verbose)
-					fprintf(stderr, "Deleted unused auto-created dive site %s\n", ds->name);
-				delete_dive_site(ds);
-				i--; // since we just deleted that one
-				continue;
-			}
-		}
 		struct membuffer site_file_name = { 0 };
 		put_format(&site_file_name, "Site-%08x", ds->uuid);
 		show_utf8(&b, "name ", ds->name, "\n");
