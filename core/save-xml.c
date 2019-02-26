@@ -591,11 +591,11 @@ void save_dives_buffer(struct membuffer *b, const bool select_only, bool anonymi
 	put_format(b, "</settings>\n");
 
 	/* save the dive sites - to make the output consistent let's sort the table, first */
-	dive_site_table_sort();
-	purge_empty_dive_sites();
+	dive_site_table_sort(&dive_site_table);
+	purge_empty_dive_sites(&dive_site_table);
 	put_format(b, "<divesites>\n");
 	for (i = 0; i < dive_site_table.nr; i++) {
-		struct dive_site *ds = get_dive_site(i);
+		struct dive_site *ds = get_dive_site(i, &dive_site_table);
 		/* Only write used dive sites */
 		if (!is_dive_site_used(ds, false))
 			continue;
