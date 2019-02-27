@@ -754,8 +754,12 @@ RemoveDivesFromTrip::RemoveDivesFromTrip(const QVector<dive *> &divesToRemove)
 {
 	setText(tr("remove %n dive(s) from trip", "", divesToRemove.size()));
 	divesToMove.divesToMove.reserve(divesToRemove.size());
-	for (dive *d: divesToRemove)
+	for (dive *d: divesToRemove) {
+		// If a user manually removes a dive from a trip, don't autogroup this dive.
+		// The flag will not be reset on undo, but that should be acceptable.
+		d->notrip = true;
 		divesToMove.divesToMove.push_back( {d, nullptr} );
+	}
 }
 
 RemoveAutogenTrips::RemoveAutogenTrips()
