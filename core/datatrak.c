@@ -147,7 +147,7 @@ static dc_status_t dt_libdc_buffer(unsigned char *ptr, int prf_length, int dc_mo
  * Parses a mem buffer extracting its data and filling a subsurface's dive structure.
  * Returns a pointer to last position in buffer, or NULL on failure.
  */
-unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive)
+static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive)
 {
 	int  rc, profile_length, libdc_model;
 	char *tmp_notes_str = NULL;
