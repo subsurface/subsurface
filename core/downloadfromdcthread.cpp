@@ -60,6 +60,7 @@ static void updateRememberedDCs()
 
 
 DownloadThread::DownloadThread() : downloadTable({ 0 }),
+	diveSiteTable({ 0 }),
 	m_data(DCDeviceData::instance())
 {
 }
@@ -69,6 +70,7 @@ void DownloadThread::run()
 	auto internalData = m_data->internalData();
 	internalData->descriptor = descriptorLookup[m_data->vendor() + m_data->product()];
 	internalData->download_table = &downloadTable;
+	internalData->sites = &diveSiteTable;
 	internalData->btname = strdup(m_data->devBluetoothName().toUtf8());
 	if (!internalData->descriptor) {
 		qDebug() << "No download possible when DC type is unknown";
@@ -81,6 +83,7 @@ void DownloadThread::run()
 #endif
 	qDebug() << "Starting download from " << (internalData->bluetooth_mode ? "BT" : internalData->devname);
 	clear_table(&downloadTable);
+	clear_dive_site_table(&diveSiteTable);
 
 	Q_ASSERT(internalData->download_table != nullptr);
 	const char *errorText;

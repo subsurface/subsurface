@@ -551,7 +551,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 
 	showProgressBar();
 	QByteArray fileNamePtr = QFile::encodeName(filename);
-	if (!parse_file(fileNamePtr.data(), &dive_table, &trip_table))
+	if (!parse_file(fileNamePtr.data(), &dive_table, &trip_table, &dive_site_table))
 		setCurrentFile(fileNamePtr.data());
 	process_loaded_dives();
 	Command::clear();
@@ -1651,7 +1651,7 @@ void MainWindow::importFiles(const QStringList fileNames)
 
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		parse_file(fileNamePtr.data(), &table, &trips);
+		parse_file(fileNamePtr.data(), &table, &trips, &dive_site_table);
 	}
 	QString source = fileNames.size() == 1 ? fileNames[0] : tr("multiple files");
 	Command::importDives(&table, &trips, IMPORT_MERGE_ALL_TRIPS, source);
@@ -1668,7 +1668,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	showProgressBar();
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		if (!parse_file(fileNamePtr.data(), &dive_table, &trip_table)) {
+		if (!parse_file(fileNamePtr.data(), &dive_table, &trip_table, &dive_site_table)) {
 			setCurrentFile(fileNamePtr.data());
 			addRecentFile(fileNamePtr, false);
 		}
