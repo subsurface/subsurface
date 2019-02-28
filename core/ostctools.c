@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "dive.h"
+#include "ssrf.h"
 #include "subsurface-string.h"
 #include "gettext.h"
 #include "divelist.h"
@@ -35,8 +36,10 @@ static int ostc_prepare_data(int data_model, dc_family_t dc_fam, device_data_t *
  * each file. So it's not necessary to iterate once and again on a parsing
  * function. Actually there's only one kind of archive for every DC model.
  */
-void ostctools_import(const char *file, struct dive_table *divetable)
+void ostctools_import(const char *file, struct dive_table *divetable, struct trip_table *trips, struct dive_site_table *sites)
 {
+	UNUSED(trips);
+	UNUSED(sites);
 	FILE *archive;
 	device_data_t *devdata = calloc(1, sizeof(device_data_t));
 	dc_family_t dc_fam;

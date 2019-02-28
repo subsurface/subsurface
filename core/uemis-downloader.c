@@ -993,7 +993,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 		} else if (!is_log && dive && !strcmp(tag, "divespot_id")) {
 			int divespot_id = atoi(val);
 			if (divespot_id != -1) {
-				struct dive_site *ds = create_dive_site("from Uemis", dive->when, &dive_site_table);
+				struct dive_site *ds = create_dive_site("from Uemis", dive->when, devdata->sites);
 				dive->dive_site = ds;
 				uemis_mark_divelocation(dive->dc.diveid, divespot_id, ds);
 			}
@@ -1174,7 +1174,7 @@ static bool load_uemis_divespot(const char *mountpath, int divespot_id)
 	return false;
 }
 
-static void get_uemis_divespot(const char *mountpath, int divespot_id, struct dive *dive)
+static void get_uemis_divespot(device_data_t *devdata, const char *mountpath, int divespot_id, struct dive *dive)
 {
 	struct dive_site *nds = dive->dive_site;
 	
@@ -1191,11 +1191,11 @@ static void get_uemis_divespot(const char *mountpath, int divespot_id, struct di
 			 * we search all existing divesites if we have one with the same name already. The function
 			 * returns the first found which is luckily not the newly created.
 			 */
-			ods = get_dive_site_by_name(nds->name, &dive_site_table);
+			ods = get_dive_site_by_name(nds->name, devdata->sites);
 			if (ods) {
 				/* if the uuid's are the same, the new site is a duplicate and can be deleted */
 				if (nds->uuid != ods->uuid) {
-					delete_dive_site(nds, &dive_site_table);
+					delete_dive_site(nds, devdata->sites);
 					dive->dive_site = ods;
 				}
 			}
@@ -1204,7 +1204,7 @@ static void get_uemis_divespot(const char *mountpath, int divespot_id, struct di
 			/* if we can't load the dive site details, delete the site we
 			* created in process_raw_buffer
 			*/
-			delete_dive_site(dive->dive_site, &dive_site_table);
+			delete_dive_site(dive->dive_site, devdata->sites);
 		}
 	}
 }
@@ -1257,7 +1257,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 #endif
 						int divespot_id = uemis_get_divespot_id_by_diveid(dive->dc.diveid);
 						if (divespot_id >= 0)
-							get_uemis_divespot(mountpath, divespot_id, dive);
+							get_uemis_divespot(data, mountpath, divespot_id, dive);
 
 					} else {
 						/* in this case we found a deleted file, so let's increment */

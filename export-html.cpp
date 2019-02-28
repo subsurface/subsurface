@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 		qDebug() << "need --source and --output";
 		exit(1);
 	}
-	int ret = parse_file(qPrintable(source), &dive_table, &trip_table);
+	int ret = parse_file(qPrintable(source), &dive_table, &trip_table, &dive_site_table);
 	if (ret) {
 		fprintf(stderr, "parse_file returned %d\n", ret);
 		exit(1);

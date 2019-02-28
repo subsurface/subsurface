@@ -571,7 +571,7 @@ static void set_dc_serial(struct divecomputer *dc, const char *serial)
 
 extern void parse_location(char *, location_t *);
 
-static void parse_string_field(struct dive *dive, dc_field_string_t *str)
+static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_field_string_t *str)
 {
 	// Our dive ID is the string hash of the "Dive ID" string
 	if (!strcmp(str->desc, "Dive ID")) {
@@ -596,7 +596,7 @@ static void parse_string_field(struct dive *dive, dc_field_string_t *str)
 		parse_location(line, &location);
 
 		if (location.lat.udeg && location.lon.udeg)
-			dive->dive_site = create_dive_site_with_gps(str->value, &location, time(NULL), &dive_site_table);
+			dive->dive_site = create_dive_site_with_gps(str->value, &location, time(NULL), devdata->sites);
 	}
 }
 #endif
@@ -712,7 +712,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 			break;
 		if (!str.desc || !str.value)
 			break;
-		parse_string_field(dive, &str);
+		parse_string_field(devdata, dive, &str);
 	}
 #endif
 
