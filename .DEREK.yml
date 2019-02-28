@@ -15,5 +15,4 @@ maintainers:
 features:
  - dco_check
  - comments
- - labels
- - milestone
+ - pr_description_required
