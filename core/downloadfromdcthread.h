@@ -70,6 +70,7 @@ public:
 
 private:
 	struct dive_table downloadTable;
+	struct dive_site_table diveSiteTable;
 	DCDeviceData *m_data;
 };
 

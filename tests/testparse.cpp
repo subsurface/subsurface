@@ -107,7 +107,7 @@ int TestParse::parseCSV(int units, std::string file)
 	params[pnr++] = intdup(-1);
 	params[pnr++] = NULL;
 
-	return parse_manual_file(file.c_str(), params, pnr - 1, &dive_table, &trip_table);
+	return parse_manual_file(file.c_str(), params, pnr - 1, &dive_table, &trip_table, &dive_site_table);
 }
 
 int TestParse::parseDivingLog()
@@ -118,7 +118,7 @@ int TestParse::parseDivingLog()
 
 	int ret = sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDivingLog4.1.1.sql", &_sqlite3_handle);
 	if (ret == 0)
-		ret = parse_divinglog_buffer(_sqlite3_handle, 0, 0, 0, &dive_table, &trip_table);
+		ret = parse_divinglog_buffer(_sqlite3_handle, 0, 0, 0, &dive_table, &trip_table, &dive_site_table);
 	else
 		fprintf(stderr, "Can't open sqlite3 db: " SUBSURFACE_TEST_DATA "/dives/TestDivingLog4.1.1.sql");
 
@@ -128,13 +128,13 @@ int TestParse::parseDivingLog()
 int TestParse::parseV2NoQuestion()
 {
 	// parsing of a V2 file should work
-	return parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table, &trip_table);
+	return parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table, &trip_table, &dive_site_table);
 }
 
 int TestParse::parseV3()
 {
 	// parsing of a V3 files should succeed
-	return parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml", &dive_table, &trip_table);
+	return parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml", &dive_table, &trip_table, &dive_site_table);
 }
 
 void TestParse::testParse()
@@ -159,7 +159,7 @@ void TestParse::testParse()
 void TestParse::testParseDM4()
 {
 	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDiveDM4.db", &_sqlite3_handle), 0);
-	QCOMPARE(parse_dm4_buffer(_sqlite3_handle, 0, 0, 0, &dive_table, &trip_table), 0);
+	QCOMPARE(parse_dm4_buffer(_sqlite3_handle, 0, 0, 0, &dive_table, &trip_table, &dive_site_table), 0);
 
 	QCOMPARE(save_dives("./testdm4out.ssrf"), 0);
 	FILE_COMPARE("./testdm4out.ssrf",
@@ -169,7 +169,7 @@ void TestParse::testParseDM4()
 void TestParse::testParseDM5()
 {
 	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDiveDM5.db", &_sqlite3_handle), 0);
-	QCOMPARE(parse_dm5_buffer(_sqlite3_handle, 0, 0, 0, &dive_table, &trip_table), 0);
+	QCOMPARE(parse_dm5_buffer(_sqlite3_handle, 0, 0, 0, &dive_table, &trip_table, &dive_site_table), 0);
 
 	QCOMPARE(save_dives("./testdm5out.ssrf"), 0);
 	FILE_COMPARE("./testdm5out.ssrf",
@@ -216,7 +216,7 @@ void TestParse::testParseHUDC()
 	params[pnr++] = NULL;
 
 	QCOMPARE(parse_csv_file(SUBSURFACE_TEST_DATA "/dives/TestDiveSeabearHUDC.csv",
-				params, pnr - 1, "csv", &dive_table, &trip_table),
+				params, pnr - 1, "csv", &dive_table, &trip_table, &dive_site_table),
 		 0);
 
 	QCOMPARE(dive_table.nr, 1);
@@ -261,7 +261,7 @@ void TestParse::testParseNewFormat()
 							       "/dives/")
 						   .append(files.at(i))
 						   .toLatin1()
-						   .data(), &dive_table, &trip_table),
+						   .data(), &dive_table, &trip_table, &dive_site_table),
 			 0);
 		QCOMPARE(dive_table.nr, i + 1);
 	}
@@ -280,7 +280,7 @@ void TestParse::testParseDLD()
 	QString filename = SUBSURFACE_TEST_DATA "/dives/TestDiveDivelogsDE.DLD";
 
 	QVERIFY(readfile(filename.toLatin1().data(), &mem) > 0);
-	QVERIFY(try_to_open_zip(filename.toLatin1().data(), &dive_table, &trip_table) > 0);
+	QVERIFY(try_to_open_zip(filename.toLatin1().data(), &dive_table, &trip_table, &dive_site_table) > 0);
 
 	fprintf(stderr, "number of dives from DLD: %d \n", dive_table.nr);
 
@@ -300,8 +300,8 @@ void TestParse::testParseMerge()
 	/*
 	 * check that we correctly merge mixed cylinder dives
 	 */
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/ostc.xml", &dive_table, &trip_table), 0);
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/vyper.xml", &dive_table, &trip_table), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/ostc.xml", &dive_table, &trip_table, &dive_site_table), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/vyper.xml", &dive_table, &trip_table, &dive_site_table), 0);
 	QCOMPARE(save_dives("./testmerge.ssrf"), 0);
 	FILE_COMPARE("./testmerge.ssrf",
 		     SUBSURFACE_TEST_DATA "/dives/mergedVyperOstc.xml");
@@ -367,12 +367,12 @@ int TestParse::parseCSVmanual(int units, std::string file)
 	params[pnr++] = intdup(units);
 	params[pnr++] = NULL;
 
-	return parse_manual_file(file.c_str(), params, pnr - 1, &dive_table, &trip_table);
+	return parse_manual_file(file.c_str(), params, pnr - 1, &dive_table, &trip_table, &dive_site_table);
 }
 
 void TestParse::exportCSVDiveDetails()
 {
-	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table, &trip_table);
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table, &trip_table, &dive_site_table);
 
 	export_dives_xslt("testcsvexportmanual.csv", 0, 0, "xml2manualcsv.xslt", false);
 	export_dives_xslt("testcsvexportmanualimperial.csv", 0, 1, "xml2manualcsv.xslt", false);
@@ -416,12 +416,12 @@ int TestParse::parseCSVprofile(int units, std::string file)
 	params[pnr++] = intdup(units);
 	params[pnr++] = NULL;
 
-	return parse_csv_file(file.c_str(), params, pnr - 1, "csv", &dive_table, &trip_table);
+	return parse_csv_file(file.c_str(), params, pnr - 1, "csv", &dive_table, &trip_table, &dive_site_table);
 }
 
 void TestParse::exportCSVDiveProfile()
 {
-	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table, &trip_table);
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table, &trip_table, &dive_site_table);
 
 	export_dives_xslt("testcsvexportprofile.csv", 0, 0, "xml2csv.xslt", false);
 	export_dives_xslt("testcsvexportprofileimperial.csv", 0, 1, "xml2csv.xslt", false);
@@ -439,13 +439,13 @@ void TestParse::exportCSVDiveProfile()
 
 void TestParse::exportUDDF()
 {
-	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table, &trip_table);
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table, &trip_table, &dive_site_table);
 
 	export_dives_xslt("testuddfexport.uddf", 0, 1, "uddf-export.xslt", false);
 
 	clear_dive_file_data();
 
-	parse_file("testuddfexport.uddf", &dive_table, &trip_table);
+	parse_file("testuddfexport.uddf", &dive_table, &trip_table, &dive_site_table);
 	export_dives_xslt("testuddfexport2.uddf", 0, 1, "uddf-export.xslt", false);
 
 	FILE_COMPARE("testuddfexport.uddf",
@@ -510,7 +510,7 @@ void TestParse::parseDL7()
 
 	clear_dive_file_data();
 	QCOMPARE(parse_csv_file(SUBSURFACE_TEST_DATA "/dives/DL7.zxu",
-				params, pnr - 1, "DL7", &dive_table, &trip_table),
+				params, pnr - 1, "DL7", &dive_table, &trip_table, &dive_site_table),
 		 0);
 	QCOMPARE(dive_table.nr, 3);
 

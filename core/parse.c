@@ -225,7 +225,7 @@ void dive_site_end(struct parser_state *state)
 		state->cur_dive_site->taxonomy.category = NULL;
 	}
 	if (state->cur_dive_site->uuid) {
-		struct dive_site *ds = alloc_or_get_dive_site(state->cur_dive_site->uuid, &dive_site_table);
+		struct dive_site *ds = alloc_or_get_dive_site(state->cur_dive_site->uuid, state->sites);
 		merge_dive_site(ds, state->cur_dive_site);
 
 		if (verbose > 3)
@@ -419,7 +419,7 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 		struct dive_site *ds = dive->dive_site;
 		if (!ds) {
 			// if the dive doesn't have a uuid, check if there's already a dive site by this name
-			ds = get_dive_site_by_name(buffer, &dive_site_table);
+			ds = get_dive_site_by_name(buffer, state->sites);
 		}
 		if (ds) {
 			// we have a uuid, let's hope there isn't a different name
@@ -430,11 +430,11 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 				// but wait, we could have gotten this one based on GPS coords and could
 				// have had two different names for the same site... so let's search the other
 				// way around
-				struct dive_site *exact_match = get_dive_site_by_gps_and_name(buffer, &ds->location, &dive_site_table);
+				struct dive_site *exact_match = get_dive_site_by_gps_and_name(buffer, &ds->location, state->sites);
 				if (exact_match) {
 					dive->dive_site = exact_match;
 				} else {
-					struct dive_site *newds = create_dive_site(buffer, dive->when, &dive_site_table);
+					struct dive_site *newds = create_dive_site(buffer, dive->when, state->sites);
 					dive->dive_site = newds;
 					if (has_location(&state->cur_location)) {
 						// we started this uuid with GPS data, so lets use those
@@ -449,7 +449,7 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 				dive->dive_site = ds;
 			}
 		} else {
-			dive->dive_site = create_dive_site(buffer, dive->when, &dive_site_table);
+			dive->dive_site = create_dive_site(buffer, dive->when, state->sites);
 		}
 	}
 	free(to_free);
