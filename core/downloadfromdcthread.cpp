@@ -257,7 +257,6 @@ void show_computer_list()
 DCDeviceData::DCDeviceData()
 {
 	memset(&data, 0, sizeof(data));
-	data.trip = nullptr;
 	data.download_table = nullptr;
 	data.diveid = 0;
 	data.deviceid = 0;
