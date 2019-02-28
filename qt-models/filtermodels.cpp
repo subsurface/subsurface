@@ -74,6 +74,27 @@ namespace {
 	{
 		return true;
 	}
+
+	bool hasSuits(const QStringList &suits, const struct dive *d, FilterData::Mode mode)
+	{
+		if (suits.isEmpty())
+			return true;
+		QStringList diveSuits;
+		if (d->suit)
+			diveSuits.push_back(QString(d->suit));
+		return check(suits, diveSuits, mode);
+	}
+
+	bool hasNotes(const QStringList &dnotes, const struct dive *d, FilterData::Mode mode)
+	{
+		if (dnotes.isEmpty())
+			return true;
+		QStringList diveNotes;
+		if (d->notes)
+			diveNotes.push_back(QString(d->notes));
+		return check(dnotes, diveNotes, mode);
+	}
+
 }
 
 MultiFilterSortModel *MultiFilterSortModel::instance()
@@ -147,6 +168,14 @@ bool MultiFilterSortModel::showDive(const struct dive *d) const
 
 	// Location
 	if (!hasLocations(filterData.location, d, filterData.locationMode))
+		return false;
+
+	// Suit
+	if (!hasSuits(filterData.suit, d, filterData.suitMode))
+		return false;
+
+	// Notes
+	if (!hasNotes(filterData.dnotes, d, filterData.dnotesMode))
 		return false;
 
 	if (!hasEquipment(filterData.equipment, d, filterData.equipmentMode))

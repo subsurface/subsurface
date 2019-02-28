@@ -41,10 +41,14 @@ struct FilterData {
 	QStringList tags;
 	QStringList people;
 	QStringList location;
+	QStringList suit;
+	QStringList dnotes;
 	QStringList equipment;
 	Mode tagsMode = Mode::ALL_OF;
 	Mode peopleMode = Mode::ALL_OF;
 	Mode locationMode = Mode::ANY_OF;
+	Mode dnotesMode = Mode::ALL_OF;
+	Mode suitMode = Mode::ANY_OF;
 	Mode equipmentMode = Mode::ALL_OF;
 	bool logged = true;
 	bool planned = true;
