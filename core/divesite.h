@@ -64,6 +64,7 @@ unsigned int get_distance(const location_t *loc1, const location_t *loc2);
 struct dive_site *find_or_create_dive_site_with_name(const char *name, timestamp_t divetime, struct dive_site_table *table);
 void merge_dive_sites(struct dive_site *ref, struct dive_site *dive_sites[], int count);
 void purge_empty_dive_sites(struct dive_site_table *table);
+void clear_dive_site_table(struct dive_site_table *table);
 
 #ifdef __cplusplus
 }

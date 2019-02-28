@@ -1365,7 +1365,7 @@ static void insert_dive(struct dive_table *table, struct dive *d)
 }
 
 /*
- * Clear a dive_table and a trip_table. Think about generating these with macros.
+ * Clear a dive_table, trip_table and dive_site_table. Think about generating these with macros.
  */
 void clear_table(struct dive_table *table)
 {
@@ -1378,6 +1378,13 @@ static void clear_trip_table(struct trip_table *table)
 {
 	for (int i = 0; i < table->nr; i++)
 		free_trip(table->trips[i]);
+	table->nr = 0;
+}
+
+void clear_dive_site_table(struct dive_site_table *table)
+{
+	for (int i = 0; i < table->nr; i++)
+		free_dive_site(table->dive_sites[i]);
 	table->nr = 0;
 }
 

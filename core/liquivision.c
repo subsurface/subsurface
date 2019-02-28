@@ -132,7 +132,7 @@ static int handle_event_ver3(int code, const unsigned char *ps, unsigned int ps_
 	return skip;
 }
 
-static void parse_dives (int log_version, const unsigned char *buf, unsigned int buf_size, struct dive_table *table)
+static void parse_dives(int log_version, const unsigned char *buf, unsigned int buf_size, struct dive_table *table, struct dive_site_table *sites)
 {
 	unsigned int ptr = 0;
 	unsigned char model;
@@ -227,7 +227,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 		// now that we have the dive time we can store the divesite
 		// (we need the dive time to create deterministic uuids)
 		if (found_divesite) {
-			dive->dive_site = find_or_create_dive_site_with_name(location, dive->when, &dive_site_table);
+			dive->dive_site = find_or_create_dive_site_with_name(location, dive->when, sites);
 			free(location);
 		}
 		//unsigned int end_time = array_uint32_le(buf + ptr);
@@ -441,7 +441,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 	free(dive);
 }
 
-int try_to_open_liquivision(const char *filename, struct memblock *mem, struct dive_table *table, struct trip_table *trips)
+int try_to_open_liquivision(const char *filename, struct memblock *mem, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
 {
 	UNUSED(filename);
 	UNUSED(trips);
@@ -466,7 +466,7 @@ int try_to_open_liquivision(const char *filename, struct memblock *mem, struct d
 	}
 	ptr += 4;
 
-	parse_dives(log_version, buf + ptr, buf_size - ptr, table);
+	parse_dives(log_version, buf + ptr, buf_size - ptr, table, sites);
 
 	return 1;
 }
