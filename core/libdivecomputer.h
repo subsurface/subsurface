@@ -38,7 +38,6 @@ typedef struct dc_user_device_t
 	dc_device_t *device;
 	dc_context_t *context;
 	dc_iostream_t *iostream;
-	struct dive_trip *trip;
 	int preexisting;
 	bool force_download;
 	bool libdc_log;
