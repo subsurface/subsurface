@@ -26,6 +26,7 @@
 #include "qt-models/messagehandlermodel.h"
 #include "core/divelist.h"
 #include "core/device.h"
+#include "core/file.h"
 #include "core/qthelper.h"
 #include "core/qt-gui.h"
 #include "core/git-access.h"
