@@ -596,7 +596,7 @@ static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_fie
 		parse_location(line, &location);
 
 		if (location.lat.udeg && location.lon.udeg)
-			dive->dive_site = create_dive_site_with_gps(str->value, &location, time(NULL), devdata->sites);
+			dive->dive_site = create_dive_site_with_gps(str->value, &location, devdata->sites);
 	}
 }
 #endif
