@@ -20,6 +20,7 @@
 #include "core/color.h"
 #include "core/divecomputer.h"
 #include "core/divesitehelpers.h"
+#include "core/file.h"
 #include "core/gettextfromc.h"
 #include "core/git-access.h"
 #include "core/import-csv.h"

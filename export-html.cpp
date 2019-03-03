@@ -8,6 +8,8 @@
 
 #include "core/qt-gui.h"
 #include "core/qthelper.h"
+#include "core/file.h"
+#include "core/divesite.h"
 #include "core/save-html.h"
 #include <stdio.h>
 #include "git2.h"

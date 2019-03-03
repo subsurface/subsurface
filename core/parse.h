@@ -4,6 +4,8 @@
 
 #define MAX_EVENT_NAME 128
 
+#include <sqlite3.h>
+
 typedef union {
 	struct event event;
 	char allocation[sizeof(struct event) + MAX_EVENT_NAME];
@@ -68,6 +70,9 @@ struct parser_state {
 
 #define cur_event event_allocation.event
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 void init_parser_state(struct parser_state *state);
 void free_parser_state(struct parser_state *state);
 
@@ -112,5 +117,16 @@ void utf8_string(char *buffer, void *_res);
 
 void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state);
 int atoi_n(char *ptr, unsigned int len);
+
+int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
+int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
+int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
+int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
+int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
+int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
+int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
+#ifdef __cplusplus
+}
+#endif
 
 #endif
