@@ -14,10 +14,10 @@ int get_divesite_idx(const struct dive_site *ds, struct dive_site_table *ds_tabl
 {
 	int i;
 	const struct dive_site *d;
-	// tempting as it may be, don't die when called with dive=NULL
+	// tempting as it may be, don't die when called with ds=NULL
 	if (ds)
 		for_each_dive_site(i, d, ds_table) {
-			if (d->uuid == ds->uuid) // don't compare pointers, we could be passing in a copy of the dive
+			if (d == ds)
 				return i;
 		}
 	return -1;
