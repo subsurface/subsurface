@@ -35,11 +35,11 @@ set(SUBSURFACE_MOBILE_MODELS_LIB_SRCS
 	gpslistmodel.cpp
 )
 
-if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	add_library(subsurface_models_desktop STATIC ${SUBSURFACE_GENERIC_MODELS_LIB_SRCS}
 		${SUBSURFACE_DESKTOP_MODELS_LIB_SRCS})
 	target_link_libraries(subsurface_models_desktop ${QT_LIBRARIES})
-elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
+elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	add_library(subsurface_models_mobile STATIC ${SUBSURFACE_GENERIC_MODELS_LIB_SRCS}
 		${SUBSURFACE_MOBILE_MODELS_LIB_SRCS})
 	target_link_libraries(subsurface_models_mobile ${QT_LIBRARIES})

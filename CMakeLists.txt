@@ -52,7 +52,7 @@ SET_PROPERTY(CACHE SUBSURFACE_TARGET_EXECUTABLE PROPERTY STRINGS ${SUBSURFACE_AC
 
 #verify if Platform is correct and warn on wxit with example.
 list (FIND SUBSURFACE_ACCEPTED_EXECUTABLES ${SUBSURFACE_TARGET_EXECUTABLE}  _index)
-if (${_index} EQUAL -1)
+if (_index EQUAL -1)
   message(FATAL_ERROR "Requested platform not supported, please use one of the following:
     ${SUBSURFACE_ACCEPTED_EXECUTABLES}
 
@@ -68,21 +68,21 @@ add_definitions(-DSUBSURFACE_SOURCE="${SUBSURFACE_SOURCE}")
 #
 # TODO: This Compilation part should go on the Target specific CMake.
 #
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 ")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override")
-	if((${CMAKE_SYSTEM_NAME} MATCHES "Darwin") AND
-	   ((${CMAKE_SYSTEM_VERSION} MATCHES "11.4.") OR
-	    (${CMAKE_OSX_DEPLOYMENT_TARGET} MATCHES "10.7") OR
-	    (${CMAKE_OSX_DEPLOYMENT_TARGET} MATCHES "10.8")))
+	if ((CMAKE_SYSTEM_NAME MATCHES "Darwin") AND
+	   ((CMAKE_SYSTEM_VERSION MATCHES "11.4.") OR
+	    (CMAKE_OSX_DEPLOYMENT_TARGET MATCHES "10.7") OR
+	    (CMAKE_OSX_DEPLOYMENT_TARGET MATCHES "10.8")))
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -stdlib=libc++")
 	else()
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 	endif()
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 ")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wno-inconsistent-missing-override")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
@@ -94,9 +94,9 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wfloat-conversion")
 	endif()
 
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
   # using Intel C++
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # using Visual Studio C++
 endif()
 
@@ -122,7 +122,7 @@ include(pkgconfig_helper)
 # module file.
 include(HandleFindGit2)
 include(HandleFindLibDiveComputer)
-if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
         include(HandleFindGrantlee)
 	include(HandleUserManual)
 endif()
@@ -151,7 +151,7 @@ include_directories(.
 # Project Target specific configuration should go here,
 # if the configuration is too big or would disrupt the normal code flux,
 # move it somewhere else (another file) and include it.
-if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 		set(SUBSURFACE_TARGET Subsurface)
 	else()
@@ -160,7 +160,7 @@ if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
 	list(APPEND QT_EXTRA_COMPONENTS QuickWidgets)
 	list(APPEND QT_EXTRA_LIBRARIES Qt5::QuickWidgets)
 	remove_definitions(-DSUBSURFACE_MOBILE)
-elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
+elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 		set(SUBSURFACE_TARGET Subsurface-mobile)
 	else()
@@ -204,7 +204,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${HID_LIB})
         set(EXTRA_LIBS ${APP_SERVICES_LIBRARY})
         set(ICON_FILE ${CMAKE_SOURCE_DIR}/packaging/macosx/Subsurface.icns)
-	if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
+	if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		set(MACOSX_BUNDLE_INFO_STRING "Subsurface-mobile")
 		set(MACOSX_BUNDLE_BUNDLE_NAME "Subsurface-mobile")
 	else()
@@ -242,7 +242,7 @@ set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test Qt5::QuickTest)
 
 #disable bluetooth if Qt version is ancient.
 if (BTSUPPORT AND Qt5Widgets_VERSION VERSION_LESS 5.4.0)
-	if (${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
+	if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		message(FATAL_ERROR "Subsurface-mobile requires BT and Qt version ${Qt5Widgets_VERSION} is too old for that")
 	endif()
 	set(BTSUPPORT OFF)
@@ -253,11 +253,11 @@ endif()
 # Windows Qt doesn't support BLE at all
 # the rest of them need at least 5.6 to be reasonable but really, you want 5.9.1
 if (BTSUPPORT AND NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	if ("${Qt5Core_VERSION}" VERSION_LESS 5.6.0)
+	if (Qt5Core_VERSION VERSION_LESS 5.6.0)
 		message(STATUS "Turning off BLE support as Qt version ${Qt5Core_VERSION} is insufficient for that")
 	else()
 		set(BLESUPPORT ON)
-		if ("${Qt5Core_VERSION}" VERSION_LESS 5.9.1)
+		if (Qt5Core_VERSION VERSION_LESS 5.9.1)
 			message(STATUS "BLE support has been enabled, but for best results you really want Qt 5.9.1")
 		endif()
 	endif()
@@ -281,12 +281,12 @@ add_subdirectory(core)
 add_subdirectory(qt-models)
 add_subdirectory(profile-widget)
 
-if (${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	add_subdirectory(desktop-widgets)
 endif()
 
 # create the executables
-if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	set(MOBILE_SRC
 		mobile-widgets/qmlmanager.cpp
 		mobile-widgets/qmlprefs.cpp
@@ -328,7 +328,7 @@ if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
-elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
+elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	set(SUBSURFACE_APP
 		subsurface-desktop-main.cpp
 		subsurface-helper.cpp
@@ -397,10 +397,8 @@ if(NOT DEFINED QT_TRANSLATION_DIR OR QT_TRANSLATION_DIR STREQUAL "")
 endif()
 set(QTTRANSLATIONS "")
 foreach(QTTRANSLATION ${QTTRANSLATIONS_BASE})
-	if(NOT ${QTTRANSLATION} STREQUAL "")
-		if(EXISTS ${QT_TRANSLATION_DIR}/${QTTRANSLATION})
-			set(QTTRANSLATIONS ${QTTRANSLATIONS} ${QT_TRANSLATION_DIR}/${QTTRANSLATION})
-		endif()
+	if (QTTRANSLATION AND EXISTS ${QT_TRANSLATION_DIR}/${QTTRANSLATION})
+		set(QTTRANSLATIONS ${QTTRANSLATIONS} ${QT_TRANSLATION_DIR}/${QTTRANSLATION})
 	endif()
 endforeach()
 
@@ -435,7 +433,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	install(FILES ${CMAKE_SOURCE_DIR}/gpl-2.0.txt DESTINATION ${RESOURCEDIR})
 	install(CODE "execute_process(COMMAND mkdir -p ${RESOURCEDIR}/qml)")
 	# this is a HACK
-	if((${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable") AND (NOT NO_PRINTING))
+	if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable" AND NOT NO_PRINTING)
 		install(DIRECTORY ${Grantlee5_DIR}/../../grantlee DESTINATION ${PLUGINDIR})
 	endif()
 	install(CODE "execute_process(COMMAND mkdir -p ${PLUGINDIR}/geoservices)")
@@ -452,7 +450,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 		# and with Qt 5.11 we need another library that isn't copied by macdeployqt
 		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/lib/QtPositioningQuick.framework ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks)")
 	endif()
-	if((${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable"))
+	if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtQuick ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
 		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtGraphicalEffects ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
 		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtQml ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
@@ -525,7 +523,7 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	# in the filesystem below our install-root
 	# different Linux flavors put the plugin in different directories
 	file(GLOB_RECURSE GOOGLEMAPS ${CMAKE_SOURCE_DIR}/../install-root/libqtgeoservices_googlemaps.so)
-	if ("${GOOGLEMAPS}" STREQUAL "")
+	if (NOT GOOGLEMAPS)
 		message(STATUS "Cannot find libqtgeoservices_googlemaps.so")
 	else()
 		add_custom_target(link_googlemaps_plugin ALL COMMAND
