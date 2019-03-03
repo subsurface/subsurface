@@ -13,7 +13,6 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "divesite.h"
-#include <libxml/tree.h>
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
 
