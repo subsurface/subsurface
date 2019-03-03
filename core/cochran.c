@@ -16,6 +16,7 @@
 #include "dive.h"
 #include "file.h"
 #include "units.h"
+#include "sha1.h"
 #include "gettext.h"
 #include "cochran.h"
 #include "divelist.h"
