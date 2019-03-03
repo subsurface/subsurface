@@ -197,7 +197,7 @@ static int cobalt_dive(void *param, int columns, char **data, char **column)
 			return 1;
 		}
 		sprintf(tmp, "%s / %s", location, location_site);
-		state->cur_dive->dive_site = find_or_create_dive_site_with_name(tmp, state->cur_dive->when, state->sites);
+		state->cur_dive->dive_site = find_or_create_dive_site_with_name(tmp, state->sites);
 		free(tmp);
 	}
 	free(location);
