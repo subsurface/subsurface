@@ -75,7 +75,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Darwin"
 		)
 endif()
 
-if(NOT DEFINED SSRF_CORELIB OR SSRF_CORELIB STREQUAL "SSRF_CORELIB-NOTFOUND")
+if(NOT SSRF_CORELIB)
 	message(FATAL_ERROR "  libsubsurface_corelib.a not found. Did you build Subsurface previously?")
 else()
 	message(STATUS "  Found ${SSRF_CORELIB}")
