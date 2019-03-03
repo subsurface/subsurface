@@ -484,7 +484,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 	}
 	ui.downloadCancelRetryButton->setText(tr("Retry download"));
 	ui.downloadCancelRetryButton->setEnabled(true);
-	diveImportedModel->repopulate(thread.table());
+	diveImportedModel->repopulate(thread.table(), thread.sites());
 }
 
 void DownloadFromDCWidget::on_cancel_clicked()
@@ -502,6 +502,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 	if (currentState != DONE && currentState != ERROR)
 		return;
 	struct dive_table *table = thread.table();
+	struct dive_site_table *sites = thread.sites();
 
 	// delete non-selected dives
 	int total = table->nr;
@@ -520,7 +521,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 			flags |= IMPORT_PREFER_IMPORTED;
 		if (ui.createNewTrip->isChecked())
 			flags |= IMPORT_ADD_TO_NEW_TRIP;
-		Command::importDives(table, nullptr, flags, data->devName());
+		Command::importDives(table, nullptr, sites, flags, data->devName());
 	}
 
 	if (ostcFirmwareCheck && currentState == DONE)

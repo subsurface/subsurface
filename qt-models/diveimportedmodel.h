@@ -20,7 +20,7 @@ public:
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	Q_INVOKABLE void clearTable();
 	QHash<int, QByteArray> roleNames() const;
-	Q_INVOKABLE void repopulate(dive_table_t *table);
+	Q_INVOKABLE void repopulate(dive_table_t *table, dive_site_table_t *sites);
 	Q_INVOKABLE void recordDives();
 public
 slots:
@@ -34,6 +34,7 @@ private:
 	int lastIndex;
 	std::vector<char> checkStates; // char instead of bool to avoid silly pessimization of std::vector.
 	struct dive_table *diveTable;
+	struct dive_site_table *sitesTable;
 };
 
 #endif

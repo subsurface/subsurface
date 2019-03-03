@@ -1648,13 +1648,14 @@ void MainWindow::importFiles(const QStringList fileNames)
 	QByteArray fileNamePtr;
 	struct dive_table table = { 0 };
 	struct trip_table trips = { 0 };
+	struct dive_site_table sites = { 0 };
 
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		parse_file(fileNamePtr.data(), &table, &trips, &dive_site_table);
+		parse_file(fileNamePtr.data(), &table, &trips, &sites);
 	}
 	QString source = fileNames.size() == 1 ? fileNames[0] : tr("multiple files");
-	Command::importDives(&table, &trips, IMPORT_MERGE_ALL_TRIPS, source);
+	Command::importDives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS, source);
 }
 
 void MainWindow::loadFiles(const QStringList fileNames)

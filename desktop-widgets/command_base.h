@@ -147,10 +147,14 @@ struct DiveDeleter {
 struct TripDeleter {
 	void operator()(dive_trip *t) { free_trip(t); }
 };
+struct DiveSiteDeleter {
+	void operator()(dive_site *ds) { free_dive_site(ds); }
+};
 
 // Owning pointers to dive and dive_trip objects.
 typedef std::unique_ptr<dive, DiveDeleter> OwningDivePtr;
 typedef std::unique_ptr<dive_trip, TripDeleter> OwningTripPtr;
+typedef std::unique_ptr<dive_site, DiveSiteDeleter> OwningDiveSitePtr;
 
 // This is the base class of all commands.
 // It defines the Qt-translation functions
