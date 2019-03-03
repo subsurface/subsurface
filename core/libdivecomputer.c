@@ -19,6 +19,7 @@
 #include "device.h"
 #include "divelist.h"
 #include "display.h"
+#include "sha1.h"
 
 #include <libdivecomputer/version.h>
 #include <libdivecomputer/usbhid.h>

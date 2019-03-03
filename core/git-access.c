@@ -24,6 +24,7 @@
 #include "qthelper.h"
 #include "git-access.h"
 #include "gettext.h"
+#include "sha1.h"
 
 bool is_subsurface_cloud = false;
 

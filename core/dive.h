@@ -18,7 +18,6 @@
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
 
-#include "sha1.h"
 #include "units.h"
 
 #ifdef __cplusplus
