@@ -673,17 +673,15 @@ struct dive_site *MainTab::updateDiveSite(struct dive_site *pickedDs, dive *d)
 
 	if (pickedDs == RECENTLY_ADDED_DIVESITE) {
 		QString name = ui.location->text();
-		pickedDs = create_dive_site(qPrintable(name), displayed_dive.when, &dive_site_table);
+		pickedDs = create_dive_site(qPrintable(name), &dive_site_table);
 		createdNewDive = true;
 	}
 
 	if (origDs) {
 		if(createdNewDive) {
-			uint32_t pickedUuid = pickedDs->uuid;
 			copy_dive_site(origDs, pickedDs);
 			free(pickedDs->name);
 			pickedDs->name = copy_qstring(ui.location->text());
-			pickedDs->uuid = pickedUuid;
 			qDebug() << "Creating and copying dive site";
 		} else if (!has_location(&pickedDs->location)) {
 			pickedDs->location = origDs->location;

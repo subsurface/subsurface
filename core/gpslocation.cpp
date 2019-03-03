@@ -211,7 +211,7 @@ static void copy_gps_location(struct gpsTracker &gps, struct dive *d)
 {
 	struct dive_site *ds = d->dive_site;
 	if (!ds) {
-		ds = create_dive_site(qPrintable(gps.name), gps.when, &dive_site_table);
+		ds = create_dive_site(qPrintable(gps.name), &dive_site_table);
 		d->dive_site = ds;
 	}
 	ds->location = gps.location;

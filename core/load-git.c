@@ -159,7 +159,7 @@ static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 	if (!ds) {
 		ds = get_dive_site_by_gps(&location, &dive_site_table);
 		if (!ds)
-			dive->dive_site = create_dive_site_with_gps("", &location, dive->when, &dive_site_table);
+			dive->dive_site = create_dive_site_with_gps("", &location, &dive_site_table);
 		else
 			dive->dive_site = ds;
 	} else {
@@ -183,7 +183,7 @@ static void parse_dive_location(char *line, struct membuffer *str, void *_dive)
 	if (!ds) {
 		ds = get_dive_site_by_name(name, &dive_site_table);
 		if (!ds)
-			dive->dive_site = create_dive_site(name, dive->when, &dive_site_table);
+			dive->dive_site = create_dive_site(name, &dive_site_table);
 		else
 			dive->dive_site = ds;
 	} else {
