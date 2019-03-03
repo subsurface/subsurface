@@ -16,6 +16,7 @@
 #include <fcntl.h>
 #include <dirent.h>
 #include <stdio.h>
+#include <stdarg.h>
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
