@@ -140,6 +140,19 @@ void add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *ds_tab
 	ds_table->nr = nr + 1;
 }
 
+struct dive_site *alloc_dive_site()
+{
+	struct dive_site *ds;
+	ds = calloc(1, sizeof(*ds));
+	if (!ds)
+		exit(1);
+	ds->uuid = rand() & 0xff;
+	ds->uuid |= (rand() & 0xff) << 8;
+	ds->uuid |= (rand() & 0xff) << 16;
+	ds->uuid |= (rand() & 0xff) << 24;
+	return ds;
+}
+
 /* we never allow a second dive site with the same uuid */
 struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *ds_table)
 {
@@ -148,9 +161,8 @@ struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *
 	if (uuid && (ds = get_dive_site_by_uuid(uuid, ds_table)) != NULL)
 		return ds;
 
-	ds = calloc(1, sizeof(*ds));
-	if (!ds)
-		exit(1);
+	ds = alloc_dive_site();
+
 	add_dive_site_to_table(ds, ds_table);
 
 	// we should always be called with a valid uuid except in the special
