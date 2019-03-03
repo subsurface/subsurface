@@ -117,14 +117,13 @@ static uint32_t dive_site_getUniqId(struct dive_site_table *ds_table)
 	return id;
 }
 
-/* we never allow a second dive site with the same uuid */
-struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *ds_table)
+void register_dive_site(struct dive_site *ds)
 {
-	struct dive_site *ds;
+	add_dive_site_to_table(ds, &dive_site_table);
+}
 
-	if (uuid && (ds = get_dive_site_by_uuid(uuid, ds_table)) != NULL)
-		return ds;
-
+void add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *ds_table)
+{
 	int nr = ds_table->nr;
 	int allocated = ds_table->allocated;
 	struct dive_site **sites = ds_table->dive_sites;
@@ -137,11 +136,23 @@ struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *
 		ds_table->dive_sites = sites;
 		ds_table->allocated = allocated;
 	}
+	sites[nr] = ds;
+	ds_table->nr = nr + 1;
+}
+
+/* we never allow a second dive site with the same uuid */
+struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *ds_table)
+{
+	struct dive_site *ds;
+
+	if (uuid && (ds = get_dive_site_by_uuid(uuid, ds_table)) != NULL)
+		return ds;
+
 	ds = calloc(1, sizeof(*ds));
 	if (!ds)
 		exit(1);
-	sites[nr] = ds;
-	ds_table->nr = nr + 1;
+	add_dive_site_to_table(ds, ds_table);
+
 	// we should always be called with a valid uuid except in the special
 	// case where we want to copy a dive site into the memory we allocated
 	// here - then we need to pass in 0 and create a temporary uuid here
@@ -195,12 +206,16 @@ void free_dive_site(struct dive_site *ds)
 	}
 }
 
-void delete_dive_site(struct dive_site *ds, struct dive_site_table *ds_table)
+void unregister_dive_site(struct dive_site *ds)
+{
+	remove_dive_site_from_table(ds, &dive_site_table);
+}
+
+void remove_dive_site_from_table(struct dive_site *ds, struct dive_site_table *ds_table)
 {
 	int nr = ds_table->nr;
 	for (int i = 0; i < nr; i++) {
 		if (ds == get_dive_site(i, ds_table)) {
-			free_dive_site(ds);
 			if (nr - 1 > i)
 				memmove(&ds_table->dive_sites[i],
 					&ds_table->dive_sites[i+1],
@@ -209,6 +224,14 @@ void delete_dive_site(struct dive_site *ds, struct dive_site_table *ds_table)
 			break;
 		}
 	}
+}
+
+void delete_dive_site(struct dive_site *ds, struct dive_site_table *ds_table)
+{
+	if (!ds)
+		return;
+	remove_dive_site_from_table(ds, ds_table);
+	free_dive_site(ds);
 }
 
 static uint32_t create_divesite_uuid(const char *name, timestamp_t divetime)
@@ -289,6 +312,30 @@ static void merge_string(char **a, char **b)
 
 	*a = format_string("(%s) or (%s)", s1, s2);
 	free(s1);
+}
+
+/* Used to check on import if two dive sites are equivalent.
+ * Since currently no merging is performed, be very conservative
+ * and only consider equal dive sites that are exactly the same.
+ * Taxonomy is not compared, as no taxonomy is generated on
+ * import.
+ */
+static bool same_dive_site(const struct dive_site *a, const struct dive_site *b)
+{
+	return same_string(a->name, b->name)
+	    && same_location(&a->location, &b->location)
+	    && same_string(a->description, b->description)
+	    && same_string(a->notes, b->notes);
+}
+
+struct dive_site *get_same_dive_site(const struct dive_site *site)
+{
+	int i;
+	struct dive_site *ds;
+	for_each_dive_site (i, ds, &dive_site_table)
+		if (same_dive_site(ds, site))
+			return ds;
+	return NULL;
 }
 
 void merge_dive_site(struct dive_site *a, struct dive_site *b)

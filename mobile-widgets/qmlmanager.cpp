@@ -341,8 +341,9 @@ void QMLManager::mergeLocalRepo()
 	char *filename = NOCLOUD_LOCALSTORAGE;
 	struct dive_table table = { 0 };
 	struct trip_table trips = { 0 };
-	parse_file(filename, &table, &trips, &dive_site_table);
-	add_imported_dives(&table, &trips, IMPORT_MERGE_ALL_TRIPS);
+	struct dive_site_table sites = { 0 };
+	parse_file(filename, &table, &trips, &sites);
+	add_imported_dives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS);
 }
 
 void QMLManager::copyAppLogToClipboard()
