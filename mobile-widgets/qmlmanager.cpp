@@ -774,7 +774,7 @@ static void setupDivesite(struct dive *d, struct dive_site *ds, double lat, doub
 	if (ds) {
 		ds->location = location;
 	} else {
-		d->dive_site = create_dive_site_with_gps(locationtext, &location, d->when, &dive_site_table);
+		d->dive_site = create_dive_site_with_gps(locationtext, &location, &dive_site_table);
 	}
 }
 
@@ -892,7 +892,7 @@ bool QMLManager::checkLocation(DiveObjectHelper *myDive, struct dive *d, QString
 		diveChanged = true;
 		ds = get_dive_site_by_name(qPrintable(location), &dive_site_table);
 		if (!ds && !location.isEmpty())
-			ds = create_dive_site(qPrintable(location), d->when, &dive_site_table);
+			ds = create_dive_site(qPrintable(location), &dive_site_table);
 		d->dive_site = ds;
 	}
 	// now make sure that the GPS coordinates match - if the user changed the name but not

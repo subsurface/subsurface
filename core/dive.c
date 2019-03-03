@@ -3965,7 +3965,7 @@ static void dive_set_geodata_from_picture(struct dive *dive, struct picture *pic
 		if (ds) {
 			ds->location = picture->location;
 		} else {
-			dive->dive_site = create_dive_site_with_gps("", &picture->location, dive->when, table);
+			dive->dive_site = create_dive_site_with_gps("", &picture->location, table);
 			invalidate_dive_cache(dive);
 		}
 	}

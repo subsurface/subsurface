@@ -143,7 +143,7 @@ struct dive_site *alloc_dive_site()
 	return ds;
 }
 
-/* we never allow a second dive site with the same uuid */
+/* when parsing, dive sites are identified by uuid */
 struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *table)
 {
 	struct dive_site *ds;
@@ -229,44 +229,27 @@ void delete_dive_site(struct dive_site *ds, struct dive_site_table *table)
 	free_dive_site(ds);
 }
 
-static uint32_t create_divesite_uuid(const char *name, timestamp_t divetime)
-{
-	if (name == NULL)
-		name ="";
-	union {
-		unsigned char hash[20];
-		uint32_t i;
-	} u;
-	SHA_CTX ctx;
-	SHA1_Init(&ctx);
-	SHA1_Update(&ctx, &divetime, sizeof(timestamp_t));
-	SHA1_Update(&ctx, name, strlen(name));
-	SHA1_Final(u.hash, &ctx);
-	// now return the first 32 of the 160 bit hash
-	return u.i;
-}
-
 /* allocate a new site and add it to the table */
-struct dive_site *create_dive_site(const char *name, timestamp_t divetime, struct dive_site_table *table)
+struct dive_site *create_dive_site(const char *name, struct dive_site_table *table)
 {
-	uint32_t uuid = create_divesite_uuid(name, divetime);
-	struct dive_site *ds = alloc_or_get_dive_site(uuid, table);
+	struct dive_site *ds = alloc_dive_site();
 	ds->name = copy_string(name);
+	add_dive_site_to_table(ds, table);
 	return ds;
 }
 
 /* same as before, but with GPS data */
-struct dive_site *create_dive_site_with_gps(const char *name, const location_t *loc, timestamp_t divetime, struct dive_site_table *table)
+struct dive_site *create_dive_site_with_gps(const char *name, const location_t *loc, struct dive_site_table *table)
 {
-	uint32_t uuid = create_divesite_uuid(name, divetime);
-	struct dive_site *ds = alloc_or_get_dive_site(uuid, table);
+	struct dive_site *ds = alloc_dive_site();
 	ds->name = copy_string(name);
 	ds->location = *loc;
+	add_dive_site_to_table(ds, table);
 
 	return ds;
 }
 
-/* a uuid is always present - but if all the other fields are empty, the dive site is pointless */
+/* if all fields are empty, the dive site is pointless */
 bool dive_site_is_empty(struct dive_site *ds)
 {
 	return !ds ||
@@ -286,7 +269,6 @@ void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
 	copy->name = copy_string(orig->name);
 	copy->notes = copy_string(orig->notes);
 	copy->description = copy_string(orig->description);
-	copy->uuid = orig->uuid;
 	copy_taxonomy(&orig->taxonomy, &copy->taxonomy);
 }
 
@@ -370,7 +352,7 @@ void merge_dive_sites(struct dive_site *ref, struct dive_site *dive_sites[], int
 	mark_divelist_changed(true);
 }
 
-struct dive_site *find_or_create_dive_site_with_name(const char *name, timestamp_t divetime, struct dive_site_table *table)
+struct dive_site *find_or_create_dive_site_with_name(const char *name, struct dive_site_table *table)
 {
 	int i;
 	struct dive_site *ds;
@@ -380,7 +362,7 @@ struct dive_site *find_or_create_dive_site_with_name(const char *name, timestamp
 	}
 	if (ds)
 		return ds;
-	return create_dive_site(name, divetime, table);
+	return create_dive_site(name, table);
 }
 
 void purge_empty_dive_sites(struct dive_site_table *table)
