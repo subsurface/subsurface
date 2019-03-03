@@ -2,6 +2,7 @@
 #include "testparseperformance.h"
 #include "core/dive.h"
 #include "core/divelist.h"
+#include "core/file.h"
 #include "core/git-access.h"
 #include "core/settings/qPrefProxy.h"
 #include "core/settings/qPrefCloudStorage.h"
@@ -41,7 +42,6 @@ void TestParsePerformance::initTestCase()
 	QString localCacheDir(get_local_dir(LARGE_TEST_REPO, "git"));
 	QDir localCacheDirectory(localCacheDir);
 	QCOMPARE(localCacheDirectory.removeRecursively(), true);
-
 }
 
 void TestParsePerformance::init()

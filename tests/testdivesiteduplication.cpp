@@ -2,6 +2,7 @@
 #include "testdivesiteduplication.h"
 #include "core/dive.h"
 #include "core/divesite.h"
+#include "core/file.h"
 
 void TestDiveSiteDuplication::testReadV2()
 {

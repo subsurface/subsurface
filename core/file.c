@@ -17,6 +17,7 @@
 #include "git-access.h"
 #include "qthelper.h"
 #include "import-csv.h"
+#include "parse.h"
 
 /* For SAMPLE_* */
 #include <libdivecomputer/parser.h>
