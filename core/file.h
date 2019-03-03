@@ -16,6 +16,7 @@ extern int datatrak_import(struct memblock *mem, struct dive_table *table, struc
 extern void ostctools_import(const char *file, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
 
 extern int readfile(const char *filename, struct memblock *mem);
+extern int parse_file(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
 extern int try_to_open_zip(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
 #ifdef __cplusplus
 }

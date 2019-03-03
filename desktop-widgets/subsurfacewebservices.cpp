@@ -7,11 +7,11 @@
 #include "desktop-widgets/command.h"
 #include "desktop-widgets/usersurvey.h"
 #include "core/divelist.h"
+#include "core/file.h"
 #include "desktop-widgets/mapwidget.h"
 #include "desktop-widgets/tab-widgets/maintab.h"
 #include "core/display.h"
 #include "core/membuffer.h"
-#include <errno.h>
 #include "core/cloudstorage.h"
 #include "core/subsurface-string.h"
 
@@ -23,6 +23,7 @@
 #include <qdesktopservices.h>
 #include <QShortcut>
 #include <QDebug>
+#include <errno.h>
 
 #ifdef Q_OS_UNIX
 #include <unistd.h> // for dup(2)
