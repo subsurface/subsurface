@@ -675,7 +675,7 @@ struct dive_site *MainTab::updateDiveSite(struct dive_site *pickedDs, dive *d)
 		return origDs;
 
 	if (pickedDs == RECENTLY_ADDED_DIVESITE) {
-		QString name = ui.location->text().isEmpty() ? tr("New dive site") : ui.location->text();
+		QString name = ui.location->text();
 		pickedDs = create_dive_site(qPrintable(name), displayed_dive.when, &dive_site_table);
 		createdNewDive = true;
 	}
