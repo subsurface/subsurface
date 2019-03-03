@@ -17,10 +17,13 @@ QAction *redoAction(QObject *parent);	// Create an redo action.
 
 // 2) Dive-list related commands
 
-void addDive(dive *d, bool autogroup, bool newNumber); // If d->dive_trip is null and autogroup is true, dives within the auto-group
-						       // distance are added to a trip. dive d is consumed (the structure is reset)!
-						       // If newNumber is true, the dive is assigned a new number, depending on the
-						       // insertion position.
+// If d->dive_trip is null and autogroup is true, dives within the auto-group
+// distance are added to a trip. dive d is consumed (the structure is reset)!
+// If newNumber is true, the dive is assigned a new number, depending on the
+// insertion position.
+// Id newDS is not empty, a dive site with that name will be created. d->dive_site
+// should be null in this case.
+void addDive(dive *d, const QString &newDS, bool autogroup, bool newNumber);
 void importDives(struct dive_table *dives, struct trip_table *trips, struct dive_site_table *sites, int flags, const QString &source);
 void deleteDive(const QVector<struct dive*> &divesToDelete);
 void shiftTime(const QVector<dive *> &changedDives, int amount);

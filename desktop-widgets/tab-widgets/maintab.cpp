@@ -730,11 +730,19 @@ void MainTab::acceptChanges()
 	hideMessage();
 	ui.equipmentTab->setEnabled(true);
 	if (editMode == ADD) {
-		// make sure that the dive site is handled as well
-		updateDiveSite(ui.location->currDiveSite(), &displayed_dive);
+		// Handle dive site
+		struct dive_site *pickedDs = ui.location->currDiveSite();
+		QString newDiveSiteName;
+		if (pickedDs == RECENTLY_ADDED_DIVESITE) {
+			newDiveSiteName = ui.location->text();
+			displayed_dive.dive_site = nullptr;
+		} else {
+			displayed_dive.dive_site = pickedDs;
+		}
+
 		copyTagsToDisplayedDive();
 
-		Command::addDive(&displayed_dive, autogroup, true);
+		Command::addDive(&displayed_dive, newDiveSiteName, autogroup, true);
 
 		editMode = NONE;
 		MainWindow::instance()->exitEditState();
