@@ -3,6 +3,8 @@
 #define QTHELPER_H
 
 #include <stdint.h>
+#include <libxslt/transform.h>
+#include <libxslt/xsltutils.h>
 #include "dive.h"
 #include "divelist.h"
 
@@ -145,6 +147,7 @@ void cache_insert(int tissue, int timestep, enum inertgas gas, double value);
 void print_qt_versions();
 void lock_planner();
 void unlock_planner();
+xsltStylesheetPtr get_stylesheet(const char *name);
 
 #ifdef __cplusplus
 }
