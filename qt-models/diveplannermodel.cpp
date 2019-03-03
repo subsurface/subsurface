@@ -1145,11 +1145,11 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 	if (!current_dive || displayed_dive.id != current_dive->id) {
 		// we were planning a new dive, not re-planning an existing one
 		displayed_dive.divetrip = nullptr; // Should not be necessary, just in case!
-		Command::addDive(&displayed_dive, autogroup, true);
+		Command::addDive(&displayed_dive, QString(), autogroup, true);
 	} else if (replanCopy) {
 		// we were planning an old dive and save as a new dive
 		displayed_dive.id = dive_getUniqID(); // Things will break horribly if we create dives with the same id.
-		Command::addDive(&displayed_dive, false, false);
+		Command::addDive(&displayed_dive, QString(), false, false);
 	} else {
 		// we were planning an old dive and rewrite the plan
 		mark_divelist_changed(true);
