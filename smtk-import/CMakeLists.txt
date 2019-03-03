@@ -114,15 +114,9 @@ if (COMMANDLINE AND CMAKE_SYSTEM_NAME STREQUAL "Linux")
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	add_custom_command(
-		OUTPUT ${CMAKE_BINARY_DIR}/qt.conf
-		COMMAND echo \"[Paths]\" > ${CMAKE_BINARY_DIR}/qt.conf \; echo \"Prefix=.\" >> ${CMAKE_BINARY_DIR}/qt.conf
-	)
-	add_custom_target(
-		generate_qtconf
-		DEPENDS ${CMAKE_BINARY_DIR}/qt.conf
-	)
-	add_dependencies(${SMTK_IMPORT_TARGET} generate_qtconf)
+	file(WRITE ${CMAKE_BINARY_DIR}/qt.conf "[Paths]
+Prefix=.
+")
 endif()
 
 target_link_libraries(${SMTK_IMPORT_TARGET} smtk_import ${SMTK_LINK_LIBRARIES})

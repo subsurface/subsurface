@@ -364,15 +364,9 @@ add_dependencies(subsurface_corelib version)
 
 # add platform specific actions
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	add_custom_command(
-		OUTPUT ${CMAKE_BINARY_DIR}/qt.conf
-		COMMAND echo \"[Paths]\" > ${CMAKE_BINARY_DIR}/qt.conf \; echo \"Prefix=.\" >> ${CMAKE_BINARY_DIR}/qt.conf
-	)
-	add_custom_target(
-		generate_qtconf
-		DEPENDS ${CMAKE_BINARY_DIR}/qt.conf
-	)
-	add_dependencies(${SUBSURFACE_TARGET} generate_qtconf)
+	file(WRITE ${CMAKE_BINARY_DIR}/qt.conf "[Paths]
+Prefix=.
+")
 endif()
 
 # build an automated html exporter
