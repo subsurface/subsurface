@@ -6,9 +6,8 @@
 project(Subsurface)
 cmake_minimum_required(VERSION 2.8.11)
 
-# don't process generated files - this is new in 3.10 - but
-# VERSION_GREATER_EQUAL did get added until 3.7
-if(${CMAKE_VERSION} VERSION_EQUAL "3.10.0" OR ${CMAKE_VERSION} VERSION_GREATER "3.10.0")
+# don't process generated files - this is new in 3.10
+if (POLICY CMP0071)
 	cmake_policy(SET CMP0071 OLD)
 endif()
 
