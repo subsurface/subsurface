@@ -95,7 +95,9 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	endif()
 
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
-  # using Intel C++
+	# works only for CMake 3.1 and later
+	set(CMAKE_C_STANDARD 99)
+	set(CMAKE_CXX_STANDARD 11)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # using Visual Studio C++
 endif()
