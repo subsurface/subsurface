@@ -13,8 +13,6 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "divesite.h"
-#include <libxslt/transform.h>
-#include <libxslt/xsltutils.h>
 
 #include "units.h"
 
@@ -506,8 +504,6 @@ extern void subsurface_console_exit(void);
 extern bool subsurface_user_is_root(void);
 
 extern timestamp_t get_times();
-
-extern xsltStylesheetPtr get_stylesheet(const char *name);
 
 extern timestamp_t utc_mktime(struct tm *tm);
 extern void utc_mkdate(timestamp_t, struct tm *tm);
