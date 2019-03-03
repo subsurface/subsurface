@@ -24,10 +24,10 @@ struct dive_site
 	struct taxonomy_data taxonomy;
 };
 
-struct dive_site_table {
+typedef struct dive_site_table {
 	int nr, allocated;
 	struct dive_site **dive_sites;
-};
+} dive_site_table_t;
 
 extern struct dive_site_table dive_site_table;
 
@@ -45,6 +45,10 @@ static inline struct dive_site *get_dive_site(int nr, struct dive_site_table *ta
 int get_divesite_idx(const struct dive_site *ds, struct dive_site_table *table);
 struct dive_site *get_dive_site_by_uuid(uint32_t uuid, struct dive_site_table *table);
 void dive_site_table_sort(struct dive_site_table *table);
+void add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *table);
+void remove_dive_site_from_table(struct dive_site *ds, struct dive_site_table *table);
+void register_dive_site(struct dive_site *ds);
+void unregister_dive_site(struct dive_site *ds);
 struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *table);
 int nr_of_dives_at_dive_site(struct dive_site *ds, bool select_only);
 bool is_dive_site_used(struct dive_site *ds, bool select_only);
@@ -56,6 +60,7 @@ struct dive_site *get_dive_site_by_name(const char *name, struct dive_site_table
 struct dive_site *get_dive_site_by_gps(const location_t *, struct dive_site_table *table);
 struct dive_site *get_dive_site_by_gps_and_name(char *name, const location_t *, struct dive_site_table *table);
 struct dive_site *get_dive_site_by_gps_proximity(const location_t *, int distance, struct dive_site_table *table);
+struct dive_site *get_same_dive_site(const struct dive_site *);
 bool dive_site_is_empty(struct dive_site *ds);
 void copy_dive_site_taxonomy(struct dive_site *orig, struct dive_site *copy);
 void copy_dive_site(struct dive_site *orig, struct dive_site *copy);

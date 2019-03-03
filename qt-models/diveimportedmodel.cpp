@@ -4,7 +4,8 @@
 DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
 	firstIndex(0),
 	lastIndex(-1),
-	diveTable(nullptr)
+	diveTable(nullptr),
+	sitesTable(nullptr)
 {
 }
 
@@ -127,11 +128,12 @@ void DiveImportedModel::clearTable()
 	endRemoveRows();
 }
 
-void DiveImportedModel::repopulate(dive_table_t *table)
+void DiveImportedModel::repopulate(dive_table_t *table, struct dive_site_table *sites)
 {
 	beginResetModel();
 
 	diveTable = table;
+	sitesTable = sites;
 	firstIndex = 0;
 	lastIndex = diveTable->nr - 1;
 	checkStates.resize(diveTable->nr);
@@ -158,7 +160,7 @@ void DiveImportedModel::recordDives()
 	}
 
 	// TODO: Might want to let the user select IMPORT_ADD_TO_NEW_TRIP
-	add_imported_dives(diveTable, nullptr, IMPORT_PREFER_IMPORTED | IMPORT_IS_DOWNLOADED);
+	add_imported_dives(diveTable, nullptr, sitesTable, IMPORT_PREFER_IMPORTED | IMPORT_IS_DOWNLOADED);
 }
 
 QHash<int, QByteArray> DiveImportedModel::roleNames() const {

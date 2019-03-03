@@ -21,7 +21,7 @@ void addDive(dive *d, bool autogroup, bool newNumber); // If d->dive_trip is nul
 						       // distance are added to a trip. dive d is consumed (the structure is reset)!
 						       // If newNumber is true, the dive is assigned a new number, depending on the
 						       // insertion position.
-void importDives(struct dive_table *dives, struct trip_table *trips, int flags, const QString &source);
+void importDives(struct dive_table *dives, struct trip_table *trips, struct dive_site_table *sites, int flags, const QString &source);
 void deleteDive(const QVector<struct dive*> &divesToDelete);
 void shiftTime(const QVector<dive *> &changedDives, int amount);
 void renumberDives(const QVector<QPair<dive *, int>> &divesToRenumber);

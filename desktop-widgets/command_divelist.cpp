@@ -104,15 +104,23 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 // returns a vector of corresponding DiveToAdd objects, which can later be readded.
 // Moreover, a vector of deleted trips is returned, if trips became empty.
 // The passed in vector is cleared.
-DivesAndTripsToAdd DiveListBase::removeDives(std::vector<dive *> &divesToDelete)
+DivesAndTripsToAdd DiveListBase::removeDives(DivesAndSitesToRemove &divesAndSitesToDelete)
 {
 	std::vector<DiveToAdd> divesToAdd;
 	std::vector<OwningTripPtr> tripsToAdd;
-	divesToAdd.reserve(divesToDelete.size());
+	std::vector<OwningDiveSitePtr> sitesToAdd;
+	divesToAdd.reserve(divesAndSitesToDelete.dives.size());
+	sitesToAdd.reserve(divesAndSitesToDelete.sites.size());
 
-	for (dive *d: divesToDelete)
+	for (dive *d: divesAndSitesToDelete.dives)
 		divesToAdd.push_back(removeDive(d, tripsToAdd));
-	divesToDelete.clear();
+	divesAndSitesToDelete.dives.clear();
+
+	for (dive_site *ds: divesAndSitesToDelete.sites) {
+		unregister_dive_site(ds);
+		sitesToAdd.emplace_back(ds);
+	}
+	divesAndSitesToDelete.sites.clear();
 
 	// We send one dives-deleted signal per trip (see comments in DiveListNotifier.h).
 	// Therefore, collect all dives in an array and sort by trip.
@@ -129,17 +137,19 @@ DivesAndTripsToAdd DiveListBase::removeDives(std::vector<dive *> &divesToDelete)
 					       { return ptr.get() == trip; }) != tripsToAdd.end();
 		emit diveListNotifier.divesDeleted(trip, deleteTrip, divesInTrip);
 	});
-	return { std::move(divesToAdd), std::move(tripsToAdd) };
+	return { std::move(divesToAdd), std::move(tripsToAdd), std::move(sitesToAdd) };
 }
 
 // This helper function is the counterpart fo removeDives(): it calls addDive() on a list
 // of dives to be (re)added and returns a vector of the added dives. It does this in reverse
 // order, so that trips are created appropriately and indexing is correct.
 // The passed in vector is cleared.
-std::vector<dive *> DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
+DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 {
 	std::vector<dive *> res;
+	std::vector<dive_site *> sites;
 	res.resize(toAdd.dives.size());
+	sites.reserve(toAdd.sites.size());
 
 	// Now, add the dives
 	// Note: the idiomatic STL-way would be std::transform, but let's use a loop since
@@ -159,6 +169,13 @@ std::vector<dive *> DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 	}
 	toAdd.trips.clear();
 
+	// Finally, add any necessary dive sites
+	for (OwningDiveSitePtr &ds: toAdd.sites) {
+		sites.push_back(ds.get());
+		register_dive_site(ds.release()); // Return ownership to backend
+	}
+	toAdd.sites.clear();
+
 	// We send one dives-deleted signal per trip (see comments in DiveListNotifier.h).
 	// Therefore, collect all dives in a array and sort by trip.
 	std::vector<std::pair<dive_trip *, dive *>> dives;
@@ -173,7 +190,7 @@ std::vector<dive *> DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 		// Finally, emit the signal
 		emit diveListNotifier.divesAdded(trip, createTrip, divesInTrip);
 	});
-	return res;
+	return { res, sites };
 }
 
 // This helper function renumbers dives according to an array of id/number pairs.
@@ -518,12 +535,12 @@ void AddDive::redoit()
 	selection = getDiveSelection();
 	currentDive = current_dive;
 
-	divesToRemove = addDives(divesToAdd);
+	divesAndSitesToRemove = addDives(divesToAdd);
 	sort_trip_table(&trip_table); // Though unlikely, adding a dive may reorder trips
 	mark_divelist_changed(true);
 
 	// Select the newly added dive
-	restoreSelection(divesToRemove, divesToRemove[0]);
+	restoreSelection(divesAndSitesToRemove.dives, divesAndSitesToRemove.dives[0]);
 
 	// Exit from edit mode, but don't recalculate dive list
 	// TODO: Remove edit mode
@@ -533,7 +550,7 @@ void AddDive::redoit()
 void AddDive::undoit()
 {
 	// Simply remove the dive that was previously added...
-	divesToAdd = removeDives(divesToRemove);
+	divesToAdd = removeDives(divesAndSitesToRemove);
 	sort_trip_table(&trip_table); // Though unlikely, removing a dive may reorder trips
 
 	// ...and restore the selection
@@ -544,19 +561,25 @@ void AddDive::undoit()
 	MainWindow::instance()->refreshDisplay(false);
 }
 
-ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, int flags, const QString &source)
+ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, struct dive_site_table *sites, int flags, const QString &source)
 {
 	setText(tr("import %n dive(s) from %1", "", dives->nr).arg(source));
 
 	struct dive_table dives_to_add = { 0 };
 	struct dive_table dives_to_remove = { 0 };
 	struct trip_table trips_to_add = { 0 };
-	process_imported_dives(dives, trips, flags, &dives_to_add, &dives_to_remove, &trips_to_add);
+	struct dive_site_table sites_to_add = { 0 };
+	process_imported_dives(dives, trips, sites, flags, &dives_to_add, &dives_to_remove, &trips_to_add, &sites_to_add);
 
 	// Add trips to the divesToAdd.trips structure
 	divesToAdd.trips.reserve(trips_to_add.nr);
 	for (int i = 0; i < trips_to_add.nr; ++i)
 		divesToAdd.trips.emplace_back(trips_to_add.trips[i]);
+
+	// Add sites to the divesToAdd.sites structure
+	divesToAdd.sites.reserve(sites_to_add.nr);
+	for (int i = 0; i < sites_to_add.nr; ++i)
+		divesToAdd.sites.emplace_back(sites_to_add.dive_sites[i]);
 
 	// Add dives to the divesToAdd.dives structure
 	divesToAdd.dives.reserve(dives_to_add.nr);
@@ -575,9 +598,9 @@ ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, int
 	}
 
 	// Add dive to be deleted to the divesToRemove structure
-	divesToRemove.reserve(dives_to_remove.nr);
+	divesAndSitesToRemove.dives.reserve(dives_to_remove.nr);
 	for (int i = 0; i < dives_to_remove.nr; ++i)
-		divesToRemove.push_back(dives_to_remove.dives[i]);
+		divesAndSitesToRemove.dives.push_back(dives_to_remove.dives[i]);
 }
 
 bool ImportDives::workToBeDone()
@@ -590,31 +613,31 @@ void ImportDives::redoit()
 	// Remember selection so that we can undo it
 	currentDive = current_dive;
 
-	// Add new dives
-	std::vector<dive *> divesToRemoveNew = addDives(divesToAdd);
+	// Add new dives and sites
+	DivesAndSitesToRemove divesAndSitesToRemoveNew = addDives(divesToAdd);
 
-	// Remove old dives
-	divesToAdd = removeDives(divesToRemove);
+	// Remove old dives and sites
+	divesToAdd = removeDives(divesAndSitesToRemove);
 
 	// Select the newly added dives
-	restoreSelection(divesToRemoveNew, divesToRemoveNew.back());
+	restoreSelection(divesAndSitesToRemoveNew.dives, divesAndSitesToRemoveNew.dives.back());
 
-	// Remember dives to remove
-	divesToRemove = std::move(divesToRemoveNew);
+	// Remember dives and sites to remove
+	divesAndSitesToRemove = std::move(divesAndSitesToRemoveNew);
 
 	mark_divelist_changed(true);
 }
 
 void ImportDives::undoit()
 {
-	// Add new dives
-	std::vector<dive *> divesToRemoveNew = addDives(divesToAdd);
+	// Add new dives and sites
+	DivesAndSitesToRemove divesAndSitesToRemoveNew = addDives(divesToAdd);
 
-	// Remove old dives
-	divesToAdd = removeDives(divesToRemove);
+	// Remove old dives and sites
+	divesToAdd = removeDives(divesAndSitesToRemove);
 
-	// Remember dives to remove
-	divesToRemove = std::move(divesToRemoveNew);
+	// Remember dives and sites to remove
+	divesAndSitesToRemove = std::move(divesAndSitesToRemoveNew);
 
 	// ...and restore the selection
 	restoreSelection(selection, currentDive);
@@ -622,14 +645,15 @@ void ImportDives::undoit()
 	mark_divelist_changed(true);
 }
 
-DeleteDive::DeleteDive(const QVector<struct dive*> &divesToDeleteIn) : divesToDelete(divesToDeleteIn.toStdVector())
+DeleteDive::DeleteDive(const QVector<struct dive*> &divesToDeleteIn)
 {
-	setText(tr("delete %n dive(s)", "", divesToDelete.size()));
+	divesToDelete.dives = divesToDeleteIn.toStdVector();
+	setText(tr("delete %n dive(s)", "", divesToDelete.dives.size()));
 }
 
 bool DeleteDive::workToBeDone()
 {
-	return !divesToDelete.empty();
+	return !divesToDelete.dives.empty();
 }
 
 void DeleteDive::undoit()
@@ -639,8 +663,8 @@ void DeleteDive::undoit()
 	mark_divelist_changed(true);
 
 	// Select all re-added dives and make the first one current
-	dive *currentDive = !divesToDelete.empty() ? divesToDelete[0] : nullptr;
-	restoreSelection(divesToDelete, currentDive);
+	dive *currentDive = !divesToDelete.dives.empty() ? divesToDelete.dives[0] : nullptr;
+	restoreSelection(divesToDelete.dives, currentDive);
 }
 
 void DeleteDive::redoit()
@@ -842,7 +866,7 @@ SplitDives::SplitDives(dive *d, duration_t time)
 	new1->selected = false;
 	new2->selected = false;
 
-	diveToSplit.push_back(d);
+	diveToSplit.dives.push_back(d);
 	splitDives.dives.resize(2);
 	splitDives.dives[0].dive.reset(new1);
 	splitDives.dives[0].trip = d->divetrip;
@@ -854,7 +878,7 @@ SplitDives::SplitDives(dive *d, duration_t time)
 
 bool SplitDives::workToBeDone()
 {
-	return !diveToSplit.empty();
+	return !diveToSplit.dives.empty();
 }
 
 void SplitDives::redoit()
@@ -864,7 +888,7 @@ void SplitDives::redoit()
 	mark_divelist_changed(true);
 
 	// Select split dives and make first dive current
-	restoreSelection(divesToUnsplit, divesToUnsplit[0]);
+	restoreSelection(divesToUnsplit.dives, divesToUnsplit.dives[0]);
 }
 
 void SplitDives::undoit()
@@ -875,7 +899,7 @@ void SplitDives::undoit()
 	mark_divelist_changed(true);
 
 	// Select unsplit dive and make it current
-	restoreSelection(diveToSplit, diveToSplit[0] );
+	restoreSelection(diveToSplit.dives, diveToSplit.dives[0] );
 }
 
 MergeDives::MergeDives(const QVector <dive *> &dives)
@@ -957,7 +981,7 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 	mergedDive.dives[0].dive = std::move(d);
 	mergedDive.dives[0].idx = get_divenr(dives[0]);
 	mergedDive.dives[0].trip = preferred_trip;
-	divesToMerge = dives.toStdVector();
+	divesToMerge.dives = dives.toStdVector();
 }
 
 bool MergeDives::workToBeDone()
@@ -972,7 +996,7 @@ void MergeDives::redoit()
 	unmergedDives = removeDives(divesToMerge);
 
 	// Select merged dive and make it current
-	restoreSelection(diveToUnmerge, diveToUnmerge[0]);
+	restoreSelection(diveToUnmerge.dives, diveToUnmerge.dives[0]);
 }
 
 void MergeDives::undoit()
@@ -982,7 +1006,7 @@ void MergeDives::undoit()
 	renumberDives(divesToRenumber);
 
 	// Select unmerged dives and make first one current
-	restoreSelection(divesToMerge, divesToMerge[0]);
+	restoreSelection(divesToMerge.dives, divesToMerge.dives[0]);
 }
 
 } // namespace Command

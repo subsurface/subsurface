@@ -308,6 +308,11 @@ struct dive_table *DownloadThread::table()
 	return &downloadTable;
 }
 
+struct dive_site_table *DownloadThread::sites()
+{
+	return &diveSiteTable;
+}
+
 QString DCDeviceData::vendor() const
 {
 	return data.vendor;
