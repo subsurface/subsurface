@@ -1673,7 +1673,7 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 			    struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
 			    struct trip_table *trips_to_add)
 {
-	int i, nr, start_renumbering_at = 0;
+	int i, j, nr, start_renumbering_at = 0;
 	struct dive_trip *trip_import, *new_trip;
 	int preexisting;
 	bool sequence_changed = false;
@@ -1740,8 +1740,8 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 
 		/* If no trip to merge-into was found, add trip as-is.
 		 * First, add dives to list of dives to add */
-		for (i = 0; i < trip_import->dives.nr; i++) {
-			struct dive *d = trip_import->dives.dives[i];
+		for (j = 0; j < trip_import->dives.nr; j++) {
+			struct dive *d = trip_import->dives.dives[j];
 
 			/* Add dive to list of dives to-be-added. */
 			insert_dive(dives_to_add, d);
