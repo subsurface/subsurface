@@ -5,6 +5,7 @@
 #include <QTextDocument>
 
 #include "core/qthelper.h"
+#include "core/divesite.h"
 #include "core/subsurface-string.h"
 #include "qt-models/tankinfomodel.h"
 

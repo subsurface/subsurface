@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "core/gpslocation.h"
+#include "core/divesite.h"
 #include "qt-models/gpslistmodel.h"
 #include "core/pref.h"
 #include "core/qthelper.h"

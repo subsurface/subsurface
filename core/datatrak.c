@@ -15,6 +15,7 @@
 #include "units.h"
 #include "device.h"
 #include "file.h"
+#include "divesite.h"
 #include "ssrf.h"
 
 static unsigned int two_bytes_to_int(unsigned char x, unsigned char y)

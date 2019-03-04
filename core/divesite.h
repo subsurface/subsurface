@@ -4,6 +4,7 @@
 
 #include "units.h"
 #include "taxonomy.h"
+#include "dive.h"
 #include <stdlib.h>
 
 #ifdef __cplusplus
@@ -18,6 +19,7 @@ struct dive_site
 {
 	uint32_t uuid;
 	char *name;
+	struct dive_table dives;
 	location_t location;
 	char *description;
 	char *notes;
@@ -54,6 +56,8 @@ struct dive_site *alloc_dive_site();
 int nr_of_dives_at_dive_site(struct dive_site *ds, bool select_only);
 bool is_dive_site_used(struct dive_site *ds, bool select_only);
 void free_dive_site(struct dive_site *ds);
+void unregister_dive_site(struct dive_site *ds);
+void register_dive_site(struct dive_site *ds);
 void delete_dive_site(struct dive_site *ds, struct dive_site_table *ds_table);
 struct dive_site *create_dive_site(const char *name, struct dive_site_table *ds_table);
 struct dive_site *create_dive_site_with_gps(const char *name, const location_t *, struct dive_site_table *ds_table);
@@ -71,6 +75,8 @@ struct dive_site *find_or_create_dive_site_with_name(const char *name, struct di
 void merge_dive_sites(struct dive_site *ref, struct dive_site *dive_sites[], int count);
 void purge_empty_dive_sites(struct dive_site_table *ds_table);
 void clear_dive_site_table(struct dive_site_table *ds_table);
+void add_dive_to_dive_site(struct dive *d, struct dive_site *ds);
+struct dive_site *unregister_dive_from_dive_site(struct dive *d);
 
 #ifdef __cplusplus
 }
@@ -78,6 +84,7 @@ QString constructLocationTags(struct taxonomy_data *taxonomy, bool for_maintab);
 
 /* Make pointer-to-dive_site a "Qt metatype" so that we can pass it through QVariants */
 Q_DECLARE_METATYPE(dive_site *);
+Q_DECLARE_METATYPE(dive_site_table_t *);
 
 #endif
 

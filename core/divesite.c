@@ -382,6 +382,29 @@ void purge_empty_dive_sites(struct dive_site_table *ds_table)
 	}
 }
 
+void add_dive_to_dive_site(struct dive *d, struct dive_site *ds)
+{
+	int idx;
+	if (d->dive_site == ds)
+		return;
+	if (d->dive_site)
+		fprintf(stderr, "Warning: adding dive that already belongs to a dive site to a different site\n");
+	idx = dive_table_get_insertion_index(&ds->dives, d);
+	add_to_dive_table(&ds->dives, idx, d);
+	d->dive_site = ds;
+}
+
+struct dive_site *unregister_dive_from_dive_site(struct dive *d)
+{
+	struct dive_site *ds = d->dive_site;
+	if (!ds)
+		return NULL;
+	remove_dive(&ds->dives, d);
+	d->dive_site = NULL;
+	return ds;
+}
+
+/* Assign arbitrary UUIDs to dive sites. This is called by before writing the dive log to XML or git. */
 static int compare_sites(const void *_a, const void *_b)
 {
 	const struct dive_site *a = (const struct dive_site *)*(void **)_a;

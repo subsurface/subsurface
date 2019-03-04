@@ -6,7 +6,7 @@
 #include <QHash>
 #include <QLoggingCategory>
 
-#include "dive.h"
+#include "divesite.h"
 #include "libdivecomputer.h"
 #include "connectionlistmodel.h"
 #if BT_SUPPORT

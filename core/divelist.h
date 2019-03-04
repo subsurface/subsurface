@@ -2,14 +2,14 @@
 #ifndef DIVELIST_H
 #define DIVELIST_H
 
+#include "dive.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* this is used for both git and xml format */
 #define DATAFORMAT_VERSION 3
-
-struct dive;
 
 extern void update_cylinder_related_info(struct dive *);
 extern void mark_divelist_changed(bool);
@@ -33,10 +33,12 @@ extern char *get_dive_gas_string(const struct dive *dive);
 
 extern struct dive **grow_dive_table(struct dive_table *table);
 extern int dive_table_get_insertion_index(struct dive_table *table, struct dive *dive);
+extern void add_to_dive_table(struct dive_table *table, int idx, struct dive *dive);
 extern void add_single_dive(int idx, struct dive *dive);
 extern void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
 extern int get_divenr(const struct dive *dive);
 extern struct dive_trip *unregister_dive_from_trip(struct dive *dive);
+extern void remove_dive(struct dive_table *table, const struct dive *dive);
 extern void remove_dive_from_trip(struct dive *dive, struct trip_table *trip_table_arg);
 extern dive_trip_t *alloc_trip(void);
 extern dive_trip_t *create_trip_from_dive(struct dive *dive);

@@ -15,7 +15,7 @@
 
 #include "gettext.h"
 
-#include "dive.h"
+#include "divesite.h"
 #include "subsurface-string.h"
 #include "divelist.h"
 #include "device.h"

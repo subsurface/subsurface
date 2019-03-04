@@ -13,6 +13,7 @@
 #include "gettext.h"
 
 #include "uemis.h"
+#include "divesite.h"
 #include <libdivecomputer/parser.h>
 #include <libdivecomputer/version.h>
 
