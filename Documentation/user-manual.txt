@@ -150,7 +150,7 @@ temperatures and SAC; total time and number of dives selected).
 
 [[S_ViewPanels]]
 
-image::images/main_window_f22.jpg["The Main Window",align="center"]
+image::images/MainWindow.jpg["The Main Window",align="center"]
 
 Decide which of the four panels are displayed by selecting the
 *View* option on the main menu. This feature has several choices of display:
@@ -1975,7 +1975,7 @@ Poseidon and APD equipment can be found in xref:_appendix_b_dive_computer_specif
 
 === Using the Dive Map to obtain more dive information
 
-The Dive Map has a number of buttons useful for manipulation several aspects of a dive. These are:
+The Dive Map has buttons useful for obtaining spatial information about a dive. These are:
 
 [icon="images/icons/MapViewMode.jpg"]
 [NOTE]
@@ -2510,6 +2510,66 @@ an existing marker a menu appears, adding options to allow deletion of the
 marker, or to allow all markers of that type to be hidden. Hidden events can be
 restored to view by selecting Unhide all events from the context menu.
 
+[[S_Filter]]
+=== Filtering the dive list
+
+The dives in the *Dive List* can be filtered, selecting only some
+of the dives based on attributes such as dive tags, dive site, divemaster or buddy.
+For instance, filtering lets you list the dives during a particular year at a specific
+dive site, or otherwise the cave dives with a particular buddy. Filtering can be performed
+based on any information in the _Info Panel_.
+
+To open the filter, select _Log ->  Filter divelist_ from the main menu. This replaces the
+_Dive Map Panel_ with a _Filter Panel_. The top window bar contains the number of dives that satisfy the
+current selections of the filter (see image below).
+
+image::images/FilterWindowBar.jpg["Figure: Filter Window Bar",align="center"]
+
+When opened, the filter contains default values that include all the dives in the _Dive list_. Filter the
+_Dive list_ by either changing some of the default values in the panel, or by typing specific
+values or words in any of the text boxes. For instance, in the image below the open circuit dives using
+a drysuit at a specific location (Simonstad) are shown in the _Dive list_. There is no button to
+activate the filter action: the action of typing text into a textbox or specifying a range
+in any of the fields automatically performs the filtering. 
+
+During filtering the Dive Mode (Open circuit, CCR, pSCR, Freedive) is added to the tag list of a dive, allowing
+only specific types of dive (e.g. CCR) to be selected in the tag attribute of the filter. This is
+useful for rebreather divers and free divers who also do some open circuit diving.
+
+image::images/FilterPanel.jpg["Figure: Filter panel",align="center"]
+
+The filter criteria can be any of the following: 
+
+1) Using different text boxes in the _Filter panel_ performs an AND operator on different attributes. For example,
+   typing "Peter" for the Persons attribute and "Sipadan" for the Location attribute results in a dive list containing
+   all dives with Peter at Sipadan.
+
+2) Within a single attribute the "All of" criterion implements an AND operator. For the _People_ attribute in
+   the image below, the filtered dive list contains the dives for which BOTH Bob Smith AND Stefan Schultz
+   were listed as dive buddies/divemaster based on the People information in the _Info Panel_.
+
+3) The "Any of" criterion implements an OR operator. For the _Location_ attribute in the image below,
+   the filtered dive list contains dives performed EITHER at Simonstad OR at Hout Bay.
+
+4) The "None of" criterion implements a NOT function. For the _Suit_ attribute in the image below,
+   the dive list EXCLUDES all the dives during which a drysuit was used.
+
+5) Empty field. For the _Tags_ and _Notes_ attributes in the image below, an empty text box results
+   in these attributes being not being considered during filtering.
+
+image::images/FilterOptions.jpg["Figure: Filter options",align="center"]
+
+At the top of the _Filter Panel_ the *yellow up-arrow* is used for resetting the filter to show all dives,
+and a *red button* with white cross closes the filter panel. 
+
+IMPORTANT: The filter action can only be stopped by using the _Reset Filter_ button (yellow up-arrow) or
+by manually clearing all the filter text boxes. Closing the _Filter Panel_ does not terminate
+filtering: the filtered dive list remains unchanged. This is obvious from the top bar of the _Subsurface_
+window indicating that only some of all the dives are shown. Closing the _Filter Panel_ activates the _Map Panel_,
+allowing viewing the map locations of the filtered dive list. For instance one might wish to filter on
+Bob Smith as a buddy. Closing the _Filter Panel_ allows viewing the map locations where Bob Smith was a buddy.
+To re-open the _Filter Panel_ in this case, select _Log ->  Filter divelist_ from the _Main Menu_.
+
 == Organizing the logbook (Manipulating groups of dives)
 
 [[S_DiveListContextMenu]]
@@ -2696,34 +2756,6 @@ Important actions on dives or trips, described above, can be undone or redone.
 This includes: _delete dives_, _merge dives_, _split selected dives_, _renumber dives_ and _shift dive times_.
 To do this after performing any of these actions, from the *Main Menu* select
 _Edit_. This brings up the possibility to _Undo_ or _Redo_ an action.
-
-
-[[S_Filter]]
-=== Filtering the dive list
-
-The dives in the *Dive List* panel can be filtered, selecting only some
-of the dives based on their attributes, e.g. dive tags, dive site, divemaster or buddy.
-For instance, filtering lets you list the dives during a particular year at a specific
-dive site, or otherwise the cave dives with a particular buddy.
-
-To open the filter, select _Log ->  Filter divelist_ from the main menu. This replaces the
-_Dive Map_ with a filter panel. The top line contains the number of dives that satisfy the
-current selections of the filter, a *yellow up-arrow* for resetting the filter to show all dives,
-and a *red button* with white cross to close the filter panel. When opened, the filter
-contains default values that include all the dives in the _Dive list_. Filter the
-_Dive list_ by either changing some of the default values in the panel, or by typing specific
-values or words in any of the text boxes. For instance, in the image below the dives for
-a specific location (Simonstad) are shown in the _Dive list_. There is no button to
-perform the filter action: The action of typing text into a textbox or specifying a range
-in any of the fields automatically performs the filtering. 
-
-In our case, below, the top lefthand shows that the _Dive list_ contains 39 dives at that location
-and all trips and dives to that location are shown in the _Dive list_.
-
-image::images/Filterpanel.jpg["Figure: Filter panel",align="center"]
-
-Filter criteria can be inverted by selecting, in the appropriate dropdown list, "None of" instead of "All of", or
-"Doesn't match" instead of "Matches". 
 
 [[S_ExportLog]]
 == Exporting the dive log or parts of the dive log
