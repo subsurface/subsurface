@@ -14,6 +14,7 @@
 #include "qt-models/divetripmodel.h"
 #include "qt-models/divelocationmodel.h"
 #include "core/qthelper.h"
+#include "core/divesite.h"
 #include "desktop-widgets/simplewidgets.h"
 
 #include <QCompleter>

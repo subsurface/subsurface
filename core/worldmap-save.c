@@ -10,6 +10,7 @@
 #include <stdio.h>
 
 #include "membuffer.h"
+#include "divesite.h"
 #include "save-html.h"
 #include "worldmap-save.h"
 #include "worldmap-options.h"

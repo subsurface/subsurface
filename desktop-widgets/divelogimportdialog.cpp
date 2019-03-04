@@ -11,6 +11,7 @@
 #include <QUndoStack>
 #include <QPainter>
 #include "core/qthelper.h"
+#include "core/divesite.h"
 #include "core/import-csv.h"
 
 static QString subsurface_mimedata = "subsurface/csvcolumns";

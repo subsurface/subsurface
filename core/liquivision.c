@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include "ssrf.h"
-#include "dive.h"
+#include "divesite.h"
 #include "divelist.h"
 #include "file.h"
 #include "strndup.h"

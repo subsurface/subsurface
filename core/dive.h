@@ -12,7 +12,6 @@
 #include <zip.h>
 #include <string.h>
 #include <sys/stat.h>
-#include "divesite.h"
 
 #include "units.h"
 
@@ -289,6 +288,8 @@ typedef struct trip_table {
 } trip_table_t;
 
 struct picture;
+struct dive_site;
+struct dive_site_table;
 struct dive {
 	int number;
 	bool notrip; /* Don't autogroup this dive to a trip */
@@ -747,12 +748,12 @@ extern void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_de
  * Note: we have to use the typedef "dive_table_t" instead of "struct dive_table",
  * because MOC removes the "struct", but dive_table is already the name of a global
  * variable, leading to compilation errors. Likewise for "struct trip_table" and
- * "struct dive_site_table". */
+ * "struct dive_site_table" (defined in "divesite.h"). */
+#include <QObject>
 Q_DECLARE_METATYPE(struct dive *);
 Q_DECLARE_METATYPE(struct dive_trip *);
 Q_DECLARE_METATYPE(dive_table_t *);
 Q_DECLARE_METATYPE(trip_table_t *);
-Q_DECLARE_METATYPE(dive_site_table_t *);
 
 #endif
 

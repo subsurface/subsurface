@@ -3,6 +3,7 @@
 #include "qt-models/models.h"
 #include "core/display.h"
 #include "core/qthelper.h"
+#include "core/divesite.h"
 #include "core/subsurface-string.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
 #include "qt-models/divetripmodel.h"
