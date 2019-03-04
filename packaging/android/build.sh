@@ -287,7 +287,6 @@ if [ "$QUICK" = "" ] ; then
 	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libgit2
 	if [ ! -e "$PKG_CONFIG_LIBDIR/libgit2.pc" ] ; then
 		# We don't want to find the HTTP_Parser package of the build host by mistake
-		perl -pi -e 's/FIND_PACKAGE\(HTTP_Parser\)/#FIND_PACKAGE(HTTP_Parser)/' libgit2/CMakeLists.txt
 		mkdir -p libgit2-build-"$ARCH"
 		pushd libgit2-build-"$ARCH"
 		cmake \
@@ -301,6 +300,7 @@ if [ "$QUICK" = "" ] ; then
 			-DOPENSSL_CRYPTO_LIBRARY="$PREFIX"/lib/libcrypto.so \
 			-DOPENSSL_INCLUDE_DIR="$PREFIX"/include/openssl \
 			-D_OPENSSL_VERSION="${OPENSSL_VERSION}" \
+			-DCMAKE_DISABLE_FIND_PACKAGE_HTTP_Parser=TRUE \
 			../libgit2/
 		make
 		make install
