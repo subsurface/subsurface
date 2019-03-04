@@ -12,8 +12,8 @@
 #include <zip.h>
 #include <libxslt/transform.h>
 
-#include "dive.h"
 #include "subsurface-string.h"
+#include "divesite.h"
 #include "divelist.h"
 #include "display.h"
 #include "planner.h"
@@ -872,7 +872,7 @@ static MAKE_GET_INSERTION_INDEX(trip_table, struct dive_trip *, trips, trip_less
 		}									\
 	}
 
-static MAKE_ADD_TO(dive_table, struct dive *, dives)
+MAKE_ADD_TO(dive_table, struct dive *, dives)
 static MAKE_ADD_TO(trip_table, struct dive_trip *, trips)
 
 #define MAKE_REMOVE_FROM(table_type, array_name)				\
@@ -916,7 +916,7 @@ static MAKE_GET_IDX(trip_table, struct dive_trip *, trips)
 MAKE_SORT(dive_table, struct dive *, dives, comp_dives)
 MAKE_SORT(trip_table, struct dive_trip *, trips, comp_trips)
 
-static void remove_dive(struct dive_table *table, const struct dive *dive)
+void remove_dive(struct dive_table *table, const struct dive *dive)
 {
 	int idx = get_idx_in_dive_table(table, dive);
 	if (idx >= 0)

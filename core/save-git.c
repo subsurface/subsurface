@@ -17,7 +17,7 @@
 #include <fcntl.h>
 #include <git2.h>
 
-#include "dive.h"
+#include "divesite.h"
 #include "subsurface-string.h"
 #include "divelist.h"
 #include "device.h"

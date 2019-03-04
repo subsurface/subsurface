@@ -3,7 +3,7 @@
 
 #include <QAbstractTableModel>
 #include <vector>
-#include "core/dive.h"
+#include "core/divesite.h"
 
 class DiveImportedModel : public QAbstractTableModel
 {

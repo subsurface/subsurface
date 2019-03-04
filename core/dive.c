@@ -10,6 +10,7 @@
 #include "libdivecomputer.h"
 #include "device.h"
 #include "divelist.h"
+#include "divesite.h"
 #include "qthelper.h"
 #include "metadata.h"
 #include "membuffer.h"

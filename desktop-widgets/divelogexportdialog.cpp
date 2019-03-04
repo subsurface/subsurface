@@ -15,7 +15,7 @@
 #include "core/settings/qPrefDisplay.h"
 #include "desktop-widgets/mainwindow.h"
 #include "profile-widget/profilewidget2.h"
-#include "core/dive.h"  // Allows access to helper functions in TeX export.
+#include "core/divesite.h"
 
 // Retrieves the current unit settings defined in the Subsurface preferences.
 #define GET_UNIT(name, field, f, t)           \
