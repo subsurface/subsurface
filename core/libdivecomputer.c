@@ -14,7 +14,7 @@
 #include <fcntl.h>
 #include <time.h>
 #include "gettext.h"
-#include "dive.h"
+#include "divesite.h"
 #include "subsurface-string.h"
 #include "device.h"
 #include "divelist.h"

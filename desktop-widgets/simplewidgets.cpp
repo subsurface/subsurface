@@ -13,6 +13,7 @@
 #include <QClipboard>
 
 #include "core/file.h"
+#include "core/divesite.h"
 #include "desktop-widgets/mainwindow.h"
 #include "core/qthelper.h"
 #include "libdivecomputer/parser.h"

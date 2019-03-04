@@ -2,7 +2,7 @@
 #include "testgitstorage.h"
 #include "git2.h"
 
-#include "core/dive.h"
+#include "core/divesite.h"
 #include "core/divelist.h"
 #include "core/file.h"
 #include "core/qthelper.h"

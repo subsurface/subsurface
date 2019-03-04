@@ -4,7 +4,7 @@
 #ifndef COMMAND_BASE_H
 #define COMMAND_BASE_H
 
-#include "core/dive.h"
+#include "core/divesite.h"
 
 #include <QUndoCommand>
 #include <QCoreApplication>	// For Q_DECLARE_TR_FUNCTIONS

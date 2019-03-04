@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <libdivecomputer/parser.h>
 
-#include "dive.h"
+#include "divesite.h"
 #include "subsurface-string.h"
 #include "parse.h"
 #include "divelist.h"

@@ -2,6 +2,7 @@
 #include "core/units.h"
 #include "qt-models/divelocationmodel.h"
 #include "core/qthelper.h"
+#include "core/divesite.h"
 #include <QDebug>
 #include <QLineEdit>
 #include <QIcon>
