@@ -433,16 +433,15 @@ cmake $MOBILE_CMAKE \
 rm -f ssrf-version.h
 make version
 
+SUBSURFACE_VERSION=$(grep CANONICAL_VERSION_STRING ssrf-version.h | awk '{ print $3 }' | tr -d \")
 if [ ! -z "$SUBSURFACE_MOBILE" ] ; then
 	SUBSURFACE_MOBILE_VERSION=$(grep MOBILE_VERSION_STRING ssrf-version.h | awk '{ print $3 }' | tr -d \" )
-	SUBSURFACE_MOBILE_VERSION="$SUBSURFACE_MOBILE_VERSION ($(grep CANONICAL_VERSION_STRING ssrf-version.h | awk '{ print $3 }' | tr -d \"))"
+	SUBSURFACE_MOBILE_VERSION="$SUBSURFACE_MOBILE_VERSION (${SUBSURFACE_VERSION})"
 
 	rm -rf android-mobile
 	cp -a "$SUBSURFACE_SOURCE/android-mobile" .
 	sed -i -e "s/@SUBSURFACE_MOBILE_VERSION@/$SUBSURFACE_MOBILE_VERSION/;s/@BUILD_NR@/$BUILD_NR/" android-mobile/AndroidManifest.xml
 else
-	SUBSURFACE_VERSION=$(grep CANONICAL_VERSION_STRING ssrf-version.h | awk '{ print $3 }' | tr -d \")
-
 	# android-mobile is hardcoded in CMakeLists.txt nowadays.
 	rm -rf android-mobile
 	cp -a "$SUBSURFACE_SOURCE/android" android-mobile
