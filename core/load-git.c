@@ -159,9 +159,8 @@ static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 	if (!ds) {
 		ds = get_dive_site_by_gps(&location, &dive_site_table);
 		if (!ds)
-			dive->dive_site = create_dive_site_with_gps("", &location, &dive_site_table);
-		else
-			dive->dive_site = ds;
+			ds = create_dive_site_with_gps("", &location, &dive_site_table);
+		add_dive_to_dive_site(dive, ds);
 	} else {
 		if (dive_site_has_gps_location(ds) && !same_location(&ds->location, &location)) {
 			const char *coords = printGPSCoords(&location);
@@ -183,9 +182,8 @@ static void parse_dive_location(char *line, struct membuffer *str, void *_dive)
 	if (!ds) {
 		ds = get_dive_site_by_name(name, &dive_site_table);
 		if (!ds)
-			dive->dive_site = create_dive_site(name, &dive_site_table);
-		else
-			dive->dive_site = ds;
+			ds = create_dive_site(name, &dive_site_table);
+		add_dive_to_dive_site(dive, ds);
 	} else {
 		// we already had a dive site linked to the dive
 		if (empty_string(ds->name)) {
@@ -212,7 +210,7 @@ static void parse_dive_notes(char *line, struct membuffer *str, void *_dive)
 { UNUSED(line); struct dive *dive = _dive; dive->notes = get_utf8(str); }
 
 static void parse_dive_divesiteid(char *line, struct membuffer *str, void *_dive)
-{ UNUSED(str); struct dive *dive = _dive; dive->dive_site = get_dive_site_by_uuid(get_hex(line), &dive_site_table); }
+{ UNUSED(str); struct dive *dive = _dive; add_dive_to_dive_site(dive, get_dive_site_by_uuid(get_hex(line), &dive_site_table)); }
 
 /*
  * We can have multiple tags in the membuffer. They are separated by

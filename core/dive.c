@@ -650,8 +650,10 @@ void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_compo
 		d->rating = s->rating;
 	if (what.visibility)
 		d->visibility = s->visibility;
-	if (what.divesite)
-		d->dive_site = s->dive_site;
+	if (what.divesite) {
+		unregister_dive_from_dive_site(d);
+		add_dive_to_dive_site(d, s->dive_site);
+	}
 	if (what.tags)
 		STRUCTURED_LIST_COPY(struct tag_entry, s->tag_list, d->tag_list, copy_tl);
 	if (what.cylinders)
@@ -2924,12 +2926,21 @@ static int likely_same_dive(const struct dive *a, const struct dive *b)
  * be the old dive and dive b is supposed to be the newly imported
  * dive. If the flag "prefer_downloaded" is set, data of the latter
  * will take priority over the former.
+ *
+ * Attn: The dive_site parameter of the dive will be set, but the caller
+ * still has to register the dive in the dive site!
  */
 struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded)
 {
-	if (likely_same_dive(a, b))
-		return merge_dives(a, b, 0, prefer_downloaded, NULL);
-	return NULL;
+	struct dive *res;
+	struct dive_site *site;
+
+	if (!likely_same_dive(a, b))
+		return NULL;
+
+	res = merge_dives(a, b, 0, prefer_downloaded, NULL, &site);
+	res->dive_site = site; /* Caller has to call add_dive_to_dive_site()! */
+	return res;
 }
 
 void free_events(struct event *ev)
@@ -3375,10 +3386,12 @@ bool has_planned(const struct dive *dive, bool planned) {
  * will take priority over the former.
  *
  * The trip the new dive should be associated with (if any) is returned
- * in the "trip" output paramater. If "trip" is NULL, then the dive will
- * instead be added to this trip.
+ * in the "trip" output parameter.
+ *
+ * The dive site the new dive should be added to (if any) is returned
+ * in the "dive_site" output parameter.
  */
-struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset, bool prefer_downloaded, struct dive_trip **trip)
+struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset, bool prefer_downloaded, struct dive_trip **trip, struct dive_site **site)
 {
 	struct dive *res = alloc_dive();
 	int cylinders_map_a[MAX_CYLINDERS], cylinders_map_b[MAX_CYLINDERS];
@@ -3425,10 +3438,7 @@ struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset,
 		join_dive_computers(res, &res->dc, &a->dc, &b->dc, cylinders_map_a, cylinders_map_b, 0);
 
 	/* we take the first dive site, unless it's empty */
-	if (a->dive_site && !dive_site_is_empty(a->dive_site))
-		res->dive_site = a->dive_site;
-	else
-		res->dive_site = b->dive_site;
+	*site = a->dive_site && !dive_site_is_empty(a->dive_site) ? a->dive_site : b->dive_site;
 	fixup_dive(res);
 	return res;
 }
@@ -3966,7 +3976,8 @@ static void dive_set_geodata_from_picture(struct dive *dive, struct picture *pic
 		if (ds) {
 			ds->location = picture->location;
 		} else {
-			dive->dive_site = create_dive_site_with_gps("", &picture->location, table);
+			ds = create_dive_site_with_gps("", &picture->location, table);
+			add_dive_to_dive_site(dive, ds);
 			invalidate_dive_cache(dive);
 		}
 	}

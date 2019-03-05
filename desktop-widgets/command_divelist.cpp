@@ -64,9 +64,10 @@ DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<OwningTripPtr> &t
 	if (res.idx < 0)
 		qWarning() << "Deletion of unknown dive!";
 
-	// remove dive from trip - if this is the last dive in the trip
+	// remove dive from trip and site - if this is the last dive in the trip
 	// remove the whole trip.
 	res.trip = unregister_dive_from_trip(d);
+	res.site = unregister_dive_from_dive_site(d);
 	if (res.trip && res.trip->dives.nr == 0) {
 		unregister_trip(res.trip, &trip_table);	// Remove trip from backend
 		tripsToAdd.emplace_back(res.trip);	// Take ownership of trip
@@ -84,6 +85,8 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 {
 	if (d.trip)
 		add_dive_to_trip(d.dive.get(), d.trip);
+	if (d.site)
+		add_dive_to_dive_site(d.dive.get(), d.site);
 	dive *res = d.dive.release();		// Give up ownership of dive
 
 	// Set the filter flag according to current filter settings
@@ -514,9 +517,11 @@ AddDive::AddDive(dive *d, const QString &newDS, bool autogroup, bool newNumber)
 	// If we alloc a new-trip for autogrouping, get an owning pointer to it.
 	OwningTripPtr allocTrip;
 	dive_trip *trip = divePtr->divetrip;
-	// We have to delete the pointer-to-trip, because this would prevent the core from adding to the trip
-	// and we would get the count-of-dives in the trip wrong. Yes, that's all horribly subtle!
+	dive_site *site = divePtr->dive_site;
+	// We have to delete the pointers to trip and site, because this would prevent the core from adding to the
+	// trip or site and we would get the count-of-dives in the trip or site wrong. Yes, that's all horribly subtle!
 	divePtr->divetrip = nullptr;
+	divePtr->dive_site = nullptr;
 	if (!trip && autogroup) {
 		bool alloc;
 		trip = get_trip_for_new_dive(divePtr.get(), &alloc);
@@ -528,7 +533,7 @@ AddDive::AddDive(dive *d, const QString &newDS, bool autogroup, bool newNumber)
 	if (newNumber)
 		divePtr->number = get_dive_nr_at_idx(idx);
 
-	divesToAdd.dives.push_back({ std::move(divePtr), trip, idx });
+	divesToAdd.dives.push_back({ std::move(divePtr), trip, site, idx });
 	if (allocTrip)
 		divesToAdd.trips.push_back(std::move(allocTrip));
 }
@@ -597,13 +602,15 @@ ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, str
 		divePtr->selected = false; // See above in AddDive::AddDive()
 		dive_trip *trip = divePtr->divetrip;
 		divePtr->divetrip = nullptr; // See above in AddDive::AddDive()
+		dive_site *site = divePtr->dive_site;
+		divePtr->dive_site = nullptr; // See above in AddDive::AddDive()
 		int idx = dive_table_get_insertion_index(&dive_table, divePtr.get());
 
 		// Note: The dives are added in reverse order of the divesToAdd array.
 		// This, and the fact that we populate the array in chronological order
 		// means that wo do *not* have to manipulated the indices.
 		// Yes, that's all horribly subtle.
-		divesToAdd.dives.push_back({ std::move(divePtr), trip, idx });
+		divesToAdd.dives.push_back({ std::move(divePtr), trip, site, idx });
 	}
 
 	// Add dive to be deleted to the divesToRemove structure
@@ -923,7 +930,8 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 	}
 
 	dive_trip *preferred_trip;
-	OwningDivePtr d(merge_dives(dives[0], dives[1], dives[1]->when - dives[0]->when, false, &preferred_trip));
+	dive_site *preferred_site;
+	OwningDivePtr d(merge_dives(dives[0], dives[1], dives[1]->when - dives[0]->when, false, &preferred_trip, &preferred_site));
 
 	// Currently, the core code selects the dive -> this is not what we want, as
 	// we manually manage the selection post-command.
@@ -933,13 +941,15 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 	// Set the preferred dive trip, so that for subsequent merges the better trip can be selected
 	d->divetrip = preferred_trip;
 	for (int i = 2; i < dives.count(); ++i) {
-		d.reset(merge_dives(d.get(), dives[i], dives[i]->when - d->when, false, &preferred_trip));
-		// Set the preferred dive trip, so that for subsequent merges the better trip can be selected
+		d.reset(merge_dives(d.get(), dives[i], dives[i]->when - d->when, false, &preferred_trip, &preferred_site));
+		// Set the preferred dive trip and site, so that for subsequent merges the better trip and site can be selected
 		d->divetrip = preferred_trip;
+		d->dive_site = preferred_site;
 	}
 
-	// We got our preferred trip, so now the reference can be deleted from the newly generated dive
+	// We got our preferred trip and site, so now the references can be deleted from the newly generated dive
 	d->divetrip = nullptr;
+	d->dive_site = nullptr;
 
 	// The merged dive gets the number of the first dive
 	d->number = dives[0]->number;

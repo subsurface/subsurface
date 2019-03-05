@@ -339,7 +339,8 @@ void merge_dive_sites(struct dive_site *ref, struct dive_site *dive_sites[], int
 		for_each_dive(curr_dive, d) {
 			if (d->dive_site != dive_sites[i] )
 				continue;
-			d->dive_site = ref;
+			unregister_dive_from_dive_site(d);
+			add_dive_to_dive_site(d, ref);
 			invalidate_dive_cache(d);
 		}
 	}
@@ -377,7 +378,7 @@ void purge_empty_dive_sites(struct dive_site_table *table)
 			continue;
 		for_each_dive(j, d) {
 			if (d->dive_site == ds)
-				d->dive_site = NULL;
+				unregister_dive_from_dive_site(d);
 		}
 	}
 }
@@ -387,8 +388,10 @@ void add_dive_to_dive_site(struct dive *d, struct dive_site *ds)
 	int idx;
 	if (d->dive_site == ds)
 		return;
-	if (d->dive_site)
+	if (d->dive_site) {
 		fprintf(stderr, "Warning: adding dive that has dive site set to dive site\n");
+		unregister_dive_from_dive_site(d);
+	}
 	idx = dive_table_get_insertion_index(&ds->dives, d);
 	add_to_dive_table(&ds->dives, idx, d);
 	d->dive_site = ds;

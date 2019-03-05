@@ -47,7 +47,8 @@ static void copy_gps_location(struct dive *from, struct dive *to)
 		struct dive_site *gds = get_dive_site_for_dive(from);
 		if (!ds) {
 			// simply link to the one created for the fake dive
-			to->dive_site = gds;
+			unregister_dive_from_dive_site(to);
+			add_dive_to_dive_site(to, gds);
 		} else {
 			ds->latitude = gds->latitude;
 			ds->longitude = gds->longitude;
