@@ -186,6 +186,13 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
         # in some builds we appear to be missing libz for some strange reason...
 	# Add ssh2 at the end for openSUSE builds (for recent cmake?)
         set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lssh2 -lz -lpthread)
+
+        # Test for ARM processor (Raspberry Pi) and add libGLESv2 if found
+        if (CMAKE_SYSTEM_PROCESSOR STREQUAL "armv7l" OR CMAKE_SYSTEM_PROCESSOR STREQUAL "armv6l")
+                message (STATUS "Found ARM processor. Adding libGLESv2")
+                set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lGLESv2)
+                set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+        endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         execute_process(
                 COMMAND sh scripts/get-version linux
