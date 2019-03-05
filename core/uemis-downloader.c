@@ -996,7 +996,8 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 			int divespot_id = atoi(val);
 			if (divespot_id != -1) {
 				struct dive_site *ds = create_dive_site("from Uemis", devdata->sites);
-				dive->dive_site = ds;
+				unregister_dive_from_dive_site(dive);
+				add_dive_to_dive_site(dive, ds);
 				uemis_mark_divelocation(dive->dc.diveid, divespot_id, ds);
 			}
 #if UEMIS_DEBUG & 2
@@ -1182,7 +1183,8 @@ static void get_uemis_divespot(device_data_t *devdata, const char *mountpath, in
 	
 	if (is_divespot_mappable(divespot_id)) {
 		struct dive_site *ds = get_dive_site_by_divespot_id(divespot_id);
-		dive->dive_site = ds;
+		unregister_dive_from_dive_site(dive);
+		add_dive_to_dive_site(dive, ds);
 	} else if (nds && nds->name && strstr(nds->name,"from Uemis")) {
 		if (load_uemis_divespot(mountpath, divespot_id)) {
 			/* get the divesite based on the diveid, this should give us
@@ -1198,7 +1200,8 @@ static void get_uemis_divespot(device_data_t *devdata, const char *mountpath, in
 				/* if the uuid's are the same, the new site is a duplicate and can be deleted */
 				if (nds->uuid != ods->uuid) {
 					delete_dive_site(nds, devdata->sites);
-					dive->dive_site = ods;
+					unregister_dive_from_dive_site(dive);
+					add_dive_to_dive_site(dive, ods);
 				}
 			}
 			add_to_divespot_mapping(divespot_id, dive->dive_site);

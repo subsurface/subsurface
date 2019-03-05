@@ -12,10 +12,10 @@
 namespace Command {
 
 // This helper structure describes a dive that we want to add.
-// Potentially it also adds a trip (if deletion of the dive resulted in deletion of the trip)
 struct DiveToAdd {
 	OwningDivePtr	 dive;		// Dive to add
 	dive_trip	*trip;		// Trip the dive belongs to, may be null
+	dive_site	*site;		// Site the dive is associated with, may be null
 	int		 idx;		// Position in divelist
 };
 

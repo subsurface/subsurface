@@ -1169,6 +1169,7 @@ void delete_single_dive(int idx)
 	if (dive->selected)
 		deselect_dive(dive);
 	remove_dive_from_trip(dive, &trip_table);
+	unregister_dive_from_dive_site(dive);
 	delete_dive_from_table(&dive_table, idx);
 }
 
@@ -1337,6 +1338,7 @@ static void merge_imported_dives(struct dive_table *table)
 		struct dive *prev = table->dives[i - 1];
 		struct dive *dive = table->dives[i];
 		struct dive *merged;
+		struct dive_site *ds;
 
 		/* only try to merge overlapping dives - or if one of the dives has
 		 * zero duration (that might be a gps marker from the webservice) */
@@ -1347,6 +1349,13 @@ static void merge_imported_dives(struct dive_table *table)
 		merged = try_to_merge(prev, dive, false);
 		if (!merged)
 			continue;
+
+		/* Add dive to dive site; try_to_merge() does not do that! */
+		ds = merged->dive_site;
+		if (ds) {
+			merged->dive_site = NULL;
+			add_dive_to_dive_site(merged, ds);
+		}
 
 		/* Overwrite the first of the two dives and remove the second */
 		free_dive(prev);
@@ -1531,15 +1540,15 @@ void add_imported_dives(struct dive_table *import_table, struct trip_table *impo
 	process_imported_dives(import_table, import_trip_table, import_sites_table, flags,
 			       &dives_to_add, &dives_to_remove, &trips_to_add, &dive_sites_to_add);
 
-	/* Add new dives to trip, so that trips don't get deleted
-	 * on deletion of old dives */
+	/* Add new dives to trip and site to get reference count correct. */
 	for (i = 0; i < dives_to_add.nr; i++) {
 		struct dive *d = dives_to_add.dives[i];
 		struct dive_trip *trip = d->divetrip;
-		if (!trip)
-			continue;
+		struct dive_site *site = d->dive_site;
 		d->divetrip = NULL;
+		d->dive_site = NULL;
 		add_dive_to_trip(d, trip);
+		add_dive_to_dive_site(d, site);
 	}
 
 	/* Remove old dives */
@@ -1716,6 +1725,7 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 
 		if (!old_ds) {
 			/* Dive site doesn't exist. Add it to list of dive sites to be added. */
+			new_ds->dives.nr = 0; /* Caller is responsible for adding dives to site */
 			add_dive_site_to_table(new_ds, sites_to_add);
 			continue;
 		}
