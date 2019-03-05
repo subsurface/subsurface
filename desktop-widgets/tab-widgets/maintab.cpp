@@ -689,7 +689,8 @@ struct dive_site *MainTab::updateDiveSite(struct dive_site *pickedDs, dive *d)
 		}
 	}
 
-	d->dive_site = pickedDs;
+	unregister_dive_from_dive_site(d);
+	add_dive_to_dive_site(d, pickedDs);
 	qDebug() << "Setting the dive site id on the dive:" << pickedDs->uuid;
 	return pickedDs;
 }

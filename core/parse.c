@@ -415,14 +415,14 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 	char *buffer = ds_name;
 	char *to_free = NULL;
 	int size = trimspace(buffer);
-	if(size) {
+	if (size) {
 		struct dive_site *ds = dive->dive_site;
 		if (!ds) {
-			// if the dive doesn't have a uuid, check if there's already a dive site by this name
+			// if the dive doesn't have a dive site, check if there's already a dive site by this name
 			ds = get_dive_site_by_name(buffer, state->sites);
 		}
 		if (ds) {
-			// we have a uuid, let's hope there isn't a different name
+			// we have a dive site, let's hope there isn't a different name
 			if (empty_string(ds->name)) {
 				ds->name = copy_string(buffer);
 			} else if (!same_string(ds->name, buffer)) {
@@ -432,10 +432,12 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 				// way around
 				struct dive_site *exact_match = get_dive_site_by_gps_and_name(buffer, &ds->location, state->sites);
 				if (exact_match) {
-					dive->dive_site = exact_match;
+					unregister_dive_from_dive_site(dive);
+					add_dive_to_dive_site(dive, exact_match);
 				} else {
 					struct dive_site *newds = create_dive_site(buffer, state->sites);
-					dive->dive_site = newds;
+					unregister_dive_from_dive_site(dive);
+					add_dive_to_dive_site(dive, newds);
 					if (has_location(&state->cur_location)) {
 						// we started this uuid with GPS data, so lets use those
 						newds->location = state->cur_location;
@@ -444,12 +446,13 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 					}
 					newds->notes = add_to_string(newds->notes, translate("gettextFromC", "additional name for site: %s\n"), ds->name);
 				}
-			} else {
+			} else if (dive->dive_site != ds) {
 				// add the existing dive site to the current dive
-				dive->dive_site = ds;
+				unregister_dive_from_dive_site(dive);
+				add_dive_to_dive_site(dive, ds);
 			}
 		} else {
-			dive->dive_site = create_dive_site(buffer, state->sites);
+			add_dive_to_dive_site(dive, create_dive_site(buffer, state->sites));
 		}
 	}
 	free(to_free);
