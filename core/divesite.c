@@ -176,18 +176,16 @@ int nr_of_dives_at_dive_site(struct dive_site *ds, bool select_only)
 
 bool is_dive_site_used(struct dive_site *ds, bool select_only)
 {
-	int j;
-	bool found = false;
-	struct dive *d;
-	if (!ds)
-		return false;
-	for_each_dive(j, d) {
-		if (d->dive_site == ds && (!select_only || d->selected)) {
-			found = true;
-			break;
-		}
+	int i;
+
+	if (!select_only)
+		return ds->dives.nr > 0;
+
+	for (i = 0; i < ds->dives.nr; i++) {
+		if (ds->dives.dives[i]->selected)
+			return true;
 	}
-	return found;
+	return false;
 }
 
 void free_dive_site(struct dive_site *ds)
