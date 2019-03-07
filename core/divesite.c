@@ -159,19 +159,9 @@ struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *
 	return ds;
 }
 
-int nr_of_dives_at_dive_site(struct dive_site *ds, bool select_only)
+int nr_of_dives_at_dive_site(struct dive_site *ds)
 {
-	int j;
-	int nr = 0;
-	struct dive *d;
-	if (!ds)
-		return 0;
-	for_each_dive(j, d) {
-		if (d->dive_site == ds && (!select_only || d->selected)) {
-			nr++;
-		}
-	}
-	return nr;
+	return ds->dives.nr;
 }
 
 bool is_dive_site_used(struct dive_site *ds, bool select_only)

@@ -498,7 +498,7 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 		} else {
 			int distanceMeters = get_distance(&ds->location, &currentDiveSite->location);
 			QString distance = distance_string(distanceMeters);
-			int nr = nr_of_dives_at_dive_site(ds, false);
+			int nr = nr_of_dives_at_dive_site(ds);
 			bottomText += tr(" (~%1 away").arg(distance);
 			bottomText += tr(", %n dive(s) here)", "", nr);
 		}
