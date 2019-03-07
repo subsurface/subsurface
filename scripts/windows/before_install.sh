@@ -9,7 +9,7 @@ git pull --tags
 git describe
 
 # grab our own custom MXE environment
-cd ${TRAVIS_BUILD_DIR}/..
+pushd ${TRAVIS_BUILD_DIR}/..
 echo "Downloading prebuilt MXE environment from Subsurface-divelog.org"
 wget -q http://subsurface-divelog.org/downloads/mxe-994ad473.tar.xz
 mkdir -p mxe
@@ -21,14 +21,7 @@ sudo mkdir -p /data/winqt551/
 sudo ln -s ${TRAVIS_BUILD_DIR}/../mxe /data/winqt551/mxe-current
 ls -l /data/winqt551/mxe-current/usr
 sudo ln -s ${TRAVIS_BUILD_DIR}/../mxe /usr/src/mxe
-
-# libdivecomputer uses the wrong include path for libusb
-# the pkgconfig file for libusb already gives the include path as
-# ../include/libusb-1.0  yet libdivecomputer wants to use
-# include <libusb-1.0/libusb.h>
-cd usr/i686-w64-mingw32.shared/include/libusb-1.0
-ln -s . libusb-1.0
-cd ${TRAVIS_BUILD_DIR}/..
+popd
 
 # now set up our other dependencies
 
