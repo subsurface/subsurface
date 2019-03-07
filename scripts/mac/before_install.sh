@@ -15,13 +15,6 @@ git fetch --unshallow
 git pull --tags
 git describe
 
-# libdivecomputer uses the wrong include path for libusb and hidapi
-# the pkgconfig file for libusb/hidapi already gives the include path as
-# ../include/libusb-1.0 (../include/hidapi) yet libdivecomputer wants to use
-# include <libusb-1.0/libusb.h> and include <hidapi/hidapi.h>
-sudo ln -s /usr/local/include/libusb-1.0 /usr/local/include/libusb-1.0/libusb-1.0
-sudo ln -s /usr/local/include/hidapi /usr/local/include/libusb-1.0/hidapi
-
 # prep things so we can build for Mac
 # we have a custom built Qt some gives us just what we need, including QtWebKit
 #

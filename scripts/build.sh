@@ -308,12 +308,6 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	make -j4 -k
 	make -k install
 	popd
-else
-	# we are getting libusb and hidapi from pkg-config and that goes wrong
-	# or more specifically, the way libdivecomputer references
-	# the include files goes wrong
-	pkg-config --exists libusb-1.0 && LIBDC_CFLAGS=-I$(dirname $(pkg-config --cflags libusb-1.0 | sed -e 's/^-I//'))
-	pkg-config --exists hidapi && LIBDC_CFLAGS="${LIBDC_CFLAGS} -I$(dirname $(pkg-config --cflags hidapi | sed -e 's/^-I//'))"
 fi
 
 
