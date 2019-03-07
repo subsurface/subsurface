@@ -53,7 +53,7 @@ void register_dive_site(struct dive_site *ds);
 void unregister_dive_site(struct dive_site *ds);
 struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *ds_table);
 struct dive_site *alloc_dive_site();
-int nr_of_dives_at_dive_site(struct dive_site *ds, bool select_only);
+int nr_of_dives_at_dive_site(struct dive_site *ds);
 bool is_dive_site_used(struct dive_site *ds, bool select_only);
 void free_dive_site(struct dive_site *ds);
 void unregister_dive_site(struct dive_site *ds);
