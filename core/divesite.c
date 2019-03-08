@@ -102,21 +102,6 @@ struct dive_site *get_dive_site_by_gps_proximity(const location_t *loc, int dist
 	return res;
 }
 
-/* try to create a uniqe ID - fingers crossed */
-static uint32_t dive_site_getUniqId(struct dive_site_table *ds_table)
-{
-	uint32_t id = 0;
-
-	while (id == 0 || get_dive_site_by_uuid(id, ds_table)) {
-		id = rand() & 0xff;
-		id |= (rand() & 0xff) << 8;
-		id |= (rand() & 0xff) << 16;
-		id |= (rand() & 0xff) << 24;
-	}
-
-	return id;
-}
-
 void register_dive_site(struct dive_site *ds)
 {
 	add_dive_site_to_table(ds, &dive_site_table);
@@ -127,6 +112,15 @@ void add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *ds_tab
 	int nr = ds_table->nr;
 	int allocated = ds_table->allocated;
 	struct dive_site **sites = ds_table->dive_sites;
+
+	/* Take care to never have the same uuid twice. This could happen on
+	 * reimport of a log where the dive sites have diverged */
+	while (ds->uuid == 0 || get_dive_site_by_uuid(ds->uuid, ds_table) != NULL) {
+		ds->uuid = rand() & 0xff;
+		ds->uuid |= (rand() & 0xff) << 8;
+		ds->uuid |= (rand() & 0xff) << 16;
+		ds->uuid |= (rand() & 0xff) << 24;
+	}
 
 	if (nr >= allocated) {
 		allocated = (nr + 32) * 3 / 2;
@@ -146,10 +140,6 @@ struct dive_site *alloc_dive_site()
 	ds = calloc(1, sizeof(*ds));
 	if (!ds)
 		exit(1);
-	ds->uuid = rand() & 0xff;
-	ds->uuid |= (rand() & 0xff) << 8;
-	ds->uuid |= (rand() & 0xff) << 16;
-	ds->uuid |= (rand() & 0xff) << 24;
 	return ds;
 }
 
@@ -162,17 +152,10 @@ struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *
 		return ds;
 
 	ds = alloc_dive_site();
+	ds->uuid = uuid;
 
 	add_dive_site_to_table(ds, ds_table);
 
-	// we should always be called with a valid uuid except in the special
-	// case where we want to copy a dive site into the memory we allocated
-	// here - then we need to pass in 0 and create a temporary uuid here
-	// (just so things are always consistent)
-	if (uuid)
-		ds->uuid = uuid;
-	else
-		ds->uuid = dive_site_getUniqId(ds_table);
 	return ds;
 }
 
