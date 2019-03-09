@@ -3,6 +3,8 @@
 #include "qt-models/divelocationmodel.h"
 #include "core/qthelper.h"
 #include "core/divesite.h"
+#include "core/metrics.h"
+#include "cleanertablemodel.h" // for trashIcon();
 #include <QDebug>
 #include <QLineEdit>
 #include <QIcon>
@@ -23,14 +25,55 @@ LocationInformationModel::LocationInformationModel(QObject *obj) : QAbstractTabl
 {
 }
 
-int LocationInformationModel::columnCount(const QModelIndex&) const
+int LocationInformationModel::columnCount(const QModelIndex &) const
 {
 	return COLUMNS;
 }
 
-int LocationInformationModel::rowCount(const QModelIndex&) const
+int LocationInformationModel::rowCount(const QModelIndex &) const
 {
 	return dive_site_table.nr;
+}
+
+QVariant LocationInformationModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+	if (orientation == Qt::Vertical)
+		return QVariant();
+
+	switch (role) {
+	case Qt::TextAlignmentRole:
+		return int(Qt::AlignLeft | Qt::AlignVCenter);
+	case Qt::FontRole:
+		return defaultModelFont();
+	case Qt::InitialSortOrderRole:
+		// By default, sort number of dives descending, everything else ascending.
+		return section == NUM_DIVES ? Qt::DescendingOrder : Qt::AscendingOrder;
+	case Qt::DisplayRole:
+	case Qt::ToolTipRole:
+		switch (section) {
+		case NAME:
+			return tr("Name");
+		case DESCRIPTION:
+			return tr("Description");
+		case NUM_DIVES:
+			return tr("# of dives");
+		}
+		break;
+	}
+
+	return QVariant();
+}
+
+Qt::ItemFlags LocationInformationModel::flags(const QModelIndex &index) const
+{
+	switch (index.column()) {
+	case REMOVE:
+		return Qt::ItemIsEnabled;
+	case NAME:
+	case DESCRIPTION:
+		return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+	}
+	return QAbstractItemModel::flags(index);
 }
 
 QVariant LocationInformationModel::getDiveSiteData(const struct dive_site *ds, int column, int role)
@@ -40,10 +83,11 @@ QVariant LocationInformationModel::getDiveSiteData(const struct dive_site *ds, i
 
 	switch(role) {
 	case Qt::EditRole:
-	case Qt::DisplayRole :
+	case Qt::DisplayRole:
 		switch(column) {
 		case DIVESITE: return QVariant::fromValue<dive_site *>((dive_site *)ds); // Not nice: casting away const
 		case NAME: return ds->name;
+		case NUM_DIVES: return ds->dives.nr;
 		case LATITUDE: return ds->location.lat.udeg;
 		case LONGITUDE: return ds->location.lon.udeg;
 		case COORDS: return "TODO";
@@ -54,12 +98,19 @@ QVariant LocationInformationModel::getDiveSiteData(const struct dive_site *ds, i
 		case TAXONOMY_3: return "TODO";
 		}
 	break;
-	case Qt::DecorationRole : {
-		if (dive_site_has_gps_location(ds))
-			return QIcon(":geotag-icon");
-		else
-			return QVariant();
-	}
+	case Qt::ToolTipRole:
+		switch(column) {
+		case REMOVE: return tr("Clicking here will remove this divesite.");
+		}
+	break;
+	case Qt::DecorationRole:
+		switch(column) {
+#ifndef SUBSURFACE_MOBILE
+		case REMOVE: return trashIcon();
+#endif
+		case NAME: return dive_site_has_gps_location(ds) ? QIcon(":geotag-icon") : QVariant();
+		}
+	break;
 	case DIVESITE_ROLE:
 		return QVariant::fromValue<dive_site *>((dive_site *)ds); // Not nice: casting away const
 	}

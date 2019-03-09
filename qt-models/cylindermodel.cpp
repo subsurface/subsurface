@@ -29,7 +29,6 @@ QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, in
 
 CylindersModel *CylindersModel::instance()
 {
-
 	static CylindersModel self;
 	return &self;
 }
