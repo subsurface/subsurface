@@ -48,6 +48,7 @@ set (SUBSURFACE_UI
 	tab-widgets/TabDiveInformation.ui
 	tab-widgets/TabDivePhotos.ui
 	tab-widgets/TabDiveExtraInfo.ui
+	tab-widgets/TabDiveSite.ui
 )
 
 # the interface, in C++
@@ -87,6 +88,7 @@ set(SUBSURFACE_INTERFACE
 	tab-widgets/TabDiveInformation.cpp
 	tab-widgets/TabDivePhotos.cpp
 	tab-widgets/TabDiveExtraInfo.cpp
+	tab-widgets/TabDiveSite.cpp
 	tab-widgets/maintab.cpp
 	tab-widgets/TabBase.cpp
 )

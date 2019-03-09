@@ -5,7 +5,6 @@
 #include <QAbstractTableModel>
 #include <QStringListModel>
 #include <QSortFilterProxyModel>
-#include <stdint.h>
 #include "core/units.h"
 
 #define RECENTLY_ADDED_DIVESITE ((struct dive_site *)~0)
@@ -15,7 +14,7 @@ Q_OBJECT
 public:
 	// Common columns, roles and accessor function for all dive-site models.
 	// Thus, different views can connect to different models.
-	enum Columns { DIVESITE, NAME, LATITUDE, LONGITUDE, COORDS, DESCRIPTION, NOTES, TAXONOMY_1, TAXONOMY_2, TAXONOMY_3, COLUMNS};
+	enum Columns { REMOVE, NAME, DESCRIPTION, NUM_DIVES, COORDS, NOTES, LATITUDE, LONGITUDE, DIVESITE, TAXONOMY_1, TAXONOMY_2, TAXONOMY_3, COLUMNS};
 	enum Roles { DIVESITE_ROLE = Qt::UserRole + 1 };
 	static QVariant getDiveSiteData(const struct dive_site *ds, int column, int role);
 
@@ -25,6 +24,8 @@ public:
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	QVariant data(const QModelIndex &index = QModelIndex(), int role = Qt::DisplayRole) const;
 	bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
+	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+	Qt::ItemFlags flags(const QModelIndex &index) const override;
 
 public slots:
 	void update();

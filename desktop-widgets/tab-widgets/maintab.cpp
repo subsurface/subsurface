@@ -33,6 +33,7 @@
 #include "TabDiveInformation.h"
 #include "TabDivePhotos.h"
 #include "TabDiveStatistics.h"
+#include "TabDiveSite.h"
 
 #include <QCompleter>
 #include <QSettings>
@@ -62,6 +63,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Media"));
 	extraWidgets << new TabDiveExtraInfo();
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Extra Info"));
+	extraWidgets << new TabDiveSite();
+	ui.tabWidget->addTab(extraWidgets.last(), tr("Dive sites"));
 
 	ui.dateEdit->setDisplayFormat(prefs.date_format);
 	ui.timeEdit->setDisplayFormat(prefs.time_format);
@@ -205,8 +208,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	acceptingEdit = false;
 
 	ui.diveTripLocation->hide();
-
-
 }
 
 MainTab::~MainTab()
