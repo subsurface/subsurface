@@ -407,7 +407,7 @@ struct dive *unregister_dive(int idx);
 extern void delete_single_dive(int idx);
 
 extern void insert_trip(dive_trip_t *trip, struct trip_table *trip_table_arg);
-extern void remove_trip(dive_trip_t *trip, struct trip_table *trip_table_arg);
+extern void remove_trip(const dive_trip_t *trip, struct trip_table *trip_table_arg);
 extern void free_trip(dive_trip_t *trip);
 extern timestamp_t trip_date(const struct dive_trip *trip);
 
