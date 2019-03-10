@@ -14,6 +14,7 @@
 #include "display.h"
 #include "divelist.h"
 #include "statistics.h"
+#include "units.h"
 
 static void process_temperatures(struct dive *dp, stats_t *stats)
 {
@@ -95,6 +96,7 @@ char *get_minutes(int seconds)
 void calculate_stats_summary(struct stats_summary *out, bool selected_only)
 {
 	int idx;
+	int t_idx, d_idx, r;
 	struct dive *dp;
 	struct tm tm;
 	int current_year = 0;
@@ -104,7 +106,7 @@ void calculate_stats_summary(struct stats_summary *out, bool selected_only)
 	int prev_month = 0, prev_year = 0;
 	int trip_iter = 0;
 	dive_trip_t *trip_ptr = 0;
-	unsigned int size, tsize;
+	size_t size, tsize, dsize, tmsize;
 	stats_t stats = { 0 };
 
 	if (dive_table.nr > 0) {
@@ -119,17 +121,24 @@ void calculate_stats_summary(struct stats_summary *out, bool selected_only)
 
 	size = sizeof(stats_t) * (dive_table.nr + 1);
 	tsize = sizeof(stats_t) * (NUM_DIVEMODE + 1);
+	dsize = sizeof(stats_t) * ((STATS_MAX_DEPTH / STATS_DEPTH_BUCKET) + 1);
+	tmsize = sizeof(stats_t) * ((STATS_MAX_TEMP / STATS_TEMP_BUCKET) + 1);
 	free_stats_summary(out);
 	out->stats_yearly = malloc(size);
 	out->stats_monthly = malloc(size);
 	out->stats_by_trip = malloc(size);
 	out->stats_by_type = malloc(tsize);
-	if (!out->stats_yearly || !out->stats_monthly || !out->stats_by_trip || !out->stats_by_type)
+	out->stats_by_depth = malloc(dsize);
+	out->stats_by_temp = malloc(tmsize);
+	if (!out->stats_yearly || !out->stats_monthly || !out->stats_by_trip ||
+		  !out->stats_by_type || !out->stats_by_depth || !out->stats_by_temp)
 		return;
 	memset(out->stats_yearly, 0, size);
 	memset(out->stats_monthly, 0, size);
 	memset(out->stats_by_trip, 0, size);
 	memset(out->stats_by_type, 0, tsize);
+	memset(out->stats_by_depth, 0, dsize);
+	memset(out->stats_by_temp, 0, tmsize);
 	out->stats_yearly[0].is_year = true;
 
 	/* Setting the is_trip to true to show the location as first
@@ -144,6 +153,12 @@ void calculate_stats_summary(struct stats_summary *out, bool selected_only)
 	out->stats_by_type[3].is_trip = true;
 	out->stats_by_type[4].location = strdup(translate("gettextFromC", divemode_text_ui[FREEDIVE]));
 	out->stats_by_type[4].is_trip = true;
+
+	out->stats_by_depth[0].location = strdup(translate("gettextFromC", "All (by max depth stats)"));
+	out->stats_by_depth[0].is_trip = true;
+
+	out->stats_by_temp[0].location = strdup(translate("gettextFromC", "All (by min. temp stats)"));
+	out->stats_by_temp[0].is_trip = true;
 
 	/* this relies on the fact that the dives in the dive_table
 	 * are in chronological order */
@@ -173,6 +188,30 @@ void calculate_stats_summary(struct stats_summary *out, bool selected_only)
 
 		process_dive(dp, &(out->stats_by_type[dp->dc.divemode + 1]));
 		out->stats_by_type[dp->dc.divemode + 1].selection_size++;
+
+		/* stats_by_depth[0] is all the dives combined */
+		out->stats_by_depth[0].selection_size++;
+		process_dive(dp, &(out->stats_by_depth[0]));
+
+		d_idx = dp->maxdepth.mm / (STATS_DEPTH_BUCKET * 1000);
+		if (d_idx < 0)
+			d_idx = 0;
+		if (d_idx >= STATS_MAX_DEPTH / STATS_DEPTH_BUCKET)
+			d_idx = STATS_MAX_DEPTH / STATS_DEPTH_BUCKET - 1;
+		process_dive(dp, &(out->stats_by_depth[d_idx + 1]));
+		out->stats_by_depth[d_idx + 1].selection_size++;
+
+		/* stats_by_temp[0] is all the dives combined */
+		out->stats_by_temp[0].selection_size++;
+		process_dive(dp, &(out->stats_by_temp[0]));
+
+		t_idx = ((int)mkelvin_to_C(dp->mintemp.mkelvin)) / STATS_TEMP_BUCKET;
+		if (t_idx < 0)
+			t_idx = 0;
+		if (t_idx >= STATS_MAX_TEMP / STATS_TEMP_BUCKET)
+			t_idx = STATS_MAX_TEMP / STATS_TEMP_BUCKET - 1;
+		process_dive(dp, &(out->stats_by_temp[t_idx + 1]));
+		out->stats_by_temp[t_idx + 1].selection_size++;
 
 		if (dp->divetrip != NULL) {
 			if (trip_ptr != dp->divetrip) {
@@ -207,6 +246,24 @@ void calculate_stats_summary(struct stats_summary *out, bool selected_only)
 		prev_month = current_month;
 		prev_year = current_year;
 	}
+
+	/* add labels for depth ranges up to maximum depth seen */
+	if (out->stats_by_depth[0].selection_size) {
+		d_idx = out->stats_by_depth[0].max_depth.mm;
+		if (d_idx > STATS_MAX_DEPTH * 1000)
+			d_idx = STATS_MAX_DEPTH * 1000;
+		for (r = 0; r * (STATS_DEPTH_BUCKET * 1000) < d_idx; ++r)
+			out->stats_by_depth[r+1].is_trip = true;
+	}
+
+	/* add labels for depth ranges up to maximum temperature seen */
+	if (out->stats_by_temp[0].selection_size) {
+		t_idx = (int)mkelvin_to_C(out->stats_by_temp[0].max_temp.mkelvin);
+		if (t_idx > STATS_MAX_TEMP)
+			t_idx = STATS_MAX_TEMP;
+		for (r = 0; r * STATS_TEMP_BUCKET < t_idx; ++r)
+			out->stats_by_temp[r+1].is_trip = true;
+	}
 }
 
 void free_stats_summary(struct stats_summary *stats)
@@ -215,6 +272,8 @@ void free_stats_summary(struct stats_summary *stats)
 	free(stats->stats_monthly);
 	free(stats->stats_by_trip);
 	free(stats->stats_by_type);
+	free(stats->stats_by_depth);
+	free(stats->stats_by_temp);
 }
 
 void init_stats_summary(struct stats_summary *stats)
@@ -223,6 +282,8 @@ void init_stats_summary(struct stats_summary *stats)
 	stats->stats_monthly = NULL;
 	stats->stats_by_trip = NULL;
 	stats->stats_by_type = NULL;
+	stats->stats_by_depth = NULL;
+	stats->stats_by_temp = NULL;
 }
 
 /* make sure we skip the selected summary entries */

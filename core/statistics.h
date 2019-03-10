@@ -12,6 +12,11 @@
 #include "core/units.h"
 #include "core/dive.h"	// For MAX_CYLINDERS
 
+#define STATS_MAX_DEPTH 300	/* Max depth for stats bucket is 300m */
+#define STATS_DEPTH_BUCKET 10	/* Size of buckets for depth range */
+#define STATS_MAX_TEMP 40		/* Max temp for stats bucket is 40C */
+#define STATS_TEMP_BUCKET 5 /* Size of buckets for temp range */
+
 typedef struct
 {
 	int period;
@@ -44,6 +49,8 @@ struct stats_summary {
 	stats_t *stats_monthly;
 	stats_t *stats_by_trip;
 	stats_t *stats_by_type;
+	stats_t *stats_by_depth;
+	stats_t *stats_by_temp;
 };
 
 #ifdef __cplusplus
