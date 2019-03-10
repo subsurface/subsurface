@@ -67,6 +67,8 @@ DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<OwningTripPtr> &t
 	// remove dive from trip and site - if this is the last dive in the trip
 	// remove the whole trip.
 	res.trip = unregister_dive_from_trip(d);
+	if (d->dive_site)
+		diveSiteCountChanged(d->dive_site);
 	res.site = unregister_dive_from_dive_site(d);
 	if (res.trip && res.trip->dives.nr == 0) {
 		unregister_trip(res.trip, &trip_table);	// Remove trip from backend
@@ -78,6 +80,12 @@ DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<OwningTripPtr> &t
 	return res;
 }
 
+void DiveListBase::diveSiteCountChanged(struct dive_site *ds)
+{
+	if (std::find(sitesCountChanged.begin(), sitesCountChanged.end(), ds) == sitesCountChanged.end())
+		sitesCountChanged.push_back(ds);
+}
+
 // This helper function adds a dive and returns ownership to the backend. It may also add a dive trip.
 // It is crucial that dives are added in reverse order of deletion (see comment above)!
 // Returns pointer to added dive (which is owned by the backend!)
@@ -85,8 +93,10 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 {
 	if (d.trip)
 		add_dive_to_trip(d.dive.get(), d.trip);
-	if (d.site)
+	if (d.site) {
 		add_dive_to_dive_site(d.dive.get(), d.site);
+		diveSiteCountChanged(d.site);
+	}
 	dive *res = d.dive.release();		// Give up ownership of dive
 
 	// Set the filter flag according to current filter settings
@@ -368,6 +378,8 @@ void DiveListBase::finishWork()
 {
 	if (selectionChanged) // If the selection changed -> tell the frontend
 		emit diveListNotifier.selectionChanged();
+	for (dive_site *ds: sitesCountChanged)
+		emit diveListNotifier.diveSiteDiveCountChanged(ds);
 }
 
 // Set the current dive either from a list of selected dives,
