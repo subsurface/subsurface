@@ -18,6 +18,7 @@
 #include "planner.h"
 #include "qthelper.h"
 #include "git-access.h"
+#include "table.h"
 
 static bool dive_list_changed = false;
 
@@ -820,108 +821,23 @@ static int comp_trips(const struct dive_trip *a, const struct dive_trip *b)
 	return comp_dives(a->dives.dives[0], b->dives.dives[0]);
 }
 
-#define MAKE_GROW_TABLE(table_type, item_type, array_name) \
-	item_type *grow_##table_type(struct table_type *table)				\
-	{										\
-		int nr = table->nr, allocated = table->allocated;			\
-		item_type *items = table->array_name;					\
-											\
-		if (nr >= allocated) {							\
-			allocated = (nr + 32) * 3 / 2;					\
-			items = realloc(items, allocated * sizeof(item_type));		\
-			if (!items)							\
-				exit(1);						\
-			table->array_name = items;					\
-			table->allocated = allocated;					\
-		}									\
-		return items;								\
-	}
-
 MAKE_GROW_TABLE(dive_table, struct dive *, dives)
 static MAKE_GROW_TABLE(trip_table, struct dive_trip *, trips)
-
-/* get the index where we want to insert an object so that everything stays
- * ordered according to a comparison function() */
-#define MAKE_GET_INSERTION_INDEX(table_type, item_type, array_name, fun)		\
-	int table_type##_get_insertion_index(struct table_type *table, item_type item)	\
-	{										\
-		/* we might want to use binary search here */				\
-		for (int i = 0; i < table->nr; i++) {					\
-			if (fun(item, table->array_name[i]))				\
-				return i;						\
-		}									\
-		return table->nr;							\
-	}
 
 MAKE_GET_INSERTION_INDEX(dive_table, struct dive *, dives, dive_less_than)
 static MAKE_GET_INSERTION_INDEX(trip_table, struct dive_trip *, trips, trip_less_than)
 
-/* add object at the given index to a table. */
-#define MAKE_ADD_TO(table_type, item_type, array_name)					\
-	void add_to_##table_type(struct table_type *table, int idx, item_type item)	\
-	{										\
-		int i;									\
-		grow_##table_type(table);						\
-		table->nr++;								\
-											\
-		for (i = idx; i < table->nr; i++) {					\
-			item_type tmp = table->array_name[i];				\
-			table->array_name[i] = item;					\
-			item = tmp;							\
-		}									\
-	}
-
 MAKE_ADD_TO(dive_table, struct dive *, dives)
 static MAKE_ADD_TO(trip_table, struct dive_trip *, trips)
-
-#define MAKE_REMOVE_FROM(table_type, array_name)				\
-	void remove_from_##table_type(struct table_type *table, int idx)	\
-	{									\
-		int i;								\
-		for (i = idx; i < table->nr - 1; i++)				\
-			table->array_name[i] = table->array_name[i + 1];	\
-		table->array_name[--table->nr] = NULL;				\
-	}
 
 static MAKE_REMOVE_FROM(dive_table, dives)
 static MAKE_REMOVE_FROM(trip_table, trips)
 
-#define MAKE_GET_IDX(table_type, item_type, array_name)						\
-	int get_idx_in_##table_type(const struct table_type *table, const item_type item)	\
-	{											\
-		for (int i = 0; i < table->nr; ++i) {						\
-			if (table->array_name[i] == item)					\
-				return i;							\
-		}										\
-		return -1;									\
-	}
-
 static MAKE_GET_IDX(dive_table, struct dive *, dives)
 static MAKE_GET_IDX(trip_table, struct dive_trip *, trips)
 
-#define MAKE_SORT(table_type, item_type, array_name, fun)					\
-	static int sortfn_##table_type(const void *_a, const void *_b)				\
-	{											\
-		const item_type a = (const item_type)*(const void **)_a;			\
-		const item_type b = (const item_type)*(const void **)_b;			\
-		return fun(a, b);								\
-	}											\
-												\
-	void sort_##table_type(struct table_type *table)					\
-	{											\
-		qsort(table->array_name, table->nr, sizeof(item_type), sortfn_##table_type);	\
-	}
-
 MAKE_SORT(dive_table, struct dive *, dives, comp_dives)
 MAKE_SORT(trip_table, struct dive_trip *, trips, comp_trips)
-
-#define MAKE_REMOVE(table_type, item_type, item_name)				\
-	void remove_##item_name(const item_type item, struct table_type *table)	\
-	{									\
-		int idx = get_idx_in_##table_type(table, item);			\
-		if (idx >= 0)							\
-			remove_from_##table_type(table, idx);			\
-	}
 
 MAKE_REMOVE(dive_table, struct dive *, dive)
 MAKE_REMOVE(trip_table, struct dive_trip *, trip)
