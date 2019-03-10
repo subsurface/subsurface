@@ -915,12 +915,16 @@ static MAKE_GET_IDX(trip_table, struct dive_trip *, trips)
 MAKE_SORT(dive_table, struct dive *, dives, comp_dives)
 MAKE_SORT(trip_table, struct dive_trip *, trips, comp_trips)
 
-void remove_dive(const struct dive *dive, struct dive_table *table)
-{
-	int idx = get_idx_in_dive_table(table, dive);
-	if (idx >= 0)
-		remove_from_dive_table(table, idx);
-}
+#define MAKE_REMOVE(table_type, item_type, item_name)				\
+	void remove_##item_name(const item_type item, struct table_type *table)	\
+	{									\
+		int idx = get_idx_in_##table_type(table, item);			\
+		if (idx >= 0)							\
+			remove_from_##table_type(table, idx);			\
+	}
+
+MAKE_REMOVE(dive_table, struct dive *, dive)
+MAKE_REMOVE(trip_table, struct dive_trip *, trip)
 
 /* remove a dive from the trip it's associated to, but don't delete the
  * trip if this was the last dive in the trip. the caller is responsible
@@ -999,16 +1003,6 @@ dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive, struct trip_tab
 	add_dive_to_trip(dive, dive_trip);
 	insert_trip(dive_trip, trip_table_arg);
 	return dive_trip;
-}
-
-/* remove trip from the trip-list, but don't free its memory.
- * caller takes ownership of the trip. */
-void remove_trip(dive_trip_t *trip, struct trip_table *trip_table_arg)
-{
-	int idx = get_idx_in_trip_table(trip_table_arg, trip);
-	assert(!trip->dives.nr);
-	if (idx >= 0)
-		remove_from_trip_table(trip_table_arg, idx);
 }
 
 /*
