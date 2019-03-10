@@ -5,6 +5,7 @@
 #include "subsurface-string.h"
 #include "divelist.h"
 #include "membuffer.h"
+#include "table.h"
 
 #include <math.h>
 
@@ -108,12 +109,26 @@ void register_dive_site(struct dive_site *ds)
 	add_dive_site_to_table(ds, &dive_site_table);
 }
 
+static int compare_sites(const struct dive_site *a, const struct dive_site *b)
+{
+	return a->uuid > b->uuid ? 1 : a->uuid == b->uuid ? 0 : -1;
+}
+
+static int site_less_than(const struct dive_site *a, const struct dive_site *b)
+{
+	return compare_sites(a, b) < 0;
+}
+
+static MAKE_GROW_TABLE(dive_site_table, struct dive_site *, dive_sites)
+static MAKE_GET_INSERTION_INDEX(dive_site_table, struct dive_site *, dive_sites, site_less_than)
+static MAKE_ADD_TO(dive_site_table, struct dive_site *, dive_sites)
+static MAKE_REMOVE_FROM(dive_site_table, dive_sites)
+static MAKE_GET_IDX(dive_site_table, struct dive_site *, dive_sites)
+MAKE_SORT(dive_site_table, struct dive_site *, dive_sites, compare_sites)
+static MAKE_REMOVE(dive_site_table, struct dive_site *, dive_site)
+
 void add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *ds_table)
 {
-	int nr = ds_table->nr;
-	int allocated = ds_table->allocated;
-	struct dive_site **sites = ds_table->dive_sites;
-
 	/* Take care to never have the same uuid twice. This could happen on
 	 * reimport of a log where the dive sites have diverged */
 	while (ds->uuid == 0 || get_dive_site_by_uuid(ds->uuid, ds_table) != NULL) {
@@ -123,16 +138,8 @@ void add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *ds_tab
 		ds->uuid |= (rand() & 0xff) << 24;
 	}
 
-	if (nr >= allocated) {
-		allocated = (nr + 32) * 3 / 2;
-		sites = realloc(sites, allocated * sizeof(struct dive_site *));
-		if (!sites)
-			exit(1);
-		ds_table->dive_sites = sites;
-		ds_table->allocated = allocated;
-	}
-	sites[nr] = ds;
-	ds_table->nr = nr + 1;
+	int idx = dive_site_table_get_insertion_index(ds_table, ds);
+	add_to_dive_site_table(ds_table, idx, ds);
 }
 
 struct dive_site *alloc_dive_site()
@@ -192,29 +199,14 @@ void free_dive_site(struct dive_site *ds)
 
 void unregister_dive_site(struct dive_site *ds)
 {
-	remove_dive_site_from_table(ds, &dive_site_table);
-}
-
-void remove_dive_site_from_table(struct dive_site *ds, struct dive_site_table *ds_table)
-{
-	int nr = ds_table->nr;
-	for (int i = 0; i < nr; i++) {
-		if (ds == get_dive_site(i, ds_table)) {
-			if (nr - 1 > i)
-				memmove(&ds_table->dive_sites[i],
-					&ds_table->dive_sites[i+1],
-					(nr - 1 - i) * sizeof(ds_table->dive_sites[0]));
-			ds_table->nr = nr - 1;
-			break;
-		}
-	}
+	remove_dive_site(ds, &dive_site_table);
 }
 
 void delete_dive_site(struct dive_site *ds, struct dive_site_table *ds_table)
 {
 	if (!ds)
 		return;
-	remove_dive_site_from_table(ds, ds_table);
+	remove_dive_site(ds, ds_table);
 	free_dive_site(ds);
 }
 
@@ -394,17 +386,4 @@ struct dive_site *unregister_dive_from_dive_site(struct dive *d)
 	remove_dive(d, &ds->dives);
 	d->dive_site = NULL;
 	return ds;
-}
-
-/* Assign arbitrary UUIDs to dive sites. This is called by before writing the dive log to XML or git. */
-static int compare_sites(const void *_a, const void *_b)
-{
-	const struct dive_site *a = (const struct dive_site *)*(void **)_a;
-	const struct dive_site *b = (const struct dive_site *)*(void **)_b;
-	return a->uuid > b->uuid ? 1 : a->uuid == b->uuid ? 0 : -1;
-}
-
-void dive_site_table_sort(struct dive_site_table *ds_table)
-{
-	qsort(ds_table->dive_sites, ds_table->nr, sizeof(struct dive_site *), compare_sites);
 }
