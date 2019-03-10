@@ -4,7 +4,7 @@
 # set(CMAKE_VERBOSE_MAKEFILE ON)
 
 project(Subsurface)
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 3.1)
 
 # don't process generated files - this is new in 3.10
 if (POLICY CMP0071)
@@ -65,27 +65,25 @@ endif()
 set(SUBSURFACE_SOURCE ${CMAKE_SOURCE_DIR})
 add_definitions(-DSUBSURFACE_SOURCE="${SUBSURFACE_SOURCE}")
 
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED TRUE)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+
 #
 # TODO: This Compilation part should go on the Target specific CMake.
 #
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 ")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override")
 	if ((CMAKE_SYSTEM_NAME MATCHES "Darwin") AND
 	   ((CMAKE_SYSTEM_VERSION MATCHES "11.4.") OR
 	    (CMAKE_OSX_DEPLOYMENT_TARGET MATCHES "10.7") OR
 	    (CMAKE_OSX_DEPLOYMENT_TARGET MATCHES "10.8")))
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -stdlib=libc++")
-	else()
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 	endif()
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 ")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wno-inconsistent-missing-override")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-
 	# Warn about possible float conversion errors
 	# Use NOT VERSION_LESS since VERSION_GREATER_EQUAL is not available
 	# in currently used cmake version.
@@ -95,9 +93,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	endif()
 
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
-	# works only for CMake 3.1 and later
-	set(CMAKE_C_STANDARD 99)
-	set(CMAKE_CXX_STANDARD 11)
+  # using Intel C++
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # using Visual Studio C++
 endif()
