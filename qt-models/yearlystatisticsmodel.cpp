@@ -185,6 +185,8 @@ void YearlyStatisticsModel::update_yearly_stats()
 	int i, month = 0;
 	unsigned int j, combined_months;
 	stats_summary_auto_free stats;
+	QString label;
+	temperature_t t_range_min,t_range_max;
 	calculate_stats_summary(&stats, false);
 
 	for (i = 0; stats.stats_yearly != NULL && stats.stats_yearly[i].period; ++i) {
@@ -222,6 +224,40 @@ void YearlyStatisticsModel::update_yearly_stats()
 			item->children.append(iChild);
 			iChild->parent = item;
 		}
+		rootItem->children.append(item);
+		item->parent = rootItem.get();
+	}
+
+	/* Show the statistic sorted by dive depth */
+	if (stats.stats_by_depth != NULL && stats.stats_by_depth[0].selection_size) {
+		YearStatisticsItem *item = new YearStatisticsItem(stats.stats_by_depth[0]);
+		for (i = 1; stats.stats_by_depth[i].is_trip; ++i)
+			if (stats.stats_by_depth[i].selection_size) {
+				label = QString(tr("%1 - %2")).arg(get_depth_string((i - 1) * (STATS_DEPTH_BUCKET * 1000), true, false),
+					get_depth_string(i * (STATS_DEPTH_BUCKET * 1000), true, false));
+				stats.stats_by_depth[i].location = strdup(label.toUtf8().data());
+				YearStatisticsItem *iChild = new YearStatisticsItem(stats.stats_by_depth[i]);
+				item->children.append(iChild);
+				iChild->parent = item;
+			}
+		rootItem->children.append(item);
+		item->parent = rootItem.get();
+	}
+
+	/* Show the statistic sorted by dive temperature */
+	if (stats.stats_by_temp != NULL && stats.stats_by_temp[0].selection_size) {
+		YearStatisticsItem *item = new YearStatisticsItem(stats.stats_by_temp[0]);
+		for (i = 1; stats.stats_by_temp[i].is_trip; ++i)
+			if (stats.stats_by_temp[i].selection_size) {
+				t_range_min.mkelvin = C_to_mkelvin((i - 1) * STATS_TEMP_BUCKET);
+				t_range_max.mkelvin = C_to_mkelvin(i * STATS_TEMP_BUCKET);
+				label = QString(tr("%1 - %2")).arg(get_temperature_string(t_range_min, true),
+					get_temperature_string(t_range_max, true));
+				stats.stats_by_temp[i].location = strdup(label.toUtf8().data());
+				YearStatisticsItem *iChild = new YearStatisticsItem(stats.stats_by_temp[i]);
+				item->children.append(iChild);
+				iChild->parent = item;
+			}
 		rootItem->children.append(item);
 		item->parent = rootItem.get();
 	}
