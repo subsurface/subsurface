@@ -1,7 +1,7 @@
 # Modified from Subsurface's CMakeLists.txt
 
 project(smtk2ssrf)
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 3.1)
 
 option(COMMANDLINE "Build command line version" OFF)
 
@@ -9,6 +9,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+set(PKG_CONFIG_USE_CMAKE_PREFIX_PATH FALSE)
 set(SSRF_PATH ../)
 set(CMAKE_MODULE_PATH ${SSRF_PATH}cmake/Modules)
 include(${CMAKE_MODULE_PATH}/MacroOutOfSourceBuild.cmake)
@@ -82,8 +83,11 @@ else()
 endif()
 
 # Set compiler flags and definitions
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fPIC")
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED TRUE)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
         set(SMTK_LINK_LIBRARIES ${SMTK_LINK_LIBRARIES} -lssh2 -lz -lpthread)
