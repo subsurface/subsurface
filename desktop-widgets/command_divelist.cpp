@@ -73,7 +73,7 @@ DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<OwningTripPtr> &t
 		diveSiteCountChanged(d->dive_site);
 	res.site = unregister_dive_from_dive_site(d);
 	if (res.trip && res.trip->dives.nr == 0) {
-		unregister_trip(res.trip, &trip_table);	// Remove trip from backend
+		remove_trip(res.trip, &trip_table);	// Remove trip from backend
 		tripsToAdd.emplace_back(res.trip);	// Take ownership of trip
 	}
 
@@ -253,7 +253,7 @@ static OwningTripPtr moveDiveToTrip(DiveToTrip &diveToTrip)
 	// Remove dive from trip - if this is the last dive in the trip, remove the whole trip.
 	dive_trip *trip = unregister_dive_from_trip(diveToTrip.dive);
 	if (trip && trip->dives.nr == 0) {
-		unregister_trip(trip, &trip_table);	// Remove trip from backend
+		remove_trip(trip, &trip_table);	// Remove trip from backend
 		res.reset(trip);
 	}
 

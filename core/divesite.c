@@ -391,7 +391,7 @@ struct dive_site *unregister_dive_from_dive_site(struct dive *d)
 	struct dive_site *ds = d->dive_site;
 	if (!ds)
 		return NULL;
-	remove_dive(&ds->dives, d);
+	remove_dive(d, &ds->dives);
 	d->dive_site = NULL;
 	return ds;
 }
