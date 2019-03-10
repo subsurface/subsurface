@@ -42,6 +42,9 @@ signals:
 	void divesDeselected(dive_trip *trip, const QVector<dive *> &dives);
 	void currentDiveChanged();
 	void selectionChanged();
+
+	// Dive site signals
+	void diveSiteDiveCountChanged(dive_site *ds);
 public:
 	// Desktop uses the QTreeView class to present the list of dives. The layout
 	// of this class gives us a very fundamental problem, as we can not easily

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "core/units.h"
 #include "qt-models/divelocationmodel.h"
+#include "core/subsurface-qt/DiveListNotifier.h"
 #include "core/qthelper.h"
 #include "core/divesite.h"
 #include "core/metrics.h"
@@ -23,6 +24,7 @@ LocationInformationModel *LocationInformationModel::instance()
 
 LocationInformationModel::LocationInformationModel(QObject *obj) : QAbstractTableModel(obj)
 {
+	connect(&diveListNotifier, &DiveListNotifier::diveSiteDiveCountChanged, this, &LocationInformationModel::diveSiteDiveCountChanged);
 }
 
 int LocationInformationModel::columnCount(const QModelIndex &) const
@@ -152,6 +154,13 @@ bool LocationInformationModel::removeRows(int row, int, const QModelIndex&)
 		delete_dive_site(ds, &dive_site_table);
 	endRemoveRows();
 	return true;
+}
+
+void LocationInformationModel::diveSiteDiveCountChanged(dive_site *ds)
+{
+	int idx = get_divesite_idx(ds, &dive_site_table);
+	if (idx >= 0)
+		dataChanged(createIndex(idx, NUM_DIVES), createIndex(idx, NUM_DIVES));
 }
 
 GeoReferencingOptionsModel *GeoReferencingOptionsModel::instance()
