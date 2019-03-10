@@ -9,6 +9,9 @@
 
 #define RECENTLY_ADDED_DIVESITE ((struct dive_site *)~0)
 
+struct dive;
+struct dive_trip;
+
 class LocationInformationModel : public QAbstractTableModel {
 Q_OBJECT
 public:
@@ -30,6 +33,7 @@ public:
 public slots:
 	void update();
 	QStringList allSiteNames() const;
+	void diveSiteDiveCountChanged(struct dive_site *ds);
 private:
 	QStringList locationNames;
 };

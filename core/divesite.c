@@ -23,6 +23,7 @@ int get_divesite_idx(const struct dive_site *ds, struct dive_site_table *ds_tabl
 	return -1;
 }
 
+// TODO: keep table sorted by UUID and do a binary search?
 struct dive_site *get_dive_site_by_uuid(uint32_t uuid, struct dive_site_table *ds_table)
 {
 	int i;
