@@ -1,3 +1,4 @@
+- Desktop: make sure cloud storage email addresses are lower case only
 - Desktop: Fix editing of dive-time [#1975]
 - Bluetooth: only show recognized dive computers by default
 - Desktop: Add export option for profile picture [#1962]

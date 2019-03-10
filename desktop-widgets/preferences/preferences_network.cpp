@@ -53,7 +53,7 @@ void PreferencesNetwork::syncSettings()
 	proxy->set_proxy_user(ui->proxyUsername->text());
 	proxy->set_proxy_pass(ui->proxyPassword->text());
 
-	QString email = ui->cloud_storage_email->text();
+	QString email = ui->cloud_storage_email->text().toLower();
 	QString password = ui->cloud_storage_password->text();
 	QString newpassword = ui->cloud_storage_new_passwd->text();
 
