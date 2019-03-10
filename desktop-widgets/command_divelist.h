@@ -66,6 +66,9 @@ protected:
 	DivesAndTripsToAdd removeDives(DivesAndSitesToRemove &divesAndSitesToDelete);
 	DivesAndSitesToRemove addDives(DivesAndTripsToAdd &toAdd);
 
+	// Register dive sites where counts changed so that we can signal the frontend later.
+	void diveSiteCountChanged(struct dive_site *ds);
+
 	// Set the selection to a given state. Set the selectionChanged flag if anything changed.
 	void restoreSelection(const std::vector<dive *> &selection, dive *currentDive);
 
@@ -74,9 +77,12 @@ protected:
 	// If this flag is set on first execution, a selectionChanged signal will
 	// be sent.
 	bool selectionChanged;
+
 private:
+	// Keep track of dive sites where the number of dives changed
+	std::vector<dive_site *> sitesCountChanged;
 	void initWork(); // reset selectionChanged flag
-	void finishWork(); // emit signal if selection changed
+	void finishWork(); // emit signals if selection or dive site counts changed
 	void undo() override;
 	void redo() override;
 	virtual void redoit() = 0;
