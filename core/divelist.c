@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 /* divelist.c */
-/* core logic for the dive list */
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -916,7 +915,7 @@ static MAKE_GET_IDX(trip_table, struct dive_trip *, trips)
 MAKE_SORT(dive_table, struct dive *, dives, comp_dives)
 MAKE_SORT(trip_table, struct dive_trip *, trips, comp_trips)
 
-void remove_dive(struct dive_table *table, const struct dive *dive)
+void remove_dive(const struct dive *dive, struct dive_table *table)
 {
 	int idx = get_idx_in_dive_table(table, dive);
 	if (idx >= 0)
@@ -934,14 +933,14 @@ struct dive_trip *unregister_dive_from_trip(struct dive *dive)
 	if (!trip)
 		return NULL;
 
-	remove_dive(&trip->dives, dive);
+	remove_dive(dive, &trip->dives);
 	dive->divetrip = NULL;
 	return trip;
 }
 
 static void delete_trip(dive_trip_t *trip, struct trip_table *trip_table_arg)
 {
-	unregister_trip(trip, trip_table_arg);
+	remove_trip(trip, trip_table_arg);
 	free_trip(trip);
 }
 
@@ -1004,7 +1003,7 @@ dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive, struct trip_tab
 
 /* remove trip from the trip-list, but don't free its memory.
  * caller takes ownership of the trip. */
-void unregister_trip(dive_trip_t *trip, struct trip_table *trip_table_arg)
+void remove_trip(dive_trip_t *trip, struct trip_table *trip_table_arg)
 {
 	int idx = get_idx_in_trip_table(trip_table_arg, trip);
 	assert(!trip->dives.nr);
@@ -1476,7 +1475,7 @@ static bool merge_dive_tables(struct dive_table *dives_from, struct dive_table *
 		struct dive *dive_to_add = dives_from->dives[i];
 
 		if (delete_from)
-			remove_dive(delete_from, dive_to_add);
+			remove_dive(dive_to_add, delete_from);
 
 		/* Find insertion point. */
 		while (j < dives_to->nr && dive_less_than(dives_to->dives[j], dive_to_add))
@@ -1759,7 +1758,7 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 			insert_dive(dives_to_add, d);
 			sequence_changed |= !dive_is_after_last(d);
 
-			remove_dive(import_table, d);
+			remove_dive(d, import_table);
 		}
 
 		/* Then, add trip to list of trips to add */
