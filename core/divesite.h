@@ -46,9 +46,8 @@ static inline struct dive_site *get_dive_site(int nr, struct dive_site_table *ta
 
 int get_divesite_idx(const struct dive_site *ds, struct dive_site_table *table);
 struct dive_site *get_dive_site_by_uuid(uint32_t uuid, struct dive_site_table *table);
-void dive_site_table_sort(struct dive_site_table *table);
+void sort_dive_site_table(struct dive_site_table *table);
 void add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *table);
-void remove_dive_site_from_table(struct dive_site *ds, struct dive_site_table *table);
 void register_dive_site(struct dive_site *ds);
 void unregister_dive_site(struct dive_site *ds);
 struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *table);
