@@ -104,9 +104,9 @@ struct dive_site *get_dive_site_by_gps_proximity(const location_t *loc, int dist
 	return res;
 }
 
-void register_dive_site(struct dive_site *ds)
+int register_dive_site(struct dive_site *ds)
 {
-	add_dive_site_to_table(ds, &dive_site_table);
+	return add_dive_site_to_table(ds, &dive_site_table);
 }
 
 static int compare_sites(const struct dive_site *a, const struct dive_site *b)
@@ -127,7 +127,7 @@ static MAKE_GET_IDX(dive_site_table, struct dive_site *, dive_sites)
 MAKE_SORT(dive_site_table, struct dive_site *, dive_sites, compare_sites)
 static MAKE_REMOVE(dive_site_table, struct dive_site *, dive_site)
 
-void add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *table)
+int add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *table)
 {
 	/* Take care to never have the same uuid twice. This could happen on
 	 * reimport of a log where the dive sites have diverged */
@@ -140,6 +140,7 @@ void add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *table)
 
 	int idx = dive_site_table_get_insertion_index(table, ds);
 	add_to_dive_site_table(table, idx, ds);
+	return idx;
 }
 
 struct dive_site *alloc_dive_site()
@@ -197,9 +198,9 @@ void free_dive_site(struct dive_site *ds)
 	}
 }
 
-void unregister_dive_site(struct dive_site *ds)
+int unregister_dive_site(struct dive_site *ds)
 {
-	remove_dive_site(ds, &dive_site_table);
+	return remove_dive_site(ds, &dive_site_table);
 }
 
 void delete_dive_site(struct dive_site *ds, struct dive_site_table *table)

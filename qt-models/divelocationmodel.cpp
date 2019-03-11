@@ -25,6 +25,8 @@ LocationInformationModel *LocationInformationModel::instance()
 LocationInformationModel::LocationInformationModel(QObject *obj) : QAbstractTableModel(obj)
 {
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteDiveCountChanged, this, &LocationInformationModel::diveSiteDiveCountChanged);
+	connect(&diveListNotifier, &DiveListNotifier::diveSiteAdded, this, &LocationInformationModel::diveSiteAdded);
+	connect(&diveListNotifier, &DiveListNotifier::diveSiteDeleted, this, &LocationInformationModel::diveSiteDeleted);
 }
 
 int LocationInformationModel::columnCount(const QModelIndex &) const
@@ -161,6 +163,24 @@ void LocationInformationModel::diveSiteDiveCountChanged(dive_site *ds)
 	int idx = get_divesite_idx(ds, &dive_site_table);
 	if (idx >= 0)
 		dataChanged(createIndex(idx, NUM_DIVES), createIndex(idx, NUM_DIVES));
+}
+
+void LocationInformationModel::diveSiteAdded(struct dive_site *, int idx)
+{
+	if (idx < 0)
+		return;
+	beginInsertRows(QModelIndex(), idx, idx);
+	// Row has already been added by Undo-Command.
+	endInsertRows();
+}
+
+void LocationInformationModel::diveSiteDeleted(struct dive_site *, int idx)
+{
+	if (idx < 0)
+		return;
+	beginRemoveRows(QModelIndex(), idx, idx);
+	// Row has already been added by Undo-Command.
+	endRemoveRows();
 }
 
 GeoReferencingOptionsModel *GeoReferencingOptionsModel::instance()

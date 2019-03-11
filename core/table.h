@@ -83,11 +83,12 @@
 	}
 
 #define MAKE_REMOVE(table_type, item_type, item_name)				\
-	void remove_##item_name(const item_type item, struct table_type *table)	\
+	int remove_##item_name(const item_type item, struct table_type *table)	\
 	{									\
 		int idx = get_idx_in_##table_type(table, item);			\
 		if (idx >= 0)							\
 			remove_from_##table_type(table, idx);			\
+		return idx;							\
 	}
 
 #endif
