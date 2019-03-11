@@ -43,7 +43,10 @@ signals:
 	void currentDiveChanged();
 	void selectionChanged();
 
-	// Dive site signals
+	// Dive site signals. Add and delete events are sent per dive site and
+	// provide an index into the global dive site table.
+	void diveSiteAdded(dive_site *ds, int idx);
+	void diveSiteDeleted(dive_site *ds, int idx);
 	void diveSiteDiveCountChanged(dive_site *ds);
 public:
 	// Desktop uses the QTreeView class to present the list of dives. The layout

@@ -34,6 +34,8 @@ public slots:
 	void update();
 	QStringList allSiteNames() const;
 	void diveSiteDiveCountChanged(struct dive_site *ds);
+	void diveSiteAdded(struct dive_site *ds, int idx);
+	void diveSiteDeleted(struct dive_site *ds, int idx);
 private:
 	QStringList locationNames;
 };
