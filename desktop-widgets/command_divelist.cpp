@@ -133,8 +133,9 @@ DivesAndTripsToAdd DiveListBase::removeDives(DivesAndSitesToRemove &divesAndSite
 	divesAndSitesToDelete.dives.clear();
 
 	for (dive_site *ds: divesAndSitesToDelete.sites) {
-		unregister_dive_site(ds);
+		int idx = unregister_dive_site(ds);
 		sitesToAdd.emplace_back(ds);
+		emit diveListNotifier.diveSiteDeleted(ds, idx);
 	}
 	divesAndSitesToDelete.sites.clear();
 
@@ -188,7 +189,8 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 	// Finally, add any necessary dive sites
 	for (OwningDiveSitePtr &ds: toAdd.sites) {
 		sites.push_back(ds.get());
-		register_dive_site(ds.release()); // Return ownership to backend
+		int idx = register_dive_site(ds.release()); // Return ownership to backend
+		emit diveListNotifier.diveSiteAdded(sites.back(), idx);
 	}
 	toAdd.sites.clear();
 

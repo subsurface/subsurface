@@ -38,7 +38,7 @@ extern void add_single_dive(int idx, struct dive *dive);
 extern void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
 extern int get_divenr(const struct dive *dive);
 extern struct dive_trip *unregister_dive_from_trip(struct dive *dive);
-extern void remove_dive(const struct dive *dive, struct dive_table *table);
+extern int remove_dive(const struct dive *dive, struct dive_table *table);
 extern void remove_dive_from_trip(struct dive *dive, struct trip_table *trip_table_arg);
 extern dive_trip_t *alloc_trip(void);
 extern dive_trip_t *create_trip_from_dive(struct dive *dive);
