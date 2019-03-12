@@ -5,8 +5,12 @@
 #include "core/qthelper.h"
 #include "core/divesite.h"
 #include "core/metrics.h"
+#ifndef SUBSURFACE_MOBILE
 #include "cleanertablemodel.h" // for trashIcon();
-#include <QDebug>
+#include "desktop-widgets/mainwindow.h" // to place message box
+#include "desktop-widgets/command.h"
+#include <QMessageBox>
+#endif
 #include <QLineEdit>
 #include <QIcon>
 #include <core/gettextfromc.h>
@@ -218,6 +222,25 @@ QStringList DiveSiteSortedModel::allSiteNames() const
 	}
 	return locationNames;
 }
+
+#ifndef SUBSURFACE_MOBILE
+// TODO: Remove from model. It doesn't make sense to call the model here, which calls the undo command,
+// which in turn calls the model.
+void DiveSiteSortedModel::remove(const QModelIndex &index)
+{
+	if (index.column() != LocationInformationModel::REMOVE)
+		return;
+	struct dive_site *ds = get_dive_site(mapToSource(index).row(), &dive_site_table);
+	if (!ds)
+		return;
+	if (ds->dives.nr > 0 &&
+	    QMessageBox::warning(MainWindow::instance(), tr("Delete dive site?"),
+				 tr("This dive site has %n dive(s). Do you really want to delete it?\n", "", ds->dives.nr),
+				 QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
+			return;
+	Command::deleteDiveSites(QVector<dive_site *>{ds});
+}
+#endif
 
 GeoReferencingOptionsModel *GeoReferencingOptionsModel::instance()
 {
