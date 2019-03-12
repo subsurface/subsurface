@@ -48,6 +48,7 @@ signals:
 	void diveSiteAdded(dive_site *ds, int idx);
 	void diveSiteDeleted(dive_site *ds, int idx);
 	void diveSiteDiveCountChanged(dive_site *ds);
+	void diveSiteChanged(dive_site *ds, int field); // field according to LocationInformationModel
 public:
 	// Desktop uses the QTreeView class to present the list of dives. The layout
 	// of this class gives us a very fundamental problem, as we can not easily
