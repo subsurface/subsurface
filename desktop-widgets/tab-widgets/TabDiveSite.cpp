@@ -8,7 +8,10 @@ TabDiveSite::TabDiveSite(QWidget *parent) : TabBase(parent)
 {
 	ui.setupUi(this);
 	ui.diveSites->setTitle(tr("Dive sites"));
-	ui.diveSites->setModel(LocationInformationModel::instance());
+	ui.diveSites->setModel(&model);
+	// Default: sort by name
+	ui.diveSites->view()->sortByColumn(LocationInformationModel::NAME, Qt::AscendingOrder);
+	ui.diveSites->view()->setSortingEnabled(true);
 
 	// Show only the first few columns
 	for (int i = LocationInformationModel::COORDS; i < LocationInformationModel::COLUMNS; ++i)

@@ -223,6 +223,9 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	set_git_update_cb(&gitProgressCB);
 	LOG_STP("qmlmgr git update");
 
+	// present dive site lists sorted by name
+	locationModel.sort(LocationInformationModel::NAME);
+
 	// make sure we know if the current cloud repo has been successfully synced
 	syncLoadFromCloud();
 	LOG_STP("qmlmgr sync load cloud");
@@ -334,7 +337,8 @@ void QMLManager::updateAllGlobalLists()
 	buddyModel.updateModel(); emit buddyListChanged();
 	suitModel.updateModel(); emit suitListChanged();
 	divemasterModel.updateModel(); emit divemasterListChanged();
-	locationModel.update(); emit locationListChanged();
+	// TODO: Probably not needed anymore, as the dive site list is generated on the fly!
+	LocationInformationModel::instance()->update(); emit locationListChanged();
 }
 
 void QMLManager::mergeLocalRepo()
