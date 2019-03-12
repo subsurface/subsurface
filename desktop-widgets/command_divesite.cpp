@@ -85,6 +85,7 @@ void DeleteDiveSites::undo()
 EditDiveSiteName::EditDiveSiteName(dive_site *dsIn, const QString &name) : ds(dsIn),
 	value(name)
 {
+	setText(tr("Edit dive site name"));
 }
 
 bool EditDiveSiteName::workToBeDone()

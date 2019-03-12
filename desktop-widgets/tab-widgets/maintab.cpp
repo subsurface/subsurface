@@ -873,18 +873,11 @@ void MainTab::acceptChanges()
 		}
 
 		// update the dive site for the selected dives that had the same dive site as the current dive
-		struct dive_site *oldDs = cd->dive_site;
 		struct dive_site *newDs = nullptr;
 		MODIFY_DIVES(selectedDives,
 			if (mydive->dive_site == current_dive->dive_site)
 				newDs = updateDiveSite(!newDs ? ui.location->currDiveSite() : newDs, mydive);
 		);
-		if (oldDs && !is_dive_site_used(oldDs, false)) {
-			if (verbose)
-				qDebug() << "delete now unused dive site" << (oldDs->name ? oldDs->name : "without name");
-			delete_dive_site(oldDs, &dive_site_table);
-			MapWidget::instance()->reload();
-		}
 		// the code above can change the correct uuid for the displayed dive site - and the
 		// code below triggers an update of the display without re-initializing displayed_dive
 		// so let's make sure here that our data is consistent now that we have handled the
