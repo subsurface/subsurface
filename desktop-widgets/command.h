@@ -38,6 +38,10 @@ void splitDives(dive *d, duration_t time);
 void splitDiveComputer(dive *d, int dc_num);
 void mergeDives(const QVector <dive *> &dives);
 
+// 3) Dive-site related commands
+
+void deleteDiveSites(const QVector <dive_site *> &sites);
+
 } // namespace Command
 
 #endif // COMMAND_H
