@@ -13,7 +13,7 @@ struct dive;
 struct dive_trip;
 
 class LocationInformationModel : public QAbstractTableModel {
-Q_OBJECT
+	Q_OBJECT
 public:
 	// Common columns, roles and accessor function for all dive-site models.
 	// Thus, different views can connect to different models.
@@ -42,7 +42,7 @@ private:
 
 // To access only divesites at the given GPS coordinates with the exception of a given dive site
 class GPSLocationInformationModel : public QSortFilterProxyModel {
-Q_OBJECT
+	Q_OBJECT
 private:
 	const struct dive_site *ignoreDs;
 	location_t location;
@@ -54,7 +54,7 @@ public:
 };
 
 class GeoReferencingOptionsModel : public QStringListModel {
-Q_OBJECT
+	Q_OBJECT
 public:
 	static GeoReferencingOptionsModel *instance();
 private:
