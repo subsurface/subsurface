@@ -11,11 +11,6 @@
 #include <QIcon>
 #include <core/gettextfromc.h>
 
-static bool dive_site_less_than(dive_site *a, dive_site *b)
-{
-	return QString(a->name) < QString(b->name);
-}
-
 LocationInformationModel *LocationInformationModel::instance()
 {
 	static LocationInformationModel *self = new LocationInformationModel();
@@ -133,16 +128,7 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 void LocationInformationModel::update()
 {
 	beginResetModel();
-	qSort(dive_site_table.dive_sites, dive_site_table.dive_sites + dive_site_table.nr, dive_site_less_than);
-	locationNames.clear();
-	for (int i = 0; i < dive_site_table.nr; i++)
-		locationNames << QString(dive_site_table.dive_sites[i]->name);
 	endResetModel();
-}
-
-QStringList LocationInformationModel::allSiteNames() const
-{
-	return locationNames;
 }
 
 bool LocationInformationModel::removeRows(int row, int, const QModelIndex&)
@@ -181,6 +167,56 @@ void LocationInformationModel::diveSiteDeleted(struct dive_site *, int idx)
 	beginRemoveRows(QModelIndex(), idx, idx);
 	// Row has already been added by Undo-Command.
 	endRemoveRows();
+}
+
+bool DiveSiteSortedModel::filterAcceptsRow(int sourceRow, const QModelIndex &source_parent) const
+{
+	// TODO: filtering
+	return true;
+}
+
+bool DiveSiteSortedModel::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
+{
+	// The source indices correspond to indices in the global dive site table.
+	// Let's access them directly without going via the source model.
+	// Kind of dirty, but less effort.
+	struct dive_site *ds1 = get_dive_site(i1.row(), &dive_site_table);
+	struct dive_site *ds2 = get_dive_site(i2.row(), &dive_site_table);
+	if (!ds1 || !ds2) // Invalid dive sites compare as different
+		return false;
+	switch (i1.column()) {
+	case LocationInformationModel::NAME:
+	default:
+		return QString::localeAwareCompare(QString(ds1->name), QString(ds2->name)) < 0; // TODO: avoid copy
+	case LocationInformationModel::DESCRIPTION: {
+		int cmp = QString::localeAwareCompare(QString(ds1->description), QString(ds2->description)); // TODO: avoid copy
+		return cmp != 0 ? cmp < 0 :
+		       QString::localeAwareCompare(QString(ds1->name), QString(ds2->name)) < 0; // TODO: avoid copy
+	}
+	case LocationInformationModel::NUM_DIVES: {
+		int cmp = ds1->dives.nr - ds2->dives.nr;
+		// Since by default nr dives is descending, invert sort direction of names, such that
+		// the names are listed as ascending.
+		return cmp != 0 ? cmp < 0 :
+		       QString::localeAwareCompare(QString(ds1->name), QString(ds2->name)) < 0; // TODO: avoid copy
+	}
+	}
+}
+
+DiveSiteSortedModel::DiveSiteSortedModel()
+{
+	setSourceModel(LocationInformationModel::instance());
+}
+
+QStringList DiveSiteSortedModel::allSiteNames() const
+{
+	QStringList locationNames;
+	int num = rowCount();
+	for (int i = 0; i < num; i++) {
+		int idx = mapToSource(index(i, 0)).row();
+		locationNames << QString(dive_site_table.dive_sites[idx]->name);
+	}
+	return locationNames;
 }
 
 GeoReferencingOptionsModel *GeoReferencingOptionsModel::instance()
