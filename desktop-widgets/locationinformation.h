@@ -12,7 +12,7 @@
 #include <QSortFilterProxyModel>
 
 class LocationInformationWidget : public QGroupBox {
-Q_OBJECT
+	Q_OBJECT
 public:
 	LocationInformationWidget(QWidget *parent = 0);
 	bool eventFilter(QObject*, QEvent*) override;
