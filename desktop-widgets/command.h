@@ -37,6 +37,10 @@ void mergeTrips(dive_trip *trip1, dive_trip *trip2);
 void splitDives(dive *d, duration_t time);
 void mergeDives(const QVector <dive *> &dives);
 
+// 3) Dive-site related commands
+
+void deleteDiveSites(const QVector <dive_site *> &sites);
+
 } // namespace Command
 
 #endif // COMMAND_H

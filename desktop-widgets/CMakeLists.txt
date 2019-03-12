@@ -81,6 +81,7 @@ set(SUBSURFACE_INTERFACE
 	command.cpp
 	command_base.cpp
 	command_divelist.cpp
+	command_divesite.cpp
 	locationinformation.cpp
 	qtwaitingspinner.cpp
 	filterwidget2.cpp

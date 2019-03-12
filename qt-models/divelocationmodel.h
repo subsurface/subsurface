@@ -42,6 +42,8 @@ class DiveSiteSortedModel : public QSortFilterProxyModel {
 private:
 	bool filterAcceptsRow(int sourceRow, const QModelIndex &source_parent) const override;
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
+public slots:
+	void remove(const QModelIndex &index);
 public:
 	DiveSiteSortedModel();
 	QStringList allSiteNames() const;
