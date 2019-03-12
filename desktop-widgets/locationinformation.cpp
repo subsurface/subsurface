@@ -8,6 +8,7 @@
 #include "qt-models/filtermodels.h"
 #include "core/divesitehelpers.h"
 #include "desktop-widgets/modeldelegates.h"
+#include "core/subsurface-qt/DiveListNotifier.h"
 
 #include <QDebug>
 #include <QShowEvent>
@@ -37,6 +38,8 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	connect(ui.updateLocationButton, SIGNAL(clicked()), this, SLOT(updateLocationOnMap()));
 	connect(ui.diveSiteCoordinates, SIGNAL(returnPressed()), this, SLOT(updateLocationOnMap()));
 	ui.diveSiteCoordinates->installEventFilter(this);
+
+	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &LocationInformationWidget::diveSiteChanged);
 
 	ui.diveSiteListView->setModel(&filter_model);
 	ui.diveSiteListView->setModelColumn(LocationInformationModel::NAME);
@@ -122,6 +125,18 @@ void LocationInformationWidget::updateLabels()
 	}
 
 	ui.locationTags->setText(constructLocationTags(&taxonomy, false));
+}
+
+void LocationInformationWidget::diveSiteChanged(struct dive_site *ds, int field)
+{
+	if (diveSite != ds)
+		return; // A different dive site was changed -> do nothing.
+	switch (field) {
+	case LocationInformationModel::NAME:
+		ui.diveSiteName->setText(diveSite->name);
+	default:
+		return;
+	}
 }
 
 void LocationInformationWidget::clearLabels()

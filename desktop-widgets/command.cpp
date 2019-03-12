@@ -78,4 +78,9 @@ void deleteDiveSites(const QVector <dive_site *> &sites)
 	execute(new DeleteDiveSites(sites));
 }
 
+void editDiveSiteName(dive_site *ds, const QString &value)
+{
+	execute(new EditDiveSiteName(ds, value));
+}
+
 } // namespace Command

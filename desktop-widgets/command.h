@@ -40,6 +40,7 @@ void mergeDives(const QVector <dive *> &dives);
 // 3) Dive-site related commands
 
 void deleteDiveSites(const QVector <dive_site *> &sites);
+void editDiveSiteName(dive_site *ds, const QString &value);
 
 } // namespace Command
 

@@ -35,13 +35,16 @@ public slots:
 	void diveSiteDiveCountChanged(struct dive_site *ds);
 	void diveSiteAdded(struct dive_site *ds, int idx);
 	void diveSiteDeleted(struct dive_site *ds, int idx);
+	void diveSiteChanged(struct dive_site *ds, int field);
 };
 
 class DiveSiteSortedModel : public QSortFilterProxyModel {
 	Q_OBJECT
 private:
+	struct dive_site *getDiveSite(const QModelIndex &idx);
 	bool filterAcceptsRow(int sourceRow, const QModelIndex &source_parent) const override;
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
+	bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 public slots:
 	void remove(const QModelIndex &index);
 public:
