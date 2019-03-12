@@ -3,6 +3,8 @@
 #include "command_divesite.h"
 #include "core/divesite.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/qthelper.h"
+#include "qt-models/divelocationmodel.h"
 
 namespace Command {
 
@@ -78,6 +80,31 @@ void DeleteDiveSites::redo()
 void DeleteDiveSites::undo()
 {
 	sitesToRemove = std::move(addDiveSites(sitesToAdd));
+}
+
+EditDiveSiteName::EditDiveSiteName(dive_site *dsIn, const QString &name) : ds(dsIn),
+	value(name)
+{
+}
+
+bool EditDiveSiteName::workToBeDone()
+{
+	return value != QString(ds->name);
+}
+
+void EditDiveSiteName::redo()
+{
+	QString s = ds->name;
+	free(ds->name);
+	ds->name = copy_qstring(value);
+	value = s;
+	emit diveListNotifier.diveSiteChanged(ds, LocationInformationModel::NAME); // Inform frontend of changed dive site.
+}
+
+void EditDiveSiteName::undo()
+{
+	// Undo and redo do the same
+	redo();
 }
 
 } // namespace Command

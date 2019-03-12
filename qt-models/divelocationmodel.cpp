@@ -26,6 +26,7 @@ LocationInformationModel::LocationInformationModel(QObject *obj) : QAbstractTabl
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteDiveCountChanged, this, &LocationInformationModel::diveSiteDiveCountChanged);
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteAdded, this, &LocationInformationModel::diveSiteAdded);
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteDeleted, this, &LocationInformationModel::diveSiteDeleted);
+	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &LocationInformationModel::diveSiteChanged);
 }
 
 int LocationInformationModel::columnCount(const QModelIndex &) const
@@ -173,6 +174,14 @@ void LocationInformationModel::diveSiteDeleted(struct dive_site *, int idx)
 	endRemoveRows();
 }
 
+void LocationInformationModel::diveSiteChanged(struct dive_site *ds, int field)
+{
+	int idx = get_divesite_idx(ds, &dive_site_table);
+	if (idx < 0)
+		return;
+	dataChanged(createIndex(idx, field), createIndex(idx, field));
+}
+
 bool DiveSiteSortedModel::filterAcceptsRow(int sourceRow, const QModelIndex &source_parent) const
 {
 	// TODO: filtering
@@ -223,14 +232,33 @@ QStringList DiveSiteSortedModel::allSiteNames() const
 	return locationNames;
 }
 
+struct dive_site *DiveSiteSortedModel::getDiveSite(const QModelIndex &idx)
+{
+	return get_dive_site(mapToSource(idx).row(), &dive_site_table);
+}
+
 #ifndef SUBSURFACE_MOBILE
+bool DiveSiteSortedModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+	struct dive_site *ds = getDiveSite(index);
+	if (!ds || value.isNull())
+		return false;
+	switch (index.column()) {
+	case LocationInformationModel::NAME:
+		Command::editDiveSiteName(ds, value.toString());
+		return true;
+	default:
+		return false;
+	}
+}
+
 // TODO: Remove from model. It doesn't make sense to call the model here, which calls the undo command,
 // which in turn calls the model.
 void DiveSiteSortedModel::remove(const QModelIndex &index)
 {
 	if (index.column() != LocationInformationModel::REMOVE)
 		return;
-	struct dive_site *ds = get_dive_site(mapToSource(index).row(), &dive_site_table);
+	struct dive_site *ds = getDiveSite(index);
 	if (!ds)
 		return;
 	if (ds->dives.nr > 0 &&
@@ -240,7 +268,7 @@ void DiveSiteSortedModel::remove(const QModelIndex &index)
 			return;
 	Command::deleteDiveSites(QVector<dive_site *>{ds});
 }
-#endif
+#endif // SUBSURFACE_MOBILE
 
 GeoReferencingOptionsModel *GeoReferencingOptionsModel::instance()
 {

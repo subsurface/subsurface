@@ -16,14 +16,26 @@ public:
 	DeleteDiveSites(const QVector<dive_site *> &sites);
 private:
 	bool workToBeDone() override;
+	void undo() override;
+	void redo() override;
 
 	// For redo
 	std::vector<dive_site *> sitesToRemove;
 
 	// For undo
 	std::vector<OwningDiveSitePtr> sitesToAdd;
+};
+
+class EditDiveSiteName : public Base {
+public:
+	EditDiveSiteName(dive_site *ds, const QString &name);
+private:
+	bool workToBeDone() override;
 	void undo() override;
 	void redo() override;
+
+	dive_site *ds;
+	QString value; // Value to be set
 };
 
 } // namespace Command
