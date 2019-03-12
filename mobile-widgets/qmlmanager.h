@@ -209,7 +209,7 @@ private:
 	BuddyCompletionModel buddyModel;
 	SuitCompletionModel suitModel;
 	DiveMasterCompletionModel divemasterModel;
-	LocationInformationModel locationModel;
+	DiveSiteSortedModel locationModel;
 	QString m_startPageText;
 	QString m_logText;
 	QString m_lastError;
