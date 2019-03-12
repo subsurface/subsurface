@@ -32,12 +32,19 @@ public:
 
 public slots:
 	void update();
-	QStringList allSiteNames() const;
 	void diveSiteDiveCountChanged(struct dive_site *ds);
 	void diveSiteAdded(struct dive_site *ds, int idx);
 	void diveSiteDeleted(struct dive_site *ds, int idx);
+};
+
+class DiveSiteSortedModel : public QSortFilterProxyModel {
+	Q_OBJECT
 private:
-	QStringList locationNames;
+	bool filterAcceptsRow(int sourceRow, const QModelIndex &source_parent) const override;
+	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
+public:
+	DiveSiteSortedModel();
+	QStringList allSiteNames() const;
 };
 
 // To access only divesites at the given GPS coordinates with the exception of a given dive site

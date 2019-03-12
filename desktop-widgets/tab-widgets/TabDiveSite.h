@@ -4,6 +4,7 @@
 
 #include "TabBase.h"
 #include "ui_TabDiveSite.h"
+#include "qt-models/divelocationmodel.h"
 
 class TabDiveSite : public TabBase {
 	Q_OBJECT
@@ -13,6 +14,7 @@ public:
 	void clear() override;
 private:
 	Ui::TabDiveSite ui;
+	DiveSiteSortedModel model;
 };
 
 #endif
