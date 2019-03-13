@@ -42,7 +42,6 @@ private slots:
 	void diveSiteChanged(struct dive_site *ds, int field);
 signals:
 	void endEditDiveSite();
-	void nameChanged(const QString &oldName, const QString &newName);
 
 private:
 	void clearLabels();
