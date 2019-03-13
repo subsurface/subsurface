@@ -31,8 +31,8 @@ public slots:
 	void resetPallete();
 	void on_diveSiteCountry_textChanged(const QString& text);
 	void on_diveSiteCoordinates_textChanged(const QString& text);
-	void on_diveSiteDescription_textChanged(const QString& text);
-	void on_diveSiteName_textChanged(const QString& text);
+	void on_diveSiteDescription_editingFinished();
+	void on_diveSiteName_editingFinished();
 	void on_diveSiteNotes_textChanged();
 	void reverseGeocode();
 	void mergeSelectedDiveSites();
