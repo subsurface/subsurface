@@ -212,11 +212,6 @@ void LocationInformationWidget::acceptChanges()
 
 	if (!ui.diveSiteCoordinates->text().isEmpty())
 		parseGpsText(ui.diveSiteCoordinates->text(), diveSite->location);
-	if (dive_site_is_empty(diveSite)) {
-		LocationInformationModel::instance()->removeRow(get_divesite_idx(diveSite, &dive_site_table));
-		displayed_dive.dive_site = nullptr;
-		diveSite = nullptr;
-	}
 	mark_divelist_changed(true);
 	resetState();
 }
