@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "TabDiveSite.h"
+#include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/divesite.h"
 #include "qt-models/divelocationmodel.h"
 #include "desktop-widgets/command.h"
 
@@ -31,5 +33,23 @@ void TabDiveSite::clear()
 
 void TabDiveSite::add()
 {
+	// This is mighty dirty: We hook into the "dive site added" signal and
+	// select the name field of the added dive site when the command sends
+	// the signal. This works only because we know that the model added the
+	// connection first. Very subtle!
+	// After the command has finished, the signal is disconnected so that dive
+	// site names are not selected on regular redo / undo.
+	connect(&diveListNotifier, &DiveListNotifier::diveSiteAdded, this, &TabDiveSite::diveSiteAdded);
 	Command::addDiveSite(tr("New dive site"));
+	disconnect(&diveListNotifier, &DiveListNotifier::diveSiteAdded, this, &TabDiveSite::diveSiteAdded);
+}
+
+void TabDiveSite::diveSiteAdded(struct dive_site *, int idx)
+{
+	if (idx < 0)
+		return;
+	QModelIndex globalIdx = LocationInformationModel::instance()->index(idx, LocationInformationModel::NAME);
+	QModelIndex localIdx = model.mapFromSource(globalIdx);
+	ui.diveSites->view()->setCurrentIndex(localIdx);
+	ui.diveSites->view()->edit(localIdx);
 }

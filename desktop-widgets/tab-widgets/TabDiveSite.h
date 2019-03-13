@@ -14,6 +14,7 @@ public:
 	void clear() override;
 private slots:
 	void add();
+	void diveSiteAdded(struct dive_site *, int idx);
 private:
 	Ui::TabDiveSite ui;
 	DiveSiteSortedModel model;
