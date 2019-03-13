@@ -55,7 +55,7 @@
     </widget>
    </item>
    <item row="7" column="2" rowspan="2" colspan="3">
-    <widget class="QPlainTextEdit" name="diveSiteNotes">
+    <widget class="TextEdit" name="diveSiteNotes">
      <property name="focusPolicy">
       <enum>Qt::ClickFocus</enum>
      </property>
@@ -178,6 +178,10 @@
    <extends>QFrame</extends>
    <header>desktop-widgets/kmessagewidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TextEdit</class>
+   <header>desktop-widgets/textedit.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
