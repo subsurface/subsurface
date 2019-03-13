@@ -13,8 +13,7 @@ pushd ${TRAVIS_BUILD_DIR}/..
 echo "Downloading prebuilt MXE environment from Subsurface-divelog.org"
 wget -q http://subsurface-divelog.org/downloads/mxe-994ad473.tar.xz
 mkdir -p mxe
-cd mxe
-tar xJf ../mxe-994ad473.tar.xz
+tar xJ -C mxe -f mxe-994ad473.tar.xz
 
 # hack around path dependency - needs to be fixed
 sudo mkdir -p /data/winqt551/
