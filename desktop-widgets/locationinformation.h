@@ -33,7 +33,7 @@ public slots:
 	void on_diveSiteCoordinates_textChanged(const QString& text);
 	void on_diveSiteDescription_editingFinished();
 	void on_diveSiteName_editingFinished();
-	void on_diveSiteNotes_textChanged();
+	void on_diveSiteNotes_editingFinished();
 	void reverseGeocode();
 	void mergeSelectedDiveSites();
 private slots:
