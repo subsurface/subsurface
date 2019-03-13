@@ -11,6 +11,23 @@
 // We put everything in a namespace, so that we can shorten names without polluting the global namespace
 namespace Command {
 
+class AddDiveSite : public Base {
+public:
+	AddDiveSite(const QString &name);
+private:
+	bool workToBeDone() override;
+	void undo() override;
+	void redo() override;
+
+	// Note: we only add one dive site. Nevertheless, we use vectors so that we
+	// can reuse the dive site deletion code.
+	// For redo
+	std::vector<dive_site *> sitesToRemove;
+
+	// For undo
+	std::vector<OwningDiveSitePtr> sitesToAdd;
+};
+
 class DeleteDiveSites : public Base {
 public:
 	DeleteDiveSites(const QVector<dive_site *> &sites);
