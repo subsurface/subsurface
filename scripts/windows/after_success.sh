@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -z $TRAVIS_BRANCH ] && [ "$TRAVIS_BRANCH" != "master" ] ; then
+if [ -n $TRAVIS_BRANCH ] && [ "$TRAVIS_BRANCH" != "master" ] ; then
 	export UPLOADTOOL_SUFFIX=$TRAVIS_BRANCH
 fi
 
