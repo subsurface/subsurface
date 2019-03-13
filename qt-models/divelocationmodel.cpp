@@ -136,19 +136,6 @@ void LocationInformationModel::update()
 	endResetModel();
 }
 
-bool LocationInformationModel::removeRows(int row, int, const QModelIndex&)
-{
-	if(row >= rowCount())
-		return false;
-
-	beginRemoveRows(QModelIndex(), row, row);
-	struct dive_site *ds = get_dive_site(row, &dive_site_table);
-	if (ds)
-		delete_dive_site(ds, &dive_site_table);
-	endRemoveRows();
-	return true;
-}
-
 void LocationInformationModel::diveSiteDiveCountChanged(dive_site *ds)
 {
 	int idx = get_divesite_idx(ds, &dive_site_table);
