@@ -26,7 +26,6 @@ public:
 	int columnCount(const QModelIndex &parent) const;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	QVariant data(const QModelIndex &index = QModelIndex(), int role = Qt::DisplayRole) const;
-	bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
 
