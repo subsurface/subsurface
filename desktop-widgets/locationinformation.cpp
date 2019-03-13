@@ -187,7 +187,6 @@ void LocationInformationWidget::acceptChanges()
 	char *uiString;
 	uiString = copy_qstring(ui.diveSiteName->text());
 	if (!same_string(uiString, diveSite->name)) {
-		emit nameChanged(QString(diveSite->name), ui.diveSiteName->text());
 		free(diveSite->name);
 		diveSite->name = uiString;
 	} else {
