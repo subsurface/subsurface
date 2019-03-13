@@ -15,6 +15,7 @@ public:
 private slots:
 	void add();
 	void diveSiteAdded(struct dive_site *, int idx);
+	void diveSiteChanged(struct dive_site *ds, int field);
 private:
 	Ui::TabDiveSite ui;
 	DiveSiteSortedModel model;
