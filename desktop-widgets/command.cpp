@@ -88,4 +88,9 @@ void editDiveSiteName(dive_site *ds, const QString &value)
 	execute(new EditDiveSiteName(ds, value));
 }
 
+void editDiveSiteDescription(dive_site *ds, const QString &value)
+{
+	execute(new EditDiveSiteDescription(ds, value));
+}
+
 } // namespace Command
