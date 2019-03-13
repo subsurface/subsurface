@@ -134,6 +134,10 @@ void LocationInformationWidget::diveSiteChanged(struct dive_site *ds, int field)
 	switch (field) {
 	case LocationInformationModel::NAME:
 		ui.diveSiteName->setText(diveSite->name);
+		return;
+	case LocationInformationModel::DESCRIPTION:
+		ui.diveSiteDescription->setText(diveSite->description);
+		return;
 	default:
 		return;
 	}

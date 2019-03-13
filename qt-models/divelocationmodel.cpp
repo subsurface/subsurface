@@ -233,6 +233,9 @@ bool DiveSiteSortedModel::setData(const QModelIndex &index, const QVariant &valu
 	case LocationInformationModel::NAME:
 		Command::editDiveSiteName(ds, value.toString());
 		return true;
+	case LocationInformationModel::DESCRIPTION:
+		Command::editDiveSiteDescription(ds, value.toString());
+		return true;
 	default:
 		return false;
 	}

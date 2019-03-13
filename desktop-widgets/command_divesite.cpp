@@ -82,6 +82,15 @@ void DeleteDiveSites::undo()
 	sitesToRemove = std::move(addDiveSites(sitesToAdd));
 }
 
+// Helper function: swap C and Qt string
+static void swap(char *&c, QString &q)
+{
+	QString s = c;
+	free(c);
+	c = copy_qstring(q);
+	q = s;
+}
+
 EditDiveSiteName::EditDiveSiteName(dive_site *dsIn, const QString &name) : ds(dsIn),
 	value(name)
 {
@@ -95,14 +104,34 @@ bool EditDiveSiteName::workToBeDone()
 
 void EditDiveSiteName::redo()
 {
-	QString s = ds->name;
-	free(ds->name);
-	ds->name = copy_qstring(value);
-	value = s;
+	swap(ds->name, value);
 	emit diveListNotifier.diveSiteChanged(ds, LocationInformationModel::NAME); // Inform frontend of changed dive site.
 }
 
 void EditDiveSiteName::undo()
+{
+	// Undo and redo do the same
+	redo();
+}
+
+EditDiveSiteDescription::EditDiveSiteDescription(dive_site *dsIn, const QString &description) : ds(dsIn),
+	value(description)
+{
+	setText(tr("Edit dive site description"));
+}
+
+bool EditDiveSiteDescription::workToBeDone()
+{
+	return value != QString(ds->description);
+}
+
+void EditDiveSiteDescription::redo()
+{
+	swap(ds->description, value);
+	emit diveListNotifier.diveSiteChanged(ds, LocationInformationModel::DESCRIPTION); // Inform frontend of changed dive site.
+}
+
+void EditDiveSiteDescription::undo()
 {
 	// Undo and redo do the same
 	redo();
