@@ -9,6 +9,7 @@
 #include "core/divesitehelpers.h"
 #include "desktop-widgets/modeldelegates.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
+#include "command.h"
 
 #include <QDebug>
 #include <QShowEvent>
@@ -185,20 +186,6 @@ void LocationInformationWidget::acceptChanges()
 	}
 
 	char *uiString;
-	uiString = copy_qstring(ui.diveSiteName->text());
-	if (!same_string(uiString, diveSite->name)) {
-		free(diveSite->name);
-		diveSite->name = uiString;
-	} else {
-		free(uiString);
-	}
-	uiString = copy_qstring(ui.diveSiteDescription->text());
-	if (!same_string(uiString, diveSite->description)) {
-		free(diveSite->description);
-		diveSite->description = uiString;
-	} else {
-		free(uiString);
-	}
 	uiString = copy_qstring(ui.diveSiteCountry->text());
 	// if the user entered a different country, first update the local taxonomy
 	// this below will get copied into the diveSite
@@ -306,16 +293,16 @@ void LocationInformationWidget::on_diveSiteCountry_textChanged(const QString& te
 		markChangedWidget(ui.diveSiteCountry);
 }
 
-void LocationInformationWidget::on_diveSiteDescription_textChanged(const QString &text)
+void LocationInformationWidget::on_diveSiteDescription_editingFinished()
 {
-	if (diveSite && !same_string(qPrintable(text), diveSite->description))
-		markChangedWidget(ui.diveSiteDescription);
+	if (diveSite)
+		Command::editDiveSiteDescription(diveSite, ui.diveSiteDescription->text());
 }
 
-void LocationInformationWidget::on_diveSiteName_textChanged(const QString &text)
+void LocationInformationWidget::on_diveSiteName_editingFinished()
 {
-	if (diveSite && !same_string(qPrintable(text), diveSite->name))
-		markChangedWidget(ui.diveSiteName);
+	if (diveSite)
+		Command::editDiveSiteName(diveSite, ui.diveSiteName->text());
 }
 
 void LocationInformationWidget::on_diveSiteNotes_textChanged()
