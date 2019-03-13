@@ -139,6 +139,9 @@ void LocationInformationWidget::diveSiteChanged(struct dive_site *ds, int field)
 	case LocationInformationModel::DESCRIPTION:
 		ui.diveSiteDescription->setText(diveSite->description);
 		return;
+	case LocationInformationModel::NOTES:
+		ui.diveSiteNotes->setText(diveSite->notes);
+		return;
 	default:
 		return;
 	}
@@ -196,14 +199,6 @@ void LocationInformationWidget::acceptChanges()
 		free(uiString);
 	// now update the diveSite
 	copy_taxonomy(&taxonomy, &diveSite->taxonomy);
-
-	uiString = copy_qstring(ui.diveSiteNotes->document()->toPlainText());
-	if (!same_string(uiString, diveSite->notes)) {
-		free(diveSite->notes);
-		diveSite->notes = uiString;
-	} else {
-		free(uiString);
-	}
 
 	if (!ui.diveSiteCoordinates->text().isEmpty())
 		parseGpsText(ui.diveSiteCoordinates->text(), diveSite->location);
@@ -305,10 +300,10 @@ void LocationInformationWidget::on_diveSiteName_editingFinished()
 		Command::editDiveSiteName(diveSite, ui.diveSiteName->text());
 }
 
-void LocationInformationWidget::on_diveSiteNotes_textChanged()
+void LocationInformationWidget::on_diveSiteNotes_editingFinished()
 {
-	if (diveSite && !same_string(qPrintable(ui.diveSiteNotes->toPlainText()), diveSite->notes))
-		markChangedWidget(ui.diveSiteNotes);
+	if (diveSite)
+		Command::editDiveSiteNotes(diveSite, ui.diveSiteNotes->toPlainText());
 }
 
 void LocationInformationWidget::resetPallete()

@@ -159,4 +159,27 @@ void EditDiveSiteDescription::undo()
 	redo();
 }
 
+EditDiveSiteNotes::EditDiveSiteNotes(dive_site *dsIn, const QString &notes) : ds(dsIn),
+	value(notes)
+{
+	setText(tr("Edit dive site notes"));
+}
+
+bool EditDiveSiteNotes::workToBeDone()
+{
+	return value != QString(ds->notes);
+}
+
+void EditDiveSiteNotes::redo()
+{
+	swap(ds->notes, value);
+	emit diveListNotifier.diveSiteChanged(ds, LocationInformationModel::NOTES); // Inform frontend of changed dive site.
+}
+
+void EditDiveSiteNotes::undo()
+{
+	// Undo and redo do the same
+	redo();
+}
+
 } // namespace Command
