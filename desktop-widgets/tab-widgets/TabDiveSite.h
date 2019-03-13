@@ -12,6 +12,8 @@ public:
 	TabDiveSite(QWidget *parent = 0);
 	void updateData() override;
 	void clear() override;
+private slots:
+	void add();
 private:
 	Ui::TabDiveSite ui;
 	DiveSiteSortedModel model;

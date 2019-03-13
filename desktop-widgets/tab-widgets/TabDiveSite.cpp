@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "TabDiveSite.h"
 #include "qt-models/divelocationmodel.h"
+#include "desktop-widgets/command.h"
 
 #include <qt-models/divecomputerextradatamodel.h>
 
@@ -16,6 +17,8 @@ TabDiveSite::TabDiveSite(QWidget *parent) : TabBase(parent)
 	// Show only the first few rows
 	for (int i = LocationInformationModel::COORDS; i < LocationInformationModel::COLUMNS; ++i)
 		ui.diveSites->view()->setColumnHidden(i, true);
+
+	connect(ui.diveSites, &TableView::addButtonClicked, this, &TabDiveSite::add);
 }
 
 void TabDiveSite::updateData()
@@ -24,4 +27,9 @@ void TabDiveSite::updateData()
 
 void TabDiveSite::clear()
 {
+}
+
+void TabDiveSite::add()
+{
+	Command::addDiveSite(tr("New dive site"));
 }

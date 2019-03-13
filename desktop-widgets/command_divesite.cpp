@@ -62,6 +62,28 @@ static std::vector<OwningDiveSitePtr> removeDiveSites(std::vector<dive_site *> &
 	return res;
 }
 
+AddDiveSite::AddDiveSite(const QString &name)
+{
+	setText(tr("add dive site"));
+	sitesToAdd.emplace_back(alloc_dive_site());
+	sitesToAdd.back()->name = copy_qstring(name);
+}
+
+bool AddDiveSite::workToBeDone()
+{
+	return true;
+}
+
+void AddDiveSite::redo()
+{
+	sitesToRemove = std::move(addDiveSites(sitesToAdd));
+}
+
+void AddDiveSite::undo()
+{
+	sitesToAdd = std::move(removeDiveSites(sitesToRemove));
+}
+
 DeleteDiveSites::DeleteDiveSites(const QVector<dive_site *> &sites) : sitesToRemove(sites.toStdVector())
 {
 	setText(tr("delete %n dive site(s)", "", sites.size()));
