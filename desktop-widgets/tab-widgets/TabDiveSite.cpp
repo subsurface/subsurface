@@ -21,6 +21,10 @@ TabDiveSite::TabDiveSite(QWidget *parent) : TabBase(parent)
 		ui.diveSites->view()->setColumnHidden(i, true);
 
 	connect(ui.diveSites, &TableView::addButtonClicked, this, &TabDiveSite::add);
+
+	// Subtle: We depend on this slot being executed after the slot in the model.
+	// This is realized because the model was constructed as a member object and connects in the constructor.
+	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &TabDiveSite::diveSiteChanged);
 }
 
 void TabDiveSite::updateData()
@@ -52,4 +56,14 @@ void TabDiveSite::diveSiteAdded(struct dive_site *, int idx)
 	QModelIndex localIdx = model.mapFromSource(globalIdx);
 	ui.diveSites->view()->setCurrentIndex(localIdx);
 	ui.diveSites->view()->edit(localIdx);
+}
+
+void TabDiveSite::diveSiteChanged(struct dive_site *ds, int field)
+{
+	int idx = get_divesite_idx(ds, &dive_site_table);
+	if (idx < 0)
+		return;
+	QModelIndex globalIdx = LocationInformationModel::instance()->index(idx, field);
+	QModelIndex localIdx = model.mapFromSource(globalIdx);
+	ui.diveSites->view()->scrollTo(localIdx);
 }
