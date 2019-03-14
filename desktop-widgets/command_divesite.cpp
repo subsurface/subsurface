@@ -208,17 +208,8 @@ void EditDiveSiteCountry::undo()
 	redo();
 }
 
-// Parse GPS text into location_t
-static location_t parseGpsText(const QString &text)
-{
-	double lat, lon;
-	if (parseGpsText(text, &lat, &lon))
-		return create_location(lat, lon);
-	return { {0}, {0} };
-}
-
-EditDiveSiteLocation::EditDiveSiteLocation(dive_site *dsIn, const QString &location) : ds(dsIn),
-	value(parseGpsText(location))
+EditDiveSiteLocation::EditDiveSiteLocation(dive_site *dsIn, const location_t location) : ds(dsIn),
+	value(location)
 {
 	setText(tr("Edit dive site location"));
 }

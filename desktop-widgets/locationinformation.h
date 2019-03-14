@@ -23,12 +23,6 @@ protected:
 
 public slots:
 	void acceptChanges();
-	void rejectChanges();
-	void updateGpsCoordinates(const location_t &);
-	void markChangedWidget(QWidget *w);
-	void enableEdition();
-	void resetState();
-	void resetPallete();
 	void on_diveSiteCountry_editingFinished();
 	void on_diveSiteCoordinates_editingFinished();
 	void on_diveSiteDescription_editingFinished();
@@ -45,8 +39,6 @@ signals:
 private:
 	void clearLabels();
 	Ui::LocationInformation ui;
-	bool modified;
-	QAction *acceptAction, *rejectAction;
 	GPSLocationInformationModel filter_model;
 	dive_site *diveSite;
 	taxonomy_data taxonomy;

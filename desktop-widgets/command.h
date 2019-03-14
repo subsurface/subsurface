@@ -45,7 +45,7 @@ void editDiveSiteName(dive_site *ds, const QString &value);
 void editDiveSiteDescription(dive_site *ds, const QString &value);
 void editDiveSiteNotes(dive_site *ds, const QString &value);
 void editDiveSiteCountry(dive_site *ds, const QString &value);
-void editDiveSiteLocation(dive_site *ds, const QString &value);
+void editDiveSiteLocation(dive_site *ds, location_t value);
 void addDiveSite(const QString &name);
 
 } // namespace Command
