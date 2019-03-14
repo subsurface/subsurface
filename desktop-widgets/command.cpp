@@ -98,6 +98,11 @@ void editDiveSiteNotes(dive_site *ds, const QString &value)
 	execute(new EditDiveSiteNotes(ds, value));
 }
 
+void editDiveSiteCountry(dive_site *ds, const QString &value)
+{
+	execute(new EditDiveSiteCountry(ds, value));
+}
+
 void addDiveSite(const QString &name)
 {
 	execute(new AddDiveSite(name));
