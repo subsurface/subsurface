@@ -4,6 +4,7 @@
 #include "core/divesite.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
 #include "core/qthelper.h"
+#include "core/subsurface-string.h"
 #include "qt-models/divelocationmodel.h"
 
 namespace Command {
@@ -177,6 +178,31 @@ void EditDiveSiteNotes::redo()
 }
 
 void EditDiveSiteNotes::undo()
+{
+	// Undo and redo do the same
+	redo();
+}
+
+EditDiveSiteCountry::EditDiveSiteCountry(dive_site *dsIn, const QString &country) : ds(dsIn),
+	value(country)
+{
+	setText(tr("Edit dive site country"));
+}
+
+bool EditDiveSiteCountry::workToBeDone()
+{
+	return !same_string(qPrintable(value), taxonomy_get_country(&ds->taxonomy));
+}
+
+void EditDiveSiteCountry::redo()
+{
+	QString old = taxonomy_get_country(&ds->taxonomy);
+	taxonomy_set_country(&ds->taxonomy, copy_qstring(value), taxonomy_origin::GEOMANUAL);
+	value = old;
+	emit diveListNotifier.diveSiteChanged(ds, LocationInformationModel::TAXONOMY); // Inform frontend of changed dive site.
+}
+
+void EditDiveSiteCountry::undo()
 {
 	// Undo and redo do the same
 	redo();
