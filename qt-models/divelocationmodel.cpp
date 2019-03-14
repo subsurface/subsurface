@@ -97,9 +97,7 @@ QVariant LocationInformationModel::getDiveSiteData(const struct dive_site *ds, i
 		case COORDS: return "TODO";
 		case DESCRIPTION: return ds->description;
 		case NOTES: return ds->name;
-		case TAXONOMY_1: return "TODO";
-		case TAXONOMY_2: return "TODO";
-		case TAXONOMY_3: return "TODO";
+		case TAXONOMY: return "TODO";
 		}
 	break;
 	case Qt::ToolTipRole:
