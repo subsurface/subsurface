@@ -38,7 +38,6 @@ public slots:
 	void mergeSelectedDiveSites();
 private slots:
 	void updateLabels();
-	void updateLocationOnMap();
 	void diveSiteChanged(struct dive_site *ds, int field);
 signals:
 	void endEditDiveSite();

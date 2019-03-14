@@ -36,8 +36,6 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	ui.diveSiteMessage->addAction(rejectAction);
 
 	connect(ui.geoCodeButton, SIGNAL(clicked()), this, SLOT(reverseGeocode()));
-	connect(ui.updateLocationButton, SIGNAL(clicked()), this, SLOT(updateLocationOnMap()));
-	connect(ui.diveSiteCoordinates, SIGNAL(returnPressed()), this, SLOT(updateLocationOnMap()));
 	ui.diveSiteCoordinates->installEventFilter(this);
 
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &LocationInformationWidget::diveSiteChanged);
@@ -58,8 +56,6 @@ bool LocationInformationWidget::eventFilter(QObject *object, QEvent *ev)
 		contextMenu.addAction(tr("Merge into current site"), this, SLOT(mergeSelectedDiveSites()));
 		contextMenu.exec(ctx->globalPos());
 		return true;
-	} else if (ev->type() == QEvent::FocusOut && object == ui.diveSiteCoordinates) {
-		updateLocationOnMap();
 	}
 	return false;
 }
@@ -67,7 +63,6 @@ bool LocationInformationWidget::eventFilter(QObject *object, QEvent *ev)
 void LocationInformationWidget::enableLocationButtons(bool enable)
 {
 	ui.geoCodeButton->setEnabled(enable);
-	ui.updateLocationButton->setEnabled(enable);
 }
 
 void LocationInformationWidget::mergeSelectedDiveSites()
@@ -241,7 +236,6 @@ void LocationInformationWidget::resetState()
 	MapWidget::instance()->repopulateLabels();
 	MultiFilterSortModel::instance()->stopFilterDiveSite();
 	emit endEditDiveSite();
-	updateLocationOnMap();
 }
 
 void LocationInformationWidget::enableEdition()
@@ -299,17 +293,6 @@ void LocationInformationWidget::reverseGeocode()
 		return;
 	reverseGeoLookup(location.lat, location.lon, &taxonomy);
 	ui.locationTags->setText(constructLocationTags(&taxonomy, false));
-}
-
-void LocationInformationWidget::updateLocationOnMap()
-{
-	if (!diveSite)
-		return;
-	location_t location;
-	if (!parseGpsText(ui.diveSiteCoordinates->text(), location))
-		return;
-	MapWidget::instance()->updateDiveSiteCoordinates(diveSite, location);
-	filter_model.setCoordinates(location);
 }
 
 DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject*)
