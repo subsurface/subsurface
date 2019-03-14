@@ -30,7 +30,7 @@ public slots:
 	void resetState();
 	void resetPallete();
 	void on_diveSiteCountry_editingFinished();
-	void on_diveSiteCoordinates_textChanged(const QString& text);
+	void on_diveSiteCoordinates_editingFinished();
 	void on_diveSiteDescription_editingFinished();
 	void on_diveSiteName_editingFinished();
 	void on_diveSiteNotes_editingFinished();

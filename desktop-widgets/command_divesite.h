@@ -92,6 +92,18 @@ private:
 	QString value; // Value to be set
 };
 
+class EditDiveSiteLocation : public Base {
+public:
+	EditDiveSiteLocation(dive_site *ds, const QString &location);
+private:
+	bool workToBeDone() override;
+	void undo() override;
+	void redo() override;
+
+	dive_site *ds;
+	location_t value; // Value to be set
+};
+
 } // namespace Command
 
 #endif // COMMAND_DIVESITE_H
