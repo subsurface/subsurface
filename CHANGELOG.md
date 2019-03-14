@@ -1,3 +1,4 @@
+- Desktop: Add stats by depth and temperature ranges to yearly stats [#1996]
 - Desktop: make sure cloud storage email addresses are lower case only
 - Desktop: Fix editing of dive-time [#1975]
 - Bluetooth: only show recognized dive computers by default
