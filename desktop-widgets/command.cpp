@@ -98,7 +98,7 @@ void editDiveSiteCountry(dive_site *ds, const QString &value)
 	execute(new EditDiveSiteCountry(ds, value));
 }
 
-void editDiveSiteLocation(dive_site *ds, const QString &value)
+void editDiveSiteLocation(dive_site *ds, location_t value)
 {
 	execute(new EditDiveSiteLocation(ds, value));
 }

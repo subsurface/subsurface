@@ -12,6 +12,7 @@
 #include "qt-models/divelocationmodel.h"
 #include "mainwindow.h"
 #include "divelistview.h"
+#include "command.h"
 
 static const QUrl urlMapWidget = QUrl(QStringLiteral("qrc:/qml/MapWidget.qml"));
 static const QUrl urlMapWidgetError = QUrl(QStringLiteral("qrc:/qml/MapWidgetError.qml"));
@@ -49,7 +50,7 @@ void MapWidget::doneLoading(QQuickWidget::Status status)
 	m_mapHelper = rootObject()->findChild<MapWidgetHelper *>();
 	connect(m_mapHelper, SIGNAL(selectedDivesChanged(QList<int>)),
 		this, SLOT(selectedDivesChanged(QList<int>)));
-	connect(m_mapHelper, &MapWidgetHelper::coordinatesChanged, this, &MapWidget::coordinatesChangedLocal);
+	connect(m_mapHelper, &MapWidgetHelper::coordinatesChanged, this, &MapWidget::coordinatesChanged);
 }
 
 void MapWidget::centerOnSelectedDiveSite()
@@ -112,10 +113,9 @@ void MapWidget::selectedDivesChanged(QList<int> list)
 	skipReload = false;
 }
 
-void MapWidget::coordinatesChangedLocal(const location_t &location)
+void MapWidget::coordinatesChanged(struct dive_site *ds, const location_t &location)
 {
-	CHECK_IS_READY_RETURN_VOID();
-	emit coordinatesChanged(location);
+	Command::editDiveSiteLocation(ds, location);
 }
 
 void MapWidget::diveSiteChanged(struct dive_site *ds, int field)

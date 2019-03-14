@@ -19,21 +19,17 @@
 #include <QDesktopWidget>
 #include <QScrollBar>
 
-LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent), modified(false), diveSite(nullptr)
+LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent), diveSite(nullptr)
 {
 	memset(&taxonomy, 0, sizeof(taxonomy));
 	ui.setupUi(this);
 	ui.diveSiteMessage->setCloseButtonVisible(false);
 
-	acceptAction = new QAction(tr("Apply changes"), this);
-	connect(acceptAction, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
-
-	rejectAction = new QAction(tr("Discard changes"), this);
-	connect(rejectAction, SIGNAL(triggered(bool)), this, SLOT(rejectChanges()));
+	QAction *acceptAction = new QAction(tr("Done"), this);
+	connect(acceptAction, &QAction::triggered, this, &LocationInformationWidget::acceptChanges);
 
 	ui.diveSiteMessage->setText(tr("Dive site management"));
 	ui.diveSiteMessage->addAction(acceptAction);
-	ui.diveSiteMessage->addAction(rejectAction);
 
 	connect(ui.geoCodeButton, SIGNAL(clicked()), this, SLOT(reverseGeocode()));
 	ui.diveSiteCoordinates->installEventFilter(this);
@@ -43,9 +39,6 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	ui.diveSiteListView->setModel(&filter_model);
 	ui.diveSiteListView->setModelColumn(LocationInformationModel::NAME);
 	ui.diveSiteListView->installEventFilter(this);
-	// Map Management Code.
-	connect(MapWidget::instance(), &MapWidget::coordinatesChanged,
-		this, &LocationInformationWidget::updateGpsCoordinates);
 }
 
 bool LocationInformationWidget::eventFilter(QObject *object, QEvent *ev)
@@ -166,38 +159,25 @@ void LocationInformationWidget::clearLabels()
 	ui.locationTags->clear();
 }
 
-void LocationInformationWidget::updateGpsCoordinates(const location_t &location)
-{
-	QString oldText = ui.diveSiteCoordinates->text();
-
-	const char *coords = printGPSCoords(&location);
-	ui.diveSiteCoordinates->setText(coords);
-	enableLocationButtons(has_location(&location));
-	free((void *)coords);
-	if (oldText != ui.diveSiteCoordinates->text())
-		markChangedWidget(ui.diveSiteCoordinates);
-}
-
-// Parse GPS text into latitude and longitude.
-// On error, false is returned and the output parameters are left unmodified.
-bool parseGpsText(const QString &text, location_t &location)
+// Parse GPS text into location_t
+static location_t parseGpsText(const QString &text)
 {
 	double lat, lon;
-	if (parseGpsText(text, &lat, &lon)) {
-		location = create_location(lat, lon);
-		return true;
-	}
-	return false;
+	if (parseGpsText(text, &lat, &lon))
+		return create_location(lat, lon);
+	return { {0}, {0} };
 }
+
 
 void LocationInformationWidget::acceptChanges()
 {
-	resetState();
-}
-
-void LocationInformationWidget::rejectChanges()
-{
-	resetState();
+	MainWindow::instance()->diveList->setEnabled(true);
+	MainWindow::instance()->setEnabledToolbar(true);
+	MainWindow::instance()->setApplicationState("Default");
+	MapWidget::instance()->endGetDiveCoordinates();
+	MapWidget::instance()->repopulateLabels();
+	MultiFilterSortModel::instance()->stopFilterDiveSite();
+	emit endEditDiveSite();
 }
 
 void LocationInformationWidget::initFields(dive_site *ds)
@@ -220,43 +200,11 @@ void LocationInformationWidget::initFields(dive_site *ds)
 	MapWidget::instance()->prepareForGetDiveCoordinates(ds);
 }
 
-void LocationInformationWidget::markChangedWidget(QWidget *w)
-{
-	QPalette p;
-	qreal h, s, l, a;
-	if (!modified)
-		enableEdition();
-	qApp->palette().color(QPalette::Text).getHslF(&h, &s, &l, &a);
-	p.setBrush(QPalette::Base, (l <= 0.3) ? QColor(Qt::yellow).lighter() : (l <= 0.6) ? QColor(Qt::yellow).light() : /* else */ QColor(Qt::yellow).darker(300));
-	w->setPalette(p);
-	modified = true;
-}
-
-void LocationInformationWidget::resetState()
-{
-	modified = false;
-	resetPallete();
-	MainWindow::instance()->diveList->setEnabled(true);
-	MainWindow::instance()->setEnabledToolbar(true);
-	ui.diveSiteMessage->setText(tr("Dive site management"));
-	MapWidget::instance()->endGetDiveCoordinates();
-	MapWidget::instance()->repopulateLabels();
-	MultiFilterSortModel::instance()->stopFilterDiveSite();
-	emit endEditDiveSite();
-}
-
-void LocationInformationWidget::enableEdition()
-{
-	MainWindow::instance()->diveList->setEnabled(false);
-	MainWindow::instance()->setEnabledToolbar(false);
-	ui.diveSiteMessage->setText(tr("You are editing a dive site"));
-}
-
 void LocationInformationWidget::on_diveSiteCoordinates_editingFinished()
 {
 	if (!diveSite)
 		return;
-	Command::editDiveSiteLocation(diveSite, ui.diveSiteCoordinates->text());
+	Command::editDiveSiteLocation(diveSite, parseGpsText(ui.diveSiteCoordinates->text()));
 }
 
 void LocationInformationWidget::on_diveSiteCountry_editingFinished()
@@ -283,20 +231,10 @@ void LocationInformationWidget::on_diveSiteNotes_editingFinished()
 		Command::editDiveSiteNotes(diveSite, ui.diveSiteNotes->toPlainText());
 }
 
-void LocationInformationWidget::resetPallete()
-{
-	QPalette p;
-	ui.diveSiteCoordinates->setPalette(p);
-	ui.diveSiteDescription->setPalette(p);
-	ui.diveSiteCountry->setPalette(p);
-	ui.diveSiteName->setPalette(p);
-	ui.diveSiteNotes->setPalette(p);
-}
-
 void LocationInformationWidget::reverseGeocode()
 {
-	location_t location;
-	if (!parseGpsText(ui.diveSiteCoordinates->text(), location))
+	location_t location = parseGpsText(ui.diveSiteCoordinates->text());
+	if (!has_location(&location))
 		return;
 	reverseGeoLookup(location.lat, location.lon, &taxonomy);
 	ui.locationTags->setText(constructLocationTags(&taxonomy, false));
