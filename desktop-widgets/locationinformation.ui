@@ -156,20 +156,6 @@
    <item row="2" column="2" colspan="3">
     <widget class="QLineEdit" name="diveSiteCountry"/>
    </item>
-   <item row="3" column="3">
-    <widget class="QToolButton" name="updateLocationButton">
-     <property name="toolTip">
-      <string>Update location on map</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../subsurface.qrc">
-       <normaloff>:dive-location-marker-selected-icon</normaloff>:dive-location-marker-selected-icon</iconset>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -188,7 +174,6 @@
   <tabstop>diveSiteName</tabstop>
   <tabstop>diveSiteCountry</tabstop>
   <tabstop>diveSiteCoordinates</tabstop>
-  <tabstop>updateLocationButton</tabstop>
   <tabstop>geoCodeButton</tabstop>
   <tabstop>diveSiteDescription</tabstop>
   <tabstop>diveSiteNotes</tabstop>
