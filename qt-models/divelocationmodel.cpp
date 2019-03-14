@@ -92,7 +92,7 @@ QVariant LocationInformationModel::getDiveSiteData(const struct dive_site *ds, i
 		case DIVESITE: return QVariant::fromValue<dive_site *>((dive_site *)ds); // Not nice: casting away const
 		case NAME: return ds->name;
 		case NUM_DIVES: return ds->dives.nr;
-		case COORDS: return "TODO";
+		case LOCATION: return "TODO";
 		case DESCRIPTION: return ds->description;
 		case NOTES: return ds->name;
 		case TAXONOMY: return "TODO";
