@@ -24,9 +24,6 @@ public:
 	static MapWidget *instance();
 	void reload();
 
-signals:
-	void coordinatesChanged(const location_t &);
-
 public slots:
 	void centerOnSelectedDiveSite();
 	void centerOnDiveSite(struct dive_site *);
@@ -35,7 +32,7 @@ public slots:
 	void repopulateLabels();
 	void prepareForGetDiveCoordinates(struct dive_site *ds);
 	void selectedDivesChanged(QList<int>);
-	void coordinatesChangedLocal(const location_t &);
+	void coordinatesChanged(struct dive_site *ds, const location_t &);
 	void doneLoading(QQuickWidget::Status status);
 	void diveSiteChanged(struct dive_site *ds, int field);
 

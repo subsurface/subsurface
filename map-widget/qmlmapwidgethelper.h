@@ -53,7 +53,7 @@ signals:
 	void modelChanged();
 	void editModeChanged();
 	void selectedDivesChanged(QList<int> list);
-	void coordinatesChanged(const location_t &);
+	void coordinatesChanged(struct dive_site *ds, const location_t &);
 	void pluginObjectChanged();
 };
 

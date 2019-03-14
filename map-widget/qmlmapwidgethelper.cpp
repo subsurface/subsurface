@@ -257,7 +257,7 @@ void MapWidgetHelper::updateCurrentDiveSiteCoordinatesFromMap(struct dive_site *
 	if (loc)
 		loc->setCoordinate(coord);
 	location_t location = mk_location(coord);
-	emit coordinatesChanged(location);
+	emit coordinatesChanged(ds, location);
 }
 
 void MapWidgetHelper::updateDiveSiteCoordinates(struct dive_site *ds, const location_t &location)
@@ -294,8 +294,6 @@ void MapWidgetHelper::enterEditMode(struct dive_site *ds)
 		coord = exists->coordinate();
 	}
 	centerOnDiveSite(ds);
-	location_t location = mk_location(coord);
-	emit coordinatesChanged(location);
 	emit editModeChanged();
 }
 

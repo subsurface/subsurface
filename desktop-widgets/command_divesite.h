@@ -94,7 +94,7 @@ private:
 
 class EditDiveSiteLocation : public Base {
 public:
-	EditDiveSiteLocation(dive_site *ds, const QString &location);
+	EditDiveSiteLocation(dive_site *ds, location_t location);
 private:
 	bool workToBeDone() override;
 	void undo() override;
