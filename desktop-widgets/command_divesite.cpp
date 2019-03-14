@@ -208,4 +208,40 @@ void EditDiveSiteCountry::undo()
 	redo();
 }
 
+// Parse GPS text into location_t
+static location_t parseGpsText(const QString &text)
+{
+	double lat, lon;
+	if (parseGpsText(text, &lat, &lon))
+		return create_location(lat, lon);
+	return { {0}, {0} };
+}
+
+EditDiveSiteLocation::EditDiveSiteLocation(dive_site *dsIn, const QString &location) : ds(dsIn),
+	value(parseGpsText(location))
+{
+	setText(tr("Edit dive site location"));
+}
+
+bool EditDiveSiteLocation::workToBeDone()
+{
+	bool ok = has_location(&value);
+	bool old_ok = has_location(&ds->location);
+	if (ok != old_ok)
+		return true;
+	return ok && !same_location(&value, &ds->location);
+}
+
+void EditDiveSiteLocation::redo()
+{
+	std::swap(value, ds->location);
+	emit diveListNotifier.diveSiteChanged(ds, LocationInformationModel::LOCATION); // Inform frontend of changed dive site.
+}
+
+void EditDiveSiteLocation::undo()
+{
+	// Undo and redo do the same
+	redo();
+}
+
 } // namespace Command

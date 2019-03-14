@@ -145,6 +145,17 @@ void LocationInformationWidget::diveSiteChanged(struct dive_site *ds, int field)
 	case LocationInformationModel::TAXONOMY:
 		ui.diveSiteCountry->setText(taxonomy_get_country(&diveSite->taxonomy));
 		return;
+	case LocationInformationModel::LOCATION:
+		filter_model.setCoordinates(diveSite->location);
+		if (has_location(&diveSite->location)) {
+			enableLocationButtons(true);
+			const char *coords = printGPSCoords(&diveSite->location);
+			ui.diveSiteCoordinates->setText(coords);
+			free((void *)coords);
+		} else {
+			enableLocationButtons(false);
+			ui.diveSiteCoordinates->clear();
+		}
 	default:
 		return;
 	}
@@ -186,14 +197,6 @@ bool parseGpsText(const QString &text, location_t &location)
 
 void LocationInformationWidget::acceptChanges()
 {
-	if (!diveSite) {
-		qWarning() << "did not have valid dive site in LocationInformationWidget";
-		return;
-	}
-
-	if (!ui.diveSiteCoordinates->text().isEmpty())
-		parseGpsText(ui.diveSiteCoordinates->text(), diveSite->location);
-	mark_divelist_changed(true);
 	resetState();
 }
 
@@ -255,22 +258,11 @@ void LocationInformationWidget::enableEdition()
 	ui.diveSiteMessage->setText(tr("You are editing a dive site"));
 }
 
-void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString &text)
+void LocationInformationWidget::on_diveSiteCoordinates_editingFinished()
 {
 	if (!diveSite)
 		return;
-	location_t location;
-	bool ok_old = has_location(&diveSite->location);
-	bool ok = parseGpsText(text, location);
-	if (ok != ok_old || !same_location(&location, &diveSite->location)) {
-		if (ok) {
-			markChangedWidget(ui.diveSiteCoordinates);
-			enableLocationButtons(true);
-			filter_model.setCoordinates(location);
-		} else {
-			enableLocationButtons(false);
-		}
-	}
+	Command::editDiveSiteLocation(diveSite, ui.diveSiteCoordinates->text());
 }
 
 void LocationInformationWidget::on_diveSiteCountry_editingFinished()

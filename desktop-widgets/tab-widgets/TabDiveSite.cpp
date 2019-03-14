@@ -17,7 +17,7 @@ TabDiveSite::TabDiveSite(QWidget *parent) : TabBase(parent)
 	ui.diveSites->view()->setSortingEnabled(true);
 
 	// Show only the first few rows
-	for (int i = LocationInformationModel::COORDS; i < LocationInformationModel::COLUMNS; ++i)
+	for (int i = LocationInformationModel::LOCATION; i < LocationInformationModel::COLUMNS; ++i)
 		ui.diveSites->view()->setColumnHidden(i, true);
 
 	connect(ui.diveSites, &TableView::addButtonClicked, this, &TabDiveSite::add);
