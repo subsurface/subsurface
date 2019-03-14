@@ -155,7 +155,7 @@ void MapLocationModel::updateMapLocationCoordinates(const struct dive_site *ds, 
 	foreach(location, m_mapLocations) {
 		if (ds == location->divesite()) {
 			location->setCoordinateNoEmit(coord);
-			emit dataChanged(createIndex(0, row), createIndex(0, row));
+			emit dataChanged(createIndex(row, 0), createIndex(row, 0));
 			return;
 		}
 		row++;
