@@ -6,6 +6,7 @@
 
 #include "mapwidget.h"
 #include "core/divesite.h"
+#include "core/subsurface-qt/DiveListNotifier.h"
 #include "map-widget/qmlmapwidgethelper.h"
 #include "qt-models/maplocationmodel.h"
 #include "qt-models/divelocationmodel.h"
@@ -28,6 +29,7 @@ MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
 	m_mapHelper = Q_NULLPTR;
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
 	connect(this, &QQuickWidget::statusChanged, this, &MapWidget::doneLoading);
+	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &MapWidget::diveSiteChanged);
 	setSource(urlMapWidget);
 }
 
@@ -116,10 +118,11 @@ void MapWidget::coordinatesChangedLocal(const location_t &location)
 	emit coordinatesChanged(location);
 }
 
-void MapWidget::updateDiveSiteCoordinates(struct dive_site *ds, const location_t &location)
+void MapWidget::diveSiteChanged(struct dive_site *ds, int field)
 {
 	CHECK_IS_READY_RETURN_VOID();
-	m_mapHelper->updateDiveSiteCoordinates(ds, location);
+	if (field == LocationInformationModel::LOCATION)
+		m_mapHelper->updateDiveSiteCoordinates(ds, ds->location);
 }
 
 MapWidget::~MapWidget()
