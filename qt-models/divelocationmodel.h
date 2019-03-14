@@ -17,7 +17,7 @@ class LocationInformationModel : public QAbstractTableModel {
 public:
 	// Common columns, roles and accessor function for all dive-site models.
 	// Thus, different views can connect to different models.
-	enum Columns { REMOVE, NAME, DESCRIPTION, NUM_DIVES, COORDS, NOTES, LATITUDE, LONGITUDE, DIVESITE, TAXONOMY_1, TAXONOMY_2, TAXONOMY_3, COLUMNS};
+	enum Columns { REMOVE, NAME, DESCRIPTION, NUM_DIVES, COORDS, NOTES, LATITUDE, LONGITUDE, DIVESITE, TAXONOMY, COLUMNS};
 	enum Roles { DIVESITE_ROLE = Qt::UserRole + 1 };
 	static QVariant getDiveSiteData(const struct dive_site *ds, int column, int role);
 

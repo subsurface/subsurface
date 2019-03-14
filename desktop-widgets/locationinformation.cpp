@@ -142,6 +142,9 @@ void LocationInformationWidget::diveSiteChanged(struct dive_site *ds, int field)
 	case LocationInformationModel::NOTES:
 		ui.diveSiteNotes->setText(diveSite->notes);
 		return;
+	case LocationInformationModel::TAXONOMY:
+		ui.diveSiteCountry->setText(taxonomy_get_country(&diveSite->taxonomy));
+		return;
 	default:
 		return;
 	}
@@ -187,18 +190,6 @@ void LocationInformationWidget::acceptChanges()
 		qWarning() << "did not have valid dive site in LocationInformationWidget";
 		return;
 	}
-
-	char *uiString;
-	uiString = copy_qstring(ui.diveSiteCountry->text());
-	// if the user entered a different country, first update the local taxonomy
-	// this below will get copied into the diveSite
-	if (!same_string(uiString, taxonomy_get_country(&taxonomy)) &&
-	    !empty_string(uiString))
-		taxonomy_set_country(&taxonomy, uiString, taxonomy_origin::GEOMANUAL);
-	else
-		free(uiString);
-	// now update the diveSite
-	copy_taxonomy(&taxonomy, &diveSite->taxonomy);
 
 	if (!ui.diveSiteCoordinates->text().isEmpty())
 		parseGpsText(ui.diveSiteCoordinates->text(), diveSite->location);
@@ -282,10 +273,10 @@ void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString
 	}
 }
 
-void LocationInformationWidget::on_diveSiteCountry_textChanged(const QString& text)
+void LocationInformationWidget::on_diveSiteCountry_editingFinished()
 {
-	if (!same_string(qPrintable(text), taxonomy_get_country(&taxonomy)))
-		markChangedWidget(ui.diveSiteCountry);
+	if (diveSite)
+		Command::editDiveSiteCountry(diveSite, ui.diveSiteCountry->text());
 }
 
 void LocationInformationWidget::on_diveSiteDescription_editingFinished()
