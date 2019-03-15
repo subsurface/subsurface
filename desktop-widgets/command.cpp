@@ -103,6 +103,11 @@ void editDiveSiteLocation(dive_site *ds, location_t value)
 	execute(new EditDiveSiteLocation(ds, value));
 }
 
+void editDiveSiteTaxonomy(dive_site *ds, taxonomy_data &value)
+{
+	execute(new EditDiveSiteTaxonomy(ds, value));
+}
+
 void addDiveSite(const QString &name)
 {
 	execute(new AddDiveSite(name));
