@@ -164,7 +164,6 @@ void LocationInformationWidget::acceptChanges()
 	MapWidget::instance()->endGetDiveCoordinates();
 	MapWidget::instance()->repopulateLabels();
 	MultiFilterSortModel::instance()->stopFilterDiveSite();
-	emit endEditDiveSite();
 }
 
 void LocationInformationWidget::initFields(dive_site *ds)
