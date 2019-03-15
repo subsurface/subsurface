@@ -104,6 +104,19 @@ private:
 	location_t value; // Value to be set
 };
 
+class EditDiveSiteTaxonomy : public Base {
+public:
+	EditDiveSiteTaxonomy(dive_site *ds, taxonomy_data &taxonomy);
+	~EditDiveSiteTaxonomy(); // free taxonomy
+private:
+	bool workToBeDone() override;
+	void undo() override;
+	void redo() override;
+
+	dive_site *ds;
+	taxonomy_data value; // Value to be set
+};
+
 } // namespace Command
 
 #endif // COMMAND_DIVESITE_H

@@ -10,6 +10,7 @@
 #include "desktop-widgets/modeldelegates.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
 #include "command.h"
+#include "core/taxonomy.h"
 
 #include <QDebug>
 #include <QShowEvent>
@@ -21,7 +22,6 @@
 
 LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent), diveSite(nullptr)
 {
-	memset(&taxonomy, 0, sizeof(taxonomy));
 	ui.setupUi(this);
 	ui.diveSiteMessage->setCloseButtonVisible(false);
 
@@ -92,7 +92,7 @@ void LocationInformationWidget::updateLabels()
 		ui.diveSiteName->setText(diveSite->name);
 	else
 		ui.diveSiteName->clear();
-	const char *country = taxonomy_get_country(&taxonomy);
+	const char *country = taxonomy_get_country(&diveSite->taxonomy);
 	if (country)
 		ui.diveSiteCountry->setText(country);
 	else
@@ -110,7 +110,7 @@ void LocationInformationWidget::updateLabels()
 	else
 		ui.diveSiteCoordinates->clear();
 
-	ui.locationTags->setText(constructLocationTags(&taxonomy, false));
+	ui.locationTags->setText(constructLocationTags(&diveSite->taxonomy, false));
 }
 
 void LocationInformationWidget::diveSiteChanged(struct dive_site *ds, int field)
@@ -129,6 +129,7 @@ void LocationInformationWidget::diveSiteChanged(struct dive_site *ds, int field)
 		return;
 	case LocationInformationModel::TAXONOMY:
 		ui.diveSiteCountry->setText(taxonomy_get_country(&diveSite->taxonomy));
+		ui.locationTags->setText(constructLocationTags(&diveSite->taxonomy, false));
 		return;
 	case LocationInformationModel::LOCATION:
 		filter_model.setCoordinates(diveSite->location);
@@ -178,7 +179,6 @@ void LocationInformationWidget::initFields(dive_site *ds)
 {
 	diveSite = ds;
 	if (ds) {
-		copy_taxonomy(&ds->taxonomy, &taxonomy);
 		filter_model.set(ds, ds->location);
 		updateLabels();
 		enableLocationButtons(dive_site_has_gps_location(ds));
@@ -187,7 +187,6 @@ void LocationInformationWidget::initFields(dive_site *ds)
 		if (m)
 			m->invalidate();
 	} else {
-		free_taxonomy(&taxonomy);
 		filter_model.set(0, location_t { degrees_t{ 0 }, degrees_t{ 0 } });
 		clearLabels();
 	}
@@ -228,10 +227,11 @@ void LocationInformationWidget::on_diveSiteNotes_editingFinished()
 void LocationInformationWidget::reverseGeocode()
 {
 	location_t location = parseGpsText(ui.diveSiteCoordinates->text());
-	if (!has_location(&location))
+	if (!diveSite || !has_location(&location))
 		return;
+	taxonomy_data taxonomy = { 0 };
 	reverseGeoLookup(location.lat, location.lon, &taxonomy);
-	ui.locationTags->setText(constructLocationTags(&taxonomy, false));
+	Command::editDiveSiteTaxonomy(diveSite, taxonomy);
 }
 
 DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject*)
