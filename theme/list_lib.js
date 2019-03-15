@@ -259,8 +259,7 @@ function putTags(tags)
 */
 function putRating(rating)
 {
-	var result;
-	result = '<div>';
+	var result = '<div>';
 	for (var i = 0; i < rating; i++)
 		result += ' &#9733; ';
 	for (var i = rating; i < 5; i++)
@@ -704,8 +703,7 @@ function showStats()
 
 function getDiveStats()
 {
-	var res = "";
-	res += '<table><tr id="stats_header">';
+	var res = '<table><tr id="stats_header">';
 	res += '<td class="statscell">' + translate.Year + '</td><td class="statscell">#</td><td class="statscell">' + translate.Total_Time + '</td><td class="statscell">' + translate.Average_Time + '</td><td class="statscell">' + translate.Shortest_Time + '</td><td class="statscell">' + translate.Longest_Time + '</td><td class="statscell">' + translate.Average_Depth + '</td><td class="statscell">' + translate.Min_Depth + '</td><td class="statscell">' + translate.Max_Depth + '</td><td class="statscell">' + translate.Average_SAC + '</td><td class="statscell">' + translate.Min_SAC + '</td><td class="statscell">' + translate.Max_SAC + '</td><td class="statscell">' + translate.Average_Temp + '</td><td class="statscell">' + translate.Min_Temp + '</td><td class="statscell">' + translate.Max_Temp + '</td>';
 	res += '</tr>';
 	res += getStatsRows();
@@ -859,8 +857,7 @@ function get_weights_HTML(dive)
 	if (!dive.Weights.length)
 		return "";
 
-	var result = "";
-	result += '<table><tr><td class="words">' + translate.Weight + '</td><td class="words">' + translate.Type + '</td></tr>';
+	var result = '<table><tr><td class="words">' + translate.Weight + '</td><td class="words">' + translate.Type + '</td></tr>';
 	for (var i in dive.Weights) {
 		result += get_weight_HTML(dive.Weights[i]);
 	}
@@ -904,8 +901,7 @@ function get_cylinders_HTML(dive)
 	if (!dive.Cylinders.length)
 		return "";
 
-	var result = "";
-	result += '<h2 class="det_hed">' + translate.Dive_equipment + '</h2><table><tr><td class="words">' + translate.Type + '</td><td class="words">' + translate.Size + '</td><td class="words">' + translate.Work_Pressure + '</td><td class="words">' + translate.Start_Pressure + '</td><td class="words">' + translate.End_Pressure + '</td><td class="words">'+translate.Gas+'</td></tr>';
+	var result = '<h2 class="det_hed">' + translate.Dive_equipment + '</h2><table><tr><td class="words">' + translate.Type + '</td><td class="words">' + translate.Size + '</td><td class="words">' + translate.Work_Pressure + '</td><td class="words">' + translate.Start_Pressure + '</td><td class="words">' + translate.End_Pressure + '</td><td class="words">'+translate.Gas+'</td></tr>';
 	for (var i in dive.Cylinders) {
 		result += get_cylinder_HTML(dive.Cylinders[i]);
 	}
@@ -941,8 +937,7 @@ function get_bookmarks_HTML(dive)
 {
 	if (!dive.events || dive.events <= 0)
 		return "";
-	var result = "";
-	result += '<h2 class="det_hed">' + translate.Events + '</h2><table><tr><td class="words">' + translate.Name + '</td><td class="words">' + translate.Time + '</td><td class="words">' + translate.Value + '</td></tr>';
+	var result = '<h2 class="det_hed">' + translate.Events + '</h2><table><tr><td class="words">' + translate.Name + '</td><td class="words">' + translate.Time + '</td><td class="words">' + translate.Value + '</td></tr>';
 	for (var i in dive.events) {
 		result += get_bookmark_HTML(dive.events[i]);
 	}
@@ -993,8 +988,7 @@ function put_divecomputer_details(dc)
 	if (dc.length <= 0)
 		return;
 
-	var res = '';
-	res += '<p style="margin:10px;" class="words">Divecomputer:</p>';
+	var res = '<p style="margin:10px;" class="words">Divecomputer:</p>';
 	for (var i =0; i < dc.length; i++) {
 		res += '<table>';
 		res += '<tr><td>Model : </td><td>' + dc[i].model + '</td></tr>';
