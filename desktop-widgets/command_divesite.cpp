@@ -235,4 +235,35 @@ void EditDiveSiteLocation::undo()
 	redo();
 }
 
+EditDiveSiteTaxonomy::EditDiveSiteTaxonomy(dive_site *dsIn, taxonomy_data &taxonomy) : ds(dsIn),
+	value(taxonomy)
+{
+	// We did a dumb copy. Erase the source to remove double references to strings.
+	memset(&taxonomy, 0, sizeof(taxonomy));
+	setText(tr("Edit dive site taxonomy"));
+}
+
+EditDiveSiteTaxonomy::~EditDiveSiteTaxonomy()
+{
+	free_taxonomy(&value);
+}
+
+bool EditDiveSiteTaxonomy::workToBeDone()
+{
+	// TODO: Apparently we have no way of comparing taxonomies?
+	return true;
+}
+
+void EditDiveSiteTaxonomy::redo()
+{
+	std::swap(value, ds->taxonomy);
+	emit diveListNotifier.diveSiteChanged(ds, LocationInformationModel::TAXONOMY); // Inform frontend of changed dive site.
+}
+
+void EditDiveSiteTaxonomy::undo()
+{
+	// Undo and redo do the same
+	redo();
+}
+
 } // namespace Command

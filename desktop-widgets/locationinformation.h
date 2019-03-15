@@ -4,7 +4,6 @@
 
 #include "core/units.h"
 #include "core/divesite.h"
-#include "core/taxonomy.h"
 #include "ui_locationinformation.h"
 #include "qt-models/divelocationmodel.h"
 #include <stdint.h>
@@ -41,7 +40,6 @@ private:
 	Ui::LocationInformation ui;
 	GPSLocationInformationModel filter_model;
 	dive_site *diveSite;
-	taxonomy_data taxonomy;
 };
 
 class DiveLocationFilterProxyModel : public QSortFilterProxyModel {
