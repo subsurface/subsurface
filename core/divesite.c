@@ -310,31 +310,6 @@ void merge_dive_site(struct dive_site *a, struct dive_site *b)
 	}
 }
 
-void merge_dive_sites(struct dive_site *ref, struct dive_site *dive_sites[], int count)
-{
-	int curr_dive, i;
-	struct dive *d;
-	for(i = 0; i < count; i++){
-		if (dive_sites[i] == ref)
-			continue;
-
-		for_each_dive(curr_dive, d) {
-			if (d->dive_site != dive_sites[i] )
-				continue;
-			unregister_dive_from_dive_site(d);
-			add_dive_to_dive_site(d, ref);
-			invalidate_dive_cache(d);
-		}
-	}
-
-	for(i = 0; i < count; i++) {
-		if (dive_sites[i] == ref)
-			continue;
-		delete_dive_site(dive_sites[i], &dive_site_table);
-	}
-	mark_divelist_changed(true);
-}
-
 struct dive_site *find_or_create_dive_site_with_name(const char *name, struct dive_site_table *table)
 {
 	int i;

@@ -266,4 +266,44 @@ void EditDiveSiteTaxonomy::undo()
 	redo();
 }
 
+MergeDiveSites::MergeDiveSites(dive_site *dsIn, const QVector<dive_site *> &sites) : ds(dsIn)
+{
+	sitesToRemove.reserve(sites.size());
+	for (dive_site *site: sites) {
+		if (site != ds)
+			sitesToRemove.push_back(site);
+	}
+}
+
+bool MergeDiveSites::workToBeDone()
+{
+	return !sitesToRemove.empty();
+}
+
+void MergeDiveSites::redo()
+{
+	// First, remove all dive sites
+	sitesToAdd = std::move(removeDiveSites(sitesToRemove));
+
+	// The dives of the above dive sites were reset to no dive sites.
+	// Add them to the merged-into dive site. Thankfully, we remember
+	// the dives in the sitesToAdd vector.
+	for (const OwningDiveSitePtr &site: sitesToAdd) {
+		for (int i = 0; i < site->dives.nr; ++i)
+			add_dive_to_dive_site(site->dives.dives[i], ds); // TODO: send dive changed signal
+	}
+}
+
+void MergeDiveSites::undo()
+{
+	// Before readding the dive sites, unregister the corresponding dives so that they can be
+	// readded to their old dive sites.
+	for (const OwningDiveSitePtr &site: sitesToAdd) {
+		for (int i = 0; i < site->dives.nr; ++i)
+			unregister_dive_from_dive_site(site->dives.dives[i]);
+	}
+
+	sitesToRemove = std::move(addDiveSites(sitesToAdd));
+}
+
 } // namespace Command

@@ -69,7 +69,6 @@ void copy_dive_site(struct dive_site *orig, struct dive_site *copy);
 void merge_dive_site(struct dive_site *a, struct dive_site *b);
 unsigned int get_distance(const location_t *loc1, const location_t *loc2);
 struct dive_site *find_or_create_dive_site_with_name(const char *name, struct dive_site_table *table);
-void merge_dive_sites(struct dive_site *ref, struct dive_site *dive_sites[], int count);
 void purge_empty_dive_sites(struct dive_site_table *table);
 void clear_dive_site_table(struct dive_site_table *table);
 void add_dive_to_dive_site(struct dive *d, struct dive_site *ds);

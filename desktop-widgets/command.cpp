@@ -113,4 +113,9 @@ void addDiveSite(const QString &name)
 	execute(new AddDiveSite(name));
 }
 
+void mergeDiveSites(dive_site *ds, const QVector<dive_site *> &sites)
+{
+	execute(new MergeDiveSites(ds, sites));
+}
+
 } // namespace Command

@@ -117,6 +117,23 @@ private:
 	taxonomy_data value; // Value to be set
 };
 
+class MergeDiveSites : public Base {
+public:
+	MergeDiveSites(dive_site *ds, const QVector<dive_site *> &sites);
+private:
+	bool workToBeDone() override;
+	void undo() override;
+	void redo() override;
+
+	dive_site *ds;
+
+	// For redo
+	std::vector<dive_site *> sitesToRemove;
+
+	// For undo
+	std::vector<OwningDiveSitePtr> sitesToAdd;
+};
+
 } // namespace Command
 
 #endif // COMMAND_DIVESITE_H

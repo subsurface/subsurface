@@ -62,24 +62,16 @@ void LocationInformationWidget::mergeSelectedDiveSites()
 {
 	if (!diveSite)
 		return;
-	if (QMessageBox::warning(MainWindow::instance(), tr("Merging dive sites"),
-				 tr("You are about to merge dive sites, you can't undo that action \n Are you sure you want to continue?"),
-				 QMessageBox::Ok, QMessageBox::Cancel) != QMessageBox::Ok)
-		return;
 
 	QModelIndexList selection = ui.diveSiteListView->selectionModel()->selectedIndexes();
-	// std::vector guarantees contiguous storage and can therefore be passed to C-code
-	std::vector<struct dive_site *> selected_dive_sites;
+	QVector<dive_site *> selected_dive_sites;
 	selected_dive_sites.reserve(selection.count());
-	Q_FOREACH (const QModelIndex &idx, selection) {
+	for (const QModelIndex &idx: selection) {
 		dive_site *ds = idx.data(LocationInformationModel::DIVESITE_ROLE).value<dive_site *>();
 		if (ds)
 			selected_dive_sites.push_back(ds);
 	}
-	merge_dive_sites(diveSite, selected_dive_sites.data(), (int)selected_dive_sites.size());
-	LocationInformationModel::instance()->update();
-	QSortFilterProxyModel *m = (QSortFilterProxyModel *)ui.diveSiteListView->model();
-	m->invalidate();
+	Command::mergeDiveSites(diveSite, selected_dive_sites);
 }
 
 void LocationInformationWidget::updateLabels()
