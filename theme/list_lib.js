@@ -174,7 +174,6 @@ function setNumberOfDives(e)
 {
 	var value = e.options[e.selectedIndex].value;
 	sizeofpage = parseInt(value, 10);
-	var end = start + sizeofpage - 1;
 	viewInPage();
 }
 
@@ -682,7 +681,6 @@ var statsShows;
 */
 function toggleStats()
 {
-	var stats_button = document.getElementById('stats_button');
 	if (statsShows) {
 		statsShows = false;
 		document.getElementById('diveListPanel').style.display = 'block';
@@ -1182,7 +1180,7 @@ function int_to_time(n)
 
 function float_to_deg(flt){
 	var deg = 0 | flt;
-	flt = (flt < 0 ? flt =- flt : flt);
+	flt = (flt < 0 ? - flt : flt);
         var min = 0 | flt % 1 * 60;
         var sec = (0 | flt * 60 % 1 * 6000) / 100;
         return deg + "&deg; " + min + "' " + sec + "\"";
