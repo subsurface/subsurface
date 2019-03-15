@@ -168,11 +168,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	profileContainer->setLayout(profLayout);
 
 	diveSiteEdit = new LocationInformationWidget(this);
-	connect(diveSiteEdit, &LocationInformationWidget::endEditDiveSite,
-			this, &MainWindow::setDefaultState);
-	connect(diveSiteEdit, SIGNAL(endEditDiveSite()), this, SLOT(refreshDisplay()));
-	connect(diveSiteEdit, &LocationInformationWidget::endEditDiveSite,
-			mainTab, &MainTab::refreshDisplayedDiveSite);
 
 	std::pair<QByteArray, QVariant> enabled = std::make_pair("enabled", QVariant(true));
 	std::pair<QByteArray, QVariant> disabled = std::make_pair("enabled", QVariant(false));
