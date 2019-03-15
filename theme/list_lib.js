@@ -950,10 +950,11 @@ function get_bookmarks_HTML(dive)
 	return result;
 }
 
-function getDiveCoorString(coordinates){
-	res = "";
-	lat = coordinates.lat;
-	lon = coordinates.lon;
+function getDiveCoorString(coordinates)
+{
+	var res = "";
+	var lat = coordinates.lat;
+	var lon = coordinates.lon;
 	res += float_to_deg(lat) + ' , ' + float_to_deg(lon);
 	return res;
 }
@@ -1043,7 +1044,7 @@ function remove_missing_photos()
 	var actually_removed = 0;
 
 	console.log(missing_ids.length);
-	for(i = 0; i < missing_ids.length; i++){
+	for(var i = 0; i < missing_ids.length; i++){
 		dive.photos.splice(missing_ids[i] - actually_removed, 1);
 		actually_removed++;
 	}
