@@ -32,9 +32,6 @@ public slots:
 private slots:
 	void updateLabels();
 	void diveSiteChanged(struct dive_site *ds, int field);
-signals:
-	void endEditDiveSite();
-
 private:
 	void clearLabels();
 	Ui::LocationInformation ui;
