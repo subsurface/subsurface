@@ -77,6 +77,8 @@ parts:
 
   libdc:
     plugin: autotools
+    source: .
+    source-type: git
     source-subdir: libdivecomputer
     build-packages:
     - libbluetooth-dev
@@ -92,6 +94,7 @@ parts:
     - libusb-1.0-0
 
   subsurface:
+    source: .
     after: [desktop-qt5, googlemaps, libdc]
     plugin: cmake
     configflags:
