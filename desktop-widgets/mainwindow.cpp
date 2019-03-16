@@ -378,10 +378,17 @@ void MainWindow::setStateProperties(const QByteArray& state, const PropertyList&
 	stateProperties[state] = PropertiesForQuadrant(tl, tr, bl, br);
 }
 
+void MainWindow::editDiveSite(dive_site *ds)
+{
+	if (!ds)
+		return;
+	diveSiteEdit->initFields(ds);
+	setApplicationState("EditDiveSite");
+}
+
 void MainWindow::on_actionDiveSiteEdit_triggered()
 {
-	diveSiteEdit->initFields(get_dive_site_for_dive(&displayed_dive));
-	setApplicationState("EditDiveSite");
+	editDiveSite(get_dive_site_for_dive(&displayed_dive));
 }
 
 void MainWindow::enableDisableCloudActions()
