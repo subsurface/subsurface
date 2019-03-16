@@ -22,6 +22,7 @@ HINTS
     ${CMAKE_CURRENT_SOURCE_DIR}/../libdivecomputer/include/
     /usr/local/include
     /usr/include
+    /opt/out/include
 )
 
 FIND_LIBRARY( LIBDIVECOMPUTER_LIBRARIES
@@ -31,8 +32,9 @@ NAMES
 HINTS
     ${CMAKE_CURRENT_SOURCE_DIR}/../install-root/lib
     ${CMAKE_CURRENT_SOURCE_DIR}/../libdivecomputer/src/.libs/
-    /usr/local/include
-    /usr/include
+    /usr/local/lib
+    /usr/lib
+    /opt/out/lib
 )
 
 INCLUDE( FindPackageHandleStandardArgs )
