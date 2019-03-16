@@ -218,7 +218,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(variationsComputed(QString)), this, SLOT(updateVariations(QString)));
 	connect(plannerDetails->printPlan(), SIGNAL(pressed()), divePlannerWidget, SLOT(printDecoPlan()));
-	connect(this, SIGNAL(startDiveSiteEdit()), this, SLOT(on_actionDiveSiteEdit_triggered()));
 	connect(mainTab, &MainTab::diveSiteChanged, mapWidget, &MapWidget::centerOnSelectedDiveSite);
 	connect(this, &MainWindow::showError, ui.mainErrorMessage, &NotificationWidget::showError, Qt::AutoConnection);
 
@@ -386,7 +385,7 @@ void MainWindow::editDiveSite(dive_site *ds)
 	setApplicationState("EditDiveSite");
 }
 
-void MainWindow::on_actionDiveSiteEdit_triggered()
+void MainWindow::startDiveSiteEdit()
 {
 	editDiveSite(get_dive_site_for_dive(&displayed_dive));
 }
