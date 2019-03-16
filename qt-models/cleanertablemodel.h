@@ -9,6 +9,7 @@
 /* Retrieve the trash icon pixmap, common to most table models */
 const QPixmap &trashIcon();
 const QPixmap &trashForbiddenIcon();
+const QPixmap &editIcon();
 
 /* When using a QAbstractTableModel, consider using this instead
  * of the default implementation, as it's easyer to setup the columns
