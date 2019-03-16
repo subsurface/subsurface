@@ -83,7 +83,7 @@
         <file alias="edit-clear-icon">icons/edit-undo.svg</file>
         <file alias="show-icon">icons/go-top.svg</file>
         <file alias="filter-close">icons/process-stop.svg</file>
-        <file alias="duplicate-edit-icon">icons/edit-circled.svg</file>
+        <file alias="edit-icon">icons/edit-circled.svg</file>
         <file alias="globe-icon">icons/Emblem-earth.svg</file>
         <file alias="geotag-icon">icons/geocode.svg</file>
         <file alias="photo-in-icon">icons/duringPhoto.png</file>
