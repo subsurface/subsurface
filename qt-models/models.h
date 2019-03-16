@@ -44,7 +44,6 @@ slots:
 	void repopulate();
 };
 
-
 class LanguageModel : public QAbstractListModel {
 	Q_OBJECT
 public:
