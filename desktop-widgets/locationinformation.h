@@ -33,6 +33,7 @@ private slots:
 	void updateLabels();
 	void diveSiteChanged(struct dive_site *ds, int field);
 private:
+	void keyPressEvent(QKeyEvent *e) override;
 	void clearLabels();
 	Ui::LocationInformation ui;
 	GPSLocationInformationModel filter_model;

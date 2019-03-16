@@ -41,6 +41,13 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	ui.diveSiteListView->installEventFilter(this);
 }
 
+void LocationInformationWidget::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Qt::Key_Escape)
+		MainWindow::instance()->setFocus();
+	return QGroupBox::keyPressEvent(e);
+}
+
 bool LocationInformationWidget::eventFilter(QObject *object, QEvent *ev)
 {
 	if (ev->type() == QEvent::ContextMenu) {
