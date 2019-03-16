@@ -82,6 +82,7 @@ public:
 	void enableDisableOtherDCsActions();
 	void enterEditState();
 	void exitEditState();
+	void editDiveSite(dive_site *ds);
 
 	MainTab *mainTab;
 	PlannerDetails *plannerDetails;
