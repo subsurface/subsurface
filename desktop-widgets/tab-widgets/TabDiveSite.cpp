@@ -15,6 +15,8 @@ TabDiveSite::TabDiveSite(QWidget *parent) : TabBase(parent)
 	// Default: sort by name
 	ui.diveSites->view()->sortByColumn(LocationInformationModel::NAME, Qt::AscendingOrder);
 	ui.diveSites->view()->setSortingEnabled(true);
+	ui.diveSites->view()->horizontalHeader()->setSectionResizeMode(LocationInformationModel::NAME, QHeaderView::Stretch);
+	ui.diveSites->view()->horizontalHeader()->setSectionResizeMode(LocationInformationModel::DESCRIPTION, QHeaderView::Stretch);
 
 	// Show only the first few columns
 	for (int i = LocationInformationModel::LOCATION; i < LocationInformationModel::COLUMNS; ++i)
