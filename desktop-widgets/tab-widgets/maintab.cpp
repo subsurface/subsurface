@@ -82,7 +82,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.weights->setModel(weightModel);
 	closeMessage();
 
-	connect(ui.editDiveSiteButton, SIGNAL(clicked()), MainWindow::instance(), SIGNAL(startDiveSiteEdit()));
+	connect(ui.editDiveSiteButton, &QToolButton::clicked, MainWindow::instance(), &MainWindow::startDiveSiteEdit);
 	connect(ui.location, &DiveLocationLineEdit::entered, MapWidget::instance(), &MapWidget::centerOnIndex);
 	connect(ui.location, &DiveLocationLineEdit::currentChanged, MapWidget::instance(), &MapWidget::centerOnIndex);
 

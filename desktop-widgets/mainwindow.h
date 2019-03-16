@@ -134,7 +134,6 @@ slots:
 	void on_actionReplanDive_triggered();
 	void on_action_Check_for_Updates_triggered();
 
-	void on_actionDiveSiteEdit_triggered();
 	void selectionChanged();
 	void initialUiSetup();
 
@@ -156,7 +155,6 @@ protected:
 	void closeEvent(QCloseEvent *);
 
 signals:
-	void startDiveSiteEdit();
 	void showError(QString message);
 
 public
@@ -177,7 +175,7 @@ slots:
 	void disableShortcuts(bool disablePaste = true);
 	void enableShortcuts();
 	void updateVariations(QString);
-
+	void startDiveSiteEdit();
 
 private:
 	Ui::MainWindow ui;
