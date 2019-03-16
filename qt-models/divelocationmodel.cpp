@@ -6,7 +6,7 @@
 #include "core/divesite.h"
 #include "core/metrics.h"
 #ifndef SUBSURFACE_MOBILE
-#include "cleanertablemodel.h" // for trashIcon();
+#include "cleanertablemodel.h" // for trashIcon() and editIcon()
 #include "desktop-widgets/mainwindow.h" // to place message box
 #include "desktop-widgets/command.h"
 #include <QMessageBox>
@@ -100,12 +100,14 @@ QVariant LocationInformationModel::getDiveSiteData(const struct dive_site *ds, i
 	break;
 	case Qt::ToolTipRole:
 		switch(column) {
+		case EDIT: return tr("Click here to edit the divesite.");
 		case REMOVE: return tr("Clicking here will remove this divesite.");
 		}
 	break;
 	case Qt::DecorationRole:
 		switch(column) {
 #ifndef SUBSURFACE_MOBILE
+		case EDIT: return editIcon();
 		case REMOVE: return trashIcon();
 #endif
 		case NAME: return dive_site_has_gps_location(ds) ? QIcon(":geotag-icon") : QVariant();
@@ -238,21 +240,26 @@ bool DiveSiteSortedModel::setData(const QModelIndex &index, const QVariant &valu
 }
 
 #ifndef SUBSURFACE_MOBILE
-// TODO: Remove from model. It doesn't make sense to call the model here, which calls the undo command,
+// TODO: Remove or edit. It doesn't make sense to call the model here, which calls the undo command,
 // which in turn calls the model.
 void DiveSiteSortedModel::remove(const QModelIndex &index)
 {
-	if (index.column() != LocationInformationModel::REMOVE)
-		return;
 	struct dive_site *ds = getDiveSite(index);
 	if (!ds)
 		return;
-	if (ds->dives.nr > 0 &&
-	    QMessageBox::warning(MainWindow::instance(), tr("Delete dive site?"),
-				 tr("This dive site has %n dive(s). Do you really want to delete it?\n", "", ds->dives.nr),
-				 QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
-			return;
-	Command::deleteDiveSites(QVector<dive_site *>{ds});
+	switch (index.column()) {
+	case LocationInformationModel::EDIT:
+		MainWindow::instance()->editDiveSite(ds);
+		break;
+	case LocationInformationModel::REMOVE:
+		if (ds->dives.nr > 0 &&
+		    QMessageBox::warning(MainWindow::instance(), tr("Delete dive site?"),
+					 tr("This dive site has %n dive(s). Do you really want to delete it?\n", "", ds->dives.nr),
+					 QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
+				return;
+		Command::deleteDiveSites(QVector<dive_site *>{ds});
+		break;
+	}
 }
 #endif
 
