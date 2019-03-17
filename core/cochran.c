@@ -450,23 +450,23 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 	// Get starting depth and temp (tank PSI???)
 	switch (config.type) {
 	case TYPE_GEMINI:
-		depth = (float) (log[CMD_START_DEPTH]
+		depth = (double) (log[CMD_START_DEPTH]
 			+ log[CMD_START_DEPTH + 1] * 256) / 4;
 		temp = log[CMD_START_TEMP];
 		psi = log[CMD_START_PSI] + log[CMD_START_PSI + 1] * 256;
-		sgc_rate = (float)(log[CMD_START_SGC]
+		sgc_rate = (double)(log[CMD_START_SGC]
 			+ log[CMD_START_SGC + 1] * 256) / 2;
 		profile_period = log[CMD_PROFILE_PERIOD];
 		break;
 	case TYPE_COMMANDER:
-		depth = (float) (log[CMD_START_DEPTH]
+		depth = (double) (log[CMD_START_DEPTH]
 			+ log[CMD_START_DEPTH + 1] * 256) / 4;
 		temp = log[CMD_START_TEMP];
 		profile_period = log[CMD_PROFILE_PERIOD];
 		break;
 
 	case TYPE_EMC:
-		depth = (float) log [EMC_START_DEPTH] / 256
+		depth = (double) log [EMC_START_DEPTH] / 256
 			+ log[EMC_START_DEPTH + 1];
 		temp = log[EMC_START_TEMP];
 		profile_period = log[EMC_PROFILE_PERIOD];
@@ -503,7 +503,7 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 		}
 
 		// Depth is in every sample
-		depth_sample = (float)(s[0] & 0x3F) / 4 * (s[0] & 0x40 ? -1 : 1);
+		depth_sample = (double)(s[0] & 0x3F) / 4 * (s[0] & 0x40 ? -1 : 1);
 		depth += depth_sample;
 
 #ifdef COCHRAN_DEBUG
@@ -528,13 +528,13 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 				ascent_rate = (s[1] & 0x7f) * (s[1] & 0x80 ? 1 : -1);
 				break;
 			case 2:	// PSI change
-				psi -= (float)(s[1] & 0x7f) * (s[1] & 0x80 ? 1 : -1) / 4;
+				psi -= (double)(s[1] & 0x7f) * (s[1] & 0x80 ? 1 : -1) / 4;
 				break;
 			case 1:	// SGC rate
-				sgc_rate -= (float)(s[1] & 0x7f) * (s[1] & 0x80 ? 1 : -1) / 2;
+				sgc_rate -= (double)(s[1] & 0x7f) * (s[1] & 0x80 ? 1 : -1) / 2;
 				break;
 			case 3:	// Temperature
-				temp = (float)s[1] / 2 + 20;
+				temp = (double)s[1] / 2 + 20;
 				break;
 			}
 			break;
@@ -544,7 +544,7 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 				ascent_rate = (s[1] & 0x7f) * (s[1] & 0x80 ? 1: -1);
 				break;
 			case 1:	// Temperature
-				temp = (float)s[1] / 2 + 20;
+				temp = (double)s[1] / 2 + 20;
 				break;
 			}
 			// Get NDL and deco information
