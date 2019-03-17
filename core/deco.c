@@ -292,7 +292,7 @@ double tissue_tolerance_calc(struct deco_state *ds, const struct dive *dive, dou
 		if (plot_depth) {
 			++sum1;
 			sumx += plot_depth;
-			sumxx += plot_depth * plot_depth;
+			sumxx += (long)plot_depth * plot_depth;
 			double n2_gradient, he_gradient, total_gradient;
 			n2_gradient = update_gradient(ds, depth_to_bar(plot_depth, &displayed_dive), ds->bottom_n2_gradient[ds->ci_pointing_to_guiding_tissue]);
 			he_gradient = update_gradient(ds, depth_to_bar(plot_depth, &displayed_dive), ds->bottom_he_gradient[ds->ci_pointing_to_guiding_tissue]);
