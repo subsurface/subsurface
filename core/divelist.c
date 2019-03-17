@@ -1,52 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /* divelist.c */
-/* core logic for the dive list -
- * accessed through the following interfaces:
- *
- * struct trip_table trip_table
- * void process_loaded_dives()
- * void process_imported_dives(bool prefer_imported)
- * unsigned int amount_selected
- * void dump_selection(void)
- * void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2low_p)
- * char *get_dive_gas_string(const struct dive *dive)
- * int total_weight(const struct dive *dive)
- * int get_divenr(const struct dive *dive)
- * int get_divesite_idx(const struct dive_site *ds)
- * int init_decompression(struct dive *dive)
- * void update_cylinder_related_info(struct dive *dive)
- * void dump_trip_list(void)
- * void insert_trip(dive_trip_t *dive_trip_p, struct trip_table *trip_table)
- * void unregister_trip(dive_trip_t *trip, struct trip_table *table)
- * void free_trip(dive_trip_t *trip)
- * void remove_dive_from_trip(struct dive *dive, struct trip_table *trip_table)
- * struct dive_trip *unregister_dive_from_trip(struct dive *dive, struct trip_table *trip_table)
- * void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
- * dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive, struct trip_table *trip_table)
- * dive_trip_t *get_dives_to_autogroup(sruct dive_table *table, int start, int *from, int *to, bool *allocated)
- * dive_trip_t *get_trip_for_new_dive(struct dive *new_dive, bool *allocated)
- * void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
- * dive_trip_t *combine_trips_create(struct dive_trip *trip_a, struct dive_trip *trip_b)
- * struct dive *unregister_dive(int idx)
- * void delete_single_dive(int idx)
- * void add_single_dive(int idx, struct dive *dive)
- * void select_dive(struct dive *dive)
- * void deselect_dive(struct dive *dive)
- * void mark_divelist_changed(int changed)
- * int unsaved_changes()
- * bool dive_less_than(const struct dive *a, const struct dive *b)
- * bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b)
- * bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b)
- * void sort_dive_table(struct dive_table *table)
- * void sort_trip_table(struct trip_table *table)
- * bool is_trip_before_after(const struct dive *dive, bool before)
- * void delete_dive_from_table(struct dive_table *table, int idx)
- * int find_next_visible_dive(timestamp_t when);
- * void clear_dive_file_data()
- * void clear_table(struct dive_table *table)
- * bool trip_is_single_day(const struct dive_trip *trip)
- * int trip_shown_dives(const struct dive_trip *trip)
- */
+/* core logic for the dive list */
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
