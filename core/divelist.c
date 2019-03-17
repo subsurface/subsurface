@@ -939,17 +939,17 @@ struct dive_trip *unregister_dive_from_trip(struct dive *dive)
 	return trip;
 }
 
-static void delete_trip(dive_trip_t *trip, struct trip_table *trip_table)
+static void delete_trip(dive_trip_t *trip, struct trip_table *trip_table_arg)
 {
-	unregister_trip(trip, trip_table);
+	unregister_trip(trip, trip_table_arg);
 	free_trip(trip);
 }
 
-void remove_dive_from_trip(struct dive *dive, struct trip_table *trip_table)
+void remove_dive_from_trip(struct dive *dive, struct trip_table *trip_table_arg)
 {
 	struct dive_trip *trip = unregister_dive_from_trip(dive);
 	if (trip && trip->dives.nr == 0)
-		delete_trip(trip, trip_table);
+		delete_trip(trip, trip_table_arg);
 }
 
 /* Add dive to a trip. Caller is responsible for removing dive
@@ -972,10 +972,10 @@ dive_trip_t *alloc_trip(void)
 }
 
 /* insert the trip into the trip table */
-void insert_trip(dive_trip_t *dive_trip, struct trip_table *trip_table)
+void insert_trip(dive_trip_t *dive_trip, struct trip_table *trip_table_arg)
 {
-	int idx = trip_table_get_insertion_index(trip_table, dive_trip);
-	add_to_trip_table(trip_table, idx, dive_trip);
+	int idx = trip_table_get_insertion_index(trip_table_arg, dive_trip);
+	add_to_trip_table(trip_table_arg, idx, dive_trip);
 #ifdef DEBUG_TRIP
 	dump_trip_list();
 #endif
@@ -991,25 +991,25 @@ dive_trip_t *create_trip_from_dive(struct dive *dive)
 	return trip;
 }
 
-dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive, struct trip_table *trip_table)
+dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive, struct trip_table *trip_table_arg)
 {
 	dive_trip_t *dive_trip = alloc_trip();
 
 	dive_trip = create_trip_from_dive(dive);
 
 	add_dive_to_trip(dive, dive_trip);
-	insert_trip(dive_trip, trip_table);
+	insert_trip(dive_trip, trip_table_arg);
 	return dive_trip;
 }
 
 /* remove trip from the trip-list, but don't free its memory.
  * caller takes ownership of the trip. */
-void unregister_trip(dive_trip_t *trip, struct trip_table *trip_table)
+void unregister_trip(dive_trip_t *trip, struct trip_table *trip_table_arg)
 {
-	int idx = get_idx_in_trip_table(trip_table, trip);
+	int idx = get_idx_in_trip_table(trip_table_arg, trip);
 	assert(!trip->dives.nr);
 	if (idx >= 0)
-		remove_from_trip_table(trip_table, idx);
+		remove_from_trip_table(trip_table_arg, idx);
 }
 
 /*
@@ -1111,7 +1111,7 @@ dive_trip_t *get_dives_to_autogroup(struct dive_table *table, int start, int *fr
  * Walk the dives from the oldest dive in the given table, and see if we
  * can autogroup them. But only do this when the user selected autogrouping.
  */
-static void autogroup_dives(struct dive_table *table, struct trip_table *trip_table)
+static void autogroup_dives(struct dive_table *table, struct trip_table *trip_table_arg)
 {
 	int from, to;
 	dive_trip_t *trip;
@@ -1126,9 +1126,9 @@ static void autogroup_dives(struct dive_table *table, struct trip_table *trip_ta
 			add_dive_to_trip(table->dives[j], trip);
 		/* If this was newly allocated, add trip to list */
 		if (alloc)
-			insert_trip(trip, trip_table);
+			insert_trip(trip, trip_table_arg);
 	}
-	sort_trip_table(trip_table);
+	sort_trip_table(trip_table_arg);
 #ifdef DEBUG_TRIP
 	dump_trip_list();
 #endif
