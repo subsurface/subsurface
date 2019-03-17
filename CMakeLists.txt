@@ -276,6 +276,11 @@ endif()
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES})
 qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc map-widget/qml/map-widget.qrc)
 
+# hack to build successfully on LGTM
+if(DEFINED ENV{LGTM_SRC})
+	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lgssapi_krb5 -lhttp_parser)
+endif()
+
 # include translations
 add_subdirectory(translations)
 add_subdirectory(core)
