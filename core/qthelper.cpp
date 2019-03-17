@@ -72,16 +72,16 @@ QString distance_string(int distanceInMeters)
 	return str;
 }
 
-extern "C" const char *printGPSCoords(const location_t *loc)
+extern "C" const char *printGPSCoords(const location_t *location)
 {
-	int lat = loc->lat.udeg;
-	int lon = loc->lon.udeg;
+	int lat = location->lat.udeg;
+	int lon = location->lon.udeg;
 	unsigned int latdeg, londeg;
 	unsigned int latmin, lonmin;
 	double latsec, lonsec;
 	QString lath, lonh, result;
 
-	if (!has_location(loc))
+	if (!has_location(location))
 		return strdup("");
 
 	if (prefs.coordinates_traditional) {
