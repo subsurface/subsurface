@@ -159,7 +159,7 @@ BTDiscovery::~BTDiscovery()
 {
 	m_instance = NULL;
 #if defined(BT_SUPPORT)
-	free(discoveryAgent);
+	delete discoveryAgent;
 #endif
 }
 
