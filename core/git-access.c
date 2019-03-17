@@ -836,7 +836,7 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 			if (is_subsurface_cloud)
 				(void)cleanup_local_cache(remote, branch);
 			else
-				report_error("local git cache at '%s' is corrupt");
+				report_error("local git cache at '%s' is corrupt", localdir);
 			return NULL;
 		}
 		return update_local_repo(localdir, remote, branch, rt);
