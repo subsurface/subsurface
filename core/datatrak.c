@@ -31,12 +31,12 @@ static unsigned long four_bytes_to_long(unsigned char x, unsigned char y, unsign
 	return ((long)x << 24) + ((long)y << 16) + ((long)z << 8) + (long)t;
 }
 
-static unsigned char *byte_to_bits(unsigned char byte)
+static unsigned char *byte_to_bits(unsigned char byte_value)
 {
 	unsigned char i, *bits = (unsigned char *)malloc(8);
 
 	for (i = 0; i < 8; i++)
-		bits[i] = byte & (1 << i);
+		bits[i] = byte_value & (1 << i);
 	return bits;
 }
 
