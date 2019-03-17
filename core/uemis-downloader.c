@@ -505,16 +505,16 @@ static void uemis_increased_timeout(int *timeout)
 	usleep(*timeout);
 }
 
-static char *build_ans_path(const char *path, int filenr)
+static char *build_ans_path(const char *path, int filenumber)
 {
 	char *intermediate, *ans_path, fl[13];
 
-	/* Clamp filenr into the 0..9999 range. This is never necessary,
-	 * as filenr can never go above UEMIS_MAX_FILES, but gcc doesn't
+	/* Clamp filenumber into the 0..9999 range. This is never necessary,
+	 * as filenumber can never go above UEMIS_MAX_FILES, but gcc doesn't
 	 * recognize that and produces very noisy warnings. */
-	filenr = filenr < 0 ? 0 : filenr % 10000;
+	filenumber = filenumber < 0 ? 0 : filenumber % 10000;
 
-	snprintf(fl, 13, "ANS%d.TXT", filenr);
+	snprintf(fl, 13, "ANS%d.TXT", filenumber);
 	intermediate = build_filename(path, "ANS");
 	ans_path = build_filename(intermediate, fl);
 	free(intermediate);
