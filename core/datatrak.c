@@ -16,7 +16,7 @@
 #include "file.h"
 #include "ssrf.h"
 
-unsigned char lector_bytes[2], lector_word[4], tmp_1byte, *byte;
+unsigned char tmp_1byte, *byte;
 unsigned int tmp_2bytes;
 char is_nitrox, is_O2, is_SCR;
 unsigned long tmp_4bytes;
