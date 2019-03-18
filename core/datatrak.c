@@ -6,6 +6,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <string.h>
 #include <time.h>
 #include "gettext.h"
@@ -26,13 +27,9 @@ static unsigned long four_bytes_to_long(unsigned char x, unsigned char y, unsign
 	return ((long)x << 24) + ((long)y << 16) + ((long)z << 8) + (long)t;
 }
 
-static unsigned char *byte_to_bits(unsigned char byte_value)
+static bool bit_set(unsigned char byte, int bit)
 {
-	unsigned char i, *bits = (unsigned char *)malloc(8);
-
-	for (i = 0; i < 8; i++)
-		bits[i] = byte_value & (1 << i);
-	return bits;
+	return byte & (1 << bit);
 }
 
 /*
@@ -151,7 +148,7 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 		      *compl_buffer,
 		      *membuf = runner;
 	char buffer[1024];
-	unsigned char tmp_1byte, *byte;
+	unsigned char tmp_1byte;
 	unsigned int tmp_2bytes;
 	unsigned long tmp_4bytes;
 	struct dive_site *ds;
@@ -361,76 +358,68 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 	 * will use tags. Bits 0 and 1 are not used. Reuse coincident tags.
 	 */
 	read_bytes(1);
-	byte = byte_to_bits(tmp_1byte);
-	if (byte[2] != 0)
+	if (bit_set(tmp_1byte, 2))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "no stop")));
-	if (byte[3] != 0)
+	if (bit_set(tmp_1byte, 3))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "deco")));
-	if (byte[4] != 0)
+	if (bit_set(tmp_1byte, 4))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "single ascent")));
-	if (byte[5] != 0)
+	if (bit_set(tmp_1byte, 5))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "multiple ascent")));
-	if (byte[6] != 0)
+	if (bit_set(tmp_1byte, 6))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "fresh water")));
-	if (byte[7] != 0)
+	if (bit_set(tmp_1byte, 7))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "salt water")));
-	free(byte);
 
 	/*
 	 * Dive Type 2 - Bit table, use tags again
 	 */
 	read_bytes(1);
-	byte = byte_to_bits(tmp_1byte);
-	if (byte[0] != 0) {
+	if (bit_set(tmp_1byte, 0)) {
 		taglist_add_tag(&dt_dive->tag_list, strdup("nitrox"));
 		is_nitrox = 1;
 	}
-	if (byte[1] != 0) {
+	if (bit_set(tmp_1byte, 1)) {
 		taglist_add_tag(&dt_dive->tag_list, strdup("rebreather"));
 		is_SCR = 1;
 		dt_dive->dc.divemode = PSCR;
 	}
-	free(byte);
 
 	/*
 	 *  Dive Activity 1 - Bit table, use tags again
 	 */
 	read_bytes(1);
-	byte = byte_to_bits(tmp_1byte);
-	if (byte[0] != 0)
+	if (bit_set(tmp_1byte, 0))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "sight seeing")));
-	if (byte[1] != 0)
+	if (bit_set(tmp_1byte, 1))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "club dive")));
-	if (byte[2] != 0)
+	if (bit_set(tmp_1byte, 2))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "instructor")));
-	if (byte[3] != 0)
+	if (bit_set(tmp_1byte, 3))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "instruction")));
-	if (byte[4] != 0)
+	if (bit_set(tmp_1byte, 4))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "night")));
-	if (byte[5] != 0)
+	if (bit_set(tmp_1byte, 5))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "cave")));
-	if (byte[6] != 0)
+	if (bit_set(tmp_1byte, 6))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "ice")));
-	if (byte[7] != 0)
+	if (bit_set(tmp_1byte, 7))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "search")));
-	free(byte);
 
 	/*
 	 * Dive Activity 2 - Bit table, use tags again
 	 */
 	read_bytes(1);
-	byte = byte_to_bits(tmp_1byte);
-	if (byte[0] != 0)
+	if (bit_set(tmp_1byte, 0))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "wreck")));
-	if (byte[1] != 0)
+	if (bit_set(tmp_1byte, 1))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "river")));
-	if (byte[2] != 0)
+	if (bit_set(tmp_1byte, 2))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "drift")));
-	if (byte[3] != 0)
+	if (bit_set(tmp_1byte, 3))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "photo")));
-	if (byte[4] != 0)
+	if (bit_set(tmp_1byte, 4))
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "other")));
-	free(byte);
 
 	/*
 	 * Other activities - String  1st byte = long
