@@ -84,9 +84,9 @@ static bool hasVideoFileExtension(const QString &filename)
 // If the input-flag "tryDownload" is set to false, no download attempt is made. This is to
 // prevent infinite loops, where failed image downloads would be repeated ad infinitum.
 // Returns: fetched image, type
-Thumbnailer::Thumbnail Thumbnailer::fetchImage(const QString &filename, const QString &originalFilename, bool tryDownload)
+Thumbnailer::Thumbnail Thumbnailer::fetchImage(const QString &urlfilename, const QString &originalFilename, bool tryDownload)
 {
-	QUrl url = QUrl::fromUserInput(filename);
+	QUrl url = QUrl::fromUserInput(urlfilename);
 	if (url.isLocalFile()) {
 		// We try to determine the type first by peeking into the file.
 		QString filename = url.toLocalFile();
