@@ -5,7 +5,7 @@
 #include "core/units.h"
 #include "core/divesite.h"
 #include "core/taxonomy.h"
-#include "ui_locationinformation.h"
+#include "ui_locationInformation.h"
 #include "qt-models/divelocationmodel.h"
 #include <stdint.h>
 #include <QAbstractListModel>
