@@ -26,6 +26,7 @@
 
 #define MAX_PROFILE_DECO 7200
 
+extern int ascent_velocity(int depth, int avg_depth, int bottom_time);
 
 struct dive *current_dive = NULL;
 unsigned int dc_number = 0;
@@ -917,10 +918,7 @@ static void calculate_ndl_tts(struct deco_state *ds, const struct dive *dive, st
 	/* FIXME: This should be configurable */
 	/* ascent speed up to first deco stop */
 	const int ascent_s_per_step = 1;
-	const int ascent_mm_per_step = 200; /* 12 m/min */
-	/* ascent speed between deco stops */
 	const int ascent_s_per_deco_step = 1;
-	const int ascent_mm_per_deco_step = 16; /* 1 m/min */
 	/* how long time steps in deco calculations? */
 	const int time_stepsize = 60;
 	const int deco_stepsize = 3000;
@@ -957,7 +955,7 @@ static void calculate_ndl_tts(struct deco_state *ds, const struct dive *dive, st
 	entry->in_deco_calc = true;
 
 	/* Add segments for movement to stopdepth */
-	for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_step, entry->tts_calc += ascent_s_per_step) {
+	for (; ascent_depth > next_stop; ascent_depth -= ascent_s_per_step * ascent_velocity(ascent_depth, entry->running_sum / entry->sec, 0), entry->tts_calc += ascent_s_per_step) {
 		add_segment(ds, depth_to_bar(ascent_depth, dive),
 			    gasmix, ascent_s_per_step, entry->o2pressure.mbar, divemode, prefs.decosac);
 		next_stop = ROUND_UP(deco_allowed_depth(tissue_tolerance_calc(ds, dive, depth_to_bar(ascent_depth, dive)),
@@ -984,7 +982,7 @@ static void calculate_ndl_tts(struct deco_state *ds, const struct dive *dive, st
 
 		if (deco_allowed_depth(tissue_tolerance_calc(ds, dive, depth_to_bar(ascent_depth,dive)), surface_pressure, dive, 1) <= next_stop) {
 			/* move to the next stop and add the travel between stops */
-			for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_deco_step, entry->tts_calc += ascent_s_per_deco_step)
+			for (; ascent_depth > next_stop; ascent_depth -= ascent_s_per_deco_step * ascent_velocity(ascent_depth, entry->running_sum / entry->sec, 0), entry->tts_calc += ascent_s_per_deco_step)
 				add_segment(ds, depth_to_bar(ascent_depth, dive),
 					    gasmix, ascent_s_per_deco_step, entry->o2pressure.mbar, divemode, prefs.decosac);
 			ascent_depth = next_stop;
