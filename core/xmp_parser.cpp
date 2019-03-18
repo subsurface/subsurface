@@ -72,7 +72,7 @@ static timestamp_t extract_timestamp_from_attributes(const xmlNode *node)
 	return 0;
 }
 
-static timestamp_t extract_timestamp(const xmlNode *node)
+static timestamp_t extract_timestamp(const xmlNode *firstnode)
 {
 	// We use a private stack, so that we can return in one go without
 	// having to unwind the call-stack. We only recurse to a fixed depth,
@@ -80,7 +80,7 @@ static timestamp_t extract_timestamp(const xmlNode *node)
 	// This can be increased on demand.
 	static const int max_recursion_depth = 16;
 	const xmlNode *stack[max_recursion_depth];
-	stack[0] = node;
+	stack[0] = firstnode;
 	int stack_depth = 1;
 
 	while (stack_depth > 0) {
