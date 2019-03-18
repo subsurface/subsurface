@@ -42,3 +42,6 @@ extraction:
             - export INSTALL_ROOT=/opt/out
             - export PKG_CONFIG_PATH=$INSTALL_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
             - bash -x ./scripts/build-libdivecomputer.sh
+
+queries:
+    - exclude: "cpp/short-global-name"
