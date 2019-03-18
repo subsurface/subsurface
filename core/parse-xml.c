@@ -2137,19 +2137,19 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 
 	/* Recording the starting battery status to extra data */
 	if (battery_start.volt1) {
-		size_t size = snprintf(NULL, 0, "%dmV (%d%%)", battery_start.volt1, battery_start.percent1) + 1;
+		size_t stringsize = snprintf(NULL, 0, "%dmV (%d%%)", battery_start.volt1, battery_start.percent1) + 1;
 		char *ptr = malloc(size);
 
 		if (ptr) {
-			snprintf(ptr, size, "%dmV (%d%%)", battery_start.volt1, battery_start.percent1);
+			snprintf(ptr, stringsize, "%dmV (%d%%)", battery_start.volt1, battery_start.percent1);
 			add_extra_data(state.cur_dc, "Battery 1 (start)", ptr);
 			free(ptr);
 		}
 
-		size = snprintf(NULL, 0, "%dmV (%d%%)", battery_start.volt2, battery_start.percent2) + 1;
-		ptr = malloc(size);
+		stringsize = snprintf(NULL, 0, "%dmV (%d%%)", battery_start.volt2, battery_start.percent2) + 1;
+		ptr = malloc(stringsize);
 		if (ptr) {
-			snprintf(ptr, size, "%dmV (%d%%)", battery_start.volt2, battery_start.percent2);
+			snprintf(ptr, stringsize, "%dmV (%d%%)", battery_start.volt2, battery_start.percent2);
 			add_extra_data(state.cur_dc, "Battery 2 (start)", ptr);
 			free(ptr);
 		}
@@ -2157,19 +2157,19 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 
 	/* Recording the ending battery status to extra data */
 	if (battery_end.volt1) {
-		size_t size = snprintf(NULL, 0, "%dmV (%d%%)", battery_end.volt1, battery_end.percent1) + 1;
-		char *ptr = malloc(size);
+		size_t stringsize = snprintf(NULL, 0, "%dmV (%d%%)", battery_end.volt1, battery_end.percent1) + 1;
+		char *ptr = malloc(stringsize);
 
 		if (ptr) {
-			snprintf(ptr, size, "%dmV (%d%%)", battery_end.volt1, battery_end.percent1);
+			snprintf(ptr, stringsize, "%dmV (%d%%)", battery_end.volt1, battery_end.percent1);
 			add_extra_data(state.cur_dc, "Battery 1 (end)", ptr);
 			free(ptr);
 		}
 
-		size = snprintf(NULL, 0, "%dmV (%d%%)", battery_end.volt2, battery_end.percent2) + 1;
-		ptr = malloc(size);
+		stringsize = snprintf(NULL, 0, "%dmV (%d%%)", battery_end.volt2, battery_end.percent2) + 1;
+		ptr = malloc(stringsize);
 		if (ptr) {
-			snprintf(ptr, size, "%dmV (%d%%)", battery_end.volt2, battery_end.percent2);
+			snprintf(ptr, stringsize, "%dmV (%d%%)", battery_end.volt2, battery_end.percent2);
 			add_extra_data(state.cur_dc, "Battery 2 (end)", ptr);
 			free(ptr);
 		}
