@@ -715,7 +715,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	bottom_time = clock = previous_point_time = dive->dc.sample[dive->dc.samples - 1].time.seconds;
 
 	current_cylinder = get_cylinderid_at_time(dive, &dive->dc, sample->time);
-	// FIXME: This needs a function to find the divemode at the end of the dive like in
+	// Find the divemode at the end of the dive
 	const struct event *ev = NULL;
 	divemode = UNDEF_COMP_TYPE;
 	divemode = get_current_divemode(&dive->dc, bottom_time, &ev, &divemode);
