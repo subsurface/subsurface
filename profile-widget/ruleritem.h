@@ -37,7 +37,7 @@ public:
 	explicit RulerItem2();
 	void recalculate();
 
-	void setPlotInfo(struct plot_info pInfo);
+	void setPlotInfo(struct plot_info *pInfo);
 	RulerNodeItem2 *sourceNode() const;
 	RulerNodeItem2 *destNode() const;
 	void setAxis(DiveCartesianAxis *time, DiveCartesianAxis *depth);

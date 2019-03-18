@@ -152,11 +152,11 @@ RulerNodeItem2 *RulerItem2::destNode() const
 	return dest;
 }
 
-void RulerItem2::setPlotInfo(plot_info info)
+void RulerItem2::setPlotInfo(plot_info *info)
 {
-	pInfo = info;
-	dest->setPlotInfo(info);
-	source->setPlotInfo(info);
+	pInfo = *info;
+	dest->setPlotInfo(*info);
+	source->setPlotInfo(*info);
 	dest->recalculate();
 	source->recalculate();
 	recalculate();
