@@ -22,7 +22,6 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	previousLast(0),
 	timer(new QTimer(this)),
 	dumpWarningShown(false),
-	ostcFirmwareCheck(0),
 #if defined (BT_SUPPORT)
 	btd(nullptr),
 #endif
@@ -408,7 +407,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	if ((product == "OSTC 3" || product == "OSTC 3+" || product == "OSTC cR" ||
 	     product == "OSTC Sport" || product == "OSTC 4" || product == "OSTC Plus") &&
 	    !data->saveDump()) {
-		ostcFirmwareCheck = new OstcFirmwareCheck(product);
+		ostcFirmwareCheck.reset(new OstcFirmwareCheck(product));
 	}
 }
 
