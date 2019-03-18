@@ -93,7 +93,7 @@ struct Dir {
 	double progressFrom, progressTo;
 };
 
-QVector<FindMovedImagesDialog::Match> FindMovedImagesDialog::learnImages(const QString &dir, int maxRecursions, QVector<QString> imagePathsIn)
+QVector<FindMovedImagesDialog::Match> FindMovedImagesDialog::learnImages(const QString &rootdir, int maxRecursions, QVector<QString> imagePathsIn)
 {
 	QMap<QString, ImageMatch> matches;
 
@@ -112,7 +112,7 @@ QVector<FindMovedImagesDialog::Match> FindMovedImagesDialog::learnImages(const Q
 
 	QVector<QVector<Dir>> stack; // Use a stack to recurse into directories
 	stack.reserve(maxRecursions + 1);
-	stack.append({ { dir, 0.0, 1.0 } });
+	stack.append({ { rootdir, 0.0, 1.0 } });
 	while (!stack.isEmpty()) {
 		if (stack.last().isEmpty()) {
 			stack.removeLast();
