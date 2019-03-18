@@ -7,6 +7,7 @@
 #include <QHash>
 #include <QMap>
 #include <QAbstractTableModel>
+#include <memory>
 
 #include "core/libdivecomputer.h"
 #include "desktop-widgets/configuredivecomputerdialog.h"
@@ -79,7 +80,7 @@ private:
 	void fill_device_list(unsigned int transport);
 	QTimer *timer;
 	bool dumpWarningShown;
-	OstcFirmwareCheck *ostcFirmwareCheck;
+	std::unique_ptr<OstcFirmwareCheck> ostcFirmwareCheck;
 	DiveImportedModel *diveImportedModel;
 #if defined(BT_SUPPORT)
 	BtDeviceSelectionDialog *btDeviceSelectionDialog;
