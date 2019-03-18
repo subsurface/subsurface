@@ -16,12 +16,6 @@
 #include "file.h"
 #include "ssrf.h"
 
-unsigned char tmp_1byte, *byte;
-unsigned int tmp_2bytes;
-char is_nitrox, is_O2, is_SCR;
-unsigned long tmp_4bytes;
-long maxbuf;
-
 static unsigned int two_bytes_to_int(unsigned char x, unsigned char y)
 {
 	return (x << 8) + y;
@@ -147,7 +141,7 @@ static dc_status_t dt_libdc_buffer(unsigned char *ptr, int prf_length, int dc_mo
  * Parses a mem buffer extracting its data and filling a subsurface's dive structure.
  * Returns a pointer to last position in buffer, or NULL on failure.
  */
-static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive)
+static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, long maxbuf)
 {
 	int  rc, profile_length, libdc_model;
 	char *tmp_notes_str = NULL;
@@ -157,13 +151,13 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 		      *compl_buffer,
 		      *membuf = runner;
 	char buffer[1024];
+	unsigned char tmp_1byte, *byte;
+	unsigned int tmp_2bytes;
+	unsigned long tmp_4bytes;
 	struct dive_site *ds;
-	device_data_t *devdata = calloc(1, sizeof(device_data_t));
+	char is_nitrox = 0, is_O2 = 0, is_SCR = 0;
 
-	/*
-	 * Reset global variables for new dive
-	 */
-	is_nitrox = is_O2 = is_SCR = 0;
+	device_data_t *devdata = calloc(1, sizeof(device_data_t));
 
 	/*
 	 * Parse byte to byte till next dive entry
@@ -583,7 +577,7 @@ int datatrak_import(struct memblock *mem, struct dive_table *table, struct trip_
 	unsigned char *runner;
 	int i = 0, numdives = 0, rc = 0;
 
-	maxbuf = (long) mem->buffer + mem->size;
+	long maxbuf = (long) mem->buffer + mem->size;
 
 	// Verify fileheader,  get number of dives in datatrak divelog, zero on error
 	numdives = read_file_header((unsigned char *)mem->buffer);
@@ -599,7 +593,7 @@ int datatrak_import(struct memblock *mem, struct dive_table *table, struct trip_
 	while ((i < numdives) && ((long) runner < maxbuf)) {
 		struct dive *ptdive = alloc_dive();
 
-		runner = dt_dive_parser(runner, ptdive);
+		runner = dt_dive_parser(runner, ptdive, maxbuf);
 		if (runner == NULL) {
 			report_error(translate("gettextFromC", "Error: no dive"));
 			free(ptdive);
