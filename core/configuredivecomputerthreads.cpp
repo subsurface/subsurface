@@ -1442,7 +1442,7 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 
 	unsigned char data[256] = {};
 #ifdef DEBUG_OSTC_CF
-	// FIXME: how should we report settings not supported back?
+	// open question: how should we report settings not supported back?
 	unsigned char max_CF = 0;
 #endif
 	rc = hw_ostc_device_eeprom_read(device, 0, data, sizeof(data));
@@ -1829,7 +1829,7 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	else if (gas5.type == 2)
 		data[33] = 5;
 	else
-		// FIXME: No gas was First?
+		// odd: No gas was First?
 		// Set gas 1 to first
 		data[33] = 1;
 
@@ -1956,7 +1956,7 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	else if (dil5.type == 2)
 		data[115] = 5;
 	else
-		// FIXME: No first diluent?
+		// odd: No first diluent?
 		// Set gas 1 to fist
 		data[115] = 1;
 
@@ -2178,7 +2178,7 @@ void WriteSettingsThread::run()
 		}
 		break;
 	case DC_FAMILY_HW_OSTC3:
-		// FIXME: Is this the best way?
+		// Is this the best way?
 		if (m_deviceDetails->model == "OSTC 4")
 			rc = write_ostc4_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
 		else
