@@ -1,7 +1,7 @@
 # Modified from Subsurface's CMakeLists.txt
 
-project(smtk2ssrf)
 cmake_minimum_required(VERSION 3.1)
+project(smtk2ssrf)
 
 option(COMMANDLINE "Build command line version" OFF)
 
