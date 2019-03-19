@@ -3,8 +3,8 @@
 # Uncomment his to see all commands cmake actually executes
 # set(CMAKE_VERBOSE_MAKEFILE ON)
 
-project(Subsurface)
 cmake_minimum_required(VERSION 3.1)
+project(Subsurface)
 
 # don't process generated files - this is new in 3.10
 if (POLICY CMP0071)
