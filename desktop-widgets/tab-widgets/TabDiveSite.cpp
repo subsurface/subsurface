@@ -69,3 +69,8 @@ void TabDiveSite::diveSiteChanged(struct dive_site *ds, int field)
 	QModelIndex localIdx = model.mapFromSource(globalIdx);
 	ui.diveSites->view()->scrollTo(localIdx);
 }
+
+void TabDiveSite::on_purgeUnused_clicked()
+{
+	Command::purgeUnusedDiveSites();
+}

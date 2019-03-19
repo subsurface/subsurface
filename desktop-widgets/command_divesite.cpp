@@ -105,6 +105,31 @@ void DeleteDiveSites::undo()
 	sitesToRemove = std::move(addDiveSites(sitesToAdd));
 }
 
+PurgeUnusedDiveSites::PurgeUnusedDiveSites()
+{
+	setText(tr("purge unused dive sites"));
+	for (int i = 0; i < dive_site_table.nr; ++i) {
+		dive_site *ds = dive_site_table.dive_sites[i];
+		if (ds->dives.nr == 0)
+			sitesToRemove.push_back(ds);
+	}
+}
+
+bool PurgeUnusedDiveSites::workToBeDone()
+{
+	return !sitesToRemove.empty();
+}
+
+void PurgeUnusedDiveSites::redo()
+{
+	sitesToAdd = std::move(removeDiveSites(sitesToRemove));
+}
+
+void PurgeUnusedDiveSites::undo()
+{
+	sitesToRemove = std::move(addDiveSites(sitesToAdd));
+}
+
 // Helper function: swap C and Qt string
 static void swap(char *&c, QString &q)
 {
