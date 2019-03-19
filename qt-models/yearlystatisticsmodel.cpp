@@ -28,13 +28,13 @@ public:
 	};
 
 	QVariant data(int column, int role) const;
-	YearStatisticsItem(stats_t *interval);
+	YearStatisticsItem(const stats_t &interval);
 
 private:
 	stats_t stats_interval;
 };
 
-YearStatisticsItem::YearStatisticsItem(stats_t  *interval) : stats_interval(*interval)
+YearStatisticsItem::YearStatisticsItem(const stats_t &interval) : stats_interval(interval)
 {
 }
 
@@ -190,11 +190,11 @@ void YearlyStatisticsModel::update_yearly_stats()
 	calculate_stats_summary(&stats, false);
 
 	for (i = 0; stats.stats_yearly != NULL && stats.stats_yearly[i].period; ++i) {
-		YearStatisticsItem *item = new YearStatisticsItem(&stats.stats_yearly[i]);
+		YearStatisticsItem *item = new YearStatisticsItem(stats.stats_yearly[i]);
 		combined_months = 0;
 		for (j = 0; combined_months < stats.stats_yearly[i].selection_size; ++j) {
 			combined_months += stats.stats_monthly[month].selection_size;
-			YearStatisticsItem *iChild = new YearStatisticsItem(&stats.stats_monthly[month]);
+			YearStatisticsItem *iChild = new YearStatisticsItem(stats.stats_monthly[month]);
 			item->children.append(iChild);
 			iChild->parent = item;
 			month++;
@@ -204,9 +204,9 @@ void YearlyStatisticsModel::update_yearly_stats()
 	}
 
 	if (stats.stats_by_trip != NULL && stats.stats_by_trip[0].is_trip == true) {
-		YearStatisticsItem *item = new YearStatisticsItem(&stats.stats_by_trip[0]);
+		YearStatisticsItem *item = new YearStatisticsItem(stats.stats_by_trip[0]);
 		for (i = 1; stats.stats_by_trip != NULL && stats.stats_by_trip[i].is_trip; ++i) {
-			YearStatisticsItem *iChild = new YearStatisticsItem(&stats.stats_by_trip[i]);
+			YearStatisticsItem *iChild = new YearStatisticsItem(stats.stats_by_trip[i]);
 			item->children.append(iChild);
 			iChild->parent = item;
 		}
@@ -216,11 +216,11 @@ void YearlyStatisticsModel::update_yearly_stats()
 
 	/* Show the statistic sorted by dive type */
 	if (stats.stats_by_type != NULL && stats.stats_by_type[0].selection_size) {
-		YearStatisticsItem *item = new YearStatisticsItem(&stats.stats_by_type[0]);
+		YearStatisticsItem *item = new YearStatisticsItem(stats.stats_by_type[0]);
 		for (i = 1; i <= NUM_DIVEMODE; ++i) {
 			if (stats.stats_by_type[i].selection_size == 0)
 				continue;
-			YearStatisticsItem *iChild = new YearStatisticsItem(&stats.stats_by_type[i]);
+			YearStatisticsItem *iChild = new YearStatisticsItem(stats.stats_by_type[i]);
 			item->children.append(iChild);
 			iChild->parent = item;
 		}
@@ -230,13 +230,13 @@ void YearlyStatisticsModel::update_yearly_stats()
 
 	/* Show the statistic sorted by dive depth */
 	if (stats.stats_by_depth != NULL && stats.stats_by_depth[0].selection_size) {
-		YearStatisticsItem *item = new YearStatisticsItem(&stats.stats_by_depth[0]);
+		YearStatisticsItem *item = new YearStatisticsItem(stats.stats_by_depth[0]);
 		for (i = 1; stats.stats_by_depth[i].is_trip; ++i)
 			if (stats.stats_by_depth[i].selection_size) {
 				label = QString(tr("%1 - %2")).arg(get_depth_string((i - 1) * (STATS_DEPTH_BUCKET * 1000), true, false),
 					get_depth_string(i * (STATS_DEPTH_BUCKET * 1000), true, false));
 				stats.stats_by_depth[i].location = strdup(label.toUtf8().data());
-				YearStatisticsItem *iChild = new YearStatisticsItem(&stats.stats_by_depth[i]);
+				YearStatisticsItem *iChild = new YearStatisticsItem(stats.stats_by_depth[i]);
 				item->children.append(iChild);
 				iChild->parent = item;
 			}
@@ -246,7 +246,7 @@ void YearlyStatisticsModel::update_yearly_stats()
 
 	/* Show the statistic sorted by dive temperature */
 	if (stats.stats_by_temp != NULL && stats.stats_by_temp[0].selection_size) {
-		YearStatisticsItem *item = new YearStatisticsItem(&stats.stats_by_temp[0]);
+		YearStatisticsItem *item = new YearStatisticsItem(stats.stats_by_temp[0]);
 		for (i = 1; stats.stats_by_temp[i].is_trip; ++i)
 			if (stats.stats_by_temp[i].selection_size) {
 				t_range_min.mkelvin = C_to_mkelvin((i - 1) * STATS_TEMP_BUCKET);
@@ -254,7 +254,7 @@ void YearlyStatisticsModel::update_yearly_stats()
 				label = QString(tr("%1 - %2")).arg(get_temperature_string(t_range_min, true),
 					get_temperature_string(t_range_max, true));
 				stats.stats_by_temp[i].location = strdup(label.toUtf8().data());
-				YearStatisticsItem *iChild = new YearStatisticsItem(&stats.stats_by_temp[i]);
+				YearStatisticsItem *iChild = new YearStatisticsItem(stats.stats_by_temp[i]);
 				item->children.append(iChild);
 				iChild->parent = item;
 			}
