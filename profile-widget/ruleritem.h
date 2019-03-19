@@ -18,7 +18,7 @@ class RulerNodeItem2 : public QObject, public QGraphicsEllipseItem {
 public:
 	explicit RulerNodeItem2();
 	void setRuler(RulerItem2 *r);
-	void setPlotInfo(struct plot_info &info);
+	void setPlotInfo(const struct plot_info &info);
 	void recalculate();
 
 protected:
@@ -37,7 +37,7 @@ public:
 	explicit RulerItem2();
 	void recalculate();
 
-	void setPlotInfo(struct plot_info *pInfo);
+	void setPlotInfo(const struct plot_info &pInfo);
 	RulerNodeItem2 *sourceNode() const;
 	RulerNodeItem2 *destNode() const;
 	void setAxis(DiveCartesianAxis *time, DiveCartesianAxis *depth);

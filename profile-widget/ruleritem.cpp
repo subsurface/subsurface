@@ -26,7 +26,7 @@ RulerNodeItem2::RulerNodeItem2() :
 	setFlag(ItemIgnoresTransformations);
 }
 
-void RulerNodeItem2::setPlotInfo(plot_info &info)
+void RulerNodeItem2::setPlotInfo(const plot_info &info)
 {
 	pInfo = info;
 	entry = pInfo.entry;
@@ -152,11 +152,11 @@ RulerNodeItem2 *RulerItem2::destNode() const
 	return dest;
 }
 
-void RulerItem2::setPlotInfo(plot_info *info)
+void RulerItem2::setPlotInfo(const plot_info &info)
 {
-	pInfo = *info;
-	dest->setPlotInfo(*info);
-	source->setPlotInfo(*info);
+	pInfo = info;
+	dest->setPlotInfo(info);
+	source->setPlotInfo(info);
 	dest->recalculate();
 	source->recalculate();
 	recalculate();
