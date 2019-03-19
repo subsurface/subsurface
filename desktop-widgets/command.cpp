@@ -123,4 +123,9 @@ void mergeDiveSites(dive_site *ds, const QVector<dive_site *> &sites)
 	execute(new MergeDiveSites(ds, sites));
 }
 
+void purgeUnusedDiveSites()
+{
+	execute(new PurgeUnusedDiveSites);
+}
+
 } // namespace Command
