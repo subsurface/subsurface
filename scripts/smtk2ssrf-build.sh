@@ -147,7 +147,6 @@ cmake   -DBTSUPPORT=OFF \
 	-DNO_DOCS=ON \
 	-DNO_PRINTING=ON \
 	-DNO_USERMANUAL=ON \
-	-DUSE_WEBENGINE=OFF \
 	-DSUBSURFACE_TARGET_EXECUTABLE=DesktopExecutable \
 	build
 cd build || aborting "Couldn't cd into $SSRF_PATH/build directory"
