@@ -20,8 +20,7 @@ NAMES
 HINTS
     ${CMAKE_CURRENT_SOURCE_DIR}/../install-root/include
     ${CMAKE_CURRENT_SOURCE_DIR}/../libdivecomputer/include/
-    /usr/local/include
-    /usr/include
+PATHS
     /opt/out/include
 )
 
@@ -32,8 +31,7 @@ NAMES
 HINTS
     ${CMAKE_CURRENT_SOURCE_DIR}/../install-root/lib
     ${CMAKE_CURRENT_SOURCE_DIR}/../libdivecomputer/src/.libs/
-    /usr/local/lib
-    /usr/lib
+PATHS
     /opt/out/lib
 )
 
