@@ -59,7 +59,6 @@ public:
 
 signals:
 	void addDiveFinished();
-	void dateTimeChanged();
 	void diveSiteChanged();
 public
 slots:
@@ -69,6 +68,7 @@ slots:
 	void updateDiveInfo(bool clear = false);
 	void updateNotes(const struct dive *d);
 	void updateMode(struct dive *d);
+	void updateDateTime(struct dive *d);
 	void updateDepthDuration();
 	void acceptChanges();
 	void rejectChanges();
