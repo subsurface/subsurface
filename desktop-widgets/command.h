@@ -48,6 +48,7 @@ void editDiveSiteLocation(dive_site *ds, location_t value);
 void editDiveSiteTaxonomy(dive_site *ds, taxonomy_data &value); // value is consumed (i.e. will be erased after call)!
 void addDiveSite(const QString &name);
 void mergeDiveSites(dive_site *ds, const QVector<dive_site *> &sites);
+void purgeUnusedDiveSites();
 
 } // namespace Command
 
