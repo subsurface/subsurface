@@ -363,6 +363,11 @@ void MainTab::divesEdited(const QVector<dive *> &, DiveField field)
 	case DiveField::MODE:
 		updateMode(current_dive);
 		break;
+	case DiveField::DATETIME:
+		updateDateTime(current_dive);
+		MainWindow::instance()->graphics->dateTimeChanged();
+		DivePlannerPointsModel::instance()->getDiveplan().when = current_dive->when;
+		break;
 	default:
 		break;
 	}
@@ -423,6 +428,16 @@ void MainTab::updateMode(struct dive *d)
 	MainWindow::instance()->graphics->recalcCeiling();
 }
 
+void MainTab::updateDateTime(struct dive *d)
+{
+	// Subsurface always uses "local time" as in "whatever was the local time at the location"
+	// so all time stamps have no time zone information and are in UTC
+	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000*d->when, Qt::UTC);
+	localTime.setTimeSpec(Qt::UTC);
+	ui.dateEdit->setDate(localTime.date());
+	ui.timeEdit->setTime(localTime.time());
+}
+
 void MainTab::updateDiveInfo(bool clear)
 {
 	ui.location->refreshDiveSiteCache();
@@ -464,12 +479,7 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.locationTags->clear();
 		}
 
-		// Subsurface always uses "local time" as in "whatever was the local time at the location"
-		// so all time stamps have no time zone information and are in UTC
-		QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000*displayed_dive.when, Qt::UTC);
-		localTime.setTimeSpec(Qt::UTC);
-		ui.dateEdit->setDate(localTime.date());
-		ui.timeEdit->setTime(localTime.time());
+		updateDateTime(&displayed_dive);
 		if (MainWindow::instance() && MainWindow::instance()->diveList->selectedTrips().count() == 1) {
 			// Remember the tab selected for last dive
 			if (lastSelectedDive)
@@ -614,7 +624,6 @@ void MainTab::updateDiveInfo(bool clear)
 		/* unset the special value text for date and time, just in case someone dove at midnight */
 		ui.dateEdit->setSpecialValueText(QString(""));
 		ui.timeEdit->setSpecialValueText(QString(""));
-
 	} else {
 		/* clear the fields */
 		clearTabs();
@@ -761,7 +770,7 @@ void MainTab::acceptChanges()
 	struct dive *d;
 	bool do_replot = false;
 
-	if(ui.location->hasFocus()) {
+	if (ui.location->hasFocus()) {
 		this->setFocus();
 	}
 
@@ -913,10 +922,6 @@ void MainTab::acceptChanges()
 				invalidate_dive_cache(d);
 			}
 		}
-
-		timestamp_t offset = displayed_dive.when - cd->when;
-		if (offset)
-			Command::shiftTime(selectedDives, (int)offset);
 	}
 	if (editMode == MANUALLY_ADDED_DIVE) {
 		// we just added or edited the dive, let fixup_dive() make
@@ -1132,28 +1137,35 @@ void MainTab::on_watertemp_editingFinished()
 			       current_dive->watertemp.mkelvin);
 }
 
+// Editing of the dive time is different. If multiple dives are edited,
+// all dives are shifted by an offset.
+static void shiftTime(QDateTime &dateTime)
+{
+	timestamp_t when = dateTime.toTime_t();
+	if (current_dive && current_dive->when != when) {
+		timestamp_t offset = current_dive->when - when;
+		Command::shiftTime(getSelectedDivesCurrentLast(), (int)offset);
+	}
+}
+
 void MainTab::on_dateEdit_dateChanged(const QDate &date)
 {
-	if (editMode == IGNORE || acceptingEdit == true)
+	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
 		return;
-	markChangedWidget(ui.dateEdit);
-	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*displayed_dive.when, Qt::UTC);
+	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*current_dive->when, Qt::UTC);
 	dateTime.setTimeSpec(Qt::UTC);
 	dateTime.setDate(date);
-	DivePlannerPointsModel::instance()->getDiveplan().when = displayed_dive.when = dateTime.toTime_t();
-	emit dateTimeChanged();
+	shiftTime(dateTime);
 }
 
 void MainTab::on_timeEdit_timeChanged(const QTime &time)
 {
-	if (editMode == IGNORE || acceptingEdit == true)
+	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
 		return;
-	markChangedWidget(ui.timeEdit);
-	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*displayed_dive.when, Qt::UTC);
+	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*current_dive->when, Qt::UTC);
 	dateTime.setTimeSpec(Qt::UTC);
 	dateTime.setTime(time);
-	DivePlannerPointsModel::instance()->getDiveplan().when = displayed_dive.when = dateTime.toTime_t();
-	emit dateTimeChanged();
+	shiftTime(dateTime);
 }
 
 void MainTab::copyTagsToDisplayedDive()
