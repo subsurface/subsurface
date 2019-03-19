@@ -915,7 +915,7 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 /* calculate DECO STOP / TTS / NDL */
 static void calculate_ndl_tts(struct deco_state *ds, const struct dive *dive, struct plot_data *entry, struct gasmix gasmix, double surface_pressure,enum divemode_t divemode)
 {
-	/* FIXME: This should be configurable */
+	/* should this be configurable? */
 	/* ascent speed up to first deco stop */
 	const int ascent_s_per_step = 1;
 	const int ascent_s_per_deco_step = 1;

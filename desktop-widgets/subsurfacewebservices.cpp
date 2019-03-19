@@ -536,7 +536,7 @@ DivelogsDeWebServices::DivelogsDeWebServices(QWidget *parent, Qt::WindowFlags f)
 	multipart(NULL),
 	uploadMode(false)
 {
-	//FIXME: DivelogDE user and pass should be on the prefs struct or something?
+	// should DivelogDE user and pass be stored in the prefs struct or something?
 	QSettings s;
 	ui.userID->setText(s.value("divelogde_user").toString());
 	ui.password->setText(s.value("divelogde_pass").toString());

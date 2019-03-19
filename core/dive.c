@@ -1577,7 +1577,7 @@ static void simplify_dc_pressures(struct divecomputer *dc)
 	}
 }
 
-/* FIXME! sensor -> cylinder mapping? */
+/* Do we need a sensor -> cylinder mapping? */
 static void fixup_start_pressure(struct dive *dive, int idx, pressure_t p)
 {
 	if (idx >= 0 && idx < MAX_CYLINDERS) {
@@ -2366,7 +2366,7 @@ static int match_cylinder(const cylinder_t *cyl, const struct dive *dive, unsign
 		if (different_manual_pressures(cyl, target))
 			continue;
 
-		/* FIXME! Should we check sizes too? */
+		/* open question: Should we check sizes too? */
 		return i;
 	}
 	return -1;
