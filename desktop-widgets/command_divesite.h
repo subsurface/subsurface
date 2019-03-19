@@ -43,6 +43,21 @@ private:
 	std::vector<OwningDiveSitePtr> sitesToAdd;
 };
 
+class PurgeUnusedDiveSites : public Base {
+public:
+	PurgeUnusedDiveSites();
+private:
+	bool workToBeDone() override;
+	void undo() override;
+	void redo() override;
+
+	// For redo
+	std::vector<dive_site *> sitesToRemove;
+
+	// For undo
+	std::vector<OwningDiveSitePtr> sitesToAdd;
+};
+
 class EditDiveSiteName : public Base {
 public:
 	EditDiveSiteName(dive_site *ds, const QString &name);
