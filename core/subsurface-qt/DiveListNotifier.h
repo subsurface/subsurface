@@ -16,7 +16,7 @@ enum class DiveField {
 	DATETIME,
 	AIR_TEMP,
 	WATER_TEMP,
-	LOCATION,
+	DIVESITE,
 	DIVEMASTER,
 	BUDDY,
 	RATING,
@@ -66,6 +66,7 @@ signals:
 	void diveSiteDeleted(dive_site *ds, int idx);
 	void diveSiteDiveCountChanged(dive_site *ds);
 	void diveSiteChanged(dive_site *ds, int field); // field according to LocationInformationModel
+	void diveSiteDivesChanged(dive_site *ds); // The dives associated with that site changed
 
 	// Signals emitted when dives are edited.
 	void divesEdited(const QVector<dive *> &dives, DiveField);

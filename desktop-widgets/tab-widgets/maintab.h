@@ -69,11 +69,11 @@ slots:
 	void updateNotes(const struct dive *d);
 	void updateMode(struct dive *d);
 	void updateDateTime(struct dive *d);
+	void updateDiveSite(struct dive *d);
 	void updateDepthDuration();
 	void acceptChanges();
 	void rejectChanges();
 	void on_location_diveSiteSelected();
-	void on_location_textChanged();
 	void on_divemaster_textChanged();
 	void on_buddy_textChanged();
 	void on_suit_editingFinished();
@@ -126,7 +126,6 @@ private:
 	dive_trip_t *currentTrip;
 	dive_trip_t displayedTrip;
 	bool acceptingEdit;
-	struct dive_site *updateDiveSite(struct dive_site *pickedDs, dive *d);
 	QList<TabBase*> extraWidgets;
 };
 
