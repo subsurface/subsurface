@@ -2,6 +2,7 @@
 
 #include "command_edit.h"
 #include "core/divelist.h"
+#include "core/qthelper.h" // for copy_qstring
 
 namespace Command {
 
@@ -70,12 +71,17 @@ template
 EditBase<QString>::EditBase(const QVector<dive *> &dives, QString oldValue, QString newValue);
 template
 EditBase<int>::EditBase(const QVector<dive *> &dives, int oldValue, int newValue);
+template
+EditBase<struct dive_site *>::EditBase(const QVector<dive *> &dives, struct dive_site *oldValue, struct dive_site *newValue);
 
 // Undo and redo do the same as just the stored value is exchanged
 template<typename T>
 void EditBase<T>::redo()
 {
-	undo();
+	// Note: here, we explicitly call the undo function of EditBase<T> and don't do
+	// virtual dispatch. Thus, derived classes can call this redo function without
+	// having their own undo() function called.
+	EditBase<T>::undo();
 }
 
 // Implementation of virtual functions
@@ -206,6 +212,78 @@ QString EditWaterTemp::fieldName() const
 DiveField EditWaterTemp::fieldId() const
 {
 	return DiveField::WATER_TEMP;
+}
+
+// ***** DiveSite *****
+void EditDiveSite::set(struct dive *d, struct dive_site *dive_site) const
+{
+	unregister_dive_from_dive_site(d);
+	add_dive_to_dive_site(d, dive_site);
+}
+
+struct dive_site *EditDiveSite::data(struct dive *d) const
+{
+	return d->dive_site;
+}
+
+QString EditDiveSite::fieldName() const
+{
+	return tr("dive site");
+}
+
+DiveField EditDiveSite::fieldId() const
+{
+	return DiveField::DIVESITE;
+}
+
+void EditDiveSite::undo()
+{
+	// Do the normal undo thing, then send dive site changed signals
+	EditBase<dive_site *>::undo();
+	if (value)
+		emit diveListNotifier.diveSiteDivesChanged(value);
+	if (old)
+		emit diveListNotifier.diveSiteDivesChanged(old);
+}
+
+void EditDiveSite::redo()
+{
+	EditDiveSite::undo(); // Undo and redo do the same
+}
+
+static struct dive_site *createDiveSite(const QString &name, struct dive_site *old)
+{
+	struct dive_site *ds = alloc_dive_site();
+	if (old) {
+		copy_dive_site(old, ds);
+		free(ds->name); // Free name, as we will overwrite it with our own version
+	}
+	ds->name = copy_qstring(name);
+	return ds;
+}
+
+EditDiveSiteNew::EditDiveSiteNew(const QVector<dive *> &dives, const QString &newName, struct dive_site *oldValue) :
+	EditDiveSite(dives, createDiveSite(newName, oldValue), oldValue),
+	diveSiteToAdd(value),
+	diveSiteToRemove(nullptr)
+{
+}
+
+void EditDiveSiteNew::undo()
+{
+	EditDiveSite::undo();
+	int idx = unregister_dive_site(diveSiteToRemove);
+	diveSiteToAdd.reset(diveSiteToRemove);
+	emit diveListNotifier.diveSiteDeleted(diveSiteToRemove, idx); // Inform frontend of removed dive site.
+	diveSiteToRemove = nullptr;
+}
+
+void EditDiveSiteNew::redo()
+{
+	diveSiteToRemove = diveSiteToAdd.get();
+	int idx = register_dive_site(diveSiteToAdd.release()); // Return ownership to backend.
+	emit diveListNotifier.diveSiteAdded(diveSiteToRemove, idx); // Inform frontend of new dive site.
+	EditDiveSite::redo();
 }
 
 // ***** Mode *****

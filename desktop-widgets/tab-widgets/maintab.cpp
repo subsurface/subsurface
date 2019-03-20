@@ -368,6 +368,10 @@ void MainTab::divesEdited(const QVector<dive *> &, DiveField field)
 		MainWindow::instance()->graphics->dateTimeChanged();
 		DivePlannerPointsModel::instance()->getDiveplan().when = current_dive->when;
 		break;
+	case DiveField::DIVESITE:
+		updateDiveSite(current_dive);
+		emit diveSiteChanged();
+		break;
 	default:
 		break;
 	}
@@ -438,6 +442,23 @@ void MainTab::updateDateTime(struct dive *d)
 	ui.timeEdit->setTime(localTime.time());
 }
 
+void MainTab::updateDiveSite(struct dive *d)
+{
+	struct dive_site *ds = d->dive_site;
+	if (ds) {
+		ui.location->setCurrentDiveSite(ds);
+		ui.locationTags->setText(constructLocationTags(&ds->taxonomy, true));
+
+		if (ui.locationTags->text().isEmpty() && has_location(&ds->location))
+			ui.locationTags->setText(printGPSCoords(&ds->location));
+		ui.editDiveSiteButton->setEnabled(true);
+	} else {
+		ui.location->clear();
+		ui.locationTags->clear();
+		ui.editDiveSiteButton->setEnabled(false);
+	}
+}
+
 void MainTab::updateDiveInfo(bool clear)
 {
 	ui.location->refreshDiveSiteCache();
@@ -466,19 +487,7 @@ void MainTab::updateDiveInfo(bool clear)
 	updateMode(&displayed_dive);
 
 	if (!clear) {
-		struct dive_site *ds = NULL;
-		ds = displayed_dive.dive_site;
-		if (ds) {
-			ui.location->setCurrentDiveSite(ds);
-			ui.locationTags->setText(constructLocationTags(&ds->taxonomy, true));
-
-			if (ui.locationTags->text().isEmpty() && has_location(&ds->location))
-				ui.locationTags->setText(printGPSCoords(&ds->location));
-		} else {
-			ui.location->clear();
-			ui.locationTags->clear();
-		}
-
+		updateDiveSite(&displayed_dive);
 		updateDateTime(&displayed_dive);
 		if (MainWindow::instance() && MainWindow::instance()->diveList->selectedTrips().count() == 1) {
 			// Remember the tab selected for last dive
@@ -707,49 +716,6 @@ void MainTab::refreshDisplayedDiveSite()
 		ui.location->setCurrentDiveSite(ds);
 }
 
-// when this is called we already have updated the current_dive and know that it exists
-// there is no point in calling this function if there is no current dive
-struct dive_site *MainTab::updateDiveSite(struct dive_site *pickedDs, dive *d)
-{
-	if (!d)
-		return 0;
-
-	if (ui.location->text().isEmpty())
-		return 0;
-
-	if (!pickedDs)
-		return 0;
-
-	struct dive_site *origDs = d->dive_site;
-	bool createdNewDive = false;
-
-	if (pickedDs == origDs)
-		return origDs;
-
-	if (pickedDs == RECENTLY_ADDED_DIVESITE) {
-		QString name = ui.location->text();
-		pickedDs = create_dive_site(qPrintable(name), &dive_site_table);
-		createdNewDive = true;
-	}
-
-	if (origDs) {
-		if(createdNewDive) {
-			copy_dive_site(origDs, pickedDs);
-			free(pickedDs->name);
-			pickedDs->name = copy_qstring(ui.location->text());
-			qDebug() << "Creating and copying dive site";
-		} else if (!has_location(&pickedDs->location)) {
-			pickedDs->location = origDs->location;
-			qDebug() << "Copying GPS information";
-		}
-	}
-
-	unregister_dive_from_dive_site(d);
-	add_dive_to_dive_site(d, pickedDs);
-	qDebug() << "Setting the dive site id on the dive:" << pickedDs->uuid;
-	return pickedDs;
-}
-
 // Get the list of selected dives, but put the current dive at the last position of the vector
 static QVector<dive *> getSelectedDivesCurrentLast()
 {
@@ -831,11 +797,9 @@ void MainTab::acceptChanges()
 			copy_samples(&displayed_dive.dc, &current_dive->dc);
 			addedId = displayed_dive.id;
 		}
-		struct dive *cd = current_dive;
 		// now check if something has changed and if yes, edit the selected dives that
 		// were identical with the master dive shown (and mark the divelist as changed)
-		if (displayed_dive.dive_site != cd->dive_site)
-			MODIFY_DIVES(selectedDives, EDIT_VALUE(dive_site));
+		struct dive *cd = current_dive;
 
 		// three text fields are somewhat special and are represented as tags
 		// in the UI - they need somewhat smarter handling
@@ -901,18 +865,6 @@ void MainTab::acceptChanges()
 				cd->weightsystem[i].description = copy_string(displayed_dive.weightsystem[i].description);
 			}
 		}
-
-		// update the dive site for the selected dives that had the same dive site as the current dive
-		struct dive_site *newDs = nullptr;
-		MODIFY_DIVES(selectedDives,
-			if (mydive->dive_site == current_dive->dive_site)
-				newDs = updateDiveSite(!newDs ? ui.location->currDiveSite() : newDs, mydive);
-		);
-		// the code above can change the correct uuid for the displayed dive site - and the
-		// code below triggers an update of the display without re-initializing displayed_dive
-		// so let's make sure here that our data is consistent now that we have handled the
-		// dive sites
-		displayed_dive.dive_site = current_dive->dive_site;
 
 		// each dive that was selected might have had the temperatures in its active divecomputer changed
 		// so re-populate the temperatures - easiest way to do this is by calling fixup_dive
@@ -1302,39 +1254,16 @@ void MainTab::on_tagWidget_textChanged()
 	markChangedWidget(ui.tagWidget);
 }
 
-void MainTab::on_location_textChanged()
-{
-	if (editMode == IGNORE)
-		return;
-
-	// we don't want to act on the edit until editing is finished,
-	// but we want to mark the field so it's obvious it is being edited
-	QString currentLocation;
-	struct dive_site *ds = displayed_dive.dive_site;
-	if (ds)
-		currentLocation = ds->name;
-	if (ui.location->text() != currentLocation)
-		markChangedWidget(ui.location);
-}
-
 void MainTab::on_location_diveSiteSelected()
 {
-	if (editMode == IGNORE || acceptingEdit == true)
+	if (editMode == IGNORE || acceptingEdit == true || !current_dive)
 		return;
 
-	if (ui.location->text().isEmpty()) {
-		displayed_dive.dive_site = nullptr;
-		markChangedWidget(ui.location);
-		emit diveSiteChanged();
-		return;
-	} else {
-		if (ui.location->currDiveSite() != displayed_dive.dive_site) {
-			markChangedWidget(ui.location);
-		} else {
-			QPalette p;
-			ui.location->setPalette(p);
-		}
-	}
+	struct dive_site *newDs = ui.location->currDiveSite();
+	if (newDs == RECENTLY_ADDED_DIVESITE)
+		Command::editDiveSiteNew(getSelectedDivesCurrentLast(), ui.location->text(), current_dive->dive_site);
+	else
+		Command::editDiveSite(getSelectedDivesCurrentLast(), newDs, current_dive->dive_site);
 }
 
 void MainTab::on_diveTripLocation_textEdited(const QString& text)
