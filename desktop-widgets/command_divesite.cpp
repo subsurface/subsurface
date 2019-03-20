@@ -311,25 +311,37 @@ void MergeDiveSites::redo()
 	// First, remove all dive sites
 	sitesToAdd = std::move(removeDiveSites(sitesToRemove));
 
+	// Remember which dives changed so that we can send a single dives-edited signal
+	QVector<dive *> divesChanged;
+
 	// The dives of the above dive sites were reset to no dive sites.
 	// Add them to the merged-into dive site. Thankfully, we remember
 	// the dives in the sitesToAdd vector.
 	for (const OwningDiveSitePtr &site: sitesToAdd) {
-		for (int i = 0; i < site->dives.nr; ++i)
-			add_dive_to_dive_site(site->dives.dives[i], ds); // TODO: send dive changed signal
+		for (int i = 0; i < site->dives.nr; ++i) {
+			add_dive_to_dive_site(site->dives.dives[i], ds);
+			divesChanged.append(site->dives.dives[i]);
+		}
 	}
+	emit diveListNotifier.divesEdited(divesChanged, DiveField::DIVESITE);
 }
 
 void MergeDiveSites::undo()
 {
+	// Remember which dives changed so that we can send a single dives-edited signal
+	QVector<dive *> divesChanged;
+
 	// Before readding the dive sites, unregister the corresponding dives so that they can be
 	// readded to their old dive sites.
 	for (const OwningDiveSitePtr &site: sitesToAdd) {
-		for (int i = 0; i < site->dives.nr; ++i)
+		for (int i = 0; i < site->dives.nr; ++i) {
 			unregister_dive_from_dive_site(site->dives.dives[i]);
+			divesChanged.append(site->dives.dives[i]);
+		}
 	}
 
 	sitesToRemove = std::move(addDiveSites(sitesToAdd));
+	emit diveListNotifier.divesEdited(divesChanged, DiveField::DIVESITE);
 }
 
 } // namespace Command
