@@ -297,12 +297,8 @@ QStringList DCDeviceData::getProductListFromVendor(const QString &vendor)
 
 int DCDeviceData::getMatchingAddress(const QString &vendor, const QString &product)
 {
-	for (int i = 0; i < connectionListModel.rowCount(); i++) {
-		QString address = connectionListModel.address(i);
-		if (address.contains(product))
-			return i;
-	}
-	return -1;
+	Q_UNUSED(vendor)
+	return connectionListModel.indexOf(product);
 }
 
 DCDeviceData *DownloadThread::data()
