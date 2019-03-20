@@ -24,9 +24,12 @@ static int diveplan_duration(struct diveplan *diveplan)
 {
 	struct divedatapoint *dp = diveplan->dp;
 	int duration = 0;
+	int lastdepth = 0;
 	while(dp) {
-		if (dp->time > duration)
+		if (dp->time > duration && (dp->depth.mm > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD)) {
 			duration = dp->time;
+			lastdepth = dp->depth.mm;
+		}
 		dp = dp->next;
 	}
 	return (duration + 30) / 60;
@@ -192,6 +195,9 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		    !gaschange_after &&
 		    !rebreatherchange_before &&
 		    !rebreatherchange_after)
+			continue;
+		// Ignore final surface segment for notes
+		if (lastdepth == 0 && dp->depth.mm == 0 && !dp->next)
 			continue;
 		if ((dp->time - lasttime < 10 && lastdepth == dp->depth.mm) && !(gaschange_after && dp->next && dp->depth.mm != dp->next->depth.mm))
 			continue;
