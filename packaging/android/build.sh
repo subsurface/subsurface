@@ -268,7 +268,7 @@ if [ "$QUICK" = "" ] ; then
 		git reset --hard
 		sed -i 's/SIZEOF_SIZE_T/__SIZEOF_SIZE_T__/g' lib/compat.h
 		# also, don't deal with manuals and bzip2
-		sed -i 's/ADD_SUBDIRECTORY(man)//;s/FIND_PACKAGE(BZip2)/# FIND_PACKAGE(BZip2)/' CMakeLists.txt
+		sed -i 's/ADD_SUBDIRECTORY(man)//' CMakeLists.txt
 		popd
 		mkdir -p libzip-build-"$ARCH"
 		pushd libzip-build-"$ARCH"
@@ -278,6 +278,7 @@ if [ "$QUICK" = "" ] ; then
 			-DCMAKE_INSTALL_PREFIX="$PREFIX" \
 			-DCMAKE_INSTALL_LIBDIR="lib" \
 			-DBUILD_SHARED_LIBS=OFF \
+			-DCMAKE_DISABLE_FIND_PACKAGE_BZip2=TRUE \
 			../libzip/
 		make
 		make install
