@@ -1080,6 +1080,14 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		diveplan->eff_gflow = lrint(100.0 * (regressiona() * first_stop_depth + regressionb()));
 	}
 
+	for (int i = 0; i < MAX_CYLINDERS; i++)
+		if (cylinder_nodata(&dive->cylinder[i])) {
+			// Switch to an empty air cylinder for breathing air at the surface
+			// If no empty cylinder is found, keep using last deco gas
+			current_cylinder = i;
+			break;
+		}
+	plan_add_segment(diveplan, 600, 0, current_cylinder, 0, false, OC);
 	create_dive_from_plan(diveplan, dive, is_planner);
 	add_plan_to_notes(diveplan, dive, show_disclaimer, error);
 	fixup_dc_duration(&dive->dc);

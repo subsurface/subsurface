@@ -10,6 +10,8 @@
 #include "core/membuffer.h"
 #include "core/subsurface-string.h"
 
+#define DEPTH_NOT_FOUND (-2342)
+
 extern struct ev_select *ev_namelist;
 extern int evn_used;
 
@@ -234,7 +236,8 @@ bool DiveEventItem::shouldBeHidden()
 	struct sample *first_sample = &dc->sample[0];
 	if (!strcmp(event->name, "gaschange") &&
 	    (event->time.seconds == 0 ||
-	     (first_sample && event->time.seconds == first_sample->time.seconds)))
+	     (first_sample && event->time.seconds == first_sample->time.seconds) ||
+	     depthAtTime(event->time.seconds) < SURFACE_THRESHOLD))
 		return true;
 
 	/*
@@ -254,6 +257,17 @@ bool DiveEventItem::shouldBeHidden()
 	return false;
 }
 
+int DiveEventItem::depthAtTime(int time)
+{
+	QModelIndexList result = dataModel->match(dataModel->index(0, DivePlotDataModel::TIME), Qt::DisplayRole, time);
+	if (result.isEmpty()) {
+		Q_ASSERT("can't find a spot in the dataModel");
+		hide();
+		return DEPTH_NOT_FOUND;
+	}
+	return dataModel->data(dataModel->index(result.first().row(), DivePlotDataModel::DEPTH)).toInt();
+}
+
 void DiveEventItem::recalculatePos(bool instant)
 {
 	if (!vAxis || !hAxis || !internalEvent || !dataModel)
@@ -265,9 +279,11 @@ void DiveEventItem::recalculatePos(bool instant)
 		hide();
 		return;
 	}
+	int depth = depthAtTime(internalEvent->time.seconds);
+	if (depth == DEPTH_NOT_FOUND)
+		return;
 	if (!isVisible() && !shouldBeHidden())
 		show();
-	int depth = dataModel->data(dataModel->index(result.first().row(), DivePlotDataModel::DEPTH)).toInt();
 	qreal x = hAxis->posAtValue(internalEvent->time.seconds);
 	qreal y = vAxis->posAtValue(depth);
 	if (!instant)

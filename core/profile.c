@@ -453,7 +453,7 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 
 			if (depth > maxdepth)
 				maxdepth = s->depth.mm;
-			if ((depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD) &&
+			if ((depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD || in_planner()) &&
 			    s->time.seconds > maxtime)
 				maxtime = s->time.seconds;
 			lastdepth = depth;

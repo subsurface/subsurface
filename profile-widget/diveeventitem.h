@@ -27,6 +27,7 @@ slots:
 private:
 	void setupToolTipString(struct gasmix lastgasmix);
 	void setupPixmap(struct gasmix lastgasmix);
+	int depthAtTime(int time);
 	DiveCartesianAxis *vAxis;
 	DiveCartesianAxis *hAxis;
 	DivePlotDataModel *dataModel;
