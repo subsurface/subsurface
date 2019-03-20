@@ -152,13 +152,14 @@ for ARCH in $ARCHS; do
 	if [ ! -e $PKG_CONFIG_LIBDIR/libzip.pc ] ; then
 		pushd ${SSRF_CLONE}/libzip
 		# don't waste time on building command line tools, examples, manual, and regression tests - and don't build the BZIP2 support we don't need
-		sed -i.bak 's/ADD_SUBDIRECTORY(src)//;s/ADD_SUBDIRECTORY(examples)//;s/ADD_SUBDIRECTORY(man)//;s/ADD_SUBDIRECTORY(regress)//;s/FIND_PACKAGE(BZip2)/# FIND_PACKAGE(BZip2)/' CMakeLists.txt
+		sed -i.bak 's/ADD_SUBDIRECTORY(src)//;s/ADD_SUBDIRECTORY(examples)//;s/ADD_SUBDIRECTORY(man)//;s/ADD_SUBDIRECTORY(regress)//' CMakeLists.txt
 		mkdir -p build-ios/libzip-build-$ARCH_NAME
 		pushd build-ios/libzip-build-$ARCH_NAME
 		cmake -DBUILD_SHARED_LIBS="OFF" \
 			-DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
 			-DCMAKE_INSTALL_PREFIX=${PREFIX} \
 			-DCMAKE_PREFIX_PATH=${PREFIX} \
+			-DCMAKE_DISABLE_FIND_PACKAGE_BZip2=TRUE \
 			${SSRF_CLONE}/libzip
 		# quiet the super noise warnings
 		sed -i.bak 's/C_FLAGS = /C_FLAGS = -Wno-nullability-completeness -Wno-expansion-to-defined /' lib/CMakeFiles/zip.dir/flags.make
