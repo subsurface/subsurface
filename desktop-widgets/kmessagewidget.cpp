@@ -40,6 +40,7 @@ class KMessageWidgetPrivate
 {
 public:
     void init(KMessageWidget *);
+    ~KMessageWidgetPrivate();
 
     KMessageWidget *q;
     QFrame *content;
@@ -100,6 +101,13 @@ void KMessageWidgetPrivate::init(KMessageWidget *q_ptr)
     closeButton->setDefaultAction(closeAction);
 
     q->setMessageType(KMessageWidget::Information);
+}
+
+KMessageWidgetPrivate::~KMessageWidgetPrivate()
+{
+    delete iconLabel;
+    delete textLabel;
+    delete closeButton;
 }
 
 void KMessageWidgetPrivate::createLayout()
