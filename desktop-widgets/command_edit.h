@@ -25,6 +25,7 @@ namespace Command {
 
 template <typename T>
 class EditBase : public Base {
+protected:
 	T value; // Value to be set
 	T old; // Previous value
 
@@ -99,6 +100,30 @@ public:
 	int data(struct dive *d) const override;
 	QString fieldName() const override;
 	DiveField fieldId() const override;
+};
+
+class EditDiveSite : public EditBase<struct dive_site *> {
+public:
+	using EditBase<struct dive_site *>::EditBase;	// Use constructor of base class.
+	void set(struct dive *d, struct dive_site *value) const override;
+	struct dive_site *data(struct dive *d) const override;
+	QString fieldName() const override;
+	DiveField fieldId() const override;
+
+	// We specialize these so that we can send dive-site changed signals.
+	void undo() override;
+	void redo() override;
+};
+
+// Edit dive site, but add a new dive site first. Reuses the code of EditDiveSite by
+// deriving from it and hooks into undo() and redo() to add / remove the dive site.
+class EditDiveSiteNew : public EditDiveSite {
+public:
+	OwningDiveSitePtr diveSiteToAdd;
+	struct dive_site *diveSiteToRemove;
+	EditDiveSiteNew(const QVector<dive *> &dives, const QString &newName, struct dive_site *oldValue);
+	void undo() override;
+	void redo() override;
 };
 
 class EditMode : public EditBase<int> {

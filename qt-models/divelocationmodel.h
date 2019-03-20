@@ -35,6 +35,7 @@ public slots:
 	void diveSiteAdded(struct dive_site *ds, int idx);
 	void diveSiteDeleted(struct dive_site *ds, int idx);
 	void diveSiteChanged(struct dive_site *ds, int field);
+	void diveSiteDivesChanged(struct dive_site *ds);
 };
 
 class DiveSiteSortedModel : public QSortFilterProxyModel {

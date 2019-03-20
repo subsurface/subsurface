@@ -27,6 +27,7 @@ LocationInformationModel::LocationInformationModel(QObject *obj) : QAbstractTabl
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteAdded, this, &LocationInformationModel::diveSiteAdded);
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteDeleted, this, &LocationInformationModel::diveSiteDeleted);
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &LocationInformationModel::diveSiteChanged);
+	connect(&diveListNotifier, &DiveListNotifier::diveSiteDivesChanged, this, &LocationInformationModel::diveSiteDivesChanged);
 }
 
 int LocationInformationModel::columnCount(const QModelIndex &) const
@@ -165,6 +166,14 @@ void LocationInformationModel::diveSiteChanged(struct dive_site *ds, int field)
 	if (idx < 0)
 		return;
 	dataChanged(createIndex(idx, field), createIndex(idx, field));
+}
+
+void LocationInformationModel::diveSiteDivesChanged(struct dive_site *ds)
+{
+	int idx = get_divesite_idx(ds, &dive_site_table);
+	if (idx < 0)
+		return;
+	dataChanged(createIndex(idx, NUM_DIVES), createIndex(idx, NUM_DIVES));
 }
 
 bool DiveSiteSortedModel::filterAcceptsRow(int sourceRow, const QModelIndex &source_parent) const

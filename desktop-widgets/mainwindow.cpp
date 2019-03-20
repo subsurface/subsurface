@@ -213,7 +213,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	}
 	ui.menuFile->insertSeparator(ui.actionQuit);
 	connect(mainTab, SIGNAL(addDiveFinished()), graphics, SLOT(setProfileState()));
-	connect(mainTab, SIGNAL(dateTimeChanged()), graphics, SLOT(dateTimeChanged()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(variationsComputed(QString)), this, SLOT(updateVariations(QString)));
@@ -387,7 +386,8 @@ void MainWindow::editDiveSite(dive_site *ds)
 
 void MainWindow::startDiveSiteEdit()
 {
-	editDiveSite(get_dive_site_for_dive(&displayed_dive));
+	if (current_dive)
+		editDiveSite(get_dive_site_for_dive(current_dive));
 }
 
 void MainWindow::enableDisableCloudActions()

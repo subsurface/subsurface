@@ -165,4 +165,14 @@ void editWaterTemp(const QVector<dive *> dives, int newValue, int oldValue)
 	execute(new EditWaterTemp(dives, newValue, oldValue));
 }
 
+void editDiveSite(const QVector<dive *> dives, struct dive_site *newValue, struct dive_site *oldValue)
+{
+	execute(new EditDiveSite(dives, newValue, oldValue));
+}
+
+void editDiveSiteNew(const QVector<dive *> dives, const QString &newName, struct dive_site *oldValue)
+{
+	execute(new EditDiveSiteNew(dives, newName, oldValue));
+}
+
 } // namespace Command
