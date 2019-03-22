@@ -21,7 +21,7 @@ int ConnectionListModel::rowCount(const QModelIndex&) const
 	return m_addresses.count();
 }
 
-void ConnectionListModel::addAddress(const QString address)
+void ConnectionListModel::addAddress(const QString &address)
 {
 	if (!m_addresses.contains(address)) {
 		beginInsertRows(QModelIndex(), rowCount(), rowCount());
@@ -37,8 +37,10 @@ void ConnectionListModel::removeAllAddresses()
 	endRemoveRows();
 }
 
-int ConnectionListModel::indexOf(QString address)
+int ConnectionListModel::indexOf(const QString &address) const
 {
-	const QRegExp re(".*" + address + ".*", Qt::CaseInsensitive);
-	return m_addresses.indexOf(re);
+	for (int i = 0; i < m_addresses.count(); i++)
+		if (m_addresses.at(i).contains(address, Qt::CaseInsensitive))
+			return i;
+	return -1;
 }
