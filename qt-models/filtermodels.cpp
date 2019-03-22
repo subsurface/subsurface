@@ -249,6 +249,18 @@ void MultiFilterSortModel::myInvalidate()
 #endif
 }
 
+bool MultiFilterSortModel::updateDive(struct dive *d)
+{
+	bool oldStatus = !d->hidden_by_filter;
+	bool newStatus = showDive(d);
+	bool changed = oldStatus != newStatus;
+	if (changed) {
+		filter_dive(d, newStatus);
+		divesDisplayed += newStatus - oldStatus;
+	}
+	return changed;
+}
+
 void MultiFilterSortModel::clearFilter()
 {
 	myInvalidate();

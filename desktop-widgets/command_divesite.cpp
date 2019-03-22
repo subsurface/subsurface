@@ -7,6 +7,7 @@
 #include "core/qthelper.h"
 #include "core/subsurface-string.h"
 #include "qt-models/divelocationmodel.h"
+#include "qt-models/filtermodels.h"
 
 namespace Command {
 
@@ -17,13 +18,16 @@ namespace Command {
 static std::vector<dive_site *> addDiveSites(std::vector<OwningDiveSitePtr> &sites)
 {
 	std::vector<dive_site *> res;
+	std::vector<dive *> changedDives;
 	res.reserve(sites.size());
 
 	for (OwningDiveSitePtr &ds: sites) {
 		// Readd the dives that belonged to this site
 		for (int i = 0; i < ds->dives.nr; ++i) {
 			// TODO: send dive site changed signal
-			ds->dives.dives[i]->dive_site = ds.get();
+			struct dive *d = ds->dives.dives[i];
+			d->dive_site = ds.get();
+			changedDives.push_back(d);
 		}
 
 		// Add dive site to core, but remember a non-owning pointer first.
@@ -31,6 +35,10 @@ static std::vector<dive_site *> addDiveSites(std::vector<OwningDiveSitePtr> &sit
 		int idx = register_dive_site(ds.release()); // Return ownership to backend.
 		emit diveListNotifier.diveSiteAdded(res.back(), idx); // Inform frontend of new dive site.
 	}
+
+	processByTrip(changedDives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
+		emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::DIVESITE);
+	});
 
 	// Clear vector of unused owning pointers
 	sites.clear();
@@ -44,13 +52,15 @@ static std::vector<dive_site *> addDiveSites(std::vector<OwningDiveSitePtr> &sit
 static std::vector<OwningDiveSitePtr> removeDiveSites(std::vector<dive_site *> &sites)
 {
 	std::vector<OwningDiveSitePtr> res;
+	std::vector<dive *> changedDives;
 	res.reserve(sites.size());
 
 	for (dive_site *ds: sites) {
 		// Reset the dive_site field of the affected dives
 		for (int i = 0; i < ds->dives.nr; ++i) {
-			// TODO: send dive site changed signal
-			ds->dives.dives[i]->dive_site = nullptr;
+			struct dive *d = ds->dives.dives[i];
+			d->dive_site = nullptr;
+			changedDives.push_back(d);
 		}
 
 		// Remove dive site from core and take ownership.
@@ -58,6 +68,10 @@ static std::vector<OwningDiveSitePtr> removeDiveSites(std::vector<dive_site *> &
 		res.emplace_back(ds);
 		emit diveListNotifier.diveSiteDeleted(ds, idx); // Inform frontend of removed dive site.
 	}
+
+	processByTrip(changedDives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
+		emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::DIVESITE);
+	});
 
 	sites.clear();
 
@@ -344,6 +358,7 @@ void MergeDiveSites::undo()
 	}
 
 	sitesToRemove = std::move(addDiveSites(sitesToAdd));
+
 	processByTrip(divesChanged, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
 		emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::DIVESITE);
 	});

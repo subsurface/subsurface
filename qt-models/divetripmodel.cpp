@@ -876,6 +876,12 @@ void DiveTripModelTree::divesDeleted(dive_trip *trip, bool deleteTrip, const QVe
 
 void DiveTripModelTree::divesChanged(dive_trip *trip, const QVector<dive *> &dives)
 {
+	// Update filter flags. TODO: The filter should update the flag by itself when
+	// recieving the signals below.
+	bool diveChanged = false;
+	for (dive *d: dives)
+		diveChanged |= MultiFilterSortModel::instance()->updateDive(d);
+
 	if (!trip) {
 		// This is outside of a trip. Process top-level items range-wise.
 
@@ -910,6 +916,10 @@ void DiveTripModelTree::divesChanged(dive_trip *trip, const QVector<dive *> &div
 
 		// If necessary, move the trip
 		topLevelChanged(idx);
+
+		// If a dive changed, re-render the trip in the list [or actually make it (in)visible].
+		if (diveChanged)
+			dataChanged(createIndex(idx, 0, noParent), createIndex(idx, 0, noParent));
 	}
 }
 
@@ -1161,6 +1171,11 @@ void DiveTripModelList::divesDeleted(dive_trip *trip, bool deleteTrip, const QVe
 
 void DiveTripModelList::divesChanged(dive_trip *trip, const QVector<dive *> &dives)
 {
+	// Update filter flags. TODO: The filter should update the flag by itself when
+	// recieving the signals below.
+	for (dive *d: dives)
+		MultiFilterSortModel::instance()->updateDive(d);
+
 	// Since we know that the dive list is sorted, we will only ever search for the first element
 	// in dives as this must be the first that we encounter. Once we find a range, increase the
 	// index accordingly.
