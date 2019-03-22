@@ -14,7 +14,6 @@ struct htmlExportSetting {
 	QString themeFile;
 };
 
-void file_copy_and_overwrite(const QString &fileName, const QString &newName);
 void exportHtmlInitLogic(const QString &filename, struct htmlExportSetting &hes);
 
 #endif // DIVELOGEXPORTLOGIC_H

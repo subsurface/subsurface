@@ -10,7 +10,7 @@
 #include "statistics.h"
 #include "save-html.h"
 
-void file_copy_and_overwrite(const QString &fileName, const QString &newName)
+static void file_copy_and_overwrite(const QString &fileName, const QString &newName)
 {
 	QFile file(newName);
 	if (file.exists())
@@ -18,7 +18,7 @@ void file_copy_and_overwrite(const QString &fileName, const QString &newName)
 	QFile::copy(fileName, newName);
 }
 
-void exportHTMLsettings(const QString &filename, struct htmlExportSetting &hes)
+static void exportHTMLsettings(const QString &filename, struct htmlExportSetting &hes)
 {
 	QString fontSize = hes.fontSize;
 	QString fontFamily = hes.fontFamily;
@@ -128,20 +128,18 @@ void exportHtmlInitLogic(const QString &filename, struct htmlExportSetting &hes)
 	QFile file(filename);
 	QFileInfo info(file);
 	QDir mainDir = info.absoluteDir();
-	mainDir.mkdir(file.fileName() + "_files");
-	QString exportFiles = file.fileName() + "_files";
+	QString exportFiles = file.fileName() + "_files" + QDir::separator();
+	mainDir.mkdir(exportFiles);
 
-	QString json_dive_data = exportFiles + QDir::separator() + "file.js";
-	QString json_settings = exportFiles + QDir::separator() + "settings.js";
-	QString translation = exportFiles + QDir::separator() + "translation.js";
-	QString stat_file = exportFiles + QDir::separator() + "stat.js";
-	exportFiles += "/";
+	QString json_dive_data = exportFiles + "file.js";
+	QString json_settings = exportFiles + "settings.js";
+	QString translation = exportFiles + "translation.js";
+	QString stat_file = exportFiles + "stat.js";
 
 	if (hes.exportPhotos) {
-		photosDirectory = exportFiles + QDir::separator() + "photos" + QDir::separator();
+		photosDirectory = exportFiles + "photos" + QDir::separator();
 		mainDir.mkdir(photosDirectory);
 	}
-
 
 	exportHTMLsettings(json_settings, hes);
 	exportHTMLstatistics(stat_file, hes);
