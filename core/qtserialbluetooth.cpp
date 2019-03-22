@@ -151,10 +151,8 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char* d
 			return DC_STATUS_NODEVICE;
 		case QBluetoothSocket::UnsupportedProtocolError:
 			return DC_STATUS_PROTOCOL;
-#if QT_VERSION >= 0x050400
 		case QBluetoothSocket::OperationError:
 			return DC_STATUS_UNSUPPORTED;
-#endif
 		case QBluetoothSocket::NetworkError:
 			return DC_STATUS_IO;
 		default:

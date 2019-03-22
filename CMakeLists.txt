@@ -230,21 +230,11 @@ if(ANDROID)
 	set(CMAKE_FIND_ROOT_PATH "/;${CMAKE_FIND_ROOT_PATH}")
 endif()
 set(QT_FIND_COMPONENTS Core Concurrent Widgets Network Svg Positioning Quick Location ${QT_EXTRA_COMPONENTS})
-find_package(Qt5 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
+find_package(Qt5 5.5 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
 foreach(_QT_COMPONENT ${QT_FIND_COMPONENTS})
 	list(APPEND QT_LIBRARIES Qt5::${_QT_COMPONENT})
 endforeach()
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test Qt5::QuickTest)
-
-#disable bluetooth if Qt version is ancient.
-if (BTSUPPORT AND Qt5Widgets_VERSION VERSION_LESS 5.4.0)
-	if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
-		message(FATAL_ERROR "Subsurface-mobile requires BT and Qt version ${Qt5Widgets_VERSION} is too old for that")
-	endif()
-	set(BTSUPPORT OFF)
-	message(STATUS "Turning off Bluetooth support as Qt version ${Qt5Core_VERSION} is insufficient for that")
-	list(REMOVE_ITEM QT_LIBRARIES Qt5::Bluetooth)
-endif()
 
 # Windows Qt doesn't support BLE at all
 # the rest of them need at least 5.6 to be reasonable but really, you want 5.9.1
