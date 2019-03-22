@@ -60,6 +60,7 @@ public:
 	static MultiFilterSortModel *instance();
 	bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 	bool showDive(const struct dive *d) const;
+	bool updateDive(struct dive *d); // returns true if visibility status changed
 	int divesDisplayed;
 	bool lessThan(const QModelIndex &, const QModelIndex &) const override;
 public
