@@ -44,6 +44,7 @@ private:
 	struct dive_site *getDiveSite(const QModelIndex &idx);
 	bool filterAcceptsRow(int sourceRow, const QModelIndex &source_parent) const override;
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
+	QString fullText;
 #ifndef SUBSURFACE_MOBILE
 	bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 public slots:
@@ -52,6 +53,7 @@ public slots:
 public:
 	DiveSiteSortedModel();
 	QStringList allSiteNames() const;
+	void setFilter(const QString &text);
 };
 
 // To access only divesites at the given GPS coordinates with the exception of a given dive site

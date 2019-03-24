@@ -17,6 +17,7 @@ private slots:
 	void diveSiteAdded(struct dive_site *, int idx);
 	void diveSiteChanged(struct dive_site *ds, int field);
 	void on_purgeUnused_clicked();
+	void on_filterText_textChanged(const QString &text);
 private:
 	Ui::TabDiveSite ui;
 	DiveSiteSortedModel model;
