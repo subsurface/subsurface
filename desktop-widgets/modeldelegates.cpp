@@ -484,9 +484,9 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	}
 
 	if (bottomText.isEmpty()) {
-		const char *gpsCoords = printGPSCoords(&ds->location);
+		char *gpsCoords = printGPSCoords(&ds->location);
 		bottomText = QString(gpsCoords);
-		free( (void*) gpsCoords);
+		free(gpsCoords);
 	}
 
 	if (dive_site_has_gps_location(ds) && currentDiveSiteHasGPS) {

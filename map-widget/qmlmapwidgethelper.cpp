@@ -246,10 +246,10 @@ void MapWidgetHelper::copyToClipboardCoordinates(QGeoCoordinate coord, bool form
 	bool savep = prefs.coordinates_traditional;
 	prefs.coordinates_traditional = formatTraditional;
 	location_t location = mk_location(coord);
-	const char *coordinates = printGPSCoords(&location);
+	char *coordinates = printGPSCoords(&location);
 	QApplication::clipboard()->setText(QString(coordinates), QClipboard::Clipboard);
 
-	free((void *)coordinates);
+	free(coordinates);
 	prefs.coordinates_traditional = savep;
 }
 

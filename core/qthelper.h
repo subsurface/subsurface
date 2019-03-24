@@ -123,7 +123,7 @@ void moveInVector(Vector &v, int rangeBegin, int rangeEnd, int destination)
 extern "C" {
 #endif
 
-const char *printGPSCoords(const location_t *loc);
+char *printGPSCoords(const location_t *loc);
 bool in_planner();
 bool getProxyString(char **buffer);
 bool canReachCloudServer();

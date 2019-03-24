@@ -1602,9 +1602,12 @@ QString QMLManager::getGpsFromSiteName(const QString& siteName)
 	struct dive_site *ds;
 
 	ds = get_dive_site_by_name(qPrintable(siteName));
-	if (ds)
-		return QString(printGPSCoords(&ds->location));
-	return QString();
+	if (!ds)
+		return QString();
+	char *gps = printGPSCoords(&ds->location);
+	QString res = gps;
+	free(gps);
+	return res;
 }
 
 void QMLManager::setNotificationText(QString text)
