@@ -178,8 +178,14 @@ void LocationInformationModel::diveSiteDivesChanged(struct dive_site *ds)
 
 bool DiveSiteSortedModel::filterAcceptsRow(int sourceRow, const QModelIndex &source_parent) const
 {
-	// TODO: filtering
-	return true;
+	if (fullText.isEmpty())
+		return true;
+
+	if (sourceRow < 0 || sourceRow > dive_site_table.nr)
+		return false;
+	struct dive_site *ds = dive_site_table.dive_sites[sourceRow];
+	QString text = QString(ds->name) + QString(ds->description) + QString(ds->notes);
+	return text.contains(fullText, Qt::CaseInsensitive);
 }
 
 bool DiveSiteSortedModel::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
@@ -271,6 +277,12 @@ void DiveSiteSortedModel::remove(const QModelIndex &index)
 	}
 }
 #endif // SUBSURFACE_MOBILE
+
+void DiveSiteSortedModel::setFilter(const QString &text)
+{
+	fullText = text.trimmed();
+	invalidateFilter();
+}
 
 GeoReferencingOptionsModel *GeoReferencingOptionsModel::instance()
 {
