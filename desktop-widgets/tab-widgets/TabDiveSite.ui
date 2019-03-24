@@ -15,11 +15,18 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QToolButton" name="purgeUnused">
-     <property name="text">
-      <string>Purge unused dive sites</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="layout">
+     <item>
+      <widget class="QToolButton" name="purgeUnused">
+       <property name="text">
+        <string>Purge unused dive sites</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="filterText"/>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="TableView" name="diveSites" native="true"/>

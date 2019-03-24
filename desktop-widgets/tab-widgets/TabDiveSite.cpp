@@ -74,3 +74,8 @@ void TabDiveSite::on_purgeUnused_clicked()
 {
 	Command::purgeUnusedDiveSites();
 }
+
+void TabDiveSite::on_filterText_textChanged(const QString &text)
+{
+	model.setFilter(text);
+}
