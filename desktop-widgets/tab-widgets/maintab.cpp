@@ -411,9 +411,9 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.locationTags->setText(constructLocationTags(&ds->taxonomy, true));
 
 			if (ui.locationTags->text().isEmpty() && has_location(&ds->location)) {
-				const char *coords = printGPSCoords(&ds->location);
+				char *coords = printGPSCoords(&ds->location);
 				ui.locationTags->setText(coords);
-				free((void *)coords);
+				free(coords);
 			}
 		} else {
 			ui.location->clear();

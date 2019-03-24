@@ -72,7 +72,7 @@ QString distance_string(int distanceInMeters)
 	return str;
 }
 
-extern "C" const char *printGPSCoords(const location_t *location)
+extern "C" char *printGPSCoords(const location_t *location)
 {
 	int lat = location->lat.udeg;
 	int lon = location->lon.udeg;
