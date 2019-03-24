@@ -53,6 +53,16 @@ void ConfigureDiveComputer::saveDeviceDetails(DeviceDetails *details, device_dat
 	writeThread->start();
 }
 
+static QString writeGasDetails(gas g)
+{
+	return QStringList({
+			QString::number(g.oxygen),
+			QString::number(g.helium),
+			QString::number(g.type),
+			QString::number(g.depth)
+		}).join(QLatin1Char(','));
+}
+
 bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *details, device_data_t *data)
 {
 	QString xml = "";
@@ -70,68 +80,18 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	writer.writeStartElement("Settings");
 	writer.writeTextElement("CustomText", details->customText);
 	//Add gasses
-	QString gas1 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->gas1.oxygen),
-				    QString::number(details->gas1.helium),
-				    QString::number(details->gas1.type),
-				    QString::number(details->gas1.depth));
-	QString gas2 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->gas2.oxygen),
-				    QString::number(details->gas2.helium),
-				    QString::number(details->gas2.type),
-				    QString::number(details->gas2.depth));
-	QString gas3 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->gas3.oxygen),
-				    QString::number(details->gas3.helium),
-				    QString::number(details->gas3.type),
-				    QString::number(details->gas3.depth));
-	QString gas4 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->gas4.oxygen),
-				    QString::number(details->gas4.helium),
-				    QString::number(details->gas4.type),
-				    QString::number(details->gas4.depth));
-	QString gas5 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->gas5.oxygen),
-				    QString::number(details->gas5.helium),
-				    QString::number(details->gas5.type),
-				    QString::number(details->gas5.depth));
-	writer.writeTextElement("Gas1", gas1);
-	writer.writeTextElement("Gas2", gas2);
-	writer.writeTextElement("Gas3", gas3);
-	writer.writeTextElement("Gas4", gas4);
-	writer.writeTextElement("Gas5", gas5);
+	writer.writeTextElement("Gas1", writeGasDetails(details->gas1));
+	writer.writeTextElement("Gas2", writeGasDetails(details->gas2));
+	writer.writeTextElement("Gas3", writeGasDetails(details->gas3));
+	writer.writeTextElement("Gas4", writeGasDetails(details->gas4));
+	writer.writeTextElement("Gas5", writeGasDetails(details->gas5));
 	//
 	//Add dil values
-	QString dil1 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->dil1.oxygen),
-				    QString::number(details->dil1.helium),
-				    QString::number(details->dil1.type),
-				    QString::number(details->dil1.depth));
-	QString dil2 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->dil2.oxygen),
-				    QString::number(details->dil2.helium),
-				    QString::number(details->dil2.type),
-				    QString::number(details->dil2.depth));
-	QString dil3 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->dil3.oxygen),
-				    QString::number(details->dil3.helium),
-				    QString::number(details->dil3.type),
-				    QString::number(details->dil3.depth));
-	QString dil4 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->dil4.oxygen),
-				    QString::number(details->dil4.helium),
-				    QString::number(details->dil4.type),
-				    QString::number(details->dil4.depth));
-	QString dil5 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->dil5.oxygen),
-				    QString::number(details->dil5.helium),
-				    QString::number(details->dil5.type),
-				    QString::number(details->dil5.depth));
-	writer.writeTextElement("Dil1", dil1);
-	writer.writeTextElement("Dil2", dil2);
-	writer.writeTextElement("Dil3", dil3);
-	writer.writeTextElement("Dil4", dil4);
-	writer.writeTextElement("Dil5", dil5);
+	writer.writeTextElement("Dil1", writeGasDetails(details->dil1));
+	writer.writeTextElement("Dil2", writeGasDetails(details->dil2));
+	writer.writeTextElement("Dil3", writeGasDetails(details->dil3));
+	writer.writeTextElement("Dil4", writeGasDetails(details->dil4));
+	writer.writeTextElement("Dil5", writeGasDetails(details->dil5));
 
 	//Add setpoint values
 	QString sp1 = QString("%1,%2")
