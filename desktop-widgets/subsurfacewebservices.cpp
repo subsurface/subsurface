@@ -677,7 +677,7 @@ void DivelogsDeWebServices::downloadFinished()
 			::close(duppedfd);
 	} else {
 		QMessageBox::critical(this, tr("Problem with download"),
-				      tr("The archive could not be opened:\n"));
+				      tr("The archive could not be opened:\n%1").arg(QString::fromLocal8Bit(strerror(errno))));
 		return;
 	}
 #else
