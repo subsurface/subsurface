@@ -483,11 +483,8 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 		bottomText += QString(ds->taxonomy.category[idx].value);
 	}
 
-	if (bottomText.isEmpty()) {
-		char *gpsCoords = printGPSCoords(&ds->location);
-		bottomText = QString(gpsCoords);
-		free(gpsCoords);
-	}
+	if (bottomText.isEmpty())
+		bottomText = printGPSCoords(&ds->location);
 
 	if (dive_site_has_gps_location(ds) && currentDiveSiteHasGPS) {
 		// so we are showing a completion and both the current dive site and the completion

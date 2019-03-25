@@ -1201,7 +1201,7 @@ static void gps_in_dive(char *buffer, struct dive *dive, struct parser_state *st
 			fprintf(stderr, "dive site uuid in dive, but gps location (%10.6f/%10.6f) different from dive location (%10.6f/%10.6f)\n",
 				ds->location.lat.udeg / 1000000.0, ds->location.lon.udeg / 1000000.0,
 				location.lat.udeg / 1000000.0, location.lon.udeg / 1000000.0);
-			char *coords = printGPSCoords(&location);
+			char *coords = printGPSCoordsC(&location);
 			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple GPS locations for this dive site; also %s\n"), coords);
 			free(coords);
 		} else {

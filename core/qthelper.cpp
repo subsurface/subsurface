@@ -72,7 +72,7 @@ QString distance_string(int distanceInMeters)
 	return str;
 }
 
-extern "C" char *printGPSCoords(const location_t *location)
+QString printGPSCoords(const location_t *location)
 {
 	int lat = location->lat.udeg;
 	int lon = location->lon.udeg;
@@ -82,7 +82,7 @@ extern "C" char *printGPSCoords(const location_t *location)
 	QString lath, lonh, result;
 
 	if (!has_location(location))
-		return strdup("");
+		return QString();
 
 	if (prefs.coordinates_traditional) {
 		lath = lat >= 0 ? gettextFromC::tr("N") : gettextFromC::tr("S");
@@ -101,7 +101,12 @@ extern "C" char *printGPSCoords(const location_t *location)
 	} else {
 		result.sprintf("%f %f", (double) lat / 1000000.0, (double) lon / 1000000.0);
 	}
-	return copy_qstring(result);
+	return result;
+}
+
+extern "C" char *printGPSCoordsC(const location_t *location)
+{
+	return copy_qstring(printGPSCoords(location));
 }
 
 /**

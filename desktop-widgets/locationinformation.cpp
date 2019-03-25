@@ -113,13 +113,10 @@ void LocationInformationWidget::updateLabels()
 		ui.diveSiteNotes->setPlainText(diveSite->notes);
 	else
 		ui.diveSiteNotes->clear();
-	if (has_location(&diveSite->location)) {
-		char *coords = printGPSCoords(&diveSite->location);
-		ui.diveSiteCoordinates->setText(coords);
-		free(coords);
-	} else {
+	if (has_location(&diveSite->location))
+		ui.diveSiteCoordinates->setText(printGPSCoords(&diveSite->location));
+	else
 		ui.diveSiteCoordinates->clear();
-	}
 
 	ui.locationTags->setText(constructLocationTags(&taxonomy, false));
 }
@@ -138,10 +135,8 @@ void LocationInformationWidget::updateGpsCoordinates(const location_t &location)
 {
 	QString oldText = ui.diveSiteCoordinates->text();
 
-	char *coords = printGPSCoords(&location);
-	ui.diveSiteCoordinates->setText(coords);
+	ui.diveSiteCoordinates->setText(printGPSCoords(&location));
 	enableLocationButtons(has_location(&location));
-	free(coords);
 	if (oldText != ui.diveSiteCoordinates->text())
 		markChangedWidget(ui.diveSiteCoordinates);
 }
