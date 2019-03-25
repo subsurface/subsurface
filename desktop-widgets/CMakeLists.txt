@@ -52,64 +52,107 @@ set (SUBSURFACE_UI
 
 # the interface, in C++
 set(SUBSURFACE_INTERFACE
-	updatemanager.cpp
-	about.cpp
-	divecomputermanagementdialog.cpp
-	divelistview.cpp
-	diveplanner.cpp
-	diveshareexportdialog.cpp
-	downloadfromdivecomputer.cpp
-	findmovedimagesdialog.cpp
-	kmessagewidget.cpp
-	mainwindow.cpp
-	mapwidget.cpp
 	../map-widget/qmlmapwidgethelper.cpp
-	modeldelegates.cpp
-	notificationwidget.cpp
-	simplewidgets.cpp
-	starwidget.cpp
-	subsurfacewebservices.cpp
-	tableview.cpp
-	divelogimportdialog.cpp
-	tagwidget.cpp
-	groupedlineedit.cpp
-	divelogexportdialog.cpp
-	divepicturewidget.cpp
-	usersurvey.cpp
-	configuredivecomputerdialog.cpp
+	about.cpp
+	about.h
 	command.cpp
+	command.h
 	command_base.cpp
+	command_base.h
 	command_divelist.cpp
-	locationinformation.cpp
-	qtwaitingspinner.cpp
+	command_divelist.h
+	configuredivecomputerdialog.cpp
+	configuredivecomputerdialog.h
+	divecomputermanagementdialog.cpp
+	divecomputermanagementdialog.h
+	divelistview.cpp
+	divelistview.h
+	divelogexportdialog.cpp
+	divelogexportdialog.h
+	divelogimportdialog.cpp
+	divelogimportdialog.h
+	divepicturewidget.cpp
+	divepicturewidget.h
+	diveplanner.cpp
+	diveplanner.h
+	diveshareexportdialog.cpp
+	diveshareexportdialog.h
+	downloadfromdivecomputer.cpp
+	downloadfromdivecomputer.h
 	filterwidget2.cpp
-	tab-widgets/TabDiveStatistics.cpp
-	tab-widgets/TabDiveInformation.cpp
-	tab-widgets/TabDivePhotos.cpp
-	tab-widgets/TabDiveExtraInfo.cpp
-	tab-widgets/maintab.cpp
+	filterwidget2.h
+	findmovedimagesdialog.cpp
+	findmovedimagesdialog.h
+	groupedlineedit.cpp
+	groupedlineedit.h
+	kmessagewidget.cpp
+	kmessagewidget.h
+	locationinformation.cpp
+	locationinformation.h
+	mainwindow.cpp
+	mainwindow.h
+	mapwidget.cpp
+	mapwidget.h
+	modeldelegates.cpp
+	modeldelegates.h
+	notificationwidget.cpp
+	notificationwidget.h
+	qtwaitingspinner.cpp
+	qtwaitingspinner.h
+	simplewidgets.cpp
+	simplewidgets.h
+	starwidget.cpp
+	starwidget.h
+	subsurfacewebservices.cpp
+	subsurfacewebservices.h
 	tab-widgets/TabBase.cpp
+	tab-widgets/TabBase.h
+	tab-widgets/TabDiveExtraInfo.cpp
+	tab-widgets/TabDiveExtraInfo.h
+	tab-widgets/TabDiveInformation.cpp
+	tab-widgets/TabDiveInformation.h
+	tab-widgets/TabDivePhotos.cpp
+	tab-widgets/TabDivePhotos.h
+	tab-widgets/TabDiveStatistics.cpp
+	tab-widgets/TabDiveStatistics.h
+	tab-widgets/maintab.cpp
+	tab-widgets/maintab.h
+	tableview.cpp
+	tableview.h
+	tagwidget.cpp
+	tagwidget.h
+	updatemanager.cpp
+	updatemanager.h
+	usersurvey.cpp
+	usersurvey.h
 )
 
 if(NOT NO_USERMANUAL)
 	set(SUBSURFACE_INTERFACE ${SUBSURFACE_INTERFACE}
 		usermanual.cpp
+		usermanual.h
 	)
 endif()
 
 if(NOT NO_PRINTING)
 	set(SUBSURFACE_INTERFACE ${SUBSURFACE_INTERFACE}
-		templateedit.cpp
 		printdialog.cpp
-		printoptions.cpp
+		printdialog.h
 		printer.cpp
+		printer.h
+		printoptions.cpp
+		printoptions.h
+		templateedit.cpp
+		templateedit.h
 		templatelayout.cpp
+		templatelayout.h
 	)
 endif()
 
 if (BTSUPPORT)
 	set(SUBSURFACE_INTERFACE ${SUBSURFACE_INTERFACE}
 		btdeviceselectiondialog.cpp
+		btdeviceselectiondialog.h
 	)
 endif()
 
@@ -117,10 +160,14 @@ source_group("Subsurface Interface" FILES ${SUBSURFACE_INTERFACE})
 
 # the yearly statistics widget.
 set(SUBSURFACE_STATISTICS_LIB_SRCS
-	statistics/statisticswidget.cpp
-	statistics/yearstatistics.cpp
-	statistics/statisticsbar.cpp
 	statistics/monthstatistics.cpp
+	statistics/monthstatistics.h
+	statistics/statisticsbar.cpp
+	statistics/statisticsbar.h
+	statistics/statisticswidget.cpp
+	statistics/statisticswidget.h
+	statistics/yearstatistics.cpp
+	statistics/yearstatistics.h
 )
 source_group("Subsurface Statistics" FILES ${SUBSURFACE_STATISTICS_LIB_SRCS})
 

@@ -19,13 +19,21 @@ source_group("Subsurface Interface Files" FILES ${SUBSURFACE_PREFERENCES_UI})
 
 set(SUBSURFACE_PREFERENCES_LIB_SRCS
 	abstractpreferenceswidget.cpp
-	preferencesdialog.cpp
-	preferences_language.cpp
-	preferences_georeference.cpp
+	abstractpreferenceswidget.h
 	preferences_defaults.cpp
-	preferences_units.cpp
+	preferences_defaults.h
+	preferences_georeference.cpp
+	preferences_georeference.h
 	preferences_graph.cpp
+	preferences_graph.h
+	preferences_language.cpp
+	preferences_language.h
 	preferences_network.cpp
+	preferences_network.h
+	preferences_units.cpp
+	preferences_units.h
+	preferencesdialog.cpp
+	preferencesdialog.h
 )
 
 source_group("Subsurface Preferences" FILES ${SUBSURFACE_PREFERENCES_LIB_SRCS})
