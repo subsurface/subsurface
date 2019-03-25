@@ -1087,7 +1087,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 			current_cylinder = i;
 			break;
 		}
-	plan_add_segment(diveplan, 600, 0, current_cylinder, 0, false, OC);
+	plan_add_segment(diveplan, prefs.surface_segment, 0, current_cylinder, 0, false, OC);
 	create_dive_from_plan(diveplan, dive, is_planner);
 	add_plan_to_notes(diveplan, dive, show_disclaimer, error);
 	fixup_dc_duration(&dive->dc);

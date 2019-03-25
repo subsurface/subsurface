@@ -523,6 +523,20 @@
             </property>
            </widget>
           </item>
+          <item row="24" column="1">
+           <widget class="QLabel" name="label_surface_segment">
+            <property name="text">
+             <string>Surface segment</string>
+            </property>
+           </widget>
+          </item>
+          <item row="24" column="2">
+           <widget class="QSpinBox" name="surface_segment">
+            <property name="suffix">
+             <string>min</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>

@@ -625,6 +625,12 @@ void DivePlannerPointsModel::setMinSwitchDuration(int duration)
 	emitDataChanged();
 }
 
+void DivePlannerPointsModel::setSurfaceSegment(int duration)
+{
+	qPrefDivePlanner::set_surface_segment(duration * 60);
+	emitDataChanged();
+}
+
 void DivePlannerPointsModel::setStartDate(const QDate &date)
 {
 	startTime.setDate(date);
