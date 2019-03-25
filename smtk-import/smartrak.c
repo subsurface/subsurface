@@ -211,7 +211,7 @@ static  MdbTableDef *smtk_open_table(MdbHandle *mdb, char *tablename, MdbColumn 
  * This is based in add_to_string() and add_to_string_va(), and, as its parents
  * frees the original string.
  */
-static char *smtk_concat_str(const char *orig, const char *sep, const char *fmt, ...)
+static char *smtk_concat_str(char *orig, const char *sep, const char *fmt, ...)
 {
 	char *str;
 	va_list args;
@@ -229,7 +229,7 @@ static char *smtk_concat_str(const char *orig, const char *sep, const char *fmt,
 
 	free_buffer(&out);
 	free_buffer(&in);
-	free((void *)orig);
+	free(orig);
 
 	return str;
 }
