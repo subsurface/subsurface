@@ -3,36 +3,58 @@
 
 # models used both mobile and desktop builds
 set(SUBSURFACE_GENERIC_MODELS_LIB_SRCS
-	diveplotdatamodel.cpp
-	diveimportedmodel.cpp
 	completionmodels.cpp
+	completionmodels.h
+	diveimportedmodel.cpp
+	diveimportedmodel.h
 	divelocationmodel.cpp
+	divelocationmodel.h
+	diveplotdatamodel.cpp
+	diveplotdatamodel.h
 	maplocationmodel.cpp
+	maplocationmodel.h
 )
 
 # models exclusively used in desktop builds
 set(SUBSURFACE_DESKTOP_MODELS_LIB_SRCS
-	divepicturemodel.cpp
 	cleanertablemodel.cpp
-	models.cpp
-	tankinfomodel.cpp
-	treemodel.cpp
+	cleanertablemodel.h
 	cylindermodel.cpp
-	yearlystatisticsmodel.cpp
-	weightsysteminfomodel.cpp
-	weightmodel.cpp
-	filtermodels.cpp
-	divecomputermodel.cpp
-	divetripmodel.cpp
-	diveplannermodel.cpp
+	cylindermodel.h
 	divecomputerextradatamodel.cpp
+	divecomputerextradatamodel.h
+	divecomputermodel.cpp
+	divecomputermodel.h
+	divepicturemodel.cpp
+	divepicturemodel.h
+	diveplannermodel.cpp
+	diveplannermodel.h
+	divetripmodel.cpp
+	divetripmodel.h
+	filtermodels.cpp
+	filtermodels.h
+	models.cpp
+	models.h
+	tankinfomodel.cpp
+	tankinfomodel.h
+	treemodel.cpp
+	treemodel.h
+	weightmodel.cpp
+	weightmodel.h
+	weightsysteminfomodel.cpp
+	weightsysteminfomodel.h
+	yearlystatisticsmodel.cpp
+	yearlystatisticsmodel.h
 )
 
 # models exclusively used in mobile builds
 set(SUBSURFACE_MOBILE_MODELS_LIB_SRCS
 	divelistmodel.cpp
-	messagehandlermodel.cpp
+	divelistmodel.h
 	gpslistmodel.cpp
+	gpslistmodel.h
+	messagehandlermodel.cpp
+	messagehandlermodel.h
 )
 
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")

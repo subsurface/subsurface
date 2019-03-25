@@ -23,104 +23,183 @@ endif()
 if(BTSUPPORT)
 	add_definitions(-DBT_SUPPORT)
 	set(BT_SRC_FILES desktop-widgets/btdeviceselectiondialog.cpp)
-	set(BT_CORE_SRC_FILES qtserialbluetooth.cpp btdiscovery.cpp)
+	set(BT_CORE_SRC_FILES
+		btdiscovery.cpp
+		btdiscovery.h
+		qtserialbluetooth.cpp
+	)
 endif()
 
 if(BLESUPPORT)
 	add_definitions(-DBLE_SUPPORT)
-	set(BT_CORE_SRC_FILES ${BT_CORE_SRC_FILES} qt-ble.cpp)
+	list(APPEND BT_CORE_SRC_FILES qt-ble.cpp qt-ble.h)
 endif()
 
 # compile the core library part in C, part in C++
 set(SUBSURFACE_CORE_LIB_SRCS
 	checkcloudconnection.cpp
+	checkcloudconnection.h
 	cloudstorage.cpp
+	cloudstorage.h
 	cochran.c
+	cochran.h
 	color.cpp
+	color.h
 	configuredivecomputer.cpp
+	configuredivecomputer.h
 	configuredivecomputerthreads.cpp
+	configuredivecomputerthreads.h
 	connectionlistmodel.cpp
+	connectionlistmodel.h
 	datatrak.c
+	datatrak.h
 	deco.c
+	deco.h
 	device.c
+	device.h
 	devicedetails.cpp
+	devicedetails.h
+	display.h
 	dive.c
+	dive.h
 	divecomputer.cpp
-	divelogexportlogic.cpp
-	divesite.c
-	divesitehelpers.cpp
-	divesite-helper.cpp
+	divecomputer.h
 	divelist.c
+	divelist.h
+	divelogexportlogic.cpp
+	divelogexportlogic.h
+	divesite-helper.cpp
+	divesite.c
+	divesite.h
+	divesitehelpers.cpp
+	divesitehelpers.h
 	downloadfromdcthread.cpp
+	downloadfromdcthread.h
 	equipment.c
 	errorhelper.c
 	exif.cpp
+	exif.h
 	file.c
+	file.h
 	format.cpp
-	gaspressures.c
+	format.h
 	gas-model.c
+	gaspressures.c
+	gaspressures.h
+	gettext.h
 	gettextfromc.cpp
+	gettextfromc.h
 	git-access.c
+	git-access.h
 	gpslocation.cpp
+	gpslocation.h
 	imagedownloader.cpp
+	imagedownloader.h
+	import-cobalt.c
+	import-csv.c
+	import-csv.h
+	import-divinglog.c
+	import-shearwater.c
+	import-suunto.c
 	libdivecomputer.c
+	libdivecomputer.h
 	liquivision.c
 	load-git.c
 	membuffer.c
+	membuffer.h
 	metadata.cpp
-	xmp_parser.cpp
+	metadata.h
 	metrics.cpp
+	metrics.h
 	ostctools.c
 	parse-xml.c
 	parse.c
-	import-suunto.c
-	import-shearwater.c
-	import-cobalt.c
-	import-divinglog.c
-	import-csv.c
+	parse.h
 	planner.c
+	planner.h
 	plannernotes.c
+	pref.h
 	profile.c
-	qthelper.cpp
+	profile.h
+	qt-gui.h
 	qt-init.cpp
+	qthelper.cpp
+	qthelper.h
 	save-git.c
-	save-xml.c
 	save-html.c
+	save-html.h
+	save-xml.c
 	sha1.c
+	sha1.h
+	ssrf.h
 	statistics.c
+	statistics.h
+	strndup.h
 	strtod.c
+	subsurface-string.h
 	subsurfacestartup.c
+	subsurfacestartup.h
 	subsurfacesysinfo.cpp
+	subsurfacesysinfo.h
 	taxonomy.c
+	taxonomy.h
 	time.c
-	uemis.c
 	uemis-downloader.c
+	uemis.c
+	uemis.h
+	units.h
 	version.c
+	version.h
 	videoframeextractor.cpp
+	videoframeextractor.h
+	webservice.h
 	windowtitleupdate.cpp
+	windowtitleupdate.h
+	worldmap-options.h
 	worldmap-save.c
+	worldmap-save.h
+	xmp_parser.cpp
+	xmp_parser.h
 
 	# classes to manage struct preferences for QWidget and QML
 	settings/qPref.cpp
+	settings/qPref.h
 	settings/qPrefCloudStorage.cpp
+	settings/qPrefCloudStorage.h
 	settings/qPrefDisplay.cpp
+	settings/qPrefDisplay.h
 	settings/qPrefDiveComputer.cpp
+	settings/qPrefDiveComputer.h
 	settings/qPrefDivePlanner.cpp
+	settings/qPrefDivePlanner.h
 	settings/qPrefGeneral.cpp
+	settings/qPrefGeneral.h
 	settings/qPrefGeocoding.cpp
+	settings/qPrefGeocoding.h
 	settings/qPrefLanguage.cpp
+	settings/qPrefLanguage.h
 	settings/qPrefLocationService.cpp
+	settings/qPrefLocationService.h
 	settings/qPrefPartialPressureGas.cpp
+	settings/qPrefPartialPressureGas.h
 	settings/qPrefPrivate.cpp
+	settings/qPrefPrivate.h
 	settings/qPrefProxy.cpp
+	settings/qPrefProxy.h
 	settings/qPrefTechnicalDetails.cpp
+	settings/qPrefTechnicalDetails.h
 	settings/qPrefUnit.cpp
+	settings/qPrefUnit.h
 	settings/qPrefUpdateManager.cpp
+	settings/qPrefUpdateManager.h
 
 	#Subsurface Qt have the Subsurface structs QObjectified for easy access via QML.
-	subsurface-qt/DiveObjectHelper.cpp
 	subsurface-qt/CylinderObjectHelper.cpp
+	subsurface-qt/CylinderObjectHelper.h
 	subsurface-qt/DiveListNotifier.cpp
+	subsurface-qt/DiveListNotifier.h
+	subsurface-qt/DiveObjectHelper.cpp
+	subsurface-qt/DiveObjectHelper.h
 
 	${SERIAL_FTDI}
 	${PLATFORM_SRC}
@@ -130,4 +209,3 @@ source_group("Subsurface Core" FILES ${SUBSURFACE_CORE_LIB_SRCS})
 
 add_library(subsurface_corelib STATIC ${SUBSURFACE_CORE_LIB_SRCS} )
 target_link_libraries(subsurface_corelib ${QT_LIBRARIES})
-
