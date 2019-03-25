@@ -321,6 +321,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.vpmb_conservatism->setDisabled(true);
 		ui.switch_at_req_stop->setDisabled(true);
 		ui.min_switch_duration->setDisabled(true);
+		ui.surface_segment->setDisabled(true);
 		ui.label_min_switch_duration->setDisabled(true);
 		ui.sacfactor->setDisabled(true);
 		ui.problemsolvingtime->setDisabled(true);
@@ -359,6 +360,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.vpmb_conservatism->setDisabled(false);
 		ui.switch_at_req_stop->setDisabled(false);
 		ui.min_switch_duration->setDisabled(false);
+		ui.surface_segment->setDisabled(false);
 		ui.label_min_switch_duration->setDisabled(false);
 		ui.sacfactor->setDisabled(false);
 		ui.problemsolvingtime->setDisabled(false);
@@ -393,6 +395,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.vpmb_conservatism->setDisabled(true);
 		ui.switch_at_req_stop->setDisabled(false);
 		ui.min_switch_duration->setDisabled(false);
+		ui.surface_segment->setDisabled(false);
 		ui.label_min_switch_duration->setDisabled(false);
 		ui.sacfactor->setDisabled(false);
 		ui.problemsolvingtime->setDisabled(false);
@@ -450,6 +453,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.drop_stone_mode->setChecked(prefs.drop_stone_mode);
 	ui.switch_at_req_stop->setChecked(prefs.switch_at_req_stop);
 	ui.min_switch_duration->setValue(prefs.min_switch_duration / 60);
+	ui.surface_segment->setValue(prefs.surface_segment / 60);
 	ui.recreational_deco->setChecked(prefs.planner_deco_mode == RECREATIONAL);
 	ui.buehlmann_deco->setChecked(prefs.planner_deco_mode == BUEHLMANN);
 	ui.vpmb_deco->setChecked(prefs.planner_deco_mode == VPMB);
@@ -493,6 +497,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.bailout, SIGNAL(toggled(bool)), this, SLOT(setBailout(bool)));
 	connect(ui.switch_at_req_stop, SIGNAL(toggled(bool)), plannerModel, SLOT(setSwitchAtReqStop(bool)));
 	connect(ui.min_switch_duration, SIGNAL(valueChanged(int)), plannerModel, SLOT(setMinSwitchDuration(int)));
+	connect(ui.surface_segment, SIGNAL(valueChanged(int)), plannerModel, SLOT(setSurfaceSegment(int)));
 	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), plannerModel, SLOT(setRebreatherMode(int)));
 	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), this, SLOT(setBailoutVisibility(int)));
 

@@ -83,6 +83,8 @@ HANDLE_PREFERENCE_BOOL(DivePlanner, "last_stop", last_stop);
 
 HANDLE_PREFERENCE_INT(DivePlanner, "min_switch_duration", min_switch_duration);
 
+HANDLE_PREFERENCE_INT(DivePlanner, "surface_segment", surface_segment);
+
 HANDLE_PREFERENCE_ENUM(DivePlanner, deco_mode, "deco_mode", planner_deco_mode);
 
 HANDLE_PREFERENCE_INT(DivePlanner, "problemsolvingtime", problemsolvingtime);

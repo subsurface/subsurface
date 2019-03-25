@@ -63,6 +63,7 @@ public:
 	static bool drop_stone_mode() { return prefs.drop_stone_mode; }
 	static bool last_stop() { return prefs.last_stop; }
 	static int min_switch_duration() { return prefs.min_switch_duration; }
+	static int surface_segment() { return prefs.surface_segment; }
 	static deco_mode planner_deco_mode() { return prefs.planner_deco_mode; }
 	static int problemsolvingtime() { return prefs.problemsolvingtime; }
 	static int reserve_gas() { return prefs.reserve_gas; }
@@ -91,6 +92,7 @@ public slots:
 	static void set_drop_stone_mode(bool value);
 	static void set_last_stop(bool value);
 	static void set_min_switch_duration(int value);
+	static void set_surface_segment(int vallue);
 	static void set_planner_deco_mode(deco_mode value);
 	static void set_problemsolvingtime(int value);
 	static void set_reserve_gas(int value);
@@ -119,6 +121,7 @@ signals:
 	void drop_stone_modeChanged(bool value);
 	void last_stopChanged(bool value);
 	void min_switch_durationChanged(int value);
+	void surface_segmentChanged(int value);
 	void planner_deco_modeChanged(deco_mode value);
 	void problemsolvingtimeChanged(int value);
 	void reserve_gasChanged(int value);
@@ -148,6 +151,7 @@ private:
 	static void disk_drop_stone_mode(bool doSync);
 	static void disk_last_stop(bool doSync);
 	static void disk_min_switch_duration(bool doSync);
+	static void disk_surface_segment(bool doSync);
 	static void disk_planner_deco_mode(bool doSync);
 	static void disk_problemsolvingtime(bool doSync);
 	static void disk_reserve_gas(bool doSync);

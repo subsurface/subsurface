@@ -163,6 +163,7 @@ struct preferences {
 	bool            drop_stone_mode;
 	bool            last_stop;   // At 6m?
 	int             min_switch_duration; // seconds
+	int             surface_segment; // seconds at the surface after planned dive
 	enum deco_mode  planner_deco_mode;
 	int             problemsolvingtime;
 	int             reserve_gas;
