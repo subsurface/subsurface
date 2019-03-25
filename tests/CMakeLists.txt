@@ -39,9 +39,10 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	endif()
 endif()
 
-# Helper macro TEST used to created rules to build, link, install and run tests
-macro(TEST NAME FILE)
-	add_executable(${NAME} ${FILE} )
+# Helper function TEST used to created rules to build, link, install and run tests
+function(TEST NAME FILE)
+	get_filename_component(HDR "${FILE}" NAME_WE)
+	add_executable(${NAME} ${FILE} ${HDR}.h)
 	target_link_libraries(
 		${NAME}
 		subsurface_corelib
@@ -70,7 +71,7 @@ macro(TEST NAME FILE)
 	else()
 		add_test(NAME ${NAME} COMMAND  $<TARGET_FILE:${NAME}>)
 	endif()
-endmacro()
+endfunction()
 
 enable_testing()
 add_definitions(-g)
