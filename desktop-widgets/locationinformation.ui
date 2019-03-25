@@ -94,9 +94,30 @@
    <item row="9" column="0" colspan="5">
     <widget class="QGroupBox" name="diveSiteGroupBox">
      <property name="title">
-      <string>Dive sites on same coordinates</string>
+      <string>Near dive sites</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Show dive sites in the range of:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="diveSiteDistance"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="diveSiteDistanceUnits">
+          <property name="text">
+           <string></string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
       <item>
        <widget class="QListView" name="diveSiteListView">
         <property name="sizePolicy">

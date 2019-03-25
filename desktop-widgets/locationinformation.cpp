@@ -11,6 +11,7 @@
 #include "core/subsurface-qt/DiveListNotifier.h"
 #include "command.h"
 #include "core/taxonomy.h"
+#include "core/settings/qPrefUnit.h"
 
 #include <QDebug>
 #include <QShowEvent>
@@ -20,7 +21,7 @@
 #include <QDesktopWidget>
 #include <QScrollBar>
 
-LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent), diveSite(nullptr)
+LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent), diveSite(nullptr), closeDistance(0)
 {
 	ui.setupUi(this);
 	ui.diveSiteMessage->setCloseButtonVisible(false);
@@ -35,6 +36,8 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	ui.diveSiteCoordinates->installEventFilter(this);
 
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &LocationInformationWidget::diveSiteChanged);
+	connect(qPrefUnits::instance(), &qPrefUnits::unit_systemChanged, this, &LocationInformationWidget::unitsChanged);
+	unitsChanged();
 
 	ui.diveSiteListView->setModel(&filter_model);
 	ui.diveSiteListView->setModelColumn(LocationInformationModel::NAME);
@@ -110,6 +113,17 @@ void LocationInformationWidget::updateLabels()
 		ui.diveSiteCoordinates->clear();
 
 	ui.locationTags->setText(constructLocationTags(&diveSite->taxonomy, false));
+}
+
+void LocationInformationWidget::unitsChanged()
+{
+	if (prefs.units.length == units::METERS) {
+		ui.diveSiteDistanceUnits->setText("m");
+		ui.diveSiteDistance->setText(QString::number(lrint(closeDistance / 1000.0)));
+	} else {
+		ui.diveSiteDistanceUnits->setText("ft");
+		ui.diveSiteDistance->setText(QString::number(lrint(mm_to_feet(closeDistance))));
+	}
 }
 
 void LocationInformationWidget::diveSiteChanged(struct dive_site *ds, int field)
@@ -220,6 +234,16 @@ void LocationInformationWidget::on_diveSiteNotes_editingFinished()
 {
 	if (diveSite)
 		Command::editDiveSiteNotes(diveSite, ui.diveSiteNotes->toPlainText());
+}
+
+void LocationInformationWidget::on_diveSiteDistance_textChanged(const QString &s)
+{
+	bool ok;
+	uint64_t d = s.toLongLong(&ok);
+	if (!ok)
+		d = 0;
+	closeDistance = prefs.units.length == units::METERS ? d * 1000 : feet_to_mm(d);
+	filter_model.setDistance(closeDistance);
 }
 
 void LocationInformationWidget::reverseGeocode()

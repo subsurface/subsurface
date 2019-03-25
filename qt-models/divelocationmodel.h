@@ -62,11 +62,13 @@ class GPSLocationInformationModel : public QSortFilterProxyModel {
 private:
 	const struct dive_site *ignoreDs;
 	location_t location;
+	int64_t distance;
 	bool filterAcceptsRow(int sourceRow, const QModelIndex &source_parent) const override;
 public:
 	GPSLocationInformationModel(QObject *parent = nullptr);
 	void set(const struct dive_site *ignoreDs, const location_t &);
 	void setCoordinates(const location_t &);
+	void setDistance(int64_t dist); // Distance from coordinates in mm
 };
 
 class GeoReferencingOptionsModel : public QStringListModel {

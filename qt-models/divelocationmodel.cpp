@@ -302,15 +302,17 @@ GeoReferencingOptionsModel::GeoReferencingOptionsModel(QObject *parent) : QStrin
 bool GPSLocationInformationModel::filterAcceptsRow(int sourceRow, const QModelIndex &parent) const
 {
 	struct dive_site *ds = sourceModel()->index(sourceRow, LocationInformationModel::DIVESITE, parent).data().value<dive_site *>();
-	if (ds == ignoreDs || ds == RECENTLY_ADDED_DIVESITE)
+	if (!ds || ds == ignoreDs || ds == RECENTLY_ADDED_DIVESITE)
 		return false;
 
-	return ds && same_location(&ds->location, &location);
+	return distance <= 0 ? same_location(&ds->location, &location)
+			     : (int64_t)get_distance(&ds->location, &location) * 1000 <= distance; // We need 64 bit to represent distances in mm
 }
 
 GPSLocationInformationModel::GPSLocationInformationModel(QObject *parent) : QSortFilterProxyModel(parent),
 	ignoreDs(nullptr),
-	location({{0},{0}})
+	location({{0},{0}}),
+	distance(0)
 {
 	setSourceModel(LocationInformationModel::instance());
 }
@@ -325,5 +327,11 @@ void GPSLocationInformationModel::set(const struct dive_site *ignoreDsIn, const 
 void GPSLocationInformationModel::setCoordinates(const location_t &locationIn)
 {
 	location = locationIn;
+	invalidate();
+}
+
+void GPSLocationInformationModel::setDistance(int64_t dist)
+{
+	distance = dist;
 	invalidate();
 }

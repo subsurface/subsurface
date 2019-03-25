@@ -27,17 +27,20 @@ public slots:
 	void on_diveSiteDescription_editingFinished();
 	void on_diveSiteName_editingFinished();
 	void on_diveSiteNotes_editingFinished();
+	void on_diveSiteDistance_textChanged(const QString &s);
 	void reverseGeocode();
 	void mergeSelectedDiveSites();
 private slots:
 	void updateLabels();
 	void diveSiteChanged(struct dive_site *ds, int field);
+	void unitsChanged();
 private:
 	void keyPressEvent(QKeyEvent *e) override;
 	void clearLabels();
 	Ui::LocationInformation ui;
 	GPSLocationInformationModel filter_model;
 	dive_site *diveSite;
+	int64_t closeDistance; // Distance of "close" dive sites in mm
 };
 
 class DiveLocationFilterProxyModel : public QSortFilterProxyModel {
