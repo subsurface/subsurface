@@ -278,7 +278,7 @@ void put_quoted(struct membuffer *b, const char *text, int is_attribute, int is_
 	}
 }
 
-char *add_to_string_va(const char *old, const char *fmt, va_list args)
+char *add_to_string_va(char *old, const char *fmt, va_list args)
 {
 	char *res;
 	struct membuffer o = { 0 }, n = { 0 };
@@ -296,7 +296,7 @@ char *add_to_string_va(const char *old, const char *fmt, va_list args)
  * WARNING - this will free(old), the intended pattern is
  * string = add_to_string(string, fmt, ...)
  */
-char *add_to_string(const char *old, const char *fmt, ...)
+char *add_to_string(char *old, const char *fmt, ...)
 {
 	char *res;
 	va_list args;

@@ -71,8 +71,8 @@ extern __printf(2, 0) void put_vformat(struct membuffer *, const char *, va_list
 extern __printf(2, 0) void put_vformat_loc(struct membuffer *, const char *, va_list);
 extern __printf(2, 3) void put_format(struct membuffer *, const char *fmt, ...);
 extern __printf(2, 3) void put_format_loc(struct membuffer *, const char *fmt, ...);
-extern __printf(2, 0) char *add_to_string_va(const char *old, const char *fmt, va_list args);
-extern __printf(2, 3) char *add_to_string(const char *old, const char *fmt, ...);
+extern __printf(2, 0) char *add_to_string_va(char *old, const char *fmt, va_list args);
+extern __printf(2, 3) char *add_to_string(char *old, const char *fmt, ...);
 
 /* Helpers that use membuffers internally */
 extern __printf(1, 0) char *vformat_string(const char *, va_list);
