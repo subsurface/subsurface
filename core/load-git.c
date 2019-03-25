@@ -164,7 +164,7 @@ static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 			dive->dive_site = ds;
 	} else {
 		if (dive_site_has_gps_location(ds) && !same_location(&ds->location, &location)) {
-			char *coords = printGPSCoords(&location);
+			char *coords = printGPSCoordsC(&location);
 			// we have a dive site that already has GPS coordinates
 			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple GPS locations for this dive site; also %s\n"), coords);
 			free(coords);

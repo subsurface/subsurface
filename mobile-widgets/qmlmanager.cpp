@@ -1604,10 +1604,7 @@ QString QMLManager::getGpsFromSiteName(const QString& siteName)
 	ds = get_dive_site_by_name(qPrintable(siteName));
 	if (!ds)
 		return QString();
-	char *gps = printGPSCoords(&ds->location);
-	QString res = gps;
-	free(gps);
-	return res;
+	return printGPSCoords(&ds->location);
 }
 
 void QMLManager::setNotificationText(QString text)

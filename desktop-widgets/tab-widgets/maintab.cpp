@@ -410,11 +410,8 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.location->setCurrentDiveSite(ds);
 			ui.locationTags->setText(constructLocationTags(&ds->taxonomy, true));
 
-			if (ui.locationTags->text().isEmpty() && has_location(&ds->location)) {
-				char *coords = printGPSCoords(&ds->location);
-				ui.locationTags->setText(coords);
-				free(coords);
-			}
+			if (ui.locationTags->text().isEmpty() && has_location(&ds->location))
+				ui.locationTags->setText(printGPSCoords(&ds->location));
 		} else {
 			ui.location->clear();
 			ui.locationTags->clear();

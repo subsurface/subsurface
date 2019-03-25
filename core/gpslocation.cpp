@@ -137,9 +137,7 @@ QString GpsLocation::currentPosition()
 		if (delta < 300) {
 			// we can simply use the last position that we tracked
 			gpsTracker gt = m_trackers.last();
-			char *gps = printGPSCoords(&gt.location);
-			QString gpsString = gps;
-			free(gps);
+			QString gpsString = printGPSCoords(&gt.location);
 			qDebug() << "returning last position" << gpsString;
 			return gpsString;
 		} else {

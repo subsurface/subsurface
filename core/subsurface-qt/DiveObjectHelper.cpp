@@ -114,10 +114,7 @@ QString DiveObjectHelper::gps() const
 	struct dive_site *ds = m_dive->dive_site;
 	if (!ds)
 		return QString();
-	char *gps = printGPSCoords(&ds->location);
-	QString res = gps;
-	free(gps);
-	return res;
+	return printGPSCoords(&ds->location);
 }
 
 QString DiveObjectHelper::gps_decimal() const

@@ -82,6 +82,7 @@ QString uiLanguage(QLocale *callerLoc);
 QLocale getLocale();
 void selectedDivesGasUsed(QVector<QPair<QString, int> > &gasUsed);
 QString getUserAgent();
+QString printGPSCoords(const location_t *loc);
 
 #if defined __APPLE__
 #define TITLE_OR_TEXT(_t, _m) "", _t + "\n" + _m
@@ -123,7 +124,7 @@ void moveInVector(Vector &v, int rangeBegin, int rangeEnd, int destination)
 extern "C" {
 #endif
 
-char *printGPSCoords(const location_t *loc);
+char *printGPSCoordsC(const location_t *loc);
 bool in_planner();
 bool getProxyString(char **buffer);
 bool canReachCloudServer();
