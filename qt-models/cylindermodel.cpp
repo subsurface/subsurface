@@ -442,6 +442,7 @@ void CylindersModel::add()
 	fill_default_cylinder(&displayed_dive.cylinder[row]);
 	displayed_dive.cylinder[row].start = displayed_dive.cylinder[row].type.workingpressure;
 	displayed_dive.cylinder[row].manually_added = true;
+	displayed_dive.cylinder[row].cylinder_use = OC_GAS;
 	beginInsertRows(QModelIndex(), row, row);
 	rows++;
 	changed = true;

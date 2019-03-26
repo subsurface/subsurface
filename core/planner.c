@@ -1085,6 +1085,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 			// Switch to an empty air cylinder for breathing air at the surface
 			// If no empty cylinder is found, keep using last deco gas
 			current_cylinder = i;
+			dive->cylinder[i].cylinder_use = NOT_USED;
 			break;
 		}
 	plan_add_segment(diveplan, prefs.surface_segment, 0, current_cylinder, 0, false, OC);
