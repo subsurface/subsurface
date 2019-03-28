@@ -91,7 +91,7 @@ private:
 
 class AddDive : public DiveListBase {
 public:
-	AddDive(dive *dive, const QString &newDS, bool autogroup, bool newNumber);
+	AddDive(dive *dive, bool autogroup, bool newNumber);
 private:
 	void undoit() override;
 	void redoit() override;
