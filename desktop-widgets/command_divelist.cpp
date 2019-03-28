@@ -359,21 +359,13 @@ void DiveListBase::redo()
 	finishWork();
 }
 
-AddDive::AddDive(dive *d, const QString &newDS, bool autogroup, bool newNumber)
+AddDive::AddDive(dive *d, bool autogroup, bool newNumber)
 {
 	setText(tr("add dive"));
-	// By convention, d is "displayed dive" and can be overwritten.
+	// By convention, d is a pointer to "displayed dive" or a temporary variable and can be overwritten.
 	d->maxdepth.mm = 0;
 	d->dc.maxdepth.mm = 0;
 	fixup_dive(d);
-
-	// Create new dive site if requested.
-	if (!newDS.isEmpty()) {
-		struct dive_site *ds = alloc_dive_site();
-		ds->name = copy_qstring(newDS);
-		d->dive_site = ds;
-		divesToAdd.sites.emplace_back(ds);
-	}
 
 	// Get an owning pointer to a copied or moved dive
 	// Note: if move is true, this destroys the old dive!

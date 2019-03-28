@@ -177,7 +177,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	disabledList.push_back(disabled);
 
 	registerApplicationState("Default", mainTab, profileContainer, diveList, mapWidget );
-	registerApplicationState("AddDive", mainTab, profileContainer, diveList, mapWidget );
 	registerApplicationState("EditDive", mainTab, profileContainer, diveList, mapWidget );
 	registerApplicationState("PlanDive", divePlannerWidget, profileContainer, divePlannerSettingsWidget, plannerDetails );
 	registerApplicationState("EditPlannedDive", divePlannerWidget, profileContainer, diveList, mapWidget );
@@ -185,7 +184,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	registerApplicationState("FilterDive", mainTab, profileContainer, diveList, &filterWidget2);
 
 	setStateProperties("Default", enabledList, enabledList, enabledList, enabledList);
-	setStateProperties("AddDive", enabledList, enabledList, enabledList, enabledList);
 	setStateProperties("EditDive", enabledList, enabledList, enabledList, enabledList);
 	setStateProperties("PlanDive", enabledList, enabledList, enabledList, enabledList);
 	setStateProperties("EditPlannedDive", enabledList, enabledList, enabledList, enabledList);
@@ -212,7 +210,6 @@ MainWindow::MainWindow() : QMainWindow(),
 		connect(actionsRecent[i], SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
 	}
 	ui.menuFile->insertSeparator(ui.actionQuit);
-	connect(mainTab, SIGNAL(addDiveFinished()), graphics, SLOT(setProfileState()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(variationsComputed(QString)), this, SLOT(updateVariations(QString)));
@@ -897,7 +894,6 @@ void MainWindow::setupForAddAndPlan(const char *model)
 	// setup the dive cylinders
 	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->setupCylinders();
-
 }
 
 void MainWindow::on_actionReplanDive_triggered()
@@ -958,31 +954,27 @@ void MainWindow::on_actionAddDive_triggered()
 	if (!plannerStateClean())
 		return;
 
-	if (diveList->selectedTrips().count() >= 1) {
-		diveList->rememberSelection();
-		diveList->clearSelection();
-	}
-
-	setApplicationState("AddDive");
-	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
-
-	// setup things so we can later create our starting dive
-	setupForAddAndPlan("manually added dive"); // don't translate, stored in the XML file
-
-	// now show the mostly empty main tab
-	mainTab->updateDiveInfo();
-
-	mainTab->addDiveStarted();
-
-	graphics->setAddState();
+	// TODO: We (mis)use displayed_dive to construct a default dive using the dive planner.
+	// This means that we have to do all this in a setPlanState()/setProfileState() pair,
+	// to avoid the profile and planner going out of sync (which in turn can lead to crashes).
+	// This should all be simplified. There is no apparent no reason to go via the planner
+	// to create a default profile.
+	clear_dive(&displayed_dive);
+	graphics->setPlanState();
+	DivePlannerPointsModel::instance()->setupStartTime();
 	DivePlannerPointsModel::instance()->createSimpleDive();
-	configureToolbar();
-	graphics->plotDive(nullptr, false, true);
+	displayed_dive.id = dive_getUniqID();
+	displayed_dive.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
+	displayed_dive.dc.model = strdup("manually added dive"); // don't translate! this is stored in the XML file
 	fixup_dc_duration(&displayed_dive.dc);
 	displayed_dive.duration = displayed_dive.dc.duration;
+	graphics->setProfileState();
 
-	// now that we have the correct depth and duration, update the dive info
-	mainTab->updateDepthDuration();
+	Command::addDive(&displayed_dive, autogroup, true);
+
+	// Plot dive actually copies current_dive to displayed_dive and therefore ensures that the
+	// correct data are displayed!
+	graphics->plotDive(nullptr, false, true);
 }
 
 void MainWindow::on_actionRenumber_triggered()
