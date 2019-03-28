@@ -234,16 +234,6 @@ void MainTab::toggleTriggeredColumn()
 		view->hideColumn(col);
 }
 
-void MainTab::addDiveStarted()
-{
-	ui.tabWidget->setCurrentIndex(0);
-	ui.tabWidget->setTabEnabled(2, false);
-	ui.tabWidget->setTabEnabled(3, false);
-	ui.tabWidget->setTabEnabled(4, false);
-	ui.tabWidget->setTabEnabled(5, false);
-	enableEdition(ADD);
-}
-
 void MainTab::addMessageAction(QAction *action)
 {
 	ui.diveNotesMessage->addAction(action);
@@ -320,9 +310,14 @@ void MainTab::enableEdition(EditMode newEditMode)
 
 static void profileFromDive(struct dive *d)
 {
+	// TODO: We have to put these manipulations into a setPlanState()/setProfileState() pair,
+	// because otherwise the DivePlannerPointsModel and the profile get out of sync.
+	// This can lead to crashes. Let's try to detangle these subtleties.
+	MainWindow::instance()->graphics->setPlanState();
 	DivePlannerPointsModel::instance()->loadFromDive(d);
 	MainWindow::instance()->graphics->setReplot(true);
 	MainWindow::instance()->graphics->plotDive(current_dive, true);
+	MainWindow::instance()->graphics->setProfileState();
 }
 
 // This function gets called if a field gets updated by an undo command.
@@ -434,16 +429,6 @@ bool MainTab::isEditing()
 	return editMode != NONE;
 }
 
-void MainTab::updateDepthDuration()
-{
-	ui.depth->setVisible(true);
-	ui.depthLabel->setVisible(true);
-	ui.duration->setVisible(true);
-	ui.durationLabel->setVisible(true);
-	ui.duration->setText(render_seconds_to_string(displayed_dive.duration.seconds));
-	ui.depth->setText(get_depth_string(displayed_dive.maxdepth, true));
-}
-
 void MainTab::updateNotes(const struct dive *d)
 {
 	QString tmp(d->notes);
@@ -493,7 +478,7 @@ void MainTab::updateDiveInfo(bool clear)
 	ui.location->refreshDiveSiteCache();
 	EditMode rememberEM = editMode;
 	// don't execute this while adding / planning a dive
-	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE || MainWindow::instance()->graphics->isPlanner())
+	if (editMode == MANUALLY_ADDED_DIVE || MainWindow::instance()->graphics->isPlanner())
 		return;
 	if (!isEnabled() && !clear )
 		setEnabled(true);
@@ -763,105 +748,78 @@ void MainTab::acceptChanges()
 	ui.dateEdit->setEnabled(true);
 	hideMessage();
 	ui.equipmentTab->setEnabled(true);
-	if (lastMode == ADD) {
-		// Handle dive site
-		struct dive_site *pickedDs = ui.location->currDiveSite();
-		QString newDiveSiteName;
-		if (pickedDs == RECENTLY_ADDED_DIVESITE) {
-			newDiveSiteName = ui.location->text();
-			displayed_dive.dive_site = nullptr;
-		} else {
-			displayed_dive.dive_site = pickedDs;
-		}
 
-		copyTagsToDisplayedDive();
+	// Get list of selected dives, but put the current dive last;
+	// this is required in case the invocation wants to compare things
+	// to the original value in current_dive like it should
+	QVector<dive *> selectedDives = getSelectedDivesCurrentLast();
+	if (lastMode == MANUALLY_ADDED_DIVE) {
+		// preserve any changes to the profile
+		free(current_dive->dc.sample);
+		copy_samples(&displayed_dive.dc, &current_dive->dc);
+		addedId = displayed_dive.id;
+	}
+	// now check if something has changed and if yes, edit the selected dives that
+	// were identical with the master dive shown (and mark the divelist as changed)
+	struct dive *cd = current_dive;
 
-		Command::addDive(&displayed_dive, newDiveSiteName, autogroup, true);
-
-		editMode = NONE;
-		MainWindow::instance()->exitEditState();
-		cylindersModel->changed = false;
-		weightModel->changed = false;
-		MainWindow::instance()->setEnabledToolbar(true);
-		ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
-		emit addDiveFinished();
-		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
-		MainWindow::instance()->diveList->setFocus();
-		displayed_dive.divetrip = nullptr; // Should not be necessary, just in case!
-		return;
-	} else {
-		// Get list of selected dives, but put the current dive last;
-		// this is required in case the invocation wants to compare things
-		// to the original value in current_dive like it should
-		QVector<dive *> selectedDives = getSelectedDivesCurrentLast();
-		if (lastMode == MANUALLY_ADDED_DIVE) {
-			// preserve any changes to the profile
-			free(current_dive->dc.sample);
-			copy_samples(&displayed_dive.dc, &current_dive->dc);
-			addedId = displayed_dive.id;
-		}
-		// now check if something has changed and if yes, edit the selected dives that
-		// were identical with the master dive shown (and mark the divelist as changed)
-		struct dive *cd = current_dive;
-
-		if (cylindersModel->changed) {
-			mark_divelist_changed(true);
-			MODIFY_DIVES(selectedDives,
-				for (int i = 0; i < MAX_CYLINDERS; i++) {
-					if (mydive != cd) {
-						if (same_string(mydive->cylinder[i].type.description, cd->cylinder[i].type.description)) {
-							// if we started out with the same cylinder description (for multi-edit) or if we do copt & paste
-							// make sure that we have the same cylinder type and copy the gasmix, but DON'T copy the start
-							// and end pressures (those are per dive after all)
-							if (!same_string(mydive->cylinder[i].type.description, displayed_dive.cylinder[i].type.description)) {
-								free((void*)mydive->cylinder[i].type.description);
-								mydive->cylinder[i].type.description = copy_string(displayed_dive.cylinder[i].type.description);
-							}
-							mydive->cylinder[i].type.size = displayed_dive.cylinder[i].type.size;
-							mydive->cylinder[i].type.workingpressure = displayed_dive.cylinder[i].type.workingpressure;
-							mydive->cylinder[i].gasmix = displayed_dive.cylinder[i].gasmix;
-							mydive->cylinder[i].cylinder_use = displayed_dive.cylinder[i].cylinder_use;
-							mydive->cylinder[i].depth = displayed_dive.cylinder[i].depth;
-						}
-					}
-				}
-			);
+	if (cylindersModel->changed) {
+		mark_divelist_changed(true);
+		MODIFY_DIVES(selectedDives,
 			for (int i = 0; i < MAX_CYLINDERS; i++) {
-				// copy the cylinder but make sure we have our own copy of the strings
-				free((void*)cd->cylinder[i].type.description);
-				cd->cylinder[i] = displayed_dive.cylinder[i];
-				cd->cylinder[i].type.description = copy_string(displayed_dive.cylinder[i].type.description);
-			}
-			/* if cylinders changed we may have changed gas change events
-			 * and sensor idx in samples as well
-			 * - so far this is ONLY supported for a single selected dive */
-			struct divecomputer *tdc = &current_dive->dc;
-			struct divecomputer *sdc = &displayed_dive.dc;
-			while(tdc && sdc) {
-				free_events(tdc->events);
-				copy_events(sdc, tdc);
-				free(tdc->sample);
-				copy_samples(sdc, tdc);
-				tdc = tdc->next;
-				sdc = sdc->next;
-			}
-			do_replot = true;
-		}
-
-		if (weightModel->changed) {
-			mark_divelist_changed(true);
-			MODIFY_DIVES(selectedDives,
-				for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-					if (mydive != cd && (same_string(mydive->weightsystem[i].description, cd->weightsystem[i].description))) {
-						mydive->weightsystem[i] = displayed_dive.weightsystem[i];
-						mydive->weightsystem[i].description = copy_string(displayed_dive.weightsystem[i].description);
+				if (mydive != cd) {
+					if (same_string(mydive->cylinder[i].type.description, cd->cylinder[i].type.description)) {
+						// if we started out with the same cylinder description (for multi-edit) or if we do copt & paste
+						// make sure that we have the same cylinder type and copy the gasmix, but DON'T copy the start
+						// and end pressures (those are per dive after all)
+						if (!same_string(mydive->cylinder[i].type.description, displayed_dive.cylinder[i].type.description)) {
+							free((void*)mydive->cylinder[i].type.description);
+							mydive->cylinder[i].type.description = copy_string(displayed_dive.cylinder[i].type.description);
+						}
+						mydive->cylinder[i].type.size = displayed_dive.cylinder[i].type.size;
+						mydive->cylinder[i].type.workingpressure = displayed_dive.cylinder[i].type.workingpressure;
+						mydive->cylinder[i].gasmix = displayed_dive.cylinder[i].gasmix;
+						mydive->cylinder[i].cylinder_use = displayed_dive.cylinder[i].cylinder_use;
+						mydive->cylinder[i].depth = displayed_dive.cylinder[i].depth;
 					}
 				}
-			);
-			for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-				cd->weightsystem[i] = displayed_dive.weightsystem[i];
-				cd->weightsystem[i].description = copy_string(displayed_dive.weightsystem[i].description);
 			}
+		);
+		for (int i = 0; i < MAX_CYLINDERS; i++) {
+			// copy the cylinder but make sure we have our own copy of the strings
+			free((void*)cd->cylinder[i].type.description);
+			cd->cylinder[i] = displayed_dive.cylinder[i];
+			cd->cylinder[i].type.description = copy_string(displayed_dive.cylinder[i].type.description);
+		}
+		/* if cylinders changed we may have changed gas change events
+		 * and sensor idx in samples as well
+		 * - so far this is ONLY supported for a single selected dive */
+		struct divecomputer *tdc = &current_dive->dc;
+		struct divecomputer *sdc = &displayed_dive.dc;
+		while(tdc && sdc) {
+			free_events(tdc->events);
+			copy_events(sdc, tdc);
+			free(tdc->sample);
+			copy_samples(sdc, tdc);
+			tdc = tdc->next;
+			sdc = sdc->next;
+		}
+		do_replot = true;
+	}
+
+	if (weightModel->changed) {
+		mark_divelist_changed(true);
+		MODIFY_DIVES(selectedDives,
+			for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
+				if (mydive != cd && (same_string(mydive->weightsystem[i].description, cd->weightsystem[i].description))) {
+					mydive->weightsystem[i] = displayed_dive.weightsystem[i];
+					mydive->weightsystem[i].description = copy_string(displayed_dive.weightsystem[i].description);
+				}
+			}
+		);
+		for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
+			cd->weightsystem[i] = displayed_dive.weightsystem[i];
+			cd->weightsystem[i].description = copy_string(displayed_dive.weightsystem[i].description);
 		}
 	}
 	if (lastMode == MANUALLY_ADDED_DIVE) {
@@ -919,10 +877,8 @@ void MainTab::rejectChanges()
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	hideMessage();
-	// no harm done to call cancelPlan even if we were not in ADD or PLAN mode...
+	// no harm done to call cancelPlan even if we were not PLAN mode...
 	DivePlannerPointsModel::instance()->cancelPlan();
-	if(lastMode == ADD)
-		MainWindow::instance()->diveList->restoreSelection();
 
 	// now make sure that the correct dive is displayed
 	if (current_dive)
@@ -1040,15 +996,6 @@ void MainTab::on_timeEdit_timeChanged(const QTime &time)
 	dateTime.setTimeSpec(Qt::UTC);
 	dateTime.setTime(time);
 	shiftTime(dateTime);
-}
-
-void MainTab::copyTagsToDisplayedDive()
-{
-	taglist_free(displayed_dive.tag_list);
-	displayed_dive.tag_list = NULL;
-	Q_FOREACH (const QString &tag, ui.tagWidget->getBlockStringList())
-		taglist_add_tag(&displayed_dive.tag_list, qPrintable(tag));
-	taglist_cleanup(&displayed_dive.tag_list);
 }
 
 void MainTab::on_tagWidget_editingFinished()

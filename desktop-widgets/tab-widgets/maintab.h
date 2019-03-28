@@ -39,7 +39,6 @@ public:
 	enum EditMode {
 		NONE,
 		DIVE,
-		ADD,
 		MANUALLY_ADDED_DIVE,
 		IGNORE
 	};
@@ -56,7 +55,6 @@ public:
 	void nextInputField(QKeyEvent *event);
 
 signals:
-	void addDiveFinished();
 	void diveSiteChanged();
 public
 slots:
@@ -69,7 +67,6 @@ slots:
 	void updateMode(struct dive *d);
 	void updateDateTime(struct dive *d);
 	void updateDiveSite(struct dive *d);
-	void updateDepthDuration();
 	void acceptChanges();
 	void rejectChanges();
 	void on_location_diveSiteSelected();
@@ -90,7 +87,6 @@ slots:
 	void on_tagWidget_editingFinished();
 	void editCylinderWidget(const QModelIndex &index);
 	void editWeightWidget(const QModelIndex &index);
-	void addDiveStarted();
 	void addMessageAction(QAction *action);
 	void hideMessage();
 	void closeMessage();
@@ -114,7 +110,6 @@ private:
 	bool lastSelectedDive;
 	int lastTabSelectedDive;
 	int lastTabSelectedDiveTrip;
-	void copyTagsToDisplayedDive();
 	dive_trip_t *currentTrip;
 	QList<TabBase*> extraWidgets;
 };

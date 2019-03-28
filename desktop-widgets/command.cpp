@@ -9,9 +9,9 @@
 namespace Command {
 
 // Dive-list related commands
-void addDive(dive *d, const QString &newDS, bool autogroup, bool newNumber)
+void addDive(dive *d, bool autogroup, bool newNumber)
 {
-	execute(new AddDive(d, newDS, autogroup, newNumber));
+	execute(new AddDive(d, autogroup, newNumber));
 }
 
 void importDives(struct dive_table *dives, struct trip_table *trips, struct dive_site_table *sites, int flags, const QString &source)
