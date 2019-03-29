@@ -63,7 +63,7 @@ slots:
 	void tripChanged(dive_trip *trip, TripField field);
 	void addCylinder_clicked();
 	void addWeight_clicked();
-	void updateDiveInfo(bool clear = false);
+	void updateDiveInfo();
 	void updateNotes(const struct dive *d);
 	void updateMode(struct dive *d);
 	void updateDateTime(struct dive *d);
