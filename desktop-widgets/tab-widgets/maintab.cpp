@@ -82,6 +82,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &MainTab::divesChanged);
 	connect(&diveListNotifier, &DiveListNotifier::tripChanged, this, &MainTab::tripChanged);
+	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &MainTab::diveSiteEdited);
 
 	connect(ui.editDiveSiteButton, &QToolButton::clicked, MainWindow::instance(), &MainWindow::startDiveSiteEdit);
 	connect(ui.location, &DiveLocationLineEdit::entered, MapWidget::instance(), &MapWidget::centerOnIndex);
@@ -379,6 +380,12 @@ void MainTab::divesChanged(dive_trip *trip, const QVector<dive *> &dives, DiveFi
 	default:
 		break;
 	}
+}
+
+void MainTab::diveSiteEdited(dive_site *ds, int)
+{
+	if (current_dive && current_dive->dive_site == ds)
+		updateDiveSite(current_dive);
 }
 
 // This function gets called if a trip-field gets updated by an undo command.
