@@ -97,7 +97,7 @@ signals:
 	void enableShortcuts();
 	void disableShortcuts(bool paste);
 	void refreshDisplay(bool recreateDivelist);
-	void updateDiveInfo(bool clear);
+	void updateDiveInfo();
 	void editCurrentDive();
 	void dateTimeChangedItems();
 
