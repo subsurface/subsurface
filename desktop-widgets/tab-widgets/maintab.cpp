@@ -419,17 +419,17 @@ void MainTab::nextInputField(QKeyEvent *event)
 	keyPressEvent(event);
 }
 
-#define UPDATE_TEXT(d, field)          \
-	if (clear || !d.field)         \
+#define UPDATE_TEXT(field)                    \
+	if (!current_dive || !current_dive->field)     \
 		ui.field->setText(QString()); \
-	else                           \
-		ui.field->setText(d.field)
+	else                                  \
+		ui.field->setText(current_dive->field)
 
-#define UPDATE_TEMP(d, field)            \
-	if (clear || d.field.mkelvin == 0) \
-		ui.field->setText("");   \
-	else                             \
-		ui.field->setText(get_temperature_string(d.field, true))
+#define UPDATE_TEMP(field)                             \
+	if (!current_dive || current_dive->field.mkelvin == 0) \
+		ui.field->setText("");                 \
+	else                                           \
+		ui.field->setText(get_temperature_string(current_dive->field, true))
 
 bool MainTab::isEditing()
 {
@@ -480,16 +480,16 @@ void MainTab::updateDiveSite(struct dive *d)
 	}
 }
 
-void MainTab::updateDiveInfo(bool clear)
+void MainTab::updateDiveInfo()
 {
 	ui.location->refreshDiveSiteCache();
 	EditMode rememberEM = editMode;
 	// don't execute this while adding / planning a dive
 	if (editMode == MANUALLY_ADDED_DIVE || MainWindow::instance()->graphics->isPlanner())
 		return;
-	if (!isEnabled() && !clear )
+	if (!isEnabled() && current_dive)
 		setEnabled(true);
-	if (isEnabled() && clear)
+	if (isEnabled() && !current_dive)
 		setEnabled(false);
 	editMode = IGNORE; // don't trigger on changes to the widgets
 
@@ -497,19 +497,17 @@ void MainTab::updateDiveInfo(bool clear)
 		widget->updateData();
 	}
 
-	ui.notes->setText(QString());
-	if (!clear)
-		updateNotes(&displayed_dive);
-	UPDATE_TEXT(displayed_dive, suit);
-	UPDATE_TEXT(displayed_dive, divemaster);
-	UPDATE_TEXT(displayed_dive, buddy);
-	UPDATE_TEMP(displayed_dive, airtemp);
-	UPDATE_TEMP(displayed_dive, watertemp);
-	updateMode(&displayed_dive);
+	UPDATE_TEXT(suit);
+	UPDATE_TEXT(divemaster);
+	UPDATE_TEXT(buddy);
+	UPDATE_TEMP(airtemp);
+	UPDATE_TEMP(watertemp);
 
-	if (!clear) {
-		updateDiveSite(&displayed_dive);
-		updateDateTime(&displayed_dive);
+	if (current_dive) {
+		updateNotes(current_dive);
+		updateMode(current_dive);
+		updateDiveSite(current_dive);
+		updateDateTime(current_dive);
 		if (MainWindow::instance() && MainWindow::instance()->diveList->selectedTrips().count() == 1) {
 			// Remember the tab selected for last dive
 			if (lastSelectedDive)
@@ -603,25 +601,23 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.timeLabel->setVisible(true);
 			ui.timeEdit->setVisible(true);
 			/* and fill them from the dive */
-			ui.rating->setCurrentStars(displayed_dive.rating);
-			ui.visibility->setCurrentStars(displayed_dive.visibility);
+			ui.rating->setCurrentStars(current_dive->rating);
+			ui.visibility->setCurrentStars(current_dive->visibility);
 			// reset labels in case we last displayed trip notes
 			ui.LocationLabel->setText(tr("Location"));
 			ui.NotesLabel->setText(tr("Notes"));
 			ui.equipmentTab->setEnabled(true);
 			cylindersModel->updateDive();
 			weightModel->updateDive();
-			ui.tagWidget->setText(get_taglist_string(displayed_dive.tag_list));
-			if (current_dive) {
-				bool isManual = same_string(current_dive->dc.model, "manually added dive");
-				ui.depth->setVisible(isManual);
-				ui.depthLabel->setVisible(isManual);
-				ui.duration->setVisible(isManual);
-				ui.durationLabel->setVisible(isManual);
-			}
+			ui.tagWidget->setText(get_taglist_string(current_dive->tag_list));
+			bool isManual = same_string(current_dive->dc.model, "manually added dive");
+			ui.depth->setVisible(isManual);
+			ui.depthLabel->setVisible(isManual);
+			ui.duration->setVisible(isManual);
+			ui.durationLabel->setVisible(isManual);
 		}
-		ui.duration->setText(render_seconds_to_string(displayed_dive.duration.seconds));
-		ui.depth->setText(get_depth_string(displayed_dive.maxdepth, true));
+		ui.duration->setText(render_seconds_to_string(current_dive->duration.seconds));
+		ui.depth->setText(get_depth_string(current_dive->maxdepth, true));
 
 		volume_t gases[MAX_CYLINDERS] = {};
 		get_gas_used(&displayed_dive, gases);
@@ -676,8 +672,8 @@ void MainTab::updateDiveInfo(bool clear)
 	else
 		ui.cylinders->view()->hideColumn(CylindersModel::USE);
 
-	if (verbose && displayed_dive.dive_site)
-		qDebug() << "Set the current dive site:" << displayed_dive.dive_site->uuid;
+	if (verbose && current_dive && current_dive->dive_site)
+		qDebug() << "Set the current dive site:" << current_dive->dive_site->uuid;
 	emit diveSiteChanged();
 }
 
@@ -721,7 +717,7 @@ MainTab::EditMode MainTab::getEditMode() const
 
 void MainTab::refreshDisplayedDiveSite()
 {
-	struct dive_site *ds = get_dive_site_for_dive(&displayed_dive);
+	struct dive_site *ds = get_dive_site_for_dive(current_dive);
 	if (ds)
 		ui.location->setCurrentDiveSite(ds);
 }
@@ -892,14 +888,14 @@ void MainTab::rejectChanges()
 		copy_dive(current_dive, &displayed_dive);
 	else
 		clear_dive(&displayed_dive);
-	updateDiveInfo(!current_dive);
+	updateDiveInfo();
 
 	for (auto widget : extraWidgets) {
 		widget->updateData();
 	}
 	// the user could have edited the location and then canceled the edit
 	// let's get the correct location back in view
-	MapWidget::instance()->centerOnDiveSite(displayed_dive.dive_site);
+	MapWidget::instance()->centerOnDiveSite(current_dive ? current_dive->dive_site : nullptr);
 	// show the profile and dive info
 	MainWindow::instance()->graphics->replot();
 	MainWindow::instance()->setEnabledToolbar(true);

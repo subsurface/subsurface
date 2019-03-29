@@ -465,7 +465,7 @@ void MainWindow::selectionChanged()
 {
 	if (!current_dive) {
 		mainTab->clearTabs();
-		mainTab->updateDiveInfo(true);
+		mainTab->updateDiveInfo();
 		graphics->setEmptyState();
 	} else {
 		graphics->plotDive(nullptr, false, true);
@@ -634,8 +634,9 @@ void MainWindow::on_actionCloudOnline_triggered()
 
 void MainWindow::cleanUpEmpty()
 {
+	current_dive = nullptr;
 	mainTab->clearTabs();
-	mainTab->updateDiveInfo(true);
+	mainTab->updateDiveInfo();
 	graphics->setEmptyState();
 	diveList->reload();
 	diveList->setSortOrder(DiveTripModelBase::NR, Qt::DescendingOrder);
