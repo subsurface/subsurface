@@ -92,8 +92,6 @@ void EditBase<T>::undo()
 
 	if (setSelection(selectedDives, current))
 		emit diveListNotifier.selectionChanged(); // If the selection changed -> tell the frontend
-
-	mark_divelist_changed(true);
 }
 
 // We have to manually instantiate the constructors of the EditBase class,
@@ -509,8 +507,6 @@ void EditTagsBase::undo()
 
 	if (setSelection(selectedDives, current))
 		emit diveListNotifier.selectionChanged(); // If the selection changed -> tell the frontend
-
-	mark_divelist_changed(true);
 }
 
 // Undo and redo do the same as just the stored value is exchanged

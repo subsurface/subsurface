@@ -128,6 +128,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_Instance = this;
 	ui.setupUi(this);
 	read_hashes();
+	Command::init();
 	// Define the States of the Application Here, Currently the states are situations where the different
 	// widgets will change on the mainwindow.
 
@@ -589,7 +590,15 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 		return;
 
 	setCurrentFile(qPrintable(filename));
-	mark_divelist_changed(false);
+	setFileClean();
+}
+
+// Currently we have two markers for unsaved changes:
+// 1) unsaved_changes() returns true for non-undoable changes.
+// 2) Command::isClean() returns false for undoable changes.
+static bool unsavedChanges()
+{
+	return unsaved_changes() || !Command::isClean();
 }
 
 void MainWindow::on_actionCloudOnline_triggered()
@@ -611,7 +620,7 @@ void MainWindow::on_actionCloudOnline_triggered()
 	git_local_only = isOffline;
 	if (!isOffline) {
 		// User requests to go online. Try to sync cloud storage
-		if (unsaved_changes()) {
+		if (unsavedChanges()) {
 			// If there are unsaved changes, ask the user if they want to save them.
 			// If they don't, they have to sync manually.
 			if (QMessageBox::warning(this, tr("Save changes?"),
@@ -653,10 +662,16 @@ bool MainWindow::okToClose(QString message)
 		QMessageBox::warning(this, tr("Warning"), message);
 		return false;
 	}
-	if (unsaved_changes() && askSaveChanges() == false)
+	if (unsavedChanges() && askSaveChanges() == false)
 		return false;
 
 	return true;
+}
+
+void MainWindow::setFileClean()
+{
+	mark_divelist_changed(false);
+	Command::setClean();
 }
 
 void MainWindow::closeCurrentFile()
@@ -667,7 +682,7 @@ void MainWindow::closeCurrentFile()
 	clear_dive_file_data();
 	setCurrentFile(nullptr);
 	cleanUpEmpty();
-	mark_divelist_changed(false);
+	setFileClean();
 
 	clear_events();
 
@@ -763,7 +778,7 @@ void MainWindow::on_actionQuit_triggered()
 			return;
 	}
 
-	if (unsaved_changes() && (askSaveChanges() == false))
+	if (unsavedChanges() && (askSaveChanges() == false))
 		return;
 	writeSettings();
 	QApplication::quit();
@@ -1421,7 +1436,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		return;
 	}
 
-	if (unsaved_changes() && (askSaveChanges() == false)) {
+	if (unsavedChanges() && (askSaveChanges() == false)) {
 		event->ignore();
 		return;
 	}
@@ -1555,7 +1570,7 @@ int MainWindow::file_save_as(void)
 		return -1;
 
 	setCurrentFile(qPrintable(filename));
-	mark_divelist_changed(false);
+	setFileClean();
 	addRecentFile(filename, true);
 	return 0;
 }
@@ -1592,7 +1607,7 @@ int MainWindow::file_save(void)
 	}
 	if (is_cloud)
 		hideProgressBar();
-	mark_divelist_changed(false);
+	setFileClean();
 	addRecentFile(QString(existing_filename), true);
 	return 0;
 }
@@ -1631,7 +1646,7 @@ void MainWindow::setTitle()
 		return;
 	}
 
-	QString unsaved = (unsaved_changes() ? " *" : "");
+	QString unsaved = (unsavedChanges() ? " *" : "");
 	QString shown = QString(" (%1)").arg(filterWidget2.shownText());
 	setWindowTitle("Subsurface: " + displayedFilename(existing_filename) + unsaved + shown);
 }

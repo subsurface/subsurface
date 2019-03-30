@@ -10,7 +10,10 @@
 namespace Command {
 
 // 1) General commands
+void init();				// Setup signals to inform frontend of clean status.
 void clear();				// Reset the undo stack. Delete all commands.
+void setClean();			// Call after save - this marks a state where no changes need to be saved.
+bool isClean();				// Any changes need to be saved?
 QAction *undoAction(QObject *parent);	// Create an undo action.
 QAction *redoAction(QObject *parent);	// Create an redo action.
 
