@@ -883,9 +883,6 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 	for (int i = 0; i < dive_site_table.nr; i++) {
 		struct membuffer b = { 0 };
 		struct dive_site *ds = get_dive_site(i, &dive_site_table);
-		/* Only write used dive sites */
-		if (!is_dive_site_used(ds, false))
-			continue;
 		struct membuffer site_file_name = { 0 };
 		put_format(&site_file_name, "Site-%08x", ds->uuid);
 		show_utf8(&b, "name ", ds->name, "\n");
