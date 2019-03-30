@@ -108,7 +108,6 @@ void reverseGeoLookup(degrees_t latitude, degrees_t longitude, taxonomy_data *ta
 				taxonomy->category[ri].category = TC_ADMIN_L3;
 				taxonomy->nr++;
 			}
-			mark_divelist_changed(true);
 		} else {
 			report_error("geonames.org did not provide reverse lookup information");
 			qDebug() << "no reverse geo lookup; geonames returned\n" << fullReply;
@@ -157,7 +156,6 @@ void reverseGeoLookup(degrees_t latitude, degrees_t longitude, taxonomy_data *ta
 				if (idx == taxonomy->nr)
 					taxonomy->nr++;
 			}
-			mark_divelist_changed(true);
 		}
 	} else {
 		report_error("timeout accessing geonames.org");

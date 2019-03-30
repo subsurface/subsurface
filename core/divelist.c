@@ -20,6 +20,8 @@
 #include "git-access.h"
 #include "table.h"
 
+/* This flag is set to true by operations that are not implemented in the
+ * undo system. It is therefore only cleared on save and load. */
 static bool dive_list_changed = false;
 
 bool autogroup = false;

@@ -411,7 +411,6 @@ void AddDive::redoit()
 
 	divesAndSitesToRemove = addDives(divesToAdd);
 	sort_trip_table(&trip_table); // Though unlikely, adding a dive may reorder trips
-	mark_divelist_changed(true);
 
 	// Select the newly added dive
 	restoreSelection(divesAndSitesToRemove.dives, divesAndSitesToRemove.dives[0]);
@@ -500,8 +499,6 @@ void ImportDives::redoit()
 
 	// Remember dives and sites to remove
 	divesAndSitesToRemove = std::move(divesAndSitesToRemoveNew);
-
-	mark_divelist_changed(true);
 }
 
 void ImportDives::undoit()
@@ -517,8 +514,6 @@ void ImportDives::undoit()
 
 	// ...and restore the selection
 	restoreSelection(selection, currentDive);
-
-	mark_divelist_changed(true);
 }
 
 DeleteDive::DeleteDive(const QVector<struct dive*> &divesToDeleteIn)
@@ -536,7 +531,6 @@ void DeleteDive::undoit()
 {
 	divesToDelete = addDives(divesToAdd);
 	sort_trip_table(&trip_table); // Though unlikely, removing a dive may reorder trips
-	mark_divelist_changed(true);
 
 	// Select all re-added dives and make the first one current
 	dive *currentDive = !divesToDelete.dives.empty() ? divesToDelete.dives[0] : nullptr;
@@ -547,7 +541,6 @@ void DeleteDive::redoit()
 {
 	divesToAdd = removeDives(divesToDelete);
 	sort_trip_table(&trip_table); // Though unlikely, adding a dive may reorder trips
-	mark_divelist_changed(true);
 
 	// Deselect all dives and select dive that was close to the first deleted dive
 	dive *newCurrent = nullptr;
@@ -587,8 +580,6 @@ void ShiftTime::redoit()
 
 	// Negate the time-shift so that the next call does the reverse
 	timeChanged = -timeChanged;
-
-	mark_divelist_changed(true);
 }
 
 bool ShiftTime::workToBeDone()
@@ -611,7 +602,6 @@ RenumberDives::RenumberDives(const QVector<QPair<dive *, int>> &divesToRenumberI
 void RenumberDives::undoit()
 {
 	renumberDives(divesToRenumber);
-	mark_divelist_changed(true);
 }
 
 bool RenumberDives::workToBeDone()
@@ -634,8 +624,6 @@ void TripBase::redoit()
 {
 	moveDivesBetweenTrips(divesToMove);
 	sort_trip_table(&trip_table); // Though unlikely, moving dives may reorder trips
-
-	mark_divelist_changed(true);
 }
 
 void TripBase::undoit()
@@ -764,7 +752,6 @@ void SplitDivesBase::redoit()
 {
 	divesToUnsplit = addDives(splitDives);
 	unsplitDive = removeDives(diveToSplit);
-	mark_divelist_changed(true);
 
 	// Select split dives and make first dive current
 	restoreSelection(divesToUnsplit.dives, divesToUnsplit.dives[0]);
@@ -775,7 +762,6 @@ void SplitDivesBase::undoit()
 	// Note: reverse order with respect to redoit()
 	diveToSplit = addDives(unsplitDive);
 	splitDives = removeDives(divesToUnsplit);
-	mark_divelist_changed(true);
 
 	// Select unsplit dive and make it current
 	restoreSelection(diveToSplit.dives, diveToSplit.dives[0] );
