@@ -15,6 +15,7 @@
 #include "core/settings/qPrefDisplay.h"
 #include "desktop-widgets/mainwindow.h"
 #include "profile-widget/profilewidget2.h"
+#include "core/save-profiledata.h"
 #include "core/dive.h"  // Allows access to helper functions in TeX export.
 
 // Retrieves the current unit settings defined in the Subsurface preferences.
@@ -98,6 +99,8 @@ void DiveLogExportDialog::showExplanation()
 		ui->description->setText(tr("Write dive as LaTeX macros to file."));
 	} else if (ui->exportProfile->isChecked()) {
 		ui->description->setText(tr("Write the profile image as PNG file."));
+	} else if (ui->exportProfileData->isChecked()) {
+		ui->description->setText(tr("Write profile data to a CSV file."));
 	}
 }
 
@@ -175,6 +178,10 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 			filename = QFileDialog::getSaveFileName(this, tr("Save profile image"), lastDir);
 			if (!filename.isNull() && !filename.isEmpty())
 				exportProfile(qPrintable(filename), ui->exportSelected->isChecked());
+		} else if (ui->exportProfileData->isChecked()) {
+			filename = QFileDialog::getSaveFileName(this, tr("Save profile data"), lastDir);
+			if (!filename.isNull() && !filename.isEmpty())
+				save_profiledata(qPrintable(filename), ui->exportSelected->isChecked());
 		}
 		break;
 	case 1:

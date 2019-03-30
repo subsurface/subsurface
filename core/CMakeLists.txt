@@ -128,6 +128,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	save-git.c
 	save-html.c
 	save-html.h
+	save-profiledata.c
 	save-xml.c
 	sha1.c
 	sha1.h

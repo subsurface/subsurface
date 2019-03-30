@@ -1,4 +1,5 @@
 - Import: Initial support for importing Mares log software
+- Export option for profile data
 - Planner: Allow for a final segment at the surface to display further desaturation
 - Desktop: Add stats by depth and temperature ranges to yearly stats [#1996]
 - Desktop: make sure cloud storage email addresses are lower case only
