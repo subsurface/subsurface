@@ -2,7 +2,6 @@
 
 #include "command_edit_trip.h"
 #include "command_private.h"
-#include "core/divelist.h" // for mark_divelist_changed(). TODO: remove
 #include "core/qthelper.h"
 
 namespace Command {
@@ -27,7 +26,6 @@ void EditTripBase::undo()
 	value = old;
 
 	emit diveListNotifier.tripChanged(trip, fieldId());
-	mark_divelist_changed(true);
 }
 
 // Undo and redo do the same as just the stored value is exchanged
