@@ -185,10 +185,9 @@ struct MergeTrips : public TripBase {
 	MergeTrips(dive_trip *trip1, dive_trip *trip2);
 };
 
-class SplitDives : public DiveListBase {
-public:
-	// If time is < 0, split at first surface interval
-	SplitDives(dive *d, duration_t time);
+class SplitDivesBase : public DiveListBase {
+protected:
+	SplitDivesBase(dive *old, std::array<dive *, 2> newDives);
 private:
 	void undoit() override;
 	void redoit() override;
@@ -207,6 +206,18 @@ private:
 	// that we can reuse the multi-dive functions of the other commands.
 	DivesAndTripsToAdd	unsplitDive;
 	std::vector<dive *>	divesToUnsplit;
+};
+
+class SplitDives : public SplitDivesBase {
+public:
+	// If time is < 0, split at first surface interval
+	SplitDives(dive *d, duration_t time);
+};
+
+class SplitDiveComputer : public SplitDivesBase {
+public:
+	// If time is < 0, split at first surface interval
+	SplitDiveComputer(dive *d, int dc_num);
 };
 
 class MergeDives : public DiveListBase {

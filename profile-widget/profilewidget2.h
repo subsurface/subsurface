@@ -126,6 +126,7 @@ slots: // Necessary to call from QAction's signals.
 	void editName();
 	void makeFirstDC();
 	void deleteCurrentDC();
+	void splitCurrentDC();
 	void pointInserted(const QModelIndex &parent, int start, int end);
 	void pointsRemoved(const QModelIndex &, int start, int end);
 	void updateThumbnail(QString filename, QImage thumbnail, duration_t duration);

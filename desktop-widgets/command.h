@@ -32,6 +32,7 @@ void createTrip(const QVector<dive *> &divesToAddIn);
 void autogroupDives();
 void mergeTrips(dive_trip *trip1, dive_trip *trip2);
 void splitDives(dive *d, duration_t time);
+void splitDiveComputer(dive *d, int dc_num);
 void mergeDives(const QVector <dive *> &dives);
 
 } // namespace Command

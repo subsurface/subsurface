@@ -1436,8 +1436,10 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 			// create menu to show when right clicking on dive computer name
 			if (dc_number > 0)
 				m.addAction(tr("Make first dive computer"), this, SLOT(makeFirstDC()));
-			if (count_divecomputers() > 1)
+			if (count_divecomputers() > 1) {
 				m.addAction(tr("Delete this dive computer"), this, SLOT(deleteCurrentDC()));
+				m.addAction(tr("Split this dive computer into own dive"), this, SLOT(splitCurrentDC()));
+			}
 			m.exec(event->globalPos());
 			// don't show the regular profile context menu
 			return;
@@ -1579,6 +1581,11 @@ void ProfileWidget2::deleteCurrentDC()
 	plotDive(0, true, false);
 
 	emit refreshDisplay(true);
+}
+
+void ProfileWidget2::splitCurrentDC()
+{
+	Command::splitDiveComputer(current_dive, dc_number);
 }
 
 void ProfileWidget2::makeFirstDC()

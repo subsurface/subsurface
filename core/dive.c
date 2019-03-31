@@ -596,7 +596,7 @@ void clear_dive(struct dive *d)
 /* make a true copy that is independent of the source dive;
  * all data structures are duplicated, so the copy can be modified without
  * any impact on the source */
-void copy_dive(const struct dive *s, struct dive *d)
+static void copy_dive_nodc(const struct dive *s, struct dive *d)
 {
 	clear_dive(d);
 	/* simply copy things over, but then make actual copies of the
@@ -614,10 +614,22 @@ void copy_dive(const struct dive *s, struct dive *d)
 		d->weightsystem[i].description = copy_string(s->weightsystem[i].description);
 	STRUCTURED_LIST_COPY(struct picture, s->picture_list, d->picture_list, copy_pl);
 	STRUCTURED_LIST_COPY(struct tag_entry, s->tag_list, d->tag_list, copy_tl);
+}
+
+void copy_dive(const struct dive *s, struct dive *d)
+{
+	copy_dive_nodc(s, d);
 
 	// Copy the first dc explicitly, then the list of subsequent dc's
 	copy_dc(&s->dc, &d->dc);
 	STRUCTURED_LIST_COPY(struct divecomputer, s->dc.next, d->dc.next, copy_dc);
+}
+
+static void copy_dive_onedc(const struct dive *s, const struct divecomputer *sdc, struct dive *d)
+{
+	copy_dive_nodc(s, d);
+	copy_dc(sdc, &d->dc);
+	d->dc.next = NULL;
 }
 
 /* make a clone of the source dive and clean out the source dive;
@@ -3497,6 +3509,7 @@ static void force_fixup_dive(struct dive *d)
  * Split a dive that has a surface interval from samples 'a' to 'b'
  * into two dives, but don't add them to the log yet.
  * Returns the nr of the old dive or <0 on failure.
+ * Moreover, on failure both output dives are set to NULL.
  * On success, the newly allocated dives are returned in out1 and out2.
  */
 static int split_dive_at(const struct dive *dive, int a, int b, struct dive **out1, struct dive **out2)
@@ -3506,6 +3519,8 @@ static int split_dive_at(const struct dive *dive, int a, int b, struct dive **ou
 	struct dive *d1, *d2;
 	struct divecomputer *dc1, *dc2;
 	struct event *event, **evp;
+
+	*out1 = *out2 = NULL;
 
 	/* if we can't find the dive in the dive list, don't bother */
 	if ((nr = get_divenr(dive)) < 0)
@@ -4076,30 +4091,74 @@ unsigned int count_divecomputers(void)
 	return ret;
 }
 
-/* always acts on the current dive */
-void delete_current_divecomputer(void)
+static void delete_divecomputer(struct dive *d, int num)
 {
-	struct divecomputer *dc = current_dc;
+	int i;
 
-	if (dc == &current_dive->dc) {
+	/* Refuse to delete the last dive computer */
+	if (!d->dc.next)
+		return;
+
+	if (num == 0) {
 		/* remove the first one, so copy the second one in place of the first and free the second one
 		 * be careful about freeing the no longer needed structures - since we copy things around we can't use free_dc()*/
-		struct divecomputer *fdc = dc->next;
-		free_dc_contents(dc);
-		memcpy(dc, fdc, sizeof(struct divecomputer));
+		struct divecomputer *fdc = d->dc.next;
+		free_dc_contents(&d->dc);
+		memcpy(&d->dc, fdc, sizeof(struct divecomputer));
 		free(fdc);
 	} else {
-		struct divecomputer *pdc = &current_dive->dc;
-		while (pdc->next != dc && pdc->next)
+		struct divecomputer *pdc = &d->dc;
+		for (i = 0; i < num - 1 && pdc; i++)
 			pdc = pdc->next;
-		if (pdc->next == dc) {
+		if (pdc->next) {
+			struct divecomputer *dc = pdc->next;
 			pdc->next = dc->next;
 			free_dc(dc);
 		}
 	}
-	if (dc_number == count_divecomputers())
+
+	/* If this is the currently displayed dive, we might have to adjust
+	 * the currently displayed dive computer. */
+	if (d == current_dive && dc_number >= count_divecomputers())
 		dc_number--;
-	invalidate_dive_cache(current_dive);
+	invalidate_dive_cache(d);
+}
+
+/* always acts on the current dive */
+void delete_current_divecomputer(void)
+{
+	delete_divecomputer(current_dive, dc_number);
+}
+
+/*
+ * This splits the dive src by dive computer. The first output dive has all
+ * dive computers except num, the second only dive computer num.
+ * The dives will not be associated with a trip.
+ * On error, both output parameters are set to NULL.
+ */
+void split_divecomputer(const struct dive *src, int num, struct dive **out1, struct dive **out2)
+{
+	struct divecomputer *srcdc = get_dive_dc(current_dive, dc_number);
+
+	if (src && srcdc) {
+		// Copy the dive, but only using the selected dive computer
+		*out2 = alloc_dive();
+		copy_dive_onedc(src, srcdc, *out2);
+
+		// This will also make fixup_dive() to allocate a new dive id...
+		(*out2)->id = 0;
+		fixup_dive(*out2);
+
+		// Copy the dive with all dive computers
+		*out1 = create_new_copy(src);
+
+		// .. and then delete the split-out dive computer
+		delete_divecomputer(*out1, num);
+
+		(*out1)->divetrip = (*out2)->divetrip = NULL;
+	} else {
+		*out1 = *out2 = NULL;
+	}
 }
 
 /* helper function to make it easier to work with our structures
