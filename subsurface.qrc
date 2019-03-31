@@ -41,6 +41,7 @@
         <file>xslt/divelogs-export.xslt</file>
         <file>xslt/divelogs.xslt</file>
         <file>xslt/DivingLog.xslt</file>
+        <file>xslt/Mares.xslt</file>
         <file>xslt/jdivelog2subsurface.xslt</file>
         <file>xslt/MacDive.xslt</file>
         <file>xslt/SuuntoDM4.xslt</file>
