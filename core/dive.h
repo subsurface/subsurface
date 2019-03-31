@@ -440,6 +440,7 @@ extern timestamp_t dive_endtime(const struct dive *dive);
 extern void make_first_dc(void);
 extern unsigned int count_divecomputers(void);
 extern void delete_current_divecomputer(void);
+void split_divecomputer(const struct dive *src, int num, struct dive **out1, struct dive **out2);
 
 /*
  * Iterate over each dive, with the first parameter being the index

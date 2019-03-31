@@ -8,6 +8,8 @@
 #include "core/subsurface-qt/DiveListNotifier.h"
 #include "qt-models/filtermodels.h"
 
+#include <array>
+
 namespace Command {
 
 // Generally, signals are sent in batches per trip. To avoid writing the same loop
@@ -822,42 +824,51 @@ MergeTrips::MergeTrips(dive_trip *trip1, dive_trip *trip2)
 		divesToMove.divesToMove.push_back( { trip2->dives.dives[i], newTrip } );
 }
 
-SplitDives::SplitDives(dive *d, duration_t time)
+// std::array<dive *, 2> is the same as struct *dive[2], with the fundamental
+// difference that it can be returned from functions. Thus, this constructor
+// can be chained with the result of a function.
+SplitDivesBase::SplitDivesBase(dive *d, std::array<dive *, 2> newDives)
 {
-	setText(tr("split dive"));
-
-	// Split the dive
-	dive *new1, *new2;
-	int idx = time.seconds < 0 ?
-		split_dive(d, &new1, &new2) :
-		split_dive_at_time(d, time, &new1, &new2);
-
-	// If this didn't work, simply return. Empty arrays indicate that nothing is to be done.
-	if (idx < 0)
+	// If either of the new dives is null, simply return. Empty arrays indicate that nothing is to be done.
+	if (!newDives[0] || !newDives[1])
 		return;
 
 	// Currently, the core code selects the dive -> this is not what we want, as
 	// we manually manage the selection post-command.
 	// TODO: Reset selection in core.
-	new1->selected = false;
-	new2->selected = false;
+	newDives[0]->selected = false;
+	newDives[1]->selected = false;
+
+	// Getting the insertion indexes correct is actually not easy, as we don't know
+	// which of the dives will land first when splitting out dive computers!
+	// TODO: We really should think about not storing the insertion index in the undo
+	// command, but calculating it on the fly on execution.
+	int idx_old = get_divenr(d);
+	int idx1 = dive_table_get_insertion_index(&dive_table, newDives[0]);
+	int idx2 = dive_table_get_insertion_index(&dive_table, newDives[1]);
+	if (idx1 > idx_old)
+		--idx1;
+	if (idx2 > idx_old)
+		--idx2;
+	if (idx1 == idx2 && dive_less_than(newDives[0], newDives[1]))
+		++idx2;
 
 	diveToSplit.push_back(d);
 	splitDives.dives.resize(2);
-	splitDives.dives[0].dive.reset(new1);
+	splitDives.dives[0].dive.reset(newDives[0]);
 	splitDives.dives[0].trip = d->divetrip;
-	splitDives.dives[0].idx = idx;
-	splitDives.dives[1].dive.reset(new2);
+	splitDives.dives[0].idx = idx1;
+	splitDives.dives[1].dive.reset(newDives[1]);
 	splitDives.dives[1].trip = d->divetrip;
-	splitDives.dives[1].idx = idx + 1;
+	splitDives.dives[1].idx = idx2;
 }
 
-bool SplitDives::workToBeDone()
+bool SplitDivesBase::workToBeDone()
 {
 	return !diveToSplit.empty();
 }
 
-void SplitDives::redoit()
+void SplitDivesBase::redoit()
 {
 	divesToUnsplit = addDives(splitDives);
 	unsplitDive = removeDives(diveToSplit);
@@ -867,7 +878,7 @@ void SplitDives::redoit()
 	restoreSelection(divesToUnsplit, divesToUnsplit[0]);
 }
 
-void SplitDives::undoit()
+void SplitDivesBase::undoit()
 {
 	// Note: reverse order with respect to redoit()
 	diveToSplit = addDives(unsplitDive);
@@ -876,6 +887,41 @@ void SplitDives::undoit()
 
 	// Select unsplit dive and make it current
 	restoreSelection(diveToSplit, diveToSplit[0] );
+}
+
+static std::array<dive *, 2> doSplitDives(const dive *d, duration_t time)
+{
+	// Split the dive
+	dive *new1, *new2;
+	if (time.seconds < 0)
+		split_dive(d, &new1, &new2);
+	else
+		split_dive_at_time(d, time, &new1, &new2);
+
+	return { new1, new2 };
+}
+
+SplitDives::SplitDives(dive *d, duration_t time) : SplitDivesBase(d, doSplitDives(d, time))
+{
+	setText(tr("split dive"));
+}
+
+static std::array<dive *, 2> splitDiveComputer(const dive *d, int dc_num)
+{
+	// Refuse to do anything if the dive has only one dive computer.
+	// Yes, this should have been checked by the UI, but let's just make sure.
+	if (!d->dc.next)
+		return { nullptr, nullptr};
+
+	dive *new1, *new2;
+	split_divecomputer(d, dc_num, &new1, &new2);
+
+	return { new1, new2 };
+}
+
+SplitDiveComputer::SplitDiveComputer(dive *d, int dc_num) : SplitDivesBase(d, splitDiveComputer(d, dc_num))
+{
+	setText(tr("split dive computer"));
 }
 
 MergeDives::MergeDives(const QVector <dive *> &dives)
