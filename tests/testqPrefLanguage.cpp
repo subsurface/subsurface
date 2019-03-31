@@ -201,14 +201,14 @@ void TestQPrefLanguage::test_oldPreferences()
 
 void TestQPrefLanguage::test_signals()
 {
-	QSignalSpy spy1(qPrefLanguage::instance(), SIGNAL(date_formatChanged(QString)));
-	QSignalSpy spy2(qPrefLanguage::instance(), SIGNAL(date_format_overrideChanged(bool)));
-	QSignalSpy spy3(qPrefLanguage::instance(), SIGNAL(date_format_shortChanged(QString)));
-	QSignalSpy spy4(qPrefLanguage::instance(), SIGNAL(languageChanged(QString)));
-	QSignalSpy spy5(qPrefLanguage::instance(), SIGNAL(lang_localeChanged(QString)));
-	QSignalSpy spy6(qPrefLanguage::instance(), SIGNAL(time_formatChanged(QString)));
-	QSignalSpy spy7(qPrefLanguage::instance(), SIGNAL(time_format_overrideChanged(bool)));
-	QSignalSpy spy8(qPrefLanguage::instance(), SIGNAL(use_system_languageChanged(bool)));
+	QSignalSpy spy1(qPrefLanguage::instance(), &qPrefLanguage::date_formatChanged);
+	QSignalSpy spy2(qPrefLanguage::instance(), &qPrefLanguage::date_format_overrideChanged);
+	QSignalSpy spy3(qPrefLanguage::instance(), &qPrefLanguage::date_format_shortChanged);
+	QSignalSpy spy4(qPrefLanguage::instance(), &qPrefLanguage::languageChanged);
+	QSignalSpy spy5(qPrefLanguage::instance(), &qPrefLanguage::lang_localeChanged);
+	QSignalSpy spy6(qPrefLanguage::instance(), &qPrefLanguage::time_formatChanged);
+	QSignalSpy spy7(qPrefLanguage::instance(), &qPrefLanguage::time_format_overrideChanged);
+	QSignalSpy spy8(qPrefLanguage::instance(), &qPrefLanguage::use_system_languageChanged);
 
 	qPrefLanguage::set_date_format("signal date2");
 	prefs.date_format_override = true;

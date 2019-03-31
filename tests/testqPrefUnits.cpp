@@ -236,15 +236,15 @@ void TestQPrefUnits::test_oldPreferences()
 
 void TestQPrefUnits::test_signals()
 {
-	QSignalSpy spy1(qPrefUnits::instance(), SIGNAL(coordinates_traditionalChanged(bool)));
-	QSignalSpy spy2(qPrefUnits::instance(), SIGNAL(duration_unitsChanged(int)));
-	QSignalSpy spy3(qPrefUnits::instance(), SIGNAL(lengthChanged(int)));
-	QSignalSpy spy4(qPrefUnits::instance(), SIGNAL(pressureChanged(int)));
-	QSignalSpy spy5(qPrefUnits::instance(), SIGNAL(show_units_tableChanged(bool)));
-	QSignalSpy spy6(qPrefUnits::instance(), SIGNAL(temperatureChanged(int)));
-	QSignalSpy spy7(qPrefUnits::instance(), SIGNAL(vertical_speed_timeChanged(int)));
-	QSignalSpy spy8(qPrefUnits::instance(), SIGNAL(volumeChanged(int)));
-	QSignalSpy spy9(qPrefUnits::instance(), SIGNAL(weightChanged(int)));
+	QSignalSpy spy1(qPrefUnits::instance(), &qPrefUnits::coordinates_traditionalChanged);
+	QSignalSpy spy2(qPrefUnits::instance(), &qPrefUnits::duration_unitsChanged);
+	QSignalSpy spy3(qPrefUnits::instance(), &qPrefUnits::lengthChanged);
+	QSignalSpy spy4(qPrefUnits::instance(), &qPrefUnits::pressureChanged);
+	QSignalSpy spy5(qPrefUnits::instance(), &qPrefUnits::show_units_tableChanged);
+	QSignalSpy spy6(qPrefUnits::instance(), &qPrefUnits::temperatureChanged);
+	QSignalSpy spy7(qPrefUnits::instance(), &qPrefUnits::vertical_speed_timeChanged);
+	QSignalSpy spy8(qPrefUnits::instance(), &qPrefUnits::volumeChanged);
+	QSignalSpy spy9(qPrefUnits::instance(), &qPrefUnits::weightChanged);
 
 	prefs.coordinates_traditional = true;
 	qPrefUnits::set_coordinates_traditional(false);

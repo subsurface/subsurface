@@ -117,8 +117,8 @@ void TestQPrefLocationService::test_oldPreferences()
 
 void TestQPrefLocationService::test_signals()
 {
-	QSignalSpy spy1(qPrefLocationService::instance(), SIGNAL(distance_thresholdChanged(int)));
-	QSignalSpy spy2(qPrefLocationService::instance(), SIGNAL(time_thresholdChanged(int)));
+	QSignalSpy spy1(qPrefLocationService::instance(), &qPrefLocationService::distance_thresholdChanged);
+	QSignalSpy spy2(qPrefLocationService::instance(), &qPrefLocationService::time_thresholdChanged);
 
 	qPrefLocationService::set_distance_threshold(-2000);
 	qPrefLocationService::set_time_threshold(-90);

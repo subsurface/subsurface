@@ -187,13 +187,13 @@ void TestQPrefPartialPressureGas::test_oldPreferences()
 
 void TestQPrefPartialPressureGas::test_signals()
 {
-	QSignalSpy spy1(qPrefPartialPressureGas::instance(), SIGNAL(pheChanged(bool)));
-	QSignalSpy spy2(qPrefPartialPressureGas::instance(), SIGNAL(phe_thresholdChanged(double)));
-	QSignalSpy spy3(qPrefPartialPressureGas::instance(), SIGNAL(pn2Changed(bool)));
-	QSignalSpy spy4(qPrefPartialPressureGas::instance(), SIGNAL(pn2_thresholdChanged(double)));
-	QSignalSpy spy5(qPrefPartialPressureGas::instance(), SIGNAL(po2Changed(bool)));
-	QSignalSpy spy6(qPrefPartialPressureGas::instance(), SIGNAL(po2_threshold_maxChanged(double)));
-	QSignalSpy spy7(qPrefPartialPressureGas::instance(), SIGNAL(po2_threshold_minChanged(double)));
+	QSignalSpy spy1(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::pheChanged);
+	QSignalSpy spy2(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::phe_thresholdChanged);
+	QSignalSpy spy3(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::pn2Changed);
+	QSignalSpy spy4(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::pn2_thresholdChanged);
+	QSignalSpy spy5(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::po2Changed);
+	QSignalSpy spy6(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::po2_threshold_maxChanged);
+	QSignalSpy spy7(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::po2_threshold_minChanged);
 
 	prefs.pp_graphs.phe = true;
 	qPrefPartialPressureGas::set_phe(false);

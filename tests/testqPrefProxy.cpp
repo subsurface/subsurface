@@ -174,12 +174,12 @@ void TestQPrefProxy::test_oldPreferences()
 
 void TestQPrefProxy::test_signals()
 {
-	QSignalSpy spy1(qPrefProxy::instance(), SIGNAL(proxy_authChanged(bool)));
-	QSignalSpy spy2(qPrefProxy::instance(), SIGNAL(proxy_hostChanged(QString)));
-	QSignalSpy spy3(qPrefProxy::instance(), SIGNAL(proxy_passChanged(QString)));
-	QSignalSpy spy4(qPrefProxy::instance(), SIGNAL(proxy_portChanged(int)));
-	QSignalSpy spy5(qPrefProxy::instance(), SIGNAL(proxy_typeChanged(int)));
-	QSignalSpy spy6(qPrefProxy::instance(), SIGNAL(proxy_userChanged(QString)));
+	QSignalSpy spy1(qPrefProxy::instance(), &qPrefProxy::proxy_authChanged);
+	QSignalSpy spy2(qPrefProxy::instance(), &qPrefProxy::proxy_hostChanged);
+	QSignalSpy spy3(qPrefProxy::instance(), &qPrefProxy::proxy_passChanged);
+	QSignalSpy spy4(qPrefProxy::instance(), &qPrefProxy::proxy_portChanged);
+	QSignalSpy spy5(qPrefProxy::instance(), &qPrefProxy::proxy_typeChanged);
+	QSignalSpy spy6(qPrefProxy::instance(), &qPrefProxy::proxy_userChanged);
 
 	prefs.proxy_auth = true;
 	qPrefProxy::set_proxy_auth(false);

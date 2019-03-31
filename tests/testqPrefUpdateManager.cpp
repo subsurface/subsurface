@@ -166,11 +166,11 @@ void TestQPrefUpdateManager::test_oldPreferences()
 
 void TestQPrefUpdateManager::test_signals()
 {
-	QSignalSpy spy1(qPrefUpdateManager::instance(), SIGNAL(dont_check_for_updatesChanged(bool)));
-	QSignalSpy spy2(qPrefUpdateManager::instance(), SIGNAL(dont_check_existsChanged(bool)));
-	QSignalSpy spy3(qPrefUpdateManager::instance(), SIGNAL(last_version_usedChanged(QString)));
-	QSignalSpy spy4(qPrefUpdateManager::instance(), SIGNAL(next_checkChanged(QDate)));
-	QSignalSpy spy5(qPrefUpdateManager::instance(), SIGNAL(uuidStringChanged(QString)));
+	QSignalSpy spy1(qPrefUpdateManager::instance(), &qPrefUpdateManager::dont_check_for_updatesChanged);
+	QSignalSpy spy2(qPrefUpdateManager::instance(), &qPrefUpdateManager::dont_check_existsChanged);
+	QSignalSpy spy3(qPrefUpdateManager::instance(), &qPrefUpdateManager::last_version_usedChanged);
+	QSignalSpy spy4(qPrefUpdateManager::instance(), &qPrefUpdateManager::next_checkChanged);
+	QSignalSpy spy5(qPrefUpdateManager::instance(), &qPrefUpdateManager::uuidStringChanged);
 
 	prefs.update_manager.dont_check_for_updates = true;
 	qPrefUpdateManager::set_dont_check_for_updates(false);

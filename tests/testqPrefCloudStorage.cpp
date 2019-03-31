@@ -217,15 +217,15 @@ void TestQPrefCloudStorage::test_oldPreferences()
 
 void TestQPrefCloudStorage::test_signals()
 {
-	QSignalSpy spy1(qPrefCloudStorage::instance(), SIGNAL(cloud_base_urlChanged(QString)));
-	QSignalSpy spy2(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_emailChanged(QString)));
-	QSignalSpy spy3(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_email_encodedChanged(QString)));
-	QSignalSpy spy4(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_passwordChanged(QString)));
-	QSignalSpy spy5(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_pinChanged(QString)));
-	QSignalSpy spy6(qPrefCloudStorage::instance(), SIGNAL(cloud_timeoutChanged(int)));
-	QSignalSpy spy7(qPrefCloudStorage::instance(), SIGNAL(cloud_verification_statusChanged(int)));
-	QSignalSpy spy9(qPrefCloudStorage::instance(), SIGNAL(save_password_localChanged(bool)));
-	QSignalSpy spy10(qPrefCloudStorage::instance(), SIGNAL(cloud_auto_syncChanged(bool)));
+	QSignalSpy spy1(qPrefCloudStorage::instance(), &qPrefCloudStorage::cloud_base_urlChanged);
+	QSignalSpy spy2(qPrefCloudStorage::instance(), &qPrefCloudStorage::cloud_storage_emailChanged);
+	QSignalSpy spy3(qPrefCloudStorage::instance(), &qPrefCloudStorage::cloud_storage_email_encodedChanged);
+	QSignalSpy spy4(qPrefCloudStorage::instance(), &qPrefCloudStorage::cloud_storage_passwordChanged);
+	QSignalSpy spy5(qPrefCloudStorage::instance(), &qPrefCloudStorage::cloud_storage_pinChanged);
+	QSignalSpy spy6(qPrefCloudStorage::instance(), &qPrefCloudStorage::cloud_timeoutChanged);
+	QSignalSpy spy7(qPrefCloudStorage::instance(), &qPrefCloudStorage::cloud_verification_statusChanged);
+	QSignalSpy spy9(qPrefCloudStorage::instance(), &qPrefCloudStorage::save_password_localChanged);
+	QSignalSpy spy10(qPrefCloudStorage::instance(), &qPrefCloudStorage::cloud_auto_syncChanged);
 
 	qPrefCloudStorage::set_cloud_base_url("signal url");
 	qPrefCloudStorage::set_cloud_storage_email("signal myEmail");

@@ -168,22 +168,22 @@ void TestQPrefDisplay::test_multiple()
 
 void TestQPrefDisplay::test_signals()
 {
-	QSignalSpy spy1(qPrefDisplay::instance(), SIGNAL(animation_speedChanged(int)));
-	QSignalSpy spy2(qPrefDisplay::instance(), SIGNAL(display_invalid_divesChanged(bool)));
-	QSignalSpy spy3(qPrefDisplay::instance(), SIGNAL(divelist_fontChanged(QString)));
-	QSignalSpy spy4(qPrefDisplay::instance(), SIGNAL(font_sizeChanged(double)));
-	QSignalSpy spy5(qPrefDisplay::instance(), SIGNAL(show_developerChanged(bool)));
-	QSignalSpy spy6(qPrefDisplay::instance(), SIGNAL(themeChanged(QString)));
-	QSignalSpy spy7(qPrefDisplay::instance(), SIGNAL(lastDirChanged(QString)));
-	QSignalSpy spy8(qPrefDisplay::instance(), SIGNAL(tooltip_positionChanged(QPointF)));
-	QSignalSpy spy9(qPrefDisplay::instance(), SIGNAL(userSurveyChanged(QString)));
-	QSignalSpy spy10(qPrefDisplay::instance(), SIGNAL(mainSplitterChanged(QByteArray)));
-	QSignalSpy spy11(qPrefDisplay::instance(), SIGNAL(topSplitterChanged(QByteArray)));
-	QSignalSpy spy12(qPrefDisplay::instance(), SIGNAL(bottomSplitterChanged(QByteArray)));
-	QSignalSpy spy13(qPrefDisplay::instance(), SIGNAL(maximizedChanged(bool)));
-	QSignalSpy spy14(qPrefDisplay::instance(), SIGNAL(geometryChanged(QByteArray)));
-	QSignalSpy spy15(qPrefDisplay::instance(), SIGNAL(windowStateChanged(QByteArray)));
-	QSignalSpy spy16(qPrefDisplay::instance(), SIGNAL(lastStateChanged(int)));
+	QSignalSpy spy1(qPrefDisplay::instance(), &qPrefDisplay::animation_speedChanged);
+	QSignalSpy spy2(qPrefDisplay::instance(), &qPrefDisplay::display_invalid_divesChanged);
+	QSignalSpy spy3(qPrefDisplay::instance(), &qPrefDisplay::divelist_fontChanged);
+	QSignalSpy spy4(qPrefDisplay::instance(), &qPrefDisplay::font_sizeChanged);
+	QSignalSpy spy5(qPrefDisplay::instance(), &qPrefDisplay::show_developerChanged);
+	QSignalSpy spy6(qPrefDisplay::instance(), &qPrefDisplay::themeChanged);
+	QSignalSpy spy7(qPrefDisplay::instance(), &qPrefDisplay::lastDirChanged);
+	QSignalSpy spy8(qPrefDisplay::instance(), &qPrefDisplay::tooltip_positionChanged);
+	QSignalSpy spy9(qPrefDisplay::instance(), &qPrefDisplay::userSurveyChanged);
+	QSignalSpy spy10(qPrefDisplay::instance(), &qPrefDisplay::mainSplitterChanged);
+	QSignalSpy spy11(qPrefDisplay::instance(), &qPrefDisplay::topSplitterChanged);
+	QSignalSpy spy12(qPrefDisplay::instance(), &qPrefDisplay::bottomSplitterChanged);
+	QSignalSpy spy13(qPrefDisplay::instance(), &qPrefDisplay::maximizedChanged);
+	QSignalSpy spy14(qPrefDisplay::instance(), &qPrefDisplay::geometryChanged);
+	QSignalSpy spy15(qPrefDisplay::instance(), &qPrefDisplay::windowStateChanged);
+	QSignalSpy spy16(qPrefDisplay::instance(), &qPrefDisplay::lastStateChanged);
 
 	qPrefDisplay::set_animation_speed(1);
 	qPrefDisplay::set_display_invalid_dives(false);
