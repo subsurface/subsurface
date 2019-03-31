@@ -239,19 +239,19 @@ void TestQPrefGeneral::test_oldPreferences()
 
 void TestQPrefGeneral::test_signals()
 {
-	QSignalSpy spy1(qPrefGeneral::instance(), SIGNAL(auto_recalculate_thumbnailsChanged(bool)));
-	QSignalSpy spy2(qPrefGeneral::instance(), SIGNAL(default_cylinderChanged(QString)));
-	QSignalSpy spy3(qPrefGeneral::instance(), SIGNAL(default_filenameChanged(QString)));
-	QSignalSpy spy4(qPrefGeneral::instance(), SIGNAL(default_file_behaviorChanged(def_file_behavior)));
-	QSignalSpy spy5(qPrefGeneral::instance(), SIGNAL(defaultsetpointChanged(int)));
-	QSignalSpy spy6(qPrefGeneral::instance(), SIGNAL(extract_video_thumbnailsChanged(bool)));
-	QSignalSpy spy7(qPrefGeneral::instance(), SIGNAL(extract_video_thumbnails_positionChanged(int)));
-	QSignalSpy spy8(qPrefGeneral::instance(), SIGNAL(ffmpeg_executableChanged(QString)));
-	QSignalSpy spy9(qPrefGeneral::instance(), SIGNAL(o2consumptionChanged(int)));
-	QSignalSpy spy10(qPrefGeneral::instance(), SIGNAL(pscr_ratioChanged(int)));
-	QSignalSpy spy11(qPrefGeneral::instance(), SIGNAL(use_default_fileChanged(bool)));
-	QSignalSpy spy12(qPrefGeneral::instance(), SIGNAL(diveshareExport_uidChanged(QString)));
-	QSignalSpy spy13(qPrefGeneral::instance(), SIGNAL(diveshareExport_privateChanged(bool)));
+	QSignalSpy spy1(qPrefGeneral::instance(), &qPrefGeneral::auto_recalculate_thumbnailsChanged);
+	QSignalSpy spy2(qPrefGeneral::instance(), &qPrefGeneral::default_cylinderChanged);
+	QSignalSpy spy3(qPrefGeneral::instance(), &qPrefGeneral::default_filenameChanged);
+	QSignalSpy spy4(qPrefGeneral::instance(), &qPrefGeneral::default_file_behaviorChanged);
+	QSignalSpy spy5(qPrefGeneral::instance(), &qPrefGeneral::defaultsetpointChanged);
+	QSignalSpy spy6(qPrefGeneral::instance(), &qPrefGeneral::extract_video_thumbnailsChanged);
+	QSignalSpy spy7(qPrefGeneral::instance(), &qPrefGeneral::extract_video_thumbnails_positionChanged);
+	QSignalSpy spy8(qPrefGeneral::instance(), &qPrefGeneral::ffmpeg_executableChanged);
+	QSignalSpy spy9(qPrefGeneral::instance(), &qPrefGeneral::o2consumptionChanged);
+	QSignalSpy spy10(qPrefGeneral::instance(), &qPrefGeneral::pscr_ratioChanged);
+	QSignalSpy spy11(qPrefGeneral::instance(), &qPrefGeneral::use_default_fileChanged);
+	QSignalSpy spy12(qPrefGeneral::instance(), &qPrefGeneral::diveshareExport_uidChanged);
+	QSignalSpy spy13(qPrefGeneral::instance(), &qPrefGeneral::diveshareExport_privateChanged);
 
 	prefs.auto_recalculate_thumbnails = true;
 	qPrefGeneral::set_auto_recalculate_thumbnails(false);

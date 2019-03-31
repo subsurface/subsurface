@@ -132,9 +132,9 @@ void TestQPrefGeocoding::test_oldPreferences()
 
 void TestQPrefGeocoding::test_signals()
 {
-	QSignalSpy spy1(qPrefGeocoding::instance(), SIGNAL(first_taxonomy_categoryChanged(taxonomy_category)));
-	QSignalSpy spy2(qPrefGeocoding::instance(), SIGNAL(second_taxonomy_categoryChanged(taxonomy_category)));
-	QSignalSpy spy3(qPrefGeocoding::instance(), SIGNAL(third_taxonomy_categoryChanged(taxonomy_category)));
+	QSignalSpy spy1(qPrefGeocoding::instance(), &qPrefGeocoding::first_taxonomy_categoryChanged);
+	QSignalSpy spy2(qPrefGeocoding::instance(), &qPrefGeocoding::second_taxonomy_categoryChanged);
+	QSignalSpy spy3(qPrefGeocoding::instance(), &qPrefGeocoding::third_taxonomy_categoryChanged);
 
 	prefs.geocoding.category[0] = TC_NONE;
 	qPrefGeocoding::set_first_taxonomy_category(TC_COUNTRY);

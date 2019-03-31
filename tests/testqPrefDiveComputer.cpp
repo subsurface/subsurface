@@ -138,10 +138,10 @@ void TestQPrefDiveComputer::test_oldPreferences()
 
 void TestQPrefDiveComputer::test_signals()
 {
-	QSignalSpy spy1(qPrefDiveComputer::instance(), SIGNAL(deviceChanged(QString)));
-	QSignalSpy spy2(qPrefDiveComputer::instance(), SIGNAL(device_nameChanged(QString)));
-	QSignalSpy spy4(qPrefDiveComputer::instance(), SIGNAL(productChanged(QString)));
-	QSignalSpy spy5(qPrefDiveComputer::instance(), SIGNAL(vendorChanged(QString)));
+	QSignalSpy spy1(qPrefDiveComputer::instance(), &qPrefDiveComputer::deviceChanged);
+	QSignalSpy spy2(qPrefDiveComputer::instance(), &qPrefDiveComputer::device_nameChanged);
+	QSignalSpy spy4(qPrefDiveComputer::instance(), &qPrefDiveComputer::productChanged);
+	QSignalSpy spy5(qPrefDiveComputer::instance(), &qPrefDiveComputer::vendorChanged);
 
 	qPrefDiveComputer::set_device("t_signal device");
 	qPrefDiveComputer::set_device_name("t_signal device name");

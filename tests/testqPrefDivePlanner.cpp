@@ -439,31 +439,31 @@ void TestQPrefDivePlanner::test_oldPreferences()
 
 void TestQPrefDivePlanner::test_signals()
 {
-	QSignalSpy spy1(qPrefDivePlanner::instance(), SIGNAL(ascratelast6mChanged(int)));
-	QSignalSpy spy2(qPrefDivePlanner::instance(), SIGNAL(ascratestopsChanged(int)));
-	QSignalSpy spy3(qPrefDivePlanner::instance(), SIGNAL(ascrate50Changed(int)));
-	QSignalSpy spy4(qPrefDivePlanner::instance(), SIGNAL(ascrate75Changed(int)));
-	QSignalSpy spy5(qPrefDivePlanner::instance(), SIGNAL(bestmixendChanged(int)));
-	QSignalSpy spy6(qPrefDivePlanner::instance(), SIGNAL(bottompo2Changed(int)));
-	QSignalSpy spy7(qPrefDivePlanner::instance(), SIGNAL(bottomsacChanged(int)));
-	QSignalSpy spy8(qPrefDivePlanner::instance(), SIGNAL(decopo2Changed(int)));
-	QSignalSpy spy9(qPrefDivePlanner::instance(), SIGNAL(decosacChanged(int)));
-	QSignalSpy spy10(qPrefDivePlanner::instance(), SIGNAL(descrateChanged(int)));
-	QSignalSpy spy11(qPrefDivePlanner::instance(), SIGNAL(display_durationChanged(bool)));
-	QSignalSpy spy12(qPrefDivePlanner::instance(), SIGNAL(display_runtimeChanged(bool)));
-	QSignalSpy spy13(qPrefDivePlanner::instance(), SIGNAL(display_transitionsChanged(bool)));
-	QSignalSpy spy14(qPrefDivePlanner::instance(), SIGNAL(display_variationsChanged(bool)));
-	QSignalSpy spy15(qPrefDivePlanner::instance(), SIGNAL(doo2breaksChanged(bool)));
-	QSignalSpy spy16(qPrefDivePlanner::instance(), SIGNAL(drop_stone_modeChanged(bool)));
-	QSignalSpy spy17(qPrefDivePlanner::instance(), SIGNAL(last_stopChanged(bool)));
-	QSignalSpy spy18(qPrefDivePlanner::instance(), SIGNAL(min_switch_durationChanged(int)));
-	QSignalSpy spy19(qPrefDivePlanner::instance(), SIGNAL(planner_deco_modeChanged(deco_mode)));
-	QSignalSpy spy20(qPrefDivePlanner::instance(), SIGNAL(problemsolvingtimeChanged(int)));
-	QSignalSpy spy21(qPrefDivePlanner::instance(), SIGNAL(reserve_gasChanged(int)));
-	QSignalSpy spy22(qPrefDivePlanner::instance(), SIGNAL(sacfactorChanged(int)));
-	QSignalSpy spy23(qPrefDivePlanner::instance(), SIGNAL(safetystopChanged(bool)));
-	QSignalSpy spy24(qPrefDivePlanner::instance(), SIGNAL(switch_at_req_stopChanged(bool)));
-	QSignalSpy spy25(qPrefDivePlanner::instance(), SIGNAL(verbatim_planChanged(bool)));
+	QSignalSpy spy1(qPrefDivePlanner::instance(), &qPrefDivePlanner::ascratelast6mChanged);
+	QSignalSpy spy2(qPrefDivePlanner::instance(), &qPrefDivePlanner::ascratestopsChanged);
+	QSignalSpy spy3(qPrefDivePlanner::instance(), &qPrefDivePlanner::ascrate50Changed);
+	QSignalSpy spy4(qPrefDivePlanner::instance(), &qPrefDivePlanner::ascrate75Changed);
+	QSignalSpy spy5(qPrefDivePlanner::instance(), &qPrefDivePlanner::bestmixendChanged);
+	QSignalSpy spy6(qPrefDivePlanner::instance(), &qPrefDivePlanner::bottompo2Changed);
+	QSignalSpy spy7(qPrefDivePlanner::instance(), &qPrefDivePlanner::bottomsacChanged);
+	QSignalSpy spy8(qPrefDivePlanner::instance(), &qPrefDivePlanner::decopo2Changed);
+	QSignalSpy spy9(qPrefDivePlanner::instance(), &qPrefDivePlanner::decosacChanged);
+	QSignalSpy spy10(qPrefDivePlanner::instance(), &qPrefDivePlanner::descrateChanged);
+	QSignalSpy spy11(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_durationChanged);
+	QSignalSpy spy12(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_runtimeChanged);
+	QSignalSpy spy13(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_transitionsChanged);
+	QSignalSpy spy14(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_variationsChanged);
+	QSignalSpy spy15(qPrefDivePlanner::instance(), &qPrefDivePlanner::doo2breaksChanged);
+	QSignalSpy spy16(qPrefDivePlanner::instance(), &qPrefDivePlanner::drop_stone_modeChanged);
+	QSignalSpy spy17(qPrefDivePlanner::instance(), &qPrefDivePlanner::last_stopChanged);
+	QSignalSpy spy18(qPrefDivePlanner::instance(), &qPrefDivePlanner::min_switch_durationChanged);
+	QSignalSpy spy19(qPrefDivePlanner::instance(), &qPrefDivePlanner::planner_deco_modeChanged);
+	QSignalSpy spy20(qPrefDivePlanner::instance(), &qPrefDivePlanner::problemsolvingtimeChanged);
+	QSignalSpy spy21(qPrefDivePlanner::instance(), &qPrefDivePlanner::reserve_gasChanged);
+	QSignalSpy spy22(qPrefDivePlanner::instance(), &qPrefDivePlanner::sacfactorChanged);
+	QSignalSpy spy23(qPrefDivePlanner::instance(), &qPrefDivePlanner::safetystopChanged);
+	QSignalSpy spy24(qPrefDivePlanner::instance(), &qPrefDivePlanner::switch_at_req_stopChanged);
+	QSignalSpy spy25(qPrefDivePlanner::instance(), &qPrefDivePlanner::verbatim_planChanged);
 
 	qPrefDivePlanner::set_ascratelast6m(-20);
 	qPrefDivePlanner::set_ascratestops(-21);
