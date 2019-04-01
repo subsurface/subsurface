@@ -154,20 +154,20 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		ui.scrollArea_2->viewport()->setPalette(p);
 
 		// GroupBoxes in Gnome3 looks like I'v drawn them...
-		static const QString gnomeCss(
+		static const QString gnomeCss = QStringLiteral(
 			"QGroupBox {"
-			"    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
-			"    stop: 0 #E0E0E0, stop: 1 #FFFFFF);"
-			"    border: 2px solid gray;"
-			"    border-radius: 5px;"
-			"    margin-top: 1ex;"
+				"background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
+				"stop: 0 #E0E0E0, stop: 1 #FFFFFF);"
+				"border: 2px solid gray;"
+				"border-radius: 5px;"
+				"margin-top: 1ex;"
 			"}"
 			"QGroupBox::title {"
-			"    subcontrol-origin: margin;"
-			"    subcontrol-position: top center;"
-			"    padding: 0 3px;"
-			"    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
-			"    stop: 0 #E0E0E0, stop: 1 #FFFFFF);"
+				"subcontrol-origin: margin;"
+				"subcontrol-position: top center;"
+				"padding: 0 3px;"
+				"background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
+				"stop: 0 #E0E0E0, stop: 1 #FFFFFF);"
 			"}");
 		Q_FOREACH (QGroupBox *box, findChildren<QGroupBox *>()) {
 			box->setStyleSheet(gnomeCss);

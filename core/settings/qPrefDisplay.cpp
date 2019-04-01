@@ -15,7 +15,7 @@ QString qPrefDisplay::st_lastDir;
 static const QString st_lastDir_default = "";
 
 QString qPrefDisplay::st_theme;
-static const QString st_theme_default = "Blue";
+static const QString st_theme_default = QStringLiteral("Blue");
 
 QString qPrefDisplay::st_userSurvey;
 static const QString st_userSurvey_default = "";
