@@ -24,8 +24,8 @@ MapWidget *MapWidget::m_instance = NULL;
 
 MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
 {
-	m_rootItem = Q_NULLPTR;
-	m_mapHelper = Q_NULLPTR;
+	m_rootItem = nullptr;
+	m_mapHelper = nullptr;
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
 	connect(this, &QQuickWidget::statusChanged, this, &MapWidget::doneLoading);
 	setSource(urlMapWidget);
