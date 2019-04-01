@@ -76,11 +76,11 @@ bool CheckCloudConnection::checkServer()
 	return false;
 }
 
-void CheckCloudConnection::sslErrors(QList<QSslError> errorList)
+void CheckCloudConnection::sslErrors(const QList<QSslError> &errorList)
 {
 	if (verbose) {
 		qDebug() << "Received error response trying to set up https connection with cloud storage backend:";
-		Q_FOREACH (QSslError err, errorList) {
+		for (QSslError err: errorList) {
 			qDebug() << err.errorString();
 		}
 	}

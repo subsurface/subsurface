@@ -81,11 +81,11 @@ void CloudStorageAuthenticate::uploadError(QNetworkReply::NetworkError)
 	qDebug() << "Received error response from cloud storage backend:" << reply->errorString();
 }
 
-void CloudStorageAuthenticate::sslErrors(QList<QSslError> errorList)
+void CloudStorageAuthenticate::sslErrors(const QList<QSslError> &errorList)
 {
 	if (verbose) {
 		qDebug() << "Received error response trying to set up https connection with cloud storage backend:";
-		Q_FOREACH (QSslError err, errorList) {
+		for (QSslError err: errorList) {
 			qDebug() << err.errorString();
 		}
 	}

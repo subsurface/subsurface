@@ -198,8 +198,8 @@ void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 	this_d.name = device.name();
 	btPairedDevices.append(this_d);
 
-	QList<QBluetoothUuid> serviceUuids = device.serviceUuids();
-	foreach (QBluetoothUuid id, serviceUuids) {
+	const auto serviceUuids = device.serviceUuids();
+	for (QBluetoothUuid id: serviceUuids) {
 		addBtUuid(id);
 		qDebug() << id.toByteArray();
 	}

@@ -599,7 +599,7 @@ void QMLManager::handleSslErrors(const QList<QSslError> &errors)
 {
 	auto *reply = qobject_cast<QNetworkReply *>(sender());
 	setStartPageText(RED_FONT + tr("Cannot open cloud storage: Error creating https connection") + END_FONT);
-	Q_FOREACH (QSslError e, errors) {
+	for (QSslError e: errors) {
 		appendTextToLog(e.errorString());
 	}
 	reply->abort();
@@ -1761,8 +1761,8 @@ void QMLManager::setStatusbarColor(QColor)
 void QMLManager::retrieveBluetoothName()
 {
 	QString name = DC_devName();
-	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
-	foreach (BTDiscovery::btVendorProduct btDC, btDCs) {
+	const QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
+	for (BTDiscovery::btVendorProduct btDC: btDCs) {
 		qDebug() << "compare" <<name << btDC.btpdi.address;
 		if (name.contains(btDC.btpdi.address))
 			DC_setDevBluetoothName(btDC.btpdi.name);

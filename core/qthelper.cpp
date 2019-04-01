@@ -1144,7 +1144,7 @@ QStringList imageExtensionFilters()
 QStringList videoExtensionFilters()
 {
 	QStringList filters;
-	foreach (const QString &format, videoExtensionsList)
+	for (const QString &format: videoExtensionsList)
 		filters.append("*" + format);
 	return filters;
 }
@@ -1506,9 +1506,9 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 
 	parseLine = f.readLine().trimmed();
 
-	QStringList currColumns = parseLine.split(';');
+	const QStringList currColumns = parseLine.split(';');
 	unsigned short index = 0;
-	Q_FOREACH (QString columnText, currColumns) {
+	for (const QString &columnText: currColumns) {
 		if (columnText == "Time") {
 			params[pnr++] = strdup("timeField");
 			params[pnr++] = intdup(index++);

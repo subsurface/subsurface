@@ -144,12 +144,12 @@ DiveListModel::DiveListModel(QObject *parent) : QAbstractListModel(parent)
 	m_instance = this;
 }
 
-void DiveListModel::addDive(QList<dive *>listOfDives)
+void DiveListModel::addDive(const QList<dive *> &listOfDives)
 {
 	if (listOfDives.isEmpty())
 		return;
 	beginInsertRows(QModelIndex(), rowCount(), rowCount() + listOfDives.count() - 1);
-	foreach (dive *d, listOfDives) {
+	for (dive *d: listOfDives) {
 		m_dives.append(new DiveObjectHelper(d));
 	}
 	endInsertRows();

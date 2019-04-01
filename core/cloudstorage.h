@@ -16,7 +16,7 @@ signals:
 private
 slots:
 	void uploadError(QNetworkReply::NetworkError error);
-	void sslErrors(QList<QSslError> errorList);
+	void sslErrors(const QList<QSslError> &errorList);
 	void uploadFinished();
 private:
 	QNetworkReply *reply;

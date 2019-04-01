@@ -1101,9 +1101,9 @@ bool ProfileWidget2::eventFilter(QObject *object, QEvent *event)
 #endif
 
 template <typename T>
-static void hideAll(T &container)
+static void hideAll(const T &container)
 {
-	Q_FOREACH (auto *item, container)
+	for (auto *item: container)
 		item->setVisible(false);
 }
 

@@ -77,8 +77,8 @@ void Printer::flowRender()
 	// get all references to dontbreak divs
 	int start = 0, end = 0;
 	int fullPageResolution = webView->page()->mainFrame()->contentsSize().height();
-	QWebElementCollection dontbreak = webView->page()->mainFrame()->findAllElements(".dontbreak");
-	foreach (QWebElement dontbreakElement, dontbreak) {
+	const QWebElementCollection dontbreak = webView->page()->mainFrame()->findAllElements(".dontbreak");
+	for (QWebElement dontbreakElement: dontbreak) {
 		if ((dontbreakElement.geometry().y() + dontbreakElement.geometry().height()) - start < pageSize.height()) {
 			// One more element can be placed
 			end = dontbreakElement.geometry().y() + dontbreakElement.geometry().height();
