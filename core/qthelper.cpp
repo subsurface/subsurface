@@ -39,7 +39,10 @@
 const char *existing_filename;
 static QLocale loc;
 
-static const QString DEGREE_SIGNS("dD" UTF8_DEGREE);
+static inline QString degreeSigns()
+{
+    return QStringLiteral("dD\u00b0");
+}
 
 QString weight_string(int weight_in_grams)
 {
@@ -160,7 +163,7 @@ static bool parseCoord(const QString& txt, int& pos, const QString& positives,
 		} else if (others.indexOf(txt[pos]) >= 0) {
 			//we are at the next coordinate.
 			break;
-		} else if (DEGREE_SIGNS.indexOf(txt[pos]) >= 0 ||
+		} else if (degreeSigns().indexOf(txt[pos]) >= 0 ||
 			   (txt[pos].isSpace() && !degreesDefined && numberDefined)) {
 			if (!numberDefined)
 				return false;
@@ -232,7 +235,7 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 
 	//remove the useless spaces (but keep the ones separating numbers)
 	static const QRegExp SPACE_CLEANER("\\s*([" + POS_LAT + NEG_LAT + POS_LON +
-		NEG_LON + DEGREE_SIGNS + "'\"\\s])\\s*");
+		NEG_LON + degreeSigns() + "'\"\\s])\\s*");
 	const QString normalized = gps_text.trimmed().toUpper().replace(SPACE_CLEANER, "\\1");
 
 	if (normalized.isEmpty()) {
