@@ -6,7 +6,7 @@
 static const QString group = QStringLiteral("UpdateManager");
 
 QString qPrefUpdateManager::st_uuidString;
-static const QString st_uuidString_default = "";
+static const QString st_uuidString_default;
 
 qPrefUpdateManager::qPrefUpdateManager(QObject *parent) : QObject(parent)
 {
