@@ -24,14 +24,14 @@ MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
 
 QGeoCoordinate MapWidgetHelper::getCoordinates(struct dive_site *ds)
 {
-	if (!ds || !dive_site_has_gps_location(ds))
+	if (!dive_site_has_gps_location(ds))
 		return QGeoCoordinate(0.0, 0.0);
 	return QGeoCoordinate(ds->location.lat.udeg * 0.000001, ds->location.lon.udeg * 0.000001);
 }
 
 void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 {
-	if (!ds || !dive_site_has_gps_location(ds)) {
+	if (!dive_site_has_gps_location(ds)) {
 		// dive site with no GPS
 		m_mapLocationModel->setSelected(ds, false);
 		QMetaObject::invokeMethod(m_map, "deselectMapLocation");
