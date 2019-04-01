@@ -53,6 +53,7 @@ public:
 	void updateCoordinatesText(qreal lat, qreal lon);
 	void refreshDisplayedDiveSite();
 	void nextInputField(QKeyEvent *event);
+	void stealFocus();
 
 signals:
 	void diveSiteChanged();

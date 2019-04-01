@@ -528,11 +528,13 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_actionSave_triggered()
 {
+	mainTab->stealFocus(); // Make sure that any currently edited field is updated before saving.
 	file_save();
 }
 
 void MainWindow::on_actionSaveAs_triggered()
 {
+	mainTab->stealFocus(); // Make sure that any currently edited field is updated before saving.
 	file_save_as();
 }
 
@@ -582,6 +584,7 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 		qDebug() << "Saving cloud storage to:" << filename;
 	if (mainTab->isEditing())
 		mainTab->acceptChanges();
+	mainTab->stealFocus(); // Make sure that any currently edited field is updated before saving.
 
 	showProgressBar();
 	int error = save_dives(qPrintable(filename));
