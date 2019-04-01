@@ -12,31 +12,31 @@ QPointF qPrefDisplay::st_tooltip_position;
 static const QPointF st_tooltip_position_default = QPointF(0,0);
 
 QString qPrefDisplay::st_lastDir;
-static const QString st_lastDir_default = "";
+static const QString st_lastDir_default;
 
 QString qPrefDisplay::st_theme;
 static const QString st_theme_default = QStringLiteral("Blue");
 
 QString qPrefDisplay::st_userSurvey;
-static const QString st_userSurvey_default = "";
+static const QString st_userSurvey_default;
 
 QByteArray qPrefDisplay::st_mainSplitter;
-static const QByteArray st_mainSplitter_default = "";
+static const QByteArray st_mainSplitter_default;
 
 QByteArray qPrefDisplay::st_topSplitter;
-static const QByteArray st_topSplitter_default = "";
+static const QByteArray st_topSplitter_default;
 
 QByteArray qPrefDisplay::st_bottomSplitter;
-static const QByteArray st_bottomSplitter_default = "";
+static const QByteArray st_bottomSplitter_default;
 
 bool qPrefDisplay::st_maximized;
 static bool st_maximized_default = false;
 
 QByteArray qPrefDisplay::st_geometry;
-static const QByteArray st_geometry_default = 0;
+static const QByteArray st_geometry_default;
 
 QByteArray qPrefDisplay::st_windowState;
-static const QByteArray st_windowState_default = 0;
+static const QByteArray st_windowState_default;
 
 int qPrefDisplay::st_lastState;
 static int st_lastState_default = false;

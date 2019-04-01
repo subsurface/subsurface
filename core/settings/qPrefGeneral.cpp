@@ -6,7 +6,7 @@
 static const QString group = QStringLiteral("GeneralSettings");
 
 QString qPrefGeneral::st_diveshareExport_uid;
-static const QString st_diveshareExport_uid_default = "";
+static const QString st_diveshareExport_uid_default;
 
 bool qPrefGeneral::st_diveshareExport_private;
 static const bool st_diveshareExport_private_default = false;
