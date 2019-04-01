@@ -366,6 +366,10 @@ void MainTab::divesChanged(dive_trip *trip, const QVector<dive *> &dives, DiveFi
 		break;
 	case DiveField::DIVESITE:
 		updateDiveSite(current_dive);
+		// Since we only show dive sites with a dive, a new dive site may have appeared or an old one disappeared.
+		// Therefore reload the map widget.
+		// TODO: Call this only if a site *actually* went from usage count 0 to 1 or 1 to 0.
+		MapWidget::instance()->repopulateLabels();
 		emit diveSiteChanged();
 		break;
 	case DiveField::TAGS:
