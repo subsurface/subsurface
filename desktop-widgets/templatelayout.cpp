@@ -259,7 +259,7 @@ void TemplateLayout::writeTemplate(QString template_name, QString grantlee_templ
 
 YearInfo::YearInfo()
 {
-	year = Q_NULLPTR;
+	year = nullptr;
 }
 
 YearInfo::~YearInfo()
