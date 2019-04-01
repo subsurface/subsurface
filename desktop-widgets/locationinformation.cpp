@@ -75,11 +75,11 @@ void LocationInformationWidget::mergeSelectedDiveSites()
 				 QMessageBox::Ok, QMessageBox::Cancel) != QMessageBox::Ok)
 		return;
 
-	QModelIndexList selection = ui.diveSiteListView->selectionModel()->selectedIndexes();
+	const QModelIndexList selection = ui.diveSiteListView->selectionModel()->selectedIndexes();
 	// std::vector guarantees contiguous storage and can therefore be passed to C-code
 	std::vector<struct dive_site *> selected_dive_sites;
 	selected_dive_sites.reserve(selection.count());
-	Q_FOREACH (const QModelIndex &idx, selection) {
+	for (const QModelIndex &idx: selection) {
 		dive_site *ds = idx.data(LocationInformationModel::DIVESITE_ROLE).value<dive_site *>();
 		if (ds)
 			selected_dive_sites.push_back(ds);

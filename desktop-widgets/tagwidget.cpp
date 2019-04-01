@@ -70,7 +70,8 @@ void TagWidget::highlight()
 {
 	removeAllBlocks();
 	int lastPos = 0;
-	Q_FOREACH (const QString& s, text().split(QChar(','), QString::SkipEmptyParts)) {
+	const auto l = text().split(QChar(','), QString::SkipEmptyParts);
+	for (const QString &s: l) {
 		QString trimmed = s.trimmed();
 		if (trimmed.isEmpty())
 			continue;

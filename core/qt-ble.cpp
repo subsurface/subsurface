@@ -341,7 +341,7 @@ dc_status_t BLEObject::setHwCredit(unsigned int c)
 	return DC_STATUS_SUCCESS;
 }
 
-dc_status_t BLEObject::setupHwTerminalIo(QList<QLowEnergyCharacteristic> allC)
+dc_status_t BLEObject::setupHwTerminalIo(const QList<QLowEnergyCharacteristic> &allC)
 {	/* This initalizes the Terminal I/O client as described in
 	 * http://www.telit.com/fileadmin/user_upload/products/Downloads/sr-rf/BlueMod/TIO_Implementation_Guide_r04.pdf
 	 * Referenced section numbers below are from that document.
@@ -479,16 +479,16 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, dc_user_
 			return r;
 		}
 	} else {
-		foreach (const QLowEnergyCharacteristic &c, list) {
+		for (const QLowEnergyCharacteristic &c: list) {
 			if (!is_read_characteristic(c))
 				continue;
 
 			qDebug() << "Using read characteristic" << c.uuid();
 
-			QList<QLowEnergyDescriptor> l = c.descriptors();
+			const QList<QLowEnergyDescriptor> l = c.descriptors();
 			QLowEnergyDescriptor d = l.first();
 
-			foreach (const QLowEnergyDescriptor &tmp, l) {
+			for (const QLowEnergyDescriptor &tmp: l) {
 				if (tmp.type() == QBluetoothUuid::ClientCharacteristicConfiguration) {
 					d = tmp;
 					break;

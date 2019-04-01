@@ -19,20 +19,20 @@ int getTotalWork(print_options *printOptions)
 
 void find_all_templates()
 {
-	const QString ext(".html");
+	const QLatin1String ext(".html");
 	grantlee_templates.clear();
 	grantlee_statistics_templates.clear();
 	QDir dir(getPrintingTemplatePathUser());
-	QStringList list = dir.entryList(QDir::Files | QDir::NoDotAndDotDot);
-	foreach (const QString& filename, list) {
+	const QStringList list = dir.entryList(QDir::Files | QDir::NoDotAndDotDot);
+	for (const QString &filename: list) {
 		if (filename.at(filename.size() - 1) != '~' && filename.endsWith(ext))
 			grantlee_templates.append(filename);
 	}
 
 	// find statistics templates
 	dir.setPath(getPrintingTemplatePathUser() + QDir::separator() + "statistics");
-	list = dir.entryList(QDir::Files | QDir::NoDotAndDotDot);
-	foreach (const QString& filename, list) {
+	const QStringList stat = dir.entryList(QDir::Files | QDir::NoDotAndDotDot);
+	for (const QString &filename: stat) {
 		if (filename.at(filename.size() - 1) != '~' && filename.endsWith(ext))
 			grantlee_statistics_templates.append(filename);
 	}
@@ -66,12 +66,14 @@ void copy_bundled_templates(QString src, QString dst, QStringList *templateBacku
 	QDir dir(src);
 	if (!dir.exists())
 		return;
-	foreach (QString d, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+	const auto dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	for (const QString &d: dirs) {
 		QString dst_path = dst + QDir::separator() + d;
 		dir.mkpath(dst_path);
 		copy_bundled_templates(src + QDir::separator() + d, dst_path, templateBackupList);
 	}
-	foreach (QString f, dir.entryList(QDir::Files)) {
+	const auto files = dir.entryList(QDir::Files);
+	for (const QString &f: files) {
 		QFile fileSrc(src + QDir::separator() + f);
 		QFile fileDest(dst + QDir::separator() + f);
 		if (fileDest.exists()) {

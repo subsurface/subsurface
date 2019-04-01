@@ -76,8 +76,8 @@ void run_ui()
 	// same directory the executable was started from <bundle>/Contents/MacOS/
 	// To work around this we need to manually copy the components at install time
 	// to Contents/Frameworks/qml and make sure that we add the correct import path
-	QStringList importPathList = engine.importPathList();
-	Q_FOREACH (QString importPath, importPathList) {
+	const QStringList importPathList = engine.importPathList();
+	for (QString importPath: importPathList) {
 		if (importPath.contains("MacOS"))
 			engine.addImportPath(importPath.replace("MacOS", "Frameworks"));
 	}

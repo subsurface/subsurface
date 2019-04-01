@@ -272,8 +272,9 @@ void ToolTipItem::refresh(const QPointF &pos)
 	}
 	entryToolTip.first->setPixmap(tissues);
 
-	Q_FOREACH (QGraphicsItem *item, scene()->items(pos, Qt::IntersectsItemBoundingRect
-		,Qt::DescendingOrder, scene()->views().first()->transform())) {
+	const auto l = scene()->items(pos, Qt::IntersectsItemBoundingRect, Qt::DescendingOrder,
+			scene()->views().first()->transform());
+	for (QGraphicsItem *item: l) {
 		if (!item->toolTip().isEmpty())
 			addToolTip(item->toolTip());
 	}

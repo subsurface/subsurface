@@ -21,9 +21,9 @@ TabDiveStatistics::TabDiveStatistics(QWidget *parent) : TabBase(parent), ui(new 
 	ui->timeLimits->overrideMinToolTipText(tr("Shortest dive"));
 	ui->timeLimits->overrideAvgToolTipText(tr("Average length of all selected dives"));
 
-	Q_FOREACH (QObject *obj, children()) {
-		if (QLabel *label = qobject_cast<QLabel *>(obj))
-			label->setAlignment(Qt::AlignHCenter);
+	const auto l = findChildren<QLabel *>(QString(), Qt::FindDirectChildrenOnly);
+	for (QLabel *label: l) {
+		label->setAlignment(Qt::AlignHCenter);
 	}
 }
 

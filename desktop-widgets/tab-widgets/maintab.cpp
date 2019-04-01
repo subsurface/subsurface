@@ -1271,14 +1271,13 @@ void MainTab::saveTaggedStrings(const QVector<dive *> &selectedDives)
 
 int MainTab::diffTaggedStrings(QString currentString, QString displayedString, QStringList &addedList, QStringList &removedList)
 {
-	QStringList displayedList, currentList;
-	currentList = currentString.split(',', QString::SkipEmptyParts);
-	displayedList = displayedString.split(',', QString::SkipEmptyParts);
-	Q_FOREACH ( const QString tag, currentList) {
+	const QStringList currentList = currentString.split(',', QString::SkipEmptyParts);
+	const QStringList displayedList = displayedString.split(',', QString::SkipEmptyParts);
+	for (const QString &tag: currentList) {
 		if (!displayedList.contains(tag, Qt::CaseInsensitive))
 			removedList << tag.trimmed();
 	}
-	Q_FOREACH (const QString tag, displayedList) {
+	for (const QString &tag: displayedList) {
 		if (!currentList.contains(tag, Qt::CaseInsensitive))
 			addedList << tag.trimmed();
 	}

@@ -156,6 +156,16 @@ other editors that implement this coding style, please add them here.
 	```
 	QLowEnergyService *service = qobject_cast<QLowEnergyService*>(sender());
 	```
+  - If the variable is a container that is only assigned to a local variable to
+	be able to use it in a range-based for loop
+	```
+	const auto l = device.serviceUuids();
+	for (QBluetoothUuid id: serviceUuids) {
+	```
+	The variable has also to be const to avoid that Qt containers will do a
+	deep copy when the range bases for loop will call the begin() method
+	internally.
+
 * text strings
   The default language of subsurface is US English so please use US English
   spelling and terminology.
@@ -173,7 +183,7 @@ other editors that implement this coding style, please add them here.
   This works by default in classes (indirectly) derived from QObject. Each
   string to be translated is associated with a context, which corresponds
   to the class name. Classes that are not derived from QObject can generate
-  the tr() functions by using the `Q_DECLARE_FUNCTIONS` macro:
+  the tr() functions by using the `Q_DECLARE_TR_FUNCTIONS` macro:
   ```
 	#include <QCoreApplication>
 
