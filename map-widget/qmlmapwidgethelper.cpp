@@ -288,7 +288,9 @@ void MapWidgetHelper::enterEditMode(struct dive_site *ds)
 	QGeoCoordinate coord;
 	// if divesite doesn't exist in the model, add a new MapLocation.
 	if (!exists) {
-		coord = m_map->property("center").value<QGeoCoordinate>();
+		// If the dive site doesn't have a GPS location, use the centre of the map
+		coord = has_location(&ds->location) ? getCoordinates(ds)
+						    : m_map->property("center").value<QGeoCoordinate>();
 		m_mapLocationModel->add(new MapLocation(ds, coord, QString(ds->name)));
 	} else {
 		coord = exists->coordinate();
