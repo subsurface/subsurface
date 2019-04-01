@@ -742,7 +742,7 @@ void MainTab::acceptChanges()
 	bool do_replot = false;
 
 	if (ui.location->hasFocus())
-		setFocus();
+		stealFocus();
 
 	EditMode lastMode = editMode;
 	editMode = IGNORE;
@@ -1092,6 +1092,13 @@ void MainTab::editWeightWidget(const QModelIndex &index)
 		ui.weights->edit(index);
 }
 
+// Remove focus from any active field to update the corresponding value in the dive.
+// Do this by setting the focus to ourself
+void MainTab::stealFocus()
+{
+	setFocus();
+}
+
 void MainTab::escDetected()
 {
 	// In edit mode, pressing escape cancels the current changes.
@@ -1099,7 +1106,7 @@ void MainTab::escDetected()
 	if (editMode != NONE)
 		rejectChanges();
 	else
-		setFocus();
+		stealFocus();
 }
 
 void MainTab::clearTabs()
