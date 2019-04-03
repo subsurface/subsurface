@@ -97,10 +97,9 @@ void TabDiveStatistics::updateData()
 		ui->timeLimits->setMinimum("");
 	}
 
-	QVector<QPair<QString, int> > gasUsed;
+	QVector<QPair<QString, int> > gasUsed = selectedDivesGasUsed();
 	QString gasUsedString;
 	volume_t vol;
-	selectedDivesGasUsed(gasUsed);
 	for (int j = 0; j < MAX_CYLINDERS; j++) {
 		if (gasUsed.isEmpty())
 			break;
