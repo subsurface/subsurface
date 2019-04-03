@@ -14,7 +14,6 @@
 #include "qPrefTechnicalDetails.h"
 #include "qPrefUnit.h"
 #include "qPrefUpdateManager.h"
-#include "ssrf-version.h"
 
 #include <QtQml>
 #include <QQmlContext>
@@ -27,16 +26,6 @@ qPref *qPref::instance()
 {
 	static qPref *self = new qPref;
 	return self;
-}
-
-const QString qPref::canonical_version()
-{
-	return QString(CANONICAL_VERSION_STRING);
-}
-
-const QString qPref::mobile_version()
-{
-	return QString(MOBILE_VERSION_STRING);
 }
 
 void qPref::loadSync(bool doSync)
