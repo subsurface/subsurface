@@ -129,18 +129,13 @@ void UserManual::linkClickedSlot(const QUrl& url)
 
 #ifdef Q_OS_MAC
 void UserManual::showEvent(QShowEvent *e) {
-	filterAction = NULL;
-	closeAction = NULL;
 	MainWindow *m = MainWindow::instance();
-	Q_FOREACH (QObject *o, m->children()) {
-		if (o->objectName() == "actionFilterTags") {
-			filterAction = qobject_cast<QAction*>(o);
-			filterAction->setShortcut(QKeySequence());
-		} else if (o->objectName() == "actionClose") {
-			closeAction  = qobject_cast<QAction*>(o);
-			closeAction->setShortcut(QKeySequence());
-		}
-	}
+	filterAction = m->findChild<QAction *>(QLatin1String("actionFilterTags"), Qt::FindDirectChildrenOnly);
+	if (filterAction != nullptr)
+		filterAction->setShortcut(QKeySequence());
+	closeAction = m->findChild<QAction *>(QLatin1String("actionClose"), Qt::FindDirectChildrenOnly);
+	if (closeAction != nullptr)
+		closeAction->setShortcut(QKeySequence());
 }
 void UserManual::hideEvent(QHideEvent *e) {
 	if (closeAction != NULL)
