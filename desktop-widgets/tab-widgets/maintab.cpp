@@ -652,8 +652,8 @@ void MainTab::updateDiveInfo()
 			ui.locationTags->show();
 		ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 		/* unset the special value text for date and time, just in case someone dove at midnight */
-		ui.dateEdit->setSpecialValueText(QString(""));
-		ui.timeEdit->setSpecialValueText(QString(""));
+		ui.dateEdit->setSpecialValueText(QString());
+		ui.timeEdit->setSpecialValueText(QString());
 	} else {
 		/* clear the fields */
 		clearTabs();

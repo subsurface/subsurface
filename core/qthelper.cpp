@@ -647,7 +647,7 @@ QString getSubsurfaceDataPath(QString folderToFind)
 	folder = QDir(execdir.append("/../Resources/").append(folderToFind));
 	if (folder.exists())
 		return folder.absolutePath();
-	return QString("");
+	return QString();
 }
 
 static const char *printing_templates = "printing_templates";
