@@ -530,6 +530,7 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 endif()
 
 if (MAKE_TESTS)
+	enable_testing()
 	add_subdirectory(tests)
 endif()
 

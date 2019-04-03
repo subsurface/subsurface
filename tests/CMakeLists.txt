@@ -73,7 +73,6 @@ function(TEST NAME FILE)
 	endif()
 endfunction()
 
-enable_testing()
 add_definitions(-g)
 add_definitions(-DSUBSURFACE_TEST_DATA="${SUBSURFACE_TEST_DATA}")
 
