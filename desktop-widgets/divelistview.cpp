@@ -402,7 +402,7 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 	// select the dives, highest index first - this way the oldest of the dives
 	// becomes the selected_dive that we scroll to
 	QList<int> sortedSelection = newDiveSelection;
-	qSort(sortedSelection.begin(), sortedSelection.end());
+	std::sort(sortedSelection.begin(), sortedSelection.end());
 	newSelection = firstInList = sortedSelection.first();
 
 	while (!sortedSelection.isEmpty())

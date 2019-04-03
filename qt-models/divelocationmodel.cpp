@@ -77,7 +77,7 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 void LocationInformationModel::update()
 {
 	beginResetModel();
-	qSort(dive_site_table.dive_sites, dive_site_table.dive_sites + dive_site_table.nr, dive_site_less_than);
+	std::sort(dive_site_table.dive_sites, dive_site_table.dive_sites + dive_site_table.nr, dive_site_less_than);
 	locationNames.clear();
 	for (int i = 0; i < dive_site_table.nr; i++)
 		locationNames << QString(dive_site_table.dive_sites[i]->name);

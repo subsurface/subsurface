@@ -184,8 +184,10 @@ void fill_computer_list()
 		descriptorLookup[QString(vendor) + QString(product)] = descriptor;
 	}
 	dc_iterator_free(iterator);
-	Q_FOREACH (QString vendor, vendorList)
-		qSort(productList[vendor]);
+	Q_FOREACH (QString vendor, vendorList) {
+		auto &l = productList[vendor];
+		std::sort(l.begin(), l.end());
+	}
 
 #if !defined(Q_OS_ANDROID) && !defined(Q_OS_IOS)
 	/* currently suppress the Uemis Zurich on Q_OS_ANDROID and Q_OS_IOS,
@@ -212,7 +214,7 @@ void fill_computer_list()
 	descriptorLookup["UemisZurich"] = (dc_descriptor_t *)mydescriptor;
 #endif
 
-	qSort(vendorList);
+	std::sort(vendorList.begin(), vendorList.end());
 }
 
 #define NUMTRANSPORTS 7
