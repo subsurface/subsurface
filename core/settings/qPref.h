@@ -8,8 +8,6 @@
 
 class qPref : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(QString canonical_version READ canonical_version);
-	Q_PROPERTY(QString mobile_version READ mobile_version);
 
 public:
 	qPref(QObject *parent = NULL);
@@ -21,10 +19,6 @@ public:
 
 	// Register QML
 	void registerQML(QQmlEngine *engine);
-
-public:
-	static const QString canonical_version();
-	static const QString mobile_version();
 
 private:
 	static void loadSync(bool doSync);
