@@ -14,7 +14,7 @@ void TestQPrefDivePlanner::initTestCase()
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("SubsurfaceTestQPrefDivePlanner");
-	qPref::instance()->registerQML(NULL);
+	qPref::registerQML(NULL);
 }
 
 void TestQPrefDivePlanner::test_struct_get()

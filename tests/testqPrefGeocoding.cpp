@@ -14,7 +14,7 @@ void TestQPrefGeocoding::initTestCase()
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("SubsurfaceTestQPrefGeocoding");
-	qPref::instance()->registerQML(NULL);
+	qPref::registerQML(NULL);
 }
 
 void TestQPrefGeocoding::test_struct_get()

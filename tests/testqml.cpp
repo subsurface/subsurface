@@ -15,7 +15,7 @@ int main(int argc, char **argv)
 	QMLTestSetup setup;
 
 	// register C++ types and classes (but not objects)
-	qPref::instance()->registerQML(NULL);
+	qPref::registerQML(NULL);
 
 	return quick_test_main_with_setup(argc, argv, "TestQML", nullptr, &setup);
 #endif //QT_VERSION
@@ -24,6 +24,6 @@ int main(int argc, char **argv)
 void QMLTestSetup::qmlEngineAvailable(QQmlEngine *engine)
 {
 	// register C++ objects (but not types and classes)
-	qPref::instance()->registerQML(engine);
+	qPref::registerQML(engine);
 };
 

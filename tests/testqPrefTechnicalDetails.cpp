@@ -14,7 +14,7 @@ void TestQPrefTechnicalDetails::initTestCase()
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("SubsurfaceTestQPrefTechnicalDetails");
-	qPref::instance()->registerQML(NULL);
+	qPref::registerQML(NULL);
 }
 
 void TestQPrefTechnicalDetails::test_struct_get()
