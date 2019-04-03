@@ -89,9 +89,7 @@ void TankItem::modelDataChanged(const QModelIndex&, const QModelIndex&)
 		return;
 
 	// remove the old rectangles
-	foreach (QGraphicsRectItem *r, rects) {
-		delete(r);
-	}
+	qDeleteAll(rects);
 	rects.clear();
 
 	qreal width, left;
