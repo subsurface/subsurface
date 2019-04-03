@@ -56,7 +56,7 @@ void PrintOptions::setupTemplates()
 	// temp. store the template from options, as addItem() updates it via:
 	// on_printTemplate_currentIndexChanged()
 	QString storedTemplate = printOptions->p_template;
-	qSort(currList);
+	currList.sort();
 	int current_index = 0;
 	ui.printTemplate->clear();
 	Q_FOREACH(const QString& theme, currList) {

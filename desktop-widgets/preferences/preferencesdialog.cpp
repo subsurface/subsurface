@@ -97,7 +97,7 @@ bool abstractpreferenceswidget_lessthan(AbstractPreferencesWidget *p1, AbstractP
 void PreferencesDialog::addPreferencePage(AbstractPreferencesWidget *page)
 {
 	pages.push_back(page);
-	qSort(pages.begin(), pages.end(), abstractpreferenceswidget_lessthan);
+	std::sort(pages.begin(), pages.end(), abstractpreferenceswidget_lessthan);
 }
 
 void PreferencesDialog::refreshPages()

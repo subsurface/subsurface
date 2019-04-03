@@ -394,7 +394,7 @@ void selectedDivesGasUsed(QVector<QPair<QString, int> > &gasUsedOrdered)
 	Q_FOREACH(const QString& gas, gasUsed.keys()) {
 		gasUsedOrdered.append(qMakePair(gas, gasUsed[gas]));
 	}
-	qSort(gasUsedOrdered.begin(), gasUsedOrdered.end(), lessThan);
+	std::sort(gasUsedOrdered.begin(), gasUsedOrdered.end(), lessThan);
 }
 
 QString getUserAgent()
