@@ -6,13 +6,8 @@
 #include <QObject>
 #include <QQmlEngine>
 
-class qPref : public QObject {
-	Q_OBJECT
-
+class qPref {
 public:
-	qPref(QObject *parent = NULL);
-	static qPref *instance();
-
 	// Load/Sync local settings (disk) and struct preference
 	static void load() { loadSync(false); }
 	static void sync() { loadSync(true); }
