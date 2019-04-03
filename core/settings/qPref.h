@@ -18,7 +18,7 @@ public:
 	static void sync() { loadSync(true); }
 
 	// Register QML
-	void registerQML(QQmlEngine *engine);
+	static void registerQML(QQmlEngine *engine);
 
 private:
 	static void loadSync(bool doSync);

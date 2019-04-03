@@ -158,7 +158,7 @@ static void register_meta_types()
 void register_qml_types(QQmlEngine *engine)
 {
 	// register qPref*
-	qPref::instance()->registerQML(engine);
+	qPref::registerQML(engine);
 
 #ifndef SUBSURFACE_TEST_DATA
 	int rc;
