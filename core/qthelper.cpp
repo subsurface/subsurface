@@ -375,7 +375,7 @@ static bool lessThan(const QPair<QString, int> &a, const QPair<QString, int> &b)
 	return a.second < b.second;
 }
 
-void selectedDivesGasUsed(QVector<QPair<QString, int> > &gasUsedOrdered)
+QVector<QPair<QString, int>> selectedDivesGasUsed()
 {
 	int i, j;
 	struct dive *d;
@@ -391,10 +391,13 @@ void selectedDivesGasUsed(QVector<QPair<QString, int> > &gasUsedOrdered)
 				gasUsed[gasName] += diveGases[j].mliter;
 			}
 	}
-	Q_FOREACH(const QString& gas, gasUsed.keys()) {
-		gasUsedOrdered.append(qMakePair(gas, gasUsed[gas]));
-	}
+	QVector<QPair<QString, int>> gasUsedOrdered;
+	gasUsedOrdered.reserve(gasUsed.size());
+	for (auto it = gasUsed.cbegin(); it != gasUsed.cend(); ++it)
+		gasUsedOrdered.append(qMakePair(it.key(), it.value()));
 	std::sort(gasUsedOrdered.begin(), gasUsedOrdered.end(), lessThan);
+
+	return gasUsedOrdered;
 }
 
 QString getUserAgent()

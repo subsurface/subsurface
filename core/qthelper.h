@@ -80,7 +80,7 @@ QString get_short_dive_date_string(timestamp_t when);
 QString get_trip_date_string(timestamp_t when, int nr, bool getday);
 QString uiLanguage(QLocale *callerLoc);
 QLocale getLocale();
-void selectedDivesGasUsed(QVector<QPair<QString, int> > &gasUsed);
+QVector<QPair<QString, int>> selectedDivesGasUsed();
 QString getUserAgent();
 QString printGPSCoords(const location_t *loc);
 

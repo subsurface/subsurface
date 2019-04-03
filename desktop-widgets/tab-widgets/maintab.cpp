@@ -542,21 +542,6 @@ void MainTab::updateDiveInfo(bool clear)
 		int mean[MAX_CYLINDERS], duration[MAX_CYLINDERS];
 		per_cylinder_mean_depth(&displayed_dive, select_dc(&displayed_dive), mean, duration);
 
-		// now let's get some gas use statistics
-		QVector<QPair<QString, int> > gasUsed;
-		QString gasUsedString;
-		volume_t vol;
-		selectedDivesGasUsed(gasUsed);
-		for (int j = 0; j < MAX_CYLINDERS; j++) {
-			if (gasUsed.isEmpty())
-				break;
-			QPair<QString, int> gasPair = gasUsed.last();
-			gasUsed.pop_back();
-			vol.mliter = gasPair.second;
-			gasUsedString.append(gasPair.first).append(": ").append(get_volume_string(vol, true)).append("\n");
-		}
-		if (!gasUsed.isEmpty())
-			gasUsedString.append("...");
 		volume_t o2_tot = {}, he_tot = {};
 		selected_dives_gas_parts(&o2_tot, &he_tot);
 
