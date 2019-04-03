@@ -142,8 +142,7 @@ BLEObject::~BLEObject()
 {
 	qDebug() << "Deleting BLE object";
 
-	foreach (QLowEnergyService *service, services)
-		delete service;
+	qDeleteAll(services);
 
 	delete controller;
 }
