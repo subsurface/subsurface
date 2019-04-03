@@ -18,16 +18,6 @@
 #include <QtQml>
 #include <QQmlContext>
 
-qPref::qPref(QObject *parent) : QObject(parent)
-{
-}
-
-qPref *qPref::instance()
-{
-	static qPref *self = new qPref;
-	return self;
-}
-
 void qPref::loadSync(bool doSync)
 {
 	if (!doSync)
@@ -58,7 +48,6 @@ void qPref::registerQML(QQmlEngine *engine)
 	if (engine) {
 		QQmlContext *ct = engine->rootContext();
 
-		ct->setContextProperty("Pref", qPref::instance());
 		ct->setContextProperty("PrefCloudStorage", qPrefCloudStorage::instance());
 		ct->setContextProperty("PrefDisplay", qPrefDisplay::instance());
 		ct->setContextProperty("PrefDiveComputer", qPrefDiveComputer::instance());
