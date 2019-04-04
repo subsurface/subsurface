@@ -52,21 +52,16 @@ FilterWidget2::FilterWidget2(QWidget* parent) :
 	connect(ui.minVisibility, &StarWidget::valueChanged,
 		this, &FilterWidget2::updateFilter);
 
-	// We need these insane casts because Qt decided to function-overload some of their signals(!).
-	// QDoubleSpinBox::valueChanged() sends double and QString using the same signal name.
-	// QComboBox::currentIndexChanged() sends int and QString using the same signal name.
-	// Qt 5.7 provides a "convenient" helper that hides this, but only if compiling in C++14
-	// or higher. One can then write: "QOverload<double>(&QDoubleSpinBox::valueChanged)", etc.
-	connect(ui.maxAirTemp, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+	connect(ui.maxAirTemp, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui.minAirTemp, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+	connect(ui.minAirTemp, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui.maxWaterTemp, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+	connect(ui.maxWaterTemp, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui.minWaterTemp, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+	connect(ui.minWaterTemp, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
 		this, &FilterWidget2::updateFilter);
 
 	connect(ui.fromDate, &QDateTimeEdit::dateChanged,
@@ -84,25 +79,25 @@ FilterWidget2::FilterWidget2(QWidget* parent) :
 	connect(ui.tags, &QLineEdit::textChanged,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui.tagsMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+	connect(ui.tagsMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
 		this, &FilterWidget2::updateFilter);
 
 	connect(ui.people, &QLineEdit::textChanged,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui.peopleMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+	connect(ui.peopleMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
 		this, &FilterWidget2::updateFilter);
 
 	connect(ui.location, &QLineEdit::textChanged,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui.locationMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+	connect(ui.locationMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
 		this, &FilterWidget2::updateFilter);
 
 	connect(ui.suit, &QLineEdit::textChanged,
 		this, &FilterWidget2::updateFilter);
 
-	connect(ui.suitMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+	connect(ui.suitMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
 		this, &FilterWidget2::updateFilter);
 
 	connect(ui.dnotes, &QLineEdit::textChanged,
