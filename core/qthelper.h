@@ -116,6 +116,21 @@ void moveInVector(Vector &v, int rangeBegin, int rangeEnd, int destination)
 		std::rotate(it + destination, it + rangeBegin, it + rangeEnd);
 }
 
+// Qt overloads some signals(!) which can't therefore be used in connect() calls with
+// pointers-to-member functions where the signatures of signal and slot don't match perfectly.
+// For this case, Qt 5.7 provides the qOverload<> helper.
+// Since we still support Qt 5.5 let's reimplement it here.
+#if QT_VERSION < 0x050700
+template <typename... Args>
+struct QOverload {
+	template <typename Ret, typename Class>
+	static Ret (Class::*of(Ret (Class::*fun)(Args...)))(Args...)
+	{
+		return fun;
+	}
+};
+#endif
+
 #endif
 
 // 3) Functions visible to C and C++
