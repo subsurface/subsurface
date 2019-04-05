@@ -6,6 +6,7 @@
 #include "divelist.h"
 #include "membuffer.h"
 #include "table.h"
+#include "sha1.h"
 
 #include <math.h>
 
@@ -129,14 +130,27 @@ static MAKE_REMOVE(dive_site_table, struct dive_site *, dive_site)
 
 int add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *ds_table)
 {
+	/* If the site doesn't yet have an UUID, create a new one.
+	 * Make this deterministic for testing. */
+	if (!ds->uuid) {
+		SHA_CTX ctx;
+		uint32_t csum[5];
+
+		SHA1_Init(&ctx);
+		if (ds->name)
+			SHA1_Update(&ctx, ds->name, strlen(ds->name));
+		if (ds->description)
+			SHA1_Update(&ctx, ds->description, strlen(ds->description));
+		if (ds->notes)
+			SHA1_Update(&ctx, ds->notes, strlen(ds->notes));
+		SHA1_Final((unsigned char *)csum, &ctx);
+		ds->uuid = csum[0];
+	}
+
 	/* Take care to never have the same uuid twice. This could happen on
 	 * reimport of a log where the dive sites have diverged */
-	while (ds->uuid == 0 || get_dive_site_by_uuid(ds->uuid, ds_table) != NULL) {
-		ds->uuid = rand() & 0xff;
-		ds->uuid |= (rand() & 0xff) << 8;
-		ds->uuid |= (rand() & 0xff) << 16;
-		ds->uuid |= (rand() & 0xff) << 24;
-	}
+	while (ds->uuid == 0 || get_dive_site_by_uuid(ds->uuid, ds_table) != NULL)
+		++ds->uuid;
 
 	int idx = dive_site_table_get_insertion_index(ds_table, ds);
 	add_to_dive_site_table(ds_table, idx, ds);
