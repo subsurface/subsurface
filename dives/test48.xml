@@ -1,6 +1,6 @@
 <divelog program='subsurface' version='3'>
 <divesites>
-<site uuid='15ae02d1'>
+<site uuid='15ae02d1' name='Test dive'>
 </site>
 </divesites>
 <dives>
