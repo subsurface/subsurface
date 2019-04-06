@@ -481,6 +481,8 @@ extern int save_dives_logic(const char *filename, bool select_only, bool anonymi
 extern int save_dive(FILE *f, struct dive *dive, bool anonymize);
 extern int export_dives_xslt(const char *filename, const bool selected, const int units, const char *export_xslt, bool anonymize);
 
+extern int save_dive_sites_logic(const char *filename, bool select_only, bool anonymize);
+
 struct membuffer;
 extern void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize);
 

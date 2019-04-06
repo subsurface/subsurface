@@ -21,6 +21,7 @@
 #include "strndup.h"
 #include "git-access.h"
 #include "qthelper.h"
+#include "gettext.h"
 
 /*
  * We're outputting utf8 in xml.
@@ -590,15 +591,16 @@ void save_dives_buffer(struct membuffer *b, const bool select_only, bool anonymi
 		put_format(b, "  <autogroup state='1' />\n");
 	put_format(b, "</settings>\n");
 
-	/* save the dive sites - to make the output consistent let's sort the table, first */
-	sort_dive_site_table(&dive_site_table);
-	purge_empty_dive_sites(&dive_site_table);
+	/* save the dive sites */
 	put_format(b, "<divesites>\n");
 	for (i = 0; i < dive_site_table.nr; i++) {
 		struct dive_site *ds = get_dive_site(i, &dive_site_table);
+		/* Don't export empty dive sites */
+		if (dive_site_is_empty(ds))
+			continue;
 		/* Only write used dive sites when exporting selected dives */
 		if (select_only && !is_dive_site_used(ds, true))
-				continue;
+			continue;
 
 		put_format(b, "<site uuid='%8x'", ds->uuid);
 		show_utf8_blanked(b, ds->name, " name='", "'", 1, anonymize);
@@ -734,7 +736,7 @@ int save_dives_logic(const char *filename, const bool select_only, bool anonymiz
 		error = fclose(f);
 	}
 	if (error)
-		report_error("Save failed (%s)", strerror(errno));
+		report_error(translate("gettextFromC", "Failed to save dives to %s (%s)"), filename, strerror(errno));
 
 	free_buffer(&buf);
 	return error;
@@ -797,4 +799,66 @@ int export_dives_xslt(const char *filename, const bool selected, const int units
 	xmlFreeDoc(transformed);
 
 	return res;
+}
+
+void save_dive_sites_buffer(struct membuffer *b, const bool select_only, bool anonymize)
+{
+	int i;
+	put_format(b, "<divesites program='subsurface' version='%d'>\n", DATAFORMAT_VERSION);
+
+	/* save the dive sites */
+	for (i = 0; i < dive_site_table.nr; i++) {
+		struct dive_site *ds = get_dive_site(i, &dive_site_table);
+		/* Don't export empty dive sites */
+		if (dive_site_is_empty(ds))
+			continue;
+		/* Only write used dive sites when exporting selected dives */
+		if (select_only && !is_dive_site_used(ds, true))
+			continue;
+
+		put_format(b, "<site uuid='%8x'", ds->uuid);
+		show_utf8_blanked(b, ds->name, " name='", "'", 1, anonymize);
+		put_location(b, &ds->location, " gps='", "'");
+		show_utf8_blanked(b, ds->description, " description='", "'", 1, anonymize);
+		put_format(b, ">\n");
+		show_utf8_blanked(b, ds->notes, "  <notes>", " </notes>\n", 0, anonymize);
+		if (ds->taxonomy.nr) {
+			for (int j = 0; j < ds->taxonomy.nr; j++) {
+				struct taxonomy *t = &ds->taxonomy.category[j];
+				if (t->category != TC_NONE && t->value) {
+					put_format(b, "  <geo cat='%d'", t->category);
+					put_format(b, " origin='%d'", t->origin);
+					show_utf8_blanked(b, t->value, " value='", "'/>\n", 1, anonymize);
+				}
+			}
+		}
+		put_format(b, "</site>\n");
+	}
+	put_format(b, "</divesites>\n");
+}
+
+int save_dive_sites_logic(const char *filename, const bool select_only, bool anonymize)
+{
+	struct membuffer buf = { 0 };
+	FILE *f;
+	int error = 0;
+
+	save_dive_sites_buffer(&buf, select_only, anonymize);
+
+	if (same_string(filename, "-")) {
+		f = stdout;
+	} else {
+		try_to_backup(filename);
+		error = -1;
+		f = subsurface_fopen(filename, "w");
+	}
+	if (f) {
+		flush_buffer(&buf, f);
+		error = fclose(f);
+	}
+	if (error)
+		report_error(translate("gettextFromC", "Failed to save divesites to %s (%s)"), filename, strerror(errno));
+
+	free_buffer(&buf);
+	return error;
 }
