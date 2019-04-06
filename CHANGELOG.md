@@ -1,3 +1,4 @@
+- Desktop: Add export option for dive sites
 - Import: Initial support for importing Mares log software
 - Export option for profile data
 - Desktop: Splitting of individual dive computers into distinct dives

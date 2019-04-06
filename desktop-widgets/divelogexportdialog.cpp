@@ -91,6 +91,8 @@ void DiveLogExportDialog::showExplanation()
 		ui->description->setText(tr("HTML export of the dive locations, visualized on a world map."));
 	} else if (ui->exportSubsurfaceXML->isChecked()) {
 		ui->description->setText(tr("Subsurface native XML format."));
+	} else if (ui->exportSubsurfaceSitesXML->isChecked()) {
+		ui->description->setText(tr("Subsurface dive sites native XML format."));
 	} else if (ui->exportImageDepths->isChecked()) {
 		ui->description->setText(tr("Write depths of images to file."));
 	} else if (ui->exportTeX->isChecked()) {
@@ -165,6 +167,15 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 					filename.append(".ssrf");
 				QByteArray bt = QFile::encodeName(filename);
 				save_dives_logic(bt.data(), ui->exportSelected->isChecked(), ui->anonymize->isChecked());
+			}
+		} else if (ui->exportSubsurfaceSitesXML->isChecked()) {
+			filename = QFileDialog::getSaveFileName(this, tr("Export Subsurface dive sites XML"), lastDir,
+								tr("Subsurface files") + " (*.xml)");
+			if (!filename.isNull() && !filename.isEmpty()) {
+				if (!filename.contains('.'))
+					filename.append(".xml");
+				QByteArray bt = QFile::encodeName(filename);
+				save_dive_sites_logic(bt.data(), ui->exportSelected->isChecked(), ui->anonymize->isChecked());
 			}
 		} else if (ui->exportImageDepths->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Save image depths"), lastDir);
