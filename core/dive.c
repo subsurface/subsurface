@@ -2009,6 +2009,58 @@ static void merge_samples(struct divecomputer *res,
 	}
 }
 
+/*
+ * Does the extradata key/value pair already exist in the
+ * supplied dive computer data?
+ *
+ * This is not hugely efficient (with the whole "do this for
+ * every value you merge" it's O(n**2)) but it's not like we
+ * have very many extra_data entries per dive computer anyway.
+ */
+static bool extra_data_exists(const struct extra_data *ed, const struct divecomputer *dc)
+{
+	const struct extra_data *p;
+
+	for (p = dc->extra_data; p; p = p->next) {
+		if (strcmp(p->key, ed->key))
+			continue;
+		if (strcmp(p->value, ed->value))
+			continue;
+		return true;
+	}
+	return false;
+}
+
+/*
+ * Merge extra_data.
+ *
+ * The extra data from 'a' has already been copied into 'res'. So
+ * we really should just copy over the data from 'b' too.
+ */
+static void merge_extra_data(struct divecomputer *res,
+			  const struct divecomputer *a, const struct divecomputer *b)
+{
+	struct extra_data **ed, *src;
+
+	// Find the place to add things in the result
+	ed = &res->extra_data;
+	while (*ed)
+		ed = &(*ed)->next;
+
+	for (src = b->extra_data; src; src = src->next) {
+		if (extra_data_exists(src, a))
+			continue;
+		*ed = malloc(sizeof(struct extra_data));
+		if (!*ed)
+			break;
+		copy_extra_data(src, *ed);
+		ed = &(*ed)->next;
+	}
+
+	// Terminate the result list
+	*ed = NULL;
+}
+
 static char *merge_text(const char *a, const char *b, const char *sep)
 {
 	char *res;
@@ -3110,6 +3162,7 @@ static void interleave_dive_computers(struct dive *d, struct divecomputer *res,
 		if (match) {
 			merge_events(d, res, a, match, cylinders_map_a, cylinders_map_b, offset);
 			merge_samples(res, a, match, cylinders_map_a, cylinders_map_b, offset);
+			merge_extra_data(res, a, match);
 			/* Use the diveid of the later dive! */
 			if (offset > 0)
 				res->diveid = match->diveid;
