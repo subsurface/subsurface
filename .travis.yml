@@ -9,13 +9,26 @@ matrix:
 
     - env: SUBSURFACE_PLATFORM='mac'
       os: osx
-      osx_image: xcode8
-      language: c++ ruby
+      osx_image: xcode10.1
+      language: c++
+      addons:
+        homebrew:
+          packages:
+            - xz
+            - hidapi
+            - libusb
+            - libxml2
+            - libxslt
+            - libzip
+            - openssl
+            - pkg-config
+            - libgit2
+            - libssh2
+          update: true
 
     - env: SUBSURFACE_PLATFORM='windows'
       os: linux
       dist: trusty
-      sudo: required
       language: c++
 
     - env: SUBSURFACE_PLATFORM='windows-container'
@@ -28,7 +41,6 @@ matrix:
     - env: SUBSURFACE_PLATFORM='linux'
       os: linux
       dist: trusty
-      sudo: required
       language: c++
       addons:
         apt:
@@ -65,7 +77,6 @@ matrix:
     - env: SUBSURFACE_PLATFORM='linux2'
       os: linux
       dist: trusty
-      sudo: required
       language: c++
       addons:
         apt:
@@ -156,6 +167,6 @@ after_success:
     - source ${TRAVIS_BUILD_DIR}/scripts/${SUBSURFACE_PLATFORM}/after_success.sh
 
 branches:
-  except:
-    - # Do not build tags that we create when we upload to GitHub Releases
-    - /^(?i:continuous)/
+  only:
+    - master
+    - /^v\d+\.\d+(\.\d+)?(-branch)?$/
