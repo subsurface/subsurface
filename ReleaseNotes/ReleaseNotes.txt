@@ -2,6 +2,21 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 4.8.6
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- Desktop: update snap and appdata meta data
+- Desktop: make sure cloud storage email addresses are lower case only
+- Desktop: Fix editing of dive-time [#1975]
+- Desktop: Add export option for profile picture [#1962]
+- Export: fix picture thumbnails [#1963]
+- Desktop: remove support for the "Share on Facebook" feature.
+  Rationale: It is fairly easy to share images on Facebook, thus it was decided
+  that this feature is redundant and should be removed from Subsurface.
+- Dive computer support:
+  - Add initial support for tag events on Shearwater Teric
+  - Add support for additional Ratio dive computers
+  - several bug fixes for existing dive computers
+
 New in _Subsurface_ 4.8.5
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - Shearwater import: add suppport for importing Shearwater Cloud logs
