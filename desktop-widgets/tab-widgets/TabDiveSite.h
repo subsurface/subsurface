@@ -18,9 +18,13 @@ private slots:
 	void diveSiteChanged(struct dive_site *ds, int field);
 	void on_purgeUnused_clicked();
 	void on_filterText_textChanged(const QString &text);
+	void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 private:
 	Ui::TabDiveSite ui;
 	DiveSiteSortedModel model;
+	void updateFilter();
+	void hideEvent(QHideEvent *) override;
+	void showEvent(QShowEvent *) override;
 };
 
 #endif
