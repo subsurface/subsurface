@@ -77,11 +77,11 @@ slots:
 
 signals:
 	void filterFinished();
-	void countsChanged();
 
 private:
 	MultiFilterSortModel(QObject *parent = 0);
 	struct dive_site *curr_dive_site;
+	void countsChanged();
 	FilterData filterData;
 };
 

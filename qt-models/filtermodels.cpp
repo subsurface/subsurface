@@ -241,6 +241,7 @@ void MultiFilterSortModel::myInvalidate()
 
 	// Tell the dive trip model to update the displayed-counts
 	DiveTripModelBase::instance()->filterFinished();
+	countsChanged();
 	emit filterFinished();
 
 #if !defined(SUBSURFACE_MOBILE)
@@ -296,7 +297,7 @@ void MultiFilterSortModel::divesAdded(dive_trip *, bool, const QVector<dive *> &
 		if (!d->hidden_by_filter)
 			++divesDisplayed;
 	}
-	emit countsChanged();
+	countsChanged();
 }
 
 void MultiFilterSortModel::divesDeleted(dive_trip *, bool, const QVector<dive *> &dives)
@@ -305,5 +306,10 @@ void MultiFilterSortModel::divesDeleted(dive_trip *, bool, const QVector<dive *>
 		if (!d->hidden_by_filter)
 			--divesDisplayed;
 	}
-	emit countsChanged();
+	countsChanged();
+}
+
+void MultiFilterSortModel::countsChanged()
+{
+	updateWindowTitle();
 }
