@@ -67,8 +67,8 @@ public
 slots:
 	void myInvalidate();
 	void clearFilter();
-	void startFilterDiveSite(struct dive_site *ds);
-	void stopFilterDiveSite();
+	void startFilterDiveSites(QVector<dive_site *> ds);
+	void stopFilterDiveSites();
 	void filterChanged(const QModelIndex &from, const QModelIndex &to, const QVector<int> &roles);
 	void resetModel(DiveTripModelBase::Layout layout);
 	void filterDataChanged(const FilterData &data);
@@ -80,7 +80,8 @@ signals:
 
 private:
 	MultiFilterSortModel(QObject *parent = 0);
-	struct dive_site *curr_dive_site;
+	// Dive site filtering has priority over other filters
+	QVector<dive_site *> dive_sites;
 	void countsChanged();
 	FilterData filterData;
 };

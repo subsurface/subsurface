@@ -105,8 +105,7 @@ MultiFilterSortModel *MultiFilterSortModel::instance()
 }
 
 MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent),
-	divesDisplayed(0),
-	curr_dive_site(NULL)
+	divesDisplayed(0)
 {
 	setFilterKeyColumn(-1); // filter all columns
 	setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -125,9 +124,9 @@ void MultiFilterSortModel::resetModel(DiveTripModelBase::Layout layout)
 
 bool MultiFilterSortModel::showDive(const struct dive *d) const
 {
-	// If curr_dive_site is set, we are in a special dive-site editing mode.
-	if (curr_dive_site)
-		return d->dive_site == curr_dive_site;
+	// If dive_sites is not empty, we are in a special dive-site filtering mode.
+	if (!dive_sites.isEmpty())
+		return dive_sites.contains(d->dive_site);
 
 	if (!filterData.validFilter)
 		return true;
@@ -245,7 +244,7 @@ void MultiFilterSortModel::myInvalidate()
 	emit filterFinished();
 
 #if !defined(SUBSURFACE_MOBILE)
-	if (curr_dive_site)
+	if (!dive_sites.isEmpty())
 		MainWindow::instance()->diveList->expandAll();
 #endif
 }
@@ -267,15 +266,15 @@ void MultiFilterSortModel::clearFilter()
 	myInvalidate();
 }
 
-void MultiFilterSortModel::startFilterDiveSite(struct dive_site *ds)
+void MultiFilterSortModel::startFilterDiveSites(QVector<dive_site *> ds)
 {
-	curr_dive_site = ds;
+	dive_sites = ds;
 	myInvalidate();
 }
 
-void MultiFilterSortModel::stopFilterDiveSite()
+void MultiFilterSortModel::stopFilterDiveSites()
 {
-	curr_dive_site = NULL;
+	dive_sites.clear();
 	myInvalidate();
 }
 
