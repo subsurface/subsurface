@@ -1,3 +1,6 @@
+- Desktop: make dive sites 1st class citizens with their own dive site table
+- Desktop: only show dives at the dive sites selected in dive site table
+- Desktop: add undo functionality to edit operations and remove 'edited' state
 - Desktop: Add export option for dive sites
 - Import: Initial support for importing Mares log software
 - Export option for profile data
