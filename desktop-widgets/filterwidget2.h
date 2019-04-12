@@ -33,7 +33,6 @@ private slots:
 	void clearFilter();
 	void closeFilter();
 	void temperatureChanged();
-	void countsChanged();
 
 private:
 	bool ignoreSignal;

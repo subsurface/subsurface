@@ -119,10 +119,6 @@ FilterWidget2::FilterWidget2(QWidget* parent) :
 	connect(qPrefUnits::instance(), &qPrefUnits::unit_systemChanged,
 		this, &FilterWidget2::temperatureChanged);
 
-	// Update counts if dives were added / removed
-	connect(MultiFilterSortModel::instance(), &MultiFilterSortModel::countsChanged,
-		this, &FilterWidget2::countsChanged);
-
 	// Reset all fields.
 	clearFilter();
 }
@@ -241,12 +237,6 @@ void FilterWidget2::hideEvent(QHideEvent *event)
 void FilterWidget2::filterDataChanged(const FilterData &data)
 {
 	MultiFilterSortModel::instance()->filterDataChanged(data);
-	countsChanged();
-}
-
-void FilterWidget2::countsChanged()
-{
-	updateWindowTitle();
 }
 
 QString FilterWidget2::shownText()
