@@ -491,10 +491,15 @@ void MainTab::updateDiveInfo()
 	// don't execute this while adding / planning a dive
 	if (editMode == MANUALLY_ADDED_DIVE || MainWindow::instance()->graphics->isPlanner())
 		return;
-	if (!isEnabled() && current_dive)
-		setEnabled(true);
-	if (isEnabled() && !current_dive)
-		setEnabled(false);
+
+	// If there is no current dive, disable all widgets except the last, which is the dive site tab.
+	// TODO: Conceptually, the dive site tab shouldn't even be a tab here!
+	bool enabled = current_dive != nullptr;
+	ui.equipmentTab->setEnabled(enabled);
+	ui.notesTab->setEnabled(enabled);
+	for (int i = 0; i < extraWidgets.size() - 1; ++i)
+		extraWidgets[i]->setEnabled(enabled);
+
 	editMode = IGNORE; // don't trigger on changes to the widgets
 
 	for (auto widget : extraWidgets) {
