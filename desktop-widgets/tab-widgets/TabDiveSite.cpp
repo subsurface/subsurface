@@ -3,6 +3,7 @@
 #include "core/subsurface-qt/DiveListNotifier.h"
 #include "core/divesite.h"
 #include "qt-models/divelocationmodel.h"
+#include "qt-models/filtermodels.h"
 #include "desktop-widgets/command.h"
 
 #include <qt-models/divecomputerextradatamodel.h>
@@ -23,6 +24,7 @@ TabDiveSite::TabDiveSite(QWidget *parent) : TabBase(parent)
 		ui.diveSites->view()->setColumnHidden(i, true);
 
 	connect(ui.diveSites, &TableView::addButtonClicked, this, &TabDiveSite::add);
+	connect(ui.diveSites->view()->selectionModel(), &QItemSelectionModel::selectionChanged, this, &TabDiveSite::selectionChanged);
 
 	// Subtle: We depend on this slot being executed after the slot in the model.
 	// This is realized because the model was constructed as a member object and connects in the constructor.
@@ -78,4 +80,34 @@ void TabDiveSite::on_purgeUnused_clicked()
 void TabDiveSite::on_filterText_textChanged(const QString &text)
 {
 	model.setFilter(text);
+}
+
+void TabDiveSite::updateFilter()
+{
+	const QModelIndexList indexes = ui.diveSites->view()->selectionModel()->selectedIndexes();
+	QVector<dive_site *> sites;
+	sites.reserve(indexes.size());
+	for (const QModelIndex &idx: indexes) {
+		struct dive_site *ds = model.getDiveSite(idx);
+		sites.append(ds);
+	}
+	MultiFilterSortModel::instance()->startFilterDiveSites(sites);
+}
+
+void TabDiveSite::selectionChanged(const QItemSelection &, const QItemSelection &)
+{
+	updateFilter();
+}
+
+void TabDiveSite::showEvent(QShowEvent *)
+{
+	// If the user switches to the dive site tab and there was already a selection,
+	// filter on that selection.
+	updateFilter();
+}
+
+void TabDiveSite::hideEvent(QHideEvent *)
+{
+	// If the user switches to a different tab, stop the dive site filtering
+	MultiFilterSortModel::instance()->stopFilterDiveSites();
 }

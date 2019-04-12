@@ -41,7 +41,6 @@ public slots:
 class DiveSiteSortedModel : public QSortFilterProxyModel {
 	Q_OBJECT
 private:
-	struct dive_site *getDiveSite(const QModelIndex &idx);
 	bool filterAcceptsRow(int sourceRow, const QModelIndex &source_parent) const override;
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
 	QString fullText;
@@ -54,6 +53,7 @@ public:
 	DiveSiteSortedModel();
 	QStringList allSiteNames() const;
 	void setFilter(const QString &text);
+	struct dive_site *getDiveSite(const QModelIndex &idx);
 };
 
 // To access only divesites at the given GPS coordinates with the exception of a given dive site
