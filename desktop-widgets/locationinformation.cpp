@@ -184,7 +184,7 @@ void LocationInformationWidget::acceptChanges()
 	MainWindow::instance()->setApplicationState("Default");
 	MapWidget::instance()->endGetDiveCoordinates();
 	MapWidget::instance()->repopulateLabels();
-	MultiFilterSortModel::instance()->stopFilterDiveSite();
+	MultiFilterSortModel::instance()->stopFilterDiveSites();
 }
 
 void LocationInformationWidget::initFields(dive_site *ds)
@@ -195,7 +195,7 @@ void LocationInformationWidget::initFields(dive_site *ds)
 		updateLabels();
 		enableLocationButtons(dive_site_has_gps_location(ds));
 		QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(ui.diveSiteListView->model());
-		MultiFilterSortModel::instance()->startFilterDiveSite(ds);
+		MultiFilterSortModel::instance()->startFilterDiveSites(QVector<dive_site *>{ ds });
 		if (m)
 			m->invalidate();
 	} else {
