@@ -21,14 +21,6 @@
 
 class ExtraDataModel;
 class DivePictureModel;
-class QCompleter;
-
-struct Completers {
-	QCompleter *divemaster;
-	QCompleter *buddy;
-	QCompleter *suit;
-	QCompleter *tags;
-};
 
 class TabBase;
 class MainTab : public QTabWidget {
@@ -96,7 +88,6 @@ private:
 	DiveMasterCompletionModel diveMasterModel;
 	SuitCompletionModel suitModel;
 	TagCompletionModel tagModel;
-	Completers completers;
 	bool modified;
 	bool lastSelectedDive;
 	int lastTabSelectedDive;
