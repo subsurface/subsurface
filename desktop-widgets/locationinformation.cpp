@@ -299,12 +299,13 @@ QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 		case Qt::DisplayRole:
 			return new_ds_value[index.row()];
 		case Qt::ToolTipRole:
-			return displayed_dive.dive_site ?
+			return current_dive && current_dive->dive_site ?
 				tr("Create a new dive site, copying relevant information from the current dive.") :
 				tr("Create a new dive site with this name");
 		case Qt::DecorationRole:
 			return plusIcon;
 		}
+		return QVariant();
 	}
 
 	// The dive sites are -2 because of the first two items.
