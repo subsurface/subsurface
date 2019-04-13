@@ -133,7 +133,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	// widgets will change on the mainwindow.
 
 	// for the "default" mode
-	mainTab = new MainTab(this);
+	mainTab.reset(new MainTab);
 	diveList = new DiveListView(this);
 	graphics = new ProfileWidget2(this);
 	MapWidget *mapWidget = MapWidget::instance();
@@ -177,12 +177,12 @@ MainWindow::MainWindow() : QMainWindow(),
 	enabledList.push_back(enabled);
 	disabledList.push_back(disabled);
 
-	registerApplicationState("Default", mainTab, profileContainer, diveList, mapWidget );
-	registerApplicationState("EditDive", mainTab, profileContainer, diveList, mapWidget );
+	registerApplicationState("Default", mainTab.get(), profileContainer, diveList, mapWidget );
+	registerApplicationState("EditDive", mainTab.get(), profileContainer, diveList, mapWidget );
 	registerApplicationState("PlanDive", divePlannerWidget, profileContainer, divePlannerSettingsWidget, plannerDetails );
 	registerApplicationState("EditPlannedDive", divePlannerWidget, profileContainer, diveList, mapWidget );
 	registerApplicationState("EditDiveSite", diveSiteEdit, profileContainer, diveList, mapWidget);
-	registerApplicationState("FilterDive", mainTab, profileContainer, diveList, &filterWidget2);
+	registerApplicationState("FilterDive", mainTab.get(), profileContainer, diveList, &filterWidget2);
 
 	setStateProperties("Default", enabledList, enabledList, enabledList, enabledList);
 	setStateProperties("EditDive", enabledList, enabledList, enabledList, enabledList);
@@ -200,7 +200,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(readSettings()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), diveList, SLOT(update()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), diveList, SLOT(reloadHeaderActions()));
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), mainTab, SLOT(updateDiveInfo()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), mainTab.get(), SLOT(updateDiveInfo()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), divePlannerWidget, SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), divePlannerSettingsWidget, SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), TankInfoModel::instance(), SLOT(update()));
@@ -215,7 +215,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(variationsComputed(QString)), this, SLOT(updateVariations(QString)));
 	connect(plannerDetails->printPlan(), SIGNAL(pressed()), divePlannerWidget, SLOT(printDecoPlan()));
-	connect(mainTab, &MainTab::diveSiteChanged, mapWidget, &MapWidget::centerOnSelectedDiveSite);
+	connect(mainTab.get(), &MainTab::diveSiteChanged, mapWidget, &MapWidget::centerOnSelectedDiveSite);
 	connect(this, &MainWindow::showError, ui.mainErrorMessage, &NotificationWidget::showError, Qt::AutoConnection);
 
 	connect(&windowTitleUpdate, &WindowTitleUpdate::updateTitle, this, &MainWindow::setAutomaticTitle);
@@ -327,7 +327,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(graphics, &ProfileWidget2::enableShortcuts, this, &MainWindow::enableShortcuts);
 	connect(graphics, &ProfileWidget2::refreshDisplay, this, &MainWindow::refreshDisplay);
 	connect(graphics, &ProfileWidget2::editCurrentDive, this, &MainWindow::editCurrentDive);
-	connect(graphics, &ProfileWidget2::updateDiveInfo, mainTab, &MainTab::updateDiveInfo);
+	connect(graphics, &ProfileWidget2::updateDiveInfo, mainTab.get(), &MainTab::updateDiveInfo);
 
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), graphics, SLOT(settingsChanged()));
 
