@@ -19,8 +19,6 @@
 #include "core/dive.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
 
-class WeightModel;
-class CylindersModel;
 class ExtraDataModel;
 class DivePictureModel;
 class QCompleter;
@@ -46,7 +44,6 @@ public:
 	MainTab(QWidget *parent = 0);
 	~MainTab();
 	void clearTabs();
-	void clearEquipment();
 	void reload();
 	void initialUiSetup();
 	bool isEditing();
@@ -62,8 +59,6 @@ slots:
 	void divesChanged(dive_trip *trip, const QVector<dive *> &dives, DiveField field);
 	void diveSiteEdited(dive_site *ds, int field);
 	void tripChanged(dive_trip *trip, TripField field);
-	void addCylinder_clicked();
-	void addWeight_clicked();
 	void updateDiveInfo();
 	void updateNotes(const struct dive *d);
 	void updateMode(struct dive *d);
@@ -87,20 +82,15 @@ slots:
 	void on_rating_valueChanged(int value);
 	void on_visibility_valueChanged(int value);
 	void on_tagWidget_editingFinished();
-	void editCylinderWidget(const QModelIndex &index);
-	void editWeightWidget(const QModelIndex &index);
 	void addMessageAction(QAction *action);
 	void hideMessage();
 	void closeMessage();
 	void displayMessage(QString str);
 	void enableEdition(EditMode newEditMode = NONE);
-	void toggleTriggeredColumn();
 	void updateTextLabels(bool showUnits = true);
 	void escDetected(void);
 private:
 	Ui::MainTab ui;
-	WeightModel *weightModel;
-	CylindersModel *cylindersModel;
 	EditMode editMode;
 	BuddyCompletionModel buddyModel;
 	DiveMasterCompletionModel diveMasterModel;
