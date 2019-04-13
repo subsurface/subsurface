@@ -404,7 +404,7 @@ void MainWindow::enableDisableOtherDCsActions()
 void MainWindow::setDefaultState()
 {
 	setApplicationState("Default");
-	if (mainTab->getEditMode() != MainTab::NONE)
+	if (mainTab->isEditing())
 		ui.bottomLeft->currentWidget()->setEnabled(false);
 }
 

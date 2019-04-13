@@ -704,11 +704,6 @@ void MainTab::reload()
 		mark_divelist_changed(true);                 \
 	} while (0)
 
-MainTab::EditMode MainTab::getEditMode() const
-{
-	return editMode;
-}
-
 void MainTab::refreshDisplayedDiveSite()
 {
 	struct dive_site *ds = get_dive_site_for_dive(current_dive);
