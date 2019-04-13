@@ -30,6 +30,8 @@
 #ifndef SUBSURFACE_TEST_DATA
 QObject *qqWindowObject = NULL;
 
+bool m_mainWindowValid = false;
+
 // Forward declaration
 static void register_qml_types(QQmlEngine *);
 static void register_meta_types();
@@ -42,12 +44,14 @@ void init_ui()
 	register_qml_types(NULL);
 
 	MainWindow *window = new MainWindow();
+	m_mainWindowValid = true;
 	window->setTitle();
 #endif // SUBSURFACE_MOBILE
 }
 
 void exit_ui()
 {
+	m_mainWindowValid = false;
 #ifndef SUBSURFACE_MOBILE
 	delete MainWindow::instance();
 #endif // SUBSURFACE_MOBILE

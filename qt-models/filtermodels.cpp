@@ -2,6 +2,7 @@
 #include "qt-models/filtermodels.h"
 #include "qt-models/models.h"
 #include "core/display.h"
+#include "core/qt-gui.h"
 #include "core/qthelper.h"
 #include "core/divesite.h"
 #include "core/subsurface-string.h"
@@ -225,6 +226,12 @@ void MultiFilterSortModel::myInvalidate()
 {
 	int i;
 	struct dive *d;
+
+	// hack around what seems like a Qt bug: when the MainWindow is destroyed
+	// it's hiding its children and this causes the filter invalidation to be
+	// called which then dereferences partially destroyed objects
+	if (!m_mainWindowValid)
+		return;
 
 	divesDisplayed = 0;
 

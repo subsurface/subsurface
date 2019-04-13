@@ -4,6 +4,7 @@
 
 void init_qt_late();
 void init_ui();
+extern bool m_mainWindowValid;
 
 void run_ui();
 void exit_ui();
