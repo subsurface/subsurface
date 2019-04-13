@@ -48,6 +48,7 @@ set (SUBSURFACE_UI
 	tab-widgets/TabDiveInformation.ui
 	tab-widgets/TabDivePhotos.ui
 	tab-widgets/TabDiveExtraInfo.ui
+	tab-widgets/TabDiveEquipment.ui
 	tab-widgets/TabDiveSite.ui
 )
 
@@ -118,6 +119,8 @@ set(SUBSURFACE_INTERFACE
 	tab-widgets/TabBase.h
 	tab-widgets/TabDiveExtraInfo.cpp
 	tab-widgets/TabDiveExtraInfo.h
+	tab-widgets/TabDiveEquipment.cpp
+	tab-widgets/TabDiveEquipment.h
 	tab-widgets/TabDiveInformation.cpp
 	tab-widgets/TabDiveInformation.h
 	tab-widgets/TabDivePhotos.cpp

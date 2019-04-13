@@ -10,15 +10,12 @@
 #include "desktop-widgets/mapwidget.h"
 #include "core/qthelper.h"
 #include "core/statistics.h"
-#include "desktop-widgets/modeldelegates.h"
 #include "qt-models/diveplannermodel.h"
 #include "desktop-widgets/divelistview.h"
 #include "core/display.h"
 #include "profile-widget/profilewidget2.h"
 #include "desktop-widgets/diveplanner.h"
 #include "core/divesitehelpers.h"
-#include "qt-models/cylindermodel.h"
-#include "qt-models/weightmodel.h"
 #include "qt-models/divecomputerextradatamodel.h"
 #include "qt-models/divelocationmodel.h"
 #include "qt-models/filtermodels.h"
@@ -29,6 +26,7 @@
 #include "desktop-widgets/command.h"
 #include "desktop-widgets/simplewidgets.h"
 
+#include "TabDiveEquipment.h"
 #include "TabDiveExtraInfo.h"
 #include "TabDiveInformation.h"
 #include "TabDivePhotos.h"
@@ -44,8 +42,6 @@
 #include <QStringList>
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
-	weightModel(new WeightModel(this)),
-	cylindersModel(new CylindersModel(this)),
 	editMode(NONE),
 	lastSelectedDive(true),
 	lastTabSelectedDive(0),
@@ -54,6 +50,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 {
 	ui.setupUi(this);
 
+	extraWidgets << new TabDiveEquipment();
+	ui.tabWidget->addTab(extraWidgets.last(), tr("Equipment"));
 	extraWidgets << new TabDiveInformation();
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Information"));
 	extraWidgets << new TabDiveStatistics();
@@ -70,14 +68,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	memset(&displayed_dive, 0, sizeof(displayed_dive));
 
-	// This makes sure we only delete the models
-	// after the destructor of the tables,
-	// this is needed to save the column sizes.
-	cylindersModel->setParent(ui.cylinders);
-	weightModel->setParent(ui.weights);
-
-	ui.cylinders->setModel(cylindersModel);
-	ui.weights->setModel(weightModel);
 	closeMessage();
 
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &MainTab::divesChanged);
@@ -108,14 +98,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	// filled from a dive, they are made writeable
 	setEnabled(false);
 
-	ui.cylinders->setTitle(tr("Cylinders"));
-	ui.cylinders->setBtnToolTip(tr("Add cylinder"));
-	connect(ui.cylinders, SIGNAL(addButtonClicked()), this, SLOT(addCylinder_clicked()));
-
-	ui.weights->setTitle(tr("Weights"));
-	ui.weights->setBtnToolTip(tr("Add weight system"));
-	connect(ui.weights, SIGNAL(addButtonClicked()), this, SLOT(addWeight_clicked()));
-
 	// This needs to be the same order as enum dive_comp_type in dive.h!
 	QStringList types = QStringList();
 	for (int i = 0; i < NUM_DIVEMODE; i++)
@@ -123,13 +105,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.DiveType->insertItems(0, types);
 	connect(ui.DiveType, SIGNAL(currentIndexChanged(int)), this, SLOT(divetype_Changed(int)));
 
-	connect(ui.cylinders->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
-	connect(ui.weights->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editWeightWidget(QModelIndex)));
-
-	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
-	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::USE, new TankUseDelegate(this));
-	ui.weights->view()->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate(this));
-	ui.cylinders->view()->setColumnHidden(CylindersModel::DEPTH, true);
 	completers.buddy = new QCompleter(&buddyModel, ui.buddy);
 	completers.divemaster = new QCompleter(&diveMasterModel, ui.divemaster);
 	completers.suit = new QCompleter(&suitModel, ui.suit);
@@ -151,12 +126,11 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	setMinimumWidth(0);
 
 	// Current display of things on Gnome3 looks like shit, so
-	// let`s fix that.
+	// let's fix that.
 	if (isGnome3Session()) {
 		QPalette p;
 		p.setColor(QPalette::Window, QColor(Qt::white));
 		ui.scrollArea->viewport()->setPalette(p);
-		ui.scrollArea_2->viewport()->setPalette(p);
 
 		// GroupBoxes in Gnome3 looks like I'v drawn them...
 		static const QString gnomeCss = QStringLiteral(
@@ -183,23 +157,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	Q_FOREACH (QLabel *label, findChildren<QLabel *>()) {
 		label->setContentsMargins(margins);
 	}
-	ui.cylinders->view()->horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
-	ui.weights->view()->horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
-
-	QSettings s;
-	s.beginGroup("cylinders_dialog");
-	for (int i = 0; i < CylindersModel::COLUMNS; i++) {
-		if ((i == CylindersModel::REMOVE) || (i == CylindersModel::TYPE))
-			continue;
-		bool checked = s.value(QString("column%1_hidden").arg(i)).toBool();
-		action = new QAction(cylindersModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString(), ui.cylinders->view());
-		action->setCheckable(true);
-		action->setData(i);
-		action->setChecked(!checked);
-		connect(action, SIGNAL(triggered(bool)), this, SLOT(toggleTriggeredColumn()));
-		ui.cylinders->view()->setColumnHidden(i, checked);
-		ui.cylinders->view()->horizontalHeader()->addAction(action);
-	}
 
 	connect(ui.diveNotesMessage, &KMessageWidget::showAnimationFinished,
 					ui.location, &DiveLocationLineEdit::fixPopupPosition);
@@ -212,27 +169,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 MainTab::~MainTab()
 {
-	QSettings s;
-	s.beginGroup("cylinders_dialog");
-	for (int i = 0; i < CylindersModel::COLUMNS; i++) {
-		if ((i == CylindersModel::REMOVE) || (i == CylindersModel::TYPE))
-			continue;
-		s.setValue(QString("column%1_hidden").arg(i), ui.cylinders->view()->isColumnHidden(i));
-	}
-}
-
-void MainTab::toggleTriggeredColumn()
-{
-	QAction *action = qobject_cast<QAction *>(sender());
-	int col = action->data().toInt();
-	QTableView *view = ui.cylinders->view();
-
-	if (action->isChecked()) {
-		view->showColumn(col);
-		if (view->columnWidth(col) <= 15)
-			view->setColumnWidth(col, 80);
-	} else
-		view->hideColumn(col);
 }
 
 void MainTab::addMessageAction(QAction *action)
@@ -412,12 +348,6 @@ void MainTab::tripChanged(dive_trip *trip, TripField field)
 	}
 }
 
-void MainTab::clearEquipment()
-{
-	cylindersModel->clear();
-	weightModel->clear();
-}
-
 void MainTab::nextInputField(QKeyEvent *event)
 {
 	keyPressEvent(event);
@@ -495,16 +425,14 @@ void MainTab::updateDiveInfo()
 	// If there is no current dive, disable all widgets except the last, which is the dive site tab.
 	// TODO: Conceptually, the dive site tab shouldn't even be a tab here!
 	bool enabled = current_dive != nullptr;
-	ui.equipmentTab->setEnabled(enabled);
 	ui.notesTab->setEnabled(enabled);
 	for (int i = 0; i < extraWidgets.size() - 1; ++i)
 		extraWidgets[i]->setEnabled(enabled);
 
 	editMode = IGNORE; // don't trigger on changes to the widgets
 
-	for (auto widget : extraWidgets) {
+	for (TabBase *widget: extraWidgets)
 		widget->updateData();
-	}
 
 	UPDATE_TEXT(suit);
 	UPDATE_TEXT(divemaster);
@@ -563,8 +491,6 @@ void MainTab::updateDiveInfo()
 			//ui.location->setText(currentTrip->location);
 			ui.NotesLabel->setText(tr("Trip notes"));
 			ui.notes->setText(currentTrip->notes);
-			clearEquipment();
-			ui.equipmentTab->setEnabled(false);
 			ui.depth->setVisible(false);
 			ui.depthLabel->setVisible(false);
 			ui.duration->setVisible(false);
@@ -615,9 +541,6 @@ void MainTab::updateDiveInfo()
 			// reset labels in case we last displayed trip notes
 			ui.LocationLabel->setText(tr("Location"));
 			ui.NotesLabel->setText(tr("Notes"));
-			ui.equipmentTab->setEnabled(true);
-			cylindersModel->updateDive();
-			weightModel->updateDive();
 			ui.tagWidget->setText(get_taglist_string(current_dive->tag_list));
 			bool isManual = same_string(current_dive->dc.model, "manually added dive");
 			ui.depth->setVisible(isManual);
@@ -660,29 +583,10 @@ void MainTab::updateDiveInfo()
 		ui.tagWidget->clear();
 	}
 	editMode = rememberEM;
-	ui.cylinders->view()->hideColumn(CylindersModel::DEPTH);
-	if (get_dive_dc(&displayed_dive, dc_number)->divemode == CCR)
-		ui.cylinders->view()->showColumn(CylindersModel::USE);
-	else
-		ui.cylinders->view()->hideColumn(CylindersModel::USE);
 
 	if (verbose && current_dive && current_dive->dive_site)
 		qDebug() << "Set the current dive site:" << current_dive->dive_site->uuid;
 	emit diveSiteChanged();
-}
-
-void MainTab::addCylinder_clicked()
-{
-	if (editMode == NONE)
-		enableEdition();
-	cylindersModel->add();
-}
-
-void MainTab::addWeight_clicked()
-{
-	if (editMode == NONE)
-		enableEdition();
-	weightModel->add();
 }
 
 void MainTab::reload()
@@ -694,16 +598,6 @@ void MainTab::reload()
 	LocationInformationModel::instance()->update();
 }
 
-// tricky little macro to edit all the selected dives
-// loop ove all DIVES and do WHAT.
-#define MODIFY_DIVES(DIVES, WHAT)                            \
-	do {                                                 \
-		for (dive *mydive: DIVES) {                  \
-			WHAT;                                \
-		}					     \
-		mark_divelist_changed(true);                 \
-	} while (0)
-
 void MainTab::refreshDisplayedDiveSite()
 {
 	struct dive_site *ds = get_dive_site_for_dive(current_dive);
@@ -711,24 +605,9 @@ void MainTab::refreshDisplayedDiveSite()
 		ui.location->setCurrentDiveSite(ds);
 }
 
-// Get the list of selected dives, but put the current dive at the last position of the vector
-static QVector<dive *> getSelectedDivesCurrentLast()
-{
-	QVector<dive *> res;
-	struct dive *d;
-	int i;
-	for_each_dive (i, d) {
-		if (d->selected && d != current_dive)
-			res.append(d);
-	}
-	res.append(current_dive);
-	return res;
-}
-
 void MainTab::acceptChanges()
 {
 	int addedId = -1;
-	bool do_replot = false;
 
 	if (ui.location->hasFocus())
 		stealFocus();
@@ -739,81 +618,18 @@ void MainTab::acceptChanges()
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	ui.dateEdit->setEnabled(true);
 	hideMessage();
-	ui.equipmentTab->setEnabled(true);
 
-	// Get list of selected dives, but put the current dive last;
-	// this is required in case the invocation wants to compare things
-	// to the original value in current_dive like it should
-	QVector<dive *> selectedDives = getSelectedDivesCurrentLast();
 	if (lastMode == MANUALLY_ADDED_DIVE) {
 		// preserve any changes to the profile
 		free(current_dive->dc.sample);
 		copy_samples(&displayed_dive.dc, &current_dive->dc);
 		addedId = displayed_dive.id;
 	}
-	// now check if something has changed and if yes, edit the selected dives that
-	// were identical with the master dive shown (and mark the divelist as changed)
-	struct dive *cd = current_dive;
 
-	if (cylindersModel->changed) {
-		mark_divelist_changed(true);
-		MODIFY_DIVES(selectedDives,
-			for (int i = 0; i < MAX_CYLINDERS; i++) {
-				if (mydive != cd) {
-					if (same_string(mydive->cylinder[i].type.description, cd->cylinder[i].type.description)) {
-						// if we started out with the same cylinder description (for multi-edit) or if we do copt & paste
-						// make sure that we have the same cylinder type and copy the gasmix, but DON'T copy the start
-						// and end pressures (those are per dive after all)
-						if (!same_string(mydive->cylinder[i].type.description, displayed_dive.cylinder[i].type.description)) {
-							free((void*)mydive->cylinder[i].type.description);
-							mydive->cylinder[i].type.description = copy_string(displayed_dive.cylinder[i].type.description);
-						}
-						mydive->cylinder[i].type.size = displayed_dive.cylinder[i].type.size;
-						mydive->cylinder[i].type.workingpressure = displayed_dive.cylinder[i].type.workingpressure;
-						mydive->cylinder[i].gasmix = displayed_dive.cylinder[i].gasmix;
-						mydive->cylinder[i].cylinder_use = displayed_dive.cylinder[i].cylinder_use;
-						mydive->cylinder[i].depth = displayed_dive.cylinder[i].depth;
-					}
-				}
-			}
-		);
-		for (int i = 0; i < MAX_CYLINDERS; i++) {
-			// copy the cylinder but make sure we have our own copy of the strings
-			free((void*)cd->cylinder[i].type.description);
-			cd->cylinder[i] = displayed_dive.cylinder[i];
-			cd->cylinder[i].type.description = copy_string(displayed_dive.cylinder[i].type.description);
-		}
-		/* if cylinders changed we may have changed gas change events
-		 * and sensor idx in samples as well
-		 * - so far this is ONLY supported for a single selected dive */
-		struct divecomputer *tdc = &current_dive->dc;
-		struct divecomputer *sdc = &displayed_dive.dc;
-		while(tdc && sdc) {
-			free_events(tdc->events);
-			copy_events(sdc, tdc);
-			free(tdc->sample);
-			copy_samples(sdc, tdc);
-			tdc = tdc->next;
-			sdc = sdc->next;
-		}
-		do_replot = true;
-	}
+	// TODO: This is a temporary hack until the equipment tab is included in the undo system:
+	// The equipment tab is hardcoded at the first place of the "extra widgets".
+	((TabDiveEquipment *)extraWidgets[0])->acceptChanges();
 
-	if (weightModel->changed) {
-		mark_divelist_changed(true);
-		MODIFY_DIVES(selectedDives,
-			for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-				if (mydive != cd && (same_string(mydive->weightsystem[i].description, cd->weightsystem[i].description))) {
-					mydive->weightsystem[i] = displayed_dive.weightsystem[i];
-					mydive->weightsystem[i].description = copy_string(displayed_dive.weightsystem[i].description);
-				}
-			}
-		);
-		for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-			cd->weightsystem[i] = displayed_dive.weightsystem[i];
-			cd->weightsystem[i].description = copy_string(displayed_dive.weightsystem[i].description);
-		}
-	}
 	if (lastMode == MANUALLY_ADDED_DIVE) {
 		// we just added or edited the dive, let fixup_dive() make
 		// sure we get the max. depth right
@@ -833,8 +649,6 @@ void MainTab::acceptChanges()
 		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->graphics->replot();
 	} else {
-		if (do_replot)
-			MainWindow::instance()->graphics->replot();
 		MainWindow::instance()->diveList->rememberSelection();
 		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->diveList->restoreSelection();
@@ -843,8 +657,6 @@ void MainTab::acceptChanges()
 	MainWindow::instance()->diveList->verticalScrollBar()->setSliderPosition(scrolledBy);
 	MainWindow::instance()->diveList->setFocus();
 	MainWindow::instance()->exitEditState();
-	cylindersModel->changed = false;
-	weightModel->changed = false;
 	MainWindow::instance()->setEnabledToolbar(true);
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 	editMode = NONE;
@@ -879,9 +691,14 @@ void MainTab::rejectChanges()
 		clear_dive(&displayed_dive);
 	updateDiveInfo();
 
-	for (auto widget : extraWidgets) {
+	for (auto widget: extraWidgets) {
 		widget->updateData();
 	}
+
+	// TODO: This is a temporary hack until the equipment tab is included in the undo system:
+	// The equipment tab is hardcoded at the first place of the "extra widgets".
+	((TabDiveEquipment *)extraWidgets[0])->rejectChanges();
+
 	// the user could have edited the location and then canceled the edit
 	// let's get the correct location back in view
 	MapWidget::instance()->centerOnDiveSite(current_dive ? current_dive->dive_site : nullptr);
@@ -889,10 +706,6 @@ void MainTab::rejectChanges()
 	MainWindow::instance()->graphics->replot();
 	MainWindow::instance()->setEnabledToolbar(true);
 	MainWindow::instance()->exitEditState();
-	cylindersModel->changed = false;
-	weightModel->changed = false;
-	cylindersModel->updateDive();
-	weightModel->updateDive();
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 }
 
@@ -963,10 +776,18 @@ void MainTab::on_watertemp_editingFinished()
 // all dives are shifted by an offset.
 static void shiftTime(QDateTime &dateTime)
 {
+	QVector<dive *> dives;
+	struct dive *d;
+	int i;
+	for_each_dive (i, d) {
+		if (d->selected)
+			dives.append(d);
+	}
+
 	timestamp_t when = dateTime.toTime_t();
 	if (current_dive && current_dive->when != when) {
 		timestamp_t offset = current_dive->when - when;
-		Command::shiftTime(getSelectedDivesCurrentLast(), (int)offset);
+		Command::shiftTime(dives, (int)offset);
 	}
 }
 
@@ -1055,32 +876,6 @@ void MainTab::on_visibility_valueChanged(int value)
 	Command::editVisibility(value, false);
 }
 
-#undef MODIFY_DIVES
-
-void MainTab::editCylinderWidget(const QModelIndex &index)
-{
-	// we need a local copy or bad things happen when enableEdition() is called
-	QModelIndex editIndex = index;
-	if (cylindersModel->changed && editMode == NONE) {
-		enableEdition();
-		return;
-	}
-	if (editIndex.isValid() && editIndex.column() != CylindersModel::REMOVE) {
-		if (editMode == NONE)
-			enableEdition();
-		ui.cylinders->edit(editIndex);
-	}
-}
-
-void MainTab::editWeightWidget(const QModelIndex &index)
-{
-	if (editMode == NONE)
-		enableEdition();
-
-	if (index.isValid() && index.column() != WeightModel::REMOVE)
-		ui.weights->edit(index);
-}
-
 // Remove focus from any active field to update the corresponding value in the dive.
 // Do this by setting the focus to ourself
 void MainTab::stealFocus()
@@ -1102,5 +897,4 @@ void MainTab::clearTabs()
 {
 	for (auto widget: extraWidgets)
 		widget->clear();
-	clearEquipment();
 }
