@@ -41,6 +41,13 @@
 #include <QDesktopServices>
 #include <QStringList>
 
+struct Completers {
+	QCompleter *divemaster;
+	QCompleter *buddy;
+	QCompleter *suit;
+	QCompleter *tags;
+};
+
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	editMode(NONE),
 	lastSelectedDive(true),
@@ -105,6 +112,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.DiveType->insertItems(0, types);
 	connect(ui.DiveType, SIGNAL(currentIndexChanged(int)), this, SLOT(divetype_Changed(int)));
 
+	Completers completers;
 	completers.buddy = new QCompleter(&buddyModel, ui.buddy);
 	completers.divemaster = new QCompleter(&diveMasterModel, ui.divemaster);
 	completers.suit = new QCompleter(&suitModel, ui.suit);
