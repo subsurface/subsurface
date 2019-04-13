@@ -13,6 +13,7 @@
 #include <QUrl>
 #include <QUuid>
 #include <QProgressDialog>
+#include <memory>
 
 #include "ui_mainwindow.h"
 #include "ui_plannerDetails.h"
@@ -84,7 +85,7 @@ public:
 	void exitEditState();
 	void editDiveSite(dive_site *ds);
 
-	MainTab *mainTab;
+	std::unique_ptr<MainTab> mainTab;
 	PlannerDetails *plannerDetails;
 	PlannerSettingsWidget *divePlannerSettingsWidget;
 	ProfileWidget2 *graphics;
