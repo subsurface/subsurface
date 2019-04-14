@@ -3596,8 +3596,6 @@ static int split_dive_at(const struct dive *dive, int a, int b, struct dive **ou
 	struct divecomputer *dc1, *dc2;
 	struct event *event, **evp;
 
-	*out1 = *out2 = NULL;
-
 	/* if we can't find the dive in the dive list, don't bother */
 	if ((nr = get_divenr(dive)) < 0)
 		return -1;
@@ -3727,6 +3725,7 @@ int split_dive(const struct dive *dive, struct dive **new1, struct dive **new2)
 	int at_surface, surface_start;
 	const struct divecomputer *dc;
 
+	*new1 = *new2 = NULL;
 	if (!dive)
 		return -1;
 
@@ -3768,6 +3767,7 @@ int split_dive_at_time(const struct dive *dive, duration_t time, struct dive **n
 	int i = 0;
 	struct sample *sample = dive->dc.sample;
 
+	*new1 = *new2 = NULL;
 	if (!dive)
 		return -1;
 	while(sample->time.seconds < time.seconds) {
