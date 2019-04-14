@@ -207,6 +207,7 @@ void free_dive_site(struct dive_site *ds)
 		free(ds->name);
 		free(ds->notes);
 		free(ds->description);
+		free(ds->dives.dives);
 		free_taxonomy(&ds->taxonomy);
 		free(ds);
 	}
