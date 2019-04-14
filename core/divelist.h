@@ -69,6 +69,7 @@ void report_datafile_version(int version);
 int get_dive_id_closest_to(timestamp_t when);
 void clear_dive_file_data();
 void clear_table(struct dive_table *table);
+void clear_trip_table(struct trip_table *table);
 
 typedef enum {PO2VAL, SINGLE_EXP, SINGLE_SLOPE, DAILY_EXP, DAILY_SLOPE, NO_COLUMNS} cns_table_headers;
 

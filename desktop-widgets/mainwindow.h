@@ -139,6 +139,7 @@ slots:
 	void initialUiSetup();
 
 	void on_actionImportDiveLog_triggered();
+	void on_actionImportDiveSites_triggered();
 
 	/* TODO: Move those slots below to it's own class */
 	void on_actionExport_triggered();

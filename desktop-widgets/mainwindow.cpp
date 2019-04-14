@@ -1748,6 +1748,34 @@ void MainWindow::on_actionImportDiveLog_triggered()
 	}
 }
 
+void MainWindow::on_actionImportDiveSites_triggered()
+{
+	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open dive site file"), lastUsedDir(), filter_import());
+
+	if (fileNames.isEmpty())
+		return;
+	updateLastUsedDir(QFileInfo(fileNames[0]).dir().path());
+
+	struct dive_table table = { 0 };
+	struct trip_table trips = { 0 };
+	struct dive_site_table sites = { 0 };
+
+	for (const QString &s: fileNames) {
+		QByteArray fileNamePtr = QFile::encodeName(s);
+		parse_file(fileNamePtr.data(), &table, &trips, &sites);
+	}
+	// The imported dive sites still have pointers to imported dives - remove them
+	for (int i = 0; i < sites.nr; ++i)
+		sites.dive_sites[i]->dives.nr = 0;
+
+	// Now we can clear the imported dives and trips.
+	clear_table(&table);
+	clear_trip_table(&trips);
+
+	QString source = fileNames.size() == 1 ? fileNames[0] : tr("multiple files");
+	Command::importDiveSites(&sites, source);
+}
+
 void MainWindow::editCurrentDive()
 {
 	if (!current_dive)

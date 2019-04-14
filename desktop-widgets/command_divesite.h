@@ -21,10 +21,26 @@ private:
 
 	// Note: we only add one dive site. Nevertheless, we use vectors so that we
 	// can reuse the dive site deletion code.
-	// For redo
+	// For undo
 	std::vector<dive_site *> sitesToRemove;
 
+	// For redo
+	std::vector<OwningDiveSitePtr> sitesToAdd;
+};
+
+class ImportDiveSites : public Base {
+public:
+	// Note: the dive site table is consumed after the call it will be empty.
+	ImportDiveSites(struct dive_site_table *sites, const QString &source);
+private:
+	bool workToBeDone() override;
+	void undo() override;
+	void redo() override;
+
 	// For undo
+	std::vector<dive_site *> sitesToRemove;
+
+	// For redo
 	std::vector<OwningDiveSitePtr> sitesToAdd;
 };
 
