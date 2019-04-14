@@ -715,6 +715,7 @@ void free_trip(dive_trip_t *trip)
 	if (trip) {
 		free(trip->location);
 		free(trip->notes);
+		free(trip->dives.dives);
 		free(trip);
 	}
 }
