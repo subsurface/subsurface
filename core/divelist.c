@@ -844,6 +844,12 @@ MAKE_SORT(trip_table, struct dive_trip *, trips, comp_trips)
 MAKE_REMOVE(dive_table, struct dive *, dive)
 MAKE_REMOVE(trip_table, struct dive_trip *, trip)
 
+static void insert_dive(struct dive_table *table, struct dive *d)
+{
+	int idx = dive_table_get_insertion_index(table, d);
+	add_to_dive_table(table, idx, d);
+}
+
 /* remove a dive from the trip it's associated to, but don't delete the
  * trip if this was the last dive in the trip. the caller is responsible
  * for removing the trip, if the trip->dives.nr went to 0.
@@ -877,13 +883,11 @@ void remove_dive_from_trip(struct dive *dive, struct trip_table *trip_table_arg)
  * from trip beforehand. */
 void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 {
-	int idx;
 	if (dive->divetrip == trip)
 		return;
 	if (dive->divetrip)
 		fprintf(stderr, "Warning: adding dive to trip that has trip set\n");
-	idx = dive_table_get_insertion_index(&trip->dives, dive);
-	add_to_dive_table(&trip->dives, idx, dive);
+	insert_dive(&trip->dives, dive);
 	dive->divetrip = trip;
 }
 
@@ -1084,12 +1088,11 @@ void delete_single_dive(int idx)
 	delete_dive_from_table(&dive_table, idx);
 }
 
-/* add a dive at the given index in the global dive table and keep track
- * of the number of selected dives. if the index is negative, the dive will
- * be added according to dive_less_than() order */
-void add_single_dive(int idx, struct dive *dive)
+/* add a dive at the end of the global dive table and keep track
+ * of the number of selected dives. */
+void append_dive(struct dive *dive)
 {
-	add_to_dive_table(&dive_table, idx, dive);
+	add_to_dive_table(&dive_table, dive_table.nr, dive);
 	if (dive->selected)
 		amount_selected++;
 }
@@ -1278,12 +1281,6 @@ static void merge_imported_dives(struct dive_table *table)
 	}
 }
 
-static void insert_dive(struct dive_table *table, struct dive *d)
-{
-	int idx = dive_table_get_insertion_index(table, d);
-	add_to_dive_table(table, idx, d);
-}
-
 /*
  * Clear a dive_table, trip_table and dive_site_table. Think about generating these with macros.
  */
@@ -1470,10 +1467,8 @@ void add_imported_dives(struct dive_table *import_table, struct trip_table *impo
 	dives_to_remove.nr = 0;
 
 	/* Add new dives */
-	for (i = 0; i < dives_to_add.nr; i++) {
-		idx = dive_table_get_insertion_index(&dive_table, dives_to_add.dives[i]);
-		add_single_dive(idx, dives_to_add.dives[i]);
-	}
+	for (i = 0; i < dives_to_add.nr; i++)
+		insert_dive(&dive_table, dives_to_add.dives[i]);
 	dives_to_add.nr = 0;
 
 	/* Add new trips */

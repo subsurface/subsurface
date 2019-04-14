@@ -278,7 +278,7 @@ QString DiveListModel::startAddDive()
 	nr++;
 	d->number = nr;
 	d->dc.model = strdup("manually added dive");
-	add_single_dive(dive_table.nr, d);
+	append_dive(d);
 	insertDive(get_idx_by_uniq_id(d->id), new DiveObjectHelper(d));
 	return QString::number(d->id);
 }
