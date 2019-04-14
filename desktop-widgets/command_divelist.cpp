@@ -32,13 +32,9 @@ DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<OwningTripPtr> &t
 		current_dive = nullptr;
 	}
 
-	DiveToAdd res;
-	res.idx = get_divenr(d);
-	if (res.idx < 0)
-		qWarning() << "Deletion of unknown dive!";
-
 	// remove dive from trip and site - if this is the last dive in the trip
 	// remove the whole trip.
+	DiveToAdd res;
 	res.trip = unregister_dive_from_trip(d);
 	if (d->dive_site)
 		diveSiteCountChanged(d->dive_site);
@@ -48,7 +44,11 @@ DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<OwningTripPtr> &t
 		tripsToAdd.emplace_back(res.trip);	// Take ownership of trip
 	}
 
-	res.dive.reset(unregister_dive(res.idx));	// Remove dive from backend
+	int idx = get_divenr(d);
+	if (idx < 0)
+		qWarning() << "Deletion of unknown dive!";
+
+	res.dive.reset(unregister_dive(idx));		// Remove dive from backend
 
 	return res;
 }
@@ -76,7 +76,8 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 	bool show = MultiFilterSortModel::instance()->showDive(res);
 	res->hidden_by_filter = !show;
 
-	add_single_dive(d.idx, res);		// Return ownership to backend
+	int idx = dive_table_get_insertion_index(&dive_table, res);
+	add_to_dive_table(&dive_table, idx, res);	// Return ownership to backend
 	invalidate_dive_cache(res);		// Ensure that dive is written in git_save()
 
 	// If the dive to be removed is selected, we will inform the frontend
@@ -393,7 +394,7 @@ AddDive::AddDive(dive *d, bool autogroup, bool newNumber)
 	if (newNumber)
 		divePtr->number = get_dive_nr_at_idx(idx);
 
-	divesToAdd.dives.push_back({ std::move(divePtr), trip, site, idx });
+	divesToAdd.dives.push_back({ std::move(divePtr), trip, site });
 	if (allocTrip)
 		divesToAdd.trips.push_back(std::move(allocTrip));
 }
@@ -463,13 +464,8 @@ ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, str
 		divePtr->divetrip = nullptr; // See above in AddDive::AddDive()
 		dive_site *site = divePtr->dive_site;
 		divePtr->dive_site = nullptr; // See above in AddDive::AddDive()
-		int idx = dive_table_get_insertion_index(&dive_table, divePtr.get());
 
-		// Note: The dives are added in reverse order of the divesToAdd array.
-		// This, and the fact that we populate the array in chronological order
-		// means that wo do *not* have to manipulated the indices.
-		// Yes, that's all horribly subtle.
-		divesToAdd.dives.push_back({ std::move(divePtr), trip, site, idx });
+		divesToAdd.dives.push_back({ std::move(divePtr), trip, site });
 	}
 
 	// Add dive to be deleted to the divesToRemove structure
@@ -719,28 +715,12 @@ SplitDivesBase::SplitDivesBase(dive *d, std::array<dive *, 2> newDives)
 	newDives[0]->selected = false;
 	newDives[1]->selected = false;
 
-	// Getting the insertion indexes correct is actually not easy, as we don't know
-	// which of the dives will land first when splitting out dive computers!
-	// TODO: We really should think about not storing the insertion index in the undo
-	// command, but calculating it on the fly on execution.
-	int idx_old = get_divenr(d);
-	int idx1 = dive_table_get_insertion_index(&dive_table, newDives[0]);
-	int idx2 = dive_table_get_insertion_index(&dive_table, newDives[1]);
-	if (idx1 > idx_old)
-		--idx1;
-	if (idx2 > idx_old)
-		--idx2;
-	if (idx1 == idx2 && dive_less_than(newDives[0], newDives[1]))
-		++idx2;
-
 	diveToSplit.dives.push_back(d);
 	splitDives.dives.resize(2);
 	splitDives.dives[0].dive.reset(newDives[0]);
 	splitDives.dives[0].trip = d->divetrip;
-	splitDives.dives[0].idx = idx1;
 	splitDives.dives[1].dive.reset(newDives[1]);
 	splitDives.dives[1].trip = d->divetrip;
-	splitDives.dives[1].idx = idx2;
 }
 
 bool SplitDivesBase::workToBeDone()
@@ -882,7 +862,6 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 
 	mergedDive.dives.resize(1);
 	mergedDive.dives[0].dive = std::move(d);
-	mergedDive.dives[0].idx = get_divenr(dives[0]);
 	mergedDive.dives[0].trip = preferred_trip;
 	divesToMerge.dives = dives.toStdVector();
 }
