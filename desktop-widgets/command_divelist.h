@@ -16,7 +16,6 @@ struct DiveToAdd {
 	OwningDivePtr	 dive;		// Dive to add
 	dive_trip	*trip;		// Trip the dive belongs to, may be null
 	dive_site	*site;		// Site the dive is associated with, may be null
-	int		 idx;		// Position in divelist
 };
 
 // Multiple trips, dives and dive sites that have to be added for a command
