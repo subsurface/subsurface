@@ -59,7 +59,7 @@ void DivePictureModel::updateDivePictures()
 		if (dive->selected) {
 			int first = pictures.count();
 			FOR_EACH_PICTURE(dive)
-				pictures.push_back({ dive->id, picture, picture->filename, {}, picture->offset.seconds });
+				pictures.push_back({ dive->id, picture, picture->filename, {}, picture->offset.seconds, {.seconds = 0}});
 
 			// Sort pictures of this dive by offset.
 			// Thus, the list will be sorted by (diveId, offset).
@@ -101,6 +101,11 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 		case Qt::UserRole:
 			ret = entry.diveId;
 			break;
+		case Qt::UserRole + 1:
+			ret = entry.offsetSeconds;
+			break;
+		case Qt::UserRole + 2:
+			ret = entry.length.seconds;
 		}
 	} else if (index.column() == 1) {
 		switch (role) {
@@ -197,8 +202,10 @@ void DivePictureModel::updateThumbnail(QString filename, QImage thumbnail, durat
 {
 	int i = findPictureId(filename);
 	if (i >= 0) {
-		if (duration.seconds > 0)
+		if (duration.seconds > 0) {
 			addDurationToThumbnail(thumbnail, duration);	// If we know the duration paint it on top of the thumbnail
+			pictures[i].length = duration;
+		}
 		pictures[i].image = thumbnail;
 		emit dataChanged(createIndex(i, 0), createIndex(i, 1));
 	}

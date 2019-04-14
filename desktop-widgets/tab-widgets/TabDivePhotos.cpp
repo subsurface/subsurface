@@ -11,6 +11,8 @@
 #include <QUrl>
 #include <QMessageBox>
 #include <QFileInfo>
+#include "core/save-profiledata.h"
+#include "core/membuffer.h"
 
 //TODO: Remove those in the future.
 #include "../mainwindow.h"
@@ -57,6 +59,7 @@ void TabDivePhotos::contextMenuEvent(QContextMenuEvent *event)
 	popup.addAction(tr("Delete all media files"), this, SLOT(removeAllPhotos()));
 	popup.addAction(tr("Open folder of selected media files"), this, SLOT(openFolderOfSelectedFiles()));
 	popup.addAction(tr("Recalculate selected thumbnails"), this, SLOT(recalculateSelectedThumbnails()));
+	popup.addAction(tr("Save dive data as subtitles"), this, SLOT(saveSubtitles()));
 	popup.exec(event->globalPos());
 	event->accept();
 }
@@ -104,6 +107,40 @@ void TabDivePhotos::openFolderOfSelectedFiles()
 void TabDivePhotos::recalculateSelectedThumbnails()
 {
 	Thumbnailer::instance()->calculateThumbnails(getSelectedFilenames());
+}
+
+void TabDivePhotos::saveSubtitles()
+{
+	QVector<QString> selectedPhotos;
+	if (!ui->photosView->selectionModel()->hasSelection())
+		return;
+	QModelIndexList indexes = ui->photosView->selectionModel()->selectedRows();
+	if (indexes.count() == 0)
+		indexes = ui->photosView->selectionModel()->selectedIndexes();
+	selectedPhotos.reserve(indexes.count());
+	for (const auto &photo: indexes) {
+		if (photo.isValid()) {
+			QString fileUrl = photo.data(Qt::DisplayPropertyRole).toString();
+			if (!fileUrl.isEmpty()) {
+				QFileInfo fi = QFileInfo(fileUrl);
+				QFile subtitlefile;
+				subtitlefile.setFileName(QString(fi.path()) + "/" + fi.completeBaseName() + ".ass");
+				int offset = photo.data(Qt::UserRole + 1).toInt();
+				int duration = photo.data(Qt::UserRole + 2).toInt();
+				// Only videos have non-zero duration
+				if (!duration)
+					continue;
+				struct membuffer b = { 0 };
+				save_subtitles_buffer(&b, &displayed_dive, offset, duration);
+				char *data = detach_buffer(&b);
+				subtitlefile.open(QIODevice::WriteOnly);
+				subtitlefile.write(data, strlen(data));
+				subtitlefile.close();
+				free(data);
+			}
+
+		}
+	}
 }
 
 //TODO: This looks overly wrong. We shouldn't call MainWindow to retrieve the DiveList to add Images.
