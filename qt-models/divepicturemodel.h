@@ -14,6 +14,7 @@ struct PictureEntry {
 	QString filename;
 	QImage image;
 	int offsetSeconds;
+	duration_t length;
 };
 
 class DivePictureModel : public QAbstractTableModel {

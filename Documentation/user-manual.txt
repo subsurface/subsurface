@@ -1638,6 +1638,17 @@ or play the video, overlaying the _Subsurface_ window. Delete media from the _Me
 it (single-click) and then by pressing the _Del_ key on the keyboard. This removes it BOTH
 from the _Media_ tab as well as the dive profile.
 
+By right-clicking on a video and selecting the "Save dive data as subtitles" option, a subtitles
+file with the same name as the video but with an ".ass" extension is created that contains
+time dependent dive data (runtime, depth, temperature, NDL, TTS, surface GF) to be overlayed
+with the video. The VLC video player automatically finds this file upon playing the video
+and overlays the dive data. Alternatively, the ffmpeg video encoder can be used to create a 
+new video file with the dive data encoded in the video stream. To do so run
+
+	ffmpeg -v video.mp4 -vf "ass=video.ass" video_with_data.mp4
+
+from the command line. You need to have the libass library installed.
+
 ==== Media on an external hard disk
 Most underwater photographers store media on an external drive. If such a drive can be mapped by the operating system
 (almost always the case) the media can be directly accessed by _Subsurface_. This eases the interaction

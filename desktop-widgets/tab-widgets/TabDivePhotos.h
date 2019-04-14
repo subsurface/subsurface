@@ -29,6 +29,7 @@ private slots:
 	void recalculateSelectedThumbnails();
 	void openFolderOfSelectedFiles();
 	void changeZoomLevel(int delta);
+	void saveSubtitles();
 
 private:
 	Ui::TabDivePhotos *ui;
