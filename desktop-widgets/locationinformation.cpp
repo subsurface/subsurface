@@ -194,10 +194,8 @@ void LocationInformationWidget::initFields(dive_site *ds)
 		filter_model.set(ds, ds->location);
 		updateLabels();
 		enableLocationButtons(dive_site_has_gps_location(ds));
-		QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(ui.diveSiteListView->model());
 		MultiFilterSortModel::instance()->startFilterDiveSites(QVector<dive_site *>{ ds });
-		if (m)
-			m->invalidate();
+		filter_model.invalidate();
 	} else {
 		filter_model.set(0, location_t { degrees_t{ 0 }, degrees_t{ 0 } });
 		clearLabels();
