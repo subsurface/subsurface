@@ -451,6 +451,8 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		char warning[1000] = "";
 		char mingas[1000] = "";
 		cylinder_t *cyl = &dive->cylinder[gasidx];
+		if (cyl->cylinder_use == NOT_USED)
+			continue;
 		if (cylinder_none(cyl))
 			break;
 
