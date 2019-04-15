@@ -45,10 +45,12 @@ private:
 
 class DiveLocationFilterProxyModel : public QSortFilterProxyModel {
 	Q_OBJECT
+	QString filter;
 public:
 	DiveLocationFilterProxyModel(QObject *parent = 0);
 	bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
 	bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const override;
+	void setFilter(const QString &filter);
 };
 
 class DiveLocationModel : public QAbstractTableModel {
