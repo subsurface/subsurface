@@ -262,6 +262,7 @@ void DiveLocationFilterProxyModel::setFilter(const QString &filterIn)
 {
 	filter = filterIn;
 	invalidate();
+	sort(LocationInformationModel::NAME);
 }
 
 bool DiveLocationFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex&) const
@@ -275,7 +276,10 @@ bool DiveLocationFilterProxyModel::filterAcceptsRow(int source_row, const QModel
 
 bool DiveLocationFilterProxyModel::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
 {
-	return source_left.data().toString() < source_right.data().toString();
+	// The first two entries are special - we never want to change their order
+	if (source_left.row() <= 1 || source_right.row() <= 1)
+		return source_left.row() < source_right.row();
+	return source_left.data().toString().compare(source_right.data().toString(), Qt::CaseInsensitive) < 0;
 }
 
 DiveLocationModel::DiveLocationModel(QObject *)
@@ -367,7 +371,7 @@ DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent) : QLineEdit(parent),
 	connect(view, &DiveLocationListView::currentIndexChanged, this, &DiveLocationLineEdit::currentChanged);
 }
 
-bool DiveLocationLineEdit::eventFilter(QObject*, QEvent *e)
+bool DiveLocationLineEdit::eventFilter(QObject *, QEvent *e)
 {
 	if (e->type() == QEvent::KeyPress) {
 		QKeyEvent *keyEv = (QKeyEvent *)e;
@@ -553,6 +557,7 @@ void DiveLocationLineEdit::showPopup()
 	if (!view->isVisible()) {
 		setTemporaryDiveSiteName(text());
 		proxy->invalidate();
+		proxy->sort(LocationInformationModel::NAME);
 		view->show();
 	}
 }
