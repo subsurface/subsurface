@@ -267,6 +267,11 @@ void DiveLocationFilterProxyModel::setFilter(const QString &filterIn)
 
 bool DiveLocationFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex&) const
 {
+	// We don't want to show the first two entries (add dive site with that name)
+	// if there is no filter text.
+	if (filter.isEmpty() && source_row <= 1)
+		return false;
+
 	if (source_row == 0)
 		return true;
 
