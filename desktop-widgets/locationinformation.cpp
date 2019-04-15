@@ -256,11 +256,15 @@ void LocationInformationWidget::reverseGeocode()
 	Command::editDiveSiteTaxonomy(diveSite, taxonomy);
 }
 
-DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject*)
+DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject *)
 {
 }
 
-DiveLocationLineEdit *location_line_edit = 0;
+void DiveLocationFilterProxyModel::setFilter(const QString &filterIn)
+{
+	filter = filterIn;
+	invalidate();
+}
 
 bool DiveLocationFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex&) const
 {
@@ -268,7 +272,7 @@ bool DiveLocationFilterProxyModel::filterAcceptsRow(int source_row, const QModel
 		return true;
 
 	QString sourceString = sourceModel()->index(source_row, LocationInformationModel::NAME).data(Qt::DisplayRole).toString();
-	return sourceString.toLower().contains(location_line_edit->text().toLower());
+	return sourceString.contains(filter, Qt::CaseInsensitive);
 }
 
 bool DiveLocationFilterProxyModel::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
@@ -276,7 +280,7 @@ bool DiveLocationFilterProxyModel::lessThan(const QModelIndex &source_left, cons
 	return source_left.data().toString() < source_right.data().toString();
 }
 
-DiveLocationModel::DiveLocationModel(QObject*)
+DiveLocationModel::DiveLocationModel(QObject *)
 {
 	resetModel();
 }
@@ -343,8 +347,6 @@ DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent) : QLineEdit(parent),
 							      currType(NO_DIVE_SITE),
 							      currDs(nullptr)
 {
-	location_line_edit = this;
-
 	proxy->setSourceModel(model);
 	proxy->setFilterKeyColumn(LocationInformationModel::NAME);
 
@@ -452,7 +454,7 @@ static struct dive_site *get_dive_site_name_start_which_str(const QString &str)
 	return NULL;
 }
 
-void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString&)
+void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString &name)
 {
 	// This function fills the first two entries with potential names of
 	// a dive site to be generated. The first entry is simply the entered
@@ -460,21 +462,21 @@ void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString&)
 	// with the entered text.
 	QModelIndex i0 = model->index(0, LocationInformationModel::NAME);
 	QModelIndex i1 = model->index(1, LocationInformationModel::NAME);
-	model->setData(i0, text());
+	model->setData(i0, name);
 
 	// Note: if i1_name stays empty, the line will automatically
 	// be filtered out by the proxy filter, as it does not contain
 	// the user entered text.
 	QString i1_name;
-	if (struct dive_site *ds = get_dive_site_name_start_which_str(text())) {
+	if (struct dive_site *ds = get_dive_site_name_start_which_str(name)) {
 		const QString orig_name = QString(ds->name).toLower();
-		const QString new_name = text().toLower();
+		const QString new_name = name.toLower();
 		if (new_name != orig_name)
 			i1_name = QString(ds->name);
 	}
 
 	model->setData(i1, i1_name);
-	proxy->invalidate();
+	proxy->setFilter(name);
 	fixPopupPosition();
 	if (!view->isVisible())
 		view->show();
