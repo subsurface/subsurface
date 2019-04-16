@@ -31,7 +31,6 @@ struct keyword_action {
 };
 #define ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
 
-extern void parse_location(char *buf, location_t *);
 git_blob *git_tree_entry_blob(git_repository *repo, const git_tree_entry *entry);
 
 static char *get_utf8(struct membuffer *b)
