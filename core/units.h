@@ -138,6 +138,8 @@ typedef struct pos {
 	degrees_t lat, lon;
 } location_t;
 
+extern void parse_location(const char *, location_t *);
+
 static inline bool has_location(const location_t *loc)
 {
 	return loc->lat.udeg || loc->lon.udeg;

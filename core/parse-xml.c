@@ -1088,7 +1088,7 @@ static int uddf_dive_match(struct dive *dive, const char *name, char *buf, struc
  * We don't do exponentials etc, if somebody does
  * GPS locations in that format, they are insane.
  */
-static degrees_t parse_degrees(char *buf, char **end)
+static degrees_t parse_degrees(const char *buf, const char **end)
 {
 	int sign = 1, decimals = 6, value = 0;
 	degrees_t ret;
@@ -1133,7 +1133,7 @@ static degrees_t parse_degrees(char *buf, char **end)
 
 static void gps_lat(char *buffer, struct dive *dive, struct parser_state *state)
 {
-	char *end;
+	const char *end;
 	location_t location = { };
 	struct dive_site *ds = get_dive_site_for_dive(dive);
 
@@ -1149,7 +1149,7 @@ static void gps_lat(char *buffer, struct dive *dive, struct parser_state *state)
 
 static void gps_long(char *buffer, struct dive *dive, struct parser_state *state)
 {
-	char *end;
+	const char *end;
 	location_t location = { };
 	struct dive_site *ds = get_dive_site_for_dive(dive);
 
@@ -1164,9 +1164,9 @@ static void gps_long(char *buffer, struct dive *dive, struct parser_state *state
 }
 
 /* We allow either spaces or a comma between the decimal degrees */
-void parse_location(char *buffer, location_t *loc)
+void parse_location(const char *buffer, location_t *loc)
 {
-	char *end;
+	const char *end;
 	loc->lat = parse_degrees(buffer, &end);
 	if (*end == ',') end++;
 	loc->lon = parse_degrees(end, &end);

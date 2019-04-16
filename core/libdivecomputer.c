@@ -570,8 +570,6 @@ static void set_dc_serial(struct divecomputer *dc, const char *serial)
 		dc->deviceid = calculate_string_hash(serial);
 }
 
-extern void parse_location(char *, location_t *);
-
 static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_field_string_t *str)
 {
 	// Our dive ID is the string hash of the "Dive ID" string
