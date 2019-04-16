@@ -452,9 +452,6 @@ void split_divecomputer(const struct dive *src, int num, struct dive **out1, str
 #define for_each_dc(_dive, _dc) \
 	for (_dc = &_dive->dc; _dc; _dc = _dc->next)
 
-#define for_each_gps_location(_i, _x) \
-	for ((_i) = 0; ((_x) = get_gps_location(_i, &gps_location_table)) != NULL; (_i)++)
-
 extern struct dive *get_dive_by_uniq_id(int id);
 extern int get_idx_by_uniq_id(int id);
 extern bool dive_site_has_gps_location(const struct dive_site *ds);
