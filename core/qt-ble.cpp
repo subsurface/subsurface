@@ -211,7 +211,7 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 
 		WAITFOR(!receivedPackets.isEmpty(), timeout);
 		if (receivedPackets.isEmpty())
-			return DC_STATUS_IO;
+			return DC_STATUS_TIMEOUT;
 	}
 
 	QByteArray packet = receivedPackets.takeFirst();
