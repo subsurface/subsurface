@@ -1,5 +1,8 @@
 <RCC>
 	<qresource prefix="/qml">
+		<!-- ********** Templates ********** -->
+		<file>TemplateSection.qml</file>
+
 		<!-- ********** qml ********** -->
 		<file>About.qml</file>
 		<file>CloudCredentials.qml</file>
