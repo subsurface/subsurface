@@ -341,6 +341,14 @@ static struct dive_site *createDiveSite(const QString &name)
 		copy_dive_site(old, ds);
 		free(ds->name); // Free name, as we will overwrite it with our own version
 	}
+
+	// If the current dive has a location, use that as location for the new dive site
+	if (current_dive) {
+		location_t loc = dive_get_gps_location(current_dive);
+		if (has_location(&loc))
+			ds->location = loc;
+	}
+
 	ds->name = copy_qstring(name);
 	return ds;
 }

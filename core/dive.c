@@ -4500,6 +4500,53 @@ int dive_has_gps_location(const struct dive *dive)
 	return dive_site_has_gps_location(dive->dive_site);
 }
 
+/* Extract GPS location of a dive computer stored in the GPS1
+ * or GPS2 extra data fields */
+static location_t dc_get_gps_location(const struct divecomputer *dc)
+{
+	location_t res = { };
+
+	for (struct extra_data *data = dc->extra_data; data; data = data->next) {
+		if (!strcmp(data->key, "GPS1")) {
+			parse_location(data->value, &res);
+			/* If we found a valid GPS1 field exit early since
+			 * it has priority over GPS2 */
+			if (has_location(&res))
+				break;
+		} else if (!strcmp(data->key, "GPS2")) {
+			/* For GPS2 fields continue searching, as we might
+			 * still find a GPS1 field */
+			parse_location(data->value, &res);
+		}
+	}
+	return res;
+}
+
+/* Get GPS location for a dive. Highest priority is given to the GPS1
+ * extra data written by libdivecomputer, as this comes from a real GPS
+ * device. If that doesn't exits, use the currently set dive site.
+ * This function is potentially slow, therefore only call sparingly
+ * and remember the result.
+ */
+location_t dive_get_gps_location(const struct dive *d)
+{
+	location_t res = { };
+
+	for (const struct divecomputer *dc = &d->dc; dc; dc = dc->next) {
+		res = dc_get_gps_location(dc);
+		if (has_location(&res))
+			return res;
+	}
+
+	/* No libdivecomputer generated GPS data found.
+	 * Let's use the location of the current dive site.
+	 */
+	if (d->dive_site)
+		res = d->dive_site->location;
+
+	return res;
+}
+
 /* When evaluated at the time of a gasswitch, this returns the new gas */
 struct gasmix get_gasmix(const struct dive *dive, const struct divecomputer *dc, int time, const struct event **evp, struct gasmix gasmix)
 {

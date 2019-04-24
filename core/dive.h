@@ -456,6 +456,7 @@ extern struct dive *get_dive_by_uniq_id(int id);
 extern int get_idx_by_uniq_id(int id);
 extern bool dive_site_has_gps_location(const struct dive_site *ds);
 extern int dive_has_gps_location(const struct dive *dive);
+extern location_t dive_get_gps_location(const struct dive *d);
 
 extern int report_error(const char *fmt, ...);
 extern void set_error_cb(void(*cb)(char *));	// Callback takes ownership of passed string
