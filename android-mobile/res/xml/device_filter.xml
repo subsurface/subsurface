@@ -19,8 +19,10 @@
     <usb-device vendor-id="0x1493" product-id="0x30"/>
     <!-- EON Steel core -->
     <usb-device vendor-id="0x1493" product-id="0x33"/>
-    <!-- Scubapro G2 -->
+    <!-- Scubapro G2 (wrist/console/hud) -->
     <usb-device vendor-id="0x2e6c" product-id="0x3201"/>
+    <usb-device vendor-id="0x2e6c" product-id="0x3211"/>
+    <usb-device vendor-id="0x2e6c" product-id="0x4201"/>
     <!-- Scubapro Aladin Square -->
     <usb-device vendor-id="0xc251" product-id="0x2006"/>
     <!-- Atomics Aquatics Cobalt -->
