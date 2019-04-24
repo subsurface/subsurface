@@ -254,7 +254,7 @@ void LocationInformationWidget::reverseGeocode()
 	Command::editDiveSiteTaxonomy(diveSite, taxonomy);
 }
 
-DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject *)
+DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject *) : currentLocation({0, 0})
 {
 }
 
@@ -262,6 +262,12 @@ void DiveLocationFilterProxyModel::setFilter(const QString &filterIn)
 {
 	filter = filterIn;
 	invalidate();
+	sort(LocationInformationModel::NAME);
+}
+
+void DiveLocationFilterProxyModel::setCurrentLocation(location_t loc)
+{
+	currentLocation = loc;
 	sort(LocationInformationModel::NAME);
 }
 
@@ -284,6 +290,14 @@ bool DiveLocationFilterProxyModel::lessThan(const QModelIndex &source_left, cons
 	// The first two entries are special - we never want to change their order
 	if (source_left.row() <= 1 || source_right.row() <= 1)
 		return source_left.row() < source_right.row();
+
+	// If there is a current location, sort by that - otherwise use the provided column
+	if (has_location(&currentLocation)) {
+		// The dive sites are -2 because of the first two items.
+		struct dive_site *ds1 = get_dive_site(source_left.row() - 2, &dive_site_table);
+		struct dive_site *ds2 = get_dive_site(source_right.row() - 2, &dive_site_table);
+		return get_distance(&ds1->location, &currentLocation) < get_distance(&ds2->location, &currentLocation);
+	}
 	return source_left.data().toString().compare(source_right.data().toString(), Qt::CaseInsensitive) < 0;
 }
 
@@ -545,8 +559,9 @@ void DiveLocationLineEdit::fixPopupPosition()
 	}
 }
 
-void DiveLocationLineEdit::setCurrentDiveSite(struct dive_site *ds)
+void DiveLocationLineEdit::setCurrentDiveSite(struct dive *d)
 {
+	struct dive_site *ds = get_dive_site_for_dive(d);
 	currDs = ds;
 	if (!currDs) {
 		currType = NO_DIVE_SITE;
@@ -554,6 +569,9 @@ void DiveLocationLineEdit::setCurrentDiveSite(struct dive_site *ds)
 	} else {
 		setText(ds->name);
 	}
+
+	location_t currentLocation = d ? dive_get_gps_location(d) : location_t{0, 0};
+	proxy->setCurrentLocation(currentLocation);
 }
 
 void DiveLocationLineEdit::showPopup()

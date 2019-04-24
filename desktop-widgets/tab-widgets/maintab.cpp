@@ -396,15 +396,14 @@ void MainTab::updateDateTime(struct dive *d)
 void MainTab::updateDiveSite(struct dive *d)
 {
 	struct dive_site *ds = d->dive_site;
+	ui.location->setCurrentDiveSite(d);
 	if (ds) {
-		ui.location->setCurrentDiveSite(ds);
 		ui.locationTags->setText(constructLocationTags(&ds->taxonomy, true));
 
 		if (ui.locationTags->text().isEmpty() && has_location(&ds->location))
 			ui.locationTags->setText(printGPSCoords(&ds->location));
 		ui.editDiveSiteButton->setEnabled(true);
 	} else {
-		ui.location->clear();
 		ui.locationTags->clear();
 		ui.editDiveSiteButton->setEnabled(false);
 	}
@@ -601,9 +600,7 @@ void MainTab::reload()
 
 void MainTab::refreshDisplayedDiveSite()
 {
-	struct dive_site *ds = get_dive_site_for_dive(current_dive);
-	if (ds)
-		ui.location->setCurrentDiveSite(ds);
+	ui.location->setCurrentDiveSite(current_dive);
 }
 
 void MainTab::acceptChanges()

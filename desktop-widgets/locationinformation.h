@@ -51,6 +51,9 @@ public:
 	bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
 	bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const override;
 	void setFilter(const QString &filter);
+	void setCurrentLocation(location_t loc);
+private:
+	location_t currentLocation; // Sort by distance to that location
 };
 
 class DiveLocationModel : public QAbstractTableModel {
@@ -88,7 +91,7 @@ public:
 	DiveSiteType currDiveSiteType() const;
 	struct dive_site *currDiveSite() const;
 	void fixPopupPosition();
-	void setCurrentDiveSite(struct dive_site *ds);
+	void setCurrentDiveSite(struct dive *d);
 
 signals:
 	void diveSiteSelected();
