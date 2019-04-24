@@ -1938,17 +1938,19 @@ void QMLManager::showDownloadPage(QString deviceString)
 				.arg(connectionListModel.indexOf("Suunto"))
 				.arg(productList["Suunto"].indexOf("EON Core"))
 				.arg(connectionListModel.indexOf("USB device"));
-	} else if (deviceString.contains("mVendorId=11884") && // 0x2e6c / 0x3201
-		   deviceString.contains("mProductId=12801")) {
+	} else if (deviceString.contains("mVendorId=11884") && // 0x2e6c / 0x3201,0x3211,0x4201
+		   (deviceString.contains("mProductId=12801") ||
+		    deviceString.contains("mProductId=12817") ||
+		    deviceString.contains("mProductId=16897"))) {
 		name = QString("%1;%2;%3")
 				.arg(connectionListModel.indexOf("Scubapro"))
-				.arg(productList["Suunto"].indexOf("G2"))
+				.arg(productList["Scubapro"].indexOf("G2"))
 				.arg(connectionListModel.indexOf("USB device"));
 	} else if (deviceString.contains("mVendorId=49745") && // 0xc251 / 0x2006
 		   deviceString.contains("mProductId=8198")) {
 		name = QString("%1;%2;%3")
 				.arg(connectionListModel.indexOf("Scubapro"))
-				.arg(productList["Suunto"].indexOf("Aladin Square"))
+				.arg(productList["Scubapro"].indexOf("Aladin Square"))
 				.arg(connectionListModel.indexOf("USB device"));
 	} else if (deviceString.contains("mVendorId=1027") && // 0x0403 / 0x6001,0x6010,0x6011,0x6015
 		   (deviceString.contains("mProductId=24577") ||
