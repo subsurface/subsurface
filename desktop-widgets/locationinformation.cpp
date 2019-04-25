@@ -373,7 +373,7 @@ DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent) : QLineEdit(parent),
 
 	view->setModel(proxy);
 	view->setModelColumn(LocationInformationModel::NAME);
-	view->setItemDelegate(new LocationFilterDelegate());
+	view->setItemDelegate(&delegate);
 	view->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	view->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -572,6 +572,7 @@ void DiveLocationLineEdit::setCurrentDiveSite(struct dive *d)
 
 	location_t currentLocation = d ? dive_get_gps_location(d) : location_t{0, 0};
 	proxy->setCurrentLocation(currentLocation);
+	delegate.setCurrentLocation(currentLocation);
 }
 
 void DiveLocationLineEdit::showPopup()

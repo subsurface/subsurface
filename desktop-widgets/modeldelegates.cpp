@@ -441,8 +441,13 @@ QWidget *DoubleSpinBoxDelegate::createEditor(QWidget *parent, const QStyleOption
 	return w;
 }
 
-LocationFilterDelegate::LocationFilterDelegate(QObject*)
+LocationFilterDelegate::LocationFilterDelegate(QObject *) : currentLocation({0, 0})
 {
+}
+
+void LocationFilterDelegate::setCurrentLocation(location_t loc)
+{
+	currentLocation = loc;
 }
 
 void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &origIdx) const
@@ -461,8 +466,7 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	QIcon icon = index.data(Qt::DecorationRole).value<QIcon>();
 	struct dive_site *ds =
 		index.model()->data(index.model()->index(index.row(), LocationInformationModel::DIVESITE)).value<dive_site *>();
-	struct dive_site *currentDiveSite = current_dive ? get_dive_site_for_dive(current_dive) : nullptr;
-	bool currentDiveSiteHasGPS = currentDiveSite && dive_site_has_gps_location(currentDiveSite);
+	bool currentDiveHasGPS = has_location(&currentLocation);
 	//Special case: do not show name, but instead, show
 	if (index.row() < 2) {
 		diveSiteName = index.data().toString();
@@ -487,13 +491,13 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	if (bottomText.isEmpty())
 		bottomText = printGPSCoords(&ds->location);
 
-	if (dive_site_has_gps_location(ds) && currentDiveSiteHasGPS) {
+	if (dive_site_has_gps_location(ds) && currentDiveHasGPS) {
 		// so we are showing a completion and both the current dive site and the completion
 		// have a GPS fix... so let's show the distance
-		if (same_location(&ds->location, &currentDiveSite->location)) {
+		if (same_location(&ds->location, &currentLocation)) {
 			bottomText += tr(" (same GPS fix)");
 		} else {
-			int distanceMeters = get_distance(&ds->location, &currentDiveSite->location);
+			int distanceMeters = get_distance(&ds->location, &currentLocation);
 			QString distance = distance_string(distanceMeters);
 			int nr = nr_of_dives_at_dive_site(ds);
 			bottomText += tr(" (~%1 away").arg(distance);
@@ -501,7 +505,7 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 		}
 	}
 	if (bottomText.isEmpty()) {
-		if (currentDiveSiteHasGPS)
+		if (currentDiveHasGPS)
 			bottomText = tr("(no existing GPS data, add GPS fix from this dive)");
 		else
 			bottomText = tr("(no GPS data)");

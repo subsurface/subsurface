@@ -5,6 +5,7 @@
 #include "core/units.h"
 #include "core/divesite.h"
 #include "ui_locationinformation.h"
+#include "modeldelegates.h"
 #include "qt-models/divelocationmodel.h"
 #include <stdint.h>
 #include <QAbstractListModel>
@@ -108,6 +109,7 @@ private:
 	DiveLocationFilterProxyModel *proxy;
 	DiveLocationModel *model;
 	DiveLocationListView *view;
+	LocationFilterDelegate delegate;
 	DiveSiteType currType;
 	struct dive_site *currDs;
 };
