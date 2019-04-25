@@ -2,6 +2,8 @@
 #ifndef MODELDELEGATES_H
 #define MODELDELEGATES_H
 
+#include "core/units.h"
+
 #include <QStyledItemDelegate>
 #include <QComboBox>
 class QPainter;
@@ -130,6 +132,9 @@ public:
 	LocationFilterDelegate(QObject *parent = 0);
 	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+	void setCurrentLocation(location_t loc);
+private:
+	location_t currentLocation;
 };
 
 #endif // MODELDELEGATES_H
