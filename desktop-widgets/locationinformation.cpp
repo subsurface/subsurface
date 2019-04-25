@@ -581,6 +581,20 @@ void DiveLocationLineEdit::showPopup()
 		setTemporaryDiveSiteName(text());
 }
 
+void DiveLocationLineEdit::showAllSites()
+{
+	if (!view->isVisible()) {
+		// By setting the "temporary dive site name" to the empty string,
+		// all dive sites are shown sorted by distance from the site of
+		// the current dive.
+		setTemporaryDiveSiteName(QString());
+
+		// By selecting the whole text, the user can immediately start
+		// typing to activate the full-text filter.
+		selectAll();
+	}
+}
+
 DiveLocationLineEdit::DiveSiteType DiveLocationLineEdit::currDiveSiteType() const
 {
 	return currType;

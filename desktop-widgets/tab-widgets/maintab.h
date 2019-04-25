@@ -59,6 +59,7 @@ slots:
 	void acceptChanges();
 	void rejectChanges();
 	void on_location_diveSiteSelected();
+	void on_locationPopupButton_clicked();
 	void on_divemaster_editingFinished();
 	void on_buddy_editingFinished();
 	void on_suit_editingFinished();

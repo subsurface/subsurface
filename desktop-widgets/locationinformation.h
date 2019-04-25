@@ -93,6 +93,7 @@ public:
 	struct dive_site *currDiveSite() const;
 	void fixPopupPosition();
 	void setCurrentDiveSite(struct dive *d);
+	void showAllSites();
 
 signals:
 	void diveSiteSelected();

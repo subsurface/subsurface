@@ -217,6 +217,13 @@
                 <widget class="DiveLocationLineEdit" name="location"/>
                </item>
                <item>
+                <widget class="QToolButton" name="locationPopupButton">
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QToolButton" name="editDiveSiteButton">
                  <property name="toolTip">
                   <string>Edit dive site</string>
