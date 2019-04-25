@@ -577,13 +577,8 @@ void DiveLocationLineEdit::setCurrentDiveSite(struct dive *d)
 
 void DiveLocationLineEdit::showPopup()
 {
-	fixPopupPosition();
-	if (!view->isVisible()) {
+	if (!view->isVisible())
 		setTemporaryDiveSiteName(text());
-		proxy->invalidate();
-		proxy->sort(LocationInformationModel::NAME);
-		view->show();
-	}
 }
 
 DiveLocationLineEdit::DiveSiteType DiveLocationLineEdit::currDiveSiteType() const
