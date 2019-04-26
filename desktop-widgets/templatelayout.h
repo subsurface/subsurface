@@ -20,14 +20,14 @@ extern QList<QString> grantlee_templates, grantlee_statistics_templates;
 class TemplateLayout : public QObject {
 	Q_OBJECT
 public:
-	TemplateLayout(print_options *PrintOptions, template_options *templateOptions);
+	TemplateLayout(print_options *printOptions, template_options *templateOptions);
 	QString generate();
 	QString generateStatistics();
 	static QString readTemplate(QString template_name);
 	static void writeTemplate(QString template_name, QString grantlee_template);
 
 private:
-	print_options *PrintOptions;
+	print_options *printOptions;
 	template_options *templateOptions;
 
 signals:

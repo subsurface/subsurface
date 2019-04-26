@@ -92,9 +92,9 @@ void copy_bundled_templates(QString src, QString dst, QStringList *templateBacku
 	}
 }
 
-TemplateLayout::TemplateLayout(print_options *PrintOptions, template_options *templateOptions)
+TemplateLayout::TemplateLayout(print_options *printOptions, template_options *templateOptions)
 {
-	this->PrintOptions = PrintOptions;
+	this->printOptions = printOptions;
 	this->templateOptions = templateOptions;
 }
 
@@ -134,7 +134,7 @@ static QString preprocessTemplate(const QString &in)
 QString TemplateLayout::generate()
 {
 	int progress = 0;
-	int totalWork = getTotalWork(PrintOptions);
+	int totalWork = getTotalWork(printOptions);
 
 	QString htmlContent;
 	Grantlee::Engine engine(this);
@@ -152,7 +152,7 @@ QString TemplateLayout::generate()
 		int i;
 		for_each_dive (i, dive) {
 			//TODO check for exporting selected dives only
-			if (!dive->selected && PrintOptions->print_selected)
+			if (!dive->selected && printOptions->print_selected)
 				continue;
 			DiveObjectHelper *d = new DiveObjectHelper(dive);
 			diveList.append(QVariant::fromValue(d));
@@ -163,14 +163,14 @@ QString TemplateLayout::generate()
 	Grantlee::Context c;
 	c.insert("dives", diveList);
 	c.insert("template_options", QVariant::fromValue(*templateOptions));
-	c.insert("print_options", QVariant::fromValue(*PrintOptions));
+	c.insert("print_options", QVariant::fromValue(*printOptions));
 
 	/* don't use the Grantlee loader API */
-	QString templateContents = readTemplate(PrintOptions->p_template);
+	QString templateContents = readTemplate(printOptions->p_template);
 	QString preprocessed = preprocessTemplate(templateContents);
 
 	/* create the template from QString; is this thing allocating memory? */
-	Grantlee::Template t = engine.newTemplate(preprocessed, PrintOptions->p_template);
+	Grantlee::Template t = engine.newTemplate(preprocessed, printOptions->p_template);
 	if (!t || t->error()) {
 		qDebug() << "Can't load template";
 		return htmlContent;
@@ -212,9 +212,9 @@ QString TemplateLayout::generateStatistics()
 	Grantlee::Context c;
 	c.insert("years", years);
 	c.insert("template_options", QVariant::fromValue(*templateOptions));
-	c.insert("print_options", QVariant::fromValue(*PrintOptions));
+	c.insert("print_options", QVariant::fromValue(*printOptions));
 
-	Grantlee::Template t = engine.loadByName(PrintOptions->p_template);
+	Grantlee::Template t = engine.loadByName(printOptions->p_template);
 	if (!t || t->error()) {
 		qDebug() << "Can't load template";
 		return htmlContent;
