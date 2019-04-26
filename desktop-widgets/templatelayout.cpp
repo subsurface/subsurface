@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <QFileDevice>
-#include <string>
 #include <list>
 
 #include "templatelayout.h"
