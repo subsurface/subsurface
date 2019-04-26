@@ -361,18 +361,6 @@ void MainTab::nextInputField(QKeyEvent *event)
 	keyPressEvent(event);
 }
 
-#define UPDATE_TEXT(field)                    \
-	if (!current_dive || !current_dive->field)     \
-		ui.field->setText(QString()); \
-	else                                  \
-		ui.field->setText(current_dive->field)
-
-#define UPDATE_TEMP(field)                             \
-	if (!current_dive || current_dive->field.mkelvin == 0) \
-		ui.field->setText("");                 \
-	else                                           \
-		ui.field->setText(get_temperature_string(current_dive->field, true))
-
 bool MainTab::isEditing()
 {
 	return editMode != NONE;
@@ -442,17 +430,7 @@ void MainTab::updateDiveInfo()
 	for (TabBase *widget: extraWidgets)
 		widget->updateData();
 
-	UPDATE_TEXT(suit);
-	UPDATE_TEXT(divemaster);
-	UPDATE_TEXT(buddy);
-	UPDATE_TEMP(airtemp);
-	UPDATE_TEMP(watertemp);
-
 	if (current_dive) {
-		updateNotes(current_dive);
-		updateMode(current_dive);
-		updateDiveSite(current_dive);
-		updateDateTime(current_dive);
 		if (MainWindow::instance() && MainWindow::instance()->diveList->selectedTrips().count() == 1) {
 			// Remember the tab selected for last dive
 			if (lastSelectedDive)
@@ -555,6 +533,16 @@ void MainTab::updateDiveInfo()
 			ui.depthLabel->setVisible(isManual);
 			ui.duration->setVisible(isManual);
 			ui.durationLabel->setVisible(isManual);
+
+			updateNotes(current_dive);
+			updateMode(current_dive);
+			updateDiveSite(current_dive);
+			updateDateTime(current_dive);
+			ui.suit->setText(current_dive->suit);
+			ui.divemaster->setText(current_dive->divemaster);
+			ui.buddy->setText(current_dive->buddy);
+			ui.airtemp->setText(get_temperature_string(current_dive->airtemp, true));
+			ui.watertemp->setText(get_temperature_string(current_dive->watertemp, true));
 		}
 		ui.duration->setText(render_seconds_to_string(current_dive->duration.seconds));
 		ui.depth->setText(get_depth_string(current_dive->maxdepth, true));
@@ -581,6 +569,11 @@ void MainTab::updateDiveInfo()
 		ui.rating->setCurrentStars(0);
 		ui.visibility->setCurrentStars(0);
 		ui.location->clear();
+		ui.suit->clear();
+		ui.divemaster->clear();
+		ui.buddy->clear();
+		ui.airtemp->clear();
+		ui.watertemp->clear();
 		/* set date and time to minimums which triggers showing the special value text */
 		ui.dateEdit->setSpecialValueText(QString("-"));
 		ui.dateEdit->setMinimumDate(QDate(1, 1, 1));
