@@ -52,7 +52,6 @@ void TabDiveInformation::updateProfile()
 	volume_t sac;
 	QString gaslist, SACs, separator;
 
-	gaslist = ""; SACs = ""; volumes = ""; separator = "";
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		if (!is_cylinder_used(current_dive, i))
 			continue;
