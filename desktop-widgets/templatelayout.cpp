@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <QFileDevice>
 #include <string>
+#include <list>
 
 #include "templatelayout.h"
 #include "core/display.h"
@@ -141,12 +142,18 @@ QString TemplateLayout::generate()
 	Grantlee::registerMetaType<template_options>();
 	Grantlee::registerMetaType<print_options>();
 
+	// Note: Currently, this should not be transformed into a QVector<> or std::vector<>,
+	// as diveList contains pointers to elements in this list. But vectors might relocate
+	// and thus invalidate the pointers! std::list<> is used here, because the new elements
+	// can be directly constructed in the list with the emplace_back() call.
+	// Ultimately, the memory management should be fixed.
+	std::list<DiveObjectHelper> diveObjectList;
 	QVariantList diveList;
 
 	struct dive *dive;
 	if (in_planner()) {
-		DiveObjectHelper *d = new DiveObjectHelper(&displayed_dive);
-		diveList.append(QVariant::fromValue(d));
+		diveObjectList.emplace_back(&displayed_dive);
+		diveList.append(QVariant::fromValue(&diveObjectList.back()));
 		emit progressUpdated(100.0);
 	} else {
 		int i;
@@ -154,8 +161,8 @@ QString TemplateLayout::generate()
 			//TODO check for exporting selected dives only
 			if (!dive->selected && printOptions->print_selected)
 				continue;
-			DiveObjectHelper *d = new DiveObjectHelper(dive);
-			diveList.append(QVariant::fromValue(d));
+			diveObjectList.emplace_back(dive);
+			diveList.append(QVariant::fromValue(&diveObjectList.back()));
 			progress++;
 			emit progressUpdated(lrint(progress * 100.0 / totalWork));
 		}
