@@ -21,14 +21,12 @@ class TemplateLayout : public QObject {
 	Q_OBJECT
 public:
 	TemplateLayout(print_options *PrintOptions, template_options *templateOptions);
-	~TemplateLayout();
 	QString generate();
 	QString generateStatistics();
 	static QString readTemplate(QString template_name);
 	static void writeTemplate(QString template_name, QString grantlee_template);
 
 private:
-	Grantlee::Engine *m_engine;
 	print_options *PrintOptions;
 	template_options *templateOptions;
 
