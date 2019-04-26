@@ -34,16 +34,8 @@ signals:
 	void progressUpdated(int value);
 };
 
-class YearInfo {
-public:
+struct YearInfo {
 	stats_t *year;
-	YearInfo(stats_t& year)
-		:year(&year)
-	{
-
-	}
-	YearInfo();
-	~YearInfo();
 };
 
 Q_DECLARE_METATYPE(template_options)
