@@ -210,7 +210,7 @@ QString TemplateLayout::generateStatistics()
 	stats_summary_auto_free stats;
 	calculate_stats_summary(&stats, false);
 	while (stats.stats_yearly != NULL && stats.stats_yearly[i].period) {
-		YearInfo year(stats.stats_yearly[i]);
+		YearInfo year{ &stats.stats_yearly[i] };
 		years.append(QVariant::fromValue(year));
 		i++;
 	}
@@ -255,14 +255,4 @@ void TemplateLayout::writeTemplate(QString template_name, QString grantlee_templ
 		qfile.resize(qfile.pos());
 		qfile.close();
 	}
-}
-
-YearInfo::YearInfo()
-{
-	year = nullptr;
-}
-
-YearInfo::~YearInfo()
-{
-
 }
