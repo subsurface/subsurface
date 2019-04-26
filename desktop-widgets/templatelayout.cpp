@@ -92,16 +92,10 @@ void copy_bundled_templates(QString src, QString dst, QStringList *templateBacku
 	}
 }
 
-TemplateLayout::TemplateLayout(print_options *PrintOptions, template_options *templateOptions) :
-	m_engine(NULL)
+TemplateLayout::TemplateLayout(print_options *PrintOptions, template_options *templateOptions)
 {
 	this->PrintOptions = PrintOptions;
 	this->templateOptions = templateOptions;
-}
-
-TemplateLayout::~TemplateLayout()
-{
-	delete m_engine;
 }
 
 /* a HTML pre-processor stage. acts like a compatibility layer
@@ -143,8 +137,7 @@ QString TemplateLayout::generate()
 	int totalWork = getTotalWork(PrintOptions);
 
 	QString htmlContent;
-	delete m_engine;
-	m_engine = new Grantlee::Engine(this);
+	Grantlee::Engine engine(this);
 	Grantlee::registerMetaType<template_options>();
 	Grantlee::registerMetaType<print_options>();
 
@@ -177,7 +170,7 @@ QString TemplateLayout::generate()
 	QString preprocessed = preprocessTemplate(templateContents);
 
 	/* create the template from QString; is this thing allocating memory? */
-	Grantlee::Template t = m_engine->newTemplate(preprocessed, PrintOptions->p_template);
+	Grantlee::Template t = engine.newTemplate(preprocessed, PrintOptions->p_template);
 	if (!t || t->error()) {
 		qDebug() << "Can't load template";
 		return htmlContent;
@@ -194,13 +187,12 @@ QString TemplateLayout::generate()
 QString TemplateLayout::generateStatistics()
 {
 	QString htmlContent;
-	delete m_engine;
-	m_engine = new Grantlee::Engine(this);
+	Grantlee::Engine engine(this);
 
 	QSharedPointer<Grantlee::FileSystemTemplateLoader> m_templateLoader =
 		QSharedPointer<Grantlee::FileSystemTemplateLoader>(new Grantlee::FileSystemTemplateLoader());
 	m_templateLoader->setTemplateDirs(QStringList() << getPrintingTemplatePathUser() + QDir::separator() + QString("statistics"));
-	m_engine->addTemplateLoader(m_templateLoader);
+	engine.addTemplateLoader(m_templateLoader);
 
 	Grantlee::registerMetaType<YearInfo>();
 	Grantlee::registerMetaType<template_options>();
@@ -222,7 +214,7 @@ QString TemplateLayout::generateStatistics()
 	c.insert("template_options", QVariant::fromValue(*templateOptions));
 	c.insert("print_options", QVariant::fromValue(*PrintOptions));
 
-	Grantlee::Template t = m_engine->loadByName(PrintOptions->p_template);
+	Grantlee::Template t = engine.loadByName(PrintOptions->p_template);
 	if (!t || t->error()) {
 		qDebug() << "Can't load template";
 		return htmlContent;
