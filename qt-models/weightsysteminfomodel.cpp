@@ -68,50 +68,20 @@ QVariant WSInfoModel::data(const QModelIndex &index, int role) const
 
 int WSInfoModel::rowCount(const QModelIndex&) const
 {
-	return rows + 1;
+	return rows;
 }
 
-WSInfoModel::WSInfoModel() : rows(-1)
+WSInfoModel::WSInfoModel()
 {
 	setHeaderDataStrings(QStringList() << tr("Description") << tr("kg"));
-	struct ws_info_t *info;
-	for (info = ws_info; info->name && info < ws_info + MAX_WS_INFO; info++, rows++)
-		;
-
-	if (rows > -1) {
-		beginInsertRows(QModelIndex(), 0, rows);
-		endInsertRows();
-	}
-}
-
-void WSInfoModel::updateInfo()
-{
-	struct ws_info_t *info;
-	beginRemoveRows(QModelIndex(), 0, this->rows);
-	endRemoveRows();
-	rows = -1;
-	for (info = ws_info; info->name && info < ws_info + MAX_WS_INFO; info++, rows++)
-		;
-
-	if (rows > -1) {
-		beginInsertRows(QModelIndex(), 0, rows);
-		endInsertRows();
-	}
+	update();
 }
 
 void WSInfoModel::update()
 {
-	if (rows > -1) {
-		beginRemoveRows(QModelIndex(), 0, rows);
-		endRemoveRows();
-		rows = -1;
-	}
-	struct ws_info_t *info;
-	for (info = ws_info; info->name && info < ws_info + MAX_WS_INFO; info++, rows++)
+	beginResetModel();
+	rows = 0;
+	for (struct ws_info_t *info = ws_info; info->name && info < ws_info + MAX_WS_INFO; info++, rows++)
 		;
-
-	if (rows > -1) {
-		beginInsertRows(QModelIndex(), 0, rows);
-		endInsertRows();
-	}
+	endResetModel();
 }

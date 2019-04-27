@@ -425,7 +425,7 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	setApplicationState("Default");
 	diveList->setEnabled(true);
 	diveList->setFocus();
-	WSInfoModel::instance()->updateInfo();
+	WSInfoModel::instance()->update();
 	ui.actionAutoGroup->setChecked(autogroup);
 }
 
