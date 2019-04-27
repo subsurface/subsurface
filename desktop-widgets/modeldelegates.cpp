@@ -294,7 +294,7 @@ QWidget *TankInfoDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	QWidget *delegate = ComboBoxDelegate::createEditor(parent, option, index);
 	CylindersModel *mymodel = qobject_cast<CylindersModel *>(currCombo.model);
 	cylinder_t *cyl = mymodel->cylinderAt(index);
-	currCylinderData.type = copy_string(cyl->type.description);
+	currCylinderData.type = cyl->type.description;
 	currCylinderData.pressure = cyl->type.workingpressure.mbar;
 	currCylinderData.size = cyl->type.size.mliter;
 	MainWindow::instance()->graphics->setReplot(false);
@@ -372,7 +372,7 @@ QWidget *WSInfoDelegate::createEditor(QWidget *parent, const QStyleOptionViewIte
 	QWidget *editor = ComboBoxDelegate::createEditor(parent, option, index);
 	WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
 	weightsystem_t *ws = mymodel->weightSystemAt(index);
-	currWeight.type = copy_string(ws->description);
+	currWeight.type = ws->description;
 	currWeight.weight = ws->weight.grams;
 	return editor;
 }
