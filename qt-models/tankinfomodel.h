@@ -22,7 +22,6 @@ public:
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
-	const QString &biggerString() const;
 	void clear();
 public
 slots:
@@ -30,7 +29,6 @@ slots:
 
 private:
 	int rows;
-	QString biggerEntry;
 };
 
 #endif
