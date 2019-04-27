@@ -71,20 +71,12 @@ int WSInfoModel::rowCount(const QModelIndex&) const
 	return rows + 1;
 }
 
-const QString &WSInfoModel::biggerString() const
-{
-	return biggerEntry;
-}
-
 WSInfoModel::WSInfoModel() : rows(-1)
 {
 	setHeaderDataStrings(QStringList() << tr("Description") << tr("kg"));
 	struct ws_info_t *info;
-	for (info = ws_info; info->name && info < ws_info + MAX_WS_INFO; info++, rows++) {
-		QString wsInfoName = gettextFromC::tr(info->name);
-		if (wsInfoName.count() > biggerEntry.count())
-			biggerEntry = wsInfoName;
-	}
+	for (info = ws_info; info->name && info < ws_info + MAX_WS_INFO; info++, rows++)
+		;
 
 	if (rows > -1) {
 		beginInsertRows(QModelIndex(), 0, rows);
@@ -98,11 +90,8 @@ void WSInfoModel::updateInfo()
 	beginRemoveRows(QModelIndex(), 0, this->rows);
 	endRemoveRows();
 	rows = -1;
-	for (info = ws_info; info->name && info < ws_info + MAX_WS_INFO; info++, rows++) {
-		QString wsInfoName = gettextFromC::tr(info->name);
-		if (wsInfoName.count() > biggerEntry.count())
-			biggerEntry = wsInfoName;
-	}
+	for (info = ws_info; info->name && info < ws_info + MAX_WS_INFO; info++, rows++)
+		;
 
 	if (rows > -1) {
 		beginInsertRows(QModelIndex(), 0, rows);
@@ -118,7 +107,8 @@ void WSInfoModel::update()
 		rows = -1;
 	}
 	struct ws_info_t *info;
-	for (info = ws_info; info->name && info < ws_info + MAX_WS_INFO; info++, rows++);
+	for (info = ws_info; info->name && info < ws_info + MAX_WS_INFO; info++, rows++)
+		;
 
 	if (rows > -1) {
 		beginInsertRows(QModelIndex(), 0, rows);
