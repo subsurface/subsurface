@@ -103,7 +103,7 @@ void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) 
 	c->lineEdit()->setSelection(0, c->lineEdit()->text().length());
 }
 
-struct CurrSelected {
+static struct CurrSelected {
 	QComboBox *comboEditor;
 	int currRow;
 	QString activeText;
@@ -233,7 +233,7 @@ void ComboBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionV
 	editor->setGeometry(defaultRect);
 }
 
-struct RevertCylinderData {
+static struct RevertCylinderData {
 	QString type;
 	int pressure;
 	int size;
@@ -326,7 +326,7 @@ void TankUseDelegate::setModelData(QWidget * editor, QAbstractItemModel * model,
 	model->setData(index, comboBox->currentIndex());
 }
 
-struct RevertWeightData {
+static struct RevertWeightData {
 	QString type;
 	int weight;
 } currWeight;
