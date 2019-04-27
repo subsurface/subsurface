@@ -79,35 +79,20 @@ QVariant TankInfoModel::data(const QModelIndex &index, int role) const
 
 int TankInfoModel::rowCount(const QModelIndex&) const
 {
-	return rows + 1;
+	return rows;
 }
 
-TankInfoModel::TankInfoModel() : rows(-1)
+TankInfoModel::TankInfoModel()
 {
 	setHeaderDataStrings(QStringList() << tr("Description") << tr("ml") << tr("bar"));
-	struct tank_info_t *info = tank_info;
-	for (info = tank_info; info->name && info < tank_info + MAX_TANK_INFO; info++, rows++)
-		;
-
-	if (rows > -1) {
-		beginInsertRows(QModelIndex(), 0, rows);
-		endInsertRows();
-	}
+	update();
 }
 
 void TankInfoModel::update()
 {
-	if (rows > -1) {
-		beginRemoveRows(QModelIndex(), 0, rows);
-		endRemoveRows();
-		rows = -1;
-	}
-	struct tank_info_t *info = tank_info;
-	for (info = tank_info; info->name && info < tank_info + MAX_TANK_INFO; info++, rows++)
+	beginResetModel();
+	rows = 0;
+	for (struct tank_info_t *info = tank_info; info->name && info < tank_info + MAX_TANK_INFO; info++, rows++)
 		;
-
-	if (rows > -1) {
-		beginInsertRows(QModelIndex(), 0, rows);
-		endInsertRows();
-	}
+	endResetModel();
 }
