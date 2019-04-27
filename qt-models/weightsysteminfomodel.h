@@ -22,7 +22,6 @@ public:
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 	void clear();
 	void update();
-	void updateInfo();
 
 private:
 	int rows;
