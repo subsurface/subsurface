@@ -278,6 +278,11 @@ void MultiFilterSortModel::stopFilterDiveSites()
 	myInvalidate();
 }
 
+bool MultiFilterSortModel::diveSiteMode() const
+{
+	return !dive_sites.isEmpty();
+}
+
 bool MultiFilterSortModel::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
 {
 	// Hand sorting down to the source model.
