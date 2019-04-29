@@ -86,7 +86,6 @@ void MapWidget::repopulateLabels()
 void MapWidget::reload()
 {
 	CHECK_IS_READY_RETURN_VOID();
-	m_mapHelper->exitEditMode();
 	if (!skipReload)
 		m_mapHelper->reloadMapLocations();
 }
