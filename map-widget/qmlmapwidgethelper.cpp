@@ -8,6 +8,9 @@
 #include "core/divesite.h"
 #include "core/qthelper.h"
 #include "qt-models/maplocationmodel.h"
+#ifndef SUBSURFACE_MOBILE
+#include "qt-models/filtermodels.h"
+#endif
 
 #define MIN_DISTANCE_BETWEEN_DIVE_SITES_M 50.0
 #define SMALL_CIRCLE_RADIUS_PX            26.0
@@ -114,10 +117,18 @@ void MapWidgetHelper::reloadMapLocations()
 	QVector<struct dive_site *> locations;
 	qreal latitude, longitude;
 
+#ifdef SUBSURFACE_MOBILE
+	bool diveSiteMode = false;
+#else
+	// In dive site mode (that is when either editing a dive site or on
+	// the dive site tab), we want to show all dive sites, not only those
+	// of the non-hidden dives.
+	bool diveSiteMode = MultiFilterSortModel::instance()->diveSiteMode();
+#endif
 	for_each_dive(idx, dive) {
 		// Don't show dive sites of hidden dives, unless this is the currently
-		// displayed (edited) dive.
-		if (dive->hidden_by_filter && dive != current_dive)
+		// displayed (edited) dive or we're in dive site edit mode.
+		if (!diveSiteMode && dive->hidden_by_filter && dive != current_dive)
 			continue;
 		struct dive_site *ds = get_dive_site_for_dive(dive);
 		if (!dive_site_has_gps_location(ds) || locations.contains(ds))

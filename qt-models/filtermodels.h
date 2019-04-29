@@ -63,6 +63,7 @@ public:
 	bool updateDive(struct dive *d); // returns true if visibility status changed
 	int divesDisplayed;
 	bool lessThan(const QModelIndex &, const QModelIndex &) const override;
+	bool diveSiteMode() const; // returns true if we're filtering on dive site
 public
 slots:
 	void myInvalidate();
