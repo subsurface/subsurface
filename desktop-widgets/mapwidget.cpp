@@ -93,6 +93,8 @@ void MapWidget::reload()
 void MapWidget::endGetDiveCoordinates()
 {
 	CHECK_IS_READY_RETURN_VOID();
+
+	skipReload = false;
 	m_mapHelper->exitEditMode();
 }
 
@@ -100,6 +102,10 @@ void MapWidget::prepareForGetDiveCoordinates(struct dive_site *ds)
 {
 	CHECK_IS_READY_RETURN_VOID();
 	m_mapHelper->enterEditMode(ds);
+
+	// Ignore any reload signals during edit mode to avoid showing all flags when in edit mode.
+	// This can happen for example when the filter is reset.
+	skipReload = true;
 }
 
 void MapWidget::selectedDivesChanged(QList<int> list)
