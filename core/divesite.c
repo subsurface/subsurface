@@ -77,15 +77,18 @@ struct dive_site *get_dive_site_by_gps_and_name(char *name, const location_t *lo
 // Calculate the distance in meters between two coordinates.
 unsigned int get_distance(const location_t *loc1, const location_t *loc2)
 {
+	double lat1_r = udeg_to_radians(loc1->lat.udeg);
 	double lat2_r = udeg_to_radians(loc2->lat.udeg);
 	double lat_d_r = udeg_to_radians(loc2->lat.udeg - loc1->lat.udeg);
 	double lon_d_r = udeg_to_radians(loc2->lon.udeg - loc1->lon.udeg);
 
 	double a = sin(lat_d_r/2) * sin(lat_d_r/2) +
-		cos(lat2_r) * cos(lat2_r) * sin(lon_d_r/2) * sin(lon_d_r/2);
+		cos(lat1_r) * cos(lat2_r) * sin(lon_d_r/2) * sin(lon_d_r/2);
+	if (a < 0.0) a = 0.0;
+	if (a > 1.0) a = 1.0;
 	double c = 2 * atan2(sqrt(a), sqrt(1.0 - a));
 
-	// Earth radious in metres
+	// Earth radius in metres
 	return lrint(6371000 * c);
 }
 
