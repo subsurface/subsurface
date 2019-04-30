@@ -92,6 +92,7 @@ TEST(TestUnitConversion testunitconversion.cpp)
 TEST(TestProfile testprofile.cpp)
 TEST(TestGpsCoords testgpscoords.cpp)
 TEST(TestParse testparse.cpp)
+TEST(TestAirPressure testAirPressure.cpp)
 if (BTSUPPORT)
 	TEST(TestHelper testhelper.cpp)
 endif()
@@ -128,6 +129,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestParse
 	TestGitStorage
 	TestPlan
+	TestAirPressure
 	TestDiveSiteDuplication
 	TestRenumber
 	TestPicture

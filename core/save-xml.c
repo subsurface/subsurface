@@ -473,6 +473,7 @@ static void save_picture(struct membuffer *b, struct picture *pic)
 void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 {
 	struct divecomputer *dc;
+	pressure_t surface_pressure = un_fixup_surface_pressure(dive);
 
 	put_string(b, "<dive");
 	if (dive->number)
@@ -488,6 +489,8 @@ void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 		put_format(b, " divesiteid='%8x'", dive->dive_site->uuid);
 	}
 	show_date(b, dive->when);
+	if (surface_pressure.mbar)
+		put_pressure(b, surface_pressure, " airpressure='", " bar'");
 	if (dive->dc.duration.seconds > 0)
 		put_format(b, " duration='%u:%02u min'>\n",
 			   FRACTION(dive->dc.duration.seconds, 60));

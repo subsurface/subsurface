@@ -254,6 +254,17 @@ static inline int mbar_to_PSI(int mbar)
 	return to_PSI(p);
 }
 
+static inline int32_t altitude_to_pressure(int32_t altitude) 	// altitude in mm above sea level
+{						// returns atmospheric pressure in mbar
+	return (int32_t) (1013.0 * exp(- altitude / 7800000.0));
+}
+
+
+static inline int32_t pressure_to_altitude(int32_t pressure)	// pressure in mbar
+{						// returns altitude in mm above sea level
+	return (int32_t) (log(1013.0 / pressure) * 7800000);
+}
+
 /*
  * We keep our internal data in well-specified units, but
  * the input and output may come in some random format. This

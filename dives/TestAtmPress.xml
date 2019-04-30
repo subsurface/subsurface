@@ -1,0 +1,50 @@
+<divelog program='subsurface' version='3'>
+<settings>
+  <autogroup state='1' />
+</settings>
+<divesites>
+<site uuid='4fdcf19b' name='Loc1'>
+</site>
+<site uuid='b15ad032' name='Loc2'>
+</site>
+</divesites>
+<dives>
+<trip date='2019-04-09' time='09:15:16' location='Scottburgh'>
+<dive number='524' tripflag='NOTRIP' divesiteid='b15ad032' date='2019-04-09' time='09:15:16' airpressure='1.012 bar' duration='42:08 min'>
+  <cylinder size='10.0 l' workpressure='232.0 bar' description='10ℓ 232 bar' o2='30.0%' depth='42.96 m' />
+  <cylinder size='10.0 l' workpressure='232.0 bar' description='10ℓ 232 bar' o2='30.0%' depth='42.96 m' />
+  <weightsystem weight='3.0 kg' description='belt' />
+  <divecomputer model='Uwatec Galileo Trimix' deviceid='462769ce' diveid='14106bf6'>
+  <depth max='30.068 m' mean='21.394 m' />
+  <temperature air='24.6 C' water='23.2 C' />
+  <water salinity='1025 g/l' />
+  <sample time='0:00 min' depth='0.0 m' temp='24.4 C' rbt='99:00 min' />
+  <sample time='0:04 min' depth='2.439 m' temp='24.8 C' rbt='99:00 min' />
+  <sample time='0:08 min' depth='3.395 m' temp='24.4 C' rbt='99:00 min' />
+  <sample time='0:12 min' depth='3.902 m' temp='24.8 C' pressure='208.5 bar' rbt='99:00 min' />
+  <sample time='45:16 min' depth='4.488 m' pressure='208.25 bar' rbt='98:00 min' />
+  </divecomputer>
+</dive>
+<dive number='525' divesiteid='4fdcf19b' date='2019-04-10' time='08:14:01' airpressure='0.991 bar' duration='41:24 min'>
+  <cylinder size='10.0 l' workpressure='232.0 bar' description='10ℓ 232 bar' o2='31.0%' depth='41.25 m' />
+  <cylinder description='unknown' o2='31.0%' depth='41.25 m' />
+  <weightsystem weight='3.0 kg' description='belt' />
+  <divecomputer model='Uwatec Galileo Trimix' deviceid='462769ce' diveid='04c0cf94'>
+  <depth max='26.166 m' mean='19.561 m' />
+  <temperature air='24.8 C' water='23.6 C' />
+  <water salinity='1025 g/l' />
+  <sample time='0:00 min' depth='0.0 m' temp='26.8 C' rbt='99:00 min' />
+  <sample time='0:04 min' depth='3.61 m' rbt='99:00 min' />
+  <sample time='0:08 min' depth='4.741 m' temp='25.6 C' pressure='217.25 bar' rbt='99:00 min' />
+  <sample time='0:12 min' depth='6.478 m' pressure='216.75 bar' rbt='97:00 min' />
+  <sample time='0:16 min' depth='7.785 m' rbt='94:00 min' />
+  <sample time='44:04 min' depth='0.0 m' rbt='99:00 min' />
+  <sample time='44:08 min' depth='0.02 m' rbt='99:00 min' />
+  <sample time='44:12 min' depth='0.098 m' rbt='99:00 min' />
+  <sample time='44:16 min' depth='0.059 m' rbt='99:00 min' />
+  <sample time='44:20 min' depth='0.059 m' rbt='99:00 min' />
+  </divecomputer>
+</dive>
+</trip>
+</dives>
+</divelog>

@@ -1317,9 +1317,10 @@ static struct event *find_previous_event(struct divecomputer *dc, struct event *
 	return previous;
 }
 
-static void fixup_surface_pressure(struct dive *dive)
+pressure_t calculate_surface_pressure(const struct dive *dive)
 {
-	struct divecomputer *dc;
+	const struct divecomputer *dc;
+	pressure_t res;
 	int sum = 0, nr = 0;
 
 	for_each_dc (dive, dc) {
@@ -1328,8 +1329,24 @@ static void fixup_surface_pressure(struct dive *dive)
 			nr++;
 		}
 	}
-	if (nr)
-		dive->surface_pressure.mbar = (sum + nr / 2) / nr;
+	res.mbar = nr ? (sum + nr / 2) / nr : 0;
+	return res;
+}
+
+static void fixup_surface_pressure(struct dive *dive)
+{
+	dive->surface_pressure = calculate_surface_pressure(dive);
+}
+
+/* if the surface pressure in the dive data is redundant to the calculated
+ * value (i.e., it was added by running fixup on the dive) return 0,
+ * otherwise return the air temperature given in the dive */
+pressure_t un_fixup_surface_pressure(const struct dive *d)
+{
+	pressure_t res = d->surface_pressure;
+	if (res.mbar && res.mbar == calculate_surface_pressure(d).mbar)
+		res.mbar = 0;
+	return res;
 }
 
 static void fixup_water_salinity(struct dive *dive)
@@ -1823,7 +1840,8 @@ struct dive *fixup_dive(struct dive *dive)
 		fixup_dive_dc(dive, dc);
 
 	fixup_water_salinity(dive);
-	fixup_surface_pressure(dive);
+	if (!dive->surface_pressure.mbar)
+		fixup_surface_pressure(dive);
 	fixup_meandepth(dive);
 	fixup_duration(dive);
 	fixup_watertemp(dive);
