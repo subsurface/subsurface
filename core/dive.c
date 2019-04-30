@@ -453,6 +453,20 @@ double get_weight_units(unsigned int grams, int *frac, const char **units)
 	return value;
 }
 
+int32_t altitude_to_pressure(int altitude) 		// altitude in meters above sea level
+{						// function returns atmospheric pressure in mbar
+	int i, alt;
+	int pressval[21] = { 1013, 984, 955, 926, 899, 872, 846, 820, 795, 771, 747, 724, 701, 679, 658, 637, 616, 597, 577, 559, 540 };
+	// Calculated atmospheric pressure values at 250m increments in altitude from sea level to 4999m,
+	// calculated following the US Standard Atmosphere 1976, US Government Printing Office, Washington DC, 1976.
+	// For intermediate altitudes, linear interpolation is performed here.
+	alt = altitude;
+	if (altitude < 0) alt = 0;
+	if (altitude > 4999) alt = 4999;
+	i = alt/250;
+	return (int32_t)(pressval[i] - ((double)(alt - 250 * i)/250.0)  *  (pressval[i] - pressval[i + 1]));
+}
+
 // we need this to be uniq. oh, and it has no meaning whatsoever
 // - that's why we have the silly initial number and increment by 3 :-)
 int dive_getUniqID()

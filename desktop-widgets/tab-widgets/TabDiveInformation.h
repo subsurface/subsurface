@@ -18,10 +18,12 @@ public:
 	void clear() override;
 private slots:
 	void divesChanged(dive_trip *trip, const QVector<dive *> &dives, DiveField field);
+	void on_atmPressVal_editingFinished();
 private:
 	Ui::TabDiveInformation *ui;
 	void updateProfile();
 	void updateWhen();
+	int pressTypeIndex;
 };
 
 #endif

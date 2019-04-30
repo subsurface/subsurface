@@ -224,25 +224,37 @@
          </layout>
         </widget>
        </item>
-       <item row="2" column="2">
+
+       <item row="2" column="2" colspan="1">
         <widget class="QGroupBox" name="groupBox_10">
          <property name="title">
-          <string>Air pressure</string>
+          <string>Atm. pressure</string>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
          <layout class="QHBoxLayout" name="diveInfoAirPressureLayout">
           <item>
-           <widget class="QLabel" name="airPressureText">
-            <property name="text">
-             <string/>
+           <widget class="QLineEdit" name="atmPressVal">
+            <property name="readOnly">
+             <bool>false</bool>
             </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="atmPressType">
            </widget>
           </item>
          </layout>
         </widget>
        </item>
+
        <item row="3" column="2">
         <widget class="QGroupBox" name="groupBox_9">
          <property name="title">

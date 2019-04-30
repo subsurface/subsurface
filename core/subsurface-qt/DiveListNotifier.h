@@ -19,6 +19,7 @@ enum class DiveField {
 	DURATION,
 	AIR_TEMP,
 	WATER_TEMP,
+	ATM_PRESS,
 	DIVESITE,
 	DIVEMASTER,
 	BUDDY,

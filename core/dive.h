@@ -390,6 +390,7 @@ extern int depth_to_mbar(int depth, const struct dive *dive);
 extern double depth_to_bar(int depth, const struct dive *dive);
 extern double depth_to_atm(int depth, const struct dive *dive);
 extern int rel_mbar_to_depth(int mbar, const struct dive *dive);
+extern int altitude_to_pressure(int altitude);
 extern int mbar_to_depth(int mbar, const struct dive *dive);
 extern depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, const struct dive *dive, int roundto);
 extern depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, int roundto);
