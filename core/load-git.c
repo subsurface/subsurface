@@ -77,6 +77,13 @@ static weight_t get_weight(const char *line)
 	return w;
 }
 
+static pressure_t get_airpressure(const char *line)
+{
+	pressure_t p;
+	p.mbar = lrint(ascii_strtod(line, NULL));
+	return p;
+}
+
 static pressure_t get_pressure(const char *line)
 {
 	pressure_t p;
@@ -245,6 +252,9 @@ static void parse_dive_airtemp(char *line, struct membuffer *str, void *_dive)
 
 static void parse_dive_watertemp(char *line, struct membuffer *str, void *_dive)
 { UNUSED(str); struct dive *dive = _dive; dive->watertemp = get_temperature(line); }
+
+static void parse_dive_airpressure(char *line, struct membuffer *str, void *_dive)
+{ UNUSED(str); struct dive *dive = _dive; dive->surface_pressure = get_airpressure(line); }
 
 static void parse_dive_duration(char *line, struct membuffer *str, void *_dive)
 { UNUSED(str); struct dive *dive = _dive; dive->duration = get_duration(line); }
@@ -981,7 +991,7 @@ static void divecomputer_parser(char *line, struct membuffer *str, void *_dc)
 struct keyword_action dive_action[] = {
 #undef D
 #define D(x) { #x, parse_dive_ ## x }
-	D(airtemp), D(buddy), D(cylinder), D(divemaster), D(divesiteid), D(duration),
+	D(airpressure), D(airtemp), D(buddy), D(cylinder), D(divemaster), D(divesiteid), D(duration),
 	D(gps), D(location), D(notes), D(notrip), D(rating), D(suit),
 	D(tags), D(visibility), D(watertemp), D(weightsystem)
 };

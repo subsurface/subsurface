@@ -535,6 +535,8 @@ extern bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b)
 extern void sort_dive_table(struct dive_table *table);
 extern void sort_trip_table(struct trip_table *table);
 extern struct dive *fixup_dive(struct dive *dive);
+extern pressure_t calculate_surface_pressure(const struct dive *dive);
+extern pressure_t un_fixup_surface_pressure(const struct dive *d);
 extern void fixup_dc_duration(struct divecomputer *dc);
 extern int dive_getUniqID();
 extern unsigned int dc_airtemp(const struct divecomputer *dc);

@@ -248,6 +248,27 @@ DiveField EditWaterTemp::fieldId() const
 	return DiveField::WATER_TEMP;
 }
 
+// ***** Atmospheric pressure *****
+void EditAtmPress::set(struct dive *d, int value) const
+{
+	d->surface_pressure.mbar = value > 0 ? (uint32_t)value : 0u;
+}
+
+int EditAtmPress::data(struct dive *d) const
+{
+	return (int)d->surface_pressure.mbar;
+}
+
+QString EditAtmPress::fieldName() const
+{
+	return tr("Atm. pressure");
+}
+
+DiveField EditAtmPress::fieldId() const
+{
+	return DiveField::ATM_PRESS;
+}
+
 // ***** Duration *****
 void EditDuration::set(struct dive *d, int value) const
 {

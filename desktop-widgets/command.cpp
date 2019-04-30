@@ -166,6 +166,11 @@ void editWaterTemp(int newValue, bool currentDiveOnly)
 	execute(new EditWaterTemp(newValue, currentDiveOnly));
 }
 
+void editAtmPress(int newValue, bool currentDiveOnly)
+{
+	execute(new EditAtmPress(newValue, currentDiveOnly));
+}
+
 void editDepth(int newValue, bool currentDiveOnly)
 {
 	execute(new EditDepth(newValue, currentDiveOnly));

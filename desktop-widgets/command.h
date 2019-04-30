@@ -60,6 +60,7 @@ void editRating(int newValue, bool currentDiveOnly);
 void editVisibility(int newValue, bool currentDiveOnly);
 void editAirTemp(int newValue, bool currentDiveOnly);
 void editWaterTemp(int newValue, bool currentDiveOnly);
+void editAtmPress(int newValue, bool currentDiveOnly);
 void editDepth(int newValue, bool currentDiveOnly);
 void editDuration(int newValue, bool currentDiveOnly);
 void editDiveSite(struct dive_site *newValue, bool currentDiveOnly);
