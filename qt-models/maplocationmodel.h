@@ -61,8 +61,7 @@ public:
 	int rowCount(const QModelIndex &parent) const override;
 	int count();
 	void add(MapLocation *);
-	void addList(QVector<MapLocation *>);
-	void clear();
+	void reload();
 	MapLocation *getMapLocation(const struct dive_site *ds);
 	void updateMapLocationCoordinates(const struct dive_site *ds, QGeoCoordinate coord);
 	Q_INVOKABLE void setSelected(struct dive_site *ds, bool fromClick = true);

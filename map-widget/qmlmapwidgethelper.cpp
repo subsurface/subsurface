@@ -8,11 +8,7 @@
 #include "core/divesite.h"
 #include "core/qthelper.h"
 #include "qt-models/maplocationmodel.h"
-#ifndef SUBSURFACE_MOBILE
-#include "qt-models/filtermodels.h"
-#endif
 
-#define MIN_DISTANCE_BETWEEN_DIVE_SITES_M 50.0
 #define SMALL_CIRCLE_RADIUS_PX            26.0
 
 MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
@@ -108,49 +104,7 @@ void MapWidgetHelper::centerOnSelectedDiveSite()
 
 void MapWidgetHelper::reloadMapLocations()
 {
-	int idx;
-	struct dive *dive;
-	QMap<QString, MapLocation *> locationNameMap;
-	m_mapLocationModel->clear();
-	MapLocation *location;
-	QVector<MapLocation *> locationList;
-	QVector<struct dive_site *> locations;
-	qreal latitude, longitude;
-
-#ifdef SUBSURFACE_MOBILE
-	bool diveSiteMode = false;
-#else
-	// In dive site mode (that is when either editing a dive site or on
-	// the dive site tab), we want to show all dive sites, not only those
-	// of the non-hidden dives.
-	bool diveSiteMode = MultiFilterSortModel::instance()->diveSiteMode();
-#endif
-	for_each_dive(idx, dive) {
-		// Don't show dive sites of hidden dives, unless this is the currently
-		// displayed (edited) dive or we're in dive site edit mode.
-		if (!diveSiteMode && dive->hidden_by_filter && dive != current_dive)
-			continue;
-		struct dive_site *ds = get_dive_site_for_dive(dive);
-		if (!dive_site_has_gps_location(ds) || locations.contains(ds))
-			continue;
-		latitude = ds->location.lat.udeg * 0.000001;
-		longitude = ds->location.lon.udeg * 0.000001;
-		QGeoCoordinate dsCoord(latitude, longitude);
-		QString name(ds->name);
-		// don't add dive locations with the same name, unless they are
-		// at least MIN_DISTANCE_BETWEEN_DIVE_SITES_M apart
-		if (locationNameMap.contains(name)) {
-			MapLocation *existingLocation = locationNameMap[name];
-			QGeoCoordinate coord = existingLocation->coordinate();
-			if (dsCoord.distanceTo(coord) < MIN_DISTANCE_BETWEEN_DIVE_SITES_M)
-				continue;
-		}
-		location = new MapLocation(ds, dsCoord, name);
-		locationList.append(location);
-		locations.append(ds);
-		locationNameMap[name] = location;
-	}
-	m_mapLocationModel->addList(locationList);
+	m_mapLocationModel->reload();
 }
 
 void MapWidgetHelper::selectedLocationChanged(MapLocation *location)
