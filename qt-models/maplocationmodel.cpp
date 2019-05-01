@@ -61,8 +61,7 @@ QVariant MapLocation::divesiteVariant()
 	return QVariant::fromValue(m_ds);
 }
 
-MapLocationModel::MapLocationModel(QObject *parent) : QAbstractListModel(parent),
-	m_selectedDs(nullptr)
+MapLocationModel::MapLocationModel(QObject *parent) : QAbstractListModel(parent)
 {
 	m_roles[MapLocation::Roles::RoleDivesite] = MapLocation::PROPERTY_NAME_DIVESITE;
 	m_roles[MapLocation::Roles::RoleCoordinate] = MapLocation::PROPERTY_NAME_COORDINATE;
@@ -120,6 +119,7 @@ void MapLocationModel::reload()
 
 	qDeleteAll(m_mapLocations);
 	m_mapLocations.clear();
+	m_selectedDs.clear();
 
 	QMap<QString, MapLocation *> locationNameMap;
 	MapLocation *location;
@@ -140,7 +140,11 @@ void MapLocationModel::reload()
 		if (!diveSiteMode && dive->hidden_by_filter && dive != current_dive)
 			continue;
 		struct dive_site *ds = get_dive_site_for_dive(dive);
-		if (!dive_site_has_gps_location(ds) || locations.contains(ds))
+		if (!dive_site_has_gps_location(ds))
+			continue;
+		if (dive->selected && !m_selectedDs.contains(ds))
+			m_selectedDs.append(ds);
+		if (locations.contains(ds))
 			continue;
 		latitude = ds->location.lat.udeg * 0.000001;
 		longitude = ds->location.lon.udeg * 0.000001;
@@ -165,15 +169,16 @@ void MapLocationModel::reload()
 
 void MapLocationModel::setSelected(struct dive_site *ds, bool fromClick)
 {
-	m_selectedDs = ds;
-	emit selectedDsChanged();
+	m_selectedDs.clear();
+	m_selectedDs.append(ds);
 	if (fromClick)
-		emit selectedLocationChanged(getMapLocation(m_selectedDs));
+		emit selectedLocationChanged(getMapLocation(ds));
 }
 
-QVariant MapLocationModel::selectedDs()
+bool MapLocationModel::isSelected(const QVariant &dsVariant) const
 {
-	return QVariant::fromValue(m_selectedDs);
+	dive_site *ds = dsVariant.value<dive_site *>();
+	return ds && m_selectedDs.contains(ds);
 }
 
 MapLocation *MapLocationModel::getMapLocation(const struct dive_site *ds)
