@@ -50,7 +50,6 @@ class MapLocationModel : public QAbstractListModel
 {
 	Q_OBJECT
 	Q_PROPERTY(int count READ count NOTIFY countChanged)
-	Q_PROPERTY(QVariant selectedDs READ selectedDs NOTIFY selectedDsChanged)
 
 public:
 	MapLocationModel(QObject *parent = NULL);
@@ -65,7 +64,9 @@ public:
 	MapLocation *getMapLocation(const struct dive_site *ds);
 	void updateMapLocationCoordinates(const struct dive_site *ds, QGeoCoordinate coord);
 	Q_INVOKABLE void setSelected(struct dive_site *ds, bool fromClick = true);
-	QVariant selectedDs();
+	// The dive site is passed as a QVariant, because a null-QVariant is not automatically
+	// transformed into a null pointer and warning messages are spewed onto the console.
+	Q_INVOKABLE bool isSelected(const QVariant &ds) const;
 
 protected:
 	QHash<int, QByteArray> roleNames() const override;
@@ -73,11 +74,10 @@ protected:
 private:
 	QVector<MapLocation *> m_mapLocations;
 	QHash<int, QByteArray> m_roles;
-	struct dive_site *m_selectedDs;
+	QVector<dive_site *> m_selectedDs;
 
 signals:
 	void countChanged(int c);
-	void selectedDsChanged();
 	void selectedLocationChanged(MapLocation *);
 };
 
