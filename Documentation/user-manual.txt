@@ -401,7 +401,7 @@ of the dive computer (at least for those not charging while connected via USB).
  - The checkbox marked _Download into new trip_ ensures that, after upload, the downloaded dives
    are grouped together as a new trip(s) in the *Dive List*.
 
- - Do *not* check the checkboxes labeled _Save libdivecomputer logfile_ and
+ - Do *not* check the checkboxes labelled _Save libdivecomputer logfile_ and
    _Save libdivecomputer dumpfile_. These are only used as diagnostic tools
    when there are problems with downloads(see below).
  - Then select the _Download_ button.
@@ -508,7 +508,7 @@ four steps:
 
 Select the Download dialog by selecting
 _Import -> Import from dive computer_ from the *Main Menu*. After checking the
-box labeled _"Choose Bluetooth download mode"_, the dialog below appears.
+box labelled _"Choose Bluetooth download mode"_, the dialog below appears.
 
 ===== On Linux or MacOS:
 
@@ -711,12 +711,12 @@ be used).
 *Location*:
 [icon="images/icons/warning2.png"]
 [WARNING]
-Dive locations are managed as a *separate* part of the dive log.
+Dive locations are managed as a *separate* part of the dive log (See the section entitled xref:S_DiveSiteManagement[Manipulating Dive Site Information]).
 The dive information in the *Notes* and *Equipment* tabs can therefore NOT be edited at the same
 time as the dive site information. Save all the other dive information (e.g.
 divemaster, buddy, protective gear, notes about the dive) by selecting _Apply changes_ on the
 *Notes* tab BEFORE editing the dive site information. Then supply a dive site name in the
-textbox labeled _Location_ on the *Notes* tab.
+textbox labelled _Location_ on the *Notes* tab. 
 
 *Using existing dive locations:* Type in the name of the dive site, e.g. "Tihany, Lake Balaton, Hungary".
 If several dives are
@@ -1317,7 +1317,7 @@ instance, _Subsurface_ expects the column heading for Dive number (" # ") to be 
 the column heading that _Subsurface_ expects is not in the blue row, drag the
 appropriate balloon from the upper area and drop it in the appropriate blue
 cell at the top of the table. For example, to indicate the correct column for "Dive #", drag
-the ballooned item labeled "Dive # " and drop it in the blue
+the ballooned item labelled "Dive # " and drop it in the blue
 cell immediately above the white cell containing " # ", depicted in
 the image below.
 
@@ -1406,6 +1406,91 @@ size of the _CSV_ file might cause problems. Importing 100 dives at a time
 (_CSV dive details_) works, but larger files might exceed
 the limits of the parser used. When encountering problems with _CSV_ imports, first try with
 a smaller file to make sure everything works.
+
+[[S_DiveSiteManagement]]
+=== Manipulating Dive Site Information
+
+The dive site information of all dives is managed as a separate entity independent of the dive information.
+Selecting the rightmost tab of the *Notes panel*,
+labelled "Dive sites" brings up the _dive sites management panel_ (image below).
+Linking a dive to a dive site is performed from within the Notes tab showing the information for
+that dive (see the section on xref:S_locations[Locations]). On the other hand the dive sites management panel allows
+dive-independent data to be managed. A new dive site can be created either while editing a dive (within the *Notes* tab,
+see xref:S_locations[Locations]) or it could be created within the dive sites management panel (image below).
+ 
+image::images/DiveSitesTab.jpg["FIGURE: Dive sites tab",align="center"]
+
+If a description for a dive site has previously been entered, this is shown in the panel
+as well as the number of dives at each site. The list of sites can be ordered by clicking
+on any of the three headings. A dustbin and an edit icon are on the left of each dive site name.
+The following actions are possible for managing the collection of dive sites:
+
+==== Filter the list of dive sites
+
+At the top right of the dive site management panel is a text box (see image above). If you wish to only show dives
+from a particular site, then type a partial dive site name such as "Genova". This shows only the dive sites
+that have been described for Genova, assuming that the word "Genova" forms part of the dive site name
+or description.
+
+==== Edit a dive site
+
+The information for each dive site can be edited either from from within the *Notes* tab or
+within the *Dive sites* tab.  In order to edit the dive site information, select the
+Edit icon to the left of the dive site name (see image above). Editing dive site information
+from within the *Notes* tab is discussed in the section on xref:S_locations[Locations] where
+each of the fields in the dive site edit panel is explained.
+
+image::images/DiveSiteEdit.jpg["FIGURE: Dive site edit",align="center"]
+
+Add any desirable information to the tab. Editing of coordinates is explained in the
+section dealing with xref:S_locations[Locations]. Having finished editing the dive site information,
+select the Done button at the top. This returns you to the dive sites management panel.
+
+==== Merge dive sites
+
+Merging two or more dives is achieved in the dive site edit panel (see image above). We assume that the dive
+sites that need merging are not far apart. Merging is performed by selecting a dive site and then merging
+other dives with this selected dive site. In the edit panel, above, select the text box labelled "Show dive sites
+in the range of:" and provide a critical distance that would include the site that needs to be merged with the present site.
+A list of sites within this range is presented (see image below).
+
+image::images/DiveSiteMerge.jpg["FIGURE: Dive sites merge",align="center"]
+
+Select the dive site to be merged by right-clicking it. A confirmation
+message is presented (see image above). Clicking the confirmation message merges the selected dive with
+the dive named at the top of the panel and returns you to the dive sites management panel.
+
+==== Add a dive site
+
+At the top right of the dive sites management table is a round button with a "+". Clicking that button inserts a
+new site entitled "New dive site" into the list (image below). The new site can also be deleted (maybe after erroneously
+clicking the + icon or you realised the dive site already exists) by selecting _Edit -> Undo_ from the main menu or by typing Cntrl-Z while the dive sites management table has focus. Edit this new site by selecting its edit icon and provide a name,
+coordinates and, if preferred, a description. Clicking
+the "Done" button in the edit panel returns you to the dive sites management panel.
+
+image::images/DiveSiteInsert.jpg["FIGURE: Add dive site",align="center"]
+
+==== Delete a dive site
+
+On the left of each dive site is a dustbin icon. Clicking the dustbin deletes that site. If there are any
+dives performed at that site, a warning message is shown (see image below). If this site is then deleted,
+the location(s) of dives that used this site would need to be created. 
+
+image::images/DiveSiteDelete.jpg["FIGURE: Delete a dive site",align="center"]
+
+==== General approach to the use of the dive sites list
+
+Since the dive sites list is managed separately from the dive list, it is possible to add dive sites to the list
+even though these sites have not been used for any dives. In this case the column labelled "# of dives" shows a zero.
+This makes it possible for divers to share dive sites and sites can be created before any of them are dived. Alternatively
+a site can be created with a useful description such as "Ann dived this site last summer and she saw huge numbers of
+bumphead parrotfish. She said Jan - Apr is the best time. I hope to dive there myself". In this way the dive sites
+list becomes a repository of useful information outside of the dive list.
+
+==== Delete unused dive sites
+
+At the top left of the dive sites management panel is a button "Purge unused dive sites". Selecting this button
+deletes all the dive sites that do not have associated dives.
 
 === Importing Dive coordinates from a mobile device with GPS.
 
@@ -1801,7 +1886,7 @@ image::images/pSCR_profile.jpg["FIGURE: pSCR profile",align="center"]
 _Visualising the pO~2~ drop_: The difference between the pO~2~ of the fresh cylinder gas and the pO~2~
 in the loop can be visualised in _Subsurface_ by opening the _Profile_
 panel in the _File -> Preferences_ menu item and then providing suitable information in the section
-labeled _pSCR options_. The _pSCR metabolic rate_ is your rate of oxygen metabolism in liters/min (commonly
+labelled _pSCR options_. The _pSCR metabolic rate_ is your rate of oxygen metabolism in liters/min (commonly
 between 0.5 and 2.5). The _Dilution ratio_ is the ratio indicating how much gas in the loop is replaced with
 fresh gas, relative to the gas being breathed (common values are between 1:3 and 1:10). These values are also
 used when planning pSCR dives. If the oxygen content of the loop is not recorded by an oxygen sensor, _Subsurface_
@@ -1809,7 +1894,7 @@ estimates the pO~2~ in the loop using the information supplied above. This pO~2~
 representing the oxygen partial pressure in the dive profile. If the oxygen pressure in the loop is measured using
 an oxygen sensor connected to a dive computer, this information is probably recorded by the dive computer and these
 measured pO~2~ values are shown on the dive profile. In addition, the _Preferences_ panel allows one to activate
-a checkbox labeled _Show equivalent OC pO~2~ with pSCR pO~2~_. This activates display of the pO~2~ in the
+a checkbox labelled _Show equivalent OC pO~2~ with pSCR pO~2~_. This activates display of the pO~2~ in the
 fresh gas from the cylinder (an orange line). The vertical distance between the orange graph and the green graph
 indicates the "pO~2~ drop over the mouthpiece". Much of pSCR diving involves managing this pO~2~ difference.
 
@@ -1862,7 +1947,7 @@ for more complete information. Use that software to download the dive data into
 a known directory. From the main menu of _Subsurface_, select _Import ->  Import
 log files_ to bring up the xref:Unified_import[universal import dialog]. As
 explained in that section, the bottom right
-hand of the import dialog contains a dropdown list (labeled _Filter:_) of appropriate devices
+hand of the import dialog contains a dropdown list (labelled _Filter:_) of appropriate devices
 that currently include (Poseidon) MkVI or APD log viewer files. Import for other
 CCR equipment is under active development. Having selected the appropriate CCR format and
 the directory where the original dive logs have been stored from the CCR dive
@@ -3374,7 +3459,7 @@ image::images/PlannerWindow1.jpg["FIGURE: Dive planner startup window",align="ce
   above sea level of the dive site. The atmospheric pressure can also be entered as an altitude
   in meters, assuming a sea-level atmospheric pressure of 1.013 bar.
 
-- In the table labeled _Available Gases_, add the information of the cylinders to be used
+- In the table labelled _Available Gases_, add the information of the cylinders to be used
   as well as the gas composition within that cylinder. This is done in a similar way as for
   <<cylinder_definitions,providing cylinder data for dive logs>>. Choose the cylinder type by
   double clicking the cylinder type and using the dropdown list, then specify the start
@@ -3383,7 +3468,7 @@ image::images/PlannerWindow1.jpg["FIGURE: Dive planner startup window",align="ce
   concentration in the boxes provided in this dialog. Add additional cylinders by using the
   "+" icon to the top right-hand of the dialog.
 
-- The _Available Gases_ table includes three gas depth fields, labeled:
+- The _Available Gases_ table includes three gas depth fields, labelled:
  ** Deco switch at: the switch depth for deco gases. Unless overridden by the user, this will be
     automatically calculated based on the Deco pO~2~ preference (default 1.6 bar)
  ** Bot. MOD: the gas Maximum Operating Depth (MOD) if it is used as a bottom mix. Automatically
@@ -3782,12 +3867,12 @@ the dive and the green pO~2~ indicates the estimated pO~2~ in the loop, the
 whole dive being performed in rebreather mode. We wish to plan
 for a worst-case scenario with bailout at the turning point (i.e. the furthest point into
 the cave). In the *Dive planner points* table, change the *Dive mode* of the last two segments
-to *OC* (indicated in the left-hand image, labeled *A*, below). In this case the existing EAN31
+to *OC* (indicated in the left-hand image, labelled *A*, below). In this case the existing EAN31
 cylinder (Cyl.2 in the *Dive planner points* table is used for bailout (i.e. the bailout
 cylinder [Cyl. 3] has not been used yet). Note that the pO~2~ graph now indicates the appropriate
 pO~2~ values, since the gas breathed now has the pO~2~ of an OC configuration. In order to switch
 to the bailout cylinder (Cyl. 3), indicate this by selecting the appropriate cylinder in the *Dive planner points* table as
-indicated in the image on the right, below (labeled *B*). The icon on the depth profile
+indicated in the image on the right, below (labelled *B*). The icon on the depth profile
 now shows an overlapping bailout event with cylinder change. As in the graph on the left, the appropriate
 pO~2~ values are shown in the pO~2~ graphs. The volumes of gas required can be obtained at the bottom of the
 *Dive plan details* panel.
@@ -4480,7 +4565,7 @@ APD inspiration dive logs are imported into _Subsurface_ as follows:
 - Copy the contents of the clipboard into the text editor and save the text file
   with a filename extension of _.apd_.
 - Within _Subsurface_, select _Import ->  Import log files_ to open the xref:Unified_import[universal import dialog].
-- In the dropdown list towards the bottom right of the dialog (labeled 'Filter:'), select "APD log viewer".
+- In the dropdown list towards the bottom right of the dialog (labelled 'Filter:'), select "APD log viewer".
 - On the list of file names select the _.apd_ file  created. An import
   dialog opens showing the default settings for the data in the
 _.apd_ file. If changes are required,
