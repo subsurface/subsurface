@@ -63,14 +63,13 @@ void MapWidgetHelper::centerOnSelectedDiveSite()
 
 	if (selDS.isEmpty()) {
 		// no selected dives with GPS coordinates
-		m_mapLocationModel->setSelected(nullptr, false);
 		QMetaObject::invokeMethod(m_map, "deselectMapLocation");
 	} else if (selDS.size() == 1) {
-		centerOnDiveSite(selDS[0]);
-	} else if (selDS.size() > 1) {
+		QGeoCoordinate dsCoord (selDS[0]->location.lat.udeg * 0.000001, selDS[0]->location.lon.udeg * 0.000001);
+		QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(dsCoord)));
+	} else {
 		/* more than one dive sites with GPS selected.
 		 * find the most top-left and bottom-right dive sites on the map coordinate system. */
-		m_mapLocationModel->setSelected(selDS[0], false);
 		qreal minLat = 0.0, minLon = 0.0, maxLat = 0.0, maxLon = 0.0;
 		bool start = true;
 		for(struct dive_site *dss: selDS) {
