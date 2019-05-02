@@ -48,8 +48,7 @@ void MapWidget::doneLoading(QQuickWidget::Status status)
 	isReady = true;
 	m_rootItem = qobject_cast<QQuickItem *>(rootObject());
 	m_mapHelper = rootObject()->findChild<MapWidgetHelper *>();
-	connect(m_mapHelper, SIGNAL(selectedDivesChanged(QList<int>)),
-		this, SLOT(selectedDivesChanged(QList<int>)));
+	connect(m_mapHelper, &MapWidgetHelper::selectedDivesChanged, this, &MapWidget::selectedDivesChanged);
 	connect(m_mapHelper, &MapWidgetHelper::coordinatesChanged, this, &MapWidget::coordinatesChanged);
 }
 
@@ -108,7 +107,7 @@ void MapWidget::prepareForGetDiveCoordinates(struct dive_site *ds)
 	skipReload = true;
 }
 
-void MapWidget::selectedDivesChanged(QList<int> list)
+void MapWidget::selectedDivesChanged(const QList<int> &list)
 {
 	CHECK_IS_READY_RETURN_VOID();
 	skipReload = true;
