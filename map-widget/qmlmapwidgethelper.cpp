@@ -110,7 +110,7 @@ void MapWidgetHelper::selectedLocationChanged(MapLocation *location)
 {
 	int idx;
 	struct dive *dive;
-	m_selectedDiveIds.clear();
+	QList<int> selectedDiveIds;
 	QGeoCoordinate locationCoord = location->coordinate();
 	for_each_dive (idx, dive) {
 		struct dive_site *ds = get_dive_site_for_dive(dive);
@@ -121,27 +121,27 @@ void MapWidgetHelper::selectedLocationChanged(MapLocation *location)
 		const qreal longitude = ds->location.lon.udeg * 0.000001;
 		QGeoCoordinate dsCoord(latitude, longitude);
 		if (locationCoord.distanceTo(dsCoord) < m_smallCircleRadius)
-			m_selectedDiveIds.append(idx);
+			selectedDiveIds.append(idx);
 	}
 #else // the mobile version doesn't support multi-dive selection
 		if (ds == location->divesite())
-			m_selectedDiveIds.append(dive->id); // use id here instead of index
+			selectedDiveIds.append(dive->id); // use id here instead of index
 	}
 	int last; // get latest dive chronologically
-	if (!m_selectedDiveIds.isEmpty()) {
-		 last = m_selectedDiveIds.last();
-		 m_selectedDiveIds.clear();
-		 m_selectedDiveIds.append(last);
+	if (!selectedDiveIds.isEmpty()) {
+		 last = selectedDiveIds.last();
+		 selectedDiveIds.clear();
+		 selectedDiveIds.append(last);
 	}
 #endif
-	emit selectedDivesChanged(m_selectedDiveIds);
+	emit selectedDivesChanged(selectedDiveIds);
 }
 
 void MapWidgetHelper::selectVisibleLocations()
 {
 	int idx;
 	struct dive *dive;
-	m_selectedDiveIds.clear();
+	QList<int> selectedDiveIds;
 	for_each_dive (idx, dive) {
 		struct dive_site *ds = get_dive_site_for_dive(dive);
 		if (!dive_site_has_gps_location(ds))
@@ -154,19 +154,19 @@ void MapWidgetHelper::selectVisibleLocations()
 		                          Q_ARG(QGeoCoordinate, dsCoord));
 		if (!qIsNaN(point.x()))
 #ifndef SUBSURFACE_MOBILE // indexes on desktop
-			m_selectedDiveIds.append(idx);
+			selectedDiveIds.append(idx);
 	}
 #else // use id on mobile instead of index
-			m_selectedDiveIds.append(dive->id);
+			selectedDiveIds.append(dive->id);
 	}
 	int last; // get latest dive chronologically
-	if (!m_selectedDiveIds.isEmpty()) {
-		 last = m_selectedDiveIds.last();
-		 m_selectedDiveIds.clear();
-		 m_selectedDiveIds.append(last);
+	if (!selectedDiveIds.isEmpty()) {
+		 last = selectedDiveIds.last();
+		 selectedDiveIds.clear();
+		 selectedDiveIds.append(last);
 	}
 #endif
-	emit selectedDivesChanged(m_selectedDiveIds);
+	emit selectedDivesChanged(selectedDiveIds);
 }
 
 /*

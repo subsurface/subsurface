@@ -43,7 +43,6 @@ private:
 	QObject *m_map;
 	MapLocationModel *m_mapLocationModel;
 	qreal m_smallCircleRadius;
-	QList<int> m_selectedDiveIds;
 	bool m_editMode;
 
 private slots:
@@ -52,7 +51,7 @@ private slots:
 signals:
 	void modelChanged();
 	void editModeChanged();
-	void selectedDivesChanged(QList<int> list);
+	void selectedDivesChanged(const QList<int> &list);
 	void coordinatesChanged(struct dive_site *ds, const location_t &);
 	void pluginObjectChanged();
 };
