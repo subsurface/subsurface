@@ -141,7 +141,6 @@ void MapWidgetHelper::selectVisibleLocations()
 {
 	int idx;
 	struct dive *dive;
-	bool selectedFirst = false;
 	m_selectedDiveIds.clear();
 	for_each_dive (idx, dive) {
 		struct dive_site *ds = get_dive_site_for_dive(dive);
@@ -153,18 +152,12 @@ void MapWidgetHelper::selectVisibleLocations()
 		QPointF point;
 		QMetaObject::invokeMethod(m_map, "fromCoordinate", Q_RETURN_ARG(QPointF, point),
 		                          Q_ARG(QGeoCoordinate, dsCoord));
-		if (!qIsNaN(point.x())) {
-			if (!selectedFirst) {
-				m_mapLocationModel->setSelected(ds, false);
-				selectedFirst = true;
-			}
+		if (!qIsNaN(point.x()))
 #ifndef SUBSURFACE_MOBILE // indexes on desktop
 			m_selectedDiveIds.append(idx);
-		}
 	}
 #else // use id on mobile instead of index
 			m_selectedDiveIds.append(dive->id);
-		}
 	}
 	int last; // get latest dive chronologically
 	if (!m_selectedDiveIds.isEmpty()) {
