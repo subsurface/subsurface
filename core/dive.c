@@ -456,7 +456,7 @@ double get_weight_units(unsigned int grams, int *frac, const char **units)
 int32_t altitude_to_pressure(int altitude) 		// altitude in meters above sea level
 {						// function returns atmospheric pressure in mbar
 	int i, alt;
-	int pressval[21] = { 1013, 984, 955, 926, 899, 872, 846, 820, 795, 771, 747, 724, 701, 679, 658, 637, 616, 597, 577, 559, 540 };
+	static const int pressval[21] = { 1013, 984, 955, 926, 899, 872, 846, 820, 795, 771, 747, 724, 701, 679, 658, 637, 616, 597, 577, 559, 540 };
 	// Calculated atmospheric pressure values at 250m increments in altitude from sea level to 4999m,
 	// calculated following the US Standard Atmosphere 1976, US Government Printing Office, Washington DC, 1976.
 	// For intermediate altitudes, linear interpolation is performed here.
@@ -1331,7 +1331,7 @@ static struct event *find_previous_event(struct divecomputer *dc, struct event *
 	return previous;
 }
 
-static void fixup_surface_pressure(struct dive *dive)
+void fixup_surface_pressure(struct dive *dive)
 {
 	struct divecomputer *dc;
 	int sum = 0, nr = 0;

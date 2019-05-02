@@ -5,6 +5,7 @@
 #include "core/divelist.h"
 #include "core/qthelper.h" // for copy_qstring
 #include "core/subsurface-string.h"
+#include "core/dive.h" // for surface_pressure
 #include "desktop-widgets/mapwidget.h" // TODO: Replace desktop-dependency by signal
 
 namespace Command {
@@ -251,7 +252,9 @@ DiveField EditWaterTemp::fieldId() const
 // ***** Atmospheric pressure *****
 void EditAtmPress::set(struct dive *d, int value) const
 {
-	d->surface_pressure.mbar = value > 0 ? (uint32_t)value : 0u;
+	divecomputer *dc = get_dive_dc(d,dc_number); 
+	dc->surface_pressure.mbar = value > 0 ? (uint32_t)value : 0u;
+	fixup_surface_pressure(d);  // create new dive->surface-pressure
 }
 
 int EditAtmPress::data(struct dive *d) const

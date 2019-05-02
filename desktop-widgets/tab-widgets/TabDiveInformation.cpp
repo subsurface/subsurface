@@ -13,9 +13,7 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 {
 	ui->setupUi(this);
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &TabDiveInformation::divesChanged);
-	QStringList atmPressTypes = QStringList();
-	atmPressTypes.append("mbar");
-	atmPressTypes.append(get_depth_unit());
+	QStringList atmPressTypes { "mbar", get_depth_unit() };
 	ui->atmPressType->insertItems(0, atmPressTypes);
 	pressTypeIndex = 0;
 }
@@ -148,10 +146,6 @@ void TabDiveInformation::divesChanged(dive_trip *trip, const QVector<dive *> &di
 		break;
 	case DiveField::ATM_PRESS:
 		ui->atmPressVal->setText(ui->atmPressVal->text().sprintf("%d",current_dive->surface_pressure.mbar));
-
-//get_temperature_string(current_dive->surface_pressure, true));
-//pressStr.sprintf("%d",atmpress);
-
 		break;
 	case DiveField::DATETIME:
 		updateWhen();
@@ -163,21 +157,19 @@ void TabDiveInformation::divesChanged(dive_trip *trip, const QVector<dive *> &di
 
 void TabDiveInformation::on_atmPressVal_editingFinished()
 {
-	int32_t atmpress = 0;
-	QString pressStr;
+	int32_t atmpress;
 	if (current_dive) {
 		if (ui->atmPressType->currentIndex() == 1) {		// If altitude has been specified:
 			atmpress = (int)(0.5 + ui->atmPressVal->text().toFloat());	// get altitude from text box
 			if (prefs.units.length == units::FEET)		// if altitude in feet
 				atmpress = (int)(atmpress / 3.28084); 	// 	convert feet -> meters
 			atmpress = altitude_to_pressure(atmpress);	// convert altitude to pressure
-			pressStr.sprintf("%d",atmpress);
-			ui->atmPressVal->setText(pressStr);		// Write pressure to text box
-			ui->atmPressType->setCurrentIndex(0);		// set combobox to mbar
-		}
-		else
+			ui->atmPressVal->setText(ui->atmPressVal->text().sprintf("%d",atmpress));
+			ui->atmPressType->setCurrentIndex(0);		// reset combobox to mbar
+		} else {
 			atmpress = ui->atmPressVal->text().toInt();	// get pressure that has been specified
-		Command::editAtmPress(atmpress, false);
+		}
+		Command::editAtmPress(atmpress, false);			// and save the pressure
 	}
 }
 

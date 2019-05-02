@@ -389,8 +389,7 @@ extern int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int s
 extern int depth_to_mbar(int depth, const struct dive *dive);
 extern double depth_to_bar(int depth, const struct dive *dive);
 extern double depth_to_atm(int depth, const struct dive *dive);
-extern int rel_mbar_to_depth(int mbar, const struct dive *dive);
-extern int altitude_to_pressure(int altitude);
+extern int32_t altitude_to_pressure(int altitude);
 extern int mbar_to_depth(int mbar, const struct dive *dive);
 extern depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, const struct dive *dive, int roundto);
 extern depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, int roundto);
@@ -537,6 +536,7 @@ extern void sort_dive_table(struct dive_table *table);
 extern void sort_trip_table(struct trip_table *table);
 extern struct dive *fixup_dive(struct dive *dive);
 extern void fixup_dc_duration(struct divecomputer *dc);
+extern void fixup_surface_pressure(struct dive *dive);
 extern int dive_getUniqID();
 extern unsigned int dc_airtemp(const struct divecomputer *dc);
 extern unsigned int dc_watertemp(const struct divecomputer *dc);
