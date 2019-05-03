@@ -62,6 +62,7 @@ public:
 	void add(MapLocation *);
 	void reload();
 	MapLocation *getMapLocation(const struct dive_site *ds);
+	const QVector<dive_site *> &selectedDs() const;
 	void updateMapLocationCoordinates(const struct dive_site *ds, QGeoCoordinate coord);
 	Q_INVOKABLE void setSelected(struct dive_site *ds, bool fromClick = true);
 	// The dive site is passed as a QVariant, because a null-QVariant is not automatically

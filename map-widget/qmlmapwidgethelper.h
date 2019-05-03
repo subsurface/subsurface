@@ -35,11 +35,11 @@ public:
 	Q_INVOKABLE void updateCurrentDiveSiteCoordinatesFromMap(struct dive_site *ds, QGeoCoordinate coord);
 	Q_INVOKABLE void selectVisibleLocations();
 	void updateDiveSiteCoordinates(struct dive_site *ds, const location_t &);
-	void enterEditMode(struct dive_site *ds);
-	void exitEditMode();
 	QString pluginObject();
 
 private:
+	void enterEditMode();
+	void exitEditMode();
 	QObject *m_map;
 	MapLocationModel *m_mapLocationModel;
 	qreal m_smallCircleRadius;
