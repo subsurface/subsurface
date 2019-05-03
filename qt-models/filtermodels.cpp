@@ -278,6 +278,11 @@ void MultiFilterSortModel::stopFilterDiveSites()
 	myInvalidate();
 }
 
+const QVector<dive_site *> &MultiFilterSortModel::filteredDiveSites() const
+{
+	return dive_sites;
+}
+
 bool MultiFilterSortModel::diveSiteMode() const
 {
 	return !dive_sites.isEmpty();

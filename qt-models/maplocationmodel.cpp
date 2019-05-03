@@ -136,8 +136,11 @@ void MapLocationModel::reload()
 #else
 	// In dive site mode (that is when either editing a dive site or on
 	// the dive site tab), we want to show all dive sites, not only those
-	// of the non-hidden dives.
+	// of the non-hidden dives. Moreover, the selected dive sites are those
+	// that we filter for.
 	bool diveSiteMode = MultiFilterSortModel::instance()->diveSiteMode();
+	if (diveSiteMode)
+		m_selectedDs = MultiFilterSortModel::instance()->filteredDiveSites();
 #endif
 	for_each_dive(idx, dive) {
 		// Don't show dive sites of hidden dives, unless this is the currently
@@ -147,7 +150,7 @@ void MapLocationModel::reload()
 		struct dive_site *ds = get_dive_site_for_dive(dive);
 		if (!dive_site_has_gps_location(ds))
 			continue;
-		if (dive->selected && !m_selectedDs.contains(ds))
+		if (!diveSiteMode && dive->selected && !m_selectedDs.contains(ds))
 			m_selectedDs.append(ds);
 		if (locations.contains(ds))
 			continue;
