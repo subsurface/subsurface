@@ -64,6 +64,7 @@ public:
 	int divesDisplayed;
 	bool lessThan(const QModelIndex &, const QModelIndex &) const override;
 	bool diveSiteMode() const; // returns true if we're filtering on dive site
+	const QVector<dive_site *> &filteredDiveSites() const;
 public
 slots:
 	void myInvalidate();
