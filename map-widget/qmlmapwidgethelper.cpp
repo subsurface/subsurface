@@ -8,6 +8,9 @@
 #include "core/divesite.h"
 #include "core/qthelper.h"
 #include "qt-models/maplocationmodel.h"
+#ifndef SUBSURFACE_MOBILE
+#include "qt-models/filtermodels.h"
+#endif
 
 #define SMALL_CIRCLE_RADIUS_PX            26.0
 
@@ -103,6 +106,14 @@ void MapWidgetHelper::centerOnSelectedDiveSite()
 
 void MapWidgetHelper::reloadMapLocations()
 {
+#ifndef SUBSURFACE_MOBILE
+	// The filter being set to dive site is the signal that we are in dive site edit mode.
+	// This is the case when either the dive site edit tab or the dive site list tab are active.
+	if (MultiFilterSortModel::instance()->diveSiteMode())
+		enterEditMode();
+	else
+		exitEditMode();
+#endif
 	m_mapLocationModel->reload();
 }
 
@@ -230,26 +241,26 @@ void MapWidgetHelper::updateDiveSiteCoordinates(struct dive_site *ds, const loca
 
 void MapWidgetHelper::exitEditMode()
 {
+	if (!m_editMode)
+		return;
 	m_editMode = false;
 	emit editModeChanged();
 }
 
-void MapWidgetHelper::enterEditMode(struct dive_site *ds)
+void MapWidgetHelper::enterEditMode()
 {
-	// We don't support editing of a dive site that doesn't exist
-	if (!ds)
+	if (m_editMode)
 		return;
 
 	m_editMode = true;
-	// if divesite doesn't exist in the model, add a new MapLocation.
-	MapLocation *exists = m_mapLocationModel->getMapLocation(ds);
-	if (!exists) {
+	// if divesite of the first selected dive doesn't exist in the model, add a new MapLocation.
+	const QVector<dive_site *> selDs = m_mapLocationModel->selectedDs();
+	if (!selDs.isEmpty() && ! m_mapLocationModel->getMapLocation(selDs[0])) {
 		// If the dive site doesn't have a GPS location, use the centre of the map
-		QGeoCoordinate coord = has_location(&ds->location) ? getCoordinates(ds)
-								   : m_map->property("center").value<QGeoCoordinate>();
-		m_mapLocationModel->add(new MapLocation(ds, coord, QString(ds->name)));
+		QGeoCoordinate coord = has_location(&selDs[0]->location) ? getCoordinates(selDs[0])
+									 : m_map->property("center").value<QGeoCoordinate>();
+		m_mapLocationModel->add(new MapLocation(selDs[0], coord, QString(selDs[0]->name)));
 	}
-	centerOnDiveSite(ds);
 	emit editModeChanged();
 }
 

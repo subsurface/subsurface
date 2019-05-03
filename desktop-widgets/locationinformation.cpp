@@ -182,7 +182,6 @@ void LocationInformationWidget::acceptChanges()
 	MainWindow::instance()->diveList->setEnabled(true);
 	MainWindow::instance()->setEnabledToolbar(true);
 	MainWindow::instance()->setApplicationState("Default");
-	MapWidget::instance()->endGetDiveCoordinates();
 	MapWidget::instance()->repopulateLabels();
 	MultiFilterSortModel::instance()->stopFilterDiveSites();
 }
@@ -200,7 +199,6 @@ void LocationInformationWidget::initFields(dive_site *ds)
 		filter_model.set(0, location_t { degrees_t{ 0 }, degrees_t{ 0 } });
 		clearLabels();
 	}
-	MapWidget::instance()->prepareForGetDiveCoordinates(ds);
 }
 
 void LocationInformationWidget::on_diveSiteCoordinates_editingFinished()

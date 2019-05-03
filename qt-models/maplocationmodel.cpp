@@ -110,6 +110,11 @@ void MapLocationModel::add(MapLocation *location)
 	endInsertRows();
 }
 
+const QVector<dive_site *> &MapLocationModel::selectedDs() const
+{
+	return m_selectedDs;
+}
+
 void MapLocationModel::reload()
 {
 	int idx;
