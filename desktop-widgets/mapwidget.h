@@ -3,6 +3,7 @@
 #define MAPWIDGET_H
 
 #include "core/units.h"
+#include "core/subsurface-qt/DiveListNotifier.h"
 #include <QQuickWidget>
 #include <QList>
 
@@ -11,7 +12,6 @@
 class QResizeEvent;
 class QQuickItem;
 class MapWidgetHelper;
-struct dive_site;
 
 class MapWidget : public QQuickWidget {
 
@@ -35,6 +35,7 @@ public slots:
 	void coordinatesChanged(struct dive_site *ds, const location_t &);
 	void doneLoading(QQuickWidget::Status status);
 	void diveSiteChanged(struct dive_site *ds, int field);
+	void divesChanged(dive_trip *, const QVector<dive *> &, DiveField field);
 
 private:
 	static MapWidget *m_instance;

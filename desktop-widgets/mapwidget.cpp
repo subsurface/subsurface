@@ -6,7 +6,6 @@
 
 #include "mapwidget.h"
 #include "core/divesite.h"
-#include "core/subsurface-qt/DiveListNotifier.h"
 #include "map-widget/qmlmapwidgethelper.h"
 #include "qt-models/maplocationmodel.h"
 #include "qt-models/divelocationmodel.h"
@@ -31,6 +30,7 @@ MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
 	connect(this, &QQuickWidget::statusChanged, this, &MapWidget::doneLoading);
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &MapWidget::diveSiteChanged);
+	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &MapWidget::divesChanged);
 	setSource(urlMapWidget);
 }
 
@@ -85,8 +85,10 @@ void MapWidget::repopulateLabels()
 void MapWidget::reload()
 {
 	CHECK_IS_READY_RETURN_VOID();
-	if (!skipReload)
+	if (!skipReload) {
 		m_mapHelper->reloadMapLocations();
+		centerOnSelectedDiveSite();
+	}
 }
 
 void MapWidget::endGetDiveCoordinates()
@@ -127,6 +129,12 @@ void MapWidget::diveSiteChanged(struct dive_site *ds, int field)
 	CHECK_IS_READY_RETURN_VOID();
 	if (field == LocationInformationModel::LOCATION)
 		m_mapHelper->updateDiveSiteCoordinates(ds, ds->location);
+}
+
+void MapWidget::divesChanged(dive_trip *, const QVector<dive *> &, DiveField field)
+{
+	if (field == DiveField::DIVESITE)
+		reload();
 }
 
 MapWidget::~MapWidget()
