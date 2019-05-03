@@ -44,8 +44,6 @@ public:
 	void nextInputField(QKeyEvent *event);
 	void stealFocus();
 
-signals:
-	void diveSiteChanged();
 public
 slots:
 	void divesChanged(dive_trip *trip, const QVector<dive *> &dives, DiveField field);
