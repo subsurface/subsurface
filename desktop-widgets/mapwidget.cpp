@@ -105,11 +105,7 @@ void MapWidget::prepareForGetDiveCoordinates(struct dive_site *ds)
 void MapWidget::selectedDivesChanged(const QList<int> &list)
 {
 	CHECK_IS_READY_RETURN_VOID();
-	skipReload = true;
-	MainWindow::instance()->diveList->unselectDives();
-	if (!list.empty())
-		MainWindow::instance()->diveList->selectDives(list);
-	skipReload = false;
+	MainWindow::instance()->diveList->selectDives(list);
 }
 
 void MapWidget::coordinatesChanged(struct dive_site *ds, const location_t &location)

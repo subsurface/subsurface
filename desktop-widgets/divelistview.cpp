@@ -277,9 +277,7 @@ void DiveListView::restoreSelection()
 		return;
 
 	selectionSaved = false;
-	dontEmitDiveChangedSignal = true;
-	unselectDives();
-	dontEmitDiveChangedSignal = false;
+	QList<int> divesToSelect;
 	Q_FOREACH (dive_trip_t *trip, selectedDives.keys()) {
 		QList<int> divesOnTrip = getDivesInTrip(trip);
 		QList<int> selectedDivesOnTrip = selectedDives.values(trip);
@@ -289,8 +287,9 @@ void DiveListView::restoreSelection()
 			selectTrip(trip);
 			selectedDivesOnTrip.removeAll(-1);
 		}
-		selectDives(selectedDivesOnTrip);
+		divesToSelect += selectedDivesOnTrip;
 	}
+	selectDives(divesToSelect);
 }
 
 // This is a bit ugly: we hook directly into the tripChanged signal to
@@ -417,6 +416,10 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 		return;
 
 	dontEmitDiveChangedSignal = true;
+
+	// First, clear the old selection
+	unselectDives();
+
 	// select the dives, highest index first - this way the oldest of the dives
 	// becomes the selected_dive that we scroll to
 	QList<int> sortedSelection = newDiveSelection;
