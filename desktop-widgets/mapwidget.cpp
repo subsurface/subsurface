@@ -52,13 +52,6 @@ void MapWidget::doneLoading(QQuickWidget::Status status)
 	connect(m_mapHelper, &MapWidgetHelper::coordinatesChanged, this, &MapWidget::coordinatesChanged);
 }
 
-void MapWidget::centerOnSelectedDiveSite()
-{
-	CHECK_IS_READY_RETURN_VOID();
-	if (!skipReload)
-		m_mapHelper->centerOnSelectedDiveSite();
-}
-
 void MapWidget::centerOnDiveSite(struct dive_site *ds)
 {
 	CHECK_IS_READY_RETURN_VOID();
@@ -71,7 +64,7 @@ void MapWidget::centerOnIndex(const QModelIndex& idx)
 	CHECK_IS_READY_RETURN_VOID();
 	dive_site *ds = idx.model()->index(idx.row(), LocationInformationModel::DIVESITE).data().value<dive_site *>();
 	if (!ds || ds == RECENTLY_ADDED_DIVESITE || !dive_site_has_gps_location(ds))
-		centerOnSelectedDiveSite();
+		m_mapHelper->centerOnSelectedDiveSite();
 	else
 		centerOnDiveSite(ds);
 }
@@ -87,7 +80,7 @@ void MapWidget::reload()
 	CHECK_IS_READY_RETURN_VOID();
 	if (!skipReload) {
 		m_mapHelper->reloadMapLocations();
-		centerOnSelectedDiveSite();
+		m_mapHelper->centerOnSelectedDiveSite();
 	}
 }
 
