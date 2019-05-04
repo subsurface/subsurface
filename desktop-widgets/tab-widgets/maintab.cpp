@@ -431,19 +431,25 @@ void MainTab::updateDiveInfo()
 		widget->updateData();
 
 	if (current_dive) {
+		// If we're on the dive-site tab, we don't want to switch tab when entering / exiting
+		// trip mode. The reason is that
+		// 1) this disrupts the user-experience and
+		// 2) the filter is reset, potentially erasing the current trip under our feet.
+		// TODO: Don't hard code tab location!
+		bool onDiveSiteTab = ui.tabWidget->currentIndex() == 6;
 		if (MainWindow::instance() && MainWindow::instance()->diveList->selectedTrips().count() == 1) {
-			// Remember the tab selected for last dive
-			if (lastSelectedDive)
+			currentTrip = MainWindow::instance()->diveList->selectedTrips().front();
+			// Remember the tab selected for last dive but only if we're not on the dive site tab
+			if (lastSelectedDive && !onDiveSiteTab)
 				lastTabSelectedDive = ui.tabWidget->currentIndex();
 			ui.tabWidget->setTabText(0, tr("Trip notes"));
 			ui.tabWidget->setTabEnabled(1, false);
 			ui.tabWidget->setTabEnabled(2, false);
 			ui.tabWidget->setTabEnabled(5, false);
-			// Recover the tab selected for last dive trip
-			if (lastSelectedDive)
+			// Recover the tab selected for last dive trip but only if we're not on the dive site tab
+			if (lastSelectedDive && !onDiveSiteTab)
 				ui.tabWidget->setCurrentIndex(lastTabSelectedDiveTrip);
 			lastSelectedDive = false;
-			currentTrip = *MainWindow::instance()->diveList->selectedTrips().begin();
 			// only use trip relevant fields
 			ui.divemaster->setVisible(false);
 			ui.DivemasterLabel->setVisible(false);
@@ -482,8 +488,8 @@ void MainTab::updateDiveInfo()
 			ui.duration->setVisible(false);
 			ui.durationLabel->setVisible(false);
 		} else {
-			// Remember the tab selected for last dive trip
-			if (!lastSelectedDive)
+			// Remember the tab selected for last dive trip but only if we're not on the dive site tab
+			if (!lastSelectedDive && !onDiveSiteTab)
 				lastTabSelectedDiveTrip = ui.tabWidget->currentIndex();
 			ui.tabWidget->setTabText(0, tr("Notes"));
 			ui.tabWidget->setTabEnabled(1, true);
@@ -491,8 +497,8 @@ void MainTab::updateDiveInfo()
 			ui.tabWidget->setTabEnabled(3, true);
 			ui.tabWidget->setTabEnabled(4, true);
 			ui.tabWidget->setTabEnabled(5, true);
-			// Recover the tab selected for last dive
-			if (!lastSelectedDive)
+			// Recover the tab selected for last dive but only if we're not on the dive site tab
+			if (!lastSelectedDive && !onDiveSiteTab)
 				ui.tabWidget->setCurrentIndex(lastTabSelectedDive);
 			lastSelectedDive = true;
 			currentTrip = NULL;
