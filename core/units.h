@@ -19,7 +19,6 @@ extern "C" {
 #define N2_DENSITY 1165
 #define HE_DENSITY 166
 #define SURFACE_PRESSURE 1013 // mbar
-#define SURFACE_PRESSURE_STRING "1013"
 #define ZERO_C_IN_MKELVIN 273150 // mKelvin
 
 #ifdef __cplusplus
