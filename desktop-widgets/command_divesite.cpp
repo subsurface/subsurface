@@ -100,6 +100,42 @@ void AddDiveSite::undo()
 	sitesToAdd = std::move(removeDiveSites(sitesToRemove));
 }
 
+ImportDiveSites::ImportDiveSites(struct dive_site_table *sites, const QString &source)
+{
+	setText(tr("import dive sites from %1").arg(source));
+
+	for (int i = 0; i < sites->nr; ++i) {
+		struct dive_site *new_ds = sites->dive_sites[i];
+
+		// Don't import dive sites that already exist. Currently we only check for
+		// the same name. We might want to be smarter here and merge dive site data, etc.
+		struct dive_site *old_ds = get_same_dive_site(new_ds);
+		if (old_ds) {
+			free_dive_site(new_ds);
+			continue;
+		}
+		sitesToAdd.emplace_back(new_ds);
+	}
+
+	// All site have been consumed
+	sites->nr = 0;
+}
+
+bool ImportDiveSites::workToBeDone()
+{
+	return !sitesToAdd.empty();
+}
+
+void ImportDiveSites::redo()
+{
+	sitesToRemove = std::move(addDiveSites(sitesToAdd));
+}
+
+void ImportDiveSites::undo()
+{
+	sitesToAdd = std::move(removeDiveSites(sitesToRemove));
+}
+
 DeleteDiveSites::DeleteDiveSites(const QVector<dive_site *> &sites) : sitesToRemove(sites.toStdVector())
 {
 	setText(tr("delete %n dive site(s)", "", sites.size()));
