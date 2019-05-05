@@ -22,6 +22,7 @@ private slots:
 private:
 	Ui::TabDiveSite ui;
 	DiveSiteSortedModel model;
+	QVector<dive_site *> selectedDiveSites();
 	void updateFilter();
 	void hideEvent(QHideEvent *) override;
 	void showEvent(QShowEvent *) override;

@@ -70,6 +70,7 @@ slots:
 	void myInvalidate();
 	void clearFilter();
 	void startFilterDiveSites(QVector<dive_site *> ds);
+	void setFilterDiveSite(QVector<dive_site *> ds);
 	void stopFilterDiveSites();
 	void filterChanged(const QModelIndex &from, const QModelIndex &to, const QVector<int> &roles);
 	void resetModel(DiveTripModelBase::Layout layout);
@@ -86,6 +87,14 @@ private:
 	QVector<dive_site *> dive_sites;
 	void countsChanged();
 	FilterData filterData;
+
+	// We use ref-counting for the dive site mode. The reason is that when switching
+	// between two tabs that both need dive site mode, the following course of
+	// events may happen:
+	//	1) The new tab appears -> enter dive site mode.
+	//	2) The old tab gets its hide() signal -> exit dive site mode.
+	// The filter is now not in dive site mode, even if it should
+	int diveSiteRefCount;
 };
 
 #endif

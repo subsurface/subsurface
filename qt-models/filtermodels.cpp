@@ -105,7 +105,8 @@ MultiFilterSortModel *MultiFilterSortModel::instance()
 }
 
 MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent),
-	divesDisplayed(0)
+	divesDisplayed(0),
+	diveSiteRefCount(0)
 {
 	setFilterKeyColumn(-1); // filter all columns
 	setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -269,12 +270,21 @@ void MultiFilterSortModel::clearFilter()
 void MultiFilterSortModel::startFilterDiveSites(QVector<dive_site *> ds)
 {
 	dive_sites = ds;
+	++diveSiteRefCount;
 	myInvalidate();
 }
 
 void MultiFilterSortModel::stopFilterDiveSites()
 {
+	if (--diveSiteRefCount > 0)
+		return;
 	dive_sites.clear();
+	myInvalidate();
+}
+
+void MultiFilterSortModel::setFilterDiveSite(QVector<dive_site *> ds)
+{
+	dive_sites = ds;
 	myInvalidate();
 }
 
