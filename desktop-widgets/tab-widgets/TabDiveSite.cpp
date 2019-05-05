@@ -83,7 +83,7 @@ void TabDiveSite::on_filterText_textChanged(const QString &text)
 	model.setFilter(text);
 }
 
-void TabDiveSite::updateFilter()
+QVector<dive_site *> TabDiveSite::selectedDiveSites()
 {
 	const QModelIndexList indexes = ui.diveSites->view()->selectionModel()->selectedIndexes();
 	QVector<dive_site *> sites;
@@ -92,7 +92,12 @@ void TabDiveSite::updateFilter()
 		struct dive_site *ds = model.getDiveSite(idx);
 		sites.append(ds);
 	}
-	MultiFilterSortModel::instance()->startFilterDiveSites(sites);
+	return sites;
+}
+
+void TabDiveSite::updateFilter()
+{
+	MultiFilterSortModel::instance()->setFilterDiveSite(selectedDiveSites());
 }
 
 void TabDiveSite::selectionChanged(const QItemSelection &, const QItemSelection &)
@@ -104,7 +109,7 @@ void TabDiveSite::showEvent(QShowEvent *)
 {
 	// If the user switches to the dive site tab and there was already a selection,
 	// filter on that selection.
-	updateFilter();
+	MultiFilterSortModel::instance()->startFilterDiveSites(selectedDiveSites());
 }
 
 void TabDiveSite::hideEvent(QHideEvent *)
