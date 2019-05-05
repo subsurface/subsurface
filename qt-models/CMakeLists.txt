@@ -29,6 +29,8 @@ set(SUBSURFACE_DESKTOP_MODELS_LIB_SRCS
 	divepicturemodel.h
 	diveplannermodel.cpp
 	diveplannermodel.h
+	divesiteimportmodel.cpp
+	divesiteimportmodel.h
 	divetripmodel.cpp
 	divetripmodel.h
 	filtermodels.cpp
