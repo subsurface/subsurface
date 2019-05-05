@@ -47,22 +47,8 @@ void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 
 void MapWidgetHelper::centerOnSelectedDiveSite()
 {
-	QVector<struct dive_site *> selDS;
+	QVector<struct dive_site *> selDS = m_mapLocationModel->selectedDs();
 	QVector<QGeoCoordinate> selGC;
-
-	int idx;
-	struct dive *dive;
-	for_each_dive (idx, dive) {
-		if (!dive->selected)
-			continue;
-		struct dive_site *dss = get_dive_site_for_dive(dive);
-		if (!dive_site_has_gps_location(dss))
-			continue;
-		// only store dive sites with GPS
-		selDS.append(dss);
-		selGC.append(QGeoCoordinate(dss->location.lat.udeg * 0.000001,
-		                            dss->location.lon.udeg * 0.000001));
-	}
 
 	if (selDS.isEmpty()) {
 		// no selected dives with GPS coordinates
