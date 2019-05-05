@@ -1292,7 +1292,7 @@ void clear_table(struct dive_table *table)
 	table->nr = 0;
 }
 
-static void clear_trip_table(struct trip_table *table)
+void clear_trip_table(struct trip_table *table)
 {
 	for (int i = 0; i < table->nr; i++)
 		free_trip(table->trips[i]);

@@ -130,6 +130,7 @@
     </property>
     <addaction name="actionDownloadDC"/>
     <addaction name="actionImportDiveLog"/>
+    <addaction name="actionImportDiveSites"/>
     <addaction name="actionDivelogs_de"/>
    </widget>
    <widget class="QMenu" name="menu_Edit">
@@ -379,6 +380,17 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionImportDiveSites">
+   <property name="text">
+    <string>&amp;Import dive sites</string>
+   </property>
+   <property name="toolTip">
+    <string>Import dive sites from other users</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+J</string>
    </property>
   </action>
   <action name="actionDivelogs_de">
