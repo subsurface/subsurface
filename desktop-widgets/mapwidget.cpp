@@ -16,7 +16,6 @@
 static const QUrl urlMapWidget = QUrl(QStringLiteral("qrc:/qml/MapWidget.qml"));
 static const QUrl urlMapWidgetError = QUrl(QStringLiteral("qrc:/qml/MapWidgetError.qml"));
 static bool isReady = false;
-static bool skipReload = false;
 
 #define CHECK_IS_READY_RETURN_VOID() \
 	if (!isReady) return
@@ -55,8 +54,7 @@ void MapWidget::doneLoading(QQuickWidget::Status status)
 void MapWidget::centerOnDiveSite(struct dive_site *ds)
 {
 	CHECK_IS_READY_RETURN_VOID();
-	if (!skipReload)
-		m_mapHelper->centerOnDiveSite(ds);
+	m_mapHelper->centerOnDiveSite(ds);
 }
 
 void MapWidget::centerOnIndex(const QModelIndex& idx)
@@ -78,10 +76,8 @@ void MapWidget::repopulateLabels()
 void MapWidget::reload()
 {
 	CHECK_IS_READY_RETURN_VOID();
-	if (!skipReload) {
-		m_mapHelper->reloadMapLocations();
-		m_mapHelper->centerOnSelectedDiveSite();
-	}
+	m_mapHelper->reloadMapLocations();
+	m_mapHelper->centerOnSelectedDiveSite();
 }
 
 void MapWidget::selectedDivesChanged(const QList<int> &list)
