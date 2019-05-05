@@ -255,7 +255,7 @@ Kirigami.Page {
 		RowLayout {
 			id: buttonBar
 			Layout.fillWidth: true
-			Layout.topMargin: Kirigami.Units.smallSpacing * 2
+			Layout.topMargin: Kirigami.Units.smallSpacing
 			spacing: Kirigami.Units.smallSpacing
 			SsrfButton {
 				id: download
@@ -286,7 +286,9 @@ Kirigami.Page {
 						manager.DC_bluetoothMode = false;
 						manager.DC_devName = connectionString;
 					}
-					manager.appendTextToLog("DCDownloadThread started for " + manager.DC_vendor + " " + manager.DC_product + " on "+ manager.DC_devName)
+					var message = "DCDownloadThread started for " + manager.DC_vendor + " " + manager.DC_product + " on " + manager.DC_devName;
+					message += " downloading " + (manager.DC_forceDownload ? "all" : "only new" ) + " dives";
+					manager.appendTextToLog(message)
 					progressBar.visible = true
 					downloadThread.start()
 				}
@@ -318,6 +320,31 @@ Kirigami.Page {
 				Layout.fillWidth: true
 				text: divesDownloaded ? qsTr(" Downloaded dives") :
 							(manager.progressMessage != "" ? qsTr("Info:") + " " + manager.progressMessage : btMessage)
+				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			}
+		}
+
+		RowLayout {
+			id: downloadOptions
+			Layout.fillWidth: true
+			Layout.topMargin: 0
+			spacing: Kirigami.Units.smallSpacing
+			SsrfCheckBox {
+				id: forceAll
+				checked: manager.DC_forceDownload
+				enabled: forceAllLabel.visible
+				visible: enabled
+				height: forceAllLabel.height - Kirigami.Units.smallSpacing;
+				width: height
+				onClicked: {
+					manager.DC_forceDownload = !manager.DC_forceDownload;
+				}
+			}
+			Controls.Label {
+				id: forceAllLabel
+				text: qsTr("force downloading all dives")
+				visible: comboVendor.currentIndex != -1 && comboProduct.currentIndex != -1 &&
+					 comboConnection.currentIndex != -1
 				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			}
 		}
