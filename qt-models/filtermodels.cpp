@@ -270,8 +270,13 @@ void MultiFilterSortModel::clearFilter()
 void MultiFilterSortModel::startFilterDiveSites(QVector<dive_site *> ds)
 {
 	dive_sites = ds;
-	++diveSiteRefCount;
-	myInvalidate();
+	if (++diveSiteRefCount > 1) {
+		setFilterDiveSite(ds);
+	} else {
+		std::sort(ds.begin(), ds.end());
+		dive_sites = ds;
+		myInvalidate();
+	}
 }
 
 void MultiFilterSortModel::stopFilterDiveSites()
@@ -284,6 +289,11 @@ void MultiFilterSortModel::stopFilterDiveSites()
 
 void MultiFilterSortModel::setFilterDiveSite(QVector<dive_site *> ds)
 {
+	// If the filter didn't change, return early to avoid a full
+	// map reload. For a well-defined comparison, sort the vector first.
+	std::sort(ds.begin(), ds.end());
+	if (ds == dive_sites)
+		return;
 	dive_sites = ds;
 	myInvalidate();
 }
@@ -295,7 +305,7 @@ const QVector<dive_site *> &MultiFilterSortModel::filteredDiveSites() const
 
 bool MultiFilterSortModel::diveSiteMode() const
 {
-	return !dive_sites.isEmpty();
+	return diveSiteRefCount > 0;
 }
 
 bool MultiFilterSortModel::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
