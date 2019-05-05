@@ -43,6 +43,7 @@
 #include "desktop-widgets/divelistview.h"
 #include "desktop-widgets/divelogexportdialog.h"
 #include "desktop-widgets/divelogimportdialog.h"
+#include "desktop-widgets/divesiteimportdialog.h"
 #include "desktop-widgets/diveplanner.h"
 #include "desktop-widgets/downloadfromdivecomputer.h"
 #include "desktop-widgets/findmovedimagesdialog.h"
@@ -1338,6 +1339,18 @@ QString MainWindow::filter_import()
 	return f;
 }
 
+QString MainWindow::filter_import_dive_sites()
+{
+	QString f = tr("Dive site files") +
+		    " (*.ssrf"
+		    " *.xml"
+		    ");;";
+
+	f += tr("All files") + " (*.*)";
+
+	return f;
+}
+
 bool MainWindow::askSaveChanges()
 {
 	QMessageBox response(this);
@@ -1746,6 +1759,37 @@ void MainWindow::on_actionImportDiveLog_triggered()
 		DiveLogImportDialog diveLogImport(csvFiles, this);
 		diveLogImport.exec();
 	}
+}
+
+void MainWindow::on_actionImportDiveSites_triggered()
+{
+	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open dive site file"), lastUsedDir(), filter_import_dive_sites());
+
+	if (fileNames.isEmpty())
+		return;
+	updateLastUsedDir(QFileInfo(fileNames[0]).dir().path());
+
+	struct dive_table table = { 0 };
+	struct trip_table trips = { 0 };
+	struct dive_site_table sites = { 0 };
+
+	for (const QString &s: fileNames) {
+		QByteArray fileNamePtr = QFile::encodeName(s);
+		parse_file(fileNamePtr.data(), &table, &trips, &sites);
+	}
+	// The imported dive sites still have pointers to imported dives - remove them
+	for (int i = 0; i < sites.nr; ++i)
+		sites.dive_sites[i]->dives.nr = 0;
+
+	// Now we can clear the imported dives and trips.
+	clear_table(&table);
+	clear_trip_table(&trips);
+
+	QString source = fileNames.size() == 1 ? fileNames[0] : tr("multiple files");
+
+	// sites table will be cleared by DivesiteImportDialog constructor
+	DivesiteImportDialog divesiteImport(sites, source, this);
+	divesiteImport.exec();
 }
 
 void MainWindow::editCurrentDive()

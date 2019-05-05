@@ -139,6 +139,7 @@ slots:
 	void initialUiSetup();
 
 	void on_actionImportDiveLog_triggered();
+	void on_actionImportDiveSites_triggered();
 
 	/* TODO: Move those slots below to it's own class */
 	void on_actionExport_triggered();
@@ -192,6 +193,7 @@ private:
 	CurrentState stateBeforeEdit;
 	QString filter_open();
 	QString filter_import();
+	QString filter_import_dive_sites();
 	static MainWindow *m_Instance;
 	QString displayedFilename(QString fullFilename);
 	bool askSaveChanges();
