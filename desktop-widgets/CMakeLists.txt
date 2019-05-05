@@ -22,6 +22,7 @@ set (SUBSURFACE_UI
 	divecomputermanagementdialog.ui
 	divelogexportdialog.ui
 	divelogimportdialog.ui
+	divesiteimportdialog.ui
 	diveplanner.ui
 	diveshareexportdialog.ui
 	downloadfromdivecomputer.ui
@@ -87,6 +88,8 @@ set(SUBSURFACE_INTERFACE
 	diveplanner.h
 	diveshareexportdialog.cpp
 	diveshareexportdialog.h
+	divesiteimportdialog.cpp
+	divesiteimportdialog.h
 	downloadfromdivecomputer.cpp
 	downloadfromdivecomputer.h
 	filterwidget2.cpp
