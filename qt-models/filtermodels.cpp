@@ -227,21 +227,33 @@ void MultiFilterSortModel::myInvalidate()
 	int i;
 	struct dive *d;
 
-	divesDisplayed = 0;
+	{
+		// This marker prevents the UI from getting notifications on selection changes.
+		// It is active until the end of the scope.
+		// This is actually meant for the undo-commands, so that they can do their work
+		// without having the UI updated.
+		// Here, it is used because invalidating the filter can generate numerous
+		// selection changes, which do full ui reloads. Instead, do that all at once
+		// as a consequence of the filterFinished signal right after the local scope.
+		auto marker = diveListNotifier.enterCommand();
 
-	// Apply filter for each dive
-	for_each_dive (i, d) {
-		bool show = showDive(d);
-		filter_dive(d, show);
-		if (show)
-			divesDisplayed++;
+		divesDisplayed = 0;
+
+		// Apply filter for each dive
+		for_each_dive (i, d) {
+			bool show = showDive(d);
+			filter_dive(d, show);
+			if (show)
+				divesDisplayed++;
+		}
+
+		invalidateFilter();
+
+		// Tell the dive trip model to update the displayed-counts
+		DiveTripModelBase::instance()->filterFinished();
+		countsChanged();
 	}
 
-	invalidateFilter();
-
-	// Tell the dive trip model to update the displayed-counts
-	DiveTripModelBase::instance()->filterFinished();
-	countsChanged();
 	emit filterFinished();
 
 #if !defined(SUBSURFACE_MOBILE)
