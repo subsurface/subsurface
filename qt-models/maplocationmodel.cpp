@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
-#include <QDebug>
 #include "maplocationmodel.h"
 #include "core/divesite.h"
 #ifndef SUBSURFACE_MOBILE
 #include "qt-models/filtermodels.h"
 #endif
+
+#include <QDebug>
+#include <algorithm>
 
 const char *MapLocation::PROPERTY_NAME_COORDINATE = "coordinate";
 const char *MapLocation::PROPERTY_NAME_DIVESITE   = "divesite";
@@ -115,11 +117,20 @@ const QVector<dive_site *> &MapLocationModel::selectedDs() const
 	return m_selectedDs;
 }
 
+static bool hasVisibleDive(const dive_site *ds)
+{
+	return std::any_of(&ds->dives.dives[0], &ds->dives.dives[ds->dives.nr],
+			   [] (const dive *d) { return !d->hidden_by_filter; });
+}
+
+static bool hasSelectedDive(const dive_site *ds)
+{
+	return std::any_of(&ds->dives.dives[0], &ds->dives.dives[ds->dives.nr],
+			   [] (const dive *d) { return d->selected; });
+}
+
 void MapLocationModel::reload()
 {
-	int idx;
-	struct dive *dive;
-
 	beginResetModel();
 
 	qDeleteAll(m_mapLocations);
@@ -128,7 +139,6 @@ void MapLocationModel::reload()
 
 	QMap<QString, MapLocation *> locationNameMap;
 	MapLocation *location;
-	QVector<struct dive_site *> locations;
 	qreal latitude, longitude;
 
 #ifdef SUBSURFACE_MOBILE
@@ -142,34 +152,33 @@ void MapLocationModel::reload()
 	if (diveSiteMode)
 		m_selectedDs = MultiFilterSortModel::instance()->filteredDiveSites();
 #endif
-	for_each_dive(idx, dive) {
-		// Don't show dive sites of hidden dives, unless this is the currently
-		// displayed (edited) dive or we're in dive site edit mode.
-		if (!diveSiteMode && dive->hidden_by_filter && dive != current_dive)
+	for (int i = 0; i < dive_site_table.nr; ++i) {
+		struct dive_site *ds = dive_site_table.dive_sites[i];
+
+		// Don't show dive sites of hidden dives, unless we're in dive site edit mode.
+		if (!diveSiteMode && !hasVisibleDive(ds))
 			continue;
-		struct dive_site *ds = get_dive_site_for_dive(dive);
 		if (!dive_site_has_gps_location(ds))
 			continue;
-		if (!diveSiteMode && dive->selected && !m_selectedDs.contains(ds))
+		if (!diveSiteMode && hasSelectedDive(ds) && !m_selectedDs.contains(ds))
 			m_selectedDs.append(ds);
-		if (locations.contains(ds))
-			continue;
 		latitude = ds->location.lat.udeg * 0.000001;
 		longitude = ds->location.lon.udeg * 0.000001;
 		QGeoCoordinate dsCoord(latitude, longitude);
 		QString name(ds->name);
-		// don't add dive locations with the same name, unless they are
-		// at least MIN_DISTANCE_BETWEEN_DIVE_SITES_M apart
-		if (locationNameMap.contains(name)) {
-			MapLocation *existingLocation = locationNameMap[name];
-			QGeoCoordinate coord = existingLocation->coordinate();
-			if (dsCoord.distanceTo(coord) < MIN_DISTANCE_BETWEEN_DIVE_SITES_M)
-				continue;
+		if (!diveSiteMode) {
+			// don't add dive locations with the same name, unless they are
+			// at least MIN_DISTANCE_BETWEEN_DIVE_SITES_M apart
+			if (locationNameMap.contains(name)) {
+				MapLocation *existingLocation = locationNameMap[name];
+				QGeoCoordinate coord = existingLocation->coordinate();
+				if (dsCoord.distanceTo(coord) < MIN_DISTANCE_BETWEEN_DIVE_SITES_M)
+					continue;
+			}
+			locationNameMap[name] = location;
 		}
 		location = new MapLocation(ds, dsCoord, name);
 		m_mapLocations.append(location);
-		locations.append(ds);
-		locationNameMap[name] = location;
 	}
 
 	endResetModel();

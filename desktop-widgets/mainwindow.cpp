@@ -473,8 +473,8 @@ void MainWindow::selectionChanged()
 		mainTab->updateDiveInfo();
 		configureToolbar();
 		enableDisableOtherDCsActions();
-		MapWidget::instance()->reload();
 	}
+	MapWidget::instance()->reload();
 }
 
 void MainWindow::on_actionNew_triggered()
