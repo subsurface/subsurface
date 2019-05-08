@@ -129,7 +129,7 @@ static bool hasSelectedDive(const dive_site *ds)
 			   [] (const dive *d) { return d->selected; });
 }
 
-void MapLocationModel::reload()
+void MapLocationModel::reload(QObject *map)
 {
 	beginResetModel();
 
@@ -139,7 +139,6 @@ void MapLocationModel::reload()
 
 	QMap<QString, MapLocation *> locationNameMap;
 	MapLocation *location;
-	qreal latitude, longitude;
 
 #ifdef SUBSURFACE_MOBILE
 	bool diveSiteMode = false;
@@ -154,17 +153,25 @@ void MapLocationModel::reload()
 #endif
 	for (int i = 0; i < dive_site_table.nr; ++i) {
 		struct dive_site *ds = dive_site_table.dive_sites[i];
+		QGeoCoordinate dsCoord;
 
 		// Don't show dive sites of hidden dives, unless we're in dive site edit mode.
 		if (!diveSiteMode && !hasVisibleDive(ds))
 			continue;
-		if (!dive_site_has_gps_location(ds))
-			continue;
+		if (!dive_site_has_gps_location(ds)) {
+			// Dive sites that do not have a gps location are not shown in normal mode.
+			// In dive-edit mode, selected sites are placed at the center of the map,
+			// so that the user can drag them somewhere without having to enter coordinates.
+			if (!diveSiteMode || !m_selectedDs.contains(ds) || !map)
+				continue;
+			dsCoord = map->property("center").value<QGeoCoordinate>();
+		} else {
+			qreal latitude = ds->location.lat.udeg * 0.000001;
+			qreal longitude = ds->location.lon.udeg * 0.000001;
+			dsCoord = QGeoCoordinate(latitude, longitude);
+		}
 		if (!diveSiteMode && hasSelectedDive(ds) && !m_selectedDs.contains(ds))
 			m_selectedDs.append(ds);
-		latitude = ds->location.lat.udeg * 0.000001;
-		longitude = ds->location.lon.udeg * 0.000001;
-		QGeoCoordinate dsCoord(latitude, longitude);
 		QString name(ds->name);
 		if (!diveSiteMode) {
 			// don't add dive locations with the same name, unless they are

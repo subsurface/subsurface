@@ -100,7 +100,7 @@ void MapWidgetHelper::reloadMapLocations()
 	else
 		exitEditMode();
 #endif
-	m_mapLocationModel->reload();
+	m_mapLocationModel->reload(m_map);
 }
 
 void MapWidgetHelper::selectedLocationChanged(MapLocation *location)
@@ -239,14 +239,6 @@ void MapWidgetHelper::enterEditMode()
 		return;
 
 	m_editMode = true;
-	// if divesite of the first selected dive doesn't exist in the model, add a new MapLocation.
-	const QVector<dive_site *> selDs = m_mapLocationModel->selectedDs();
-	if (!selDs.isEmpty() && ! m_mapLocationModel->getMapLocation(selDs[0])) {
-		// If the dive site doesn't have a GPS location, use the centre of the map
-		QGeoCoordinate coord = has_location(&selDs[0]->location) ? getCoordinates(selDs[0])
-									 : m_map->property("center").value<QGeoCoordinate>();
-		m_mapLocationModel->add(new MapLocation(selDs[0], coord, QString(selDs[0]->name)));
-	}
 	emit editModeChanged();
 }
 
