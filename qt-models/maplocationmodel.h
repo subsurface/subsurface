@@ -60,7 +60,8 @@ public:
 	int rowCount(const QModelIndex &parent) const override;
 	int count();
 	void add(MapLocation *);
-	void reload();
+	// If map is not null, it will be used to place new dive sites without GPS location at the center of the map
+	void reload(QObject *map);
 	MapLocation *getMapLocation(const struct dive_site *ds);
 	const QVector<dive_site *> &selectedDs() const;
 	void updateMapLocationCoordinates(const struct dive_site *ds, QGeoCoordinate coord);
