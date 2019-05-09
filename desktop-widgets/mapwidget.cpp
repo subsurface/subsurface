@@ -28,7 +28,6 @@ MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
 	m_mapHelper = nullptr;
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
 	connect(this, &QQuickWidget::statusChanged, this, &MapWidget::doneLoading);
-	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &MapWidget::diveSiteChanged);
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &MapWidget::divesChanged);
 	setSource(urlMapWidget);
 }
@@ -89,13 +88,6 @@ void MapWidget::selectedDivesChanged(const QList<int> &list)
 void MapWidget::coordinatesChanged(struct dive_site *ds, const location_t &location)
 {
 	Command::editDiveSiteLocation(ds, location);
-}
-
-void MapWidget::diveSiteChanged(struct dive_site *ds, int field)
-{
-	CHECK_IS_READY_RETURN_VOID();
-	if (field == LocationInformationModel::LOCATION)
-		m_mapHelper->updateDiveSiteCoordinates(ds, ds->location);
 }
 
 void MapWidget::divesChanged(dive_trip *, const QVector<dive *> &, DiveField field)

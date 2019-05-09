@@ -8,6 +8,7 @@
 #include "core/divesite.h"
 #include "core/qthelper.h"
 #include "qt-models/maplocationmodel.h"
+#include "qt-models/divelocationmodel.h"
 #ifndef SUBSURFACE_MOBILE
 #include "qt-models/filtermodels.h"
 #endif
@@ -22,6 +23,7 @@ MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
 	m_editMode = false;
 	connect(m_mapLocationModel, SIGNAL(selectedLocationChanged(MapLocation *)),
 	        this, SLOT(selectedLocationChanged(MapLocation *)));
+	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &MapWidgetHelper::diveSiteChanged);
 }
 
 QGeoCoordinate MapWidgetHelper::getCoordinates(struct dive_site *ds)
@@ -218,15 +220,9 @@ void MapWidgetHelper::updateCurrentDiveSiteCoordinatesFromMap(struct dive_site *
 	emit coordinatesChanged(ds, location);
 }
 
-void MapWidgetHelper::updateDiveSiteCoordinates(struct dive_site *ds, const location_t &location)
+void MapWidgetHelper::diveSiteChanged(struct dive_site *ds, int field)
 {
-	if (!ds)
-		return;
-	const qreal latitude_r = location.lat.udeg * 0.000001;
-	const qreal longitude_r = location.lon.udeg * 0.000001;
-	QGeoCoordinate coord(latitude_r, longitude_r);
-	m_mapLocationModel->updateMapLocationCoordinates(ds, coord);
-	QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(coord)));
+	centerOnDiveSite(ds);
 }
 
 void MapWidgetHelper::exitEditMode()
