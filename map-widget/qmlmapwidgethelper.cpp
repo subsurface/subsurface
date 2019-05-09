@@ -244,23 +244,19 @@ void MapWidgetHelper::enterEditMode()
 
 QString MapWidgetHelper::pluginObject()
 {
-	QString str;
-	str += "import QtQuick 2.0;";
-	str += "import QtLocation 5.3;";
-	str += "Plugin {";
-	str += "    id: mapPlugin;";
-	str += "    name: 'googlemaps';";
-	str += "    PluginParameter { name: 'googlemaps.maps.language'; value: '%lang%' }";
-	str += "    PluginParameter { name: 'googlemaps.cachefolder'; value: '%cacheFolder%' }";
-	str += "    Component.onCompleted: {";
-	str += "        if (availableServiceProviders.indexOf(name) === -1) {";
-	str += "            console.warn('MapWidget.qml: cannot find a plugin named: ' + name);";
-	str += "        }";
-	str += "    }";
-	str += "}";
 	QString lang = uiLanguage(NULL).replace('_', '-');
-	str.replace("%lang%", lang);
-	QString cacheFolder = QString(system_default_directory()).append("/googlemaps");
-	str.replace("%cacheFolder%", cacheFolder.replace("\\", "/"));
-	return str;
+	QString cacheFolder = QString(system_default_directory()).append("/googlemaps").replace("\\", "/");
+	return QStringLiteral("import QtQuick 2.0;"
+			      "import QtLocation 5.3;"
+			      "Plugin {"
+			      "    id: mapPlugin;"
+			      "    name: 'googlemaps';"
+			      "    PluginParameter { name: 'googlemaps.maps.language'; value: '%1' }"
+			      "    PluginParameter { name: 'googlemaps.cachefolder'; value: '%2' }"
+			      "    Component.onCompleted: {"
+			      "        if (availableServiceProviders.indexOf(name) === -1) {"
+			      "            console.warn('MapWidget.qml: cannot find a plugin named: ' + name);"
+			      "        }"
+			      "    }"
+			      "}").arg(lang, cacheFolder);
 }
