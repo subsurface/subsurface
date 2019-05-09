@@ -85,7 +85,7 @@
       </xsl:choose>
 
       <xsl:if test="WEIGHT|WEIGTH != ''">
-        <weightsystem>
+        <weightsystem description='imported'>
           <xsl:attribute name="weight">
             <xsl:value-of select="concat(translate(WEIGHT|WEIGTH, ',', '.'), ' kg')"/>
           </xsl:attribute>
