@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "maplocationmodel.h"
+#include "divelocationmodel.h"
 #include "core/divesite.h"
 #ifndef SUBSURFACE_MOBILE
 #include "qt-models/filtermodels.h"
@@ -68,6 +69,7 @@ MapLocationModel::MapLocationModel(QObject *parent) : QAbstractListModel(parent)
 	m_roles[MapLocation::Roles::RoleDivesite] = MapLocation::PROPERTY_NAME_DIVESITE;
 	m_roles[MapLocation::Roles::RoleCoordinate] = MapLocation::PROPERTY_NAME_COORDINATE;
 	m_roles[MapLocation::Roles::RoleName] = MapLocation::PROPERTY_NAME_NAME;
+	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &MapLocationModel::diveSiteChanged);
 }
 
 MapLocationModel::~MapLocationModel()
@@ -215,18 +217,33 @@ MapLocation *MapLocationModel::getMapLocation(const struct dive_site *ds)
 	return NULL;
 }
 
-void MapLocationModel::updateMapLocationCoordinates(const struct dive_site *ds, QGeoCoordinate coord)
+void MapLocationModel::diveSiteChanged(struct dive_site *ds, int field)
 {
-	MapLocation *location;
-	int row = 0;
-	foreach(location, m_mapLocations) {
-		if (ds == location->divesite()) {
-			location->setCoordinateNoEmit(coord);
-			emit dataChanged(createIndex(row, 0), createIndex(row, 0));
-			return;
-		}
-		row++;
+	// Find dive site
+	int row;
+	for (row = 0; row < m_mapLocations.size(); ++row) {
+		if (m_mapLocations[row]->divesite() == ds)
+			break;
 	}
-	// should not happen, as this should be called only when editing an existing marker
-	qWarning() << "MapLocationModel::updateMapLocationCoordinates(): cannot find MapLocation for uuid:" << (ds ? ds->uuid : 0);
+	if (row ==  m_mapLocations.size())
+		return;
+
+	switch (field) {
+	case LocationInformationModel::LOCATION:
+		if (has_location(&ds->location)) {
+			const qreal latitude_r = ds->location.lat.udeg * 0.000001;
+			const qreal longitude_r = ds->location.lon.udeg * 0.000001;
+			QGeoCoordinate coord(latitude_r, longitude_r);
+			m_mapLocations[row]->setCoordinateNoEmit(coord);
+		}
+		break;
+	case LocationInformationModel::NAME:
+		m_mapLocations[row]->setProperty("name", ds->name);
+		break;
+	default:
+		break;
+	}
+
+
+	emit dataChanged(createIndex(row, 0), createIndex(row, 0));
 }

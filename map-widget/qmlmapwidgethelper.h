@@ -3,6 +3,7 @@
 #define QMLMAPWIDGETHELPER_H
 
 #include "core/units.h"
+#include "core/subsurface-qt/DiveListNotifier.h"
 #include <QObject>
 #include <QGeoCoordinate>
 
@@ -34,7 +35,6 @@ public:
 	Q_INVOKABLE void calculateSmallCircleRadius(QGeoCoordinate coord);
 	Q_INVOKABLE void updateCurrentDiveSiteCoordinatesFromMap(struct dive_site *ds, QGeoCoordinate coord);
 	Q_INVOKABLE void selectVisibleLocations();
-	void updateDiveSiteCoordinates(struct dive_site *ds, const location_t &);
 	QString pluginObject();
 
 private:
@@ -47,6 +47,7 @@ private:
 
 private slots:
 	void selectedLocationChanged(MapLocation *);
+	void diveSiteChanged(struct dive_site *ds, int field);
 
 signals:
 	void modelChanged();

@@ -31,7 +31,6 @@ public slots:
 	void selectedDivesChanged(const QList<int> &);
 	void coordinatesChanged(struct dive_site *ds, const location_t &);
 	void doneLoading(QQuickWidget::Status status);
-	void diveSiteChanged(struct dive_site *ds, int field);
 	void divesChanged(dive_trip *, const QVector<dive *> &, DiveField field);
 
 private:
