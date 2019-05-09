@@ -84,10 +84,10 @@
         </xsl:otherwise>
       </xsl:choose>
 
-      <xsl:if test="WEIGHT != ''">
+      <xsl:if test="WEIGHT|WEIGTH != ''">
         <weightsystem>
           <xsl:attribute name="weight">
-            <xsl:value-of select="concat(translate(WEIGHT, ',', '.'), ' kg')"/>
+            <xsl:value-of select="concat(translate(WEIGHT|WEIGTH, ',', '.'), ' kg')"/>
           </xsl:attribute>
         </weightsystem>
       </xsl:if>
