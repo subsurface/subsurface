@@ -178,20 +178,20 @@ MainWindow::MainWindow() : QMainWindow(),
 	enabledList.push_back(enabled);
 	disabledList.push_back(disabled);
 
-	registerApplicationState("Default", mainTab.get(), profileContainer, diveList, mapWidget );
-	registerApplicationState("EditDive", mainTab.get(), profileContainer, diveList, mapWidget );
-	registerApplicationState("PlanDive", divePlannerWidget, profileContainer, divePlannerSettingsWidget, plannerDetails );
-	registerApplicationState("EditPlannedDive", divePlannerWidget, profileContainer, diveList, mapWidget );
-	registerApplicationState("EditDiveSite", diveSiteEdit, profileContainer, diveList, mapWidget);
-	registerApplicationState("FilterDive", mainTab.get(), profileContainer, diveList, &filterWidget2);
+	registerApplicationState(ApplicationState::Default, mainTab.get(), profileContainer, diveList, mapWidget );
+	registerApplicationState(ApplicationState::EditDive, mainTab.get(), profileContainer, diveList, mapWidget );
+	registerApplicationState(ApplicationState::PlanDive, divePlannerWidget, profileContainer, divePlannerSettingsWidget, plannerDetails );
+	registerApplicationState(ApplicationState::EditPlannedDive, divePlannerWidget, profileContainer, diveList, mapWidget );
+	registerApplicationState(ApplicationState::EditDiveSite, diveSiteEdit, profileContainer, diveList, mapWidget);
+	registerApplicationState(ApplicationState::FilterDive, mainTab.get(), profileContainer, diveList, &filterWidget2);
 
-	setStateProperties("Default", enabledList, enabledList, enabledList, enabledList);
-	setStateProperties("EditDive", enabledList, enabledList, enabledList, enabledList);
-	setStateProperties("PlanDive", enabledList, enabledList, enabledList, enabledList);
-	setStateProperties("EditPlannedDive", enabledList, enabledList, enabledList, enabledList);
-	setStateProperties("EditDiveSite", enabledList, disabledList, disabledList, enabledList);
-	setStateProperties("FilterDive", enabledList, enabledList, enabledList, enabledList);
-	setApplicationState("Default");
+	setStateProperties(ApplicationState::Default, enabledList, enabledList, enabledList, enabledList);
+	setStateProperties(ApplicationState::EditDive, enabledList, enabledList, enabledList, enabledList);
+	setStateProperties(ApplicationState::PlanDive, enabledList, enabledList, enabledList, enabledList);
+	setStateProperties(ApplicationState::EditPlannedDive, enabledList, enabledList, enabledList, enabledList);
+	setStateProperties(ApplicationState::EditDiveSite, enabledList, disabledList, disabledList, enabledList);
+	setStateProperties(ApplicationState::FilterDive, enabledList, enabledList, enabledList, enabledList);
+	setApplicationState(ApplicationState::Default);
 
 	setWindowIcon(QIcon(":subsurface-icon"));
 	if (!QIcon::hasThemeIcon("window-close")) {
@@ -369,9 +369,9 @@ void MainWindow::setupSocialNetworkMenu()
 {
 }
 
-void MainWindow::setStateProperties(const QByteArray& state, const PropertyList& tl, const PropertyList& tr, const PropertyList& bl, const PropertyList& br)
+void MainWindow::setStateProperties(ApplicationState state, const PropertyList& tl, const PropertyList& tr, const PropertyList& bl, const PropertyList& br)
 {
-	stateProperties[state] = PropertiesForQuadrant(tl, tr, bl, br);
+	stateProperties[(int)state] = PropertiesForQuadrant(tl, tr, bl, br);
 }
 
 void MainWindow::editDiveSite(dive_site *ds)
@@ -379,7 +379,7 @@ void MainWindow::editDiveSite(dive_site *ds)
 	if (!ds)
 		return;
 	diveSiteEdit->initFields(ds);
-	setApplicationState("EditDiveSite");
+	setApplicationState(ApplicationState::EditDiveSite);
 }
 
 void MainWindow::startDiveSiteEdit()
@@ -403,7 +403,7 @@ void MainWindow::enableDisableOtherDCsActions()
 
 void MainWindow::setDefaultState()
 {
-	setApplicationState("Default");
+	setApplicationState(ApplicationState::Default);
 	if (mainTab->isEditing())
 		ui.bottomLeft->currentWidget()->setEnabled(false);
 }
@@ -422,7 +422,7 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	if (doRecreateDiveList)
 		recreateDiveList();
 
-	setApplicationState("Default");
+	setApplicationState(ApplicationState::Default);
 	diveList->setEnabled(true);
 	diveList->setFocus();
 	WSInfoModel::instance()->update();
@@ -713,7 +713,7 @@ void MainWindow::on_actionClose_triggered()
 	if (okToClose(tr("Please save or cancel the current dive edit before closing the file."))) {
 		closeCurrentFile();
 		DivePictureModel::instance()->updateDivePictures();
-		setApplicationState("Default");
+		setApplicationState(ApplicationState::Default);
 		recreateDiveList();
 	}
 }
@@ -753,7 +753,7 @@ void MainWindow::showProfile()
 {
 	enableShortcuts();
 	graphics->setProfileState();
-	setApplicationState("Default");
+	setApplicationState(ApplicationState::Default);
 }
 
 void MainWindow::on_actionPreferences_triggered()
@@ -839,7 +839,7 @@ void MainWindow::planCreated()
 {
 	// make sure our UI is in a consistent state
 	showProfile();
-	setApplicationState("Default");
+	setApplicationState(ApplicationState::Default);
 	diveList->setEnabled(true);
 	diveList->setFocus();
 }
@@ -931,7 +931,7 @@ void MainWindow::on_actionReplanDive_triggered()
 
 	graphics->setPlanState();
 	graphics->clearHandlers();
-	setApplicationState("PlanDive");
+	setApplicationState(ApplicationState::PlanDive);
 	divePlannerWidget->setReplanButton(true);
 	divePlannerWidget->setupStartTime(QDateTime::fromMSecsSinceEpoch(1000 * current_dive->when, Qt::UTC));
 	if (current_dive->surface_pressure.mbar)
@@ -950,7 +950,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 
 	// put us in PLAN mode
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
-	setApplicationState("PlanDive");
+	setApplicationState(ApplicationState::PlanDive);
 
 	graphics->setPlanState();
 
@@ -1808,16 +1808,16 @@ void MainWindow::editCurrentDive()
 	if (defaultDC == "manually added dive") {
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 		graphics->setAddState();
-		setApplicationState("EditDive");
+		setApplicationState(ApplicationState::EditDive);
 		DivePlannerPointsModel::instance()->loadFromDive(d);
 		mainTab->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
 	} else if (defaultDC == "planned dive") {
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
-		setApplicationState("EditPlannedDive");
+		setApplicationState(ApplicationState::EditPlannedDive);
 		DivePlannerPointsModel::instance()->loadFromDive(d);
 		mainTab->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
 	} else {
-		setApplicationState("EditDive");
+		setApplicationState(ApplicationState::EditDive);
 		mainTab->enableEdition();
 	}
 }
@@ -1863,14 +1863,14 @@ void MainWindow::on_paste_triggered()
 
 void MainWindow::on_actionFilterTags_triggered()
 {
-	setApplicationState(getCurrentAppState() == "FilterDive" ? "Default" : "FilterDive");
+	setApplicationState(getAppState() == ApplicationState::FilterDive ? ApplicationState::Default : ApplicationState::FilterDive);
 	if (state == LIST_MAXIMIZED)
 		showFilterIfEnabled();
 }
 
 void MainWindow::showFilterIfEnabled()
 {
-	if (getCurrentAppState() == "FilterDive") {
+	if (getAppState() == ApplicationState::FilterDive) {
 		const int appW = qApp->desktop()->size().width();
 		QList<int> profileFilterSizes = { round_int(appW * 0.7), round_int(appW * 0.3) };
 		ui.bottomSplitter->setSizes(profileFilterSizes);
@@ -1878,9 +1878,9 @@ void MainWindow::showFilterIfEnabled()
 		ui.bottomSplitter->setSizes({ EXPANDED, COLLAPSED });
 	}
 }
-void MainWindow::registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *topRight, QWidget *bottomLeft, QWidget *bottomRight)
+void MainWindow::registerApplicationState(ApplicationState state, QWidget *topLeft, QWidget *topRight, QWidget *bottomLeft, QWidget *bottomRight)
 {
-	applicationState[state] = WidgetForQuadrant(topLeft, topRight, bottomLeft, bottomRight);
+	applicationState[(int)state] = WidgetForQuadrant(topLeft, topRight, bottomLeft, bottomRight);
 	if (ui.topLeft->indexOf(topLeft) == -1 && topLeft) {
 		ui.topLeft->addWidget(topLeft);
 	}
@@ -1895,38 +1895,35 @@ void MainWindow::registerApplicationState(const QByteArray& state, QWidget *topL
 	}
 }
 
-void MainWindow::setApplicationState(const QByteArray &state)
+void MainWindow::setApplicationState(ApplicationState state)
 {
-	if (!applicationState.keys().contains(state))
+	if (getAppState() == state)
 		return;
 
-	if (getCurrentAppState() == state)
-		return;
-
-	setCurrentAppState(state);
+	setAppState(state);
 
 #define SET_CURRENT_INDEX( X ) \
-	if (applicationState[state].X) { \
-		ui.X->setCurrentWidget( applicationState[state].X); \
+	if (applicationState[(int)state].X) { \
+		ui.X->setCurrentWidget( applicationState[(int)state].X); \
 		ui.X->show(); \
 	} else { \
 		ui.X->hide(); \
 	}
 
 	SET_CURRENT_INDEX( topLeft )
-	Q_FOREACH(const WidgetProperty& p, stateProperties[state].topLeft) {
+	Q_FOREACH(const WidgetProperty& p, stateProperties[(int)state].topLeft) {
 		ui.topLeft->currentWidget()->setProperty( p.first.data(), p.second);
 	}
 	SET_CURRENT_INDEX( topRight )
-	Q_FOREACH(const WidgetProperty& p, stateProperties[state].topRight) {
+	Q_FOREACH(const WidgetProperty& p, stateProperties[(int)state].topRight) {
 		ui.topRight->currentWidget()->setProperty( p.first.data(), p.second);
 	}
 	SET_CURRENT_INDEX( bottomLeft )
-	Q_FOREACH(const WidgetProperty& p, stateProperties[state].bottomLeft) {
+	Q_FOREACH(const WidgetProperty& p, stateProperties[(int)state].bottomLeft) {
 		ui.bottomLeft->currentWidget()->setProperty( p.first.data(), p.second);
 	}
 	SET_CURRENT_INDEX( bottomRight )
-	Q_FOREACH(const WidgetProperty& p, stateProperties[state].bottomRight) {
+	Q_FOREACH(const WidgetProperty& p, stateProperties[(int)state].bottomRight) {
 		ui.bottomRight->currentWidget()->setProperty( p.first.data(), p.second);
 	}
 #undef SET_CURRENT_INDEX

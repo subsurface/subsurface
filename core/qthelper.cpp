@@ -12,6 +12,7 @@
 #include "divecomputer.h"
 #include "time.h"
 #include "gettextfromc.h"
+#include "applicationstate.h"
 #include "metadata.h"
 #include <sys/time.h>
 #include "exif.h"
@@ -1362,21 +1363,9 @@ extern "C" void parse_display_units(char *line)
 	qDebug() << line;
 }
 
-static QByteArray currentApplicationState;
-
-QByteArray getCurrentAppState()
-{
-	return currentApplicationState;
-}
-
-void setCurrentAppState(const QByteArray &state)
-{
-	currentApplicationState = state;
-}
-
 extern "C" bool in_planner()
 {
-	return currentApplicationState == "PlanDive" || currentApplicationState == "EditPlannedDive";
+	return getAppState() == ApplicationState::PlanDive || getAppState() == ApplicationState::EditPlannedDive;
 }
 
 extern "C" enum deco_mode decoMode()

@@ -19,6 +19,7 @@
 #include "ui_plannerDetails.h"
 #include "desktop-widgets/notificationwidget.h"
 #include "desktop-widgets/filterwidget2.h"
+#include "core/applicationstate.h"
 #include "core/gpslocation.h"
 #include "core/dive.h"
 
@@ -56,7 +57,7 @@ public:
 		INFO_MAXIMIZED,
 		PROFILE_MAXIMIZED,
 		LIST_MAXIMIZED,
-		EDIT
+		EDIT,
 	};
 
 	MainWindow();
@@ -75,8 +76,8 @@ public:
 	void setToolButtonsEnabled(bool enabled);
 	void printPlan();
 	void checkSurvey();
-	void setApplicationState(const QByteArray& state);
-	void setStateProperties(const QByteArray& state, const PropertyList& tl, const PropertyList& tr, const PropertyList& bl,const PropertyList& br);
+	void setApplicationState(ApplicationState state);
+	void setStateProperties(ApplicationState state, const PropertyList& tl, const PropertyList& tr, const PropertyList& bl,const PropertyList& br);
 	bool inPlanner();
 	NotificationWidget *getNotificationWidget();
 	void enableDisableCloudActions();
@@ -212,7 +213,7 @@ private:
 	void toggleCollapsible(bool toggle);
 	void showFilterIfEnabled();
 	void updateLastUsedDir(const QString &s);
-	void registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *topRight, QWidget *bottomLeft, QWidget *bottomRight);
+	void registerApplicationState(ApplicationState state, QWidget *topLeft, QWidget *topRight, QWidget *bottomLeft, QWidget *bottomRight);
 	void enterState(CurrentState);
 	bool filesAsArguments;
 	UpdateManager *updateManager;
@@ -249,8 +250,8 @@ private:
 		PropertyList bottomRight;
 	};
 
-	QHash<QByteArray, WidgetForQuadrant> applicationState;
-	QHash<QByteArray, PropertiesForQuadrant> stateProperties;
+	WidgetForQuadrant applicationState[(size_t)ApplicationState::Count];
+	PropertiesForQuadrant stateProperties[(size_t)ApplicationState::Count];
 
 	GpsLocation *locationProvider;
 	QMenu *connections;
