@@ -77,7 +77,6 @@ public:
 	void printPlan();
 	void checkSurvey();
 	void setApplicationState(ApplicationState state);
-	void setStateProperties(ApplicationState state, const PropertyList& tl, const PropertyList& tr, const PropertyList& bl,const PropertyList& br);
 	bool inPlanner();
 	NotificationWidget *getNotificationWidget();
 	void enableDisableCloudActions();
@@ -213,7 +212,6 @@ private:
 	void toggleCollapsible(bool toggle);
 	void showFilterIfEnabled();
 	void updateLastUsedDir(const QString &s);
-	void registerApplicationState(ApplicationState state, QWidget *topLeft, QWidget *topRight, QWidget *bottomLeft, QWidget *bottomRight);
 	void enterState(CurrentState);
 	bool filesAsArguments;
 	UpdateManager *updateManager;
@@ -231,27 +229,27 @@ private:
 	QStringList recentFiles;
 	QAction *actionsRecent[NUM_RECENT_FILES];
 
-	struct WidgetForQuadrant {
-		WidgetForQuadrant(QWidget *tl = 0, QWidget *tr = 0, QWidget *bl = 0, QWidget *br = 0) :
-			topLeft(tl), topRight(tr), bottomLeft(bl), bottomRight(br) {}
-		QWidget *topLeft;
-		QWidget *topRight;
-		QWidget *bottomLeft;
-		QWidget *bottomRight;
+	enum {
+		FLAG_NONE = 0,
+		FLAG_DISABLED = 1
 	};
 
-	struct PropertiesForQuadrant {
-		PropertiesForQuadrant(){}
-		PropertiesForQuadrant(const PropertyList& tl, const PropertyList& tr,const PropertyList& bl,const PropertyList& br) :
-			topLeft(tl), topRight(tr), bottomLeft(bl), bottomRight(br) {}
-		PropertyList topLeft;
-		PropertyList topRight;
-		PropertyList bottomLeft;
-		PropertyList bottomRight;
+	struct Quadrant {
+		QWidget *widget;
+		int flags;
 	};
 
-	WidgetForQuadrant applicationState[(size_t)ApplicationState::Count];
-	PropertiesForQuadrant stateProperties[(size_t)ApplicationState::Count];
+	struct Quadrants {
+		Quadrant topLeft;
+		Quadrant topRight;
+		Quadrant bottomLeft;
+		Quadrant bottomRight;
+	};
+
+	Quadrants applicationState[(size_t)ApplicationState::Count];
+	static void setQuadrant(const Quadrant &, QStackedWidget *);
+	static void addWidgets(const Quadrant &, QStackedWidget *);
+	void registerApplicationState(ApplicationState state, Quadrants q);
 
 	GpsLocation *locationProvider;
 	QMenu *connections;
