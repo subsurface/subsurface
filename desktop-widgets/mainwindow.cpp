@@ -171,26 +171,18 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	diveSiteEdit = new LocationInformationWidget(this);
 
-	std::pair<QByteArray, QVariant> enabled = std::make_pair("enabled", QVariant(true));
-	std::pair<QByteArray, QVariant> disabled = std::make_pair("enabled", QVariant(false));
-	PropertyList enabledList;
-	PropertyList disabledList;
-	enabledList.push_back(enabled);
-	disabledList.push_back(disabled);
-
-	registerApplicationState(ApplicationState::Default, mainTab.get(), profileContainer, diveList, mapWidget );
-	registerApplicationState(ApplicationState::EditDive, mainTab.get(), profileContainer, diveList, mapWidget );
-	registerApplicationState(ApplicationState::PlanDive, divePlannerWidget, profileContainer, divePlannerSettingsWidget, plannerDetails );
-	registerApplicationState(ApplicationState::EditPlannedDive, divePlannerWidget, profileContainer, diveList, mapWidget );
-	registerApplicationState(ApplicationState::EditDiveSite, diveSiteEdit, profileContainer, diveList, mapWidget);
-	registerApplicationState(ApplicationState::FilterDive, mainTab.get(), profileContainer, diveList, &filterWidget2);
-
-	setStateProperties(ApplicationState::Default, enabledList, enabledList, enabledList, enabledList);
-	setStateProperties(ApplicationState::EditDive, enabledList, enabledList, enabledList, enabledList);
-	setStateProperties(ApplicationState::PlanDive, enabledList, enabledList, enabledList, enabledList);
-	setStateProperties(ApplicationState::EditPlannedDive, enabledList, enabledList, enabledList, enabledList);
-	setStateProperties(ApplicationState::EditDiveSite, enabledList, disabledList, disabledList, enabledList);
-	setStateProperties(ApplicationState::FilterDive, enabledList, enabledList, enabledList, enabledList);
+	registerApplicationState(ApplicationState::Default, { { mainTab.get(), FLAG_NONE }, { profileContainer, FLAG_NONE },
+							      { diveList, FLAG_NONE },      { mapWidget, FLAG_NONE } });
+	registerApplicationState(ApplicationState::EditDive, { { mainTab.get(), FLAG_NONE }, { profileContainer, FLAG_NONE },
+							       { diveList, FLAG_NONE },       { mapWidget, FLAG_NONE } });
+	registerApplicationState(ApplicationState::PlanDive, { { divePlannerWidget, FLAG_NONE },         { profileContainer, FLAG_NONE },
+							       { divePlannerSettingsWidget, FLAG_NONE }, { plannerDetails, FLAG_NONE } });
+	registerApplicationState(ApplicationState::EditPlannedDive, { { divePlannerWidget, FLAG_NONE }, { profileContainer, FLAG_NONE },
+								      { diveList, FLAG_NONE },          { mapWidget, FLAG_NONE } });
+	registerApplicationState(ApplicationState::EditDiveSite, { { diveSiteEdit, FLAG_NONE }, { profileContainer, FLAG_DISABLED },
+								   { diveList, FLAG_DISABLED }, { mapWidget, FLAG_NONE } });
+	registerApplicationState(ApplicationState::FilterDive, { { mainTab.get(), FLAG_NONE }, { profileContainer, FLAG_NONE },
+								 { diveList, FLAG_NONE },      { &filterWidget2, FLAG_NONE } });
 	setApplicationState(ApplicationState::Default);
 
 	setWindowIcon(QIcon(":subsurface-icon"));
@@ -367,11 +359,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupSocialNetworkMenu()
 {
-}
-
-void MainWindow::setStateProperties(ApplicationState state, const PropertyList& tl, const PropertyList& tr, const PropertyList& bl, const PropertyList& br)
-{
-	stateProperties[(int)state] = PropertiesForQuadrant(tl, tr, bl, br);
 }
 
 void MainWindow::editDiveSite(dive_site *ds)
@@ -1878,20 +1865,30 @@ void MainWindow::showFilterIfEnabled()
 		ui.bottomSplitter->setSizes({ EXPANDED, COLLAPSED });
 	}
 }
-void MainWindow::registerApplicationState(ApplicationState state, QWidget *topLeft, QWidget *topRight, QWidget *bottomLeft, QWidget *bottomRight)
+
+void MainWindow::addWidgets(const Quadrant &q, QStackedWidget *stack)
 {
-	applicationState[(int)state] = WidgetForQuadrant(topLeft, topRight, bottomLeft, bottomRight);
-	if (ui.topLeft->indexOf(topLeft) == -1 && topLeft) {
-		ui.topLeft->addWidget(topLeft);
-	}
-	if (ui.topRight->indexOf(topRight) == -1 && topRight) {
-		ui.topRight->addWidget(topRight);
-	}
-	if (ui.bottomLeft->indexOf(bottomLeft) == -1 && bottomLeft) {
-		ui.bottomLeft->addWidget(bottomLeft);
-	}
-	if(ui.bottomRight->indexOf(bottomRight) == -1 && bottomRight) {
-		ui.bottomRight->addWidget(bottomRight);
+	if (q.widget && stack->indexOf(q.widget) == -1)
+		stack->addWidget(q.widget);
+}
+
+void MainWindow::registerApplicationState(ApplicationState state, Quadrants q)
+{
+	applicationState[(int)state] = q;
+	addWidgets(q.topLeft, ui.topLeft);
+	addWidgets(q.topRight, ui.topRight);
+	addWidgets(q.bottomLeft, ui.bottomLeft);
+	addWidgets(q.bottomRight, ui.bottomRight);
+}
+
+void MainWindow::setQuadrant(const Quadrant &q, QStackedWidget *stack)
+{
+	if (q.widget) {
+		stack->setCurrentWidget(q.widget);
+		stack->show();
+		q.widget->setEnabled(!(q.flags & FLAG_DISABLED));
+	} else {
+		stack->hide();
 	}
 }
 
@@ -1902,31 +1899,11 @@ void MainWindow::setApplicationState(ApplicationState state)
 
 	setAppState(state);
 
-#define SET_CURRENT_INDEX( X ) \
-	if (applicationState[(int)state].X) { \
-		ui.X->setCurrentWidget( applicationState[(int)state].X); \
-		ui.X->show(); \
-	} else { \
-		ui.X->hide(); \
-	}
-
-	SET_CURRENT_INDEX( topLeft )
-	Q_FOREACH(const WidgetProperty& p, stateProperties[(int)state].topLeft) {
-		ui.topLeft->currentWidget()->setProperty( p.first.data(), p.second);
-	}
-	SET_CURRENT_INDEX( topRight )
-	Q_FOREACH(const WidgetProperty& p, stateProperties[(int)state].topRight) {
-		ui.topRight->currentWidget()->setProperty( p.first.data(), p.second);
-	}
-	SET_CURRENT_INDEX( bottomLeft )
-	Q_FOREACH(const WidgetProperty& p, stateProperties[(int)state].bottomLeft) {
-		ui.bottomLeft->currentWidget()->setProperty( p.first.data(), p.second);
-	}
-	SET_CURRENT_INDEX( bottomRight )
-	Q_FOREACH(const WidgetProperty& p, stateProperties[(int)state].bottomRight) {
-		ui.bottomRight->currentWidget()->setProperty( p.first.data(), p.second);
-	}
-#undef SET_CURRENT_INDEX
+	const Quadrants &quadrants = applicationState[(int)state];
+	setQuadrant(quadrants.topLeft, ui.topLeft);
+	setQuadrant(quadrants.topRight, ui.topRight);
+	setQuadrant(quadrants.bottomLeft, ui.bottomLeft);
+	setQuadrant(quadrants.bottomRight, ui.bottomRight);
 }
 
 void MainWindow::showProgressBar()
