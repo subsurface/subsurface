@@ -53,6 +53,27 @@
         </xsl:choose>
       </xsl:attribute>
 
+      <!-- Custom fields to tags -->
+      <xsl:if test="CUSTOM1|CUSTOM2|CUSTOM3|CUSTOM4|CUSTOM5 != ''">
+        <xsl:attribute name="tags">
+          <xsl:if test="CUSTOM1 != ''">
+            <xsl:value-of select="concat(CUSTOM1, ',')" />
+          </xsl:if>
+          <xsl:if test="CUSTOM2 != ''">
+            <xsl:value-of select="concat(CUSTOM2, ',')" />
+          </xsl:if>
+          <xsl:if test="CUSTOM3 != ''">
+            <xsl:value-of select="concat(CUSTOM3, ',')" />
+          </xsl:if>
+          <xsl:if test="CUSTOM4 != ''">
+            <xsl:value-of select="concat(CUSTOM4, ',')" />
+          </xsl:if>
+          <xsl:if test="CUSTOM5 != ''">
+            <xsl:value-of select="concat(CUSTOM5, ',')" />
+          </xsl:if>
+        </xsl:attribute>
+      </xsl:if>
+
       <xsl:choose>
         <xsl:when test="MEANDEPTH != ''">
           <depth max="{concat(translate(MAXDEPTH, ',', '.'),' m')}" mean="{concat(translate(MEANDEPTH, ',', '.'), ' m')}"/>
