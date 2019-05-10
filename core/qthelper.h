@@ -40,8 +40,6 @@ volume_t string_to_volume(const char *str, pressure_t workp);
 fraction_t string_to_fraction(const char *str);
 int getCloudURL(QString &filename);
 bool parseGpsText(const QString &gps_text, double *latitude, double *longitude);
-QByteArray getCurrentAppState();
-void setCurrentAppState(const QByteArray &state);
 void init_proxy();
 QString getUUID();
 extern const QStringList videoExtensionsList;

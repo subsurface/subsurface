@@ -5,6 +5,7 @@
 #include "core/qthelper.h"
 #include "core/subsurfacestartup.h"
 #include "core/units.h"
+#include "core/applicationstate.h"
 #include <QDebug>
 
 #define DEBUG 1
@@ -469,7 +470,7 @@ void TestPlan::testVpmbMetric45m30minTx()
 
 	struct diveplan testPlan = {};
 	setupPlanVpmb45m30mTx(&testPlan);
-	setCurrentAppState("PlanDive");
+	setAppState(ApplicationState::PlanDive);
 
 	plan(&test_deco_state, &testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
@@ -500,7 +501,7 @@ void TestPlan::testVpmbMetric60m10minTx()
 
 	struct diveplan testPlan = {};
 	setupPlanVpmb60m10mTx(&testPlan);
-	setCurrentAppState("PlanDive");
+	setAppState(ApplicationState::PlanDive);
 
 	plan(&test_deco_state, &testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
@@ -531,7 +532,7 @@ void TestPlan::testVpmbMetric60m30minAir()
 
 	struct diveplan testPlan = {};
 	setupPlanVpmb60m30minAir(&testPlan);
-	setCurrentAppState("PlanDive");
+	setAppState(ApplicationState::PlanDive);
 
 	plan(&test_deco_state, &testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
@@ -562,7 +563,7 @@ void TestPlan::testVpmbMetric60m30minEan50()
 
 	struct diveplan testPlan = {};
 	setupPlanVpmb60m30minEan50(&testPlan);
-	setCurrentAppState("PlanDive");
+	setAppState(ApplicationState::PlanDive);
 
 	plan(&test_deco_state, &testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
@@ -599,7 +600,7 @@ void TestPlan::testVpmbMetric60m30minTx()
 
 	struct diveplan testPlan = {};
 	setupPlanVpmb60m30minTx(&testPlan);
-	setCurrentAppState("PlanDive");
+	setAppState(ApplicationState::PlanDive);
 
 	plan(&test_deco_state, &testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
@@ -636,7 +637,7 @@ void TestPlan::testVpmbMetric100m60min()
 
 	struct diveplan testPlan = {};
 	setupPlanVpmb100m60min(&testPlan);
-	setCurrentAppState("PlanDive");
+	setAppState(ApplicationState::PlanDive);
 
 	plan(&test_deco_state, &testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
@@ -680,7 +681,7 @@ void TestPlan::testMultipleGases()
 	struct diveplan testPlan = {};
 
 	setupPlanSeveralGases(&testPlan);
-	setCurrentAppState("PlanDive");
+	setAppState(ApplicationState::PlanDive);
 
 	plan(&test_deco_state, &testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
@@ -706,7 +707,7 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 
 	struct diveplan testPlan = {};
 	setupPlanVpmbMultiLevelAir(&testPlan);
-	setCurrentAppState("PlanDive");
+	setAppState(ApplicationState::PlanDive);
 
 	plan(&test_deco_state, &testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
@@ -737,7 +738,7 @@ void TestPlan::testVpmbMetric100m10min()
 
 	struct diveplan testPlan = {};
 	setupPlanVpmb100m10min(&testPlan);
-	setCurrentAppState("PlanDive");
+	setAppState(ApplicationState::PlanDive);
 
 	plan(&test_deco_state, &testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
@@ -784,7 +785,7 @@ void TestPlan::testVpmbMetricRepeat()
 
 	struct diveplan testPlan = {};
 	setupPlanVpmb30m20min(&testPlan);
-	setCurrentAppState("PlanDive");
+	setAppState(ApplicationState::PlanDive);
 
 	plan(&test_deco_state, &testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 

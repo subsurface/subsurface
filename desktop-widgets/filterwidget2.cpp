@@ -161,7 +161,7 @@ void FilterWidget2::clearFilter()
 
 void FilterWidget2::closeFilter()
 {
-	MainWindow::instance()->setApplicationState("Default");
+	MainWindow::instance()->setApplicationState(ApplicationState::Default);
 }
 
 void FilterWidget2::temperatureChanged()

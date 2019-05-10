@@ -18,6 +18,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/qtserialbluetooth.cpp \
 	../../core/plannernotes.c \
 	../../core/uemis-downloader.c \
+	../../core/applicationstate.cpp \
 	../../core/qthelper.cpp \
 	../../core/checkcloudconnection.cpp \
 	../../core/color.cpp \
