@@ -982,7 +982,7 @@ void PartialPressureGasItem::modelDataChanged(const QModelIndex &topLeft, const 
 	}
 	setPolygon(poly);
 	/*
-	createPPLegend(trUtf8("pN" UTF8_SUBSCRIPT_2),getColor(PN2), legendPos);
+	createPPLegend(trUtf8("pN₂"), getColor(PN2), legendPos);
 	*/
 }
 

@@ -587,15 +587,6 @@ extern int total_weight(const struct dive *);
 
 const char *monthname(int mon);
 
-#define UTF8_DEGREE "\xc2\xb0"
-#define UTF8_DELTA "\xce\x94"
-#define UTF8_UPWARDS_ARROW "\xE2\x86\x91"
-#define UTF8_DOWNWARDS_ARROW "\xE2\x86\x93"
-#define UTF8_AVERAGE "\xc3\xb8"
-#define UTF8_SUBSCRIPT_2 "\xe2\x82\x82"
-#define UTF8_WHITESTAR "\xe2\x98\x86"
-#define UTF8_BLACKSTAR "\xe2\x98\x85"
-
 extern const char *existing_filename;
 extern void subsurface_command_line_init(int *, char ***);
 extern void subsurface_command_line_exit(int *, char ***);

@@ -1418,9 +1418,9 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	if (entry->cns)
 		put_format_loc(b, translate("gettextFromC", "CNS: %u%%\n"), entry->cns);
 	if (prefs.pp_graphs.po2 && entry->pressures.o2 > 0)
-		put_format_loc(b, translate("gettextFromC", "pO%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->pressures.o2);
+		put_format_loc(b, translate("gettextFromC", "pO₂: %.2fbar\n"), entry->pressures.o2);
 	if (prefs.pp_graphs.pn2 && entry->pressures.n2 > 0)
-		put_format_loc(b, translate("gettextFromC", "pN%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->pressures.n2);
+		put_format_loc(b, translate("gettextFromC", "pN₂: %.2fbar\n"), entry->pressures.n2);
 	if (prefs.pp_graphs.phe && entry->pressures.he > 0)
 		put_format_loc(b, translate("gettextFromC", "pHe: %.2fbar\n"), entry->pressures.he);
 	if (prefs.mod && entry->mod > 0) {
@@ -1625,42 +1625,42 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 	avg_depth /= stop->sec - start->sec;
 	avg_speed /= stop->sec - start->sec;
 
-	snprintf_loc(buf, bufsize, translate("gettextFromC", "%sT:%d:%02dmin"), UTF8_DELTA, delta_time / 60, delta_time % 60);
+	snprintf_loc(buf, bufsize, translate("gettextFromC", "ΔT:%d:%02dmin"), delta_time / 60, delta_time % 60);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(delta_depth, NULL, &depth_unit);
-	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s %sD:%.1f%s"), buf2, UTF8_DELTA, depthvalue, depth_unit);
+	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s ΔD:%.1f%s"), buf2, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(min_depth, NULL, &depth_unit);
-	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s %sD:%.1f%s"), buf2, UTF8_DOWNWARDS_ARROW, depthvalue, depth_unit);
+	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s ↓D:%.1f%s"), buf2, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(max_depth, NULL, &depth_unit);
-	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s %sD:%.1f%s"), buf2, UTF8_UPWARDS_ARROW, depthvalue, depth_unit);
+	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s ↑D:%.1f%s"), buf2, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(avg_depth, NULL, &depth_unit);
-	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s %sD:%.1f%s\n"), buf2, UTF8_AVERAGE, depthvalue, depth_unit);
+	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s øD:%.1f%s\n"), buf2, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	speedvalue = get_vertical_speed_units(abs(max_desc_speed), NULL, &vertical_speed_unit);
-	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s%sV:%.2f%s"), buf2, UTF8_DOWNWARDS_ARROW, speedvalue, vertical_speed_unit);
+	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s ↓V:%.2f%s"), buf2, speedvalue, vertical_speed_unit);
 	memcpy(buf2, buf, bufsize);
 
 	speedvalue = get_vertical_speed_units(abs(max_asc_speed), NULL, &vertical_speed_unit);
-	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s %sV:%.2f%s"), buf2, UTF8_UPWARDS_ARROW, speedvalue, vertical_speed_unit);
+	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s ↑V:%.2f%s"), buf2, speedvalue, vertical_speed_unit);
 	memcpy(buf2, buf, bufsize);
 
 	speedvalue = get_vertical_speed_units(abs(avg_speed), NULL, &vertical_speed_unit);
-	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s %sV:%.2f%s"), buf2, UTF8_AVERAGE, speedvalue, vertical_speed_unit);
+	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s øV:%.2f%s"), buf2, speedvalue, vertical_speed_unit);
 	memcpy(buf2, buf, bufsize);
 
 	/* Only print if gas has been used */
 	if (bar_used) {
 		pressurevalue = get_pressure_units(bar_used, &pressure_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf_loc(buf, bufsize, translate("gettextFromC", "%s %sP:%d%s"), buf2, UTF8_DELTA, pressurevalue, pressure_unit);
+		snprintf_loc(buf, bufsize, translate("gettextFromC", "%s ΔP:%d%s"), buf2, pressurevalue, pressure_unit);
 		cylinder_t *cyl = displayed_dive.cylinder + 0;
 		/* if we didn't cross a tank change and know the cylidner size as well, show SAC rate */
 		if (!crossed_tankchange && cyl->type.size.mliter) {

@@ -213,7 +213,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case DURATION:
 			return tr("Duration");
 		case TEMPERATURE:
-			return tr("Temp.(%1%2)").arg(UTF8_DEGREE).arg((get_units()->temperature == units::CELSIUS) ? "C" : "F");
+			return tr("Temp.(°%1)").arg((get_units()->temperature == units::CELSIUS) ? "C" : "F");
 		case TOTALWEIGHT:
 			return tr("Weight(%1)").arg((get_units()->weight == units::KG) ? tr("kg") : tr("lbs"));
 		case SUIT:
@@ -320,7 +320,7 @@ QVariant DiveTripModelBase::headerData(int section, Qt::Orientation orientation,
 		case DURATION:
 			return tr("Duration");
 		case TEMPERATURE:
-			return tr("Temp.(%1%2)").arg(UTF8_DEGREE).arg((get_units()->temperature == units::CELSIUS) ? "C" : "F");
+			return tr("Temp.(°%1)").arg((get_units()->temperature == units::CELSIUS) ? "C" : "F");
 		case TOTALWEIGHT:
 			return tr("Weight(%1)").arg((get_units()->weight == units::KG) ? tr("kg") : tr("lbs"));
 		case SUIT:

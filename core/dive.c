@@ -316,10 +316,10 @@ double get_temp_units(unsigned int mk, const char **units)
 
 	if (units_p->temperature == FAHRENHEIT) {
 		deg = mkelvin_to_F(mk);
-		unit = UTF8_DEGREE "F";
+		unit = "°F";
 	} else {
 		deg = mkelvin_to_C(mk);
-		unit = UTF8_DEGREE "C";
+		unit = "°C";
 	}
 	if (units)
 		*units = unit;
