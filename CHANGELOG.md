@@ -1,5 +1,6 @@
 - Import: Small enhancements on Suunto SDE import
 - Desktop: Add import dive site menu option and site selection dialog
+- Core: Sort dives by number if at the same date
 - Core: fix bug in get_distance() to correctly compute spherical distance
 - Desktop: For videos, add save data export as subtitle file
 - Desktop: make dive sites 1st class citizens with their own dive site table
