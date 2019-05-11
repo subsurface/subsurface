@@ -98,9 +98,9 @@ QString printGPSCoords(const location_t *location)
 		lonmin = (lon % 1000000U) * 60U;
 		latsec = (latmin % 1000000) * 60;
 		lonsec = (lonmin % 1000000) * 60;
-		result.sprintf("%u%s%02d\'%06.3f\"%s %u%s%02d\'%06.3f\"%s",
-			       latdeg, UTF8_DEGREE, latmin / 1000000, latsec / 1000000, qPrintable(lath),
-			       londeg, UTF8_DEGREE, lonmin / 1000000, lonsec / 1000000, qPrintable(lonh));
+		result.sprintf("%u°%02d\'%06.3f\"%s %u°%02d\'%06.3f\"%s",
+			       latdeg, latmin / 1000000, latsec / 1000000, qPrintable(lath),
+			       londeg, lonmin / 1000000, lonsec / 1000000, qPrintable(lonh));
 	} else {
 		result.sprintf("%f %f", (double) lat / 1000000.0, (double) lon / 1000000.0);
 	}
@@ -577,19 +577,19 @@ QString get_temperature_string(temperature_t temp, bool showunit)
 		return ""; //temperature not defined
 	} else if (prefs.units.temperature == units::CELSIUS) {
 		double celsius = mkelvin_to_C(temp.mkelvin);
-		return QString("%L1%2%3").arg(celsius, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE) : "").arg(showunit ? gettextFromC::tr("C") : QString());
+		return QString("%L1%2%3").arg(celsius, 0, 'f', 1).arg(showunit ? "°" : "").arg(showunit ? gettextFromC::tr("C") : QString());
 	} else {
 		double fahrenheit = mkelvin_to_F(temp.mkelvin);
-		return QString("%L1%2%3").arg(fahrenheit, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE) : "").arg(showunit ? gettextFromC::tr("F") : QString());
+		return QString("%L1%2%3").arg(fahrenheit, 0, 'f', 1).arg(showunit ? "°" : "").arg(showunit ? gettextFromC::tr("F") : QString());
 	}
 }
 
 QString get_temp_unit()
 {
 	if (prefs.units.temperature == units::CELSIUS)
-		return QString(UTF8_DEGREE "C");
+		return QString("°C");
 	else
-		return QString(UTF8_DEGREE "F");
+		return QString("°F");
 }
 
 QString get_volume_string(int mliter, bool showunit)

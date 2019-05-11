@@ -652,7 +652,6 @@ void update_cylinder_related_info(struct dive *dive)
 }
 
 #define MAX_GAS_STRING 80
-#define UTF8_ELLIPSIS "\xE2\x80\xA6"
 
 /* callers needs to free the string */
 char *get_dive_gas_string(const struct dive *dive)
@@ -670,12 +669,12 @@ char *get_dive_gas_string(const struct dive *dive)
 			if (o2 == o2max)
 				snprintf(buffer, MAX_GAS_STRING, "%d/%d", o2, he);
 			else
-				snprintf(buffer, MAX_GAS_STRING, "%d/%d" UTF8_ELLIPSIS "%d%%", o2, he, o2max);
+				snprintf(buffer, MAX_GAS_STRING, "%d/%d…%d%%", o2, he, o2max);
 		else if (o2)
 			if (o2 == o2max)
 				snprintf(buffer, MAX_GAS_STRING, "%d%%", o2);
 			else
-				snprintf(buffer, MAX_GAS_STRING, "%d" UTF8_ELLIPSIS "%d%%", o2, o2max);
+				snprintf(buffer, MAX_GAS_STRING, "%d…%d%%", o2, o2max);
 		else
 			strcpy(buffer, translate("gettextFromC", "air"));
 	}
