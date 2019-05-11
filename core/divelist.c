@@ -779,7 +779,7 @@ struct dive *last_selected_dive()
  * After editing a key used in this sort-function, the order of
  * the dives must be re-astablished.
  * Currently, this does a lexicographic sort on the
- * (start-time, trip-time, id) tuple.
+ * (start-time, trip-time, number, id) tuple.
  * trip-time is defined such that dives that do not belong to
  * a trip are sorted *after* dives that do. Thus, in the default
  * chronologically-descending sort order, they are shown *before*.
@@ -804,6 +804,10 @@ static int comp_dives(const struct dive *a, const struct dive *b)
 		if (trip_date(a->divetrip) > trip_date(b->divetrip))
 			return 1;
 	}
+	if (a->number < b->number)
+		return -1;
+	if (a->number > b->number)
+		return 1;
 	if (a->id < b->id)
 		return -1;
 	if (a->id > b->id)
