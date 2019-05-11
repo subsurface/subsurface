@@ -71,7 +71,7 @@ ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(par
 		       tr("O₂") << tr("He") << tr("Sample time") << tr("Sample depth") << tr("Sample temperature") << tr("Sample pO₂") << tr("Sample CNS") << tr("Sample NDL") <<
 		       tr("Sample TTS") << tr("Sample stopdepth") << tr("Sample pressure") <<
 		       tr("Sample sensor1 pO₂") << tr("Sample sensor2 pO₂") << tr("Sample sensor3 pO₂") <<
-		       tr("Sample setpoint") << tr("Visibility") << tr("Rating");
+		       tr("Sample setpoint") << tr("Visibility") << tr("Rating") << tr("Sample heartrate");
 }
 
 bool ColumnNameProvider::insertRows(int row, int, const QModelIndex&)
@@ -832,6 +832,8 @@ int DiveLogImportDialog::setup_csv_params(QStringList r, char **params, int pnr)
 	params[pnr++] = intdup(r.indexOf(tr("Sample stopdepth")));
 	params[pnr++] = strdup("pressureField");
 	params[pnr++] = intdup(r.indexOf(tr("Sample pressure")));
+	params[pnr++] = strdup("heartBeat");
+	params[pnr++] = intdup(r.indexOf(tr("Sample heartrate")));
 	params[pnr++] = strdup("setpointField");
 	params[pnr++] = intdup(r.indexOf(tr("Sample setpoint")));
 	params[pnr++] = strdup("visibilityField");
@@ -994,7 +996,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 
 				parse_manual_file(qPrintable(fileNames[i]), params, pnr - 1, &table, &trips, &sites);
 			} else {
-				char *params[51];
+				char *params[53];
 				int pnr = 0;
 
 				QRegExp apdRe("^.*[/\\][0-9a-zA-Z]*_([0-9]{6})_([0-9]{6})\\.apd");
