@@ -35,6 +35,7 @@
   <xsl:param name="meanDepth" select="meanDepth"/>
   <xsl:param name="airTemp" select="airTemp"/>
   <xsl:param name="waterTemp" select="waterTemp"/>
+  <xsl:param name="heartBeat" select="heartBeat"/>
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:variable name="lf"><xsl:text>
@@ -545,6 +546,16 @@
             </xsl:attribute>
           </xsl:if>
         </xsl:if>
+
+        <xsl:if test="$heartBeat >= 0">
+          <xsl:attribute name="heartbeat">
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="$heartBeat"/>
+              <xsl:with-param name="line" select="$line"/>
+            </xsl:call-template>
+          </xsl:attribute>
+        </xsl:if>
+
       </sample>
     </xsl:if>
   </xsl:template>
