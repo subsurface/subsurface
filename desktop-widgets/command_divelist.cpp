@@ -100,6 +100,11 @@ DivesAndTripsToAdd DiveListBase::removeDives(DivesAndSitesToRemove &divesAndSite
 	divesToAdd.reserve(divesAndSitesToDelete.dives.size());
 	sitesToAdd.reserve(divesAndSitesToDelete.sites.size());
 
+	// Make sure that the dive list is sorted. The added dives will be sent in a signal
+	// and the recipients assume that the dives are sorted the same way as they are
+	// in the core list.
+	std::sort(divesAndSitesToDelete.dives.begin(), divesAndSitesToDelete.dives.end(), dive_less_than);
+
 	for (dive *d: divesAndSitesToDelete.dives)
 		divesToAdd.push_back(removeDive(d, tripsToAdd));
 	divesAndSitesToDelete.dives.clear();
@@ -139,6 +144,13 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 	std::vector<dive_site *> sites;
 	res.resize(toAdd.dives.size());
 	sites.reserve(toAdd.sites.size());
+
+	// Make sure that the dive list is sorted. The added dives will be sent in a signal
+	// and the recipients assume that the dives are sorted the same way as they are
+	// in the core list.
+	std::sort(toAdd.dives.begin(), toAdd.dives.end(),
+		  [](const DiveToAdd &d, const DiveToAdd &d2)
+		  { return dive_less_than(d.dive.get(), d2.dive.get()); });
 
 	// Now, add the dives
 	// Note: the idiomatic STL-way would be std::transform, but let's use a loop since
