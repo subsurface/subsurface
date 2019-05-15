@@ -769,6 +769,29 @@ struct dive *last_selected_dive()
 	return ret;
 }
 
+/* Like strcmp(), but don't crash on null-pointers */
+static int safe_strcmp(const char *s1, const char *s2)
+{
+	return strcmp(s1 ? s1 : "", s2 ? s2 : "");
+}
+
+/* Compare a list of dive computers by model name */
+static int comp_dc(const struct divecomputer *dc1, const struct divecomputer *dc2)
+{
+	int cmp;
+	while (dc1 || dc2) {
+		if (!dc1)
+			return -1;
+		if (!dc2)
+			return 1;
+		if ((cmp = safe_strcmp(dc1->model, dc2->model)) != 0)
+			return cmp;
+		dc1 = dc1->next;
+		dc2 = dc2->next;
+	}
+	return 0;
+}
+
 /* This function defines the sort ordering of dives. The core
  * and the UI models should use the same sort function, which
  * should be stable. This is not crucial at the moment, as the
@@ -788,6 +811,7 @@ struct dive *last_selected_dive()
  */
 static int comp_dives(const struct dive *a, const struct dive *b)
 {
+	int cmp;
 	if (a->when < b->when)
 		return -1;
 	if (a->when > b->when)
@@ -806,6 +830,8 @@ static int comp_dives(const struct dive *a, const struct dive *b)
 		return -1;
 	if (a->number > b->number)
 		return 1;
+	if ((cmp = comp_dc(&a->dc, &b->dc)) != 0)
+		return cmp;
 	if (a->id < b->id)
 		return -1;
 	if (a->id > b->id)
