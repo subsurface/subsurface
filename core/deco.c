@@ -461,8 +461,7 @@ void calc_crushing_pressure(struct deco_state *ds, double pressure)
 		if (gradient <= vpmb_config.gradient_of_imperm) {	// permeable situation
 			n2_crushing_pressure = he_crushing_pressure = gradient;
 			ds->crushing_onset_tension[ci] = gas_tension;
-		}
-		else {	// impermeable
+		} else {	// impermeable
 			if (ds->max_ambient_pressure >= pressure)
 				return;
 

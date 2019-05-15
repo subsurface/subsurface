@@ -100,9 +100,9 @@ void Printer::flowRender()
 			emit(progessUpdated(lrint((end * 80.0 / fullPageResolution) + done)));
 
 			// add new pages only in print mode, while previewing we don't add new pages
-			if (printMode == Printer::PRINT)
+			if (printMode == Printer::PRINT) {
 				static_cast<QPrinter*>(paintDevice)->newPage();
-			else {
+			} else {
 				painter.end();
 				return;
 			}

@@ -376,9 +376,9 @@ void ShiftImageTimesDialog::updateInvalid()
 	ui.invalidFilesText->hide();
 	QDateTime time_first = QDateTime::fromTime_t(first_selected_dive()->when, Qt::UTC);
 	QDateTime time_last = QDateTime::fromTime_t(last_selected_dive()->when, Qt::UTC);
-	if (first_selected_dive() == last_selected_dive())
+	if (first_selected_dive() == last_selected_dive()) {
 		ui.invalidFilesText->setPlainText(tr("Selected dive date/time") + ": " + time_first.toString());
-	else {
+	} else {
 		ui.invalidFilesText->setPlainText(tr("First selected dive date/time") + ": " + time_first.toString());
 		ui.invalidFilesText->append(tr("Last selected dive date/time") + ": " + time_last.toString());
 	}

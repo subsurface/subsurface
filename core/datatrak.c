@@ -65,9 +65,9 @@ static char *to_utf8(unsigned char *in_string)
 
 	char *out_string = calloc(outlen, 1);
 	for (i = 0; i < inlen; i++) {
-		if (in_string[i] < 127)
+		if (in_string[i] < 127) {
 			out_string[j] = in_string[i];
-		else {
+		} else {
 			if (in_string[i] > 127 && in_string[i] <= 173)
 				in_string[i] = to_8859(in_string[i]);
 			out_string[j] = (in_string[i] >> 6) | 0xC0;

@@ -86,8 +86,7 @@ void TabDiveInformation::updateProfile()
 
 	if (current_dive->surface_pressure.mbar == 0) {
 		ui->atmPressVal->clear();			// If no atm pressure for dive then clear text box
-	}
-	else {
+	} else {
 
 		ui->atmPressVal->setEnabled(true);
 		QString pressStr;

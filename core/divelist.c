@@ -582,8 +582,7 @@ int init_decompression(struct deco_state *ds, struct dive *dive)
 			printf("Tissues after init:\n");
 			dump_tissues(ds);
 #endif
-		}
-		else {
+		} else {
 			surface_time = pdive->when - last_endtime;
 			if (surface_time < 0) {
 #if DECO_CALC_DEBUG & 2
@@ -620,8 +619,7 @@ int init_decompression(struct deco_state *ds, struct dive *dive)
 		printf("Tissues after no previous dive, surface time set to 48h:\n");
 		dump_tissues(ds);
 #endif
-	}
-	else {
+	} else {
 		surface_time = dive->when - last_endtime;
 		if (surface_time < 0) {
 #if DECO_CALC_DEBUG & 2

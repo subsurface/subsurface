@@ -1340,7 +1340,7 @@ static void fixup_surface_pressure(struct dive *dive)
 
 /* if the surface pressure in the dive data is redundant to the calculated
  * value (i.e., it was added by running fixup on the dive) return 0,
- * otherwise return the air temperature given in the dive */
+ * otherwise return the surface pressure given in the dive */
 pressure_t un_fixup_surface_pressure(const struct dive *d)
 {
 	pressure_t res = d->surface_pressure;

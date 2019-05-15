@@ -89,8 +89,8 @@ static int countPhotos(const struct dive *d)
 		pic_offset = picture->offset.seconds;
 		if  ((pic_offset < -bufperiod) | (pic_offset > diveTotaltime+bufperiod)) {
 			icon_index |= 0x02;	// If picture is before/after the dive
-		}				//  then set the appropriate bit ...
-		else {
+						//  then set the appropriate bit ...
+		} else {
 			icon_index |= 0x01;	// else set the bit for picture during the dive
 		}
 	}
