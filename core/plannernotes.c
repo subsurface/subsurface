@@ -11,6 +11,7 @@
 #include <string.h>
 #include "dive.h"
 #include "deco.h"
+#include "units.h"
 #include "divelist.h"
 #include "planner.h"
 #include "gettext.h"
@@ -420,7 +421,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	put_string(&buf, "<br>");
 
 	const char *depth_unit;
-	int altitude = (int) get_depth_units((int) (log(1013.0 / diveplan->surface_pressure) * 7800000), NULL, &depth_unit);
+	int altitude = (int) get_depth_units((int) (pressure_to_altitude(diveplan->surface_pressure)), NULL, &depth_unit);
 
 	put_format_loc(&buf, translate("gettextFromC", "ATM pressure: %dmbar (%d%s)<br></div>"), diveplan->surface_pressure, altitude, depth_unit);
 

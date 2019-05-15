@@ -4,6 +4,7 @@
 #include "desktop-widgets/mainwindow.h"
 #include "core/planner.h"
 #include "core/qthelper.h"
+#include "core/units.h"
 #include "core/settings/qPrefDivePlanner.h"
 #include "core/gettextfromc.h"
 
@@ -235,7 +236,7 @@ void DivePlannerWidget::settingsChanged()
 		ui.atmHeight->setMaximum(3000);
 	}
 	ui.atmHeight->blockSignals(true);
-	ui.atmHeight->setValue((int) get_depth_units((int) (log(1013.0 / plannerModel->getSurfacePressure()) * 7800000), NULL,NULL));
+	ui.atmHeight->setValue((int) get_depth_units((int) pressure_to_altitude(plannerModel->getSurfacePressure()), NULL,NULL));
 	ui.atmHeight->blockSignals(false);
 }
 
@@ -243,13 +244,13 @@ void DivePlannerWidget::atmPressureChanged(const int pressure)
 {
 	plannerModel->setSurfacePressure(pressure);
 	ui.atmHeight->blockSignals(true);
-	ui.atmHeight->setValue((int) get_depth_units((int) (log(1013.0 / pressure) * 7800000), NULL,NULL));
+	ui.atmHeight->setValue((int) get_depth_units((int) pressure_to_altitude(pressure), NULL,NULL));
 	ui.atmHeight->blockSignals(false);
 }
 
 void DivePlannerWidget::heightChanged(const int height)
-{
-	int pressure = (int) (1013.0 * exp(- (double) units_to_depth((double) height).mm / 7800000.0));
+{						// height is in ft or in meters
+	int pressure = (int) (altitude_to_pressure(units_to_depth((double) height).mm));
 	ui.ATMPressure->blockSignals(true);
 	ui.ATMPressure->setValue(pressure);
 	ui.ATMPressure->blockSignals(false);
