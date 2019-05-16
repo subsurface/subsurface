@@ -56,6 +56,11 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		product = "EON Core";
 	}
 
+	if (btName.startsWith("Suunto D5")) {
+		vendor = "Suunto";
+		product = "D5";
+	}
+
 	if (btName.startsWith("G2")  || btName.startsWith("Aladin") || btName.startsWith("HUD")) {
 		vendor = "Scubapro";
 		if (btName.startsWith("G2")) product = "G2";
