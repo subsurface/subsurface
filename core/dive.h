@@ -434,7 +434,7 @@ extern unsigned int number_of_computers(const struct dive *dive);
 extern struct divecomputer *get_dive_dc(struct dive *dive, int nr);
 extern timestamp_t dive_endtime(const struct dive *dive);
 
-extern void make_first_dc(void);
+extern struct dive *make_first_dc(const struct dive *d, int dc_number);
 extern unsigned int count_divecomputers(void);
 extern void delete_current_divecomputer(void);
 void split_divecomputer(const struct dive *src, int num, struct dive **out1, struct dive **out2);

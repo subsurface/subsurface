@@ -9,6 +9,7 @@
 #include "core/qthelper.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
 #include "qt-models/filtermodels.h"
+#include "../profile-widget/profilewidget2.h"
 
 #include <array>
 
@@ -800,6 +801,57 @@ static std::array<dive *, 2> splitDiveComputer(const dive *d, int dc_num)
 SplitDiveComputer::SplitDiveComputer(dive *d, int dc_num) : SplitDivesBase(d, splitDiveComputer(d, dc_num))
 {
 	setText(tr("split dive computer"));
+}
+
+MoveDiveComputerToFront::MoveDiveComputerToFront(dive *d, int dc_num)
+{
+	setText(tr("move dive computer to front"));
+
+	dive *new_dive = make_first_dc(d, dc_num);
+	if (!new_dive)
+		return;
+
+	diveToRemove.dives.push_back(d);
+
+	// Currently, the core code selects the dive -> this is not what we want, as
+	// we manually manage the selection post-command.
+	// TODO: Reset selection in core.
+	new_dive->selected = false;
+
+	// Reset references to trip and site in the new dive, as the undo command
+	// will add the dive to the trip and site.
+	new_dive->divetrip = nullptr;
+	new_dive->dive_site = nullptr;
+
+	diveToAdd.dives.resize(1);
+	diveToAdd.dives[0].dive.reset(new_dive);
+	diveToAdd.dives[0].trip = d->divetrip;
+	diveToAdd.dives[0].site = d->dive_site;
+}
+
+bool MoveDiveComputerToFront::workToBeDone()
+{
+	return !diveToRemove.dives.empty() || !diveToAdd.dives.empty();
+}
+
+void MoveDiveComputerToFront::redoit()
+{
+	DivesAndSitesToRemove addedDive = addDives(diveToAdd);
+	diveToAdd = removeDives(diveToRemove);
+	diveToRemove = std::move(addedDive);
+
+	// Select added dive and make it current
+	restoreSelection(diveToRemove.dives, diveToRemove.dives[0]);
+
+	// Update the profile to show the first dive computer
+	dc_number = 0;
+	MainWindow::instance()->graphics->replot(current_dive);
+}
+
+void MoveDiveComputerToFront::undoit()
+{
+	// Undo and redo do the same
+	redoit();
 }
 
 MergeDives::MergeDives(const QVector <dive *> &dives)
