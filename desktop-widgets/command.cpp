@@ -74,6 +74,11 @@ void splitDiveComputer(dive *d, int dc_num)
 	execute(new SplitDiveComputer(d, dc_num));
 }
 
+void moveDiveComputerToFront(dive *d, int dc_num)
+{
+	execute(new MoveDiveComputerToFront(d, dc_num));
+}
+
 void mergeDives(const QVector <dive *> &dives)
 {
 	execute(new MergeDives(dives));

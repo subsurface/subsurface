@@ -1590,14 +1590,7 @@ void ProfileWidget2::splitCurrentDC()
 
 void ProfileWidget2::makeFirstDC()
 {
-	make_first_dc();
-	mark_divelist_changed(true);
-	// this is now the first DC, so we need to redraw the profile and refresh the dive list
-	// (and no, it's not just enough to rewrite the text - the first DC is special so values in the
-	// dive list may change).
-	// As a side benefit, this returns focus to the dive list.
-	dc_number = 0;
-	emit refreshDisplay(true);
+	Command::moveDiveComputerToFront(current_dive, dc_number);
 }
 
 void ProfileWidget2::hideEvents()

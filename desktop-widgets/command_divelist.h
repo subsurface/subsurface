@@ -236,6 +236,23 @@ public:
 	SplitDiveComputer(dive *d, int dc_num);
 };
 
+// When moving the dive computer to the front, we go the ineffective,
+// but easy way: We keep two full copies of the dive (before and after).
+// Removing and readding assures that the dive stays at the correct
+// position in the list (the dive computer list is used for sorting dives).
+class MoveDiveComputerToFront : public DiveListBase {
+public:
+	MoveDiveComputerToFront(dive *d, int dc_num);
+private:
+	void undoit() override;
+	void redoit() override;
+	bool workToBeDone() override;
+
+	// For redo and undo
+	DivesAndTripsToAdd	diveToAdd;
+	DivesAndSitesToRemove	diveToRemove;
+};
+
 class MergeDives : public DiveListBase {
 public:
 	MergeDives(const QVector<dive *> &dives);

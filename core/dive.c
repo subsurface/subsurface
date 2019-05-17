@@ -4151,27 +4151,42 @@ bool dive_remove_picture(struct dive *d, const char *filename)
 	return false;
 }
 
-/* this always acts on the current divecomputer of the current dive */
-void make_first_dc()
+/* clones a dive and moves given dive computer to front */
+struct dive *make_first_dc(const struct dive *d, int dc_number)
 {
-	struct divecomputer *dc = &current_dive->dc;
-	struct divecomputer *newdc = malloc(sizeof(*newdc));
-	struct divecomputer *cur_dc = current_dc; /* needs to be in a local variable so the macro isn't re-executed */
+	struct dive *res;
+	struct divecomputer *dc, *newdc, *old_dc;
+
+	/* copy the dive */
+	res = alloc_dive();
+	copy_dive(d, res);
+
+	/* make a new unique id, since we still can't handle two equal ids */
+	res->id = dive_getUniqID();
+	invalidate_dive_cache(res);
+
+	if (dc_number == 0)
+		return res;
+
+	dc = &res->dc;
+	newdc = malloc(sizeof(*newdc));
+	old_dc = get_dive_dc(res, dc_number);
 
 	/* skip the current DC in the linked list */
-	while (dc && dc->next != cur_dc)
-		dc = dc->next;
+	for (dc = &res->dc; dc && dc->next != old_dc; dc = dc->next)
+		;
 	if (!dc) {
 		free(newdc);
 		fprintf(stderr, "data inconsistent: can't find the current DC");
-		return;
+		return res;
 	}
-	dc->next = cur_dc->next;
-	*newdc = current_dive->dc;
-	current_dive->dc = *cur_dc;
-	current_dive->dc.next = newdc;
-	free(cur_dc);
-	invalidate_dive_cache(current_dive);
+	dc->next = old_dc->next;
+	*newdc = res->dc;
+	res->dc = *old_dc;
+	res->dc.next = newdc;
+	free(old_dc);
+
+	return res;
 }
 
 /* always acts on the current dive */
