@@ -715,12 +715,20 @@ SplitDivesBase::SplitDivesBase(dive *d, std::array<dive *, 2> newDives)
 	newDives[0]->selected = false;
 	newDives[1]->selected = false;
 
+	// The new dives will be registered to the dive site using the site member
+	// of the DiveToAdd structure. For this to work, we must set the dive's
+	// dive_site member to null. Yes, that's subtle!
+	newDives[0]->dive_site = nullptr;
+	newDives[1]->dive_site = nullptr;
+
 	diveToSplit.dives.push_back(d);
 	splitDives.dives.resize(2);
 	splitDives.dives[0].dive.reset(newDives[0]);
 	splitDives.dives[0].trip = d->divetrip;
+	splitDives.dives[0].site = d->dive_site;
 	splitDives.dives[1].dive.reset(newDives[1]);
 	splitDives.dives[1].trip = d->divetrip;
+	splitDives.dives[1].site = d->dive_site;
 }
 
 bool SplitDivesBase::workToBeDone()
@@ -863,6 +871,7 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 	mergedDive.dives.resize(1);
 	mergedDive.dives[0].dive = std::move(d);
 	mergedDive.dives[0].trip = preferred_trip;
+	mergedDive.dives[0].site = preferred_site;
 	divesToMerge.dives = dives.toStdVector();
 }
 
