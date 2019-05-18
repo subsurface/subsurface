@@ -26,11 +26,6 @@ matrix:
             - libssh2
           update: true
 
-    - env: SUBSURFACE_PLATFORM='windows'
-      os: linux
-      dist: trusty
-      language: c++
-
     - env: SUBSURFACE_PLATFORM='windows-container'
       os: linux
       filter_secrets: false
