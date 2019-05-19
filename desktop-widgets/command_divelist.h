@@ -236,21 +236,34 @@ public:
 	SplitDiveComputer(dive *d, int dc_num);
 };
 
-// When moving the dive computer to the front, we go the ineffective,
-// but easy way: We keep two full copies of the dive (before and after).
+// When manipulating dive computers (moving, deleting) we go the ineffective,
+// but simple and robust way: We keep two full copies of the dive (before and after).
 // Removing and readding assures that the dive stays at the correct
 // position in the list (the dive computer list is used for sorting dives).
-class MoveDiveComputerToFront : public DiveListBase {
-public:
-	MoveDiveComputerToFront(dive *d, int dc_num);
+class DiveComputerBase : public DiveListBase {
+protected:
+	// old_dive must be a dive known to the core.
+	// new_dive must be new dive whose ownership is taken.
+	DiveComputerBase(dive *old_dive, dive *new_dive);
 private:
 	void undoit() override;
 	void redoit() override;
 	bool workToBeDone() override;
 
+protected:
 	// For redo and undo
 	DivesAndTripsToAdd	diveToAdd;
 	DivesAndSitesToRemove	diveToRemove;
+};
+
+class MoveDiveComputerToFront : public DiveComputerBase {
+public:
+	MoveDiveComputerToFront(dive *d, int dc_num);
+};
+
+class DeleteDiveComputer : public DiveComputerBase {
+public:
+	DeleteDiveComputer(dive *d, int dc_num);
 };
 
 class MergeDives : public DiveListBase {

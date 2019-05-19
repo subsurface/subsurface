@@ -803,15 +803,12 @@ SplitDiveComputer::SplitDiveComputer(dive *d, int dc_num) : SplitDivesBase(d, sp
 	setText(tr("split dive computer"));
 }
 
-MoveDiveComputerToFront::MoveDiveComputerToFront(dive *d, int dc_num)
+DiveComputerBase::DiveComputerBase(dive *old_dive, dive *new_dive)
 {
-	setText(tr("move dive computer to front"));
-
-	dive *new_dive = make_first_dc(d, dc_num);
 	if (!new_dive)
 		return;
 
-	diveToRemove.dives.push_back(d);
+	diveToRemove.dives.push_back(old_dive);
 
 	// Currently, the core code selects the dive -> this is not what we want, as
 	// we manually manage the selection post-command.
@@ -825,16 +822,16 @@ MoveDiveComputerToFront::MoveDiveComputerToFront(dive *d, int dc_num)
 
 	diveToAdd.dives.resize(1);
 	diveToAdd.dives[0].dive.reset(new_dive);
-	diveToAdd.dives[0].trip = d->divetrip;
-	diveToAdd.dives[0].site = d->dive_site;
+	diveToAdd.dives[0].trip = old_dive->divetrip;
+	diveToAdd.dives[0].site = old_dive->dive_site;
 }
 
-bool MoveDiveComputerToFront::workToBeDone()
+bool DiveComputerBase::workToBeDone()
 {
 	return !diveToRemove.dives.empty() || !diveToAdd.dives.empty();
 }
 
-void MoveDiveComputerToFront::redoit()
+void DiveComputerBase::redoit()
 {
 	DivesAndSitesToRemove addedDive = addDives(diveToAdd);
 	diveToAdd = removeDives(diveToRemove);
@@ -848,10 +845,22 @@ void MoveDiveComputerToFront::redoit()
 	MainWindow::instance()->graphics->replot(current_dive);
 }
 
-void MoveDiveComputerToFront::undoit()
+void DiveComputerBase::undoit()
 {
 	// Undo and redo do the same
 	redoit();
+}
+
+MoveDiveComputerToFront::MoveDiveComputerToFront(dive *d, int dc_num)
+	: DiveComputerBase(d, make_first_dc(d, dc_num))
+{
+	setText(tr("move dive computer to front"));
+}
+
+DeleteDiveComputer::DeleteDiveComputer(dive *d, int dc_num)
+	: DiveComputerBase(d, clone_delete_divecomputer(d, dc_num))
+{
+	setText(tr("delete dive computer"));
 }
 
 MergeDives::MergeDives(const QVector <dive *> &dives)

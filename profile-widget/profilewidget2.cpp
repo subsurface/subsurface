@@ -1575,12 +1575,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 
 void ProfileWidget2::deleteCurrentDC()
 {
-	delete_current_divecomputer();
-	mark_divelist_changed(true);
-	// we need to force it since it's likely the same dive and same dc_number - but that's a different dive computer now
-	plotDive(0, true, false);
-
-	emit refreshDisplay(true);
+	Command::deleteDiveComputer(current_dive, dc_number);
 }
 
 void ProfileWidget2::splitCurrentDC()
