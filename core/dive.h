@@ -517,7 +517,7 @@ extern void record_dive(struct dive *dive);
 extern void clear_dive(struct dive *dive);
 extern void copy_dive(const struct dive *s, struct dive *d);
 extern void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear);
-extern struct dive *clone_dive(struct dive *s);
+extern struct dive *move_dive(struct dive *s);
 
 extern void alloc_samples(struct divecomputer *dc, int num);
 extern void free_samples(struct divecomputer *dc);
