@@ -733,8 +733,6 @@ void DiveTripModelTree::addDivesToTrip(int trip, const QVector<dive *> &dives)
 	// Construct the parent index, ie. the index of the trip.
 	QModelIndex parent = createIndex(trip, 0, noParent);
 
-	// Either this is outside of a trip or we're in list mode.
-	// Thus, add dives at the top-level in batches
 	addInBatches(items[trip].dives, dives,
 		     [](dive *d, dive *d2) { return dive_less_than(d, d2); }, // comp
 		     [&](std::vector<dive *> &items, const QVector<dive *> &dives, int idx, int from, int to) { // inserter
@@ -1061,7 +1059,7 @@ void DiveTripModelTree::currentDiveChanged()
 		int diveIdx = findDiveInTrip(idx, current_dive);
 		if (diveIdx < 0) {
 			// We don't know this dive. Something is wrong. Warn and bail.
-			qWarning() << "DiveTripModelTree::currentDiveChanged(): unknown top-level dive";
+			qWarning() << "DiveTripModelTree::currentDiveChanged(): unknown dive";
 			emit newCurrentDive(QModelIndex());
 			return;
 		}
@@ -1226,7 +1224,6 @@ void DiveTripModelList::currentDiveChanged()
 		return;
 	}
 
-	// Either this is outside of a trip or we're in list mode.
 	auto it = std::find(items.begin(), items.end(), current_dive);
 	if (it == items.end()) {
 		// We don't know this dive. Something is wrong. Warn and bail.
