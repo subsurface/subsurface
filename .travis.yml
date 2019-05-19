@@ -9,7 +9,7 @@ matrix:
 
     - env: SUBSURFACE_PLATFORM='mac'
       os: osx
-      osx_image: xcode10.1
+      osx_image: xcode9.2
       language: c++
       addons:
         homebrew:
