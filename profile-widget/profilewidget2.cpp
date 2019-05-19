@@ -1430,13 +1430,13 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 			parentItem = parentItem->parentItem();
 		}
 		if (isDCName) {
-			if (dc_number == 0 && count_divecomputers() == 1)
+			if (dc_number == 0 && count_divecomputers(current_dive) == 1)
 				// nothing to do, can't delete or reorder
 				return;
 			// create menu to show when right clicking on dive computer name
 			if (dc_number > 0)
 				m.addAction(tr("Make first dive computer"), this, SLOT(makeFirstDC()));
-			if (count_divecomputers() > 1) {
+			if (count_divecomputers(current_dive) > 1) {
 				m.addAction(tr("Delete this dive computer"), this, SLOT(deleteCurrentDC()));
 				m.addAction(tr("Split this dive computer into own dive"), this, SLOT(splitCurrentDC()));
 			}

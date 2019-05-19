@@ -4189,11 +4189,10 @@ struct dive *make_first_dc(const struct dive *d, int dc_number)
 	return res;
 }
 
-/* always acts on the current dive */
-unsigned int count_divecomputers(void)
+int count_divecomputers(const struct dive *d)
 {
 	int ret = 1;
-	struct divecomputer *dc = current_dive->dc.next;
+	struct divecomputer *dc = d->dc.next;
 	while (dc) {
 		ret++;
 		dc = dc->next;
@@ -4229,7 +4228,7 @@ static void delete_divecomputer(struct dive *d, int num)
 
 	/* If this is the currently displayed dive, we might have to adjust
 	 * the currently displayed dive computer. */
-	if (d == current_dive && dc_number >= count_divecomputers())
+	if (d == current_dive && dc_number >= count_divecomputers(d))
 		dc_number--;
 	invalidate_dive_cache(d);
 }
