@@ -381,8 +381,7 @@ AddDive::AddDive(dive *d, bool autogroup, bool newNumber)
 	d->dc.maxdepth.mm = 0;
 	fixup_dive(d);
 
-	// Get an owning pointer to a copied or moved dive
-	// Note: if move is true, this destroys the old dive!
+	// Get an owning pointer to a moved dive.
 	OwningDivePtr divePtr(clone_dive(d));
 	divePtr->selected = false; // If we clone a planned dive, it might have been selected.
 				   // We have to clear the flag, as selections will be managed
