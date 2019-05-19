@@ -802,7 +802,8 @@ SplitDiveComputer::SplitDiveComputer(dive *d, int dc_num) : SplitDivesBase(d, sp
 	setText(tr("split dive computer"));
 }
 
-DiveComputerBase::DiveComputerBase(dive *old_dive, dive *new_dive)
+DiveComputerBase::DiveComputerBase(dive *old_dive, dive *new_dive, int dc_nr_after_in) : dc_nr_before(dc_number),
+	dc_nr_after(dc_nr_after_in)
 {
 	if (!new_dive)
 		return;
@@ -840,7 +841,8 @@ void DiveComputerBase::redoit()
 	restoreSelection(diveToRemove.dives, diveToRemove.dives[0]);
 
 	// Update the profile to show the first dive computer
-	dc_number = 0;
+	dc_number = dc_nr_after;
+	std::swap(dc_nr_before, dc_nr_after);
 	MainWindow::instance()->graphics->replot(current_dive);
 }
 
@@ -851,13 +853,13 @@ void DiveComputerBase::undoit()
 }
 
 MoveDiveComputerToFront::MoveDiveComputerToFront(dive *d, int dc_num)
-	: DiveComputerBase(d, make_first_dc(d, dc_num))
+	: DiveComputerBase(d, make_first_dc(d, dc_num), 0)
 {
 	setText(tr("move dive computer to front"));
 }
 
 DeleteDiveComputer::DeleteDiveComputer(dive *d, int dc_num)
-	: DiveComputerBase(d, clone_delete_divecomputer(d, dc_num))
+	: DiveComputerBase(d, clone_delete_divecomputer(d, dc_num), std::min(count_divecomputers(d) - 1, dc_num))
 {
 	setText(tr("delete dive computer"));
 }
