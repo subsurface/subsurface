@@ -31,7 +31,7 @@ pushd ${TRAVIS_BUILD_DIR}/..
 
 echo "Get custom Qt build and unpack it"
 curl --output ./Qt-5.11.1-ios.tar.xz \
-                https://storage.googleapis.com/travis-cache/Qt-5.11.1-ios.tar.xz
+                https://f002.backblazeb2.com/file/Subsurface-Travis/Qt-5.11.1-ios.tar.xz
 md5 ./Qt-5.11.1-ios.tar.xz
 
 mkdir -p Qt/5.11.1

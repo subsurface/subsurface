@@ -27,7 +27,7 @@ mkdir -p Qt/5.12.3
 
 echo "Get custom Qt build and unpack it"
 curl --output Qt-5.12.3-mac.tar.xz \
-		https://storage.googleapis.com/travis-cache/Qt-5.12.3-mac.tar.xz
+		https://f002.backblazeb2.com/file/Subsurface-Travis/Qt-5.12.3-mac.tar.xz
 
 tar -xJ -C Qt/5.12.3 -f Qt-5.12.3-mac.tar.xz
 
