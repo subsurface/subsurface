@@ -1,3 +1,4 @@
+- Desktop: Add undo functionality for dive computer movement and deletion
 - Import: Small enhancements on Suunto SDE import
 - Desktop: Add import dive site menu option and site selection dialog
 - Core: Sort dives by number if at the same date
