@@ -637,7 +637,7 @@ static void copy_dive_onedc(const struct dive *s, const struct divecomputer *sdc
  * this is specifically so we can create a dive in the displayed_dive and then
  * add it to the divelist.
  * Note the difference to copy_dive() / clean_dive() */
-struct dive *clone_dive(struct dive *s)
+struct dive *move_dive(struct dive *s)
 {
 	struct dive *dive = alloc_dive();
 	*dive = *s;			   // so all the pointers in dive point to the things s pointed to

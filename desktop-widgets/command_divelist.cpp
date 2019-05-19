@@ -382,7 +382,7 @@ AddDive::AddDive(dive *d, bool autogroup, bool newNumber)
 	fixup_dive(d);
 
 	// Get an owning pointer to a moved dive.
-	OwningDivePtr divePtr(clone_dive(d));
+	OwningDivePtr divePtr(move_dive(d));
 	divePtr->selected = false; // If we clone a planned dive, it might have been selected.
 				   // We have to clear the flag, as selections will be managed
 				   // on dive-addition.
