@@ -4234,10 +4234,22 @@ static void delete_divecomputer(struct dive *d, int num)
 	invalidate_dive_cache(d);
 }
 
-/* always acts on the current dive */
-void delete_current_divecomputer(void)
+/* Clone a dive and delete goven dive computer */
+struct dive *clone_delete_divecomputer(const struct dive *d, int dc_number)
 {
-	delete_divecomputer(current_dive, dc_number);
+	struct dive *res;
+
+	/* copy the dive */
+	res = alloc_dive();
+	copy_dive(d, res);
+
+	/* make a new unique id, since we still can't handle two equal ids */
+	res->id = dive_getUniqID();
+	invalidate_dive_cache(res);
+
+	delete_divecomputer(res, dc_number);
+
+	return res;
 }
 
 /*

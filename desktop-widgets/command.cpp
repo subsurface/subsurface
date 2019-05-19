@@ -79,6 +79,11 @@ void moveDiveComputerToFront(dive *d, int dc_num)
 	execute(new MoveDiveComputerToFront(d, dc_num));
 }
 
+void deleteDiveComputer(dive *d, int dc_num)
+{
+	execute(new DeleteDiveComputer(d, dc_num));
+}
+
 void mergeDives(const QVector <dive *> &dives)
 {
 	execute(new MergeDives(dives));

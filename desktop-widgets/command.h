@@ -37,6 +37,7 @@ void mergeTrips(dive_trip *trip1, dive_trip *trip2);
 void splitDives(dive *d, duration_t time);
 void splitDiveComputer(dive *d, int dc_num);
 void moveDiveComputerToFront(dive *d, int dc_num);
+void deleteDiveComputer(dive *d, int dc_num);
 void mergeDives(const QVector <dive *> &dives);
 
 // 3) Dive-site related commands
