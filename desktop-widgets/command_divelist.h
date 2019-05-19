@@ -244,7 +244,7 @@ class DiveComputerBase : public DiveListBase {
 protected:
 	// old_dive must be a dive known to the core.
 	// new_dive must be new dive whose ownership is taken.
-	DiveComputerBase(dive *old_dive, dive *new_dive);
+	DiveComputerBase(dive *old_dive, dive *new_dive, int dc_nr_after);
 private:
 	void undoit() override;
 	void redoit() override;
@@ -254,6 +254,7 @@ protected:
 	// For redo and undo
 	DivesAndTripsToAdd	diveToAdd;
 	DivesAndSitesToRemove	diveToRemove;
+	int			dc_nr_before, dc_nr_after;
 };
 
 class MoveDiveComputerToFront : public DiveComputerBase {
