@@ -2452,6 +2452,13 @@ even though the diver technically encountered a ceiling at depth, the dive still
 not require a specific deco stop. This feature lets dive computers offer
 longer non-stop bottom times.
 
+Strictly speaking, the green calculated ceiling is a direct representation of
+the inert gas loadings of the simulated tissues only and is independent of 
+any assumed ascent velocities. It indicates the deco model's minimal allowed
+depth at this instant of time given the inert gas loadings and is not a statement
+about a possible ascent schedule in the remaining dive. To obtain the latter,
+use the "Edit dive in planner" option from the Log menu.
+
 [icon="images/icons/cceiling.jpg"]
 [NOTE]
 If the dive computer itself calculates a ceiling and makes it available to
