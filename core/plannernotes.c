@@ -116,8 +116,8 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 
 	if (show_disclaimer) {
 		put_string(&buf, "<div><b>");
-		put_format(&buf, translate("gettextFromC", "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE %s "
-			"ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS "
+		put_format(&buf, translate("gettextFromC", "DISCLAIMER / WARNING: THIS IMPLEMENTATION OF THE %s "
+			"ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT HAS "
 			"RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO "
 			"PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."), deco);
 		put_string(&buf, "</b><br></div>");
