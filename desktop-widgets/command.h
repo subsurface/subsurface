@@ -10,6 +10,7 @@
 namespace Command {
 
 // 1) General commands
+
 void init();				// Setup signals to inform frontend of clean status.
 void clear();				// Reset the undo stack. Delete all commands.
 void setClean();			// Call after save - this marks a state where no changes need to be saved.
@@ -73,7 +74,8 @@ int editBuddies(const QStringList &newList, bool currentDiveOnly);
 int editDiveMaster(const QStringList &newList, bool currentDiveOnly);
 void pasteDives(const dive *d, dive_components what);
 
-// 4) Trip editing commands
+// 5) Trip editing commands
+
 void editTripLocation(dive_trip *trip, const QString &s);
 void editTripNotes(dive_trip *trip, const QString &s);
 
