@@ -234,6 +234,7 @@ void pasteDives(const dive *d, dive_components what)
 	execute(new PasteDives(d, what));
 }
 
+// Trip editing related commands
 void editTripLocation(dive_trip *trip, const QString &s)
 {
 	execute(new EditTripLocation(trip, s));
