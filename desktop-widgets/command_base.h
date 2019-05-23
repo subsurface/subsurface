@@ -166,9 +166,9 @@ public:
 	virtual bool workToBeDone() = 0;
 };
 
-// Put a command on the undoStack, but test whether there is something to be done
-// beforehand by calling the workToBeDone() function. If nothing is to be done,
-// the command will be deleted.
+// Put a command on the undoStack (and take ownership), but test whether there
+// is something to be done beforehand by calling the workToBeDone() function.
+// If nothing is to be done, the command will be deleted.
 void execute(Base *cmd);
 
 } // namespace Command

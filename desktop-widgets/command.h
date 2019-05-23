@@ -56,21 +56,21 @@ void purgeUnusedDiveSites();
 
 // 4) Dive editing related commands
 
-void editNotes(const QString &newValue, bool currentDiveOnly);
-void editSuit(const QString &newValue, bool currentDiveOnly);
-void editMode(int index, int newValue, bool currentDiveOnly);
-void editRating(int newValue, bool currentDiveOnly);
-void editVisibility(int newValue, bool currentDiveOnly);
-void editAirTemp(int newValue, bool currentDiveOnly);
-void editWaterTemp(int newValue, bool currentDiveOnly);
-void editAtmPress(int newValue, bool currentDiveOnly);
-void editDepth(int newValue, bool currentDiveOnly);
-void editDuration(int newValue, bool currentDiveOnly);
-void editDiveSite(struct dive_site *newValue, bool currentDiveOnly);
-void editDiveSiteNew(const QString &newName, bool currentDiveOnly);
-void editTags(const QStringList &newList, bool currentDiveOnly);
-void editBuddies(const QStringList &newList, bool currentDiveOnly);
-void editDiveMaster(const QStringList &newList, bool currentDiveOnly);
+int editNotes(const QString &newValue, bool currentDiveOnly);
+int editSuit(const QString &newValue, bool currentDiveOnly);
+int editMode(int index, int newValue, bool currentDiveOnly);
+int editRating(int newValue, bool currentDiveOnly);
+int editVisibility(int newValue, bool currentDiveOnly);
+int editAirTemp(int newValue, bool currentDiveOnly);
+int editWaterTemp(int newValue, bool currentDiveOnly);
+int editAtmPress(int newValue, bool currentDiveOnly);
+int editDepth(int newValue, bool currentDiveOnly);
+int editDuration(int newValue, bool currentDiveOnly);
+int editDiveSite(struct dive_site *newValue, bool currentDiveOnly);
+int editDiveSiteNew(const QString &newName, bool currentDiveOnly);
+int editTags(const QStringList &newList, bool currentDiveOnly);
+int editBuddies(const QStringList &newList, bool currentDiveOnly);
+int editDiveMaster(const QStringList &newList, bool currentDiveOnly);
 void pasteDives(const dive *d, dive_components what);
 
 // 4) Trip editing commands
