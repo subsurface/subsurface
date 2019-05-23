@@ -23,8 +23,23 @@
 // We put everything in a namespace, so that we can shorten names without polluting the global namespace
 namespace Command {
 
+// Base class for commands that have a list of dives.
+// This is used for extracting the number of dives and show a
+// warning message when multiple dives are edited.
+class EditDivesBase : public Base {
+protected:
+	EditDivesBase(bool currentDiveOnly);
+	std::vector<dive *> dives; // Dives to be edited.
+
+	// On undo, we set the selection and current dive at the time of the operation.
+	std::vector<dive *> selectedDives;
+	struct dive *current;
+public:
+	int numDives() const;
+};
+
 template <typename T>
-class EditBase : public Base {
+class EditBase : public EditDivesBase {
 protected:
 	T value; // Value to be set
 	T old; // Previous value
@@ -33,10 +48,6 @@ protected:
 	void redo() override;
 	bool workToBeDone() override;
 
-	std::vector<dive *> dives; // Dives to be edited.
-	// On undo, we set the selection and current dive at the time of the operation.
-	std::vector<dive *> selectedDives;
-	struct dive *current;
 public:
 	EditBase(T newValue, bool currentDiveOnly);
 
@@ -166,16 +177,9 @@ public:
 // Fields that work with tag-lists (tags, buddies, divemasters) work differently and therefore
 // have their own base class. In this case, it's not a template, as all these lists are base
 // on strings.
-class EditTagsBase : public Base {
+class EditTagsBase : public EditDivesBase {
 	bool workToBeDone() override;
 
-	// Dives to be edited. For historical reasons, the *last* entry was
-	// the active dive when the user initialized the action. This dive
-	// will be made the current dive on redo / undo.
-	std::vector<dive *> dives;
-	// On undo, we set the selection and current dive at the time of the operation.
-	std::vector<dive *> selectedDives;
-	struct dive *current;
 	QStringList newList;	// Temporary until initialized
 public:
 	EditTagsBase(const QStringList &newList, bool currentDiveOnly);

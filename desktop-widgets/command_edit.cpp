@@ -25,12 +25,22 @@ static std::vector<dive *> getDives(bool currentDiveOnly)
 	return res;
 }
 
-template<typename T>
-EditBase<T>::EditBase(T newValue, bool currentDiveOnly) :
-	value(std::move(newValue)),
+EditDivesBase::EditDivesBase(bool currentDiveOnly) :
 	dives(getDives(currentDiveOnly)),
 	selectedDives(getDiveSelection()),
 	current(current_dive)
+{
+}
+
+int EditDivesBase::numDives() const
+{
+	return dives.size();
+}
+
+template<typename T>
+EditBase<T>::EditBase(T newValue, bool currentDiveOnly) :
+	EditDivesBase(currentDiveOnly),
+	value(std::move(newValue))
 {
 }
 
@@ -439,9 +449,7 @@ DiveField EditMode::fieldId() const
 
 // ***** Tag based commands *****
 EditTagsBase::EditTagsBase(const QStringList &newListIn, bool currentDiveOnly) :
-	dives(getDives(currentDiveOnly)),
-	selectedDives(getDiveSelection()),
-	current(current_dive),
+	EditDivesBase(currentDiveOnly),
 	newList(newListIn)
 {
 }
