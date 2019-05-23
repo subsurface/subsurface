@@ -145,80 +145,88 @@ void purgeUnusedDiveSites()
 	execute(new PurgeUnusedDiveSites);
 }
 
+// Execute an edit-command and return number of edited dives
+static int execute_edit(EditDivesBase *cmd)
+{
+	int res = cmd->numDives();
+	execute(cmd);
+	return res;
+}
+
 // Dive editing related commands
-void editNotes(const QString &newValue, bool currentDiveOnly)
+int editNotes(const QString &newValue, bool currentDiveOnly)
 {
-	execute(new EditNotes(newValue, currentDiveOnly));
+	return execute_edit(new EditNotes(newValue, currentDiveOnly));
 }
 
-void editMode(int index, int newValue, bool currentDiveOnly)
+int editMode(int index, int newValue, bool currentDiveOnly)
 {
-	execute(new EditMode(index, newValue, currentDiveOnly));
+	return execute_edit(new EditMode(index, newValue, currentDiveOnly));
 }
 
-void editSuit(const QString &newValue, bool currentDiveOnly)
+int editSuit(const QString &newValue, bool currentDiveOnly)
 {
-	execute(new EditSuit(newValue, currentDiveOnly));
+	return execute_edit(new EditSuit(newValue, currentDiveOnly));
 }
 
-void editRating(int newValue, bool currentDiveOnly)
+int editRating(int newValue, bool currentDiveOnly)
 {
-	execute(new EditRating(newValue, currentDiveOnly));
+	return execute_edit(new EditRating(newValue, currentDiveOnly));
 }
 
-void editVisibility(int newValue, bool currentDiveOnly)
+int editVisibility(int newValue, bool currentDiveOnly)
 {
-	execute(new EditVisibility(newValue, currentDiveOnly));
+	return execute_edit(new EditVisibility(newValue, currentDiveOnly));
 }
 
-void editAirTemp(int newValue, bool currentDiveOnly)
+int editAirTemp(int newValue, bool currentDiveOnly)
 {
-	execute(new EditAirTemp(newValue, currentDiveOnly));
+	return execute_edit(new EditAirTemp(newValue, currentDiveOnly));
 }
 
-void editWaterTemp(int newValue, bool currentDiveOnly)
+int editWaterTemp(int newValue, bool currentDiveOnly)
 {
-	execute(new EditWaterTemp(newValue, currentDiveOnly));
+	return execute_edit(new EditWaterTemp(newValue, currentDiveOnly));
 }
 
-void editAtmPress(int newValue, bool currentDiveOnly)
+int editAtmPress(int newValue, bool currentDiveOnly)
 {
-	execute(new EditAtmPress(newValue, currentDiveOnly));
+	return execute_edit(new EditAtmPress(newValue, currentDiveOnly));
 }
 
-void editDepth(int newValue, bool currentDiveOnly)
+int editDepth(int newValue, bool currentDiveOnly)
 {
-	execute(new EditDepth(newValue, currentDiveOnly));
+	return execute_edit(new EditDepth(newValue, currentDiveOnly));
 }
 
-void editDuration(int newValue, bool currentDiveOnly)
+int editDuration(int newValue, bool currentDiveOnly)
 {
-	execute(new EditDuration(newValue, currentDiveOnly));
+	return execute_edit(new EditDuration(newValue, currentDiveOnly));
 }
 
-void editDiveSite(struct dive_site *newValue, bool currentDiveOnly)
+int editDiveSite(struct dive_site *newValue, bool currentDiveOnly)
 {
-	execute(new EditDiveSite(newValue, currentDiveOnly));
+	return execute_edit(new EditDiveSite(newValue, currentDiveOnly));
 }
 
-void editDiveSiteNew(const QString &newName, bool currentDiveOnly)
+int editDiveSiteNew(const QString &newName, bool currentDiveOnly)
 {
-	execute(new EditDiveSiteNew(newName, currentDiveOnly));
+	return execute_edit(new EditDiveSiteNew(newName, currentDiveOnly));
 }
 
-void editTags(const QStringList &newList, bool currentDiveOnly)
+int editTags(const QStringList &newList, bool currentDiveOnly)
 {
-	execute(new EditTags(newList, currentDiveOnly));
+	return execute_edit(new EditTags(newList, currentDiveOnly));
 }
 
-void editBuddies(const QStringList &newList, bool currentDiveOnly)
+int editBuddies(const QStringList &newList, bool currentDiveOnly)
 {
-	execute(new EditBuddies(newList, currentDiveOnly));
+	return execute_edit(new EditBuddies(newList, currentDiveOnly));
 }
 
-void editDiveMaster(const QStringList &newList, bool currentDiveOnly)
+int editDiveMaster(const QStringList &newList, bool currentDiveOnly)
 {
-	execute(new EditDiveMaster(newList, currentDiveOnly));
+	return execute_edit(new EditDiveMaster(newList, currentDiveOnly));
 }
 
 void pasteDives(const dive *d, dive_components what)
