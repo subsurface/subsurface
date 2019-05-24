@@ -75,6 +75,7 @@ slots:
 	void on_tagWidget_editingFinished();
 	void hideMessage();
 	void closeMessage();
+	void closeWarning();
 	void displayMessage(QString str);
 	void enableEdition(EditMode newEditMode = NONE);
 	void updateTextLabels(bool showUnits = true);
@@ -92,6 +93,7 @@ private:
 	int lastTabSelectedDiveTrip;
 	dive_trip_t *currentTrip;
 	QList<TabBase*> extraWidgets;
+	void divesEdited(int num); // Opens a warning window if more than one dive was edited
 };
 
 #endif // MAINTAB_H
