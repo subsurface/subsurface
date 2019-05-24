@@ -168,8 +168,8 @@ public:
 
 // Put a command on the undoStack (and take ownership), but test whether there
 // is something to be done beforehand by calling the workToBeDone() function.
-// If nothing is to be done, the command will be deleted.
-void execute(Base *cmd);
+// If nothing is to be done, the command will be deleted and false is returned.
+bool execute(Base *cmd);
 
 } // namespace Command
 
