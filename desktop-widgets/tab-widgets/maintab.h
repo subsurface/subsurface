@@ -73,7 +73,6 @@ slots:
 	void on_rating_valueChanged(int value);
 	void on_visibility_valueChanged(int value);
 	void on_tagWidget_editingFinished();
-	void addMessageAction(QAction *action);
 	void hideMessage();
 	void closeMessage();
 	void displayMessage(QString str);
