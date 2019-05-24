@@ -148,9 +148,8 @@ void purgeUnusedDiveSites()
 // Execute an edit-command and return number of edited dives
 static int execute_edit(EditDivesBase *cmd)
 {
-	int res = cmd->numDives();
-	execute(cmd);
-	return res;
+	int count = cmd->numDives();
+	return execute(cmd) ? count : 0;
 }
 
 // Dive editing related commands
