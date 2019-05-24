@@ -18,6 +18,9 @@
     <widget class="KMessageWidget" name="diveNotesMessage"/>
    </item>
    <item>
+    <widget class="KMessageWidget" name="multiDiveWarningMessage"/>
+   </item>
+   <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>0</number>

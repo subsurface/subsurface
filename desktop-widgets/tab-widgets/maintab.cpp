@@ -93,6 +93,10 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(rejectChanges()));
 	ui.diveNotesMessage->addAction(action);
 
+	action = new QAction(tr("OK"), this);
+	connect(action, &QAction::triggered, this, &MainTab::closeWarning);
+	ui.multiDiveWarningMessage->addAction(action);
+
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), this);
 	connect(closeKey, SIGNAL(activated()), this, SLOT(escDetected()));
 
@@ -126,6 +130,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.suit->setCompleter(completers.suit);
 	ui.tagWidget->setCompleter(completers.tags);
 	ui.diveNotesMessage->hide();
+	ui.multiDiveWarningMessage->hide();
 	ui.depth->hide();
 	ui.depthLabel->hide();
 	ui.duration->hide();
@@ -168,6 +173,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	connect(ui.diveNotesMessage, &KMessageWidget::showAnimationFinished,
 					ui.location, &DiveLocationLineEdit::fixPopupPosition);
+	connect(ui.multiDiveWarningMessage, &KMessageWidget::showAnimationFinished,
+					ui.location, &DiveLocationLineEdit::fixPopupPosition);
 
 	// enable URL clickability in notes:
 	new TextHyperlinkEventFilter(ui.notes);//destroyed when ui.notes is destroyed
@@ -189,6 +196,11 @@ void MainTab::closeMessage()
 {
 	hideMessage();
 	ui.diveNotesMessage->setCloseButtonVisible(false);
+}
+
+void MainTab::closeWarning()
+{
+	ui.multiDiveWarningMessage->animatedHide();
 }
 
 void MainTab::displayMessage(QString str)
@@ -704,6 +716,16 @@ void MainTab::rejectChanges()
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 }
 
+void MainTab::divesEdited(int i)
+{
+	// No warning if only one dive was edited
+	if (i <= 1)
+		return;
+	ui.multiDiveWarningMessage->setCloseButtonVisible(false);
+	ui.multiDiveWarningMessage->setText(tr("Warning: edited %1 dives").arg(i));
+	ui.multiDiveWarningMessage->animatedShow();
+}
+
 static QStringList stringToList(const QString &s)
 {
 	QStringList res = s.split(",", QString::SkipEmptyParts);
@@ -717,7 +739,7 @@ void MainTab::on_buddy_editingFinished()
 	if (editMode == IGNORE || !current_dive)
 		return;
 
-	Command::editBuddies(stringToList(ui.buddy->toPlainText()), false);
+	divesEdited(Command::editBuddies(stringToList(ui.buddy->toPlainText()), false));
 }
 
 void MainTab::on_divemaster_editingFinished()
@@ -725,7 +747,7 @@ void MainTab::on_divemaster_editingFinished()
 	if (editMode == IGNORE || !current_dive)
 		return;
 
-	Command::editDiveMaster(stringToList(ui.divemaster->toPlainText()), false);
+	divesEdited(Command::editDiveMaster(stringToList(ui.divemaster->toPlainText()), false));
 }
 
 void MainTab::on_duration_editingFinished()
@@ -734,7 +756,7 @@ void MainTab::on_duration_editingFinished()
 		return;
 
 	// Duration editing is special: we only edit the current dive.
-	Command::editDuration(parseDurationToSeconds(ui.duration->text()), true);
+	divesEdited(Command::editDuration(parseDurationToSeconds(ui.duration->text()), true));
 }
 
 void MainTab::on_depth_editingFinished()
@@ -743,7 +765,7 @@ void MainTab::on_depth_editingFinished()
 		return;
 
 	// Depth editing is special: we only edit the current dive.
-	Command::editDepth(parseLengthToMm(ui.depth->text()), true);
+	divesEdited(Command::editDepth(parseLengthToMm(ui.depth->text()), true));
 }
 
 void MainTab::on_airtemp_editingFinished()
@@ -753,14 +775,14 @@ void MainTab::on_airtemp_editingFinished()
 	// no user visible effects. These can be very confusing.
 	if (editMode == IGNORE || !ui.airtemp->isModified() || !current_dive)
 		return;
-	Command::editAirTemp(parseTemperatureToMkelvin(ui.airtemp->text()), false);
+	divesEdited(Command::editAirTemp(parseTemperatureToMkelvin(ui.airtemp->text()), false));
 }
 
 void MainTab::divetype_Changed(int index)
 {
 	if (editMode == IGNORE || !current_dive)
 		return;
-	Command::editMode(dc_number, (enum divemode_t)index, false);
+	divesEdited(Command::editMode(dc_number, (enum divemode_t)index, false));
 }
 
 void MainTab::on_watertemp_editingFinished()
@@ -770,7 +792,7 @@ void MainTab::on_watertemp_editingFinished()
 	// no user visible effects. These can be very confusing.
 	if (editMode == IGNORE || !ui.watertemp->isModified() || !current_dive)
 		return;
-	Command::editWaterTemp(parseTemperatureToMkelvin(ui.watertemp->text()), false);
+	divesEdited(Command::editWaterTemp(parseTemperatureToMkelvin(ui.watertemp->text()), false));
 }
 
 // Editing of the dive time is different. If multiple dives are edited,
@@ -817,7 +839,7 @@ void MainTab::on_tagWidget_editingFinished()
 	if (editMode == IGNORE || !current_dive)
 		return;
 
-	Command::editTags(ui.tagWidget->getBlockStringList(), false);
+	divesEdited(Command::editTags(ui.tagWidget->getBlockStringList(), false));
 }
 
 void MainTab::on_location_diveSiteSelected()
@@ -827,9 +849,9 @@ void MainTab::on_location_diveSiteSelected()
 
 	struct dive_site *newDs = ui.location->currDiveSite();
 	if (newDs == RECENTLY_ADDED_DIVESITE)
-		Command::editDiveSiteNew(ui.location->text(), false);
+		divesEdited(Command::editDiveSiteNew(ui.location->text(), false));
 	else
-		Command::editDiveSite(newDs, false);
+		divesEdited(Command::editDiveSite(newDs, false));
 }
 
 void MainTab::on_locationPopupButton_clicked()
@@ -849,7 +871,7 @@ void MainTab::on_suit_editingFinished()
 	if (editMode == IGNORE || !current_dive)
 		return;
 
-	Command::editSuit(ui.suit->text(), false);
+	divesEdited(Command::editSuit(ui.suit->text(), false));
 }
 
 void MainTab::on_notes_editingFinished()
@@ -863,7 +885,7 @@ void MainTab::on_notes_editingFinished()
 	if (currentTrip)
 		Command::editTripNotes(currentTrip, notes);
 	else
-		Command::editNotes(notes, false);
+		divesEdited(Command::editNotes(notes, false));
 }
 
 void MainTab::on_rating_valueChanged(int value)
@@ -871,7 +893,7 @@ void MainTab::on_rating_valueChanged(int value)
 	if (editMode == IGNORE || !current_dive)
 		return;
 
-	Command::editRating(value, false);
+	divesEdited(Command::editRating(value, false));
 }
 
 void MainTab::on_visibility_valueChanged(int value)
@@ -879,7 +901,7 @@ void MainTab::on_visibility_valueChanged(int value)
 	if (editMode == IGNORE || !current_dive)
 		return;
 
-	Command::editVisibility(value, false);
+	divesEdited(Command::editVisibility(value, false));
 }
 
 // Remove focus from any active field to update the corresponding value in the dive.
