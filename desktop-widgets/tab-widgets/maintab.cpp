@@ -80,6 +80,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &MainTab::divesChanged);
 	connect(&diveListNotifier, &DiveListNotifier::tripChanged, this, &MainTab::tripChanged);
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &MainTab::diveSiteEdited);
+	connect(&diveListNotifier, &DiveListNotifier::commandExecuted, this, &MainTab::closeWarning);
 
 	connect(ui.editDiveSiteButton, &QToolButton::clicked, MainWindow::instance(), &MainWindow::startDiveSiteEdit);
 	connect(ui.location, &DiveLocationLineEdit::entered, MapWidget::instance(), &MapWidget::centerOnIndex);
@@ -200,7 +201,7 @@ void MainTab::closeMessage()
 
 void MainTab::closeWarning()
 {
-	ui.multiDiveWarningMessage->animatedHide();
+	ui.multiDiveWarningMessage->hide();
 }
 
 void MainTab::displayMessage(QString str)
@@ -721,7 +722,7 @@ void MainTab::divesEdited(int i)
 		return;
 	ui.multiDiveWarningMessage->setCloseButtonVisible(false);
 	ui.multiDiveWarningMessage->setText(tr("Warning: edited %1 dives").arg(i));
-	ui.multiDiveWarningMessage->animatedShow();
+	ui.multiDiveWarningMessage->show();
 }
 
 static QStringList stringToList(const QString &s)
