@@ -98,6 +98,11 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(action, &QAction::triggered, this, &MainTab::closeWarning);
 	ui.multiDiveWarningMessage->addAction(action);
 
+	action = new QAction(tr("Undo"), this);
+	connect(action, &QAction::triggered, Command::undoAction(this), &QAction::trigger);
+	connect(action, &QAction::triggered, this, &MainTab::closeWarning);
+	ui.multiDiveWarningMessage->addAction(action);
+
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), this);
 	connect(closeKey, SIGNAL(activated()), this, SLOT(escDetected()));
 
