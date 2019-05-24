@@ -38,12 +38,15 @@ QAction *redoAction(QObject *parent)
 	return undoStack.createRedoAction(parent, QCoreApplication::translate("Command", "&Redo"));
 }
 
-void execute(Base *cmd)
+bool execute(Base *cmd)
 {
-	if (cmd->workToBeDone())
+	if (cmd->workToBeDone()) {
 		undoStack.push(cmd);
-	else
+		return true;
+	} else {
 		delete cmd;
+		return false;
+	}
 }
 
 } // namespace Command
