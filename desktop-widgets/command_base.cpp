@@ -2,6 +2,7 @@
 
 #include "command_base.h"
 #include "core/qthelper.h" // for updateWindowTitle()
+#include "core/subsurface-qt/DiveListNotifier.h"
 
 namespace Command {
 
@@ -42,6 +43,7 @@ bool execute(Base *cmd)
 {
 	if (cmd->workToBeDone()) {
 		undoStack.push(cmd);
+		emit diveListNotifier.commandExecuted();
 		return true;
 	} else {
 		delete cmd;
