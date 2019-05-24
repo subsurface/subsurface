@@ -87,11 +87,11 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	QAction *action = new QAction(tr("Apply changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
-	addMessageAction(action);
+	ui.diveNotesMessage->addAction(action);
 
 	action = new QAction(tr("Discard changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(rejectChanges()));
-	addMessageAction(action);
+	ui.diveNotesMessage->addAction(action);
 
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), this);
 	connect(closeKey, SIGNAL(activated()), this, SLOT(escDetected()));
@@ -177,11 +177,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 MainTab::~MainTab()
 {
-}
-
-void MainTab::addMessageAction(QAction *action)
-{
-	ui.diveNotesMessage->addAction(action);
 }
 
 void MainTab::hideMessage()
