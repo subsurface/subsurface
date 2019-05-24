@@ -81,6 +81,12 @@ signals:
 	void diveSiteDiveCountChanged(dive_site *ds);
 	void diveSiteChanged(dive_site *ds, int field); // field according to LocationInformationModel
 	void diveSiteDivesChanged(dive_site *ds); // The dives associated with that site changed
+
+	// This signal is emited every time a command is executed.
+	// This is used to hide an old multi-dives-edited warning message.
+	// This is necessary, so that the user can't click on the "undo" button and undo
+	// an unrelated command.
+	void commandExecuted();
 public:
 	// Desktop uses the QTreeView class to present the list of dives. The layout
 	// of this class gives us a very fundamental problem, as we can not easily
