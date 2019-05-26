@@ -63,7 +63,7 @@ bool EditBase<T>::workToBeDone()
 	// Create a text for the menu entry. In the case of multiple dives add the number
 	size_t num_dives = dives.size();
 	if (num_dives > 0)
-		//: remove the part in parantheses for %n = 1
+		//: remove the part in parentheses for %n = 1
 		setText(tr("Edit %1 (%n dive(s))", "", num_dives).arg(fieldName()));
 
 	return num_dives > 0;
@@ -501,7 +501,7 @@ bool EditTagsBase::workToBeDone()
 	// Create a text for the menu entry. In the case of multiple dives add the number
 	size_t num_dives = dives.size();
 	if (num_dives > 0)
-		//: remove the part in parantheses for %n = 1
+		//: remove the part in parentheses for %n = 1
 		setText(tr("Edit %1 (%n dive(s))", "", num_dives).arg(fieldName()));
 
 	return num_dives != 0;
