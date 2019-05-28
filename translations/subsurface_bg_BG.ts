@@ -11813,7 +11813,7 @@ Uemis Zurich включен ли е правилно?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="238"/>
         <source>Add dive manually</source>
-        <translation>Ръчно добавяне на гмъркане</translation>
+        <translation>Ръчно добавяне на гмуркане</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="252"/>
