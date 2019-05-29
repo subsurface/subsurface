@@ -753,7 +753,10 @@ void MainTab::on_depth_editingFinished()
 
 void MainTab::on_airtemp_editingFinished()
 {
-	if (editMode == IGNORE || !current_dive)
+	// If the field wasn't modified by the user, don't post a new undo command.
+	// Owing to rounding errors, this might lead to undo commands that have
+	// no user visible effects. These can be very confusing.
+	if (editMode == IGNORE || !ui.airtemp->isModified() || !current_dive)
 		return;
 	Command::editAirTemp(parseTemperatureToMkelvin(ui.airtemp->text()), false);
 }
@@ -767,7 +770,10 @@ void MainTab::divetype_Changed(int index)
 
 void MainTab::on_watertemp_editingFinished()
 {
-	if (editMode == IGNORE || !current_dive)
+	// If the field wasn't modified by the user, don't post a new undo command.
+	// Owing to rounding errors, this might lead to undo commands that have
+	// no user visible effects. These can be very confusing.
+	if (editMode == IGNORE || !ui.watertemp->isModified() || !current_dive)
 		return;
 	Command::editWaterTemp(parseTemperatureToMkelvin(ui.watertemp->text()), false);
 }
