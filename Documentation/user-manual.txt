@@ -3172,7 +3172,7 @@ can be read and changed to different values. To begin, be sure the appropriate h
 is installed for the dive computer (also required for downloading dives) and the device name of the dive computer is known.
 See <<_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer,APPENDIX A>> for information on how to do this.
 
-Once the dive computer is connected to the _Subsurface_ computer, select _File ->  Configure dive
+Once the dive computer is connected to the _Subsurface_ computer, select _File ->  Change settings on dive
 computer_ from the _Main Menu_. Select the appropriate device name (or mount point) in the
 dropdown list at the
 top of the configuration panel and select the appropriate dive
