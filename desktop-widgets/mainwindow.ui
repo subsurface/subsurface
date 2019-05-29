@@ -430,7 +430,7 @@
   </action>
   <action name="actionConfigure_Dive_Computer">
    <property name="text">
-    <string>Configure &amp;dive computer</string>
+    <string>Change settings on &amp;dive computer</string>
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+Shift+C</string>
