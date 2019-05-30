@@ -13,6 +13,7 @@
 #include "core/subsurfacestartup.h"
 #include "core/settings/qPref.h"
 #include "core/settings/qPrefDisplay.h"
+#include "core/tag.h"
 
 #include <QApplication>
 #include <QLocale>

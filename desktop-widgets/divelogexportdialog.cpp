@@ -17,6 +17,7 @@
 #include "profile-widget/profilewidget2.h"
 #include "core/save-profiledata.h"
 #include "core/divesite.h"
+#include "core/tag.h"
 
 // Retrieves the current unit settings defined in the Subsurface preferences.
 #define GET_UNIT(name, field, f, t)           \

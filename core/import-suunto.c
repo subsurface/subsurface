@@ -12,6 +12,7 @@
 #include "device.h"
 #include "membuffer.h"
 #include "gettext.h"
+#include "tag.h"
 
 static int dm4_events(void *param, int columns, char **data, char **column)
 {

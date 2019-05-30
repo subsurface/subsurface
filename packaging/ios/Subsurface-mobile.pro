@@ -70,6 +70,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/membuffer.c \
 	../../core/sha1.c \
 	../../core/strtod.c \
+	../../core/tag.c \
 	../../core/taxonomy.c \
 	../../core/time.c \
 	../../core/uemis.c \

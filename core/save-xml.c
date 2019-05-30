@@ -22,6 +22,7 @@
 #include "git-access.h"
 #include "qthelper.h"
 #include "gettext.h"
+#include "tag.h"
 
 /*
  * We're outputting utf8 in xml.

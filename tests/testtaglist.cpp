@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testtaglist.h"
 #include "core/dive.h"
+#include "core/tag.h"
 
 void TestTagList::initTestCase()
 {

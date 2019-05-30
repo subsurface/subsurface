@@ -33,6 +33,7 @@
 #include "core/libdivecomputer.h"
 #include "core/divesite.h"
 #include "core/membuffer.h"
+#include "core/tag.h"
 
 /* SmartTrak version, constant for every single file */
 int smtk_version;
