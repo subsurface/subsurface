@@ -3429,18 +3429,6 @@ struct tag_entry *taglist_added(struct tag_entry *original_list, struct tag_entr
 	return added_list;
 }
 
-void dump_taglist(const char *intro, struct tag_entry *tl)
-{
-	char *comma = "";
-	fprintf(stderr, "%s", intro);
-	while(tl) {
-		fprintf(stderr, "%s %s", comma, tl->tag->name);
-		comma = ",";
-		tl = tl->next;
-	}
-	fprintf(stderr, "\n");
-}
-
 bool is_dc_planner(const struct divecomputer *dc) {
 	return same_string(dc->model, "planned dive");
 }
