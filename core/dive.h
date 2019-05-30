@@ -303,10 +303,6 @@ extern depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, 
 #define SURFACE_THRESHOLD 750 /* somewhat arbitrary: only below 75cm is it really diving */
 
 extern bool autogroup;
-/* random threashold: three days without diving -> new trip
- * this works very well for people who usually dive as part of a trip and don't
- * regularly dive at a local facility; this is why trips are an optional feature */
-#define TRIP_THRESHOLD 3600 * 24 * 3
 
 extern void add_dive_to_trip(struct dive *, dive_trip_t *);
 
