@@ -2,8 +2,7 @@
 #ifndef STRUCTURED_LIST_H
 #define STRUCTURED_LIST_H
 
-/* Clear everything but the first element;
- * this works for taglist, picturelist, even dive computers */
+/* Clear whole list; this works for taglist, picturelist and dive computers */
 #define STRUCTURED_LIST_FREE(_type, _start, _free) \
 	{                                          \
 		_type *_ptr = _start;              \
