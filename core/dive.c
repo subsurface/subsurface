@@ -614,7 +614,7 @@ static void copy_dive_nodc(const struct dive *s, struct dive *d)
 	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
 		d->weightsystem[i].description = copy_string(s->weightsystem[i].description);
 	STRUCTURED_LIST_COPY(struct picture, s->picture_list, d->picture_list, copy_pl);
-	STRUCTURED_LIST_COPY(struct tag_entry, s->tag_list, d->tag_list, copy_tl);
+	d->tag_list = taglist_copy(s->tag_list);
 }
 
 void copy_dive(const struct dive *s, struct dive *d)
