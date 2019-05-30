@@ -5,6 +5,7 @@
 #include "core/divelist.h"
 #include "core/qthelper.h" // for copy_qstring
 #include "core/subsurface-string.h"
+#include "core/tag.h"
 #include "desktop-widgets/mapwidget.h" // TODO: Replace desktop-dependency by signal
 
 namespace Command {

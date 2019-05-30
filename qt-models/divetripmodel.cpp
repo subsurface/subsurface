@@ -6,6 +6,7 @@
 #include "core/divelist.h"
 #include "core/qthelper.h"
 #include "core/subsurface-string.h"
+#include "core/tag.h"
 #include <QIcon>
 #include <QDebug>
 #include <memory>

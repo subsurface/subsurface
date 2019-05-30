@@ -26,6 +26,7 @@
 #include "uemis.h"
 #include "divelist.h"
 #include "divesite.h"
+#include "tag.h"
 #include "core/subsurface-string.h"
 
 #define ERR_FS_ALMOST_FULL QT_TRANSLATE_NOOP("gettextFromC", "Uemis Zurich: the file system is almost full.\nDisconnect/reconnect the dive computer\nand click \'Retry\'")

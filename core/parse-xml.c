@@ -29,6 +29,7 @@
 #include "device.h"
 #include "membuffer.h"
 #include "qthelper.h"
+#include "tag.h"
 
 int verbose, quit, force_root;
 int last_xml_version = -1;

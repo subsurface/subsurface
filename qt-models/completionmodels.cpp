@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/completionmodels.h"
 #include "core/dive.h"
+#include "core/tag.h"
 #include <QSet>
 #include <QString>
 
