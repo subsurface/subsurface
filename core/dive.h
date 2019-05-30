@@ -13,7 +13,7 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#include "units.h"
+#include "equipment.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,47 +22,10 @@ extern "C" {
 extern int last_xml_version;
 
 enum divemode_t {OC, CCR, PSCR, FREEDIVE, NUM_DIVEMODE, UNDEF_COMP_TYPE};	// Flags (Open-circuit and Closed-circuit-rebreather) for setting dive computer type
-enum cylinderuse {OC_GAS, DILUENT, OXYGEN, NOT_USED, NUM_GAS_USE}; // The different uses for cylinders
 
 extern const char *cylinderuse_text[];
 extern const char *divemode_text_ui[];
 extern const char *divemode_text[];
-
-// o2 == 0 && he == 0 -> air
-// o2 < 0 -> invalid
-struct gasmix {
-	fraction_t o2;
-	fraction_t he;
-};
-static const struct gasmix gasmix_invalid = { { -1 }, { -1 } };
-static const struct gasmix gasmix_air = { { 0 }, { 0 } };
-
-typedef struct
-{
-	volume_t size;
-	pressure_t workingpressure;
-	const char *description; /* "LP85", "AL72", "AL80", "HP100+" or whatever */
-} cylinder_type_t;
-
-typedef struct
-{
-	cylinder_type_t type;
-	struct gasmix gasmix;
-	pressure_t start, end, sample_start, sample_end;
-	depth_t depth;
-	bool manually_added;
-	volume_t gas_used;
-	volume_t deco_gas_used;
-	enum cylinderuse cylinder_use;
-	bool bestmix_o2;
-	bool bestmix_he;
-} cylinder_t;
-
-typedef struct
-{
-	weight_t weight;
-	const char *description; /* "integrated", "belt", "ankle" */
-} weightsystem_t;
 
 struct icd_data { // This structure provides communication between function isobaric_counterdiffusion() and the calling software.
 	int dN2;      // The change in fraction (permille) of nitrogen during the change
@@ -150,9 +113,6 @@ static inline int interpolate(int a, int b, int part, int whole)
 	return (a+b)/2;
 }
 
-void get_gas_string(struct gasmix gasmix, char *text, int len);
-const char *gasname(struct gasmix gasmix);
-
 #define MAX_SENSORS 2
 struct sample                         // BASE TYPE BYTES  UNITS    RANGE               DESCRIPTION
 {                                     // --------- -----  -----    -----               -----------
@@ -213,13 +173,6 @@ struct divecomputer {
 	struct extra_data *extra_data;
 	struct divecomputer *next;
 };
-
-#define MAX_CYLINDERS (20)
-#define MAX_WEIGHTSYSTEMS (6)
-#define MAX_TANK_INFO (100)
-#define MAX_WS_INFO (100)
-#define W_IDX_PRIMARY 0
-#define W_IDX_SECONDARY 1
 
 typedef struct dive_table {
 	int nr, allocated;
@@ -520,8 +473,6 @@ extern int nr_weightsystems(const struct dive *dive);
 
 // extern void report_error(GError* error);
 
-extern void add_cylinder_description(cylinder_type_t *);
-extern void add_weightsystem_description(weightsystem_t *);
 extern void remember_event(const char *eventname);
 extern void invalidate_dive_cache(struct dive *dc);
 
@@ -652,28 +603,6 @@ extern struct gasmix get_gasmix_at_time(const struct dive *dive, const struct di
  * used to fill the combobox in the add/edit cylinder
  * dialog
  */
-
-struct tank_info_t {
-	const char *name;
-	int cuft, ml, psi, bar;
-};
-extern struct tank_info_t tank_info[MAX_TANK_INFO];
-
-struct ws_info_t {
-	const char *name;
-	int grams;
-};
-extern struct ws_info_t ws_info[MAX_WS_INFO];
-
-extern bool cylinder_nodata(const cylinder_t *cyl);
-extern bool cylinder_none(const cylinder_t *cyl);
-extern bool weightsystem_none(const weightsystem_t *ws);
-extern void remove_cylinder(struct dive *dive, int idx);
-extern void remove_weightsystem(struct dive *dive, int idx);
-extern void reset_cylinders(struct dive *dive, bool track_gas);
-#ifdef DEBUG_CYL
-extern void dump_cylinders(struct dive *dive, bool verbose);
-#endif
 
 extern void set_informational_units(const char *units);
 extern void set_git_prefs(const char *prefs);
