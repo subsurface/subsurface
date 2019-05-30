@@ -3429,12 +3429,14 @@ struct tag_entry *taglist_added(struct tag_entry *original_list, struct tag_entr
 	return added_list;
 }
 
-bool is_dc_planner(const struct divecomputer *dc) {
+bool is_dc_planner(const struct divecomputer *dc)
+{
 	return same_string(dc->model, "planned dive");
 }
 
 // Does this dive have a dive computer for which is_dc_planner has value planned
-bool has_planned(const struct dive *dive, bool planned) {
+bool has_planned(const struct dive *dive, bool planned)
+{
 	const struct divecomputer *dc = &dive->dc;
 
 	while (dc) {
