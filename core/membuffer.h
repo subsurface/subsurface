@@ -45,6 +45,8 @@ extern "C" {
 #endif
 
 #include <ctype.h>
+#include <stdio.h>
+#include <stdarg.h>
 #include "units.h"
 
 struct membuffer {
