@@ -22,6 +22,7 @@
 #include "profile-widget/profilewidget2.h"
 #include "desktop-widgets/command.h"
 #include "core/metadata.h"
+#include "core/tag.h"
 
 double MinMaxAvgWidget::average() const
 {

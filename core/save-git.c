@@ -26,6 +26,7 @@
 #include "version.h"
 #include "qthelper.h"
 #include "gettext.h"
+#include "tag.h"
 
 #define VA_BUF(b, fmt) do { va_list args; va_start(args, fmt); put_vformat(b, fmt, args); va_end(args); } while (0)
 

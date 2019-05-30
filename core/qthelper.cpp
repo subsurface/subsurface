@@ -17,6 +17,7 @@
 #include <sys/time.h>
 #include "exif.h"
 #include "file.h"
+#include "tag.h"
 #include "imagedownloader.h"
 #include <QFile>
 #include <QRegExp>

@@ -144,6 +144,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	subsurfacestartup.h
 	subsurfacesysinfo.cpp
 	subsurfacesysinfo.h
+	tag.c
+	tag.h
 	taxonomy.c
 	taxonomy.h
 	time.c

@@ -12,6 +12,7 @@
 #include "core/qthelper.h"
 #include "core/subsurfacestartup.h"
 #include "core/settings/qPref.h"
+#include "core/tag.h"
 #include "desktop-widgets/diveplanner.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/preferences/preferencesdialog.h"
