@@ -955,6 +955,11 @@ dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive, struct trip_tab
 	return dive_trip;
 }
 
+/* random threshold: three days without diving -> new trip
+ * this works very well for people who usually dive as part of a trip and don't
+ * regularly dive at a local facility; this is why trips are an optional feature */
+#define TRIP_THRESHOLD 3600 * 24 * 3
+
 /*
  * Find a trip a new dive should be autogrouped with. If no such trips
  * exist, allocate a new trip. The bool "*allocated" is set to true
