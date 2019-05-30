@@ -78,6 +78,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	downloadfromdcthread.cpp
 	downloadfromdcthread.h
 	equipment.c
+	equipment.h
 	errorhelper.c
 	exif.cpp
 	exif.h
