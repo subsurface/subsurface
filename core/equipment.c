@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <time.h>
+#include "equipment.h"
 #include "gettext.h"
 #include "dive.h"
 #include "display.h"
