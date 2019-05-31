@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testmerge.h"
 #include "core/divesite.h"
-#include "core/divelist.h"
 #include "core/file.h"
+#include "core/trip.h"
 #include <QTextStream>
 
 void TestMerge::initTestCase()

@@ -15,6 +15,7 @@
 #include "metadata.h"
 #include "membuffer.h"
 #include "tag.h"
+#include "trip.h"
 #include "structured_list.h"
 
 /* one could argue about the best place to have this variable -

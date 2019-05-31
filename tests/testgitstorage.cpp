@@ -3,12 +3,12 @@
 #include "git2.h"
 
 #include "core/divesite.h"
-#include "core/divelist.h"
 #include "core/file.h"
 #include "core/qthelper.h"
 #include "core/subsurfacestartup.h"
 #include "core/settings/qPrefProxy.h"
 #include "core/settings/qPrefCloudStorage.h"
+#include "core/trip.h"
 
 #include <QDir>
 #include <QTextStream>

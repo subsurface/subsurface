@@ -25,7 +25,7 @@
 #include "divesite.h"
 #include "subsurface-string.h"
 #include "parse.h"
-#include "divelist.h"
+#include "trip.h"
 #include "device.h"
 #include "membuffer.h"
 #include "qthelper.h"

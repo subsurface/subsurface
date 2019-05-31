@@ -6,7 +6,7 @@
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/command.h"
 #include "desktop-widgets/usersurvey.h"
-#include "core/divelist.h"
+#include "core/trip.h"
 #include "core/file.h"
 #include "desktop-widgets/mapwidget.h"
 #include "desktop-widgets/tab-widgets/maintab.h"

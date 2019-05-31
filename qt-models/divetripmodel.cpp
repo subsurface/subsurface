@@ -3,7 +3,7 @@
 #include "qt-models/filtermodels.h"
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
-#include "core/divelist.h"
+#include "core/trip.h"
 #include "core/qthelper.h"
 #include "core/subsurface-string.h"
 #include "core/tag.h"

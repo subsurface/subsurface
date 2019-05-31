@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testAirPressure.h"
 #include "core/divesite.h"
-#include "core/divelist.h"
+#include "core/trip.h"
 #include "core/file.h"
 #include "core/dive.h"
 #include <QString>

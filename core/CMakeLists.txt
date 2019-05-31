@@ -150,6 +150,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	taxonomy.c
 	taxonomy.h
 	time.c
+	trip.c
+	trip.h
 	uemis-downloader.c
 	uemis.c
 	uemis.h

@@ -24,7 +24,7 @@
 #include "qt-models/gpslistmodel.h"
 #include "qt-models/completionmodels.h"
 #include "qt-models/messagehandlermodel.h"
-#include "core/divelist.h"
+#include "qt-models/tankinfomodel.h"
 #include "core/device.h"
 #include "core/file.h"
 #include "core/qthelper.h"
@@ -32,7 +32,6 @@
 #include "core/git-access.h"
 #include "core/cloudstorage.h"
 #include "core/membuffer.h"
-#include "qt-models/tankinfomodel.h"
 #include "core/downloadfromdcthread.h"
 #include "core/subsurface-string.h"
 #include "core/pref.h"
@@ -42,6 +41,7 @@
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "core/settings/qPrefUnit.h"
+#include "core/trip.h"
 
 QMLManager *QMLManager::m_instance = NULL;
 bool noCloudToCloud = false;
