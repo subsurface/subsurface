@@ -23,118 +23,104 @@
 #include "desktop-widgets/command.h"
 #include "core/metadata.h"
 
-class MinMaxAvgWidgetPrivate {
-public:
-	QLabel *avgIco, *avgValue;
-	QLabel *minIco, *minValue;
-	QLabel *maxIco, *maxValue;
-
-	MinMaxAvgWidgetPrivate(MinMaxAvgWidget *owner)
-	{
-		avgIco = new QLabel(owner);
-		avgIco->setPixmap(QIcon(":value-average-icon").pixmap(16, 16));
-		avgIco->setToolTip(gettextFromC::tr("Average"));
-		minIco = new QLabel(owner);
-		minIco->setPixmap(QIcon(":value-minimum-icon").pixmap(16, 16));
-		minIco->setToolTip(gettextFromC::tr("Minimum"));
-		maxIco = new QLabel(owner);
-		maxIco->setPixmap(QIcon(":value-maximum-icon").pixmap(16, 16));
-		maxIco->setToolTip(gettextFromC::tr("Maximum"));
-		avgValue = new QLabel(owner);
-		minValue = new QLabel(owner);
-		maxValue = new QLabel(owner);
-
-		QGridLayout *formLayout = new QGridLayout();
-		formLayout->addWidget(maxIco, 0, 0);
-		formLayout->addWidget(maxValue, 0, 1);
-		formLayout->addWidget(avgIco, 1, 0);
-		formLayout->addWidget(avgValue, 1, 1);
-		formLayout->addWidget(minIco, 2, 0);
-		formLayout->addWidget(minValue, 2, 1);
-		owner->setLayout(formLayout);
-	}
-};
-
 double MinMaxAvgWidget::average() const
 {
-	return d->avgValue->text().toDouble();
+	return avgValue->text().toDouble();
 }
 
 double MinMaxAvgWidget::maximum() const
 {
-	return d->maxValue->text().toDouble();
+	return maxValue->text().toDouble();
 }
+
 double MinMaxAvgWidget::minimum() const
 {
-	return d->minValue->text().toDouble();
+	return minValue->text().toDouble();
 }
 
-MinMaxAvgWidget::MinMaxAvgWidget(QWidget*) : d(new MinMaxAvgWidgetPrivate(this))
+MinMaxAvgWidget::MinMaxAvgWidget(QWidget *parent) : QWidget(parent)
 {
-}
+	avgIco = new QLabel(this);
+	avgIco->setPixmap(QIcon(":value-average-icon").pixmap(16, 16));
+	avgIco->setToolTip(gettextFromC::tr("Average"));
+	minIco = new QLabel(this);
+	minIco->setPixmap(QIcon(":value-minimum-icon").pixmap(16, 16));
+	minIco->setToolTip(gettextFromC::tr("Minimum"));
+	maxIco = new QLabel(this);
+	maxIco->setPixmap(QIcon(":value-maximum-icon").pixmap(16, 16));
+	maxIco->setToolTip(gettextFromC::tr("Maximum"));
+	avgValue = new QLabel(this);
+	minValue = new QLabel(this);
+	maxValue = new QLabel(this);
 
-MinMaxAvgWidget::~MinMaxAvgWidget()
-{
+	QGridLayout *formLayout = new QGridLayout;
+	formLayout->addWidget(maxIco, 0, 0);
+	formLayout->addWidget(maxValue, 0, 1);
+	formLayout->addWidget(avgIco, 1, 0);
+	formLayout->addWidget(avgValue, 1, 1);
+	formLayout->addWidget(minIco, 2, 0);
+	formLayout->addWidget(minValue, 2, 1);
+	setLayout(formLayout);
 }
 
 void MinMaxAvgWidget::clear()
 {
-	d->avgValue->setText(QString());
-	d->maxValue->setText(QString());
-	d->minValue->setText(QString());
+	avgValue->setText(QString());
+	maxValue->setText(QString());
+	minValue->setText(QString());
 }
 
 void MinMaxAvgWidget::setAverage(double average)
 {
-	d->avgValue->setText(QString::number(average));
+	avgValue->setText(QString::number(average));
 }
 
 void MinMaxAvgWidget::setMaximum(double maximum)
 {
-	d->maxValue->setText(QString::number(maximum));
+	maxValue->setText(QString::number(maximum));
 }
 void MinMaxAvgWidget::setMinimum(double minimum)
 {
-	d->minValue->setText(QString::number(minimum));
+	minValue->setText(QString::number(minimum));
 }
 
 void MinMaxAvgWidget::setAverage(const QString &average)
 {
-	d->avgValue->setText(average);
+	avgValue->setText(average);
 }
 
 void MinMaxAvgWidget::setMaximum(const QString &maximum)
 {
-	d->maxValue->setText(maximum);
+	maxValue->setText(maximum);
 }
 
 void MinMaxAvgWidget::setMinimum(const QString &minimum)
 {
-	d->minValue->setText(minimum);
+	minValue->setText(minimum);
 }
 
 void MinMaxAvgWidget::overrideMinToolTipText(const QString &newTip)
 {
-	d->minIco->setToolTip(newTip);
-	d->minValue->setToolTip(newTip);
+	minIco->setToolTip(newTip);
+	minValue->setToolTip(newTip);
 }
 
 void MinMaxAvgWidget::overrideAvgToolTipText(const QString &newTip)
 {
-	d->avgIco->setToolTip(newTip);
-	d->avgValue->setToolTip(newTip);
+	avgIco->setToolTip(newTip);
+	avgValue->setToolTip(newTip);
 }
 
 void MinMaxAvgWidget::overrideMaxToolTipText(const QString &newTip)
 {
-	d->maxIco->setToolTip(newTip);
-	d->maxValue->setToolTip(newTip);
+	maxIco->setToolTip(newTip);
+	maxValue->setToolTip(newTip);
 }
 
-void MinMaxAvgWidget::setAvgVisibility(const bool visible)
+void MinMaxAvgWidget::setAvgVisibility(bool visible)
 {
-	d->avgIco->setVisible(visible);
-	d->avgValue->setVisible(visible);
+	avgIco->setVisible(visible);
+	avgValue->setVisible(visible);
 }
 
 RenumberDialog *RenumberDialog::instance()
