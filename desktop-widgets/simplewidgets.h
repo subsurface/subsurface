@@ -29,9 +29,11 @@ class MinMaxAvgWidget : public QWidget {
 	Q_PROPERTY(double minimum READ minimum WRITE setMinimum)
 	Q_PROPERTY(double maximum READ maximum WRITE setMaximum)
 	Q_PROPERTY(double average READ average WRITE setAverage)
+	QLabel *avgIco, *avgValue;
+	QLabel *minIco, *minValue;
+	QLabel *maxIco, *maxValue;
 public:
 	MinMaxAvgWidget(QWidget *parent);
-	~MinMaxAvgWidget();
 	double minimum() const;
 	double maximum() const;
 	double average() const;
@@ -44,11 +46,8 @@ public:
 	void overrideMinToolTipText(const QString &newTip);
 	void overrideAvgToolTipText(const QString &newTip);
 	void overrideMaxToolTipText(const QString &newTip);
-	void setAvgVisibility(const bool visible);
+	void setAvgVisibility(bool visible);
 	void clear();
-
-private:
-	QScopedPointer<MinMaxAvgWidgetPrivate> d;
 };
 
 class RenumberDialog : public QDialog {
