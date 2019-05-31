@@ -10,6 +10,7 @@
 #include "desktop-widgets/mapwidget.h"
 #include "core/qthelper.h"
 #include "core/statistics.h"
+#include "core/trip.h"
 #include "qt-models/diveplannermodel.h"
 #include "desktop-widgets/divelistview.h"
 #include "core/display.h"

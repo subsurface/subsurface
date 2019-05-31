@@ -12,6 +12,7 @@
 #include "mainwindow.h"
 #include "divelistview.h"
 #include "command.h"
+#include "core/trip.h" // TODO: Needed because divesChanged uses a trip parameter -> remove that!
 
 static const QUrl urlMapWidget = QUrl(QStringLiteral("qrc:/qml/MapWidget.qml"));
 static const QUrl urlMapWidgetError = QUrl(QStringLiteral("qrc:/qml/MapWidgetError.qml"));

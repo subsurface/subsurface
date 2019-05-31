@@ -5,6 +5,7 @@
 #include "core/units.h"
 #include "core/dive.h"
 #include "desktop-widgets/command.h"
+#include "core/trip.h" // TODO: Needed because divesChanged uses a trip parameter -> remove that!
 
 #include <core/qthelper.h>
 #include <core/statistics.h>

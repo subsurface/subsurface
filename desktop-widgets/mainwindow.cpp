@@ -27,6 +27,7 @@
 #include "core/planner.h"
 #include "core/qthelper.h"
 #include "core/subsurface-string.h"
+#include "core/trip.h"
 #include "core/version.h"
 #include "core/windowtitleupdate.h"
 

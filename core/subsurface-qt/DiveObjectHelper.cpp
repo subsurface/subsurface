@@ -6,6 +6,7 @@
 
 #include "core/qthelper.h"
 #include "core/divesite.h"
+#include "core/trip.h"
 #include "core/subsurface-string.h"
 #include "qt-models/tankinfomodel.h"
 

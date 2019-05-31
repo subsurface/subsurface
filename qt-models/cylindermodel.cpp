@@ -7,6 +7,7 @@
 #include "qt-models/diveplannermodel.h"
 #include "core/gettextfromc.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/trip.h" // TODO: Needed because cylindersReset uses a trip parameter -> remove that!
 
 CylindersModel::CylindersModel(QObject *parent) :
 	CleanerTableModel(parent),

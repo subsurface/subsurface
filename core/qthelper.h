@@ -24,7 +24,7 @@ enum inertgas {N2, HE};
 QString weight_string(int weight_in_grams);
 QString distance_string(int distanceInMeters);
 bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out = 0);
-QList<int> getDivesInTrip(dive_trip_t *trip);
+QList<int> getDivesInTrip(struct dive_trip *trip);
 QString get_gas_string(struct gasmix gas);
 QString get_divepoint_gas_string(struct dive *d, const divedatapoint& dp);
 QString get_taglist_string(struct tag_entry *tag_list);

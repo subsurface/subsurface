@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testprofile.h"
 #include "core/divesite.h"
+#include "core/trip.h"
 #include "core/file.h"
 
 void TestProfile::testRedCeiling()
