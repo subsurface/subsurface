@@ -18,6 +18,7 @@
 #include "exif.h"
 #include "file.h"
 #include "tag.h"
+#include "trip.h"
 #include "imagedownloader.h"
 #include <QFile>
 #include <QRegExp>

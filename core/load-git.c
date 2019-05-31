@@ -16,8 +16,8 @@
 #include "gettext.h"
 
 #include "divesite.h"
+#include "trip.h"
 #include "subsurface-string.h"
-#include "divelist.h"
 #include "device.h"
 #include "membuffer.h"
 #include "git-access.h"

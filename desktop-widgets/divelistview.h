@@ -39,7 +39,7 @@ public:
 	void rememberSelection();
 	void restoreSelection();
 	void contextMenuEvent(QContextMenuEvent *event);
-	QList<dive_trip_t *> selectedTrips();
+	QList<dive_trip *> selectedTrips();
 	static QString lastUsedImageDir();
 	static void updateLastUsedImageDir(const QString &s);
 public
@@ -78,7 +78,7 @@ private:
 	QVector<int> initialColumnWidths;
 
 	/* if dive_trip_t is null, there's no problem. */
-	QMultiHash<dive_trip_t *, int> selectedDives;
+	QMultiHash<dive_trip *, int> selectedDives;
 	void resetModel();	// Call after model changed
 	void merge_trip(const QModelIndex &a, const int offset);
 	void setColumnWidths();
@@ -86,7 +86,7 @@ private:
 	void backupExpandedRows();
 	void restoreExpandedRows();
 	int lastVisibleColumn();
-	void selectTrip(dive_trip_t *trip);
+	void selectTrip(dive_trip *trip);
 	void updateLastImageTimeOffset(int offset);
 	int lastImageTimeOffset();
 	void addToTrip(int delta);

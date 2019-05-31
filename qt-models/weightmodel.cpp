@@ -6,6 +6,7 @@
 #include "core/qthelper.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
 #include "qt-models/weightsysteminfomodel.h"
+#include "core/trip.h" // TODO: Needed because weightsystemsReset uses a trip parameter -> remove that!
 
 WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
 	changed(false),

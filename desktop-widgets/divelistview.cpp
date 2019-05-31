@@ -20,6 +20,7 @@
 #include <QMessageBox>
 #include <QHeaderView>
 #include "core/qthelper.h"
+#include "core/trip.h"
 #include "desktop-widgets/command.h"
 #include "desktop-widgets/divelistview.h"
 #include "qt-models/divepicturemodel.h"

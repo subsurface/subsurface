@@ -91,7 +91,7 @@ private:
 	bool lastSelectedDive;
 	int lastTabSelectedDive;
 	int lastTabSelectedDiveTrip;
-	dive_trip_t *currentTrip;
+	dive_trip *currentTrip;
 	QList<TabBase*> extraWidgets;
 	void divesEdited(int num); // Opens a warning window if more than one dive was edited
 };

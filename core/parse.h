@@ -46,7 +46,7 @@ struct parser_state {
 	struct dive *cur_dive;			/* owning */
 	struct dive_site *cur_dive_site;	/* owning */
 	location_t cur_location;
-	dive_trip_t *cur_trip;			/* owning */
+	struct dive_trip *cur_trip;		/* owning */
 	struct sample *cur_sample;		/* non-owning */
 	struct picture *cur_picture;		/* owning */
 	char *country, *city;			/* owning */

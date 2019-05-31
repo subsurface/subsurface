@@ -9,6 +9,7 @@
 #include "gettext.h"
 #include "divesite.h"
 #include "tag.h"
+#include "trip.h"
 #include <stdio.h>
 
 void write_attribute(struct membuffer *b, const char *att_name, const char *value, const char *separator)

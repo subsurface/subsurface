@@ -179,28 +179,15 @@ typedef struct dive_table {
 	struct dive **dives;
 } dive_table_t;
 
-typedef struct dive_trip
-{
-	char *location;
-	char *notes;
-	struct dive_table dives;
-	/* Used by the io-routines to mark trips that have already been written. */
-	bool saved;
-	bool autogen;
-} dive_trip_t;
-
-typedef struct trip_table {
-	int nr, allocated;
-	struct dive_trip **trips;
-} trip_table_t;
-
 struct picture;
 struct dive_site;
 struct dive_site_table;
+struct dive_trip;
+struct trip_table;
 struct dive {
 	int number;
 	bool notrip; /* Don't autogroup this dive to a trip */
-	dive_trip_t *divetrip;
+	struct dive_trip *divetrip;
 	bool selected;
 	bool hidden_by_filter;
 	timestamp_t when;
@@ -304,15 +291,8 @@ extern depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, 
 
 extern bool autogroup;
 
-extern void add_dive_to_trip(struct dive *, dive_trip_t *);
-
 struct dive *unregister_dive(int idx);
 extern void delete_single_dive(int idx);
-
-extern void insert_trip(dive_trip_t *trip, struct trip_table *trip_table_arg);
-extern int remove_trip(const dive_trip_t *trip, struct trip_table *trip_table_arg);
-extern void free_trip(dive_trip_t *trip);
-extern timestamp_t trip_date(const struct dive_trip *trip);
 
 extern const struct units SI_units, IMPERIAL_units;
 
@@ -320,7 +300,6 @@ extern const struct units *get_units(void);
 extern int run_survey, verbose, quit, force_root;
 
 extern struct dive_table dive_table;
-extern struct trip_table trip_table;
 extern struct dive displayed_dive;
 extern unsigned int dc_number;
 extern struct dive *current_dive;
@@ -430,10 +409,8 @@ extern void add_sample_pressure(struct sample *sample, int sensor, int mbar);
 extern int legacy_format_o2pressures(const struct dive *dive, const struct divecomputer *dc);
 
 extern bool dive_less_than(const struct dive *a, const struct dive *b);
-extern bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b);
 extern bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b);
 extern void sort_dive_table(struct dive_table *table);
-extern void sort_trip_table(struct trip_table *table);
 extern struct dive *fixup_dive(struct dive *dive);
 extern pressure_t calculate_surface_pressure(const struct dive *dive);
 extern pressure_t un_fixup_surface_pressure(const struct dive *d);
@@ -621,12 +598,10 @@ extern void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_de
  * Note: we have to use the typedef "dive_table_t" instead of "struct dive_table",
  * because MOC removes the "struct", but dive_table is already the name of a global
  * variable, leading to compilation errors. Likewise for "struct trip_table" and
- * "struct dive_site_table" (defined in "divesite.h"). */
+ * "struct dive_site_table" (defined in "dive.h" and "divesite.h"). */
 #include <QObject>
 Q_DECLARE_METATYPE(struct dive *);
-Q_DECLARE_METATYPE(struct dive_trip *);
 Q_DECLARE_METATYPE(dive_table_t *);
-Q_DECLARE_METATYPE(trip_table_t *);
 
 #endif
 
