@@ -85,6 +85,11 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		product = "Pro Plus X";
 	}
 
+	if (btName.contains(QRegularExpression("^FS\\d{6}$"))) {
+		vendor = "Oceanic";
+		product = "Geo 4.0";
+	}
+
 	if (!vendor.isEmpty() && !product.isEmpty())
 		return descriptorLookup.value(vendor + product);
 
