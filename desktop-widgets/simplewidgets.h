@@ -26,9 +26,6 @@ class FilterModelBase;
 
 class MinMaxAvgWidget : public QWidget {
 	Q_OBJECT
-	Q_PROPERTY(double minimum READ minimum WRITE setMinimum)
-	Q_PROPERTY(double maximum READ maximum WRITE setMaximum)
-	Q_PROPERTY(double average READ average WRITE setAverage)
 	QLabel *avgIco, *avgValue;
 	QLabel *minIco, *minValue;
 	QLabel *maxIco, *maxValue;
