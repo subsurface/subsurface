@@ -152,6 +152,7 @@ void TabDiveEquipment::editWeightWidget(const QModelIndex &index)
 #define MODIFY_DIVES(DIVES, WHAT)                            \
 	do {                                                 \
 		for (dive *mydive: DIVES) {                  \
+			invalidate_dive_cache(mydive);       \
 			WHAT;                                \
 		}					     \
 		mark_divelist_changed(true);                 \
