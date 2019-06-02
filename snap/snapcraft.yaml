@@ -25,6 +25,7 @@ apps:
     - network
     - opengl
     - raw-usb
+    - removable-media
     - unity7
 
 parts:

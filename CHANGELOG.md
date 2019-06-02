@@ -1,3 +1,4 @@
+- Snap: add `removable-media` plug for access to /media and /mnt paths
 - Desktop: Add undo functionality for dive computer movement and deletion
 - Import: Small enhancements on Suunto SDE import
 - Desktop: Add import dive site menu option and site selection dialog
