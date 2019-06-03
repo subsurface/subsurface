@@ -468,6 +468,7 @@ void MainTab::updateDiveInfo()
 			ui.timeEdit->setVisible(false);
 			ui.diveTripLocation->show();
 			ui.location->hide();
+			ui.locationPopupButton->hide();
 			ui.editDiveSiteButton->hide();
 			// rename the remaining fields and fill data from selected trip
 			ui.LocationLabel->setText(tr("Trip location"));
@@ -499,6 +500,7 @@ void MainTab::updateDiveInfo()
 			// make all the fields visible writeable
 			ui.diveTripLocation->hide();
 			ui.location->show();
+			ui.locationPopupButton->show();
 			ui.editDiveSiteButton->show();
 			ui.divemaster->setVisible(true);
 			ui.buddy->setVisible(true);
