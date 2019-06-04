@@ -32,7 +32,6 @@ struct dive *current_dive = NULL;
 unsigned int dc_number = 0;
 
 static struct plot_data *last_pi_entry_new = NULL;
-void populate_pressure_information(struct dive *, struct divecomputer *, struct plot_info *, int);
 
 #ifdef DEBUG_PI
 /* debugging tool - not normally used */
