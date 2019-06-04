@@ -12,6 +12,10 @@ extern int deco_allowed_depth(double tissues_tolerance, double surface_pressure,
 
 double get_gf(struct deco_state *ds, double ambpressure_bar, const struct dive *dive);
 
+extern double regressiona();
+extern double regressionb();
+extern void reset_regression();
+
 #ifdef __cplusplus
 }
 #endif
