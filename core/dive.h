@@ -292,7 +292,6 @@ extern location_t dive_get_gps_location(const struct dive *d);
 extern int report_error(const char *fmt, ...);
 extern void set_error_cb(void(*cb)(char *));	// Callback takes ownership of passed string
 
-extern struct dive *find_dive_including(timestamp_t when);
 extern bool dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset);
 extern bool time_during_dive_with_offset(struct dive *dive, timestamp_t when, timestamp_t offset);
 struct dive *find_dive_n_near(timestamp_t when, int n, timestamp_t offset);
