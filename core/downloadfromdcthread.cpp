@@ -82,7 +82,7 @@ void DownloadThread::run()
 #endif
 	qDebug() << "Starting download from " << (internalData->bluetooth_mode ? "BT" : internalData->devname);
 	qDebug() << "downloading" << (internalData->force_download ? "all" : "only new") << "dives";
-	clear_table(&downloadTable);
+	clear_dive_table(&downloadTable);
 	clear_dive_site_table(&diveSiteTable);
 
 	Q_ASSERT(internalData->download_table != nullptr);

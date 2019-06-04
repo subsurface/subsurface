@@ -91,4 +91,12 @@
 		return idx;							\
 	}
 
+#define MAKE_CLEAR_TABLE(table_type, array_name, item_name)			\
+	void clear_##table_type(struct table_type *table)			\
+	{									\
+		for (int i = 0; i < table->nr; i++)				\
+			free_##item_name(table->array_name[i]);			\
+		table->nr = 0;							\
+	}
+
 #endif

@@ -130,6 +130,7 @@ static MAKE_REMOVE_FROM(dive_site_table, dive_sites)
 static MAKE_GET_IDX(dive_site_table, struct dive_site *, dive_sites)
 MAKE_SORT(dive_site_table, struct dive_site *, dive_sites, compare_sites)
 static MAKE_REMOVE(dive_site_table, struct dive_site *, dive_site)
+MAKE_CLEAR_TABLE(dive_site_table, dive_sites, dive_site)
 
 int add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *ds_table)
 {
