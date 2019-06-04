@@ -319,15 +319,28 @@ struct units {
 #define SI_UNITS                                                                                           \
         {                                                                                                  \
 	        .length = METERS, .volume = LITER, .pressure = BAR, .temperature = CELSIUS, .weight = KG,  \
-		.vertical_speed_time = MINUTES, .duration_units = MIXED, .show_units_table = false              \
+		.vertical_speed_time = MINUTES, .duration_units = MIXED, .show_units_table = false         \
         }
 
 #define IMPERIAL_UNITS                                                                                     \
         {                                                                                                  \
 	        .length = FEET, .volume = CUFT, .pressure = PSI, .temperature = FAHRENHEIT, .weight = LBS, \
-		.vertical_speed_time = MINUTES, .duration_units = MIXED, .show_units_table = false              \
+		.vertical_speed_time = MINUTES, .duration_units = MIXED, .show_units_table = false         \
         }
 
+extern const struct units SI_units, IMPERIAL_units;
+
+extern const struct units *get_units(void);
+
+extern int get_pressure_units(int mb, const char **units);
+extern double get_depth_units(int mm, int *frac, const char **units);
+extern double get_volume_units(unsigned int ml, int *frac, const char **units);
+extern double get_temp_units(unsigned int mk, const char **units);
+extern double get_weight_units(unsigned int grams, int *frac, const char **units);
+extern double get_vertical_speed_units(unsigned int mms, int *frac, const char **units);
+
+extern depth_t units_to_depth(double depth);
+extern int units_to_sac(double volume);
 #ifdef __cplusplus
 }
 #endif

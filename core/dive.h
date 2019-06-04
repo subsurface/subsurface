@@ -63,16 +63,6 @@ struct event {
 
 extern int event_is_gaschange(const struct event *ev);
 
-extern int get_pressure_units(int mb, const char **units);
-extern double get_depth_units(int mm, int *frac, const char **units);
-extern double get_volume_units(unsigned int ml, int *frac, const char **units);
-extern double get_temp_units(unsigned int mk, const char **units);
-extern double get_weight_units(unsigned int grams, int *frac, const char **units);
-extern double get_vertical_speed_units(unsigned int mms, int *frac, const char **units);
-
-extern depth_t units_to_depth(double depth);
-extern int units_to_sac(double volume);
-
 /* Volume in mliter of a cylinder at pressure 'p' */
 extern int gas_volume(const cylinder_t *cyl, pressure_t p);
 extern double gas_compressibility_factor(struct gasmix gas, double bar);
@@ -294,9 +284,6 @@ extern bool autogroup;
 struct dive *unregister_dive(int idx);
 extern void delete_single_dive(int idx);
 
-extern const struct units SI_units, IMPERIAL_units;
-
-extern const struct units *get_units(void);
 extern int run_survey, verbose, quit, force_root;
 
 extern struct dive_table dive_table;
