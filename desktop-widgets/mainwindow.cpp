@@ -1769,7 +1769,7 @@ void MainWindow::on_actionImportDiveSites_triggered()
 		sites.dive_sites[i]->dives.nr = 0;
 
 	// Now we can clear the imported dives and trips.
-	clear_table(&table);
+	clear_dive_table(&table);
 	clear_trip_table(&trips);
 
 	QString source = fileNames.size() == 1 ? fileNames[0] : tr("multiple files");
