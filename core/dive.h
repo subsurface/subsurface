@@ -248,9 +248,6 @@ struct picture {
 	if (_dive)              \
 		for (struct picture *picture = (_dive)->picture_list; picture; picture = picture->next)
 
-#define FOR_EACH_PICTURE_NON_PTR(_divestruct) \
-	for (struct picture *picture = (_divestruct).picture_list; picture; picture = picture->next)
-
 extern struct picture *alloc_picture();
 extern void free_picture(struct picture *picture);
 extern void create_picture(const char *filename, int shift_time, bool match_all);
