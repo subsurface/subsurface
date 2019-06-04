@@ -35,10 +35,6 @@ static int decostoplevels_imperial[] = { 0, 3048, 6096, 9144, 12192, 15240, 1828
 					182880, 193040, 203200, 223520, 243840, 264160, 284480, 304800,
 					325120, 345440, 365760, 386080 };
 
-extern double regressiona();
-extern double regressionb();
-extern void reset_regression();
-
 char *disclaimer;
 int plot_depth = 0;
 #if DEBUG_PLAN
