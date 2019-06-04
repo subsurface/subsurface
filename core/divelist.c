@@ -159,6 +159,7 @@ static int calculate_otu(const struct dive *dive)
 	}
 	return lrint(otu);
 }
+
 /* Table of maximum oxygen exposure durations, used in CNS calulations.
    This table shows the official NOAA maximum O2 exposure limits (in seconds) for different PO2 values. It also gives
    slope values for linear interpolation for intermediate PO2 values between the tabulated PO2 values in the 1st column.
@@ -169,7 +170,8 @@ static int calculate_otu(const struct dive *dive)
    preserve the integer structure of the table, all slopes are given as slope*10: divide by 10 to get the valid slope.
    The columns below are: 
    po2 (mbar), Maximum Single Exposure (seconds), single_slope, Maximum 24 hour Exposure (seconds), 24h_slope */
-int const cns_table[][5] = {
+enum cns_table_headers {PO2VAL, SINGLE_EXP, SINGLE_SLOPE, DAILY_EXP, DAILY_SLOPE, NO_COLUMNS};
+static int const cns_table[][5] = {
 	{ 1600,  45 * 60, 456, 150 * 60, 180 },
 	{ 1550,  83 * 60, 456, 165 * 60, 180 },
 	{ 1500, 120 * 60, 444, 180 * 60, 180 },
