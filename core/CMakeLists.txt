@@ -156,6 +156,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	uemis.c
 	uemis.h
 	units.h
+	units.c
 	version.c
 	version.h
 	videoframeextractor.cpp

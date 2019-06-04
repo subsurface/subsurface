@@ -74,6 +74,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/taxonomy.c \
 	../../core/time.c \
 	../../core/trip.c \
+	../../core/units.c \
 	../../core/uemis.c \
 	../../core/btdiscovery.cpp \
 	../../core/connectionlistmodel.cpp \
