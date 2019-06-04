@@ -67,6 +67,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/deco.c \
 	../../core/divesite.c \
 	../../core/equipment.c \
+	../../core/gas.c \
 	../../core/membuffer.c \
 	../../core/sha1.c \
 	../../core/strtod.c \

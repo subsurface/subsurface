@@ -2,22 +2,13 @@
 #ifndef EQUIPMENT_H
 #define EQUIPMENT_H
 
-#include "units.h"
+#include "gas.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 struct dive;
-
-// o2 == 0 && he == 0 -> air
-// o2 < 0 -> invalid
-struct gasmix {
-	fraction_t o2;
-	fraction_t he;
-};
-static const struct gasmix gasmix_invalid = { { -1 }, { -1 } };
-static const struct gasmix gasmix_air = { { 0 }, { 0 } };
 
 enum cylinderuse {OC_GAS, DILUENT, OXYGEN, NOT_USED, NUM_GAS_USE}; // The different uses for cylinders
 
@@ -63,6 +54,8 @@ extern bool weightsystem_none(const weightsystem_t *ws);
 extern void remove_cylinder(struct dive *dive, int idx);
 extern void remove_weightsystem(struct dive *dive, int idx);
 extern void reset_cylinders(struct dive *dive, bool track_gas);
+extern int gas_volume(const cylinder_t *cyl, pressure_t p); /* Volume in mliter of a cylinder at pressure 'p' */
+extern int find_best_gasmix_match(struct gasmix mix, const cylinder_t array[], unsigned int used);
 #ifdef DEBUG_CYL
 extern void dump_cylinders(struct dive *dive, bool verbose);
 #endif
