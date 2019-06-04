@@ -3351,21 +3351,6 @@ timestamp_t dive_endtime(const struct dive *dive)
 	return dive->when + dive_totaltime(dive);
 }
 
-struct dive *find_dive_including(timestamp_t when)
-{
-	int i;
-	struct dive *dive;
-
-	/* binary search, anyone? Too lazy for now;
-	 * also we always use the duration from the first divecomputer
-	 *     could this ever be a problem? */
-	for_each_dive (i, dive) {
-		if (dive->when <= when && when <= dive_endtime(dive))
-			return dive;
-	}
-	return NULL;
-}
-
 bool time_during_dive_with_offset(struct dive *dive, timestamp_t when, timestamp_t offset)
 {
 	timestamp_t start = dive->when;
