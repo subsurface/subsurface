@@ -78,12 +78,7 @@ int trimspace(char *buffer)
  */
 void record_dive_to_table(struct dive *dive, struct dive_table *table)
 {
-	assert(table != NULL);
-	struct dive **dives = grow_dive_table(table);
-	int nr = table->nr;
-
-	dives[nr] = fixup_dive(dive);
-	table->nr = nr + 1;
+	add_to_dive_table(table, table->nr, fixup_dive(dive));
 }
 
 void record_dive(struct dive *dive)

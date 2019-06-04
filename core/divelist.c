@@ -775,7 +775,7 @@ int comp_dives(const struct dive *a, const struct dive *b)
 }
 
 /* Dive table functions */
-MAKE_GROW_TABLE(dive_table, struct dive *, dives)
+static MAKE_GROW_TABLE(dive_table, struct dive *, dives)
 MAKE_GET_INSERTION_INDEX(dive_table, struct dive *, dives, dive_less_than)
 MAKE_ADD_TO(dive_table, struct dive *, dives)
 static MAKE_REMOVE_FROM(dive_table, dives)
