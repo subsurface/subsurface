@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <time.h>
+#include <limits.h>
 #include "equipment.h"
 #include "gettext.h"
 #include "dive.h"
@@ -99,6 +100,36 @@ const char *gasname(struct gasmix gasmix)
 	static char gas[64];
 	get_gas_string(gasmix, gas, sizeof(gas));
 	return gas;
+}
+
+int gas_volume(const cylinder_t *cyl, pressure_t p)
+{
+	double bar = p.mbar / 1000.0;
+	double z_factor = gas_compressibility_factor(cyl->gasmix, bar);
+	return lrint(cyl->type.size.mliter * bar_to_atm(bar) / z_factor);
+}
+
+int find_best_gasmix_match(struct gasmix mix, const cylinder_t array[], unsigned int used)
+{
+	int i;
+	int best = -1, score = INT_MAX;
+
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		const cylinder_t *match;
+		int distance;
+
+		if (used & (1 << i))
+			continue;
+		match = array + i;
+		if (cylinder_nodata(match))
+			continue;
+		distance = gasmix_distance(mix, match->gasmix);
+		if (distance >= score)
+			continue;
+		best = i;
+		score = distance;
+	}
+	return best;
 }
 
 bool weightsystem_none(const weightsystem_t *ws)
