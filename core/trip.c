@@ -49,6 +49,7 @@ static MAKE_ADD_TO(trip_table, struct dive_trip *, trips)
 static MAKE_REMOVE_FROM(trip_table, trips)
 MAKE_SORT(trip_table, struct dive_trip *, trips, comp_trips)
 MAKE_REMOVE(trip_table, struct dive_trip *, trip)
+MAKE_CLEAR_TABLE(trip_table, trips, trip)
 
 timestamp_t trip_date(const struct dive_trip *trip)
 {
@@ -292,13 +293,6 @@ dive_trip_t *combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
 	trip->notes = copy_non_empty_string(trip_a->notes, trip_b->notes);
 
 	return trip;
-}
-
-void clear_trip_table(struct trip_table *table)
-{
-	for (int i = 0; i < table->nr; i++)
-		free_trip(table->trips[i]);
-	table->nr = 0;
 }
 
 /* Trips are compared according to the first dive in the trip. */

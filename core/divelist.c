@@ -782,6 +782,7 @@ static MAKE_REMOVE_FROM(dive_table, dives)
 static MAKE_GET_IDX(dive_table, struct dive *, dives)
 MAKE_SORT(dive_table, struct dive *, dives, comp_dives)
 MAKE_REMOVE(dive_table, struct dive *, dive)
+MAKE_CLEAR_TABLE(dive_table, dives, dive)
 
 void insert_dive(struct dive_table *table, struct dive *d)
 {
@@ -1006,23 +1007,6 @@ static void merge_imported_dives(struct dive_table *table)
 		/* Redo the new 'i'th dive */
 		i--;
 	}
-}
-
-/*
- * Clear a dive_table and dive_site_table. Think about generating these with macros.
- */
-void clear_table(struct dive_table *table)
-{
-	for (int i = 0; i < table->nr; i++)
-		free_dive(table->dives[i]);
-	table->nr = 0;
-}
-
-void clear_dive_site_table(struct dive_site_table *ds_table)
-{
-	for (int i = 0; i < ds_table->nr; i++)
-		free_dive_site(ds_table->dive_sites[i]);
-	ds_table->nr = 0;
 }
 
 /*
@@ -1292,8 +1276,8 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 		import_trip_table = &local_trip_table;
 
 	/* Make sure that output parameters don't contain garbage */
-	clear_table(dives_to_add);
-	clear_table(dives_to_remove);
+	clear_dive_table(dives_to_add);
+	clear_dive_table(dives_to_remove);
 	clear_trip_table(trips_to_add);
 	clear_dive_site_table(sites_to_add);
 
