@@ -67,7 +67,7 @@ struct vpmb_config {
 	short conservatism;		  //! VPM-B conservatism level (0-4)
 };
 
-struct vpmb_config vpmb_config = {
+static struct vpmb_config vpmb_config = {
 	.crit_radius_N2 = 0.55,
 	.crit_radius_He = 0.45,
 	.crit_volume_lambda = 199.58,
@@ -79,15 +79,15 @@ struct vpmb_config vpmb_config = {
 	.conservatism = 3
 };
 
-const double buehlmann_N2_a[] = { 1.1696, 1.0, 0.8618, 0.7562,
-				  0.62, 0.5043, 0.441, 0.4,
-				  0.375, 0.35, 0.3295, 0.3065,
-				  0.2835, 0.261, 0.248, 0.2327 };
+static const double buehlmann_N2_a[] = { 1.1696, 1.0, 0.8618, 0.7562,
+					 0.62, 0.5043, 0.441, 0.4,
+					 0.375, 0.35, 0.3295, 0.3065,
+					 0.2835, 0.261, 0.248, 0.2327 };
 
-const double buehlmann_N2_b[] = { 0.5578, 0.6514, 0.7222, 0.7825,
-				  0.8126, 0.8434, 0.8693, 0.8910,
-				  0.9092, 0.9222, 0.9319, 0.9403,
-				  0.9477, 0.9544, 0.9602, 0.9653 };
+static const double buehlmann_N2_b[] = { 0.5578, 0.6514, 0.7222, 0.7825,
+					 0.8126, 0.8434, 0.8693, 0.8910,
+					 0.9092, 0.9222, 0.9319, 0.9403,
+					 0.9477, 0.9544, 0.9602, 0.9653 };
 
 const double buehlmann_N2_t_halflife[] = { 5.0, 8.0, 12.5, 18.5,
 					   27.0, 38.3, 54.3, 77.0,
@@ -95,36 +95,36 @@ const double buehlmann_N2_t_halflife[] = { 5.0, 8.0, 12.5, 18.5,
 					   305.0, 390.0, 498.0, 635.0 };
 
 // 1 - exp(-1 / (halflife * 60) * ln(2))
-const double buehlmann_N2_factor_expositon_one_second[] = {
+static const double buehlmann_N2_factor_expositon_one_second[] = {
 	2.30782347297664E-003, 1.44301447809736E-003, 9.23769302935806E-004, 6.24261986779007E-004,
 	4.27777107246730E-004, 3.01585140931371E-004, 2.12729727268379E-004, 1.50020603047807E-004,
 	1.05980191127841E-004, 7.91232600646508E-005, 6.17759153688224E-005, 4.83354552742732E-005,
 	3.78761777920511E-005, 2.96212356654113E-005, 2.31974277413727E-005, 1.81926738960225E-005
 };
 
-const double buehlmann_He_a[] = { 1.6189, 1.383, 1.1919, 1.0458,
-				  0.922, 0.8205, 0.7305, 0.6502,
-				  0.595, 0.5545, 0.5333, 0.5189,
-				  0.5181, 0.5176, 0.5172, 0.5119 };
+static const double buehlmann_He_a[] = { 1.6189, 1.383, 1.1919, 1.0458,
+					 0.922, 0.8205, 0.7305, 0.6502,
+					 0.595, 0.5545, 0.5333, 0.5189,
+					 0.5181, 0.5176, 0.5172, 0.5119 };
 
-const double buehlmann_He_b[] = { 0.4770, 0.5747, 0.6527, 0.7223,
-				  0.7582, 0.7957, 0.8279, 0.8553,
-				  0.8757, 0.8903, 0.8997, 0.9073,
-				  0.9122, 0.9171, 0.9217, 0.9267 };
+static const double buehlmann_He_b[] = { 0.4770, 0.5747, 0.6527, 0.7223,
+					 0.7582, 0.7957, 0.8279, 0.8553,
+					 0.8757, 0.8903, 0.8997, 0.9073,
+					 0.9122, 0.9171, 0.9217, 0.9267 };
 
-const double buehlmann_He_t_halflife[] = { 1.88, 3.02, 4.72, 6.99,
-					   10.21, 14.48, 20.53, 29.11,
-					   41.20, 55.19, 70.69, 90.34,
-					   115.29, 147.42, 188.24, 240.03 };
+static const double buehlmann_He_t_halflife[] = { 1.88, 3.02, 4.72, 6.99,
+						  10.21, 14.48, 20.53, 29.11,
+						  41.20, 55.19, 70.69, 90.34,
+						  115.29, 147.42, 188.24, 240.03 };
 
-const double buehlmann_He_factor_expositon_one_second[] = {
+static const double buehlmann_He_factor_expositon_one_second[] = {
 	6.12608039419837E-003, 3.81800836683133E-003, 2.44456078654209E-003, 1.65134647076792E-003,
 	1.13084424730725E-003, 7.97503165599123E-004, 5.62552521860549E-004, 3.96776399429366E-004,
 	2.80360036664540E-004, 2.09299583354805E-004, 1.63410794820518E-004, 1.27869320250551E-004,
 	1.00198406028040E-004, 7.83611475491108E-005, 6.13689891868496E-005, 4.81280465299827E-005
 };
 
-const double vpmb_conservatism_lvls[] = { 1.0, 1.05, 1.12, 1.22, 1.35 };
+static const double vpmb_conservatism_lvls[] = { 1.0, 1.05, 1.12, 1.22, 1.35 };
 
 /* Inspired gas loading equations depend on the partial pressure of inert gas in the alveolar.
  * P_alv = (P_amb - P_H2O + (1 - Rq) / Rq * P_CO2) * f
@@ -153,18 +153,18 @@ const double vpmb_conservatism_lvls[] = { 1.0, 1.05, 1.12, 1.22, 1.35 };
 
 #define TISSUE_ARRAY_SZ sizeof(ds->tissue_n2_sat)
 
-int  sum1;
-long sumx, sumxx;
-double sumy, sumxy;
+static int  sum1;
+static long sumx, sumxx;
+static double sumy, sumxy;
 
-double get_crit_radius_He()
+static double get_crit_radius_He()
 {
 	if (vpmb_config.conservatism <= 4)
 		return vpmb_config.crit_radius_He * vpmb_conservatism_lvls[vpmb_config.conservatism] * subsurface_conservatism_factor;
 	return vpmb_config.crit_radius_He;
 }
 
-double get_crit_radius_N2()
+static double get_crit_radius_N2()
 {
 	if (vpmb_config.conservatism <= 4)
 		return vpmb_config.crit_radius_N2 * vpmb_conservatism_lvls[vpmb_config.conservatism] * subsurface_conservatism_factor;
@@ -175,7 +175,7 @@ double get_crit_radius_N2()
 // x^3 - B x - C == 0
 // Use trigonometric formula for negative discriminants (see Wikipedia for details)
 
-double solve_cubic2(double B, double C)
+static double solve_cubic2(double B, double C)
 {
 	double discriminant = 27 * C * C - 4 * cube(B);
 	if (discriminant < 0.0) {
@@ -190,7 +190,7 @@ double solve_cubic2(double B, double C)
 // This is a simplified formula avoiding radii. It uses the fact that Boyle's law says
 // pV = (G + P_amb) / G^3 is constant to solve for the new gradient G.
 
-double update_gradient(struct deco_state *ds, double next_stop_pressure, double first_gradient)
+static double update_gradient(struct deco_state *ds, double next_stop_pressure, double first_gradient)
 {
 	double B = cube(first_gradient) / (ds->first_ceiling_pressure.mbar / 1000.0 + first_gradient);
 	double C = next_stop_pressure * B;
@@ -202,7 +202,7 @@ double update_gradient(struct deco_state *ds, double next_stop_pressure, double 
 	return new_gradient;
 }
 
-double vpmb_tolerated_ambient_pressure(struct deco_state *ds, double reference_pressure, int ci)
+static double vpmb_tolerated_ambient_pressure(struct deco_state *ds, double reference_pressure, int ci)
 {
 	double n2_gradient, he_gradient, total_gradient;
 
@@ -319,7 +319,7 @@ double tissue_tolerance_calc(struct deco_state *ds, const struct dive *dive, dou
  */
 
 
-double factor(int period_in_seconds, int ci, enum inertgas gas)
+static double factor(int period_in_seconds, int ci, enum inertgas gas)
 {
 	double factor;
 	if (period_in_seconds == 1) {
@@ -342,7 +342,7 @@ double factor(int period_in_seconds, int ci, enum inertgas gas)
 	return factor;
 }
 
-double calc_surface_phase(double surface_pressure, double he_pressure, double n2_pressure, double he_time_constant, double n2_time_constant)
+static double calc_surface_phase(double surface_pressure, double he_pressure, double n2_pressure, double he_time_constant, double n2_time_constant)
 {
 	double inspired_n2 = (surface_pressure - ((in_planner() && (decoMode() == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE)) * NITROGEN_FRACTION;
 
@@ -395,7 +395,7 @@ void vpmb_next_gradient(struct deco_state *ds, double deco_time, double surface_
 // A*r^3 - B*r^2 - C == 0
 // Solved with the help of mathematica
 
-double solve_cubic(double A, double B, double C)
+static double solve_cubic(double A, double B, double C)
 {
 	double BA = B/A;
 	double CA = C/A;
@@ -431,7 +431,7 @@ void nuclear_regeneration(struct deco_state *ds, double time)
 
 
 // Calculates the nucleons inner pressure during the impermeable period
-double calc_inner_pressure(double crit_radius, double onset_tension, double current_ambient_pressure)
+static double calc_inner_pressure(double crit_radius, double onset_tension, double current_ambient_pressure)
 {
 	double onset_radius = 1.0 / (vpmb_config.gradient_of_imperm / (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) + 1.0 / crit_radius);
 
