@@ -27,13 +27,6 @@ extern const char *cylinderuse_text[];
 extern const char *divemode_text_ui[];
 extern const char *divemode_text[];
 
-struct icd_data { // This structure provides communication between function isobaric_counterdiffusion() and the calling software.
-	int dN2;      // The change in fraction (permille) of nitrogen during the change
-	int dHe;      // The change in fraction (permille) of helium during the change
-};
-
-extern bool isobaric_counterdiffusion(struct gasmix oldgasmix, struct gasmix newgasmix, struct icd_data *results);
-
 /*
  * Events are currently based straight on what libdivecomputer gives us.
  *  We need to wrap these into our own events at some point to remove some of the limitations.
@@ -63,34 +56,7 @@ struct event {
 
 extern int event_is_gaschange(const struct event *ev);
 
-/* Volume in mliter of a cylinder at pressure 'p' */
-extern int gas_volume(const cylinder_t *cyl, pressure_t p);
-extern double gas_compressibility_factor(struct gasmix gas, double bar);
-extern double isothermal_pressure(struct gasmix gas, double p1, int volume1, int volume2);
-extern double gas_density(struct gasmix gas, int pressure);
-extern int same_gasmix(struct gasmix a, struct gasmix b);
-
-static inline int get_o2(struct gasmix mix)
-{
-	return mix.o2.permille ?: O2_IN_AIR;
-}
-
-static inline int get_he(struct gasmix mix)
-{
-	return mix.he.permille;
-}
-
-struct gas_pressures {
-	double o2, n2, he;
-};
-
 extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, struct gasmix mix, double po2, enum divemode_t dctype);
-
-extern void sanitize_gasmix(struct gasmix *mix);
-extern int gasmix_distance(struct gasmix a, struct gasmix b);
-extern int find_best_gasmix_match(struct gasmix mix, const cylinder_t array[], unsigned int used);
-
-extern bool gasmix_is_air(struct gasmix gasmix);
 
 /* Linear interpolation between 'a' and 'b', when we are 'part'way into the 'whole' distance from a to b */
 static inline int interpolate(int a, int b, int part, int whole)
