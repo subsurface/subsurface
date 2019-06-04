@@ -6,7 +6,7 @@
 extern "C" {
 #endif
 
-extern double buehlmann_N2_t_halflife[];
+extern const double buehlmann_N2_t_halflife[];
 
 extern int deco_allowed_depth(double tissues_tolerance, double surface_pressure, const struct dive *dive, bool smooth);
 
