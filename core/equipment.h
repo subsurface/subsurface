@@ -46,8 +46,8 @@ typedef struct
 #define W_IDX_PRIMARY 0
 #define W_IDX_SECONDARY 1
 
-extern void add_cylinder_description(cylinder_type_t *);
-extern void add_weightsystem_description(weightsystem_t *);
+extern void add_cylinder_description(const cylinder_type_t *);
+extern void add_weightsystem_description(const weightsystem_t *);
 extern bool cylinder_nodata(const cylinder_t *cyl);
 extern bool cylinder_none(const cylinder_t *cyl);
 extern bool weightsystem_none(const weightsystem_t *ws);
