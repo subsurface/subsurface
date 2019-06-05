@@ -109,7 +109,7 @@ int gas_volume(const cylinder_t *cyl, pressure_t p)
 	return lrint(cyl->type.size.mliter * bar_to_atm(bar) / z_factor);
 }
 
-int find_best_gasmix_match(struct gasmix mix, const cylinder_t array[], unsigned int used)
+int find_best_gasmix_match(struct gasmix mix, const cylinder_t array[])
 {
 	int i;
 	int best = -1, score = INT_MAX;
@@ -118,8 +118,6 @@ int find_best_gasmix_match(struct gasmix mix, const cylinder_t array[], unsigned
 		const cylinder_t *match;
 		int distance;
 
-		if (used & (1 << i))
-			continue;
 		match = array + i;
 		if (cylinder_nodata(match))
 			continue;

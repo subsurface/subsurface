@@ -91,7 +91,7 @@ int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, duration_
 
 int get_gasidx(struct dive *dive, struct gasmix mix)
 {
-	return find_best_gasmix_match(mix, dive->cylinder, 0);
+	return find_best_gasmix_match(mix, dive->cylinder);
 }
 
 void interpolate_transition(struct deco_state *ds, struct dive *dive, duration_t t0, duration_t t1, depth_t d0, depth_t d1, struct gasmix gasmix, o2pressure_t po2, enum divemode_t divemode)
