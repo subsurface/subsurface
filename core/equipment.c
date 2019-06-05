@@ -18,7 +18,7 @@
 #include "divelist.h"
 
 /* placeholders for a few functions that we need to redesign for the Qt UI */
-void add_cylinder_description(cylinder_type_t *type)
+void add_cylinder_description(const cylinder_type_t *type)
 {
 	const char *desc;
 	int i;
@@ -37,7 +37,7 @@ void add_cylinder_description(cylinder_type_t *type)
 		tank_info[i].bar = type->workingpressure.mbar / 1000;
 	}
 }
-void add_weightsystem_description(weightsystem_t *weightsystem)
+void add_weightsystem_description(const weightsystem_t *weightsystem)
 {
 	const char *desc;
 	int i;
