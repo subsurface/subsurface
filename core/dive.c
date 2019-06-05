@@ -1431,7 +1431,7 @@ static bool validate_gaschange(struct dive *dive, struct event *event)
 	if (event->gas.index >= 0)
 		return true;
 
-	index = find_best_gasmix_match(event->gas.mix, dive->cylinder, 0);
+	index = find_best_gasmix_match(event->gas.mix, dive->cylinder);
 	if (index < 0)
 		return false;
 

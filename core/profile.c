@@ -334,7 +334,7 @@ int get_cylinder_index(const struct dive *dive, const struct event *ev)
 	fprintf(stderr, "Still looking up cylinder based on gas mix in get_cylinder_index()!\n");
 
 	mix = get_gasmix_from_event(dive, ev);
-	best = find_best_gasmix_match(mix, dive->cylinder, 0);
+	best = find_best_gasmix_match(mix, dive->cylinder);
 	return best < 0 ? 0 : best;
 }
 
