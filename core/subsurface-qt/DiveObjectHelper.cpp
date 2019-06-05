@@ -352,10 +352,7 @@ int DiveObjectHelper::visibility() const
 
 QString DiveObjectHelper::sumWeight() const
 {
-	weight_t sum = { 0 };
-	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++){
-		sum.grams += m_dive->weightsystem[i].weight.grams;
-	}
+	weight_t sum = { total_weight(m_dive) };
 	return get_weight_string(sum, true);
 }
 
