@@ -3,7 +3,6 @@
 #include "core/qthelper.h"
 #include "core/settings/qPrefDiveComputer.h"
 #include <QDebug>
-#include <QRegularExpression>
 #if defined(Q_OS_ANDROID)
 #include "core/subsurface-string.h"
 #endif
