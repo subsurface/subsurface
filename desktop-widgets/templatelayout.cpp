@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <QFileDevice>
+#include <QRegularExpression>
 #include <list>
 
 #include "templatelayout.h"
@@ -99,34 +100,26 @@ TemplateLayout::TemplateLayout(print_options *printOptions, template_options *te
 }
 
 /* a HTML pre-processor stage. acts like a compatibility layer
- * between some Grantlee variables and DiveObjectHelper Q_PROPERTIES;
- */
+ * between some Grantlee variables and DiveObjectHelper Q_PROPERTIES:
+ *	dive.weights -> dive.weightList
+ * 	dive.weight# -> dive.weights.#
+ *	dive.cylinders -> dive.cylinderList
+ * 	dive.cylinder# -> dive.cylinders.#
+ * The Grantlee parser works with a single or no space next to the variable
+ * markers - e.g. '{{ var }}'. We're graceful and support an arbitrary number of
+ * whitespace. */
+static QRegularExpression weightsRegExp(R"({{\*?([A-Za-z]+[A-Za-z0-9]*).weights\s*}})");
+static QRegularExpression weightRegExp(R"({{\*?([A-Za-z]+[A-Za-z0-9]*).weight(\d+)\s*}})");
+static QRegularExpression cylindersRegExp(R"({{\*?([A-Za-z]+[A-Za-z0-9]*).cylinders\s*}})");
+static QRegularExpression cylinderRegExp(R"({{\s*([A-Za-z]+[A-Za-z0-9]*).cylinder(\d+)\s*}})");
 static QString preprocessTemplate(const QString &in)
 {
-	int i;
 	QString out = in;
-	QString iStr;
-	QList<QPair<QString, QString> > list;
 
-	/* populate known variables in a QPair list */
-	list << qMakePair(QString("dive.weights"), QString("dive.weightList"));
-	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++)
-		list << qMakePair(QString("dive.weight%1").arg(i), QString("dive.weights.%1").arg(i));
-
-	list << qMakePair(QString("dive.cylinders"), QString("dive.cylinderList"));
-	for (i = 0; i < MAX_CYLINDERS; i++)
-		list << qMakePair(QString("dive.cylinder%1").arg(i), QString("dive.cylinders.%1").arg(i));
-
-	/* lazy method of variable replacement without regex. the Grantlee parser
-	 * works with a single or no space next to the variable markers -
-	 * e.g. '{{ var }}' */
-	for (i = 0; i < list.length(); i++) {
-		QPair<QString, QString> p = list.at(i);
-		out.replace("{{ " + p.first + " }}", "{{ " + p.second + " }}");
-		out.replace("{{" + p.first + "}}", "{{" + p.second + "}}");
-		out.replace("{{ " + p.first + "}}", "{{ " + p.second + "}}");
-		out.replace("{{" + p.first + " }}", "{{" + p.second + " }}");
-	}
+	out.replace(weightsRegExp, QStringLiteral(R"({{\1.weightList}})"));
+	out.replace(weightRegExp, QStringLiteral(R"({{\1.weights.\2}})"));
+	out.replace(cylindersRegExp, QStringLiteral(R"({{\1.cylinderList}})"));
+	out.replace(cylindersRegExp, QStringLiteral(R"({{\1.cylinders.\2}})"));
 
 	return out;
 }
