@@ -333,14 +333,13 @@ void BtDeviceSelectionDialog::pairingFinished(const QBluetoothAddress &address, 
 
 	// Find the items which represent the BTH device and update their state
 	QList<QListWidgetItem *> items = ui->discoveredDevicesList->findItems(remoteDeviceStringAddress, Qt::MatchContains);
-	QRegularExpression pairingExpression = QRegularExpression(QString("%1|%2|%3").arg(tr("PAIRED"),
-											  tr("AUTHORIZED_PAIRED"),
-											  tr("UNPAIRED")));
+	QRegularExpression pairingExpression(QString("%1|%2|%3").arg(tr("PAIRED"),
+								     tr("AUTHORIZED_PAIRED"),
+								     tr("UNPAIRED")));
 
 	for (int i = 0; i < items.count(); ++i) {
 		QListWidgetItem *item = items.at(i);
-		QString updatedDeviceLabel = item->text().replace(QRegularExpression(pairingExpression),
-								  pairingStatusLabel);
+		QString updatedDeviceLabel = item->text().replace(pairingExpression, pairingStatusLabel);
 
 		item->setText(updatedDeviceLabel);
 		item->setBackgroundColor(pairingColor);
