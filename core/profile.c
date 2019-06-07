@@ -1420,7 +1420,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	if (prefs.pp_graphs.po2 && entry->pressures.o2 > 0) {
 		put_format_loc(b, translate("gettextFromC", "pO₂: %.2fbar\n"), entry->pressures.o2);
 		if (entry->scr_OC_pO2.mbar)
-			put_format_loc(b, translate("gettextFromC", "SCR ΔpO2: %.2fbar\n"), entry->scr_OC_pO2.mbar/1000.0 - entry->pressures.o2);
+			put_format_loc(b, translate("gettextFromC", "SCR ΔpO₂: %.2fbar\n"), entry->scr_OC_pO2.mbar/1000.0 - entry->pressures.o2);
 	}
 	if (prefs.pp_graphs.pn2 && entry->pressures.n2 > 0)
 		put_format_loc(b, translate("gettextFromC", "pN₂: %.2fbar\n"), entry->pressures.n2);
