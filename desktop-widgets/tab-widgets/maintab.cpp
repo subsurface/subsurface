@@ -563,8 +563,6 @@ void MainTab::updateDiveInfo()
 		ui.duration->setText(render_seconds_to_string(current_dive->duration.seconds));
 		ui.depth->setText(get_depth_string(current_dive->maxdepth, true));
 
-		volume_t gases[MAX_CYLINDERS] = {};
-		get_gas_used(&displayed_dive, gases);
 		int mean[MAX_CYLINDERS], duration[MAX_CYLINDERS];
 		per_cylinder_mean_depth(&displayed_dive, select_dc(&displayed_dive), mean, duration);
 
