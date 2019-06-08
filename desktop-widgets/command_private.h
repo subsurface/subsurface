@@ -15,6 +15,7 @@ namespace Command {
 // Generally, signals are sent in batches per trip. To avoid writing the same loop
 // again and again, this template takes a vector of trip / dive pairs, sorts it
 // by trip and then calls a function-object with trip and a QVector of dives in that trip.
+// The dives are sorted by the dive_less_than() function defined in the core.
 // Input parameters:
 //	- dives: a vector of trip,dive pairs, which will be sorted and processed in batches by trip.
 //	- action: a function object, taking a trip-pointer and a QVector of dives, which will be called for each batch.
@@ -24,7 +25,7 @@ void processByTrip(std::vector<std::pair<dive_trip *, dive *>> &dives, Function 
 	// Use std::tie for lexicographical sorting of trip, then start-time
 	std::sort(dives.begin(), dives.end(),
 		  [](const std::pair<dive_trip *, dive *> &e1, const std::pair<dive_trip *, dive *> &e2)
-		  { return std::tie(e1.first, e1.second->when) < std::tie(e2.first, e2.second->when); });
+		  { return e1.first == e2.first ? dive_less_than(e1.second, e2.second) : e1.first < e2.first; });
 
 	// Then, process the dives in batches by trip
 	size_t i, j; // Begin and end of batch
