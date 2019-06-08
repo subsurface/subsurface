@@ -24,9 +24,8 @@ weightsystem_t *WeightModel::weightSystemAt(const QModelIndex &index)
 
 void WeightModel::remove(const QModelIndex &index)
 {
-	if (index.column() != REMOVE) {
+	if (index.column() != REMOVE)
 		return;
-	}
 	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
 	rows--;
 	remove_weightsystem(&displayed_dive, index.row());
@@ -44,44 +43,36 @@ void WeightModel::clear()
 
 QVariant WeightModel::data(const QModelIndex &index, int role) const
 {
-	QVariant ret;
 	if (!index.isValid() || index.row() >= MAX_WEIGHTSYSTEMS)
-		return ret;
+		return QVariant();
 
 	weightsystem_t *ws = &displayed_dive.weightsystem[index.row()];
 
 	switch (role) {
 	case Qt::FontRole:
-		ret = defaultModelFont();
-		break;
+		return defaultModelFont();
 	case Qt::TextAlignmentRole:
-		ret = Qt::AlignCenter;
-		break;
+		return Qt::AlignCenter;
 	case Qt::DisplayRole:
 	case Qt::EditRole:
 		switch (index.column()) {
 		case TYPE:
-			ret = gettextFromC::tr(ws->description);
-			break;
+			return gettextFromC::tr(ws->description);
 		case WEIGHT:
-			ret = get_weight_string(ws->weight, true);
-			break;
+			return get_weight_string(ws->weight, true);
 		}
 		break;
 	case Qt::DecorationRole:
 		if (index.column() == REMOVE)
-			ret = trashIcon();
-		break;
+			return trashIcon();
 	case Qt::SizeHintRole:
 		if (index.column() == REMOVE)
-			ret = trashIcon().size();
-		break;
+			return trashIcon().size();
 	case Qt::ToolTipRole:
 		if (index.column() == REMOVE)
-			ret = tr("Clicking here will remove this weight system.");
-		break;
+			return tr("Clicking here will remove this weight system.");
 	}
-	return ret;
+	return QVariant();
 }
 
 // this is our magic 'pass data in' function that allows the delegate to get

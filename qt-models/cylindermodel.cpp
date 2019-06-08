@@ -132,10 +132,8 @@ static QVariant percent_string(fraction_t fraction)
 
 QVariant CylindersModel::data(const QModelIndex &index, int role) const
 {
-	QVariant ret;
-
 	if (!index.isValid() || index.row() >= MAX_CYLINDERS)
-		return ret;
+		return QVariant();
 
 	cylinder_t *cyl = &displayed_dive.cylinder[index.row()];
 
@@ -151,7 +149,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			endp = cyl->end.mbar ? cyl->end : cyl->sample_end;
 			if ((startp.mbar && !endp.mbar) ||
 					(endp.mbar && startp.mbar <= endp.mbar))
-				ret = REDORANGE1_HIGH_TRANS;
+				return REDORANGE1_HIGH_TRANS;
 			break;
 		}
 		break;
@@ -167,65 +165,57 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			font.setItalic(!cyl->end.mbar);
 			break;
 		}
-		ret = font;
-		break;
+		return font;
 	}
 	case Qt::TextAlignmentRole:
-		ret = Qt::AlignCenter;
-		break;
+		return Qt::AlignCenter;
 	case Qt::DisplayRole:
 	case Qt::EditRole:
 		switch (index.column()) {
 		case TYPE:
-			ret = QString(cyl->type.description);
-			break;
+			return QString(cyl->type.description);
 		case SIZE:
 			if (cyl->type.size.mliter)
-				ret = get_cylinder_string(cyl);
+				return get_cylinder_string(cyl);
 			break;
 		case WORKINGPRESS:
 			if (cyl->type.workingpressure.mbar)
-				ret = get_pressure_string(cyl->type.workingpressure, true);
+				return get_pressure_string(cyl->type.workingpressure, true);
 			break;
 		case START:
 			if (cyl->start.mbar)
-				ret = get_pressure_string(cyl->start, true);
+				return get_pressure_string(cyl->start, true);
 			else if (cyl->sample_start.mbar)
-				ret = get_pressure_string(cyl->sample_start, true);
+				return get_pressure_string(cyl->sample_start, true);
 			break;
 		case END:
 			if (cyl->end.mbar)
-				ret = get_pressure_string(cyl->end, true);
+				return get_pressure_string(cyl->end, true);
 			else if (cyl->sample_end.mbar)
-				ret = get_pressure_string(cyl->sample_end, true);
+				return get_pressure_string(cyl->sample_end, true);
 			break;
 		case O2:
-			ret = percent_string(cyl->gasmix.o2);
-			break;
+			return percent_string(cyl->gasmix.o2);
 		case HE:
-			ret = percent_string(cyl->gasmix.he);
-			break;
+			return percent_string(cyl->gasmix.he);
 		case DEPTH:
-			ret = get_depth_string(cyl->depth, true);
-			break;
+			return get_depth_string(cyl->depth, true);
 		case MOD:
 			if (cyl->bestmix_o2) {
-				ret = QString("*");
+				return QStringLiteral("*");
 			} else {
 				pressure_t modpO2;
 				modpO2.mbar = prefs.bottompo2;
-				ret = get_depth_string(gas_mod(cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(1,1)), true);
+				return get_depth_string(gas_mod(cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(1,1)), true);
 			}
-			break;
 		case MND:
 			if (cyl->bestmix_he)
-				ret = QString("*");
+				return QStringLiteral("*");
 			else
-				ret = get_depth_string(gas_mnd(cyl->gasmix, prefs.bestmixend, &displayed_dive, M_OR_FT(1,1)), true);
+				return get_depth_string(gas_mnd(cyl->gasmix, prefs.bestmixend, &displayed_dive, M_OR_FT(1,1)), true);
 			break;
 		case USE:
-			ret = gettextFromC::tr(cylinderuse_text[cyl->cylinder_use]);
-			break;
+			return gettextFromC::tr(cylinderuse_text[cyl->cylinder_use]);
 		}
 		break;
 	case Qt::DecorationRole:
@@ -233,21 +223,19 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		if (index.column() == REMOVE) {
 			if ((in_planner() && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
 				(!in_planner() && is_cylinder_prot(&displayed_dive, index.row()))) {
-					ret = trashForbiddenIcon();
+					return trashForbiddenIcon();
 			}
-			else ret = trashIcon();
+			return trashIcon();
 		}
 		break;
-
 	case Qt::ToolTipRole:
 		switch (index.column()) {
 		case REMOVE:
 			if ((in_planner() && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
 				(!in_planner() && is_cylinder_prot(&displayed_dive, index.row()))) {
-					ret = tr("This gas is in use. Only cylinders that are not used in the dive can be removed.");
+					return tr("This gas is in use. Only cylinders that are not used in the dive can be removed.");
 			}
-			else ret = tr("Clicking here will remove this cylinder.");
-			break;
+			return tr("Clicking here will remove this cylinder.");
 		case TYPE:
 		case SIZE:
 			return gas_usage_tooltip(cyl);
@@ -258,19 +246,16 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		case END:
 			return gas_end_tooltip(cyl);
 		case DEPTH:
-			ret = tr("Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.");
-			break;
+			return tr("Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.");
 		case MOD:
-			ret = tr("Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to '*' for best O₂% for max. depth.");
-			break;
+			return tr("Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to '*' for best O₂% for max. depth.");
 		case MND:
-			ret = tr("Calculated using Best Mix END preference. Setting MND adjusts He%, set to '*' for best He% for max. depth.");
-			break;
+			return tr("Calculated using Best Mix END preference. Setting MND adjusts He%, set to '*' for best He% for max. depth.");
 		}
 		break;
 	}
 
-	return ret;
+	return QVariant();
 }
 
 cylinder_t *CylindersModel::cylinderAt(const QModelIndex &index)
