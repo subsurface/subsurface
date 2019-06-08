@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 
-// The DiveListNotifier emits signals when the dive-list changes (dives/trips created/deleted/moved/edited)
-// Note that vectors are passed by reference, so this will only work for signals inside the UI thread!
+// The DiveListNotifier emits signals when the dive-list changes (dives/trips/divesites created/deleted/moved/edited)
 
 #ifndef DIVELISTNOTIFIER_H
 #define DIVELISTNOTIFIER_H
@@ -48,7 +47,7 @@ signals:
 	// or the deletion spans multiple trips. But most of the time only dives of a single trip
 	// will be affected and trips don't overlap, so these considerations are moot.
 	// Notes:
-	// - The dives are always sorted by start-time.
+	// - The dives are always sorted by according to the dives_less_than() function of the core.
 	// - The "trip" arguments are null for top-level-dives.
 	void divesAdded(dive_trip *trip, bool addTrip, const QVector<dive *> &dives);
 	void divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives);
