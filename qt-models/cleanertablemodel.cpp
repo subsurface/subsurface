@@ -31,19 +31,16 @@ int CleanerTableModel::columnCount(const QModelIndex&) const
 
 QVariant CleanerTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-	QVariant ret;
-
 	if (orientation == Qt::Vertical)
-		return ret;
+		return QVariant();
 
 	switch (role) {
 	case Qt::FontRole:
-		ret = defaultModelFont();
-		break;
+		return defaultModelFont();
 	case Qt::DisplayRole:
-		ret = headers.at(section);
+		return headers.at(section);
 	}
-	return ret;
+	return QVariant();
 }
 
 void CleanerTableModel::setHeaderDataStrings(const QStringList &newHeaders)
