@@ -706,9 +706,9 @@ int parseDurationToSeconds(const QString &text)
 	double hours, minutes, seconds = 0;
 	int colon = numOnly.indexOf(':');
 	if (colon >= 0) {
-		hours = numOnly.left(colon).toDouble();
+		hours = numOnly.leftRef(colon).toDouble();
 
-		QString minutesStr = numOnly.mid(colon + 1);
+		QStringRef minutesStr = numOnly.midRef(colon + 1);
 		colon = minutesStr.indexOf(':');
 		if (colon >= 0) {
 			minutes = minutesStr.left(colon).toDouble();

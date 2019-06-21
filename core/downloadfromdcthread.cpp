@@ -376,11 +376,10 @@ void DCDeviceData::setDevName(const QString &devName)
 		int idx1 = devName.indexOf('(');
 		int idx2 = devName.lastIndexOf(')');
 		if (idx1 >= 0 && idx2 >= 0 && idx2 > idx1) {
-			QString front = devName.left(idx1).trimmed();
-			QString back = devName.mid(idx1 + 1, idx2 - idx1 - 1);
-			QString newDevName = back.indexOf(':') >= 0 ? back : front;
+			QStringRef back = devName.midRef(idx1 + 1, idx2 - idx1 - 1);
+			QStringRef newDevName = back.contains(':') ? back : devName.leftRef(idx1).trimmed();
 			qWarning() << "Found invalid bluetooth device" << devName << "corrected to" << newDevName << ".";
-			data.devname = copy_qstring(newDevName);
+			data.devname = copy_qstring(newDevName.toString());
 			return;
 		}
 	}
