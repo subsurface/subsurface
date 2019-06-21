@@ -24,7 +24,7 @@ static dc_descriptor_t *getDeviceType(QString btName)
 
 	if (btName.startsWith("OSTC")) {
 		vendor = "Heinrichs Weikamp";
-		if (btName.mid(4,1) == "3") product = "OSTC Plus";
+		if (btName.at(4) == '3') product = "OSTC Plus";
 		else if (btName.mid(4,2) == "s#") product = "OSTC Sport";
 		else if (btName.mid(4,2) == "s ") product = "OSTC Sport";
 		else if (btName.mid(4,2) == "4-") product = "OSTC 4";

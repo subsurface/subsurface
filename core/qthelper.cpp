@@ -699,26 +699,28 @@ QString render_seconds_to_string(int seconds)
 
 int parseDurationToSeconds(const QString &text)
 {
-	int secs;
 	QString numOnly = text;
-	QString hours, minutes, seconds;
-	numOnly.replace(",", ".").remove(QRegExp("[^-0-9.:]"));
+	numOnly.replace(',', '.').remove(QRegExp("[^-0-9.:]"));
 	if (numOnly.isEmpty())
 		return 0;
-	if (numOnly.contains(':')) {
-		hours = numOnly.left(numOnly.indexOf(':'));
-		minutes = numOnly.right(numOnly.length() - hours.length() - 1);
-		if (minutes.contains(':')) {
-			numOnly = minutes;
-			minutes = numOnly.left(numOnly.indexOf(':'));
-			seconds = numOnly.right(numOnly.length() - minutes.length() - 1);
+	double hours, minutes, seconds = 0;
+	int colon = numOnly.indexOf(':');
+	if (colon >= 0) {
+		hours = numOnly.left(colon).toDouble();
+
+		QString minutesStr = numOnly.mid(colon + 1);
+		colon = minutesStr.indexOf(':');
+		if (colon >= 0) {
+			minutes = minutesStr.left(colon).toDouble();
+			seconds = minutesStr.mid(colon + 1).toDouble();
+		} else {
+			minutes = minutesStr.toDouble();
 		}
 	} else {
-		hours = "0";
-		minutes = numOnly;
+		hours = 0;
+		minutes = numOnly.toDouble();
 	}
-	secs = lrint(hours.toDouble() * 3600 + minutes.toDouble() * 60 + seconds.toDouble());
-	return secs;
+	return lrint(hours * 3600 + minutes * 60 + seconds);
 }
 
 int parseLengthToMm(const QString &text)

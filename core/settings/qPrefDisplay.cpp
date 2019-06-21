@@ -77,8 +77,9 @@ void qPrefDisplay::loadSync(bool doSync)
 void qPrefDisplay::set_divelist_font(const QString &value)
 {
 	QString newValue = value;
-	if (value.contains(","))
-		newValue = value.left(value.indexOf(","));
+	int comma = value.indexOf(',');
+	if (comma >= 0)
+		newValue = value.left(comma);
 
 	if (newValue != prefs.divelist_font &&
 	    !subsurface_ignore_font(qPrintable(newValue))) {
