@@ -2652,6 +2652,14 @@ técnicamente encontrara un techo, la inmersión aún no requiere explícitament
 una parada de descompresión. Esta característica permite a los ordenadores de
 buceo ofrecer tiempos de fondo más largos.
 
+Estríctamente hablando, el techo verde calculado es solo una representación directa
+de las cargas de gas inerte de los tejidos simulados y es independiente de
+cualquier velocidad de ascenso asumida. Indica la profundidad mínima permitida
+por el modelo de descompresión en ese instante de tiempo para unas cargas de
+gas determinadas y no es una afirmación acerca de una posible tabla de ascenso
+para el resto de la inmersión. Para obtener esta última utiliza la opción
+"Editar inmersión en el Planificador_" en el menú Registro.
+
 [icon="images/icons/cceiling.jpg"]
 [NOTE]
 Si el propio ordenador de buceo calcula un techo y lo pone a disposición de
@@ -3465,7 +3473,7 @@ Ver el <<_apendice_a_informacion_especifica_del_sistema_operativo_para_importar_
 para información sobre como hacerlo.
 
 Una vez que el ordenador de buceo está al PC con _Subsurface_, se selecciona
-_Archivo -> Configurar ordenador de buceo_ en el menú principal. Si se ha
+_Archivo -> Cambiar ajustes del ordenador de buceo_ en el menú principal. Si se ha
 indicado el nombre de dispositivo correcto en el campo de texto de la parte
 superior, esto abrirá y seleccionará el modelo correcto en el panel de la
 izquierda (ver imagen a continuación).
