@@ -194,25 +194,9 @@ bool MultiFilterSortModel::showDive(const struct dive *d) const
 
 bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
-	QModelIndex index0 = sourceModel()->index(source_row, 0, source_parent);
-	struct dive *d = sourceModel()->data(index0, DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
-
-	// For dives, simply check the hidden_by_filter flag
-	if (d)
-		return !d->hidden_by_filter;
-
-	// Since this is not a dive, it must be a trip
-	dive_trip *trip = sourceModel()->data(index0, DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
-
-	if (!trip)
-		return false; // Oops. Neither dive nor trip, something is seriously wrong.
-
-	// Show the trip if any dive is visible
-	for (int i = 0; i < trip->dives.nr; ++i) {
-		if (!trip->dives.dives[i]->hidden_by_filter)
-			return true;
-	}
-	return false;
+	QAbstractItemModel *m = sourceModel();
+	QModelIndex index0 = m->index(source_row, 0, source_parent);
+	return m->data(index0, DiveTripModelBase::SHOWN_ROLE).value<bool>();
 }
 
 void MultiFilterSortModel::filterChanged(const QModelIndex &from, const QModelIndex &to, const QVector<int> &roles)
@@ -225,8 +209,9 @@ void MultiFilterSortModel::filterChanged(const QModelIndex &from, const QModelIn
 
 void MultiFilterSortModel::myInvalidate()
 {
-	int i;
-	struct dive *d;
+	QAbstractItemModel *m = sourceModel();
+	if (!m)
+		return;
 
 	{
 		// This marker prevents the UI from getting notifications on selection changes.
@@ -240,12 +225,36 @@ void MultiFilterSortModel::myInvalidate()
 
 		divesDisplayed = 0;
 
-		// Apply filter for each dive
-		for_each_dive (i, d) {
-			bool show = showDive(d);
-			filter_dive(d, show);
-			if (show)
-				divesDisplayed++;
+		for (int i = 0; i < m->rowCount(QModelIndex()); ++i) {
+			QModelIndex idx = m->index(i, 0, QModelIndex());
+
+			dive_trip *trip = m->data(idx, DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
+			if (trip) {
+				// This is a trip -> loop over all dives and see if any is selected
+
+				bool showTrip = false;
+				for (int j = 0; j < m->rowCount(idx); ++j) {
+					QModelIndex idx2 = m->index(j, 0, idx);
+					dive *d = m->data(idx2, DiveTripModelBase::DIVE_ROLE).value<dive *>();
+					if (!d) {
+						qWarning("MultiFilterSortModel::myInvalidate(): subitem not a dive!?");
+						continue;
+					}
+					bool show = showDive(d);
+					if (show) {
+						divesDisplayed++;
+						showTrip = true;
+					}
+					m->setData(idx2, show, DiveTripModelBase::SHOWN_ROLE);
+				}
+				m->setData(idx, showTrip, DiveTripModelBase::SHOWN_ROLE);
+			} else {
+				dive *d = m->data(idx, DiveTripModelBase::DIVE_ROLE).value<dive *>();
+				bool show = showDive(d);
+				if (show)
+					divesDisplayed++;
+				m->setData(idx, show, DiveTripModelBase::SHOWN_ROLE);
+			}
 		}
 
 		invalidateFilter();
