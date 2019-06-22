@@ -389,6 +389,9 @@ Qt::ItemFlags DiveTripModelBase::flags(const QModelIndex &index) const
 
 bool DiveTripModelBase::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+	if (role == SHOWN_ROLE)
+		return setShown(index, value.value<bool>());
+
 	// We only support setting of data for dives and there, only the number.
 	dive *d = diveOrNull(index);
 	if (!d)
@@ -636,16 +639,19 @@ QModelIndex DiveTripModelTree::parent(const QModelIndex &index) const
 }
 
 DiveTripModelTree::Item::Item(dive_trip *t, const QVector<dive *> &divesIn) : d_or_t{nullptr, t},
-	dives(divesIn.toStdVector())
+	dives(divesIn.toStdVector()),
+	shown(std::any_of(dives.begin(), dives.end(), [](dive *d){ return !d->hidden_by_filter; }))
 {
 }
 
 DiveTripModelTree::Item::Item(dive_trip *t, dive *d) : d_or_t{nullptr, t},
-	dives({ d })
+	dives({ d }),
+	shown(!d->hidden_by_filter)
 {
 }
 
-DiveTripModelTree::Item::Item(dive *d) : d_or_t{d, nullptr}
+DiveTripModelTree::Item::Item(dive *d) : d_or_t{d, nullptr},
+	shown(!d->hidden_by_filter)
 {
 }
 
@@ -683,8 +689,44 @@ dive *DiveTripModelTree::diveOrNull(const QModelIndex &index) const
 	return tripOrDive(index).dive;
 }
 
+// Set the shown flag that marks whether an entry is shown or hidden by the filter.
+// The flag is cached for top-level items (trips and dives outside of trips).
+// For dives that belong to a trip (i.e. non-top-level items), the flag is
+// simply written through to the core.
+bool DiveTripModelTree::setShown(const QModelIndex &idx, bool shown)
+{
+	if (!idx.isValid())
+		return false;
+
+	QModelIndex parent = idx.parent();
+	if (!parent.isValid()) {
+		// An invalid parent means that we're at the top-level
+		Item &item = items[idx.row()];
+		item.shown = shown; // Cache the flag.
+		if (item.d_or_t.dive) {
+			// This is a dive -> also register the flag in the core
+			filter_dive(item.d_or_t.dive, shown);
+		}
+	} else {
+		// We're not at the top-level. This must be a dive, therefore
+		// simply write the flag through to the core.
+		const Item &parentItem = items[parent.row()];
+		filter_dive(parentItem.dives[idx.row()], shown);
+	}
+
+	return true;
+}
+
 QVariant DiveTripModelTree::data(const QModelIndex &index, int role) const
 {
+	if (role == SHOWN_ROLE) {
+		QModelIndex parent = index.parent();
+		// An invalid parent means that we're at the top-level
+		if (!parent.isValid())
+			return items[index.row()].shown;
+		return !items[parent.row()].dives[index.row()]->hidden_by_filter;
+	}
+
 	// Set the font for all items alike
 	if (role == Qt::FontRole)
 		return defaultModelFont();
@@ -1135,6 +1177,15 @@ dive *DiveTripModelList::diveOrNull(const QModelIndex &index) const
 	return items[row];
 }
 
+bool DiveTripModelList::setShown(const QModelIndex &idx, bool shown)
+{
+	dive *d = diveOrNull(idx);
+	if (!d)
+		return false;
+	filter_dive(d, shown);
+	return true;
+}
+
 QVariant DiveTripModelList::data(const QModelIndex &index, int role) const
 {
 	// Set the font for all items alike
@@ -1142,6 +1193,8 @@ QVariant DiveTripModelList::data(const QModelIndex &index, int role) const
 		return defaultModelFont();
 
 	dive *d = diveOrNull(index);
+	if (role == SHOWN_ROLE)
+		return d && !d->hidden_by_filter;
 	return d ? diveData(d, index.column(), role) : QVariant();
 }
 

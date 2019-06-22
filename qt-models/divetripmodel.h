@@ -52,6 +52,7 @@ public:
 		DIVE_ROLE,
 		TRIP_ROLE,
 		DIVE_IDX,
+		SHOWN_ROLE,
 		SELECTED_ROLE
 	};
 	enum Layout {
@@ -74,6 +75,7 @@ public:
 	DiveTripModelBase(QObject *parent = 0);
 	int columnCount(const QModelIndex&) const;
 	virtual void filterFinished() = 0;
+	virtual bool setShown(const QModelIndex &idx, bool shown) = 0;
 
 	// Used for sorting. This is a bit of a layering violation, as sorting should be performed
 	// by the higher-up QSortFilterProxyModel, but it makes things so much easier!
@@ -126,6 +128,7 @@ private:
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
 	void changeDiveSelection(dive_trip *trip, const QVector<dive *> &dives, bool select) override;
 	dive *diveOrNull(const QModelIndex &index) const override;
+	bool setShown(const QModelIndex &idx, bool shown);
 
 	// The tree model has two levels. At the top level, we have either trips or dives
 	// that do not belong to trips. Such a top-level item is represented by the "Item"
@@ -138,6 +141,7 @@ private:
 	struct Item {
 		dive_or_trip		d_or_t;
 		std::vector<dive *>	dives;			// std::vector<> instead of QVector for insert() with three iterators
+		bool			shown;
 		Item(dive_trip *t, const QVector<dive *> &dives);
 		Item(dive_trip *t, dive *d);			// Initialize a trip with one dive
 		Item(dive *d);					// Initialize a top-level dive
@@ -187,6 +191,7 @@ private:
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
 	void changeDiveSelection(dive_trip *trip, const QVector<dive *> &dives, bool select) override;
 	dive *diveOrNull(const QModelIndex &index) const override;
+	bool setShown(const QModelIndex &idx, bool shown);
 
 	std::vector<dive *> items;				// TODO: access core data directly
 };
