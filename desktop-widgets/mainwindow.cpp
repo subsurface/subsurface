@@ -18,6 +18,7 @@
 #include <QtConcurrentRun>
 
 #include "core/color.h"
+#include "core/device.h"
 #include "core/divecomputer.h"
 #include "core/divesitehelpers.h"
 #include "core/file.h"
@@ -962,21 +963,18 @@ void MainWindow::on_actionAddDive_triggered()
 	if (!plannerStateClean())
 		return;
 
-	// TODO: We (mis)use displayed_dive to construct a default dive using the dive planner.
-	// This means that we have to do all this in a setPlanState()/setProfileState() pair,
-	// to avoid the profile and planner going out of sync (which in turn can lead to crashes).
-	// This should all be simplified. There is no apparent no reason to go via the planner
-	// to create a default profile.
+	// create a dive an hour from now with a default depth (15m/45ft) and duration (40 minutes)
+	// as a starting point for the user to edit
 	clear_dive(&displayed_dive);
-	graphics->setPlanState();
-	DivePlannerPointsModel::instance()->setupStartTime();
-	DivePlannerPointsModel::instance()->createSimpleDive();
 	displayed_dive.id = dive_getUniqID();
 	displayed_dive.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
+	displayed_dive.dc.duration.seconds = 40 * 60;
+	displayed_dive.dc.maxdepth.mm = M_OR_FT(15, 45);
+	displayed_dive.dc.meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
 	displayed_dive.dc.model = strdup("manually added dive"); // don't translate! this is stored in the XML file
-	fixup_dc_duration(&displayed_dive.dc);
 	displayed_dive.duration = displayed_dive.dc.duration;
-	graphics->setProfileState();
+	fake_dc(&displayed_dive.dc);
+	fixup_dive(&displayed_dive);
 
 	Command::addDive(&displayed_dive, autogroup, true);
 
