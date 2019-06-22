@@ -965,18 +965,17 @@ void MainWindow::on_actionAddDive_triggered()
 
 	// create a dive an hour from now with a default depth (15m/45ft) and duration (40 minutes)
 	// as a starting point for the user to edit
-	clear_dive(&displayed_dive);
-	displayed_dive.id = dive_getUniqID();
-	displayed_dive.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
-	displayed_dive.dc.duration.seconds = 40 * 60;
-	displayed_dive.dc.maxdepth.mm = M_OR_FT(15, 45);
-	displayed_dive.dc.meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
-	displayed_dive.dc.model = strdup("manually added dive"); // don't translate! this is stored in the XML file
-	displayed_dive.duration = displayed_dive.dc.duration;
-	fake_dc(&displayed_dive.dc);
-	fixup_dive(&displayed_dive);
+	struct dive d = { 0 };
+	d.id = dive_getUniqID();
+	d.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
+	d.dc.duration.seconds = 40 * 60;
+	d.dc.maxdepth.mm = M_OR_FT(15, 45);
+	d.dc.meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
+	d.dc.model = strdup("manually added dive"); // don't translate! this is stored in the XML file
+	fake_dc(&d.dc);
+	fixup_dive(&d);
 
-	Command::addDive(&displayed_dive, autogroup, true);
+	Command::addDive(&d, autogroup, true);
 
 	// Plot dive actually copies current_dive to displayed_dive and therefore ensures that the
 	// correct data are displayed!
