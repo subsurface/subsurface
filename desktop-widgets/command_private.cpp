@@ -47,12 +47,13 @@ bool setSelection(const std::vector<dive *> &selection, dive *currentDive)
 	// To do so, generate vectors of dives to be selected and deselected.
 	// We send signals batched by trip, so keep track of trip/dive pairs.
 	QVector<dive *> divesToSelect;
-	QVector<dive *> divesToDeselect;
+	divesToSelect.reserve(selection.size());
 
 	// TODO: We might want to keep track of selected dives in a more efficient way!
 	int i;
 	dive *d;
 	amount_selected = 0; // We recalculate amount_selected
+	bool selectionChanged = false;
 	for_each_dive(i, d) {
 		// We only modify dives that are currently visible.
 		if (d->hidden_by_filter) {
@@ -65,24 +66,21 @@ bool setSelection(const std::vector<dive *> &selection, dive *currentDive)
 		// TODO: By sorting the list in the same way as the backend, this could be made more efficient.
 		bool newState = std::find(selection.begin(), selection.end(), d) != selection.end();
 
+		if (newState) {
+			++amount_selected;
+			divesToSelect.push_back(d);
+		}
 		// TODO: Instead of using select_dive() and deselect_dive(), we set selected directly.
 		// The reason is that deselect() automatically sets a new current dive, which we
 		// don't want, as we set it later anyway.
 		// There is other parts of the C++ code that touches the innards directly, but
 		// ultimately this should be pushed down to C.
-		if (newState && !d->selected) {
-			d->selected = true;
-			++amount_selected;
-			divesToSelect.push_back(d);
-		} else if (!newState && d->selected) {
-			d->selected = false;
-			divesToDeselect.push_back(d);
-		}
+		selectionChanged |= d->selected != newState;
+		d->selected = newState;
 	}
 
 	// Send the select and deselect signals
 	emit diveListNotifier.divesSelected(divesToSelect);
-	emit diveListNotifier.divesDeselected(divesToDeselect);
 
 	bool currentDiveChanged = false;
 	if (!currentDive) {
@@ -105,7 +103,7 @@ bool setSelection(const std::vector<dive *> &selection, dive *currentDive)
 	}
 
 	// return true if selection of current dive changed
-	return !divesToSelect.empty() || !divesToDeselect.empty() || currentDiveChanged;
+	return selectionChanged || currentDiveChanged;
 }
 
 // Turn current selection into a vector.

@@ -53,13 +53,12 @@ signals:
 	void tripChanged(dive_trip *trip, TripField field);
 
 	// Selection-signals come in two kinds:
-	//  - divesSelected, divesDeselected and currentDiveChanged are are used by the dive-list
+	//  - divesSelected and currentDiveChanged are are used by the dive-list
 	//    model and view to correctly highlight the correct dives.
 	//  - selectionChanged() is called once at the end of commands if either the selection
 	//    or the current dive changed. It is used by the main-window / profile to update
 	//    their data.
 	void divesSelected(const QVector<dive *> &dives);
-	void divesDeselected(const QVector<dive *> &dives);
 	void currentDiveChanged();
 	void selectionChanged();
 
