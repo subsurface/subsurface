@@ -31,7 +31,7 @@ public slots:
 	void selectedDivesChanged(const QList<int> &);
 	void coordinatesChanged(struct dive_site *ds, const location_t &);
 	void doneLoading(QQuickWidget::Status status);
-	void divesChanged(dive_trip *, const QVector<dive *> &, DiveField field);
+	void divesChanged(const QVector<dive *> &, DiveField field);
 
 private:
 	static MapWidget *m_instance;

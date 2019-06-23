@@ -37,39 +37,29 @@ enum class TripField {
 class DiveListNotifier : public QObject {
 	Q_OBJECT
 signals:
-
-	// Note that there are no signals for trips being added / created / time-shifted,
-	// because these events never happen without a dive being added / created / time-shifted.
-
-	// We send one divesAdded, divesDeleted, divesChanged and divesTimeChanged, divesSelected
-	// signal per trip (non-associated dives being considered part of the null trip). This is
-	// ideal for the tree-view, but might be not-so-perfect for the list view, if trips intermingle
-	// or the deletion spans multiple trips. But most of the time only dives of a single trip
-	// will be affected and trips don't overlap, so these considerations are moot.
-	// Notes:
-	// - The dives are always sorted by according to the dives_less_than() function of the core.
-	// - The "trip" arguments are null for top-level-dives.
+	// Note that there are no signals for trips being added and created
+	// because these events never happen without a dive being added, removed or moved.
+	// The dives are always sorted according to the dives_less_than() function of the core.
 	void divesAdded(dive_trip *trip, bool addTrip, const QVector<dive *> &dives);
 	void divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives);
-	void divesChanged(dive_trip *trip, const QVector<dive *> &dives, DiveField field);
 	void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
-	void divesTimeChanged(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
+	void divesChanged(const QVector<dive *> &dives, DiveField field);
+	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
 
-	void cylindersReset(dive_trip *trip, const QVector<dive *> &dives);
-	void weightsystemsReset(dive_trip *trip, const QVector<dive *> &dives);
+	void cylindersReset(const QVector<dive *> &dives);
+	void weightsystemsReset(const QVector<dive *> &dives);
 
 	// Trip edited signal
 	void tripChanged(dive_trip *trip, TripField field);
 
 	// Selection-signals come in two kinds:
-	//  - divesSelected, divesDeselected and currentDiveChanged are finer grained and are
-	//    called batch-wise per trip (except currentDiveChanged, of course). These signals
-	//    are used by the dive-list model and view to correctly highlight the correct dives.
+	//  - divesSelected, divesDeselected and currentDiveChanged are are used by the dive-list
+	//    model and view to correctly highlight the correct dives.
 	//  - selectionChanged() is called once at the end of commands if either the selection
 	//    or the current dive changed. It is used by the main-window / profile to update
 	//    their data.
-	void divesSelected(dive_trip *trip, const QVector<dive *> &dives);
-	void divesDeselected(dive_trip *trip, const QVector<dive *> &dives);
+	void divesSelected(const QVector<dive *> &dives);
+	void divesDeselected(const QVector<dive *> &dives);
 	void currentDiveChanged();
 	void selectionChanged();
 

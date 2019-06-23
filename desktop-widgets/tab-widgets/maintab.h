@@ -46,7 +46,7 @@ public:
 
 public
 slots:
-	void divesChanged(dive_trip *trip, const QVector<dive *> &dives, DiveField field);
+	void divesChanged(const QVector<dive *> &dives, DiveField field);
 	void diveSiteEdited(dive_site *ds, int field);
 	void tripChanged(dive_trip *trip, TripField field);
 	void updateDiveInfo();

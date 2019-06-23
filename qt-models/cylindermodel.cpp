@@ -7,7 +7,6 @@
 #include "qt-models/diveplannermodel.h"
 #include "core/gettextfromc.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
-#include "core/trip.h" // TODO: Needed because cylindersReset uses a trip parameter -> remove that!
 
 CylindersModel::CylindersModel(QObject *parent) :
 	CleanerTableModel(parent),
@@ -619,7 +618,7 @@ bool CylindersModel::updateBestMixes()
 	return gasUpdated;
 }
 
-void CylindersModel::cylindersReset(dive_trip *trip, const QVector<dive *> &dives)
+void CylindersModel::cylindersReset(const QVector<dive *> &dives)
 {
 	// This model only concerns the currently displayed dive. If this is not among the
 	// dives that had their cylinders reset, exit.
