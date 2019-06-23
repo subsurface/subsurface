@@ -49,17 +49,13 @@ struct DivesToTrip
 	std::vector<OwningTripPtr> tripsToAdd;
 };
 
-// All divelist commands derive from a common base class, which has a flag
-// for when then selection changed. In such a case, in the redo() and undo()
-// methods a signal will be sent. The base-class implements redo() and undo(),
-// which resets the flag and sends a signal. Derived classes implement the
-// virtual methods redoit() and undoit() [Yes, the names could be more expressive].
-// Moreover, the class implements helper methods, which set the selectionChanged
-// flag accordingly.
+// All divelist commands derive from a common base class. It keeps track
+// of dive site counts that may have changed.
+// Derived classes implement the virtual methods redoit() and undoit()
+// [Yes, the names could be more expressive].
 class DiveListBase : public Base {
 protected:
-	// These are helper functions to add / remove dive from the C-core structures,
-	// which set the selectionChanged flag if the added / removed dive was selected.
+	// These are helper functions to add / remove dive from the C-core structures.
 	DiveToAdd removeDive(struct dive *d, std::vector<OwningTripPtr> &tripsToAdd);
 	dive *addDive(DiveToAdd &d);
 	DivesAndTripsToAdd removeDives(DivesAndSitesToRemove &divesAndSitesToDelete);
@@ -68,20 +64,11 @@ protected:
 	// Register dive sites where counts changed so that we can signal the frontend later.
 	void diveSiteCountChanged(struct dive_site *ds);
 
-	// Set the selection to a given state. Set the selectionChanged flag if anything changed.
-	void restoreSelection(const std::vector<dive *> &selection, dive *currentDive);
-
-	// Commands set this flag if the selection changed on first execution.
-	// Only then, a new the divelist will be scanned again after the command.
-	// If this flag is set on first execution, a selectionChanged signal will
-	// be sent.
-	bool selectionChanged;
-
 private:
 	// Keep track of dive sites where the number of dives changed
 	std::vector<dive_site *> sitesCountChanged;
-	void initWork(); // reset selectionChanged flag
-	void finishWork(); // emit signals if selection or dive site counts changed
+	void initWork();
+	void finishWork(); // update dive site counts
 	void undo() override;
 	void redo() override;
 	virtual void redoit() = 0;
