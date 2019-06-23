@@ -918,8 +918,13 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 	d->divetrip = nullptr;
 	d->dive_site = nullptr;
 
-	// The merged dive gets the number of the first dive
-	d->number = dives[0]->number;
+	// The merged dive gets the number of the first dive with a non-zero number
+	for (const dive *dive: dives) {
+		if (dive->number) {
+			d->number = dive->number;
+			break;
+		}
+	}
 
 	// We will only renumber the remaining dives if the joined dives are consecutive.
 	// Otherwise all bets are off concerning what the user wanted and doing nothing seems
