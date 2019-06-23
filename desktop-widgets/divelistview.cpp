@@ -192,13 +192,11 @@ void DiveListView::reset()
 }
 
 // If items were selected, inform the selection model
-void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indexes, bool select)
+void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indexes)
 {
+	clearSelection();
 	MultiFilterSortModel *m = MultiFilterSortModel::instance();
 	QItemSelectionModel *s = selectionModel();
-	auto flags = select ?
-		QItemSelectionModel::Rows | QItemSelectionModel::Select :
-		QItemSelectionModel::Rows | QItemSelectionModel::Deselect;
 	for (const QModelIndex &index: indexes) {
 		// We have to transform the indices into local indices, since
 		// there might be sorting or filtering in effect.
@@ -210,10 +208,10 @@ void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indexes, boo
 		if (!localIndex.isValid())
 			continue;
 
-		s->select(localIndex, flags);
+		s->select(localIndex, QItemSelectionModel::Rows | QItemSelectionModel::Select);
 
 		// If an item of a not-yet expanded trip is selected, expand the trip.
-		if (select && localIndex.parent().isValid() && !isExpanded(localIndex.parent())) {
+		if (localIndex.parent().isValid() && !isExpanded(localIndex.parent())) {
 			setAnimated(false);
 			expand(localIndex.parent());
 			setAnimated(true);
