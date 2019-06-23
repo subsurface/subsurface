@@ -42,6 +42,8 @@ public:
 	QList<dive_trip *> selectedTrips();
 	static QString lastUsedImageDir();
 	static void updateLastUsedImageDir(const QString &s);
+signals:
+	void divesSelected();
 public
 slots:
 	void toggleColumnVisibilityByIndex();

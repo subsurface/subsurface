@@ -108,8 +108,7 @@ public slots:
 	void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
 	void divesChanged(const QVector<dive *> &dives);
 	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
-	void divesSelected(const QVector<dive *> &dives);
-	void currentDiveChanged();
+	void divesSelected(const QVector<dive *> &dives, dive *current);
 	void tripChanged(dive_trip *trip, TripField);
 
 public:
@@ -175,8 +174,7 @@ public slots:
 	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
 	// Does nothing in list view.
 	//void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
-	void divesSelected(const QVector<dive *> &dives);
-	void currentDiveChanged();
+	void divesSelected(const QVector<dive *> &dives, dive *current);
 
 public:
 	DiveTripModelList(QObject *parent = nullptr);

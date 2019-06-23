@@ -53,7 +53,6 @@ void setSelection(const std::vector<dive *> &selection, dive *currentDive)
 	int i;
 	dive *d;
 	amount_selected = 0; // We recalculate amount_selected
-	bool selectionChanged = false;
 	for_each_dive(i, d) {
 		// We only modify dives that are currently visible.
 		if (d->hidden_by_filter) {
@@ -75,36 +74,19 @@ void setSelection(const std::vector<dive *> &selection, dive *currentDive)
 		// don't want, as we set it later anyway.
 		// There is other parts of the C++ code that touches the innards directly, but
 		// ultimately this should be pushed down to C.
-		selectionChanged |= d->selected != newState;
 		d->selected = newState;
 	}
 
-	// Send the select and deselect signals
-	emit diveListNotifier.divesSelected(divesToSelect);
-
-	bool currentDiveChanged = false;
-	if (!currentDive) {
-		// If currentDive is null, we have no current dive. In such a case always
-		// notify the frontend.
-		currentDiveChanged = true;
-		emit diveListNotifier.currentDiveChanged();
-	} else if (current_dive != currentDive) {
-		currentDiveChanged = true;
-
-		// We cannot simply change the currentd dive to the given dive.
-		// It might be hidden by a filter and thus not be selected.
-		if (currentDive->selected)
-			// Current dive is visible and selected. Excellent.
-			current_dive = currentDive;
-		else
-			// Current not visible -> find a different dive.
-			setClosestCurrentDive(currentDive->when, selection);
-		emit diveListNotifier.currentDiveChanged();
+	// We cannot simply change the current dive to the given dive.
+	// It might be hidden by a filter and thus not be selected.
+	current_dive = currentDive;
+	if (current_dive && !currentDive->selected) {
+		// Current not visible -> find a different dive.
+		setClosestCurrentDive(currentDive->when, selection);
 	}
 
-	// If the selection changed -> tell the frontend
-	if (selectionChanged || currentDiveChanged)
-		emit diveListNotifier.selectionChanged();
+	// Send the new selection
+	emit diveListNotifier.divesSelected(divesToSelect, current_dive);
 }
 
 // Turn current selection into a vector.
