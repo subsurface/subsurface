@@ -92,15 +92,15 @@ signals:
 	void selectionChanged(const QVector<QModelIndex> &indexes, bool select);
 	void newCurrentDive(QModelIndex index);
 protected slots:
-	void divesSelected(dive_trip *trip, const QVector<dive *> &dives);
-	void divesDeselected(dive_trip *trip, const QVector<dive *> &dives);
+	void divesSelected(const QVector<dive *> &dives);
+	void divesDeselected(const QVector<dive *> &dives);
 protected:
 	// Access trip and dive data
 	static QVariant diveData(const struct dive *d, int column, int role);
 	static QVariant tripData(const dive_trip *trip, int column, int role);
 
 	// Select or deselect dives
-	virtual void changeDiveSelection(dive_trip *trip, const QVector<dive *> &dives, bool select) = 0;
+	virtual void changeDiveSelection(const QVector<dive *> &dives, bool select) = 0;
 
 	virtual dive *diveOrNull(const QModelIndex &index) const = 0;	// Returns a dive if this index represents a dive, null otherwise
 };
@@ -111,9 +111,9 @@ class DiveTripModelTree : public DiveTripModelBase
 public slots:
 	void divesAdded(dive_trip *trip, bool addTrip, const QVector<dive *> &dives);
 	void divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives);
-	void divesChanged(dive_trip *trip, const QVector<dive *> &dives);
-	void divesTimeChanged(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
 	void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
+	void divesChanged(const QVector<dive *> &dives);
+	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
 	void currentDiveChanged();
 	void tripChanged(dive_trip *trip, TripField);
 
@@ -126,9 +126,12 @@ private:
 	QVariant data(const QModelIndex &index, int role) const override;
 	void filterFinished() override;
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
-	void changeDiveSelection(dive_trip *trip, const QVector<dive *> &dives, bool select) override;
+	void changeDiveSelection(const QVector<dive *> &dives, bool select) override;
+	void changeDiveSelectionTrip(dive_trip *trip, const QVector<dive *> &dives, bool select);
 	dive *diveOrNull(const QModelIndex &index) const override;
 	bool setShown(const QModelIndex &idx, bool shown);
+	void divesChangedTrip(dive_trip *trip, const QVector<dive *> &dives);
+	void divesTimeChangedTrip(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
 
 	// The tree model has two levels. At the top level, we have either trips or dives
 	// that do not belong to trips. Such a top-level item is represented by the "Item"
@@ -174,8 +177,8 @@ class DiveTripModelList : public DiveTripModelBase
 public slots:
 	void divesAdded(dive_trip *trip, bool addTrip, const QVector<dive *> &dives);
 	void divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives);
-	void divesChanged(dive_trip *trip, const QVector<dive *> &dives);
-	void divesTimeChanged(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
+	void divesChanged(const QVector<dive *> &dives);
+	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
 	// Does nothing in list view.
 	//void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
 	void currentDiveChanged();
@@ -189,7 +192,7 @@ private:
 	QVariant data(const QModelIndex &index, int role) const override;
 	void filterFinished() override;
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
-	void changeDiveSelection(dive_trip *trip, const QVector<dive *> &dives, bool select) override;
+	void changeDiveSelection(const QVector<dive *> &dives, bool select) override;
 	dive *diveOrNull(const QModelIndex &index) const override;
 	bool setShown(const QModelIndex &idx, bool shown);
 

@@ -18,7 +18,7 @@ namespace Command {
 static std::vector<dive_site *> addDiveSites(std::vector<OwningDiveSitePtr> &sites)
 {
 	std::vector<dive_site *> res;
-	std::vector<dive *> changedDives;
+	QVector<dive *> changedDives;
 	res.reserve(sites.size());
 
 	for (OwningDiveSitePtr &ds: sites) {
@@ -36,9 +36,7 @@ static std::vector<dive_site *> addDiveSites(std::vector<OwningDiveSitePtr> &sit
 		emit diveListNotifier.diveSiteAdded(res.back(), idx); // Inform frontend of new dive site.
 	}
 
-	processByTrip(changedDives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
-		emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::DIVESITE);
-	});
+	emit diveListNotifier.divesChanged(changedDives, DiveField::DIVESITE);
 
 	// Clear vector of unused owning pointers
 	sites.clear();
@@ -52,7 +50,7 @@ static std::vector<dive_site *> addDiveSites(std::vector<OwningDiveSitePtr> &sit
 static std::vector<OwningDiveSitePtr> removeDiveSites(std::vector<dive_site *> &sites)
 {
 	std::vector<OwningDiveSitePtr> res;
-	std::vector<dive *> changedDives;
+	QVector<dive *> changedDives;
 	res.reserve(sites.size());
 
 	for (dive_site *ds: sites) {
@@ -69,9 +67,7 @@ static std::vector<OwningDiveSitePtr> removeDiveSites(std::vector<dive_site *> &
 		emit diveListNotifier.diveSiteDeleted(ds, idx); // Inform frontend of removed dive site.
 	}
 
-	processByTrip(changedDives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
-		emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::DIVESITE);
-	});
+	emit diveListNotifier.divesChanged(changedDives, DiveField::DIVESITE);
 
 	sites.clear();
 
@@ -363,7 +359,7 @@ void MergeDiveSites::redo()
 	sitesToAdd = std::move(removeDiveSites(sitesToRemove));
 
 	// Remember which dives changed so that we can send a single dives-edited signal
-	std::vector<dive *> divesChanged;
+	QVector<dive *> divesChanged;
 
 	// The dives of the above dive sites were reset to no dive sites.
 	// Add them to the merged-into dive site. Thankfully, we remember
@@ -374,15 +370,13 @@ void MergeDiveSites::redo()
 			divesChanged.push_back(site->dives.dives[i]);
 		}
 	}
-	processByTrip(divesChanged, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
-		emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::DIVESITE);
-	});
+	emit diveListNotifier.divesChanged(divesChanged, DiveField::DIVESITE);
 }
 
 void MergeDiveSites::undo()
 {
 	// Remember which dives changed so that we can send a single dives-edited signal
-	std::vector<dive *> divesChanged;
+	QVector<dive *> divesChanged;
 
 	// Before readding the dive sites, unregister the corresponding dives so that they can be
 	// readded to their old dive sites.
@@ -395,9 +389,7 @@ void MergeDiveSites::undo()
 
 	sitesToRemove = std::move(addDiveSites(sitesToAdd));
 
-	processByTrip(divesChanged, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
-		emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::DIVESITE);
-	});
+	emit diveListNotifier.divesChanged(divesChanged, DiveField::DIVESITE);
 }
 
 } // namespace Command

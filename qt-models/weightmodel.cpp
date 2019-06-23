@@ -6,7 +6,6 @@
 #include "core/qthelper.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
 #include "qt-models/weightsysteminfomodel.h"
-#include "core/trip.h" // TODO: Needed because weightsystemsReset uses a trip parameter -> remove that!
 
 WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
 	changed(false),
@@ -168,7 +167,7 @@ void WeightModel::updateDive()
 	}
 }
 
-void WeightModel::weightsystemsReset(dive_trip *trip, const QVector<dive *> &dives)
+void WeightModel::weightsystemsReset(const QVector<dive *> &dives)
 {
 	// This model only concerns the currently displayed dive. If this is not among the
 	// dives that had their cylinders reset, exit.

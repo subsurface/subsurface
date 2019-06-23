@@ -417,14 +417,14 @@ bool DiveTripModelBase::setData(const QModelIndex &index, const QVariant &value,
 	return true;
 }
 
-void DiveTripModelBase::divesSelected(dive_trip *trip, const QVector<dive *> &dives)
+void DiveTripModelBase::divesSelected(const QVector<dive *> &dives)
 {
-	changeDiveSelection(trip, dives, true);
+	changeDiveSelection(dives, true);
 }
 
-void DiveTripModelBase::divesDeselected(dive_trip *trip, const QVector<dive *> &dives)
+void DiveTripModelBase::divesDeselected(const QVector<dive *> &dives)
 {
-	changeDiveSelection(trip, dives, false);
+	changeDiveSelection(dives, false);
 }
 
 // Find a range of matching elements in a vector.
@@ -915,7 +915,38 @@ void DiveTripModelTree::divesDeleted(dive_trip *trip, bool deleteTrip, const QVe
 	}
 }
 
-void DiveTripModelTree::divesChanged(dive_trip *trip, const QVector<dive *> &dives)
+// The tree-version of the model wants to process the dives per trip.
+// This template takes a vector of dives and calls a function batchwise for each trip.
+template<typename Function>
+void processByTrip(QVector<dive *> dives, Function action)
+{
+	// Sort lexicographically by trip then according to the dive_less_than() function.
+	std::sort(dives.begin(), dives.end(), [](const dive *d1, const dive *d2)
+		  { return d1->divetrip == d2->divetrip ? dive_less_than(d1, d2) : d1->divetrip < d2->divetrip; });
+
+	// Then, process the dives in batches by trip
+	int i, j; // Begin and end of batch
+	for (i = 0; i < dives.size(); i = j) {
+		dive_trip *trip = dives[i]->divetrip;
+		for (j = i + 1; j < dives.size() && dives[j]->divetrip == trip; ++j)
+			; // pass
+		// Copy dives into a QVector. Some sort of "range_view" would be ideal.
+		QVector<dive *> divesInTrip(j - i);
+		for (int k = i; k < j; ++k)
+			divesInTrip[k - i] = dives[k];
+
+		// Finally, emit the signal
+		action(trip, divesInTrip);
+	}
+}
+
+void DiveTripModelTree::divesChanged(const QVector<dive *> &dives)
+{
+	processByTrip(dives, [this] (dive_trip *trip, const QVector<dive *> &divesInTrip)
+		      { divesChangedTrip(trip, divesInTrip); });
+}
+
+void DiveTripModelTree::divesChangedTrip(dive_trip *trip, const QVector<dive *> &dives)
 {
 	// Update filter flags. TODO: The filter should update the flag by itself when
 	// recieving the signals below.
@@ -992,7 +1023,7 @@ void DiveTripModelTree::divesMovedBetweenTrips(dive_trip *from, dive_trip *to, b
 	// Move dives between trips. This is an "interesting" problem, as we might
 	// move from trip to trip, from trip to top-level or from top-level to trip.
 	// Moreover, we might have to add a trip first or delete an old trip.
-	// For simplicity, we will simply used the already existing divesAdded() / divesDeleted()
+	// For simplicity, we will simply use the already existing divesAdded() / divesDeleted()
 	// functions. This *is* cheating. But let's just try this and see how graceful
 	// this is handled by Qt and if it gives some ugly UI behavior!
 
@@ -1006,10 +1037,16 @@ void DiveTripModelTree::divesMovedBetweenTrips(dive_trip *from, dive_trip *to, b
 	QVector<dive *> selectedDives = filterSelectedDives(dives);
 	divesAdded(to, createTo, dives);
 	divesDeleted(from, deleteFrom, dives);
-	divesSelected(to, selectedDives);
+	changeDiveSelectionTrip(to, dives, true);
 }
 
-void DiveTripModelTree::divesTimeChanged(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives)
+void DiveTripModelTree::divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives)
+{
+	processByTrip(dives, [this, delta] (dive_trip *trip, const QVector<dive *> &divesInTrip)
+		      { divesTimeChangedTrip(trip, delta, divesInTrip); });
+}
+
+void DiveTripModelTree::divesTimeChangedTrip(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives)
 {
 	// As in the case of divesMovedBetweenTrips(), this is a tricky, but solvable, problem.
 	// We have to consider the direction (delta < 0 or delta >0) and that dives at their destination
@@ -1024,10 +1061,16 @@ void DiveTripModelTree::divesTimeChanged(dive_trip *trip, timestamp_t delta, con
 	QVector<dive *> selectedDives = filterSelectedDives(dives);
 	divesDeleted(trip, false, dives);
 	divesAdded(trip, false, dives);
-	divesSelected(trip, selectedDives);
+	changeDiveSelectionTrip(trip, selectedDives, true);
 }
 
-void DiveTripModelTree::changeDiveSelection(dive_trip *trip, const QVector<dive *> &dives, bool select)
+void DiveTripModelTree::changeDiveSelection(const QVector<dive *> &dives, bool select)
+{
+	processByTrip(dives, [this, select] (dive_trip *trip, const QVector<dive *> &divesInTrip)
+		      { changeDiveSelectionTrip(trip, divesInTrip, select); });
+}
+
+void DiveTripModelTree::changeDiveSelectionTrip(dive_trip *trip, const QVector<dive *> &dives, bool select)
 {
 	// We got a number of dives that have been selected. Turn this into QModelIndexes and
 	// emit a signal, so that views can change the selection.
@@ -1198,8 +1241,10 @@ QVariant DiveTripModelList::data(const QModelIndex &index, int role) const
 	return d ? diveData(d, index.column(), role) : QVariant();
 }
 
-void DiveTripModelList::divesAdded(dive_trip *, bool, const QVector<dive *> &dives)
+void DiveTripModelList::divesAdded(dive_trip *, bool, const QVector<dive *> &divesIn)
 {
+	QVector<dive *> dives = divesIn;
+	std::sort(dives.begin(), dives.end(), dive_less_than);
 	addInBatches(items, dives,
 		     &dive_less_than, // comp
 		     [&](std::vector<dive *> &items, const QVector<dive *> &dives, int idx, int from, int to) { // inserter
@@ -1209,8 +1254,10 @@ void DiveTripModelList::divesAdded(dive_trip *, bool, const QVector<dive *> &div
 		     });
 }
 
-void DiveTripModelList::divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives)
+void DiveTripModelList::divesDeleted(dive_trip *, bool, const QVector<dive *> &divesIn)
 {
+	QVector<dive *> dives = divesIn;
+	std::sort(dives.begin(), dives.end(), dive_less_than);
 	processRangesZip(items, dives,
 			 [](const dive *d1, const dive *d2) { return d1 == d2; }, // Condition (std::equal_to only in C++14)
 			 [&](std::vector<dive *> &items, const QVector<dive *> &, int from, int to, int) -> int { // Action
@@ -1221,8 +1268,11 @@ void DiveTripModelList::divesDeleted(dive_trip *trip, bool deleteTrip, const QVe
 				 });
 }
 
-void DiveTripModelList::divesChanged(dive_trip *trip, const QVector<dive *> &dives)
+void DiveTripModelList::divesChanged(const QVector<dive *> &divesIn)
 {
+	QVector<dive *> dives = divesIn;
+	std::sort(dives.begin(), dives.end(), dive_less_than);
+
 	// Update filter flags. TODO: The filter should update the flag by itself when
 	// recieving the signals below.
 	for (dive *d: dives)
@@ -1240,16 +1290,19 @@ void DiveTripModelList::divesChanged(dive_trip *trip, const QVector<dive *> &div
 			 });
 }
 
-void DiveTripModelList::divesTimeChanged(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives)
+void DiveTripModelList::divesTimeChanged(timestamp_t delta, const QVector<dive *> &divesIn)
 {
+	QVector<dive *> dives = divesIn;
+	std::sort(dives.begin(), dives.end(), dive_less_than);
+
 	// See comment for DiveTripModelTree::divesTimeChanged above.
 	QVector<dive *> selectedDives = filterSelectedDives(dives);
-	divesDeleted(trip, false, dives);
-	divesAdded(trip, false, dives);
-	divesSelected(trip, selectedDives);
+	divesDeleted(nullptr, false, dives);
+	divesAdded(nullptr, false, dives);
+	divesSelected(selectedDives);
 }
 
-void DiveTripModelList::changeDiveSelection(dive_trip *trip, const QVector<dive *> &dives, bool select)
+void DiveTripModelList::changeDiveSelection(const QVector<dive *> &dives, bool select)
 {
 	// We got a number of dives that have been selected. Turn this into QModelIndexes and
 	// emit a signal, so that views can change the selection.
