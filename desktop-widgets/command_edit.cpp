@@ -99,8 +99,7 @@ void EditBase<T>::undo()
 	DiveField id = fieldId();
 	emit diveListNotifier.divesChanged(QVector<dive *>::fromStdVector(dives), id);
 
-	if (setSelection(selectedDives, current))
-		emit diveListNotifier.selectionChanged(); // If the selection changed -> tell the frontend
+	setSelection(selectedDives, current);
 }
 
 // We have to manually instantiate the constructors of the EditBase class,
@@ -539,8 +538,7 @@ void EditTagsBase::undo()
 	DiveField id = fieldId();
 	emit diveListNotifier.divesChanged(QVector<dive *>::fromStdVector(dives), id);
 
-	if (setSelection(selectedDives, current))
-		emit diveListNotifier.selectionChanged(); // If the selection changed -> tell the frontend
+	setSelection(selectedDives, current);
 }
 
 // Undo and redo do the same as just the stored value is exchanged
