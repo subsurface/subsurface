@@ -42,7 +42,7 @@ static void setClosestCurrentDive(timestamp_t when, const std::vector<dive *> &s
 // Reset the selection to the dives of the "selection" vector and send the appropriate signals.
 // Set the current dive to "currentDive". "currentDive" must be an element of "selection" (or
 // null if "seletion" is empty). Return true if the selection or current dive changed.
-bool setSelection(const std::vector<dive *> &selection, dive *currentDive)
+void setSelection(const std::vector<dive *> &selection, dive *currentDive)
 {
 	// To do so, generate vectors of dives to be selected and deselected.
 	// We send signals batched by trip, so keep track of trip/dive pairs.
@@ -102,8 +102,9 @@ bool setSelection(const std::vector<dive *> &selection, dive *currentDive)
 		emit diveListNotifier.currentDiveChanged();
 	}
 
-	// return true if selection of current dive changed
-	return selectionChanged || currentDiveChanged;
+	// If the selection changed -> tell the frontend
+	if (selectionChanged || currentDiveChanged)
+		emit diveListNotifier.selectionChanged();
 }
 
 // Turn current selection into a vector.
