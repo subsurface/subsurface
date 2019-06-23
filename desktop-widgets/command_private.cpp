@@ -46,8 +46,8 @@ bool setSelection(const std::vector<dive *> &selection, dive *currentDive)
 {
 	// To do so, generate vectors of dives to be selected and deselected.
 	// We send signals batched by trip, so keep track of trip/dive pairs.
-	std::vector<std::pair<dive_trip *, dive *>> divesToSelect;
-	std::vector<std::pair<dive_trip *, dive *>> divesToDeselect;
+	QVector<dive *> divesToSelect;
+	QVector<dive *> divesToDeselect;
 
 	// TODO: We might want to keep track of selected dives in a more efficient way!
 	int i;
@@ -73,20 +73,16 @@ bool setSelection(const std::vector<dive *> &selection, dive *currentDive)
 		if (newState && !d->selected) {
 			d->selected = true;
 			++amount_selected;
-			divesToSelect.push_back({ d->divetrip, d });
+			divesToSelect.push_back(d);
 		} else if (!newState && d->selected) {
 			d->selected = false;
-			divesToDeselect.push_back({ d->divetrip, d });
+			divesToDeselect.push_back(d);
 		}
 	}
 
 	// Send the select and deselect signals
-	processByTrip(divesToSelect, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
-		emit diveListNotifier.divesSelected(trip, divesInTrip);
-	});
-	processByTrip(divesToDeselect, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
-		emit diveListNotifier.divesDeselected(trip, divesInTrip);
-	});
+	emit diveListNotifier.divesSelected(divesToSelect);
+	emit diveListNotifier.divesDeselected(divesToDeselect);
 
 	bool currentDiveChanged = false;
 	if (!currentDive) {

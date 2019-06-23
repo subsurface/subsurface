@@ -89,6 +89,37 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 	return res;
 }
 
+// Some signals are sent in batches per trip. To avoid writing the same loop
+// twice, this template takes a vector of trip / dive pairs, sorts it
+// by trip and then calls a function-object with trip and a QVector of dives in that trip.
+// The dives are sorted by the dive_less_than() function defined in the core.
+// Input parameters:
+//	- dives: a vector of trip,dive pairs, which will be sorted and processed in batches by trip.
+//	- action: a function object, taking a trip-pointer and a QVector of dives, which will be called for each batch.
+template<typename Function>
+void processByTrip(std::vector<std::pair<dive_trip *, dive *>> &dives, Function action)
+{
+	// Sort lexicographically by trip then according to the dive_less_than() function.
+	std::sort(dives.begin(), dives.end(),
+		  [](const std::pair<dive_trip *, dive *> &e1, const std::pair<dive_trip *, dive *> &e2)
+		  { return e1.first == e2.first ? dive_less_than(e1.second, e2.second) : e1.first < e2.first; });
+
+	// Then, process the dives in batches by trip
+	size_t i, j; // Begin and end of batch
+	for (i = 0; i < dives.size(); i = j) {
+		dive_trip *trip = dives[i].first;
+		for (j = i + 1; j < dives.size() && dives[j].first == trip; ++j)
+			; // pass
+		// Copy dives into a QVector. Some sort of "range_view" would be ideal, but Qt doesn't work this way.
+		QVector<dive *> divesInTrip(j - i);
+		for (size_t k = i; k < j; ++k)
+			divesInTrip[k - i] = dives[k].second;
+
+		// Finally, emit the signal
+		action(trip, divesInTrip);
+	}
+}
+
 // This helper function calls removeDive() on a list of dives to be removed and
 // returns a vector of corresponding DiveToAdd objects, which can later be readded.
 // Moreover, a vector of deleted trips is returned, if trips became empty.
@@ -143,8 +174,10 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 {
 	std::vector<dive *> res;
 	std::vector<dive_site *> sites;
+	std::vector<std::pair<dive_trip *, dive *>> dives;
 	res.resize(toAdd.dives.size());
 	sites.reserve(toAdd.sites.size());
+	dives.reserve(toAdd.sites.size());
 
 	// Make sure that the dive list is sorted. The added dives will be sent in a signal
 	// and the recipients assume that the dives are sorted the same way as they are
@@ -157,8 +190,10 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 	// Note: the idiomatic STL-way would be std::transform, but let's use a loop since
 	// that is closer to classical C-style.
 	auto it2 = res.rbegin();
-	for (auto it = toAdd.dives.rbegin(); it != toAdd.dives.rend(); ++it, ++it2)
+	for (auto it = toAdd.dives.rbegin(); it != toAdd.dives.rend(); ++it, ++it2) {
 		*it2 = addDive(*it);
+		dives.push_back({ (*it2)->divetrip, *it2 });
+	}
 	toAdd.dives.clear();
 
 	// If the dives belong to new trips, add these as well.
@@ -180,7 +215,7 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 	toAdd.sites.clear();
 
 	// Send signals by trip.
-	processByTrip(res, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
+	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
 		// Now, let's check if this trip is supposed to be created, by checking if it was marked as "add it".
 		bool createTrip = trip && std::find(addedTrips.begin(), addedTrips.end(), trip) != addedTrips.end();
 		// Finally, emit the signal
@@ -191,30 +226,21 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 
 // This helper function renumbers dives according to an array of id/number pairs.
 // The old numbers are stored in the array, thus calling this function twice has no effect.
-// TODO: switch from uniq-id to indices once all divelist-actions are controlled by undo-able commands
 static void renumberDives(QVector<QPair<dive *, int>> &divesToRenumber)
 {
+	QVector<dive *> dives;
+	dives.reserve(divesToRenumber.size());
 	for (auto &pair: divesToRenumber) {
 		dive *d = pair.first;
 		if (!d)
 			continue;
 		std::swap(d->number, pair.second);
+		dives.push_back(d);
 		invalidate_dive_cache(d);
 	}
 
-	// Emit changed signals per trip.
-	// First, collect all dives and sort by trip
-	std::vector<std::pair<dive_trip *, dive *>> dives;
-	dives.reserve(divesToRenumber.size());
-	for (const auto &pair: divesToRenumber) {
-		dive *d = pair.first;
-		dives.push_back({ d->divetrip, d });
-	}
-
 	// Send signals.
-	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
-		emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::NR);
-	});
+	emit diveListNotifier.divesChanged(dives, DiveField::NR);
 }
 
 // This helper function moves a dive to a trip. The old trip is recorded in the
@@ -571,20 +597,22 @@ ShiftTime::ShiftTime(const QVector<dive *> &changedDives, int amount)
 
 void ShiftTime::redoit()
 {
-	for (dive *d: diveList)
+	std::vector<dive_trip *> trips;
+	for (dive *d: diveList) {
 		d->when += timeChanged;
+		if (d->divetrip && std::find(trips.begin(), trips.end(), d->divetrip) == trips.end())
+			trips.push_back(d->divetrip);
+	}
 
-	// Changing times may have unsorted the dive table
+	// Changing times may have unsorted the dive and trip tables
 	sort_dive_table(&dive_table);
 	sort_trip_table(&trip_table);
+	for (dive_trip *trip: trips)
+		sort_dive_table(&trip->dives); // Keep the trip-table in order
 
-	// Send signals per trip (see comments in DiveListNotifier.h) and sort tables.
-	processByTrip(diveList, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
-		if (trip)
-			sort_dive_table(&trip->dives); // Keep the trip-table in order
-		emit diveListNotifier.divesTimeChanged(trip, timeChanged, divesInTrip);
-		emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::DATETIME);
-	});
+	// Send signals
+	emit diveListNotifier.divesTimeChanged(timeChanged, diveList);
+	emit diveListNotifier.divesChanged(diveList, DiveField::DATETIME);
 
 	// Negate the time-shift so that the next call does the reverse
 	timeChanged = -timeChanged;

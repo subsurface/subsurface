@@ -5,7 +5,6 @@
 #include "core/units.h"
 #include "core/dive.h"
 #include "desktop-widgets/command.h"
-#include "core/trip.h" // TODO: Needed because divesChanged uses a trip parameter -> remove that!
 #include "core/qthelper.h"
 #include "core/statistics.h"
 #include "core/display.h"
@@ -131,7 +130,7 @@ void TabDiveInformation::updateData()
 
 // This function gets called if a field gets updated by an undo command.
 // Refresh the corresponding UI field.
-void TabDiveInformation::divesChanged(dive_trip *trip, const QVector<dive *> &dives, DiveField field)
+void TabDiveInformation::divesChanged(const QVector<dive *> &dives, DiveField field)
 {
 	// If the current dive is not in list of changed dives, do nothing
 	if (!current_dive || !dives.contains(current_dive))

@@ -97,9 +97,7 @@ void EditBase<T>::undo()
 
 	// Send signals.
 	DiveField id = fieldId();
-	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
-		emit diveListNotifier.divesChanged(trip, divesInTrip, id);
-	});
+	emit diveListNotifier.divesChanged(QVector<dive *>::fromStdVector(dives), id);
 
 	if (setSelection(selectedDives, current))
 		emit diveListNotifier.selectionChanged(); // If the selection changed -> tell the frontend
@@ -539,9 +537,7 @@ void EditTagsBase::undo()
 
 	// Send signals.
 	DiveField id = fieldId();
-	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
-		emit diveListNotifier.divesChanged(trip, divesInTrip, id);
-	});
+	emit diveListNotifier.divesChanged(QVector<dive *>::fromStdVector(dives), id);
 
 	if (setSelection(selectedDives, current))
 		emit diveListNotifier.selectionChanged(); // If the selection changed -> tell the frontend
@@ -750,7 +746,7 @@ void PasteDives::undo()
 	}
 	ownedDiveSites.clear();
 
-	std::vector<dive *> divesToNotify; // Remember dives so that we can send signals later
+	QVector<dive *> divesToNotify; // Remember dives so that we can send signals later
 	divesToNotify.reserve(dives.size());
 	for (PasteState &state: dives) {
 		divesToNotify.push_back(state.d);
@@ -780,28 +776,26 @@ void PasteDives::undo()
 	// TODO: We send one signal per changed field. This means that the dive list may
 	// update the entry numerous times. Perhaps change the field-id into flags?
 	// There seems to be a number of enums / flags describing dive fields. Perhaps unify them all?
-	processByTrip(divesToNotify, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
-		if (what.notes)
-			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::NOTES);
-		if (what.divemaster)
-			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::DIVEMASTER);
-		if (what.buddy)
-			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::BUDDY);
-		if (what.suit)
-			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::SUIT);
-		if (what.rating)
-			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::RATING);
-		if (what.visibility)
-			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::VISIBILITY);
-		if (what.divesite)
-			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::DIVESITE);
-		if (what.tags)
-			emit diveListNotifier.divesChanged(trip, divesInTrip, DiveField::TAGS);
-		if (what.cylinders)
-			emit diveListNotifier.cylindersReset(trip, divesInTrip);
-		if (what.weights)
-			emit diveListNotifier.weightsystemsReset(trip, divesInTrip);
-	});
+	if (what.notes)
+		emit diveListNotifier.divesChanged(divesToNotify, DiveField::NOTES);
+	if (what.divemaster)
+		emit diveListNotifier.divesChanged(divesToNotify, DiveField::DIVEMASTER);
+	if (what.buddy)
+		emit diveListNotifier.divesChanged(divesToNotify, DiveField::BUDDY);
+	if (what.suit)
+		emit diveListNotifier.divesChanged(divesToNotify, DiveField::SUIT);
+	if (what.rating)
+		emit diveListNotifier.divesChanged(divesToNotify, DiveField::RATING);
+	if (what.visibility)
+		emit diveListNotifier.divesChanged(divesToNotify, DiveField::VISIBILITY);
+	if (what.divesite)
+		emit diveListNotifier.divesChanged(divesToNotify, DiveField::DIVESITE);
+	if (what.tags)
+		emit diveListNotifier.divesChanged(divesToNotify, DiveField::TAGS);
+	if (what.cylinders)
+		emit diveListNotifier.cylindersReset(divesToNotify);
+	if (what.weights)
+		emit diveListNotifier.weightsystemsReset(divesToNotify);
 
 	if (diveSiteListChanged)
 		MapWidget::instance()->reload();

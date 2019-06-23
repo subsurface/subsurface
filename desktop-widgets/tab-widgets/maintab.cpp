@@ -281,7 +281,7 @@ static void profileFromDive(struct dive *d)
 
 // This function gets called if a field gets updated by an undo command.
 // Refresh the corresponding UI field.
-void MainTab::divesChanged(dive_trip *trip, const QVector<dive *> &dives, DiveField field)
+void MainTab::divesChanged(const QVector<dive *> &dives, DiveField field)
 {
 	// If the current dive is not in list of changed dives, do nothing
 	if (!current_dive || !dives.contains(current_dive))

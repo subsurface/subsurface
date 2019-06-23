@@ -12,7 +12,6 @@
 #include "mainwindow.h"
 #include "divelistview.h"
 #include "command.h"
-#include "core/trip.h" // TODO: Needed because divesChanged uses a trip parameter -> remove that!
 
 static const QUrl urlMapWidget = QUrl(QStringLiteral("qrc:/qml/MapWidget.qml"));
 static const QUrl urlMapWidgetError = QUrl(QStringLiteral("qrc:/qml/MapWidgetError.qml"));
@@ -91,7 +90,7 @@ void MapWidget::coordinatesChanged(struct dive_site *ds, const location_t &locat
 	Command::editDiveSiteLocation(ds, location);
 }
 
-void MapWidget::divesChanged(dive_trip *, const QVector<dive *> &, DiveField field)
+void MapWidget::divesChanged(const QVector<dive *> &, DiveField field)
 {
 	if (field == DiveField::DIVESITE)
 		reload();
