@@ -614,6 +614,9 @@ void ShiftTime::redoit()
 	emit diveListNotifier.divesTimeChanged(timeChanged, diveList);
 	emit diveListNotifier.divesChanged(diveList, DiveField::DATETIME);
 
+	// Select the changed dives
+	restoreSelection(diveList.toStdVector(), diveList[0]);
+
 	// Negate the time-shift so that the next call does the reverse
 	timeChanged = -timeChanged;
 }
@@ -638,6 +641,13 @@ RenumberDives::RenumberDives(const QVector<QPair<dive *, int>> &divesToRenumberI
 void RenumberDives::undoit()
 {
 	renumberDives(divesToRenumber);
+
+	// Select the changed dives
+	std::vector<dive *> dives;
+	dives.reserve(divesToRenumber.size());
+	for (const QPair<dive *, int> &item: divesToRenumber)
+		dives.push_back(item.first);
+	restoreSelection(dives, dives[0]);
 }
 
 bool RenumberDives::workToBeDone()
@@ -660,6 +670,13 @@ void TripBase::redoit()
 {
 	moveDivesBetweenTrips(divesToMove);
 	sort_trip_table(&trip_table); // Though unlikely, moving dives may reorder trips
+
+	// Select the moved dives
+	std::vector<dive *> dives;
+	dives.reserve(divesToMove.divesToMove.size());
+	for (const DiveToTrip &item: divesToMove.divesToMove)
+		dives.push_back(item.dive);
+	restoreSelection(dives, dives[0]);
 }
 
 void TripBase::undoit()

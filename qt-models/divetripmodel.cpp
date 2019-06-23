@@ -417,16 +417,6 @@ bool DiveTripModelBase::setData(const QModelIndex &index, const QVariant &value,
 	return true;
 }
 
-void DiveTripModelBase::divesSelected(const QVector<dive *> &dives)
-{
-	changeDiveSelection(dives, true);
-}
-
-void DiveTripModelBase::divesDeselected(const QVector<dive *> &dives)
-{
-	changeDiveSelection(dives, false);
-}
-
 // Find a range of matching elements in a vector.
 // Input parameters:
 //	v: vector to be searched
@@ -561,7 +551,6 @@ DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::divesMovedBetweenTrips, this, &DiveTripModelTree::divesMovedBetweenTrips);
 	connect(&diveListNotifier, &DiveListNotifier::divesTimeChanged, this, &DiveTripModelTree::divesTimeChanged);
 	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelTree::divesSelected);
-	connect(&diveListNotifier, &DiveListNotifier::divesDeselected, this, &DiveTripModelTree::divesDeselected);
 	connect(&diveListNotifier, &DiveListNotifier::currentDiveChanged, this, &DiveTripModelTree::currentDiveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::tripChanged, this, &DiveTripModelTree::tripChanged);
 
@@ -1037,7 +1026,6 @@ void DiveTripModelTree::divesMovedBetweenTrips(dive_trip *from, dive_trip *to, b
 	QVector<dive *> selectedDives = filterSelectedDives(dives);
 	divesAdded(to, createTo, dives);
 	divesDeleted(from, deleteFrom, dives);
-	changeDiveSelectionTrip(to, dives, true);
 }
 
 void DiveTripModelTree::divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives)
@@ -1061,22 +1049,23 @@ void DiveTripModelTree::divesTimeChangedTrip(dive_trip *trip, timestamp_t delta,
 	QVector<dive *> selectedDives = filterSelectedDives(dives);
 	divesDeleted(trip, false, dives);
 	divesAdded(trip, false, dives);
-	changeDiveSelectionTrip(trip, selectedDives, true);
 }
 
-void DiveTripModelTree::changeDiveSelection(const QVector<dive *> &dives, bool select)
-{
-	processByTrip(dives, [this, select] (dive_trip *trip, const QVector<dive *> &divesInTrip)
-		      { changeDiveSelectionTrip(trip, divesInTrip, select); });
-}
-
-void DiveTripModelTree::changeDiveSelectionTrip(dive_trip *trip, const QVector<dive *> &dives, bool select)
+void DiveTripModelTree::divesSelected(const QVector<dive *> &dives)
 {
 	// We got a number of dives that have been selected. Turn this into QModelIndexes and
 	// emit a signal, so that views can change the selection.
 	QVector<QModelIndex> indexes;
 	indexes.reserve(dives.count());
 
+	processByTrip(dives, [this, &indexes] (dive_trip *trip, const QVector<dive *> &divesInTrip)
+		      { divesSelectedTrip(trip, divesInTrip, indexes); });
+
+	emit selectionChanged(indexes);
+}
+
+void DiveTripModelTree::divesSelectedTrip(dive_trip *trip, const QVector<dive *> &dives, QVector<QModelIndex> &indexes)
+{
 	if (!trip) {
 		// This is at the top level.
 		// Since both lists are sorted, we can do this linearly. Perhaps a binary search
@@ -1095,7 +1084,7 @@ void DiveTripModelTree::changeDiveSelectionTrip(dive_trip *trip, const QVector<d
 		if (idx < 0) {
 			// We don't know the trip - this shouldn't happen. We seem to have
 			// missed some signals!
-			qWarning() << "DiveTripModelTree::changeDiveSelection(): unknown trip";
+			qWarning() << "DiveTripModelTree::diveSelectedTrip(): unknown trip";
 			return;
 		}
 		// Locate the indices inside the trip.
@@ -1111,8 +1100,6 @@ void DiveTripModelTree::changeDiveSelectionTrip(dive_trip *trip, const QVector<d
 			indexes.append(createIndex(j, 0, idx));
 		}
 	}
-
-	emit selectionChanged(indexes, select);
 }
 
 void DiveTripModelTree::currentDiveChanged()
@@ -1182,7 +1169,6 @@ DiveTripModelList::DiveTripModelList(QObject *parent) : DiveTripModelBase(parent
 	//connect(&diveListNotifier, &DiveListNotifier::divesMovedBetweenTrips, this, &DiveTripModelList::divesMovedBetweenTrips);
 	connect(&diveListNotifier, &DiveListNotifier::divesTimeChanged, this, &DiveTripModelList::divesTimeChanged);
 	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelList::divesSelected);
-	connect(&diveListNotifier, &DiveListNotifier::divesDeselected, this, &DiveTripModelList::divesDeselected);
 	connect(&diveListNotifier, &DiveListNotifier::currentDiveChanged, this, &DiveTripModelList::currentDiveChanged);
 
 	// Fill model
@@ -1302,7 +1288,7 @@ void DiveTripModelList::divesTimeChanged(timestamp_t delta, const QVector<dive *
 	divesSelected(selectedDives);
 }
 
-void DiveTripModelList::changeDiveSelection(const QVector<dive *> &dives, bool select)
+void DiveTripModelList::divesSelected(const QVector<dive *> &dives)
 {
 	// We got a number of dives that have been selected. Turn this into QModelIndexes and
 	// emit a signal, so that views can change the selection.
@@ -1320,7 +1306,7 @@ void DiveTripModelList::changeDiveSelection(const QVector<dive *> &dives, bool s
 		indexes.append(createIndex(j, 0, noParent));
 	}
 
-	emit selectionChanged(indexes, select);
+	emit selectionChanged(indexes);
 }
 
 void DiveTripModelList::currentDiveChanged()

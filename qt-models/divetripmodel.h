@@ -89,18 +89,12 @@ signals:
 	// into QModelIndexes according to the current view (tree/list). Finally, the DiveListView transforms these
 	// indexes into local indexes according to current sorting/filtering and instructs the QSelectionModel to
 	// perform the appropriate actions.
-	void selectionChanged(const QVector<QModelIndex> &indexes, bool select);
+	void selectionChanged(const QVector<QModelIndex> &indexes);
 	void newCurrentDive(QModelIndex index);
-protected slots:
-	void divesSelected(const QVector<dive *> &dives);
-	void divesDeselected(const QVector<dive *> &dives);
 protected:
 	// Access trip and dive data
 	static QVariant diveData(const struct dive *d, int column, int role);
 	static QVariant tripData(const dive_trip *trip, int column, int role);
-
-	// Select or deselect dives
-	virtual void changeDiveSelection(const QVector<dive *> &dives, bool select) = 0;
 
 	virtual dive *diveOrNull(const QModelIndex &index) const = 0;	// Returns a dive if this index represents a dive, null otherwise
 };
@@ -114,6 +108,7 @@ public slots:
 	void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
 	void divesChanged(const QVector<dive *> &dives);
 	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
+	void divesSelected(const QVector<dive *> &dives);
 	void currentDiveChanged();
 	void tripChanged(dive_trip *trip, TripField);
 
@@ -126,8 +121,7 @@ private:
 	QVariant data(const QModelIndex &index, int role) const override;
 	void filterFinished() override;
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
-	void changeDiveSelection(const QVector<dive *> &dives, bool select) override;
-	void changeDiveSelectionTrip(dive_trip *trip, const QVector<dive *> &dives, bool select);
+	void divesSelectedTrip(dive_trip *trip, const QVector<dive *> &dives, QVector<QModelIndex> &);
 	dive *diveOrNull(const QModelIndex &index) const override;
 	bool setShown(const QModelIndex &idx, bool shown);
 	void divesChangedTrip(dive_trip *trip, const QVector<dive *> &dives);
@@ -181,6 +175,7 @@ public slots:
 	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
 	// Does nothing in list view.
 	//void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
+	void divesSelected(const QVector<dive *> &dives);
 	void currentDiveChanged();
 
 public:
@@ -192,7 +187,6 @@ private:
 	QVariant data(const QModelIndex &index, int role) const override;
 	void filterFinished() override;
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
-	void changeDiveSelection(const QVector<dive *> &dives, bool select) override;
 	dive *diveOrNull(const QModelIndex &index) const override;
 	bool setShown(const QModelIndex &idx, bool shown);
 
