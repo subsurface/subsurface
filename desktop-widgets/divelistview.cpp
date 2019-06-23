@@ -448,7 +448,7 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 		scrollTo(idx);
 	}
 	// now that everything is up to date, update the widgets
-	emit diveListNotifier.selectionChanged();
+	emit divesSelected();
 	dontEmitDiveChangedSignal = false;
 	return;
 }
@@ -663,7 +663,7 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 		}
 	}
 	if (!dontEmitDiveChangedSignal)
-		emit diveListNotifier.selectionChanged();
+		emit divesSelected();
 
 	// Display the new, processed, selection
 	QTreeView::selectionChanged(selectionModel()->selection(), newDeselected);
@@ -1063,7 +1063,7 @@ void DiveListView::filterFinished()
 	// If there are no more selected dives, select the first visible dive
 	if (!selectionModel()->hasSelection())
 		selectFirstDive();
-	emit diveListNotifier.selectionChanged();
+	emit divesSelected();
 }
 
 QString DiveListView::lastUsedImageDir()
