@@ -190,6 +190,7 @@ static void swap(char *&c, QString &q)
 static QVector<dive *> getDivesForSite(struct dive_site *ds)
 {
 	QVector<dive *> diveSiteDives;
+	diveSiteDives.reserve(ds->dives.nr);
 
 	for (int i = 0; i < ds->dives.nr; ++i)
 		diveSiteDives.push_back(ds->dives.dives[i]);
