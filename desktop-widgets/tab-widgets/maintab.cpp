@@ -814,7 +814,7 @@ static void shiftTime(QDateTime &dateTime)
 
 	timestamp_t when = dateTime.toTime_t();
 	if (current_dive && current_dive->when != when) {
-		timestamp_t offset = current_dive->when - when;
+		timestamp_t offset = when - current_dive->when;
 		Command::shiftTime(dives, (int)offset);
 	}
 }
