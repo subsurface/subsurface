@@ -203,9 +203,8 @@ void LocationInformationWidget::initFields(dive_site *ds)
 
 void LocationInformationWidget::on_diveSiteCoordinates_editingFinished()
 {
-	if (!diveSite)
-		return;
-	Command::editDiveSiteLocation(diveSite, parseGpsText(ui.diveSiteCoordinates->text()));
+	if (diveSite)
+		Command::editDiveSiteLocation(diveSite, parseGpsText(ui.diveSiteCoordinates->text()));
 }
 
 void LocationInformationWidget::on_diveSiteCountry_editingFinished()
