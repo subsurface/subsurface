@@ -1,10 +1,10 @@
-// Subsurface 4.8 User Manual
+// Subsurface 4.9 User Manual
 // ==========================
 // :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
 // Ferguson, Salvador Cuñat, Pedro Neves
-// :revnumber: 4.8.2
-// :revdate:September 2018
+// :revnumber: 4.9
+// :revdate:June 2019
 :icons:
 :toc2:
 :toc-placement: manual
@@ -19,7 +19,7 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves,
 Stefan Fuchs
 
-[blue]#_Version 4.9, February 2019_#
+[blue]#_Version 4.9, June 2019_#
 
 Welcome as a user of _Subsurface_, an advanced dive logging program with
 extensive infrastructure to describe, organize, interpret and print scuba
@@ -242,6 +242,8 @@ for this specific dive is saved in memory but NOT written to disk.
 The _Apply changes_ button should ONLY be selected after all parts
 of a dive have been entered. When closing Subsurface, the program will
 ask again, this time whether the complete dive log should be saved on disk or not.
+
+Click here to find out xref:S_undo[*How to UNDO changes while typing information*]
 
 [[S_CreateProfile]]
 ==== Creating a Dive Profile
@@ -696,6 +698,24 @@ the correct date. Press ESC to close the calendar.
 The time values (hour and minutes) can also be
 edited directly by clicking on each of them in the text box and by over-typing the
 information displayed.
+
+[[S_undo]]
+*How to UNDO information that has been typed.* While editing a dive log one frequently
+overtypes existing information. Sometimes this is unintended. Let's say, for the moment,
+the time of your dive computer was set wrongly and the dive time in the
+*Notes* tab is therefore incorrect. You wish to correct the time indicated in the *Notes* tab
+to reflect the true dive time. The example in the images below reflect a small part
+of the *Notes* tab where the dive time was changed from
+8:44 (image a) to 7:44 (image b). Now, for some reason, you wish to return
+to the initial time (08:44). Click on the _Edit_ heading in the main menu and
+an option appears to undo the change in time (image c). Select this undo option
+and the time is again shown as 8:44. Having undone the change, a new option appears under
+the _Edit_ heading: Redo the change (image d). If this option is selected, the change in
+time is redone. The undo facility applies to the majority of information typed into the text
+areas of _Subsurface_ and facilitates easy and accurate data entry. Even changes to multiple
+dives can be undone.
+
+image::images/undo.jpg["FIGURE:Performing an undo",align="center"]
 
 *Air/water temperatures*: Air and water temperatures during the dive are shown
 in text boxes to the right of the Start time. Many dive computers supply water
@@ -2103,13 +2123,28 @@ activates the Map menu. The items are:
 * Select visible dive locations. In the Dive List panel, highlight all the dive sites visible in the Dive Map. This allows easy
   selection of the dives within a particular geographical area to inspect them or to calculate statistics for them.
 
-=== The *Info* tab (for individual dives)
+=== The *Information* tab (for individual dives)
 
-The Info tab gives some summary information about a particular dive that
+The Information tab gives some summary information about a particular dive that
 has been selected in the *Dive List*. Useful information here includes the
 surface interval before the dive, the maximum and mean depths of the dive, the
 gas volume consumed, the surface air consumption (SAC) and the number of oxygen
-toxicity units (OTU) incurred.
+toxicity units (OTU) incurred. 
+
+[icon="images/atmpress.jpg"]
+[NOTE]
+The text box *Atm. pressure* allows one to specify
+the altitude or the atmospheric pressure of the dive site while diving. If this text box
+contains a value, dive calculations take into account altitude. The dropbox on the
+right allows two ways of expressing atmospheric pressure: mbar or m/ft above sea level.
+The altitude unit (metric/imperial) is taken from the settings in the *Preferences* screen. A
+third option is to use the atmospheric pressure provided by the dive computer. In order to specify
+the pressure/altitude, first select the approriate unit (in the case of the image on the left
+these are "mbar/m/use dc", then type an appropriate value into the text box. In the case
+of m/ft the altitude typed into the text box is automatically converted to the
+mean expected atmospheric pressure (mbar) at the specified altitude.
+In the case of "use dc", no value is required in the text box. Atmospheric pressure provided by a dive
+computer does not need any editing.
 
 [icon="images/icons/info.jpg"]
 [NOTE]
