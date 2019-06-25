@@ -46,6 +46,7 @@ typedef struct
 
 extern void add_cylinder_description(const cylinder_type_t *);
 extern void add_weightsystem_description(const weightsystem_t *);
+extern bool same_weightsystem(weightsystem_t w1, weightsystem_t w2);
 extern bool cylinder_nodata(const cylinder_t *cyl);
 extern bool cylinder_none(const cylinder_t *cyl);
 extern bool weightsystem_none(const weightsystem_t *ws);

@@ -16,6 +16,7 @@
 #include "dive.h"
 #include "display.h"
 #include "divelist.h"
+#include "subsurface-string.h"
 
 /* placeholders for a few functions that we need to redesign for the Qt UI */
 void add_cylinder_description(const cylinder_type_t *type)
@@ -56,6 +57,12 @@ void add_weightsystem_description(const weightsystem_t *weightsystem)
 		ws_info[i].name = strdup(desc);
 		ws_info[i].grams = weightsystem->weight.grams;
 	}
+}
+
+bool same_weightsystem(weightsystem_t w1, weightsystem_t w2)
+{
+	return w1->weight.grams == w2->weight.grams &&
+	       same_string(w1->description, w2->description);
 }
 
 bool cylinder_nodata(const cylinder_t *cyl)
