@@ -1015,7 +1015,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Ritmo cardiaco de la muestra</translation>
     </message>
 </context>
 <context>
@@ -1040,7 +1040,7 @@
         <location filename="../desktop-widgets/command_edit.cpp" line="77"/>
         <source>Edit %1 (%n dive(s))</source>
         <extracomment>remove the part in parentheses for %n = 1</extracomment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Editar %1 (%n inmersión(es))</numerusform><numerusform>Editar %1 (%n inmersión(es))</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1067,7 +1067,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="669"/>
         <source>add %n dives to trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Añadir %n inmersiones al viaje</numerusform><numerusform>Añadir %n inmersiones al viaje</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1102,7 +1102,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="864"/>
         <source>delete dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Borrar ordenador de buceo</translation>
     </message>
 </context>
 <context>
@@ -1110,7 +1110,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divesite.cpp" line="141"/>
         <source>delete %n dive site(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Borrar %n puntos de buceo</numerusform><numerusform>Borrar %n puntos de buceo</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1126,7 +1126,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="274"/>
         <source>Atm. pressure</source>
-        <translation type="unfinished"/>
+        <translation>Presión atmosférica</translation>
     </message>
 </context>
 <context>
@@ -1270,7 +1270,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="105"/>
         <source>import dive sites from %1</source>
-        <translation type="unfinished"/>
+        <translation>Importar puntos de buceo de %1</translation>
     </message>
 </context>
 <context>
@@ -1278,7 +1278,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="452"/>
         <source>import %n dive(s) from %1</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Importar %n inmersión(es) de %1</numerusform><numerusform>Importar %n inmersión(es) de %1</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1302,7 +1302,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="858"/>
         <source>move dive computer to front</source>
-        <translation type="unfinished"/>
+        <translation>Traer al frente el ordenador de buceo</translation>
     </message>
 </context>
 <context>
@@ -1326,7 +1326,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="645"/>
         <source>remove %n dive(s) from trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Borrar %n inmersión(es) del viaje</numerusform><numerusform>Borrar %n inmersión(es) del viaje</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1334,7 +1334,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="607"/>
         <source>renumber %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Renumerar %n inmersión(es)</numerusform><numerusform>Renumerar %n inmersión(es)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1342,7 +1342,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="569"/>
         <source>shift time of %n dives</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Mover la hora de %n inmersiones</numerusform><numerusform>Mover la hora de %n inmersiones</numerusform></translation>
     </message>
 </context>
 <context>
@@ -5141,12 +5141,12 @@ GPS actual:</translation>
     <message numerus="yes">
         <location filename="../qt-models/divelistmodel.cpp" line="107"/>
         <source>(%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>(%n inmersión(es))</numerusform><numerusform>(%n inmersión(es))</numerusform></translation>
     </message>
     <message>
         <location filename="../qt-models/divelistmodel.cpp" line="109"/>
         <source>(%L1 shown)</source>
-        <translation type="unfinished"/>
+        <translation>(%L1 mostradas)</translation>
     </message>
 </context>
 <context>
@@ -6548,7 +6548,7 @@ GPS actual:</translation>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="836"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Ritmo cardiaco de la muestra</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="1019"/>
@@ -7092,7 +7092,9 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divelocationmodel.cpp" line="272"/>
         <source>This dive site has %n dive(s). Do you really want to delete it?
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Este punto de buceo tiene %n inmersión(es). ¿Realmente quieres borrarlo?
+</numerusform><numerusform>Este punto de buceo tiene %n inmersión(es). ¿Realmente quieres borrarlo?
+</numerusform></translation>
     </message>
 </context>
 <context>
@@ -7467,7 +7469,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="216"/>
         <location filename="../qt-models/divetripmodel.cpp" line="323"/>
         <source>Temp.(°%1)</source>
-        <translation type="unfinished"/>
+        <translation>Temp.(°%1)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="218"/>
@@ -7796,7 +7798,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/divesiteimportdialog.ui" line="14"/>
         <source>Select dive sites to import</source>
-        <translation type="unfinished"/>
+        <translation>Selecciona los puntos de buceo a importar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divesiteimportdialog.ui" line="58"/>
@@ -7840,12 +7842,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divesiteimportmodel.cpp" line="36"/>
         <source>Nearest
 Existing Site</source>
-        <translation type="unfinished"/>
+        <translation>Punto existente
+más cercano</translation>
     </message>
     <message>
         <location filename="../qt-models/divesiteimportmodel.cpp" line="38"/>
         <source>Distance</source>
-        <translation type="unfinished"/>
+        <translation>Distancia</translation>
     </message>
 </context>
 <context>
@@ -8266,7 +8269,7 @@ Existing Site</source>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="345"/>
         <source>force downloading all dives</source>
-        <translation type="unfinished"/>
+        <translation>Forzar descarga de todas las inmersiones</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="383"/>
@@ -8342,7 +8345,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/command_edit.cpp" line="513"/>
         <source>Edit %1 (%n dive(s))</source>
         <extracomment>remove the part in parentheses for %n = 1</extracomment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Editar %1 (%n inmersión(es))</numerusform><numerusform>Editar %1 (%n inmersión(es))</numerusform></translation>
     </message>
 </context>
 <context>
@@ -9450,12 +9453,12 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="101"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Deshacer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="731"/>
         <source>Warning: edited %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Aviso: editada(s) %1 inmersión(es)</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
@@ -9928,12 +9931,12 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="387"/>
         <source>&amp;Import dive sites</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Importar puntos de buceo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="390"/>
         <source>Import dive sites from other users</source>
-        <translation type="unfinished"/>
+        <translation>Importar puntos de buceo de otros usuarios</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="398"/>
@@ -10173,7 +10176,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="433"/>
         <source>Change settings on &amp;dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Cambiar los ajustes del or&amp;denador de buceo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="644"/>
@@ -10457,7 +10460,7 @@ Si selecciona no, la nube solo sera sincronizada en la próxima llamada de &quot
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1752"/>
         <source>Open dive site file</source>
-        <translation type="unfinished"/>
+        <translation>Abrir archivo de puntos de buceo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1787"/>
@@ -10691,7 +10694,7 @@ Si selecciona no, la nube solo sera sincronizada en la próxima llamada de &quot
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1330"/>
         <source>Dive site files</source>
-        <translation type="unfinished"/>
+        <translation>Archivos de puntos de buceo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1345"/>
@@ -10970,7 +10973,7 @@ Si tu dispositivo usa Bluetooth, efectúa los mismos preparativos que para desca
     <message numerus="yes">
         <location filename="../desktop-widgets/command_edit.cpp" line="733"/>
         <source>Paste onto %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Pegar en %n inmersión(es)</numerusform><numerusform>Pegar en %n inmersión(es)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -12768,7 +12771,7 @@ Por favor, exporta esta plantilla a un archivo distinto.</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1441"/>
         <source>Split this dive computer into own dive</source>
-        <translation type="unfinished"/>
+        <translation>Crear inmersión a partir de este ordenador</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1457"/>
@@ -14462,7 +14465,7 @@ Archivos con fecha/hora incorrectas</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="231"/>
         <source>Atm. pressure</source>
-        <translation type="unfinished"/>
+        <translation>Presión atmosférica</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="230"/>
@@ -18153,7 +18156,7 @@ Puedes crear el archivo de registro seleccionando la casilla correspondiente en 
     <message>
         <location filename="../core/plannernotes.c" line="119"/>
         <source>DISCLAIMER / WARNING: THIS IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
-        <translation type="unfinished"/>
+        <translation>RENUNCIA/AVISO:  ESTA IMPLEMENTACIÓN DEL ALGORITMO %s Y LA IMPLEMENTACIÓN DEL PLANIFICADOR DE INMERSIONES BASADO EN ÉL, HAN SIDO PROBADOS DE FORMA LIMITADA.  RECOMENDAMOS ENCARECIDAMENTE NO PLANIFICAR INMERSIONES ÚNICAMENTE CON LOS RESULTADOS QUE SE OBTIENEN AQUÍ.</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="130"/>
@@ -18483,19 +18486,22 @@ Prof: %.1f%s
         <location filename="../core/profile.c" line="1421"/>
         <source>pO₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>pO₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1423"/>
         <source>SCR ΔpO₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>SCR ΔpO₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1426"/>
         <source>pN₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>pN₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1440"/>
@@ -18720,48 +18726,49 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/profile.c" line="1631"/>
         <source>ΔT:%d:%02dmin</source>
-        <translation type="unfinished"/>
+        <translation>ΔT:%d:%02dmin</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1635"/>
         <source>%s ΔD:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ΔProf:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1639"/>
         <source>%s ↓D:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↓Prof:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1643"/>
         <source>%s ↑D:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↑Prof:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1647"/>
         <source>%s øD:%.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>%s øProf:%.1f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1651"/>
         <source>%s ↓V:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↓V:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1655"/>
         <source>%s ↑V:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↑V:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1659"/>
         <source>%s øV:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s øV:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1666"/>
         <source>%s ΔP:%d%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ΔPres:%d%s</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/core/profile.c" line="1620"/>
@@ -20927,7 +20934,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="522"/>
         <source>Bailout: Deco on OC</source>
-        <translation type="unfinished"/>
+        <translation>Bailout: Deco en OC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="529"/>

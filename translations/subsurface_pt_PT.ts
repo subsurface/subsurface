@@ -39,7 +39,10 @@
 
 © Subsurface developer team
 2011-2019</source>
-        <translation type="unfinished"/>
+        <translation>Version: %1
+
+© Subsurface developer team
+2011-2019</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/mobile-widgets/qml/About.qml" line="49"/>
@@ -178,12 +181,12 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="221"/>
         <source>even if not recognized as dive computer</source>
-        <translation type="unfinished"/>
+        <translation>mesmo que não tenha sido reconhecido pelo computador de mergulho</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="224"/>
         <source>Show all BT devices</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar todos os dispositivos BT</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="242"/>
@@ -1012,7 +1015,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Frequência cardíaca</translation>
     </message>
 </context>
 <context>
@@ -1037,7 +1040,7 @@
         <location filename="../desktop-widgets/command_edit.cpp" line="77"/>
         <source>Edit %1 (%n dive(s))</source>
         <extracomment>remove the part in parentheses for %n = 1</extracomment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Editar %1 mergulho</numerusform><numerusform>Editar %n mergulhos</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1056,7 +1059,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="83"/>
         <source>add dive site</source>
-        <translation type="unfinished"/>
+        <translation>adicionar local de mergulho</translation>
     </message>
 </context>
 <context>
@@ -1064,7 +1067,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="669"/>
         <source>add %n dives to trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>adicionar %1 mergulho à viagem</numerusform><numerusform>adicionar %n mergulhos à viagem</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1099,7 +1102,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="864"/>
         <source>delete dive computer</source>
-        <translation type="unfinished"/>
+        <translation>eliminar computador de mergulho</translation>
     </message>
 </context>
 <context>
@@ -1107,7 +1110,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divesite.cpp" line="141"/>
         <source>delete %n dive site(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>apagar %1 local de mergulho</numerusform><numerusform>apagar %n locais de mergulho</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1115,7 +1118,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="229"/>
         <source>air temperature</source>
-        <translation type="unfinished"/>
+        <translation>temperatura do ar</translation>
     </message>
 </context>
 <context>
@@ -1123,7 +1126,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="274"/>
         <source>Atm. pressure</source>
-        <translation type="unfinished"/>
+        <translation>Pressão atmosférica</translation>
     </message>
 </context>
 <context>
@@ -1139,7 +1142,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="344"/>
         <source>dive site</source>
-        <translation type="unfinished"/>
+        <translation>local de mergulho</translation>
     </message>
 </context>
 <context>
@@ -1147,7 +1150,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="265"/>
         <source>Edit dive site country</source>
-        <translation type="unfinished"/>
+        <translation>Editar país do local de mergulho</translation>
     </message>
 </context>
 <context>
@@ -1155,7 +1158,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="219"/>
         <source>Edit dive site description</source>
-        <translation type="unfinished"/>
+        <translation>Editar descrição do local de mergulho</translation>
     </message>
 </context>
 <context>
@@ -1163,7 +1166,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="290"/>
         <source>Edit dive site location</source>
-        <translation type="unfinished"/>
+        <translation>Editar localização do ponto de mergulho</translation>
     </message>
 </context>
 <context>
@@ -1171,7 +1174,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="196"/>
         <source>Edit dive site name</source>
-        <translation type="unfinished"/>
+        <translation>Editar nome do local de mergulho</translation>
     </message>
 </context>
 <context>
@@ -1179,7 +1182,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="242"/>
         <source>Edit dive site notes</source>
-        <translation type="unfinished"/>
+        <translation>Editar notas do local de mergulho</translation>
     </message>
 </context>
 <context>
@@ -1187,7 +1190,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="319"/>
         <source>Edit dive site taxonomy</source>
-        <translation type="unfinished"/>
+        <translation>Editar taxonomia dos locais de mergulho</translation>
     </message>
 </context>
 <context>
@@ -1203,7 +1206,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="144"/>
         <source>notes</source>
-        <translation type="unfinished"/>
+        <translation>notas</translation>
     </message>
 </context>
 <context>
@@ -1211,7 +1214,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="187"/>
         <source>rating</source>
-        <translation type="unfinished"/>
+        <translation>classificação</translation>
     </message>
 </context>
 <context>
@@ -1227,7 +1230,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit_trip.cpp" line="18"/>
         <source>Edit %1</source>
-        <translation type="unfinished"/>
+        <translation>Editar %1</translation>
     </message>
 </context>
 <context>
@@ -1235,7 +1238,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit_trip.cpp" line="53"/>
         <source>trip location</source>
-        <translation type="unfinished"/>
+        <translation>localização da viagem</translation>
     </message>
 </context>
 <context>
@@ -1243,7 +1246,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit_trip.cpp" line="75"/>
         <source>trip notes</source>
-        <translation type="unfinished"/>
+        <translation>notas da viagem</translation>
     </message>
 </context>
 <context>
@@ -1251,7 +1254,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="208"/>
         <source>visibility</source>
-        <translation type="unfinished"/>
+        <translation>visibilidade</translation>
     </message>
 </context>
 <context>
@@ -1259,7 +1262,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="253"/>
         <source>water temperature</source>
-        <translation type="unfinished"/>
+        <translation>temperatura da água</translation>
     </message>
 </context>
 <context>
@@ -1267,7 +1270,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="105"/>
         <source>import dive sites from %1</source>
-        <translation type="unfinished"/>
+        <translation>importar locais de mergulho de %1</translation>
     </message>
 </context>
 <context>
@@ -1275,7 +1278,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="452"/>
         <source>import %n dive(s) from %1</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>importar %1 mergulho de %1</numerusform><numerusform>importar %n mergulhos de %1</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1283,7 +1286,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="347"/>
         <source>merge dive sites</source>
-        <translation type="unfinished"/>
+        <translation>juntar locais de mergulho</translation>
     </message>
 </context>
 <context>
@@ -1299,7 +1302,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="858"/>
         <source>move dive computer to front</source>
-        <translation type="unfinished"/>
+        <translation>mover computador de mergulho para a frente</translation>
     </message>
 </context>
 <context>
@@ -1307,7 +1310,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="161"/>
         <source>purge unused dive sites</source>
-        <translation type="unfinished"/>
+        <translation>eliminar locais de mergulho não usados</translation>
     </message>
 </context>
 <context>
@@ -1323,7 +1326,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="645"/>
         <source>remove %n dive(s) from trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>remover %1 mergulho da viagem</numerusform><numerusform>remover %n mergulhos da viagem</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1331,7 +1334,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="607"/>
         <source>renumber %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>renumerar %1 mergulho</numerusform><numerusform>renumerar %n mergulhos</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1339,7 +1342,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="569"/>
         <source>shift time of %n dives</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>deslocar tempos do %1 mergulho</numerusform><numerusform>deslocar tempos de %n mergulhos</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1347,7 +1350,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="802"/>
         <source>split dive computer</source>
-        <translation type="unfinished"/>
+        <translation>dividir computador de mergulho</translation>
     </message>
 </context>
 <context>
@@ -4080,12 +4083,12 @@
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="14"/>
         <source>Copy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Copiar definições</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="26"/>
         <source>Selection for copy-paste</source>
-        <translation type="unfinished"/>
+        <translation>Selecção para copiar-colar</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="36"/>
@@ -4305,44 +4308,45 @@
         <location filename="../desktop-widgets/simplewidgets.cpp" line="486"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="499"/>
         <source>Dive site: </source>
-        <translation type="unfinished"/>
+        <translation>Local de mergulho:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="488"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="501"/>
         <source>Dive master: </source>
-        <translation type="unfinished"/>
+        <translation>Guia de mergulho:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="490"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="503"/>
         <source>Buddy: </source>
-        <translation type="unfinished"/>
+        <translation>Companheiro:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="492"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="505"/>
         <source>Rating: </source>
-        <translation type="unfinished"/>
+        <translation>Classificação:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="494"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="507"/>
         <source>Visibility: </source>
-        <translation type="unfinished"/>
+        <translation>Visibilidade:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="496"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="509"/>
         <source>Notes:
 </source>
-        <translation type="unfinished"/>
+        <translation>Notas:
+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="498"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="511"/>
         <source>Suit: </source>
-        <translation type="unfinished"/>
+        <translation>Fato:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="500"/>
@@ -4355,14 +4359,16 @@
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="523"/>
         <source>Cylinders:
 </source>
-        <translation type="unfinished"/>
+        <translation>Garrafas:
+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="518"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="531"/>
         <source>Weights:
 </source>
-        <translation type="unfinished"/>
+        <translation>Lastro:
+</translation>
     </message>
 </context>
 <context>
@@ -4432,7 +4438,7 @@
         <location filename="../desktop-widgets/divecomponentselection.ui" line="52"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/divecomponentselection.ui" line="52"/>
         <source>Which components would you like to copy?</source>
-        <translation type="unfinished"/>
+        <translation>Quais os componentes que deseja copiar?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="80"/>
@@ -4465,7 +4471,7 @@
         <location filename="../desktop-widgets/divecomponentselection.ui" line="146"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/divecomponentselection.ui" line="146"/>
         <source>You can paste these to another dive or as text to another application.</source>
-        <translation type="unfinished"/>
+        <translation>Pode colar estes a outro mergulho ou como texto noutra aplicação.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="108"/>
@@ -5134,12 +5140,12 @@ do GPS actual:</translation>
     <message numerus="yes">
         <location filename="../qt-models/divelistmodel.cpp" line="107"/>
         <source>(%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>(%1 mergulho)</numerusform><numerusform>(%n mergulhos)</numerusform></translation>
     </message>
     <message>
         <location filename="../qt-models/divelistmodel.cpp" line="109"/>
         <source>(%L1 shown)</source>
-        <translation type="unfinished"/>
+        <translation>(%L1 mostrados)</translation>
     </message>
 </context>
 <context>
@@ -5529,7 +5535,7 @@ do GPS actual:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="211"/>
         <source>Subsurface dive sites XML</source>
-        <translation type="unfinished"/>
+        <translation>Formato XML do Subsurface para locais de mergulho</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="280"/>
@@ -5540,12 +5546,12 @@ do GPS actual:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="310"/>
         <source>LaTeX</source>
-        <translation type="unfinished"/>
+        <translation>LaTeX</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="330"/>
         <source>Profile Data CSV</source>
-        <translation type="unfinished"/>
+        <translation>Perfil de mergulho como CSV</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="372"/>
@@ -5790,7 +5796,7 @@ do GPS actual:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="95"/>
         <source>Subsurface dive sites native XML format.</source>
-        <translation type="unfinished"/>
+        <translation>Formato XML nativo do Subsurface para os locais de mergulho</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="97"/>
@@ -5811,18 +5817,18 @@ do GPS actual:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="101"/>
         <source>Write dive as LaTeX macros to file.</source>
-        <translation type="unfinished"/>
+        <translation>Exportar o mergulho como macros TeX para o ficheiro.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="103"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/divelogexportdialog.cpp" line="98"/>
         <source>Write the profile image as PNG file.</source>
-        <translation type="unfinished"/>
+        <translation>Gravar imagem do perfil de mergulho como ficheiro PNG.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="105"/>
         <source>Write profile data to a CSV file.</source>
-        <translation type="unfinished"/>
+        <translation>Gravar dados do perfil de mergulho para um ficheiro CSV.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="143"/>
@@ -5876,7 +5882,7 @@ do GPS actual:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="172"/>
         <source>Export Subsurface dive sites XML</source>
-        <translation type="unfinished"/>
+        <translation>Exportar XML do Subsurface com os locais de mergulho</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="185"/>
@@ -5934,12 +5940,12 @@ do GPS actual:</translation>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="189"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/divelogexportdialog.cpp" line="173"/>
         <source>Save profile image</source>
-        <translation type="unfinished"/>
+        <translation>Gravar imagem do perfil</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="193"/>
         <source>Save profile data</source>
-        <translation type="unfinished"/>
+        <translation>Gravar dados do perfil</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="199"/>
@@ -6541,12 +6547,12 @@ do GPS actual:</translation>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="836"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Fre</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="1019"/>
         <source>multiple files</source>
-        <translation type="unfinished"/>
+        <translation>múltiplos ficheiros</translation>
     </message>
 </context>
 <context>
@@ -7079,13 +7085,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divelocationmodel.cpp" line="271"/>
         <source>Delete dive site?</source>
-        <translation type="unfinished"/>
+        <translation>Apagar local de mergulho?</translation>
     </message>
     <message numerus="yes">
         <location filename="../qt-models/divelocationmodel.cpp" line="272"/>
         <source>This dive site has %n dive(s). Do you really want to delete it?
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Este local de mergulho tem %1 mergulho. Tem a certeza que deseja apagá-lo?</numerusform><numerusform>Este local de mergulho tem %n mergulhos. Tem a certeza que deseja apagá-lo?
+</numerusform></translation>
     </message>
 </context>
 <context>
@@ -7460,7 +7467,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="216"/>
         <location filename="../qt-models/divetripmodel.cpp" line="323"/>
         <source>Temp.(°%1)</source>
-        <translation type="unfinished"/>
+        <translation>Temp.(°%1)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="218"/>
@@ -7723,17 +7730,17 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="160"/>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="491"/>
         <source>No dives were selected</source>
-        <translation type="unfinished"/>
+        <translation>Não tem mergulhos seleccionados</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="170"/>
         <source>Stylesheet to export to divelogs.de is not found</source>
-        <translation type="unfinished"/>
+        <translation>Não foi encontrada a folha de estilos para exportar para divelogs.de</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="180"/>
         <source>Failed to create zip file for upload: %s</source>
-        <translation type="unfinished"/>
+        <translation>Falha na criação do ficheiro zip para upload: %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="718"/>
@@ -7789,7 +7796,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/divesiteimportdialog.ui" line="14"/>
         <source>Select dive sites to import</source>
-        <translation type="unfinished"/>
+        <translation>Seleccionar mergulhos para importar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divesiteimportdialog.ui" line="58"/>
@@ -7833,12 +7840,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divesiteimportmodel.cpp" line="36"/>
         <source>Nearest
 Existing Site</source>
-        <translation type="unfinished"/>
+        <translation>Mais próximo
+Local existente</translation>
     </message>
     <message>
         <location filename="../qt-models/divesiteimportmodel.cpp" line="38"/>
         <source>Distance</source>
-        <translation type="unfinished"/>
+        <translation>Distância</translation>
     </message>
 </context>
 <context>
@@ -8259,7 +8267,7 @@ Existing Site</source>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="345"/>
         <source>force downloading all dives</source>
-        <translation type="unfinished"/>
+        <translation>forçar a transferência de todos os mergulhos</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="383"/>
@@ -8302,7 +8310,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="607"/>
         <source>buddies</source>
-        <translation type="unfinished"/>
+        <translation>companheiiros</translation>
     </message>
 </context>
 <context>
@@ -8310,7 +8318,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="630"/>
         <source>dive master</source>
-        <translation type="unfinished"/>
+        <translation>guia de mergulho</translation>
     </message>
 </context>
 <context>
@@ -8318,7 +8326,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="442"/>
         <source>dive mode</source>
-        <translation type="unfinished"/>
+        <translation>modo de mergulho</translation>
     </message>
 </context>
 <context>
@@ -8326,7 +8334,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="575"/>
         <source>tags</source>
-        <translation type="unfinished"/>
+        <translation>categorias</translation>
     </message>
 </context>
 <context>
@@ -8335,7 +8343,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/command_edit.cpp" line="513"/>
         <source>Edit %1 (%n dive(s))</source>
         <extracomment>remove the part in parentheses for %n = 1</extracomment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Editar %1 mergulho</numerusform><numerusform>Editar %n mergulhos</numerusform></translation>
     </message>
 </context>
 <context>
@@ -8497,7 +8505,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="20"/>
         <source>Reset / close</source>
-        <translation type="unfinished"/>
+        <translation>Reinicializar / fechar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="30"/>
@@ -8505,12 +8513,12 @@ Existing Site</source>
         <location filename="../desktop-widgets/filterwidget2.ui" line="96"/>
         <location filename="../desktop-widgets/filterwidget2.ui" line="113"/>
         <source>Min</source>
-        <translation type="unfinished"/>
+        <translation>Min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="37"/>
         <source>People</source>
-        <translation type="unfinished"/>
+        <translation>Pessoas</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="44"/>
@@ -8518,7 +8526,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/filterwidget2.ui" line="120"/>
         <location filename="../desktop-widgets/filterwidget2.ui" line="162"/>
         <source>Max</source>
-        <translation type="unfinished"/>
+        <translation>Max</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="51"/>
@@ -8578,12 +8586,12 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="249"/>
         <source>Logged</source>
-        <translation type="unfinished"/>
+        <translation>Registados</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="259"/>
         <source>Planned</source>
-        <translation type="unfinished"/>
+        <translation>Planeados</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="303"/>
@@ -8602,7 +8610,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/filterwidget2.ui" line="394"/>
         <location filename="../desktop-widgets/filterwidget2.ui" line="413"/>
         <source>All of</source>
-        <translation type="unfinished"/>
+        <translation>Todos</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="323"/>
@@ -8612,7 +8620,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/filterwidget2.ui" line="399"/>
         <location filename="../desktop-widgets/filterwidget2.ui" line="418"/>
         <source>Any of</source>
-        <translation type="unfinished"/>
+        <translation>Qualquer um</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="328"/>
@@ -8622,7 +8630,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/filterwidget2.ui" line="404"/>
         <location filename="../desktop-widgets/filterwidget2.ui" line="423"/>
         <source>None of</source>
-        <translation type="unfinished"/>
+        <translation>Nenhum</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/filterwidget.ui" line="87"/>
@@ -8644,12 +8652,12 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/filterwidget2.cpp" line="245"/>
         <source>%L1/%L2 shown</source>
-        <translation type="unfinished"/>
+        <translation>%L1/%L2 mostrados</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.cpp" line="248"/>
         <source>%L1 dives</source>
-        <translation type="unfinished"/>
+        <translation>%L1 mergulhos</translation>
     </message>
 </context>
 <context>
@@ -9038,12 +9046,12 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="97"/>
         <source>Near dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Locais de mergulho próximos</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="105"/>
         <source>Show dive sites in the range of:</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar locais de mergulho num raio de:</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/locationInformation.ui" line="97"/>
@@ -9095,17 +9103,17 @@ Existing Site</source>
     <message>
         <location filename="../qt-models/divelocationmodel.cpp" line="64"/>
         <source># of dives</source>
-        <translation type="unfinished"/>
+        <translation># de mergulhos</translation>
     </message>
     <message>
         <location filename="../qt-models/divelocationmodel.cpp" line="104"/>
         <source>Click here to edit the divesite.</source>
-        <translation type="unfinished"/>
+        <translation>Clicar aqui para editar local de mergulho.</translation>
     </message>
     <message>
         <location filename="../qt-models/divelocationmodel.cpp" line="105"/>
         <source>Clicking here will remove this divesite.</source>
-        <translation type="unfinished"/>
+        <translation>Ao clicar aqui irá remover este local de mergulho.</translation>
     </message>
 </context>
 <context>
@@ -9417,7 +9425,7 @@ Tem a certeza que quer continuar?</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="71"/>
         <source>Dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Locais de mergulho</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="89"/>
@@ -9443,12 +9451,12 @@ Tem a certeza que quer continuar?</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="101"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Reverter</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="731"/>
         <source>Warning: edited %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Aviso: editados %1 mergulhos</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
@@ -9921,12 +9929,12 @@ Tem a certeza que quer continuar?</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="387"/>
         <source>&amp;Import dive sites</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Importar locais de mergulho</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="390"/>
         <source>Import dive sites from other users</source>
-        <translation type="unfinished"/>
+        <translation>Importar locais de mergulho de outros utilizadores</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="398"/>
@@ -9985,13 +9993,13 @@ Tem a certeza que quer continuar?</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="713"/>
         <source>Cloud stora&amp;ge online</source>
-        <translation type="unfinished"/>
+        <translation>Armazenamento remoto em linha</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="725"/>
         <location filename="../desktop-widgets/mainwindow.ui" line="728"/>
         <source>Toggle deco information</source>
-        <translation type="unfinished"/>
+        <translation>Visualizar/ocultar informação de descompressão</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/mainwindow.ui" line="422"/>
@@ -10166,7 +10174,7 @@ Tem a certeza que quer continuar?</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="433"/>
         <source>Change settings on &amp;dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Alterar configurações do computador de mergulho</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="644"/>
@@ -10444,12 +10452,12 @@ Se responder não, o armazenamento remoto será sincronizado apenas da próxima 
         <location filename="../desktop-widgets/mainwindow.cpp" line="1671"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1774"/>
         <source>multiple files</source>
-        <translation type="unfinished"/>
+        <translation>múltiplos ficheiros</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1752"/>
         <source>Open dive site file</source>
-        <translation type="unfinished"/>
+        <translation>Abrir ficheiro dos locais de mergulho</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1787"/>
@@ -10683,7 +10691,7 @@ Se responder não, o armazenamento remoto será sincronizado apenas da próxima 
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1330"/>
         <source>Dive site files</source>
-        <translation type="unfinished"/>
+        <translation>Ficheiros de locais de mergulho</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1345"/>
@@ -10962,7 +10970,7 @@ Se o seu computador de mergulho usa Bluetooth, prepare o update do mesmo modo qu
     <message numerus="yes">
         <location filename="../desktop-widgets/command_edit.cpp" line="733"/>
         <source>Paste onto %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Colar em %1 mergulho</numerusform><numerusform>Colar em %n mergulhos</numerusform></translation>
     </message>
 </context>
 <context>
@@ -11137,7 +11145,7 @@ Se o seu computador de mergulho usa Bluetooth, prepare o update do mesmo modo qu
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="52"/>
         <source>Default file</source>
-        <translation type="unfinished"/>
+        <translation>Logbook preferido</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="67"/>
@@ -12759,7 +12767,7 @@ Por favor exporte o modelo para outro ficheiro.</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1441"/>
         <source>Split this dive computer into own dive</source>
-        <translation type="unfinished"/>
+        <translation>Separar este computador de mergulho num outro mergulho</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1457"/>
@@ -13637,13 +13645,14 @@ Por favor exporte o modelo para outro ficheiro.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="537"/>
         <source>Bluetooth</source>
-        <translation type="unfinished"/>
+        <translation>Bluetooth</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="547"/>
         <source>Show all bluetooth devices 
 even if not recognized as dive computers</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar todos os dispositivos bluetooth
+mesmo que não reconhecidos como computadores de mergulho</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="572"/>
@@ -14292,7 +14301,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/about.cpp" line="20"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/about.cpp" line="20"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2019&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Software multi-plataforma de registo de mergulhos&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, e outros, 2011-2019&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -14450,7 +14459,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="231"/>
         <source>Atm. pressure</source>
-        <translation type="unfinished"/>
+        <translation>Pressão atmosférica</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="230"/>
@@ -14616,7 +14625,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="62"/>
         <source>Save dive data as subtitles</source>
-        <translation type="unfinished"/>
+        <translation>Gravar dados de mergulho como legendas</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="159"/>
@@ -14641,12 +14650,12 @@ Files with inappropriate date/time</source>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.ui" line="14"/>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="14"/>
         <source>Dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Locais de mergulho</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.ui" line="22"/>
         <source>Purge unused dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar locais de mergulho não usados</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="52"/>
@@ -16065,7 +16074,8 @@ Média</translation>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="152"/>
         <source>
 Average maximum</source>
-        <translation type="unfinished"/>
+        <translation>
+Fazer média do máximo</translation>
     </message>
     <message>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="155"/>
@@ -16127,7 +16137,7 @@ Média</translation>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="236"/>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="254"/>
         <source>%1 - %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2</translation>
     </message>
 </context>
 <context>
@@ -18141,7 +18151,7 @@ Poderá criar este ficheiro seleccionando a opção respectiva no menu de downlo
     <message>
         <location filename="../core/plannernotes.c" line="119"/>
         <source>DISCLAIMER / WARNING: THIS IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
-        <translation type="unfinished"/>
+        <translation>AVISO: ESTA IMPLEMENTAÇÃO DO ALGORITMO %s E A IMPLEMENTAÇÃO DE UM PLANEADOR NELE BASEADO NÃO FORAM  ALVO DE TESTES EXAUSTIVOS. RECOMENDA-SE VIVAMENTE QUE NÃO PLANEIE MERGULHOS APENAS COM BASE NOS RESULTADOS AQUI APRESENTADOS.</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="130"/>
@@ -18471,19 +18481,22 @@ D: %.1f%s
         <location filename="../core/profile.c" line="1421"/>
         <source>pO₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>pO₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1423"/>
         <source>SCR ΔpO₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>SCR ΔpO₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1426"/>
         <source>pN₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>pN₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1440"/>
@@ -18643,7 +18656,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/profile.c" line="1511"/>
         <source>Surface GF %.0f%%
 </source>
-        <translation type="unfinished"/>
+        <translation>GF à superfície %.0f%%
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1514"/>
@@ -18708,48 +18722,49 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/profile.c" line="1631"/>
         <source>ΔT:%d:%02dmin</source>
-        <translation type="unfinished"/>
+        <translation>ΔT:%d:%02dmin</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1635"/>
         <source>%s ΔD:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ΔD:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1639"/>
         <source>%s ↓D:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↓D:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1643"/>
         <source>%s ↑D:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↑D:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1647"/>
         <source>%s øD:%.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>%s øD:%.1f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1651"/>
         <source>%s ↓V:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↓V:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1655"/>
         <source>%s ↑V:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↑V:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1659"/>
         <source>%s øV:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s øV:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1666"/>
         <source>%s ΔP:%d%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ΔP:%d%s</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/core/profile.c" line="1620"/>
@@ -19443,12 +19458,12 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/statistics.c" line="157"/>
         <source>All (by max depth stats)</source>
-        <translation type="unfinished"/>
+        <translation>Todos (estatísticas por profundidade máxima)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="160"/>
         <source>All (by min. temp stats)</source>
-        <translation type="unfinished"/>
+        <translation>Todos (estatísticas por temperatura mínima)</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="42"/>
@@ -20375,12 +20390,12 @@ O Uemis Zurich está correctamente ligado?</translation>
     <message>
         <location filename="../core/save-xml.c" line="742"/>
         <source>Failed to save dives to %s (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao gravar mergulhos para %s (%s)</translation>
     </message>
     <message>
         <location filename="../core/save-xml.c" line="863"/>
         <source>Failed to save divesites to %s (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao gravar locais de mergulho para %s (%s)</translation>
     </message>
 </context>
 <context>
@@ -20915,12 +20930,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="522"/>
         <source>Bailout: Deco on OC</source>
-        <translation type="unfinished"/>
+        <translation>Bailout: Descompressão em circuito aberto</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="529"/>
         <source>Surface segment</source>
-        <translation type="unfinished"/>
+        <translation>Segmento à superfície</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="546"/>

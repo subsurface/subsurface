@@ -1015,7 +1015,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>sampling hjärtfrekvens</translation>
     </message>
 </context>
 <context>
@@ -1102,7 +1102,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="864"/>
         <source>delete dive computer</source>
-        <translation type="unfinished"/>
+        <translation>radera dykdator</translation>
     </message>
 </context>
 <context>
@@ -1126,7 +1126,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="274"/>
         <source>Atm. pressure</source>
-        <translation type="unfinished"/>
+        <translation>Atm. tryck</translation>
     </message>
 </context>
 <context>
@@ -1270,7 +1270,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="105"/>
         <source>import dive sites from %1</source>
-        <translation type="unfinished"/>
+        <translation>Importera dykplatser från %1</translation>
     </message>
 </context>
 <context>
@@ -1302,7 +1302,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="858"/>
         <source>move dive computer to front</source>
-        <translation type="unfinished"/>
+        <translation>Lägg dykdator överst</translation>
     </message>
 </context>
 <context>
@@ -6547,7 +6547,7 @@ GPS-position:</translation>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="836"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>sampling hjärtfrekvens</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="1019"/>
@@ -7468,7 +7468,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="216"/>
         <location filename="../qt-models/divetripmodel.cpp" line="323"/>
         <source>Temp.(°%1)</source>
-        <translation type="unfinished"/>
+        <translation>Temp.(°%1)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="218"/>
@@ -7797,7 +7797,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/divesiteimportdialog.ui" line="14"/>
         <source>Select dive sites to import</source>
-        <translation type="unfinished"/>
+        <translation>Markera dykplatser för import</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divesiteimportdialog.ui" line="58"/>
@@ -7841,12 +7841,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divesiteimportmodel.cpp" line="36"/>
         <source>Nearest
 Existing Site</source>
-        <translation type="unfinished"/>
+        <translation>Närliggande
+Existerande dykplats</translation>
     </message>
     <message>
         <location filename="../qt-models/divesiteimportmodel.cpp" line="38"/>
         <source>Distance</source>
-        <translation type="unfinished"/>
+        <translation>Avstånd</translation>
     </message>
 </context>
 <context>
@@ -8267,7 +8268,7 @@ Existing Site</source>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="345"/>
         <source>force downloading all dives</source>
-        <translation type="unfinished"/>
+        <translation>Tvinga nedladdning av alla dyk</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="383"/>
@@ -9451,12 +9452,12 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="101"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Ångra</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="731"/>
         <source>Warning: edited %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Varning: redigerade %1 dyk</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
@@ -9929,12 +9930,12 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="387"/>
         <source>&amp;Import dive sites</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Importera dykplatser</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="390"/>
         <source>Import dive sites from other users</source>
-        <translation type="unfinished"/>
+        <translation>Importera dykplatser från andra användare</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="398"/>
@@ -10174,7 +10175,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="433"/>
         <source>Change settings on &amp;dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Ändra inställningar på &amp;dykdator</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="644"/>
@@ -10459,7 +10460,7 @@ Om du svarar Nej kommer förändringarna synkroniseras nästa gång du väljer &
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1752"/>
         <source>Open dive site file</source>
-        <translation type="unfinished"/>
+        <translation>Öppna dykplatsfil</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1787"/>
@@ -10693,7 +10694,7 @@ Om du svarar Nej kommer förändringarna synkroniseras nästa gång du väljer &
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1330"/>
         <source>Dive site files</source>
-        <translation type="unfinished"/>
+        <translation>Dykplatsfiler</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1345"/>
@@ -14463,7 +14464,7 @@ Filer med felaktig datum/tid</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="231"/>
         <source>Atm. pressure</source>
-        <translation type="unfinished"/>
+        <translation>Atm. tryck</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="230"/>
@@ -17848,7 +17849,7 @@ Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogf�
         <location filename="../tmp/Subsurface-4.8.5/core/plannernotes.c" line="115"/>
         <location filename="../tmp/Subsurface-4.8.6/core/plannernotes.c" line="115"/>
         <source>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
-        <translation>VARNING: DET HÄR ÄR EN NY IMPLEMENTATION AV %s ALGORITMEN OCH EN DYKPLANERARE BASERAD PÅ DENNA. DEN HAR BARA FÅTT EN BEGRÄNSAD MÄNGD TESTNING. VI REKOMENDERAR STARKT ATT INTE PLANERA DYK ENBART BASERADE PÅ DEN INFORMATION SOM GES HÄR.</translation>
+        <translation>VARNING: DET HÄR ÄR EN NY IMPLEMENTATION AV %s ALGORITMEN I DYKPLANERAREN. DEN HAR BARA FÅTT EN BEGRÄNSAD MÄNGD TESTNING. VI REKOMMENDERAR STARKT ATT INTE PLANERA DYK ENBART BASERADE PÅ RESULTAT SOM GES HÄR.</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="113"/>
@@ -18153,7 +18154,7 @@ Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogf�
     <message>
         <location filename="../core/plannernotes.c" line="119"/>
         <source>DISCLAIMER / WARNING: THIS IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
-        <translation type="unfinished"/>
+        <translation>VARNING: DEN HÄR IMPLEMENTATIONEN AV %s ALGORITMEN I DYKPLANERAREN HAR BARA FÅTT EN BEGRÄNSAD MÄNGD TESTNING. VI REKOMMENDERAR STARKT ATT INTE PLANERA DYK ENBART BASERADE PÅ RESULTAT SOM GES HÄR.</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="130"/>
@@ -18483,19 +18484,22 @@ D: %.1f%s
         <location filename="../core/profile.c" line="1421"/>
         <source>pO₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>pO₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1423"/>
         <source>SCR ΔpO₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>SCR ΔpO₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1426"/>
         <source>pN₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>pN₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1440"/>
@@ -18721,48 +18725,49 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/profile.c" line="1631"/>
         <source>ΔT:%d:%02dmin</source>
-        <translation type="unfinished"/>
+        <translation>ΔT:%d:%02dmin</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1635"/>
         <source>%s ΔD:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ΔD:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1639"/>
         <source>%s ↓D:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↓D:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1643"/>
         <source>%s ↑D:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↑D:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1647"/>
         <source>%s øD:%.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>%s øD:%.1f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1651"/>
         <source>%s ↓V:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↓V:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1655"/>
         <source>%s ↑V:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↑V:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1659"/>
         <source>%s øV:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s øV:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1666"/>
         <source>%s ΔP:%d%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ΔP:%d%s</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/core/profile.c" line="1620"/>

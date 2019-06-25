@@ -1014,7 +1014,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Puls</translation>
     </message>
 </context>
 <context>
@@ -1101,7 +1101,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="864"/>
         <source>delete dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Tauchcomputer entfernen</translation>
     </message>
 </context>
 <context>
@@ -1125,7 +1125,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="274"/>
         <source>Atm. pressure</source>
-        <translation type="unfinished"/>
+        <translation>Oberflächendruck</translation>
     </message>
 </context>
 <context>
@@ -1269,7 +1269,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="105"/>
         <source>import dive sites from %1</source>
-        <translation type="unfinished"/>
+        <translation>importiere Tauchplätze von %1</translation>
     </message>
 </context>
 <context>
@@ -1301,7 +1301,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="858"/>
         <source>move dive computer to front</source>
-        <translation type="unfinished"/>
+        <translation>setze als ersten Tauchcomputer</translation>
     </message>
 </context>
 <context>
@@ -6544,7 +6544,7 @@ Position verwenden</translation>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="836"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Puls</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="1019"/>
@@ -7463,7 +7463,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="216"/>
         <location filename="../qt-models/divetripmodel.cpp" line="323"/>
         <source>Temp.(°%1)</source>
-        <translation type="unfinished"/>
+        <translation>Temp.(°%1)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="218"/>
@@ -7792,7 +7792,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/divesiteimportdialog.ui" line="14"/>
         <source>Select dive sites to import</source>
-        <translation type="unfinished"/>
+        <translation>Wähle Tauchplaẗze zum Importieren aus</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divesiteimportdialog.ui" line="58"/>
@@ -7836,12 +7836,12 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divesiteimportmodel.cpp" line="36"/>
         <source>Nearest
 Existing Site</source>
-        <translation type="unfinished"/>
+        <translation>Existierender Tauchplatz</translation>
     </message>
     <message>
         <location filename="../qt-models/divesiteimportmodel.cpp" line="38"/>
         <source>Distance</source>
-        <translation type="unfinished"/>
+        <translation>Entfernung</translation>
     </message>
 </context>
 <context>
@@ -8262,7 +8262,7 @@ Existing Site</source>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="345"/>
         <source>force downloading all dives</source>
-        <translation type="unfinished"/>
+        <translation>erneutes Herunterladen aller Tauchgänge erzwingen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="383"/>
@@ -9446,12 +9446,12 @@ Trotzdem fortfahren?</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="101"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Rückgängig</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="731"/>
         <source>Warning: edited %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Achtung: %1 Tauchgänge editiert</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
@@ -9924,12 +9924,12 @@ Trotzdem fortfahren?</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="387"/>
         <source>&amp;Import dive sites</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Importiere Tauchplätze</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="390"/>
         <source>Import dive sites from other users</source>
-        <translation type="unfinished"/>
+        <translation>Importiere Tauchplätze von anderem Benutzer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="398"/>
@@ -10169,7 +10169,7 @@ Trotzdem fortfahren?</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="433"/>
         <source>Change settings on &amp;dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Einstellungen des Tauchcomputers verändern</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="644"/>
@@ -10452,7 +10452,7 @@ Bei &quot;nein&quot; wird die Cloud erst beim nächsten &quot;Cloudspeicher öff
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1752"/>
         <source>Open dive site file</source>
-        <translation type="unfinished"/>
+        <translation>Öffne Tauchplatz Datei</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1787"/>
@@ -10686,7 +10686,7 @@ Bei &quot;nein&quot; wird die Cloud erst beim nächsten &quot;Cloudspeicher öff
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1330"/>
         <source>Dive site files</source>
-        <translation type="unfinished"/>
+        <translation>Tauchplatz Dateien</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1345"/>
@@ -14455,7 +14455,7 @@ Dateien mit unpassendem Datum/Zeit</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="231"/>
         <source>Atm. pressure</source>
-        <translation type="unfinished"/>
+        <translation>Oberflächendruck</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="230"/>
@@ -18147,7 +18147,7 @@ Die kann durch Setzen einen Häkchens im Download-Dialog erstellt werden.</trans
     <message>
         <location filename="../core/plannernotes.c" line="119"/>
         <source>DISCLAIMER / WARNING: THIS IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
-        <translation type="unfinished"/>
+        <translation>HINWEIS / WARNUNG: DIES IST EINE NEUIMPLEMENTATION DES %s-ALGORITHMUS UND EINE DARAUF BASIERENDE TAUCHGANGSPLANERIMPLEMENTATION, DIE NUR EINER GERINGEN ZAHL VON TESTS UNTERZOGEN WURDE. WIR RATEN DRINGEND, TAUCHGÄNGE NICHT AUSSSCHLIESSLICH AUFGRUND DIESER RESULTATE ZU PLANEN!</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="130"/>
@@ -18477,19 +18477,22 @@ Tiefe: %.1f%s
         <location filename="../core/profile.c" line="1421"/>
         <source>pO₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>pO₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1423"/>
         <source>SCR ΔpO₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>SCR ΔpO₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1426"/>
         <source>pN₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>pN₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1440"/>
@@ -18714,48 +18717,49 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/profile.c" line="1631"/>
         <source>ΔT:%d:%02dmin</source>
-        <translation type="unfinished"/>
+        <translation>ΔT:%d:%02dmin</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1635"/>
         <source>%s ΔD:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ΔD:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1639"/>
         <source>%s ↓D:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↓D:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1643"/>
         <source>%s ↑D:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↑D:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1647"/>
         <source>%s øD:%.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>%s øD:%.1f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1651"/>
         <source>%s ↓V:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↓V:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1655"/>
         <source>%s ↑V:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↑V:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1659"/>
         <source>%s øV:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s øV:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1666"/>
         <source>%s ΔP:%d%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ΔP:%d%s</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/core/profile.c" line="1620"/>

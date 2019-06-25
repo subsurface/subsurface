@@ -39,7 +39,10 @@
 
 © Subsurface developer team
 2011-2019</source>
-        <translation type="unfinished"/>
+        <translation>Версия: %1
+
+© Subsurface екипа
+2011-2019</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/mobile-widgets/qml/About.qml" line="49"/>
@@ -68,7 +71,7 @@
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/command_divelist.cpp" line="700"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/command_divelist.cpp" line="700"/>
         <source>add %n dives to trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>добави %n гмуркания към пътуване</numerusform><numerusform>добави %n гмуркания към пътуване</numerusform></translation>
     </message>
 </context>
 <context>
@@ -78,7 +81,7 @@
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/command_divelist.cpp" line="720"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/command_divelist.cpp" line="720"/>
         <source>autogroup dives</source>
-        <translation type="unfinished"/>
+        <translation>Автоматично групиране на гмурания</translation>
     </message>
 </context>
 <context>
@@ -178,12 +181,12 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="221"/>
         <source>even if not recognized as dive computer</source>
-        <translation type="unfinished"/>
+        <translation>дори ако не е разпознато като гмуркачески компютър</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="224"/>
         <source>Show all BT devices</source>
-        <translation type="unfinished"/>
+        <translation>Покажи всички Bluetooth устройства</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="242"/>
@@ -1012,7 +1015,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Проба на сърдечен ритъм</translation>
     </message>
 </context>
 <context>
@@ -1037,7 +1040,7 @@
         <location filename="../desktop-widgets/command_edit.cpp" line="77"/>
         <source>Edit %1 (%n dive(s))</source>
         <extracomment>remove the part in parentheses for %n = 1</extracomment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Редактирай %1 (%n гмуркане (гмуркания))</numerusform><numerusform>Редактирай %1 (%n гмуркане (гмуркания))</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1048,7 +1051,7 @@
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/command_divelist.cpp" line="488"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/command_divelist.cpp" line="488"/>
         <source>add dive</source>
-        <translation type="unfinished"/>
+        <translation>добави гмуркане</translation>
     </message>
 </context>
 <context>
@@ -1056,7 +1059,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="83"/>
         <source>add dive site</source>
-        <translation type="unfinished"/>
+        <translation>добави място за гмуркане</translation>
     </message>
 </context>
 <context>
@@ -1064,7 +1067,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="669"/>
         <source>add %n dives to trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>добави %n гмуркания към пътуване</numerusform><numerusform>добави %n гмуркания към пътуване</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1072,7 +1075,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="689"/>
         <source>autogroup dives</source>
-        <translation type="unfinished"/>
+        <translation>Автоматично групиране на гмурания</translation>
     </message>
 </context>
 <context>
@@ -1080,7 +1083,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="676"/>
         <source>create trip</source>
-        <translation type="unfinished"/>
+        <translation>създай пътуване</translation>
     </message>
 </context>
 <context>
@@ -1091,7 +1094,7 @@
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/command_divelist.cpp" line="558"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/command_divelist.cpp" line="558"/>
         <source>delete %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Изтрий %n гмуркане (гмуркания)</numerusform><numerusform>изтрий гмуркане (гмуркания)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1099,7 +1102,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="864"/>
         <source>delete dive computer</source>
-        <translation type="unfinished"/>
+        <translation>изтрий гмуркачески компютър</translation>
     </message>
 </context>
 <context>
@@ -1107,7 +1110,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divesite.cpp" line="141"/>
         <source>delete %n dive site(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>изтрий %n места за гмуркане (гмуркания)</numerusform><numerusform>изтрий %n места за гмуркане (гмуркания)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1115,7 +1118,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="229"/>
         <source>air temperature</source>
-        <translation type="unfinished"/>
+        <translation>темп. на въздуха</translation>
     </message>
 </context>
 <context>
@@ -1123,7 +1126,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="274"/>
         <source>Atm. pressure</source>
-        <translation type="unfinished"/>
+        <translation>атмосф. налягане</translation>
     </message>
 </context>
 <context>
@@ -1139,7 +1142,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="344"/>
         <source>dive site</source>
-        <translation type="unfinished"/>
+        <translation>място за гмуркане</translation>
     </message>
 </context>
 <context>
@@ -1147,7 +1150,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="265"/>
         <source>Edit dive site country</source>
-        <translation type="unfinished"/>
+        <translation>Редакция на държава</translation>
     </message>
 </context>
 <context>
@@ -1155,7 +1158,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="219"/>
         <source>Edit dive site description</source>
-        <translation type="unfinished"/>
+        <translation>Редакция на описание на място за гмуркане</translation>
     </message>
 </context>
 <context>
@@ -1163,7 +1166,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="290"/>
         <source>Edit dive site location</source>
-        <translation type="unfinished"/>
+        <translation>Редакция на местонахождение на гмуркане</translation>
     </message>
 </context>
 <context>
@@ -1171,7 +1174,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="196"/>
         <source>Edit dive site name</source>
-        <translation type="unfinished"/>
+        <translation>Редакция на име на място за гмуркане</translation>
     </message>
 </context>
 <context>
@@ -1179,7 +1182,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="242"/>
         <source>Edit dive site notes</source>
-        <translation type="unfinished"/>
+        <translation>Редакция на бележки на място за гмуркане</translation>
     </message>
 </context>
 <context>
@@ -1187,7 +1190,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="319"/>
         <source>Edit dive site taxonomy</source>
-        <translation type="unfinished"/>
+        <translation>Редакция на таксономия на място за гмуркане</translation>
     </message>
 </context>
 <context>
@@ -1203,7 +1206,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="144"/>
         <source>notes</source>
-        <translation type="unfinished"/>
+        <translation>бележки</translation>
     </message>
 </context>
 <context>
@@ -1211,7 +1214,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="187"/>
         <source>rating</source>
-        <translation type="unfinished"/>
+        <translation>оценка</translation>
     </message>
 </context>
 <context>
@@ -1227,7 +1230,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit_trip.cpp" line="18"/>
         <source>Edit %1</source>
-        <translation type="unfinished"/>
+        <translation>Редактирай %1</translation>
     </message>
 </context>
 <context>
@@ -1235,7 +1238,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit_trip.cpp" line="53"/>
         <source>trip location</source>
-        <translation type="unfinished"/>
+        <translation>местонахождение на пътуване</translation>
     </message>
 </context>
 <context>
@@ -1243,7 +1246,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit_trip.cpp" line="75"/>
         <source>trip notes</source>
-        <translation type="unfinished"/>
+        <translation>бележки за пътуване</translation>
     </message>
 </context>
 <context>
@@ -1251,7 +1254,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="208"/>
         <source>visibility</source>
-        <translation type="unfinished"/>
+        <translation>видимост</translation>
     </message>
 </context>
 <context>
@@ -1259,7 +1262,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="253"/>
         <source>water temperature</source>
-        <translation type="unfinished"/>
+        <translation>темп. на водата</translation>
     </message>
 </context>
 <context>
@@ -1267,7 +1270,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="105"/>
         <source>import dive sites from %1</source>
-        <translation type="unfinished"/>
+        <translation>вмъкни места за гмуркане от %1</translation>
     </message>
 </context>
 <context>
@@ -1275,7 +1278,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="452"/>
         <source>import %n dive(s) from %1</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>вмъкни %n места за гмуркане (гмуркания) от %1</numerusform><numerusform>вмъкни %n места за гмуркане (гмуркания) от %1</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1283,7 +1286,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="347"/>
         <source>merge dive sites</source>
-        <translation type="unfinished"/>
+        <translation>слей места за гмуркане</translation>
     </message>
 </context>
 <context>
@@ -1291,7 +1294,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="869"/>
         <source>merge dive</source>
-        <translation type="unfinished"/>
+        <translation>слей гмуркания</translation>
     </message>
 </context>
 <context>
@@ -1299,7 +1302,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="858"/>
         <source>move dive computer to front</source>
-        <translation type="unfinished"/>
+        <translation>премести гмуркачески компютър отпред</translation>
     </message>
 </context>
 <context>
@@ -1307,7 +1310,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="161"/>
         <source>purge unused dive sites</source>
-        <translation type="unfinished"/>
+        <translation>изчисти неизползвани места за гмуркане</translation>
     </message>
 </context>
 <context>
@@ -1315,7 +1318,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="657"/>
         <source>remove autogenerated trips</source>
-        <translation type="unfinished"/>
+        <translation>премахни автоматично генерирани пътувания</translation>
     </message>
 </context>
 <context>
@@ -1323,7 +1326,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="645"/>
         <source>remove %n dive(s) from trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>премахни %n гмуркане (гмуркания) от пътуване</numerusform><numerusform>премахни %n гмуркане (гмуркания) от пътуване</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1331,7 +1334,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="607"/>
         <source>renumber %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>преномерирай %n гмуркане (гмуркания)</numerusform><numerusform>преномерирай %n гмуркане (гмуркания)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1339,7 +1342,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="569"/>
         <source>shift time of %n dives</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Измести времето на %n гмуркания</numerusform><numerusform>измести времето на %n гмуркания</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1347,7 +1350,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="802"/>
         <source>split dive computer</source>
-        <translation type="unfinished"/>
+        <translation>раздели леководолазен компютър</translation>
     </message>
 </context>
 <context>
@@ -1355,7 +1358,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="784"/>
         <source>split dive</source>
-        <translation type="unfinished"/>
+        <translation>раздели гмуркане</translation>
     </message>
 </context>
 <context>
@@ -4080,12 +4083,12 @@
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="14"/>
         <source>Copy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Копирай настройки</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="26"/>
         <source>Selection for copy-paste</source>
-        <translation type="unfinished"/>
+        <translation>Селекция за копи-пейст</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="36"/>
@@ -4145,7 +4148,7 @@
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/command_divelist.cpp" line="707"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/command_divelist.cpp" line="707"/>
         <source>create trip</source>
-        <translation type="unfinished"/>
+        <translation>Създай пътуване</translation>
     </message>
 </context>
 <context>
@@ -4305,44 +4308,45 @@
         <location filename="../desktop-widgets/simplewidgets.cpp" line="486"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="499"/>
         <source>Dive site: </source>
-        <translation type="unfinished"/>
+        <translation>Място за гмуркане:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="488"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="501"/>
         <source>Dive master: </source>
-        <translation type="unfinished"/>
+        <translation>Водач:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="490"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="503"/>
         <source>Buddy: </source>
-        <translation type="unfinished"/>
+        <translation>Партньор:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="492"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="505"/>
         <source>Rating: </source>
-        <translation type="unfinished"/>
+        <translation>Оценка:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="494"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="507"/>
         <source>Visibility: </source>
-        <translation type="unfinished"/>
+        <translation>Видимост:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="496"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="509"/>
         <source>Notes:
 </source>
-        <translation type="unfinished"/>
+        <translation>Бележки:
+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="498"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="511"/>
         <source>Suit: </source>
-        <translation type="unfinished"/>
+        <translation>Водолазен костюм:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="500"/>
@@ -4355,14 +4359,16 @@
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="523"/>
         <source>Cylinders:
 </source>
-        <translation type="unfinished"/>
+        <translation>Бутилки:
+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="518"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="531"/>
         <source>Weights:
 </source>
-        <translation type="unfinished"/>
+        <translation>Тежести:
+</translation>
     </message>
 </context>
 <context>
@@ -4432,7 +4438,7 @@
         <location filename="../desktop-widgets/divecomponentselection.ui" line="52"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/divecomponentselection.ui" line="52"/>
         <source>Which components would you like to copy?</source>
-        <translation type="unfinished"/>
+        <translation>Кои компоненти бихте желали да копирате?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="80"/>
@@ -4465,7 +4471,7 @@
         <location filename="../desktop-widgets/divecomponentselection.ui" line="146"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/divecomponentselection.ui" line="146"/>
         <source>You can paste these to another dive or as text to another application.</source>
-        <translation type="unfinished"/>
+        <translation>Можете да ги копирате в друго гмуркане или като текст към друго приложение.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="108"/>
@@ -4591,7 +4597,7 @@
         <location filename="../tmp/Subsurface-4.8.5/mobile-widgets/qml/DiveDetails.qml" line="192"/>
         <location filename="../tmp/Subsurface-4.8.6/mobile-widgets/qml/DiveDetails.qml" line="192"/>
         <source>Save edits</source>
-        <translation type="unfinished"/>
+        <translation>Запиши редакциите</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="192"/>
@@ -5086,7 +5092,7 @@ GPS позиция:</translation>
         <location filename="../tmp/Subsurface-4.8.5/mobile-widgets/qml/DiveList.qml" line="363"/>
         <location filename="../tmp/Subsurface-4.8.6/mobile-widgets/qml/DiveList.qml" line="363"/>
         <source>Please wait, filtering dive list</source>
-        <translation type="unfinished"/>
+        <translation>Моля изчакайте, филтриране на списъка на гмуркания</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="560"/>
@@ -5094,7 +5100,7 @@ GPS позиция:</translation>
         <location filename="../tmp/Subsurface-4.8.5/mobile-widgets/qml/DiveList.qml" line="478"/>
         <location filename="../tmp/Subsurface-4.8.6/mobile-widgets/qml/DiveList.qml" line="478"/>
         <source>Download dives</source>
-        <translation type="unfinished"/>
+        <translation>Изтегли гмуркания</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="570"/>
@@ -5110,7 +5116,7 @@ GPS позиция:</translation>
         <location filename="../tmp/Subsurface-4.8.5/mobile-widgets/qml/DiveList.qml" line="498"/>
         <location filename="../tmp/Subsurface-4.8.6/mobile-widgets/qml/DiveList.qml" line="498"/>
         <source>Filter dives</source>
-        <translation type="unfinished"/>
+        <translation>Филтрирай гмуркания</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="424"/>
@@ -5134,12 +5140,12 @@ GPS позиция:</translation>
     <message numerus="yes">
         <location filename="../qt-models/divelistmodel.cpp" line="107"/>
         <source>(%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>(%n гмуркане (гмуркания))</numerusform><numerusform>(%n гмуркане (гмуркания))</numerusform></translation>
     </message>
     <message>
         <location filename="../qt-models/divelistmodel.cpp" line="109"/>
         <source>(%L1 shown)</source>
-        <translation type="unfinished"/>
+        <translation>(%L1 показани)</translation>
     </message>
 </context>
 <context>
@@ -5529,7 +5535,7 @@ GPS позиция:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="211"/>
         <source>Subsurface dive sites XML</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface места за гмуркане като XML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="280"/>
@@ -5540,12 +5546,12 @@ GPS позиция:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="310"/>
         <source>LaTeX</source>
-        <translation type="unfinished"/>
+        <translation>LaTeX</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="330"/>
         <source>Profile Data CSV</source>
-        <translation type="unfinished"/>
+        <translation>Профил данни като CSV</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="372"/>
@@ -5790,7 +5796,7 @@ GPS позиция:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="95"/>
         <source>Subsurface dive sites native XML format.</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface XML формат.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="97"/>
@@ -5811,18 +5817,18 @@ GPS позиция:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="101"/>
         <source>Write dive as LaTeX macros to file.</source>
-        <translation type="unfinished"/>
+        <translation>Запиши гмуркане като LaTeX макрота във файл.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="103"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/divelogexportdialog.cpp" line="98"/>
         <source>Write the profile image as PNG file.</source>
-        <translation type="unfinished"/>
+        <translation>Запиши профил изображението като PNG файл.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="105"/>
         <source>Write profile data to a CSV file.</source>
-        <translation type="unfinished"/>
+        <translation>Запиши профил данните като CSV файл.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="143"/>
@@ -5876,7 +5882,7 @@ GPS позиция:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="172"/>
         <source>Export Subsurface dive sites XML</source>
-        <translation type="unfinished"/>
+        <translation>Експорт на Subsurface места за гмуркане като XML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="185"/>
@@ -5934,12 +5940,12 @@ GPS позиция:</translation>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="189"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/divelogexportdialog.cpp" line="173"/>
         <source>Save profile image</source>
-        <translation type="unfinished"/>
+        <translation>Запиши гмуркачески профил като изображение</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="193"/>
         <source>Save profile data</source>
-        <translation type="unfinished"/>
+        <translation>Запиши профил като данни</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="199"/>
@@ -6541,12 +6547,12 @@ GPS позиция:</translation>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="836"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Проба на сърдечен ритъм</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="1019"/>
         <source>multiple files</source>
-        <translation type="unfinished"/>
+        <translation>повече файлове</translation>
     </message>
 </context>
 <context>
@@ -7079,13 +7085,15 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divelocationmodel.cpp" line="271"/>
         <source>Delete dive site?</source>
-        <translation type="unfinished"/>
+        <translation>Изтрий място за гмуркане?</translation>
     </message>
     <message numerus="yes">
         <location filename="../qt-models/divelocationmodel.cpp" line="272"/>
         <source>This dive site has %n dive(s). Do you really want to delete it?
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Това място за гмуркане има %n гмуркане (гмуркания). Искате ли да го изтриете?
+</numerusform><numerusform>Това място за гмуркане има %n гмуркане (гмуркания). Искате ли да го изтриете?
+</numerusform></translation>
     </message>
 </context>
 <context>
@@ -7460,7 +7468,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="216"/>
         <location filename="../qt-models/divetripmodel.cpp" line="323"/>
         <source>Temp.(°%1)</source>
-        <translation type="unfinished"/>
+        <translation>Темп.(°%1)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="218"/>
@@ -7723,17 +7731,17 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="160"/>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="491"/>
         <source>No dives were selected</source>
-        <translation type="unfinished"/>
+        <translation>Няма избрани гмуркания</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="170"/>
         <source>Stylesheet to export to divelogs.de is not found</source>
-        <translation type="unfinished"/>
+        <translation>Стиловете за експорт към divelogs.de не могат да бъдат намерени</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="180"/>
         <source>Failed to create zip file for upload: %s</source>
-        <translation type="unfinished"/>
+        <translation>Не може да бъде създаден ZIP файл за качване: %s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="718"/>
@@ -7789,7 +7797,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/divesiteimportdialog.ui" line="14"/>
         <source>Select dive sites to import</source>
-        <translation type="unfinished"/>
+        <translation>Изберете места за гмуркане за импорт</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divesiteimportdialog.ui" line="58"/>
@@ -7833,12 +7841,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divesiteimportmodel.cpp" line="36"/>
         <source>Nearest
 Existing Site</source>
-        <translation type="unfinished"/>
+        <translation>Най-близкото
+Съществуващо място за гмуркане</translation>
     </message>
     <message>
         <location filename="../qt-models/divesiteimportmodel.cpp" line="38"/>
         <source>Distance</source>
-        <translation type="unfinished"/>
+        <translation>Разстояние</translation>
     </message>
 </context>
 <context>
@@ -8259,7 +8268,7 @@ Existing Site</source>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="345"/>
         <source>force downloading all dives</source>
-        <translation type="unfinished"/>
+        <translation>Наложи изтегляне на всички гмуркания</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="383"/>
@@ -8302,7 +8311,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="607"/>
         <source>buddies</source>
-        <translation type="unfinished"/>
+        <translation>партньори</translation>
     </message>
 </context>
 <context>
@@ -8310,7 +8319,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="630"/>
         <source>dive master</source>
-        <translation type="unfinished"/>
+        <translation>водач</translation>
     </message>
 </context>
 <context>
@@ -8318,7 +8327,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="442"/>
         <source>dive mode</source>
-        <translation type="unfinished"/>
+        <translation>режим на гмуркане</translation>
     </message>
 </context>
 <context>
@@ -8326,7 +8335,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="575"/>
         <source>tags</source>
-        <translation type="unfinished"/>
+        <translation>тагове</translation>
     </message>
 </context>
 <context>
@@ -8335,7 +8344,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/command_edit.cpp" line="513"/>
         <source>Edit %1 (%n dive(s))</source>
         <extracomment>remove the part in parentheses for %n = 1</extracomment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Редактирай %1 (%n гмуркане (гмуркания))</numerusform><numerusform>Редактирай %1 (%n гмуркане (гмуркания))</numerusform></translation>
     </message>
 </context>
 <context>
@@ -8497,7 +8506,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="20"/>
         <source>Reset / close</source>
-        <translation type="unfinished"/>
+        <translation>Изчисти / затвори</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="30"/>
@@ -8505,12 +8514,12 @@ Existing Site</source>
         <location filename="../desktop-widgets/filterwidget2.ui" line="96"/>
         <location filename="../desktop-widgets/filterwidget2.ui" line="113"/>
         <source>Min</source>
-        <translation type="unfinished"/>
+        <translation>Мин.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="37"/>
         <source>People</source>
-        <translation type="unfinished"/>
+        <translation>Хора</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="44"/>
@@ -8518,7 +8527,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/filterwidget2.ui" line="120"/>
         <location filename="../desktop-widgets/filterwidget2.ui" line="162"/>
         <source>Max</source>
-        <translation type="unfinished"/>
+        <translation>Макс.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="51"/>
@@ -8578,12 +8587,12 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="249"/>
         <source>Logged</source>
-        <translation type="unfinished"/>
+        <translation>Регистрирани</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="259"/>
         <source>Planned</source>
-        <translation type="unfinished"/>
+        <translation>Планирани</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="303"/>
@@ -8602,7 +8611,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/filterwidget2.ui" line="394"/>
         <location filename="../desktop-widgets/filterwidget2.ui" line="413"/>
         <source>All of</source>
-        <translation type="unfinished"/>
+        <translation>Всички от</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="323"/>
@@ -8612,7 +8621,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/filterwidget2.ui" line="399"/>
         <location filename="../desktop-widgets/filterwidget2.ui" line="418"/>
         <source>Any of</source>
-        <translation type="unfinished"/>
+        <translation>Някой от</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="328"/>
@@ -8622,7 +8631,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/filterwidget2.ui" line="404"/>
         <location filename="../desktop-widgets/filterwidget2.ui" line="423"/>
         <source>None of</source>
-        <translation type="unfinished"/>
+        <translation>Нито едно от</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/filterwidget.ui" line="87"/>
@@ -8644,12 +8653,12 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/filterwidget2.cpp" line="245"/>
         <source>%L1/%L2 shown</source>
-        <translation type="unfinished"/>
+        <translation>%L1/%L2 показани</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.cpp" line="248"/>
         <source>%L1 dives</source>
-        <translation type="unfinished"/>
+        <translation>%L1 гмуркания</translation>
     </message>
 </context>
 <context>
@@ -9038,12 +9047,12 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="97"/>
         <source>Near dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Близки места за гмуркане</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="105"/>
         <source>Show dive sites in the range of:</source>
-        <translation type="unfinished"/>
+        <translation>Покажи места за гмуркане в диапазона:</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/locationInformation.ui" line="97"/>
@@ -9095,17 +9104,17 @@ Existing Site</source>
     <message>
         <location filename="../qt-models/divelocationmodel.cpp" line="64"/>
         <source># of dives</source>
-        <translation type="unfinished"/>
+        <translation>Брой гмуркания</translation>
     </message>
     <message>
         <location filename="../qt-models/divelocationmodel.cpp" line="104"/>
         <source>Click here to edit the divesite.</source>
-        <translation type="unfinished"/>
+        <translation>Кликнете тук за да редактирате мястото за гмуркане.</translation>
     </message>
     <message>
         <location filename="../qt-models/divelocationmodel.cpp" line="105"/>
         <source>Clicking here will remove this divesite.</source>
-        <translation type="unfinished"/>
+        <translation>Кликнете тук за да премахнете мястото за гмуркане.</translation>
     </message>
 </context>
 <context>
@@ -9417,7 +9426,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="71"/>
         <source>Dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Места за гмуркане</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="89"/>
@@ -9443,12 +9452,12 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="101"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Отмени</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="731"/>
         <source>Warning: edited %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Внимание: редактирани са %1 гмуркания</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
@@ -9921,12 +9930,12 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="387"/>
         <source>&amp;Import dive sites</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Вмъкни места за гмуркане</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="390"/>
         <source>Import dive sites from other users</source>
-        <translation type="unfinished"/>
+        <translation>Вмъкни места за гмуркане от други потребители</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="398"/>
@@ -9985,13 +9994,13 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="713"/>
         <source>Cloud stora&amp;ge online</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Облаковия слад е онлайн</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="725"/>
         <location filename="../desktop-widgets/mainwindow.ui" line="728"/>
         <source>Toggle deco information</source>
-        <translation type="unfinished"/>
+        <translation>Превключи деко информация</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/mainwindow.ui" line="422"/>
@@ -10166,7 +10175,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="433"/>
         <source>Change settings on &amp;dive computer</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Промени настройки на гмуркачески компютър</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="644"/>
@@ -10446,12 +10455,12 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../desktop-widgets/mainwindow.cpp" line="1671"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1774"/>
         <source>multiple files</source>
-        <translation type="unfinished"/>
+        <translation>повече файлове</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1752"/>
         <source>Open dive site file</source>
-        <translation type="unfinished"/>
+        <translation>Отвори файл с места за гмуркане</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1787"/>
@@ -10685,7 +10694,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1330"/>
         <source>Dive site files</source>
-        <translation type="unfinished"/>
+        <translation>Файлове с места за гмуркане</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1345"/>
@@ -10858,7 +10867,7 @@ QML модулите QtPositioning и QtLocation може да липсват!</
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/command_divelist.cpp" line="804"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/command_divelist.cpp" line="804"/>
         <source>merge dive</source>
-        <translation type="unfinished"/>
+        <translation>слей гмуркания</translation>
     </message>
 </context>
 <context>
@@ -10963,7 +10972,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message numerus="yes">
         <location filename="../desktop-widgets/command_edit.cpp" line="733"/>
         <source>Paste onto %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Поставете върху %n гмуркане (гмуркания)</numerusform><numerusform>Поставете върху %n гмуркане (гмуркания)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -11138,7 +11147,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="52"/>
         <source>Default file</source>
-        <translation type="unfinished"/>
+        <translation>Файл по подразбиране</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="67"/>
@@ -12761,7 +12770,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1441"/>
         <source>Split this dive computer into own dive</source>
-        <translation type="unfinished"/>
+        <translation>Раздели леководолазен компютър в собствено гмуркане</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1457"/>
@@ -13204,7 +13213,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/command_divelist.cpp" line="688"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/command_divelist.cpp" line="688"/>
         <source>remove autogenerated trips</source>
-        <translation type="unfinished"/>
+        <translation>премахни автоматично генерирани пътувания</translation>
     </message>
 </context>
 <context>
@@ -13214,7 +13223,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/command_divelist.cpp" line="680"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/command_divelist.cpp" line="680"/>
         <source>remove %n dive(s) from trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>премахни %n гмуркане (гмуркания) от пътуван</numerusform><numerusform>премахни %n гмуркане (гмуркания) от пътуване</numerusform></translation>
     </message>
 </context>
 <context>
@@ -13282,7 +13291,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/command_divelist.cpp" line="640"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/command_divelist.cpp" line="640"/>
         <source>renumber %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>преномерирай %n гмуркане (гмуркания)</numerusform><numerusform>преномерирай %n гмуркане (гмуркания)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -13618,7 +13627,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.8.5/mobile-widgets/qml/Settings.qml" line="486"/>
         <location filename="../tmp/Subsurface-4.8.6/mobile-widgets/qml/Settings.qml" line="486"/>
         <source>Filter preferences</source>
-        <translation type="unfinished"/>
+        <translation>Филтрирай настройки</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="495"/>
@@ -13626,7 +13635,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.8.5/mobile-widgets/qml/Settings.qml" line="495"/>
         <location filename="../tmp/Subsurface-4.8.6/mobile-widgets/qml/Settings.qml" line="495"/>
         <source>Include notes in full text filtering</source>
-        <translation type="unfinished"/>
+        <translation>Вмъкни бележки в пълно текстово филтрирание</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="510"/>
@@ -13634,18 +13643,19 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.8.5/mobile-widgets/qml/Settings.qml" line="510"/>
         <location filename="../tmp/Subsurface-4.8.6/mobile-widgets/qml/Settings.qml" line="510"/>
         <source>Match filter case sensitive</source>
-        <translation type="unfinished"/>
+        <translation>Филтър различаващ големи и малки букви</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="537"/>
         <source>Bluetooth</source>
-        <translation type="unfinished"/>
+        <translation>Bluetooth</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="547"/>
         <source>Show all bluetooth devices 
 even if not recognized as dive computers</source>
-        <translation type="unfinished"/>
+        <translation>Покажи всички Bluetooth устройсва
+дори ако не са разпознати като гмуркачески компютър</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="572"/>
@@ -13834,7 +13844,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/command_divelist.cpp" line="597"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/command_divelist.cpp" line="597"/>
         <source>shift time of %n dives</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>измести времето на %n гмуркания</numerusform><numerusform>измести времето на %n гмуркания</numerusform></translation>
     </message>
 </context>
 <context>
@@ -14215,7 +14225,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/command_divelist.cpp" line="748"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/command_divelist.cpp" line="748"/>
         <source>split dive</source>
-        <translation type="unfinished"/>
+        <translation>раздели гмуркане</translation>
     </message>
 </context>
 <context>
@@ -14294,7 +14304,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/about.cpp" line="20"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/about.cpp" line="20"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2019&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;мулти-платформен, гмуркачески регистър софтуер&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Линус Торвалдс, Дърк Хондел, Томаз Канабрава, и други, 2011-2019&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -14452,7 +14462,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="231"/>
         <source>Atm. pressure</source>
-        <translation type="unfinished"/>
+        <translation>атмосф. налягане</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="230"/>
@@ -14618,7 +14628,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="62"/>
         <source>Save dive data as subtitles</source>
-        <translation type="unfinished"/>
+        <translation>Запиши гмуркачески данни като субтитри</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="159"/>
@@ -14643,12 +14653,12 @@ Files with inappropriate date/time</source>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.ui" line="14"/>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="14"/>
         <source>Dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Места за гмуркане</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.ui" line="22"/>
         <source>Purge unused dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Изчисти неизползвани места за гмуркане</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="52"/>
@@ -16067,7 +16077,8 @@ Longest</source>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="152"/>
         <source>
 Average maximum</source>
-        <translation type="unfinished"/>
+        <translation>
+Среден максимум</translation>
     </message>
     <message>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="155"/>
@@ -16129,7 +16140,7 @@ Maximum</source>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="236"/>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="254"/>
         <source>%1 - %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2</translation>
     </message>
 </context>
 <context>
@@ -18144,7 +18155,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
     <message>
         <location filename="../core/plannernotes.c" line="119"/>
         <source>DISCLAIMER / WARNING: THIS IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
-        <translation type="unfinished"/>
+        <translation>ВНИМАНИЕ: ТАЗИ ИМПЛЕМЕНТАЦИЯ НА АЛГОРИТЪМА %s И ПЛАНОВИКА НЕ СА ТЕСТВАНИ ДОСТАТЪЧНО! СИЛНО ПРЕПОРЪЧВАМЕ ДА НЕ БАЗИРАТЕ ГМУРКАНИЯТА СИ САМО НА ТЕЗИ ДАННИ!</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="130"/>
@@ -18474,19 +18485,22 @@ D: %.1f%s
         <location filename="../core/profile.c" line="1421"/>
         <source>pO₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>pO₂: %.2fбара
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1423"/>
         <source>SCR ΔpO₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>SCR ΔpO₂: %.2бара
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1426"/>
         <source>pN₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>pN₂: %.2fбара
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1440"/>
@@ -18646,7 +18660,8 @@ EADD: %d%s / %.1fгр./л.
         <location filename="../core/profile.c" line="1511"/>
         <source>Surface GF %.0f%%
 </source>
-        <translation type="unfinished"/>
+        <translation>Повърхностен GF %.0f%%
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1514"/>
@@ -18711,48 +18726,49 @@ EADD: %d%s / %.1fгр./л.
     <message>
         <location filename="../core/profile.c" line="1631"/>
         <source>ΔT:%d:%02dmin</source>
-        <translation type="unfinished"/>
+        <translation>ΔT:%d:%02dмин.</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1635"/>
         <source>%s ΔD:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ΔD:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1639"/>
         <source>%s ↓D:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↓D:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1643"/>
         <source>%s ↑D:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↑D:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1647"/>
         <source>%s øD:%.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>%s øD:%.1f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1651"/>
         <source>%s ↓V:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↓V:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1655"/>
         <source>%s ↑V:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↑V:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1659"/>
         <source>%s øV:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s øV:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1666"/>
         <source>%s ΔP:%d%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ΔP:%d%s</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/core/profile.c" line="1620"/>
@@ -19446,12 +19462,12 @@ EADD: %d%s / %.1fгр./л.
     <message>
         <location filename="../core/statistics.c" line="157"/>
         <source>All (by max depth stats)</source>
-        <translation type="unfinished"/>
+        <translation>Всички (според макс. дълбочина статистика)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="160"/>
         <source>All (by min. temp stats)</source>
-        <translation type="unfinished"/>
+        <translation>Всички (според мин. темп. статистика)</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="42"/>
@@ -20378,12 +20394,12 @@ Uemis Zurich включен ли е правилно?</translation>
     <message>
         <location filename="../core/save-xml.c" line="742"/>
         <source>Failed to save dives to %s (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Неуспешен запис на гмуркания в %s (%s)</translation>
     </message>
     <message>
         <location filename="../core/save-xml.c" line="863"/>
         <source>Failed to save divesites to %s (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Неуспешен запис на места за гмуркане в %s (%s)</translation>
     </message>
 </context>
 <context>
@@ -20918,12 +20934,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="522"/>
         <source>Bailout: Deco on OC</source>
-        <translation type="unfinished"/>
+        <translation>Връщане: деко към OC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="529"/>
         <source>Surface segment</source>
-        <translation type="unfinished"/>
+        <translation>Повърхностен сегмент</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="546"/>

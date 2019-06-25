@@ -602,7 +602,7 @@
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/simplewidgets.cpp" line="542"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="587"/>
         <source>Person</source>
-        <translation type="unfinished"/>
+        <translation>Persona</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/simplewidgets.cpp" line="543"/>
@@ -1048,7 +1048,7 @@
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/command_divelist.cpp" line="488"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/command_divelist.cpp" line="488"/>
         <source>add dive</source>
-        <translation type="unfinished"/>
+        <translation>aggiungi immersione</translation>
     </message>
 </context>
 <context>
@@ -1115,7 +1115,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="229"/>
         <source>air temperature</source>
-        <translation type="unfinished"/>
+        <translation>temperatura aria</translation>
     </message>
 </context>
 <context>
@@ -1123,7 +1123,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="274"/>
         <source>Atm. pressure</source>
-        <translation type="unfinished"/>
+        <translation>Pressione atm.</translation>
     </message>
 </context>
 <context>
@@ -1203,7 +1203,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="144"/>
         <source>notes</source>
-        <translation type="unfinished"/>
+        <translation>note</translation>
     </message>
 </context>
 <context>
@@ -1251,7 +1251,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="208"/>
         <source>visibility</source>
-        <translation type="unfinished"/>
+        <translation>visibilità</translation>
     </message>
 </context>
 <context>
@@ -1259,7 +1259,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="253"/>
         <source>water temperature</source>
-        <translation type="unfinished"/>
+        <translation>temperatura acqua</translation>
     </message>
 </context>
 <context>
@@ -4080,7 +4080,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="14"/>
         <source>Copy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Copia impostazioni</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="26"/>
@@ -4317,32 +4317,33 @@
         <location filename="../desktop-widgets/simplewidgets.cpp" line="490"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="503"/>
         <source>Buddy: </source>
-        <translation type="unfinished"/>
+        <translation>Compagno:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="492"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="505"/>
         <source>Rating: </source>
-        <translation type="unfinished"/>
+        <translation>Voto:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="494"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="507"/>
         <source>Visibility: </source>
-        <translation type="unfinished"/>
+        <translation>Visibilità:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="496"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="509"/>
         <source>Notes:
 </source>
-        <translation type="unfinished"/>
+        <translation>Note:
+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="498"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="511"/>
         <source>Suit: </source>
-        <translation type="unfinished"/>
+        <translation>Muta:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="500"/>
@@ -4355,14 +4356,16 @@
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="523"/>
         <source>Cylinders:
 </source>
-        <translation type="unfinished"/>
+        <translation>Bombole:
+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="518"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="531"/>
         <source>Weights:
 </source>
-        <translation type="unfinished"/>
+        <translation>Pesi:
+</translation>
     </message>
 </context>
 <context>
@@ -4432,7 +4435,7 @@
         <location filename="../desktop-widgets/divecomponentselection.ui" line="52"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/divecomponentselection.ui" line="52"/>
         <source>Which components would you like to copy?</source>
-        <translation type="unfinished"/>
+        <translation>Quale componente vuoi copiare?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="80"/>
@@ -14452,7 +14455,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="231"/>
         <source>Atm. pressure</source>
-        <translation type="unfinished"/>
+        <translation>Pressione atm.</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="230"/>
