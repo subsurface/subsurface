@@ -72,6 +72,12 @@ void add_weightsystem_description(const weightsystem_t *weightsystem)
 	}
 }
 
+bool same_weightsystem(weightsystem_t w1, weightsystem_t w2)
+{
+	return w1->weight.grams == w2->weight.grams &&
+	       same_string(w1->description, w2->description);
+}
+
 bool cylinder_nodata(const cylinder_t *cyl)
 {
 	return !cyl->type.size.mliter &&
