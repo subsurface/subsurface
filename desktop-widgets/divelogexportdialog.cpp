@@ -447,16 +447,12 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		put_format(&buf, "\n%% Weighting information:\n");
 		qty_weight = 0;
 		total_weight = 0;
-		for (i = 0; i < MAX_WEIGHTSYSTEMS; i++){
-			if (dive->weightsystem[i].weight.grams){
-				put_format(&buf, "\\def\\%sweight%ctype{%s}\n", ssrf, 'a' + i, dive->weightsystem[i].description);
-				put_format(&buf, "\\def\\%sweight%camt{%.3f\\%sweightunit}\n", ssrf, 'a' + i, get_weight_units(dive->weightsystem[i].weight.grams, NULL, &unit), ssrf);
-				qty_weight += 1;
-				total_weight += get_weight_units(dive->weightsystem[i].weight.grams, NULL, &unit);
-			} else {
-				put_format(&buf, "\\def\\%sweight%ctype{}\n", ssrf, 'a' + i);
-				put_format(&buf, "\\def\\%sweight%camt{}\n", ssrf, 'a' + i);
-			}
+		for (i = 0; i < dive->weightsystems.nr; i++) {
+			weightsystem_t w = dive->weightsystems.weightsystems[i];
+			put_format(&buf, "\\def\\%sweight%ctype{%s}\n", ssrf, 'a' + i, w.description);
+			put_format(&buf, "\\def\\%sweight%camt{%.3f\\%sweightunit}\n", ssrf, 'a' + i, get_weight_units(w.weight.grams, NULL, &unit), ssrf);
+			qty_weight += 1;
+			total_weight += get_weight_units(w.weight.grams, NULL, &unit);
 		}
 		put_format(&buf, "\\def\\%sqtyweights{%d}\n", ssrf, qty_weight);
 		put_format(&buf, "\\def\\%stotalweight{%.2f\\%sweightunit}\n", ssrf, total_weight, ssrf);

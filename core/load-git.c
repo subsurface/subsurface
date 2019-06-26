@@ -330,7 +330,7 @@ static char *parse_keyvalue_entry(void (*fn)(void *, const char *, const char *)
 	return line;
 }
 
-static int cylinder_index, weightsystem_index;
+static int cylinder_index;
 static int o2pressure_sensor;
 
 static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const char *value)
@@ -424,21 +424,19 @@ static void parse_weightsystem_keyvalue(void *_ws, const char *key, const char *
 static void parse_dive_weightsystem(char *line, struct membuffer *str, void *_dive)
 {
 	struct dive *dive = _dive;
-	weightsystem_t *ws = dive->weightsystem + weightsystem_index;
+	weightsystem_t ws = { 0 };
 
-	if (weightsystem_index >= MAX_WEIGHTSYSTEMS)
-		return;
-
-	weightsystem_index++;
-	ws->description = get_utf8(str);
+	ws.description = get_utf8(str);
 	for (;;) {
 		char c;
 		while (isspace(c = *line))
 			line++;
 		if (!c)
 			break;
-		line = parse_keyvalue_entry(parse_weightsystem_keyvalue, ws, line);
+		line = parse_keyvalue_entry(parse_weightsystem_keyvalue, &ws, line);
 	}
+
+	add_to_weightsystem_table(&dive->weightsystems, dive->weightsystems.nr, ws);
 }
 
 static int match_action(char *line, struct membuffer *str, void *data,
@@ -1506,7 +1504,8 @@ static int parse_dive_entry(git_repository *repo, const git_tree_entry *entry, c
 		return report_error("Unable to read dive file");
 	if (*suffix)
 		dive->number = atoi(suffix+1);
-	cylinder_index = weightsystem_index = 0;
+	cylinder_index = 0;
+	clear_weightsystem_table(&dive->weightsystems);
 	o2pressure_sensor = 1;
 	for_each_line(blob, dive_parser, active_dive);
 	git_blob_free(blob);

@@ -18,14 +18,14 @@ WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
 
 weightsystem_t *WeightModel::weightSystemAt(const QModelIndex &index)
 {
-	return &displayed_dive.weightsystem[index.row()];
+	return &displayed_dive.weightsystems.weightsystems[index.row()];
 }
 
 void WeightModel::remove(const QModelIndex &index)
 {
 	if (index.column() != REMOVE)
 		return;
-	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
+	beginRemoveRows(QModelIndex(), index.row(), index.row());
 	rows--;
 	remove_weightsystem(&displayed_dive, index.row());
 	changed = true;
@@ -34,18 +34,17 @@ void WeightModel::remove(const QModelIndex &index)
 
 void WeightModel::clear()
 {
-	if (rows > 0) {
-		beginRemoveRows(QModelIndex(), 0, rows - 1);
-		endRemoveRows();
-	}
+	beginResetModel();
+	rows = 0;
+	endResetModel();
 }
 
 QVariant WeightModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid() || index.row() >= MAX_WEIGHTSYSTEMS)
+	if (!index.isValid() || index.row() >= displayed_dive.weightsystems.nr)
 		return QVariant();
 
-	weightsystem_t *ws = &displayed_dive.weightsystem[index.row()];
+	const weightsystem_t *ws = &displayed_dive.weightsystems.weightsystems[index.row()];
 
 	switch (role) {
 	case Qt::FontRole:
@@ -79,7 +78,7 @@ QVariant WeightModel::data(const QModelIndex &index, int role) const
 // so we only implement the two columns we care about
 void WeightModel::passInData(const QModelIndex &index, const QVariant &value)
 {
-	weightsystem_t *ws = &displayed_dive.weightsystem[index.row()];
+	weightsystem_t *ws = &displayed_dive.weightsystems.weightsystems[index.row()];
 	if (index.column() == WEIGHT) {
 		if (ws->weight.grams != value.toInt()) {
 			ws->weight.grams = value.toInt();
@@ -92,7 +91,7 @@ void WeightModel::passInData(const QModelIndex &index, const QVariant &value)
 bool WeightModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
 	QString vString = value.toString();
-	weightsystem_t *ws = &displayed_dive.weightsystem[index.row()];
+	weightsystem_t *ws = &displayed_dive.weightsystems.weightsystems[index.row()];
 	switch (index.column()) {
 	case TYPE:
 		if (!value.isNull()) {
@@ -142,11 +141,10 @@ int WeightModel::rowCount(const QModelIndex&) const
 
 void WeightModel::add()
 {
-	if (rows >= MAX_WEIGHTSYSTEMS)
-		return;
-
 	int row = rows;
+	weightsystem_t ws { {0}, "" };
 	beginInsertRows(QModelIndex(), row, row);
+	add_cloned_weightsystem(&displayed_dive.weightsystems, ws);
 	rows++;
 	changed = true;
 	endInsertRows();
@@ -154,17 +152,9 @@ void WeightModel::add()
 
 void WeightModel::updateDive()
 {
-	clear();
-	rows = 0;
-	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-		if (!weightsystem_none(&displayed_dive.weightsystem[i])) {
-			rows = i + 1;
-		}
-	}
-	if (rows > 0) {
-		beginInsertRows(QModelIndex(), 0, rows - 1);
-		endInsertRows();
-	}
+	beginResetModel();
+	rows = displayed_dive.weightsystems.nr;
+	endResetModel();
 }
 
 void WeightModel::weightsystemsReset(const QVector<dive *> &dives)
@@ -174,8 +164,8 @@ void WeightModel::weightsystemsReset(const QVector<dive *> &dives)
 	if (!current_dive || std::find(dives.begin(), dives.end(), current_dive) == dives.end())
 		return;
 
-	// Copy the cylinders from the current dive to the displayed dive.
-	copy_weights(current_dive, &displayed_dive);
+	// Copy the weights from the current dive to the displayed dive.
+	copy_weights(&current_dive->weightsystems, &displayed_dive.weightsystems);
 
 	// And update the model..
 	updateDive();

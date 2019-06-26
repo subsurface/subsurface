@@ -1063,7 +1063,8 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 
 		/* No DC related data */
 		smtkdive->visibility = strtod(col[coln(VISIBILITY)]->bind_ptr, NULL) > 25 ? 5 : lrint(strtod(col[13]->bind_ptr, NULL) / 5);
-		smtkdive->weightsystem[0].weight.grams = lrint(strtod(col[coln(WEIGHT)]->bind_ptr, NULL) * 1000);
+		weightsystem_t ws = { {lrint(strtod(col[coln(WEIGHT)]->bind_ptr, NULL) * 1000)}, "" };
+		add_cloned_weightsystem(&smtkdive->weightsystems, ws);
 		smtkdive->suit = copy_string(suit_list[atoi(col[coln(SUITIDX)]->bind_ptr) - 1]);
 		smtk_build_location(mdb_clon, col[coln(SITEIDX)]->bind_ptr, &smtkdive->dive_site);
 		smtkdive->buddy = smtk_locate_buddy(mdb_clon, col[0]->bind_ptr, buddy_list);

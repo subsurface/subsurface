@@ -1031,10 +1031,10 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 	}
 	// not sure what we'd do if there was more than one weight system
 	// defined - for now just ignore that case
-	if (weightsystem_none(&d->weightsystem[1])) {
+	if (d->weightsystems.nr == 1) {
 		if (myDive->sumWeight() != weight) {
 			diveChanged = true;
-			d->weightsystem[0].weight.grams = parseWeightToGrams(weight);
+			d->weightsystems.weightsystems[0].weight.grams = parseWeightToGrams(weight);
 		}
 	}
 	// start and end pressures for first cylinder only

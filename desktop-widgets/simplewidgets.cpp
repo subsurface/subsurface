@@ -518,9 +518,9 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 		if (what->weights) {
 			int w;
 			text << tr("Weights:\n");
-			for (w = 0; w < MAX_WEIGHTSYSTEMS; w++) {
-				if (displayed_dive.weightsystem[w].weight.grams)
-					text << displayed_dive.weightsystem[w].description << displayed_dive.weightsystem[w].weight.grams / 1000 << "kg\n";
+			for (w = 0; w < displayed_dive.weightsystems.nr; w++) {
+				weightsystem_t ws = displayed_dive.weightsystems.weightsystems[w];
+				text << ws.description << ws.weight.grams / 1000 << "kg\n";
 			}
 		}
 		clipboard->setText(cliptext);

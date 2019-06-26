@@ -165,9 +165,9 @@ static void save_weightsystem_info(struct membuffer *b, struct dive *dive)
 
 	nr = nr_weightsystems(dive);
 	for (i = 0; i < nr; i++) {
-		weightsystem_t *ws = dive->weightsystem + i;
-		int grams = ws->weight.grams;
-		const char *description = ws->description;
+		weightsystem_t ws = dive->weightsystems.weightsystems[i];
+		int grams = ws.weight.grams;
+		const char *description = ws.description;
 
 		put_string(b, "weightsystem");
 		put_milli(b, " weight=", grams, "kg");

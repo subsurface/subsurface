@@ -1309,14 +1309,12 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 		return;
 	if (MATCH_STATE("airpressure.dive", pressure, &dive->surface_pressure))
 		return;
-	if (state->cur_ws_index < MAX_WEIGHTSYSTEMS) {
-		if (MATCH("description.weightsystem", utf8_string, &dive->weightsystem[state->cur_ws_index].description))
-			return;
-		if (MATCH_STATE("weight.weightsystem", weight, &dive->weightsystem[state->cur_ws_index].weight))
-			return;
-		if (MATCH_STATE("weight", weight, &dive->weightsystem[state->cur_ws_index].weight))
-			return;
-	}
+	if (MATCH("description.weightsystem", utf8_string, &dive->weightsystems.weightsystems[dive->weightsystems.nr - 1].description))
+		return;
+	if (MATCH_STATE("weight.weightsystem", weight, &dive->weightsystems.weightsystems[dive->weightsystems.nr - 1].weight))
+		return;
+	if (MATCH_STATE("weight", weight, &dive->weightsystems.weightsystems[dive->weightsystems.nr - 1].weight))
+		return;
 	if (state->cur_cylinder_index < MAX_CYLINDERS) {
 		if (MATCH("size.cylinder", cylindersize, &dive->cylinder[state->cur_cylinder_index].type.size))
 			return;

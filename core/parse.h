@@ -54,7 +54,7 @@ struct parser_state {
 	bool in_settings;
 	bool in_userid;
 	struct tm cur_tm;
-	int cur_cylinder_index, cur_ws_index;
+	int cur_cylinder_index;
 	int lastcylinderindex, next_o2_sensor;
 	int o2pressure_sensor;
 	int sample_rate;

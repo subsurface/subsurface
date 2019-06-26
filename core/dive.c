@@ -355,8 +355,8 @@ static void free_dive_structures(struct dive *d)
 	STRUCTURED_LIST_FREE(struct picture, d->picture_list, free_picture);
 	for (int i = 0; i < MAX_CYLINDERS; i++)
 		free((void *)d->cylinder[i].type.description);
-	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
-		free((void *)d->weightsystem[i].description);
+	clear_weightsystem_table(&d->weightsystems);
+	free(d->weightsystems.weightsystems);
 }
 
 void free_dive(struct dive *d)
@@ -387,6 +387,7 @@ static void copy_dive_nodc(const struct dive *s, struct dive *d)
 	 * relevant components that are referenced through pointers,
 	 * so all the strings and the structured lists */
 	*d = *s;
+	memset(&d->weightsystems, 0, sizeof(d->weightsystems));
 	invalidate_dive_cache(d);
 	d->buddy = copy_string(s->buddy);
 	d->divemaster = copy_string(s->divemaster);
@@ -394,8 +395,7 @@ static void copy_dive_nodc(const struct dive *s, struct dive *d)
 	d->suit = copy_string(s->suit);
 	for (int i = 0; i < MAX_CYLINDERS; i++)
 		d->cylinder[i].type.description = copy_string(s->cylinder[i].type.description);
-	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
-		d->weightsystem[i].description = copy_string(s->weightsystem[i].description);
+	copy_weights(&s->weightsystems, &d->weightsystems);
 	STRUCTURED_LIST_COPY(struct picture, s->picture_list, d->picture_list, copy_pl);
 	d->tag_list = taglist_copy(s->tag_list);
 }
@@ -432,15 +432,6 @@ struct dive *move_dive(struct dive *s)
 	if (what._component)                \
 		d->_component = copy_string(s->_component)
 
-void copy_weights(const struct dive *s, struct dive *d)
-{
-	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-		free((void *)d->weightsystem[i].description);
-		d->weightsystem[i] = s->weightsystem[i];
-		d->weightsystem[i].description = copy_string(s->weightsystem[i].description);
-	}
-}
-
 // copy elements, depending on bits in what that are set
 void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear)
 {
@@ -463,7 +454,7 @@ void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_compo
 	if (what.cylinders)
 		copy_cylinders(s, d, false);
 	if (what.weights)
-		copy_weights(s, d);
+		copy_weights(&s->weightsystems, &d->weightsystems);
 }
 #undef CONDITIONAL_COPY_STRING
 
@@ -515,14 +506,7 @@ int nr_cylinders(const struct dive *dive)
 
 int nr_weightsystems(const struct dive *dive)
 {
-	int nr;
-
-	for (nr = MAX_WEIGHTSYSTEMS; nr; --nr) {
-		const weightsystem_t *ws = dive->weightsystem + nr - 1;
-		if (!weightsystem_none(ws))
-			break;
-	}
-	return nr;
+	return dive->weightsystems.nr;
 }
 
 /* copy the equipment data part of the cylinders */
@@ -1557,8 +1541,8 @@ struct dive *fixup_dive(struct dive *dive)
 			cyl->end.mbar = 0;
 	}
 	update_cylinder_related_info(dive);
-	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-		weightsystem_t *ws = dive->weightsystem + i;
+	for (i = 0; i < dive->weightsystems.nr; i++) {
+		weightsystem_t *ws = &dive->weightsystems.weightsystems[i];
 		add_weightsystem_description(ws);
 	}
 	/* we should always have a uniq ID as that gets assigned during alloc_dive(),
@@ -1920,14 +1904,6 @@ static void merge_events(struct dive *d, struct divecomputer *res,
 		add_initial_gaschange(d, res, 0, cylinders_map1[0]);
 	if (cylinders_map2[0] > 0)
 		add_initial_gaschange(d, res, offset, cylinders_map2[0]);
-}
-
-static void merge_weightsystem_info(weightsystem_t *res, const weightsystem_t *a, const weightsystem_t *b)
-{
-	if (!a->weight.grams)
-		a = b;
-	res->weight = a->weight;
-	res->description = copy_string(a->description);
 }
 
 /* get_cylinder_idx_by_use(): Find the index of the first cylinder with a particular CCR use type.
@@ -2307,11 +2283,28 @@ static void merge_cylinders(struct dive *res, const struct dive *a, const struct
 	}
 }
 
+/* Check whether a weightsystem table contains a given weightsystem */
+static bool has_weightsystem(const struct weightsystem_table *t, const weightsystem_t w)
+{
+	int i;
+	for (i = 0; i < t->nr; i++) {
+		if (same_weightsystem(w, t->weightsystems[i]))
+			return true;
+	}
+	return false;
+}
+
 static void merge_equipment(struct dive *res, const struct dive *a, const struct dive *b)
 {
 	int i;
-	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++)
-		merge_weightsystem_info(res->weightsystem + i, a->weightsystem + i, b->weightsystem + i);
+	for (i = 0; i < a->weightsystems.nr; i++) {
+		if (!has_weightsystem(&res->weightsystems, a->weightsystems.weightsystems[i]))
+			add_cloned_weightsystem(&res->weightsystems, a->weightsystems.weightsystems[i]);
+	}
+	for (i = 0; i < b->weightsystems.nr; i++) {
+		if (!has_weightsystem(&res->weightsystems, b->weightsystems.weightsystems[i]))
+			add_cloned_weightsystem(&res->weightsystems, b->weightsystems.weightsystems[i]);
+	}
 }
 
 static void merge_temperatures(struct dive *res, const struct dive *a, const struct dive *b)

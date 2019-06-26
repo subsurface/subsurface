@@ -654,7 +654,7 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 	tags(nullptr)
 {
 	memset(&cylinders[0], 0, sizeof(cylinders));
-	memset(&weightsystems[0], 0, sizeof(weightsystems));
+	clear_weightsystem_table(&weightsystems);
 	if (what.notes)
 		notes = data->notes;
 	if (what.divemaster)
@@ -675,12 +675,8 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 		for (int i = 0; i < MAX_CYLINDERS; ++i)
 			copy_cylinder(data->cylinder[i], cylinders[i]);
 	}
-	if (what.weights) {
-		for (int i = 0; i < MAX_WEIGHTSYSTEMS; ++i) {
-			weightsystems[i] = data->weightsystem[i];
-			weightsystems[i].description = copy_string(data->weightsystem[i].description);
-		}
-	}
+	if (what.weights)
+		copy_weights(&data->weightsystems, &weightsystems);
 }
 
 PasteState::~PasteState()
@@ -688,8 +684,8 @@ PasteState::~PasteState()
 	taglist_free(tags);
 	for (cylinder_t &c: cylinders)
 		free((void *)c.type.description);
-	for (weightsystem_t &w: weightsystems)
-		free((void *)w.description);
+	clear_weightsystem_table(&weightsystems);
+	free(weightsystems.weightsystems);
 }
 
 void PasteState::swap(dive_components what)
@@ -713,7 +709,7 @@ void PasteState::swap(dive_components what)
 	if (what.cylinders)
 		std::swap(cylinders, d->cylinder);
 	if (what.weights)
-		std::swap(weightsystems, d->weightsystem);
+		std::swap(weightsystems, d->weightsystems);
 }
 
 // ***** Paste *****
