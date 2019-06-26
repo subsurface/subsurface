@@ -14,7 +14,7 @@ enum returnPressureSelector {START_PRESSURE, END_PRESSURE};
 
 static QString getFormattedWeight(struct dive *dive, unsigned int idx)
 {
-	weightsystem_t *weight = &dive->weightsystem[idx];
+	weightsystem_t *weight = &dive->weightsystems.weightsystems[idx];
 	if (!weight->description)
 		return QString();
 	QString fmt = QString(weight->description);
@@ -231,7 +231,7 @@ QString DiveObjectHelper::sac() const
 QString DiveObjectHelper::weightList() const
 {
 	QString weights;
-	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
+	for (int i = 0; i < m_dive->weightsystems.nr; i++) {
 		QString w = getFormattedWeight(m_dive, i);
 		if (w.isEmpty())
 			continue;
@@ -243,7 +243,7 @@ QString DiveObjectHelper::weightList() const
 QStringList DiveObjectHelper::weights() const
 {
 	QStringList weights;
-	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
+	for (int i = 0; i < m_dive->weightsystems.nr; i++) {
 		QString w = getFormattedWeight(m_dive, i);
 		if (w.isEmpty())
 			continue;
@@ -254,12 +254,12 @@ QStringList DiveObjectHelper::weights() const
 
 bool DiveObjectHelper::singleWeight() const
 {
-	return weightsystem_none(&m_dive->weightsystem[1]);
+	return m_dive->weightsystems.nr == 1;
 }
 
 QString DiveObjectHelper::weight(int idx) const
 {
-	if ( (idx < 0) || idx > MAX_WEIGHTSYSTEMS )
+	if ((idx < 0) || idx >= m_dive->weightsystems.nr)
 		return QString();
 	return getFormattedWeight(m_dive, idx);
 }

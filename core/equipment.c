@@ -17,6 +17,29 @@
 #include "display.h"
 #include "divelist.h"
 #include "subsurface-string.h"
+#include "table.h"
+
+static void free_weightsystem(weightsystem_t w)
+{
+	free((void *)w.description);
+}
+
+void copy_weights(const struct weightsystem_table *s, struct weightsystem_table *d)
+{
+	clear_weightsystem_table(d);
+	for (int i = 0; i < s->nr; i++)
+		add_cloned_weightsystem(d, s->weightsystems[i]);
+}
+
+/* weightsystem table functions */
+//static MAKE_GET_IDX(weightsystem_table, weightsystem_t, weightsystems)
+static MAKE_GROW_TABLE(weightsystem_table, weightsystem_t, weightsystems)
+//static MAKE_GET_INSERTION_INDEX(weightsystem_table, weightsystem_t, weightsystems, weightsystem_less_than)
+MAKE_ADD_TO(weightsystem_table, weightsystem_t, weightsystems)
+MAKE_REMOVE_FROM(weightsystem_table, weightsystems)
+//MAKE_SORT(weightsystem_table, weightsystem_t, weightsystems, comp_weightsystems)
+//MAKE_REMOVE(weightsystem_table, weightsystem_t, weightsystem)
+MAKE_CLEAR_TABLE(weightsystem_table, weightsystems, weightsystem)
 
 const char *cylinderuse_text[NUM_GAS_USE] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "OC-gas"), QT_TRANSLATE_NOOP("gettextFromC", "diluent"), QT_TRANSLATE_NOOP("gettextFromC", "oxygen"), QT_TRANSLATE_NOOP("gettextFromC", "not used")
@@ -51,6 +74,7 @@ void add_cylinder_description(const cylinder_type_t *type)
 		tank_info[i].bar = type->workingpressure.mbar / 1000;
 	}
 }
+
 void add_weightsystem_description(const weightsystem_t *weightsystem)
 {
 	const char *desc;
@@ -72,10 +96,18 @@ void add_weightsystem_description(const weightsystem_t *weightsystem)
 	}
 }
 
+/* Add a clone of a weightsystem to the end of a weightsystem table.
+ * Cloned in means that the description-string is copied. */
+void add_cloned_weightsystem(struct weightsystem_table *t, weightsystem_t ws)
+{
+	weightsystem_t w_clone = { ws.weight, copy_string(ws.description) };
+	add_to_weightsystem_table(t, t->nr, w_clone);
+}
+
 bool same_weightsystem(weightsystem_t w1, weightsystem_t w2)
 {
-	return w1->weight.grams == w2->weight.grams &&
-	       same_string(w1->description, w2->description);
+	return w1.weight.grams == w2.weight.grams &&
+	       same_string(w1.description, w2.description);
 }
 
 bool cylinder_nodata(const cylinder_t *cyl)
@@ -239,10 +271,7 @@ void remove_cylinder(struct dive *dive, int idx)
 
 void remove_weightsystem(struct dive *dive, int idx)
 {
-	weightsystem_t *ws = dive->weightsystem + idx;
-	int nr = MAX_WEIGHTSYSTEMS - idx - 1;
-	memmove(ws, ws + 1, nr * sizeof(*ws));
-	memset(ws + nr, 0, sizeof(*ws));
+	remove_from_weightsystem_table(&dive->weightsystems, idx);
 }
 
 /* when planning a dive we need to make sure that all cylinders have a sane depth assigned

@@ -194,7 +194,7 @@ static void uemis_get_weight(char *buffer, weightsystem_t *weight, int diveid)
 	weight->weight.grams = uemis_get_weight_unit(diveid) ?
 		lbs_to_grams(ascii_strtod(buffer, NULL)) :
 		lrint(ascii_strtod(buffer, NULL) * 1000);
-	weight->description = strdup(translate("gettextFromC", "unknown"));
+	weight->description = translate("gettextFromC", "unknown");
 }
 
 static struct dive *uemis_start_dive(uint32_t deviceid)
@@ -815,7 +815,9 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
 	} else if (!strcmp(tag, "altitude")) {
 		uemis_get_index(val, &dive->dc.surface_pressure.mbar);
 	} else if (!strcmp(tag, "f32Weight")) {
-		uemis_get_weight(val, &dive->weightsystem[0], dive->dc.diveid);
+		weightsystem_t ws;
+		uemis_get_weight(val, &ws, dive->dc.diveid);
+		add_cloned_weightsystem(&dive->weightsystems, ws);
 	} else if (!strcmp(tag, "notes")) {
 		uemis_add_string(val, &dive->notes, " ");
 	} else if (!strcmp(tag, "u8DiveSuit")) {

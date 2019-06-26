@@ -50,13 +50,13 @@
 		}									\
 	}
 
-#define MAKE_REMOVE_FROM(table_type, array_name)				\
-	void remove_from_##table_type(struct table_type *table, int idx)	\
-	{									\
-		int i;								\
-		for (i = idx; i < table->nr - 1; i++)				\
-			table->array_name[i] = table->array_name[i + 1];	\
-		table->array_name[--table->nr] = NULL;				\
+#define MAKE_REMOVE_FROM(table_type, array_name)						\
+	void remove_from_##table_type(struct table_type *table, int idx)			\
+	{											\
+		int i;										\
+		for (i = idx; i < table->nr - 1; i++)						\
+			table->array_name[i] = table->array_name[i + 1];			\
+		memset(&table->array_name[--table->nr], 0, sizeof(table->array_name[0]));	\
 	}
 
 #define MAKE_GET_IDX(table_type, item_type, array_name)						\

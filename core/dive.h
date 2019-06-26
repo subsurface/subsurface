@@ -153,7 +153,7 @@ struct dive {
 	int rating;
 	int visibility; /* 0 - 5 star rating */
 	cylinder_t cylinder[MAX_CYLINDERS];
-	weightsystem_t weightsystem[MAX_WEIGHTSYSTEMS];
+	struct weightsystem_table weightsystems;
 	char *suit;
 	int sac, otu, cns, maxcns;
 
@@ -374,7 +374,6 @@ extern void copy_events(const struct divecomputer *s, struct divecomputer *d);
 extern void free_events(struct event *ev);
 extern void copy_cylinders(const struct dive *s, struct dive *d, bool used_only);
 extern void copy_samples(const struct divecomputer *s, struct divecomputer *d);
-extern void copy_weights(const struct dive *s, struct dive *d);
 extern bool is_cylinder_used(const struct dive *dive, int idx);
 extern bool is_cylinder_prot(const struct dive *dive, int idx);
 extern void fill_default_cylinder(cylinder_t *cyl);
