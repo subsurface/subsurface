@@ -99,8 +99,8 @@ int total_weight(const struct dive *dive)
 	int i, total_grams = 0;
 
 	if (dive)
-		for (i = 0; i < MAX_WEIGHTSYSTEMS; i++)
-			total_grams += dive->weightsystem[i].weight.grams;
+		for (i = 0; i < dive->weightsystems.nr; i++)
+			total_grams += dive->weightsystems.weightsystems[i].weight.grams;
 	return total_grams;
 }
 

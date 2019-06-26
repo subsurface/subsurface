@@ -257,7 +257,6 @@ void dive_end(struct parser_state *state)
 	state->cur_location.lat.udeg = 0;
 	state->cur_location.lon.udeg = 0;
 	state->cur_cylinder_index = 0;
-	state->cur_ws_index = 0;
 }
 
 void trip_start(struct parser_state *state)
@@ -299,11 +298,12 @@ void cylinder_end(struct parser_state *state)
 
 void ws_start(struct parser_state *state)
 {
+	weightsystem_t w = { {0}, "" };
+	add_cloned_weightsystem(&state->cur_dive->weightsystems, w);
 }
 
 void ws_end(struct parser_state *state)
 {
-	state->cur_ws_index++;
 }
 
 /*

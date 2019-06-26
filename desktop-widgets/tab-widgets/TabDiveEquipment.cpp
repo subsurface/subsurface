@@ -172,6 +172,10 @@ static QVector<dive *> getSelectedDivesCurrentLast()
 	return res;
 }
 
+// TODO: This is only a temporary function until undo of weightsystems is implemented.
+// Therefore it is not worth putting it in a header.
+extern bool weightsystems_equal(const dive *d1, const dive *d2);
+
 void TabDiveEquipment::acceptChanges()
 {
 	bool do_replot = false;
@@ -232,17 +236,10 @@ void TabDiveEquipment::acceptChanges()
 	if (weightModel->changed) {
 		mark_divelist_changed(true);
 		MODIFY_DIVES(selectedDives,
-			for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-				if (mydive != cd && (same_string(mydive->weightsystem[i].description, cd->weightsystem[i].description))) {
-					mydive->weightsystem[i] = displayed_dive.weightsystem[i];
-					mydive->weightsystem[i].description = copy_string(displayed_dive.weightsystem[i].description);
-				}
-			}
+			if (weightsystems_equal(mydive, cd))
+				copy_weights(&displayed_dive.weightsystems, &mydive->weightsystems);
 		);
-		for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-			cd->weightsystem[i] = displayed_dive.weightsystem[i];
-			cd->weightsystem[i].description = copy_string(displayed_dive.weightsystem[i].description);
-		}
+		copy_weights(&displayed_dive.weightsystems, &cd->weightsystems);
 	}
 
 	if (do_replot)

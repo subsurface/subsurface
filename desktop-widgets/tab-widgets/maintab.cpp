@@ -676,6 +676,17 @@ void MainTab::acceptChanges()
 	editMode = NONE;
 }
 
+bool weightsystems_equal(const dive *d1, const dive *d2)
+{
+	if (d1->weightsystems.nr != d2->weightsystems.nr)
+		return false;
+	for (int i = 0; i < d1->weightsystems.nr; ++i) {
+		if (!same_weightsystem(d1->weightsystems.weightsystems[0], d2->weightsystems.weightsystems[i]))
+			return false;
+	}
+	return true;
+}
+
 void MainTab::rejectChanges()
 {
 	EditMode lastMode = editMode;
@@ -683,7 +694,7 @@ void MainTab::rejectChanges()
 	if (lastMode != NONE && current_dive &&
 	    (modified ||
 	     memcmp(&current_dive->cylinder[0], &displayed_dive.cylinder[0], sizeof(cylinder_t) * MAX_CYLINDERS) ||
-	     memcmp(&current_dive->weightsystem[0], &displayed_dive.weightsystem[0], sizeof(weightsystem_t) * MAX_WEIGHTSYSTEMS))) {
+	     !weightsystems_equal(current_dive, &displayed_dive))) {
 		if (QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(tr("Discard the changes?"),
 									       tr("You are about to discard your changes.")),
 					 QMessageBox::Discard | QMessageBox::Cancel, QMessageBox::Discard) != QMessageBox::Discard) {

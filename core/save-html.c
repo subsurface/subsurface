@@ -106,9 +106,9 @@ static void put_weightsystem_HTML(struct membuffer *b, struct dive *dive)
 	char *separator = "";
 
 	for (i = 0; i < nr; i++) {
-		weightsystem_t *ws = dive->weightsystem + i;
-		int grams = ws->weight.grams;
-		const char *description = ws->description;
+		weightsystem_t ws = dive->weightsystems.weightsystems[i];
+		int grams = ws.weight.grams;
+		const char *description = ws.description;
 
 		put_string(b, separator);
 		separator = ", ";
