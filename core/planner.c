@@ -736,10 +736,6 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	printf("depth %5.2lfm \n", depth / 1000.0);
 	printf("current_cylinder %i\n", current_cylinder);
 #endif
-	if ((divemode == CCR || divemode == PSCR) && prefs.dobailout) {
-		divemode = OC;
-		po2 = 0;
-	}
 
 	best_first_ascend_cylinder = current_cylinder;
 	/* Find the gases available for deco */
@@ -832,6 +828,16 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 
 	// VPM-B or Buehlmann Deco
 	tissue_at_end(ds, dive, cached_datap);
+	if ((divemode == CCR || divemode == PSCR) && prefs.dobailout) {
+		divemode = OC;
+		po2 = 0;
+		add_segment(ds, depth_to_bar(depth, dive),
+			dive->cylinder[current_cylinder].gasmix,
+			prefs.min_switch_duration, po2, divemode, prefs.bottomsac);
+		plan_add_segment(diveplan, prefs.min_switch_duration, depth, current_cylinder, po2, false, divemode);
+		clock += prefs.min_switch_duration;
+		last_segment_min_switch = true;
+	}
 	previous_deco_time = 100000000;
 	ds->deco_time = 10000000;
 	cache_deco_state(ds, &bottom_cache);  // Lets us make several iterations
