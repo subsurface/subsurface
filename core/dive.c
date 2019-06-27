@@ -757,7 +757,7 @@ static unsigned int get_cylinder_known(const struct dive *dive, const struct div
 void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, int *mean, int *duration)
 {
 	int i;
-	int depthtime[MAX_CYLINDERS] = { 0, };
+	int *depthtime;
 	uint32_t lasttime = 0;
 	int lastdepth = 0;
 	int idx = 0;
@@ -803,6 +803,8 @@ void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, i
 	if (!dc->samples)
 		fake_dc(dc);
 	const struct event *ev = get_next_event(dc->events, "gaschange");
+	depthtime = malloc(MAX_CYLINDERS * sizeof(*depthtime));
+	memset(depthtime, 0, MAX_CYLINDERS * sizeof(*depthtime));
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;
 		uint32_t time = sample->time.seconds;
@@ -835,6 +837,7 @@ void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, i
 		if (duration[i])
 			mean[i] = (depthtime[i] + duration[i] / 2) / duration[i];
 	}
+	free(depthtime);
 }
 
 static void update_min_max_temperatures(struct dive *dive, temperature_t temperature)
@@ -2983,7 +2986,7 @@ bool has_planned(const struct dive *dive, bool planned)
 struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset, bool prefer_downloaded, struct dive_trip **trip, struct dive_site **site)
 {
 	struct dive *res = alloc_dive();
-	int cylinders_map_a[MAX_CYLINDERS], cylinders_map_b[MAX_CYLINDERS];
+	int *cylinders_map_a, *cylinders_map_b;
 
 	if (offset) {
 		/*
@@ -3015,6 +3018,8 @@ struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset,
 	MERGE_NONZERO(res, a, b, visibility);
 	STRUCTURED_LIST_COPY(struct picture, a->picture_list ? a->picture_list : b->picture_list, res->picture_list, copy_pl);
 	taglist_merge(&res->tag_list, a->tag_list, b->tag_list);
+	cylinders_map_a = malloc(MAX_CYLINDERS * sizeof(*cylinders_map_a));
+	cylinders_map_b = malloc(MAX_CYLINDERS * sizeof(*cylinders_map_b));
 	merge_cylinders(res, a, b, cylinders_map_a, cylinders_map_b);
 	merge_equipment(res, a, b);
 	merge_temperatures(res, a, b);
@@ -3029,6 +3034,8 @@ struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset,
 	/* we take the first dive site, unless it's empty */
 	*site = a->dive_site && !dive_site_is_empty(a->dive_site) ? a->dive_site : b->dive_site;
 	fixup_dive(res);
+	free(cylinders_map_a);
+	free(cylinders_map_b);
 	return res;
 }
 
@@ -3046,6 +3053,11 @@ static struct dive *create_new_copy(const struct dive *from)
 	return to;
 }
 
+struct start_end_pressure {
+	pressure_t start;
+	pressure_t end;
+};
+
 static void force_fixup_dive(struct dive *d)
 {
 	struct divecomputer *dc = &d->dc;
@@ -3053,8 +3065,7 @@ static void force_fixup_dive(struct dive *d)
 	int old_mintemp = d->mintemp.mkelvin;
 	int old_maxtemp = d->maxtemp.mkelvin;
 	duration_t old_duration = d->duration;
-	cylinder_t old_cylinders[MAX_CYLINDERS];
-	memcpy(old_cylinders, &d->cylinder, MAX_CYLINDERS * sizeof(cylinder_t));
+	struct start_end_pressure *old_pressures = malloc(MAX_CYLINDERS * sizeof(*old_pressures));
 
 	d->maxdepth.mm = 0;
 	dc->maxdepth.mm = 0;
@@ -3064,6 +3075,8 @@ static void force_fixup_dive(struct dive *d)
 	d->maxtemp.mkelvin = 0;
 	d->mintemp.mkelvin = 0;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		old_pressures[i].start = d->cylinder[i].start;
+		old_pressures[i].end = d->cylinder[i].end;
 		d->cylinder[i].start.mbar = 0;
 		d->cylinder[i].end.mbar = 0;
 	}
@@ -3086,11 +3099,11 @@ static void force_fixup_dive(struct dive *d)
 		d->duration = old_duration;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		if (!d->cylinder[i].start.mbar)
-			d->cylinder[i].start = old_cylinders[i].start;
+			d->cylinder[i].start = old_pressures[i].start;
 		if (!d->cylinder[i].end.mbar)
-			d->cylinder[i].end = old_cylinders[i].end;
+			d->cylinder[i].end = old_pressures[i].end;
 	}
-
+	free(old_pressures);
 }
 
 /*
