@@ -507,7 +507,7 @@ Qt::ItemFlags CylindersModel::flags(const QModelIndex &index) const
 
 void CylindersModel::remove(const QModelIndex &index)
 {
-	int mapping[MAX_CYLINDERS];
+	std::vector<int> mapping(MAX_CYLINDERS);
 
 	if (index.column() == USE) {
 		cylinder_t *cyl = cylinderAt(index);
@@ -538,9 +538,9 @@ void CylindersModel::remove(const QModelIndex &index)
 	for (int i = index.row() + 1; i < MAX_CYLINDERS; i++)
 		mapping[i] = i - 1;
 
-	cylinder_renumber(&displayed_dive, mapping);
+	cylinder_renumber(&displayed_dive, &mapping[0]);
 	if (in_planner())
-		DivePlannerPointsModel::instance()->cylinderRenumber(mapping);
+		DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
 	changed = true;
 	endRemoveRows();
 	dataChanged(index, index);
@@ -548,7 +548,7 @@ void CylindersModel::remove(const QModelIndex &index)
 
 void CylindersModel::moveAtFirst(int cylid)
 {
-	int mapping[MAX_CYLINDERS];
+	std::vector<int> mapping(MAX_CYLINDERS);
 	cylinder_t temp_cyl;
 
 	beginMoveRows(QModelIndex(), cylid, cylid, QModelIndex(), 0);
@@ -561,9 +561,9 @@ void CylindersModel::moveAtFirst(int cylid)
 	mapping[cylid] = 0;
 	for (int i = cylid + 1; i < MAX_CYLINDERS; i++)
 		mapping[i] = i;
-	cylinder_renumber(&displayed_dive, mapping);
+	cylinder_renumber(&displayed_dive, &mapping[0]);
 	if (in_planner())
-		DivePlannerPointsModel::instance()->cylinderRenumber(mapping);
+		DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
 	changed = true;
 	endMoveRows();
 }
