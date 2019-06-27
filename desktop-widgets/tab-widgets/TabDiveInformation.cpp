@@ -53,8 +53,7 @@ void TabDiveInformation::updateProfile()
 	ui->maximumDepthText->setText(get_depth_string(current_dive->maxdepth, true));
 	ui->averageDepthText->setText(get_depth_string(current_dive->meandepth, true));
 
-	volume_t gases[MAX_CYLINDERS] = {};
-	get_gas_used(current_dive, gases);
+	volume_t *gases =  get_gas_used(current_dive);
 	QString volumes;
 	int mean[MAX_CYLINDERS], duration[MAX_CYLINDERS];
 	per_cylinder_mean_depth(current_dive, select_dc(current_dive), mean, duration);
@@ -76,6 +75,7 @@ void TabDiveInformation::updateProfile()
 			SACs.append(get_volume_string(sac, true).append(tr("/min")));
 		}
 	}
+	free(gases);
 	ui->gasUsedText->setText(volumes);
 	ui->oxygenHeliumText->setText(gaslist);
 

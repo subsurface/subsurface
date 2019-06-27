@@ -359,10 +359,13 @@ bool is_cylinder_prot(const struct dive *dive, int idx)
 	return false;
 }
 
-void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS])
+/* Returns a dynamically allocated array with MAX_CYLINDERS entries that
+ * has to be freed by the caller */
+volume_t *get_gas_used(struct dive *dive)
 {
 	int idx;
 
+	volume_t *gases = malloc(MAX_CYLINDERS * sizeof(volume_t));
 	for (idx = 0; idx < MAX_CYLINDERS; idx++) {
 		cylinder_t *cyl = &dive->cylinder[idx];
 		pressure_t start, end;
@@ -372,6 +375,8 @@ void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS])
 		if (end.mbar && start.mbar > end.mbar)
 			gases[idx].mliter = gas_volume(cyl, start) - gas_volume(cyl, end);
 	}
+
+	return gases;
 }
 
 /* Quite crude reverse-blender-function, but it produces a approx result */
@@ -397,8 +402,7 @@ void selected_dives_gas_parts(volume_t *o2_tot, volume_t *he_tot)
 	for_each_dive (i, d) {
 		if (!d->selected)
 			continue;
-		volume_t diveGases[MAX_CYLINDERS] = {};
-		get_gas_used(d, diveGases);
+		volume_t *diveGases = get_gas_used(d);
 		for (j = 0; j < MAX_CYLINDERS; j++) {
 			if (diveGases[j].mliter) {
 				volume_t o2 = {}, he = {};
@@ -407,5 +411,6 @@ void selected_dives_gas_parts(volume_t *o2_tot, volume_t *he_tot)
 				he_tot->mliter += he.mliter;
 			}
 		}
+		free(diveGases);
 	}
 }
