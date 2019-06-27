@@ -229,11 +229,14 @@ of each dive. These panels are respectively marked [red]#A#, [red]#B# and
 in the figure below. Each of these tabs will now be explained for data entry.
 
 image::images/AddDive1_f22.jpg["FIGURE: Add dive",align="center"]
-When you edit a field in Notes or Equipment panels, _Subsurface_ enters *Editing Mode*,
+When you edit a field in the Notes or Equipment panels, _Subsurface_ enters *Editing Mode*,
 indicated by the message in the blue box at the top of the *Notes* panel (see the image below). This message is
 displayed in all the panels under Notes and Equipment when in *Editing Mode*.
 
 image::images/BlueEditBar_f22.jpg["Blue edit bar",align="center"]
+
+If this hand-entered dive was away from the sea you may wish to edit the xref:S_altitude[*altitude setting in the
+Information panel*] because dives at altitude need special calculations.
 
 The _Apply changes_ button should only be selected after all the parts of a dive have been entered.
 When entering dives by hand, the _Info_, _Equipment_ and _Profile_ tabs should be completed
@@ -712,8 +715,8 @@ an option appears to undo the change in time (image c). Select this undo option
 and the time is again shown as 8:44. Having undone the change, a new option appears under
 the _Edit_ heading: Redo the change (image d). If this option is selected, the change in
 time is redone. The undo facility applies to the majority of information typed into the text
-areas of _Subsurface_ and facilitates easy and accurate data entry. Even changes to multiple
-dives can be undone.
+areas of _Subsurface_ and facilitates easy and accurate data entry. Multiple changes
+to a specific dive and changes to multiple dives can be undone.
 
 image::images/undo.jpg["FIGURE:Performing an undo",align="center"]
 
@@ -860,6 +863,10 @@ the tags that correspond to the typing. For instance, by typing
 +cav+, the tags *cave* and *cavern* are shown to choose from.
 
 *Notes*: Any additional information for the dive can be entered here.
+
+If this dive was away from the sea and your dive computer does not record atmospheric
+pressure or altitude you may wish to edit the xref:S_altitude[*altitude setting in the
+Information panel*] because dives at altitude require special calculations.
 
 The _Apply changes_ and _Discard changes_ buttons are used to save all the information for tabs
 in the *Info* panel and in the *Dive Profile* panel. Use them
@@ -2131,6 +2138,7 @@ surface interval before the dive, the maximum and mean depths of the dive, the
 gas volume consumed, the surface air consumption (SAC) and the number of oxygen
 toxicity units (OTU) incurred. 
 
+[[S_altitude]]
 [icon="images/atmpress.jpg"]
 [NOTE]
 The text box *Atm. pressure* allows one to specify
@@ -2139,7 +2147,7 @@ contains a value, dive calculations take into account altitude. The dropbox on t
 right allows two ways of expressing atmospheric pressure: mbar or m/ft above sea level.
 The altitude unit (metric/imperial) is taken from the settings in the *Preferences* screen. A
 third option is to use the atmospheric pressure provided by the dive computer. In order to specify
-the pressure/altitude, first select the approriate unit (in the case of the image on the left
+the pressure/altitude, first select the appropriate unit (in the case of the image on the left
 these are "mbar/m/use dc", then type an appropriate value into the text box. In the case
 of m/ft the altitude typed into the text box is automatically converted to the
 mean expected atmospheric pressure (mbar) at the specified altitude.
