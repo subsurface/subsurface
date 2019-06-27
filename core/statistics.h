@@ -10,7 +10,6 @@
 #define STATISTICS_H
 
 #include "core/units.h"
-#include "core/dive.h"	// For MAX_CYLINDERS
 
 #define STATS_MAX_DEPTH 300	/* Max depth for stats bucket is 300m */
 #define STATS_DEPTH_BUCKET 10	/* Size of buckets for depth range */
@@ -62,7 +61,7 @@ extern void init_stats_summary(struct stats_summary *stats);
 extern void free_stats_summary(struct stats_summary *stats);
 extern void calculate_stats_summary(struct stats_summary *stats, bool selected_only);
 extern void calculate_stats_selected(stats_t *stats_selection);
-extern void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS]);
+extern volume_t *get_gas_used(struct dive *dive);
 extern void selected_dives_gas_parts(volume_t *o2_tot, volume_t *he_tot);
 
 #ifdef __cplusplus

@@ -3,6 +3,7 @@
 #include "core/qthelper.h"
 #include "core/metrics.h"
 #include "core/statistics.h"
+#include "core/dive.h" // For NUM_DIVEMODE
 
 class YearStatisticsItem : public TreeItem {
 	Q_DECLARE_TR_FUNCTIONS(YearStatisticsItem)
