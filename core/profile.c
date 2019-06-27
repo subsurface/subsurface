@@ -828,15 +828,18 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 {
 	int prev, i;
 	const struct event *ev;
-	int seen[MAX_CYLINDERS] = { 0, };
-	unsigned int first[MAX_CYLINDERS] = { 0, };
-	unsigned int last[MAX_CYLINDERS] = { 0, };
+	int *seen = malloc(MAX_CYLINDERS * sizeof(*seen));
+	int *first = malloc(MAX_CYLINDERS * sizeof(*first));
+	int *last = malloc(MAX_CYLINDERS * sizeof(*last));
 	const struct divecomputer *secondary;
 
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		seen[i] = 0;
+		first[i] = 0;
+		last[i] = INT_MAX;
+	}
 	prev = explicit_first_cylinder(dive, dc);
 	seen[prev] = 1;
-	for (i = 0; i < MAX_CYLINDERS; i++)
-		last[i] = INT_MAX;
 
 	for (ev = get_next_event(dc->events, "gaschange"); ev != NULL; ev = get_next_event(ev->next, "gaschange")) {
 		int cyl = ev->gas.index;
@@ -909,6 +912,10 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 			continue;
 		populate_secondary_sensor_data(dc, pi);
 	} while ((secondary = secondary->next) != NULL);
+
+	free(seen);
+	free(first);
+	free(last);
 }
 
 #ifndef SUBSURFACE_MOBILE
