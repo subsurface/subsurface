@@ -1032,19 +1032,6 @@ static bool try_to_merge_into(struct dive *dive_to_add, int idx, struct dive_tab
 	return true;
 }
 
-/* Check if two trips overlap time-wise. */
-static bool trips_overlap(const struct dive_trip *t1, const struct dive_trip *t2)
-{
-	/* First, handle the empty-trip cases. */
-	if (t1->dives.nr == 0 || t2->dives.nr == 0)
-		return 0;
-
-	if (trip_date(t1) < trip_date(t2))
-		return trip_enddate(t1) >= trip_date(t2);
-	else
-		return trip_enddate(t2) >= trip_date(t1);
-}
-
 /* Check if a dive is ranked after the last dive of the global dive list */
 static bool dive_is_after_last(struct dive *d)
 {
