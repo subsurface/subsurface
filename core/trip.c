@@ -192,6 +192,19 @@ dive_trip_t *get_trip_for_new_dive(struct dive *new_dive, bool *allocated)
 	return trip;
 }
 
+/* Check if two trips overlap time-wise up to trip threshold. */
+bool trips_overlap(const struct dive_trip *t1, const struct dive_trip *t2)
+{
+	/* First, handle the empty-trip cases. */
+	if (t1->dives.nr == 0 || t2->dives.nr == 0)
+		return 0;
+
+	if (trip_date(t1) < trip_date(t2))
+		return trip_enddate(t1) + TRIP_THRESHOLD >= trip_date(t2);
+	else
+		return trip_enddate(t2) + TRIP_THRESHOLD >= trip_date(t1);
+}
+
 /*
  * Collect dives for auto-grouping. Pass in first dive which should be checked.
  * Returns range of dives that should be autogrouped and trip it should be
