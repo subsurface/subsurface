@@ -164,29 +164,25 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 
 void DivePlotDataModel::clear()
 {
-	if (rowCount() != 0) {
-		beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
-		pInfo.nr = 0;
-		free(pInfo.entry);
-		pInfo.entry = 0;
-		diveId = -1;
-		dcNr = -1;
-		endRemoveRows();
-	}
+	beginResetModel();
+	pInfo.nr = 0;
+	free(pInfo.entry);
+	pInfo.entry = 0;
+	diveId = -1;
+	dcNr = -1;
+	endResetModel();
 }
 
 void DivePlotDataModel::setDive(dive *d, const plot_info &info)
 {
-	clear();
-	Q_ASSERT(d != NULL);
+	beginResetModel();
 	diveId = d->id;
 	dcNr = dc_number;
 	free(pInfo.entry);
 	pInfo = info;
 	pInfo.entry = (struct plot_data *)malloc(sizeof(struct plot_data) * pInfo.nr);
 	memcpy(pInfo.entry, info.entry, sizeof(plot_data) * pInfo.nr);
-	beginInsertRows(QModelIndex(), 0, pInfo.nr - 1);
-	endInsertRows();
+	endResetModel();
 }
 
 unsigned int DivePlotDataModel::dcShown() const
@@ -199,8 +195,8 @@ unsigned int DivePlotDataModel::dcShown() const
 	{                                                             \
 		double ret = -1;                                      \
 		for (int i = 0, count = rowCount(); i < count; i++) { \
-			if (pInfo.entry[i].pressures.GAS > ret)                 \
-				ret = pInfo.entry[i].pressures.GAS;             \
+			if (pInfo.entry[i].pressures.GAS > ret)       \
+				ret = pInfo.entry[i].pressures.GAS;   \
 		}                                                     \
 		return ret;                                           \
 	}
