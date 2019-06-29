@@ -246,7 +246,7 @@ struct PasteState {
 	int rating;
 	int visibility;
 	tag_entry *tags;
-	cylinder_t cylinders[MAX_CYLINDERS];
+	std::vector<cylinder_t> cylinders;
 	struct weightsystem_table weightsystems;
 
 	PasteState(dive *d, const dive *data, dive_components what); // Read data from dive data for dive d
