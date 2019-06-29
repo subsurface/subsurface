@@ -687,7 +687,8 @@ static void swapCandQString(QString &q, char *&c)
 }
 
 PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dIn),
-	tags(nullptr)
+	tags(nullptr),
+	cylinders(MAX_CYLINDERS)
 {
 	memset(&cylinders[0], 0, sizeof(cylinders));
 	memset(&weightsystems, 0, sizeof(weightsystems));
@@ -742,8 +743,10 @@ void PasteState::swap(dive_components what)
 		std::swap(divesite, d->dive_site);
 	if (what.tags)
 		std::swap(tags, d->tag_list);
-	if (what.cylinders)
-		std::swap(cylinders, d->cylinder);
+	if (what.cylinders) {
+		for (int i = 0; i < MAX_CYLINDERS; ++i)
+			std::swap(cylinders[i], d->cylinder[i]);
+	}
 	if (what.weights)
 		std::swap(weightsystems, d->weightsystems);
 }
