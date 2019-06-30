@@ -83,13 +83,11 @@ signals:
 class DiveLocationLineEdit : public QLineEdit {
 	Q_OBJECT
 public:
-	enum DiveSiteType { NO_DIVE_SITE, NEW_DIVE_SITE, EXISTING_DIVE_SITE };
 	DiveLocationLineEdit(QWidget *parent =0 );
 	void refreshDiveSiteCache();
 	void setTemporaryDiveSiteName(const QString& s);
 	bool eventFilter(QObject*, QEvent*);
 	void itemActivated(const QModelIndex& index);
-	DiveSiteType currDiveSiteType() const;
 	struct dive_site *currDiveSite() const;
 	void fixPopupPosition();
 	void setCurrentDiveSite(struct dive *d);
@@ -111,7 +109,6 @@ private:
 	DiveLocationModel *model;
 	DiveLocationListView *view;
 	LocationFilterDelegate delegate;
-	DiveSiteType currType;
 	struct dive_site *currDs;
 };
 
