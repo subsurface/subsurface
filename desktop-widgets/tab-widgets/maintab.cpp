@@ -86,6 +86,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ui.editDiveSiteButton, &QToolButton::clicked, MainWindow::instance(), &MainWindow::startDiveSiteEdit);
 	connect(ui.location, &DiveLocationLineEdit::entered, MapWidget::instance(), &MapWidget::centerOnIndex);
 	connect(ui.location, &DiveLocationLineEdit::currentChanged, MapWidget::instance(), &MapWidget::centerOnIndex);
+	connect(ui.location, &DiveLocationLineEdit::editingFinished, this, &MainTab::on_location_diveSiteSelected);
 
 	QAction *action = new QAction(tr("Apply changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));

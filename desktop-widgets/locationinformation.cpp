@@ -432,9 +432,8 @@ bool DiveLocationLineEdit::eventFilter(QObject *, QEvent *e)
 
 void DiveLocationLineEdit::focusOutEvent(QFocusEvent *ev)
 {
-	if (!view->isVisible()) {
+	if (!view->isVisible())
 		QLineEdit::focusOutEvent(ev);
-	}
 }
 
 void DiveLocationLineEdit::itemActivated(const QModelIndex &index)
@@ -601,7 +600,8 @@ DiveLocationLineEdit::DiveSiteType DiveLocationLineEdit::currDiveSiteType() cons
 
 struct dive_site *DiveLocationLineEdit::currDiveSite() const
 {
-	return currDs;
+	// If there is no text, this corresponds to the empty dive site
+	return text().trimmed().isEmpty() ? nullptr : currDs;
 }
 
 DiveLocationListView::DiveLocationListView(QWidget*)
