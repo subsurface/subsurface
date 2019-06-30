@@ -364,7 +364,6 @@ DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent) : QLineEdit(parent),
 							      proxy(new DiveLocationFilterProxyModel()),
 							      model(new DiveLocationModel()),
 							      view(new DiveLocationListView()),
-							      currType(NO_DIVE_SITE),
 							      currDs(nullptr)
 {
 	proxy->setSourceModel(model);
@@ -443,13 +442,8 @@ void DiveLocationLineEdit::itemActivated(const QModelIndex &index)
 		idx = index.model()->index(index.row(), LocationInformationModel::NAME);
 
 	dive_site *ds = index.model()->index(index.row(), LocationInformationModel::DIVESITE).data().value<dive_site *>();
-	currType = ds == RECENTLY_ADDED_DIVESITE ? NEW_DIVE_SITE : EXISTING_DIVE_SITE;
 	currDs = ds;
 	setText(idx.data().toString());
-	if (currType == NEW_DIVE_SITE)
-		qDebug() << "Setting a New dive site";
-	else
-		qDebug() << "Setting a Existing dive site";
 	if (view->isVisible())
 		view->hide();
 	emit diveSiteSelected();
@@ -509,12 +503,10 @@ void DiveLocationLineEdit::keyPressEvent(QKeyEvent *ev)
 	    ev->key() != Qt::Key_Escape &&
 	    ev->key() != Qt::Key_Return) {
 
-		if (ev->key() != Qt::Key_Up && ev->key() != Qt::Key_Down) {
-			currType = NEW_DIVE_SITE;
+		if (ev->key() != Qt::Key_Up && ev->key() != Qt::Key_Down)
 			currDs = RECENTLY_ADDED_DIVESITE;
-		} else {
+		else
 			showPopup();
-		}
 	} else if (ev->key() == Qt::Key_Escape) {
 		view->hide();
 	}
@@ -561,12 +553,10 @@ void DiveLocationLineEdit::setCurrentDiveSite(struct dive *d)
 {
 	struct dive_site *ds = get_dive_site_for_dive(d);
 	currDs = ds;
-	if (!currDs) {
-		currType = NO_DIVE_SITE;
+	if (!currDs)
 		clear();
-	} else {
+	else
 		setText(ds->name);
-	}
 
 	location_t currentLocation = d ? dive_get_gps_location(d) : location_t{0, 0};
 	proxy->setCurrentLocation(currentLocation);
@@ -591,11 +581,6 @@ void DiveLocationLineEdit::showAllSites()
 		// typing to activate the full-text filter.
 		selectAll();
 	}
-}
-
-DiveLocationLineEdit::DiveSiteType DiveLocationLineEdit::currDiveSiteType() const
-{
-	return currType;
 }
 
 struct dive_site *DiveLocationLineEdit::currDiveSite() const
