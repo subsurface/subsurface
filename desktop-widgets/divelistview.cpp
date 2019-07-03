@@ -194,6 +194,10 @@ void DiveListView::reset()
 // If items were selected, inform the selection model
 void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indexes)
 {
+	// Since dives are selected dive-by-dive, send only a single signal at the
+	// end, not one for every dive.
+	dontEmitDiveChangedSignal = true;
+
 	clearSelection();
 	MultiFilterSortModel *m = MultiFilterSortModel::instance();
 	QItemSelectionModel *s = selectionModel();
@@ -217,6 +221,9 @@ void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indexes)
 			setAnimated(true);
 		}
 	}
+
+	dontEmitDiveChangedSignal = false;
+	emit divesSelected();
 }
 
 void DiveListView::currentDiveChanged(QModelIndex index)
