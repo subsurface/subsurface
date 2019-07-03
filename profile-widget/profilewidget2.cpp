@@ -1684,7 +1684,6 @@ void ProfileWidget2::splitDive()
 	duration_t time;
 	time.seconds = lrint(timeAxis->valueAt(scenePos));
 	Command::splitDives(d, time);
-	emit updateDiveInfo();
 #endif
 }
 
