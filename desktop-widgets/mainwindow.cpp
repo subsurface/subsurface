@@ -191,7 +191,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	if (!QIcon::hasThemeIcon("window-close")) {
 		QIcon::setThemeName("subsurface");
 	}
-	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &MainWindow::selectionChanged);
 	connect(diveList, &DiveListView::divesSelected, this, &MainWindow::selectionChanged);
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(readSettings()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), diveList, SLOT(update()));
