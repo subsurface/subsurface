@@ -131,6 +131,27 @@ int DownloadFromDCWidget::deviceIndex(QString deviceText)
 }
 
 // DC button slots
+// we need two versions as one of the helper functions used is only available if
+// Bluetooth support is enabled
+#ifdef BT_SUPPORT
+#define DCBUTTON(num) \
+void DownloadFromDCWidget::DC##num##Clicked() \
+{ \
+	ui.vendor->setCurrentIndex(ui.vendor->findText(qPrefDiveComputer::vendor##num())); \
+	productModel.setStringList(productList[qPrefDiveComputer::vendor##num()]); \
+	ui.product->setCurrentIndex(ui.product->findText(qPrefDiveComputer::product##num())); \
+	ui.bluetoothMode->setChecked(isBluetoothAddress(qPrefDiveComputer::device##num())); \
+	if (ui.device->currentIndex() == -1) \
+		ui.device->setCurrentIndex(deviceIndex(qPrefDiveComputer::device##num())); \
+	if (QSysInfo::kernelType() == "darwin") { \
+		/* it makes no sense that this would be needed on macOS but not Linux */ \
+		QCoreApplication::processEvents(); \
+		ui.vendor->update(); \
+		ui.product->update(); \
+		ui.device->update(); \
+	} \
+}
+#else
 #define DCBUTTON(num) \
 void DownloadFromDCWidget::DC##num##Clicked() \
 { \
@@ -146,6 +167,9 @@ void DownloadFromDCWidget::DC##num##Clicked() \
 		ui.device->update(); \
 	} \
 }
+#endif
+
+
 
 DCBUTTON(1)
 DCBUTTON(2)
