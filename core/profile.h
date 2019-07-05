@@ -100,7 +100,6 @@ int get_maxdepth(struct plot_info *pi);
 #define SENSOR_PRESSURE(_entry,_idx) (_entry)->pressure[_idx][SENSOR_PR]
 #define INTERPOLATED_PRESSURE(_entry,_idx) (_entry)->pressure[_idx][INTERPOLATED_PR]
 #define GET_PRESSURE(_entry,_idx) (SENSOR_PRESSURE(_entry,_idx) ? SENSOR_PRESSURE(_entry,_idx) : INTERPOLATED_PRESSURE(_entry,_idx))
-#define SAC_WINDOW 45 /* sliding window in seconds for current SAC calculation */
 
 #ifdef __cplusplus
 }
