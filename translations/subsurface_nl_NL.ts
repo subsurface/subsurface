@@ -39,7 +39,10 @@
 
 © Subsurface developer team
 2011-2019</source>
-        <translation type="unfinished"/>
+        <translation>Versie: %1
+
+© Subsurface ontwikkelteam
+2011-2019</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/mobile-widgets/qml/About.qml" line="49"/>
@@ -183,7 +186,7 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="224"/>
         <source>Show all BT devices</source>
-        <translation type="unfinished"/>
+        <translation>Toon alle BT toestellen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="242"/>
@@ -1012,7 +1015,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Voorbeeld hartslag</translation>
     </message>
 </context>
 <context>
@@ -1056,7 +1059,7 @@
     <message>
         <location filename="../desktop-widgets/command_divesite.cpp" line="83"/>
         <source>add dive site</source>
-        <translation type="unfinished"/>
+        <translation>duikstek toevoegen</translation>
     </message>
 </context>
 <context>
@@ -1099,7 +1102,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="864"/>
         <source>delete dive computer</source>
-        <translation type="unfinished"/>
+        <translation>verwijder duikcomputer</translation>
     </message>
 </context>
 <context>
@@ -1107,7 +1110,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divesite.cpp" line="141"/>
         <source>delete %n dive site(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>verwijder %n duikstek</numerusform><numerusform>verwijder %n duikstekken</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1139,7 +1142,7 @@
     <message>
         <location filename="../desktop-widgets/command_edit.cpp" line="344"/>
         <source>dive site</source>
-        <translation type="unfinished"/>
+        <translation>duikstek</translation>
     </message>
 </context>
 <context>
@@ -4080,7 +4083,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="14"/>
         <source>Copy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Instellingen kopiëren</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="26"/>
@@ -4305,7 +4308,7 @@
         <location filename="../desktop-widgets/simplewidgets.cpp" line="486"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="499"/>
         <source>Dive site: </source>
-        <translation type="unfinished"/>
+        <translation>Duikstek:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="488"/>
@@ -4362,7 +4365,7 @@
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/simplewidgets.cpp" line="531"/>
         <source>Weights:
 </source>
-        <translation type="unfinished"/>
+        <translation>Gewichten</translation>
     </message>
 </context>
 <context>
@@ -6541,12 +6544,12 @@ GPS locatie:</translation>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="836"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Voorbeeld hartslag</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="1019"/>
         <source>multiple files</source>
-        <translation type="unfinished"/>
+        <translation>meerdere bestanden</translation>
     </message>
 </context>
 <context>
@@ -7838,7 +7841,7 @@ Existing Site</source>
     <message>
         <location filename="../qt-models/divesiteimportmodel.cpp" line="38"/>
         <source>Distance</source>
-        <translation type="unfinished"/>
+        <translation>Afstand</translation>
     </message>
 </context>
 <context>
@@ -9417,7 +9420,7 @@ Bent u zeker?</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="71"/>
         <source>Dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Duikstekken</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="89"/>
@@ -10166,7 +10169,7 @@ Bent u zeker?</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="433"/>
         <source>Change settings on &amp;dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Instellingen wijzigen op &amp;duikcomputer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="644"/>
@@ -10446,7 +10449,7 @@ Bij antwoord nee, zal de cloud pas gesynchroniseerd worden bij de eerstvolgende 
         <location filename="../desktop-widgets/mainwindow.cpp" line="1671"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1774"/>
         <source>multiple files</source>
-        <translation type="unfinished"/>
+        <translation>meerdere bestanden</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1752"/>
@@ -13641,7 +13644,7 @@ Kan niet verbinden met de Subsurface cloud opslag, terug naar lokale mode</trans
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="537"/>
         <source>Bluetooth</source>
-        <translation type="unfinished"/>
+        <translation>Bluetooth</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="547"/>
@@ -14645,7 +14648,7 @@ Bestanden met onjuiste datum/tijd</translation>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.ui" line="14"/>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="14"/>
         <source>Dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Duikstekken</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.ui" line="22"/>

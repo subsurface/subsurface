@@ -375,7 +375,7 @@
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/btdeviceselectiondialog.cpp" line="315"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/btdeviceselectiondialog.cpp" line="335"/>
         <source>UNPAIRED</source>
-        <translation>Ej Parkopplad</translation>
+        <translation>EJ_PARKOPPLAD</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="190"/>
@@ -391,7 +391,7 @@
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/btdeviceselectiondialog.cpp" line="320"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/btdeviceselectiondialog.cpp" line="333"/>
         <source>PAIRED</source>
-        <translation>Parkopplad</translation>
+        <translation>PARKOPPLAD</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="193"/>
@@ -407,7 +407,7 @@
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/btdeviceselectiondialog.cpp" line="325"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/btdeviceselectiondialog.cpp" line="334"/>
         <source>AUTHORIZED_PAIRED</source>
-        <translation>IHOPPARNING_GODKÄND</translation>
+        <translation>PARKOPPLING_GODKÄND</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="208"/>
@@ -491,7 +491,7 @@
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/btdeviceselectiondialog.cpp" line="316"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/btdeviceselectiondialog.cpp" line="316"/>
         <source>Device %1 was unpaired.</source>
-        <translation>Parkopplingen med %1 togs bort.</translation>
+        <translation>Parkopplingsinformation med enhet %1 raderades</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="326"/>
@@ -3620,7 +3620,7 @@
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/configuredivecomputerdialog.ui" line="3767"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3033"/>
         <source>Sample rate</source>
-        <translation>Samplingsfrekvens</translation>
+        <translation>Registreringsintervall</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3780"/>
@@ -7006,7 +7006,7 @@ GPS-position:</translation>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/diveshareexportdialog.ui" line="61"/>
         <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="179"/>
         <source>User ID</source>
-        <translation>Användar-ID</translation>
+        <translation>Användarnamn</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="75"/>
@@ -7024,7 +7024,7 @@ GPS-position:</translation>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/diveshareexportdialog.ui" line="82"/>
         <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="184"/>
         <source>Get user ID</source>
-        <translation>Hämta användar-ID</translation>
+        <translation>Hämta användarnamn</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="91"/>
@@ -7033,7 +7033,7 @@ GPS-position:</translation>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/diveshareexportdialog.ui" line="91"/>
         <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="185"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#ff8000;&quot;&gt;⚠&lt;/span&gt; Not using a UserID means that you will need to manually keep bookmarks to your dives, to find them again.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#ff8000;&quot;&gt;⚠&lt;/span&gt;Att inte använda ett användar-ID betyder att du på egen hand behöver skapa bokmärken så att du kan hitta dina dyk igen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#ff8000;&quot;&gt;⚠&lt;/span&gt;Att inte använda ett användarnamn betyder att du på egen hand behöver skapa bokmärken så att du kan hitta dina dyk igen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="104"/>
@@ -9994,7 +9994,7 @@ Existerande dykplats</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="713"/>
         <source>Cloud stora&amp;ge online</source>
-        <translation>Molnlagrin&amp;g online</translation>
+        <translation>Molnlagrin&amp;g uppkopplad</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="725"/>
@@ -10271,7 +10271,7 @@ Existerande dykplats</translation>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/mainwindow.ui" line="695"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="613"/>
         <source>Cloud storage online</source>
-        <translation>Molnlagring aktiv</translation>
+        <translation>Molnlagring uppkopplad</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.8.4/desktop-widgets/mainwindow.cpp" line="385"/>
@@ -10771,8 +10771,8 @@ Om du svarar Nej kommer förändringarna synkroniseras nästa gång du väljer &
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/mainwindow.cpp" line="1692"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
-        <translation>Du öppnade en datafil från en äldre version av Subsurface. Vi rekommenderar att du läser manualen för att lära dig om förändringarna i den nya versionen, speciellt om dykplats administrationen som har ändrats signifikant.
-Subsurface har redan försökt att fylla i datat men det kan vara värt besväret att titta på den nya dykplats administrationen och se till att allt ser bra ut.</translation>
+        <translation>Du öppnade en datafil från en äldre version av Subsurface. Vi rekommenderar att du läser manualen för att ta del av förändringarna i den nya versionen, det är framför allt redigering av dykplatser som har genomgått signifikanta förändringar.
+Subsurface har redan försökt att fylla i data korrekt men kontrollera dina dykplatser och se till att allt ser bra ut.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1725"/>
