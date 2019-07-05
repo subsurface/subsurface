@@ -357,15 +357,14 @@ static void debug_print_pressures(struct plot_info *pi)
 }
 #endif
 
-/* This function goes through the list of tank pressures, either SENSOR_PRESSURE(entry) or O2CYLINDER_PRESSURE(entry),
- * of structure plot_info for the dive profile where each item in the list corresponds to one point (node) of the
- * profile. It finds values for which there are no tank pressures (pressure==0). For each missing item (node) of
- * tank pressure it creates a pr_track_alloc structure that represents a segment on the dive profile and that
- * contains tank pressures. There is a linked list of pr_track_alloc structures for each cylinder. These pr_track_alloc
- * structures ultimately allow for filling the missing tank pressure values on the dive profile using the depth_pressure
- * of the dive. To do this, it calculates the summed pressure-time value for the duration of the dive and stores these
- * in the pr_track_alloc structures. If diluent_flag = 1, then DILUENT_PRESSURE(entry) is used instead of SENSOR_PRESSURE.
- * This function is called by create_plot_info_new() in profile.c
+/* This function goes through the list of tank pressures, of structure plot_info for the dive profile where each
+ * item in the list corresponds to one point (node) of the profile. It finds values for which there are no tank
+ * pressures (pressure==0). For each missing item (node) of tank pressure it creates a pr_track_alloc structure
+ * that represents a segment on the dive profile and that contains tank pressures. There is a linked list of
+ * pr_track_alloc structures for each cylinder. These pr_track_alloc structures ultimately allow for filling
+ * the missing tank pressure values on the dive profile using the depth_pressure of the dive. To do this, it
+ * calculates the summed pressure-time value for the duration of the dive and stores these * in the pr_track_alloc
+ * structures. This function is called by create_plot_info_new() in profile.c
  */
 void populate_pressure_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, int sensor)
 {
