@@ -76,12 +76,12 @@ struct ev_select {
 	bool plot_ev;
 };
 
-void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int bufsize, int sum);
-struct plot_info *analyze_plot_info(struct plot_info *pi);
-void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast, struct deco_state *planner_ds);
-void calculate_deco_information(struct deco_state *ds, const struct deco_state *planner_de, const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi, bool print_mode);
-struct plot_data *get_plot_details_new(struct plot_info *pi, int time, struct membuffer *);
-void free_plot_info_data(struct plot_info *pi);
+extern void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int bufsize, int sum);
+extern struct plot_info *analyze_plot_info(struct plot_info *pi);
+extern void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast, struct deco_state *planner_ds);
+extern void calculate_deco_information(struct deco_state *ds, const struct deco_state *planner_de, const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi, bool print_mode);
+extern struct plot_data *get_plot_details_new(struct plot_info *pi, int time, struct membuffer *);
+extern void free_plot_info_data(struct plot_info *pi);
 
 /*
  * When showing dive profiles, we scale things to the
@@ -91,12 +91,12 @@ void free_plot_info_data(struct plot_info *pi);
  * We also need to add 180 seconds at the end so the min/max
  * plots correctly
  */
-int get_maxtime(struct plot_info *pi);
+extern int get_maxtime(struct plot_info *pi);
 
 /* get the maximum depth to which we want to plot
  * take into account the additional verical space needed to plot
  * partial pressure graphs */
-int get_maxdepth(struct plot_info *pi);
+extern int get_maxdepth(struct plot_info *pi);
 
 static inline int get_plot_pressure_data(const struct plot_data *entry, enum plot_pressure sensor, int idx)
 {
