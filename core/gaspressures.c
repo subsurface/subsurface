@@ -352,7 +352,7 @@ static void debug_print_pressures(struct plot_info *pi)
 	int i;
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
-		printf("%5d |%9d | %9d || %9d | %9d |\n", i, SENSOR_PRESSURE(entry), INTERPOLATED_PRESSURE(entry), DILUENT_PRESSURE(entry), INTERPOLATED_DILUENT_PRESSURE(entry));
+		printf("%5d |%9d | %9d |\n", i, SENSOR_PRESSURE(entry), INTERPOLATED_PRESSURE(entry));
 	}
 }
 #endif
