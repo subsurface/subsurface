@@ -669,7 +669,7 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 		struct plot_data *entry = dataModel->data().entry + i;
 
 		for (int cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
-			int mbar = GET_PRESSURE(entry, cyl);
+			int mbar = get_plot_pressure(entry, cyl);
 			int time = entry->sec;
 
 			if (!mbar)
@@ -729,7 +729,7 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 		struct plot_data *entry = dataModel->data().entry + i;
 
 		for (int cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
-			int mbar = GET_PRESSURE(entry, cyl);
+			int mbar = get_plot_pressure(entry, cyl);
 
 			if (!mbar)
 				continue;
