@@ -16,17 +16,20 @@ typedef enum {
 	CRAZY
 } velocity_t;
 
+enum plot_pressure {
+	SENSOR_PR = 0,
+	INTERPOLATED_PR = 1,
+	NUM_PLOT_PRESSURES = 2
+};
+
 struct membuffer;
 struct divecomputer;
 struct plot_info;
 struct plot_data {
 	unsigned int in_deco : 1;
 	int sec;
-	/*
-	 * pressure[x][0] is sensor pressure for cylinder x
-	 * pressure[x][1] is interpolated pressure
-	 */
-	int pressure[MAX_CYLINDERS][2];
+	/* One pressure item per cylinder and pressure type */
+	int pressure[MAX_CYLINDERS][NUM_PLOT_PRESSURES];
 	int temperature;
 	/* Depth info */
 	int depth;
@@ -95,15 +98,12 @@ int get_maxtime(struct plot_info *pi);
  * partial pressure graphs */
 int get_maxdepth(struct plot_info *pi);
 
-#define SENSOR_PR 0
-#define INTERPOLATED_PR 1
-
-static inline int get_plot_pressure_data(const struct plot_data *entry, int sensor, int idx)
+static inline int get_plot_pressure_data(const struct plot_data *entry, enum plot_pressure sensor, int idx)
 {
 	return entry->pressure[idx][sensor];
 }
 
-static inline void set_plot_pressure_data(struct plot_data *entry, int sensor, int idx, int value)
+static inline void set_plot_pressure_data(struct plot_data *entry, enum plot_pressure sensor, int idx, int value)
 {
 	entry->pressure[idx][sensor] = value;
 }
