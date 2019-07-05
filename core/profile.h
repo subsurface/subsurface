@@ -99,7 +99,12 @@ int get_maxdepth(struct plot_info *pi);
 #define INTERPOLATED_PR 1
 #define SENSOR_PRESSURE(_entry,_idx) (_entry)->pressure[_idx][SENSOR_PR]
 #define INTERPOLATED_PRESSURE(_entry,_idx) (_entry)->pressure[_idx][INTERPOLATED_PR]
-#define GET_PRESSURE(_entry,_idx) (SENSOR_PRESSURE(_entry,_idx) ? SENSOR_PRESSURE(_entry,_idx) : INTERPOLATED_PRESSURE(_entry,_idx))
+
+static inline int get_plot_pressure(const struct plot_data *entry, int idx)
+{
+	int res = SENSOR_PRESSURE(entry, idx);
+	return res ? res : INTERPOLATED_PRESSURE(entry, idx);
+}
 
 #ifdef __cplusplus
 }
