@@ -8,6 +8,8 @@
 #include "core/settings/qPrefDiveComputer.h"
 
 #include <QFileDialog>
+#include <QProcess>
+#include <QMessageBox>
 
 PreferencesDefaults::PreferencesDefaults(): AbstractPreferencesWidget(tr("General"), QIcon(":preferences-other-icon"), 0 ), ui(new Ui::PreferencesDefaults())
 {
@@ -45,13 +47,37 @@ void PreferencesDefaults::on_localDefaultFile_toggled(bool toggle)
 	ui->chooseFile->setEnabled(toggle);
 }
 
+void PreferencesDefaults::checkFfmpegExecutable()
+{
+	QString s = ui->ffmpegExecutable->text().trimmed();
+
+	// If the user didn't provide a string they probably didn't intend to run ffmeg,
+	// so let's not give an error message.
+	if (s.isEmpty())
+		return;
+
+	// Try to execute ffmpeg. But wait at most 2 sec for startup and execution
+	// so that the UI doesn't hang unnecessarily.
+	QProcess ffmpeg;
+	ffmpeg.start(s);
+	if (!ffmpeg.waitForStarted(2000) || !ffmpeg.waitForFinished(3000))
+		QMessageBox::warning(this, tr("Warning"), tr("Couldn't execute ffmpeg at given location. Thumbnailing will not work."));
+}
+
 void PreferencesDefaults::on_ffmpegFile_clicked()
 {
 	QFileInfo fi(system_default_filename());
 	QString ffmpegFileName = QFileDialog::getOpenFileName(this, tr("Select ffmpeg executable"));
 
-	if (!ffmpegFileName.isEmpty())
+	if (!ffmpegFileName.isEmpty()) {
 		ui->ffmpegExecutable->setText(ffmpegFileName);
+		checkFfmpegExecutable();
+	}
+}
+
+void PreferencesDefaults::on_ffmpegExecutable_editingFinished()
+{
+	checkFfmpegExecutable();
 }
 
 void PreferencesDefaults::on_extractVideoThumbnails_toggled(bool toggled)
