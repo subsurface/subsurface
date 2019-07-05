@@ -178,8 +178,8 @@ static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, str
 
 	if (duration <= 0)
 		return 0;
-	a.mbar = GET_PRESSURE(entry1, 0);
-	b.mbar = GET_PRESSURE(entry2, 0);
+	a.mbar = get_plot_pressure(entry1, 0);
+	b.mbar = get_plot_pressure(entry2, 0);
 	if (!b.mbar || a.mbar <= b.mbar)
 		return 0;
 
@@ -663,8 +663,8 @@ static int sac_between(struct dive *dive, struct plot_data *first, struct plot_d
 		if (!(gases & (1u << i)))
 			continue;
 
-		a.mbar = GET_PRESSURE(first, i);
-		b.mbar = GET_PRESSURE(last, i);
+		a.mbar = get_plot_pressure(first, i);
+		b.mbar = get_plot_pressure(last, i);
 		cyl = dive->cylinder + i;
 		cyluse = gas_volume(cyl, a) - gas_volume(cyl, b);
 		if (cyluse > 0)
@@ -698,7 +698,7 @@ static unsigned int have_pressures(struct plot_data *entry, unsigned int gases)
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		unsigned int mask = 1 << i;
 		if (gases & mask) {
-			if (!GET_PRESSURE(entry, i))
+			if (!get_plot_pressure(entry, i))
 				gases &= ~mask;
 		}
 	}
@@ -1394,7 +1394,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	depthvalue = get_depth_units(entry->depth, NULL, &depth_unit);
 	put_format_loc(b, translate("gettextFromC", "@: %d:%02d\nD: %.1f%s\n"), FRACTION(entry->sec, 60), depthvalue, depth_unit);
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
-		int mbar = GET_PRESSURE(entry, cyl);
+		int mbar = get_plot_pressure(entry, cyl);
 		if (!mbar)
 			continue;
 		struct gasmix mix = displayed_dive.cylinder[cyl].gasmix;
@@ -1595,7 +1595,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 	bar_used = 0;
 
 	last_sec = start->sec;
-	last_pressure = GET_PRESSURE(start, 0);
+	last_pressure = get_plot_pressure(start, 0);
 
 	data = start;
 	while (data != stop) {
@@ -1616,12 +1616,12 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 		if (data->depth > max_depth)
 			max_depth = data->depth;
 		/* Try to detect gas changes - this hack might work for some side mount scenarios? */
-		if (GET_PRESSURE(data, 0) < last_pressure + 2000)
-			bar_used += last_pressure - GET_PRESSURE(data, 0);
+		if (get_plot_pressure(data, 0) < last_pressure + 2000)
+			bar_used += last_pressure - get_plot_pressure(data, 0);
 
 		count += 1;
 		last_sec = data->sec;
-		last_pressure = GET_PRESSURE(data, 0);
+		last_pressure = get_plot_pressure(data, 0);
 	}
 	avg_depth /= stop->sec - start->sec;
 	avg_speed /= stop->sec - start->sec;
@@ -1670,13 +1670,13 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 			const char *volume_unit;
 			struct plot_data *first = start;
 			struct plot_data *last = stop;
-			while (first < stop && GET_PRESSURE(first, 0) == 0)
+			while (first < stop && get_plot_pressure(first, 0) == 0)
 				first++;
-			while (last > first && GET_PRESSURE(last, 0) == 0)
+			while (last > first && get_plot_pressure(last, 0) == 0)
 				last--;
 
-			pressure_t first_pressure = { GET_PRESSURE(first, 0) };
-			pressure_t stop_pressure = { GET_PRESSURE(last, 0) };
+			pressure_t first_pressure = { get_plot_pressure(first, 0) };
+			pressure_t stop_pressure = { get_plot_pressure(last, 0) };
 			int volume_used = gas_volume(cyl, first_pressure) - gas_volume(cyl, stop_pressure);
 
 			/* Mean pressure in ATM */
