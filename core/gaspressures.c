@@ -352,7 +352,7 @@ static void debug_print_pressures(struct plot_info *pi)
 	int i;
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
-		printf("%5d |%9d | %9d |\n", i, SENSOR_PRESSURE(entry), INTERPOLATED_PRESSURE(entry));
+		printf("%5d |%9d | %9d |\n", i, get_plot_sensor_pressure(entry), get_plot_interpolated_pressure(entry));
 	}
 }
 #endif
@@ -388,7 +388,7 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 	first = last = -1;
 	for (int i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
-		unsigned pressure = SENSOR_PRESSURE(entry, sensor);
+		int pressure = get_plot_sensor_pressure(entry, sensor);
 
 		if (!pressure)
 			continue;
@@ -417,7 +417,7 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 
 	for (int i = first; i <= last; i++) {
 		struct plot_data *entry = pi->entry + i;
-		unsigned pressure = SENSOR_PRESSURE(entry, sensor);
+		int pressure = get_plot_sensor_pressure(entry, sensor);
 		int time = entry->sec;
 
 		while (ev && ev->time.seconds <= time) {   // Find 1st gaschange event after 
