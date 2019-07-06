@@ -25,7 +25,7 @@ protected:
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 private:
 	struct plot_info pInfo;
-	struct plot_data *entry;
+	int idx;
 	RulerItem2 *ruler;
 	DiveCartesianAxis *timeAxis;
 	DiveCartesianAxis *depthAxis;
