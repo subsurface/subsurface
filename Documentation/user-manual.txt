@@ -229,21 +229,20 @@ of each dive. These panels are respectively marked [red]#A#, [red]#B# and
 in the figure below. Each of these tabs will now be explained for data entry.
 
 image::images/AddDive1_f22.jpg["FIGURE: Add dive",align="center"]
-When you edit a field in Notes or Equipment panels, _Subsurface_ enters *Editing Mode*,
-indicated by the message in the blue box at the top of the *Notes* panel (see the image below). This message is
-displayed in all the panels under Notes and Equipment when in *Editing Mode*.
+Most actions when editing a new dive can be individually undone, as described in the
+section on <<S_undo,undoing edits>>, but changes
+in the Equipment panel are not yet included in that in-depth undo implementations, and therefore
+_Subsurface_ enters *Editing Mode* when changes are made in this panel. This is indicated
+indicated by the message in the blue box at the top of the panels (see the image below).
 
 image::images/BlueEditBar_f22.jpg["Blue edit bar",align="center"]
 
-The _Apply changes_ button should only be selected after all the parts of a dive have been entered.
-When entering dives by hand, the _Info_, _Equipment_ and _Profile_ tabs should be completed
-before applying the information. By selecting the _Apply changes_ button, a local copy of the information
-for this specific dive is saved in memory but NOT written to disk.
-The _Apply changes_ button should ONLY be selected after all parts
-of a dive have been entered. When closing Subsurface, the program will
-ask again, this time whether the complete dive log should be saved on disk or not.
-
-Click here to find out xref:S_undo[*How to UNDO changes while typing information*]
+The _Apply changes_ button should be selected after all the equipment for a dive has been entered.
+All edits to a new dive, including changes to the equipment after
+selecting the _Apply changes_ button, are
+saved in memory but NOT written to storage.
+If you don't manually save them before closing Subsurface, the program will
+ask again, this time whether the complete dive log should be saved to storage or not.
 
 [[S_CreateProfile]]
 ==== Creating a Dive Profile
@@ -700,16 +699,17 @@ edited directly by clicking on each of them in the text box and by over-typing t
 information displayed.
 
 [[S_undo]]
-*How to UNDO information that has been typed.* While editing a dive log one frequently
-overtypes existing information. Sometimes this is unintended. Let's say, for the moment,
-the time of your dive computer was set wrongly and the dive time in the
+*How to UNDO information that has been typed.* While editing a dive log you frequently
+replace or modify existing information. Sometimes this is unintended. Let's say, for the moment,
+the time of your dive computer was set incorrectly and the dive time in the
 *Notes* tab is therefore incorrect. You wish to correct the time indicated in the *Notes* tab
 to reflect the true dive time. The example in the images below reflect a small part
 of the *Notes* tab where the dive time was changed from
 8:44 (image a) to 7:44 (image b). Now, for some reason, you wish to return
 to the initial time (08:44). Click on the _Edit_ heading in the main menu and
 an option appears to undo the change in time (image c). Select this undo option
-and the time is again shown as 8:44. Having undone the change, a new option appears under
+and the time is again shown as 8:44. This can also be achieved by typing Ctrl-Z (or CMD-Z on a Mac).
+Having undone the change, a new option appears under
 the _Edit_ heading: Redo the change (image d). If this option is selected, the change in
 time is redone. The undo facility applies to the majority of information typed into the text
 areas of _Subsurface_ and facilitates easy and accurate data entry. Even changes to multiple
@@ -736,7 +736,7 @@ The dive information in the *Notes* and *Equipment* tabs can therefore NOT be ed
 time as the dive site information. Save all the other dive information (e.g.
 divemaster, buddy, protective gear, notes about the dive) by selecting _Apply changes_ on the
 *Notes* tab BEFORE editing the dive site information. Then supply a dive site name in the
-textbox labelled _Location_ on the *Notes* tab. 
+textbox labelled _Location_ on the *Notes* tab.
 
 *Using existing dive locations:* Type in the name of the dive site, e.g. "Tihany, Lake Balaton, Hungary".
 If several dives are
@@ -1087,7 +1087,7 @@ available, as in dialog *B*, above. Currently these are:
  - CSV (text-based and spreadsheet-based) dive logs, including APD CCR logs
 
 Selecting the appropriate format from the dropdown list and then the specific log file in the main window
-containing the file list. Then select the _Open_ button near the bottom right. 
+containing the file list. Then select the _Open_ button near the bottom right.
 
 If the dive log being imported is in CSV format, the user is given the
 opportunity to perform manual edits to the column headers before it is imported
@@ -1100,7 +1100,7 @@ xref:S_ImportingCSVDives[Importing data in CSV format].
 In many cases changes to the column headers are not required because
 they are pre-configured for the specific type of import and
 the CSV import screen can be bypassed by selecting the _OK_ button.
-This opens the imported dive log in the _Subsurface_ *Dive List*. 
+This opens the imported dive log in the _Subsurface_ *Dive List*.
 
 Some other formats not accessible through the Import dialog are also supported, as explained below.
 
@@ -1437,7 +1437,7 @@ Linking a dive to a dive site is performed from within the Notes tab showing the
 that dive (see the section on xref:S_locations[Locations]). On the other hand the dive sites management panel allows
 dive-independent data to be managed. A new dive site can be created either while editing a dive (within the *Notes* tab,
 see xref:S_locations[Locations]) or it could be created within the dive sites management panel (image below).
- 
+
 image::images/DiveSitesTab.jpg["FIGURE: Dive sites tab",align="center"]
 
 If a description for a dive site has previously been entered, this is shown in the panel
@@ -1484,7 +1484,7 @@ the dive named at the top of the panel and returns you to the dive sites managem
 
 At the top right of the dive sites management table is a round button with a "+". Clicking that button inserts a
 new site entitled "New dive site" into the list (image below). The new site can also be deleted (maybe after erroneously
-clicking the + icon or you realised the dive site already exists) by selecting _Edit -> Undo_ from the main menu or by typing Cntrl-Z while the dive sites management table has focus. Edit this new site by selecting its edit icon and provide a name,
+clicking the + icon or you realised the dive site already exists) by selecting _Edit -> Undo_ from the main menu or by typing Ctrl-Z (or CMD-Z on a Mac) while the dive sites management table has focus. Edit this new site by selecting its edit icon and provide a name,
 coordinates and, if preferred, a description. Clicking
 the "Done" button in the edit panel returns you to the dive sites management panel.
 
@@ -1494,7 +1494,7 @@ image::images/DiveSiteInsert.jpg["FIGURE: Add dive site",align="center"]
 
 On the left of each dive site is a dustbin icon. Clicking the dustbin deletes that site. If there are any
 dives performed at that site, a warning message is shown (see image below). If this site is then deleted,
-the location(s) of dives that used this site would need to be created. 
+the location(s) of dives that used this site would need to be created.
 
 image::images/DiveSiteDelete.jpg["FIGURE: Delete a dive site",align="center"]
 
@@ -1747,7 +1747,7 @@ By right-clicking on a video and selecting the "Save dive data as subtitles" opt
 file with the same name as the video but with an ".ass" extension is created that contains
 time dependent dive data (runtime, depth, temperature, NDL, TTS, surface GF) to be overlayed
 with the video. The VLC video player automatically finds this file upon playing the video
-and overlays the dive data. Alternatively, the ffmpeg video encoder can be used to create a 
+and overlays the dive data. Alternatively, the ffmpeg video encoder can be used to create a
 new video file with the dive data encoded in the video stream. To do so run
 
 	ffmpeg -v video.mp4 -vf "ass=video.ass" video_with_data.mp4
@@ -2129,7 +2129,7 @@ The Information tab gives some summary information about a particular dive that
 has been selected in the *Dive List*. Useful information here includes the
 surface interval before the dive, the maximum and mean depths of the dive, the
 gas volume consumed, the surface air consumption (SAC) and the number of oxygen
-toxicity units (OTU) incurred. 
+toxicity units (OTU) incurred.
 
 [icon="images/atmpress.jpg"]
 [NOTE]
@@ -2236,7 +2236,7 @@ ascent/descent rate, surface air consumption (SAC), oxygen partial pressure,
 maximum operating depth, equivalent air depth (EAD), equivalent narcotic depth
 (END), equivalent air density depth (EADD, also as gas density in g/l), decompression requirements at that
 instant in time (Deco), the surface GF (a measure of inert gas loading of the diver's body defined as the excess
-over the surface pressure normalized such that the maximally allowed over pressure at the surface, the 
+over the surface pressure normalized such that the maximally allowed over pressure at the surface, the
 M-value, corresponds to 100%), the time to surface (TTS), the calculated ceiling, as well
 as of the statistics in the Information Box, shown as four
 buttons on the left of the profile panel. These are:
@@ -2488,7 +2488,7 @@ not require a specific deco stop. This feature lets dive computers offer
 longer non-stop bottom times.
 
 Strictly speaking, the green calculated ceiling is a direct representation of
-the inert gas loadings of the simulated tissues only and is independent of 
+the inert gas loadings of the simulated tissues only and is independent of
 any assumed ascent velocities. It indicates the deco model's minimal allowed
 depth at this instant of time given the inert gas loadings and is not a statement
 about a possible ascent schedule in the remaining dive. To obtain the latter,
@@ -2668,7 +2668,7 @@ _Dive list_ by either changing some of the default values in the panel, or by ty
 values or words in any of the text boxes. For instance, in the image below the open circuit dives using
 a drysuit at a specific location (Simonstad) are shown in the _Dive list_. There is no button to
 activate the filter action: the action of typing text into a textbox or specifying a range
-in any of the fields automatically performs the filtering. 
+in any of the fields automatically performs the filtering.
 
 During filtering the Dive Mode (Open circuit, CCR, pSCR, Freedive) is added to the tag list of a dive, allowing
 only specific types of dive (e.g. CCR) to be selected in the tag attribute of the filter. This is
@@ -2676,7 +2676,7 @@ useful for rebreather divers and free divers who also do some open circuit divin
 
 image::images/FilterPanel.jpg["Figure: Filter panel",align="center"]
 
-The filter criteria can be any of the following: 
+The filter criteria can be any of the following:
 
 1) Using different text boxes in the _Filter panel_ performs an AND operator on different attributes. For example,
    typing "Peter" for the Persons attribute and "Sipadan" for the Location attribute results in a dive list containing
@@ -2698,7 +2698,7 @@ The filter criteria can be any of the following:
 image::images/FilterOptions.jpg["Figure: Filter options",align="center"]
 
 At the top of the _Filter Panel_ the *yellow up-arrow* is used for resetting the filter to show all dives,
-and a *red button* with white cross closes the filter panel. 
+and a *red button* with white cross closes the filter panel.
 
 IMPORTANT: The filter action can only be stopped by using the _Reset Filter_ button (yellow up-arrow) or
 by manually clearing all the filter text boxes. Closing the _Filter Panel_ does not terminate
