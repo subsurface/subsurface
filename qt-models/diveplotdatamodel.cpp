@@ -167,7 +167,9 @@ void DivePlotDataModel::clear()
 	beginResetModel();
 	pInfo.nr = 0;
 	free(pInfo.entry);
-	pInfo.entry = 0;
+	free(pInfo.pressures);
+	pInfo.entry = nullptr;
+	pInfo.pressures = nullptr;
 	diveId = -1;
 	dcNr = -1;
 	endResetModel();
@@ -179,9 +181,12 @@ void DivePlotDataModel::setDive(dive *d, const plot_info &info)
 	diveId = d->id;
 	dcNr = dc_number;
 	free(pInfo.entry);
+	free(pInfo.pressures);
 	pInfo = info;
-	pInfo.entry = (struct plot_data *)malloc(sizeof(struct plot_data) * pInfo.nr);
+	pInfo.entry = (plot_data *)malloc(sizeof(plot_data) * pInfo.nr);
 	memcpy(pInfo.entry, info.entry, sizeof(plot_data) * pInfo.nr);
+	pInfo.pressures = (plot_pressure_data *)malloc(sizeof(plot_pressure_data) * MAX_CYLINDERS * pInfo.nr);
+	memcpy(pInfo.pressures, info.pressures, sizeof(plot_pressure_data) * MAX_CYLINDERS * pInfo.nr);
 	endResetModel();
 }
 

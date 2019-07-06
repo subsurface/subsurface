@@ -501,7 +501,6 @@ static void insert_entry(struct plot_info *pi, int idx, int time, int depth, int
 	entry->sec = time;
 	entry->depth = depth;
 	entry->running_sum = prev->running_sum + (time - prev->sec) * (depth + prev->depth) / 2;
-	memset(entry->pressure, 0, sizeof(entry->pressure));
 	entry->sac = sac;
 	entry->ndl = -1;
 	entry->bearing = -1;
@@ -510,6 +509,7 @@ static void insert_entry(struct plot_info *pi, int idx, int time, int depth, int
 void free_plot_info_data(struct plot_info *pi)
 {
 	free(pi->entry);
+	free(pi->pressures);
 	pi->entry = NULL;
 }
 
@@ -534,6 +534,7 @@ static void populate_plot_entries(struct dive *dive, struct divecomputer *dc, st
 	nr = dc->samples + 6 + maxtime / 10 + count_events(dc);
 	plot_data = calloc(nr, sizeof(struct plot_data));
 	pi->entry = plot_data;
+	pi->pressures = calloc(nr * MAX_CYLINDERS, sizeof(struct plot_pressure_data));
 	if (!plot_data)
 		return;
 	pi->nr = nr;
