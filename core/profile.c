@@ -493,17 +493,19 @@ static void calculate_max_limits_new(struct dive *dive, struct divecomputer *giv
 /* copy the previous entry (we know this exists), update time and depth
  * and zero out the sensor pressure (since this is a synthetic entry)
  * increment the entry pointer and the count of synthetic entries. */
-#define INSERT_ENTRY(_time, _depth, _sac) \
-	*entry = entry[-1];         \
-	entry->sec = _time;         \
-	entry->depth = _depth;      \
-	entry->running_sum = (entry - 1)->running_sum + (_time - (entry - 1)->sec) * (_depth + (entry - 1)->depth) / 2; \
-	memset(entry->pressure, 0, sizeof(entry->pressure)); \
-	entry->sac = _sac;          \
-	entry->ndl = -1;          \
-	entry->bearing = -1;          \
-	entry++;                    \
-	idx++
+static void insert_entry(struct plot_info *pi, int idx, int time, int depth, int sac)
+{
+	struct plot_data *entry = pi->entry + idx;
+	struct plot_data *prev = pi->entry + idx - 1;
+	*entry = *prev;
+	entry->sec = time;
+	entry->depth = depth;
+	entry->running_sum = prev->running_sum + (time - prev->sec) * (depth + prev->depth) / 2;
+	memset(entry->pressure, 0, sizeof(entry->pressure));
+	entry->sac = sac;
+	entry->ndl = -1;
+	entry->bearing = -1;
+}
 
 void free_plot_info_data(struct plot_info *pi)
 {
@@ -562,12 +564,16 @@ static void populate_plot_entries(struct dive *dive, struct divecomputer *dc, st
 
 			/* Add events if they are between plot entries */
 			while (ev && (int)ev->time.seconds < lasttime + offset) {
-				INSERT_ENTRY(ev->time.seconds, interpolate(lastdepth, depth, ev->time.seconds - lasttime, delta), sac);
+				insert_entry(pi, idx, ev->time.seconds, interpolate(lastdepth, depth, ev->time.seconds - lasttime, delta), sac);
+				entry++;
+				idx++;
 				ev = ev->next;
 			}
 
 			/* now insert the time interpolated entry */
-			INSERT_ENTRY(lasttime + offset, interpolate(lastdepth, depth, offset, delta), sac);
+			insert_entry(pi, idx, lasttime + offset, interpolate(lastdepth, depth, offset, delta), sac);
+			entry++;
+			idx++;
 
 			/* skip events that happened at this time */
 			while (ev && (int)ev->time.seconds == lasttime + offset)
@@ -576,7 +582,9 @@ static void populate_plot_entries(struct dive *dive, struct divecomputer *dc, st
 
 		/* Add events if they are between plot entries */
 		while (ev && (int)ev->time.seconds < time) {
-			INSERT_ENTRY(ev->time.seconds, interpolate(lastdepth, depth, ev->time.seconds - lasttime, delta), sac);
+			insert_entry(pi, idx, ev->time.seconds, interpolate(lastdepth, depth, ev->time.seconds - lasttime, delta), sac);
+			entry++;
+			idx++;
 			ev = ev->next;
 		}
 
@@ -628,8 +636,10 @@ static void populate_plot_entries(struct dive *dive, struct divecomputer *dc, st
 		int time = ev->time.seconds;
 
 		if (time > lasttime) {
-			INSERT_ENTRY(ev->time.seconds, 0, 0);
+			insert_entry(pi, idx, ev->time.seconds, 0, 0);
 			lasttime = time;
+			idx++;
+			entry++;
 		}
 		ev = ev->next;
 	}
@@ -639,8 +649,6 @@ static void populate_plot_entries(struct dive *dive, struct divecomputer *dc, st
 	plot_data[idx++].sec = lasttime + 2;
 	pi->nr = idx;
 }
-
-#undef INSERT_ENTRY
 
 /*
  * Calculate the sac rate between the two plot entries 'first' and 'last'.
