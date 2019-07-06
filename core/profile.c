@@ -398,11 +398,10 @@ static void check_setpoint_events(const struct dive *dive, struct divecomputer *
 }
 
 
-struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer *given_dc)
+static void calculate_max_limits_new(struct dive *dive, struct divecomputer *given_dc, struct plot_info *pi)
 {
 	struct divecomputer *dc = &(dive->dc);
 	bool seen = false;
-	static struct plot_info pi;
 	int maxdepth = dive->maxdepth.mm;
 	int maxtime = 0;
 	int maxpressure = 0, minpressure = INT_MAX;
@@ -478,16 +477,15 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 	if (minhr > maxhr)
 		minhr = maxhr;
 
-	memset(&pi, 0, sizeof(pi));
-	pi.maxdepth = maxdepth;
-	pi.maxtime = maxtime;
-	pi.maxpressure = maxpressure;
-	pi.minpressure = minpressure;
-	pi.minhr = minhr;
-	pi.maxhr = maxhr;
-	pi.mintemp = mintemp;
-	pi.maxtemp = maxtemp;
-	return pi;
+	memset(pi, 0, sizeof(*pi));
+	pi->maxdepth = maxdepth;
+	pi->maxtime = maxtime;
+	pi->maxpressure = maxpressure;
+	pi->minpressure = minpressure;
+	pi->minhr = minhr;
+	pi->maxhr = maxhr;
+	pi->mintemp = mintemp;
+	pi->maxtemp = maxtemp;
 }
 
 /* copy the previous entry (we know this exists), update time and depth
@@ -1337,6 +1335,7 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 	UNUSED(planner_ds);
 #endif
 	free_plot_info_data(pi);
+	calculate_max_limits_new(dive, dc, pi);
 	get_dive_gas(dive, &o2, &he, &o2max);
 	if (dc->divemode == FREEDIVE){
 		pi->dive_type = FREEDIVE;
