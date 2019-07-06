@@ -21,6 +21,7 @@ struct plot_info {
 	double endtempcoord;
 	double maxpp;
 	struct plot_data *entry;
+	struct plot_pressure_data *pressures; /* MAX_CYLINDERS blocks of nr entries. */
 };
 
 extern struct divecomputer *select_dc(struct dive *);

@@ -28,11 +28,16 @@ struct deco_state;
 struct divecomputer;
 struct plot_info;
 
+/*
+ * sensor data for a given cylinder
+ */
+struct plot_pressure_data {
+	int data[NUM_PLOT_PRESSURES];
+};
+
 struct plot_data {
 	unsigned int in_deco : 1;
 	int sec;
-	/* One pressure item per cylinder and pressure type */
-	int pressure[MAX_CYLINDERS][NUM_PLOT_PRESSURES];
 	int temperature;
 	/* Depth info */
 	int depth;
@@ -104,12 +109,12 @@ extern int get_maxdepth(struct plot_info *pi);
 
 static inline int get_plot_pressure_data(const struct plot_info *pi, int idx, enum plot_pressure sensor, int cylinder)
 {
-	return pi->entry[idx].pressure[cylinder][sensor];
+	return pi->pressures[cylinder * pi->nr + idx].data[sensor];
 }
 
 static inline void set_plot_pressure_data(struct plot_info *pi, int idx, enum plot_pressure sensor, int cylinder, int value)
 {
-	pi->entry[idx].pressure[cylinder][sensor] = value;
+	pi->pressures[cylinder * pi->nr + idx].data[sensor] = value;
 }
 
 static inline int get_plot_sensor_pressure(const struct plot_info *pi, int idx, int cylinder)
