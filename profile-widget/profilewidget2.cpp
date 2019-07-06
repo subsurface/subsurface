@@ -636,8 +636,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 	 * shown.
 	 */
 
-	free_plot_info_data(&plotInfo);
-	plotInfo = calculate_max_limits_new(&displayed_dive, currentdc);
+	// create_plot_info_new() automatically frees old plot data
 #ifndef SUBSURFACE_MOBILE
 	create_plot_info_new(&displayed_dive, currentdc, &plotInfo, !shouldCalculateMaxDepth, &DivePlannerPointsModel::instance()->final_deco_state);
 #else

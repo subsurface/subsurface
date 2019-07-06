@@ -202,7 +202,6 @@ static void save_profiles_buffer(struct membuffer *b, bool select_only)
 	for_each_dive(i, dive) {
 		if (select_only && !dive->selected)
 			continue;
-		pi = calculate_max_limits_new(dive, &dive->dc);
 		create_plot_info_new(dive, &dive->dc, &pi, false, planner_deco_state);
 		put_headers(b);
 		put_format(b, "\n");
@@ -221,7 +220,6 @@ void save_subtitles_buffer(struct membuffer *b, struct dive *dive, int offset, i
 	struct plot_info pi;
 	struct deco_state *planner_deco_state = NULL;
 
-	pi = calculate_max_limits_new(dive, &dive->dc);
 	create_plot_info_new(dive, &dive->dc, &pi, false, planner_deco_state);
 
 	put_format(b, "[Script Info]\n");
