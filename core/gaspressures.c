@@ -263,13 +263,10 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 		double magic;
 		pr_track_t *segment;
 		int pressure;
-		int *save_pressure, *save_interpolated;
 
 		entry = pi->entry + i;
 
-		save_pressure = &(entry->pressure[cyl][SENSOR_PR]);
-		save_interpolated = &(entry->pressure[cyl][INTERPOLATED_PR]);
-		pressure = *save_pressure ? *save_pressure : *save_interpolated;
+		pressure = get_plot_pressure(pi, i, cyl);
 
 		if (pressure) {			// If there is a valid pressure value,
 			last_segment = NULL;	// get rid of interpolation data,
@@ -291,7 +288,8 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 			continue;
 
 		if (!segment->pressure_time) {		// Empty segment?
-			*save_pressure = cur_pr;	// Just use our current pressure
+			set_plot_pressure_data(pi, i, SENSOR_PR, cyl, cur_pr);
+							// Just use our current pressure
 			continue;			// and skip to next point.
 		}
 
@@ -318,7 +316,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 			magic = (interpolate.end - interpolate.start) /  (segment->t_end - segment->t_start);
 			cur_pr = lrint(segment->start + magic * (entry->sec - segment->t_start));
 		}
-		*save_interpolated = cur_pr; // and store the interpolated data in plot_info
+		set_plot_pressure_data(pi, i, INTERPOLATED_PR, cyl, cur_pr); // and store the interpolated data in plot_info
 	}
 }
 
