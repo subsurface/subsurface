@@ -116,7 +116,7 @@ void RulerItem2::recalculate()
 	}
 	QLineF line(startPoint, endPoint);
 	setLine(line);
-	compare_samples(&pInfo.entry[source->idx], &pInfo.entry[dest->idx], buffer, 500, 1);
+	compare_samples(&pInfo, source->idx, dest->idx, buffer, 500, 1);
 	text = QString(buffer);
 
 	// draw text

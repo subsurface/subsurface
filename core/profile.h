@@ -3,6 +3,7 @@
 #define PROFILE_H
 
 #include "dive.h"
+#include "display.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -78,12 +79,12 @@ struct ev_select {
 	bool plot_ev;
 };
 
-extern void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int bufsize, int sum);
+extern void compare_samples(struct plot_info *p1, int idx1, int idx2, char *buf, int bufsize, bool sum);
 extern struct plot_info *analyze_plot_info(struct plot_info *pi);
 extern void init_plot_info(struct plot_info *pi);
 extern void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast, struct deco_state *planner_ds);
 extern void calculate_deco_information(struct deco_state *ds, const struct deco_state *planner_de, const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi, bool print_mode);
-extern struct plot_data *get_plot_details_new(struct plot_info *pi, int time, struct membuffer *);
+extern int get_plot_details_new(struct plot_info *pi, int time, struct membuffer *);
 extern void free_plot_info_data(struct plot_info *pi);
 
 /*
@@ -121,10 +122,11 @@ static inline int get_plot_interpolated_pressure(const struct plot_data *entry, 
 	return get_plot_pressure_data(entry, INTERPOLATED_PR, idx);
 }
 
-static inline int get_plot_pressure(const struct plot_data *entry, int idx)
+static inline int get_plot_pressure(const struct plot_info *pi, int idx, int cylinder)
 {
-	int res = get_plot_sensor_pressure(entry, idx);
-	return res ? res : get_plot_interpolated_pressure(entry, idx);
+	const struct plot_data *entry = pi->entry + idx;
+	int res = get_plot_sensor_pressure(entry, cylinder);
+	return res ? res : get_plot_interpolated_pressure(entry, cylinder);
 }
 
 #ifdef __cplusplus

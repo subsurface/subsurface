@@ -230,7 +230,6 @@ void ToolTipItem::setTimeAxis(DiveCartesianAxis *axis)
 
 void ToolTipItem::refresh(const QPointF &pos)
 {
-	struct plot_data *entry;
 	static QPixmap tissues(16,60);
 	static QPainter painter(&tissues);
 	static struct membuffer mb = {};
@@ -245,7 +244,7 @@ void ToolTipItem::refresh(const QPointF &pos)
 	clear();
 
 	mb.len = 0;
-	entry = get_plot_details_new(&pInfo, time, &mb);
+	int idx = get_plot_details_new(&pInfo, time, &mb);
 
 	tissues.fill();
 	painter.setPen(QColor(0, 0, 0, 0));
@@ -255,10 +254,11 @@ void ToolTipItem::refresh(const QPointF &pos)
 	painter.drawRect(0, 10, 16, (100 - AMB_PERCENTAGE) / 2);
 	painter.setBrush(QColor(Qt::red));
 	painter.drawRect(0,0,16,10);
-	if (entry) {
+	if (idx) {
 		ProfileWidget2 *view = qobject_cast<ProfileWidget2*>(scene()->views().first());
 		Q_ASSERT(view);
 
+		const struct plot_data *entry = &pInfo.entry[idx];
 		painter.setPen(QColor(0, 0, 0, 255));
 		if (decoMode() == BUEHLMANN)
 			painter.drawLine(0, lrint(60 - entry->gfline / 2), 16, lrint(60 - entry->gfline / 2));
