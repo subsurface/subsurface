@@ -599,9 +599,9 @@ static void populate_plot_entries(struct dive *dive, struct divecomputer *dc, st
 			entry->pressures.o2 = sample->setpoint.mbar / 1000.0;
 		}
 		if (sample->pressure[0].mbar)
-			set_plot_pressure_data(entry, SENSOR_PR, sample->sensor[0], sample->pressure[0].mbar);
+			set_plot_pressure_data(pi, idx, SENSOR_PR, sample->sensor[0], sample->pressure[0].mbar);
 		if (sample->pressure[1].mbar)
-			set_plot_pressure_data(entry, SENSOR_PR, sample->sensor[1], sample->pressure[1].mbar);
+			set_plot_pressure_data(pi, idx, SENSOR_PR, sample->sensor[1], sample->pressure[1].mbar);
 		if (sample->temperature.mkelvin)
 			entry->temperature = lasttemp = sample->temperature.mkelvin;
 		else
@@ -816,18 +816,12 @@ static void populate_secondary_sensor_data(const struct divecomputer *dc, struct
  */
 static void add_plot_pressure(struct plot_info *pi, int time, int cyl, pressure_t p)
 {
-	struct plot_data *entry;
-	if (pi->nr <= 0) {
-		fprintf(stderr, "add_plot_pressure(): called with pi->nr <= 0\n");
-		return;
-	}
 	for (int i = 0; i < pi->nr; i++) {
-		entry = pi->entry + i;
-
-		if (entry->sec >= time)
-			break;
+		if (i == pi->nr - 1 || pi->entry[i].sec >= time) {
+			set_plot_pressure_data(pi, i, SENSOR_PR, cyl, p.mbar);
+			return;
+		}
 	}
-	set_plot_pressure_data(entry, SENSOR_PR, cyl, p.mbar);
 }
 
 static void setup_gas_sensor_pressure(const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi)

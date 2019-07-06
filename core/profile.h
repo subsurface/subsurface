@@ -107,9 +107,9 @@ static inline int get_plot_pressure_data(const struct plot_info *pi, int idx, en
 	return pi->entry[idx].pressure[cylinder][sensor];
 }
 
-static inline void set_plot_pressure_data(struct plot_data *entry, enum plot_pressure sensor, int idx, int value)
+static inline void set_plot_pressure_data(struct plot_info *pi, int idx, enum plot_pressure sensor, int cylinder, int value)
 {
-	entry->pressure[idx][sensor] = value;
+	pi->entry[idx].pressure[cylinder][sensor] = value;
 }
 
 static inline int get_plot_sensor_pressure(const struct plot_info *pi, int idx, int cylinder)

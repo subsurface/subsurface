@@ -442,7 +442,7 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 		// until we get back to this cylinder.
 		if (cyl != sensor) {
 			current = NULL;
-			set_plot_pressure_data(entry, SENSOR_PR, sensor, 0);
+			set_plot_pressure_data(pi, i, SENSOR_PR, sensor, 0);
 			continue;
 		}
 
