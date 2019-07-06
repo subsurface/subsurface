@@ -75,11 +75,11 @@ struct ev_select {
 
 struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer *given_dc);
 void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int bufsize, int sum);
-struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi);
 struct plot_info *analyze_plot_info(struct plot_info *pi);
 void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast, struct deco_state *planner_ds);
 void calculate_deco_information(struct deco_state *ds, const struct deco_state *planner_de, const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi, bool print_mode);
 struct plot_data *get_plot_details_new(struct plot_info *pi, int time, struct membuffer *);
+void free_plot_info_data(struct plot_info *pi);
 
 /*
  * When showing dive profiles, we scale things to the

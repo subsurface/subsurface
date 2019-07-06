@@ -191,6 +191,7 @@ static void put_st_event(struct membuffer *b, struct plot_data *entry, int offse
 	}
 	put_format(b, "\n");
 }
+
 static void save_profiles_buffer(struct membuffer *b, bool select_only)
 {
 	int i;
@@ -211,6 +212,7 @@ static void save_profiles_buffer(struct membuffer *b, bool select_only)
 			put_format(b, "\n");
 		}
 		put_format(b, "\n");
+		free_plot_info_data(&pi);
 	}
 }
 
@@ -233,6 +235,8 @@ void save_subtitles_buffer(struct membuffer *b, struct dive *dive, int offset, i
 		put_st_event(b, &pi.entry[i], offset, length);
 	}
 	put_format(b, "\n");
+
+	free_plot_info_data(&pi);
 }
 
 int save_profiledata(const char *filename, const bool select_only)

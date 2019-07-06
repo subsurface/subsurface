@@ -31,8 +31,6 @@ extern int ascent_velocity(int depth, int avg_depth, int bottom_time);
 struct dive *current_dive = NULL;
 unsigned int dc_number = 0;
 
-static struct plot_data *last_pi_entry_new = NULL;
-
 #ifdef DEBUG_PI
 /* debugging tool - not normally used */
 static void dump_pi(struct plot_info *pi)
@@ -507,7 +505,13 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 	entry++;                    \
 	idx++
 
-struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
+void free_plot_info_data(struct plot_info *pi)
+{
+	free(pi->entry);
+	pi->entry = NULL;
+}
+
+static void populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	UNUSED(dive);
 	int idx, maxtime, nr, i;
@@ -529,7 +533,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 	plot_data = calloc(nr, sizeof(struct plot_data));
 	pi->entry = plot_data;
 	if (!plot_data)
-		return NULL;
+		return;
 	pi->nr = nr;
 	idx = 2; /* the two extra events at the start */
 
@@ -634,8 +638,6 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 	plot_data[idx++].sec = lasttime + 1;
 	plot_data[idx++].sec = lasttime + 2;
 	pi->nr = idx;
-
-	return plot_data;
 }
 
 #undef INSERT_ENTRY
@@ -1334,9 +1336,7 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 #else
 	UNUSED(planner_ds);
 #endif
-	/* Create the new plot data */
-	free((void *)last_pi_entry_new);
-
+	free_plot_info_data(pi);
 	get_dive_gas(dive, &o2, &he, &o2max);
 	if (dc->divemode == FREEDIVE){
 		pi->dive_type = FREEDIVE;
@@ -1349,7 +1349,7 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 			pi->dive_type = AIR;
 	}
 
-	last_pi_entry_new = populate_plot_entries(dive, dc, pi);
+	populate_plot_entries(dive, dc, pi);
 
 	check_setpoint_events(dive, dc, pi);     /* Populate setpoints */
 	setup_gas_sensor_pressure(dive, dc, pi); /* Try to populate our gas pressure knowledge */
