@@ -31,16 +31,15 @@ static void put_video_time(struct membuffer *b, int secs)
 	put_format(b, "%d:%02d:%02d.000,", hours, mins, secs);
 }
 
-static void put_pd(struct membuffer *b, struct plot_data *entry)
+static void put_pd(struct membuffer *b, const struct plot_info *pi, int idx)
 {
-	if (!entry)
-		return;
+	const struct plot_data *entry = pi->entry + idx;
 
 	put_int(b, entry->in_deco);
 	put_int(b,  entry->sec);
 	for (int c = 0; c < MAX_CYLINDERS; c++) {
-		put_int(b, entry->pressure[c][0]);
-		put_int(b, entry->pressure[c][1]);
+		put_int(b, get_plot_sensor_pressure(pi, idx, c));
+		put_int(b, get_plot_interpolated_pressure(pi, idx, c));
 	}
 	put_int(b, entry->temperature);
 	put_int(b, entry->depth);
@@ -208,7 +207,7 @@ static void save_profiles_buffer(struct membuffer *b, bool select_only)
 		put_format(b, "\n");
 
 		for (int i = 0; i < pi.nr; i++) {
-			put_pd(b, &pi.entry[i]);
+			put_pd(b, &pi, i);
 			put_format(b, "\n");
 		}
 		put_format(b, "\n");
