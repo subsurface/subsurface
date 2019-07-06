@@ -8,8 +8,6 @@
 extern "C" {
 #endif
 
-extern double get_screen_dpi(void);
-
 /* Plot info with smoothing, velocity indication
  * and one-, two- and three-minute minimums and maximums */
 struct plot_info {
