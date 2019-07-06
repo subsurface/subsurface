@@ -102,9 +102,9 @@ extern int get_maxtime(struct plot_info *pi);
  * partial pressure graphs */
 extern int get_maxdepth(struct plot_info *pi);
 
-static inline int get_plot_pressure_data(const struct plot_data *entry, enum plot_pressure sensor, int idx)
+static inline int get_plot_pressure_data(const struct plot_info *pi, int idx, enum plot_pressure sensor, int cylinder)
 {
-	return entry->pressure[idx][sensor];
+	return pi->entry[idx].pressure[cylinder][sensor];
 }
 
 static inline void set_plot_pressure_data(struct plot_data *entry, enum plot_pressure sensor, int idx, int value)
@@ -112,21 +112,20 @@ static inline void set_plot_pressure_data(struct plot_data *entry, enum plot_pre
 	entry->pressure[idx][sensor] = value;
 }
 
-static inline int get_plot_sensor_pressure(const struct plot_data *entry, int idx)
+static inline int get_plot_sensor_pressure(const struct plot_info *pi, int idx, int cylinder)
 {
-	return get_plot_pressure_data(entry, SENSOR_PR, idx);
+	return get_plot_pressure_data(pi, idx, SENSOR_PR, cylinder);
 }
 
-static inline int get_plot_interpolated_pressure(const struct plot_data *entry, int idx)
+static inline int get_plot_interpolated_pressure(const struct plot_info *pi, int idx, int cylinder)
 {
-	return get_plot_pressure_data(entry, INTERPOLATED_PR, idx);
+	return get_plot_pressure_data(pi, idx, INTERPOLATED_PR, cylinder);
 }
 
 static inline int get_plot_pressure(const struct plot_info *pi, int idx, int cylinder)
 {
-	const struct plot_data *entry = pi->entry + idx;
-	int res = get_plot_sensor_pressure(entry, cylinder);
-	return res ? res : get_plot_interpolated_pressure(entry, cylinder);
+	int res = get_plot_sensor_pressure(pi, idx, cylinder);
+	return res ? res : get_plot_interpolated_pressure(pi, idx, cylinder);
 }
 
 #ifdef __cplusplus

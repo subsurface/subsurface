@@ -1379,18 +1379,16 @@ bool ProfileWidget2::isPlanner()
 }
 
 #if 0 // TODO::: FINISH OR DISABLE
-struct plot_data *ProfileWidget2::getEntryFromPos(QPointF pos)
+struct int ProfileWidget2::getEntryFromPos(QPointF pos)
 {
 	// find the time stamp corresponding to the mouse position
 	int seconds = lrint(timeAxis->valueAt(pos));
-	struct plot_data *entry = NULL;
 
 	for (int i = 0; i < plotInfo.nr; i++) {
-		entry = plotInfo.entry + i;
-		if ((int)entry->sec >= seconds)
-			break;
+		if (plotInfo.entry[i].sec >= seconds)
+			return i;
 	}
-	return entry;
+	return plotInfo.nr - 1;
 }
 #endif
 
@@ -1513,37 +1511,39 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		}
 #if 0 // TODO::: FINISH OR DISABLE
 		QPointF scenePos = mapToScene(event->pos());
-		struct plot_data *entry = getEntryFromPos(scenePos);
+		int idx = getEntryFromPos(scenePos);
 		// this shows how to figure out if we should ask the user if they want adjust interpolated pressures
 		// at either side of a gas change
 		if (dcEvent->type == SAMPLE_EVENT_GASCHANGE || dcEvent->type == SAMPLE_EVENT_GASCHANGE2) {
 			qDebug() << "figure out if there are interpolated pressures";
-			struct plot_data *gasChangeEntry = entry;
-			struct plot_data *newGasEntry;
-			while (gasChangeEntry > plotInfo.entry) {
-				--gasChangeEntry;
-				if (gasChangeEntry->sec <= dcEvent->time.seconds)
+			int gasChangeIdx = idx;
+			while (gasChangeIdx > 0) {
+				--gasChangeIdx;
+				if (plotInfo.entry[gasChangeIdx].sec <= dcEvent->time.seconds)
 					break;
 			}
-			qDebug() << "at gas change at" << gasChangeEntry->sec << ": sensor pressure" << gasChangeEntry->pressure[0] << "interpolated" << gasChangeEntry->pressure[1];
+			const struct plot_data &gasChangeEntry = plotInfo.entry[newGasIdx];
+			qDebug() << "at gas change at" << gasChangeEntry->sec << ": sensor pressure" << get_plot_sensor_pressure(&plotInfo, newGasIdx)
+				 << "interpolated" << ;get_plot_sensor_pressure(&plotInfo, newGasIdx);
 			// now gasChangeEntry points at the gas change, that entry has the final pressure of
 			// the old tank, the next entry has the starting pressure of the next tank
-			if (gasChangeEntry + 1 <= plotInfo.entry + plotInfo.nr) {
-				newGasEntry = gasChangeEntry + 1;
+			if (gasChangeIdx < plotInfo.nr - 1) {
+				int newGasIdx = gasChangeIdx + 1;
+				const struct plot_data &newGasEntry = plotInfo.entry[newGasIdx];
 				qDebug() << "after gas change at " << newGasEntry->sec << ": sensor pressure" << newGasEntry->pressure[0] << "interpolated" << newGasEntry->pressure[1];
-				if (get_plot_sensor_pressure(gasChangeEntry) == 0 || displayed_dive.cylinder[gasChangeEntry->sensor[0]].sample_start.mbar == 0) {
+				if (get_plot_sensor_pressure(&plotInfo, gasChangeIdx) == 0 || displayed_dive.cylinder[gasChangeEntry->sensor[0]].sample_start.mbar == 0) {
 					// if we have no sensorpressure or if we have no pressure from samples we can assume that
 					// we only have interpolated pressure (the pressure in the entry may be stored in the sensor
 					// pressure field if this is the first or last entry for this tank... see details in gaspressures.c
 					pressure_t pressure;
-					pressure.mbar = get_plot_interpolated_pressure(gasChangeEntry) ? : get_plot_sensor_pressure(gasChangeEntry);
+					pressure.mbar = get_plot_interpolated_pressure(&plotInfo, gasChangeIdx) ? : get_plot_sensor_pressure(&plotInfo, gasChangeIdx);
 					QAction *adjustOldPressure = m.addAction(tr("Adjust pressure of cyl. %1 (currently interpolated as %2)")
 										 .arg(gasChangeEntry->sensor[0] + 1).arg(get_pressure_string(pressure)));
 				}
-				if (get_plot_sensor_pressure(newGasEntry) == 0 || displayed_dive.cylinder[newGasEntry->sensor[0]].sample_start.mbar == 0) {
+				if (get_plot_sensor_pressure(&plotInfo, newGasIdx) == 0 || displayed_dive.cylinder[newGasEntry->sensor[0]].sample_start.mbar == 0) {
 					// we only have interpolated press -- see commend above
 					pressure_t pressure;
-					pressure.mbar = get_plot_interpolated_pressure(newGasEntry) ? : get_plot_sensor_pressure(newGasEntry);
+					pressure.mbar = get_plot_interpolated_pressure(&plotInfo, newGasIdx) ? : get_plot_sensor_pressure(&plotInfo, newGasIdx);
 					QAction *adjustOldPressure = m.addAction(tr("Adjust pressure of cyl. %1 (currently interpolated as %2)")
 										 .arg(newGasEntry->sensor[0] + 1).arg(get_pressure_string(pressure)));
 				}
