@@ -12,7 +12,7 @@
 #include "core/profile.h"
 
 RulerNodeItem2::RulerNodeItem2() :
-	entry(NULL),
+	idx(-1),
 	ruler(NULL),
 	timeAxis(NULL),
 	depthAxis(NULL)
@@ -29,7 +29,7 @@ RulerNodeItem2::RulerNodeItem2() :
 void RulerNodeItem2::setPlotInfo(const plot_info &info)
 {
 	pInfo = info;
-	entry = pInfo.entry;
+	idx = 0;
 }
 
 void RulerNodeItem2::setRuler(RulerItem2 *r)
@@ -39,21 +39,20 @@ void RulerNodeItem2::setRuler(RulerItem2 *r)
 
 void RulerNodeItem2::recalculate()
 {
-	struct plot_data *data = pInfo.entry + (pInfo.nr - 1);
-	uint16_t count = 0;
+	if (pInfo.nr <= 0)
+		return;
+
+	const struct plot_data &last = pInfo.entry[pInfo.nr - 1];
 	if (x() < 0) {
 		setPos(0, y());
-	} else if (x() > timeAxis->posAtValue(data->sec)) {
-		setPos(timeAxis->posAtValue(data->sec), depthAxis->posAtValue(data->depth));
+	} else if (x() > timeAxis->posAtValue(last.sec)) {
+		setPos(timeAxis->posAtValue(last.sec), depthAxis->posAtValue(last.depth));
 	} else {
-		data = pInfo.entry;
-		count = 0;
-		while (timeAxis->posAtValue(data->sec) < x() && count < pInfo.nr) {
-			data = pInfo.entry + count;
-			count++;
-		}
-		setPos(timeAxis->posAtValue(data->sec), depthAxis->posAtValue(data->depth));
-		entry = data;
+		idx = 0;
+		while (idx < pInfo.nr && timeAxis->posAtValue(pInfo.entry[idx].sec) < x())
+			++idx;
+		const struct plot_data &data = pInfo.entry[idx];
+		setPos(timeAxis->posAtValue(data.sec), depthAxis->posAtValue(data.depth));
 	}
 }
 
@@ -117,7 +116,7 @@ void RulerItem2::recalculate()
 	}
 	QLineF line(startPoint, endPoint);
 	setLine(line);
-	compare_samples(source->entry, dest->entry, buffer, 500, 1);
+	compare_samples(&pInfo.entry[source->idx], &pInfo.entry[dest->idx], buffer, 500, 1);
 	text = QString(buffer);
 
 	// draw text
