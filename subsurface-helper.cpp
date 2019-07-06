@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <QQmlEngine>
-#include <QDesktopWidget>
-#include <QApplication>
 #include <QDebug>
 #include <QQuickItem>
 
@@ -54,13 +52,6 @@ void exit_ui()
 	delete qApp;
 	free((void *)existing_filename);
 }
-
-double get_screen_dpi()
-{
-	QDesktopWidget *mydesk = qApp->desktop();
-	return mydesk->physicalDpiX();
-}
-
 
 void run_ui()
 {
