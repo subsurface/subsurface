@@ -1378,6 +1378,7 @@ bool ProfileWidget2::isPlanner()
 	return currentState == PLAN;
 }
 
+#if 0 // TODO::: FINISH OR DISABLE
 struct plot_data *ProfileWidget2::getEntryFromPos(QPointF pos)
 {
 	// find the time stamp corresponding to the mouse position
@@ -1391,6 +1392,7 @@ struct plot_data *ProfileWidget2::getEntryFromPos(QPointF pos)
 	}
 	return entry;
 }
+#endif
 
 void ProfileWidget2::setReplot(bool state)
 {
@@ -1509,7 +1511,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 			connect(action, SIGNAL(triggered(bool)), this, SLOT(editName()));
 			m.addAction(action);
 		}
-#if 0 // FIXME::: FINISH OR DISABLE
+#if 0 // TODO::: FINISH OR DISABLE
 		QPointF scenePos = mapToScene(event->pos());
 		struct plot_data *entry = getEntryFromPos(scenePos);
 		// this shows how to figure out if we should ask the user if they want adjust interpolated pressures
