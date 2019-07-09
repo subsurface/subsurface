@@ -391,6 +391,9 @@ static void parse_dive_cylinder(char *line, struct membuffer *str, void *_dive)
 	struct dive *dive = _dive;
 	cylinder_t *cylinder = dive->cylinder + cylinder_index;
 
+	if (cylinder_index >= MAX_CYLINDERS)
+		return;
+
 	cylinder->type.description = get_utf8(str);
 	for (;;) {
 		char c;
@@ -422,6 +425,9 @@ static void parse_dive_weightsystem(char *line, struct membuffer *str, void *_di
 {
 	struct dive *dive = _dive;
 	weightsystem_t *ws = dive->weightsystem + weightsystem_index;
+
+	if (weightsystem_index >= MAX_WEIGHTSYSTEMS)
+		return;
 
 	weightsystem_index++;
 	ws->description = get_utf8(str);
