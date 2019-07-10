@@ -1,14 +1,13 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/animationfunctions.h"
 #include "core/pref.h"
-#include "core/settings/qPrefDisplay.h"
 #include <QPropertyAnimation>
 
 namespace Animations {
 
-	void hide(QObject *obj)
+	void hide(QObject *obj, int speed)
 	{
-		if (qPrefDisplay::animation_speed() != 0) {
+		if (speed != 0) {
 			QPropertyAnimation *animation = new QPropertyAnimation(obj, "opacity");
 			animation->setStartValue(1);
 			animation->setEndValue(0);
@@ -18,9 +17,9 @@ namespace Animations {
 		}
 	}
 
-	void show(QObject *obj)
+	void show(QObject *obj, int speed)
 	{
-		if (qPrefDisplay::animation_speed() != 0) {
+		if (speed != 0) {
 			QPropertyAnimation *animation = new QPropertyAnimation(obj, "opacity");
 			animation->setStartValue(0);
 			animation->setEndValue(1);
@@ -30,9 +29,9 @@ namespace Animations {
 		}
 	}
 
-	void animDelete(QObject *obj)
+	void animDelete(QObject *obj, int speed)
 	{
-		if (qPrefDisplay::animation_speed() != 0) {
+		if (speed != 0) {
 			QPropertyAnimation *animation = new QPropertyAnimation(obj, "opacity");
 			obj->connect(animation, &QPropertyAnimation::finished, &QObject::deleteLater);
 			animation->setStartValue(1);
@@ -43,9 +42,9 @@ namespace Animations {
 		}
 	}
 
-	void moveTo(QObject *obj, qreal x, qreal y)
+	void moveTo(QObject *obj, int speed, qreal x, qreal y)
 	{
-		if (qPrefDisplay::animation_speed() != 0) {
+		if (speed != 0) {
 			QPropertyAnimation *animation = new QPropertyAnimation(obj, "pos");
 			animation->setDuration(prefs.animation_speed);
 			animation->setStartValue(obj->property("pos").toPointF());
@@ -56,9 +55,9 @@ namespace Animations {
 		}
 	}
 
-	void scaleTo(QObject *obj, qreal scale)
+	void scaleTo(QObject *obj, int speed, qreal scale)
 	{
-		if (qPrefDisplay::animation_speed() != 0) {
+		if (speed != 0) {
 			QPropertyAnimation *animation = new QPropertyAnimation(obj, "scale");
 			animation->setDuration(prefs.animation_speed);
 			animation->setStartValue(obj->property("scale").toReal());
@@ -70,8 +69,8 @@ namespace Animations {
 		}
 	}
 
-	void moveTo(QObject *obj, const QPointF &pos)
+	void moveTo(QObject *obj, int speed, const QPointF &pos)
 	{
-		moveTo(obj, pos.x(), pos.y());
+		moveTo(obj, speed, pos.x(), pos.y());
 	}
 }
