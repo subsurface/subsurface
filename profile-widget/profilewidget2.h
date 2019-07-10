@@ -90,6 +90,7 @@ public:
 	void recalcCeiling();
 	void setToolTipVisibile(bool visible);
 	State currentState;
+	int animSpeed;
 
 signals:
 	void fontPrintScaleChanged(double scale);
