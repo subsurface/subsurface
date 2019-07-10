@@ -788,7 +788,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 #endif
 		DiveEventItem *item = new DiveEventItem();
 		item->setHorizontalAxis(timeAxis);
-		item->setVerticalAxis(profileYAxis);
+		item->setVerticalAxis(profileYAxis, qPrefDisplay::animation_speed());
 		item->setModel(dataModel);
 		item->setEvent(event, lastgasmix);
 		item->setZValue(2);
