@@ -1,3 +1,4 @@
+- Export: fix axes when exporting multiple profile pictures
 - Snap: add `removable-media` plug for access to /media and /mnt paths
 - Desktop: Add undo functionality for dive computer movement and deletion
 - Import: Small enhancements on Suunto SDE import

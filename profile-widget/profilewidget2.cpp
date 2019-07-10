@@ -548,7 +548,7 @@ void ProfileWidget2::resetZoom()
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
-void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPictures, bool plotPicturesSynchronously)
+void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPictures, bool instant)
 {
 	static bool firstCall = true;
 #ifndef SUBSURFACE_MOBILE
@@ -594,7 +594,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 	}
 
 	// special handling for the first time we display things
-	animSpeed = qPrefDisplay::animation_speed();
+	animSpeed = instant ? 0 : qPrefDisplay::animation_speed();
 	if (firstCall && haveFilesOnCommandLine()) {
 		animSpeed = 0;
 		firstCall = false;
@@ -823,7 +823,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 	if (doClearPictures)
 		clearPictures();
 	else
-		plotPicturesInternal(d, plotPicturesSynchronously);
+		plotPicturesInternal(d, instant);
 
 	toolTipItem->refresh(mapToScene(mapFromGlobal(QCursor::pos())));
 #endif
