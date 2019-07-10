@@ -589,6 +589,7 @@ void MainTab::updateDiveInfo()
 		ui.buddy->clear();
 		ui.airtemp->clear();
 		ui.watertemp->clear();
+		ui.notes->clear();
 		/* set date and time to minimums which triggers showing the special value text */
 		ui.dateEdit->setSpecialValueText(QString("-"));
 		ui.dateEdit->setMinimumDate(QDate(1, 1, 1));
