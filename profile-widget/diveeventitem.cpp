@@ -288,7 +288,7 @@ void DiveEventItem::recalculatePos(int speed)
 	qreal x = hAxis->posAtValue(internalEvent->time.seconds);
 	qreal y = vAxis->posAtValue(depth);
 	if (speed > 0)
-		Animations::moveTo(this, x, y);
+		Animations::moveTo(this, speed, x, y);
 	else
 		setPos(x, y);
 	if (isVisible() && shouldBeHidden())

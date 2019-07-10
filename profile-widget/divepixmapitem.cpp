@@ -4,6 +4,7 @@
 #include "qt-models/divepicturemodel.h"
 #include "core/pref.h"
 #include "core/qthelper.h"
+#include "core/settings/qPrefDisplay.h"
 #ifndef SUBSURFACE_MOBILE
 #include "desktop-widgets/preferences/preferencesdialog.h"
 #endif
@@ -93,12 +94,12 @@ void DivePictureItem::setPixmap(const QPixmap &pix)
 
 void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent*)
 {
-	Animations::scaleTo(this, 1.0);
+	Animations::scaleTo(this, qPrefDisplay::animation_speed(), 1.0);
 	setZValue(baseZValue + 5.0);
 
 	button->setOpacity(0);
 	button->show();
-	Animations::show(button);
+	Animations::show(button, qPrefDisplay::animation_speed());
 }
 
 void DivePictureItem::setFileUrl(const QString &s)
@@ -108,9 +109,9 @@ void DivePictureItem::setFileUrl(const QString &s)
 
 void DivePictureItem::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
 {
-	Animations::scaleTo(this, 0.2);
+	Animations::scaleTo(this, qPrefDisplay::animation_speed(), 0.2);
 	setZValue(baseZValue);
-	Animations::hide(button);
+	Animations::hide(button, qPrefDisplay::animation_speed());
 }
 
 void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
