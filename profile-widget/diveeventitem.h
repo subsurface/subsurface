@@ -16,13 +16,13 @@ public:
 	void setEvent(struct event *ev, struct gasmix lastgasmix);
 	struct event *getEvent();
 	void eventVisibilityChanged(const QString &eventName, bool visible);
-	void setVerticalAxis(DiveCartesianAxis *axis);
+	void setVerticalAxis(DiveCartesianAxis *axis, int speed);
 	void setHorizontalAxis(DiveCartesianAxis *axis);
 	void setModel(DivePlotDataModel *model);
 	bool shouldBeHidden();
 public
 slots:
-	void recalculatePos(bool instant = false);
+	void recalculatePos(int animationSpeed);
 
 private:
 	void setupToolTipString(struct gasmix lastgasmix);

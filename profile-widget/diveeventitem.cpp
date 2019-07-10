@@ -32,20 +32,21 @@ DiveEventItem::~DiveEventItem()
 void DiveEventItem::setHorizontalAxis(DiveCartesianAxis *axis)
 {
 	hAxis = axis;
-	recalculatePos(true);
+	recalculatePos(0);
 }
 
 void DiveEventItem::setModel(DivePlotDataModel *model)
 {
 	dataModel = model;
-	recalculatePos(true);
+	recalculatePos(0);
 }
 
-void DiveEventItem::setVerticalAxis(DiveCartesianAxis *axis)
+void DiveEventItem::setVerticalAxis(DiveCartesianAxis *axis, int speed)
 {
 	vAxis = axis;
-	recalculatePos(true);
-	connect(vAxis, SIGNAL(sizeChanged()), this, SLOT(recalculatePos()));
+	recalculatePos(0);
+	connect(vAxis, &DiveCartesianAxis::sizeChanged, this,
+		[speed, this] { recalculatePos(speed); });
 }
 
 struct event *DiveEventItem::getEvent()
@@ -62,7 +63,7 @@ void DiveEventItem::setEvent(struct event *ev, struct gasmix lastgasmix)
 	internalEvent = clone_event(ev);
 	setupPixmap(lastgasmix);
 	setupToolTipString(lastgasmix);
-	recalculatePos(true);
+	recalculatePos(0);
 }
 
 void DiveEventItem::setupPixmap(struct gasmix lastgasmix)
@@ -268,7 +269,7 @@ int DiveEventItem::depthAtTime(int time)
 	return dataModel->data(dataModel->index(result.first().row(), DivePlotDataModel::DEPTH)).toInt();
 }
 
-void DiveEventItem::recalculatePos(bool instant)
+void DiveEventItem::recalculatePos(int speed)
 {
 	if (!vAxis || !hAxis || !internalEvent || !dataModel)
 		return;
@@ -286,7 +287,7 @@ void DiveEventItem::recalculatePos(bool instant)
 		show();
 	qreal x = hAxis->posAtValue(internalEvent->time.seconds);
 	qreal y = vAxis->posAtValue(depth);
-	if (!instant)
+	if (speed > 0)
 		Animations::moveTo(this, x, y);
 	else
 		setPos(x, y);
