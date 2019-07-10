@@ -594,10 +594,9 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 	}
 
 	// special handling for the first time we display things
-	int animSpeedBackup = 0;
+	animSpeed = qPrefDisplay::animation_speed();
 	if (firstCall && haveFilesOnCommandLine()) {
-		animSpeedBackup = qPrefDisplay::animation_speed();
-		qPrefDisplay::set_animation_speed(0);
+		animSpeed = 0;
 		firstCall = false;
 	}
 
@@ -814,9 +813,6 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 		dcText += tr(" (#%1 of %2)").arg(dc_number + 1).arg(nr);
 #endif
 	diveComputerText->setText(dcText);
-	if (haveFilesOnCommandLine() && animSpeedBackup != 0) {
-		qPrefDisplay::set_animation_speed(animSpeedBackup);
-	}
 
 #ifndef SUBSURFACE_MOBILE
 	if (currentState == ADD || currentState == PLAN) { // TODO: figure a way to move this from here.

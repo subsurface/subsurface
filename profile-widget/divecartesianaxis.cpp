@@ -10,7 +10,6 @@
 #include "profile-widget/animationfunctions.h"
 #include "profile-widget/divelineitem.h"
 #include "profile-widget/profilewidget2.h"
-#include "core/settings/qPrefDisplay.h" // TODO: Remove
 
 QPen DiveCartesianAxis::gridPen()
 {
@@ -127,11 +126,11 @@ void DiveCartesianAxis::setLinesVisible(bool arg1)
 }
 
 template <typename T>
-void emptyList(QList<T *> &list, int steps)
+void emptyList(QList<T *> &list, int steps, int speed)
 {
 	while (list.size() > steps) {
 		T *removedItem = list.takeLast();
-		Animations::animDelete(removedItem, qPrefDisplay::animation_speed());
+		Animations::animDelete(removedItem, speed);
 	}
 }
 
@@ -150,8 +149,8 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 	if (steps < 1)
 		return;
 
-	emptyList(labels, steps);
-	emptyList(lines, steps);
+	emptyList(labels, steps, profileWidget->animSpeed);
+	emptyList(lines, steps, profileWidget->animSpeed);
 
 	// Move the remaining ticks / text to their correct positions
 	// regarding the possible new values for the axis
@@ -178,9 +177,9 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 
 		labels[i]->setText(textForValue(currValueText));
 		if (orientation == LeftToRight || orientation == RightToLeft) {
-			Animations::moveTo(labels[i], qPrefDisplay::animation_speed(), childPos, m.y1() + tick_size);
+			Animations::moveTo(labels[i], profileWidget->animSpeed, childPos, m.y1() + tick_size);
 		} else {
-			Animations::moveTo(labels[i], qPrefDisplay::animation_speed() ,m.x1() - tick_size, childPos);
+			Animations::moveTo(labels[i], profileWidget->animSpeed ,m.x1() - tick_size, childPos);
 		}
 	}
 
@@ -190,9 +189,9 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 					 begin - i * stepSize;
 
 		if (orientation == LeftToRight || orientation == RightToLeft) {
-			Animations::moveTo(lines[i], qPrefDisplay::animation_speed(), childPos, m.y1());
+			Animations::moveTo(lines[i], profileWidget->animSpeed, childPos, m.y1());
 		} else {
-			Animations::moveTo(lines[i], qPrefDisplay::animation_speed(), m.x1(), childPos);
+			Animations::moveTo(lines[i], profileWidget->animSpeed, m.x1(), childPos);
 		}
 	}
 
@@ -213,11 +212,11 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 		if (orientation == RightToLeft || orientation == LeftToRight) {
 			label->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
 			label->setPos(scene()->sceneRect().width() + 10, m.y1() + tick_size); // position it outside of the scene);
-			Animations::moveTo(label, qPrefDisplay::animation_speed(),childPos , m.y1() + tick_size);
+			Animations::moveTo(label, profileWidget->animSpeed,childPos , m.y1() + tick_size);
 		} else {
 			label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 			label->setPos(m.x1() - tick_size, scene()->sceneRect().height() + 10);
-			Animations::moveTo(label, qPrefDisplay::animation_speed(), m.x1() - tick_size, childPos);
+			Animations::moveTo(label, profileWidget->animSpeed, m.x1() - tick_size, childPos);
 		}
 	}
 
@@ -238,13 +237,13 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 		if (orientation == RightToLeft || orientation == LeftToRight) {
 			line->setLine(0, -line_size, 0, 0);
 			line->setPos(scene()->sceneRect().width() + 10, m.y1()); // position it outside of the scene);
-			Animations::moveTo(line, qPrefDisplay::animation_speed(), childPos, m.y1());
+			Animations::moveTo(line, profileWidget->animSpeed, childPos, m.y1());
 		} else {
 			QPointF p1 = mapFromScene(3, 0);
 			QPointF p2 = mapFromScene(line_size, 0);
 			line->setLine(p1.x(), 0, p2.x(), 0);
 			line->setPos(m.x1(), scene()->sceneRect().height() + 10);
-			Animations::moveTo(line, qPrefDisplay::animation_speed(), m.x1(), childPos);
+			Animations::moveTo(line, profileWidget->animSpeed, m.x1(), childPos);
 		}
 	}
 
