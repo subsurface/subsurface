@@ -242,22 +242,29 @@ if [ "$QUICK" = "" ] ; then
 		mkdir -p openssl-build-"$ARCH"
 		cp -r openssl/* openssl-build-"$ARCH"
 		pushd openssl-build-"$ARCH"
-		perl -pi -e 's/install: all install_docs install_sw/install: install_docs install_sw/g' Makefile.org
 		perl -pi -e 's/-mandroid//g' Configure
+		export ANDROID_NDK_HOME=$ANDROID_NDK_ROOT
 		# Use env to make all these temporary, so they don't pollute later builds.
-		env SYSTEM=android \
-			CROSS_COMPILE=${BUILDCHAIN}- \
-			MACHINE=$OPENSSL_MACHINE \
-			HOSTCC=clang \
+		env	PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH \
 			CC=clang \
-			ANDROID_DEV="$PREFIX" \
-			bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine no-asm --openssldir="$PREFIX"
-	#	sed -i.bak -e 's/soname=\$\$SHLIB\$\$SHLIB_SOVER\$\$SHLIB_SUFFIX/soname=\$\$SHLIB/g' Makefile.shared
+			./Configure android-"$ARCH" no-ssl2 no-ssl3 no-comp no-hw no-engine no-asm --prefix="$PREFIX" -DOPENSSL_NO_UI_CONSOLE -DOPENSSL_NO_STDIO
 		make depend
-		make
-		# now fix the reference to libcrypto.so.1.0.0 to be just to libcrypto.so
-		perl -pi -e 's/libcrypto.so.1.0.0/libcrypto.so\x00\x00\x00\x00\x00\x00/' libssl.so.1.0.0
-		make install_sw
+		make build_libs
+
+		# now fix the reference to libcrypto.so.1.1 and libssl.so.1.1 to be just unversioned
+		# as androiddeployqt and Android itself does not like versioned shared objects
+		perl -pi -e 's/libcrypto.so.1.1/libcrypto.so\x00\x00\x00\x00/' libcrypto.so.1.1
+		perl -pi -e 's/libcrypto.so.1.1/libcrypto.so\x00\x00\x00\x00/' libssl.so.1.1
+		perl -pi -e 's/libssl.so.1.1/libssl.so\x00\x00\x00\x00/' libcrypto.so.1.1
+		perl -pi -e 's/libssl.so.1.1/libssl.so\x00\x00\x00\x00/' libssl.so.1.1
+
+		cp -RL include/openssl $PREFIX/include/openssl
+		cp libcrypto.a $PREFIX/lib
+		cp libcrypto.so* $PREFIX/lib
+		cp libssl.a $PREFIX/lib
+		cp libssl.so* $PREFIX/lib
+		cp *.pc $PKG_CONFIG_LIBDIR
+
 		popd
 	fi
 
@@ -428,7 +435,7 @@ cmake $MOBILE_CMAKE \
 	-DANDROID_NATIVE_LIBCRYPT="$BUILDROOT/ndk-$ARCH/sysroot/usr/lib/libcrypto.so" \
 	-DCMAKE_MAKE_PROGRAM="make" \
 	"$SUBSURFACE_SOURCE"
-
+	
 # set up the version number
 
 rm -f ssrf-version.h
