@@ -7,10 +7,11 @@ buildscript {
     repositories {
         jcenter()
         maven { url "https://dl.bintray.com/android/android-tools/" }
+	google()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.2.1'
     }
 }
 
@@ -18,6 +19,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://dl.bintray.com/android/android-tools/" }
+	google()
     }
 }
 
