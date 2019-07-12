@@ -683,20 +683,17 @@ To have a more complete dive record, the user needs to add
 additional information by hand. The procedure
 below is virtually identical for hand-entered dives and for dives downloaded from a dive computer.
 
-In some cases,
-you must provide the date and time of the dive, for example when entering a dive by hand or when a
-dive computer doesn’t provide the date and time of the dive.
-(Usually the date and time of the dive, gas mixture and water temperature are
-shown as obtained from the dive computer)
-If the contents of the *Notes tab* is changed or edited in any way, the message in a blue box at
-the top of the panel shows the dive is being edited. If you
+Usually the date and time of the dive, gas mixture and water temperature are
+shown as obtained from the dive computer. In some cases,
+provide the date and time of the dive, for example when entering a dive by hand or when a
+dive computer doesn’t provide this information. If you
 click on the *Notes* tab, the following fields are
 visible (left hand image, below):
 
 image::images/AddDive3_f22.jpg["FIGURE: The Notes tab",align="center"]
 
 The right hand image, above, shows a *Notes tab* filled with dive information.
-The *Date* and *Time* fields reflects the date and time of the dive. By clicking
+The *Date* and *Time* fields reflect the date and time of the dive. By clicking
 the date, a calendar is displayed for selecting
 the correct date. Press ESC to close the calendar.
 The time values (hour and minutes) can also be
@@ -748,12 +745,12 @@ If several dives are
 made at the same location, the site information for the first dive is re-used.
 Therefore, if a dive site has been used before, the name of that site (and sometimes
 the names of similar sites) appears below the dive site text box (image below). Double-click on
-the appropriate dive site name and the dive location will be associated with the
-dive being entered. Then select _Apply Changes_ (image below) to save the geolocation for this dive site.
+the appropriate dive site name with associated coordinates and that site will be associated with the
+dive being entered.
 
 image::images/Location1.jpg["FIGURE:Location choice panel",align="center"]
 
-*Entering a new dive location:* On the other hand, having dived at a new dive location,
+*Entering a new dive location:* On the other hand, having dived at a new dive site,
 a new record needs to be created
 that could be used for the new and for later dives at this new site. Type the name of the new dive site into the text box
 (image A below).
@@ -795,7 +792,7 @@ by dragging it on the map, zooming in on the appropriate part of the map and pla
 the marker at an appropriate position (image B below). The coordinates of the dive
 location are automatically inserted into the appropriate text box in the dive location
 information window (image A below). Enter any other contextual information about the dive site (Description and Notes),
-then select _Apply Changes_ to save the geolocation for this dive site.
+then select _Done_ to save the geolocation for this dive site.
 The dive site information can later be edited by clicking the globe icon to the right of the
 dive site name in the *Notes tab*.
 
@@ -819,7 +816,7 @@ same).
 *Dive site name lookup:* If you typed coordinates into the appropriate
 text box, you can do an automated name lookup based on the coordinates.
 This is done when _Subsurface_ uses the Internet to find the name of the dive site
-based on the coordinates that were given. If a name has been found, it is
+based on the coordinates that were given. If a name is found, it is
 automatically inserted into the tags box. The list box
 (Titled _Dive sites on same coordinates_") at the bottom
 of the dive site panel contains the names of other dives sites used at the
@@ -870,9 +867,7 @@ If this dive was away from the sea and your dive computer does not record atmosp
 pressure or altitude you may wish to edit the xref:S_altitude[*altitude setting in the
 Information panel*] because dives at altitude require special calculations.
 
-The _Apply changes_ and _Discard changes_ buttons are used to save all the information for tabs
-in the *Info* panel and in the *Dive Profile* panel. Use them
-when *ALL* other information has been added. The image xref:S_Notes_dc[at the beginning of this section]
+The image xref:S_Notes_dc[at the beginning of this section]
 shows an example of a *Notes tab* after completing the dive information.
 
 ===== Equipment
@@ -4519,15 +4514,16 @@ stored on the dive computer.
 The Uwatec Galileo dive computers use infra red (IrDA) communication
 between the dive computer and Subsurface. The Uwatec hardware uses
 a USB dongle based on the serial infra-red (SIR) protocol and the
-MSC7780 IrDA controller manufactured by MosChip
+MCS7780 IrDA controller manufactured by MosChip
 and marketed by Scubapro and some electronics companies.
-Under Linux, the kernel
+Under current Linux, the kernel
 already provides for communication using the IrDA protocol. However,
 the user additionally needs to load a driver for the IrDA interface
 with the dive computer. The easiest way is to load the *irda-tools*
 package from the http://irda.sourceforge.net/docs/startirda.html[Linux IrDA Project].
 After the installation of the irda-tools, the *root user* can specify a device name
 from the console as follows:
+
 +irattach irda0+
 
 After executing this command, Subsurface will recognize the Galileo
@@ -4539,8 +4535,10 @@ http://www.drivers-download.com/Drv/MosChip/MCS7780/[www.drivers-download.com]. 
 drivers for the Uwatec can also be downloaded from the ScubaPro web site, with drivers located on
 the download page for the ScubaPro SmartTrak software.
 
+For Windows, IrDA is not available for Windows 10 and higher.
 For the Apple Mac, IrDA communication via the MCS7780 link is not
 available for OSX 10.6 or higher.
+In addition it is foreseen that the IrDA stack will be phased out in Linux. This is old technology and, even though it is currently more robust, fast and efficient than many other technologies such as Bluetooth, it is not fasionable. If IrDA communication is required for an operating system that does not support it, an easy solution is to run Subsurface in a virtual machine (VM) that contains support for IrDA. A VM (e.g. VMWare or vitualbox) can be installed on most modern operating systems. The only hardware setup required is to route the USB port of the host OS through to the guest OS.
 
 [[S_ImportingDR5]]
 === Importing from Heinrichs Weikamp DR5
