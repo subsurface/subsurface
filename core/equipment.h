@@ -63,7 +63,6 @@ extern void add_weightsystem_description(const weightsystem_t *);
 extern bool same_weightsystem(weightsystem_t w1, weightsystem_t w2);
 extern bool cylinder_nodata(const cylinder_t *cyl);
 extern bool cylinder_none(const cylinder_t *cyl);
-extern bool weightsystem_none(const weightsystem_t *ws);
 extern void remove_cylinder(struct dive *dive, int idx);
 extern void remove_weightsystem(struct dive *dive, int idx);
 extern void reset_cylinders(struct dive *dive, bool track_gas);

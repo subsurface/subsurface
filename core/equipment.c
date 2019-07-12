@@ -182,11 +182,6 @@ int find_best_gasmix_match(struct gasmix mix, const cylinder_t array[])
 	return best;
 }
 
-bool weightsystem_none(const weightsystem_t *ws)
-{
-	return !ws->weight.grams && !ws->description;
-}
-
 /*
  * We hardcode the most common standard cylinders,
  * we should pick up any other names from the dive
