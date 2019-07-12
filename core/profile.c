@@ -656,7 +656,7 @@ static void populate_plot_entries(struct dive *dive, struct divecomputer *dc, st
  *
  * Everything in between has a cylinder pressure for at least some of the cylinders.
  */
-static int sac_between(struct dive *dive, struct plot_info *pi, int first, int last, unsigned int gases)
+static int sac_between(struct dive *dive, struct plot_info *pi, int first, int last, const bool gases[])
 {
 	int i, airuse;
 	double pressuretime;
@@ -671,7 +671,7 @@ static int sac_between(struct dive *dive, struct plot_info *pi, int first, int l
 		cylinder_t *cyl;
 		int cyluse;
 
-		if (!(gases & (1u << i)))
+		if (!gases[i])
 			continue;
 
 		a.mbar = get_plot_pressure(pi, first, i);
@@ -703,26 +703,40 @@ static int sac_between(struct dive *dive, struct plot_info *pi, int first, int l
 	return lrint(airuse / pressuretime);
 }
 
-/* Which of the set of gases have pressure data */
-static unsigned int have_pressures(struct plot_info *pi, int idx, unsigned int gases)
+/* Is there pressure data for all gases? */
+static bool all_pressures(struct plot_info *pi, int idx, const bool gases[])
 {
 	int i;
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
-		unsigned int mask = 1 << i;
-		if (gases & mask) {
-			if (!get_plot_pressure(pi, idx, i))
-				gases &= ~mask;
-		}
+		if (gases[i] && !get_plot_pressure(pi, idx, i))
+			return false;
 	}
-	return gases;
+
+	return true;
+}
+
+/* Which of the set of gases have pressure data? Returns false if none of them. */
+static bool filter_pressures(struct plot_info *pi, int idx, const bool gases_in[], bool gases_out[])
+{
+	int i;
+	bool has_pressure = false;
+
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		gases_out[i] = gases_in[i] && get_plot_pressure(pi, idx, i);
+		has_pressure |= gases_out[i];
+	}
+
+	return has_pressure;
 }
 
 /*
  * Try to do the momentary sac rate for this entry, averaging over one
- * minute.
+ * minute. This is premature optimization, but instead of allocating
+ * an array of gases, the caller passes in scratch memory in the last
+ * argument.
  */
-static void fill_sac(struct dive *dive, struct plot_info *pi, int idx, unsigned int gases)
+static void fill_sac(struct dive *dive, struct plot_info *pi, int idx, const bool gases_in[], bool gases[])
 {
 	struct plot_data *entry = pi->entry + idx;
 	int first, last;
@@ -735,8 +749,7 @@ static void fill_sac(struct dive *dive, struct plot_info *pi, int idx, unsigned 
 	 * We may not have pressure data for all the cylinders,
 	 * but we'll calculate the SAC for the ones we do have.
 	 */
-	gases = have_pressures(pi, idx, gases);
-	if (!gases)
+	if (!filter_pressures(pi, idx, gases_in, gases))
 		return;
 
 	/*
@@ -753,7 +766,7 @@ static void fill_sac(struct dive *dive, struct plot_info *pi, int idx, unsigned 
 			break;
 		if (prev->sec < time)
 			break;
-		if (have_pressures(pi, idx - 1, gases) != gases)
+		if (!all_pressures(pi, idx - 1, gases))
 			break;
 		idx--;
 		first = idx;
@@ -769,7 +782,7 @@ static void fill_sac(struct dive *dive, struct plot_info *pi, int idx, unsigned 
 			break;
 		if (next->sec > time)
 			break;
-		if (have_pressures(pi, idx + 1, gases) != gases)
+		if (!all_pressures(pi, idx + 1, gases))
 			break;
 		last = idx;
 	}
@@ -781,35 +794,40 @@ static void fill_sac(struct dive *dive, struct plot_info *pi, int idx, unsigned 
 /*
  * Create a bitmap of cylinders that match our current gasmix
  */
-static unsigned int matching_gases(struct dive *dive, struct gasmix gasmix)
+static void matching_gases(struct dive *dive, struct gasmix gasmix, bool gases[])
 {
 	int i;
-	unsigned int gases = 0;
 
-	for (i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = dive->cylinder + i;
-		if (same_gasmix(gasmix, cyl->gasmix))
-			gases |= 1 << i;
-	}
-	return gases;
+	for (i = 0; i < MAX_CYLINDERS; i++)
+		gases[i] = same_gasmix(gasmix, dive->cylinder[i].gasmix);
 }
 
 static void calculate_sac(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	struct gasmix gasmix = gasmix_invalid;
 	const struct event *ev = NULL;
-	unsigned int gases = 0;
+	bool *gases, *gases_scratch;
+
+	gases = malloc(MAX_CYLINDERS * sizeof(*gases));
+	memset(gases, 0, MAX_CYLINDERS * sizeof(*gases));
+
+	/* This might be premature optimization, but let's allocate the gas array for
+	 * the fill_sac function only once an not once per sample */
+	gases_scratch = malloc(MAX_CYLINDERS * sizeof(*gases));
 
 	for (int i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
 		struct gasmix newmix = get_gasmix(dive, dc, entry->sec, &ev, gasmix);
 		if (!same_gasmix(newmix, gasmix)) {
 			gasmix = newmix;
-			gases = matching_gases(dive, newmix);
+			matching_gases(dive, newmix, gases);
 		}
 
-		fill_sac(dive, pi, i, gases);
+		fill_sac(dive, pi, i, gases, gases_scratch);
 	}
+
+	free(gases);
+	free(gases_scratch);
 }
 
 static void populate_secondary_sensor_data(const struct divecomputer *dc, struct plot_info *pi)
