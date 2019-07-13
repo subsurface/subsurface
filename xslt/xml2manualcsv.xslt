@@ -53,22 +53,45 @@
         <xsl:text>&quot;&quot;</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
+
+    <!-- Air temperature -->
     <xsl:choose>
-      <xsl:when test="divetemperature/@air|divetemperature/@water != ''">
-        <xsl:apply-templates select="divetemperature"/>
+      <xsl:when test="divetemperature/@air != ''">
+        <xsl:call-template name="temperature">
+          <xsl:with-param name="temp" select="divetemperature/@air"/>
+        </xsl:call-template>
       </xsl:when>
-      <xsl:when test="divecomputer[1]/temperature/@air|divecomputer[1]/temperature/@water != ''">
-        <xsl:apply-templates select="divecomputer[1]/temperature"/>
+      <xsl:when test="divecomputer[1]/temperature/@air != ''">
+        <xsl:call-template name="temperature">
+          <xsl:with-param name="temp" select="divecomputer[1]/temperature/@air"/>
+        </xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
         <!-- empty air temperature -->
         <xsl:value-of select="$fs"/>
         <xsl:text>&quot;&quot;</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
+
+    <!-- Water temperature -->
+    <xsl:choose>
+      <xsl:when test="divetemperature/@water != ''">
+        <xsl:call-template name="temperature">
+        <xsl:with-param name="temp" select="divetemperature/@water"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:when test="divecomputer[1]/temperature/@water != ''">
+        <xsl:call-template name="temperature">
+          <xsl:with-param name="temp" select="divecomputer[1]/temperature/@water"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
         <!-- water temperature -->
         <xsl:value-of select="$fs"/>
         <xsl:text>&quot;&quot;</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
+
     <xsl:choose>
       <xsl:when test="cylinder[1]/@start|cylinder[1]/@end != ''">
         <xsl:apply-templates select="cylinder[1]"/>
@@ -250,34 +273,26 @@
     </xsl:choose>
     <xsl:text>&quot;</xsl:text>
   </xsl:template>
-  <xsl:template match="divetemperature|temperature">
+
+  <!-- Temperature template -->
+  <xsl:template name="temperature">
+    <xsl:param name="temp"/>
+
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
     <xsl:choose>
       <xsl:when test="$units = 1">
-        <xsl:if test="substring-before(@air, ' ') &gt; 0">
-          <xsl:value-of select="concat(format-number((substring-before(@air, ' ') * 1.8) + 32, '0.0'), '')"/>
+        <xsl:if test="substring-before($temp, ' ') &gt; 0">
+          <xsl:value-of select="concat(format-number((substring-before($temp, ' ') * 1.8) + 32, '0.0'), '')"/>
         </xsl:if>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="substring-before(@air, ' ')"/>
-      </xsl:otherwise>
-    </xsl:choose>
-    <xsl:text>&quot;</xsl:text>
-    <xsl:value-of select="$fs"/>
-    <xsl:text>&quot;</xsl:text>
-    <xsl:choose>
-      <xsl:when test="$units = 1">
-        <xsl:if test="substring-before(@water, ' ') &gt; 0">
-          <xsl:value-of select="concat(format-number((substring-before(@water, ' ') * 1.8) + 32, '0.0'), '')"/>
-        </xsl:if>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="substring-before(@water, ' ')"/>
+        <xsl:value-of select="substring-before($temp, ' ')"/>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:text>&quot;</xsl:text>
   </xsl:template>
+
   <xsl:template match="cylinder">
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
