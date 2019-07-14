@@ -140,6 +140,7 @@ static void save_cylinder_info(struct membuffer *b, struct dive *dive)
 		cylinder_t *cylinder = dive->cylinder + i;
 		int volume = cylinder->type.size.mliter;
 		const char *description = cylinder->type.description;
+		int use = cylinder->cylinder_use;
 
 		put_string(b, "cylinder");
 		if (volume)
@@ -150,8 +151,8 @@ static void save_cylinder_info(struct membuffer *b, struct dive *dive)
 		put_gasmix(b, cylinder->gasmix);
 		put_pressure(b, cylinder->start, " start=", "bar");
 		put_pressure(b, cylinder->end, " end=", "bar");
-		if (cylinder->cylinder_use != OC_GAS)
-			put_format(b, " use=%s", cylinderuse_text[cylinder->cylinder_use]);
+		if (use > OC_GAS && use < NUM_GAS_USE)
+			show_utf8(b, " use=", cylinderuse_text[use], "");
 		if (cylinder->depth.mm != 0)
 			put_milli(b, " depth=", cylinder->depth.mm, "m");
 		put_string(b, "\n");
