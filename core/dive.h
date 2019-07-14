@@ -23,7 +23,7 @@ extern int last_xml_version;
 
 enum divemode_t {OC, CCR, PSCR, FREEDIVE, NUM_DIVEMODE, UNDEF_COMP_TYPE};	// Flags (Open-circuit and Closed-circuit-rebreather) for setting dive computer type
 
-extern const char *cylinderuse_text[];
+extern const char *cylinderuse_text[NUM_GAS_USE];
 extern const char *divemode_text_ui[];
 extern const char *divemode_text[];
 
