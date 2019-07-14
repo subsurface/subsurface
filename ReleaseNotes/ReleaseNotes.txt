@@ -2,6 +2,70 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 4.9
+~~~~~~~~~~~~~~~~~~~~~~~
+- Major rewrite of the undo facility. Most operations can now be undone at
+  a much finer granularity. With the exception of tanks and weights this
+  removes the "edited" state in the UI
+- Dive sites as first class citizens with better user interface and
+  ability to track them separately from dives, including the ability to
+  export and import dive sites
+- Show surface gradient factor in infobox
+- Add ability to save dive data as subtitle file for videos
+- Split individual dive computers into distinct dives
+- Add stats by depth and temperature ranges to yearly stats [#1996]
+- Allow to filter for logged/planned dives
+- Include average max depth in statistics
+- Planner: Allow for a final segment at the surface to display further desaturation
+- Planner: Add UI element for bailout planning for rebreather dives
+- Bluetooth: only show recognized dive computers by default
+- New LaTeX export option
+- Add media to closest dive, not all selected dives
+- Sort dives by number if at the same date
+- Fix bug in get_distance() to correctly compute spherical distance
+- Fix a bug related to non-ASCII characters in user names
+- Merge overlapping trips on import
+- Fix bug in cloud save after removing dives from a trip
+- Perform more accurate OTU calculations, and include OTU calculations for
+  rebreather dives [#1851 & #1865].
+- Import: Small enhancements on Suunto SDE import
+- Import: Initial support for importing Mares log software
+- Dive computer support:
+  - Add support for Mares Genius
+  - Add support for Oceanic Geo 4.0
+  - Add support for Scubapro Aladin H Matrix, G2 HUD
+  - Add support for Suunto D5
+  - Add support for Tusa Talis
+  - Many bugfixes for previously support dive computers
+
+New in _Subsurface_ 4.8.6
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- Desktop: update snap and appdata meta data
+- Desktop: make sure cloud storage email addresses are lower case only
+- Desktop: Fix editing of dive-time [#1975]
+- Desktop: Add export option for profile picture [#1962]
+- Export: fix picture thumbnails [#1963]
+- Desktop: remove support for the "Share on Facebook" feature.
+  Rationale: It is fairly easy to share images on Facebook, thus it was decided
+  that this feature is redundant and should be removed from Subsurface.
+- Dive computer support:
+  - Add initial support for tag events on Shearwater Teric
+  - Add support for additional Ratio dive computers
+  - several bug fixes for existing dive computers
+
+New in _Subsurface_ 4.8.5
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- Shearwater import: add suppport for importing Shearwater Cloud logs
+- Core, Mobile: all controller states other than powered off are valid [#1903]
+- Core: shift dive time in correct direction [#1893]
+- Desktop: translate trip date
+- Dive computer support:
+  - Fix support for Shearwater Teric with firmware v11
+  - Add support for Oceanic Pro Plus X over BLE
+  - Add support for the Cressi Goa and Cartesio
+  - Add support for the Ratio iDive Color series
+  - Add support for the Aqualung i300C
+
 New in _Subsurface_ 4.8.4
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - Windows: add experimental support for BTLE dive computers.
