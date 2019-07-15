@@ -9,6 +9,7 @@
 #include "core/settings/qPrefDivePlanner.h"
 #include "desktop-widgets/command.h"
 #include "core/gettextfromc.h"
+#include "core/deco.h"
 #include <QApplication>
 #include <QTextDocument>
 #include <QtConcurrent>
