@@ -704,54 +704,71 @@ void fixup_dc_duration(struct divecomputer *dc)
 
 /* Which cylinders had gas used? */
 #define SOME_GAS 5000
-static unsigned int get_cylinder_used(const struct dive *dive)
+static bool cylinder_used(const cylinder_t *cyl)
 {
-	int i;
-	unsigned int mask = 0;
+	int start_mbar, end_mbar;
 
-	for (i = 0; i < MAX_CYLINDERS; i++) {
-		const cylinder_t *cyl = dive->cylinder + i;
-		int start_mbar, end_mbar;
+	if (cylinder_nodata(cyl))
+		return false;
+	start_mbar = cyl->start.mbar ?: cyl->sample_start.mbar;
+	end_mbar = cyl->end.mbar ?: cyl->sample_end.mbar;
 
-		if (cylinder_nodata(cyl))
-			continue;
-		start_mbar = cyl->start.mbar ?: cyl->sample_start.mbar;
-		end_mbar = cyl->end.mbar ?: cyl->sample_end.mbar;
-
-		// More than 5 bar used? This matches statistics.c
-		// heuristics
-		if (start_mbar > end_mbar + SOME_GAS)
-			mask |= 1 << i;
-	}
-	return mask;
+	// More than 5 bar used? This matches statistics.c
+	// heuristics
+	return start_mbar > end_mbar + SOME_GAS;
 }
 
-/* Which cylinders do we know usage about? */
-static unsigned int get_cylinder_known(const struct dive *dive, const struct divecomputer *dc)
+/* Get list of used cylinders. Returns the number of used cylinders. */
+static int get_cylinder_used(const struct dive *dive, bool used[])
 {
-	unsigned int mask = 0;
+	int i, num = 0;
+
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		used[i] = cylinder_used(dive->cylinder + i);
+		if (used[i])
+			num++;
+	}
+	return num;
+}
+
+/* Are there any used cylinders which we do not know usage about? */
+static bool has_unknown_used_cylinders(const struct dive *dive, const struct divecomputer *dc,
+				       const bool used_cylinders[], int num)
+{
+	int idx;
 	const struct event *ev;
+	bool *used_and_unknown = malloc(MAX_CYLINDERS * sizeof(bool));
+	memcpy(used_and_unknown, used_cylinders, MAX_CYLINDERS * sizeof(bool));
 
 	/* We know about using the O2 cylinder in a CCR dive */
 	if (dc->divemode == CCR) {
 		int o2_cyl = get_cylinder_idx_by_use(dive, OXYGEN);
-		if (o2_cyl >= 0)
-			mask |= 1 << o2_cyl;
+		if (o2_cyl >= 0 && used_and_unknown[o2_cyl]) {
+			used_and_unknown[o2_cyl] = false;
+			num--;
+		}
 	}
 
 	/* We know about the explicit first cylinder (or first) */
-	mask |= 1 << explicit_first_cylinder(dive, dc);
+	idx = explicit_first_cylinder(dive, dc);
+	if (used_and_unknown[idx]) {
+		used_and_unknown[idx] = false;
+		num--;
+	}
 
 	/* And we have possible switches to other gases */
 	ev = get_next_event(dc->events, "gaschange");
-	while (ev) {
-		int i = get_cylinder_index(dive, ev);
-		if (i >= 0)
-			mask |= 1 << i;
+	while (ev && num > 0) {
+		idx = get_cylinder_index(dive, ev);
+		if (idx >= 0 && used_and_unknown[idx]) {
+			used_and_unknown[idx] = false;
+			num--;
+		}
 		ev = get_next_event(ev->next, "gaschange");
 	}
 
-	return mask;
+	free(used_and_unknown);
+	return num > 0;
 }
 
 void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, int *mean, int *duration)
@@ -761,7 +778,8 @@ void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, i
 	uint32_t lasttime = 0;
 	int lastdepth = 0;
 	int idx = 0;
-	unsigned int used_mask, known_mask;
+	bool *used_cylinders;
+	int num_used_cylinders;
 
 	for (i = 0; i < MAX_CYLINDERS; i++)
 		mean[i] = duration[i] = 0;
@@ -773,33 +791,34 @@ void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, i
 	 * if we don't actually know about the usage of all the
 	 * used cylinders.
 	 */
-	used_mask = get_cylinder_used(dive);
-	known_mask = get_cylinder_known(dive, dc);
-	if (used_mask & ~known_mask) {
+	used_cylinders = malloc(MAX_CYLINDERS * sizeof(bool));
+	num_used_cylinders = get_cylinder_used(dive, used_cylinders);
+	if (has_unknown_used_cylinders(dive, dc, used_cylinders, num_used_cylinders)) {
 		/*
 		 * If we had more than one used cylinder, but
 		 * do not know usage of them, we simply cannot
 		 * account mean depth to them.
-		 *
-		 * The "x & (x-1)" test shows if it's not a pure
-		 * power of two.
 		 */
-		if (used_mask & (used_mask-1))
+		if (num_used_cylinders > 1) {
+			free(used_cylinders);
 			return;
+		}
 
 		/*
 		 * For a single cylinder, use the overall mean
 		 * and duration
 		 */
 		for (i = 0; i < MAX_CYLINDERS; i++) {
-			if (used_mask & (1 << i)) {
+			if (used_cylinders[i]) {
 				mean[i] = dc->meandepth.mm;
 				duration[i] = dc->duration.seconds;
 			}
 		}
 
+		free(used_cylinders);
 		return;
 	}
+	free(used_cylinders);
 	if (!dc->samples)
 		fake_dc(dc);
 	const struct event *ev = get_next_event(dc->events, "gaschange");
