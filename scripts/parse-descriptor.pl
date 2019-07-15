@@ -4,19 +4,17 @@
 #
 # Usage:
 #
-# parse-descriptor.pl <path to libdivecomputer/src/descriptor.c> <outfile>
+# parse-descriptor.pl <outfile>
 #
 # depending on suffix of the outfile it creates the right content for
 # either a text file or and html file
 use Carp;
 
 #set command line arguments
-my ($infi, $outfi) = @ARGV;
+my $outfi = $ARGV[0];
 my ($type) = $outfi =~ /\.([^.]+)$/;
 
-if ($infi !~ /.*descriptor.c/) {
-	croak "run as $ARGV[0] <path to descriptor.c> <outputfile>\n";
-}
+my $infi = "libdivecomputer/src/descriptor.c";
 
 open(my $fh, "<", $infi) || croak "can't open $infi: $!";
 open(STDOUT, ">", $outfi) || croak "can't open $outfi: $!";
