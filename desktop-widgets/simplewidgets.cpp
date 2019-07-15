@@ -23,6 +23,7 @@
 #include "desktop-widgets/command.h"
 #include "core/metadata.h"
 #include "core/tag.h"
+#include "core/divelist.h" // for mark_divelist_changed
 
 double MinMaxAvgWidget::average() const
 {

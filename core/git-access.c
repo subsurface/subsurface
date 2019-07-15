@@ -22,6 +22,7 @@
 #include "membuffer.h"
 #include "strndup.h"
 #include "qthelper.h"
+#include "dive.h"
 #include "git-access.h"
 #include "gettext.h"
 #include "sha1.h"

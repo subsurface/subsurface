@@ -5,8 +5,9 @@
 #include <stdint.h>
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
-#include "dive.h"
-#include "divelist.h"
+#include "core/pref.h"
+
+struct picture;
 
 // 1) Types
 
@@ -26,7 +27,7 @@ QString distance_string(int distanceInMeters);
 bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out = 0);
 QList<int> getDivesInTrip(struct dive_trip *trip);
 QString get_gas_string(struct gasmix gas);
-QString get_divepoint_gas_string(struct dive *d, const divedatapoint& dp);
+QString get_divepoint_gas_string(struct dive *d, const struct divedatapoint &dp);
 QString get_taglist_string(struct tag_entry *tag_list);
 void read_hashes();
 void write_hashes();

@@ -2,6 +2,7 @@
 #include "cloudstorage.h"
 #include "pref.h"
 #include "qthelper.h"
+#include "dive.h"
 #include "settings/qPrefCloudStorage.h"
 #include <QApplication>
 
