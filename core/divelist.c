@@ -12,6 +12,7 @@
 #include <libxslt/transform.h>
 
 #include "subsurface-string.h"
+#include "deco.h"
 #include "divesite.h"
 #include "divelist.h"
 #include "display.h"

@@ -7,7 +7,7 @@
 #include <QMessageBox>
 
 #include "qt-models/models.h"
-#include "core/dive.h" // TODO: replace by deco.h
+#include "core/deco.h"
 
 PreferencesGraph::PreferencesGraph() : AbstractPreferencesWidget(tr("Profile"), QIcon(":graph-icon"), 5)
 {

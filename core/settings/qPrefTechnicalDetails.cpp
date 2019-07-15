@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qPrefTechnicalDetails.h"
 #include "qPrefPrivate.h"
-
-
+#include "core/deco.h"
 
 static const QString group = QStringLiteral("TecDetails");
 

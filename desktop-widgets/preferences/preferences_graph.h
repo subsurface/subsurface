@@ -23,7 +23,6 @@ private slots:
 
 private:
 	Ui::PreferencesGraph *ui;
-
 };
 
 #endif
