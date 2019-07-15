@@ -16,6 +16,20 @@
 #include "dive.h"
 #include "display.h"
 #include "divelist.h"
+#include "subsurface-string.h"
+
+const char *cylinderuse_text[NUM_GAS_USE] = {
+	QT_TRANSLATE_NOOP("gettextFromC", "OC-gas"), QT_TRANSLATE_NOOP("gettextFromC", "diluent"), QT_TRANSLATE_NOOP("gettextFromC", "oxygen"), QT_TRANSLATE_NOOP("gettextFromC", "not used")
+};
+
+int cylinderuse_from_text(const char *text)
+{
+	for (enum cylinderuse i = 0; i < NUM_GAS_USE; i++) {
+		if (same_string(text, cylinderuse_text[i]) || same_string(text, translate("gettextFromC", cylinderuse_text[i])))
+			return i;
+	}
+	return -1;
+}
 
 /* placeholders for a few functions that we need to redesign for the Qt UI */
 void add_cylinder_description(const cylinder_type_t *type)
