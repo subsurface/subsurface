@@ -3,6 +3,7 @@
 #include "desktop-widgets/command.h"
 #include "core/display.h"
 #include "core/qthelper.h"
+#include "core/divelist.h"
 #include "core/settings/qPrefDiveComputer.h"
 #include "core/subsurface-string.h"
 #include "core/uemis.h"

@@ -5,6 +5,7 @@
 #include <QLibraryInfo>
 #include <QTextCodec>
 #include "qthelper.h"
+#include "dive.h" // for "verbose"
 #include "core/settings/qPref.h"
 
 char *settings_suffix = NULL;

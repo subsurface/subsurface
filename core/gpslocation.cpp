@@ -4,6 +4,7 @@
 #include "qt-models/gpslistmodel.h"
 #include "core/pref.h"
 #include "core/qthelper.h"
+#include "core/divelist.h" // for mark_divelist_changed()
 #include "core/settings/qPrefLocationService.h"
 #include <time.h>
 #include <unistd.h>

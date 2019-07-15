@@ -3,6 +3,7 @@
 #include "tankinfomodel.h"
 #include "models.h"
 #include "core/qthelper.h"
+#include "core/divelist.h" // for mark_divelist_changed()
 #include "core/color.h"
 #include "qt-models/diveplannermodel.h"
 #include "core/gettextfromc.h"
