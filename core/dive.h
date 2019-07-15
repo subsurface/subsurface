@@ -449,19 +449,8 @@ struct deco_state {
 };
 
 extern void add_segment(struct deco_state *ds, double pressure, struct gasmix gasmix, int period_in_seconds, int setpoint, enum divemode_t divemode, int sac);
-extern void clear_deco(struct deco_state *ds, double surface_pressure);
-extern void dump_tissues(struct deco_state *ds);
-extern void set_gf(short gflow, short gfhigh);
-extern void set_vpmb_conservatism(short conservatism);
-extern void cache_deco_state(struct deco_state *source, struct deco_state **datap);
-extern void restore_deco_state(struct deco_state *data, struct deco_state *target, bool keep_vpmb_state);
-extern void nuclear_regeneration(struct deco_state *ds, double time);
-extern void vpmb_start_gradient(struct deco_state *ds);
-extern void vpmb_next_gradient(struct deco_state *ds, double deco_time, double surface_pressure);
-extern double tissue_tolerance_calc(struct deco_state *ds, const struct dive *dive, double pressure);
 extern bool is_dc_planner(const struct divecomputer *dc);
 extern bool has_planned(const struct dive *dive, bool planned);
-
 
 /* this should be converted to use our types */
 struct divedatapoint {
@@ -499,10 +488,6 @@ struct decostop {
 	int time;
 };
 extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
-extern void calc_crushing_pressure(struct deco_state *ds, double pressure);
-extern void vpmb_start_gradient(struct deco_state *ds);
-extern void clear_vpmb_state(struct deco_state *ds);
-extern void printdecotable(struct decostop *table);
 
 /* Since C doesn't have parameter-based overloading, two versions of get_next_event. */
 extern const struct event *get_next_event(const struct event *event, const char *name);
