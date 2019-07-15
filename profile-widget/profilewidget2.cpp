@@ -178,6 +178,11 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 #endif
 }
 
+ProfileWidget2::~ProfileWidget2()
+{
+	free_plot_info_data(&plotInfo);
+}
+
 #ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::addActionShortcut(const Qt::Key shortcut, void (ProfileWidget2::*slot)())
 {

@@ -32,6 +32,11 @@ TankItem::TankItem(QObject *parent) :
 	hAxis = nullptr;
 }
 
+TankItem::~TankItem()
+{
+	free(pInfoEntry);
+}
+
 void TankItem::setData(DivePlotDataModel *model, struct plot_info *plotInfo, struct dive *d)
 {
 	// If there is nothing to plot, quit early.

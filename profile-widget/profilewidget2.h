@@ -73,6 +73,7 @@ public:
 	};
 
 	ProfileWidget2(QWidget *parent = 0);
+	~ProfileWidget2();
 	void resetZoom();
 	void scale(qreal sx, qreal sy);
 	void plotDive(const struct dive *d = 0, bool force = false, bool clearPictures = false, bool instant = false);
