@@ -9,7 +9,6 @@
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/mapwidget.h"
 #include "core/qthelper.h"
-#include "core/statistics.h"
 #include "core/trip.h"
 #include "qt-models/diveplannermodel.h"
 #include "desktop-widgets/divelistview.h"
@@ -563,12 +562,6 @@ void MainTab::updateDiveInfo()
 		}
 		ui.duration->setText(render_seconds_to_string(current_dive->duration.seconds));
 		ui.depth->setText(get_depth_string(current_dive->maxdepth, true));
-
-		int mean[MAX_CYLINDERS], duration[MAX_CYLINDERS];
-		per_cylinder_mean_depth(&displayed_dive, select_dc(&displayed_dive), mean, duration);
-
-		volume_t o2_tot = {}, he_tot = {};
-		selected_dives_gas_parts(&o2_tot, &he_tot);
 
 		if(ui.locationTags->text().isEmpty())
 			ui.locationTags->hide();
