@@ -16,9 +16,6 @@
 
 #include "core/metrics.h"
 
-#include "core/dive.h"
-#include "core/divelist.h"
-#include "core/divecomputer.h"
 #include "cleanertablemodel.h"
 #include "treemodel.h"
 
