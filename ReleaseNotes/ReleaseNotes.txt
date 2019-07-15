@@ -36,6 +36,7 @@ New in _Subsurface_ 4.9
   - Add support for Scubapro Aladin H Matrix, G2 HUD
   - Add support for Suunto D5
   - Add support for Tusa Talis
+  - Add support for Aqualung i550C
   - Many bugfixes for previously support dive computers
 
 New in _Subsurface_ 4.8.6
