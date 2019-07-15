@@ -44,6 +44,7 @@ typedef struct
 #define MAX_TANK_INFO (100)
 #define MAX_WS_INFO (100)
 
+extern int cylinderuse_from_text(const char *text);
 extern void add_cylinder_description(const cylinder_type_t *);
 extern void add_weightsystem_description(const weightsystem_t *);
 extern bool cylinder_nodata(const cylinder_t *cyl);

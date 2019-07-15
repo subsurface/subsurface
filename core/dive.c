@@ -23,10 +23,6 @@
  * here */
 struct dive displayed_dive;
 
-const char *cylinderuse_text[NUM_GAS_USE] = {
-	QT_TRANSLATE_NOOP("gettextFromC", "OC-gas"), QT_TRANSLATE_NOOP("gettextFromC", "diluent"), QT_TRANSLATE_NOOP("gettextFromC", "oxygen"), QT_TRANSLATE_NOOP("gettextFromC", "not used")
-};
-
 // For user visible text but still not translated
 const char *divemode_text_ui[] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "Open circuit"),
@@ -565,15 +561,6 @@ void copy_cylinders(const struct dive *s, struct dive *d, bool used_only)
 			j++;
 		}
 	}
-}
-
-int cylinderuse_from_text(const char *text)
-{
-	for (enum cylinderuse i = 0; i < NUM_GAS_USE; i++) {
-		if (same_string(text, cylinderuse_text[i]) || same_string(text, translate("gettextFromC", cylinderuse_text[i])))
-			return i;
-	}
-	return -1;
 }
 
 void copy_samples(const struct divecomputer *s, struct divecomputer *d)

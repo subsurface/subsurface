@@ -314,8 +314,6 @@ extern int save_dive_sites_logic(const char *filename, bool select_only, bool an
 struct membuffer;
 extern void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize);
 
-int cylinderuse_from_text(const char *text);
-
 struct user_info {
 	char *name;
 	char *email;
