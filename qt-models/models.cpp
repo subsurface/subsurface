@@ -7,6 +7,7 @@
  */
 #include "qt-models/models.h"
 #include "core/qthelper.h"
+#include "core/dive.h"
 #include "core/gettextfromc.h"
 
 #include <QLocale>

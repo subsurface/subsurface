@@ -2,6 +2,7 @@
 #include "core/libdivecomputer.h"
 #include "core/qthelper.h"
 #include "core/settings/qPrefDiveComputer.h"
+#include "core/divelist.h"
 #include <QDebug>
 #if defined(Q_OS_ANDROID)
 #include "core/subsurface-string.h"
