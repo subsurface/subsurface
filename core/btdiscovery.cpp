@@ -90,6 +90,11 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		product = "Geo 4.0";
 	}
 
+	if (btName.contains(QRegularExpression("^DS\\d{6}"))) {
+		vendor = "Ratio";
+		product = "iX3M GPS Easy"; // we don't know which of the GPS models, so set one
+	}
+
 	if (!vendor.isEmpty() && !product.isEmpty())
 		return descriptorLookup.value(vendor + product);
 
