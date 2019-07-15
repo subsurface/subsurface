@@ -33,11 +33,6 @@ void write_hashes();
 QString thumbnailFileName(const QString &filename);
 void learnPictureFilename(const QString &originalName, const QString &localName);
 QString localFilePath(const QString &originalFilename);
-weight_t string_to_weight(const char *str);
-depth_t string_to_depth(const char *str);
-pressure_t string_to_pressure(const char *str);
-volume_t string_to_volume(const char *str, pressure_t workp);
-fraction_t string_to_fraction(const char *str);
 int getCloudURL(QString &filename);
 bool parseGpsText(const QString &gps_text, double *latitude, double *longitude);
 void init_proxy();
@@ -162,6 +157,11 @@ void print_qt_versions();
 void lock_planner();
 void unlock_planner();
 xsltStylesheetPtr get_stylesheet(const char *name);
+weight_t string_to_weight(const char *str);
+depth_t string_to_depth(const char *str);
+pressure_t string_to_pressure(const char *str);
+volume_t string_to_volume(const char *str, pressure_t workp);
+fraction_t string_to_fraction(const char *str);
 
 #ifdef __cplusplus
 }
