@@ -1016,14 +1016,12 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 		if (done && ++bp < endptr && *bp != '{' && strstr(bp, "{{")) {
 			done = false;
 			record_dive_to_table(dive, devdata->download_table);
-			mark_divelist_changed(true);
 			dive = uemis_start_dive(deviceid);
 		}
 	}
 	if (is_log) {
 		if (dive->dc.diveid) {
 			record_dive_to_table(dive, devdata->download_table);
-			mark_divelist_changed(true);
 		} else { /* partial dive */
 			free(dive);
 			free(buf);

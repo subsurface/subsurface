@@ -3215,8 +3215,6 @@ static int split_dive_at(const struct dive *dive, int a, int b, struct dive **ou
 			d2->number = 0;
 	}
 
-	mark_divelist_changed(true);
-
 	*out1 = d1;
 	*out2 = d2;
 	return nr;

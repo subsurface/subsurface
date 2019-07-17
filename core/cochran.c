@@ -787,7 +787,6 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 	}
 
 	record_dive_to_table(dive, table);
-	mark_divelist_changed(true);
 
 	free(buf);
 }
