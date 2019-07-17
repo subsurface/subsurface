@@ -190,7 +190,6 @@ void ostctools_import(const char *file, struct dive_table *divetable, struct tri
 		add_extra_data(&ostcdive->dc, "Serial", ostcdive->dc.serial);
 	}
 	record_dive_to_table(ostcdive, divetable);
-	mark_divelist_changed(true);
 	sort_dive_table(divetable);
 
 close_out:
