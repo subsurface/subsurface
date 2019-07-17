@@ -29,6 +29,7 @@ namespace Command {
 class EditDivesBase : public Base {
 protected:
 	EditDivesBase(bool currentDiveOnly);
+	EditDivesBase(dive *d);
 	std::vector<dive *> dives; // Dives to be edited.
 
 	// On undo, we set the selection and current dive at the time of the operation.
@@ -50,6 +51,7 @@ protected:
 
 public:
 	EditBase(T newValue, bool currentDiveOnly);
+	EditBase(T newValue, dive *d);
 
 protected:
 	// Get and set functions to be overriden by sub-classes.
@@ -169,6 +171,15 @@ class EditMode : public EditBase<int> {
 public:
 	EditMode(int indexIn, int newValue, bool currentDiveOnly);
 	void set(struct dive *d, int i) const override;
+	int data(struct dive *d) const override;
+	QString fieldName() const override;
+	DiveField fieldId() const override;
+};
+
+class EditNumber : public EditBase<int> {
+public:
+	using EditBase<int>::EditBase;	// Use constructor of base class.
+	void set(struct dive *d, int number) const override;
 	int data(struct dive *d) const override;
 	QString fieldName() const override;
 	DiveField fieldId() const override;

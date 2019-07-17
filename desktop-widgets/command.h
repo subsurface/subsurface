@@ -60,6 +60,7 @@ void purgeUnusedDiveSites();
 int editNotes(const QString &newValue, bool currentDiveOnly);
 int editSuit(const QString &newValue, bool currentDiveOnly);
 int editMode(int index, int newValue, bool currentDiveOnly);
+int editNumber(int newValue, bool currentDiveOnly);
 int editRating(int newValue, bool currentDiveOnly);
 int editVisibility(int newValue, bool currentDiveOnly);
 int editAirTemp(int newValue, bool currentDiveOnly);
