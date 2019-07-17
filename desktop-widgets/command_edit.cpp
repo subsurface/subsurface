@@ -33,6 +33,13 @@ EditDivesBase::EditDivesBase(bool currentDiveOnly) :
 {
 }
 
+EditDivesBase::EditDivesBase(dive *d) :
+	dives({ d }),
+	selectedDives(getDiveSelection()),
+	current(current_dive)
+{
+}
+
 int EditDivesBase::numDives() const
 {
 	return dives.size();
@@ -41,6 +48,13 @@ int EditDivesBase::numDives() const
 template<typename T>
 EditBase<T>::EditBase(T newValue, bool currentDiveOnly) :
 	EditDivesBase(currentDiveOnly),
+	value(std::move(newValue))
+{
+}
+
+template<typename T>
+EditBase<T>::EditBase(T newValue, dive *d) :
+	EditDivesBase(d),
 	value(std::move(newValue))
 {
 }
@@ -444,6 +458,28 @@ DiveField EditMode::fieldId() const
 {
 	return DiveField::MODE;
 }
+
+// ***** Number *****
+void EditNumber::set(struct dive *d, int number) const
+{
+	d->number = number;
+}
+
+int EditNumber::data(struct dive *d) const
+{
+	return d->number;
+}
+
+QString EditNumber::fieldName() const
+{
+	return tr("number");
+}
+
+DiveField EditNumber::fieldId() const
+{
+	return DiveField::NR;
+}
+
 
 // ***** Tag based commands *****
 EditTagsBase::EditTagsBase(const QStringList &newListIn, bool currentDiveOnly) :

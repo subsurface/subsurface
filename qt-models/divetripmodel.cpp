@@ -7,6 +7,7 @@
 #include "core/qthelper.h"
 #include "core/subsurface-string.h"
 #include "core/tag.h"
+#include "desktop-widgets/command.h"
 #include <QIcon>
 #include <QDebug>
 #include <memory>
@@ -412,8 +413,7 @@ bool DiveTripModelBase::setData(const QModelIndex &index, const QVariant &value,
 		if (dive->number == v)
 			return false;
 	}
-	d->number = v;
-	mark_divelist_changed(true);
+	Command::editNumber(v, d);
 	return true;
 }
 
