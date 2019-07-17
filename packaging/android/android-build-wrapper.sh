@@ -149,7 +149,7 @@ echo "${BUILDNR}" > ./buildnr.dat
 
 echo "Building Subsurface-mobile for Android, build nr ${BUILDNR}"
 
-rm -f ./subsurface-mobile-build-arm/build/outputs/apk/*.apk
+rm -f ./subsurface-mobile-build-arm/build/outputs/apk/debug/*.apk
 rm -df ./subsurface-mobile-build-arm/AndroidManifest.xml
 
 if [ "$USE_X" ] ; then
@@ -160,5 +160,5 @@ else
 	bash "$SUBSURFACE_SOURCE"/packaging/android/build.sh -buildnr "$BUILDNR" arm64 "$@"
 fi
 
-ls -l ./subsurface-mobile-build-arm/build/outputs/apk/*.apk
+ls -l ./subsurface-mobile-build-arm/build/outputs/apk/debug/*.apk
 
