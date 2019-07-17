@@ -346,4 +346,4 @@ This will download and install the required NDK, SDK and Qt required to build th
 
 After that, you can run: ./subsurface/packaging/android/build.sh everytime you want to build a new version.
 
-This will generate an apk file in ./subsurface-mobile-build-arm/build/outputs/apk/
+This will generate an apk file in ./subsurface-mobile-build-arm/build/outputs/apk/debug
