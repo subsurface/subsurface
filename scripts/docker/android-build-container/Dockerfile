@@ -54,4 +54,4 @@ RUN cd /android && \
     du -sh *
 RUN apt-get clean
 RUN cd /android/android-ndk-r18b/toolchains && ln -s x86_64-4.9 x86-64-4.9
-RUN touch /android/finished-`date`
+RUN touch /android/finished-"`date`"
