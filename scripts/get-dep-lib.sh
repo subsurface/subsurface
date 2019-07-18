@@ -104,7 +104,7 @@ fi
 # FIX FOR ANDROID,
 if [ "$PLATFORM" == "singleAndroid" ] ; then
 	CURRENT_OPENSSL="OpenSSL_1_1_1c"
-# If changing the openSSL version here, make sure to change it in versions.sh also.
+# If changing the openSSL version here, make sure to change it in packaging/android/variables.sh also.
 fi
 # no curl and old libs (never version breaks)
 # check whether to use curl or wget

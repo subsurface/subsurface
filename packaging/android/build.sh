@@ -435,7 +435,7 @@ cmake $MOBILE_CMAKE \
 	-DANDROID_NATIVE_LIBCRYPT="$BUILDROOT/ndk-$ARCH/sysroot/usr/lib/libcrypto.so" \
 	-DCMAKE_MAKE_PROGRAM="make" \
 	"$SUBSURFACE_SOURCE"
-	
+
 # set up the version number
 
 rm -f ssrf-version.h
