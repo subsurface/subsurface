@@ -87,6 +87,7 @@ export ARCH
 
 # Configure where we can find things here
 export ANDROID_NDK_ROOT=${ANDROID_NDK_ROOT-$SUBSURFACE_SOURCE/../${ANDROID_NDK}}
+export ANDROID_NDK_HOME=$ANDROID_NDK_ROOT
 
 if [ -n "${QT5_ANDROID+X}" ] ; then
 	echo "Using Qt5 in $QT5_ANDROID"
@@ -243,7 +244,6 @@ if [ "$QUICK" = "" ] ; then
 		cp -r openssl/* openssl-build-"$ARCH"
 		pushd openssl-build-"$ARCH"
 		perl -pi -e 's/-mandroid//g' Configure
-		export ANDROID_NDK_HOME=$ANDROID_NDK_ROOT
 		# Use env to make all these temporary, so they don't pollute later builds.
 		env	PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH \
 			CC=clang \
