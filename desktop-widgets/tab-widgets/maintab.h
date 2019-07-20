@@ -61,7 +61,6 @@ slots:
 	void on_locationPopupButton_clicked();
 	void on_divemaster_editingFinished();
 	void on_buddy_editingFinished();
-	void on_suit_editingFinished();
 	void on_diveTripLocation_editingFinished();
 	void on_notes_editingFinished();
 	void on_airtemp_editingFinished();
@@ -86,7 +85,6 @@ private:
 	EditMode editMode;
 	BuddyCompletionModel buddyModel;
 	DiveMasterCompletionModel diveMasterModel;
-	SuitCompletionModel suitModel;
 	TagCompletionModel tagModel;
 	bool modified;
 	bool lastSelectedDive;

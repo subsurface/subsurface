@@ -4,6 +4,8 @@
 
 #include "TabBase.h"
 #include "ui_TabDiveEquipment.h"
+#include "qt-models/completionmodels.h"
+#include "desktop-widgets/divelistview.h"
 
 namespace Ui {
 	class TabDiveEquipment;
@@ -21,15 +23,21 @@ public:
 	void clear() override;
 	void acceptChanges();
 	void rejectChanges();
+	void divesEdited(int i);
+	void closeWarning();
+
 private slots:
+	void divesChanged(const QVector<dive *> &dives, DiveField field);
 	void addCylinder_clicked();
 	void addWeight_clicked();
 	void toggleTriggeredColumn();
 	void editCylinderWidget(const QModelIndex &index);
 	void editWeightWidget(const QModelIndex &index);
+	void on_suit_editingFinished();
+
 private:
 	Ui::TabDiveEquipment ui;
-
+	SuitCompletionModel suitModel;
 	CylindersModel *cylindersModel;
 	WeightModel *weightModel;
 };
