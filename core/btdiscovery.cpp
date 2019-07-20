@@ -38,12 +38,15 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	if (btName.startsWith("Predator") ||
 	    btName.startsWith("Petrel") ||
 	    btName.startsWith("Perdix") ||
-	    btName.startsWith("Teric")) {
+	    btName.startsWith("Teric") ||
+	    btName.startsWith("NERD")) {
 		vendor = "Shearwater";
 		if (btName.startsWith("Petrel")) product = "Petrel"; // or petrel 2?
 		if (btName.startsWith("Perdix")) product = "Perdix";
 		if (btName.startsWith("Predator")) product = "Predator";
 		if (btName.startsWith("Teric")) product = "Teric";
+		if (btName.startsWith("NERD")) product = "Nerd"; // next line might override this
+		if (btName.startsWith("NERD 2")) product = "Nerd 2";
 	}
 
 	if (btName.startsWith("EON Steel")) {
