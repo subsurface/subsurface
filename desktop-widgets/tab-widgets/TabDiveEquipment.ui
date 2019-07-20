@@ -7,6 +7,9 @@
   </attribute>
   <layout class="QVBoxLayout" name="verticalLayout_10">
    <item>
+    <widget class="KMessageWidget" name="multiDiveWarningMessage"/>
+   </item>
+   <item>
     <widget class="QScrollArea" name="scrollArea">
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
@@ -61,11 +64,21 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QSplitter" name="splitter">
+            <widget class="QSplitter" name="splitter">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
             <widget class="TableView" name="cylinders" native="true"/>
+            <widget class="QLabel" name="suitText">
+             <property name="text">
+              <string>Suit</string>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="suit">
+             <property name="readOnly">
+              <bool>false</bool>
+             </property>
+            </widget>
             <widget class="TableView" name="weights" native="true"/>
            </widget>
           </item>

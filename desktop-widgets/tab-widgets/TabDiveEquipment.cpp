@@ -4,20 +4,23 @@
 #include "desktop-widgets/mainwindow.h" // TODO: Only used temporarilly for edit mode changes
 #include "desktop-widgets/simplewidgets.h" // For isGnome3Session()
 #include "desktop-widgets/modeldelegates.h"
-
+#include "desktop-widgets/command.h"
 #include "profile-widget/profilewidget2.h"
 
 #include "qt-models/cylindermodel.h"
 #include "qt-models/weightmodel.h"
 
-#include "core/divelist.h"
 #include "core/subsurface-string.h"
+#include "core/divelist.h"
 
 #include <QSettings>
+#include <QCompleter>
+
 TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 	cylindersModel(new CylindersModel(this)),
 	weightModel(new WeightModel(this))
 {
+	QCompleter *suitCompleter;
 	ui.setupUi(this);
 
 	// This makes sure we only delete the models
@@ -29,6 +32,7 @@ TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 	ui.cylinders->setModel(cylindersModel);
 	ui.weights->setModel(weightModel);
 
+	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &TabDiveEquipment::divesChanged);
 	connect(ui.cylinders->view(), &QTableView::clicked, this, &TabDiveEquipment::editCylinderWidget);
 	connect(ui.weights->view(), &QTableView::clicked, this, &TabDiveEquipment::editWeightWidget);
 
@@ -53,6 +57,17 @@ TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 	ui.weights->setBtnToolTip(tr("Add weight system"));
 	connect(ui.weights, &TableView::addButtonClicked, this, &TabDiveEquipment::addWeight_clicked);
 
+	QAction *action = new QAction(tr("OK"), this);
+	connect(action, &QAction::triggered, this, &TabDiveEquipment::closeWarning);
+	ui.multiDiveWarningMessage->addAction(action);
+
+	action = new QAction(tr("Undo"), this);
+	connect(action, &QAction::triggered, Command::undoAction(this), &QAction::trigger);
+	connect(action, &QAction::triggered, this, &TabDiveEquipment::closeWarning);
+	ui.multiDiveWarningMessage->addAction(action);
+
+	ui.multiDiveWarningMessage->hide();
+
 	QSettings s;
 	s.beginGroup("cylinders_dialog");
 	for (int i = 0; i < CylindersModel::COLUMNS; i++) {
@@ -67,9 +82,11 @@ TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 		ui.cylinders->view()->setColumnHidden(i, checked);
 		ui.cylinders->view()->horizontalHeader()->addAction(action);
 	}
-
 	ui.cylinders->view()->horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
 	ui.weights->view()->horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
+	suitCompleter = new QCompleter(&suitModel, ui.suit);
+	suitCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+	ui.suit->setCompleter(suitCompleter);
 }
 
 TabDiveEquipment::~TabDiveEquipment()
@@ -80,6 +97,23 @@ TabDiveEquipment::~TabDiveEquipment()
 		if ((i == CylindersModel::REMOVE) || (i == CylindersModel::TYPE))
 			continue;
 		s.setValue(QString("column%1_hidden").arg(i), ui.cylinders->view()->isColumnHidden(i));
+	}
+}
+
+// This function gets called if a field gets updated by an undo command.
+// Refresh the corresponding UI field.
+void TabDiveEquipment::divesChanged(const QVector<dive *> &dives, DiveField field)
+{
+	// If the current dive is not in list of changed dives, do nothing
+	if (!current_dive || !dives.contains(current_dive))
+		return;
+
+	switch(field) {
+	case DiveField::SUIT:
+		ui.suit->setText(QString(current_dive->suit));
+		break;
+	default:
+		break;
 	}
 }
 
@@ -101,18 +135,24 @@ void TabDiveEquipment::updateData()
 {
 	cylindersModel->updateDive();
 	weightModel->updateDive();
+	suitModel.updateModel();
 
 	ui.cylinders->view()->hideColumn(CylindersModel::DEPTH);
 	if (get_dive_dc(&displayed_dive, dc_number)->divemode == CCR)
 		ui.cylinders->view()->showColumn(CylindersModel::USE);
 	else
 		ui.cylinders->view()->hideColumn(CylindersModel::USE);
+	if (current_dive && current_dive->suit)
+		ui.suit->setText(QString(current_dive->suit));
+	else
+		ui.suit->clear();
 }
 
 void TabDiveEquipment::clear()
 {
 	cylindersModel->clear();
 	weightModel->clear();
+	ui.suit->clear();
 }
 
 void TabDiveEquipment::addCylinder_clicked()
@@ -256,3 +296,27 @@ void TabDiveEquipment::rejectChanges()
 	cylindersModel->updateDive();
 	weightModel->updateDive();
 }
+
+void TabDiveEquipment::divesEdited(int i)
+{
+	// No warning if only one dive was edited
+	if (i <= 1)
+		return;
+	ui.multiDiveWarningMessage->setCloseButtonVisible(false);
+	ui.multiDiveWarningMessage->setText(tr("Warning: edited %1 dives").arg(i));
+	ui.multiDiveWarningMessage->show();
+}
+
+void TabDiveEquipment::on_suit_editingFinished()
+{
+	if (!current_dive)
+		return;
+	divesEdited(Command::editSuit(ui.suit->text(), false));
+}
+
+void TabDiveEquipment::closeWarning()
+{
+	ui.multiDiveWarningMessage->hide();
+}
+
+

@@ -44,7 +44,6 @@
 struct Completers {
 	QCompleter *divemaster;
 	QCompleter *buddy;
-	QCompleter *suit;
 	QCompleter *tags;
 };
 
@@ -126,15 +125,12 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	Completers completers;
 	completers.buddy = new QCompleter(&buddyModel, ui.buddy);
 	completers.divemaster = new QCompleter(&diveMasterModel, ui.divemaster);
-	completers.suit = new QCompleter(&suitModel, ui.suit);
 	completers.tags = new QCompleter(&tagModel, ui.tagWidget);
 	completers.buddy->setCaseSensitivity(Qt::CaseInsensitive);
 	completers.divemaster->setCaseSensitivity(Qt::CaseInsensitive);
-	completers.suit->setCaseSensitivity(Qt::CaseInsensitive);
 	completers.tags->setCaseSensitivity(Qt::CaseInsensitive);
 	ui.buddy->setCompleter(completers.buddy);
 	ui.divemaster->setCompleter(completers.divemaster);
-	ui.suit->setCompleter(completers.suit);
 	ui.tagWidget->setCompleter(completers.tags);
 	ui.diveNotesMessage->hide();
 	ui.multiDiveWarningMessage->hide();
@@ -308,9 +304,6 @@ void MainTab::divesChanged(const QVector<dive *> &dives, DiveField field)
 	case DiveField::VISIBILITY:
 		ui.visibility->setCurrentStars(current_dive->visibility);
 		break;
-	case DiveField::SUIT:
-		ui.suit->setText(QString(current_dive->suit));
-		break;
 	case DiveField::NOTES:
 		updateNotes(current_dive);
 		break;
@@ -474,8 +467,6 @@ void MainTab::updateDiveInfo()
 			ui.DivemasterLabel->setVisible(false);
 			ui.buddy->setVisible(false);
 			ui.BuddyLabel->setVisible(false);
-			ui.suit->setVisible(false);
-			ui.SuitLabel->setVisible(false);
 			ui.rating->setVisible(false);
 			ui.RatingLabel->setVisible(false);
 			ui.visibility->setVisible(false);
@@ -530,8 +521,6 @@ void MainTab::updateDiveInfo()
 			ui.editDiveSiteButton->show();
 			ui.divemaster->setVisible(true);
 			ui.buddy->setVisible(true);
-			ui.suit->setVisible(true);
-			ui.SuitLabel->setVisible(true);
 			ui.rating->setVisible(true);
 			ui.RatingLabel->setVisible(true);
 			ui.visibility->setVisible(true);
@@ -566,7 +555,6 @@ void MainTab::updateDiveInfo()
 			updateMode(current_dive);
 			updateDiveSite(current_dive);
 			updateDateTime(current_dive);
-			ui.suit->setText(current_dive->suit);
 			ui.divemaster->setText(current_dive->divemaster);
 			ui.buddy->setText(current_dive->buddy);
 			ui.airtemp->setText(get_temperature_string(current_dive->airtemp, true));
@@ -589,7 +577,6 @@ void MainTab::updateDiveInfo()
 		ui.rating->setCurrentStars(0);
 		ui.visibility->setCurrentStars(0);
 		ui.location->clear();
-		ui.suit->clear();
 		ui.divemaster->clear();
 		ui.buddy->clear();
 		ui.airtemp->clear();
@@ -612,7 +599,6 @@ void MainTab::updateDiveInfo()
 
 void MainTab::reload()
 {
-	suitModel.updateModel();
 	buddyModel.updateModel();
 	diveMasterModel.updateModel();
 	tagModel.updateModel();
@@ -887,14 +873,6 @@ void MainTab::on_diveTripLocation_editingFinished()
 	if (!currentTrip)
 		return;
 	Command::editTripLocation(currentTrip, ui.diveTripLocation->text());
-}
-
-void MainTab::on_suit_editingFinished()
-{
-	if (editMode == IGNORE || !current_dive)
-		return;
-
-	divesEdited(Command::editSuit(ui.suit->text(), false));
 }
 
 void MainTab::on_notes_editingFinished()
