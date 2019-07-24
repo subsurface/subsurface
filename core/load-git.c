@@ -26,9 +26,20 @@
 
 const char *saved_git_id = NULL;
 
+struct git_parser_state {
+	git_repository *repo;
+	struct divecomputer *active_dc;
+	struct dive *active_dive;
+	dive_trip_t *active_trip;
+	struct picture *active_pic;
+	struct dive_site *active_site;
+	int cylinder_index, weightsystem_index;
+	int o2pressure_sensor;
+};
+
 struct keyword_action {
 	const char *keyword;
-	void (*fn)(char *, struct membuffer *, void *);
+	void (*fn)(char *, struct membuffer *, struct git_parser_state *);
 };
 #define ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
 
@@ -99,7 +110,7 @@ static int get_salinity(const char *line)
 static fraction_t get_fraction(const char *line)
 {
 	fraction_t f;
-	f.permille = lrint(10*ascii_strtod(line, NULL));
+	f.permille = lrint(10 * ascii_strtod(line, NULL));
 	return f;
 }
 
@@ -155,19 +166,18 @@ static int get_index(const char *line)
 static int get_hex(const char *line)
 { return strtoul(line, NULL, 16); }
 
-static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
+static void parse_dive_gps(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	UNUSED(str);
 	location_t location;
-	struct dive *dive = _dive;
-	struct dive_site *ds = get_dive_site_for_dive(dive);
+	struct dive_site *ds = get_dive_site_for_dive(state->active_dive);
 
 	parse_location(line, &location);
 	if (!ds) {
 		ds = get_dive_site_by_gps(&location, &dive_site_table);
 		if (!ds)
 			ds = create_dive_site_with_gps("", &location, &dive_site_table);
-		add_dive_to_dive_site(dive, ds);
+		add_dive_to_dive_site(state->active_dive, ds);
 	} else {
 		if (dive_site_has_gps_location(ds) && !same_location(&ds->location, &location)) {
 			char *coords = printGPSCoordsC(&location);
@@ -180,17 +190,16 @@ static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 
 }
 
-static void parse_dive_location(char *line, struct membuffer *str, void *_dive)
+static void parse_dive_location(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	UNUSED(line);
 	char *name = get_utf8(str);
-	struct dive *dive = _dive;
-	struct dive_site *ds = get_dive_site_for_dive(dive);
+	struct dive_site *ds = get_dive_site_for_dive(state->active_dive);
 	if (!ds) {
 		ds = get_dive_site_by_name(name, &dive_site_table);
 		if (!ds)
 			ds = create_dive_site(name, &dive_site_table);
-		add_dive_to_dive_site(dive, ds);
+		add_dive_to_dive_site(state->active_dive, ds);
 	} else {
 		// we already had a dive site linked to the dive
 		if (empty_string(ds->name)) {
@@ -204,29 +213,28 @@ static void parse_dive_location(char *line, struct membuffer *str, void *_dive)
 	free(name);
 }
 
-static void parse_dive_divemaster(char *line, struct membuffer *str, void *_dive)
-{ UNUSED(line); struct dive *dive = _dive; dive->divemaster = get_utf8(str); }
+static void parse_dive_divemaster(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(line); state->active_dive->divemaster = get_utf8(str); }
 
-static void parse_dive_buddy(char *line, struct membuffer *str, void *_dive)
-{ UNUSED(line); struct dive *dive = _dive; dive->buddy = get_utf8(str); }
+static void parse_dive_buddy(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(line); state->active_dive->buddy = get_utf8(str); }
 
-static void parse_dive_suit(char *line, struct membuffer *str, void *_dive)
-{ UNUSED(line); struct dive *dive = _dive; dive->suit = get_utf8(str); }
+static void parse_dive_suit(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(line); state->active_dive->suit = get_utf8(str); }
 
-static void parse_dive_notes(char *line, struct membuffer *str, void *_dive)
-{ UNUSED(line); struct dive *dive = _dive; dive->notes = get_utf8(str); }
+static void parse_dive_notes(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(line); state->active_dive->notes = get_utf8(str); }
 
-static void parse_dive_divesiteid(char *line, struct membuffer *str, void *_dive)
-{ UNUSED(str); struct dive *dive = _dive; add_dive_to_dive_site(dive, get_dive_site_by_uuid(get_hex(line), &dive_site_table)); }
+static void parse_dive_divesiteid(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); add_dive_to_dive_site(state->active_dive, get_dive_site_by_uuid(get_hex(line), &dive_site_table)); }
 
 /*
  * We can have multiple tags in the membuffer. They are separated by
  * NUL bytes.
  */
-static void parse_dive_tags(char *line, struct membuffer *str, void *_dive)
+static void parse_dive_tags(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	UNUSED(line);
-	struct dive *dive = _dive;
 	const char *tag;
 	int len = str->len;
 
@@ -238,68 +246,65 @@ static void parse_dive_tags(char *line, struct membuffer *str, void *_dive)
 	for (;;) {
 		int taglen = strlen(tag);
 		if (taglen)
-			taglist_add_tag(&dive->tag_list, tag);
+			taglist_add_tag(&state->active_dive->tag_list, tag);
 		len -= taglen;
 		if (!len)
 			return;
-		tag += taglen+1;
+		tag += taglen + 1;
 		len--;
 	}
 }
 
-static void parse_dive_airtemp(char *line, struct membuffer *str, void *_dive)
-{ UNUSED(str); struct dive *dive = _dive; dive->airtemp = get_temperature(line); }
+static void parse_dive_airtemp(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dive->airtemp = get_temperature(line); }
 
-static void parse_dive_watertemp(char *line, struct membuffer *str, void *_dive)
-{ UNUSED(str); struct dive *dive = _dive; dive->watertemp = get_temperature(line); }
+static void parse_dive_watertemp(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dive->watertemp = get_temperature(line); }
 
-static void parse_dive_airpressure(char *line, struct membuffer *str, void *_dive)
-{ UNUSED(str); struct dive *dive = _dive; dive->surface_pressure = get_airpressure(line); }
+static void parse_dive_airpressure(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dive->surface_pressure = get_airpressure(line); }
 
-static void parse_dive_duration(char *line, struct membuffer *str, void *_dive)
-{ UNUSED(str); struct dive *dive = _dive; dive->duration = get_duration(line); }
+static void parse_dive_duration(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dive->duration = get_duration(line); }
 
-static void parse_dive_rating(char *line, struct membuffer *str, void *_dive)
-{ UNUSED(str); struct dive *dive = _dive; dive->rating = get_index(line); }
+static void parse_dive_rating(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dive->rating = get_index(line); }
 
-static void parse_dive_visibility(char *line, struct membuffer *str, void *_dive)
-{ UNUSED(str); struct dive *dive = _dive; dive->visibility = get_index(line); }
+static void parse_dive_visibility(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dive->visibility = get_index(line); }
 
-static void parse_dive_notrip(char *line, struct membuffer *str, void *_dive)
+static void parse_dive_notrip(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	UNUSED(str);
 	UNUSED(line);
-	struct dive *dive = _dive; dive->notrip = true;
+	state->active_dive->notrip = true;
 }
 
-static void parse_site_description(char *line, struct membuffer *str, void *_ds)
-{ UNUSED(line); struct dive_site *ds = _ds; ds->description = strdup(mb_cstring(str)); }
+static void parse_site_description(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(line); state->active_site->description = strdup(mb_cstring(str)); }
 
-static void parse_site_name(char *line, struct membuffer *str, void *_ds)
-{ UNUSED(line); struct dive_site *ds = _ds; ds->name = strdup(mb_cstring(str)); }
+static void parse_site_name(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(line); state->active_site->name = strdup(mb_cstring(str)); }
 
-static void parse_site_notes(char *line, struct membuffer *str, void *_ds)
-{ UNUSED(line); struct dive_site *ds = _ds; ds->notes = strdup(mb_cstring(str)); }
+static void parse_site_notes(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(line); state->active_site->notes = strdup(mb_cstring(str)); }
 
-static void parse_site_gps(char *line, struct membuffer *str, void *_ds)
+static void parse_site_gps(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	UNUSED(str);
-	struct dive_site *ds = _ds;
-
-	parse_location(line, &ds->location);
+	parse_location(line, &state->active_site->location);
 }
 
-static void parse_site_geo(char *line, struct membuffer *str, void *_ds)
+static void parse_site_geo(char *line, struct membuffer *str, struct git_parser_state *state)
 {
-	struct dive_site *ds = _ds;
-	if (ds->taxonomy.category == NULL)
-		ds->taxonomy.category = alloc_taxonomy();
-	int nr = ds->taxonomy.nr;
+	if (state->active_site->taxonomy.category == NULL)
+		state->active_site->taxonomy.category = alloc_taxonomy();
+	int nr = state->active_site->taxonomy.nr;
 	if (nr < TC_NR_CATEGORIES) {
-		struct taxonomy *t = &ds->taxonomy.category[nr];
+		struct taxonomy *t = &state->active_site->taxonomy.category[nr];
 		t->value = strdup(mb_cstring(str));
 		sscanf(line, "cat %d origin %d \"", &t->category, (int *)&t->origin);
-		ds->taxonomy.nr++;
+		state->active_site->taxonomy.nr++;
 	}
 }
 
@@ -329,9 +334,6 @@ static char *parse_keyvalue_entry(void (*fn)(void *, const char *, const char *)
 	fn(fndata, key, val);
 	return line;
 }
-
-static int cylinder_index;
-static int o2pressure_sensor;
 
 static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const char *value)
 {
@@ -386,12 +388,11 @@ static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const char
 	report_error("Unknown cylinder key/value pair (%s/%s)", key, value);
 }
 
-static void parse_dive_cylinder(char *line, struct membuffer *str, void *_dive)
+static void parse_dive_cylinder(char *line, struct membuffer *str, struct git_parser_state *state)
 {
-	struct dive *dive = _dive;
-	cylinder_t *cylinder = dive->cylinder + cylinder_index;
+	cylinder_t *cylinder = state->active_dive->cylinder + state->cylinder_index;
 
-	if (cylinder_index >= MAX_CYLINDERS)
+	if (state->cylinder_index >= MAX_CYLINDERS)
 		return;
 
 	cylinder->type.description = get_utf8(str);
@@ -404,8 +405,8 @@ static void parse_dive_cylinder(char *line, struct membuffer *str, void *_dive)
 		line = parse_keyvalue_entry(parse_cylinder_keyvalue, cylinder, line);
 	}
 	if (cylinder->cylinder_use == OXYGEN)
-		o2pressure_sensor = cylinder_index;
-	cylinder_index++;
+		state->o2pressure_sensor = state->cylinder_index;
+	state->cylinder_index++;
 }
 
 static void parse_weightsystem_keyvalue(void *_ws, const char *key, const char *value)
@@ -421,9 +422,8 @@ static void parse_weightsystem_keyvalue(void *_ws, const char *key, const char *
 	report_error("Unknown weightsystem key/value pair (%s/%s)", key, value);
 }
 
-static void parse_dive_weightsystem(char *line, struct membuffer *str, void *_dive)
+static void parse_dive_weightsystem(char *line, struct membuffer *str, struct git_parser_state *state)
 {
-	struct dive *dive = _dive;
 	weightsystem_t ws = { 0 };
 
 	ws.description = get_utf8(str);
@@ -436,7 +436,7 @@ static void parse_dive_weightsystem(char *line, struct membuffer *str, void *_di
 		line = parse_keyvalue_entry(parse_weightsystem_keyvalue, &ws, line);
 	}
 
-	add_to_weightsystem_table(&dive->weightsystems, dive->weightsystems.nr, ws);
+	add_to_weightsystem_table(&state->active_dive->weightsystems, state->active_dive->weightsystems.nr, ws);
 }
 
 static int match_action(char *line, struct membuffer *str, void *data,
@@ -607,24 +607,24 @@ static char *parse_sample_unit(struct sample *sample, double val, char *unit)
  * or the second cylinder depending on what isn't an
  * oxygen cylinder.
  */
-static struct sample *new_sample(struct divecomputer *dc)
+static struct sample *new_sample(struct git_parser_state *state)
 {
-	struct sample *sample = prepare_sample(dc);
-	if (sample != dc->sample) {
-		memcpy(sample, sample-1, sizeof(struct sample));
+	struct sample *sample = prepare_sample(state->active_dc);
+	if (sample != state->active_dc->sample) {
+		memcpy(sample, sample - 1, sizeof(struct sample));
 		sample->pressure[0].mbar = 0;
 		sample->pressure[1].mbar = 0;
 	} else {
-		sample->sensor[0] = !o2pressure_sensor;
-		sample->sensor[1] = o2pressure_sensor;
+		sample->sensor[0] = !state->o2pressure_sensor;
+		sample->sensor[1] = state->o2pressure_sensor;
 	}
 	return sample;
 }
 
-static void sample_parser(char *line, struct divecomputer *dc)
+static void sample_parser(char *line, struct git_parser_state *state)
 {
 	int m, s = 0;
-	struct sample *sample = new_sample(dc);
+	struct sample *sample = new_sample(state);
 
 	m = strtol(line, &line, 10);
 	if (*line == ':')
@@ -652,56 +652,56 @@ static void sample_parser(char *line, struct divecomputer *dc)
 			line = parse_sample_unit(sample, val, line);
 		}
 	}
-	finish_sample(dc);
+	finish_sample(state->active_dc);
 }
 
-static void parse_dc_airtemp(char *line, struct membuffer *str, void *_dc)
-{ UNUSED(str); struct divecomputer *dc = _dc; dc->airtemp = get_temperature(line); }
+static void parse_dc_airtemp(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dc->airtemp = get_temperature(line); }
 
-static void parse_dc_date(char *line, struct membuffer *str, void *_dc)
-{ UNUSED(str); struct divecomputer *dc = _dc; update_date(&dc->when, line); }
+static void parse_dc_date(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); update_date(&state->active_dc->when, line); }
 
-static void parse_dc_deviceid(char *line, struct membuffer *str, void *_dc)
-{ UNUSED(str); struct divecomputer *dc = _dc; set_dc_deviceid(dc, get_hex(line)); }
+static void parse_dc_deviceid(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); set_dc_deviceid(state->active_dc, get_hex(line)); }
 
-static void parse_dc_diveid(char *line, struct membuffer *str, void *_dc)
-{ UNUSED(str); struct divecomputer *dc = _dc; dc->diveid = get_hex(line); }
+static void parse_dc_diveid(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dc->diveid = get_hex(line); }
 
-static void parse_dc_duration(char *line, struct membuffer *str, void *_dc)
-{ UNUSED(str); struct divecomputer *dc = _dc; dc->duration = get_duration(line); }
+static void parse_dc_duration(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dc->duration = get_duration(line); }
 
-static void parse_dc_dctype(char *line, struct membuffer *str, void *_dc)
-{ UNUSED(str); struct divecomputer *dc = _dc; dc->divemode = get_dctype(line); }
+static void parse_dc_dctype(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dc->divemode = get_dctype(line); }
 
-static void parse_dc_lastmanualtime(char *line, struct membuffer *str, void *_dc)
-{ UNUSED(str); struct divecomputer *dc = _dc; dc->last_manual_time = get_duration(line); }
+static void parse_dc_lastmanualtime(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dc->last_manual_time = get_duration(line); }
 
-static void parse_dc_maxdepth(char *line, struct membuffer *str, void *_dc)
-{ UNUSED(str); struct divecomputer *dc = _dc; dc->maxdepth = get_depth(line); }
+static void parse_dc_maxdepth(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dc->maxdepth = get_depth(line); }
 
-static void parse_dc_meandepth(char *line, struct membuffer *str, void *_dc)
-{ UNUSED(str); struct divecomputer *dc = _dc; dc->meandepth = get_depth(line); }
+static void parse_dc_meandepth(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dc->meandepth = get_depth(line); }
 
-static void parse_dc_model(char *line, struct membuffer *str, void *_dc)
-{ UNUSED(line); struct divecomputer *dc = _dc; dc->model = get_utf8(str); }
+static void parse_dc_model(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(line); state->active_dc->model = get_utf8(str); }
 
-static void parse_dc_numberofoxygensensors(char *line, struct membuffer *str, void *_dc)
-{ UNUSED(str); struct divecomputer *dc = _dc; dc->no_o2sensors = get_index(line); }
+static void parse_dc_numberofoxygensensors(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dc->no_o2sensors = get_index(line); }
 
-static void parse_dc_surfacepressure(char *line, struct membuffer *str, void *_dc)
-{ UNUSED(str); struct divecomputer *dc = _dc; dc->surface_pressure = get_pressure(line); }
+static void parse_dc_surfacepressure(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dc->surface_pressure = get_pressure(line); }
 
-static void parse_dc_salinity(char *line, struct membuffer *str, void *_dc)
-{ UNUSED(str); struct divecomputer *dc = _dc; dc->salinity = get_salinity(line); }
+static void parse_dc_salinity(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dc->salinity = get_salinity(line); }
 
-static void parse_dc_surfacetime(char *line, struct membuffer *str, void *_dc)
-{ UNUSED(str); struct divecomputer *dc = _dc; dc->surfacetime = get_duration(line); }
+static void parse_dc_surfacetime(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dc->surfacetime = get_duration(line); }
 
-static void parse_dc_time(char *line, struct membuffer *str, void *_dc)
-{ UNUSED(str); struct divecomputer *dc = _dc; update_time(&dc->when, line); }
+static void parse_dc_time(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); update_time(&state->active_dc->when, line); }
 
-static void parse_dc_watertemp(char *line, struct membuffer *str, void *_dc)
-{ UNUSED(str); struct divecomputer *dc = _dc; dc->watertemp = get_temperature(line); }
+static void parse_dc_watertemp(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dc->watertemp = get_temperature(line); }
 
 
 static int get_divemode(const char *divemodestring) {
@@ -740,10 +740,9 @@ static void parse_event_keyvalue(void *_event, const char *key, const char *valu
 
 /* keyvalue "key" "value"
  * so we have two strings (possibly empty) in the membuffer, separated by a '\0' */
-static void parse_dc_keyvalue(char *line, struct membuffer *str, void *_dc)
+static void parse_dc_keyvalue(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	const char *key, *value;
-	struct divecomputer *dc = _dc;
 
 	// Let's make sure we have two strings...
 	int string_counter = 0;
@@ -761,14 +760,13 @@ static void parse_dc_keyvalue(char *line, struct membuffer *str, void *_dc)
 	// first string to 'key' and NUL terminates the second string (which then goes to 'value')
 	key = mb_cstring(str);
 	value = key + strlen(key) + 1;
-	add_extra_data(dc, key, value);
+	add_extra_data(state->active_dc, key, value);
 }
 
-static void parse_dc_event(char *line, struct membuffer *str, void *_dc)
+static void parse_dc_event(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	int m, s = 0;
 	const char *name;
-	struct divecomputer *dc = _dc;
 	struct event event = { 0 }, *ev;
 
 	m = strtol(line, &line, 10);
@@ -788,16 +786,15 @@ static void parse_dc_event(char *line, struct membuffer *str, void *_dc)
 	name = "";
 	if (str->len)
 		name = mb_cstring(str);
-	ev = add_event(dc, event.time.seconds, event.type, event.flags, event.value, name);
+	ev = add_event(state->active_dc, event.time.seconds, event.type, event.flags, event.value, name);
 
 	/*
 	 * Older logs might mark the dive to be CCR by having an "SP change" event at time 0:00.
 	 * Better to mark them being CCR on import so no need for special treatments elsewhere on
 	 * the code.
 	 */
-	if (ev && event.time.seconds == 0 && event.type == SAMPLE_EVENT_PO2 && event.value && dc->divemode==OC) {
-		dc->divemode = CCR;
-	}
+	if (ev && event.time.seconds == 0 && event.type == SAMPLE_EVENT_PO2 && event.value && state->active_dc->divemode==OC)
+		state->active_dc->divemode = CCR;
 
 	if (ev && event_is_gaschange(ev)) {
 		/*
@@ -812,20 +809,20 @@ static void parse_dc_event(char *line, struct membuffer *str, void *_dc)
 }
 
 /* Not needed anymore - trip date calculated implicitly from first dive */
-static void parse_trip_date(char *line, struct membuffer *str, void *trip)
-{ UNUSED(line); UNUSED(str); UNUSED(trip); }
+static void parse_trip_date(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(line); UNUSED(str); UNUSED(state); }
 
 /* Not needed anymore - trip date calculated implicitly from first dive */
-static void parse_trip_time(char *line, struct membuffer *str, void *trip)
-{ UNUSED(line); UNUSED(str); UNUSED(trip); }
+static void parse_trip_time(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(line); UNUSED(str); UNUSED(state); }
 
-static void parse_trip_location(char *line, struct membuffer *str, void *_trip)
-{ UNUSED(line); dive_trip_t *trip = _trip; trip->location = get_utf8(str); }
+static void parse_trip_location(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(line); state->active_trip->location = get_utf8(str); }
 
-static void parse_trip_notes(char *line, struct membuffer *str, void *_trip)
-{ UNUSED(line); dive_trip_t *trip = _trip; trip->notes = get_utf8(str); }
+static void parse_trip_notes(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(line); state->active_trip->notes = get_utf8(str); }
 
-static void parse_settings_autogroup(char *line, struct membuffer *str, void *_unused)
+static void parse_settings_autogroup(char *line, struct membuffer *str, struct git_parser_state *_unused)
 {
 	UNUSED(line);
 	UNUSED(str);
@@ -833,7 +830,7 @@ static void parse_settings_autogroup(char *line, struct membuffer *str, void *_u
 	set_autogroup(true);
 }
 
-static void parse_settings_units(char *line, struct membuffer *str, void *unused)
+static void parse_settings_units(char *line, struct membuffer *str, struct git_parser_state *unused)
 {
 	UNUSED(str);
 	UNUSED(unused);
@@ -841,7 +838,7 @@ static void parse_settings_units(char *line, struct membuffer *str, void *unused
 		set_informational_units(line);
 }
 
-static void parse_settings_userid(char *line, struct membuffer *str, void *_unused)
+static void parse_settings_userid(char *line, struct membuffer *str, struct git_parser_state *_unused)
 /* Keep this despite removal of the webservice as there are legacy logbook around
  * that still have this defined.
  */
@@ -851,7 +848,7 @@ static void parse_settings_userid(char *line, struct membuffer *str, void *_unus
 	UNUSED(line);
 }
 
-static void parse_settings_prefs(char *line, struct membuffer *str, void *unused)
+static void parse_settings_prefs(char *line, struct membuffer *str, struct git_parser_state *unused)
 {
 	UNUSED(str);
 	UNUSED(unused);
@@ -866,7 +863,7 @@ static void parse_settings_prefs(char *line, struct membuffer *str, void *unused
  * We MUST keep this in sync with the XML version (so we can report a consistent
  * minimum datafile version)
  */
-static void parse_settings_version(char *line, struct membuffer *str, void *_unused)
+static void parse_settings_version(char *line, struct membuffer *str, struct git_parser_state *_unused)
 {
 	UNUSED(str);
 	UNUSED(_unused);
@@ -877,7 +874,7 @@ static void parse_settings_version(char *line, struct membuffer *str, void *_unu
 }
 
 /* The string in the membuffer is the version string of subsurface that saved things, just FYI */
-static void parse_settings_subsurface(char *line, struct membuffer *str, void *_unused)
+static void parse_settings_subsurface(char *line, struct membuffer *str, struct git_parser_state *_unused)
 {
 	UNUSED(line);
 	UNUSED(str);
@@ -927,7 +924,7 @@ static void parse_divecomputerid_keyvalue(void *_cid, const char *key, const cha
  *
  * We keep the "next" string in "id.cstr" and update it as we use it.
  */
-static void parse_settings_divecomputerid(char *line, struct membuffer *str, void *_unused)
+static void parse_settings_divecomputerid(char *line, struct membuffer *str, struct git_parser_state *_unused)
 {
 	UNUSED(_unused);
 	struct divecomputerid id = { mb_cstring(str) };
@@ -948,28 +945,25 @@ static void parse_settings_divecomputerid(char *line, struct membuffer *str, voi
 	create_device_node(id.model, id.deviceid, id.serial, id.firmware, id.nickname);
 }
 
-static void parse_picture_filename(char *line, struct membuffer *str, void *_pic)
+static void parse_picture_filename(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	UNUSED(line);
-	struct picture *pic = _pic;
-	pic->filename = get_utf8(str);
+	state->active_pic->filename = get_utf8(str);
 }
 
-static void parse_picture_gps(char *line, struct membuffer *str, void *_pic)
+static void parse_picture_gps(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	UNUSED(str);
-	struct picture *pic = _pic;
-
-	parse_location(line, &pic->location);
+	parse_location(line, &state->active_pic->location);
 }
 
-static void parse_picture_hash(char *line, struct membuffer *str, void *_pic)
+static void parse_picture_hash(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	// we no longer use hashes to identify pictures, but we shouldn't
-	// remove this parser or otherwise users get an ugly red warning when
+	// remove this parser lest users get an ugly red warning when
 	// opening old git repos
 	UNUSED(line);
-	UNUSED(_pic);
+	UNUSED(state);
 	UNUSED(str);
 }
 
@@ -983,12 +977,12 @@ struct keyword_action dc_action[] = {
 };
 
 /* Sample lines start with a space or a number */
-static void divecomputer_parser(char *line, struct membuffer *str, void *_dc)
+static void divecomputer_parser(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	char c = *line;
 	if (c < 'a' || c > 'z')
-		sample_parser(line, _dc);
-	match_action(line, str, _dc, dc_action, ARRAY_SIZE(dc_action));
+		sample_parser(line, state);
+	match_action(line, str, state, dc_action, ARRAY_SIZE(dc_action));
 }
 
 /* These need to be sorted! */
@@ -1000,9 +994,9 @@ struct keyword_action dive_action[] = {
 	D(tags), D(visibility), D(watertemp), D(weightsystem)
 };
 
-static void dive_parser(char *line, struct membuffer *str, void *_dive)
+static void dive_parser(char *line, struct membuffer *str, struct git_parser_state *state)
 {
-	match_action(line, str, _dive, dive_action, ARRAY_SIZE(dive_action));
+	match_action(line, str, state, dive_action, ARRAY_SIZE(dive_action));
 }
 
 /* These need to be sorted! */
@@ -1012,9 +1006,9 @@ struct keyword_action site_action[] = {
 	D(description), D(geo), D(gps), D(name), D(notes)
 };
 
-static void site_parser(char *line, struct membuffer *str, void *_ds)
+static void site_parser(char *line, struct membuffer *str, struct git_parser_state *state)
 {
-	match_action(line, str, _ds, site_action, ARRAY_SIZE(site_action));
+	match_action(line, str, state, site_action, ARRAY_SIZE(site_action));
 }
 
 /* These need to be sorted! */
@@ -1024,9 +1018,9 @@ struct keyword_action trip_action[] = {
 	D(date), D(location), D(notes), D(time),
 };
 
-static void trip_parser(char *line, struct membuffer *str, void *_trip)
+static void trip_parser(char *line, struct membuffer *str, struct git_parser_state *state)
 {
-	match_action(line, str, _trip, trip_action, ARRAY_SIZE(trip_action));
+	match_action(line, str, state, trip_action, ARRAY_SIZE(trip_action));
 }
 
 /* These need to be sorted! */
@@ -1036,10 +1030,9 @@ static struct keyword_action settings_action[] = {
 	D(autogroup), D(divecomputerid), D(prefs), D(subsurface), D(units), D(userid), D(version)
 };
 
-static void settings_parser(char *line, struct membuffer *str, void *_unused)
+static void settings_parser(char *line, struct membuffer *str, struct git_parser_state *state)
 {
-	UNUSED(_unused);
-	match_action(line, str, NULL, settings_action, ARRAY_SIZE(settings_action));
+	match_action(line, str, state, settings_action, ARRAY_SIZE(settings_action));
 }
 
 /* These need to be sorted! */
@@ -1049,9 +1042,9 @@ static struct keyword_action picture_action[] = {
 	D(filename), D(gps), D(hash)
 };
 
-static void picture_parser(char *line, struct membuffer *str, void *_pic)
+static void picture_parser(char *line, struct membuffer *str, struct git_parser_state *state)
 {
-	match_action(line, str, _pic, picture_action, ARRAY_SIZE(picture_action));
+	match_action(line, str, state, picture_action, ARRAY_SIZE(picture_action));
 }
 
 /*
@@ -1130,9 +1123,9 @@ static const char *parse_one_string(const char *buf, const char *end, struct mem
 	return p;
 }
 
-typedef void (line_fn_t)(char *, struct membuffer *, void *);
+typedef void (line_fn_t)(char *, struct membuffer *, struct git_parser_state *);
 #define MAXLINE 500
-static unsigned parse_one_line(const char *buf, unsigned size, line_fn_t *fn, void *fndata, struct membuffer *b)
+static unsigned parse_one_line(const char *buf, unsigned size, line_fn_t *fn, struct git_parser_state *state, struct membuffer *b)
 {
 	const char *end = buf + size;
 	const char *p = buf;
@@ -1151,7 +1144,7 @@ static unsigned parse_one_line(const char *buf, unsigned size, line_fn_t *fn, vo
 			p = parse_one_string(p, end, b);
 	}
 	line[off] = 0;
-	fn(line, b, fndata);
+	fn(line, b, state);
 	return p - buf;
 }
 
@@ -1160,14 +1153,14 @@ static unsigned parse_one_line(const char *buf, unsigned size, line_fn_t *fn, vo
  * strings, but the callback function can "steal" it by
  * saving its value and just clear the original.
  */
-static void for_each_line(git_blob *blob, line_fn_t *fn, void *fndata)
+static void for_each_line(git_blob *blob, line_fn_t *fn, struct git_parser_state *state)
 {
 	const char *content = git_blob_rawcontent(blob);
 	unsigned int size = git_blob_rawsize(blob);
 	struct membuffer str = { 0 };
 
 	while (size) {
-		unsigned int n = parse_one_line(content, size, fn, fndata, &str);
+		unsigned int n = parse_one_line(content, size, fn, state, &str);
 		content += n;
 		size -= n;
 
@@ -1180,40 +1173,35 @@ static void for_each_line(git_blob *blob, line_fn_t *fn, void *fndata)
 #define GIT_WALK_OK   0
 #define GIT_WALK_SKIP 1
 
-static struct divecomputer *active_dc;
-static struct dive *active_dive;
-static dive_trip_t *active_trip;
-
-static void finish_active_trip(void)
+static void finish_active_trip(struct git_parser_state *state)
 {
-	dive_trip_t *trip = active_trip;
+	dive_trip_t *trip = state->active_trip;
 
 	if (trip) {
-		active_trip = NULL;
+		state->active_trip = NULL;
 		insert_trip(trip, &trip_table);
 	}
 }
 
-static void finish_active_dive(void)
+static void finish_active_dive(struct git_parser_state *state)
 {
-	struct dive *dive = active_dive;
+	struct dive *dive = state->active_dive;
 
 	if (dive) {
-		active_dive = NULL;
+		state->active_dive = NULL;
 		record_dive(dive);
 	}
 }
 
-static struct dive *create_new_dive(timestamp_t when)
+static void create_new_dive(timestamp_t when, struct git_parser_state *state)
 {
-	struct dive *dive = alloc_dive();
+	state->active_dive = alloc_dive();
 
 	/* We'll fill in more data from the dive file */
-	dive->when = when;
+	state->active_dive->when = when;
 
-	if (active_trip)
-		add_dive_to_trip(dive, active_trip);
-	return dive;
+	if (state->active_trip)
+		add_dive_to_trip(state->active_dive, state->active_trip);
 }
 
 static bool validate_date(int yyyy, int mm, int dd)
@@ -1233,7 +1221,7 @@ static bool validate_time(int h, int m, int s)
 /*
  * Dive trip directory, name is 'nn-alphabetic[~hex]'
  */
-static int dive_trip_directory(const char *root, const char *name)
+static int dive_trip_directory(const char *root, const char *name, struct git_parser_state *state)
 {
 	int yyyy = -1, mm = -1, dd = -1;
 
@@ -1242,8 +1230,8 @@ static int dive_trip_directory(const char *root, const char *name)
 	dd = atoi(name);
 	if (!validate_date(yyyy, mm, dd))
 		return GIT_WALK_SKIP;
-	finish_active_trip();
-	active_trip = alloc_trip();
+	finish_active_trip(state);
+	state->active_trip = alloc_trip();
 	return GIT_WALK_OK;
 }
 
@@ -1255,7 +1243,7 @@ static int dive_trip_directory(const char *root, const char *name)
  *
  * The root path will be of the form yyyy/mm[/tripdir],
  */
-static int dive_directory(const char *root, const git_tree_entry *entry, const char *name, int timeoff)
+static int dive_directory(const char *root, const git_tree_entry *entry, const char *name, int timeoff, struct git_parser_state *state)
 {
 	int yyyy = -1, mm = -1, dd = -1;
 	int h, m, s;
@@ -1303,7 +1291,7 @@ static int dive_directory(const char *root, const git_tree_entry *entry, const c
 	 * of a pathname of the form 'yyyy/mm/'.
 	 */
 	if (strlen(root) == 8)
-		finish_active_trip();
+		finish_active_trip(state);
 
 	/*
 	 * Get the date. The day of the month is in the dive directory
@@ -1331,17 +1319,17 @@ static int dive_directory(const char *root, const git_tree_entry *entry, const c
 	tm.tm_mon = mm-1;
 	tm.tm_mday = dd;
 
-	finish_active_dive();
-	active_dive = create_new_dive(utc_mktime(&tm));
-	memcpy(active_dive->git_id, git_tree_entry_id(entry)->id, 20);
+	finish_active_dive(state);
+	create_new_dive(utc_mktime(&tm), state);
+	memcpy(state->active_dive->git_id, git_tree_entry_id(entry)->id, 20);
 	return GIT_WALK_OK;
 }
 
-static int picture_directory(const char *root, const char *name)
+static int picture_directory(const char *root, const char *name, struct git_parser_state *state)
 {
 	UNUSED(root);
 	UNUSED(name);
-	if (!active_dive)
+	if (!state->active_dive)
 		return GIT_WALK_SKIP;
 	return GIT_WALK_OK;
 }
@@ -1397,14 +1385,14 @@ static int nonunique_length(const char *str)
  *    If it doesn't match the above patterns, we'll ignore them
  *    for dive loading purposes, and not even recurse into them.
  */
-static int walk_tree_directory(const char *root, const git_tree_entry *entry)
+static int walk_tree_directory(const char *root, const git_tree_entry *entry, struct git_parser_state *state)
 {
 	const char *name = git_tree_entry_name(entry);
 	int digits = 0, len;
 	char c;
 
 	if (!strcmp(name, "Pictures"))
-		return picture_directory(root, name);
+		return picture_directory(root, name, state);
 
 	if (!strcmp(name, "01-Divesites"))
 		return GIT_WALK_OK;
@@ -1432,12 +1420,12 @@ static int walk_tree_directory(const char *root, const git_tree_entry *entry)
 	 * two digits and a dash
 	 */
 	if (name[len-3] == ':' || name[len-3] == '=')
-		return dive_directory(root, entry, name, len-8);
+		return dive_directory(root, entry, name, len-8, state);
 
 	if (digits != 2)
 		return GIT_WALK_SKIP;
 
-	return dive_trip_directory(root, name);
+	return dive_trip_directory(root, name, state);
 }
 
 static git_blob *git_tree_entry_blob(git_repository *repo, const git_tree_entry *entry)
@@ -1475,18 +1463,18 @@ static struct divecomputer *create_new_dc(struct dive *dive)
  * cheap, but the loading of the git blob into memory can be pretty
  * costly.
  */
-static int parse_divecomputer_entry(git_repository *repo, const git_tree_entry *entry, const char *suffix)
+static int parse_divecomputer_entry(struct git_parser_state *state, const git_tree_entry *entry, const char *suffix)
 {
 	UNUSED(suffix);
-	git_blob *blob = git_tree_entry_blob(repo, entry);
+	git_blob *blob = git_tree_entry_blob(state->repo, entry);
 
 	if (!blob)
 		return report_error("Unable to read divecomputer file");
 
-	active_dc = create_new_dc(active_dive);
-	for_each_line(blob, divecomputer_parser, active_dc);
+	state->active_dc = create_new_dc(state->active_dive);
+	for_each_line(blob, divecomputer_parser, state);
 	git_blob_free(blob);
-	active_dc = NULL;
+	state->active_dc = NULL;
 	return 0;
 }
 
@@ -1496,49 +1484,50 @@ static int parse_divecomputer_entry(git_repository *repo, const git_tree_entry *
  * pictures too. So if any of the dive computers change, the dive cache
  * has to be invalidated too.
  */
-static int parse_dive_entry(git_repository *repo, const git_tree_entry *entry, const char *suffix)
+static int parse_dive_entry(struct git_parser_state *state, const git_tree_entry *entry, const char *suffix)
 {
-	struct dive *dive = active_dive;
-	git_blob *blob = git_tree_entry_blob(repo, entry);
+	struct dive *dive = state->active_dive;
+	git_blob *blob = git_tree_entry_blob(state->repo, entry);
 	if (!blob)
 		return report_error("Unable to read dive file");
 	if (*suffix)
 		dive->number = atoi(suffix+1);
-	cylinder_index = 0;
-	clear_weightsystem_table(&dive->weightsystems);
-	o2pressure_sensor = 1;
-	for_each_line(blob, dive_parser, active_dive);
+	state->cylinder_index = 0;
+	clear_weightsystem_table(&state->active_dive->weightsystems);
+	state->o2pressure_sensor = 1;
+	for_each_line(blob, dive_parser, state);
 	git_blob_free(blob);
 	return 0;
 }
 
-static int parse_site_entry(git_repository *repo, const git_tree_entry *entry, const char *suffix)
+static int parse_site_entry(struct git_parser_state *state, const git_tree_entry *entry, const char *suffix)
 {
 	if (*suffix == '\0')
 		return report_error("Dive site without uuid");
 	uint32_t uuid = strtoul(suffix, NULL, 16);
-	struct dive_site *ds = alloc_or_get_dive_site(uuid, &dive_site_table);
-	git_blob *blob = git_tree_entry_blob(repo, entry);
+	state->active_site = alloc_or_get_dive_site(uuid, &dive_site_table);
+	git_blob *blob = git_tree_entry_blob(state->repo, entry);
 	if (!blob)
 		return report_error("Unable to read dive site file");
-	for_each_line(blob, site_parser, ds);
+	for_each_line(blob, site_parser, state);
+	state->active_site = NULL;
 	git_blob_free(blob);
 	return 0;
 }
 
-static int parse_trip_entry(git_repository *repo, const git_tree_entry *entry)
+static int parse_trip_entry(struct git_parser_state *state, const git_tree_entry *entry)
 {
-	git_blob *blob = git_tree_entry_blob(repo, entry);
+	git_blob *blob = git_tree_entry_blob(state->repo, entry);
 	if (!blob)
 		return report_error("Unable to read trip file");
-	for_each_line(blob, trip_parser, active_trip);
+	for_each_line(blob, trip_parser, state);
 	git_blob_free(blob);
 	return 0;
 }
 
-static int parse_settings_entry(git_repository *repo, const git_tree_entry *entry)
+static int parse_settings_entry(struct git_parser_state *state, const git_tree_entry *entry)
 {
-	git_blob *blob = git_tree_entry_blob(repo, entry);
+	git_blob *blob = git_tree_entry_blob(state->repo, entry);
 	if (!blob)
 		return report_error("Unable to read settings file");
 	for_each_line(blob, settings_parser, NULL);
@@ -1546,10 +1535,9 @@ static int parse_settings_entry(git_repository *repo, const git_tree_entry *entr
 	return 0;
 }
 
-static int parse_picture_entry(git_repository *repo, const git_tree_entry *entry, const char *name)
+static int parse_picture_entry(struct git_parser_state *state, const git_tree_entry *entry, const char *name)
 {
 	git_blob *blob;
-	struct picture *pic;
 	int hh, mm, ss, offset;
 	char sign;
 
@@ -1566,46 +1554,47 @@ static int parse_picture_entry(git_repository *repo, const git_tree_entry *entry
 	if (sign == '-')
 		offset = -offset;
 
-	blob = git_tree_entry_blob(repo, entry);
+	blob = git_tree_entry_blob(state->repo, entry);
 	if (!blob)
 		return report_error("Unable to read picture file");
 
-	pic = alloc_picture();
-	pic->offset.seconds = offset;
+	state->active_pic = alloc_picture();
+	state->active_pic->offset.seconds = offset;
 
-	for_each_line(blob, picture_parser, pic);
-	dive_add_picture(active_dive, pic);
+	for_each_line(blob, picture_parser, state);
+	dive_add_picture(state->active_dive, state->active_pic);
 	git_blob_free(blob);
+	state->active_pic = NULL;
 	return 0;
 }
 
-static int walk_tree_file(const char *root, const git_tree_entry *entry, git_repository *repo)
+static int walk_tree_file(const char *root, const git_tree_entry *entry, struct git_parser_state *state)
 {
-	struct dive *dive = active_dive;
-	dive_trip_t *trip = active_trip;
+	struct dive *dive = state->active_dive;
+	dive_trip_t *trip = state->active_trip;
 	const char *name = git_tree_entry_name(entry);
 	if (verbose > 1)
 		fprintf(stderr, "git load handling file %s\n", name);
 	switch (*name) {
 	case '-': case '+':
 		if (dive)
-			return parse_picture_entry(repo, entry, name);
+			return parse_picture_entry(state, entry, name);
 		break;
 	case 'D':
 		if (dive && !strncmp(name, "Divecomputer", 12))
-			return parse_divecomputer_entry(repo, entry, name+12);
+			return parse_divecomputer_entry(state, entry, name + 12);
 		if (dive && !strncmp(name, "Dive", 4))
-			return parse_dive_entry(repo, entry, name+4);
+			return parse_dive_entry(state, entry, name + 4);
 		break;
 	case 'S':
 		if (!strncmp(name, "Site", 4))
-			return parse_site_entry(repo, entry, name + 5);
+			return parse_site_entry(state, entry, name + 5);
 		break;
 	case '0':
 		if (trip && !strcmp(name, "00-Trip"))
-			return parse_trip_entry(repo, entry);
+			return parse_trip_entry(state, entry);
 		if (!strcmp(name, "00-Subsurface"))
-			return parse_settings_entry(repo, entry);
+			return parse_settings_entry(state, entry);
 		break;
 	}
 	report_error("Unknown file %s%s (%p %p)", root, name, dive, trip);
@@ -1614,20 +1603,20 @@ static int walk_tree_file(const char *root, const git_tree_entry *entry, git_rep
 
 static int walk_tree_cb(const char *root, const git_tree_entry *entry, void *payload)
 {
-	git_repository *repo = payload;
+	struct git_parser_state *state = payload;
 	git_filemode_t mode = git_tree_entry_filemode(entry);
 
 	if (mode == GIT_FILEMODE_TREE)
-		return walk_tree_directory(root, entry);
+		return walk_tree_directory(root, entry, state);
 
-	walk_tree_file(root, entry, repo);
+	walk_tree_file(root, entry, state);
 	/* Ignore failed blob loads */
 	return GIT_WALK_OK;
 }
 
-static int load_dives_from_tree(git_repository *repo, git_tree *tree)
+static int load_dives_from_tree(git_repository *repo, git_tree *tree, struct git_parser_state *state)
 {
-	git_tree_walk(tree, GIT_TREEWALK_PRE, walk_tree_cb, repo);
+	git_tree_walk(tree, GIT_TREEWALK_PRE, walk_tree_cb, state);
 	return 0;
 }
 
@@ -1655,7 +1644,7 @@ static int find_commit(git_repository *repo, const char *branch, git_commit **co
 	return 0;
 }
 
-static int do_git_load(git_repository *repo, const char *branch)
+static int do_git_load(git_repository *repo, const char *branch, struct git_parser_state *state)
 {
 	int ret;
 	git_commit *commit;
@@ -1667,7 +1656,7 @@ static int do_git_load(git_repository *repo, const char *branch)
 	if (git_commit_tree(&tree, commit))
 		return report_error("Could not look up tree of commit in branch '%s'", branch);
 	git_storage_update_progress(translate("gettextFromC", "Load dives from local cache"));
-	ret = load_dives_from_tree(repo, tree);
+	ret = load_dives_from_tree(repo, tree, state);
 	if (!ret) {
 		set_git_id(git_commit_id(commit));
 		git_storage_update_progress(translate("gettextFromC", "Successfully opened dive data"));
@@ -1698,13 +1687,15 @@ const char *get_sha(git_repository *repo, const char *branch)
 int git_load_dives(struct git_repository *repo, const char *branch)
 {
 	int ret;
+	struct git_parser_state state = { 0 };
+	state.repo = repo;
 
 	if (repo == dummy_git_repository)
 		return report_error("Unable to open git repository at '%s'", branch);
-	ret = do_git_load(repo, branch);
+	ret = do_git_load(repo, branch, &state);
 	git_repository_free(repo);
 	free((void *)branch);
-	finish_active_dive();
-	finish_active_trip();
+	finish_active_dive(&state);
+	finish_active_trip(&state);
 	return ret;
 }
