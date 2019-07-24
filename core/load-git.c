@@ -52,7 +52,7 @@ static char *get_utf8(struct membuffer *b)
 
 	if (!len)
 		return NULL;
-	res = malloc(len+1);
+	res = malloc(len + 1);
 	if (res) {
 		memcpy(res, b->buffer, len);
 		res[len] = 0;
@@ -70,21 +70,21 @@ static temperature_t get_temperature(const char *line)
 static depth_t get_depth(const char *line)
 {
 	depth_t d;
-	d.mm = lrint(1000*ascii_strtod(line, NULL));
+	d.mm = lrint(1000 * ascii_strtod(line, NULL));
 	return d;
 }
 
 static volume_t get_volume(const char *line)
 {
 	volume_t v;
-	v.mliter = lrint(1000*ascii_strtod(line, NULL));
+	v.mliter = lrint(1000 * ascii_strtod(line, NULL));
 	return v;
 }
 
 static weight_t get_weight(const char *line)
 {
 	weight_t w;
-	w.grams = lrint(1000*ascii_strtod(line, NULL));
+	w.grams = lrint(1000 * ascii_strtod(line, NULL));
 	return w;
 }
 
@@ -98,13 +98,13 @@ static pressure_t get_airpressure(const char *line)
 static pressure_t get_pressure(const char *line)
 {
 	pressure_t p;
-	p.mbar = lrint(1000*ascii_strtod(line, NULL));
+	p.mbar = lrint(1000 * ascii_strtod(line, NULL));
 	return p;
 }
 
 static int get_salinity(const char *line)
 {
-	return lrint(10*ascii_strtod(line, NULL));
+	return lrint(10 * ascii_strtod(line, NULL));
 }
 
 static fraction_t get_fraction(const char *line)
@@ -147,7 +147,7 @@ static duration_t get_duration(const char *line)
 	int m = 0, s = 0;
 	duration_t d;
 	sscanf(line, "%d:%d", &m, &s);
-	d.seconds = m*60+s;
+	d.seconds = m * 60 + s;
 	return d;
 }
 
@@ -463,7 +463,7 @@ static int match_action(char *line, struct membuffer *str, void *data,
 	low = 0;
 	high = nr_action;
 	while (low < high) {
-		unsigned mid = (low+high)/2;
+		unsigned mid = (low + high)/2;
 		struct keyword_action *a = action + mid;
 		int cmp = strcmp(line, a->keyword);
 		if (!cmp) {	// attribute found:
@@ -473,7 +473,7 @@ static int match_action(char *line, struct membuffer *str, void *data,
 		if (cmp < 0)
 			high = mid;
 		else
-			low = mid+1;
+			low = mid + 1;
 	}
 report_error("Unmatched action '%s'", line);
 	return -1;
@@ -573,13 +573,13 @@ static char *parse_sample_unit(struct sample *sample, double val, char *unit)
 	/* The cylinder pressure may also be of the form '123.0bar:4' to indicate sensor */
 	switch (*unit) {
 	case 'm':
-		sample->depth.mm = lrint(1000*val);
+		sample->depth.mm = lrint(1000 * val);
 		break;
 	case 'b':
 		sensor = sample->sensor[0];
-		if (end > unit+4 && unit[3] == ':')
-			sensor = atoi(unit+4);
-		add_sample_pressure(sample, sensor, lrint(1000*val));
+		if (end > unit + 4 && unit[3] == ':')
+			sensor = atoi(unit + 4);
+		add_sample_pressure(sample, sensor, lrint(1000 * val));
 		break;
 	default:
 		sample->temperature.mkelvin = C_to_mkelvin(val);
@@ -628,8 +628,8 @@ static void sample_parser(char *line, struct git_parser_state *state)
 
 	m = strtol(line, &line, 10);
 	if (*line == ':')
-		s = strtol(line+1, &line, 10);
-	sample->time.seconds = m*60+s;
+		s = strtol(line + 1, &line, 10);
+	sample->time.seconds = m * 60 + s;
 
 	for (;;) {
 		char c;
@@ -729,7 +729,7 @@ static void parse_event_keyvalue(void *_event, const char *key, const char *valu
 		event->value = get_divemode(value);
 	} else if (!strcmp(key, "cylinder")) {
 		/* NOTE! We add one here as a marker that "yes, we got a cylinder index" */
-		event->gas.index = 1+get_index(value);
+		event->gas.index = 1 + get_index(value);
 	} else if (!strcmp(key, "o2")) {
 		event->gas.mix.o2 = get_fraction(value);
 	} else if (!strcmp(key, "he")) {
@@ -771,8 +771,8 @@ static void parse_dc_event(char *line, struct membuffer *str, struct git_parser_
 
 	m = strtol(line, &line, 10);
 	if (*line == ':')
-		s = strtol(line+1, &line, 10);
-	event.time.seconds = m*60+s;
+		s = strtol(line + 1, &line, 10);
+	event.time.seconds = m * 60 + s;
 
 	for (;;) {
 		char c;
@@ -896,7 +896,7 @@ static void parse_divecomputerid_keyvalue(void *_cid, const char *key, const cha
 
 	if (*value == '"') {
 		value = cid->cstr;
-		cid->cstr += strlen(cid->cstr)+1;
+		cid->cstr += strlen(cid->cstr) + 1;
 	}
 	if (!strcmp(key, "deviceid")) {
 		cid->deviceid = get_hex(value);
@@ -1129,7 +1129,7 @@ static unsigned parse_one_line(const char *buf, unsigned size, line_fn_t *fn, st
 {
 	const char *end = buf + size;
 	const char *p = buf;
-	char line[MAXLINE+1];
+	char line[MAXLINE + 1];
 	int off = 0;
 
 	while (p < end) {
@@ -1265,7 +1265,7 @@ static int dive_directory(const char *root, const git_tree_entry *entry, const c
 		return GIT_WALK_SKIP;
 
 	/* Get the time of day -- parse both time formats so we can read old repos when not on Windows */
-	if (sscanf(name+timeoff, "%d:%d:%d", &h, &m, &s) != 3 && sscanf(name+timeoff, "%d=%d=%d", &h, &m, &s) != 3)
+	if (sscanf(name + timeoff, "%d:%d:%d", &h, &m, &s) != 3 && sscanf(name + timeoff, "%d=%d=%d", &h, &m, &s) != 3)
 		return GIT_WALK_SKIP;
 	if (!validate_time(h, m, s))
 		return GIT_WALK_SKIP;
@@ -1491,7 +1491,7 @@ static int parse_dive_entry(struct git_parser_state *state, const git_tree_entry
 	if (!blob)
 		return report_error("Unable to read dive file");
 	if (*suffix)
-		dive->number = atoi(suffix+1);
+		dive->number = atoi(suffix + 1);
 	state->cylinder_index = 0;
 	clear_weightsystem_table(&state->active_dive->weightsystems);
 	state->o2pressure_sensor = 1;
@@ -1550,7 +1550,7 @@ static int parse_picture_entry(struct git_parser_state *state, const git_tree_en
 	if (sscanf(name, "%c%d:%d:%d", &sign, &hh, &mm, &ss) != 4 &&
 	    sscanf(name, "%c%d=%d=%d", &sign, &hh, &mm, &ss) != 4)
 		return report_error("Unknown file name %s", name);
-	offset = ss + 60*(mm + 60*hh);
+	offset = ss + 60 * (mm + 60 * hh);
 	if (sign == '-')
 		offset = -offset;
 
@@ -1627,7 +1627,7 @@ void clear_git_id(void)
 
 void set_git_id(const struct git_oid * id)
 {
-	static char git_id_buffer[GIT_OID_HEXSZ+1];
+	static char git_id_buffer[GIT_OID_HEXSZ + 1];
 
 	git_oid_tostr(git_id_buffer, sizeof(git_id_buffer), id);
 	saved_git_id = git_id_buffer;
@@ -1668,7 +1668,7 @@ static int do_git_load(git_repository *repo, const char *branch, struct git_pars
 
 const char *get_sha(git_repository *repo, const char *branch)
 {
-	static char git_id_buffer[GIT_OID_HEXSZ+1];
+	static char git_id_buffer[GIT_OID_HEXSZ + 1];
 	git_commit *commit;
 	if (find_commit(repo, branch, &commit))
 		return NULL;
