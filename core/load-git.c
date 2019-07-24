@@ -32,7 +32,7 @@ struct keyword_action {
 };
 #define ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
 
-git_blob *git_tree_entry_blob(git_repository *repo, const git_tree_entry *entry);
+static git_blob *git_tree_entry_blob(git_repository *repo, const git_tree_entry *entry);
 
 static char *get_utf8(struct membuffer *b)
 {
@@ -704,7 +704,7 @@ static void parse_dc_watertemp(char *line, struct membuffer *str, void *_dc)
 { UNUSED(str); struct divecomputer *dc = _dc; dc->watertemp = get_temperature(line); }
 
 
-int get_divemode(const char *divemodestring) {
+static int get_divemode(const char *divemodestring) {
 	for (int i = 0; i < NUM_DIVEMODE; i++) {
 		if (!strcmp(divemodestring, divemode_text[i]))
 			return i;
@@ -1440,7 +1440,7 @@ static int walk_tree_directory(const char *root, const git_tree_entry *entry)
 	return dive_trip_directory(root, name);
 }
 
-git_blob *git_tree_entry_blob(git_repository *repo, const git_tree_entry *entry)
+static git_blob *git_tree_entry_blob(git_repository *repo, const git_tree_entry *entry)
 {
 	const git_oid *id = git_tree_entry_id(entry);
 	git_blob *blob;
