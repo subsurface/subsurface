@@ -2124,14 +2124,14 @@ static int different_manual_pressures(const cylinder_t *a, const cylinder_t *b)
  * same cylinder use (ie OC/Diluent/Oxygen), and if pressures
  * have been added manually they need to match.
  */
-static int match_cylinder(const cylinder_t *cyl, const struct dive *dive, unsigned int available)
+static int match_cylinder(const cylinder_t *cyl, const struct dive *dive, bool *used_in_a, bool *matched)
 {
 	int i;
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		const cylinder_t *target;
 
-		if (!(available & (1u << i)))
+		if (!used_in_a[i] || matched[i])
 			continue;
 		target = dive->cylinder + i;
 		if (!same_gasmix(cyl->gasmix, target->gasmix))
@@ -2150,19 +2150,18 @@ static int match_cylinder(const cylinder_t *cyl, const struct dive *dive, unsign
 /*
  * Note: we only allocate from the end, not in holes in the middle.
  * So we don't look for empty bits, we look for "no more bits set".
- * We could use some "find last bit set" math function, but let's
- * not be fancy.
  */
-static int find_unused_cylinder(unsigned int used_map)
+static int find_unused_cylinder(bool used_map[])
 {
 	int i;
 
-	for (i = 0; i < MAX_CYLINDERS; i++) {
-		if (!used_map)
+	if (used_map[MAX_CYLINDERS - 1])
+		return -1; /* Maximum number of cylinders used! */
+	for (i = MAX_CYLINDERS - 1; i > 0; i--) {
+		if (used_map[i - 1])
 			return i;
-		used_map >>= 1;
 	}
-	return -1;
+	return 0; /* Not a single cylinder used. */
 }
 
 /*
@@ -2237,17 +2236,18 @@ static void merge_cylinders(struct dive *res, const struct dive *a, const struct
 			    int mapping_a[], int mapping_b[])
 {
 	int i;
-	unsigned int used_in_a = 0, used_in_b = 0, matched = 0;
+	bool *used_in_a = malloc(MAX_CYLINDERS * sizeof(bool));
+	bool *used_in_b = malloc(MAX_CYLINDERS * sizeof(bool));
+	bool *matched_in_a = malloc(MAX_CYLINDERS * sizeof(bool));
 
 	/* First, clear all cylinders in destination */
 	memset(res->cylinder, 0, sizeof(res->cylinder));
 
 	/* Calculate usage map of cylinders */
 	for (i = 0; i < MAX_CYLINDERS; i++) {
-		if (!cylinder_none(a->cylinder+i) || is_cylinder_used(a, i))
-			used_in_a |= 1u << i;
-		if (!cylinder_none(b->cylinder+i) || is_cylinder_used(b, i))
-			used_in_b |= 1u << i;
+		used_in_a[i] = !cylinder_none(a->cylinder+i) || is_cylinder_used(a, i);
+		used_in_b[i] = !cylinder_none(b->cylinder+i) || is_cylinder_used(b, i);
+		matched_in_a[i] = false;
 	}
 
 	/* For each cylinder in 'b', try to match up things */
@@ -2256,10 +2256,10 @@ static void merge_cylinders(struct dive *res, const struct dive *a, const struct
 
 		mapping_a[i] = i;
 		mapping_b[i] = -1;
-		if (!(used_in_b & (1u << i)))
+		if (!used_in_b[i])
 			continue;
 
-		j = match_cylinder(b->cylinder+i, a, used_in_a & ~matched);
+		j = match_cylinder(b->cylinder+i, a, used_in_a, matched_in_a);
 		if (j < 0)
 			continue;
 
@@ -2277,12 +2277,12 @@ static void merge_cylinders(struct dive *res, const struct dive *a, const struct
 		 */
 		merge_one_cylinder(res->cylinder + j, a->cylinder + j, b->cylinder + i);
 		mapping_b[i] = j;
-		matched |= 1u << j;
+		matched_in_a[j] = true;
 	}
 
 	/* Now copy all the used cylinders from 'a' which are used, but have not been matched */
 	for (i = 0; i < MAX_CYLINDERS; i++) {
-		if (used_in_a & (1u << i) && !(matched & (1u << i)))
+		if (used_in_a[i] && !matched_in_a[i])
 			copy_cylinder(a->cylinder + i, res->cylinder + i);
 	}
 
@@ -2290,7 +2290,8 @@ static void merge_cylinders(struct dive *res, const struct dive *a, const struct
 	 * Consider all the cylinders we matched as used, whether they
 	 * originally were or not (either in 'a' or 'b').
 	 */
-	used_in_a |= matched;
+	for (i = 0; i < MAX_CYLINDERS; i++)
+		used_in_a[i] |= matched_in_a[i];
 
 	/*
 	 * Go back to 'b' and remap any remaining cylinders that didn't
@@ -2302,7 +2303,7 @@ static void merge_cylinders(struct dive *res, const struct dive *a, const struct
 		/* Already remapped, or not interesting? */
 		if (mapping_b[i] >= 0)
 			continue;
-		if (!(used_in_b & (1u << i)))
+		if (!used_in_b[i])
 			continue;
 
 		j = find_unused_cylinder(used_in_a);
@@ -2311,8 +2312,12 @@ static void merge_cylinders(struct dive *res, const struct dive *a, const struct
 
 		copy_cylinder(b->cylinder + i, res->cylinder + j);
 		mapping_b[i] = j;
-		used_in_a |= 1u << j;
+		used_in_a[i] = true;
 	}
+
+	free(used_in_a);
+	free(used_in_b);
+	free(matched_in_a);
 }
 
 /* Check whether a weightsystem table contains a given weightsystem */
