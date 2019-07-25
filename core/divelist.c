@@ -1488,7 +1488,7 @@ void clear_dive_file_data()
 	clear_dive(&displayed_dive);
 
 	reset_min_datafile_version();
-	saved_git_id = "";
+	clear_git_id();
 }
 
 bool dive_less_than(const struct dive *a, const struct dive *b)
