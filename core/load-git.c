@@ -1625,7 +1625,7 @@ void clear_git_id(void)
 	saved_git_id = NULL;
 }
 
-void set_git_id(const struct git_oid * id)
+void set_git_id(const struct git_oid *id)
 {
 	static char git_id_buffer[GIT_OID_HEXSZ + 1];
 
