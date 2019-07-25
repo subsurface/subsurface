@@ -433,6 +433,7 @@ struct dive *move_dive(struct dive *s)
 		d->_component = copy_string(s->_component)
 
 // copy elements, depending on bits in what that are set
+static void copy_cylinder_types(const struct dive *s, struct dive *d);
 void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear)
 {
 	if (clear)
@@ -452,7 +453,7 @@ void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_compo
 	if (what.tags)
 		d->tag_list = taglist_copy(s->tag_list);
 	if (what.cylinders)
-		copy_cylinders(s, d, false);
+		copy_cylinder_types(s, d);
 	if (what.weights)
 		copy_weights(&s->weightsystems, &d->weightsystems);
 }
@@ -509,41 +510,43 @@ int nr_weightsystems(const struct dive *dive)
 	return dive->weightsystems.nr;
 }
 
-/* copy the equipment data part of the cylinders */
-void copy_cylinders(const struct dive *s, struct dive *d, bool used_only)
+/* copy the equipment data part of the cylinders but keep pressures */
+static void copy_cylinder_types(const struct dive *s, struct dive *d)
 {
-	int i,j;
-	cylinder_t t[MAX_CYLINDERS];
+	int i;
 	if (!s || !d)
 		return;
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
-		// Store the original start and end pressures
-		t[i].start.mbar = d->cylinder[i].start.mbar;
-		t[i].end.mbar = d->cylinder[i].end.mbar;
-		t[i].sample_start.mbar = d->cylinder[i].sample_start.mbar;
-		t[i].sample_end.mbar = d->cylinder[i].sample_end.mbar;
-
 		free((void *)d->cylinder[i].type.description);
-		memset(&d->cylinder[i], 0, sizeof(cylinder_t));
+		d->cylinder[i].type = s->cylinder[i].type;
+		d->cylinder[i].type.description = s->cylinder[i].type.description ?
+			strdup(s->cylinder[i].type.description) : NULL;
+		d->cylinder[i].gasmix = s->cylinder[i].gasmix;
+		d->cylinder[i].depth = s->cylinder[i].depth;
+		d->cylinder[i].cylinder_use = s->cylinder[i].cylinder_use;
+		d->cylinder[i].manually_added = true;
 	}
-	for (i = j = 0; i < MAX_CYLINDERS; i++) {
+}
+
+void copy_cylinders(const struct dive *s, struct dive *d, bool used_only)
+{
+	int i, j;
+	if (!s || !d)
+		return;
+
+	for (i = 0, j = 0; i < MAX_CYLINDERS; i++) {
 		if (!used_only || is_cylinder_used(s, i) || s->cylinder[i].cylinder_use == NOT_USED) {
-			d->cylinder[j].type = s->cylinder[i].type;
-			d->cylinder[j].type.description = copy_string(s->cylinder[i].type.description);
-			d->cylinder[j].gasmix = s->cylinder[i].gasmix;
-			d->cylinder[j].depth = s->cylinder[i].depth;
-			d->cylinder[j].cylinder_use = s->cylinder[i].cylinder_use;
-			d->cylinder[j].manually_added = true;
-
-			// Restore the start and end pressures from original cylinder
-			d->cylinder[i].start.mbar = t[i].start.mbar;
-			d->cylinder[i].end.mbar = t[i].end.mbar;
-			d->cylinder[i].sample_start.mbar = t[i].sample_start.mbar;
-			d->cylinder[i].sample_end.mbar = t[i].sample_end.mbar;
-
+			free((void *)d->cylinder[j].type.description);
+			d->cylinder[j] = s->cylinder[i];
+			if (d->cylinder[j].type.description)
+				d->cylinder[j].type.description = strdup(d->cylinder[j].type.description);
 			j++;
 		}
+	}
+	for ( ; j < MAX_CYLINDERS; j++) {
+		free((void *)d->cylinder[j].type.description);
+		memset(d->cylinder + j, 0, sizeof(d->cylinder[j]));
 	}
 }
 
