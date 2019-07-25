@@ -334,8 +334,9 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, struct dive_site **lo
 	if (!table)
 		return;
 
-	for (i = 1; i <= atoi(idx); i++)
+	do {
 		mdb_fetch_row(table);
+	} while (strcasecmp(col[0]->bind_ptr, idx));
 	loc_idx = copy_string(col[2]->bind_ptr);
 	site = copy_string(col[1]->bind_ptr);
 	loc = create_location(strtod(col[6]->bind_ptr, NULL), strtod(col[7]->bind_ptr, NULL));
@@ -360,8 +361,10 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, struct dive_site **lo
 	/* Read data from Location table, linked to Site by loc_idx */
 	table = smtk_open_table(mdb, "Location", col, bound_values);
 	mdb_rewind_table(table);
-	for (i = 1; i <= atoi(loc_idx); i++)
+	do {
 		mdb_fetch_row(table);
+	} while (strcasecmp(col[0]->bind_ptr, loc_idx));
+
 	/*
 	 * Create a string for Subsurface's dive site structure with coordinates
 	 * if available, if the site's name doesn't previously exists.
