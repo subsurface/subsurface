@@ -517,6 +517,17 @@ int nr_weightsystems(const struct dive *dive)
 	return dive->weightsystems.nr;
 }
 
+static void copy_cylinder_type(const cylinder_t *s, cylinder_t *d)
+{
+	free(d->type.description);
+	d->type = s->type;
+	d->type.description = s->type.description ? strdup(s->type.description) : NULL;
+	d->gasmix = s->gasmix;
+	d->depth = s->depth;
+	d->cylinder_use = s->cylinder_use;
+	d->manually_added = true;
+}
+
 /* copy the equipment data part of the cylinders but keep pressures */
 static void copy_cylinder_types(const struct dive *s, struct dive *d)
 {
@@ -524,16 +535,8 @@ static void copy_cylinder_types(const struct dive *s, struct dive *d)
 	if (!s || !d)
 		return;
 
-	for (i = 0; i < MAX_CYLINDERS; i++) {
-		free((void *)d->cylinder[i].type.description);
-		d->cylinder[i].type = s->cylinder[i].type;
-		d->cylinder[i].type.description = s->cylinder[i].type.description ?
-			strdup(s->cylinder[i].type.description) : NULL;
-		d->cylinder[i].gasmix = s->cylinder[i].gasmix;
-		d->cylinder[i].depth = s->cylinder[i].depth;
-		d->cylinder[i].cylinder_use = s->cylinder[i].cylinder_use;
-		d->cylinder[i].manually_added = true;
-	}
+	for (i = 0; i < MAX_CYLINDERS; i++)
+		copy_cylinder_type(s->cylinder + i, d->cylinder + i);
 }
 
 void copy_cylinders(const struct dive *s, struct dive *d, bool used_only)
