@@ -674,7 +674,7 @@ bool weightsystems_equal(const dive *d1, const dive *d2)
 	if (d1->weightsystems.nr != d2->weightsystems.nr)
 		return false;
 	for (int i = 0; i < d1->weightsystems.nr; ++i) {
-		if (!same_weightsystem(d1->weightsystems.weightsystems[0], d2->weightsystems.weightsystems[i]))
+		if (!same_weightsystem(d1->weightsystems.weightsystems[i], d2->weightsystems.weightsystems[i]))
 			return false;
 	}
 	return true;
