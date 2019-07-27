@@ -140,7 +140,7 @@ void MapLocationModel::reload(QObject *map)
 	m_selectedDs.clear();
 
 	QMap<QString, MapLocation *> locationNameMap;
-	MapLocation *location;
+	MapLocation *location = nullptr;
 
 #ifdef SUBSURFACE_MOBILE
 	bool diveSiteMode = false;
@@ -180,6 +180,8 @@ void MapLocationModel::reload(QObject *map)
 			// at least MIN_DISTANCE_BETWEEN_DIVE_SITES_M apart
 			if (locationNameMap.contains(name)) {
 				MapLocation *existingLocation = locationNameMap[name];
+				if (!existingLocation)
+					continue;
 				QGeoCoordinate coord = existingLocation->coordinate();
 				if (dsCoord.distanceTo(coord) < MIN_DISTANCE_BETWEEN_DIVE_SITES_M)
 					continue;
