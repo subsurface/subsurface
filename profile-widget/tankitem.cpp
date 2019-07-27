@@ -32,14 +32,6 @@ TankItem::TankItem(QObject *parent) :
 	trimix = trimixGradient;
 	air = blue;
 	hAxis = nullptr;
-	memset(&diveCylinderStore, 0, sizeof(diveCylinderStore));
-}
-
-TankItem::~TankItem()
-{
-	// Should this be clear_dive(diveCylinderStore)?
-	for (int i = 0; i < MAX_CYLINDERS; i++)
-		free((void *)diveCylinderStore.cylinder[i].type.description);
 }
 
 void TankItem::setData(DivePlotDataModel *model, struct plot_info *plotInfo, struct dive *d)
@@ -51,7 +43,6 @@ void TankItem::setData(DivePlotDataModel *model, struct plot_info *plotInfo, str
 	pInfoEntry = (struct plot_data *)malloc(size);
 	pInfoNr = plotInfo->nr;
 	memcpy(pInfoEntry, plotInfo->entry, size);
-	copy_cylinders(d, &diveCylinderStore, false);
 	dataModel = model;
 	connect(dataModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(modelDataChanged(QModelIndex, QModelIndex)), Qt::UniqueConnection);
 	modelDataChanged();

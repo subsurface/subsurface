@@ -15,7 +15,6 @@ class TankItem : public QObject, public QGraphicsRectItem
 
 public:
 	explicit TankItem(QObject *parent = 0);
-	~TankItem();
 	void setHorizontalAxis(DiveCartesianAxis *horizontal);
 	void setData(DivePlotDataModel *model, struct plot_info *plotInfo, struct dive *d);
 
@@ -28,7 +27,6 @@ private:
 	void createBar(qreal x, qreal w, struct gasmix gas);
 	DivePlotDataModel *dataModel;
 	DiveCartesianAxis *hAxis;
-	struct dive diveCylinderStore;
 	struct plot_data *pInfoEntry;
 	int pInfoNr;
 	qreal height;
