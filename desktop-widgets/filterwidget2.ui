@@ -307,7 +307,7 @@
        <item row="0" column="2">
         <widget class="QToolButton" name="close">
          <property name="toolTip">
-          <string>Close and reset filters</string>
+          <string>Close filters</string>
          </property>
          <property name="icon">
           <iconset>
