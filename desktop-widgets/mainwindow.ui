@@ -109,6 +109,7 @@
     <addaction name="actionViewInfo"/>
     <addaction name="actionViewMap"/>
     <addaction name="separator"/>
+    <addaction name="actionStatsCharts"/>
     <addaction name="actionYearlyStatistics"/>
     <addaction name="actionPreviousDC"/>
     <addaction name="actionNextDC"/>
@@ -289,6 +290,14 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+Y</string>
+   </property>
+  </action>
+  <action name="actionStatsCharts">
+   <property name="text">
+    <string>&amp;Statistics charts</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+G</string>
    </property>
   </action>
   <action name="actionViewList">

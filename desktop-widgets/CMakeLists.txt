@@ -146,6 +146,16 @@ set(SUBSURFACE_INTERFACE
 	usersurvey.h
 )
 
+if(NOT NO_CHARTS)
+	set(SUBSURFACE_INTERFACE ${SUBSURFACE_INTERFACE}
+		chartwidget.cpp
+		chartwidget.h
+	)
+	set(SUBSURFACE_UI ${SUBSURFACE_UI}
+		chartwidget.ui
+	)
+endif()
+
 if(NOT NO_USERMANUAL)
 	set(SUBSURFACE_INTERFACE ${SUBSURFACE_INTERFACE}
 		usermanual.cpp
@@ -188,6 +198,7 @@ set(SUBSURFACE_STATISTICS_LIB_SRCS
 	statistics/yearstatistics.cpp
 	statistics/yearstatistics.h
 )
+
 source_group("Subsurface Statistics" FILES ${SUBSURFACE_STATISTICS_LIB_SRCS})
 
 qt5_wrap_ui(SUBSURFACE_UI_SRCS ${SUBSURFACE_UI})

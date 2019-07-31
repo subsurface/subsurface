@@ -23,6 +23,10 @@
 #include "core/gpslocation.h"
 #include "core/dive.h"
 
+#ifndef NO_CHARTS
+#include "desktop-widgets/chartwidget.h"
+#endif
+
 #define NUM_RECENT_FILES 4
 
 class QSortFilterProxyModel;
@@ -116,6 +120,7 @@ slots:
 	void on_actionRenumber_triggered();
 	void on_actionAutoGroup_triggered();
 	void on_actionYearlyStatistics_triggered();
+	void on_actionStatsCharts_triggered();
 
 	/* view menu actions */
 	void on_actionViewList_triggered();
@@ -216,6 +221,10 @@ private:
 	bool filesAsArguments;
 	UpdateManager *updateManager;
 	LocationInformationWidget *diveSiteEdit;
+
+#ifndef NO_CHARTS
+	ChartWidget *statsChartWidget;
+#endif
 
 	bool plannerStateClean();
 	void setupForAddAndPlan(const char *model);

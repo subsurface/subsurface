@@ -17,4 +17,4 @@ docker exec -t builder dnf install -y \
 	libudev-devel libusbx-devel libcurl-devel libssh2-devel\
 	qt5-qtbase-devel qt5-qtdeclarative-devel qt5-qtscript-devel \
 	qt5-qtwebkit-devel qt5-qtsvg-devel qt5-qttools-devel \
-	qt5-qtconnectivity-devel qt5-qtlocation-devel
+	qt5-qtconnectivity-devel qt5-qtlocation-devel qt5-qtcharts-devel
