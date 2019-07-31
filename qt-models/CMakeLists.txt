@@ -47,6 +47,8 @@ set(SUBSURFACE_DESKTOP_MODELS_LIB_SRCS
 	weightsysteminfomodel.h
 	yearlystatisticsmodel.cpp
 	yearlystatisticsmodel.h
+	datestatsmodel.cpp
+	datestatsmodel.h
 )
 
 # models exclusively used in mobile builds
