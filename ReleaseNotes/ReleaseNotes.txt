@@ -2,6 +2,11 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 4.9.1
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- fix incorrect tool tip for the button closing the filter panel
+- fix crash when (re-)loading maps
+
 New in _Subsurface_ 4.9
 ~~~~~~~~~~~~~~~~~~~~~~~
 - Major rewrite of the undo facility. Most operations can now be undone at
