@@ -321,7 +321,7 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, struct dive_site **lo
 	MdbTableDef *table;
 	MdbColumn *col[MDB_MAX_COLS];
 	char *bound_values[MDB_MAX_COLS];
-	int i;
+	int i, rc;
 	uint32_t d;
 	struct dive_site *ds;
 	location_t loc;
@@ -333,10 +333,11 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, struct dive_site **lo
 	table = smtk_open_table(mdb, "Site", col, bound_values);
 	if (!table)
 		return;
-
 	do {
-		mdb_fetch_row(table);
-	} while (strcasecmp(col[0]->bind_ptr, idx));
+		rc = mdb_fetch_row(table);
+	} while (strcasecmp(col[0]->bind_ptr, idx) && rc != 0);
+	if (rc == 0)
+		return;
 	loc_idx = copy_string(col[2]->bind_ptr);
 	site = copy_string(col[1]->bind_ptr);
 	loc = create_location(strtod(col[6]->bind_ptr, NULL), strtod(col[7]->bind_ptr, NULL));
@@ -362,8 +363,10 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, struct dive_site **lo
 	table = smtk_open_table(mdb, "Location", col, bound_values);
 	mdb_rewind_table(table);
 	do {
-		mdb_fetch_row(table);
-	} while (strcasecmp(col[0]->bind_ptr, loc_idx));
+		rc =mdb_fetch_row(table);
+	} while (strcasecmp(col[0]->bind_ptr, loc_idx) && rc != 0);
+	if (rc == 0)
+		return;
 
 	/*
 	 * Create a string for Subsurface's dive site structure with coordinates
