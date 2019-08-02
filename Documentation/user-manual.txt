@@ -661,10 +661,22 @@ Some divers use more than one dive computer at the same time, e.g. during techni
 If you import the dive profiles from these different dive computers into _Subsurface_, the
 profiles can be viewed independently. During upload the data from the dive computers are automatically
 merged into a single dive. The different profiles are presented on the _Profile_ panel with
-the name of each dive computer indicated at the bottom left.
+the name of each dive computer indicated at the bottom left as well as an indicator of the
+number of dive computers uploaded for this dive (e.g."No. 2 of 2"). The original dive profile is
+shown by default while profiles from additional dive computers are added "behind" that of the
+first uploaded dive computer.
 *While the dive is highlighted in the _Dive List_*, switch between the profiles of the
-different dive computers by using either the left/right arrow keyboard keys or
-by selecting _View -> Previous DC_ or _View -> Next DC_. The data in the _Notes_ panel
+different dive computers by using the left/right arrow keyboard keys. If profiles from more than
+one dive computer exists for a dive, right-clicking on the name of the dive computer
+(bottom left of the profile panel) activates a context menu (image below) that allows one to make the selected
+dive computer the one whose profile is shown by default: this changes the order in which the profiles
+are shown when using the left-arrow and right-arrow keys. The context menu also allows deleting any of
+the dive computers or to take the information from a specific dive computer and present that
+as a separate dive.
+
+image::images/dc_management.jpg["FIGURE:dc management",align="center"]
+
+The data in the _Notes_ panel
 are not affected by the specific dive computer that is selected.
 
 [[S_EditDiveInfo]]
@@ -908,6 +920,16 @@ for this dive, or just start typing in the box which shows the available
 options for the entered characters. The
 *Size* of the cylinder as well as its working pressure (_Work.press_) will
 automatically be shown in the dialog.
+
+*If your cylinder is not listed:* Maybe the cylinder type you dive with is not listed in the dropdown list. Add a new
+cylinder by selecting any of the existing cylinders in the list and clicking on the
+name of that cylinder. This activates the cursor on the cylinder name. Overtype
+the cylinder name with your new cylinder name and press ENTER on the keyboard. The new
+cylinder name now appears on the dropdown list. Overtyping a cylinder name does not affect
+the name that is being overtyped. Add a size and start pressure for that
+cylinder. The usual convention is that double cylinders are prefixed with a "D"  to
+indicate "double". Say for instance you dive a manifolded twinset of two 7 litre steel cylinders. This
+could be named "D7ℓ 232 bar" rather than "14ℓ 232 bar". However, use a rule that works for you.
 
 Next, indicate the starting pressure and the ending pressure of the
 specified gas during the dive. The unit of pressure (metric/imperial)
