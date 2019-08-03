@@ -1027,7 +1027,7 @@ void MainWindow::on_actionStatsCharts_triggered()
 {
 // Check if charts are being included
 #ifndef NO_CHARTS
-	statsChartWidget = new ChartWidget();
+	statsChartWidget.reset(new ChartWidget(this));
 	statsChartWidget->show();
 #endif
 }

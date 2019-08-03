@@ -223,7 +223,7 @@ private:
 	LocationInformationWidget *diveSiteEdit;
 
 #ifndef NO_CHARTS
-	ChartWidget *statsChartWidget;
+	std::unique_ptr<ChartWidget> statsChartWidget;
 #endif
 
 	bool plannerStateClean();

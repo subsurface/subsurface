@@ -15,24 +15,26 @@ DateStatsTableModel::DateStatsTableModel(QObject *parent) :
 
 	// Iterate through dives and count for each month and year
 	for_each_dive(idx, dp) {
-		utc_mkdate(dp->when, &tm);
-		// Advance current_year to the current dive, adding an empty
-		// QVector for each year
-		while (tm.tm_year != current_year) {
-			// Check if this is the first dive
-			if (current_year == -1) {
-				yearVec[YEAR] = tm.tm_year;
-				current_year = tm.tm_year;
-			} else {
-				m_data.append(yearVec);
-				current_year++;
-				yearVec.fill(0);
-				yearVec[YEAR] = current_year;
+		if (!dp->hidden_by_filter) {
+			utc_mkdate(dp->when, &tm);
+			// Advance current_year to the current dive, adding an empty
+			// QVector for each year
+			while (tm.tm_year != current_year) {
+				// Check if this is the first dive
+				if (current_year == -1) {
+					yearVec[YEAR] = tm.tm_year;
+					current_year = tm.tm_year;
+				} else {
+					m_data.append(yearVec);
+					current_year++;
+					yearVec.fill(0);
+					yearVec[YEAR] = current_year;
+				}
 			}
+			// Increment current year and month and year total
+			yearVec[tm.tm_mon]++;
+			yearVec[TOTAL]++;
 		}
-		// Increment current year and month and year total
-		yearVec[tm.tm_mon]++;
-		yearVec[TOTAL]++;
 	}
 
 	// Append the last QVector if there were any dives
@@ -82,7 +84,7 @@ QVariant DateStatsTableModel::headerData(int section, Qt::Orientation orientatio
 
 	if (orientation == Qt::Horizontal) {
 		// Return QString with Year lable in it.
-		return QString("%1").arg(m_data[section].at(YEAR));
+		return QStringLiteral("%1").arg(m_data[section].at(YEAR));
 	} else {
 		// Return labels for months and total.
 		switch (section) {

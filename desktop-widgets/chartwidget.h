@@ -2,12 +2,13 @@
 #define CHARTWIDGET_H
 
 #include <QWidget>
+#include <QChart>
+#include <QChartView>
+#include <QVBarModelMapper>
+#include <QHBarModelMapper>
 #include "ui_chartwidget.h"
 #include "qt-models/datestatsmodel.h"
-
-namespace Ui {
-class ChartWidget;
-}
+#include "core/subsurface-qt/DiveListNotifier.h"
 
 class ChartWidget : public QWidget
 {
@@ -15,12 +16,21 @@ class ChartWidget : public QWidget
 
 public:
 	explicit ChartWidget(QWidget *parent = nullptr);
-	void DrawYearChart();
-	void DrawMonthChart();
+	~ChartWidget();
+	QtCharts::QChart *drawYearChart();
+	QtCharts::QChart *drawMonthChart();
+
+public
+slots:
+	void filterFinished();
 
 private:
 	Ui::ChartWidget ui;
-	DateStatsTableModel model;
+	DateStatsTableModel *model;
+	QtCharts::QChartView monthChartView;
+	QtCharts::QChartView yearChartView;
+	QtCharts::QHBarModelMapper yearMapper;
+	QtCharts::QVBarModelMapper monthMapper;
 };
 
 #endif // STATSCHARTWIDGET_H

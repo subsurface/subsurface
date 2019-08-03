@@ -1,31 +1,57 @@
 #include "chartwidget.h"
+#include "core/trip.h"
+#include "qt-models/filtermodels.h"
 #include "qt-models/datestatsmodel.h"
 
-#include <QChart>
-#include <QChartView>
 #include <QVXYModelMapper>
 #include <QBarSeries>
 #include <QStackedBarSeries>
 #include <QBarSet>
-#include <QVBarModelMapper>
-#include <QHBarModelMapper>
 #include <QHeaderView>
 #include <QBarCategoryAxis>
 #include <QValueAxis>
 
 ChartWidget::ChartWidget(QWidget *parent) : QWidget(parent,Qt::Window)
 {
+	model = new DateStatsTableModel(this);
 	ui.setupUi(this);
-	DrawYearChart();
-	DrawMonthChart();
+
+	// create year chart layout
+	yearChartView.setChart(drawYearChart());
+	yearChartView.setRenderHint(QPainter::Antialiasing);
+	QGridLayout *yearLayout = new QGridLayout;
+	yearLayout->addWidget(&yearChartView, 1, 0);
+	yearLayout->setColumnStretch(0, 1);
+	this->ui.tabYearStats->setLayout(yearLayout);
+	// position view to chartview
+	this->ui.tabWidget->setCurrentIndex(this->ui.tabWidget->
+		indexOf(this->ui.tabYearStats));
+
+	// create month chart layout
+	monthChartView.setChart(drawMonthChart());
+	monthChartView.setRenderHint(QPainter::Antialiasing);
+	QGridLayout *monthLayout = new QGridLayout;
+	monthLayout->addWidget(&monthChartView, 1, 0);
+	monthLayout->setColumnStretch(0, 1);
+	this->ui.tabMonthStats->setLayout(monthLayout);
+
+	connect(MultiFilterSortModel::instance(), &MultiFilterSortModel::filterFinished, this, &ChartWidget::filterFinished);
+	connect(&diveListNotifier, &DiveListNotifier::divesAdded, this, &ChartWidget::filterFinished);
+	connect(&diveListNotifier, &DiveListNotifier::divesDeleted, this, &ChartWidget::filterFinished);
+	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &ChartWidget::filterFinished);
 }
 
-void ChartWidget::DrawYearChart()
+ChartWidget::~ChartWidget() {
+	delete model;
+}
+
+QtCharts::QChart *ChartWidget::drawYearChart()
 {
 	int idx;
 
-	// Set up QChart
 	QtCharts::QChart *yearChart = new QtCharts::QChart();
+
+	// Set up QChart
 	yearChart->setAnimationOptions(QtCharts::QChart::AllAnimations);
 	yearChart->legend()->hide();
 	yearChart->createDefaultAxes();
@@ -33,19 +59,18 @@ void ChartWidget::DrawYearChart()
 
 	// Add data series using ModelMapper
 	QtCharts::QBarSeries *series = new QtCharts::QBarSeries;
-	QtCharts::QHBarModelMapper *mapper = new QtCharts::QHBarModelMapper(this);
-	mapper->setFirstBarSetRow(DateStatsTableModel::TOTAL);
-	mapper->setLastBarSetRow(DateStatsTableModel::TOTAL);
-	mapper->setFirstColumn(0);
-	mapper->setColumnCount(model.columnCount());
-	mapper->setSeries(series);
-	mapper->setModel(&model);
+	yearMapper.setFirstBarSetRow(DateStatsTableModel::TOTAL);
+	yearMapper.setLastBarSetRow(DateStatsTableModel::TOTAL);
+	yearMapper.setFirstColumn(0);
+	yearMapper.setColumnCount(model->columnCount());
+	yearMapper.setSeries(series);
+	yearMapper.setModel(model);
 	yearChart->addSeries(series);
 
 	// Add X Axis with labels
 	QStringList categories;
-	for (idx = 0; idx < model.columnCount(); idx++)
-		categories << model.headerData(idx, Qt::Horizontal, Qt::DisplayRole).toString();
+	for (idx = 0; idx < model->columnCount(); idx++)
+		categories << model->headerData(idx, Qt::Horizontal, Qt::DisplayRole).toString();
 	QtCharts::QBarCategoryAxis *axisX = new QtCharts::QBarCategoryAxis();
 	axisX->append(categories);
 	yearChart->addAxis(axisX, Qt::AlignBottom);
@@ -53,29 +78,20 @@ void ChartWidget::DrawYearChart()
 
 	// Add Y Axis with tick marks
 	QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis();
-	axisY->setTickCount(model.axisMax(Qt::Horizontal) / 10 + 1);
-	axisY->setMax(model.axisMax(Qt::Horizontal));
+	axisY->setTickCount(model->axisMax(Qt::Horizontal) / 10 + 1);
+	axisY->setMax(model->axisMax(Qt::Horizontal));
 	axisY->setLabelFormat("%i");
 	yearChart->addAxis(axisY, Qt::AlignLeft);
 	series->attachAxis(axisY);
 
-	// create layout
-	QtCharts::QChartView *yearChartView = new QtCharts::QChartView(yearChart);
-	yearChartView->setRenderHint(QPainter::Antialiasing);
-	QGridLayout *layout = new QGridLayout;
-	layout->addWidget(yearChartView, 1, 0);
-	layout->setColumnStretch(0, 1);
-	this->ui.tabYearStats->setLayout(layout);
-
-	// position view to chartview
-	this->ui.tabWidget->setCurrentIndex(this->ui.tabWidget->
-		indexOf(this->ui.tabYearStats));
+	return(yearChart);
 }
 
-void ChartWidget::DrawMonthChart()
+QtCharts::QChart *ChartWidget::drawMonthChart()
 {
-	// Set up QChart
 	QtCharts::QChart *monthChart = new QtCharts::QChart();
+
+	// Set up QChart
 	monthChart->setAnimationOptions(QtCharts::QChart::AllAnimations);
 	monthChart->legend()->hide();
 	monthChart->createDefaultAxes();
@@ -83,13 +99,12 @@ void ChartWidget::DrawMonthChart()
 
 	// Add data series using ModelMapper
 	QtCharts::QStackedBarSeries *series = new QtCharts::QStackedBarSeries;
-	QtCharts::QVBarModelMapper *mapper = new QtCharts::QVBarModelMapper(this);
-	mapper->setFirstBarSetColumn(0);
-	mapper->setLastBarSetColumn(model.columnCount() - 1);
-	mapper->setFirstRow(DateStatsTableModel::JAN);
-	mapper->setRowCount(12);
-	mapper->setSeries(series);
-	mapper->setModel(&model);
+	monthMapper.setFirstBarSetColumn(0);
+	monthMapper.setLastBarSetColumn(model->columnCount() - 1);
+	monthMapper.setFirstRow(DateStatsTableModel::JAN);
+	monthMapper.setRowCount(12);
+	monthMapper.setSeries(series);
+	monthMapper.setModel(model);
 	monthChart->addSeries(series);
 
 	// Add X Axis with labels
@@ -106,8 +121,8 @@ void ChartWidget::DrawMonthChart()
 
 	// Add Y Axis with tick marks
 	QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis();
-	axisY->setTickCount(model.axisMax(Qt::Vertical) / 5 + 1);
-	axisY->setMax(model.axisMax(Qt::Vertical));
+	axisY->setTickCount(model->axisMax(Qt::Vertical) / 5 + 1);
+	axisY->setMax(model->axisMax(Qt::Vertical));
 	axisY->setLabelFormat("%i");
 	monthChart->addAxis(axisY, Qt::AlignLeft);
 	series->attachAxis(axisY);
@@ -116,11 +131,23 @@ void ChartWidget::DrawMonthChart()
 	monthChart->legend()->setVisible(true);
 	monthChart->legend()->setAlignment(Qt::AlignBottom);
 
-	// create layout
-	QtCharts::QChartView *monthChartView = new QtCharts::QChartView(monthChart);
-	monthChartView->setRenderHint(QPainter::Antialiasing);
-	QGridLayout *layout = new QGridLayout;
-	layout->addWidget(monthChartView, 1, 0);
-	layout->setColumnStretch(0, 1);
-	this->ui.tabMonthStats->setLayout(layout);
+	return (monthChart);
+}
+
+void ChartWidget::filterFinished() {
+	DateStatsTableModel *oldModel;
+	QtCharts::QChart *oldChart;
+
+	oldModel = model;
+	model = new DateStatsTableModel(this);
+
+	oldChart = yearChartView.chart();
+	yearChartView.setChart(drawYearChart());
+	delete oldChart;
+
+	oldChart = monthChartView.chart();
+	monthChartView.setChart(drawMonthChart());
+	delete oldChart;
+
+	delete oldModel;
 }
