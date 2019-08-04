@@ -29,14 +29,13 @@ QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, in
 		return CleanerTableModel::headerData(section, orientation, role);
 }
 
-
 CylindersModel *CylindersModel::instance()
 {
 	static CylindersModel self;
 	return &self;
 }
 
-static QString get_cylinder_string(cylinder_t *cyl)
+static QString get_cylinder_string(const cylinder_t *cyl)
 {
 	QString unit;
 	int decimals;
@@ -73,9 +72,9 @@ static QString gas_volume_string(int ml, const char *tail)
 	return QString("%L1 %2 %3").arg(vol, 0, 'f', decimals).arg(unit).arg(tail);
 }
 
-static QVariant gas_wp_tooltip(cylinder_t *cyl);
+static QVariant gas_wp_tooltip(const cylinder_t *cyl);
 
-static QVariant gas_usage_tooltip(cylinder_t *cyl)
+static QVariant gas_usage_tooltip(const cylinder_t *cyl)
 {
 	pressure_t startp = cyl->start.mbar ? cyl->start : cyl->sample_start;
 	pressure_t endp = cyl->end.mbar ? cyl->end : cyl->sample_end;
@@ -94,7 +93,7 @@ static QVariant gas_usage_tooltip(cylinder_t *cyl)
 		gas_volume_string(end, ")");
 }
 
-static QVariant gas_volume_tooltip(cylinder_t *cyl, pressure_t p)
+static QVariant gas_volume_tooltip(const cylinder_t *cyl, pressure_t p)
 {
 	int vol = gas_volume(cyl, p);
 	double Z;
@@ -106,17 +105,17 @@ static QVariant gas_volume_tooltip(cylinder_t *cyl, pressure_t p)
 	return gas_volume_string(vol, "(Z=") + QString("%1)").arg(Z, 0, 'f', 3);
 }
 
-static QVariant gas_wp_tooltip(cylinder_t *cyl)
+static QVariant gas_wp_tooltip(const cylinder_t *cyl)
 {
 	return gas_volume_tooltip(cyl, cyl->type.workingpressure);
 }
 
-static QVariant gas_start_tooltip(cylinder_t *cyl)
+static QVariant gas_start_tooltip(const cylinder_t *cyl)
 {
 	return gas_volume_tooltip(cyl, cyl->start.mbar ? cyl->start : cyl->sample_start);
 }
 
-static QVariant gas_end_tooltip(cylinder_t *cyl)
+static QVariant gas_end_tooltip(const cylinder_t *cyl)
 {
 	return gas_volume_tooltip(cyl, cyl->end.mbar ? cyl->end : cyl->sample_end);
 }
@@ -135,7 +134,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 	if (!index.isValid() || index.row() >= MAX_CYLINDERS)
 		return QVariant();
 
-	cylinder_t *cyl = &displayed_dive.cylinder[index.row()];
+	const cylinder_t *cyl = &displayed_dive.cylinder[index.row()];
 
 	switch (role) {
 	case Qt::BackgroundRole: {
