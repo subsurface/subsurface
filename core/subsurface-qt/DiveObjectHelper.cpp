@@ -213,27 +213,38 @@ QStringList getFirstGas(const dive *d)
 	return gas;
 }
 
+// Add string to sorted QStringList, if it doesn't already exist and
+// it isn't the empty string.
+static void addStringToSortedList(QStringList &l, const char *s)
+{
+	if (empty_string(s))
+		return;
+
+	// Do a binary search for the string. lower_bound() returns an iterator
+	// to either the searched-for element or the next higher element if it
+	// doesn't exist.
+	QString qs(s);
+	auto it = std::lower_bound(l.begin(), l.end(), qs); // TODO: use locale-aware sorting
+	if (it != l.end() && *it == s)
+		return;
+
+	// Add new string at sorted position
+	l.insert(it, s);
+}
+
 QStringList getFullCylinderList()
 {
 	QStringList cylinders;
-	int i = 0;
 	struct dive *d;
+	int i = 0;
 	for_each_dive (i, d) {
-		for (int j = 0; j < d->cylinders.nr; j++) {
-			QString cyl = d->cylinders.cylinders[j].type.description;
-			cylinders << cyl;
-		}
+		for (int j = 0; j < d->cylinders.nr; j++)
+			addStringToSortedList(cylinders, d->cylinders.cylinders[j].type.description);
 	}
 
-	for (int ti = 0; ti < MAX_TANK_INFO && tank_info[ti].name != NULL; ti++) {
-		QString cyl = tank_info[ti].name;
-		if (cyl.isEmpty())
-			continue;
-		cylinders << cyl;
-	}
+	for (int ti = 0; ti < MAX_TANK_INFO; ti++)
+		addStringToSortedList(cylinders, tank_info[ti].name);
 
-	cylinders.removeDuplicates();
-	cylinders.sort();
 	return cylinders;
 }
 
