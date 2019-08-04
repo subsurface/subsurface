@@ -3,6 +3,8 @@ Planner: Add checkbox on considering oxygen narcotic
 Planner: Improve rounding of stop durations in planner notes
 Desktop: register changes when clicking "done" on dive-site edit screen
 Mobile: re-enable GPS location service icon in global drawer
+Core: support dives with no cylinders
+Core: remove restriction on number of cylinders
 Mobile: add support for editing the dive number of a dive
 Desktop: make dive replanning undoable
 Desktop: update statistics tab on undo or redo
@@ -14,7 +16,6 @@ libdivecomputer:
 - Add support for the Oceanic Geo 4.0
 - clean up Shearwater tank pressure handling
 - minor fixlets
-
 ---
 * Always add new entries at the very top of this file above other existing entries and this note.
 * Use this layout for new entries: `[Area]: [Details about the change] [reference thread / issue]`
