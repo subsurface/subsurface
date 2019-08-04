@@ -704,7 +704,7 @@ void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int second
 		return;
 	}
 	/* The gas switch event format is insane for historical reasons */
-	struct gasmix mix = dive->cylinders.cylinders[idx].gasmix;
+	struct gasmix mix = get_cylinder(dive, idx)->gasmix;
 	int o2 = get_o2(mix);
 	int he = get_he(mix);
 	struct event *ev;
@@ -1242,7 +1242,7 @@ static void gps_picture_location(char *buffer, struct picture *pic)
 static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, struct parser_state *state)
 {
 	char *hash = NULL;
-	cylinder_t *cyl = dive->cylinders.nr > 0 ? &dive->cylinders.cylinders[dive->cylinders.nr - 1] : NULL;
+	cylinder_t *cyl = dive->cylinders.nr > 0 ? get_cylinder(dive, dive->cylinders.nr - 1) : NULL;
 	pressure_t p;
 	start_match("dive", name, buf);
 
@@ -1904,7 +1904,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 
 				found = false;
 				for (i = 0; i < state.cur_dive->cylinders.nr; ++i) {
-					const cylinder_t *cyl = &state.cur_dive->cylinders.cylinders[i];
+					const cylinder_t *cyl = get_cylinder(state.cur_dive, i);
 					if (cyl->gasmix.o2.permille == ptr[6] * 10 && cyl->gasmix.he.permille == ptr[7] * 10) {
 						found = true;
 						break;

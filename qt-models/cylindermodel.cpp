@@ -134,7 +134,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 	if (!index.isValid() || index.row() >= rows)
 		return QVariant();
 
-	const cylinder_t *cyl = &displayed_dive.cylinders.cylinders[index.row()];
+	const cylinder_t *cyl = get_cylinder(&displayed_dive, index.row());
 
 	switch (role) {
 	case Qt::BackgroundRole: {
@@ -259,7 +259,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 
 cylinder_t *CylindersModel::cylinderAt(const QModelIndex &index)
 {
-	return &displayed_dive.cylinders.cylinders[index.row()];
+	return get_cylinder(&displayed_dive, index.row());
 }
 
 // this is our magic 'pass data in' function that allows the delegate to get
@@ -449,7 +449,7 @@ static bool show_cylinder(struct dive *dive, int i)
 	if (is_cylinder_used(dive, i))
 		return true;
 
-	cylinder_t *cyl = dive->cylinders.cylinders + i;
+	cylinder_t *cyl = get_cylinder(dive, i);
 	if (cyl->start.mbar || cyl->sample_start.mbar ||
 	    cyl->end.mbar || cyl->sample_end.mbar)
 		return true;
@@ -533,10 +533,10 @@ void CylindersModel::moveAtFirst(int cylid)
 	cylinder_t temp_cyl;
 
 	beginMoveRows(QModelIndex(), cylid, cylid, QModelIndex(), 0);
-	memmove(&temp_cyl, &displayed_dive.cylinders.cylinders[cylid], sizeof(temp_cyl));
+	memmove(&temp_cyl, get_cylinder(&displayed_dive, cylid), sizeof(temp_cyl));
 	for (int i = cylid - 1; i >= 0; i--)
-		memmove(&displayed_dive.cylinders.cylinders[i + 1], &displayed_dive.cylinders.cylinders[i], sizeof(temp_cyl));
-	memmove(&displayed_dive.cylinders.cylinders[0], &temp_cyl, sizeof(temp_cyl));
+		memmove(get_cylinder(&displayed_dive, i + 1), get_cylinder(&displayed_dive, i), sizeof(temp_cyl));
+	memmove(get_cylinder(&displayed_dive, 0), &temp_cyl, sizeof(temp_cyl));
 
 	// Create a mapping of cylinder indexes:
 	// 1) Fill mapping[0]..mapping[cyl] with 0..index
@@ -558,7 +558,7 @@ void CylindersModel::updateDecoDepths(pressure_t olddecopo2)
 	pressure_t decopo2;
 	decopo2.mbar = prefs.decopo2;
 	for (int i = 0; i < displayed_dive.cylinders.nr; i++) {
-		cylinder_t *cyl = &displayed_dive.cylinders.cylinders[i];
+		cylinder_t *cyl = get_cylinder(&displayed_dive, i);
 		/* If the gas's deco MOD matches the old pO2, it will have been automatically calculated and should be updated.
 		 * If they don't match, we should leave the user entered depth as it is */
 		if (cyl->depth.mm == gas_mod(cyl->gasmix, olddecopo2, &displayed_dive, M_OR_FT(3, 10)).mm) {
@@ -578,7 +578,7 @@ bool CylindersModel::updateBestMixes()
 	// Check if any of the cylinders are best mixes, update if needed
 	bool gasUpdated = false;
 	for (int i = 0; i < displayed_dive.cylinders.nr; i++) {
-		cylinder_t *cyl = &displayed_dive.cylinders.cylinders[i];
+		cylinder_t *cyl = get_cylinder(&displayed_dive, i);
 		if (cyl->bestmix_o2) {
 			cyl->gasmix.o2 = best_o2(displayed_dive.maxdepth, &displayed_dive);
 			// fO2 + fHe must not be greater than 1

@@ -179,7 +179,7 @@ static void save_cylinder_info(struct membuffer *b, struct dive *dive)
 	nr = nr_cylinders(dive);
 
 	for (i = 0; i < nr; i++) {
-		cylinder_t *cylinder = dive->cylinders.cylinders + i;
+		cylinder_t *cylinder = get_cylinder(dive, i);
 		int volume = cylinder->type.size.mliter;
 		const char *description = cylinder->type.description;
 		int use = cylinder->cylinder_use;

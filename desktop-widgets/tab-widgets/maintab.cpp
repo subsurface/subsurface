@@ -656,7 +656,7 @@ bool cylinders_equal(const dive *d1, const dive *d2)
 	if (d1->cylinders.nr != d2->cylinders.nr)
 		return false;
 	for (int i = 0; i < d1->cylinders.nr; ++i) {
-		if (!same_cylinder(d1->cylinders.cylinders[i], d2->cylinders.cylinders[i]))
+		if (!same_cylinder(*get_cylinder(d1, i), *get_cylinder(d2, i)))
 			return false;
 	}
 	return true;

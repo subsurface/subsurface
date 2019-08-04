@@ -61,7 +61,7 @@ static int shearwater_changes(void *param, int columns, char **data, char **colu
 	int i;
 	bool found = false;
 	for (i = 0; i < state->cur_dive->cylinders.nr; ++i) {
-		const cylinder_t *cyl = &state->cur_dive->cylinders.cylinders[i];
+		const cylinder_t *cyl = get_cylinder(state->cur_dive, i);
 		if (cyl->gasmix.o2.permille == o2 && cyl->gasmix.he.permille == he) {
 			found = true;
 			break;

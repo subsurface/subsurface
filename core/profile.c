@@ -189,7 +189,7 @@ static int get_local_sac(struct plot_info *pi, int idx1, int idx2, struct dive *
 	depth = (entry1->depth + entry2->depth) / 2;
 	atm = depth_to_atm(depth, dive);
 
-	cyl = dive->cylinders.cylinders + index;
+	cyl = get_cylinder(dive, index);
 
 	airuse = gas_volume(cyl, a) - gas_volume(cyl, b);
 
@@ -414,7 +414,7 @@ static void calculate_max_limits_new(struct dive *dive, struct divecomputer *giv
 
 	/* Get the per-cylinder maximum pressure if they are manual */
 	for (cyl = 0; cyl < dive->cylinders.nr; cyl++) {
-		int mbar = dive->cylinders.cylinders[cyl].start.mbar;
+		int mbar = get_cylinder(dive, cyl)->start.mbar;
 		if (mbar > maxpressure)
 			maxpressure = mbar;
 		if (mbar < minpressure)
@@ -677,7 +677,7 @@ static int sac_between(struct dive *dive, struct plot_info *pi, int first, int l
 
 		a.mbar = get_plot_pressure(pi, first, i);
 		b.mbar = get_plot_pressure(pi, last, i);
-		cyl = dive->cylinders.cylinders + i;
+		cyl = get_cylinder(dive, i);
 		cyluse = gas_volume(cyl, a) - gas_volume(cyl, b);
 		if (cyluse > 0)
 			airuse += cyluse;
@@ -800,7 +800,7 @@ static void matching_gases(struct dive *dive, struct gasmix gasmix, bool gases[]
 	int i;
 
 	for (i = 0; i < dive->cylinders.nr; i++)
-		gases[i] = same_gasmix(gasmix, dive->cylinders.cylinders[i].gasmix);
+		gases[i] = same_gasmix(gasmix, get_cylinder(dive, i)->gasmix);
 }
 
 static void calculate_sac(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
@@ -890,7 +890,7 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 	// Fill in "seen[]" array - mark cylinders we're not interested
 	// in as negative.
 	for (i = 0; i < pi->nr_cylinders; i++) {
-		const cylinder_t *cyl = dive->cylinders.cylinders + i;
+		const cylinder_t *cyl = get_cylinder(dive, i);
 		int start = cyl->start.mbar;
 		int end = cyl->end.mbar;
 
@@ -920,7 +920,7 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 
 	for (i = 0; i < pi->nr_cylinders; i++) {
 		if (seen[i] >= 0) {
-			const cylinder_t *cyl = dive->cylinders.cylinders + i;
+			const cylinder_t *cyl = get_cylinder(dive, i);
 
 			add_plot_pressure(pi, first[i], i, cyl->start);
 			add_plot_pressure(pi, last[i], i, cyl->end);
@@ -1442,7 +1442,7 @@ static void plot_string(struct plot_info *pi, int idx, struct membuffer *b)
 		int mbar = get_plot_pressure(pi, idx, cyl);
 		if (!mbar)
 			continue;
-		struct gasmix mix = displayed_dive.cylinders.cylinders[cyl].gasmix;
+		struct gasmix mix = get_cylinder(&displayed_dive, cyl)->gasmix;
 		pressurevalue = get_pressure_units(mbar, &pressure_unit);
 		put_format_loc(b, translate("gettextFromC", "P: %d%s (%s)\n"), pressurevalue, pressure_unit, gasname(mix));
 	}
@@ -1706,7 +1706,7 @@ void compare_samples(struct plot_info *pi, int idx1, int idx2, char *buf, int bu
 		pressurevalue = get_pressure_units(bar_used, &pressure_unit);
 		memcpy(buf2, buf, bufsize);
 		snprintf_loc(buf, bufsize, translate("gettextFromC", "%s ΔP:%d%s"), buf2, pressurevalue, pressure_unit);
-		cylinder_t *cyl = displayed_dive.cylinders.cylinders + 0;
+		cylinder_t *cyl = get_cylinder(&displayed_dive, 0);
 		/* if we didn't cross a tank change and know the cylidner size as well, show SAC rate */
 		if (!crossed_tankchange && cyl->type.size.mliter) {
 			double volume_value;

@@ -66,7 +66,7 @@ void TabDiveInformation::updateProfile()
 		gaslist.append(separator); volumes.append(separator); SACs.append(separator);
 		separator = "\n";
 
-		gaslist.append(gasname(current_dive->cylinders.cylinders[i].gasmix));
+		gaslist.append(gasname(get_cylinder(current_dive, i)->gasmix));
 		if (!gases[i].mliter)
 			continue;
 		volumes.append(get_volume_string(gases[i], true));

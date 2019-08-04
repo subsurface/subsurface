@@ -157,7 +157,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case SUIT:
 			return QString(d->suit);
 		case CYLINDER:
-			return d->cylinders.nr > 0 ? QString(d->cylinders.cylinders[0].type.description) : QString();
+			return d->cylinders.nr > 0 ? QString(get_cylinder(d, 0)->type.description) : QString();
 		case SAC:
 			return displaySac(d, prefs.units.show_units_table);
 		case OTU:
@@ -1411,7 +1411,7 @@ bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) c
 		return lessThanHelper(strCmp(d1->suit, d2->suit), row_diff);
 	case CYLINDER:
 		if (d1->cylinders.nr > 0 && d2->cylinders.nr > 0)
-			return lessThanHelper(strCmp(d1->cylinders.cylinders[0].type.description, d2->cylinders.cylinders[0].type.description), row_diff);
+			return lessThanHelper(strCmp(get_cylinder(d1, 0)->type.description, get_cylinder(d2, 0)->type.description), row_diff);
 		return d1->cylinders.nr - d2->cylinders.nr < 0;
 	case GAS:
 		return lessThanHelper(nitrox_sort_value(d1) - nitrox_sort_value(d2), row_diff);

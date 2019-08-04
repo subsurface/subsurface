@@ -1125,10 +1125,10 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 			if (state != "add" && !is_cylinder_used(d, i))
 				continue;
 
-			d->cylinders.cylinders[i].start.mbar = parsePressureToMbar(startpressure[j]);
-			d->cylinders.cylinders[i].end.mbar = parsePressureToMbar(endpressure[j]);
-			if (d->cylinders.cylinders[i].end.mbar > d->cylinders.cylinders[i].start.mbar)
-				d->cylinders.cylinders[i].end.mbar = d->cylinders.cylinders[i].start.mbar;
+			get_cylinder(d, i)->start.mbar = parsePressureToMbar(startpressure[j]);
+			get_cylinder(d, i)->end.mbar = parsePressureToMbar(endpressure[j]);
+			if (get_cylinder(d, i)->end.mbar > get_cylinder(d, i)->start.mbar)
+				get_cylinder(d, i)->end.mbar = get_cylinder(d, i)->start.mbar;
 
 			j++;
 		}
@@ -1146,8 +1146,8 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 				he >= 0 && he <= 1000 &&
 				o2 + he <= 1000) {
 				diveChanged = true;
-				d->cylinders.cylinders[i].gasmix.o2.permille = o2;
-				d->cylinders.cylinders[i].gasmix.he.permille = he;
+				get_cylinder(d, i)->gasmix.o2.permille = o2;
+				get_cylinder(d, i)->gasmix.he.permille = he;
 			}
 			j++;
 		}
@@ -1173,9 +1173,9 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 					break;
 				}
 			}
-			d->cylinders.cylinders[j].type.description = copy_qstring(usedCylinder[k]);
-			d->cylinders.cylinders[j].type.size.mliter = size;
-			d->cylinders.cylinders[j].type.workingpressure.mbar = wp;
+			get_cylinder(d, j)->type.description = copy_qstring(usedCylinder[k]);
+			get_cylinder(d, j)->type.size.mliter = size;
+			get_cylinder(d, j)->type.workingpressure.mbar = wp;
 			k++;
 		}
 	}
@@ -1789,8 +1789,8 @@ QStringList QMLManager::cylinderInit() const
 	int i = 0;
 	for_each_dive (i, d) {
 		for (int j = 0; j < d->cylinders.nr; j++) {
-			if (!empty_string(d->cylinders.cylinders[j].type.description))
-				cylinders << d->cylinders.cylinders[j].type.description;
+			if (!empty_string(get_cylinder(d, j)->type.description))
+				cylinders << get_cylinder(d, j)->type.description;
 		}
 	}
 

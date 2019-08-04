@@ -445,7 +445,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		put_format(&buf, "\n%% Gas use information:\n");
 		qty_cyl = 0;
 		for (i = 0; i < dive->cylinders.nr; i++){
-			const cylinder_t &cyl = dive->cylinders.cylinders[i];
+			const cylinder_t &cyl = *get_cylinder(dive, i);
 			if (is_cylinder_used(dive, i) || (prefs.display_unused_tanks && cyl.type.description)){
 				put_format(&buf, "\\def\\%scyl%cdescription{%s}\n", ssrf, 'a' + i, cyl.type.description);
 				put_format(&buf, "\\def\\%scyl%cgasname{%s}\n", ssrf, 'a' + i, gasname(cyl.gasmix));

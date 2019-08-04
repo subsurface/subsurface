@@ -279,7 +279,7 @@ void reset_cylinders(struct dive *dive, bool track_gas)
 	pressure_t decopo2 = {.mbar = prefs.decopo2};
 
 	for (int i = 0; i < dive->cylinders.nr; i++) {
-		cylinder_t *cyl = &dive->cylinders.cylinders[i];
+		cylinder_t *cyl = get_cylinder(dive, i);
 		if (cyl->depth.mm == 0) /* if the gas doesn't give a mod, calculate based on prefs */
 			cyl->depth = gas_mod(cyl->gasmix, decopo2, dive, M_OR_FT(3,10));
 		if (track_gas)
@@ -308,10 +308,10 @@ void copy_cylinder_types(const struct dive *s, struct dive *d)
 		return;
 
 	for (i = 0; i < s->cylinders.nr && i < d->cylinders.nr; i++)
-		copy_cylinder_type(s->cylinders.cylinders + i, d->cylinders.cylinders + i);
+		copy_cylinder_type(get_cylinder(s, i), get_cylinder(d, i));
 
 	for ( ; i < s->cylinders.nr; i++)
-		add_cloned_cylinder(&d->cylinders, s->cylinders.cylinders[i]);
+		add_cloned_cylinder(&d->cylinders, *get_cylinder(s, i));
 }
 
 cylinder_t *add_empty_cylinder(struct cylinder_table *t)
@@ -355,7 +355,7 @@ void dump_cylinders(struct dive *dive, bool verbose)
 {
 	printf("Cylinder list:\n");
 	for (int i = 0; i < dive->cylinders; i++) {
-		cylinder_t *cyl = &dive->cylinders.cylinders[i];
+		cylinder_t *cyl = get_cylinder(dive, i);
 
 		printf("%02d: Type     %s, %3.1fl, %3.0fbar\n", i, cyl->type.description, cyl->type.size.mliter / 1000.0, cyl->type.workingpressure.mbar / 1000.0);
 		printf("    Gasmix   O2 %2.0f%% He %2.0f%%\n", cyl->gasmix.o2.permille / 10.0, cyl->gasmix.he.permille / 10.0);

@@ -97,7 +97,7 @@ void TankItem::modelDataChanged(const QModelIndex&, const QModelIndex&)
 
 	// start with the first gasmix and at the start of the dive
 	int cyl = explicit_first_cylinder(&displayed_dive, dc);
-	struct gasmix gasmix = displayed_dive.cylinders.cylinders[cyl].gasmix;
+	struct gasmix gasmix = get_cylinder(&displayed_dive, cyl)->gasmix;
 	int startTime = 0;
 
 	// work through all the gas changes and add the rectangle for each gas while it was used
