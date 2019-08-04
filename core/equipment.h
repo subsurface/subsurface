@@ -69,7 +69,7 @@ extern int cylinderuse_from_text(const char *text);
 extern void copy_weights(const struct weightsystem_table *s, struct weightsystem_table *d);
 extern void copy_cylinder_types(const struct dive *s, struct dive *d);
 extern void add_cloned_weightsystem(struct weightsystem_table *t, weightsystem_t ws);
-extern void add_empty_cylinder(struct cylinder_table *t);
+extern cylinder_t *add_empty_cylinder(struct cylinder_table *t);
 extern void add_cloned_cylinder(struct cylinder_table *t, cylinder_t cyl);
 extern cylinder_t *get_cylinder(const struct dive *d, int idx);
 extern cylinder_t *get_or_create_cylinder(struct dive *d, int idx);

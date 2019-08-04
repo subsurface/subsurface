@@ -314,11 +314,12 @@ void copy_cylinder_types(const struct dive *s, struct dive *d)
 		add_cloned_cylinder(&d->cylinders, s->cylinders.cylinders[i]);
 }
 
-void add_empty_cylinder(struct cylinder_table *t)
+cylinder_t *add_empty_cylinder(struct cylinder_table *t)
 {
 	cylinder_t cyl = { 0 };
 	cyl.type.description = strdup("");
 	add_to_cylinder_table(t, t->nr, cyl);
+	return &t->cylinders[t->nr - 1];
 }
 
 /* access to cylinders is controlled by two functions:
