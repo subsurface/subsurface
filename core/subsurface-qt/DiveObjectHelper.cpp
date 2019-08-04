@@ -20,7 +20,7 @@ static int callCounter = 0;
 
 enum returnPressureSelector {START_PRESSURE, END_PRESSURE};
 
-static QString getFormattedWeight(const struct dive *dive, unsigned int idx)
+static QString getFormattedWeight(const struct dive *dive, int idx)
 {
 	const weightsystem_t *weight = &dive->weightsystems.weightsystems[idx];
 	if (!weight->description)
@@ -30,7 +30,7 @@ static QString getFormattedWeight(const struct dive *dive, unsigned int idx)
 	return fmt;
 }
 
-static QString getFormattedCylinder(const struct dive *dive, unsigned int idx)
+static QString getFormattedCylinder(const struct dive *dive, int idx)
 {
 	const cylinder_t *cyl = &dive->cylinders.cylinders[idx];
 	const char *desc = cyl->type.description;
