@@ -190,13 +190,13 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		nextdp = dp->next;
 		if (dp->time == 0)
 			continue;
-		gasmix = dive->cylinders.cylinders[dp->cylinderid].gasmix;
+		gasmix = get_cylinder(dive, dp->cylinderid)->gasmix;
 		depthvalue = get_depth_units(dp->depth.mm, &decimals, &depth_unit);
 		/* analyze the dive points ahead */
 		while (nextdp && nextdp->time == 0)
 			nextdp = nextdp->next;
 		if (nextdp)
-			newgasmix = dive->cylinders.cylinders[nextdp->cylinderid].gasmix;
+			newgasmix = get_cylinder(dive, nextdp->cylinderid)->gasmix;
 		gaschange_after = (nextdp && (gasmix_distance(gasmix, newgasmix)));
 		gaschange_before =  (gasmix_distance(lastprintgasmix, gasmix));
 		rebreatherchange_after = (nextdp && (dp->setpoint != nextdp->setpoint || dp->divemode != nextdp->divemode));
@@ -466,7 +466,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		const char *unit, *pressure_unit, *depth_unit;
 		char warning[1000] = "";
 		char mingas[1000] = "";
-		cylinder_t *cyl = &dive->cylinders.cylinders[gasidx];
+		cylinder_t *cyl = get_cylinder(dive, gasidx);
 		if (cyl->cylinder_use == NOT_USED)
 			continue;
 
@@ -581,7 +581,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		while (dp) {
 			if (dp->time != 0) {
 				struct gas_pressures pressures;
-				struct gasmix gasmix = dive->cylinders.cylinders[dp->cylinderid].gasmix;
+				struct gasmix gasmix = get_cylinder(dive, dp->cylinderid)->gasmix;
 
 				current_divemode = get_current_divemode(&dive->dc, dp->time, &evd, &current_divemode);
 				amb = depth_to_atm(dp->depth.mm, dive);

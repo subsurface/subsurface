@@ -268,13 +268,13 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 		case GAS:
 			/* Check if we have the same gasmix two or more times
 			 * If yes return more verbose string */
-			int same_gas = same_gasmix_cylinder(&displayed_dive.cylinders.cylinders[p.cylinderid], p.cylinderid, &displayed_dive, true);
+			int same_gas = same_gasmix_cylinder(get_cylinder(&displayed_dive, p.cylinderid), p.cylinderid, &displayed_dive, true);
 			if (same_gas == -1)
-				return get_gas_string(displayed_dive.cylinders.cylinders[p.cylinderid].gasmix);
+				return get_gas_string(get_cylinder(&displayed_dive, p.cylinderid)->gasmix);
 			else
-				return get_gas_string(displayed_dive.cylinders.cylinders[p.cylinderid].gasmix) +
+				return get_gas_string(get_cylinder(&displayed_dive, p.cylinderid)->gasmix) +
 					QString(" (%1 %2 ").arg(tr("cyl.")).arg(p.cylinderid + 1) +
-						displayed_dive.cylinders.cylinders[p.cylinderid].type.description + ")";
+						get_cylinder(&displayed_dive, p.cylinderid)->type.description + ")";
 		}
 	} else if (role == Qt::DecorationRole) {
 		switch (index.column()) {
@@ -894,7 +894,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	struct deco_state *cache = NULL;
 	struct divedatapoint *dp = NULL;
 	for (int i = 0; i < displayed_dive.cylinders.nr; i++) {
-		cylinder_t *cyl = &displayed_dive.cylinders.cylinders[i];
+		cylinder_t *cyl = get_cylinder(&displayed_dive, i);
 		if (cyl->depth.mm && cyl->cylinder_use != NOT_USED) {
 			dp = create_dp(0, cyl->depth.mm, i, 0);
 			if (diveplan.dp) {

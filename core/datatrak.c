@@ -356,7 +356,7 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 	 */
 	read_bytes(2);
 	if (tmp_2bytes != 0x7FFF && dt_dive->cylinders.nr > 0)
-		dt_dive->cylinders.cylinders[0].gas_used.mliter = lrint(dt_dive->cylinders.cylinders[0].type.size.mliter * (tmp_2bytes / 100.0));
+		get_cylinder(dt_dive, 0)->gas_used.mliter = lrint(get_cylinder(dt_dive, 0)->type.size.mliter * (tmp_2bytes / 100.0));
 
 	/*
 	 * Dive Type 1 -  Bit table. Subsurface don't have this record, but
@@ -532,10 +532,10 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 			goto bail;
 		}
 		if (is_nitrox && dt_dive->cylinders.nr > 0)
-			dt_dive->cylinders.cylinders[0].gasmix.o2.permille =
+			get_cylinder(dt_dive, 0)->gasmix.o2.permille =
 					lrint(membuf[23] & 0x0F ? 20.0 + 2 * (membuf[23] & 0x0F) : 21.0) * 10;
 		if (is_O2 && dt_dive->cylinders.nr > 0)
-			dt_dive->cylinders.cylinders[0].gasmix.o2.permille = membuf[23] * 10;
+			get_cylinder(dt_dive, 0)->gasmix.o2.permille = membuf[23] * 10;
 		free(compl_buffer);
 	}
 	JUMP(membuf, profile_length);
@@ -550,8 +550,8 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 	create_device_node(dt_dive->dc.model, dt_dive->dc.deviceid, "", "", dt_dive->dc.model);
 	dt_dive->dc.next = NULL;
 	if (!is_SCR && dt_dive->cylinders.nr > 0) {
-		dt_dive->cylinders.cylinders[0].end.mbar = dt_dive->cylinders.cylinders[0].start.mbar -
-			((dt_dive->cylinders.cylinders[0].gas_used.mliter / dt_dive->cylinders.cylinders[0].type.size.mliter) * 1000);
+		get_cylinder(dt_dive, 0)->end.mbar = get_cylinder(dt_dive, 0)->start.mbar -
+			((get_cylinder(dt_dive, 0)->gas_used.mliter / get_cylinder(dt_dive, 0)->type.size.mliter) * 1000);
 	}
 	free(devdata);
 	return membuf;

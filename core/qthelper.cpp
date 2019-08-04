@@ -391,7 +391,7 @@ QVector<QPair<QString, int>> selectedDivesGasUsed()
 		volume_t *diveGases = get_gas_used(d);
 		for (j = 0; j < d->cylinders.nr; j++) {
 			if (diveGases[j].mliter) {
-				QString gasName = gasname(d->cylinders.cylinders[j].gasmix);
+				QString gasName = gasname(get_cylinder(d, j)->gasmix);
 				gasUsed[gasName] += diveGases[j].mliter;
 			}
 		}
@@ -1186,7 +1186,7 @@ QString get_gas_string(struct gasmix gas)
 QString get_divepoint_gas_string(struct dive *d, const divedatapoint &p)
 {
 	int idx = p.cylinderid;
-	return get_gas_string(d->cylinders.cylinders[idx].gasmix);
+	return get_gas_string(get_cylinder(d, idx)->gasmix);
 }
 
 QString get_taglist_string(struct tag_entry *tag_list)

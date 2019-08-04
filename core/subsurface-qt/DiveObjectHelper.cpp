@@ -32,7 +32,7 @@ static QString getFormattedWeight(const struct dive *dive, int idx)
 
 static QString getFormattedCylinder(const struct dive *dive, int idx)
 {
-	const cylinder_t *cyl = &dive->cylinders.cylinders[idx];
+	const cylinder_t *cyl = get_cylinder(dive, idx);
 	const char *desc = cyl->type.description;
 	if (!desc && idx > 0)
 		return QString();
@@ -46,7 +46,7 @@ static QString getFormattedCylinder(const struct dive *dive, int idx)
 
 static QString getPressures(const struct dive *dive, int i, enum returnPressureSelector ret)
 {
-	const cylinder_t *cyl = &dive->cylinders.cylinders[i];
+	const cylinder_t *cyl = get_cylinder(dive, i);
 	QString fmt;
 	if (ret == START_PRESSURE) {
 		if (cyl->start.mbar)
@@ -104,10 +104,10 @@ static QString formatGas(const dive *d)
 	for (int i = 0; i < d->cylinders.nr; i++) {
 		if (!is_cylinder_used(d, i))
 			continue;
-		gas = d->cylinders.cylinders[i].type.description;
+		gas = get_cylinder(d, i)->type.description;
 		if (!gas.isEmpty())
 			gas += QChar(' ');
-		gas += gasname(d->cylinders.cylinders[i].gasmix);
+		gas += gasname(get_cylinder(d, i)->gasmix);
 		// if has a description and if such gas is not already present
 		if (!gas.isEmpty() && gases.indexOf(gas) == -1) {
 			if (!gases.isEmpty())
@@ -167,8 +167,8 @@ static QVector<CylinderObjectHelper> makeCylinderObjects(const dive *d)
 	QVector<CylinderObjectHelper> res;
 	for (int i = 0; i < d->cylinders.nr; i++) {
 		//Don't add blank cylinders, only those that have been defined.
-		if (d->cylinders.cylinders[i].type.description)
-			res.append(CylinderObjectHelper(&d->cylinders.cylinders[i])); // no emplace for QVector. :(
+		if (get_cylinder(d, i)->type.description)
+			res.append(CylinderObjectHelper(get_cylinder(d, i))); // no emplace for QVector. :(
 	}
 	return res;
 }
@@ -178,7 +178,7 @@ QStringList formatGetCylinder(const dive *d)
 	QStringList getCylinder;
 	for (int i = 0; i < d->cylinders.nr; i++) {
 		if (is_cylinder_used(d, i))
-			getCylinder << d->cylinders.cylinders[i].type.description;
+			getCylinder << get_cylinder(d, i)->type.description;
 	}
 	return getCylinder;
 }
@@ -208,7 +208,7 @@ QStringList getFirstGas(const dive *d)
 	QStringList gas;
 	for (int i = 0; i < d->cylinders.nr; i++) {
 		if (is_cylinder_used(d, i))
-			gas << get_gas_string(d->cylinders.cylinders[i].gasmix);
+			gas << get_gas_string(get_cylinder(d, i)->gasmix);
 	}
 	return gas;
 }
@@ -239,7 +239,7 @@ QStringList getFullCylinderList()
 	int i = 0;
 	for_each_dive (i, d) {
 		for (int j = 0; j < d->cylinders.nr; j++)
-			addStringToSortedList(cylinders, d->cylinders.cylinders[j].type.description);
+			addStringToSortedList(cylinders, get_cylinder(d, j)->type.description);
 	}
 
 	for (int ti = 0; ti < MAX_TANK_INFO; ti++)

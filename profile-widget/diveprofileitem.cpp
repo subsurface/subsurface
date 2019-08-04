@@ -748,7 +748,7 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 					label_y_offset = -7 * axisLog;
 				}
 				plotPressureValue(mbar, entry->sec, alignVar, value_y_offset);
-				plotGasValue(mbar, entry->sec, displayed_dive.cylinders.cylinders[cyl].gasmix, alignVar, label_y_offset);
+				plotGasValue(mbar, entry->sec, get_cylinder(&displayed_dive, cyl)->gasmix, alignVar, label_y_offset);
 				seen_cyl[cyl] = true;
 
 				/* Alternate alignment as we see cylinder use.. */

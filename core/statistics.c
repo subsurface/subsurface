@@ -334,7 +334,7 @@ bool is_cylinder_used(const struct dive *dive, int idx)
 	if (idx < 0 || idx >= dive->cylinders.nr)
 		return false;
 
-	cyl = &dive->cylinders.cylinders[idx];
+	cyl = get_cylinder(dive, idx);
 	if ((cyl->start.mbar - cyl->end.mbar) > SOME_GAS)
 		return true;
 
@@ -369,7 +369,7 @@ volume_t *get_gas_used(struct dive *dive)
 
 	volume_t *gases = malloc(dive->cylinders.nr * sizeof(volume_t));
 	for (idx = 0; idx < dive->cylinders.nr; idx++) {
-		cylinder_t *cyl = &dive->cylinders.cylinders[idx];
+		cylinder_t *cyl = get_cylinder(dive, idx);
 		pressure_t start, end;
 
 		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
@@ -408,7 +408,7 @@ void selected_dives_gas_parts(volume_t *o2_tot, volume_t *he_tot)
 		for (j = 0; j < d->cylinders.nr; j++) {
 			if (diveGases[j].mliter) {
 				volume_t o2 = {}, he = {};
-				get_gas_parts(d->cylinders.cylinders[j].gasmix, diveGases[j], O2_IN_AIR, &o2, &he);
+				get_gas_parts(get_cylinder(d, j)->gasmix, diveGases[j], O2_IN_AIR, &o2, &he);
 				o2_tot->mliter += o2.mliter;
 				he_tot->mliter += he.mliter;
 			}
