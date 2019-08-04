@@ -651,13 +651,24 @@ bool weightsystems_equal(const dive *d1, const dive *d2)
 	return true;
 }
 
+bool cylinders_equal(const dive *d1, const dive *d2)
+{
+	if (d1->cylinders.nr != d2->cylinders.nr)
+		return false;
+	for (int i = 0; i < d1->cylinders.nr; ++i) {
+		if (!same_cylinder(d1->cylinders.cylinders[i], d2->cylinders.cylinders[i]))
+			return false;
+	}
+	return true;
+}
+
 void MainTab::rejectChanges()
 {
 	EditMode lastMode = editMode;
 
 	if (lastMode != NONE && current_dive &&
 	    (modified ||
-	     memcmp(&current_dive->cylinder[0], &displayed_dive.cylinder[0], sizeof(cylinder_t) * MAX_CYLINDERS) ||
+	     !cylinders_equal(current_dive, &displayed_dive) ||
 	     !weightsystems_equal(current_dive, &displayed_dive))) {
 		if (QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(tr("Discard the changes?"),
 									       tr("You are about to discard your changes.")),

@@ -37,7 +37,6 @@ public:
 	void add();
 	void clear();
 	void updateDive();
-	void copyFromDive(struct dive *d);
 	void updateDecoDepths(pressure_t olddecopo2);
 	void updateTrashIcon();
 	void moveAtFirst(int cylid);

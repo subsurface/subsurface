@@ -207,9 +207,10 @@ static QVector<dive *> getSelectedDivesCurrentLast()
 	return res;
 }
 
-// TODO: This is only a temporary function until undo of weightsystems is implemented.
+// TODO: This are only temporary functions until undo of weightsystems and cylinders is implemented.
 // Therefore it is not worth putting it in a header.
 extern bool weightsystems_equal(const dive *d1, const dive *d2);
+extern bool cylinders_equal(const dive *d1, const dive *d2);
 
 void TabDiveEquipment::acceptChanges()
 {
@@ -227,31 +228,13 @@ void TabDiveEquipment::acceptChanges()
 	if (cylindersModel->changed) {
 		mark_divelist_changed(true);
 		MODIFY_DIVES(selectedDives,
-			for (int i = 0; i < MAX_CYLINDERS; i++) {
-				if (mydive != cd) {
-					if (same_string(mydive->cylinder[i].type.description, cd->cylinder[i].type.description)) {
-						// if we started out with the same cylinder description (for multi-edit) or if we do copt & paste
-						// make sure that we have the same cylinder type and copy the gasmix, but DON'T copy the start
-						// and end pressures (those are per dive after all)
-						if (!same_string(mydive->cylinder[i].type.description, displayed_dive.cylinder[i].type.description)) {
-							free((void*)mydive->cylinder[i].type.description);
-							mydive->cylinder[i].type.description = copy_string(displayed_dive.cylinder[i].type.description);
-						}
-						mydive->cylinder[i].type.size = displayed_dive.cylinder[i].type.size;
-						mydive->cylinder[i].type.workingpressure = displayed_dive.cylinder[i].type.workingpressure;
-						mydive->cylinder[i].gasmix = displayed_dive.cylinder[i].gasmix;
-						mydive->cylinder[i].cylinder_use = displayed_dive.cylinder[i].cylinder_use;
-						mydive->cylinder[i].depth = displayed_dive.cylinder[i].depth;
-					}
-				}
-			}
+			// if we started out with the same cylinder description (for multi-edit) or if we do copt & paste
+			// make sure that we have the same cylinder type and copy the gasmix, but DON'T copy the start
+			// and end pressures (those are per dive after all)
+			if (cylinders_equal(mydive, cd) && mydive != cd)
+				copy_cylinder_types(&displayed_dive, cd);
+			copy_cylinders(&displayed_dive.cylinders, &cd->cylinders);
 		);
-		for (int i = 0; i < MAX_CYLINDERS; i++) {
-			// copy the cylinder but make sure we have our own copy of the strings
-			free((void*)cd->cylinder[i].type.description);
-			cd->cylinder[i] = displayed_dive.cylinder[i];
-			cd->cylinder[i].type.description = copy_string(displayed_dive.cylinder[i].type.description);
-		}
 		/* if cylinders changed we may have changed gas change events
 		 * and sensor idx in samples as well
 		 * - so far this is ONLY supported for a single selected dive */

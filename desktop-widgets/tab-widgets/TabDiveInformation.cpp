@@ -53,20 +53,20 @@ void TabDiveInformation::updateProfile()
 	ui->maximumDepthText->setText(get_depth_string(current_dive->maxdepth, true));
 	ui->averageDepthText->setText(get_depth_string(current_dive->meandepth, true));
 
-	volume_t *gases =  get_gas_used(current_dive);
+	volume_t *gases = get_gas_used(current_dive);
 	QString volumes;
-	std::vector<int> mean(MAX_CYLINDERS), duration(MAX_CYLINDERS);
+	std::vector<int> mean(current_dive->cylinders.nr), duration(current_dive->cylinders.nr);
 	per_cylinder_mean_depth(current_dive, select_dc(current_dive), &mean[0], &duration[0]);
 	volume_t sac;
 	QString gaslist, SACs, separator;
 
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
+	for (int i = 0; i < current_dive->cylinders.nr; i++) {
 		if (!is_cylinder_used(current_dive, i))
 			continue;
 		gaslist.append(separator); volumes.append(separator); SACs.append(separator);
 		separator = "\n";
 
-		gaslist.append(gasname(current_dive->cylinder[i].gasmix));
+		gaslist.append(gasname(current_dive->cylinders.cylinders[i].gasmix));
 		if (!gases[i].mliter)
 			continue;
 		volumes.append(get_volume_string(gases[i], true));

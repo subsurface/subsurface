@@ -257,7 +257,6 @@ void dive_end(struct parser_state *state)
 	state->cur_dc = NULL;
 	state->cur_location.lat.udeg = 0;
 	state->cur_location.lon.udeg = 0;
-	state->cur_cylinder_index = 0;
 }
 
 void trip_start(struct parser_state *state)
@@ -290,11 +289,11 @@ void picture_end(struct parser_state *state)
 
 void cylinder_start(struct parser_state *state)
 {
+	add_empty_cylinder(&state->cur_dive->cylinders);
 }
 
 void cylinder_end(struct parser_state *state)
 {
-	state->cur_cylinder_index++;
 }
 
 void ws_start(struct parser_state *state)

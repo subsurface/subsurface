@@ -12,6 +12,7 @@ extern "C" {
  * and one-, two- and three-minute minimums and maximums */
 struct plot_info {
 	int nr;
+	int nr_cylinders;
 	int maxtime;
 	int meandepth, maxdepth;
 	int minpressure, maxpressure;
@@ -21,7 +22,7 @@ struct plot_info {
 	double endtempcoord;
 	double maxpp;
 	struct plot_data *entry;
-	struct plot_pressure_data *pressures; /* MAX_CYLINDERS blocks of nr entries. */
+	struct plot_pressure_data *pressures; /* cylinders.nr blocks of nr entries. */
 };
 
 extern struct divecomputer *select_dc(struct dive *);

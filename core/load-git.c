@@ -34,7 +34,6 @@ struct git_parser_state {
 	dive_trip_t *active_trip;
 	struct picture *active_pic;
 	struct dive_site *active_site;
-	int cylinder_index, weightsystem_index;
 	int o2pressure_sensor;
 };
 
@@ -391,23 +390,21 @@ static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const char
 
 static void parse_dive_cylinder(char *line, struct membuffer *str, struct git_parser_state *state)
 {
-	cylinder_t *cylinder = state->active_dive->cylinder + state->cylinder_index;
+	cylinder_t cylinder = { 0 };
 
-	if (state->cylinder_index >= MAX_CYLINDERS)
-		return;
-
-	cylinder->type.description = get_utf8(str);
+	cylinder.type.description = get_utf8(str);
 	for (;;) {
 		char c;
 		while (isspace(c = *line))
 			line++;
 		if (!c)
 			break;
-		line = parse_keyvalue_entry(parse_cylinder_keyvalue, cylinder, line);
+		line = parse_keyvalue_entry(parse_cylinder_keyvalue, &cylinder, line);
 	}
-	if (cylinder->cylinder_use == OXYGEN)
-		state->o2pressure_sensor = state->cylinder_index;
-	state->cylinder_index++;
+	if (cylinder.cylinder_use == OXYGEN)
+		state->o2pressure_sensor = state->active_dive->cylinders.nr;
+
+	add_to_cylinder_table(&state->active_dive->cylinders, state->active_dive->cylinders.nr, cylinder);
 }
 
 static void parse_weightsystem_keyvalue(void *_ws, const char *key, const char *value)
@@ -1493,7 +1490,6 @@ static int parse_dive_entry(struct git_parser_state *state, const git_tree_entry
 		return report_error("Unable to read dive file");
 	if (*suffix)
 		dive->number = atoi(suffix + 1);
-	state->cylinder_index = 0;
 	clear_weightsystem_table(&state->active_dive->weightsystems);
 	state->o2pressure_sensor = 1;
 	for_each_line(blob, dive_parser, state);

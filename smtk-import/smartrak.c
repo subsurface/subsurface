@@ -507,7 +507,7 @@ static void merge_cylinder_info(cylinder_t *src, cylinder_t *dst)
 static int smtk_clean_cylinders(struct dive *d)
 {
 	int i = tanks - 1;
-	cylinder_t  *cyl, *base = &d->cylinder[0];
+	cylinder_t  *cyl, *base = &d->cylinders.cylinders[0];
 
 	cyl = base + tanks - 1;
 	while (cyl != base) {
@@ -966,8 +966,6 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 	smtk_version = atoi(smtk_ver[0]);
 	tanks = (smtk_version < 10213) ? 3 : 10;
 
-
-
 	mdb_table = smtk_open_table(mdb, "Dives", col, bound_values);
 	if (!mdb_table) {
 		report_error("[Error][smartrak_import]\tFile %s does not seem to be an SmartTrak file.", file);
@@ -978,6 +976,8 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		dc_family_t dc_fam = DC_FAMILY_NULL;
 		unsigned char *prf_buffer, *hdr_buffer, *compl_buffer;
 		struct dive *smtkdive = alloc_dive();
+		for (i = 0; i < tanks; ++i)
+			add_empty_cylinder(&smtkdive->cylinders);
 		struct tm *tm_date = malloc(sizeof(struct tm));
 		size_t hdr_length, prf_length;
 		dc_status_t rc = 0;
@@ -1038,24 +1038,24 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		int tankidxcol = coln(TANKIDX);
 
 		for (i = 0; i < tanks; i++) {
-			if (smtkdive->cylinder[i].start.mbar == 0)
-				smtkdive->cylinder[i].start.mbar = lrint(strtod(col[(i * 2) + pstartcol]->bind_ptr, NULL) * 1000);
+			if (smtkdive->cylinders.cylinders[i].start.mbar == 0)
+				smtkdive->cylinders.cylinders[i].start.mbar = lrint(strtod(col[(i * 2) + pstartcol]->bind_ptr, NULL) * 1000);
 			/*
 			 * If there is a start pressure ensure that end pressure is not zero as
 			 * will be registered in DCs which only keep track of differential pressures,
 			 * and collect the data registered  by the user in mdb
 			 */
-			if (smtkdive->cylinder[i].end.mbar == 0 && smtkdive->cylinder[i].start.mbar != 0)
-					smtkdive->cylinder[i].end.mbar = lrint(strtod(col[(i * 2) + 1 + pstartcol]->bind_ptr, NULL) * 1000 ? : 1000);
-			if (smtkdive->cylinder[i].gasmix.o2.permille == 0)
-				smtkdive->cylinder[i].gasmix.o2.permille = lrint(strtod(col[i + o2fraccol]->bind_ptr, NULL) * 10);
+			if (smtkdive->cylinders.cylinders[i].end.mbar == 0 && smtkdive->cylinders.cylinders[i].start.mbar != 0)
+					smtkdive->cylinders.cylinders[i].end.mbar = lrint(strtod(col[(i * 2) + 1 + pstartcol]->bind_ptr, NULL) * 1000 ? : 1000);
+			if (smtkdive->cylinders.cylinders[i].gasmix.o2.permille == 0)
+				smtkdive->cylinders.cylinders[i].gasmix.o2.permille = lrint(strtod(col[i + o2fraccol]->bind_ptr, NULL) * 10);
 			if (smtk_version == 10213) {
-				if (smtkdive->cylinder[i].gasmix.he.permille == 0)
-					smtkdive->cylinder[i].gasmix.he.permille = lrint(strtod(col[i + hefraccol]->bind_ptr, NULL) * 10);
+				if (smtkdive->cylinders.cylinders[i].gasmix.he.permille == 0)
+					smtkdive->cylinders.cylinders[i].gasmix.he.permille = lrint(strtod(col[i + hefraccol]->bind_ptr, NULL) * 10);
 			} else {
-				smtkdive->cylinder[i].gasmix.he.permille = 0;
+				smtkdive->cylinders.cylinders[i].gasmix.he.permille = 0;
 			}
-			smtk_build_tank_info(mdb_clon, &smtkdive->cylinder[i], col[i + tankidxcol]->bind_ptr);
+			smtk_build_tank_info(mdb_clon, &smtkdive->cylinders.cylinders[i], col[i + tankidxcol]->bind_ptr);
 		}
 		/* Check for duplicated cylinders and clean them */
 		smtk_clean_cylinders(smtkdive);

@@ -33,6 +33,17 @@ typedef struct
 	bool bestmix_he;
 } cylinder_t;
 
+/* Table of cylinders. Attention: this stores cylinders,
+ * *not* pointers to cylinders. This has two crucial consequences:
+ * 1) Pointers to cylinders are not stable. They may be
+ *    invalidated if the table is reallocated.
+ * 2) add_to_cylinder_table(), etc. take ownership of the
+ *    cylinder. Notably of the description string. */
+struct cylinder_table {
+	int nr, allocated;
+	cylinder_t *cylinders;
+};
+
 typedef struct
 {
 	weight_t weight;
@@ -51,7 +62,6 @@ struct weightsystem_table {
 	weightsystem_t *weightsystems;
 };
 
-#define MAX_CYLINDERS (20)
 #define MAX_TANK_INFO (100)
 #define MAX_WS_INFO (100)
 
@@ -59,16 +69,19 @@ extern int cylinderuse_from_text(const char *text);
 extern void copy_weights(const struct weightsystem_table *s, struct weightsystem_table *d);
 extern void copy_cylinder_types(const struct dive *s, struct dive *d);
 extern void add_cloned_weightsystem(struct weightsystem_table *t, weightsystem_t ws);
+extern void add_empty_cylinder(struct cylinder_table *t);
+extern void add_cloned_cylinder(struct cylinder_table *t, cylinder_t cyl);
+extern cylinder_t *get_cylinder(const struct dive *d, int idx);
+extern cylinder_t *get_or_create_cylinder(struct dive *d, int idx);
 extern void add_cylinder_description(const cylinder_type_t *);
 extern void add_weightsystem_description(const weightsystem_t *);
 extern bool same_weightsystem(weightsystem_t w1, weightsystem_t w2);
-extern bool cylinder_nodata(const cylinder_t *cyl);
-extern bool cylinder_none(const cylinder_t *cyl);
+extern bool same_cylinder(cylinder_t cyl1, cylinder_t cyl2);
 extern void remove_cylinder(struct dive *dive, int idx);
 extern void remove_weightsystem(struct dive *dive, int idx);
 extern void reset_cylinders(struct dive *dive, bool track_gas);
 extern int gas_volume(const cylinder_t *cyl, pressure_t p); /* Volume in mliter of a cylinder at pressure 'p' */
-extern int find_best_gasmix_match(struct gasmix mix, const cylinder_t array[]);
+extern int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table *cylinders);
 #ifdef DEBUG_CYL
 extern void dump_cylinders(struct dive *dive, bool verbose);
 #endif
@@ -76,6 +89,10 @@ extern void dump_cylinders(struct dive *dive, bool verbose);
 /* Weightsystem table functions */
 extern void clear_weightsystem_table(struct weightsystem_table *);
 extern void add_to_weightsystem_table(struct weightsystem_table *, int idx, weightsystem_t ws);
+
+/* Cylinder table functions */
+extern void clear_cylinder_table(struct cylinder_table *);
+extern void add_to_cylinder_table(struct cylinder_table *, int idx, cylinder_t cyl);
 
 void get_gas_string(struct gasmix gasmix, char *text, int len);
 const char *gasname(struct gasmix gasmix);

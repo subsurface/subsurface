@@ -18,6 +18,7 @@ static int shearwater_cylinders(void *param, int columns, char **data, char **co
 	UNUSED(columns);
 	UNUSED(column);
 	struct parser_state *state = (struct parser_state *)param;
+	cylinder_t *cyl;
 
 	int o2 = lrint(strtod_flags(data[0], NULL, 0) * 1000);
 	int he = lrint(strtod_flags(data[1], NULL, 0) * 1000);
@@ -28,8 +29,9 @@ static int shearwater_cylinders(void *param, int columns, char **data, char **co
 		o2 = 1000;
 
 	cylinder_start(state);
-	state->cur_dive->cylinder[state->cur_cylinder_index].gasmix.o2.permille = o2;
-	state->cur_dive->cylinder[state->cur_cylinder_index].gasmix.he.permille = he;
+	cyl = &state->cur_dive->cylinders.cylinders[state->cur_dive->cylinders.nr - 1];
+	cyl->gasmix.o2.permille = o2;
+	cyl->gasmix.he.permille = he;
 	cylinder_end(state);
 
 	return 0;
@@ -40,6 +42,7 @@ static int shearwater_changes(void *param, int columns, char **data, char **colu
 	UNUSED(columns);
 	UNUSED(column);
 	struct parser_state *state = (struct parser_state *)param;
+	cylinder_t *cyl;
 
 	if (columns != 3) {
 		return 1;
@@ -58,8 +61,9 @@ static int shearwater_changes(void *param, int columns, char **data, char **colu
 	// Find the cylinder index
 	int i;
 	bool found = false;
-	for (i = 0; i < state->cur_cylinder_index; ++i) {
-		if (state->cur_dive->cylinder[i].gasmix.o2.permille == o2 && state->cur_dive->cylinder[i].gasmix.he.permille == he) {
+	for (i = 0; i < state->cur_dive->cylinders.nr; ++i) {
+		const cylinder_t *cyl = &state->cur_dive->cylinders.cylinders[i];
+		if (cyl->gasmix.o2.permille == o2 && cyl->gasmix.he.permille == he) {
 			found = true;
 			break;
 		}
@@ -67,13 +71,13 @@ static int shearwater_changes(void *param, int columns, char **data, char **colu
 	if (!found) {
 		// Cylinder not found, creating a new one
 		cylinder_start(state);
-		state->cur_dive->cylinder[state->cur_cylinder_index].gasmix.o2.permille = o2;
-		state->cur_dive->cylinder[state->cur_cylinder_index].gasmix.he.permille = he;
+		cyl = &state->cur_dive->cylinders.cylinders[state->cur_dive->cylinders.nr - 1];
+		cyl->gasmix.o2.permille = o2;
+		cyl->gasmix.he.permille = he;
 		cylinder_end(state);
-		i = state->cur_cylinder_index;
 	}
 
-	add_gas_switch_event(state->cur_dive, get_dc(state), state->sample_rate ? atoi(data[0]) / state->sample_rate * 10 : atoi(data[0]), i);
+	add_gas_switch_event(state->cur_dive, get_dc(state), state->sample_rate ? atoi(data[0]) / state->sample_rate * 10 : atoi(data[0]), state->cur_dive->cylinders.nr - 1);
 	return 0;
 }
 

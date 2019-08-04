@@ -336,17 +336,18 @@ void uemis_parse_divelog_binary(char *base64, void *datap)
 		 * we store the incorrect working pressure to get the SAC calculations "close"
 		 * but the user will have to correct this manually
 		 */
-		dive->cylinder[i].type.size.mliter = lrintf(volume);
-		dive->cylinder[i].type.workingpressure.mbar = 202600;
-		dive->cylinder[i].gasmix.o2.permille = *(uint8_t *)(data + 120 + 25 * (gasoffset + i)) * 10;
-		dive->cylinder[i].gasmix.he.permille = 0;
+		cylinder_t *cyl = get_or_create_cylinder(dive, i);
+		cyl->type.size.mliter = lrintf(volume);
+		cyl->type.workingpressure.mbar = 202600;
+		cyl->gasmix.o2.permille = *(uint8_t *)(data + 120 + 25 * (gasoffset + i)) * 10;
+		cyl->gasmix.he.permille = 0;
 	}
 	/* first byte of divelog data is at offset 0x123 */
 	i = 0x123;
 	u_sample = (uemis_sample_t *)(data + i);
 	while ((i <= datalen) && (data[i] != 0 || data[i + 1] != 0)) {
 		if (u_sample->active_tank != active) {
-			if (u_sample->active_tank >= MAX_CYLINDERS) {
+			if (u_sample->active_tank >= dive->cylinders.nr) {
 				fprintf(stderr, "got invalid sensor #%d was #%d\n", u_sample->active_tank, active);
 			} else {
 				active = u_sample->active_tank;

@@ -1536,7 +1536,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 				int newGasIdx = gasChangeIdx + 1;
 				const struct plot_data &newGasEntry = plotInfo.entry[newGasIdx];
 				qDebug() << "after gas change at " << newGasEntry->sec << ": sensor pressure" << newGasEntry->pressure[0] << "interpolated" << newGasEntry->pressure[1];
-				if (get_plot_sensor_pressure(&plotInfo, gasChangeIdx) == 0 || displayed_dive.cylinder[gasChangeEntry->sensor[0]].sample_start.mbar == 0) {
+				if (get_plot_sensor_pressure(&plotInfo, gasChangeIdx) == 0 || displayed_dive.cylinders.cylinders[gasChangeEntry->sensor[0]].sample_start.mbar == 0) {
 					// if we have no sensorpressure or if we have no pressure from samples we can assume that
 					// we only have interpolated pressure (the pressure in the entry may be stored in the sensor
 					// pressure field if this is the first or last entry for this tank... see details in gaspressures.c
@@ -1545,7 +1545,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 					QAction *adjustOldPressure = m.addAction(tr("Adjust pressure of cyl. %1 (currently interpolated as %2)")
 										 .arg(gasChangeEntry->sensor[0] + 1).arg(get_pressure_string(pressure)));
 				}
-				if (get_plot_sensor_pressure(&plotInfo, newGasIdx) == 0 || displayed_dive.cylinder[newGasEntry->sensor[0]].sample_start.mbar == 0) {
+				if (get_plot_sensor_pressure(&plotInfo, newGasIdx) == 0 || displayed_dive.cylinders.cylinders[newGasEntry->sensor[0]].sample_start.mbar == 0) {
 					// we only have interpolated press -- see commend above
 					pressure_t pressure;
 					pressure.mbar = get_plot_interpolated_pressure(&plotInfo, newGasIdx) ? : get_plot_sensor_pressure(&plotInfo, newGasIdx);
@@ -1882,7 +1882,7 @@ void ProfileWidget2::repositionDiveHandlers()
 		QLineF line(p1, p2);
 		QPointF pos = line.pointAt(0.5);
 		gases[i]->setPos(pos);
-		gases[i]->setText(get_gas_string(displayed_dive.cylinder[datapoint.cylinderid].gasmix));
+		gases[i]->setText(get_gas_string(displayed_dive.cylinders.cylinders[datapoint.cylinderid].gasmix));
 		gases[i]->setVisible(datapoint.entered &&
 				(i == 0 || gases[i]->text() != gases[i-1]->text()));
 	}

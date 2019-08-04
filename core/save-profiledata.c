@@ -37,7 +37,7 @@ static void put_pd(struct membuffer *b, const struct plot_info *pi, int idx)
 
 	put_int(b, entry->in_deco);
 	put_int(b,  entry->sec);
-	for (int c = 0; c < MAX_CYLINDERS; c++) {
+	for (int c = 0; c < pi->nr_cylinders; c++) {
 		put_int(b, get_plot_sensor_pressure(pi, idx, c));
 		put_int(b, get_plot_interpolated_pressure(pi, idx, c));
 	}
@@ -103,11 +103,11 @@ static void put_pd(struct membuffer *b, const struct plot_info *pi, int idx)
 	put_int(b, entry->icd_warning ? 1 : 0);
 }
 
-static void put_headers(struct membuffer *b)
+static void put_headers(struct membuffer *b, int nr_cylinders)
 {
 	put_csv_string(b, "in_deco");
 	put_csv_string(b, "sec");
-	for (int c = 0; c < MAX_CYLINDERS; c++) {
+	for (int c = 0; c < nr_cylinders; c++) {
 		put_format(b, "\"pressure_%d_cylinder\", ", c);
 		put_format(b, "\"pressure_%d_interpolated\", ", c);
 	}
@@ -203,7 +203,7 @@ static void save_profiles_buffer(struct membuffer *b, bool select_only)
 		if (select_only && !dive->selected)
 			continue;
 		create_plot_info_new(dive, &dive->dc, &pi, false, planner_deco_state);
-		put_headers(b);
+		put_headers(b, pi.nr_cylinders);
 		put_format(b, "\n");
 
 		for (int i = 0; i < pi.nr; i++) {

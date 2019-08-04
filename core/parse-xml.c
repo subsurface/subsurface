@@ -225,7 +225,7 @@ static void cylinder_use(char *buffer, enum cylinderuse *cyl_use, struct parser_
 		int use = cylinderuse_from_text(buffer);
 		*cyl_use = use;
 		if (use == OXYGEN)
-			state->o2pressure_sensor = state->cur_cylinder_index;
+			state->o2pressure_sensor = state->cur_dive->cylinders.nr - 1;
 	}
 }
 
@@ -408,8 +408,7 @@ static void gasmix(char *buffer, fraction_t *fraction, struct parser_state *stat
 	/* libdivecomputer does negative percentages. */
 	if (*buffer == '-')
 		return;
-	if (state->cur_cylinder_index < MAX_CYLINDERS)
-		percent(buffer, fraction);
+	percent(buffer, fraction);
 }
 
 static void gasmix_nitrogen(char *buffer, struct gasmix *gasmix)
@@ -700,10 +699,12 @@ static void try_to_match_autogroup(const char *name, char *buf)
 void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx)
 {
 	/* sanity check so we don't crash */
-	if (idx < 0 || idx >= MAX_CYLINDERS)
+	if (idx < 0 || idx >= dive->cylinders.nr) {
+		report_error("Unknown cylinder index: %d", idx);
 		return;
+	}
 	/* The gas switch event format is insane for historical reasons */
-	struct gasmix mix = dive->cylinder[idx].gasmix;
+	struct gasmix mix = dive->cylinders.cylinders[idx].gasmix;
 	int o2 = get_o2(mix);
 	int he = get_he(mix);
 	struct event *ev;
@@ -1000,16 +1001,35 @@ static void divinglog_place(char *place, struct dive *d, struct parser_state *st
 
 static int divinglog_dive_match(struct dive *dive, const char *name, char *buf, struct parser_state *state)
 {
+	/* For cylinder related fields, we might have to create a cylinder first. */
+	cylinder_t cyl = { 0 };
+	if (MATCH("tanktype", utf8_string, &cyl.type.description)) {
+		cylinder_t *cyl0 = get_or_create_cylinder(dive, 0);
+		free((void *)cyl0->type.description);
+		cyl0->type.description = cyl.type.description;
+		return 1;
+	}
+	if (MATCH("tanksize", cylindersize, &cyl.type.size)) {
+		get_or_create_cylinder(dive, 0)->type.size = cyl.type.size;
+		return 1;
+	}
+	if (MATCH_STATE("presw", pressure, &cyl.type.workingpressure)) {
+		get_or_create_cylinder(dive, 0)->type.workingpressure = cyl.type.workingpressure;
+		return 1;
+	}
+	if (MATCH_STATE("press", pressure, &cyl.start)) {
+		get_or_create_cylinder(dive, 0)->start = cyl.start;
+		return 1;
+	}
+	if (MATCH_STATE("prese", pressure, &cyl.end)) {
+		get_or_create_cylinder(dive, 0)->end = cyl.end;
+		return 1;
+	}
 	return MATCH_STATE("divedate", divedate, &dive->when) ||
 	       MATCH_STATE("entrytime", divetime, &dive->when) ||
 	       MATCH("divetime", duration, &dive->dc.duration) ||
 	       MATCH_STATE("depth", depth, &dive->dc.maxdepth) ||
 	       MATCH_STATE("depthavg", depth, &dive->dc.meandepth) ||
-	       MATCH("tanktype", utf8_string, &dive->cylinder[0].type.description) ||
-	       MATCH("tanksize", cylindersize, &dive->cylinder[0].type.size) ||
-	       MATCH_STATE("presw", pressure, &dive->cylinder[0].type.workingpressure) ||
-	       MATCH_STATE("press", pressure, &dive->cylinder[0].start) ||
-	       MATCH_STATE("prese", pressure, &dive->cylinder[0].end) ||
 	       MATCH("comments", utf8_string, &dive->notes) ||
 	       MATCH("names.buddy", utf8_string, &dive->buddy) ||
 	       MATCH("name.country", utf8_string, &state->country) ||
@@ -1222,6 +1242,8 @@ static void gps_picture_location(char *buffer, struct picture *pic)
 static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, struct parser_state *state)
 {
 	char *hash = NULL;
+	cylinder_t *cyl = dive->cylinders.nr > 0 ? &dive->cylinders.cylinders[dive->cylinders.nr - 1] : NULL;
+	pressure_t p;
 	start_match("dive", name, buf);
 
 	switch (state->import_source) {
@@ -1270,10 +1292,14 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 		free(hash);
 		return;
 	}
-	if (MATCH_STATE("cylinderstartpressure", pressure, &dive->cylinder[0].start))
+	if (MATCH_STATE("cylinderstartpressure", pressure, &p)) {
+		get_or_create_cylinder(dive, 0)->start = p;
 		return;
-	if (MATCH_STATE("cylinderendpressure", pressure, &dive->cylinder[0].end))
+	}
+	if (MATCH_STATE("cylinderendpressure", pressure, &p)) {
+		get_or_create_cylinder(dive, 0)->end = p;
 		return;
+	}
 	if (MATCH_STATE("gps", gps_in_dive, dive))
 		return;
 	if (MATCH_STATE("Place", gps_in_dive, dive))
@@ -1316,28 +1342,28 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 		return;
 	if (MATCH_STATE("weight", weight, &dive->weightsystems.weightsystems[dive->weightsystems.nr - 1].weight))
 		return;
-	if (state->cur_cylinder_index < MAX_CYLINDERS) {
-		if (MATCH("size.cylinder", cylindersize, &dive->cylinder[state->cur_cylinder_index].type.size))
+	if (cyl) {
+		if (MATCH("size.cylinder", cylindersize, &cyl->type.size))
 			return;
-		if (MATCH_STATE("workpressure.cylinder", pressure, &dive->cylinder[state->cur_cylinder_index].type.workingpressure))
+		if (MATCH_STATE("workpressure.cylinder", pressure, &cyl->type.workingpressure))
 			return;
-		if (MATCH("description.cylinder", utf8_string, &dive->cylinder[state->cur_cylinder_index].type.description))
+		if (MATCH("description.cylinder", utf8_string, &cyl->type.description))
 			return;
-		if (MATCH_STATE("start.cylinder", pressure, &dive->cylinder[state->cur_cylinder_index].start))
+		if (MATCH_STATE("start.cylinder", pressure, &cyl->start))
 			return;
-		if (MATCH_STATE("end.cylinder", pressure, &dive->cylinder[state->cur_cylinder_index].end))
+		if (MATCH_STATE("end.cylinder", pressure, &cyl->end))
 			return;
-		if (MATCH_STATE("use.cylinder", cylinder_use, &dive->cylinder[state->cur_cylinder_index].cylinder_use))
+		if (MATCH_STATE("use.cylinder", cylinder_use, &cyl->cylinder_use))
 			return;
-		if (MATCH_STATE("depth.cylinder", depth, &dive->cylinder[state->cur_cylinder_index].depth))
+		if (MATCH_STATE("depth.cylinder", depth, &cyl->depth))
 			return;
-		if (MATCH_STATE("o2", gasmix, &dive->cylinder[state->cur_cylinder_index].gasmix.o2))
+		if (MATCH_STATE("o2", gasmix, &cyl->gasmix.o2))
 			return;
-		if (MATCH_STATE("o2percent", gasmix, &dive->cylinder[state->cur_cylinder_index].gasmix.o2))
+		if (MATCH_STATE("o2percent", gasmix, &cyl->gasmix.o2))
 			return;
-		if (MATCH("n2", gasmix_nitrogen, &dive->cylinder[state->cur_cylinder_index].gasmix))
+		if (MATCH("n2", gasmix_nitrogen, &cyl->gasmix))
 			return;
-		if (MATCH_STATE("he", gasmix, &dive->cylinder[state->cur_cylinder_index].gasmix.he))
+		if (MATCH_STATE("he", gasmix, &cyl->gasmix.he))
 			return;
 	}
 	if (MATCH_STATE("air.divetemperature", temperature, &dive->airtemp))
@@ -1710,6 +1736,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 	struct battery_status battery_start = {0, 0, 0, 0};
 	struct battery_status battery_end = {0, 0, 0, 0};
 	uint16_t o2_sensor_calibration_values[4] = {0};
+	cylinder_t *cyl;
 	struct parser_state state;
 
 	init_parser_state(&state);
@@ -1765,8 +1792,9 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 	state.cur_dc->surface_pressure.mbar = ((ptr[25] << 8) + ptr[24]) / 10;
 
 	// Declare initial mix as first cylinder
-	state.cur_dive->cylinder[0].gasmix.o2.permille = ptr[26] * 10;
-	state.cur_dive->cylinder[0].gasmix.he.permille = ptr[27] * 10;
+	cyl = get_or_create_cylinder(state.cur_dive, 0);
+	cyl->gasmix.o2.permille = ptr[26] * 10;
+	cyl->gasmix.he.permille = ptr[27] * 10;
 
 	/* Done with parsing what we know about the dive header */
 	ptr += 32;
@@ -1874,18 +1902,20 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 				state.cur_event.value = ptr[7] << 8 ^ ptr[6];
 
 				found = false;
-				for (i = 0; i < state.cur_cylinder_index; ++i) {
-					if (state.cur_dive->cylinder[i].gasmix.o2.permille == ptr[6] * 10 && state.cur_dive->cylinder[i].gasmix.he.permille == ptr[7] * 10) {
+				for (i = 0; i < state.cur_dive->cylinders.nr; ++i) {
+					const cylinder_t *cyl = &state.cur_dive->cylinders.cylinders[i];
+					if (cyl->gasmix.o2.permille == ptr[6] * 10 && cyl->gasmix.he.permille == ptr[7] * 10) {
 						found = true;
 						break;
 					}
 				}
 				if (!found) {
 					cylinder_start(&state);
-					state.cur_dive->cylinder[state.cur_cylinder_index].gasmix.o2.permille = ptr[6] * 10;
-					state.cur_dive->cylinder[state.cur_cylinder_index].gasmix.he.permille = ptr[7] * 10;
+					cylinder_t *cyl = &state.cur_dive->cylinders.cylinders[state.cur_dive->cylinders.nr - 1];
+					cyl->gasmix.o2.permille = ptr[6] * 10;
+					cyl->gasmix.he.permille = ptr[7] * 10;
 					cylinder_end(&state);
-					state.cur_event.gas.index = state.cur_cylinder_index;
+					state.cur_event.gas.index = state.cur_dive->cylinders.nr - 1;
 				} else {
 					state.cur_event.gas.index = i;
 				}

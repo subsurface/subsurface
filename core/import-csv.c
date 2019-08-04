@@ -509,8 +509,8 @@ int parse_txt_file(const char *filename, const char *csv, struct dive_table *tab
 		int prev_depth = 0, cur_sampletime = 0, prev_setpoint = -1, prev_ndl = -1;
 		bool has_depth = false, has_setpoint = false, has_ndl = false;
 		char *lineptr, *key, *value;
-		int cur_cylinder_index = 0;
 		unsigned int prev_time = 0;
+		cylinder_t cyl;
 
 		struct dive *dive;
 		struct divecomputer *dc;
@@ -538,25 +538,25 @@ int parse_txt_file(const char *filename, const char *csv, struct dive_table *tab
 		dive->dc.divemode = CCR;
 		dive->dc.no_o2sensors = 2;
 
-		dive->cylinder[cur_cylinder_index].cylinder_use = OXYGEN;
-		dive->cylinder[cur_cylinder_index].type.size.mliter = 3000;
-		dive->cylinder[cur_cylinder_index].type.workingpressure.mbar = 200000;
-		dive->cylinder[cur_cylinder_index].type.description = strdup("3l Mk6");
-		dive->cylinder[cur_cylinder_index].gasmix.o2.permille = 1000;
-		cur_cylinder_index++;
+		cyl.cylinder_use = OXYGEN;
+		cyl.type.size.mliter = 3000;
+		cyl.type.workingpressure.mbar = 200000;
+		cyl.type.description = "3l Mk6";
+		cyl.gasmix.o2.permille = 1000;
+		add_cloned_cylinder(&dive->cylinders, cyl);
 
-		dive->cylinder[cur_cylinder_index].cylinder_use = DILUENT;
-		dive->cylinder[cur_cylinder_index].type.size.mliter = 3000;
-		dive->cylinder[cur_cylinder_index].type.workingpressure.mbar = 200000;
-		dive->cylinder[cur_cylinder_index].type.description = strdup("3l Mk6");
+		cyl.cylinder_use = DILUENT;
+		cyl.type.size.mliter = 3000;
+		cyl.type.workingpressure.mbar = 200000;
+		cyl.type.description = "3l Mk6";
 		value = parse_mkvi_value(memtxt.buffer, "Helium percentage");
 		he = atoi(value);
 		free(value);
 		value = parse_mkvi_value(memtxt.buffer, "Nitrogen percentage");
-		dive->cylinder[cur_cylinder_index].gasmix.o2.permille = (100 - atoi(value) - he) * 10;
+		cyl.gasmix.o2.permille = (100 - atoi(value) - he) * 10;
 		free(value);
-		dive->cylinder[cur_cylinder_index].gasmix.he.permille = he * 10;
-		cur_cylinder_index++;
+		cyl.gasmix.he.permille = he * 10;
+		add_cloned_cylinder(&dive->cylinders, cyl);
 
 		lineptr = strstr(memtxt.buffer, "Dive started at");
 		while (!empty_string(lineptr) && (lineptr = strchr(lineptr, '\n'))) {

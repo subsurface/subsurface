@@ -32,7 +32,7 @@ static QString getFormattedWeight(const struct dive *dive, unsigned int idx)
 
 static QString getFormattedCylinder(const struct dive *dive, unsigned int idx)
 {
-	const cylinder_t *cyl = &dive->cylinder[idx];
+	const cylinder_t *cyl = &dive->cylinders.cylinders[idx];
 	const char *desc = cyl->type.description;
 	if (!desc && idx > 0)
 		return QString();
@@ -46,7 +46,7 @@ static QString getFormattedCylinder(const struct dive *dive, unsigned int idx)
 
 static QString getPressures(const struct dive *dive, int i, enum returnPressureSelector ret)
 {
-	const cylinder_t *cyl = &dive->cylinder[i];
+	const cylinder_t *cyl = &dive->cylinders.cylinders[i];
 	QString fmt;
 	if (ret == START_PRESSURE) {
 		if (cyl->start.mbar)
@@ -101,13 +101,13 @@ static QString formatGas(const dive *d)
 	 * from the get_gas_string function or this is correct?
 	 */
 	QString gas, gases;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
+	for (int i = 0; i < d->cylinders.nr; i++) {
 		if (!is_cylinder_used(d, i))
 			continue;
-		gas = d->cylinder[i].type.description;
+		gas = d->cylinders.cylinders[i].type.description;
 		if (!gas.isEmpty())
 			gas += QChar(' ');
-		gas += gasname(d->cylinder[i].gasmix);
+		gas += gasname(d->cylinders.cylinders[i].gasmix);
 		// if has a description and if such gas is not already present
 		if (!gas.isEmpty() && gases.indexOf(gas) == -1) {
 			if (!gases.isEmpty())
@@ -155,10 +155,8 @@ static QStringList formatWeights(const dive *d)
 QStringList formatCylinders(const dive *d)
 {
 	QStringList cylinders;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
+	for (int i = 0; i < d->cylinders.nr; i++) {
 		QString cyl = getFormattedCylinder(d, i);
-		if (cyl.isEmpty())
-			continue;
 		cylinders << cyl;
 	}
 	return cylinders;
@@ -167,10 +165,10 @@ QStringList formatCylinders(const dive *d)
 static QVector<CylinderObjectHelper> makeCylinderObjects(const dive *d)
 {
 	QVector<CylinderObjectHelper> res;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
+	for (int i = 0; i < d->cylinders.nr; i++) {
 		//Don't add blank cylinders, only those that have been defined.
-		if (d->cylinder[i].type.description)
-			res.append(CylinderObjectHelper(&d->cylinder[i])); // no emplace for QVector. :(
+		if (d->cylinders.cylinders[i].type.description)
+			res.append(CylinderObjectHelper(&d->cylinders.cylinders[i])); // no emplace for QVector. :(
 	}
 	return res;
 }
@@ -178,9 +176,9 @@ static QVector<CylinderObjectHelper> makeCylinderObjects(const dive *d)
 QStringList formatGetCylinder(const dive *d)
 {
 	QStringList getCylinder;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
+	for (int i = 0; i < d->cylinders.nr; i++) {
 		if (is_cylinder_used(d, i))
-			getCylinder << d->cylinder[i].type.description;
+			getCylinder << d->cylinders.cylinders[i].type.description;
 	}
 	return getCylinder;
 }
@@ -188,7 +186,7 @@ QStringList formatGetCylinder(const dive *d)
 QStringList getStartPressure(const dive *d)
 {
 	QStringList startPressure;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
+	for (int i = 0; i < d->cylinders.nr; i++) {
 		if (is_cylinder_used(d, i))
 			startPressure << getPressures(d, i, START_PRESSURE);
 	}
@@ -198,7 +196,7 @@ QStringList getStartPressure(const dive *d)
 QStringList getEndPressure(const dive *d)
 {
 	QStringList endPressure;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
+	for (int i = 0; i < d->cylinders.nr; i++) {
 		if (is_cylinder_used(d, i))
 			endPressure << getPressures(d, i, END_PRESSURE);
 	}
@@ -208,9 +206,9 @@ QStringList getEndPressure(const dive *d)
 QStringList getFirstGas(const dive *d)
 {
 	QStringList gas;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
+	for (int i = 0; i < d->cylinders.nr; i++) {
 		if (is_cylinder_used(d, i))
-			gas << get_gas_string(d->cylinder[i].gasmix);
+			gas << get_gas_string(d->cylinders.cylinders[i].gasmix);
 	}
 	return gas;
 }
@@ -221,10 +219,8 @@ QStringList getFullCylinderList()
 	int i = 0;
 	struct dive *d;
 	for_each_dive (i, d) {
-		for (int j = 0; j < MAX_CYLINDERS; j++) {
-			QString cyl = d->cylinder[j].type.description;
-			if (cyl.isEmpty())
-				continue;
+		for (int j = 0; j < d->cylinders.nr; j++) {
+			QString cyl = d->cylinders.cylinders[j].type.description;
 			cylinders << cyl;
 		}
 	}

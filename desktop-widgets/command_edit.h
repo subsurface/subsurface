@@ -246,7 +246,7 @@ struct PasteState {
 	int rating;
 	int visibility;
 	tag_entry *tags;
-	std::vector<cylinder_t> cylinders;
+	struct cylinder_table cylinders;
 	struct weightsystem_table weightsystems;
 
 	PasteState(dive *d, const dive *data, dive_components what); // Read data from dive data for dive d
@@ -273,7 +273,7 @@ class ReplanDive : public Base {
 	// Exchange these data with current dive
 	timestamp_t when;
 	depth_t maxdepth, meandepth;
-	cylinder_t cylinders[MAX_CYLINDERS];
+	struct cylinder_table cylinders;
 	struct divecomputer dc;
 	char *notes;
 	pressure_t surface_pressure;

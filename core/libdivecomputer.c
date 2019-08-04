@@ -112,7 +112,9 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 	}
 	bool no_volume = true;
 
-	for (i = 0; i < MAX_CYLINDERS && (i < ngases || i < ntanks); i++) {
+	clear_cylinder_table(&dive->cylinders);
+	for (i = 0; i < ngases || i < ntanks; i++) {
+		cylinder_t cyl = { 0 };
 		if (i < ngases) {
 			dc_gasmix_t gasmix = { 0 };
 			int o2, he;
@@ -139,27 +141,22 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 				}
 				he = 0;
 			}
-			dive->cylinder[i].gasmix.o2.permille = o2;
-			dive->cylinder[i].gasmix.he.permille = he;
-		} else {
-			dive->cylinder[i].gasmix.o2.permille = 0;
-			dive->cylinder[i].gasmix.he.permille = 0;
+			cyl.gasmix.o2.permille = o2;
+			cyl.gasmix.he.permille = he;
 		}
 
 		if (i < ntanks) {
 			dc_tank_t tank = { 0 };
 			rc = dc_parser_get_field(parser, DC_FIELD_TANK, i, &tank);
 			if (rc == DC_STATUS_SUCCESS) {
-				cylinder_t *cyl = dive->cylinder + i;
+				cyl.type.size.mliter = lrint(tank.volume * 1000);
+				cyl.type.workingpressure.mbar = lrint(tank.workpressure * 1000);
 
-				cyl->type.size.mliter = lrint(tank.volume * 1000);
-				cyl->type.workingpressure.mbar = lrint(tank.workpressure * 1000);
-
-				cyl->cylinder_use = OC_GAS;
+				cyl.cylinder_use = OC_GAS;
 				if (tank.type & DC_TANKINFO_CC_O2)
-					cyl->cylinder_use = OXYGEN;
+					cyl.cylinder_use = OXYGEN;
 				if (tank.type & DC_TANKINFO_CC_DILUENT)
-					cyl->cylinder_use = DILUENT;
+					cyl.cylinder_use = DILUENT;
 
 				if (tank.type & DC_TANKINFO_IMPERIAL) {
 					if (same_string(devdata->model, "Suunto EON Steel")) {
@@ -169,13 +166,13 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 						 * First, the pressures are off by a constant factor. WTF?
 						 * Then we can round the wet sizes so we get to multiples of 10
 						 * for cuft sizes (as that's all that you can enter) */
-						dive->cylinder[i].type.workingpressure.mbar = lrint(
-							dive->cylinder[i].type.workingpressure.mbar * 206.843 / 206.7 );
+						cyl.type.workingpressure.mbar = lrint(
+							cyl.type.workingpressure.mbar * 206.843 / 206.7 );
 						char name_buffer[17];
-						int rounded_size = lrint(ml_to_cuft(gas_volume(&dive->cylinder[i],
-							dive->cylinder[i].type.workingpressure)));
+						int rounded_size = lrint(ml_to_cuft(gas_volume(&cyl,
+							cyl.type.workingpressure)));
 						rounded_size = (int)((rounded_size + 5) / 10) * 10;
-						switch (dive->cylinder[i].type.workingpressure.mbar) {
+						switch (cyl.type.workingpressure.mbar) {
 						case 206843:
 							snprintf(name_buffer, sizeof(name_buffer), "AL%d", rounded_size);
 							break;
@@ -192,9 +189,9 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 							snprintf(name_buffer, sizeof(name_buffer), "%d cuft", rounded_size);
 							break;
 						}
-						dive->cylinder[i].type.description = copy_string(name_buffer);
-						dive->cylinder[i].type.size.mliter = lrint(cuft_to_l(rounded_size) * 1000 /
-											mbar_to_atm(dive->cylinder[i].type.workingpressure.mbar));
+						cyl.type.description = copy_string(name_buffer);
+						cyl.type.size.mliter = lrint(cuft_to_l(rounded_size) * 1000 /
+											mbar_to_atm(cyl.type.workingpressure.mbar));
 					}
 				}
 				if (tank.gasmix != i) { // we don't handle this, yet
@@ -213,22 +210,24 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 			// rest of the code treats this as if they were valid values
 			if (!IS_FP_SAME(tank.beginpressure, 0.0)) {
 				if (!IS_FP_SAME(tank.endpressure, 0.0)) {
-					dive->cylinder[i].start.mbar = lrint(tank.beginpressure * 1000);
-					dive->cylinder[i].end.mbar = lrint(tank.endpressure * 1000);
+					cyl.start.mbar = lrint(tank.beginpressure * 1000);
+					cyl.end.mbar = lrint(tank.endpressure * 1000);
 				} else if (same_string(devdata->vendor, "Uwatec")) {
-					dive->cylinder[i].start.mbar = lrint(tank.beginpressure * 1000 + 30000);
-					dive->cylinder[i].end.mbar = 30000;
+					cyl.start.mbar = lrint(tank.beginpressure * 1000 + 30000);
+					cyl.end.mbar = 30000;
 				}
 			}
 		}
 		if (no_volume) {
 			/* for the first tank, if there is no tanksize available from the
 			 * dive computer, fill in the default tank information (if set) */
-			fill_default_cylinder(dive, i);
+			fill_default_cylinder(dive, &cyl);
 		}
 		/* whatever happens, make sure there is a name for the cylinder */
-		if (empty_string(dive->cylinder[i].type.description))
-			dive->cylinder[i].type.description = strdup(translate("gettextFromC", "unknown"));
+		if (empty_string(cyl.type.description))
+			cyl.type.description = strdup(translate("gettextFromC", "unknown"));
+
+		add_to_cylinder_table(&dive->cylinders, dive->cylinders.nr, cyl);
 	}
 	return DC_STATUS_SUCCESS;
 }
@@ -294,7 +293,8 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 
 static void handle_gasmix(struct divecomputer *dc, struct sample *sample, int idx)
 {
-	if (idx < 0 || idx >= MAX_CYLINDERS)
+	/* TODO: Verify that index is not higher than the number of cylinders */
+	if (idx < 0)
 		return;
 	add_event(dc, sample->time.seconds, SAMPLE_EVENT_GASCHANGE2, idx+1, 0, "gaschange");
 	current_gas_index = idx;
