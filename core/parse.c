@@ -289,8 +289,7 @@ void picture_end(struct parser_state *state)
 
 cylinder_t *cylinder_start(struct parser_state *state)
 {
-	add_empty_cylinder(&state->cur_dive->cylinders);
-	return &state->cur_dive->cylinders.cylinders[state->cur_dive->cylinders.nr - 1];
+	return add_empty_cylinder(&state->cur_dive->cylinders);
 }
 
 void cylinder_end(struct parser_state *state)

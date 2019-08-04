@@ -2126,9 +2126,7 @@ static int match_cylinder(const cylinder_t *cyl, const struct dive *dive, const 
  */
 static void merge_one_cylinder(struct cylinder_table *t, const cylinder_t *a, const cylinder_t *b)
 {
-	cylinder_t *res;
-	add_empty_cylinder(t);
-	res = t->cylinders + (t->nr - 1);
+	cylinder_t *res = add_empty_cylinder(t);
 	res->type.size.mliter = a->type.size.mliter ?
 		a->type.size.mliter : b->type.size.mliter;
 	res->type.workingpressure.mbar = a->type.workingpressure.mbar ?
