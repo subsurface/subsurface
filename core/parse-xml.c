@@ -343,6 +343,7 @@ static void sampletime(char *buffer, duration_t *time)
 		time->seconds = (hr * 60 + min) * 60 + sec;
 		break;
 	default:
+		time->seconds = 0;
 		printf("Strange sample time reading %s\n", buffer);
 	}
 }
