@@ -1560,13 +1560,14 @@ static void uddf_importer(struct parser_state *state)
 	state->xml_parsing_units.temperature = KELVIN;
 }
 
+typedef void (*parser_func)(struct parser_state *);
 /*
  * I'm sure this could be done as some fancy DTD rules.
  * It's just not worth the headache.
  */
 static struct nesting {
 	const char *name;
-	void (*start)(struct parser_state *), (*end)(struct parser_state *);
+	parser_func start, end;
 } nesting[] = {
 	  { "divecomputerid", dc_settings_start, dc_settings_end },
 	  { "settings", settings_start, settings_end },
@@ -1579,9 +1580,9 @@ static struct nesting {
 	  { "SAMPLE", sample_start, sample_end },
 	  { "reading", sample_start, sample_end },
 	  { "event", event_start, event_end },
-	  { "mix", cylinder_start, cylinder_end },
-	  { "gasmix", cylinder_start, cylinder_end },
-	  { "cylinder", cylinder_start, cylinder_end },
+	  { "mix", (parser_func)cylinder_start, (parser_func)cylinder_end },
+	  { "gasmix", (parser_func)cylinder_start, (parser_func)cylinder_end },
+	  { "cylinder", (parser_func)cylinder_start, (parser_func)cylinder_end },
 	  { "weightsystem", ws_start, ws_end },
 	  { "divecomputer", divecomputer_start, divecomputer_end },
 	  { "P", sample_start, sample_end },
@@ -1910,8 +1911,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 					}
 				}
 				if (!found) {
-					cylinder_start(&state);
-					cylinder_t *cyl = &state.cur_dive->cylinders.cylinders[state.cur_dive->cylinders.nr - 1];
+					cyl = cylinder_start(&state);
 					cyl->gasmix.o2.permille = ptr[6] * 10;
 					cyl->gasmix.he.permille = ptr[7] * 10;
 					cylinder_end(&state);

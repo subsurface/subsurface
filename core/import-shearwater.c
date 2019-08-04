@@ -28,8 +28,7 @@ static int shearwater_cylinders(void *param, int columns, char **data, char **co
 	if (o2 == 990 && he == 0)
 		o2 = 1000;
 
-	cylinder_start(state);
-	cyl = &state->cur_dive->cylinders.cylinders[state->cur_dive->cylinders.nr - 1];
+	cyl = cylinder_start(state);
 	cyl->gasmix.o2.permille = o2;
 	cyl->gasmix.he.permille = he;
 	cylinder_end(state);
@@ -70,8 +69,7 @@ static int shearwater_changes(void *param, int columns, char **data, char **colu
 	}
 	if (!found) {
 		// Cylinder not found, creating a new one
-		cylinder_start(state);
-		cyl = &state->cur_dive->cylinders.cylinders[state->cur_dive->cylinders.nr - 1];
+		cyl = cylinder_start(state);
 		cyl->gasmix.o2.permille = o2;
 		cyl->gasmix.he.permille = he;
 		cylinder_end(state);
