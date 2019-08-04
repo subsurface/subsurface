@@ -152,29 +152,32 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 // setup the cylinder widget accordingly
 void DivePlannerPointsModel::setupCylinders()
 {
-	int i;
+	clear_cylinder_table(&displayed_dive.cylinders);
 	if (mode == PLAN && current_dive) {
 		// take the displayed cylinders from the selected dive as starting point
-		CylindersModel::instance()->copyFromDive(current_dive);
-		copy_cylinders(current_dive, &displayed_dive, !prefs.display_unused_tanks);
+		copy_used_cylinders(current_dive, &displayed_dive, !prefs.display_unused_tanks);
 		reset_cylinders(&displayed_dive, true);
 
-		for (i = 0; i < MAX_CYLINDERS; i++)
-			if (!cylinder_none(&(displayed_dive.cylinder[i])))
-				return;		// We have at least one cylinder
+		if (displayed_dive.cylinders.nr > 0) {
+			CylindersModel::instance()->updateDive();
+			return;		// We have at least one cylinder
+		}
 	}
 	if (!empty_string(prefs.default_cylinder)) {
-		fill_default_cylinder(&displayed_dive, 0);
-		displayed_dive.cylinder[0].start = displayed_dive.cylinder[0].type.workingpressure;
-	}
-	if (cylinder_none(&displayed_dive.cylinder[0])) {
+		cylinder_t cyl = { 0 };
+		fill_default_cylinder(&displayed_dive, &cyl);
+		cyl.start = cyl.type.workingpressure;
+		add_to_cylinder_table(&displayed_dive.cylinders, 0, cyl);
+	} else {
+		cylinder_t cyl = { 0 };
 		// roughly an AL80
-		displayed_dive.cylinder[0].type.description = copy_qstring(tr("unknown"));
-		displayed_dive.cylinder[0].type.size.mliter = 11100;
-		displayed_dive.cylinder[0].type.workingpressure.mbar = 207000;
+		cyl.type.description = copy_qstring(tr("unknown"));
+		cyl.type.size.mliter = 11100;
+		cyl.type.workingpressure.mbar = 207000;
+		add_to_cylinder_table(&displayed_dive.cylinders, 0, cyl);
 	}
 	reset_cylinders(&displayed_dive, false);
-	CylindersModel::instance()->copyFromDive(&displayed_dive);
+	CylindersModel::instance()->updateDive();
 }
 
 // Update the dive's maximum depth.  Returns true if max. depth changed
@@ -265,13 +268,13 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 		case GAS:
 			/* Check if we have the same gasmix two or more times
 			 * If yes return more verbose string */
-			int same_gas = same_gasmix_cylinder(&displayed_dive.cylinder[p.cylinderid], p.cylinderid, &displayed_dive, true);
+			int same_gas = same_gasmix_cylinder(&displayed_dive.cylinders.cylinders[p.cylinderid], p.cylinderid, &displayed_dive, true);
 			if (same_gas == -1)
-				return get_gas_string(displayed_dive.cylinder[p.cylinderid].gasmix);
+				return get_gas_string(displayed_dive.cylinders.cylinders[p.cylinderid].gasmix);
 			else
-				return get_gas_string(displayed_dive.cylinder[p.cylinderid].gasmix) +
+				return get_gas_string(displayed_dive.cylinders.cylinders[p.cylinderid].gasmix) +
 					QString(" (%1 %2 ").arg(tr("cyl.")).arg(p.cylinderid + 1) +
-						displayed_dive.cylinder[p.cylinderid].type.description + ")";
+						displayed_dive.cylinders.cylinders[p.cylinderid].type.description + ")";
 		}
 	} else if (role == Qt::DecorationRole) {
 		switch (index.column()) {
@@ -333,7 +336,7 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 				p.setpoint = po2;
 		} break;
 		case GAS:
-			if (value.toInt() >= 0 && value.toInt() < MAX_CYLINDERS)
+			if (value.toInt() >= 0)
 				p.cylinderid = value.toInt();
 			/* Did we change the start (dp 0) cylinder to another cylinderid than 0? */
 			if (value.toInt() != 0 && index.row() == 0)
@@ -890,8 +893,8 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	// what does the cache do???
 	struct deco_state *cache = NULL;
 	struct divedatapoint *dp = NULL;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = &displayed_dive.cylinder[i];
+	for (int i = 0; i < displayed_dive.cylinders.nr; i++) {
+		cylinder_t *cyl = &displayed_dive.cylinders.cylinders[i];
 		if (cyl->depth.mm && cyl->cylinder_use != NOT_USED) {
 			dp = create_dp(0, cyl->depth.mm, i, 0);
 			if (diveplan.dp) {

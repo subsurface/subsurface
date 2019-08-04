@@ -1125,10 +1125,10 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 			if (state != "add" && !is_cylinder_used(d, i))
 				continue;
 
-			d->cylinder[i].start.mbar = parsePressureToMbar(startpressure[j]);
-			d->cylinder[i].end.mbar = parsePressureToMbar(endpressure[j]);
-			if (d->cylinder[i].end.mbar > d->cylinder[i].start.mbar)
-				d->cylinder[i].end.mbar = d->cylinder[i].start.mbar;
+			d->cylinders.cylinders[i].start.mbar = parsePressureToMbar(startpressure[j]);
+			d->cylinders.cylinders[i].end.mbar = parsePressureToMbar(endpressure[j]);
+			if (d->cylinders.cylinders[i].end.mbar > d->cylinders.cylinders[i].start.mbar)
+				d->cylinders.cylinders[i].end.mbar = d->cylinders.cylinders[i].start.mbar;
 
 			j++;
 		}
@@ -1146,8 +1146,8 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 				he >= 0 && he <= 1000 &&
 				o2 + he <= 1000) {
 				diveChanged = true;
-				d->cylinder[i].gasmix.o2.permille = o2;
-				d->cylinder[i].gasmix.he.permille = he;
+				d->cylinders.cylinders[i].gasmix.o2.permille = o2;
+				d->cylinders.cylinders[i].gasmix.he.permille = he;
 			}
 			j++;
 		}
@@ -1157,7 +1157,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		diveChanged = true;
 		unsigned long i;
 		int size = 0, wp = 0, j = 0, k = 0;
-		for (j = 0; k < usedCylinder.length() && j < MAX_CYLINDERS; j++) {
+		for (j = 0; k < usedCylinder.length(); j++) {
 			if (state != "add" && !is_cylinder_used(d, j))
 				continue;
 
@@ -1173,9 +1173,9 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 					break;
 				}
 			}
-			d->cylinder[j].type.description = copy_qstring(usedCylinder[k]);
-			d->cylinder[j].type.size.mliter = size;
-			d->cylinder[j].type.workingpressure.mbar = wp;
+			d->cylinders.cylinders[j].type.description = copy_qstring(usedCylinder[k]);
+			d->cylinders.cylinders[j].type.size.mliter = size;
+			d->cylinders.cylinders[j].type.workingpressure.mbar = wp;
 			k++;
 		}
 	}
@@ -1788,9 +1788,9 @@ QStringList QMLManager::cylinderInit() const
 	struct dive *d;
 	int i = 0;
 	for_each_dive (i, d) {
-		for (int j = 0; j < MAX_CYLINDERS; j++) {
-			if (!empty_string(d->cylinder[j].type.description))
-				cylinders << d->cylinder[j].type.description;
+		for (int j = 0; j < d->cylinders.nr; j++) {
+			if (!empty_string(d->cylinders.cylinders[j].type.description))
+				cylinders << d->cylinders.cylinders[j].type.description;
 		}
 	}
 

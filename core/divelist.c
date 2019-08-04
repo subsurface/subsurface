@@ -65,14 +65,12 @@ void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2max_p)
 	int maxo2 = -1, maxhe = -1, mino2 = 1000;
 
 
-	for (i = 0; i < MAX_CYLINDERS; i++) {
-		const cylinder_t *cyl = dive->cylinder + i;
+	for (i = 0; i < dive->cylinders.nr; i++) {
+		const cylinder_t *cyl = dive->cylinders.cylinders + i;
 		int o2 = get_o2(cyl->gasmix);
 		int he = get_he(cyl->gasmix);
 
 		if (!is_cylinder_used(dive, i))
-			continue;
-		if (cylinder_none(cyl))
 			continue;
 		if (o2 > maxo2)
 			maxo2 = o2;
@@ -349,9 +347,9 @@ static double calculate_airuse(const struct dive *dive)
 	int airuse = 0;
 	int i;
 
-	for (i = 0; i < MAX_CYLINDERS; i++) {
+	for (i = 0; i < dive->cylinders.nr; i++) {
 		pressure_t start, end;
-		const cylinder_t *cyl = dive->cylinder + i;
+		const cylinder_t *cyl = dive->cylinders.cylinders + i;
 
 		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
 		end = cyl->end.mbar ? cyl->end : cyl->sample_end;

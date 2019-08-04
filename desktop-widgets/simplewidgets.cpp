@@ -510,9 +510,9 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 		if (what->cylinders) {
 			int cyl;
 			text << tr("Cylinders:\n");
-			for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+			for (cyl = 0; cyl < displayed_dive.cylinders.nr; cyl++) {
 				if (is_cylinder_used(&displayed_dive, cyl))
-					text << displayed_dive.cylinder[cyl].type.description << " " << gasname(displayed_dive.cylinder[cyl].gasmix) << "\n";
+					text << displayed_dive.cylinders.cylinders[cyl].type.description << " " << gasname(displayed_dive.cylinders.cylinders[cyl].gasmix) << "\n";
 			}
 		}
 		if (what->weights) {

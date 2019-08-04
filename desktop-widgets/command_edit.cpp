@@ -666,18 +666,6 @@ DiveField EditDiveMaster::fieldId() const
 	return DiveField::DIVEMASTER;
 }
 
-// Helper function to copy cylinders. This supposes that the destination
-// cylinder is uninitialized. I.e. the old description is not freed!
-static void copy_cylinder(const cylinder_t &s, cylinder_t &d)
-{
-	d.type.description = copy_string(s.type.description);
-	d.type.size = s.type.size;
-	d.type.workingpressure = s.type.workingpressure;
-	d.gasmix = s.gasmix;
-	d.cylinder_use = s.cylinder_use;
-	d.depth = s.depth;
-}
-
 static void swapCandQString(QString &q, char *&c)
 {
 	QString tmp(c);
@@ -687,10 +675,9 @@ static void swapCandQString(QString &q, char *&c)
 }
 
 PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dIn),
-	tags(nullptr),
-	cylinders(MAX_CYLINDERS)
+	tags(nullptr)
 {
-	memset(&cylinders[0], 0, sizeof(cylinders));
+	memset(&cylinders, 0, sizeof(cylinders));
 	memset(&weightsystems, 0, sizeof(weightsystems));
 	if (what.notes)
 		notes = data->notes;
@@ -708,10 +695,8 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 		divesite = data->dive_site;
 	if (what.tags)
 		tags = taglist_copy(data->tag_list);
-	if (what.cylinders) {
-		for (int i = 0; i < MAX_CYLINDERS; ++i)
-			copy_cylinder(data->cylinder[i], cylinders[i]);
-	}
+	if (what.cylinders)
+		copy_cylinders(&data->cylinders, &cylinders);
 	if (what.weights)
 		copy_weights(&data->weightsystems, &weightsystems);
 }
@@ -719,8 +704,7 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 PasteState::~PasteState()
 {
 	taglist_free(tags);
-	for (cylinder_t &c: cylinders)
-		free((void *)c.type.description);
+	clear_cylinder_table(&cylinders);
 	clear_weightsystem_table(&weightsystems);
 	free(weightsystems.weightsystems);
 }
@@ -743,10 +727,8 @@ void PasteState::swap(dive_components what)
 		std::swap(divesite, d->dive_site);
 	if (what.tags)
 		std::swap(tags, d->tag_list);
-	if (what.cylinders) {
-		for (int i = 0; i < MAX_CYLINDERS; ++i)
-			std::swap(cylinders[i], d->cylinder[i]);
-	}
+	if (what.cylinders)
+		std::swap(cylinders, d->cylinders);
 	if (what.weights)
 		std::swap(weightsystems, d->weightsystems);
 }
@@ -836,7 +818,7 @@ ReplanDive::ReplanDive(dive *source) : d(current_dive),
 	dc({ 0 }),
 	notes(nullptr)
 {
-	memset(&cylinders[0], 0, sizeof(cylinders));
+	memset(&cylinders, 0, sizeof(cylinders));
 	if (!d)
 		return;
 
@@ -849,7 +831,7 @@ ReplanDive::ReplanDive(dive *source) : d(current_dive),
 	surface_pressure = source->surface_pressure;
 
 	// This resets the dive computers and cylinders of the source dive, avoiding deep copies.
-	std::swap(source->cylinder, cylinders);
+	std::swap(source->cylinders, cylinders);
 	std::swap(source->dc, dc);
 
 	setText(tr("Replan dive"));
@@ -857,8 +839,7 @@ ReplanDive::ReplanDive(dive *source) : d(current_dive),
 
 ReplanDive::~ReplanDive()
 {
-	for (cylinder_t &c: cylinders)
-		free((void *)c.type.description);
+	clear_cylinder_table(&cylinders);
 	free_dive_dcs(&dc);
 	free(notes);
 }
@@ -873,7 +854,7 @@ void ReplanDive::undo()
 	std::swap(d->when, when);
 	std::swap(d->maxdepth, maxdepth);
 	std::swap(d->meandepth, meandepth);
-	std::swap(d->cylinder, cylinders);
+	std::swap(d->cylinders, cylinders);
 	std::swap(d->dc, dc);
 	std::swap(d->notes, notes);
 	std::swap(d->surface_pressure, surface_pressure);
@@ -882,9 +863,11 @@ void ReplanDive::undo()
 	fixup_dive(d);
 
 	QVector<dive *> divesToNotify = { d };
+	// Note that we have to emit cylindersReset before divesChanged, because the divesChanged
+	// updates the DivePlotDataModel, which is out-of-sync and gets confused.
+	emit diveListNotifier.cylindersReset(divesToNotify);
 	emit diveListNotifier.divesChanged(divesToNotify, DiveField::DATETIME | DiveField::DURATION | DiveField::DEPTH | DiveField::MODE |
 							  DiveField::NOTES | DiveField::SALINITY | DiveField::ATM_PRESS);
-	emit diveListNotifier.cylindersReset(divesToNotify);
 }
 
 // Redo and undo do the same

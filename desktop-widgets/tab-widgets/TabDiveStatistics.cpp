@@ -118,16 +118,12 @@ void TabDiveStatistics::updateData()
 	QVector<QPair<QString, int> > gasUsed = selectedDivesGasUsed();
 	QString gasUsedString;
 	volume_t vol;
-	for (int j = 0; j < MAX_CYLINDERS; j++) {
-		if (gasUsed.isEmpty())
-			break;
+	while (!gasUsed.isEmpty()) {
 		QPair<QString, int> gasPair = gasUsed.last();
 		gasUsed.pop_back();
 		vol.mliter = gasPair.second;
 		gasUsedString.append(gasPair.first).append(": ").append(get_volume_string(vol, true)).append("\n");
 	}
-	if (!gasUsed.isEmpty())
-		gasUsedString.append("...");
 	volume_t o2_tot = {}, he_tot = {};
 	selected_dives_gas_parts(&o2_tot, &he_tot);
 

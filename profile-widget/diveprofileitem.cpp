@@ -659,17 +659,17 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
 
-	std::vector<int> plotted_cyl(MAX_CYLINDERS, false);
-	std::vector<int> last_plotted(MAX_CYLINDERS, 0);
-	std::vector<QPolygonF> poly(MAX_CYLINDERS);
+	const struct plot_info *pInfo = &dataModel->data();
+	std::vector<int> plotted_cyl(pInfo->nr_cylinders, false);
+	std::vector<int> last_plotted(pInfo->nr_cylinders, 0);
+	std::vector<QPolygonF> poly(pInfo->nr_cylinders);
 	QPolygonF boundingPoly;
 	polygons.clear();
 
-	const struct plot_info *pInfo = &dataModel->data();
 	for (int i = 0, count = dataModel->rowCount(); i < count; i++) {
 		const struct plot_data *entry = pInfo->entry + i;
 
-		for (int cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+		for (int cyl = 0; cyl < pInfo->nr_cylinders; cyl++) {
 			int mbar = get_plot_pressure(pInfo, i, cyl);
 			int time = entry->sec;
 
@@ -698,7 +698,7 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 		}
 	}
 
-	for (int cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+	for (int cyl = 0; cyl < pInfo->nr_cylinders; cyl++) {
 		if (!plotted_cyl[cyl])
 			continue;
 		polygons.append(poly[cyl]);
@@ -708,9 +708,9 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 	qDeleteAll(texts);
 	texts.clear();
 
-	std::vector<int> seen_cyl(MAX_CYLINDERS, false);
-	std::vector<int> last_pressure(MAX_CYLINDERS, 0);
-	std::vector<int> last_time(MAX_CYLINDERS, 0);
+	std::vector<int> seen_cyl(pInfo->nr_cylinders, false);
+	std::vector<int> last_pressure(pInfo->nr_cylinders, 0);
+	std::vector<int> last_time(pInfo->nr_cylinders, 0);
 
 	// These are offset values used to print the gas lables and pressures on a
 	// dive profile at appropriate Y-coordinates. We alternate aligning the
@@ -721,7 +721,7 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 	// pressures.
 
 	QFlags<Qt::AlignmentFlag> alignVar = Qt::AlignTop;
-	std::vector<QFlags<Qt::AlignmentFlag>> align(MAX_CYLINDERS);
+	std::vector<QFlags<Qt::AlignmentFlag>> align(pInfo->nr_cylinders);
 
 	double axisRange = (vAxis->maximum() - vAxis->minimum())/1000;	// Convert axis pressure range to bar
 	double axisLog = log10(log10(axisRange));
@@ -729,7 +729,7 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 	for (int i = 0, count = dataModel->rowCount(); i < count; i++) {
 		const struct plot_data *entry = pInfo->entry + i;
 
-		for (int cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+		for (int cyl = 0; cyl < pInfo->nr_cylinders; cyl++) {
 			int mbar = get_plot_pressure(pInfo, i, cyl);
 
 			if (!mbar)
@@ -748,7 +748,7 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 					label_y_offset = -7 * axisLog;
 				}
 				plotPressureValue(mbar, entry->sec, alignVar, value_y_offset);
-				plotGasValue(mbar, entry->sec, displayed_dive.cylinder[cyl].gasmix, alignVar, label_y_offset);
+				plotGasValue(mbar, entry->sec, displayed_dive.cylinders.cylinders[cyl].gasmix, alignVar, label_y_offset);
 				seen_cyl[cyl] = true;
 
 				/* Alternate alignment as we see cylinder use.. */
@@ -761,7 +761,7 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 	}
 
 	// For each cylinder, on right hand side of profile, write cylinder pressure
-	for (int cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+	for (int cyl = 0; cyl < pInfo->nr_cylinders; cyl++) {
 		if (last_time[cyl]) {
 			double value_y_offset = -0.5;
 			plotPressureValue(last_pressure[cyl], last_time[cyl], align[cyl] | Qt::AlignLeft, value_y_offset);

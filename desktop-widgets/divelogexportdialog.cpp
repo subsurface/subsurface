@@ -444,17 +444,17 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		// Print cylinder data
 		put_format(&buf, "\n%% Gas use information:\n");
 		qty_cyl = 0;
-		for (i = 0; i < MAX_CYLINDERS; i++){
-
-			if (is_cylinder_used(dive, i) || (prefs.display_unused_tanks && dive->cylinder[i].type.description)){
-				put_format(&buf, "\\def\\%scyl%cdescription{%s}\n", ssrf, 'a' + i, dive->cylinder[i].type.description);
-				put_format(&buf, "\\def\\%scyl%cgasname{%s}\n", ssrf, 'a' + i, gasname(dive->cylinder[i].gasmix));
-				put_format(&buf, "\\def\\%scyl%cmixO2{%.1f\\%%}\n", ssrf, 'a' + i, get_o2(dive->cylinder[i].gasmix)/10.0);
-				put_format(&buf, "\\def\\%scyl%cmixHe{%.1f\\%%}\n", ssrf, 'a' + i, get_he(dive->cylinder[i].gasmix)/10.0);
-				put_format(&buf, "\\def\\%scyl%cmixN2{%.1f\\%%}\n", ssrf, 'a' + i, (100.0 - (get_o2(dive->cylinder[i].gasmix)/10.0) - (get_he(dive->cylinder[i].gasmix)/10.0)));
-				delta_p.mbar += dive->cylinder[i].start.mbar - dive->cylinder[i].end.mbar;
-				put_format(&buf, "\\def\\%scyl%cstartpress{%.1f\\%spressureunit}\n", ssrf, 'a' + i, get_pressure_units(dive->cylinder[i].start.mbar, &unit)/1.0, ssrf);
-				put_format(&buf, "\\def\\%scyl%cendpress{%.1f\\%spressureunit}\n", ssrf, 'a' + i, get_pressure_units(dive->cylinder[i].end.mbar, &unit)/1.0, ssrf);
+		for (i = 0; i < dive->cylinders.nr; i++){
+			const cylinder_t &cyl = dive->cylinders.cylinders[i];
+			if (is_cylinder_used(dive, i) || (prefs.display_unused_tanks && cyl.type.description)){
+				put_format(&buf, "\\def\\%scyl%cdescription{%s}\n", ssrf, 'a' + i, cyl.type.description);
+				put_format(&buf, "\\def\\%scyl%cgasname{%s}\n", ssrf, 'a' + i, gasname(cyl.gasmix));
+				put_format(&buf, "\\def\\%scyl%cmixO2{%.1f\\%%}\n", ssrf, 'a' + i, get_o2(cyl.gasmix)/10.0);
+				put_format(&buf, "\\def\\%scyl%cmixHe{%.1f\\%%}\n", ssrf, 'a' + i, get_he(cyl.gasmix)/10.0);
+				put_format(&buf, "\\def\\%scyl%cmixN2{%.1f\\%%}\n", ssrf, 'a' + i, (100.0 - (get_o2(cyl.gasmix)/10.0) - (get_he(cyl.gasmix)/10.0)));
+				delta_p.mbar += cyl.start.mbar - cyl.end.mbar;
+				put_format(&buf, "\\def\\%scyl%cstartpress{%.1f\\%spressureunit}\n", ssrf, 'a' + i, get_pressure_units(cyl.start.mbar, &unit)/1.0, ssrf);
+				put_format(&buf, "\\def\\%scyl%cendpress{%.1f\\%spressureunit}\n", ssrf, 'a' + i, get_pressure_units(cyl.end.mbar, &unit)/1.0, ssrf);
 				qty_cyl += 1;
 			} else {
 				put_format(&buf, "\\def\\%scyl%cdescription{}\n", ssrf, 'a' + i);
@@ -462,7 +462,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 				put_format(&buf, "\\def\\%scyl%cmixO2{}\n", ssrf, 'a' + i);
 				put_format(&buf, "\\def\\%scyl%cmixHe{}\n", ssrf, 'a' + i);
 				put_format(&buf, "\\def\\%scyl%cmixN2{}\n", ssrf, 'a' + i);
-				delta_p.mbar += dive->cylinder[i].start.mbar - dive->cylinder[i].end.mbar;
+				delta_p.mbar += cyl.start.mbar - cyl.end.mbar;
 				put_format(&buf, "\\def\\%scyl%cstartpress{}\n", ssrf, 'a' + i);
 				put_format(&buf, "\\def\\%scyl%cendpress{}\n", ssrf, 'a' + i);
 				qty_cyl += 1;

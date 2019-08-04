@@ -24,6 +24,11 @@ static void free_weightsystem(weightsystem_t w)
 	free((void *)w.description);
 }
 
+static void free_cylinder(cylinder_t c)
+{
+	free((void *)c.type.description);
+}
+
 void copy_weights(const struct weightsystem_table *s, struct weightsystem_table *d)
 {
 	clear_weightsystem_table(d);
@@ -40,6 +45,16 @@ MAKE_REMOVE_FROM(weightsystem_table, weightsystems)
 //MAKE_SORT(weightsystem_table, weightsystem_t, weightsystems, comp_weightsystems)
 //MAKE_REMOVE(weightsystem_table, weightsystem_t, weightsystem)
 MAKE_CLEAR_TABLE(weightsystem_table, weightsystems, weightsystem)
+
+/* cylinder table functions */
+//static MAKE_GET_IDX(cylinder_table, cylinder_t, cylinders)
+static MAKE_GROW_TABLE(cylinder_table, cylinder_t, cylinders)
+//static MAKE_GET_INSERTION_INDEX(cylinder_table, cylinder_t, cylinders, cylinder_less_than)
+MAKE_ADD_TO(cylinder_table, cylinder_t, cylinders)
+MAKE_REMOVE_FROM(cylinder_table, cylinders)
+//MAKE_SORT(cylinder_table, cylinder_t, cylinders, comp_cylinders)
+//MAKE_REMOVE(cylinder_table, cylinder_t, cylinder)
+MAKE_CLEAR_TABLE(cylinder_table, cylinders, cylinder)
 
 const char *cylinderuse_text[NUM_GAS_USE] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "OC-gas"), QT_TRANSLATE_NOOP("gettextFromC", "diluent"), QT_TRANSLATE_NOOP("gettextFromC", "oxygen"), QT_TRANSLATE_NOOP("gettextFromC", "not used")
@@ -104,34 +119,27 @@ void add_cloned_weightsystem(struct weightsystem_table *t, weightsystem_t ws)
 	add_to_weightsystem_table(t, t->nr, w_clone);
 }
 
+/* Add a clone of a cylinder to the end of a cylinder table.
+ * Cloned in means that the description-string is copied. */
+void add_cloned_cylinder(struct cylinder_table *t, cylinder_t cyl)
+{
+	cyl.type.description = copy_string(cyl.type.description);
+	add_to_cylinder_table(t, t->nr, cyl);
+}
+
 bool same_weightsystem(weightsystem_t w1, weightsystem_t w2)
 {
 	return w1.weight.grams == w2.weight.grams &&
 	       same_string(w1.description, w2.description);
 }
 
-bool cylinder_nodata(const cylinder_t *cyl)
+bool same_cylinder(cylinder_t cyl1, cylinder_t cyl2)
 {
-	return !cyl->type.size.mliter &&
-	       !cyl->type.workingpressure.mbar &&
-	       !cyl->type.description &&
-	       !cyl->gasmix.o2.permille &&
-	       !cyl->gasmix.he.permille &&
-	       !cyl->start.mbar &&
-	       !cyl->end.mbar &&
-	       !cyl->gas_used.mliter &&
-	       !cyl->deco_gas_used.mliter;
-}
-
-static bool cylinder_nosamples(const cylinder_t *cyl)
-{
-	return !cyl->sample_start.mbar &&
-	       !cyl->sample_end.mbar;
-}
-
-bool cylinder_none(const cylinder_t *cyl)
-{
-	return cylinder_nodata(cyl) && cylinder_nosamples(cyl);
+	return same_string(cyl1.type.description, cyl2.type.description) &&
+	       same_gasmix(cyl1.gasmix, cyl2.gasmix) &&
+	       cyl1.start.mbar == cyl2.start.mbar &&
+	       cyl1.end.mbar == cyl2.end.mbar &&
+	       cyl1.cylinder_use == cyl2.cylinder_use;
 }
 
 void get_gas_string(struct gasmix gasmix, char *text, int len)
@@ -161,18 +169,16 @@ int gas_volume(const cylinder_t *cyl, pressure_t p)
 	return lrint(cyl->type.size.mliter * bar_to_atm(bar) / z_factor);
 }
 
-int find_best_gasmix_match(struct gasmix mix, const cylinder_t array[])
+int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table *cylinders)
 {
 	int i;
 	int best = -1, score = INT_MAX;
 
-	for (i = 0; i < MAX_CYLINDERS; i++) {
+	for (i = 0; i < cylinders->nr; i++) {
 		const cylinder_t *match;
 		int distance;
 
-		match = array + i;
-		if (cylinder_nodata(match))
-			continue;
+		match = cylinders->cylinders + i;
 		distance = gasmix_distance(mix, match->gasmix);
 		if (distance >= score)
 			continue;
@@ -258,10 +264,7 @@ struct ws_info_t ws_info[MAX_WS_INFO] = {
 
 void remove_cylinder(struct dive *dive, int idx)
 {
-	cylinder_t *cyl = dive->cylinder + idx;
-	int nr = MAX_CYLINDERS - idx - 1;
-	memmove(cyl, cyl + 1, nr * sizeof(*cyl));
-	memset(cyl + nr, 0, sizeof(*cyl));
+	remove_from_cylinder_table(&dive->cylinders, idx);
 }
 
 void remove_weightsystem(struct dive *dive, int idx)
@@ -275,10 +278,8 @@ void reset_cylinders(struct dive *dive, bool track_gas)
 {
 	pressure_t decopo2 = {.mbar = prefs.decopo2};
 
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = &dive->cylinder[i];
-		if (cylinder_none(cyl))
-			continue;
+	for (int i = 0; i < dive->cylinders.nr; i++) {
+		cylinder_t *cyl = &dive->cylinders.cylinders[i];
 		if (cyl->depth.mm == 0) /* if the gas doesn't give a mod, calculate based on prefs */
 			cyl->depth = gas_mod(cyl->gasmix, decopo2, dive, M_OR_FT(3,10));
 		if (track_gas)
@@ -290,7 +291,7 @@ void reset_cylinders(struct dive *dive, bool track_gas)
 
 static void copy_cylinder_type(const cylinder_t *s, cylinder_t *d)
 {
-	free(d->type.description);
+	free_cylinder(*d);
 	d->type = s->type;
 	d->type.description = s->type.description ? strdup(s->type.description) : NULL;
 	d->gasmix = s->gasmix;
@@ -306,16 +307,54 @@ void copy_cylinder_types(const struct dive *s, struct dive *d)
 	if (!s || !d)
 		return;
 
-	for (i = 0; i < MAX_CYLINDERS; i++)
-		copy_cylinder_type(s->cylinder + i, d->cylinder + i);
+	for (i = 0; i < s->cylinders.nr && i < d->cylinders.nr; i++)
+		copy_cylinder_type(s->cylinders.cylinders + i, d->cylinders.cylinders + i);
+
+	for ( ; i < s->cylinders.nr; i++)
+		add_cloned_cylinder(&d->cylinders, s->cylinders.cylinders[i]);
+}
+
+void add_empty_cylinder(struct cylinder_table *t)
+{
+	cylinder_t cyl = { 0 };
+	cyl.type.description = strdup("");
+	add_to_cylinder_table(t, t->nr, cyl);
+}
+
+/* access to cylinders is controlled by two functions:
+ * - get_cylinder() returns the cylinder of a dive and supposes that
+ *   the cylinder with the given index exists. If it doesn't, an error
+ *   message is printed and NULL returned.
+ * - get_or_create_cylinder() creates an empty cylinder if it doesn't exist.
+ *   Multiple cylinders might be created if the index is bigger than the
+ *   number of existing cylinders
+ */
+cylinder_t *get_cylinder(const struct dive *d, int idx)
+{
+	if (idx < 0 || idx >= d->cylinders.nr) {
+		fprintf(stderr, "Warning: accessing invalid cylinder %d (%d existing)\n", idx, d->cylinders.nr);
+		return NULL;
+	}
+	return &d->cylinders.cylinders[idx];
+}
+
+cylinder_t *get_or_create_cylinder(struct dive *d, int idx)
+{
+	if (idx < 0) {
+		fprintf(stderr, "Warning: accessing invalid cylinder %d\n", idx);
+		return NULL;
+	}
+	while (idx >= d->cylinders.nr)
+		add_empty_cylinder(&d->cylinders);
+	return &d->cylinders.cylinders[idx];
 }
 
 #ifdef DEBUG_CYL
 void dump_cylinders(struct dive *dive, bool verbose)
 {
 	printf("Cylinder list:\n");
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = &dive->cylinder[i];
+	for (int i = 0; i < dive->cylinders; i++) {
+		cylinder_t *cyl = &dive->cylinders.cylinders[i];
 
 		printf("%02d: Type     %s, %3.1fl, %3.0fbar\n", i, cyl->type.description, cyl->type.size.mliter / 1000.0, cyl->type.workingpressure.mbar / 1000.0);
 		printf("    Gasmix   O2 %2.0f%% He %2.0f%%\n", cyl->gasmix.o2.permille / 10.0, cyl->gasmix.he.permille / 10.0);

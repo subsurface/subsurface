@@ -144,7 +144,7 @@ struct dive {
 	struct dive_site *dive_site;
 	char *notes;
 	char *divemaster, *buddy;
-	cylinder_t cylinder[MAX_CYLINDERS];
+	struct cylinder_table cylinders;
 	struct weightsystem_table weightsystems;
 	char *suit;
 	int number;
@@ -183,7 +183,7 @@ extern bool dive_cache_is_valid(const struct dive *dive);
 
 extern int get_cylinder_idx_by_use(const struct dive *dive, enum cylinderuse cylinder_use_type);
 extern void cylinder_renumber(struct dive *dive, int mapping[]);
-extern int same_gasmix_cylinder(cylinder_t *cyl, int cylid, struct dive *dive, bool check_unused);
+extern int same_gasmix_cylinder(const cylinder_t *cyl, int cylid, const struct dive *dive, bool check_unused);
 
 /* when selectively copying dive information, which parts should be copied? */
 struct dive_components {
@@ -362,11 +362,12 @@ extern struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_dow
 extern struct event *clone_event(const struct event *src_ev);
 extern void copy_events(const struct divecomputer *s, struct divecomputer *d);
 extern void free_events(struct event *ev);
-extern void copy_cylinders(const struct dive *s, struct dive *d, bool used_only);
+extern void copy_cylinders(const struct cylinder_table *s, struct cylinder_table *d);
+extern void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_only);
 extern void copy_samples(const struct divecomputer *s, struct divecomputer *d);
 extern bool is_cylinder_used(const struct dive *dive, int idx);
 extern bool is_cylinder_prot(const struct dive *dive, int idx);
-extern void fill_default_cylinder(struct dive *dive, int idx);
+extern void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
 extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name);
 extern void remove_event(struct event *event);

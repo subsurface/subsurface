@@ -190,13 +190,13 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		nextdp = dp->next;
 		if (dp->time == 0)
 			continue;
-		gasmix = dive->cylinder[dp->cylinderid].gasmix;
+		gasmix = dive->cylinders.cylinders[dp->cylinderid].gasmix;
 		depthvalue = get_depth_units(dp->depth.mm, &decimals, &depth_unit);
 		/* analyze the dive points ahead */
 		while (nextdp && nextdp->time == 0)
 			nextdp = nextdp->next;
 		if (nextdp)
-			newgasmix = dive->cylinder[nextdp->cylinderid].gasmix;
+			newgasmix = dive->cylinders.cylinders[nextdp->cylinderid].gasmix;
 		gaschange_after = (nextdp && (gasmix_distance(gasmix, newgasmix)));
 		gaschange_before =  (gasmix_distance(lastprintgasmix, gasmix));
 		rebreatherchange_after = (nextdp && (dp->setpoint != nextdp->setpoint || dp->divemode != nextdp->divemode));
@@ -461,16 +461,14 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	free(temp);
 
 	/* Print gas consumption: This loop covers all cylinders */
-	for (int gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
+	for (int gasidx = 0; gasidx < dive->cylinders.nr; gasidx++) {
 		double volume, pressure, deco_volume, deco_pressure, mingas_volume, mingas_pressure, mingas_d_pressure, mingas_depth;
 		const char *unit, *pressure_unit, *depth_unit;
 		char warning[1000] = "";
 		char mingas[1000] = "";
-		cylinder_t *cyl = &dive->cylinder[gasidx];
+		cylinder_t *cyl = &dive->cylinders.cylinders[gasidx];
 		if (cyl->cylinder_use == NOT_USED)
 			continue;
-		if (cylinder_none(cyl))
-			break;
 
 		volume = get_volume_units(cyl->gas_used.mliter, NULL, &unit);
 		deco_volume = get_volume_units(cyl->deco_gas_used.mliter, NULL, &unit);
@@ -583,7 +581,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		while (dp) {
 			if (dp->time != 0) {
 				struct gas_pressures pressures;
-				struct gasmix gasmix = dive->cylinder[dp->cylinderid].gasmix;
+				struct gasmix gasmix = dive->cylinders.cylinders[dp->cylinderid].gasmix;
 
 				current_divemode = get_current_divemode(&dive->dc, dp->time, &evd, &current_divemode);
 				amb = depth_to_atm(dp->depth.mm, dive);

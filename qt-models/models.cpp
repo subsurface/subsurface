@@ -26,10 +26,8 @@ GasSelectionModel *GasSelectionModel::instance()
 static QStringList getGasList()
 {
 	QStringList list;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = &displayed_dive.cylinder[i];
-		if (cylinder_nodata(cyl))
-			break;
+	for (int i = 0; i < displayed_dive.cylinders.nr; i++) {
+		const cylinder_t *cyl = &displayed_dive.cylinders.cylinders[i];
 		/* Check if we have the same gasmix two or more times
 		 * If yes return more verbose string */
 		int same_gas = same_gasmix_cylinder(cyl, i, &displayed_dive, true);

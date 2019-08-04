@@ -18,22 +18,16 @@ static int divinglog_cylinder(void *param, int columns, char **data, char **colu
 	UNUSED(columns);
 	UNUSED(column);
 	struct parser_state *state = (struct parser_state *)param;
+	cylinder_t *cyl;
 
 	short dbl = 1;
 	//char get_cylinder_template[] = "select TankID,TankSize,PresS,PresE,PresW,O2,He,DblTank from Tank where LogID = %d";
-
-	/*
-	 * Divinglog might have more cylinders than what we support. So
-	 * better to ignore those.
-	 */
-
-	if (state->cur_cylinder_index >= MAX_CYLINDERS)
-		return 0;
 
 	if (data[7] && atoi(data[7]) > 0)
 		dbl = 2;
 
 	cylinder_start(state);
+	cyl = &state->cur_dive->cylinders.cylinders[state->cur_dive->cylinders.nr - 1];
 
 	/*
 	 * Assuming that we have to double the cylinder size, if double
@@ -41,18 +35,18 @@ static int divinglog_cylinder(void *param, int columns, char **data, char **colu
 	 */
 
 	if (data[1] && atoi(data[1]) > 0)
-		state->cur_dive->cylinder[state->cur_cylinder_index].type.size.mliter = atol(data[1]) * 1000 * dbl;
+		cyl->type.size.mliter = atol(data[1]) * 1000 * dbl;
 
 	if (data[2] && atoi(data[2]) > 0)
-		state->cur_dive->cylinder[state->cur_cylinder_index].start.mbar = atol(data[2]) * 1000;
+		cyl->start.mbar = atol(data[2]) * 1000;
 	if (data[3] && atoi(data[3]) > 0)
-		state->cur_dive->cylinder[state->cur_cylinder_index].end.mbar = atol(data[3]) * 1000;
+		cyl->end.mbar = atol(data[3]) * 1000;
 	if (data[4] && atoi(data[4]) > 0)
-		state->cur_dive->cylinder[state->cur_cylinder_index].type.workingpressure.mbar = atol(data[4]) * 1000;
+		cyl->type.workingpressure.mbar = atol(data[4]) * 1000;
 	if (data[5] && atoi(data[5]) > 0)
-		state->cur_dive->cylinder[state->cur_cylinder_index].gasmix.o2.permille = atol(data[5]) * 10;
+		cyl->gasmix.o2.permille = atol(data[5]) * 10;
 	if (data[6] && atoi(data[6]) > 0)
-		state->cur_dive->cylinder[state->cur_cylinder_index].gasmix.he.permille = atol(data[6]) * 10;
+		cyl->gasmix.he.permille = atol(data[6]) * 10;
 
 	cylinder_end(state);
 
@@ -136,8 +130,8 @@ static int divinglog_profile(void *param, int columns, char **data, char **colum
 			state->cur_sample->temperature.mkelvin = C_to_mkelvin(temp / 10.0f);
 			state->cur_sample->pressure[0].mbar = pressure * 100;
 			state->cur_sample->rbt.seconds = rbt;
-			if (oldcyl != tank) {
-				struct gasmix mix = state->cur_dive->cylinder[tank].gasmix;
+			if (oldcyl != tank && tank >= 0 && tank < state->cur_dive->cylinders.nr) {
+				struct gasmix mix = state->cur_dive->cylinders.cylinders[tank].gasmix;
 				int o2 = get_o2(mix);
 				int he = get_he(mix);
 

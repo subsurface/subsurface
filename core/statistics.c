@@ -330,13 +330,15 @@ bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc,
 bool is_cylinder_used(const struct dive *dive, int idx)
 {
 	const struct divecomputer *dc;
-	if (cylinder_none(&dive->cylinder[idx]))
+	cylinder_t *cyl;
+	if (idx < 0 || idx >= dive->cylinders.nr)
 		return false;
 
-	if ((dive->cylinder[idx].start.mbar - dive->cylinder[idx].end.mbar) > SOME_GAS)
+	cyl = &dive->cylinders.cylinders[idx];
+	if ((cyl->start.mbar - cyl->end.mbar) > SOME_GAS)
 		return true;
 
-	if ((dive->cylinder[idx].sample_start.mbar - dive->cylinder[idx].sample_end.mbar) > SOME_GAS)
+	if ((cyl->sample_start.mbar - cyl->sample_end.mbar) > SOME_GAS)
 		return true;
 
 	for_each_dc(dive, dc) {
@@ -349,7 +351,7 @@ bool is_cylinder_used(const struct dive *dive, int idx)
 bool is_cylinder_prot(const struct dive *dive, int idx)
 {
 	const struct divecomputer *dc;
-	if (cylinder_none(&dive->cylinder[idx]))
+	if (idx < 0 || idx >= dive->cylinders.nr)
 		return false;
 
 	for_each_dc(dive, dc) {
@@ -359,15 +361,15 @@ bool is_cylinder_prot(const struct dive *dive, int idx)
 	return false;
 }
 
-/* Returns a dynamically allocated array with MAX_CYLINDERS entries that
- * has to be freed by the caller */
+/* Returns a dynamically allocated array with dive->cylinders.nr entries,
+ * which has to be freed by the caller */
 volume_t *get_gas_used(struct dive *dive)
 {
 	int idx;
 
-	volume_t *gases = malloc(MAX_CYLINDERS * sizeof(volume_t));
-	for (idx = 0; idx < MAX_CYLINDERS; idx++) {
-		cylinder_t *cyl = &dive->cylinder[idx];
+	volume_t *gases = malloc(dive->cylinders.nr * sizeof(volume_t));
+	for (idx = 0; idx < dive->cylinders.nr; idx++) {
+		cylinder_t *cyl = &dive->cylinders.cylinders[idx];
 		pressure_t start, end;
 
 		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
@@ -403,10 +405,10 @@ void selected_dives_gas_parts(volume_t *o2_tot, volume_t *he_tot)
 		if (!d->selected)
 			continue;
 		volume_t *diveGases = get_gas_used(d);
-		for (j = 0; j < MAX_CYLINDERS; j++) {
+		for (j = 0; j < d->cylinders.nr; j++) {
 			if (diveGases[j].mliter) {
 				volume_t o2 = {}, he = {};
-				get_gas_parts(d->cylinder[j].gasmix, diveGases[j], O2_IN_AIR, &o2, &he);
+				get_gas_parts(d->cylinders.cylinders[j].gasmix, diveGases[j], O2_IN_AIR, &o2, &he);
 				o2_tot->mliter += o2.mliter;
 				he_tot->mliter += he.mliter;
 			}

@@ -173,6 +173,7 @@ static int dm4_dive(void *param, int columns, char **data, char **column)
 	char get_events_template[] = "select * from Mark where DiveId = %d";
 	char get_tags_template[] = "select Text from DiveTag where DiveId = %d";
 	char get_events[64];
+	cylinder_t *cyl;
 
 	dive_start(state);
 	state->cur_dive->number = atoi(data[0]);
@@ -218,22 +219,23 @@ static int dm4_dive(void *param, int columns, char **data, char **column)
 	 * TODO: handle multiple cylinders
 	 */
 	cylinder_start(state);
+	cyl = &state->cur_dive->cylinders.cylinders[state->cur_dive->cylinders.nr - 1];
 	if (data[22] && atoi(data[22]) > 0)
-		state->cur_dive->cylinder[state->cur_cylinder_index].start.mbar = atoi(data[22]);
+		cyl->start.mbar = atoi(data[22]);
 	else if (data[10] && atoi(data[10]) > 0)
-		state->cur_dive->cylinder[state->cur_cylinder_index].start.mbar = atoi(data[10]);
+		cyl->start.mbar = atoi(data[10]);
 	if (data[23] && atoi(data[23]) > 0)
-		state->cur_dive->cylinder[state->cur_cylinder_index].end.mbar = (atoi(data[23]));
+		cyl->end.mbar = (atoi(data[23]));
 	if (data[11] && atoi(data[11]) > 0)
-		state->cur_dive->cylinder[state->cur_cylinder_index].end.mbar = (atoi(data[11]));
+		cyl->end.mbar = (atoi(data[11]));
 	if (data[12])
-		state->cur_dive->cylinder[state->cur_cylinder_index].type.size.mliter = lrint((strtod_flags(data[12], NULL, 0)) * 1000);
+		cyl->type.size.mliter = lrint((strtod_flags(data[12], NULL, 0)) * 1000);
 	if (data[13])
-		state->cur_dive->cylinder[state->cur_cylinder_index].type.workingpressure.mbar = (atoi(data[13]));
+		cyl->type.workingpressure.mbar = (atoi(data[13]));
 	if (data[20])
-		state->cur_dive->cylinder[state->cur_cylinder_index].gasmix.o2.permille = atoi(data[20]) * 10;
+		cyl->gasmix.o2.permille = atoi(data[20]) * 10;
 	if (data[21])
-		state->cur_dive->cylinder[state->cur_cylinder_index].gasmix.he.permille = atoi(data[21]) * 10;
+		cyl->gasmix.he.permille = atoi(data[21]) * 10;
 	cylinder_end(state);
 
 	if (data[14])
@@ -324,25 +326,27 @@ static int dm5_cylinders(void *param, int columns, char **data, char **column)
 	UNUSED(columns);
 	UNUSED(column);
 	struct parser_state *state = (struct parser_state *)param;
+	cylinder_t *cyl;
 
 	cylinder_start(state);
+	cyl = &state->cur_dive->cylinders.cylinders[state->cur_dive->cylinders.nr - 1];
 	if (data[7] && atoi(data[7]) > 0 && atoi(data[7]) < 350000)
-		state->cur_dive->cylinder[state->cur_cylinder_index].start.mbar = atoi(data[7]);
+		cyl->start.mbar = atoi(data[7]);
 	if (data[8] && atoi(data[8]) > 0 && atoi(data[8]) < 350000)
-		state->cur_dive->cylinder[state->cur_cylinder_index].end.mbar = (atoi(data[8]));
+		cyl->end.mbar = (atoi(data[8]));
 	if (data[6]) {
 		/* DM5 shows tank size of 12 liters when the actual
 		 * value is 0 (and using metric units). So we just use
 		 * the same 12 liters when size is not available */
-		if (strtod_flags(data[6], NULL, 0) == 0.0 && state->cur_dive->cylinder[state->cur_cylinder_index].start.mbar)
-			state->cur_dive->cylinder[state->cur_cylinder_index].type.size.mliter = 12000;
+		if (strtod_flags(data[6], NULL, 0) == 0.0 && cyl->start.mbar)
+			cyl->type.size.mliter = 12000;
 		else
-			state->cur_dive->cylinder[state->cur_cylinder_index].type.size.mliter = lrint((strtod_flags(data[6], NULL, 0)) * 1000);
+			cyl->type.size.mliter = lrint((strtod_flags(data[6], NULL, 0)) * 1000);
 	}
 	if (data[2])
-		state->cur_dive->cylinder[state->cur_cylinder_index].gasmix.o2.permille = atoi(data[2]) * 10;
+		cyl->gasmix.o2.permille = atoi(data[2]) * 10;
 	if (data[3])
-		state->cur_dive->cylinder[state->cur_cylinder_index].gasmix.he.permille = atoi(data[3]) * 10;
+		cyl->gasmix.he.permille = atoi(data[3]) * 10;
 	cylinder_end(state);
 	return 0;
 }

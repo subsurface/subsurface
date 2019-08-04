@@ -132,7 +132,7 @@ static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 		put_string(b, separator);
 
 	for (i = 0; i < nr; i++) {
-		cylinder_t *cylinder = dive->cylinder + i;
+		cylinder_t *cylinder = dive->cylinders.cylinders + i;
 		put_format(b, "%s{", separator);
 		separator = ", ";
 		write_attribute(b, "Type", cylinder->type.description, ", ");

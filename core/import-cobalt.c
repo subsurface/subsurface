@@ -37,20 +37,22 @@ static int cobalt_cylinders(void *param, int columns, char **data, char **column
 	UNUSED(columns);
 	UNUSED(column);
 	struct parser_state *state = (struct parser_state *)param;
+	cylinder_t *cyl;
 
 	cylinder_start(state);
+	cyl = &state->cur_dive->cylinders.cylinders[state->cur_dive->cylinders.nr - 1];
 	if (data[0])
-		state->cur_dive->cylinder[state->cur_cylinder_index].gasmix.o2.permille = atoi(data[0]) * 10;
+		cyl->gasmix.o2.permille = atoi(data[0]) * 10;
 	if (data[1])
-		state->cur_dive->cylinder[state->cur_cylinder_index].gasmix.he.permille = atoi(data[1]) * 10;
+		cyl->gasmix.he.permille = atoi(data[1]) * 10;
 	if (data[2])
-		state->cur_dive->cylinder[state->cur_cylinder_index].start.mbar = psi_to_mbar(atoi(data[2]));
+		cyl->start.mbar = psi_to_mbar(atoi(data[2]));
 	if (data[3])
-		state->cur_dive->cylinder[state->cur_cylinder_index].end.mbar = psi_to_mbar(atoi(data[3]));
+		cyl->end.mbar = psi_to_mbar(atoi(data[3]));
 	if (data[4])
-		state->cur_dive->cylinder[state->cur_cylinder_index].type.size.mliter = atoi(data[4]) * 100;
+		cyl->type.size.mliter = atoi(data[4]) * 100;
 	if (data[5])
-		state->cur_dive->cylinder[state->cur_cylinder_index].gas_used.mliter = atoi(data[5]) * 1000;
+		cyl->gas_used.mliter = atoi(data[5]) * 1000;
 	cylinder_end(state);
 
 	return 0;

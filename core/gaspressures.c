@@ -238,7 +238,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 	if (!track_pr)
 		return;
 
-	if (dive->cylinder[cyl].cylinder_use == OC_GAS)
+	if (dive->cylinders.cylinders[cyl].cylinder_use == OC_GAS)
 		strategy = SAC;
 	else
 		strategy = TIME;
@@ -302,7 +302,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 			last_segment = segment;
 		}
 
-		if(dive->cylinder[cyl].cylinder_use == OC_GAS) {
+		if(dive->cylinders.cylinders[cyl].cylinder_use == OC_GAS) {
 
 			/* if this segment has pressure_time, then calculate a new interpolated pressure */
 			if (interpolate.pressure_time) {
@@ -366,13 +366,16 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 {
 	UNUSED(dc);
 	int first, last, cyl;
-	cylinder_t *cylinder = dive->cylinder + sensor;
+	cylinder_t *cylinder = dive->cylinders.cylinders + sensor;
 	pr_track_t *track = NULL;
 	pr_track_t *current = NULL;
 	const struct event *ev, *b_ev;
 	int missing_pr = 0, dense = 1;
 	enum divemode_t dmode = dc->divemode;
 	const double gasfactor[5] = {1.0, 0.0, prefs.pscr_ratio/1000.0, 1.0, 1.0 };
+
+	if (sensor < 0 || sensor >= dive->cylinders.nr)
+		return;
 
 	/* if we have no pressure data whatsoever, this is pointless, so let's just return */
 	if (!cylinder->start.mbar && !cylinder->end.mbar &&

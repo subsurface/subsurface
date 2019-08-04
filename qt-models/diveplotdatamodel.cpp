@@ -190,8 +190,8 @@ void DivePlotDataModel::setDive(dive *d, const plot_info &info)
 	pInfo = info;
 	pInfo.entry = (plot_data *)malloc(sizeof(plot_data) * pInfo.nr);
 	memcpy(pInfo.entry, info.entry, sizeof(plot_data) * pInfo.nr);
-	pInfo.pressures = (plot_pressure_data *)malloc(sizeof(plot_pressure_data) * MAX_CYLINDERS * pInfo.nr);
-	memcpy(pInfo.pressures, info.pressures, sizeof(plot_pressure_data) * MAX_CYLINDERS * pInfo.nr);
+	pInfo.pressures = (plot_pressure_data *)malloc(sizeof(plot_pressure_data) * pInfo.nr_cylinders * pInfo.nr);
+	memcpy(pInfo.pressures, info.pressures, sizeof(plot_pressure_data) * pInfo.nr_cylinders * pInfo.nr);
 	endResetModel();
 }
 

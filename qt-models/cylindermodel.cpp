@@ -131,10 +131,10 @@ static QVariant percent_string(fraction_t fraction)
 
 QVariant CylindersModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid() || index.row() >= MAX_CYLINDERS)
+	if (!index.isValid() || index.row() >= rows)
 		return QVariant();
 
-	const cylinder_t *cyl = &displayed_dive.cylinder[index.row()];
+	const cylinder_t *cyl = &displayed_dive.cylinders.cylinders[index.row()];
 
 	switch (role) {
 	case Qt::BackgroundRole: {
@@ -259,7 +259,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 
 cylinder_t *CylindersModel::cylinderAt(const QModelIndex &index)
 {
-	return &displayed_dive.cylinder[index.row()];
+	return &displayed_dive.cylinders.cylinders[index.row()];
 }
 
 // this is our magic 'pass data in' function that allows the delegate to get
@@ -420,16 +420,14 @@ int CylindersModel::rowCount(const QModelIndex&) const
 
 void CylindersModel::add()
 {
-	if (rows >= MAX_CYLINDERS) {
-		return;
-	}
-
 	int row = rows;
-	fill_default_cylinder(&displayed_dive, row);
-	displayed_dive.cylinder[row].start = displayed_dive.cylinder[row].type.workingpressure;
-	displayed_dive.cylinder[row].manually_added = true;
-	displayed_dive.cylinder[row].cylinder_use = OC_GAS;
+	cylinder_t cyl = { 0 };
+	fill_default_cylinder(&displayed_dive, &cyl);
+	cyl.start = cyl.type.workingpressure;
+	cyl.manually_added = true;
+	cyl.cylinder_use = OC_GAS;
 	beginInsertRows(QModelIndex(), row, row);
+	add_to_cylinder_table(&displayed_dive.cylinders, row, cyl);
 	rows++;
 	changed = true;
 	endInsertRows();
@@ -446,12 +444,12 @@ void CylindersModel::clear()
 
 static bool show_cylinder(struct dive *dive, int i)
 {
-	cylinder_t *cyl = dive->cylinder + i;
-
+	if (i < 0 || i >= dive->cylinders.nr)
+		return false;
 	if (is_cylinder_used(dive, i))
 		return true;
-	if (cylinder_none(cyl))
-		return false;
+
+	cylinder_t *cyl = dive->cylinders.cylinders + i;
 	if (cyl->start.mbar || cyl->sample_start.mbar ||
 	    cyl->end.mbar || cyl->sample_end.mbar)
 		return true;
@@ -467,34 +465,18 @@ static bool show_cylinder(struct dive *dive, int i)
 
 void CylindersModel::updateDive()
 {
-	clear();
-	rows = 0;
 #ifdef DEBUG_CYL
 	dump_cylinders(&displayed_dive, true);
 #endif
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		if (show_cylinder(&displayed_dive, i))
-			rows = i + 1;
-	}
-	if (rows > 0) {
-		beginInsertRows(QModelIndex(), 0, rows - 1);
-		endInsertRows();
-	}
-}
-
-void CylindersModel::copyFromDive(dive *d)
-{
-	if (!d)
-		return;
+	beginResetModel();
+	// TODO: this is fundamentally broken - it assumes that unused cylinders are at
+	// the end. Fix by using a QSortFilterProxyModel.
 	rows = 0;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		if (show_cylinder(d, i))
-			rows = i + 1;
+	for (int i = 0; i < displayed_dive.cylinders.nr; ++i) {
+		if (show_cylinder(&displayed_dive, i))
+			++rows;
 	}
-	if (rows > 0) {
-		beginInsertRows(QModelIndex(), 0, rows - 1);
-		endInsertRows();
-	}
+	endResetModel();
 }
 
 Qt::ItemFlags CylindersModel::flags(const QModelIndex &index) const
@@ -506,7 +488,6 @@ Qt::ItemFlags CylindersModel::flags(const QModelIndex &index) const
 
 void CylindersModel::remove(const QModelIndex &index)
 {
-	std::vector<int> mapping(MAX_CYLINDERS);
 
 	if (index.column() == USE) {
 		cylinder_t *cyl = cylinderAt(index);
@@ -518,48 +499,53 @@ void CylindersModel::remove(const QModelIndex &index)
 		dataChanged(index, index);
 		return;
 	}
-	if (index.column() != REMOVE) {
+
+	if (index.column() != REMOVE)
 		return;
-	}
 
 	if ((in_planner() && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
 		(!in_planner() && is_cylinder_prot(&displayed_dive, index.row())))
 			return;
 
-	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
+	beginRemoveRows(QModelIndex(), index.row(), index.row());
 	rows--;
-
 	remove_cylinder(&displayed_dive, index.row());
-	for (int i = 0; i < index.row(); i++)
-		mapping[i] = i;
-	// No mapping for removed gas, set to -1
+	changed = true;
+	endRemoveRows();
+
+	// Create a mapping of cylinder indexes:
+	// 1) Fill mapping[0]..mapping[index-1] with 0..index
+	// 2) Set mapping[index] to -1
+	// 3) Fill mapping[index+1]..mapping[end] with index..
+	std::vector<int> mapping(displayed_dive.cylinders.nr + 1);
+	std::iota(mapping.begin(), mapping.begin() + index.row(), 0);
 	mapping[index.row()] = -1;
-	for (int i = index.row() + 1; i < MAX_CYLINDERS; i++)
-		mapping[i] = i - 1;
+	std::iota(mapping.begin() + index.row() + 1, mapping.end(), index.row());
 
 	cylinder_renumber(&displayed_dive, &mapping[0]);
 	if (in_planner())
 		DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
 	changed = true;
-	endRemoveRows();
-	dataChanged(index, index);
 }
 
 void CylindersModel::moveAtFirst(int cylid)
 {
-	std::vector<int> mapping(MAX_CYLINDERS);
 	cylinder_t temp_cyl;
 
 	beginMoveRows(QModelIndex(), cylid, cylid, QModelIndex(), 0);
-	memmove(&temp_cyl, &displayed_dive.cylinder[cylid], sizeof(temp_cyl));
-	for (int i = cylid - 1; i >= 0; i--) {
-		memmove(&displayed_dive.cylinder[i + 1], &displayed_dive.cylinder[i], sizeof(temp_cyl));
-		mapping[i] = i + 1;
-	}
-	memmove(&displayed_dive.cylinder[0], &temp_cyl, sizeof(temp_cyl));
+	memmove(&temp_cyl, &displayed_dive.cylinders.cylinders[cylid], sizeof(temp_cyl));
+	for (int i = cylid - 1; i >= 0; i--)
+		memmove(&displayed_dive.cylinders.cylinders[i + 1], &displayed_dive.cylinders.cylinders[i], sizeof(temp_cyl));
+	memmove(&displayed_dive.cylinders.cylinders[0], &temp_cyl, sizeof(temp_cyl));
+
+	// Create a mapping of cylinder indexes:
+	// 1) Fill mapping[0]..mapping[cyl] with 0..index
+	// 2) Set mapping[cyl] to 0
+	// 3) Fill mapping[cyl+1]..mapping[end] with cyl..
+	std::vector<int> mapping(displayed_dive.cylinders.nr);
+	std::iota(mapping.begin(), mapping.begin() + cylid, 1);
 	mapping[cylid] = 0;
-	for (int i = cylid + 1; i < MAX_CYLINDERS; i++)
-		mapping[i] = i;
+	std::iota(mapping.begin() + (cylid + 1), mapping.end(), cylid);
 	cylinder_renumber(&displayed_dive, &mapping[0]);
 	if (in_planner())
 		DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
@@ -571,28 +557,28 @@ void CylindersModel::updateDecoDepths(pressure_t olddecopo2)
 {
 	pressure_t decopo2;
 	decopo2.mbar = prefs.decopo2;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = &displayed_dive.cylinder[i];
+	for (int i = 0; i < displayed_dive.cylinders.nr; i++) {
+		cylinder_t *cyl = &displayed_dive.cylinders.cylinders[i];
 		/* If the gas's deco MOD matches the old pO2, it will have been automatically calculated and should be updated.
 		 * If they don't match, we should leave the user entered depth as it is */
 		if (cyl->depth.mm == gas_mod(cyl->gasmix, olddecopo2, &displayed_dive, M_OR_FT(3, 10)).mm) {
 			cyl->depth = gas_mod(cyl->gasmix, decopo2, &displayed_dive, M_OR_FT(3, 10));
 		}
 	}
-	emit dataChanged(createIndex(0, 0), createIndex(MAX_CYLINDERS - 1, COLUMNS - 1));
+	emit dataChanged(createIndex(0, 0), createIndex(displayed_dive.cylinders.nr - 1, COLUMNS - 1));
 }
 
 void CylindersModel::updateTrashIcon()
 {
-	emit dataChanged(createIndex(0, 0), createIndex(MAX_CYLINDERS - 1, 0));
+	emit dataChanged(createIndex(0, 0), createIndex(displayed_dive.cylinders.nr - 1, 0));
 }
 
 bool CylindersModel::updateBestMixes()
 {
 	// Check if any of the cylinders are best mixes, update if needed
 	bool gasUpdated = false;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = &displayed_dive.cylinder[i];
+	for (int i = 0; i < displayed_dive.cylinders.nr; i++) {
+		cylinder_t *cyl = &displayed_dive.cylinders.cylinders[i];
 		if (cyl->bestmix_o2) {
 			cyl->gasmix.o2 = best_o2(displayed_dive.maxdepth, &displayed_dive);
 			// fO2 + fHe must not be greater than 1
@@ -614,7 +600,7 @@ bool CylindersModel::updateBestMixes()
 	/* This slot is called when the bottom pO2 and END preferences are updated, we want to
 	 * emit dataChanged so MOD and MND are refreshed, even if the gas mix hasn't been changed */
 	if (gasUpdated)
-		emit dataChanged(createIndex(0, 0), createIndex(MAX_CYLINDERS - 1, COLUMNS - 1));
+		emit dataChanged(createIndex(0, 0), createIndex(displayed_dive.cylinders.nr - 1, COLUMNS - 1));
 	return gasUpdated;
 }
 
@@ -626,7 +612,7 @@ void CylindersModel::cylindersReset(const QVector<dive *> &dives)
 		return;
 
 	// Copy the cylinders from the current dive to the displayed dive.
-	copy_cylinders(current_dive, &displayed_dive, false);
+	copy_cylinders(&current_dive->cylinders, &displayed_dive.cylinders);
 
 	// And update the model..
 	updateDive();
