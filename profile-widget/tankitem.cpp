@@ -32,11 +32,6 @@ TankItem::TankItem(QObject *parent) :
 	hAxis = nullptr;
 }
 
-TankItem::~TankItem()
-{
-	free(pInfoEntry);
-}
-
 void TankItem::setData(DivePlotDataModel *model, struct plot_info *plotInfo, struct dive *d)
 {
 	// If there is nothing to plot, quit early.
@@ -92,6 +87,10 @@ void TankItem::modelDataChanged(const QModelIndex&, const QModelIndex&)
 	// remove the old rectangles
 	qDeleteAll(rects);
 	rects.clear();
+
+	// Bail if there are no cylinders
+	if (displayed_dive.cylinders.nr <= 0)
+		return;
 
 	// get the information directly from the displayed_dive (the dc always exists)
 	struct divecomputer *dc = get_dive_dc(&displayed_dive, dc_number);

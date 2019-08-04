@@ -15,7 +15,6 @@ class TankItem : public QObject, public QGraphicsRectItem
 
 public:
 	explicit TankItem(QObject *parent = 0);
-	~TankItem();
 	void setHorizontalAxis(DiveCartesianAxis *horizontal);
 	void setData(DivePlotDataModel *model, struct plot_info *plotInfo, struct dive *d);
 
