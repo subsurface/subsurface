@@ -753,6 +753,9 @@ void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, i
 	bool *used_cylinders;
 	int num_used_cylinders;
 
+	if (dive->cylinders.nr <= 0)
+		return;
+
 	for (i = 0; i < dive->cylinders.nr; i++)
 		mean[i] = duration[i] = 0;
 	if (!dc)
