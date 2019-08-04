@@ -440,7 +440,6 @@ struct dive *move_dive(struct dive *s)
 		d->_component = copy_string(s->_component)
 
 // copy elements, depending on bits in what that are set
-static void copy_cylinder_types(const struct dive *s, struct dive *d);
 void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear)
 {
 	if (clear)
@@ -515,28 +514,6 @@ int nr_cylinders(const struct dive *dive)
 int nr_weightsystems(const struct dive *dive)
 {
 	return dive->weightsystems.nr;
-}
-
-static void copy_cylinder_type(const cylinder_t *s, cylinder_t *d)
-{
-	free(d->type.description);
-	d->type = s->type;
-	d->type.description = s->type.description ? strdup(s->type.description) : NULL;
-	d->gasmix = s->gasmix;
-	d->depth = s->depth;
-	d->cylinder_use = s->cylinder_use;
-	d->manually_added = true;
-}
-
-/* copy the equipment data part of the cylinders but keep pressures */
-static void copy_cylinder_types(const struct dive *s, struct dive *d)
-{
-	int i;
-	if (!s || !d)
-		return;
-
-	for (i = 0; i < MAX_CYLINDERS; i++)
-		copy_cylinder_type(s->cylinder + i, d->cylinder + i);
 }
 
 void copy_cylinders(const struct dive *s, struct dive *d, bool used_only)

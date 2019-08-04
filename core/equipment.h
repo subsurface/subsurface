@@ -57,6 +57,7 @@ struct weightsystem_table {
 
 extern int cylinderuse_from_text(const char *text);
 extern void copy_weights(const struct weightsystem_table *s, struct weightsystem_table *d);
+extern void copy_cylinder_types(const struct dive *s, struct dive *d);
 extern void add_cloned_weightsystem(struct weightsystem_table *t, weightsystem_t ws);
 extern void add_cylinder_description(const cylinder_type_t *);
 extern void add_weightsystem_description(const weightsystem_t *);
