@@ -218,8 +218,7 @@ static int dm4_dive(void *param, int columns, char **data, char **column)
 	/*
 	 * TODO: handle multiple cylinders
 	 */
-	cylinder_start(state);
-	cyl = &state->cur_dive->cylinders.cylinders[state->cur_dive->cylinders.nr - 1];
+	cyl = cylinder_start(state);
 	if (data[22] && atoi(data[22]) > 0)
 		cyl->start.mbar = atoi(data[22]);
 	else if (data[10] && atoi(data[10]) > 0)
@@ -328,8 +327,7 @@ static int dm5_cylinders(void *param, int columns, char **data, char **column)
 	struct parser_state *state = (struct parser_state *)param;
 	cylinder_t *cyl;
 
-	cylinder_start(state);
-	cyl = &state->cur_dive->cylinders.cylinders[state->cur_dive->cylinders.nr - 1];
+	cyl = cylinder_start(state);
 	if (data[7] && atoi(data[7]) > 0 && atoi(data[7]) < 350000)
 		cyl->start.mbar = atoi(data[7]);
 	if (data[8] && atoi(data[8]) > 0 && atoi(data[8]) < 350000)

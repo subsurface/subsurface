@@ -39,8 +39,7 @@ static int cobalt_cylinders(void *param, int columns, char **data, char **column
 	struct parser_state *state = (struct parser_state *)param;
 	cylinder_t *cyl;
 
-	cylinder_start(state);
-	cyl = &state->cur_dive->cylinders.cylinders[state->cur_dive->cylinders.nr - 1];
+	cyl = cylinder_start(state);
 	if (data[0])
 		cyl->gasmix.o2.permille = atoi(data[0]) * 10;
 	if (data[1])

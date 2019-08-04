@@ -26,8 +26,7 @@ static int divinglog_cylinder(void *param, int columns, char **data, char **colu
 	if (data[7] && atoi(data[7]) > 0)
 		dbl = 2;
 
-	cylinder_start(state);
-	cyl = &state->cur_dive->cylinders.cylinders[state->cur_dive->cylinders.nr - 1];
+	cyl = cylinder_start(state);
 
 	/*
 	 * Assuming that we have to double the cylinder size, if double

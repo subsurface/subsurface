@@ -101,7 +101,7 @@ void trip_start(struct parser_state *state);
 void trip_end(struct parser_state *state);
 void picture_start(struct parser_state *state);
 void picture_end(struct parser_state *state);
-void cylinder_start(struct parser_state *state);
+cylinder_t *cylinder_start(struct parser_state *state);
 void cylinder_end(struct parser_state *state);
 void ws_start(struct parser_state *state);
 void ws_end(struct parser_state *state);
