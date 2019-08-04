@@ -288,6 +288,28 @@ void reset_cylinders(struct dive *dive, bool track_gas)
 	}
 }
 
+static void copy_cylinder_type(const cylinder_t *s, cylinder_t *d)
+{
+	free(d->type.description);
+	d->type = s->type;
+	d->type.description = s->type.description ? strdup(s->type.description) : NULL;
+	d->gasmix = s->gasmix;
+	d->depth = s->depth;
+	d->cylinder_use = s->cylinder_use;
+	d->manually_added = true;
+}
+
+/* copy the equipment data part of the cylinders but keep pressures */
+void copy_cylinder_types(const struct dive *s, struct dive *d)
+{
+	int i;
+	if (!s || !d)
+		return;
+
+	for (i = 0; i < MAX_CYLINDERS; i++)
+		copy_cylinder_type(s->cylinder + i, d->cylinder + i);
+}
+
 #ifdef DEBUG_CYL
 void dump_cylinders(struct dive *dive, bool verbose)
 {
