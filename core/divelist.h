@@ -8,6 +8,8 @@
 extern "C" {
 #endif
 
+struct deco_state;
+
 /* this is used for both git and xml format */
 #define DATAFORMAT_VERSION 3
 

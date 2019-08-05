@@ -5,7 +5,8 @@
 #include <QAbstractTableModel>
 
 #include "core/display.h"
-#include "core/dive.h"
+#include "core/deco.h"
+#include "core/planner.h"
 
 struct dive;
 struct plot_data;
