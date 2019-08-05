@@ -94,7 +94,7 @@ int get_gasidx(struct dive *dive, struct gasmix mix)
 	return find_best_gasmix_match(mix, dive->cylinder);
 }
 
-void interpolate_transition(struct deco_state *ds, struct dive *dive, duration_t t0, duration_t t1, depth_t d0, depth_t d1, struct gasmix gasmix, o2pressure_t po2, enum divemode_t divemode)
+static void interpolate_transition(struct deco_state *ds, struct dive *dive, duration_t t0, duration_t t1, depth_t d0, depth_t d1, struct gasmix gasmix, o2pressure_t po2, enum divemode_t divemode)
 {
 	int32_t j;
 
@@ -107,7 +107,7 @@ void interpolate_transition(struct deco_state *ds, struct dive *dive, duration_t
 }
 
 /* returns the tissue tolerance at the end of this (partial) dive */
-int tissue_at_end(struct deco_state *ds, struct dive *dive, struct deco_state **cached_datap)
+static int tissue_at_end(struct deco_state *ds, struct dive *dive, struct deco_state **cached_datap)
 {
 	struct divecomputer *dc;
 	struct sample *sample, *psample;
@@ -376,7 +376,7 @@ struct divedatapoint *create_dp(int time_incr, int depth, int cylinderid, int po
 	return dp;
 }
 
-void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
+static void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 {
 	struct divedatapoint **lastdp = &diveplan->dp;
 	struct divedatapoint *ldp = *lastdp;
@@ -405,7 +405,6 @@ struct gaschanges {
 	int depth;
 	int gasidx;
 };
-
 
 static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, int *gaschangenr, int depth, int *asc_cylinder)
 {
@@ -528,7 +527,7 @@ int ascent_velocity(int depth, int avg_depth, int bottom_time)
 	}
 }
 
-void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int bottom_time, bool safety_stop, enum divemode_t divemode)
+static void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int bottom_time, bool safety_stop, enum divemode_t divemode)
 {
 	while (depth > 0) {
 		int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
@@ -544,7 +543,7 @@ void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int bottom
 }
 
 // Determine whether ascending to the next stop will break the ceiling.  Return true if the ascent is ok, false if it isn't.
-bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, int stoplevel, int avg_depth, int bottom_time, struct gasmix gasmix, int po2, double surface_pressure, struct dive *dive, enum divemode_t divemode)
+static bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, int stoplevel, int avg_depth, int bottom_time, struct gasmix gasmix, int po2, double surface_pressure, struct dive *dive, enum divemode_t divemode)
 {
 
 	bool clear_to_ascend = true;
@@ -590,7 +589,7 @@ bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, int sto
  * Also return true if this cannot be calculated because the cylinder doesn't have
  * size or a starting pressure.
  */
-bool enough_gas(int current_cylinder)
+static bool enough_gas(int current_cylinder)
 {
 	cylinder_t *cyl;
 	cyl = &displayed_dive.cylinder[current_cylinder];
@@ -608,8 +607,7 @@ bool enough_gas(int current_cylinder)
  * leap is a guess for the maximum but there is no guarantee that leap is an upper limit.
  * So we always test at the upper bundary, not in the middle!
  */
-
-int wait_until(struct deco_state *ds, struct dive *dive, int clock, int min, int leap, int stepsize, int depth, int target_depth, int avg_depth, int bottom_time, struct gasmix gasmix, int po2, double surface_pressure, enum divemode_t divemode)
+static int wait_until(struct deco_state *ds, struct dive *dive, int clock, int min, int leap, int stepsize, int depth, int target_depth, int avg_depth, int bottom_time, struct gasmix gasmix, int po2, double surface_pressure, enum divemode_t divemode)
 {
 	// When a deco stop exceeds two days, there is something wrong...
 	if (min >= 48 * 3600)
