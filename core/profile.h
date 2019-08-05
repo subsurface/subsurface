@@ -23,8 +23,10 @@ enum plot_pressure {
 };
 
 struct membuffer;
+struct deco_state;
 struct divecomputer;
 struct plot_info;
+
 struct plot_data {
 	unsigned int in_deco : 1;
 	int sec;
