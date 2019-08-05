@@ -624,17 +624,6 @@ static int wait_until(struct deco_state *ds, struct dive *dive, int clock, int m
 	return wait_until(ds, dive, clock, min, leap / 2, stepsize, depth, target_depth, avg_depth, bottom_time, gasmix, po2, surface_pressure, divemode);
 }
 
-// Work out the stops. Return value is if there were any mandatory stops.
-
-
-void printdecotable(struct decostop *table)
-{
-	while (table->depth) {
-		printf("depth=%d time=%d\n", table->depth, table->time);
-		++table;
-	}
-}
-
 static void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_depth)
 {
 	int integral = 0;
