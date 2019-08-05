@@ -12,6 +12,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "divemode.h"
 #include "equipment.h"
 
 #ifdef __cplusplus
@@ -19,8 +20,6 @@ extern "C" {
 #endif
 
 extern int last_xml_version;
-
-enum divemode_t {OC, CCR, PSCR, FREEDIVE, NUM_DIVEMODE, UNDEF_COMP_TYPE};	// Flags (Open-circuit and Closed-circuit-rebreather) for setting dive computer type
 
 extern const char *cylinderuse_text[NUM_GAS_USE];
 extern const char *divemode_text_ui[];
@@ -405,75 +404,8 @@ extern void subsurface_command_line_exit(int *, char ***);
 
 #define DECOTIMESTEP 60 /* seconds. Unit of deco stop times */
 
-struct deco_state {
-	double tissue_n2_sat[16];
-	double tissue_he_sat[16];
-	double tolerated_by_tissue[16];
-	double tissue_inertgas_saturation[16];
-	double buehlmann_inertgas_a[16];
-	double buehlmann_inertgas_b[16];
-
-	double max_n2_crushing_pressure[16];
-	double max_he_crushing_pressure[16];
-
-	double crushing_onset_tension[16];            // total inert gas tension in the t* moment
-	double n2_regen_radius[16];                   // rs
-	double he_regen_radius[16];
-	double max_ambient_pressure;                  // last moment we were descending
-
-	double bottom_n2_gradient[16];
-	double bottom_he_gradient[16];
-
-	double initial_n2_gradient[16];
-	double initial_he_gradient[16];
-	pressure_t first_ceiling_pressure;
-	pressure_t max_bottom_ceiling_pressure;
-	int ci_pointing_to_guiding_tissue;
-	double gf_low_pressure_this_dive;
-	int deco_time;
-	bool icd_warning;
-};
-
-extern void add_segment(struct deco_state *ds, double pressure, struct gasmix gasmix, int period_in_seconds, int setpoint, enum divemode_t divemode, int sac);
 extern bool is_dc_planner(const struct divecomputer *dc);
 extern bool has_planned(const struct dive *dive, bool planned);
-
-/* this should be converted to use our types */
-struct divedatapoint {
-	int time;
-	depth_t depth;
-	int cylinderid;
-	pressure_t minimum_gas;
-	int setpoint;
-	bool entered;
-	struct divedatapoint *next;
-	enum divemode_t divemode;
-};
-
-struct diveplan {
-	timestamp_t when;
-	int surface_pressure; /* mbar */
-	int bottomsac;	/* ml/min */
-	int decosac;	  /* ml/min */
-	int salinity;
-	short gflow;
-	short gfhigh;
-	short vpmb_conservatism;
-	struct divedatapoint *dp;
-	int eff_gflow, eff_gfhigh;
-	int surface_interval;
-};
-
-struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int cylinderid, int po2, bool entered, enum divemode_t divemode);
-struct divedatapoint *create_dp(int time_incr, int depth, int cylinderid, int po2);
-#if DEBUG_PLAN
-void dump_plan(struct diveplan *diveplan);
-#endif
-struct decostop {
-	int depth;
-	int time;
-};
-extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
 
 /* Since C doesn't have parameter-based overloading, two versions of get_next_event. */
 extern const struct event *get_next_event(const struct event *event, const char *name);
@@ -500,8 +432,6 @@ extern void set_git_prefs(const char *prefs);
 
 extern char *get_dive_date_c_string(timestamp_t when);
 extern void update_setpoint_events(const struct dive *dive, struct divecomputer *dc);
-
-extern void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_depth);
 
 #ifdef __cplusplus
 }

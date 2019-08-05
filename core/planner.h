@@ -5,6 +5,35 @@
 #define LONGDECO 1
 #define NOT_RECREATIONAL 2
 
+#include "units.h"
+#include "divemode.h"
+
+/* this should be converted to use our types */
+struct divedatapoint {
+	int time;
+	depth_t depth;
+	int cylinderid;
+	pressure_t minimum_gas;
+	int setpoint;
+	bool entered;
+	struct divedatapoint *next;
+	enum divemode_t divemode;
+};
+
+struct diveplan {
+	timestamp_t when;
+	int surface_pressure; /* mbar */
+	int bottomsac;	/* ml/min */
+	int decosac;	  /* ml/min */
+	int salinity;
+	short gflow;
+	short gfhigh;
+	short vpmb_conservatism;
+	struct divedatapoint *dp;
+	int eff_gflow, eff_gfhigh;
+	int surface_interval;
+};
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -26,6 +55,17 @@ extern void free_dps(struct diveplan *diveplan);
 extern struct dive *planned_dive;
 extern char *cache_data;
 extern char *disclaimer;
+
+struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int cylinderid, int po2, bool entered, enum divemode_t divemode);
+struct divedatapoint *create_dp(int time_incr, int depth, int cylinderid, int po2);
+#if DEBUG_PLAN
+void dump_plan(struct diveplan *diveplan);
+#endif
+struct decostop {
+	int depth;
+	int time;
+};
+extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
 
 #ifdef __cplusplus
 }

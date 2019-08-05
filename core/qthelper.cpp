@@ -11,6 +11,7 @@
 #include "version.h"
 #include "divecomputer.h"
 #include "errorhelper.h"
+#include "planner.h"
 #include "time.h"
 #include "gettextfromc.h"
 #include "applicationstate.h"

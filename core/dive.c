@@ -3435,32 +3435,6 @@ void set_git_prefs(const char *prefs)
 		git_prefs.pp_graphs.po2 = 1;
 }
 
-void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_depth)
-{
-	int integral = 0;
-	int last_time = 0;
-	int last_depth = 0;
-	struct divedatapoint *dp = dive->dp;
-
-	*max_depth = 0;
-
-	while (dp) {
-		if (dp->time) {
-			/* Ignore gas indication samples */
-			integral += (dp->depth.mm + last_depth) * (dp->time - last_time) / 2;
-			last_time = dp->time;
-			last_depth = dp->depth.mm;
-			if (dp->depth.mm > *max_depth)
-				*max_depth = dp->depth.mm;
-		}
-		dp = dp->next;
-	}
-	if (last_time)
-		*avg_depth = integral / last_time;
-	else
-		*avg_depth = *max_depth = 0;
-}
-
 struct picture *alloc_picture()
 {
 	struct picture *pic = malloc(sizeof(struct picture));

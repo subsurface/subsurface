@@ -5,12 +5,11 @@
  *
  * (c) Dirk Hohndel 2013
  */
-#include "ssrf.h"
 #include <assert.h>
 #include <unistd.h>
 #include <ctype.h>
 #include <string.h>
-#include "dive.h"
+#include "ssrf.h"
 #include "divelist.h"
 #include "subsurface-string.h"
 #include "deco.h"
@@ -636,6 +635,32 @@ void printdecotable(struct decostop *table)
 		printf("depth=%d time=%d\n", table->depth, table->time);
 		++table;
 	}
+}
+
+static void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_depth)
+{
+	int integral = 0;
+	int last_time = 0;
+	int last_depth = 0;
+	struct divedatapoint *dp = dive->dp;
+
+	*max_depth = 0;
+
+	while (dp) {
+		if (dp->time) {
+			/* Ignore gas indication samples */
+			integral += (dp->depth.mm + last_depth) * (dp->time - last_time) / 2;
+			last_time = dp->time;
+			last_depth = dp->depth.mm;
+			if (dp->depth.mm > *max_depth)
+				*max_depth = dp->depth.mm;
+		}
+		dp = dp->next;
+	}
+	if (last_time)
+		*avg_depth = integral / last_time;
+	else
+		*avg_depth = *max_depth = 0;
 }
 
 bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer)
