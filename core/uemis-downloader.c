@@ -27,6 +27,7 @@
 #include "divelist.h"
 #include "divesite.h"
 #include "errorhelper.h"
+#include "file.h"
 #include "tag.h"
 #include "core/subsurface-string.h"
 

@@ -3,6 +3,7 @@
 /* implements UNIX specific functions */
 #include "ssrf.h"
 #include "dive.h"
+#include "file.h"
 #include "subsurface-string.h"
 #include "display.h"
 #include "membuffer.h"
@@ -14,6 +15,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <pwd.h>
+#include <zip.h>
 
 // the DE should provide us with a default font and font size...
 const char unix_system_divelist_default_font[] = "Sans";
