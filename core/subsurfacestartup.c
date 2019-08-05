@@ -4,6 +4,8 @@
 #include "version.h"
 #include <stdbool.h>
 #include <string.h>
+#include "errorhelper.h"
+#include "dive.h" // for quit and force_root
 #include "gettext.h"
 #include "qthelper.h"
 #include "git-access.h"

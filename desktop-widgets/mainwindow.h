@@ -21,7 +21,6 @@
 #include "desktop-widgets/filterwidget2.h"
 #include "core/applicationstate.h"
 #include "core/gpslocation.h"
-#include "core/dive.h"
 
 #define NUM_RECENT_FILES 4
 

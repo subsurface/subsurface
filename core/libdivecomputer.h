@@ -2,6 +2,7 @@
 #ifndef LIBDIVECOMPUTER_H
 #define LIBDIVECOMPUTER_H
 
+#include <stdint.h>
 
 /* libdivecomputer */
 
@@ -18,11 +19,14 @@
 #define dc_usb_storage_open(stream, context, devname) (DC_STATUS_UNSUPPORTED)
 #endif
 
-#include "dive.h"
-
 #ifdef __cplusplus
 extern "C" {
+#else
+#include <stdbool.h>
 #endif
+
+struct dive;
+struct dive_computer;
 
 typedef struct dc_user_device_t
 {

@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "dive.h"
+#include "errorhelper.h"
 #include "ssrf.h"
 #include "subsurface-string.h"
 #include "gettext.h"

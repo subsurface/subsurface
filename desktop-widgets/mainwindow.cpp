@@ -21,6 +21,7 @@
 #include "core/device.h"
 #include "core/divecomputer.h"
 #include "core/divesitehelpers.h"
+#include "core/errorhelper.h"
 #include "core/file.h"
 #include "core/gettextfromc.h"
 #include "core/git-access.h"

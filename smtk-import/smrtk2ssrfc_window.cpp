@@ -4,6 +4,7 @@
 #include "qt-models/filtermodels.h"
 #include "core/dive.h"
 #include "core/divelist.h"
+#include "core/errorhelper.h"
 #include "core/settings/qPrefDisplay.h"
 #include <QFileDialog>
 #include <QFileInfo>

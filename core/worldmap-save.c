@@ -11,6 +11,7 @@
 
 #include "membuffer.h"
 #include "divesite.h"
+#include "errorhelper.h"
 #include "save-html.h"
 #include "worldmap-save.h"
 #include "worldmap-options.h"

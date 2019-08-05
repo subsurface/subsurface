@@ -19,6 +19,7 @@
 #include <QStandardPaths>
 #include <QMessageBox>
 #include <QHeaderView>
+#include "core/errorhelper.h"
 #include "core/qthelper.h"
 #include "core/trip.h"
 #include "desktop-widgets/command.h"

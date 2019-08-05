@@ -7,6 +7,7 @@
 #include "desktop-widgets/command.h"
 #include "desktop-widgets/usersurvey.h"
 #include "core/trip.h"
+#include "core/errorhelper.h"
 #include "core/file.h"
 #include "desktop-widgets/mapwidget.h"
 #include "desktop-widgets/tab-widgets/maintab.h"

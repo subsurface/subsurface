@@ -20,6 +20,7 @@
 #include "qt-models/divelocationmodel.h"
 #include "qt-models/filtermodels.h"
 #include "core/divesite.h"
+#include "core/errorhelper.h"
 #include "core/subsurface-string.h"
 #include "core/gettextfromc.h"
 #include "desktop-widgets/locationinformation.h"

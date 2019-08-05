@@ -21,6 +21,7 @@
 #include "subsurface-string.h"
 #include "trip.h"
 #include "device.h"
+#include "errorhelper.h"
 #include "membuffer.h"
 #include "git-access.h"
 #include "version.h"

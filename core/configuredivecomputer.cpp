@@ -8,6 +8,8 @@
 #include <libxslt/transform.h>
 #include <QStringList>
 #include <QXmlStreamWriter>
+#include "core/dive.h" // for subsurface_fopen()
+#include "core/errorhelper.h"
 #include "core/version.h"
 
 ConfigureDiveComputer::ConfigureDiveComputer() : readThread(0),

@@ -8,6 +8,7 @@
 #include "qthelper.h"
 #include "gettext.h"
 #include "divesite.h"
+#include "errorhelper.h"
 #include "tag.h"
 #include "trip.h"
 #include <stdio.h>
