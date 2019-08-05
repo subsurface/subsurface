@@ -1,7 +1,6 @@
 #include "core/profile.h"
-#include "core/profile.h"
-#include "core/dive.h"
 #include "core/display.h"
+#include "core/errorhelper.h"
 #include "core/membuffer.h"
 #include "core/subsurface-string.h"
 #include "core/save-profiledata.h"

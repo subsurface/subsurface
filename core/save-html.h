@@ -2,12 +2,13 @@
 #ifndef HTML_SAVE_H
 #define HTML_SAVE_H
 
-#include "dive.h"
 #include "membuffer.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+struct dive;
 
 void put_HTML_date(struct membuffer *b, struct dive *dive, const char *pre, const char *post);
 void put_HTML_depth(struct membuffer *b, struct dive *dive, const char *pre, const char *post);

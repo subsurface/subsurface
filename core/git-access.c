@@ -22,7 +22,8 @@
 #include "membuffer.h"
 #include "strndup.h"
 #include "qthelper.h"
-#include "dive.h"
+#include "dive.h" // for subsurface_stat()
+#include "errorhelper.h"
 #include "git-access.h"
 #include "gettext.h"
 #include "sha1.h"

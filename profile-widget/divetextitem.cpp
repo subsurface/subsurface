@@ -2,7 +2,7 @@
 #include "divetextitem.h"
 #include "profilewidget2.h"
 #include "core/color.h"
-#include "core/dive.h"
+#include "core/errorhelper.h"
 
 #include <QBrush>
 #include <QDebug>

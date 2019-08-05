@@ -3,6 +3,8 @@
 #include "libdivecomputer/hw_ostc.h"
 #include "libdivecomputer/hw_ostc3.h"
 #include "libdivecomputer.h"
+#include "units.h"
+#include "errorhelper.h"
 
 #define OSTC3_GAS1			0x10
 #define OSTC3_GAS2			0x11

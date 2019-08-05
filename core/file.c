@@ -13,6 +13,7 @@
 #include "dive.h"
 #include "subsurface-string.h"
 #include "divelist.h"
+#include "errorhelper.h"
 #include "file.h"
 #include "git-access.h"
 #include "qthelper.h"

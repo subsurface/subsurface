@@ -2,7 +2,7 @@
 #include "videoframeextractor.h"
 #include "imagedownloader.h"
 #include "core/pref.h"
-#include "core/dive.h"		// for report_error()!
+#include "core/errorhelper.h"
 
 #include <QtConcurrent>
 #include <QProcess>

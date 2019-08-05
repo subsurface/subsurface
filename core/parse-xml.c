@@ -23,6 +23,7 @@
 #include "gettext.h"
 
 #include "divesite.h"
+#include "errorhelper.h"
 #include "subsurface-string.h"
 #include "parse.h"
 #include "trip.h"
@@ -31,7 +32,7 @@
 #include "qthelper.h"
 #include "tag.h"
 
-int verbose, quit, force_root;
+int quit, force_root;
 int last_xml_version = -1;
 
 static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params);

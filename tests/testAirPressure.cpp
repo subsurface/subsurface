@@ -3,7 +3,7 @@
 #include "core/divesite.h"
 #include "core/trip.h"
 #include "core/file.h"
-#include "core/dive.h"
+#include "core/errorhelper.h"
 #include <QString>
 #include <core/qthelper.h>
 

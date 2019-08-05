@@ -16,6 +16,7 @@
 #include "gettext.h"
 
 #include "divesite.h"
+#include "errorhelper.h"
 #include "trip.h"
 #include "subsurface-string.h"
 #include "device.h"

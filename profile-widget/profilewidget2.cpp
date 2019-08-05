@@ -19,6 +19,7 @@
 #include "qt-models/models.h"
 #include "qt-models/divepicturemodel.h"
 #include "core/divelist.h"
+#include "core/errorhelper.h"
 #ifndef SUBSURFACE_MOBILE
 #include "desktop-widgets/diveplanner.h"
 #include "desktop-widgets/simplewidgets.h"

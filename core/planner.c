@@ -11,9 +11,10 @@
 #include <ctype.h>
 #include <string.h>
 #include "dive.h"
+#include "divelist.h"
 #include "subsurface-string.h"
 #include "deco.h"
-#include "divelist.h"
+#include "errorhelper.h"
 #include "planner.h"
 #include "gettext.h"
 #include "libdivecomputer/parser.h"

@@ -4,10 +4,12 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 #include <stdarg.h>
-#include "dive.h"
+#include "errorhelper.h"
 #include "membuffer.h"
 
 #define VA_BUF(b, fmt) do { va_list args; va_start(args, fmt); put_vformat(b, fmt, args); va_end(args); } while (0)
+
+int verbose;
 
 static void (*error_cb)(char *) = NULL;
 

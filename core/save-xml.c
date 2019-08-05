@@ -14,6 +14,7 @@
 #include <fcntl.h>
 
 #include "divesite.h"
+#include "errorhelper.h"
 #include "subsurface-string.h"
 #include "trip.h"
 #include "device.h"

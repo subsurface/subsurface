@@ -2,7 +2,7 @@
 #include <errno.h>
 #include <libdivecomputer/parser.h>
 
-#include "dive.h"
+#include "errorhelper.h"
 #include "ssrf.h"
 #include "subsurface-string.h"
 #include "divelist.h"

@@ -7,6 +7,8 @@ struct memblock {
 	size_t size;
 };
 
+struct trip_table;
+
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -8,6 +8,7 @@
 #include <libdivecomputer/parser.h>
 
 #include "divesite.h"
+#include "errorhelper.h"
 #include "subsurface-string.h"
 #include "parse.h"
 #include "trip.h"

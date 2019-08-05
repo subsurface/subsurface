@@ -2,10 +2,6 @@
 #ifndef SUBSURFACESTARTUP_H
 #define SUBSURFACESTARTUP_H
 
-#include "dive.h"
-#include "divelist.h"
-#include "libdivecomputer.h"
-
 #ifdef __cplusplus
 extern "C" {
 #else

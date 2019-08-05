@@ -26,6 +26,7 @@
 #include "uemis.h"
 #include "divelist.h"
 #include "divesite.h"
+#include "errorhelper.h"
 #include "tag.h"
 #include "core/subsurface-string.h"
 

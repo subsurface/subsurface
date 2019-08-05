@@ -26,6 +26,7 @@
 #include "qt-models/messagehandlermodel.h"
 #include "qt-models/tankinfomodel.h"
 #include "core/device.h"
+#include "core/errorhelper.h"
 #include "core/file.h"
 #include "core/qthelper.h"
 #include "core/qt-gui.h"

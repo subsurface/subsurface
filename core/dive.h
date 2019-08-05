@@ -247,7 +247,7 @@ extern bool autogroup;
 struct dive *unregister_dive(int idx);
 extern void delete_single_dive(int idx);
 
-extern int run_survey, verbose, quit, force_root;
+extern int run_survey, quit, force_root;
 
 extern struct dive_table dive_table;
 extern struct dive displayed_dive;
@@ -288,9 +288,6 @@ extern int get_idx_by_uniq_id(int id);
 extern bool dive_site_has_gps_location(const struct dive_site *ds);
 extern int dive_has_gps_location(const struct dive *dive);
 extern location_t dive_get_gps_location(const struct dive *d);
-
-extern int report_error(const char *fmt, ...);
-extern void set_error_cb(void(*cb)(char *));	// Callback takes ownership of passed string
 
 extern bool dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset);
 extern bool time_during_dive_with_offset(struct dive *dive, timestamp_t when, timestamp_t offset);

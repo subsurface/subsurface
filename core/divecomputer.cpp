@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "divecomputer.h"
 #include "dive.h"
+#include "errorhelper.h"
 #include "core/settings/qPrefDiveComputer.h"
 #include "subsurface-string.h"
 

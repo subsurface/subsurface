@@ -8,10 +8,9 @@
 #include "pref.h"
 #include "qthelper.h"
 #include "git-access.h"
-#include "dive.h" // for "verbose"
+#include "errorhelper.h"
 
 #include "checkcloudconnection.h"
-
 
 CheckCloudConnection::CheckCloudConnection(QObject *parent) :
 	QObject(parent),

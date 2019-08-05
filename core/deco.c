@@ -23,7 +23,8 @@
 #include "dive.h"
 #include "subsurface-string.h"
 #include <assert.h>
-#include "core/planner.h"
+#include "errorhelper.h"
+#include "planner.h"
 #include "qthelper.h"
 
 #define cube(x) (x * x * x)
