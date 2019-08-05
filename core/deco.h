@@ -43,6 +43,13 @@ struct deco_state {
 	bool icd_warning;
 };
 
+struct regression {
+	int  sum1;
+	long sumx, sumxx;
+	double sumy, sumxy;
+	int plot_depth;
+};
+
 extern const double buehlmann_N2_t_halflife[];
 
 extern int deco_allowed_depth(double tissues_tolerance, double surface_pressure, const struct dive *dive, bool smooth);
@@ -63,9 +70,10 @@ extern void vpmb_start_gradient(struct deco_state *ds);
 extern void clear_vpmb_state(struct deco_state *ds);
 extern void add_segment(struct deco_state *ds, double pressure, struct gasmix gasmix, int period_in_seconds, int setpoint, enum divemode_t divemode, int sac);
 
-extern double regressiona();
-extern double regressionb();
-extern void reset_regression();
+extern double regressiona(const struct regression *regression);
+extern double regressionb(const struct regression *regression);
+extern void reset_regression(struct regression *regression);
+extern void update_regression(struct deco_state *ds, struct regression *regression);
 
 #ifdef __cplusplus
 }

@@ -36,7 +36,6 @@ static int decostoplevels_imperial[] = { 0, 3048, 6096, 9144, 12192, 15240, 1828
 					325120, 345440, 365760, 386080 };
 
 char *disclaimer;
-int plot_depth = 0;
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan)
 {
@@ -543,7 +542,7 @@ static void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int
 }
 
 // Determine whether ascending to the next stop will break the ceiling.  Return true if the ascent is ok, false if it isn't.
-static bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, int stoplevel, int avg_depth, int bottom_time, struct gasmix gasmix, int po2, double surface_pressure, struct dive *dive, enum divemode_t divemode)
+static bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, int stoplevel, int avg_depth, int bottom_time, struct gasmix gasmix, int po2, double surface_pressure, struct dive *dive, enum divemode_t divemode, struct regression *regression)
 {
 
 	bool clear_to_ascend = true;
@@ -557,23 +556,28 @@ static bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, 
 		add_segment(ds, depth_to_bar(trial_depth, dive),
 			    gasmix,
 			    wait_time, po2, divemode, prefs.decosac);
-	if (decoMode() == VPMB && (deco_allowed_depth(tissue_tolerance_calc(ds, dive,depth_to_bar(stoplevel, dive)),
-						      surface_pressure, dive, 1)
-				   > stoplevel)) {
-		restore_deco_state(trial_cache, ds, false);
-		free(trial_cache);
-		return false;
+	if (decoMode() == VPMB) {
+		double tolerance_limit = tissue_tolerance_calc(ds, dive, depth_to_bar(stoplevel, dive));
+		update_regression(ds, regression);
+		if (deco_allowed_depth(tolerance_limit, surface_pressure, dive, 1) > stoplevel) {
+			restore_deco_state(trial_cache, ds, false);
+			free(trial_cache);
+			return false;
+		}
 	}
 
 	while (trial_depth > stoplevel) {
+		double tolerance_limit;
 		int deltad = ascent_velocity(trial_depth, avg_depth, bottom_time) * TIMESTEP;
 		if (deltad > trial_depth) /* don't test against depth above surface */
 			deltad = trial_depth;
 		add_segment(ds, depth_to_bar(trial_depth, dive),
 			    gasmix,
 			    TIMESTEP, po2, divemode, prefs.decosac);
-		if (deco_allowed_depth(tissue_tolerance_calc(ds, dive, depth_to_bar(trial_depth, dive)),
-				       surface_pressure, dive, 1) > trial_depth - deltad) {
+		tolerance_limit = tissue_tolerance_calc(ds, dive, depth_to_bar(trial_depth, dive));
+		if (decoMode() == VPMB)
+			update_regression(ds, regression);
+		if (deco_allowed_depth(tolerance_limit, surface_pressure, dive, 1) > trial_depth - deltad) {
 			/* We should have stopped */
 			clear_to_ascend = false;
 			break;
@@ -607,7 +611,7 @@ static bool enough_gas(int current_cylinder)
  * leap is a guess for the maximum but there is no guarantee that leap is an upper limit.
  * So we always test at the upper bundary, not in the middle!
  */
-static int wait_until(struct deco_state *ds, struct dive *dive, int clock, int min, int leap, int stepsize, int depth, int target_depth, int avg_depth, int bottom_time, struct gasmix gasmix, int po2, double surface_pressure, enum divemode_t divemode)
+static int wait_until(struct deco_state *ds, struct dive *dive, int clock, int min, int leap, int stepsize, int depth, int target_depth, int avg_depth, int bottom_time, struct gasmix gasmix, int po2, double surface_pressure, enum divemode_t divemode, struct regression *regression)
 {
 	// When a deco stop exceeds two days, there is something wrong...
 	if (min >= 48 * 3600)
@@ -615,13 +619,13 @@ static int wait_until(struct deco_state *ds, struct dive *dive, int clock, int m
 	// Round min + leap up to the next multiple of stepsize
 	int upper = min + leap + stepsize - 1 - (min + leap - 1) % stepsize;
 	// Is the upper boundary too small?
-	if (!trial_ascent(ds, upper - clock, depth, target_depth, avg_depth, bottom_time, gasmix, po2, surface_pressure, dive, divemode))
-		return wait_until(ds, dive, clock, upper, leap, stepsize, depth, target_depth, avg_depth, bottom_time, gasmix, po2, surface_pressure, divemode);
+	if (!trial_ascent(ds, upper - clock, depth, target_depth, avg_depth, bottom_time, gasmix, po2, surface_pressure, dive, divemode, regression))
+		return wait_until(ds, dive, clock, upper, leap, stepsize, depth, target_depth, avg_depth, bottom_time, gasmix, po2, surface_pressure, divemode, regression);
 
 	if (upper - min <= stepsize)
 		return upper;
 
-	return wait_until(ds, dive, clock, min, leap / 2, stepsize, depth, target_depth, avg_depth, bottom_time, gasmix, po2, surface_pressure, divemode);
+	return wait_until(ds, dive, clock, min, leap / 2, stepsize, depth, target_depth, avg_depth, bottom_time, gasmix, po2, surface_pressure, divemode, regression);
 }
 
 static void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_depth)
@@ -688,6 +692,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	bool o2breaking = false;
 	int decostopcounter = 0;
 	enum divemode_t divemode = dive->dc.divemode;
+	struct regression regression;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh);
 	set_vpmb_conservatism(diveplan->vpmb_conservatism);
@@ -786,7 +791,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 			update_cylinder_pressure(dive, depth, depth, timestep, prefs.bottomsac, &dive->cylinder[current_cylinder], false, divemode);
 			clock += timestep;
 		} while (trial_ascent(ds, 0, depth, 0, avg_depth, bottom_time, dive->cylinder[current_cylinder].gasmix,
-				      po2, diveplan->surface_pressure / 1000.0, dive, divemode) &&
+				      po2, diveplan->surface_pressure / 1000.0, dive, divemode, NULL) &&
 			 enough_gas(current_cylinder) && clock < 6 * 3600);
 
 		// We did stay one DECOTIMESTEP too many.
@@ -878,7 +883,8 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		first_stop_depth = 0;
 		stopidx = bottom_stopidx;
 		ds->first_ceiling_pressure.mbar = depth_to_mbar(
-					deco_allowed_depth(tissue_tolerance_calc(ds, dive, depth_to_bar(depth, dive)), diveplan->surface_pressure / 1000.0, dive, 1),
+					deco_allowed_depth(tissue_tolerance_calc(ds, dive, depth_to_bar(depth, dive)),
+							   diveplan->surface_pressure / 1000.0, dive, 1),
 					dive);
 		if (ds->max_bottom_ceiling_pressure.mbar > ds->first_ceiling_pressure.mbar)
 			ds->first_ceiling_pressure.mbar = ds->max_bottom_ceiling_pressure.mbar;
@@ -894,7 +900,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 			report_error(translate("gettextFromC", "Can't find gas %s"), gasname(gas));
 			current_cylinder = 0;
 		}
-		reset_regression();
+		reset_regression(&regression);
 		while (1) {
 			/* We will break out when we hit the surface */
 			do {
@@ -918,7 +924,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 				depth -= deltad;
 				/* Print VPM-Gradient as gradient factor, this has to be done from within deco.c */
 				if (decodive)
-					plot_depth = depth;
+					regression.plot_depth = depth;
 			} while (depth > 0 && depth > stoplevels[stopidx]);
 
 			if (depth <= 0)
@@ -940,7 +946,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 				if (current_cylinder != gaschanges[gi].gasidx) {
 					if (!prefs.switch_at_req_stop ||
 							!trial_ascent(ds, 0, depth, stoplevels[stopidx - 1], avg_depth, bottom_time,
-							dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0, dive, divemode) || get_o2(dive->cylinder[current_cylinder].gasmix) < 160) {
+							dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0, dive, divemode, &regression) || get_o2(dive->cylinder[current_cylinder].gasmix) < 160) {
 						current_cylinder = gaschanges[gi].gasidx;
 						gas = dive->cylinder[current_cylinder].gasmix;
 #if DEBUG_PLAN & 16
@@ -970,7 +976,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 			while (1) {
 				/* Check if ascending to next stop is clear, go back and wait if we hit the ceiling on the way */
 				if (trial_ascent(ds, 0, depth, stoplevels[stopidx], avg_depth, bottom_time,
-						dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0, dive, divemode)) {
+						dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0, dive, divemode, &regression)) {
 					decostoptable[decostopcounter].depth = depth;
 					decostoptable[decostopcounter].time = 0;
 					decostopcounter++;
@@ -1013,7 +1019,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 				}
 
 				int new_clock = wait_until(ds, dive, clock, clock, laststoptime * 2 + 1, timestep, depth, stoplevels[stopidx], avg_depth,
-					bottom_time, dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0, divemode);
+					bottom_time, dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0, divemode, &regression);
 				laststoptime = new_clock - clock;
 				/* Finish infinite deco */
 				if (laststoptime >= 48 * 3600 && depth >= 6000) {
@@ -1089,8 +1095,8 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 
 	plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false, divemode);
 	if (decoMode() == VPMB) {
-		diveplan->eff_gfhigh = lrint(100.0 * regressionb());
-		diveplan->eff_gflow = lrint(100.0 * (regressiona() * first_stop_depth + regressionb()));
+		diveplan->eff_gfhigh = lrint(100.0 * regressionb(&regression));
+		diveplan->eff_gflow = lrint(100.0 * (regressiona(&regression) * first_stop_depth + regressionb(&regression)));
 	}
 
 	for (int i = 0; i < MAX_CYLINDERS; i++)

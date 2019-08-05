@@ -37,8 +37,6 @@
 // was introduced in v4.6.3 this can be set to a value of 1.0 which means no correction.
 #define subsurface_conservatism_factor 1.0
 
-extern int plot_depth;
-
 //! Option structure for Buehlmann decompression.
 struct buehlmann_config {
 	double satmult;			//! safety at inert gas accumulation as percentage of effect (more than 100).
@@ -157,10 +155,6 @@ static const double vpmb_conservatism_lvls[] = { 1.0, 1.05, 1.12, 1.22, 1.35 };
 
 #define TISSUE_ARRAY_SZ sizeof(ds->tissue_n2_sat)
 
-static int  sum1;
-static long sumx, sumxx;
-static double sumy, sumxy;
-
 static double get_crit_radius_He()
 {
 	if (vpmb_config.conservatism <= 4)
@@ -222,7 +216,6 @@ static double vpmb_tolerated_ambient_pressure(struct deco_state *ds, double refe
 
 	return ds->tissue_n2_sat[ci] + ds->tissue_he_sat[ci] + vpmb_config.other_gases_pressure - total_gradient;
 }
-
 
 double tissue_tolerance_calc(struct deco_state *ds, const struct dive *dive, double pressure)
 {
@@ -292,23 +285,6 @@ double tissue_tolerance_calc(struct deco_state *ds, const struct dive *dive, dou
 			}
 		// We are doing ok if the gradient was computed within ten centimeters of the ceiling.
 		} while (fabs(ret_tolerance_limit_ambient_pressure - reference_pressure) > 0.01);
-
-		if (plot_depth) {
-			++sum1;
-			sumx += plot_depth;
-			sumxx += (long)plot_depth * plot_depth;
-			double n2_gradient, he_gradient, total_gradient;
-			n2_gradient = update_gradient(ds, depth_to_bar(plot_depth, &displayed_dive), ds->bottom_n2_gradient[ds->ci_pointing_to_guiding_tissue]);
-			he_gradient = update_gradient(ds, depth_to_bar(plot_depth, &displayed_dive), ds->bottom_he_gradient[ds->ci_pointing_to_guiding_tissue]);
-			total_gradient = ((n2_gradient * ds->tissue_n2_sat[ds->ci_pointing_to_guiding_tissue]) + (he_gradient * ds->tissue_he_sat[ds->ci_pointing_to_guiding_tissue]))
-					/ (ds->tissue_n2_sat[ds->ci_pointing_to_guiding_tissue] + ds->tissue_he_sat[ds->ci_pointing_to_guiding_tissue]);
-
-			double buehlmann_gradient = (1.0 / ds->buehlmann_inertgas_b[ds->ci_pointing_to_guiding_tissue] - 1.0) * depth_to_bar(plot_depth, &displayed_dive) + ds->buehlmann_inertgas_a[ds->ci_pointing_to_guiding_tissue];
-			double gf = (total_gradient - vpmb_config.other_gases_pressure) / buehlmann_gradient;
-			sumxy += gf * plot_depth;
-			sumy += gf;
-			plot_depth = 0;
-		}
 	}
 	return ret_tolerance_limit_ambient_pressure;
 }
@@ -639,30 +615,48 @@ double get_gf(struct deco_state *ds, double ambpressure_bar, const struct dive *
 	return gf;
 }
 
-double regressiona()
+double regressiona(const struct regression *regression)
 {
-	if (sum1 > 1) {
-		double avxy = sumxy / sum1;
-		double avx = (double)sumx / sum1;
-		double avy = sumy / sum1;
-		double avxx = (double) sumxx / sum1;
+	if (regression->sum1 > 1) {
+		double avxy = regression->sumxy / regression->sum1;
+		double avx = (double)regression->sumx / regression->sum1;
+		double avy = regression->sumy / regression->sum1;
+		double avxx = (double) regression->sumxx / regression->sum1;
 		return (avxy - avx * avy) / (avxx - avx*avx);
 	}
 	else
 		return 0.0;
 }
 
-double regressionb()
+double regressionb(const struct regression *regression)
 {
-	if (sum1)
-		return sumy / sum1 - sumx * regressiona() / sum1;
+	if (regression->sum1)
+		return regression->sumy / regression->sum1 - regression->sumx * regressiona(regression) / regression->sum1;
 	else
 		return 0.0;
 }
 
-void reset_regression()
+void reset_regression(struct regression *regression)
 {
-	sum1 = 0;
-	sumxx = sumx = 0L;
-	sumy = sumxy = 0.0;
+	memset(regression, 0, sizeof(*regression));
+}
+
+void update_regression(struct deco_state *ds, struct regression *regression)
+{
+	if (!regression->plot_depth)
+		return;
+	regression->sum1 += 1;
+	regression->sumx += regression->plot_depth;
+	regression->sumxx += (long)regression->plot_depth * regression->plot_depth;
+	double n2_gradient, he_gradient, total_gradient;
+	n2_gradient = update_gradient(ds, depth_to_bar(regression->plot_depth, &displayed_dive), ds->bottom_n2_gradient[ds->ci_pointing_to_guiding_tissue]);
+	he_gradient = update_gradient(ds, depth_to_bar(regression->plot_depth, &displayed_dive), ds->bottom_he_gradient[ds->ci_pointing_to_guiding_tissue]);
+	total_gradient = ((n2_gradient * ds->tissue_n2_sat[ds->ci_pointing_to_guiding_tissue]) + (he_gradient * ds->tissue_he_sat[ds->ci_pointing_to_guiding_tissue]))
+			/ (ds->tissue_n2_sat[ds->ci_pointing_to_guiding_tissue] + ds->tissue_he_sat[ds->ci_pointing_to_guiding_tissue]);
+
+	double buehlmann_gradient = (1.0 / ds->buehlmann_inertgas_b[ds->ci_pointing_to_guiding_tissue] - 1.0) * depth_to_bar(regression->plot_depth, &displayed_dive) + ds->buehlmann_inertgas_a[ds->ci_pointing_to_guiding_tissue];
+	double gf = (total_gradient - vpmb_config.other_gases_pressure) / buehlmann_gradient;
+	regression->sumxy += gf * regression->plot_depth;
+	regression->sumy += gf;
+	regression->plot_depth = 0;
 }
