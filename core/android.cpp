@@ -2,6 +2,7 @@
 /* implements Android specific functions */
 #include "dive.h"
 #include "display.h"
+#include "file.h"
 #include "qthelper.h"
 #include <string.h>
 #include <sys/types.h>
@@ -10,6 +11,7 @@
 #include <libusb.h>
 #include <errno.h>
 #include <unistd.h>
+#include <zip.h>
 
 #include <QtAndroidExtras/QtAndroidExtras>
 #include <QtAndroidExtras/QAndroidJniObject>

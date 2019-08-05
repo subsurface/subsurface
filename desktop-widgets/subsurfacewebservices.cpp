@@ -25,6 +25,7 @@
 #include <QShortcut>
 #include <QDebug>
 #include <errno.h>
+#include <zip.h>
 
 #ifdef Q_OS_UNIX
 #include <unistd.h> // for dup(2)

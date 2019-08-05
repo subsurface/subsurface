@@ -17,12 +17,13 @@
  * restore_deco_state()
  * dump_tissues()
  */
-#include "ssrf.h"
 #include <math.h>
 #include <string.h>
+#include <assert.h>
+
+#include "ssrf.h"
 #include "dive.h"
 #include "subsurface-string.h"
-#include <assert.h>
 #include "errorhelper.h"
 #include "planner.h"
 #include "qthelper.h"

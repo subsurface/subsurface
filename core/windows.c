@@ -5,6 +5,8 @@
 #include <io.h>
 #include "dive.h"
 #include "display.h"
+#include "file.h"
+#include "errorhelper.h"
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x500
 #include <windows.h>
