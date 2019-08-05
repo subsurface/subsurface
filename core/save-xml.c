@@ -18,6 +18,7 @@
 #include "subsurface-string.h"
 #include "trip.h"
 #include "device.h"
+#include "file.h"
 #include "membuffer.h"
 #include "strndup.h"
 #include "git-access.h"

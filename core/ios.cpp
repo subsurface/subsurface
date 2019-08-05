@@ -4,6 +4,7 @@
 #include <dirent.h>
 #include <fnmatch.h>
 #include "dive.h"
+#include "file.h"
 #include "display.h"
 #include "core/qthelper.h"
 #include <CoreFoundation/CoreFoundation.h>
@@ -15,6 +16,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <zip.h>
 
 #include <QStandardPaths>
 

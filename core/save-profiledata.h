@@ -2,8 +2,6 @@
 #ifndef SAVE_PROFILE_DATA_H
 #define SAVE_PROFILE_DATA_H
 
-#include "dive.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif

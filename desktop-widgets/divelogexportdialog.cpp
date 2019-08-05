@@ -5,20 +5,21 @@
 #include <QtConcurrent>
 #include <string.h> // Allows string comparisons and substitutions in TeX export
 
-#include "desktop-widgets/divelogexportdialog.h"
-#include "core/divelogexportlogic.h"
-#include "desktop-widgets/diveshareexportdialog.h"
 #include "ui_divelogexportdialog.h"
-#include "desktop-widgets/subsurfacewebservices.h"
+#include "core/divelogexportlogic.h"
 #include "core/worldmap-save.h"
 #include "core/save-html.h"
 #include "core/settings/qPrefDisplay.h"
-#include "desktop-widgets/mainwindow.h"
-#include "profile-widget/profilewidget2.h"
 #include "core/save-profiledata.h"
 #include "core/divesite.h"
 #include "core/errorhelper.h"
+#include "core/file.h"
 #include "core/tag.h"
+#include "desktop-widgets/mainwindow.h"
+#include "desktop-widgets/divelogexportdialog.h"
+#include "desktop-widgets/diveshareexportdialog.h"
+#include "desktop-widgets/subsurfacewebservices.h"
+#include "profile-widget/profilewidget2.h"
 
 // Retrieves the current unit settings defined in the Subsurface preferences.
 #define GET_UNIT(name, field, f, t)           \
