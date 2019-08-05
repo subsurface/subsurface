@@ -41,6 +41,10 @@ struct deco_state {
 	double gf_low_pressure_this_dive;
 	int deco_time;
 	bool icd_warning;
+	int  sum1;
+	long sumx, sumxx;
+	double sumy, sumxy;
+	int plot_depth;
 };
 
 extern const double buehlmann_N2_t_halflife[];
@@ -63,9 +67,10 @@ extern void vpmb_start_gradient(struct deco_state *ds);
 extern void clear_vpmb_state(struct deco_state *ds);
 extern void add_segment(struct deco_state *ds, double pressure, struct gasmix gasmix, int period_in_seconds, int setpoint, enum divemode_t divemode, int sac);
 
-extern double regressiona();
-extern double regressionb();
-extern void reset_regression();
+extern double regressiona(const struct deco_state *ds);
+extern double regressionb(const struct deco_state *ds);
+extern void reset_regression(struct deco_state *ds);
+extern void update_regression(struct deco_state *ds, const struct dive *dive);
 
 #ifdef __cplusplus
 }
