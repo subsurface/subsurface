@@ -595,10 +595,9 @@ static bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, 
  * Also return true if this cannot be calculated because the cylinder doesn't have
  * size or a starting pressure.
  */
-static bool enough_gas(int current_cylinder)
+static bool enough_gas(const struct dive *dive, int current_cylinder)
 {
-	cylinder_t *cyl;
-	cyl = &displayed_dive.cylinder[current_cylinder];
+	const cylinder_t *cyl = &dive->cylinder[current_cylinder];
 
 	if (!cyl->start.mbar)
 		return true;
@@ -794,7 +793,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 			clock += timestep;
 		} while (trial_ascent(ds, 0, depth, 0, avg_depth, bottom_time, dive->cylinder[current_cylinder].gasmix,
 				      po2, diveplan->surface_pressure / 1000.0, dive, divemode, NULL) &&
-			 enough_gas(current_cylinder) && clock < 6 * 3600);
+			 enough_gas(dive, current_cylinder) && clock < 6 * 3600);
 
 		// We did stay one DECOTIMESTEP too many.
 		// In the best of all worlds, we would roll back also the last add_segment in terms of caching deco state, but
