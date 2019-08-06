@@ -406,12 +406,12 @@ struct gaschanges {
 	int gasidx;
 };
 
-static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, int *gaschangenr, int depth, int *asc_cylinder)
+static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive *dive, int *gaschangenr, int depth, int *asc_cylinder)
 {
 	int nr = 0;
 	struct gaschanges *gaschanges = NULL;
 	struct divedatapoint *dp = diveplan->dp;
-	int best_depth = displayed_dive.cylinder[*asc_cylinder].depth.mm;
+	int best_depth = dive->cylinder[*asc_cylinder].depth.mm;
 	bool total_time_zero = true;
 	while (dp) {
 		if (dp->time == 0 && total_time_zero) {
@@ -446,7 +446,7 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, int *gascha
 	for (nr = 0; nr < *gaschangenr; nr++) {
 		int idx = gaschanges[nr].gasidx;
 		printf("gaschange nr %d: @ %5.2lfm gasidx %d (%s)\n", nr, gaschanges[nr].depth / 1000.0,
-		       idx, gasname(&displayed_dive.cylinder[idx].gasmix));
+		       idx, gasname(dive->cylinder[idx].gasmix));
 	}
 #endif
 	return gaschanges;
@@ -763,7 +763,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		gaschanges = NULL;
 		gaschangenr = 0;
 	} else {
-		gaschanges = analyze_gaslist(diveplan, &gaschangenr, depth, &best_first_ascend_cylinder);
+		gaschanges = analyze_gaslist(diveplan, dive, &gaschangenr, depth, &best_first_ascend_cylinder);
 	}
 	/* Find the first potential decostopdepth above current depth */
 	for (stopidx = 0; stopidx < decostoplevelcount; stopidx++)
