@@ -224,7 +224,7 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 		if (no_volume) {
 			/* for the first tank, if there is no tanksize available from the
 			 * dive computer, fill in the default tank information (if set) */
-			fill_default_cylinder(&dive->cylinder[i]);
+			fill_default_cylinder(dive, i);
 		}
 		/* whatever happens, make sure there is a name for the cylinder */
 		if (empty_string(dive->cylinder[i].type.description))
