@@ -233,7 +233,7 @@ static void update_cylinder_pressure(struct dive *d, int old_depth, int new_dept
 	}
 }
 
-/* simply overwrite the data in the displayed_dive
+/* overwrite the data in dive
  * return false if something goes wrong */
 static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, bool track_gas)
 {
@@ -256,7 +256,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 #endif
 	dive->salinity = diveplan->salinity;
 	// reset the cylinders and clear out the samples and events of the
-	// displayed dive so we can restart
+	// dive-to-be-planned so we can restart
 	reset_cylinders(dive, track_gas);
 	dc = &dive->dc;
 	dc->when = dive->when = diveplan->when;
@@ -343,7 +343,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 	dive->dc.last_manual_time.seconds = last_manual_point;
 
 #if DEBUG_PLAN & 32
-	save_dive(stdout, &displayed_dive);
+	save_dive(stdout, dive);
 #endif
 	return;
 }
