@@ -102,7 +102,7 @@ static void interpolate_transition(struct deco_state *ds, struct dive *dive, dur
 		add_segment(ds, depth_to_bar(depth, dive), gasmix, 1, po2.mbar, divemode, prefs.bottomsac);
 	}
 	if (d1.mm > d0.mm)
-		calc_crushing_pressure(ds, depth_to_bar(d1.mm, &displayed_dive));
+		calc_crushing_pressure(ds, depth_to_bar(d1.mm, dive));
 }
 
 /* returns the tissue tolerance at the end of this (partial) dive */
