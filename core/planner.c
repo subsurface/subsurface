@@ -558,7 +558,7 @@ static bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, 
 			    wait_time, po2, divemode, prefs.decosac);
 	if (decoMode() == VPMB) {
 		double tolerance_limit = tissue_tolerance_calc(ds, dive, depth_to_bar(stoplevel, dive));
-		update_regression(ds, regression);
+		update_regression(ds, dive, regression);
 		if (deco_allowed_depth(tolerance_limit, surface_pressure, dive, 1) > stoplevel) {
 			restore_deco_state(trial_cache, ds, false);
 			free(trial_cache);
@@ -576,7 +576,7 @@ static bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, 
 			    TIMESTEP, po2, divemode, prefs.decosac);
 		tolerance_limit = tissue_tolerance_calc(ds, dive, depth_to_bar(trial_depth, dive));
 		if (decoMode() == VPMB)
-			update_regression(ds, regression);
+			update_regression(ds, dive, regression);
 		if (deco_allowed_depth(tolerance_limit, surface_pressure, dive, 1) > trial_depth - deltad) {
 			/* We should have stopped */
 			clear_to_ascend = false;

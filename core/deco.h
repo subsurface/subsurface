@@ -73,7 +73,7 @@ extern void add_segment(struct deco_state *ds, double pressure, struct gasmix ga
 extern double regressiona(const struct regression *regression);
 extern double regressionb(const struct regression *regression);
 extern void reset_regression(struct regression *regression);
-extern void update_regression(struct deco_state *ds, struct regression *regression);
+extern void update_regression(struct deco_state *ds, const struct dive *d, struct regression *regression);
 
 #ifdef __cplusplus
 }

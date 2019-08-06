@@ -641,7 +641,7 @@ void reset_regression(struct regression *regression)
 	memset(regression, 0, sizeof(*regression));
 }
 
-void update_regression(struct deco_state *ds, struct regression *regression)
+void update_regression(struct deco_state *ds, const struct dive *dive, struct regression *regression)
 {
 	if (!regression->plot_depth)
 		return;
@@ -649,12 +649,12 @@ void update_regression(struct deco_state *ds, struct regression *regression)
 	regression->sumx += regression->plot_depth;
 	regression->sumxx += (long)regression->plot_depth * regression->plot_depth;
 	double n2_gradient, he_gradient, total_gradient;
-	n2_gradient = update_gradient(ds, depth_to_bar(regression->plot_depth, &displayed_dive), ds->bottom_n2_gradient[ds->ci_pointing_to_guiding_tissue]);
-	he_gradient = update_gradient(ds, depth_to_bar(regression->plot_depth, &displayed_dive), ds->bottom_he_gradient[ds->ci_pointing_to_guiding_tissue]);
+	n2_gradient = update_gradient(ds, depth_to_bar(regression->plot_depth, dive), ds->bottom_n2_gradient[ds->ci_pointing_to_guiding_tissue]);
+	he_gradient = update_gradient(ds, depth_to_bar(regression->plot_depth, dive), ds->bottom_he_gradient[ds->ci_pointing_to_guiding_tissue]);
 	total_gradient = ((n2_gradient * ds->tissue_n2_sat[ds->ci_pointing_to_guiding_tissue]) + (he_gradient * ds->tissue_he_sat[ds->ci_pointing_to_guiding_tissue]))
 			/ (ds->tissue_n2_sat[ds->ci_pointing_to_guiding_tissue] + ds->tissue_he_sat[ds->ci_pointing_to_guiding_tissue]);
 
-	double buehlmann_gradient = (1.0 / ds->buehlmann_inertgas_b[ds->ci_pointing_to_guiding_tissue] - 1.0) * depth_to_bar(regression->plot_depth, &displayed_dive) + ds->buehlmann_inertgas_a[ds->ci_pointing_to_guiding_tissue];
+	double buehlmann_gradient = (1.0 / ds->buehlmann_inertgas_b[ds->ci_pointing_to_guiding_tissue] - 1.0) * depth_to_bar(regression->plot_depth, dive) + ds->buehlmann_inertgas_a[ds->ci_pointing_to_guiding_tissue];
 	double gf = (total_gradient - vpmb_config.other_gases_pressure) / buehlmann_gradient;
 	regression->sumxy += gf * regression->plot_depth;
 	regression->sumy += gf;
