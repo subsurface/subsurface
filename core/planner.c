@@ -527,15 +527,16 @@ int ascent_velocity(int depth, int avg_depth, int bottom_time)
 	}
 }
 
-static void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int bottom_time, bool safety_stop, enum divemode_t divemode)
+static void track_ascent_gas(int depth, struct dive *dive, int cylinder_id, int avg_depth, int bottom_time, bool safety_stop, enum divemode_t divemode)
 {
+	cylinder_t *cylinder = &dive->cylinder[cylinder_id];
 	while (depth > 0) {
 		int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
 		if (deltad > depth)
 			deltad = depth;
-		update_cylinder_pressure(&displayed_dive, depth, depth - deltad, TIMESTEP, prefs.decosac, cylinder, true, divemode);
+		update_cylinder_pressure(dive, depth, depth - deltad, TIMESTEP, prefs.decosac, cylinder, true, divemode);
 		if (depth <= 5000 && depth >= (5000 - deltad) && safety_stop) {
-			update_cylinder_pressure(&displayed_dive, 5000, 5000, 180, prefs.decosac, cylinder, true, divemode);
+			update_cylinder_pressure(dive, 5000, 5000, 180, prefs.decosac, cylinder, true, divemode);
 			safety_stop = false;
 		}
 		depth -= deltad;
@@ -783,7 +784,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	vpmb_start_gradient(ds);
 	if (decoMode() == RECREATIONAL) {
 		bool safety_stop = prefs.safetystop && max_depth >= 10000;
-		track_ascent_gas(depth, &dive->cylinder[current_cylinder], avg_depth, bottom_time, safety_stop, divemode);
+		track_ascent_gas(depth, dive, current_cylinder, avg_depth, bottom_time, safety_stop, divemode);
 		// How long can we stay at the current depth and still directly ascent to the surface?
 		do {
 			add_segment(ds, depth_to_bar(depth, dive),
