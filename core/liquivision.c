@@ -149,7 +149,7 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 
 		/* Just the main cylinder until we can handle the buddy cylinder porperly */
 		for (i = 0; i < 1; i++)
-			fill_default_cylinder(&dive->cylinder[i]);
+			fill_default_cylinder(dive, i);
 
 		// Model 0=Xen, 1,2=Xeo, 4=Lynx, other=Liquivision
 		model = *(buf + ptr);

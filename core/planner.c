@@ -178,9 +178,10 @@ static int tissue_at_end(struct deco_state *ds, struct dive *dive, struct deco_s
 
 
 /* if a default cylinder is set, use that */
-void fill_default_cylinder(cylinder_t *cyl)
+void fill_default_cylinder(struct dive *dive, int idx)
 {
 	const char *cyl_name = prefs.default_cylinder;
+	cylinder_t *cyl = &dive->cylinder[idx];
 	struct tank_info_t *ti = tank_info;
 	pressure_t pO2 = {.mbar = 1600};
 
@@ -204,7 +205,7 @@ void fill_default_cylinder(cylinder_t *cyl)
 			cyl->type.size.mliter = lrint(cuft_to_l(ti->cuft) * 1000 / bar_to_atm(psi_to_bar(ti->psi)));
 	}
 	// MOD of air
-	cyl->depth = gas_mod(cyl->gasmix, pO2, &displayed_dive, 1);
+	cyl->depth = gas_mod(cyl->gasmix, pO2, dive, 1);
 }
 
 /* calculate the new end pressure of the cylinder, based on its current end pressure and the

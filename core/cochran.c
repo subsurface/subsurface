@@ -677,7 +677,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		if (config.type == TYPE_GEMINI) {
 			dc->model = "Gemini";
 			dc->deviceid = buf[0x18c] * 256 + buf[0x18d];	// serial no
-			fill_default_cylinder(&dive->cylinder[0]);
+			fill_default_cylinder(dive, 0);
 			dive->cylinder[0].gasmix.o2.permille = (log[CMD_O2_PERCENT] / 256
 				+ log[CMD_O2_PERCENT + 1]) * 10;
 			dive->cylinder[0].gasmix.he.permille = 0;
@@ -685,7 +685,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 			dc->model = "Commander";
 			dc->deviceid = array_uint32_le(buf + 0x31e);	// serial no
 			for (g = 0; g < 2; g++) {
-				fill_default_cylinder(&dive->cylinder[g]);
+				fill_default_cylinder(dive, g);
 				dive->cylinder[g].gasmix.o2.permille = (log[CMD_O2_PERCENT + g * 2] / 256
 					+ log[CMD_O2_PERCENT + g * 2 + 1]) * 10;
 				dive->cylinder[g].gasmix.he.permille = 0;
@@ -727,7 +727,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		dc->model = "EMC";
 		dc->deviceid = array_uint32_le(buf + 0x31e);	// serial no
 		for (g = 0; g < 4; g++) {
-			fill_default_cylinder(&dive->cylinder[g]);
+			fill_default_cylinder(dive , g);
 			dive->cylinder[g].gasmix.o2.permille =
 				(log[EMC_O2_PERCENT + g * 2] / 256
 				+ log[EMC_O2_PERCENT + g * 2 + 1]) * 10;

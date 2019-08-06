@@ -362,7 +362,7 @@ extern void copy_cylinders(const struct dive *s, struct dive *d, bool used_only)
 extern void copy_samples(const struct divecomputer *s, struct divecomputer *d);
 extern bool is_cylinder_used(const struct dive *dive, int idx);
 extern bool is_cylinder_prot(const struct dive *dive, int idx);
-extern void fill_default_cylinder(cylinder_t *cyl);
+extern void fill_default_cylinder(struct dive *dive, int idx);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
 extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name);
 extern void remove_event(struct event *event);
