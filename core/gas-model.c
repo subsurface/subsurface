@@ -6,7 +6,10 @@
 #include "dive.h"
 
 /* "Virial minus one" - the virial cubic form without the initial 1.0 */
-#define virial_m1(C, x1, x2, x3) (C[0]*x1+C[1]*x2+C[2]*x3)
+static double virial_m1(const double coeff[], double x)
+{
+	return x*coeff[0] + x*x*coeff[1] + x*x*x*coeff[2];
+}
 
 /*
  * Z = pV/nRT
@@ -44,17 +47,14 @@ double gas_compressibility_factor(struct gasmix gas, double bar)
 		+5.33304543646e-11
 	};
 	int o2, he;
-	double x1, x2, x3;
 	double Z;
 
 	o2 = get_o2(gas);
 	he = get_he(gas);
 
-	x1 = bar; x2 = x1*x1; x3 = x2*x1;
-
-	Z = virial_m1(o2_coefficients, x1, x2, x3) * o2 +
-	    virial_m1(he_coefficients, x1, x2, x3) * he +
-	    virial_m1(n2_coefficients, x1, x2, x3) * (1000 - o2 - he);
+	Z = virial_m1(o2_coefficients, bar) * o2 +
+	    virial_m1(he_coefficients, bar) * he +
+	    virial_m1(n2_coefficients, bar) * (1000 - o2 - he);
 
 	/*
 	 * We add the 1.0 at the very end - the linear mixing of the
