@@ -52,7 +52,8 @@ slots:
 	void updateDiveInfo();
 	void updateNotes(const struct dive *d);
 	void updateMode(struct dive *d);
-	void updateDateTime(struct dive *d);
+	void updateDateTime(const struct dive *d);
+	void updateTripDate(const struct dive_trip *t);
 	void updateDiveSite(struct dive *d);
 	void acceptChanges();
 	void rejectChanges();
