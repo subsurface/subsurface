@@ -47,6 +47,14 @@ double gas_compressibility_factor(struct gasmix gas, double bar)
 	double x1, x2, x3;
 	double Z;
 
+	/*
+	 * The curve fitting range is only [0,500] bar.
+	 * Anything else is way out of range for cylinder
+	 * pressures.
+	 */
+	if (bar < 0) bar = 0;
+	if (bar > 500) bar = 500;
+
 	o2 = get_o2(gas);
 	he = get_he(gas);
 
