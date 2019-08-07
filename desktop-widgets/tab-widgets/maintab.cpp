@@ -392,14 +392,25 @@ void MainTab::updateMode(struct dive *d)
 	MainWindow::instance()->graphics->recalcCeiling();
 }
 
-void MainTab::updateDateTime(struct dive *d)
+static QDateTime timestampToDateTime(timestamp_t when)
 {
 	// Subsurface always uses "local time" as in "whatever was the local time at the location"
 	// so all time stamps have no time zone information and are in UTC
-	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000*d->when, Qt::UTC);
+	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000 * when, Qt::UTC);
 	localTime.setTimeSpec(Qt::UTC);
+	return localTime;
+}
+void MainTab::updateDateTime(const struct dive *d)
+{
+	QDateTime localTime = timestampToDateTime(d->when);
 	ui.dateEdit->setDate(localTime.date());
 	ui.timeEdit->setTime(localTime.time());
+}
+
+void MainTab::updateTripDate(const struct dive_trip *t)
+{
+	QDateTime localTime = timestampToDateTime(trip_date(t));
+	ui.dateEdit->setDate(localTime.date());
 }
 
 void MainTab::updateDiveSite(struct dive *d)
@@ -487,6 +498,7 @@ void MainTab::updateDiveInfo()
 			// rename the remaining fields and fill data from selected trip
 			ui.LocationLabel->setText(tr("Trip location"));
 			ui.diveTripLocation->setText(currentTrip->location);
+			updateTripDate(currentTrip);
 			ui.locationTags->clear();
 			//TODO: Fix this.
 			//ui.location->setText(currentTrip->location);
