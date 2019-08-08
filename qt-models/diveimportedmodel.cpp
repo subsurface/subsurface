@@ -136,10 +136,14 @@ void DiveImportedModel::repopulate(dive_table_t *table, struct dive_site_table *
 	diveTable = table;
 	sitesTable = sites;
 	firstIndex = 0;
-	lastIndex = diveTable->nr - 1;
-	checkStates.resize(diveTable->nr);
-	std::fill(checkStates.begin(), checkStates.end(), true);
-
+	if (diveTable) {
+		lastIndex = diveTable->nr - 1;
+		checkStates.resize(diveTable->nr);
+		std::fill(checkStates.begin(), checkStates.end(), true);
+	} else {
+		lastIndex = -1;
+		checkStates.resize(0);
+	}
 	endResetModel();
 }
 
