@@ -65,6 +65,7 @@
 
 // Magentas
 #define MEDIUMREDVIOLET1_HIGHER_TRANS QColor::fromRgbF(0.7, 0.2, 0.7, 0.1)
+#define MAGENTA QColor::fromRgbF(1.0, 0.0, 1.0, 1.0)
 
 #define SAC_COLORS_START_IDX SAC_1
 #define SAC_COLORS 9

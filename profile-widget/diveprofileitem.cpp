@@ -809,7 +809,10 @@ void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 				else
 					pen.setBrush(MED_GRAY_HIGH_TRANS);
 			} else {
-				pen.setBrush(getPressureColor(entry->density));
+				if (vAxis->valueAt(poly[i]) < 0)
+					pen.setBrush(MAGENTA);
+				else
+					pen.setBrush(getPressureColor(entry->density));
 			}
 			painter->setPen(pen);
 			painter->drawLine(poly[i - 1], poly[i]);
