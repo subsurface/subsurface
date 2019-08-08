@@ -51,7 +51,6 @@ slots:
 	void tripChanged(dive_trip *trip, TripField field);
 	void updateDiveInfo();
 	void updateNotes(const struct dive *d);
-	void updateMode(struct dive *d);
 	void updateDateTime(const struct dive *d);
 	void updateTripDate(const struct dive_trip *t);
 	void updateDiveSite(struct dive *d);
@@ -66,12 +65,10 @@ slots:
 	void on_airtemp_editingFinished();
 	void on_duration_editingFinished();
 	void on_depth_editingFinished();
-	void divetype_Changed(int);
 	void on_watertemp_editingFinished();
 	void on_dateEdit_dateChanged(const QDate &date);
 	void on_timeEdit_timeChanged(const QTime & time);
 	void on_rating_valueChanged(int value);
-	void on_visibility_valueChanged(int value);
 	void on_tagWidget_editingFinished();
 	void hideMessage();
 	void closeMessage();

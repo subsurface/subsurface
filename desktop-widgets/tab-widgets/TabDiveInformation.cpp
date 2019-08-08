@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "TabDiveInformation.h"
 #include "ui_TabDiveInformation.h"
+#include "desktop-widgets/mainwindow.h" // TODO: Only used temporarilly for edit mode changes
+#include "profile-widget/profilewidget2.h"
 #include "../tagwidget.h"
 #include "core/units.h"
 #include "core/dive.h"
@@ -12,6 +14,7 @@
 
 #define COMBO_CHANGED 0
 #define TEXT_EDITED 1
+#define CSS_SET_HEADING_BLUE "QLabel { color: mediumblue;} "
 
 TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(new Ui::TabDiveInformation())
 {
@@ -20,6 +23,32 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 	QStringList atmPressTypes { "mbar", get_depth_unit() ,"use dc"};
 	ui->atmPressType->insertItems(0, atmPressTypes);
 	pressTypeIndex = 0;
+	// This needs to be the same order as enum dive_comp_type in dive.h!
+	QStringList types;
+	for (int i = 0; i < NUM_DIVEMODE; i++)
+		types.append(gettextFromC::tr(divemode_text_ui[i]));
+	ui->diveType->insertItems(0, types);
+	connect(ui->diveType, SIGNAL(currentIndexChanged(int)), this, SLOT(diveModeChanged(int)));
+	QString CSSSetSmallLabel = "QLabel { color: mediumblue; font-size: " +                        /* // Using label height ... */
+		QString::number((int)(0.5 + ui->diveHeadingLabel->geometry().height() * 0.66)) + "px;}"; // .. set CSS font size of star widget subscripts
+	ui->scrollAreaWidgetContents_3->setStyleSheet("QGroupBox { border: 1px solid silver; border-radius: 4px; margin-top: 0.65em; background-color: gainsboro;} QGroupBox::title { color: mediumblue;} ");
+	ui->diveModeBox->setStyleSheet("QGroupBox{ padding: 0;} ");
+	ui->diveHeadingLabel->setStyleSheet(CSS_SET_HEADING_BLUE);
+	ui->gasHeadingLabel->setStyleSheet(CSS_SET_HEADING_BLUE);
+	ui->environmentHeadingLabel->setStyleSheet(CSS_SET_HEADING_BLUE);
+	ui->groupBox_surge->setStyleSheet(CSSSetSmallLabel);
+	ui->groupBox_visibility->setStyleSheet(CSSSetSmallLabel);
+	ui->groupBox_chill->setStyleSheet(CSSSetSmallLabel);
+	ui->groupBox_waves->setStyleSheet(CSSSetSmallLabel);
+	ui->groupBox_current->setStyleSheet(CSSSetSmallLabel);
+	QAction *action = new QAction(tr("OK"), this);
+	connect(action, &QAction::triggered, this, &TabDiveInformation::closeWarning);
+	ui->multiDiveWarningMessage->addAction(action);
+	action = new QAction(tr("Undo"), this);
+	connect(action, &QAction::triggered, Command::undoAction(this), &QAction::trigger);
+	connect(action, &QAction::triggered, this, &TabDiveInformation::closeWarning);
+	ui->multiDiveWarningMessage->addAction(action);
+	ui->multiDiveWarningMessage->hide();
 }
 
 TabDiveInformation::~TabDiveInformation()
@@ -34,7 +63,6 @@ void TabDiveInformation::clear()
 	ui->maxcnsText->clear();
 	ui->oxygenHeliumText->clear();
 	ui->gasUsedText->clear();
-	ui->dateText->clear();
 	ui->diveTimeText->clear();
 	ui->surfaceIntervalText->clear();
 	ui->maximumDepthText->clear();
@@ -43,6 +71,22 @@ void TabDiveInformation::clear()
 	ui->airTemperatureText->clear();
 	ui->atmPressVal->clear();
 	ui->salinityText->clear();
+	ui->waterTypeText->clear();
+}
+
+void TabDiveInformation::divesEdited(int i)
+{
+	// No warning if only one dive was edited
+	if (i <= 1)
+		return;
+	ui->multiDiveWarningMessage->setCloseButtonVisible(false);
+	ui->multiDiveWarningMessage->setText(tr("Warning: edited %1 dives").arg(i));
+	ui->multiDiveWarningMessage->show();
+}
+
+void TabDiveInformation::closeWarning()
+{
+	ui->multiDiveWarningMessage->hide();
 }
 
 // Update fields that depend on the dive profile
@@ -98,7 +142,6 @@ void TabDiveInformation::updateProfile()
 // Update fields that depend on start of dive
 void TabDiveInformation::updateWhen()
 {
-	ui->dateText->setText(get_short_dive_date_string(current_dive->when));
 	timestamp_t surface_interval = get_surface_interval(current_dive->when);
 	if (surface_interval >= 0)
 		ui->surfaceIntervalText->setText(get_dive_surfint_string(surface_interval, tr("d"), tr("h"), tr("min")));
@@ -117,16 +160,26 @@ void TabDiveInformation::updateData()
 	updateWhen();
 	ui->waterTemperatureText->setText(get_temperature_string(current_dive->watertemp, true));
 	ui->airTemperatureText->setText(get_temperature_string(current_dive->airtemp, true));
-
 	if (current_dive->salinity)
 		ui->salinityText->setText(QString("%1g/ℓ").arg(current_dive->salinity / 10.0));
 	else
 		ui->salinityText->clear();
-
-	ui->atmPressType->setEditable(true);
 	ui->atmPressType->setItemText(1, get_depth_unit());  // Check for changes in depth unit (imperial/metric)
-	ui->atmPressType->setEditable(false);
 	ui->atmPressType->setCurrentIndex(0);  // Set the atmospheric pressure combo box to mbar
+	if (current_dive->salinity) {			// Set water type indicator (EN13319 = 1.020 g/l)
+		if (current_dive->salinity < 10050) 
+			ui->waterTypeText->setText(tr("Fresh"));
+		else if (current_dive->salinity < 10190)
+			ui->waterTypeText->setText(tr("Salty"));
+		else if (current_dive->salinity < 10210)
+			ui->waterTypeText->setText(tr("EN13319"));
+		else ui->waterTypeText->setText(tr("Salt"));
+	} else {
+		ui->waterTypeText->clear();
+	}
+	updateMode(current_dive);
+	ui->visibility->setCurrentStars(current_dive->visibility);
+
 }
 
 // This function gets called if a field gets updated by an undo command.
@@ -138,26 +191,37 @@ void TabDiveInformation::divesChanged(const QVector<dive *> &dives, DiveField fi
 		return;
 
 	switch(field) {
-	case DiveField::DURATION:
-	case DiveField::DEPTH:
-	case DiveField::MODE:
-		updateProfile();
-		break;
-	case DiveField::AIR_TEMP:
-		ui->airTemperatureText->setText(get_temperature_string(current_dive->airtemp, true));
-		break;
-	case DiveField::WATER_TEMP:
-		ui->waterTemperatureText->setText(get_temperature_string(current_dive->watertemp, true));
-		break;
 	case DiveField::ATM_PRESS:
 		ui->atmPressVal->setText(ui->atmPressVal->text().sprintf("%d",current_dive->surface_pressure.mbar));
 		break;
-	case DiveField::DATETIME:
-		updateWhen();
+	case DiveField::MODE:
+		updateMode(current_dive);
+		updateProfile();
+		break;
+	case DiveField::VISIBILITY:
+		ui->visibility->setCurrentStars(current_dive->visibility);
 		break;
 	default:
 		break;
 	}
+}
+
+void TabDiveInformation::on_visibility_valueChanged(int value)
+{
+	if (current_dive)
+		divesEdited(Command::editVisibility(value, false));
+}
+
+void TabDiveInformation::updateMode(struct dive *d)
+{
+	ui->diveType->setCurrentIndex(get_dive_dc(d, dc_number)->divemode);
+	MainWindow::instance()->graphics->recalcCeiling();
+}
+
+void TabDiveInformation::diveModeChanged(int index)
+{
+	if (current_dive)
+		divesEdited(Command::editMode(dc_number, (enum divemode_t)index, false));
 }
 
 void TabDiveInformation::on_atmPressType_currentIndexChanged(int index) { updateTextBox(COMBO_CHANGED); }
@@ -198,7 +262,7 @@ void TabDiveInformation::updateTextBox(int event) // Either the text box has bee
 			break;
 		}
 		if (atmpress.mbar)
-			Command::editAtmPress(atmpress.mbar, false);      // and save the pressure for undo
+			divesEdited(Command::editAtmPress(atmpress.mbar, false));      // and save the pressure for undo
 	}
 }
 

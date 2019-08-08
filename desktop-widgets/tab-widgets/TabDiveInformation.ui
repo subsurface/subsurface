@@ -15,6 +15,9 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="KMessageWidget" name="multiDiveWarningMessage"/>
+   </item>
+   <item>
     <widget class="QScrollArea" name="scrollArea_3">
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
@@ -48,34 +51,55 @@
         <number>0</number>
        </property>
        <property name="horizontalSpacing">
-        <number>6</number>
+        <number>4</number>
        </property>
        <property name="verticalSpacing">
         <number>0</number>
        </property>
+
        <item row="0" column="0">
-        <widget class="QGroupBox" name="groupBox_5">
+        <widget class="QLabel" name="diveHeadingLabel">
+         <property name="text">
+          <string>DIVE</string>
+         </property>
+        </widget>
+       </item>
+
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="diveModeBox">
          <property name="title">
-          <string>Date</string>
+          <string>Dive mode</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
          <layout class="QHBoxLayout" name="diveInfoDateLayout">
           <item>
-           <widget class="QLabel" name="dateText">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
+           <widget class="QComboBox" name="diveType"/>
           </item>
          </layout>
         </widget>
        </item>
-       <item row="0" column="2">
+
+       <item row="1" column="1">
         <widget class="QGroupBox" name="groupBox_12">
          <property name="title">
           <string>Interval</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
          <layout class="QHBoxLayout" name="diveInfoSurfintervallLayout">
           <item>
@@ -84,17 +108,120 @@
              <string/>
             </property>
             <property name="alignment">
-             <set>Qt::AlignCenter</set>
+             <set>Qt::AlignHCenter</set>
             </property>
            </widget>
           </item>
          </layout>
         </widget>
        </item>
-       <item row="1" column="0">
+       <item row="1" column="2">
+        <widget class="QGroupBox" name="groupBox_11">
+         <property name="title">
+          <string>Duration</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoDiveTimeLayout">
+          <item>
+           <widget class="QLabel" name="diveTimeText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QGroupBox" name="groupBox_6">
+         <property name="title">
+          <string>Max. depth</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoMaxDepthLayout">
+          <item>
+           <widget class="QLabel" name="maximumDepthText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+
+       <item row="1" column="4">
+        <widget class="QGroupBox" name="groupBox_7">
+         <property name="title">
+          <string>Avg. depth</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoAvgDepthLayout">
+          <item>
+           <widget class="QLabel" name="averageDepthText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+
+       <item row="2" column="0">
+        <widget class="QLabel" name="gasHeadingLabel">
+         <property name="text">
+          <string>GAS</string>
+         </property>
+        </widget>
+       </item>
+
+       <item row="3" column="0">
         <widget class="QGroupBox" name="groupBox_3">
          <property name="title">
-          <string>Gases used</string>
+          <string> Gas name</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
          <layout class="QHBoxLayout" name="diveInfoGasesUsedLayout">
           <item>
@@ -110,10 +237,19 @@
          </layout>
         </widget>
        </item>
-       <item row="1" column="1">
+       <item row="3" column="1">
         <widget class="QGroupBox" name="groupBox_4">
          <property name="title">
           <string>Gas consumed</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
          <layout class="QHBoxLayout" name="diveInfoGasConsumedLayout">
           <item>
@@ -129,10 +265,19 @@
          </layout>
         </widget>
        </item>
-       <item row="1" column="2">
+       <item row="3" column="2">
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
           <string>SAC</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
          <layout class="QHBoxLayout" name="diveInfoSacLayout">
           <item>
@@ -148,10 +293,19 @@
          </layout>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="3" column="3">
         <widget class="QGroupBox" name="groupBox_15">
          <property name="title">
           <string>CNS</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>1</verstretch>
+          </sizepolicy>
          </property>
          <layout class="QHBoxLayout" name="diveInfoCnsLayout">
           <item>
@@ -167,10 +321,19 @@
          </layout>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="3" column="4">
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
           <string>OTU</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
          <layout class="QHBoxLayout" name="diveInfoOtuLayout">
           <item>
@@ -178,44 +341,12 @@
             <property name="text">
              <string/>
             </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QGroupBox" name="groupBox_6">
-         <property name="title">
-          <string>Max. depth</string>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <layout class="QHBoxLayout" name="diveInfoMaxDepthLayout">
-          <item>
-           <widget class="QLabel" name="maximumDepthText">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QGroupBox" name="groupBox_7">
-         <property name="title">
-          <string>Avg. depth</string>
-         </property>
-         <layout class="QHBoxLayout" name="diveInfoAvgDepthLayout">
-          <item>
-           <widget class="QLabel" name="averageDepthText">
-            <property name="text">
-             <string/>
-            </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
             </property>
@@ -225,17 +356,125 @@
         </widget>
        </item>
 
-       <item row="2" column="2" colspan="1">
+       <item row="4" column="0">
+        <widget class="QLabel" name="environmentHeadingLabel">
+         <property name="text">
+          <string>ENVIRONMENT</string>
+         </property>
+        </widget>
+       </item>
+
+       <item row="5" column="0">
+        <widget class="QGroupBox" name="groupBox_9">
+         <property name="title">
+          <string>Air temp.</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoAirTempLayout">
+          <item>
+           <widget class="QLabel" name="airTemperatureText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+
+       <item row="5" column="1">
+        <widget class="QGroupBox" name="groupBox_8">
+         <property name="title">
+          <string>Water temp.</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoWaterTempLayout">
+          <item>
+           <widget class="QLabel" name="waterTemperatureText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+
+       <item row="5" column="2" colspan="3">
+        <layout class="QGridLayout" name="envGroupLayout">
+         <property name="horizontalSpacing">
+          <number>4</number>
+         </property>
+
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_1">
+         <property name="title">
+          <string>Water type/Density</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoWaterDensityLayout">
+
+          <item>
+        <widget class="QLabel" name="waterTypeText">
+         <property name="text">
+          <string>EN13319</string>
+         </property>
+        </widget>
+          </item>
+
+          <item>
+           <widget class="QLabel" name="salinityText">
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+
+         </layout>
+        </widget>
+       </item>
+
+       <item row="0" column="1">
         <widget class="QGroupBox" name="groupBox_10">
          <property name="title">
-          <string>Atm. pressure</string>
+          <string>Atm. pressure/Altitude</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignHCenter</set>
          </property>
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-             <horstretch>0</horstretch>
+            <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+             <horstretch>1</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
@@ -255,86 +494,267 @@
         </widget>
        </item>
 
-       <item row="3" column="2">
-        <widget class="QGroupBox" name="groupBox_9">
+       </layout>
+       </item>
+
+       <item row="6" column="0">
+        <widget class="QGroupBox" name="groupBox_waves">
          <property name="title">
-          <string>Air temp.</string>
+          <string>Surface waves</string>
          </property>
-         <layout class="QHBoxLayout" name="diveInfoAirTempLayout">
-          <item>
-           <widget class="QLabel" name="airTemperatureText">
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property> 
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <layout class="QGridLayout" name="surfaceWavesLayout">
+          <property name="verticalSpacing">
+           <number>0</number>
+          </property>
+          <item row="0" column="0" colspan="2" alignment="Qt::AlignHCenter">
+           <widget class="StarWidget" name="waves" native="true">
+            <property name="focusPolicy">
+             <enum>Qt::StrongFocus</enum>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" alignment="Qt::AlignLeft">
+           <widget class="QLabel" name="waveLabel1">
             <property name="text">
-             <string/>
+             <string>Small</string>
             </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
+           </widget>
+           </item>
+           <item row="1" column="1" alignment="Qt::AlignRight">
+            <widget class="QLabel" name="waveLabel2">
+             <property name="text">
+              <string>Large</string>
+             </property>
            </widget>
           </item>
          </layout>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QGroupBox" name="groupBox_8">
+
+       <item row="6" column="1" alignment="Qt::AlignVCenter">
+        <widget class="QGroupBox" name="groupBox_visibility">
          <property name="title">
-          <string>Water temp.</string>
+          <string>Visibility</string>
          </property>
-         <layout class="QHBoxLayout" name="diveInfoWaterTempLayout">
-          <item>
-           <widget class="QLabel" name="waterTemperatureText">
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <layout class="QGridLayout" name="visibilityLayout">
+          <property name="verticalSpacing">
+           <number>0</number>
+          </property>
+          <item row="0" column="0" colspan="2" alignment="Qt::AlignHCenter">
+           <widget class="StarWidget" name="visibility" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::StrongFocus</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" alignment="Qt::AlignLeft">
+           <widget class="QLabel" name="visLabel1">
             <property name="text">
-             <string/>
+             <string>Bad</string>
             </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
+           </widget>
+           </item>
+           <item row="1" column="1" alignment="Qt::AlignRight">
+            <widget class="QLabel" name="visLabel2">
+             <property name="text">
+              <string>Good</string>
+             </property>
            </widget>
           </item>
          </layout>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QGroupBox" name="groupBox_11">
+
+       <item row="6" column="2" alignment="Qt::AlignVCenter">
+        <widget class="QGroupBox" name="groupBox_current">
          <property name="title">
-          <string>Dive time</string>
+          <string>Current</string>
          </property>
-         <layout class="QHBoxLayout" name="diveInfoDiveTimeLayout">
-          <item>
-           <widget class="QLabel" name="diveTimeText">
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+         <layout class="QGridLayout" name="currentLayout">
+          <property name="verticalSpacing">
+           <number>0</number>
+          </property>
+          <item row="0" column="0" colspan="2" alignment="Qt::AlignHCenter">
+           <widget class="StarWidget" name="current" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::StrongFocus</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" alignment="Qt::AlignLeft">
+           <widget class="QLabel" name="curLabel1">
             <property name="text">
-             <string/>
+             <string>Weak</string>
             </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
+           </widget>
+           </item>
+           <item row="1" column="1" alignment="Qt::AlignRight">
+            <widget class="QLabel" name="curLabel2">
+             <property name="text">
+              <string>Strong</string>
+             </property>
            </widget>
           </item>
          </layout>
         </widget>
        </item>
-       <item row="4" column="1">
-        <widget class="QGroupBox" name="groupBox_1">
+
+       <item row="6" column="3" alignment="Qt::AlignVCenter">
+        <widget class="QGroupBox" name="groupBox_surge">
          <property name="title">
-          <string>Water type</string>
+          <string>Surge</string>
          </property>
-         <layout class="QHBoxLayout" name="diveInfoSalinityLayout">
-          <item>
-           <widget class="QLabel" name="salinityText">
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+         <layout class="QGridLayout" name="surgeLayout">
+          <property name="verticalSpacing">
+           <number>0</number>
+          </property>
+          <item row="0" column="0" colspan="2" alignment="Qt::AlignHCenter">
+           <widget class="StarWidget" name="surge" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
+            <property name="focusPolicy">
+             <enum>Qt::StrongFocus</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" alignment="Qt::AlignLeft">
+           <widget class="QLabel" name="surgeLabel1">
+            <property name="text">
+             <string>Weak</string>
+            </property>
+           </widget>
+           </item>
+           <item row="1" column="1" alignment="Qt::AlignRight">
+            <widget class="QLabel" name="surgeLabel2">
+             <property name="text">
+              <string>Strong</string>
+             </property>
            </widget>
           </item>
          </layout>
         </widget>
        </item>
-       <item row="5" column="0">
+
+       <item row="6" column="4" alignment="Qt::AlignVCenter">
+        <widget class="QGroupBox" name="groupBox_chill">
+         <property name="title">
+          <string>Chill</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+         <layout class="QGridLayout" name="cLayout">
+          <property name="verticalSpacing">
+           <number>0</number>
+          </property>
+          <item row="0" column="0" colspan="2" alignment="Qt::AlignHCenter">
+           <widget class="StarWidget" name="surge" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::StrongFocus</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" alignment="Qt::AlignLeft">
+           <widget class="QLabel" name="chillLabel1">
+            <property name="text">
+             <string>Comfy</string>
+            </property>
+           </widget>
+           </item>
+           <item row="1" column="1" alignment="Qt::AlignRight">
+            <widget class="QLabel" name="chillLabel2">
+             <property name="text">
+              <string>Freezing</string>
+             </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+
+       <item row="7" column="0">
         <spacer>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
          <property name="sizeHint" stdset="0">
           <size>

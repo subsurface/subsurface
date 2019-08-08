@@ -298,114 +298,19 @@
             </layout>
            </item>
            <item>
-            <layout class="QGridLayout" name="gridLayout_8" columnstretch="0,0,1">
-             <property name="leftMargin">
+            <layout class="QHBoxLayout" name="gridLayout_9">
+             <property name="Spacing">
               <number>5</number>
              </property>
-             <property name="rightMargin">
+           <item>  
+            <layout class="QVBoxLayout" name="gridLayout_tags">
+             <property name="Spacing">
               <number>5</number>
              </property>
-             <property name="horizontalSpacing">
-              <number>5</number>
-             </property>
-             <property name="verticalSpacing">
-              <number>0</number>
-             </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="RatingLabel">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Rating</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLabel" name="visibilityLabel">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Visibility</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0" alignment="Qt::AlignVCenter">
-              <widget class="StarWidget" name="rating" native="true">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="focusPolicy">
-                <enum>Qt::StrongFocus</enum>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1" alignment="Qt::AlignVCenter">
-              <widget class="StarWidget" name="visibility" native="true">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="focusPolicy">
-                <enum>Qt::StrongFocus</enum>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="2">
-              <spacer>
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeType">
-                 <enum>QSizePolicy::Expanding</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout_9">
-             <property name="horizontalSpacing">
-              <number>5</number>
-             </property>
-             <property name="verticalSpacing">
-              <number>0</number>
-             </property>
-             <item row="1" column="1">
-              <widget class="QComboBox" name="DiveType"/>
-             </item>
              <item row="0" column="0">
               <widget class="QLabel" name="TagLabel">
                <property name="text">
                 <string>Tags</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLabel" name="TypeLabel">
-               <property name="text">
-                <string>Dive mode</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
@@ -437,8 +342,43 @@
                </property>
               </widget>
              </item>
-            </layout>
+           </layout>
            </item>
+           <item>  
+            <layout class="QVBoxLayout" name="gridLayout_rating">
+             <property name="Spacing">
+              <number>5</number>
+             </property>
+             <item row="0" column="1">
+              <widget class="QLabel" name="RatingLabel">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Rating</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1" alignment="Qt::AlignVCenter">
+              <widget class="StarWidget" name="rating" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::StrongFocus</enum>
+               </property>
+              </widget>
+             </item>
+          </layout>
+          </item>
+          </layout>
+         </item>
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_7">
              <property name="spacing">
