@@ -224,10 +224,12 @@ DiveSiteSortedModel::DiveSiteSortedModel()
 QStringList DiveSiteSortedModel::allSiteNames() const
 {
 	QStringList locationNames;
-	int num = rowCount();
-	for (int i = 0; i < num; i++) {
-		int idx = mapToSource(index(i, 0)).row();
-		locationNames << QString(dive_site_table.dive_sites[idx]->name);
+	if (dive_site_table.dive_sites) {
+		int num = rowCount();
+		for (int i = 0; i < num; i++) {
+			int idx = mapToSource(index(i, 0)).row();
+			locationNames << QString(dive_site_table.dive_sites[idx]->name);
+		}
 	}
 	return locationNames;
 }
