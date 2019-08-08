@@ -341,7 +341,7 @@ struct event *get_next_event_mutable(struct event *event, const char *name)
 	if (!name || !*name)
 		return NULL;
 	while (event) {
-		if (!strcmp(event->name, name))
+		if (same_string(event->name, name))
 			return event;
 		event = event->next;
 	}
