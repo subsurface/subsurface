@@ -231,6 +231,12 @@ static double calculate_cns_dive(const struct dive *dive)
 		}
 		po2i = (po2i + po2f) / 2;	// po2i now holds the mean po2 of initial and final po2 values of segment.
 		/* Don't increase CNS when po2 below 500 matm */
+		if (po2i > 1600) {
+			if (po2i > 1650)
+				return 0;
+			else
+				po2i = 1600;
+		}
 		if (po2i <= 500)
 			continue;
 		/* Find the table-row for calculating the maximum exposure at this PO2 */
@@ -239,6 +245,7 @@ static double calculate_cns_dive(const struct dive *dive)
 				break;
 		/* Increment CNS with simple linear interpolation: 100 * time / (single-exposure-time + delta-PO2 * single-slope) */
 		cns += (double)t / ((double)cns_table[j][SINGLE_EXP] - ((double)po2i - (double)cns_table[j][PO2VAL]) * (double)cns_table[j][SINGLE_SLOPE] / 10.0) * 100;
+
 	}
 	return cns;
 }
