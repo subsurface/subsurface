@@ -3,6 +3,9 @@
 #define LIBDIVECOMPUTER_H
 
 #include <stdint.h>
+#if defined(Q_OS_IOS)
+#include <stdio.h>
+#endif
 
 /* libdivecomputer */
 
