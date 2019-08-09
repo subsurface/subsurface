@@ -352,9 +352,11 @@ bool trip_is_single_day(const struct dive_trip *trip)
 int trip_shown_dives(const struct dive_trip *trip)
 {
 	int res = 0;
-	for (int i = 0; i < trip->dives.nr; ++i) {
-		if (!trip->dives.dives[i]->hidden_by_filter)
-			res++;
+	if (trip->dives.dives) {
+		for (int i = 0; i < trip->dives.nr; ++i) {
+			if (trip->dives.dives[i] && !trip->dives.dives[i]->hidden_by_filter)
+				res++;
+		}
 	}
 	return res;
 }
