@@ -264,7 +264,7 @@ int check_git_sha(const char *filename, struct git_repository **git_p, const cha
 	struct git_repository *git;
 	const char *branch = NULL;
 
-	char *current_sha = strdup(saved_git_id);
+	char *current_sha = copy_string(saved_git_id);
 	git = is_git_repository(filename, &branch, NULL, false);
 	if (git_p)
 		*git_p = git;
