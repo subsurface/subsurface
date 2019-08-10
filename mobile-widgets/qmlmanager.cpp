@@ -333,13 +333,19 @@ void QMLManager::openLocalThenRemote(QString url)
 	updateAllGlobalLists();
 }
 
+void QMLManager::updateSiteList()
+{
+	LocationInformationModel::instance()->update();
+	emit locationListChanged();
+}
+
 void QMLManager::updateAllGlobalLists()
 {
 	buddyModel.updateModel(); emit buddyListChanged();
 	suitModel.updateModel(); emit suitListChanged();
 	divemasterModel.updateModel(); emit divemasterListChanged();
 	// TODO: Probably not needed anymore, as the dive site list is generated on the fly!
-	LocationInformationModel::instance()->update(); emit locationListChanged();
+	updateSiteList();
 }
 
 void QMLManager::mergeLocalRepo()
@@ -774,7 +780,7 @@ void QMLManager::refreshDiveList()
 	DiveListModel::instance()->addAllDives();
 }
 
-static void setupDivesite(struct dive *d, struct dive_site *ds, double lat, double lon, const char *locationtext)
+void QMLManager::setupDivesite(struct dive *d, struct dive_site *ds, double lat, double lon, const char *locationtext)
 {
 	location_t location = create_location(lat, lon);
 	if (ds) {
@@ -782,6 +788,8 @@ static void setupDivesite(struct dive *d, struct dive_site *ds, double lat, doub
 	} else {
 		unregister_dive_from_dive_site(d);
 		add_dive_to_dive_site(d, create_dive_site_with_gps(locationtext, &location, &dive_site_table));
+		// We created a new dive site - let the dive site model know.
+		updateSiteList();
 	}
 }
 
@@ -902,6 +910,8 @@ bool QMLManager::checkLocation(DiveObjectHelper *myDive, struct dive *d, QString
 			ds = create_dive_site(qPrintable(location), &dive_site_table);
 		unregister_dive_from_dive_site(d);
 		add_dive_to_dive_site(d, ds);
+		// We created a new dive site - let the dive site model know.
+		updateSiteList();
 	}
 	// now make sure that the GPS coordinates match - if the user changed the name but not
 	// the GPS coordinates, this still does the right thing as the now new dive site will
