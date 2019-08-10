@@ -254,7 +254,7 @@ QStringList DiveObjectHelper::weights() const
 
 bool DiveObjectHelper::singleWeight() const
 {
-	return m_dive->weightsystems.nr == 1;
+	return m_dive->weightsystems.nr <= 1;
 }
 
 QString DiveObjectHelper::weight(int idx) const
