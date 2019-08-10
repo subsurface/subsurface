@@ -227,6 +227,13 @@ QStringList DiveSiteSortedModel::allSiteNames() const
 	int num = rowCount();
 	for (int i = 0; i < num; i++) {
 		int idx = mapToSource(index(i, 0)).row();
+		// This shouldn't happen, but if model and core get out of sync,
+		// (more precisely: the core has more sites than the model is aware of),
+		// we might get an invalid index.
+		if (idx < 0 || idx > dive_site_table.nr) {
+			fprintf(stderr, "DiveSiteSortedModel::allSiteNames(): invalid index");
+			continue;
+		}
 		locationNames << QString(dive_site_table.dive_sites[idx]->name);
 	}
 	return locationNames;
