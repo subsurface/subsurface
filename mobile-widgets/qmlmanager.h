@@ -236,6 +236,8 @@ private:
 	QString m_progressMessage;
 	bool m_btEnabled;
 	void updateAllGlobalLists();
+	void updateSiteList();
+	void setupDivesite(struct dive *d, struct dive_site *ds, double lat, double lon, const char *locationtext);
 	QString m_pluggedInDeviceName;
 	bool m_showNonDiveComputers;
 	struct dive *m_copyPasteDive = NULL;
