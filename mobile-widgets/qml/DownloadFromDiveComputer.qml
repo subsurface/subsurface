@@ -28,6 +28,10 @@ Kirigami.Page {
 		id: downloadThread
 
 		onFinished : {
+			if (!table || !sites) {
+				console.warn("DCDownloadThread::onFinished(): table or sites is null!")
+				return
+			}
 			importModel.repopulate(table, sites)
 			progressBar.visible = false
 			if (dcImportModel.rowCount() > 0) {
