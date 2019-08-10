@@ -1030,11 +1030,14 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		diveChanged = true;
 		d->watertemp.mkelvin = parseTemperatureToMkelvin(watertemp);
 	}
-	// not sure what we'd do if there was more than one weight system
-	// defined - for now just ignore that case
-	if (d->weightsystems.nr == 1) {
-		if (myDive->sumWeight() != weight) {
-			diveChanged = true;
+	if (myDive->sumWeight() != weight) {
+		diveChanged = true;
+		// not sure what we'd do if there was more than one weight system
+		// defined - for now just ignore that case
+		if (d->weightsystems.nr == 0) {
+			weightsystem_t ws = { { parseWeightToGrams(weight) } , "" };
+			add_cloned_weightsystem(&d->weightsystems, ws);
+		} else if (d->weightsystems.nr == 1) {
 			d->weightsystems.weightsystems[0].weight.grams = parseWeightToGrams(weight);
 		}
 	}
