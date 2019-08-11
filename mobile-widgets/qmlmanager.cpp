@@ -481,7 +481,7 @@ void QMLManager::saveCloudCredentials()
 	}
 
 	cloudCredentialsChanged |= !same_string(prefs.cloud_storage_password,
-								qPrintable(QMLPrefs::instance()->cloudPassword()));
+						qPrintable(QMLPrefs::instance()->cloudPassword()));
 
 	if (QMLPrefs::instance()->credentialStatus() != qPrefCloudStorage::CS_NOCLOUD &&
 		!cloudCredentialsChanged) {
@@ -1035,8 +1035,8 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		// not sure what we'd do if there was more than one weight system
 		// defined - for now just ignore that case
 		if (d->weightsystems.nr == 0) {
-			weightsystem_t ws = { { parseWeightToGrams(weight) } , "" };
-			add_cloned_weightsystem(&d->weightsystems, ws);
+			weightsystem_t ws = { { parseWeightToGrams(weight) } , strdup(qPrintable(tr("weight"))) };
+			add_to_weightsystem_table(&d->weightsystems, 0, ws); // takes ownership of the string
 		} else if (d->weightsystems.nr == 1) {
 			d->weightsystems.weightsystems[0].weight.grams = parseWeightToGrams(weight);
 		}
