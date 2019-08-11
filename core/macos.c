@@ -17,6 +17,8 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <zip.h>
+#include <sys/stat.h>
 
 void subsurface_user_info(struct user_info *info)
 {
