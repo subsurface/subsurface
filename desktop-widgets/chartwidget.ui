@@ -38,6 +38,16 @@
        <string>Months</string>
       </attribute>
      </widget>
+     <widget class="QWidget" name="tabTagStats">
+      <attribute name="title">
+       <string>Tags</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="tabBuddyStats">
+      <attribute name="title">
+       <string>Buddies</string>
+      </attribute>
+     </widget>
     </widget>
    </item>
   </layout>

@@ -14,6 +14,8 @@
 ChartWidget::ChartWidget(QWidget *parent) : QWidget(parent,Qt::Window)
 {
 	model = new DateStatsTableModel(this);
+	tagModel = new TagStatsListModel(this);
+	buddyModel = new BuddyStatsListModel(this);
 	ui.setupUi(this);
 
 	// create year chart layout
@@ -35,6 +37,22 @@ ChartWidget::ChartWidget(QWidget *parent) : QWidget(parent,Qt::Window)
 	monthLayout->setColumnStretch(0, 1);
 	this->ui.tabMonthStats->setLayout(monthLayout);
 
+	// create tag chart layout
+	tagChartView.setChart(drawTagChart());
+	tagChartView.setRenderHint(QPainter::Antialiasing);
+	QGridLayout *tagLayout = new QGridLayout;
+	tagLayout->addWidget(&tagChartView, 1, 0);
+	tagLayout->setColumnStretch(0, 1);
+	this->ui.tabTagStats->setLayout(tagLayout);
+
+	// create buddy chart layout
+	buddyChartView.setChart(drawBuddyChart());
+	buddyChartView.setRenderHint(QPainter::Antialiasing);
+	QGridLayout *buddyLayout = new QGridLayout;
+	buddyLayout->addWidget(&buddyChartView, 1, 0);
+	buddyLayout->setColumnStretch(0, 1);
+	this->ui.tabBuddyStats->setLayout(buddyLayout);
+
 	connect(MultiFilterSortModel::instance(), &MultiFilterSortModel::filterFinished, this, &ChartWidget::filterFinished);
 	connect(&diveListNotifier, &DiveListNotifier::divesAdded, this, &ChartWidget::filterFinished);
 	connect(&diveListNotifier, &DiveListNotifier::divesDeleted, this, &ChartWidget::filterFinished);
@@ -43,6 +61,8 @@ ChartWidget::ChartWidget(QWidget *parent) : QWidget(parent,Qt::Window)
 
 ChartWidget::~ChartWidget() {
 	delete model;
+	delete tagModel;
+	delete buddyModel;
 }
 
 QtCharts::QChart *ChartWidget::drawYearChart()
@@ -134,20 +154,126 @@ QtCharts::QChart *ChartWidget::drawMonthChart()
 	return (monthChart);
 }
 
+QtCharts::QChart *ChartWidget::drawTagChart()
+{
+	int idx;
+
+	QtCharts::QChart *tagChart = new QtCharts::QChart();
+
+	// Set up QChart
+	tagChart->setAnimationOptions(QtCharts::QChart::AllAnimations);
+	tagChart->legend()->hide();
+	tagChart->createDefaultAxes();
+	tagChart->setTitle(tr("Tags"));
+
+	// Add data series using ModelMapper
+	QtCharts::QBarSeries *series = new QtCharts::QBarSeries;
+	tagMapper.setFirstBarSetColumn(0);
+	tagMapper.setLastBarSetColumn(0);
+	tagMapper.setFirstRow(0);
+	tagMapper.setRowCount(tagModel->rowCount());
+	tagMapper.setSeries(series);
+	tagMapper.setModel(tagModel);
+	tagChart->addSeries(series);
+
+	// Add X Axis with labels
+	QStringList tags;
+
+	for (idx = 0; idx < tagModel->rowCount(); idx++) {
+		tags << tagModel->headerData(idx, Qt::Vertical).toString();
+	}
+	QtCharts::QBarCategoryAxis *axisX = new QtCharts::QBarCategoryAxis();
+	axisX->append(tags);
+	axisX->setLabelsAngle(270);
+	tagChart->addAxis(axisX, Qt::AlignBottom);
+	series->attachAxis(axisX);
+
+	// Add Y Axis with tick marks
+	QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis();
+	axisY->setTickCount(tagModel->axisMax() / 10 + 1);
+	axisY->setMax(tagModel->axisMax());
+	axisY->setLabelFormat("%i");
+	tagChart->addAxis(axisY, Qt::AlignLeft);
+	series->attachAxis(axisY);
+
+	return (tagChart);
+}
+
+QtCharts::QChart *ChartWidget::drawBuddyChart()
+{
+	int idx;
+
+	QtCharts::QChart *buddyChart = new QtCharts::QChart();
+
+	// Set up QChart
+	buddyChart->setAnimationOptions(QtCharts::QChart::AllAnimations);
+	buddyChart->legend()->hide();
+	buddyChart->createDefaultAxes();
+	buddyChart->setTitle(tr("Buddies"));
+
+	// Add data series using ModelMapper
+	QtCharts::QBarSeries *series = new QtCharts::QBarSeries;
+	buddyMapper.setFirstBarSetColumn(0);
+	buddyMapper.setLastBarSetColumn(0);
+	buddyMapper.setFirstRow(0);
+	buddyMapper.setRowCount(buddyModel->rowCount());
+	buddyMapper.setSeries(series);
+	buddyMapper.setModel(buddyModel);
+	buddyChart->addSeries(series);
+
+	// Add X Axis with labels
+	QStringList buddies;
+
+	for (idx = 0; idx < buddyModel->rowCount(); idx++) {
+		buddies << buddyModel->headerData(idx, Qt::Vertical).toString();
+	}
+	QtCharts::QBarCategoryAxis *axisX = new QtCharts::QBarCategoryAxis();
+	axisX->append(buddies);
+	axisX->setLabelsAngle(270);
+	buddyChart->addAxis(axisX, Qt::AlignBottom);
+	series->attachAxis(axisX);
+
+	// Add Y Axis with tick marks
+	QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis();
+	axisY->setTickCount(buddyModel->axisMax() / 10 + 1);
+	axisY->setMax(buddyModel->axisMax());
+	axisY->setLabelFormat("%i");
+	buddyChart->addAxis(axisY, Qt::AlignLeft);
+	series->attachAxis(axisY);
+
+	return (buddyChart);
+}
+
 void ChartWidget::filterFinished() {
-	DateStatsTableModel *oldModel;
+	DateStatsTableModel *oldDateModel;
+	TagStatsListModel *oldTagModel;
+	BuddyStatsListModel *oldBuddyModel;
 	QtCharts::QChart *oldChart;
 
-	oldModel = model;
+	// Replace yearly and monthly charts and destroy old objects
+	oldDateModel = model;
 	model = new DateStatsTableModel(this);
-
 	oldChart = yearChartView.chart();
 	yearChartView.setChart(drawYearChart());
 	delete oldChart;
-
 	oldChart = monthChartView.chart();
 	monthChartView.setChart(drawMonthChart());
 	delete oldChart;
+	delete oldDateModel;
 
-	delete oldModel;
+	// Replace tags chart and destroy old objects
+	oldTagModel = tagModel;
+	tagModel = new TagStatsListModel(this);
+	oldChart = tagChartView.chart();
+	tagChartView.setChart(drawTagChart());
+	delete oldChart;
+	delete oldTagModel;
+
+	// Replace buddy chart and destroy old objects
+	oldBuddyModel = buddyModel;
+	buddyModel = new BuddyStatsListModel(this);
+	oldChart = buddyChartView.chart();
+	buddyChartView.setChart(drawBuddyChart());
+	delete oldChart;
+	delete oldBuddyModel;
 }
