@@ -2,7 +2,8 @@
 #ifndef DIVE_QOBJECT_H
 #define DIVE_QOBJECT_H
 
-#include "CylinderObjectHelper.h"
+#include "core/units.h"
+
 #include <QObject>
 #include <QString>
 #include <QStringList>
@@ -38,7 +39,6 @@ class DiveObjectHelper : public QObject {
 	Q_PROPERTY(QString suit READ suit CONSTANT)
 	Q_PROPERTY(QStringList cylinderList READ cylinderList CONSTANT)
 	Q_PROPERTY(QStringList cylinders READ cylinders CONSTANT)
-	Q_PROPERTY(QList<CylinderObjectHelper*> cylinderObjects READ cylinderObjects CONSTANT)
 	Q_PROPERTY(QString tripId READ tripId CONSTANT)
 	Q_PROPERTY(int tripNrDives READ tripNrDives CONSTANT)
 	Q_PROPERTY(int maxcns READ maxcns CONSTANT)
@@ -52,7 +52,6 @@ class DiveObjectHelper : public QObject {
 	Q_PROPERTY(QString fullTextNoNotes READ fullTextNoNotes CONSTANT)
 public:
 	DiveObjectHelper(struct dive *dive = NULL);
-	~DiveObjectHelper();
 	int number() const;
 	int id() const;
 	struct dive *getDive() const;
@@ -84,7 +83,6 @@ public:
 	QStringList cylinderList() const;
 	QStringList cylinders() const;
 	QString cylinder(int idx) const;
-	QList<CylinderObjectHelper*> cylinderObjects() const;
 	QString tripId() const;
 	int tripNrDives() const;
 	int maxcns() const;
@@ -99,7 +97,6 @@ public:
 
 private:
 	struct dive *m_dive;
-	QList<CylinderObjectHelper*> m_cyls;
 };
 	Q_DECLARE_METATYPE(DiveObjectHelper *)
 

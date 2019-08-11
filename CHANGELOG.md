@@ -1,3 +1,4 @@
+- Grantlee: remove unused CylinderObjectHelper class
 - Mobile: allow editing weights for dives that have no weight
 - Desktop: fix missing header files in macos.c
 - Desktop: fix display of trip time
