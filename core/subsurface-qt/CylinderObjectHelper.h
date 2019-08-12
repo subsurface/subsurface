@@ -2,7 +2,7 @@
 #ifndef CYLINDER_QOBJECT_H
 #define CYLINDER_QOBJECT_H
 
-#include "../dive.h"
+#include "../equipment.h"
 #include <QObject>
 #include <QString>
 
