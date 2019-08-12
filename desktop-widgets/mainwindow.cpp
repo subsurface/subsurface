@@ -1457,8 +1457,20 @@ void MainWindow::loadRecentFiles()
 		if (!key.startsWith("File_"))
 			continue;
 		QString file = s.value(key).toString();
-		if (QFile::exists(file))
+
+		// never add our cloud URL to the recent files
+		if (!same_string(prefs.cloud_git_url, "") && file.startsWith(prefs.cloud_git_url))
+			continue;
+		// but allow local git repos
+		QRegularExpression gitrepo("(.*)\\[[^]]+]");
+		QRegularExpressionMatch match = gitrepo.match(file);
+		if (match.hasMatch()) {
+			const QFileInfo gitDirectory(match.captured(1) + "/.git");
+			if ((gitDirectory.exists()) && (gitDirectory.isDir()))
+				recentFiles.append(file);
+		} else if (QFile::exists(file)) {
 			recentFiles.append(file);
+		}
 		if (recentFiles.count() > NUM_RECENT_FILES)
 			break;
 	}
@@ -1484,6 +1496,9 @@ void MainWindow::updateRecentFilesMenu()
 
 void MainWindow::addRecentFile(const QString &file, bool update)
 {
+	// never add Subsurface cloud file to the recent files - it has its own menu entry
+	if (!same_string(prefs.cloud_git_url, "") && file.startsWith(prefs.cloud_git_url))
+		return;
 	QString localFile = QDir::toNativeSeparators(file);
 	int index = recentFiles.indexOf(localFile);
 	if (index >= 0)
