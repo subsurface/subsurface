@@ -9,6 +9,7 @@
 #include "core/statistics.h"
 #include "core/qthelper.h"
 #include "core/subsurface-qt/DiveObjectHelper.h"
+#include "core/subsurface-qt/CylinderObjectHelper.h" // TODO: remove once grantlee supports Q_GADGET objects
 
 int getTotalWork(print_options *printOptions);
 void find_all_templates();
@@ -120,4 +121,22 @@ if (property == "year") {
 }
 GRANTLEE_END_LOOKUP
 
+// TODO: This is currently needed because our grantlee version
+// doesn't support Q_GADGET based classes. A patch to fix this
+// exists. Remove in due course.
+GRANTLEE_BEGIN_LOOKUP(CylinderObjectHelper)
+if (property == "description") {
+	return object.description;
+} else if (property == "size") {
+	return object.size;
+} else if (property == "workingPressure") {
+	return object.workingPressure;
+} else if (property == "startPressure") {
+	return object.startPressure;
+} else if (property == "endPressure") {
+	return object.endPressure;
+} else if (property == "gasMix") {
+	return object.gasMix;
+}
+GRANTLEE_END_LOOKUP
 #endif

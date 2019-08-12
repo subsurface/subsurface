@@ -133,6 +133,7 @@ QString TemplateLayout::generate()
 	Grantlee::Engine engine(this);
 	Grantlee::registerMetaType<template_options>();
 	Grantlee::registerMetaType<print_options>();
+	Grantlee::registerMetaType<CylinderObjectHelper>(); // TODO: Remove when grantlee supports Q_GADGET
 
 	// Note: Currently, this should not be transformed into a QVector<> or std::vector<>,
 	// as diveList contains pointers to elements in this list. But vectors might relocate
@@ -196,6 +197,7 @@ QString TemplateLayout::generateStatistics()
 	Grantlee::registerMetaType<YearInfo>();
 	Grantlee::registerMetaType<template_options>();
 	Grantlee::registerMetaType<print_options>();
+	Grantlee::registerMetaType<CylinderObjectHelper>(); // TODO: Remove when grantlee supports Q_GADGET
 
 	QVariantList years;
 
