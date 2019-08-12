@@ -58,6 +58,8 @@ static QString getPressures(struct dive *dive, int i, enum returnPressureSelecto
 DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 	m_dive(d)
 {
+	if (!m_dive)
+		qWarning("Creating DiveObjectHelper from NULL dive");
 	m_cyls.clear();
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		//Don't add blank cylinders, only those that have been defined.
