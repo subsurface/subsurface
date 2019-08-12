@@ -60,18 +60,11 @@ DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 {
 	if (!m_dive)
 		qWarning("Creating DiveObjectHelper from NULL dive");
-	m_cyls.clear();
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		//Don't add blank cylinders, only those that have been defined.
 		if (m_dive->cylinder[i].type.description)
-			m_cyls.append(new CylinderObjectHelper(&m_dive->cylinder[i]));
+			m_cyls.append(CylinderObjectHelper(&m_dive->cylinder[i]));
 	}
-}
-
-DiveObjectHelper::~DiveObjectHelper()
-{
-while (!m_cyls.isEmpty())
-	delete m_cyls.takeFirst();
 }
 
 int DiveObjectHelper::number() const
@@ -316,7 +309,7 @@ QString DiveObjectHelper::cylinder(int idx) const
 	return getFormattedCylinder(m_dive, idx);
 }
 
-QList<CylinderObjectHelper*> DiveObjectHelper::cylinderObjects() const
+QVector<CylinderObjectHelper> DiveObjectHelper::cylinderObjects() const
 {
 	return m_cyls;
 }
