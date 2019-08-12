@@ -58,13 +58,6 @@ static QString getPressures(struct dive *dive, int i, enum returnPressureSelecto
 DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 	m_dive(d)
 {
-	if (!m_dive)
-		qWarning("Creating DiveObjectHelper from NULL dive");
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		//Don't add blank cylinders, only those that have been defined.
-		if (m_dive->cylinder[i].type.description)
-			m_cyls.append(CylinderObjectHelper(&m_dive->cylinder[i]));
-	}
 }
 
 int DiveObjectHelper::number() const
@@ -311,7 +304,13 @@ QString DiveObjectHelper::cylinder(int idx) const
 
 QVector<CylinderObjectHelper> DiveObjectHelper::cylinderObjects() const
 {
-	return m_cyls;
+	QVector<CylinderObjectHelper> res;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		//Don't add blank cylinders, only those that have been defined.
+		if (m_dive->cylinder[i].type.description)
+			res.append(CylinderObjectHelper(&m_dive->cylinder[i])); // no emplace for QVector. :(
+	}
+	return res;
 }
 
 QString DiveObjectHelper::tripId() const

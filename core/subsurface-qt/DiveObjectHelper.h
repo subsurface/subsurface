@@ -99,7 +99,6 @@ public:
 
 private:
 	struct dive *m_dive;
-	QVector<CylinderObjectHelper> m_cyls;
 };
 	Q_DECLARE_METATYPE(DiveObjectHelper *)
 
