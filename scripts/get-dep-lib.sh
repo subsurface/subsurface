@@ -15,7 +15,7 @@ CURRENT_LIBXML2="v2.9.4"
 CURRENT_LIBFTDI="1.3"
 CURRENT_KIRIGAMI="v5.62.0"
 CURRENT_BREEZE_ICONS=""
-CURRENT_GRANTLEE="v5.0.0"
+CURRENT_GRANTLEE="v5.1.0"
 CURRENT_MDBTOOLS="master"
 CURRENT_QT_ANDROID_CMAKE="master"
 
@@ -188,6 +188,8 @@ for package in "${PACKAGES[@]}" ; do
 			;;
 		grantlee)
 			git_checkout_library grantlee $CURRENT_GRANTLEE https://github.com/steveire/grantlee.git
+			# this should be removed once there is a newer Grantlee release than v5.1.0
+			( cd grantlee ; git -c user.email=in@val.id -c user.name='Subsurface build automation' cherry-pick 1b4f22431ae35dfd11f07a5ae88a1b4db3de2a85 ; cd .. )
 			;;
 		mdbtools)
 			git_checkout_library mdbtools $CURRENT_MDBTOOLS https://github.com/brianb/mdbtools.git
