@@ -51,7 +51,7 @@ class DiveObjectHelper : public QObject {
 	Q_PROPERTY(QString fullText READ fullText CONSTANT)
 	Q_PROPERTY(QString fullTextNoNotes READ fullTextNoNotes CONSTANT)
 public:
-	DiveObjectHelper(struct dive *dive = NULL);
+	DiveObjectHelper(struct dive *dive);
 	~DiveObjectHelper();
 	int number() const;
 	int id() const;
