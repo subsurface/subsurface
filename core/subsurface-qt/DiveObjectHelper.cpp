@@ -389,15 +389,3 @@ QStringList DiveObjectHelper::firstGas() const
 	}
 	return gas;
 }
-
-// for a full text search / filter function
-QString DiveObjectHelper::fullText() const
-{
-	return fullTextNoNotes() + ":-:" + notes();
-}
-
-QString DiveObjectHelper::fullTextNoNotes() const
-{
-	QString tripLocation = m_dive->divetrip ? m_dive->divetrip->location : QString();
-	return tripLocation + ":-:" + location() + ":-:" + buddy() + ":-:" + divemaster() + ":-:" + suit() + ":-:" + tags();
-}
