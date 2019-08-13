@@ -12,9 +12,9 @@
 
 enum returnPressureSelector {START_PRESSURE, END_PRESSURE};
 
-static QString getFormattedWeight(struct dive *dive, unsigned int idx)
+static QString getFormattedWeight(const struct dive *dive, unsigned int idx)
 {
-	weightsystem_t *weight = &dive->weightsystems.weightsystems[idx];
+	const weightsystem_t *weight = &dive->weightsystems.weightsystems[idx];
 	if (!weight->description)
 		return QString();
 	QString fmt = QString(weight->description);
@@ -22,9 +22,9 @@ static QString getFormattedWeight(struct dive *dive, unsigned int idx)
 	return fmt;
 }
 
-static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
+static QString getFormattedCylinder(const struct dive *dive, unsigned int idx)
 {
-	cylinder_t *cyl = &dive->cylinder[idx];
+	const cylinder_t *cyl = &dive->cylinder[idx];
 	const char *desc = cyl->type.description;
 	if (!desc && idx > 0)
 		return QString();
@@ -36,9 +36,9 @@ static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 	return fmt;
 }
 
-static QString getPressures(struct dive *dive, int i, enum returnPressureSelector ret)
+static QString getPressures(const struct dive *dive, int i, enum returnPressureSelector ret)
 {
-	cylinder_t *cyl = &dive->cylinder[i];
+	const cylinder_t *cyl = &dive->cylinder[i];
 	QString fmt;
 	if (ret == START_PRESSURE) {
 		if (cyl->start.mbar)
@@ -55,115 +55,20 @@ static QString getPressures(struct dive *dive, int i, enum returnPressureSelecto
 	return fmt;
 }
 
-// Qt's metatype system insists on generating a default constructed object,
-// even if that makes no sense. Usage of this object *will* crash.
-DiveObjectHelper::DiveObjectHelper() :
-	m_dive(nullptr)
-{
-}
-
-DiveObjectHelper::DiveObjectHelper(struct dive *d) :
-	m_dive(d)
-{
-}
-
-int DiveObjectHelper::number() const
-{
-	return m_dive->number;
-}
-
-int DiveObjectHelper::id() const
-{
-	return m_dive->id;
-}
-
-QString DiveObjectHelper::date() const
-{
-	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000*m_dive->when, Qt::UTC);
-	localTime.setTimeSpec(Qt::UTC);
-	return localTime.date().toString(prefs.date_format_short);
-}
-
-timestamp_t DiveObjectHelper::timestamp() const
-{
-	return m_dive->when;
-}
-
-QString DiveObjectHelper::time() const
-{
-	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000*m_dive->when, Qt::UTC);
-	localTime.setTimeSpec(Qt::UTC);
-	return localTime.time().toString(prefs.time_format);
-}
-
-QString DiveObjectHelper::location() const
-{
-	return get_dive_location(m_dive) ? QString::fromUtf8(get_dive_location(m_dive)) : QString();
-}
-
-QString DiveObjectHelper::gps() const
-{
-	struct dive_site *ds = m_dive->dive_site;
-	if (!ds)
-		return QString();
-	return printGPSCoords(&ds->location);
-}
-
-QString DiveObjectHelper::gps_decimal() const
+static QString format_gps_decimal(const dive *d)
 {
 	bool savep = prefs.coordinates_traditional;
-	QString val;
 
 	prefs.coordinates_traditional = false;
-	val = gps();
+	QString val = d->dive_site ? printGPSCoords(&d->dive_site->location) : QString();
 	prefs.coordinates_traditional = savep;
 	return val;
 }
 
-QVariant DiveObjectHelper::dive_site() const
+static QString formatNotes(const dive *d)
 {
-	return QVariant::fromValue(m_dive->dive_site);
-}
-
-QString DiveObjectHelper::duration() const
-{
-	return get_dive_duration_string(m_dive->duration.seconds, gettextFromC::tr("h"), gettextFromC::tr("min"));
-}
-
-bool DiveObjectHelper::noDive() const
-{
-	return m_dive->duration.seconds == 0 && m_dive->dc.duration.seconds == 0;
-}
-
-QString DiveObjectHelper::depth() const
-{
-	return get_depth_string(m_dive->dc.maxdepth.mm, true, true);
-}
-
-QString DiveObjectHelper::divemaster() const
-{
-	return m_dive->divemaster ? m_dive->divemaster : QString();
-}
-
-QString DiveObjectHelper::buddy() const
-{
-	return m_dive->buddy ? m_dive->buddy : QString();
-}
-
-QString DiveObjectHelper::airTemp() const
-{
-	return get_temperature_string(m_dive->airtemp, true);
-}
-
-QString DiveObjectHelper::waterTemp() const
-{
-	return get_temperature_string(m_dive->watertemp, true);
-}
-
-QString DiveObjectHelper::notes() const
-{
-	QString tmp = m_dive->notes ? QString::fromUtf8(m_dive->notes) : QString();
-	if (is_dc_planner(&m_dive->dc)) {
+	QString tmp = d->notes ? QString::fromUtf8(d->notes) : QString();
+	if (is_dc_planner(&d->dc)) {
 		QTextDocument notes;
 	#define _NOTES_BR "&#92n"
 		tmp.replace("<thead>", "<thead>" _NOTES_BR)
@@ -180,24 +85,19 @@ QString DiveObjectHelper::notes() const
 	return tmp;
 }
 
-QString DiveObjectHelper::tags() const
-{
-	return get_taglist_string(m_dive->tag_list);
-}
-
-QString DiveObjectHelper::gas() const
+static QString formatGas(const dive *d)
 {
 	/*WARNING: here should be the gastlist, returned
 	 * from the get_gas_string function or this is correct?
 	 */
 	QString gas, gases;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		if (!is_cylinder_used(m_dive, i))
+		if (!is_cylinder_used(d, i))
 			continue;
-		gas = m_dive->cylinder[i].type.description;
+		gas = d->cylinder[i].type.description;
 		if (!gas.isEmpty())
 			gas += QChar(' ');
-		gas += gasname(m_dive->cylinder[i].gasmix);
+		gas += gasname(d->cylinder[i].gasmix);
 		// if has a description and if such gas is not already present
 		if (!gas.isEmpty() && gases.indexOf(gas) == -1) {
 			if (!gases.isEmpty())
@@ -208,21 +108,21 @@ QString DiveObjectHelper::gas() const
 	return gases;
 }
 
-QString DiveObjectHelper::sac() const
+static QString formatSac(const dive *d)
 {
-	if (!m_dive->sac)
+	if (!d->sac)
 		return QString();
 	const char *unit;
 	int decimal;
-	double value = get_volume_units(m_dive->sac, &decimal, &unit);
+	double value = get_volume_units(d->sac, &decimal, &unit);
 	return QString::number(value, 'f', decimal).append(unit);
 }
 
-QString DiveObjectHelper::weightList() const
+static QString formatWeightList(const dive *d)
 {
 	QString weights;
-	for (int i = 0; i < m_dive->weightsystems.nr; i++) {
-		QString w = getFormattedWeight(m_dive, i);
+	for (int i = 0; i < d->weightsystems.nr; i++) {
+		QString w = getFormattedWeight(d, i);
 		if (w.isEmpty())
 			continue;
 		weights += w + "; ";
@@ -230,11 +130,11 @@ QString DiveObjectHelper::weightList() const
 	return weights;
 }
 
-QStringList DiveObjectHelper::weights() const
+static QStringList formatWeights(const dive *d)
 {
 	QStringList weights;
-	for (int i = 0; i < m_dive->weightsystems.nr; i++) {
-		QString w = getFormattedWeight(m_dive, i);
+	for (int i = 0; i < d->weightsystems.nr; i++) {
+		QString w = getFormattedWeight(d, i);
 		if (w.isEmpty())
 			continue;
 		weights << w;
@@ -242,21 +142,130 @@ QStringList DiveObjectHelper::weights() const
 	return weights;
 }
 
-bool DiveObjectHelper::singleWeight() const
+static QStringList formatCylinders(const dive *d)
 {
-	return m_dive->weightsystems.nr <= 1;
+	QStringList cylinders;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		QString cyl = getFormattedCylinder(d, i);
+		if (cyl.isEmpty())
+			continue;
+		cylinders << cyl;
+	}
+	return cylinders;
 }
 
-QString DiveObjectHelper::suit() const
+static QVector<CylinderObjectHelper> makeCylinderObjects(const dive *d)
 {
-	return m_dive->suit ? m_dive->suit : QString();
+	QVector<CylinderObjectHelper> res;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		//Don't add blank cylinders, only those that have been defined.
+		if (d->cylinder[i].type.description)
+			res.append(CylinderObjectHelper(&d->cylinder[i])); // no emplace for QVector. :(
+	}
+	return res;
+}
+
+static QStringList formatGetCylinder(const dive *d)
+{
+	QStringList getCylinder; 
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		if (is_cylinder_used(d, i))
+			getCylinder << d->cylinder[i].type.description;
+	}
+	return getCylinder;
+}
+
+static QStringList getStartPressure(const dive *d)
+{
+	QStringList startPressure;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		if (is_cylinder_used(d, i))
+			startPressure << getPressures(d, i, START_PRESSURE);
+	}
+	return startPressure;
+}
+
+static QStringList getEndPressure(const dive *d)
+{
+	QStringList endPressure;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		if (is_cylinder_used(d, i))
+			endPressure << getPressures(d, i, END_PRESSURE);
+	}
+	return endPressure;
+}
+
+static QStringList getFirstGas(const dive *d)
+{
+	QStringList gas;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		if (is_cylinder_used(d, i))
+			gas << get_gas_string(d->cylinder[i].gasmix);
+	}
+	return gas;
+}
+
+// Qt's metatype system insists on generating a default constructed object, even if that makes no sense.
+DiveObjectHelper::DiveObjectHelper()
+{
+}
+
+DiveObjectHelper::DiveObjectHelper(const struct dive *d) :
+	number(d->number),
+	id(d->id),
+	rating(d->rating),
+	visibility(d->visibility),
+	timestamp(d->when),
+	location(get_dive_location(d) ? QString::fromUtf8(get_dive_location(d)) : QString()),
+	gps(d->dive_site ? printGPSCoords(&d->dive_site->location) : QString()),
+	gps_decimal(format_gps_decimal(d)),
+	dive_site(QVariant::fromValue(d->dive_site)),
+	duration(get_dive_duration_string(d->duration.seconds, gettextFromC::tr("h"), gettextFromC::tr("min"))),
+	noDive(d->duration.seconds == 0 && d->dc.duration.seconds == 0),
+	depth(get_depth_string(d->dc.maxdepth.mm, true, true)),
+	divemaster(d->divemaster ? d->divemaster : QString()),
+	buddy(d->buddy ? d->buddy : QString()),
+	airTemp(get_temperature_string(d->airtemp, true)),
+	waterTemp(get_temperature_string(d->watertemp, true)),
+	notes(formatNotes(d)),
+	tags(get_taglist_string(d->tag_list)),
+	gas(formatGas(d)),
+	sac(formatSac(d)),
+	weightList(formatWeightList(d)),
+	weights(formatWeights(d)),
+	singleWeight(d->weightsystems.nr <= 1),
+	suit(d->suit ? d->suit : QString()),
+	cylinders(formatCylinders(d)),
+	cylinderObjects(makeCylinderObjects(d)),
+	maxcns(d->maxcns),
+	otu(d->otu),
+	sumWeight(get_weight_string(weight_t { total_weight(d) }, true)),
+	getCylinder(formatGetCylinder(d)),
+	startPressure(getStartPressure(d)),
+	endPressure(getEndPressure(d)),
+	firstGas(getFirstGas(d))
+{
+}
+
+QString DiveObjectHelper::date() const
+{
+	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000 * timestamp, Qt::UTC);
+	localTime.setTimeSpec(Qt::UTC);
+	return localTime.date().toString(prefs.date_format_short);
+}
+
+QString DiveObjectHelper::time() const
+{
+	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000 * timestamp, Qt::UTC);
+	localTime.setTimeSpec(Qt::UTC);
+	return localTime.time().toString(prefs.time_format);
 }
 
 QStringList DiveObjectHelper::cylinderList() const
 {
 	QStringList cylinders;
-	struct dive *d;
 	int i = 0;
+	struct dive *d;
 	for_each_dive (i, d) {
 		for (int j = 0; j < MAX_CYLINDERS; j++) {
 			QString cyl = d->cylinder[j].type.description;
@@ -266,7 +275,7 @@ QStringList DiveObjectHelper::cylinderList() const
 		}
 	}
 
-	for (unsigned long ti = 0; ti < MAX_TANK_INFO && tank_info[ti].name != NULL; ti++) {
+	for (int ti = 0; ti < MAX_TANK_INFO && tank_info[ti].name != NULL; ti++) {
 		QString cyl = tank_info[ti].name;
 		if (cyl.isEmpty())
 			continue;
@@ -276,93 +285,4 @@ QStringList DiveObjectHelper::cylinderList() const
 	cylinders.removeDuplicates();
 	cylinders.sort();
 	return cylinders;
-}
-
-QStringList DiveObjectHelper::cylinders() const
-{
-	QStringList cylinders;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		QString cyl = getFormattedCylinder(m_dive, i);
-		if (cyl.isEmpty())
-			continue;
-		cylinders << cyl;
-	}
-	return cylinders;
-}
-
-QVector<CylinderObjectHelper> DiveObjectHelper::cylinderObjects() const
-{
-	QVector<CylinderObjectHelper> res;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		//Don't add blank cylinders, only those that have been defined.
-		if (m_dive->cylinder[i].type.description)
-			res.append(CylinderObjectHelper(&m_dive->cylinder[i])); // no emplace for QVector. :(
-	}
-	return res;
-}
-
-int DiveObjectHelper::maxcns() const
-{
-	return m_dive->maxcns;
-}
-
-int DiveObjectHelper::otu() const
-{
-	return m_dive->otu;
-}
-
-int DiveObjectHelper::rating() const
-{
-	return m_dive->rating;
-}
-
-int DiveObjectHelper::visibility() const
-{
-	return m_dive->visibility;
-}
-
-QString DiveObjectHelper::sumWeight() const
-{
-	weight_t sum = { total_weight(m_dive) };
-	return get_weight_string(sum, true);
-}
-
-QStringList DiveObjectHelper::getCylinder() const
-{
-	QStringList getCylinder; 
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		if (is_cylinder_used(m_dive, i))
-			getCylinder << m_dive->cylinder[i].type.description;
-	}
-	return getCylinder;
-}
-
-QStringList DiveObjectHelper::startPressure() const
-{
-	QStringList startPressure;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		if (is_cylinder_used(m_dive, i))
-			startPressure << getPressures(m_dive, i, START_PRESSURE);
-	}
-	return startPressure;
-}
-
-QStringList DiveObjectHelper::endPressure() const
-{
-	QStringList endPressure;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		if (is_cylinder_used(m_dive, i))
-			endPressure << getPressures(m_dive, i, END_PRESSURE);
-	}
-	return endPressure;
-}
-
-QStringList DiveObjectHelper::firstGas() const
-{
-	QStringList gas;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		if (is_cylinder_used(m_dive, i))
-			gas << get_gas_string(m_dive->cylinder[i].gasmix);
-	}
-	return gas;
 }

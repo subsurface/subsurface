@@ -145,77 +145,77 @@ GRANTLEE_END_LOOKUP
 // exists. Remove in due course.
 GRANTLEE_BEGIN_LOOKUP(DiveObjectHelper)
 if (property == "number") {
-	return object.number();
+	return object.number;
 } else if (property == "id") {
-	return object.id();
+	return object.id;
 } else if (property == "rating") {
-	return object.rating();
+	return object.rating;
 } else if (property == "visibility") {
-	return object.visibility();
+	return object.visibility;
 } else if (property == "date") {
 	return object.date();
 } else if (property == "time") {
 	return object.time();
 } else if (property == "timestamp") {
-	return QVariant::fromValue(object.timestamp());
+	return QVariant::fromValue(object.timestamp);
 } else if (property == "location") {
-	return object.location();
+	return object.location;
 } else if (property == "gps") {
-	return object.gps();
+	return object.gps;
 } else if (property == "gps_decimal") {
-	return object.gps_decimal();
+	return object.gps_decimal;
 } else if (property == "dive_site") {
-	return object.dive_site();
+	return object.dive_site;
 } else if (property == "duration") {
-	return object.duration();
+	return object.duration;
 } else if (property == "noDive") {
-	return object.noDive();
+	return object.noDive;
 } else if (property == "depth") {
-	return object.depth();
+	return object.depth;
 } else if (property == "divemaster") {
-	return object.divemaster();
+	return object.divemaster;
 } else if (property == "buddy") {
-	return object.buddy();
+	return object.buddy;
 } else if (property == "airTemp") {
-	return object.airTemp();
+	return object.airTemp;
 } else if (property == "waterTemp") {
-	return object.waterTemp();
+	return object.waterTemp;
 } else if (property == "notes") {
-	return object.notes();
+	return object.notes;
 } else if (property == "tags") {
-	return object.tags();
+	return object.tags;
 } else if (property == "gas") {
-	return object.gas();
+	return object.gas;
 } else if (property == "sac") {
-	return object.sac();
+	return object.sac;
 } else if (property == "weightList") {
-	return object.weightList();
+	return object.weightList;
 } else if (property == "weights") {
-	return object.weights();
+	return object.weights;
 } else if (property == "singleWeight") {
-	return object.singleWeight();
+	return object.singleWeight;
 } else if (property == "suit") {
-	return object.suit();
+	return object.suit;
 } else if (property == "cylinderList") {
 	return object.cylinderList();
 } else if (property == "cylinders") {
-	return object.cylinders();
+	return object.cylinders;
 } else if (property == "cylinderObjects") {
-	return QVariant::fromValue(object.cylinderObjects());
+	return QVariant::fromValue(object.cylinderObjects);
 } else if (property == "maxcns") {
-	return object.maxcns();
+	return object.maxcns;
 } else if (property == "otu") {
-	return object.otu();
+	return object.otu;
 } else if (property == "sumWeight") {
-	return object.sumWeight();
+	return object.sumWeight;
 } else if (property == "getCylinder") {
-	return object.getCylinder();
+	return object.getCylinder;
 } else if (property == "startPressure") {
-	return object.startPressure();
+	return object.startPressure;
 } else if (property == "endPressure") {
-	return object.endPressure();
+	return object.endPressure;
 } else if (property == "firstGas") {
-	return object.firstGas();
+	return object.firstGas;
 }
 GRANTLEE_END_LOOKUP
 #endif
