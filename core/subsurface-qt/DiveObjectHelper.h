@@ -48,8 +48,6 @@ class DiveObjectHelper : public QObject {
 	Q_PROPERTY(QStringList startPressure READ startPressure CONSTANT)
 	Q_PROPERTY(QStringList endPressure READ endPressure CONSTANT)
 	Q_PROPERTY(QStringList firstGas READ firstGas CONSTANT)
-	Q_PROPERTY(QString fullText READ fullText CONSTANT)
-	Q_PROPERTY(QString fullTextNoNotes READ fullTextNoNotes CONSTANT)
 public:
 	DiveObjectHelper(struct dive *dive);
 	~DiveObjectHelper();
@@ -94,8 +92,6 @@ public:
 	QStringList startPressure() const;
 	QStringList endPressure() const;
 	QStringList firstGas() const;
-	QString fullText() const;
-	QString fullTextNoNotes() const;
 	static bool containsText(const struct dive *d, const QString &filterstring, Qt::CaseSensitivity cs, bool includeNotes);
 
 private:
