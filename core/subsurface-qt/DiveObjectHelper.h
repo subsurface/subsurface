@@ -78,7 +78,6 @@ public:
 	QString suit() const;
 	QStringList cylinderList() const;
 	QStringList cylinders() const;
-	QString cylinder(int idx) const;
 	QVector<CylinderObjectHelper> cylinderObjects() const;
 	int maxcns() const;
 	int otu() const;
