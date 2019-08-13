@@ -290,13 +290,6 @@ QStringList DiveObjectHelper::cylinders() const
 	return cylinders;
 }
 
-QString DiveObjectHelper::cylinder(int idx) const
-{
-	if ( (idx < 0) || idx > MAX_CYLINDERS)
-		return QString();
-	return getFormattedCylinder(m_dive, idx);
-}
-
 QVector<CylinderObjectHelper> DiveObjectHelper::cylinderObjects() const
 {
 	QVector<CylinderObjectHelper> res;
