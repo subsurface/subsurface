@@ -50,6 +50,8 @@ class DiveObjectHelper {
 public:
 	DiveObjectHelper(); // This is only to be used by Qt's metatype system!
 	DiveObjectHelper(struct dive *dive);
+	operator bool() const; // Returns false if this is an invalid default-generated object
+	bool operator!() const; // Returns true if this is an invalid default-generated object
 	int number() const;
 	int id() const;
 	struct dive *getDive() const;
