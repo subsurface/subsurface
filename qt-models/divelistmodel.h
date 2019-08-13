@@ -38,8 +38,6 @@ public:
 	enum DiveListRoles {
 		DiveRole = Qt::UserRole + 1,
 		DiveDateRole,
-		FullTextRole,
-		FullTextNoNotesRole
 	};
 
 	static DiveListModel *instance();
