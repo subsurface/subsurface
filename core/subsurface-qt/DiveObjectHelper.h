@@ -74,7 +74,6 @@ public:
 	QString sac() const;
 	QString weightList() const;
 	QStringList weights() const;
-	QString weight(int idx) const;
 	bool singleWeight() const;
 	QString suit() const;
 	QStringList cylinderList() const;
