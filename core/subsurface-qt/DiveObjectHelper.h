@@ -9,8 +9,8 @@
 #include <QVector>
 #include <QVariant>
 
-class DiveObjectHelper : public QObject {
-	Q_OBJECT
+class DiveObjectHelper {
+	Q_GADGET
 	Q_PROPERTY(int number READ number CONSTANT)
 	Q_PROPERTY(int id READ id CONSTANT)
 	Q_PROPERTY(int rating READ rating CONSTANT)
@@ -52,6 +52,7 @@ class DiveObjectHelper : public QObject {
 	Q_PROPERTY(QString fullText READ fullText CONSTANT)
 	Q_PROPERTY(QString fullTextNoNotes READ fullTextNoNotes CONSTANT)
 public:
+	DiveObjectHelper(); // This is only to be used by Qt's metatype system!
 	DiveObjectHelper(struct dive *dive);
 	int number() const;
 	int id() const;
@@ -100,6 +101,6 @@ public:
 private:
 	struct dive *m_dive;
 };
-	Q_DECLARE_METATYPE(DiveObjectHelper *)
+	Q_DECLARE_METATYPE(DiveObjectHelper)
 
 #endif

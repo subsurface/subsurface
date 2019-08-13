@@ -33,6 +33,7 @@ void DiveListSortModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
 	QSortFilterProxyModel::setSourceModel(sourceModel);
 }
+
 void DiveListSortModel::setFilter(QString f)
 {
 	filterString = f;
@@ -66,8 +67,8 @@ int DiveListSortModel::getIdxForId(int id)
 {
 	for (int i = 0; i < rowCount(); i++) {
 		QVariant v = data(index(i, 0), DiveListModel::DiveRole);
-		DiveObjectHelper *d = v.value<DiveObjectHelper *>();
-		if (d->id() == id)
+		DiveObjectHelper d = v.value<DiveObjectHelper>();
+		if (d.id() == id)
 			return i;
 	}
 	return -1;
@@ -241,12 +242,12 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 	if(index.row() < 0 || index.row() >= m_dives.count())
 		return QVariant();
 
-	DiveObjectHelper *curr_dive = m_dives[index.row()];
+	DiveObjectHelper &curr_dive = *m_dives[index.row()];
 	switch(role) {
-	case DiveRole: return QVariant::fromValue<QObject*>(curr_dive);
-	case DiveDateRole: return (qlonglong)curr_dive->timestamp();
-	case FullTextRole: return curr_dive->fullText();
-	case FullTextNoNotesRole: return curr_dive->fullTextNoNotes();
+	case DiveRole: return QVariant::fromValue<DiveObjectHelper>(curr_dive);
+	case DiveDateRole: return (qlonglong)curr_dive.timestamp();
+	case FullTextRole: return curr_dive.fullText();
+	case FullTextNoNotesRole: return curr_dive.fullTextNoNotes();
 	}
 	return QVariant();
 
@@ -289,7 +290,7 @@ DiveListModel *DiveListModel::instance()
 	return m_instance;
 }
 
-DiveObjectHelper* DiveListModel::at(int i)
+DiveObjectHelper *DiveListModel::at(int i)
 {
 	return m_dives.at(i);
 }
