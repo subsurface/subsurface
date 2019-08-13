@@ -238,7 +238,7 @@ int DiveListModel::getDiveIdx(int id) const
 
 QVariant DiveListModel::data(const QModelIndex &index, int role) const
 {
-	if(index.row() < 0 || index.row() > m_dives.count())
+	if(index.row() < 0 || index.row() >= m_dives.count())
 		return QVariant();
 
 	DiveObjectHelper *curr_dive = m_dives[index.row()];
