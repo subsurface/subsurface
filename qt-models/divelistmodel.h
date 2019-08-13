@@ -62,9 +62,8 @@ public:
 	QHash<int, QByteArray> roleNames() const;
 	QString startAddDive();
 	void resetInternalData();
-	Q_INVOKABLE DiveObjectHelper* at(int i);
+	Q_INVOKABLE DiveObjectHelper at(int i);
 private:
-	QList<DiveObjectHelper*> m_dives;
 	static DiveListModel *m_instance;
 };
 

@@ -51,8 +51,8 @@ void DiveListSortModel::resetFilter()
 bool DiveListSortModel::filterAcceptsRow(int source_row, const QModelIndex &) const
 {
 	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
-	DiveObjectHelper *d = mySourceModel->at(source_row);
-	return d && !d->getDive()->hidden_by_filter;
+	DiveObjectHelper d = mySourceModel->at(source_row);
+	return d && !d.getDive()->hidden_by_filter;
 }
 
 int DiveListSortModel::shown()
@@ -148,9 +148,6 @@ void DiveListModel::addDive(const QList<dive *> &listOfDives)
 	if (listOfDives.isEmpty())
 		return;
 	beginInsertRows(QModelIndex(), rowCount(), rowCount() + listOfDives.count() - 1);
-	for (dive *d: listOfDives) {
-		m_dives.append(new DiveObjectHelper(d));
-	}
 	endInsertRows();
 }
 
@@ -165,25 +162,22 @@ void DiveListModel::addAllDives()
 
 }
 
-void DiveListModel::insertDive(int i, DiveObjectHelper *newDive)
+void DiveListModel::insertDive(int i, DiveObjectHelper *)
 {
 	beginInsertRows(QModelIndex(), i, i);
-	m_dives.insert(i, newDive);
 	endInsertRows();
 }
 
 void DiveListModel::removeDive(int i)
 {
 	beginRemoveRows(QModelIndex(), i, i);
-	delete m_dives.at(i);
-	m_dives.removeAt(i);
 	endRemoveRows();
 }
 
 void DiveListModel::removeDiveById(int id)
 {
-	for (int i = 0; i < rowCount(); i++) {
-		if (m_dives.at(i)->id() == id) {
+	for (int i = 0; i < dive_table.nr; i++) {
+		if (dive_table.dives[i]->id == id) {
 			removeDive(i);
 			return;
 		}
@@ -192,21 +186,16 @@ void DiveListModel::removeDiveById(int id)
 
 void DiveListModel::updateDive(int i, dive *d)
 {
-	DiveObjectHelper *newDive = new DiveObjectHelper(d);
 	// we need to make sure that QML knows that this dive has changed -
 	// the only reliable way I've found is to remove and re-insert it
 	removeDive(i);
-	insertDive(i, newDive);
+	insertDive(i, nullptr); // TODO: DiveObjectHelper not needed anymore - remove second argument
 }
 
 void DiveListModel::clear()
 {
-	if (m_dives.count()) {
-		beginRemoveRows(QModelIndex(), 0, m_dives.count() - 1);
-		qDeleteAll(m_dives);
-		m_dives.clear();
-		endRemoveRows();
-	}
+	beginResetModel();
+	endResetModel();
 }
 
 void DiveListModel::resetInternalData()
@@ -221,25 +210,20 @@ void DiveListModel::resetInternalData()
 
 int DiveListModel::rowCount(const QModelIndex &) const
 {
-	return m_dives.count();
+	return dive_table.nr;
 }
 
 int DiveListModel::getDiveIdx(int id) const
 {
-	int i;
-	for (i = 0; i < m_dives.count(); i++) {
-		if (m_dives.at(i)->id() == id)
-			return i;
-	}
-	return -1;
+	return get_idx_by_uniq_id(id);
 }
 
 QVariant DiveListModel::data(const QModelIndex &index, int role) const
 {
-	if(index.row() < 0 || index.row() >= m_dives.count())
+	if(index.row() < 0 || index.row() >= dive_table.nr)
 		return QVariant();
 
-	DiveObjectHelper &curr_dive = *m_dives[index.row()];
+	DiveObjectHelper curr_dive(dive_table.dives[index.row()]);
 	const dive *d = curr_dive.getDive();
 	if (!d)
 		return QVariant();
@@ -305,7 +289,11 @@ DiveListModel *DiveListModel::instance()
 	return m_instance;
 }
 
-DiveObjectHelper *DiveListModel::at(int i)
+DiveObjectHelper DiveListModel::at(int i)
 {
-	return m_dives.at(i);
+	if (i < 0 || i >= dive_table.nr) {
+		qWarning("DiveListModel::at(): accessing invalid dive with id %d", i);
+		return DiveObjectHelper(); // Returns an invalid DiveObjectHelper that will crash on access.
+	}
+	return DiveObjectHelper(dive_table.dives[i]);
 }
