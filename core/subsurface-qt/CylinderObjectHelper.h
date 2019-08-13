@@ -15,7 +15,7 @@ class CylinderObjectHelper {
 	Q_PROPERTY(QString endPressure MEMBER endPressure CONSTANT)
 	Q_PROPERTY(QString gasMix MEMBER gasMix CONSTANT)
 public:
-	CylinderObjectHelper(cylinder_t *cylinder = NULL);
+	CylinderObjectHelper(const cylinder_t *cylinder = NULL);
 	QString description;
 	QString size;
 	QString workingPressure;
