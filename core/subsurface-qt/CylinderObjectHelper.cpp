@@ -3,7 +3,7 @@
 #include "../qthelper.h"
 
 static QString EMPTY_CYLINDER_STRING = QStringLiteral("");
-CylinderObjectHelper::CylinderObjectHelper(cylinder_t *cylinder)
+CylinderObjectHelper::CylinderObjectHelper(const cylinder_t *cylinder)
 {
 	if (!cylinder)
 		return;
