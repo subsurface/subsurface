@@ -55,6 +55,7 @@ public:
 	void removeDiveById(int id);
 	void updateDive(int i, dive *d);
 	void reload();
+	struct dive *getDive(int i);
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	int getDiveIdx(int id) const;
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;

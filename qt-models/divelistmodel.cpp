@@ -51,8 +51,8 @@ void DiveListSortModel::resetFilter()
 bool DiveListSortModel::filterAcceptsRow(int source_row, const QModelIndex &) const
 {
 	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
-	DiveObjectHelper d = mySourceModel->at(source_row);
-	return d && !d.getDive()->hidden_by_filter;
+	const dive *d = mySourceModel->getDive(source_row);
+	return d && !d->hidden_by_filter;
 }
 
 int DiveListSortModel::shown()
@@ -262,11 +262,18 @@ DiveListModel *DiveListModel::instance()
 	return m_instance;
 }
 
-DiveObjectHelper DiveListModel::at(int i)
+struct dive *DiveListModel::getDive(int i)
 {
 	if (i < 0 || i >= dive_table.nr) {
-		qWarning("DiveListModel::at(): accessing invalid dive with id %d", i);
-		return DiveObjectHelper(); // Returns an invalid DiveObjectHelper that will crash on access.
+		qWarning("DiveListModel::getDive(): accessing invalid dive with id %d", i);
+		return nullptr;
 	}
-	return DiveObjectHelper(dive_table.dives[i]);
+	return dive_table.dives[i];
+}
+
+DiveObjectHelper DiveListModel::at(int i)
+{
+	// For an invalid id, returns an invalid DiveObjectHelper that will crash on access.
+	dive *d = getDive(i);
+	return d ? DiveObjectHelper(d) : DiveObjectHelper();
 }
