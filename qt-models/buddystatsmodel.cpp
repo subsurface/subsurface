@@ -44,7 +44,7 @@ int BuddyStatsListModel::axisMax() const
 	for (idx = 0; idx < rowCount(); idx++)
 		if (m_data.at(idx).count > max_dives)
 			max_dives = m_data.at(idx).count;
-	return (((max_dives / 10) + 1) * 10);
+	return (max_dives);
 }
 
 int BuddyStatsListModel::findIndex(QString buddy) const

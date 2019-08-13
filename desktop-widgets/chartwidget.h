@@ -29,6 +29,8 @@ slots:
 	void filterFinished();
 
 private:
+	int calcYAxisTicks(int maxDiveCount);
+	int calcYAxisMax(int maxDiveCount);
 	Ui::ChartWidget ui;
 	DateStatsTableModel *model;
 	TagStatsListModel *tagModel;

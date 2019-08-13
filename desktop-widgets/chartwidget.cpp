@@ -93,13 +93,14 @@ QtCharts::QChart *ChartWidget::drawYearChart()
 		categories << model->headerData(idx, Qt::Horizontal, Qt::DisplayRole).toString();
 	QtCharts::QBarCategoryAxis *axisX = new QtCharts::QBarCategoryAxis();
 	axisX->append(categories);
+	axisX->setLabelsAngle(270);
 	yearChart->addAxis(axisX, Qt::AlignBottom);
 	series->attachAxis(axisX);
 
 	// Add Y Axis with tick marks
 	QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis();
-	axisY->setTickCount(model->axisMax(Qt::Horizontal) / 10 + 1);
-	axisY->setMax(model->axisMax(Qt::Horizontal));
+	axisY->setTickCount(calcYAxisTicks(model->axisMax(Qt::Horizontal)));
+	axisY->setMax(calcYAxisMax(model->axisMax(Qt::Horizontal)));
 	axisY->setLabelFormat("%i");
 	yearChart->addAxis(axisY, Qt::AlignLeft);
 	series->attachAxis(axisY);
@@ -141,8 +142,8 @@ QtCharts::QChart *ChartWidget::drawMonthChart()
 
 	// Add Y Axis with tick marks
 	QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis();
-	axisY->setTickCount(model->axisMax(Qt::Vertical) / 5 + 1);
-	axisY->setMax(model->axisMax(Qt::Vertical));
+	axisY->setTickCount(calcYAxisTicks(model->axisMax(Qt::Vertical)));
+	axisY->setMax(calcYAxisMax(model->axisMax(Qt::Vertical)));
 	axisY->setLabelFormat("%i");
 	monthChart->addAxis(axisY, Qt::AlignLeft);
 	series->attachAxis(axisY);
@@ -190,8 +191,8 @@ QtCharts::QChart *ChartWidget::drawTagChart()
 
 	// Add Y Axis with tick marks
 	QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis();
-	axisY->setTickCount(tagModel->axisMax() / 10 + 1);
-	axisY->setMax(tagModel->axisMax());
+	axisY->setTickCount(calcYAxisTicks(tagModel->axisMax()));
+	axisY->setMax(calcYAxisMax(tagModel->axisMax()));
 	axisY->setLabelFormat("%i");
 	tagChart->addAxis(axisY, Qt::AlignLeft);
 	series->attachAxis(axisY);
@@ -235,8 +236,8 @@ QtCharts::QChart *ChartWidget::drawBuddyChart()
 
 	// Add Y Axis with tick marks
 	QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis();
-	axisY->setTickCount(buddyModel->axisMax() / 10 + 1);
-	axisY->setMax(buddyModel->axisMax());
+	axisY->setTickCount(calcYAxisTicks(buddyModel->axisMax()));
+	axisY->setMax(calcYAxisMax(buddyModel->axisMax()));
 	axisY->setLabelFormat("%i");
 	buddyChart->addAxis(axisY, Qt::AlignLeft);
 	series->attachAxis(axisY);
@@ -276,4 +277,42 @@ void ChartWidget::filterFinished() {
 	buddyChartView.setChart(drawBuddyChart());
 	delete oldChart;
 	delete oldBuddyModel;
+}
+
+int ChartWidget::calcYAxisTicks(int maxDiveCount)
+{
+	if (maxDiveCount > 10000) {
+		return((maxDiveCount + 1) / 5000 + 2);
+	} else if (maxDiveCount > 5000) {
+		return((maxDiveCount + 1) / 1000 + 2);
+	} else if (maxDiveCount > 1000) {
+		return((maxDiveCount + 1) / 500 + 2);
+	} else if (maxDiveCount > 500) {
+		return((maxDiveCount + 1) / 100 + 2);
+	} else if (maxDiveCount > 100) {
+		return((maxDiveCount + 1) / 50 + 2);
+	} else if (maxDiveCount > 50) {
+		return((maxDiveCount + 1) / 10 + 2);
+	} else {
+		return((maxDiveCount + 1) / 5 + 2);
+	}
+}
+
+int ChartWidget::calcYAxisMax(int maxDiveCount)
+{
+	if (maxDiveCount > 10000) {
+		return(((maxDiveCount + 1) / 5000 + 1) * 5000);
+	} else if (maxDiveCount > 5000) {
+		return(((maxDiveCount + 1) / 1000 + 1) * 1000);
+	} else if (maxDiveCount > 1000) {
+		return(((maxDiveCount + 1) / 500 + 1) * 500);
+	} else if (maxDiveCount > 500) {
+		return(((maxDiveCount + 1) / 100 + 1) * 100);
+	} else if (maxDiveCount > 100) {
+		return(((maxDiveCount + 1) / 50 + 1) * 50);
+	} else if (maxDiveCount > 50) {
+		return(((maxDiveCount + 1) / 10 + 1) * 10);
+	} else {
+		return(((maxDiveCount + 1) / 5 + 1) * 5);
+	}
 }

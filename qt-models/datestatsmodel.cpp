@@ -63,17 +63,17 @@ int DateStatsTableModel::axisMax(Qt::Orientation orientation) const
 		for (idx = 0; idx < columnCount(); idx++)
 			if (m_data[idx].at(TOTAL) > max_dives)
 				max_dives = m_data[idx].at(TOTAL);
-		return (((max_dives / 10) + 1) * 10);
+		return (max_dives);
 	} else {
 		// Find max number of dives for a given month and round to multiple of 5
 		for (month = JAN; month <= DEC; month++) {
 			dive_count = 0;
-			for (idx =0; idx < columnCount(); idx++)
+			for (idx = 0; idx < columnCount(); idx++)
 				dive_count += m_data[idx].at(month);
 			if (dive_count > max_dives)
 				max_dives = dive_count;
 		}
-		return (((max_dives / 5) + 1) * 5);
+		return (max_dives);
 	}
 }
 
