@@ -227,10 +227,10 @@ private:
 	qreal m_lastDevicePixelRatio;
 	QElapsedTimer timer;
 	bool alreadySaving;
-	bool checkDate(DiveObjectHelper *myDive, struct dive * d, QString date);
-	bool checkLocation(DiveObjectHelper *myDive, struct dive *d, QString location, QString gps);
-	bool checkDuration(DiveObjectHelper *myDive, struct dive *d, QString duration);
-	bool checkDepth(DiveObjectHelper *myDive, struct dive *d, QString depth);
+	bool checkDate(const DiveObjectHelper &myDive, struct dive *d, QString date);
+	bool checkLocation(const DiveObjectHelper &myDive, struct dive *d, QString location, QString gps);
+	bool checkDuration(const DiveObjectHelper &myDive, struct dive *d, QString duration);
+	bool checkDepth(const DiveObjectHelper &myDive, struct dive *d, QString depth);
 	bool currentGitLocalOnly;
 	Q_INVOKABLE DCDeviceData *m_device_data;
 	QString m_progressMessage;
