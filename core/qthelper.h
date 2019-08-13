@@ -79,6 +79,7 @@ QLocale getLocale();
 QVector<QPair<QString, int>> selectedDivesGasUsed();
 QString getUserAgent();
 QString printGPSCoords(const location_t *loc);
+bool diveContainsText(const struct dive *d, const QString &filterstring, Qt::CaseSensitivity cs, bool includeNotes);
 
 #if defined __APPLE__
 #define TITLE_OR_TEXT(_t, _m) "", _t + "\n" + _m
