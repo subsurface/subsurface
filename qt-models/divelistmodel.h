@@ -58,6 +58,7 @@ public:
 	struct dive *getDive(int i);
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	int getDiveIdx(int id) const;
+	QModelIndex getDiveQIdx(int id);
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	QHash<int, QByteArray> roleNames() const;
 	QString startAddDive();

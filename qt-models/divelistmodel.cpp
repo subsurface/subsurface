@@ -62,13 +62,12 @@ int DiveListSortModel::shown()
 
 int DiveListSortModel::getIdxForId(int id)
 {
-	for (int i = 0; i < rowCount(); i++) {
-		QVariant v = data(index(i, 0), DiveListModel::DiveRole);
-		DiveObjectHelper d = v.value<DiveObjectHelper>();
-		if (d.id() == id)
-			return i;
-	}
-	return -1;
+	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
+	QModelIndex sourceIdx = mySourceModel->getDiveQIdx(id);
+	if (!sourceIdx.isValid())
+		return -1;
+	QModelIndex localIdx = mapFromSource(sourceIdx);
+	return localIdx.row();
 }
 
 void DiveListSortModel::reload()
@@ -187,9 +186,18 @@ int DiveListModel::rowCount(const QModelIndex &) const
 	return dive_table.nr;
 }
 
+// Get the index of a dive in the global dive list by the dive's unique id. Returns an integer [0..nrdives).
 int DiveListModel::getDiveIdx(int id) const
 {
 	return get_idx_by_uniq_id(id);
+}
+
+// Get an index of a dive. In contrast to getDiveIdx, this returns a Qt model-index,
+// which can be used to access data of a Qt model.
+QModelIndex DiveListModel::getDiveQIdx(int id)
+{
+	int idx = getDiveIdx(id);
+	return idx >= 0 ? createIndex(idx, 0) : QModelIndex();
 }
 
 QVariant DiveListModel::data(const QModelIndex &index, int role) const
