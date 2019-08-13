@@ -1160,7 +1160,7 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		if (newIdx != oldIdx) {
 			DiveListModel::instance()->removeDive(modelIdx);
 			modelIdx += (newIdx - oldIdx);
-			DiveListModel::instance()->insertDive(modelIdx, &myDive);
+			DiveListModel::instance()->insertDive(modelIdx);
 			diveChanged = true; // because we already modified things
 		}
 	}

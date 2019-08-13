@@ -165,7 +165,7 @@ void DiveListModel::addAllDives()
 
 }
 
-void DiveListModel::insertDive(int i, DiveObjectHelper *)
+void DiveListModel::insertDive(int i)
 {
 	beginInsertRows(QModelIndex(), i, i);
 	endInsertRows();
@@ -192,7 +192,7 @@ void DiveListModel::updateDive(int i, dive *d)
 	// we need to make sure that QML knows that this dive has changed -
 	// the only reliable way I've found is to remove and re-insert it
 	removeDive(i);
-	insertDive(i, nullptr); // TODO: DiveObjectHelper not needed anymore - remove second argument
+	insertDive(i);
 }
 
 void DiveListModel::clear()
@@ -265,7 +265,7 @@ QString DiveListModel::startAddDive()
 	d->number = nr;
 	d->dc.model = strdup("manually added dive");
 	append_dive(d);
-	insertDive(get_idx_by_uniq_id(d->id), new DiveObjectHelper(d));
+	insertDive(get_idx_by_uniq_id(d->id));
 	return QString::number(d->id);
 }
 
