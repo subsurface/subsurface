@@ -1156,7 +1156,7 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		if (newIdx != oldIdx) {
 			DiveListModel::instance()->removeDive(modelIdx);
 			modelIdx += (newIdx - oldIdx);
-			DiveListModel::instance()->insertDive(modelIdx, &myDive);
+			DiveListModel::instance()->insertDive(modelIdx);
 			diveChanged = true; // because we already modified things
 		}
 	}
@@ -1307,7 +1307,7 @@ bool QMLManager::undoDelete(int id)
 		add_dive_to_trip(deletedDive, trip);
 	}
 	record_dive(deletedDive);
-	DiveListModel::instance()->insertDive(get_idx_by_uniq_id(deletedDive->id), nullptr);
+	DiveListModel::instance()->insertDive(get_idx_by_uniq_id(deletedDive->id));
 	changesNeedSaving();
 	deletedDive = NULL;
 	deletedTrip = NULL;

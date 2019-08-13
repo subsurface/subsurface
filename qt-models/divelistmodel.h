@@ -50,7 +50,7 @@ public:
 	DiveListModel(QObject *parent = 0);
 	void addDive(const QList<dive *> &listOfDives);
 	void addAllDives();
-	void insertDive(int i, DiveObjectHelper *newDive);
+	void insertDive(int i);
 	void removeDive(int i);
 	void removeDiveById(int id);
 	void updateDive(int i, dive *d);
