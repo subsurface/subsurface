@@ -247,13 +247,6 @@ bool DiveObjectHelper::singleWeight() const
 	return m_dive->weightsystems.nr <= 1;
 }
 
-QString DiveObjectHelper::weight(int idx) const
-{
-	if ((idx < 0) || idx >= m_dive->weightsystems.nr)
-		return QString();
-	return getFormattedWeight(m_dive, idx);
-}
-
 QString DiveObjectHelper::suit() const
 {
 	return m_dive->suit ? m_dive->suit : QString();
