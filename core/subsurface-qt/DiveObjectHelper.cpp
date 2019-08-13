@@ -67,16 +67,6 @@ DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 {
 }
 
-DiveObjectHelper::operator bool() const
-{
-	return !!m_dive;
-}
-
-bool DiveObjectHelper::operator!() const
-{
-	return !m_dive;
-}
-
 int DiveObjectHelper::number() const
 {
 	return m_dive->number;
