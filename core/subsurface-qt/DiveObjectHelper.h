@@ -54,7 +54,6 @@ public:
 	bool operator!() const; // Returns true if this is an invalid default-generated object
 	int number() const;
 	int id() const;
-	struct dive *getDive() const;
 	int rating() const;
 	int visibility() const;
 	QString date() const;
