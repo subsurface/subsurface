@@ -197,12 +197,11 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 	if(index.row() < 0 || index.row() >= dive_table.nr)
 		return QVariant();
 
-	DiveObjectHelper curr_dive(dive_table.dives[index.row()]);
-	const dive *d = curr_dive.getDive();
+	dive *d = dive_table.dives[index.row()];
 	if (!d)
 		return QVariant();
 	switch(role) {
-	case DiveRole: return QVariant::fromValue<DiveObjectHelper>(curr_dive);
+	case DiveRole: return QVariant::fromValue(DiveObjectHelper(d));
 	case DiveDateRole: return (qlonglong)d->when;
 	case TripIdRole: return d->divetrip ? QString::number((quint64)d->divetrip, 16) : QString();
 	case TripNrDivesRole: return d->divetrip ? d->divetrip->dives.nr : 0;
