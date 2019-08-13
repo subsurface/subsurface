@@ -134,19 +134,13 @@ QString TemplateLayout::generate()
 	Grantlee::registerMetaType<template_options>();
 	Grantlee::registerMetaType<print_options>();
 	Grantlee::registerMetaType<CylinderObjectHelper>(); // TODO: Remove when grantlee supports Q_GADGET
+	Grantlee::registerMetaType<DiveObjectHelper>(); // TODO: Remove when grantlee supports Q_GADGET
 
-	// Note: Currently, this should not be transformed into a QVector<> or std::vector<>,
-	// as diveList contains pointers to elements in this list. But vectors might relocate
-	// and thus invalidate the pointers! std::list<> is used here, because the new elements
-	// can be directly constructed in the list with the emplace_back() call.
-	// Ultimately, the memory management should be fixed.
-	std::list<DiveObjectHelper> diveObjectList;
 	QVariantList diveList;
 
 	struct dive *dive;
 	if (in_planner()) {
-		diveObjectList.emplace_back(&displayed_dive);
-		diveList.append(QVariant::fromValue(&diveObjectList.back()));
+		diveList.append(QVariant::fromValue(DiveObjectHelper(&displayed_dive)));
 		emit progressUpdated(100.0);
 	} else {
 		int i;
@@ -154,8 +148,7 @@ QString TemplateLayout::generate()
 			//TODO check for exporting selected dives only
 			if (!dive->selected && printOptions->print_selected)
 				continue;
-			diveObjectList.emplace_back(dive);
-			diveList.append(QVariant::fromValue(&diveObjectList.back()));
+			diveList.append(QVariant::fromValue(DiveObjectHelper(dive)));
 			progress++;
 			emit progressUpdated(lrint(progress * 100.0 / totalWork));
 		}
@@ -198,6 +191,7 @@ QString TemplateLayout::generateStatistics()
 	Grantlee::registerMetaType<template_options>();
 	Grantlee::registerMetaType<print_options>();
 	Grantlee::registerMetaType<CylinderObjectHelper>(); // TODO: Remove when grantlee supports Q_GADGET
+	Grantlee::registerMetaType<DiveObjectHelper>(); // TODO: Remove when grantlee supports Q_GADGET
 
 	QVariantList years;
 

@@ -55,6 +55,13 @@ static QString getPressures(struct dive *dive, int i, enum returnPressureSelecto
 	return fmt;
 }
 
+// Qt's metatype system insists on generating a default constructed object,
+// even if that makes no sense. Usage of this object *will* crash.
+DiveObjectHelper::DiveObjectHelper() :
+	m_dive(nullptr)
+{
+}
+
 DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 	m_dive(d)
 {
