@@ -409,3 +409,21 @@ QString DiveObjectHelper::fullTextNoNotes() const
 	QString tripLocation = m_dive->divetrip ? m_dive->divetrip->location : QString();
 	return tripLocation + ":-:" + location() + ":-:" + buddy() + ":-:" + divemaster() + ":-:" + suit() + ":-:" + tags();
 }
+
+static bool contains(const char *s, const QString &filterstring, Qt::CaseSensitivity cs)
+{
+	return !empty_string(s) && QString(s).contains(filterstring, cs);
+}
+
+bool DiveObjectHelper::containsText(const struct dive *d, const QString &filterstring, Qt::CaseSensitivity cs, bool includeNotes)
+{
+	if (!d)
+		return false;
+	return contains(get_dive_location(d), filterstring, cs) ||
+	       (d->divetrip && contains(d->divetrip->location, filterstring, cs)) ||
+	       contains(d->buddy, filterstring, cs) ||
+	       contains(d->divemaster, filterstring, cs) ||
+	       contains(d->suit, filterstring, cs) ||
+	       get_taglist_string(d->tag_list).contains(filterstring, cs) ||
+	       (includeNotes && contains(d->notes, filterstring, cs));
+}

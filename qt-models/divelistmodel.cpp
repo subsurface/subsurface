@@ -20,19 +20,17 @@ void DiveListSortModel::updateFilterState()
 	bool includeNotes = qPrefGeneral::filterFullTextNotes();
 	Qt::CaseSensitivity cs = qPrefGeneral::filterCaseSensitive() ? Qt::CaseSensitive : Qt::CaseInsensitive;
 
-	// get the underlying model and re-calculate the filter value for each dive
-	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
-	for (int i = 0; i < mySourceModel->rowCount(); i++) {
-		DiveObjectHelper *d = mySourceModel->at(i);
-		QString fullText = includeNotes? d->fullText() : d->fullTextNoNotes();
-		d->getDive()->hidden_by_filter = !fullText.contains(filterString, cs);
-	}
+	int i;
+	struct dive *d;
+	for_each_dive(i, d)
+		d->hidden_by_filter = !DiveObjectHelper::containsText(d, filterString, cs, includeNotes);
 }
 
 void DiveListSortModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
 	QSortFilterProxyModel::setSourceModel(sourceModel);
 }
+
 void DiveListSortModel::setFilter(QString f)
 {
 	filterString = f;

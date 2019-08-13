@@ -96,6 +96,7 @@ public:
 	QStringList firstGas() const;
 	QString fullText() const;
 	QString fullTextNoNotes() const;
+	static bool containsText(const struct dive *d, const QString &filterstring, Qt::CaseSensitivity cs, bool includeNotes);
 
 private:
 	struct dive *m_dive;
