@@ -87,11 +87,6 @@ int DiveObjectHelper::id() const
 	return m_dive->id;
 }
 
-struct dive *DiveObjectHelper::getDive() const
-{
-	return m_dive;
-}
-
 QString DiveObjectHelper::date() const
 {
 	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000*m_dive->when, Qt::UTC);
