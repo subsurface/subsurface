@@ -43,6 +43,7 @@ public:
 		DateTimeRole,
 		IdRole,
 		NumberRole,
+		LocationRole,
 	};
 
 	static DiveListModel *instance();

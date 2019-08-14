@@ -256,6 +256,7 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 		}
 	case IdRole: return d->id;
 	case NumberRole: return d->number;
+	case LocationRole: return get_dive_location(d);
 	}
 	return QVariant();
 }
@@ -270,6 +271,7 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 	roles[DateTimeRole] = "dateTime";
 	roles[IdRole] = "id";
 	roles[NumberRole] = "number";
+	roles[LocationRole] = "location";
 	return roles;
 }
 
