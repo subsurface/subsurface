@@ -40,7 +40,8 @@ public:
 		DiveDateRole,
 		TripIdRole,
 		TripNrDivesRole,
-		DateTimeRole
+		DateTimeRole,
+		IdRole
 	};
 
 	static DiveListModel *instance();

@@ -254,6 +254,7 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 		return QStringLiteral("%1 %2").arg(localTime.date().toString(prefs.date_format_short),
 						   localTime.time().toString(prefs.time_format));
 		}
+	case IdRole: return d->id;
 	}
 	return QVariant();
 }
@@ -266,6 +267,7 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 	roles[TripIdRole] = "tripId";
 	roles[TripNrDivesRole] = "tripNrDives";
 	roles[DateTimeRole] = "dateTime";
+	roles[IdRole] = "id";
 	return roles;
 }
 
