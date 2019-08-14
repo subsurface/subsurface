@@ -13,7 +13,7 @@ class DiveListSortModel : public QSortFilterProxyModel
 public:
 	DiveListSortModel(QObject *parent = 0);
 	void setSourceModel(QAbstractItemModel *sourceModel);
-	Q_INVOKABLE void clear();
+	Q_INVOKABLE void reload();
 	Q_INVOKABLE QVariant tripIdToObject(const QString &s);
 	Q_INVOKABLE QString tripTitle(const QVariant &trip);
 	Q_INVOKABLE QString tripShortDate(const QVariant &trip);
@@ -54,7 +54,7 @@ public:
 	void removeDive(int i);
 	void removeDiveById(int id);
 	void updateDive(int i, dive *d);
-	void clear();
+	void reload();
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	int getDiveIdx(int id) const;
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;

@@ -390,8 +390,7 @@ Kirigami.Page {
 					manager.appendTextToLog("Save downloaded dives that were selected")
 					importModel.recordDives()
 					manager.saveChangesLocal()
-					diveModel.clear()
-					diveModel.addAllDives()
+					diveModel.reload()
 					pageStack.pop();
 					download.text = qsTr("Download")
 					divesDownloaded = false
