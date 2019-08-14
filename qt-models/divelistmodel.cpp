@@ -77,13 +77,6 @@ void DiveListSortModel::clear()
 	mySourceModel->clear();
 }
 
-void DiveListSortModel::addAllDives()
-{
-	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
-	mySourceModel->addAllDives();
-	updateFilterState();
-}
-
 // In QML, section headings can only be strings. To identify dives that
 // belong to the same trip, a string containing the trip-pointer in hexadecimal
 // encoding is passed in. To format the trip heading, the string is then
