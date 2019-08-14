@@ -57,7 +57,7 @@ Kirigami.ScrollablePage {
 			states: [
 				State {
 					name: "isHidden";
-					when: dive.tripId !== activeTrip && ! diveOutsideTrip
+					when: tripId !== activeTrip && ! diveOutsideTrip
 					PropertyChanges {
 						target: innerListItem
 						height: 0
@@ -66,7 +66,7 @@ Kirigami.ScrollablePage {
 				},
 				State {
 					name: "isVisible";
-					when: dive.tripId === activeTrip || diveOutsideTrip
+					when: tripId === activeTrip || diveOutsideTrip
 					PropertyChanges {
 						target: innerListItem
 						height: diveListEntry.height + Kirigami.Units.smallSpacing
@@ -129,7 +129,7 @@ Kirigami.ScrollablePage {
 			Item {
 				Rectangle {
 					id: leftBarDive
-					width: dive.tripId == "" ? 0 : Kirigami.Units.smallSpacing
+					width: tripId == "" ? 0 : Kirigami.Units.smallSpacing
 					height: diveListEntry.height * 0.8
 					color: subsurfaceTheme.lightPrimaryColor
 					anchors {
@@ -524,7 +524,7 @@ Kirigami.ScrollablePage {
 		maximumFlickVelocity: parent.height * 5
 		bottomMargin: Kirigami.Units.iconSizes.medium + Kirigami.Units.gridUnit
 		cacheBuffer: 40 // this will increase memory use, but should help with scrolling
-		section.property: "dive.tripId"
+		section.property: "tripId"
 		section.criteria: ViewSection.FullString
 		section.delegate: tripHeading
 		section.labelPositioning: ViewSection.CurrentLabelAtStart | ViewSection.InlineLabels

@@ -240,9 +240,11 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 
 	DiveObjectHelper *curr_dive = m_dives[index.row()];
+	const dive *d = curr_dive->getDive();
 	switch(role) {
 	case DiveRole: return QVariant::fromValue<QObject*>(curr_dive);
 	case DiveDateRole: return (qlonglong)curr_dive->timestamp();
+	case TripIdRole: return d->divetrip ? QString::number((quint64)d->divetrip, 16) : QString();
 	}
 	return QVariant();
 
@@ -253,6 +255,7 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 	QHash<int, QByteArray> roles;
 	roles[DiveRole] = "dive";
 	roles[DiveDateRole] = "date";
+	roles[TripIdRole] = "tripId";
 	return roles;
 }
 
