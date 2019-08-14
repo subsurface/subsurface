@@ -313,11 +313,6 @@ QVector<CylinderObjectHelper> DiveObjectHelper::cylinderObjects() const
 	return res;
 }
 
-QString DiveObjectHelper::tripId() const
-{
-	return m_dive->divetrip ? QString::number((quint64)m_dive->divetrip, 16) : QString();
-}
-
 int DiveObjectHelper::tripNrDives() const
 {
 	struct dive_trip *dt = m_dive->divetrip;
