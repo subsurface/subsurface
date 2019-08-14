@@ -229,11 +229,11 @@ Kirigami.ScrollablePage {
 							copyButtonVisible = false
 							pasteButtonVisible = false
 							timer.stop()
-							manager.copyDiveData(dive.id)
+							manager.copyDiveData(id)
 						}
 						onPressAndHold: {
 								globalDrawer.close()
-								manager.copyDiveData(dive.id)
+								manager.copyDiveData(id)
 								pageStack.push(settingsCopyWindow)
 						}
 					}
@@ -270,7 +270,7 @@ Kirigami.ScrollablePage {
 							copyButtonVisible = false
 							pasteButtonVisible = false
 							timer.stop()
-							manager.pasteDiveData(dive.id)
+							manager.pasteDiveData(id)
 						}
 					}
 				}
@@ -307,7 +307,7 @@ Kirigami.ScrollablePage {
 							copyButtonVisible = false
 							pasteButtonVisible = false
 							timer.stop()
-							manager.deleteDive(dive.id)
+							manager.deleteDive(id)
 						}
 					}
 				}
