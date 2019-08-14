@@ -71,10 +71,10 @@ int DiveListSortModel::getIdxForId(int id)
 	return -1;
 }
 
-void DiveListSortModel::clear()
+void DiveListSortModel::reload()
 {
 	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
-	mySourceModel->clear();
+	mySourceModel->reload();
 }
 
 // In QML, section headings can only be strings. To identify dives that
@@ -136,25 +136,6 @@ DiveListModel::DiveListModel(QObject *parent) : QAbstractListModel(parent)
 	m_instance = this;
 }
 
-void DiveListModel::addDive(const QList<dive *> &listOfDives)
-{
-	if (listOfDives.isEmpty())
-		return;
-	beginInsertRows(QModelIndex(), rowCount(), rowCount() + listOfDives.count() - 1);
-	endInsertRows();
-}
-
-void DiveListModel::addAllDives()
-{
-	QList<dive *>listOfDives;
-	int i;
-	struct dive *d;
-	for_each_dive (i, d)
-		listOfDives.append(d);
-	addDive(listOfDives);
-
-}
-
 void DiveListModel::insertDive(int i, DiveObjectHelper *)
 {
 	beginInsertRows(QModelIndex(), i, i);
@@ -185,7 +166,7 @@ void DiveListModel::updateDive(int i, dive *d)
 	insertDive(i, nullptr); // TODO: DiveObjectHelper not needed anymore - remove second argument
 }
 
-void DiveListModel::clear()
+void DiveListModel::reload()
 {
 	beginResetModel();
 	endResetModel();

@@ -309,8 +309,7 @@ void QMLManager::openLocalThenRemote(QString url)
 		qPrefTechnicalDetails::set_show_ccr_sensors(git_prefs.show_ccr_sensors);
 		qPrefPartialPressureGas::set_po2(git_prefs.pp_graphs.po2);
 		process_loaded_dives();
-		DiveListModel::instance()->clear();
-		DiveListModel::instance()->addAllDives();
+		DiveListModel::instance()->reload();
 		appendTextToLog(QStringLiteral("%1 dives loaded from cache").arg(dive_table.nr));
 		setNotificationText(tr("%1 dives loaded from local dive data file").arg(dive_table.nr));
 	}
@@ -529,7 +528,7 @@ void QMLManager::saveCloudCredentials()
 		getCloudURL(url);
 		manager()->clearAccessCache(); // remove any chached credentials
 		clear_git_id(); // invalidate our remembered GIT SHA
-		DiveListModel::instance()->clear();
+		DiveListModel::instance()->reload();
 		GpsListModel::instance()->clear();
 		setStartPageText(tr("Attempting to open cloud storage with new credentials"));
 		// we therefore know that no one else is already accessing THIS git repo;
@@ -757,8 +756,7 @@ successful_exit:
 	if (noCloudToCloud) {
 		git_storage_update_progress(qPrintable(tr("Loading dives from local storage ('no cloud' mode)")));
 		mergeLocalRepo();
-		DiveListModel::instance()->clear();
-		DiveListModel::instance()->addAllDives();
+		DiveListModel::instance()->reload();
 		appendTextToLog(QStringLiteral("%1 dives loaded after importing nocloud local storage").arg(dive_table.nr));
 		noCloudToCloud = false;
 		mark_divelist_changed(true);
@@ -819,9 +817,8 @@ void QMLManager::consumeFinishedLoad(timestamp_t currentDiveTimestamp)
 	prefs.show_ccr_setpoint = git_prefs.show_ccr_setpoint;
 	prefs.show_ccr_sensors = git_prefs.show_ccr_sensors;
 	prefs.pp_graphs.po2 = git_prefs.pp_graphs.po2;
-	DiveListModel::instance()->clear();
 	process_loaded_dives();
-	DiveListModel::instance()->addAllDives();
+	DiveListModel::instance()->reload();
 	if (currentDiveTimestamp)
 		setUpdateSelectedDive(dlSortModel->getIdxForId(get_dive_id_closest_to(currentDiveTimestamp)));
 	appendTextToLog(QStringLiteral("%1 dives loaded").arg(dive_table.nr));
@@ -832,8 +829,7 @@ void QMLManager::consumeFinishedLoad(timestamp_t currentDiveTimestamp)
 
 void QMLManager::refreshDiveList()
 {
-	DiveListModel::instance()->clear();
-	DiveListModel::instance()->addAllDives();
+	DiveListModel::instance()->reload();
 }
 
 void QMLManager::setupDivesite(struct dive *d, struct dive_site *ds, double lat, double lon, const char *locationtext)
@@ -1367,9 +1363,7 @@ bool QMLManager::undoDelete(int id)
 		add_dive_to_trip(deletedDive, trip);
 	}
 	record_dive(deletedDive);
-	QList<dive *>diveAsList;
-	diveAsList << deletedDive;
-	DiveListModel::instance()->addDive(diveAsList);
+	DiveListModel::instance()->insertDive(get_idx_by_uniq_id(deletedDive->id), nullptr);
 	changesNeedSaving();
 	deletedDive = NULL;
 	deletedTrip = NULL;
