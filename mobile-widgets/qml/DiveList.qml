@@ -187,7 +187,7 @@ Kirigami.ScrollablePage {
 					}
 					Controls.Label {
 						id: numberText
-						text: "#" + dive.number
+						text: "#" + number
 						font.pointSize: subsurfaceTheme.smallPointSize
 						color: innerListItem.checked ? subsurfaceTheme.darkerPrimaryTextColor : secondaryTextColor
 						anchors {
