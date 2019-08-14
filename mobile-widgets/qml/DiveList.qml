@@ -179,7 +179,7 @@ Kirigami.ScrollablePage {
 						}
 						// let's try to show the depth / duration very compact
 						Controls.Label {
-							text: dive.depth + ' / ' + dive.duration
+							text: depthDuration
 							width: Math.max(Kirigami.Units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
 							font.pointSize: subsurfaceTheme.smallPointSize
 							color: innerListItem.checked ? subsurfaceTheme.darkerPrimaryTextColor : secondaryTextColor
