@@ -313,12 +313,6 @@ QVector<CylinderObjectHelper> DiveObjectHelper::cylinderObjects() const
 	return res;
 }
 
-int DiveObjectHelper::tripNrDives() const
-{
-	struct dive_trip *dt = m_dive->divetrip;
-	return dt ? dt->dives.nr : 0;
-}
-
 int DiveObjectHelper::maxcns() const
 {
 	return m_dive->maxcns;

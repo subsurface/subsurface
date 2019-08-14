@@ -39,6 +39,7 @@ public:
 		DiveRole = Qt::UserRole + 1,
 		DiveDateRole,
 		TripIdRole,
+		TripNrDivesRole,
 	};
 
 	static DiveListModel *instance();

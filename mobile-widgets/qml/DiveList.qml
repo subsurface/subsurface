@@ -41,7 +41,7 @@ Kirigami.ScrollablePage {
 		id: diveDelegate
 		Kirigami.AbstractListItem {
 			// this looks weird, but it's how we can tell that this dive isn't in a trip
-			property bool diveOutsideTrip: dive.tripNrDives === 0
+			property bool diveOutsideTrip: tripNrDives === 0
 			leftPadding: 0
 			topPadding: 0
 			id: innerListItem
@@ -86,7 +86,7 @@ Kirigami.ScrollablePage {
 						}
 						NumberAnimation {
 							property: "height"
-							duration: 200 + 20 * dive.tripNrDives
+							duration: 200 + 20 * tripNrDives
 							easing.type: Easing.InOutQuad
 						}
 					}
@@ -97,7 +97,7 @@ Kirigami.ScrollablePage {
 					SequentialAnimation {
 						NumberAnimation {
 							property: "height"
-							duration: 200 + 20 * dive.tripNrDives
+							duration: 200 + 20 * tripNrDives
 							easing.type: Easing.InOutQuad
 						}
 						NumberAnimation {
