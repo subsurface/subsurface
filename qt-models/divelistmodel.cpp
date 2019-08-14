@@ -257,6 +257,8 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 	case IdRole: return d->id;
 	case NumberRole: return d->number;
 	case LocationRole: return get_dive_location(d);
+	case DepthDurationRole: return QStringLiteral("%1 / %2").arg(get_depth_string(d->dc.maxdepth.mm, true, true),
+								     get_dive_duration_string(d->duration.seconds, gettextFromC::tr("h"), gettextFromC::tr("min")));
 	}
 	return QVariant();
 }
@@ -272,6 +274,7 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 	roles[IdRole] = "id";
 	roles[NumberRole] = "number";
 	roles[LocationRole] = "location";
+	roles[DepthDurationRole] = "depthDuration";
 	return roles;
 }
 

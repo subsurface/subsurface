@@ -44,6 +44,7 @@ public:
 		IdRole,
 		NumberRole,
 		LocationRole,
+		DepthDurationRole,
 	};
 
 	static DiveListModel *instance();
