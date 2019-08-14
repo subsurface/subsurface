@@ -148,7 +148,7 @@ Kirigami.ScrollablePage {
 					anchors.left: leftBarDive.right
 					Controls.Label {
 						id: locationText
-						text: dive.location
+						text: location
 						font.weight: Font.Bold
 						font.pointSize: subsurfaceTheme.regularPointSize
 						elide: Text.ElideRight
