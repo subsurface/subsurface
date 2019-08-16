@@ -17,6 +17,7 @@ Documentation/docbook-xsl.css
 Documentation/user-manual*.html
 Documentation/user-manual*.pdf
 Documentation/user-manual*.text
+Documentation/mobile-images/mobile-images
 packaging/windows/subsurface.nsi
 packaging/macos/Info.plist
 *.kdev4
@@ -38,4 +39,5 @@ mobile-widgets/qml/kirigami
 packaging/ios/install-root
 packaging/ios/Info.plist
 packaging/ios/Qt
+packaging/ios/asset_catalog_compiler.Info.plist
 appdata/subsurface.appdata.xml
