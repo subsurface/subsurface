@@ -98,6 +98,11 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		product = "iX3M GPS Easy"; // we don't know which of the GPS models, so set one
 	}
 
+	if (btName == "COSMIQ") {
+		vendor = "Deepblu";
+		product = "Cosmiq+";
+	}
+
 	if (!vendor.isEmpty() && !product.isEmpty())
 		return descriptorLookup.value(vendor + product);
 
