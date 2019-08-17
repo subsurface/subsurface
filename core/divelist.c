@@ -161,35 +161,6 @@ static int calculate_otu(const struct dive *dive)
 	return lrint(otu);
 }
 
-/* Table of maximum oxygen exposure durations, used in CNS calulations.
-   This table shows the official NOAA maximum O2 exposure limits (in seconds) for different PO2 values. It also gives
-   slope values for linear interpolation for intermediate PO2 values between the tabulated PO2 values in the 1st column.
-   Top & bottom rows are inserted that are not in the NOAA table: (1) For PO2 > 1.6 the same slope value as between
-   1.5 & 1.6 is used. This exptrapolation for PO2 > 1.6 likely gives an underestimate above 1.6 but is better than the
-   value for PO2=1.6 (45 min). (2) The NOAA table only tabulates values for PO2 >= 0.6. Since O2-uptake occurs down to
-   PO2=0.5, the same slope is used as for 0.7 > PO2 > 0.6. This gives a conservative estimate for 0.6 > PO2 > 0.5. To
-   preserve the integer structure of the table, all slopes are given as slope*10: divide by 10 to get the valid slope.
-   The columns below are: 
-   po2 (mbar), Maximum Single Exposure (seconds), single_slope, Maximum 24 hour Exposure (seconds), 24h_slope */
-enum cns_table_headers {PO2VAL, SINGLE_EXP, SINGLE_SLOPE, DAILY_EXP, DAILY_SLOPE, NO_COLUMNS};
-static int const cns_table[][5] = {
-	{ 1600,  45 * 60, 456, 150 * 60, 180 },
-	{ 1550,  83 * 60, 456, 165 * 60, 180 },
-	{ 1500, 120 * 60, 444, 180 * 60, 180 },
-	{ 1450, 135 * 60, 180, 180 * 60,  00 },
-	{ 1400, 150 * 60, 180, 180 * 60,  00 },
-	{ 1350, 165 * 60, 180, 195 * 60, 180 },
-	{ 1300, 180 * 60, 180, 210 * 60, 180 },
-	{ 1250, 195 * 60, 180, 225 * 60, 180 },
-	{ 1200, 210 * 60, 180, 240 * 60, 180 },
-	{ 1100, 240 * 60, 180, 270 * 60, 180 },
-	{ 1000, 300 * 60, 360, 300 * 60, 180 },
-	{ 900,  360 * 60, 360, 360 * 60, 360 },
-	{ 800,  450 * 60, 540, 450 * 60, 540 },
-	{ 700,  570 * 60, 720, 570 * 60, 720 },
-	{ 600,  720 * 60, 900, 720 * 60, 900 },
-	{ 500,  870 * 60, 900, 870 * 60, 900 }
-};
 
 /* Calculate the CNS for a single dive  - this only takes the first divecomputer into account.
    The CNS contributions are summed for dive segments defined by samples. The maximum O2 exposure duration for each
@@ -203,9 +174,9 @@ static int const cns_table[][5] = {
 static double calculate_cns_dive(const struct dive *dive)
 {
 	int n;
-	size_t j;
 	const struct divecomputer *dc = &dive->dc;
 	double cns = 0.0;
+	double rate;
 	/* Calculate the CNS for each sample in this dive and sum them */
 	for (n = 1; n < dc->samples; n++) {
 		int t;
@@ -233,12 +204,10 @@ static double calculate_cns_dive(const struct dive *dive)
 		/* Don't increase CNS when po2 below 500 matm */
 		if (po2i <= 500)
 			continue;
-		/* Find the table-row for calculating the maximum exposure at this PO2 */
-		for (j = 1; j < sizeof(cns_table) / (sizeof(int) * NO_COLUMNS); j++)
-			if (po2i > cns_table[j][PO2VAL])
-				break;
-		/* Increment CNS with simple linear interpolation: 100 * time / (single-exposure-time + delta-PO2 * single-slope) */
-		cns += (double)t / ((double)cns_table[j][SINGLE_EXP] - ((double)po2i - (double)cns_table[j][PO2VAL]) * (double)cns_table[j][SINGLE_SLOPE] / 10.0) * 100;
+
+		// This formula is the result of fitting two lines to the Log of the NOAA CNS table
+		rate = po2i <= 1500 ? exp(-11.7853 + 0.00193873 * po2i) : exp(-23.6349 + 0.00980829 * po2i);
+		cns += (double) t * rate * 1000.0;
 	}
 	return cns;
 }
