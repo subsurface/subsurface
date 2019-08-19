@@ -623,7 +623,8 @@ void save_dives_buffer(struct membuffer *b, const bool select_only, bool anonymi
 				if (t->category != TC_NONE && t->value) {
 					put_format(b, "  <geo cat='%d'", t->category);
 					put_format(b, " origin='%d'", t->origin);
-					show_utf8_blanked(b, t->value, " value='", "'/>\n", 1, anonymize);
+					show_utf8_blanked(b, t->value, " value='", "'", 1, anonymize);
+					put_format(b, "/>\n");
 				}
 			}
 		}
@@ -837,7 +838,8 @@ void save_dive_sites_buffer(struct membuffer *b, const bool select_only, bool an
 				if (t->category != TC_NONE && t->value) {
 					put_format(b, "  <geo cat='%d'", t->category);
 					put_format(b, " origin='%d'", t->origin);
-					show_utf8_blanked(b, t->value, " value='", "'/>\n", 1, anonymize);
+					show_utf8_blanked(b, t->value, " value='", "'", 1, anonymize);
+					put_format(b, "/>\n");
 				}
 			}
 		}
