@@ -240,49 +240,50 @@ Kirigami.Page {
 
 		// set things up for editing - so make sure that the detailsEdit has
 		// all the right data (using the property aliases set up above)
-		dive_id = currentItem.modelData.dive.id
-		number = currentItem.modelData.dive.number
-		date = currentItem.modelData.dive.date + " " + currentItem.modelData.dive.time
-		location = currentItem.modelData.dive.location
-		locationIndex = manager.locationList.indexOf(currentItem.modelData.dive.location)
-		gps = currentItem.modelData.dive.gps
+		var dive = currentItem.modelData.dive
+		dive_id = dive.id
+		number = dive.number
+		date = dive.date + " " + dive.time
+		location = dive.location
+		locationIndex = manager.locationList.indexOf(dive.location)
+		gps = dive.gps
 		gpsCheckbox = false
-		duration = currentItem.modelData.dive.duration
-		depth = currentItem.modelData.dive.depth
-		airtemp = currentItem.modelData.dive.airTemp
-		watertemp = currentItem.modelData.dive.waterTemp
-		suitIndex = manager.suitList.indexOf(currentItem.modelData.dive.suit)
-		if (currentItem.modelData.dive.buddy.indexOf(",") > 0) {
-			buddyIndex = manager.buddyList.indexOf(currentItem.modelData.dive.buddy.split(",", 1).toString())
+		duration = dive.duration
+		depth = dive.depth
+		airtemp = dive.airTemp
+		watertemp = dive.waterTemp
+		suitIndex = manager.suitList.indexOf(dive.suit)
+		if (dive.buddy.indexOf(",") > 0) {
+			buddyIndex = manager.buddyList.indexOf(dive.buddy.split(",", 1).toString())
 		} else {
-			buddyIndex = manager.buddyList.indexOf(currentItem.modelData.dive.buddy)
+			buddyIndex = manager.buddyList.indexOf(dive.buddy)
 		}
-		buddyText = currentItem.modelData.dive.buddy;
-		if (currentItem.modelData.dive.divemaster.indexOf(",") > 0) {
-			divemasterIndex = manager.divemasterList.indexOf(currentItem.modelData.dive.divemaster.split(",", 1).toString())
+		buddyText = dive.buddy;
+		if (dive.divemaster.indexOf(",") > 0) {
+			divemasterIndex = manager.divemasterList.indexOf(dive.divemaster.split(",", 1).toString())
 		} else {
-			divemasterIndex = manager.divemasterList.indexOf(currentItem.modelData.dive.divemaster)
+			divemasterIndex = manager.divemasterList.indexOf(dive.divemaster)
 		}
-		divemasterText = currentItem.modelData.dive.divemaster
-		notes = currentItem.modelData.dive.notes
-		if (currentItem.modelData.dive.singleWeight) {
+		divemasterText = dive.divemaster
+		notes = dive.notes
+		if (dive.singleWeight) {
 			// we have only one weight, go ahead, have fun and edit it
-			weight = currentItem.modelData.dive.sumWeight
+			weight = dive.sumWeight
 		} else {
 			// careful when translating, this text is "magic" in DiveDetailsEdit.qml
 			weight = "cannot edit multiple weight systems"
 		}
-		startpressure = currentItem.modelData.dive.startPressure
-		endpressure = currentItem.modelData.dive.endPressure
-		usedGas = currentItem.modelData.dive.firstGas
-		usedCyl = currentItem.modelData.dive.getCylinder
-		cylinderIndex0 = currentItem.modelData.dive.cylinderList.indexOf(usedCyl[0])
-		cylinderIndex1 = currentItem.modelData.dive.cylinderList.indexOf(usedCyl[1])
-		cylinderIndex2 = currentItem.modelData.dive.cylinderList.indexOf(usedCyl[2])
-		cylinderIndex3 = currentItem.modelData.dive.cylinderList.indexOf(usedCyl[3])
-		cylinderIndex4 = currentItem.modelData.dive.cylinderList.indexOf(usedCyl[4])
-		rating = currentItem.modelData.dive.rating
-		visibility = currentItem.modelData.dive.visibility
+		startpressure = dive.startPressure
+		endpressure = dive.endPressure
+		usedGas = dive.firstGas
+		usedCyl = dive.getCylinder
+		cylinderIndex0 = dive.cylinderList.indexOf(usedCyl[0])
+		cylinderIndex1 = dive.cylinderList.indexOf(usedCyl[1])
+		cylinderIndex2 = dive.cylinderList.indexOf(usedCyl[2])
+		cylinderIndex3 = dive.cylinderList.indexOf(usedCyl[3])
+		cylinderIndex4 = dive.cylinderList.indexOf(usedCyl[4])
+		rating = dive.rating
+		visibility = dive.visibility
 
 		diveDetailsPage.state = "edit"
 	}
