@@ -236,7 +236,6 @@ DiveObjectHelper::DiveObjectHelper(const struct dive *d) :
 	singleWeight(d->weightsystems.nr <= 1),
 	suit(d->suit ? d->suit : QString()),
 	cylinders(formatCylinders(d)),
-	cylinderObjects(makeCylinderObjects(d)),
 	maxcns(d->maxcns),
 	otu(d->otu),
 	sumWeight(get_weight_string(weight_t { total_weight(d) }, true)),
@@ -244,6 +243,16 @@ DiveObjectHelper::DiveObjectHelper(const struct dive *d) :
 	startPressure(getStartPressure(d)),
 	endPressure(getEndPressure(d)),
 	firstGas(getFirstGas(d))
+{
+}
+
+DiveObjectHelperGrantlee::DiveObjectHelperGrantlee()
+{
+}
+
+DiveObjectHelperGrantlee::DiveObjectHelperGrantlee(const struct dive *d) :
+	DiveObjectHelper(d),
+	cylinderObjects(makeCylinderObjects(d))
 {
 }
 

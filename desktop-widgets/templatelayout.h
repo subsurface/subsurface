@@ -143,7 +143,7 @@ GRANTLEE_END_LOOKUP
 // TODO: This is currently needed because our grantlee version
 // doesn't support Q_GADGET based classes. A patch to fix this
 // exists. Remove in due course.
-GRANTLEE_BEGIN_LOOKUP(DiveObjectHelper)
+GRANTLEE_BEGIN_LOOKUP(DiveObjectHelperGrantlee)
 if (property == "number") {
 	return object.number;
 } else if (property == "id") {

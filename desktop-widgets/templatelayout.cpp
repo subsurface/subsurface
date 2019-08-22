@@ -100,7 +100,7 @@ TemplateLayout::TemplateLayout(print_options *printOptions, template_options *te
 }
 
 /* a HTML pre-processor stage. acts like a compatibility layer
- * between some Grantlee variables and DiveObjectHelper Q_PROPERTIES:
+ * between some Grantlee variables and DiveObjectHelperGrantlee Q_PROPERTIES:
  *	dive.weights -> dive.weightList
  * 	dive.weight# -> dive.weights.#
  *	dive.cylinders -> dive.cylinderList
@@ -134,13 +134,13 @@ QString TemplateLayout::generate()
 	Grantlee::registerMetaType<template_options>();
 	Grantlee::registerMetaType<print_options>();
 	Grantlee::registerMetaType<CylinderObjectHelper>(); // TODO: Remove when grantlee supports Q_GADGET
-	Grantlee::registerMetaType<DiveObjectHelper>(); // TODO: Remove when grantlee supports Q_GADGET
+	Grantlee::registerMetaType<DiveObjectHelperGrantlee>(); // TODO: Remove when grantlee supports Q_GADGET
 
 	QVariantList diveList;
 
 	struct dive *dive;
 	if (in_planner()) {
-		diveList.append(QVariant::fromValue(DiveObjectHelper(&displayed_dive)));
+		diveList.append(QVariant::fromValue(DiveObjectHelperGrantlee(&displayed_dive)));
 		emit progressUpdated(100.0);
 	} else {
 		int i;
@@ -148,7 +148,7 @@ QString TemplateLayout::generate()
 			//TODO check for exporting selected dives only
 			if (!dive->selected && printOptions->print_selected)
 				continue;
-			diveList.append(QVariant::fromValue(DiveObjectHelper(dive)));
+			diveList.append(QVariant::fromValue(DiveObjectHelperGrantlee(dive)));
 			progress++;
 			emit progressUpdated(lrint(progress * 100.0 / totalWork));
 		}
@@ -191,7 +191,7 @@ QString TemplateLayout::generateStatistics()
 	Grantlee::registerMetaType<template_options>();
 	Grantlee::registerMetaType<print_options>();
 	Grantlee::registerMetaType<CylinderObjectHelper>(); // TODO: Remove when grantlee supports Q_GADGET
-	Grantlee::registerMetaType<DiveObjectHelper>(); // TODO: Remove when grantlee supports Q_GADGET
+	Grantlee::registerMetaType<DiveObjectHelperGrantlee>(); // TODO: Remove when grantlee supports Q_GADGET
 
 	QVariantList years;
 
