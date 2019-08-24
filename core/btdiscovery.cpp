@@ -78,9 +78,28 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		product = "Quad";
 	}
 
+	// The Pelagic dive computers (generally branded as Oceanic or Aqualung)
+	// show up with a two-byte model code followed by six bytes of serial
+	// number. The model code matches the hex model (so "FQ" is 0x4651,
+	// where 'F' is 46h and 'Q' is 51h in ASCII).
+	if (btName.contains(QRegularExpression("^FI\\d{6}$"))) {
+		vendor = "Aqualung";
+		product = "i200c";
+	}
+
+	if (btName.contains(QRegularExpression("^FH\\d{6}$"))) {
+		vendor = "Aqualung";
+		product = "i300c";
+	}
+
 	if (btName.contains(QRegularExpression("^FQ\\d{6}$"))) {
 		vendor = "Aqualung";
 		product = "i770R";
+	}
+
+	if (btName.contains(QRegularExpression("^FR\\d{6}$"))) {
+		vendor = "Aqualung";
+		product = "i550c";
 	}
 
 	if (btName.contains(QRegularExpression("^ER\\d{6}$"))) {
@@ -93,6 +112,8 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		product = "Geo 4.0";
 	}
 
+	// The Ratio bluetooth name looks like the Pelagic ones,
+	// but that seems to be just happenstance.
 	if (btName.contains(QRegularExpression("^DS\\d{6}"))) {
 		vendor = "Ratio";
 		product = "iX3M GPS Easy"; // we don't know which of the GPS models, so set one
