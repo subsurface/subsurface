@@ -690,7 +690,7 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 	tags(nullptr)
 {
 	memset(&cylinders[0], 0, sizeof(cylinders));
-	clear_weightsystem_table(&weightsystems);
+	memset(&weightsystems, 0, sizeof(weightsystems));
 	if (what.notes)
 		notes = data->notes;
 	if (what.divemaster)
