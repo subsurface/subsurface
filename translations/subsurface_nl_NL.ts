@@ -910,7 +910,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="571"/>
         <source>shift time of %n dives</source>
-        <translation><numerusform>Tijdstip van %1 duik verschuiven</numerusform><numerusform>Tijdstip van %1 duiken verschuiven</numerusform></translation>
+        <translation><numerusform>Tijdstip van %n duik verschuiven</numerusform><numerusform>Tijdstip van %n duiken verschuiven</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2454,7 +2454,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1536"/>
         <source>Disconnected from device</source>
-        <translation>Verbinding verbroken met toestel</translation>
+        <translation>Verbinding met toestel verbroken</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1464"/>
@@ -3166,7 +3166,7 @@ GPS locatie:</translation>
     <message numerus="yes">
         <location filename="../qt-models/divelistmodel.cpp" line="108"/>
         <source>(%n dive(s))</source>
-        <translation><numerusform>(%1 duik)</numerusform><numerusform>(%1 duiken)</numerusform></translation>
+        <translation><numerusform>(%n duik)</numerusform><numerusform>(%n duiken)</numerusform></translation>
     </message>
     <message>
         <location filename="../qt-models/divelistmodel.cpp" line="110"/>
@@ -5975,7 +5975,7 @@ Bestaande duikstek</translation>
         <location filename="../desktop-widgets/mainwindow.ui" line="283"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="558"/>
         <source>Auto &amp;group</source>
-        <translation>Automatisch groeperen</translation>
+        <translation>Automatisch &amp;groeperen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="288"/>
@@ -5987,25 +5987,25 @@ Bestaande duikstek</translation>
         <location filename="../desktop-widgets/mainwindow.ui" line="296"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="560"/>
         <source>&amp;Dive list</source>
-        <translation>Duiklijst</translation>
+        <translation>&amp;Duiklijst</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="304"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="561"/>
         <source>&amp;Profile</source>
-        <translation>Profiel</translation>
+        <translation>&amp;Profiel</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="312"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="562"/>
         <source>&amp;Info</source>
-        <translation>Info</translation>
+        <translation>&amp;Info</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="320"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="563"/>
         <source>&amp;All</source>
-        <translation>Alle</translation>
+        <translation>&amp;Alle</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="328"/>
@@ -6041,7 +6041,7 @@ Bestaande duikstek</translation>
         <location filename="../desktop-widgets/mainwindow.ui" line="368"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="569"/>
         <source>P&amp;lan dive</source>
-        <translation>Duik plannen</translation>
+        <translation>Duik p&amp;lannen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="376"/>
@@ -6093,7 +6093,7 @@ Bestaande duikstek</translation>
         <location filename="../desktop-widgets/mainwindow.ui" line="422"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="580"/>
         <source>&amp;Export</source>
-        <translation>Exporteren</translation>
+        <translation>&amp;Exporteren</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="425"/>
@@ -6933,7 +6933,7 @@ Als je toestel Bluetooth gebruikt, doe de gelijke voorbereidingen als voor een l
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="301"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="355"/>
         <source>Reset all settings to their default value</source>
-        <translation>Zet alle instellingen terug naar hun originele waarden</translation>
+        <translation>Zet alle instellingen terug naar hun standaardwaarde</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="12"/>
@@ -10824,7 +10824,7 @@ Dit log bestand kan worden aangemaakt door het selecteren van het juiste keuzeve
         <location filename="../core/parse-xml.c" line="400"/>
         <source>Strange percentage reading %s
 </source>
-        <translation>Vreemde percentage %s
+        <translation>Vreemd percentage %s
 </translation>
     </message>
     <message>
@@ -12364,17 +12364,17 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="412"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
-        <translation>XML etiket &apos;DiveDateReader&apos; werd verwacht, maar kreeg &apos;%1</translation>
+        <translation>XML element &apos;DiveDateReader&apos; werd verwacht, maar kreeg &apos;%1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="458"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
-        <translation>Verwacht XML etiket &apos;DiveDates&apos; werd niet gevonden</translation>
+        <translation>Verwacht XML element &apos;DiveDates&apos; werd niet gevonden</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="465"/>
         <source>Malformed XML response. Line %1: %2</source>
-        <translation>Slecht gevormd XML antwoord. Regel %1: %2</translation>
+        <translation>Onjuist gevormd XML antwoord. Regel %1: %2</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="121"/>
