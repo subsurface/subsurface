@@ -2,6 +2,17 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 4.9.2
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- Desktop: fix copy & paste crash
+- Desktop: fix saving to XML with empty dive site taxonomies
+- Desktop: fix display of trip time
+- Planner: fix calculation of CNS for pO2 > 1.6 bar
+- Mobile: allow editing weights for dives that have no weight
+- Dive computer support:
+  - add support for Deepblu Cosmiq+
+  - add support for Aqualung i200C
+
 New in _Subsurface_ 4.9.1
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - fix incorrect tool tip for the button closing the filter panel
