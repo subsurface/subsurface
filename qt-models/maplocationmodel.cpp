@@ -133,10 +133,13 @@ static bool hasSelectedDive(const dive_site *ds)
 
 void MapLocationModel::reload(QObject *map)
 {
-	beginResetModel();
+	if (m_mapLocations.size() > 0) {
+		beginRemoveRows(QModelIndex(), 0, m_mapLocations.size() - 1);
+		qDeleteAll(m_mapLocations);
+		m_mapLocations.clear();
+		endRemoveRows();
+	}
 
-	qDeleteAll(m_mapLocations);
-	m_mapLocations.clear();
 	m_selectedDs.clear();
 
 	QMap<QString, MapLocation *> locationNameMap;
@@ -190,7 +193,10 @@ void MapLocationModel::reload(QObject *map)
 			locationNameMap[name] = location;
 	}
 
-	endResetModel();
+	if (m_mapLocations.size() > 0) {
+		beginInsertRows(QModelIndex(), 0, m_mapLocations.size() - 1);
+		endInsertRows();
+	}
 }
 
 void MapLocationModel::setSelected(struct dive_site *ds, bool fromClick)
