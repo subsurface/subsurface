@@ -10,7 +10,7 @@ DivePlotDataModel::DivePlotDataModel(QObject *parent) :
 	diveId(0),
 	dcNr(0)
 {
-	memset(&pInfo, 0, sizeof(pInfo));
+	init_plot_info(&pInfo);
 	memset(&plot_deco_state, 0, sizeof(struct deco_state));
 }
 

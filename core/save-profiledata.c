@@ -199,6 +199,7 @@ static void save_profiles_buffer(struct membuffer *b, bool select_only)
 	struct plot_info pi;
 	struct deco_state *planner_deco_state = NULL;
 
+	init_plot_info(&pi);
 	for_each_dive(i, dive) {
 		if (select_only && !dive->selected)
 			continue;
@@ -220,6 +221,7 @@ void save_subtitles_buffer(struct membuffer *b, struct dive *dive, int offset, i
 	struct plot_info pi;
 	struct deco_state *planner_deco_state = NULL;
 
+	init_plot_info(&pi);
 	create_plot_info_new(dive, &dive->dc, &pi, false, planner_deco_state);
 
 	put_format(b, "[Script Info]\n");

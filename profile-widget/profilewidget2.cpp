@@ -148,7 +148,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	// would like to be able to ASSERT here that PreferencesDialog::loadSettings has been called.
 	isPlotZoomed = prefs.zoomed_plot; // now it seems that 'prefs' has loaded our preferences
 
-	memset(&plotInfo, 0, sizeof(plotInfo));
+	init_plot_info(&plotInfo);
 
 	setupSceneAndFlags();
 	setupItemSizes();

@@ -1319,11 +1319,22 @@ static void debug_print_profiledata(struct plot_info *pi)
 #endif
 
 /*
+ * Initialize a plot_info structure to all-zeroes
+ */
+void init_plot_info(struct plot_info *pi)
+{
+	memset(pi, 0, sizeof(*pi));
+}
+
+/*
  * Create a plot-info with smoothing and ranged min/max
  *
  * This also makes sure that we have extra empty events on both
  * sides, so that you can do end-points without having to worry
  * about it.
+ *
+ * The old data will be freed. Before the first call, the plot
+ * info must be initialized with init_plot_info().
  */
 void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast, struct deco_state *planner_ds)
 {

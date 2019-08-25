@@ -17,7 +17,7 @@ RulerNodeItem2::RulerNodeItem2() :
 	timeAxis(NULL),
 	depthAxis(NULL)
 {
-	memset(&pInfo, 0, sizeof(pInfo));
+	init_plot_info(&pInfo);
 	setRect(-8, -8, 16, 16);
 	setBrush(QColor(0xff, 0, 0, 127));
 	setPen(QColor(Qt::red));
