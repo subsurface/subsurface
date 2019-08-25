@@ -196,6 +196,8 @@ void MapLocationModel::reload(QObject *map)
 void MapLocationModel::setSelected(struct dive_site *ds, bool fromClick)
 {
 	m_selectedDs.clear();
+	if (!ds)
+		return;
 	m_selectedDs.append(ds);
 	if (fromClick)
 		emit selectedLocationChanged(getMapLocation(ds));
