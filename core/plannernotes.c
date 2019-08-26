@@ -537,9 +537,10 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			}
 		}
 		/* Gas consumption: Now finally print all strings to output */
-		put_format(&buf, "%s%s%s<br></div>", temp, warning, mingas);
+		put_format(&buf, "%s%s%s<br>", temp, warning, mingas);
 		free(temp);
 	}
+	put_string(&buf, "</div>");
 
 	/* For trimix OC dives, if an icd table header and icd data were printed to buffer, then add the ICD table here */
 	if (!icdtableheader && prefs.show_icd) {
