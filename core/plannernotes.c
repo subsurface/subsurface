@@ -449,14 +449,16 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	for (int gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
 		double volume, pressure, deco_volume, deco_pressure, mingas_volume, mingas_pressure, mingas_d_pressure, mingas_depth;
 		const char *unit, *pressure_unit, *depth_unit;
-		char warning[1000] = "";
-		char mingas[1000] = "";
+		char *warning;
+		char *mingas;
 		cylinder_t *cyl = &dive->cylinder[gasidx];
 		if (cyl->cylinder_use == NOT_USED)
 			continue;
 		if (cylinder_none(cyl))
 			break;
 
+		asprintf(&warning, "");
+		asprintf(&mingas, "");
 		volume = get_volume_units(cyl->gas_used.mliter, NULL, &unit);
 		deco_volume = get_volume_units(cyl->deco_gas_used.mliter, NULL, &unit);
 		if (cyl->type.size.mliter) {
@@ -469,13 +471,13 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			 * This only works if we have working pressure for the cylinder
 			 * 10bar is a made up number - but it seemed silly to pretend you could breathe cylinder down to 0 */
 			if (cyl->end.mbar < 10000)
-				snprintf(warning, sizeof(warning), "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
+				asprintf(&warning, "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
 					translate("gettextFromC", "Warning:"),
 					translate("gettextFromC", "this is more gas than available in the specified cylinder!"));
 			else
 				if (cyl->end.mbar / 1000.0 * cyl->type.size.mliter / gas_compressibility_factor(cyl->gasmix, cyl->end.mbar / 1000.0)
 				    < cyl->deco_gas_used.mliter)
-					snprintf(warning, sizeof(warning), "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
+					asprintf(&warning, "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
 						translate("gettextFromC", "Warning:"),
 						translate("gettextFromC", "not enough reserve for gas sharing on ascent!"));
 
@@ -499,7 +501,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					mingas_depth = get_depth_units(lastbottomdp->depth.mm, NULL, &depth_unit);
 					/* Print it to results */
 					if (cyl->start.mbar > lastbottomdp->minimum_gas.mbar) {
-						snprintf_loc(mingas, sizeof(mingas), "<br>&nbsp;&mdash; <span style='color: %s;'>%s</span> (%s %.1fx%s/+%d%s@%.0f%s): "
+						asprintf_loc(&mingas, "<br>&nbsp;&mdash; <span style='color: %s;'>%s</span> (%s %.1fx%s/+%d%s@%.0f%s): "
 							     "%.0f%s/%.0f%s<span style='color: %s;'>/&Delta;:%+.0f%s</span>",
 							     mingas_d_pressure > 0 ? "green" :"red",
 							     translate("gettextFromC", "Minimum gas"),
@@ -514,7 +516,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 							     mingas_d_pressure > 0 ? "grey" :"indianred",
 							     mingas_d_pressure, pressure_unit);
 					} else {
-						snprintf(warning, sizeof(warning), "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
+						asprintf(&warning, "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
 							translate("gettextFromC", "Warning:"),
 							translate("gettextFromC", "required minimum gas for ascent already exceeding start pressure of cylinder!"));
 					}
@@ -539,6 +541,8 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		/* Gas consumption: Now finally print all strings to output */
 		put_format(&buf, "%s%s%s<br>", temp, warning, mingas);
 		free(temp);
+		free(warning);
+		free(mingas);
 	}
 	put_string(&buf, "</div>");
 
