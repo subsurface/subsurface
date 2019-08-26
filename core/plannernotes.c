@@ -539,7 +539,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			}
 		}
 		/* Gas consumption: Now finally print all strings to output */
-		put_format(&buf, "%s%s%s<br>", temp, warning, mingas);
+		put_format_loc(&buf, "%s%s%s<br>", temp, warning, mingas);
 		free(temp);
 		free(warning);
 		free(mingas);
