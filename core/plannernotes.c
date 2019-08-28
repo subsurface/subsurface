@@ -120,7 +120,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		return;
 
 	if (error) {
-		put_format(&buf, "<span style='color: red;'>%s </span> %s<br>",
+		put_format(&buf, "<span style='color: red;'>%s </span> %s<br/>",
 				translate("gettextFromC", "Warning:"),
 				translate("gettextFromC", "Decompression calculation aborted due to excessive time"));
 		goto finished;
@@ -130,19 +130,20 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		char *disclaimer = get_planner_disclaimer_formatted();
 		put_string(&buf, "<div><b>");
 		put_string(&buf, disclaimer);
-		put_string(&buf, "</b><br></div>");
+		put_string(&buf, "</b><br/>\n</div>\n");
 		free(disclaimer);
 	}
 
+	put_string(&buf, "<div>\n<b>");
 	if (diveplan->surface_interval < 0) {
-		put_format(&buf, "<div><b>%s (%s) %s<br></div>",
+		put_format(&buf, "%s (%s) %s",
 			translate("gettextFromC", "Subsurface"),
 			subsurface_canonical_version(),
 			translate("gettextFromC", "dive plan</b> (overlapping dives detected)"));
 		goto finished;
 	} else if (diveplan->surface_interval >= 48 * 60 *60) {
 		char *current_date = get_current_date();
-		put_format(&buf, "<div><b>%s (%s) %s %s</b><br>",
+		put_format(&buf, "%s (%s) %s %s",
 			translate("gettextFromC", "Subsurface"),
 			subsurface_canonical_version(),
 			translate("gettextFromC", "dive plan</b> created on"),
@@ -150,7 +151,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		free(current_date);
 	} else {
 		char *current_date = get_current_date();
-		put_format_loc(&buf, "<div><b>%s (%s) %s %d:%02d) %s %s<br>",
+		put_format_loc(&buf, "%s (%s) %s %d:%02d) %s %s",
 			translate("gettextFromC", "Subsurface"),
 			subsurface_canonical_version(),
 			translate("gettextFromC", "dive plan</b> (surface interval "),
@@ -159,21 +160,23 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			current_date);
 		free(current_date);
 	}
+	put_string(&buf, "<br/>\n");
 
 	if (prefs.display_variations && decoMode() != RECREATIONAL)
 		put_format_loc(&buf, translate("gettextFromC", "Runtime: %dmin%s"),
-			diveplan_duration(diveplan), "VARIATIONS<br></div>");
+			diveplan_duration(diveplan), "VARIATIONS");
 	else
-		put_format_loc(&buf, translate("gettextFromC", "Runtime: %dmin<br></div>"),
-			diveplan_duration(diveplan));
+		put_format_loc(&buf, translate("gettextFromC", "Runtime: %dmin%s"),
+			diveplan_duration(diveplan), "");
+	put_string(&buf, "<br/>\n</div>\n");
 
 	if (!plan_verbatim) {
-		put_format(&buf, "<table><thead><tr><th></th><th>%s</th>", translate("gettextFromC", "depth"));
+		put_format(&buf, "<table>\n<thead>\n<tr><th></th><th>%s</th>", translate("gettextFromC", "depth"));
 		if (plan_display_duration)
 			put_format(&buf, "<th style='padding-left: 10px;'>%s</th>", translate("gettextFromC", "duration"));
 		if (plan_display_runtime)
 			put_format(&buf, "<th style='padding-left: 10px;'>%s</th>", translate("gettextFromC", "runtime"));
-		put_format(&buf, "<th style='padding-left: 10px; float: left;'>%s</th></tr></thead><tbody style='float: left;'>",
+		put_format(&buf, "<th style='padding-left: 10px; float: left;'>%s</th></tr>\n</thead>\n<tbody style='float: left;'>\n",
 				translate("gettextFromC", "gas"));
 	}
 
@@ -244,7 +247,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 							     gasname(gasmix));
 					}
 
-					put_string(&buf, "<br>");
+					put_string(&buf, "<br/>\n");
 				}
 				newdepth = dp->depth.mm;
 				lasttime = dp->time;
@@ -265,7 +268,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 							     gasname(gasmix),
 							     translate("gettextFromC", divemode_text_ui[dp->divemode]));
 					}
-					put_string(&buf, "<br>");
+					put_string(&buf, "<br/>\n");
 					newdepth = dp->depth.mm;
 					lasttime = dp->time;
 				}
@@ -370,12 +373,12 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 				} else {
 					put_string(&buf, "<td>&nbsp;</td>");
 				}
-				put_string(&buf, "</tr>");
+				put_string(&buf, "</tr>\n");
 				newdepth = dp->depth.mm;
 				lasttime = dp->time;
 			}
 		}
-		if (gaschange_after) {
+		if (gaschange_after || gaschange_before) {
 			// gas switch at this waypoint for verbatim
 			if (plan_verbatim) {
 				if (lastsetpoint >= 0) {
@@ -392,7 +395,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 							}
 						}
 					}
-					put_string(&buf, "<br>");
+					put_string(&buf, "<br/>\n");
 				}
 				lastprintgasmix = newgasmix;
 				gaschange_after = false;
@@ -405,17 +408,17 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		lastentered = dp->entered;
 	} while ((dp = nextdp) != NULL);
 	if (!plan_verbatim)
-		put_string(&buf, "</tbody></table><br>");
+		put_string(&buf, "</tbody>\n</table>\n<br/>\n");
 
 	/* Print the CNS and OTU next.*/
 	dive->cns = 0;
 	dive->maxcns = 0;
 	update_cylinder_related_info(dive);
-	put_format_loc(&buf, "<div>%s: %i%%", translate("gettextFromC", "CNS"), dive->cns);
-	put_format_loc(&buf, "<br>%s: %i<br></div>", translate("gettextFromC", "OTU"), dive->otu);
+	put_format_loc(&buf, "<div>\n%s: %i%%", translate("gettextFromC", "CNS"), dive->cns);
+	put_format_loc(&buf, "<br/>\n%s: %i<br/>\n</div>\n", translate("gettextFromC", "OTU"), dive->otu);
 
 	/* Print the settings for the diveplan next. */
-	put_string(&buf, "<div>");
+	put_string(&buf, "<div>\n");
 	if (decoMode() == BUEHLMANN) {
 		put_format_loc(&buf, translate("gettextFromC", "Deco model: Bühlmann ZHL-16C with GFLow = %d%% and GFHigh = %d%%"), diveplan->gflow, diveplan->gfhigh);
 	} else if (decoMode() == VPMB){
@@ -429,12 +432,12 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		put_format_loc(&buf, translate("gettextFromC", "Deco model: Recreational mode based on Bühlmann ZHL-16B with GFLow = %d%% and GFHigh = %d%%"),
 			     diveplan->gflow, diveplan->gfhigh);
 	}
-	put_string(&buf, "<br>");
+	put_string(&buf, "<br/>\n");
 
 	const char *depth_unit;
 	int altitude = (int) get_depth_units((int) (pressure_to_altitude(diveplan->surface_pressure)), NULL, &depth_unit);
 
-	put_format_loc(&buf, translate("gettextFromC", "ATM pressure: %dmbar (%d%s)<br></div>"), diveplan->surface_pressure, altitude, depth_unit);
+	put_format_loc(&buf, translate("gettextFromC", "ATM pressure: %dmbar (%d%s)<br/>\n</div>\n"), diveplan->surface_pressure, altitude, depth_unit);
 
 	/* Get SAC values and units for printing it in gas consumption */
 	double bottomsacvalue, decosacvalue;
@@ -453,7 +456,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	else
 		asprintf_loc(&temp, "%s %.*f|%.*f%s/min):", translate("gettextFromC", "Gas consumption (based on SAC"),
 			     sacdecimals, bottomsacvalue, sacdecimals, decosacvalue, sacunit);
-	put_format(&buf, "<div>%s<br>", temp);
+	put_format(&buf, "<div>\n%s<br/>\n", temp);
 	free(temp);
 
 	/* Print gas consumption: This loop covers all cylinders */
@@ -480,13 +483,13 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			 * This only works if we have working pressure for the cylinder
 			 * 10bar is a made up number - but it seemed silly to pretend you could breathe cylinder down to 0 */
 			if (cyl->end.mbar < 10000)
-				snprintf(warning, sizeof(warning), "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
+				snprintf(warning, sizeof(warning), "<br/>\n&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
 					translate("gettextFromC", "Warning:"),
 					translate("gettextFromC", "this is more gas than available in the specified cylinder!"));
 			else
 				if (cyl->end.mbar / 1000.0 * cyl->type.size.mliter / gas_compressibility_factor(cyl->gasmix, cyl->end.mbar / 1000.0)
 				    < cyl->deco_gas_used.mliter)
-					snprintf(warning, sizeof(warning), "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
+					snprintf(warning, sizeof(warning), "<br/>\n&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
 						translate("gettextFromC", "Warning:"),
 						translate("gettextFromC", "not enough reserve for gas sharing on ascent!"));
 
@@ -510,7 +513,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					mingas_depth = get_depth_units(lastbottomdp->depth.mm, NULL, &depth_unit);
 					/* Print it to results */
 					if (cyl->start.mbar > lastbottomdp->minimum_gas.mbar) {
-						snprintf_loc(mingas, sizeof(mingas), "<br>&nbsp;&mdash; <span style='color: %s;'>%s</span> (%s %.1fx%s/+%d%s@%.0f%s): "
+						snprintf_loc(mingas, sizeof(mingas), "<br/>\n&nbsp;&mdash; <span style='color: %s;'>%s</span> (%s %.1fx%s/+%d%s@%.0f%s): "
 							     "%.0f%s/%.0f%s<span style='color: %s;'>/&Delta;:%+.0f%s</span>",
 							     mingas_d_pressure > 0 ? "green" :"red",
 							     translate("gettextFromC", "Minimum gas"),
@@ -525,7 +528,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 							     mingas_d_pressure > 0 ? "grey" :"indianred",
 							     mingas_d_pressure, pressure_unit);
 					} else {
-						snprintf(warning, sizeof(warning), "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
+						snprintf(warning, sizeof(warning), "<br/>\n&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
 							translate("gettextFromC", "Warning:"),
 							translate("gettextFromC", "required minimum gas for ascent already exceeding start pressure of cylinder!"));
 					}
@@ -548,13 +551,14 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			}
 		}
 		/* Gas consumption: Now finally print all strings to output */
-		put_format(&buf, "%s%s%s<br></div>", temp, warning, mingas);
+		put_format(&buf, "%s%s%s<br/>\n", temp, warning, mingas);
 		free(temp);
 	}
+	put_format(&buf, "</div>\n");
 
 	/* For trimix OC dives, if an icd table header and icd data were printed to buffer, then add the ICD table here */
 	if (!icdtableheader && prefs.show_icd) {
-		put_string(&icdbuf, "</tbody></table>"); // End the ICD table
+		put_string(&icdbuf, "</tbody></table>\n"); // End the ICD table
 		mb_cstring(&icdbuf);
 		put_string(&buf, icdbuf.buffer); // ..and add it to the html buffer
 		if (icdwarning) { // If necessary, add warning
@@ -562,7 +566,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 				translate("gettextFromC", "Warning:"),
 				translate("gettextFromC", "Isobaric counterdiffusion conditions exceeded"));
 		}
-		put_string(&buf, "<br></div>");
+		put_string(&buf, "<br/></div>\n");
 	}
 	free_buffer(&icdbuf);
 
@@ -589,11 +593,11 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					int decimals;
 					double depth_value = get_depth_units(dp->depth.mm, &decimals, &depth_unit);
 					if (!o2warning_exist)
-						put_string(&buf, "<div>");
+						put_string(&buf, "<div>\n");
 					o2warning_exist = true;
 					asprintf_loc(&temp, translate("gettextFromC", "high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
 						pressures.o2, FRACTION(dp->time, 60), gasname(gasmix), decimals, depth_value, depth_unit);
-					put_format(&buf, "<span style='color: red;'>%s </span> %s<br>", translate("gettextFromC", "Warning:"), temp);
+					put_format(&buf, "<span style='color: red;'>%s </span> %s<br/>\n", translate("gettextFromC", "Warning:"), temp);
 					free(temp);
 				} else if (pressures.o2 < 0.16) {
 					const char *depth_unit;
@@ -604,14 +608,15 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					o2warning_exist = true;
 					asprintf_loc(&temp, translate("gettextFromC", "low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
 						pressures.o2, FRACTION(dp->time, 60), gasname(gasmix), decimals, depth_value, depth_unit);
-					put_format(&buf, "<span style='color: red;'>%s </span> %s<br>", translate("gettextFromC", "Warning:"), temp);
+					put_format(&buf, "<span style='color: red;'>%s </span> %s<br/>\n", translate("gettextFromC", "Warning:"), temp);
 					free(temp);
 				}
 			}
 			dp = dp->next;
 		}
 	}
-	put_string(&buf, "</div>");
+	if (o2warning_exist)
+		put_string(&buf, "</div>\n");
 finished:
 	mb_cstring(&buf);
 	free(dive->notes);
