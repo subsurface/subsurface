@@ -207,7 +207,7 @@ static double calculate_cns_dive(const struct dive *dive)
 
 		// This formula is the result of fitting two lines to the Log of the NOAA CNS table
 		rate = po2i <= 1500 ? exp(-11.7853 + 0.00193873 * po2i) : exp(-23.6349 + 0.00980829 * po2i);
-		cns += (double) t * rate * 1000.0;
+		cns += (double) t * rate * 100.0;
 	}
 	return cns;
 }
