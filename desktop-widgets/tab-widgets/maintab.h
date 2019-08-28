@@ -30,7 +30,7 @@ public:
 		NONE,
 		DIVE,
 		MANUALLY_ADDED_DIVE,
-		IGNORE
+		IGNORE_MODE
 	};
 
 	MainTab(QWidget *parent = 0);

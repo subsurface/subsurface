@@ -26,7 +26,7 @@ public:
 		FWUPDATE,
 		CANCELLING,
 		CANCELLED,
-		ERROR,
+		ERRORED,
 		DONE,
 	};
 

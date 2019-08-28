@@ -145,7 +145,7 @@ static void divetags(char *buffer, struct tag_entry **tags)
 
 enum number_type {
 	NEITHER,
-	FLOAT
+	FLOATVAL
 };
 
 static enum number_type parse_float(const char *buffer, double *res, const char **endp)
@@ -172,7 +172,7 @@ static enum number_type parse_float(const char *buffer, double *res, const char 
 	}
 
 	*res = val;
-	return FLOAT;
+	return FLOATVAL;
 }
 
 union int_or_float {
@@ -191,12 +191,12 @@ static void pressure(char *buffer, pressure_t *pressure, struct parser_state *st
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
-	case FLOAT:
+	case FLOATVAL:
 		/* Just ignore zero values */
 		if (!val.fp)
 			break;
 		switch (state->xml_parsing_units.pressure) {
-		case PASCAL:
+		case PASCALS:
 			mbar = val.fp / 100;
 			break;
 		case BAR:
@@ -233,7 +233,7 @@ static void salinity(char *buffer, int *salinity)
 {
 	union int_or_float val;
 	switch (integer_or_float(buffer, &val)) {
-	case FLOAT:
+	case FLOATVAL:
 		*salinity = lrint(val.fp * 10.0);
 		break;
 	default:
@@ -246,7 +246,7 @@ static void depth(char *buffer, depth_t *depth, struct parser_state *state)
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
-	case FLOAT:
+	case FLOATVAL:
 		switch (state->xml_parsing_units.length) {
 		case METERS:
 			depth->mm = lrint(val.fp * 1000);
@@ -281,7 +281,7 @@ static void weight(char *buffer, weight_t *weight, struct parser_state *state)
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
-	case FLOAT:
+	case FLOATVAL:
 		switch (state->xml_parsing_units.weight) {
 		case KG:
 			weight->grams = lrint(val.fp * 1000);
@@ -301,7 +301,7 @@ static void temperature(char *buffer, temperature_t *temperature, struct parser_
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
-	case FLOAT:
+	case FLOATVAL:
 		switch (state->xml_parsing_units.temperature) {
 		case KELVIN:
 			temperature->mkelvin = lrint(val.fp * 1000);
@@ -383,7 +383,7 @@ static void percent(char *buffer, fraction_t *fraction)
 	const char *end;
 
 	switch (parse_float(buffer, &val, &end)) {
-	case FLOAT:
+	case FLOATVAL:
 		/* Turn fractions into percent unless explicit.. */
 		if (val <= 1.0) {
 			while (isspace(*end))
@@ -424,7 +424,7 @@ static void cylindersize(char *buffer, volume_t *volume)
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
-	case FLOAT:
+	case FLOATVAL:
 		volume->mliter = lrint(val.fp * 1000);
 		break;
 
@@ -600,7 +600,7 @@ static void fahrenheit(char *buffer, temperature_t *temperature)
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
-	case FLOAT:
+	case FLOATVAL:
 		if (IS_FP_SAME(val.fp, 32.0))
 			break;
 		if (val.fp < 32.0)
@@ -638,7 +638,7 @@ static void psi_or_bar(char *buffer, pressure_t *pressure)
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
-	case FLOAT:
+	case FLOATVAL:
 		if (val.fp > 400)
 			pressure->mbar = psi_to_mbar(val.fp);
 		else
@@ -1530,7 +1530,7 @@ static void uddf_importer(struct parser_state *state)
 {
 	state->import_source = UDDF;
 	state->xml_parsing_units = SI_units;
-	state->xml_parsing_units.pressure = PASCAL;
+	state->xml_parsing_units.pressure = PASCALS;
 	state->xml_parsing_units.temperature = KELVIN;
 }
 

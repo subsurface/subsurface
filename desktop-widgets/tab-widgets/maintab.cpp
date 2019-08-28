@@ -438,7 +438,7 @@ void MainTab::updateDiveInfo()
 	for (int i = 0; i < extraWidgets.size() - 1; ++i)
 		extraWidgets[i]->setEnabled(enabled);
 
-	editMode = IGNORE; // don't trigger on changes to the widgets
+	editMode = IGNORE_MODE; // don't trigger on changes to the widgets
 
 	for (TabBase *widget: extraWidgets)
 		widget->updateData();
@@ -619,7 +619,7 @@ void MainTab::acceptChanges()
 		stealFocus();
 
 	EditMode lastMode = editMode;
-	editMode = IGNORE;
+	editMode = IGNORE_MODE;
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	ui.dateEdit->setEnabled(true);
@@ -746,7 +746,7 @@ static QStringList stringToList(const QString &s)
 
 void MainTab::on_buddy_editingFinished()
 {
-	if (editMode == IGNORE || !current_dive)
+	if (editMode == IGNORE_MODE || !current_dive)
 		return;
 
 	divesEdited(Command::editBuddies(stringToList(ui.buddy->toPlainText()), false));
@@ -754,7 +754,7 @@ void MainTab::on_buddy_editingFinished()
 
 void MainTab::on_divemaster_editingFinished()
 {
-	if (editMode == IGNORE || !current_dive)
+	if (editMode == IGNORE_MODE || !current_dive)
 		return;
 
 	divesEdited(Command::editDiveMaster(stringToList(ui.divemaster->toPlainText()), false));
@@ -762,7 +762,7 @@ void MainTab::on_divemaster_editingFinished()
 
 void MainTab::on_duration_editingFinished()
 {
-	if (editMode == IGNORE || !current_dive)
+	if (editMode == IGNORE_MODE || !current_dive)
 		return;
 
 	// Duration editing is special: we only edit the current dive.
@@ -771,7 +771,7 @@ void MainTab::on_duration_editingFinished()
 
 void MainTab::on_depth_editingFinished()
 {
-	if (editMode == IGNORE || !current_dive)
+	if (editMode == IGNORE_MODE || !current_dive)
 		return;
 
 	// Depth editing is special: we only edit the current dive.
@@ -783,14 +783,14 @@ void MainTab::on_airtemp_editingFinished()
 	// If the field wasn't modified by the user, don't post a new undo command.
 	// Owing to rounding errors, this might lead to undo commands that have
 	// no user visible effects. These can be very confusing.
-	if (editMode == IGNORE || !ui.airtemp->isModified() || !current_dive)
+	if (editMode == IGNORE_MODE || !ui.airtemp->isModified() || !current_dive)
 		return;
 	divesEdited(Command::editAirTemp(parseTemperatureToMkelvin(ui.airtemp->text()), false));
 }
 
 void MainTab::divetype_Changed(int index)
 {
-	if (editMode == IGNORE || !current_dive)
+	if (editMode == IGNORE_MODE || !current_dive)
 		return;
 	divesEdited(Command::editMode(dc_number, (enum divemode_t)index, false));
 }
@@ -800,7 +800,7 @@ void MainTab::on_watertemp_editingFinished()
 	// If the field wasn't modified by the user, don't post a new undo command.
 	// Owing to rounding errors, this might lead to undo commands that have
 	// no user visible effects. These can be very confusing.
-	if (editMode == IGNORE || !ui.watertemp->isModified() || !current_dive)
+	if (editMode == IGNORE_MODE || !ui.watertemp->isModified() || !current_dive)
 		return;
 	divesEdited(Command::editWaterTemp(parseTemperatureToMkelvin(ui.watertemp->text()), false));
 }
@@ -826,7 +826,7 @@ static void shiftTime(QDateTime &dateTime)
 
 void MainTab::on_dateEdit_dateChanged(const QDate &date)
 {
-	if (editMode == IGNORE || !current_dive)
+	if (editMode == IGNORE_MODE || !current_dive)
 		return;
 	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*current_dive->when, Qt::UTC);
 	dateTime.setTimeSpec(Qt::UTC);
@@ -836,7 +836,7 @@ void MainTab::on_dateEdit_dateChanged(const QDate &date)
 
 void MainTab::on_timeEdit_timeChanged(const QTime &time)
 {
-	if (editMode == IGNORE || !current_dive)
+	if (editMode == IGNORE_MODE || !current_dive)
 		return;
 	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*current_dive->when, Qt::UTC);
 	dateTime.setTimeSpec(Qt::UTC);
@@ -846,7 +846,7 @@ void MainTab::on_timeEdit_timeChanged(const QTime &time)
 
 void MainTab::on_tagWidget_editingFinished()
 {
-	if (editMode == IGNORE || !current_dive)
+	if (editMode == IGNORE_MODE || !current_dive)
 		return;
 
 	divesEdited(Command::editTags(ui.tagWidget->getBlockStringList(), false));
@@ -854,7 +854,7 @@ void MainTab::on_tagWidget_editingFinished()
 
 void MainTab::on_location_diveSiteSelected()
 {
-	if (editMode == IGNORE || !current_dive)
+	if (editMode == IGNORE_MODE || !current_dive)
 		return;
 
 	struct dive_site *newDs = ui.location->currDiveSite();
@@ -892,7 +892,7 @@ void MainTab::on_notes_editingFinished()
 
 void MainTab::on_rating_valueChanged(int value)
 {
-	if (editMode == IGNORE || !current_dive)
+	if (editMode == IGNORE_MODE || !current_dive)
 		return;
 
 	divesEdited(Command::editRating(value, false));
@@ -900,7 +900,7 @@ void MainTab::on_rating_valueChanged(int value)
 
 void MainTab::on_visibility_valueChanged(int value)
 {
-	if (editMode == IGNORE || !current_dive)
+	if (editMode == IGNORE_MODE || !current_dive)
 		return;
 
 	divesEdited(Command::editVisibility(value, false));

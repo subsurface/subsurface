@@ -271,9 +271,6 @@ static inline int32_t pressure_to_altitude(int32_t pressure)	// pressure in mbar
  * keeps track of those units.
  */
 /* turns out in Win32 PASCAL is defined as a calling convention */
-#ifdef WIN32
-#undef PASCAL
-#endif
 struct units {
 	enum LENGTH {
 		METERS,
@@ -286,7 +283,7 @@ struct units {
 	enum PRESSURE {
 		BAR,
 		PSI,
-		PASCAL
+		PASCALS
 	} pressure;
 	enum TEMPERATURE {
 		CELSIUS,

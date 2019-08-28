@@ -32,7 +32,7 @@ public:
 		INITIAL,
 		DOWNLOADING,
 		CANCELLING,
-		ERROR,
+		ERRORED,
 		DONE,
 	};
 
