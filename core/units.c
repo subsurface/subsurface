@@ -9,7 +9,7 @@ int get_pressure_units(int mb, const char **units)
 	const struct units *units_p = get_units();
 
 	switch (units_p->pressure) {
-	case PASCAL:
+	case PASCALS:
 		pressure = mb * 100;
 		unit = translate("gettextFromC", "pascal");
 		break;

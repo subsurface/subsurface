@@ -244,7 +244,7 @@ void DownloadFromDCWidget::updateState(states state)
 
 	// user pressed cancel but the application isn't doing anything.
 	// means close the window
-	else if ((currentState == INITIAL || currentState == DONE || currentState == ERROR) && state == CANCELLING) {
+	else if ((currentState == INITIAL || currentState == DONE || currentState == ERRORED) && state == CANCELLING) {
 		timer->stop();
 		reject();
 	}
@@ -294,7 +294,7 @@ void DownloadFromDCWidget::updateState(states state)
 	}
 
 	// got an error
-	else if (state == ERROR) {
+	else if (state == ERRORED) {
 		timer->stop();
 
 		QMessageBox::critical(this, TITLE_OR_TEXT(tr("Error"), thread.error), QMessageBox::Ok);
@@ -503,7 +503,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 		if (thread.error.isEmpty())
 			updateState(DONE);
 		else
-			updateState(ERROR);
+			updateState(ERRORED);
 	} else if (currentState == CANCELLING) {
 		updateState(DONE);
 	}
@@ -524,7 +524,7 @@ void DownloadFromDCWidget::on_cancel_clicked()
 
 void DownloadFromDCWidget::on_ok_clicked()
 {
-	if (currentState != DONE && currentState != ERROR)
+	if (currentState != DONE && currentState != ERRORED)
 		return;
 	struct dive_table *table = thread.table();
 	struct dive_site_table *sites = thread.sites();
