@@ -616,4 +616,7 @@ finished:
 	mb_cstring(&buf);
 	free(dive->notes);
 	dive->notes = detach_buffer(&buf);
+#ifdef DEBUG_PLANNER_NOTES
+	printf("<!DOCTYPE html>\n<html>\n\t<head><title>plannernotes</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/></head>\n\t<body>\n%s\t</body>\n</html>\n", dive->notes);
+#endif
 }
