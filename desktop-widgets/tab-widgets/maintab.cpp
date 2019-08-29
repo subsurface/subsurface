@@ -369,11 +369,15 @@ bool MainTab::isEditing()
 	return editMode != NONE;
 }
 
+static bool isHtml(const QString &s)
+{
+	return s.contains("<div", Qt::CaseInsensitive) || s.contains("<table", Qt::CaseInsensitive);
+}
+
 void MainTab::updateNotes(const struct dive *d)
 {
 	QString tmp(d->notes);
-	if (tmp.indexOf("<div") != -1) {
-		tmp.replace(QString("\n"), QString("<br>"));
+	if (isHtml(tmp)) {
 		ui.notes->setHtml(tmp);
 	} else {
 		ui.notes->setPlainText(tmp);
@@ -881,8 +885,8 @@ void MainTab::on_notes_editingFinished()
 	if (!currentTrip && !current_dive)
 		return;
 
-	QString notes = ui.notes->toHtml().indexOf("<div") != -1 ?
-		ui.notes->toHtml() : ui.notes->toPlainText();
+	QString html = ui.notes->toHtml();
+	QString notes = isHtml(html) ? html : ui.notes->toPlainText();
 
 	if (currentTrip)
 		Command::editTripNotes(currentTrip, notes);

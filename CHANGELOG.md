@@ -1,3 +1,4 @@
+- Desktop: Don't destroy format of planner notes when editing dive notes [#2265]
 - Desktop: fix crash when saving subtitles or profile picture
 ---
 * Always add new entries at the very top of this file above other existing entries and this note.
