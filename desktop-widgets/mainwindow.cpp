@@ -408,10 +408,10 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 {
 	mainTab->reload();
 	TankInfoModel::instance()->update();
-	MapWidget::instance()->reload();
 	if (doRecreateDiveList)
 		recreateDiveList();
 
+	MapWidget::instance()->reload();
 	setApplicationState(ApplicationState::Default);
 	diveList->setEnabled(true);
 	diveList->setFocus();
