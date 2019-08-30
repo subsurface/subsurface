@@ -65,7 +65,7 @@ public:
 	void reload(QObject *map);
 	MapLocation *getMapLocation(const struct dive_site *ds);
 	const QVector<dive_site *> &selectedDs() const;
-	Q_INVOKABLE void setSelected(struct dive_site *ds, bool fromClick = true);
+	Q_INVOKABLE void setSelected(struct dive_site *ds);
 	// The dive site is passed as a QVariant, because a null-QVariant is not automatically
 	// transformed into a null pointer and warning messages are spewed onto the console.
 	Q_INVOKABLE bool isSelected(const QVariant &ds) const;
@@ -83,7 +83,6 @@ private:
 
 signals:
 	void countChanged(int c);
-	void selectedLocationChanged(MapLocation *);
 };
 
 #endif
