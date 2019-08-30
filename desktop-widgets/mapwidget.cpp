@@ -84,6 +84,12 @@ bool MapWidget::editMode() const
 	return isReady && m_mapHelper->editMode();
 }
 
+void MapWidget::setSelected(const QVector<dive_site *> &divesites)
+{
+	CHECK_IS_READY_RETURN_VOID();
+	m_mapHelper->setSelected(divesites);
+}
+
 void MapWidget::selectionChanged()
 {
 	CHECK_IS_READY_RETURN_VOID();

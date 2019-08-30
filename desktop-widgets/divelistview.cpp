@@ -27,6 +27,7 @@
 #include "qt-models/divepicturemodel.h"
 #include "core/metrics.h"
 #include "desktop-widgets/simplewidgets.h"
+#include "desktop-widgets/mapwidget.h"
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false),
 	currentLayout(DiveTripModelBase::TREE), dontEmitDiveChangedSignal(false), selectionSaved(false),
@@ -455,6 +456,22 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 			scrollTo(idx.parent());
 		scrollTo(idx);
 	}
+
+	// update the selected-flag for the dive sites.
+	// the actual reloading of the dive sites will be perfomed
+	// by the main-window in response to the divesSelected signal
+	// emitted below.
+	QVector<dive_site *> selectedSites;
+	for (int idx: newDiveSelection) {
+		dive *d = get_dive(idx);
+		if (!d)
+			continue;
+		dive_site *ds = d->dive_site;
+		if (ds && !selectedSites.contains(ds))
+			selectedSites.append(ds);
+	}
+	MapWidget::instance()->setSelected(selectedSites);
+
 	// now that everything is up to date, update the widgets
 	emit divesSelected();
 	dontEmitDiveChangedSignal = false;

@@ -229,6 +229,11 @@ void MapLocationModel::setSelected(struct dive_site *ds)
 		m_selectedDs.append(ds);
 }
 
+void MapLocationModel::setSelected(const QVector<dive_site *> &divesites)
+{
+	m_selectedDs = divesites;
+}
+
 bool MapLocationModel::isSelected(const QVariant &dsVariant) const
 {
 	dive_site *ds = dsVariant.value<dive_site *>();
