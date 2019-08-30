@@ -96,16 +96,21 @@ void MapWidgetHelper::centerOnSelectedDiveSite()
 	}
 }
 
-void MapWidgetHelper::reloadMapLocations()
+void MapWidgetHelper::updateEditMode()
 {
 #ifndef SUBSURFACE_MOBILE
 	// The filter being set to dive site is the signal that we are in dive site edit mode.
 	// This is the case when either the dive site edit tab or the dive site list tab are active.
-	if (MultiFilterSortModel::instance()->diveSiteMode())
-		enterEditMode();
-	else
-		exitEditMode();
+	bool old = m_editMode;
+	m_editMode = MultiFilterSortModel::instance()->diveSiteMode();
+	if (old != m_editMode)
+		emit editModeChanged();
 #endif
+}
+
+void MapWidgetHelper::reloadMapLocations()
+{
+	updateEditMode();
 	m_mapLocationModel->reload(m_map);
 }
 
@@ -223,23 +228,6 @@ void MapWidgetHelper::updateCurrentDiveSiteCoordinatesFromMap(struct dive_site *
 void MapWidgetHelper::diveSiteChanged(struct dive_site *ds, int field)
 {
 	centerOnDiveSite(ds);
-}
-
-void MapWidgetHelper::exitEditMode()
-{
-	if (!m_editMode)
-		return;
-	m_editMode = false;
-	emit editModeChanged();
-}
-
-void MapWidgetHelper::enterEditMode()
-{
-	if (m_editMode)
-		return;
-
-	m_editMode = true;
-	emit editModeChanged();
 }
 
 QString MapWidgetHelper::pluginObject()

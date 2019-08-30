@@ -38,8 +38,7 @@ public:
 	QString pluginObject();
 
 private:
-	void enterEditMode();
-	void exitEditMode();
+	void updateEditMode();
 	QObject *m_map;
 	MapLocationModel *m_mapLocationModel;
 	qreal m_smallCircleRadius;
