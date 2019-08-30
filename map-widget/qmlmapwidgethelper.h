@@ -37,6 +37,7 @@ public:
 	Q_INVOKABLE void selectVisibleLocations();
 	Q_INVOKABLE void selectedLocationChanged(struct dive_site *ds);
 	QString pluginObject();
+	bool editMode() const;
 
 private:
 	void updateEditMode();

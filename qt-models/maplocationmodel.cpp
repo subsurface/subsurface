@@ -4,6 +4,7 @@
 #include "core/divesite.h"
 #ifndef SUBSURFACE_MOBILE
 #include "qt-models/filtermodels.h"
+#include "desktop-widgets/mapwidget.h"
 #endif
 
 #include <QDebug>
@@ -12,16 +13,29 @@
 const char *MapLocation::PROPERTY_NAME_COORDINATE = "coordinate";
 const char *MapLocation::PROPERTY_NAME_DIVESITE   = "divesite";
 const char *MapLocation::PROPERTY_NAME_NAME       = "name";
+const char *MapLocation::PROPERTY_NAME_PIXMAP     = "pixmap";
 
 #define MIN_DISTANCE_BETWEEN_DIVE_SITES_M 50.0
 
-MapLocation::MapLocation() : m_ds(nullptr)
+MapLocation::MapLocation() : m_ds(nullptr), m_selected(false)
 {
 }
 
-MapLocation::MapLocation(struct dive_site *ds, QGeoCoordinate coord, QString name) :
-    m_ds(ds), m_coordinate(coord), m_name(name)
+MapLocation::MapLocation(struct dive_site *ds, QGeoCoordinate coord, QString name, bool selected) :
+    m_ds(ds), m_coordinate(coord), m_name(name), m_selected(selected)
 {
+}
+
+// Check whether we are in divesite-edit mode. This doesn't
+// exist on mobile. And on desktop we have to access the MapWidget.
+// Simplify this!
+static bool inEditMode()
+{
+#ifdef SUBSURFACE_MOBILE
+	return false;
+#else
+	return MapWidget::instance()->editMode();
+#endif
 }
 
 QVariant MapLocation::getRole(int role) const
@@ -33,6 +47,10 @@ QVariant MapLocation::getRole(int role) const
 		return QVariant::fromValue(m_coordinate);
 	case Roles::RoleName:
 		return QVariant::fromValue(m_name);
+	case Roles::RolePixmap:
+		return m_selected ? QString("qrc:///dive-location-marker-selected-icon") :
+		       inEditMode() ? QString("qrc:///dive-location-marker-inactive-icon") :
+				    QString("qrc:///dive-location-marker-icon");
 	default:
 		return QVariant();
 	}
@@ -69,6 +87,7 @@ MapLocationModel::MapLocationModel(QObject *parent) : QAbstractListModel(parent)
 	m_roles[MapLocation::Roles::RoleDivesite] = MapLocation::PROPERTY_NAME_DIVESITE;
 	m_roles[MapLocation::Roles::RoleCoordinate] = MapLocation::PROPERTY_NAME_COORDINATE;
 	m_roles[MapLocation::Roles::RoleName] = MapLocation::PROPERTY_NAME_NAME;
+	m_roles[MapLocation::Roles::RolePixmap] = MapLocation::PROPERTY_NAME_PIXMAP;
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &MapLocationModel::diveSiteChanged);
 }
 
@@ -184,7 +203,8 @@ void MapLocationModel::reload(QObject *map)
 					continue;
 			}
 		}
-		MapLocation *location = new MapLocation(ds, dsCoord, name);
+		bool selected = m_selectedDs.contains(ds);
+		MapLocation *location = new MapLocation(ds, dsCoord, name, selected);
 		m_mapLocations.append(location);
 		if (!diveSiteMode)
 			locationNameMap[name] = location;
@@ -242,7 +262,6 @@ void MapLocationModel::diveSiteChanged(struct dive_site *ds, int field)
 	default:
 		break;
 	}
-
 
 	emit dataChanged(createIndex(row, 0), createIndex(row, 0));
 }

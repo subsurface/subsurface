@@ -79,6 +79,11 @@ void MapWidget::reload()
 	m_mapHelper->centerOnSelectedDiveSite();
 }
 
+bool MapWidget::editMode() const
+{
+	return isReady && m_mapHelper->editMode();
+}
+
 void MapWidget::selectedDivesChanged(const QList<int> &list)
 {
 	CHECK_IS_READY_RETURN_VOID();

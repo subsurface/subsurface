@@ -23,6 +23,7 @@ public:
 
 	static MapWidget *instance();
 	void reload();
+	bool editMode() const;
 
 public slots:
 	void centerOnDiveSite(struct dive_site *);

@@ -21,9 +21,10 @@ public:
 	static const char *PROPERTY_NAME_COORDINATE;
 	static const char *PROPERTY_NAME_DIVESITE;
 	static const char *PROPERTY_NAME_NAME;
+	static const char *PROPERTY_NAME_PIXMAP;
 
 	explicit MapLocation();
-	explicit MapLocation(struct dive_site *ds, QGeoCoordinate coord, QString name);
+	explicit MapLocation(struct dive_site *ds, QGeoCoordinate coord, QString name, bool selected);
 
 	QVariant getRole(int role) const;
 	QGeoCoordinate coordinate();
@@ -35,13 +36,16 @@ public:
 	enum Roles {
 		RoleDivesite = Qt::UserRole + 1,
 		RoleCoordinate,
-		RoleName
+		RoleName,
+		RolePixmap
 	};
 
 private:
 	struct dive_site *m_ds;
 	QGeoCoordinate m_coordinate;
 	QString m_name;
+public:
+	bool m_selected = false;
 
 signals:
 	void coordinateChanged();
