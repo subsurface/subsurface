@@ -59,7 +59,7 @@ Item {
 				z: mapHelper.model.isSelected(model.divesite) ? mapHelper.model.count - 1 : 0
 				sourceItem: Image {
 					id: mapItemImage
-					source: "qrc:///dive-location-marker" + (mapHelper.model.isSelected(model.divesite) ? "-selected" : (mapHelper.editMode ? "-inactive" : "")) + "-icon"
+					source: model.pixmap
 					SequentialAnimation {
 						id: mapItemImageAnimation
 						PropertyAnimation { target: mapItemImage; property: "scale"; from: 1.0; to: 0.7; duration: 120 }

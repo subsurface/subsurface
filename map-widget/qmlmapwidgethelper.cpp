@@ -11,6 +11,7 @@
 #include "qt-models/divelocationmodel.h"
 #ifndef SUBSURFACE_MOBILE
 #include "qt-models/filtermodels.h"
+#include "desktop-widgets/mapwidget.h"
 #endif
 
 #define SMALL_CIRCLE_RADIUS_PX            26.0
@@ -233,6 +234,11 @@ void MapWidgetHelper::updateCurrentDiveSiteCoordinatesFromMap(struct dive_site *
 void MapWidgetHelper::diveSiteChanged(struct dive_site *ds, int field)
 {
 	centerOnDiveSite(ds);
+}
+
+bool MapWidgetHelper::editMode() const
+{
+	return m_editMode;
 }
 
 QString MapWidgetHelper::pluginObject()
