@@ -14,6 +14,7 @@ const char *MapLocation::PROPERTY_NAME_COORDINATE = "coordinate";
 const char *MapLocation::PROPERTY_NAME_DIVESITE   = "divesite";
 const char *MapLocation::PROPERTY_NAME_NAME       = "name";
 const char *MapLocation::PROPERTY_NAME_PIXMAP     = "pixmap";
+const char *MapLocation::PROPERTY_NAME_Z          = "z";
 
 #define MIN_DISTANCE_BETWEEN_DIVE_SITES_M 50.0
 
@@ -51,6 +52,8 @@ QVariant MapLocation::getRole(int role) const
 		return m_selected ? QString("qrc:///dive-location-marker-selected-icon") :
 		       inEditMode() ? QString("qrc:///dive-location-marker-inactive-icon") :
 				    QString("qrc:///dive-location-marker-icon");
+	case Roles::RoleZ:
+		return m_selected ? 1 : 0;
 	default:
 		return QVariant();
 	}
@@ -88,6 +91,7 @@ MapLocationModel::MapLocationModel(QObject *parent) : QAbstractListModel(parent)
 	m_roles[MapLocation::Roles::RoleCoordinate] = MapLocation::PROPERTY_NAME_COORDINATE;
 	m_roles[MapLocation::Roles::RoleName] = MapLocation::PROPERTY_NAME_NAME;
 	m_roles[MapLocation::Roles::RolePixmap] = MapLocation::PROPERTY_NAME_PIXMAP;
+	m_roles[MapLocation::Roles::RoleZ] = MapLocation::PROPERTY_NAME_Z;
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &MapLocationModel::diveSiteChanged);
 }
 
