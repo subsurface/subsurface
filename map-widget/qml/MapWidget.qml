@@ -69,10 +69,8 @@ Item {
 						drag.target: (mapHelper.editMode && mapHelper.model.isSelected(model.divesite)) ? mapItem : undefined
 						anchors.fill: parent
 						onClicked: {
-							if (!mapHelper.editMode && model.divesite) {
-								mapHelper.model.setSelected(model.divesite)
+							if (!mapHelper.editMode && model.divesite)
 								mapHelper.selectedLocationChanged(model.divesite)
-							}
 						}
 						onDoubleClicked: map.doubleClickHandler(mapItem.coordinate)
 						onReleased: {

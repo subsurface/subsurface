@@ -68,6 +68,7 @@ public:
 	// If map is not null, it will be used to place new dive sites without GPS location at the center of the map
 	void reload(QObject *map);
 	void selectionChanged();
+	void setSelected(const QVector<dive_site *> &divesites);
 	MapLocation *getMapLocation(const struct dive_site *ds);
 	const QVector<dive_site *> &selectedDs() const;
 	Q_INVOKABLE void setSelected(struct dive_site *ds);
