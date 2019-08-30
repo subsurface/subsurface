@@ -84,6 +84,13 @@ bool MapWidget::editMode() const
 	return isReady && m_mapHelper->editMode();
 }
 
+void MapWidget::selectionChanged()
+{
+	CHECK_IS_READY_RETURN_VOID();
+	m_mapHelper->selectionChanged();
+	m_mapHelper->centerOnSelectedDiveSite();
+}
+
 void MapWidget::selectedDivesChanged(const QList<int> &list)
 {
 	CHECK_IS_READY_RETURN_VOID();

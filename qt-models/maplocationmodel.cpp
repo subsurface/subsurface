@@ -150,6 +150,15 @@ static bool hasSelectedDive(const dive_site *ds)
 			   [] (const dive *d) { return d->selected; });
 }
 
+void MapLocationModel::selectionChanged()
+{
+	if (m_mapLocations.isEmpty())
+		return;
+	for(MapLocation *m: m_mapLocations)
+		m->m_selected = m_selectedDs.contains(m->divesite());
+	emit dataChanged(createIndex(0, 0), createIndex(m_mapLocations.size() - 1, 0));
+}
+
 void MapLocationModel::reload(QObject *map)
 {
 	beginResetModel();

@@ -113,6 +113,11 @@ void MapWidgetHelper::reloadMapLocations()
 	m_mapLocationModel->reload(m_map);
 }
 
+void MapWidgetHelper::selectionChanged()
+{
+	m_mapLocationModel->selectionChanged();
+}
+
 void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)
 {
 	int idx;
