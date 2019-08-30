@@ -22,6 +22,7 @@ public:
 	static const char *PROPERTY_NAME_DIVESITE;
 	static const char *PROPERTY_NAME_NAME;
 	static const char *PROPERTY_NAME_PIXMAP;
+	static const char *PROPERTY_NAME_Z;
 
 	explicit MapLocation();
 	explicit MapLocation(struct dive_site *ds, QGeoCoordinate coord, QString name, bool selected);
@@ -37,7 +38,8 @@ public:
 		RoleDivesite = Qt::UserRole + 1,
 		RoleCoordinate,
 		RoleName,
-		RolePixmap
+		RolePixmap,
+		RoleZ
 	};
 
 private:

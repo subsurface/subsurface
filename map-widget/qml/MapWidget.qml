@@ -56,7 +56,7 @@ Item {
 				anchorPoint.x: 0
 				anchorPoint.y: mapItemImage.height
 				coordinate:  model.coordinate
-				z: mapHelper.model.isSelected(model.divesite) ? mapHelper.model.count - 1 : 0
+				z: model.z
 				sourceItem: Image {
 					id: mapItemImage
 					source: model.pixmap
