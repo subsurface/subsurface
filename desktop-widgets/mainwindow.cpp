@@ -464,7 +464,7 @@ void MainWindow::selectionChanged()
 		configureToolbar();
 		enableDisableOtherDCsActions();
 	}
-	MapWidget::instance()->reload();
+	MapWidget::instance()->selectionChanged();
 }
 
 void MainWindow::on_actionNew_triggered()

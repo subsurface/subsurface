@@ -23,6 +23,7 @@ public:
 
 	static MapWidget *instance();
 	void reload();
+	void selectionChanged();
 	bool editMode() const;
 
 public slots:
