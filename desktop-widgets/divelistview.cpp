@@ -687,8 +687,20 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 			select_dive(dive);
 		}
 	}
-	if (!dontEmitDiveChangedSignal)
+	if (!dontEmitDiveChangedSignal) {
+		// When receiving the divesSelected signal the main window will
+		// instruct the map to update the flags. Thus, make sure that
+		// the selected maps are registered correctly.
+		QVector<dive_site *> selectedSites;
+		for (QModelIndex index: selectionModel()->selection().indexes()) {
+			const QAbstractItemModel *model = index.model();
+			struct dive *dive = model->data(index, DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
+			if (dive && dive->dive_site)
+				selectedSites.push_back(dive->dive_site);
+		}
+		MapWidget::instance()->setSelected(selectedSites);
 		emit divesSelected();
+	}
 
 	// Display the new, processed, selection
 	QTreeView::selectionChanged(selectionModel()->selection(), newDeselected);
