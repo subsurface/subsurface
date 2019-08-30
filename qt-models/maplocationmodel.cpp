@@ -193,14 +193,11 @@ void MapLocationModel::reload(QObject *map)
 	endResetModel();
 }
 
-void MapLocationModel::setSelected(struct dive_site *ds, bool fromClick)
+void MapLocationModel::setSelected(struct dive_site *ds)
 {
 	m_selectedDs.clear();
-	if (!ds)
-		return;
-	m_selectedDs.append(ds);
-	if (fromClick)
-		emit selectedLocationChanged(getMapLocation(ds));
+	if (ds)
+		m_selectedDs.append(ds);
 }
 
 bool MapLocationModel::isSelected(const QVariant &dsVariant) const

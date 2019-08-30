@@ -21,8 +21,6 @@ MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
 	m_smallCircleRadius = SMALL_CIRCLE_RADIUS_PX;
 	m_map = nullptr;
 	m_editMode = false;
-	connect(m_mapLocationModel, SIGNAL(selectedLocationChanged(MapLocation *)),
-	        this, SLOT(selectedLocationChanged(MapLocation *)));
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &MapWidgetHelper::diveSiteChanged);
 }
 
@@ -37,11 +35,11 @@ void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 {
 	if (!dive_site_has_gps_location(ds)) {
 		// dive site with no GPS
-		m_mapLocationModel->setSelected(ds, false);
+		m_mapLocationModel->setSelected(ds);
 		QMetaObject::invokeMethod(m_map, "deselectMapLocation");
 	} else {
 		// dive site with GPS
-		m_mapLocationModel->setSelected(ds, false);
+		m_mapLocationModel->setSelected(ds);
 		QGeoCoordinate dsCoord (ds->location.lat.udeg * 0.000001, ds->location.lon.udeg * 0.000001);
 		QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(dsCoord)));
 	}
@@ -114,12 +112,19 @@ void MapWidgetHelper::reloadMapLocations()
 	m_mapLocationModel->reload(m_map);
 }
 
-void MapWidgetHelper::selectedLocationChanged(MapLocation *location)
+void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)
 {
 	int idx;
 	struct dive *dive;
 	QList<int> selectedDiveIds;
+
+	if (!ds_in)
+		return;
+	MapLocation *location = m_mapLocationModel->getMapLocation(ds_in);
+	if (!location)
+		return;
 	QGeoCoordinate locationCoord = location->coordinate();
+
 	for_each_dive (idx, dive) {
 		struct dive_site *ds = get_dive_site_for_dive(dive);
 		if (!dive_site_has_gps_location(ds))
