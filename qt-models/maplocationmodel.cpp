@@ -12,10 +12,6 @@
 
 #define MIN_DISTANCE_BETWEEN_DIVE_SITES_M 50.0
 
-MapLocation::MapLocation() : divesite(nullptr), selected(false)
-{
-}
-
 MapLocation::MapLocation(struct dive_site *dsIn, QGeoCoordinate coordIn, QString nameIn, bool selectedIn) :
     divesite(dsIn), coordinate(coordIn), name(nameIn), selected(selectedIn)
 {
