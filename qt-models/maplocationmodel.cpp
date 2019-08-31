@@ -76,11 +76,6 @@ struct dive_site *MapLocation::divesite()
 	return m_ds;
 }
 
-QVariant MapLocation::divesiteVariant()
-{
-	return QVariant::fromValue(m_ds);
-}
-
 MapLocationModel::MapLocationModel(QObject *parent) : QAbstractListModel(parent)
 {
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &MapLocationModel::diveSiteChanged);

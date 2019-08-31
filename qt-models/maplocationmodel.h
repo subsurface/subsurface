@@ -13,9 +13,6 @@
 class MapLocation : public QObject
 {
 	Q_OBJECT
-	Q_PROPERTY(QVariant divesite READ divesiteVariant)
-	Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE setCoordinate NOTIFY coordinateChanged)
-	Q_PROPERTY(QString name MEMBER m_name)
 
 public:
 	explicit MapLocation();
@@ -25,7 +22,6 @@ public:
 	QGeoCoordinate coordinate();
 	void setCoordinate(QGeoCoordinate coord);
 	void setCoordinateNoEmit(QGeoCoordinate coord);
-	QVariant divesiteVariant();
 	struct dive_site *divesite();
 
 	enum Roles {
