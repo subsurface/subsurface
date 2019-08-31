@@ -18,12 +18,6 @@ class MapLocation : public QObject
 	Q_PROPERTY(QString name MEMBER m_name)
 
 public:
-	static const char *PROPERTY_NAME_COORDINATE;
-	static const char *PROPERTY_NAME_DIVESITE;
-	static const char *PROPERTY_NAME_NAME;
-	static const char *PROPERTY_NAME_PIXMAP;
-	static const char *PROPERTY_NAME_Z;
-
 	explicit MapLocation();
 	explicit MapLocation(struct dive_site *ds, QGeoCoordinate coord, QString name, bool selected);
 
@@ -86,7 +80,6 @@ private slots:
 
 private:
 	QVector<MapLocation *> m_mapLocations;
-	QHash<int, QByteArray> m_roles;
 	QVector<dive_site *> m_selectedDs;
 
 signals:
