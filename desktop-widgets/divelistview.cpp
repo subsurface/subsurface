@@ -461,16 +461,21 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 	// the actual reloading of the dive sites will be perfomed
 	// by the main-window in response to the divesSelected signal
 	// emitted below.
-	QVector<dive_site *> selectedSites;
-	for (int idx: newDiveSelection) {
-		dive *d = get_dive(idx);
-		if (!d)
-			continue;
-		dive_site *ds = d->dive_site;
-		if (ds && !selectedSites.contains(ds))
-			selectedSites.append(ds);
+	// But don't do this if we are in divesite mode, because then
+	// the dive-site selection is controlled by the filter not
+	// by the selected dives.
+	if (!MultiFilterSortModel::instance()->diveSiteMode()) {
+		QVector<dive_site *> selectedSites;
+		for (int idx: newDiveSelection) {
+			dive *d = get_dive(idx);
+			if (!d)
+				continue;
+			dive_site *ds = d->dive_site;
+			if (ds && !selectedSites.contains(ds))
+				selectedSites.append(ds);
+		}
+		MapWidget::instance()->setSelected(selectedSites);
 	}
-	MapWidget::instance()->setSelected(selectedSites);
 
 	// now that everything is up to date, update the widgets
 	emit divesSelected();
@@ -691,14 +696,19 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 		// When receiving the divesSelected signal the main window will
 		// instruct the map to update the flags. Thus, make sure that
 		// the selected maps are registered correctly.
-		QVector<dive_site *> selectedSites;
-		for (QModelIndex index: selectionModel()->selection().indexes()) {
-			const QAbstractItemModel *model = index.model();
-			struct dive *dive = model->data(index, DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
-			if (dive && dive->dive_site)
-				selectedSites.push_back(dive->dive_site);
+		// But don't do this if we are in divesite mode, because then
+		// the dive-site selection is controlled by the filter not
+		// by the selected dives.
+		if (!MultiFilterSortModel::instance()->diveSiteMode()) {
+			QVector<dive_site *> selectedSites;
+			for (QModelIndex index: selectionModel()->selection().indexes()) {
+				const QAbstractItemModel *model = index.model();
+				struct dive *dive = model->data(index, DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
+				if (dive && dive->dive_site)
+					selectedSites.push_back(dive->dive_site);
+			}
+			MapWidget::instance()->setSelected(selectedSites);
 		}
-		MapWidget::instance()->setSelected(selectedSites);
 		emit divesSelected();
 	}
 

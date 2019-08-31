@@ -127,8 +127,7 @@ void MultiFilterSortModel::resetModel(DiveTripModelBase::Layout layout)
 
 bool MultiFilterSortModel::showDive(const struct dive *d) const
 {
-	// If dive_sites is not empty, we are in a special dive-site filtering mode.
-	if (!dive_sites.isEmpty())
+	if (diveSiteMode())
 		return dive_sites.contains(d->dive_site);
 
 	if (!filterData.validFilter)
@@ -267,13 +266,16 @@ void MultiFilterSortModel::myInvalidate()
 
 #if !defined(SUBSURFACE_MOBILE)
 	// The shown maps may have changed -> reload the map widget.
-	MapWidget::instance()->reload();
+	// But don't do this in dive site mode, because then we show all
+	// dive sites and only change the selected flag.
+	if (!diveSiteMode())
+		MapWidget::instance()->reload();
 #endif
 
 	emit filterFinished();
 
 #if !defined(SUBSURFACE_MOBILE)
-	if (!dive_sites.isEmpty())
+	if (diveSiteMode())
 		MainWindow::instance()->diveList->expandAll();
 #endif
 }
@@ -303,6 +305,11 @@ void MultiFilterSortModel::startFilterDiveSites(QVector<dive_site *> ds)
 	} else {
 		std::sort(ds.begin(), ds.end());
 		dive_sites = ds;
+#if !defined(SUBSURFACE_MOBILE)
+		// When switching into dive site mode, reload the dive sites.
+		// We won't do this in myInvalidate() once we are in dive site mode.
+		MapWidget::instance()->reload();
+#endif
 		myInvalidate();
 	}
 }
@@ -323,6 +330,10 @@ void MultiFilterSortModel::setFilterDiveSite(QVector<dive_site *> ds)
 	if (ds == dive_sites)
 		return;
 	dive_sites = ds;
+
+#if !defined(SUBSURFACE_MOBILE)
+	MapWidget::instance()->setSelected(dive_sites);
+#endif
 	myInvalidate();
 }
 
