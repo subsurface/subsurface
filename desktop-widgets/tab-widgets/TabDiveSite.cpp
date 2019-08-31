@@ -95,14 +95,9 @@ QVector<dive_site *> TabDiveSite::selectedDiveSites()
 	return sites;
 }
 
-void TabDiveSite::updateFilter()
-{
-	MultiFilterSortModel::instance()->setFilterDiveSite(selectedDiveSites());
-}
-
 void TabDiveSite::selectionChanged(const QItemSelection &, const QItemSelection &)
 {
-	updateFilter();
+	MultiFilterSortModel::instance()->setFilterDiveSite(selectedDiveSites());
 }
 
 void TabDiveSite::showEvent(QShowEvent *)
