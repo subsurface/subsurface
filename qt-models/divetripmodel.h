@@ -106,6 +106,7 @@ public slots:
 	void divesAdded(dive_trip *trip, bool addTrip, const QVector<dive *> &dives);
 	void divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives);
 	void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
+	void diveSiteChanged(dive_site *ds, int field);
 	void divesChanged(const QVector<dive *> &dives);
 	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
 	void divesSelected(const QVector<dive *> &dives, dive *current);
@@ -170,6 +171,7 @@ class DiveTripModelList : public DiveTripModelBase
 public slots:
 	void divesAdded(dive_trip *trip, bool addTrip, const QVector<dive *> &dives);
 	void divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives);
+	void diveSiteChanged(dive_site *ds, int field);
 	void divesChanged(const QVector<dive *> &dives);
 	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
 	// Does nothing in list view.

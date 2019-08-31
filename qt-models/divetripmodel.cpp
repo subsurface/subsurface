@@ -5,8 +5,10 @@
 #include "core/metrics.h"
 #include "core/trip.h"
 #include "core/qthelper.h"
+#include "core/divesite.h"
 #include "core/subsurface-string.h"
 #include "core/tag.h"
+#include "qt-models/divelocationmodel.h" // For the dive-site field ids
 #include "desktop-widgets/command.h"
 #include <QIcon>
 #include <QDebug>
@@ -548,6 +550,7 @@ DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::divesAdded, this, &DiveTripModelTree::divesAdded);
 	connect(&diveListNotifier, &DiveListNotifier::divesDeleted, this, &DiveTripModelTree::divesDeleted);
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &DiveTripModelTree::divesChanged);
+	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &DiveTripModelTree::diveSiteChanged);
 	connect(&diveListNotifier, &DiveListNotifier::divesMovedBetweenTrips, this, &DiveTripModelTree::divesMovedBetweenTrips);
 	connect(&diveListNotifier, &DiveListNotifier::divesTimeChanged, this, &DiveTripModelTree::divesTimeChanged);
 	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelTree::divesSelected);
@@ -928,6 +931,34 @@ void processByTrip(QVector<dive *> dives, Function action)
 	}
 }
 
+// Helper function: collect the dives that are at the given dive site
+static QVector<dive *> getDivesForSite(struct dive_site *ds)
+{
+	QVector<dive *> diveSiteDives;
+	diveSiteDives.reserve(ds->dives.nr);
+
+	for (int i = 0; i < ds->dives.nr; ++i)
+		diveSiteDives.push_back(ds->dives.dives[i]);
+
+	return diveSiteDives;
+}
+
+// On the change of which dive site field should we update the
+// dive in the list?
+static bool isInterestingDiveSiteField(int field)
+{
+	return field == LocationInformationModel::NAME		// dive site name can is shown in the dive list
+	    || field == LocationInformationModel::TAXONOMY	// country is shown in the dive list
+	    || field == LocationInformationModel::LOCATION;	// the globe icon in the dive list shows whether we have coordinates
+}
+
+void DiveTripModelTree::diveSiteChanged(dive_site *ds, int field)
+{
+	if (!isInterestingDiveSiteField(field))
+		return;
+	divesChanged(getDivesForSite(ds));
+}
+
 void DiveTripModelTree::divesChanged(const QVector<dive *> &dives)
 {
 	processByTrip(dives, [this] (dive_trip *trip, const QVector<dive *> &divesInTrip)
@@ -1161,6 +1192,7 @@ DiveTripModelList::DiveTripModelList(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::divesAdded, this, &DiveTripModelList::divesAdded);
 	connect(&diveListNotifier, &DiveListNotifier::divesDeleted, this, &DiveTripModelList::divesDeleted);
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &DiveTripModelList::divesChanged);
+	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &DiveTripModelList::diveSiteChanged);
 	// Does nothing in list-view
 	//connect(&diveListNotifier, &DiveListNotifier::divesMovedBetweenTrips, this, &DiveTripModelList::divesMovedBetweenTrips);
 	connect(&diveListNotifier, &DiveListNotifier::divesTimeChanged, this, &DiveTripModelList::divesTimeChanged);
@@ -1247,6 +1279,13 @@ void DiveTripModelList::divesDeleted(dive_trip *, bool, const QVector<dive *> &d
 				endRemoveRows();
 				return from - to; // Delta: negate the number of items deleted
 				 });
+}
+
+void DiveTripModelList::diveSiteChanged(dive_site *ds, int field)
+{
+	if (!isInterestingDiveSiteField(field))
+		return;
+	divesChanged(getDivesForSite(ds));
 }
 
 void DiveTripModelList::divesChanged(const QVector<dive *> &divesIn)
