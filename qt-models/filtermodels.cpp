@@ -12,6 +12,7 @@
 #if !defined(SUBSURFACE_MOBILE)
 #include "desktop-widgets/divelistview.h"
 #include "desktop-widgets/mainwindow.h"
+#include "desktop-widgets/mapwidget.h"
 #endif
 
 #include <QDebug>
@@ -263,6 +264,11 @@ void MultiFilterSortModel::myInvalidate()
 		DiveTripModelBase::instance()->filterFinished();
 		countsChanged();
 	}
+
+#if !defined(SUBSURFACE_MOBILE)
+	// The shown maps may have changed -> reload the map widget.
+	MapWidget::instance()->reload();
+#endif
 
 	emit filterFinished();
 
