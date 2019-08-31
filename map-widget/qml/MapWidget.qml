@@ -66,7 +66,7 @@ Item {
 						PropertyAnimation { target: mapItemImage; property: "scale"; from: 0.7; to: 1.0; duration: 80 }
 					}
 					MouseArea {
-						drag.target: (mapHelper.editMode && mapHelper.model.isSelected(model.divesite)) ? mapItem : undefined
+						drag.target: (mapHelper.editMode && model.isSelected) ? mapItem : undefined
 						anchors.fill: parent
 						onClicked: {
 							if (!mapHelper.editMode && model.divesite)
@@ -74,7 +74,7 @@ Item {
 						}
 						onDoubleClicked: map.doubleClickHandler(mapItem.coordinate)
 						onReleased: {
-							if (mapHelper.editMode && mapHelper.model.isSelected(model.divesite)) {
+							if (mapHelper.editMode && model.isSelected) {
 								mapHelper.updateCurrentDiveSiteCoordinatesFromMap(model.divesite, mapItem.coordinate)
 							}
 						}
@@ -94,7 +94,7 @@ Item {
 							id: mapItemText
 							text: model.name
 							font.pointSize: 11.0
-							color: mapHelper.model.isSelected(model.divesite) ? "white" : "lightgrey"
+							color: model.isSelected ? "white" : "lightgrey"
 						}
 					}
 				}

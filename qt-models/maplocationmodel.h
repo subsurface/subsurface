@@ -33,7 +33,8 @@ public:
 		RoleCoordinate,
 		RoleName,
 		RolePixmap,
-		RoleZ
+		RoleZ,
+		RoleIsSelected
 	};
 
 private:
