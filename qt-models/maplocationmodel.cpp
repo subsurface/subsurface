@@ -236,12 +236,6 @@ void MapLocationModel::setSelected(const QVector<dive_site *> &divesites)
 	m_selectedDs = divesites;
 }
 
-bool MapLocationModel::isSelected(const QVariant &dsVariant) const
-{
-	dive_site *ds = dsVariant.value<dive_site *>();
-	return ds && m_selectedDs.contains(ds);
-}
-
 MapLocation *MapLocationModel::getMapLocation(const struct dive_site *ds)
 {
 	MapLocation *location;
