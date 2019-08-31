@@ -186,19 +186,6 @@ static void swap(char *&c, QString &q)
 	q = s;
 }
 
-// Helper function: collect the dives that are at the given dive site
-static QVector<dive *> getDivesForSite(struct dive_site *ds)
-{
-	QVector<dive *> diveSiteDives;
-	diveSiteDives.reserve(ds->dives.nr);
-
-	for (int i = 0; i < ds->dives.nr; ++i)
-		diveSiteDives.push_back(ds->dives.dives[i]);
-
-	return diveSiteDives;
-}
-
-
 EditDiveSiteName::EditDiveSiteName(dive_site *dsIn, const QString &name) : ds(dsIn),
 	value(name)
 {
@@ -214,7 +201,6 @@ void EditDiveSiteName::redo()
 {
 	swap(ds->name, value);
 	emit diveListNotifier.diveSiteChanged(ds, LocationInformationModel::NAME); // Inform frontend of changed dive site.
-	emit diveListNotifier.divesChanged(getDivesForSite(ds), DiveField::DIVESITE); // dive site name can be shown in the dive list
 }
 
 void EditDiveSiteName::undo()
@@ -286,8 +272,6 @@ void EditDiveSiteCountry::redo()
 	taxonomy_set_country(&ds->taxonomy, copy_qstring(value), taxonomy_origin::GEOMANUAL);
 	value = old;
 	emit diveListNotifier.diveSiteChanged(ds, LocationInformationModel::TAXONOMY); // Inform frontend of changed dive site.
-	emit diveListNotifier.divesChanged(getDivesForSite(ds), DiveField::DIVESITE); // Country can be shown in the dive list
-
 }
 
 void EditDiveSiteCountry::undo()
@@ -315,7 +299,6 @@ void EditDiveSiteLocation::redo()
 {
 	std::swap(value, ds->location);
 	emit diveListNotifier.diveSiteChanged(ds, LocationInformationModel::LOCATION); // Inform frontend of changed dive site.
-	emit diveListNotifier.divesChanged(getDivesForSite(ds), DiveField::DIVESITE); // the globe icon in the dive list shows whether we have coordinates
 }
 
 void EditDiveSiteLocation::undo()
