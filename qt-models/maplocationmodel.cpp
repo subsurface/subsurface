@@ -7,9 +7,6 @@
 #include "desktop-widgets/mapwidget.h"
 #endif
 
-#include <QDebug>
-#include <algorithm>
-
 #define MIN_DISTANCE_BETWEEN_DIVE_SITES_M 50.0
 
 MapLocation::MapLocation(struct dive_site *dsIn, QGeoCoordinate coordIn, QString nameIn, bool selectedIn) :
