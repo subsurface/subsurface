@@ -10,10 +10,8 @@
 #include <QAbstractListModel>
 #include <QGeoCoordinate>
 
-class MapLocation : public QObject
+class MapLocation
 {
-	Q_OBJECT
-
 public:
 	explicit MapLocation();
 	explicit MapLocation(struct dive_site *ds, QGeoCoordinate coord, QString name, bool selected);

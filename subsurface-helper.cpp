@@ -164,6 +164,5 @@ void register_qml_types(QQmlEngine *engine)
 
 	REGISTER_TYPE(MapWidgetHelper, "MapWidgetHelper");
 	REGISTER_TYPE(MapLocationModel, "MapLocationModel");
-	REGISTER_TYPE(MapLocation, "MapLocation");
 #endif // not SUBSURFACE_TEST_DATA
 }
