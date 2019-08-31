@@ -13,7 +13,6 @@
 class MapLocation
 {
 public:
-	explicit MapLocation();
 	explicit MapLocation(struct dive_site *ds, QGeoCoordinate coord, QString name, bool selected);
 
 	QVariant getRole(int role) const;
@@ -30,7 +29,7 @@ public:
 	struct dive_site *divesite;
 	QGeoCoordinate coordinate;
 	QString name;
-	bool selected = false;
+	bool selected;
 };
 
 class MapLocationModel : public QAbstractListModel
