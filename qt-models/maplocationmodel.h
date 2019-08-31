@@ -68,7 +68,7 @@ public:
 	void setSelected(const QVector<dive_site *> &divesites);
 	MapLocation *getMapLocation(const struct dive_site *ds);
 	const QVector<dive_site *> &selectedDs() const;
-	Q_INVOKABLE void setSelected(struct dive_site *ds);
+	void setSelected(struct dive_site *ds);
 
 protected:
 	QHash<int, QByteArray> roleNames() const override;
