@@ -63,12 +63,6 @@ QGeoCoordinate MapLocation::coordinate()
 void MapLocation::setCoordinate(QGeoCoordinate coord)
 {
 	m_coordinate = coord;
-	emit coordinateChanged();
-}
-
-void MapLocation::setCoordinateNoEmit(QGeoCoordinate coord)
-{
-	m_coordinate = coord;
 }
 
 struct dive_site *MapLocation::divesite()
@@ -246,7 +240,7 @@ void MapLocationModel::diveSiteChanged(struct dive_site *ds, int field)
 			const qreal latitude_r = ds->location.lat.udeg * 0.000001;
 			const qreal longitude_r = ds->location.lon.udeg * 0.000001;
 			QGeoCoordinate coord(latitude_r, longitude_r);
-			m_mapLocations[row]->setCoordinateNoEmit(coord);
+			m_mapLocations[row]->setCoordinate(coord);
 		}
 		break;
 	case LocationInformationModel::NAME:
