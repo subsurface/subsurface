@@ -21,7 +21,6 @@ public:
 	QVariant getRole(int role) const;
 	QGeoCoordinate coordinate();
 	void setCoordinate(QGeoCoordinate coord);
-	void setCoordinateNoEmit(QGeoCoordinate coord);
 	struct dive_site *divesite();
 
 	enum Roles {
@@ -39,9 +38,6 @@ private:
 	QString m_name;
 public:
 	bool m_selected = false;
-
-signals:
-	void coordinateChanged();
 };
 
 class MapLocationModel : public QAbstractListModel
