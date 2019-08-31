@@ -10,12 +10,6 @@
 #include <QDebug>
 #include <algorithm>
 
-const char *MapLocation::PROPERTY_NAME_COORDINATE = "coordinate";
-const char *MapLocation::PROPERTY_NAME_DIVESITE   = "divesite";
-const char *MapLocation::PROPERTY_NAME_NAME       = "name";
-const char *MapLocation::PROPERTY_NAME_PIXMAP     = "pixmap";
-const char *MapLocation::PROPERTY_NAME_Z          = "z";
-
 #define MIN_DISTANCE_BETWEEN_DIVE_SITES_M 50.0
 
 MapLocation::MapLocation() : m_ds(nullptr), m_selected(false)
@@ -87,11 +81,6 @@ QVariant MapLocation::divesiteVariant()
 
 MapLocationModel::MapLocationModel(QObject *parent) : QAbstractListModel(parent)
 {
-	m_roles[MapLocation::Roles::RoleDivesite] = MapLocation::PROPERTY_NAME_DIVESITE;
-	m_roles[MapLocation::Roles::RoleCoordinate] = MapLocation::PROPERTY_NAME_COORDINATE;
-	m_roles[MapLocation::Roles::RoleName] = MapLocation::PROPERTY_NAME_NAME;
-	m_roles[MapLocation::Roles::RolePixmap] = MapLocation::PROPERTY_NAME_PIXMAP;
-	m_roles[MapLocation::Roles::RoleZ] = MapLocation::PROPERTY_NAME_Z;
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &MapLocationModel::diveSiteChanged);
 }
 
@@ -110,7 +99,13 @@ QVariant MapLocationModel::data(const QModelIndex & index, int role) const
 
 QHash<int, QByteArray> MapLocationModel::roleNames() const
 {
-	return m_roles;
+	QHash<int, QByteArray> roles;
+	roles[MapLocation::Roles::RoleDivesite] = "divesite";
+	roles[MapLocation::Roles::RoleCoordinate] = "coordinate";
+	roles[MapLocation::Roles::RoleName] = "name";
+	roles[MapLocation::Roles::RolePixmap] = "pixmap";
+	roles[MapLocation::Roles::RoleZ] = "z";
+	return roles;
 }
 
 int MapLocationModel::rowCount(const QModelIndex&) const
