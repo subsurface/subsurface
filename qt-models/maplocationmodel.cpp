@@ -116,11 +116,6 @@ int MapLocationModel::rowCount(const QModelIndex&) const
 	return m_mapLocations.size();
 }
 
-int MapLocationModel::count()
-{
-	return m_mapLocations.size();
-}
-
 void MapLocationModel::add(MapLocation *location)
 {
 	beginInsertRows(QModelIndex(), m_mapLocations.size(), m_mapLocations.size());
