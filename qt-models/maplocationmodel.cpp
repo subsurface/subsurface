@@ -121,13 +121,6 @@ int MapLocationModel::count()
 	return m_mapLocations.size();
 }
 
-MapLocation *MapLocationModel::get(int row)
-{
-	if (row < 0 || row >= m_mapLocations.size())
-		return NULL;
-	return m_mapLocations.at(row);
-}
-
 void MapLocationModel::add(MapLocation *location)
 {
 	beginInsertRows(QModelIndex(), m_mapLocations.size(), m_mapLocations.size());
