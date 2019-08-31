@@ -48,6 +48,8 @@ QVariant MapLocation::getRole(int role) const
 				    QString("qrc:///dive-location-marker-icon");
 	case Roles::RoleZ:
 		return m_selected ? 1 : 0;
+	case Roles::RoleIsSelected:
+		return QVariant::fromValue(m_selected);
 	default:
 		return QVariant();
 	}
@@ -105,6 +107,7 @@ QHash<int, QByteArray> MapLocationModel::roleNames() const
 	roles[MapLocation::Roles::RoleName] = "name";
 	roles[MapLocation::Roles::RolePixmap] = "pixmap";
 	roles[MapLocation::Roles::RoleZ] = "z";
+	roles[MapLocation::Roles::RoleIsSelected] = "isSelected";
 	return roles;
 }
 
