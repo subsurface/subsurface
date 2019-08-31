@@ -19,9 +19,6 @@ public:
 	explicit MapLocation(struct dive_site *ds, QGeoCoordinate coord, QString name, bool selected);
 
 	QVariant getRole(int role) const;
-	QGeoCoordinate coordinate();
-	void setCoordinate(QGeoCoordinate coord);
-	struct dive_site *divesite();
 
 	enum Roles {
 		RoleDivesite = Qt::UserRole + 1,
@@ -32,12 +29,10 @@ public:
 		RoleIsSelected
 	};
 
-private:
-	struct dive_site *m_ds;
-	QGeoCoordinate m_coordinate;
-	QString m_name;
-public:
-	bool m_selected = false;
+	struct dive_site *divesite;
+	QGeoCoordinate coordinate;
+	QString name;
+	bool selected = false;
 };
 
 class MapLocationModel : public QAbstractListModel

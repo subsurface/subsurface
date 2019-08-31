@@ -135,7 +135,7 @@ void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)
 	MapLocation *location = m_mapLocationModel->getMapLocation(ds_in);
 	if (!location)
 		return;
-	QGeoCoordinate locationCoord = location->coordinate();
+	QGeoCoordinate locationCoord = location->coordinate;
 
 	for_each_dive (idx, dive) {
 		struct dive_site *ds = get_dive_site_for_dive(dive);
@@ -149,7 +149,7 @@ void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)
 			selectedDiveIds.append(idx);
 	}
 #else // the mobile version doesn't support multi-dive selection
-		if (ds == location->divesite())
+		if (ds == location->divesite)
 			selectedDiveIds.append(dive->id); // use id here instead of index
 	}
 	int last; // get latest dive chronologically
@@ -237,7 +237,7 @@ void MapWidgetHelper::updateCurrentDiveSiteCoordinatesFromMap(struct dive_site *
 {
 	MapLocation *loc = m_mapLocationModel->getMapLocation(ds);
 	if (loc)
-		loc->setCoordinate(coord);
+		loc->coordinate = coord;
 	location_t location = mk_location(coord);
 	emit coordinatesChanged(ds, location);
 }
