@@ -57,7 +57,6 @@ public:
 	MapLocationModel(QObject *parent = NULL);
 	~MapLocationModel();
 
-	Q_INVOKABLE MapLocation *get(int row);
 	QVariant data(const QModelIndex &index, int role) const override;
 	int rowCount(const QModelIndex &parent) const override;
 	int count();
