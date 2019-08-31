@@ -12,12 +12,12 @@
 
 #define MIN_DISTANCE_BETWEEN_DIVE_SITES_M 50.0
 
-MapLocation::MapLocation() : m_ds(nullptr), m_selected(false)
+MapLocation::MapLocation() : divesite(nullptr), selected(false)
 {
 }
 
-MapLocation::MapLocation(struct dive_site *ds, QGeoCoordinate coord, QString name, bool selected) :
-    m_ds(ds), m_coordinate(coord), m_name(name), m_selected(selected)
+MapLocation::MapLocation(struct dive_site *dsIn, QGeoCoordinate coordIn, QString nameIn, bool selectedIn) :
+    divesite(dsIn), coordinate(coordIn), name(nameIn), selected(selectedIn)
 {
 }
 
@@ -37,37 +37,22 @@ QVariant MapLocation::getRole(int role) const
 {
 	switch (role) {
 	case Roles::RoleDivesite:
-		return QVariant::fromValue((dive_site *)m_ds);
+		return QVariant::fromValue(divesite);
 	case Roles::RoleCoordinate:
-		return QVariant::fromValue(m_coordinate);
+		return QVariant::fromValue(coordinate);
 	case Roles::RoleName:
-		return QVariant::fromValue(m_name);
+		return QVariant::fromValue(name);
 	case Roles::RolePixmap:
-		return m_selected ? QString("qrc:///dive-location-marker-selected-icon") :
+		return selected ? QString("qrc:///dive-location-marker-selected-icon") :
 		       inEditMode() ? QString("qrc:///dive-location-marker-inactive-icon") :
 				    QString("qrc:///dive-location-marker-icon");
 	case Roles::RoleZ:
-		return m_selected ? 1 : 0;
+		return selected ? 1 : 0;
 	case Roles::RoleIsSelected:
-		return QVariant::fromValue(m_selected);
+		return QVariant::fromValue(selected);
 	default:
 		return QVariant();
 	}
-}
-
-QGeoCoordinate MapLocation::coordinate()
-{
-	return m_coordinate;
-}
-
-void MapLocation::setCoordinate(QGeoCoordinate coord)
-{
-	m_coordinate = coord;
-}
-
-struct dive_site *MapLocation::divesite()
-{
-	return m_ds;
 }
 
 MapLocationModel::MapLocationModel(QObject *parent) : QAbstractListModel(parent)
@@ -134,7 +119,7 @@ void MapLocationModel::selectionChanged()
 	if (m_mapLocations.isEmpty())
 		return;
 	for(MapLocation *m: m_mapLocations)
-		m->m_selected = m_selectedDs.contains(m->divesite());
+		m->selected = m_selectedDs.contains(m->divesite);
 	emit dataChanged(createIndex(0, 0), createIndex(m_mapLocations.size() - 1, 0));
 }
 
@@ -186,7 +171,7 @@ void MapLocationModel::reload(QObject *map)
 			// at least MIN_DISTANCE_BETWEEN_DIVE_SITES_M apart
 			if (locationNameMap.contains(name)) {
 				MapLocation *existingLocation = locationNameMap[name];
-				QGeoCoordinate coord = existingLocation->coordinate();
+				QGeoCoordinate coord = existingLocation->coordinate;
 				if (dsCoord.distanceTo(coord) < MIN_DISTANCE_BETWEEN_DIVE_SITES_M)
 					continue;
 			}
@@ -217,7 +202,7 @@ MapLocation *MapLocationModel::getMapLocation(const struct dive_site *ds)
 {
 	MapLocation *location;
 	foreach(location, m_mapLocations) {
-		if (ds == location->divesite())
+		if (ds == location->divesite)
 			return location;
 	}
 	return NULL;
@@ -228,10 +213,10 @@ void MapLocationModel::diveSiteChanged(struct dive_site *ds, int field)
 	// Find dive site
 	int row;
 	for (row = 0; row < m_mapLocations.size(); ++row) {
-		if (m_mapLocations[row]->divesite() == ds)
+		if (m_mapLocations[row]->divesite == ds)
 			break;
 	}
-	if (row ==  m_mapLocations.size())
+	if (row == m_mapLocations.size())
 		return;
 
 	switch (field) {
@@ -240,11 +225,11 @@ void MapLocationModel::diveSiteChanged(struct dive_site *ds, int field)
 			const qreal latitude_r = ds->location.lat.udeg * 0.000001;
 			const qreal longitude_r = ds->location.lon.udeg * 0.000001;
 			QGeoCoordinate coord(latitude_r, longitude_r);
-			m_mapLocations[row]->setCoordinate(coord);
+			m_mapLocations[row]->coordinate = coord;
 		}
 		break;
 	case LocationInformationModel::NAME:
-		m_mapLocations[row]->setProperty("name", ds->name);
+		m_mapLocations[row]->name = ds->name;
 		break;
 	default:
 		break;
