@@ -51,7 +51,6 @@ signals:
 class MapLocationModel : public QAbstractListModel
 {
 	Q_OBJECT
-	Q_PROPERTY(int count READ count NOTIFY countChanged)
 
 public:
 	MapLocationModel(QObject *parent = NULL);
@@ -59,7 +58,6 @@ public:
 
 	QVariant data(const QModelIndex &index, int role) const override;
 	int rowCount(const QModelIndex &parent) const override;
-	int count();
 	void add(MapLocation *);
 	// If map is not null, it will be used to place new dive sites without GPS location at the center of the map
 	void reload(QObject *map);
@@ -78,9 +76,6 @@ private slots:
 private:
 	QVector<MapLocation *> m_mapLocations;
 	QVector<dive_site *> m_selectedDs;
-
-signals:
-	void countChanged(int c);
 };
 
 #endif
