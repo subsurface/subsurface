@@ -74,6 +74,14 @@ static void add_icd_entry(struct membuffer *b, struct icd_data *icdvalues, bool 
 		ambientpressure_mbar * -icdvalues->dHe / 5e6f, translate("gettextFromC", "bar"));
 }
 
+const char *get_planner_disclaimer()
+{
+	return translate("gettextFromC", "DISCLAIMER / WARNING: THIS IMPLEMENTATION OF THE %s "
+			 "ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT HAS "
+			 "RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO "
+			 "PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.");
+}
+
 void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, int error)
 {
 	struct membuffer buf = { 0 };
@@ -116,10 +124,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 
 	if (show_disclaimer) {
 		put_string(&buf, "<div><b>");
-		put_format(&buf, translate("gettextFromC", "DISCLAIMER / WARNING: THIS IMPLEMENTATION OF THE %s "
-			"ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT HAS "
-			"RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO "
-			"PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."), deco);
+		put_format(&buf, get_planner_disclaimer(), deco);
 		put_string(&buf, "</b><br></div>");
 	}
 

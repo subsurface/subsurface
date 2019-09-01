@@ -1127,11 +1127,24 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 		QTextDocument notesDocument;
 		notesDocument.setHtml(current_dive->notes);
 		QString oldnotes(notesDocument.toPlainText());
-		int disclaimerPosition = oldnotes.indexOf(disclaimer);
-		if (disclaimerPosition == 0)
-			oldnotes.clear();
-		else if (disclaimerPosition >= 1)
-			oldnotes.truncate(disclaimerPosition-1);
+		QString disclaimer = get_planner_disclaimer();
+		int disclaimerMid = disclaimer.indexOf("%s");
+		QString disclaimerBegin, disclaimerEnd;
+		if (disclaimerMid >= 0) {
+			disclaimerBegin = disclaimer.left(disclaimerMid);
+			disclaimerEnd = disclaimer.mid(disclaimerMid + 2);
+		} else {
+			disclaimerBegin = disclaimer;
+		}
+		int disclaimerPositionStart = oldnotes.indexOf(disclaimerBegin);
+		if (disclaimerPositionStart >= 0) {
+			if (oldnotes.indexOf(disclaimerEnd, disclaimerPositionStart) >= 0) {
+				// We found a disclaimer according to the current locale.
+				// Remove the disclaimer and anything after the disclaimer, because
+				// that's supposedly the old planner notes.
+				oldnotes = oldnotes.left(disclaimerPositionStart);
+			}
+		}
 		// Deal with line breaks
 		oldnotes.replace("\n", "<br>");
 		oldnotes.append(displayed_dive.notes);
