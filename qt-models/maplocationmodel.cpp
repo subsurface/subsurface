@@ -29,19 +29,19 @@ static bool inEditMode()
 QVariant MapLocation::getRole(int role) const
 {
 	switch (role) {
-	case Roles::RoleDivesite:
+	case RoleDivesite:
 		return QVariant::fromValue(divesite);
-	case Roles::RoleCoordinate:
+	case RoleCoordinate:
 		return QVariant::fromValue(coordinate);
-	case Roles::RoleName:
+	case RoleName:
 		return QVariant::fromValue(name);
-	case Roles::RolePixmap:
+	case RolePixmap:
 		return selected ? QString("qrc:///dive-location-marker-selected-icon") :
 		       inEditMode() ? QString("qrc:///dive-location-marker-inactive-icon") :
 				    QString("qrc:///dive-location-marker-icon");
-	case Roles::RoleZ:
+	case RoleZ:
 		return selected ? 1 : 0;
-	case Roles::RoleIsSelected:
+	case RoleIsSelected:
 		return QVariant::fromValue(selected);
 	default:
 		return QVariant();
@@ -69,12 +69,12 @@ QVariant MapLocationModel::data(const QModelIndex & index, int role) const
 QHash<int, QByteArray> MapLocationModel::roleNames() const
 {
 	QHash<int, QByteArray> roles;
-	roles[MapLocation::Roles::RoleDivesite] = "divesite";
-	roles[MapLocation::Roles::RoleCoordinate] = "coordinate";
-	roles[MapLocation::Roles::RoleName] = "name";
-	roles[MapLocation::Roles::RolePixmap] = "pixmap";
-	roles[MapLocation::Roles::RoleZ] = "z";
-	roles[MapLocation::Roles::RoleIsSelected] = "isSelected";
+	roles[MapLocation::RoleDivesite] = "divesite";
+	roles[MapLocation::RoleCoordinate] = "coordinate";
+	roles[MapLocation::RoleName] = "name";
+	roles[MapLocation::RolePixmap] = "pixmap";
+	roles[MapLocation::RoleZ] = "z";
+	roles[MapLocation::RoleIsSelected] = "isSelected";
 	return roles;
 }
 
