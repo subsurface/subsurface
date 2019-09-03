@@ -133,7 +133,6 @@ void LocationInformationWidget::diveSiteChanged(struct dive_site *ds, int field)
 	switch (field) {
 	case LocationInformationModel::NAME:
 		ui.diveSiteName->setText(diveSite->name);
-		MapWidget::instance()->repopulateLabels();
 		return;
 	case LocationInformationModel::DESCRIPTION:
 		ui.diveSiteDescription->setText(diveSite->description);
@@ -154,7 +153,7 @@ void LocationInformationWidget::diveSiteChanged(struct dive_site *ds, int field)
 			enableLocationButtons(false);
 			ui.diveSiteCoordinates->clear();
 		}
-		MapWidget::instance()->repopulateLabels();
+		return;
 	default:
 		return;
 	}
