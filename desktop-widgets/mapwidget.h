@@ -30,7 +30,6 @@ public:
 public slots:
 	void centerOnDiveSite(struct dive_site *);
 	void centerOnIndex(const QModelIndex& idx);
-	void repopulateLabels();
 	void selectedDivesChanged(const QList<int> &);
 	void coordinatesChanged(struct dive_site *ds, const location_t &);
 	void doneLoading(QQuickWidget::Status status);
