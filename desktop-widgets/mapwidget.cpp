@@ -66,12 +66,6 @@ void MapWidget::centerOnIndex(const QModelIndex& idx)
 		centerOnDiveSite(ds);
 }
 
-void MapWidget::repopulateLabels()
-{
-	CHECK_IS_READY_RETURN_VOID();
-	m_mapHelper->reloadMapLocations();
-}
-
 void MapWidget::reload()
 {
 	CHECK_IS_READY_RETURN_VOID();
