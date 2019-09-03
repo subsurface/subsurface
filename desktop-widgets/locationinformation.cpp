@@ -183,7 +183,6 @@ void LocationInformationWidget::acceptChanges()
 	MainWindow::instance()->diveList->setEnabled(true);
 	MainWindow::instance()->setEnabledToolbar(true);
 	MainWindow::instance()->setApplicationState(ApplicationState::Default);
-	MapWidget::instance()->repopulateLabels();
 	MultiFilterSortModel::instance()->stopFilterDiveSites();
 }
 
