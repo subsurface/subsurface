@@ -69,6 +69,12 @@ matrix:
             - libglib2.0-dev
             - mdbtools-dev
 
+    - env: SUBSURFACE_PLATFORM='linux-trusty-qt512'
+      os: linux
+      language: c++
+      services:
+          - docker
+
     - env: SUBSURFACE_PLATFORM='linux2'
       os: linux
       dist: trusty
