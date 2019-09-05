@@ -28,6 +28,10 @@ while [[ $# -gt 0 ]] ; do
 			# force Bluetooth support off
 			BTSUPPORT="OFF"
 			;;
+		-quick)
+			# only build libdivecomputer and Subsurface - this assumes that all other dependencies don't need rebuilding
+			QUICK="1"
+			;;
 		-build-deps)
 			# in order to build the dependencies on Mac for release builds (to deal with the macosx-version-min for those
 			# call this script with -build-deps
@@ -65,12 +69,17 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-no-bt] [-build-deps] [-build-with-webkit] [-mobile] [-desktop] [-both] [-create-appdir] [-release]"
+			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-build-with-webkit] [-mobile] [-desktop] [-both] [-create-appdir] [-release]"
 			exit 1
 			;;
 	esac
 	shift
 done
+
+if [ "$BUILD_DEPS" = "1" ] && [ "$QUICK" = "1" ] ; then
+	echo "Conflicting options; cannot request combine -build-deps and -quick"
+	exit 1;
+fi
 
 # Verify that the Xcode Command Line Tools are installed
 if [ $PLATFORM = Darwin ] ; then
@@ -115,7 +124,12 @@ if [ "$BUILD_DESKTOP" = "1" ] ; then
 	BUILDS+=( "DesktopExecutable" )
 	BUILDDIRS+=( "build" )
 	if [ "$BUILD_WITH_WEBKIT" = "1" ] ; then
-		BUILDGRANTLEE=1
+		PRINTING="-DNO_PRINTING=OFF"
+		if [ "$QUICK" != "1" ] ; then
+			BUILDGRANTLEE=1
+		fi
+	else
+		PRINTING="-DNO_PRINTING=ON"
 	fi
 fi
 
@@ -393,8 +407,6 @@ fi
 
 if [ "$BUILDGRANTLEE" = "1" ] ; then
 	# build grantlee
-	PRINTING="-DNO_PRINTING=OFF"
-
 	cd $SRC
 	./subsurface/scripts/get-dep-lib.sh single . grantlee
 	pushd grantlee
@@ -407,29 +419,29 @@ if [ "$BUILDGRANTLEE" = "1" ] ; then
 	make -j4
 	make install
 	popd
-else
-	PRINTING="-DNO_PRINTING=ON"
 fi
 
-# build the googlemaps map plugin
+if [ "$QUICK" != "1" ] ; then
+	# build the googlemaps map plugin
 
-cd $SRC
-./subsurface/scripts/get-dep-lib.sh single . googlemaps
-pushd googlemaps
-mkdir -p build
-mkdir -p J10build
-cd build
-$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" ../googlemaps.pro
-# on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
-# since things compile fine with c++11, let's just hack that away
-# similarly, don't use -Wdata-time
-if [ "$TRAVIS" = "true" ] ; then
-	mv Makefile Makefile.bak
-	cat Makefile.bak | sed -e 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' > Makefile
+	cd $SRC
+	./subsurface/scripts/get-dep-lib.sh single . googlemaps
+	pushd googlemaps
+	mkdir -p build
+	mkdir -p J10build
+	cd build
+	$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" ../googlemaps.pro
+	# on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
+	# since things compile fine with c++11, let's just hack that away
+	# similarly, don't use -Wdata-time
+	if [ "$TRAVIS" = "true" ] ; then
+		mv Makefile Makefile.bak
+		cat Makefile.bak | sed -e 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' > Makefile
+	fi
+	make -j4
+	make install
+	popd
 fi
-make -j4
-make install
-popd
 
 # finally, build Subsurface
 
