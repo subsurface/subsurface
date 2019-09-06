@@ -36,6 +36,7 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	ui.diveSiteCoordinates->installEventFilter(this);
 
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &LocationInformationWidget::diveSiteChanged);
+	connect(&diveListNotifier, &DiveListNotifier::diveSiteDeleted, this, &LocationInformationWidget::diveSiteDeleted);
 	connect(qPrefUnits::instance(), &qPrefUnits::unit_systemChanged, this, &LocationInformationWidget::unitsChanged);
 	unitsChanged();
 
@@ -178,8 +179,19 @@ static location_t parseGpsText(const QString &text)
 	return { {0}, {0} };
 }
 
+void LocationInformationWidget::diveSiteDeleted(struct dive_site *ds, int)
+{
+	// If the currently edited dive site was removed under our feet, close the widget.
+	// This will reset the dangling pointer.
+	if (ds && ds == diveSite)
+		acceptChanges();
+}
+
 void LocationInformationWidget::acceptChanges()
 {
+	diveSite = nullptr;
+	closeDistance = 0;
+
 	MainWindow::instance()->diveList->setEnabled(true);
 	MainWindow::instance()->setEnabledToolbar(true);
 	MainWindow::instance()->setApplicationState(ApplicationState::Default);
