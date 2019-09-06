@@ -34,6 +34,7 @@ public slots:
 private slots:
 	void updateLabels();
 	void diveSiteChanged(struct dive_site *ds, int field);
+	void diveSiteDeleted(struct dive_site *ds, int);
 	void unitsChanged();
 private:
 	void keyPressEvent(QKeyEvent *e) override;

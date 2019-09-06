@@ -1,3 +1,4 @@
+- Desktop: close dive site widget if dive site is removed by undo
 - Desktop: Don't destroy format of planner notes when editing dive notes [#2265]
 - Map: avoid full map reload when clicking on flag
 - Map: highlight all selected dive sites when clicking on flag
