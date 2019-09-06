@@ -33,6 +33,7 @@ private
 slots:
 	void onFinished();
 	void previewClicked();
+	void exportHtmlClicked();
 	void printClicked();
 	void onPaintRequested(QPrinter *);
 	void createPrinterObj();

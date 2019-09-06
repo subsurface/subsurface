@@ -7,6 +7,7 @@
 #include <QProgressBar>
 #include <QPrintPreviewDialog>
 #include <QPrintDialog>
+#include <QFileDialog>
 #include <QShortcut>
 #include <QSettings>
 #include <QMessageBox>
@@ -108,10 +109,14 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) :
 	QPushButton *previewButton = new QPushButton(tr("&Preview"));
 	connect(previewButton, SIGNAL(clicked(bool)), this, SLOT(previewClicked()));
 
+	QPushButton *exportHtmlButton = new QPushButton(tr("Export Html"));
+	connect(exportHtmlButton, SIGNAL(clicked(bool)), this, SLOT(exportHtmlClicked()));
+
 	QDialogButtonBox *buttonBox = new QDialogButtonBox;
 	buttonBox->addButton(QDialogButtonBox::Cancel);
 	buttonBox->addButton(printButton, QDialogButtonBox::AcceptRole);
 	buttonBox->addButton(previewButton, QDialogButtonBox::ActionRole);
+	buttonBox->addButton(exportHtmlButton, QDialogButtonBox::AcceptRole);
 
 	connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
@@ -179,6 +184,25 @@ void PrintDialog::previewClicked(void)
 		| Qt::WindowTitleHint);
 	connect(&previewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(onPaintRequested(QPrinter *)));
 	previewDialog.exec();
+}
+
+void PrintDialog::exportHtmlClicked(void)
+{
+	createPrinterObj();
+	QString saveFileName = printOptions.p_template;
+	QString filename = existing_filename ?: prefs.default_filename;
+	QFileInfo fi(filename);
+	filename = fi.absolutePath().append(QDir::separator()).append(saveFileName);
+	QString htmlExportFilename = QFileDialog::getSaveFileName(this, tr("Filename to export html to"),
+							  filename, tr("Html file") + " (*.html)");
+	if (!htmlExportFilename.isEmpty()) {
+		QFile file(htmlExportFilename);
+		file.open(QIODevice::WriteOnly);
+		connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
+		file.write(printer->exportHtml().toUtf8());
+		file.close();
+		close();
+	}
 }
 
 void PrintDialog::printClicked(void)
