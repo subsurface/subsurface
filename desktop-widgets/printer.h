@@ -40,6 +40,7 @@ public:
 	~Printer();
 	void print();
 	void previewOnePage();
+	QString exportHtml();
 
 signals:
 	void progessUpdated(int value);
