@@ -281,7 +281,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			    (!isascent && (gaschange_before || rebreatherchange_before) && nextdp && dp->depth.mm != nextdp->depth.mm) ||
 			    ((gaschange_after || rebreatherchange_after) && lastentered) || ((gaschange_after || rebreatherchange_after)&& !isascent) ||
 			    (isascent && (gaschange_after || rebreatherchange_after) && nextdp && dp->depth.mm != nextdp->depth.mm ) ||
-			    (lastentered && !dp->entered)) {
+			    (lastentered && !dp->entered && dp->next->depth.mm == dp->depth.mm)) {
 				// Print a symbol to indicate whether segment is an ascent, descent, constant depth (user entered) or deco stop
 				if (isascent)
 					segmentsymbol = "&#10138;"; // up-right arrow for ascent
