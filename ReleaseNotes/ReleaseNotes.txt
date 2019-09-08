@@ -2,8 +2,14 @@
 
 = _Subsurface_ Release Notes
 
-New in _Subsurface_ 4.9.2
+New in _Subsurface_ 4.9.3
 ~~~~~~~~~~~~~~~~~~~~~~~~~
+- Desktop: close dive site widget if dive site is removed by undo
+- Desktop: Don't destroy format of planner notes when editing dive notes [#2265]
+- Map: avoid full map reload when clicking on flag
+- Map: highlight all selected dive sites when clicking on flag
+- Map: fix crash when clicking on flags in Qt 5.9
+- Desktop: fix crash when saving subtitles or profile picture
 - Desktop: fix copy & paste crash
 - Desktop: fix saving to XML with empty dive site taxonomies
 - Desktop: fix display of trip time
@@ -12,6 +18,10 @@ New in _Subsurface_ 4.9.2
 - Dive computer support:
   - add support for Deepblu Cosmiq+
   - add support for Aqualung i200C
+  - various bug fixes
+
+(Subsurface 4.9.2 was tagged but never released, new features are included
+in the 4.9.3 entry above)
 
 New in _Subsurface_ 4.9.1
 ~~~~~~~~~~~~~~~~~~~~~~~~~
