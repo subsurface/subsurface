@@ -111,6 +111,7 @@ signals:
 	void recreationChanged(bool);
 	void calculatedPlanNotes();
 	void variationsComputed(QString);
+	void updateDiveInfo();
 
 private:
 	explicit DivePlannerPointsModel(QObject *parent = 0);

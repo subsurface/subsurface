@@ -9,6 +9,7 @@
 #include "core/divelist.h" // for mark_divelist_changed()
 #include "core/settings/qPrefDivePlanner.h"
 #include "desktop-widgets/command.h"
+#include "desktop-widgets/mainwindow.h"
 #include "core/gettextfromc.h"
 #include "core/deco.h"
 #include <QApplication>
@@ -1154,8 +1155,13 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 		Command::addDive(&displayed_dive, false, false);
 	} else {
 		// we were planning an old dive and rewrite the plan
-		mark_divelist_changed(true);
+		displayed_dive.maxdepth.mm = 0;
+		displayed_dive.dc.maxdepth.mm = 0;
+		fixup_dive(&displayed_dive);
 		copy_dive(&displayed_dive, current_dive);
+		mark_divelist_changed(true);
+		emit updateDiveInfo();
+		MainWindow::instance()->refreshDisplay();
 	}
 
 	// Remove and clean the diveplan, so we don't delete
