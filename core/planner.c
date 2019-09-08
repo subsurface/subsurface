@@ -932,10 +932,6 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 			if (gi >= 0 && stoplevels[stopidx] <= gaschanges[gi].depth) {
 				/* We have reached a gas change.
 				 * Record this in the dive plan */
-				if (is_final_plan)
-					plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
-				previous_point_time = clock;
-				stopping = true;
 
 				/* Check we need to change cylinder.
 				 * We might not if the cylinder was chosen by the user
@@ -946,6 +942,10 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 					if (!prefs.switch_at_req_stop ||
 							!trial_ascent(ds, 0, depth, stoplevels[stopidx - 1], avg_depth, bottom_time,
 							dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0, dive, divemode) || get_o2(dive->cylinder[current_cylinder].gasmix) < 160) {
+						if (is_final_plan)
+							plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
+						stopping = true;
+						previous_point_time = clock;
 						current_cylinder = gaschanges[gi].gasidx;
 						gas = dive->cylinder[current_cylinder].gasmix;
 #if DEBUG_PLAN & 16
