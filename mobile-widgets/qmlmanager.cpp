@@ -535,6 +535,50 @@ void QMLManager::saveCloudCredentials()
 	}
 }
 
+bool QMLManager::verifyCredentials(QString email, QString password, QString pin)
+{
+	setStartPageText(tr("Testing cloud credentials"));
+	if (pin.isEmpty())
+		appendTextToLog(QStringLiteral("verify credentials for email %1 (no PIN)").arg(email, pin));
+	else
+		appendTextToLog(QStringLiteral("verify credentials for email %1 PIN %2").arg(email, pin));
+	CloudStorageAuthenticate *csa = new CloudStorageAuthenticate(this);
+	csa->backend(email, password, pin);
+	// let's wait here for the signal to avoid too many more nested functions
+	QTimer myTimer;
+	myTimer.setSingleShot(true);
+	QEventLoop loop;
+	connect(csa, &CloudStorageAuthenticate::finishedAuthenticate, &loop, &QEventLoop::quit);
+	connect(&myTimer, &QTimer::timeout, &loop, &QEventLoop::quit);
+	myTimer.start(5000);
+	loop.exec();
+	if (!myTimer.isActive()) {
+		// got no response from the server
+		setStartPageText(RED_FONT + tr("No response from cloud server to validate the credentials") + END_FONT);
+		return false;
+	}
+	myTimer.stop();
+	if (prefs.cloud_verification_status == qPrefCloudStorage::CS_INCORRECT_USER_PASSWD) {
+		appendTextToLog(QStringLiteral("Incorrect email / password combination"));
+		setStartPageText(RED_FONT + tr("Incorrect email / password combination") + END_FONT);
+		return false;
+	} else if (prefs.cloud_verification_status == qPrefCloudStorage::CS_NEED_TO_VERIFY) {
+		if (pin.isEmpty()) {
+			appendTextToLog(QStringLiteral("Cloud credentials require PIN entry"));
+			setStartPageText(RED_FONT + tr("Cloud credentials require verification PIN") + END_FONT);
+		} else {
+			appendTextToLog(QStringLiteral("PIN provided but not accepted"));
+			setStartPageText(RED_FONT + tr("Incorrect PIN, please try again") + END_FONT);
+		}
+		QMLPrefs::instance()->setShowPin(true);
+		return false;
+	} else if (prefs.cloud_verification_status == qPrefCloudStorage::CS_VERIFIED) {
+		appendTextToLog(QStringLiteral("PIN accepted"));
+		setStartPageText(RED_FONT + tr("PIN accepted, credentials verified") + END_FONT);
+	}
+	return true;
+}
+
 void QMLManager::tryRetrieveDataFromBackend()
 {
 	// if the cloud credentials are present, we should try to get the GPS Webservice ID
