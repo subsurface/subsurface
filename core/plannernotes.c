@@ -82,11 +82,21 @@ const char *get_planner_disclaimer()
 			 "PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.");
 }
 
+/* Returns newly allocated buffer. Must be freed by caller */
+char *get_planner_disclaimer_formatted()
+{
+	struct membuffer buf = { 0 };
+	const char *deco = decoMode() == VPMB ? translate("gettextFromC", "VPM-B")
+					      : translate("gettextFromC", "BUHLMANN");
+	put_format(&buf, get_planner_disclaimer(), deco);
+	return detach_buffer(&buf);
+}
+
 void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, int error)
 {
 	struct membuffer buf = { 0 };
 	struct membuffer icdbuf = { 0 };
-	const char *deco, *segmentsymbol;
+	const char *segmentsymbol;
 	int lastdepth = 0, lasttime = 0, lastsetpoint = -1, newdepth = 0, lastprintdepth = 0, lastprintsetpoint = -1;
 	struct gasmix lastprintgasmix = gasmix_invalid;
 	struct divedatapoint *dp = diveplan->dp;
@@ -106,12 +116,6 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	struct icd_data icdvalues;
 	char *temp;
 
-	if (decoMode() == VPMB) {
-		deco = translate("gettextFromC", "VPM-B");
-	} else {
-		deco = translate("gettextFromC", "BUHLMANN");
-	}
-
 	if (!dp)
 		return;
 
@@ -123,9 +127,11 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	}
 
 	if (show_disclaimer) {
+		char *disclaimer = get_planner_disclaimer_formatted();
 		put_string(&buf, "<div><b>");
-		put_format(&buf, get_planner_disclaimer(), deco);
+		put_string(&buf, disclaimer);
 		put_string(&buf, "</b><br></div>");
+		free(disclaimer);
 	}
 
 	if (diveplan->surface_interval < 0) {
