@@ -525,12 +525,28 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color contrastAccentColor: "#FF5722" // used for delete button
 		property color lightDrawerColor: "#FFFFFF"
 		property color darkDrawerColor: "#424242"
-
-		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 		Component.onCompleted: {
+			// some screens are too narrow for Subsurface-mobile to render well
+			// try to hack around that by making sure that we can fit at least 21 gridUnits in a row
+			var numColumns = Math.floor(rootItem.width/(Kirigami.Units.gridUnit * pageStack.defaultColumnWidth))
+			var colWidth = numColumns > 1 ? Math.floor(rootItem.width / numColumns) : rootItem.width;
+			var kirigamiGridUnit = Kirigami.Units.gridUnit
+			var widthInGridUnits = Math.floor(colWidth / kirigamiGridUnit)
+			if (widthInGridUnits < 21) {
+				kirigamiGridUnit = Math.floor(colWidth / 21)
+				widthInGridUnits = Math.floor(colWidth / kirigamiGridUnit)
+			}
+			var factor = 1.0
+			console.log("Column width " + colWidth + " root item width " + rootItem.width)
+			console.log("width in Grid Units " + widthInGridUnits + " original gridUnit " + Kirigami.Units.gridUnit + " now " + kirigamiGridUnit)
+			if (Kirigami.Units.gridUnit !== kirigamiGridUnit) {
+				factor = kirigamiGridUnit / Kirigami.Units.gridUnit
+				// change our glabal grid unit
+				Kirigami.Units.gridUnit = kirigamiGridUnit
+			}
 			// break binding explicitly. Now we have a basePointSize that we can
 			// use to easily scale against
-			basePointSize = basePointSize * 1.0;
+			basePointSize = basePointSize * factor;
 
 			// set the initial UI scaling as in the the preferences
 			fontMetrics.font.pointSize = subsurfaceTheme.basePointSize * PrefDisplay.mobile_scale;
@@ -654,7 +670,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		rootItem.visible = true
 		diveList.opacity = 1
 		rootItem.opacity = 1
-		pageStack.defaultColumnWidth = Kirigami.Units.gridUnit * 28
+		pageStack.defaultColumnWidth = Kirigami.Units.gridUnit * 21
 		manager.appInitialized()
 	}
 	/* TODO: Verify where opacity went to.
