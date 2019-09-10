@@ -457,9 +457,11 @@ void QMLManager::saveCloudCredentials()
 {
 	QSettings s;
 	bool cloudCredentialsChanged = false;
+	bool noCloud = QMLPrefs::instance()->credentialStatus() == qPrefCloudStorage::CS_NOCLOUD;
+
 	// make sure we only have letters, numbers, and +-_. in password and email address
 	QRegularExpression regExp("^[a-zA-Z0-9@.+_-]+$");
-	if (QMLPrefs::instance()->credentialStatus() != qPrefCloudStorage::CS_NOCLOUD) {
+	if (!noCloud) {
 		// in case of NO_CLOUD, the email address + passwd do not care, so do not check it.
 		if (QMLPrefs::instance()->cloudPassword().isEmpty() ||
 			!regExp.match(QMLPrefs::instance()->cloudPassword()).hasMatch() ||
@@ -474,11 +476,6 @@ void QMLManager::saveCloudCredentials()
 			return;
 		}
 	}
-	s.beginGroup("CloudStorage");
-	s.setValue("email", QMLPrefs::instance()->cloudUserName());
-	s.setValue("password", QMLPrefs::instance()->cloudPassword());
-	s.setValue("cloud_verification_status", QMLPrefs::instance()->credentialStatus());
-	s.sync();
 	if (!same_string(prefs.cloud_storage_email,
 		qPrintable(QMLPrefs::instance()->cloudUserName()))) {
 		free((void *)prefs.cloud_storage_email);
@@ -495,12 +492,22 @@ void QMLManager::saveCloudCredentials()
 		QMLPrefs::instance()->setCredentialStatus(QMLPrefs::instance()->oldStatus());
 	}
 
+	if (!noCloud &&
+	    !verifyCredentials(QMLPrefs::instance()->cloudUserName(), QMLPrefs::instance()->cloudPassword(), QMLPrefs::instance()->cloudPin()))
+		return;
+
+	s.beginGroup("CloudStorage");
+	s.setValue("email", QMLPrefs::instance()->cloudUserName());
+	s.setValue("password", QMLPrefs::instance()->cloudPassword());
+	s.setValue("cloud_verification_status", QMLPrefs::instance()->credentialStatus());
+	s.sync();
+
 	if (!same_string(prefs.cloud_storage_password,
 					qPrintable(QMLPrefs::instance()->cloudPassword()))) {
 		free((void *)prefs.cloud_storage_password);
 		prefs.cloud_storage_password = copy_qstring(QMLPrefs::instance()->cloudPassword());
 	}
-	if (QMLPrefs::instance()->oldStatus() == qPrefCloudStorage::CS_NOCLOUD && cloudCredentialsChanged && dive_table.nr) {
+	if (noCloud && cloudCredentialsChanged && dive_table.nr) {
 		// we came from NOCLOUD and are connecting to a cloud account;
 		// since we already have dives in the table, let's remember that so we can keep them
 		noCloudToCloud = true;
