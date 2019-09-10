@@ -12,7 +12,6 @@ Kirigami.ScrollablePage {
 	objectName: "DiveList"
 	title: qsTr("Dive list")
 	verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-	width: subsurfaceTheme.columnWidth
 	property int credentialStatus: prefs.credentialStatus
 	property int numDives: diveListView.count
 	property color textColor: subsurfaceTheme.textColor
