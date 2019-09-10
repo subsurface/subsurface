@@ -850,8 +850,10 @@ void MainWindow::updateVariations(QString variations)
 void MainWindow::printPlan()
 {
 #ifndef NO_PRINTING
-	QString diveplan = plannerDetails->divePlanOutput()->toHtml();
-	QString withDisclaimer = QString("<img height=50 src=\":subsurface-icon\"> ") + diveplan + QString(disclaimer);
+	char *disclaimer = get_planner_disclaimer_formatted();
+	QString diveplan = QStringLiteral("<img height=50 src=\":subsurface-icon\"> ") +
+			   QString(disclaimer) + plannerDetails->divePlanOutput()->toHtml();
+	free(disclaimer);
 
 	QPrinter printer;
 	QPrintDialog *dialog = new QPrintDialog(&printer, this);
@@ -885,9 +887,9 @@ void MainWindow::printPlan()
 	QBuffer buffer(&byteArray);
 	pixmap.save(&buffer, "PNG");
 	QString profileImage = QString("<img src=\"data:image/png;base64,") + byteArray.toBase64() + "\"/><br><br>";
-	withDisclaimer = profileImage + withDisclaimer;
+	diveplan = profileImage + diveplan;
 
-	plannerDetails->divePlanOutput()->setHtml(withDisclaimer);
+	plannerDetails->divePlanOutput()->setHtml(diveplan);
 	plannerDetails->divePlanOutput()->print(&printer);
 	plannerDetails->divePlanOutput()->setHtml(displayed_dive.notes);
 #endif

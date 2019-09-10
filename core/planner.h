@@ -51,6 +51,7 @@ extern int get_gasidx(struct dive *dive, struct gasmix mix);
 extern bool diveplan_empty(struct diveplan *diveplan);
 extern void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, int error);
 extern const char *get_planner_disclaimer();
+extern char *get_planner_disclaimer_formatted();
 
 extern void free_dps(struct diveplan *diveplan);
 extern struct dive *planned_dive;
