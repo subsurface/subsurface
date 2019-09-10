@@ -291,8 +291,9 @@ void QMLManager::openLocalThenRemote(QString url)
 		 *    care about this, as the very first commit of dive data to the
 		 *    no cloud repo solves this.
 		 */
-
-		if (QMLPrefs::instance()->credentialStatus() != qPrefCloudStorage::CS_NOCLOUD)
+		auto credStatus = QMLPrefs::instance()->credentialStatus();
+		if (credStatus != qPrefCloudStorage::CS_NOCLOUD &&
+		    credStatus != qPrefCloudStorage::CS_INCORRECT_USER_PASSWD)
 			QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_NEED_TO_VERIFY);
 	} else {
 		// if we can load from the cache, we know that we have a valid cloud account
@@ -316,6 +317,10 @@ void QMLManager::openLocalThenRemote(QString url)
 	if (QMLPrefs::instance()->credentialStatus() == qPrefCloudStorage::CS_NEED_TO_VERIFY) {
 		appendTextToLog(QStringLiteral("have cloud credentials, but still needs PIN"));
 		QMLPrefs::instance()->setShowPin(true);
+	}
+	if (QMLPrefs::instance()->credentialStatus() == qPrefCloudStorage::CS_INCORRECT_USER_PASSWD) {
+		appendTextToLog(QStringLiteral("incorrect password for cloud credentials"));
+		setNotificationText(tr("Incorrect cloud credentials"));
 	}
 	if (QMLPrefs::instance()->oldStatus() == qPrefCloudStorage::CS_NOCLOUD) {
 		// if we switch to credentials from CS_NOCLOUD, we take things online temporarily
