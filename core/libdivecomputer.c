@@ -770,7 +770,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	rc = create_parser(devdata, &parser);
 	if (rc != DC_STATUS_SUCCESS) {
 		dev_info(devdata, translate("gettextFromC", "Unable to create parser for %s %s"), devdata->vendor, devdata->product);
-		return false;
+		return true;
 	}
 
 	rc = dc_parser_set_data(parser, data, size);
@@ -810,15 +810,16 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		goto error_exit;
 	}
 
+	dc_parser_destroy(parser);
+
 	/* If we already saw this dive, abort. */
 	if (!devdata->force_download && find_dive(&dive->dc)) {
 		char *date_string = get_dive_date_c_string(dive->when);
 		dev_info(devdata, translate("gettextFromC", "Already downloaded dive at %s"), date_string);
 		free(date_string);
-		goto error_exit;
+		free(dive);
+		return false;
 	}
-
-	dc_parser_destroy(parser);
 
 	/* Various libdivecomputer interface fixups */
 	if (dive->dc.airtemp.mkelvin == 0 && first_temp_is_air && dive->dc.samples) {
@@ -832,7 +833,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 error_exit:
 	dc_parser_destroy(parser);
 	free(dive);
-	return false;
+	return true;
 
 }
 
