@@ -434,6 +434,17 @@ static void dev_info(device_data_t *devdata, const char *fmt, ...)
 
 static int import_dive_number = 0;
 
+static void download_error(const char *fmt, ...)
+{
+	static char buffer[1024];
+	va_list ap;
+
+	va_start(ap, fmt);
+	vsnprintf(buffer, sizeof(buffer), fmt, ap);
+	va_end(ap);
+	report_error("Dive %d: %s", import_dive_number, buffer);
+}
+
 static int parse_samples(device_data_t *devdata, struct divecomputer *dc, dc_parser_t *parser)
 {
 	UNUSED(devdata);
@@ -611,7 +622,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 
 	rc = dc_parser_get_datetime(parser, &dt);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC", "Error parsing the datetime"));
+		download_error(translate("gettextFromC", "Error parsing the datetime"));
 		return rc;
 	}
 
@@ -635,7 +646,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	unsigned int divetime = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_DIVETIME, 0, &divetime);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC", "Error parsing the divetime"));
+		download_error(translate("gettextFromC", "Error parsing the divetime"));
 		return rc;
 	}
 	if (rc == DC_STATUS_SUCCESS)
@@ -645,7 +656,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	double maxdepth = 0.0;
 	rc = dc_parser_get_field(parser, DC_FIELD_MAXDEPTH, 0, &maxdepth);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC", "Error parsing the maxdepth"));
+		download_error(translate("gettextFromC", "Error parsing the maxdepth"));
 		return rc;
 	}
 	if (rc == DC_STATUS_SUCCESS)
@@ -659,7 +670,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	for (int i = 0; i < 3; i++) {
 		rc = dc_parser_get_field(parser, temp_fields[i], 0, &temperature);
 		if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-			dev_info(devdata, translate("gettextFromC", "Error parsing temperature"));
+			download_error(translate("gettextFromC", "Error parsing temperature"));
 			return rc;
 		}
 		if (rc == DC_STATUS_SUCCESS)
@@ -678,7 +689,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	unsigned int ngases = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_GASMIX_COUNT, 0, &ngases);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC", "Error parsing the gas mix count"));
+		download_error(translate("gettextFromC", "Error parsing the gas mix count"));
 		return rc;
 	}
 
@@ -689,7 +700,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	};
 	rc = dc_parser_get_field(parser, DC_FIELD_SALINITY, 0, &salinity);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC", "Error obtaining water salinity"));
+		download_error(translate("gettextFromC", "Error obtaining water salinity"));
 		return rc;
 	}
 	if (rc == DC_STATUS_SUCCESS)
@@ -698,7 +709,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	double surface_pressure = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_ATMOSPHERIC, 0, &surface_pressure);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC", "Error obtaining surface pressure"));
+		download_error(translate("gettextFromC", "Error obtaining surface pressure"));
 		return rc;
 	}
 	if (rc == DC_STATUS_SUCCESS)
@@ -721,7 +732,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	dc_divemode_t divemode;
 	rc = dc_parser_get_field(parser, DC_FIELD_DIVEMODE, 0, &divemode);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC", "Error obtaining dive mode"));
+		download_error(translate("gettextFromC", "Error obtaining dive mode"));
 		return rc;
 	}
 	if (rc == DC_STATUS_SUCCESS)
@@ -743,7 +754,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 
 	rc = parse_gasmixes(devdata, dive, parser, ngases);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC", "Error parsing the gas mix"));
+		download_error(translate("gettextFromC", "Error parsing the gas mix"));
 		return rc;
 	}
 
@@ -767,19 +778,20 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	in_deco = false;
 	current_gas_index = -1;
 
+	import_dive_number++;
+
 	rc = create_parser(devdata, &parser);
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(devdata, translate("gettextFromC", "Unable to create parser for %s %s"), devdata->vendor, devdata->product);
+		download_error(translate("gettextFromC", "Unable to create parser for %s %s"), devdata->vendor, devdata->product);
 		return true;
 	}
 
 	rc = dc_parser_set_data(parser, data, size);
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(devdata, translate("gettextFromC", "Error registering the data"));
+		download_error(translate("gettextFromC", "Error registering the data"));
 		goto error_exit;
 	}
 
-	import_dive_number++;
 	dive = alloc_dive();
 
 	// Fill in basic fields
@@ -799,14 +811,14 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	// Parse the dive's header data
 	rc = libdc_header_parser (parser, devdata, dive);
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(devdata, translate("getextFromC", "Error parsing the header"));
+		download_error(translate("getextFromC", "Error parsing the header"));
 		goto error_exit;
 	}
 
 	// Initialize the sample data.
 	rc = parse_samples(devdata, &dive->dc, parser);
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(devdata, translate("gettextFromC", "Error parsing the samples"));
+		download_error(translate("gettextFromC", "Error parsing the samples"));
 		goto error_exit;
 	}
 
@@ -1259,6 +1271,7 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 
 #ifdef BT_SUPPORT
 	if (transports & DC_TRANSPORT_BLUETOOTH) {
+		dev_info(data, "Opening rfcomm stream %s", data->devname);
 		rc = rfcomm_stream_open(&data->iostream, context, data->devname);
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
@@ -1267,6 +1280,7 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 
 #ifdef BLE_SUPPORT
 	if (transports & DC_TRANSPORT_BLE) {
+		dev_info(data, "Connecting to BLE device %s", data->devname);
 		rc = ble_packet_open(&data->iostream, context, data->devname, data);
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
@@ -1283,6 +1297,9 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 		dc_iterator_free (iterator);
 
 		if (device) {
+			dev_info(data, "Opening USB HID device for %04x:%04x",
+				dc_usbhid_device_get_vid(device),
+				dc_usbhid_device_get_pid(device));
 			rc = dc_usbhid_open(&data->iostream, context, device);
 			dc_usbhid_device_free(device);
 			if (rc == DC_STATUS_SUCCESS)
@@ -1291,10 +1308,13 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 	}
 
 	/* The dive computer backend does this all internally */
-	if (transports & DC_TRANSPORT_USB)
+	if (transports & DC_TRANSPORT_USB) {
+		dev_info(data, "Opening native USB device");
 		return DC_STATUS_SUCCESS;
+	}
 
 	if (transports & DC_TRANSPORT_SERIAL) {
+		dev_info(data, "Opening serial device %s", data->devname);
 #ifdef SERIAL_FTDI
 		if (!strcasecmp(data->devname, "ftdi"))
 			return ftdi_open(&data->iostream, context);
@@ -1321,12 +1341,14 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 		if (!address)
 			address = strtoul(data->devname, NULL, 0);
 
+		dev_info(data, "Opening IRDA address %u", address);
 		rc = dc_irda_open(&data->iostream, context, address, 1);
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 	}
 
 	if (transports & DC_TRANSPORT_USBSTORAGE) {
+		dev_info(data, "Opening USB storage at %s", data->devname);
 		rc = dc_usb_storage_open(&data->iostream, context, data->devname);
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
@@ -1372,6 +1394,7 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	if (rc != DC_STATUS_SUCCESS) {
 		report_error(errmsg(rc));
 	} else {
+		dev_info(data, "Connecting ...");
 		rc = dc_device_open(&data->device, data->context, data->descriptor, data->iostream);
 		INFO(0, "dc_device_open error value of %d", rc);
 		if (rc != DC_STATUS_SUCCESS && subsurface_access(data->devname, R_OK | W_OK) != 0)
@@ -1381,6 +1404,7 @@ const char *do_libdivecomputer_import(device_data_t *data)
 			err = translate("gettextFromC", "Error opening the device %s %s (%s).\nIn most cases, in order to debug this issue, a libdivecomputer logfile will be useful.\nYou can create this logfile by selecting the corresponding checkbox in the download dialog.");
 #endif
 		if (rc == DC_STATUS_SUCCESS) {
+			dev_info(data, "Starting import ...");
 			err = do_device_import(data);
 			/* TODO: Show the logfile to the user on error. */
 			dc_device_close(data->device);
