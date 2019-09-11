@@ -195,6 +195,21 @@ void Printer::templateProgessUpdated(int value)
 	emit progessUpdated(done);
 }
 
+QString Printer::exportHtml() {
+	TemplateLayout t(printOptions, templateOptions);
+	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
+	QString html;
+
+	if (printOptions->type == print_options::DIVELIST) {
+		html = t.generate();
+	} else if (printOptions->type == print_options::STATISTICS ) {
+		html = t.generateStatistics();
+	}
+
+	// TODO: write html to file
+	return html;
+}
+
 void Printer::print()
 {
 	// we can only print if "PRINT" mode is selected

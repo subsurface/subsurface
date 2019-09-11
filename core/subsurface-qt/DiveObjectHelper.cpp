@@ -166,14 +166,16 @@ QString DiveObjectHelper::notes() const
 	#define _NOTES_BR "&#92n"
 		tmp.replace("<thead>", "<thead>" _NOTES_BR)
 			.replace("<br>", "<br>" _NOTES_BR)
+			.replace("<br/>", "<br/>" _NOTES_BR)
+			.replace("<br />", "<br />" _NOTES_BR)
 			.replace("<tr>", "<tr>" _NOTES_BR)
 			.replace("</tr>", "</tr>" _NOTES_BR);
 		notes.setHtml(tmp);
 		tmp = notes.toPlainText();
-		tmp.replace(_NOTES_BR, "<br>");
+		tmp.replace(_NOTES_BR, "<br/>");
 	#undef _NOTES_BR
 	} else {
-		tmp.replace("\n", "<br>");
+		tmp.replace("\n", "<br/>");
 	}
 	return tmp;
 }

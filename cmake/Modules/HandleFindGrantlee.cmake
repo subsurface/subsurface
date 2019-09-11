@@ -10,5 +10,10 @@ else()
 		find_package(Grantlee5 REQUIRED)
 		set(GRANTLEE_LIBRARIES Grantlee5::Templates)
 	endif()
+	# Not really grantlee, but rather printing in general
 	LIST(APPEND QT_EXTRA_COMPONENTS PrintSupport)
+	# Because Qt5WebKitWidgets isn't a part of the "regular" Qt5, we can't get it the normal way
+	#LIST(APPEND QT_EXTRA_COMPONENTS WebKitWidgets)
+	find_package(Qt5WebKitWidgets REQUIRED)
+	set(GRANTLEE_LIBRARIES ${GRANTLEE_LIBRARIES} Qt5::WebKitWidgets)
 endif()
