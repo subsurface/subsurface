@@ -124,6 +124,8 @@ static void fill_supported_mobile_list()
 		QStringList({{"Commander I"}, {"Commander II"}, {"Commander TM"}, {"EMC-14"}, {"EMC-16"}, {"EMC-20H"}});
 	mobileProductList["Cressi"] =
 		QStringList({{"Leonardo"}, {"Giotto"}, {"Newton"}, {"Drake"}, {"Cartesio"}, {"Goa"}});
+	mobileProductList["DiveSystem"] =
+		QStringList({{"Orca"}, {"iDive Pro"}, {"iDive DAN"}, {"iDive Tech"}, {"iDive Reb"}, {"iDive Stealth"}, {"iDive Free"}, {"iDive Easy"}, {"iDive X3M"}, {"iDive Deep"}});
 	mobileProductList["Genesis"] =
 		QStringList({{"React Pro"}, {"React Pro White"}});
 	mobileProductList["Heinrichs Weikamp"] =
@@ -134,8 +136,12 @@ static void fill_supported_mobile_list()
 		QStringList({{"Puck Pro"}, {"Smart"}, {"Quad"}});
 	mobileProductList["Oceanic"] =
 		QStringList({{"Atom 1.0"}, {"Atom 2.0"}, {"Atom 3.0"}, {"Atom 3.1"}, {"Datamask"}, {"F10"}, {"F11"}, {"Geo"}, {"Geo 2.0"}, {"OC1"}, {"OCS"}, {"OCi"}, {"Pro Plus 2"}, {"Pro Plus 2.1"}, {"Pro Plus 3"}, {"VT 4.1"}, {"VT Pro"}, {"VT3"}, {"VT4"}, {"VTX"}, {"Veo 1.0"}, {"Veo 180"}, {"Veo 2.0"}, {"Veo 200"}, {"Veo 250"}, {"Veo 3.0"}, {"Versa Pro"}});
+	mobileProductList["Ratio"] =
+		QStringList({{"iX3M Pro Fancy"}, {"iX3M Pro Easy"}, {"iX3M Pro Pro"}, {"iX3M Pro Deep"}, {"iX3M Pro Tech+"}, {"iX3M Pro Reb"}, {"iDive Free"}, {"iDive Fancy"}, {"iDive Easy"}, {"iDive Pro"}, {"iDive Deep"}, {"iDive Tech+"}, {"iDive Reb"}, {"iDive Color Free"}, {"iDive Color Fancy"}, {"iDive Color Easy"}, {"iDive Color Pro"}, {"iDive Color Deep"}, {"iDive Color Tech+"}, {"iDive Color Reb"}});
 	mobileProductList["Scubapro"] =
 		QStringList({{"Aladin Square"}, {"G2"}});
+	mobileProductList["Seac"] =
+		QStringList({{"Jack"}, {"Guru"}});
 	mobileProductList["Seemann"] =
 		QStringList({{"XP5"}});
 	mobileProductList["Sherwood"] =
