@@ -196,6 +196,7 @@ Kirigami.Page {
 
 		Controls.Label {
 			text: qsTr(" Previously used dive computers: ")
+			font.pointSize: subsurfaceTheme.regularPointSize
 			visible: PrefDiveComputer.vendor1 !== ""
 		}
 		Flow {
