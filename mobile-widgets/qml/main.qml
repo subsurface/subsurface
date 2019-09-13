@@ -564,6 +564,13 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				darkTheme()
 		}
 	}
+
+	onWidthChanged: {
+		console.log("Window width changed to " + width)
+		// we need to recalculate our base units
+		setupUnits()
+	}
+
 	pageStack.initialPage: DiveList {
 		id: diveList
 		opacity: 0
