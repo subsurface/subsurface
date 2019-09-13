@@ -462,13 +462,40 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		subsurfaceTheme.drawerColor = subsurfaceTheme.darkDrawerColor
 	}
 
+	function setupUnits() {
+		// some screens are too narrow for Subsurface-mobile to render well
+		// try to hack around that by making sure that we can fit at least 21 gridUnits in a row
+		var numColumns = Math.floor(rootItem.width/(Kirigami.Units.gridUnit * pageStack.defaultColumnWidth))
+		var colWidth = numColumns > 1 ? Math.floor(rootItem.width / numColumns) : rootItem.width;
+		var kirigamiGridUnit = Kirigami.Units.gridUnit
+		var widthInGridUnits = Math.floor(colWidth / kirigamiGridUnit)
+		if (widthInGridUnits < 21) {
+			kirigamiGridUnit = Math.floor(colWidth / 21)
+			widthInGridUnits = Math.floor(colWidth / kirigamiGridUnit)
+		}
+		var factor = 1.0
+		console.log("Column width " + colWidth + " root item width " + rootItem.width)
+		console.log("width in Grid Units " + widthInGridUnits + " original gridUnit " + Kirigami.Units.gridUnit + " now " + kirigamiGridUnit)
+		if (Kirigami.Units.gridUnit !== kirigamiGridUnit) {
+			factor = kirigamiGridUnit / Kirigami.Units.gridUnit
+			// change our glabal grid unit
+			Kirigami.Units.gridUnit = kirigamiGridUnit
+		}
+		// break binding explicitly. Now we have a basePointSize that we can
+		// use to easily scale against
+		subsurfaceTheme.basePointSize = subsurfaceTheme.basePointSize * factor;
+
+		// set the initial UI scaling as in the the preferences
+		fontMetrics.font.pointSize = subsurfaceTheme.basePointSize * PrefDisplay.mobile_scale;
+	}
+
 	QtObject {
 		id: subsurfaceTheme
 
-		// basePointSize is determinded at start of the app and shall
-		// never be changed. This is very tricky. In order to break the
-		// binding between basePointSize and fontMetrics.font.pointSize we
-		// multipy it by 1.0 in the onComplete hander of this object.
+		// basePointSize is determinded based on the width of the screen (typically at start of the app)
+		// and must not be changed if we change font size. This is tricky in QML. In order to break the
+		// binding between basePointSize and fontMetrics.font.pointSize we explicitly multipy it by 1.0
+		// in the onComplete handler of this object.
 		property double basePointSize: fontMetrics.font.pointSize;
 
 		property double regularPointSize: fontMetrics.font.pointSize
@@ -526,31 +553,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color lightDrawerColor: "#FFFFFF"
 		property color darkDrawerColor: "#424242"
 		Component.onCompleted: {
-			// some screens are too narrow for Subsurface-mobile to render well
-			// try to hack around that by making sure that we can fit at least 21 gridUnits in a row
-			var numColumns = Math.floor(rootItem.width/(Kirigami.Units.gridUnit * pageStack.defaultColumnWidth))
-			var colWidth = numColumns > 1 ? Math.floor(rootItem.width / numColumns) : rootItem.width;
-			var kirigamiGridUnit = Kirigami.Units.gridUnit
-			var widthInGridUnits = Math.floor(colWidth / kirigamiGridUnit)
-			if (widthInGridUnits < 21) {
-				kirigamiGridUnit = Math.floor(colWidth / 21)
-				widthInGridUnits = Math.floor(colWidth / kirigamiGridUnit)
-			}
-			var factor = 1.0
-			console.log("Column width " + colWidth + " root item width " + rootItem.width)
-			console.log("width in Grid Units " + widthInGridUnits + " original gridUnit " + Kirigami.Units.gridUnit + " now " + kirigamiGridUnit)
-			if (Kirigami.Units.gridUnit !== kirigamiGridUnit) {
-				factor = kirigamiGridUnit / Kirigami.Units.gridUnit
-				// change our glabal grid unit
-				Kirigami.Units.gridUnit = kirigamiGridUnit
-			}
-			// break binding explicitly. Now we have a basePointSize that we can
-			// use to easily scale against
-			basePointSize = basePointSize * factor;
-
-			// set the initial UI scaling as in the the preferences
-			fontMetrics.font.pointSize = subsurfaceTheme.basePointSize * PrefDisplay.mobile_scale;
-
+			setupUnits()
 			// this needs to pick the theme from persistent preference settings
 			var theme = PrefDisplay.theme
 			if (theme == "Blue")
