@@ -123,8 +123,17 @@ void run_ui()
 	manager->screenChanged(screen);
 	qDebug() << "qqwindow screen has ldpi/pdpi" << screen->logicalDotsPerInch() << screen->physicalDotsPerInch();
 #if !defined(Q_OS_ANDROID) && !defined(Q_OS_IOS)
+	int width = 800;
+	if (qEnvironmentVariableIsSet("SUBSURFACE_MOBILE_WIDTH")) {
+		bool ok;
+		int width_override = qEnvironmentVariableIntValue("SUBSURFACE_MOBILE_WIDTH", &ok);
+		if (ok) {
+			width = width_override;
+			qDebug() << "overriding window width:" << width;
+		}
+	}
 	qml_window->setHeight(1200);
-	qml_window->setWidth(800);
+	qml_window->setWidth(width);
 #endif // not Q_OS_ANDROID and not Q_OS_IOS
 	qml_window->show();
 	LOG_STP("run_ui running exec");
