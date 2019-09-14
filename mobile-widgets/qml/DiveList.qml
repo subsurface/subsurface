@@ -353,8 +353,7 @@ Kirigami.ScrollablePage {
 					}
 					Controls.Label {
 						text: {
-							var trip = diveListView.model.tripIdToObject(section);
-							diveListView.model.tripShortDate(trip);
+							diveListView.model.tripShortDate(section)
 						}
 						color: subsurfaceTheme.primaryTextColor
 						font.pointSize: subsurfaceTheme.smallPointSize
@@ -379,8 +378,7 @@ Kirigami.ScrollablePage {
 				Controls.Label {
 					id: sectionText
 					text: {
-						var trip = diveListView.model.tripIdToObject(section);
-						diveListView.model.tripTitle(trip);
+						diveListView.model.tripTitle(section)
 					}
 					wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 					visible: text !== ""

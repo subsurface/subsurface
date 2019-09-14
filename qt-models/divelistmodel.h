@@ -14,9 +14,8 @@ public:
 	DiveListSortModel(QObject *parent = 0);
 	void setSourceModel(QAbstractItemModel *sourceModel);
 	Q_INVOKABLE void reload();
-	Q_INVOKABLE QVariant tripIdToObject(const QString &s);
-	Q_INVOKABLE QString tripTitle(const QVariant &trip);
-	Q_INVOKABLE QString tripShortDate(const QVariant &trip);
+	Q_INVOKABLE QString tripTitle(const QString &trip);
+	Q_INVOKABLE QString tripShortDate(const QString &trip);
 public slots:
 	int getIdxForId(int id);
 	void setFilter(QString f);
