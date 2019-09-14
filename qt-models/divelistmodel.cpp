@@ -79,26 +79,26 @@ void DiveListSortModel::reload()
 // In QtQuick ListView, section headings can only be strings. To identify dives
 // that belong to the same trip, a string containing the trip-id is passed in.
 // To format the trip heading, the string is then converted back with this function.
-QVariant DiveListSortModel::tripIdToObject(const QString &s)
+static dive_trip *tripIdToObject(const QString &s)
 {
 	if (s.isEmpty())
-		return QVariant();
+		return nullptr;
 	int id = s.toInt();
 	dive_trip **trip = std::find_if(&trip_table.trips[0], &trip_table.trips[trip_table.nr],
 				        [id] (const dive_trip *t) { return t->id == id; });
 	if (trip == &trip_table.trips[trip_table.nr]) {
 		fprintf(stderr, "Warning: unknown trip id passed through QML: %d\n", id);
-		return QVariant();
+		return nullptr;
 	}
-	return QVariant::fromValue(*trip);
+	return *trip;
 }
 
 // the trip title is designed to be location (# dives)
 // or, if there is no location name date range (# dives)
 // where the date range is given as "month year" or "month-month year" or "month year - month year"
-QString DiveListSortModel::tripTitle(const QVariant &tripIn)
+QString DiveListSortModel::tripTitle(const QString &section)
 {
-	dive_trip *dt = tripIn.value<dive_trip *>();
+	const dive_trip *dt = tripIdToObject(section);
 	if (!dt)
 		return QString();
 	QString numDives = tr("(%n dive(s))", "", dt->dives.nr);
@@ -124,9 +124,9 @@ QString DiveListSortModel::tripTitle(const QVariant &tripIn)
 	return QStringLiteral("%1 %2%3").arg(title, numDives, shownDives);
 }
 
-QString DiveListSortModel::tripShortDate(const QVariant &tripIn)
+QString DiveListSortModel::tripShortDate(const QString &section)
 {
-	dive_trip *dt = tripIn.value<dive_trip *>();
+	const dive_trip *dt = tripIdToObject(section);
 	if (!dt)
 		return QString();
 	QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*trip_date(dt), Qt::UTC);
