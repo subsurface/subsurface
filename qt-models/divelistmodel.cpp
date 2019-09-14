@@ -76,15 +76,21 @@ void DiveListSortModel::reload()
 	mySourceModel->reload();
 }
 
-// In QML, section headings can only be strings. To identify dives that
-// belong to the same trip, a string containing the trip-pointer in hexadecimal
-// encoding is passed in. To format the trip heading, the string is then
-// converted back with this function.
+// In QtQuick ListView, section headings can only be strings. To identify dives
+// that belong to the same trip, a string containing the trip-id is passed in.
+// To format the trip heading, the string is then converted back with this function.
 QVariant DiveListSortModel::tripIdToObject(const QString &s)
 {
 	if (s.isEmpty())
 		return QVariant();
-	return QVariant::fromValue((dive_trip *)s.toULongLong(nullptr, 16));
+	int id = s.toInt();
+	dive_trip **trip = std::find_if(&trip_table.trips[0], &trip_table.trips[trip_table.nr],
+				        [id] (const dive_trip *t) { return t->id == id; });
+	if (trip == &trip_table.trips[trip_table.nr]) {
+		fprintf(stderr, "Warning: unknown trip id passed through QML: %d\n", id);
+		return QVariant();
+	}
+	return QVariant::fromValue(*trip);
 }
 
 // the trip title is designed to be location (# dives)
@@ -211,7 +217,10 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 	switch(role) {
 	case DiveRole: return QVariant::fromValue(DiveObjectHelper(d));
 	case DiveDateRole: return (qlonglong)d->when;
-	case TripIdRole: return d->divetrip ? QString::number((quint64)d->divetrip, 16) : QString();
+	// We have to return a QString as trip-id, because that will be used as section
+	// variable in the QtQuick list view. That has to be a string because it will try
+	// to do locale-aware sorting. And amazingly this can't be changed.
+	case TripIdRole: return d->divetrip ? QString::number(d->divetrip->id) : QString();
 	case TripNrDivesRole: return d->divetrip ? d->divetrip->dives.nr : 0;
 	case DateTimeRole: {
 		QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000 * d->when, Qt::UTC);
