@@ -70,8 +70,10 @@ void TabDiveStatistics::updateData()
 	else
 		ui->sacLimits->setAverage("");
 
-	ui->tempLimits->setMaximum(get_temperature_string(stats_selection.max_temp, true));
-	ui->tempLimits->setMinimum(get_temperature_string(stats_selection.min_temp, true));
+	if (stats_selection.combined_count > 1) {
+		ui->tempLimits->setMaximum(get_temperature_string(stats_selection.max_temp, true));
+		ui->tempLimits->setMinimum(get_temperature_string(stats_selection.min_temp, true));
+	}
 	if (stats_selection.combined_temp.mkelvin && stats_selection.combined_count) {
 		temperature_t avg_temp;
 		avg_temp.mkelvin = stats_selection.combined_temp.mkelvin / stats_selection.combined_count;
