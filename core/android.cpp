@@ -253,3 +253,11 @@ void checkPendingIntents()
 	}
 	qDebug() << "checkPendingIntents: Activity not valid";
 }
+
+QString getAndroidHWInfo()
+{
+	return QStringLiteral("%1/%2/%3")
+			.arg(QAndroidJniObject::getStaticObjectField<jstring>("android/os/Build", "MODEL").toString())
+			.arg(QAndroidJniObject::getStaticObjectField<jstring>("android/os/Build", "BRAND").toString())
+			.arg(QAndroidJniObject::getStaticObjectField<jstring>("android/os/Build", "PRODUCT").toString());
+}

@@ -205,6 +205,10 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	git_libgit2_version(&git_maj, &git_min, &git_rev);
 	appendTextToLog(QStringLiteral("built with libgit2 %1.%2.%3").arg(git_maj).arg(git_min).arg(git_rev));
 	appendTextToLog(QStringLiteral("Running on %1").arg(QSysInfo::prettyProductName()));
+#if defined(Q_OS_ANDROID)
+	extern QString getAndroidHWInfo();
+	appendTextToLog(getAndroidHWInfo());
+#endif
 	setStartPageText(tr("Starting..."));
 	LOG_STP("qmlmgr start page");
 
