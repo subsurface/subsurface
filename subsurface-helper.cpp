@@ -25,6 +25,12 @@
 #include "desktop-widgets/mainwindow.h"
 #endif
 
+#if defined(Q_OS_ANDROID)
+QString getAndroidHWInfo(); // from android.cpp
+#include <QApplication>
+#include <QFontDatabase>
+#endif /* Q_OS_ANDROID */
+
 #ifndef SUBSURFACE_TEST_DATA
 QObject *qqWindowObject = NULL;
 
@@ -99,6 +105,19 @@ void run_ui()
 	ctxt->setContextProperty("connectionListModel", &connectionListModel);
 	ctxt->setContextProperty("logModel", MessageHandlerModel::self());
 
+#if defined(Q_OS_ANDROID)
+	if (getAndroidHWInfo().contains("/OnePlus/")) {
+		QFontDatabase db;
+		int id = QFontDatabase::addApplicationFont(":/fonts/Roboto-Regular.ttf");
+		QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+		QFont newDefaultFont;
+		newDefaultFont.setFamily(family);
+		(static_cast<QApplication *>(QCoreApplication::instance()))->setFont(newDefaultFont);
+		qDebug() << "Detected OnePlus device, trying to force bundled font" << family;
+		QFont defaultFont = (static_cast<QApplication *>(QCoreApplication::instance()))->font();
+		qDebug() << "Qt reports default font is set as" << defaultFont.family();
+	}
+#endif
 	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
 	LOG_STP("run_ui qml loaded");
 	qqWindowObject = engine.rootObjects().value(0);
