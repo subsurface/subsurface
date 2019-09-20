@@ -408,8 +408,8 @@ Kirigami.ScrollablePage {
 	StartPage {
 		id: startPage
 		anchors.fill: parent
-		opacity: credentialStatus === CloudStatus.CS_NOCLOUD ||
-									(credentialStatus === CloudStatus.CS_VERIFIED) ? 0 : 1
+		opacity: (credentialStatus === CloudStatus.CS_NOCLOUD ||
+			 credentialStatus === CloudStatus.CS_VERIFIED) ? 0 : 1
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 		function setupActions() {
@@ -424,6 +424,7 @@ Kirigami.ScrollablePage {
 			} else {
 				page.actions.main = null
 				page.actions.right = null
+				page.actions.left = null
 				page.title = qsTr("Cloud credentials")
 			}
 		}
