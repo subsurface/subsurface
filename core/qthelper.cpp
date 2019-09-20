@@ -1399,7 +1399,7 @@ QString getUUID()
 		uuidString = uuid.toString();
 		qPrefUpdateManager::set_uuidString(uuidString);
 	}
-	uuidString.replace("{", "").replace("}", "");
+	uuidString.replace("{", "p").replace("}", "");
 	return uuidString;
 }
 

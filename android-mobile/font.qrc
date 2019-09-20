@@ -1,0 +1,7 @@
+
+<RCC>
+	<qresource prefix="/fonts">
+		<!-- we need to load our own font for OnePlus phones -->
+		<file>Roboto-Regular.ttf</file>
+	</qresource>
+</RCC>

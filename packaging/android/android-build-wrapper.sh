@@ -81,8 +81,8 @@ if [ ! -d "$ANDROID_NDK" ] ; then
 fi
 
 if [ ! -d "$ANDROID_SDK"/build-tools/"${ANDROID_BUILDTOOLS_REVISION}" ] ||
-   [ ! -d "$ANDROID_SDK"/platforms/android-"${ANDROID_PLATFORMS}" ] ||
-   [ ! -d "$ANDROID_SDK"/platforms/android-"${ANDROID_PLATFORM}" ] ; then
+   [ ! -d "$ANDROID_SDK"/platforms/"${ANDROID_PLATFORMS}" ] ||
+   [ ! -d "$ANDROID_SDK"/platforms/"${ANDROID_PLATFORM}" ] ; then
 	if [ ! -d "$ANDROID_SDK" ] ; then
 		if [ ! -f "$SDK_TOOLS" ] ; then
 			wget -q https://dl.google.com/android/repository/"$SDK_TOOLS"
@@ -100,6 +100,12 @@ if [ ! -d "$ANDROID_SDK"/build-tools/"${ANDROID_BUILDTOOLS_REVISION}" ] ||
 	fi
 	popd
 fi
+
+# now that we have an NDK, copy the font that we need for OnePlus phones
+# due to https://bugreports.qt.io/browse/QTBUG-69494
+ls -l . "$ANDROID_SDK" "$ANDROID_SDK"/platforms
+ls -l "$ANDROID_SDK"/platforms/"${ANDROID_PLATFORM}" "$ANDROID_SDK"/platforms/"${ANDROID_PLATFORM}"/data/fonts/Roboto-Regular.ttf
+cp "$ANDROID_SDK"/platforms/"${ANDROID_PLATFORM}"/data/fonts/Roboto-Regular.ttf "$SUBSURFACE_SOURCE"/android-mobile || exit 1
 
 # download the Qt installer including Android bits and unpack / install
 QT_DOWNLOAD_URL=https://download.qt.io/archive/qt/${QT_VERSION}/${LATEST_QT}/${QT_BINARIES}
