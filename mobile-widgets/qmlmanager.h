@@ -43,7 +43,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QString DC_devName READ DC_devName WRITE DC_setDevName)
 	Q_PROPERTY(QString DC_devBluetoothName READ DC_devBluetoothName WRITE DC_setDevBluetoothName)
 	Q_PROPERTY(QString descriptor READ DC_descriptor)
-	Q_PROPERTY(bool DC_forceDownload READ DC_forceDownload WRITE DC_setForceDownload)
+	Q_PROPERTY(bool DC_forceDownload READ DC_forceDownload WRITE DC_setForceDownload NOTIFY DC_ForceDownloadChanged)
 	Q_PROPERTY(bool DC_bluetoothMode READ DC_bluetoothMode WRITE DC_setBluetoothMode)
 	Q_PROPERTY(bool DC_saveDump READ DC_saveDump WRITE DC_setSaveDump)
 	Q_PROPERTY(int DC_deviceId READ DC_deviceId WRITE DC_setDeviceId)
@@ -270,6 +270,7 @@ signals:
 	void waitingForPositionChanged();
 	void pluggedInDeviceNameChanged();
 	void showNonDiveComputersChanged();
+	void DC_ForceDownloadChanged();
 };
 
 #endif

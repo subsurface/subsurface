@@ -1924,6 +1924,7 @@ void QMLManager::DC_setBluetoothMode(bool mode)
 void QMLManager::DC_setForceDownload(bool force)
 {
 	DCDeviceData::instance()->setForceDownload(force);
+	DC_ForceDownloadChanged();
 }
 
 void QMLManager::DC_setSaveDump(bool dumpMode)
