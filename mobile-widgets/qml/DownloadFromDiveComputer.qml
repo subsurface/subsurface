@@ -380,7 +380,7 @@ Kirigami.Page {
 			id: bottomButtons
 			Controls.Label {
 				text: ""  // Spacer on the left for hamburger menu
-				width: Kirigami.Units.gridUnit * 2
+				width: Kirigami.Units.gridUnit * 2.5
 			}
 			SsrfButton {
 				id: acceptButton
