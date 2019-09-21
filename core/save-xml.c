@@ -811,20 +811,14 @@ int export_dives_xslt(const char *filename, const bool selected, const int units
 	return res;
 }
 
-static void save_dive_sites_buffer(struct membuffer *b, const bool select_only, bool anonymize)
+static void save_dive_sites_buffer(struct membuffer *b, const struct dive_site *sites[], int nr_sites, bool anonymize)
 {
 	int i;
 	put_format(b, "<divesites program='subsurface' version='%d'>\n", DATAFORMAT_VERSION);
 
 	/* save the dive sites */
-	for (i = 0; i < dive_site_table.nr; i++) {
-		struct dive_site *ds = get_dive_site(i, &dive_site_table);
-		/* Don't export empty dive sites */
-		if (dive_site_is_empty(ds))
-			continue;
-		/* Only write used dive sites when exporting selected dives */
-		if (select_only && !is_dive_site_selected(ds))
-			continue;
+	for (i = 0; i < nr_sites; i++) {
+		const struct dive_site *ds = sites[i];
 
 		put_format(b, "<site uuid='%8x'", ds->uuid);
 		show_utf8_blanked(b, ds->name, " name='", "'", 1, anonymize);
@@ -848,13 +842,13 @@ static void save_dive_sites_buffer(struct membuffer *b, const bool select_only, 
 	put_format(b, "</divesites>\n");
 }
 
-int save_dive_sites_logic(const char *filename, const bool select_only, bool anonymize)
+int save_dive_sites_logic(const char *filename, const struct dive_site *sites[], int nr_sites, bool anonymize)
 {
 	struct membuffer buf = { 0 };
 	FILE *f;
 	int error = 0;
 
-	save_dive_sites_buffer(&buf, select_only, anonymize);
+	save_dive_sites_buffer(&buf, sites, nr_sites, anonymize);
 
 	if (same_string(filename, "-")) {
 		f = stdout;

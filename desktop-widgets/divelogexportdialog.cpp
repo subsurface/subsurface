@@ -130,6 +130,21 @@ void DiveLogExportDialog::on_exportGroup_buttonClicked(QAbstractButton*)
 	showExplanation();
 }
 
+static std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly)
+{
+	std::vector<const dive_site *> res;
+	res.reserve(dive_site_table.nr);
+	for (int i = 0; i < dive_site_table.nr; i++) {
+		struct dive_site *ds = get_dive_site(i, &dive_site_table);
+		if (dive_site_is_empty(ds))
+			continue;
+		if (selectedOnly && !is_dive_site_selected(ds))
+			continue;
+		res.push_back(ds);
+	}
+	return res;
+}
+
 void DiveLogExportDialog::on_buttonBox_accepted()
 {
 	QString filename;
@@ -178,7 +193,8 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 				if (!filename.contains('.'))
 					filename.append(".xml");
 				QByteArray bt = QFile::encodeName(filename);
-				save_dive_sites_logic(bt.data(), ui->exportSelected->isChecked(), ui->anonymize->isChecked());
+				std::vector<const dive_site *> sites = getDiveSitesToExport(ui->exportSelected->isChecked());
+				save_dive_sites_logic(bt.data(), &sites[0], (int)sites.size(), ui->anonymize->isChecked());
 			}
 		} else if (ui->exportImageDepths->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Save image depths"), lastDir);
