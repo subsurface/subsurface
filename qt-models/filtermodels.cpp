@@ -299,7 +299,6 @@ void MultiFilterSortModel::clearFilter()
 
 void MultiFilterSortModel::startFilterDiveSites(QVector<dive_site *> ds)
 {
-	dive_sites = ds;
 	if (++diveSiteRefCount > 1) {
 		setFilterDiveSite(ds);
 	} else {
