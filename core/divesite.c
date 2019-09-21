@@ -191,12 +191,9 @@ int nr_of_dives_at_dive_site(struct dive_site *ds)
 	return ds->dives.nr;
 }
 
-bool is_dive_site_used(struct dive_site *ds, bool select_only)
+bool is_dive_site_selected(struct dive_site *ds)
 {
 	int i;
-
-	if (!select_only)
-		return ds->dives.nr > 0;
 
 	for (i = 0; i < ds->dives.nr; i++) {
 		if (ds->dives.dives[i]->selected)
