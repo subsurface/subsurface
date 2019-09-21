@@ -608,7 +608,7 @@ static void save_dives_buffer(struct membuffer *b, const bool select_only, bool 
 		if (dive_site_is_empty(ds))
 			continue;
 		/* Only write used dive sites when exporting selected dives */
-		if (select_only && !is_dive_site_used(ds, true))
+		if (select_only && !is_dive_site_selected(ds))
 			continue;
 
 		put_format(b, "<site uuid='%8x'", ds->uuid);
@@ -823,7 +823,7 @@ static void save_dive_sites_buffer(struct membuffer *b, const bool select_only, 
 		if (dive_site_is_empty(ds))
 			continue;
 		/* Only write used dive sites when exporting selected dives */
-		if (select_only && !is_dive_site_used(ds, true))
+		if (select_only && !is_dive_site_selected(ds))
 			continue;
 
 		put_format(b, "<site uuid='%8x'", ds->uuid);
