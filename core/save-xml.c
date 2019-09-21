@@ -586,7 +586,7 @@ int save_dives(const char *filename)
 	return save_dives_logic(filename, false, false);
 }
 
-void save_dives_buffer(struct membuffer *b, const bool select_only, bool anonymize)
+static void save_dives_buffer(struct membuffer *b, const bool select_only, bool anonymize)
 {
 	int i;
 	struct dive *dive;
@@ -811,7 +811,7 @@ int export_dives_xslt(const char *filename, const bool selected, const int units
 	return res;
 }
 
-void save_dive_sites_buffer(struct membuffer *b, const bool select_only, bool anonymize)
+static void save_dive_sites_buffer(struct membuffer *b, const bool select_only, bool anonymize)
 {
 	int i;
 	put_format(b, "<divesites program='subsurface' version='%d'>\n", DATAFORMAT_VERSION);
