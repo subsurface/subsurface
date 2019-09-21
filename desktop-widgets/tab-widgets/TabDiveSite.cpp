@@ -85,7 +85,7 @@ void TabDiveSite::on_filterText_textChanged(const QString &text)
 
 QVector<dive_site *> TabDiveSite::selectedDiveSites()
 {
-	const QModelIndexList indexes = ui.diveSites->view()->selectionModel()->selectedIndexes();
+	const QModelIndexList indexes = ui.diveSites->view()->selectionModel()->selectedRows();
 	QVector<dive_site *> sites;
 	sites.reserve(indexes.size());
 	for (const QModelIndex &idx: indexes) {
