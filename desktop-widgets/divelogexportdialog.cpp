@@ -133,6 +133,17 @@ void DiveLogExportDialog::on_exportGroup_buttonClicked(QAbstractButton*)
 static std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly)
 {
 	std::vector<const dive_site *> res;
+
+	if (selectedOnly && MultiFilterSortModel::instance()->diveSiteMode()) {
+		// Special case in dive site mode: export all selected dive sites,
+		// not the dive sites of selected dives.
+		QVector<dive_site *> sites = MultiFilterSortModel::instance()->filteredDiveSites();
+		res.reserve(sites.size());
+		for (const dive_site *ds: sites)
+			res.push_back(ds);
+		return res;
+	}
+
 	res.reserve(dive_site_table.nr);
 	for (int i = 0; i < dive_site_table.nr; i++) {
 		struct dive_site *ds = get_dive_site(i, &dive_site_table);
