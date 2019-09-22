@@ -5,8 +5,8 @@
 DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
 	firstIndex(0),
 	lastIndex(-1),
-	diveTable(nullptr),
-	sitesTable(nullptr)
+	diveTable({ 0 }),
+	sitesTable({ 0 })
 {
 	connect(&thread, &QThread::finished, this, &DiveImportedModel::downloadThreadFinished);
 }
@@ -54,7 +54,7 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 	if (index.row() + firstIndex > lastIndex)
 		return QVariant();
 
-	struct dive *d = get_dive_from_table(index.row() + firstIndex, diveTable);
+	struct dive *d = get_dive_from_table(index.row() + firstIndex, &diveTable);
 	if (!d)
 		return QVariant();
 
@@ -132,7 +132,19 @@ void DiveImportedModel::clearTable()
 
 void DiveImportedModel::downloadThreadFinished()
 {
-	repopulate(thread.table(), thread.sites());
+	beginResetModel();
+
+	// Move the table data from thread to model
+	move_dive_table(&thread.downloadTable, &diveTable);
+	move_dive_site_table(&thread.diveSiteTable, &sitesTable);
+
+	firstIndex = 0;
+	lastIndex = diveTable.nr - 1;
+	checkStates.resize(diveTable.nr);
+	std::fill(checkStates.begin(), checkStates.end(), true);
+
+	endResetModel();
+
 	emit downloadFinished();
 }
 
@@ -141,29 +153,15 @@ void DiveImportedModel::startDownload()
 	thread.start();
 }
 
-void DiveImportedModel::repopulate(dive_table_t *table, struct dive_site_table *sites)
-{
-	beginResetModel();
-
-	diveTable = table;
-	sitesTable = sites;
-	firstIndex = 0;
-	lastIndex = diveTable->nr - 1;
-	checkStates.resize(diveTable->nr);
-	std::fill(checkStates.begin(), checkStates.end(), true);
-
-	endResetModel();
-}
-
 std::pair<struct dive_table, struct dive_site_table> DiveImportedModel::consumeTables()
 {
 	beginResetModel();
 
 	// Move tables to result
-	struct dive_table dives;
-	struct dive_site_table sites;
-	move_dive_table(diveTable, &dives);
-	move_dive_site_table(sitesTable, &sites);
+	struct dive_table dives = { 0 };
+	struct dive_site_table sites = { 0 };
+	move_dive_table(&diveTable, &dives);
+	move_dive_site_table(&sitesTable, &sites);
 
 	// Reset indexes
 	firstIndex = 0;
@@ -177,38 +175,38 @@ std::pair<struct dive_table, struct dive_site_table> DiveImportedModel::consumeT
 
 int DiveImportedModel::numDives() const
 {
-	return diveTable->nr;
+	return diveTable.nr;
 }
 
 // Delete non-selected dives
 void DiveImportedModel::deleteDeselected()
 {
-	int total = diveTable->nr;
+	int total = diveTable.nr;
 	int j = 0;
 	for (int i = 0; i < total; i++) {
 		if (checkStates[i]) {
 			j++;
 		} else {
 			beginRemoveRows(QModelIndex(), j, j);
-			delete_dive_from_table(diveTable, j);
+			delete_dive_from_table(&diveTable, j);
 			endRemoveRows();
 		}
 	}
-	checkStates.resize(diveTable->nr);
+	checkStates.resize(diveTable.nr);
 	std::fill(checkStates.begin(), checkStates.end(), true);
 }
 
 // Note: this function is only used from mobile - perhaps move it there or unify.
 void DiveImportedModel::recordDives()
 {
-	if (diveTable->nr == 0)
+	if (diveTable.nr == 0)
 		// nothing to do, just exit
 		return;
 
 	deleteDeselected();
 
 	// TODO: Might want to let the user select IMPORT_ADD_TO_NEW_TRIP
-	add_imported_dives(diveTable, nullptr, sitesTable, IMPORT_PREFER_IMPORTED | IMPORT_IS_DOWNLOADED);
+	add_imported_dives(&diveTable, nullptr, &sitesTable, IMPORT_PREFER_IMPORTED | IMPORT_IS_DOWNLOADED);
 }
 
 QHash<int, QByteArray> DiveImportedModel::roleNames() const {

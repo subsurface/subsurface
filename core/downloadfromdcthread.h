@@ -64,13 +64,11 @@ public:
 	void run() override;
 
 	DCDeviceData *data();
-	struct dive_table *table();
-	struct dive_site_table *sites();
 	QString error;
-
-private:
 	struct dive_table downloadTable;
 	struct dive_site_table diveSiteTable;
+
+private:
 	DCDeviceData *m_data;
 };
 
