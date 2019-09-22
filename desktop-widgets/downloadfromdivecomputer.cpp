@@ -272,7 +272,7 @@ void DownloadFromDCWidget::updateState(states state)
 			markChildrenAsEnabled();
 			progress_bar_text = "";
 		} else {
-			if (diveImportedModel->thread.table()->nr != 0)
+			if (diveImportedModel->numDives() != 0)
 				progress_bar_text = "";
 			ui.progressBar->setValue(100);
 			markChildrenAsEnabled();
