@@ -366,7 +366,6 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 		// this means we are retrying - so we better clean out the partial
 		// list of downloaded dives from the last attempt
 		DiveImportedModel::instance()->clearTable();
-		clear_dive_table(thread.table());
 	}
 	updateState(DOWNLOADING);
 
@@ -516,7 +515,7 @@ void DownloadFromDCWidget::on_cancel_clicked()
 		return;
 
 	// now discard all the dives
-	clear_dive_table(thread.table());
+	DiveImportedModel::instance()->clearTable();
 	done(-1);
 }
 
