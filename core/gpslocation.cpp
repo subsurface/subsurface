@@ -15,16 +15,12 @@
 #include <QApplication>
 #include <QTimer>
 
-GpsLocation *GpsLocation::m_Instance = NULL;
-
 GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent) :
 	QObject(parent),
 	m_GpsSource(0),
 	waitingForPosition(false),
 	haveSource(UNKNOWN)
 {
-	Q_ASSERT_X(m_Instance == NULL, "GpsLocation", "GpsLocation recreated");
-	m_Instance = this;
 	showMessageCB = showMsgCB;
 	// create a QSettings object that's separate from the main application settings
 	geoSettings = new QSettings(QSettings::NativeFormat, QSettings::UserScope,
@@ -35,18 +31,6 @@ GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent) :
 
 	// register changes in time threshold
 	connect(qPrefLocationService::instance(), SIGNAL(time_thresholdChanged(int)), this, SLOT(setGpsTimeThreshold(int)));
-}
-
-GpsLocation *GpsLocation::instance()
-{
-	Q_ASSERT(m_Instance != NULL);
-
-	return m_Instance;
-}
-
-GpsLocation::~GpsLocation()
-{
-	m_Instance = NULL;
 }
 
 void GpsLocation::setGpsTimeThreshold(int seconds)
