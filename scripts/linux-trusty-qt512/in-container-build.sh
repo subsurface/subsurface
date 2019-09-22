@@ -23,6 +23,8 @@ mv appdir/usr/usr/local/Qt/5.12.4/gcc_64/plugins/* appdir/usr/plugins  # the usr
 mv appdir/usr/lib/grantlee/ appdir/usr/plugins/
 rm -rf appdir/usr/home/ appdir/usr/include/ appdir/usr/share/man/ # No need to ship developer and man files as part of the AppImage
 rm -rf appdir/usr/usr appdir/usr/lib/cmake appdir/usr/lib/pkgconfig
+cp /ssllibs/libssl.so appdir/usr/lib/libssl.so.1.1 
+cp /ssllibs/libcrypto.so appdir/usr/lib/libcrypto.so.1.1
 
 # get the linuxdeployqt tool and run it to collect the libraries
 curl -L -O "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
