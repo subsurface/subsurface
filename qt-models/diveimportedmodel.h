@@ -38,7 +38,6 @@ slots:
 	void selectNone();
 
 private:
-	int lastIndex;
 	std::vector<char> checkStates; // char instead of bool to avoid silly pessimization of std::vector.
 	struct dive_table diveTable;
 	struct dive_site_table sitesTable;

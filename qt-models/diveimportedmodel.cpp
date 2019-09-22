@@ -3,7 +3,6 @@
 #include "core/divelist.h"
 
 DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
-	lastIndex(-1),
 	diveTable({ 0 }),
 	sitesTable({ 0 })
 {
@@ -16,7 +15,7 @@ int DiveImportedModel::columnCount(const QModelIndex&) const
 
 int DiveImportedModel::rowCount(const QModelIndex&) const
 {
-	return lastIndex + 1;
+	return diveTable.nr;
 }
 
 QVariant DiveImportedModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -49,7 +48,7 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 	if (!index.isValid())
 		return QVariant();
 
-	if (index.row() > lastIndex)
+	if (index.row() >= diveTable.nr)
 		return QVariant();
 
 	struct dive *d = get_dive_from_table(index.row(), &diveTable);
@@ -91,7 +90,7 @@ void DiveImportedModel::changeSelected(QModelIndex clickedIndex)
 void DiveImportedModel::selectAll()
 {
 	std::fill(checkStates.begin(), checkStates.end(), true);
-	dataChanged(index(0, 0), index(lastIndex, 0), QVector<int>() << Qt::CheckStateRole << Selected);
+	dataChanged(index(0, 0), index(diveTable.nr - 1, 0), QVector<int>() << Qt::CheckStateRole << Selected);
 }
 
 void DiveImportedModel::selectRow(int row)
@@ -103,7 +102,7 @@ void DiveImportedModel::selectRow(int row)
 void DiveImportedModel::selectNone()
 {
 	std::fill(checkStates.begin(), checkStates.end(), false);
-	dataChanged(index(0, 0), index(lastIndex, 0 ), QVector<int>() << Qt::CheckStateRole << Selected);
+	dataChanged(index(0, 0), index(diveTable.nr - 1, 0 ), QVector<int>() << Qt::CheckStateRole << Selected);
 }
 
 Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
@@ -115,15 +114,10 @@ Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
 
 void DiveImportedModel::clearTable()
 {
-	if (lastIndex < 0) {
-		// just to be sure it's the right numbers
-		// but don't call RemoveRows or Qt in debug mode with trigger an ASSERT
-		lastIndex = -1;
-		return;
-	}
-	beginRemoveRows(QModelIndex(), 0, lastIndex);
-	lastIndex = -1;
-	endRemoveRows();
+	beginResetModel();
+	clear_dive_table(&diveTable);
+	clear_dive_site_table(&sitesTable);
+	endResetModel();
 }
 
 void DiveImportedModel::repopulate(dive_table_t &table, struct dive_site_table &sites)
@@ -140,7 +134,6 @@ void DiveImportedModel::repopulate(dive_table_t &table, struct dive_site_table &
 	sites.nr = sites.allocated = 0;
 	sites.dive_sites = nullptr;
 
-	lastIndex = diveTable.nr - 1;
 	checkStates.resize(diveTable.nr);
 	std::fill(checkStates.begin(), checkStates.end(), true);
 
@@ -162,8 +155,7 @@ std::pair<struct dive_table, struct dive_site_table> DiveImportedModel::consumeT
 	sitesTable.dive_sites = nullptr;
 
 	// Reset indexes
-	lastIndex = -1;
-	checkStates.resize(diveTable.nr);
+	checkStates.clear();
 
 	endResetModel();
 
