@@ -58,16 +58,11 @@ private:
 
 class DownloadThread : public QThread {
 	Q_OBJECT
-	Q_PROPERTY(dive_table_t *table READ table CONSTANT)
-	Q_PROPERTY(dive_site_table_t *sites READ sites CONSTANT)
-
 public:
 	DownloadThread();
 	void run() override;
 
 	DCDeviceData *data();
-	struct dive_table *table();
-	struct dive_site_table *sites();
 	QString error;
 
 private slots:
