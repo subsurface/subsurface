@@ -1556,7 +1556,7 @@ void QMLManager::applyGpsData()
 void QMLManager::populateGpsData()
 {
 	if (GpsListModel::instance())
-		GpsListModel::instance()->update();
+		GpsListModel::instance()->update(QVector<gpsTracker>::fromList(locationProvider->currentGPSInfo().values()));
 }
 
 void QMLManager::clearGpsData()
