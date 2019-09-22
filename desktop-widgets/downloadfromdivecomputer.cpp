@@ -525,21 +525,27 @@ void DownloadFromDCWidget::on_ok_clicked()
 {
 	if (currentState != DONE && currentState != ERRORED)
 		return;
-	struct dive_table *table = diveImportedModel->thread.table();
-	struct dive_site_table *sites = diveImportedModel->thread.sites();
 
 	// delete non-selected dives
 	diveImportedModel->deleteDeselected();
 
-	if (table->nr > 0) {
+	// TODO: use structured bindings once we go C++17
+	std::pair<struct dive_table, struct dive_site_table> tables = diveImportedModel->consumeTables();
+	if (tables.first.nr > 0) {
 		auto data = diveImportedModel->thread.data();
 		int flags = IMPORT_IS_DOWNLOADED;
 		if (preferDownloaded())
 			flags |= IMPORT_PREFER_IMPORTED;
 		if (ui.createNewTrip->isChecked())
 			flags |= IMPORT_ADD_TO_NEW_TRIP;
-		Command::importDives(table, nullptr, sites, flags, data->devName());
+		Command::importDives(&tables.first, nullptr, &tables.second, flags, data->devName());
+	} else {
+		clear_dive_site_table(&tables.second);
 	}
+	// The dives and dive sites have been consumed, but the arrays of the tables
+	// still exist. Free them.
+	free(tables.first.dives);
+	free(tables.second.dive_sites);
 
 	if (ostcFirmwareCheck && currentState == DONE)
 		ostcFirmwareCheck->checkLatest(this, diveImportedModel->thread.data()->internalData());
