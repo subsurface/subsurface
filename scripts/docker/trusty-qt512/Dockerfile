@@ -55,7 +55,8 @@ RUN rm -rf qtwebkit
 ADD dbus-1.12.16.tar.gz .
 RUN mkdir dbus-1.12.16/build && \
     cd dbus-1.12.16/build && \
-    cmake ../cmake -DDBUS_INSTALL_SYSTEM_LIBS=1 && \
+    sed -inline 's/${CMAKE_INSTALL_FULL_LOCALSTATEDIR}\/lib\/dbus\/machine-id/\/var\/lib\/dbus\/machine-id/' ../cmake/CMakeLists.txt  && \
+    cmake ../cmake -DDBUS_INSTALL_SYSTEM_LIBS=1  && \
     make install && \
     ldconfig
 
