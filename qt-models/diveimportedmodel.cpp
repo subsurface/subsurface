@@ -175,6 +175,11 @@ std::pair<struct dive_table, struct dive_site_table> DiveImportedModel::consumeT
 	return std::make_pair(dives, sites);
 }
 
+int DiveImportedModel::numDives() const
+{
+	return diveTable->nr;
+}
+
 // Delete non-selected dives
 void DiveImportedModel::deleteDeselected()
 {

@@ -23,6 +23,7 @@ public:
 	QHash<int, QByteArray> roleNames() const;
 	void deleteDeselected();
 	std::pair<struct dive_table, struct dive_site_table> consumeTables(); // Returns dives and sites and resets model.
+	int numDives() const;
 	Q_INVOKABLE void recordDives();
 	Q_INVOKABLE void startDownload();
 
