@@ -3,10 +3,10 @@
 #define GPSLISTMODEL_H
 
 #include "core/gpslocation.h"
-#include <QObject>
+#include "core/singleton.h"
 #include <QAbstractListModel>
 
-class GpsListModel : public QAbstractListModel
+class GpsListModel : public QAbstractListModel, public SillySingleton<GpsListModel>
 {
 	Q_OBJECT
 public:
@@ -19,7 +19,6 @@ public:
 		GpsWhenRole
 	};
 
-	static GpsListModel *instance();
 	GpsListModel(QObject *parent = 0);
 	void clear();
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -28,7 +27,6 @@ public:
 	void update();
 private:
 	QVector<gpsTracker> m_gpsFixes;
-	static GpsListModel *m_instance;
 };
 
 #endif // GPSLISTMODEL_H

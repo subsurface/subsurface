@@ -44,7 +44,6 @@
 #include "core/settings/qPrefUnit.h"
 #include "core/trip.h"
 
-QMLManager *QMLManager::m_instance = NULL;
 bool noCloudToCloud = false;
 
 #define RED_FONT QLatin1Literal("<font color=\"red\">")
@@ -150,7 +149,6 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_showNonDiveComputers(false)
 {
 	LOG_STP("qmlmgr starting");
-	m_instance = this;
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
 	timer.start();
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
@@ -451,12 +449,6 @@ QMLManager::~QMLManager()
 	if (appLogFileOpen)
 		appLogFile.close();
 #endif
-	m_instance = NULL;
-}
-
-QMLManager *QMLManager::instance()
-{
-	return m_instance;
 }
 
 #define CLOUDURL QString(prefs.cloud_base_url)

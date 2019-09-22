@@ -10,6 +10,7 @@
 #include <QBluetoothDeviceDiscoveryAgent>
 #include <QBluetoothUuid>
 #include "core/libdivecomputer.h"
+#include "core/singleton.h"
 
 #if defined(Q_OS_ANDROID)
 #include <QAndroidJniObject>
@@ -23,13 +24,12 @@ QString extractBluetoothAddress(const QString &address);
 QString extractBluetoothNameAddress(const QString &address, QString &name);
 QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr);
 
-class BTDiscovery : public QObject {
+class BTDiscovery : public QObject, public SillySingleton<BTDiscovery> {
 	Q_OBJECT
 
 public:
 	BTDiscovery(QObject *parent = NULL);
 	~BTDiscovery();
-	static BTDiscovery *instance();
 
 	struct btPairedDevice {
 		QString address;
@@ -57,7 +57,6 @@ public:
 	void discoverAddress(QString address);
 
 private:
-	static BTDiscovery *m_instance;
 	bool m_btValid;
 	bool m_showNonDiveComputers;
 

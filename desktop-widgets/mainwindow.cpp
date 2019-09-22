@@ -109,8 +109,6 @@ extern "C" int updateProgress(const char *text)
 	return progressDialogCanceled;
 }
 
-MainWindow *MainWindow::m_Instance = nullptr;
-
 extern "C" void showErrorFromC(char *buf)
 {
 	QString error(buf);
@@ -128,8 +126,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	survey(nullptr),
 	findMovedImagesDialog(nullptr)
 {
-	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
-	m_Instance = this;
 	ui.setupUi(this);
 	read_hashes();
 	Command::init();
@@ -357,7 +353,6 @@ MainWindow::MainWindow() : QMainWindow(),
 MainWindow::~MainWindow()
 {
 	write_hashes();
-	m_Instance = nullptr;
 }
 
 void MainWindow::setupSocialNetworkMenu()
@@ -396,11 +391,6 @@ void MainWindow::setDefaultState()
 	setApplicationState(ApplicationState::Default);
 	if (mainTab->isEditing())
 		ui.bottomLeft->currentWidget()->setEnabled(false);
-}
-
-MainWindow *MainWindow::instance()
-{
-	return m_Instance;
 }
 
 // This gets called after one or more dives were added, edited or downloaded for a dive computer
