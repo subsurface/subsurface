@@ -25,7 +25,8 @@ QAction *redoAction(QObject *parent);	// Create an redo action.
 // If newNumber is true, the dive is assigned a new number, depending on the
 // insertion position.
 void addDive(dive *d, const bool autogroup, bool newNumber);
-void importDives(struct dive_table *dives, struct trip_table *trips, struct dive_site_table *sites, int flags, const QString &source);
+void importDives(struct dive_table *dives, struct trip_table *trips,
+		 struct dive_site_table *sites, int flags, const QString &source); // The tables are consumed!
 void deleteDive(const QVector<struct dive*> &divesToDelete);
 void shiftTime(const QVector<dive *> &changedDives, int amount);
 void renumberDives(const QVector<QPair<dive *, int>> &divesToRenumber);
