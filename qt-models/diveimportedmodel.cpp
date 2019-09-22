@@ -143,6 +143,30 @@ void DiveImportedModel::repopulate(dive_table_t *table, struct dive_site_table *
 	endResetModel();
 }
 
+std::pair<struct dive_table, struct dive_site_table> DiveImportedModel::consumeTables()
+{
+	beginResetModel();
+
+	// Copy tables to result
+	struct dive_table dives = *diveTable;
+	struct dive_site_table sites = *sitesTable;
+
+	// Reset original tables
+	diveTable->nr = diveTable->allocated = 0;
+	diveTable->dives = nullptr;
+	sitesTable->nr = sitesTable->allocated = 0;
+	sitesTable->dive_sites = nullptr;
+
+	// Reset indexes
+	firstIndex = 0;
+	lastIndex = -1;
+	checkStates.resize(diveTable->nr);
+
+	endResetModel();
+
+	return std::make_pair(dives, sites);
+}
+
 // Delete non-selected dives
 void DiveImportedModel::deleteDeselected()
 {
