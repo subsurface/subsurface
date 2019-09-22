@@ -28,7 +28,6 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 #endif
 	currentState(INITIAL)
 {
-	diveImportedModel = new DiveImportedModel(this);
 	vendorModel.setStringList(vendorList);
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
@@ -39,7 +38,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	ui.progressBar->hide();
 	ui.progressBar->setMinimum(0);
 	ui.progressBar->setMaximum(100);
-	ui.downloadedView->setModel(diveImportedModel);
+	ui.downloadedView->setModel(DiveImportedModel::instance());
 	ui.downloadedView->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui.downloadedView->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui.downloadedView->setColumnWidth(0, startingWidth * 20);
@@ -56,13 +55,13 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 
 	timer->setInterval(200);
 
-	connect(ui.downloadedView, SIGNAL(clicked(QModelIndex)), diveImportedModel, SLOT(changeSelected(QModelIndex)));
+	connect(ui.downloadedView, SIGNAL(clicked(QModelIndex)), DiveImportedModel::instance(), SLOT(changeSelected(QModelIndex)));
 	connect(ui.chooseDumpFile, SIGNAL(clicked()), this, SLOT(pickDumpFile()));
 	connect(ui.dumpToFile, SIGNAL(stateChanged(int)), this, SLOT(checkDumpFile(int)));
 	connect(ui.chooseLogFile, SIGNAL(clicked()), this, SLOT(pickLogFile()));
 	connect(ui.logToFile, SIGNAL(stateChanged(int)), this, SLOT(checkLogFile(int)));
-	connect(ui.selectAllButton, SIGNAL(clicked()), diveImportedModel, SLOT(selectAll()));
-	connect(ui.unselectAllButton, SIGNAL(clicked()), diveImportedModel, SLOT(selectNone()));
+	connect(ui.selectAllButton, SIGNAL(clicked()), DiveImportedModel::instance(), SLOT(selectAll()));
+	connect(ui.unselectAllButton, SIGNAL(clicked()), DiveImportedModel::instance(), SLOT(selectNone()));
 	connect(timer, SIGNAL(timeout()), this, SLOT(updateProgressBar()));
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
@@ -366,7 +365,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	if (currentState == DONE) {
 		// this means we are retrying - so we better clean out the partial
 		// list of downloaded dives from the last attempt
-		diveImportedModel->clearTable();
+		DiveImportedModel::instance()->clearTable();
 		clear_dive_table(thread.table());
 	}
 	updateState(DOWNLOADING);
@@ -509,7 +508,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 	}
 	ui.downloadCancelRetryButton->setText(tr("Retry download"));
 	ui.downloadCancelRetryButton->setEnabled(true);
-	diveImportedModel->repopulate(thread.table(), thread.sites());
+	DiveImportedModel::instance()->repopulate(thread.table(), thread.sites());
 }
 
 void DownloadFromDCWidget::on_cancel_clicked()
@@ -532,8 +531,9 @@ void DownloadFromDCWidget::on_ok_clicked()
 	// delete non-selected dives
 	int total = table->nr;
 	int j = 0;
+	DiveImportedModel *model = DiveImportedModel::instance();
 	for (int i = 0; i < total; i++) {
-		if (diveImportedModel->data(diveImportedModel->index(i, 0), Qt::CheckStateRole) == Qt::Checked)
+		if (model->data(model->index(i, 0), Qt::CheckStateRole) == Qt::Checked)
 			j++;
 		else
 			delete_dive_from_table(thread.table(), j);

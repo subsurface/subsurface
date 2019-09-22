@@ -81,7 +81,6 @@ private:
 	QTimer *timer;
 	bool dumpWarningShown;
 	std::unique_ptr<OstcFirmwareCheck> ostcFirmwareCheck;
-	DiveImportedModel *diveImportedModel;
 #if defined(BT_SUPPORT)
 	BtDeviceSelectionDialog *btDeviceSelectionDialog;
 	BTDiscovery *btd;
