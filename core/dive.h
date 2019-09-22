@@ -255,7 +255,7 @@ extern struct dive *current_dive;
 #define displayed_dc (get_dive_dc(&displayed_dive, dc_number))
 
 extern struct dive *get_dive(int nr);
-extern struct dive *get_dive_from_table(int nr, struct dive_table *dt);
+extern struct dive *get_dive_from_table(int nr, const struct dive_table *dt);
 extern struct dive_site *get_dive_site_for_dive(const struct dive *dive);
 extern const char *get_dive_country(const struct dive *dive);
 extern const char *get_dive_location(const struct dive *dive);
