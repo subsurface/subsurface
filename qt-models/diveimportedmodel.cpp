@@ -143,6 +143,24 @@ void DiveImportedModel::repopulate(dive_table_t *table, struct dive_site_table *
 	endResetModel();
 }
 
+// Delete non-selected dives
+void DiveImportedModel::deleteDeselected()
+{
+	int total = diveTable->nr;
+	int j = 0;
+	for (int i = 0; i < total; i++) {
+		if (checkStates[i]) {
+			j++;
+		} else {
+			beginRemoveRows(QModelIndex(), j, j);
+			delete_dive_from_table(diveTable, j);
+			endRemoveRows();
+		}
+	}
+	checkStates.resize(diveTable->nr);
+	std::fill(checkStates.begin(), checkStates.end(), true);
+}
+
 // Note: this function is only used from mobile - perhaps move it there or unify.
 void DiveImportedModel::recordDives()
 {
@@ -150,15 +168,7 @@ void DiveImportedModel::recordDives()
 		// nothing to do, just exit
 		return;
 
-	// delete non-selected dives
-	int total = diveTable->nr;
-	int j = 0;
-	for (int i = 0; i < total; i++) {
-		if (checkStates[i])
-			j++;
-		else
-			delete_dive_from_table(diveTable, j);
-	}
+	deleteDeselected();
 
 	// TODO: Might want to let the user select IMPORT_ADD_TO_NEW_TRIP
 	add_imported_dives(diveTable, nullptr, sitesTable, IMPORT_PREFER_IMPORTED | IMPORT_IS_DOWNLOADED);
