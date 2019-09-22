@@ -3,6 +3,7 @@
 #include "core/qthelper.h"
 #include "core/settings/qPrefDiveComputer.h"
 #include "core/divelist.h"
+#include "qt-models/diveimportedmodel.h"
 #include <QDebug>
 #if defined(Q_OS_ANDROID)
 #include "core/subsurface-string.h"
@@ -63,6 +64,10 @@ DownloadThread::DownloadThread() : downloadTable({ 0 }),
 	diveSiteTable({ 0 }),
 	m_data(DCDeviceData::instance())
 {
+	// By connecting the finished signal in the constructor, we make sure that we are called first.
+	// Thus, we can update the model and all other recipients of the signal (notably QML) can
+	// check the model for new dives. Yes, this is somewhat subtle, but well defined.
+	connect(this, &QThread::finished, this, &DownloadThread::reloadModel);
 }
 
 void DownloadThread::run()
@@ -108,6 +113,11 @@ void DownloadThread::run()
 	qPrefDiveComputer::set_device_name(m_data->devBluetoothName());
 
 	updateRememberedDCs();
+}
+
+void DownloadThread::reloadModel()
+{
+	DiveImportedModel::instance()->repopulate(&downloadTable, &diveSiteTable);
 }
 
 static void fill_supported_mobile_list()

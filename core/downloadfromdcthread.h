@@ -70,6 +70,9 @@ public:
 	struct dive_site_table *sites();
 	QString error;
 
+private slots:
+	void reloadModel();
+
 private:
 	struct dive_table downloadTable;
 	struct dive_site_table diveSiteTable;

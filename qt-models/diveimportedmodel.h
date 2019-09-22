@@ -21,7 +21,7 @@ public:
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	Q_INVOKABLE void clearTable();
 	QHash<int, QByteArray> roleNames() const;
-	Q_INVOKABLE void repopulate(dive_table_t *table, dive_site_table_t *sites);
+	void repopulate(dive_table_t *table, dive_site_table_t *sites);
 	Q_INVOKABLE void recordDives();
 public
 slots:
