@@ -24,6 +24,7 @@ public:
 	void deleteDeselected();
 	std::pair<struct dive_table, struct dive_site_table> consumeTables(); // Returns dives and sites and resets model.
 	void repopulate(dive_table_t *table, dive_site_table_t *sites);
+	int numDives() const;
 	Q_INVOKABLE void recordDives();
 public
 slots:
