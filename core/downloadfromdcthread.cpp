@@ -117,7 +117,8 @@ void DownloadThread::run()
 
 void DownloadThread::reloadModel()
 {
-	DiveImportedModel::instance()->repopulate(&downloadTable, &diveSiteTable);
+	// Note: this will reset the tables
+	DiveImportedModel::instance()->repopulate(downloadTable, diveSiteTable);
 }
 
 static void fill_supported_mobile_list()

@@ -23,7 +23,11 @@ public:
 	QHash<int, QByteArray> roleNames() const;
 	void deleteDeselected();
 	std::pair<struct dive_table, struct dive_site_table> consumeTables(); // Returns dives and sites and resets model.
-	void repopulate(dive_table_t *table, dive_site_table_t *sites);
+
+	// Reset the model.
+	// Warning: this consumes the input tables, i.e. the tables are of zero size
+	// on return of the function.
+	void repopulate(dive_table_t &table, dive_site_table_t &sites);
 	int numDives() const;
 	Q_INVOKABLE void recordDives();
 public
@@ -37,8 +41,8 @@ private:
 	int firstIndex;
 	int lastIndex;
 	std::vector<char> checkStates; // char instead of bool to avoid silly pessimization of std::vector.
-	struct dive_table *diveTable;
-	struct dive_site_table *sitesTable;
+	struct dive_table diveTable;
+	struct dive_site_table sitesTable;
 };
 
 #endif
