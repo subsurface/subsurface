@@ -28,4 +28,4 @@ export QT_ROOT=/usr/local/Qt/5.12.4
 cd ${TRAVIS_BUILD_DIR}/..
 
 # start the container and keep it running
-docker run -v $PWD/subsurface:/subsurface --name=trusty-qt512 -w / -d dirkhh/trusty-qt512:0.6 /bin/sleep 60m
+docker run -v $PWD/subsurface:/subsurface --name=trusty-qt512 -w / -d dirkhh/trusty-qt512:0.7 /bin/sleep 60m
