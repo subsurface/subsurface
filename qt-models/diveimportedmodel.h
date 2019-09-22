@@ -4,8 +4,9 @@
 #include <QAbstractTableModel>
 #include <vector>
 #include "core/divesite.h"
+#include "core/singleton.h"
 
-class DiveImportedModel : public QAbstractTableModel
+class DiveImportedModel : public QAbstractTableModel, public SillySingleton<DiveImportedModel>
 {
 	Q_OBJECT
 public:
