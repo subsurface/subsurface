@@ -155,6 +155,26 @@ void DiveImportedModel::repopulate(dive_table_t *table, struct dive_site_table *
 	endResetModel();
 }
 
+std::pair<struct dive_table, struct dive_site_table> DiveImportedModel::consumeTables()
+{
+	beginResetModel();
+
+	// Move tables to result
+	struct dive_table dives;
+	struct dive_site_table sites;
+	move_dive_table(diveTable, &dives);
+	move_dive_site_table(sitesTable, &sites);
+
+	// Reset indexes
+	firstIndex = 0;
+	lastIndex = -1;
+	checkStates.clear();
+
+	endResetModel();
+
+	return std::make_pair(dives, sites);
+}
+
 // Delete non-selected dives
 void DiveImportedModel::deleteDeselected()
 {
