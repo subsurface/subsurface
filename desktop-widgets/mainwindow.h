@@ -21,6 +21,7 @@
 #include "desktop-widgets/filterwidget2.h"
 #include "core/applicationstate.h"
 #include "core/gpslocation.h"
+#include "core/singleton.h"
 
 #define NUM_RECENT_FILES 4
 
@@ -42,7 +43,7 @@ class LocationInformationWidget;
 typedef std::pair<QByteArray, QVariant> WidgetProperty;
 typedef QVector<WidgetProperty> PropertyList;
 
-class MainWindow : public QMainWindow {
+class MainWindow : public QMainWindow, public SillySingleton<MainWindow> {
 	Q_OBJECT
 public:
 	enum {
@@ -61,7 +62,6 @@ public:
 
 	MainWindow();
 	~MainWindow();
-	static MainWindow *instance();
 	void loadRecentFiles();
 	void updateRecentFiles();
 	void updateRecentFilesMenu();
@@ -193,7 +193,6 @@ private:
 	QString filter_open();
 	QString filter_import();
 	QString filter_import_dive_sites();
-	static MainWindow *m_Instance;
 	QString displayedFilename(QString fullFilename);
 	bool askSaveChanges();
 	bool okToClose(QString message);

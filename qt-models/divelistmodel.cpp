@@ -134,11 +134,8 @@ QString DiveListSortModel::tripShortDate(const QString &section)
 	return QStringLiteral("%1\n'%2").arg(firstMonth,firstTime.toString("yy"));
 }
 
-DiveListModel *DiveListModel::m_instance = NULL;
-
 DiveListModel::DiveListModel(QObject *parent) : QAbstractListModel(parent)
 {
-	m_instance = this;
 }
 
 void DiveListModel::insertDive(int i)
@@ -272,11 +269,6 @@ QString DiveListModel::startAddDive()
 	append_dive(d);
 	insertDive(get_idx_by_uniq_id(d->id));
 	return QString::number(d->id);
-}
-
-DiveListModel *DiveListModel::instance()
-{
-	return m_instance;
 }
 
 struct dive *DiveListModel::getDive(int i)
