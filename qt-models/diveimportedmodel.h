@@ -21,6 +21,7 @@ public:
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	Q_INVOKABLE void clearTable();
 	QHash<int, QByteArray> roleNames() const;
+	void deleteDeselected();
 	Q_INVOKABLE void recordDives();
 	Q_INVOKABLE void startDownload();
 
