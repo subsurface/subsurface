@@ -24,7 +24,7 @@ public:
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	QHash<int, QByteArray> roleNames() const;
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-	void update();
+	void update(QVector<gpsTracker> trackers);
 private:
 	QVector<gpsTracker> m_gpsFixes;
 };

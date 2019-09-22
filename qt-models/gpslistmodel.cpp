@@ -7,9 +7,8 @@ GpsListModel::GpsListModel(QObject *parent) : QAbstractListModel(parent)
 {
 }
 
-void GpsListModel::update()
+void GpsListModel::update(QVector<gpsTracker> trackers)
 {
-	QVector<gpsTracker> trackers = QVector<gpsTracker>::fromList(GpsLocation::instance()->currentGPSInfo().values());
 	beginResetModel();
 	m_gpsFixes = trackers;
 	endResetModel();
