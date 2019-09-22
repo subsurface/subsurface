@@ -59,6 +59,11 @@ RUN mkdir dbus-1.12.16/build && \
     make install && \
     ldconfig
 
+ADD OpenSSL_1_1_1.tar.gz .
+RUN cd /openssl-OpenSSL_1_1_1   && \
+    ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib && \
+    make && mkdir -p /ssllibs && cp *.so /ssllibs && cd / && rm -rf openssl-OpenSSL_1_1_1
+
 # try to remove some of the packages we no longer need
 RUN apt-get remove -y libqt5core5a libqt5dbus5 libqt5gui5 ruby openssh-client
 
