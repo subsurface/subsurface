@@ -199,14 +199,21 @@ void DiveImportedModel::deleteDeselected()
 // Note: this function is only used from mobile - perhaps move it there or unify.
 void DiveImportedModel::recordDives()
 {
+	deleteDeselected();
+
 	if (diveTable.nr == 0)
 		// nothing to do, just exit
 		return;
 
-	deleteDeselected();
+	// Consume the tables. They will be consumed by add_imported_dives() anyway.
+	// But let's do it in a controlled way with a proper model-reset so that the
+	// model doesn't become inconsistent.
+	std::pair<struct dive_table, struct dive_site_table> tables = consumeTables();
 
 	// TODO: Might want to let the user select IMPORT_ADD_TO_NEW_TRIP
-	add_imported_dives(&diveTable, nullptr, &sitesTable, IMPORT_PREFER_IMPORTED | IMPORT_IS_DOWNLOADED);
+	add_imported_dives(&tables.first, nullptr, &tables.second, IMPORT_PREFER_IMPORTED | IMPORT_IS_DOWNLOADED);
+	free(tables.first.dives);
+	free(tables.second.dive_sites);
 }
 
 QHash<int, QByteArray> DiveImportedModel::roleNames() const {
