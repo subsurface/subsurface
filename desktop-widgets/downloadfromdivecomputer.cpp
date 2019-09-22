@@ -529,14 +529,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 	struct dive_site_table *sites = diveImportedModel->thread.sites();
 
 	// delete non-selected dives
-	int total = table->nr;
-	int j = 0;
-	for (int i = 0; i < total; i++) {
-		if (diveImportedModel->data(diveImportedModel->index(i, 0), Qt::CheckStateRole) == Qt::Checked)
-			j++;
-		else
-			delete_dive_from_table(diveImportedModel->thread.table(), j);
-	}
+	diveImportedModel->deleteDeselected();
 
 	if (table->nr > 0) {
 		auto data = diveImportedModel->thread.data();
