@@ -3872,7 +3872,7 @@ struct dive *get_dive(int nr)
 	return dive_table.dives[nr];
 }
 
-struct dive *get_dive_from_table(int nr, struct dive_table *dt)
+struct dive *get_dive_from_table(int nr, const struct dive_table *dt)
 {
 	if (nr >= dt->nr || nr < 0)
 		return NULL;
