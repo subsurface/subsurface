@@ -34,6 +34,7 @@ Kirigami.ApplicationWindow {
 	property alias defaultCylinderIndex: settingsWindow.defaultCylinderIndex
 	property bool filterToggle: false
 	property string filterPattern: ""
+	property bool firstChange: true
 
 	onNotificationTextChanged: {
 		if (notificationText != "") {
@@ -487,6 +488,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 		// set the initial UI scaling as in the the preferences
 		fontMetrics.font.pointSize = subsurfaceTheme.basePointSize * PrefDisplay.mobile_scale;
+		console.log("Done setting up sizes")
 	}
 
 	QtObject {
@@ -552,8 +554,16 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color contrastAccentColor: "#FF5722" // used for delete button
 		property color lightDrawerColor: "#FFFFFF"
 		property color darkDrawerColor: "#424242"
+		property int initialWidth: rootItem.width
 		Component.onCompleted: {
-			setupUnits()
+			// break the binding
+			initialWidth = initialWidth * 1
+			console.log("SubsufaceTheme constructor completed, initial width " + initialWidth)
+			if (rootItem.firstChange) // only run the setup if we haven't seen a change, yet
+				setupUnits() // but don't count this as a change (after all, it's not)
+			else
+				console.log("Already adjusted size, ignoring this")
+
 			// this needs to pick the theme from persistent preference settings
 			var theme = PrefDisplay.theme
 			if (theme == "Blue")
@@ -567,8 +577,17 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	onWidthChanged: {
 		console.log("Window width changed to " + width)
-		// we need to recalculate our base units
-		setupUnits()
+		if (subsurfaceTheme.initialWidth !== undefined) {
+			if (width !== subsurfaceTheme.initialWidth && rootItem.firstChange) {
+				rootItem.firstChange = false;
+				console.log("first real change, so recalculating units")
+				setupUnits()
+			} else {
+				console.log("not recalculating base unit")
+			}
+		} else {
+			console.log("width changed before initial width initialized, ignoring")
+		}
 	}
 
 	pageStack.initialPage: DiveList {
