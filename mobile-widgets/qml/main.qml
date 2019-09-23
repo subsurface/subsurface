@@ -678,7 +678,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	Component.onCompleted: {
 		// try to see if we can detect certain device vendors through these properties
-		console.log("Running on " + Screen.manufacturer + " " + Screen.model + " " + Screen.name)
+		if (Screen.manufacturer + " " + Screen.model + " " + Screen.name !== "  ")
+			console.log("Running on " + Screen.manufacturer + " " + Screen.model + " " + Screen.name)
 		rootItem.visible = true
 		diveList.opacity = 1
 		rootItem.opacity = 1
