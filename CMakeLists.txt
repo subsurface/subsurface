@@ -24,6 +24,9 @@ MACRO_ENSURE_OUT_OF_SOURCE_BUILD(
     "We don't support building in source, please create a build folder elsewhere and remember to run git clean -xdf to remove temporary files created by CMake."
 )
 
+#Option for profiling
+option(SUBSURFACE_PROFILING_BUILD "enable profiling of Subsurface binary" OFF)
+
 #Options regarding usage of pkgconfig
 option(LIBGIT2_FROM_PKGCONFIG "use pkg-config to retrieve libgit2" OFF)
 option(LIBDC_FROM_PKGCONFIG "use pkg-config to retrieve libdivecomputer" OFF)
@@ -95,6 +98,13 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
   # using Intel C++
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # using Visual Studio C++
+endif()
+
+# set up profiling
+if (SUBSURFACE_PROFILING_BUILD)
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
+	SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
+	SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
 endif()
 
 # every compiler understands -Wall
