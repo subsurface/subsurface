@@ -99,4 +99,15 @@
 		table->nr = 0;							\
 	}
 
+/* Move data of one table to the other - source table is empty after call. */
+#define MAKE_MOVE_TABLE(table_type, array_name)					\
+	void move_##table_type(struct table_type *src, struct table_type *dst)	\
+	{									\
+		clear_##table_type(dst);					\
+		free(dst->array_name);						\
+		*dst = *src;							\
+		src->nr = src->allocated = 0;					\
+		src->array_name = NULL;						\
+	}
+
 #endif

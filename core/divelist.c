@@ -753,6 +753,7 @@ static MAKE_GET_IDX(dive_table, struct dive *, dives)
 MAKE_SORT(dive_table, struct dive *, dives, comp_dives)
 MAKE_REMOVE(dive_table, struct dive *, dive)
 MAKE_CLEAR_TABLE(dive_table, dives, dive)
+MAKE_MOVE_TABLE(dive_table, dives)
 
 void insert_dive(struct dive_table *table, struct dive *d)
 {
