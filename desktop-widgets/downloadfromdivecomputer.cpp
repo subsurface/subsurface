@@ -7,6 +7,7 @@
 #include "core/settings/qPrefDiveComputer.h"
 #include "core/subsurface-string.h"
 #include "core/uemis.h"
+#include "core/downloadfromdcthread.h"
 #include "desktop-widgets/divelistview.h"
 #include "desktop-widgets/mainwindow.h"
 #include "qt-models/diveimportedmodel.h"
@@ -67,8 +68,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 
-	connect(&thread, SIGNAL(finished()),
-		this, SLOT(onDownloadThreadFinished()), Qt::QueuedConnection);
+	connect(diveImportedModel, &DiveImportedModel::downloadFinished, this, &DownloadFromDCWidget::onDownloadThreadFinished);
 
 	if (!qPrefDiveComputer::vendor().isEmpty()) {
 		ui.vendor->setCurrentIndex(ui.vendor->findText(qPrefDiveComputer::vendor()));
@@ -272,7 +272,7 @@ void DownloadFromDCWidget::updateState(states state)
 			markChildrenAsEnabled();
 			progress_bar_text = "";
 		} else {
-			if (thread.table()->nr != 0)
+			if (diveImportedModel->thread.table()->nr != 0)
 				progress_bar_text = "";
 			ui.progressBar->setValue(100);
 			markChildrenAsEnabled();
@@ -297,7 +297,7 @@ void DownloadFromDCWidget::updateState(states state)
 	else if (state == ERRORED) {
 		timer->stop();
 
-		QMessageBox::critical(this, TITLE_OR_TEXT(tr("Error"), thread.error), QMessageBox::Ok);
+		QMessageBox::critical(this, TITLE_OR_TEXT(tr("Error"), diveImportedModel->thread.error), QMessageBox::Ok);
 		markChildrenAsEnabled();
 		progress_bar_text = "";
 		ui.progressBar->hide();
@@ -367,7 +367,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 		// this means we are retrying - so we better clean out the partial
 		// list of downloaded dives from the last attempt
 		diveImportedModel->clearTable();
-		clear_dive_table(thread.table());
+		clear_dive_table(diveImportedModel->thread.table());
 	}
 	updateState(DOWNLOADING);
 
@@ -375,7 +375,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	ui.cancel->setEnabled(false);
 	ui.downloadCancelRetryButton->setText(tr("Cancel download"));
 
-	auto data = thread.data();
+	auto data = diveImportedModel->thread.data();
 	data->setVendor(ui.vendor->currentText());
 	data->setProduct(ui.product->currentText());
 #if defined(BT_SUPPORT)
@@ -417,7 +417,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 
 	// before we start, remember where the dive_table ended
 	previousLast = dive_table.nr;
-	thread.start();
+	diveImportedModel->startDownload();
 
 	// FIXME: We should get the _actual_ device info instead of whatever
 	// the user entered in the dropdown.
@@ -500,7 +500,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 	showRememberedDCs();
 
 	if (currentState == DOWNLOADING) {
-		if (thread.error.isEmpty())
+		if (diveImportedModel->thread.error.isEmpty())
 			updateState(DONE);
 		else
 			updateState(ERRORED);
@@ -509,7 +509,6 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 	}
 	ui.downloadCancelRetryButton->setText(tr("Retry download"));
 	ui.downloadCancelRetryButton->setEnabled(true);
-	diveImportedModel->repopulate(thread.table(), thread.sites());
 }
 
 void DownloadFromDCWidget::on_cancel_clicked()
@@ -518,7 +517,7 @@ void DownloadFromDCWidget::on_cancel_clicked()
 		return;
 
 	// now discard all the dives
-	clear_dive_table(thread.table());
+	clear_dive_table(diveImportedModel->thread.table());
 	done(-1);
 }
 
@@ -526,8 +525,8 @@ void DownloadFromDCWidget::on_ok_clicked()
 {
 	if (currentState != DONE && currentState != ERRORED)
 		return;
-	struct dive_table *table = thread.table();
-	struct dive_site_table *sites = thread.sites();
+	struct dive_table *table = diveImportedModel->thread.table();
+	struct dive_site_table *sites = diveImportedModel->thread.sites();
 
 	// delete non-selected dives
 	int total = table->nr;
@@ -536,11 +535,11 @@ void DownloadFromDCWidget::on_ok_clicked()
 		if (diveImportedModel->data(diveImportedModel->index(i, 0), Qt::CheckStateRole) == Qt::Checked)
 			j++;
 		else
-			delete_dive_from_table(thread.table(), j);
+			delete_dive_from_table(diveImportedModel->thread.table(), j);
 	}
 
 	if (table->nr > 0) {
-		auto data = thread.data();
+		auto data = diveImportedModel->thread.data();
 		int flags = IMPORT_IS_DOWNLOADED;
 		if (preferDownloaded())
 			flags |= IMPORT_PREFER_IMPORTED;
@@ -550,7 +549,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 	}
 
 	if (ostcFirmwareCheck && currentState == DONE)
-		ostcFirmwareCheck->checkLatest(this, thread.data()->internalData());
+		ostcFirmwareCheck->checkLatest(this, diveImportedModel->thread.data()->internalData());
 	accept();
 }
 

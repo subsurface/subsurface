@@ -11,7 +11,6 @@
 
 #include "core/libdivecomputer.h"
 #include "desktop-widgets/configuredivecomputerdialog.h"
-#include "core/downloadfromdcthread.h"
 
 #include "ui_downloadfromdivecomputer.h"
 
@@ -21,6 +20,7 @@
 
 class QStringListModel;
 class DiveImportedModel;
+class BTDiscovery;
 
 class DownloadFromDCWidget : public QDialog {
 	Q_OBJECT
@@ -72,7 +72,6 @@ private:
 	QStringListModel vendorModel;
 	QStringListModel productModel;
 	Ui::DownloadFromDiveComputer ui;
-	DownloadThread thread;
 	bool downloading;
 
 	int previousLast;
