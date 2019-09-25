@@ -60,6 +60,7 @@ void report_datafile_version(int version);
 int get_dive_id_closest_to(timestamp_t when);
 void clear_dive_file_data();
 void clear_dive_table(struct dive_table *table);
+void move_dive_table(struct dive_table *src, struct dive_table *dst);
 
 #ifdef DEBUG_TRIP
 extern void dump_selection(void);
