@@ -200,9 +200,10 @@ void GpsLocation::positionSourceError(QGeoPositionInfoSource::Error)
 
 void GpsLocation::status(QString msg)
 {
-	qDebug() << msg;
 	if (showMessageCB)
 		(*showMessageCB)(qPrintable(msg));
+	else
+		qDebug() << msg;
 }
 
 int GpsLocation::getGpsNum() const
