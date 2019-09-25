@@ -16,6 +16,8 @@
 exec 1> >(tee ./build.log) 2>&1
 
 USE_X=$(case $- in *x*) echo "-x" ;; esac)
+QUICK=""
+RELEASE=""
 
 # deal with the command line arguments
 while [[ $# -gt 0 ]] ; do
@@ -25,8 +27,13 @@ while [[ $# -gt 0 ]] ; do
 			# only download the dependencies, don't build
 			PREP_ONLY="1"
 			;;
+		-quick)
+			# pass through to build.sh
+			QUICK="-quick"
+			;;
 		release|Release)
-			# simply pass through to build.sh
+			# pass through to build.sh
+			RELEASE="release"
 			;;
 		*)
 			echo "Unknown command line argument $arg"
@@ -103,8 +110,6 @@ fi
 
 # now that we have an NDK, copy the font that we need for OnePlus phones
 # due to https://bugreports.qt.io/browse/QTBUG-69494
-ls -l . "$ANDROID_SDK" "$ANDROID_SDK"/platforms
-ls -l "$ANDROID_SDK"/platforms/"${ANDROID_PLATFORM}" "$ANDROID_SDK"/platforms/"${ANDROID_PLATFORM}"/data/fonts/Roboto-Regular.ttf
 cp "$ANDROID_SDK"/platforms/"${ANDROID_PLATFORM}"/data/fonts/Roboto-Regular.ttf "$SUBSURFACE_SOURCE"/android-mobile || exit 1
 
 # download the Qt installer including Android bits and unpack / install
@@ -159,17 +164,17 @@ rm -f ./subsurface-mobile-build-arm/build/outputs/apk/debug/*.apk
 rm -df ./subsurface-mobile-build-arm/AndroidManifest.xml
 
 if [ "$USE_X" ] ; then
-	bash "$USE_X" "$SUBSURFACE_SOURCE"/packaging/android/build.sh -buildnr "$BUILDNR" arm "$@"
+	bash "$USE_X" "$SUBSURFACE_SOURCE"/packaging/android/build.sh -buildnr "$BUILDNR" arm $QUICK $RELEASE
 	# the arm64 APK has to have a higher build number
 	BUILDNR=$((BUILDNR+1))
 	echo "${BUILDNR}" > ./buildnr.dat
-	bash "$USE_X" "$SUBSURFACE_SOURCE"/packaging/android/build.sh -buildnr "$BUILDNR" arm64 "$@"
+	bash "$USE_X" "$SUBSURFACE_SOURCE"/packaging/android/build.sh -buildnr "$BUILDNR" arm64 $QUICK $RELEASE
 else
-	bash "$SUBSURFACE_SOURCE"/packaging/android/build.sh -buildnr "$BUILDNR" arm "$@"
+	bash "$SUBSURFACE_SOURCE"/packaging/android/build.sh -buildnr "$BUILDNR" arm $QUICK $RELEASE
 	# the arm64 APK has to have a higher build number
 	BUILDNR=$((BUILDNR+1))
 	echo "${BUILDNR}" > ./buildnr.dat
-	bash "$SUBSURFACE_SOURCE"/packaging/android/build.sh -buildnr "$BUILDNR" arm64 "$@"
+	bash "$SUBSURFACE_SOURCE"/packaging/android/build.sh -buildnr "$BUILDNR" arm64 $QUICK $RELEASE
 fi
 
 ls -l ./subsurface-mobile-build-arm/build/outputs/apk/debug/*.apk
