@@ -81,7 +81,6 @@ QString constructLocationTags(struct taxonomy_data *taxonomy, bool for_maintab);
 
 /* Make pointer-to-dive_site a "Qt metatype" so that we can pass it through QVariants */
 Q_DECLARE_METATYPE(dive_site *);
-Q_DECLARE_METATYPE(dive_site_table_t *);
 
 #endif
 
