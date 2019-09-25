@@ -8,6 +8,7 @@ DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
 	diveTable(nullptr),
 	sitesTable(nullptr)
 {
+	connect(&thread, &QThread::finished, this, &DiveImportedModel::downloadThreadFinished);
 }
 
 int DiveImportedModel::columnCount(const QModelIndex&) const
@@ -127,6 +128,17 @@ void DiveImportedModel::clearTable()
 	lastIndex = -1;
 	firstIndex = 0;
 	endRemoveRows();
+}
+
+void DiveImportedModel::downloadThreadFinished()
+{
+	repopulate(thread.table(), thread.sites());
+	emit downloadFinished();
+}
+
+void DiveImportedModel::startDownload()
+{
+	thread.start();
 }
 
 void DiveImportedModel::repopulate(dive_table_t *table, struct dive_site_table *sites)
