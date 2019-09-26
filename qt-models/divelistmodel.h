@@ -62,6 +62,7 @@ public:
 	QHash<int, QByteArray> roleNames() const;
 	QString startAddDive();
 	void resetInternalData();
+	void clear(); // Clear all dives in core
 	Q_INVOKABLE DiveObjectHelper at(int i);
 };
 

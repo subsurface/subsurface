@@ -168,6 +168,13 @@ void DiveListModel::updateDive(int i, dive *d)
 	insertDive(i);
 }
 
+void DiveListModel::clear()
+{
+	beginResetModel();
+	clear_dive_file_data();
+	endResetModel();
+}
+
 void DiveListModel::reload()
 {
 	beginResetModel();
