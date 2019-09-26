@@ -53,7 +53,7 @@ public:
 	void removeDive(int i);
 	void removeDiveById(int id);
 	void updateDive(int i, dive *d);
-	void reload();
+	void reload(); // Only call after clearing the model!
 	struct dive *getDive(int i);
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	int getDiveIdx(int id) const;
