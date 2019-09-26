@@ -397,7 +397,7 @@ Item {
 		}
 		Component.onCompleted: {
 			qmlProfile.setMargin(Kirigami.Units.smallSpacing)
-			qmlProfile.diveId = model.dive.id;
+			qmlProfile.diveId = model.id;
 			qmlProfile.update();
 		}
 	}
