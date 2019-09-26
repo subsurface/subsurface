@@ -73,7 +73,7 @@ int DiveListSortModel::getIdxForId(int id)
 void DiveListSortModel::reload()
 {
 	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
-	mySourceModel->reload();
+	mySourceModel->resetInternalData();
 }
 
 // In QtQuick ListView, section headings can only be strings. To identify dives
@@ -180,8 +180,16 @@ void DiveListModel::clear()
 
 void DiveListModel::reload()
 {
-	beginResetModel();
-	endResetModel();
+	// Note: instead of doing a (logical) beginResetModel()/endResetModel(),
+	// we add the rows (if any). The reason is that a beginResetModel()/endResetModel()
+	// pair resulted in the DiveDetailsPage being renedered for *every* dive in
+	// the list. It is unclear whether this is a Qt-bug or intended insanity.
+	// Therefore, this function must only be called after having called clear().
+	// Otherwise the model will become inconsistent!
+	if (dive_table.nr > 0) {
+		beginInsertRows(QModelIndex(), 0, dive_table.nr - 1);
+		endInsertRows();
+	}
 }
 
 void DiveListModel::resetInternalData()
