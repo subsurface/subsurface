@@ -277,7 +277,7 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 
 void QMLManager::openLocalThenRemote(QString url)
 {
-	clear_dive_file_data();
+	DiveListModel::instance()->clear();
 	setNotificationText(tr("Open local dive data file"));
 	QByteArray fileNamePrt = QFile::encodeName(url);
 	bool glo = git_local_only;
@@ -730,7 +730,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	// if we aren't switching from no-cloud mode, let's clear the dive data
 	if (!noCloudToCloud) {
 		appendTextToLog("Clear out in memory dive data");
-		clear_dive_file_data();
+		DiveListModel::instance()->clear();
 	} else {
 		appendTextToLog("Switching from no cloud mode; keep in memory dive data");
 	}
