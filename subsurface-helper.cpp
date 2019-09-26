@@ -186,7 +186,6 @@ void register_qml_types(QQmlEngine *engine)
 	REGISTER_TYPE(QMLManager, "QMLManager");
 	REGISTER_TYPE(QMLPrefs, "QMLPrefs");
 	REGISTER_TYPE(QMLProfile, "QMLProfile");
-	REGISTER_TYPE(DownloadThread, "DCDownloadThread");
 	REGISTER_TYPE(DiveImportedModel, "DCImportModel");
 #endif // not SUBSURFACE_MOBILE
 
