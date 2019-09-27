@@ -39,7 +39,7 @@ SUBSURFACE_DESKTOP=OFF
 # Which arch should we build for?
 ARCH=arm
 # Read build variables
-source subsurface/packaging/android/variables.sh 
+source $SUBSURFACE_SOURCE/packaging/android/variables.sh
 
 QUICK=""
 
