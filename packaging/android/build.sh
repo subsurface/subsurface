@@ -63,7 +63,7 @@ while [ "$#" -gt 0 ] ; do
 			SUBSURFACE_DESKTOP=ON
 			shift
 			;;
-		arm|arm64|x86)
+		arm|arm64|x86|x86_64)
 			ARCH=$1
 			shift
 			;;
@@ -129,6 +129,11 @@ elif [ "$ARCH" = "x86" ] ; then
 	BUILDCHAIN=i686-linux-android
 	OPENSSL_MACHINE=i686
 	ANDROID_ABI=x86
+elif [ "$ARCH" = "x86_64" ] ; then
+	QT_ARCH=$ARCH
+	BUILDCHAIN=x86_64-linux-android
+	OPENSSL_MACHINE=$ARCH
+	ANDROID_ABI=$ARCH
 fi
 
 # Verify Qt install and adjust for single-arch Qt install layout
