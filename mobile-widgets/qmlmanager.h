@@ -13,14 +13,13 @@
 #include "core/btdiscovery.h"
 #include "core/gpslocation.h"
 #include "core/downloadfromdcthread.h"
-#include "core/singleton.h"
 #include "qt-models/divelistmodel.h"
 #include "qt-models/completionmodels.h"
 #include "qt-models/divelocationmodel.h"
 
 #define NOCLOUD_LOCALSTORAGE format_string("%s/cloudstorage/localrepo[master]", system_default_directory())
 
-class QMLManager : public QObject, public SillySingleton<QMLManager> {
+class QMLManager : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(QString logText READ logText WRITE setLogText NOTIFY logTextChanged)
 	Q_PROPERTY(bool locationServiceEnabled MEMBER m_locationServiceEnabled WRITE setLocationServiceEnabled NOTIFY locationServiceEnabledChanged)
@@ -90,6 +89,7 @@ public:
 	Q_INVOKABLE void setGitLocalOnly(const bool &value);
 	Q_INVOKABLE void setFilter(const QString filterText);
 
+	static QMLManager *instance();
 	Q_INVOKABLE void registerError(QString error);
 	QString consumeError();
 
@@ -219,6 +219,7 @@ private:
 	bool m_verboseEnabled;
 	GpsLocation *locationProvider;
 	bool m_loadFromCloud;
+	static QMLManager *m_instance;
 	struct dive *deletedDive;
 	struct dive_trip *deletedTrip;
 	QString m_notificationText;

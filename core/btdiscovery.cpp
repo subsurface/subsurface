@@ -15,6 +15,7 @@ extern QMap<QString, dc_descriptor_t *> descriptorLookup;
 namespace {
 	QHash<QString, QBluetoothDeviceInfo> btDeviceInfo;
 }
+BTDiscovery *BTDiscovery::m_instance = NULL;
 
 static dc_descriptor_t *getDeviceType(QString btName)
 // central function to convert a BT name to a Subsurface known vendor/model pair
@@ -138,6 +139,11 @@ BTDiscovery::BTDiscovery(QObject*) : m_btValid(false),
 	m_showNonDiveComputers(false),
 	discoveryAgent(nullptr)
 {
+	if (m_instance) {
+		qDebug() << "trying to create an additional BTDiscovery object";
+		return;
+	}
+	m_instance = this;
 #if defined(BT_SUPPORT)
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
 	BTDiscoveryReDiscover();
@@ -196,9 +202,17 @@ void BTDiscovery::BTDiscoveryReDiscover()
 
 BTDiscovery::~BTDiscovery()
 {
+	m_instance = NULL;
 #if defined(BT_SUPPORT)
 	delete discoveryAgent;
 #endif
+}
+
+BTDiscovery *BTDiscovery::instance()
+{
+	if (!m_instance)
+		m_instance = new BTDiscovery();
+	return m_instance;
 }
 
 #if defined(BT_SUPPORT)

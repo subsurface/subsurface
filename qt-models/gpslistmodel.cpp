@@ -3,12 +3,16 @@
 #include "core/qthelper.h"
 #include <QVector>
 
+GpsListModel *GpsListModel::m_instance = NULL;
+
 GpsListModel::GpsListModel(QObject *parent) : QAbstractListModel(parent)
 {
+	m_instance = this;
 }
 
-void GpsListModel::update(QVector<gpsTracker> trackers)
+void GpsListModel::update()
 {
+	QVector<gpsTracker> trackers = QVector<gpsTracker>::fromList(GpsLocation::instance()->currentGPSInfo().values());
 	beginResetModel();
 	m_gpsFixes = trackers;
 	endResetModel();
@@ -58,3 +62,9 @@ QHash<int, QByteArray> GpsListModel::roleNames() const
 	roles[GpsLongitudeRole] = "longitude";
 	return roles;
 }
+
+GpsListModel *GpsListModel::instance()
+{
+	return m_instance;
+}
+

@@ -6,7 +6,6 @@
 #include <QSortFilterProxyModel>
 
 #include "core/subsurface-qt/DiveObjectHelper.h"
-#include "core/singleton.h"
 
 class DiveListSortModel : public QSortFilterProxyModel
 {
@@ -29,7 +28,7 @@ private:
 	void updateFilterState();
 };
 
-class DiveListModel : public QAbstractListModel, public SillySingleton<DiveListModel>
+class DiveListModel : public QAbstractListModel
 {
 	Q_OBJECT
 public:
@@ -46,6 +45,7 @@ public:
 		DepthDurationRole,
 	};
 
+	static DiveListModel *instance();
 	DiveListModel(QObject *parent = 0);
 	void addDive(const QList<dive *> &listOfDives);
 	void addAllDives();
@@ -63,6 +63,8 @@ public:
 	QString startAddDive();
 	void resetInternalData();
 	Q_INVOKABLE DiveObjectHelper at(int i);
+private:
+	static DiveListModel *m_instance;
 };
 
 #endif // DIVELISTMODEL_H

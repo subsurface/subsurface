@@ -5,9 +5,9 @@
 #include <QObject>
 #include "core/settings/qPrefCloudStorage.h"
 #include "core/settings/qPrefDisplay.h"
-#include "core/singleton.h"
 
-class QMLPrefs : public QObject, public SillySingleton<QMLPrefs> {
+
+class QMLPrefs : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(QString cloudPassword
 				MEMBER m_cloudPassword
@@ -35,6 +35,9 @@ class QMLPrefs : public QObject, public SillySingleton<QMLPrefs> {
 				NOTIFY oldStatusChanged)
 public:
 	QMLPrefs();
+	~QMLPrefs();
+
+	static QMLPrefs *instance();
 
 	const QString cloudPassword() const;
 	void setCloudPassword(const QString &cloudPassword);
@@ -63,6 +66,7 @@ private:
 	QString m_cloudPin;
 	QString m_cloudUserName;
 	qPrefCloudStorage::cloud_status m_credentialStatus;
+	static QMLPrefs *m_instance;
 	qPrefCloudStorage::cloud_status m_oldStatus;
 	bool m_showPin;
 
