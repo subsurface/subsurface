@@ -281,6 +281,7 @@ if [ "$QUICK" = "" ] ; then
 		sed -i 's/SIZEOF_SIZE_T/__SIZEOF_SIZE_T__/g' lib/compat.h
 		# also, don't deal with manuals and bzip2
 		sed -i 's/ADD_SUBDIRECTORY(man)//' CMakeLists.txt
+		sed -i 's/^FIND_PACKAGE(ZLIB/#&/' CMakeLists.txt
 		popd
 		mkdir -p libzip-build-"$ARCH"
 		pushd libzip-build-"$ARCH"
@@ -291,6 +292,8 @@ if [ "$QUICK" = "" ] ; then
 			-DCMAKE_INSTALL_LIBDIR="lib" \
 			-DBUILD_SHARED_LIBS=OFF \
 			-DCMAKE_DISABLE_FIND_PACKAGE_BZip2=TRUE \
+			-DZLIB_VERSION_STRING=1.2.7 \
+			-DZLIB_LIBRARY=z \
 			../libzip/
 		make
 		make install
