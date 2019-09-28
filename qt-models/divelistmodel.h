@@ -46,7 +46,7 @@ public:
 	};
 
 	static DiveListModel *instance();
-	DiveListModel(QObject *parent = 0);
+	DiveListModel();
 	void addDive(const QList<dive *> &listOfDives);
 	void addAllDives();
 	void insertDive(int i);
@@ -64,8 +64,6 @@ public:
 	void resetInternalData();
 	void clear(); // Clear all dives in core
 	Q_INVOKABLE DiveObjectHelper at(int i);
-private:
-	static DiveListModel *m_instance;
 };
 
 #endif // DIVELISTMODEL_H

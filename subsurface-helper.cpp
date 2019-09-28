@@ -96,8 +96,6 @@ void run_ui()
 	qDebug() << "QML import path" << engine.importPathList();
 #endif // __APPLE__ not Q_OS_IOS
 	engine.addImportPath("qrc://imports");
-	DiveListModel diveListModel;
-	LOG_STP("run_ui diveListModel started");
 	DiveListSortModel *sortModel = new DiveListSortModel(0);
 	GpsListModel gpsListModel;
 	QSortFilterProxyModel *gpsSortModel = new QSortFilterProxyModel(nullptr);
