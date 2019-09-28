@@ -1717,6 +1717,7 @@ void QMLManager::setDevicePixelRatio(qreal dpr, QScreen *screen)
 
 void QMLManager::screenChanged(QScreen *screen)
 {
+	qDebug("QMLManager received screen changed notification (%d,%d)", screen->size().width(), screen->size().height());
 	m_lastDevicePixelRatio = screen->devicePixelRatio();
 	emit sendScreenChanged(screen);
 }
