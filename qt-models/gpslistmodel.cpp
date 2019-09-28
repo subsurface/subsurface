@@ -3,11 +3,8 @@
 #include "core/qthelper.h"
 #include <QVector>
 
-GpsListModel *GpsListModel::m_instance = NULL;
-
-GpsListModel::GpsListModel(QObject *parent) : QAbstractListModel(parent)
+GpsListModel::GpsListModel()
 {
-	m_instance = this;
 }
 
 void GpsListModel::update()
@@ -65,6 +62,7 @@ QHash<int, QByteArray> GpsListModel::roleNames() const
 
 GpsListModel *GpsListModel::instance()
 {
-	return m_instance;
+	static GpsListModel self;
+	return &self;
 }
 
