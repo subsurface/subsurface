@@ -3,11 +3,17 @@
 #include "core/qthelper.h"
 #include "core/trip.h"
 #include "core/settings/qPrefGeneral.h"
+#include "core/ssrf.h" // for LOG_STP
 #include <QDateTime>
 
 DiveListSortModel::DiveListSortModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
+	setSourceModel(DiveListModel::instance());
+	setDynamicSortFilter(true);
+	setSortRole(DiveListModel::DiveDateRole);
+	sort(0, Qt::DescendingOrder);
 	updateFilterState();
+	LOG_STP("run_ui diveListModel sorted");
 }
 
 void DiveListSortModel::updateFilterState()

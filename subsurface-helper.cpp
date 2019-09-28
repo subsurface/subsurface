@@ -99,11 +99,6 @@ void run_ui()
 	DiveListModel diveListModel;
 	LOG_STP("run_ui diveListModel started");
 	DiveListSortModel *sortModel = new DiveListSortModel(0);
-	sortModel->setSourceModel(&diveListModel);
-	sortModel->setDynamicSortFilter(true);
-	sortModel->setSortRole(DiveListModel::DiveDateRole);
-	sortModel->sort(0, Qt::DescendingOrder);
-	LOG_STP("run_ui diveListModel sorted");
 	GpsListModel gpsListModel;
 	QSortFilterProxyModel *gpsSortModel = new QSortFilterProxyModel(nullptr);
 	gpsSortModel->setSourceModel(&gpsListModel);
