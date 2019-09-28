@@ -11,7 +11,8 @@ class DiveListSortModel : public QSortFilterProxyModel
 {
 	Q_OBJECT
 public:
-	DiveListSortModel(QObject *parent = 0);
+	DiveListSortModel();
+	static DiveListSortModel *instance();
 	void setSourceModel(QAbstractItemModel *sourceModel);
 	Q_INVOKABLE void reload();
 	Q_INVOKABLE QString tripTitle(const QString &trip);
