@@ -35,6 +35,7 @@ Kirigami.ApplicationWindow {
 	property bool filterToggle: false
 	property string filterPattern: ""
 	property bool firstChange: true
+	property int lastOrientation: undefined
 
 	onNotificationTextChanged: {
 		if (notificationText != "") {
@@ -555,6 +556,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color lightDrawerColor: "#FFFFFF"
 		property color darkDrawerColor: "#424242"
 		property int initialWidth: rootItem.width
+		property int initialHeight: rootItem.height
 		Component.onCompleted: {
 			// break the binding
 			initialWidth = initialWidth * 1
@@ -576,14 +578,25 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	}
 
 	onWidthChanged: {
-		console.log("Window width changed to " + width)
+		console.log("Window width changed to " + width + " orientation " + Screen.primaryOrientation)
 		if (subsurfaceTheme.initialWidth !== undefined) {
 			if (width !== subsurfaceTheme.initialWidth && rootItem.firstChange) {
-				rootItem.firstChange = false;
-				console.log("first real change, so recalculating units")
+				rootItem.firstChange = false
+				rootItem.lastOrientation = Screen.primaryOrientation
+				subsurfaceTheme.initialWidth = width
+				subsurfaceTheme.initialHeight = height
+				console.log("first real change, so recalculating units and recording size as " + width + " x " + height)
 				setupUnits()
+			} else if (rootItem.lastOrientation !== undefined && rootItem.lastOrientation != Screen.primaryOrientation) {
+				console.log("Screen rotated, no action necessary")
+				rootItem.lastOrientation = Screen.primaryOrientation
 			} else {
-				console.log("not recalculating base unit")
+				console.log("size change without rotation to " + width + " x " + height)
+				if (width > subsurfaceTheme.initialWidth) {
+					console.log("resetting to initial width " + subsurfaceTheme.initialWidth + " and height " + subsurfaceTheme.initialHeight)
+					rootItem.width = subsurfaceTheme.initialWidth
+					rootItem.height = subsurfaceTheme.initialHeight
+				}
 			}
 		} else {
 			console.log("width changed before initial width initialized, ignoring")
