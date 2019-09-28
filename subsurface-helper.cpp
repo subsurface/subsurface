@@ -10,6 +10,7 @@
 #include "core/ssrf.h"
 
 #ifdef SUBSURFACE_MOBILE
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "mobile-widgets/qmlmanager.h"
@@ -75,6 +76,8 @@ void run_ui()
 		qDebug() << "Qt reports default font is set as" << defaultFont.family();
 	}
 #endif
+	QScreen *appScreen = QApplication::screens().at(0);
+	int availableScreenWidth = appScreen->availableSize().width();
 	QQmlApplicationEngine engine;
 	register_qml_types(&engine);
 	LOG_STP("run_ui qml engine started");
@@ -102,7 +105,7 @@ void run_ui()
 	sortModel->sort(0, Qt::DescendingOrder);
 	LOG_STP("run_ui diveListModel sorted");
 	GpsListModel gpsListModel;
-	QSortFilterProxyModel *gpsSortModel = new QSortFilterProxyModel(0);
+	QSortFilterProxyModel *gpsSortModel = new QSortFilterProxyModel(nullptr);
 	gpsSortModel->setSourceModel(&gpsListModel);
 	gpsSortModel->setDynamicSortFilter(true);
 	gpsSortModel->setSortRole(GpsListModel::GpsWhenRole);
@@ -118,6 +121,7 @@ void run_ui()
 	ctxt->setContextProperty("logModel", MessageHandlerModel::self());
 
 	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
+	qDebug() << "loaded main.qml";
 	LOG_STP("run_ui qml loaded");
 	qqWindowObject = engine.rootObjects().value(0);
 	if (!qqWindowObject) {
@@ -128,6 +132,9 @@ void run_ui()
 	qml_window->setIcon(QIcon(":subsurface-mobile-icon"));
 	qDebug() << "qqwindow devicePixelRatio" << qml_window->devicePixelRatio() << qml_window->screen()->devicePixelRatio();
 	QScreen *screen = qml_window->screen();
+	int qmlWW = qml_window->width();
+	int qmlSW = screen->size().width();
+	qDebug() << "qml_window reports width as" << qmlWW << "associated screen width" << qmlSW << "Qt screen reports width as" << availableScreenWidth;
 	QObject::connect(qml_window, &QQuickWindow::screenChanged, QMLManager::instance(), &QMLManager::screenChanged);
 	QMLManager *manager = QMLManager::instance();
 	LOG_STP("run_ui qmlmanager instance started");

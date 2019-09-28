@@ -702,6 +702,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		rootItem.visible = true
 		diveList.opacity = 1
 		rootItem.opacity = 1
+		console.log("setting the defaultColumnWidth to " + Kirigami.Units.gridUnit * 21)
 		pageStack.defaultColumnWidth = Kirigami.Units.gridUnit * 21
 		manager.appInitialized()
 	}
