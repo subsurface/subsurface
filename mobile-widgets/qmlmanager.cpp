@@ -825,7 +825,7 @@ void QMLManager::consumeFinishedLoad(timestamp_t currentDiveTimestamp)
 	process_loaded_dives();
 	DiveListModel::instance()->reload();
 	if (currentDiveTimestamp)
-		setUpdateSelectedDive(dlSortModel->getIdxForId(get_dive_id_closest_to(currentDiveTimestamp)));
+		setUpdateSelectedDive(DiveListSortModel::instance()->getIdxForId(get_dive_id_closest_to(currentDiveTimestamp)));
 	appendTextToLog(QStringLiteral("%1 dives loaded").arg(dive_table.nr));
 	if (dive_table.nr == 0)
 		setStartPageText(tr("Cloud storage open successfully. No dives in dive list."));
@@ -2056,7 +2056,7 @@ void QMLManager::setFilter(const QString filterText)
 	QMetaObject::invokeMethod(qmlWindow, "showBusy");
 	QtConcurrent::run(QThreadPool::globalInstance(),
 			  [=]{
-				dlSortModel->setFilter(filterText);
+				DiveListSortModel::instance()->setFilter(filterText);
 				QMetaObject::invokeMethod(qmlWindow, "hideBusy");
 			  });
 }

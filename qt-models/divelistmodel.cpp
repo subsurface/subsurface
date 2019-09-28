@@ -6,7 +6,7 @@
 #include "core/ssrf.h" // for LOG_STP
 #include <QDateTime>
 
-DiveListSortModel::DiveListSortModel(QObject *parent) : QSortFilterProxyModel(parent)
+DiveListSortModel::DiveListSortModel()
 {
 	setSourceModel(DiveListModel::instance());
 	setDynamicSortFilter(true);
@@ -14,6 +14,12 @@ DiveListSortModel::DiveListSortModel(QObject *parent) : QSortFilterProxyModel(pa
 	sort(0, Qt::DescendingOrder);
 	updateFilterState();
 	LOG_STP("run_ui diveListModel sorted");
+}
+
+DiveListSortModel *DiveListSortModel::instance()
+{
+	static DiveListSortModel self;
+	return &self;
 }
 
 void DiveListSortModel::updateFilterState()

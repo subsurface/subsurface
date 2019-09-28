@@ -96,14 +96,13 @@ void run_ui()
 	qDebug() << "QML import path" << engine.importPathList();
 #endif // __APPLE__ not Q_OS_IOS
 	engine.addImportPath("qrc://imports");
-	DiveListSortModel *sortModel = new DiveListSortModel(0);
 	QSortFilterProxyModel *gpsSortModel = new QSortFilterProxyModel(nullptr);
 	gpsSortModel->setSourceModel(GpsListModel::instance());
 	gpsSortModel->setDynamicSortFilter(true);
 	gpsSortModel->setSortRole(GpsListModel::GpsWhenRole);
 	gpsSortModel->sort(0, Qt::DescendingOrder);
 	QQmlContext *ctxt = engine.rootContext();
-	ctxt->setContextProperty("diveModel", sortModel);
+	ctxt->setContextProperty("diveModel", DiveListSortModel::instance());
 	ctxt->setContextProperty("gpsModel", gpsSortModel);
 	ctxt->setContextProperty("vendorList", vendorList);
 	set_non_bt_addresses();
@@ -135,7 +134,6 @@ void run_ui()
 	LOG_STP("run_ui show_computer_list");
 
 	manager->setDevicePixelRatio(qml_window->devicePixelRatio(), qml_window->screen());
-	manager->dlSortModel = sortModel;
 	manager->qmlWindow = qqWindowObject;
 	manager->screenChanged(screen);
 	qDebug() << "qqwindow screen has ldpi/pdpi" << screen->logicalDotsPerInch() << screen->physicalDotsPerInch();
