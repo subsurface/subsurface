@@ -71,6 +71,7 @@ unsigned int get_distance(const location_t *loc1, const location_t *loc2);
 struct dive_site *find_or_create_dive_site_with_name(const char *name, struct dive_site_table *ds_table);
 void purge_empty_dive_sites(struct dive_site_table *ds_table);
 void clear_dive_site_table(struct dive_site_table *ds_table);
+void move_dive_site_table(struct dive_site_table *src, struct dive_site_table *dst);
 void add_dive_to_dive_site(struct dive *d, struct dive_site *ds);
 struct dive_site *unregister_dive_from_dive_site(struct dive *d);
 
@@ -80,7 +81,6 @@ QString constructLocationTags(struct taxonomy_data *taxonomy, bool for_maintab);
 
 /* Make pointer-to-dive_site a "Qt metatype" so that we can pass it through QVariants */
 Q_DECLARE_METATYPE(dive_site *);
-Q_DECLARE_METATYPE(dive_site_table_t *);
 
 #endif
 

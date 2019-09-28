@@ -255,7 +255,7 @@ extern struct dive *current_dive;
 #define displayed_dc (get_dive_dc(&displayed_dive, dc_number))
 
 extern struct dive *get_dive(int nr);
-extern struct dive *get_dive_from_table(int nr, struct dive_table *dt);
+extern struct dive *get_dive_from_table(int nr, const struct dive_table *dt);
 extern struct dive_site *get_dive_site_for_dive(const struct dive *dive);
 extern const char *get_dive_country(const struct dive *dive);
 extern const char *get_dive_location(const struct dive *dive);
@@ -436,15 +436,11 @@ extern void update_setpoint_events(const struct dive *dive, struct divecomputer 
 #ifdef __cplusplus
 }
 
-/* Make pointers to dive, dive_trip, dive_table, trip_table and dive_site_table
- * "Qt metatypes" so that they can be passed through QVariants and through QML.
- * Note: we have to use the typedef "dive_table_t" instead of "struct dive_table",
- * because MOC removes the "struct", but dive_table is already the name of a global
- * variable, leading to compilation errors. Likewise for "struct trip_table" and
- * "struct dive_site_table" (defined in "dive.h" and "divesite.h"). */
+/* Make pointers to dive and dive_trip "Qt metatypes" so that they can be passed through
+ * QVariants and through QML.
+ */
 #include <QObject>
 Q_DECLARE_METATYPE(struct dive *);
-Q_DECLARE_METATYPE(dive_table_t *);
 
 #endif
 

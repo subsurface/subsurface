@@ -24,18 +24,13 @@ Kirigami.Page {
 	property alias product: comboProduct.currentIndex
 	property alias connection: comboConnection.currentIndex
 
-	DCDownloadThread {
-		id: downloadThread
+	DCImportModel {
+		id: importModel
 
-		onFinished : {
-			if (!table || !sites) {
-				console.warn("DCDownloadThread::onFinished(): table or sites is null!")
-				return
-			}
-			importModel.repopulate(table, sites)
+		onDownloadFinished : {
 			progressBar.visible = false
-			if (dcImportModel.rowCount() > 0) {
-				console.log(dcImportModel.rowCount() + " dive downloaded")
+			if (rowCount() > 0) {
+				console.log(rowCount() + " dive downloaded")
 				divesDownloaded = true
 			} else {
 				console.log("no new dives downloaded")
@@ -43,10 +38,6 @@ Kirigami.Page {
 			}
 			manager.appendTextToLog("DCDownloadThread finished")
 		}
-	}
-
-	DCImportModel {
-		id: importModel
 	}
 
 	ColumnLayout {
@@ -295,7 +286,7 @@ Kirigami.Page {
 					message += " downloading " + (manager.DC_forceDownload ? "all" : "only new" ) + " dives";
 					manager.appendTextToLog(message)
 					progressBar.visible = true
-					downloadThread.start()
+					importModel.startDownload()
 				}
 			}
 			SsrfButton {
