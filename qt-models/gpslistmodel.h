@@ -20,7 +20,7 @@ public:
 	};
 
 	static GpsListModel *instance();
-	GpsListModel(QObject *parent = 0);
+	GpsListModel();
 	void clear();
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	QHash<int, QByteArray> roleNames() const;
@@ -28,7 +28,6 @@ public:
 	void update();
 private:
 	QVector<gpsTracker> m_gpsFixes;
-	static GpsListModel *m_instance;
 };
 
 #endif // GPSLISTMODEL_H

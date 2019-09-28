@@ -97,9 +97,8 @@ void run_ui()
 #endif // __APPLE__ not Q_OS_IOS
 	engine.addImportPath("qrc://imports");
 	DiveListSortModel *sortModel = new DiveListSortModel(0);
-	GpsListModel gpsListModel;
 	QSortFilterProxyModel *gpsSortModel = new QSortFilterProxyModel(nullptr);
-	gpsSortModel->setSourceModel(&gpsListModel);
+	gpsSortModel->setSourceModel(GpsListModel::instance());
 	gpsSortModel->setDynamicSortFilter(true);
 	gpsSortModel->setSortRole(GpsListModel::GpsWhenRole);
 	gpsSortModel->sort(0, Qt::DescendingOrder);
