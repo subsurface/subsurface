@@ -53,7 +53,6 @@ void log_stp(const char *ident, QString *buf)
 }
 #endif // ENABLE_STARTUP_TIMING
 
-
 int main(int argc, char **argv)
 {
 	LOG_STP("main starting");
@@ -63,7 +62,7 @@ int main(int argc, char **argv)
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
 
 	// Start application
-	new QApplication(argc, argv);
+	std::unique_ptr<QApplication> app(new QApplication(argc, argv));
 	LOG_STP("main Qt started");
 
 	// and get comand line arguments
