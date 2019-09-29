@@ -56,7 +56,6 @@ void exit_ui()
 #ifndef SUBSURFACE_MOBILE
 	delete MainWindow::instance();
 #endif // SUBSURFACE_MOBILE
-	delete qApp;
 	free((void *)existing_filename);
 }
 
