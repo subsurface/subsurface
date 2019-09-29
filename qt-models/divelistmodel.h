@@ -11,7 +11,6 @@ class DiveListSortModel : public QSortFilterProxyModel
 {
 	Q_OBJECT
 public:
-	DiveListSortModel();
 	static DiveListSortModel *instance();
 	void setSourceModel(QAbstractItemModel *sourceModel);
 	Q_INVOKABLE void reload();
@@ -25,6 +24,7 @@ public slots:
 protected:
 	bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 private:
+	DiveListSortModel();
 	QString filterString;
 	void updateFilterState();
 };
@@ -33,7 +33,6 @@ class DiveListModel : public QAbstractListModel
 {
 	Q_OBJECT
 public:
-
 	enum DiveListRoles {
 		DiveRole = Qt::UserRole + 1,
 		DiveDateRole,
@@ -47,7 +46,6 @@ public:
 	};
 
 	static DiveListModel *instance();
-	DiveListModel();
 	void addDive(const QList<dive *> &listOfDives);
 	void addAllDives();
 	void insertDive(int i);
@@ -65,6 +63,8 @@ public:
 	void resetInternalData();
 	void clear(); // Clear all dives in core
 	Q_INVOKABLE DiveObjectHelper at(int i);
+private:
+	DiveListModel();
 };
 
 #endif // DIVELISTMODEL_H
