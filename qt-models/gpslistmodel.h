@@ -10,7 +10,6 @@ class GpsListModel : public QAbstractListModel
 {
 	Q_OBJECT
 public:
-
 	enum GpsListRoles {
 		GpsDateRole = Qt::UserRole + 1,
 		GpsNameRole,
@@ -20,13 +19,13 @@ public:
 	};
 
 	static GpsListModel *instance();
-	GpsListModel();
 	void clear();
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	QHash<int, QByteArray> roleNames() const;
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	void update();
 private:
+	GpsListModel();
 	QVector<gpsTracker> m_gpsFixes;
 };
 
