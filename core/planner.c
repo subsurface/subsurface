@@ -757,7 +757,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	best_first_ascend_cylinder = current_cylinder;
 	/* Find the gases available for deco */
 
-	if (po2) {	// Don't change gas in CCR mode
+	if (divemode == CCR && !prefs.dobailout) {	// Don't change gas in CCR mode
 		gaschanges = NULL;
 		gaschangenr = 0;
 	} else {
