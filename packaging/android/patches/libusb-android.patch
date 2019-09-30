@@ -1,27 +1,34 @@
-diff -ur libusb-1.0.19.orig/libusb/libusb.h libusb-1.0.19/libusb/libusb.h
---- libusb-1.0.19.orig/libusb/libusb.h	2014-06-13 20:31:35.000000000 +0200
-+++ libusb-1.0.19/libusb/libusb.h	2015-08-20 22:26:15.851840655 +0200
-@@ -1991,6 +1991,14 @@
- void LIBUSB_CALL libusb_hotplug_deregister_callback(libusb_context *ctx,
- 						libusb_hotplug_callback_handle handle);
+diff --git a/libusb/libusb.h b/libusb/libusb.h
+index 8a6b0bfa9f37..506cf95ef4e5 100644
+--- a/libusb/libusb.h
++++ b/libusb/libusb.h
+@@ -2059,6 +2059,19 @@ enum libusb_option {
+ 
+ int LIBUSB_CALL libusb_set_option(libusb_context *ctx, enum libusb_option option, ...);
  
 +#ifdef __ANDROID__
 +typedef int (*libusb_android_open_callback_func)(uint16_t idVendor, uint16_t idProduct);
++typedef int (*libusb_android_scan_devices_func)(struct libusb_context *ctx);
 +/* Make the darn thing ifdef'able */
 +#define libusb_android_open_callback_func libusb_android_open_callback_func
 +
 +void libusb_set_android_open_callback(libusb_android_open_callback_func aocf);
++void libusb_set_android_scan_devices_callback(libusb_android_scan_devices_func asdf);
++void android_enumerate_device(struct libusb_context *ctx, uint8_t busnum, uint8_t portnum,
++		uint8_t devaddr, uint8_t numconf, struct libusb_device_descriptor dd);
++
 +#endif
 +
  #ifdef __cplusplus
  }
  #endif
-diff -ur libusb-1.0.19.orig/libusb/os/linux_usbfs.c libusb-1.0.19/libusb/os/linux_usbfs.c
---- libusb-1.0.19.orig/libusb/os/linux_usbfs.c	2014-06-13 20:31:35.000000000 +0200
-+++ libusb-1.0.19/libusb/os/linux_usbfs.c	2015-08-20 22:24:26.841479417 +0200
-@@ -179,6 +179,14 @@
- 	int iso_packet_offset;
- };
+diff --git a/libusb/os/linux_usbfs.c b/libusb/os/linux_usbfs.c
+index 63fe592720d4..68afa072d98a 100644
+--- a/libusb/os/linux_usbfs.c
++++ b/libusb/os/linux_usbfs.c
+@@ -210,6 +210,20 @@ static int _open(const char *path, int flags)
+ 		return open(path, flags);
+ }
  
 +#ifdef __ANDROID__
 +static libusb_android_open_callback_func _android_open_callback = NULL;
@@ -29,12 +36,18 @@ diff -ur libusb-1.0.19.orig/libusb/os/linux_usbfs.c libusb-1.0.19/libusb/os/linu
 +void libusb_set_android_open_callback(libusb_android_open_callback_func aocf) {
 +	_android_open_callback = aocf;
 +}
++
++static libusb_android_scan_devices_func _android_scan_devices_callback = NULL;
++
++void libusb_set_android_scan_devices_callback(libusb_android_scan_devices_func asdf) {
++	_android_scan_devices_callback = asdf;
++}
 +#endif
 +
  static int _get_usbfs_fd(struct libusb_device *dev, mode_t mode, int silent)
  {
  	struct libusb_context *ctx = DEVICE_CTX(dev);
-@@ -186,14 +194,25 @@
+@@ -217,14 +231,26 @@ static int _get_usbfs_fd(struct libusb_device *dev, mode_t mode, int silent)
  	int fd;
  	int delay = 10000;
  
@@ -50,17 +63,18 @@ diff -ur libusb-1.0.19.orig/libusb/os/linux_usbfs.c libusb-1.0.19/libusb/os/linu
 +#ifdef __ANDROID__
 +	if (_android_open_callback) {
 +		fd = _android_open_callback(dev->device_descriptor.idVendor, dev->device_descriptor.idProduct);
++		usbi_info(ctx, "got fd %d when opening usb device", fd);
 +	} else {
 +		usbi_err(ctx, "_android_open_callback not set");
 +		return LIBUSB_ERROR_OTHER;
 +	}
 +#else
- 	fd = open(path, mode);
+ 	fd = _open(path, mode);
 +#endif
  	if (fd != -1)
  		return fd; /* Success */
  
-@@ -369,11 +388,13 @@
+@@ -430,11 +456,13 @@ static int op_init(struct libusb_context *ctx)
  	struct stat statbuf;
  	int r;
  
@@ -74,21 +88,44 @@ diff -ur libusb-1.0.19.orig/libusb/os/linux_usbfs.c libusb-1.0.19/libusb/os/linu
  
  	if (monotonic_clkid == -1)
  		monotonic_clkid = find_monotonic_clock();
-@@ -469,6 +490,8 @@
- {
- #if defined(USE_UDEV)
- 	return linux_udev_start_event_monitor();
+@@ -562,6 +590,14 @@ static int linux_scan_devices(struct libusb_context *ctx)
+ 	ret = linux_udev_scan_devices(ctx);
+ #elif !defined(__ANDROID__)
+ 	ret = linux_default_scan_devices(ctx);
 +#elif __ANDROID__
-+	return LIBUSB_SUCCESS;
- #else
- 	return linux_netlink_start_event_monitor();
++	if (_android_scan_devices_callback) {
++		ret = _android_scan_devices_callback(ctx);
++		usbi_info(ctx, "back from scanning for devices on Android");
++	} else {
++		usbi_err(ctx, "_android_open_callback not set");
++		return LIBUSB_ERROR_OTHER;
++	}
  #endif
-@@ -478,6 +501,8 @@
+ 
+ 	usbi_mutex_static_unlock(&linux_hotplug_lock);
+@@ -1149,6 +1185,25 @@ retry:
+ 	return LIBUSB_SUCCESS;
+ }
+ 
++#if defined(__ANDROID__)
++void android_enumerate_device(struct libusb_context *ctx, uint8_t busnum, uint8_t portnum,
++		uint8_t devaddr, uint8_t numconf, struct libusb_device_descriptor dd)
++{
++	usbi_info(ctx, "libusb adding device bus %d / port %d", busnum, portnum);
++        unsigned long session_id = busnum << 8 | portnum;
++	struct libusb_device *dev;
++	dev = usbi_alloc_device(ctx, session_id);
++	if (dev == NULL)
++		return;
++	dev->bus_number = busnum;
++	dev->port_number = portnum;
++	dev->device_address = devaddr;
++	dev->num_configurations = numconf;
++	dev->device_descriptor = dd;
++	usbi_connect_device(dev);
++}
++#endif
++
+ int linux_enumerate_device(struct libusb_context *ctx,
+ 	uint8_t busnum, uint8_t devaddr, const char *sysfs_dir)
  {
- #if defined(USE_UDEV)
- 	return linux_udev_stop_event_monitor();
-+#elif __ANDROID__
-+	return LIBUSB_SUCCESS;
- #else
- 	return linux_netlink_stop_event_monitor();
- #endif
