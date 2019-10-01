@@ -35,12 +35,15 @@ const char *system_divelist_default_font = android_system_divelist_default_font;
 double system_divelist_default_font_size = -1;
 
 int get_usb_fd(uint16_t idVendor, uint16_t idProduct);
+int scan_devices(struct libusb_context *ctx);
+
 void subsurface_OS_pref_setup(void)
 {
 	// Abusing this function to get a decent place where we can wire in
 	// our open callback into libusb
 #ifdef libusb_android_open_callback_func
 	libusb_set_android_open_callback(get_usb_fd);
+	libusb_set_android_scan_devices_callback(scan_devices);
 #elif __ANDROID__
 #error we need libusb_android_open_callback
 #endif
@@ -100,6 +103,8 @@ int get_usb_fd(uint16_t idVendor, uint16_t idProduct)
 	int i;
 	jint fd, vendorid, productid;
 	QAndroidJniObject usbName, usbDevice;
+
+	LOG(QString("get_usb_fd(%1,%2) called").arg(idVendor).arg(idProduct));
 
 	// Get the current main activity of the application.
 	QAndroidJniObject activity = QtAndroid::androidActivity();
@@ -166,6 +171,7 @@ int get_usb_fd(uint16_t idVendor, uint16_t idProduct)
 		errno = ENODEV;
 		return -1;
 	}
+	LOG("successfully opened the device");
 	return fd;
 }
 
@@ -182,6 +188,57 @@ Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_setDeviceString(JNIEn
 #endif
 	env->ReleaseStringUTFChars(javaDeviceString, deviceString);
 	return;
+}
+
+int scan_devices(struct libusb_context *ctx)
+{
+	libusb_set_option(ctx, LIBUSB_OPTION_LOG_LEVEL, LIBUSB_LOG_LEVEL_DEBUG);
+	LOG("scan_devices called");
+
+	// Get the current main activity of the application.
+	QAndroidJniEnvironment env;
+	QAndroidJniObject activity = QtAndroid::androidActivity();
+	QAndroidJniObject usb_service = QAndroidJniObject::fromString(USB_SERVICE);
+
+	// Get UsbManager from activity
+	QAndroidJniObject usbManager = activity.callObjectMethod("getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;", usb_service.object());
+
+	//HashMap<String, UsbDevice> deviceList = myUsbManager.getDeviceList();
+	QAndroidJniObject deviceList = usbManager.callObjectMethod("getDeviceList","()Ljava/util/HashMap;");
+	if (!deviceList.callMethod<jboolean>("isEmpty")) {
+		QAndroidJniObject hashMapDevices = deviceList.callObjectMethod("values","()Ljava/util/Collection;");
+		QAndroidJniObject arrayOfDevicesObject = hashMapDevices.callObjectMethod("toArray","()[Ljava/lang/Object;");
+		jobjectArray arrayOfDevices = arrayOfDevicesObject.object<jobjectArray>();
+		int numDevices = env->GetArrayLength(arrayOfDevices);
+		LOG(QString("nr of devices = %1").arg(numDevices));
+		for (int i = 0; i < numDevices; i++) {
+			jobject value = env->GetObjectArrayElement(arrayOfDevices, i);
+			QAndroidJniObject device(value);
+			jint vendorId = device.callMethod<jint>("getVendorId","()I");
+			jint productId = device.callMethod<jint>("getProductId","()I");
+			jint configurationCount =  device.callMethod<jint>("getConfigurationCount","()I");
+			QAndroidJniObject javaDeviceName = device.callObjectMethod<jstring>("getDeviceName");
+			QString deviceName = javaDeviceName.toString();
+			LOG(QString("found name %1 vid %2 pid %3 configCount %4").arg(deviceName).arg(vendorId).arg(productId).arg(configurationCount));
+			QRegularExpression reg("/dev/bus/usb/(\\d*)/(\\d*)");
+			QRegularExpressionMatch match = reg.match(deviceName);
+			int busnum = match.captured(1).toInt();
+			int portnum = match.captured(2).toInt();
+
+			// fill in the libusb_device_descriptor
+			struct libusb_device_descriptor dd;
+			memset(&dd, 0, sizeof(dd));
+			dd.bDeviceClass = device.callMethod<jint>("getDeviceClass","()I");
+			dd.bDeviceSubClass = device.callMethod<jint>("getDeviceSubclass","()I");
+			dd.bDeviceProtocol = device.callMethod<jint>("getVendorId","()I");
+			dd.bNumConfigurations = configurationCount;
+			dd.idVendor = vendorId;
+			dd.idProduct = productId;
+			// register this device with libusb
+			android_enumerate_device(ctx, busnum, portnum, 0, configurationCount, dd);
+		}
+	}
+	return LIBUSB_SUCCESS;
 }
 
 /* NOP wrappers to comform with windows.c */
