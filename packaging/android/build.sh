@@ -252,22 +252,18 @@ if [ "$QUICK" = "" ] ; then
 		# Use env to make all these temporary, so they don't pollute later builds.
 		env	PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH \
 			CC=clang \
-			./Configure android-"$ARCH" no-ssl2 no-ssl3 no-comp no-hw no-engine no-asm --prefix="$PREFIX" -DOPENSSL_NO_UI_CONSOLE -DOPENSSL_NO_STDIO
+			./Configure shared android-"$ARCH" no-ssl2 no-ssl3 no-comp no-hw no-engine no-asm \
+				--prefix="$PREFIX" -DOPENSSL_NO_UI_CONSOLE -DOPENSSL_NO_STDIO \
+				-D__ANDROID_API__=$ANDROID_PLATFORM_LEVEL
 		make depend
-		make build_libs
-
-		# now fix the reference to libcrypto.so.1.1 and libssl.so.1.1 to be just unversioned
-		# as androiddeployqt and Android itself does not like versioned shared objects
-		perl -pi -e 's/libcrypto.so.1.1/libcrypto.so\x00\x00\x00\x00/' libcrypto.so.1.1
-		perl -pi -e 's/libcrypto.so.1.1/libcrypto.so\x00\x00\x00\x00/' libssl.so.1.1
-		perl -pi -e 's/libssl.so.1.1/libssl.so\x00\x00\x00\x00/' libcrypto.so.1.1
-		perl -pi -e 's/libssl.so.1.1/libssl.so\x00\x00\x00\x00/' libssl.so.1.1
+		# follow the suggestions here: https://doc.qt.io/qt-5/android-openssl-support.html
+		make SHLIB_VERSION_NUMBER= SHLIB_EXT=_1_1.so build_libs
 
 		cp -RL include/openssl $PREFIX/include/openssl
 		cp libcrypto.a $PREFIX/lib
-		cp libcrypto.so* $PREFIX/lib
+		cp libcrypto_1_1.so* $PREFIX/lib
 		cp libssl.a $PREFIX/lib
-		cp libssl.so* $PREFIX/lib
+		cp libssl_1_1.so* $PREFIX/lib
 		cp *.pc $PKG_CONFIG_LIBDIR
 
 		popd
@@ -312,8 +308,8 @@ if [ "$QUICK" = "" ] ; then
 			-DCMAKE_INSTALL_PREFIX="$PREFIX" \
 			-DCURL=OFF \
 			-DUSE_SSH=OFF \
-			-DOPENSSL_SSL_LIBRARY="$PREFIX"/lib/libssl.so \
-			-DOPENSSL_CRYPTO_LIBRARY="$PREFIX"/lib/libcrypto.so \
+			-DOPENSSL_SSL_LIBRARY="$PREFIX"/lib/libssl_1_1.so \
+			-DOPENSSL_CRYPTO_LIBRARY="$PREFIX"/lib/libcrypto_1_1.so \
 			-DOPENSSL_INCLUDE_DIR="$PREFIX"/include/openssl \
 			-D_OPENSSL_VERSION="${OPENSSL_VERSION}" \
 			-DCMAKE_DISABLE_FIND_PACKAGE_HTTP_Parser=TRUE \
@@ -439,8 +435,8 @@ cmake $MOBILE_CMAKE \
 	-DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
 	-DMAKE_TESTS=OFF \
 	-DFTDISUPPORT=${FTDI} \
-	-DANDROID_NATIVE_LIBSSL="$BUILDROOT/ndk-$ARCH/sysroot/usr/lib/libssl.so" \
-	-DANDROID_NATIVE_LIBCRYPT="$BUILDROOT/ndk-$ARCH/sysroot/usr/lib/libcrypto.so" \
+	-DANDROID_NATIVE_LIBSSL="$BUILDROOT/ndk-$ARCH/sysroot/usr/lib/libssl_1_1.so" \
+	-DANDROID_NATIVE_LIBCRYPT="$BUILDROOT/ndk-$ARCH/sysroot/usr/lib/libcrypto_1_1.so" \
 	-DCMAKE_MAKE_PROGRAM="make" \
 	"$SUBSURFACE_SOURCE"
 
