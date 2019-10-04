@@ -22,7 +22,7 @@ RUN apt-get update  && \
 # install, NDK and SDK there, plus the three files from the Subsurface
 # sources that we need to get the prep routines to run
 RUN mkdir -p /android
-ADD qt-opensource-linux-x64-5.12.4.run /android/
+ADD qt-opensource-linux-x64-5.13.1.run /android/
 ADD android-ndk-r*-linux-x86_64.zip /android/
 ADD sdk-tools-linux-*.zip /android/
 ADD android-build-wrapper.sh variables.sh qt-installer-noninteractive.qs /android/
