@@ -1,8 +1,8 @@
 #!/bin/bash
 # When changing Qt version remember to update the 
 # qt-installer-noninteractive file as well.
-QT_VERSION=5.12
-LATEST_QT=5.12.4
+QT_VERSION=5.13
+LATEST_QT=5.13.1
 NDK_VERSION=r18b
 SDK_VERSION=4333796
 ANDROID_BUILDTOOLS_REVISION=28.0.3
