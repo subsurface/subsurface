@@ -161,6 +161,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Date:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				id: txtDate;
@@ -168,11 +169,13 @@ Item {
 				onEditingFinished: {
 					focus = false
 				}
+				color: subsurfaceTheme.textColor
 			}
 			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Location:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.ComboBox {
 				id: locationBox
@@ -196,10 +199,12 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Coordinates:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				id: txtGps
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					focus = false
 				}
@@ -210,6 +215,7 @@ Item {
 				text: qsTr("Use current\nGPS location:")
 				visible: manager.locationServiceAvailable
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			SsrfCheckBox {
 				id: checkboxGPS
@@ -230,10 +236,12 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Depth:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				id: txtDepth
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				validator: RegExpValidator { regExp: /[^-]*/ }
 				onEditingFinished: {
 					focus = false
@@ -243,10 +251,12 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Duration:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				id: txtDuration
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				validator: RegExpValidator { regExp: /[^-]*/ }
 				onEditingFinished: {
 					focus = false
@@ -257,10 +267,12 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Air Temp:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				id: txtAirTemp
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					focus = false
 				}
@@ -270,10 +282,12 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Water Temp:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				id: txtWaterTemp
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					focus = false
 				}
@@ -283,6 +297,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Suit:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.ComboBox {
 				id: suitBox
@@ -304,6 +319,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Buddy:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.ComboBox {
 				id: buddyBox
@@ -324,6 +340,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Divemaster:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.ComboBox {
 				id: divemasterBox
@@ -344,11 +361,13 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Weight:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				id: txtWeight
 				readOnly: text === "cannot edit multiple weight systems"
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					focus = false
 				}
@@ -359,6 +378,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Cylinder1:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.ComboBox {
 				id: cylinderBox0
@@ -373,11 +393,13 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Gas mix:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				id: txtGasMix0
 				text: usedGas[0] != null ? usedGas[0] : null
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 				onEditingFinished: {
 					focus = false
@@ -388,11 +410,13 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Start Pressure:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				id: txtStartPressure0
 				text: startpressure[0] != null ? startpressure[0] : null
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					focus = false
 				}
@@ -402,11 +426,13 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("End Pressure:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				id: txtEndPressure0
 				text: endpressure[0] != null ? endpressure[0] : null
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					focus = false
 				}
@@ -417,6 +443,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Cylinder2:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.ComboBox {
 				visible: usedCyl[1] != null ? true : false
@@ -433,12 +460,14 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Gas mix:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				visible: usedCyl[1] != null ? true : false
 				id: txtGasMix1
 				text: usedGas[1] != null ? usedGas[1] : null
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 				onEditingFinished: {
 					focus = false
@@ -449,6 +478,7 @@ Item {
 				visible: usedCyl[1] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Start Pressure:")
+				color: subsurfaceTheme.textColor
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			Controls.TextField {
@@ -456,6 +486,7 @@ Item {
 				id: txtStartPressure1
 				text: startpressure[1] != null ? startpressure[1] : null
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					focus = false
 				}
@@ -465,6 +496,7 @@ Item {
 				visible: usedCyl[1] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("End Pressure:")
+				color: subsurfaceTheme.textColor
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			Controls.TextField {
@@ -472,6 +504,7 @@ Item {
 				id: txtEndPressure1
 				text: endpressure[1] != null ? endpressure[1] : null 
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					focus = false
 				}
@@ -481,6 +514,7 @@ Item {
 				visible: usedCyl[2] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Cylinder3:")
+				color: subsurfaceTheme.textColor
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			Controls.ComboBox {
@@ -499,12 +533,14 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Gas mix:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				visible: usedCyl[2] != null ? true : false
 				id: txtGasMix2
 				text: usedGas[2] != null ? usedGas[2] : null
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 				onEditingFinished: {
 					focus = false
@@ -516,12 +552,14 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Start Pressure:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				visible: usedCyl[2] != null ? true : false
 				id: txtStartPressure2
 				text: startpressure[2] != null ? startpressure[2] : null
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					focus = false
 				}
@@ -532,12 +570,14 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("End Pressure:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				visible: usedCyl[2] != null ? true : false
 				id: txtEndPressure2
 				text: endpressure[2] != null ? endpressure[2] : null
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					focus = false
 				}
@@ -548,6 +588,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Cylinder4:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.ComboBox {
 				visible: usedCyl[3] != null ? true : false
@@ -565,6 +606,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Gas mix:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				visible: usedCyl[3] != null ? true : false
@@ -572,6 +614,7 @@ Item {
 				text: usedGas[3] != null ? usedGas[3] : null
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					focus = false
 				}
@@ -582,12 +625,14 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Start Pressure:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				visible: usedCyl[3] != null ? true : false
 				id: txtStartPressure3
 				text: startpressure[3] != null ? startpressure[3] : null
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					focus = false
 				}
@@ -598,12 +643,14 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("End Pressure:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				visible: usedCyl[3] != null ? true : false
 				id: txtEndPressure3
 				text: endpressure[3] != null ? endpressure[3] : null
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					focus = false
 				}
@@ -614,6 +661,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Cylinder5:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.ComboBox {
 				visible: usedCyl[4] != null ? true : false
@@ -631,12 +679,14 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Gas mix:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				visible: usedCyl[4] != null ? true : false
 				id: txtGasMix4
 				text: usedGas[4] != null ? usedGas[4] : null
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 				onEditingFinished: {
 					focus = false
@@ -648,12 +698,14 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Start Pressure:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				visible: usedCyl[4] != null ? true : false
 				id: txtStartPressure4
 				text: startpressure[4] != null ? startpressure[4] : null
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					focus = false
 				}
@@ -664,12 +716,14 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("End Pressure:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextField {
 				visible: usedCyl[4] != null ? true : false
 				id: txtEndPressure4
 				text: endpressure[4] != null ? endpressure[4] : null
 				Layout.fillWidth: true
+				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					focus = false
 				}
@@ -679,6 +733,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Rating:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.SpinBox {
 				id: ratingPicker
@@ -692,6 +747,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Visibility:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.SpinBox {
 				id: visibilityPicker
@@ -706,6 +762,7 @@ Item {
 				Layout.alignment: Qt.AlignLeft
 				text: qsTr("Notes:")
 				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.TextArea {
 				Layout.columnSpan: 2
