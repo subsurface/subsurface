@@ -291,14 +291,16 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	set(MOBILE_SRC
 		mobile-widgets/qmlmanager.cpp
 		mobile-widgets/qmlprefs.cpp
-		mobile-widgets/qml/kirigami/src/kirigamiplugin.cpp
-		mobile-widgets/qml/kirigami/src/settings.cpp
+		mobile-widgets/qml/kirigami/src/columnview.cpp
+		mobile-widgets/qml/kirigami/src/delegaterecycler.cpp
 		mobile-widgets/qml/kirigami/src/enums.cpp
 		mobile-widgets/qml/kirigami/src/formlayoutattached.cpp
+		mobile-widgets/qml/kirigami/src/icon.cpp
+		mobile-widgets/qml/kirigami/src/kirigamiplugin.cpp
 		mobile-widgets/qml/kirigami/src/mnemonicattached.cpp
-		mobile-widgets/qml/kirigami/src/delegaterecycler.cpp
-		mobile-widgets/qml/kirigami/src/desktopicon.cpp
 		mobile-widgets/qml/kirigami/src/scenepositionattached.cpp
+		mobile-widgets/qml/kirigami/src/settings.cpp
+		mobile-widgets/qml/kirigami/src/wheelhandler.cpp
 		mobile-widgets/qml/kirigami/src/libkirigami/basictheme.cpp
 		mobile-widgets/qml/kirigami/src/libkirigami/kirigamipluginfactory.cpp
 		mobile-widgets/qml/kirigami/src/libkirigami/platformtheme.cpp
