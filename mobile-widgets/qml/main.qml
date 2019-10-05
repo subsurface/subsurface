@@ -20,12 +20,9 @@ Kirigami.ApplicationWindow {
 	// the C++ side. But as a matter of fact, it doesn't, unless you add this line:
 	font: Qt.application.font
 
-	header: Kirigami.ApplicationHeader {
-		minimumHeight: 0
-		preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2 : 1.5))
-		maximumHeight: Kirigami.Units.gridUnit * 2
-		background: Rectangle { color: subsurfaceTheme.primaryColor }
-	}
+	pageStack.globalToolBar.style: Kirigami.ApplicationHeaderStyle.Breadcrumb
+	pageStack.globalToolBar.showNavigationButtons: (Kirigami.ApplicationHeaderStyle.ShowBackButton | Kirigami.ApplicationHeaderStyle.ShowForwardButton)
+
 	property alias oldStatus: prefs.oldStatus
 	property alias notificationText: manager.notificationText
 	property alias locationServiceEnabled: manager.locationServiceEnabled
