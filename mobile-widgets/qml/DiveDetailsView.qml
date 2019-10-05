@@ -20,7 +20,7 @@ Item {
 	height: divePlate.implicitHeight + bottomLayout.implicitHeight + Kirigami.Units.iconSizes.large
 	Rectangle {
 		z: 99
-		color: Kirigami.Theme.textColor
+		color: subsurfaceTheme.textColor
 		opacity: 0.3
 		width: Kirigami.Units.smallSpacing/4
 		anchors {
@@ -40,7 +40,7 @@ Item {
 			font.weight: Font.Bold
 			font.pointSize: subsurfaceTheme.titlePointSize
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-			color: Kirigami.Theme.textColor
+			color: subsurfaceTheme.textColor
 			anchors {
 				left: parent.left
 				top: parent.top
@@ -118,30 +118,35 @@ Item {
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: ratingText.verticalCenter
 				source: (dive.rating >= 1) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				color: subsurfaceTheme.textColor
 			}
 			Kirigami.Icon {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: ratingText.verticalCenter
 				source: (dive.rating >= 2) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				color: subsurfaceTheme.textColor
 			}
 			Kirigami.Icon {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: ratingText.verticalCenter
 				source: (dive.rating >= 3) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				color: subsurfaceTheme.textColor
 			}
 			Kirigami.Icon {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: ratingText.verticalCenter
 				source: (dive.rating >= 4) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				color: subsurfaceTheme.textColor
 			}
 			Kirigami.Icon {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: ratingText.verticalCenter
 				source: (dive.rating === 5) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				color: subsurfaceTheme.textColor
 			}
 		}
 		Row {
@@ -161,30 +166,35 @@ Item {
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: visibilityText.verticalCenter
 				source: (dive.visibility >= 1) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				color: subsurfaceTheme.textColor
 			}
 			Kirigami.Icon {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: visibilityText.verticalCenter
 				source: (dive.visibility >= 2) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				color: subsurfaceTheme.textColor
 			}
 			Kirigami.Icon {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: visibilityText.verticalCenter
 				source: (dive.visibility >= 3) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				color: subsurfaceTheme.textColor
 			}
 			Kirigami.Icon {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: visibilityText.verticalCenter
 				source: (dive.visibility >= 4) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				color: subsurfaceTheme.textColor
 			}
 			Kirigami.Icon {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: visibilityText.verticalCenter
 				source: (dive.visibility === 5) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				color: subsurfaceTheme.textColor
 			}
 		}
 
@@ -235,18 +245,21 @@ Item {
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
+			color: subsurfaceTheme.textColor
 		}
 		Controls.Label {
 			text: qsTr("Air Temp:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
+			color: subsurfaceTheme.textColor
 		}
 		Controls.Label {
 			text: qsTr("Water Temp:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col3Width
+			color: subsurfaceTheme.textColor
 		}
 
 		// second row
@@ -256,18 +269,21 @@ Item {
 			text: dive.suit
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
+			color: subsurfaceTheme.textColor
 		}
 		Controls.Label {
 			id: txtAirTemp
 			text: dive.airTemp
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
+			color: subsurfaceTheme.textColor
 		}
 		Controls.Label {
 			id: txtWaterTemp
 			text: dive.waterTemp
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col3Width
+			color: subsurfaceTheme.textColor
 		}
 
 		Rectangle {
@@ -286,6 +302,7 @@ Item {
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
 			Layout.bottomMargin: 0
+			color: subsurfaceTheme.textColor
 		}
 		Controls.Label {
 			text: qsTr("Weight:")
@@ -293,6 +310,7 @@ Item {
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
 			Layout.bottomMargin: 0
+			color: subsurfaceTheme.textColor
 		}
 		Controls.Label {
 			text: qsTr("SAC:")
@@ -300,6 +318,7 @@ Item {
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col3Width
 			Layout.bottomMargin: 0
+			color: subsurfaceTheme.textColor
 		}
 
 		// fourth row
@@ -309,18 +328,21 @@ Item {
 			text: dive.getCylinder.join(', ')
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
+			color: subsurfaceTheme.textColor
 		}
 		Controls.Label {
 			id: txtWeight
 			text: dive.sumWeight
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
+			color: subsurfaceTheme.textColor
 		}
 		Controls.Label {
 			id: txtSAC
 			text: dive.sac
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col3Width
+			color: subsurfaceTheme.textColor
 		}
 
 		Rectangle {
@@ -339,6 +361,7 @@ Item {
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
 			Layout.bottomMargin: 0
+			color: subsurfaceTheme.textColor
 		}
 		Controls.Label {
 			text: qsTr("Buddy:")
@@ -347,6 +370,7 @@ Item {
 			Layout.columnSpan: 2
 			Layout.maximumWidth: detailsView.col2Width + detailsView.col3Width
 			Layout.bottomMargin: 0
+			color: subsurfaceTheme.textColor
 		}
 
 		// sixth row
@@ -356,6 +380,7 @@ Item {
 			text: dive.divemaster
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
+			color: subsurfaceTheme.textColor
 		}
 		Controls.Label {
 			id: txtBuddy
@@ -363,6 +388,7 @@ Item {
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.columnSpan: 2
 			Layout.maximumWidth: detailsView.col2Width + detailsView.col3Width
+			color: subsurfaceTheme.textColor
 		}
 
 		Rectangle {
@@ -380,6 +406,7 @@ Item {
 			text: qsTr("Notes")
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.columnSpan: 3
+			color: subsurfaceTheme.textColor
 		}
 
 		Controls.Label {
@@ -389,6 +416,7 @@ Item {
 			Layout.columnSpan: 3
 			Layout.fillWidth: true
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+			color: subsurfaceTheme.textColor
 		}
 		Item {
 			Layout.columnSpan: 3

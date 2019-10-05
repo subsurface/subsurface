@@ -27,7 +27,7 @@ Kirigami.ScrollablePage {
 		delegate : Text {
 			width: logWindow.width
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-			color: Kirigami.Theme.textColor
+			color: subsurfaceTheme.textColor
 			text : message
 			font.pointSize: subsurfaceTheme.smallPointSize
 			leftPadding: Kirigami.Units.gridUnit / 2

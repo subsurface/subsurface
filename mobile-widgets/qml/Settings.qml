@@ -42,11 +42,13 @@ Kirigami.ScrollablePage {
 				text: qsTr("Email")
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.15
+				color: subsurfaceTheme.textColor
 			}
 			Controls.Label {
 				text: prefs.credentialStatus === CloudStatus.CS_NOCLOUD ? qsTr("Not applicable") : prefs.cloudUserName
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.60
+				color: subsurfaceTheme.textColor
 			}
 			SsrfButton {
 				id: changeCloudSettings
@@ -61,12 +63,14 @@ Kirigami.ScrollablePage {
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.15
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 1.5
+				color: subsurfaceTheme.textColor
 			}
 			Controls.Label {
 				text: describe[prefs.credentialStatus]
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.60
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 1.5
+				color: subsurfaceTheme.textColor
 			}
 		}
 
@@ -149,6 +153,7 @@ Kirigami.ScrollablePage {
 				font.pointSize: subsurfaceTheme.regularPointSize
 				rightPadding: Kirigami.Units.gridUnit
 				Layout.preferredWidth: gridWidth * 0.15
+				color: subsurfaceTheme.textColor
 			}
 			Row {
 				Layout.preferredWidth: gridWidth * 0.6
@@ -316,6 +321,7 @@ Kirigami.ScrollablePage {
 				text: qsTr("Distance threshold (meters)")
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
+				color: subsurfaceTheme.textColor
 			}
 
 			Controls.TextField {
@@ -323,6 +329,7 @@ Kirigami.ScrollablePage {
 				text: PrefLocationService.distance_threshold
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.25
+				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					PrefLocationService.distance_threshold = distanceThreshold.text
 				}
@@ -332,6 +339,7 @@ Kirigami.ScrollablePage {
 				text: qsTr("Time threshold (minutes)")
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
+				color: subsurfaceTheme.textColor
 			}
 
 			Controls.TextField {
@@ -339,6 +347,7 @@ Kirigami.ScrollablePage {
 				text: PrefLocationService.time_threshold / 60
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.25
+				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					PrefLocationService.time_threshold = timeThreshold.text * 60
 				}
@@ -369,6 +378,7 @@ Kirigami.ScrollablePage {
 			Controls.Label {
 				text: qsTr("Cylinder:")
 				font.pointSize: subsurfaceTheme.regularPointSize
+				color: subsurfaceTheme.textColor
 			}
 			Controls.ComboBox {
 				id: defaultCylinderBox
@@ -404,6 +414,7 @@ Kirigami.ScrollablePage {
 				text: qsTr("Forget remembered dive computers")
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
+				color: subsurfaceTheme.textColor
 			}
 			SsrfButton {
 				id: forgetDCButton
@@ -442,6 +453,7 @@ Kirigami.ScrollablePage {
 				text: qsTr("Use Imperial Units")
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
+				color: subsurfaceTheme.textColor
 			}
 			SsrfSwitch {
 				id: imperialButton
@@ -458,6 +470,7 @@ Kirigami.ScrollablePage {
 				text: qsTr("Use Metric Units")
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
+				color: subsurfaceTheme.textColor
 			}
 			SsrfSwitch {
 				id: metricButtton
@@ -495,6 +508,7 @@ Kirigami.ScrollablePage {
 				text: qsTr("Include notes in full text filtering")
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
+				color: subsurfaceTheme.textColor
 			}
 
 			SsrfSwitch {
@@ -510,6 +524,7 @@ Kirigami.ScrollablePage {
 				text: qsTr("Match filter case sensitive")
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
+				color: subsurfaceTheme.textColor
 			}
 
 			SsrfSwitch {
@@ -547,6 +562,7 @@ Kirigami.ScrollablePage {
 				text: qsTr("Show all bluetooth devices \neven if not recognized as dive computers")
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
+				color: subsurfaceTheme.textColor
 			}
 			SsrfSwitch {
 				id: nonDCButton
@@ -582,6 +598,7 @@ Kirigami.ScrollablePage {
 				text: qsTr("Display Developer menu")
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
+				color: subsurfaceTheme.textColor
 			}
 			SsrfSwitch {
 				id: developerButton

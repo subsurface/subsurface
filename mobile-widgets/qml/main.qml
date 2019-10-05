@@ -449,7 +449,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	function darkTheme() {
 		Material.theme = Material.Dark
-		Material.accent = subsurfaceTheme.darkerPrimaryColor
+		Material.accent = subsurfaceTheme.darkPrimaryColor
 		subsurfaceTheme.currentTheme = "Dark"
 		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.darkDarkerPrimaryColor
 		subsurfaceTheme.darkerPrimaryTextColor= subsurfaceTheme.darkDarkerPrimaryTextColor
@@ -547,7 +547,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color darkPrimaryColor: "#3F51B5"
 		property color darkPrimaryTextColor: "#ECECEC"
 		property color darkLightPrimaryColor: "#C5CAE9"
-		property color darkLightPrimaryTextColor: "#212121"
+		property color darkLightPrimaryTextColor: "#ECECEC"
 		property color darkBackgroundColor: "#303030"
 		property color darkTextColor: darkPrimaryTextColor
 		property color darkSecondaryTextColor: "#757575"
