@@ -13,4 +13,4 @@ ANDROID_NDK=android-ndk-${NDK_VERSION}
 ANDROID_SDK=android-sdk-linux
 # OpenSSL also has an entry in get-dep-lib.sh line 103
 # that needs to be updated as well.
-OPENSSL_VERSION=1.1.1c
+OPENSSL_VERSION=1.1.1d
