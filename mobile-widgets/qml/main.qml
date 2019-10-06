@@ -127,6 +127,7 @@ Kirigami.ApplicationWindow {
 	}
 
 	globalDrawer: Kirigami.GlobalDrawer {
+		height: rootItem.height
 		topContent: Image {
 			source: "qrc:/qml/icons/dive.jpg"
 			Layout.fillWidth: true
@@ -661,7 +662,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	DiveDetails {
 		id: detailsWindow
 		visible: false
-		anchors.fill: parent
 	}
 
 	Log {
@@ -682,7 +682,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	MapPage {
 		id: mapPage
 		visible: false
-		anchors.fill: parent
 	}
 
 	ThemeTest {

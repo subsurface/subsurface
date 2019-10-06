@@ -59,6 +59,7 @@ Kirigami.Page {
 	rightPadding: 0
 	bottomPadding: 0
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
+	width: rootItem.colWidth
 
 	states: [
 		State {

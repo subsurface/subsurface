@@ -13,7 +13,7 @@ Kirigami.Page {
 	rightPadding: 0
 	bottomPadding: 0
 	property bool firstRun: true
-
+	width: rootItem.colWidth
 	MapWidget {
 		id: mapWidget
 		anchors.fill: parent
