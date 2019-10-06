@@ -3,6 +3,7 @@
 #define TAB_DIVE_STATISTICS_H
 
 #include "TabBase.h"
+#include "core/subsurface-qt/DiveListNotifier.h"
 
 namespace Ui {
 	class TabDiveStatistics;
@@ -15,6 +16,9 @@ public:
 	~TabDiveStatistics();
 	void updateData() override;
 	void clear() override;
+
+private slots:
+	void divesChanged(const QVector<dive *> &dives, DiveField field);
 
 private:
 	Ui::TabDiveStatistics *ui;
