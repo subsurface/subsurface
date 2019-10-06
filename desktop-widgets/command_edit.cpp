@@ -837,4 +837,72 @@ void PasteDives::redo()
 	undo();
 }
 
+// ***** Paste *****
+ReplanDive::ReplanDive(dive *source) : d(current_dive),
+	dc({ 0 }),
+	notes(nullptr)
+{
+	memset(&cylinders[0], 0, sizeof(cylinders));
+	if (!d)
+		return;
+
+	when = source->when;
+	maxdepth = source->maxdepth;
+	meandepth = source->meandepth;
+	notes = copy_string(source->notes);
+	duration = source->duration;
+	salinity = source->salinity;
+	surface_pressure = source->surface_pressure;
+
+	// This resets the dive computers and cylinders of the source dive, avoiding deep copies.
+	std::swap(source->cylinder, cylinders);
+	std::swap(source->dc, dc);
+
+	setText(tr("Replan dive"));
+}
+
+ReplanDive::~ReplanDive()
+{
+	for (cylinder_t &c: cylinders)
+		free((void *)c.type.description);
+	free_dive_dcs(&dc);
+	free(notes);
+}
+
+bool ReplanDive::workToBeDone()
+{
+	return !!d;
+}
+
+void ReplanDive::undo()
+{
+	std::swap(d->when, when);
+	std::swap(d->maxdepth, maxdepth);
+	std::swap(d->meandepth, meandepth);
+	std::swap(d->cylinder, cylinders);
+	std::swap(d->dc, dc);
+	std::swap(d->notes, notes);
+	std::swap(d->surface_pressure, surface_pressure);
+	std::swap(d->duration, duration);
+	std::swap(d->salinity, salinity);
+	fixup_dive(d);
+
+	QVector<dive *> divesToNotify = { d };
+	// TODO: Turn field into flags to avoid multiple signals
+	emit diveListNotifier.divesChanged(divesToNotify, DiveField::DATETIME);
+	emit diveListNotifier.divesChanged(divesToNotify, DiveField::DURATION);
+	emit diveListNotifier.divesChanged(divesToNotify, DiveField::DEPTH);
+	emit diveListNotifier.divesChanged(divesToNotify, DiveField::MODE);
+	emit diveListNotifier.divesChanged(divesToNotify, DiveField::NOTES);
+	emit diveListNotifier.divesChanged(divesToNotify, DiveField::SALINITY);
+	emit diveListNotifier.divesChanged(divesToNotify, DiveField::ATM_PRESS);
+	emit diveListNotifier.cylindersReset(divesToNotify);
+}
+
+// Redo and undo do the same
+void ReplanDive::redo()
+{
+	undo();
+}
+
 } // namespace Command
