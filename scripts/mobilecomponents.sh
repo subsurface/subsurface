@@ -55,11 +55,6 @@ cp $BREEZE/icons/actions/22/overflow-menu.svg $MC/icons
 pushd $MC
 ln -s $SRC/breeze-icons .
 
-# do not show the action buttons when the keyboard is open
-sed -i -e "s/visible: root.action/visible: root.action \&\& \!Qt.inputMethod.visible/g" src/controls/private/ActionButton.qml
-sed -i -e "s/visible: root.leftAction/visible: root.leftAction \&\& \!Qt.inputMethod.visible/g" src/controls/private/ActionButton.qml
-sed -i -e "s/visible: root.rightAction/visible: root.rightAction \&\& \!Qt.inputMethod.visible/g" src/controls/private/ActionButton.qml
-
 # kirigami hack: passive notification hijacks area even after disabled.
 # https://bugs.kde.org/show_bug.cgi?id=394204
 sed -i -e "s/width: backgroundRect/enabled: root.enabled;    width: backgroundRect/g" src/controls/templates/private/PassiveNotification.qml
