@@ -6,7 +6,6 @@
 #include "qt-models/models.h"
 #include "core/device.h"
 #include "core/qthelper.h"
-#include "core/divelist.h" // for mark_divelist_changed()
 #include "core/settings/qPrefDivePlanner.h"
 #include "desktop-widgets/command.h"
 #include "core/gettextfromc.h"
@@ -1176,8 +1175,7 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 		Command::addDive(&displayed_dive, false, false);
 	} else {
 		// we were planning an old dive and rewrite the plan
-		mark_divelist_changed(true);
-		copy_dive(&displayed_dive, current_dive);
+		Command::replanDive(&displayed_dive);
 	}
 
 	// Remove and clean the diveplan, so we don't delete
