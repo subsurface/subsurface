@@ -21,6 +21,8 @@ TabDiveStatistics::TabDiveStatistics(QWidget *parent) : TabBase(parent), ui(new 
 	ui->timeLimits->overrideMinToolTipText(tr("Shortest dive"));
 	ui->timeLimits->overrideAvgToolTipText(tr("Average length of all selected dives"));
 
+	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &TabDiveStatistics::divesChanged);
+
 	const auto l = findChildren<QLabel *>(QString(), Qt::FindDirectChildrenOnly);
 	for (QLabel *label: l) {
 		label->setAlignment(Qt::AlignHCenter);
@@ -40,6 +42,28 @@ void TabDiveStatistics::clear()
 	ui->tempLimits->clear();
 	ui->totalTimeAllText->clear();
 	ui->timeLimits->clear();
+}
+
+// This function gets called if a field gets updated by an undo command.
+// Refresh the corresponding UI field.
+void TabDiveStatistics::divesChanged(const QVector<dive *> &dives, DiveField field)
+{
+	// If none of the changed dives is selected, do nothing
+	if (std::none_of(dives.begin(), dives.end(), [] (const dive *d) { return d->selected; }))
+		return;
+
+	// TODO: make this more fine grained. Currently, the core can only calculate *all* statistics.
+	switch(field) {
+	case DiveField::DURATION:
+	case DiveField::DEPTH:
+	case DiveField::MODE:
+	case DiveField::AIR_TEMP:
+	case DiveField::WATER_TEMP:
+		updateData();
+		break;
+	default:
+		break;
+	}
 }
 
 void TabDiveStatistics::updateData()
