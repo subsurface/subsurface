@@ -339,6 +339,14 @@ static void copy_pl(struct picture *sp, struct picture *dp)
 	dp->filename = copy_string(sp->filename);
 }
 
+/* The first divecomputer is embedded in the dive structure. Free its data but not
+ * the structure itself. For all remainding dcs in the list, free data *and* structures. */
+void free_dive_dcs(struct divecomputer *dc)
+{
+	free_dc_contents(dc);
+	STRUCTURED_LIST_FREE(struct divecomputer, dc->next, free_dc);
+}
+
 static void free_dive_structures(struct dive *d)
 {
 	if (!d)
@@ -350,8 +358,7 @@ static void free_dive_structures(struct dive *d)
 	free(d->suit);
 	/* free tags, additional dive computers, and pictures */
 	taglist_free(d->tag_list);
-	free_dc_contents(&d->dc);
-	STRUCTURED_LIST_FREE(struct divecomputer, d->dc.next, free_dc);
+	free_dive_dcs(&d->dc);
 	STRUCTURED_LIST_FREE(struct picture, d->picture_list, free_picture);
 	for (int i = 0; i < MAX_CYLINDERS; i++)
 		free((void *)d->cylinder[i].type.description);
