@@ -85,8 +85,8 @@ Kirigami.ApplicationWindow {
 	}
 
 	function showMap() {
-		globalDrawer.close()
-		returnTopPage()
+		if (globalDrawer.drawerOpen)
+			globalDrawer.close()
 		pageStack.push(mapPage)
 	}
 
