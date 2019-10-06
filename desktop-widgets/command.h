@@ -75,6 +75,7 @@ int editTags(const QStringList &newList, bool currentDiveOnly);
 int editBuddies(const QStringList &newList, bool currentDiveOnly);
 int editDiveMaster(const QStringList &newList, bool currentDiveOnly);
 void pasteDives(const dive *d, dive_components what);
+void replanDive(dive *d); // dive computer(s) and cylinder(s) will be reset!
 
 // 5) Trip editing commands
 

@@ -254,13 +254,34 @@ struct PasteState {
 	void swap(dive_components what); // Exchange values here and in dive
 };
 
-class PasteDives  : public Base {
+class PasteDives : public Base {
 	dive_components what;
 	std::vector<PasteState> dives;
 	std::vector<OwningDiveSitePtr> ownedDiveSites;
 	dive *current;
 public:
 	PasteDives(const dive *d, dive_components what);
+private:
+	void undo() override;
+	void redo() override;
+	bool workToBeDone() override;
+};
+
+class ReplanDive : public Base {
+	dive *d;
+
+	// Exchange these data with current dive
+	timestamp_t when;
+	depth_t maxdepth, meandepth;
+	cylinder_t cylinders[MAX_CYLINDERS];
+	struct divecomputer dc;
+	char *notes;
+	pressure_t surface_pressure;
+	duration_t duration;
+	int salinity;
+public:
+	ReplanDive(dive *source); // Dive computer(s) and cylinders(s) of the source dive will be reset!
+	~ReplanDive();
 private:
 	void undo() override;
 	void redo() override;
