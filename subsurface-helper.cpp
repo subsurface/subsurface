@@ -128,9 +128,6 @@ void run_ui()
 	QObject::connect(qml_window, &QQuickWindow::screenChanged, QMLManager::instance(), &QMLManager::screenChanged);
 	QMLManager *manager = QMLManager::instance();
 	LOG_STP("run_ui qmlmanager instance started");
-	// now that the log file is initialized...
-	show_computer_list();
-	LOG_STP("run_ui show_computer_list");
 
 	manager->setDevicePixelRatio(qml_window->devicePixelRatio(), qml_window->screen());
 	manager->qmlWindow = qqWindowObject;
