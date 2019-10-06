@@ -33,6 +33,7 @@ Kirigami.ApplicationWindow {
 	property string filterPattern: ""
 	property bool firstChange: true
 	property int lastOrientation: undefined
+	property int colWidth: undefined
 
 	onNotificationTextChanged: {
 		if (notificationText != "") {
@@ -464,16 +465,16 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	function setupUnits() {
 		// some screens are too narrow for Subsurface-mobile to render well
 		// try to hack around that by making sure that we can fit at least 21 gridUnits in a row
-		var numColumns = Math.floor(rootItem.width/(Kirigami.Units.gridUnit * pageStack.defaultColumnWidth))
-		var colWidth = numColumns > 1 ? Math.floor(rootItem.width / numColumns) : rootItem.width;
+		var numColumns = Math.floor(rootItem.width/pageStack.defaultColumnWidth)
+		rootItem.colWidth = numColumns > 1 ? Math.floor(rootItem.width / numColumns) : rootItem.width;
 		var kirigamiGridUnit = Kirigami.Units.gridUnit
-		var widthInGridUnits = Math.floor(colWidth / kirigamiGridUnit)
+		var widthInGridUnits = Math.floor(rootItem.colWidth / kirigamiGridUnit)
 		if (widthInGridUnits < 21) {
-			kirigamiGridUnit = Math.floor(colWidth / 21)
-			widthInGridUnits = Math.floor(colWidth / kirigamiGridUnit)
+			kirigamiGridUnit = Math.floor(rootItem.colWidth / 21)
+			widthInGridUnits = Math.floor(rootItem.colWidth / kirigamiGridUnit)
 		}
 		var factor = 1.0
-		console.log("Column width " + colWidth + " root item width " + rootItem.width)
+		console.log(numColumns + " columns with column width of " + rootItem.colWidth)
 		console.log("width in Grid Units " + widthInGridUnits + " original gridUnit " + Kirigami.Units.gridUnit + " now " + kirigamiGridUnit)
 		if (Kirigami.Units.gridUnit !== kirigamiGridUnit) {
 			factor = kirigamiGridUnit / Kirigami.Units.gridUnit
