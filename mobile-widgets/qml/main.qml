@@ -589,6 +589,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			} else if (rootItem.lastOrientation !== undefined && rootItem.lastOrientation != Screen.primaryOrientation) {
 				console.log("Screen rotated, no action necessary")
 				rootItem.lastOrientation = Screen.primaryOrientation
+				setupUnits()
 			} else {
 				console.log("size change without rotation to " + width + " x " + height)
 				if (width > subsurfaceTheme.initialWidth) {
