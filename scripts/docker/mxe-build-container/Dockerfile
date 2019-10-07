@@ -51,4 +51,10 @@ RUN cd /win/mxe ; \
     make -j 6 2>&1 | tee build.log ;
 RUN cd /win/mxe ; \
     make MXE_TARGETS=i686-w64-mingw32.static glib -j 6 2>&1 | tee -a build.log ;
+RUN cd /win/mxe ; \
+    mkdir -p neolit ; cd neolit ; git clone -b wip/win git://github.com/qt/qtconnectivity
+RUN cd /win/mxe/neolit/qtconnectivity ; \
+    PATH=/win/mxe/usr/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin /win/mxe/usr/i686-w64-mingw32.shared/qt5/bin/qmake qtconnectivity.pro ; \
+    PATH=/win/mxe/usr/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make -j 6 ; \
+    PATH=/win/mxe/usr/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make install ;
 RUN rm -rf /win/mxe/pkg
