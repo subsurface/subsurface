@@ -613,6 +613,7 @@ Kirigami.ScrollablePage {
 
 	function setCurrentDiveListIndex(idx, noScroll) {
 		diveListView.currentIndex = idx
+		detailsWindow.showDiveIndex(idx)
 		// updating the index of the ListView triggers a non-linear scroll
 		// animation that can be very slow. the fix is to stop this animation
 		// by setting contentY to itself and then using positionViewAtIndex().
