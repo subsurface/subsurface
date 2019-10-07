@@ -34,6 +34,7 @@ Kirigami.ApplicationWindow {
 	property bool firstChange: true
 	property int lastOrientation: undefined
 	property int colWidth: undefined
+	property bool hackToOpenMap: false
 
 	onNotificationTextChanged: {
 		if (notificationText != "") {
@@ -615,12 +616,31 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	}
 
 	pageStack.onCurrentItemChanged: {
-	// This is called whenever the user navigates using the breadcrumbs in the header
+		// This is called whenever the user navigates using the breadcrumbs in the header
 
-		// disable the left swipe to go back when on the map page
 		if (pageStack.currentItem === null) {
 			console.log("there's no current page")
 		} else {
+			// horrible, insane hack to make picking the mapPage work
+			// for some reason I cannot figure out, whenever the mapPage is selected
+			// we immediately switch back to the page before it - so force-prevent
+			// that undersired behavior
+			if (pageStack.currentItem.objectName === mapPage.objectName) {
+				// remember that we actively picked the mapPage
+				hackToOpenMap = true
+			} else if (pageStack.currentItem.objectName !== mapPage.objectName &&
+					pageStack.lastItem.objectName === mapPage.objectName &&
+					hackToOpenMap) {
+				// if we just picked the mapPage and are suddenly back on a different page
+				// force things back to the mapPage
+				pageStack.currentIndex = pageStack.contentItem.contentChildren.length - 1
+				hackToOpenMap = false
+			} else {
+				// if we picked a different page reset the mapPage hack
+				hackToOpenMap = false
+			}
+
+			// disable the left swipe to go back when on the map page
 			pageStack.interactive = pageStack.currentItem.objectName !== mapPage.objectName
 
 			// is there a better way to reload the map markers instead of doing that
