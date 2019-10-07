@@ -34,7 +34,6 @@ Kirigami.ApplicationWindow {
 	property bool firstChange: true
 	property int lastOrientation: undefined
 	property int colWidth: undefined
-	property bool hackToOpenMap: false
 
 	onNotificationTextChanged: {
 		if (notificationText != "") {
@@ -615,6 +614,13 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		}
 	}
 
+	property int hackToOpenMap: 0 /* Otherpage */
+	/* I really want an enum, but those are painful in QML, so let's use numbers
+	 * 0 (Otherpage)   - the last page selected was a non-map page
+	 * 1 (MapSelected) - the map page was selected by the user
+	 * 2 (MapForced)   - the map page was forced by out hack
+	 */
+
 	pageStack.onCurrentItemChanged: {
 		// This is called whenever the user navigates using the breadcrumbs in the header
 
@@ -627,17 +633,24 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			// that undersired behavior
 			if (pageStack.currentItem.objectName === mapPage.objectName) {
 				// remember that we actively picked the mapPage
-				hackToOpenMap = true
+				if (hackToOpenMap !== 2 /* MapForced */ ) {
+					console.log("changed to map, hack on")
+					hackToOpenMap = 1 /* MapSelected */
+				} else {
+					console.log("forced back to map, ignore")
+				}
 			} else if (pageStack.currentItem.objectName !== mapPage.objectName &&
 					pageStack.lastItem.objectName === mapPage.objectName &&
-					hackToOpenMap) {
+					hackToOpenMap === 1 /* MapSelected */) {
 				// if we just picked the mapPage and are suddenly back on a different page
 				// force things back to the mapPage
+				console.log("hack was on, map is last page, switching back to map, hack off")
 				pageStack.currentIndex = pageStack.contentItem.contentChildren.length - 1
-				hackToOpenMap = false
+				hackToOpenMap = 2 /* MapForced */
 			} else {
 				// if we picked a different page reset the mapPage hack
-				hackToOpenMap = false
+				console.log("switched to " + pageStack.currentItem.objectName + " - hack off")
+				hackToOpenMap = 0 /* Otherpage */
 			}
 
 			// disable the left swipe to go back when on the map page
