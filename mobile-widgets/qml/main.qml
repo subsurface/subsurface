@@ -90,6 +90,14 @@ Kirigami.ApplicationWindow {
 		pageStack.push(mapPage)
 	}
 
+	function pageIndex(pageToFind) {
+		for (var i = 0; i < pageStack.contentItem.contentChildren.length; i++) {
+			if (pageStack.contentItem.contentChildren[i] === pageToFind)
+				return i
+		}
+		return -1
+	}
+
 	function startAddDive() {
 		detailsWindow.state = "add"
 		detailsWindow.dive_id = manager.addDive();
