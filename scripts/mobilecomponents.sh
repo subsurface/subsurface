@@ -59,20 +59,25 @@ ln -s $SRC/breeze-icons .
 # https://bugs.kde.org/show_bug.cgi?id=394204
 sed -i -e "s/width: backgroundRect/enabled: root.enabled;    width: backgroundRect/g" src/controls/templates/private/PassiveNotification.qml
 
-# another hack. Do not include the Kirigami resources (on static build). It causes
+# three more hacks - as a diff file for simplicity
+# (1) Do not include the Kirigami resources (on static build). It causes
 # double defined symbols in our setting. I would like a nicer fix for this
 # issue, but failed to find one. For example, not adding the resource in
 # our build causes the qrc file not to be generated. Manual generation
 # of the resource file (using rcc) introduces the double symbols again. 
 # so it seems some Kirigami weirdness (but their staticcmake example compiles
 # correctly).
-sed -i -e "s/#include <qrc_kirigami.cpp>/\/\/#include <qrc_kirigami.cpp>/" src/kirigamiplugin.cpp
 
-# next hack - we want to use the topContent in the GlobalDrawer for our
+# (2) we want to use the topContent in the GlobalDrawer for our
 # own image / logo / text (in part because the logo display got broken, in
 # part because we want a second line of text to show the account ID
 # for this to work we need to remove the margin that the GlobalDrawer
 # forces around the topContent
+
+# (3) theming the toolbar fails. It should get the background color from
+# the theme, but somehow that always gets overwritten with the default
+# value for 'active' set in qtquickcontrols2.conf
+
 patch -p0 < $SRC/subsurface/scripts/kirigami.diff
 
 popd

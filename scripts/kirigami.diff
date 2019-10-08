@@ -1,7 +1,7 @@
-diff -ur ../kirigami/src/controls/GlobalDrawer.qml mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml
---- ../kirigami/src/controls/GlobalDrawer.qml	2018-09-27 15:27:32.340600738 +0200
-+++ src/controls/GlobalDrawer.qml	2018-09-27 16:45:29.689438950 +0200
-@@ -328,17 +328,13 @@
+diff -rwu ../kirigami/src/controls/GlobalDrawer.qml mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml
+--- ../kirigami/src/controls/GlobalDrawer.qml	2019-10-05 11:32:27.131891061 -0500
++++ src/controls/GlobalDrawer.qml	2019-10-06 13:14:34.830804840 -0500
+@@ -331,17 +331,13 @@
                  ColumnLayout {
                      id: topContent
                      spacing: 0
@@ -20,3 +20,34 @@ diff -ur ../kirigami/src/controls/GlobalDrawer.qml mobile-widgets/qml/kirigami/s
                      visible: children.length > 0 && childrenRect.height > 0 && opacity > 0
                      opacity: !root.collapsed || showTopContentWhenCollapsed
                      Behavior on opacity {
+diff -rwu ../kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml mobile-widgets/qml/kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml
+--- ../kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml	2019-10-05 11:32:27.135224411 -0500
++++ src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml	2019-10-08 10:57:14.603086232 -0500
+@@ -40,6 +40,7 @@
+     preferredHeight: globalToolBar.preferredHeight
+     maximumHeight: globalToolBar.maximumHeight
+     separatorVisible: globalToolBar.separatorVisible
++    background: Rectangle { color: subsurfaceTheme.primaryColor }
+ 
+     RowLayout {
+         anchors.fill: parent
+@@ -110,6 +111,6 @@
+             Layout.preferredWidth: height
+         }
+     }
+-    background.opacity: breadcrumbLoader.opacity
++    //background.opacity: breadcrumbLoader.opacity
+ }
+ 
+diff -rwu ../kirigami/src/kirigamiplugin.cpp mobile-widgets/qml/kirigami/src/kirigamiplugin.cpp
+--- ../kirigami/src/kirigamiplugin.cpp	2019-10-05 11:32:27.141891113 -0500
++++ src/kirigamiplugin.cpp	2019-10-05 11:52:30.444777441 -0500
+@@ -41,7 +41,7 @@
+ 
+ //Q_INIT_RESOURCE(kirigami);
+ #ifdef KIRIGAMI_BUILD_TYPE_STATIC
+-#include <qrc_kirigami.cpp>
++//#include <qrc_kirigami.cpp>
+ #endif
+ 
+ QUrl KirigamiPlugin::componentUrl(const QString &fileName) const
