@@ -214,7 +214,15 @@ Kirigami.Page {
 	}
 
 	onCurrentItemChanged: {
+		// why do we do this? What consumes this?
 		manager.selectedDiveTimestamp = currentItem.modelData.dive.timestamp
+		// make sure the core data structures reflect that this dive is selected
+		manager.selectDive(currentItem.modelData.dive.id)
+		// update the map to show the highlighted flag and center on it
+		if (rootItem.pageIndex(mapPage) !== -1) {
+			mapPage.reloadMap()
+			mapPage.centerOnDiveSite(currentItem.modelData.dive.dive_site)
+		}
 	}
 
 	function showDiveIndex(index) {
