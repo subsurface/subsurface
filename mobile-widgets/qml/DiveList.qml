@@ -36,14 +36,6 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	function pageIndex(pageToFind) {
-		for (var i = 0; i < pageStack.contentItem.contentChildren.length; i++) {
-			if (pageStack.contentItem.contentChildren[i] === pageToFind)
-				return i
-		}
-		return -1
-	}
-
 	Component {
 		id: diveDelegate
 		Kirigami.AbstractListItem {
@@ -124,7 +116,7 @@ Kirigami.ScrollablePage {
 					diveListView.currentIndex = index
 					detailsWindow.showDiveIndex(index);
 					// switch to detailsWindow (or push it if it's not in the stack)
-					var i = pageIndex(detailsWindow)
+					var i = rootItem.pageIndex(detailsWindow)
 					if (i === -1)
 						pageStack.push(detailsWindow)
 					else
