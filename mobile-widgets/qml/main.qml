@@ -243,7 +243,7 @@ Kirigami.ApplicationWindow {
 				text: qsTr("Dive management")
 				Kirigami.Action {
 					icon {
-						name: ":/org/kde/kirigami/icons/go-previous-symbolic.svg"
+						name: ":/go-previous-symbolic"
 					}
 					text: qsTr("Back")
 					onTriggered: gDrawer.scrollViewItem.pop()
@@ -331,7 +331,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 				Kirigami.Action {
 					icon {
-						name: ":/org/kde/kirigami/icons/go-previous-symbolic.svg"
+						name: ":/go-previous-symbolic"
 					}
 					text: qsTr("Back")
 					onTriggered: gDrawer.scrollViewItem.pop()
@@ -403,7 +403,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				visible: PrefDisplay.show_developer
 				Kirigami.Action {
 					icon {
-						name: ":/org/kde/kirigami/icons/go-previous-symbolic.svg"
+						name: ":/go-previous-symbolic"
 					}
 					text: qsTr("Back")
 					onTriggered: gDrawer.scrollViewItem.pop()

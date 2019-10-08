@@ -1,6 +1,6 @@
-diff -rwu ../kirigami/src/controls/GlobalDrawer.qml src/controls/GlobalDrawer.qml
---- ../kirigami/src/controls/GlobalDrawer.qml	2019-10-08 13:21:17.459065272 -0500
-+++ src/controls/GlobalDrawer.qml	2019-10-09 13:31:33.788198422 -0500
+diff -ru ../kirigami/src/controls/GlobalDrawer.qml ./src/controls/GlobalDrawer.qml
+--- ../kirigami/src/controls/GlobalDrawer.qml	2019-10-10 17:13:41.384333413 -0700
++++ ./src/controls/GlobalDrawer.qml	2019-10-11 13:39:22.200854355 -0700
 @@ -215,6 +215,20 @@
      readonly property Action currentSubMenu: stackView.currentItem ? stackView.currentItem.current: null
  
@@ -58,7 +58,7 @@ diff -rwu ../kirigami/src/controls/GlobalDrawer.qml src/controls/GlobalDrawer.qm
                          BasicListItem {
                              id: backItem
                              visible: level > 0
-@@ -454,7 +468,7 @@
+@@ -454,7 +465,7 @@
                              sequence: backItem.MnemonicData.sequence
                              onActivated: backItem.clicked()
                          }
@@ -67,9 +67,21 @@ diff -rwu ../kirigami/src/controls/GlobalDrawer.qml src/controls/GlobalDrawer.qm
                          Repeater {
                              id: actionsRepeater
                              model: root.actions
-diff -rwu ../kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml
---- ../kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml	2019-10-05 11:32:27.135224411 -0500
-+++ src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml	2019-10-08 10:57:14.603086232 -0500
+diff -ru ../kirigami/src/controls/private/GlobalDrawerActionItem.qml ./src/controls/private/GlobalDrawerActionItem.qml
+--- ../kirigami/src/controls/private/GlobalDrawerActionItem.qml	2019-10-10 17:13:41.387666766 -0700
++++ ./src/controls/private/GlobalDrawerActionItem.qml	2019-10-11 14:16:03.013887752 -0700
+@@ -94,7 +94,7 @@
+         Layout.preferredHeight: !root.collapsed ? Units.iconSizes.smallMedium : Units.iconSizes.small/2
+         selected: listItem.checked || listItem.pressed
+         Layout.preferredWidth: Layout.preferredHeight
+-        source: (LayoutMirroring.enabled ? "go-next-symbolic-rtl" : "go-next-symbolic")
++	source: (LayoutMirroring.enabled ? ":/go-next-symbolic-rtl" : ":/go-next-symbolic")
+ 		visible: (!isExpandible || root.collapsed) && !listItem.isSeparator && modelData.hasOwnProperty("children") && modelData.children!==undefined && modelData.children.length > 0
+     }
+     data: [
+diff -ru ../kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml ./src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml
+--- ../kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml	2019-10-10 17:13:41.391000120 -0700
++++ ./src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml	2019-10-11 13:39:22.204187697 -0700
 @@ -40,6 +40,7 @@
      preferredHeight: globalToolBar.preferredHeight
      maximumHeight: globalToolBar.maximumHeight
@@ -86,9 +98,9 @@ diff -rwu ../kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.
 +    //background.opacity: breadcrumbLoader.opacity
  }
  
-diff -rwu ../kirigami/src/controls/templates/private/BackButton.qml src/controls/templates/private/BackButton.qml
---- ../kirigami/src/controls/templates/private/BackButton.qml	2019-10-05 11:32:27.138557762 -0500
-+++ src/controls/templates/private/BackButton.qml	2019-10-08 14:16:53.677758571 -0500
+diff -ru ../kirigami/src/controls/templates/private/BackButton.qml ./src/controls/templates/private/BackButton.qml
+--- ../kirigami/src/controls/templates/private/BackButton.qml	2019-10-10 17:13:41.391000120 -0700
++++ ./src/controls/templates/private/BackButton.qml	2019-10-11 13:55:58.985325656 -0700
 @@ -27,6 +27,7 @@
      id: button
  
@@ -97,20 +109,20 @@ diff -rwu ../kirigami/src/controls/templates/private/BackButton.qml src/controls
  
      enabled: applicationWindow().pageStack.layers.depth > 1 || (applicationWindow().pageStack.depth > 1 && (applicationWindow().pageStack.currentIndex > 0 || applicationWindow().pageStack.contentItem.contentX > 0))
  
-diff -rwu ../kirigami/src/controls/templates/private/ForwardButton.qml src/controls/templates/private/ForwardButton.qml
---- ../kirigami/src/controls/templates/private/ForwardButton.qml       2019-10-05 11:32:27.138557762 -0500
-+++ src/controls/templates/private/ForwardButton.qml   2019-10-08 14:13:40.804488568 -0500
+diff -ru ../kirigami/src/controls/templates/private/ForwardButton.qml ./src/controls/templates/private/ForwardButton.qml
+--- ../kirigami/src/controls/templates/private/ForwardButton.qml	2019-10-10 17:13:41.391000120 -0700
++++ ./src/controls/templates/private/ForwardButton.qml	2019-10-11 13:55:52.765272124 -0700
 @@ -27,6 +27,7 @@
      id: button
-
+ 
      icon.name: (LayoutMirroring.enabled ? "go-next-symbolic-rtl" : "go-next-symbolic")
 +    icon.source: (LayoutMirroring.enabled ? "go-next-symbolic-rtl" : "go-next-symbolic")
-
+ 
      enabled: applicationWindow().pageStack.currentIndex < applicationWindow().pageStack.depth-1
-
-diff -rwu ../kirigami/src/kirigamiplugin.cpp src/kirigamiplugin.cpp
---- ../kirigami/src/kirigamiplugin.cpp	2019-10-05 11:32:27.141891113 -0500
-+++ src/kirigamiplugin.cpp	2019-10-05 11:52:30.444777441 -0500
+ 
+diff -ru ../kirigami/src/kirigamiplugin.cpp ./src/kirigamiplugin.cpp
+--- ../kirigami/src/kirigamiplugin.cpp	2019-10-10 17:13:41.391000120 -0700
++++ ./src/kirigamiplugin.cpp	2019-10-11 13:39:22.204187697 -0700
 @@ -41,7 +41,7 @@
  
  //Q_INIT_RESOURCE(kirigami);
