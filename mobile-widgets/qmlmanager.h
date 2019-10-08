@@ -164,6 +164,7 @@ public slots:
 	void openNoCloudRepo();
 	void saveChangesLocal();
 	void saveChangesCloud(bool forceRemoteSync);
+	void selectDive(int id);
 	void deleteDive(int id);
 	void copyDiveData(int id);
 	void pasteDiveData(int id);

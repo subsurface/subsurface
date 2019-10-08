@@ -1375,6 +1375,15 @@ bool QMLManager::undoDelete(int id)
 	return true;
 }
 
+void QMLManager::selectDive(int id)
+{
+	int i;
+	struct dive *dive = NULL;
+
+	for_each_dive (i, dive)
+		dive->selected = (dive->id == id);
+}
+
 void QMLManager::deleteDive(int id)
 {
 	struct dive *d = get_dive_by_uniq_id(id);
