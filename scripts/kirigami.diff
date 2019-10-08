@@ -1,6 +1,6 @@
 diff -rwu ../kirigami/src/controls/GlobalDrawer.qml mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml
---- ../kirigami/src/controls/GlobalDrawer.qml	2019-10-05 11:32:27.131891061 -0500
-+++ src/controls/GlobalDrawer.qml	2019-10-06 13:14:34.830804840 -0500
+--- ../kirigami/src/controls/GlobalDrawer.qml	2019-10-08 13:21:17.459065272 -0500
++++ src/controls/GlobalDrawer.qml	2019-10-08 14:15:17.892762708 -0500
 @@ -331,17 +331,13 @@
                  ColumnLayout {
                      id: topContent
@@ -16,7 +16,7 @@ diff -rwu ../kirigami/src/controls/GlobalDrawer.qml mobile-widgets/qml/kirigami/
                      //NOTE: why this? just Layout.fillWidth: true doesn't seem sufficient
                      //as items are added only after this column creation
 -                    Layout.minimumWidth: parent.width - root.leftPadding - root.rightPadding
-+                    Layout.minimumWidth: parent.width
++		    Layout.minimumWidth: parent.width
                      visible: children.length > 0 && childrenRect.height > 0 && opacity > 0
                      opacity: !root.collapsed || showTopContentWhenCollapsed
                      Behavior on opacity {
@@ -38,6 +38,28 @@ diff -rwu ../kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.
 -    background.opacity: breadcrumbLoader.opacity
 +    //background.opacity: breadcrumbLoader.opacity
  }
+ 
+diff -rwu ../kirigami/src/controls/templates/private/BackButton.qml mobile-widgets/qml/kirigami/src/controls/templates/private/BackButton.qml
+--- ../kirigami/src/controls/templates/private/BackButton.qml	2019-10-05 11:32:27.138557762 -0500
++++ src/controls/templates/private/BackButton.qml	2019-10-08 14:16:53.677758571 -0500
+@@ -27,6 +27,7 @@
+     id: button
+ 
+     icon.name: (LayoutMirroring.enabled ? "go-previous-symbolic-rtl" : "go-previous-symbolic")
++    icon.source: (LayoutMirroring.enabled ? "go-previous-symbolic-rtl" : "go-previous-symbolic")
+ 
+     enabled: applicationWindow().pageStack.layers.depth > 1 || (applicationWindow().pageStack.depth > 1 && (applicationWindow().pageStack.currentIndex > 0 || applicationWindow().pageStack.contentItem.contentX > 0))
+ 
+diff -rwu ../kirigami/src/controls/templates/private/ForwardButton.qml mobile-widgets/qml/kirigami/src/controls/templates/private/ForwardButton.qml
+--- ../kirigami/src/controls/templates/private/ForwardButton.qml	2019-10-05 11:32:27.138557762 -0500
++++ src/controls/templates/private/ForwardButton.qml	2019-10-08 14:13:40.804488568 -0500
+@@ -27,6 +27,7 @@
+     id: button
+ 
+     icon.name: (LayoutMirroring.enabled ? "go-next-symbolic-rtl" : "go-next-symbolic")
++    icon.source: (LayoutMirroring.enabled ? "go-next-symbolic-rtl" : "go-next-symbolic")
+ 
+     enabled: applicationWindow().pageStack.currentIndex < applicationWindow().pageStack.depth-1
  
 diff -rwu ../kirigami/src/kirigamiplugin.cpp mobile-widgets/qml/kirigami/src/kirigamiplugin.cpp
 --- ../kirigami/src/kirigamiplugin.cpp	2019-10-05 11:32:27.141891113 -0500

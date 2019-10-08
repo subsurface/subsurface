@@ -59,7 +59,7 @@ ln -s $SRC/breeze-icons .
 # https://bugs.kde.org/show_bug.cgi?id=394204
 sed -i -e "s/width: backgroundRect/enabled: root.enabled;    width: backgroundRect/g" src/controls/templates/private/PassiveNotification.qml
 
-# three more hacks - as a diff file for simplicity
+# four more hacks - as a diff file for simplicity
 # (1) Do not include the Kirigami resources (on static build). It causes
 # double defined symbols in our setting. I would like a nicer fix for this
 # issue, but failed to find one. For example, not adding the resource in
@@ -77,6 +77,10 @@ sed -i -e "s/width: backgroundRect/enabled: root.enabled;    width: backgroundRe
 # (3) theming the toolbar fails. It should get the background color from
 # the theme, but somehow that always gets overwritten with the default
 # value for 'active' set in qtquickcontrols2.conf
+
+# (4) add a source line mirroring the name line for the forward and
+# backward icons in the global tool bar. Otherwise those icons aren't
+# found
 
 patch -p0 < $SRC/subsurface/scripts/kirigami.diff
 
