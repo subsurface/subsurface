@@ -135,6 +135,7 @@ Kirigami.ApplicationWindow {
 	}
 
 	globalDrawer: Kirigami.GlobalDrawer {
+		id: gDrawer
 		height: rootItem.height
 		topContent: Image {
 			source: "qrc:/qml/icons/dive.jpg"
@@ -242,6 +243,13 @@ Kirigami.ApplicationWindow {
 				text: qsTr("Dive management")
 				Kirigami.Action {
 					icon {
+						name: ":/org/kde/kirigami/icons/go-previous-symbolic.svg"
+					}
+					text: qsTr("Back")
+					onTriggered: gDrawer.scrollViewItem.pop()
+				}
+				Kirigami.Action {
+					icon {
 						name: ":/icons/ic_add.svg"
 					}
 					text: qsTr("Add dive manually")
@@ -323,6 +331,13 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 				Kirigami.Action {
 					icon {
+						name: ":/org/kde/kirigami/icons/go-previous-symbolic.svg"
+					}
+					text: qsTr("Back")
+					onTriggered: gDrawer.scrollViewItem.pop()
+				}
+				Kirigami.Action {
+					icon {
 						name:":/icons/ic_gps_fixed.svg"
 					}
 					text: qsTr("Show GPS fixes")
@@ -386,6 +401,13 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 				text: qsTr("Developer")
 				visible: PrefDisplay.show_developer
+				Kirigami.Action {
+					icon {
+						name: ":/org/kde/kirigami/icons/go-previous-symbolic.svg"
+					}
+					text: qsTr("Back")
+					onTriggered: gDrawer.scrollViewItem.pop()
+				}
 				Kirigami.Action {
 					text: qsTr("App log")
 					onTriggered: {
