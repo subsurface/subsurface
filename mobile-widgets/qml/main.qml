@@ -22,6 +22,9 @@ Kirigami.ApplicationWindow {
 
 	pageStack.globalToolBar.style: Kirigami.ApplicationHeaderStyle.Breadcrumb
 	pageStack.globalToolBar.showNavigationButtons: (Kirigami.ApplicationHeaderStyle.ShowBackButton | Kirigami.ApplicationHeaderStyle.ShowForwardButton)
+	pageStack.globalToolBar.minimumHeight: 0
+	pageStack.globalToolBar.preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2 : 1.5))
+	pageStack.globalToolBar.maximumHeight: Kirigami.Units.gridUnit * 2
 
 	property alias oldStatus: prefs.oldStatus
 	property alias notificationText: manager.notificationText
