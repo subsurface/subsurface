@@ -1,7 +1,36 @@
-diff -rwu ../kirigami/src/controls/GlobalDrawer.qml mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml
+diff -rwu ../kirigami/src/controls/GlobalDrawer.qml src/controls/GlobalDrawer.qml
 --- ../kirigami/src/controls/GlobalDrawer.qml	2019-10-08 13:21:17.459065272 -0500
-+++ src/controls/GlobalDrawer.qml	2019-10-08 14:15:17.892762708 -0500
-@@ -331,17 +331,13 @@
++++ src/controls/GlobalDrawer.qml	2019-10-09 13:31:33.788198422 -0500
+@@ -215,6 +215,20 @@
+     readonly property Action currentSubMenu: stackView.currentItem ? stackView.currentItem.current: null
+ 
+     /**
++     * scrollViewItem: ScrollView
++     *
++     * Points to the internal ScrollView so the caller can implement the Back button
++     */
++    readonly property Item scrollViewItem: scrollView
++
++    /**
++     * pop: function
++     *
++     * Point to the pop function of the stackView inside the scrollView in order to be able to implement the Back button in the caller
++     */
++    function pop() { scrollView.pop }
++
++    /**
+      * Notifies that the banner has been clicked
+      */
+     signal bannerClicked()
+@@ -238,6 +252,7 @@
+         anchors.fill: parent
+         implicitWidth: Math.min (Units.gridUnit * 20, root.parent.width * 0.8)
+         horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
++	function pop() { stackView.pop() }
+ 
+         Flickable {
+             id: mainFlickable
+@@ -331,17 +346,13 @@
                  ColumnLayout {
                      id: topContent
                      spacing: 0
@@ -20,7 +49,25 @@ diff -rwu ../kirigami/src/controls/GlobalDrawer.qml mobile-widgets/qml/kirigami/
                      visible: children.length > 0 && childrenRect.height > 0 && opacity > 0
                      opacity: !root.collapsed || showTopContentWhenCollapsed
                      Behavior on opacity {
-diff -rwu ../kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml mobile-widgets/qml/kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml
+@@ -435,7 +446,7 @@
+                                 easing.type: Easing.InOutQuad
+                             }
+                         }
+-
++/*
+                         BasicListItem {
+                             id: backItem
+                             visible: level > 0
+@@ -454,7 +468,7 @@
+                             sequence: backItem.MnemonicData.sequence
+                             onActivated: backItem.clicked()
+                         }
+-
++*/
+                         Repeater {
+                             id: actionsRepeater
+                             model: root.actions
+diff -rwu ../kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml
 --- ../kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml	2019-10-05 11:32:27.135224411 -0500
 +++ src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml	2019-10-08 10:57:14.603086232 -0500
 @@ -40,6 +40,7 @@
@@ -39,7 +86,7 @@ diff -rwu ../kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.
 +    //background.opacity: breadcrumbLoader.opacity
  }
  
-diff -rwu ../kirigami/src/controls/templates/private/BackButton.qml mobile-widgets/qml/kirigami/src/controls/templates/private/BackButton.qml
+diff -rwu ../kirigami/src/controls/templates/private/BackButton.qml src/controls/templates/private/BackButton.qml
 --- ../kirigami/src/controls/templates/private/BackButton.qml	2019-10-05 11:32:27.138557762 -0500
 +++ src/controls/templates/private/BackButton.qml	2019-10-08 14:16:53.677758571 -0500
 @@ -27,6 +27,7 @@
@@ -50,18 +97,18 @@ diff -rwu ../kirigami/src/controls/templates/private/BackButton.qml mobile-widge
  
      enabled: applicationWindow().pageStack.layers.depth > 1 || (applicationWindow().pageStack.depth > 1 && (applicationWindow().pageStack.currentIndex > 0 || applicationWindow().pageStack.contentItem.contentX > 0))
  
-diff -rwu ../kirigami/src/controls/templates/private/ForwardButton.qml mobile-widgets/qml/kirigami/src/controls/templates/private/ForwardButton.qml
---- ../kirigami/src/controls/templates/private/ForwardButton.qml	2019-10-05 11:32:27.138557762 -0500
-+++ src/controls/templates/private/ForwardButton.qml	2019-10-08 14:13:40.804488568 -0500
+diff -rwu ../kirigami/src/controls/templates/private/ForwardButton.qml src/controls/templates/private/ForwardButton.qml
+--- ../kirigami/src/controls/templates/private/ForwardButton.qml       2019-10-05 11:32:27.138557762 -0500
++++ src/controls/templates/private/ForwardButton.qml   2019-10-08 14:13:40.804488568 -0500
 @@ -27,6 +27,7 @@
      id: button
- 
+
      icon.name: (LayoutMirroring.enabled ? "go-next-symbolic-rtl" : "go-next-symbolic")
 +    icon.source: (LayoutMirroring.enabled ? "go-next-symbolic-rtl" : "go-next-symbolic")
- 
+
      enabled: applicationWindow().pageStack.currentIndex < applicationWindow().pageStack.depth-1
- 
-diff -rwu ../kirigami/src/kirigamiplugin.cpp mobile-widgets/qml/kirigami/src/kirigamiplugin.cpp
+
+diff -rwu ../kirigami/src/kirigamiplugin.cpp src/kirigamiplugin.cpp
 --- ../kirigami/src/kirigamiplugin.cpp	2019-10-05 11:32:27.141891113 -0500
 +++ src/kirigamiplugin.cpp	2019-10-05 11:52:30.444777441 -0500
 @@ -41,7 +41,7 @@
