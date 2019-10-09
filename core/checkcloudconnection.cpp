@@ -78,24 +78,9 @@ bool CheckCloudConnection::checkServer()
 
 void CheckCloudConnection::sslErrors(const QList<QSslError> &errorList)
 {
-	if (verbose) {
-		qDebug() << "Received error response trying to set up https connection with cloud storage backend:";
-		for (QSslError err: errorList) {
-			qDebug() << err.errorString();
-		}
-	}
-	QSslConfiguration conf = reply->sslConfiguration();
-	QSslCertificate cert = conf.peerCertificate();
-	QByteArray hexDigest = cert.digest().toHex();
-	if (reply->url().toString().contains(prefs.cloud_base_url) &&
-	    hexDigest == "13ff44c62996cfa5cd69d6810675490e") {
-		if (verbose)
-			qDebug() << "Overriding SSL check as I recognize the certificate digest" << hexDigest;
-		reply->ignoreSslErrors();
-	} else {
-		if (verbose)
-			qDebug() << "got invalid SSL certificate with hex digest" << hexDigest;
-	}
+	qDebug() << "Received error response trying to set up https connection with cloud storage backend:";
+	for (QSslError err: errorList)
+		qDebug() << err.errorString();
 }
 
 // helper to be used from C code
