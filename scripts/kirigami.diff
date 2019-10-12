@@ -1,6 +1,6 @@
-diff -ru ../kirigami/src/controls/GlobalDrawer.qml ./src/controls/GlobalDrawer.qml
+diff -rwu ../kirigami/src/controls/GlobalDrawer.qml ./src/controls/GlobalDrawer.qml
 --- ../kirigami/src/controls/GlobalDrawer.qml	2019-10-10 17:13:41.384333413 -0700
-+++ ./src/controls/GlobalDrawer.qml	2019-10-11 13:39:22.200854355 -0700
++++ ./src/controls/GlobalDrawer.qml	2019-10-11 19:44:58.988220651 -0700
 @@ -215,6 +215,20 @@
      readonly property Action currentSubMenu: stackView.currentItem ? stackView.currentItem.current: null
  
@@ -26,7 +26,7 @@ diff -ru ../kirigami/src/controls/GlobalDrawer.qml ./src/controls/GlobalDrawer.q
          anchors.fill: parent
          implicitWidth: Math.min (Units.gridUnit * 20, root.parent.width * 0.8)
          horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-+	function pop() { stackView.pop() }
++        function pop() { stackView.pop() }
  
          Flickable {
              id: mainFlickable
@@ -45,7 +45,7 @@ diff -ru ../kirigami/src/controls/GlobalDrawer.qml ./src/controls/GlobalDrawer.q
                      //NOTE: why this? just Layout.fillWidth: true doesn't seem sufficient
                      //as items are added only after this column creation
 -                    Layout.minimumWidth: parent.width - root.leftPadding - root.rightPadding
-+		    Layout.minimumWidth: parent.width
++                    Layout.minimumWidth: parent.width
                      visible: children.length > 0 && childrenRect.height > 0 && opacity > 0
                      opacity: !root.collapsed || showTopContentWhenCollapsed
                      Behavior on opacity {
@@ -67,22 +67,39 @@ diff -ru ../kirigami/src/controls/GlobalDrawer.qml ./src/controls/GlobalDrawer.q
                          Repeater {
                              id: actionsRepeater
                              model: root.actions
-diff -ru ../kirigami/src/controls/private/GlobalDrawerActionItem.qml ./src/controls/private/GlobalDrawerActionItem.qml
+diff -rwu ../kirigami/src/controls/private/GlobalDrawerActionItem.qml ./src/controls/private/GlobalDrawerActionItem.qml
 --- ../kirigami/src/controls/private/GlobalDrawerActionItem.qml	2019-10-10 17:13:41.387666766 -0700
-+++ ./src/controls/private/GlobalDrawerActionItem.qml	2019-10-11 14:16:03.013887752 -0700
++++ ./src/controls/private/GlobalDrawerActionItem.qml	2019-10-11 19:44:58.988220651 -0700
 @@ -94,7 +94,7 @@
          Layout.preferredHeight: !root.collapsed ? Units.iconSizes.smallMedium : Units.iconSizes.small/2
          selected: listItem.checked || listItem.pressed
          Layout.preferredWidth: Layout.preferredHeight
 -        source: (LayoutMirroring.enabled ? "go-next-symbolic-rtl" : "go-next-symbolic")
-+	source: (LayoutMirroring.enabled ? ":/go-next-symbolic-rtl" : ":/go-next-symbolic")
++        source: (LayoutMirroring.enabled ? ":/go-next-symbolic-rtl" : ":/go-next-symbolic")
  		visible: (!isExpandible || root.collapsed) && !listItem.isSeparator && modelData.hasOwnProperty("children") && modelData.children!==undefined && modelData.children.length > 0
      }
      data: [
-diff -ru ../kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml ./src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml
+diff -rwu ../kirigami/src/controls/private/globaltoolbar/BreadcrumbControl.qml ./src/controls/private/globaltoolbar/BreadcrumbControl.qml
+--- ../kirigami/src/controls/private/globaltoolbar/BreadcrumbControl.qml	2019-10-10 17:13:41.391000120 -0700
++++ ./src/controls/private/globaltoolbar/BreadcrumbControl.qml	2019-10-11 22:59:45.248031517 -0700
+@@ -82,7 +81,7 @@
+                     Kirigami.Heading {
+                         Layout.leftMargin: Kirigami.Units.largeSpacing
+                         font.pointSize: -1
+-                        font.pixelSize: Math.max(1, mainLayout.height * 0.6)
++                        font.pixelSize: Math.max(1, Kirigami.Units.defaultFontSize)
+                         color: Kirigami.Theme.textColor
+                         verticalAlignment: Text.AlignVCenter
+                         wrapMode: Text.NoWrap
+diff -rwu ../kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml ./src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml
 --- ../kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml	2019-10-10 17:13:41.391000120 -0700
-+++ ./src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml	2019-10-11 13:39:22.204187697 -0700
-@@ -40,6 +40,7 @@
++++ ./src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.qml	2019-10-12 10:36:39.396460010 -0700
+@@ -36,15 +36,23 @@
+     readonly property Item currentItem: layerIsMainRow ? root.currentItem : root.layers.currentItem
+ 
+     height: visible ? implicitHeight : 0
++
+     minimumHeight: globalToolBar.minimumHeight
      preferredHeight: globalToolBar.preferredHeight
      maximumHeight: globalToolBar.maximumHeight
      separatorVisible: globalToolBar.separatorVisible
@@ -90,7 +107,44 @@ diff -ru ../kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.q
  
      RowLayout {
          anchors.fill: parent
-@@ -110,6 +111,6 @@
+         spacing: 0
+-
++        // I can't make the layout work without this invisible rectangle to anchor things on
++        Rectangle {
++                id: correct
++                height: parent.height
++                width: 0
++                color: "transparent"
++        }
+         Item {
+             id: leftHandleAnchor
+             visible: (typeof applicationWindow() !== "undefined" && applicationWindow().globalDrawer && applicationWindow().globalDrawer.enabled && applicationWindow().globalDrawer.handleVisible &&
+@@ -60,20 +68,21 @@
+         RowLayout {
+             id: buttonsLayout
+             Layout.fillHeight: true
+-
+             Layout.leftMargin: leftHandleAnchor.visible ? Kirigami.Units.smallSpacing : 0
+-
++            Layout.alignment: Qt.AlignTop | Qt.AlignVCenter
+             visible: (globalToolBar.showNavigationButtons != Kirigami.ApplicationHeaderStyle.NoNavigationButtons || root.layers.depth > 1) && (globalToolBar.actualStyle != Kirigami.ApplicationHeaderStyle.None)
+ 
+             Layout.maximumWidth: visibleChildren.length > 0 ? implicitWidth : 0
+-
+             TemplatesPrivate.BackButton {
+                 id: backButton
+                 Layout.leftMargin: leftHandleAnchor.visible ? 0 : Kirigami.Units.smallSpacing
+                 Layout.preferredWidth: height
++                Layout.topMargin: 0
++                Layout.maximumHeight: correct.height
+             }
+             TemplatesPrivate.ForwardButton {
+                 Layout.preferredWidth: height
++                Layout.maximumHeight: correct.height
+             }
+         }
+ 
+@@ -110,6 +119,6 @@
              Layout.preferredWidth: height
          }
      }
@@ -98,9 +152,9 @@ diff -ru ../kirigami/src/controls/private/globaltoolbar/PageRowGlobalToolBarUI.q
 +    //background.opacity: breadcrumbLoader.opacity
  }
  
-diff -ru ../kirigami/src/controls/templates/private/BackButton.qml ./src/controls/templates/private/BackButton.qml
+diff -rwu ../kirigami/src/controls/templates/private/BackButton.qml ./src/controls/templates/private/BackButton.qml
 --- ../kirigami/src/controls/templates/private/BackButton.qml	2019-10-10 17:13:41.391000120 -0700
-+++ ./src/controls/templates/private/BackButton.qml	2019-10-11 13:55:58.985325656 -0700
++++ ./src/controls/templates/private/BackButton.qml	2019-10-12 10:32:00.517728443 -0700
 @@ -27,6 +27,7 @@
      id: button
  
@@ -109,9 +163,9 @@ diff -ru ../kirigami/src/controls/templates/private/BackButton.qml ./src/control
  
      enabled: applicationWindow().pageStack.layers.depth > 1 || (applicationWindow().pageStack.depth > 1 && (applicationWindow().pageStack.currentIndex > 0 || applicationWindow().pageStack.contentItem.contentX > 0))
  
-diff -ru ../kirigami/src/controls/templates/private/ForwardButton.qml ./src/controls/templates/private/ForwardButton.qml
+diff -rwu ../kirigami/src/controls/templates/private/ForwardButton.qml ./src/controls/templates/private/ForwardButton.qml
 --- ../kirigami/src/controls/templates/private/ForwardButton.qml	2019-10-10 17:13:41.391000120 -0700
-+++ ./src/controls/templates/private/ForwardButton.qml	2019-10-11 13:55:52.765272124 -0700
++++ ./src/controls/templates/private/ForwardButton.qml	2019-10-11 19:44:58.988220651 -0700
 @@ -27,6 +27,7 @@
      id: button
  
@@ -120,9 +174,24 @@ diff -ru ../kirigami/src/controls/templates/private/ForwardButton.qml ./src/cont
  
      enabled: applicationWindow().pageStack.currentIndex < applicationWindow().pageStack.depth-1
  
-diff -ru ../kirigami/src/kirigamiplugin.cpp ./src/kirigamiplugin.cpp
+diff -rwu ../kirigami/src/controls/Units.qml ./src/controls/Units.qml
+--- ../kirigami/src/controls/Units.qml	2019-10-10 17:13:41.387666766 -0700
++++ ./src/controls/Units.qml	2019-10-11 20:48:07.216139938 -0700
+@@ -113,6 +113,11 @@
+     readonly property int wheelScrollLines: 3
+ 
+     /**
++     * Use this to hardcode the font size of the global toolbar that Kirigami gets wrong
++     */
++    property double defaultFontSize: fontMetrics.font.pixelSize
++
++    /**
+      * metrics used by the default font
+      */
+     property variant fontMetrics: TextMetrics {
+diff -rwu ../kirigami/src/kirigamiplugin.cpp ./src/kirigamiplugin.cpp
 --- ../kirigami/src/kirigamiplugin.cpp	2019-10-10 17:13:41.391000120 -0700
-+++ ./src/kirigamiplugin.cpp	2019-10-11 13:39:22.204187697 -0700
++++ ./src/kirigamiplugin.cpp	2019-10-11 19:44:58.991554017 -0700
 @@ -41,7 +41,7 @@
  
  //Q_INIT_RESOURCE(kirigami);
