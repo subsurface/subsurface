@@ -1378,10 +1378,17 @@ bool QMLManager::undoDelete(int id)
 void QMLManager::selectDive(int id)
 {
 	int i;
+	extern int amount_selected;
 	struct dive *dive = NULL;
 
-	for_each_dive (i, dive)
+	amount_selected = 0;
+	for_each_dive (i, dive) {
 		dive->selected = (dive->id == id);
+		if (dive->selected)
+			amount_selected++;
+	}
+	if (amount_selected == 0)
+		qWarning("QManager::selectDive() called with unknown id");
 }
 
 void QMLManager::deleteDive(int id)
