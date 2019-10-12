@@ -23,6 +23,7 @@ private slots:
 private:
 	Ui::TabDiveInformation *ui;
 	void updateProfile();
+	void updateSalinity();
 	void updateWhen();
 	int pressTypeIndex;
 	void updateTextBox(int event);

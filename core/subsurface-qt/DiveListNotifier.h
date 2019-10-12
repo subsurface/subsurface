@@ -28,6 +28,7 @@ enum class DiveField {
 	TAGS,
 	MODE,
 	NOTES,
+	SALINITY
 };
 enum class TripField {
 	LOCATION,
