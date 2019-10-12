@@ -106,6 +106,14 @@ void TabDiveInformation::updateWhen()
 		ui->surfaceIntervalText->clear();
 }
 
+void TabDiveInformation::updateSalinity()
+{
+	if (current_dive->salinity)
+		ui->salinityText->setText(QString("%1g/ℓ").arg(current_dive->salinity / 10.0));
+	else
+		ui->salinityText->clear();
+}
+
 void TabDiveInformation::updateData()
 {
 	if (!current_dive) {
@@ -117,11 +125,7 @@ void TabDiveInformation::updateData()
 	updateWhen();
 	ui->waterTemperatureText->setText(get_temperature_string(current_dive->watertemp, true));
 	ui->airTemperatureText->setText(get_temperature_string(current_dive->airtemp, true));
-
-	if (current_dive->salinity)
-		ui->salinityText->setText(QString("%1g/ℓ").arg(current_dive->salinity / 10.0));
-	else
-		ui->salinityText->clear();
+	updateSalinity();
 
 	ui->atmPressType->setEditable(true);
 	ui->atmPressType->setItemText(1, get_depth_unit());  // Check for changes in depth unit (imperial/metric)
@@ -154,6 +158,9 @@ void TabDiveInformation::divesChanged(const QVector<dive *> &dives, DiveField fi
 		break;
 	case DiveField::DATETIME:
 		updateWhen();
+		break;
+	case DiveField::SALINITY:
+		updateSalinity();
 		break;
 	default:
 		break;
