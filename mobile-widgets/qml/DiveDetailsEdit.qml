@@ -163,13 +163,10 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				id: txtDate;
 				Layout.fillWidth: true
-				onEditingFinished: {
-					focus = false
-				}
-				color: subsurfaceTheme.textColor
+				flickable: detailsEditFlickable
 			}
 			Controls.Label {
 				Layout.alignment: Qt.AlignRight
@@ -201,13 +198,10 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				id: txtGps
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 
 			Controls.Label {
@@ -238,14 +232,11 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				id: txtDepth
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
 				validator: RegExpValidator { regExp: /[^-]*/ }
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 			Controls.Label {
 				Layout.alignment: Qt.AlignRight
@@ -253,14 +244,11 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				id: txtDuration
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
 				validator: RegExpValidator { regExp: /[^-]*/ }
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 
 			Controls.Label {
@@ -269,13 +257,10 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				id: txtAirTemp
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 
 			Controls.Label {
@@ -284,13 +269,10 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				id: txtWaterTemp
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 
 			Controls.Label {
@@ -363,14 +345,11 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				id: txtWeight
 				readOnly: text === "cannot edit multiple weight systems"
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 // all cylinder info should be able to become dynamic instead of this blob of code.
 // first cylinder
@@ -395,15 +374,12 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				id: txtGasMix0
 				text: usedGas[0] != null ? usedGas[0] : null
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 
 			Controls.Label {
@@ -412,14 +388,11 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				id: txtStartPressure0
 				text: startpressure[0] != null ? startpressure[0] : null
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 
 			Controls.Label {
@@ -428,14 +401,11 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				id: txtEndPressure0
 				text: endpressure[0] != null ? endpressure[0] : null
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 //second cylinder
 			Controls.Label {
@@ -462,16 +432,13 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				visible: usedCyl[1] != null ? true : false
 				id: txtGasMix1
 				text: usedGas[1] != null ? usedGas[1] : null
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 
 			Controls.Label {
@@ -481,15 +448,12 @@ Item {
 				color: subsurfaceTheme.textColor
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			Controls.TextField {
+			SsrfTextField {
 				visible: usedCyl[1] != null ? true : false
 				id: txtStartPressure1
 				text: startpressure[1] != null ? startpressure[1] : null
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 
 			Controls.Label {
@@ -499,15 +463,12 @@ Item {
 				color: subsurfaceTheme.textColor
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			Controls.TextField {
+			SsrfTextField {
 				visible: usedCyl[1] != null ? true : false
 				id: txtEndPressure1
-				text: endpressure[1] != null ? endpressure[1] : null 
+				text: endpressure[1] != null ? endpressure[1] : null
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 // third cylinder
 			Controls.Label {
@@ -535,16 +496,12 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				visible: usedCyl[2] != null ? true : false
 				id: txtGasMix2
 				text: usedGas[2] != null ? usedGas[2] : null
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
-				onEditingFinished: {
-					focus = false
-				}
 			}
 
 			Controls.Label {
@@ -554,15 +511,12 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				visible: usedCyl[2] != null ? true : false
 				id: txtStartPressure2
 				text: startpressure[2] != null ? startpressure[2] : null
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 
 			Controls.Label {
@@ -572,15 +526,12 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				visible: usedCyl[2] != null ? true : false
 				id: txtEndPressure2
 				text: endpressure[2] != null ? endpressure[2] : null
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 // fourth cylinder
 			Controls.Label {
@@ -608,16 +559,13 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				visible: usedCyl[3] != null ? true : false
 				id: txtGasMix3
 				text: usedGas[3] != null ? usedGas[3] : null
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
-				color: subsurfaceTheme.textColor
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 
 			Controls.Label {
@@ -627,15 +575,12 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				visible: usedCyl[3] != null ? true : false
 				id: txtStartPressure3
 				text: startpressure[3] != null ? startpressure[3] : null
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 
 			Controls.Label {
@@ -645,15 +590,12 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				visible: usedCyl[3] != null ? true : false
 				id: txtEndPressure3
 				text: endpressure[3] != null ? endpressure[3] : null
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 // fifth cylinder
 			Controls.Label {
@@ -681,16 +623,13 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				visible: usedCyl[4] != null ? true : false
 				id: txtGasMix4
 				text: usedGas[4] != null ? usedGas[4] : null
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 
 			Controls.Label {
@@ -700,15 +639,12 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				visible: usedCyl[4] != null ? true : false
 				id: txtStartPressure4
 				text: startpressure[4] != null ? startpressure[4] : null
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 
 			Controls.Label {
@@ -718,15 +654,12 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.TextField {
+			SsrfTextField {
 				visible: usedCyl[4] != null ? true : false
 				id: txtEndPressure4
 				text: endpressure[4] != null ? endpressure[4] : null
 				Layout.fillWidth: true
-				color: subsurfaceTheme.textColor
-				onEditingFinished: {
-					focus = false
-				}
+				flickable: detailsEditFlickable
 			}
 
 			Controls.Label {
@@ -775,6 +708,31 @@ Item {
 				Layout.minimumHeight: Kirigami.Units.gridUnit * 6
 				selectByMouse: true
 				wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+				property bool firstTime: true
+				onPressed: waitForKeyboard.start()
+
+				// we repeat the Timer / Function from the SsrfTextField here (no point really in creating a matching customized TextArea)
+				function ensureVisible(yDest) {
+					detailsEditFlickable.contentY = yDest
+				}
+
+				// give the OS enough time to actually resize the flickable
+				Timer {
+					id: waitForKeyboard
+					interval: 300 // 300ms seems like FOREVER
+					onTriggered: {
+						if (!Qt.inputMethod.visible) {
+							if (firstTime) {
+								firstTime = false
+								restart()
+							}
+							return
+						}
+						// make sure at least half the Notes field is visible
+						if (txtNotes.y + txtNotes.height / 2 > detailsEditFlickable.contentY + detailsEditFlickable.height - 3 * Kirigami.Units.gridUnit || txtNotes.y < detailsEditFlickable.contentY)
+							txtNotes.ensureVisible(Math.max(0, 3 * Kirigami.Units.gridUnit + txtNotes.y + txtNotes.height / 2 - detailsEditFlickable.height))
+					}
+				}
 			}
 		}
 		Item {
