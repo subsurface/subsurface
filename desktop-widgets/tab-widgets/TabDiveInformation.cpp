@@ -141,30 +141,18 @@ void TabDiveInformation::divesChanged(const QVector<dive *> &dives, DiveField fi
 	if (!current_dive || !dives.contains(current_dive))
 		return;
 
-	switch(field) {
-	case DiveField::DURATION:
-	case DiveField::DEPTH:
-	case DiveField::MODE:
+	if (field.duration || field.depth || field.mode)
 		updateProfile();
-		break;
-	case DiveField::AIR_TEMP:
+	if (field.air_temp)
 		ui->airTemperatureText->setText(get_temperature_string(current_dive->airtemp, true));
-		break;
-	case DiveField::WATER_TEMP:
+	if (field.water_temp)
 		ui->waterTemperatureText->setText(get_temperature_string(current_dive->watertemp, true));
-		break;
-	case DiveField::ATM_PRESS:
+	if (field.atm_press)
 		ui->atmPressVal->setText(ui->atmPressVal->text().sprintf("%d",current_dive->surface_pressure.mbar));
-		break;
-	case DiveField::DATETIME:
+	if (field.datetime)
 		updateWhen();
-		break;
-	case DiveField::SALINITY:
+	if (field.salinity)
 		updateSalinity();
-		break;
-	default:
-		break;
-	}
 }
 
 void TabDiveInformation::on_atmPressType_currentIndexChanged(int index) { updateTextBox(COMBO_CHANGED); }
