@@ -53,17 +53,8 @@ void TabDiveStatistics::divesChanged(const QVector<dive *> &dives, DiveField fie
 		return;
 
 	// TODO: make this more fine grained. Currently, the core can only calculate *all* statistics.
-	switch(field) {
-	case DiveField::DURATION:
-	case DiveField::DEPTH:
-	case DiveField::MODE:
-	case DiveField::AIR_TEMP:
-	case DiveField::WATER_TEMP:
+	if (field.duration || field.depth || field.mode || field.air_temp || field.water_temp)
 		updateData();
-		break;
-	default:
-		break;
-	}
 }
 
 void TabDiveStatistics::updateData()

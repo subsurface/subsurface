@@ -108,13 +108,8 @@ void TabDiveEquipment::divesChanged(const QVector<dive *> &dives, DiveField fiel
 	if (!current_dive || !dives.contains(current_dive))
 		return;
 
-	switch(field) {
-	case DiveField::SUIT:
+	if (field.suit)
 		ui.suit->setText(QString(current_dive->suit));
-		break;
-	default:
-		break;
-	}
 }
 
 void TabDiveEquipment::toggleTriggeredColumn()

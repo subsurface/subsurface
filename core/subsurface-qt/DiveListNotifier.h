@@ -9,30 +9,59 @@
 
 #include <QObject>
 
-// Dive and trip fields that can be edited.
-// Use "enum class" to not polute the global name space.
-enum class DiveField {
-	NR,
-	DATETIME,
-	DEPTH,
-	DURATION,
-	AIR_TEMP,
-	WATER_TEMP,
-	ATM_PRESS,
-	DIVESITE,
-	DIVEMASTER,
-	BUDDY,
-	RATING,
-	VISIBILITY,
-	SUIT,
-	TAGS,
-	MODE,
-	NOTES,
-	SALINITY
+// Dive and trip fields that can be edited. Use bit fields so that we can pass multiple fields at once.
+// Provides an inlined flag-based constructur because sadly C-style designated initializers are only supported since C++20.
+struct DiveField {
+	// Note: using int instead of the more natural bool, because gcc produces significantly worse code with
+	// bool. clang, on the other hand, does fine.
+	unsigned int nr : 1;
+	unsigned int datetime : 1;
+	unsigned int depth : 1;
+	unsigned int duration : 1;
+	unsigned int air_temp : 1;
+	unsigned int water_temp : 1;
+	unsigned int atm_press : 1;
+	unsigned int divesite : 1;
+	unsigned int divemaster : 1;
+	unsigned int buddy : 1;
+	unsigned int rating : 1;
+	unsigned int visibility : 1;
+	unsigned int suit : 1;
+	unsigned int tags : 1;
+	unsigned int mode : 1;
+	unsigned int notes : 1;
+	unsigned int salinity : 1;
+	enum Flags {
+		NONE = 0,
+		NR = 1 << 0,
+		DATETIME = 1 << 1,
+		DEPTH = 1 << 2,
+		DURATION = 1 << 3,
+		AIR_TEMP = 1 << 4,
+		WATER_TEMP = 1 << 5,
+		ATM_PRESS = 1 << 6,
+		DIVESITE = 1 << 7,
+		DIVEMASTER = 1 << 8,
+		BUDDY = 1 << 9,
+		RATING = 1 << 10,
+		VISIBILITY = 1 << 11,
+		SUIT = 1 << 12,
+		TAGS = 1 << 13,
+		MODE = 1 << 14,
+		NOTES = 1 << 15,
+		SALINITY = 1 << 16
+	};
+	DiveField(int flags);
 };
-enum class TripField {
-	LOCATION,
-	NOTES
+struct TripField {
+	unsigned int location : 1;
+	unsigned int notes : 1;
+	enum Flags {
+		NONE = 0,
+		LOCATION = 1 << 0,
+		NOTES = 1 << 1
+	};
+	TripField(int flags);
 };
 
 class DiveListNotifier : public QObject {
@@ -130,4 +159,30 @@ inline DiveListNotifier::InCommandMarker DiveListNotifier::enterCommand()
 	return InCommandMarker(*this);
 }
 
+inline DiveField::DiveField(int flags) :
+	nr((flags & NR) != 0),
+	datetime((flags & DATETIME) != 0),
+	depth((flags & DEPTH) != 0),
+	duration((flags & DURATION) != 0),
+	air_temp((flags & AIR_TEMP) != 0),
+	water_temp((flags & WATER_TEMP) != 0),
+	atm_press((flags & ATM_PRESS) != 0),
+	divesite((flags & DIVESITE) != 0),
+	divemaster((flags & DIVEMASTER) != 0),
+	buddy((flags & BUDDY) != 0),
+	rating((flags & RATING) != 0),
+	visibility((flags & VISIBILITY) != 0),
+	suit((flags & SUIT) != 0),
+	tags((flags & TAGS) != 0),
+	mode((flags & MODE) != 0),
+	notes((flags & NOTES) != 0),
+	salinity((flags & SALINITY) != 0)
+{
+}
+
+inline TripField::TripField(int flags) :
+	location((flags & LOCATION) != 0),
+	notes((flags & NOTES) != 0)
+{
+}
 #endif
