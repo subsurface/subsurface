@@ -284,53 +284,39 @@ void MainTab::divesChanged(const QVector<dive *> &dives, DiveField field)
 	if (!current_dive || !dives.contains(current_dive))
 		return;
 
-	switch(field) {
-	case DiveField::DURATION:
+	if (field.duration)
 		ui.duration->setText(render_seconds_to_string(current_dive->duration.seconds));
-		profileFromDive(current_dive);
-		break;
-	case DiveField::DEPTH:
+	if (field.depth)
 		ui.depth->setText(get_depth_string(current_dive->maxdepth, true));
-		profileFromDive(current_dive);
-		break;
-	case DiveField::AIR_TEMP:
+	if (field.air_temp)
 		ui.airtemp->setText(get_temperature_string(current_dive->airtemp, true));
-		break;
-	case DiveField::WATER_TEMP:
+	if (field.water_temp)
 		ui.watertemp->setText(get_temperature_string(current_dive->watertemp, true));
-		break;
-	case DiveField::RATING:
+	if (field.rating)
 		ui.rating->setCurrentStars(current_dive->rating);
-		break;
-	case DiveField::VISIBILITY:
+	if (field.visibility)
 		ui.visibility->setCurrentStars(current_dive->visibility);
-		break;
-	case DiveField::NOTES:
+	if (field.notes)
 		updateNotes(current_dive);
-		break;
-	case DiveField::MODE:
+	if (field.mode)
 		updateMode(current_dive);
-		break;
-	case DiveField::DATETIME:
+	if (field.datetime) {
 		updateDateTime(current_dive);
 		MainWindow::instance()->graphics->dateTimeChanged();
 		DivePlannerPointsModel::instance()->getDiveplan().when = current_dive->when;
-		break;
-	case DiveField::DIVESITE:
-		updateDiveSite(current_dive);
-		break;
-	case DiveField::TAGS:
-		ui.tagWidget->setText(get_taglist_string(current_dive->tag_list));
-		break;
-	case DiveField::BUDDY:
-		ui.buddy->setText(current_dive->buddy);
-		break;
-	case DiveField::DIVEMASTER:
-		ui.divemaster->setText(current_dive->divemaster);
-		break;
-	default:
-		break;
 	}
+	if (field.divesite)
+		updateDiveSite(current_dive);
+	if (field.tags)
+		ui.tagWidget->setText(get_taglist_string(current_dive->tag_list));
+	if (field.buddy)
+		ui.buddy->setText(current_dive->buddy);
+	if (field.divemaster)
+		ui.divemaster->setText(current_dive->divemaster);
+
+	// If duration or depth changed, the profile needs to be replotted
+	if (field.duration || field.depth)
+		profileFromDive(current_dive);
 }
 
 void MainTab::diveSiteEdited(dive_site *ds, int)
@@ -347,16 +333,10 @@ void MainTab::tripChanged(dive_trip *trip, TripField field)
 	if (currentTrip != trip)
 		return;
 
-	switch(field) {
-	case TripField::NOTES:
+	if (field.notes)
 		ui.notes->setText(currentTrip->notes);
-		break;
-	case TripField::LOCATION:
+	if (field.location)
 		ui.diveTripLocation->setText(currentTrip->location);
-		break;
-	default:
-		break;
-	}
 }
 
 void MainTab::nextInputField(QKeyEvent *event)

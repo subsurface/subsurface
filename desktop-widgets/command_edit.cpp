@@ -803,25 +803,16 @@ void PasteDives::undo()
 	}
 
 	// Send signals.
-	// TODO: We send one signal per changed field. This means that the dive list may
-	// update the entry numerous times. Perhaps change the field-id into flags?
-	// There seems to be a number of enums / flags describing dive fields. Perhaps unify them all?
-	if (what.notes)
-		emit diveListNotifier.divesChanged(divesToNotify, DiveField::NOTES);
-	if (what.divemaster)
-		emit diveListNotifier.divesChanged(divesToNotify, DiveField::DIVEMASTER);
-	if (what.buddy)
-		emit diveListNotifier.divesChanged(divesToNotify, DiveField::BUDDY);
-	if (what.suit)
-		emit diveListNotifier.divesChanged(divesToNotify, DiveField::SUIT);
-	if (what.rating)
-		emit diveListNotifier.divesChanged(divesToNotify, DiveField::RATING);
-	if (what.visibility)
-		emit diveListNotifier.divesChanged(divesToNotify, DiveField::VISIBILITY);
-	if (what.divesite)
-		emit diveListNotifier.divesChanged(divesToNotify, DiveField::DIVESITE);
-	if (what.tags)
-		emit diveListNotifier.divesChanged(divesToNotify, DiveField::TAGS);
+	DiveField fields(DiveField::NONE);
+	fields.notes = what.notes;
+	fields.divemaster = what.divemaster;
+	fields.buddy = what.buddy;
+	fields.suit = what.suit;
+	fields.rating = what.rating;
+	fields.visibility = what.visibility;
+	fields.divesite = what.divesite;
+	fields.tags = what.tags;
+	emit diveListNotifier.divesChanged(divesToNotify, fields);
 	if (what.cylinders)
 		emit diveListNotifier.cylindersReset(divesToNotify);
 	if (what.weights)
@@ -888,14 +879,8 @@ void ReplanDive::undo()
 	fixup_dive(d);
 
 	QVector<dive *> divesToNotify = { d };
-	// TODO: Turn field into flags to avoid multiple signals
-	emit diveListNotifier.divesChanged(divesToNotify, DiveField::DATETIME);
-	emit diveListNotifier.divesChanged(divesToNotify, DiveField::DURATION);
-	emit diveListNotifier.divesChanged(divesToNotify, DiveField::DEPTH);
-	emit diveListNotifier.divesChanged(divesToNotify, DiveField::MODE);
-	emit diveListNotifier.divesChanged(divesToNotify, DiveField::NOTES);
-	emit diveListNotifier.divesChanged(divesToNotify, DiveField::SALINITY);
-	emit diveListNotifier.divesChanged(divesToNotify, DiveField::ATM_PRESS);
+	emit diveListNotifier.divesChanged(divesToNotify, DiveField::DATETIME | DiveField::DURATION | DiveField::DEPTH | DiveField::MODE |
+							  DiveField::NOTES | DiveField::SALINITY | DiveField::ATM_PRESS);
 	emit diveListNotifier.cylindersReset(divesToNotify);
 }
 

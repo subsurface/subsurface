@@ -104,7 +104,7 @@ void MapWidget::coordinatesChanged(struct dive_site *ds, const location_t &locat
 
 void MapWidget::divesChanged(const QVector<dive *> &, DiveField field)
 {
-	if (field == DiveField::DIVESITE)
+	if (field.divesite)
 		reload();
 }
 
