@@ -30,6 +30,7 @@ BREEZE=../breeze-icons
 
 rm -rf $MC
 mkdir -p $MC/icons
+mkdir -p $MC/icons-dark
 cp -R $PMMC/* $MC/
 
 cp $BREEZE/icons/actions/22/map-globe.svg $MC/icons
@@ -37,6 +38,8 @@ cp $BREEZE/icons/actions/24/dialog-cancel.svg $MC/icons
 cp $BREEZE/icons/actions/24/distribute-horizontal-x.svg $MC/icons
 cp $BREEZE/icons/actions/24/document-edit.svg $MC/icons
 cp $BREEZE/icons/actions/24/document-save.svg $MC/icons
+cp $BREEZE/icons-dark/actions/24/document-edit.svg $MC/icons-dark
+cp $BREEZE/icons-dark/actions/24/document-save.svg $MC/icons-dark
 cp $BREEZE/icons/actions/24/go-next.svg $MC/icons
 cp $BREEZE/icons/actions/24/go-previous.svg $MC/icons
 cp $BREEZE/icons/actions/24/go-up.svg $MC/icons
