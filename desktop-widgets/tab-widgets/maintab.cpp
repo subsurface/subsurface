@@ -264,18 +264,6 @@ void MainTab::enableEdition(EditMode newEditMode)
 	editMode = newEditMode != NONE ? newEditMode : DIVE;
 }
 
-static void profileFromDive(struct dive *d)
-{
-	// TODO: We have to put these manipulations into a setPlanState()/setProfileState() pair,
-	// because otherwise the DivePlannerPointsModel and the profile get out of sync.
-	// This can lead to crashes. Let's try to detangle these subtleties.
-	MainWindow::instance()->graphics->setPlanState();
-	DivePlannerPointsModel::instance()->loadFromDive(d);
-	MainWindow::instance()->graphics->setReplot(true);
-	MainWindow::instance()->graphics->plotDive(current_dive, true);
-	MainWindow::instance()->graphics->setProfileState();
-}
-
 // This function gets called if a field gets updated by an undo command.
 // Refresh the corresponding UI field.
 void MainTab::divesChanged(const QVector<dive *> &dives, DiveField field)
@@ -316,7 +304,7 @@ void MainTab::divesChanged(const QVector<dive *> &dives, DiveField field)
 
 	// If duration or depth changed, the profile needs to be replotted
 	if (field.duration || field.depth)
-		profileFromDive(current_dive);
+		MainWindow::instance()->graphics->plotDive(current_dive, true);
 }
 
 void MainTab::diveSiteEdited(dive_site *ds, int)
