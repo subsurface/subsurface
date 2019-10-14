@@ -948,18 +948,18 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 			}
 		}
 		if (needs_expand)
-			popup.addAction(tr("Expand all"), this, SLOT(expandAll()));
+			popup.addAction(tr("Expand all"), this, &QTreeView::expandAll);
 		if (needs_collapse)
-			popup.addAction(tr("Collapse all"), this, SLOT(collapseAll()));
+			popup.addAction(tr("Collapse all"), this, &QTreeView::collapseAll);
 
 		// verify if there`s a need for collapse others
 		if (expanded_nodes > 1)
-			collapseAction = popup.addAction(tr("Collapse others"), this, SLOT(collapseAll()));
+			collapseAction = popup.addAction(tr("Collapse others"), this, &QTreeView::collapseAll);
 
 
 		if (d) {
-			popup.addAction(tr("Remove dive(s) from trip"), this, SLOT(removeFromTrip()));
-			popup.addAction(tr("Create new trip above"), this, SLOT(newTripAbove()));
+			popup.addAction(tr("Remove dive(s) from trip"), this, &DiveListView::removeFromTrip);
+			popup.addAction(tr("Create new trip above"), this, &DiveListView::newTripAbove);
 			if (!d->divetrip) {
 				struct dive *top = d;
 				struct dive *bottom = d;
@@ -974,30 +974,30 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 					}
 				}
 				if (is_trip_before_after(top, (currentOrder == Qt::AscendingOrder)))
-					popup.addAction(tr("Add dive(s) to trip immediately above"), this, SLOT(addToTripAbove()));
+					popup.addAction(tr("Add dive(s) to trip immediately above"), this, &DiveListView::addToTripAbove);
 				if (is_trip_before_after(bottom, (currentOrder == Qt::DescendingOrder)))
-					popup.addAction(tr("Add dive(s) to trip immediately below"), this, SLOT(addToTripBelow()));
+					popup.addAction(tr("Add dive(s) to trip immediately below"), this, &DiveListView::addToTripBelow);
 			}
 		}
 		if (trip) {
-			popup.addAction(tr("Merge trip with trip above"), this, SLOT(mergeTripAbove()));
-			popup.addAction(tr("Merge trip with trip below"), this, SLOT(mergeTripBelow()));
+			popup.addAction(tr("Merge trip with trip above"), this, &DiveListView::mergeTripAbove);
+			popup.addAction(tr("Merge trip with trip below"), this, &DiveListView::mergeTripBelow);
 		}
 	}
 	if (d) {
-		popup.addAction(tr("Delete dive(s)"), this, SLOT(deleteDive()));
+		popup.addAction(tr("Delete dive(s)"), this, &DiveListView::deleteDive);
 #if 0
-		popup.addAction(tr("Mark dive(s) invalid", this, SLOT(markDiveInvalid())));
+		popup.addAction(tr("Mark dive(s) invalid", this, &DiveListView::markDiveInvalid);
 #endif
 	}
 	if (amount_selected > 1 && consecutive_selected())
-		popup.addAction(tr("Merge selected dives"), this, SLOT(mergeDives()));
+		popup.addAction(tr("Merge selected dives"), this, &DiveListView::mergeDives);
 	if (amount_selected >= 1) {
-		popup.addAction(tr("Renumber dive(s)"), this, SLOT(renumberDives()));
-		popup.addAction(tr("Shift dive times"), this, SLOT(shiftTimes()));
-		popup.addAction(tr("Split selected dives"), this, SLOT(splitDives()));
-		popup.addAction(tr("Load media from file(s)"), this, SLOT(loadImages()));
-		popup.addAction(tr("Load media from web"), this, SLOT(loadWebImages()));
+		popup.addAction(tr("Renumber dive(s)"), this, &DiveListView::renumberDives);
+		popup.addAction(tr("Shift dive times"), this, &DiveListView::shiftTimes);
+		popup.addAction(tr("Split selected dives"), this, &DiveListView::splitDives);
+		popup.addAction(tr("Load media from file(s)"), this, &DiveListView::loadImages);
+		popup.addAction(tr("Load media from web"), this, &DiveListView::loadWebImages);
 	}
 
 	// "collapse all" really closes all trips,

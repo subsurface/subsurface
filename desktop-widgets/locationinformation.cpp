@@ -57,7 +57,7 @@ bool LocationInformationWidget::eventFilter(QObject *object, QEvent *ev)
 	if (ev->type() == QEvent::ContextMenu) {
 		QContextMenuEvent *ctx = (QContextMenuEvent *)ev;
 		QMenu contextMenu;
-		contextMenu.addAction(tr("Merge into current site"), this, SLOT(mergeSelectedDiveSites()));
+		contextMenu.addAction(tr("Merge into current site"), this, &LocationInformationWidget::mergeSelectedDiveSites);
 		contextMenu.exec(ctx->globalPos());
 		return true;
 	}

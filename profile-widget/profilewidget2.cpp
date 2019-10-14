@@ -1432,10 +1432,10 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 				return;
 			// create menu to show when right clicking on dive computer name
 			if (dc_number > 0)
-				m.addAction(tr("Make first dive computer"), this, SLOT(makeFirstDC()));
+				m.addAction(tr("Make first dive computer"), this, &ProfileWidget2::makeFirstDC);
 			if (count_divecomputers(current_dive) > 1) {
-				m.addAction(tr("Delete this dive computer"), this, SLOT(deleteCurrentDC()));
-				m.addAction(tr("Split this dive computer into own dive"), this, SLOT(splitCurrentDC()));
+				m.addAction(tr("Delete this dive computer"), this, &ProfileWidget2::deleteCurrentDC);
+				m.addAction(tr("Split this dive computer into own dive"), this, &ProfileWidget2::splitCurrentDC);
 			}
 			m.exec(event->globalPos());
 			// don't show the regular profile context menu
@@ -1457,11 +1457,11 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 			gasChange->addAction(action);
 		}
 	}
-	QAction *setpointAction = m.addAction(tr("Add setpoint change"), this, SLOT(addSetpointChange()));
+	QAction *setpointAction = m.addAction(tr("Add setpoint change"), this, &ProfileWidget2::addSetpointChange);
 	setpointAction->setData(event->globalPos());
-	QAction *action = m.addAction(tr("Add bookmark"), this, SLOT(addBookmark()));
+	QAction *action = m.addAction(tr("Add bookmark"), this, &ProfileWidget2::addBookmark);
 	action->setData(event->globalPos());
-	QAction *splitAction = m.addAction(tr("Split dive into two"), this, SLOT(splitDive()));
+	QAction *splitAction = m.addAction(tr("Split dive into two"), this, &ProfileWidget2::splitDive);
 	splitAction->setData(event->globalPos());
 	const struct event *ev = NULL;
 	enum divemode_t divemode = UNDEF_COMP_TYPE;
@@ -1564,7 +1564,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		}
 	}
 	if (some_hidden) {
-		action = m.addAction(tr("Unhide all events"), this, SLOT(unhideEvents()));
+		action = m.addAction(tr("Unhide all events"), this, &ProfileWidget2::unhideEvents);
 		action->setData(event->globalPos());
 	}
 	m.exec(event->globalPos());

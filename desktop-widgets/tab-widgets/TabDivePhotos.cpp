@@ -52,14 +52,14 @@ void TabDivePhotos::clear()
 void TabDivePhotos::contextMenuEvent(QContextMenuEvent *event)
 {
 	QMenu popup(this);
-	popup.addAction(tr("Load media from file(s)"), this, SLOT(addPhotosFromFile()));
-	popup.addAction(tr("Load media file(s) from web"), this, SLOT(addPhotosFromURL()));
+	popup.addAction(tr("Load media from file(s)"), this, &TabDivePhotos::addPhotosFromFile);
+	popup.addAction(tr("Load media file(s) from web"), this, &TabDivePhotos::addPhotosFromURL);
 	popup.addSeparator();
-	popup.addAction(tr("Delete selected media files"), this, SLOT(removeSelectedPhotos()));
-	popup.addAction(tr("Delete all media files"), this, SLOT(removeAllPhotos()));
-	popup.addAction(tr("Open folder of selected media files"), this, SLOT(openFolderOfSelectedFiles()));
-	popup.addAction(tr("Recalculate selected thumbnails"), this, SLOT(recalculateSelectedThumbnails()));
-	popup.addAction(tr("Save dive data as subtitles"), this, SLOT(saveSubtitles()));
+	popup.addAction(tr("Delete selected media files"), this, &TabDivePhotos::removeSelectedPhotos);
+	popup.addAction(tr("Delete all media files"), this, &TabDivePhotos::removeAllPhotos);
+	popup.addAction(tr("Open folder of selected media files"), this, &TabDivePhotos::openFolderOfSelectedFiles);
+	popup.addAction(tr("Recalculate selected thumbnails"), this, &TabDivePhotos::recalculateSelectedThumbnails);
+	popup.addAction(tr("Save dive data as subtitles"), this, &TabDivePhotos::saveSubtitles);
 	popup.exec(event->globalPos());
 	event->accept();
 }
