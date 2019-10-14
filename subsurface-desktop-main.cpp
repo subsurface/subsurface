@@ -214,18 +214,8 @@ exit:
 	ctx.makeCurrent(NULL);
 	surface.destroy();
 	if (glError) {
-#if QT_VERSION < QT_VERSION_CHECK(5, 8, 0)
-		qWarning() << QStringLiteral(VALIDATE_GL_PREFIX
-					     "ERROR: %1.\n"
-					     "Cannot automatically fallback to a software renderer!\n"
-					     "Set the environment variable 'QT_QUICK_BACKEND' with the value of 'software'\n"
-					     "before running Subsurface!\n")
-				      .arg(glError);
-		exit(0);
-#else
 		qWarning() << QStringLiteral(VALIDATE_GL_PREFIX "WARNING: %1. Using a software renderer!").arg(glError);
 		QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
-#endif
 	}
 }
 
