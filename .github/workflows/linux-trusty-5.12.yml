@@ -1,0 +1,27 @@
+name: Linux Qt 5.12
+on: push
+
+jobs:
+  buildInContainer:
+    runs-on: ubuntu-latest
+    container:
+      image: docker://dirkhh/trusty-qt512:0.7
+
+    steps:
+    - name: checkout sources
+      run: |
+        echo $pwd
+        git clone git://github.com/${GITHUB_REPOSITORY}
+        cd subsurface
+        git checkout ${GITHUB_SHA}
+
+    - name: run build
+      run: |
+        echo $pwd
+        bash -x subsurface/.github/workflows/in-container-build.sh
+
+    - name: publish result
+      uses: actions/upload-artifact@v1
+      with:
+        name: Subsurface-${{github.sha}}.AppImage
+        path: ./Subsurface.AppImage  # /${GITHUB_WORKSPACE}/ in the container is '.' here

@@ -11,6 +11,11 @@ if (POLICY CMP0071)
 	cmake_policy(SET CMP0071 OLD)
 endif()
 
+# support Packagename_ROOT environment variable
+if (POLICY CMP0074)
+  cmake_policy(SET CMP0074 NEW) # CMake 3.12
+endif ()
+
 # global settings
 
 set(CMAKE_MODULE_PATH
