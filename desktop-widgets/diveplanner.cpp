@@ -63,7 +63,7 @@ void DiveHandler::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 	// don't allow removing the last point
 	if (plannerModel->rowCount() > 1) {
 		m.addSeparator();
-		m.addAction(gettextFromC::tr("Remove this point"), this, SLOT(selfRemove()));
+		m.addAction(gettextFromC::tr("Remove this point"), this, &DiveHandler::selfRemove);
 		m.exec(event->screenPos());
 	}
 }
