@@ -20,15 +20,14 @@
 # MXE_TARGETS :=  i686-w64-mingw32.shared.posix.dw2
 #
 # # Uncomment the next line if you want to do debug builds later
-# # note this currently doesn't build on mxe version @180304a
 # # qtbase_CONFIGURE_OPTS=-debug-and-release
 #---
 # (documenting this in comments is hard... you need to remove
 # the first '#' of course)
 #
 # now you can start the build
-# look at the setting.mk ffrom scripts/docker/mxe-build-container/settings.mk
-# make libxml2 libxslt libusb1 libzip libssh2 libftdi1 curl qt5 nsis libgit2 qtwebkit hidapi
+#
+# make libxml2 libxslt libusb1 libzip libssh2 libftdi1 curl qt5 nsis
 #
 #     (if you intend to build Subsurface without user space FTDI support
 #      you can drop libftdi1 from that list and start this script with
@@ -45,8 +44,10 @@
 # Something like this:
 #
 # ~/src/mxe                    <- MXE git with Qt5, automake (see above)
+#      /grantlee               <- Grantlee 5.0.0 sources from git
 #      /subsurface             <- current subsurface git
 #      /googlemaps             <- Google Maps plugin for QtLocation from git
+#      /hidapi                 <- HIDAPI library for libdivecomputer
 #
 # ~/src/win32                  <- build directory
 #
@@ -136,6 +137,43 @@ else
 	fi
 	touch Release
 fi
+
+# grantlee
+
+cd "$BUILDDIR"
+if [[ ! -d grantlee || -f build.grantlee ]] ; then
+	rm -f build.grantlee
+	mkdir -p grantlee
+	cd grantlee
+	"$MXEBUILDTYPE"-cmake \
+		-DCMAKE_BUILD_TYPE=$RELEASE \
+		-DBUILD_TESTS=OFF \
+		"$BASEDIR"/grantlee
+
+	make $JOBS
+	make install
+fi
+
+# hidapi for libdivecomputer (if available)
+
+if [[ -d "$BASEDIR"/hidapi ]] ; then
+	cd "$BUILDDIR"
+	if [[ ! -d hidapi || -f build.hidapi ]] ; then
+		rm -f build.hidapi
+		mkdir -p hidapi
+		pushd "$BASEDIR"/hidapi
+		bash ./bootstrap
+		popd
+		cd hidapi
+		"$BASEDIR"/hidapi/configure \
+			CC="$MXEBUILDTYPE"-gcc \
+			--host="$MXEBUILDTYPE" \
+			--prefix="$BASEDIR"/"$MXEDIR"/usr/"$MXEBUILDTYPE"
+		make $JOBS
+		make install
+	fi
+fi
+
 
 # libdivecomputer
 # ensure the git submodule is present and the autotools are set up
