@@ -9,6 +9,10 @@ set -e
 export PATH=$QT_ROOT/bin:$PATH # Make sure correct qmake is found on the $PATH for linuxdeployqt
 export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
 
+# first make sure that no one broke Subsurface-mobile
+bash -e -x /subsurface/scripts/build.sh -mobile -quick
+
+# now build our AppImage
 bash -e -x /subsurface/scripts/build.sh -desktop -create-appdir -build-with-webkit -quick
 
 export QT_PLUGIN_PATH=$QT_ROOT/plugins
