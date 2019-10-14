@@ -1,0 +1,84 @@
+name: Mac
+on: push
+
+jobs:
+  desktopBuild:
+    runs-on: macOS-latest
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v1
+    - name: setup Homebrew
+      run: brew install autoconf automake libtool xz hidapi libusb libxml2 libxslt libzip openssl pkg-config libgit2 libssh2
+    - name: set our Qt build
+      run: |
+        mkdir -p Qt/5.13.0
+        curl --output Qt-5.13.0-mac.tar.xz https://f002.backblazeb2.com/file/Subsurface-Travis/Qt-5.13.0-mac.tar.xz
+        tar -xJ -C Qt/5.13.0 -f Qt-5.13.0-mac.tar.xz
+    - name: build Subsurface
+      run: |
+        cd ${GITHUB_WORKSPACE}/..
+        export QT_ROOT=${GITHUB_WORKSPACE}/Qt/5.13.0/clang_64
+        export PATH=$QT_ROOT/bin:$PATH
+        export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
+        DIR=$(pwd)
+
+        # first build Subsurface-mobile to ensure this didn't get broken
+        bash -e -x ./subsurface/scripts/build.sh -mobile
+
+        # now Subsurface with WebKit
+        bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -release
+
+        cd ${GITHUB_WORKSPACE}/build
+
+        # build export-html to make sure that didn't get broken
+        make export-html
+
+    - name: package Subsurface
+      run: |
+        cd ${GITHUB_WORKSPACE}/build
+        # next build and install Subsurface and then clean up the staging area
+        LIBRARY_PATH=${DIR}/install-root/lib make -j2 install
+
+        # now adjust a few references that macdeployqt appears to miss
+        EXECUTABLE=Subsurface.app/Contents/MacOS/Subsurface
+        for i in libgit2 libGrantlee_TextDocument.dylib libGrantlee_Templates.dylib; do
+                OLD=$(otool -L ${EXECUTABLE} | grep $i | cut -d\  -f1 | tr -d "\t")
+                if [[ ! -z ${OLD} && ! -f Subsurface.app/Contents/Frameworks/$(basename ${OLD}) ]] ; then
+                        # copy the library into the bundle and make sure its id and the reference to it are correct
+                        cp ${DIR}/install-root/lib/$(basename ${OLD}) Subsurface.app/Contents/Frameworks
+                        SONAME=$(basename $OLD)
+                        install_name_tool -change ${OLD} @executable_path/../Frameworks/${SONAME} ${EXECUTABLE}
+                        install_name_tool -id @executable_path/../Frameworks/${SONAME} Subsurface.app/Contents/Frameworks/${SONAME}
+                fi
+        done
+
+        # next, replace @rpath references with @executable_path references in Subsurface
+        RPATH=$(otool -L ${EXECUTABLE} | grep rpath  | cut -d\  -f1 | tr -d "\t" | cut -b 8- )
+        for i in ${RPATH}; do
+                install_name_tool -change @rpath/$i @executable_path/../Frameworks/$i ${EXECUTABLE}
+        done
+
+        # next deal with libGrantlee
+        LIBG=$(ls Subsurface.app/Contents/Frameworks/libGrantlee_Templates*dylib)
+        for i in QtScript.framework/Versions/5/QtScript QtCore.framework/Versions/5/QtCore ; do
+                install_name_tool -change @rpath/$i @executable_path/../Frameworks/$i ${LIBG}
+        done
+
+        # clean up shared library dependency in the Grantlee plugins
+        GRANTLEE_VERSION=$(basename Subsurface.app/Contents/PlugIns/grantlee/5.*)
+        for i in Subsurface.app/Contents/PlugIns/grantlee/${GRANTLEE_VERSION}/*.so; do
+                OLD=$(otool -L $i | grep libGrantlee_Templates | cut -d\  -f1 | tr -d "\t")
+                SONAME=$(basename $OLD )
+                install_name_tool -change ${OLD} @executable_path/../Frameworks/${SONAME} $i;
+                OLD=$(otool -L $i | grep QtCore | cut -d\  -f1 | tr -d "\t")
+                install_name_tool -change ${OLD} @executable_path/../Frameworks/QtCore.framework/QtCore $i;
+                pushd Subsurface.app/Contents/PlugIns/grantlee
+                ln -s ${GRANTLEE_VERSION}/$(basename $i) .
+                popd
+        done
+
+    - name: publish result
+      uses: actions/upload-artifact@v1
+      with:
+        name: Subsurface-GitHub-Build.app
+        path: build/Subsurface.app
