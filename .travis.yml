@@ -7,25 +7,6 @@ matrix:
       osx_image: xcode9.3
       language: c++
 
-    - env: SUBSURFACE_PLATFORM='mac'
-      os: osx
-      osx_image: xcode9.2
-      language: c++
-      addons:
-        homebrew:
-          packages:
-            - xz
-            - hidapi
-            - libusb
-            - libxml2
-            - libxslt
-            - libzip
-            - openssl
-            - pkg-config
-            - libgit2
-            - libssh2
-          update: true
-
     - env: SUBSURFACE_PLATFORM='windows-container'
       os: linux
       filter_secrets: false

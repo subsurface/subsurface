@@ -12,6 +12,10 @@
 # in subsurface/build
 
 # create a log file of the build
+
+# don't keep going if we run into an error
+set -e
+
 exec 1> >(tee build.log) 2>&1
 
 SRC=$(pwd)
