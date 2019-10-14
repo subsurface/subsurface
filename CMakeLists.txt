@@ -230,7 +230,10 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 endif()
 
 if(BTSUPPORT)
+	set(BLESUPPORT ON)
 	list(APPEND QT_EXTRA_COMPONENTS Bluetooth)
+	add_definitions(-DBT_SUPPORT)
+	add_definitions(-DBLE_SUPPORT)
 endif()
 
 if(ANDROID)
@@ -240,32 +243,11 @@ if(ANDROID)
 	set(CMAKE_FIND_ROOT_PATH "/;${CMAKE_FIND_ROOT_PATH}")
 endif()
 set(QT_FIND_COMPONENTS Core Concurrent Widgets Network Svg Positioning Quick Location ${QT_EXTRA_COMPONENTS})
-find_package(Qt5 5.5 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
+find_package(Qt5 5.9.1 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
 foreach(_QT_COMPONENT ${QT_FIND_COMPONENTS})
 	list(APPEND QT_LIBRARIES Qt5::${_QT_COMPONENT})
 endforeach()
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test Qt5::QuickTest)
-
-# Windows Qt doesn't support BLE at all
-# the rest of them need at least 5.6 to be reasonable but really, you want 5.9.1
-if (BTSUPPORT AND NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	if (Qt5Core_VERSION VERSION_LESS 5.6.0)
-		message(STATUS "Turning off BLE support as Qt version ${Qt5Core_VERSION} is insufficient for that")
-	else()
-		set(BLESUPPORT ON)
-		if (Qt5Core_VERSION VERSION_LESS 5.9.1)
-			message(STATUS "BLE support has been enabled, but for best results you really want Qt 5.9.1")
-		endif()
-	endif()
-endif()
-
-if(BTSUPPORT)
-	add_definitions(-DBT_SUPPORT)
-endif()
-
-if(BLESUPPORT)
-	add_definitions(-DBLE_SUPPORT)
-endif()
 
 #set up the subsurface_link_libraries variable
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES})
