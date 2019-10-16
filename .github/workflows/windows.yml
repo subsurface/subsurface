@@ -1,0 +1,64 @@
+name: Windows
+on: push
+
+jobs:
+  buildInContainer:
+    runs-on: ubuntu-latest
+    container:
+      image: docker://dirkhh/mxe-build-container:0.9
+
+    steps:
+    - name: checkout sources
+      run: |
+        cd /win
+        git clone git://github.com/${GITHUB_REPOSITORY}
+        cd subsurface
+        git checkout ${GITHUB_SHA}
+        git submodule init
+        git submodule update
+
+    - name: get other dependencies
+      run: |
+        cd /win
+        apt-get install -y ca-certificates libtool
+        bash subsurface/scripts/get-dep-lib.sh single . libzip
+        bash subsurface/scripts/get-dep-lib.sh single . hidapi
+        bash subsurface/scripts/get-dep-lib.sh single . googlemaps
+        bash subsurface/scripts/get-dep-lib.sh single . grantlee
+        bash subsurface/scripts/get-dep-lib.sh single . mdbtools
+
+    - name: run build
+      run: |
+        cd /win
+        bash -x subsurface/.github/workflows/windows-in-container-build.sh 2>&1 | tee build.log
+        grep "Built target installer" build.log
+
+    - name: publish Subsurface installer
+      uses: actions/upload-artifact@v1
+      with:
+        name: subsurface-${{github.sha}}-installer.exe
+        path: ./subsurface-installer.exe  # /${GITHUB_WORKSPACE}/ in the container is '.' here
+
+    - name: publish Subsurface binary
+      uses: actions/upload-artifact@v1
+      with:
+        name: subsurface-${{github.sha}}.exe
+        path: ./subsurface.exe  # /${GITHUB_WORKSPACE}/ in the container is '.' here
+
+    - name: publish Subsurface debug binary
+      uses: actions/upload-artifact@v1
+      with:
+        name: subsurface-${{github.sha}}.exe.debug
+        path: ./subsurface.exe.debug  # /${GITHUB_WORKSPACE}/ in the container is '.' here
+
+    - name: publish smtk2ssrf installer
+      uses: actions/upload-artifact@v1
+      with:
+        name: smtk2ssrf-${{github.sha}}-installer.exe
+        path: ./smtk2ssrf-installer.exe  # /${GITHUB_WORKSPACE}/ in the container is '.' here
+
+    - name: publish Subsurface installer
+      uses: actions/upload-artifact@v1
+      with:
+        name: smtk2ssrf-${{github.sha}}.exe
+        path: ./subsurface.exe  # /${GITHUB_WORKSPACE}/ in the container is '.' here
