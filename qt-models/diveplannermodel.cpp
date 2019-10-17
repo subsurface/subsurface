@@ -919,7 +919,10 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		cloneDiveplan(&diveplan, plan_copy);
 		unlock_planner();
 #ifdef VARIATIONS_IN_BACKGROUND
-		QtConcurrent::run(this, &DivePlannerPointsModel::computeVariations, plan_copy, &plan_deco_state);
+		// Since we're calling computeVariations asynchronously and plan_deco_state is allocated
+		// on the stack, it must be copied and freed by the worker-thread.
+		struct deco_state *plan_deco_state_copy = new deco_state(plan_deco_state);
+		QtConcurrent::run(this, &DivePlannerPointsModel::computeVariationsFreeDeco, plan_copy, plan_deco_state_copy);
 #else
 		computeVariations(plan_copy, &plan_deco_state);
 #endif
@@ -1004,7 +1007,13 @@ int DivePlannerPointsModel::analyzeVariations(struct decostop *min, struct decos
 	return (leftsum + rightsum) / 2;
 }
 
-void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, struct deco_state *previos_ds)
+void DivePlannerPointsModel::computeVariationsFreeDeco(struct diveplan *original_plan, struct deco_state *previous_ds)
+{
+	computeVariations(original_plan, previous_ds);
+	delete previous_ds;
+}
+
+void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, const struct deco_state *previous_ds)
 {
 
 //	bool oldRecalc = setRecalc(false);
@@ -1014,7 +1023,7 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, s
 	struct deco_state *cache = NULL, *save = NULL;
 	struct diveplan plan_copy;
 	struct divedatapoint *last_segment;
-	struct deco_state ds = *previos_ds;
+	struct deco_state ds = *previous_ds;
 
 	if (!original_plan)
 		return;
