@@ -76,9 +76,30 @@ jobs:
                 ln -s ${GRANTLEE_VERSION}/$(basename $i) .
                 popd
         done
-
-    - name: publish result
-      uses: actions/upload-artifact@v1
+        zip Subsurface.app.zip Subsurface.app
+    - name: store artifact
+      uses: actions/upload-artifact@master
       with:
-        name: Subsurface-GitHub-Build.app
-        path: build/Subsurface.app
+        name: Subsurface.app.zip
+        path: build/Subsurface.app.zip
+
+  publishRelease:
+    needs: desktopBuild
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: retrieve artifact
+      uses: actions/download-artifact@master
+      with:
+        name: Subsurface.app.zip
+    - name: create CI release
+      uses: ./.github/actions/release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPO: ${{ github.repository }}
+        REF: ${{ github.ref }}
+        COMMIT: ${{ github.sha }}
+        BIN1: Subsurface.app.zip

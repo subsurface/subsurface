@@ -1,0 +1,92 @@
+#!/bin/bash
+# SPDX
+
+if [[ -z "$GITHUB_TOKEN" ]]; then
+	echo "missing GITHUB_TOKEN"
+	exit 1
+fi
+
+if [[ -z "$GITHUB_REPO" ]] ; then
+	echo "missing GITHUB_REPO"
+	exit 1
+fi
+
+if [[ -z "$REF" ]] ; then
+	echo "missing REF"
+	exit 1
+fi
+
+if [[ -z "$COMMIT" ]] ; then
+	echo "missing COMMIT"
+	exit 1
+fi
+
+TAG="ci-release"
+
+echo $REF
+if [[ $REF = /refs/heads/* ]] ; then
+	branch="-$(cat $REF | cut -d/ -f 3)"
+	echo "it's /refs/heads with an added $branch"
+	if [[ $REF != /refs/heads/master ]] ; then
+		TAG=$TAG+$branch
+	fi
+fi
+
+# check if there is a tag of that name
+# if it is starts with ci (so this is a continous integration tag) and it's on a different SHA, delete it
+tag_url="https://api.github.com/repos/$GITHUB_REPO/git/refs/tags/$TAG"
+release_url="https://api.github.com/repos/$GITHUB_REPO/releases/tags/$TAG"
+
+tag_infos=$(curl -XGET --header "Authorization: token ${GITHUB_TOKEN}" "${tag_url}")
+echo "information received for tag $TAG"
+echo $tag_infos
+existing_tag_sha=$(echo $tag_infos | jq --raw-output .object.sha)
+
+if [[ "$existing_tag_sha" != "" ]] ; then
+	echo "existing tag on SHA $existing_tag_sha"
+	existing_release=$(curl -XGET --header "Authorization: token ${GITHUB_TOKEN}" "${release_url}")
+	release_id=$(echo $existing_release | jq --raw-output .id )
+	echo "information received for the release with release ID \"$release_id\""
+	echo $existing_release
+
+	if [[ "$existing_tag_sha" != "$COMMIT" ]] ; then
+		echo "tag was on different SHA, delete it and the corresponding release (if it exists)"
+		echo "deleting tag $TAG"
+		curl -XDELETE --header "Authorization: token ${GITHUB_TOKEN}" "${tag_url}"
+		if [[ "$release_id" != "" ]] ; then
+			echo "Delete the release $release_id"
+			delete_url="https://api.github.com/repos/$GITHUB_REPO/releases/$release_id"
+			curl -XDELETE --header "Authorization: token ${GITHUB_TOKEN}" "${delete_url}"
+		fi
+		echo "create a new release and implicitly a new tag"
+		release=$(curl -H "Authorization: token ${GITHUB_TOKEN}" --data '{"tag_name": "'"$TAG"'","target_commitish": "'"$COMMIT"'","name": "'"$TAG"'","body": "testing tag creation","draft": false,"prerelease": true}' "https://api.github.com/repos/$GITHUB_REPO/releases")
+		echo "response to release creation"
+		echo "$release"
+	fi
+else
+	echo "this is a new tag"
+fi
+
+# get the upload URL
+release_info=$(curl -XGET --header "Authorization: token ${GITHUB_TOKEN}" "${release_url}")
+echo "release info for $TAG"
+echo $release_info
+upload_url=$(echo $release_info | jq --raw-output .upload_url | cut -d '{' -f 1)
+
+# accept up to 9 binaries via environment variables
+for FILENAME in $BIN1 $BIN2 $BIN3 $BIN4 $BIN5 $BIN6 $BIN7 $BIN8 $BIN9
+do
+	if [[ -z "$FILENAME" ]] ; then
+		break
+	fi
+	if [[ ! -f $FILENAME ]] ; then
+		echo "Cannot find binary $FILENAME"
+		continue
+	fi
+	echo "upload $FILENAME to release"
+	BASENAME="$(basename $FILENAME)"
+	echo "curl -H \"Authorization: token xxxxx\" -H \"Accept: application/vnd.github.manifold-preview\" -H \"Content-Type: application/octet-stream\" --data-binary @$FILENAME \"$upload_url?name=$BASENAME\""
+	curl -H "Authorization: token ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.manifold-preview" -H "Content-Type: application/octet-stream" --data-binary @$FILENAME "$upload_url?name=$BASENAME"
+done
+
+# vim: tw=0

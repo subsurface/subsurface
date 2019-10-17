@@ -11,14 +11,23 @@ export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
 export Grantlee5_ROOT=/__w/subsurface/subsurface/install-root
 
 # the container currently has things under / that need to be under /__w/subsurface/subsurface instead
-cp -a /appdir /__w/subsurface/subsurface/
-cp -a /install-root /__w/subsurface/subsurface/
+cp -a /appdir /__w/subsurface/
+cp -a /install-root /__w/subsurface/
+
+echo "--------------------------------------------------------------"
+echo "building mobile"
 
 # first make sure that no one broke Subsurface-mobile
 bash -e -x subsurface/scripts/build.sh -mobile -quick
 
+echo "--------------------------------------------------------------"
+echo "building desktop"
+
 # now build our AppImage
 bash -e -x subsurface/scripts/build.sh -desktop -create-appdir -build-with-webkit -quick
+
+echo "--------------------------------------------------------------"
+echo "assembling AppImage"
 
 export QT_PLUGIN_PATH=$QT_ROOT/plugins
 export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins

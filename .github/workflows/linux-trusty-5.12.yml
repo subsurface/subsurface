@@ -9,19 +9,18 @@ jobs:
 
     steps:
     - name: checkout sources
-      run: |
-        echo $pwd
-        git clone git://github.com/${GITHUB_REPOSITORY}
-        cd subsurface
-        git checkout ${GITHUB_SHA}
+      uses: actions/checkout@v1
 
     - name: run build
       run: |
-        echo $pwd
+        cd ..
         bash -x subsurface/.github/workflows/in-container-build.sh
 
-    - name: publish result
-      uses: actions/upload-artifact@v1
-      with:
-        name: Subsurface-${{github.sha}}.AppImage
-        path: ./Subsurface.AppImage  # /${GITHUB_WORKSPACE}/ in the container is '.' here
+    - name: create CI release
+      uses: ./.github/actions/release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPO: ${{ github.repository }}
+        REF: ${{ github.ref }}
+        COMMIT: ${{ github.sha }}
+        BIN1: ./Subsurface.AppImage

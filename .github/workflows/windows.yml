@@ -9,18 +9,18 @@ jobs:
 
     steps:
     - name: checkout sources
-      run: |
-        cd /win
-        git clone git://github.com/${GITHUB_REPOSITORY}
-        cd subsurface
-        git checkout ${GITHUB_SHA}
-        git submodule init
-        git submodule update
+      uses: actions/checkout@v1
 
     - name: get other dependencies
       run: |
+        echo "creating the link from /win/subsurface"
         cd /win
+        ln -s /__w/subsurface/subsurface .
+        ls -l
+        ls -l subsurface/scripts
+        echo "installing missing container components"
         apt-get install -y ca-certificates libtool
+        echo "downloading sources for fresh build"
         bash subsurface/scripts/get-dep-lib.sh single . libzip
         bash subsurface/scripts/get-dep-lib.sh single . hidapi
         bash subsurface/scripts/get-dep-lib.sh single . googlemaps
@@ -33,32 +33,16 @@ jobs:
         bash -x subsurface/.github/workflows/windows-in-container-build.sh 2>&1 | tee build.log
         grep "Built target installer" build.log
 
-    - name: publish Subsurface installer
-      uses: actions/upload-artifact@v1
-      with:
-        name: subsurface-${{github.sha}}-installer.exe
-        path: ./subsurface-installer.exe  # /${GITHUB_WORKSPACE}/ in the container is '.' here
+    - name: create CI release
+      uses: ./.github/actions/release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPO: ${{ github.repository }}
+        REF: ${{ github.ref }}
+        COMMIT: ${{ github.sha }}
+        BIN1: ./subsurface-installer.exe
+        BIN2: ./subsurface.exe
+        BIN3: ./subsurface.exe.debug
+        BIN4: ./smtk2ssrf-installer.exe
+        BIN5: ./smtk2ssrf.exe
 
-    - name: publish Subsurface binary
-      uses: actions/upload-artifact@v1
-      with:
-        name: subsurface-${{github.sha}}.exe
-        path: ./subsurface.exe  # /${GITHUB_WORKSPACE}/ in the container is '.' here
-
-    - name: publish Subsurface debug binary
-      uses: actions/upload-artifact@v1
-      with:
-        name: subsurface-${{github.sha}}.exe.debug
-        path: ./subsurface.exe.debug  # /${GITHUB_WORKSPACE}/ in the container is '.' here
-
-    - name: publish smtk2ssrf installer
-      uses: actions/upload-artifact@v1
-      with:
-        name: smtk2ssrf-${{github.sha}}-installer.exe
-        path: ./smtk2ssrf-installer.exe  # /${GITHUB_WORKSPACE}/ in the container is '.' here
-
-    - name: publish Subsurface installer
-      uses: actions/upload-artifact@v1
-      with:
-        name: smtk2ssrf-${{github.sha}}.exe
-        path: ./subsurface.exe  # /${GITHUB_WORKSPACE}/ in the container is '.' here
