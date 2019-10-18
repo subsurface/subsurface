@@ -14,7 +14,7 @@ jobs:
     - name: run build
       run: |
         cd ..
-        bash -x subsurface/.github/workflows/in-container-build.sh
+        bash -x subsurface/.github/workflows/scripts/linux-in-container-build.sh
 
     - name: create CI release
       uses: ./.github/actions/release

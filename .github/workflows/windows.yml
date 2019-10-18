@@ -30,7 +30,7 @@ jobs:
     - name: run build
       run: |
         cd /win
-        bash -x subsurface/.github/workflows/windows-in-container-build.sh 2>&1 | tee build.log
+        bash -x subsurface/.github/workflows/scripts/windows-in-container-build.sh 2>&1 | tee build.log
         grep "Built target installer" build.log
 
     - name: create CI release
