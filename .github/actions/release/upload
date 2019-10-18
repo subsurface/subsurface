@@ -24,12 +24,17 @@ fi
 TAG="ci-release"
 
 echo $REF
-if [[ $REF = /refs/heads/* ]] ; then
-	branch="-$(cat $REF | cut -d/ -f 3)"
-	echo "it's /refs/heads with an added $branch"
-	if [[ $REF != /refs/heads/master ]] ; then
-		TAG=$TAG+$branch
+if [[ $REF = refs/heads/* ]] ; then
+	branch="$(echo $REF | cut -d/ -f 3)"
+	body="CI build of branch $branch. These binaries are for testing purposes. They are not signed and installations on Mac and Android will create warnings and errors without some extra work."
+	branch="-$branch"
+	echo "it's refs/heads with an added $branch"
+	if [[ $REF != refs/heads/master ]] ; then
+		TAG="${TAG}${branch}"
 	fi
+elif [[ $REF = refs/tags/* ]] ; then
+	TAG=$(echo $REF | cut -d/ -f 3)
+	body="Release build ($TAG)"
 fi
 
 # check if there is a tag of that name
@@ -37,12 +42,13 @@ fi
 tag_url="https://api.github.com/repos/$GITHUB_REPO/git/refs/tags/$TAG"
 release_url="https://api.github.com/repos/$GITHUB_REPO/releases/tags/$TAG"
 
+echo "get tag infos: curl -XGET --header \"Authorization: token xxxx\" \"${tag_url}\""
 tag_infos=$(curl -XGET --header "Authorization: token ${GITHUB_TOKEN}" "${tag_url}")
 echo "information received for tag $TAG"
 echo $tag_infos
 existing_tag_sha=$(echo $tag_infos | jq --raw-output .object.sha)
 
-if [[ "$existing_tag_sha" != "" ]] ; then
+if [[ "$existing_tag_sha" != "null" ]] ; then
 	echo "existing tag on SHA $existing_tag_sha"
 	existing_release=$(curl -XGET --header "Authorization: token ${GITHUB_TOKEN}" "${release_url}")
 	release_id=$(echo $existing_release | jq --raw-output .id )
@@ -53,13 +59,13 @@ if [[ "$existing_tag_sha" != "" ]] ; then
 		echo "tag was on different SHA, delete it and the corresponding release (if it exists)"
 		echo "deleting tag $TAG"
 		curl -XDELETE --header "Authorization: token ${GITHUB_TOKEN}" "${tag_url}"
-		if [[ "$release_id" != "" ]] ; then
+		if [[ "$release_id" != "null" ]] ; then
 			echo "Delete the release $release_id"
 			delete_url="https://api.github.com/repos/$GITHUB_REPO/releases/$release_id"
 			curl -XDELETE --header "Authorization: token ${GITHUB_TOKEN}" "${delete_url}"
 		fi
 		echo "create a new release and implicitly a new tag"
-		release=$(curl -H "Authorization: token ${GITHUB_TOKEN}" --data '{"tag_name": "'"$TAG"'","target_commitish": "'"$COMMIT"'","name": "'"$TAG"'","body": "testing tag creation","draft": false,"prerelease": true}' "https://api.github.com/repos/$GITHUB_REPO/releases")
+		release=$(curl -H "Authorization: token ${GITHUB_TOKEN}" --data '{"tag_name": "'"$TAG"'","target_commitish": "'"$COMMIT"'","name": "'"$TAG"'","body": "'"$body"'","draft": false,"prerelease": true}' "https://api.github.com/repos/$GITHUB_REPO/releases")
 		echo "response to release creation"
 		echo "$release"
 	fi
