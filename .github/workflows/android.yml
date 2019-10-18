@@ -1,0 +1,34 @@
+name: Android
+on: push
+
+jobs:
+  buildInContainer:
+    runs-on: ubuntu-latest
+    container:
+      image: docker://dirkhh/android-builder:5.13.01
+
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v1
+
+    - name: run build
+      run: |
+        cd ..
+        ln -s /android/Qt .
+        ln -s /android/android-ndk-r18b .
+        ln -s /android/android-sdk-linux .
+        ls -l
+        bash -x subsurface/packaging/android/android-build-wrapper.sh
+        cp /__w/subsurface/subsurface-mobile-build-arm64//build/outputs/apk/debug/subsurface-mobile-build-arm64-debug.apk ${GITHUB_WORKSPACE}/Subsurface-mobile.arm64.apk
+        cp /__w/subsurface/subsurface-mobile-build-arm//build/outputs/apk/debug/subsurface-mobile-build-arm-debug.apk ${GITHUB_WORKSPACE}/Subsurface-mobile.apk
+
+    - name: create CI release
+      uses: ./.github/actions/release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPO: ${{ github.repository }}
+        REF: ${{ github.ref }}
+        COMMIT: ${{ github.sha }}
+        BIN1: ./Subsurface-mobile.apk
+        BIN2: ./Subsurface-mobile.arm64.apk
+
