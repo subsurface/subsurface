@@ -10,6 +10,14 @@
 #include "core/subsurface-string.h"
 #include "qt-models/tankinfomodel.h"
 
+#if defined(DEBUG_DOH)
+#include <execinfo.h>
+#include <stdio.h>
+#include <unistd.h>
+static int callCounter = 0;
+#endif /* defined(DEBUG_DOH) */
+
+
 enum returnPressureSelector {START_PRESSURE, END_PRESSURE};
 
 static QString getFormattedWeight(const struct dive *dive, unsigned int idx)
@@ -169,7 +177,7 @@ static QVector<CylinderObjectHelper> makeCylinderObjects(const dive *d)
 
 static QStringList formatGetCylinder(const dive *d)
 {
-	QStringList getCylinder; 
+	QStringList getCylinder;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		if (is_cylinder_used(d, i))
 			getCylinder << d->cylinder[i].type.description;
@@ -246,6 +254,17 @@ DiveObjectHelper::DiveObjectHelper(const struct dive *d) :
 	endPressure(getEndPressure(d)),
 	firstGas(getFirstGas(d))
 {
+#if defined(DEBUG_DOH)
+	void *array[4];
+	size_t size;
+
+	// get void*'s for all entries on the stack
+	size = backtrace(array, 4);
+
+	// print out all the frames to stderr
+	fprintf(stderr, "\n\nCalling DiveObjectHelper constructor for dive %d - call #%d\n", d->number, ++callCounter);
+	backtrace_symbols_fd(array, size, STDERR_FILENO);
+#endif /* defined(DEBUG_DOH) */
 }
 
 DiveObjectHelperGrantlee::DiveObjectHelperGrantlee()
