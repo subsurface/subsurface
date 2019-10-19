@@ -1,0 +1,40 @@
+name: iOS
+on: push
+
+jobs:
+  mobileBuild:
+    runs-on: macOS-latest
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v1
+    - name: setup Homebrew
+      run: brew install autoconf automake libtool
+    - name: set our Qt build
+      run: |
+        env
+        curl -L --output qt-opensource-mac-x64-5.13.1.dmg https://download.qt.io/archive/qt/5.13/5.13.1/qt-opensource-mac-x64-5.13.1.dmg
+        df -h
+        mkdir -p mnt
+        sudo hdiutil attach -mountroot $PWD/mnt -noverify -noautoopen -verbose qt-opensource-mac-x64-5.13.1.dmg
+        df -h
+        ls -l mnt
+        find mnt
+        ./mnt/qt-opensource-mac-x64-5.13.1/qt-opensource-mac-x64-5.13.1.app/Contents/MacOS/qt-opensource-mac-x64-5.13.1 --platform minimal --script packaging/ios/qt-installer-noninteractive.qs --no-force-installations
+        df -h
+    - name: build Subsurface-mobile for iOS
+      run: |
+        ls -l $HOME $HOME/Qt
+        cd packaging/ios
+        ln -s $HOME/Qt Qt
+        pushd Qt
+        ls -l
+        popd
+        echo "build dependencies"
+        bash -x build.sh -simulator
+        echo "Subsurface-mobile for iOS"
+        cd build-Subsurface-mobile-*for_iOS-Release
+        sed -i.bak 's/-Wall/-Wno-everything/' Makefile # make the build far less verbose
+        make -j2
+
+
+        
