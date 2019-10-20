@@ -29,6 +29,15 @@ private:
 	void updateFilterState();
 };
 
+QString formatSac(const dive *d);
+QString formatNotes(const dive *d);
+QString format_gps_decimal(const dive *d);
+QStringList formatGetCylinder(const dive *d);
+QStringList getStartPressure(const dive *d);
+QStringList getEndPressure(const dive *d);
+QStringList getFirstGas(const dive *d);
+
+
 class DiveListModel : public QAbstractListModel
 {
 	Q_OBJECT
@@ -42,7 +51,28 @@ public:
 		IdRole,
 		NumberRole,
 		LocationRole,
+		DepthRole,
+		DurationRole,
 		DepthDurationRole,
+		RatingRole,
+		VizRole,
+		SuitRole,
+		AirTempRole,
+		WaterTempRole,
+		SacRole,
+		SumWeightRole,
+		DiveMasterRole,
+		BuddyRole,
+		NotesRole,
+		GpsDecimalRole,
+		GpsRole,
+		NoDiveRole,
+		DiveSiteRole,
+		CylinderRole,
+		SingleWeightRole,
+		StartPressureRole,
+		EndPressureRole,
+		FirstGasRole,
 	};
 
 	static DiveListModel *instance();

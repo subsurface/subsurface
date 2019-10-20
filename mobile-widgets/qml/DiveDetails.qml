@@ -52,7 +52,7 @@ Kirigami.Page {
 	property alias cylinderModel3: detailsEdit.cylinderModel3
 	property alias cylinderModel4: detailsEdit.cylinderModel4
 
-	title: currentItem && currentItem.modelData ? currentItem.modelData.dive.location : qsTr("Dive details")
+	title: currentItem && currentItem.modelData ? currentItem.modelData.location : qsTr("Dive details")
 	state: "view"
 	leftPadding: 0
 	topPadding: Kirigami.Units.gridUnit / 2
@@ -68,7 +68,7 @@ Kirigami.Page {
 				target: diveDetailsPage;
 				actions {
 					right: deleteAction
-					left: currentItem ? (currentItem.modelData && currentItem.modelData.dive.gps !== "" ? mapAction : null) : null
+					left: currentItem ? (currentItem.modelData && currentItem.modelData.gps !== "" ? mapAction : null) : null
 				}
 			}
 		},
@@ -153,7 +153,7 @@ Kirigami.Page {
 			name: ":/icons/trash-empty.svg"
 		}
 		onTriggered: {
-			var deletedId = currentItem.modelData.dive.id
+			var deletedId = currentItem.modelData.id
 			var deletedIndex = diveDetailsListView.currentIndex
 			manager.deleteDive(deletedId)
 			pageStack.pop()
@@ -181,7 +181,7 @@ Kirigami.Page {
 		}
 		onTriggered: {
 			showMap()
-			mapPage.centerOnDiveSite(currentItem.modelData.dive.dive_site)
+			mapPage.centerOnDiveSite(currentItem.modelData.diveSite)
 		}
 	}
 
@@ -218,11 +218,11 @@ Kirigami.Page {
 		// why do we do this? What consumes this?
 		manager.selectedDiveTimestamp = currentItem.modelData.dive.timestamp
 		// make sure the core data structures reflect that this dive is selected
-		manager.selectDive(currentItem.modelData.dive.id)
+		manager.selectDive(currentItem.modelData.id)
 		// update the map to show the highlighted flag and center on it
 		if (rootItem.pageIndex(mapPage) !== -1) {
 			mapPage.reloadMap()
-			mapPage.centerOnDiveSite(currentItem.modelData.dive.dive_site)
+			mapPage.centerOnDiveSite(currentItem.modelData.diveSite)
 		}
 	}
 
@@ -251,34 +251,35 @@ Kirigami.Page {
 		// set things up for editing - so make sure that the detailsEdit has
 		// all the right data (using the property aliases set up above)
 		var dive = currentItem.modelData.dive
-		dive_id = dive.id
-		number = dive.number
-		date = dive.date + " " + dive.time
-		location = dive.location
-		locationIndex = manager.locationList.indexOf(dive.location)
-		gps = dive.gps
+		var modelData = currentItem.modelData
+		dive_id = modelData.id
+		number = modelData.number
+		date = modelData.dateTime
+		location = modelData.location
+		locationIndex = manager.locationList.indexOf(modelData.location)
+		gps = modelData.gps
 		gpsCheckbox = false
-		duration = dive.duration
-		depth = dive.depth
-		airtemp = dive.airTemp
-		watertemp = dive.waterTemp
-		suitIndex = manager.suitList.indexOf(dive.suit)
-		if (dive.buddy.indexOf(",") > 0) {
-			buddyIndex = manager.buddyList.indexOf(dive.buddy.split(",", 1).toString())
+		duration = modelData.duration
+		depth = modelData.depth
+		airtemp = modelData.airTemp
+		watertemp = modelData.waterTemp
+		suitIndex = manager.suitList.indexOf(modelData.suit)
+		if (modelData.buddy.indexOf(",") > 0) {
+			buddyIndex = manager.buddyList.indexOf(modelData.buddy.split(",", 1).toString())
 		} else {
-			buddyIndex = manager.buddyList.indexOf(dive.buddy)
+			buddyIndex = manager.buddyList.indexOf(modelData.buddy)
 		}
-		buddyText = dive.buddy;
-		if (dive.divemaster.indexOf(",") > 0) {
-			divemasterIndex = manager.divemasterList.indexOf(dive.divemaster.split(",", 1).toString())
+		buddyText = modelData.buddy;
+		if (modelData.diveMaster.indexOf(",") > 0) {
+			divemasterIndex = manager.divemasterList.indexOf(modelData.diveMaster.split(",", 1).toString())
 		} else {
-			divemasterIndex = manager.divemasterList.indexOf(dive.divemaster)
+			divemasterIndex = manager.divemasterList.indexOf(modelData.diveMaster)
 		}
-		divemasterText = dive.divemaster
-		notes = dive.notes
-		if (dive.singleWeight) {
+		divemasterText = modelData.diveMaster
+		notes = modelData.notes
+		if (modelData.singleWeight) {
 			// we have only one weight, go ahead, have fun and edit it
-			weight = dive.sumWeight
+			weight = modelData.sumWeight
 		} else {
 			// careful when translating, this text is "magic" in DiveDetailsEdit.qml
 			weight = "cannot edit multiple weight systems"
@@ -292,8 +293,8 @@ Kirigami.Page {
 		cylinderIndex2 = dive.cylinderList.indexOf(usedCyl[2])
 		cylinderIndex3 = dive.cylinderList.indexOf(usedCyl[3])
 		cylinderIndex4 = dive.cylinderList.indexOf(usedCyl[4])
-		rating = dive.rating
-		visibility = dive.visibility
+		rating = modelData.rating
+		visibility = modelData.viz
 
 		diveDetailsPage.state = "edit"
 	}

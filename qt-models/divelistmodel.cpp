@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/divelistmodel.h"
+#include "core/divesite.h"
 #include "core/qthelper.h"
 #include "core/trip.h"
 #include "core/settings/qPrefGeneral.h"
@@ -97,7 +98,7 @@ static dive_trip *tripIdToObject(const QString &s)
 		return nullptr;
 	int id = s.toInt();
 	dive_trip **trip = std::find_if(&trip_table.trips[0], &trip_table.trips[trip_table.nr],
-				        [id] (const dive_trip *t) { return t->id == id; });
+					[id] (const dive_trip *t) { return t->id == id; });
 	if (trip == &trip_table.trips[trip_table.nr]) {
 		fprintf(stderr, "Warning: unknown trip id passed through QML: %d\n", id);
 		return nullptr;
@@ -256,8 +257,29 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 	case IdRole: return d->id;
 	case NumberRole: return d->number;
 	case LocationRole: return get_dive_location(d);
+	case DepthRole: return get_depth_string(d->dc.maxdepth.mm, true, true);
+	case DurationRole: return get_dive_duration_string(d->duration.seconds, gettextFromC::tr("h"), gettextFromC::tr("min"));
 	case DepthDurationRole: return QStringLiteral("%1 / %2").arg(get_depth_string(d->dc.maxdepth.mm, true, true),
 								     get_dive_duration_string(d->duration.seconds, gettextFromC::tr("h"), gettextFromC::tr("min")));
+	case RatingRole: return d->rating;
+	case VizRole: return d->visibility;
+	case SuitRole: return d->suit;
+	case AirTempRole: return get_temperature_string(d->airtemp, true);
+	case WaterTempRole: return get_temperature_string(d->watertemp, true);
+	case SacRole: return formatSac(d);
+	case SumWeightRole: return get_weight_string(weight_t { total_weight(d) }, true);
+	case DiveMasterRole: return d->divemaster ? d->divemaster : QString();
+	case BuddyRole: return d->buddy ? d->buddy : QString();
+	case NotesRole: return formatNotes(d);
+	case GpsRole: return d->dive_site ? printGPSCoords(&d->dive_site->location) : QString();
+	case GpsDecimalRole: return format_gps_decimal(d);
+	case NoDiveRole: return d->duration.seconds == 0 && d->dc.duration.seconds == 0;
+	case DiveSiteRole: return QVariant::fromValue(d->dive_site);
+	case CylinderRole: return formatGetCylinder(d).join(", ");
+	case SingleWeightRole: return d->weightsystems.nr <= 1;
+	case StartPressureRole: return getStartPressure(d);
+	case EndPressureRole: return getEndPressure(d);
+	case FirstGasRole: return getFirstGas(d);
 	}
 	return QVariant();
 }
@@ -273,7 +295,28 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 	roles[IdRole] = "id";
 	roles[NumberRole] = "number";
 	roles[LocationRole] = "location";
+	roles[DepthRole] = "depth";
+	roles[DurationRole] = "duration";
 	roles[DepthDurationRole] = "depthDuration";
+	roles[RatingRole] = "rating";
+	roles[VizRole] = "viz";
+	roles[SuitRole] = "suit";
+	roles[AirTempRole] = "airTemp";
+	roles[WaterTempRole] = "waterTemp";
+	roles[SacRole] = "sac";
+	roles[SumWeightRole] = "sumWeight";
+	roles[DiveMasterRole] = "diveMaster";
+	roles[BuddyRole] = "buddy";
+	roles[NotesRole]= "notes";
+	roles[GpsRole] = "gps";
+	roles[GpsDecimalRole] = "gpsDecimal";
+	roles[NoDiveRole] = "noDive";
+	roles[DiveSiteRole] = "diveSite";
+	roles[CylinderRole] = "cylinder";
+	roles[SingleWeightRole] = "singleWeight";
+	roles[StartPressureRole] = "startPressure";
+	roles[EndPressureRole] = "endPressure";
+	roles[FirstGasRole] = "firstGas";
 	return roles;
 }
 
