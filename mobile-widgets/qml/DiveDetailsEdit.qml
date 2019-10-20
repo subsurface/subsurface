@@ -363,7 +363,7 @@ Item {
 				id: cylinderBox0
 				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					diveDetailsListView.currentItem.modelData.dive.cylinderList : null
+					diveDetailsListView.currentItem.modelData.cylinderList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}
@@ -420,7 +420,7 @@ Item {
 				id: cylinderBox1
 				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					diveDetailsListView.currentItem.modelData.dive.cylinderList : null
+					diveDetailsListView.currentItem.modelData.cylinderList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}
@@ -484,7 +484,7 @@ Item {
 				currentIndex: find(usedCyl[2])
 				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					diveDetailsListView.currentItem.modelData.dive.cylinderList : null
+					diveDetailsListView.currentItem.modelData.cylinderList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}
@@ -547,7 +547,7 @@ Item {
 				currentIndex: find(usedCyl[3])
 				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					diveDetailsListView.currentItem.modelData.dive.cylinderList : null
+					diveDetailsListView.currentItem.modelData.cylinderList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}
@@ -611,7 +611,7 @@ Item {
 				currentIndex: find(usedCyl[4])
 				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					diveDetailsListView.currentItem.modelData.dive.cylinderList : null
+					diveDetailsListView.currentItem.modelData.cylinderList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}

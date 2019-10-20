@@ -216,7 +216,7 @@ Kirigami.Page {
 
 	onCurrentItemChanged: {
 		// why do we do this? What consumes this?
-		manager.selectedDiveTimestamp = currentItem.modelData.dive.timestamp
+		manager.selectedDiveTimestamp = currentItem.modelData.date
 		// make sure the core data structures reflect that this dive is selected
 		manager.selectDive(currentItem.modelData.id)
 		// update the map to show the highlighted flag and center on it
@@ -284,15 +284,15 @@ Kirigami.Page {
 			// careful when translating, this text is "magic" in DiveDetailsEdit.qml
 			weight = "cannot edit multiple weight systems"
 		}
-		startpressure = dive.startPressure
-		endpressure = dive.endPressure
-		usedGas = dive.firstGas
-		usedCyl = dive.getCylinder
-		cylinderIndex0 = dive.cylinderList.indexOf(usedCyl[0])
-		cylinderIndex1 = dive.cylinderList.indexOf(usedCyl[1])
-		cylinderIndex2 = dive.cylinderList.indexOf(usedCyl[2])
-		cylinderIndex3 = dive.cylinderList.indexOf(usedCyl[3])
-		cylinderIndex4 = dive.cylinderList.indexOf(usedCyl[4])
+		startpressure = modelData.startPressure
+		endpressure = modelData.endPressure
+		usedGas = modelData.firstGas
+		usedCyl = modelData.getCylinder
+		cylinderIndex0 = modelData.cylinderList.indexOf(usedCyl[0])
+		cylinderIndex1 = modelData.cylinderList.indexOf(usedCyl[1])
+		cylinderIndex2 = modelData.cylinderList.indexOf(usedCyl[2])
+		cylinderIndex3 = modelData.cylinderList.indexOf(usedCyl[3])
+		cylinderIndex4 = modelData.cylinderList.indexOf(usedCyl[4])
 		rating = modelData.rating
 		visibility = modelData.viz
 

@@ -36,15 +36,14 @@ QStringList formatGetCylinder(const dive *d);
 QStringList getStartPressure(const dive *d);
 QStringList getEndPressure(const dive *d);
 QStringList getFirstGas(const dive *d);
-
+QStringList getFullCylinderList();
 
 class DiveListModel : public QAbstractListModel
 {
 	Q_OBJECT
 public:
 	enum DiveListRoles {
-		DiveRole = Qt::UserRole + 1,
-		DiveDateRole,
+		DiveDateRole = Qt::UserRole + 1,
 		TripIdRole,
 		TripNrDivesRole,
 		DateTimeRole,
@@ -69,6 +68,8 @@ public:
 		NoDiveRole,
 		DiveSiteRole,
 		CylinderRole,
+		GetCylinderRole,
+		CylinderListRole,
 		SingleWeightRole,
 		StartPressureRole,
 		EndPressureRole,
