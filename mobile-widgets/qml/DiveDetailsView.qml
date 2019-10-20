@@ -36,7 +36,7 @@ Item {
 		anchors.left: parent.left
 		Controls.Label {
 			id: locationText
-			text: dive.location
+			text: location
 			font.weight: Font.Bold
 			font.pointSize: subsurfaceTheme.titlePointSize
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -49,21 +49,21 @@ Item {
 			}
 			MouseArea {
 				anchors.fill: parent
-				enabled: dive.gps_decimal !== ""
+				enabled: gpsDecimal !== ""
 				onClicked: {
 					showMap()
-					mapPage.centerOnDiveSite(dive.dive_site)
+					mapPage.centerOnDiveSite(dive_site)
 				}
 			}
 		}
 		SsrfButton {
 			id: gpsButton
 			anchors.right: parent.right
-			enabled: dive.gps !== ""
+			enabled: gps !== ""
 			text: qsTr("Map it")
 			onClicked: {
 				showMap()
-				mapPage.centerOnDiveSite(dive.dive_site)
+				mapPage.centerOnDiveSite(dive_site)
 			}
 		}
 		Row {
@@ -77,14 +77,14 @@ Item {
 			}
 
 			Controls.Label {
-				text: dive.date + " " + dive.time
+				text: dateTime
 				width: Math.max(locationText.width * 0.45, paintedWidth)
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
 			// let's try to show the depth / duration very compact
 			Controls.Label {
-				text: dive.depth + ' / ' + dive.duration
+				text: depthDuration
 				width: Math.max(Kirigami.Units.gridUnit * 3, paintedWidth)
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
@@ -92,7 +92,7 @@ Item {
 		}
 		Controls.Label {
 			id: numberText
-			text: "#" + dive.number
+			text: "#" + number
 			font.pointSize: subsurfaceTheme.smallPointSize
 			color: subsurfaceTheme.textColor
 			anchors {
@@ -117,35 +117,35 @@ Item {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: ratingText.verticalCenter
-				source: (dive.rating >= 1) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				source: (rating >= 1) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
 			Kirigami.Icon {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: ratingText.verticalCenter
-				source: (dive.rating >= 2) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				source: (rating >= 2) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
 			Kirigami.Icon {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: ratingText.verticalCenter
-				source: (dive.rating >= 3) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				source: (rating >= 3) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
 			Kirigami.Icon {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: ratingText.verticalCenter
-				source: (dive.rating >= 4) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				source: (rating >= 4) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
 			Kirigami.Icon {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: ratingText.verticalCenter
-				source: (dive.rating === 5) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				source: (rating === 5) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
 		}
@@ -165,35 +165,35 @@ Item {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: visibilityText.verticalCenter
-				source: (dive.visibility >= 1) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				source: (viz >= 1) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
 			Kirigami.Icon {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: visibilityText.verticalCenter
-				source: (dive.visibility >= 2) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				source: (viz >= 2) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
 			Kirigami.Icon {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: visibilityText.verticalCenter
-				source: (dive.visibility >= 3) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				source: (viz >= 3) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
 			Kirigami.Icon {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: visibilityText.verticalCenter
-				source: (dive.visibility >= 4) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				source: (viz >= 4) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
 			Kirigami.Icon {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: visibilityText.verticalCenter
-				source: (dive.visibility === 5) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				source: (viz === 5) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
 		}
@@ -214,7 +214,7 @@ Item {
 
 		QMLProfile {
 			id: qmlProfile
-			visible: !dive.noDive
+			visible: !noDive
 			Layout.fillWidth: true
 			Layout.preferredHeight: Layout.minimumHeight
 			Layout.minimumHeight: width * 0.75
@@ -230,7 +230,7 @@ Item {
 		}
 		Controls.Label {
 			id: noProfile
-			visible: dive.noDive
+			visible: noDive
 			Layout.fillWidth: true
 			Layout.columnSpan: 3
 			Layout.margins: Kirigami.Units.gridUnit
@@ -266,21 +266,21 @@ Item {
 		//------------
 		Controls.Label {
 			id: txtSuit
-			text: dive.suit
+			text: suit
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
 			color: subsurfaceTheme.textColor
 		}
 		Controls.Label {
 			id: txtAirTemp
-			text: dive.airTemp
+			text: airTemp
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
 			color: subsurfaceTheme.textColor
 		}
 		Controls.Label {
 			id: txtWaterTemp
-			text: dive.waterTemp
+			text: waterTemp
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col3Width
 			color: subsurfaceTheme.textColor
@@ -325,21 +325,21 @@ Item {
 		//------------
 		Controls.Label {
 			id: txtCylinder
-			text: dive.getCylinder.join(', ')
+			text: cylinder
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
 			color: subsurfaceTheme.textColor
 		}
 		Controls.Label {
 			id: txtWeight
-			text: dive.sumWeight
+			text: sumWeight
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
 			color: subsurfaceTheme.textColor
 		}
 		Controls.Label {
 			id: txtSAC
-			text: dive.sac
+			text: sac
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col3Width
 			color: subsurfaceTheme.textColor
@@ -377,14 +377,14 @@ Item {
 		//-----------
 		Controls.Label {
 			id: txtDiveMaster
-			text: dive.divemaster
+			text: diveMaster
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
 			color: subsurfaceTheme.textColor
 		}
 		Controls.Label {
 			id: txtBuddy
-			text: dive.buddy
+			text: buddy
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.columnSpan: 2
 			Layout.maximumWidth: detailsView.col2Width + detailsView.col3Width
@@ -411,7 +411,7 @@ Item {
 
 		Controls.Label {
 			id: txtNotes
-			text: dive.notes
+			text: notes
 			focus: true
 			Layout.columnSpan: 3
 			Layout.fillWidth: true
