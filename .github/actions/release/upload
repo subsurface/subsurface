@@ -48,14 +48,19 @@ echo "information received for tag $TAG"
 echo $tag_infos
 existing_tag_sha=$(echo $tag_infos | jq --raw-output .object.sha)
 
+need_new_release="0"
 if [[ "$existing_tag_sha" != "null" ]] ; then
 	echo "existing tag on SHA $existing_tag_sha"
 	existing_release=$(curl -XGET --header "Authorization: token ${GITHUB_TOKEN}" "${release_url}")
 	release_id=$(echo $existing_release | jq --raw-output .id )
 	echo "information received for the release with release ID \"$release_id\""
 	echo $existing_release
+	if [[ "$release_id" == "null" ]] ; then
+		need_new_release="1"
+	fi
 
 	if [[ "$existing_tag_sha" != "$COMMIT" ]] ; then
+		need_new_release="1"
 		echo "tag was on different SHA, delete it and the corresponding release (if it exists)"
 		echo "deleting tag $TAG"
 		curl -XDELETE --header "Authorization: token ${GITHUB_TOKEN}" "${tag_url}"
@@ -64,13 +69,17 @@ if [[ "$existing_tag_sha" != "null" ]] ; then
 			delete_url="https://api.github.com/repos/$GITHUB_REPO/releases/$release_id"
 			curl -XDELETE --header "Authorization: token ${GITHUB_TOKEN}" "${delete_url}"
 		fi
-		echo "create a new release and implicitly a new tag"
-		release=$(curl -H "Authorization: token ${GITHUB_TOKEN}" --data '{"tag_name": "'"$TAG"'","target_commitish": "'"$COMMIT"'","name": "'"$TAG"'","body": "'"$body"'","draft": false,"prerelease": true}' "https://api.github.com/repos/$GITHUB_REPO/releases")
-		echo "response to release creation"
-		echo "$release"
 	fi
 else
 	echo "this is a new tag"
+	need_new_release="1"
+fi
+
+if [[ "$need_new_release" = "1" ]] ; then
+	echo "create a new release and implicitly a new tag"
+	release=$(curl -H "Authorization: token ${GITHUB_TOKEN}" --data '{"tag_name": "'"$TAG"'","target_commitish": "'"$COMMIT"'","name": "'"$TAG"'","body": "'"$body"'","draft": false,"prerelease": true}' "https://api.github.com/repos/$GITHUB_REPO/releases")
+	echo "response to release creation"
+	echo "$release"
 fi
 
 # get the upload URL
@@ -78,6 +87,11 @@ release_info=$(curl -XGET --header "Authorization: token ${GITHUB_TOKEN}" "${rel
 echo "release info for $TAG"
 echo $release_info
 upload_url=$(echo $release_info | jq --raw-output .upload_url | cut -d '{' -f 1)
+
+if [[ "$upload_url" = "null" ]] ; then
+	echo "error determining release upload URL, aborting"
+	exit 1
+fi
 
 # accept up to 9 binaries via environment variables
 for FILENAME in $BIN1 $BIN2 $BIN3 $BIN4 $BIN5 $BIN6 $BIN7 $BIN8 $BIN9
