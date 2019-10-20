@@ -241,7 +241,6 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 	if (!d)
 		return QVariant();
 	switch(role) {
-	case DiveRole: return QVariant::fromValue(DiveObjectHelper(d));
 	case DiveDateRole: return (qlonglong)d->when;
 	// We have to return a QString as trip-id, because that will be used as section
 	// variable in the QtQuick list view. That has to be a string because it will try
@@ -276,6 +275,8 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 	case NoDiveRole: return d->duration.seconds == 0 && d->dc.duration.seconds == 0;
 	case DiveSiteRole: return QVariant::fromValue(d->dive_site);
 	case CylinderRole: return formatGetCylinder(d).join(", ");
+	case GetCylinderRole: return formatGetCylinder(d);
+	case CylinderListRole: return getFullCylinderList();
 	case SingleWeightRole: return d->weightsystems.nr <= 1;
 	case StartPressureRole: return getStartPressure(d);
 	case EndPressureRole: return getEndPressure(d);
@@ -287,7 +288,6 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 QHash<int, QByteArray> DiveListModel::roleNames() const
 {
 	QHash<int, QByteArray> roles;
-	roles[DiveRole] = "dive";
 	roles[DiveDateRole] = "date";
 	roles[TripIdRole] = "tripId";
 	roles[TripNrDivesRole] = "tripNrDives";
@@ -313,6 +313,8 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 	roles[NoDiveRole] = "noDive";
 	roles[DiveSiteRole] = "diveSite";
 	roles[CylinderRole] = "cylinder";
+	roles[GetCylinderRole] = "getCylinder";
+	roles[CylinderListRole] = "cylinderList";
 	roles[SingleWeightRole] = "singleWeight";
 	roles[StartPressureRole] = "startPressure";
 	roles[EndPressureRole] = "endPressure";
