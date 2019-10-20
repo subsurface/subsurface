@@ -63,7 +63,7 @@ static QString getPressures(const struct dive *dive, int i, enum returnPressureS
 	return fmt;
 }
 
-static QString format_gps_decimal(const dive *d)
+QString format_gps_decimal(const dive *d)
 {
 	bool savep = prefs.coordinates_traditional;
 
@@ -73,7 +73,7 @@ static QString format_gps_decimal(const dive *d)
 	return val;
 }
 
-static QString formatNotes(const dive *d)
+QString formatNotes(const dive *d)
 {
 	QString tmp = d->notes ? QString::fromUtf8(d->notes) : QString();
 	if (is_dc_planner(&d->dc)) {
@@ -118,7 +118,7 @@ static QString formatGas(const dive *d)
 	return gases;
 }
 
-static QString formatSac(const dive *d)
+QString formatSac(const dive *d)
 {
 	if (!d->sac)
 		return QString();
@@ -152,7 +152,7 @@ static QStringList formatWeights(const dive *d)
 	return weights;
 }
 
-static QStringList formatCylinders(const dive *d)
+QStringList formatCylinders(const dive *d)
 {
 	QStringList cylinders;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
@@ -175,7 +175,7 @@ static QVector<CylinderObjectHelper> makeCylinderObjects(const dive *d)
 	return res;
 }
 
-static QStringList formatGetCylinder(const dive *d)
+QStringList formatGetCylinder(const dive *d)
 {
 	QStringList getCylinder;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
@@ -185,7 +185,7 @@ static QStringList formatGetCylinder(const dive *d)
 	return getCylinder;
 }
 
-static QStringList getStartPressure(const dive *d)
+QStringList getStartPressure(const dive *d)
 {
 	QStringList startPressure;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
@@ -195,7 +195,7 @@ static QStringList getStartPressure(const dive *d)
 	return startPressure;
 }
 
-static QStringList getEndPressure(const dive *d)
+QStringList getEndPressure(const dive *d)
 {
 	QStringList endPressure;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
@@ -205,7 +205,7 @@ static QStringList getEndPressure(const dive *d)
 	return endPressure;
 }
 
-static QStringList getFirstGas(const dive *d)
+QStringList getFirstGas(const dive *d)
 {
 	QStringList gas;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
