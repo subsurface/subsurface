@@ -215,6 +215,32 @@ QStringList getFirstGas(const dive *d)
 	return gas;
 }
 
+QStringList getFullCylinderList()
+{
+	QStringList cylinders;
+	int i = 0;
+	struct dive *d;
+	for_each_dive (i, d) {
+		for (int j = 0; j < MAX_CYLINDERS; j++) {
+			QString cyl = d->cylinder[j].type.description;
+			if (cyl.isEmpty())
+				continue;
+			cylinders << cyl;
+		}
+	}
+
+	for (int ti = 0; ti < MAX_TANK_INFO && tank_info[ti].name != NULL; ti++) {
+		QString cyl = tank_info[ti].name;
+		if (cyl.isEmpty())
+			continue;
+		cylinders << cyl;
+	}
+
+	cylinders.removeDuplicates();
+	cylinders.sort();
+	return cylinders;
+}
+
 // Qt's metatype system insists on generating a default constructed object, even if that makes no sense.
 DiveObjectHelper::DiveObjectHelper()
 {
@@ -293,26 +319,5 @@ QString DiveObjectHelper::time() const
 
 QStringList DiveObjectHelper::cylinderList() const
 {
-	QStringList cylinders;
-	int i = 0;
-	struct dive *d;
-	for_each_dive (i, d) {
-		for (int j = 0; j < MAX_CYLINDERS; j++) {
-			QString cyl = d->cylinder[j].type.description;
-			if (cyl.isEmpty())
-				continue;
-			cylinders << cyl;
-		}
-	}
-
-	for (int ti = 0; ti < MAX_TANK_INFO && tank_info[ti].name != NULL; ti++) {
-		QString cyl = tank_info[ti].name;
-		if (cyl.isEmpty())
-			continue;
-		cylinders << cyl;
-	}
-
-	cylinders.removeDuplicates();
-	cylinders.sort();
-	return cylinders;
+	return getFullCylinderList();
 }
