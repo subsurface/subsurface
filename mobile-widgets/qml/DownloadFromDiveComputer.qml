@@ -366,7 +366,12 @@ Kirigami.Page {
 				}
 			}
 		}
-
+		Controls.Label {
+			text: qsTr("Please wait while we record these dives...")
+			Layout.fillWidth: true
+			visible: acceptButton.busy
+			leftPadding: Kirigami.Units.gridUnit * 3 // trust me - that looks better
+		}
 		RowLayout {
 			id: bottomButtons
 			Controls.Label {
@@ -375,10 +380,13 @@ Kirigami.Page {
 			}
 			SsrfButton {
 				id: acceptButton
+				property bool busy: false
 				enabled: divesDownloaded
 				text: qsTr("Accept")
 				bottomPadding: Kirigami.Units.gridUnit / 2
 				onClicked: {
+					busy = true
+					rootItem.showBusy()
 					manager.appendTextToLog("Save downloaded dives that were selected")
 					importModel.recordDives()
 					manager.saveChangesLocal()
@@ -386,6 +394,8 @@ Kirigami.Page {
 					manager.refreshDiveList()
 					pageStack.pop();
 					download.text = qsTr("Download")
+					busy = false
+					rootItem.hideBusy()
 					divesDownloaded = false
 				}
 			}
