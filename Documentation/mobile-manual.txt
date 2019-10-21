@@ -231,8 +231,6 @@ the new information, after which the dive list screen is
 updated and shown. To cancel any edits, tap the Android _Back_ Button or
 the application back button at the top left of the screen on iOS.
 
-When the virtual keyboard is shown, to avoid screen clutter, the action button is hidden.
-Once you close the keyboard it is drawn again.
 |=======
 
 
