@@ -155,7 +155,7 @@ public slots:
 	void retrieveUserid();
 	void loadDivesWithValidCredentials();
 	void provideAuth(QNetworkReply *reply, QAuthenticator *auth);
-	void commitChanges(QString diveId, QString date, QString location, QString gps,
+	void commitChanges(QString diveId, QString number, QString date, QString location, QString gps,
 			   QString duration, QString depth, QString airtemp,
 			   QString watertemp, QString suit, QString buddy,
 			   QString diveMaster, QString weight, QString notes, QStringList startpressure,

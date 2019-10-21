@@ -1,3 +1,4 @@
+Mobile: add support for editing the dive number of a dive
 Export: when exporting dive sites in dive site mode, export selected dive sites [#2275]
 Mobile: fix several bugs in the handling of incorrect or unverified cloud credentials
 Mobile: try to adjust the UI for cases with large default font relative to screen size

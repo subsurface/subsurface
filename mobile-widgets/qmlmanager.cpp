@@ -1060,7 +1060,7 @@ bool QMLManager::checkDepth(const DiveObjectHelper &myDive, dive *d, QString dep
 }
 
 // update the dive and return the notes field, stripped of the HTML junk
-void QMLManager::commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
+void QMLManager::commitChanges(QString diveId, QString number, QString date, QString location, QString gps, QString duration, QString depth,
 			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString weight, QString notes,
 			       QStringList startpressure, QStringList endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility, QString state)
 {
@@ -1089,6 +1089,10 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 
 	diveChanged |= checkDepth(myDive, d, depth);
 
+	if (QString::number(myDive.number) != number) {
+		diveChanged = true;
+		d->number = number.toInt();
+	}
 	if (myDive.airTemp != airtemp) {
 		diveChanged = true;
 		d->airtemp.mkelvin = parseTemperatureToMkelvin(airtemp);
