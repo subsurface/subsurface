@@ -9,7 +9,7 @@ import org.kde.kirigami 2.4 as Kirigami
 Item {
 	id: detailsEdit
 	property int dive_id
-	property int number
+	property alias number: txtNumber.text
 	property alias dateText: txtDate.text
 	property alias locationText: locationBox.editText
 	property alias locationIndex: locationBox.currentIndex
@@ -108,7 +108,7 @@ Item {
 		}
 
 		// apply the changes to the dive_table
-		manager.commitChanges(dive_id, detailsEdit.dateText, locationBox.editText, detailsEdit.gpsText, detailsEdit.durationText,
+		manager.commitChanges(dive_id, detailsEdit.number, detailsEdit.dateText, locationBox.editText, detailsEdit.gpsText, detailsEdit.durationText,
 				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText,
 				      suitBox.editText, buddyBox.editText, divemasterBox.editText,
 				      detailsEdit.weightText, detailsEdit.notesText, startpressure,
@@ -152,11 +152,18 @@ Item {
 			id: editorDetails
 			width: parent.width
 			columns: 2
-
-			Kirigami.Heading {
-				Layout.columnSpan: 2
-				text: qsTr("Dive %1").arg(number)
+			Controls.Label {
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Dive number:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
+			SsrfTextField {
+				id: txtNumber;
+				Layout.fillWidth: true
+				flickable: detailsEditFlickable
+			}
+
 			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Date:")
