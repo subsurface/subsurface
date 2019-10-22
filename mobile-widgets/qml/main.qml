@@ -90,7 +90,12 @@ Kirigami.ApplicationWindow {
 	function showMap() {
 		if (globalDrawer.drawerOpen)
 			globalDrawer.close()
-		pageStack.push(mapPage)
+		var i=pageIndex(mapPage)
+		if (i === -1)
+			pageStack.push(mapPage)
+		else
+			pageStack.currentIndex = i
+
 	}
 
 	function pageIndex(pageToFind) {
