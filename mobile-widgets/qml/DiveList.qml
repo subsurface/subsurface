@@ -155,7 +155,7 @@ Kirigami.ScrollablePage {
 					anchors.left: leftBarDive.right
 					Controls.Label {
 						id: locationText
-						text: location
+						text: (undefined !== location) ? location : ""
 						font.weight: Font.Bold
 						font.pointSize: subsurfaceTheme.regularPointSize
 						elide: Text.ElideRight
@@ -179,14 +179,14 @@ Kirigami.ScrollablePage {
 
 						Controls.Label {
 							id: dateLabel
-							text: dateTime
+							text: (undefined !== dateTime) ? dateTime : ""
 							width: Math.max(locationText.width * 0.45, paintedWidth) // helps vertical alignment throughout listview
 							font.pointSize: subsurfaceTheme.smallPointSize
 							color: innerListItem.checked ? subsurfaceTheme.darkerPrimaryTextColor : secondaryTextColor
 						}
 						// let's try to show the depth / duration very compact
 						Controls.Label {
-							text: depthDuration
+							text: (undefined !== depthDuration) ? depthDuration : ""
 							width: Math.max(Kirigami.Units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
 							font.pointSize: subsurfaceTheme.smallPointSize
 							color: innerListItem.checked ? subsurfaceTheme.darkerPrimaryTextColor : secondaryTextColor
