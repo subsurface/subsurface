@@ -52,7 +52,8 @@ Kirigami.Page {
 	property alias cylinderModel3: detailsEdit.cylinderModel3
 	property alias cylinderModel4: detailsEdit.cylinderModel4
 
-	title: currentItem && currentItem.modelData ? currentItem.modelData.location : qsTr("Dive details")
+	title: currentItem && currentItem.modelData && currentItem.modelData.location && "" !== currentItem.modelData.location ?
+		       currentItem.modelData.location : qsTr("Dive details")
 	state: "view"
 	leftPadding: 0
 	topPadding: Kirigami.Units.gridUnit / 2

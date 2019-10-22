@@ -155,7 +155,7 @@ Kirigami.ScrollablePage {
 					anchors.left: leftBarDive.right
 					Controls.Label {
 						id: locationText
-						text: (undefined !== location) ? location : ""
+						text: (undefined !== location && "" != location) ? location : qsTr("<unnamed dive site>")
 						font.weight: Font.Bold
 						font.pointSize: subsurfaceTheme.regularPointSize
 						elide: Text.ElideRight

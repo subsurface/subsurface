@@ -36,7 +36,7 @@ Item {
 		anchors.left: parent.left
 		Controls.Label {
 			id: locationText
-			text: location
+			text: (undefined !== location && "" !== location) ? location : qsTr("<unnamed dive site>")
 			font.weight: Font.Bold
 			font.pointSize: subsurfaceTheme.titlePointSize
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
