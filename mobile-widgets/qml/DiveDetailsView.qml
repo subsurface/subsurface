@@ -52,7 +52,7 @@ Item {
 				enabled: gpsDecimal !== ""
 				onClicked: {
 					showMap()
-					mapPage.centerOnDiveSite(dive_site)
+					mapPage.centerOnDiveSite(diveSite)
 				}
 			}
 		}
@@ -63,7 +63,7 @@ Item {
 			text: qsTr("Map it")
 			onClicked: {
 				showMap()
-				mapPage.centerOnDiveSite(dive_site)
+				mapPage.centerOnDiveSite(diveSite)
 			}
 		}
 		Row {
