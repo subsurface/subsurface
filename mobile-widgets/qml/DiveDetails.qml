@@ -216,14 +216,16 @@ Kirigami.Page {
 	}
 
 	onCurrentItemChanged: {
-		// why do we do this? What consumes this?
-		manager.selectedDiveTimestamp = currentItem.modelData.date
-		// make sure the core data structures reflect that this dive is selected
-		manager.selectDive(currentItem.modelData.id)
-		// update the map to show the highlighted flag and center on it
-		if (rootItem.pageIndex(mapPage) !== -1) {
-			mapPage.reloadMap()
-			mapPage.centerOnDiveSite(currentItem.modelData.diveSite)
+		if (currentItem && currentItem.modelData) {
+			// this is used when loading dives to maintain relative position in the dive list
+			manager.selectedDiveTimestamp = currentItem.modelData.date
+			// make sure the core data structures reflect that this dive is selected
+			manager.selectDive(currentItem.modelData.id)
+			// update the map to show the highlighted flag and center on it
+			if (rootItem.pageIndex(mapPage) !== -1) {
+				mapPage.reloadMap()
+				mapPage.centerOnDiveSite(currentItem.modelData.diveSite)
+			}
 		}
 	}
 
@@ -256,7 +258,7 @@ Kirigami.Page {
 		dive_id = modelData.id
 		number = modelData.number
 		date = modelData.dateTime
-		location = modelData.location
+		location = modelData.location !== undefined ? location : ""
 		locationIndex = manager.locationList.indexOf(modelData.location)
 		gps = modelData.gps
 		gpsCheckbox = false
