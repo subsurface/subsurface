@@ -21,7 +21,7 @@ Kirigami.ScrollablePage {
 		currentIndex: -1
 		boundsBehavior: Flickable.StopAtBounds
 		maximumFlickVelocity: parent.height * 5
-		cacheBuffer: Math.max(5000, parent.height * 5)
+		cacheBuffer: 100 // cache up to 100 lines above / below what is shown for smoother scrolling
 		focus: true
 		clip: true
 		delegate : Text {
