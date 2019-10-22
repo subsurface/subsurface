@@ -1,0 +1,55 @@
+name: Coverity Scan Linux Qt 5.9
+on:
+  schedule:
+    - cron: '0 18 * * *' # Daily at 18:00 UTC
+
+jobs:
+  CoverityScanBuildOnBionic:
+    runs-on: ubuntu-18.04
+
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v1
+
+    - name: add build dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y \
+        autoconf automake cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
+        libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \
+        libqt5webkit5-dev libsqlite3-dev libssh2-1-dev libssl-dev libssl-dev \
+        libtool libusb-1.0-0-dev libxml2-dev libxslt1-dev libzip-dev make \
+        pkg-config qml-module-qtlocation qml-module-qtpositioning \
+        qml-module-qtquick2 qt5-default qt5-qmake qtchooser qtconnectivity5-dev \
+        qtdeclarative5-dev qtdeclarative5-private-dev qtlocation5-dev \
+        qtpositioning5-dev qtscript5-dev qttools5-dev qttools5-dev-tools \
+        qtquickcontrols2-5-dev
+
+    - name: Download Coverity Build Tool
+      run: |
+        cd ..
+        wget -q https://scan.coverity.com/download/cxx/linux64 --post-data "token=$TOKEN&project=Subsurface-divelog%2Fsubsurface" -O cov-analysis-linux64.tar.gz
+        mkdir cov-analysis-linux64
+        tar xzf cov-analysis-linux64.tar.gz --strip 1 -C cov-analysis-linux64
+      env:
+        TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
+
+    - name: run build
+      run: |
+        cd ..
+        export PATH=`pwd`/cov-analysis-linux64/bin:$PATH
+        cov-build --dir cov-int bash -x subsurface/scripts/build.sh -desktop -build-with-webkit
+
+    - name: Submit the result to Coverity Scan
+      run: |
+        cd ..
+        tar czvf subsurface.tgz cov-int
+        curl \
+          --form token=$TOKEN \
+          --form email=glance@acc.umu.se \
+          --form file=@subsurface.tgz \
+          --form version=$(/scripts/get-version linux) \
+          --form description="Automatic scan on github actions" \
+          https://scan.coverity.com/builds?project=Subsurface-divelog%2Fsubsurface
+      env:
+        TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
