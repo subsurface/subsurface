@@ -288,7 +288,10 @@ Kirigami.ApplicationWindow {
 					}
 					text: qsTr("Apply GPS fixes")
 					onTriggered: {
-						manager.applyGpsData();
+						manager.applyGpsData()
+						globalDrawer.close()
+						diveModel.resetInternalData()
+						manager.refreshDiveList()
 					}
 				}
 				Kirigami.Action {
