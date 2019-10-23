@@ -292,6 +292,10 @@ Kirigami.ApplicationWindow {
 						globalDrawer.close()
 						diveModel.resetInternalData()
 						manager.refreshDiveList()
+						while (pageStack.depth > 1) {
+							pageStack.pop()
+						}
+						pageStack.push(diveList)
 					}
 				}
 				Kirigami.Action {
