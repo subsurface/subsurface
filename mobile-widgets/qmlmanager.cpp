@@ -1577,8 +1577,12 @@ QString QMLManager::getCurrentPosition()
 
 void QMLManager::applyGpsData()
 {
-	if (locationProvider->applyLocations())
-		refreshDiveList();
+	appendTextToLog("Applying GPS fiexs");
+	int cnt = locationProvider->applyLocations();
+	if (cnt == 0)
+		return;
+	appendTextToLog(QString("Attached %1 GPS fixes").arg(cnt));
+	refreshDiveList();
 }
 
 void QMLManager::populateGpsData()

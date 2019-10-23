@@ -27,7 +27,7 @@ public:
 	~GpsLocation();
 	static GpsLocation *instance();
 	static bool hasInstance();
-	bool applyLocations();
+	int applyLocations();
 	int getGpsNum() const;
 	bool hasLocationsSource();
 	QString currentPosition();
