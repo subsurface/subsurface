@@ -2077,11 +2077,11 @@ void QMLManager::showDownloadPage(QString deviceString)
 void QMLManager::setFilter(const QString filterText)
 {
 	// show that we are doing something, then do something in another thread in order not to block the UI
-	QMetaObject::invokeMethod(qmlWindow, "showBusy");
+	QMetaObject::invokeMethod(qmlWindow, "showBusyAndDisconnectModel");
 	QtConcurrent::run(QThreadPool::globalInstance(),
 			  [=]{
 				DiveListSortModel::instance()->setFilter(filterText);
-				QMetaObject::invokeMethod(qmlWindow, "hideBusy");
+				QMetaObject::invokeMethod(qmlWindow, "hideBusyAndConnectModel");
 			  });
 }
 
