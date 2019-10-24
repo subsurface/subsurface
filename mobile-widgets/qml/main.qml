@@ -68,10 +68,18 @@ Kirigami.ApplicationWindow {
 
 	function showBusy() {
 		busy.running = true
+	}
+
+	function showBusyAndDisconnectModel() { // this is used by QMLManager when operating the filter
+		busy.running = true
 		diveList.diveListModel = null
 	}
 
 	function hideBusy() {
+		busy.running = false
+	}
+
+	function hideBusyAndConnectModel() { // this is used by QMLManager when done filtering
 		busy.running = false
 		diveList.diveListModel = diveModel
 	}
