@@ -34,6 +34,7 @@ jobs:
         grep "Built target installer" build.log
 
     - name: create CI release
+      if: github.event_name == 'pull_request'
       uses: ./.github/actions/release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -46,3 +47,12 @@ jobs:
         BIN4: ./smtk2ssrf-installer.exe
         BIN5: ./smtk2ssrf.exe
 
+    - name: copy to transfer.sh
+      if: github.event_name == 'push'
+      run: |
+        apt-get install -y curl
+        curl --upload-file subsurface-installer.exe "https://transfer.sh/subsurface-installer.exe
+        curl --upload-file subsurface.exe "https://transfer.sh/subsurface.exe
+        curl --upload-file subsurface.exe.debug "https://transfer.sh/subsurface.exe.debug
+        curl --upload-file smtk2ssrf-installer.exe "https://transfer.sh/smtk2ssrf-installer.exe
+        curl --upload-file smtk2ssrf.exe "https://transfer.sh/smtk2ssrf.exe

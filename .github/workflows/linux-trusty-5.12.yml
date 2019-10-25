@@ -17,6 +17,7 @@ jobs:
         bash -x subsurface/.github/workflows/scripts/linux-in-container-build.sh
 
     - name: create CI release
+      if: github.event_name == 'pull_request'
       uses: ./.github/actions/release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -24,3 +25,9 @@ jobs:
         REF: ${{ github.ref }}
         COMMIT: ${{ github.sha }}
         BIN1: ./Subsurface.AppImage
+
+    - name: copy to transfer.sh
+      if: github.event_name == 'push'
+      run: |
+        apt-get install -y curl
+        curl --upload-file Subsurface.AppImage "https://transfer.sh/Subsurface.AppImage
