@@ -296,14 +296,16 @@ Kirigami.ApplicationWindow {
 					}
 					text: qsTr("Apply GPS fixes")
 					onTriggered: {
-						showBusy()
-						manager.applyGpsData()
 						globalDrawer.close()
+						showBusy()
+						diveList.diveListModel = null
+						manager.applyGpsData()
 						diveModel.resetInternalData()
 						manager.refreshDiveList()
 						while (pageStack.depth > 1) {
 							pageStack.pop()
 						}
+						diveList.diveListModel = diveModel
 						pageStack.push(diveList)
 						hideBusy()
 					}
