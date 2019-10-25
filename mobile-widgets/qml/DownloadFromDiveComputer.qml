@@ -392,7 +392,8 @@ Kirigami.Page {
 					manager.saveChangesLocal()
 					diveModel.resetInternalData()
 					manager.refreshDiveList()
-					pageStack.pop();
+					pageStack.pop()
+					pageStack.push(diveList)
 					download.text = qsTr("Download")
 					busy = false
 					rootItem.hideBusy()
