@@ -71,11 +71,14 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		if (btName.startsWith("Aladin")) product = "Aladin Sport Matrix";
 	}
 
-	if (btName == "Mares bluelink pro") {
+	if (btName.startsWith("Mares")) {
 		vendor = "Mares";
 		// we don't know which of the dive computers it is,
 		// so let's just randomly pick one
 		product = "Quad";
+		// Some we can pick out directly
+		if (btName == "Mares Genius")
+			product = "Genius";
 	}
 
 	// The Pelagic dive computers (generally branded as Oceanic or Aqualung)
