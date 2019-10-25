@@ -808,6 +808,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 		dcText = tr("Manually added dive");
 	else if (dcText.isEmpty())
 		dcText = tr("Unknown dive computer");
+	printf("dcText: %s\n", qPrintable(dcText)); // FIXME: Debugging
 #ifndef SUBSURFACE_MOBILE
 	int nr;
 	if ((nr = number_of_computers(&displayed_dive)) > 1)
