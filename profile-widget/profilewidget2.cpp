@@ -1652,7 +1652,7 @@ void ProfileWidget2::addDivemodeSwitch()
 	int i;
 	QAction *action = qobject_cast<QAction *>(sender());
 	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
-	for (i = 0; i < UNDEF_COMP_TYPE; i++)
+	for (i = 0; i < NUM_DIVEMODE; i++)
 		if (gettextFromC::tr(divemode_text_ui[i]) == action->text())
 			add_event(current_dc, lrint(timeAxis->valueAt(scenePos)), 8, 0, i,
 				QT_TRANSLATE_NOOP("gettextFromC", "modechange"));
