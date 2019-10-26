@@ -42,6 +42,7 @@ jobs:
     - name: copy to transfer.sh
       if: github.event_name == 'push'
       run: |
+        apt-get update
         apt-get install -y curl
         curl --upload-file Subsurface-mobile.apk "https://transfer.sh/Subsurface-mobile.apk
         curl --upload-file Subsurface-mobile.arm64.apk "https://transfer.sh/Subsurface-mobile.arm64.apk

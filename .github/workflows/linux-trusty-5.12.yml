@@ -35,5 +35,6 @@ jobs:
     - name: copy to transfer.sh
       if: github.event_name == 'push'
       run: |
+        apt-get update
         apt-get install -y curl
         curl --upload-file Subsurface.AppImage "https://transfer.sh/Subsurface.AppImage
