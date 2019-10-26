@@ -77,7 +77,7 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		// so let's just randomly pick one
 		product = "Quad";
 		// Some we can pick out directly
-		if (btName == "Mares Genius")
+		if (btName.startsWith("Mares Genius"))
 			product = "Genius";
 	}
 
