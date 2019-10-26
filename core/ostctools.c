@@ -44,7 +44,8 @@ void ostctools_import(const char *file, struct dive_table *divetable, struct tri
 	FILE *archive;
 	device_data_t *devdata = calloc(1, sizeof(device_data_t));
 	dc_family_t dc_fam;
-	unsigned char *buffer = calloc(65536, 1), *uc_tmp;
+	unsigned char *buffer = calloc(65536, 1);
+	unsigned char uc_tmp[2];
 	char *tmp;
 	struct dive *ostcdive = alloc_dive();
 	dc_status_t rc = 0;
@@ -56,49 +57,40 @@ void ostctools_import(const char *file, struct dive_table *divetable, struct tri
 	// Open the archive
 	if ((archive = subsurface_fopen(file, "rb")) == NULL) {
 		report_error(failed_to_read_msg, file);
-		free(ostcdive);
+		free_dive(ostcdive);
 		goto out;
 	}
 
 	// Read dive number from the log
-	uc_tmp = calloc(2, 1);
 	if (fseek(archive, 258, 0) == -1) {
 		report_error(failed_to_read_msg, file);
-		free(uc_tmp);
-		free(ostcdive);
+		free_dive(ostcdive);
 		goto close_out;
 	}
 	if (fread(uc_tmp, 1, 2, archive) != 2) {
 		report_error(failed_to_read_msg, file);
-		free(uc_tmp);
-		free(ostcdive);
+		free_dive(ostcdive);
 		goto close_out;
 	}
 	ostcdive->number = uc_tmp[0] + (uc_tmp[1] << 8);
-	free(uc_tmp);
 
 	// Read device's serial number
-	uc_tmp = calloc(2, 1);
 	if (fseek(archive, 265, 0) == -1) {
 		report_error(failed_to_read_msg, file);
-		free(uc_tmp);
-		free(ostcdive);
+		free_dive(ostcdive);
 		goto close_out;
 	}
 	if (fread(uc_tmp, 1, 2, archive) != 2) {
 		report_error(failed_to_read_msg, file);
-		free(uc_tmp);
-		free(ostcdive);
+		free_dive(ostcdive);
 		goto close_out;
 	}
 	serial = uc_tmp[0] + (uc_tmp[1] << 8);
-	free(uc_tmp);
 
 	// Read dive's raw data, header + profile
 	if (fseek(archive, 456, 0) == -1) {
 		report_error(failed_to_read_msg, file);
-		free(uc_tmp);
-		free(ostcdive);
+		free_dive(ostcdive);
 		goto close_out;
 	}
 	while ((c = getc(archive)) != EOF) {
@@ -109,7 +101,7 @@ void ostctools_import(const char *file, struct dive_table *divetable, struct tri
 	}
 	if (ferror(archive)) {
 		report_error(failed_to_read_msg, file);
-		free(ostcdive);
+		free_dive(ostcdive);
 		goto close_out;
 	}
 
@@ -127,7 +119,7 @@ void ostctools_import(const char *file, struct dive_table *divetable, struct tri
 			break;
 		default:
 			report_error(translate("gettextFromC", "Unknown DC in dive %d"), ostcdive->number);
-			free(ostcdive);
+			free_dive(ostcdive);
 			goto close_out;
 		}
 	}
@@ -158,7 +150,7 @@ void ostctools_import(const char *file, struct dive_table *divetable, struct tri
 	ret = ostc_prepare_data(model, dc_fam, devdata);
 	if (ret == 0) {
 		report_error(translate("gettextFromC", "Unknown DC in dive %d"), ostcdive->number);
-		free(ostcdive);
+		free_dive(ostcdive);
 		goto close_out;
 	}
 	tmp = calloc(strlen(devdata->vendor) + strlen(devdata->model) + 28, 1);
