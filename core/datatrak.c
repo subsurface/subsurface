@@ -462,8 +462,7 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 		dt_dive->notes = memcpy(dt_dive->notes, buffer, len);
 		free(tmp_string1);
 	}
-	if (tmp_notes_str != NULL)
-		free(tmp_notes_str);
+	free(tmp_notes_str);
 
 	/*
 	 * Alarms 1 and Alarms2 - Bit tables - Not in Subsurface, we use the profile
