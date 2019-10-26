@@ -274,7 +274,6 @@ static int divinglog_dive(void *param, int columns, char **data, char **column)
 	int retval = 0, diveid;
 	struct parser_state *state = (struct parser_state *)param;
 	sqlite3 *handle = state->sql_handle;
-	char *err = NULL;
 	char get_profile_template[] = "select ProfileInt,Profile,Profile2,Profile3,Profile4,Profile5 from Logbook where ID = %d";
 	char get_cylinder0_template[] = "select 0,TankSize,PresS,PresE,PresW,O2,He,DblTank from Logbook where ID = %d";
 	char get_cylinder_template[] = "select TankID,TankSize,PresS,PresE,PresW,O2,He,DblTank from Tank where LogID = %d order by TankID";
@@ -347,14 +346,14 @@ static int divinglog_dive(void *param, int columns, char **data, char **column)
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder0_template, diveid);
-	retval = sqlite3_exec(handle, get_buffer, &divinglog_cylinder, state, &err);
+	retval = sqlite3_exec(handle, get_buffer, &divinglog_cylinder, state, NULL);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query divinglog_cylinder0 failed.\n");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, diveid);
-	retval = sqlite3_exec(handle, get_buffer, &divinglog_cylinder, state, &err);
+	retval = sqlite3_exec(handle, get_buffer, &divinglog_cylinder, state, NULL);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query divinglog_cylinder failed.\n");
 		return 1;
@@ -384,7 +383,7 @@ static int divinglog_dive(void *param, int columns, char **data, char **column)
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, diveid);
-	retval = sqlite3_exec(handle, get_buffer, &divinglog_profile, state, &err);
+	retval = sqlite3_exec(handle, get_buffer, &divinglog_profile, state, NULL);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query divinglog_profile failed.\n");
 		return 1;
@@ -403,7 +402,6 @@ int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer,
 	UNUSED(size);
 
 	int retval;
-	char *err = NULL;
 	struct parser_state state;
 
 	init_parser_state(&state);
@@ -414,7 +412,7 @@ int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer,
 
 	char get_dives[] = "select Number,strftime('%s',Divedate || ' ' || ifnull(Entrytime,'00:00')),Country || ' - ' || City || ' - ' || Place,Buddy,Comments,Depth,Divetime,Divemaster,Airtemp,Watertemp,Weight,Divesuit,Computer,ID,Visibility,SupplyType from Logbook where UUID not in (select UUID from DeletedRecords)";
 
-	retval = sqlite3_exec(handle, get_dives, &divinglog_dive, &state, &err);
+	retval = sqlite3_exec(handle, get_dives, &divinglog_dive, &state, NULL);
 	free_parser_state(&state);
 
 	if (retval != SQLITE_OK) {

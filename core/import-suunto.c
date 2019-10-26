@@ -170,7 +170,6 @@ static int dm4_dive(void *param, int columns, char **data, char **column)
 	float *profileBlob;
 	unsigned char *tempBlob;
 	int *pressureBlob;
-	char *err = NULL;
 	char get_events_template[] = "select * from Mark where DiveId = %d";
 	char get_tags_template[] = "select Text from DiveTag where DiveId = %d";
 	char get_events[64];
@@ -260,14 +259,14 @@ static int dm4_dive(void *param, int columns, char **data, char **column)
 	}
 
 	snprintf(get_events, sizeof(get_events) - 1, get_events_template, state->cur_dive->number);
-	retval = sqlite3_exec(handle, get_events, &dm4_events, state, &err);
+	retval = sqlite3_exec(handle, get_events, &dm4_events, state, NULL);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query dm4_events failed.\n");
 		return 1;
 	}
 
 	snprintf(get_events, sizeof(get_events) - 1, get_tags_template, state->cur_dive->number);
-	retval = sqlite3_exec(handle, get_events, &dm4_tags, state, &err);
+	retval = sqlite3_exec(handle, get_events, &dm4_tags, state, NULL);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query dm4_tags failed.\n");
 		return 1;
@@ -380,7 +379,6 @@ static int dm5_dive(void *param, int columns, char **data, char **column)
 	struct parser_state *state = (struct parser_state *)param;
 	sqlite3 *handle = state->sql_handle;
 	unsigned const char *sampleBlob;
-	char *err = NULL;
 	char get_events_template[] = "select * from Mark where DiveId = %d";
 	char get_tags_template[] = "select Text from DiveTag where DiveId = %d";
 	char get_cylinders_template[] = "select * from DiveMixture where DiveId = %d";
@@ -428,7 +426,7 @@ static int dm5_dive(void *param, int columns, char **data, char **column)
 		utf8_string(data[5], &state->cur_dive->dc.model);
 
 	snprintf(get_events, sizeof(get_events) - 1, get_cylinders_template, state->cur_dive->number);
-	retval = sqlite3_exec(handle, get_events, &dm5_cylinders, state, &err);
+	retval = sqlite3_exec(handle, get_events, &dm5_cylinders, state, NULL);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query dm5_cylinders failed.\n");
 		return 1;
@@ -534,21 +532,21 @@ static int dm5_dive(void *param, int columns, char **data, char **column)
 	}
 
 	snprintf(get_events, sizeof(get_events) - 1, get_gaschange_template, state->cur_dive->number);
-	retval = sqlite3_exec(handle, get_events, &dm5_gaschange, state, &err);
+	retval = sqlite3_exec(handle, get_events, &dm5_gaschange, state, NULL);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query dm5_gaschange failed.\n");
 		return 1;
 	}
 
 	snprintf(get_events, sizeof(get_events) - 1, get_events_template, state->cur_dive->number);
-	retval = sqlite3_exec(handle, get_events, &dm4_events, state, &err);
+	retval = sqlite3_exec(handle, get_events, &dm4_events, state, NULL);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query dm4_events failed.\n");
 		return 1;
 	}
 
 	snprintf(get_events, sizeof(get_events) - 1, get_tags_template, state->cur_dive->number);
-	retval = sqlite3_exec(handle, get_events, &dm4_tags, state, &err);
+	retval = sqlite3_exec(handle, get_events, &dm4_tags, state, NULL);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query dm4_tags failed.\n");
 		return 1;
