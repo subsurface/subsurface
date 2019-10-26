@@ -40,7 +40,7 @@ jobs:
         grep "Built target installer" build.log
 
     - name: create CI release
-      if: github.event_name == 'pull_request'
+      if: github.event_name == 'push'
       uses: ./.github/actions/release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -54,7 +54,7 @@ jobs:
         BIN5: ./smtk2ssrf.exe
 
     - name: copy to transfer.sh
-      if: github.event_name == 'push'
+      if: github.event_name == 'pull_request'
       run: |
         apt-get update
         apt-get install -y curl

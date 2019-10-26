@@ -37,4 +37,4 @@ jobs:
       run: |
         apt-get update
         apt-get install -y curl
-        curl --upload-file Subsurface.AppImage "https://transfer.sh/Subsurface.AppImage
+        curl --upload-file Subsurface.AppImage "https://transfer.sh/Subsurface.AppImage"

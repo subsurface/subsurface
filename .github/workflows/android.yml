@@ -29,7 +29,7 @@ jobs:
         cp /__w/subsurface/subsurface-mobile-build-arm//build/outputs/apk/debug/subsurface-mobile-build-arm-debug.apk ${GITHUB_WORKSPACE}/Subsurface-mobile.apk
 
     - name: create CI release
-      if: github.event_name == 'pull_request'
+      if: github.event_name == 'push'
       uses: ./.github/actions/release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -40,9 +40,9 @@ jobs:
         BIN2: ./Subsurface-mobile.arm64.apk
 
     - name: copy to transfer.sh
-      if: github.event_name == 'push'
+      if: github.event_name == 'pull_request'
       run: |
         apt-get update
         apt-get install -y curl
-        curl --upload-file Subsurface-mobile.apk "https://transfer.sh/Subsurface-mobile.apk
-        curl --upload-file Subsurface-mobile.arm64.apk "https://transfer.sh/Subsurface-mobile.arm64.apk
+        curl --upload-file Subsurface-mobile.apk "https://transfer.sh/Subsurface-mobile.apk"
+        curl --upload-file Subsurface-mobile.arm64.apk "https://transfer.sh/Subsurface-mobile.arm64.apk"

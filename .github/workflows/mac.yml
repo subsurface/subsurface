@@ -102,7 +102,7 @@ jobs:
       with:
         name: Subsurface.app.zip
     - name: create CI release
-      if: github.event_name == 'pull_request'
+      if: github.event_name == 'push'
       uses: ./.github/actions/release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -112,6 +112,6 @@ jobs:
         BIN1: Subsurface.app.zip
 
     - name: copy to transfer.sh
-      if: github.event_name == 'push'
+      if: github.event_name == 'pull_request'
       run: |
         curl --upload-file Subsurface.app.zip "https://transfer.sh/Subsurface.app.zip"
