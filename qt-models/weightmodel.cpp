@@ -99,13 +99,13 @@ bool WeightModel::setData(const QModelIndex &index, const QVariant &value, int r
 			if (!ws->description || gettextFromC::tr(ws->description) != vString) {
 				// loop over translations to see if one matches
 				int i = -1;
-				while (ws_info[++i].name && i < MAX_WS_INFO) {
+				while (i < MAX_WS_INFO && ws_info[++i].name) {
 					if (gettextFromC::tr(ws_info[i].name) == vString) {
 						ws->description = copy_string(ws_info[i].name);
 						break;
 					}
 				}
-				if (ws_info[i].name == NULL) // didn't find a match
+				if (i == MAX_WS_INFO || ws_info[i].name == NULL) // didn't find a match
 					ws->description = copy_qstring(vString);
 				changed = true;
 			}
