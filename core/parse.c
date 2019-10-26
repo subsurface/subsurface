@@ -33,7 +33,6 @@ void free_parser_state(struct parser_state *state)
 	free_picture(state->cur_picture);
 	free((void *)state->cur_extra_data.key);
 	free((void *)state->cur_extra_data.value);
-	free((void *)state->cur_settings.dc.nickname);
 	free((void *)state->cur_settings.dc.model);
 	free((void *)state->cur_settings.dc.nickname);
 	free((void *)state->cur_settings.dc.serial_nr);
