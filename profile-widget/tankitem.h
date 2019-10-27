@@ -27,7 +27,6 @@ private:
 	void createBar(int startTime, int stopTime, struct gasmix gas);
 	DiveCartesianAxis *hAxis;
 	int plotEndTime;
-	qreal height;
 	QBrush air, nitrox, oxygen, trimix;
 	QList<QGraphicsRectItem *> rects;
 };
