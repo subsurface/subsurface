@@ -916,7 +916,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				QPair<QString, QString> pair = poseidonFileNames(fileNames[i]);
 				parse_txt_file(qPrintable(pair.second), qPrintable(pair.first), &table, &trips, &sites);
 			} else {
-				char *params[49];
+				char *params[50];
 				int pnr = 0;
 
 				QRegExp apdRe("^.*[/\\][0-9a-zA-Z]*_([0-9]{6})_([0-9]{6})\\.apd");
