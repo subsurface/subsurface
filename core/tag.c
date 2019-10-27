@@ -72,8 +72,7 @@ char *taglist_get_tagstring(struct tag_entry *tag_list)
 	 *  - empty tag list
 	 *  - tag list with empty tag only
 	 */
-	mb_cstring(&b);
-	return detach_buffer(&b);
+	return detach_cstring(&b);
 }
 
 static inline void taglist_free_divetag(struct divetag *tag)

@@ -132,7 +132,7 @@ void TabDivePhotos::saveSubtitles()
 					continue;
 				struct membuffer b = { 0 };
 				save_subtitles_buffer(&b, &displayed_dive, offset, duration);
-				char *data = detach_buffer(&b);
+				char *data = detach_cstring(&b);
 				subtitlefile.open(QIODevice::WriteOnly);
 				subtitlefile.write(data, strlen(data));
 				subtitlefile.close();
