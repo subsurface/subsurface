@@ -89,7 +89,7 @@ char *get_planner_disclaimer_formatted()
 	const char *deco = decoMode() == VPMB ? translate("gettextFromC", "VPM-B")
 					      : translate("gettextFromC", "BUHLMANN");
 	put_format(&buf, get_planner_disclaimer(), deco);
-	return detach_buffer(&buf);
+	return detach_cstring(&buf);
 }
 
 void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, int error)
@@ -618,9 +618,8 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	if (o2warning_exist)
 		put_string(&buf, "</div>\n");
 finished:
-	mb_cstring(&buf);
 	free(dive->notes);
-	dive->notes = detach_buffer(&buf);
+	dive->notes = detach_cstring(&buf);
 #ifdef DEBUG_PLANNER_NOTES
 	printf("<!DOCTYPE html>\n<html>\n\t<head><title>plannernotes</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/></head>\n\t<body>\n%s\t</body>\n</html>\n", dive->notes);
 #endif

@@ -23,17 +23,13 @@
  *
  *     "something, something else"
  *
- * Unless ownership to the buffer is given away say to a caller
+ * Unless ownership to the buffer is given away by using "detach_cstring()":
  *
- *     mb_cstring(&mb);
- *     return detach_buffer(&mb);
+ *	ptr = detach_cstring();
  *
- * or via a callback
+ * where the caller now has a C string and is supposed to free it.
  *
- *     mb_cstring(&mb);
- *     cb(detach_buffer(&mb));
- *
- * otherwise allocated memory should be freed
+ * Otherwise allocated memory should be freed
  *
  *     free_buffer(&mb);
  */
@@ -60,7 +56,7 @@ struct membuffer {
 #define __printf(x, y)
 #endif
 
-extern char *detach_buffer(struct membuffer *b);
+extern char *detach_cstring(struct membuffer *b);
 extern void free_buffer(struct membuffer *);
 extern void make_room(struct membuffer *b, unsigned int size);
 extern void flush_buffer(struct membuffer *, FILE *);

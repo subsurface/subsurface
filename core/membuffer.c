@@ -12,13 +12,20 @@
 #include "dive.h"
 #include "membuffer.h"
 
-char *detach_buffer(struct membuffer *b)
+/* Only for internal use */
+static char *detach_buffer(struct membuffer *b)
 {
 	char *result = b->buffer;
 	b->buffer = NULL;
 	b->len = 0;
 	b->alloc = 0;
 	return result;
+}
+
+char *detach_cstring(struct membuffer *b)
+{
+	mb_cstring(b);
+	return detach_buffer(b);
 }
 
 void free_buffer(struct membuffer *b)
@@ -117,8 +124,7 @@ char *vformat_string(const char *fmt, va_list args)
 {
 	struct membuffer mb = { 0 };
 	put_vformat(&mb, fmt, args);
-	mb_cstring(&mb);
-	return detach_buffer(&mb);
+	return detach_cstring(&mb);
 }
 
 char *format_string(const char *fmt, ...)

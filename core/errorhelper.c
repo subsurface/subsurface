@@ -22,8 +22,7 @@ int report_error(const char *fmt, ...)
 		return -1;
 
 	VA_BUF(&buf, fmt);
-	mb_cstring(&buf);
-	error_cb(detach_buffer(&buf));
+	error_cb(detach_cstring(&buf));
 
 	return -1;
 }
