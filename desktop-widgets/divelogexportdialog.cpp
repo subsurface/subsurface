@@ -377,7 +377,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		dive_site *site = dive->dive_site;
 		QRegExp ct("countrytag: (\\w+)");
 		QString country;
-		if (ct.indexIn(site->notes) >= 0)
+		if (site && ct.indexIn(site->notes) >= 0)
 			country = ct.cap(1);
 		else
 			country = "";
