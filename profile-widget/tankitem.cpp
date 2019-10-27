@@ -7,9 +7,7 @@
 
 TankItem::TankItem(QObject *parent) :
 	QObject(parent),
-	QGraphicsRectItem(),
-	pInfoEntry(0),
-	pInfoNr(0)
+	plotEndTime(-1)
 {
 	height = 3;
 	QColor red(PERSIANRED1);
@@ -35,14 +33,19 @@ TankItem::TankItem(QObject *parent) :
 
 void TankItem::setData(DivePlotDataModel *model, struct plot_info *plotInfo, struct dive *d)
 {
-	free(pInfoEntry);
-	// the plotInfo and dive structures passed in could become invalid before we stop using them,
-	// so copy the data that we need
-	int size = plotInfo->nr * sizeof(plotInfo->entry[0]);
-	pInfoEntry = (struct plot_data *)malloc(size);
-	pInfoNr = plotInfo->nr;
-	memcpy(pInfoEntry, plotInfo->entry, size);
+	// If there is nothing to plot, quit early.
+	if (plotInfo->nr <= 0) {
+		plotEndTime = -1;
+		return;
+	}
+
+	// Find correct end of the dive plot for correct end of the tankbar.
+	struct plot_data *last_entry = &plotInfo->entry[plotInfo->nr - 1];
+	plotEndTime = last_entry->sec;
+
+	// Stay informed of changes to the tanks.
 	connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(modelDataChanged(QModelIndex, QModelIndex)), Qt::UniqueConnection);
+
 	modelDataChanged();
 }
 
@@ -77,15 +80,12 @@ void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)
 void TankItem::modelDataChanged(const QModelIndex&, const QModelIndex&)
 {
 	// We don't have enougth data to calculate things, quit.
-	if (!pInfoEntry || !pInfoNr)
+	if (plotEndTime < 0)
 		return;
 
 	// remove the old rectangles
 	qDeleteAll(rects);
 	rects.clear();
-
-	// Find correct end of the dive plot for correct end of the tankbar
-	struct plot_data *last_entry = &pInfoEntry[pInfoNr-1];
 
 	// get the information directly from the displayed_dive (the dc always exists)
 	struct divecomputer *dc = get_dive_dc(&displayed_dive, dc_number);
@@ -97,13 +97,13 @@ void TankItem::modelDataChanged(const QModelIndex&, const QModelIndex&)
 
 	// work through all the gas changes and add the rectangle for each gas while it was used
 	const struct event *ev = get_next_event(dc->events, "gaschange");
-	while (ev && (int)ev->time.seconds < last_entry->sec) {
+	while (ev && (int)ev->time.seconds < plotEndTime) {
 		createBar(startTime, ev->time.seconds, gasmix);
 		startTime = ev->time.seconds;
 		gasmix = get_gasmix_from_event(&displayed_dive, ev);
 		ev = get_next_event(ev->next, "gaschange");
 	}
-	createBar(startTime, last_entry->sec, gasmix);
+	createBar(startTime, plotEndTime, gasmix);
 }
 
 void TankItem::setHorizontalAxis(DiveCartesianAxis *horizontal)
