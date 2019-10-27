@@ -26,8 +26,7 @@ public slots:
 private:
 	void createBar(int startTime, int stopTime, struct gasmix gas);
 	DiveCartesianAxis *hAxis;
-	struct plot_data *pInfoEntry;
-	int pInfoNr;
+	int plotEndTime;
 	qreal height;
 	QBrush air, nitrox, oxygen, trimix;
 	QList<QGraphicsRectItem *> rects;
