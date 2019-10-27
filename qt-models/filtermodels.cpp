@@ -250,7 +250,7 @@ void MultiFilterSortModel::myInvalidate()
 				m->setData(idx, showTrip, DiveTripModelBase::SHOWN_ROLE);
 			} else {
 				dive *d = m->data(idx, DiveTripModelBase::DIVE_ROLE).value<dive *>();
-				bool show = showDive(d);
+				bool show = (d != NULL) && showDive(d);
 				if (show)
 					divesDisplayed++;
 				m->setData(idx, show, DiveTripModelBase::SHOWN_ROLE);
