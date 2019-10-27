@@ -1471,7 +1471,7 @@ static int comp_dive_to_trip(struct dive *a, struct dive_trip *b)
 {
 	/* This should never happen, nevertheless don't crash on trips
 	 * with no (or worse a negative number of) dives. */
-	if (b->dives.nr <= 0)
+	if (!b || b->dives.nr <= 0)
 		return -1;
 	return comp_dives(a, b->dives.dives[0]);
 }
