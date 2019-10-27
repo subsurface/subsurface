@@ -1014,8 +1014,10 @@ void DivePlannerPointsModel::computeVariationsFreeDeco(struct diveplan *original
 
 void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, const struct deco_state *previous_ds)
 {
+	// nothing to do unless there's an original plan
+	if (!original_plan)
+		return;
 
-//	bool oldRecalc = setRecalc(false);
 	struct dive *dive = alloc_dive();
 	copy_dive(&displayed_dive, dive);
 	struct decostop original[60], deeper[60], shallower[60], shorter[60], longer[60];
@@ -1023,10 +1025,6 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 	struct diveplan plan_copy;
 	struct divedatapoint *last_segment;
 	struct deco_state ds = *previous_ds;
-
-	if (!original_plan)
-		return;
-
 
 	if (in_planner() && prefs.display_variations && decoMode() != RECREATIONAL) {
 		int my_instance = ++instanceCounter;
