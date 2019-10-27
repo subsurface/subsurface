@@ -1,3 +1,4 @@
+Mobile: re-enable GPS location service icon in global drawer
 Mobile: add support for editing the dive number of a dive
 Desktop: make dive replanning undoable
 Desktop: update statistics tab on undo or redo
