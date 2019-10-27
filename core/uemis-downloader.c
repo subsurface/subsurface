@@ -232,13 +232,13 @@ static void uemis_info(const char *fmt, ...)
 
 static long bytes_available(int file)
 {
-	long result;
+	long result, r2;
 	long now = lseek(file, 0, SEEK_CUR);
 	if (now == -1)
 		return 0;
 	result = lseek(file, 0, SEEK_END);
-	lseek(file, now, SEEK_SET);
-	if (now == -1 || result == -1)
+	r2 = lseek(file, now, SEEK_SET);
+	if (now == -1 || result == -1 || r2 == -1)
 		return 0;
 	return result;
 }
