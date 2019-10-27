@@ -149,7 +149,7 @@ dive_trip_t *create_trip_from_dive(struct dive *dive)
 
 dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive, struct trip_table *trip_table_arg)
 {
-	dive_trip_t *dive_trip = alloc_trip();
+	dive_trip_t *dive_trip;
 
 	dive_trip = create_trip_from_dive(dive);
 
