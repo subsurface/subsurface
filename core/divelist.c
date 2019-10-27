@@ -1478,6 +1478,18 @@ static int comp_dive_to_trip(struct dive *a, struct dive_trip *b)
 
 static int comp_dive_or_trip(struct dive_or_trip a, struct dive_or_trip b)
 {
+	/* we should only be called with both a and b having exactly one of
+	 * dive or trip not NULL. But in an abundance of caution, make sure
+	 * we still give a consistent answer even when called with invalid
+	 * arguments, as otherwise we might be hunting down crashes at a later
+	 * time...
+	 */
+	if (!a.dive && !a.trip && !b.dive && !b.trip)
+		return 0;
+	if (!a.dive && !a.trip)
+		return -1;
+	if (!b.dive && !b.trip)
+		return 1;
 	if (a.dive && b.dive)
 		return comp_dives(a.dive, b.dive);
 	if (a.trip && b.trip)
