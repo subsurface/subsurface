@@ -567,14 +567,18 @@ void DiveLocationLineEdit::fixPopupPosition()
 
 void DiveLocationLineEdit::setCurrentDiveSite(struct dive *d)
 {
-	struct dive_site *ds = get_dive_site_for_dive(d);
-	currDs = ds;
+	location_t currentLocation;
+	if (d) {
+		currDs = get_dive_site_for_dive(d);
+		currentLocation = dive_get_gps_location(d);
+	} else {
+		currDs = nullptr;
+		currentLocation = location_t{0, 0};
+	}
 	if (!currDs)
 		clear();
 	else
-		setText(ds->name);
-
-	location_t currentLocation = d ? dive_get_gps_location(d) : location_t{0, 0};
+		setText(currDs->name);
 	proxy->setCurrentLocation(currentLocation);
 	delegate.setCurrentLocation(currentLocation);
 }
