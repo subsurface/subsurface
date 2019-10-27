@@ -24,7 +24,7 @@ public slots:
 	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
 
 private:
-	void createBar(qreal x, qreal w, struct gasmix gas);
+	void createBar(int startTime, int stopTime, struct gasmix gas);
 	DiveCartesianAxis *hAxis;
 	struct plot_data *pInfoEntry;
 	int pInfoNr;
