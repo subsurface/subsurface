@@ -461,12 +461,11 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			}
 		] // end actions
-		Kirigami.Icon {
-			source: ":/icons/" + (subsurfaceTheme.currentTheme != "" ? subsurfaceTheme.currentTheme : "Blue") + "_gps.svg"
-			enabled: false
+		Image {
+			fillMode: Image.PreserveAspectFit
+			source: "qrc:///icons/" + (subsurfaceTheme.currentTheme != "" ? subsurfaceTheme.currentTheme : "Blue") + "_gps.svg"
 			visible: locationServiceEnabled
 		}
-
 	}
 
 	function blueTheme() {
