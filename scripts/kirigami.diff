@@ -213,3 +213,48 @@ diff -rwu ../kirigami/src/controls/private/ActionButton.qml ./src/controls/priva
          implicitHeight: Units.iconSizes.medium + Units.largeSpacing * 2
  
  
+@@ -291,7 +291,7 @@
+                         bottomMargin: Units.smallSpacing
+                     }
+                     enabled: root.leftAction && root.leftAction.enabled
+-                    radius: Units.devicePixelRatio*2
++		    radius: Units.devicePixelRatio*4
+                     height: Units.iconSizes.smallMedium + Units.smallSpacing * 2
+                     width: height + (root.action ? Units.gridUnit*2 : 0)
+                     visible: root.leftAction
+@@ -326,6 +326,17 @@
+                             margins: Units.smallSpacing * 2
+                         }
+                     }
++		    Rectangle {
++			anchors.left: parent.left
++			anchors.leftMargin: Units.smallSpacing
++			anchors.verticalCenter: parent.verticalCenter
++			width: Units.iconSizes.smallMedium + Units.smallSpacing * 2
++			height: width
++			radius: width / 2
++			color: "transparent"
++			border.color: Qt.lighter(buttonGraphics.baseColor, 1.1)
++			border.width: 0.5
++		    }
+                 }
+                 //right button
+                 Rectangle {
+@@ -372,6 +383,17 @@
+                             margins: Units.smallSpacing * 2
+                         }
+                     }
++		    Rectangle {
++			anchors.right: parent.right
++			anchors.rightMargin: Units.smallSpacing
++			anchors.verticalCenter: parent.verticalCenter
++			width: Units.iconSizes.smallMedium + Units.smallSpacing * 2
++			height: width
++			radius: width / 2
++			color: "transparent"
++			border.color: Qt.lighter(buttonGraphics.baseColor, 1.1)
++			border.width: 0.5
++		    }
+                 }
+             }
+ 
