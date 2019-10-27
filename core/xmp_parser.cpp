@@ -61,7 +61,7 @@ static timestamp_t extract_timestamp_from_attributes(const xmlNode *node)
 		const xmlChar *ns = p->ns ? p->ns->prefix : nullptr;
 
 		// Check for xmp::CreateDate property
-		if (!strcmp((const char *)ns, "xmp") && !strcmp((const char *)p->name, "CreateDate")) {
+		if (same_string((const char *)ns, "xmp") && same_string((const char *)p->name, "CreateDate")) {
 			// We only support a single property value
 			if (!p->children || !p->children->content)
 				return 0;
