@@ -383,6 +383,9 @@ AddDive::AddDive(dive *d, bool autogroup, bool newNumber)
 	d->dc.maxdepth.mm = 0;
 	fixup_dive(d);
 
+	// this only matters if undoit were called before redoit
+	currentDive = nullptr;
+
 	// Get an owning pointer to a moved dive.
 	OwningDivePtr divePtr(move_dive(d));
 	divePtr->selected = false; // If we clone a planned dive, it might have been selected.
@@ -452,6 +455,9 @@ void AddDive::undoit()
 ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, struct dive_site_table *sites, int flags, const QString &source)
 {
 	setText(tr("import %n dive(s) from %1", "", dives->nr).arg(source));
+
+	// this only matters if undoit were called before redoit
+	currentDive = nullptr;
 
 	struct dive_table dives_to_add = { 0 };
 	struct dive_table dives_to_remove = { 0 };
