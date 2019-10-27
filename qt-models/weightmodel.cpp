@@ -63,12 +63,15 @@ QVariant WeightModel::data(const QModelIndex &index, int role) const
 	case Qt::DecorationRole:
 		if (index.column() == REMOVE)
 			return trashIcon();
+		break;
 	case Qt::SizeHintRole:
 		if (index.column() == REMOVE)
 			return trashIcon().size();
+		break;
 	case Qt::ToolTipRole:
 		if (index.column() == REMOVE)
 			return tr("Clicking here will remove this weight system.");
+		break;
 	}
 	return QVariant();
 }
