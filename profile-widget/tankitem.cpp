@@ -46,8 +46,11 @@ void TankItem::setData(DivePlotDataModel *model, struct plot_info *plotInfo, str
 	modelDataChanged();
 }
 
-void TankItem::createBar(qreal x, qreal w, struct gasmix gas)
+void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)
 {
+	qreal x = hAxis->posAtValue(startTime);
+	qreal w = hAxis->posAtValue(stopTime) - hAxis->posAtValue(startTime);
+
 	// pick the right gradient, size, position and text
 	QGraphicsRectItem *rect = new QGraphicsRectItem(x, 0, w, height, this);
 	if (gasmix_is_air(gas))
@@ -81,8 +84,6 @@ void TankItem::modelDataChanged(const QModelIndex&, const QModelIndex&)
 	qDeleteAll(rects);
 	rects.clear();
 
-	qreal width, left;
-
 	// Find correct end of the dive plot for correct end of the tankbar
 	struct plot_data *last_entry = &pInfoEntry[pInfoNr-1];
 
@@ -97,16 +98,12 @@ void TankItem::modelDataChanged(const QModelIndex&, const QModelIndex&)
 	// work through all the gas changes and add the rectangle for each gas while it was used
 	const struct event *ev = get_next_event(dc->events, "gaschange");
 	while (ev && (int)ev->time.seconds < last_entry->sec) {
-		width = hAxis->posAtValue(ev->time.seconds) - hAxis->posAtValue(startTime);
-		left = hAxis->posAtValue(startTime);
-		createBar(left, width, gasmix);
+		createBar(startTime, ev->time.seconds, gasmix);
 		startTime = ev->time.seconds;
 		gasmix = get_gasmix_from_event(&displayed_dive, ev);
 		ev = get_next_event(ev->next, "gaschange");
 	}
-	width = hAxis->posAtValue(last_entry->sec) - hAxis->posAtValue(startTime);
-	left = hAxis->posAtValue(startTime);
-	createBar(left, width, gasmix);
+	createBar(startTime, last_entry->sec, gasmix);
 }
 
 void TankItem::setHorizontalAxis(DiveCartesianAxis *horizontal)
