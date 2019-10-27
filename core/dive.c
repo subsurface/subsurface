@@ -3275,11 +3275,12 @@ int split_dive(const struct dive *dive, struct dive **new1, struct dive **new2)
 int split_dive_at_time(const struct dive *dive, duration_t time, struct dive **new1, struct dive **new2)
 {
 	int i = 0;
-	struct sample *sample = dive->dc.sample;
 
-	*new1 = *new2 = NULL;
 	if (!dive)
 		return -1;
+
+	struct sample *sample = dive->dc.sample;
+	*new1 = *new2 = NULL;
 	while(sample->time.seconds < time.seconds) {
 		++sample;
 		++i;
@@ -3670,7 +3671,7 @@ static void delete_divecomputer(struct dive *d, int num)
 		struct divecomputer *pdc = &d->dc;
 		for (i = 0; i < num - 1 && pdc; i++)
 			pdc = pdc->next;
-		if (pdc->next) {
+		if (pdc && pdc->next) {
 			struct divecomputer *dc = pdc->next;
 			pdc->next = dc->next;
 			free_dc(dc);
