@@ -100,7 +100,6 @@ static int cobalt_dive(void *param, int columns, char **data, char **column)
 	int retval = 0;
 	struct parser_state *state = (struct parser_state *)param;
 	sqlite3 *handle = state->sql_handle;
-	char *err = NULL;
 	char *location, *location_site;
 	char get_profile_template[] = "select runtime*60,(DepthPressure*10000/SurfacePressure)-10000,p.Temperature from Dive AS d JOIN TrackPoints AS p ON d.Id=p.DiveId where d.Id=%d";
 	char get_cylinder_template[] = "select FO2,FHe,StartingPressure,EndingPressure,TankSize,TankPressure,TotalConsumption from GasMixes where DiveID=%d and StartingPressure>0 and EndingPressure > 0 group by FO2,FHe";
@@ -155,35 +154,35 @@ static int cobalt_dive(void *param, int columns, char **data, char **column)
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, state->cur_dive->number);
-	retval = sqlite3_exec(handle, get_buffer, &cobalt_cylinders, state, &err);
+	retval = sqlite3_exec(handle, get_buffer, &cobalt_cylinders, state, NULL);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query cobalt_cylinders failed.\n");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_buddy_template, state->cur_dive->number);
-	retval = sqlite3_exec(handle, get_buffer, &cobalt_buddies, state, &err);
+	retval = sqlite3_exec(handle, get_buffer, &cobalt_buddies, state, NULL);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query cobalt_buddies failed.\n");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_visibility_template, state->cur_dive->number);
-	retval = sqlite3_exec(handle, get_buffer, &cobalt_visibility, state, &err);
+	retval = sqlite3_exec(handle, get_buffer, &cobalt_visibility, state, NULL);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query cobalt_visibility failed.\n");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_location_template, state->cur_dive->number);
-	retval = sqlite3_exec(handle, get_buffer, &cobalt_location, &location, &err);
+	retval = sqlite3_exec(handle, get_buffer, &cobalt_location, &location, NULL);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query cobalt_location failed.\n");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_site_template, state->cur_dive->number);
-	retval = sqlite3_exec(handle, get_buffer, &cobalt_location, &location_site, &err);
+	retval = sqlite3_exec(handle, get_buffer, &cobalt_location, &location_site, NULL);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query cobalt_location (site) failed.\n");
 		return 1;
@@ -204,7 +203,7 @@ static int cobalt_dive(void *param, int columns, char **data, char **column)
 	free(location_site);
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, state->cur_dive->number);
-	retval = sqlite3_exec(handle, get_buffer, &cobalt_profile_sample, state, &err);
+	retval = sqlite3_exec(handle, get_buffer, &cobalt_profile_sample, state, NULL);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query cobalt_profile_sample failed.\n");
 		return 1;
@@ -223,7 +222,6 @@ int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, in
 	UNUSED(size);
 
 	int retval;
-	char *err = NULL;
 	struct parser_state state;
 
 	init_parser_state(&state);
@@ -234,7 +232,7 @@ int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, in
 
 	char get_dives[] = "select Id,strftime('%s',DiveStartTime),LocationId,'buddy','notes',Units,(MaxDepthPressure*10000/SurfacePressure)-10000,DiveMinutes,SurfacePressure,SerialNumber,'model' from Dive where IsViewDeleted = 0";
 
-	retval = sqlite3_exec(handle, get_dives, &cobalt_dive, &state, &err);
+	retval = sqlite3_exec(handle, get_dives, &cobalt_dive, &state, NULL);
 	free_parser_state(&state);
 
 	if (retval != SQLITE_OK) {
