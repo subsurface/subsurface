@@ -5,11 +5,12 @@
 #include "core/profile.h"
 #include <QPen>
 
+static const qreal height = 3.0;
+
 TankItem::TankItem(QObject *parent) :
 	QObject(parent),
 	plotEndTime(-1)
 {
-	height = 3;
 	QColor red(PERSIANRED1);
 	QColor blue(AIR_BLUE);
 	QColor yellow(NITROX_YELLOW);
