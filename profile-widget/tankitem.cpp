@@ -8,7 +8,6 @@
 TankItem::TankItem(QObject *parent) :
 	QObject(parent),
 	QGraphicsRectItem(),
-	dataModel(0),
 	pInfoEntry(0),
 	pInfoNr(0)
 {
@@ -43,8 +42,7 @@ void TankItem::setData(DivePlotDataModel *model, struct plot_info *plotInfo, str
 	pInfoEntry = (struct plot_data *)malloc(size);
 	pInfoNr = plotInfo->nr;
 	memcpy(pInfoEntry, plotInfo->entry, size);
-	dataModel = model;
-	connect(dataModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(modelDataChanged(QModelIndex, QModelIndex)), Qt::UniqueConnection);
+	connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(modelDataChanged(QModelIndex, QModelIndex)), Qt::UniqueConnection);
 	modelDataChanged();
 }
 
@@ -76,7 +74,7 @@ void TankItem::createBar(qreal x, qreal w, struct gasmix gas)
 void TankItem::modelDataChanged(const QModelIndex&, const QModelIndex&)
 {
 	// We don't have enougth data to calculate things, quit.
-	if (!dataModel || !pInfoEntry || !pInfoNr)
+	if (!pInfoEntry || !pInfoNr)
 		return;
 
 	// remove the old rectangles
