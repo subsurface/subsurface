@@ -25,7 +25,6 @@ public slots:
 
 private:
 	void createBar(qreal x, qreal w, struct gasmix gas);
-	DivePlotDataModel *dataModel;
 	DiveCartesianAxis *hAxis;
 	struct plot_data *pInfoEntry;
 	int pInfoNr;
