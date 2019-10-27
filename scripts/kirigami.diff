@@ -201,3 +201,15 @@ diff -rwu ../kirigami/src/kirigamiplugin.cpp ./src/kirigamiplugin.cpp
  #endif
  
  QUrl KirigamiPlugin::componentUrl(const QString &fileName) const
+diff -rwu ../kirigami/src/controls/private/ActionButton.qml ./src/controls/private/ActionButton.qml
+--- ../kirigami/src/controls/private/ActionButton.qml	2019-10-11 14:00:51.783839545 -0400
++++ ./src/controls/private/ActionButton.qml	2019-10-27 17:12:04.339302719 -0400
+@@ -70,7 +70,7 @@
+ 
+         anchors.bottom: edgeMouseArea.bottom
+ 
+-        implicitWidth: implicitHeight + Units.iconSizes.smallMedium*2 + Units.gridUnit
++	implicitWidth: implicitHeight + Units.iconSizes.smallMedium*4 + Units.gridUnit
+         implicitHeight: Units.iconSizes.medium + Units.largeSpacing * 2
+ 
+ 
