@@ -105,10 +105,10 @@ static void add_to_divespot_mapping(int divespot_id, struct dive_site *ds)
 	struct divespot_mapping *ndm = (struct divespot_mapping*)calloc(1, sizeof(struct divespot_mapping));
 	struct divespot_mapping **pdm = &divespot_mapping;
 	struct divespot_mapping *cdm = *pdm;
-	
+
 	while (cdm && cdm->next)
 		cdm = cdm->next;
-	
+
 	ndm->divespot_id = divespot_id;
 	ndm->dive_site = ds;
 	ndm->next = NULL;
@@ -605,6 +605,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 		}
 		if (read(ans_file, tmp, 100) < 0) {
 			free(ans_path);
+			close(ans_file);
 			return false;
 		}
 		close(ans_file);
@@ -1183,7 +1184,7 @@ static bool load_uemis_divespot(const char *mountpath, int divespot_id)
 static void get_uemis_divespot(device_data_t *devdata, const char *mountpath, int divespot_id, struct dive *dive)
 {
 	struct dive_site *nds = dive->dive_site;
-	
+
 	if (is_divespot_mappable(divespot_id)) {
 		struct dive_site *ds = get_dive_site_by_divespot_id(divespot_id);
 		unregister_dive_from_dive_site(dive);
