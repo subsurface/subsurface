@@ -111,7 +111,15 @@ jobs:
         COMMIT: ${{ github.sha }}
         BIN1: Subsurface.app.zip
 
-    - name: copy to transfer.sh
+    - name: prepare PR artifacts
       if: github.event_name == 'pull_request'
       run: |
-        curl --upload-file Subsurface.app.zip "https://transfer.sh/Subsurface.app.zip"
+        mkdir -p Mac-artifacts
+        mv Subsurface.app.zip Mac-artifacts
+
+    - name: PR artifacts
+      if: github.event_name == 'pull_request'
+      uses: actions/upload-artifact@master
+      with:
+        name: Mac-artifacts
+        path: Mac-artifacts

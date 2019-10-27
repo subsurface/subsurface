@@ -53,13 +53,15 @@ jobs:
         BIN4: ./smtk2ssrf-installer.exe
         BIN5: ./smtk2ssrf.exe
 
-    - name: copy to transfer.sh
+    - name: prepare PR artifacts
       if: github.event_name == 'pull_request'
       run: |
-        apt-get update
-        apt-get install -y curl
-        curl --upload-file subsurface-installer.exe "https://transfer.sh/subsurface-installer.exe"
-        curl --upload-file subsurface.exe "https://transfer.sh/subsurface.exe"
-        curl --upload-file subsurface.exe.debug "https://transfer.sh/subsurface.exe.debug"
-        curl --upload-file smtk2ssrf-installer.exe "https://transfer.sh/smtk2ssrf-installer.exe"
-        curl --upload-file smtk2ssrf.exe "https://transfer.sh/smtk2ssrf.exe"
+        mkdir -p Windows-artifacts
+        mv ./subsurface-installer.exe ./subsurface.exe ./subsurface.exe.debug ./smtk2ssrf-installer.exe ./smtk2ssrf.exe Windows-artifacts
+
+    - name: PR artifacts
+      if: github.event_name == 'pull_request'
+      uses: actions/upload-artifact@master
+      with:
+        name: Windows-artifacts
+        path: Windows-artifacts

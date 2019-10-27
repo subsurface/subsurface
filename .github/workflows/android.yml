@@ -39,10 +39,15 @@ jobs:
         BIN1: ./Subsurface-mobile.apk
         BIN2: ./Subsurface-mobile.arm64.apk
 
-    - name: copy to transfer.sh
+    - name: prepare PR artifacts
       if: github.event_name == 'pull_request'
       run: |
-        apt-get update
-        apt-get install -y curl
-        curl --upload-file Subsurface-mobile.apk "https://transfer.sh/Subsurface-mobile.apk"
-        curl --upload-file Subsurface-mobile.arm64.apk "https://transfer.sh/Subsurface-mobile.arm64.apk"
+        mkdir -p Android-artifacts
+        mv Subsurface-mobile.apk Subsurface-mobile.arm64.apk Android-artifacts
+
+    - name: PR artifacts
+      if: github.event_name == 'pull_request'
+      uses: actions/upload-artifact@master
+      with:
+        name: Android-artifacts
+        path: Android-artifacts
