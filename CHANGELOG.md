@@ -1,3 +1,4 @@
+Desktop: register changes when clicking "done" on dive-site edit screen
 Mobile: re-enable GPS location service icon in global drawer
 Mobile: add support for editing the dive number of a dive
 Desktop: make dive replanning undoable
