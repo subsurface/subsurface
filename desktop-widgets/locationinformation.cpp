@@ -189,13 +189,19 @@ void LocationInformationWidget::diveSiteDeleted(struct dive_site *ds, int)
 
 void LocationInformationWidget::acceptChanges()
 {
-	diveSite = nullptr;
 	closeDistance = 0;
 
 	MainWindow::instance()->diveList->setEnabled(true);
 	MainWindow::instance()->setEnabledToolbar(true);
 	MainWindow::instance()->setApplicationState(ApplicationState::Default);
 	MultiFilterSortModel::instance()->stopFilterDiveSites();
+
+	// Subtlety alert: diveSite must be cleared *after* exiting the dive-site mode.
+	// Exiting dive-site mode removes the focus from the active widget and
+	// thus fires the corresponding editingFinished signal, which in turn creates
+	// an undo-command. To set an undo-command, the widget has to know the
+	// currently edited dive-site.
+	diveSite = nullptr;
 }
 
 void LocationInformationWidget::initFields(dive_site *ds)
