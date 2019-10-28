@@ -11694,7 +11694,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/preferences/preferences_graph.ui" line="360"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="373"/>
         <source>Show unused cylinders in Equipment tab</source>
-        <translation>Pokazju nieużywane butle w zakładce Wyposażenie</translation>
+        <translation>Pokazuj nieużywane butle w zakładce Wyposażenie</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="367"/>
@@ -11703,7 +11703,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/preferences/preferences_graph.ui" line="367"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="374"/>
         <source>Show mean depth in Profile</source>
-        <translation type="unfinished"/>
+	<translation>Pokazuj średnią głębokość w Profilu"</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.cpp" line="11"/>
@@ -11741,7 +11741,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/preferences/preferences_language.ui" line="32"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="180"/>
         <source>Use system default</source>
-        <translation type="unfinished"/>
+	<translation>Użyj ustawień systemowych</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="55"/>
@@ -12094,7 +12094,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/preferences/preferences_network.cpp" line="135"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/preferences/preferences_network.cpp" line="135"/>
         <source>Subsurface cloud storage (incorrect password)</source>
-        <translation type="unfinished"/>
+        <translation>Przechowywanie danych w chmurze (złe hasło)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="137"/>
@@ -12102,7 +12102,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.8.5/desktop-widgets/preferences/preferences_network.cpp" line="137"/>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/preferences/preferences_network.cpp" line="137"/>
         <source>Subsurface cloud storage (PIN required)</source>
-        <translation type="unfinished"/>
+        <translation>Przechowywanie danych w chmurze (wymagany PIN)</translation>
     </message>
 </context>
 <context>
@@ -12348,7 +12348,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/preferences/preferences_units.ui" line="237"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="372"/>
         <source>Duration units</source>
-        <translation type="unfinished"/>
+        <translation>Jednostki czasu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="243"/>
@@ -12357,7 +12357,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/preferences/preferences_units.ui" line="243"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="373"/>
         <source>Show hours in duration</source>
-        <translation type="unfinished"/>
+        <translation>Pokaż godziny w długości nurkowania</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="250"/>
@@ -12366,7 +12366,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/preferences/preferences_units.ui" line="250"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="374"/>
         <source>hh:mm (always)</source>
-        <translation type="unfinished"/>
+        <translation>hh:mm (zawsze)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="257"/>
@@ -12375,7 +12375,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/preferences/preferences_units.ui" line="257"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="375"/>
         <source>mm (always)</source>
-        <translation type="unfinished"/>
+        <translation>mm (zawsze)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="264"/>
@@ -12384,7 +12384,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/preferences/preferences_units.ui" line="264"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="376"/>
         <source>mm (for dives shorter than 1 hour), hh:mm (otherwise)</source>
-        <translation type="unfinished"/>
+        <translation>mm (dla nurkowań krótszych niż godzina), hh:mm (dla pozostałych)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="274"/>
@@ -12393,7 +12393,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/preferences/preferences_units.ui" line="274"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="377"/>
         <source>Dive list table</source>
-        <translation type="unfinished"/>
+        <translation>Tabela nurkowań</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="280"/>
@@ -12402,7 +12402,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.8.6/desktop-widgets/preferences/preferences_units.ui" line="280"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="378"/>
         <source>Show units in dive list table</source>
-        <translation type="unfinished"/>
+        <translation>Pokaż jednostki w tabeli nurkowań</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="290"/>
