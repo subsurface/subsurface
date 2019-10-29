@@ -226,7 +226,7 @@ extern int explicit_first_cylinder(const struct dive *dive, const struct divecom
 extern int get_depth_at_time(const struct divecomputer *dc, unsigned int time);
 
 extern fraction_t best_o2(depth_t depth, const struct dive *dive);
-extern fraction_t best_he(depth_t depth, const struct dive *dive);
+extern fraction_t best_he(depth_t depth, const struct dive *dive, bool o2narcotic, fraction_t fo2);
 
 extern int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null);
 extern int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int salinity);

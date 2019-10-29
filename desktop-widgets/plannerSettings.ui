@@ -561,6 +561,83 @@
           <property name="spacing">
            <number>2</number>
           </property>
+          <item row="9" column="0" colspan="2">
+           <widget class="QGroupBox" name="Notes">
+            <property name="title">
+             <string>Notes</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_6">
+             <property name="leftMargin">
+              <number>2</number>
+             </property>
+             <property name="topMargin">
+              <number>2</number>
+             </property>
+             <property name="rightMargin">
+              <number>2</number>
+             </property>
+             <property name="bottomMargin">
+              <number>2</number>
+             </property>
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <item row="3" column="0">
+              <widget class="QCheckBox" name="verbatim_plan">
+               <property name="text">
+                <string>Verbatim dive plan</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QCheckBox" name="display_transitions">
+               <property name="toolTip">
+                <string>In diveplan, list transitions or treat them as implicit</string>
+               </property>
+               <property name="text">
+                <string>Display transitions in deco</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QCheckBox" name="display_runtime">
+               <property name="toolTip">
+                <string>In dive plan, show runtime (absolute time) of stops</string>
+               </property>
+               <property name="text">
+                <string>Display runtime</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QCheckBox" name="display_duration">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="toolTip">
+                <string>In dive plan, show duration (relative time) of stops</string>
+               </property>
+               <property name="text">
+                <string>Display segment duration</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QCheckBox" name="display_variations">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="toolTip">
+                <string>Compute variations of plan (performance cost)</string>
+               </property>
+               <property name="text">
+                <string>Display plan variations</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
           <item row="1" column="1">
            <widget class="QDoubleSpinBox" name="decoStopSAC">
             <property name="suffix">
@@ -581,7 +658,7 @@
             </property>
            </widget>
           </item>
-          <item row="8" column="0">
+          <item row="9" column="0">
            <spacer name="verticalSpacer_4">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -594,7 +671,7 @@
             </property>
            </spacer>
           </item>
-          <item row="7" column="0">
+          <item row="8" column="0">
            <spacer name="verticalSpacer_3">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -692,83 +769,6 @@
             </property>
            </widget>
           </item>
-          <item row="8" column="0" colspan="2">
-           <widget class="QGroupBox" name="Notes">
-            <property name="title">
-             <string>Notes</string>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_6">
-             <property name="leftMargin">
-              <number>2</number>
-             </property>
-             <property name="topMargin">
-              <number>2</number>
-             </property>
-             <property name="rightMargin">
-              <number>2</number>
-             </property>
-             <property name="bottomMargin">
-              <number>2</number>
-             </property>
-             <property name="spacing">
-              <number>2</number>
-             </property>
-             <item row="3" column="0">
-              <widget class="QCheckBox" name="verbatim_plan">
-               <property name="text">
-                <string>Verbatim dive plan</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QCheckBox" name="display_transitions">
-               <property name="toolTip">
-                <string>In diveplan, list transitions or treat them as implicit</string>
-               </property>
-               <property name="text">
-                <string>Display transitions in deco</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QCheckBox" name="display_runtime">
-               <property name="toolTip">
-                <string>In dive plan, show runtime (absolute time) of stops</string>
-               </property>
-               <property name="text">
-                <string>Display runtime</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QCheckBox" name="display_duration">
-               <property name="enabled">
-                <bool>true</bool>
-               </property>
-               <property name="toolTip">
-                <string>In dive plan, show duration (relative time) of stops</string>
-               </property>
-               <property name="text">
-                <string>Display segment duration</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QCheckBox" name="display_variations">
-               <property name="enabled">
-                <bool>true</bool>
-               </property>
-               <property name="toolTip">
-                <string>Compute variations of plan (performance cost)</string>
-               </property>
-               <property name="text">
-                <string>Display plan variations</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
           <item row="5" column="0">
            <widget class="QLabel" name="decopO2">
             <property name="text">
@@ -828,6 +828,16 @@
             </property>
             <property name="value">
              <number>4</number>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QCheckBox" name="o2narcotic">
+            <property name="toolTip">
+             <string>Treat oxygen as narcotic when computing best mix</string>
+            </property>
+            <property name="text">
+             <string>O₂ narcotic</string>
             </property>
            </widget>
           </item>

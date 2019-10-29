@@ -160,6 +160,7 @@ struct preferences {
 	bool            display_variations;
 	bool            doo2breaks;
 	bool            dobailout;
+	bool		o2narcotic;
 	bool            drop_stone_mode;
 	bool            last_stop;   // At 6m?
 	int             min_switch_duration; // seconds

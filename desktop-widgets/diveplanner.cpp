@@ -451,6 +451,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.backgasBreaks->setChecked(prefs.doo2breaks);
 	setBailout(false);
 	setBailoutVisibility(false);
+	ui.o2narcotic->setChecked(prefs.o2narcotic);
 	ui.drop_stone_mode->setChecked(prefs.drop_stone_mode);
 	ui.switch_at_req_stop->setChecked(prefs.switch_at_req_stop);
 	ui.min_switch_duration->setValue(prefs.min_switch_duration / 60);
@@ -496,6 +497,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.vpmb_conservatism, SIGNAL(valueChanged(int)), plannerModel, SLOT(setVpmbConservatism(int)));
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
 	connect(ui.bailout, SIGNAL(toggled(bool)), this, SLOT(setBailout(bool)));
+	connect(ui.o2narcotic, SIGNAL(toggled(bool)), this, SLOT(setO2narcotic(bool)));
 	connect(ui.switch_at_req_stop, SIGNAL(toggled(bool)), plannerModel, SLOT(setSwitchAtReqStop(bool)));
 	connect(ui.min_switch_duration, SIGNAL(valueChanged(int)), plannerModel, SLOT(setMinSwitchDuration(int)));
 	connect(ui.surface_segment, SIGNAL(valueChanged(int)), plannerModel, SLOT(setSurfaceSegment(int)));
@@ -504,6 +506,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 
 	connect(ui.bottompo2, SIGNAL(valueChanged(double)), CylindersModel::instance(), SLOT(updateBestMixes()));
 	connect(ui.bestmixEND, SIGNAL(valueChanged(int)), CylindersModel::instance(), SLOT(updateBestMixes()));
+	connect(ui.o2narcotic, SIGNAL(toggled(bool)), CylindersModel::instance(), SLOT(updateBestMixes()));
 
 	connect(modeMapper, SIGNAL(mapped(int)), this, SLOT(disableDecoElements(int)));
 	connect(ui.ascRate75, SIGNAL(valueChanged(int)), this, SLOT(setAscrate75(int)));
@@ -676,6 +679,12 @@ void PlannerSettingsWidget::setBackgasBreaks(bool dobreaks)
 void PlannerSettingsWidget::setBailout(bool dobailout)
 {
 	qPrefDivePlanner::instance()->set_dobailout(dobailout);
+	plannerModel->emitDataChanged();
+}
+
+void PlannerSettingsWidget::setO2narcotic(bool o2narcotic)
+{
+	qPrefDivePlanner::instance()->set_o2narcotic(o2narcotic);
 	plannerModel->emitDataChanged();
 }
 

@@ -391,11 +391,11 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			if (QString::compare(qPrintable(vString), "*") == 0) {
 				cyl->bestmix_he = true;
 				// Calculate fO2 for max. depth
-				cyl->gasmix.he = best_he(displayed_dive.maxdepth, &displayed_dive);
+				cyl->gasmix.he = best_he(displayed_dive.maxdepth, &displayed_dive, prefs.o2narcotic, cyl->gasmix.o2);
 			} else {
 				cyl->bestmix_he = false;
 				// Calculate fHe for input depth
-				cyl->gasmix.he = best_he(string_to_depth(qPrintable(vString)), &displayed_dive);
+				cyl->gasmix.he = best_he(string_to_depth(qPrintable(vString)), &displayed_dive, prefs.o2narcotic, cyl->gasmix.o2);
 			}
 			changed = true;
 		}
@@ -605,7 +605,7 @@ bool CylindersModel::updateBestMixes()
 			gasUpdated = true;
 		}
 		if (cyl->bestmix_he) {
-			cyl->gasmix.he = best_he(displayed_dive.maxdepth, &displayed_dive);
+			cyl->gasmix.he = best_he(displayed_dive.maxdepth, &displayed_dive, prefs.o2narcotic, cyl->gasmix.o2);
 			// fO2 + fHe must not be greater than 1
 			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
 				cyl->gasmix.o2.permille = 1000 - get_he(cyl->gasmix);
