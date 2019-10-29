@@ -103,7 +103,16 @@ Kirigami.ApplicationWindow {
 			pageStack.push(mapPage)
 		else
 			pageStack.currentIndex = i
+	}
 
+	function showDiveList() {
+		if (globalDrawer.drawerOpen)
+			globalDrawer.close()
+		var i=pageIndex(diveList)
+		if (i === -1)
+			pageStack.push(diveList)
+		else
+			pageStack.currentIndex = i
 	}
 
 	function pageIndex(pageToFind) {

@@ -385,19 +385,28 @@ Kirigami.Page {
 				text: qsTr("Accept")
 				bottomPadding: Kirigami.Units.gridUnit / 2
 				onClicked: {
+					manager.appendTextToLog("Save downloaded dives that were selected")
 					busy = true
 					rootItem.showBusy()
-					manager.appendTextToLog("Save downloaded dives that were selected")
+					manager.appendTextToLog("temporary disconnecting dive list model")
+					diveList.diveListModel = null
+					manager.appendTextToLog("Record dives")
 					importModel.recordDives()
 					manager.saveChangesLocal()
+					manager.appendTextToLog("resetting model and refreshing the dive list")
 					diveModel.resetInternalData()
 					manager.refreshDiveList()
+					manager.appendTextToLog("pageStack popping Download page")
 					pageStack.pop()
-					pageStack.push(diveList)
+					manager.appendTextToLog("setting up the dive list model again")
+					diveList.diveListModel = diveModel
+					manager.appendTextToLog("pageStack switching to dive list")
+					showDiveList()
 					download.text = qsTr("Download")
 					busy = false
 					rootItem.hideBusy()
 					divesDownloaded = false
+					manager.appendTextToLog("switch to dive list has completed")
 				}
 			}
 			Controls.Label {
