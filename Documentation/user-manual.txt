@@ -3545,7 +3545,8 @@ image::images/PlannerWindow1.jpg["FIGURE: Dive planner startup window",align="ce
     O~2~% according to the depth set. Set to ''*'' to calculate the best O~2~% for the dive maximum depth.
  ** MND: the gas Maximum Narcotic Depth (MND). Automatically calculated based on the Best Mix END
     preference (default 30m / 98 ft). Editing this field will modify the He% according to the depth set.
-    Set to ''*'' to calculate the best He% for the dive maximum depth.
+    Set to ''*'' to calculate the best He% for the dive maximum depth. Depending on the checkbox, oxygen 
+    is considered narcotic (the END is used) or not (the EAD is used).
 
 - The profile of the planned dive can be created in two ways:
  *  Drag the waypoints

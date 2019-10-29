@@ -3761,13 +3761,17 @@ fraction_t best_o2(depth_t depth, const struct dive *dive)
 }
 
 //Calculate He in best mix. O2 is considered narcopic
-fraction_t best_he(depth_t depth, const struct dive *dive)
+fraction_t best_he(depth_t depth, const struct dive *dive, bool o2narcotic, fraction_t fo2)
 {
 	fraction_t fhe;
 	int pnarcotic, ambient;
 	pnarcotic = depth_to_mbar(prefs.bestmixend.mm, dive);
 	ambient = depth_to_mbar(depth.mm, dive);
-	fhe.permille = (100 - 100 * pnarcotic / ambient) * 10;	//use integer arithmetic to round up to nearest percent
+	if (o2narcotic) {
+		fhe.permille = (100 - 100 * pnarcotic / ambient) * 10;	//use integer arithmetic to round up to nearest percent
+	} else {
+		fhe.permille = 1000 - fo2.permille - N2_IN_AIR * pnarcotic / ambient;
+	}
 	if (fhe.permille < 0)
 		fhe.permille = 0;
 	return fhe;

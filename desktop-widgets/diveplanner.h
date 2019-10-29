@@ -86,6 +86,7 @@ slots:
 	void setBestmixEND(int depth);
 	void setBackgasBreaks(bool dobreaks);
 	void setBailout(bool dobailout);
+	void setO2narcotic(bool o2narcotic);
 	void disableDecoElements(int mode);
 	void disableBackgasBreaks(bool enabled);
 	void setDiveMode(int mode);

@@ -73,6 +73,7 @@ struct preferences default_prefs = {
 	.display_duration = true,
 	.display_transitions = true,
 	.display_variations = false,
+	.o2narcotic = true,
 	.safetystop = true,
 	.bottomsac = 20000,
 	.decosac = 17000,
