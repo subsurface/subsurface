@@ -29,8 +29,8 @@ Kirigami.ScrollablePage {
 				manager.saveChangesCloud(true)
 				refreshing = false
 			} else {
-				console.log("sync with cloud storage requested, but credentialStatus is " + prefs.credentialStatus)
-				console.log("no syncing, turn off spinner")
+				manager.appendTextToLog("sync with cloud storage requested, but credentialStatus is " + prefs.credentialStatus)
+				manager.appendTextToLog("no syncing, turn off spinner")
 				refreshing = false
 			}
 		}

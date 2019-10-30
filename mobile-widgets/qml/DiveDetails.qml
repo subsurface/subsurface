@@ -247,7 +247,7 @@ Kirigami.Page {
 
 	function startEditMode() {
 		if (!currentItem.modelData) {
-			console.log("DiveDetails trying to access undefined currentItem.modelData")
+			manager.appendTextToLog("DiveDetails trying to access undefined currentItem.modelData")
 			return
 		}
 

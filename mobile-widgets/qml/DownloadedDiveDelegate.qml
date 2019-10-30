@@ -41,7 +41,7 @@ Kirigami.AbstractListItem {
 			height: childrenRect.heigh - Kirigami.Units.smallSpacing;
 			anchors.verticalCenter: parent.verticalCenter
 			onClicked: {
-				console.log("Clicked on the checkbox of item " + index)
+				manager.appendTextToLog("Clicked on the checkbox of item " + index)
 				importModel.selectRow(index)
 			}
 		}

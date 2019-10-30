@@ -30,10 +30,10 @@ Kirigami.Page {
 		onDownloadFinished : {
 			progressBar.visible = false
 			if (rowCount() > 0) {
-				console.log(rowCount() + " dive downloaded")
+				manager.appendTextToLog(rowCount() + " dive downloaded")
 				divesDownloaded = true
 			} else {
-				console.log("no new dives downloaded")
+				manager.appendTextToLog("no new dives downloaded")
 				divesDownloaded = false
 			}
 			manager.appendTextToLog("DCDownloadThread finished")
@@ -361,7 +361,7 @@ Kirigami.Page {
 				selected: model.selected ? model.selected : false
 
 				onClicked : {
-					console.log("Selecting index" + index);
+					manager.appendTextToLog("Selecting index" + index);
 					importModel.selectRow(index)
 				}
 			}

@@ -51,7 +51,7 @@ Kirigami.ApplicationWindow {
 	FontMetrics {
 		id: fontMetrics
 		Component.onCompleted: {
-			console.log("Using the following font: " + fontMetrics.font.family
+			manager.appendTextToLog("Using the following font: " + fontMetrics.font.family
 				    + " at " + subsurfaceTheme.basePointSize + "pt" +
 				    " with mobile_scale: " + PrefDisplay.mobile_scale)
 		}
@@ -534,8 +534,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			widthInGridUnits = Math.floor(rootItem.colWidth / kirigamiGridUnit)
 		}
 		var factor = 1.0
-		console.log(numColumns + " columns with column width of " + rootItem.colWidth)
-		console.log("width in Grid Units " + widthInGridUnits + " original gridUnit " + Kirigami.Units.gridUnit + " now " + kirigamiGridUnit)
+		manager.appendTextToLog(numColumns + " columns with column width of " + rootItem.colWidth)
+		manager.appendTextToLog("width in Grid Units " + widthInGridUnits + " original gridUnit " + Kirigami.Units.gridUnit + " now " + kirigamiGridUnit)
 		if (Kirigami.Units.gridUnit !== kirigamiGridUnit) {
 			factor = kirigamiGridUnit / Kirigami.Units.gridUnit
 			// change our glabal grid unit
@@ -547,7 +547,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 		// set the initial UI scaling as in the the preferences
 		fontMetrics.font.pointSize = subsurfaceTheme.basePointSize * PrefDisplay.mobile_scale;
-		console.log("Done setting up sizes")
+		manager.appendTextToLog("Done setting up sizes")
 	}
 
 	QtObject {
@@ -621,11 +621,11 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		Component.onCompleted: {
 			// break the binding
 			initialWidth = initialWidth * 1
-			console.log("SubsufaceTheme constructor completed, initial width " + initialWidth)
+			manager.appendTextToLog("SubsufaceTheme constructor completed, initial width " + initialWidth)
 			if (rootItem.firstChange) // only run the setup if we haven't seen a change, yet
 				setupUnits() // but don't count this as a change (after all, it's not)
 			else
-				console.log("Already adjusted size, ignoring this")
+				manager.appendTextToLog("Already adjusted size, ignoring this")
 
 			// this needs to pick the theme from persistent preference settings
 			var theme = PrefDisplay.theme
@@ -639,29 +639,29 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	}
 
 	onWidthChanged: {
-		console.log("Window width changed to " + width + " orientation " + Screen.primaryOrientation)
+		manager.appendTextToLog("Window width changed to " + width + " orientation " + Screen.primaryOrientation)
 		if (subsurfaceTheme.initialWidth !== undefined) {
 			if (width !== subsurfaceTheme.initialWidth && rootItem.firstChange) {
 				rootItem.firstChange = false
 				rootItem.lastOrientation = Screen.primaryOrientation
 				subsurfaceTheme.initialWidth = width
 				subsurfaceTheme.initialHeight = height
-				console.log("first real change, so recalculating units and recording size as " + width + " x " + height)
+				manager.appendTextToLog("first real change, so recalculating units and recording size as " + width + " x " + height)
 				setupUnits()
 			} else if (rootItem.lastOrientation !== undefined && rootItem.lastOrientation != Screen.primaryOrientation) {
-				console.log("Screen rotated, no action necessary")
+				manager.appendTextToLog("Screen rotated, no action necessary")
 				rootItem.lastOrientation = Screen.primaryOrientation
 				setupUnits()
 			} else {
-				console.log("size change without rotation to " + width + " x " + height)
+				manager.appendTextToLog("size change without rotation to " + width + " x " + height)
 				if (width > subsurfaceTheme.initialWidth) {
-					console.log("resetting to initial width " + subsurfaceTheme.initialWidth + " and height " + subsurfaceTheme.initialHeight)
+					manager.appendTextToLog("resetting to initial width " + subsurfaceTheme.initialWidth + " and height " + subsurfaceTheme.initialHeight)
 					rootItem.width = subsurfaceTheme.initialWidth
 					rootItem.height = subsurfaceTheme.initialHeight
 				}
 			}
 		} else {
-			console.log("width changed before initial width initialized, ignoring")
+			manager.appendTextToLog("width changed before initial width initialized, ignoring")
 		}
 	}
 
@@ -687,7 +687,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		// This is called whenever the user navigates using the breadcrumbs in the header
 
 		if (pageStack.currentItem === null) {
-			console.log("there's no current page")
+			manager.appendTextToLog("there's no current page")
 		} else {
 			// horrible, insane hack to make picking the mapPage work
 			// for some reason I cannot figure out, whenever the mapPage is selected
@@ -696,22 +696,22 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			if (pageStack.currentItem.objectName === mapPage.objectName) {
 				// remember that we actively picked the mapPage
 				if (hackToOpenMap !== 2 /* MapForced */ ) {
-					console.log("changed to map, hack on")
+					manager.appendTextToLog("pageStack switched to map")
 					hackToOpenMap = 1 /* MapSelected */
 				} else {
-					console.log("forced back to map, ignore")
+					manager.appendTextToLog("pageStack forced back to map")
 				}
 			} else if (pageStack.currentItem.objectName !== mapPage.objectName &&
 					pageStack.lastItem.objectName === mapPage.objectName &&
 					hackToOpenMap === 1 /* MapSelected */) {
 				// if we just picked the mapPage and are suddenly back on a different page
 				// force things back to the mapPage
-				console.log("hack was on, map is last page, switching back to map, hack off")
+				manager.appendTextToLog("pageStack wrong page, switching back to map")
 				pageStack.currentIndex = pageStack.contentItem.contentChildren.length - 1
 				hackToOpenMap = 2 /* MapForced */
 			} else {
 				// if we picked a different page reset the mapPage hack
-				console.log("switched to " + pageStack.currentItem.objectName + " - hack off")
+				manager.appendTextToLog("pageStack switched to " + pageStack.currentItem.objectName)
 				hackToOpenMap = 0 /* Otherpage */
 			}
 
@@ -788,27 +788,27 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	onPluggedInDeviceNameChanged: {
 		if (detailsWindow.state === 'edit' || detailsWindow.state === 'add') {
 			/* we're in the middle of editing / adding a dive */
-			console.log("Download page requested by Android Intent, but adding/editing dive; no action taken")
+			manager.appendTextToLog("Download page requested by Android Intent, but adding/editing dive; no action taken")
 		} else {
-			console.log("Show download page for device " + pluggedInDeviceName)
+			manager.appendTextToLog("Show download page for device " + pluggedInDeviceName)
 			/* if we recognized the device, we'll pass in a triple of ComboBox indeces as "vendor;product;connection" */
 			var vendorProductConnection = pluggedInDeviceName.split(';')
 			if (vendorProductConnection.length === 3)
 				diveList.showDownloadPage(vendorProductConnection[0], vendorProductConnection[1], vendorProductConnection[2])
 			else
 				diveList.showDownloadPage()
-			console.log("done showing download page")
+			manager.appendTextToLog("done showing download page")
 		}
 	}
 
 	Component.onCompleted: {
 		// try to see if we can detect certain device vendors through these properties
 		if (Screen.manufacturer + " " + Screen.model + " " + Screen.name !== "  ")
-			console.log("Running on " + Screen.manufacturer + " " + Screen.model + " " + Screen.name)
+			manager.appendTextToLog("Running on " + Screen.manufacturer + " " + Screen.model + " " + Screen.name)
 		rootItem.visible = true
 		diveList.opacity = 1
 		rootItem.opacity = 1
-		console.log("setting the defaultColumnWidth to " + Kirigami.Units.gridUnit * 21)
+		manager.appendTextToLog("setting the defaultColumnWidth to " + Kirigami.Units.gridUnit * 21)
 		pageStack.defaultColumnWidth = Kirigami.Units.gridUnit * 21
 		manager.appInitialized()
 	}
