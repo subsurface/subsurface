@@ -11,7 +11,7 @@ jobs:
   buildInContainer:
     runs-on: ubuntu-latest
     container:
-      image: docker://dirkhh/mxe-build-container:0.9
+      image: docker://docker.pkg.github.com/${GITHUB_REPOSITORY}/mxe-build-container:0.9
 
     steps:
     - name: checkout sources
