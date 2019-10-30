@@ -375,7 +375,8 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 				}
 				put_string(&buf, "</tr>\n");
 				newdepth = dp->depth.mm;
-				lasttime = dp->time;
+				// Only add the time we actually displayed so rounding errors dont accumulate
+				lasttime += ((dp->time - lasttime + 30) / 60) * 60;
 			}
 		}
 		if (gaschange_after || gaschange_before) {
