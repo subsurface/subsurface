@@ -361,7 +361,7 @@ Kirigami.ScrollablePage {
 					}
 					Controls.Label {
 						text: {
-							diveListView.model.tripShortDate(section)
+							diveListView.model ? diveListView.model.tripShortDate(section) : "no data model"
 						}
 						color: subsurfaceTheme.primaryTextColor
 						font.pointSize: subsurfaceTheme.smallPointSize
@@ -386,7 +386,7 @@ Kirigami.ScrollablePage {
 				Controls.Label {
 					id: sectionText
 					text: {
-						diveListView.model.tripTitle(section)
+						diveListView.model ? diveListView.model.tripTitle(section) : "no data model"
 					}
 					wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 					visible: text !== ""
