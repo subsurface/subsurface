@@ -11,6 +11,9 @@ jobs:
   buildInContainer:
     runs-on: ubuntu-latest
     container:
+      # FIXME: Use templating once we can mangle org/repo name into something that docker accepts.
+      # and anonymus / actions access to github packages works.
+      #image: docker://docker.pkg.github.com/${{ github.repository }}/trusty-qt512:0.7
       image: docker://dirkhh/trusty-qt512:0.7
 
     steps:
