@@ -64,7 +64,6 @@
          </property>
         </widget>
        </item>
-
        <item row="1" column="0">
         <widget class="QGroupBox" name="diveModeBox">
          <property name="title">
@@ -74,19 +73,20 @@
           <set>Qt::AlignHCenter</set>
          </property>
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
           </sizepolicy>
          </property>
-         <layout class="QHBoxLayout" name="diveInfoDateLayout">
+         <layout class="QHBoxLayout" name="diveModeLayout">
+         <property name="alignment">
+          <set>Qt::AlignBottom</set>
+         </property>
           <item>
-           <widget class="QComboBox" name="diveType"/>
+           <widget class="QComboBox" name="diveType">
+           </widget>
           </item>
          </layout>
         </widget>
        </item>
-
        <item row="1" column="1">
         <widget class="QGroupBox" name="groupBox_12">
          <property name="title">
@@ -443,15 +443,13 @@
           </sizepolicy>
          </property>
          <layout class="QHBoxLayout" name="diveInfoWaterDensityLayout">
-
           <item>
-        <widget class="QLabel" name="waterTypeText">
-         <property name="text">
-          <string>EN13319</string>
-         </property>
-        </widget>
+           <widget class="QLabel" name="waterTypeText">
+            <property name="text">
+             <string>EN13319</string>
+            </property>
+           </widget>
           </item>
-
           <item>
            <widget class="QLabel" name="salinityText">
             <property name="alignment">
@@ -459,7 +457,6 @@
             </property>
            </widget>
           </item>
-
          </layout>
         </widget>
        </item>
@@ -712,7 +709,7 @@
            <number>0</number>
           </property>
           <item row="0" column="0" colspan="2" alignment="Qt::AlignHCenter">
-           <widget class="StarWidget" name="surge" native="true">
+           <widget class="StarWidget" name="chill" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
               <horstretch>0</horstretch>
