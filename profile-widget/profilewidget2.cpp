@@ -839,13 +839,6 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 #endif
 }
 
-void ProfileWidget2::recalcCeiling()
-{
-#ifndef SUBSURFACE_MOBILE
-	diveCeiling->recalc();
-#endif
-}
-
 void ProfileWidget2::dateTimeChanged()
 {
 	emit dateTimeChangedItems();
