@@ -87,7 +87,6 @@ public:
 	bool eventFilter(QObject *, QEvent *) override;
 	void clearHandlers();
 #endif
-	void recalcCeiling();
 	void setToolTipVisibile(bool visible);
 	State currentState;
 	int animSpeed;

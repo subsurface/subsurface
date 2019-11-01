@@ -355,7 +355,7 @@ void MainTab::updateNotes(const struct dive *d)
 void MainTab::updateMode(struct dive *d)
 {
 	ui.DiveType->setCurrentIndex(get_dive_dc(d, dc_number)->divemode);
-	MainWindow::instance()->graphics->recalcCeiling();
+	MainWindow::instance()->graphics->replot();
 }
 
 static QDateTime timestampToDateTime(timestamp_t when)
