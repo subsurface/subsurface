@@ -18,8 +18,10 @@ public:
 	void clear() override;
 private slots:
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
+	void diveModeChanged(int index);
 	void on_atmPressVal_editingFinished();
 	void on_atmPressType_currentIndexChanged(int index);
+	void on_visibility_valueChanged(int value);
 private:
 	Ui::TabDiveInformation *ui;
 	void updateProfile();
@@ -27,6 +29,9 @@ private:
 	void updateWhen();
 	int pressTypeIndex;
 	void updateTextBox(int event);
+	void updateMode(struct dive *d);
+	void divesEdited(int);
+	void closeWarning();
 };
 
 #endif

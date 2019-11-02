@@ -116,13 +116,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	// filled from a dive, they are made writeable
 	setEnabled(false);
 
-	// This needs to be the same order as enum dive_comp_type in dive.h!
-	QStringList types = QStringList();
-	for (int i = 0; i < NUM_DIVEMODE; i++)
-		types.append(gettextFromC::tr(divemode_text_ui[i]));
-	ui.DiveType->insertItems(0, types);
-	connect(ui.DiveType, SIGNAL(currentIndexChanged(int)), this, SLOT(divetype_Changed(int)));
-
 	Completers completers;
 	completers.buddy = new QCompleter(&buddyModel, ui.buddy);
 	completers.divemaster = new QCompleter(&diveMasterModel, ui.divemaster);
@@ -282,12 +275,8 @@ void MainTab::divesChanged(const QVector<dive *> &dives, DiveField field)
 		ui.watertemp->setText(get_temperature_string(current_dive->watertemp, true));
 	if (field.rating)
 		ui.rating->setCurrentStars(current_dive->rating);
-	if (field.visibility)
-		ui.visibility->setCurrentStars(current_dive->visibility);
 	if (field.notes)
 		updateNotes(current_dive);
-	if (field.mode)
-		updateMode(current_dive);
 	if (field.datetime) {
 		updateDateTime(current_dive);
 		MainWindow::instance()->graphics->dateTimeChanged();
@@ -350,12 +339,6 @@ void MainTab::updateNotes(const struct dive *d)
 	} else {
 		ui.notes->setPlainText(tmp);
 	}
-}
-
-void MainTab::updateMode(struct dive *d)
-{
-	ui.DiveType->setCurrentIndex(get_dive_dc(d, dc_number)->divemode);
-	MainWindow::instance()->graphics->recalcCeiling();
 }
 
 static QDateTime timestampToDateTime(timestamp_t when)
@@ -442,14 +425,10 @@ void MainTab::updateDiveInfo()
 			ui.BuddyLabel->setVisible(false);
 			ui.rating->setVisible(false);
 			ui.RatingLabel->setVisible(false);
-			ui.visibility->setVisible(false);
-			ui.visibilityLabel->setVisible(false);
 			ui.tagWidget->setVisible(false);
 			ui.TagLabel->setVisible(false);
 			ui.airTempLabel->setVisible(false);
 			ui.airtemp->setVisible(false);
-			ui.DiveType->setVisible(false);
-			ui.TypeLabel->setVisible(false);
 			ui.waterTempLabel->setVisible(false);
 			ui.watertemp->setVisible(false);
 			ui.dateEdit->setReadOnly(true);
@@ -496,16 +475,12 @@ void MainTab::updateDiveInfo()
 			ui.buddy->setVisible(true);
 			ui.rating->setVisible(true);
 			ui.RatingLabel->setVisible(true);
-			ui.visibility->setVisible(true);
-			ui.visibilityLabel->setVisible(true);
 			ui.BuddyLabel->setVisible(true);
 			ui.DivemasterLabel->setVisible(true);
 			ui.TagLabel->setVisible(true);
 			ui.tagWidget->setVisible(true);
 			ui.airTempLabel->setVisible(true);
 			ui.airtemp->setVisible(true);
-			ui.TypeLabel->setVisible(true);
-			ui.DiveType->setVisible(true);
 			ui.waterTempLabel->setVisible(true);
 			ui.watertemp->setVisible(true);
 			ui.dateEdit->setReadOnly(false);
@@ -513,7 +488,6 @@ void MainTab::updateDiveInfo()
 			ui.timeEdit->setVisible(true);
 			/* and fill them from the dive */
 			ui.rating->setCurrentStars(current_dive->rating);
-			ui.visibility->setCurrentStars(current_dive->visibility);
 			// reset labels in case we last displayed trip notes
 			ui.LocationLabel->setText(tr("Location"));
 			ui.NotesLabel->setText(tr("Notes"));
@@ -525,7 +499,6 @@ void MainTab::updateDiveInfo()
 			ui.durationLabel->setVisible(isManual);
 
 			updateNotes(current_dive);
-			updateMode(current_dive);
 			updateDiveSite(current_dive);
 			updateDateTime(current_dive);
 			ui.divemaster->setText(current_dive->divemaster);
@@ -548,7 +521,6 @@ void MainTab::updateDiveInfo()
 		/* clear the fields */
 		clearTabs();
 		ui.rating->setCurrentStars(0);
-		ui.visibility->setCurrentStars(0);
 		ui.location->clear();
 		ui.divemaster->clear();
 		ui.buddy->clear();
@@ -760,13 +732,6 @@ void MainTab::on_airtemp_editingFinished()
 	divesEdited(Command::editAirTemp(parseTemperatureToMkelvin(ui.airtemp->text()), false));
 }
 
-void MainTab::divetype_Changed(int index)
-{
-	if (editMode == IGNORE_MODE || !current_dive)
-		return;
-	divesEdited(Command::editMode(dc_number, (enum divemode_t)index, false));
-}
-
 void MainTab::on_watertemp_editingFinished()
 {
 	// If the field wasn't modified by the user, don't post a new undo command.
@@ -868,14 +833,6 @@ void MainTab::on_rating_valueChanged(int value)
 		return;
 
 	divesEdited(Command::editRating(value, false));
-}
-
-void MainTab::on_visibility_valueChanged(int value)
-{
-	if (editMode == IGNORE_MODE || !current_dive)
-		return;
-
-	divesEdited(Command::editVisibility(value, false));
 }
 
 // Remove focus from any active field to update the corresponding value in the dive.
