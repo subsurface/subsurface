@@ -33,8 +33,10 @@ TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 	ui.weights->setModel(weightModel);
 
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &TabDiveEquipment::divesChanged);
-	connect(ui.cylinders->view(), &QTableView::clicked, this, &TabDiveEquipment::editCylinderWidget);
-	connect(ui.weights->view(), &QTableView::clicked, this, &TabDiveEquipment::editWeightWidget);
+	connect(ui.cylinders, &TableView::itemClicked, cylindersModel, &CylindersModel::remove);
+	connect(ui.cylinders, &TableView::itemClicked, this, &TabDiveEquipment::editCylinderWidget);
+	connect(ui.weights, &TableView::itemClicked, weightModel, &WeightModel::remove);
+	connect(ui.weights, &TableView::itemClicked, this, &TabDiveEquipment::editWeightWidget);
 
 	// Current display of things on Gnome3 looks like shit, so
 	// let's fix that.

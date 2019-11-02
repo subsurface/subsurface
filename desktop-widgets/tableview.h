@@ -28,10 +28,6 @@ class TableView : public QGroupBox {
 public:
 	TableView(QWidget *parent = 0);
 	~TableView();
-	/* The model is expected to have a 'remove' slot, that takes a QModelIndex as parameter.
-	 * It's also expected to have the column '1' as a trash icon. I most probably should create a
-	 * proxy model and add that column, will mark that as TODO. see? marked.
-	 */
 	void setModel(QAbstractItemModel *model);
 	void setBtnToolTip(const QString &tooltip);
 	void fixPlusPosition();
@@ -45,6 +41,7 @@ protected:
 
 signals:
 	void addButtonClicked();
+	void itemClicked(const QModelIndex &);
 
 private:
 	Ui::TableView ui;

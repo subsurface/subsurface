@@ -16,6 +16,7 @@ private slots:
 	void add();
 	void diveSiteAdded(struct dive_site *, int idx);
 	void diveSiteChanged(struct dive_site *ds, int field);
+	void diveSiteClicked(const QModelIndex &);
 	void on_purgeUnused_clicked();
 	void on_filterText_textChanged(const QString &text);
 	void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);

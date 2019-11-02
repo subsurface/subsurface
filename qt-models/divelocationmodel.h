@@ -46,8 +46,6 @@ private:
 	QString fullText;
 #ifndef SUBSURFACE_MOBILE
 	bool setData(const QModelIndex &index, const QVariant &value, int role) override;
-public slots:
-	void remove(const QModelIndex &index);
 #endif // SUBSURFACE_MOBILE
 public:
 	DiveSiteSortedModel();

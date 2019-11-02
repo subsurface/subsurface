@@ -4,9 +4,10 @@
 #include "core/divesite.h"
 #include "core/divefilter.h"
 #include "qt-models/divelocationmodel.h"
+#include "desktop-widgets/mainwindow.h" // to place message box
 #include "commands/command.h"
 
-#include <qt-models/divecomputerextradatamodel.h>
+#include <QMessageBox>
 
 TabDiveSite::TabDiveSite(QWidget *parent) : TabBase(parent)
 {
@@ -25,6 +26,7 @@ TabDiveSite::TabDiveSite(QWidget *parent) : TabBase(parent)
 		ui.diveSites->view()->setColumnHidden(i, true);
 
 	connect(ui.diveSites, &TableView::addButtonClicked, this, &TabDiveSite::add);
+	connect(ui.diveSites, &TableView::itemClicked, this, &TabDiveSite::diveSiteClicked);
 	connect(ui.diveSites->view()->selectionModel(), &QItemSelectionModel::selectionChanged, this, &TabDiveSite::selectionChanged);
 
 	// Subtle: We depend on this slot being executed after the slot in the model.
@@ -38,6 +40,26 @@ void TabDiveSite::updateData()
 
 void TabDiveSite::clear()
 {
+}
+
+void TabDiveSite::diveSiteClicked(const QModelIndex &index)
+{
+	struct dive_site *ds = model.getDiveSite(index);
+	if (!ds)
+		return;
+	switch (index.column()) {
+	case LocationInformationModel::EDIT:
+		MainWindow::instance()->editDiveSite(ds);
+		break;
+	case LocationInformationModel::REMOVE:
+		if (ds->dives.nr > 0 &&
+		    QMessageBox::warning(MainWindow::instance(), tr("Delete dive site?"),
+					 tr("This dive site has %n dive(s). Do you really want to delete it?\n", "", ds->dives.nr),
+					 QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
+				return;
+		Command::deleteDiveSites(QVector<dive_site *>{ds});
+		break;
+	}
 }
 
 void TabDiveSite::add()

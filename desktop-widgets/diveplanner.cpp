@@ -114,12 +114,14 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	ui.dateEdit->setDisplayFormat(prefs.date_format);
 	ui.tableWidget->setTitle(tr("Dive planner points"));
 	ui.tableWidget->setModel(plannerModel);
+	connect(ui.tableWidget, &TableView::itemClicked, plannerModel, &DivePlannerPointsModel::remove);
 	plannerModel->setRecalc(true);
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(this));
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::DIVEMODE, new DiveTypesDelegate(this));
 	ui.cylinderTableWidget->setTitle(tr("Available gases"));
 	ui.cylinderTableWidget->setBtnToolTip(tr("Add cylinder"));
 	ui.cylinderTableWidget->setModel(CylindersModel::instance());
+	connect(ui.cylinderTableWidget, &TableView::itemClicked, CylindersModel::instance(), &CylindersModel::remove);
 	ui.waterType->setItemData(0, FRESHWATER_SALINITY);
 	ui.waterType->setItemData(1, SEAWATER_SALINITY);
 	ui.waterType->setItemData(2, EN13319_SALINITY);

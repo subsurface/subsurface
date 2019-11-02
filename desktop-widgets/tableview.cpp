@@ -10,6 +10,8 @@ TableView::TableView(QWidget *parent) : QGroupBox(parent)
 	ui.setupUi(this);
 	ui.tableView->setItemDelegate(new DiveListDelegate(this));
 
+	connect(ui.tableView, &QTableView::clicked, this, &TableView::itemClicked);
+
 	QFontMetrics fm(defaultModelFont());
 	int text_ht = fm.height();
 
@@ -93,7 +95,6 @@ void TableView::setBtnToolTip(const QString &tooltip)
 void TableView::setModel(QAbstractItemModel *model)
 {
 	ui.tableView->setModel(model);
-	connect(ui.tableView, SIGNAL(clicked(QModelIndex)), model, SLOT(remove(QModelIndex)));
 
 	QSettings s;
 	s.beginGroup(objectName());

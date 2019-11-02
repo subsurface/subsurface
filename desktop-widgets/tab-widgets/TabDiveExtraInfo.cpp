@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "TabDiveExtraInfo.h"
 #include "ui_TabDiveExtraInfo.h"
-
-#include <qt-models/divecomputerextradatamodel.h>
+#include "qt-models/divecomputerextradatamodel.h"
 
 TabDiveExtraInfo::TabDiveExtraInfo(QWidget *parent) :
 	TabBase(parent),
