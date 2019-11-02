@@ -158,8 +158,7 @@ void TabDiveEquipment::addCylinder_clicked()
 
 void TabDiveEquipment::addWeight_clicked()
 {
-	MainWindow::instance()->mainTab->enableEdition();
-	weightModel->add();
+	divesEdited(Command::addWeight(false));
 }
 
 void TabDiveEquipment::editCylinderWidget(const QModelIndex &index)

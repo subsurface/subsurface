@@ -268,6 +268,11 @@ void editProfile(dive *d)
 	execute(new ReplanDive(d, true));
 }
 
+int addWeight(bool currentDiveOnly)
+{
+	return execute_edit(new AddWeight(currentDiveOnly));
+}
+
 // Trip editing related commands
 void editTripLocation(dive_trip *trip, const QString &s)
 {

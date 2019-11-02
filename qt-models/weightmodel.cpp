@@ -15,6 +15,8 @@ WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
 	//enum Column {REMOVE, TYPE, WEIGHT};
 	setHeaderDataStrings(QStringList() << tr("") << tr("Type") << tr("Weight"));
 	connect(&diveListNotifier, &DiveListNotifier::weightsystemsReset, this, &WeightModel::weightsystemsReset);
+	connect(&diveListNotifier, &DiveListNotifier::weightAdded, this, &WeightModel::weightAdded);
+	connect(&diveListNotifier, &DiveListNotifier::weightRemoved, this, &WeightModel::weightRemoved);
 }
 
 weightsystem_t *WeightModel::weightSystemAt(const QModelIndex &index)
@@ -146,17 +148,6 @@ int WeightModel::rowCount(const QModelIndex&) const
 	return rows;
 }
 
-void WeightModel::add()
-{
-	int row = rows;
-	weightsystem_t ws { {0}, "" };
-	beginInsertRows(QModelIndex(), row, row);
-	add_cloned_weightsystem(&d->weightsystems, ws);
-	rows++;
-	changed = true;
-	endInsertRows();
-}
-
 void WeightModel::updateDive(dive *dIn)
 {
 	beginResetModel();
@@ -174,4 +165,26 @@ void WeightModel::weightsystemsReset(const QVector<dive *> &dives)
 
 	// And update the model..
 	updateDive(d);
+}
+
+void WeightModel::weightAdded(struct dive *changed, int pos)
+{
+	if (d != changed)
+		return;
+
+	// The last row was already inserted by the undo command. Just inform the model.
+	beginInsertRows(QModelIndex(), pos, pos);
+	rows++;
+	endInsertRows();
+}
+
+void WeightModel::weightRemoved(struct dive *changed, int pos)
+{
+	if (d != changed)
+		return;
+
+	// The row was already deleted by the undo command. Just inform the model.
+	beginRemoveRows(QModelIndex(), pos, pos);
+	rows--;
+	endRemoveRows();
 }

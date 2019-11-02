@@ -953,4 +953,36 @@ void ReplanDive::redo()
 	undo();
 }
 
+// ***** Add Weight *****
+AddWeight::AddWeight(bool currentDiveOnly) :
+	EditDivesBase(currentDiveOnly)
+{
+	//: remove the part in parentheses for %n = 1
+	setText(tr("Add weight (%n dive(s))", "", dives.size()));
+}
+
+bool AddWeight::workToBeDone()
+{
+	return true;
+}
+
+void AddWeight::undo()
+{
+	for (dive *d: dives) {
+		if (d->weightsystems.nr <= 0)
+			continue;
+		remove_weightsystem(d, d->weightsystems.nr - 1);
+		emit diveListNotifier.weightRemoved(d, d->weightsystems.nr);
+	}
+}
+
+void AddWeight::redo()
+{
+	weightsystem_t ws { {0}, "" };
+	for (dive *d: dives) {
+		add_cloned_weightsystem(&d->weightsystems, ws);
+		emit diveListNotifier.weightAdded(d, d->weightsystems.nr - 1);
+	}
+}
+
 } // namespace Command
