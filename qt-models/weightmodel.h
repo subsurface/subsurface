@@ -23,7 +23,6 @@ public:
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
 	void passInData(const QModelIndex &index, const QVariant &value);
-	void add();
 	void clear();
 	void updateDive(dive *d);
 	weightsystem_t *weightSystemAt(const QModelIndex &index);
@@ -33,6 +32,8 @@ public
 slots:
 	void remove(QModelIndex index);
 	void weightsystemsReset(const QVector<dive *> &dives);
+	void weightAdded(dive *d, int pos);
+	void weightRemoved(dive *d, int pos);
 
 private:
 	dive *d;

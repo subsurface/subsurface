@@ -86,6 +86,8 @@ signals:
 
 	void cylindersReset(const QVector<dive *> &dives);
 	void weightsystemsReset(const QVector<dive *> &dives);
+	void weightAdded(dive *d, int pos);
+	void weightRemoved(dive *d, int pos);
 
 	// Trip edited signal
 	void tripChanged(dive_trip *trip, TripField field);

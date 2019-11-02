@@ -330,6 +330,15 @@ private:
 	bool workToBeDone() override;
 };
 
+class AddWeight : public EditDivesBase {
+public:
+	AddWeight(bool currentDiveOnly);
+private:
+	void undo() override;
+	void redo() override;
+	bool workToBeDone() override;
+};
+
 } // namespace Command
 
 #endif

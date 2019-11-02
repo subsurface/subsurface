@@ -81,6 +81,7 @@ int editDiveMaster(const QStringList &newList, bool currentDiveOnly);
 void pasteDives(const dive *d, dive_components what);
 void replanDive(dive *d); // dive computer(s) and cylinder(s) will be reset!
 void editProfile(dive *d); // dive computer(s) and cylinder(s) will be reset!
+int addWeight(bool currentDiveOnly);
 
 // 5) Trip editing commands
 
