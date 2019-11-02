@@ -129,7 +129,7 @@ void TabDiveEquipment::toggleTriggeredColumn()
 void TabDiveEquipment::updateData()
 {
 	cylindersModel->updateDive();
-	weightModel->updateDive();
+	weightModel->updateDive(current_dive);
 	suitModel.updateModel();
 
 	ui.cylinders->view()->hideColumn(CylindersModel::DEPTH);
@@ -272,7 +272,7 @@ void TabDiveEquipment::rejectChanges()
 	cylindersModel->changed = false;
 	weightModel->changed = false;
 	cylindersModel->updateDive();
-	weightModel->updateDive();
+	weightModel->updateDive(current_dive);
 }
 
 void TabDiveEquipment::divesEdited(int i)

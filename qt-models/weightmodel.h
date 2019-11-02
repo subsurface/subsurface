@@ -25,7 +25,7 @@ public:
 	void passInData(const QModelIndex &index, const QVariant &value);
 	void add();
 	void clear();
-	void updateDive();
+	void updateDive(dive *d);
 	weightsystem_t *weightSystemAt(const QModelIndex &index);
 	bool changed;
 
@@ -35,6 +35,7 @@ slots:
 	void weightsystemsReset(const QVector<dive *> &dives);
 
 private:
+	dive *d;
 	int rows;
 };
 
