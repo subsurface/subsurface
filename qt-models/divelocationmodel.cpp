@@ -7,9 +7,7 @@
 #include "core/metrics.h"
 #ifndef SUBSURFACE_MOBILE
 #include "cleanertablemodel.h" // for trashIcon() and editIcon()
-#include "desktop-widgets/mainwindow.h" // to place message box
 #include "commands/command.h"
-#include <QMessageBox>
 #endif
 #include <QLineEdit>
 #include <QIcon>
@@ -262,27 +260,6 @@ bool DiveSiteSortedModel::setData(const QModelIndex &index, const QVariant &valu
 	}
 }
 
-// TODO: Remove or edit. It doesn't make sense to call the model here, which calls the undo command,
-// which in turn calls the model.
-void DiveSiteSortedModel::remove(const QModelIndex &index)
-{
-	struct dive_site *ds = getDiveSite(index);
-	if (!ds)
-		return;
-	switch (index.column()) {
-	case LocationInformationModel::EDIT:
-		MainWindow::instance()->editDiveSite(ds);
-		break;
-	case LocationInformationModel::REMOVE:
-		if (ds->dives.nr > 0 &&
-		    QMessageBox::warning(MainWindow::instance(), tr("Delete dive site?"),
-					 tr("This dive site has %n dive(s). Do you really want to delete it?\n", "", ds->dives.nr),
-					 QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
-				return;
-		Command::deleteDiveSites(QVector<dive_site *>{ds});
-		break;
-	}
-}
 #endif // SUBSURFACE_MOBILE
 
 void DiveSiteSortedModel::setFilter(const QString &text)
