@@ -1031,7 +1031,7 @@ RemoveWeight::RemoveWeight(int index, bool currentDiveOnly) :
 
 RemoveWeight::~RemoveWeight()
 {
-	free((void *)ws.description);
+	free_weightsystem(ws);
 }
 
 bool RemoveWeight::workToBeDone()

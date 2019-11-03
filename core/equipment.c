@@ -19,9 +19,13 @@
 #include "subsurface-string.h"
 #include "table.h"
 
-static void free_weightsystem(weightsystem_t w)
+/* Warning: this has strange semantics for C-code! Not the weightsystem object
+ * is freed, but the data it references. The object itself is passed in by value.
+ * This is due to the fact how the table macros work.
+ */
+void free_weightsystem(weightsystem_t ws)
 {
-	free((void *)w.description);
+	free((void *)ws.description);
 }
 
 static void free_cylinder(cylinder_t c)
