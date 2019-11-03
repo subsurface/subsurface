@@ -234,6 +234,11 @@ mkdir -p build-ios/googlemaps-build
 pushd build-ios/googlemaps-build
 ${IOS_QT}/${QT_VERSION}/ios/bin/qmake ${SSRF_CLONE}/googlemaps/googlemaps.pro CONFIG+=release
 make
+if [ "$DEBUGRELEASE" != "Release" ] ; then
+	${IOS_QT}/${QT_VERSION}/ios/bin/qmake ${SSRF_CLONE}/googlemaps/googlemaps.pro CONFIG+=debug
+	make clean
+	make
+fi
 popd
 
 # now combine the libraries into fat libraries
