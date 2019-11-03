@@ -19,14 +19,14 @@ WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
 	connect(&diveListNotifier, &DiveListNotifier::weightRemoved, this, &WeightModel::weightRemoved);
 }
 
-weightsystem_t *WeightModel::weightSystemAt(const QModelIndex &index)
+weightsystem_t WeightModel::weightSystemAt(const QModelIndex &index)
 {
 	int row = index.row();
 	if (row < 0 || row >= d->weightsystems.nr) {
 		qWarning("WeightModel: Accessing invalid weightsystem %d (of %d)", row, d->weightsystems.nr);
-		return nullptr;
+		return { { 0 }, nullptr };
 	}
-	return &d->weightsystems.weightsystems[index.row()];
+	return d->weightsystems.weightsystems[index.row()];
 }
 
 void WeightModel::clear()
