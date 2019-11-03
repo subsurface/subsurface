@@ -280,10 +280,10 @@ void QMLManager::openLocalThenRemote(QString url)
 	DiveListModel::instance()->clear();
 	setNotificationText(tr("Open local dive data file"));
 	QByteArray fileNamePrt = QFile::encodeName(url);
-	bool glo = git_local_only;
-	git_local_only = true;
+	/* if this is a cloud storage repo and we have no local cache (i.e., it's the first time
+	 * we try to open this), parse_file will ALWAYS connect to the remote and populate the cache.
+	 * Otherwise parse_file will respect the git_local_only flag and only update if that isn't set */
 	int error = parse_file(fileNamePrt.data(), &dive_table, &trip_table, &dive_site_table);
-	git_local_only = glo;
 	if (error) {
 		appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
 		setNotificationText(tr("Opening local data file failed"));
