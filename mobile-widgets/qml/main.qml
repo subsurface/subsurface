@@ -451,7 +451,22 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						pageStack.push(logWindow)
 					}
 				}
-
+				Kirigami.Action {
+					text: qsTr("Test busy indicator (toggle)")
+					onTriggered: {
+						if (busy.running) {
+							hideBusy()
+						} else {
+							showBusy()
+						}
+					}
+				}
+				Kirigami.Action {
+					text: qsTr("Test notification text")
+					onTriggered: {
+						showPassiveNotification(qsTr("Test notification text"), 5000)
+					}
+				}
 				Kirigami.Action {
 					text: qsTr("Theme information")
 					onTriggered: {
