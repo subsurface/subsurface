@@ -273,6 +273,11 @@ int addWeight(bool currentDiveOnly)
 	return execute_edit(new AddWeight(currentDiveOnly));
 }
 
+int removeWeight(int index, bool currentDiveOnly)
+{
+	return execute_edit(new RemoveWeight(index, currentDiveOnly));
+}
+
 // Trip editing related commands
 void editTripLocation(dive_trip *trip, const QString &s)
 {

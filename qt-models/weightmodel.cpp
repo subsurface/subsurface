@@ -29,17 +29,6 @@ weightsystem_t *WeightModel::weightSystemAt(const QModelIndex &index)
 	return &d->weightsystems.weightsystems[index.row()];
 }
 
-void WeightModel::remove(QModelIndex index)
-{
-	if (index.column() != REMOVE || !d)
-		return;
-	beginRemoveRows(QModelIndex(), index.row(), index.row());
-	rows--;
-	remove_weightsystem(d, index.row());
-	changed = true;
-	endRemoveRows();
-}
-
 void WeightModel::clear()
 {
 	updateDive(nullptr);
@@ -95,7 +84,6 @@ void WeightModel::passInData(const QModelIndex &index, const QVariant &value)
 		}
 	}
 }
-
 
 bool WeightModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {

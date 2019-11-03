@@ -111,12 +111,24 @@ void add_weightsystem_description(const weightsystem_t *weightsystem)
 	}
 }
 
+weightsystem_t clone_weightsystem(weightsystem_t ws)
+{
+	weightsystem_t res = { ws.weight, copy_string(ws.description) };
+	return res;
+}
+
 /* Add a clone of a weightsystem to the end of a weightsystem table.
  * Cloned in means that the description-string is copied. */
 void add_cloned_weightsystem(struct weightsystem_table *t, weightsystem_t ws)
 {
-	weightsystem_t w_clone = { ws.weight, copy_string(ws.description) };
-	add_to_weightsystem_table(t, t->nr, w_clone);
+	add_to_weightsystem_table(t, t->nr, clone_weightsystem(ws));
+}
+
+/* Add a clone of a weightsystem to the end of a weightsystem table.
+ * Cloned in means that the description-string is copied. */
+void add_cloned_weightsystem_at(struct weightsystem_table *t, weightsystem_t ws)
+{
+	add_to_weightsystem_table(t, t->nr, clone_weightsystem(ws));
 }
 
 /* Add a clone of a cylinder to the end of a cylinder table.
