@@ -1349,6 +1349,7 @@ void QMLManager::saveChangesCloud(bool forceRemoteSync)
 		return;
 
 	if (!m_loadFromCloud) {
+		setNotificationText(tr("Fatal error: cannot save data file. Please copy log file and report."));
 		appendTextToLog("Don't save dives without loading from the cloud, first.");
 		return;
 	}
