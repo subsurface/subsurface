@@ -555,7 +555,7 @@ bool QMLManager::verifyCredentials(QString email, QString password, QString pin)
 {
 	setStartPageText(tr("Testing cloud credentials"));
 	if (pin.isEmpty())
-		appendTextToLog(QStringLiteral("verify credentials for email %1 (no PIN)").arg(email, pin));
+		appendTextToLog(QStringLiteral("verify credentials for email %1 (no PIN)").arg(email));
 	else
 		appendTextToLog(QStringLiteral("verify credentials for email %1 PIN %2").arg(email, pin));
 	CloudStorageAuthenticate *csa = new CloudStorageAuthenticate(this);
