@@ -30,7 +30,6 @@ public:
 
 public
 slots:
-	void remove(QModelIndex index);
 	void weightsystemsReset(const QVector<dive *> &dives);
 	void weightAdded(dive *d, int pos);
 	void weightRemoved(dive *d, int pos);

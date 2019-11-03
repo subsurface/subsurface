@@ -339,6 +339,18 @@ private:
 	bool workToBeDone() override;
 };
 
+class RemoveWeight : public EditDivesBase {
+public:
+	RemoveWeight(int index, bool currentDiveOnly);
+	~RemoveWeight();
+private:
+	weightsystem_t ws;
+	std::vector<int> indexes; // An index for each dive in the dives vector.
+	void undo() override;
+	void redo() override;
+	bool workToBeDone() override;
+};
+
 } // namespace Command
 
 #endif

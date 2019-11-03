@@ -35,7 +35,6 @@ TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &TabDiveEquipment::divesChanged);
 	connect(ui.cylinders, &TableView::itemClicked, cylindersModel, &CylindersModel::remove);
 	connect(ui.cylinders, &TableView::itemClicked, this, &TabDiveEquipment::editCylinderWidget);
-	connect(ui.weights, &TableView::itemClicked, weightModel, &WeightModel::remove);
 	connect(ui.weights, &TableView::itemClicked, this, &TabDiveEquipment::editWeightWidget);
 
 	// Current display of things on Gnome3 looks like shit, so
@@ -177,10 +176,15 @@ void TabDiveEquipment::editCylinderWidget(const QModelIndex &index)
 
 void TabDiveEquipment::editWeightWidget(const QModelIndex &index)
 {
-	MainWindow::instance()->mainTab->enableEdition();
+	if (!index.isValid())
+		return;
 
-	if (index.isValid() && index.column() != WeightModel::REMOVE)
+	if (index.column() == WeightModel::REMOVE) {
+		divesEdited(Command::removeWeight(index.row(), false));
+	} else {
+		MainWindow::instance()->mainTab->enableEdition();
 		ui.weights->edit(index);
+	}
 }
 
 // tricky little macro to edit all the selected dives
