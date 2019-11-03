@@ -23,7 +23,7 @@ weightsystem_t WeightModel::weightSystemAt(const QModelIndex &index) const
 	int row = index.row();
 	if (row < 0 || row >= d->weightsystems.nr) {
 		qWarning("WeightModel: Accessing invalid weightsystem %d (of %d)", row, d->weightsystems.nr);
-		return { { 0 }, nullptr };
+		return empty_weightsystem;
 	}
 	return d->weightsystems.weightsystems[index.row()];
 }

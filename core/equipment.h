@@ -50,6 +50,8 @@ typedef struct
 	const char *description; /* "integrated", "belt", "ankle" */
 } weightsystem_t;
 
+static const weightsystem_t empty_weightsystem = { { 0 }, 0 };
+
 /* Table of weightsystems. Attention: this stores weightsystems,
  * *not* pointers * to weightsystems. This has two crucial
  * consequences:

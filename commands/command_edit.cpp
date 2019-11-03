@@ -978,9 +978,8 @@ void AddWeight::undo()
 
 void AddWeight::redo()
 {
-	weightsystem_t ws { {0}, "" };
 	for (dive *d: dives) {
-		add_cloned_weightsystem(&d->weightsystems, ws);
+		add_cloned_weightsystem(&d->weightsystems, empty_weightsystem);
 		emit diveListNotifier.weightAdded(d, d->weightsystems.nr - 1);
 	}
 }
@@ -996,7 +995,7 @@ static int find_weightsystem_index(const struct dive *d, weightsystem_t ws)
 
 RemoveWeight::RemoveWeight(int index, bool currentDiveOnly) :
 	EditDivesBase(currentDiveOnly),
-	ws{ {0}, nullptr }
+	ws(empty_weightsystem)
 {
 	// Get the old weightsystem, bail if index is invalid
 	if (!current || index < 0 || index >= current->weightsystems.nr) {
