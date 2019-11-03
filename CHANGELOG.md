@@ -1,3 +1,4 @@
+Mobile: fix subtle potential new data loss bug in first session connecting to a cloud account
 Planner: Add checkbox on considering oxygen narcotic
 Planner: Improve rounding of stop durations in planner notes
 Desktop: register changes when clicking "done" on dive-site edit screen

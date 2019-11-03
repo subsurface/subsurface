@@ -302,6 +302,9 @@ void QMLManager::openLocalThenRemote(QString url)
 			QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_NEED_TO_VERIFY);
 	} else {
 		// if we can load from the cache, we know that we have a valid cloud account
+		// and we know that there was at least one successful sync with the cloud when
+		// that local cache was created - so there is a common ancestor
+		setLoadFromCloud(true);
 		if (QMLPrefs::instance()->credentialStatus() == qPrefCloudStorage::CS_UNKNOWN)
 			QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_VERIFIED);
 		if (git_prefs.unit_system == IMPERIAL)
