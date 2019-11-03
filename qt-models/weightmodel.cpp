@@ -9,8 +9,7 @@
 
 WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
 	changed(false),
-	d(nullptr),
-	rows(0)
+	d(nullptr)
 {
 	//enum Column {REMOVE, TYPE, WEIGHT};
 	setHeaderDataStrings(QStringList() << tr("") << tr("Type") << tr("Weight"));
@@ -19,7 +18,7 @@ WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
 	connect(&diveListNotifier, &DiveListNotifier::weightRemoved, this, &WeightModel::weightRemoved);
 }
 
-weightsystem_t WeightModel::weightSystemAt(const QModelIndex &index)
+weightsystem_t WeightModel::weightSystemAt(const QModelIndex &index) const
 {
 	int row = index.row();
 	if (row < 0 || row >= d->weightsystems.nr) {
@@ -39,7 +38,7 @@ QVariant WeightModel::data(const QModelIndex &index, int role) const
 	if (!index.isValid() || index.row() >= d->weightsystems.nr)
 		return QVariant();
 
-	const weightsystem_t *ws = &d->weightsystems.weightsystems[index.row()];
+	const weightsystem_t ws = weightSystemAt(index);
 
 	switch (role) {
 	case Qt::FontRole:
@@ -50,9 +49,9 @@ QVariant WeightModel::data(const QModelIndex &index, int role) const
 	case Qt::EditRole:
 		switch (index.column()) {
 		case TYPE:
-			return gettextFromC::tr(ws->description);
+			return gettextFromC::tr(ws.description);
 		case WEIGHT:
-			return get_weight_string(ws->weight, true);
+			return get_weight_string(ws.weight, true);
 		}
 		break;
 	case Qt::DecorationRole:
@@ -133,14 +132,13 @@ Qt::ItemFlags WeightModel::flags(const QModelIndex &index) const
 
 int WeightModel::rowCount(const QModelIndex&) const
 {
-	return rows;
+	return d ? d->weightsystems.nr : 0;
 }
 
 void WeightModel::updateDive(dive *dIn)
 {
 	beginResetModel();
 	d = dIn;
-	rows = d ? d->weightsystems.nr : 0;
 	endResetModel();
 }
 
@@ -160,9 +158,8 @@ void WeightModel::weightAdded(struct dive *changed, int pos)
 	if (d != changed)
 		return;
 
-	// The last row was already inserted by the undo command. Just inform the model.
+	// The row was already inserted by the undo command. Just inform the model.
 	beginInsertRows(QModelIndex(), pos, pos);
-	rows++;
 	endInsertRows();
 }
 
@@ -173,6 +170,5 @@ void WeightModel::weightRemoved(struct dive *changed, int pos)
 
 	// The row was already deleted by the undo command. Just inform the model.
 	beginRemoveRows(QModelIndex(), pos, pos);
-	rows--;
 	endRemoveRows();
 }
