@@ -25,7 +25,7 @@ public:
 	void passInData(const QModelIndex &index, const QVariant &value);
 	void clear();
 	void updateDive(dive *d);
-	weightsystem_t *weightSystemAt(const QModelIndex &index);
+	weightsystem_t weightSystemAt(const QModelIndex &index);
 	bool changed;
 
 public

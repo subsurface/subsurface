@@ -371,9 +371,9 @@ QWidget *WSInfoDelegate::createEditor(QWidget *parent, const QStyleOptionViewIte
 	/* First, call the combobox-create editor, it will setup our globals. */
 	QWidget *editor = ComboBoxDelegate::createEditor(parent, option, index);
 	WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
-	weightsystem_t *ws = mymodel->weightSystemAt(index);
-	currWeight.type = ws->description;
-	currWeight.weight = ws->weight.grams;
+	weightsystem_t ws = mymodel->weightSystemAt(index);
+	currWeight.type = ws.description;
+	currWeight.weight = ws.weight.grams;
 	return editor;
 }
 
