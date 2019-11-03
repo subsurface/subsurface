@@ -387,7 +387,7 @@ Kirigami.Page {
 				onClicked: {
 					manager.appendTextToLog("Save downloaded dives that were selected")
 					busy = true
-					rootItem.showBusy()
+					rootItem.showBusy("Save selected dives")
 					manager.appendTextToLog("temporary disconnecting dive list model")
 					diveList.diveListModel = null
 					manager.appendTextToLog("Record dives")
