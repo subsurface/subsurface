@@ -160,6 +160,8 @@ for ARCH in $ARCHS; do
 			-DCMAKE_INSTALL_PREFIX=${PREFIX} \
 			-DCMAKE_PREFIX_PATH=${PREFIX} \
 			-DCMAKE_DISABLE_FIND_PACKAGE_BZip2=TRUE \
+			-DENABLE_OPENSSL=FALSE \
+			-DENABLE_GNUTLS=FALSE \
 			${SSRF_CLONE}/libzip
 		# quiet the super noise warnings
 		sed -i.bak 's/C_FLAGS = /C_FLAGS = -Wno-nullability-completeness -Wno-expansion-to-defined /' lib/CMakeFiles/zip.dir/flags.make
