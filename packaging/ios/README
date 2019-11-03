@@ -4,7 +4,7 @@ Tool repo to crosscompile subsurface for iOS
 Dependencies:
 
 - This only works on a Mac
-- XCode with iOS SDK and Qt5.9 or later
+- XCode with iOS SDK and Qt5.13 or later
 - cmake
 
 Follow the instruction in:
@@ -19,7 +19,7 @@ note: this builds all dependencies and is only needed first time
       it currently build for armv7 arm64 and x86_64 (simulator)
 
 1) cd <repo>/..
-2) Launch QtCreator and open subsurface/packaging/ios/Subsurface-mobile/Subsurface-mobile.pro
+2) Launch QtCreator and open subsurface/packaging/ios/Subsurface-mobile.pro
 3) Build Subsurface-mobile in QtCreator - you can build for the simulator and for
 a device and even deploy to a connected device.
 
@@ -44,6 +44,6 @@ number, even though the sources have been recompiled which can be very
 confusing.
 
 Do a simply version update by running:
-build.sh version
-and then rebuilding in Qt Creator
+build.sh -version
+and then rebuilding in Qt Creator (or Xcode)
 
