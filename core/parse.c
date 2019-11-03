@@ -298,8 +298,7 @@ void cylinder_end(struct parser_state *state)
 
 void ws_start(struct parser_state *state)
 {
-	weightsystem_t w = { {0}, "" };
-	add_cloned_weightsystem(&state->cur_dive->weightsystems, w);
+	add_cloned_weightsystem(&state->cur_dive->weightsystems, empty_weightsystem);
 }
 
 void ws_end(struct parser_state *state)
