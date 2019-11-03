@@ -4,7 +4,6 @@
 set -x
 set -e
 
-doVersion=$1
 DEBUGRELEASE="Release"
 ARCHS="armv7 arm64 x86_64"
 TARGET="iphoneos"
@@ -13,6 +12,11 @@ TARGET2="Device"
 while [[ $# -gt 0 ]] ; do
 	arg="$1"
 	case $arg in
+		-version)
+			# only update the version info without rebuilding
+			# this is useful when working with Xcode
+			versionOnly="1"
+			;;
 		-debug)
 			# build for debugging
 			DEBUGRELEASE="Debug"
@@ -68,7 +72,7 @@ fi
 # create Info.plist with the correct versions
 cat Info.plist.in | sed "s/@MOBILE_VERSION@/$MOBILEVERSION/;s/@CANONICAL_VERSION@/$CANONICALVERSION/;s/@PRODUCT_BUNDLE_IDENTIFIER@/$BUNDLE/" > Info.plist
 
-if [ "$doVersion" = "version" ] ; then
+if [ "$versionOnly" = "1" ] ; then
 	exit 0
 fi
 
