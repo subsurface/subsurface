@@ -66,7 +66,9 @@ Kirigami.ApplicationWindow {
 		anchors.centerIn: parent
 	}
 
-	function showBusy() {
+	function showBusy(msg = "") {
+		if (msg !== "")
+			showPassiveNotification(msg, 15000) // show for 15 seconds
 		busy.running = true
 	}
 
@@ -77,6 +79,7 @@ Kirigami.ApplicationWindow {
 
 	function hideBusy() {
 		busy.running = false
+		showPassiveNotification("", 10) // this hides a notification messssage that's still shown
 	}
 
 	function hideBusyAndConnectModel() { // this is used by QMLManager when done filtering
