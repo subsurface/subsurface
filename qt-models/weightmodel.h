@@ -21,8 +21,10 @@ public:
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+	void setTempWS(int row, weightsystem_t ws);
+	void clearTempWS();
+	void commitTempWS();
 
-	void passInData(const QModelIndex &index, const QVariant &value);
 	void clear();
 	void updateDive(dive *d);
 	weightsystem_t weightSystemAt(const QModelIndex &index) const;
@@ -36,6 +38,9 @@ slots:
 
 private:
 	dive *d;
+	// If we temporarily change a line because the user is selecting a weight type
+	int tempRow;
+	weightsystem_t tempWS;
 };
 
 #endif

@@ -9,7 +9,9 @@
 
 WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
 	changed(false),
-	d(nullptr)
+	d(nullptr),
+	tempRow(-1),
+	tempWS(empty_weightsystem)
 {
 	//enum Column {REMOVE, TYPE, WEIGHT};
 	setHeaderDataStrings(QStringList() << tr("") << tr("Type") << tr("Weight"));
@@ -38,7 +40,7 @@ QVariant WeightModel::data(const QModelIndex &index, int role) const
 	if (!index.isValid() || index.row() >= d->weightsystems.nr)
 		return QVariant();
 
-	const weightsystem_t ws = weightSystemAt(index);
+	weightsystem_t ws = index.row() == tempRow ? tempWS : weightSystemAt(index);
 
 	switch (role) {
 	case Qt::FontRole:
@@ -70,18 +72,44 @@ QVariant WeightModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-// this is our magic 'pass data in' function that allows the delegate to get
-// the data here without silly unit conversions;
-// so we only implement the two columns we care about
-void WeightModel::passInData(const QModelIndex &index, const QVariant &value)
+// Ownership of passed in weight system will be taken. Caller must not use it any longer.
+void WeightModel::setTempWS(int row, weightsystem_t ws)
 {
-	weightsystem_t *ws = &d->weightsystems.weightsystems[index.row()];
-	if (index.column() == WEIGHT) {
-		if (ws->weight.grams != value.toInt()) {
-			ws->weight.grams = value.toInt();
-			dataChanged(index, index);
-		}
+	if (!d || row < 0 || row >= d->weightsystems.nr) // Sanity check: row must exist
+		return;
+
+	clearTempWS(); // Shouldn't be necessary, just in case: Reset old temporary row.
+	free_weightsystem(tempWS);
+
+	// It is really hard to get the editor-close-hints and setModelData calls under
+	// control. Therefore, if the row is set to the already existing entry, don't
+	// enter temporary mode.
+	if (same_string(d->weightsystems.weightsystems[row].description, ws.description)) {
+		free_weightsystem(ws);
+		tempWS.description = nullptr;
+	} else {
+		tempRow = row;
+		tempWS = ws;
 	}
+	dataChanged(index(row, TYPE), index(row, WEIGHT));
+}
+
+void WeightModel::clearTempWS()
+{
+	if (tempRow < 0)
+		return;
+	int oldRow = tempRow;
+	tempRow = -1;
+	dataChanged(index(oldRow, TYPE), index(oldRow, WEIGHT));
+}
+
+void WeightModel::commitTempWS()
+{
+	if (tempRow < 0)
+		return;
+	tempRow = -1;
+	setData(index(tempRow, TYPE), QVariant::fromValue(QString(tempWS.description)), Qt::EditRole);
+	setData(index(tempRow, WEIGHT), QVariant::fromValue(get_weight_string(tempWS.weight, true)), Qt::EditRole);
 }
 
 bool WeightModel::setData(const QModelIndex &index, const QVariant &value, int role)
