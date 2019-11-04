@@ -85,10 +85,8 @@ const QSize& StarWidgetsDelegate::starSize() const
 ComboBoxDelegate::ComboBoxDelegate(QAbstractItemModel *model, QObject *parent, bool allowEdit) : QStyledItemDelegate(parent), model(model)
 {
 	editable = allowEdit;
-	connect(this, SIGNAL(closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint)),
-		this, SLOT(revertModelData(QWidget *, QAbstractItemDelegate::EndEditHint)));
-	connect(this, SIGNAL(closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint)),
-		this, SLOT(fixTabBehavior()));
+	connect(this, &ComboBoxDelegate::closeEditor, this, &ComboBoxDelegate::editorClosed);
+	connect(this, &ComboBoxDelegate::closeEditor, this, &ComboBoxDelegate::fixTabBehavior);
 }
 
 void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
@@ -276,7 +274,7 @@ void TankInfoDelegate::reenableReplot(QWidget*, QAbstractItemDelegate::EndEditHi
 	//	MainWindow::instance()->graphics->replot();
 }
 
-void TankInfoDelegate::revertModelData(QWidget*, QAbstractItemDelegate::EndEditHint hint)
+void TankInfoDelegate::editorClosed(QWidget*, QAbstractItemDelegate::EndEditHint hint)
 {
 	if (hint == QAbstractItemDelegate::NoHint ||
 	    hint == QAbstractItemDelegate::RevertModelCache) {
@@ -326,19 +324,13 @@ void TankUseDelegate::setModelData(QWidget * editor, QAbstractItemModel * model,
 	model->setData(index, comboBox->currentIndex());
 }
 
-static struct RevertWeightData {
-	QString type;
-	int weight;
-} currWeight;
-
-void WSInfoDelegate::revertModelData(QWidget*, QAbstractItemDelegate::EndEditHint hint)
+void WSInfoDelegate::editorClosed(QWidget*, QAbstractItemDelegate::EndEditHint hint)
 {
-	if (hint == QAbstractItemDelegate::NoHint ||
-	    hint == QAbstractItemDelegate::RevertModelCache) {
-		WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
-		mymodel->setData(IDX(WeightModel::TYPE), currWeight.type, Qt::EditRole);
-		mymodel->passInData(IDX(WeightModel::WEIGHT), currWeight.weight);
-	}
+	WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
+	if (hint == QAbstractItemDelegate::RevertModelCache)
+		mymodel->clearTempWS();
+	else
+		mymodel->commitTempWS();
 }
 
 void WSInfoDelegate::setModelData(QWidget*, QAbstractItemModel*, const QModelIndex&) const
@@ -356,28 +348,15 @@ void WSInfoDelegate::setModelData(QWidget*, QAbstractItemModel*, const QModelInd
 		row = matches.first().row();
 	}
 	int grams = wsim->data(wsim->index(row, WSInfoModel::GR)).toInt();
-	QVariant v = QString(currCombo.activeText);
 
-	mymodel->setData(IDX(WeightModel::TYPE), v, Qt::EditRole);
-	mymodel->passInData(IDX(WeightModel::WEIGHT), grams);
+	mymodel->setTempWS(currCombo.currRow, weightsystem_t{ { grams }, copy_qstring(currCombo.activeText) });
 }
 
 WSInfoDelegate::WSInfoDelegate(QObject *parent) : ComboBoxDelegate(WSInfoModel::instance(), parent, true)
 {
 }
 
-QWidget *WSInfoDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-	/* First, call the combobox-create editor, it will setup our globals. */
-	QWidget *editor = ComboBoxDelegate::createEditor(parent, option, index);
-	WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
-	weightsystem_t ws = mymodel->weightSystemAt(index);
-	currWeight.type = ws.description;
-	currWeight.weight = ws.weight.grams;
-	return editor;
-}
-
-void AirTypesDelegate::revertModelData(QWidget*, QAbstractItemDelegate::EndEditHint)
+void AirTypesDelegate::editorClosed(QWidget*, QAbstractItemDelegate::EndEditHint)
 {
 }
 
@@ -393,7 +372,7 @@ AirTypesDelegate::AirTypesDelegate(QObject *parent) : ComboBoxDelegate(GasSelect
 {
 }
 
-void DiveTypesDelegate::revertModelData(QWidget*, QAbstractItemDelegate::EndEditHint)
+void DiveTypesDelegate::editorClosed(QWidget*, QAbstractItemDelegate::EndEditHint)
 {
 }
 

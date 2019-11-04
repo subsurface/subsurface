@@ -45,7 +45,7 @@ slots:
 	//HACK: try to get rid of this in the future.
 	void fakeActivation();
 	void fixTabBehavior();
-	virtual void revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) = 0;
+	virtual void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) = 0;
 private:
 	bool editable;
 protected:
@@ -60,7 +60,7 @@ public:
 	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 public
 slots:
-	void revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
+	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
 	void reenableReplot(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
 };
 
@@ -78,10 +78,9 @@ class WSInfoDelegate : public ComboBoxDelegate {
 public:
 	explicit WSInfoDelegate(QObject *parent = 0);
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
-	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 public
 slots:
-	void revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
+	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
 };
 
 class AirTypesDelegate : public ComboBoxDelegate {
@@ -91,7 +90,7 @@ public:
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 public
 slots:
-	void revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
+	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
 };
 
 class DiveTypesDelegate : public ComboBoxDelegate {
@@ -101,7 +100,7 @@ public:
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 public
 slots:
-	void revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
+	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
 };
 
 class SpinBoxDelegate : public QStyledItemDelegate {
