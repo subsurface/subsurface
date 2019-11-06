@@ -144,6 +144,9 @@ struct dive {
 	struct dive_trip *divetrip;
 	bool selected;
 	bool hidden_by_filter;
+#if defined(SUBSURFACE_MOBILE)
+	uint8_t collapsed; /* four values: 0 = don't show, 1 = show as dive, 2 = show corresponding trip, 3 = show dive and trip */
+#endif
 	timestamp_t when;
 	struct dive_site *dive_site;
 	char *notes;
