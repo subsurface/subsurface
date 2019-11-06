@@ -17,8 +17,7 @@ Kirigami.ScrollablePage {
 	property color textColor: subsurfaceTheme.textColor
 	property color secondaryTextColor: subsurfaceTheme.secondaryTextColor
 	property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
-	property string activeTrip
-	property QtObject diveListModel: diveModel
+	property QtObject diveListModel: diveTripModel
 	property string numShownText
 
 	supportsRefreshing: true
@@ -39,8 +38,6 @@ Kirigami.ScrollablePage {
 	Component {
 		id: diveDelegate
 		Kirigami.AbstractListItem {
-			// this looks weird, but it's how we can tell that this dive isn't in a trip
-			property bool diveOutsideTrip: tripNrDives === 0
 			// this allows us to access properties of the currentItem from outside
 			property variant myData: model
 
@@ -49,10 +46,10 @@ Kirigami.ScrollablePage {
 			id: innerListItem
 			enabled: true
 			supportsMouseEvents: true
-			checked: diveListView.currentIndex === model.index
+			checked: model.selected
 			width: parent.width
-			height: diveOutsideTrip ? diveListEntry.height + Kirigami.Units.smallSpacing : 0
-			visible: diveOutsideTrip
+			height: (collapsed & 1) ? diveListEntry.height + Kirigami.Units.smallSpacing : 0
+			visible: collapsed & 1
 			backgroundColor: checked ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 			activeBackgroundColor: subsurfaceTheme.primaryColor
 			textColor: checked ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.textColor
@@ -60,7 +57,7 @@ Kirigami.ScrollablePage {
 			states: [
 				State {
 					name: "isHidden";
-					when: tripId !== activeTrip && ! diveOutsideTrip
+					when: (collapsed & 1) == 0
 					PropertyChanges {
 						target: innerListItem
 						height: 0
@@ -69,7 +66,7 @@ Kirigami.ScrollablePage {
 				},
 				State {
 					name: "isVisible";
-					when: tripId === activeTrip || diveOutsideTrip
+					when: (collapsed & 1) == 1
 					PropertyChanges {
 						target: innerListItem
 						height: diveListEntry.height + Kirigami.Units.smallSpacing
@@ -77,44 +74,11 @@ Kirigami.ScrollablePage {
 					}
 				}
 			]
-			transitions: [
-				Transition {
-					from: "isHidden"
-					to: "isVisible"
-					SequentialAnimation {
-						NumberAnimation {
-							property: "visible"
-							duration: 1
-						}
-						NumberAnimation {
-							property: "height"
-							duration: 200 + 20 * tripNrDives
-							easing.type: Easing.InOutQuad
-						}
-					}
-				},
-				Transition {
-					from: "isVisible"
-					to: "isHidden"
-					SequentialAnimation {
-						NumberAnimation {
-							property: "height"
-							duration: 200 + 20 * tripNrDives
-							easing.type: Easing.InOutQuad
-						}
-						NumberAnimation {
-							property: "visible"
-							duration: 1
-						}
-					}
-				}
-			]
-
 			// When clicked, the mode changes to details view
 			onClicked: {
 				if (detailsWindow.state === "view") {
-					diveListView.currentIndex = index
-					detailsWindow.showDiveIndex(index);
+					//diveListView.currentIndex = index
+					detailsWindow.showDiveIndex(id);
 					// switch to detailsWindow (or push it if it's not in the stack)
 					var i = rootItem.pageIndex(detailsWindow)
 					if (i === -1)
@@ -377,10 +341,10 @@ Kirigami.ScrollablePage {
 				MouseArea {
 					anchors.fill: headingBackground
 					onClicked: {
-						if (activeTrip === section)
-							activeTrip = ""
+						if (diveTripModel.activeTrip()  === section)
+							diveTripModel.setActiveTrip("")
 						else
-							activeTrip = section
+							diveTripModel.setActiveTrip(section)
 					}
 				}
 				Controls.Label {
@@ -609,7 +573,7 @@ Kirigami.ScrollablePage {
 	function setCurrentDiveListIndex(idx, noScroll) {
 		// pick the dive in the dive list and make sure its trip is expanded
 		diveListView.currentIndex = idx
-		activeTrip = diveListView.currentItem.myData.tripId
+		diveTripModel.setActiveTrip(diveListView.currentItem.myData.tripId)
 
 		// update the diveDetails page to also show that dive
 		detailsWindow.showDiveIndex(idx)
