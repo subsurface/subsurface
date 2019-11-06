@@ -330,7 +330,7 @@ Kirigami.ScrollablePage {
 					}
 					Controls.Label {
 						text: {
-							diveListView.model ? diveListView.model.tripShortDate(section) : "no data model"
+							diveListModel ? diveListModel.tripShortDate(section) : "no data model"
 						}
 						color: subsurfaceTheme.primaryTextColor
 						font.pointSize: subsurfaceTheme.smallPointSize
@@ -346,16 +346,18 @@ Kirigami.ScrollablePage {
 				MouseArea {
 					anchors.fill: headingBackground
 					onClicked: {
-						if (diveTripModel.activeTrip()  === section)
-							diveTripModel.setActiveTrip("")
-						else
-							diveTripModel.setActiveTrip(section)
+						if (diveListModel) {
+							if (diveListModel.activeTrip()  === section)
+								diveListModel.setActiveTrip("")
+							else
+								diveListModel.setActiveTrip(section)
+						}
 					}
 				}
 				Controls.Label {
 					id: sectionText
 					text: {
-						diveListView.model ? diveListView.model.tripTitle(section) : "no data model"
+						diveListModel ? diveListModel.tripTitle(section) : "no data model"
 					}
 					wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 					visible: text !== ""
@@ -491,7 +493,7 @@ Kirigami.ScrollablePage {
 		anchors.fill: parent
 		opacity: 1.0 - startPage.opacity
 		visible: opacity > 0
-		model: page.diveListModel
+		model: diveListModel
 		currentIndex: -1
 		delegate: diveDelegate
 		header: filterHeader
@@ -578,7 +580,8 @@ Kirigami.ScrollablePage {
 	function setCurrentDiveListIndex(idx, noScroll) {
 		// pick the dive in the dive list and make sure its trip is expanded
 		diveListView.currentIndex = idx
-		diveTripModel.setActiveTrip(diveListView.currentItem.myData.tripId)
+		if (diveListModel)
+			diveListModel.setActiveTrip(diveListView.currentItem.myData.tripId)
 
 		// update the diveDetails page to also show that dive
 		detailsWindow.showDiveIndex(idx)
