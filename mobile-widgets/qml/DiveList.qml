@@ -557,7 +557,7 @@ Kirigami.ScrollablePage {
 		text: qsTr("Filter dives")
 		onTriggered: {
 			rootItem.filterToggle = !rootItem.filterToggle
-			diveModel.resetFilter()
+			manager.setFilter("")
 			numShownText = diveModel.shown()
 		}
 	}

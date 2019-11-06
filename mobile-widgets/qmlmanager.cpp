@@ -2090,6 +2090,7 @@ void QMLManager::setFilter(const QString filterText)
 	QtConcurrent::run(QThreadPool::globalInstance(),
 			  [=]{
 				DiveListSortModel::instance()->setFilter(filterText);
+				CollapsedDiveListSortModel::instance()->updateFilterState();
 				QMetaObject::invokeMethod(qmlWindow, "hideBusyAndConnectModel");
 			  });
 }
