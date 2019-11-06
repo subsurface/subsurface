@@ -84,7 +84,7 @@ Kirigami.ApplicationWindow {
 
 	function hideBusyAndConnectModel() { // this is used by QMLManager when done filtering
 		busy.running = false
-		diveList.diveListModel = diveModel
+		diveList.diveListModel = diveTripModel
 	}
 
 	function returnTopPage() {
