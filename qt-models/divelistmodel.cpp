@@ -17,8 +17,6 @@
 CollapsedDiveListSortModel::CollapsedDiveListSortModel()
 {
 	setSourceModel(DiveListSortModel::instance());
-	setDynamicSortFilter(true);
-	updateFilterState();
 	// make sure that we after changes to the underlying model (and therefore the dive list
 	// we update the filter state
 	connect(DiveListModel::instance(), &DiveListModel::rowsInserted, this, &CollapsedDiveListSortModel::updateFilterState);
@@ -35,6 +33,10 @@ CollapsedDiveListSortModel *CollapsedDiveListSortModel::instance()
 void CollapsedDiveListSortModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
 	QSortFilterProxyModel::setSourceModel(sourceModel);
+	// make sure we sort descending and have the filters correct
+	setDynamicSortFilter(true);
+	setSortRole(DiveListModel::DiveDateRole);
+	sort(0, Qt::DescendingOrder);
 	updateFilterState();
 }
 
@@ -175,10 +177,6 @@ bool CollapsedDiveListSortModel::filterAcceptsRow(int source_row, const QModelIn
 DiveListSortModel::DiveListSortModel()
 {
 	setSourceModel(DiveListModel::instance());
-	setDynamicSortFilter(true);
-	setSortRole(DiveListModel::DiveDateRole);
-	sort(0, Qt::DescendingOrder);
-	updateFilterState();
 	LOG_STP("run_ui diveListModel sorted");
 }
 
@@ -212,6 +210,11 @@ void DiveListSortModel::updateFilterState()
 void DiveListSortModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
 	QSortFilterProxyModel::setSourceModel(sourceModel);
+	// make sure we sort descending and have the filters correct
+	setDynamicSortFilter(true);
+	setSortRole(DiveListModel::DiveDateRole);
+	sort(0, Qt::DescendingOrder);
+	updateFilterState();
 }
 
 void DiveListSortModel::setFilter(QString f)
