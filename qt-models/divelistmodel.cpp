@@ -7,6 +7,7 @@
 #include "core/ssrf.h" // for LOG_STP
 #include "core/errorhelper.h" // for verbose
 #include <QDateTime>
+#include <QtConcurrent>
 #include <QDebug>
 
 // the DiveListSortModel creates the sorted, filtered list of dives that the user
@@ -101,8 +102,14 @@ QString CollapsedDiveListSortModel::tripShortDate(const QString &section)
 void CollapsedDiveListSortModel::setActiveTrip(const QString &trip)
 {
 	m_activeTrip = trip;
-	updateFilterState();
-	invalidateFilter();
+	// we can't update the filter state from the this function as that is called from
+	// a slot in the QML code which could cause the object that is executing the slot
+	// to be destroyed before this function returns.
+	// Instead do this asynchronously
+	QtConcurrent::run(QThreadPool::globalInstance(),
+			  [=]{
+				CollapsedDiveListSortModel::instance()->updateFilterState();
+			  });
 }
 
 QString CollapsedDiveListSortModel::activeTrip() const
@@ -153,8 +160,8 @@ void CollapsedDiveListSortModel::updateFilterState()
 	}
 	// everything up to here can be done even if we don't have a source model
 	if (sourceModel() != nullptr) {
-		QVector<int> changedRoles = { DiveListModel::CollapsedRole };
-		dataChanged(index(0,0), index(rowCount() - 1, 0), changedRoles);
+		DiveListModel *dlm = DiveListModel::instance();
+		dlm->dataChanged(dlm->index(0,0), dlm->index(dlm->rowCount() - 1, 0));
 	}
 }
 
@@ -220,7 +227,7 @@ void DiveListSortModel::setSourceModel(QAbstractItemModel *sourceModel)
 void DiveListSortModel::setFilter(QString f)
 {
 	filterString = f;
-	updateFilterState();
+	CollapsedDiveListSortModel::instance()->updateFilterState();
 	invalidateFilter();
 }
 
