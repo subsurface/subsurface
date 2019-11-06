@@ -82,6 +82,11 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
+			// spacer, just in case
+			Controls.Label {
+				text: " "
+				width: Kirigami.Units.largeSpacing
+			}
 			// let's try to show the depth / duration very compact
 			Controls.Label {
 				text: depthDuration

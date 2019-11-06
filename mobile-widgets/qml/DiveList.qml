@@ -148,6 +148,11 @@ Kirigami.ScrollablePage {
 							font.pointSize: subsurfaceTheme.smallPointSize
 							color: innerListItem.checked ? subsurfaceTheme.darkerPrimaryTextColor : secondaryTextColor
 						}
+						// spacer, just in case
+						Controls.Label {
+							text: " "
+							width: Kirigami.Units.largeSpacing
+						}
 						// let's try to show the depth / duration very compact
 						Controls.Label {
 							text: (undefined !== depthDuration) ? depthDuration : ""
