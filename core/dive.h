@@ -139,23 +139,17 @@ struct dive_site_table;
 struct dive_trip;
 struct trip_table;
 struct dive {
-	int number;
-	bool notrip; /* Don't autogroup this dive to a trip */
 	struct dive_trip *divetrip;
-	bool selected;
-	bool hidden_by_filter;
-#if defined(SUBSURFACE_MOBILE)
-	uint8_t collapsed; /* four values: 0 = don't show, 1 = show as dive, 2 = show corresponding trip, 3 = show dive and trip */
-#endif
 	timestamp_t when;
 	struct dive_site *dive_site;
 	char *notes;
 	char *divemaster, *buddy;
-	int rating;
-	int visibility; /* 0 - 5 star rating */
 	cylinder_t cylinder[MAX_CYLINDERS];
 	struct weightsystem_table weightsystems;
 	char *suit;
+	int number;
+	int rating;
+	int visibility; /* 0 - 5 star rating */
 	int sac, otu, cns, maxcns;
 
 	/* Calculated based on dive computer data */
@@ -170,6 +164,12 @@ struct dive {
 	int id; // unique ID for this dive
 	struct picture *picture_list;
 	unsigned char git_id[20];
+	bool notrip; /* Don't autogroup this dive to a trip */
+	bool selected;
+	bool hidden_by_filter;
+#if defined(SUBSURFACE_MOBILE)
+	uint8_t collapsed; /* four values: 0 = don't show, 1 = show as dive, 2 = show corresponding trip, 3 = show dive and trip */
+#endif
 };
 
 /* For the top-level list: an entry is either a dive or a trip */
