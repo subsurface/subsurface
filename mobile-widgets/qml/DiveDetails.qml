@@ -229,9 +229,9 @@ Kirigami.Page {
 		}
 	}
 
-	function showDiveIndex(index) {
-		currentIndex = index;
-		diveDetailsListView.positionViewAtIndex(index, ListView.End);
+	function showDiveIndex(id) {
+		currentIndex = diveModel.getIdxForId(id);
+		diveDetailsListView.positionViewAtIndex(currentIndex, ListView.End);
 	}
 
 	function endEditMode() {
