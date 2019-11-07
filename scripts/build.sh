@@ -237,6 +237,17 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	make install
 	popd
 
+	./subsurface/scripts/get-dep-lib.sh single . openssl
+	pushd openssl
+	mkdir -p build
+	cd build
+	../Configure --prefix=$INSTALL_ROOT --openssldir=$INSTALL_ROOT $OLDER_MAC darwin64-x86_64-cc
+	make depend
+	# all the tests fail because the assume that openssl is already installed. Odd? Still thinks work
+	make -j4 -k
+	make -k install
+	popd
+
 	./subsurface/scripts/get-dep-lib.sh single . libssh2
 	pushd libssh2
 	mkdir -p build
@@ -314,17 +325,6 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT --disable-examples
 	make -j4
 	make install
-	popd
-
-	./subsurface/scripts/get-dep-lib.sh single . openssl
-	pushd openssl
-	mkdir -p build
-	cd build
-	../Configure --prefix=$INSTALL_ROOT --openssldir=$INSTALL_ROOT $OLDER_MAC darwin64-x86_64-cc
-	make depend
-	# all the tests fail because the assume that openssl is already installed. Odd? Still thinks work
-	make -j4 -k
-	make -k install
 	popd
 fi
 
