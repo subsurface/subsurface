@@ -288,6 +288,15 @@ void remove_weightsystem(struct dive *dive, int idx)
 	remove_from_weightsystem_table(&dive->weightsystems, idx);
 }
 
+// ws is cloned.
+void set_weightsystem(struct dive *dive, int idx, weightsystem_t ws)
+{
+	if (idx < 0 || idx >= dive->weightsystems.nr)
+		return;
+	free_weightsystem(dive->weightsystems.weightsystems[idx]);
+	dive->weightsystems.weightsystems[idx] = clone_weightsystem(ws);
+}
+
 /* when planning a dive we need to make sure that all cylinders have a sane depth assigned
  * and if we are tracking gas consumption the pressures need to be reset to start = end = workingpressure */
 void reset_cylinders(struct dive *dive, bool track_gas)

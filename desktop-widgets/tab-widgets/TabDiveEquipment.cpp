@@ -179,12 +179,10 @@ void TabDiveEquipment::editWeightWidget(const QModelIndex &index)
 	if (!index.isValid())
 		return;
 
-	if (index.column() == WeightModel::REMOVE) {
+	if (index.column() == WeightModel::REMOVE)
 		divesEdited(Command::removeWeight(index.row(), false));
-	} else {
-		MainWindow::instance()->mainTab->enableEdition();
+	else
 		ui.weights->edit(index);
-	}
 }
 
 // tricky little macro to edit all the selected dives
@@ -254,15 +252,6 @@ void TabDiveEquipment::acceptChanges()
 			sdc = sdc->next;
 		}
 		do_replot = true;
-	}
-
-	if (weightModel->changed) {
-		mark_divelist_changed(true);
-		MODIFY_DIVES(selectedDives,
-			if (weightsystems_equal(mydive, cd))
-				copy_weights(&displayed_dive.weightsystems, &mydive->weightsystems);
-		);
-		copy_weights(&displayed_dive.weightsystems, &cd->weightsystems);
 	}
 
 	if (do_replot)

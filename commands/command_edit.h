@@ -339,16 +339,32 @@ private:
 	bool workToBeDone() override;
 };
 
-class RemoveWeight : public EditDivesBase {
-public:
-	RemoveWeight(int index, bool currentDiveOnly);
-	~RemoveWeight();
-private:
+class EditWeightBase : public EditDivesBase {
+protected:
+	EditWeightBase(int index, bool currentDiveOnly);
+	~EditWeightBase();
+
 	weightsystem_t ws;
 	std::vector<int> indexes; // An index for each dive in the dives vector.
+	bool workToBeDone() override;
+};
+
+class RemoveWeight : public EditWeightBase {
+public:
+	RemoveWeight(int index, bool currentDiveOnly);
+private:
 	void undo() override;
 	void redo() override;
-	bool workToBeDone() override;
+};
+
+class EditWeight : public EditWeightBase {
+public:
+	EditWeight(int index, weightsystem_t ws, bool currentDiveOnly); // Clones ws
+	~EditWeight();
+private:
+	weightsystem_t new_ws;
+	void undo() override;
+	void redo() override;
 };
 
 } // namespace Command

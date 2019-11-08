@@ -83,6 +83,7 @@ void replanDive(dive *d); // dive computer(s) and cylinder(s) will be reset!
 void editProfile(dive *d); // dive computer(s) and cylinder(s) will be reset!
 int addWeight(bool currentDiveOnly);
 int removeWeight(int index, bool currentDiveOnly);
+int editWeight(int index, weightsystem_t ws, bool currentDiveOnly);
 
 // 5) Trip editing commands
 

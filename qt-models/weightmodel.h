@@ -35,6 +35,7 @@ slots:
 	void weightsystemsReset(const QVector<dive *> &dives);
 	void weightAdded(dive *d, int pos);
 	void weightRemoved(dive *d, int pos);
+	void weightEdited(dive *d, int pos);
 
 private:
 	dive *d;
