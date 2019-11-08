@@ -6,6 +6,9 @@
 #include "core/qthelper.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
 #include "qt-models/weightsysteminfomodel.h"
+#ifndef SUBSURFACE_MOBILE
+#include "commands/command.h"
+#endif
 
 WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
 	changed(false),
@@ -18,6 +21,7 @@ WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
 	connect(&diveListNotifier, &DiveListNotifier::weightsystemsReset, this, &WeightModel::weightsystemsReset);
 	connect(&diveListNotifier, &DiveListNotifier::weightAdded, this, &WeightModel::weightAdded);
 	connect(&diveListNotifier, &DiveListNotifier::weightRemoved, this, &WeightModel::weightRemoved);
+	connect(&diveListNotifier, &DiveListNotifier::weightEdited, this, &WeightModel::weightEdited);
 }
 
 weightsystem_t WeightModel::weightSystemAt(const QModelIndex &index) const
@@ -105,50 +109,30 @@ void WeightModel::clearTempWS()
 
 void WeightModel::commitTempWS()
 {
-	if (tempRow < 0)
+#ifndef SUBSURFACE_MOBILE
+	if (tempRow < 0 || !d || tempRow > d->weightsystems.nr)
 		return;
+	// Only submit a command if the type changed
+	weightsystem_t ws = d->weightsystems.weightsystems[tempRow];
+	if (!same_string(ws.description, tempWS.description) || gettextFromC::tr(ws.description) != QString(tempWS.description))
+		Command::editWeight(tempRow, tempWS, false);
 	tempRow = -1;
-	setData(index(tempRow, TYPE), QVariant::fromValue(QString(tempWS.description)), Qt::EditRole);
-	setData(index(tempRow, WEIGHT), QVariant::fromValue(get_weight_string(tempWS.weight, true)), Qt::EditRole);
+#endif
 }
 
 bool WeightModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+#ifndef SUBSURFACE_MOBILE
 	QString vString = value.toString();
-	weightsystem_t *ws = &d->weightsystems.weightsystems[index.row()];
+	weightsystem_t ws = weightSystemAt(index);
 	switch (index.column()) {
-	case TYPE:
-		if (!value.isNull()) {
-			//TODO: C-function weight_system_set_description ?
-			if (!ws->description || gettextFromC::tr(ws->description) != vString) {
-				// loop over translations to see if one matches
-				int i = -1;
-				while (i < MAX_WS_INFO && ws_info[++i].name) {
-					if (gettextFromC::tr(ws_info[i].name) == vString) {
-						ws->description = copy_string(ws_info[i].name);
-						break;
-					}
-				}
-				if (i == MAX_WS_INFO || ws_info[i].name == NULL) // didn't find a match
-					ws->description = copy_qstring(vString);
-				changed = true;
-			}
-		}
-		break;
 	case WEIGHT:
-		if (CHANGED()) {
-			ws->weight = string_to_weight(qPrintable(vString));
-			// now update the ws_info
-			changed = true;
-			WSInfoModel *wsim = WSInfoModel::instance();
-			QModelIndexList matches = wsim->match(wsim->index(0, 0), Qt::DisplayRole, gettextFromC::tr(ws->description));
-			if (!matches.isEmpty())
-				wsim->setData(wsim->index(matches.first().row(), WSInfoModel::GR), ws->weight.grams);
-		}
-		break;
+		ws.weight = string_to_weight(qPrintable(vString));
+		Command::editWeight(index.row(), ws, false);
+		return true;
 	}
-	dataChanged(index, index);
-	return true;
+	return false;
+#endif
 }
 
 Qt::ItemFlags WeightModel::flags(const QModelIndex &index) const
@@ -199,4 +183,12 @@ void WeightModel::weightRemoved(struct dive *changed, int pos)
 	// The row was already deleted by the undo command. Just inform the model.
 	beginRemoveRows(QModelIndex(), pos, pos);
 	endRemoveRows();
+}
+
+void WeightModel::weightEdited(struct dive *changed, int pos)
+{
+	if (d != changed)
+		return;
+
+	dataChanged(index(pos, TYPE), index(pos, WEIGHT));
 }

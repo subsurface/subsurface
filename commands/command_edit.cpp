@@ -6,6 +6,7 @@
 #include "core/selection.h"
 #include "core/subsurface-string.h"
 #include "core/tag.h"
+#include "qt-models/weightsysteminfomodel.h"
 
 namespace Command {
 
@@ -993,7 +994,7 @@ static int find_weightsystem_index(const struct dive *d, weightsystem_t ws)
 	return -1;
 }
 
-RemoveWeight::RemoveWeight(int index, bool currentDiveOnly) :
+EditWeightBase::EditWeightBase(int index, bool currentDiveOnly) :
 	EditDivesBase(currentDiveOnly),
 	ws(empty_weightsystem)
 {
@@ -1024,19 +1025,23 @@ RemoveWeight::RemoveWeight(int index, bool currentDiveOnly) :
 		}
 	}
 	dives = std::move(divesNew);
-
-	//: remove the part in parentheses for %n = 1
-	setText(tr("Remove weight (%n dive(s))", "", dives.size()));
 }
 
-RemoveWeight::~RemoveWeight()
+EditWeightBase::~EditWeightBase()
 {
 	free_weightsystem(ws);
 }
 
-bool RemoveWeight::workToBeDone()
+bool EditWeightBase::workToBeDone()
 {
 	return !dives.empty();
+}
+
+RemoveWeight::RemoveWeight(int index, bool currentDiveOnly) :
+	EditWeightBase(index, currentDiveOnly)
+{
+	//: remove the part in parentheses for %n = 1
+	setText(tr("Remove weight (%n dive(s))", "", dives.size()));
 }
 
 void RemoveWeight::undo()
@@ -1053,6 +1058,59 @@ void RemoveWeight::redo()
 		remove_weightsystem(dives[i], indexes[i]);
 		emit diveListNotifier.weightRemoved(dives[i], indexes[i]);
 	}
+}
+
+EditWeight::EditWeight(int index, weightsystem_t wsIn, bool currentDiveOnly) :
+	EditWeightBase(index, currentDiveOnly),
+	new_ws(empty_weightsystem)
+{
+	if (dives.empty())
+		return;
+
+	//: remove the part in parentheses for %n = 1
+	setText(tr("Edit weight (%n dive(s))", "", dives.size()));
+
+	// Try to untranslate the weightsystem name
+	new_ws = clone_weightsystem(wsIn);
+	QString vString(new_ws.description);
+	for (int i = 0; i < MAX_WS_INFO && ws_info[i].name; ++i) {
+		if (gettextFromC::tr(ws_info[i].name) == vString) {
+			free_weightsystem(new_ws);
+			new_ws.description = copy_string(ws_info[i].name);
+			break;
+		}
+	}
+
+	// If that doesn't change anything, do nothing
+	if (same_weightsystem(ws, new_ws)) {
+		dives.clear();
+		return;
+	}
+
+	WSInfoModel *wsim = WSInfoModel::instance();
+	QModelIndexList matches = wsim->match(wsim->index(0, 0), Qt::DisplayRole, gettextFromC::tr(new_ws.description));
+	if (!matches.isEmpty())
+		wsim->setData(wsim->index(matches.first().row(), WSInfoModel::GR), new_ws.weight.grams);
+}
+
+EditWeight::~EditWeight()
+{
+	free_weightsystem(new_ws);
+}
+
+void EditWeight::redo()
+{
+	for (size_t i = 0; i < dives.size(); ++i) {
+		set_weightsystem(dives[i], indexes[i], new_ws);
+		emit diveListNotifier.weightEdited(dives[i], indexes[i]);
+	}
+	std::swap(ws, new_ws);
+}
+
+// Undo and redo do the same as just the stored value is exchanged
+void EditWeight::undo()
+{
+	redo();
 }
 
 } // namespace Command
