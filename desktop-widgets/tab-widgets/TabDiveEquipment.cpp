@@ -258,13 +258,11 @@ void TabDiveEquipment::acceptChanges()
 		MainWindow::instance()->graphics->replot();
 
 	cylindersModel->changed = false;
-	weightModel->changed = false;
 }
 
 void TabDiveEquipment::rejectChanges()
 {
 	cylindersModel->changed = false;
-	weightModel->changed = false;
 	cylindersModel->updateDive();
 	weightModel->updateDive(current_dive);
 }
@@ -290,5 +288,3 @@ void TabDiveEquipment::closeWarning()
 {
 	ui.multiDiveWarningMessage->hide();
 }
-
-

@@ -28,7 +28,6 @@ public:
 	void clear();
 	void updateDive(dive *d);
 	weightsystem_t weightSystemAt(const QModelIndex &index) const;
-	bool changed;
 
 public
 slots:

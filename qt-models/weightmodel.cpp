@@ -11,7 +11,6 @@
 #endif
 
 WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
-	changed(false),
 	d(nullptr),
 	tempRow(-1),
 	tempWS(empty_weightsystem)
