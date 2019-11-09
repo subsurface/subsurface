@@ -124,6 +124,10 @@ the server are synchronized.
 The login credentials can be changed, for example to work with
 multiple accounts. See the section on xref:S_ChangeCloudAccount[Changing to a different _Subsurface_ cloud account].
 
+== Getting Support
+
+The best place to get support is the Subsurface User Forum. Additionally, Subsurface-mobile allows you to send a support email by tapping on _Ask for support_ in the main menu. This will open an email to our in app support address in the native email client, including the relevant logs.
+
 == Menu Structure and User Interface
 
 At the bottom of many _Subsurface-mobile_ screens is a round button that provides for
