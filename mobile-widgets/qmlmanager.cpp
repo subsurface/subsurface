@@ -375,13 +375,28 @@ void QMLManager::mergeLocalRepo()
 
 void QMLManager::copyAppLogToClipboard()
 {
-	/*
-	 * The user clicked the button, so copy the log file
-	 * to the clipboard for easy access
-	 */
+	// The About page offers a button to copy logs so they can be pasted elsewhere
+	QApplication::clipboard()->setText(getCombinedLogs(), QClipboard::Clipboard);
+}
 
+bool QMLManager::createSupportEmail()
+{
+	QString mailToLink = "mailto:in-app-support@subsurface-divelog.org?subject=Subsurface-mobile support request";
+	mailToLink += "&body=Please describe your issue here and keep the logs below:\n\n\n\n";
+	mailToLink += getCombinedLogs();
+	if (QDesktopServices::openUrl(QUrl(mailToLink))) {
+		appendTextToLog("OS accepted support email");
+		return true;
+	}
+	appendTextToLog("failed to create support email");
+	return false;
+}
+
+// useful for support requests
+QString QMLManager::getCombinedLogs()
+{
 	// Add heading and append subsurface.log
-	QString copyString = "---------- subsurface.log ----------\n";
+	QString copyString = "\n---------- subsurface.log ----------\n";
 	copyString += MessageHandlerModel::self()->logAsString();
 
 	// Add heading and append libdivecomputer.log
@@ -408,9 +423,7 @@ void QMLManager::copyAppLogToClipboard()
 		copyString += "\n\n---------- truncated ----------\n";
 	}
 #endif
-
-	// and copy to clipboard
-	QApplication::clipboard()->setText(copyString, QClipboard::Clipboard);
+	return copyString;
 }
 
 void QMLManager::finishSetup()
