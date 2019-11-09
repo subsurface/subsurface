@@ -436,6 +436,27 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			},
 			Kirigami.Action {
 				icon {
+					name: ":/icons/ic_help_outline.svg"
+				}
+				text: qsTr("Help")
+				onTriggered: {
+					Qt.openUrlExternally("https://subsurface-divelog.org/documentation/subsurface-mobile-v2-user-manual/")
+				}
+			},
+			Kirigami.Action {
+				icon {
+					name: ":/icons/ic_help_outline.svg"
+				}
+				text: qsTr("Ask for support")
+				onTriggered: {
+					if (!manager.createSupportEmail()) {
+						manager.copyAppLogToClipboard()
+						showPassiveNotification(qsTr("failed to open email client, please manually create support email to support@subsurface-divelog.org - the logs have been copied to the clipboard and can be pasted into that email."), 6000)
+					}
+				}
+			},
+			Kirigami.Action {
+				icon {
 					name: ":/icons/ic_adb.svg"
 				}
 				text: qsTr("Developer")
@@ -476,15 +497,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						globalDrawer.close()
 						pageStack.push(themetest)
 					}
-				}
-			},
-			Kirigami.Action {
-				icon {
-					name: ":/icons/ic_help_outline.svg"
-				}
-				text: qsTr("Help")
-				onTriggered: {
-					Qt.openUrlExternally("https://subsurface-divelog.org/documentation/subsurface-mobile-v2-user-manual/")
 				}
 			}
 		] // end actions

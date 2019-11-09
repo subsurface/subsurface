@@ -185,7 +185,9 @@ public slots:
 	void populateGpsData();
 	void cancelDownloadDC();
 	void clearGpsData();
+	QString getCombinedLogs();
 	void copyAppLogToClipboard();
+	bool createSupportEmail();
 	void finishSetup();
 	void openLocalThenRemote(QString url);
 	void mergeLocalRepo();
