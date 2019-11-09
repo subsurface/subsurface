@@ -11,7 +11,7 @@
 // 2) List view: one-level model where dives are sorted by one out
 //    of many keys (e.g. date, depth, etc.).
 //
-// These two representations are realized by two classe, viz.
+// These two representations are realized by two classes, viz.
 // DiveTripModelTree and DiveTripModelList. Both classes derive
 // from DiveTripModelBase, which implements common features (e.g.
 // definition of the column types, access of data from the core
@@ -19,8 +19,8 @@
 //
 // The currently active model is set via DiveTripModelBase::resetModel().
 // This will create a new model. The model can be accessed with
-// DiveTripModelBase::instance(). Any pointer obtained by instance()
-// is invalid after a call to resetModel()! Yes, this is surprising
+// DiveTripModelBase::instance(). A pointer obtained by instance()
+// is invalidated by a call to resetModel()! Yes, this is surprising
 // behavior, so care must be taken.
 class DiveTripModelBase : public QAbstractItemModel {
 	Q_OBJECT
@@ -65,8 +65,8 @@ public:
 
 	// Reset the model using the given layout. After this call instance() will return
 	// a newly allocated object and the old model will have been destroyed! Thus, the
-	// caller is repsonsible of removing all references to any previous model obtained
-	// by insance().
+	// caller is responsible for removing all references to any previous model obtained
+	// by instance().
 	static void resetModel(Layout layout);
 
 	Qt::ItemFlags flags(const QModelIndex &index) const;
