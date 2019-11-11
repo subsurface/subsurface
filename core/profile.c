@@ -414,11 +414,12 @@ static void calculate_max_limits_new(struct dive *dive, struct divecomputer *giv
 
 	/* Get the per-cylinder maximum pressure if they are manual */
 	for (cyl = 0; cyl < dive->cylinders.nr; cyl++) {
-		int mbar = get_cylinder(dive, cyl)->start.mbar;
-		if (mbar > maxpressure)
-			maxpressure = mbar;
-		if (mbar < minpressure)
-			minpressure = mbar;
+		int mbar_start = get_cylinder(dive, cyl)->start.mbar;
+		int mbar_end = get_cylinder(dive, cyl)->end.mbar;
+		if (mbar_start > maxpressure)
+			maxpressure = mbar_start;
+		if (mbar_end < minpressure)
+			minpressure = mbar_end;
 	}
 
 	/* Then do all the samples from all the dive computers */
