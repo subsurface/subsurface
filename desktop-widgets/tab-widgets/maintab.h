@@ -62,10 +62,8 @@ slots:
 	void on_buddy_editingFinished();
 	void on_diveTripLocation_editingFinished();
 	void on_notes_editingFinished();
-	void on_airtemp_editingFinished();
 	void on_duration_editingFinished();
 	void on_depth_editingFinished();
-	void on_watertemp_editingFinished();
 	void on_dateEdit_dateChanged(const QDate &date);
 	void on_timeEdit_timeChanged(const QTime & time);
 	void on_rating_valueChanged(int value);
@@ -75,7 +73,6 @@ slots:
 	void closeWarning();
 	void displayMessage(QString str);
 	void enableEdition(EditMode newEditMode = NONE);
-	void updateTextLabels(bool showUnits = true);
 	void escDetected(void);
 private:
 	Ui::MainTab ui;
