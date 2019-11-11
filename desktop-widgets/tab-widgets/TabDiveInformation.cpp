@@ -232,9 +232,11 @@ void TabDiveInformation::updateTextBox(int event) // Either the text box has bee
 	double altitudeVal;             // maintained even though two independent events trigger saving the text box contents.
 	if (current_dive) {
 		switch (ui->atmPressType->currentIndex()) {
-		case 0:		// If an atm pressure has been specified in mbar:
+		case 0:		// If atm pressure in mbar has been selected:
 			if (event == TEXT_EDITED)         // this is only triggered by on_atmPressVal_editingFinished()
 				atmpress.mbar = ui->atmPressVal->text().toInt();    // use the specified mbar pressure
+			else                              // if no pressure has been typed, then show existing dive pressure
+				ui->atmPressVal->setText(QString::number(current_dive->surface_pressure.mbar));
 			break;
 		case 1:		// If an altitude has been specified:
 			if (event == TEXT_EDITED) {	// this is only triggered by on_atmPressVal_editingFinished()
@@ -247,7 +249,15 @@ void TabDiveInformation::updateTextBox(int event) // Either the text box has bee
 				ui->atmPressVal->setText(ui->atmPressVal->text().sprintf("%d",atmpress.mbar));
 				ui->atmPressType->setCurrentIndex(0);    // reset combobox to mbar
 			} else { // i.e. event == COMBO_CHANGED, that is, "m" or "ft" was selected from combobox
-				ui->atmPressVal->clear();   // Clear the text box so that altitude can be typed
+				 // Show estimated altitude
+				bool ok;
+				double convertVal = 0.0010;	// Metric conversion fro mm to m
+				int pressure_as_integer = ui->atmPressVal->text().toInt(&ok,10);
+				if (ok && ui->atmPressVal->text().length()) {  // Show existing atm press as an altitude:
+					if (prefs.units.length == units::FEET) // For imperial units
+						convertVal = mm_to_feet(1);    // convert from mm to ft
+					ui->atmPressVal->setText(QString::number((int)(pressure_to_altitude(pressure_as_integer) * convertVal)));
+				}
 			}
 			break;
 		case 2:          // i.e. event = COMBO_CHANGED, that is, the option "Use dc" was selected from combobox
