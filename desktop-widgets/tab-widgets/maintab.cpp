@@ -186,7 +186,6 @@ MainTab::~MainTab()
 void MainTab::hideMessage()
 {
 	ui.diveNotesMessage->animatedHide();
-	updateTextLabels(false);
 }
 
 void MainTab::closeMessage()
@@ -205,18 +204,6 @@ void MainTab::displayMessage(QString str)
 	ui.diveNotesMessage->setCloseButtonVisible(false);
 	ui.diveNotesMessage->setText(str);
 	ui.diveNotesMessage->animatedShow();
-	updateTextLabels();
-}
-
-void MainTab::updateTextLabels(bool showUnits)
-{
-	if (showUnits) {
-		ui.airTempLabel->setText(tr("Air temp. [%1]").arg(get_temp_unit()));
-		ui.waterTempLabel->setText(tr("Water temp. [%1]").arg(get_temp_unit()));
-	} else {
-		ui.airTempLabel->setText(tr("Air temp."));
-		ui.waterTempLabel->setText(tr("Water temp."));
-	}
 }
 
 void MainTab::enableEdition(EditMode newEditMode)
@@ -269,10 +256,6 @@ void MainTab::divesChanged(const QVector<dive *> &dives, DiveField field)
 		ui.duration->setText(render_seconds_to_string(current_dive->duration.seconds));
 	if (field.depth)
 		ui.depth->setText(get_depth_string(current_dive->maxdepth, true));
-	if (field.air_temp)
-		ui.airtemp->setText(get_temperature_string(current_dive->airtemp, true));
-	if (field.water_temp)
-		ui.watertemp->setText(get_temperature_string(current_dive->watertemp, true));
 	if (field.rating)
 		ui.rating->setCurrentStars(current_dive->rating);
 	if (field.notes)
@@ -427,10 +410,6 @@ void MainTab::updateDiveInfo()
 			ui.RatingLabel->setVisible(false);
 			ui.tagWidget->setVisible(false);
 			ui.TagLabel->setVisible(false);
-			ui.airTempLabel->setVisible(false);
-			ui.airtemp->setVisible(false);
-			ui.waterTempLabel->setVisible(false);
-			ui.watertemp->setVisible(false);
 			ui.dateEdit->setReadOnly(true);
 			ui.timeLabel->setVisible(false);
 			ui.timeEdit->setVisible(false);
@@ -479,10 +458,6 @@ void MainTab::updateDiveInfo()
 			ui.DivemasterLabel->setVisible(true);
 			ui.TagLabel->setVisible(true);
 			ui.tagWidget->setVisible(true);
-			ui.airTempLabel->setVisible(true);
-			ui.airtemp->setVisible(true);
-			ui.waterTempLabel->setVisible(true);
-			ui.watertemp->setVisible(true);
 			ui.dateEdit->setReadOnly(false);
 			ui.timeLabel->setVisible(true);
 			ui.timeEdit->setVisible(true);
@@ -503,8 +478,6 @@ void MainTab::updateDiveInfo()
 			updateDateTime(current_dive);
 			ui.divemaster->setText(current_dive->divemaster);
 			ui.buddy->setText(current_dive->buddy);
-			ui.airtemp->setText(get_temperature_string(current_dive->airtemp, true));
-			ui.watertemp->setText(get_temperature_string(current_dive->watertemp, true));
 		}
 		ui.duration->setText(render_seconds_to_string(current_dive->duration.seconds));
 		ui.depth->setText(get_depth_string(current_dive->maxdepth, true));
@@ -524,8 +497,6 @@ void MainTab::updateDiveInfo()
 		ui.location->clear();
 		ui.divemaster->clear();
 		ui.buddy->clear();
-		ui.airtemp->clear();
-		ui.watertemp->clear();
 		ui.notes->clear();
 		/* set date and time to minimums which triggers showing the special value text */
 		ui.dateEdit->setSpecialValueText(QString("-"));
@@ -731,26 +702,6 @@ void MainTab::on_depth_editingFinished()
 
 	// Depth editing is special: we only edit the current dive.
 	divesEdited(Command::editDepth(parseLengthToMm(ui.depth->text()), true));
-}
-
-void MainTab::on_airtemp_editingFinished()
-{
-	// If the field wasn't modified by the user, don't post a new undo command.
-	// Owing to rounding errors, this might lead to undo commands that have
-	// no user visible effects. These can be very confusing.
-	if (editMode == IGNORE_MODE || !ui.airtemp->isModified() || !current_dive)
-		return;
-	divesEdited(Command::editAirTemp(parseTemperatureToMkelvin(ui.airtemp->text()), false));
-}
-
-void MainTab::on_watertemp_editingFinished()
-{
-	// If the field wasn't modified by the user, don't post a new undo command.
-	// Owing to rounding errors, this might lead to undo commands that have
-	// no user visible effects. These can be very confusing.
-	if (editMode == IGNORE_MODE || !ui.watertemp->isModified() || !current_dive)
-		return;
-	divesEdited(Command::editWaterTemp(parseTemperatureToMkelvin(ui.watertemp->text()), false));
 }
 
 // Editing of the dive time is different. If multiple dives are edited,
