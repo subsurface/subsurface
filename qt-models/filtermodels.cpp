@@ -228,8 +228,7 @@ void MultiFilterSortModel::myInvalidate()
 		for (int i = 0; i < m->rowCount(QModelIndex()); ++i) {
 			QModelIndex idx = m->index(i, 0, QModelIndex());
 
-			dive_trip *trip = m->data(idx, DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
-			if (trip) {
+			if (m->data(idx, DiveTripModelBase::IS_TRIP_ROLE).toBool()) {
 				// This is a trip -> loop over all dives and see if any is selected
 
 				bool showTrip = false;

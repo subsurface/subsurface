@@ -723,6 +723,8 @@ QVariant DiveTripModelTree::data(const QModelIndex &index, int role) const
 		return defaultModelFont();
 
 	dive_or_trip entry = tripOrDive(index);
+	if (role == IS_TRIP_ROLE)
+		return !!entry.trip;
 	if (entry.trip)
 		return tripData(entry.trip, index.column(), role);
 	else if (entry.dive)
