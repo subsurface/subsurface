@@ -49,6 +49,7 @@ public:
 
 	enum ExtraRoles {
 		STAR_ROLE = Qt::UserRole + 1,
+		IS_TRIP_ROLE,
 		DIVE_ROLE,
 		TRIP_ROLE,
 		DIVE_IDX,

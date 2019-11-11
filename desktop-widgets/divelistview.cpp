@@ -348,8 +348,7 @@ void DiveListView::clearTripSelection()
 
 	// we want to make sure no trips are selected
 	Q_FOREACH (const QModelIndex &index, selectionModel()->selectedRows()) {
-		dive_trip_t *trip = index.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
-		if (!trip)
+		if (!index.data(DiveTripModelBase::IS_TRIP_ROLE).toBool())
 			continue;
 		selectionModel()->select(index, QItemSelectionModel::Deselect);
 	}
