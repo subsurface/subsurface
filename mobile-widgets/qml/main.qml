@@ -66,8 +66,8 @@ Kirigami.ApplicationWindow {
 		anchors.centerIn: parent
 	}
 
-	function showBusy(msg = "") {
-		if (msg !== "")
+	function showBusy(msg) {
+		if (msg !== undefined)
 			showPassiveNotification(msg, 15000) // show for 15 seconds
 		busy.running = true
 	}
