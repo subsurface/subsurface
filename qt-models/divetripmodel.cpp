@@ -433,7 +433,11 @@ bool DiveTripModelBase::setData(const QModelIndex &index, const QVariant &value,
 		if (dive->number == v)
 			return false;
 	}
+#if defined(SUBSURFACE_MOBILE)
+	d->number = v;
+#else
 	Command::editNumber(v, d);
+#endif
 	return true;
 }
 
