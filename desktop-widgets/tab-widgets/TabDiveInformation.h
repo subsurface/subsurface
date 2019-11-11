@@ -22,6 +22,8 @@ private slots:
 	void on_atmPressVal_editingFinished();
 	void on_atmPressType_currentIndexChanged(int index);
 	void on_visibility_valueChanged(int value);
+	void on_airtemp_editingFinished();
+	void on_watertemp_editingFinished();
 private:
 	Ui::TabDiveInformation *ui;
 	void updateProfile();

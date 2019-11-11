@@ -63,8 +63,8 @@ void TabDiveInformation::clear()
 	ui->surfaceIntervalText->clear();
 	ui->maximumDepthText->clear();
 	ui->averageDepthText->clear();
-	ui->waterTemperatureText->clear();
-	ui->airTemperatureText->clear();
+	ui->watertemp->clear();
+	ui->airtemp->clear();
 	ui->atmPressVal->clear();
 	ui->salinityText->clear();
 	ui->waterTypeText->clear();
@@ -170,8 +170,8 @@ void TabDiveInformation::updateData()
 
 	updateProfile();
 	updateWhen();
-	ui->waterTemperatureText->setText(get_temperature_string(current_dive->watertemp, true));
-	ui->airTemperatureText->setText(get_temperature_string(current_dive->airtemp, true));
+	ui->watertemp->setText(get_temperature_string(current_dive->watertemp, true));
+	ui->airtemp->setText(get_temperature_string(current_dive->airtemp, true));
 	ui->atmPressType->setItemText(1, get_depth_unit());  // Check for changes in depth unit (imperial/metric)
 	ui->atmPressType->setCurrentIndex(0);                // Set the atmospheric pressure combo box to mbar
 	updateMode(current_dive);
@@ -194,9 +194,9 @@ void TabDiveInformation::divesChanged(const QVector<dive *> &dives, DiveField fi
 	if (field.duration || field.depth || field.mode)
 		updateProfile();
 	if (field.air_temp)
-		ui->airTemperatureText->setText(get_temperature_string(current_dive->airtemp, true));
+		ui->airtemp->setText(get_temperature_string(current_dive->airtemp, true));
 	if (field.water_temp)
-		ui->waterTemperatureText->setText(get_temperature_string(current_dive->watertemp, true));
+		ui->watertemp->setText(get_temperature_string(current_dive->watertemp, true));
 	if (field.atm_press)
 		ui->atmPressVal->setText(ui->atmPressVal->text().sprintf("%d",current_dive->surface_pressure.mbar));
 	if (field.salinity)
@@ -222,6 +222,23 @@ void TabDiveInformation::diveModeChanged(int index)
 		divesEdited(Command::editMode(dc_number, (enum divemode_t)index, false));
 }
 
+void TabDiveInformation::on_airtemp_editingFinished()
+{
+	// If the field wasn't modified by the user, don't post a new undo command.
+	// Owing to rounding errors, this might lead to undo commands that have
+	// no user visible effects. These can be very confusing.
+	if (ui->airtemp->isModified() && current_dive)
+		divesEdited(Command::editAirTemp(parseTemperatureToMkelvin(ui->airtemp->text()), false));
+}
+
+void TabDiveInformation::on_watertemp_editingFinished()
+{
+	// If the field wasn't modified by the user, don't post a new undo command.
+	// Owing to rounding errors, this might lead to undo commands that have
+	// no user visible effects. These can be very confusing.
+	if (ui->watertemp->isModified() && current_dive)
+		divesEdited(Command::editWaterTemp(parseTemperatureToMkelvin(ui->watertemp->text()), false));
+}
 void TabDiveInformation::on_atmPressType_currentIndexChanged(int index) { updateTextBox(COMBO_CHANGED); }
 
 void TabDiveInformation::on_atmPressVal_editingFinished() { updateTextBox(TEXT_EDITED); }
