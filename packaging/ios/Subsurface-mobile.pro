@@ -128,6 +128,8 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../qt-models/diveimportedmodel.cpp \
 	../../qt-models/messagehandlermodel.cpp \
 	../../qt-models/diveplannermodel.cpp \
+	../../qt-models/divetripmodel.cpp \
+	../../qt-models/mobilelistmodel.cpp \
 	../../qt-models/cylindermodel.cpp \
 	../../qt-models/cleanertablemodel.cpp \
 	../../qt-models/tankinfomodel.cpp \
@@ -267,6 +269,8 @@ HEADERS += \
 	../../qt-models/diveimportedmodel.h \
 	../../qt-models/messagehandlermodel.h \
 	../../qt-models/diveplannermodel.h \
+	../../qt-models/divetripmodel.h \
+	../../qt-models/mobilelistmodel.h \
 	../../qt-models/cylindermodel.h \
 	../../qt-models/cleanertablemodel.h \
 	../../qt-models/tankinfomodel.h \
