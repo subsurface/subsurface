@@ -374,7 +374,7 @@
        </item>
 
        <item row="5" column="0">
-        <widget class="QGroupBox" name="groupBox_9">
+        <widget class="QGroupBox" name="groupBox_airtemp">
          <property name="title">
           <string>Air temp.</string>
          </property>
@@ -389,7 +389,7 @@
          </property>
          <layout class="QHBoxLayout" name="diveInfoAirTempLayout">
           <item>
-           <widget class="QLabel" name="airTemperatureText">
+           <widget class="QLineEdit" name="airtemp">
             <property name="text">
              <string/>
             </property>
@@ -403,7 +403,7 @@
        </item>
 
        <item row="5" column="1">
-        <widget class="QGroupBox" name="groupBox_8">
+        <widget class="QGroupBox" name="groupBox_watertemp">
          <property name="title">
           <string>Water temp.</string>
          </property>
@@ -418,7 +418,7 @@
          </property>
          <layout class="QHBoxLayout" name="diveInfoWaterTempLayout">
           <item>
-           <widget class="QLabel" name="waterTemperatureText">
+           <widget class="QLineEdit" name="watertemp">
             <property name="text">
              <string/>
             </property>
