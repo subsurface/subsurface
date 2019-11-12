@@ -66,10 +66,10 @@
            <item>
             <layout class="QGridLayout" name="gridLayout_6">
              <property name="leftMargin">
-              <number>5</number>
+              <number>0</number>
              </property>
              <property name="rightMargin">
-              <number>5</number>
+              <number>0</number>
              </property>
              <property name="horizontalSpacing">
               <number>8</number>
@@ -218,10 +218,10 @@
               <number>0</number>
              </property>
              <property name="leftMargin">
-              <number>5</number>
+              <number>0</number>
              </property>
              <property name="rightMargin">
-              <number>5</number>
+              <number>0</number>
              </property>
              <item>
               <layout class="QHBoxLayout" name="LocationLayout" stretch="0,1">
@@ -286,10 +286,10 @@
            <item>
             <layout class="QGridLayout" name="gridLayout_7">
              <property name="leftMargin">
-              <number>5</number>
+              <number>0</number>
              </property>
              <property name="rightMargin">
-              <number>5</number>
+              <number>0</number>
              </property>
              <property name="horizontalSpacing">
               <number>5</number>
