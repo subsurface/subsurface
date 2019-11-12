@@ -38,6 +38,8 @@ QHash<int, QByteArray> MobileListModel::roleNames() const
 	roles[DiveDateRole] = "date";
 	roles[TripIdRole] = "tripId";
 	roles[TripNrDivesRole] = "tripNrDives";
+	roles[TripShortDateRole] = "tripShortDate";
+	roles[TripTitleRole] = "tripTitle";
 	roles[DateTimeRole] = "dateTime";
 	roles[IdRole] = "id";
 	roles[NumberRole] = "number";
