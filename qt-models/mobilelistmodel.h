@@ -12,6 +12,8 @@ public:
 		DiveDateRole,
 		TripIdRole,
 		TripNrDivesRole,
+		TripShortDateRole,
+		TripTitleRole,
 		DateTimeRole,
 		IdRole,
 		NumberRole,
