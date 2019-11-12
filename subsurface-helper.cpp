@@ -20,6 +20,7 @@
 #include "qt-models/divesummarymodel.h"
 #include "qt-models/gpslistmodel.h"
 #include "qt-models/messagehandlermodel.h"
+#include "qt-models/mobilelistmodel.h"
 #include "profile-widget/qmlprofile.h"
 #include "core/downloadfromdcthread.h"
 #include "qt-models/diveimportedmodel.h"
@@ -103,7 +104,8 @@ void run_ui()
 	gpsSortModel->sort(0, Qt::DescendingOrder);
 	QQmlContext *ctxt = engine.rootContext();
 	ctxt->setContextProperty("diveModel", DiveListSortModel::instance());
-	ctxt->setContextProperty("diveTripModel", CollapsedDiveListSortModel::instance());
+	MobileListModel *mlm(MobileListModel::instance());
+	ctxt->setContextProperty("mobileListModel", mlm);
 	ctxt->setContextProperty("gpsModel", gpsSortModel);
 	ctxt->setContextProperty("vendorList", vendorList);
 	set_non_bt_addresses();
