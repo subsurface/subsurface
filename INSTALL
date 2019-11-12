@@ -60,8 +60,10 @@ respective upstreams.
 Getting Qt5
 -----------
 
-We use Qt5 in order to only maintain one UI across platforms. Qt5.8 is the
-oldest version supported.
+We use Qt5 in order to only maintain one UI across platforms.
+
+Qt5.9.1 is the oldest version supported if ONLY building Subsurface (desktop version)
+Qt5.11 is the oldest version supported if also building Subsurface-mobile (ios/android)
 
 Download the Open Source version from https://www.qt.io/download and 
 follow the Qt instructions to install it or alternatively follow the
