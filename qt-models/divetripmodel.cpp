@@ -58,6 +58,42 @@ static QVariant dive_table_alignment(int column)
 	return QVariant();
 }
 
+QString DiveTripModelBase::tripShortDate(const dive_trip *trip)
+{
+	if (!trip)
+		return QString();
+	QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*trip_date(trip), Qt::UTC);
+	QString firstMonth = firstTime.toString("MMM");
+	return QStringLiteral("%1\n'%2").arg(firstMonth,firstTime.toString("yy"));
+}
+
+QString DiveTripModelBase::tripTitle(const dive_trip *trip)
+{
+	if (!trip)
+		return QString();
+	QString numDives = tr("(%n dive(s))", "", trip->dives.nr);
+	int shown = trip_shown_dives(trip);
+	QString shownDives = shown != trip->dives.nr ? QStringLiteral(" ") + tr("(%L1 shown)").arg(shown) : QString();
+	QString title(trip->location);
+
+	if (title.isEmpty()) {
+		// so use the date range
+		QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*trip_date(trip), Qt::UTC);
+		QString firstMonth = firstTime.toString("MMM");
+		QString firstYear = firstTime.toString("yyyy");
+		QDateTime lastTime = QDateTime::fromMSecsSinceEpoch(1000*trip->dives.dives[0]->when, Qt::UTC);
+		QString lastMonth = lastTime.toString("MMM");
+		QString lastYear = lastTime.toString("yyyy");
+		if (lastMonth == firstMonth && lastYear == firstYear)
+			title = firstMonth + " " + firstYear;
+		else if (lastMonth != firstMonth && lastYear == firstYear)
+			title = firstMonth + "-" + lastMonth + " " + firstYear;
+		else
+			title = firstMonth + " " + firstYear + " - " + lastMonth + " " + lastYear;
+	}
+	return QStringLiteral("%1 %2%3").arg(title, numDives, shownDives);
+}
+
 QVariant DiveTripModelBase::tripData(const dive_trip *trip, int column, int role)
 {
 #ifdef SUBSURFACE_MOBILE
@@ -65,6 +101,8 @@ QVariant DiveTripModelBase::tripData(const dive_trip *trip, int column, int role
 	switch(role) {
 	case MobileListModel::TripIdRole: return QString::number(trip->id);
 	case MobileListModel::TripNrDivesRole: return trip->dives.nr;
+	case MobileListModel::TripShortDateRole: return tripShortDate(trip);
+	case MobileListModel::TripTitleRole: return tripTitle(trip);
 	}
 #endif
 
