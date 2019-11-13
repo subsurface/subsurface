@@ -2,7 +2,6 @@
 
 #include "command_divelist.h"
 #include "command_private.h"
-#include "desktop-widgets/divelistview.h"
 #include "core/divelist.h"
 #include "core/display.h" // for amount_selected
 #include "core/qthelper.h"
@@ -39,7 +38,7 @@ DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<OwningTripPtr> &t
 
 	int idx = get_divenr(d);
 	if (idx < 0)
-		qWarning() << "Deletion of unknown dive!";
+		qWarning("Deletion of unknown dive!");
 
 	res.dive.reset(unregister_dive(idx));		// Remove dive from backend
 
@@ -889,7 +888,7 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 	// Just a safety check - if there's not two or more dives - do nothing
 	// The caller should have made sure that this doesn't happen.
 	if (dives.count() < 2) {
-		qWarning() << "Merging less than two dives";
+		qWarning("Merging less than two dives");
 		return;
 	}
 
@@ -931,7 +930,7 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 	if (idx < 0 || idx + num > dive_table.nr) {
 		// It was the callers responsibility to pass only known dives.
 		// Something is seriously wrong - give up.
-		qWarning() << "Merging unknown dives";
+		qWarning("Merging unknown dives");
 		return;
 	}
 	// std::equal compares two ranges. The parameters are (begin_range1, end_range1, begin_range2).
