@@ -432,10 +432,6 @@ void AddDive::redoit()
 
 	// Select the newly added dive
 	setSelection(divesAndSitesToRemove.dives, divesAndSitesToRemove.dives[0]);
-
-	// Exit from edit mode, but don't recalculate dive list
-	// TODO: Remove edit mode
-	MainWindow::instance()->refreshDisplay(false);
 }
 
 void AddDive::undoit()
@@ -446,10 +442,6 @@ void AddDive::undoit()
 
 	// ...and restore the selection
 	setSelection(selection, currentDive);
-
-	// Exit from edit mode, but don't recalculate dive list
-	// TODO: Remove edit mode
-	MainWindow::instance()->refreshDisplay(false);
 }
 
 ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, struct dive_site_table *sites, int flags, const QString &source)
