@@ -9,7 +9,7 @@
 #include "core/subsurface-string.h"
 #include "core/tag.h"
 #include "qt-models/divelocationmodel.h" // For the dive-site field ids
-#include "desktop-widgets/command.h"
+#include "commands/command.h"
 #include <QIcon>
 #include <QDebug>
 #include <memory>

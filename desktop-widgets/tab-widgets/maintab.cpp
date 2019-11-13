@@ -24,8 +24,8 @@
 #include "core/subsurface-string.h"
 #include "core/gettextfromc.h"
 #include "desktop-widgets/locationinformation.h"
-#include "desktop-widgets/command.h"
 #include "desktop-widgets/simplewidgets.h"
+#include "commands/command.h"
 
 #include "TabDiveEquipment.h"
 #include "TabDiveExtraInfo.h"

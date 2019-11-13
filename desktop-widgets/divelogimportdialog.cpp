@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/divelogimportdialog.h"
 #include "desktop-widgets/mainwindow.h"
-#include "desktop-widgets/command.h"
+#include "commands/command.h"
 #include "core/color.h"
 #include "ui_divelogimportdialog.h"
 #include <QShortcut>

@@ -58,20 +58,6 @@ set(SUBSURFACE_INTERFACE
 	../map-widget/qmlmapwidgethelper.cpp
 	about.cpp
 	about.h
-	command.cpp
-	command.h
-	command_base.cpp
-	command_base.h
-	command_divelist.cpp
-	command_divelist.h
-	command_divesite.cpp
-	command_divesite.h
-	command_edit.cpp
-	command_edit.h
-	command_edit_trip.cpp
-	command_edit_trip.h
-	command_private.cpp
-	command_private.h
 	configuredivecomputerdialog.cpp
 	configuredivecomputerdialog.h
 	divecomputermanagementdialog.cpp

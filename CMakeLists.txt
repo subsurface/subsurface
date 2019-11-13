@@ -272,6 +272,7 @@ endif()
 add_subdirectory(translations)
 add_subdirectory(core)
 add_subdirectory(qt-models)
+add_subdirectory(commands)
 add_subdirectory(profile-widget)
 
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
@@ -343,6 +344,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 		subsurface_profile
 		subsurface_statistics
 		subsurface_models_desktop
+		subsurface_commands_desktop
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES}
 	)

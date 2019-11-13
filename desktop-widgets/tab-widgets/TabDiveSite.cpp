@@ -4,7 +4,7 @@
 #include "core/divesite.h"
 #include "qt-models/divelocationmodel.h"
 #include "qt-models/filtermodels.h"
-#include "desktop-widgets/command.h"
+#include "commands/command.h"
 
 #include <qt-models/divecomputerextradatamodel.h>
 

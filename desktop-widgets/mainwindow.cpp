@@ -41,7 +41,6 @@
 #include "core/subsurface-qt/DiveListNotifier.h"
 
 #include "desktop-widgets/about.h"
-#include "desktop-widgets/command.h"
 #include "desktop-widgets/divecomputermanagementdialog.h"
 #include "desktop-widgets/divelistview.h"
 #include "desktop-widgets/divelogexportdialog.h"
@@ -57,6 +56,7 @@
 #include "desktop-widgets/updatemanager.h"
 #include "desktop-widgets/usersurvey.h"
 #include "desktop-widgets/simplewidgets.h"
+#include "commands/command.h"
 
 #include "profile-widget/profilewidget2.h"
 

@@ -4,7 +4,7 @@
 #include "desktop-widgets/mainwindow.h" // TODO: Only used temporarilly for edit mode changes
 #include "desktop-widgets/simplewidgets.h" // For isGnome3Session()
 #include "desktop-widgets/modeldelegates.h"
-#include "desktop-widgets/command.h"
+#include "commands/command.h"
 #include "profile-widget/profilewidget2.h"
 
 #include "qt-models/cylindermodel.h"

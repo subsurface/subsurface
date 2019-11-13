@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/downloadfromdivecomputer.h"
-#include "desktop-widgets/command.h"
+#include "commands/command.h"
 #include "core/display.h"
 #include "core/qthelper.h"
 #include "core/divelist.h"

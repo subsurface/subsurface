@@ -8,7 +8,7 @@
 #ifndef SUBSURFACE_MOBILE
 #include "cleanertablemodel.h" // for trashIcon() and editIcon()
 #include "desktop-widgets/mainwindow.h" // to place message box
-#include "desktop-widgets/command.h"
+#include "commands/command.h"
 #include <QMessageBox>
 #endif
 #include <QLineEdit>
