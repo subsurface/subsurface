@@ -376,6 +376,8 @@ volume_t *get_gas_used(struct dive *dive)
 		end = cyl->end.mbar ? cyl->end : cyl->sample_end;
 		if (end.mbar && start.mbar > end.mbar)
 			gases[idx].mliter = gas_volume(cyl, start) - gas_volume(cyl, end);
+		else
+			gases[idx].mliter = 0;
 	}
 
 	return gases;
