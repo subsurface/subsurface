@@ -257,7 +257,6 @@ struct PasteState {
 class PasteDives : public Base {
 	dive_components what;
 	std::vector<PasteState> dives;
-	std::vector<OwningDiveSitePtr> ownedDiveSites;
 	dive *current;
 public:
 	PasteDives(const dive *d, dive_components what);

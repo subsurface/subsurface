@@ -6,7 +6,6 @@
 #include "core/qthelper.h" // for copy_qstring
 #include "core/subsurface-string.h"
 #include "core/tag.h"
-#include "desktop-widgets/mapwidget.h" // TODO: Replace desktop-dependency by signal
 
 namespace Command {
 
@@ -752,39 +751,12 @@ bool PasteDives::workToBeDone()
 
 void PasteDives::undo()
 {
-	bool diveSiteListChanged = false;
-
-	// If we had taken ownership of dive sites, readd them to the system
-	for (OwningDiveSitePtr &ds: ownedDiveSites) {
-		register_dive_site(ds.release());
-		diveSiteListChanged = true;
-	}
-	ownedDiveSites.clear();
-
 	QVector<dive *> divesToNotify; // Remember dives so that we can send signals later
 	divesToNotify.reserve(dives.size());
 	for (PasteState &state: dives) {
 		divesToNotify.push_back(state.d);
 		state.swap(what);
 		invalidate_dive_cache(state.d); // Ensure that dive is written in git_save()
-	}
-
-	// If dive sites were pasted, collect all overwritten dive sites
-	// and remove those which don't have users anymore from the core.
-	// But keep an owning pointer. Thus if this undo command is freed, the
-	// dive-site will be automatically deleted and on redo() it can be
-	// readded to the system
-	if (what.divesite) {
-		std::vector<dive_site *> divesites;
-		for (const PasteState &d: dives) {
-			if (std::find(divesites.begin(), divesites.end(), d.divesite) == divesites.end())
-				divesites.push_back(d.divesite);
-		}
-		for (dive_site *ds: divesites) {
-			unregister_dive_site(ds);
-			ownedDiveSites.emplace_back(ds);
-			diveSiteListChanged = true;
-		}
 	}
 
 	// Send signals.
@@ -802,9 +774,6 @@ void PasteDives::undo()
 		emit diveListNotifier.cylindersReset(divesToNotify);
 	if (what.weights)
 		emit diveListNotifier.weightsystemsReset(divesToNotify);
-
-	if (diveSiteListChanged)
-		MapWidget::instance()->reload();
 }
 
 // Redo and undo do the same
