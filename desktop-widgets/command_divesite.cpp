@@ -88,12 +88,12 @@ bool AddDiveSite::workToBeDone()
 
 void AddDiveSite::redo()
 {
-	sitesToRemove = std::move(addDiveSites(sitesToAdd));
+	sitesToRemove = addDiveSites(sitesToAdd);
 }
 
 void AddDiveSite::undo()
 {
-	sitesToAdd = std::move(removeDiveSites(sitesToRemove));
+	sitesToAdd = removeDiveSites(sitesToRemove);
 }
 
 ImportDiveSites::ImportDiveSites(struct dive_site_table *sites, const QString &source)
@@ -124,12 +124,12 @@ bool ImportDiveSites::workToBeDone()
 
 void ImportDiveSites::redo()
 {
-	sitesToRemove = std::move(addDiveSites(sitesToAdd));
+	sitesToRemove = addDiveSites(sitesToAdd);
 }
 
 void ImportDiveSites::undo()
 {
-	sitesToAdd = std::move(removeDiveSites(sitesToRemove));
+	sitesToAdd = removeDiveSites(sitesToRemove);
 }
 
 DeleteDiveSites::DeleteDiveSites(const QVector<dive_site *> &sites) : sitesToRemove(sites.toStdVector())
@@ -144,12 +144,12 @@ bool DeleteDiveSites::workToBeDone()
 
 void DeleteDiveSites::redo()
 {
-	sitesToAdd = std::move(removeDiveSites(sitesToRemove));
+	sitesToAdd = removeDiveSites(sitesToRemove);
 }
 
 void DeleteDiveSites::undo()
 {
-	sitesToRemove = std::move(addDiveSites(sitesToAdd));
+	sitesToRemove = addDiveSites(sitesToAdd);
 }
 
 PurgeUnusedDiveSites::PurgeUnusedDiveSites()
@@ -169,12 +169,12 @@ bool PurgeUnusedDiveSites::workToBeDone()
 
 void PurgeUnusedDiveSites::redo()
 {
-	sitesToAdd = std::move(removeDiveSites(sitesToRemove));
+	sitesToAdd = removeDiveSites(sitesToRemove);
 }
 
 void PurgeUnusedDiveSites::undo()
 {
-	sitesToRemove = std::move(addDiveSites(sitesToAdd));
+	sitesToRemove = addDiveSites(sitesToAdd);
 }
 
 // Helper function: swap C and Qt string
@@ -356,7 +356,7 @@ bool MergeDiveSites::workToBeDone()
 void MergeDiveSites::redo()
 {
 	// First, remove all dive sites
-	sitesToAdd = std::move(removeDiveSites(sitesToRemove));
+	sitesToAdd = removeDiveSites(sitesToRemove);
 
 	// Remember which dives changed so that we can send a single dives-edited signal
 	QVector<dive *> divesChanged;
@@ -387,7 +387,7 @@ void MergeDiveSites::undo()
 		}
 	}
 
-	sitesToRemove = std::move(addDiveSites(sitesToAdd));
+	sitesToRemove = addDiveSites(sitesToAdd);
 
 	emit diveListNotifier.divesChanged(divesChanged, DiveField::DIVESITE);
 }
