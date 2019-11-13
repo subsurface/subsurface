@@ -2,7 +2,6 @@
 
 #include "command_divelist.h"
 #include "command_private.h"
-#include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/divelistview.h"
 #include "core/divelist.h"
 #include "core/display.h" // for amount_selected
@@ -856,13 +855,13 @@ void DiveComputerBase::redoit()
 	diveToAdd = removeDives(diveToRemove);
 	diveToRemove = std::move(addedDive);
 
-	// Select added dive and make it current
+	dc_number = dc_nr_after;
+
+	// Select added dive and make it current.
+	// This automatically replots the profile.
 	setSelection(diveToRemove.dives, diveToRemove.dives[0]);
 
-	// Update the profile to show the first dive computer
-	dc_number = dc_nr_after;
 	std::swap(dc_nr_before, dc_nr_after);
-	MainWindow::instance()->graphics->replot(current_dive);
 }
 
 void DiveComputerBase::undoit()
