@@ -11,7 +11,7 @@
 #include "qt-models/divelocationmodel.h"
 #include "mainwindow.h"
 #include "divelistview.h"
-#include "command.h"
+#include "commands/command.h"
 
 static const QUrl urlMapWidget = QUrl(QStringLiteral("qrc:/qml/MapWidget.qml"));
 static const QUrl urlMapWidgetError = QUrl(QStringLiteral("qrc:/qml/MapWidgetError.qml"));

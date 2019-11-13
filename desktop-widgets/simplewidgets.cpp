@@ -20,7 +20,7 @@
 #include "desktop-widgets/divelistview.h"
 #include "core/display.h"
 #include "profile-widget/profilewidget2.h"
-#include "desktop-widgets/command.h"
+#include "commands/command.h"
 #include "core/metadata.h"
 #include "core/tag.h"
 #include "core/divelist.h" // for mark_divelist_changed

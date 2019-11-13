@@ -9,9 +9,9 @@
 #include "core/divesitehelpers.h"
 #include "desktop-widgets/modeldelegates.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
-#include "command.h"
 #include "core/taxonomy.h"
 #include "core/settings/qPrefUnit.h"
+#include "commands/command.h"
 
 #include <QDebug>
 #include <QShowEvent>

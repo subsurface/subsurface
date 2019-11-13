@@ -7,7 +7,7 @@
 #include "core/device.h"
 #include "core/qthelper.h"
 #include "core/settings/qPrefDivePlanner.h"
-#include "desktop-widgets/command.h"
+#include "commands/command.h"
 #include "core/gettextfromc.h"
 #include "core/deco.h"
 #include <QApplication>

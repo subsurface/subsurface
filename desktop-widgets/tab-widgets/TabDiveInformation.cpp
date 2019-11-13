@@ -4,9 +4,9 @@
 #include "desktop-widgets/mainwindow.h" // TODO: Only used temporarilly for edit mode changes
 #include "profile-widget/profilewidget2.h"
 #include "../tagwidget.h"
+#include "commands/command.h"
 #include "core/units.h"
 #include "core/dive.h"
-#include "desktop-widgets/command.h"
 #include "core/qthelper.h"
 #include "core/statistics.h"
 #include "core/display.h"

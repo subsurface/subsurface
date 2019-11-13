@@ -19,10 +19,10 @@
 #include <QStandardPaths>
 #include <QMessageBox>
 #include <QHeaderView>
+#include "commands/command.h"
 #include "core/errorhelper.h"
 #include "core/qthelper.h"
 #include "core/trip.h"
-#include "desktop-widgets/command.h"
 #include "desktop-widgets/divelistview.h"
 #include "qt-models/divepicturemodel.h"
 #include "core/metrics.h"
