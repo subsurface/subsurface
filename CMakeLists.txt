@@ -314,6 +314,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		subsurface_mapwidget
 		subsurface_backend_shared
 		subsurface_models_mobile
+		subsurface_commands_mobile
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
