@@ -19,6 +19,8 @@
 #include "core/settings/qPrefCloudStorage.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
+class QAction;
+
 class QMLManager : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(QString logText READ logText WRITE setLogText NOTIFY logTextChanged)
@@ -264,6 +266,7 @@ private:
 	bool m_showNonDiveComputers;
 	struct dive *m_copyPasteDive = NULL;
 	struct dive_components what;
+	QAction *undoAction;
 
 	bool verifyCredentials(QString email, QString password, QString pin);
 
