@@ -15,6 +15,12 @@ QTQUICK_COMPILER_SKIPPED_RESOURCES +=
 SOURCES += ../../subsurface-mobile-main.cpp \
 	../../subsurface-helper.cpp \
 	../../map-widget/qmlmapwidgethelper.cpp \
+	../../commands/command_base.cpp \
+	../../commands/command.cpp \
+	../../commands/command_divelist.cpp \
+	../../commands/command_divesite.cpp \
+	../../commands/command_edit.cpp \
+	../../commands/command_edit_trip.cpp \
 	../../core/cloudstorage.cpp \
 	../../core/configuredivecomputerthreads.cpp \
 	../../core/devicedetails.cpp \
@@ -174,6 +180,12 @@ INCLUDEPATH += ../../../install-root/ios/include/ \
 	/usr/include/libxml2
 
 HEADERS += \
+	../../commands/command_base.h \
+	../../commands/command.h \
+	../../commands/command_divelist.h \
+	../../commands/command_divesite.h \
+	../../commands/command_edit.h \
+	../../commands/command_edit_trip.h \
 	../../core/libdivecomputer.h \
 	../../core/cloudstorage.h \
 	../../core/configuredivecomputerthreads.h \
