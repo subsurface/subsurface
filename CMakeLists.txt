@@ -251,8 +251,8 @@ set(QT_FIND_COMPONENTS Core Concurrent Widgets Network Svg Positioning Quick Loc
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	find_package(Qt5 5.9.1 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
 else()
-	# Kirigami 5.62 and newer require at least Qt 5.11
-	find_package(Qt5 5.11 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
+	# Kirigami 5.62 and newer require at least Qt 5.12
+	find_package(Qt5 5.12 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
 endif()
 foreach(_QT_COMPONENT ${QT_FIND_COMPONENTS})
 	list(APPEND QT_LIBRARIES Qt5::${_QT_COMPONENT})
