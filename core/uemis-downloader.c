@@ -603,7 +603,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 			free(ans_path);
 			return false;
 		}
-		if (read(ans_file, tmp, 100) < 0) {
+		if (read(ans_file, tmp, 100) < 3) {
 			free(ans_path);
 			close(ans_file);
 			return false;
