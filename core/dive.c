@@ -246,9 +246,11 @@ void add_extra_data(struct divecomputer *dc, const char *key, const char *value)
 enum divemode_t get_current_divemode(const struct divecomputer *dc, int time, const struct event **evp, enum divemode_t *divemode)
 {
 	const struct event *ev = *evp;
-	if (*divemode == UNDEF_COMP_TYPE) {
+	if (*divemode == UNDEF_COMP_TYPE && dc) {
 		*divemode = dc->divemode;
-		ev = dc ? get_next_event(dc->events, "modechange") : NULL;
+		ev = get_next_event(dc->events, "modechange");
+	} else {
+		ev = NULL;
 	}
 	while (ev && ev->time.seconds < time) {
 		*divemode = (enum divemode_t) ev->value;
