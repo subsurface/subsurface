@@ -1034,8 +1034,9 @@ void calculate_deco_information(struct deco_state *ds, const struct deco_state *
 	bool first_iteration = true;
 	int prev_deco_time = 10000000, time_deep_ceiling = 0;
 
-	if (!in_planner()) {
+	if (!in_planner() || !planner_ds) {
 		ds->deco_time = 0;
+		ds->first_ceiling_pressure.mbar = 0;
 	} else {
 		ds->deco_time = planner_ds->deco_time;
 		ds->first_ceiling_pressure = planner_ds->first_ceiling_pressure;
