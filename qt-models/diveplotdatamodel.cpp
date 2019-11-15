@@ -169,15 +169,17 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 
 void DivePlotDataModel::clear()
 {
-	beginResetModel();
-	pInfo.nr = 0;
-	free(pInfo.entry);
-	free(pInfo.pressures);
-	pInfo.entry = nullptr;
-	pInfo.pressures = nullptr;
-	diveId = -1;
-	dcNr = -1;
-	endResetModel();
+	if (rowCount() != 0) {
+		beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
+		pInfo.nr = 0;
+		free(pInfo.entry);
+		free(pInfo.pressures);
+		pInfo.entry = nullptr;
+		pInfo.pressures = nullptr;
+		diveId = -1;
+		dcNr = -1;
+		endRemoveRows();
+	}
 }
 
 void DivePlotDataModel::setDive(dive *d, const plot_info &info)
