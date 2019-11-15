@@ -71,7 +71,6 @@ public:
 
 	void loadFiles(const QStringList files);
 	void importFiles(const QStringList importFiles);
-	void cleanUpEmpty();
 	void setToolButtonsEnabled(bool enabled);
 	void printPlan();
 	void checkSurvey();
