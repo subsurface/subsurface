@@ -1134,6 +1134,7 @@ void ProfileWidget2::setEmptyState()
 	ccrsensor3GasItem->setVisible(false);
 	ocpo2GasItem->setVisible(false);
 #ifndef SUBSURFACE_MOBILE
+	toolTipItem->clearPlotInfo();
 	toolTipItem->setVisible(false);
 	diveCeiling->setVisible(false);
 	decoModelParameters->setVisible(false);

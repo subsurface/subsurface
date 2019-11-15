@@ -44,6 +44,7 @@ public:
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 	void setTimeAxis(DiveCartesianAxis *axis);
 	void setPlotInfo(const plot_info &plot);
+	void clearPlotInfo();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public
 slots:
