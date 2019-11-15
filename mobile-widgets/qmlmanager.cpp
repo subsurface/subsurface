@@ -148,8 +148,6 @@ void QMLManager::btRescan()
 
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
-	deletedDive(0),
-	deletedTrip(0),
 	m_updateSelectedDive(-1),
 	m_selectedDiveTimestamp(0),
 	alreadySaving(false),
