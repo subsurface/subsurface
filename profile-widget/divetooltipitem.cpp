@@ -139,7 +139,7 @@ ToolTipItem::ToolTipItem(QGraphicsItem *parent) : QGraphicsRectItem(parent),
 	timeAxis(0),
 	lastTime(-1)
 {
-	memset(&pInfo, 0, sizeof(pInfo));
+	clearPlotInfo();
 	entryToolTip.first = NULL;
 	entryToolTip.second = NULL;
 	setFlags(ItemIgnoresTransformations | ItemIsMovable | ItemClipsChildrenToShape);
@@ -221,6 +221,11 @@ void ToolTipItem::readPos()
 void ToolTipItem::setPlotInfo(const plot_info &plot)
 {
 	pInfo = plot;
+}
+
+void ToolTipItem::clearPlotInfo()
+{
+	memset(&pInfo, 0, sizeof(pInfo));
 }
 
 void ToolTipItem::setTimeAxis(DiveCartesianAxis *axis)
