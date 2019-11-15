@@ -658,7 +658,6 @@ void MainWindow::closeCurrentFile()
 	/* free the dives and trips */
 	clear_git_id();
 	clear_dive_file_data();
-	current_dive = nullptr;
 	setCurrentFile(nullptr);
 	graphics->setEmptyState();
 	mainTab->clearTabs();

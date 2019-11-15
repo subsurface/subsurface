@@ -1446,6 +1446,7 @@ void clear_dive_file_data()
 {
 	while (dive_table.nr)
 		delete_single_dive(0);
+	current_dive = NULL;
 	while (dive_site_table.nr)
 		delete_dive_site(get_dive_site(0, &dive_site_table), &dive_site_table);
 	if (trip_table.nr != 0) {
