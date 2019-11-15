@@ -543,6 +543,7 @@ int parse_txt_file(const char *filename, const char *csv, struct dive_table *tab
 		cyl.type.workingpressure.mbar = 200000;
 		cyl.type.description = "3l Mk6";
 		cyl.gasmix.o2.permille = 1000;
+		cyl.manually_added = true;
 		add_cloned_cylinder(&dive->cylinders, cyl);
 
 		cyl.cylinder_use = DILUENT;
