@@ -634,21 +634,6 @@ void MainWindow::on_actionCloudOnline_triggered()
 	updateCloudOnlineStatus();
 }
 
-void MainWindow::cleanUpEmpty()
-{
-	current_dive = nullptr;
-	mainTab->clearTabs();
-	mainTab->updateDiveInfo();
-	graphics->setEmptyState();
-	diveList->reload();
-	diveList->setSortOrder(DiveTripModelBase::NR, Qt::DescendingOrder);
-	MapWidget::instance()->reload();
-	LocationInformationModel::instance()->update();
-	if (!existing_filename)
-		setTitle();
-	disableShortcuts();
-}
-
 bool MainWindow::okToClose(QString message)
 {
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
@@ -670,12 +655,21 @@ void MainWindow::setFileClean()
 
 void MainWindow::closeCurrentFile()
 {
-	graphics->setEmptyState();
 	/* free the dives and trips */
 	clear_git_id();
 	clear_dive_file_data();
+	current_dive = nullptr;
 	setCurrentFile(nullptr);
-	cleanUpEmpty();
+	graphics->setEmptyState();
+	mainTab->clearTabs();
+	mainTab->updateDiveInfo();
+	diveList->reload();
+	diveList->setSortOrder(DiveTripModelBase::NR, Qt::DescendingOrder);
+	MapWidget::instance()->reload();
+	LocationInformationModel::instance()->update();
+	if (!existing_filename)
+		setTitle();
+	disableShortcuts();
 	setFileClean();
 
 	clear_events();
