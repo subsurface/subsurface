@@ -53,7 +53,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	lastSelectedDive(true),
 	lastTabSelectedDive(0),
 	lastTabSelectedDiveTrip(0),
-	currentTrip(0)
+	currentTrip(0),
+	modified(false)
 {
 	ui.setupUi(this);
 
