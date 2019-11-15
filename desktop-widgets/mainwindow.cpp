@@ -657,12 +657,8 @@ void MainWindow::closeCurrentFile()
 {
 	/* free the dives and trips */
 	clear_git_id();
-	clear_dive_file_data();
+	DiveTripModelBase::instance()->clear();
 	setCurrentFile(nullptr);
-	graphics->setEmptyState();
-	mainTab->clearTabs();
-	mainTab->updateDiveInfo();
-	diveList->reload();
 	diveList->setSortOrder(DiveTripModelBase::NR, Qt::DescendingOrder);
 	MapWidget::instance()->reload();
 	LocationInformationModel::instance()->update();
