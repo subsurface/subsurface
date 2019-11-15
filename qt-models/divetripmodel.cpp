@@ -759,6 +759,11 @@ void DiveTripModelTree::topLevelChanged(int idx)
 		endMoveRows();
 	}
 
+	// If we moved the object backwards in the array, we have to
+	// subtract one from the index to account for the removed object.
+	if (newIdx > idx)
+		--newIdx;
+
 	// Finally, inform UI of changed trip header
 	QModelIndex tripIdx = createIndex(newIdx, 0, noParent);
 	dataChanged(tripIdx, tripIdx);
