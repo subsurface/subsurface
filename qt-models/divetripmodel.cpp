@@ -372,6 +372,13 @@ void DiveTripModelBase::resetModel(DiveTripModelBase::Layout layout)
 		currentModel.reset(new DiveTripModelList);
 }
 
+void DiveTripModelBase::clear()
+{
+	beginResetModel();
+	clear_dive_file_data();
+	endResetModel();
+}
+
 DiveTripModelBase::DiveTripModelBase(QObject *parent) : QAbstractItemModel(parent)
 {
 }
