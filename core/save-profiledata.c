@@ -6,6 +6,7 @@
 #include "core/subsurface-string.h"
 #include "core/save-profiledata.h"
 #include "core/version.h"
+#include <errno.h>
 
 static void put_int(struct membuffer *b, int val)
 {
@@ -257,7 +258,7 @@ int save_profiledata(const char *filename, const bool select_only)
 		error = fclose(f);
 	}
 	if (error)
-		report_error("Save failed (%s)", strerror(error));
+		report_error("Save failed (%s)", strerror(errno));
 
 	free_buffer(&buf);
 	return error;
