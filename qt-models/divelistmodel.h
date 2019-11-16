@@ -8,36 +8,6 @@
 #include "core/divefilter.h"
 #include "core/subsurface-qt/diveobjecthelper.h"
 
-class CollapsedDiveListSortModel : public QSortFilterProxyModel
-{
-	Q_OBJECT
-public:
-	static CollapsedDiveListSortModel *instance();
-	void setSourceModel(QAbstractItemModel *sourceModel);
-	Q_INVOKABLE QString tripTitle(const QString &trip);
-	Q_INVOKABLE QString tripShortDate(const QString &trip);
-	Q_INVOKABLE void setActiveTrip(const QString &trip);
-	Q_INVOKABLE QString activeTrip() const;
-	// super subtle optimization alert - in order to reduce the number of model accesses from QML,
-	// the two states where we show the dive in question have odd numbers
-	enum CollapsedState {
-		DontShow = 0,
-		ShowDive = 1,
-		ShowTrip = 2,
-		ShowDiveAndTrip = 3
-	};
-	void updateFilterState();
-	void updateSelectionState();
-
-protected:
-	bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
-
-private:
-	CollapsedDiveListSortModel();
-	bool isExpanded(struct dive_trip *dt) const;
-	QString m_activeTrip;
-};
-
 class DiveListSortModel : public QSortFilterProxyModel
 {
 	Q_OBJECT
@@ -106,7 +76,6 @@ public:
 		StartPressureRole,
 		EndPressureRole,
 		FirstGasRole,
-		CollapsedRole,
 		SelectedRole,
 	};
 

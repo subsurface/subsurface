@@ -12,175 +12,6 @@
 
 // the DiveListSortModel creates the sorted, filtered list of dives that the user
 // can flip through horizontally
-// the CollapsedDiveListSortModel creates the vertical dive list which is a second
-// filter on top of the one applied to the DiveListSortModel
-
-CollapsedDiveListSortModel::CollapsedDiveListSortModel()
-{
-	setSourceModel(DiveListSortModel::instance());
-	// make sure that we after changes to the underlying model (and therefore the dive list
-	// we update the filter state
-	connect(DiveListModel::instance(), &DiveListModel::rowsInserted, this, &CollapsedDiveListSortModel::updateFilterState);
-	connect(DiveListModel::instance(), &DiveListModel::rowsMoved, this, &CollapsedDiveListSortModel::updateFilterState);
-	connect(DiveListModel::instance(), &DiveListModel::rowsRemoved, this, &CollapsedDiveListSortModel::updateFilterState);
-}
-
-CollapsedDiveListSortModel *CollapsedDiveListSortModel::instance()
-{
-	static CollapsedDiveListSortModel self;
-	return &self;
-}
-
-void CollapsedDiveListSortModel::setSourceModel(QAbstractItemModel *sourceModel)
-{
-	QSortFilterProxyModel::setSourceModel(sourceModel);
-	// make sure we sort descending and have the filters correct
-	setDynamicSortFilter(true);
-	setSortRole(DiveListModel::DiveDateRole);
-	sort(0, Qt::DescendingOrder);
-	updateFilterState();
-}
-
-// In QtQuick ListView, section headings can only be strings. To identify dives
-// that belong to the same trip, a string containing the trip-id is passed in.
-// To format the trip heading, the string is then converted back with this function.
-static dive_trip *tripIdToObject(const QString &s)
-{
-	if (s.isEmpty())
-		return nullptr;
-	int id = s.toInt();
-	dive_trip **trip = std::find_if(&trip_table.trips[0], &trip_table.trips[trip_table.nr],
-					[id] (const dive_trip *t) { return t->id == id; });
-	if (trip == &trip_table.trips[trip_table.nr]) {
-		fprintf(stderr, "Warning: unknown trip id passed through QML: %d\n", id);
-		return nullptr;
-	}
-	return *trip;
-}
-
-// the trip title is designed to be location (# dives)
-// or, if there is no location name date range (# dives)
-// where the date range is given as "month year" or "month-month year" or "month year - month year"
-QString CollapsedDiveListSortModel::tripTitle(const QString &section)
-{
-	const dive_trip *dt = tripIdToObject(section);
-	if (!dt)
-		return QString();
-	QString numDives = tr("(%n dive(s))", "", dt->dives.nr);
-	int shown = trip_shown_dives(dt);
-	QString shownDives = shown != dt->dives.nr ? QStringLiteral(" ") + tr("(%L1 shown)").arg(shown) : QString();
-	QString title(dt->location);
-
-	if (title.isEmpty()) {
-		// so use the date range
-		QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*trip_date(dt), Qt::UTC);
-		QString firstMonth = firstTime.toString("MMM");
-		QString firstYear = firstTime.toString("yyyy");
-		QDateTime lastTime = QDateTime::fromMSecsSinceEpoch(1000*dt->dives.dives[0]->when, Qt::UTC);
-		QString lastMonth = lastTime.toString("MMM");
-		QString lastYear = lastTime.toString("yyyy");
-		if (lastMonth == firstMonth && lastYear == firstYear)
-			title = firstMonth + " " + firstYear;
-		else if (lastMonth != firstMonth && lastYear == firstYear)
-			title = firstMonth + "-" + lastMonth + " " + firstYear;
-		else
-			title = firstMonth + " " + firstYear + " - " + lastMonth + " " + lastYear;
-	}
-	return QStringLiteral("%1 %2%3").arg(title, numDives, shownDives);
-}
-
-QString CollapsedDiveListSortModel::tripShortDate(const QString &section)
-{
-	const dive_trip *dt = tripIdToObject(section);
-	if (!dt)
-		return QString();
-	QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*trip_date(dt), Qt::UTC);
-	QString firstMonth = firstTime.toString("MMM");
-	return QStringLiteral("%1\n'%2").arg(firstMonth,firstTime.toString("yy"));
-}
-
-void CollapsedDiveListSortModel::setActiveTrip(const QString &trip)
-{
-	m_activeTrip = trip;
-	// we can't update the filter state from the this function as that is called from
-	// a slot in the QML code which could cause the object that is executing the slot
-	// to be destroyed before this function returns.
-	// Instead do this asynchronously
-	QtConcurrent::run(QThreadPool::globalInstance(),
-			  []{
-				CollapsedDiveListSortModel::instance()->updateFilterState();
-			  });
-}
-
-QString CollapsedDiveListSortModel::activeTrip() const
-{
-	return m_activeTrip;
-}
-
-// tell us if this dive is the first dive in a trip that has at least one
-// dive that isn't hidden (even if this dive is hidden)
-static bool isFirstInNotCompletelyHiddenTrip(struct dive *d)
-{
-	struct dive_trip *dt = d->divetrip;
-	if (dt->dives.nr > 0 && dt->dives.dives[0] == d) {
-		// ok, this is the first dive in its trip
-		int i = -1;
-		while (++i < dt->dives.nr)
-			if (!dt->dives.dives[i]->hidden_by_filter)
-				return true;
-	}
-	return false;
-}
-
-// the mobile app allows only one selected dive
-// that means there are either zero or exactly one expanded trip -
-bool CollapsedDiveListSortModel::isExpanded(struct dive_trip *dt) const
-{
-	return !m_activeTrip.isEmpty() && dt == tripIdToObject(m_activeTrip);
-}
-
-void CollapsedDiveListSortModel::updateFilterState()
-{
-	// now do something clever to show the right dives
-	// first make sure that the underlying filtering is taken care of
-	DiveListSortModel::instance()->updateFilterState();
-	int i;
-	struct dive *d;
-	for_each_dive(i, d) {
-		CollapsedState state = DontShow;
-		struct dive_trip *dt = d->divetrip;
-
-		// we show the dives that are outside of a trip or inside of the one expanded trip
-		if (!d->hidden_by_filter && (dt == nullptr || isExpanded(dt)))
-			state = ShowDive;
-		// we mark the first dive of a trip that contains any unfiltered dives as ShowTrip  or ShowDiveAndTrip (if this is the one expanded trip)
-		if (dt != nullptr && isFirstInNotCompletelyHiddenTrip(d))
-			state = (state == ShowDive) ? ShowDiveAndTrip : ShowTrip;
-		d->collapsed = state;
-	}
-	// everything up to here can be done even if we don't have a source model
-	if (sourceModel() != nullptr) {
-		DiveListModel *dlm = DiveListModel::instance();
-		dlm->dataChanged(dlm->index(0,0), dlm->index(dlm->rowCount() - 1, 0));
-	}
-}
-
-void CollapsedDiveListSortModel::updateSelectionState()
-{
-	QVector<int> changedRoles = { DiveListModel::SelectedRole };
-	dataChanged(index(0,0), index(rowCount() - 1, 0), changedRoles);
-}
-
-bool CollapsedDiveListSortModel::filterAcceptsRow(int source_row, const QModelIndex &) const
-{
-	// get the corresponding dive from the DiveListModel and check if we should show it
-	const dive *d = DiveListModel::instance()->getDive(source_row);
-	if (verbose > 1)
-		qDebug() << "FAR source row" << source_row << "dive" << (d ? QString::number(d->number) : "NULL") << "is" << (d != nullptr && d->collapsed != DontShow) <<
-			    (d != nullptr ? QString::number(d->collapsed) : "");
-	return d != nullptr && d->collapsed != DontShow;
-}
-
 DiveListSortModel::DiveListSortModel()
 {
 	setSourceModel(DiveListModel::instance());
@@ -220,7 +51,6 @@ void DiveListSortModel::setFilter(QString f, FilterData::Mode mode)
 			data.tags = f.split(",", QString::SkipEmptyParts);
 	}
 	DiveFilter::instance()->setFilter(data);
-	CollapsedDiveListSortModel::instance()->updateFilterState();
 	invalidateFilter();
 }
 
@@ -395,7 +225,6 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 	case StartPressureRole: return getStartPressure(d);
 	case EndPressureRole: return getEndPressure(d);
 	case FirstGasRole: return getFirstGas(d);
-	case CollapsedRole: return d->collapsed;
 	case SelectedRole: return d->selected;
 	}
 	return QVariant();
@@ -435,7 +264,6 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 	roles[StartPressureRole] = "startPressure";
 	roles[EndPressureRole] = "endPressure";
 	roles[FirstGasRole] = "firstGas";
-	roles[CollapsedRole] = "collapsed";
 	roles[SelectedRole] = "selected";
 	return roles;
 }
