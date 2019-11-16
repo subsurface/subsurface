@@ -4,6 +4,7 @@
 #include <QAbstractTableModel>
 #include <vector>
 #include "core/divesite.h"
+#include "core/divelist.h"
 #include "core/downloadfromdcthread.h"
 
 class DiveImportedModel : public QAbstractTableModel
@@ -25,7 +26,7 @@ public:
 	std::pair<struct dive_table, struct dive_site_table> consumeTables(); // Returns dives and sites and resets model.
 
 	int numDives() const;
-	Q_INVOKABLE void recordDives();
+	Q_INVOKABLE void recordDives(int flags = IMPORT_PREFER_IMPORTED | IMPORT_IS_DOWNLOADED);
 	Q_INVOKABLE void startDownload();
 
 	DownloadThread thread;

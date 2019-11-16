@@ -429,7 +429,6 @@ bool DCDeviceData::saveLog() const
 	return data.libdc_log;
 }
 
-
 device_data_t *DCDeviceData::internalData()
 {
 	return &data;
