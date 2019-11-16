@@ -467,6 +467,7 @@ void DiveTripModelBase::initSelection()
 
 void DiveTripModelBase::clear()
 {
+	Command::clear(); // If we clear the dive list, all undo-information becomes stalte.
 	beginResetModel();
 	clear_dive_file_data();
 	clearData();
