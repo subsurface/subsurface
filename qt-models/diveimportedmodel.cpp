@@ -1,6 +1,7 @@
 #include "diveimportedmodel.h"
 #include "core/qthelper.h"
 #include "core/divelist.h"
+#include "commands/command.h"
 
 DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
 	diveTable(empty_dive_table),
@@ -184,21 +185,21 @@ void DiveImportedModel::deleteDeselected()
 }
 
 // Note: this function is only used from mobile - perhaps move it there or unify.
-void DiveImportedModel::recordDives()
+void DiveImportedModel::recordDives(int flags)
 {
+	// delete non-selected dives
 	deleteDeselected();
 
-	if (diveTable.nr == 0)
-		// nothing to do, just exit
-		return;
-
-	// Consume the tables. They will be consumed by add_imported_dives() anyway.
-	// But let's do it in a controlled way with a proper model-reset so that the
-	// model doesn't become inconsistent.
+	// TODO: use structured bindings once we go C++17
 	std::pair<struct dive_table, struct dive_site_table> tables = consumeTables();
-
-	// TODO: Might want to let the user select IMPORT_ADD_TO_NEW_TRIP
-	add_imported_dives(&tables.first, nullptr, &tables.second, IMPORT_PREFER_IMPORTED | IMPORT_IS_DOWNLOADED);
+	if (tables.first.nr > 0) {
+		auto data = thread.data();
+		Command::importDives(&tables.first, nullptr, &tables.second, flags, data->devName());
+	} else {
+		clear_dive_site_table(&tables.second);
+	}
+	// The dives and dive sites have been consumed, but the arrays of the tables
+	// still exist. Free them.
 	free(tables.first.dives);
 	free(tables.second.dive_sites);
 }
