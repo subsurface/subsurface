@@ -33,6 +33,7 @@ public:
 	~GpsLocation();
 	static GpsLocation *instance();
 	static bool hasInstance();
+	std::vector<DiveAndLocation> getLocations();
 	int applyLocations();
 	int getGpsNum() const;
 	bool hasLocationsSource();

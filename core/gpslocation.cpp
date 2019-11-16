@@ -218,15 +218,14 @@ int GpsLocation::getGpsNum() const
 	last = _mark;							\
 }
 
-int GpsLocation::applyLocations()
+std::vector<DiveAndLocation> GpsLocation::getLocations()
 {
 	int i;
 	int last = 0;
 	int cnt = m_trackers.count();
-	if (cnt == 0)
-		return false;
-
 	std::vector<DiveAndLocation> fixes;
+	if (cnt == 0)
+		return fixes;
 
 	// create a table with the GPS information
 	QList<struct gpsTracker> gpsTable = m_trackers.values();
@@ -308,6 +307,12 @@ int GpsLocation::applyLocations()
 		}
 	}
 
+	return fixes;
+}
+
+int GpsLocation::applyLocations()
+{
+	std::vector<DiveAndLocation> fixes = getLocations();
 	for (DiveAndLocation &dl: fixes) {
 		struct dive_site *ds = dl.d->dive_site;
 		if (!ds) {
