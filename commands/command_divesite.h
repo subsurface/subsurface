@@ -5,6 +5,7 @@
 #define COMMAND_DIVESITE_H
 
 #include "command_base.h"
+#include "core/gpslocation.h"
 
 #include <QVector>
 
@@ -110,7 +111,6 @@ private:
 	QString value; // Value to be set
 };
 
-
 class EditDiveSiteCountry : public Base {
 public:
 	EditDiveSiteCountry(dive_site *ds, const QString &country);
@@ -163,6 +163,30 @@ private:
 
 	// For undo
 	std::vector<OwningDiveSitePtr> sitesToAdd;
+};
+
+class ApplyGPSFixes : public Base {
+public:
+	// Note: the dive site table is consumed after the call it will be empty.
+	ApplyGPSFixes(const std::vector<DiveAndLocation> &fixes);
+private:
+	bool workToBeDone() override;
+	void undo() override;
+	void redo() override;
+
+	// For undo
+	std::vector<dive_site *> sitesToRemove;
+
+	// For redo
+	std::vector<OwningDiveSitePtr> sitesToAdd;
+
+	// For redo and undo
+	struct SiteAndLocation {
+		dive_site *ds;
+		location_t location;
+	};
+	std::vector<SiteAndLocation> siteLocations;
+	void editDiveSites();
 };
 
 } // namespace Command
