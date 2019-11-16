@@ -145,6 +145,11 @@ void purgeUnusedDiveSites()
 	execute(new PurgeUnusedDiveSites);
 }
 
+void applyGPSFixes(const std::vector<DiveAndLocation> &fixes)
+{
+	execute(new ApplyGPSFixes(fixes));
+}
+
 // Execute an edit-command and return number of edited dives
 static int execute_edit(EditDivesBase *cmd)
 {

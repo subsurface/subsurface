@@ -5,6 +5,9 @@
 #include "core/dive.h"
 #include <QVector>
 #include <QAction>
+#include <vector>
+
+struct DiveAndLocation;
 
 // We put everything in a namespace, so that we can shorten names without polluting the global namespace
 namespace Command {
@@ -41,6 +44,7 @@ void splitDiveComputer(dive *d, int dc_num);
 void moveDiveComputerToFront(dive *d, int dc_num);
 void deleteDiveComputer(dive *d, int dc_num);
 void mergeDives(const QVector <dive *> &dives);
+void applyGPSFixes(const std::vector<DiveAndLocation> &fixes);
 
 // 3) Dive-site related commands
 

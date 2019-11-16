@@ -391,4 +391,51 @@ void MergeDiveSites::undo()
 	emit diveListNotifier.divesChanged(divesChanged, DiveField::DIVESITE);
 }
 
+ApplyGPSFixes::ApplyGPSFixes(const std::vector<DiveAndLocation> &fixes)
+{
+	setText(tr("apply GPS fixes"));
+
+	for (const DiveAndLocation &dl: fixes) {
+		struct dive_site *ds = dl.d->dive_site;
+		if (ds) {
+			// Arbitrary choice: if we find multiple fixes for the same dive, we use the first one.
+			if (std::find_if(siteLocations.begin(), siteLocations.end(),
+					 [ds] (const SiteAndLocation &sl) { return sl.ds == ds; }) == siteLocations.end()) {
+				siteLocations.push_back({ ds, dl.location });
+			}
+		} else {
+			ds = create_dive_site(qPrintable(dl.name), &dive_site_table);
+			ds->location = dl.location;
+			add_dive_to_dive_site(dl.d, ds);
+			dl.d->dive_site = nullptr; // This will be set on redo()
+			sitesToAdd.emplace_back(ds);
+		}
+	}
+}
+
+bool ApplyGPSFixes::workToBeDone()
+{
+	return !sitesToAdd.empty() || !siteLocations.empty();
+}
+
+void ApplyGPSFixes::editDiveSites()
+{
+	for (SiteAndLocation &sl: siteLocations) {
+		std::swap(sl.location, sl.ds->location);
+		emit diveListNotifier.diveSiteChanged(sl.ds, LocationInformationModel::LOCATION); // Inform frontend of changed dive site.
+	}
+}
+
+void ApplyGPSFixes::redo()
+{
+	sitesToRemove = addDiveSites(sitesToAdd);
+	editDiveSites();
+}
+
+void ApplyGPSFixes::undo()
+{
+	sitesToAdd = removeDiveSites(sitesToRemove);
+	editDiveSites();
+}
+
 } // namespace Command
