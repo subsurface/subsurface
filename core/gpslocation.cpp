@@ -310,23 +310,6 @@ std::vector<DiveAndLocation> GpsLocation::getLocations()
 	return fixes;
 }
 
-int GpsLocation::applyLocations()
-{
-	std::vector<DiveAndLocation> fixes = getLocations();
-	for (DiveAndLocation &dl: fixes) {
-		struct dive_site *ds = dl.d->dive_site;
-		if (!ds) {
-			ds = create_dive_site(qPrintable(dl.name), &dive_site_table);
-			add_dive_to_dive_site(dl.d, ds);
-			invalidate_dive_cache(dl.d);
-		}
-		ds->location = dl.location;
-	}
-	if (!fixes.empty())
-		mark_divelist_changed(true);
-	return !fixes.empty();
-}
-
 QMap<qint64, gpsTracker> GpsLocation::currentGPSInfo() const
 {
 	return m_trackers;
