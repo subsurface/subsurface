@@ -20,6 +20,12 @@ struct gpsTracker {
 	int idx;
 };
 
+struct DiveAndLocation {
+	struct dive *d;
+	location_t location;
+	QString name;
+};
+
 class GpsLocation : public QObject {
 	Q_OBJECT
 public:
