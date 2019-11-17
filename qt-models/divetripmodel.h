@@ -78,8 +78,7 @@ public:
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 	DiveTripModelBase(QObject *parent = 0);
 	int columnCount(const QModelIndex&) const;
-	virtual void filterFinished() = 0;
-	virtual bool setShown(const QModelIndex &idx, bool shown) = 0;
+	virtual void recalculateFilter() = 0;
 
 	// Used for sorting. This is a bit of a layering violation, as sorting should be performed
 	// by the higher-up QSortFilterProxyModel, but it makes things so much easier!
@@ -123,11 +122,10 @@ private:
 	QModelIndex index(int row, int column, const QModelIndex &parent) const override;
 	QModelIndex parent(const QModelIndex &index) const override;
 	QVariant data(const QModelIndex &index, int role) const override;
-	void filterFinished() override;
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
 	void divesSelectedTrip(dive_trip *trip, const QVector<dive *> &dives, QVector<QModelIndex> &);
 	dive *diveOrNull(const QModelIndex &index) const override;
-	bool setShown(const QModelIndex &idx, bool shown);
+	void recalculateFilter();
 	void divesChangedTrip(dive_trip *trip, const QVector<dive *> &dives);
 	void divesTimeChangedTrip(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
 
@@ -189,10 +187,9 @@ private:
 	QModelIndex index(int row, int column, const QModelIndex &parent) const override;
 	QModelIndex parent(const QModelIndex &index) const override;
 	QVariant data(const QModelIndex &index, int role) const override;
-	void filterFinished() override;
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
 	dive *diveOrNull(const QModelIndex &index) const override;
-	bool setShown(const QModelIndex &idx, bool shown);
+	void recalculateFilter();
 
 	std::vector<dive *> items;				// TODO: access core data directly
 };

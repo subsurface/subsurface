@@ -193,7 +193,7 @@ void DiveFilter::startFilterDiveSites(QVector<dive_site *> ds)
 		// When switching into dive site mode, reload the dive sites.
 		// We won't do this in myInvalidate() once we are in dive site mode.
 		MapWidget::instance()->reload();
-		MultiFilterSortModel::instance()->myInvalidate();
+		DiveTripModelBase::instance()->recalculateFilter();
 	}
 }
 
@@ -202,7 +202,7 @@ void DiveFilter::stopFilterDiveSites()
 	if (--diveSiteRefCount > 0)
 		return;
 	dive_sites.clear();
-	MultiFilterSortModel::instance()->myInvalidate();
+	DiveTripModelBase::instance()->recalculateFilter();
 	MapWidget::instance()->reload();
 }
 
@@ -215,7 +215,7 @@ void DiveFilter::setFilterDiveSite(QVector<dive_site *> ds)
 		return;
 	dive_sites = ds;
 
-	MultiFilterSortModel::instance()->myInvalidate();
+	DiveTripModelBase::instance()->recalculateFilter();
 	MapWidget::instance()->setSelected(dive_sites);
 	MainWindow::instance()->diveList->expandAll();
 }
@@ -233,6 +233,6 @@ bool DiveFilter::diveSiteMode() const
 void DiveFilter::setFilter(const FilterData &data)
 {
 	filterData = data;
-	MultiFilterSortModel::instance()->myInvalidate();
+	DiveTripModelBase::instance()->recalculateFilter();
 }
 #endif // SUBSURFACE_MOBILE
