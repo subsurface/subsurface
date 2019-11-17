@@ -214,6 +214,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(this, &MainWindow::showError, ui.mainErrorMessage, &NotificationWidget::showError, Qt::AutoConnection);
 
 	connect(&windowTitleUpdate, &WindowTitleUpdate::updateTitle, this, &MainWindow::setAutomaticTitle);
+	connect(&diveListNotifier, &DiveListNotifier::numShownChanged, this, &MainWindow::setAutomaticTitle);
 #ifdef NO_PRINTING
 	plannerDetails->printPlan()->hide();
 	ui.menuFile->removeAction(ui.actionPrint);

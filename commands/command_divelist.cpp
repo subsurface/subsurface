@@ -40,6 +40,9 @@ DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<OwningTripPtr> &t
 	if (idx < 0)
 		qWarning("Deletion of unknown dive!");
 
+	if (!d->hidden_by_filter)
+		--shown_dives;
+
 	res.dive.reset(unregister_dive(idx));		// Remove dive from backend
 
 	return res;
@@ -67,6 +70,8 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 	// Set the filter flag according to current filter settings
 	bool show = MultiFilterSortModel::instance()->showDive(res);
 	res->hidden_by_filter = !show;
+	if (show)
+		++shown_dives;
 
 	int idx = dive_table_get_insertion_index(&dive_table, res);
 	add_to_dive_table(&dive_table, idx, res);	// Return ownership to backend
@@ -118,6 +123,9 @@ DivesAndTripsToAdd DiveListBase::removeDives(DivesAndSitesToRemove &divesAndSite
 	divesToAdd.reserve(divesAndSitesToDelete.dives.size());
 	sitesToAdd.reserve(divesAndSitesToDelete.sites.size());
 
+	// Remember old number of shown dives
+	int oldShown = shown_dives;
+
 	// Make sure that the dive list is sorted. The added dives will be sent in a signal
 	// and the recipients assume that the dives are sorted the same way as they are
 	// in the core list.
@@ -149,6 +157,10 @@ DivesAndTripsToAdd DiveListBase::removeDives(DivesAndSitesToRemove &divesAndSite
 					       { return ptr.get() == trip; }) != tripsToAdd.end();
 		emit diveListNotifier.divesDeleted(trip, deleteTrip, divesInTrip);
 	});
+
+	if (oldShown != shown_dives)
+		emit diveListNotifier.numShownChanged();
+
 	return { std::move(divesToAdd), std::move(tripsToAdd), std::move(sitesToAdd) };
 }
 
@@ -171,6 +183,9 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 	std::sort(toAdd.dives.begin(), toAdd.dives.end(),
 		  [](const DiveToAdd &d, const DiveToAdd &d2)
 		  { return dive_less_than(d.dive.get(), d2.dive.get()); });
+
+	// Remember old number of shown dives
+	int oldShown = shown_dives;
 
 	// Now, add the dives
 	// Note: the idiomatic STL-way would be std::transform, but let's use a loop since
@@ -207,6 +222,10 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 		// Finally, emit the signal
 		emit diveListNotifier.divesAdded(trip, createTrip, divesInTrip);
 	});
+
+	if (oldShown != shown_dives)
+		emit diveListNotifier.numShownChanged();
+
 	return { res, sites };
 }
 
