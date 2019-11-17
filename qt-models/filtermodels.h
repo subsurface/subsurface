@@ -72,8 +72,6 @@ slots:
 	void stopFilterDiveSites();
 	void resetModel(DiveTripModelBase::Layout layout);
 	void filterDataChanged(const FilterData &data);
-	void divesAdded(struct dive_trip *, bool, const QVector<dive *> &dives);
-	void divesDeleted(struct dive_trip *, bool, const QVector<dive *> &dives);
 
 signals:
 	void filterFinished();

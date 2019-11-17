@@ -92,6 +92,9 @@ signals:
 	void diveSiteChanged(dive_site *ds, int field); // field according to LocationInformationModel
 	void diveSiteDivesChanged(dive_site *ds); // The dives associated with that site changed
 
+	// Filter-related signals
+	void numShownChanged();
+
 	// This signal is emited every time a command is executed.
 	// This is used to hide an old multi-dives-edited warning message.
 	// This is necessary, so that the user can't click on the "undo" button and undo
