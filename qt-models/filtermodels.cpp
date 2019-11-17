@@ -199,14 +199,6 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 	return m->data(index0, DiveTripModelBase::SHOWN_ROLE).value<bool>();
 }
 
-void MultiFilterSortModel::filterChanged(const QModelIndex &from, const QModelIndex &to, const QVector<int> &roles)
-{
-	// Only redo the filter if a checkbox changed. If the count of an entry changed,
-	// we do *not* want to recalculate the filters.
-	if (roles.contains(Qt::CheckStateRole))
-		myInvalidate();
-}
-
 void MultiFilterSortModel::myInvalidate()
 {
 	QAbstractItemModel *m = sourceModel();
