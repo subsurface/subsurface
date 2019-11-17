@@ -1377,7 +1377,6 @@ void DiveTripModelList::filterFinished()
 	// In list mode, we don't have to change anything after filter finished.
 }
 
-
 // Simple sorting helper for sorting against a criterium and if
 // that is undefined against a different criterium.
 // Return true if diff1 < 0, false if diff1 > 0.

@@ -57,8 +57,6 @@ void MultiFilterSortModel::myInvalidate()
 		// as a consequence of the filterFinished signal right after the local scope.
 		auto marker = diveListNotifier.enterCommand();
 
-		shown_dives = 0;
-
 		DiveFilter *filter = DiveFilter::instance();
 		for (int i = 0; i < m->rowCount(QModelIndex()); ++i) {
 			QModelIndex idx = m->index(i, 0, QModelIndex());
@@ -75,18 +73,14 @@ void MultiFilterSortModel::myInvalidate()
 						continue;
 					}
 					bool show = filter->showDive(d);
-					if (show) {
-						shown_dives++;
+					if (show)
 						showTrip = true;
-					}
 					m->setData(idx2, show, DiveTripModelBase::SHOWN_ROLE);
 				}
 				m->setData(idx, showTrip, DiveTripModelBase::SHOWN_ROLE);
 			} else {
 				dive *d = m->data(idx, DiveTripModelBase::DIVE_ROLE).value<dive *>();
 				bool show = (d != NULL) && filter->showDive(d);
-				if (show)
-					shown_dives++;
 				m->setData(idx, show, DiveTripModelBase::SHOWN_ROLE);
 			}
 		}
@@ -103,14 +97,8 @@ void MultiFilterSortModel::myInvalidate()
 
 bool MultiFilterSortModel::updateDive(struct dive *d)
 {
-	bool oldStatus = !d->hidden_by_filter;
 	bool newStatus = DiveFilter::instance()->showDive(d);
-	bool changed = oldStatus != newStatus;
-	if (changed) {
-		filter_dive(d, newStatus);
-		shown_dives += newStatus - oldStatus;
-	}
-	return changed;
+	return filter_dive(d, newStatus);
 }
 
 bool MultiFilterSortModel::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
