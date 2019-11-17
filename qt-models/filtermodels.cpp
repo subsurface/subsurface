@@ -107,7 +107,6 @@ MultiFilterSortModel *MultiFilterSortModel::instance()
 }
 
 MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent),
-	divesDisplayed(0),
 	diveSiteRefCount(0)
 {
 	setFilterKeyColumn(-1); // filter all columns
@@ -215,7 +214,7 @@ void MultiFilterSortModel::myInvalidate()
 		// as a consequence of the filterFinished signal right after the local scope.
 		auto marker = diveListNotifier.enterCommand();
 
-		divesDisplayed = 0;
+		shown_dives = 0;
 
 		for (int i = 0; i < m->rowCount(QModelIndex()); ++i) {
 			QModelIndex idx = m->index(i, 0, QModelIndex());
@@ -233,7 +232,7 @@ void MultiFilterSortModel::myInvalidate()
 					}
 					bool show = showDive(d);
 					if (show) {
-						divesDisplayed++;
+						shown_dives++;
 						showTrip = true;
 					}
 					m->setData(idx2, show, DiveTripModelBase::SHOWN_ROLE);
@@ -243,7 +242,7 @@ void MultiFilterSortModel::myInvalidate()
 				dive *d = m->data(idx, DiveTripModelBase::DIVE_ROLE).value<dive *>();
 				bool show = (d != NULL) && showDive(d);
 				if (show)
-					divesDisplayed++;
+					shown_dives++;
 				m->setData(idx, show, DiveTripModelBase::SHOWN_ROLE);
 			}
 		}
@@ -278,7 +277,7 @@ bool MultiFilterSortModel::updateDive(struct dive *d)
 	bool changed = oldStatus != newStatus;
 	if (changed) {
 		filter_dive(d, newStatus);
-		divesDisplayed += newStatus - oldStatus;
+		shown_dives += newStatus - oldStatus;
 	}
 	return changed;
 }
@@ -348,7 +347,7 @@ void MultiFilterSortModel::divesAdded(dive_trip *, bool, const QVector<dive *> &
 {
 	for (dive *d: dives) {
 		if (!d->hidden_by_filter)
-			++divesDisplayed;
+			++shown_dives;
 	}
 	countsChanged();
 }
@@ -357,7 +356,7 @@ void MultiFilterSortModel::divesDeleted(dive_trip *, bool, const QVector<dive *>
 {
 	for (dive *d: dives) {
 		if (!d->hidden_by_filter)
-			--divesDisplayed;
+			--shown_dives;
 	}
 	countsChanged();
 }

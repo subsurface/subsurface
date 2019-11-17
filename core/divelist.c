@@ -899,6 +899,7 @@ void deselect_dive(struct dive *dive)
 	}
 }
 
+int shown_dives = 0;
 void filter_dive(struct dive *d, bool shown)
 {
 	if (!d)

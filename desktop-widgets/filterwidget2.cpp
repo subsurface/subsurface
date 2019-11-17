@@ -2,6 +2,7 @@
 #include "desktop-widgets/simplewidgets.h"
 #include "desktop-widgets/mainwindow.h"
 #include "core/qthelper.h"
+#include "core/divelist.h"
 #include "core/settings/qPrefUnit.h"
 
 #include <QDoubleSpinBox>
@@ -242,8 +243,7 @@ void FilterWidget2::filterDataChanged(const FilterData &data)
 QString FilterWidget2::shownText()
 {
 	if (isActive())
-		return tr("%L1/%L2 shown").arg(MultiFilterSortModel::instance()->divesDisplayed)
-				.arg(dive_table.nr);
+		return tr("%L1/%L2 shown").arg(shown_dives).arg(dive_table.nr);
 	else
 		return tr("%L1 dives").arg(dive_table.nr);
 }
