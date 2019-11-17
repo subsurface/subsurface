@@ -44,7 +44,7 @@ extern int remove_dive(const struct dive *dive, struct dive_table *table);
 extern bool consecutive_selected();
 extern void select_dive(struct dive *dive);
 extern void deselect_dive(struct dive *dive);
-extern void filter_dive(struct dive *d, bool shown);
+extern bool filter_dive(struct dive *d, bool shown); /* returns true if status changed */
 extern struct dive *first_selected_dive();
 extern struct dive *last_selected_dive();
 extern int get_dive_nr_at_idx(int idx);

@@ -900,13 +900,19 @@ void deselect_dive(struct dive *dive)
 }
 
 int shown_dives = 0;
-void filter_dive(struct dive *d, bool shown)
+bool filter_dive(struct dive *d, bool shown)
 {
+	bool old_shown, changed;
 	if (!d)
-		return;
+		return false;
+	old_shown = !d->hidden_by_filter;
 	d->hidden_by_filter = !shown;
 	if (!shown && d->selected)
 		deselect_dive(d);
+	changed = old_shown != shown;
+	if (changed)
+		shown_dives += shown - old_shown;
+	return changed;
 }
 
 void mark_divelist_changed(bool changed)
@@ -927,9 +933,13 @@ void process_loaded_dives()
 	int i;
 	struct dive *dive;
 
-	/* Register dive computer nick names */
-	for_each_dive(i, dive)
+	/* Register dive computer nick names and count shown dives. */
+	shown_dives = 0;
+	for_each_dive(i, dive) {
+		if (!dive->hidden_by_filter)
+			shown_dives++;
 		set_dc_nickname(dive);
+	}
 
 	sort_dive_table(&dive_table);
 	sort_trip_table(&trip_table);
@@ -1448,6 +1458,7 @@ void clear_dive_file_data()
 	while (dive_table.nr)
 		delete_single_dive(0);
 	current_dive = NULL;
+	shown_dives = 0;
 	while (dive_site_table.nr)
 		delete_dive_site(get_dive_site(0, &dive_site_table), &dive_site_table);
 	if (trip_table.nr != 0) {
