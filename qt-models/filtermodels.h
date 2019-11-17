@@ -71,7 +71,6 @@ slots:
 	void startFilterDiveSites(QVector<dive_site *> ds);
 	void setFilterDiveSite(QVector<dive_site *> ds);
 	void stopFilterDiveSites();
-	void filterChanged(const QModelIndex &from, const QModelIndex &to, const QVector<int> &roles);
 	void resetModel(DiveTripModelBase::Layout layout);
 	void filterDataChanged(const FilterData &data);
 	void divesAdded(struct dive_trip *, bool, const QVector<dive *> &dives);
