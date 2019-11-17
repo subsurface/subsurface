@@ -7,10 +7,10 @@
 #include "qmlmapwidgethelper.h"
 #include "core/divesite.h"
 #include "core/qthelper.h"
+#include "core/divefilter.h"
 #include "qt-models/maplocationmodel.h"
 #include "qt-models/divelocationmodel.h"
 #ifndef SUBSURFACE_MOBILE
-#include "qt-models/filtermodels.h"
 #include "desktop-widgets/mapwidget.h"
 #endif
 
@@ -106,7 +106,7 @@ void MapWidgetHelper::updateEditMode()
 	// The filter being set to dive site is the signal that we are in dive site edit mode.
 	// This is the case when either the dive site edit tab or the dive site list tab are active.
 	bool old = m_editMode;
-	m_editMode = MultiFilterSortModel::instance()->diveSiteMode();
+	m_editMode = DiveFilter::instance()->diveSiteMode();
 	if (old != m_editMode)
 		emit editModeChanged();
 #endif

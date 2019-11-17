@@ -2,6 +2,7 @@
 #include "maplocationmodel.h"
 #include "divelocationmodel.h"
 #include "core/divesite.h"
+#include "core/divefilter.h"
 #ifndef SUBSURFACE_MOBILE
 #include "qt-models/filtermodels.h"
 #include "desktop-widgets/mapwidget.h"
@@ -133,9 +134,9 @@ void MapLocationModel::reload(QObject *map)
 	// the dive site tab), we want to show all dive sites, not only those
 	// of the non-hidden dives. Moreover, the selected dive sites are those
 	// that we filter for.
-	bool diveSiteMode = MultiFilterSortModel::instance()->diveSiteMode();
+	bool diveSiteMode = DiveFilter::instance()->diveSiteMode();
 	if (diveSiteMode)
-		m_selectedDs = MultiFilterSortModel::instance()->filteredDiveSites();
+		m_selectedDs = DiveFilter::instance()->filteredDiveSites();
 #endif
 	for (int i = 0; i < dive_site_table.nr; ++i) {
 		struct dive_site *ds = dive_site_table.dive_sites[i];

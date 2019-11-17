@@ -10,6 +10,7 @@
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/divepicturewidget.h"
 #include "core/display.h"
+#include "core/divefilter.h"
 #include <unistd.h>
 #include <QSettings>
 #include <QKeyEvent>
@@ -463,7 +464,7 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 	// But don't do this if we are in divesite mode, because then
 	// the dive-site selection is controlled by the filter not
 	// by the selected dives.
-	if (!MultiFilterSortModel::instance()->diveSiteMode()) {
+	if (!DiveFilter::instance()->diveSiteMode()) {
 		QVector<dive_site *> selectedSites;
 		for (int idx: newDiveSelection) {
 			dive *d = get_dive(idx);
@@ -698,7 +699,7 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 		// But don't do this if we are in divesite mode, because then
 		// the dive-site selection is controlled by the filter not
 		// by the selected dives.
-		if (!MultiFilterSortModel::instance()->diveSiteMode()) {
+		if (!DiveFilter::instance()->diveSiteMode()) {
 			QVector<dive_site *> selectedSites;
 			for (QModelIndex index: selectionModel()->selection().indexes()) {
 				const QAbstractItemModel *model = index.model();

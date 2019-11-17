@@ -5,7 +5,7 @@
 #include "desktop-widgets/divelistview.h"
 #include "core/qthelper.h"
 #include "desktop-widgets/mapwidget.h"
-#include "qt-models/filtermodels.h"
+#include "core/divefilter.h"
 #include "core/divesitehelpers.h"
 #include "desktop-widgets/modeldelegates.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
@@ -194,7 +194,7 @@ void LocationInformationWidget::acceptChanges()
 	MainWindow::instance()->diveList->setEnabled(true);
 	MainWindow::instance()->setEnabledToolbar(true);
 	MainWindow::instance()->setApplicationState(ApplicationState::Default);
-	MultiFilterSortModel::instance()->stopFilterDiveSites();
+	DiveFilter::instance()->stopFilterDiveSites();
 
 	// Subtlety alert: diveSite must be cleared *after* exiting the dive-site mode.
 	// Exiting dive-site mode removes the focus from the active widget and
@@ -211,7 +211,7 @@ void LocationInformationWidget::initFields(dive_site *ds)
 		filter_model.set(ds, ds->location);
 		updateLabels();
 		enableLocationButtons(dive_site_has_gps_location(ds));
-		MultiFilterSortModel::instance()->startFilterDiveSites(QVector<dive_site *>{ ds });
+		DiveFilter::instance()->startFilterDiveSites(QVector<dive_site *>{ ds });
 		filter_model.invalidate();
 	} else {
 		filter_model.set(0, location_t { degrees_t{ 0 }, degrees_t{ 0 } });

@@ -237,7 +237,7 @@ void FilterWidget2::hideEvent(QHideEvent *event)
 
 void FilterWidget2::filterDataChanged(const FilterData &data)
 {
-	MultiFilterSortModel::instance()->filterDataChanged(data);
+	DiveFilter::instance()->setFilter(data);
 }
 
 QString FilterWidget2::shownText()

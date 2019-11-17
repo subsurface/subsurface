@@ -11,6 +11,7 @@
 #include "core/save-html.h"
 #include "core/settings/qPrefDisplay.h"
 #include "core/save-profiledata.h"
+#include "core/divefilter.h"
 #include "core/divesite.h"
 #include "core/errorhelper.h"
 #include "core/file.h"
@@ -134,10 +135,10 @@ static std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly)
 {
 	std::vector<const dive_site *> res;
 
-	if (selectedOnly && MultiFilterSortModel::instance()->diveSiteMode()) {
+	if (selectedOnly && DiveFilter::instance()->diveSiteMode()) {
 		// Special case in dive site mode: export all selected dive sites,
 		// not the dive sites of selected dives.
-		QVector<dive_site *> sites = MultiFilterSortModel::instance()->filteredDiveSites();
+		QVector<dive_site *> sites = DiveFilter::instance()->filteredDiveSites();
 		res.reserve(sites.size());
 		for (const dive_site *ds: sites)
 			res.push_back(ds);

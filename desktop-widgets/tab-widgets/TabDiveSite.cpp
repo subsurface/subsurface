@@ -2,8 +2,8 @@
 #include "TabDiveSite.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
 #include "core/divesite.h"
+#include "core/divefilter.h"
 #include "qt-models/divelocationmodel.h"
-#include "qt-models/filtermodels.h"
 #include "commands/command.h"
 
 #include <qt-models/divecomputerextradatamodel.h>
@@ -97,18 +97,18 @@ QVector<dive_site *> TabDiveSite::selectedDiveSites()
 
 void TabDiveSite::selectionChanged(const QItemSelection &, const QItemSelection &)
 {
-	MultiFilterSortModel::instance()->setFilterDiveSite(selectedDiveSites());
+	DiveFilter::instance()->setFilterDiveSite(selectedDiveSites());
 }
 
 void TabDiveSite::showEvent(QShowEvent *)
 {
 	// If the user switches to the dive site tab and there was already a selection,
 	// filter on that selection.
-	MultiFilterSortModel::instance()->startFilterDiveSites(selectedDiveSites());
+	DiveFilter::instance()->startFilterDiveSites(selectedDiveSites());
 }
 
 void TabDiveSite::hideEvent(QHideEvent *)
 {
 	// If the user switches to a different tab, stop the dive site filtering
-	MultiFilterSortModel::instance()->stopFilterDiveSites();
+	DiveFilter::instance()->stopFilterDiveSites();
 }
