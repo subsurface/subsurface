@@ -47,7 +47,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	resetModel();
 
 	// Update selection if all selected dives were hidden by filter
-	connect(MultiFilterSortModel::instance(), &MultiFilterSortModel::filterFinished, this, &DiveListView::filterFinished);
+	connect(&diveListNotifier, &DiveListNotifier::filterReset, this, &DiveListView::filterFinished);
 
 	connect(&diveListNotifier, &DiveListNotifier::tripChanged, this, &DiveListView::tripChanged);
 

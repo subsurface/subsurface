@@ -94,6 +94,7 @@ signals:
 
 	// Filter-related signals
 	void numShownChanged();
+	void filterReset();
 
 	// This signal is emited every time a command is executed.
 	// This is used to hide an old multi-dives-edited warning message.

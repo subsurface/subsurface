@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/divetripmodel.h"
-#include "qt-models/filtermodels.h"
 #include "core/divefilter.h"
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
@@ -400,9 +399,6 @@ Qt::ItemFlags DiveTripModelBase::flags(const QModelIndex &index) const
 
 bool DiveTripModelBase::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	if (role == SHOWN_ROLE)
-		return setShown(index, value.value<bool>());
-
 	// We only support setting of data for dives and there, only the number.
 	dive *d = diveOrNull(index);
 	if (!d)
@@ -688,33 +684,48 @@ dive *DiveTripModelTree::diveOrNull(const QModelIndex &index) const
 	return tripOrDive(index).dive;
 }
 
-// Set the shown flag that marks whether an entry is shown or hidden by the filter.
-// The flag is cached for top-level items (trips and dives outside of trips).
-// For dives that belong to a trip (i.e. non-top-level items), the flag is
-// simply written through to the core.
-bool DiveTripModelTree::setShown(const QModelIndex &idx, bool shown)
+void DiveTripModelTree::recalculateFilter()
 {
-	if (!idx.isValid())
-		return false;
-
-	QModelIndex parent = idx.parent();
-	if (!parent.isValid()) {
-		// An invalid parent means that we're at the top-level
-		Item &item = items[idx.row()];
-		item.shown = shown; // Cache the flag.
-		if (item.d_or_t.dive) {
-			// This is a dive -> also register the flag in the core
-			filter_dive(item.d_or_t.dive, shown);
+	{
+		// This marker prevents the UI from getting notifications on selection changes.
+		// It is active until the end of the scope.
+		// This was actually designed for the undo-commands, so that they can do their work
+		// without having the UI updated.
+		// Here, it is used because invalidating the filter can generate numerous
+		// selection changes, which do full ui reloads. Instead, do that all at once
+		// as a consequence of the filterReset signal right after the local scope.
+		auto marker = diveListNotifier.enterCommand();
+		DiveFilter *filter = DiveFilter::instance();
+		for (Item &item: items) {
+			if (item.d_or_t.dive) {
+				dive *d = item.d_or_t.dive;
+				item.shown = filter->showDive(item.d_or_t.dive);
+				filter_dive(d, item.shown);
+			} else {
+				// Trips are shown if any of the dives is shown
+				bool showTrip = false;
+				for (dive *d: item.dives) {
+					bool shown = filter->showDive(d);
+					filter_dive(d, shown);
+					showTrip |= shown;
+				}
+				item.shown = showTrip;
+			}
 		}
-	} else {
-		// We're not at the top-level. This must be a dive, therefore
-		// simply write the flag through to the core.
-		const Item &parentItem = items[parent.row()];
-		filter_dive(parentItem.dives[idx.row()], shown);
 	}
 
-	return true;
+
+	// Rerender all trip headers. TODO: be smarter about this and only rerender if the number
+	// of shown dives changed.
+	for (int idx = 0; idx < (int)items.size(); ++idx) {
+		QModelIndex tripIndex = createIndex(idx, 0, noParent);
+		dataChanged(tripIndex, tripIndex);
+	}
+
+	emit diveListNotifier.numShownChanged();
+	emit diveListNotifier.filterReset();
 }
+
 
 QVariant DiveTripModelTree::data(const QModelIndex &index, int role) const
 {
@@ -980,13 +991,23 @@ void DiveTripModelTree::divesChanged(const QVector<dive *> &dives)
 		      { divesChangedTrip(trip, divesInTrip); });
 }
 
+// Update visibility status of dive and return true if visibility changed
+static bool updateShown(const QVector<dive *> &dives)
+{
+	bool changed = false;
+	DiveFilter *filter = DiveFilter::instance();
+	for (dive *d: dives) {
+		bool newStatus = filter->showDive(d);
+		changed |= filter_dive(d, newStatus);
+	}
+	if (changed)
+		emit diveListNotifier.numShownChanged();
+	return changed;
+}
+
 void DiveTripModelTree::divesChangedTrip(dive_trip *trip, const QVector<dive *> &dives)
 {
-	// Update filter flags. TODO: The filter should update the flag by itself when
-	// recieving the signals below.
-	bool diveChanged = false;
-	for (dive *d: dives)
-		diveChanged |= MultiFilterSortModel::instance()->updateDive(d);
+	bool diveChanged = updateShown(dives);
 
 	if (!trip) {
 		// This is outside of a trip. Process top-level items range-wise.
@@ -1182,16 +1203,6 @@ void DiveTripModelTree::divesSelectedTrip(dive_trip *trip, const QVector<dive *>
 	}
 }
 
-void DiveTripModelTree::filterFinished()
-{
-	// If the filter finished, update all trip items to show the correct number of displayed dives
-	// in each trip. Without doing this, only trip headers of expanded trips were updated.
-	for (int idx = 0; idx < (int)items.size(); ++idx) {
-		QModelIndex tripIndex = createIndex(idx, 0, noParent);
-		dataChanged(tripIndex, tripIndex);
-	}
-}
-
 bool DiveTripModelTree::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
 {
 	// In tree mode we don't support any sorting!
@@ -1248,13 +1259,22 @@ dive *DiveTripModelList::diveOrNull(const QModelIndex &index) const
 	return items[row];
 }
 
-bool DiveTripModelList::setShown(const QModelIndex &idx, bool shown)
+void DiveTripModelList::recalculateFilter()
 {
-	dive *d = diveOrNull(idx);
-	if (!d)
-		return false;
-	filter_dive(d, shown);
-	return true;
+	{
+		// This marker prevents the UI from getting notifications on selection changes.
+		// It is active until the end of the scope. See comment in DiveTripModelTree::recalculateFilter().
+		auto marker = diveListNotifier.enterCommand();
+		DiveFilter *filter = DiveFilter::instance();
+
+		for (dive *d: items) {
+			bool shown = filter->showDive(d);
+			filter_dive(d, shown);
+		}
+	}
+
+	emit diveListNotifier.numShownChanged();
+	emit diveListNotifier.filterReset();
 }
 
 QVariant DiveTripModelList::data(const QModelIndex &index, int role) const
@@ -1308,10 +1328,7 @@ void DiveTripModelList::divesChanged(const QVector<dive *> &divesIn)
 	QVector<dive *> dives = divesIn;
 	std::sort(dives.begin(), dives.end(), dive_less_than);
 
-	// Update filter flags. TODO: The filter should update the flag by itself when
-	// recieving the signals below.
-	for (dive *d: dives)
-		MultiFilterSortModel::instance()->updateDive(d);
+	updateShown(dives);
 
 	// Since we know that the dive list is sorted, we will only ever search for the first element
 	// in dives as this must be the first that we encounter. Once we find a range, increase the
@@ -1370,11 +1387,6 @@ void DiveTripModelList::divesSelected(const QVector<dive *> &dives, dive *curren
 		return;
 	}
 	emit newCurrentDive(createIndex(it - items.begin(), 0));
-}
-
-void DiveTripModelList::filterFinished()
-{
-	// In list mode, we don't have to change anything after filter finished.
 }
 
 // Simple sorting helper for sorting against a criterium and if

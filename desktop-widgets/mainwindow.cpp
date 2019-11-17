@@ -423,7 +423,7 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 void MainWindow::recreateDiveList()
 {
 	diveList->reload();
-	MultiFilterSortModel::instance()->myInvalidate();
+	DiveTripModelBase::instance()->recalculateFilter();
 }
 
 void MainWindow::configureToolbar()
