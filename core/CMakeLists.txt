@@ -66,6 +66,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	dive.h
 	divecomputer.cpp
 	divecomputer.h
+	divefilter.cpp
+	divefilter.h
 	divelist.c
 	divelist.h
 	divelogexportlogic.cpp

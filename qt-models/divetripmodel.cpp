@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/divetripmodel.h"
 #include "qt-models/filtermodels.h"
+#include "core/divefilter.h"
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
 #include "core/trip.h"

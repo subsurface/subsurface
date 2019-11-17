@@ -8,6 +8,7 @@
 #include "core/subsurface-qt/DiveListNotifier.h"
 #include "qt-models/filtermodels.h"
 #include "../profile-widget/profilewidget2.h"
+#include "core/divefilter.h"
 
 #include <array>
 
@@ -68,7 +69,7 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 	dive *res = d.dive.release();		// Give up ownership of dive
 
 	// Set the filter flag according to current filter settings
-	bool show = MultiFilterSortModel::instance()->showDive(res);
+	bool show = DiveFilter::instance()->showDive(res);
 	res->hidden_by_filter = !show;
 	if (show)
 		++shown_dives;

@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "ui_filterwidget2.h"
-#include "qt-models/filtermodels.h"
+#include "core/divefilter.h"
 
 namespace Ui {
 	class FilterWidget2;
