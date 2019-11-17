@@ -68,7 +68,6 @@ public:
 public
 slots:
 	void myInvalidate();
-	void clearFilter();
 	void startFilterDiveSites(QVector<dive_site *> ds);
 	void setFilterDiveSite(QVector<dive_site *> ds);
 	void stopFilterDiveSites();
