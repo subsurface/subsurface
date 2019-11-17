@@ -9,6 +9,7 @@
 		<file>DiveList.qml</file>
 		<file>DownloadFromDiveComputer.qml</file>
 		<file>DownloadedDiveDelegate.qml</file>
+		<file>Export.qml</file>
 		<file>GpsList.qml</file>
 		<file>HintsTextEdit.qml</file>
 		<file>Log.qml</file>
