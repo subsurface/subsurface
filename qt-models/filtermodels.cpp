@@ -291,11 +291,6 @@ bool MultiFilterSortModel::updateDive(struct dive *d)
 	return changed;
 }
 
-void MultiFilterSortModel::clearFilter()
-{
-	myInvalidate();
-}
-
 void MultiFilterSortModel::startFilterDiveSites(QVector<dive_site *> ds)
 {
 	if (++diveSiteRefCount > 1) {
