@@ -100,6 +100,7 @@ protected:
 	static QVariant tripData(const dive_trip *trip, int column, int role);
 
 	virtual dive *diveOrNull(const QModelIndex &index) const = 0;	// Returns a dive if this index represents a dive, null otherwise
+	virtual void clearData() = 0;
 };
 
 class DiveTripModelTree : public DiveTripModelBase
@@ -119,6 +120,7 @@ public:
 	DiveTripModelTree(QObject *parent = nullptr);
 private:
 	int rowCount(const QModelIndex &parent) const override;
+	void clearData() override;
 	QModelIndex index(int row, int column, const QModelIndex &parent) const override;
 	QModelIndex parent(const QModelIndex &index) const override;
 	QVariant data(const QModelIndex &index, int role) const override;
@@ -184,6 +186,7 @@ public:
 	DiveTripModelList(QObject *parent = nullptr);
 private:
 	int rowCount(const QModelIndex &parent) const override;
+	void clearData() override;
 	QModelIndex index(int row, int column, const QModelIndex &parent) const override;
 	QModelIndex parent(const QModelIndex &index) const override;
 	QVariant data(const QModelIndex &index, int role) const override;
