@@ -376,6 +376,7 @@ void DiveTripModelBase::clear()
 {
 	beginResetModel();
 	clear_dive_file_data();
+	emit diveListNotifier.divesSelected({}, nullptr); // Inform profile, etc of changed selection
 	endResetModel();
 }
 
