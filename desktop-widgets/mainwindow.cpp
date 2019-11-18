@@ -408,7 +408,7 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	mainTab->reload();
 	TankInfoModel::instance()->update();
 	if (doRecreateDiveList)
-		recreateDiveList();
+		diveList->reload();
 
 	MapWidget::instance()->reload();
 	setApplicationState(ApplicationState::Default);
@@ -416,11 +416,6 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	diveList->setFocus();
 	WSInfoModel::instance()->update();
 	ui.actionAutoGroup->setChecked(autogroup);
-}
-
-void MainWindow::recreateDiveList()
-{
-	diveList->reload();
 }
 
 void MainWindow::configureToolbar()
