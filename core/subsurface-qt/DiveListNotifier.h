@@ -82,6 +82,7 @@ signals:
 	// Trip edited signal
 	void tripChanged(dive_trip *trip, TripField field);
 
+	// Selection changes
 	void divesSelected(const QVector<dive *> &dives, dive *current);
 
 	// Dive site signals. Add and delete events are sent per dive site and
