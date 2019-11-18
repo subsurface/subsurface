@@ -376,6 +376,7 @@ void DiveTripModelBase::clear()
 {
 	beginResetModel();
 	clear_dive_file_data();
+	clearData();
 	emit diveListNotifier.divesSelected({}, nullptr); // Inform profile, etc of changed selection
 	endResetModel();
 }
@@ -605,6 +606,11 @@ int DiveTripModelTree::rowCount(const QModelIndex &parent) const
 	// Only trips have items
 	const Item &entry =  items[parent.row()];
 	return entry.d_or_t.trip ? entry.dives.size() : 0;
+}
+
+void DiveTripModelList::clearData()
+{
+	items.clear();
 }
 
 static const quintptr noParent = ~(quintptr)0; // This is the "internalId" marker for top-level item
@@ -1236,6 +1242,11 @@ int DiveTripModelList::rowCount(const QModelIndex &parent) const
 	// In list-mode there is only one level, i.e only top-level
 	// (=invalid parent) has items.
 	return parent.isValid() ? 0 : items.size();
+}
+
+void DiveTripModelTree::clearData()
+{
+	items.clear();
 }
 
 QModelIndex DiveTripModelList::index(int row, int column, const QModelIndex &parent) const
