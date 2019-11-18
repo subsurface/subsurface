@@ -82,12 +82,11 @@ jobs:
                 ln -s ${GRANTLEE_VERSION}/$(basename $i) .
                 popd
         done
-        zip Subsurface.app.zip Subsurface.app
     - name: store artifact
       uses: actions/upload-artifact@master
       with:
-        name: Subsurface.app.zip
-        path: build/Subsurface.app.zip
+        name: Subsurface.app
+        path: build/Subsurface.app
 
   publishRelease:
     needs: desktopBuild
@@ -100,7 +99,10 @@ jobs:
     - name: retrieve artifact
       uses: actions/download-artifact@master
       with:
-        name: Subsurface.app.zip
+        name: Subsurface.app
+    - name: create zip file
+      run: |
+        zip -r Subsurface.app.zip Subsurface.app
     - name: create CI release
       if: github.event_name == 'push'
       uses: ./.github/actions/release
@@ -110,16 +112,3 @@ jobs:
         REF: ${{ github.ref }}
         COMMIT: ${{ github.sha }}
         BIN1: Subsurface.app.zip
-
-    - name: prepare PR artifacts
-      if: github.event_name == 'pull_request'
-      run: |
-        mkdir -p Mac-artifacts
-        mv Subsurface.app.zip Mac-artifacts
-
-    - name: PR artifacts
-      if: github.event_name == 'pull_request'
-      uses: actions/upload-artifact@master
-      with:
-        name: Mac-artifacts
-        path: Mac-artifacts
