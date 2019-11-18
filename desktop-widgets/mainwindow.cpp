@@ -69,7 +69,6 @@
 #include "qt-models/cylindermodel.h"
 #include "qt-models/divepicturemodel.h"
 #include "qt-models/diveplannermodel.h"
-#include "qt-models/filtermodels.h"
 #include "qt-models/tankinfomodel.h"
 #include "qt-models/weightsysteminfomodel.h"
 #include "qt-models/yearlystatisticsmodel.h"
@@ -423,7 +422,6 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 void MainWindow::recreateDiveList()
 {
 	diveList->reload();
-	DiveTripModelBase::instance()->recalculateFilter();
 }
 
 void MainWindow::configureToolbar()
