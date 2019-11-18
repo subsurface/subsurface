@@ -691,7 +691,6 @@ void MainWindow::on_actionClose_triggered()
 		closeCurrentFile();
 		DivePictureModel::instance()->updateDivePictures();
 		setApplicationState(ApplicationState::Default);
-		recreateDiveList();
 	}
 }
 
