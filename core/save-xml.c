@@ -499,9 +499,10 @@ void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 	if (dive->chill)
 		put_format(b, " chill='%d'", dive->chill);
 	save_tags(b, dive->tag_list);
-	if (dive->dive_site) {
+	if (dive->dive_site)
 		put_format(b, " divesiteid='%8x'", dive->dive_site->uuid);
-	}
+	if (dive->user_salinity)
+		put_salinity(b, dive->user_salinity, " watersalinity='", " g/l'");
 	show_date(b, dive->when);
 	if (surface_pressure.mbar)
 		put_pressure(b, surface_pressure, " airpressure='", " bar'");
