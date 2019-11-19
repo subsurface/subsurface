@@ -111,6 +111,8 @@ void run_ui()
 	ctxt->setContextProperty("connectionListModel", &connectionListModel);
 	ctxt->setContextProperty("logModel", MessageHandlerModel::self());
 
+	qmlRegisterUncreatableType<QMLManager>("org.subsurfacedivelog.mobile",1,0,"ExportType","Enum is not a type");
+
 #ifdef SUBSURFACE_MOBILE_DESKTOP
 	if (testqml) {
 		QString fileLoad(testqml);
