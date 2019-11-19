@@ -714,7 +714,7 @@ void DiveTripModelBase::sendShownChangedSignals(const std::vector<char> &changed
 // which will then be hidden and all the dives will be hidden implicitly as well.
 // Thus, do this in two passes: collect changed dives and only if any dive is visible,
 // send the signals.
-bool DiveTripModelTree::calculateFilterForTrip(const std::vector<dive *> &dives, const DiveFilter *filter, int parentIndex)
+bool DiveTripModelTree::calculateFilterForTrip(const std::vector<dive *> &dives, const DiveFilter *filter, quintptr parentIndex)
 {
 	bool showTrip = false;
 	std::vector<char> changed;
@@ -733,6 +733,13 @@ bool DiveTripModelTree::calculateFilterForTrip(const std::vector<dive *> &dives,
 
 void DiveTripModelTree::recalculateFilter()
 {
+	// Collect the changes in a vector used later to send signals.
+	// This could be solved more efficiently in one pass, but
+	// doing it in two passes allows us to use a common function without
+	// resorting to co-routines, lambdas or similar techniques.
+	std::vector<char> changed;
+	changed.reserve(items.size());
+
 	{
 		// This marker prevents the UI from getting notifications on selection changes.
 		// It is active until the end of the scope.
@@ -743,8 +750,10 @@ void DiveTripModelTree::recalculateFilter()
 		// as a consequence of the filterReset signal right after the local scope.
 		auto marker = diveListNotifier.enterCommand();
 		DiveFilter *filter = DiveFilter::instance();
+
 		for (size_t i = 0; i < items.size(); ++i) {
 			Item &item = items[i];
+			bool oldShown = item.shown;
 			if (item.d_or_t.dive) {
 				dive *d = item.d_or_t.dive;
 				item.shown = filter->showDive(item.d_or_t.dive);
@@ -753,8 +762,12 @@ void DiveTripModelTree::recalculateFilter()
 				// Trips are shown if any of the dives is shown
 				item.shown = calculateFilterForTrip(item.dives, filter, i);
 			}
+			changed.push_back(item.shown != oldShown);
 		}
 	}
+
+	// Send the data-changed signals if some items changed visibility.
+	sendShownChangedSignals(changed, noParent);
 
 	// Rerender all trip headers. TODO: be smarter about this and only rerender if the number
 	// of shown dives changed.

@@ -133,7 +133,7 @@ private:
 	void recalculateFilter();
 	void divesChangedTrip(dive_trip *trip, const QVector<dive *> &dives);
 	void divesTimeChangedTrip(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
-	bool calculateFilterForTrip(const std::vector<dive *> &dives, const DiveFilter *filter, int parentIndex);
+	bool calculateFilterForTrip(const std::vector<dive *> &dives, const DiveFilter *filter, quintptr parentIndex);
 
 	// The tree model has two levels. At the top level, we have either trips or dives
 	// that do not belong to trips. Such a top-level item is represented by the "Item"
