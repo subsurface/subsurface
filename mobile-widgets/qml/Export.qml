@@ -26,6 +26,50 @@ Kirigami.ScrollablePage {
 		}
 	}
 
+	Dialog {
+		id: uploadDialog
+		title: radioGroup.current.text
+		standardButtons: StandardButton.Apply | StandardButton.Cancel
+
+		GridLayout {
+			rowSpacing: 10
+			columnSpacing: 10
+			columns: 2
+
+			Text {
+				text: qsTr("User ID")
+			}
+			TextField {
+				id: fieldUserID
+				Layout.fillWidth: true
+				inputMethodHints: Qt.ImhNoAutoUppercase
+			}
+			Text {
+				text: qsTr("Password:")
+			}
+			TextField {
+				id: fieldPassword
+				Layout.fillWidth: true
+				inputMethodHints: Qt.ImhSensitiveData |
+								  Qt.ImhHiddenText |
+								  Qt.ImhNoAutoUppercase
+				echoMode: TextInput.PasswordEchoOnEdit
+			}
+			ProgressBar {
+				indeterminate: true
+			}
+		}
+
+		onApply: {
+			manager.exportToWEB(selectedExport, fieldUserID.text, fieldPassword.text, anonymize.checked)
+			close()
+		}
+		onRejected: {
+			close()
+		}
+
+	}
+
 	ColumnLayout {
 		width: parent.width
 		spacing: 1
@@ -165,7 +209,7 @@ Kirigami.ScrollablePage {
 			onClicked: {
 				if (selectedExport === ExportType.EX_DIVELOGS_DE ||
 					selectedExport === ExportType.EX_DIVESHARE) {
-					console.log("Upload TO BE DONE, You chose: " + selectedExport)
+					uploadDialog.open()
 				} else {
 					saveAsDialog.open()
 				}
