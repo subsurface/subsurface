@@ -158,6 +158,7 @@ struct dive {
 	pressure_t surface_pressure;
 	duration_t duration;
 	int salinity; // kg per 10000 l
+	int user_salinity; // user-specified salinity
 
 	struct tag_entry *tag_list;
 	struct divecomputer dc;

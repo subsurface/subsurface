@@ -24,12 +24,16 @@ private slots:
 	void on_visibility_valueChanged(int value);
 	void on_airtemp_editingFinished();
 	void on_watertemp_editingFinished();
+	void on_waterTypeCombo_activated(int index);
 private:
 	Ui::TabDiveInformation *ui;
 	void updateProfile();
 	void updateSalinity();
+	int updateSalinityComboIndex(int salinity);
+	void checkDcSalinityOverWritten();
 	void updateWhen();
 	int pressTypeIndex;
+	void updateWaterTypeWidget();
 	void updateTextBox(int event);
 	void updateMode(struct dive *d);
 	void divesEdited(int);
