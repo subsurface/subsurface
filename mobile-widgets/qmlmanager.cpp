@@ -37,12 +37,15 @@
 #include "core/subsurface-string.h"
 #include "core/pref.h"
 #include "core/ssrf.h"
+#include "core/save-profiledata.h"
 #include "core/settings/qPrefGeneral.h"
 #include "core/settings/qPrefLocationService.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "core/settings/qPrefUnit.h"
 #include "core/trip.h"
+#include "core/exportfuncs.h"
+#include "core/worldmap-save.h"
 
 QMLManager *QMLManager::m_instance = NULL;
 bool noCloudToCloud = false;
@@ -2124,4 +2127,82 @@ void QMLManager::appInitialized()
 #if defined(Q_OS_ANDROID)
 	checkPendingIntents();
 #endif
+}
+
+void QMLManager::exportToFile(export_types type, QString dir, bool anonymize)
+{
+	// dir starts with "file://" e.g. "file:///tmp"
+	// remove prefix and add standard filenamel
+	QString fileName = dir.right(dir.size() - 7) + "/Subsurface_export";
+
+	switch (type)
+	{
+		case EX_DIVES_XML:
+			save_dives_logic(qPrintable(fileName + ".ssrf"), false, anonymize);
+			break;
+		case EX_DIVE_SITES_XML:
+			{
+				std::vector<const dive_site *> sites = exportFuncs::instance()->getDiveSitesToExport(false);
+				save_dive_sites_logic(qPrintable(fileName + ".xml"), &sites[0], (int)sites.size(), anonymize);
+				break;
+			}
+		case EX_UDDF:
+			exportFuncs::instance()->exportUsingStyleSheet(fileName + ".uddf", true, 0, "uddf-export.xslt", anonymize);
+			break;
+		case EX_CSV_DIVE_PROFILE:
+			exportFuncs::instance()->exportUsingStyleSheet(fileName + ".uddf", true, 0, "xml2csv.xslt", anonymize);
+			break;
+		case EX_CSV_DETAILS:
+			exportFuncs::instance()->exportUsingStyleSheet(fileName + ".uddf", true, 0, "xml2manualcsv.xslt", anonymize);
+			break;
+		case EX_CSV_PROFILE:
+			save_profiledata(qPrintable(fileName + ".csv"), true);
+			break;
+		case EX_PROFILE_PNG:
+			exportFuncs::instance()->exportProfile(qPrintable(fileName + ".png"), false);
+			break;
+		case EX_WORLD_MAP:
+			export_worldmap_HTML(qPrintable(fileName + ".html"), true);
+			break;
+		case EX_TEX:
+			exportFuncs::instance()->export_TeX(qPrintable(fileName + ".tex"), true, true);
+			break;
+		case EX_LATEX:
+			exportFuncs::instance()->export_TeX(qPrintable(fileName + ".tex"), true, false);
+			break;
+		case EX_IMAGE_DEPTHS:
+			exportFuncs::instance()->export_depths(qPrintable(fileName), false);
+			break;
+		default:
+			qDebug() << "export to unknown type " << type << " using " << dir << " remove names " << anonymize;
+			break;
+	}
+}
+
+void exportFuncs::saveProfile(const struct dive *dive, const QString filename)
+{
+	// TBD
+}
+
+void QMLManager::exportToWEB(export_types type, QString userId, QString password, bool anonymize)
+{
+	switch (type)
+	{
+		case EX_DIVELOGS_DE:
+			// TO BE IMPLEMENTED
+			// Current call in Desktop-widgets
+			// DivelogsDeWebServices::instance()->
+			// prepareDivesForUpload(ui->exportSelected->isChecked());
+			break;
+		case EX_DIVESHARE:
+			// TO BE IMPLEMENTED
+			// Current call in Desktop-widgets
+			// DiveShareExportDialog::instance()->
+			// prepareDivesForUpload(ui->exportSelected->isChecked());
+			break;
+		default:
+			qDebug() << "upload to unknown type " << type << " using " << userId << "/" <<  password << " remove names " << anonymize;
+			break;
+	}
+	qDebug() << "upload NOT implemented type " << type << " using " << userId << "/" <<  password << " remove names " << anonymize;
 }
