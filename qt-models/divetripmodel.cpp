@@ -1320,6 +1320,12 @@ dive *DiveTripModelList::diveOrNull(const QModelIndex &index) const
 
 void DiveTripModelList::recalculateFilter()
 {
+	// Collect the changes in a vector used later to send signals.
+	// This could be solved more efficiently in one pass, but
+	// doing it in two passes allows us to use a common function without
+	// resorting to co-routines, lambdas or similar techniques.
+	std::vector<char> changed;
+	changed.reserve(items.size());
 	{
 		// This marker prevents the UI from getting notifications on selection changes.
 		// It is active until the end of the scope. See comment in DiveTripModelTree::recalculateFilter().
@@ -1331,6 +1337,9 @@ void DiveTripModelList::recalculateFilter()
 			filter_dive(d, shown);
 		}
 	}
+
+	// Send the data-changed signals if some items changed visibility.
+	sendShownChangedSignals(changed, noParent);
 
 	emit diveListNotifier.numShownChanged();
 	emit diveListNotifier.filterReset();
