@@ -12,6 +12,9 @@
 #include "core/display.h"
 #include "core/divelist.h"
 
+#include <stdlib.h>
+#include <stdio.h>
+
 #define COMBO_CHANGED 0
 #define TEXT_EDITED 1
 #define CSS_SET_HEADING_BLUE "QLabel { color: mediumblue;} "
@@ -175,8 +178,10 @@ int TabDiveInformation::updateSalinityComboIndex(int salinity)
 // If dive->user_salinity != dive->salinity (i.e. dc value) then show the salinity-overwrite indicator
 void TabDiveInformation::checkDcSalinityOverWritten()
 {
-	if ((current_dive) && (current_dive->dc.salinity) && (current_dive->user_salinity)) {
-		if (current_dive->dc.salinity != current_dive->user_salinity)
+	int dc_value = current_dive->dc.salinity;
+	int user_value = current_dive->user_salinity;
+	if ((current_dive) && (dc_value) && (user_value)) {
+		if (user_value != dc_value)
 			ui->salinityOverWrittenIcon->setVisible(true);
 	} else {
 		ui->salinityOverWrittenIcon->setVisible(false);
@@ -245,11 +250,10 @@ void TabDiveInformation::on_waterTypeCombo_activated(int index) {
 	// case(4): use dc: combobox_salinity is already set to 0 at the top, so no setting required here
 	default:
 		break;
-	}                 // Save and display the new salinity value
+	}                 // Save and display the new salinity value:
 	checkDcSalinityOverWritten(); // if exclamation is needed, then show it
 	ui->salinityText->setText(QString("%1g/ℓ").arg(combobox_salinity / 10.0));
-//	divesEdited(Command::editWaterTypeCombo(combobox_salinity, false)); // This will be enabled in step 4 when the undo is implemented.
-	current_dive->user_salinity = combobox_salinity;                    // This will be removed in step 4. This statement allows executable code.
+	divesEdited(Command::editWaterTypeCombo(combobox_salinity, false));
 }
 
 // This function gets called if a field gets updated by an undo command.
