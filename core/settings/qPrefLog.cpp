@@ -16,6 +16,7 @@ void qPrefLog::loadSync(bool doSync)
 	disk_default_file_behavior(doSync);
 	disk_use_default_file(doSync);
 	disk_extraEnvironmentalDefault(doSync);
+	disk_salinityEditDefault(doSync);
 	disk_show_average_depth(doSync);
 }
 
@@ -53,6 +54,8 @@ HANDLE_PREFERENCE_TXT(Log, "default_filename", default_filename);
 HANDLE_PREFERENCE_BOOL(Log, "extraEnvironmentalDefault", extraEnvironmentalDefault);
 
 HANDLE_PREFERENCE_BOOL(Log, "use_default_file", use_default_file);
+
+HANDLE_PREFERENCE_BOOL(Log, "salinityEditDefault", salinityEditDefault);
 
 HANDLE_PREFERENCE_BOOL(Log, "show_average_depth", show_average_depth);
 

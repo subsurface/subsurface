@@ -130,6 +130,13 @@
    </item>
 
    <item>
+    <widget class="QCheckBox" name="salinityEditDefault">
+     <property name="text">
+      <string>In the Information tab, allow editing of water salinity</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer_2">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
