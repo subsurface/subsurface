@@ -12,6 +12,20 @@ Kirigami.ScrollablePage {
 
 	property int selectedExport: ExportType.EX_DIVE_XML
 
+	FileDialog {
+		id: saveAsDialog
+		folder: shortcuts.documents
+		selectFolder: true
+		title: radioGroup.current.text
+		onAccepted: {
+			manager.exportToFile(selectedExport, fileUrls, anonymize.checked)
+			close()
+		}
+		onRejected: {
+			close()
+		}
+	}
+
 	ColumnLayout {
 		width: parent.width
 		spacing: 1
@@ -149,6 +163,12 @@ Kirigami.ScrollablePage {
 		SsrfButton {
 			text: qsTr("Next")
 			onClicked: {
+				if (selectedExport === ExportType.EX_DIVELOGS_DE ||
+					selectedExport === ExportType.EX_DIVESHARE) {
+					console.log("Upload TO BE DONE, You chose: " + selectedExport)
+				} else {
+					saveAsDialog.open()
+				}
 			}
 		}
 	}
