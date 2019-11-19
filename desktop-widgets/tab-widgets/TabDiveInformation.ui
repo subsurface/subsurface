@@ -445,15 +445,17 @@
           </sizepolicy>
          </property>
          <layout class="QHBoxLayout" name="diveInfoWaterDensityLayout">
-
           <item>
-        <widget class="QLabel" name="waterTypeText">
-         <property name="text">
-          <string>EN13319</string>
-         </property>
-        </widget>
+           <widget class="QLabel" name="waterTypeText">
+           </widget>
           </item>
-
+          <item>
+           <widget class="QComboBox" name="waterTypeCombo"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="salinityOverWrittenIcon">
+           </widget>
+          </item>
           <item>
            <widget class="QLabel" name="salinityText">
             <property name="alignment">
@@ -461,7 +463,6 @@
             </property>
            </widget>
           </item>
-
          </layout>
         </widget>
        </item>
