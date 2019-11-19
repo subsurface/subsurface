@@ -226,6 +226,7 @@ void TabDiveInformation::updateData()
 	ui->visibility->setCurrentStars(current_dive->visibility);
 }
 
+// From the index of the water type combo box, set the dive->salinity to an appropriate value
 void TabDiveInformation::on_waterTypeCombo_activated(int index) {
 	int waterIndex = ui->waterTypeCombo->currentIndex();
 	int combobox_salinity = 0;

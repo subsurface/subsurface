@@ -273,6 +273,9 @@ static void parse_dive_rating(char *line, struct membuffer *str, struct git_pars
 static void parse_dive_visibility(char *line, struct membuffer *str, struct git_parser_state *state)
 { UNUSED(str); state->active_dive->visibility = get_index(line); }
 
+static void parse_dive_watersalinity(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dive->user_salinity = get_salinity(line); }
+
 static void parse_dive_notrip(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	UNUSED(str);
@@ -989,7 +992,7 @@ struct keyword_action dive_action[] = {
 #define D(x) { #x, parse_dive_ ## x }
 	D(airpressure), D(airtemp), D(buddy), D(cylinder), D(divemaster), D(divesiteid), D(duration),
 	D(gps), D(location), D(notes), D(notrip), D(rating), D(suit),
-	D(tags), D(visibility), D(watertemp), D(weightsystem)
+	D(tags), D(watersalinity), D(visibility), D(watertemp), D(weightsystem)
 };
 
 static void dive_parser(char *line, struct membuffer *str, struct git_parser_state *state)

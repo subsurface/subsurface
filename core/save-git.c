@@ -433,6 +433,8 @@ static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 		put_format(b, "duration %u:%02u min\n", FRACTION(dive->dc.duration.seconds, 60));
 	SAVE("rating", rating);
 	SAVE("visibility", visibility);
+	if (dive->user_salinity)
+		put_format(b, "watersalinity %d g/l\n", (int)(dive->user_salinity/10)); 
 	if (surface_pressure.mbar)
 		SAVE("airpressure", surface_pressure.mbar);
 	cond_put_format(dive->notrip, b, "notrip\n");

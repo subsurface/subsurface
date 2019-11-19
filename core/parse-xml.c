@@ -1331,6 +1331,8 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 		return;
 	if (MATCH("buddy", utf8_string, &dive->buddy))
 		return;
+	if (MATCH("watersalinity", salinity, &dive->user_salinity))
+		return;
 	if (MATCH("rating.dive", get_rating, &dive->rating))
 		return;
 	if (MATCH("visibility.dive", get_rating, &dive->visibility))
