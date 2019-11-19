@@ -6,6 +6,8 @@
 #include "core/subsurface-qt/DiveListNotifier.h"
 #include <QAbstractItemModel>
 
+struct DiveFilter;
+
 // There are two different representations of the dive list:
 // 1) Tree view: two-level model where dives are grouped by trips
 // 2) List view: one-level model where dives are sorted by one out
@@ -98,6 +100,7 @@ protected:
 	// Access trip and dive data
 	static QVariant diveData(const struct dive *d, int column, int role);
 	static QVariant tripData(const dive_trip *trip, int column, int role);
+	void sendShownChangedSignals(const std::vector<char> &changed, quintptr parentIndex);
 
 	virtual dive *diveOrNull(const QModelIndex &index) const = 0;	// Returns a dive if this index represents a dive, null otherwise
 	virtual void clearData() = 0;
@@ -130,6 +133,7 @@ private:
 	void recalculateFilter();
 	void divesChangedTrip(dive_trip *trip, const QVector<dive *> &dives);
 	void divesTimeChangedTrip(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
+	bool calculateFilterForTrip(const std::vector<dive *> &dives, const DiveFilter *filter, int parentIndex);
 
 	// The tree model has two levels. At the top level, we have either trips or dives
 	// that do not belong to trips. Such a top-level item is represented by the "Item"
