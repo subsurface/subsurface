@@ -32,7 +32,6 @@ private slots:
 private:
 	Ui::TabDiveInformation *ui;
 	void updateProfile();
-	void updateSalinity();
 	int updateSalinityComboIndex(int salinity);
 	void checkDcSalinityOverWritten();
 	void updateWhen();

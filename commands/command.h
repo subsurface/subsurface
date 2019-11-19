@@ -71,6 +71,7 @@ int editChill(int newValue, bool currentDiveOnly);
 int editAirTemp(int newValue, bool currentDiveOnly);
 int editWaterTemp(int newValue, bool currentDiveOnly);
 int editAtmPress(int newValue, bool currentDiveOnly);
+int editWaterTypeUser(int newValue, bool currentDiveOnly);
 int editDepth(int newValue, bool currentDiveOnly);
 int editDuration(int newValue, bool currentDiveOnly);
 int editDiveSite(struct dive_site *newValue, bool currentDiveOnly);
