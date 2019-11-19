@@ -53,6 +53,26 @@ public:
 	QMLManager();
 	~QMLManager();
 
+	enum export_types {
+		EX_DIVES_XML,
+		EX_DIVE_SITES_XML,
+		EX_UDDF,
+		EX_DIVELOGS_DE,
+		EX_DIVESHARE,
+		EX_CSV_DIVE_PROFILE,
+		EX_CSV_DETAILS,
+		EX_CSV_PROFILE,
+		EX_PROFILE_PNG,
+		EX_WORLD_MAP,
+		EX_TEX,
+		EX_LATEX,
+		EX_IMAGE_DEPTHS
+	};
+	Q_ENUM(export_types)
+	Q_INVOKABLE void exportToFile(export_types type, QString directory, bool anonymize);
+	Q_INVOKABLE void exportToWEB(export_types type, QString userId, QString password, bool anonymize);
+
+
 	QString DC_vendor() const;
 	void DC_setVendor(const QString& vendor);
 
