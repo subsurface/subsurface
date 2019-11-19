@@ -691,6 +691,17 @@ dive *DiveTripModelTree::diveOrNull(const QModelIndex &index) const
 	return tripOrDive(index).dive;
 }
 
+static bool calculateFilterForTrip(const std::vector<dive *> &dives, const DiveFilter *filter)
+{
+	bool showTrip = false;
+	for (dive *d: dives) {
+		bool shown = filter->showDive(d);
+		filter_dive(d, shown);
+		showTrip |= shown;
+	}
+	return showTrip;
+}
+
 void DiveTripModelTree::recalculateFilter()
 {
 	{
@@ -710,17 +721,10 @@ void DiveTripModelTree::recalculateFilter()
 				filter_dive(d, item.shown);
 			} else {
 				// Trips are shown if any of the dives is shown
-				bool showTrip = false;
-				for (dive *d: item.dives) {
-					bool shown = filter->showDive(d);
-					filter_dive(d, shown);
-					showTrip |= shown;
-				}
-				item.shown = showTrip;
+				item.shown = calculateFilterForTrip(item.dives, filter);
 			}
 		}
 	}
-
 
 	// Rerender all trip headers. TODO: be smarter about this and only rerender if the number
 	// of shown dives changed.
