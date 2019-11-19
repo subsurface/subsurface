@@ -27,6 +27,7 @@ void PreferencesDefaults::refreshSettings()
 	ui->font->setCurrentFont(qPrefDisplay::divelist_font());
 	ui->fontsize->setValue(qPrefDisplay::font_size());
 	ui->velocitySlider->setValue(qPrefDisplay::animation_speed());
+
 }
 
 void PreferencesDefaults::syncSettings()

@@ -70,6 +70,7 @@ void PreferencesLog::refreshSettings()
 	ui->show_average_depth->setChecked(prefs.show_average_depth);
 	ui->displayinvalid->setChecked(qPrefDisplay::display_invalid_dives());
 	ui->extraEnvironmentalDefault->setChecked(prefs.extraEnvironmentalDefault);
+	ui->salinityEditDefault->setChecked(prefs.salinityEditDefault);
 }
 
 void PreferencesLog::syncSettings()
@@ -87,4 +88,5 @@ void PreferencesLog::syncSettings()
 	qPrefLog::set_show_average_depth(ui->show_average_depth->isChecked());
 	qPrefDisplay::set_display_invalid_dives(ui->displayinvalid->isChecked());
 	qPrefLog::set_extraEnvironmentalDefault(ui->extraEnvironmentalDefault->isChecked());
+	qPrefLog::set_salinityEditDefault(ui->salinityEditDefault->isChecked());
 }
