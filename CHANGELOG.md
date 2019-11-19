@@ -1,3 +1,5 @@
+Desktop: allow copy&pasting of multiple cylinders [#2386]
+Desktop: don't output random SAC values for cylinders without data [#2376]
 Mobile: add menu entry to start a support email, using native email client
 Mobile: fix subtle potential new data loss bug in first session connecting to a cloud account
 Planner: Add checkbox on considering oxygen narcotic
