@@ -198,6 +198,11 @@ int editAtmPress(int newValue, bool currentDiveOnly)
 	return execute_edit(new EditAtmPress(newValue, currentDiveOnly));
 }
 
+int editWaterTypeCombo(int newValue, bool currentDiveOnly)
+{
+	return execute_edit(new EditWaterTypeCombo(newValue, currentDiveOnly));
+}
+
 int editDepth(int newValue, bool currentDiveOnly)
 {
 	return execute_edit(new EditDepth(newValue, currentDiveOnly));
