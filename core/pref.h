@@ -119,6 +119,7 @@ struct preferences {
 	bool        use_default_file;
 	bool        filterFullTextNotes; // mobile only - include notes information in full text searh
 	bool        filterCaseSensitive; // mobile only - make fltering case sensitive
+	bool        salinityEditDefault;
 
 	// ********** Geocoding **********
 	geocoding_prefs_t geocoding;
