@@ -73,7 +73,7 @@ for i in QtScript.framework/Versions/5/QtScript QtCore.framework/Versions/5/QtCo
 done
 
 # clean up shared library dependency in the Grantlee plugins
-for i in Subsurface.app/Contents/PlugIns/grantlee/5.0/*.so; do
+for i in Subsurface.app/Contents/PlugIns/grantlee/5.1/*.so; do
 	OLD=$(otool -L $i | grep libGrantlee_Templates | cut -d\  -f1 | tr -d "\t")
 	SONAME=$(basename $OLD )
 	install_name_tool -change ${OLD} @executable_path/../Frameworks/${SONAME} $i;
@@ -81,9 +81,9 @@ for i in Subsurface.app/Contents/PlugIns/grantlee/5.0/*.so; do
 	install_name_tool -change ${OLD} @executable_path/../Frameworks/QtCore.framework/QtCore $i;
 	mv $i Subsurface.app/Contents/PlugIns/grantlee
 done
-rmdir Subsurface.app/Contents/PlugIns/grantlee/5.0
+rmdir Subsurface.app/Contents/PlugIns/grantlee/5.1
 pushd Subsurface.app/Contents/PlugIns/grantlee
-ln -s . 5.0
+ln -s . 5.1
 popd
 
 if [ "$1" = "-nodmg" ] ; then
