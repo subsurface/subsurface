@@ -31,6 +31,7 @@ private slots:
 	void on_waterTypeCombo_activated(int index);
 private:
 	Ui::TabDiveInformation *ui;
+	bool manualDive;
 	void updateProfile();
 	int updateSalinityComboIndex(int salinity);
 	void checkDcSalinityOverWritten();
