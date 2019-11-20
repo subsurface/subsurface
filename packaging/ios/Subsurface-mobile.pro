@@ -28,6 +28,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/divesitehelpers.cpp \
 	../../core/errorhelper.c \
 	../../core/exif.cpp \
+	../../core/exportfuncs.cpp \
 	../../core/format.cpp \
 	../../core/gettextfromc.cpp \
 	../../core/metrics.cpp \
@@ -80,6 +81,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/btdiscovery.cpp \
 	../../core/connectionlistmodel.cpp \
 	../../core/qt-ble.cpp \
+	../../core/save-profiledata.c \
 	../../core/settings/qPref.cpp \
 	../../core/settings/qPrefCloudStorage.cpp \
 	../../core/settings/qPrefDisplay.cpp \
@@ -177,6 +179,7 @@ HEADERS += \
 	../../core/divelogexportlogic.h \
 	../../core/divesitehelpers.h \
 	../../core/exif.h \
+	../../core/exportfuncs.h \
 	../../core/file.h \
 	../../core/gaspressures.h \
 	../../core/gettext.h \
@@ -198,6 +201,7 @@ HEADERS += \
 	../../core/btdiscovery.h \
 	../../core/connectionlistmodel.h \
 	../../core/qt-ble.h \
+	../../core/save-profiledata.h \
 	../../core/settings/qPref.h \
 	../../core/settings/qPrefCloudStorage.h \
 	../../core/settings/qPrefDisplay.h \
