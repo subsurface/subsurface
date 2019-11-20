@@ -992,7 +992,7 @@ struct keyword_action dive_action[] = {
 #define D(x) { #x, parse_dive_ ## x }
 	D(airpressure), D(airtemp), D(buddy), D(cylinder), D(divemaster), D(divesiteid), D(duration),
 	D(gps), D(location), D(notes), D(notrip), D(rating), D(suit),
-	D(tags), D(watersalinity), D(visibility), D(watertemp), D(weightsystem)
+	D(tags), D(visibility), D(watersalinity), D(watertemp), D(weightsystem)
 };
 
 static void dive_parser(char *line, struct membuffer *str, struct git_parser_state *state)
