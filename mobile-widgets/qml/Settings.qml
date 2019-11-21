@@ -559,7 +559,7 @@ Kirigami.ScrollablePage {
 			}
 
 			Controls.Label {
-				text: qsTr("Show all bluetooth devices \neven if not recognized as dive computers")
+				text: qsTr("Temporarily show all bluetooth devices \neven if not recognized as dive computers.\nPlease report DCs that need this setting")
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
 				color: subsurfaceTheme.textColor
