@@ -53,6 +53,9 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 	ui->multiDiveWarningMessage->addAction(action);
 	ui->multiDiveWarningMessage->hide();
 	updateWaterTypeWidget();
+	QPixmap warning (":salinity-warning-icon");
+	ui->salinityOverWrittenIcon->setPixmap(warning);
+
 }
 
 TabDiveInformation::~TabDiveInformation()

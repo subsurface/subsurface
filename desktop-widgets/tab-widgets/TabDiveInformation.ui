@@ -454,9 +454,6 @@
           </item>
           <item>
            <widget class="QLabel" name="salinityOverWrittenIcon">
-            <property name="text">
-             <string>!</string>
-            </property>
            </widget>
           </item>
           <item>
