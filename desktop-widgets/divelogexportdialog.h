@@ -4,7 +4,6 @@
 
 #include <QDialog>
 #include <QTextStream>
-#include <QFuture>
 #include "core/statistics.h"
 
 class QAbstractButton;
@@ -28,14 +27,9 @@ slots:
 	void on_exportGroup_buttonClicked(QAbstractButton *);
 
 private:
-	QFuture<int> future;
 	Ui::DiveLogExportDialog *ui;
 	void showExplanation();
 	void exportHtmlInit(const QString &filename);
-	void export_depths(const char *filename, const bool selected_only);
-	void export_TeX(const char *filename, const bool selected_only, bool plain);
-	void exportProfile(QString filename, const bool selected_only);
-	void saveProfile(const struct dive *dive, const QString filename);
 
 };
 
