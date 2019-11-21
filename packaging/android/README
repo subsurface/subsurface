@@ -11,7 +11,27 @@ Dependencies:
 6. dependencies of libdivecomputer and subsurface -
    visit http://subsurface.hohndel.org/documentation/building/
 
-Steps to install:
+By far the easiest way to do this is using the Android build container which is
+used to create the official builds. That has all the dependencies ready and
+makes things a lot easier.
+
+Run the docker image: docker://dirkhh/android-builder:5.13.01
+
+Check out the sources inside the container, make sure the following links
+are available in parallel to the source directory
+
+        ln -s /android/Qt .
+        ln -s /android/android-ndk-r18b .
+        ln -s /android/android-sdk-linux .
+
+and run the build wrapper from the directory above the source directory
+
+        bash -x subsurface/packaging/android/android-build-wrapper.sh
+
+This should create a pair of unsigned but otherwise working APKs (for 32 and 64
+bit ARM).
+
+Alternatively, steps to install using your own Linux machine:
 
 Step 0.
 Grab..
