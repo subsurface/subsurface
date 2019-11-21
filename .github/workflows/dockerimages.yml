@@ -27,12 +27,12 @@ jobs:
           bash setup-docker.sh
 
     - name: Build the Docker image
-      run: docker build ./scripts/docker/android-build-container/ --tag docker.pkg.github.com/${GITHUB_REPOSITORY}/android-build-container:${VERSION}
+      run: docker build ./scripts/docker/android-build-container/ --tag docker.pkg.github.com/${GITHUB_REPOSITORY,,}/android-build-container:${VERSION}
 
     - name: Push the Docker image
       run: |
         docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY/\/*/} -p ${{ secrets.GITHUB_TOKEN }}
-        docker push docker.pkg.github.com/${GITHUB_REPOSITORY}/android-build-container:${VERSION}
+        docker push docker.pkg.github.com/${GITHUB_REPOSITORY,,}/android-build-container:${VERSION}
 
   mxe-build-container:
     runs-on: ubuntu-latest
@@ -43,12 +43,12 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build the Docker image
-      run: docker build ./scripts/docker/mxe-build-container/ --tag docker.pkg.github.com/${GITHUB_REPOSITORY}/mxe-build-container:${VERSION}
+      run: docker build ./scripts/docker/mxe-build-container/ --tag docker.pkg.github.com/${GITHUB_REPOSITORY,,}/mxe-build-container:${VERSION}
 
     - name: Push the Docker image
       run: |
         docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY/\/*/} -p ${{ secrets.GITHUB_TOKEN }}
-        docker push docker.pkg.github.com/${GITHUB_REPOSITORY}/mxe-build-container:${VERSION}
+        docker push docker.pkg.github.com/${GITHUB_REPOSITORY,,}/mxe-build-container:${VERSION}
 
   trusty-qt512:
     runs-on: ubuntu-latest
@@ -64,9 +64,9 @@ jobs:
         bash getpackages.sh
 
     - name: Build the Docker image
-      run: docker build ./scripts/docker/trusty-qt512/ --tag docker.pkg.github.com/${GITHUB_REPOSITORY}/trusty-qt512:${VERSION}
+      run: docker build ./scripts/docker/trusty-qt512/ --tag docker.pkg.github.com/${GITHUB_REPOSITORY,,}/trusty-qt512:${VERSION}
 
     - name: Push the Docker image
       run: |
         docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY/\/*/} -p ${{ secrets.GITHUB_TOKEN }}
-        docker push docker.pkg.github.com/${GITHUB_REPOSITORY}/trusty-qt512:${VERSION}
+        docker push docker.pkg.github.com/${GITHUB_REPOSITORY,,}/trusty-qt512:${VERSION}

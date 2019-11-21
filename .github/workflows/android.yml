@@ -11,7 +11,7 @@ jobs:
   buildInContainer:
     runs-on: ubuntu-latest
     container:
-      image: docker://docker.pkg.github.com/${GITHUB_REPOSITORY}/android-builder:5.13.01
+      image: docker://docker.pkg.github.com/${{ github.repository }}/android-builder:5.13.01
 
     steps:
     - name: checkout sources
