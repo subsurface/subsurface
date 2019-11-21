@@ -30,9 +30,10 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		else if (btName.mid(4,2) == "4-") product = "OSTC 4";
 		else if (btName.mid(4,2) == "2-") product = "OSTC 2N";
 		else if (btName.mid(4,2) == "+ ") product = "OSTC 2";
-		// all OSTCs are HW_FAMILY_OSTC_3, so when we do not know,
-		// just try this
-		else product = "OSTC 3"; // all OSTCs are HW_FAMILY_OSTC_3
+		// all BT/BLE enabled OSTCs are HW_FAMILY_OSTC_3, so when we do not know,
+		// just use a default product that allows the codoe to download from the
+		// user's dive computer
+		else product = "OSTC 2";
 	}
 
 	if (btName.startsWith("Predator") ||
