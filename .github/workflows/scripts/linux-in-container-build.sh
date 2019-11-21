@@ -3,7 +3,7 @@
 set -x
 set -e
 
-# this gets executed by Travis when building an AppImage for Linux
+# this gets executed by the GitHub Action when building an AppImage for Linux
 # inside of the trusty-qt512 container
 
 export PATH=$QT_ROOT/bin:$PATH # Make sure correct qmake is found on the $PATH for linuxdeployqt
@@ -43,6 +43,10 @@ rm -rf appdir/usr/home/ appdir/usr/include/ appdir/usr/share/man/ # No need to s
 rm -rf appdir/usr/usr appdir/usr/lib/cmake appdir/usr/lib/pkgconfig
 cp /ssllibs/libssl.so appdir/usr/lib/libssl.so.1.1
 cp /ssllibs/libcrypto.so appdir/usr/lib/libcrypto.so.1.1
+
+# the dbus library appears to cause problems with Bluetooth. Let's not
+# bundle it in the AppImage
+rm appdir/usr/lib/libdbus-1.so.3
 
 # get the linuxdeployqt tool and run it to collect the libraries
 curl -L -O "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"

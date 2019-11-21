@@ -1,3 +1,4 @@
+Desktop/Linux: fix issue with Linux AppImage failing to communicate with Bluetooth dive computers [#2370]
 Desktop: allow copy&pasting of multiple cylinders [#2386]
 Desktop: don't output random SAC values for cylinders without data [#2376]
 Mobile: add menu entry to start a support email, using native email client
