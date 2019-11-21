@@ -59,8 +59,15 @@ void init_qt_late()
 	QLocale loc;
 
 	// assign en_GB for use in South African locale
+	// and capture other French and Spanish speaking countries with the corresponding canonical locales
 	if (loc.country() == QLocale::SouthAfrica) {
 		loc.setDefault(QLocale("en_GB"));
+		loc = QLocale();
+	} else if (loc.language() == QLocale::French) {
+		loc.setDefault(QLocale("fr_FR"));
+		loc = QLocale();
+	} else if (loc.language() == QLocale::Spanish) {
+		loc.setDefault(QLocale("es_ES"));
 		loc = QLocale();
 	}
 	QString uiLang = uiLanguage(&loc);
