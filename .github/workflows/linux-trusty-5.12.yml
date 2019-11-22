@@ -11,7 +11,9 @@ jobs:
   buildInContainer:
     runs-on: ubuntu-latest
     container:
-      image: docker://docker.pkg.github.com/${{ github.repository }}/trusty-qt512:0.7
+      # FIXME: Use templating once we can mangle org/repo name into something that docker accepts.
+      #image: docker://docker.pkg.github.com/${{ github.repository }}/trusty-qt512:0.7
+      image: docker://docker.pkg.github.com/subsurface-divelog/subsurface/trusty-qt512:0.7
 
     steps:
     - name: checkout sources
