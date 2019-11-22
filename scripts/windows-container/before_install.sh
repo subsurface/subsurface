@@ -34,7 +34,7 @@ cd ${TRAVIS_BUILD_DIR}/..
 mkdir -p win32
 
 # start the container and keep it running
-docker run -v $PWD/win32:/win/win32 -v $PWD/subsurface:/win/subsurface --name=builder -w /win -d docker.pkg.github.com/subsurface-divelog/subsurface/mxe-build-container:0.9 /bin/sleep 60m
+docker run -v $PWD/win32:/win/win32 -v $PWD/subsurface:/win/subsurface --name=builder -w /win -d dirkhh/mxe-build-container:0.9 /bin/sleep 60m
 
 # for some reason this package was installed but still isn't there?
 # hmmmm. The container doesn't seem to have libtool installed

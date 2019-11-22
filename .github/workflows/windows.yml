@@ -12,8 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     container:
       # FIXME: Use templating once we can mangle org/repo name into something that docker accepts.
+      # and anonymus / actions access to github packages works.
       #image: docker://docker.pkg.github.com/${{ github.repository }}/mxe-build-container:0.9
-      image: docker://docker.pkg.github.com/subsurface-divelog/subsurface/mxe-build-container:0.9
+      image: docker://dirkhh/mxe-build-container:0.9
 
     steps:
     - name: checkout sources
