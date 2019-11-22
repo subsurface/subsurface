@@ -107,6 +107,7 @@ Kirigami.ScrollablePage {
 		}
 		RadioButton {
 			Layout.fillWidth: true
+			visible: false // TEMPORARY MEASURE, until non UI related WEB service is ready
 			text: qsTr("Upload divelogs.de")
 			exclusiveGroup: radioGroup
 			onClicked: {
@@ -116,6 +117,7 @@ Kirigami.ScrollablePage {
 		}
 		RadioButton {
 			Layout.fillWidth: true
+			visible: false // TEMPORARY MEASURE, until non UI related WEB service is ready
 			text: qsTr("Upload DiveShare")
 			exclusiveGroup: radioGroup
 			onClicked: {
