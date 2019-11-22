@@ -2,6 +2,7 @@ Profile: Add current GF to infobox
 Mobile: (desktop only) new switch --testqml, allows to use qml files instead of resources.
 Desktop: increase speed of multi-trip selection
 Mobile: ensure that all BT/BLE flavors of the OSTC are recognized as dive computers [#2358]
+mobile-widgets: Add export function
 Desktop: allow copy&pasting of multiple cylinders [#2386]
 Desktop: don't output random SAC values for cylinders without data [#2376]
 Mobile: add menu entry to start a support email, using native email client
