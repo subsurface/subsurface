@@ -154,6 +154,7 @@ Kirigami.ScrollablePage {
 		}
 		RadioButton {
 			Layout.fillWidth: true
+			visible: false // TEMPORARY MEASURE, until a non UI PNG generation is ready
 			text: qsTr("Export Dive profile")
 			exclusiveGroup: radioGroup
 			onClicked: {
