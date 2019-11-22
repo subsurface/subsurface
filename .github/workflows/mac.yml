@@ -87,28 +87,3 @@ jobs:
       with:
         name: Subsurface.app
         path: build/Subsurface.app
-
-  publishRelease:
-    needs: desktopBuild
-    runs-on: ubuntu-latest
-    steps:
-    - name: checkout sources
-      uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
-    - name: retrieve artifact
-      uses: actions/download-artifact@master
-      with:
-        name: Subsurface.app
-    - name: create zip file
-      run: |
-        zip -r Subsurface.app.zip Subsurface.app
-    - name: create CI release
-      if: github.event_name == 'push'
-      uses: ./.github/actions/release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_REPO: ${{ github.repository }}
-        REF: ${{ github.ref }}
-        COMMIT: ${{ github.sha }}
-        BIN1: Subsurface.app.zip
