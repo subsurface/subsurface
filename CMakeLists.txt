@@ -179,6 +179,10 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	endif()
 	list(APPEND QT_EXTRA_COMPONENTS QuickControls2)
 	add_definitions(-DSUBSURFACE_MOBILE)
+
+	# add definition to seperate mobile for devices and for desktop
+	add_definitions(-DSUBSURFACE_MOBILE_DESKTOP)
+
 	message(STATUS "Building Subsurface-mobile requires BT support")
 	set(BTSUPPORT ON)
 endif()
