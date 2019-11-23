@@ -131,15 +131,13 @@ void TestQPrefPartialPressureGas::test_multiple()
 	// test multiple instances have the same information
 
 	prefs.pp_graphs.phe_threshold = 2.2;
-	auto tst_direct = new qPrefPartialPressureGas;
-
 	prefs.pp_graphs.pn2_threshold = 2.3;
 	auto tst = qPrefPartialPressureGas::instance();
 
-	QCOMPARE(tst->phe_threshold(), tst_direct->phe_threshold());
-	QCOMPARE(tst->pn2_threshold(), tst_direct->pn2_threshold());
-	QCOMPARE(tst_direct->phe_threshold(), 2.2);
-	QCOMPARE(tst_direct->pn2_threshold(), 2.3);
+	QCOMPARE(tst->phe_threshold(), qPrefPartialPressureGas::phe_threshold());
+	QCOMPARE(tst->pn2_threshold(), qPrefPartialPressureGas::pn2_threshold());
+	QCOMPARE(qPrefPartialPressureGas::phe_threshold(), 2.2);
+	QCOMPARE(qPrefPartialPressureGas::pn2_threshold(), 2.3);
 }
 
 #define TEST(METHOD, VALUE)      \

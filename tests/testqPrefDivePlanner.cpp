@@ -312,17 +312,14 @@ void TestQPrefDivePlanner::test_multiple()
 {
 	// test multiple instances have the same information
 
-	prefs.sacfactor = 22;
 	prefs.safetystop = true;
-	auto tst_direct = new qPrefDivePlanner;
-
 	prefs.sacfactor = 32;
 	auto tst = qPrefDivePlanner::instance();
 
-	QCOMPARE(tst->sacfactor(), tst_direct->sacfactor());
-	QCOMPARE(tst->safetystop(), tst_direct->safetystop());
-	QCOMPARE(tst_direct->sacfactor(), 32);
-	QCOMPARE(tst_direct->safetystop(), true);
+	QCOMPARE(tst->sacfactor(), qPrefDivePlanner::sacfactor());
+	QCOMPARE(tst->safetystop(), qPrefDivePlanner::safetystop());
+	QCOMPARE(qPrefDivePlanner::sacfactor(), 32);
+	QCOMPARE(qPrefDivePlanner::safetystop(), true);
 }
 
 #define TEST(METHOD, VALUE)      \
