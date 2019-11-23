@@ -440,7 +440,12 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtPositioning ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
 	if(NOT Qt5Core_VERSION VERSION_LESS 5.11.0)
 		# and with Qt 5.11 we need another library that isn't copied by macdeployqt
+		# 5.11 is no longer supported, but lets leave it in
+	if(Qt5Core_VERSION VERSION_LESS 5.12.5)
+		# macdeployqt seems to be correct in 5.11.3, but are definitely 
+		# correct in 5.12.5		
 		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/lib/QtPositioningQuick.framework ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks)")
+	endif()
 	endif()
 	if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtQuick ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
