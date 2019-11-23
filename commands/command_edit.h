@@ -124,7 +124,7 @@ public:
 	DiveField fieldId() const override;
 };
 
-class EditWaterTypeCombo : public EditBase<int> {
+class EditWaterTypeUser : public EditBase<int> {
 public:
 	using EditBase<int>::EditBase;	// Use constructor of base class.
 	void set(struct dive *d, int value) const override;

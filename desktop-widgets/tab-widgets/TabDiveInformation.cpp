@@ -17,6 +17,8 @@
 #define TEXT_EDITED 1
 #define CSS_SET_HEADING_BLUE "QLabel { color: mediumblue;} "
 
+enum watertypes { FRESHWATER, SALTYWATER, EN13319WATER, SALTWATER };
+
 TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(new Ui::TabDiveInformation())
 {
 	ui->setupUi(this);
@@ -38,7 +40,7 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 #if defined(Q_OS_WIN)
 	ui->scrollAreaWidgetContents_3->setStyleSheet("QGroupBox::title { color: mediumblue;} ");
 #else
-	ui->scrollAreaWidgetContents_3->setStyleSheet("QGroupBox { border: 1px solid silver; border-radius: 4px; margin-top: 0.65em; background-color: gainsboro;} QGroupBox::title { color: mediumblue;} ");
+	ui->scrollAreaWidgetContents_3->setStyleSheet("QGroupBox { border: 1px solid silver; border-radius: 4px; margin-top: 0.65em; background-color: #e7e4e4;} QGroupBox::title { color: mediumblue;} ");
 #endif
 	ui->diveHeadingLabel->setStyleSheet(CSS_SET_HEADING_BLUE);
 	ui->gasHeadingLabel->setStyleSheet(CSS_SET_HEADING_BLUE);
@@ -55,7 +57,8 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 	updateWaterTypeWidget();
 	QPixmap warning (":salinity-warning-icon");
 	ui->salinityOverWrittenIcon->setPixmap(warning);
-
+	ui->salinityOverWrittenIcon->setToolTip("Water type differs from that of dc");
+	ui->salinityOverWrittenIcon->setToolTipDuration(2500);
 }
 
 TabDiveInformation::~TabDiveInformation()
@@ -99,7 +102,7 @@ void TabDiveInformation::closeWarning()
 
 void TabDiveInformation::updateWaterTypeWidget()
 {    // Decide on whether to show the water type/salinity combobox or not
-	if ((prefs.salinityEditDefault) || (manualDive))
+	if (prefs.salinityEditDefault || manualDive)
 	{         // if the preference setting has been checked or this is a manually-entered dive
 		ui->waterTypeText->setVisible(false);
 		ui->waterTypeCombo->setVisible(true); // show combobox
@@ -168,17 +171,17 @@ void TabDiveInformation::updateWhen()
 		ui->surfaceIntervalText->clear();
 }
 
-// Provide and index for the combobox that corresponds to the salinity value
+// Provide an index for the combobox that corresponds to the salinity value
 int TabDiveInformation::updateSalinityComboIndex(int salinity)
 {
 	if (salinity < 10050)
-		return 0; // Fresh
+		return FRESHWATER;
 	else if (salinity < 10190)
-		return 1; // Salty
+		return SALTYWATER;
 	else if (salinity < 10210)
-		return 2; // EN13319
+		return EN13319WATER;
 	else
-		return 3; // salt
+		return SALTWATER;
 }
 
 // If dive->user_salinity != dive->salinity (i.e. dc value) then show the salinity-overwrite indicator
@@ -186,7 +189,7 @@ void TabDiveInformation::checkDcSalinityOverWritten()
 {
 	int dc_value = current_dive->dc.salinity;
 	int user_value = current_dive->user_salinity;
-	if ((current_dive) && (dc_value) && (user_value)) {
+	if (current_dive && dc_value && user_value) {
 		if (user_value != dc_value)
 			ui->salinityOverWrittenIcon->setVisible(true);
 	} else {
@@ -240,19 +243,18 @@ void TabDiveInformation::updateData()
 
 // From the index of the water type combo box, set the dive->salinity to an appropriate value
 void TabDiveInformation::on_waterTypeCombo_activated(int index) {
-	int waterIndex = ui->waterTypeCombo->currentIndex();
 	int combobox_salinity = 0;
-	switch(waterIndex) {
-	case(0): // Fresh
+	switch(ui->waterTypeCombo->currentIndex()) {
+	case 0: // Fresh
 		combobox_salinity = FRESHWATER_SALINITY;
 		break;
-	case(1): // Salty (brack)
+	case 1 : // Salty (brack)
 		combobox_salinity = 10100;
 		break;
-	case(2): // EN13319
+	case 2 : // EN13319
 		combobox_salinity = EN13319_SALINITY;
 		break;
-	case(3): // Salt (sea)
+	case 3 : // Salt (sea)
 		combobox_salinity = SEAWATER_SALINITY;
 	// case(4): use dc: combobox_salinity is already set to 0 at the top, so no setting required here
 	default:
@@ -260,7 +262,7 @@ void TabDiveInformation::on_waterTypeCombo_activated(int index) {
 	}                 // Save and display the new salinity value:
 	checkDcSalinityOverWritten(); // if exclamation is needed, then show it
 	ui->salinityText->setText(QString("%1g/ℓ").arg(combobox_salinity / 10.0));
-	divesEdited(Command::editWaterTypeCombo(combobox_salinity, false));
+	divesEdited(Command::editWaterTypeUser(combobox_salinity, false));
 }
 
 // This function gets called if a field gets updated by an undo command.

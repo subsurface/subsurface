@@ -269,23 +269,23 @@ DiveField EditWaterTemp::fieldId() const
 	return DiveField::WATER_TEMP;
 }
 
-// ***** Atmospheric pressure *****
-void EditWaterTypeCombo::set(struct dive *d, int value) const
+// ***** Water Type *****
+void EditWaterTypeUser::set(struct dive *d, int value) const
 {
 	d->user_salinity = value > 0 ? (uint32_t)value : 0u;
 }
 
-int EditWaterTypeCombo::data(struct dive *d) const
+int EditWaterTypeUser::data(struct dive *d) const
 {
-	return (int)d->user_salinity;
+	return d->user_salinity;
 }
 
-QString EditWaterTypeCombo::fieldName() const
+QString EditWaterTypeUser::fieldName() const
 {
 	return tr("salinity");
 }
 
-DiveField EditWaterTypeCombo::fieldId() const
+DiveField EditWaterTypeUser::fieldId() const
 {
 	return DiveField::SALINITY;
 }
