@@ -249,6 +249,9 @@ struct dive *unregister_dive(int idx);
 extern void delete_single_dive(int idx);
 
 extern int run_survey, quit, force_root;
+#ifdef SUBSURFACE_MOBILE_DESKTOP
+extern char *testqml;
+#endif
 
 extern struct dive_table dive_table;
 extern struct dive displayed_dive;

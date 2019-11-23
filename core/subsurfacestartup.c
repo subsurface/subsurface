@@ -106,6 +106,9 @@ struct preferences default_prefs = {
 };
 
 int run_survey;
+#ifdef SUBSURFACE_MOBILE_DESKTOP
+char *testqml = NULL;
+#endif
 
 const struct units *get_units()
 {
@@ -183,6 +186,9 @@ static void print_help()
 	printf("\n --version             Prints current version");
 	printf("\n --survey              Offer to submit a user survey");
 	printf("\n --user=<test>         Choose configuration space for user <test>");
+#ifdef SUBSURFACE_MOBILE_DESKTOP
+	printf("\n --testqml=<dir>       Use QML files from <dir> instead of QML resources");
+#endif
 	printf("\n --cloud-timeout=<nr>  Set timeout for cloud connection (0 < timeout < 60)\n\n");
 }
 
@@ -241,6 +247,13 @@ void parse_argument(const char *arg)
 				++force_root;
 				return;
 			}
+#ifdef SUBSURFACE_MOBILE_DESKTOP
+			if (strncmp(arg, "--testqml=", sizeof("--testqml=") - 1) == 0) {
+				testqml = malloc(strlen(arg) - sizeof("--testqml=") + 1);
+				strcpy(testqml, arg + sizeof("--testqml=") - 1);
+				return;
+			}
+#endif
 		/* fallthrough */
 		case 'p':
 			/* ignore process serial number argument when run as native macosx app */
