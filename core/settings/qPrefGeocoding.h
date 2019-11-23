@@ -22,9 +22,9 @@ public:
 	static void sync() { loadSync(true); }
 
 public:
-	taxonomy_category first_taxonomy_category() { return prefs.geocoding.category[0]; }
-	taxonomy_category second_taxonomy_category() { return prefs.geocoding.category[1]; }
-	taxonomy_category third_taxonomy_category() { return prefs.geocoding.category[2]; }
+	static taxonomy_category first_taxonomy_category() { return prefs.geocoding.category[0]; }
+	static taxonomy_category second_taxonomy_category() { return prefs.geocoding.category[1]; }
+	static taxonomy_category third_taxonomy_category() { return prefs.geocoding.category[2]; }
 
 public slots:
 	static void set_first_taxonomy_category(taxonomy_category value);
