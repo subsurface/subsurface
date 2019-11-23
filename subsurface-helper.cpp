@@ -111,7 +111,17 @@ void run_ui()
 	ctxt->setContextProperty("connectionListModel", &connectionListModel);
 	ctxt->setContextProperty("logModel", MessageHandlerModel::self());
 
+#ifdef SUBSURFACE_MOBILE_DESKTOP
+	if (testqml) {
+		QString fileLoad(testqml);
+		fileLoad += "/main.qml";
+		engine.load(QUrl(fileLoad));
+	} else {
+		engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
+	}
+#else
 	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
+#endif
 	qDebug() << "loaded main.qml";
 	LOG_STP("run_ui qml loaded");
 	qqWindowObject = engine.rootObjects().value(0);
