@@ -181,15 +181,13 @@ void TestQPrefGeneral::test_multiple()
 	// test multiple instances have the same information
 
 	prefs.o2consumption = 17;
-	auto tst_direct = new qPrefGeneral;
-
 	prefs.pscr_ratio = 18;
 	auto tst = qPrefGeneral::instance();
 
-	QCOMPARE(tst->o2consumption(), tst_direct->o2consumption());
-	QCOMPARE(tst->pscr_ratio(), tst_direct->pscr_ratio());
-	QCOMPARE(tst_direct->o2consumption(), 17);
-	QCOMPARE(tst_direct->pscr_ratio(), 18);
+	QCOMPARE(tst->o2consumption(), qPrefGeneral::o2consumption());
+	QCOMPARE(tst->pscr_ratio(), qPrefGeneral::pscr_ratio());
+	QCOMPARE(qPrefGeneral::o2consumption(), 17);
+	QCOMPARE(qPrefGeneral::pscr_ratio(), 18);
 }
 
 #define TEST(METHOD, VALUE)      \

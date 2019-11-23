@@ -152,14 +152,13 @@ void TestQPrefUnits::test_multiple()
 	// test multiple instances have the same information
 
 	prefs.units.length = units::METERS;
-	auto tst_direct = new qPrefUnits;
 
 	prefs.units.pressure = units::BAR;
 	auto tst = qPrefUnits::instance();
 
-	QCOMPARE(tst->length(), tst_direct->length());
+	QCOMPARE(tst->length(), qPrefUnits::length());
 	QCOMPARE(tst->length(), units::METERS);
-	QCOMPARE(tst->pressure(), tst_direct->pressure());
+	QCOMPARE(tst->pressure(), qPrefUnits::pressure());
 	QCOMPARE(tst->pressure(), units::BAR);
 }
 

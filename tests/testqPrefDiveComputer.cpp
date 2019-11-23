@@ -101,12 +101,11 @@ void TestQPrefDiveComputer::test_struct_disk()
 void TestQPrefDiveComputer::test_multiple()
 {
 	// test multiple instances have the same information
-	auto tst_direct = new qPrefDiveComputer;
 
 	auto tst = qPrefDiveComputer::instance();
 	prefs.dive_computer.device = copy_qstring("mine");
 
-	QCOMPARE(tst->device(), tst_direct->device());
+	QCOMPARE(tst->device(), qPrefDiveComputer::device());
 	QCOMPARE(tst->device(), QString("mine"));
 }
 
