@@ -502,6 +502,38 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						pageStack.push(themetest)
 					}
 				}
+				Kirigami.Action {
+					text: qsTr("Dive planner")
+
+					Kirigami.Action {
+						text: qsTr("Setup")
+						onTriggered: {
+							globalDrawer.close()
+							pageStack.push(divePlannerSetupWindow)
+						}
+					}
+					Kirigami.Action {
+						text: qsTr("Edit")
+						onTriggered: {
+							globalDrawer.close()
+							pageStack.push(divePlannerEditWindow)
+						}
+					}
+					Kirigami.Action {
+						text: qsTr("View")
+						onTriggered: {
+							globalDrawer.close()
+							pageStack.push(divePlannerViewWindow)
+						}
+					}
+					Kirigami.Action {
+						text: qsTr("Manager")
+						onTriggered: {
+							globalDrawer.close()
+							pageStack.push(divePlannerManagerWindow)
+						}
+					}
+				}
 			}
 		] // end actions
 		Image {
@@ -842,6 +874,26 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	MapPage {
 		id: mapPage
+		visible: false
+	}
+
+	DivePlannerSetup {
+		id: divePlannerSetupWindow
+		visible: false
+	}
+
+	DivePlannerEdit {
+		id: divePlannerEditWindow
+		visible: false
+	}
+
+	DivePlannerView {
+		id: divePlannerViewWindow
+		visible: false
+	}
+
+	DivePlannerManager {
+		id: divePlannerManagerWindow
 		visible: false
 	}
 
