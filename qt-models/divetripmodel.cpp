@@ -1185,7 +1185,7 @@ void DiveTripModelTree::divesSelected(const QVector<dive *> &dives, dive *curren
 
 	// The current dive has changed. Transform the current dive into an index and pass it on to the view.
 	if (!current) {
-		emit newCurrentDive(QModelIndex()); // No current dive -> tell view to clear current index with an invalid index
+		emit currentDiveChanged(QModelIndex()); // No current dive -> tell view to clear current index with an invalid index
 		return;
 	}
 
@@ -1196,26 +1196,26 @@ void DiveTripModelTree::divesSelected(const QVector<dive *> &dives, dive *curren
 		if (idx < 0) {
 			// We don't know this dive. Something is wrong. Warn and bail.
 			qWarning() << "DiveTripModelTree::diveSelected(): unknown top-level dive";
-			emit newCurrentDive(QModelIndex());
+			emit currentDiveChanged(QModelIndex());
 			return;
 		}
-		emit newCurrentDive(createIndex(idx, 0, noParent));
+		emit currentDiveChanged(createIndex(idx, 0, noParent));
 	} else {
 		int idx = findTripIdx(trip);
 		if (idx < 0) {
 			// We don't know the trip - this shouldn't happen. Warn and bail.
 			qWarning() << "DiveTripModelTree::diveSelected(): unknown trip";
-			emit newCurrentDive(QModelIndex());
+			emit currentDiveChanged(QModelIndex());
 			return;
 		}
 		int diveIdx = findDiveInTrip(idx, current);
 		if (diveIdx < 0) {
 			// We don't know this dive. Something is wrong. Warn and bail.
 			qWarning() << "DiveTripModelTree::diveSelected(): unknown dive";
-			emit newCurrentDive(QModelIndex());
+			emit currentDiveChanged(QModelIndex());
 			return;
 		}
-		emit newCurrentDive(createIndex(diveIdx, 0, idx));
+		emit currentDiveChanged(createIndex(diveIdx, 0, idx));
 	}
 }
 
@@ -1443,7 +1443,7 @@ void DiveTripModelList::divesSelected(const QVector<dive *> &dives, dive *curren
 
 	// Transform the current dive into an index and pass it on to the view.
 	if (!current) {
-		emit newCurrentDive(QModelIndex()); // No current dive -> tell view to clear current index with an invalid index
+		emit currentDiveChanged(QModelIndex()); // No current dive -> tell view to clear current index with an invalid index
 		return;
 	}
 
@@ -1451,10 +1451,10 @@ void DiveTripModelList::divesSelected(const QVector<dive *> &dives, dive *curren
 	if (it == items.end()) {
 		// We don't know this dive. Something is wrong. Warn and bail.
 		qWarning() << "DiveTripModelList::divesSelected(): unknown dive";
-		emit newCurrentDive(QModelIndex());
+		emit currentDiveChanged(QModelIndex());
 		return;
 	}
-	emit newCurrentDive(createIndex(it - items.begin(), 0));
+	emit currentDiveChanged(createIndex(it - items.begin(), 0));
 }
 
 // Simple sorting helper for sorting against a criterium and if

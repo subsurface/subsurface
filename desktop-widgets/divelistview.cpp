@@ -87,7 +87,7 @@ void DiveListView::resetModel()
 	// If the model was reset, we have to reconnect the signals and tell
 	// the filter model to update its source model.
 	connect(DiveTripModelBase::instance(), &DiveTripModelBase::selectionChanged, this, &DiveListView::diveSelectionChanged);
-	connect(DiveTripModelBase::instance(), &DiveTripModelBase::newCurrentDive, this, &DiveListView::currentDiveChanged);
+	connect(DiveTripModelBase::instance(), &DiveTripModelBase::currentDiveChanged, this, &DiveListView::currentDiveChanged);
 }
 
 void DiveListView::calculateInitialColumnWidth(int col)
