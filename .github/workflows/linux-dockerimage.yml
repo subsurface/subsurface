@@ -10,7 +10,7 @@ jobs:
   trusty-qt512:
     runs-on: ubuntu-latest
     env:
-      VERSION: 0.7
+      VERSION: ${{ '0.7' }}    # just assigning a number wouldn't get you a string
 
     steps:
     - uses: actions/checkout@v1
@@ -20,10 +20,16 @@ jobs:
         cd scripts/docker/trusty-qt512
         bash getpackages.sh
 
-    - name: Build the Docker image
-      run: docker build ./scripts/docker/trusty-qt512/ --tag docker.pkg.github.com/${GITHUB_REPOSITORY,,}/trusty-qt512:${VERSION}
-
-    - name: Push the Docker image
+    - name: set env
       run: |
-        docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY/\/*/} -p ${{ secrets.GITHUB_TOKEN }}
-        docker push docker.pkg.github.com/${GITHUB_REPOSITORY,,}/trusty-qt512:${VERSION}
+        v=${{ env.VERSION }}
+        echo "::set-env name=NAME::subsurface/trusty-qt512:${v}"
+
+    - name: Build and Publish Linux Docker image to Dockerhub
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name:       ${{ env.NAME }}
+        username:   ${{ secrets.DOCKER_USERNAME }}
+        password:   ${{ secrets.DOCKER_PASSWORD }}
+        dockerfile: 'Dockerfile'
+        workdir:    './scripts/docker/trusty-qt512/'

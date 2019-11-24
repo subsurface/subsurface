@@ -9,7 +9,7 @@ jobs:
   android-build-container:
     runs-on: ubuntu-latest
     env:
-      VERSION: 5.13.01
+      VERSION: ${{ '5.13.01' }}
 
     steps:
     - uses: actions/checkout@v1
@@ -21,10 +21,16 @@ jobs:
           sed -ie 's/^sudo/#sudo/' setup-docker.sh
           bash setup-docker.sh
 
-    - name: Build the Docker image
-      run: docker build ./scripts/docker/android-build-container/ --tag docker.pkg.github.com/${GITHUB_REPOSITORY,,}/android-build-container:${VERSION}
-
-    - name: Push the Docker image
+    - name: set env
       run: |
-        docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY/\/*/} -p ${{ secrets.GITHUB_TOKEN }}
-        docker push docker.pkg.github.com/${GITHUB_REPOSITORY,,}/android-build-container:${VERSION}
+        v=${{ env.VERSION }}
+        echo "::set-env name=NAME::subsurface/android-build-container:${v}"
+
+    - name: Build and Publish Linux Docker image to Dockerhub
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name:       ${{ env.NAME }}
+        username:   ${{ secrets.DOCKER_USERNAME }}
+        password:   ${{ secrets.DOCKER_PASSWORD }}
+        dockerfile: 'Dockerfile'
+        workdir:    './scripts/docker/android-build-container/'
