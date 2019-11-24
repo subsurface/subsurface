@@ -3,7 +3,7 @@
 
 # This variable controls the number of compilation processes
 # within one package ("intra-package parallelism").
-JOBS := 6
+JOBS := 2
 
 # This variable controls the targets that will build.
 MXE_TARGETS :=  i686-w64-mingw32.shared

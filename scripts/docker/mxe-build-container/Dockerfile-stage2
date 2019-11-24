@@ -1,0 +1,21 @@
+ARG VERSION
+
+# Start from the container that we created in stage 1
+From subsurface/mxe-build-container:$VERSION
+
+# this time the settings include QtWebKit - since everything else was built
+# during the first stage, QtWebKit will be the only thing that gets built
+ADD settings-stage2.mk /win/mxe/settings.mk
+RUN cd /win/mxe ; \
+    make -j 2 2>&1 | tee build.log ;
+RUN cd /win/mxe ; \
+    make MXE_TARGETS=i686-w64-mingw32.static glib -j 6 2>&1 | tee -a build.log ;
+
+# manually build the Win BLE version of QtConnectivity (we can drop this with Qt 5.14)
+RUN cd /win/mxe ; \
+    mkdir -p neolit ; cd neolit ; git clone -b wip/win git://github.com/qt/qtconnectivity
+RUN cd /win/mxe/neolit/qtconnectivity ; \
+    PATH=/win/mxe/usr/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin /win/mxe/usr/i686-w64-mingw32.shared/qt5/bin/qmake qtconnectivity.pro ; \
+    PATH=/win/mxe/usr/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make -j 6 ; \
+    PATH=/win/mxe/usr/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make install ;
+RUN rm -rf /win/mxe/pkg
