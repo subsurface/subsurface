@@ -41,12 +41,7 @@ extern void insert_dive(struct dive_table *table, struct dive *d);
 extern void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
 extern int get_divenr(const struct dive *dive);
 extern int remove_dive(const struct dive *dive, struct dive_table *table);
-extern bool consecutive_selected();
-extern void select_dive(struct dive *dive);
-extern void deselect_dive(struct dive *dive);
 extern bool filter_dive(struct dive *d, bool shown); /* returns true if status changed */
-extern struct dive *first_selected_dive();
-extern struct dive *last_selected_dive();
 extern int get_dive_nr_at_idx(int idx);
 extern void set_dive_nr_for_current_dive();
 extern timestamp_t get_surface_interval(timestamp_t when);
@@ -62,10 +57,6 @@ int get_dive_id_closest_to(timestamp_t when);
 void clear_dive_file_data();
 void clear_dive_table(struct dive_table *table);
 void move_dive_table(struct dive_table *src, struct dive_table *dst);
-
-#ifdef DEBUG_TRIP
-extern void dump_selection(void);
-#endif
 
 #ifdef __cplusplus
 }

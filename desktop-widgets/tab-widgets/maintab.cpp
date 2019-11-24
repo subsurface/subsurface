@@ -12,7 +12,7 @@
 #include "core/trip.h"
 #include "qt-models/diveplannermodel.h"
 #include "desktop-widgets/divelistview.h"
-#include "core/display.h"
+#include "core/selection.h"
 #include "profile-widget/profilewidget2.h"
 #include "desktop-widgets/diveplanner.h"
 #include "core/divesitehelpers.h"

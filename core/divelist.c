@@ -19,6 +19,7 @@
 #include "planner.h"
 #include "qthelper.h"
 #include "git-access.h"
+#include "selection.h"
 #include "table.h"
 #include "trip.h"
 
@@ -27,23 +28,6 @@
 static bool dive_list_changed = false;
 
 bool autogroup = false;
-
-unsigned int amount_selected;
-
-#if DEBUG_SELECTION_TRACKING
-void dump_selection(void)
-{
-	int i;
-	struct dive *dive;
-
-	printf("currently selected are %u dives:", amount_selected);
-	for_each_dive(i, dive) {
-		if (dive->selected)
-			printf(" %d", i);
-	}
-	printf("\n");
-}
-#endif
 
 void set_autogroup(bool value)
 {
@@ -63,7 +47,6 @@ void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2max_p)
 {
 	int i;
 	int maxo2 = -1, maxhe = -1, mino2 = 1000;
-
 
 	for (i = 0; i < dive->cylinders.nr; i++) {
 		const cylinder_t *cyl = get_cylinder(dive, i);
@@ -158,7 +141,6 @@ static int calculate_otu(const struct dive *dive)
 	}
 	return lrint(otu);
 }
-
 
 /* Calculate the CNS for a single dive  - this only takes the first divecomputer into account.
    The CNS contributions are summed for dive segments defined by samples. The maximum O2 exposure duration for each
@@ -648,30 +630,6 @@ char *get_dive_gas_string(const struct dive *dive)
 	return buffer;
 }
 
-struct dive *first_selected_dive()
-{
-	int idx;
-	struct dive *d;
-
-	for_each_dive (idx, d) {
-		if (d->selected)
-			return d;
-	}
-	return NULL;
-}
-
-struct dive *last_selected_dive()
-{
-	int idx;
-	struct dive *d, *ret = NULL;
-
-	for_each_dive (idx, d) {
-		if (d->selected)
-			ret = d;
-	}
-	return ret;
-}
-
 /* Like strcmp(), but don't crash on null-pointers */
 static int safe_strcmp(const char *s1, const char *s2)
 {
@@ -832,71 +790,6 @@ void append_dive(struct dive *dive)
 	add_to_dive_table(&dive_table, dive_table.nr, dive);
 	if (dive->selected)
 		amount_selected++;
-}
-
-bool consecutive_selected()
-{
-	struct dive *d;
-	int i;
-	bool consecutive = true;
-	bool firstfound = false;
-	bool lastfound = false;
-
-	if (amount_selected == 0 || amount_selected == 1)
-		return true;
-
-	for_each_dive(i, d) {
-		if (d->selected) {
-			if (!firstfound)
-				firstfound = true;
-			else if (lastfound)
-				consecutive = false;
-		} else if (firstfound) {
-			lastfound = true;
-		}
-	}
-	return consecutive;
-}
-
-void select_dive(struct dive *dive)
-{
-	if (!dive)
-		return;
-	if (!dive->selected) {
-		dive->selected = 1;
-		amount_selected++;
-	}
-	current_dive = dive;
-}
-
-void deselect_dive(struct dive *dive)
-{
-	int idx;
-	if (dive && dive->selected) {
-		dive->selected = 0;
-		if (amount_selected)
-			amount_selected--;
-		if (current_dive == dive && amount_selected > 0) {
-			/* pick a different dive as selected */
-			int selected_dive = idx = get_divenr(dive);
-			while (--selected_dive >= 0) {
-				dive = get_dive(selected_dive);
-				if (dive && dive->selected) {
-					current_dive = dive;
-					return;
-				}
-			}
-			selected_dive = idx;
-			while (++selected_dive < dive_table.nr) {
-				dive = get_dive(selected_dive);
-				if (dive && dive->selected) {
-					current_dive = dive;
-					return;
-				}
-			}
-		}
-		current_dive = NULL;
-	}
 }
 
 int shown_dives = 0;

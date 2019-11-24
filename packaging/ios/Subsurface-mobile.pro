@@ -70,6 +70,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/equipment.c \
 	../../core/gas.c \
 	../../core/membuffer.c \
+	../../core/selection.cpp \
 	../../core/sha1.c \
 	../../core/strtod.c \
 	../../core/tag.c \
@@ -187,6 +188,8 @@ HEADERS += \
 	../../core/membuffer.h \
 	../../core/metrics.h \
 	../../core/qt-gui.h \
+	../../core/selection.h \
+	../../core/divecomputer.h \
 	../../core/sha1.h \
 	../../core/strndup.h \
 	../../core/subsurfacestartup.h \

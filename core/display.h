@@ -29,8 +29,6 @@ extern struct divecomputer *select_dc(struct dive *);
 
 extern unsigned int dc_number;
 
-extern unsigned int amount_selected;
-
 extern int is_default_dive_computer_device(const char *);
 extern int is_default_dive_computer(const char *, const char *);
 

@@ -2,6 +2,7 @@
 
 #include "trip.h"
 #include "subsurface-string.h"
+#include "selection.h"
 #include "table.h"
 
 struct trip_table trip_table;

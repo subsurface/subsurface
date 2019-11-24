@@ -8,6 +8,112 @@
 
 #include <QVector>
 
+int amount_selected;
+
+extern "C" void select_dive(struct dive *dive)
+{
+	if (!dive)
+		return;
+	if (!dive->selected) {
+		dive->selected = 1;
+		amount_selected++;
+	}
+	current_dive = dive;
+}
+
+extern "C" void deselect_dive(struct dive *dive)
+{
+	int idx;
+	if (dive && dive->selected) {
+		dive->selected = 0;
+		if (amount_selected)
+			amount_selected--;
+		if (current_dive == dive && amount_selected > 0) {
+			/* pick a different dive as selected */
+			int selected_dive = idx = get_divenr(dive);
+			while (--selected_dive >= 0) {
+				dive = get_dive(selected_dive);
+				if (dive && dive->selected) {
+					current_dive = dive;
+					return;
+				}
+			}
+			selected_dive = idx;
+			while (++selected_dive < dive_table.nr) {
+				dive = get_dive(selected_dive);
+				if (dive && dive->selected) {
+					current_dive = dive;
+					return;
+				}
+			}
+		}
+		current_dive = NULL;
+	}
+}
+
+extern "C" struct dive *first_selected_dive()
+{
+	int idx;
+	struct dive *d;
+
+	for_each_dive (idx, d) {
+		if (d->selected)
+			return d;
+	}
+	return NULL;
+}
+
+extern "C" struct dive *last_selected_dive()
+{
+	int idx;
+	struct dive *d, *ret = NULL;
+
+	for_each_dive (idx, d) {
+		if (d->selected)
+			ret = d;
+	}
+	return ret;
+}
+
+extern "C" bool consecutive_selected()
+{
+	struct dive *d;
+	int i;
+	bool consecutive = true;
+	bool firstfound = false;
+	bool lastfound = false;
+
+	if (amount_selected == 0 || amount_selected == 1)
+		return true;
+
+	for_each_dive(i, d) {
+		if (d->selected) {
+			if (!firstfound)
+				firstfound = true;
+			else if (lastfound)
+				consecutive = false;
+		} else if (firstfound) {
+			lastfound = true;
+		}
+	}
+	return consecutive;
+}
+
+#if DEBUG_SELECTION_TRACKING
+extern "C" void dump_selection(void)
+{
+	int i;
+	struct dive *dive;
+
+	printf("currently selected are %u dives:", amount_selected);
+	for_each_dive(i, dive) {
+		if (dive->selected)
+			printf(" %d", i);
+	}
+	printf("\n");
+}
+#endif
+
 // Set the current dive either from a list of selected dives,
 // or a newly selected dive. In both cases, try to select the
 // dive that is newer that is newer than the given date.
