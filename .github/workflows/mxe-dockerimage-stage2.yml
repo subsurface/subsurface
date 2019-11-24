@@ -1,0 +1,34 @@
+name: Docker Image CI stage 2
+
+# trigger this second stage via a repository dispaych event
+# the version that we are building is passed in via the event type that is available to us here
+# as github.event.action
+
+on: repository_dispatch
+
+jobs:
+  mxe-build-container-stage2:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+      # Grab the version from the event name that we were triggered by and add ".stage1" to find the docker image to start FROM
+      # And create the NAME of the final docker image
+    - name: set env
+      run: |
+        v=${{ github.event.action }}
+        s=".stage1"
+        echo "::set-env name=VERSION::${v}${s}"
+        echo "::set-env name=NAME::subsurface/mxe-build-container:${v}"
+
+    - name: Build and Publish stage 2 Docker image to Dockerhub
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name:       ${{ env.NAME }}
+        username:   ${{ secrets.DOCKER_USERNAME }}
+        password:   ${{ secrets.DOCKER_PASSWORD }}
+        dockerfile: 'Dockerfile-stage2'
+        workdir:    './scripts/docker/mxe-build-container/'
+        buildargs:  VERSION
+
