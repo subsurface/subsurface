@@ -95,7 +95,7 @@ signals:
 	// indexes into local indexes according to current sorting/filtering and instructs the QSelectionModel to
 	// perform the appropriate actions.
 	void selectionChanged(const QVector<QModelIndex> &indexes);
-	void newCurrentDive(QModelIndex index);
+	void currentDiveChanged(QModelIndex index);
 protected:
 	// Access trip and dive data
 	static QVariant diveData(const struct dive *d, int column, int role);
