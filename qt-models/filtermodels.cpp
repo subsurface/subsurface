@@ -15,8 +15,8 @@ MultiFilterSortModel *MultiFilterSortModel::instance()
 
 MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
-	connect(&diveListNotifier, &DiveListNotifier::filterReset, this, &MultiFilterSortModel::invalidateFilter);
 	setFilterKeyColumn(-1); // filter all columns
+	setFilterRole(DiveTripModelBase::SHOWN_ROLE); // Let the proxy-model known that is has to react to change events involving SHOWN_ROLE
 	setFilterCaseSensitivity(Qt::CaseInsensitive);
 }
 
