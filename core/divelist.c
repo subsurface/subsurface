@@ -1,23 +1,13 @@
 // SPDX-License-Identifier: GPL-2.0
 /* divelist.c */
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <math.h>
-#include "gettext.h"
-#include <assert.h>
-#include <zip.h>
-#include <libxslt/transform.h>
 
 #include "subsurface-string.h"
 #include "deco.h"
 #include "divesite.h"
 #include "divelist.h"
-#include "display.h"
 #include "planner.h"
 #include "qthelper.h"
+#include "gettext.h"
 #include "git-access.h"
 #include "selection.h"
 #include "table.h"
