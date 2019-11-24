@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
 // Helper functions for the undo-commands
 
-#include "command_private.h"
-#include "core/divelist.h"
-#include "core/display.h" // for amount_selected
-#include "core/subsurface-qt/DiveListNotifier.h"
+#include "selection.h"
+#include "divelist.h"
+#include "display.h" // for amount_selected
+#include "subsurface-qt/DiveListNotifier.h"
 
-namespace Command {
+#include <QVector>
 
 // Set the current dive either from a list of selected dives,
 // or a newly selected dive. In both cases, try to select the
@@ -104,5 +104,3 @@ std::vector<dive *> getDiveSelection()
 	}
 	return res;
 }
-
-} // namespace Command

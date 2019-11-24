@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "command_divesite.h"
-#include "command_private.h"
 #include "core/divesite.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
 #include "core/qthelper.h"

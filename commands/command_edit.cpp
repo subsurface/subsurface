@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "command_edit.h"
-#include "command_private.h"
 #include "core/divelist.h"
 #include "core/qthelper.h" // for copy_qstring
+#include "core/selection.h"
 #include "core/subsurface-string.h"
 #include "core/tag.h"
 

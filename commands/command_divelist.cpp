@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "command_divelist.h"
-#include "command_private.h"
 #include "core/divelist.h"
 #include "core/display.h" // for amount_selected
 #include "core/qthelper.h"
+#include "core/selection.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
 #include "qt-models/filtermodels.h"
 #include "../profile-widget/profilewidget2.h"
