@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "command_edit_trip.h"
-#include "command_private.h"
 #include "core/qthelper.h"
+#include "core/selection.h"
 
 namespace Command {
 

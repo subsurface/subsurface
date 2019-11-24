@@ -14,8 +14,6 @@ set(SUBSURFACE_GENERIC_COMMANDS_SRCS
 	command_edit.h
 	command_edit_trip.cpp
 	command_edit_trip.h
-	command_private.cpp
-	command_private.h
 )
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	add_library(subsurface_commands_desktop STATIC ${SUBSURFACE_GENERIC_COMMANDS_SRCS})
