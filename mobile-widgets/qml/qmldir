@@ -1,0 +1,11 @@
+# This file is NOT needed for building production versions!
+#
+# However when not using resources (qrc:) but files (file:) 
+# QQmlApplicationEngine demands that all qml files (except imports)
+# are in the same directory. 
+# MapWidget qml is logically stored with the MapWidget, therefore
+# the source tree contains several qml directories.
+# this file "unites" all qml directories
+MapWidget ../../map-widget/qml/MapWidget.qml
+MapWidgetContextMenu ../../map-widget/qml/MapWidgetContextMenu.qml
+MapWidgetError ../../map-widget/qml/MapWidgetError.qml
