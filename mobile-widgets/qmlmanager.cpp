@@ -36,6 +36,7 @@
 #include "core/downloadfromdcthread.h"
 #include "core/subsurface-string.h"
 #include "core/pref.h"
+#include "core/selection.h"
 #include "core/ssrf.h"
 #include "core/save-profiledata.h"
 #include "core/settings/qPrefGeneral.h"

@@ -9,7 +9,7 @@
 #include "desktop-widgets/modeldelegates.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/divepicturewidget.h"
-#include "core/display.h"
+#include "core/selection.h"
 #include "core/divefilter.h"
 #include <unistd.h>
 #include <QSettings>

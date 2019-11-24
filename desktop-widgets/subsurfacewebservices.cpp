@@ -11,7 +11,7 @@
 #include "core/file.h"
 #include "desktop-widgets/mapwidget.h"
 #include "desktop-widgets/tab-widgets/maintab.h"
-#include "core/display.h"
+#include "core/selection.h"
 #include "core/membuffer.h"
 #include "core/cloudstorage.h"
 #include "core/subsurface-string.h"
