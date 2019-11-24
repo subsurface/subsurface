@@ -26,11 +26,13 @@
 void free_weightsystem(weightsystem_t ws)
 {
 	free((void *)ws.description);
+	ws.description = NULL;
 }
 
 static void free_cylinder(cylinder_t c)
 {
 	free((void *)c.type.description);
+	c.type.description = NULL;
 }
 
 void copy_weights(const struct weightsystem_table *s, struct weightsystem_table *d)

@@ -82,14 +82,12 @@ void WeightModel::setTempWS(int row, weightsystem_t ws)
 		return;
 
 	clearTempWS(); // Shouldn't be necessary, just in case: Reset old temporary row.
-	free_weightsystem(tempWS);
 
 	// It is really hard to get the editor-close-hints and setModelData calls under
 	// control. Therefore, if the row is set to the already existing entry, don't
 	// enter temporary mode.
 	if (same_string(d->weightsystems.weightsystems[row].description, ws.description)) {
 		free_weightsystem(ws);
-		tempWS.description = nullptr;
 	} else {
 		tempRow = row;
 		tempWS = ws;
@@ -103,6 +101,7 @@ void WeightModel::clearTempWS()
 		return;
 	int oldRow = tempRow;
 	tempRow = -1;
+	free_weightsystem(tempWS);
 	dataChanged(index(oldRow, TYPE), index(oldRow, WEIGHT));
 }
 
