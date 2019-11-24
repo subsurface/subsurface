@@ -11,10 +11,7 @@ jobs:
   buildInContainer:
     runs-on: ubuntu-latest
     container:
-      # FIXME: Use templating once we can mangle org/repo name into something that docker accepts.
-      # and anonymus / actions access to github packages works.
-      #image: docker://docker.pkg.github.com/${{ github.repository }}/android-builder:5.13.01
-      image: docker://dirkhh/android-builder:5.13.01
+      image: docker://subsurface/android-build-container:5.13.10
 
     steps:
     - name: checkout sources
