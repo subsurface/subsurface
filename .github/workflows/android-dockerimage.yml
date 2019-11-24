@@ -1,0 +1,30 @@
+name: Docker Image CI
+
+on:
+  push:
+    paths:
+    - scripts/docker/android-build-container/Dockerfile
+
+jobs:
+  android-build-container:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: 5.13.01
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Get our pre-reqs
+      run: |
+          cd scripts/docker/android-build-container
+          bash download.sh
+          sed -ie 's/^sudo/#sudo/' setup-docker.sh
+          bash setup-docker.sh
+
+    - name: Build the Docker image
+      run: docker build ./scripts/docker/android-build-container/ --tag docker.pkg.github.com/${GITHUB_REPOSITORY,,}/android-build-container:${VERSION}
+
+    - name: Push the Docker image
+      run: |
+        docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY/\/*/} -p ${{ secrets.GITHUB_TOKEN }}
+        docker push docker.pkg.github.com/${GITHUB_REPOSITORY,,}/android-build-container:${VERSION}
