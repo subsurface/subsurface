@@ -12,6 +12,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+      with:
+        ref: ${{ github.event.client_payload.target_branch }}
 
       # Grab the version from the event name that we were triggered by and add ".stage1" to find the docker image to start FROM
       # And create the NAME of the final docker image

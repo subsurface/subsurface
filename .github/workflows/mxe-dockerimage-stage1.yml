@@ -46,4 +46,4 @@ jobs:
                     -H "Accept: application/vnd.github.everest-preview+json" \
                     -H "Content-Type: application/json" \
                     https://api.github.com/repos/subsurface-divelog/subsurface/dispatches \
-                    --data '{"event_type": "${{ env.VERSION }}" }'
+                    --data '{"event_type": "${{ env.VERSION }}", "client_payload": { "target_branch": "${{ github.ref }}" } }'
