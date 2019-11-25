@@ -10,7 +10,7 @@ jobs:
   trusty-qt512:
     runs-on: ubuntu-latest
     env:
-      VERSION: ${{ '0.7' }}    # just assigning a number wouldn't get you a string
+      VERSION: ${{ '1.0' }}    # 'official' images should have a dot-zero version
 
     steps:
     - uses: actions/checkout@v1
