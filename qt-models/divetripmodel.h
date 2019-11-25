@@ -72,6 +72,9 @@ public:
 	// by instance().
 	static void resetModel(Layout layout);
 
+	// Call after having set the model to be informed of the current selection.
+	void initSelection();
+
 	// Clear all dives
 	void clear();
 

@@ -86,8 +86,11 @@ void DiveListView::resetModel()
 	MultiFilterSortModel::instance()->resetModel(currentLayout);
 	// If the model was reset, we have to reconnect the signals and tell
 	// the filter model to update its source model.
-	connect(DiveTripModelBase::instance(), &DiveTripModelBase::selectionChanged, this, &DiveListView::diveSelectionChanged);
-	connect(DiveTripModelBase::instance(), &DiveTripModelBase::currentDiveChanged, this, &DiveListView::currentDiveChanged);
+	DiveTripModelBase *m = DiveTripModelBase::instance();
+	connect(m, &DiveTripModelBase::selectionChanged, this, &DiveListView::diveSelectionChanged);
+	connect(m, &DiveTripModelBase::currentDiveChanged, this, &DiveListView::currentDiveChanged);
+	// Get the initial selection
+	m->initSelection();
 }
 
 void DiveListView::calculateInitialColumnWidth(int col)
@@ -519,10 +522,6 @@ void DiveListView::reload()
 {
 	resetModel();
 
-	if (amount_selected && current_dive != NULL)
-		selectDive(get_divenr(current_dive), true);
-	else
-		select_newest_visible_dive();
 	if (selectedIndexes().count()) {
 		QModelIndex curr = selectedIndexes().first();
 		curr = curr.parent().isValid() ? curr.parent() : curr;

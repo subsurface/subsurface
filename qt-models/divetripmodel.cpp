@@ -3,6 +3,7 @@
 #include "core/divefilter.h"
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
+#include "core/selection.h"
 #include "core/trip.h"
 #include "core/qthelper.h"
 #include "core/divesite.h"
@@ -370,6 +371,19 @@ void DiveTripModelBase::resetModel(DiveTripModelBase::Layout layout)
 		currentModel.reset(new DiveTripModelTree);
 	else
 		currentModel.reset(new DiveTripModelList);
+}
+
+// After resetting the model, the higher up model or view may call this
+// function to get informed on the current selection.
+// TODO: Currently, this reads and resets the selection. Make this more
+//  efficient by maintaining a list of selected dives.
+void DiveTripModelBase::initSelection()
+{
+	std::vector<dive *> dives = getDiveSelection();
+	if (!dives.empty())
+		setSelection(dives, current_dive);
+	else
+		select_newest_visible_dive();
 }
 
 void DiveTripModelBase::clear()
