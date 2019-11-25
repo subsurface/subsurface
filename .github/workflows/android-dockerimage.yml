@@ -4,6 +4,7 @@ on:
   push:
     paths:
     - scripts/docker/android-build-container/Dockerfile
+    - .github/workflows/android-docker*
 
 jobs:
   android-build-container:
