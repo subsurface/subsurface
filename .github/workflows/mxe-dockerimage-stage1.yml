@@ -14,7 +14,7 @@ jobs:
       #            as you test changes toward a new release, call those 1.1, 1.2, 1.3, etc
       #            VERSION is just that version presented as a string constant
       #
-      VERSION: ${{ '0.5' }}
+      VERSION: ${{ '1.0' }}
 
     steps:
     - uses: actions/checkout@v1
