@@ -19,6 +19,7 @@ extern void deselect_dive(struct dive *dive);
 extern struct dive *first_selected_dive(void);
 extern struct dive *last_selected_dive(void);
 extern bool consecutive_selected(void);
+extern void select_newest_visible_dive();
 
 #if DEBUG_SELECTION_TRACKING
 extern void dump_selection(void);

@@ -210,3 +210,16 @@ std::vector<dive *> getDiveSelection()
 	}
 	return res;
 }
+
+// Select the first dive that is visible
+extern "C" void select_newest_visible_dive()
+{
+	for (int i = dive_table.nr - 1; i >= 0; --i) {
+		dive *d = dive_table.dives[i];
+		if (!d->hidden_by_filter)
+			return setSelection({ d }, d);
+	}
+
+	// No visible dive -> deselect all
+	setSelection({}, nullptr);
+}

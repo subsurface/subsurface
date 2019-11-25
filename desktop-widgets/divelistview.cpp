@@ -474,28 +474,6 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 	selectionChangeDone();
 }
 
-// Get index of first dive. This assumes that trips without dives are never shown.
-// May return an invalid index if no dive is found.
-QModelIndex DiveListView::indexOfFirstDive()
-{
-	// Fetch the first top-level item. If this is a trip, it is supposed to have at least
-	// one child. In that case return the child. Otherwise return the top-level item, which
-	// should be a dive.
-	QAbstractItemModel *m = model();
-	QModelIndex firstDiveOrTrip = m->index(0, 0);
-	if (!firstDiveOrTrip.isValid())
-		return QModelIndex();
-	QModelIndex child = m->index(0, 0, firstDiveOrTrip);
-	return child.isValid() ? child : firstDiveOrTrip;
-}
-
-void DiveListView::selectFirstDive()
-{
-	QModelIndex first = indexOfFirstDive();
-	if (first.isValid())
-		setCurrentIndex(first);
-}
-
 bool DiveListView::eventFilter(QObject *, QEvent *event)
 {
 	if (event->type() != QEvent::KeyPress)
@@ -544,7 +522,7 @@ void DiveListView::reload()
 	if (amount_selected && current_dive != NULL)
 		selectDive(get_divenr(current_dive), true);
 	else
-		selectFirstDive();
+		select_newest_visible_dive();
 	if (selectedIndexes().count()) {
 		QModelIndex curr = selectedIndexes().first();
 		curr = curr.parent().isValid() ? curr.parent() : curr;
@@ -1114,7 +1092,7 @@ void DiveListView::filterFinished()
 
 	// If there are no more selected dives, select the first visible dive
 	if (!selectionModel()->hasSelection())
-		selectFirstDive();
+		select_newest_visible_dive();
 	emit divesSelected();
 }
 

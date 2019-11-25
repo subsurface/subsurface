@@ -34,8 +34,6 @@ public:
 	void selectDive(QModelIndex index, bool scrollto = false, bool toggle = false);
 	void selectDive(int dive_table_idx, bool scrollto = false, bool toggle = false);
 	void selectDives(const QList<int> &newDiveSelection);
-	void selectFirstDive();
-	QModelIndex indexOfFirstDive();
 	void rememberSelection();
 	void restoreSelection();
 	void contextMenuEvent(QContextMenuEvent *event);
