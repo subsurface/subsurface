@@ -486,7 +486,7 @@ Qt::ItemFlags CylindersModel::flags(const QModelIndex &index) const
 	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
-void CylindersModel::remove(const QModelIndex &index)
+void CylindersModel::remove(QModelIndex index)
 {
 
 	if (index.column() == USE) {

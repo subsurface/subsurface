@@ -21,7 +21,7 @@ weightsystem_t *WeightModel::weightSystemAt(const QModelIndex &index)
 	return &displayed_dive.weightsystems.weightsystems[index.row()];
 }
 
-void WeightModel::remove(const QModelIndex &index)
+void WeightModel::remove(QModelIndex index)
 {
 	if (index.column() != REMOVE)
 		return;
