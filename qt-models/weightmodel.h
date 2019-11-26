@@ -31,7 +31,7 @@ public:
 
 public
 slots:
-	void remove(const QModelIndex &index);
+	void remove(QModelIndex index);
 	void weightsystemsReset(const QVector<dive *> &dives);
 
 private:

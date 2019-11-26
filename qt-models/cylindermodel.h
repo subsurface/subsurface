@@ -46,7 +46,7 @@ public:
 
 public
 slots:
-	void remove(const QModelIndex &index);
+	void remove(QModelIndex index);
 	void cylindersReset(const QVector<dive *> &dives);
 	bool updateBestMixes();
 
