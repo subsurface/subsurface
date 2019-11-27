@@ -23,7 +23,10 @@ jobs:
     - name: set env
       run: |
         v=${{ env.VERSION }}
-        echo "::set-env name=NAME::subsurface/trusty-qt512:${v}"
+        b=${{ github.ref }} # -BRANCH suffix, unless the branch is master
+        b=${b/refs\/heads\//}
+        if [ $b = "master" ] ; then b="" ; else b="-$b" ; fi
+        echo "::set-env name=NAME::subsurface/trusty-qt512${b}:${v}"
 
     - name: Build and Publish Linux Docker image to Dockerhub
       uses: elgohr/Publish-Docker-Github-Action@master
