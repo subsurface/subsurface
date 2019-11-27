@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: MXE Docker Image CI
 
 on:
   push:
