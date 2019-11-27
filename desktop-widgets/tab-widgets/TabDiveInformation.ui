@@ -249,7 +249,7 @@
          </property>
          <property name="sizePolicy">
           <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
-           <horstretch>0</horstretch>
+           <horstretch>1</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
@@ -276,8 +276,8 @@
           <set>Qt::AlignHCenter</set>
          </property>
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Ignored" vsizetype="Maximum">
-           <horstretch>0</horstretch>
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>1</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
@@ -305,8 +305,8 @@
          </property>
          <property name="sizePolicy">
           <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>1</verstretch>
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <layout class="QHBoxLayout" name="diveInfoCnsLayout">
@@ -333,7 +333,7 @@
          </property>
          <property name="sizePolicy">
           <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
-           <horstretch>0</horstretch>
+           <horstretch>1</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
