@@ -37,7 +37,10 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	setItemDelegate(new DiveListDelegate(this));
 	setUniformRowHeights(true);
 	setItemDelegateForColumn(DiveTripModelBase::RATING, new StarWidgetsDelegate(this));
-	setModel(MultiFilterSortModel::instance());
+	MultiFilterSortModel *m = MultiFilterSortModel::instance();
+	setModel(m);
+	connect(m, &MultiFilterSortModel::selectionChanged, this, &DiveListView::diveSelectionChanged);
+	connect(m, &MultiFilterSortModel::currentDiveChanged, this, &DiveListView::currentDiveChanged);
 
 	setSortingEnabled(true);
 	setContextMenuPolicy(Qt::DefaultContextMenu);
@@ -83,14 +86,8 @@ DiveListView::~DiveListView()
 
 void DiveListView::resetModel()
 {
-	MultiFilterSortModel::instance()->resetModel(currentLayout);
-	// If the model was reset, we have to reconnect the signals and tell
-	// the filter model to update its source model.
-	DiveTripModelBase *m = DiveTripModelBase::instance();
-	connect(m, &DiveTripModelBase::selectionChanged, this, &DiveListView::diveSelectionChanged);
-	connect(m, &DiveTripModelBase::currentDiveChanged, this, &DiveListView::currentDiveChanged);
-	// Get the initial selection
-	m->initSelection();
+	MultiFilterSortModel *m = MultiFilterSortModel::instance();
+	m->resetModel(currentLayout);
 }
 
 void DiveListView::calculateInitialColumnWidth(int col)
@@ -201,25 +198,14 @@ void DiveListView::reset()
 void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indexes)
 {
 	clearSelection();
-	MultiFilterSortModel *m = MultiFilterSortModel::instance();
 	QItemSelectionModel *s = selectionModel();
 	for (const QModelIndex &index: indexes) {
-		// We have to transform the indices into local indices, since
-		// there might be sorting or filtering in effect.
-		QModelIndex localIndex = m->mapFromSource(index);
-
-		// It might be possible that the item is not shown (filter is
-		// in effect). Then we get an invalid index and should ignore
-		// this selection.
-		if (!localIndex.isValid())
-			continue;
-
-		s->select(localIndex, QItemSelectionModel::Rows | QItemSelectionModel::Select);
+		s->select(index, QItemSelectionModel::Rows | QItemSelectionModel::Select);
 
 		// If an item of a not-yet expanded trip is selected, expand the trip.
-		if (localIndex.parent().isValid() && !isExpanded(localIndex.parent())) {
+		if (index.parent().isValid() && !isExpanded(index.parent())) {
 			setAnimated(false);
-			expand(localIndex.parent());
+			expand(index.parent());
 			setAnimated(true);
 		}
 	}
@@ -229,17 +215,12 @@ void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indexes)
 
 void DiveListView::currentDiveChanged(QModelIndex index)
 {
-	// Transform the index into a local index, since
-	// there might be sorting or filtering in effect.
-	MultiFilterSortModel *m = MultiFilterSortModel::instance();
-	QModelIndex localIndex = m->mapFromSource(index);
-
-	// Then, set the currently activated row.
+	// Set the currently activated row.
 	// Note, we have to use the QItemSelectionModel::Current mode to avoid
 	// changing our selection (in contrast to Qt's documentation, which
 	// instructs to use QItemSelectionModel::NoUpdate, which results in
 	// funny side-effects).
-	selectionModel()->setCurrentIndex(localIndex, QItemSelectionModel::Current);
+	selectionModel()->setCurrentIndex(index, QItemSelectionModel::Current);
 }
 
 // If rows are added, check which of these rows is a trip and expand the first column

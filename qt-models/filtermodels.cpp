@@ -24,8 +24,33 @@ void MultiFilterSortModel::resetModel(DiveTripModelBase::Layout layout)
 {
 	DiveTripModelBase::resetModel(layout);
 	// DiveTripModelBase::resetModel() generates a new instance.
-	// Thus, the source model must be reset.
-	setSourceModel(DiveTripModelBase::instance());
+	// Thus, the source model must be reset and the connections must be reset.
+	DiveTripModelBase *m = DiveTripModelBase::instance();
+	setSourceModel(m);
+	connect(m, &DiveTripModelBase::selectionChanged, this, &MultiFilterSortModel::selectionChangedSlot);
+	connect(m, &DiveTripModelBase::currentDiveChanged, this, &MultiFilterSortModel::currentDiveChangedSlot);
+	m->initSelection();
+}
+
+// Translate selection into local indexes and re-emit signal
+void MultiFilterSortModel::selectionChangedSlot(const QVector<QModelIndex> &indexes)
+{
+	QVector<QModelIndex> indexesLocal;
+	indexesLocal.reserve(indexes.size());
+	for (const QModelIndex &index: indexes) {
+		QModelIndex local = mapFromSource(index);
+		if (local.isValid())
+			indexesLocal.push_back(local);
+	}
+	emit selectionChanged(indexesLocal);
+}
+
+// Translate current dive into local indexes and re-emit signal
+void MultiFilterSortModel::currentDiveChangedSlot(QModelIndex index)
+{
+	QModelIndex local = mapFromSource(index);
+	if (local.isValid())
+		emit currentDiveChanged(mapFromSource(index));
 }
 
 bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
