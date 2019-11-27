@@ -78,7 +78,6 @@ HANDLE_PREFERENCE_INT(CloudStorage, "cloud_verification_status", cloud_verificat
 
 HANDLE_PREFERENCE_BOOL(CloudStorage, "save_password_local", save_password_local);
 
-
 QString qPrefCloudStorage::diveshare_uid()
 {
 	return qPrefPrivate::propValue(keyFromGroupAndName("", "diveshareExport/uid"), "").toString();
@@ -97,4 +96,25 @@ void qPrefCloudStorage::set_diveshare_private(bool value)
 {
 	qPrefPrivate::propSetValue(keyFromGroupAndName("", "diveshareExport/private"), value, false);
 	emit instance()->diveshare_privateChanged(value);
+}
+
+QString qPrefCloudStorage::divelogde_user()
+{
+	return qPrefPrivate::propValue(keyFromGroupAndName("", "divelogde_user"), "").toString();
+}
+void qPrefCloudStorage::set_divelogde_user(const QString &value)
+{
+	qPrefPrivate::propSetValue(keyFromGroupAndName("", "divelogde_user"), value, "");
+	emit instance()->divelogde_userChanged(value);
+}
+
+
+QString qPrefCloudStorage::divelogde_pass()
+{
+	return qPrefPrivate::propValue(keyFromGroupAndName("", "divelogde_pass"), "").toString();
+}
+void qPrefCloudStorage::set_divelogde_pass(const QString &value)
+{
+	qPrefPrivate::propSetValue(keyFromGroupAndName("", "divelogde_pass"), value, "");
+	emit instance()->divelogde_passChanged(value);
 }

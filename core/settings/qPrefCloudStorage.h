@@ -19,6 +19,8 @@ class qPrefCloudStorage : public QObject {
 	Q_PROPERTY(bool save_password_local READ save_password_local WRITE set_save_password_local NOTIFY save_password_localChanged)
 	Q_PROPERTY(QString diveshare_userid READ diveshare_uid WRITE set_diveshare_uid NOTIFY diveshare_uidChanged);
 	Q_PROPERTY(bool diveshare_private READ diveshare_private WRITE set_diveshare_private NOTIFY diveshare_privateChanged);
+	Q_PROPERTY(QString divelogde_user READ divelogde_user WRITE set_divelogde_user NOTIFY divelogde_userChanged);
+	Q_PROPERTY(QString divelogde_pass READ divelogde_pass WRITE set_divelogde_pass NOTIFY divelogde_passChanged);
 
 public:
 	static qPrefCloudStorage *instance();
@@ -50,6 +52,8 @@ public:
 	static bool save_password_local() { return prefs.save_password_local; }
 	static QString diveshare_uid();
 	static bool diveshare_private();
+	static QString divelogde_user();
+	static QString divelogde_pass();
 
 public slots:
 	static void set_cloud_auto_sync(bool value);
@@ -63,6 +67,8 @@ public slots:
 	static void set_save_password_local(bool value);
 	static void set_diveshare_uid(const QString &value);
 	static void set_diveshare_private(bool value);
+	static void set_divelogde_user(const QString &value);
+	static void set_divelogde_pass(const QString &value);
 
 signals:
 	void cloud_auto_syncChanged(bool value);
@@ -76,6 +82,8 @@ signals:
 	void save_password_localChanged(bool value);
 	void diveshare_uidChanged(const QString &value);
 	void diveshare_privateChanged(bool value);
+	void divelogde_userChanged(const QString &value);
+	void divelogde_passChanged(const QString &value);
 
 private:
 	qPrefCloudStorage() {}
