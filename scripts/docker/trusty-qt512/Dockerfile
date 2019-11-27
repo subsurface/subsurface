@@ -1,6 +1,10 @@
 FROM ubuntu:14.04
 LABEL Description="Trusty with Qt 5.12 and Subsurface build deps"
 
+# right now (2019-11-27) the upstream image is broken
+# use workaround from https://bugs.launchpad.net/ubuntu/+source/ubuntu-advantage-tools/+bug/1854202
+ADD ubuntu-esm-infra-trusty /etc/apt/preferences.d/ubuntu-esm-infra-trusty
+
 # that's a lot of packages. Needed for the Qt installer, for QtWebKit
 # and for SmartTrak
 # the awkward start is because we need something newer than the default
