@@ -81,3 +81,34 @@ HANDLE_PREFERENCE_INT(CloudStorage, "timeout", cloud_timeout);
 HANDLE_PREFERENCE_INT(CloudStorage, "cloud_verification_status", cloud_verification_status);
 
 HANDLE_PREFERENCE_BOOL(CloudStorage, "save_password_local", save_password_local);
+
+QString qPrefCloudStorage::divelogsde_userid()
+{
+	return qPrefPrivate::propValue(keyFromGroupAndName(group, "divelogsde_userid"), "").toString();
+}
+void qPrefCloudStorage::set_divelogsde_userid(const QString &value)
+{
+	qPrefPrivate::propSetValue(keyFromGroupAndName(group, "divelogsde_userid"), value, "");
+	emit instance()->divelogsde_useridChanged(value);
+}
+
+
+QString qPrefCloudStorage::divelogsde_password()
+{
+	return qPrefPrivate::propValue(keyFromGroupAndName(group, "divelogsde_password"), "").toString();
+}
+void qPrefCloudStorage::set_divelogsde_password(const QString &value)
+{
+	qPrefPrivate::propSetValue(keyFromGroupAndName(group, "divelogsde_password"), value, "");
+	emit instance()->divelogsde_passwordChanged(value);
+}
+
+QString qPrefCloudStorage::diveshare_userid()
+{
+	return qPrefPrivate::propValue(keyFromGroupAndName(group, "diveshare_userid"), "").toString();
+}
+void qPrefCloudStorage::set_diveshare_userid(const QString &value)
+{
+	qPrefPrivate::propSetValue(keyFromGroupAndName(group, "diveshare_userid"), value, "");
+	emit instance()->diveshare_useridChanged(value);
+}

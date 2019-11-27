@@ -17,6 +17,9 @@ class qPrefCloudStorage : public QObject {
 	Q_PROPERTY(int cloud_verification_status READ cloud_verification_status WRITE set_cloud_verification_status NOTIFY cloud_verification_statusChanged);
 	Q_PROPERTY(int cloud_timeout READ cloud_timeout WRITE set_cloud_timeout NOTIFY cloud_timeoutChanged);
 	Q_PROPERTY(bool save_password_local READ save_password_local WRITE set_save_password_local NOTIFY save_password_localChanged);
+	Q_PROPERTY(QString divelogsde_userid READ divelogsde_userid WRITE set_divelogsde_userid NOTIFY divelogsde_useridChanged);
+	Q_PROPERTY(QString divelogsde_password READ divelogsde_password WRITE set_divelogsde_password NOTIFY divelogsde_passwordChanged);
+	Q_PROPERTY(QString diveshare_userid READ diveshare_userid WRITE set_diveshare_userid NOTIFY diveshare_useridChanged);
 
 public:
 	qPrefCloudStorage(QObject *parent = NULL);
@@ -47,6 +50,10 @@ public:
 	static int cloud_timeout() { return prefs.cloud_timeout; }
 	static int cloud_verification_status() { return prefs.cloud_verification_status; }
 	static bool save_password_local() { return prefs.save_password_local; }
+	static QString divelogsde_userid();
+	static QString divelogsde_password();
+	static QString diveshare_userid();
+
 
 public slots:
 	static void set_cloud_auto_sync(bool value);
@@ -58,6 +65,9 @@ public slots:
 	static void set_cloud_timeout(int value);
 	static void set_cloud_verification_status(int value);
 	static void set_save_password_local(bool value);
+	static void set_divelogsde_userid(const QString &value);
+	static void set_divelogsde_password(const QString &value);
+	static void set_diveshare_userid(const QString &value);
 
 signals:
 	void cloud_auto_syncChanged(bool value);
@@ -69,6 +79,9 @@ signals:
 	void cloud_timeoutChanged(int value);
 	void cloud_verification_statusChanged(int value);
 	void save_password_localChanged(bool value);
+	void divelogsde_useridChanged(const QString &value);
+	void divelogsde_passwordChanged(const QString &value);
+	void diveshare_useridChanged(const QString &value);
 
 private:
 	// functions to load/sync variable with disk
