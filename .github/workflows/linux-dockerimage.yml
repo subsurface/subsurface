@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Linux Qt 5.12 Docker Image CI
 
 on:
   push:

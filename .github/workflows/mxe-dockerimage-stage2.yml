@@ -1,4 +1,4 @@
-name: Docker Image CI stage 2
+name: MXE stage 2 Docker Image CI
 
 # trigger this second stage via a repository dispaych event
 # the version that we are building is passed in via the event type that is available to us here
