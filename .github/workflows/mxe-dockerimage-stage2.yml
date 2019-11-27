@@ -21,8 +21,11 @@ jobs:
       run: |
         v=${{ github.event.action }}
         s=".stage1"
+        b=${{ github.event.client_payload.target_branc }} # -BRANCH suffix, unless the branch is master
+        b=${b/refs\/heads\//}
+        if [ $b = "master" ] ; then b="" ; else b="-$b" ; fi
         echo "::set-env name=VERSION::${v}${s}"
-        echo "::set-env name=NAME::subsurface/mxe-build-container:${v}"
+        echo "::set-env name=NAME::subsurface/mxe-build-container${b}:${v}"
 
     - name: Build and Publish stage 2 Docker image to Dockerhub
       uses: elgohr/Publish-Docker-Github-Action@master
