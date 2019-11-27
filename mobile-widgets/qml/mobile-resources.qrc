@@ -91,4 +91,13 @@
 		<file alias="go-next-symbolic">kirigami/icons/go-next.svg</file>
 		<file alias="go-previous-symbolic">kirigami/icons/go-previous.svg</file>
 	</qresource>
+
+
+	<qresource prefix="/qml">
+		<!-- ********** xslt ********** -->
+		<file alias="xslt/commonTemplates.xsl">../../xslt/commonTemplates.xsl</file>
+		<file alias="xslt/uddf-export.xslt">../../xslt/uddf-export.xslt</file>
+		<file alias="xslt/xml2csv.xslt">../../xslt/xml2csv.xslt</file>
+		<file alias="xslt/xml2manualcsv.xslt">../../xslt/xml2manualcsv.xslt</file>
+	</qresource>
 </RCC>
