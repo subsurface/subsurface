@@ -31,7 +31,7 @@
 #include "desktop-widgets/mapwidget.h"
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false),
-	currentLayout(DiveTripModelBase::TREE), dontEmitDiveChangedSignal(false), selectionSaved(false),
+	currentLayout(DiveTripModelBase::TREE), selectionSaved(false),
 	initialColumnWidths(DiveTripModelBase::COLUMNS, 50)	// Set up with default length 50
 {
 	setItemDelegate(new DiveListDelegate(this));
@@ -197,10 +197,6 @@ void DiveListView::reset()
 // If items were selected, inform the selection model
 void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indexes)
 {
-	// Since dives are selected dive-by-dive, send only a single signal at the
-	// end, not one for every dive.
-	dontEmitDiveChangedSignal = true;
-
 	clearSelection();
 	MultiFilterSortModel *m = MultiFilterSortModel::instance();
 	QItemSelectionModel *s = selectionModel();
@@ -225,8 +221,7 @@ void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indexes)
 		}
 	}
 
-	dontEmitDiveChangedSignal = false;
-	emit divesSelected();
+	selectionChangeDone();
 }
 
 void DiveListView::currentDiveChanged(QModelIndex index)
@@ -312,10 +307,9 @@ void DiveListView::tripChanged(dive_trip *trip, TripField)
 	if (selected.size() == 1 && selected[0] == trip)
 		return;
 
-	dontEmitDiveChangedSignal = true;
 	unselectDives();
-	dontEmitDiveChangedSignal = false;
 	selectTrip(trip);
+	selectionChangeDone();
 }
 
 void DiveListView::selectTrip(dive_trip_t *trip)
@@ -401,6 +395,7 @@ void DiveListView::selectDive(QModelIndex idx, bool scrollto, bool toggle)
 	}
 	if (scrollto)
 		scrollTo(idx, PositionAtCenter);
+	selectionChangeDone();
 }
 
 void DiveListView::selectDive(int i, bool scrollto, bool toggle)
@@ -422,8 +417,6 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 
 	if (!newDiveSelection.count())
 		return;
-
-	dontEmitDiveChangedSignal = true;
 
 	// First, clear the old selection
 	unselectDives();
@@ -478,9 +471,7 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 	}
 
 	// now that everything is up to date, update the widgets
-	emit divesSelected();
-	dontEmitDiveChangedSignal = false;
-	return;
+	selectionChangeDone();
 }
 
 // Get index of first dive. This assumes that trips without dives are never shown.
@@ -645,6 +636,39 @@ void DiveListView::currentChanged(const QModelIndex &current, const QModelIndex&
 	scrollTo(current);
 }
 
+void DiveListView::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags flags)
+{
+	QTreeView::setSelection(rect, flags);
+	selectionChangeDone();
+}
+
+void DiveListView::selectAll()
+{
+	QTreeView::selectAll();
+	selectionChangeDone();
+}
+
+void DiveListView::selectionChangeDone()
+{
+	// When receiving the divesSelected signal the main window will
+	// instruct the map to update the flags. Thus, make sure that
+	// the selected maps are registered correctly.
+	// But don't do this if we are in divesite mode, because then
+	// the dive-site selection is controlled by the filter not
+	// by the selected dives.
+	if (!DiveFilter::instance()->diveSiteMode()) {
+		QVector<dive_site *> selectedSites;
+		for (QModelIndex index: selectionModel()->selection().indexes()) {
+			const QAbstractItemModel *model = index.model();
+			struct dive *dive = model->data(index, DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
+			if (dive && dive->dive_site)
+				selectedSites.push_back(dive->dive_site);
+		}
+		MapWidget::instance()->setSelected(selectedSites);
+	}
+	emit divesSelected();
+}
+
 void DiveListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
 	if (diveListNotifier.inCommand()) {
@@ -691,25 +715,6 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 		} else {
 			select_dive(dive);
 		}
-	}
-	if (!dontEmitDiveChangedSignal) {
-		// When receiving the divesSelected signal the main window will
-		// instruct the map to update the flags. Thus, make sure that
-		// the selected maps are registered correctly.
-		// But don't do this if we are in divesite mode, because then
-		// the dive-site selection is controlled by the filter not
-		// by the selected dives.
-		if (!DiveFilter::instance()->diveSiteMode()) {
-			QVector<dive_site *> selectedSites;
-			for (QModelIndex index: selectionModel()->selection().indexes()) {
-				const QAbstractItemModel *model = index.model();
-				struct dive *dive = model->data(index, DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
-				if (dive && dive->dive_site)
-					selectedSites.push_back(dive->dive_site);
-			}
-			MapWidget::instance()->setSelected(selectedSites);
-		}
-		emit divesSelected();
 	}
 
 	// Display the new, processed, selection
