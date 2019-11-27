@@ -14,6 +14,12 @@ public:
 	bool lessThan(const QModelIndex &, const QModelIndex &) const override;
 
 	void resetModel(DiveTripModelBase::Layout layout);
+signals:
+	void selectionChanged(const QVector<QModelIndex> &indexes);
+	void currentDiveChanged(QModelIndex index);
+private slots:
+	void selectionChangedSlot(const QVector<QModelIndex> &indexes);
+	void currentDiveChangedSlot(QModelIndex index);
 private:
 	MultiFilterSortModel(QObject *parent = 0);
 };
