@@ -100,5 +100,6 @@
 		<file alias="xslt/uddf-export.xslt">../../xslt/uddf-export.xslt</file>
 		<file alias="xslt/xml2csv.xslt">../../xslt/xml2csv.xslt</file>
 		<file alias="xslt/xml2manualcsv.xslt">../../xslt/xml2manualcsv.xslt</file>
+		<file alias="xslt/divelogs-export.xslt">../../xslt/divelogs-export.xslt</file>
 	</qresource>
 </RCC>
