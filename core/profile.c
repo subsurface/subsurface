@@ -1126,13 +1126,17 @@ void calculate_deco_information(struct deco_state *ds, const struct deco_state *
 				}
 			}
 			entry->surface_gf = 0.0;
+			entry->current_gf = 0.0;
 			for (j = 0; j < 16; j++) {
 				double m_value = ds->buehlmann_inertgas_a[j] + entry->ambpressure / ds->buehlmann_inertgas_b[j];
 				double surface_m_value = ds->buehlmann_inertgas_a[j] + surface_pressure / ds->buehlmann_inertgas_b[j];
 				entry->ceilings[j] = deco_allowed_depth(ds->tolerated_by_tissue[j], surface_pressure, dive, 1);
+				double current_gf = (ds->tissue_inertgas_saturation[j] - entry->ambpressure) / (m_value - entry->ambpressure);
 				entry->percentages[j] = ds->tissue_inertgas_saturation[j] < entry->ambpressure ?
 					lrint(ds->tissue_inertgas_saturation[j] / entry->ambpressure * AMB_PERCENTAGE) :
-					lrint(AMB_PERCENTAGE + (ds->tissue_inertgas_saturation[j] - entry->ambpressure) / (m_value - entry->ambpressure) * (100.0 - AMB_PERCENTAGE));
+					lrint(AMB_PERCENTAGE + current_gf * (100.0 - AMB_PERCENTAGE));
+				if (current_gf > entry->current_gf)
+					entry->current_gf = current_gf;
 				double surface_gf = 100.0 * (ds->tissue_inertgas_saturation[j] - surface_pressure) / (surface_m_value - surface_pressure);
 				if (surface_gf > entry->surface_gf)
 					entry->surface_gf = surface_gf;
@@ -1552,7 +1556,9 @@ static void plot_string(struct plot_info *pi, int idx, struct membuffer *b)
 	if (entry->rbt)
 		put_format_loc(b, translate("gettextFromC", "RBT: %umin\n"), DIV_UP(entry->rbt, 60));
 	if (prefs.decoinfo) {
-		if (entry->surface_gf > 0)
+		if (entry->current_gf > 0.0)
+			put_format(b, translate("gettextFromC", "GF %d%%\n"), (int)(100.0 * entry->current_gf));
+		if (entry->surface_gf > 0.0)
 			put_format(b, translate("gettextFromC", "Surface GF %.0f%%\n"), entry->surface_gf);
 		if (entry->ceiling) {
 			depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);

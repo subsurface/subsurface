@@ -75,6 +75,7 @@ struct plot_data {
 	double ambpressure;
 	double gfline;
 	double surface_gf;
+	double current_gf;
 	double density;
 	bool icd_warning;
 };
