@@ -135,7 +135,7 @@ void DiveListView::calculateInitialColumnWidth(int col)
 void DiveListView::setColumnWidths()
 {
 	QSettings settings;
-	backupExpandedRows();
+	std::vector<int> expandedRows = backupExpandedRows();
 	settings.beginGroup("ListWidget");
 	/* if no width are set, use the calculated width for each column;
 	 * for that to work we need to temporarily expand all rows */
@@ -150,7 +150,7 @@ void DiveListView::setColumnWidths()
 			setColumnWidth(i, initialColumnWidths[i]);
 	}
 	settings.endGroup();
-	restoreExpandedRows();
+	restoreExpandedRows(expandedRows);
 	setColumnWidth(lastVisibleColumn(), 10);
 }
 
@@ -165,18 +165,19 @@ int DiveListView::lastVisibleColumn()
 	return lastColumn;
 }
 
-void DiveListView::backupExpandedRows()
+std::vector<int> DiveListView::backupExpandedRows()
 {
-	expandedRows.clear();
+	std::vector<int> expandedRows;
 	for (int i = 0; i < model()->rowCount(); i++)
 		if (isExpanded(model()->index(i, 0)))
 			expandedRows.push_back(i);
+	return expandedRows;
 }
 
-void DiveListView::restoreExpandedRows()
+void DiveListView::restoreExpandedRows(const std::vector<int> &expandedRows)
 {
 	setAnimated(false);
-	Q_FOREACH (const int &i, expandedRows)
+	for (int i: expandedRows)
 		setExpanded(model()->index(i, 0), true);
 	setAnimated(true);
 }
@@ -437,13 +438,14 @@ void DiveListView::sortIndicatorChanged(int i, Qt::SortOrder order)
 		sortByColumn(i, order);
 	} else {
 		// clear the model, repopulate with new indexes.
-		if (currentLayout == DiveTripModelBase::TREE)
-			backupExpandedRows();
+		std::vector<int> expandedRows;
+		if(currentLayout == DiveTripModelBase::TREE)
+			expandedRows = backupExpandedRows();
 		currentLayout = newLayout;
 		resetModel();
 		sortByColumn(i, order);
 		if (newLayout == DiveTripModelBase::TREE)
-			restoreExpandedRows();
+			restoreExpandedRows(expandedRows);
 	}
 }
 
