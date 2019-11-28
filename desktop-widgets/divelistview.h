@@ -31,8 +31,8 @@ public:
 	bool eventFilter(QObject *, QEvent *);
 	void unselectDives();
 	void clearTripSelection();
-	void selectDive(QModelIndex index, bool scrollto = false, bool toggle = false);
-	void selectDive(int dive_table_idx, bool scrollto = false, bool toggle = false);
+	void selectDive(QModelIndex index, bool scrollto = false);
+	void selectDive(int dive_table_idx, bool scrollto = false);
 	void selectDives(const QList<int> &newDiveSelection);
 	void contextMenuEvent(QContextMenuEvent *event);
 	QList<dive_trip *> selectedTrips();

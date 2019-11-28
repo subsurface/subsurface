@@ -322,13 +322,11 @@ QList<dive_trip_t *> DiveListView::selectedTrips()
 	return ret;
 }
 
-void DiveListView::selectDive(QModelIndex idx, bool scrollto, bool toggle)
+void DiveListView::selectDive(QModelIndex idx, bool scrollto)
 {
 	if (!idx.isValid())
 		return;
-	QItemSelectionModel::SelectionFlags flags = toggle ? QItemSelectionModel::Toggle : QItemSelectionModel::Select;
-	flags |= QItemSelectionModel::Rows;
-	selectionModel()->setCurrentIndex(idx, flags);
+	selectionModel()->setCurrentIndex(idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
 	if (idx.parent().isValid()) {
 		setAnimated(false);
 		expand(idx.parent());
@@ -341,7 +339,7 @@ void DiveListView::selectDive(QModelIndex idx, bool scrollto, bool toggle)
 	selectionChangeDone();
 }
 
-void DiveListView::selectDive(int i, bool scrollto, bool toggle)
+void DiveListView::selectDive(int i, bool scrollto)
 {
 	if (i == -1)
 		return;
@@ -350,7 +348,7 @@ void DiveListView::selectDive(int i, bool scrollto, bool toggle)
 	if (match.isEmpty())
 		return;
 	QModelIndex idx = match.first();
-	selectDive(idx, scrollto, toggle);
+	selectDive(idx, scrollto);
 }
 
 void DiveListView::selectDives(const QList<int> &newDiveSelection)
