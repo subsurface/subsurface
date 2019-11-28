@@ -480,8 +480,6 @@ void DiveListView::sortIndicatorChanged(int i, Qt::SortOrder order)
 		sortByColumn(i, order);
 	} else {
 		// clear the model, repopulate with new indexes.
-		rememberSelection();
-		unselectDives();
 		if (currentLayout == DiveTripModelBase::TREE)
 			backupExpandedRows();
 		currentLayout = newLayout;
@@ -489,7 +487,6 @@ void DiveListView::sortIndicatorChanged(int i, Qt::SortOrder order)
 		sortByColumn(i, order);
 		if (newLayout == DiveTripModelBase::TREE)
 			restoreExpandedRows();
-		restoreSelection();
 	}
 }
 
