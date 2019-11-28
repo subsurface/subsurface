@@ -16,7 +16,7 @@ jobs:
         ref: ${{ github.event.client_payload.target_branch }}
 
       # Grab the version from the event name that we were triggered by and add ".stage1" to find the docker image to start FROM
-      # And create the NAME of the final docker image
+      # And create the NAME of the final docker image (including the branch if not master)
     - name: set env
       run: |
         v=${{ github.event.action }}
