@@ -554,9 +554,7 @@ void MainTab::acceptChanges()
 		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->graphics->replot();
 	} else {
-		MainWindow::instance()->diveList->rememberSelection();
 		MainWindow::instance()->refreshDisplay();
-		MainWindow::instance()->diveList->restoreSelection();
 	}
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	MainWindow::instance()->diveList->verticalScrollBar()->setSliderPosition(scrolledBy);
