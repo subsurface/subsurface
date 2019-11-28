@@ -8,6 +8,7 @@
 #include "core/file.h"
 #include "core/errorhelper.h"
 #include "core/divefilter.h"
+#include "core/divesite.h"
 #include "exportfuncs.h"
 
 
@@ -300,6 +301,12 @@ std::vector<const dive_site *> exportFuncs::getDiveSitesToExport(bool selectedOn
 			continue;
 		res.push_back(ds);
 	}
+#else
+	/* walk the dive site list */
+	int i;
+	const struct dive_site *ds;
+	for_each_dive_site (i, ds, &dive_site_table)
+		res.push_back(get_dive_site(i, &dive_site_table));
 #endif
 	return res;
 }
