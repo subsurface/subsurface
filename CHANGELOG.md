@@ -1,3 +1,4 @@
+Profile: Add current GF to infobox
 Mobile: (desktop only) new switch --testqml, allows to use qml files instead of resources.
 Desktop: increase speed of multi-trip selection
 Mobile: ensure that all BT/BLE flavors of the OSTC are recognized as dive computers [#2358]

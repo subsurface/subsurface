@@ -2290,8 +2290,11 @@ TTS longer than 2 hours is not accurately calculated and Subsurface only indicat
 
 [icon="images/icons/GFLow.jpg"]
 [NOTE]
-Show *Deco information*. When enabled, the information box shows the surface GF and the momentary
-ceilings for the individual tissue compartments. The surface GF is an indication of to what degree
+Show *Deco information*. When enabled, the information box shows  the current gradient factor (GF),
+the surface GF and the momentary
+ceilings for the individual tissue compartments. The gradient factor is in indication of how
+much of the allowed pressure gradient between tissues (normalized with a 100/100 Bühlmann model)
+the diver is currently using. The surface GF is an indication of to what degree
 the partial pressure of nitrogen in the blood exceeds the partial pressure required for safely
 reaching the surface. Surface GF > 100% means that it is unsafe to surface.
 
