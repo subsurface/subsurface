@@ -30,7 +30,7 @@
 #include "desktop-widgets/simplewidgets.h"
 #include "desktop-widgets/mapwidget.h"
 
-DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false),
+DiveListView::DiveListView(QWidget *parent) : QTreeView(parent),
 	currentLayout(DiveTripModelBase::TREE),
 	initialColumnWidths(DiveTripModelBase::COLUMNS, 50)	// Set up with default length 50
 {
