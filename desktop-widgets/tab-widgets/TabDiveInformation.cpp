@@ -195,6 +195,10 @@ void TabDiveInformation::updateData()
 	updateMode(current_dive);
 	updateSalinity();
 	ui->visibility->setCurrentStars(current_dive->visibility);
+	ui->wavesize->setCurrentStars(current_dive->wavesize);
+	ui->current->setCurrentStars(current_dive->current);
+	ui->surge->setCurrentStars(current_dive->surge);
+	ui->chill->setCurrentStars(current_dive->chill);
 	if (prefs.extraEnvironmentalDefault)
 		showCurrentWidget(TRUE, 2);   // Show current star widget at 3rd position
 	else
@@ -211,6 +215,14 @@ void TabDiveInformation::divesChanged(const QVector<dive *> &dives, DiveField fi
 
 	if (field.visibility)
 		ui->visibility->setCurrentStars(current_dive->visibility);
+	if (field.wavesize)
+		ui->wavesize->setCurrentStars(current_dive->wavesize);
+	if (field.current)
+		ui->current->setCurrentStars(current_dive->current);
+	if (field.surge)
+		ui->surge->setCurrentStars(current_dive->surge);
+	if (field.chill)
+		ui->chill->setCurrentStars(current_dive->chill);
 	if (field.mode)
 		updateMode(current_dive);
 	if (field.duration || field.depth || field.mode)
@@ -230,6 +242,30 @@ void TabDiveInformation::on_visibility_valueChanged(int value)
 {
 	if (current_dive)
 		divesEdited(Command::editVisibility(value, false));
+}
+
+void TabDiveInformation::on_wavesize_valueChanged(int value)
+{
+	if (current_dive)
+		divesEdited(Command::editWaveSize(value, false));
+}
+
+void TabDiveInformation::on_current_valueChanged(int value)
+{
+	if (current_dive)
+		divesEdited(Command::editCurrent(value, false));
+}
+
+void TabDiveInformation::on_surge_valueChanged(int value)
+{
+	if (current_dive)
+		divesEdited(Command::editSurge(value, false));
+}
+
+void TabDiveInformation::on_chill_valueChanged(int value)
+{
+	if (current_dive)
+		divesEdited(Command::editChill(value, false));
 }
 
 void TabDiveInformation::updateMode(struct dive *d)

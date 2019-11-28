@@ -149,7 +149,7 @@ struct dive {
 	char *suit;
 	int number;
 	int rating;
-	int visibility; /* 0 - 5 star rating */
+	int wavesize, current, visibility, surge, chill; /* 0 - 5 star ratings */
 	int sac, otu, cns, maxcns;
 
 	/* Calculated based on dive computer data */
@@ -194,6 +194,10 @@ struct dive_components {
 	unsigned int suit : 1;
 	unsigned int rating : 1;
 	unsigned int visibility : 1;
+	unsigned int wavesize : 1;
+	unsigned int current : 1;
+	unsigned int surge : 1;
+	unsigned int chill : 1;
 	unsigned int tags : 1;
 	unsigned int cylinders : 1;
 	unsigned int weights : 1;

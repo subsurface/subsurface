@@ -26,6 +26,10 @@ struct DiveField {
 	unsigned int buddy : 1;
 	unsigned int rating : 1;
 	unsigned int visibility : 1;
+	unsigned int wavesize : 1;
+	unsigned int current : 1;
+	unsigned int surge : 1;
+	unsigned int chill : 1;
 	unsigned int suit : 1;
 	unsigned int tags : 1;
 	unsigned int mode : 1;
@@ -45,11 +49,15 @@ struct DiveField {
 		BUDDY = 1 << 9,
 		RATING = 1 << 10,
 		VISIBILITY = 1 << 11,
-		SUIT = 1 << 12,
-		TAGS = 1 << 13,
-		MODE = 1 << 14,
-		NOTES = 1 << 15,
-		SALINITY = 1 << 16
+		WAVESIZE = 1 << 12,
+		CURRENT = 1 << 13,
+		SURGE = 1 << 14,
+		CHILL = 1 << 15,
+		SUIT = 1 << 16,
+		TAGS = 1 << 17,
+		MODE = 1 << 18,
+		NOTES = 1 << 19,
+		SALINITY = 1 << 20
 	};
 	DiveField(int flags);
 };
@@ -177,6 +185,10 @@ inline DiveField::DiveField(int flags) :
 	buddy((flags & BUDDY) != 0),
 	rating((flags & RATING) != 0),
 	visibility((flags & VISIBILITY) != 0),
+	wavesize((flags & WAVESIZE) != 0),
+	current((flags & CURRENT) != 0),
+	surge((flags & SURGE) != 0),
+	chill((flags & CHILL) != 0),
 	suit((flags & SUIT) != 0),
 	tags((flags & TAGS) != 0),
 	mode((flags & MODE) != 0),
