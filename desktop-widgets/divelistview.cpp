@@ -31,7 +31,7 @@
 #include "desktop-widgets/mapwidget.h"
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false),
-	currentLayout(DiveTripModelBase::TREE), selectionSaved(false),
+	currentLayout(DiveTripModelBase::TREE),
 	initialColumnWidths(DiveTripModelBase::COLUMNS, 50)	// Set up with default length 50
 {
 	setItemDelegate(new DiveListDelegate(this));
@@ -237,47 +237,6 @@ void DiveListView::rowsInserted(const QModelIndex &parent, int start, int end)
 		if (m->rowCount(m->index(i, 0)) != 0)
 			setFirstColumnSpanned(i, QModelIndex(), true);
 	}
-}
-
-// this only remembers dives that were selected, not trips
-void DiveListView::rememberSelection()
-{
-	selectedDives.clear();
-	QItemSelection selection = selectionModel()->selection();
-	Q_FOREACH (const QModelIndex &index, selection.indexes()) {
-		if (index.column() != 0) // We only care about the dives, so, let's stick to rows and discard columns.
-			continue;
-		struct dive *d = index.data(DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
-		if (d) {
-			selectedDives.insert(d->divetrip, get_divenr(d));
-		} else {
-			struct dive_trip *t = index.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
-			if (t)
-				selectedDives.insert(t, -1);
-		}
-	}
-	selectionSaved = true;
-}
-
-void DiveListView::restoreSelection()
-{
-	if (!selectionSaved)
-		return;
-
-	selectionSaved = false;
-	QList<int> divesToSelect;
-	Q_FOREACH (dive_trip_t *trip, selectedDives.keys()) {
-		QList<int> divesOnTrip = getDivesInTrip(trip);
-		QList<int> selectedDivesOnTrip = selectedDives.values(trip);
-
-		// Only select trip if all of its dives were selected
-		if(selectedDivesOnTrip.contains(-1)) {
-			selectTrip(trip);
-			selectedDivesOnTrip.removeAll(-1);
-		}
-		divesToSelect += selectedDivesOnTrip;
-	}
-	selectDives(divesToSelect);
 }
 
 // This is a bit ugly: we hook directly into the tripChanged signal to

@@ -34,8 +34,6 @@ public:
 	void selectDive(QModelIndex index, bool scrollto = false, bool toggle = false);
 	void selectDive(int dive_table_idx, bool scrollto = false, bool toggle = false);
 	void selectDives(const QList<int> &newDiveSelection);
-	void rememberSelection();
-	void restoreSelection();
 	void contextMenuEvent(QContextMenuEvent *event);
 	QList<dive_trip *> selectedTrips();
 	static QString lastUsedImageDir();
@@ -76,12 +74,9 @@ private:
 	DiveTripModelBase::Layout currentLayout;
 	QModelIndex contextMenuIndex;
 	bool dontEmitDiveChangedSignal;
-	bool selectionSaved;
 	// Remember the initial column widths, to avoid writing unchanged widths to the settings
 	QVector<int> initialColumnWidths;
 
-	/* if dive_trip_t is null, there's no problem. */
-	QMultiHash<dive_trip *, int> selectedDives;
 	void resetModel();	// Call after model changed
 	void merge_trip(const QModelIndex &a, const int offset);
 	void setColumnWidths();
