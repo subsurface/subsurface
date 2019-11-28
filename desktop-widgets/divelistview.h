@@ -71,7 +71,6 @@ private:
 	void selectionChangeDone();
 	DiveTripModelBase::Layout currentLayout;
 	QModelIndex contextMenuIndex;
-	bool dontEmitDiveChangedSignal;
 	// Remember the initial column widths, to avoid writing unchanged widths to the settings
 	QVector<int> initialColumnWidths;
 
