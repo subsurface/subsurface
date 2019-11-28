@@ -69,7 +69,6 @@ private:
 	void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags flags) override;
 	void selectAll() override;
 	void selectionChangeDone();
-	QList<int> expandedRows;
 	DiveTripModelBase::Layout currentLayout;
 	QModelIndex contextMenuIndex;
 	bool dontEmitDiveChangedSignal;
@@ -80,8 +79,8 @@ private:
 	void merge_trip(const QModelIndex &a, const int offset);
 	void setColumnWidths();
 	void calculateInitialColumnWidth(int col);
-	void backupExpandedRows();
-	void restoreExpandedRows();
+	std::vector<int> backupExpandedRows();
+	void restoreExpandedRows(const std::vector<int> &);
 	int lastVisibleColumn();
 	void selectTrip(dive_trip *trip);
 	void updateLastImageTimeOffset(int offset);
