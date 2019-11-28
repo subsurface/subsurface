@@ -306,6 +306,22 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupBox_extra_star_widgets">
+     <property name="title">
+      <string>Environmental parameters in Information tab</string>
+     </property>
+     <layout class="QHBoxLayout" name="extraWidgetLayout">
+      <item>
+       <widget class="QCheckBox" name="extraEnvironmentalDefault">
+        <property name="text">
+         <string>Show extended range of environmental paramaters</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer_2">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

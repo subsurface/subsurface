@@ -38,6 +38,7 @@ void qPrefGeneral::loadSync(bool doSync)
 	disk_use_default_file(doSync);
 	disk_filterFullTextNotes(doSync);
 	disk_filterCaseSensitive(doSync);
+	disk_extraEnvironmentalDefault(doSync);
 
 	if (!doSync) {
 		load_diveshareExport_uid();
@@ -92,6 +93,8 @@ HANDLE_PREFERENCE_TXT(General, "ffmpeg_executable", ffmpeg_executable);
 HANDLE_PREFERENCE_INT(General, "o2consumption", o2consumption);
 
 HANDLE_PREFERENCE_INT(General, "pscr_ratio", pscr_ratio);
+
+HANDLE_PREFERENCE_BOOL(General, "extraEnvironmentalDefault", extraEnvironmentalDefault);
 
 HANDLE_PREFERENCE_BOOL(General, "use_default_file", use_default_file);
 
