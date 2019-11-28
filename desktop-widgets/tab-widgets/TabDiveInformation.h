@@ -22,6 +22,10 @@ private slots:
 	void on_atmPressVal_editingFinished();
 	void on_atmPressType_currentIndexChanged(int index);
 	void on_visibility_valueChanged(int value);
+	void on_wavesize_valueChanged(int value);
+	void on_current_valueChanged(int value);
+	void on_surge_valueChanged(int value);
+	void on_chill_valueChanged(int value);
 	void on_airtemp_editingFinished();
 	void on_watertemp_editingFinished();
 private:

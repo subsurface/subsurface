@@ -224,6 +224,90 @@ DiveField EditVisibility::fieldId() const
 	return DiveField::VISIBILITY;
 }
 
+// ***** WaveSize *****
+void EditWaveSize::set(struct dive *d, int value) const
+{
+	d->wavesize = value;
+}
+
+int EditWaveSize::data(struct dive *d) const
+{
+	return d->wavesize;
+}
+
+QString EditWaveSize::fieldName() const
+{
+	return tr("wavesize");
+}
+
+DiveField EditWaveSize::fieldId() const
+{
+	return DiveField::WAVESIZE;
+}
+
+// ***** Current *****
+void EditCurrent::set(struct dive *d, int value) const
+{
+	d->current = value;
+}
+
+int EditCurrent::data(struct dive *d) const
+{
+	return d->current;
+}
+
+QString EditCurrent::fieldName() const
+{
+	return tr("current");
+}
+
+DiveField EditCurrent::fieldId() const
+{
+	return DiveField::CURRENT;
+}
+
+// ***** Surge *****
+void EditSurge::set(struct dive *d, int value) const
+{
+	d->surge = value;
+}
+
+int EditSurge::data(struct dive *d) const
+{
+	return d->surge;
+}
+
+QString EditSurge::fieldName() const
+{
+	return tr("surge");
+}
+
+DiveField EditSurge::fieldId() const
+{
+	return DiveField::SURGE;
+}
+
+// ***** Chill *****
+void EditChill::set(struct dive *d, int value) const
+{
+	d->chill = value;
+}
+
+int EditChill::data(struct dive *d) const
+{
+	return d->chill;
+}
+
+QString EditChill::fieldName() const
+{
+	return tr("chill");
+}
+
+DiveField EditChill::fieldId() const
+{
+	return DiveField::CHILL;
+}
+
 // ***** Air Temperature *****
 void EditAirTemp::set(struct dive *d, int value) const
 {
@@ -690,6 +774,14 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 		rating = data->rating;
 	if (what.visibility)
 		visibility = data->visibility;
+	if (what.wavesize)
+		wavesize = data->wavesize;
+	if (what.current)
+		current = data->current;
+	if (what.surge)
+		surge = data->surge;
+	if (what.chill)
+		chill = data->chill;
 	if (what.divesite)
 		divesite = data->dive_site;
 	if (what.tags)
@@ -722,6 +814,14 @@ void PasteState::swap(dive_components what)
 		std::swap(rating, d->rating);
 	if (what.visibility)
 		std::swap(visibility, d->visibility);
+	if (what.wavesize)
+		std::swap(wavesize, d->wavesize);
+	if (what.current)
+		std::swap(current, d->current);
+	if (what.surge)
+		std::swap(surge, d->surge);
+	if (what.chill)
+		std::swap(chill, d->chill);
 	if (what.divesite)
 		std::swap(divesite, d->dive_site);
 	if (what.tags)
@@ -767,6 +867,10 @@ void PasteDives::undo()
 	fields.suit = what.suit;
 	fields.rating = what.rating;
 	fields.visibility = what.visibility;
+	fields.wavesize = what.wavesize;
+	fields.current = what.current;
+	fields.surge = what.surge;
+	fields.chill = what.chill;
 	fields.divesite = what.divesite;
 	fields.tags = what.tags;
 	emit diveListNotifier.divesChanged(divesToNotify, fields);

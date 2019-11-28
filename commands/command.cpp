@@ -183,6 +183,26 @@ int editVisibility(int newValue, bool currentDiveOnly)
 	return execute_edit(new EditVisibility(newValue, currentDiveOnly));
 }
 
+int editWaveSize(int newValue, bool currentDiveOnly)
+{
+	return execute_edit(new EditWaveSize(newValue, currentDiveOnly));
+}
+
+int editCurrent(int newValue, bool currentDiveOnly)
+{
+	return execute_edit(new EditCurrent(newValue, currentDiveOnly));
+}
+
+int editSurge(int newValue, bool currentDiveOnly)
+{
+	return execute_edit(new EditSurge(newValue, currentDiveOnly));
+}
+
+int editChill(int newValue, bool currentDiveOnly)
+{
+	return execute_edit(new EditChill(newValue, currentDiveOnly));
+}
+
 int editAirTemp(int newValue, bool currentDiveOnly)
 {
 	return execute_edit(new EditAirTemp(newValue, currentDiveOnly));
