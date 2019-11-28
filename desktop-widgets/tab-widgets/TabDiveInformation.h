@@ -34,6 +34,7 @@ private:
 	void updateMode(struct dive *d);
 	void divesEdited(int);
 	void closeWarning();
+	void showCurrentWidget(bool show, int position);
 };
 
 #endif

@@ -36,6 +36,12 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 	ui->gasHeadingLabel->setStyleSheet(CSS_SET_HEADING_BLUE);
 	ui->environmentHeadingLabel->setStyleSheet(CSS_SET_HEADING_BLUE);
 	ui->groupBox_visibility->setStyleSheet(CSSSetSmallLabel);
+	ui->groupBox_current->setStyleSheet(CSSSetSmallLabel);
+	ui->groupBox_wavesize->setStyleSheet(CSSSetSmallLabel);
+	ui->groupBox_surge->setStyleSheet(CSSSetSmallLabel);
+	ui->groupBox_chill->setStyleSheet(CSSSetSmallLabel);
+	if (!prefs.extraEnvironmentalDefault) // if extraEnvironmental preference is turned off
+		showCurrentWidget(false, 0);  // Show current star widget at lefthand side
 	QAction *action = new QAction(tr("OK"), this);
 	connect(action, &QAction::triggered, this, &TabDiveInformation::closeWarning);
 	ui->multiDiveWarningMessage->addAction(action);
@@ -160,6 +166,16 @@ void TabDiveInformation::updateSalinity()
 	}
 }
 
+void TabDiveInformation::showCurrentWidget(bool show, int position)
+{
+		ui->groupBox_wavesize->setVisible(show);
+		ui->groupBox_surge->setVisible(show);
+		ui->groupBox_chill->setVisible(show);
+		int layoutPosition = ui->diveInfoScrollAreaLayout->indexOf(ui->groupBox_current);
+		ui->diveInfoScrollAreaLayout->takeAt(layoutPosition);
+		ui->diveInfoScrollAreaLayout->addWidget(ui->groupBox_current, 6, position, 1, 1);
+}
+
 void TabDiveInformation::updateData()
 {
 	if (!current_dive) {
@@ -176,6 +192,10 @@ void TabDiveInformation::updateData()
 	updateMode(current_dive);
 	updateSalinity();
 	ui->visibility->setCurrentStars(current_dive->visibility);
+	if (prefs.extraEnvironmentalDefault)
+		showCurrentWidget(true, 2);   // Show current star widget at 3rd position
+	else
+		showCurrentWidget(false, 0);  // Show current star widget at lefthand side
 }
 
 // This function gets called if a field gets updated by an undo command.
