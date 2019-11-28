@@ -90,7 +90,6 @@ Kirigami.ScrollablePage {
 		}
 		RadioButton {
 			Layout.fillWidth: true
-			visible: false // TEMPORARY MEASURE, until DiveFilter is available
 			text: qsTr("Export Subsurface dive sites XML")
 			exclusiveGroup: radioGroup
 			onClicked: {
