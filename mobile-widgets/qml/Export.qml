@@ -37,6 +37,7 @@ Kirigami.ScrollablePage {
 			columns: 2
 
 			Text {
+				id: textUserID
 				text: qsTr("User ID")
 			}
 			TextField {
@@ -45,6 +46,7 @@ Kirigami.ScrollablePage {
 				inputMethodHints: Qt.ImhNoAutoUppercase
 			}
 			Text {
+				id: textPassword
 				text: qsTr("Password:")
 			}
 			TextField {
@@ -56,11 +58,23 @@ Kirigami.ScrollablePage {
 				echoMode: TextInput.PasswordEchoOnEdit
 			}
 			ProgressBar {
+				value: 0.0
 				indeterminate: true
 			}
 		}
 
 		onApply: {
+			if (selectedExport === ExportType.EX_DIVELOGS_DE) {
+				if (fieldUserID.text !== PrefCloudStorage.divelogsde_userid) {
+
+					PrefCloudStorage.divelogsde_userid = fieldUserID.text
+				}
+				if (fieldPassword.text !== PrefCloudStorage.divelogsde_password)
+					PrefCloudStorage.divelogsde_password = fieldPassword.text
+			} else {
+				if (fieldUserID.text !== PrefCloudStorage.diveshare_userid)
+					PrefCloudStorage.diveshare_userid = fieldUserID.text
+			}
 			manager.exportToWEB(selectedExport, fieldUserID.text, fieldPassword.text, anonymize.checked)
 			close()
 		}
@@ -107,7 +121,6 @@ Kirigami.ScrollablePage {
 		}
 		RadioButton {
 			Layout.fillWidth: true
-			visible: false // TEMPORARY MEASURE, until non UI related WEB service is ready
 			text: qsTr("Upload divelogs.de")
 			exclusiveGroup: radioGroup
 			onClicked: {
@@ -211,8 +224,22 @@ Kirigami.ScrollablePage {
 		SsrfButton {
 			text: qsTr("Next")
 			onClicked: {
-				if (selectedExport === ExportType.EX_DIVELOGS_DE ||
-					selectedExport === ExportType.EX_DIVESHARE) {
+				if (selectedExport === ExportType.EX_DIVELOGS_DE) {
+					textUserID.visible = true
+					fieldUserID.visible = true
+					fieldUserID.text = PrefCloudStorage.divelogsde_userid
+					textPassword.visible = true
+					fieldPassword.visible = true
+					fieldPassword.text = PrefCloudStorage.divelogsde_password
+					anonymize.visible = false
+					uploadDialog.open()
+				} else if (selectedExport === ExportType.EX_DIVESHARE) {
+					textUserID.visible = true
+					fieldUserID.visible = true
+					fieldUserID.text = PrefCloudStorage.diveshare_userid
+					textPassword.visible = false
+					fieldPassword.visible = false
+					anonymize.visible = true
 					uploadDialog.open()
 				} else {
 					saveAsDialog.open()
