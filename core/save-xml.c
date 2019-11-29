@@ -490,6 +490,14 @@ void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 		put_format(b, " rating='%d'", dive->rating);
 	if (dive->visibility)
 		put_format(b, " visibility='%d'", dive->visibility);
+	if (dive->wavesize)
+		put_format(b, " wavesize='%d'", dive->wavesize);
+	if (dive->current)
+		put_format(b, " current='%d'", dive->current);
+	if (dive->surge)
+		put_format(b, " surge='%d'", dive->surge);
+	if (dive->chill)
+		put_format(b, " chill='%d'", dive->chill);
 	save_tags(b, dive->tag_list);
 	if (dive->dive_site) {
 		put_format(b, " divesiteid='%8x'", dive->dive_site->uuid);
