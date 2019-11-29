@@ -39,6 +39,7 @@ Kirigami.ScrollablePage {
 			columns: 2
 
 			Text {
+				id: textUserID
 				text: qsTr("User ID")
 			}
 			TextField {
@@ -47,6 +48,7 @@ Kirigami.ScrollablePage {
 				inputMethodHints: Qt.ImhNoAutoUppercase
 			}
 			Text {
+				id: textPassword
 				text: qsTr("Password:")
 			}
 			TextField {
@@ -63,6 +65,16 @@ Kirigami.ScrollablePage {
 		}
 
 		onApply: {
+			if (selectedExport === ExportType.EX_DIVELOGS_DE) {
+				if (fieldUserID.text !== PrefCloudStorage.divelogde_user) {
+
+					PrefCloudStorage.divelogde_user = fieldUserID.text
+				}
+				if (fieldPassword.text !== PrefCloudStorage.divelogde_pass)
+					PrefCloudStorage.divelogde_pass = fieldPassword.text
+			} else {
+				// TO BE IMPLEMENTED
+			}
 			manager.exportToWEB(selectedExport, fieldUserID.text, fieldPassword.text, anonymize.checked)
 			close()
 		}
@@ -108,7 +120,6 @@ Kirigami.ScrollablePage {
 		}
 		RadioButton {
 			Layout.fillWidth: true
-			visible: false // TEMPORARY MEASURE, until non UI related WEB service is ready
 			text: qsTr("Upload divelogs.de")
 			exclusiveGroup: radioGroup
 			onClicked: {
@@ -212,9 +223,17 @@ Kirigami.ScrollablePage {
 		SsrfButton {
 			text: qsTr("Next")
 			onClicked: {
-				if (selectedExport === ExportType.EX_DIVELOGS_DE ||
-					selectedExport === ExportType.EX_DIVESHARE) {
+				if (selectedExport === ExportType.EX_DIVELOGS_DE) {
+					textUserID.visible = true
+					fieldUserID.visible = true
+					fieldUserID.text = PrefCloudStorage.divelogde_user
+					textPassword.visible = true
+					fieldPassword.visible = true
+					fieldPassword.text = PrefCloudStorage.divelogde_pass
+					anonymize.visible = false
 					uploadDialog.open()
+				} else if (selectedExport === ExportType.EX_DIVESHARE) {
+					// TO BE IMPLEMENTED
 				} else {
 					saveAsDialog.open()
 				}
