@@ -273,6 +273,18 @@ static void parse_dive_rating(char *line, struct membuffer *str, struct git_pars
 static void parse_dive_visibility(char *line, struct membuffer *str, struct git_parser_state *state)
 { UNUSED(str); state->active_dive->visibility = get_index(line); }
 
+static void parse_dive_wavesize(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dive->wavesize = get_index(line); }
+
+static void parse_dive_current(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dive->current = get_index(line); }
+
+static void parse_dive_surge(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dive->surge = get_index(line); }
+
+static void parse_dive_chill(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(str); state->active_dive->chill = get_index(line); }
+
 static void parse_dive_notrip(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	UNUSED(str);
@@ -987,9 +999,9 @@ static void divecomputer_parser(char *line, struct membuffer *str, struct git_pa
 struct keyword_action dive_action[] = {
 #undef D
 #define D(x) { #x, parse_dive_ ## x }
-	D(airpressure), D(airtemp), D(buddy), D(cylinder), D(divemaster), D(divesiteid), D(duration),
-	D(gps), D(location), D(notes), D(notrip), D(rating), D(suit),
-	D(tags), D(visibility), D(watertemp), D(weightsystem)
+	D(airpressure), D(airtemp), D(buddy), D(chill), D(current), D(cylinder), D(divemaster), D(divesiteid), D(duration),
+	D(gps), D(location), D(notes), D(notrip), D(rating), D(suit), D(surge),
+	D(tags), D(visibility), D(watertemp), D(wavesize), D(weightsystem)
 };
 
 static void dive_parser(char *line, struct membuffer *str, struct git_parser_state *state)

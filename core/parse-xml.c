@@ -1335,6 +1335,14 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 		return;
 	if (MATCH("visibility.dive", get_rating, &dive->visibility))
 		return;
+	if (MATCH("wavesize.dive", get_rating, &dive->wavesize))
+		return;
+	if (MATCH("current.dive", get_rating, &dive->current))
+		return;
+	if (MATCH("surge.dive", get_rating, &dive->surge))
+		return;
+	if (MATCH("chill.dive", get_rating, &dive->chill))
+		return;
 	if (MATCH_STATE("airpressure.dive", pressure, &dive->surface_pressure))
 		return;
 	if (MATCH("description.weightsystem", utf8_string, &dive->weightsystems.weightsystems[dive->weightsystems.nr - 1].description))
