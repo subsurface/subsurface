@@ -529,8 +529,6 @@ void MainTab::refreshDisplayedDiveSite()
 
 void MainTab::acceptChanges()
 {
-	int addedId = -1;
-
 	if (ui.location->hasFocus())
 		stealFocus();
 
@@ -541,33 +539,18 @@ void MainTab::acceptChanges()
 	ui.dateEdit->setEnabled(true);
 	hideMessage();
 
-	if (lastMode == MANUALLY_ADDED_DIVE) {
-		// preserve any changes to the profile
-		free(current_dive->dc.sample);
-		copy_samples(&displayed_dive.dc, &current_dive->dc);
-		addedId = displayed_dive.id;
-	}
-
 	// TODO: This is a temporary hack until the equipment tab is included in the undo system:
 	// The equipment tab is hardcoded at the first place of the "extra widgets".
 	((TabDiveEquipment *)extraWidgets[0])->acceptChanges();
 
 	if (lastMode == MANUALLY_ADDED_DIVE) {
-		// we just added or edited the dive, let fixup_dive() make
-		// sure we get the max. depth right
-		current_dive->maxdepth.mm = current_dc->maxdepth.mm = 0;
-		fixup_dive(current_dive);
-		set_dive_nr_for_current_dive();
 		MainWindow::instance()->showProfile();
-		mark_divelist_changed(true);
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
+		Command::editProfile(&displayed_dive);
 	}
 	int scrolledBy = MainWindow::instance()->diveList->verticalScrollBar()->sliderPosition();
 	if (lastMode == MANUALLY_ADDED_DIVE) {
 		MainWindow::instance()->diveList->reload();
-		int newDiveNr = get_divenr(get_dive_by_uniq_id(addedId));
-		MainWindow::instance()->diveList->unselectDives();
-		MainWindow::instance()->diveList->selectDive(newDiveNr, true);
 		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->graphics->replot();
 	} else {

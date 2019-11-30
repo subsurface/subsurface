@@ -887,13 +887,17 @@ void PasteDives::redo()
 }
 
 // ***** Paste *****
-ReplanDive::ReplanDive(dive *source) : d(current_dive),
+ReplanDive::ReplanDive(dive *source, bool edit_profile) : d(current_dive),
 	dc({ 0 }),
 	notes(nullptr)
 {
 	memset(&cylinders, 0, sizeof(cylinders));
 	if (!d)
 		return;
+
+	// Fix source. Things might be inconsistent after modifying the profile.
+	source->maxdepth.mm = source->dc.maxdepth.mm = 0;
+	fixup_dive(source);
 
 	when = source->when;
 	maxdepth = source->maxdepth;
@@ -907,7 +911,7 @@ ReplanDive::ReplanDive(dive *source) : d(current_dive),
 	std::swap(source->cylinders, cylinders);
 	std::swap(source->dc, dc);
 
-	setText(tr("Replan dive"));
+	setText(edit_profile ? tr("Replan dive") : tr("Edit profile"));
 }
 
 ReplanDive::~ReplanDive()
