@@ -279,7 +279,9 @@ class ReplanDive : public Base {
 	duration_t duration;
 	int salinity;
 public:
-	ReplanDive(dive *source); // Dive computer(s) and cylinders(s) of the source dive will be reset!
+	// Dive computer(s) and cylinders(s) of the source dive will be reset!
+	// If edit_profile is true, the text will be changed from "replan dive" to "edit profile".
+	ReplanDive(dive *source, bool edit_profile);
 	~ReplanDive();
 private:
 	void undo() override;

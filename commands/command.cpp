@@ -240,7 +240,12 @@ void pasteDives(const dive *d, dive_components what)
 
 void replanDive(dive *d)
 {
-	execute(new ReplanDive(d));
+	execute(new ReplanDive(d, false));
+}
+
+void editProfile(dive *d)
+{
+	execute(new ReplanDive(d, true));
 }
 
 // Trip editing related commands
