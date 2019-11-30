@@ -47,6 +47,8 @@
 #include "core/trip.h"
 #include "core/exportfuncs.h"
 #include "core/worldmap-save.h"
+#include "uploadDiveLogsDE.h"
+
 
 QMLManager *QMLManager::m_instance = NULL;
 bool noCloudToCloud = false;
@@ -2190,10 +2192,7 @@ void QMLManager::exportToWEB(export_types type, QString userId, QString password
 	switch (type)
 	{
 		case EX_DIVELOGS_DE:
-			// TO BE IMPLEMENTED
-			// Current call in Desktop-widgets
-			// DivelogsDeWebServices::instance()->
-			// prepareDivesForUpload(ui->exportSelected->isChecked());
+			uploadDiveLogsDE::instance()->doUpload(false, userId, password);
 			break;
 		case EX_DIVESHARE:
 			// TO BE IMPLEMENTED
@@ -2205,5 +2204,4 @@ void QMLManager::exportToWEB(export_types type, QString userId, QString password
 			qDebug() << "upload to unknown type " << type << " using " << userId << "/" <<  password << " remove names " << anonymize;
 			break;
 	}
-	qDebug() << "upload NOT implemented type " << type << " using " << userId << "/" <<  password << " remove names " << anonymize;
 }
