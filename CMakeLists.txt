@@ -286,6 +286,7 @@ endif()
 # create the executables
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	set(MOBILE_SRC
+		mobile-widgets/uploadDiveLogsDE.cpp
 		mobile-widgets/qmlmanager.cpp
 		mobile-widgets/qmlprefs.cpp
 		mobile-widgets/qml/kirigami/src/columnview.cpp
