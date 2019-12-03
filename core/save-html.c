@@ -355,6 +355,10 @@ void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_d
 	put_HTML_coordinates(b, dive);
 	put_format(b, "\"rating\":%d,", dive->rating);
 	put_format(b, "\"visibility\":%d,", dive->visibility);
+	put_format(b, "\"current\":%d,", dive->current);
+	put_format(b, "\"wavesize\":%d,", dive->wavesize);
+	put_format(b, "\"surge\":%d,", dive->surge);
+	put_format(b, "\"chill\":%d,", dive->chill);
 	put_format(b, "\"dive_duration\":\"%u:%02u min\",",
 		   FRACTION(dive->duration.seconds, 60));
 	put_string(b, "\"temperature\":{");
@@ -512,8 +516,13 @@ void export_translation(const char *file_name)
 	write_attribute(b, "Advanced_Search", translate("gettextFromC", "Advanced search"), ", ");
 
 	//Dive expanded view
+
 	write_attribute(b, "Rating", translate("gettextFromC", "Rating"), ", ");
+	write_attribute(b, "WaveSize", translate("gettextFromC", "WaveSize"), ", ");
 	write_attribute(b, "Visibility", translate("gettextFromC", "Visibility"), ", ");
+	write_attribute(b, "Current", translate("gettextFromC", "Current"), ", ");
+	write_attribute(b, "Surge", translate("gettextFromC", "Surge"), ", ");
+	write_attribute(b, "Chill", translate("gettextFromC", "Chill"), ", ");
 	write_attribute(b, "Duration", translate("gettextFromC", "Duration"), ", ");
 	write_attribute(b, "DiveMaster", translate("gettextFromC", "Divemaster"), ", ");
 	write_attribute(b, "Buddy", translate("gettextFromC", "Buddy"), ", ");
