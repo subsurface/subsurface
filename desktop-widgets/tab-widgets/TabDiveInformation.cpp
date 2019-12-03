@@ -12,9 +12,6 @@
 #include "core/display.h"
 #include "core/divelist.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-
 #define COMBO_CHANGED 0
 #define TEXT_EDITED 1
 #define CSS_SET_HEADING_BLUE "QLabel { color: mediumblue;} "
@@ -44,7 +41,7 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 	ui->groupBox_surge->setStyleSheet(CSSSetSmallLabel);
 	ui->groupBox_chill->setStyleSheet(CSSSetSmallLabel);
 	if (!prefs.extraEnvironmentalDefault) // if extraEnvironmental preference is turned off
-		showCurrentWidget(FALSE, 0);  // Show current star widget at lefthand side
+		showCurrentWidget(false, 0);  // Show current star widget at lefthand side
 	QAction *action = new QAction(tr("OK"), this);
 	connect(action, &QAction::triggered, this, &TabDiveInformation::closeWarning);
 	ui->multiDiveWarningMessage->addAction(action);
@@ -176,7 +173,7 @@ void TabDiveInformation::showCurrentWidget(bool show, int position)
 		ui->groupBox_chill->setVisible(show);
 		int layoutPosition = ui->diveInfoScrollAreaLayout->indexOf(ui->groupBox_current);
 		ui->diveInfoScrollAreaLayout->takeAt(layoutPosition);
-		ui->diveInfoScrollAreaLayout->addWidget(ui->groupBox_current,6,position,1,1);
+		ui->diveInfoScrollAreaLayout->addWidget(ui->groupBox_current, 6, position, 1, 1);
 }
 
 void TabDiveInformation::updateData()
@@ -200,9 +197,9 @@ void TabDiveInformation::updateData()
 	ui->surge->setCurrentStars(current_dive->surge);
 	ui->chill->setCurrentStars(current_dive->chill);
 	if (prefs.extraEnvironmentalDefault)
-		showCurrentWidget(TRUE, 2);   // Show current star widget at 3rd position
+		showCurrentWidget(true, 2);   // Show current star widget at 3rd position
 	else
-		showCurrentWidget(FALSE, 0);  // Show current star widget at lefthand side
+		showCurrentWidget(false, 0);  // Show current star widget at lefthand side
 }
 
 // This function gets called if a field gets updated by an undo command.

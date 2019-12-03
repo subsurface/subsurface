@@ -13,7 +13,6 @@
 #include "tag.h"
 #include "trip.h"
 #include <stdio.h>
-#include <stdlib.h>
 
 void write_attribute(struct membuffer *b, const char *att_name, const char *value, const char *separator)
 {

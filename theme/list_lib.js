@@ -987,8 +987,7 @@ function get_dive_HTML(dive)
 		  '</td></tr><tr><td class="words">' + translate.Suit + ': </td><td>' + dive.suit +
 		  '</td></tr><tr><td class="words">' + translate.Tags + ': </td><td>' + putTags(dive.tags) +
 		  '</td></tr></table>'+ put_divecomputer_details(dive.divecomputers) +'<div style="margin:10px;"><p class="words">' + translate.Notes + ': </p>' + dive.notes + '</div>';
-	res = table1 + table2 + table3;
-	return res;
+	return table1 + table2 + table3;
 };
 
 function put_divecomputer_details(dc)
