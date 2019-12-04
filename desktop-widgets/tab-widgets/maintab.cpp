@@ -50,11 +50,11 @@ struct Completers {
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	editMode(NONE),
+	modified(false),
 	lastSelectedDive(true),
 	lastTabSelectedDive(0),
 	lastTabSelectedDiveTrip(0),
-	currentTrip(0),
-	modified(false)
+	currentTrip(0)
 {
 	ui.setupUi(this);
 
