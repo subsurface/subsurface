@@ -87,8 +87,9 @@ bool EditBase<T>::workToBeDone()
 
 	// Create a text for the menu entry. In the case of multiple dives add the number
 	size_t num_dives = dives.size();
-	if (num_dives > 0)
-		//: remove the part in parentheses for %n = 1
+	if (num_dives == 1)
+		setText(tr("Edit %1").arg(fieldName()));
+	else if (num_dives > 0)
 		setText(tr("Edit %1 (%n dive(s))", "", num_dives).arg(fieldName()));
 
 	return num_dives > 0;
@@ -626,8 +627,9 @@ bool EditTagsBase::workToBeDone()
 
 	// Create a text for the menu entry. In the case of multiple dives add the number
 	size_t num_dives = dives.size();
-	if (num_dives > 0)
-		//: remove the part in parentheses for %n = 1
+	if (num_dives == 1)
+		setText(tr("Edit %1").arg(fieldName()));
+	else if (num_dives > 0)
 		setText(tr("Edit %1 (%n dive(s))", "", num_dives).arg(fieldName()));
 
 	return num_dives != 0;
@@ -958,8 +960,10 @@ void ReplanDive::redo()
 AddWeight::AddWeight(bool currentDiveOnly) :
 	EditDivesBase(currentDiveOnly)
 {
-	//: remove the part in parentheses for %n = 1
-	setText(tr("Add weight (%n dive(s))", "", dives.size()));
+	if (dives.size() == 1)
+		setText(tr("Add weight"));
+	else
+		setText(tr("Add weight (%n dive(s))", "", dives.size()));
 }
 
 bool AddWeight::workToBeDone()
@@ -1040,8 +1044,10 @@ bool EditWeightBase::workToBeDone()
 RemoveWeight::RemoveWeight(int index, bool currentDiveOnly) :
 	EditWeightBase(index, currentDiveOnly)
 {
-	//: remove the part in parentheses for %n = 1
-	setText(tr("Remove weight (%n dive(s))", "", dives.size()));
+	if (dives.size() == 1)
+		setText(tr("Remove weight"));
+	else
+		setText(tr("Remove weight (%n dive(s))", "", dives.size()));
 }
 
 void RemoveWeight::undo()
@@ -1067,8 +1073,10 @@ EditWeight::EditWeight(int index, weightsystem_t wsIn, bool currentDiveOnly) :
 	if (dives.empty())
 		return;
 
-	//: remove the part in parentheses for %n = 1
-	setText(tr("Edit weight (%n dive(s))", "", dives.size()));
+	if (dives.size() == 1)
+		setText(tr("Edit weight"));
+	else
+		setText(tr("Edit weight (%n dive(s))", "", dives.size()));
 
 	// Try to untranslate the weightsystem name
 	new_ws = clone_weightsystem(wsIn);
