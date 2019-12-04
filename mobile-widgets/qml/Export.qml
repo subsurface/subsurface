@@ -19,9 +19,11 @@ Kirigami.ScrollablePage {
 		title: radioGroup.current.text
 		onAccepted: {
 			manager.exportToFile(selectedExport, fileUrls, anonymize.checked)
+			pageStack.pop()
 			close()
 		}
 		onRejected: {
+			pageStack.pop()
 			close()
 		}
 	}
