@@ -54,7 +54,7 @@ Kirigami.ScrollablePage {
 				} else {
 					manager.appendTextToLog("clicked on dive")
 					if (detailsWindow.state === "view") {
-						detailsWindow.showDiveIndex(id); // we need access to dive->id
+						manager.selectRow(model.row);
 						// switch to detailsWindow (or push it if it's not in the stack)
 						var i = rootItem.pageIndex(detailsWindow)
 						if (i === -1)

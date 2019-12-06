@@ -365,6 +365,19 @@ void QMLManager::openLocalThenRemote(QString url)
 	updateAllGlobalLists();
 }
 
+// Convenience function to accesss dive directly via its row.
+static struct dive *diveInRow(const QAbstractItemModel *model, int row)
+{
+	QModelIndex index = model->index(row, 0, QModelIndex());
+	return index.isValid() ?  model->data(index, DiveTripModelBase::DIVE_ROLE).value<struct dive *>() : nullptr;
+}
+
+void QMLManager::selectRow(int row)
+{
+	dive *d = diveInRow(MobileListModel::instance(), row);
+	select_single_dive(d);
+}
+
 void QMLManager::updateSiteList()
 {
 	LocationInformationModel::instance()->update();
