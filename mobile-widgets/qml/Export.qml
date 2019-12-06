@@ -10,7 +10,7 @@ import org.kde.kirigami 2.4 as Kirigami
 Kirigami.ScrollablePage {
 	title: qsTr("Export Divelog information")
 
-	property int selectedExport: ExportType.EX_DIVE_XML
+	property int selectedExport: ExportType.EX_DIVES_XML
 
 	FileDialog {
 		id: saveAsDialog
