@@ -19,8 +19,6 @@ public:
 
 public slots:
 	void proxyType_changed(int i);
-	void updateCloudAuthenticationState();
-	void passwordUpdateSuccessful();
 
 private:
 	Ui::PreferencesNetwork *ui;

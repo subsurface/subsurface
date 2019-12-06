@@ -8,6 +8,7 @@
 #include "preferences_units.h"
 #include "preferences_graph.h"
 #include "preferences_network.h"
+#include "preferences_cloud.h"
 
 #include "core/qthelper.h"
 
@@ -65,6 +66,7 @@ PreferencesDialog::PreferencesDialog()
 	addPreferencePage(new PreferencesUnits());
 	addPreferencePage(new PreferencesGraph());
 	addPreferencePage(new PreferencesNetwork());
+	addPreferencePage(new PreferencesCloud());
 	refreshPages();
 
 	connect(pagesList, &QListWidget::currentRowChanged,
