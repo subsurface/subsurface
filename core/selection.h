@@ -20,6 +20,7 @@ extern struct dive *first_selected_dive(void);
 extern struct dive *last_selected_dive(void);
 extern bool consecutive_selected(void);
 extern void select_newest_visible_dive();
+extern void select_single_dive(struct dive *d); // wrapper for setSelection() with a single dive. NULL clears the selection.
 
 #if DEBUG_SELECTION_TRACKING
 extern void dump_selection(void);
