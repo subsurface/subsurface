@@ -574,10 +574,7 @@ void DeleteDive::redoit()
 		timestamp_t when = divesToAdd.dives[0].dive->when;
 		newCurrent = find_next_visible_dive(when);
 	}
-	if (newCurrent)
-		setSelection(std::vector<dive *>{ newCurrent }, newCurrent);
-	else
-		setSelection(std::vector<dive *>(), nullptr);
+	select_single_dive(newCurrent);
 }
 
 

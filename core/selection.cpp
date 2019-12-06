@@ -195,6 +195,14 @@ void setSelection(const std::vector<dive *> &selection, dive *currentDive)
 	emit diveListNotifier.divesSelected(divesToSelect, current_dive);
 }
 
+extern "C" void select_single_dive(dive *d)
+{
+	if (d)
+		setSelection(std::vector<dive *>{ d }, d);
+	else
+		setSelection(std::vector<dive *>(), nullptr);
+}
+
 // Turn current selection into a vector.
 // TODO: This could be made much more efficient if we kept a sorted list of selected dives!
 std::vector<dive *> getDiveSelection()
@@ -217,9 +225,9 @@ extern "C" void select_newest_visible_dive()
 	for (int i = dive_table.nr - 1; i >= 0; --i) {
 		dive *d = dive_table.dives[i];
 		if (!d->hidden_by_filter)
-			return setSelection({ d }, d);
+			return select_single_dive(d);
 	}
 
 	// No visible dive -> deselect all
-	setSelection({}, nullptr);
+	select_single_dive(nullptr);
 }
