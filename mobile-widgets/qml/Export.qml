@@ -76,9 +76,11 @@ Kirigami.ScrollablePage {
 				// TO BE IMPLEMENTED
 			}
 			manager.exportToWEB(selectedExport, fieldUserID.text, fieldPassword.text, anonymize.checked)
+			pageStack.pop()
 			close()
 		}
 		onRejected: {
+			pageStack.pop()
 			close()
 		}
 
