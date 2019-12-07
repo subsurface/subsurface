@@ -15,7 +15,6 @@ class qPrefTechnicalDetails : public QObject {
 	Q_PROPERTY(bool decoinfo READ decoinfo WRITE set_decoinfo NOTIFY decoinfoChanged)
 	Q_PROPERTY(bool dcceiling READ dcceiling WRITE set_dcceiling NOTIFY dcceilingChanged)
 	Q_PROPERTY(deco_mode display_deco_mode READ display_deco_mode WRITE set_display_deco_mode NOTIFY display_deco_modeChanged)
-	Q_PROPERTY(bool display_unused_tanks READ display_unused_tanks WRITE set_display_unused_tanks NOTIFY display_unused_tanksChanged)
 	Q_PROPERTY(bool ead READ ead WRITE set_ead NOTIFY eadChanged)
 	Q_PROPERTY(int gfhigh READ gfhigh WRITE set_gfhigh NOTIFY gfhighChanged)
 	Q_PROPERTY(int gflow READ gflow WRITE set_gflow NOTIFY gflowChanged)
@@ -53,7 +52,6 @@ public:
 	static bool decoinfo() { return prefs.decoinfo; }
 	static bool dcceiling() { return prefs.dcceiling; }
 	static deco_mode display_deco_mode() { return prefs.display_deco_mode; }
-	static bool display_unused_tanks() { return prefs.display_unused_tanks; }
 	static bool ead() { return prefs.ead; }
 	static int gfhigh() { return prefs.gfhigh; }
 	static int gflow() { return prefs.gflow; }
@@ -83,7 +81,6 @@ public slots:
 	static void set_decoinfo(bool value);
 	static void set_dcceiling(bool value);
 	static void set_display_deco_mode(deco_mode value);
-	static void set_display_unused_tanks(bool value);
 	static void set_ead(bool value);
 	static void set_gfhigh(int value);
 	static void set_gflow(int value);
@@ -113,7 +110,6 @@ signals:
 	void decoinfoChanged(bool value);
 	void dcceilingChanged(bool value);
 	void display_deco_modeChanged(deco_mode value);
-	void display_unused_tanksChanged(bool value);
 	void eadChanged(bool value);
 	void gfhighChanged(int value);
 	void gflowChanged(int value);
@@ -145,7 +141,6 @@ private:
 	static void disk_decoinfo(bool doSync);
 	static void disk_dcceiling(bool doSync);
 	static void disk_display_deco_mode(bool doSync);
-	static void disk_display_unused_tanks(bool doSync);
 	static void disk_ead(bool doSync);
 	static void disk_gfhigh(bool doSync);
 	static void disk_gflow(bool doSync);

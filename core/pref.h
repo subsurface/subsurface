@@ -98,12 +98,16 @@ struct preferences {
 	dive_computer_prefs_t dive_computer3;
 	dive_computer_prefs_t dive_computer4;
 
-	// ********** Display **********
+	// ********** Display *************
 	bool        display_invalid_dives;
 	const char *divelist_font;
 	double      font_size;
 	double      mobile_scale;
 	bool        show_developer;
+
+	// ********** Equipment tab *******
+	const char *default_cylinder;
+	bool        display_unused_tanks;
 
 	// ********** General **********
 	bool        auto_recalculate_thumbnails;
@@ -111,7 +115,6 @@ struct preferences {
 	int	    extract_video_thumbnails_position; // position in stream: 0=first 100=last second
 	const char *ffmpeg_executable; // path of ffmpeg binary
 	int         defaultsetpoint; // default setpoint in mbar
-	const char *default_cylinder;
 	const char *default_filename;
 	enum def_file_behavior default_file_behavior;
 	int         o2consumption; // ml per min
@@ -182,7 +185,6 @@ struct preferences {
 	bool                        decoinfo; // Show deco info in infobox
 	bool                        dcceiling;
 	enum deco_mode              display_deco_mode;
-	bool                        display_unused_tanks;
 	bool                        ead;
 	int                         gfhigh;
 	int                         gflow;

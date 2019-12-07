@@ -109,12 +109,6 @@ void PreferencesDefaults::refreshSettings()
 	ui->cloudDefaultFile->setChecked(qPrefGeneral::default_file_behavior() == CLOUD_DEFAULT_FILE);
 	ui->localDefaultFile->setChecked(qPrefGeneral::default_file_behavior() == LOCAL_DEFAULT_FILE);
 
-	ui->default_cylinder->clear();
-	for (int i = 0; i < MAX_TANK_INFO && tank_info[i].name != NULL; i++) {
-		ui->default_cylinder->addItem(tank_info[i].name);
-		if (qPrefGeneral::default_cylinder() == tank_info[i].name)
-			ui->default_cylinder->setCurrentIndex(i);
-	}
 	ui->displayinvalid->setChecked(qPrefDisplay::display_invalid_dives());
 	ui->velocitySlider->setValue(qPrefDisplay::animation_speed());
 	ui->btnUseDefaultFile->setChecked(qPrefGeneral::use_default_file());
@@ -145,7 +139,6 @@ void PreferencesDefaults::syncSettings()
 {
 	auto general = qPrefGeneral::instance();
 	general->set_default_filename(ui->defaultfilename->text());
-	general->set_default_cylinder(ui->default_cylinder->currentText());
 	general->set_use_default_file(ui->btnUseDefaultFile->isChecked());
 	if (ui->noDefaultFile->isChecked())
 		general->set_default_file_behavior(NO_DEFAULT_FILE);
