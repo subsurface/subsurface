@@ -8,7 +8,6 @@
 class qPrefGeneral : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(bool auto_recalculate_thumbnails READ auto_recalculate_thumbnails WRITE set_auto_recalculate_thumbnails NOTIFY auto_recalculate_thumbnailsChanged)
-	Q_PROPERTY(QString default_cylinder READ default_cylinder WRITE set_default_cylinder NOTIFY default_cylinderChanged)
 	Q_PROPERTY(QString default_filename READ default_filename WRITE set_default_filename NOTIFY default_filenameChanged)
 	Q_PROPERTY(enum def_file_behavior default_file_behavior READ default_file_behavior WRITE set_default_file_behavior NOTIFY default_file_behaviorChanged)
 	Q_PROPERTY(int defaultsetpoint READ defaultsetpoint WRITE set_defaultsetpoint NOTIFY defaultsetpointChanged)
@@ -35,7 +34,6 @@ public:
 
 public:
 	static bool auto_recalculate_thumbnails() { return prefs.auto_recalculate_thumbnails; }
-	static QString default_cylinder() { return prefs.default_cylinder; }
 	static QString default_filename() { return prefs.default_filename; }
 	static enum def_file_behavior default_file_behavior() { return prefs.default_file_behavior; }
 	static int defaultsetpoint() { return prefs.defaultsetpoint; }
@@ -53,7 +51,6 @@ public:
 
 public slots:
 	static void set_auto_recalculate_thumbnails(bool value);
-	static void set_default_cylinder(const QString& value);
 	static void set_default_filename(const QString& value);
 	static void set_default_file_behavior(enum def_file_behavior value);
 	static void set_defaultsetpoint(int value);
@@ -71,7 +68,6 @@ public slots:
 
 signals:
 	void auto_recalculate_thumbnailsChanged(bool value);
-	void default_cylinderChanged(const QString& value);
 	void default_filenameChanged(const QString& value);
 	void default_file_behaviorChanged(enum def_file_behavior value);
 	void defaultsetpointChanged(int value);
@@ -92,7 +88,6 @@ private:
 	qPrefGeneral() {}
 
 	static void disk_auto_recalculate_thumbnails(bool doSync);
-	static void disk_default_cylinder(bool doSync);
 	static void disk_default_filename(bool doSync);
 	static void disk_default_file_behavior(bool doSync);
 	static void disk_defaultsetpoint(bool doSync);

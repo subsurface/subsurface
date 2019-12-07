@@ -29,7 +29,6 @@ void TestQPrefTechnicalDetails::test_struct_get()
 	prefs.calcndltts = true;
 	prefs.dcceiling = true;
 	prefs.display_deco_mode = BUEHLMANN;
-	prefs.display_unused_tanks = true;
 	prefs.ead = true;
 	prefs.gfhigh = 27;
 	prefs.gflow = 25;
@@ -56,7 +55,6 @@ void TestQPrefTechnicalDetails::test_struct_get()
 	QCOMPARE(tst->calcndltts(), prefs.calcndltts);
 	QCOMPARE(tst->dcceiling(), prefs.dcceiling);
 	QCOMPARE(tst->display_deco_mode(), prefs.display_deco_mode);
-	QCOMPARE(tst->display_unused_tanks(), prefs.display_unused_tanks);
 	QCOMPARE(tst->ead(), prefs.ead);
 	QCOMPARE(tst->gfhigh(), prefs.gfhigh);
 	QCOMPARE(tst->gflow(), prefs.gflow);
@@ -91,7 +89,6 @@ void TestQPrefTechnicalDetails::test_set_struct()
 	tst->set_calcndltts(false);
 	tst->set_dcceiling(false);
 	tst->set_display_deco_mode(RECREATIONAL);
-	tst->set_display_unused_tanks(false);
 	tst->set_ead(false);
 	tst->set_gfhigh(29);
 	tst->set_gflow(24);
@@ -118,7 +115,6 @@ void TestQPrefTechnicalDetails::test_set_struct()
 	QCOMPARE(prefs.calcndltts, false);
 	QCOMPARE(prefs.dcceiling, false);
 	QCOMPARE(prefs.display_deco_mode, RECREATIONAL);
-	QCOMPARE(prefs.display_unused_tanks, false);
 	QCOMPARE(prefs.ead, false);
 	QCOMPARE(prefs.gfhigh, 29);
 	QCOMPARE(prefs.gflow, 24);
@@ -153,7 +149,6 @@ void TestQPrefTechnicalDetails::test_set_load_struct()
 	tst->set_calcndltts(false);
 	tst->set_dcceiling(true);
 	tst->set_display_deco_mode(RECREATIONAL);
-	tst->set_display_unused_tanks(false);
 	tst->set_ead(false);
 	tst->set_gfhigh(29);
 	tst->set_gflow(24);
@@ -181,7 +176,6 @@ void TestQPrefTechnicalDetails::test_set_load_struct()
 	prefs.calcndltts = true;
 	prefs.dcceiling = false;
 	prefs.display_deco_mode = BUEHLMANN;
-	prefs.display_unused_tanks = true;
 	prefs.ead = true;
 	prefs.gfhigh = 27;
 	prefs.gflow = 25;
@@ -209,7 +203,6 @@ void TestQPrefTechnicalDetails::test_set_load_struct()
 	QCOMPARE(prefs.calcndltts, false);
 	QCOMPARE(prefs.dcceiling, true);
 	QCOMPARE(prefs.display_deco_mode, RECREATIONAL);
-	QCOMPARE(prefs.display_unused_tanks, false);
 	QCOMPARE(prefs.ead, false);
 	QCOMPARE((int)prefs.gfhigh, 29);
 	QCOMPARE((int)prefs.gflow, 24);
@@ -244,7 +237,6 @@ void TestQPrefTechnicalDetails::test_struct_disk()
 	prefs.calcndltts = true;
 	prefs.dcceiling = true;
 	prefs.display_deco_mode = BUEHLMANN;
-	prefs.display_unused_tanks = true;
 	prefs.ead = true;
 	prefs.gfhigh = 11;
 	prefs.gflow = 12;
@@ -273,7 +265,6 @@ void TestQPrefTechnicalDetails::test_struct_disk()
 	prefs.calcndltts = false;
 	prefs.dcceiling = false;
 	prefs.display_deco_mode = RECREATIONAL;
-	prefs.display_unused_tanks = false;
 	prefs.ead = false;
 	prefs.gfhigh = 27;
 	prefs.gflow = 25;
@@ -301,7 +292,6 @@ void TestQPrefTechnicalDetails::test_struct_disk()
 	QCOMPARE(prefs.calcndltts, true);
 	QCOMPARE(prefs.dcceiling, true);
 	QCOMPARE(prefs.display_deco_mode, BUEHLMANN);
-	QCOMPARE(prefs.display_unused_tanks, true);
 	QCOMPARE(prefs.ead, true);
 	QCOMPARE(prefs.gfhigh, 11);
 	QCOMPARE(prefs.gflow, 12);
@@ -399,8 +389,6 @@ void TestQPrefTechnicalDetails::test_oldPreferences()
 	TEST(tecDetails->zoomed_plot(), true);
 	tecDetails->set_show_sac(true);
 	TEST(tecDetails->show_sac(), true);
-	tecDetails->set_display_unused_tanks(true);
-	TEST(tecDetails->display_unused_tanks(), true);
 	tecDetails->set_show_average_depth(true);
 	TEST(tecDetails->show_average_depth(), true);
 	tecDetails->set_show_pictures_in_profile(true);
@@ -438,8 +426,6 @@ void TestQPrefTechnicalDetails::test_oldPreferences()
 	TEST(tecDetails->zoomed_plot(), false);
 	tecDetails->set_show_sac(false);
 	TEST(tecDetails->show_sac(), false);
-	tecDetails->set_display_unused_tanks(false);
-	TEST(tecDetails->display_unused_tanks(), false);
 	tecDetails->set_show_average_depth(false);
 	TEST(tecDetails->show_average_depth(), false);
 	tecDetails->set_show_pictures_in_profile(false);
@@ -454,7 +440,6 @@ void TestQPrefTechnicalDetails::test_signals()
 	QSignalSpy spy4(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::calcndlttsChanged);
 	QSignalSpy spy5(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::dcceilingChanged);
 	QSignalSpy spy6(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::display_deco_modeChanged);
-	QSignalSpy spy7(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::display_unused_tanksChanged);
 	QSignalSpy spy8(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::eadChanged);
 	QSignalSpy spy9(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::gfhighChanged);
 	QSignalSpy spy10(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::gflowChanged);
@@ -487,8 +472,6 @@ void TestQPrefTechnicalDetails::test_signals()
 	prefs.dcceiling = true;
 	qPrefTechnicalDetails::set_dcceiling(false);
 	qPrefTechnicalDetails::set_display_deco_mode(VPMB);
-	prefs.display_unused_tanks = true;
-	qPrefTechnicalDetails::set_display_unused_tanks(false);
 	prefs.ead = true;
 	qPrefTechnicalDetails::set_ead(false);
 	qPrefTechnicalDetails::set_gfhigh(-29);
@@ -532,7 +515,6 @@ void TestQPrefTechnicalDetails::test_signals()
 	QCOMPARE(spy4.count(), 1);
 	QCOMPARE(spy5.count(), 1);
 	QCOMPARE(spy6.count(), 1);
-	QCOMPARE(spy7.count(), 1);
 	QCOMPARE(spy8.count(), 1);
 	QCOMPARE(spy9.count(), 1);
 	QCOMPARE(spy10.count(), 1);
@@ -560,7 +542,6 @@ void TestQPrefTechnicalDetails::test_signals()
 	QVERIFY(spy4.takeFirst().at(0).toBool() == false);
 	QVERIFY(spy5.takeFirst().at(0).toBool() == false);
 	QVERIFY(spy6.takeFirst().at(0).toInt() == VPMB);
-	QVERIFY(spy7.takeFirst().at(0).toBool() == false);
 	QVERIFY(spy8.takeFirst().at(0).toBool() == false);
 	QVERIFY(spy9.takeFirst().at(0).toInt() == -29);
 	QVERIFY(spy10.takeFirst().at(0).toInt() == -24);

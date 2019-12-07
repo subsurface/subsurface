@@ -20,7 +20,6 @@ void qPrefTechnicalDetails::loadSync(bool doSync)
 	disk_calcndltts(doSync);
 	disk_dcceiling(doSync);
 	disk_display_deco_mode(doSync);
-	disk_display_unused_tanks(doSync);
 	disk_ead(doSync);
 	disk_gfhigh(doSync);
 	disk_gflow(doSync);
@@ -56,8 +55,6 @@ HANDLE_PREFERENCE_BOOL(TechnicalDetails, "decoinfo", decoinfo);
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "dcceiling", dcceiling);
 
 HANDLE_PREFERENCE_ENUM(TechnicalDetails, deco_mode, "display_deco_mode", display_deco_mode);
-
-HANDLE_PREFERENCE_BOOL(TechnicalDetails, "display_unused_tanks", display_unused_tanks);
 
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "ead", ead);
 

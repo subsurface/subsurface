@@ -14,6 +14,7 @@
 #include "qPrefTechnicalDetails.h"
 #include "qPrefUnit.h"
 #include "qPrefUpdateManager.h"
+#include "qPrefEquipment.h"
 
 #include <QtQml>
 #include <QQmlContext>
@@ -38,6 +39,7 @@ void qPref::loadSync(bool doSync)
 	qPrefTechnicalDetails::loadSync(doSync);
 	qPrefUnits::loadSync(doSync);
 	qPrefUpdateManager::loadSync(doSync);
+	qPrefEquipment::loadSync(doSync);
 }
 
 Q_DECLARE_METATYPE(deco_mode);
@@ -61,6 +63,7 @@ void qPref::registerQML(QQmlEngine *engine)
 		ct->setContextProperty("PrefTechnicalDetails", qPrefTechnicalDetails::instance());
 		ct->setContextProperty("PrefUnits", qPrefUnits::instance());
 		ct->setContextProperty("PrefUpdateManager", qPrefUpdateManager::instance());
+		ct->setContextProperty("PrefEquipment", qPrefUpdateManager::instance());
 	}
 
 	// Register special types

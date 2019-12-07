@@ -355,20 +355,13 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0" colspan="2">
-       <widget class="QCheckBox" name="display_unused_tanks">
-        <property name="text">
-         <string>Show unused cylinders in Equipment tab</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="2">
        <widget class="QCheckBox" name="show_average_depth">
         <property name="text">
          <string>Show mean depth in Profile</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2">
+      <item row="1" column="0" colspan="2">
        <widget class="QCheckBox" name="auto_recalculate_thumbnails">
         <property name="text">
          <string>Recalculate thumbnails if older than media file</string>

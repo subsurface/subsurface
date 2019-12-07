@@ -142,38 +142,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_6">
-     <property name="title">
-      <string>Default cylinder</string>
-     </property>
-     <layout class="QFormLayout" name="formLayout_6">
-      <property name="horizontalSpacing">
-       <number>5</number>
-      </property>
-      <property name="verticalSpacing">
-       <number>5</number>
-      </property>
-      <property name="margin">
-       <number>5</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_11">
-        <property name="text">
-         <string>Use default cylinder</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QComboBox" name="default_cylinder"/>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <widget class="QGroupBox" name="groupBox_7">
      <property name="title">
       <string>Animations</string>
