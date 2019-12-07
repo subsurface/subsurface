@@ -110,6 +110,7 @@ TEST(TestQPrefDisplay testqPrefDisplay.cpp)
 TEST(TestQPrefDiveComputer testqPrefDiveComputer.cpp)
 TEST(TestQPrefDivePlanner testqPrefDivePlanner.cpp)
 TEST(TestQPrefGeneral testqPrefGeneral.cpp)
+TEST(TestQPrefEquipment testqPrefEquipment.cpp)
 TEST(TestQPrefGeocoding testqPrefGeocoding.cpp)
 TEST(TestQPrefLanguage testqPrefLanguage.cpp)
 TEST(TestQPrefLocationService testqPrefLocationService.cpp)
@@ -141,6 +142,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestQPrefDiveComputer
 	TestQPrefDivePlanner
 	TestQPrefGeneral
+	TestQPrefEquipment
 	TestQPrefGeocoding
 	TestQPrefLanguage
 	TestQPrefLocationService

@@ -22,7 +22,6 @@ void qPrefGeneral::loadSync(bool doSync)
 {
 	disk_auto_recalculate_thumbnails(doSync);
 	disk_auto_recalculate_thumbnails(doSync);
-	disk_default_cylinder(doSync);
 	disk_default_filename(doSync);
 	disk_default_file_behavior(doSync);
 	disk_defaultsetpoint(doSync);
@@ -43,8 +42,6 @@ void qPrefGeneral::loadSync(bool doSync)
 }
 
 HANDLE_PREFERENCE_BOOL(General, "auto_recalculate_thumbnails", auto_recalculate_thumbnails);
-
-HANDLE_PREFERENCE_TXT(General, "default_cylinder", default_cylinder);
 
 HANDLE_PREFERENCE_TXT(General, "default_filename", default_filename);
 

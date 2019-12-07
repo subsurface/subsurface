@@ -12,6 +12,7 @@ set(SUBSURFACE_PREFERENCES_UI
   preferences_units.ui
   preferences_georeference.ui
   preferences_language.ui
+  preferences_equipment.ui
 )
 
 qt5_wrap_ui(SUBSURFACE_PREFERENCES_UI_HDRS ${SUBSURFACE_PREFERENCES_UI})
@@ -23,6 +24,8 @@ set(SUBSURFACE_PREFERENCES_LIB_SRCS
 	abstractpreferenceswidget.h
 	preferences_defaults.cpp
 	preferences_defaults.h
+	preferences_equipment.cpp
+	preferences_equipment.h
 	preferences_georeference.cpp
 	preferences_georeference.h
 	preferences_graph.cpp

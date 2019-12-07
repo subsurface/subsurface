@@ -13,6 +13,7 @@
         <file alias="advanced-icon">icons/advanced.png</file>
         <file alias="preferences-system-network-icon">icons/network.png</file>
         <file alias="preferences-cloud-icon">icons/pref_cloud.png</file>
+        <file alias="preferences-equipment-icon">icons/pref_equipment.png</file>
         <file alias="scale-graph-icon">icons/graph.png</file>
         <file alias="value-minimum-icon">icons/minimum.png</file>
         <file alias="value-maximum-icon">icons/maximum.png</file>

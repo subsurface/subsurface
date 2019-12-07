@@ -24,7 +24,6 @@ void TestQPrefGeneral::test_struct_get()
 	auto tst = qPrefGeneral::instance();
 
 	prefs.auto_recalculate_thumbnails = true;
-	prefs.default_cylinder = copy_qstring("new base11");
 	prefs.default_filename = copy_qstring("new base12");
 	prefs.default_file_behavior = UNDEFINED_DEFAULT_FILE;
 	prefs.defaultsetpoint = 14;
@@ -36,7 +35,6 @@ void TestQPrefGeneral::test_struct_get()
 	prefs.use_default_file = true;
 
 	QCOMPARE(tst->auto_recalculate_thumbnails(), prefs.auto_recalculate_thumbnails);
-	QCOMPARE(tst->default_cylinder(), QString(prefs.default_cylinder));
 	QCOMPARE(tst->default_filename(), QString(prefs.default_filename));
 	QCOMPARE(tst->default_file_behavior(), prefs.default_file_behavior);
 	QCOMPARE(tst->defaultsetpoint(), prefs.defaultsetpoint);
@@ -55,7 +53,6 @@ void TestQPrefGeneral::test_set_struct()
 	auto tst = qPrefGeneral::instance();
 
 	tst->set_auto_recalculate_thumbnails(false);
-	tst->set_default_cylinder("new base21");
 	tst->set_default_filename("new base22");
 	tst->set_default_file_behavior(LOCAL_DEFAULT_FILE);
 	tst->set_defaultsetpoint(24);
@@ -69,7 +66,6 @@ void TestQPrefGeneral::test_set_struct()
 	tst->set_diveshareExport_private(false);
 
 	QCOMPARE(prefs.auto_recalculate_thumbnails, false);
-	QCOMPARE(QString(prefs.default_cylinder), QString("new base21"));
 	QCOMPARE(QString(prefs.default_filename), QString("new base22"));
 	QCOMPARE(prefs.default_file_behavior, LOCAL_DEFAULT_FILE);
 	QCOMPARE(prefs.defaultsetpoint, 24);
@@ -90,7 +86,6 @@ void TestQPrefGeneral::test_set_load_struct()
 	auto tst = qPrefGeneral::instance();
 
 	tst->set_auto_recalculate_thumbnails(true);
-	tst->set_default_cylinder("new base31");
 	tst->set_default_filename("new base32");
 	tst->set_default_file_behavior(NO_DEFAULT_FILE);
 	tst->set_defaultsetpoint(34);
@@ -104,7 +99,6 @@ void TestQPrefGeneral::test_set_load_struct()
 	tst->set_diveshareExport_private(true);
 
 	prefs.auto_recalculate_thumbnails = false;
-	prefs.default_cylinder = copy_qstring("error");
 	prefs.default_filename = copy_qstring("error");
 	prefs.default_file_behavior = UNDEFINED_DEFAULT_FILE;
 	prefs.defaultsetpoint = 14;
@@ -117,7 +111,6 @@ void TestQPrefGeneral::test_set_load_struct()
 
 	tst->load();
 	QCOMPARE(prefs.auto_recalculate_thumbnails, true);
-	QCOMPARE(QString(prefs.default_cylinder), QString("new base31"));
 	QCOMPARE(QString(prefs.default_filename), QString("new base32"));
 	QCOMPARE(prefs.default_file_behavior, NO_DEFAULT_FILE);
 	QCOMPARE(prefs.defaultsetpoint, 34);
@@ -138,7 +131,6 @@ void TestQPrefGeneral::test_struct_disk()
 	auto tst = qPrefGeneral::instance();
 
 	prefs.auto_recalculate_thumbnails = true;
-	prefs.default_cylinder = copy_qstring("base41");
 	prefs.default_filename = copy_qstring("base42");
 	prefs.default_file_behavior = CLOUD_DEFAULT_FILE;
 	prefs.defaultsetpoint = 44;
@@ -151,7 +143,6 @@ void TestQPrefGeneral::test_struct_disk()
 
 	tst->sync();
 	prefs.auto_recalculate_thumbnails = false;
-	prefs.default_cylinder = copy_qstring("error");
 	prefs.default_filename = copy_qstring("error");
 	prefs.default_file_behavior = UNDEFINED_DEFAULT_FILE;
 	prefs.defaultsetpoint = 14;
@@ -164,7 +155,6 @@ void TestQPrefGeneral::test_struct_disk()
 
 	tst->load();
 	QCOMPARE(prefs.auto_recalculate_thumbnails, true);
-	QCOMPARE(QString(prefs.default_cylinder), QString("base41"));
 	QCOMPARE(QString(prefs.default_filename), QString("base42"));
 	QCOMPARE(prefs.default_file_behavior, CLOUD_DEFAULT_FILE);
 	QCOMPARE(prefs.defaultsetpoint, 44);
@@ -201,7 +191,6 @@ void TestQPrefGeneral::test_oldPreferences()
 	auto general = qPrefGeneral::instance();
 
 	general->set_default_filename("filename");
-	general->set_default_cylinder("cylinder_2");
 	general->set_default_file_behavior(LOCAL_DEFAULT_FILE);
 	general->set_defaultsetpoint(0);
 	general->set_o2consumption(0);
@@ -209,7 +198,6 @@ void TestQPrefGeneral::test_oldPreferences()
 	general->set_use_default_file(true);
 
 	TEST(general->default_filename(), QStringLiteral("filename"));
-	TEST(general->default_cylinder(), QStringLiteral("cylinder_2"));
 	TEST(general->default_file_behavior(), LOCAL_DEFAULT_FILE); // since we have a default file, here it returns
 	TEST(general->defaultsetpoint(), 0);
 	TEST(general->o2consumption(), 0);
@@ -217,7 +205,6 @@ void TestQPrefGeneral::test_oldPreferences()
 	TEST(general->use_default_file(), true);
 
 	general->set_default_filename("no_file_name");
-	general->set_default_cylinder("cylinder_1");
 	//TODOl: Change this to a enum.
 	general->set_default_file_behavior(CLOUD_DEFAULT_FILE);
 
@@ -227,7 +214,6 @@ void TestQPrefGeneral::test_oldPreferences()
 	general->set_use_default_file(false);
 
 	TEST(general->default_filename(), QStringLiteral("no_file_name"));
-	TEST(general->default_cylinder(), QStringLiteral("cylinder_1"));
 	TEST(general->default_file_behavior(), CLOUD_DEFAULT_FILE);
 	TEST(general->defaultsetpoint(), 1);
 	TEST(general->o2consumption(), 1);
@@ -238,7 +224,6 @@ void TestQPrefGeneral::test_oldPreferences()
 void TestQPrefGeneral::test_signals()
 {
 	QSignalSpy spy1(qPrefGeneral::instance(), &qPrefGeneral::auto_recalculate_thumbnailsChanged);
-	QSignalSpy spy2(qPrefGeneral::instance(), &qPrefGeneral::default_cylinderChanged);
 	QSignalSpy spy3(qPrefGeneral::instance(), &qPrefGeneral::default_filenameChanged);
 	QSignalSpy spy4(qPrefGeneral::instance(), &qPrefGeneral::default_file_behaviorChanged);
 	QSignalSpy spy5(qPrefGeneral::instance(), &qPrefGeneral::defaultsetpointChanged);
@@ -254,7 +239,6 @@ void TestQPrefGeneral::test_signals()
 	prefs.auto_recalculate_thumbnails = true;
 	qPrefGeneral::set_auto_recalculate_thumbnails(false);
 
-	qPrefGeneral::set_default_cylinder("new base21");
 	qPrefGeneral::set_default_filename("new base22");
 	qPrefGeneral::set_default_file_behavior(LOCAL_DEFAULT_FILE);
 	qPrefGeneral::set_defaultsetpoint(24);
@@ -271,7 +255,6 @@ void TestQPrefGeneral::test_signals()
 
 	QVERIFY(spy1.takeFirst().at(0).toBool() == false);
 
-	qPrefGeneral::set_default_cylinder("new base21");
 	qPrefGeneral::set_default_filename("new base22");
 	qPrefGeneral::set_default_file_behavior(LOCAL_DEFAULT_FILE);
 	qPrefGeneral::set_defaultsetpoint(24);
@@ -284,6 +267,5 @@ void TestQPrefGeneral::test_signals()
 	qPrefGeneral::set_diveshareExport_uid("uid1");
 	qPrefGeneral::set_diveshareExport_private(false);
 }
-
 
 QTEST_MAIN(TestQPrefGeneral)
