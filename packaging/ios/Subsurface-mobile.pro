@@ -82,6 +82,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/btdiscovery.cpp \
 	../../core/connectionlistmodel.cpp \
 	../../core/qt-ble.cpp \
+	../../core/uploadDiveShare.cpp \
 	../../core/save-profiledata.c \
 	../../core/settings/qPref.cpp \
 	../../core/settings/qPrefCloudStorage.cpp \
@@ -205,6 +206,7 @@ HEADERS += \
 	../../core/connectionlistmodel.h \
 	../../core/qt-ble.h \
 	../../core/save-profiledata.h \
+	../../core/uploadDiveShare.h \
 	../../core/settings/qPref.h \
 	../../core/settings/qPrefCloudStorage.h \
 	../../core/settings/qPrefDisplay.h \
