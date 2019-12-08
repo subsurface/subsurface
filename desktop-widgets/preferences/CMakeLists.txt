@@ -14,6 +14,7 @@ set(SUBSURFACE_PREFERENCES_UI
   preferences_language.ui
   preferences_media.ui
   preferences_equipment.ui
+  preferences_dc.ui
 )
 
 qt5_wrap_ui(SUBSURFACE_PREFERENCES_UI_HDRS ${SUBSURFACE_PREFERENCES_UI})
@@ -23,6 +24,10 @@ source_group("Subsurface Interface Files" FILES ${SUBSURFACE_PREFERENCES_UI})
 set(SUBSURFACE_PREFERENCES_LIB_SRCS
 	abstractpreferenceswidget.cpp
 	abstractpreferenceswidget.h
+	preferences_cloud.cpp
+	preferences_cloud.h
+	preferences_dc.cpp
+	preferences_dc.h
 	preferences_defaults.cpp
 	preferences_defaults.h
 	preferences_equipment.cpp
@@ -37,8 +42,6 @@ set(SUBSURFACE_PREFERENCES_LIB_SRCS
 	preferences_media.h
 	preferences_network.cpp
 	preferences_network.h
-	preferences_cloud.cpp
-	preferences_cloud.h
 	preferences_units.cpp
 	preferences_units.h
 	preferencesdialog.cpp

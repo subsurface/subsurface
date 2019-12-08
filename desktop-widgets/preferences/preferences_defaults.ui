@@ -178,26 +178,10 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_9">
-     <property name="title">
-      <string>Clear settings</string>
+    <widget class="QPushButton" name="resetSettings">
+     <property name="text">
+      <string>Reset all settings to their default value</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QPushButton" name="resetRememberedDCs">
-        <property name="text">
-         <string>Reset remembered dive computers</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="resetSettings">
-        <property name="text">
-         <string>Reset all settings to their default value</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
     </widget>
    </item>
    <item>
