@@ -48,6 +48,7 @@
 #include "core/exportfuncs.h"
 #include "core/worldmap-save.h"
 #include "core/uploadDiveLogsDE.h"
+#include "core/uploadDiveShare.h"
 
 
 QMLManager *QMLManager::m_instance = NULL;
@@ -166,6 +167,14 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 			this, &QMLManager::uploadFinish);
 	connect(uploadDiveLogsDE::instance(), &uploadDiveLogsDE::uploadProgress,
 			this, &QMLManager::uploadProgress);
+	connect(uploadDiveShare::instance(), &uploadDiveShare::uploadProgress,
+			this, &QMLManager::uploadProgress);
+
+	// uploadDiveShare::uploadFinish() is defined with 3 parameters,
+	// whereas QMLManager::uploadFinish() is defined with 2 paramters,
+	// Solution add a slot as landing zone.
+	connect(uploadDiveShare::instance(), SIGNAL(uploadDiveShare::uploadFinish(bool, const QString &, const QByteArray &)),
+			this, SLOT(uploadFinishSlot(bool, const QString &, const QByteArray &)));
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 #if defined(Q_OS_ANDROID)
@@ -2201,13 +2210,16 @@ void QMLManager::exportToWEB(export_types type, QString userId, QString password
 			uploadDiveLogsDE::instance()->doUpload(false, userId, password);
 			break;
 		case EX_DIVESHARE:
-			// TO BE IMPLEMENTED
-			// Current call in Desktop-widgets
-			// DiveShareExportDialog::instance()->
-			// prepareDivesForUpload(ui->exportSelected->isChecked());
+			uploadDiveShare::instance()->doUpload(false, userId, anonymize);
 			break;
 		default:
 			qDebug() << "upload to unknown type " << type << " using " << userId << "/" <<  password << " remove names " << anonymize;
 			break;
 	}
 }
+
+void QMLManager::uploadFinishSlot(bool success, const QString &text, const QByteArray &html)
+{
+	emit uploadFinish(success, text);
+}
+

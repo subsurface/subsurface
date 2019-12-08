@@ -298,6 +298,9 @@ signals:
 	// From upload process
 	void uploadFinish(bool success, const QString &text);
 	void uploadProgress(qreal percentage);
+
+private slots:
+	void uploadFinishSlot(bool success, const QString &text, const QByteArray &html);
 };
 
 #endif
