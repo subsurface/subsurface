@@ -286,6 +286,7 @@ void uploadDiveLogsDE::uploadFinished()
 				}
 				err = tr("Upload successful");
 				emit uploadFinish(true, err);
+				timeout.stop();
 				return;
 			}
 			err = tr("Login failed");
