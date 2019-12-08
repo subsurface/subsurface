@@ -165,6 +165,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	uemis.h
 	units.h
 	units.c
+	uploadDiveShare.cpp
+	uploadDiveShare.h
 	version.c
 	version.h
 	videoframeextractor.cpp
