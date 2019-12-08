@@ -88,6 +88,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/uploadDiveShare.cpp \
 	../../core/uploadDiveLogsDE.cpp \
 	../../core/save-profiledata.c \
+	../../core/plannershared.cpp \
 	../../core/settings/qPref.cpp \
 	../../core/settings/qPrefCloudStorage.cpp \
 	../../core/settings/qPrefDisplay.cpp \
@@ -212,6 +213,7 @@ HEADERS += \
 	../../core/save-profiledata.h \
 	../../core/uploadDiveShare.h \
 	../../core/uploadDiveLogsDE.h \
+	../../core/plannershared.h \
 	../../core/settings/qPref.h \
 	../../core/settings/qPrefCloudStorage.h \
 	../../core/settings/qPrefDisplay.h \
