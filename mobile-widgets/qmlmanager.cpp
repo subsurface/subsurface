@@ -161,6 +161,12 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	timer.start();
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
 
+	// make upload signals available in QML
+	connect(uploadDiveLogsDE::instance(), &uploadDiveLogsDE::uploadFinish,
+			this, &QMLManager::uploadFinish);
+	connect(uploadDiveLogsDE::instance(), &uploadDiveLogsDE::uploadProgress,
+			this, &QMLManager::uploadProgress);
+
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 #if defined(Q_OS_ANDROID)
 	// on Android we first try the GenericDataLocation (typically /storage/emulated/0) and if that fails
