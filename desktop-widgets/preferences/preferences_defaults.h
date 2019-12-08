@@ -21,7 +21,6 @@ public slots:
 	void on_btnUseDefaultFile_toggled(bool toggled);
 	void on_localDefaultFile_toggled(bool toggled);
 	void on_resetSettings_clicked();
-	void on_resetRememberedDCs_clicked();
 
 private:
 	Ui::PreferencesDefaults *ui;

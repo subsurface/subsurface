@@ -11,6 +11,7 @@
 #include "preferences_cloud.h"
 #include "preferences_equipment.h"
 #include "preferences_media.h"
+#include "preferences_dc.h"
 
 #include "core/qthelper.h"
 
@@ -71,6 +72,7 @@ PreferencesDialog::PreferencesDialog()
 	addPreferencePage(new PreferencesCloud());
 	addPreferencePage(new PreferencesEquipment());
 	addPreferencePage(new PreferencesMedia());
+	addPreferencePage(new PreferencesDc());
 
 	refreshPages();
 
