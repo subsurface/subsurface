@@ -294,6 +294,10 @@ signals:
 	void pluggedInDeviceNameChanged();
 	void showNonDiveComputersChanged();
 	void DC_ForceDownloadChanged();
+
+	// From upload process
+	void uploadFinish(bool success, const QString &text);
+	void uploadProgress(qreal percentage);
 };
 
 #endif
