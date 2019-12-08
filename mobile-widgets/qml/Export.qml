@@ -59,6 +59,11 @@ Kirigami.ScrollablePage {
 								  Qt.ImhNoAutoUppercase
 				echoMode: TextInput.PasswordEchoOnEdit
 			}
+			CheckBox {
+				id: fieldPrivate
+				Layout.fillWidth: true
+				text: qsTr("Private")
+			}
 			ProgressBar {
 				id: progress
 				value: 0.0
@@ -79,10 +84,14 @@ Kirigami.ScrollablePage {
 				}
 				if (fieldPassword.text !== PrefCloudStorage.divelogde_pass)
 					PrefCloudStorage.divelogde_pass = fieldPassword.text
+				manager.exportToWEB(selectedExport, fieldUserID.text, fieldPassword.text, anonymize.checked)
 			} else {
-				// TO BE IMPLEMENTED
+				if (fieldUserID.text !== PrefCloudStorage.diveshare_uid) {
+					PrefCloudStorage.diveshare_uid = fieldUserID.text
+				}
+				PrefCloudStorage.diveshare_private = fieldPrivate.checked
+				manager.exportToWEB(selectedExport, fieldUserID.text, fieldPassword.text, fieldPrivate.checked)
 			}
-			manager.exportToWEB(selectedExport, fieldUserID.text, fieldPassword.text, anonymize.checked)
 		}
 		onRejected: {
 			pageStack.pop()
@@ -150,7 +159,6 @@ Kirigami.ScrollablePage {
 		}
 		RadioButton {
 			Layout.fillWidth: true
-			visible: false // TEMPORARY MEASURE, until non UI related WEB service is ready
 			text: qsTr("Upload DiveShare")
 			exclusiveGroup: radioGroup
 			onClicked: {
@@ -253,9 +261,17 @@ Kirigami.ScrollablePage {
 					fieldPassword.text = PrefCloudStorage.divelogde_pass
 					anonymize.visible = false
 					statusText.text = ""
+					fieldPrivate.visible = false
 					uploadDialog.open()
 				} else if (selectedExport === ExportType.EX_DIVESHARE) {
-					// TO BE IMPLEMENTED
+					textUserID.visible = true
+					fieldUserID.visible = true
+					fieldUserID.text = PrefCloudStorage.diveshare_uid
+					fieldPrivate.visible = true
+					fieldPrivate.checked = PrefCloudStorage.diveshare_private
+					textPassword.visible = false
+					fieldPassword.visible = false
+					uploadDialog.open()
 				} else {
 					saveAsDialog.open()
 				}
