@@ -50,7 +50,6 @@ void PreferencesGraph::refreshSettings()
 	ui->pscrfactor->setValue(lrint(1000.0 / prefs.pscr_ratio));
 
 	ui->show_average_depth->setChecked(prefs.show_average_depth);
-	ui->auto_recalculate_thumbnails->setChecked(prefs.auto_recalculate_thumbnails);
 	ui->show_icd->setChecked(prefs.show_icd);
 }
 
@@ -59,7 +58,6 @@ void PreferencesGraph::syncSettings()
 	qPrefGeneral::set_defaultsetpoint(lrint(ui->defaultSetpoint->value() * 1000.0));
 	qPrefGeneral::set_o2consumption(lrint(ui->psro2rate->value() *1000.0));
 	qPrefGeneral::set_pscr_ratio(lrint(1000.0 / ui->pscrfactor->value()));
-	qPrefGeneral::set_auto_recalculate_thumbnails(ui->auto_recalculate_thumbnails->isChecked());
 
 	qPrefPartialPressureGas::set_phe_threshold(ui->pheThreshold->value());
 	qPrefPartialPressureGas::set_po2_threshold_max(ui->po2ThresholdMax->value());

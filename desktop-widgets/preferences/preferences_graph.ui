@@ -361,13 +361,6 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0" colspan="2">
-       <widget class="QCheckBox" name="auto_recalculate_thumbnails">
-        <property name="text">
-         <string>Recalculate thumbnails if older than media file</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>

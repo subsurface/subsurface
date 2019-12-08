@@ -20,15 +20,11 @@ public slots:
 	void on_chooseFile_clicked();
 	void on_btnUseDefaultFile_toggled(bool toggled);
 	void on_localDefaultFile_toggled(bool toggled);
-	void on_ffmpegFile_clicked();
-	void on_ffmpegExecutable_editingFinished();
-	void on_extractVideoThumbnails_toggled(bool toggled);
 	void on_resetSettings_clicked();
 	void on_resetRememberedDCs_clicked();
 
 private:
 	Ui::PreferencesDefaults *ui;
-	void checkFfmpegExecutable();
 };
 
 
