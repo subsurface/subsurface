@@ -6,9 +6,10 @@
 #include "desktop-widgets/subsurfacewebservices.h"
 #include "core/qthelper.h"
 #include "core/cloudstorage.h"
+#include "core/settings/qPrefCloudStorage.h"
 
 #include <QDesktopServices>
-#include <QSettings>
+
 
 DiveShareExportDialog::DiveShareExportDialog(QWidget *parent) :
 	QDialog(parent),
@@ -43,12 +44,8 @@ void DiveShareExportDialog::prepareDivesForUpload(bool selected)
 	ui->frameConfigure->setVisible(true);
 	ui->frameResults->setVisible(false);
 
-	QSettings settings;
-	if (settings.contains("diveshareExport/uid"))
-		ui->txtUID->setText(settings.value("diveshareExport/uid").toString());
-
-	if (settings.contains("diveshareExport/private"))
-		ui->chkPrivate->setChecked(settings.value("diveshareExport/private").toBool());
+	ui->txtUID->setText(qPrefCloudStorage::diveshare_uid());
+	ui->chkPrivate->setChecked(qPrefCloudStorage::diveshare_private());
 
 	show();
 }
@@ -108,9 +105,8 @@ void DiveShareExportDialog::finishedSlot()
 void DiveShareExportDialog::doUpload()
 {
 	//Store current settings
-	QSettings settings;
-	settings.setValue("diveshareExport/uid", ui->txtUID->text());
-	settings.setValue("diveshareExport/private", ui->chkPrivate->isChecked());
+	qPrefCloudStorage::set_diveshare_uid(ui->txtUID->text());
+	qPrefCloudStorage::set_diveshare_private(ui->chkPrivate->isChecked());
 
 	//Change UI into results mode
 	ui->frameConfigure->setVisible(false);
