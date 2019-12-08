@@ -213,6 +213,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	settings/qPrefUpdateManager.h
 	settings/qPrefEquipment.cpp
 	settings/qPrefEquipment.h
+	settings/qPrefMedia.cpp
+	settings/qPrefMedia.h
 
 	#Subsurface Qt have the Subsurface structs QObjectified for easy access via QML.
 	subsurface-qt/CylinderObjectHelper.cpp

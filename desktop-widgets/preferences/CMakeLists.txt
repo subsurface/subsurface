@@ -12,6 +12,7 @@ set(SUBSURFACE_PREFERENCES_UI
   preferences_units.ui
   preferences_georeference.ui
   preferences_language.ui
+  preferences_media.ui
   preferences_equipment.ui
 )
 
@@ -32,6 +33,8 @@ set(SUBSURFACE_PREFERENCES_LIB_SRCS
 	preferences_graph.h
 	preferences_language.cpp
 	preferences_language.h
+	preferences_media.cpp
+	preferences_media.h
 	preferences_network.cpp
 	preferences_network.h
 	preferences_cloud.cpp
