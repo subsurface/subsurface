@@ -77,3 +77,24 @@ HANDLE_PREFERENCE_INT(CloudStorage, "timeout", cloud_timeout);
 HANDLE_PREFERENCE_INT(CloudStorage, "cloud_verification_status", cloud_verification_status);
 
 HANDLE_PREFERENCE_BOOL(CloudStorage, "save_password_local", save_password_local);
+
+
+QString qPrefCloudStorage::diveshare_uid()
+{
+	return qPrefPrivate::propValue(keyFromGroupAndName("", "diveshareExport/uid"), "").toString();
+}
+void qPrefCloudStorage::set_diveshare_uid(const QString &value)
+{
+	qPrefPrivate::propSetValue(keyFromGroupAndName("", "diveshareExport/uid"), value, "");
+	emit instance()->diveshare_uidChanged(value);
+}
+
+bool qPrefCloudStorage::diveshare_private()
+{
+	return qPrefPrivate::propValue(keyFromGroupAndName("", "diveshareExport/private"), "").toBool();
+}
+void qPrefCloudStorage::set_diveshare_private(bool value)
+{
+	qPrefPrivate::propSetValue(keyFromGroupAndName("", "diveshareExport/private"), value, false);
+	emit instance()->diveshare_privateChanged(value);
+}
