@@ -60,8 +60,16 @@ Kirigami.ScrollablePage {
 				echoMode: TextInput.PasswordEchoOnEdit
 			}
 			ProgressBar {
-				indeterminate: true
+				id: progress
+				value: 0.0
 			}
+			Text {
+				id: statusText
+				Layout.fillWidth: true
+				Layout.columnSpan: 2
+				wrapMode: Text.Wrap
+			}
+
 		}
 
 		onApply: {
@@ -76,14 +84,22 @@ Kirigami.ScrollablePage {
 				// TO BE IMPLEMENTED
 			}
 			manager.exportToWEB(selectedExport, fieldUserID.text, fieldPassword.text, anonymize.checked)
-			pageStack.pop()
-			close()
 		}
 		onRejected: {
 			pageStack.pop()
 			close()
 		}
 
+		Connections {
+			target: manager
+			onUploadFinish: {
+				statusText.text = text
+				progress.value = 0
+			}
+			onUploadProgress: {
+				progress.value = percentage
+			}
+		}
 	}
 
 	ColumnLayout {
