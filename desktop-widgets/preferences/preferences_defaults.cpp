@@ -47,14 +47,6 @@ void PreferencesDefaults::on_localDefaultFile_toggled(bool toggle)
 	ui->chooseFile->setEnabled(toggle);
 }
 
-void PreferencesDefaults::on_resetRememberedDCs_clicked()
-{
-	qPrefDiveComputer::set_vendor1(QString());
-	qPrefDiveComputer::set_vendor2(QString());
-	qPrefDiveComputer::set_vendor3(QString());
-	qPrefDiveComputer::set_vendor4(QString());
-}
-
 void PreferencesDefaults::on_resetSettings_clicked()
 {
 	// apparently this button was never hooked up?
