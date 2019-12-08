@@ -20,14 +20,9 @@ qPrefGeneral *qPrefGeneral::instance()
 
 void qPrefGeneral::loadSync(bool doSync)
 {
-	disk_auto_recalculate_thumbnails(doSync);
-	disk_auto_recalculate_thumbnails(doSync);
 	disk_default_filename(doSync);
 	disk_default_file_behavior(doSync);
 	disk_defaultsetpoint(doSync);
-	disk_extract_video_thumbnails(doSync);
-	disk_extract_video_thumbnails_position(doSync);
-	disk_ffmpeg_executable(doSync);
 	disk_o2consumption(doSync);
 	disk_pscr_ratio(doSync);
 	disk_use_default_file(doSync);
@@ -40,8 +35,6 @@ void qPrefGeneral::loadSync(bool doSync)
 		load_diveshareExport_private();
 	}
 }
-
-HANDLE_PREFERENCE_BOOL(General, "auto_recalculate_thumbnails", auto_recalculate_thumbnails);
 
 HANDLE_PREFERENCE_TXT(General, "default_filename", default_filename);
 
@@ -76,12 +69,6 @@ void qPrefGeneral::disk_default_file_behavior(bool doSync)
 }
 
 HANDLE_PREFERENCE_INT(General, "defaultsetpoint", defaultsetpoint);
-
-HANDLE_PREFERENCE_BOOL(General, "extract_video_thumbnails", extract_video_thumbnails);
-
-HANDLE_PREFERENCE_INT(General, "extract_video_thumbnails_position", extract_video_thumbnails_position);
-
-HANDLE_PREFERENCE_TXT(General, "ffmpeg_executable", ffmpeg_executable);
 
 HANDLE_PREFERENCE_INT(General, "o2consumption", o2consumption);
 
