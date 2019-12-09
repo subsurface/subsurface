@@ -15,6 +15,7 @@
 #include "core/membuffer.h"
 #include "core/cloudstorage.h"
 #include "core/subsurface-string.h"
+#include "core/uploadDiveLogsDE.h"
 
 #include <QDir>
 #include <QHttpMultiPart>
@@ -153,141 +154,6 @@ static bool merge_locations_into_dives(void)
 	return changed > 0;
 }
 #endif
-
-// TODO: This looks like should be ported to C code. or a big part of it.
-bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, const bool selected)
-{
-	static const char errPrefix[] = "divelog.de-upload:";
-	if (!amount_selected) {
-		report_error(tr("No dives were selected").toUtf8());
-		return false;
-	}
-
-	xsltStylesheetPtr xslt = NULL;
-	struct zip *zip;
-
-	xslt = get_stylesheet("divelogs-export.xslt");
-	if (!xslt) {
-		qDebug() << errPrefix << "missing stylesheet";
-		report_error(tr("Stylesheet to export to divelogs.de is not found").toUtf8());
-		return false;
-	}
-
-
-	int error_code;
-	zip = zip_open(QFile::encodeName(QDir::toNativeSeparators(tempfile)), ZIP_CREATE, &error_code);
-	if (!zip) {
-		char buffer[1024];
-		zip_error_to_str(buffer, sizeof buffer, error_code, errno);
-		report_error(tr("Failed to create zip file for upload: %s").toUtf8(), buffer);
-		return false;
-	}
-
-	/* walk the dive list in chronological order */
-	int i;
-	struct dive *dive;
-	for_each_dive (i, dive) {
-		char filename[PATH_MAX];
-		int streamsize;
-		const char *membuf;
-		xmlDoc *transformed;
-		struct zip_source *s;
-		struct membuffer mb = {};
-
-		/*
-		 * Get the i'th dive in XML format so we can process it.
-		 * We need to save to a file before we can reload it back into memory...
-		 */
-		if (selected && !dive->selected)
-			continue;
-		/* make sure the buffer is empty and add the dive */
-		mb.len = 0;
-
-		struct dive_site *ds = dive->dive_site;
-
-		if (ds) {
-			put_format(&mb, "<divelog><divesites><site uuid='%8x' name='", dive->dive_site->uuid);
-			put_quoted(&mb, ds->name, 1, 0);
-			put_format(&mb, "'");
-			put_location(&mb, &ds->location, " gps='", "'");
-			put_format(&mb, ">\n");
-			if (ds->taxonomy.nr) {
-				for (int j = 0; j < ds->taxonomy.nr; j++) {
-					struct taxonomy *t = &ds->taxonomy.category[j];
-					if (t->category != TC_NONE && t->category == prefs.geocoding.category[j] && t->value) {
-						put_format(&mb, "  <geo cat='%d'", t->category);
-						put_format(&mb, " origin='%d' value='", t->origin);
-						put_quoted(&mb, t->value, 1, 0);
-						put_format(&mb, "'/>\n");
-					}
-				}
-			}
-			put_format(&mb, "</site>\n</divesites>\n");
-		}
-
-		save_one_dive_to_mb(&mb, dive, false);
-
-		if (ds) {
-			put_format(&mb, "</divelog>\n");
-		}
-		membuf = mb_cstring(&mb);
-		streamsize = strlen(membuf);
-		/*
-		 * Parse the memory buffer into XML document and
-		 * transform it to divelogs.de format, finally dumping
-		 * the XML into a character buffer.
-		 */
-		xmlDoc *doc = xmlReadMemory(membuf, streamsize, "divelog", NULL, 0);
-		if (!doc) {
-			qWarning() << errPrefix << "could not parse back into memory the XML file we've just created!";
-			report_error(tr("internal error").toUtf8());
-			goto error_close_zip;
-		}
-		free_buffer(&mb);
-
-		transformed = xsltApplyStylesheet(xslt, doc, NULL);
-		if (!transformed) {
-			qWarning() << errPrefix << "XSLT transform failed for dive: " << i;
-			report_error(tr("Conversion of dive %1 to divelogs.de format failed").arg(i).toUtf8());
-			continue;
-		}
-		xmlDocDumpMemory(transformed, (xmlChar **)&membuf, &streamsize);
-		xmlFreeDoc(doc);
-		xmlFreeDoc(transformed);
-
-		/*
-		 * Save the XML document into a zip file.
-		 */
-		snprintf(filename, PATH_MAX, "%d.xml", i + 1);
-		s = zip_source_buffer(zip, membuf, streamsize, 1);
-		if (s) {
-			int64_t ret = zip_add(zip, filename, s);
-			if (ret == -1)
-				qDebug() << errPrefix << "failed to include dive:" << i;
-		}
-	}
-	xsltFreeStylesheet(xslt);
-	if (zip_close(zip)) {
-		int ze, se;
-#if LIBZIP_VERSION_MAJOR >= 1
-		zip_error_t *error = zip_get_error(zip);
-		ze = zip_error_code_zip(error);
-		se = zip_error_code_system(error);
-#else
-		zip_error_get(zip, &ze, &se);
-#endif
-		report_error(qPrintable(tr("error writing zip file: %s zip error %d system error %d - %s")),
-			     qPrintable(QDir::toNativeSeparators(tempfile)), ze, se, zip_strerror(zip));
-		return false;
-	}
-	return true;
-
-error_close_zip:
-	zip_close(zip);
-	QFile::remove(tempfile);
-	xsltFreeStylesheet(xslt);
-	return false;
-}
 
 WebServices::WebServices(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f), reply(0)
 {
@@ -493,7 +359,8 @@ void DivelogsDeWebServices::prepareDivesForUpload(bool selected)
 		report_error(tr("No dives were selected").toUtf8());
 		return;
 	}
-	if (prepare_dives_for_divelogs(filename, selected)) {
+
+	if (uploadDiveLogsDE::instance()->prepareDives(filename, selected)) {
 		QFile f(filename);
 		if (f.open(QIODevice::ReadOnly)) {
 			uploadDives((QIODevice *)&f);
