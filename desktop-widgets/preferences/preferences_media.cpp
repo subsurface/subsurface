@@ -13,7 +13,7 @@
 
 #include "qt-models/models.h"
 
-PreferencesMedia::PreferencesMedia() : AbstractPreferencesWidget(tr("Media"), QIcon(":preferences-media-icon"), 8)
+PreferencesMedia::PreferencesMedia() : AbstractPreferencesWidget(tr("Media"), QIcon(":preferences-media-icon"), 6)
 {
 	ui = new Ui::PreferencesMedia();
 	ui->setupUi(this);

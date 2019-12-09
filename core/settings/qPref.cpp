@@ -16,7 +16,7 @@
 #include "qPrefUpdateManager.h"
 #include "qPrefEquipment.h"
 #include "qPrefMedia.h"
-//#include "qPrefClearDc.h"
+#include "qPrefLog.h"
 
 
 #include <QtQml>
@@ -44,7 +44,7 @@ void qPref::loadSync(bool doSync)
 	qPrefUpdateManager::loadSync(doSync);
 	qPrefEquipment::loadSync(doSync);
 	qPrefMedia::loadSync(doSync);
-//	qPrefClearDc::loadSync(doSync);
+	qPrefLog::loadSync(doSync);
 }
 
 Q_DECLARE_METATYPE(deco_mode);
@@ -71,6 +71,7 @@ void qPref::registerQML(QQmlEngine *engine)
 		ct->setContextProperty("PrefEquipment", qPrefUpdateManager::instance());
 		ct->setContextProperty("PrefMedia", qPrefUpdateManager::instance());
 		ct->setContextProperty("PrefClearDc", qPrefUpdateManager::instance());
+		ct->setContextProperty("PrefLog", qPrefUpdateManager::instance());
 	}
 
 	// Register special types

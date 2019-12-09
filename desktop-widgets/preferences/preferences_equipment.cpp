@@ -14,7 +14,7 @@
 
 #include "qt-models/models.h"
 
-PreferencesEquipment::PreferencesEquipment() : AbstractPreferencesWidget(tr("Equipment"), QIcon(":preferences-equipment-icon"), 4)
+PreferencesEquipment::PreferencesEquipment() : AbstractPreferencesWidget(tr("Equipment"), QIcon(":preferences-equipment-icon"), 5)
 {
 	ui = new Ui::PreferencesEquipment();
 	ui->setupUi(this);

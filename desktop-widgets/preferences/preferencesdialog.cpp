@@ -12,6 +12,7 @@
 #include "preferences_equipment.h"
 #include "preferences_media.h"
 #include "preferences_dc.h"
+#include "preferences_log.h"
 
 #include "core/qthelper.h"
 
@@ -73,6 +74,7 @@ PreferencesDialog::PreferencesDialog()
 	addPreferencePage(new PreferencesEquipment());
 	addPreferencePage(new PreferencesMedia());
 	addPreferencePage(new PreferencesDc());
+	addPreferencePage(new PreferencesLog());
 
 	refreshPages();
 

@@ -4,7 +4,7 @@
 #include "core/qthelper.h"
 #include "core/settings/qPrefUnit.h"
 
-PreferencesUnits::PreferencesUnits(): AbstractPreferencesWidget(tr("Units"),QIcon(":units-icon"),1), ui(new Ui::PreferencesUnits())
+PreferencesUnits::PreferencesUnits(): AbstractPreferencesWidget(tr("Units"), QIcon(":units-icon"), 2), ui(new Ui::PreferencesUnits())
 {
 	ui->setupUi(this);
 }
