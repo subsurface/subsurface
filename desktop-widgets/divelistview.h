@@ -30,7 +30,6 @@ public:
 	void reload(); // Call to reload model data
 	bool eventFilter(QObject *, QEvent *);
 	void unselectDives();
-	void clearTripSelection();
 	void selectDive(QModelIndex index, bool scrollto = false);
 	void selectDive(int dive_table_idx, bool scrollto = false);
 	void selectDives(const QList<int> &newDiveSelection);
@@ -63,7 +62,6 @@ slots:
 	void loadWebImages();
 	void diveSelectionChanged(const QVector<QModelIndex> &indexes);
 	void currentDiveChanged(QModelIndex index);
-	void filterFinished();
 	void tripChanged(dive_trip *trip, TripField);
 private:
 	void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags flags) override;
