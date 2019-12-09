@@ -251,75 +251,7 @@ void DivelogsDeWebServices::prepareDivesForUpload(bool selected)
 	exec();
 }
 
-bool DivelogsDeWebServices::uploadDives(bool selected)
-{
-	/* generate a random filename and create/open that file with zip_open */
-	QString filename = QDir::tempPath() + "/import-" + QString::number(qrand() % 99999999) + ".dld";
-	if (!amount_selected) {
-		report_error(tr("No dives were selected").toUtf8());
-		return false;
-	}
-
-	if (!uploadDiveLogsDE::instance()->prepareDives(filename, selected)) {
-		report_error("Failed to create upload file %s\n", qPrintable(filename));
-		return false;
-	}
-
-	QFile f(filename);
-	if (!f.open(QIODevice::ReadOnly)) {
-		report_error("Failed to open upload file %s\n", qPrintable(filename));
-		return false;
-	}
-
-	QHttpMultiPart mp(QHttpMultiPart::FormDataType);
-	QHttpPart part;
-	QFileInfo fi(f);
-	QString args("form-data; name=\"userfile\"; filename=\"" + fi.absoluteFilePath() + "\"");
-	part.setRawHeader("Content-Disposition", args.toLatin1());
-	part.setBodyDevice((QIODevice *)&f);
-	mp.append(part);
-
-	multipart = &mp;
-
-	multipart = NULL;
-	if (reply != NULL && reply->isOpen()) {
-		reply->abort();
-		delete reply;
-		reply = NULL;
-	}
-	f.close();
-	f.remove();
-
-	{
-		QNetworkRequest request;
-		request.setUrl(QUrl("https://divelogs.de/DivelogsDirectImport.php"));
-		request.setRawHeader("Accept", "text/xml, application/xml");
-		request.setRawHeader("User-Agent", userAgent.toUtf8());
-
-		QHttpPart part;
-		part.setRawHeader("Content-Disposition", "form-data; name=\"user\"");
-		part.setBody(ui.userID->text().toUtf8());
-		multipart->append(part);
-
-		part.setRawHeader("Content-Disposition", "form-data; name=\"pass\"");
-		part.setBody(ui.password->text().toUtf8());
-		multipart->append(part);
-
-		reply = manager()->post(request, multipart);
-		connect(reply, SIGNAL(finished()), this, SLOT(uploadFinished()));
-		connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this,
-				SLOT(uploadError(QNetworkReply::NetworkError)));
-		connect(reply, SIGNAL(uploadProgress(qint64, qint64)), this,
-				SLOT(updateProgress(qint64, qint64)));
-
-		timeout.start(30000); // 30s
-
-	}
-	return true;
-}
-
 DivelogsDeWebServices::DivelogsDeWebServices(QWidget *parent, Qt::WindowFlags f) : WebServices(parent, f),
-	multipart(NULL),
 	uploadMode(false)
 {
 	// should DivelogDE user and pass be stored in the prefs struct or something?
@@ -344,14 +276,16 @@ void DivelogsDeWebServices::startUpload()
 	ui.userID->setEnabled(false);
 	ui.password->setEnabled(false);
 
-	// Prepare zip file
-	if (!uploadDives(useSelectedDives))
-		return;
-
-	// Remember for later
-	// connect(reply, SIGNAL(finished()), this, SLOT(listDownloadFinished()));
-	// connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
-	//		this, SLOT(downloadError(QNetworkReply::NetworkError)));
+	// do upload in shared backend
+	connect(uploadDiveLogsDE::instance(), SIGNAL(uploadFinish(bool, const QString &)),
+			this, SLOT(uploadFinished(bool, const QString &)));
+	connect(uploadDiveLogsDE::instance(), SIGNAL(uploadProgress(qreal, qreal)),
+			this, SLOT(updateProgress(qreal, qreal)));
+	connect(uploadDiveLogsDE::instance(), SIGNAL(uploadStatus(const QString &)),
+			this, SLOT(uploadStatus(const QString &)));
+	uploadDiveLogsDE::instance()->doUpload(useSelectedDives,
+							   qPrefCloudStorage::divelogde_user(),
+							   qPrefCloudStorage::divelogde_pass());
 }
 
 void DivelogsDeWebServices::startDownload()
@@ -470,11 +404,8 @@ void DivelogsDeWebServices::downloadFinished()
 #endif
 }
 
-void DivelogsDeWebServices::uploadFinished()
+void DivelogsDeWebServices::uploadFinished(bool success, const QString &text)
 {
-	if (!reply)
-		return;
-
 	ui.progressBar->setRange(0, 1);
 	ui.upload->setEnabled(true);
 	ui.userID->setEnabled(true);
@@ -482,30 +413,7 @@ void DivelogsDeWebServices::uploadFinished()
 	ui.buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(false);
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setText(tr("Done"));
-	ui.status->setText(tr("Upload finished"));
-
-	// check what the server sent us: it might contain
-	// an error condition, such as a failed login
-	QByteArray xmlData = reply->readAll();
-	reply->deleteLater();
-	reply = NULL;
-	char *resp = xmlData.data();
-	if (resp) {
-		char *parsed = strstr(resp, "<Login>");
-		if (parsed) {
-			if (strstr(resp, "<Login>succeeded</Login>")) {
-				if (strstr(resp, "<FileCopy>failed</FileCopy>")) {
-					ui.status->setText(tr("Upload failed"));
-					return;
-				}
-				ui.status->setText(tr("Upload successful"));
-				return;
-			}
-			ui.status->setText(tr("Login failed"));
-			return;
-		}
-		ui.status->setText(tr("Cannot parse response"));
-	}
+	ui.status->setText(text);
 }
 
 void DivelogsDeWebServices::setStatusText(int)
@@ -520,9 +428,16 @@ void DivelogsDeWebServices::downloadError(QNetworkReply::NetworkError)
 	reply = NULL;
 }
 
-void DivelogsDeWebServices::uploadError(QNetworkReply::NetworkError error)
+void DivelogsDeWebServices::updateProgress(qreal current, qreal total)
 {
-	downloadError(error);
+	ui.progressBar->setRange(0, total);
+	ui.progressBar->setValue(current);
+	ui.status->setText(tr("Transferring data..."));
+}
+
+void DivelogsDeWebServices::uploadStatus(const QString &text)
+{
+	ui.status->setText(text);
 }
 
 void DivelogsDeWebServices::buttonClicked(QAbstractButton *button)

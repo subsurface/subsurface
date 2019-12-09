@@ -59,19 +59,18 @@ slots:
 	void saveToZipFile();
 	void listDownloadFinished();
 	void downloadFinished();
-	void uploadFinished();
+	void uploadFinished(bool success, const QString &text);
 	void downloadError(QNetworkReply::NetworkError error);
-	void uploadError(QNetworkReply::NetworkError error);
 	void startUpload();
+	void updateProgress(qreal current, qreal total);
+	void uploadStatus(const QString &text);
 
 private:
-	bool uploadDives(bool selected);
 	explicit DivelogsDeWebServices(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	void setStatusText(int status);
 	void download_dialog_traverse_xml(xmlNodePtr node, unsigned int *download_status);
 	unsigned int download_dialog_parse_response(const QByteArray &length);
 
-	QHttpMultiPart *multipart;
 	QTemporaryFile zipFile;
 	bool uploadMode;
 	bool useSelectedDives;
