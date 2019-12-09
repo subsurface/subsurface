@@ -16,11 +16,11 @@
 #include "core/cloudstorage.h"
 #include "core/subsurface-string.h"
 #include "core/uploadDiveLogsDE.h"
+#include "core/settings/qPrefCloudStorage.h"
 
 #include <QDir>
 #include <QHttpMultiPart>
 #include <QMessageBox>
-#include <QSettings>
 #include <QXmlStreamReader>
 #include <qdesktopservices.h>
 #include <QShortcut>
@@ -291,9 +291,8 @@ DivelogsDeWebServices::DivelogsDeWebServices(QWidget *parent, Qt::WindowFlags f)
 	uploadMode(false)
 {
 	// should DivelogDE user and pass be stored in the prefs struct or something?
-	QSettings s;
-	ui.userID->setText(s.value("divelogde_user").toString());
-	ui.password->setText(s.value("divelogde_pass").toString());
+	ui.userID->setText(qPrefCloudStorage::divelogde_user());
+	ui.password->setText(qPrefCloudStorage::divelogde_pass());
 	ui.saveUidLocal->hide();
 	hideUpload();
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
@@ -304,10 +303,8 @@ DivelogsDeWebServices::DivelogsDeWebServices(QWidget *parent, Qt::WindowFlags f)
 
 void DivelogsDeWebServices::startUpload()
 {
-	QSettings s;
-	s.setValue("divelogde_user", ui.userID->text());
-	s.setValue("divelogde_pass", ui.password->text());
-	s.sync();
+	qPrefCloudStorage::set_divelogde_user(ui.userID->text());
+	qPrefCloudStorage::set_divelogde_pass(ui.password->text());
 
 	ui.status->setText(tr("Uploading dive list..."));
 	ui.progressBar->setRange(0, 0); // this makes the progressbar do an 'infinite spin'
@@ -530,10 +527,8 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton *button)
 		Command::importDives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS, QStringLiteral("divelogs.de"));
 
 		/* store last entered user/pass in config */
-		QSettings s;
-		s.setValue("divelogde_user", ui.userID->text());
-		s.setValue("divelogde_pass", ui.password->text());
-		s.sync();
+		qPrefCloudStorage::set_divelogde_user(ui.userID->text());
+		qPrefCloudStorage::set_divelogde_pass(ui.password->text());
 		hide();
 		close();
 		resetState();
