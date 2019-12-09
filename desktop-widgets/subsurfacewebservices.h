@@ -74,6 +74,7 @@ private:
 	QHttpMultiPart *multipart;
 	QTemporaryFile zipFile;
 	bool uploadMode;
+	bool useSelectedDives;
 };
 
 class UserSurveyServices : public QDialog {

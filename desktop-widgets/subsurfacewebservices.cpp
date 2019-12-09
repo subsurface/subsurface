@@ -238,9 +238,8 @@ void DivelogsDeWebServices::prepareDivesForUpload(bool selected)
 {
 	// this is called when the user selects the divelogs.de radiobutton
 
-	// Prepare zip file
-	if (!uploadDives(selected))
-		return;
+	// Remember if all dives or selected dives are to be uploaded
+	useSelectedDives = selected;
 
 	// Adjust UI
 	hideDownload();
@@ -290,6 +289,32 @@ bool DivelogsDeWebServices::uploadDives(bool selected)
 	}
 	f.close();
 	f.remove();
+
+	{
+		QNetworkRequest request;
+		request.setUrl(QUrl("https://divelogs.de/DivelogsDirectImport.php"));
+		request.setRawHeader("Accept", "text/xml, application/xml");
+		request.setRawHeader("User-Agent", userAgent.toUtf8());
+
+		QHttpPart part;
+		part.setRawHeader("Content-Disposition", "form-data; name=\"user\"");
+		part.setBody(ui.userID->text().toUtf8());
+		multipart->append(part);
+
+		part.setRawHeader("Content-Disposition", "form-data; name=\"pass\"");
+		part.setBody(ui.password->text().toUtf8());
+		multipart->append(part);
+
+		reply = manager()->post(request, multipart);
+		connect(reply, SIGNAL(finished()), this, SLOT(uploadFinished()));
+		connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this,
+				SLOT(uploadError(QNetworkReply::NetworkError)));
+		connect(reply, SIGNAL(uploadProgress(qint64, qint64)), this,
+				SLOT(updateProgress(qint64, qint64)));
+
+		timeout.start(30000); // 30s
+
+	}
 	return true;
 }
 
@@ -319,28 +344,14 @@ void DivelogsDeWebServices::startUpload()
 	ui.userID->setEnabled(false);
 	ui.password->setEnabled(false);
 
-	QNetworkRequest request;
-	request.setUrl(QUrl("https://divelogs.de/DivelogsDirectImport.php"));
-	request.setRawHeader("Accept", "text/xml, application/xml");
-	request.setRawHeader("User-Agent", userAgent.toUtf8());
+	// Prepare zip file
+	if (!uploadDives(useSelectedDives))
+		return;
 
-	QHttpPart part;
-	part.setRawHeader("Content-Disposition", "form-data; name=\"user\"");
-	part.setBody(ui.userID->text().toUtf8());
-	multipart->append(part);
-
-	part.setRawHeader("Content-Disposition", "form-data; name=\"pass\"");
-	part.setBody(ui.password->text().toUtf8());
-	multipart->append(part);
-
-	reply = manager()->post(request, multipart);
-	connect(reply, SIGNAL(finished()), this, SLOT(uploadFinished()));
-	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this,
-		SLOT(uploadError(QNetworkReply::NetworkError)));
-	connect(reply, SIGNAL(uploadProgress(qint64, qint64)), this,
-		SLOT(updateProgress(qint64, qint64)));
-
-	timeout.start(30000); // 30s
+	// Remember for later
+	// connect(reply, SIGNAL(finished()), this, SLOT(listDownloadFinished()));
+	// connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+	//		this, SLOT(downloadError(QNetworkReply::NetworkError)));
 }
 
 void DivelogsDeWebServices::startDownload()
