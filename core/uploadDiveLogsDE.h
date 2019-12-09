@@ -17,10 +17,10 @@ public:
 	bool prepareDives(const QString &tempfile, const bool selected);
 
 private slots:
-	void updateProgress(qint64 current, qint64 total);
-	void uploadFinished();
-	void uploadTimeout();
-	void uploadError(QNetworkReply::NetworkError error);
+	void updateProgressSlot(qint64 current, qint64 total);
+	void uploadFinishedSlot();
+	void uploadTimeoutSlot();
+	void uploadErrorSlot(QNetworkReply::NetworkError error);
 
 signals:
 	void uploadFinish(bool success, const QString &text);
