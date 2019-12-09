@@ -18,12 +18,6 @@ struct DiveFilter;
 // from DiveTripModelBase, which implements common features (e.g.
 // definition of the column types, access of data from the core
 // structures) and a common interface.
-//
-// The currently active model is set via DiveTripModelBase::resetModel().
-// This will create a new model. The model can be accessed with
-// DiveTripModelBase::instance(). A pointer obtained by instance()
-// is invalidated by a call to resetModel()! Yes, this is surprising
-// behavior, so care must be taken.
 class DiveTripModelBase : public QAbstractItemModel {
 	Q_OBJECT
 public:
@@ -62,15 +56,6 @@ public:
 		TREE,
 		LIST,
 	};
-
-	// Functions implemented by base class
-	static DiveTripModelBase *instance();
-
-	// Reset the model using the given layout. After this call instance() will return
-	// a newly allocated object and the old model will have been destroyed! Thus, the
-	// caller is responsible for removing all references to any previous model obtained
-	// by instance().
-	static void resetModel(Layout layout);
 
 	// Call after having set the model to be informed of the current selection.
 	void initSelection();
