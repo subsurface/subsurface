@@ -246,18 +246,18 @@ void uploadDiveLogsDE::uploadDives(const QString &filename, const QString &useri
 	reply = manager()->post(request, multipart);
 
 	// connect signals from upload process
-	connect(reply, SIGNAL(finished()), this, SLOT(uploadFinished()));
+	connect(reply, SIGNAL(finished()), this, SLOT(uploadFinishedSlot()));
 	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this,
-		SLOT(uploadError(QNetworkReply::NetworkError)));
+		SLOT(uploadErrorSlot(QNetworkReply::NetworkError)));
 	connect(reply, SIGNAL(uploadProgress(qint64, qint64)), this,
-		SLOT(updateProgress(qint64, qint64)));
-	connect(&timeout, SIGNAL(timeout()), this, SLOT(uploadTimeout()));
+		SLOT(updateProgressSlot(qint64, qint64)));
+	connect(&timeout, SIGNAL(timeout()), this, SLOT(uploadTimeoutSlot()));
 
 	timeout.start(30000); // 30s
 }
 
 
-void uploadDiveLogsDE::updateProgress(qint64 current, qint64 total)
+void uploadDiveLogsDE::updateProgressSlot(qint64 current, qint64 total)
 {
 	if (!reply)
 		return;
@@ -274,7 +274,7 @@ void uploadDiveLogsDE::updateProgress(qint64 current, qint64 total)
 }
 
 
-void uploadDiveLogsDE::uploadFinished()
+void uploadDiveLogsDE::uploadFinishedSlot()
 {
 	QString err;
 
@@ -314,7 +314,7 @@ void uploadDiveLogsDE::uploadFinished()
 }
 
 
-void uploadDiveLogsDE::uploadTimeout()
+void uploadDiveLogsDE::uploadTimeoutSlot()
 {
 	QString err(tr("divelogs.de not responding"));
 	report_error(err.toUtf8());
@@ -323,7 +323,7 @@ void uploadDiveLogsDE::uploadTimeout()
 }
 
 
-void uploadDiveLogsDE::uploadError(QNetworkReply::NetworkError error)
+void uploadDiveLogsDE::uploadErrorSlot(QNetworkReply::NetworkError error)
 {
 	QString err(tr("network error %1").arg(error));
 	report_error(err.toUtf8());
