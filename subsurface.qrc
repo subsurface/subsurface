@@ -16,6 +16,8 @@
         <file alias="preferences-equipment-icon">icons/pref_equipment.png</file>
         <file alias="preferences-media-icon">icons/pref_media.png</file>
         <file alias="preferences-dc-icon">icons/pref_dc.png</file>
+        <file alias="preferences-log-icon">icons/pref_log.png</file>
+        <file alias="preferences-display-icon">icons/pref_display.png</file>
         <file alias="scale-graph-icon">icons/graph.png</file>
         <file alias="value-minimum-icon">icons/minimum.png</file>
         <file alias="value-maximum-icon">icons/maximum.png</file>

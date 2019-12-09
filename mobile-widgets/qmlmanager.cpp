@@ -39,7 +39,7 @@
 #include "core/selection.h"
 #include "core/ssrf.h"
 #include "core/save-profiledata.h"
-#include "core/settings/qPrefGeneral.h"
+#include "core/settings/qPrefLog.h"
 #include "core/settings/qPrefLocationService.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefPartialPressureGas.h"
@@ -1311,7 +1311,7 @@ void QMLManager::openNoCloudRepo()
 	if (git == dummy_git_repository) {
 		git_create_local_repo(filename);
 		set_filename(filename);
-		auto s = qPrefGeneral::instance();
+		auto s = qPrefLog::instance();
 		s->set_default_filename(filename);
 		s->set_default_file_behavior(LOCAL_DEFAULT_FILE);
 	}
@@ -1327,7 +1327,7 @@ void QMLManager::saveChangesLocal()
 				char *filename = NOCLOUD_LOCALSTORAGE;
 				git_create_local_repo(filename);
 				set_filename(filename);
-				auto s = qPrefGeneral::instance();
+				auto s = qPrefLog::instance();
 				s->set_default_filename(filename);
 				s->set_default_file_behavior(LOCAL_DEFAULT_FILE);
 			}

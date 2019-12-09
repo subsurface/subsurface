@@ -30,7 +30,6 @@ void qPrefTechnicalDetails::loadSync(bool doSync)
 	disk_percentagegraph(doSync);
 	disk_redceiling(doSync);
 	disk_rulergraph(doSync);
-	disk_show_average_depth(doSync);
 	disk_show_ccr_sensors(doSync);
 	disk_show_ccr_setpoint(doSync);
 	disk_show_icd(doSync);
@@ -111,8 +110,6 @@ HANDLE_PREFERENCE_BOOL(TechnicalDetails, "percentagegraph", percentagegraph);
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "redceiling", redceiling);
 
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "RulerBar", rulergraph);
-
-HANDLE_PREFERENCE_BOOL(TechnicalDetails, "show_average_depth", show_average_depth);
 
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "show_ccr_sensors", show_ccr_sensors);
 

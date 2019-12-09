@@ -15,6 +15,7 @@ set(SUBSURFACE_PREFERENCES_UI
   preferences_media.ui
   preferences_equipment.ui
   preferences_dc.ui
+  preferences_log.ui
 )
 
 qt5_wrap_ui(SUBSURFACE_PREFERENCES_UI_HDRS ${SUBSURFACE_PREFERENCES_UI})
@@ -38,6 +39,8 @@ set(SUBSURFACE_PREFERENCES_LIB_SRCS
 	preferences_graph.h
 	preferences_language.cpp
 	preferences_language.h
+	preferences_log.cpp
+	preferences_log.h
 	preferences_media.cpp
 	preferences_media.h
 	preferences_network.cpp

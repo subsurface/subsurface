@@ -10,7 +10,7 @@
 #include <QProcess>
 #include <QMessageBox>
 
-PreferencesDc::PreferencesDc(): AbstractPreferencesWidget(tr("Dive download"), QIcon(":preferences-dc-icon"), 0 ), ui(new Ui::PreferencesDc())
+PreferencesDc::PreferencesDc(): AbstractPreferencesWidget(tr("Dive download"), QIcon(":preferences-dc-icon"), 3 ), ui(new Ui::PreferencesDc())
 {
 	ui->setupUi(this);
 	const QSize BUTTON_SIZE = QSize(200, 22);

@@ -25,7 +25,6 @@ class qPrefTechnicalDetails : public QObject {
 	Q_PROPERTY(bool percentagegraph READ percentagegraph WRITE set_percentagegraph NOTIFY percentagegraphChanged)
 	Q_PROPERTY(bool redceiling READ redceiling WRITE set_redceiling NOTIFY redceilingChanged)
 	Q_PROPERTY(bool rulergraph READ rulergraph WRITE set_rulergraph NOTIFY rulergraphChanged)
-	Q_PROPERTY(bool show_average_depth READ show_average_depth WRITE set_show_average_depth NOTIFY show_average_depthChanged)
 	Q_PROPERTY(bool show_ccr_sensors READ show_ccr_sensors WRITE set_show_ccr_sensors NOTIFY show_ccr_sensorsChanged)
 	Q_PROPERTY(bool show_ccr_setpoint READ show_ccr_setpoint WRITE set_show_ccr_setpoint NOTIFY show_ccr_setpointChanged)
 	Q_PROPERTY(bool show_icd READ show_icd WRITE set_show_icd NOTIFY show_icdChanged)
@@ -62,7 +61,6 @@ public:
 	static bool percentagegraph() { return prefs.percentagegraph; }
 	static bool redceiling() { return prefs.redceiling; }
 	static bool rulergraph() { return prefs.rulergraph; }
-	static bool show_average_depth() { return prefs.show_average_depth; }
 	static bool show_ccr_sensors() { return prefs.show_ccr_sensors; }
 	static bool show_ccr_setpoint() { return prefs.show_ccr_setpoint; }
 	static bool show_icd() { return prefs.show_icd; }
@@ -91,7 +89,6 @@ public slots:
 	static void set_percentagegraph(bool value);
 	static void set_redceiling(bool value);
 	static void set_rulergraph(bool value);
-	static void set_show_average_depth(bool value);
 	static void set_show_ccr_sensors(bool value);
 	static void set_show_ccr_setpoint(bool value);
 	static void set_show_icd(bool value);
@@ -120,7 +117,6 @@ signals:
 	void percentagegraphChanged(bool value);
 	void redceilingChanged(bool value);
 	void rulergraphChanged(bool value);
-	void show_average_depthChanged(bool value);
 	void show_ccr_sensorsChanged(bool value);
 	void show_ccr_setpointChanged(bool value);
 	void show_icdChanged(bool value);
@@ -151,7 +147,6 @@ private:
 	static void disk_percentagegraph(bool doSync);
 	static void disk_redceiling(bool doSync);
 	static void disk_rulergraph(bool doSync);
-	static void disk_show_average_depth(bool doSync);
 	static void disk_show_ccr_sensors(bool doSync);
 	static void disk_show_ccr_setpoint(bool doSync);
 	static void disk_show_icd(bool doSync);
