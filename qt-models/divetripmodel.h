@@ -83,7 +83,6 @@ public:
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 	DiveTripModelBase(QObject *parent = 0);
 	int columnCount(const QModelIndex&) const;
-	virtual void recalculateFilter() = 0;
 
 	// Used for sorting. This is a bit of a layering violation, as sorting should be performed
 	// by the higher-up QSortFilterProxyModel, but it makes things so much easier!
@@ -121,6 +120,7 @@ public slots:
 	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
 	void divesSelected(const QVector<dive *> &dives, dive *current);
 	void tripChanged(dive_trip *trip, TripField);
+	void filterReset();
 
 public:
 	DiveTripModelTree(QObject *parent = nullptr);
@@ -133,7 +133,6 @@ private:
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
 	void divesSelectedTrip(dive_trip *trip, const QVector<dive *> &dives, QVector<QModelIndex> &);
 	dive *diveOrNull(const QModelIndex &index) const override;
-	void recalculateFilter();
 	void divesChangedTrip(dive_trip *trip, const QVector<dive *> &dives);
 	void divesTimeChangedTrip(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
 	bool calculateFilterForTrip(const std::vector<dive *> &dives, const DiveFilter *filter, quintptr parentIndex);
@@ -188,6 +187,7 @@ public slots:
 	// Does nothing in list view.
 	//void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
 	void divesSelected(const QVector<dive *> &dives, dive *current);
+	void filterReset();
 
 public:
 	DiveTripModelList(QObject *parent = nullptr);
@@ -199,7 +199,6 @@ private:
 	QVariant data(const QModelIndex &index, int role) const override;
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
 	dive *diveOrNull(const QModelIndex &index) const override;
-	void recalculateFilter();
 
 	std::vector<dive *> items;				// TODO: access core data directly
 };
