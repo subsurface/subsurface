@@ -69,6 +69,7 @@
 #include "qt-models/cylindermodel.h"
 #include "qt-models/divepicturemodel.h"
 #include "qt-models/diveplannermodel.h"
+#include "qt-models/filtermodels.h"
 #include "qt-models/tankinfomodel.h"
 #include "qt-models/weightsysteminfomodel.h"
 #include "qt-models/yearlystatisticsmodel.h"
@@ -650,7 +651,7 @@ void MainWindow::closeCurrentFile()
 {
 	/* free the dives and trips */
 	clear_git_id();
-	DiveTripModelBase::instance()->clear();
+	MultiFilterSortModel::instance()->clear();
 	setCurrentFile(nullptr);
 	diveList->setSortOrder(DiveTripModelBase::NR, Qt::DescendingOrder);
 	MapWidget::instance()->reload();
