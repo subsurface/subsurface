@@ -32,6 +32,11 @@ void MultiFilterSortModel::resetModel(DiveTripModelBase::Layout layout)
 	m->initSelection();
 }
 
+void MultiFilterSortModel::clear()
+{
+	DiveTripModelBase::instance()->clear();
+}
+
 // Translate selection into local indexes and re-emit signal
 void MultiFilterSortModel::selectionChangedSlot(const QVector<QModelIndex> &indexes)
 {
