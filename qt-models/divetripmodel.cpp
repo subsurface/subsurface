@@ -575,6 +575,7 @@ DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::divesTimeChanged, this, &DiveTripModelTree::divesTimeChanged);
 	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelTree::divesSelected);
 	connect(&diveListNotifier, &DiveListNotifier::tripChanged, this, &DiveTripModelTree::tripChanged);
+	connect(&diveListNotifier, &DiveListNotifier::filterReset, this, &DiveTripModelTree::filterReset);
 
 	// Fill model
 	for (int i = 0; i < dive_table.nr ; ++i) {
@@ -745,7 +746,11 @@ bool DiveTripModelTree::calculateFilterForTrip(const std::vector<dive *> &dives,
 	return showTrip;
 }
 
-void DiveTripModelTree::recalculateFilter()
+// This recalculates the filters and sends appropriate changed signals.
+// Attention: Since this uses / modifies the hidden_by_filter flag of the
+// core dive structure, only one DiveTripModel[Tree|List] must exist at
+// a given time!
+void DiveTripModelTree::filterReset()
 {
 	// Collect the changes in a vector used later to send signals.
 	// This could be solved more efficiently in one pass, but
@@ -791,7 +796,6 @@ void DiveTripModelTree::recalculateFilter()
 	}
 
 	emit diveListNotifier.numShownChanged();
-	emit diveListNotifier.filterReset();
 }
 
 
@@ -1291,6 +1295,7 @@ DiveTripModelList::DiveTripModelList(QObject *parent) : DiveTripModelBase(parent
 	//connect(&diveListNotifier, &DiveListNotifier::divesMovedBetweenTrips, this, &DiveTripModelList::divesMovedBetweenTrips);
 	connect(&diveListNotifier, &DiveListNotifier::divesTimeChanged, this, &DiveTripModelList::divesTimeChanged);
 	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelList::divesSelected);
+	connect(&diveListNotifier, &DiveListNotifier::filterReset, this, &DiveTripModelList::filterReset);
 
 	// Fill model
 	items.reserve(dive_table.nr);
@@ -1332,7 +1337,11 @@ dive *DiveTripModelList::diveOrNull(const QModelIndex &index) const
 	return items[row];
 }
 
-void DiveTripModelList::recalculateFilter()
+// This recalculates the filters and sends appropriate changed signals.
+// Attention: Since this uses / modifies the hidden_by_filter flag of the
+// core dive structure, only one DiveTripModel[Tree|List] must exist at
+// a given time!
+void DiveTripModelList::filterReset()
 {
 	// Collect the changes in a vector used later to send signals.
 	// This could be solved more efficiently in one pass, but
@@ -1342,7 +1351,7 @@ void DiveTripModelList::recalculateFilter()
 	changed.reserve(items.size());
 	{
 		// This marker prevents the UI from getting notifications on selection changes.
-		// It is active until the end of the scope. See comment in DiveTripModelTree::recalculateFilter().
+		// It is active until the end of the scope. See comment in DiveTripModelTree::filterReset().
 		auto marker = diveListNotifier.enterCommand();
 		DiveFilter *filter = DiveFilter::instance();
 
@@ -1356,7 +1365,6 @@ void DiveTripModelList::recalculateFilter()
 	sendShownChangedSignals(changed, noParent);
 
 	emit diveListNotifier.numShownChanged();
-	emit diveListNotifier.filterReset();
 }
 
 QVariant DiveTripModelList::data(const QModelIndex &index, int role) const
