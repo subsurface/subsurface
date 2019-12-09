@@ -5,7 +5,10 @@
 #include "divetripmodel.h"
 
 #include <QSortFilterProxyModel>
+#include <memory>
 
+// This proxy model sits on top of either a DiveTripList or DiveTripTree model
+// and does filtering and/or sorting.
 class MultiFilterSortModel : public QSortFilterProxyModel {
 	Q_OBJECT
 public:
@@ -23,6 +26,7 @@ private slots:
 	void currentDiveChangedSlot(QModelIndex index);
 private:
 	MultiFilterSortModel(QObject *parent = 0);
+	std::unique_ptr<DiveTripModelBase> model;
 };
 
 #endif

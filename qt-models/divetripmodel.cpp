@@ -357,22 +357,6 @@ QVariant DiveTripModelBase::headerData(int section, Qt::Orientation orientation,
 	return QVariant();
 }
 
-static std::unique_ptr<DiveTripModelBase> currentModel;
-DiveTripModelBase *DiveTripModelBase::instance()
-{
-	if (!currentModel)
-		resetModel(TREE);
-	return currentModel.get();
-}
-
-void DiveTripModelBase::resetModel(DiveTripModelBase::Layout layout)
-{
-	if (layout == TREE)
-		currentModel.reset(new DiveTripModelTree);
-	else
-		currentModel.reset(new DiveTripModelList);
-}
-
 // After resetting the model, the higher up model or view may call this
 // function to get informed on the current selection.
 // TODO: Currently, this reads and resets the selection. Make this more

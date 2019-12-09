@@ -15,6 +15,7 @@ MultiFilterSortModel *MultiFilterSortModel::instance()
 
 MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
+	resetModel(DiveTripModelBase::TREE);
 	setFilterKeyColumn(-1); // filter all columns
 	setFilterRole(DiveTripModelBase::SHOWN_ROLE); // Let the proxy-model known that is has to react to change events involving SHOWN_ROLE
 	setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -22,19 +23,20 @@ MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyMo
 
 void MultiFilterSortModel::resetModel(DiveTripModelBase::Layout layout)
 {
-	DiveTripModelBase::resetModel(layout);
-	// DiveTripModelBase::resetModel() generates a new instance.
-	// Thus, the source model must be reset and the connections must be reset.
-	DiveTripModelBase *m = DiveTripModelBase::instance();
-	setSourceModel(m);
-	connect(m, &DiveTripModelBase::selectionChanged, this, &MultiFilterSortModel::selectionChangedSlot);
-	connect(m, &DiveTripModelBase::currentDiveChanged, this, &MultiFilterSortModel::currentDiveChangedSlot);
-	m->initSelection();
+	if (layout == DiveTripModelBase::TREE)
+		model.reset(new DiveTripModelTree);
+	else
+		model.reset(new DiveTripModelList);
+
+	setSourceModel(model.get());
+	connect(model.get(), &DiveTripModelBase::selectionChanged, this, &MultiFilterSortModel::selectionChangedSlot);
+	connect(model.get(), &DiveTripModelBase::currentDiveChanged, this, &MultiFilterSortModel::currentDiveChangedSlot);
+	model->initSelection();
 }
 
 void MultiFilterSortModel::clear()
 {
-	DiveTripModelBase::instance()->clear();
+	model->clear();
 }
 
 // Translate selection into local indexes and re-emit signal
@@ -68,5 +70,5 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 bool MultiFilterSortModel::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
 {
 	// Hand sorting down to the source model.
-	return DiveTripModelBase::instance()->lessThan(i1, i2);
+	return model->lessThan(i1, i2);
 }
