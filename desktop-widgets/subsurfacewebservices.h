@@ -65,7 +65,7 @@ slots:
 	void startUpload();
 
 private:
-	void uploadDives(QIODevice *dldContent);
+	bool uploadDives(bool selected);
 	explicit DivelogsDeWebServices(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	void setStatusText(int status);
 	void download_dialog_traverse_xml(xmlNodePtr node, unsigned int *download_status);

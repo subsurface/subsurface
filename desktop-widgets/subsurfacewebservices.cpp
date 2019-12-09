@@ -236,40 +236,13 @@ void DivelogsDeWebServices::downloadDives()
 
 void DivelogsDeWebServices::prepareDivesForUpload(bool selected)
 {
-	/* generate a random filename and create/open that file with zip_open */
-	QString filename = QDir::tempPath() + "/import-" + QString::number(qrand() % 99999999) + ".dld";
-	if (!amount_selected) {
-		report_error(tr("No dives were selected").toUtf8());
+	// this is called when the user selects the divelogs.de radiobutton
+
+	// Prepare zip file
+	if (!uploadDives(selected))
 		return;
-	}
 
-	if (uploadDiveLogsDE::instance()->prepareDives(filename, selected)) {
-		QFile f(filename);
-		if (f.open(QIODevice::ReadOnly)) {
-			uploadDives((QIODevice *)&f);
-			f.close();
-			f.remove();
-			return;
-		} else {
-			report_error("Failed to open upload file %s\n", qPrintable(filename));
-		}
-	} else {
-		report_error("Failed to create upload file %s\n", qPrintable(filename));
-	}
-}
-
-void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)
-{
-	QHttpMultiPart mp(QHttpMultiPart::FormDataType);
-	QHttpPart part;
-	QFile *f = (QFile *)dldContent;
-	QFileInfo fi(*f);
-	QString args("form-data; name=\"userfile\"; filename=\"" + fi.absoluteFilePath() + "\"");
-	part.setRawHeader("Content-Disposition", args.toLatin1());
-	part.setBodyDevice(dldContent);
-	mp.append(part);
-
-	multipart = &mp;
+	// Adjust UI
 	hideDownload();
 	resetState();
 	uploadMode = true;
@@ -277,6 +250,37 @@ void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setText(tr("Done"));
 	exec();
+}
+
+bool DivelogsDeWebServices::uploadDives(bool selected)
+{
+	/* generate a random filename and create/open that file with zip_open */
+	QString filename = QDir::tempPath() + "/import-" + QString::number(qrand() % 99999999) + ".dld";
+	if (!amount_selected) {
+		report_error(tr("No dives were selected").toUtf8());
+		return false;
+	}
+
+	if (!uploadDiveLogsDE::instance()->prepareDives(filename, selected)) {
+		report_error("Failed to create upload file %s\n", qPrintable(filename));
+		return false;
+	}
+
+	QFile f(filename);
+	if (!f.open(QIODevice::ReadOnly)) {
+		report_error("Failed to open upload file %s\n", qPrintable(filename));
+		return false;
+	}
+
+	QHttpMultiPart mp(QHttpMultiPart::FormDataType);
+	QHttpPart part;
+	QFileInfo fi(f);
+	QString args("form-data; name=\"userfile\"; filename=\"" + fi.absoluteFilePath() + "\"");
+	part.setRawHeader("Content-Disposition", args.toLatin1());
+	part.setBodyDevice((QIODevice *)&f);
+	mp.append(part);
+
+	multipart = &mp;
 
 	multipart = NULL;
 	if (reply != NULL && reply->isOpen()) {
@@ -284,6 +288,9 @@ void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)
 		delete reply;
 		reply = NULL;
 	}
+	f.close();
+	f.remove();
+	return true;
 }
 
 DivelogsDeWebServices::DivelogsDeWebServices(QWidget *parent, Qt::WindowFlags f) : WebServices(parent, f),
