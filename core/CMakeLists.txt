@@ -191,6 +191,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	settings/qPrefDiveComputer.h
 	settings/qPrefDivePlanner.cpp
 	settings/qPrefDivePlanner.h
+	settings/qPrefEquipment.cpp
+	settings/qPrefEquipment.h
 	settings/qPrefGeneral.cpp
 	settings/qPrefGeneral.h
 	settings/qPrefGeocoding.cpp
@@ -199,6 +201,10 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	settings/qPrefLanguage.h
 	settings/qPrefLocationService.cpp
 	settings/qPrefLocationService.h
+	settings/qPrefLog.cpp
+	settings/qPrefLog.h
+	settings/qPrefMedia.cpp
+	settings/qPrefMedia.h
 	settings/qPrefPartialPressureGas.cpp
 	settings/qPrefPartialPressureGas.h
 	settings/qPrefPrivate.cpp
@@ -211,10 +217,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	settings/qPrefUnit.h
 	settings/qPrefUpdateManager.cpp
 	settings/qPrefUpdateManager.h
-	settings/qPrefEquipment.cpp
-	settings/qPrefEquipment.h
-	settings/qPrefMedia.cpp
-	settings/qPrefMedia.h
 
 	#Subsurface Qt have the Subsurface structs QObjectified for easy access via QML.
 	subsurface-qt/CylinderObjectHelper.cpp

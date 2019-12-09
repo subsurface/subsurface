@@ -9,7 +9,7 @@
 #include "qt-models/models.h"
 #include "core/deco.h"
 
-PreferencesGraph::PreferencesGraph() : AbstractPreferencesWidget(tr("Profile"), QIcon(":graph-icon"), 5)
+PreferencesGraph::PreferencesGraph() : AbstractPreferencesWidget(tr("Tech setup"), QIcon(":graph-icon"), 7)
 {
 	ui = new Ui::PreferencesGraph();
 	ui->setupUi(this);
@@ -49,7 +49,6 @@ void PreferencesGraph::refreshSettings()
 	ui->psro2rate->setValue(prefs.o2consumption / 1000.0);
 	ui->pscrfactor->setValue(lrint(1000.0 / prefs.pscr_ratio));
 
-	ui->show_average_depth->setChecked(prefs.show_average_depth);
 	ui->show_icd->setChecked(prefs.show_icd);
 }
 
@@ -75,7 +74,6 @@ void PreferencesGraph::syncSettings()
 	qPrefTechnicalDetails::set_show_ccr_setpoint(ui->show_ccr_setpoint->isChecked());
 	qPrefTechnicalDetails::set_show_ccr_sensors(ui->show_ccr_sensors->isChecked());
 	qPrefTechnicalDetails::set_show_scr_ocpo2(ui->show_scr_ocpo2->isChecked());
-	qPrefTechnicalDetails::set_show_average_depth(ui->show_average_depth->isChecked());
 	qPrefTechnicalDetails::set_show_icd(ui->show_icd->isChecked());
 	qPrefTechnicalDetails::set_display_deco_mode(ui->vpmb->isChecked() ? VPMB : BUEHLMANN);
 }

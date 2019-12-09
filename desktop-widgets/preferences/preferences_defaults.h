@@ -17,10 +17,6 @@ public:
 	void refreshSettings() override;
 	void syncSettings() override;
 public slots:
-	void on_chooseFile_clicked();
-	void on_btnUseDefaultFile_toggled(bool toggled);
-	void on_localDefaultFile_toggled(bool toggled);
-	void on_resetSettings_clicked();
 
 private:
 	Ui::PreferencesDefaults *ui;

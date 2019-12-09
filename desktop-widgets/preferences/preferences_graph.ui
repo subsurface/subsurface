@@ -349,22 +349,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_6">
-     <property name="title">
-      <string>Misc</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0" colspan="2">
-       <widget class="QCheckBox" name="show_average_depth">
-        <property name="text">
-         <string>Show mean depth in Profile</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -398,8 +382,6 @@
   <tabstop>buehlmann</tabstop>
   <tabstop>gflow</tabstop>
   <tabstop>gfhigh</tabstop>
-  <tabstop>display_unused_tanks</tabstop>
-  <tabstop>show_average_depth</tabstop>
  </tabstops>
  <resources/>
  <connections/>

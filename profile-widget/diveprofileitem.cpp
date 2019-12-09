@@ -11,6 +11,7 @@
 #include "qt-models/diveplannermodel.h"
 #include "core/qthelper.h"
 #include "core/settings/qPrefTechnicalDetails.h"
+#include "core/settings/qPrefLog.h"
 #include "libdivecomputer/parser.h"
 #include "profile-widget/profilewidget2.h"
 
@@ -635,7 +636,7 @@ void DiveMeanDepthItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*
 	painter->setPen(pen());
 	painter->drawPolyline(polygon());
 	painter->restore();
-	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_average_depthChanged, this, &DiveAmbPressureItem::setVisible);
+	connect(qPrefLog::instance(), &qPrefLog::show_average_depthChanged, this, &DiveAmbPressureItem::setVisible);
 }
 
 void DiveMeanDepthItem::createTextItem()
