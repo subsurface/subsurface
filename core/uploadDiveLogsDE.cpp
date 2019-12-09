@@ -46,8 +46,7 @@ void uploadDiveLogsDE::doUpload(bool selected, const QString &userid, const QStr
 
 	// Make zip file, with all dives, in divelogs.de format
 	if (!prepareDives(selected, filename)) {
-		err = tr("Failed to create uploadDiveLogsDE file %s\n").arg(filename);
-		report_error(err.toUtf8());
+		report_error(tr("Failed to create upload file %s\n").toUtf8(), qPrintable(filename));
 		emit uploadFinish(false, err);
 		timeout.stop();
 		return;
