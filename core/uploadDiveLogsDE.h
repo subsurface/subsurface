@@ -25,6 +25,7 @@ private slots:
 signals:
 	void uploadFinish(bool success, const QString &text);
 	void uploadProgress(qreal percentage, qreal total);
+	void uploadStatus(const QString &text);
 	
 private:
 	uploadDiveLogsDE();

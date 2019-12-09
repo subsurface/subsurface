@@ -74,6 +74,8 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, const bool selected
 	xsltStylesheetPtr xslt = NULL;
 	struct zip *zip;
 
+	emit uploadStatus(tr("building zip file to upload"));
+
 	xslt = get_stylesheet("divelogs-export.xslt");
 	if (!xslt) {
 		qDebug() << errPrefix << "missing stylesheet";
@@ -213,6 +215,8 @@ void uploadDiveLogsDE::uploadDives(const QString &filename, const QString &useri
 		multipart = NULL;
 	}
 	multipart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+
+	emit uploadStatus(tr("Uploading dives"));
 
 	// prepare header with filename (of all dives) and pointer to file
 	args = "form-data; name=\"userfile\"; filename=\"" + filename + "\"";
