@@ -261,13 +261,14 @@ void uploadDiveLogsDE::updateProgressSlot(qint64 current, qint64 total)
 {
 	if (!reply)
 		return;
+	
 	if (total <= 0 || current <= 0)
 		return;
 
-	// Calculate percentage
+	// Calculate percentage as 0.x (values between 0.0 and 1.0)
 	// And signal whoever wants to know
 	qreal percentage = (float)current / (float)total;
-	emit uploadProgress(percentage);
+	emit uploadProgress(percentage, 1.0);
 
 	// reset the timer: 30 seconds after we last got any data
 	timeout.start();
@@ -295,38 +296,46 @@ void uploadDiveLogsDE::uploadFinishedSlot()
 					report_error(tr("Upload failed").toUtf8());
 					return;
 				}
+				timeout.stop();
 				err = tr("Upload successful");
 				emit uploadFinish(true, err);
-				timeout.stop();
 				return;
 			}
+			timeout.stop();
 			err = tr("Login failed");
 			report_error(err.toUtf8());
 			emit uploadFinish(false, err);
-			timeout.stop();
 			return;
 		}
+		timeout.stop();
 		err = tr("Cannot parse response");
 		report_error(tr("Cannot parse response").toUtf8());
 		emit uploadFinish(false, err);
-		timeout.stop();
 	}
 }
 
 
 void uploadDiveLogsDE::uploadTimeoutSlot()
 {
+	timeout.stop();
+	if (reply) {
+		reply->deleteLater();
+		reply = NULL;
+	}
 	QString err(tr("divelogs.de not responding"));
 	report_error(err.toUtf8());
 	emit uploadFinish(false, err);
-	timeout.stop();
 }
 
 
 void uploadDiveLogsDE::uploadErrorSlot(QNetworkReply::NetworkError error)
 {
+	timeout.stop();
+	if (reply) {
+		reply->deleteLater();
+		reply = NULL;
+	}
 	QString err(tr("network error %1").arg(error));
 	report_error(err.toUtf8());
 	emit uploadFinish(false, err);
-	timeout.stop();
 }
