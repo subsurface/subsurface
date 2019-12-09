@@ -13,6 +13,9 @@ public:
 	static uploadDiveLogsDE *instance();
 	void doUpload(bool selected, const QString &userid, const QString &password);
 
+	// only to be used in desktop-widgets::subsurfacewebservices
+	bool prepareDives(const QString &tempfile, const bool selected);
+
 private slots:
 	void updateProgress(qint64 current, qint64 total);
 	void uploadFinished();
@@ -26,7 +29,6 @@ signals:
 private:
 	uploadDiveLogsDE();
 
-	bool prepareDives(const QString &tempfile, const bool selected);
 	void uploadDives(const QString &filename, const QString &userid, const QString &password);
 
 	QNetworkReply *reply;
