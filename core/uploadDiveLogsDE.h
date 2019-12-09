@@ -26,7 +26,7 @@ signals:
 private:
 	uploadDiveLogsDE();
 
-	bool prepareDives(bool selected, const QString &filename);
+	bool prepareDives(const QString &tempfile, const bool selected);
 	void uploadDives(const QString &filename, const QString &userid, const QString &password);
 
 	QNetworkReply *reply;
