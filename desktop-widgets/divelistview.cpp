@@ -93,7 +93,7 @@ void DiveListView::calculateInitialColumnWidth(int col)
 	int em = metrics.width('m');
 	int zw = metrics.width('0');
 
-	QString header_txt = DiveTripModelBase::instance()->headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();
+	QString header_txt = MultiFilterSortModel::instance()->headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();
 	int width = metrics.width(header_txt);
 	int sw = 0;
 	switch (col) {
