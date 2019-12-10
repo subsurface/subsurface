@@ -437,7 +437,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	install(CODE "execute_process(COMMAND cp ${CMAKE_SOURCE_DIR}/../install-root/${_qt5Core_install_prefix}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
 	# this is a hack - but I don't know how else to find the macdeployqt program if it's not in the PATH
 	string(REPLACE moc macdeployqt MACDEPLOYQT ${QT_MOC_EXECUTABLE})
-	install(CODE "execute_process(COMMAND ${MACDEPLOYQT} ${APP_BUNDLE_DIR} ${MACDEPLOY_ARGS})")
+	install(CODE "execute_process(COMMAND ${MACDEPLOYQT} ${APP_BUNDLE_DIR} -no-strip ${MACDEPLOY_ARGS})")
 	# and another hack to get the QML Components in the right place
 	install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtQuick.2 ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
 	install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtLocation ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
