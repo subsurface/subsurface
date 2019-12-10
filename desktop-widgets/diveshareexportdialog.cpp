@@ -15,8 +15,7 @@
 DiveShareExportDialog::DiveShareExportDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::DiveShareExportDialog),
-	exportSelected(false),
-	reply(NULL)
+	exportSelected(false)
 {
 	ui->setupUi(this);
 }
@@ -89,18 +88,16 @@ static QByteArray generate_html_list(const QByteArray &data)
 	return html;
 }
 
-void DiveShareExportDialog::finishedSlot()
+void DiveShareExportDialog::finishedSlot(bool isOk, const QString &text, const QByteArray &html)
 {
 	ui->progressBar->setVisible(false);
-	if (reply->error() != 0) {
+	if (!isOk) {
 		ui->buttonBox->setStandardButtons(QDialogButtonBox::Cancel);
-		ui->txtResult->setText(reply->errorString());
+		ui->txtResult->setText(text);
 	} else {
 		ui->buttonBox->setStandardButtons(QDialogButtonBox::Ok);
-		ui->txtResult->setHtml(generate_html_list(reply->readAll()));
+		ui->txtResult->setHtml(generate_html_list(html));
 	}
-
-	reply->deleteLater();
 }
 
 void DiveShareExportDialog::doUpload()
@@ -118,4 +115,12 @@ void DiveShareExportDialog::doUpload()
 	ui->progressBar->setRange(0, 0);
 
 	uploadDiveShare::instance()->doUpload(exportSelected, uid, noPublic);
+	connect(uploadDiveShare::instance(), SIGNAL(uploadFinish(bool, const QString &, const QByteArray &)),
+			this, SLOT(finishedSlot(bool, const QString &, const QByteArray &)));
+
+	// Not implemented in the UI, but would be nice to have
+	//connect(uploadDiveLogsDE::instance(), SIGNAL(uploadProgress(qreal, qreal)),
+	//		this, SLOT(updateProgress(qreal, qreal)));
+	//connect(uploadDiveLogsDE::instance(), SIGNAL(uploadStatus(const QString &)),
+	//		this, SLOT(uploadStatus(const QString &)));
 }

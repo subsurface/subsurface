@@ -24,12 +24,11 @@ public:
 private:
 	Ui::DiveShareExportDialog *ui;
 	bool exportSelected;
-	QNetworkReply *reply;
 private
 slots:
 	void UIDFromBrowser();
 	void doUpload();
-	void finishedSlot();
+	void finishedSlot(bool, const QString &, const QByteArray &);
 };
 
 #endif // DIVESHAREEXPORTDIALOG_H
