@@ -26,6 +26,34 @@ uploadDiveShare::uploadDiveShare():
 
 void uploadDiveShare::doUpload(bool selected, const QString &uid, bool noPublic)
 {
+	//generate json
+	struct membuffer buf = {};
+	export_list(&buf, NULL, selected, false);
+	QByteArray json_data(buf.buffer, buf.len);
+	free_buffer(&buf);
+
+	//Request to server
+	QNetworkRequest request;
+	if (noPublic)
+		request.setUrl(QUrl("http://dive-share.appspot.com/upload?private=true"));
+	else
+		request.setUrl(QUrl("http://dive-share.appspot.com/upload"));
+	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
+	if (uid.length() != 0)
+		request.setRawHeader("X-UID", uid.toUtf8());
+
+	// Execute async.
+	reply = manager()->put(request, json_data);
+
+	// connect signals from upload process
+	connect(reply, SIGNAL(finished()), this, SLOT(slot_uploadFinished()));
+	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this,
+			SLOT(slot_uploadError(QNetworkReply::NetworkError)));
+	connect(reply, SIGNAL(uploadProgress(qint64, qint64)), this,
+			SLOT(slot_updateProgress(qint64, qint64)));
+	connect(&timeout, SIGNAL(timeout()), this, SLOT(slot_uploadTimeout()));
+
+	timeout.start(30000); // 30s
 }
 
 
@@ -65,7 +93,7 @@ void uploadDiveShare::slot_uploadTimeout()
 		reply->deleteLater();
 		reply = NULL;
 	}
-	QString err(tr("divelogs.de not responding"));
+	QString err(tr("dive-share.com not responding"));
 	report_error(err.toUtf8());
 	emit uploadFinish(false, err);
 }
