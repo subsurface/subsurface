@@ -6,6 +6,7 @@
 #include "desktop-widgets/subsurfacewebservices.h"
 #include "core/qthelper.h"
 #include "core/cloudstorage.h"
+#include "core/uploadDiveShare.h"
 #include "core/settings/qPrefCloudStorage.h"
 
 #include <QDesktopServices>
@@ -105,8 +106,10 @@ void DiveShareExportDialog::finishedSlot()
 void DiveShareExportDialog::doUpload()
 {
 	//Store current settings
-	qPrefCloudStorage::set_diveshare_uid(ui->txtUID->text());
-	qPrefCloudStorage::set_diveshare_private(ui->chkPrivate->isChecked());
+	QString uid = ui->txtUID->text();
+	bool noPublic = ui->chkPrivate->isChecked();
+	qPrefCloudStorage::set_diveshare_uid(uid);
+	qPrefCloudStorage::set_diveshare_private(noPublic);
 
 	//Change UI into results mode
 	ui->frameConfigure->setVisible(false);
@@ -114,25 +117,5 @@ void DiveShareExportDialog::doUpload()
 	ui->progressBar->setVisible(true);
 	ui->progressBar->setRange(0, 0);
 
-	//generate json
-	struct membuffer buf = {};
-	export_list(&buf, NULL, exportSelected, false);
-	QByteArray json_data(buf.buffer, buf.len);
-	free_buffer(&buf);
-
-	//Request to server
-	QNetworkRequest request;
-
-	if (ui->chkPrivate->isChecked())
-		request.setUrl(QUrl(DIVESHARE_BASE_URI "/upload?private=true"));
-	else
-		request.setUrl(QUrl(DIVESHARE_BASE_URI "/upload"));
-
-	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
-	if (ui->txtUID->text().length() != 0)
-		request.setRawHeader("X-UID", ui->txtUID->text().toUtf8());
-
-	reply = manager()->put(request, json_data);
-
-	QObject::connect(reply, SIGNAL(finished()), this, SLOT(finishedSlot()));
+	uploadDiveShare::instance()->doUpload(exportSelected, uid, noPublic);
 }
