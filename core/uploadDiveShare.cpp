@@ -79,9 +79,9 @@ void uploadDiveShare::slot_uploadFinished()
 	reply->deleteLater();
 	timeout.stop();
 	if (reply->error() != 0)  {
-		emit uploadFinish(false, reply->errorString());
+		emit uploadFinish(false, reply->errorString(), reply->readAll());
 	} else {
-		emit uploadFinish(true, tr("Upload successful"));
+		emit uploadFinish(true, tr("Upload successful"), reply->readAll());
 	}
 }
 
@@ -95,7 +95,7 @@ void uploadDiveShare::slot_uploadTimeout()
 	}
 	QString err(tr("dive-share.com not responding"));
 	report_error(err.toUtf8());
-	emit uploadFinish(false, err);
+	emit uploadFinish(false, err, QByteArray());
 }
 
 
@@ -108,5 +108,5 @@ void uploadDiveShare::slot_uploadError(QNetworkReply::NetworkError error)
 	}
 	QString err(tr("network error %1").arg(error));
 	report_error(err.toUtf8());
-	emit uploadFinish(false, err);
+	emit uploadFinish(false, err, QByteArray());
 }
