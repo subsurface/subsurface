@@ -742,7 +742,7 @@ void DiveTripModelTree::filterReset()
 	// resorting to co-routines, lambdas or similar techniques.
 	std::vector<char> changed;
 	changed.reserve(items.size());
-
+	dive *old_current = current_dive;
 	{
 		// This marker prevents the UI from getting notifications on selection changes.
 		// It is active until the end of the scope.
@@ -780,6 +780,11 @@ void DiveTripModelTree::filterReset()
 	}
 
 	emit diveListNotifier.numShownChanged();
+
+	// If the current dive changed, instruct the UI of the changed selection
+	// TODO: This is way to heavy, as it reloads the whole selection!
+	if (old_current != current_dive)
+		initSelection();
 }
 
 
@@ -1333,6 +1338,7 @@ void DiveTripModelList::filterReset()
 	// resorting to co-routines, lambdas or similar techniques.
 	std::vector<char> changed;
 	changed.reserve(items.size());
+	dive *old_current = current_dive;
 	{
 		// This marker prevents the UI from getting notifications on selection changes.
 		// It is active until the end of the scope. See comment in DiveTripModelTree::filterReset().
@@ -1349,6 +1355,11 @@ void DiveTripModelList::filterReset()
 	sendShownChangedSignals(changed, noParent);
 
 	emit diveListNotifier.numShownChanged();
+
+	// If the current dive changed, instruct the UI of the changed selection
+	// TODO: This is way to heavy, as it reloads the whole selection!
+	if (old_current != current_dive)
+		initSelection();
 }
 
 QVariant DiveTripModelList::data(const QModelIndex &index, int role) const
