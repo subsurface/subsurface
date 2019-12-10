@@ -2,6 +2,7 @@
 #include "preferences_defaults.h"
 #include "ui_preferences_defaults.h"
 #include "core/dive.h"
+#include "preferencesdialog.h"
 #include "core/settings/qPrefGeneral.h"
 #include "core/settings/qPrefDisplay.h"
 #include "core/settings/qPrefCloudStorage.h"
@@ -20,6 +21,12 @@ PreferencesDefaults::~PreferencesDefaults()
 {
 	delete ui;
 }
+
+/*void PreferencesDefaults::on_resetSettings_clicked()
+{
+	auto dialog = PreferencesDialog::instance();
+	dialog->defaultsRequested();
+} */
 
 void PreferencesDefaults::refreshSettings()
 {

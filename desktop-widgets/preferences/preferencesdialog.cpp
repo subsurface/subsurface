@@ -13,6 +13,7 @@
 #include "preferences_media.h"
 #include "preferences_dc.h"
 #include "preferences_log.h"
+#include "preferences_reset.h"
 
 #include "core/qthelper.h"
 
@@ -23,6 +24,9 @@
 #include <QDialogButtonBox>
 #include <QAbstractButton>
 #include <QDebug>
+
+#include <stdlib.h>
+#include <stdio.h>
 
 PreferencesDialog* PreferencesDialog::instance()
 {
@@ -52,8 +56,8 @@ PreferencesDialog::PreferencesDialog()
 		QDialogButtonBox::Apply |
 		QDialogButtonBox::Cancel);
 
-	pagesList->setMinimumWidth(120);
-	pagesList->setMaximumWidth(120);
+	pagesList->setMinimumWidth(140);
+	pagesList->setMaximumWidth(140);
 
 	QHBoxLayout *h = new QHBoxLayout();
 	h->addWidget(pagesList);
@@ -75,6 +79,7 @@ PreferencesDialog::PreferencesDialog()
 	addPreferencePage(new PreferencesMedia());
 	addPreferencePage(new PreferencesDc());
 	addPreferencePage(new PreferencesLog());
+	addPreferencePage(new PreferencesReset());
 
 	refreshPages();
 
