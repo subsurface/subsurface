@@ -19,13 +19,13 @@ public:
 	void addPreferencePage(AbstractPreferencesWidget *page);
 	void refreshPages();
 	void emitSettingsChanged();
+	void defaultsRequested();
 signals:
 	void settingsChanged();
 private:
 	PreferencesDialog();
 	void cancelRequested();
 	void applyRequested(bool closeIt);
-	void defaultsRequested();
 	void buttonClicked(QAbstractButton *btn);
 	QList<AbstractPreferencesWidget*> pages;
 	QListWidget *pagesList;

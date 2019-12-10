@@ -16,6 +16,7 @@ public:
 	~PreferencesDefaults();
 	void refreshSettings() override;
 	void syncSettings() override;
+
 public slots:
 
 private:

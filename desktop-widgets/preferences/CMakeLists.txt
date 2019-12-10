@@ -5,17 +5,18 @@ include_directories(.
 )
 
 set(SUBSURFACE_PREFERENCES_UI
-  preferences_defaults.ui
-  preferences_graph.ui
-  preferences_network.ui
   preferences_cloud.ui
-  preferences_units.ui
-  preferences_georeference.ui
-  preferences_language.ui
-  preferences_media.ui
-  preferences_equipment.ui
   preferences_dc.ui
+  preferences_defaults.ui
+  preferences_equipment.ui
+  preferences_georeference.ui
+  preferences_graph.ui
+  preferences_language.ui
   preferences_log.ui
+  preferences_media.ui
+  preferences_network.ui
+  preferences_reset.ui
+  preferences_units.ui
 )
 
 qt5_wrap_ui(SUBSURFACE_PREFERENCES_UI_HDRS ${SUBSURFACE_PREFERENCES_UI})
@@ -45,6 +46,8 @@ set(SUBSURFACE_PREFERENCES_LIB_SRCS
 	preferences_media.h
 	preferences_network.cpp
 	preferences_network.h
+	preferences_reset.cpp
+	preferences_reset.h
 	preferences_units.cpp
 	preferences_units.h
 	preferencesdialog.cpp
