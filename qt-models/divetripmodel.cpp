@@ -1347,7 +1347,7 @@ void DiveTripModelList::filterReset()
 
 		for (dive *d: items) {
 			bool shown = filter->showDive(d);
-			filter_dive(d, shown);
+			changed.push_back(filter_dive(d, shown));
 		}
 	}
 
