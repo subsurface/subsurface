@@ -37,10 +37,12 @@ void uploadDiveLogsDE::doUpload(bool selected, const QString &userid, const QStr
 {
 	QString err;
 
+
 	/* generate a temporary filename and create/open that file with zip_open */
 	QString filename(QDir::tempPath() + "/divelogsde-upload.dld");
 
 	// delete file if it exist
+
 	QFile f(filename);
 	if (f.open(QIODevice::ReadOnly)) {
 		f.close();
@@ -49,15 +51,13 @@ void uploadDiveLogsDE::doUpload(bool selected, const QString &userid, const QStr
 
 	// Make zip file, with all dives, in divelogs.de format
 	if (!prepareDives(filename, selected)) {
-		report_error(tr("Failed to create upload file %s\n").toUtf8(), qPrintable(filename));
-		emit uploadFinish(false, err);
+		emit uploadFinish(false, tr("Cannot prepare dives, none selected?"));
 		timeout.stop();
 		return;
 	}
 
 	// And upload it
 	uploadDives(filename, userid, password);
-	timeout.stop();
 }
 
 
