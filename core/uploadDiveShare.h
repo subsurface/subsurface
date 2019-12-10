@@ -19,7 +19,7 @@ private slots:
 	void slot_uploadError(QNetworkReply::NetworkError error);
 
 signals:
-	void uploadFinish(bool success, const QString &text);
+	void uploadFinish(bool success, const QString &text, const QByteArray &html);
 	void uploadProgress(qreal percentage, qreal total);
 	void uploadStatus(const QString &text);
 	
