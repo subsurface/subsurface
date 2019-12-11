@@ -1,4 +1,5 @@
 Mobile: support for "upload to divelogs.de"
+mobile: add support for upload to dive-share.com
 Profile: Add current GF to infobox
 Mobile: (desktop only) new switch --testqml, allows to use qml files instead of resources.
 Desktop: increase speed of multi-trip selection
