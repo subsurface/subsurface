@@ -40,7 +40,7 @@ if [[ -L subsurface && -d subsurface ]] ; then
 	# ./subsurface is a symbolic link to the source directory, so let's
 	# set up a prefix that puts the build directories in the current directory
 	# but this can be overwritten via the command line
-	BUILD_PREFIX="${SRC}/"
+	BUILD_PREFIX="$SRC/"
 fi
 
 PLATFORM=$(uname)
@@ -118,7 +118,7 @@ if [ "$BUILD_DEPS" = "1" ] && [ "$QUICK" = "1" ] ; then
 fi
 
 # Verify that the Xcode Command Line Tools are installed
-if [ $PLATFORM = Darwin ] ; then
+if [ "$PLATFORM" = Darwin ] ; then
 	if [ -d /Developer/SDKs ] ; then
 		SDKROOT=/Developer/SDKs
 	elif [ -d /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs ] ; then
@@ -181,10 +181,10 @@ export INSTALL_ROOT
 # make sure we find our own packages first (e.g., libgit2 only uses pkg_config to find libssh2)
 export PKG_CONFIG_PATH=$INSTALL_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
 
-echo Building from $SRC, installing in $INSTALL_ROOT
+echo Building from "$SRC", installing in "$INSTALL_ROOT"
 
 # find qmake
-if [ ! -z $CMAKE_PREFIX_PATH ] ; then
+if [ -n "$CMAKE_PREFIX_PATH" ] ; then
 	QMAKE=$CMAKE_PREFIX_PATH/../../bin/qmake
 else
 	hash qmake > /dev/null 2> /dev/null && QMAKE=qmake
@@ -194,12 +194,12 @@ fi
 
 # on Debian and Ubuntu based systems, the private QtLocation and
 # QtPositioning headers aren't bundled. Download them if necessary.
-if [ $PLATFORM = Linux ] ; then
-	QT_HEADERS_PATH=`$QMAKE -query QT_INSTALL_HEADERS`
-	QT_VERSION=`$QMAKE -query QT_VERSION`
+if [ "$PLATFORM" = Linux ] ; then
+	QT_HEADERS_PATH=$($QMAKE -query QT_INSTALL_HEADERS)
+	QT_VERSION=$($QMAKE -query QT_VERSION)
 
 	if [ ! -d "$QT_HEADERS_PATH/QtLocation/$QT_VERSION/QtLocation/private" ] &&
-           [ ! -d $INSTALL_ROOT/include/QtLocation/private ] ; then
+           [ ! -d "$INSTALL_ROOT"/include/QtLocation/private ] ; then
 		echo "Missing private Qt headers for $QT_VERSION; downloading them..."
 
 		QTLOC_GIT=./qtlocation_git
@@ -207,20 +207,20 @@ if [ $PLATFORM = Linux ] ; then
 		QTPOS_PRIVATE=$INSTALL_ROOT/include/QtPositioning/private
 
 		rm -rf $QTLOC_GIT > /dev/null 2>&1
-		rm -rf $INSTALL_ROOT/include/QtLocation > /dev/null 2>&1
-		rm -rf $INSTALL_ROOT/include/QtPositioning > /dev/null 2>&1
+		rm -rf "$INSTALL_ROOT"/include/QtLocation > /dev/null 2>&1
+		rm -rf "$INSTALL_ROOT"/include/QtPositioning > /dev/null 2>&1
 
-		git clone --branch v$QT_VERSION git://code.qt.io/qt/qtlocation.git --depth=1 $QTLOC_GIT
+		git clone --branch "v$QT_VERSION" git://code.qt.io/qt/qtlocation.git --depth=1 $QTLOC_GIT
 
-		mkdir -p $QTLOC_PRIVATE
+		mkdir -p "$QTLOC_PRIVATE"
 		cd $QTLOC_GIT/src/location
-		find -name '*_p.h' | xargs cp -t $QTLOC_PRIVATE
-		cd $SRC
+		find . -name '*_p.h' -print0 | xargs -0 cp -t "$QTLOC_PRIVATE"
+		cd "$SRC"
 
-		mkdir -p $QTPOS_PRIVATE
+		mkdir -p "$QTPOS_PRIVATE"
 		cd $QTLOC_GIT/src/positioning
-		find -name '*_p.h' | xargs cp -t $QTPOS_PRIVATE
-		cd $SRC
+		find . -name '*_p.h' -print0 | xargs -0 cp -t "$QTPOS_PRIVATE"
+		cd "$SRC"
 
 		echo "* cleanup..."
 		rm -rf $QTLOC_GIT > /dev/null 2>&1
@@ -228,11 +228,11 @@ if [ $PLATFORM = Linux ] ; then
 fi
 
 # set up the right file name extensions
-if [ $PLATFORM = Darwin ] ; then
+if [ "$PLATFORM" = Darwin ] ; then
 	SH_LIB_EXT=dylib
 	if [ ! "$BUILD_DEPS" == "1" ] ; then
 		pkg-config --exists libgit2 && LIBGIT=$(pkg-config --modversion libgit2 | cut -d. -f2)
-		if [[ "$LIBGIT" > "23" ]] ; then
+		if [[ "$LIBGIT" -gt "23" ]] ; then
 			LIBGIT2_FROM_PKGCONFIG="-DLIBGIT2_FROM_PKGCONFIG=ON"
 		fi
 	fi
@@ -247,7 +247,7 @@ else
 		LIBGIT=$(pkg-config --modversion libgit2 | cut -d. -f2)
 		LIBGIT2_FROM_PKGCONFIG="-DLIBGIT2_FROM_PKGCONFIG=ON"
 	fi
-	if [[ "$LIBGIT" < "26" ]] ; then
+	if [[ "$LIBGIT" -lt "26" ]] ; then
 		# maybe there's a system version that's new enough?
 		LIBGIT=$(ldconfig -p | grep libgit2\\.so\\. | awk -F. '{ print $NF }')
 	fi
@@ -257,13 +257,13 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	# when building distributable binaries on a Mac, we cannot rely on anything from Homebrew,
 	# because that always requires the latest OS (how stupid is that - and they consider it a
 	# feature). So we painfully need to build the dependencies ourselves.
-	cd $SRC
+	cd "$SRC"
 	./subsurface/scripts/get-dep-lib.sh single . libcurl
 	pushd libcurl
 	bash ./buildconf
 	mkdir -p build
 	cd build
-	CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT --with-darwinssl \
+	CFLAGS="$OLDER_MAC" ../configure --prefix="$INSTALL_ROOT" --with-darwinssl \
 		--disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap --disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp
 	make -j4
 	make install
@@ -273,7 +273,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	pushd openssl
 	mkdir -p build
 	cd build
-	../Configure --prefix=$INSTALL_ROOT --openssldir=$INSTALL_ROOT $OLDER_MAC darwin64-x86_64-cc
+	../Configure --prefix="$INSTALL_ROOT" --openssldir="$INSTALL_ROOT" "$OLDER_MAC" darwin64-x86_64-cc
 	make depend
 	# all the tests fail because the assume that openssl is already installed. Odd? Still thinks work
 	make -j4 -k
@@ -284,39 +284,39 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	pushd libssh2
 	mkdir -p build
 	cd build
-	cmake $OLDER_MAC_CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=$DEBUGRELEASE -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
+	cmake "$OLDER_MAC_CMAKE" -DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" -DCMAKE_BUILD_TYPE=$DEBUGRELEASE -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
 	make -j4
 	make install
 	popd
-	if [ $PLATFORM = Darwin ] ; then
+	if [ "$PLATFORM" = Darwin ] ; then
 		# in order for macdeployqt to do its job correctly, we need the full path in the dylib ID
-		cd $INSTALL_ROOT/lib
+		cd "$INSTALL_ROOT"/lib
 		NAME=$(otool -L libssh2.dylib | grep -v : | head -1 | cut -f1 -d\  | tr -d '\t')
-		echo $NAME | if grep -v / > /dev/null 2>&1 ; then
+		echo "$NAME" | if grep -v / > /dev/null 2>&1 ; then
 			install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
 		fi
 	fi
 fi
 
-if [[ "$LIBGIT" < "26" ]] ; then
+if [[ "$LIBGIT" -lt "26" ]] ; then
 	LIBGIT_ARGS=" -DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include -DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT "
 
-	cd $SRC
+	cd "$SRC"
 
 	./subsurface/scripts/get-dep-lib.sh single . libgit2
 	pushd libgit2
 	mkdir -p build
 	cd build
-	cmake $OLDER_MAC_CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=$DEBUGRELEASE -DBUILD_CLAR=OFF ..
+	cmake "$OLDER_MAC_CMAKE" -DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" -DBUILD_CLAR=OFF ..
 	make -j4
 	make install
 	popd
 
-	if [ $PLATFORM = Darwin ] ; then
+	if [ "$PLATFORM" = Darwin ] ; then
 		# in order for macdeployqt to do its job correctly, we need the full path in the dylib ID
-		cd $INSTALL_ROOT/lib
+		cd "$INSTALL_ROOT/lib"
 		NAME=$(otool -L libgit2.dylib | grep -v : | head -1 | cut -f1 -d\  | tr -d '\t')
-		echo $NAME | if grep -v / > /dev/null 2>&1 ; then
+		echo "$NAME" | if grep -v / > /dev/null 2>&1 ; then
 			install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
 		fi
 	fi
@@ -326,13 +326,13 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	# when building distributable binaries on a Mac, we cannot rely on anything from Homebrew,
 	# because that always requires the latest OS (how stupid is that - and they consider it a
 	# feature). So we painfully need to build the dependencies ourselves.
-	cd $SRC
+	cd "$SRC"
 	./subsurface/scripts/get-dep-lib.sh single . libzip
 	pushd libzip
 	mkdir -p build
 	cd build
-	cmake $OLDER_MAC_CMAKE -DCMAKE_BUILD_TYPE=$DEBUGRELEASE \
-		-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
+	cmake "$OLDER_MAC_CMAKE" -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" \
+		-DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" \
 		..
 	make -j4
 	make install
@@ -344,7 +344,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	bash ./bootstrap
 	mkdir -p build
 	cd build
-	CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT
+	CFLAGS="$OLDER_MAC" ../configure --prefix="$INSTALL_ROOT"
 	make -j4
 	make install
 	popd
@@ -354,14 +354,14 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	bash ./bootstrap.sh
 	mkdir -p build
 	cd build
-	CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT --disable-examples
+	CFLAGS="$OLDER_MAC" ../configure --prefix="$INSTALL_ROOT" --disable-examples
 	make -j4
 	make install
 	popd
 fi
 
 
-cd $SRC
+cd "$SRC"
 
 # build libdivecomputer
 
@@ -375,20 +375,20 @@ fi
 mkdir -p "${BUILD_PREFIX}libdivecomputer/build"
 cd "${BUILD_PREFIX}libdivecomputer/build"
 
-if [ ! -f $SRC/subsurface/libdivecomputer/configure ] ; then
+if [ ! -f "$SRC"/subsurface/libdivecomputer/configure ] ; then
 	# this is not a typo
 	# in some scenarios it appears that autoreconf doesn't copy the
 	# ltmain.sh file; running it twice, however, fixes that problem
-	autoreconf --install $SRC/subsurface/libdivecomputer
-	autoreconf --install $SRC/subsurface/libdivecomputer
+	autoreconf --install "$SRC"/subsurface/libdivecomputer
+	autoreconf --install "$SRC"/subsurface/libdivecomputer
 fi
-CFLAGS="$OLDER_MAC -I$INSTALL_ROOT/include $LIBDC_CFLAGS" $SRC/subsurface/libdivecomputer/configure --prefix=$INSTALL_ROOT --disable-examples
-if [ $PLATFORM = Darwin ] ; then
+CFLAGS="$OLDER_MAC -I$INSTALL_ROOT/include $LIBDC_CFLAGS" "$SRC"/subsurface/libdivecomputer/configure --prefix="$INSTALL_ROOT" --disable-examples
+if [ "$PLATFORM" = Darwin ] ; then
 	# remove some copmpiler options that aren't supported on Mac
 	# otherwise the log gets very noisy
 	for i in $(find . -name Makefile)
 	do
-		sed -i .bak 's/-Wrestrict//;s/-Wno-unused-but-set-variable//' $i
+		sed -i .bak 's/-Wrestrict//;s/-Wno-unused-but-set-variable//' "$i"
 	done
 	# it seems that on my Mac some of the configure tests for libdivecomputer
 	# pass even though the feature tested for is actually missing
@@ -404,9 +404,9 @@ fi
 make -j4
 make install
 
-if [ $PLATFORM = Darwin ] ; then
+if [ "$PLATFORM" = Darwin ] ; then
 	if [ -z "$CMAKE_PREFIX_PATH" ] ; then
-		libdir=`$QMAKE -query QT_INSTALL_LIBS`
+		libdir=$($QMAKE -query QT_INSTALL_LIBS)
 		if [ $? -eq 0 ]; then
 			export CMAKE_PREFIX_PATH=$libdir/cmake
 		elif [ -d "$HOME/Qt/5.9.1" ] ; then
@@ -431,7 +431,7 @@ if [ $PLATFORM = Darwin ] ; then
 	fi
 fi
 
-cd $SRC
+cd "$SRC"
 
 if [ "$BUILD_WITH_WEBKIT" = "1" ]; then
 	EXTRA_OPTS="-DNO_USERMANUAL=OFF"
@@ -441,15 +441,15 @@ fi
 
 if [ "$BUILDGRANTLEE" = "1" ] ; then
 	# build grantlee
-	cd $SRC
+	cd "$SRC"
 	./subsurface/scripts/get-dep-lib.sh single . grantlee
 	pushd grantlee
 	mkdir -p build
 	cd build
-	cmake $OLDER_MAC_CMAKE -DCMAKE_BUILD_TYPE=$DEBUGRELEASE \
-		-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
+	cmake "$OLDER_MAC_CMAKE" -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" \
+		-DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" \
 		-DBUILD_TESTS=NO \
-		$SRC/grantlee
+		"$SRC"/grantlee
 	make -j4
 	make install
 	popd
@@ -458,7 +458,7 @@ fi
 if [ "$QUICK" != "1" ] ; then
 	# build the googlemaps map plugin
 
-	cd $SRC
+	cd "$SRC"
 	./subsurface/scripts/get-dep-lib.sh single . googlemaps
 	pushd googlemaps
 	mkdir -p build
@@ -486,29 +486,30 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	BUILDDIR=${BUILDDIRS[$i]}
 	echo "build $SUBSURFACE_EXECUTABLE in $BUILDDIR"
 
-	cd $SRC/subsurface
+	cd "$SRC"/subsurface
 
 	# pull the plasma-mobile components from upstream if building Subsurface-mobile
 	if [ "$SUBSURFACE_EXECUTABLE" = "MobileExecutable" ] ; then
 		bash ./scripts/mobilecomponents.sh
 	fi
 
-	mkdir -p $BUILDDIR
-	cd $BUILDDIR
+	mkdir -p "$BUILDDIR"
+	cd "$BUILDDIR"
 	export CMAKE_PREFIX_PATH="$INSTALL_ROOT/lib/cmake;${CMAKE_PREFIX_PATH}"
-	cmake -DCMAKE_BUILD_TYPE=$DEBUGRELEASE $SRC/subsurface \
-		-DSUBSURFACE_TARGET_EXECUTABLE=$SUBSURFACE_EXECUTABLE \
-		${LIBGIT_ARGS} \
-		-DLIBDIVECOMPUTER_INCLUDE_DIR=$INSTALL_ROOT/include \
-		-DLIBDIVECOMPUTER_LIBRARIES=$INSTALL_ROOT/lib/libdivecomputer.a \
-		-DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH \
-		-DBTSUPPORT=${BTSUPPORT} \
-		-DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} \
+	cmake -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" \
+		-DSUBSURFACE_TARGET_EXECUTABLE="$SUBSURFACE_EXECUTABLE" \
+		"$LIBGIT_ARGS" \
+		-DLIBDIVECOMPUTER_INCLUDE_DIR="$INSTALL_ROOT"/include \
+		-DLIBDIVECOMPUTER_LIBRARIES="$INSTALL_ROOT"/lib/libdivecomputer.a \
+		-DCMAKE_PREFIX_PATH="$CMAKE_PREFIX_PATH" \
+		-DBTSUPPORT="$BTSUPPORT" \
+		-DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" \
 		$LIBGIT2_FROM_PKGCONFIG \
 		-DFORCE_LIBSSH=OFF \
-		$PRINTING $EXTRA_OPTS
+		$PRINTING $EXTRA_OPTS \
+		"$SRC"/subsurface
 
-	if [ $PLATFORM = Darwin ] ; then
+	if [ "$PLATFORM" = Darwin ] ; then
 		rm -rf Subsurface.app
 		rm -rf Subsurface-mobile.app
 	fi
@@ -518,7 +519,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 
 	if [ "$CREATE_APPDIR" = "1" ] ; then
 		# if we create an AppImage this makes gives us a sane starting point
-		cd $SRC
+		cd "$SRC"
 		mkdir -p ./appdir
 		mkdir -p appdir/usr/share/metainfo
 		mkdir -p appdir/usr/share/icons/hicolor/256x256/apps
