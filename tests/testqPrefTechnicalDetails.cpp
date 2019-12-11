@@ -39,7 +39,6 @@ void TestQPrefTechnicalDetails::test_struct_get()
 	prefs.percentagegraph = true;
 	prefs.redceiling = true;
 	prefs.rulergraph = true;
-//	prefs.show_average_depth = true;
 	prefs.show_ccr_sensors = true;
 	prefs.show_ccr_setpoint = true;
 	prefs.show_icd = true;
@@ -65,7 +64,6 @@ void TestQPrefTechnicalDetails::test_struct_get()
 	QCOMPARE(tst->percentagegraph(), prefs.percentagegraph);
 	QCOMPARE(tst->redceiling(), prefs.redceiling);
 	QCOMPARE(tst->rulergraph(), prefs.rulergraph);
-//	QCOMPARE(tst->show_average_depth(), prefs.show_average_depth);
 	QCOMPARE(tst->show_ccr_sensors(), prefs.show_ccr_sensors);
 	QCOMPARE(tst->show_ccr_setpoint(), prefs.show_ccr_setpoint);
 	QCOMPARE(tst->show_icd(), prefs.show_icd);
@@ -99,7 +97,6 @@ void TestQPrefTechnicalDetails::test_set_struct()
 	tst->set_percentagegraph(false);
 	tst->set_redceiling(false);
 	tst->set_rulergraph(false);
-//	tst->set_show_average_depth(false);
 	tst->set_show_ccr_sensors(false);
 	tst->set_show_ccr_setpoint(false);
 	tst->set_show_icd(false);
@@ -125,7 +122,6 @@ void TestQPrefTechnicalDetails::test_set_struct()
 	QCOMPARE(prefs.percentagegraph, false);
 	QCOMPARE(prefs.redceiling, false);
 	QCOMPARE(prefs.rulergraph, false);
-//	QCOMPARE(prefs.show_average_depth, false);
 	QCOMPARE(prefs.show_ccr_sensors, false);
 	QCOMPARE(prefs.show_ccr_setpoint, false);
 	QCOMPARE(prefs.show_icd, false);
@@ -159,7 +155,6 @@ void TestQPrefTechnicalDetails::test_set_load_struct()
 	tst->set_percentagegraph(false);
 	tst->set_redceiling(false);
 	tst->set_rulergraph(false);
-//	tst->set_show_average_depth(true);
 	tst->set_show_ccr_sensors(true);
 	tst->set_show_ccr_setpoint(true);
 	tst->set_show_icd(true);
@@ -186,7 +181,6 @@ void TestQPrefTechnicalDetails::test_set_load_struct()
 	prefs.percentagegraph = true;
 	prefs.redceiling = true;
 	prefs.rulergraph = true;
-//	prefs.show_average_depth = false;
 	prefs.show_ccr_sensors = false;
 	prefs.show_ccr_setpoint = false;
 	prefs.show_icd = false;
@@ -213,7 +207,6 @@ void TestQPrefTechnicalDetails::test_set_load_struct()
 	QCOMPARE(prefs.percentagegraph, false);
 	QCOMPARE(prefs.redceiling, false);
 	QCOMPARE(prefs.rulergraph, false);
-//	QCOMPARE(prefs.show_average_depth, true);
 	QCOMPARE(prefs.show_ccr_sensors, true);
 	QCOMPARE(prefs.show_ccr_setpoint, true);
 	QCOMPARE(prefs.show_icd, true);
@@ -247,7 +240,6 @@ void TestQPrefTechnicalDetails::test_struct_disk()
 	prefs.percentagegraph = true;
 	prefs.redceiling = true;
 	prefs.rulergraph = true;
-//	prefs.show_average_depth = true;
 	prefs.show_ccr_sensors = true;
 	prefs.show_ccr_setpoint = true;
 	prefs.show_icd = true;
@@ -275,7 +267,6 @@ void TestQPrefTechnicalDetails::test_struct_disk()
 	prefs.percentagegraph = false;
 	prefs.redceiling = false;
 	prefs.rulergraph = false;
-//	prefs.show_average_depth = false;
 	prefs.show_ccr_sensors = false;
 	prefs.show_ccr_setpoint = false;
 	prefs.show_icd = false;
@@ -302,7 +293,6 @@ void TestQPrefTechnicalDetails::test_struct_disk()
 	QCOMPARE(prefs.percentagegraph, true);
 	QCOMPARE(prefs.redceiling, true);
 	QCOMPARE(prefs.rulergraph, true);
-//	QCOMPARE(prefs.show_average_depth, true);
 	QCOMPARE(prefs.show_ccr_sensors, true);
 	QCOMPARE(prefs.show_ccr_setpoint, true);
 	QCOMPARE(prefs.show_icd, true);
@@ -389,8 +379,6 @@ void TestQPrefTechnicalDetails::test_oldPreferences()
 	TEST(tecDetails->zoomed_plot(), true);
 	tecDetails->set_show_sac(true);
 	TEST(tecDetails->show_sac(), true);
-//	tecDetails->set_show_average_depth(true);
-//	TEST(tecDetails->show_average_depth(), true);
 	tecDetails->set_show_pictures_in_profile(true);
 	TEST(tecDetails->show_pictures_in_profile(), true);
 
@@ -426,8 +414,6 @@ void TestQPrefTechnicalDetails::test_oldPreferences()
 	TEST(tecDetails->zoomed_plot(), false);
 	tecDetails->set_show_sac(false);
 	TEST(tecDetails->show_sac(), false);
-//	tecDetails->set_show_average_depth(false);
-//	TEST(tecDetails->show_average_depth(), false);
 	tecDetails->set_show_pictures_in_profile(false);
 	TEST(tecDetails->show_pictures_in_profile(), false);
 }
@@ -450,7 +436,6 @@ void TestQPrefTechnicalDetails::test_signals()
 	QSignalSpy spy15(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::percentagegraphChanged);
 	QSignalSpy spy16(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::redceilingChanged);
 	QSignalSpy spy17(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::rulergraphChanged);
-//	QSignalSpy spy18(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_average_depthChanged);
 	QSignalSpy spy19(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_ccr_sensorsChanged);
 	QSignalSpy spy20(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_ccr_setpointChanged);
 	QSignalSpy spy21(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_icdChanged);
@@ -489,8 +474,6 @@ void TestQPrefTechnicalDetails::test_signals()
 	qPrefTechnicalDetails::set_redceiling(false);
 	prefs.rulergraph = true;
 	qPrefTechnicalDetails::set_rulergraph(false);
-//	prefs.show_average_depth = true;
-//	qPrefTechnicalDetails::set_show_average_depth(false);
 	prefs.show_ccr_sensors = true;
 	qPrefTechnicalDetails::set_show_ccr_sensors(false);
 	prefs.show_ccr_setpoint = true;
@@ -525,7 +508,6 @@ void TestQPrefTechnicalDetails::test_signals()
 	QCOMPARE(spy15.count(), 1);
 	QCOMPARE(spy16.count(), 1);
 	QCOMPARE(spy17.count(), 1);
-//	QCOMPARE(spy18.count(), 1);
 	QCOMPARE(spy19.count(), 1);
 	QCOMPARE(spy20.count(), 1);
 	QCOMPARE(spy21.count(), 1);
@@ -552,7 +534,6 @@ void TestQPrefTechnicalDetails::test_signals()
 	QVERIFY(spy15.takeFirst().at(0).toBool() == false);
 	QVERIFY(spy16.takeFirst().at(0).toBool() == false);
 	QVERIFY(spy17.takeFirst().at(0).toBool() == false);
-//	QVERIFY(spy18.takeFirst().at(0).toBool() == false);
 	QVERIFY(spy19.takeFirst().at(0).toBool() == false);
 	QVERIFY(spy20.takeFirst().at(0).toBool() == false);
 	QVERIFY(spy21.takeFirst().at(0).toBool() == false);
