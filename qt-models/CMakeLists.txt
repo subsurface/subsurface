@@ -25,6 +25,8 @@ set(SUBSURFACE_GENERIC_MODELS_LIB_SRCS
 	models.h
 	tankinfomodel.cpp
 	tankinfomodel.h
+	weightsysteminfomodel.cpp
+	weightsysteminfomodel.h
 )
 
 # models exclusively used in desktop builds
@@ -49,8 +51,6 @@ set(SUBSURFACE_DESKTOP_MODELS_LIB_SRCS
 	treemodel.h
 	weightmodel.cpp
 	weightmodel.h
-	weightsysteminfomodel.cpp
-	weightsysteminfomodel.h
 	yearlystatisticsmodel.cpp
 	yearlystatisticsmodel.h
 )
