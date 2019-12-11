@@ -93,6 +93,10 @@ Kirigami.ScrollablePage {
 		Connections {
 			target: manager
 			onUploadFinish: {
+				if (success) {
+					pageStack.pop()
+					close()
+				}
 				statusText.text = text
 				progress.value = 0
 			}
