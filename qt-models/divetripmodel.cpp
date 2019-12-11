@@ -379,6 +379,15 @@ void DiveTripModelBase::clear()
 	endResetModel();
 }
 
+void DiveTripModelBase::reset()
+{
+	beginResetModel();
+	clearData();
+	populate();
+	endResetModel();
+	initSelection();
+}
+
 DiveTripModelBase::DiveTripModelBase(QObject *parent) : QAbstractItemModel(parent)
 {
 }
@@ -561,7 +570,11 @@ DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::tripChanged, this, &DiveTripModelTree::tripChanged);
 	connect(&diveListNotifier, &DiveListNotifier::filterReset, this, &DiveTripModelTree::filterReset);
 
-	// Fill model
+	populate();
+}
+
+void DiveTripModelTree::populate()
+{
 	for (int i = 0; i < dive_table.nr ; ++i) {
 		dive *d = get_dive(i);
 		update_cylinder_related_info(d);
@@ -1286,6 +1299,11 @@ DiveTripModelList::DiveTripModelList(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelList::divesSelected);
 	connect(&diveListNotifier, &DiveListNotifier::filterReset, this, &DiveTripModelList::filterReset);
 
+	populate();
+}
+
+void DiveTripModelList::populate()
+{
 	// Fill model
 	items.reserve(dive_table.nr);
 	for (int i = 0; i < dive_table.nr ; ++i)

@@ -63,6 +63,9 @@ public:
 	// Clear all dives
 	void clear();
 
+	// Reload data
+	void reset();
+
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
@@ -91,6 +94,7 @@ protected:
 
 	virtual dive *diveOrNull(const QModelIndex &index) const = 0;	// Returns a dive if this index represents a dive, null otherwise
 	virtual void clearData() = 0;
+	virtual void populate() = 0;
 };
 
 class DiveTripModelTree : public DiveTripModelBase
@@ -112,6 +116,7 @@ public:
 private:
 	int rowCount(const QModelIndex &parent) const override;
 	void clearData() override;
+	void populate() override;
 	QModelIndex index(int row, int column, const QModelIndex &parent) const override;
 	QModelIndex parent(const QModelIndex &index) const override;
 	QVariant data(const QModelIndex &index, int role) const override;
@@ -179,6 +184,7 @@ public:
 private:
 	int rowCount(const QModelIndex &parent) const override;
 	void clearData() override;
+	void populate() override;
 	QModelIndex index(int row, int column, const QModelIndex &parent) const override;
 	QModelIndex parent(const QModelIndex &index) const override;
 	QVariant data(const QModelIndex &index, int role) const override;
