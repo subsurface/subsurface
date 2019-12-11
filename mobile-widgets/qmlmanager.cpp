@@ -300,7 +300,7 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 void QMLManager::openLocalThenRemote(QString url)
 {
 	DiveListModel::instance()->clear();
-	MobileListModel::instance()->resetModel();
+	MobileModels::instance()->clear();
 	setNotificationText(tr("Open local dive data file"));
 	QByteArray fileNamePrt = QFile::encodeName(url);
 	/* if this is a cloud storage repo and we have no local cache (i.e., it's the first time
@@ -338,7 +338,7 @@ void QMLManager::openLocalThenRemote(QString url)
 		qPrefPartialPressureGas::set_po2(git_prefs.pp_graphs.po2);
 		process_loaded_dives();
 		DiveListModel::instance()->reload();
-		MobileListModel::instance()->resetModel();
+		MobileModels::instance()->reset();
 		appendTextToLog(QStringLiteral("%1 dives loaded from cache").arg(dive_table.nr));
 		setNotificationText(tr("%1 dives loaded from local dive data file").arg(dive_table.nr));
 	}
@@ -374,7 +374,7 @@ static struct dive *diveInRow(const QAbstractItemModel *model, int row)
 
 void QMLManager::selectRow(int row)
 {
-	dive *d = diveInRow(MobileListModel::instance(), row);
+	dive *d = diveInRow(MobileModels::instance()->listModel(), row);
 	select_single_dive(d);
 }
 
@@ -574,8 +574,8 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 		getCloudURL(url);
 		manager()->clearAccessCache(); // remove any chached credentials
 		clear_git_id(); // invalidate our remembered GIT SHA
+		MobileModels::instance()->clear();
 		DiveListModel::instance()->reload();
-		MobileListModel::instance()->resetModel();
 		GpsListModel::instance()->clear();
 		setStartPageText(tr("Attempting to open cloud storage with new credentials"));
 		// we therefore know that no one else is already accessing THIS git repo;

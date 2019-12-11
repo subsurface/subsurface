@@ -45,8 +45,6 @@ public:
 		SelectedRole,
 	};
 	MobileListModel(DiveTripModelBase *source);
-	static MobileListModel *instance();
-	void resetModel();
 	void expand(int row);
 	void unexpand();
 	Q_INVOKABLE void toggle(int row);
@@ -58,7 +56,6 @@ private:
 		bool visible;
 		int first, last;
 	};
-	void connectSignals();
 	std::vector<IndexRange> rangeStack;
 	QModelIndex sourceIndex(int row, int col, int parentRow = -1) const;
 	int numSubItems() const;
@@ -93,6 +90,19 @@ private slots:
 	void changed(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles);
 };
 
+// This convenience class provides access to the two mobile models.
+// Moreover, it provides an interface to the source trip-model.
+class MobileModels {
+public:
+	static MobileModels *instance();
+	MobileListModel *listModel();
+	void clear(); // Clear all dive data
+	void reset(); // Reset model after having reloaded the core data
+private:
+	MobileModels();
+	DiveTripModelTree source;
+	MobileListModel lm;
+};
 
 // Helper functions - these are actually defined in DiveObjectHelper.cpp. Why declare them here?
 QString formatSac(const dive *d);

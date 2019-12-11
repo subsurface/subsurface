@@ -2,20 +2,9 @@
 #include "mobilelistmodel.h"
 #include "core/divelist.h" // for shown_dives
 
-MobileListModel::MobileListModel(DiveTripModelBase *sourceIn) : source(sourceIn),
+MobileListModel::MobileListModel(DiveTripModelBase *sourceIn) :
+	source(sourceIn),
 	expandedRow(-1)
-{
-	connectSignals();
-}
-
-MobileListModel *MobileListModel::instance()
-{
-	static DiveTripModelTree source;
-	static MobileListModel self(&source);
-	return &self;
-}
-
-void MobileListModel::connectSignals()
 {
 	connect(source, &DiveTripModelBase::modelAboutToBeReset, this, &MobileListModel::beginResetModel);
 	connect(source, &DiveTripModelBase::modelReset, this, &MobileListModel::endResetModel);
@@ -244,14 +233,6 @@ QVariant MobileListModel::data(const QModelIndex &index, int role) const
 		return index.row() <= expandedRow || index.row() > expandedRow + numSubItems();
 
 	return source->data(mapToSource(index), role);
-}
-
-void MobileListModel::resetModel()
-{
-	beginResetModel();
-	source->reset();
-	connectSignals();
-	endResetModel();
 }
 
 // Trivial helper to return and erase the last element of a stack
@@ -543,4 +524,29 @@ void MobileListModel::toggle(int row)
 		unexpand();
 	else
 		expand(row);
+}
+MobileModels *MobileModels::instance()
+{
+	static MobileModels self;
+	return &self;
+}
+
+MobileModels::MobileModels() :
+	lm(&source)
+{
+}
+
+MobileListModel *MobileModels::listModel()
+{
+	return &lm;
+}
+
+void MobileModels::clear()
+{
+	source.clear();
+}
+
+void MobileModels::reset()
+{
+	source.reset();
 }
