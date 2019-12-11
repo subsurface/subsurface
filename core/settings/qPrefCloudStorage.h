@@ -17,7 +17,7 @@ class qPrefCloudStorage : public QObject {
 	Q_PROPERTY(int cloud_verification_status READ cloud_verification_status WRITE set_cloud_verification_status NOTIFY cloud_verification_statusChanged)
 	Q_PROPERTY(int cloud_timeout READ cloud_timeout WRITE set_cloud_timeout NOTIFY cloud_timeoutChanged)
 	Q_PROPERTY(bool save_password_local READ save_password_local WRITE set_save_password_local NOTIFY save_password_localChanged)
-	Q_PROPERTY(QString diveshare_userid READ diveshare_uid WRITE set_diveshare_uid NOTIFY diveshare_uidChanged);
+	Q_PROPERTY(QString diveshare_uid READ diveshare_uid WRITE set_diveshare_uid NOTIFY diveshare_uidChanged);
 	Q_PROPERTY(bool diveshare_private READ diveshare_private WRITE set_diveshare_private NOTIFY diveshare_privateChanged);
 	Q_PROPERTY(QString divelogde_user READ divelogde_user WRITE set_divelogde_user NOTIFY divelogde_userChanged);
 	Q_PROPERTY(QString divelogde_pass READ divelogde_pass WRITE set_divelogde_pass NOTIFY divelogde_passChanged);
