@@ -2,7 +2,7 @@
 #
 # this should be run from the src directory which contains the subsurface
 # directory; the layout should look like this:
-#.../src/subsurface
+# .../src/subsurface
 #
 # the script will build Subsurface and libdivecomputer (plus some other
 # dependencies if requestsed) from source.
@@ -10,6 +10,12 @@
 # it installs the libraries and subsurface in the install-root subdirectory
 # of the current directory (except on Mac where the Subsurface.app ends up
 # in subsurface/build
+#
+# there is basic support for building from a shared directory, e.g., with
+# one subsurface source tree on a host computer, accessed from multiple
+# VMs as well as the host to build without stepping on each other - the
+# one exceptioin is running autotools for libdiveconputer which has to
+# happen in the shared libdivecomputer folder
 
 # create a log file of the build
 
@@ -40,6 +46,14 @@ while [[ $# -gt 0 ]] ; do
 			# in order to build the dependencies on Mac for release builds (to deal with the macosx-version-min for those
 			# call this script with -build-deps
 			BUILD_DEPS="1"
+			;;
+		-build-prefix)
+			# instead of building in build & build-mobile in the current directory, build in <buildprefix>build
+			# and <buildprefix>build-mobile; notice that there's no slash between the prefix and the two directory
+			# names, so if the prefix is supposed to be a path, add the slash at the end of it, or do funky things
+			# where build/build-mobile get appended to partial path name
+			shift
+			BUILD_PREFIX="$1"
 			;;
 		-build-with-webkit)
 			# unless you build Qt from source (or at least webkit from source, you won't have webkit installed
@@ -73,7 +87,7 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-build-with-webkit] [-mobile] [-desktop] [-both] [-create-appdir] [-release]"
+			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-build-prefix <PREFIX>] [-build-with-webkit] [-mobile] [-desktop] [-both] [-create-appdir] [-release]"
 			exit 1
 			;;
 	esac
@@ -110,14 +124,14 @@ if [ $PLATFORM = Darwin ] ; then
 fi
 
 # normally this script builds the desktop version in subsurface/build
-# if the first argument is "-mobile" then build Subsurface-mobile in subsurface/build-mobile
-# if the first argument is "-both" then build both in subsurface/build and subsurface/build-mobile
+# if the first argument is "-mobile" then build Subsurface-mobile in "$BUILD_PREFIX"build-mobile
+# if the first argument is "-both" then build both in subsurface/build and "$BUILD_PREFIX"build-mobile
 BUILDGRANTLEE=0
 
 if [ "$BUILD_MOBILE" = "1" ] ; then
 	echo "building Subsurface-mobile in subsurface/build-mobile"
 	BUILDS=( "MobileExecutable" )
-	BUILDDIRS=( "build-mobile" )
+	BUILDDIRS=( "${BUILD_PREFIX}build-mobile" )
 else
 	# if no options are given, build Subsurface
 	BUILD_DESKTOP="1"
@@ -126,7 +140,7 @@ fi
 if [ "$BUILD_DESKTOP" = "1" ] ; then
 	echo "building Subsurface in subsurface/build"
 	BUILDS+=( "DesktopExecutable" )
-	BUILDDIRS+=( "build" )
+	BUILDDIRS+=( "${BUILD_PREFIX}build" )
 	if [ "$BUILD_WITH_WEBKIT" = "1" ] ; then
 		PRINTING="-DNO_PRINTING=OFF"
 		if [ "$QUICK" != "1" ] ; then
@@ -149,7 +163,7 @@ export INSTALL_ROOT
 # make sure we find our own packages first (e.g., libgit2 only uses pkg_config to find libssh2)
 export PKG_CONFIG_PATH=$INSTALL_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
 
-echo Building in $SRC, installing in $INSTALL_ROOT
+echo Building from $SRC, installing in $INSTALL_ROOT
 
 # find qmake
 if [ ! -z $CMAKE_PREFIX_PATH ] ; then
@@ -340,19 +354,17 @@ if [ ! -d libdivecomputer/src ] ; then
 	git submodule update --recursive
 fi
 
-cd libdivecomputer
+mkdir -p "${BUILD_PREFIX}libdivecomputer/build"
+cd "${BUILD_PREFIX}libdivecomputer/build"
 
-mkdir -p build
-cd build
-
-if [ ! -f ../configure ] ; then
+if [ ! -f $SRC/subsurface/libdivecomputer/configure ] ; then
 	# this is not a typo
 	# in some scenarios it appears that autoreconf doesn't copy the
 	# ltmain.sh file; running it twice, however, fixes that problem
-	autoreconf --install ..
-	autoreconf --install ..
+	autoreconf --install $SRC/subsurface/libdivecomputer
+	autoreconf --install $SRC/subsurface/libdivecomputer
 fi
-CFLAGS="$OLDER_MAC -I$INSTALL_ROOT/include $LIBDC_CFLAGS" ../configure --prefix=$INSTALL_ROOT --disable-examples
+CFLAGS="$OLDER_MAC -I$INSTALL_ROOT/include $LIBDC_CFLAGS" $SRC/subsurface/libdivecomputer/configure --prefix=$INSTALL_ROOT --disable-examples
 if [ $PLATFORM = Darwin ] ; then
 	# remove some copmpiler options that aren't supported on Mac
 	# otherwise the log gets very noisy
@@ -451,22 +463,22 @@ fi
 
 set -x
 
-cd $SRC/subsurface
 for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	SUBSURFACE_EXECUTABLE=${BUILDS[$i]}
 	BUILDDIR=${BUILDDIRS[$i]}
 	echo "build $SUBSURFACE_EXECUTABLE in $BUILDDIR"
 
+	cd $SRC/subsurface
+
 	# pull the plasma-mobile components from upstream if building Subsurface-mobile
 	if [ "$SUBSURFACE_EXECUTABLE" = "MobileExecutable" ] ; then
-		cd $SRC/subsurface
 		bash ./scripts/mobilecomponents.sh
 	fi
 
-	mkdir -p $SRC/subsurface/$BUILDDIR
-	cd $SRC/subsurface/$BUILDDIR
+	mkdir -p $BUILDDIR
+	cd $BUILDDIR
 	export CMAKE_PREFIX_PATH="$INSTALL_ROOT/lib/cmake;${CMAKE_PREFIX_PATH}"
-	cmake -DCMAKE_BUILD_TYPE=$DEBUGRELEASE .. \
+	cmake -DCMAKE_BUILD_TYPE=$DEBUGRELEASE $SRC/subsurface \
 		-DSUBSURFACE_TARGET_EXECUTABLE=$SUBSURFACE_EXECUTABLE \
 		${LIBGIT_ARGS} \
 		-DLIBDIVECOMPUTER_INCLUDE_DIR=$INSTALL_ROOT/include \
