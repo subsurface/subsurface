@@ -9,22 +9,40 @@
 #
 # it installs the libraries and subsurface in the install-root subdirectory
 # of the current directory (except on Mac where the Subsurface.app ends up
-# in subsurface/build
+# in subsurface/build)
+#
+# by default it puts the build folders in
+# ./subsurface/llibdivecomputer/build (libdivecomputer build)
+# ./subsurface/build                  (desktop build)
+# ./subsurface/build-mobile           (mobile build)
 #
 # there is basic support for building from a shared directory, e.g., with
 # one subsurface source tree on a host computer, accessed from multiple
 # VMs as well as the host to build without stepping on each other - the
 # one exceptioin is running autotools for libdiveconputer which has to
 # happen in the shared libdivecomputer folder
-
-# create a log file of the build
+# one way to achieve this is to have ./subsurface be a symlink; in that
+# case the build directories are libdivecomputer/build, build, build-mobile
+# alternatively a build prefix can be explicitly given with -build-prefix
+# that build prefix is directly pre-pended to the destinations mentioned
+# above - if this is a directory, it needs to end with '/'
 
 # don't keep going if we run into an error
 set -e
 
+# create a log file of the build
+
 exec 1> >(tee build.log) 2>&1
 
 SRC=$(pwd)
+
+if [[ -L subsurface && -d subsurface ]] ; then
+	# ./subsurface is a symbolic link to the source directory, so let's
+	# set up a prefix that puts the build directories in the current directory
+	# but this can be overwritten via the command line
+	BUILD_PREFIX="${SRC}/"
+fi
+
 PLATFORM=$(uname)
 
 BTSUPPORT="ON"
