@@ -174,8 +174,12 @@ if [[ ! -d "subsurface" ]] ; then
 	exit 1
 fi
 
-mkdir -p install-root
-INSTALL_ROOT=$SRC/install-root
+if [ -z "$BUILD_PREFIX" ] ; then
+	INSTALL_ROOT=$SRC/install-root
+else
+	INSTALL_ROOT="$BUILD_PREFIX"install-root
+fi
+mkdir -p "$INSTALL_ROOT"
 export INSTALL_ROOT
 
 # make sure we find our own packages first (e.g., libgit2 only uses pkg_config to find libssh2)
