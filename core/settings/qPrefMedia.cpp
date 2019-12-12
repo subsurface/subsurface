@@ -17,7 +17,6 @@ void qPrefMedia::loadSync(bool doSync)
 	disk_ffmpeg_executable(doSync);
 	disk_auto_recalculate_thumbnails(doSync);
 	disk_auto_recalculate_thumbnails(doSync);
-
 }
 
 HANDLE_PREFERENCE_BOOL(Media, "auto_recalculate_thumbnails", auto_recalculate_thumbnails);

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "preferences_reset.h"
 #include "ui_preferences_reset.h"
-#include "core/dive.h"
 #include "preferencesdialog.h"
 
 PreferencesReset::PreferencesReset(): AbstractPreferencesWidget(tr("Reset"), QIcon(":preferences-reset-icon"), 11 ), ui(new Ui::PreferencesReset())

@@ -17,7 +17,6 @@ void qPrefGeocoding::loadSync(bool doSync)
 	disk_third_taxonomy_category(doSync);
 }
 
-
 void qPrefGeocoding::set_first_taxonomy_category(taxonomy_category value)
 {
 	if (value != prefs.geocoding.category[0]) {
@@ -34,7 +33,6 @@ void qPrefGeocoding::disk_first_taxonomy_category(bool doSync)
 		prefs.geocoding.category[0] = (enum taxonomy_category)qPrefPrivate::propValue(keyFromGroupAndName(group, "cat0"), default_prefs.geocoding.category[0]).toInt();
 }
 
-
 void qPrefGeocoding::set_second_taxonomy_category(taxonomy_category value)
 {
 	if (value != prefs.geocoding.category[1]) {
@@ -43,6 +41,7 @@ void qPrefGeocoding::set_second_taxonomy_category(taxonomy_category value)
 		emit instance()->second_taxonomy_categoryChanged(value);
 	}
 }
+
 void qPrefGeocoding::disk_second_taxonomy_category(bool doSync)
 {
 	if (doSync)
@@ -60,6 +59,7 @@ void qPrefGeocoding::set_third_taxonomy_category(taxonomy_category value)
 		emit instance()->third_taxonomy_categoryChanged(value);
 	}
 }
+
 void qPrefGeocoding::disk_third_taxonomy_category(bool doSync)
 {
 	if (doSync)

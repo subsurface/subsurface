@@ -10,7 +10,6 @@ qPrefDiveComputer *qPrefDiveComputer::instance()
 	return self;
 }
 
-
 void qPrefDiveComputer::loadSync(bool doSync)
 {
 	// last computer used
@@ -30,7 +29,6 @@ void qPrefDiveComputer::loadSync(bool doSync)
 	DISK_DC(2)
 	DISK_DC(3)
 	DISK_DC(4)
-
 }
 
 // these are the 'active' settings

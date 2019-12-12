@@ -5,7 +5,6 @@
 
 #include <QObject>
 
-
 class qPrefTechnicalDetails : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(bool calcalltissues READ calcalltissues WRITE set_calcalltissues NOTIFY calcalltissuesChanged)

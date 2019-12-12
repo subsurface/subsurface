@@ -5,7 +5,6 @@
 
 #include <QObject>
 
-
 class qPrefGeocoding : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(taxonomy_category first_taxonomy_category READ first_taxonomy_category WRITE set_first_taxonomy_category NOTIFY first_taxonomy_categoryChanged)
