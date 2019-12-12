@@ -157,13 +157,14 @@ void TestQPrefLog::test_signals()
 	QSignalSpy spy4(qPrefLog::instance(), &qPrefLog::show_average_depthChanged);
 	QSignalSpy spy5(qPrefLog::instance(), &qPrefLog::extraEnvironmentalDefaultChanged);
 
-	qPrefLog::set_default_filename("new base22");
+	qPrefLog::set_default_filename("new base01");
 	qPrefLog::set_default_file_behavior(LOCAL_DEFAULT_FILE);
 	qPrefLog::set_use_default_file(false);
 	qPrefLog::set_show_average_depth(false);
 	qPrefLog::set_extraEnvironmentalDefault(false);
 
-	qPrefLog::set_default_filename("new base22");
+//	qPrefLog::set_default_filename("new base01");
+	prefs.default_file_behavior = NO_DEFAULT_FILE;
 	qPrefLog::set_default_file_behavior(LOCAL_DEFAULT_FILE);
 	prefs.use_default_file = true;
 	qPrefLog::set_use_default_file(false);

@@ -18,7 +18,6 @@
 #include "qPrefMedia.h"
 #include "qPrefLog.h"
 
-
 #include <QtQml>
 #include <QQmlContext>
 

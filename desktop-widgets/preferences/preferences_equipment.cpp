@@ -4,15 +4,11 @@
 #include "core/settings/qPrefEquipment.h"
 #include "core/qthelper.h"
 #include "core/dive.h"
-
-#include <stdlib.h>
-#include <stdio.h>
+#include "qt-models/models.h"
 
 #include <QApplication>
 #include <QMessageBox>
 #include <QSortFilterProxyModel>
-
-#include "qt-models/models.h"
 
 PreferencesEquipment::PreferencesEquipment() : AbstractPreferencesWidget(tr("Equipment"), QIcon(":preferences-equipment-icon"), 5)
 {

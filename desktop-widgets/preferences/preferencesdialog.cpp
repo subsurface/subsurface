@@ -25,9 +25,6 @@
 #include <QAbstractButton>
 #include <QDebug>
 
-#include <stdlib.h>
-#include <stdio.h>
-
 PreferencesDialog* PreferencesDialog::instance()
 {
 	static PreferencesDialog *self = new PreferencesDialog();

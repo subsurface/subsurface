@@ -2,7 +2,6 @@
 #include "preferences_dc.h"
 #include "ui_preferences_dc.h"
 #include "core/dive.h"
-//#include "core/settings/qPrefClearDc.h"
 #include "core/settings/qPrefDisplay.h"
 #include "core/settings/qPrefCloudStorage.h"
 #include "core/settings/qPrefDiveComputer.h"
@@ -30,7 +29,6 @@ void PreferencesDc::on_resetRememberedDCs_clicked()
 	qPrefDiveComputer::set_vendor3(QString());
 	qPrefDiveComputer::set_vendor4(QString());
 }
-
 
 void PreferencesDc::refreshSettings()
 {

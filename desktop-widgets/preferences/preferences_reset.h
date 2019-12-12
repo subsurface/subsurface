@@ -22,8 +22,8 @@ public slots:
 
 private:
 	Ui::PreferencesReset *ui;
-};
 
+};
 
 #endif
 
