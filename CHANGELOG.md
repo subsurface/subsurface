@@ -1,3 +1,4 @@
+Desktop: implement dive invalidation
 Mobile-android: remove libusb/FTDI support (largely non-functional)
 Mobile-android: Continue download after obtaining USB permission
 Mobile-android: Add usb-serial-for-android driver support

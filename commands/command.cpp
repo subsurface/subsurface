@@ -168,6 +168,11 @@ int editMode(int index, int newValue, bool currentDiveOnly)
 	return execute_edit(new EditMode(index, newValue, currentDiveOnly));
 }
 
+int editInvalid(int newValue, bool currentDiveOnly)
+{
+	return execute_edit(new EditInvalid(newValue, currentDiveOnly));
+}
+
 int editSuit(const QString &newValue, bool currentDiveOnly)
 {
 	return execute_edit(new EditSuit(newValue, currentDiveOnly));

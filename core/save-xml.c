@@ -499,7 +499,7 @@ void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 	if (dive->chill)
 		put_format(b, " chill='%d'", dive->chill);
 	if (dive->invalid)
-		put_format(b, " invalid");
+		put_format(b, " invalid='1'");
 	save_tags(b, dive->tag_list);
 	if (dive->dive_site)
 		put_format(b, " divesiteid='%8x'", dive->dive_site->uuid);
