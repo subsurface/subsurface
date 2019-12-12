@@ -8,7 +8,6 @@
 #include "core/settings/qPrefDivePlanner.h"
 #include "core/gettextfromc.h"
 #include "backend-shared/plannershared.h"
-
 #include "qt-models/cylindermodel.h"
 #include "qt-models/models.h"
 #include "profile-widget/profilewidget2.h"
