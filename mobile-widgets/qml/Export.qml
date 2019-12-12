@@ -75,7 +75,6 @@ Kirigami.ScrollablePage {
 		onApply: {
 			if (selectedExport === ExportType.EX_DIVELOGS_DE) {
 				if (fieldUserID.text !== PrefCloudStorage.divelogde_user) {
-
 					PrefCloudStorage.divelogde_user = fieldUserID.text
 				}
 				if (fieldPassword.text !== PrefCloudStorage.divelogde_pass)
