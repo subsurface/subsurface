@@ -7,6 +7,7 @@
 #include "core/units.h"
 #include "core/settings/qPrefDivePlanner.h"
 #include "core/gettextfromc.h"
+#include "core/plannershared.h"
 
 #include "qt-models/cylindermodel.h"
 #include "qt-models/models.h"
@@ -22,8 +23,6 @@
 
 #define MAX_DEPTH M_OR_FT(150, 450)
 #define MIN_DEPTH M_OR_FT(20, 60)
-
-#define UNIT_FACTOR ((prefs.units.length == units::METERS) ? 1000.0 / 60.0 : feet_to_mm(1.0) / 60.0)
 
 static DivePlannerPointsModel* plannerModel = DivePlannerPointsModel::instance();
 
@@ -543,11 +542,11 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 
 void PlannerSettingsWidget::updateUnitsUI()
 {
-	ui.ascRate75->setValue(lrint(prefs.ascrate75 / UNIT_FACTOR));
-	ui.ascRate50->setValue(lrint(prefs.ascrate50 / UNIT_FACTOR));
-	ui.ascRateStops->setValue(lrint(prefs.ascratestops / UNIT_FACTOR));
-	ui.ascRateLast6m->setValue(lrint(prefs.ascratelast6m / UNIT_FACTOR));
-	ui.descRate->setValue(lrint(prefs.descrate / UNIT_FACTOR));
+	ui.ascRate75->setValue(plannerShared::ascrate75());
+	ui.ascRate50->setValue(plannerShared::ascrate50());
+	ui.ascRateStops->setValue(plannerShared::ascratestops());
+	ui.ascRateLast6m->setValue(plannerShared::ascratelast6m());
+	ui.descRate->setValue(lrint(plannerShared::descrate()));
 	ui.bestmixEND->setValue(lrint(get_depth_units(prefs.bestmixend.mm, NULL, NULL)));
 }
 
@@ -621,27 +620,27 @@ void PlannerSettingsWidget::printDecoPlan()
 
 void PlannerSettingsWidget::setAscrate75(int rate)
 {
-	qPrefDivePlanner::instance()->set_ascrate75(lrint(rate * UNIT_FACTOR));
+	plannerShared::set_ascrate75(rate);
 }
 
 void PlannerSettingsWidget::setAscrate50(int rate)
 {
-	qPrefDivePlanner::instance()->set_ascrate50(lrint(rate * UNIT_FACTOR));
+	plannerShared::set_ascrate50(rate);
 }
 
 void PlannerSettingsWidget::setAscratestops(int rate)
 {
-	qPrefDivePlanner::instance()->set_ascratestops(lrint(rate * UNIT_FACTOR));
+	plannerShared::set_ascratestops(rate);
 }
 
 void PlannerSettingsWidget::setAscratelast6m(int rate)
 {
-	qPrefDivePlanner::instance()->set_ascratelast6m(lrint(rate * UNIT_FACTOR));
+	plannerShared::set_ascratelast6m(rate);
 }
 
 void PlannerSettingsWidget::setDescrate(int rate)
 {
-	qPrefDivePlanner::instance()->set_descrate(lrint(rate * UNIT_FACTOR));
+	plannerShared::set_descrate(rate);
 }
 
 void PlannerSettingsWidget::sacFactorChanged(const double factor)
