@@ -35,6 +35,7 @@ struct DiveField {
 	unsigned int mode : 1;
 	unsigned int notes : 1;
 	unsigned int salinity : 1;
+	unsigned int invalid : 1;
 	enum Flags {
 		NONE = 0,
 		NR = 1 << 0,
@@ -57,7 +58,8 @@ struct DiveField {
 		TAGS = 1 << 17,
 		MODE = 1 << 18,
 		NOTES = 1 << 19,
-		SALINITY = 1 << 20
+		SALINITY = 1 << 20,
+		INVALID = 1 << 21
 	};
 	DiveField(int flags);
 };

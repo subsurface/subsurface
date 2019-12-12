@@ -574,6 +574,27 @@ DiveField EditMode::fieldId() const
 	return DiveField::MODE;
 }
 
+// ***** Invalid *****
+void EditInvalid::set(struct dive *d, int invalid) const
+{
+	d->invalid = invalid;
+}
+
+int EditInvalid::data(struct dive *d) const
+{
+	return d->invalid;
+}
+
+QString EditInvalid::fieldName() const
+{
+	return tr("invalid");
+}
+
+DiveField EditInvalid::fieldId() const
+{
+	return DiveField::INVALID;
+}
+
 // ***** Tag based commands *****
 EditTagsBase::EditTagsBase(const QStringList &newListIn, bool currentDiveOnly) :
 	EditDivesBase(currentDiveOnly),
