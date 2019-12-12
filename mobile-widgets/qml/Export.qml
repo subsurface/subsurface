@@ -94,7 +94,7 @@ Kirigami.ScrollablePage {
 			onUploadFinish: {
 				if (success) {
 					pageStack.pop()
-					close()
+					uploadDialog.close()
 				}
 				statusText.text = text
 				progress.value = 0
