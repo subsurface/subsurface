@@ -46,18 +46,18 @@ void uploadDiveShare::doUpload(bool selected, const QString &uid, bool noPublic)
 	reply = manager()->put(request, json_data);
 
 	// connect signals from upload process
-	connect(reply, SIGNAL(finished()), this, SLOT(slot_uploadFinished()));
+	connect(reply, SIGNAL(finished()), this, SLOT(uploadFinishedSlot()));
 	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this,
-			SLOT(slot_uploadError(QNetworkReply::NetworkError)));
+			SLOT(uploadErrorSlot(QNetworkReply::NetworkError)));
 	connect(reply, SIGNAL(uploadProgress(qint64, qint64)), this,
-			SLOT(slot_updateProgress(qint64, qint64)));
-	connect(&timeout, SIGNAL(timeout()), this, SLOT(slot_uploadTimeout()));
+			SLOT(updateProgressSlot(qint64, qint64)));
+	connect(&timeout, SIGNAL(timeout()), this, SLOT(uploadTimeoutSlot()));
 
 	timeout.start(30000); // 30s
 }
 
 
-void uploadDiveShare::slot_updateProgress(qint64 current, qint64 total)
+void uploadDiveShare::updateProgressSlot(qint64 current, qint64 total)
 {
 	if (!reply)
 		return;
@@ -74,7 +74,7 @@ void uploadDiveShare::slot_updateProgress(qint64 current, qint64 total)
 }
 
 
-void uploadDiveShare::slot_uploadFinished()
+void uploadDiveShare::uploadFinishedSlot()
 {
 	reply->deleteLater();
 	timeout.stop();
@@ -86,7 +86,7 @@ void uploadDiveShare::slot_uploadFinished()
 }
 
 
-void uploadDiveShare::slot_uploadTimeout()
+void uploadDiveShare::uploadTimeoutSlot()
 {
 	timeout.stop();
 	if (reply) {
@@ -99,7 +99,7 @@ void uploadDiveShare::slot_uploadTimeout()
 }
 
 
-void uploadDiveShare::slot_uploadError(QNetworkReply::NetworkError error)
+void uploadDiveShare::uploadErrorSlot(QNetworkReply::NetworkError error)
 {
 	timeout.stop();
 	if (reply) {

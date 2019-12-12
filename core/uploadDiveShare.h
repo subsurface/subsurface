@@ -13,10 +13,10 @@ public:
 	void doUpload(bool selected, const QString &uid, bool noPublic);
 
 private slots:
-	void slot_updateProgress(qint64 current, qint64 total);
-	void slot_uploadFinished();
-	void slot_uploadTimeout();
-	void slot_uploadError(QNetworkReply::NetworkError error);
+	void updateProgressSlot(qint64 current, qint64 total);
+	void uploadFinishedSlot();
+	void uploadTimeoutSlot();
+	void uploadErrorSlot(QNetworkReply::NetworkError error);
 
 signals:
 	void uploadFinish(bool success, const QString &text, const QByteArray &html);
