@@ -107,6 +107,9 @@ QVariant DiveTripModelBase::tripData(const dive_trip *trip, int column, int role
 	case MobileListModel::TripNotesRole: return QString(trip->notes);
 	}
 #endif
+	// Set the font for all trips alike
+	if (role == Qt::FontRole)
+		return defaultModelFont();
 
 	if (role == TRIP_ROLE)
 		return QVariant::fromValue(const_cast<dive_trip *>(trip)); // Not nice: casting away a const
@@ -187,6 +190,15 @@ static QString displayWeight(const struct dive *d, bool units)
 		return s + gettextFromC::tr("lbs");
 }
 
+static QFont struckOutFont()
+{
+	QFont font;
+	font.setStrikeOut(true);
+	return font;
+}
+static QBrush invalidForeground(Qt::gray);
+static QFont invalidFont = struckOutFont();
+
 QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 {
 #ifdef SUBSURFACE_MOBILE
@@ -235,6 +247,10 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 	}
 #endif
 	switch (role) {
+	case Qt::FontRole:
+		return d->invalid ? invalidFont : defaultModelFont();
+	case Qt::ForegroundRole:
+		return d->invalid ? invalidForeground : QVariant();
 	case Qt::TextAlignmentRole:
 		return dive_table_alignment(column);
 	case Qt::DisplayRole:
@@ -922,10 +938,6 @@ void DiveTripModelTree::divesHidden(dive_trip *trip, const QVector<dive *> &dive
 
 QVariant DiveTripModelTree::data(const QModelIndex &index, int role) const
 {
-	// Set the font for all items alike
-	if (role == Qt::FontRole)
-		return defaultModelFont();
-
 	dive_or_trip entry = tripOrDive(index);
 	if (!entry.trip && !entry.dive)
 		return QVariant();			// That's an invalid index!
@@ -1524,10 +1536,6 @@ void DiveTripModelList::filterReset()
 
 QVariant DiveTripModelList::data(const QModelIndex &index, int role) const
 {
-	// Set the font for all items alike
-	if (role == Qt::FontRole)
-		return defaultModelFont();
-
 	dive *d = diveOrNull(index);
 	return d ? diveData(d, index.column(), role) : QVariant();
 }
