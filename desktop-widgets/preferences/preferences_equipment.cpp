@@ -9,8 +9,6 @@
 #include <QMessageBox>
 #include <QSortFilterProxyModel>
 
-#include "qt-models/models.h"
-
 PreferencesEquipment::PreferencesEquipment() : AbstractPreferencesWidget(tr("Equipment"), QIcon(":preferences-equipment-icon"), 5)
 {
 	ui = new Ui::PreferencesEquipment();

@@ -30,7 +30,6 @@ void PreferencesDc::on_resetRememberedDCs_clicked()
 	qPrefDiveComputer::set_vendor4(QString());
 }
 
-
 void PreferencesDc::refreshSettings()
 {
 }

@@ -19,8 +19,6 @@ void qPrefLog::loadSync(bool doSync)
 	disk_show_average_depth(doSync);
 }
 
-HANDLE_PREFERENCE_TXT(Log, "default_filename", default_filename);
-
 void qPrefLog::set_default_file_behavior(enum def_file_behavior value)
 {
 	if (value != prefs.default_file_behavior ||
@@ -50,6 +48,7 @@ void qPrefLog::disk_default_file_behavior(bool doSync)
 	}
 }
 
+HANDLE_PREFERENCE_TXT(Log, "default_filename", default_filename);
 
 HANDLE_PREFERENCE_BOOL(Log, "extraEnvironmentalDefault", extraEnvironmentalDefault);
 

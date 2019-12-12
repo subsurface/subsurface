@@ -22,12 +22,6 @@ PreferencesDefaults::~PreferencesDefaults()
 	delete ui;
 }
 
-/*void PreferencesDefaults::on_resetSettings_clicked()
-{
-	auto dialog = PreferencesDialog::instance();
-	dialog->defaultsRequested();
-} */
-
 void PreferencesDefaults::refreshSettings()
 {
 	ui->font->setCurrentFont(qPrefDisplay::divelist_font());

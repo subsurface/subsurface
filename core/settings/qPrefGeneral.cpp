@@ -2,7 +2,6 @@
 #include "qPrefGeneral.h"
 #include "qPrefPrivate.h"
 
-
 static const QString group = QStringLiteral("GeneralSettings");
 
 QString qPrefGeneral::st_diveshareExport_uid;
@@ -16,7 +15,6 @@ qPrefGeneral *qPrefGeneral::instance()
 	static qPrefGeneral *self = new qPrefGeneral;
 	return self;
 }
-
 
 void qPrefGeneral::loadSync(bool doSync)
 {

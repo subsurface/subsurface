@@ -35,7 +35,7 @@
       <bool>true</bool>
      </property>
      <property name="text">
-      <string>Photographs or videos are sometimes edited. If a photo is more recent than its thumbnail, checking the checkbox below will allow creating a new thumbnail after the media has been edited.</string>
+      <string>Photographs or videos are sometimes edited after being uploaded and linked to Subsurface. If a photo is therefore more recent than its original thumbnail, checking the checkbox below will allow creating a new thumbnail after the media has been edited.</string>
      </property>
     </widget>
    </item>

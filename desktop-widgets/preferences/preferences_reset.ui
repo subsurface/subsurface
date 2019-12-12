@@ -15,9 +15,6 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
 
-
-
-
    <item row="0" column="0" colspan="2">
    <layout class="QHBoxLayout" name="horizontalLayout">
 
@@ -39,7 +36,7 @@
       <bool>true</bool>
      </property>
      <property name="text">
-      <string>Selecting this button will reset all settings to their default values</string>
+      <string>Selecting this button will reset all preferences to their default values</string>
      </property>
     </widget>
    </item>
@@ -50,7 +47,7 @@
    <item row="1" column="0">
     <widget class="QPushButton" name="resetSettings">
      <property name="text">
-      <string>Reset all settings</string>
+      <string>Reset all preferences</string>
      </property>
     </widget>
    </item>

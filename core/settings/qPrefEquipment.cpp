@@ -14,7 +14,6 @@ void qPrefEquipment::loadSync(bool doSync)
 {
 	disk_default_cylinder(doSync);
 	disk_display_unused_tanks(doSync);
-
 }
 
 HANDLE_PREFERENCE_TXT(Equipment, "default_cylinder", default_cylinder);
