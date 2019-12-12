@@ -252,6 +252,7 @@ Kirigami.ScrollablePage {
 					fieldPassword.visible = true
 					fieldPassword.text = PrefCloudStorage.divelogde_pass
 					anonymize.visible = false
+					statusText.text = ""
 					uploadDialog.open()
 				} else if (selectedExport === ExportType.EX_DIVESHARE) {
 					// TO BE IMPLEMENTED
