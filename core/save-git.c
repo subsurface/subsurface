@@ -442,6 +442,7 @@ static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 	if (surface_pressure.mbar)
 		SAVE("airpressure", surface_pressure.mbar);
 	cond_put_format(dive->notrip, b, "notrip\n");
+	cond_put_format(dive->invalid, b, "invalid\n");
 	save_tags(b, dive->tag_list);
 	if (dive->dive_site)
 		put_format(b, "divesiteid %08x\n", dive->dive_site->uuid);
