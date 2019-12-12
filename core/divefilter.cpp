@@ -287,6 +287,9 @@ DiveFilter::DiveFilter() : diveSiteRefCount(0)
 
 bool DiveFilter::showDive(const struct dive *d) const
 {
+	if (d->invalid && !prefs.display_invalid_dives)
+		return false;
+
 	if (!filterData.validFilter)
 		return true;
 
