@@ -283,6 +283,13 @@ static void parse_dive_notrip(char *line, struct membuffer *str, struct git_pars
 	state->active_dive->notrip = true;
 }
 
+static void parse_dive_invalid(char *line, struct membuffer *str, struct git_parser_state *state)
+{
+	UNUSED(str);
+	UNUSED(line);
+	state->active_dive->invalid = true;
+}
+
 static void parse_site_description(char *line, struct membuffer *str, struct git_parser_state *state)
 { UNUSED(line); state->active_site->description = detach_cstring(str); }
 
@@ -1039,7 +1046,7 @@ struct keyword_action dive_action[] = {
 #undef D
 #define D(x) { #x, parse_dive_ ## x }
 	D(airpressure), D(airtemp), D(buddy), D(chill), D(current), D(cylinder), D(divemaster), D(divesiteid), D(duration),
-	D(gps), D(location), D(notes), D(notrip), D(rating), D(suit), D(surge),
+	D(gps), D(invalid), D(location), D(notes), D(notrip), D(rating), D(suit), D(surge),
 	D(tags), D(visibility), D(watersalinity), D(watertemp), D(wavesize), D(weightsystem)
 };
 

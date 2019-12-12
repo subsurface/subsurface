@@ -172,6 +172,7 @@ struct dive {
 	bool selected;
 	bool hidden_by_filter;
 	struct full_text_cache *full_text; /* word cache for full text search */
+	bool invalid;
 };
 
 /* For the top-level list: an entry is either a dive or a trip */
