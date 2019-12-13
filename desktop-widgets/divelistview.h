@@ -47,6 +47,7 @@ slots:
 	void removeFromTrip();
 	void deleteDive();
 	void markDiveInvalid();
+	void markDiveValid();
 	void rowsInserted(const QModelIndex &parent, int start, int end) override;
 	void reset() override;
 	void mergeTripAbove();
