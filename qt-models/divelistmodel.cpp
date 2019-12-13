@@ -4,7 +4,6 @@
 #include "core/qthelper.h"
 #include "core/trip.h"
 #include "core/settings/qPrefGeneral.h"
-#include "core/ssrf.h" // for LOG_STP
 #include "core/errorhelper.h" // for verbose
 #include <QDateTime>
 #include <QtConcurrent>
@@ -184,7 +183,6 @@ bool CollapsedDiveListSortModel::filterAcceptsRow(int source_row, const QModelIn
 DiveListSortModel::DiveListSortModel()
 {
 	setSourceModel(DiveListModel::instance());
-	LOG_STP("run_ui diveListModel sorted");
 }
 
 DiveListSortModel *DiveListSortModel::instance()
@@ -271,7 +269,6 @@ void DiveListSortModel::reload()
 
 DiveListModel::DiveListModel()
 {
-	LOG_STP("run_ui diveListModel started");
 }
 
 void DiveListModel::insertDive(int i)
