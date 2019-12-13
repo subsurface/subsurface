@@ -1108,7 +1108,7 @@ void DiveTripModelTree::divesChangedTrip(dive_trip *trip, const QVector<dive *> 
 
 		// Change the dives in the trip. We do this range-wise.
 		processRangesZip(items[idx].dives, dives,
-				 [](const dive *d1, const dive *d2) { return d1 == d2; }, // Condition (std::equal_to only in C++14)
+				 std::equal_to<const dive *>(), // Condition: dive-pointers are equal
 				 [&](const std::vector<dive *> &, const QVector<dive *> &, int from, int to, int) -> int { // Action
 					// TODO: We might be smarter about which columns changed!
 					dataChanged(createIndex(from, 0, idx), createIndex(to - 1, COLUMNS - 1, idx));
@@ -1410,7 +1410,7 @@ void DiveTripModelList::divesDeleted(dive_trip *, bool, const QVector<dive *> &d
 	QVector<dive *> dives = divesIn;
 	std::sort(dives.begin(), dives.end(), dive_less_than);
 	processRangesZip(items, dives,
-			 [](const dive *d1, const dive *d2) { return d1 == d2; }, // Condition (std::equal_to only in C++14)
+			 std::equal_to<const dive *>(), // Condition: dive-pointers are equal
 			 [&](std::vector<dive *> &items, const QVector<dive *> &, int from, int to, int) -> int { // Action
 				beginRemoveRows(QModelIndex(), from, to - 1);
 				items.erase(items.begin() + from, items.begin() + to);
@@ -1437,7 +1437,7 @@ void DiveTripModelList::divesChanged(const QVector<dive *> &divesIn)
 	// in dives as this must be the first that we encounter. Once we find a range, increase the
 	// index accordingly.
 	processRangesZip(items, dives,
-			 [](const dive *d1, const dive *d2) { return d1 == d2; }, // Condition (std::equal_to only in C++14)
+			 std::equal_to<const dive *>(), // Condition: dive-pointers are equal
 			 [&](const std::vector<dive *> &, const QVector<dive *> &, int from, int to, int) -> int { // Action
 				// TODO: We might be smarter about which columns changed!
 				dataChanged(createIndex(from, 0, noParent), createIndex(to - 1, COLUMNS - 1, noParent));
