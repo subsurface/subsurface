@@ -1268,6 +1268,16 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 	}
 }
 
+static struct dive *get_last_valid_dive()
+{
+	int i;
+	for (i = dive_table.nr - 1; i >= 0; i--) {
+		if (!dive_table.dives[i]->invalid)
+			return dive_table.dives[i];
+	}
+	return NULL;
+}
+
 /* return the number a dive gets when inserted at the given index.
  * this function is supposed to be called *before* a dive was added.
  * this returns:
@@ -1277,13 +1287,10 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
  */
 int get_dive_nr_at_idx(int idx)
 {
-	if (dive_table.nr == 0)
+	struct dive *last_dive = get_last_valid_dive(dive_table.nr - 1);
+	if (!last_dive)
 		return 1;
-	if (idx >= dive_table.nr) {
-		struct dive *last_dive = get_dive(dive_table.nr - 1);
-		return last_dive->number ? last_dive->number + 1 : 0;
-	}
-	return 0;
+	return last_dive->number ? last_dive->number + 1 : 0;
 }
 
 void set_dive_nr_for_current_dive()
