@@ -618,31 +618,6 @@ void PlannerSettingsWidget::printDecoPlan()
 {
 }
 
-void PlannerSettingsWidget::setAscrate75(int rate)
-{
-	plannerShared::set_ascrate75(rate);
-}
-
-void PlannerSettingsWidget::setAscrate50(int rate)
-{
-	plannerShared::set_ascrate50(rate);
-}
-
-void PlannerSettingsWidget::setAscratestops(int rate)
-{
-	plannerShared::set_ascratestops(rate);
-}
-
-void PlannerSettingsWidget::setAscratelast6m(int rate)
-{
-	plannerShared::set_ascratelast6m(rate);
-}
-
-void PlannerSettingsWidget::setDescrate(int rate)
-{
-	plannerShared::set_descrate(rate);
-}
-
 void PlannerSettingsWidget::sacFactorChanged(const double factor)
 {
 	plannerModel->setSacFactor(factor);
