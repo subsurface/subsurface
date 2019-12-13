@@ -6,6 +6,7 @@
 #include "core/settings/qPrefDisplay.h"
 #include "core/settings/qPrefCloudStorage.h"
 #include "core/settings/qPrefDiveComputer.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 
 #include <QFileDialog>
 #include <QProcess>
@@ -85,8 +86,14 @@ void PreferencesLog::syncSettings()
 	else if (ui->cloudDefaultFile->isChecked())
 		log->set_default_file_behavior(CLOUD_DEFAULT_FILE);
 
+	bool displayinvalid_changed = ui->displayinvalid->isChecked() != prefs.display_invalid_dives;
+
 	qPrefLog::set_show_average_depth(ui->show_average_depth->isChecked());
 	qPrefDisplay::set_display_invalid_dives(ui->displayinvalid->isChecked());
 	qPrefLog::set_extraEnvironmentalDefault(ui->extraEnvironmentalDefault->isChecked());
 	qPrefLog::set_salinityEditDefault(ui->salinityEditDefault->isChecked());
+
+	// TODO: Move to preferences code?
+	if (displayinvalid_changed)
+		emit diveListNotifier.filterReset();
 }
