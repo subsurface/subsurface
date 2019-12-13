@@ -5,6 +5,7 @@
 #include "profile-widget/profilewidget2.h"
 #include "../tagwidget.h"
 #include "commands/command.h"
+#include "core/subsurface-string.h"
 #include "core/units.h"
 #include "core/dive.h"
 #include "core/qthelper.h"
@@ -16,13 +17,18 @@
 #define TEXT_EDITED 1
 #define CSS_SET_HEADING_BLUE "QLabel { color: mediumblue;} "
 
+enum watertypes { FRESHWATER, SALTYWATER, EN13319WATER, SALTWATER };
+
 TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(new Ui::TabDiveInformation())
 {
 	ui->setupUi(this);
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &TabDiveInformation::divesChanged);
-	QStringList atmPressTypes { "mbar", get_depth_unit() ,"use dc"};
+	QStringList atmPressTypes { "mbar", get_depth_unit() ,tr("use dc")};
 	ui->atmPressType->insertItems(0, atmPressTypes);
 	pressTypeIndex = 0;
+	QStringList waterTypes {tr("Fresh"), tr("Salty"), "EN13319", tr("Salt"), tr("use dc")};
+	ui->waterTypeCombo->insertItems(0, waterTypes);
+
 	// This needs to be the same order as enum dive_comp_type in dive.h!
 	QStringList types;
 	for (int i = 0; i < NUM_DIVEMODE; i++)
@@ -31,7 +37,11 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 	connect(ui->diveType, SIGNAL(currentIndexChanged(int)), this, SLOT(diveModeChanged(int)));
 	QString CSSSetSmallLabel = "QLabel { color: mediumblue; font-size: " +                        /* // Using label height ... */
 		QString::number((int)(0.5 + ui->diveHeadingLabel->geometry().height() * 0.66)) + "px;}"; // .. set CSS font size of star widget subscripts
+#if defined(Q_OS_WIN)
 	ui->scrollAreaWidgetContents_3->setStyleSheet("QGroupBox::title { color: mediumblue;} ");
+#else
+	ui->scrollAreaWidgetContents_3->setStyleSheet("QGroupBox { border: 1px solid silver; border-radius: 4px; margin-top: 0.65em; background-color: #e7e4e4;} QGroupBox::title { color: mediumblue;} ");
+#endif
 	ui->diveHeadingLabel->setStyleSheet(CSS_SET_HEADING_BLUE);
 	ui->gasHeadingLabel->setStyleSheet(CSS_SET_HEADING_BLUE);
 	ui->environmentHeadingLabel->setStyleSheet(CSS_SET_HEADING_BLUE);
@@ -50,6 +60,11 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 	connect(action, &QAction::triggered, this, &TabDiveInformation::closeWarning);
 	ui->multiDiveWarningMessage->addAction(action);
 	ui->multiDiveWarningMessage->hide();
+	updateWaterTypeWidget();
+	QPixmap warning (":salinity-warning-icon");
+	ui->salinityOverWrittenIcon->setPixmap(warning);
+	ui->salinityOverWrittenIcon->setToolTip("Water type differs from that of dc");
+	ui->salinityOverWrittenIcon->setToolTipDuration(2500);
 }
 
 TabDiveInformation::~TabDiveInformation()
@@ -73,6 +88,7 @@ void TabDiveInformation::clear()
 	ui->atmPressVal->clear();
 	ui->salinityText->clear();
 	ui->waterTypeText->clear();
+	ui->waterTypeCombo->setCurrentIndex(0);
 }
 
 void TabDiveInformation::divesEdited(int i)
@@ -88,6 +104,18 @@ void TabDiveInformation::divesEdited(int i)
 void TabDiveInformation::closeWarning()
 {
 	ui->multiDiveWarningMessage->hide();
+}
+
+void TabDiveInformation::updateWaterTypeWidget()
+{    // Decide on whether to show the water type/salinity combobox or not
+	if (prefs.salinityEditDefault || manualDive)
+	{         // if the preference setting has been checked or this is a manually-entered dive
+		ui->waterTypeText->setVisible(false);
+		ui->waterTypeCombo->setVisible(true); // show combobox
+	} else {  // if the preference setting has not been set
+		ui->waterTypeCombo->setVisible(false);
+		ui->waterTypeText->setVisible(true);  // show water type as text label
+	}
 }
 
 // Update fields that depend on the dive profile
@@ -149,20 +177,29 @@ void TabDiveInformation::updateWhen()
 		ui->surfaceIntervalText->clear();
 }
 
-void TabDiveInformation::updateSalinity()
+// Provide an index for the combobox that corresponds to the salinity value
+int TabDiveInformation::updateSalinityComboIndex(int salinity)
 {
-	if (current_dive->salinity) {                 // Set up the salinity string:
-		ui->salinityText->setText(QString("%1g/ℓ").arg(current_dive->salinity / 10.0));
-		if (current_dive->salinity < 10050)   // Set water type indicator:
-			ui->waterTypeText->setText(tr("Fresh"));
-		else if (current_dive->salinity < 10190)
-			ui->waterTypeText->setText(tr("Salty"));
-		else if (current_dive->salinity < 10210) // (EN13319 = 1.019 - 1.021 g/l)
-			ui->waterTypeText->setText(tr("EN13319"));
-		else ui->waterTypeText->setText(tr("Salt"));
+	if (salinity < 10050)
+		return FRESHWATER;
+	else if (salinity < 10190)
+		return SALTYWATER;
+	else if (salinity < 10210)
+		return EN13319WATER;
+	else
+		return SALTWATER;
+}
+
+// If dive->user_salinity != dive->salinity (i.e. dc value) then show the salinity-overwrite indicator
+void TabDiveInformation::checkDcSalinityOverWritten()
+{
+	int dc_value = current_dive->dc.salinity;
+	int user_value = current_dive->user_salinity;
+	if (current_dive && dc_value && user_value) {
+		if (user_value != dc_value)
+			ui->salinityOverWrittenIcon->setVisible(true);
 	} else {
-		ui->salinityText->clear();
-		ui->waterTypeText->clear();
+		ui->salinityOverWrittenIcon->setVisible(false);
 	}
 }
 
@@ -183,14 +220,40 @@ void TabDiveInformation::updateData()
 		return;
 	}
 
+	int salinity_value;
+	manualDive = same_string(current_dive->dc.model, "manually added dive");
+	updateWaterTypeWidget();
 	updateProfile();
 	updateWhen();
 	ui->watertemp->setText(get_temperature_string(current_dive->watertemp, true));
 	ui->airtemp->setText(get_temperature_string(current_dive->airtemp, true));
 	ui->atmPressType->setItemText(1, get_depth_unit());  // Check for changes in depth unit (imperial/metric)
 	ui->atmPressType->setCurrentIndex(0);                // Set the atmospheric pressure combo box to mbar
+	if (current_dive->user_salinity)
+		salinity_value = current_dive->user_salinity;
+	else
+		salinity_value = current_dive->salinity;
+	if (salinity_value) {			// Set water type indicator (EN13319 = 1.020 g/l)
+		if (prefs.salinityEditDefault) {   //If edit-salinity is enabled then set correct water type in combobox:
+			ui->waterTypeCombo->setCurrentIndex(updateSalinityComboIndex(salinity_value)); 
+		} else {         // If water salinity is not editable: show water type as a text label
+			if (salinity_value < 10050)
+				ui->waterTypeText->setText(tr("Fresh"));
+			else if (salinity_value < 10190)
+				ui->waterTypeText->setText(tr("Salty"));
+			else if (salinity_value < 10210)
+				ui->waterTypeText->setText("EN13319");
+			else
+				ui->waterTypeText->setText(tr("Salt"));
+		}
+		checkDcSalinityOverWritten();  // If exclamation is needed (i.e. salinity overwrite by user), then show it
+		ui->salinityText->setText(QString("%1g/ℓ").arg(salinity_value / 10.0));
+	} else {
+		ui->waterTypeCombo->setCurrentIndex(0);
+		ui->waterTypeText->clear();
+		ui->salinityText->clear();
+	}
 	updateMode(current_dive);
-	updateSalinity();
 	ui->visibility->setCurrentStars(current_dive->visibility);
 	ui->wavesize->setCurrentStars(current_dive->wavesize);
 	ui->current->setCurrentStars(current_dive->current);
@@ -202,10 +265,36 @@ void TabDiveInformation::updateData()
 		showCurrentWidget(false, 0);  // Show current star widget at lefthand side
 }
 
+// From the index of the water type combo box, set the dive->salinity to an appropriate value
+void TabDiveInformation::on_waterTypeCombo_activated(int index) {
+	int combobox_salinity = 0;
+	switch(ui->waterTypeCombo->currentIndex()) {
+	case 0: // Fresh
+		combobox_salinity = FRESHWATER_SALINITY;
+		break;
+	case 1 : // Salty (brack)
+		combobox_salinity = 10100;
+		break;
+	case 2 : // EN13319
+		combobox_salinity = EN13319_SALINITY;
+		break;
+	case 3 : // Salt (sea)
+		combobox_salinity = SEAWATER_SALINITY;
+	// case(4): use dc: combobox_salinity is already set to 0 at the top, so no setting required here
+	default:
+		break;
+	}                 // Save and display the new salinity value:
+	checkDcSalinityOverWritten(); // if exclamation is needed, then show it
+	ui->salinityText->setText(QString("%1g/ℓ").arg(combobox_salinity / 10.0));
+	divesEdited(Command::editWaterTypeUser(combobox_salinity, false));
+}
+
 // This function gets called if a field gets updated by an undo command.
 // Refresh the corresponding UI field.
 void TabDiveInformation::divesChanged(const QVector<dive *> &dives, DiveField field)
 {
+	int salinity_value;
+
 	// If the current dive is not in list of changed dives, do nothing
 	if (!current_dive || !dives.contains(current_dive))
 		return;
@@ -231,9 +320,14 @@ void TabDiveInformation::divesChanged(const QVector<dive *> &dives, DiveField fi
 	if (field.atm_press)
 		ui->atmPressVal->setText(ui->atmPressVal->text().sprintf("%d",current_dive->surface_pressure.mbar));
 	if (field.salinity)
-		updateSalinity();
+		checkDcSalinityOverWritten();
+	if (current_dive->user_salinity)
+		salinity_value = current_dive->user_salinity;
+	else
+		salinity_value = current_dive->salinity;
+	ui->waterTypeCombo->setCurrentIndex(updateSalinityComboIndex(salinity_value));
+	ui->salinityText->setText(QString("%1g/ℓ").arg(salinity_value / 10.0));
 }
-
 
 void TabDiveInformation::on_visibility_valueChanged(int value)
 {

@@ -139,6 +139,7 @@ void PreferencesDefaults::refreshSettings()
 	ui->videoThumbnailPosition->setValue(qPrefGeneral::extract_video_thumbnails_position());
 	ui->ffmpegExecutable->setText(qPrefGeneral::ffmpeg_executable());
 	ui->extraEnvironmentalDefault->setChecked(prefs.extraEnvironmentalDefault);
+	ui->salinityEditDefault->setChecked(prefs.salinityEditDefault);
 }
 
 void PreferencesDefaults::syncSettings()
@@ -162,4 +163,5 @@ void PreferencesDefaults::syncSettings()
 	qPrefDisplay::set_display_invalid_dives(ui->displayinvalid->isChecked());
 	qPrefDisplay::set_animation_speed(ui->velocitySlider->value());
 	qPrefGeneral::set_extraEnvironmentalDefault(ui->extraEnvironmentalDefault->isChecked());
+	qPrefGeneral::set_salinityEditDefault(ui->salinityEditDefault->isChecked());
 }
