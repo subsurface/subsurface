@@ -510,11 +510,11 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.o2narcotic, SIGNAL(toggled(bool)), CylindersModel::instance(), SLOT(updateBestMixes()));
 
 	connect(modeMapper, SIGNAL(mapped(int)), this, SLOT(disableDecoElements(int)));
-	connect(ui.ascRate75, SIGNAL(valueChanged(int)), this, SLOT(setAscrate75(int)));
-	connect(ui.ascRate50, SIGNAL(valueChanged(int)), this, SLOT(setAscrate50(int)));
-	connect(ui.descRate, SIGNAL(valueChanged(int)), this, SLOT(setDescrate(int)));
-	connect(ui.ascRateStops, SIGNAL(valueChanged(int)), this, SLOT(setAscratestops(int)));
-	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), this, SLOT(setAscratelast6m(int)));
+	connect(ui.ascRate75, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_ascrate75(int)));
+	connect(ui.ascRate50, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_ascrate50(int)));
+	connect(ui.descRate, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_descrate(int)));
+	connect(ui.ascRateStops, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_ascratestops(int)));
+	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_ascratelast6m(int)));
 	connect(ui.sacfactor, SIGNAL(valueChanged(double)), this, SLOT(sacFactorChanged(double)));
 	connect(ui.problemsolvingtime, SIGNAL(valueChanged(int)), this, SLOT(problemSolvingTimeChanged(int)));
 	connect(ui.bottompo2, SIGNAL(valueChanged(double)), this, SLOT(setBottomPo2(double)));
