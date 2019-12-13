@@ -165,6 +165,8 @@ void calculate_stats_summary(struct stats_summary *out, bool selected_only)
 	for_each_dive (idx, dp) {
 		if (selected_only && !dp->selected)
 			continue;
+		if (dp->invalid)
+			continue;
 		process_dive(dp, &stats);
 
 		/* yearly statistics */
@@ -296,7 +298,7 @@ void calculate_stats_selected(stats_t *stats_selection)
 
 	nr = 0;
 	for_each_dive(i, dive) {
-		if (dive->selected) {
+		if (dive->selected && !dive->invalid) {
 			process_dive(dive, stats_selection);
 			nr++;
 		}
@@ -404,7 +406,7 @@ void selected_dives_gas_parts(volume_t *o2_tot, volume_t *he_tot)
 	int i, j;
 	struct dive *d;
 	for_each_dive (i, d) {
-		if (!d->selected)
+		if (!d->selected || d->invalid)
 			continue;
 		volume_t *diveGases = get_gas_used(d);
 		for (j = 0; j < d->cylinders.nr; j++) {
