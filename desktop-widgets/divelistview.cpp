@@ -841,6 +841,11 @@ void DiveListView::markDiveInvalid()
 	Command::editInvalid(true, false);
 }
 
+void DiveListView::markDiveValid()
+{
+	Command::editInvalid(false, false);
+}
+
 void DiveListView::deleteDive()
 {
 	struct dive *d = contextMenuIndex.data(DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
@@ -920,7 +925,10 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	}
 	if (d) {
 		popup.addAction(tr("Delete dive(s)"), this, &DiveListView::deleteDive);
-		popup.addAction(tr("Mark dive(s) invalid"), this, &DiveListView::markDiveInvalid);
+		if (d->invalid)
+			popup.addAction(tr("Mark dive(s) valid"), this, &DiveListView::markDiveValid);
+		else
+			popup.addAction(tr("Mark dive(s) invalid"), this, &DiveListView::markDiveInvalid);
 	}
 	if (amount_selected > 1 && consecutive_selected())
 		popup.addAction(tr("Merge selected dives"), this, &DiveListView::mergeDives);
