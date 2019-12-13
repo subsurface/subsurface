@@ -45,7 +45,7 @@ Kirigami.ScrollablePage {
 				color: subsurfaceTheme.textColor
 			}
 			Controls.Label {
-				text: prefs.credentialStatus === CloudStatus.CS_NOCLOUD ? qsTr("Not applicable") : prefs.cloudUserName
+				text: PrefCloudStorage.credentialStatus === CloudStatus.CS_NOCLOUD ? qsTr("Not applicable") : PrefCloudStorage.cloud_storage_email
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.60
 				color: subsurfaceTheme.textColor
