@@ -7,7 +7,7 @@
 #include "core/units.h"
 #include "core/settings/qPrefDivePlanner.h"
 #include "core/gettextfromc.h"
-#include "core/plannerShared.h"
+#include "backend-shared/plannerShared.h"
 
 #include "qt-models/cylindermodel.h"
 #include "qt-models/models.h"

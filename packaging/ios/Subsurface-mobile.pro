@@ -84,7 +84,6 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/uploadDiveShare.cpp \
 	../../core/uploadDiveLogsDE.cpp \
 	../../core/save-profiledata.c \
-	../../core/plannerShared.cpp \
 	../../core/settings/qPref.cpp \
 	../../core/settings/qPrefCloudStorage.cpp \
 	../../core/settings/qPrefDisplay.cpp \
@@ -104,6 +103,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/subsurface-qt/DiveObjectHelper.cpp \
 	../../core/subsurface-qt/DiveListNotifier.cpp \
 	../../backend-shared/exportfuncs.cpp \
+	../../backend-shared/plannerShared.cpp \
 	../../mobile-widgets/qmlmanager.cpp \
 	../../mobile-widgets/qmlprefs.cpp \
 	../../qt-models/divelistmodel.cpp \
@@ -209,7 +209,6 @@ HEADERS += \
 	../../core/save-profiledata.h \
 	../../core/uploadDiveShare.h \
 	../../core/uploadDiveLogsDE.h \
-	../../core/plannerShared.h \
 	../../core/settings/qPref.h \
 	../../core/settings/qPrefCloudStorage.h \
 	../../core/settings/qPrefDisplay.h \
@@ -229,6 +228,7 @@ HEADERS += \
 	../../core/subsurface-qt/DiveObjectHelper.h \
 	../../core/subsurface-qt/DiveListNotifier.h \
 	../../backend-shared/exportfuncs.h \
+	../../backend-shared/plannerShared.h \
 	../../mobile-widgets/qmlmanager.h \
 	../../mobile-widgets/qmlprefs.h \
 	../../map-widget/qmlmapwidgethelper.h \

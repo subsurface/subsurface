@@ -72,8 +72,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	divelist.h
 	divelogexportlogic.cpp
 	divelogexportlogic.h
-	plannerShared.cpp
-	plannerShared.h
 	divesite-helper.cpp
 	divesite.c
 	divesite.h
