@@ -3,6 +3,8 @@
 set(BACKEND_SRCS
 	exportfuncs.cpp
 	exportfuncs.h
+	plannershared.cpp
+	plannershared.h
 )
 
 add_library(subsurface_backend_shared STATIC ${BACKEND_SRCS})
