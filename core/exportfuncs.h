@@ -4,7 +4,7 @@
 
 #include <QObject>
 #include <QFuture>
-#include "dive.h"
+#include "core/dive.h"
 
 class exportFuncs: public QObject {
 	Q_OBJECT
