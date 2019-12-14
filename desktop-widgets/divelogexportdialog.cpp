@@ -15,7 +15,7 @@
 #include "core/errorhelper.h"
 #include "core/file.h"
 #include "core/tag.h"
-#include "core/exportfuncs.h"
+#include "backend-shared/exportfuncs.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/divelogexportdialog.h"
 #include "desktop-widgets/diveshareexportdialog.h"
