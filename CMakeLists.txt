@@ -312,6 +312,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		subsurface_mobile
 		subsurface_profile
 		subsurface_mapwidget
+		subsurface_backend_shared
 		subsurface_models_mobile
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES}
@@ -335,6 +336,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 		subsurface_profile
 		subsurface_statistics
 		subsurface_mapwidget
+		subsurface_backend_shared
 		subsurface_models_desktop
 		subsurface_commands_desktop
 		subsurface_corelib

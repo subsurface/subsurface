@@ -86,8 +86,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	errorhelper.c
 	exif.cpp
 	exif.h
-	exportfuncs.cpp
-	exportfuncs.h
 	file.c
 	file.h
 	format.cpp
