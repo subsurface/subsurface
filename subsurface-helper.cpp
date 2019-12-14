@@ -20,7 +20,7 @@
 #include "qt-models/messagehandlermodel.h"
 #include "profile-widget/qmlprofile.h"
 #include "core/downloadfromdcthread.h"
-#include "core/plannershared.h"
+#include "backend-shared/plannershared.h"
 #include "qt-models/diveimportedmodel.h"
 #include "mobile-widgets/qml/kirigami/src/kirigamiplugin.h"
 #else
