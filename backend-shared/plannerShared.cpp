@@ -59,3 +59,67 @@ void plannerShared::set_descrate(int value)
 	qPrefDivePlanner::set_descrate(value * TO_MM_BY_SEC);
 }
 
+
+// Planning values
+deco_mode plannerShared::planner_deco_mode()
+{
+	return BUEHLMANN;
+}
+void plannerShared::set_planner_deco_mode(deco_mode value)
+{
+//	qPrefDivePlanner::set_X(value);
+}
+
+bool plannerShared::dobailout()
+{
+	return 1;
+}
+void plannerShared::set_dobailout(bool value)
+{
+	//	qPrefDivePlanner::set_X(value);
+}
+
+int plannerShared::reserve_gas()
+{
+	return 1;
+}
+void plannerShared::set_reserve_gas(int value)
+{
+	//	qPrefDivePlanner::set_X(value);
+}
+
+bool plannerShared::safetystop()
+{
+	return 1;
+}
+void plannerShared::set_safetystop(bool value)
+{
+	//	qPrefDivePlanner::set_X(value);
+}
+
+int plannerShared::gflow()
+{
+	return 1;
+}
+void plannerShared::set_gflow(int value)
+{
+	//	qPrefDivePlanner::set_X(value);
+}
+
+int plannerShared::gfhigh()
+{
+	return 1;
+}
+void plannerShared::set_gfhigh(int value)
+{
+	//	qPrefDivePlanner::set_X(value);
+}
+
+int plannerShared::vpmb_conservatism()
+{
+	return 1;
+}
+void plannerShared::set_vpmb_conservatism(int value)
+{
+	//	qPrefDivePlanner::set_X(value);
+}
