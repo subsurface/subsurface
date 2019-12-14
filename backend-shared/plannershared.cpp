@@ -2,7 +2,7 @@
 #include "plannerShared.h"
 #include "core/pref.h"
 #include "core/settings/qPrefDivePlanner.h"
-
+#include "qt-models/diveplannermodel.h"
 
 plannerShared *plannerShared::instance()
 {
@@ -63,11 +63,11 @@ void plannerShared::set_descrate(int value)
 // Planning values
 deco_mode plannerShared::planner_deco_mode()
 {
-	return BUEHLMANN;
+	return qPrefDivePlanner::planner_deco_mode();
 }
 void plannerShared::set_planner_deco_mode(deco_mode value)
 {
-//	qPrefDivePlanner::set_X(value);
+	DivePlannerPointsModel::instance()->setDecoMode(value);
 }
 
 bool plannerShared::dobailout()
@@ -81,20 +81,20 @@ void plannerShared::set_dobailout(bool value)
 
 int plannerShared::reserve_gas()
 {
-	return 1;
+	return qPrefDivePlanner::reserve_gas();
 }
 void plannerShared::set_reserve_gas(int value)
 {
-	//	qPrefDivePlanner::set_X(value);
+	DivePlannerPointsModel::instance()->setReserveGas(value);
 }
 
 bool plannerShared::safetystop()
 {
-	return 1;
+	return qPrefDivePlanner::safetystop();
 }
 void plannerShared::set_safetystop(bool value)
 {
-	//	qPrefDivePlanner::set_X(value);
+	DivePlannerPointsModel::instance()->setSafetyStop(value);
 }
 
 int plannerShared::gflow()
