@@ -1,0 +1,11 @@
+This directory contains shared UI backend code shared between
+the desktop version and the mobile version.
+
+The backend code sits between the actual functionality, which
+are implemented in core and qt-models, and the UI/QML which
+are implemented in desktop-widgets and mobile-widgets.
+
+The idea of backend is not to duplicate code, and at the same time
+limit the UI and QML to only deal with real GUI.
+
+The first implementations for backend are "export" and "diveplanner".
