@@ -45,7 +45,7 @@
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "core/settings/qPrefUnit.h"
 #include "core/trip.h"
-#include "core/exportfuncs.h"
+#include "backend-shared/exportfuncs.h"
 #include "core/worldmap-save.h"
 #include "core/uploadDiveLogsDE.h"
 #include "core/uploadDiveShare.h"

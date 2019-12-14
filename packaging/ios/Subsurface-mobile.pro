@@ -28,7 +28,6 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/divesitehelpers.cpp \
 	../../core/errorhelper.c \
 	../../core/exif.cpp \
-	../../core/exportfuncs.cpp \
 	../../core/format.cpp \
 	../../core/gettextfromc.cpp \
 	../../core/metrics.cpp \
@@ -104,6 +103,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/subsurface-qt/CylinderObjectHelper.cpp \
 	../../core/subsurface-qt/DiveObjectHelper.cpp \
 	../../core/subsurface-qt/DiveListNotifier.cpp \
+	../../backend-shared/exportfuncs.cpp \
 	../../mobile-widgets/qmlmanager.cpp \
 	../../mobile-widgets/qmlprefs.cpp \
 	../../qt-models/divelistmodel.cpp \
@@ -183,7 +183,6 @@ HEADERS += \
 	../../core/divelogexportlogic.h \
 	../../core/divesitehelpers.h \
 	../../core/exif.h \
-	../../core/exportfuncs.h \
 	../../core/file.h \
 	../../core/gaspressures.h \
 	../../core/gettext.h \
@@ -229,6 +228,7 @@ HEADERS += \
 	../../core/subsurface-qt/CylinderObjectHelper.h \
 	../../core/subsurface-qt/DiveObjectHelper.h \
 	../../core/subsurface-qt/DiveListNotifier.h \
+	../../backend-shared/exportfuncs.h \
 	../../mobile-widgets/qmlmanager.h \
 	../../mobile-widgets/qmlprefs.h \
 	../../map-widget/qmlmapwidgethelper.h \
