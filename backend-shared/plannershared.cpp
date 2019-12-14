@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-#include "plannerShared.h"
+#include "plannershared.h"
 #include "core/pref.h"
 #include "core/settings/qPrefDivePlanner.h"
 
