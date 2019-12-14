@@ -278,6 +278,7 @@ add_subdirectory(core)
 add_subdirectory(qt-models)
 add_subdirectory(commands)
 add_subdirectory(profile-widget)
+add_subdirectory(backend-shared)
 
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	add_subdirectory(desktop-widgets)
