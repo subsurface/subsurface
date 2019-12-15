@@ -2,6 +2,7 @@
 #include "plannerShared.h"
 #include "core/pref.h"
 #include "core/settings/qPrefDivePlanner.h"
+#include "core/settings/qPrefTechnicalDetails.h"
 #include "qt-models/diveplannermodel.h"
 
 plannerShared *plannerShared::instance()
@@ -100,27 +101,27 @@ void plannerShared::set_safetystop(bool value)
 
 int plannerShared::gflow()
 {
-	return 1;
+	return qPrefTechnicalDetails::gflow();
 }
 void plannerShared::set_gflow(int value)
 {
-	//	qPrefDivePlanner::set_X(value);
+	DivePlannerPointsModel::instance()->setGFLow(value);
 }
 
 int plannerShared::gfhigh()
 {
-	return 1;
+	return qPrefTechnicalDetails::gflow();
 }
 void plannerShared::set_gfhigh(int value)
 {
-	//	qPrefDivePlanner::set_X(value);
+	DivePlannerPointsModel::instance()->setGFHigh(value);
 }
 
 int plannerShared::vpmb_conservatism()
 {
-	return 1;
+	return qPrefTechnicalDetails::vpmb_conservatism();
 }
 void plannerShared::set_vpmb_conservatism(int value)
 {
-	//	qPrefDivePlanner::set_X(value);
+	DivePlannerPointsModel::instance()->setVpmbConservatism(value);
 }
