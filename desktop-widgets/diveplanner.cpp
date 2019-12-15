@@ -450,7 +450,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.bottompo2->setValue(prefs.bottompo2 / 1000.0);
 	ui.decopo2->setValue(prefs.decopo2 / 1000.0);
 	ui.backgasBreaks->setChecked(prefs.doo2breaks);
-	setBailout(false);
+	plannerShared::set_dobailout(false);
 	setBailoutVisibility(false);
 	ui.o2narcotic->setChecked(prefs.o2narcotic);
 	ui.drop_stone_mode->setChecked(prefs.drop_stone_mode);
@@ -497,7 +497,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
 	connect(ui.vpmb_conservatism, SIGNAL(valueChanged(int)), plannerModel, SLOT(setVpmbConservatism(int)));
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
-	connect(ui.bailout, SIGNAL(toggled(bool)), this, SLOT(setBailout(bool)));
+	connect(ui.bailout, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_bailout(bool)));
 	connect(ui.o2narcotic, SIGNAL(toggled(bool)), this, SLOT(setO2narcotic(bool)));
 	connect(ui.switch_at_req_stop, SIGNAL(toggled(bool)), plannerModel, SLOT(setSwitchAtReqStop(bool)));
 	connect(ui.min_switch_duration, SIGNAL(valueChanged(int)), plannerModel, SLOT(setMinSwitchDuration(int)));
@@ -649,12 +649,6 @@ void PlannerSettingsWidget::setBestmixEND(int depth)
 void PlannerSettingsWidget::setBackgasBreaks(bool dobreaks)
 {
 	qPrefDivePlanner::instance()->set_doo2breaks(dobreaks);
-	plannerModel->emitDataChanged();
-}
-
-void PlannerSettingsWidget::setBailout(bool dobailout)
-{
-	qPrefDivePlanner::instance()->set_dobailout(dobailout);
 	plannerModel->emitDataChanged();
 }
 
