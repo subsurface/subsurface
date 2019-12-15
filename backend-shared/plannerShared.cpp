@@ -72,11 +72,12 @@ void plannerShared::set_planner_deco_mode(deco_mode value)
 
 bool plannerShared::dobailout()
 {
-	return 1;
+	return qPrefDivePlanner::dobailout();
 }
 void plannerShared::set_dobailout(bool value)
 {
-	//	qPrefDivePlanner::set_X(value);
+	qPrefDivePlanner::set_dobailout(value);
+	DivePlannerPointsModel::instance()->emitDataChanged();
 }
 
 int plannerShared::reserve_gas()
