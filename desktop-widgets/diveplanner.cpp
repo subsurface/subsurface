@@ -469,7 +469,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.rebreathermode->insertItems(0, rebreather_modes);
 
 	modeMapper = new QSignalMapper(this);
-	connect(modeMapper, SIGNAL(mapped(int)) , plannerModel, SLOT(setDecoMode(int)));
+	connect(modeMapper, SIGNAL(mapped(int)) , plannerShared::instance(), SLOT(set_planner_deco_mode(int)));
 	modeMapper->setMapping(ui.recreational_deco, int(RECREATIONAL));
 	modeMapper->setMapping(ui.buehlmann_deco, int(BUEHLMANN));
 	modeMapper->setMapping(ui.vpmb_deco, int(VPMB));
@@ -485,8 +485,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.display_runtime, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayRuntime(bool)));
 	connect(ui.display_transitions, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayTransitions(bool)));
 	connect(ui.display_variations, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayVariations(bool)));
-	connect(ui.safetystop, SIGNAL(toggled(bool)), plannerModel, SLOT(setSafetyStop(bool)));
-	connect(ui.reserve_gas, SIGNAL(valueChanged(int)), plannerModel, SLOT(setReserveGas(int)));
+	connect(ui.safetystop, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_safetystop(bool)));
+	connect(ui.reserve_gas, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_reserve_gas(int)));
 	connect(ui.ascRate75, SIGNAL(valueChanged(int)), plannerModel, SLOT(setAscrate75(int)));
 	connect(ui.ascRate50, SIGNAL(valueChanged(int)), plannerModel, SLOT(setAscrate50(int)));
 	connect(ui.ascRateStops, SIGNAL(valueChanged(int)), plannerModel, SLOT(setAscratestops(int)));
