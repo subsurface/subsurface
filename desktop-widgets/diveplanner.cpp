@@ -493,9 +493,9 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), plannerModel, SLOT(setAscratelast6m(int)));
 	connect(ui.descRate, SIGNAL(valueChanged(int)), plannerModel, SLOT(setDescrate(int)));
 	connect(ui.drop_stone_mode, SIGNAL(toggled(bool)), plannerModel, SLOT(setDropStoneMode(bool)));
-	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFHigh(int)));
-	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
-	connect(ui.vpmb_conservatism, SIGNAL(valueChanged(int)), plannerModel, SLOT(setVpmbConservatism(int)));
+	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_gfhigh(int)));
+	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_gflow(int)));
+	connect(ui.vpmb_conservatism, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_vpmb_conservatism(int)));
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
 	connect(ui.bailout, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_bailout(bool)));
 	connect(ui.o2narcotic, SIGNAL(toggled(bool)), this, SLOT(setO2narcotic(bool)));
