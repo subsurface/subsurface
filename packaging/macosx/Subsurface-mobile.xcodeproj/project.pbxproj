@@ -21,6 +21,7 @@
 		3D23B3FE2389DD12009A3D79 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../../CHANGELOG.md; sourceTree = "<group>"; };
 		3D23B3FF2389DD26009A3D79 /* desktop-widgets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "desktop-widgets"; path = "../../desktop-widgets"; sourceTree = "<group>"; };
 		3D65BE1623B1365F003E850E /* tests */ = {isa = PBXFileReference; lastKnownFileType = folder; name = tests; path = ../../tests; sourceTree = "<group>"; };
+		3DF60A8023A622D3001F76CB /* backend-shared */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "backend-shared"; path = "../../backend-shared"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -32,6 +33,7 @@
 				3D23B3FD2389DD00009A3D79 /* CMakeLists.txt */,
 				39CE747E214FB2CF000423F3 /* subsurface-helper.cpp */,
 				39CE747F214FB2CF000423F3 /* subsurface-mobile-main.cpp */,
+				3DF60A8023A622D3001F76CB /* backend-shared */,
 				3D23B3FA2389DCB8009A3D79 /* appdata */,
 				3D23B3FB2389DCC2009A3D79 /* cmake */,
 				3D23B3FC2389DCE4009A3D79 /* commands */,
