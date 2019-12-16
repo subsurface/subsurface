@@ -6,7 +6,7 @@
 #include "core/subsurface-qt/DiveListNotifier.h"
 #include <QAbstractItemModel>
 
-struct DiveFilter;
+class DiveFilter;
 
 // There are two different representations of the dive list:
 // 1) Tree view: two-level model where dives are grouped by trips
