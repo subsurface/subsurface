@@ -48,7 +48,7 @@ popd
 # prepare build dir
 mkdir -p build-ios
 
-IOS_QT=${TOP}/Qt
+IOS_QT=~/Qt
 QT_VERSION=$(cd ${IOS_QT}; ls -d [1-9]* | awk -F. '{ printf("%02d.%02d.%02d\n", $1,$2,$3); }' | sort -n | tail -1 | sed -e 's/\.0/\./g;s/^0//')
 
 if [ -z $QT_VERSION ] ; then
