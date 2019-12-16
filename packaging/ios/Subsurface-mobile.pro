@@ -114,6 +114,11 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../qt-models/maplocationmodel.cpp \
 	../../qt-models/diveimportedmodel.cpp \
 	../../qt-models/messagehandlermodel.cpp \
+	../../qt-models/diveplannermodel.cpp \
+	../../qt-models/cylindermodel.cpp \
+	../../qt-models/cleanertablemodel.cpp \
+	../../qt-models/tankinfomodel.cpp \
+	../../qt-models/models.cpp \
 	../../profile-widget/qmlprofile.cpp \
 	../../profile-widget/divecartesianaxis.cpp \
 	../../profile-widget/diveeventitem.cpp \
@@ -241,6 +246,11 @@ HEADERS += \
 	../../qt-models/maplocationmodel.h \
 	../../qt-models/diveimportedmodel.h \
 	../../qt-models/messagehandlermodel.h \
+	../../qt-models/diveplannermodel.h \
+	../../qt-models/cylindermodel.h \
+	../../qt-models/cleanertablemodel.h \
+	../../qt-models/tankinfomodel.h \
+	../../qt-models/models.h \
 	../../profile-widget/qmlprofile.h \
 	../../profile-widget/diveprofileitem.h \
 	../../profile-widget/profilewidget2.h \
