@@ -93,7 +93,7 @@ for ARCH in $ARCHS; do
 
 	echo next building for $ARCH
 
-	INSTALL_ROOT=$TOP/build-ios/install-root-$ARCH
+	INSTALL_ROOT=$SSRF_CLONE/install-root/ios/$ARCH
 	mkdir -p $INSTALL_ROOT/lib $INSTALL_ROOT/bin $INSTALL_ROOT/include
 	PKG_CONFIG_LIBDIR=$INSTALL_ROOT/lib/pkgconfig
 
@@ -246,12 +246,12 @@ fi
 popd
 
 # now combine the libraries into fat libraries
-rm -rf install-root
-cp -a build-ios/install-root-x86_64 install-root
+ARCH_ROOT=$SSRF_CLONE/install-root/ios
+cp -a $ARCH_ROOT/x86_64/* $ARCH_ROOT
 if [ "$TARGET" = "iphoneos" ] ; then
-	pushd install-root/lib
+	pushd $ARCH_ROOT/lib
 	for LIB in $(find . -type f -name \*.a); do
-		lipo ../../build-ios/install-root-armv7/lib/$LIB ../../build-ios/install-root-arm64/lib/$LIB ../../build-ios/install-root-x86_64/lib/$LIB -create -output $LIB
+		lipo $ARCH_ROOT/armv7/lib/$LIB $ARCH_ROOT/arm64/lib/$LIB $ARCH_ROOT/x86_64/lib/$LIB -create -output $LIB
 	done
 	popd
 fi
@@ -285,6 +285,6 @@ for BUILD_NOW in $BUILD_LOOP; do
 	${IOS_QT}/${QT_VERSION}/ios/bin/qmake ../Subsurface-mobile.pro \
 		-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=$DRCONFIG
 
-	make qmake_all
+	make 
 	popd
 done

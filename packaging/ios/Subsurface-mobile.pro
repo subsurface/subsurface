@@ -132,20 +132,20 @@ RESOURCES += ./qml.qrc \
 			../../map-widget/qml/map-widget.qrc \
 			./translations.qrc
 
-LIBS += ./install-root/lib/libdivecomputer.a \
-	./install-root/lib/libgit2.a \
-	./install-root/lib/libzip.a \
-	./install-root/lib/libxslt.a \
-	./build-ios/googlemaps-build/libqtgeoservices_googlemaps.a \
+LIBS += ../../../../install-root/ios/lib/libdivecomputer.a \
+	../../../../install-root/ios/lib/libgit2.a \
+	../../../../install-root/ios/lib/libzip.a \
+	../../../../install-root/ios/lib/libxslt.a \
+	../build-ios/googlemaps-build/libqtgeoservices_googlemaps.a \
 	-liconv \
 	-lsqlite3 \
 	-lxml2
 
-INCLUDEPATH += ./install-root/include/ \
-	./install-root/lib/libzip/include \
-	./install-root/include/libxstl \
-	./install-root/include/libexstl \
-	./install-root/include/openssl \
+INCLUDEPATH += ../../../install-root/ios/include/ \
+	../../../install-root/lib/libzip/include \
+	../../../install-root/ios/include/libxstl \
+	../../../install-root/ios/include/libexstl \
+	../../../install-root/ios/include/openssl \
 	../.. \
 	../../core \
 	../../mobile-widgets/qml/kirigami/src/libkirigami \
