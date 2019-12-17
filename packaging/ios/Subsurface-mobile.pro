@@ -136,7 +136,7 @@ LIBS += ../../../../install-root/ios/lib/libdivecomputer.a \
 	../../../../install-root/ios/lib/libgit2.a \
 	../../../../install-root/ios/lib/libzip.a \
 	../../../../install-root/ios/lib/libxslt.a \
-	../build-ios/googlemaps-build/libqtgeoservices_googlemaps.a \
+	../../../../googlemaps/build-ios/libqtgeoservices_googlemaps.a \
 	-liconv \
 	-lsqlite3 \
 	-lxml2

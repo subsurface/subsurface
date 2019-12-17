@@ -145,8 +145,8 @@ for ARCH in $ARCHS; do
 	autoreconf --install
 	popd
 	if [ ! -e $PKG_CONFIG_LIBDIR/libxslt.pc ] ; then
-		mkdir -p build-ios/libxslt-build-$ARCH_NAME
-		pushd build-ios/libxslt-build-$ARCH_NAME
+		mkdir -p ${SSRF_CLONE}/libxslt/build-ios/$ARCH_NAME
+		pushd ${SSRF_CLONE}/libxslt/build-ios/$ARCH_NAME
 		${SSRF_CLONE}/libxslt/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --without-python --without-crypto --enable-static --disable-shared
 		make
 		make install
@@ -157,8 +157,8 @@ for ARCH in $ARCHS; do
 		pushd ${SSRF_CLONE}/libzip
 		# don't waste time on building command line tools, examples, manual, and regression tests - and don't build the BZIP2 support we don't need
 		sed -i.bak 's/ADD_SUBDIRECTORY(src)//;s/ADD_SUBDIRECTORY(examples)//;s/ADD_SUBDIRECTORY(man)//;s/ADD_SUBDIRECTORY(regress)//' CMakeLists.txt
-		mkdir -p build-ios/libzip-build-$ARCH_NAME
-		pushd build-ios/libzip-build-$ARCH_NAME
+		mkdir -p ${SSRF_CLONE}/libzip/build-ios/$ARCH_NAME
+		pushd ${SSRF_CLONE}/libzip/build-ios/$ARCH_NAME
 		cmake -DBUILD_SHARED_LIBS="OFF" \
 			-DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
 			-DCMAKE_INSTALL_PREFIX=${PREFIX} \
@@ -182,8 +182,8 @@ for ARCH in $ARCHS; do
 	popd
 
 	if [ ! -e $PKG_CONFIG_LIBDIR/libgit2.pc ] ; then
-		mkdir -p build-ios/libgit2-build-$ARCH
-		pushd build-ios/libgit2-build-$ARCH
+		mkdir -p ${SSRF_CLONE}/libgit2/build-ios/$ARCH
+		pushd ${SSRF_CLONE}/libgit2/build-ios/$ARCH
 		cmake ${SSRF_CLONE}/libgit2 \
 		    -G "Unix Makefiles" \
 		    -DBUILD_SHARED_LIBS="OFF" \
@@ -216,16 +216,16 @@ for ARCH in $ARCHS; do
 		autoreconf --install
 		popd
 	fi
-	if [ ! -f build-ios/libdivecomputer-${ARCH}.SHA ] ; then
-		echo "" > build-ios/libdivecomputer-${ARCH}.SHA
+	mkdir -p ../../libdivecomputer/build-ios/$ARCH
+	if [ ! -f ../../libdivecomputer/build-ios/${ARCH}/git.SHA ] ; then
+		echo "" > ../../libdivecomputer/build-ios/${ARCH}/git.SHA
 	fi
 	CURRENT_SHA=$(cd ../../libdivecomputer ; git describe)
-	PREVIOUS_SHA=$(cat build-ios/libdivecomputer-${ARCH}.SHA)
+	PREVIOUS_SHA=$(cat ../../libdivecomputer/build-ios/${ARCH}/git.SHA)
 	if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" ] ; then
-		echo $CURRENT_SHA > build-ios/libdivecomputer-${ARCH}.SHA
-		mkdir -p build-ios/libdivecomputer-build-$ARCH
-		pushd build-ios/libdivecomputer-build-$ARCH
-		../../../../libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no --without-libusb --without-hidapi --enable-ble
+		echo $CURRENT_SHA > ../../libdivecomputer/build-ios/${ARCH}/git.SHA
+		pushd ../../libdivecomputer/build-ios/$ARCH
+		../../configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no --without-libusb --without-hidapi --enable-ble
 		make
 		make install
 		popd
@@ -234,8 +234,8 @@ for ARCH in $ARCHS; do
 done
 
 # build googlemaps
-mkdir -p build-ios/googlemaps-build
-pushd build-ios/googlemaps-build
+mkdir -p ${SSRF_CLONE}/googlemaps/build-ios
+pushd ${SSRF_CLONE}/googlemaps/build-ios
 ${IOS_QT}/${QT_VERSION}/ios/bin/qmake ${SSRF_CLONE}/googlemaps/googlemaps.pro CONFIG+=release
 make
 if [ "$DEBUGRELEASE" != "Release" ] ; then
