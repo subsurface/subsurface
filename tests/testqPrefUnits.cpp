@@ -32,14 +32,14 @@ void TestQPrefUnits::test_struct_get()
 	prefs.units.weight = units::KG;
 
 	QCOMPARE(tst->coordinates_traditional(), true);
-	QCOMPARE(tst->duration_units(), units::MIXED);
-	QCOMPARE(tst->length(), units::METERS);
-	QCOMPARE(tst->pressure(), units::BAR);
+	QCOMPARE(tst->duration_units(), QStringLiteral("mixed"));
+	QCOMPARE(tst->length(), QStringLiteral("meters"));
+	QCOMPARE(tst->pressure(), QStringLiteral("bar"));
 	QCOMPARE(tst->show_units_table(), true);
-	QCOMPARE(tst->temperature(), units::CELSIUS);
-	QCOMPARE(tst->vertical_speed_time(), units::SECONDS);
-	QCOMPARE(tst->volume(), units::LITER);
-	QCOMPARE(tst->weight(), units::KG);
+	QCOMPARE(tst->temperature(), QStringLiteral("celcius"));
+	QCOMPARE(tst->vertical_speed_time(), QStringLiteral("seconds"));
+	QCOMPARE(tst->volume(), QStringLiteral("liter"));
+	QCOMPARE(tst->weight(), QStringLiteral("kg"));
 }
 
 void TestQPrefUnits::test_set_struct()
@@ -157,9 +157,9 @@ void TestQPrefUnits::test_multiple()
 	auto tst = qPrefUnits::instance();
 
 	QCOMPARE(tst->length(), qPrefUnits::length());
-	QCOMPARE(tst->length(), units::METERS);
+	QCOMPARE(tst->length(), QStringLiteral("meters"));
 	QCOMPARE(tst->pressure(), qPrefUnits::pressure());
-	QCOMPARE(tst->pressure(), units::BAR);
+	QCOMPARE(tst->pressure(), QStringLiteral("bar"));
 }
 
 void TestQPrefUnits::test_unit_system()
@@ -170,20 +170,20 @@ void TestQPrefUnits::test_unit_system()
 
 	tst->set_unit_system("metric");
 	QCOMPARE(prefs.unit_system, METRIC);
-	QCOMPARE(tst->unit_system(), QString("metric"));
+	QCOMPARE(tst->unit_system(), QStringLiteral("metric"));
 	tst->set_unit_system("imperial");
 	QCOMPARE(prefs.unit_system, IMPERIAL);
-	QCOMPARE(tst->unit_system(), QString("imperial"));
+	QCOMPARE(tst->unit_system(), QStringLiteral("imperial"));
 	tst->set_unit_system("personalized");
 	QCOMPARE(prefs.unit_system, PERSONALIZE);
-	QCOMPARE(tst->unit_system(), QString("personalized"));
+	QCOMPARE(tst->unit_system(), QStringLiteral("personalized"));
 
 	prefs.unit_system = METRIC;
-	QCOMPARE(tst->unit_system(), QString("metric"));
+	QCOMPARE(tst->unit_system(), QStringLiteral("metric"));
 	prefs.unit_system = IMPERIAL;
-	QCOMPARE(tst->unit_system(), QString("imperial"));
+	QCOMPARE(tst->unit_system(), QStringLiteral("imperial"));
 	prefs.unit_system = PERSONALIZE;
-	QCOMPARE(tst->unit_system(), QString("personalized"));
+	QCOMPARE(tst->unit_system(), QStringLiteral("personalized"));
 }
 
 #define TEST(METHOD, VALUE)      \
@@ -205,12 +205,12 @@ void TestQPrefUnits::test_oldPreferences()
 	units->set_coordinates_traditional(false);
 	units->set_vertical_speed_time(units::SECONDS);
 
-	TEST(units->length(), units::METERS);
-	TEST(units->pressure(), units::BAR);
-	TEST(units->volume(), units::LITER);
-	TEST(units->temperature(), units::CELSIUS);
-	TEST(units->weight(), units::KG);
-	TEST(units->vertical_speed_time(), units::SECONDS);
+	TEST(units->length(), QStringLiteral("meters"));
+	TEST(units->pressure(), QStringLiteral("bar"));
+	TEST(units->volume(), QStringLiteral("liter"));
+	TEST(units->temperature(), QStringLiteral("celcius"));
+	TEST(units->weight(), QStringLiteral("kg"));
+	TEST(units->vertical_speed_time(), QStringLiteral("seconds"));
 	TEST(units->unit_system(), QStringLiteral("metric"));
 	TEST(units->coordinates_traditional(), false);
 
@@ -223,27 +223,27 @@ void TestQPrefUnits::test_oldPreferences()
 	units->set_unit_system(QStringLiteral("fake-metric-system"));
 	units->set_coordinates_traditional(true);
 
-	TEST(units->length(), units::FEET);
-	TEST(units->pressure(), units::PSI);
-	TEST(units->volume(), units::CUFT);
-	TEST(units->temperature(), units::FAHRENHEIT);
-	TEST(units->weight(), units::LBS);
-	TEST(units->vertical_speed_time(), units::MINUTES);
+	TEST(units->length(), QStringLiteral("feet"));
+	TEST(units->pressure(), QStringLiteral("psi"));
+	TEST(units->volume(), QStringLiteral("cuft"));
+	TEST(units->temperature(), QStringLiteral("fahrenheit"));
+	TEST(units->weight(), QStringLiteral("lbs"));
+	TEST(units->vertical_speed_time(), QStringLiteral("minutes"));
 	TEST(units->unit_system(), QStringLiteral("personalized"));
 	TEST(units->coordinates_traditional(), true);
 }
 
 void TestQPrefUnits::test_signals()
 {
-	QSignalSpy spy1(qPrefUnits::instance(), &qPrefUnits::coordinates_traditionalChanged);
-	QSignalSpy spy2(qPrefUnits::instance(), &qPrefUnits::duration_unitsChanged);
-	QSignalSpy spy3(qPrefUnits::instance(), &qPrefUnits::lengthChanged);
-	QSignalSpy spy4(qPrefUnits::instance(), &qPrefUnits::pressureChanged);
-	QSignalSpy spy5(qPrefUnits::instance(), &qPrefUnits::show_units_tableChanged);
-	QSignalSpy spy6(qPrefUnits::instance(), &qPrefUnits::temperatureChanged);
-	QSignalSpy spy7(qPrefUnits::instance(), &qPrefUnits::vertical_speed_timeChanged);
-	QSignalSpy spy8(qPrefUnits::instance(), &qPrefUnits::volumeChanged);
-	QSignalSpy spy9(qPrefUnits::instance(), &qPrefUnits::weightChanged);
+	QSignalSpy spy1(qPrefUnits::instance(), SIGNAL(coordinates_traditionalChanged(bool)));
+	QSignalSpy spy2(qPrefUnits::instance(), SIGNAL(duration_unitsChanged(int)));
+	QSignalSpy spy3(qPrefUnits::instance(), SIGNAL(lengthChanged(int)));
+	QSignalSpy spy4(qPrefUnits::instance(), SIGNAL(pressureChanged(int)));
+	QSignalSpy spy5(qPrefUnits::instance(), SIGNAL(show_units_tableChanged(bool)));
+	QSignalSpy spy6(qPrefUnits::instance(), SIGNAL(temperatureChanged(int)));
+	QSignalSpy spy7(qPrefUnits::instance(), SIGNAL(vertical_speed_timeChanged(int)));
+	QSignalSpy spy8(qPrefUnits::instance(), SIGNAL(volumeChanged(int)));
+	QSignalSpy spy9(qPrefUnits::instance(), SIGNAL(weightChanged(int)));
 
 	prefs.coordinates_traditional = true;
 	qPrefUnits::set_coordinates_traditional(false);
