@@ -28,7 +28,7 @@ Kirigami.ScrollablePage {
 		}
 		Controls.Label {
 			id: explanationTextBasic
-			visible: !showPin
+			visible: !prefs.showPin
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.gridUnit
 			Layout.topMargin: Kirigami.Units.gridUnit * 3
@@ -41,7 +41,7 @@ Kirigami.ScrollablePage {
 		}
 		Controls.Label {
 			id: explanationTextPin
-			visible: showPin
+			visible: prefs.showPin
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.gridUnit
 			Layout.topMargin: Kirigami.Units.gridUnit * 3

@@ -26,11 +26,9 @@ Kirigami.ApplicationWindow {
 	pageStack.globalToolBar.preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2 : 1.5))
 	pageStack.globalToolBar.maximumHeight: Kirigami.Units.gridUnit * 2
 
-	property alias oldStatus: prefs.oldStatus
 	property alias notificationText: manager.notificationText
 	property alias locationServiceEnabled: manager.locationServiceEnabled
 	property alias pluggedInDeviceName: manager.pluggedInDeviceName
-	property alias showPin: prefs.showPin
 	property alias defaultCylinderIndex: settingsWindow.defaultCylinderIndex
 	property bool filterToggle: false
 	property string filterPattern: ""
@@ -249,8 +247,8 @@ Kirigami.ApplicationWindow {
 					if (prefs.credentialStatus == CloudStatus.CS_UNKNOWN) {
 						// the user has asked to change credentials - if the credentials before that
 						// were valid, go back to dive list
-						if (oldStatus == CloudStatus.CS_VERIFIED) {
-							prefs.credentialStatus = oldStatus
+						if (prefs.oldStatus == CloudStatus.CS_VERIFIED) {
+							prefs.credentialStatus = prefs.oldStatus
 						}
 					}
 					returnTopPage()
@@ -334,7 +332,7 @@ Kirigami.ApplicationWindow {
 					onTriggered: {
 						if (prefs.credentialStatus === CloudStatus.CS_NOCLOUD) {
 							returnTopPage()
-							oldStatus = prefs.credentialStatus
+							prefs.oldStatus = prefs.credentialStatus
 							manager.startPageText = "Enter valid cloud storage credentials"
 							prefs.credentialStatus = CloudStatus.CS_UNKNOWN
 							globalDrawer.close()
