@@ -496,7 +496,6 @@ QMLManager *QMLManager::instance()
 
 void QMLManager::saveCloudCredentials()
 {
-	QSettings s;
 	bool cloudCredentialsChanged = false;
 	bool noCloud = QMLPrefs::instance()->credentialStatus() == qPrefCloudStorage::CS_NOCLOUD;
 
@@ -537,11 +536,9 @@ void QMLManager::saveCloudCredentials()
 	    !verifyCredentials(QMLPrefs::instance()->cloudUserName(), QMLPrefs::instance()->cloudPassword(), QMLPrefs::instance()->cloudPin()))
 		return;
 
-	s.beginGroup("CloudStorage");
-	s.setValue("email", QMLPrefs::instance()->cloudUserName());
-	s.setValue("password", QMLPrefs::instance()->cloudPassword());
-	s.setValue("cloud_verification_status", QMLPrefs::instance()->credentialStatus());
-	s.sync();
+	qPrefCloudStorage::set_cloud_storage_email(QMLPrefs::instance()->cloudUserName());
+	qPrefCloudStorage::set_cloud_storage_password(QMLPrefs::instance()->cloudPassword());
+	qPrefCloudStorage::set_cloud_verification_status(QMLPrefs::instance()->credentialStatus());
 
 	if (!same_string(prefs.cloud_storage_password,
 					qPrintable(QMLPrefs::instance()->cloudPassword()))) {
