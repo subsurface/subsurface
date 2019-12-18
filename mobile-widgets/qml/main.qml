@@ -165,6 +165,8 @@ Kirigami.ApplicationWindow {
 	globalDrawer: Kirigami.GlobalDrawer {
 		id: gDrawer
 		height: rootItem.height
+		enabled: (prefs.credentialStatus === CloudStatus.CS_NOCLOUD ||
+					prefs.credentialStatus === CloudStatus.CS_VERIFIED)
 		topContent: Image {
 			source: "qrc:/qml/icons/dive.jpg"
 			Layout.fillWidth: true
