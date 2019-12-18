@@ -121,8 +121,8 @@ extern "C" char *printGPSCoordsC(const location_t *location)
 * Try to parse in a generic manner a coordinate.
 */
 static bool parseCoord(const QString& txt, int& pos, const QString& positives,
-		       const QString& negatives, const QString& others,
-		       double& value)
+			const QString& negatives, const QString& others,
+			double& value)
 {
 	bool numberDefined = false, degreesDefined = false,
 		minutesDefined = false, secondsDefined = false;
@@ -1065,7 +1065,7 @@ static void convertLocalFilename(const QHash<QString, QByteArray> &hashOf, const
 		QByteArray hash = it.key();
 		HashToFile dummy { hash, QString() };
 		for(auto it2 = std::lower_bound(h2f.begin(), h2f.end(), dummy);
-		    it2 != h2f.end() && it2->hash == hash; ++it2) {
+			it2 != h2f.end() && it2->hash == hash; ++it2) {
 			// Note that learnPictureFilename cares about all the special cases,
 			// i.e. either filename being empty or both filenames being equal.
 			learnPictureFilename(it2->filename, it.value());
