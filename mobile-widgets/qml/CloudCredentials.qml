@@ -37,7 +37,7 @@ Item {
 		Keys.onTabPressed: goToNext()
 
 		onVisibleChanged: {
-			if (visible && manager.accessingCloud < 0) {
+			if (visible) {
 				Qt.inputMethod.show()
 				login.forceActiveFocus()
 			} else {
