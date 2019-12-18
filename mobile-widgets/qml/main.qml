@@ -50,8 +50,8 @@ Kirigami.ApplicationWindow {
 		id: fontMetrics
 		Component.onCompleted: {
 			manager.appendTextToLog("Using the following font: " + fontMetrics.font.family
-				    + " at " + subsurfaceTheme.basePointSize + "pt" +
-				    " with mobile_scale: " + PrefDisplay.mobile_scale)
+					+ " at " + subsurfaceTheme.basePointSize + "pt" +
+					" with mobile_scale: " + PrefDisplay.mobile_scale)
 		}
 	}
 	visible: false
@@ -164,7 +164,7 @@ Kirigami.ApplicationWindow {
 		id: gDrawer
 		height: rootItem.height
 		enabled: (prefs.credentialStatus === CloudStatus.CS_NOCLOUD ||
-					prefs.credentialStatus === CloudStatus.CS_VERIFIED)
+			 prefs.credentialStatus === CloudStatus.CS_VERIFIED)
 		topContent: Image {
 			source: "qrc:/qml/icons/dive.jpg"
 			Layout.fillWidth: true

@@ -2,7 +2,8 @@
 #include "plannerShared.h"
 #include "core/pref.h"
 #include "core/settings/qPrefDivePlanner.h"
-
+#include "core/settings/qPrefTechnicalDetails.h"
+#include "qt-models/diveplannermodel.h"
 
 plannerShared *plannerShared::instance()
 {
@@ -59,3 +60,68 @@ void plannerShared::set_descrate(int value)
 	qPrefDivePlanner::set_descrate(value * TO_MM_BY_SEC);
 }
 
+
+// Planning values
+deco_mode plannerShared::planner_deco_mode()
+{
+	return qPrefDivePlanner::planner_deco_mode();
+}
+void plannerShared::set_planner_deco_mode(deco_mode value)
+{
+	DivePlannerPointsModel::instance()->setDecoMode(value);
+}
+
+bool plannerShared::dobailout()
+{
+	return qPrefDivePlanner::dobailout();
+}
+void plannerShared::set_dobailout(bool value)
+{
+	qPrefDivePlanner::set_dobailout(value);
+	DivePlannerPointsModel::instance()->emitDataChanged();
+}
+
+int plannerShared::reserve_gas()
+{
+	return qPrefDivePlanner::reserve_gas();
+}
+void plannerShared::set_reserve_gas(int value)
+{
+	DivePlannerPointsModel::instance()->setReserveGas(value);
+}
+
+bool plannerShared::safetystop()
+{
+	return qPrefDivePlanner::safetystop();
+}
+void plannerShared::set_safetystop(bool value)
+{
+	DivePlannerPointsModel::instance()->setSafetyStop(value);
+}
+
+int plannerShared::gflow()
+{
+	return qPrefTechnicalDetails::gflow();
+}
+void plannerShared::set_gflow(int value)
+{
+	DivePlannerPointsModel::instance()->setGFLow(value);
+}
+
+int plannerShared::gfhigh()
+{
+	return qPrefTechnicalDetails::gflow();
+}
+void plannerShared::set_gfhigh(int value)
+{
+	DivePlannerPointsModel::instance()->setGFHigh(value);
+}
+
+int plannerShared::vpmb_conservatism()
+{
+	return qPrefTechnicalDetails::vpmb_conservatism();
+}
+void plannerShared::set_vpmb_conservatism(int value)
+{
+	DivePlannerPointsModel::instance()->setVpmbConservatism(value);
+}
