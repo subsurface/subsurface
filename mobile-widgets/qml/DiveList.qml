@@ -34,6 +34,18 @@ Kirigami.ScrollablePage {
 			}
 		}
 	}
+//	this will be: onVisibleChanged: {
+	function simulateVisibleChanged() {
+		console.log("---> DiveList changed visibility to " + visible)
+		if (visible) {
+			page.actions.main = page.downloadFromDCAction
+			page.actions.right = page.addDiveAction
+			page.actions.left = page.filterToggleAction
+			page.title = qsTr("Dive list")
+			if (diveListView.count === 0)
+				showPassiveNotification(qsTr("Please tap the '+' button to add a dive (or download dives from a supported dive computer)"), 3000)
+		}
+	}
 
 	Component {
 		id: diveDelegate
@@ -389,24 +401,17 @@ Kirigami.ScrollablePage {
 			 credentialStatus === CloudStatus.CS_VERIFIED) ? 0 : 1
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
-		function setupActions() {
-			if (prefs.credentialStatus === CloudStatus.CS_VERIFIED ||
-					prefs.credentialStatus === CloudStatus.CS_NOCLOUD) {
-				page.actions.main = page.downloadFromDCAction
-				page.actions.right = page.addDiveAction
-				page.actions.left = page.filterToggleAction
-				page.title = qsTr("Dive list")
-				if (diveListView.count === 0)
-					showPassiveNotification(qsTr("Please tap the '+' button to add a dive (or download dives from a supported dive computer)"), 3000)
-			} else {
+		onVisibleChanged: {
+			console.log("---> Startpage changed visibility to " + visible)
+			if (visible) {
 				page.actions.main = null
 				page.actions.right = null
 				page.actions.left = null
 				page.title = qsTr("Cloud credentials")
+			} else {
+				// This is to be removed when StartPage becomes a proper page
+				page.simulateVisibleChanged()
 			}
-		}
-		onVisibleChanged: {
-			setupActions();
 		}
 	}
 
