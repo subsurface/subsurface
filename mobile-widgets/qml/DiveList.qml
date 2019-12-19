@@ -408,11 +408,6 @@ Kirigami.ScrollablePage {
 		onVisibleChanged: {
 			setupActions();
 		}
-
-		Component.onCompleted: {
-			manager.finishSetup();
-			setupActions();
-		}
 	}
 
 	Controls.Label {
