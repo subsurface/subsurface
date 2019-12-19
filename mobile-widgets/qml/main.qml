@@ -858,8 +858,10 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		rootItem.opacity = 1
 		manager.appendTextToLog("setting the defaultColumnWidth to " + Kirigami.Units.gridUnit * 21)
 		pageStack.defaultColumnWidth = Kirigami.Units.gridUnit * 21
+		manager.finishSetup()
 		manager.appInitialized()
 	}
+
 	/* TODO: Verify where opacity went to.
 	Behavior on opacity {
 		NumberAnimation {
