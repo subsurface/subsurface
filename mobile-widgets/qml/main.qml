@@ -708,16 +708,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		}
 	}
 
-	pageStack.initialPage: DiveList {
-		id: diveList
-		opacity: 0
-		Behavior on opacity {
-			NumberAnimation {
-				duration: 200
-				easing.type: Easing.OutQuad
-			}
-		}
-	}
+	pageStack.initialPage: diveList
 
 	property int hackToOpenMap: 0 /* Otherpage */
 	/* I really want an enum, but those are painful in QML, so let's use numbers
@@ -781,6 +772,11 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	QMLManager {
 		id: manager
+	}
+
+	DiveList {
+		id: diveList
+		visible: false
 	}
 
 	Settings {
