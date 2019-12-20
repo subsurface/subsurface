@@ -55,17 +55,6 @@ void QMLPrefs::setCloudPin(const QString &cloudPin)
 	emit cloudPinChanged();
 }
 
-const QString QMLPrefs::cloudUserName() const
-{
-	return m_cloudUserName;
-}
-
-void QMLPrefs::setCloudUserName(const QString &cloudUserName)
-{
-	m_cloudUserName = cloudUserName.toLower();
-	emit cloudUserNameChanged();
-}
-
 qPrefCloudStorage::cloud_status QMLPrefs::credentialStatus() const
 {
 	return m_credentialStatus;
@@ -140,7 +129,7 @@ void QMLPrefs::cancelCredentialsPinSetup()
 
 void QMLPrefs::clearCredentials()
 {
-	setCloudUserName(NULL);
+	qPrefCloudStorage::set_cloud_storage_email(NULL);
 	setCloudPassword(NULL);
 	setCloudPin(NULL);
 }
