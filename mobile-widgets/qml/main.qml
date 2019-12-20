@@ -708,8 +708,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		}
 	}
 
-	pageStack.initialPage: diveList
-
 	property int hackToOpenMap: 0 /* Otherpage */
 	/* I really want an enum, but those are painful in QML, so let's use numbers
 	 * 0 (Otherpage)   - the last page selected was a non-map page
@@ -772,6 +770,31 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	QMLManager {
 		id: manager
+	}
+
+	StartPage {
+		id: startPage
+		anchors.fill: parent
+		visible: prefs.credentialStatus !== CloudStatus.CS_NOCLOUD &&
+			 prefs.credentialStatus !== CloudStatus.CS_VERIFIED
+		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
+
+		onVisibleChanged: {
+			console.log("---> Startpage changed visibility to " + visible)
+			if (visible) {
+				pageStack.clear()
+				diveList.visible = false
+			} else {
+				pageStack.push(diveList)
+			}
+		}
+
+		Component.onCompleted: {
+			if (!visible) {
+				console.log("---> Startpage change to diveList")
+				pageStack.initPage = diveList
+			}
+		}
 	}
 
 	DiveList {
