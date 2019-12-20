@@ -58,7 +58,7 @@ Item {
 
 		Controls.TextField {
 			id: login
-			text: prefs.cloudUserName
+			text: PrefCloudStorage.cloud_storage_email
 			visible: !prefs.showPin
 			Layout.fillWidth: true
 			inputMethodHints: Qt.ImhEmailCharactersOnly |
@@ -101,7 +101,7 @@ Item {
 			visible: prefs.showPin
 			SsrfButton {
 				id: registerpin
-				text: qsTr("Register") 
+				text: qsTr("Register")
 				onClicked: {
 					saveCredentials()
 				}
