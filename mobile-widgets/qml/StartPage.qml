@@ -7,7 +7,6 @@ import org.subsurfacedivelog.mobile 1.0
 
 
 Kirigami.ScrollablePage {
-	id: startpage
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 
 	ColumnLayout {
