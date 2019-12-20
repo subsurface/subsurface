@@ -33,17 +33,6 @@ QMLPrefs *QMLPrefs::instance()
 
 
 /*** public functions ***/
-const QString QMLPrefs::cloudPassword() const
-{
-	return m_cloudPassword;
-}
-
-void QMLPrefs::setCloudPassword(const QString &cloudPassword)
-{
-	m_cloudPassword = cloudPassword;
-	emit cloudPasswordChanged();
-}
-
 const QString QMLPrefs::cloudPin() const
 {
 	return m_cloudPin;
@@ -130,6 +119,6 @@ void QMLPrefs::cancelCredentialsPinSetup()
 void QMLPrefs::clearCredentials()
 {
 	qPrefCloudStorage::set_cloud_storage_email(NULL);
-	setCloudPassword(NULL);
+	qPrefCloudStorage::set_cloud_storage_password(NULL);
 	setCloudPin(NULL);
 }
