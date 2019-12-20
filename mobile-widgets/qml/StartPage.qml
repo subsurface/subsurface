@@ -50,7 +50,7 @@ Kirigami.ScrollablePage {
 				"If you do not receive an email from us within 15 minutes, please check " +
 				"the correct spelling of your email address and your spam box first.<br/><br/>" +
 				"In case of any problems regarding cloud account setup, please contact us " +
-				"at our user forum \(https://subsurface-divelog.org/user-forum/\).<br/><br/>").arg(prefs.cloudUserName)
+				"at our user forum \(https://subsurface-divelog.org/user-forum/\).<br/><br/>").arg(PrefCloudStorage.cloud_storage_email)
 			wrapMode: Text.WordWrap
 		}
 		Item { width: Kirigami.Units.gridUnit; height: 3 * Kirigami.Units.gridUnit}
