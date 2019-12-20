@@ -225,7 +225,7 @@ Kirigami.ApplicationWindow {
 						visible: text.length > 0
 						level: 3
 						color: "white"
-						text: prefs.cloudUserName
+						text: PrefCloudStorage.cloud_storage_email
 						wrapMode: Text.NoWrap
 						elide: Text.ElideRight
 						font.weight: Font.Normal
