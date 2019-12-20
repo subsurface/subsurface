@@ -132,8 +132,6 @@ void QMLPrefs::cancelCredentialsPinSetup()
 	 */
 	
 	setCredentialStatus(qPrefCloudStorage::CS_UNKNOWN);
-	qPrefCloudStorage::set_cloud_storage_email(m_cloudUserName);
-	qPrefCloudStorage::set_cloud_storage_password(m_cloudPassword);
 	qPrefCloudStorage::set_cloud_verification_status(m_credentialStatus);
 	QMLManager::instance()->setStartPageText(tr("Starting..."));
 	
