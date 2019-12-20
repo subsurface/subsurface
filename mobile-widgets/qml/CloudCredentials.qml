@@ -74,7 +74,7 @@ Item {
 
 		Controls.TextField {
 			id: password
-			text: prefs.cloudPassword
+			text: PrefCloudStorage.cloud_storage_password
 			visible: !rootItem.showPin
 			echoMode: TextInput.PasswordEchoOnEdit
 			inputMethodHints: Qt.ImhSensitiveData |

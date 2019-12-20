@@ -442,13 +442,12 @@ QString QMLManager::getCombinedLogs()
 void QMLManager::finishSetup()
 {
 	// Initialize cloud credentials.
-	QMLPrefs::instance()->setCloudPassword(qPrefCloudStorage::cloud_storage_password());
 	git_local_only = !prefs.cloud_auto_sync;
 	QMLPrefs::instance()->setCredentialStatus((qPrefCloudStorage::cloud_status) prefs.cloud_verification_status);
 	// if the cloud credentials are valid, we should get the GPS Webservice ID as well
 	QString url;
 	if (!qPrefCloudStorage::cloud_storage_email().isEmpty() &&
-	    !QMLPrefs::instance()->cloudPassword().isEmpty() &&
+	    !qPrefCloudStorage::cloud_storage_password().isEmpty() &&
 	    getCloudURL(url) == 0) {
 		// we know that we are the first ones to access git storage, so we don't need to test,
 		// but we need to make sure we stay the only ones accessing git storage
@@ -498,14 +497,12 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 	bool cloudCredentialsChanged = false;
 	bool noCloud = QMLPrefs::instance()->credentialStatus() == qPrefCloudStorage::CS_NOCLOUD;
 
-	QMLPrefs::instance()->setCloudPassword(newPassword);
-
 	// make sure we only have letters, numbers, and +-_. in password and email address
 	QRegularExpression regExp("^[a-zA-Z0-9@.+_-]+$");
 	if (!noCloud) {
 		// in case of NO_CLOUD, the email address + passwd do not care, so do not check it.
-		if (QMLPrefs::instance()->cloudPassword().isEmpty() ||
-			!regExp.match(QMLPrefs::instance()->cloudPassword()).hasMatch() ||
+		if (newPassword.isEmpty() ||
+			!regExp.match(newPassword).hasMatch() ||
 			!regExp.match(newEmail).hasMatch()) {
 			setStartPageText(RED_FONT + tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.") + END_FONT);
 			return;
@@ -521,8 +518,9 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 		cloudCredentialsChanged = true;
 	}
 
-	cloudCredentialsChanged |= !same_string(prefs.cloud_storage_password,
-						qPrintable(QMLPrefs::instance()->cloudPassword()));
+	if (!same_string(prefs.cloud_storage_password, qPrintable(newPassword))) {
+		cloudCredentialsChanged = true;
+	}
 
 	if (QMLPrefs::instance()->credentialStatus() != qPrefCloudStorage::CS_NOCLOUD &&
 		!cloudCredentialsChanged) {
@@ -531,18 +529,13 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 	}
 
 	if (!noCloud &&
-	    !verifyCredentials(newEmail, QMLPrefs::instance()->cloudPassword(), QMLPrefs::instance()->cloudPin()))
+		!verifyCredentials(newEmail, newPassword, QMLPrefs::instance()->cloudPin()))
 		return;
 
 	qPrefCloudStorage::set_cloud_storage_email(newEmail);
-	qPrefCloudStorage::set_cloud_storage_password(QMLPrefs::instance()->cloudPassword());
+	qPrefCloudStorage::set_cloud_storage_password(newPassword);
 	qPrefCloudStorage::set_cloud_verification_status(QMLPrefs::instance()->credentialStatus());
 
-	if (!same_string(prefs.cloud_storage_password,
-					qPrintable(QMLPrefs::instance()->cloudPassword()))) {
-		free((void *)prefs.cloud_storage_password);
-		prefs.cloud_storage_password = copy_qstring(QMLPrefs::instance()->cloudPassword());
-	}
 	if (noCloud && cloudCredentialsChanged && dive_table.nr) {
 		// we came from NOCLOUD and are connecting to a cloud account;
 		// since we already have dives in the table, let's remember that so we can keep them
@@ -550,7 +543,7 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 		appendTextToLog("transitioning from no-cloud to cloud and have dives");
 	}
 	if (qPrefCloudStorage::cloud_storage_email().isEmpty() ||
-		QMLPrefs::instance()->cloudPassword().isEmpty()) {
+		qPrefCloudStorage::cloud_storage_password().isEmpty()) {
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	} else if (cloudCredentialsChanged) {
 		// let's make sure there are no unsaved changes
@@ -828,7 +821,7 @@ void QMLManager::revertToNoCloudIfNeeded()
 		free((void *)prefs.cloud_storage_password);
 		prefs.cloud_storage_password = NULL;
 		qPrefCloudStorage::set_cloud_storage_email("");
-		QMLPrefs::instance()->setCloudPassword("");
+		qPrefCloudStorage::set_cloud_storage_password("");
 		QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_NOCLOUD);
 		set_filename(NOCLOUD_LOCALSTORAGE);
 		setStartPageText(RED_FONT + tr("Failed to connect to cloud server, reverting to no cloud status") + END_FONT);
