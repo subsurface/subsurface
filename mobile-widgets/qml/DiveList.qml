@@ -42,8 +42,7 @@ Kirigami.ScrollablePage {
 			}
 		}
 	}
-//	this will be: onVisibleChanged: {
-	function simulateVisibleChanged() {
+	onVisibleChanged: {
 		console.log("---> DiveList changed visibility to " + visible)
 		if (visible) {
 			page.actions.main = page.downloadFromDCAction
@@ -398,27 +397,6 @@ Kirigami.ScrollablePage {
 				width: parent.width
 				anchors.top: headingBackground.bottom
 				color: "#B2B2B2"
-			}
-		}
-	}
-
-	StartPage {
-		id: startPage
-		anchors.fill: parent
-		opacity: (credentialStatus === CloudStatus.CS_NOCLOUD ||
-			 credentialStatus === CloudStatus.CS_VERIFIED) ? 0 : 1
-		visible: opacity > 0
-		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
-		onVisibleChanged: {
-			console.log("---> Startpage changed visibility to " + visible)
-			if (visible) {
-				page.actions.main = null
-				page.actions.right = null
-				page.actions.left = null
-				page.title = qsTr("Cloud credentials")
-			} else {
-				// This is to be removed when StartPage becomes a proper page
-				page.simulateVisibleChanged()
 			}
 		}
 	}
