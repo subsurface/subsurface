@@ -244,13 +244,6 @@ Kirigami.ApplicationWindow {
 				text: qsTr("Dive list")
 				onTriggered: {
 					manager.appendTextToLog("requested dive list with credential status " + prefs.credentialStatus)
-					if (prefs.credentialStatus == CloudStatus.CS_UNKNOWN) {
-						// the user has asked to change credentials - if the credentials before that
-						// were valid, go back to dive list
-						if (prefs.oldStatus == CloudStatus.CS_VERIFIED) {
-							prefs.credentialStatus = prefs.oldStatus
-						}
-					}
 					returnTopPage()
 					globalDrawer.close()
 				}
