@@ -198,7 +198,7 @@ public slots:
 	bool toggleTags(bool toggle);
 	bool toggleCylinders(bool toggle);
 	bool toggleWeights(bool toggle);
-	bool undoDelete(int id);
+	void undoDelete(int id);
 	QString addDive();
 	void addDiveAborted(int id);
 	void applyGpsData();
