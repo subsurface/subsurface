@@ -15,10 +15,8 @@ Item {
 	property string password: password.text;
 
 	function saveCredentials() {
-		prefs.cloudUserName = login.text
-		prefs.cloudPassword = password.text
 		prefs.cloudPin = pin.text
-		manager.saveCloudCredentials()
+		manager.saveCloudCredentials(login.text, password.text)
 	}
 
 	ColumnLayout {
