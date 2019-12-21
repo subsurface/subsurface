@@ -155,12 +155,11 @@ Kirigami.Page {
 		}
 		onTriggered: {
 			var deletedId = currentItem.modelData.id
-			var deletedIndex = diveDetailsListView.currentIndex
 			manager.deleteDive(deletedId)
 			pageStack.pop()
 			showPassiveNotification("Dive deleted", 5000, "Undo",
 						function() {
-							diveDetailsListView.currentIndex = manager.undoDelete(deletedId) ? deletedIndex : diveDetailsListView.currentIndex
+							manager.undoDelete(deletedId)
 						});
 		}
 	}
