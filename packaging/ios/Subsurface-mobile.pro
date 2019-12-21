@@ -6,6 +6,9 @@ DEFINES += SUBSURFACE_MOBILE BT_SUPPORT BLE_SUPPORT
 
 CONFIG += c++11
 
+CONFIG += qtquickcompiler
+QTQUICK_COMPILER_SKIPPED_RESOURCES +=
+
 SOURCES += ../../subsurface-mobile-main.cpp \
 	../../subsurface-helper.cpp \
 	../../map-widget/qmlmapwidgethelper.cpp \
