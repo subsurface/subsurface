@@ -137,7 +137,6 @@ Item {
 		diveDetailsListView.currentItem.modelData.visibility = detailsEdit.visibility
 		Qt.inputMethod.hide()
 		// now make sure we directly show the saved dive (this may be a new dive, or it may have moved)
-		showDiveIndex(newIdx)
 		clearDetailsEdit()
 	}
 

@@ -229,11 +229,6 @@ Kirigami.Page {
 		}
 	}
 
-	function showDiveIndex(id) {
-		currentIndex = swipeModel.getIdxForId(id);
-		diveDetailsListView.positionViewAtIndex(currentIndex, ListView.End);
-	}
-
 	function endEditMode() {
 		// if we were adding a dive, we need to remove it
 		if (state === "add")
