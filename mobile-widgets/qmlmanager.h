@@ -107,6 +107,7 @@ public:
 	Q_INVOKABLE void setGitLocalOnly(const bool &value);
 	Q_INVOKABLE void setFilter(const QString filterText, int mode);
 	Q_INVOKABLE void selectRow(int row);
+	Q_INVOKABLE void selectSwipeRow(int row);
 
 	static QMLManager *instance();
 	Q_INVOKABLE void registerError(QString error);
