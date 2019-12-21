@@ -499,8 +499,6 @@ Kirigami.ScrollablePage {
 	ListView {
 		id: diveListView
 		anchors.fill: parent
-		opacity: 1.0 - startPage.opacity
-		visible: opacity > 0
 		model: diveListModel
 		currentIndex: -1
 		delegate: diveDelegate
@@ -571,18 +569,11 @@ Kirigami.ScrollablePage {
 	}
 
 	onBackRequested: {
-		if (startPage.visible && diveListView.count > 0 &&
-			prefs.credentialStatus !== CloudStatus.CS_INCORRECT_USER_PASSWD) {
-			prefs.credentialStatus = oldStatus
-			event.accepted = true;
-		}
-		if (!startPage.visible) {
-			if (Qt.platform.os != "ios") {
-				manager.quit()
-			}
-			// let's make sure Kirigami doesn't quit on our behalf
-			event.accepted = true
-		}
+		if (Qt.platform.os != "ios")
+			manager.quit()
+
+		// let's make sure Kirigami doesn't quit on our behalf
+		event.accepted = true
 	}
 
 	function setCurrentDiveListIndex(idx, noScroll) {
