@@ -458,7 +458,7 @@ void QMLManager::finishSetup()
 	} else if (!empty_string(existing_filename) &&
 				QMLPrefs::instance()->credentialStatus() != qPrefCloudStorage::CS_UNKNOWN) {
 		QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_NOCLOUD);
-		saveCloudCredentials();
+		saveCloudCredentials(qPrefCloudStorage::cloud_storage_email(), qPrefCloudStorage::cloud_storage_password());
 		appendTextToLog(tr("working in no-cloud mode"));
 		int error = parse_file(existing_filename, &dive_table, &trip_table, &dive_site_table);
 		if (error) {
@@ -494,10 +494,13 @@ QMLManager *QMLManager::instance()
 #define CLOUDURL QString(prefs.cloud_base_url)
 #define CLOUDREDIRECTURL CLOUDURL + "/cgi-bin/redirect.pl"
 
-void QMLManager::saveCloudCredentials()
+void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &newPassword)
 {
 	bool cloudCredentialsChanged = false;
 	bool noCloud = QMLPrefs::instance()->credentialStatus() == qPrefCloudStorage::CS_NOCLOUD;
+
+	QMLPrefs::instance()->setCloudUserName(newEmail);
+	QMLPrefs::instance()->setCloudPassword(newPassword);
 
 	// make sure we only have letters, numbers, and +-_. in password and email address
 	QRegularExpression regExp("^[a-zA-Z0-9@.+_-]+$");
