@@ -378,6 +378,12 @@ void QMLManager::selectRow(int row)
 	select_single_dive(d);
 }
 
+void QMLManager::selectSwipeRow(int row)
+{
+	dive *d = diveInRow(MobileModels::instance()->swipeModel(), row);
+	select_single_dive(d);
+}
+
 void QMLManager::updateSiteList()
 {
 	LocationInformationModel::instance()->update();
