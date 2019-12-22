@@ -305,7 +305,6 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		mobile-widgets/qml/kirigami/src/libkirigami/tabletmodewatcher.cpp
 		subsurface-mobile-main.cpp
 		subsurface-helper.cpp
-		profile-widget/qmlprofile.cpp
 		map-widget/qmlmapwidgethelper.cpp
 	)
 	include_directories(${CMAKE_SOURCE_DIR}/mobile-widgets/qml/kirigami/src/libkirigami)
