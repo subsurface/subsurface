@@ -12,7 +12,7 @@
 # in subsurface/build)
 #
 # by default it puts the build folders in
-# ./subsurface/llibdivecomputer/build (libdivecomputer build)
+# ./subsurface/libdivecomputer/build (libdivecomputer build)
 # ./subsurface/build                  (desktop build)
 # ./subsurface/build-mobile           (mobile build)
 #
