@@ -55,7 +55,6 @@ set (SUBSURFACE_UI
 
 # the interface, in C++
 set(SUBSURFACE_INTERFACE
-	../map-widget/qmlmapwidgethelper.cpp
 	about.cpp
 	about.h
 	configuredivecomputerdialog.cpp
