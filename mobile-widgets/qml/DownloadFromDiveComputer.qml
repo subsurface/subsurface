@@ -162,21 +162,47 @@ Kirigami.Page {
 					elide: Text.ElideRight
 				}
 				onCurrentTextChanged: {
+					var curVendor
+					var curProduct
+					var curDevice
 					dc1.enabled = dc2.enabled = dc3.enabled = dc4.enabled = true
 					for (var i = 1; i < 5; i++) {
+						switch (i) {
+							case 1:
+								curVendor = PrefDiveComputer.vendor1
+								curProduct = PrefDiveComputer.product1
+								curDevice = PrefDiveComputer.device1
+								break
+							case 2:
+								curVendor = PrefDiveComputer.vendor2
+								curProduct = PrefDiveComputer.product2
+								curDevice = PrefDiveComputer.device2
+								break
+							case 3:
+								curVendor = PrefDiveComputer.vendor3
+								curProduct = PrefDiveComputer.product3
+								curDevice = PrefDiveComputer.device3
+								break
+							case 4:
+								curVendor = PrefDiveComputer.vendor4
+								curProduct = PrefDiveComputer.product4
+								curDevice = PrefDiveComputer.device4
+								break
+						}
+
 						if (comboProduct.currentIndex === -1 && currentText === "FTDI"){
-							if ( eval("PrefDiveComputer.vendor" + i) === comboVendor.currentText && eval("PrefDiveComputer.device" + i).toUpperCase() === currentText)
-								rememberedDCsGrid.setDC(eval("PrefDiveComputer.vendor" + i), eval("PrefDiveComputer.product" + i), ("PrefDiveComputer.device" + i))
+							if ( curVendor === comboVendor.currentText && curDevice.toUpperCase() === currentText)
+								rememberedDCsGrid.setDC(curVendor, curProduct, curDevice)
 						}else if (comboProduct.currentIndex !== -1 && currentText === "FTDI") {
-							if ( eval("PrefDiveComputer.vendor" + i) === comboVendor.currentText && eval("PrefDiveComputer.product" + i) === comboProduct.currentText && eval("PrefDiveComputer.device" + i).toUpperCase() === currentText) {
-								eval("dc"+ i + ".enabled = false")
+							if ( curVendor === comboVendor.currentText && cyrProduct === comboProduct.currentText && curDevice.toUpperCase() === currentText) {
+								disableDC(i)
 								break
 							}
-						}else if ( eval("PrefDiveComputer.vendor" + i) === comboVendor.currentText && eval("PrefDiveComputer.product" + i) === comboProduct.currentText && eval("PrefDiveComputer.product" + i) +" " + eval("PrefDiveComputer.device" + i) === currentText) {
-							eval("dc"+ i + ".enabled = false")
+						}else if ( curVendor === comboVendor.currentText && curProduct === comboProduct.currentText && curProduct +" " + curDevice === currentText) {
+							disableDC(i)
 							break
-						}else if ( eval("PrefDiveComputer.vendor" + i) === comboVendor.currentText && eval("PrefDiveComputer.product" + i) === comboProduct.currentText && eval("PrefDiveComputer.device" + i) === currentText) {
-							eval("dc"+ i + ".enabled = false")
+						}else if ( curVendor === comboVendor.currentText && curProduct === comboProduct.currentText && curDevice === currentText) {
+							disableDC(i)
 							break
 						}
 					}
@@ -202,6 +228,23 @@ Kirigami.Page {
 				comboProduct.currentIndex = comboProduct.find(product);
 				comboConnection.currentIndex = manager.getConnectionIndex(device);
 			}
+			function disableDC(inx) {
+				switch (inx) {
+					case 1:
+						dc1.enabled = false
+						break;
+					case 2:
+						dc2.enabled = false
+						break;
+					case 3:
+						dc3.enabled = false
+						break;
+					case 4:
+						dc4.enabled = false
+						break;
+				}
+			}
+
 			SsrfButton {
 				id: dc1
 				visible: PrefDiveComputer.vendor1 !== ""
