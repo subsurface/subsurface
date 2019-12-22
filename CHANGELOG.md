@@ -1,3 +1,4 @@
+Mobile: use of qml compiler, smaller footprint and faster UI
 Mobile: support for "upload to divelogs.de"
 mobile: add support for upload to dive-share.com
 Profile: Add current GF to infobox
