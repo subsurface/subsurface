@@ -1,5 +1,6 @@
 # cmake based build of Subsurface
 
+
 # Uncomment his to see all commands cmake actually executes
 # set(CMAKE_VERBOSE_MAKEFILE ON)
 
@@ -281,6 +282,7 @@ add_subdirectory(profile-widget)
 add_subdirectory(map-widget)
 add_subdirectory(mobile-widgets)
 add_subdirectory(backend-shared)
+add_subdirectory(map-widget)
 
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	add_subdirectory(desktop-widgets)
@@ -313,6 +315,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		subsurface_profile
 		subsurface_mapwidget
 		subsurface_backend_shared
+		subsurface_mapwidget
 		subsurface_models_mobile
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES}
@@ -337,6 +340,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 		subsurface_statistics
 		subsurface_mapwidget
 		subsurface_backend_shared
+		subsurface_mapwidget
 		subsurface_models_desktop
 		subsurface_commands_desktop
 		subsurface_corelib
