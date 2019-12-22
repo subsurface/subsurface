@@ -20,12 +20,18 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	divetooltipitem.h
 	profilewidget2.cpp
 	profilewidget2.h
-# 	qmlprofile.h
 	ruleritem.cpp
 	ruleritem.h
 	tankitem.cpp
 	tankitem.h
 )
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
+set(SUBSURFACE_PROFILE_LIB_SRCS
+	${SUBSURFACE_PROFILE_LIB_SRCS}
+	qmlprofile.cpp
+	qmlprofile.h
+)
+endif ()
 source_group("Subsurface Profile" FILES ${SUBSURFACE_PROFILE_LIB_SRCS})
 
 add_library(subsurface_profile STATIC ${SUBSURFACE_PROFILE_LIB_SRCS})
