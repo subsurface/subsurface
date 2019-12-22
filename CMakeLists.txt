@@ -279,6 +279,7 @@ add_subdirectory(qt-models)
 add_subdirectory(commands)
 add_subdirectory(profile-widget)
 add_subdirectory(map-widget)
+add_subdirectory(mobile-widgets)
 
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	add_subdirectory(desktop-widgets)
@@ -287,22 +288,6 @@ endif()
 # create the executables
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	set(MOBILE_SRC
-		mobile-widgets/qmlmanager.cpp
-		mobile-widgets/qmlprefs.cpp
-		mobile-widgets/qml/kirigami/src/columnview.cpp
-		mobile-widgets/qml/kirigami/src/delegaterecycler.cpp
-		mobile-widgets/qml/kirigami/src/enums.cpp
-		mobile-widgets/qml/kirigami/src/formlayoutattached.cpp
-		mobile-widgets/qml/kirigami/src/icon.cpp
-		mobile-widgets/qml/kirigami/src/kirigamiplugin.cpp
-		mobile-widgets/qml/kirigami/src/mnemonicattached.cpp
-		mobile-widgets/qml/kirigami/src/scenepositionattached.cpp
-		mobile-widgets/qml/kirigami/src/settings.cpp
-		mobile-widgets/qml/kirigami/src/wheelhandler.cpp
-		mobile-widgets/qml/kirigami/src/libkirigami/basictheme.cpp
-		mobile-widgets/qml/kirigami/src/libkirigami/kirigamipluginfactory.cpp
-		mobile-widgets/qml/kirigami/src/libkirigami/platformtheme.cpp
-		mobile-widgets/qml/kirigami/src/libkirigami/tabletmodewatcher.cpp
 		subsurface-mobile-main.cpp
 		subsurface-helper.cpp
 	)
@@ -323,6 +308,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	endif()
 	target_link_libraries(
 		${SUBSURFACE_TARGET}
+		subsurface_mobile
 		subsurface_profile
 		subsurface_mapwidget
 		subsurface_models_mobile
