@@ -38,6 +38,12 @@ class plannerShared: public QObject {
 	Q_PROPERTY(bool doo2breaks READ doo2breaks WRITE set_doo2breaks NOTIFY doo2breaksChanged);
 	Q_PROPERTY(int min_switch_duration READ min_switch_duration WRITE set_min_switch_duration NOTIFY min_switch_durationChanged);
 
+	// Gas data
+	Q_PROPERTY(double bottomsac READ bottomsac WRITE set_bottomsac NOTIFY bottomsacChanged);
+	Q_PROPERTY(double decosac READ decosac WRITE set_decosac NOTIFY decosacChanged);
+	Q_PROPERTY(int problemsolvingtime READ problemsolvingtime WRITE set_problemsolvingtime NOTIFY problemsolvingtimeChanged);
+	Q_PROPERTY(double sacfactor READ sacfactor WRITE set_sacfactor NOTIFY sacfactorChanged);
+
 public:
 	static plannerShared *instance();
 
@@ -62,6 +68,12 @@ public:
 	static bool doo2breaks();
 	static int min_switch_duration();
 
+	// Gas data
+	static double bottomsac();
+	static double decosac();
+	static int problemsolvingtime();
+	static double sacfactor();
+
 public slots:
 	// Ascend/Descend data, converted to meter/feet depending on user selection
 	static void set_ascratelast6m(int value);
@@ -84,6 +96,12 @@ public slots:
 	static void set_doo2breaks(bool value);
 	static void set_min_switch_duration(int value);
 
+	// Gas data
+	static void set_bottomsac(double value);
+	static void set_decosac(double value);
+	static void set_problemsolvingtime(int value);
+	static void set_sacfactor(double value);
+
 signals:
 	// Ascend/Descend data, converted to meter/feet depending on user selection
 	void ascratelast6mChanged(int value);
@@ -105,6 +123,12 @@ signals:
 	void switch_at_req_stopChanged(bool value);
 	void doo2breaksChanged(bool value);
 	void min_switch_durationChanged(int value);
+
+	// Gas data
+	void bottomsacChanged(double value);
+	void decosacChanged(double value);
+	void problemsolvingtimeChanged(int value);
+	void sacfactorChanged(double value);
 
 private:
 	plannerShared() {}
