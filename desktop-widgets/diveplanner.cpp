@@ -436,8 +436,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.safetystop->setChecked(prefs.safetystop);
 	ui.sacfactor->setValue(plannerShared::sacfactor());
 	ui.problemsolvingtime->setValue(prefs.problemsolvingtime);
-	ui.bottompo2->setValue(prefs.bottompo2 / 1000.0);
-	ui.decopo2->setValue(prefs.decopo2 / 1000.0);
+	ui.bottompo2->setValue(plannerShared::bottompo2());
+	ui.decopo2->setValue(plannerShared::decopo2());
 	ui.backgasBreaks->setChecked(prefs.doo2breaks);
 	plannerShared::set_dobailout(false);
 	setBailoutVisibility(false);
@@ -494,9 +494,6 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), plannerModel, SLOT(setRebreatherMode(int)));
 	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), this, SLOT(setBailoutVisibility(int)));
 
-	connect(ui.bottompo2, SIGNAL(valueChanged(double)), CylindersModel::instance(), SLOT(updateBestMixes()));
-	connect(ui.bestmixEND, SIGNAL(valueChanged(int)), CylindersModel::instance(), SLOT(updateBestMixes()));
-
 	connect(modeMapper, SIGNAL(mapped(int)), this, SLOT(disableDecoElements(int)));
 	connect(ui.ascRate75, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_ascrate75(int)));
 	connect(ui.ascRate50, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_ascrate50(int)));
@@ -505,9 +502,9 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_ascratelast6m(int)));
 	connect(ui.sacfactor, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(set_sacfactor(double)));
 	connect(ui.problemsolvingtime, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_problemsolvingtime(int)));
-	connect(ui.bottompo2, SIGNAL(valueChanged(double)), this, SLOT(setBottomPo2(double)));
-	connect(ui.decopo2, SIGNAL(valueChanged(double)), this, SLOT(setDecoPo2(double)));
-	connect(ui.bestmixEND, SIGNAL(valueChanged(int)), this, SLOT(setBestmixEND(int)));
+	connect(ui.bottompo2, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(set_bottompo2(double)));
+	connect(ui.decopo2, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(set_decopo2(double)));
+	connect(ui.bestmixEND, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_bestmixend(int)));
 	connect(ui.bottomSAC, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(sec_bottomsac(double)));
 	connect(ui.decoStopSAC, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(set_decosac(double)));
 
@@ -604,24 +601,6 @@ void PlannerSettingsWidget::settingsChanged()
 
 void PlannerSettingsWidget::printDecoPlan()
 {
-}
-
-void PlannerSettingsWidget::setBottomPo2(double po2)
-{
-	qPrefDivePlanner::instance()->set_bottompo2((int) (po2 * 1000.0));
-}
-
-void PlannerSettingsWidget::setDecoPo2(double po2)
-{
-	pressure_t olddecopo2;
-	olddecopo2.mbar = prefs.decopo2;
-	qPrefDivePlanner::instance()->set_decopo2((int) (po2 * 1000.0));
-	CylindersModel::instance()->updateDecoDepths(olddecopo2);
-}
-
-void PlannerSettingsWidget::setBestmixEND(int depth)
-{
-	qPrefDivePlanner::instance()->set_bestmixend(units_to_depth(depth).mm);
 }
 
 void PlannerSettingsWidget::setBackgasBreaks(bool dobreaks)
