@@ -71,11 +71,7 @@ public:
 public
 slots:
 	void settingsChanged();
-	void bottomSacChanged(const double bottomSac);
-	void decoSacChanged(const double decosac);
 	void printDecoPlan();
-	void sacFactorChanged(const double factor);
-	void problemSolvingTimeChanged(const int min);
 	void setBottomPo2(double po2);
 	void setDecoPo2(double po2);
 	void setBestmixEND(int depth);
