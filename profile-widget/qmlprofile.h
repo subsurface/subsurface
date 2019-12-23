@@ -8,7 +8,7 @@
 class QMLProfile : public QQuickPaintedItem
 {
 	Q_OBJECT
-	Q_PROPERTY(QString diveId MEMBER m_diveId WRITE setDiveId)
+	Q_PROPERTY(int diveId MEMBER m_diveId WRITE setDiveId)
 	Q_PROPERTY(qreal devicePixelRatio READ devicePixelRatio WRITE setDevicePixelRatio NOTIFY devicePixelRatioChanged)
 
 public:
@@ -16,8 +16,8 @@ public:
 
 	void paint(QPainter *painter);
 
-	QString diveId() const;
-	void setDiveId(const QString &diveId);
+	int diveId() const;
+	void setDiveId(int diveId);
 	qreal devicePixelRatio() const;
 	void setDevicePixelRatio(qreal dpr);
 
@@ -25,7 +25,7 @@ public slots:
 	void setMargin(int margin);
 	void screenChanged(QScreen *screen);
 private:
-	QString m_diveId;
+	int m_diveId;
 	qreal m_devicePixelRatio;
 	int m_margin;
 	QScopedPointer<ProfileWidget2> m_profileWidget;

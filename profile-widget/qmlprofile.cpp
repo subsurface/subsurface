@@ -80,17 +80,17 @@ void QMLProfile::setMargin(int margin)
 	m_margin = margin;
 }
 
-QString QMLProfile::diveId() const
+int QMLProfile::diveId() const
 {
 	return m_diveId;
 }
 
-void QMLProfile::setDiveId(const QString &diveId)
+void QMLProfile::setDiveId(int diveId)
 {
 	m_diveId = diveId;
-	struct dive *d = get_dive_by_uniq_id(m_diveId.toInt());
-	if (m_diveId.toInt() < 1)
+	if (m_diveId < 0)
 		return;
+	struct dive *d = get_dive_by_uniq_id(diveId);
 	if (!d)
 		return;
 	if (verbose)
