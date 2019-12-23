@@ -488,7 +488,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.vpmb_conservatism, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_vpmb_conservatism(int)));
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
 	connect(ui.bailout, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_bailout(bool)));
-	connect(ui.o2narcotic, SIGNAL(toggled(bool)), this, SLOT(setO2narcotic(bool)));
+	connect(ui.o2narcotic, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_o2narcotic(bool)));
 	connect(ui.switch_at_req_stop, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_switch_at_req_stop(bool)));
 	connect(ui.min_switch_duration, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_min_switch_duration()(int)));
 	connect(ui.surface_segment, SIGNAL(valueChanged(int)), plannerModel, SLOT(setSurfaceSegment(int)));
@@ -497,7 +497,6 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 
 	connect(ui.bottompo2, SIGNAL(valueChanged(double)), CylindersModel::instance(), SLOT(updateBestMixes()));
 	connect(ui.bestmixEND, SIGNAL(valueChanged(int)), CylindersModel::instance(), SLOT(updateBestMixes()));
-	connect(ui.o2narcotic, SIGNAL(toggled(bool)), CylindersModel::instance(), SLOT(updateBestMixes()));
 
 	connect(modeMapper, SIGNAL(mapped(int)), this, SLOT(disableDecoElements(int)));
 	connect(ui.ascRate75, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_ascrate75(int)));
@@ -629,12 +628,6 @@ void PlannerSettingsWidget::setBestmixEND(int depth)
 void PlannerSettingsWidget::setBackgasBreaks(bool dobreaks)
 {
 	plannerShared::set_doo2breaks(dobreaks);
-}
-
-void PlannerSettingsWidget::setO2narcotic(bool o2narcotic)
-{
-	qPrefDivePlanner::instance()->set_o2narcotic(o2narcotic);
-	plannerModel->emitDataChanged();
 }
 
 void PlannerSettingsWidget::setBailoutVisibility(int mode)
