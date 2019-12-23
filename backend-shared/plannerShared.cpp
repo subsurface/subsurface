@@ -258,3 +258,48 @@ void plannerShared::set_bestmixend(int value)
 	qPrefDivePlanner::set_bestmixend(units_to_depth(value).mm);
 	CylindersModel::instance()->updateBestMixes();
 }
+
+bool plannerShared::display_runtime()
+{
+	return qPrefDivePlanner::display_runtime();
+}
+void plannerShared::set_display_runtime(bool value)
+{
+	DivePlannerPointsModel::instance()->setDisplayRuntime(value);
+}
+
+bool plannerShared::display_duration()
+{
+	return qPrefDivePlanner::display_duration();
+}
+void plannerShared::set_display_duration(bool value)
+{
+	DivePlannerPointsModel::instance()->setDisplayDuration(value);
+}
+
+bool plannerShared::display_transitions()
+{
+	return qPrefDivePlanner::display_transitions();
+}
+void plannerShared::set_display_transitions(bool value)
+{
+	DivePlannerPointsModel::instance()->setDisplayTransitions(value);
+}
+
+bool plannerShared::verbatim_plan()
+{
+	return qPrefDivePlanner::verbatim_plan();
+}
+void plannerShared::set_verbatim_plan(bool value)
+{
+	DivePlannerPointsModel::instance()->setSacFactor(value);
+}
+
+bool plannerShared::display_variations()
+{
+	return qPrefDivePlanner::display_variations;
+}
+void plannerShared::set_display_variations(bool value)
+{
+	DivePlannerPointsModel::instance()->setDisplayVariations(value);
+}
