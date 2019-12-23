@@ -162,3 +162,13 @@ void plannerShared::set_doo2breaks(bool value)
 	qPrefDivePlanner::set_doo2breaks(value);
 	DivePlannerPointsModel::instance()->emitDataChanged();
 }
+
+int plannerShared::min_switch_duration()
+{
+	return qPrefDivePlanner::min_switch_duration() / 60;
+}
+void plannerShared::set_min_switch_duration(int value)
+{
+	// NO conversion, this is done in the planner model.
+	DivePlannerPointsModel::instance()->setMinSwitchDuration(value);
+}

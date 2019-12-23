@@ -36,6 +36,7 @@ class plannerShared: public QObject {
 	Q_PROPERTY(bool last_stop READ last_stop WRITE set_last_stop NOTIFY last_stopChanged);
 	Q_PROPERTY(bool switch_at_req_stop READ switch_at_req_stop WRITE set_switch_at_req_stop NOTIFY switch_at_req_stopChanged);
 	Q_PROPERTY(bool doo2breaks READ doo2breaks WRITE set_doo2breaks NOTIFY doo2breaksChanged);
+	Q_PROPERTY(int min_switch_duration READ min_switch_duration WRITE set_min_switch_duration NOTIFY min_switch_durationChanged);
 
 public:
 	static plannerShared *instance();
@@ -59,6 +60,7 @@ public:
 	static bool last_stop();
 	static bool switch_at_req_stop();
 	static bool doo2breaks();
+	static int min_switch_duration();
 
 public slots:
 	// Ascend/Descend data, converted to meter/feet depending on user selection
@@ -80,6 +82,7 @@ public slots:
 	static void set_last_stop(bool value);
 	static void set_switch_at_req_stop(bool value);
 	static void set_doo2breaks(bool value);
+	static void set_min_switch_duration(int value);
 
 signals:
 	// Ascend/Descend data, converted to meter/feet depending on user selection
@@ -101,6 +104,7 @@ signals:
 	void last_stopChanged(bool value);
 	void switch_at_req_stopChanged(bool value);
 	void doo2breaksChanged(bool value);
+	void min_switch_durationChanged(int value);
 
 private:
 	plannerShared() {}
