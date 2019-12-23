@@ -125,3 +125,30 @@ void plannerShared::set_vpmb_conservatism(int value)
 {
 	DivePlannerPointsModel::instance()->setVpmbConservatism(value);
 }
+
+bool plannerShared::drop_stone_mode()
+{
+	return qPrefDivePlanner::drop_stone_mode();
+}
+void plannerShared::set_drop_stone_mode(bool value)
+{
+	DivePlannerPointsModel::instance()->setDropStoneMode(value);
+}
+
+bool plannerShared::last_stop()
+{
+	return qPrefDivePlanner::last_stop();
+}
+void plannerShared::set_last_stop(bool value)
+{
+	DivePlannerPointsModel::instance()->setLastStop6m(value);
+}
+
+bool plannerShared::switch_at_req_stop()
+{
+	return qPrefDivePlanner::switch_at_req_stop();
+}
+void plannerShared::set_switch_at_req_stop(bool value)
+{
+	DivePlannerPointsModel::instance()->setSwitchAtReqStop(value);
+}

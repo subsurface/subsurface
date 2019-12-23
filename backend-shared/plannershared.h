@@ -32,6 +32,9 @@ class plannerShared: public QObject {
 	Q_PROPERTY(int gflow READ gflow WRITE set_gflow NOTIFY gflowChanged);
 	Q_PROPERTY(int gfhigh READ gfhigh WRITE set_gfhigh NOTIFY gfhighChanged);
 	Q_PROPERTY(int vpmb_conservatism READ vpmb_conservatism WRITE set_vpmb_conservatism NOTIFY vpmb_conservatismChanged);
+	Q_PROPERTY(bool drop_stone_mode READ drop_stone_mode WRITE set_drop_stone_mode NOTIFY drop_stone_modeChanged);
+	Q_PROPERTY(bool last_stop READ last_stop WRITE set_last_stop NOTIFY last_stopChanged);
+	Q_PROPERTY(bool switch_at_req_stop READ switch_at_req_stop WRITE set_switch_at_req_stop NOTIFY switch_at_req_stopChanged);
 
 public:
 	static plannerShared *instance();
@@ -51,6 +54,9 @@ public:
 	static int gflow();
 	static int gfhigh();
 	static int vpmb_conservatism();
+	static bool drop_stone_mode();
+	static bool last_stop();
+	static bool switch_at_req_stop();
 
 public slots:
 	// Ascend/Descend data, converted to meter/feet depending on user selection
@@ -68,6 +74,9 @@ public slots:
 	static void set_gflow(int value);
 	static void set_gfhigh(int value);
 	static void set_vpmb_conservatism(int value);
+	static void set_drop_stone_mode(bool value);
+	static void set_last_stop(bool value);
+	static void set_switch_at_req_stop(bool value);
 
 signals:
 	// Ascend/Descend data, converted to meter/feet depending on user selection
@@ -85,6 +94,9 @@ signals:
 	void gflowChanged(int value);
 	void gfhighChanged(int value);
 	void vpmb_conservatismChanged(int value);
+	void drop_stone_modeChanged(bool value);
+	void last_stopChanged(bool value);
+	void switch_at_req_stopChanged(bool value);
 
 private:
 	plannerShared() {}
