@@ -4,6 +4,7 @@
 #include "core/settings/qPrefDivePlanner.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "qt-models/diveplannermodel.h"
+#include "qt-models/cylindermodel.h"
 
 plannerShared *plannerShared::instance()
 {
@@ -212,3 +213,15 @@ void plannerShared::set_sacfactor(double value)
 	// NO conversion, this is done in the planner model.
 	DivePlannerPointsModel::instance()->setSacFactor(value);
 }
+
+bool plannerShared::o2narcotic()
+{
+	return qPrefDivePlanner::o2narcotic();
+}
+void plannerShared::set_o2narcotic(bool value)
+{
+	qPrefDivePlanner::set_o2narcotic(value);
+	DivePlannerPointsModel::instance()->emitDataChanged();
+	CylindersModel::instance()->updateBestMixes();
+}
+
