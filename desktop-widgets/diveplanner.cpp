@@ -287,16 +287,6 @@ void DivePlannerWidget::customSalinityChanged(double density)
 	}
 }
 
-void PlannerSettingsWidget::bottomSacChanged(const double bottomSac)
-{
-	plannerModel->setBottomSac(bottomSac);
-}
-
-void PlannerSettingsWidget::decoSacChanged(const double decosac)
-{
-	plannerModel->setDecoSac(decosac);
-}
-
 void PlannerSettingsWidget::disableDecoElements(int mode)
 {
 	if (mode == RECREATIONAL) {
@@ -365,7 +355,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.label_min_switch_duration->setDisabled(false);
 		ui.sacfactor->setDisabled(false);
 		ui.problemsolvingtime->setDisabled(false);
-		ui.sacfactor->setValue(prefs.sacfactor / 100.0);
+		ui.sacfactor->setValue(plannerShared::sacfactor());
 		ui.problemsolvingtime->setValue(prefs.problemsolvingtime);
 		ui.display_variations->setDisabled(false);
 	}
@@ -400,7 +390,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.label_min_switch_duration->setDisabled(false);
 		ui.sacfactor->setDisabled(false);
 		ui.problemsolvingtime->setDisabled(false);
-		ui.sacfactor->setValue(prefs.sacfactor / 100.0);
+		ui.sacfactor->setValue(plannerShared::sacfactor());
 		ui.problemsolvingtime->setValue(prefs.problemsolvingtime);
 		ui.display_variations->setDisabled(false);
 	}
@@ -444,7 +434,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.display_transitions->setChecked(prefs.display_transitions);
 	ui.display_variations->setChecked(prefs.display_variations);
 	ui.safetystop->setChecked(prefs.safetystop);
-	ui.sacfactor->setValue(prefs.sacfactor / 100.0);
+	ui.sacfactor->setValue(plannerShared::sacfactor());
 	ui.problemsolvingtime->setValue(prefs.problemsolvingtime);
 	ui.bottompo2->setValue(prefs.bottompo2 / 1000.0);
 	ui.decopo2->setValue(prefs.decopo2 / 1000.0);
@@ -514,13 +504,13 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.descRate, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_descrate(int)));
 	connect(ui.ascRateStops, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_ascratestops(int)));
 	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_ascratelast6m(int)));
-	connect(ui.sacfactor, SIGNAL(valueChanged(double)), this, SLOT(sacFactorChanged(double)));
-	connect(ui.problemsolvingtime, SIGNAL(valueChanged(int)), this, SLOT(problemSolvingTimeChanged(int)));
+	connect(ui.sacfactor, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(set_sacfactor(double)));
+	connect(ui.problemsolvingtime, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_problemsolvingtime(int)));
 	connect(ui.bottompo2, SIGNAL(valueChanged(double)), this, SLOT(setBottomPo2(double)));
 	connect(ui.decopo2, SIGNAL(valueChanged(double)), this, SLOT(setDecoPo2(double)));
 	connect(ui.bestmixEND, SIGNAL(valueChanged(int)), this, SLOT(setBestmixEND(int)));
-	connect(ui.bottomSAC, SIGNAL(valueChanged(double)), this, SLOT(bottomSacChanged(double)));
-	connect(ui.decoStopSAC, SIGNAL(valueChanged(double)), this, SLOT(decoSacChanged(double)));
+	connect(ui.bottomSAC, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(sec_bottomsac(double)));
+	connect(ui.decoStopSAC, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(set_decosac(double)));
 
 	settingsChanged();
 	ui.gflow->setValue(prefs.gflow);
@@ -588,8 +578,8 @@ void PlannerSettingsWidget::settingsChanged()
 		ui.bottomSAC->setSingleStep(1);
 		ui.decoStopSAC->setDecimals(0);
 		ui.decoStopSAC->setSingleStep(1);
-		ui.bottomSAC->setValue((double) prefs.bottomsac / 1000.0);
-		ui.decoStopSAC->setValue((double) prefs.decosac / 1000.0);
+		ui.bottomSAC->setValue(plannerShared::bottomsac());
+		ui.decoStopSAC->setValue(plannerShared::decosac());
 	}
 	if(get_units()->pressure == units::BAR) {
 		ui.reserve_gas->setSuffix(tr("bar"));
@@ -615,16 +605,6 @@ void PlannerSettingsWidget::settingsChanged()
 
 void PlannerSettingsWidget::printDecoPlan()
 {
-}
-
-void PlannerSettingsWidget::sacFactorChanged(const double factor)
-{
-	plannerModel->setSacFactor(factor);
-}
-
-void PlannerSettingsWidget::problemSolvingTimeChanged(const int minutes)
-{
-	plannerModel->setProblemSolvingTime(minutes);
 }
 
 void PlannerSettingsWidget::setBottomPo2(double po2)
