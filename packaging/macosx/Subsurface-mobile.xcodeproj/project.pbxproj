@@ -20,12 +20,14 @@
 		3D23B3FD2389DD00009A3D79 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CMakeLists.txt; path = ../../CMakeLists.txt; sourceTree = "<group>"; };
 		3D23B3FE2389DD12009A3D79 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../../CHANGELOG.md; sourceTree = "<group>"; };
 		3D23B3FF2389DD26009A3D79 /* desktop-widgets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "desktop-widgets"; path = "../../desktop-widgets"; sourceTree = "<group>"; };
+		3D65BE1623B1365F003E850E /* tests */ = {isa = PBXFileReference; lastKnownFileType = folder; name = tests; path = ../../tests; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		39C475D4214FAF2A00CBA20C = {
 			isa = PBXGroup;
 			children = (
+				3D65BE1623B1365F003E850E /* tests */,
 				3D23B3FE2389DD12009A3D79 /* CHANGELOG.md */,
 				3D23B3FD2389DD00009A3D79 /* CMakeLists.txt */,
 				39CE747E214FB2CF000423F3 /* subsurface-helper.cpp */,
@@ -39,6 +41,7 @@
 				39CE7484214FB3A9000423F3 /* mobile-widgets */,
 				39CE7485214FB3B7000423F3 /* profile-widget */,
 				39CE7486214FB3C1000423F3 /* qt-models */,
+				3D65BE1623B1365F003E850E /* tests */,
 			);
 			sourceTree = "<group>";
 		};
