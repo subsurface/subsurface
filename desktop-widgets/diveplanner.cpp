@@ -478,7 +478,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.buehlmann_deco, SIGNAL(clicked()), modeMapper, SLOT(map()));
 	connect(ui.vpmb_deco, SIGNAL(clicked()), modeMapper, SLOT(map()));
 
-	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
+	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_last_stop(bool)));
 	connect(ui.lastStop, SIGNAL(toggled(bool)), this, SLOT(disableBackgasBreaks(bool)));
 	connect(ui.verbatim_plan, SIGNAL(toggled(bool)), plannerModel, SLOT(setVerbatim(bool)));
 	connect(ui.display_duration, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayDuration(bool)));
@@ -492,14 +492,14 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.ascRateStops, SIGNAL(valueChanged(int)), plannerModel, SLOT(setAscratestops(int)));
 	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), plannerModel, SLOT(setAscratelast6m(int)));
 	connect(ui.descRate, SIGNAL(valueChanged(int)), plannerModel, SLOT(setDescrate(int)));
-	connect(ui.drop_stone_mode, SIGNAL(toggled(bool)), plannerModel, SLOT(setDropStoneMode(bool)));
-	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFHigh(int)));
-	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
-	connect(ui.vpmb_conservatism, SIGNAL(valueChanged(int)), plannerModel, SLOT(setVpmbConservatism(int)));
+	connect(ui.drop_stone_mode, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_drop_stone_mode(bool)));
+	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_gfhigh(int)));
+	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_gflow(int)));
+	connect(ui.vpmb_conservatism, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_vpmb_conservatism(int)));
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
 	connect(ui.bailout, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_bailout(bool)));
 	connect(ui.o2narcotic, SIGNAL(toggled(bool)), this, SLOT(setO2narcotic(bool)));
-	connect(ui.switch_at_req_stop, SIGNAL(toggled(bool)), plannerModel, SLOT(setSwitchAtReqStop(bool)));
+	connect(ui.switch_at_req_stop, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_switch_at_req_stop(bool)));
 	connect(ui.min_switch_duration, SIGNAL(valueChanged(int)), plannerModel, SLOT(setMinSwitchDuration(int)));
 	connect(ui.surface_segment, SIGNAL(valueChanged(int)), plannerModel, SLOT(setSurfaceSegment(int)));
 	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), plannerModel, SLOT(setRebreatherMode(int)));
