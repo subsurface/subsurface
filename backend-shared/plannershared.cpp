@@ -150,3 +150,13 @@ void plannerShared::set_switch_at_req_stop(bool value)
 {
 	DivePlannerPointsModel::instance()->setSwitchAtReqStop(value);
 }
+
+bool plannerShared::doo2breaks()
+{
+	return qPrefDivePlanner::doo2breaks();
+}
+void plannerShared::set_doo2breaks(bool value)
+{
+	qPrefDivePlanner::set_doo2breaks(value);
+	DivePlannerPointsModel::instance()->emitDataChanged();
+}
