@@ -865,17 +865,19 @@ static int same_rounded_pressure(pressure_t a, pressure_t b)
 /* Some dive computers (Cobalt) don't start the dive with cylinder 0 but explicitly
  * tell us what the first gas is with a gas change event in the first sample.
  * Sneakily we'll use a return value of 0 (or FALSE) when there is no explicit
- * first cylinder - in which case cylinder 0 is indeed the first cylinder */
+ * first cylinder - in which case cylinder 0 is indeed the first cylinder.
+ * We likewise return 0 if the event concerns a cylinder that doesn't exist. */
 int explicit_first_cylinder(const struct dive *dive, const struct divecomputer *dc)
 {
+	int res = 0;
 	if (dc) {
 		const struct event *ev = get_next_event(dc->events, "gaschange");
 		if (ev && ((dc->sample && ev->time.seconds == dc->sample[0].time.seconds) || ev->time.seconds <= 1))
-			return get_cylinder_index(dive, ev);
+			res = get_cylinder_index(dive, ev);
 		else if (dc->divemode == CCR)
-			return MAX(get_cylinder_idx_by_use(dive, DILUENT), 0);
+			res = MAX(get_cylinder_idx_by_use(dive, DILUENT), 0);
 	}
-	return 0;
+	return res < dive->cylinders.nr ? res : 0;
 }
 
 /* this gets called when the dive mode has changed (so OC vs. CC)
