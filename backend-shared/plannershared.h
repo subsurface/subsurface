@@ -35,6 +35,7 @@ class plannerShared: public QObject {
 	Q_PROPERTY(bool drop_stone_mode READ drop_stone_mode WRITE set_drop_stone_mode NOTIFY drop_stone_modeChanged);
 	Q_PROPERTY(bool last_stop READ last_stop WRITE set_last_stop NOTIFY last_stopChanged);
 	Q_PROPERTY(bool switch_at_req_stop READ switch_at_req_stop WRITE set_switch_at_req_stop NOTIFY switch_at_req_stopChanged);
+	Q_PROPERTY(bool doo2breaks READ doo2breaks WRITE set_doo2breaks NOTIFY doo2breaksChanged);
 
 public:
 	static plannerShared *instance();
@@ -57,6 +58,7 @@ public:
 	static bool drop_stone_mode();
 	static bool last_stop();
 	static bool switch_at_req_stop();
+	static bool doo2breaks();
 
 public slots:
 	// Ascend/Descend data, converted to meter/feet depending on user selection
@@ -77,6 +79,7 @@ public slots:
 	static void set_drop_stone_mode(bool value);
 	static void set_last_stop(bool value);
 	static void set_switch_at_req_stop(bool value);
+	static void set_doo2breaks(bool value);
 
 signals:
 	// Ascend/Descend data, converted to meter/feet depending on user selection
@@ -97,6 +100,7 @@ signals:
 	void drop_stone_modeChanged(bool value);
 	void last_stopChanged(bool value);
 	void switch_at_req_stopChanged(bool value);
+	void doo2breaksChanged(bool value);
 
 private:
 	plannerShared() {}
