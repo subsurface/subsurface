@@ -59,6 +59,7 @@ void plannerShared::set_descrate(int value)
 	qPrefDivePlanner::set_descrate(value * TO_MM_BY_SEC);
 }
 
+
 // Planning values
 deco_mode plannerShared::planner_deco_mode()
 {
@@ -169,4 +170,44 @@ void plannerShared::set_min_switch_duration(int value)
 {
 	// NO conversion, this is done in the planner model.
 	DivePlannerPointsModel::instance()->setMinSwitchDuration(value);
+}
+
+double plannerShared::bottomsac()
+{
+	return qPrefDivePlanner::bottomsac() / 1000.0;
+}
+void plannerShared::set_bottomsac(double value)
+{
+	// NO conversion, this is done in the planner model.
+	DivePlannerPointsModel::instance()->setBottomSac(value);
+}
+
+double plannerShared::decosac()
+{
+	return qPrefDivePlanner::decosac() / 1000.0;
+}
+void plannerShared::set_decosac(double value)
+{
+	// NO conversion, this is done in the planner model.
+	DivePlannerPointsModel::instance()->setDecoSac(value);
+}
+
+int plannerShared::problemsolvingtime()
+{
+	return qPrefDivePlanner::problemsolvingtime();
+}
+void plannerShared::set_problemsolvingtime(int value)
+{
+	// NO conversion, this is done in the planner model.
+	DivePlannerPointsModel::instance()->setProblemSolvingTime(value);
+}
+
+double plannerShared::sacfactor()
+{
+	return qPrefDivePlanner::sacfactor() / 100.0;
+}
+void plannerShared::set_sacfactor(double value)
+{
+	// NO conversion, this is done in the planner model.
+	DivePlannerPointsModel::instance()->setSacFactor(value);
 }
