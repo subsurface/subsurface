@@ -44,6 +44,9 @@ class plannerShared: public QObject {
 	Q_PROPERTY(int problemsolvingtime READ problemsolvingtime WRITE set_problemsolvingtime NOTIFY problemsolvingtimeChanged);
 	Q_PROPERTY(double sacfactor READ sacfactor WRITE set_sacfactor NOTIFY sacfactorChanged);
 	Q_PROPERTY(bool o2narcotic READ o2narcotic WRITE set_o2narcotic NOTIFY o2narcoticChanged);
+	Q_PROPERTY(double bottompo2 READ bottompo2 WRITE set_bottompo2 NOTIFY bottompo2Changed);
+	Q_PROPERTY(double decopo2 READ decopo2 WRITE set_decopo2 NOTIFY decopo2Changed);
+	Q_PROPERTY(int bestmixend READ bestmixend WRITE set_bestmixend NOTIFY bestmixendChanged);
 
 public:
 	static plannerShared *instance();
@@ -75,6 +78,9 @@ public:
 	static int problemsolvingtime();
 	static double sacfactor();
 	static bool o2narcotic();
+	static double bottompo2();
+	static double decopo2();
+	static int bestmixend();
 
 public slots:
 	// Ascend/Descend data, converted to meter/feet depending on user selection
@@ -104,6 +110,9 @@ public slots:
 	static void set_problemsolvingtime(int value);
 	static void set_sacfactor(double value);
 	static void set_o2narcotic(bool value);
+	static void set_bottompo2(double value);
+	static void set_decopo2(double value);
+	static void set_bestmixend(int value);
 
 signals:
 	// Ascend/Descend data, converted to meter/feet depending on user selection
@@ -115,12 +124,12 @@ signals:
 
 	// Planning data
 	void planner_deco_modeChanged(deco_mode value);
+	void dobailoutChanged(bool value);
 	void reserve_gasChanged(int value);
 	void safetystopChanged(bool value);
 	void gflowChanged(int value);
 	void gfhighChanged(int value);
 	void vpmb_conservatismChanged(int value);
-	void dobailoutChanged(bool value);
 	void drop_stone_modeChanged(bool value);
 	void last_stopChanged(bool value);
 	void switch_at_req_stopChanged(bool value);
@@ -133,6 +142,9 @@ signals:
 	void problemsolvingtimeChanged(int value);
 	void sacfactorChanged(double value);
 	void o2narcoticChanged(bool value);
+	void bottompo2Changed(double value);
+	void decopo2Changed(double value);
+	void bestmixendChanged(int value);
 
 private:
 	plannerShared() {}
