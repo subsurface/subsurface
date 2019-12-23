@@ -43,6 +43,7 @@ class plannerShared: public QObject {
 	Q_PROPERTY(double decosac READ decosac WRITE set_decosac NOTIFY decosacChanged);
 	Q_PROPERTY(int problemsolvingtime READ problemsolvingtime WRITE set_problemsolvingtime NOTIFY problemsolvingtimeChanged);
 	Q_PROPERTY(double sacfactor READ sacfactor WRITE set_sacfactor NOTIFY sacfactorChanged);
+	Q_PROPERTY(bool o2narcotic READ o2narcotic WRITE set_o2narcotic NOTIFY o2narcoticChanged);
 
 public:
 	static plannerShared *instance();
@@ -73,6 +74,7 @@ public:
 	static double decosac();
 	static int problemsolvingtime();
 	static double sacfactor();
+	static bool o2narcotic();
 
 public slots:
 	// Ascend/Descend data, converted to meter/feet depending on user selection
@@ -101,6 +103,7 @@ public slots:
 	static void set_decosac(double value);
 	static void set_problemsolvingtime(int value);
 	static void set_sacfactor(double value);
+	static void set_o2narcotic(bool value);
 
 signals:
 	// Ascend/Descend data, converted to meter/feet depending on user selection
@@ -129,6 +132,7 @@ signals:
 	void decosacChanged(double value);
 	void problemsolvingtimeChanged(int value);
 	void sacfactorChanged(double value);
+	void o2narcoticChanged(bool value);
 
 private:
 	plannerShared() {}
