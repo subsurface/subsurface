@@ -98,6 +98,10 @@ other editors that implement this coding style, please add them here.
   where the two meet, use your best judgment and go for best consistency
   (i.e., where does the variable "originate")
 
+* there is a strong preference for lower case file names; sometimes conventions
+  or outside requirements make camelCase filenames the better (or only) choice,
+  but absent such an outside reason all file names should be lower case
+
 * switch statements with blocks are a little bit special (to avoid indenting
   too far)
   ```
