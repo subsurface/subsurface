@@ -222,3 +222,37 @@ void plannerShared::set_o2narcotic(bool value)
 	DivePlannerPointsModel::instance()->emitDataChanged();
 	CylindersModel::instance()->updateBestMixes();
 }
+
+double plannerShared::bottompo2()
+{
+	return (qPrefDivePlanner::bottompo2() / 1000.0);
+}
+void plannerShared::set_bottompo2(double value)
+{
+	// NO conversion, this is done in the planner model.
+	qPrefDivePlanner::set_bottompo2((int) (value * 1000.0));
+	CylindersModel::instance()->updateBestMixes();
+}
+
+double plannerShared::decopo2()
+{
+	return qPrefDivePlanner::decopo2() / 1000;
+}
+void plannerShared::set_decopo2(double value)
+{
+	pressure_t olddecopo2;
+	olddecopo2.mbar = prefs.decopo2;
+	qPrefDivePlanner::instance()->set_decopo2((int) (value * 1000.0));
+	CylindersModel::instance()->updateDecoDepths(olddecopo2);
+	CylindersModel::instance()->updateBestMixes();
+}
+
+int plannerShared::bestmixend()
+{
+	return lrint(get_depth_units(prefs.bestmixend.mm, NULL, NULL));
+}
+void plannerShared::set_bestmixend(int value)
+{
+	qPrefDivePlanner::set_bestmixend(units_to_depth(value).mm);
+	CylindersModel::instance()->updateBestMixes();
+}
