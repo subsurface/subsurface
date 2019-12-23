@@ -647,8 +647,7 @@ void PlannerSettingsWidget::setBestmixEND(int depth)
 
 void PlannerSettingsWidget::setBackgasBreaks(bool dobreaks)
 {
-	qPrefDivePlanner::instance()->set_doo2breaks(dobreaks);
-	plannerModel->emitDataChanged();
+	plannerShared::set_doo2breaks(dobreaks);
 }
 
 void PlannerSettingsWidget::setO2narcotic(bool o2narcotic)
