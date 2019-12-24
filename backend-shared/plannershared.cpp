@@ -113,3 +113,13 @@ void plannerShared::set_vpmb_conservatism(int value)
 {
 	DivePlannerPointsModel::instance()->setVpmbConservatism(value);
 }
+
+bool plannerShared::dobailout()
+{
+	return qPrefDivePlanner::dobailout();
+}
+void plannerShared::set_dobailout(bool value)
+{
+	qPrefDivePlanner::set_dobailout(value);
+	DivePlannerPointsModel::instance()->emitDataChanged();
+}
