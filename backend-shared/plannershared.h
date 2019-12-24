@@ -31,6 +31,7 @@ class plannerShared: public QObject {
 	Q_PROPERTY(int gflow READ gflow WRITE set_gflow NOTIFY gflowChanged);
 	Q_PROPERTY(int gfhigh READ gfhigh WRITE set_gfhigh NOTIFY gfhighChanged);
 	Q_PROPERTY(int vpmb_conservatism READ vpmb_conservatism WRITE set_vpmb_conservatism NOTIFY vpmb_conservatismChanged);
+	Q_PROPERTY(bool dobailout READ dobailout WRITE set_dobailout NOTIFY dobailoutChanged);
 
 public:
 	static plannerShared *instance();
@@ -49,6 +50,7 @@ public:
 	static int gflow();
 	static int gfhigh();
 	static int vpmb_conservatism();
+	static bool dobailout();
 
 public slots:
 	// Ascend/Descend data, converted to meter/feet depending on user selection
@@ -65,6 +67,7 @@ public slots:
 	static void set_gflow(int value);
 	static void set_gfhigh(int value);
 	static void set_vpmb_conservatism(int value);
+	static void set_dobailout(bool value);
 
 signals:
 	// Ascend/Descend data, converted to meter/feet depending on user selection
@@ -81,6 +84,7 @@ signals:
 	void gflowChanged(int value);
 	void gfhighChanged(int value);
 	void vpmb_conservatismChanged(int value);
+	void dobailoutChanged(bool value);
 
 private:
 	plannerShared() {}
