@@ -1,27 +1,41 @@
 Testing subsurface:
 
-Right now to test subsurface you need to have the 'cmake' executable
-to compile the source code of the tests and run them.
+Subsurface contains a number of tests to ensure the stability of the product, these tests can be used
+manually as they are in the build process.
 
-1 - create a folder 'build-tests' on the project root directory
-2 - run cmake ( cmake .. )
-3 - compile the software by invoking make
-4 - run the tests by invoking make test
-(optional 5) if the tests are failing, a better way to see what's
-happening is to run ctest -V , this way the tests will still fail,
-but more verbosely - easier to track them down.
+Making the tests available is automatic, whenever building either desktop or mobile (for desktop) 
+the tests are created.
 
-to create a new test, just implement copy the one provided by
-example in the tests folder and add the last three lines of the CMakeLists.txt file
-adapted to your test.
+The source code for the tests are found in
+- subsurface/tests
+and the executables are (after creation) found in
+- subsurface/build/tests
+or 
+- subsurface/build-mobile/tests
 
-If you have multiple versions of Qt installed, you might get a "plugin missing error", you can fix that by doing
+To run a specific test do as in this example:
+cd subsurface/<build directory>/tests
+./TestTagList
+
+To run the whole suite do:
+cd subsurface/<build directory>/tests
+ctest
+
+To get more verbose (a lot more) do:
+cd subsurface/<build directory>/tests
+ctest -V
+
+hint try "man ctest" or "ctest --help"
+
+If you have multiple versions of Qt installed,
+you might get a "plugin missing error", you can fix that by doing
 
 export QT_QPA_PLATFORM_PLUGIN_PATH=~/Qt/5.13.2/clang_64/plugins
 (of course substitute 5.13.2 with your preferred version)
 
-To create a new test you can do one of the following (information
-provided by Tomaz on IRC):
+We need more tests so please have fun.
+
+if you just want to create a new test case:
 
 1) Create a new private slot on an already created test class
 2) Implement the test there, and compare the expected result with the
@@ -35,9 +49,21 @@ testRedCeiling()
 	QCOMPARE( dive->ceiling->color(), QColor("red"));
 }
 
-3) Run the test case and see result
+3) build the system
+4) Run the test case and see result
 
-$ make test
+if you want to create a new test
+
+1) amend subsurface/tests/CMakeLists.txt 
+1.1) there are 3 places where the test needs to be added
+1.1.1) simplest way is to search for e.g. TestPlannerShared and add your test in a similar way
+2) Create the source files (.h and .cpp all lowercase)
+2.1) simplest way is to copy one of the other test sources
+3) build system
+4) correct any errors
+5) run test
+5.1) subsurface/<build directory>/tests/Test<name>
+6) Fix the test case
 
 If the color is not QColor("red"), when you run the test you will get a
 failure. Then you run a command to get a more verbose output and see in
@@ -45,26 +71,15 @@ which part the test fails.
 
 $ ctest -V
 
-4) Fix the test case
+7) submit PR to get the test merged into the product.
 
-5) Look at the existing test cases if you run into trouble or need more
+Hint look at the existing test cases if you run into trouble or need more
 ideas. E.g. running following command will show the first test cases
 written for unit conversions:
 
-$ git show 019edd065fd1eefd5f705c42bce23255bb5e20ac
-
 Also the Qt documentation is good source for more information:
 
-http://qt-project.org/doc/qt-4.8/qtest.html
 http://qt-project.org/doc/qt-5/qtest.html
-
-6) To create a new test class, copy the last three lines of the CMake,
-and duplicate it with the new class / file.
-
-Each "test" can have N test cases on it (each private slot counts as one
-test) and is executable. When one runs make, these test cases are
-compiled and when running "make test" they will be executed. Of course,
-the test cases can be run manually as well.
 
 There are three main test macros that we use, but of course many more
 are available (check the Qt documentation):
@@ -76,7 +91,3 @@ QVERIFY2(boolean, "error message on fail")
 If expecting a test case to fail, use
 
 QEXPECT_FAIL("", "This test case fails, as it is not yet fully implemented", Continue);
-
-To link libraries, use the following macro:
-
-TARGET_LINK_LIBRARIES(TestCaseName ${QT_LIBRARIES} subsurface_corelib)
