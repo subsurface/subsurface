@@ -49,9 +49,6 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent),
 
 	resetModel();
 
-	// Update selection if all selected dives were hidden by filter
-	connect(&diveListNotifier, &DiveListNotifier::filterReset, this, &DiveListView::filterFinished);
-
 	connect(&diveListNotifier, &DiveListNotifier::tripChanged, this, &DiveListView::tripChanged);
 
 	header()->setStretchLastSection(true);
@@ -96,7 +93,7 @@ void DiveListView::calculateInitialColumnWidth(int col)
 	int em = metrics.width('m');
 	int zw = metrics.width('0');
 
-	QString header_txt = DiveTripModelBase::instance()->headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();
+	QString header_txt = MultiFilterSortModel::instance()->headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();
 	int width = metrics.width(header_txt);
 	int sw = 0;
 	switch (col) {
@@ -271,26 +268,6 @@ void DiveListView::selectTrip(dive_trip_t *trip)
 	flags |= QItemSelectionModel::Rows;
 	selectionModel()->select(idx, flags);
 	expand(idx);
-}
-
-// this is an odd one - when filtering the dive list the selection status of the trips
-// is kept - but all other selections are lost. That's gets us into rather inconsistent state
-// we call this function which clears the selection state of the trips as well, but does so
-// without updating our internal "->selected" state. So once we called this function we can
-// go back and select those dives that are still visible under the filter and everything
-// works as expected
-void DiveListView::clearTripSelection()
-{
-	// This marks the selection change as being internal - ie. we don't process it further.
-	// TODO: This should probably be done differently.
-	auto marker = diveListNotifier.enterCommand();
-
-	// we want to make sure no trips are selected
-	Q_FOREACH (const QModelIndex &index, selectionModel()->selectedRows()) {
-		if (!index.data(DiveTripModelBase::IS_TRIP_ROLE).toBool())
-			continue;
-		selectionModel()->select(index, QItemSelectionModel::Deselect);
-	}
 }
 
 void DiveListView::unselectDives()
@@ -1017,19 +994,6 @@ void DiveListView::loadImageFromURL(QUrl url)
 			matchImagesToDives(QStringList(url.toString()));
 		}
 	}
-}
-
-void DiveListView::filterFinished()
-{
-	// first make sure the trips are no longer shown as selected
-	// (but without updating the selection state of the dives... this just cleans
-	// up an oddity in the filter handling)
-	clearTripSelection();
-
-	// If there are no more selected dives, select the first visible dive
-	if (!selectionModel()->hasSelection())
-		select_newest_visible_dive();
-	emit divesSelected();
 }
 
 QString DiveListView::lastUsedImageDir()

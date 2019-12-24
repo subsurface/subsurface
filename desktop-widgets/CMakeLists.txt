@@ -28,6 +28,7 @@ set (SUBSURFACE_UI
 	downloadfromdivecomputer.ui
 	filterwidget2.ui
 	findmovedimagesdialog.ui
+	importgps.ui
 	listfilter.ui
 	locationinformation.ui
 	mainwindow.ui
@@ -84,6 +85,8 @@ set(SUBSURFACE_INTERFACE
 	findmovedimagesdialog.h
 	groupedlineedit.cpp
 	groupedlineedit.h
+	importgps.cpp
+	importgps.h
 	kmessagewidget.cpp
 	kmessagewidget.h
 	locationinformation.cpp
