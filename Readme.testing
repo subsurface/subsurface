@@ -15,7 +15,10 @@ to create a new test, just implement copy the one provided by
 example in the tests folder and add the last three lines of the CMakeLists.txt file
 adapted to your test.
 
+If you have multiple versions of Qt installed, you might get a "plugin missing error", you can fix that by doing
 
+export QT_QPA_PLATFORM_PLUGIN_PATH=~/Qt/5.13.2/clang_64/plugins
+(of course substitute 5.13.2 with your preferred version)
 
 To create a new test you can do one of the following (information
 provided by Tomaz on IRC):
