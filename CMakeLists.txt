@@ -313,7 +313,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		subsurface_profile
 		subsurface_mapwidget
 		subsurface_backend_shared
-		subsurface_models_mobile
+		subsurface_models
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
@@ -337,8 +337,8 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 		subsurface_statistics
 		subsurface_mapwidget
 		subsurface_backend_shared
-		subsurface_models_desktop
-		subsurface_commands_desktop
+		subsurface_models
+		subsurface_commands
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
@@ -346,7 +346,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	add_dependencies(subsurface_statistics subsurface_generated_ui)
 	add_dependencies(subsurface_interface subsurface_generated_ui)
 	add_dependencies(subsurface_profile subsurface_generated_ui)
-	add_dependencies(subsurface_models_desktop subsurface_generated_ui)
+	add_dependencies(subsurface_models subsurface_generated_ui)
 	add_dependencies(subsurface_generated_ui version)
 endif()
 
