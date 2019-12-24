@@ -49,9 +49,9 @@ Kirigami.ApplicationWindow {
 	FontMetrics {
 		id: fontMetrics
 		Component.onCompleted: {
-			manager.appendTextToLog("Using the following font: " + fontMetrics.font.family
-				    + " at " + subsurfaceTheme.basePointSize + "pt" +
-				    " with mobile_scale: " + PrefDisplay.mobile_scale)
+			manager.appendTextToLog("Using the following font: " + fontMetrics.font.family +
+					" at " + subsurfaceTheme.basePointSize + "pt" +
+					" with mobile_scale: " + PrefDisplay.mobile_scale)
 		}
 	}
 	visible: false
