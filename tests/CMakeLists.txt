@@ -39,12 +39,23 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	endif()
 endif()
 
+# define libraries to use, due to the fact that some library names are different between mobile and desktop
+# extra settings are needed
+# even though the targets are test executable the overall target is the same
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
+	set(TEST_SPECIFIC_LIBRARIES subsurface_models_desktop)
+else()
+	set(TEST_SPECIFIC_LIBRARIES subsurface_models_mobile )
+endif()
+
 # Helper function TEST used to created rules to build, link, install and run tests
 function(TEST NAME FILE)
 	get_filename_component(HDR "${FILE}" NAME_WE)
 	add_executable(${NAME} ${FILE} ${HDR}.h)
 	target_link_libraries(
 		${NAME}
+		subsurface_backend_shared
+		${TEST_SPECIFIC_LIBRARIES}
 		subsurface_corelib
 		RESOURCE_LIBRARY
 		${QT_TEST_LIBRARIES}
