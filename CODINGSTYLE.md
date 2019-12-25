@@ -101,6 +101,8 @@ other editors that implement this coding style, please add them here.
 * there is a strong preference for lower case file names; sometimes conventions
   or outside requirements make camelCase filenames the better (or only) choice,
   but absent such an outside reason all file names should be lower case
+  This rule applies to new file names, existing file names should not be
+  changed without a reason.
 
 * cpp/h file names should be identical to the class name but in lower case
 
