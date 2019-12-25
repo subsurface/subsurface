@@ -7,9 +7,9 @@
 #include "core/device.h"
 #include "core/qthelper.h"
 #include "core/settings/qPrefDivePlanner.h"
-#ifndef SUBSURFACE_MOBILE
+#if not defined(SUBSURFACE_MOBILE) && not defined(SUBSURFACE_TESTING)
 #include "commands/command.h"
-#endif // SUBSURFACE_MOBILE
+#endif // SUBSURFACE_MOBILE SUBSURFACE_TESTING
 #include "core/gettextfromc.h"
 #include "core/deco.h"
 #include <QApplication>
@@ -1171,20 +1171,20 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 	if (!current_dive || displayed_dive.id != current_dive->id) {
 		// we were planning a new dive, not re-planning an existing one
 		displayed_dive.divetrip = nullptr; // Should not be necessary, just in case!
-#ifndef SUBSURFACE_MOBILE
+#if not defined(SUBSURFACE_MOBILE) && not defined(SUBSURFACE_TESTING)
 		Command::addDive(&displayed_dive, autogroup, true);
-#endif // SUBSURFACE_MOBILE
+#endif // SUBSURFACE_MOBILE SUBSURFACE_TESTING
 	} else if (replanCopy) {
 		// we were planning an old dive and save as a new dive
 		displayed_dive.id = dive_getUniqID(); // Things will break horribly if we create dives with the same id.
-#ifndef SUBSURFACE_MOBILE
+#if not defined(SUBSURFACE_MOBILE) && not defined(SUBSURFACE_TESTING)
 		Command::addDive(&displayed_dive, false, false);
-#endif // SUBSURFACE_MOBILE
+#endif // SUBSURFACE_MOBILE SUBSURFACE_TESTING
 	} else {
 		// we were planning an old dive and rewrite the plan
-#ifndef SUBSURFACE_MOBILE
+#if not defined(SUBSURFACE_MOBILE) && not defined(SUBSURFACE_TESTING)
 		Command::replanDive(&displayed_dive);
-#endif // SUBSURFACE_MOBILE
+#endif // SUBSURFACE_MOBILE SUBSURFACE_TESTING
 	}
 
 	// Remove and clean the diveplan, so we don't delete
