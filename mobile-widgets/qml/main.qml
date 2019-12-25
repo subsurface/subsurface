@@ -780,7 +780,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 
 		onVisibleChanged: {
-			console.log("---> Startpage changed visibility to " + visible)
 			if (visible) {
 				pageStack.clear()
 				diveList.visible = false
@@ -791,7 +790,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 		Component.onCompleted: {
 			if (!visible) {
-				console.log("---> Startpage change to diveList")
 				pageStack.initPage = diveList
 			}
 		}
