@@ -43,7 +43,6 @@ Kirigami.ScrollablePage {
 		}
 	}
 	onVisibleChanged: {
-		console.log("---> DiveList changed visibility to " + visible)
 		if (visible) {
 			page.actions.main = page.downloadFromDCAction
 			page.actions.right = page.addDiveAction
