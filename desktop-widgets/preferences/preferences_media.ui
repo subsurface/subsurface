@@ -16,7 +16,7 @@
   <layout class="QVBoxLayout" name="verticalLayout">
 
    <item>
-    <widget class="QLabel" name="label_help4">
+    <widget class="QLabel" name="label_help_thumbnails1">
      <property name="toolTip">
       <string extracomment="Help info 1"/>
      </property>
@@ -27,7 +27,7 @@
    </item>
 
    <item>
-    <widget class="QLabel" name="label_help4">
+    <widget class="QLabel" name="label_help_thumbnails2">
      <property name="toolTip">
       <string extracomment="Help info 1"/>
      </property>
@@ -49,7 +49,7 @@
    </item>
 
    <item>
-    <widget class="QLabel" name="label_help4">
+    <widget class="QLabel" name="label_help_media_1">
      <property name="toolTip">
       <string extracomment="Help info 1"/>
      </property>
@@ -60,7 +60,7 @@
    </item>
 
    <item>
-    <widget class="QLabel" name="label_help4">
+    <widget class="QLabel" name="label_help_video_1">
      <property name="toolTip">
       <string extracomment="Help info 1"/>
      </property>
@@ -87,7 +87,7 @@
       </property>
 
       <item row="0" column="0" colspan="2">
-       <widget class="QLabel" name="label_help4">
+       <widget class="QLabel" name="label_help_video_2">
         <property name="toolTip">
          <string extracomment="Help info 2"/>
         </property>
@@ -131,7 +131,7 @@
       </item>
 
       <item row="3" column="0" colspan="2">
-       <widget class="QLabel" name="label_help4">
+       <widget class="QLabel" name="label_help_video_3">
         <property name="toolTip">
          <string extracomment="Help info 3"/>
         </property>
