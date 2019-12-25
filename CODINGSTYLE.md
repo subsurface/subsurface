@@ -102,6 +102,10 @@ other editors that implement this coding style, please add them here.
   or outside requirements make camelCase filenames the better (or only) choice,
   but absent such an outside reason all file names should be lower case
 
+* cpp/h file names should usually be identical to the class name but in lower
+  case. Where it seems appropriate, multiple, closely related classes can be
+  in a single file with a more generic name.
+
 * switch statements with blocks are a little bit special (to avoid indenting
   too far)
   ```
