@@ -15,7 +15,6 @@ Item {
 	property string password: password.text;
 
 	function saveCredentials() {
-		prefs.cloudPin = pin.text
 		manager.saveCloudCredentials(login.text, password.text)
 	}
 
@@ -103,7 +102,7 @@ Item {
 				id: registerpin
 				text: qsTr("Register")
 				onClicked: {
-					saveCredentials()
+					verifyCredentials(login.text, password.text, pin.text)
 				}
 			}
 			Controls.Label {
