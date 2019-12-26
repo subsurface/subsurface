@@ -10,13 +10,321 @@ import org.kde.kirigami 2.4 as Kirigami
 Kirigami.ScrollablePage {
 	title: qsTr("Dive planner setup")
 
-	ColumnLayout {
+	Column {
 		width: parent.width
 		spacing: 1
 		Layout.margins: 10
 
-		Text {
-			text: "Dive planner setup"
+		TemplateSection {
+			id: rates
+			title: qsTr("Rates")
+
+			GridLayout {
+				columns: 2
+				rowSpacing: 10
+				columnSpacing: 20
+				visible: rates.isExpanded
+
+				TemplateLabel {
+					Layout.columnSpan: 2
+					text: qsTr("Ascent")
+					font.bold: true
+				}
+				TemplateLabel {
+					text: qsTr("below 75% avg. depth")
+				}
+				TemplateSpinBox {
+					from: 1
+					to: 99
+					stepSize: 1
+					value: 15
+					textFromValue: function (value, locale) {
+						return value + qsTr("m/min")
+					}
+					onValueModified: {
+						console.log("got value: " + value)
+					}
+				}
+				TemplateLabel {
+					text: qsTr("75% to 50% avg. depth")
+				}
+				TemplateSpinBox {
+					from: 1
+					to: 99
+					stepSize: 1
+					value: 15
+					textFromValue: function (value, locale) {
+						return value + qsTr("m/min")
+					}
+					onValueModified: {
+						console.log("got value: " + value)
+					}
+				}
+				TemplateLabel {
+					text: qsTr("50% avg. depth to 6m")
+				}
+				TemplateSpinBox {
+					from: 1
+					to: 99
+					stepSize: 1
+					value: 15
+					textFromValue: function (value, locale) {
+						return value + qsTr("m/min")
+					}
+					onValueModified: {
+						console.log("got value: " + value)
+					}
+				}
+				TemplateLabel {
+					text: qsTr("6m to surface")
+				}
+				TemplateSpinBox {
+					from: 1
+					to: 99
+					stepSize: 1
+					value: 15
+					textFromValue: function (value, locale) {
+						return value + qsTr("m/min")
+					}
+					onValueModified: {
+						console.log("got value: " + value)
+					}
+				}
+				TemplateLabel {
+					Layout.columnSpan: 2
+					text: qsTr("Descent")
+					font.bold: true
+				}
+				TemplateLabel {
+					text: qsTr("Surface to the bottom")
+				}
+				TemplateSpinBox {
+					from: 1
+					to: 99
+					stepSize: 1
+					value: 15
+					textFromValue: function (value, locale) {
+						return value + qsTr("m/min")
+					}
+					onValueModified: {
+						console.log("got value: " + value)
+					}
+				}
+			}
+		}
+		TemplateSection {
+			id: planning
+			title: qsTr("Planning")
+
+			GridLayout {
+				columns: 2
+				rowSpacing: 10
+				columnSpacing: 20
+				visible: planning.isExpanded
+
+				// Only support "Open circuit"
+				TemplateLabel {
+					text: "WORK in progress"
+				}
+
+				TemplateRadioButton {
+					text: qsTr("Recreational NO deco")
+					Layout.columnSpan: 2
+				}
+				// Reserve gas is 50bar (PADI/SSI rules)
+				TemplateRadioButton {
+					text: qsTr("Bühlmann, GFLow/GFHigh:")
+				}
+				Row {
+					spacing: 0
+
+					TemplateSpinBox {
+						width: planning.width / 2 -30
+						from: 1
+						to: 99
+						stepSize: 1
+						value: 15
+						textFromValue: function (value, locale) {
+							return value + qsTr(" %")
+						}
+						onValueModified: {
+							console.log("got value: " + value)
+						}
+					}
+					TemplateSpinBox {
+						width: planning.width / 2 -30
+						from: 1
+						to: 99
+						stepSize: 1
+						value: 15
+						textFromValue: function (value, locale) {
+							return value + qsTr(" %")
+						}
+						onValueModified: {
+							console.log("got value: " + value)
+						}
+					}
+				}
+				TemplateRadioButton {
+					text: qsTr("VPM-B, Conservatism:")
+				}
+				TemplateSpinBox {
+					from: 0
+					to: 4
+					stepSize: 1
+					value: 2
+					textFromValue: function (value, locale) {
+						return qsTr("+") + value
+					}
+					onValueModified: {
+						console.log("got value: " + value)
+					}
+				}
+			}
+		}
+		TemplateSection {
+			id: gasoptions
+			title: qsTr("Gas options")
+
+			GridLayout {
+				columns: 2
+				rowSpacing: 10
+				columnSpacing: 20
+				visible: gasoptions.isExpanded
+
+				TemplateLabel {
+					text: qsTr("Bottom SAC")
+				}
+				TemplateSpinBox {
+					from: 1
+					to: 99
+					stepSize: 1
+					value: 20
+					textFromValue: function (value, locale) {
+						return value + qsTr("l/min")
+					}
+					onValueModified: {
+						console.log("got value: " + value)
+					}
+				}
+				TemplateLabel {
+					text: qsTr("Deco SAC")
+				}
+				TemplateSpinBox {
+					from: 1
+					to: 99
+					stepSize: 1
+					value: 17
+					textFromValue: function (value, locale) {
+						return value + qsTr("l/min")
+					}
+					onValueModified: {
+						console.log("got value: " + value)
+					}
+				}
+				TemplateLabel {
+					text: qsTr("SAC factor")
+				}
+				TemplateSpinBox {
+					from: 20
+					to: 99
+					stepSize: 1
+					value: 20
+					textFromValue: function (value, locale) {
+						return (value / 10).toFixed(1)
+					}
+					onValueModified: {
+						console.log("got value: " + value)
+					}
+				}
+				TemplateLabel {
+					text: qsTr("Problem solving time")
+				}
+				TemplateSpinBox {
+					from: 1
+					to: 9
+					stepSize: 1
+					value: 4
+					textFromValue: function (value, locale) {
+						return value + qsTr("min")
+					}
+					onValueModified: {
+						console.log("got value: " + value)
+					}
+				}
+				TemplateLabel {
+					text: qsTr("Bottom pO2")
+				}
+				TemplateSpinBox {
+					from: 0
+					to: 200
+					stepSize: 1
+					value: 120
+					textFromValue: function (value, locale) {
+						return (value / 100).toFixed(2) + "bar"
+					}
+					onValueModified: {
+						console.log("got value: " + value)
+					}
+				}
+				TemplateLabel {
+					text: qsTr("Deco pO2")
+				}
+				TemplateSpinBox {
+					from: 0
+					to: 200
+					stepSize: 1
+					value: 160
+					textFromValue: function (value, locale) {
+						return (value / 100).toFixed(2) + "bar"
+					}
+					onValueModified: {
+						console.log("got value: " + value)
+					}
+				}
+				TemplateLabel {
+					text: qsTr("Best mix END")
+				}
+				TemplateSpinBox {
+					from: 1
+					to: 99
+					stepSize: 1
+					value: 20
+					textFromValue: function (value, locale) {
+						return value + qsTr("m")
+					}
+					onValueModified: {
+						console.log("got value: " + value)
+					}
+				}
+				TemplateCheckBox {
+					text: qsTr("O2 narcotic")
+				}
+			}
+		}
+		TemplateSection {
+			id: notes
+			title: qsTr("Notes")
+
+			ColumnLayout {
+				visible: notes.isExpanded
+
+				TemplateCheckBox {
+					text: qsTr("Display runtime")
+				}
+				TemplateCheckBox {
+					text: qsTr("Display segment duration")
+				}
+				TemplateCheckBox {
+					text: qsTr("Display transitions in deco")
+				}
+				TemplateCheckBox {
+					text: qsTr("Verbatim dive plan")
+				}
+				TemplateCheckBox {
+					text: qsTr("Display plan variations")
+				}
+			}
 		}
 	}
 }
