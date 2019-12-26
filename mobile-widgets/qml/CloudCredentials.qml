@@ -14,10 +14,6 @@ Item {
 	property string username: login.text;
 	property string password: password.text;
 
-	function saveCredentials() {
-		manager.saveCloudCredentials(login.text, password.text)
-	}
-
 	ColumnLayout {
 		id: outerLayout
 		width: loginWindow.width - Kirigami.Units.gridUnit // to ensure the full input fields are visible
@@ -129,7 +125,7 @@ Item {
 				id: signin_register_normal
 				text: qsTr("Sign-in or Register")
 				onClicked: {
-					saveCredentials()
+					manager.saveCloudCredentials(login.text, password.text)
 				}
 			}
 			Controls.Label {
