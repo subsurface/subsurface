@@ -144,7 +144,7 @@ Item {
 					manager.setGitLocalOnly(true)
 					PrefCloudStorage.cloud_auto_sync = false
 					prefs.credentialStatus = CloudStatus.CS_NOCLOUD
-					manager.saveCloudCredentials()
+					manager.saveCloudCredentials("", "")
 					manager.openNoCloudRepo()
 				}
 			}
