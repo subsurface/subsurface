@@ -165,7 +165,7 @@ Kirigami.ApplicationWindow {
 		height: rootItem.height
 		rightPadding: 0
 		enabled: (prefs.credentialStatus === CloudStatus.CS_NOCLOUD ||
-					prefs.credentialStatus === CloudStatus.CS_VERIFIED)
+			                prefs.credentialStatus === CloudStatus.CS_VERIFIED)
 		topContent: Image {
 			source: "qrc:/qml/icons/dive.jpg"
 			Layout.fillWidth: true
@@ -276,7 +276,7 @@ Kirigami.ApplicationWindow {
 					}
 					text: qsTr("Add dive manually")
 					enabled: prefs.credentialStatus === CloudStatus.CS_VERIFIED ||
-							prefs.credentialStatus === CloudStatus.CS_NOCLOUD
+						        prefs.credentialStatus === CloudStatus.CS_NOCLOUD
 					onTriggered: {
 						globalDrawer.close()
 						returnTopPage()  // otherwise odd things happen with the page stack
@@ -322,7 +322,7 @@ Kirigami.ApplicationWindow {
 					}
 					text: qsTr("Manual sync with cloud")
 					enabled: prefs.credentialStatus === CloudStatus.CS_VERIFIED ||
-							prefs.credentialStatus === CloudStatus.CS_NOCLOUD
+						        prefs.credentialStatus === CloudStatus.CS_NOCLOUD
 					onTriggered: {
 						if (prefs.credentialStatus === CloudStatus.CS_NOCLOUD) {
 							returnTopPage()
@@ -774,8 +774,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					manager.appendTextToLog("pageStack forced back to map")
 				}
 			} else if (pageStack.currentItem.objectName !== mapPage.objectName &&
-					pageStack.lastItem.objectName === mapPage.objectName &&
-					hackToOpenMap === 1 /* MapSelected */) {
+				        pageStack.lastItem.objectName === mapPage.objectName &&
+				        hackToOpenMap === 1 /* MapSelected */) {
 				// if we just picked the mapPage and are suddenly back on a different page
 				// force things back to the mapPage
 				manager.appendTextToLog("pageStack wrong page, switching back to map")
