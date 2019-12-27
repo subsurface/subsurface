@@ -98,7 +98,7 @@ Item {
 				id: registerpin
 				text: qsTr("Register")
 				onClicked: {
-					verifyCredentials(login.text, password.text, pin.text)
+					manager.saveCloudCredentials(login.text, password.text, pin.text)
 				}
 			}
 			Controls.Label {
@@ -127,7 +127,7 @@ Item {
 				id: signin_register_normal
 				text: qsTr("Sign-in or Register")
 				onClicked: {
-					manager.saveCloudCredentials(login.text, password.text)
+					manager.saveCloudCredentials(login.text, password.text, "")
 				}
 			}
 			Controls.Label {
