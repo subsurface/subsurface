@@ -162,6 +162,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
 
 	// make upload signals available in QML
+	// Remark: signal - signal connect
 	connect(uploadDiveLogsDE::instance(), &uploadDiveLogsDE::uploadFinish,
 			this, &QMLManager::uploadFinish);
 	connect(uploadDiveLogsDE::instance(), &uploadDiveLogsDE::uploadProgress,
@@ -170,10 +171,10 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 			this, &QMLManager::uploadProgress);
 
 	// uploadDiveShare::uploadFinish() is defined with 3 parameters,
-	// whereas QMLManager::uploadFinish() is defined with 2 paramters,
+	// whereas QMLManager::uploadFinish() is defined with 2 parameters,
 	// Solution add a slot as landing zone.
-	connect(uploadDiveShare::instance(), SIGNAL(uploadDiveShare::uploadFinish(bool, const QString &, const QByteArray &)),
-			this, SLOT(uploadFinishSlot(bool, const QString &, const QByteArray &)));
+	connect(uploadDiveShare::instance(), &uploadDiveShare::uploadFinish,
+			this, &QMLManager::uploadFinishSlot);
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 #if defined(Q_OS_ANDROID)
