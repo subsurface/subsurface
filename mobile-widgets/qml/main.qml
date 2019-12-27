@@ -823,7 +823,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 		Component.onCompleted: {
 			if (!visible) {
-				pageStack.initPage = diveList
+				showDiveList()
 			}
 		}
 	}
