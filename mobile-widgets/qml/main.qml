@@ -474,6 +474,16 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						}
 					}
 				}
+				Kirigami.Action{
+					icon {
+						name: ":/icons/account_circle.svg"
+					}
+					text: qsTr("Reset forgotten Subsurface Cloud password")
+					onTriggered: {
+						Qt.openUrlExternally("https://cloud.subsurface-divelog.org/passwordreset")
+						globalDrawer.close()
+					}
+				}
 			},
 			Kirigami.Action {
 				icon {
