@@ -621,8 +621,8 @@ void QMLManager::tryRetrieveDataFromBackend()
 		setStartPageText(tr("Testing cloud credentials"));
 		appendTextToLog("Have credentials, let's see if they are valid");
 		CloudStorageAuthenticate *csa = new CloudStorageAuthenticate(this);
-		csa->backend(prefs.cloud_storage_email, prefs.cloud_storage_password,
-						QMLPrefs::instance()->cloudPin());
+		csa->backend(prefs.cloud_storage_email, prefs.cloud_storage_password, "");
+
 		// let's wait here for the signal to avoid too many more nested functions
 		QTimer myTimer;
 		myTimer.setSingleShot(true);
@@ -638,7 +638,6 @@ void QMLManager::tryRetrieveDataFromBackend()
 			return;
 		}
 		myTimer.stop();
-		QMLPrefs::instance()->setCloudPin("");
 		if (prefs.cloud_verification_status == qPrefCloudStorage::CS_INCORRECT_USER_PASSWD) {
 			appendTextToLog(QStringLiteral("Incorrect cloud credentials"));
 			setStartPageText(RED_FONT + tr("Incorrect cloud credentials") + END_FONT);
