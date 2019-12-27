@@ -9,10 +9,6 @@
 
 class QMLPrefs : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(QString cloudPin
-				MEMBER m_cloudPin
-				WRITE setCloudPin
-				NOTIFY cloudPinChanged)
 	Q_PROPERTY(qPrefCloudStorage::cloud_status credentialStatus
 				MEMBER m_credentialStatus
 				WRITE setCredentialStatus
@@ -31,9 +27,6 @@ public:
 
 	static QMLPrefs *instance();
 
-	const QString cloudPin() const;
-	void setCloudPin(const QString &cloudPin);
-
 	qPrefCloudStorage::cloud_status credentialStatus() const;
 	void setCredentialStatus(const qPrefCloudStorage::cloud_status value);
 
@@ -44,14 +37,12 @@ public:
 	void setShowPin(bool enable);
 
 private:
-	QString m_cloudPin;
 	qPrefCloudStorage::cloud_status m_credentialStatus;
 	static QMLPrefs *m_instance;
 	qPrefCloudStorage::cloud_status m_oldStatus;
 	bool m_showPin;
 
 signals:
-	void cloudPinChanged();
 	void credentialStatusChanged();
 	void oldStatusChanged();
 	void showPinChanged();
