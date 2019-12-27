@@ -15,18 +15,51 @@ void TestPlannerShared::initTestCase()
 	plannerShared::instance();
 }
 
+
+// test values have been researched with official subsurface 4.9.3
+//
+// research have been done by using the UI of subsurface, while
+// checking the content of org.hohndel.subsurface.Subsurface.plist
+// (securing UI value it not the default)
+//
+// All test have been done on a iMac Pro with Catalina 10.15.2, values in the plist
+// might be different on other systems.
+// if you experience such problems, please report these so a proper adjustment can
+// be made.
+//
+// meters pr time unit and feet pr time unit
+// UI (meters) - plist value       UI (feet) - plist value
+//    16m      -    267               33f    -     168
+//     7m      -    117               27f    -     137
+//     8m      -    133               40f    -     203
+//    10m      -    167               35f    -     178
+//
+// liter pr time unit and cuft pr time unit
+// UI (liters) - plist value       UI (cuft) - plist value
+//    30l      -    30000           0,9cuft  -   25485
+//     5l      -     5000           0,01cuft -    1416
+//     8l      -     8000           0,4cuft  -   11327
+//    10l      -    10000           0,7cuft  -   19822
+//
+// bar pr time unit and psi pr time unit
+// UI (bar) - plist value       UI (psi) - plist value
+//   1,5b      -   1500           1,5psi -   1500
+//   1,6b      -   1600           1,3psi -   1300
+//   1,2b      -   1200           1,1psi -   1100
+//   1,0b      -   1000           1,0psi -   1000
+//
+// sac factor
+// UI - plist value
+//    4,2      -    420
+//    3,5      -    350
+//    2,8      -    280
+//    2,0      -    200
+
+
+
 void TestPlannerShared::test_rates()
 
 {
-	// Rates all use meters pr time unit
-	// test values have been researched with official subsurface 4.9.3
-
-	// UI (meters) - plist value       UI (feet) - plist value
-	//    16m      -    267               33f    -     168
-	//     7m      -    117               27f    -     137
-	//     8m      -    133               40f    -     203
-	//    10m      -    167               35f    -     178
-
 	// Set system to use meters
 	qPrefUnits::set_unit_system(QStringLiteral("metric"));
 
@@ -126,10 +159,8 @@ void TestPlannerShared::test_rates()
 
 void TestPlannerShared::test_planning()
 {
-	// Variables to test
-	// dive_mode
-	//OC, CCR, PSCR, FREEDIVE, NUM_DIVEMODE, UNDEF_COMP_TYPE
-
+	// Variables currently not tested
+	// dive_mode: OC, CCR, PSCR, FREEDIVE, NUM_DIVEMODE, UNDEF_COMP_TYPE
 	// planner_deco_mode
 	// dobailout
 	// reserve_gas
@@ -146,7 +177,7 @@ void TestPlannerShared::test_planning()
 
 void TestPlannerShared::test_gas()
 {
-	// Variables to test
+	// Variables currently not tested
 	// bottomsac
 	// decosac
 	// problemsolvingtime
@@ -159,7 +190,7 @@ void TestPlannerShared::test_gas()
 
 void TestPlannerShared::test_notes()
 {
-	// Variables to test
+	// Variables currently not tested
 	// display_runtime
 	// display_duration
 	// display_transitions
