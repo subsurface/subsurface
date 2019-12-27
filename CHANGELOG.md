@@ -1,4 +1,5 @@
-Mobile: added DivePlanner setup, as first part of a mobile diveplanner
+Mobile: add menu item for cloud password reset
+Mobile: add DivePlanner setup, as first part of a mobile diveplanner
 Mobile: secure user selects operational mode, before leaving login
 Mobile: use of qml compiler, smaller footprint and faster UI
 Mobile: support for "upload to divelogs.de"
