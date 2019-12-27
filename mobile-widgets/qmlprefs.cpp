@@ -92,29 +92,6 @@ void QMLPrefs::setShowPin(bool enable)
 }
 
 /*** public slot functions ***/
-void QMLPrefs::cancelCredentialsPinSetup()
-{   
-	/* 
-	 * The user selected <cancel> on the final stage of the
-	 * cloud account generation (entering the emailed PIN).
-	 * 
-	 * Resets the cloud credential status to CS_UNKNOWN, resulting
-	 * in a return to the first crededentials page, with the
-	 * email and passwd still filled in. In case of a cancel
-	 * of registration (from the PIN page), the email address
-	 * was probably misspelled, so the user never received a PIN to
-	 * complete the process.
-	 * 
-	 * Notice that this function is also used to switch to a different
-	 * cloud account, so the name is not perfect.
-	 */
-	
-	setCredentialStatus(qPrefCloudStorage::CS_UNKNOWN);
-	qPrefCloudStorage::set_cloud_verification_status(m_credentialStatus);
-	QMLManager::instance()->setStartPageText(tr("Starting..."));
-	
-	setShowPin(false);
-}
 
 void QMLPrefs::clearCredentials()
 {

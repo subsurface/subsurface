@@ -44,7 +44,6 @@ public:
 	void setShowPin(bool enable);
 
 public slots:
-	void cancelCredentialsPinSetup();
 	void clearCredentials();
 
 private:
