@@ -161,7 +161,7 @@ Kirigami.ApplicationWindow {
 	}
 
 	globalDrawer: Kirigami.GlobalDrawer {
-		id: gDrawer
+		id: globalDrawer
 		height: rootItem.height
 		enabled: (prefs.credentialStatus === CloudStatus.CS_NOCLOUD ||
 					prefs.credentialStatus === CloudStatus.CS_VERIFIED)
@@ -267,7 +267,7 @@ Kirigami.ApplicationWindow {
 						name: ":/go-previous-symbolic"
 					}
 					text: qsTr("Back")
-					onTriggered: gDrawer.scrollViewItem.pop()
+					onTriggered: globalDrawer.scrollViewItem.pop()
 				}
 				Kirigami.Action {
 					icon {
@@ -366,7 +366,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						name: ":/go-previous-symbolic"
 					}
 					text: qsTr("Back")
-					onTriggered: gDrawer.scrollViewItem.pop()
+					onTriggered: globalDrawer.scrollViewItem.pop()
 				}
 				Kirigami.Action {
 					icon {
@@ -470,7 +470,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						name: ":/go-previous-symbolic"
 					}
 					text: qsTr("Back")
-					onTriggered: gDrawer.scrollViewItem.pop()
+					onTriggered: globalDrawer.scrollViewItem.pop()
 				}
 				Kirigami.Action {
 					text: qsTr("App log")
