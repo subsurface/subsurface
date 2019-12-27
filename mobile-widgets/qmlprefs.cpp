@@ -33,16 +33,6 @@ QMLPrefs *QMLPrefs::instance()
 
 
 /*** public functions ***/
-const QString QMLPrefs::cloudPin() const
-{
-	return m_cloudPin;
-}
-
-void QMLPrefs::setCloudPin(const QString &cloudPin)
-{
-	m_cloudPin = cloudPin;
-	emit cloudPinChanged();
-}
 
 qPrefCloudStorage::cloud_status QMLPrefs::credentialStatus() const
 {
@@ -58,7 +48,6 @@ void QMLPrefs::setCredentialStatus(const qPrefCloudStorage::cloud_status value)
 			set_filename(NOCLOUD_LOCALSTORAGE);
 			qPrefCloudStorage::set_cloud_storage_email(NULL);
 			qPrefCloudStorage::set_cloud_storage_password(NULL);
-			setCloudPin(NULL);
 			if (qPrefUnits::unit_system() == "imperial")
 				prefs.units = IMPERIAL_units;
 			else if (qPrefUnits::unit_system() == "metric")
