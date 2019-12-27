@@ -168,7 +168,6 @@ public slots:
 	void appInitialized();
 	void applicationStateChanged(Qt::ApplicationState state);
 	void saveCloudCredentials(const QString &email, const QString &password, const QString &pin);
-	bool verifyCredentials(QString email, QString password, QString pin);
 	void tryRetrieveDataFromBackend();
 	void handleError(QNetworkReply::NetworkError nError);
 	void handleSslErrors(const QList<QSslError> &errors);
@@ -266,6 +265,8 @@ private:
 	bool m_showNonDiveComputers;
 	struct dive *m_copyPasteDive = NULL;
 	struct dive_components what;
+
+	bool verifyCredentials(QString email, QString password, QString pin);
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	QString appLogFileName;
