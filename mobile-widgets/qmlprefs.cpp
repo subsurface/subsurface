@@ -56,7 +56,9 @@ void QMLPrefs::setCredentialStatus(const qPrefCloudStorage::cloud_status value)
 		if (value == qPrefCloudStorage::CS_NOCLOUD) {
 			QMLManager::instance()->appendTextToLog("Switching to no cloud mode");
 			set_filename(NOCLOUD_LOCALSTORAGE);
-			clearCredentials();
+			qPrefCloudStorage::set_cloud_storage_email(NULL);
+			qPrefCloudStorage::set_cloud_storage_password(NULL);
+			setCloudPin(NULL);
 			if (qPrefUnits::unit_system() == "imperial")
 				prefs.units = IMPERIAL_units;
 			else if (qPrefUnits::unit_system() == "metric")
@@ -89,13 +91,4 @@ void QMLPrefs::setShowPin(bool enable)
 {
 	m_showPin = enable;
 	emit showPinChanged();
-}
-
-/*** public slot functions ***/
-
-void QMLPrefs::clearCredentials()
-{
-	qPrefCloudStorage::set_cloud_storage_email(NULL);
-	qPrefCloudStorage::set_cloud_storage_password(NULL);
-	setCloudPin(NULL);
 }
