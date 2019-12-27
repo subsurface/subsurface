@@ -43,9 +43,6 @@ public:
 	bool showPin() const;
 	void setShowPin(bool enable);
 
-public slots:
-	void clearCredentials();
-
 private:
 	QString m_cloudPin;
 	qPrefCloudStorage::cloud_status m_credentialStatus;
