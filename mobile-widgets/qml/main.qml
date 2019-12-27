@@ -507,6 +507,13 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("Dive planner")
 
 					Kirigami.Action {
+						icon {
+							name: ":/go-previous-symbolic"
+						}
+						text: qsTr("Back")
+						onTriggered: globalDrawer.scrollViewItem.pop()
+					}
+					Kirigami.Action {
 						text: qsTr("Setup")
 						onTriggered: {
 							globalDrawer.close()
