@@ -54,8 +54,10 @@ Kirigami.ScrollablePage {
 				id: changeCloudSettings
 				text: qsTr("Change")
 				onClicked: {
-					prefs.cancelCredentialsPinSetup()
-					rootItem.returnTopPage()
+					PrefCloudStorage.cloud_verification_status = CloudStatus.CS_UNKNOWN
+					prefs.credentialStatus = CloudStatus.CS_UNKNOWN
+					manager.startPageText  = qsTr("Starting...");
+					prefs.showPin = false;
 				}
 			}
 			Controls.Label {
