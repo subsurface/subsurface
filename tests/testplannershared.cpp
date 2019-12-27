@@ -177,15 +177,123 @@ void TestPlannerShared::test_planning()
 
 void TestPlannerShared::test_gas()
 {
+	// test independent of metric/imperial
+	plannerShared::set_sacfactor(4.2);
+	QCOMPARE(qPrefDivePlanner::sacfactor(), 420);
+	plannerShared::set_sacfactor(3.5);
+	QCOMPARE(qPrefDivePlanner::sacfactor(), 350);
+	qPrefDivePlanner::set_sacfactor(280);
+	QCOMPARE(plannerShared::sacfactor(), 2.8);
+	qPrefDivePlanner::set_sacfactor(200);
+	QCOMPARE(plannerShared::sacfactor(), 2.0);
+
+	plannerShared::set_problemsolvingtime(4);
+	QCOMPARE(qPrefDivePlanner::problemsolvingtime(), 4);
+	plannerShared::set_problemsolvingtime(5);
+	QCOMPARE(qPrefDivePlanner::problemsolvingtime(), 5);
+	qPrefDivePlanner::set_problemsolvingtime(2);
+	QCOMPARE(plannerShared::problemsolvingtime(), 2);
+	qPrefDivePlanner::set_problemsolvingtime(6);
+	QCOMPARE(plannerShared::problemsolvingtime(), 6);
+
+	// Set system to use meters
+	qPrefUnits::set_unit_system(QStringLiteral("metric"));
+
+	plannerShared::set_bottomsac(30);
+	QCOMPARE(qPrefDivePlanner::bottomsac(), 30000);
+	plannerShared::set_bottomsac(5);
+	QCOMPARE(qPrefDivePlanner::bottomsac(), 5000);
+	qPrefDivePlanner::set_bottomsac(8000);
+	QCOMPARE(plannerShared::bottomsac(), 8);
+	qPrefDivePlanner::set_bottomsac(10000);
+	QCOMPARE(plannerShared::bottomsac(), 10);
+
+	plannerShared::set_decosac(30);
+	QCOMPARE(qPrefDivePlanner::decosac(), 30000);
+	plannerShared::set_decosac(5);
+	QCOMPARE(qPrefDivePlanner::decosac(), 5000);
+	qPrefDivePlanner::set_decosac(8000);
+	QCOMPARE(plannerShared::decosac(), 8);
+	qPrefDivePlanner::set_decosac(10000);
+	QCOMPARE(plannerShared::decosac(), 10);
+
+	plannerShared::set_bottompo2(1.5);
+	QCOMPARE(qPrefDivePlanner::bottompo2(), 1500);
+	plannerShared::set_bottompo2(1.6);
+	QCOMPARE(qPrefDivePlanner::bottompo2(), 1600);
+	qPrefDivePlanner::set_bottompo2(1200);
+	QCOMPARE(plannerShared::bottompo2(), 1.2);
+	qPrefDivePlanner::set_bottompo2(1000);
+	QCOMPARE(plannerShared::bottompo2(), 1.0);
+
+	plannerShared::set_decopo2(1.5);
+	QCOMPARE(qPrefDivePlanner::decopo2(), 1500);
+	plannerShared::set_decopo2(1.6);
+	QCOMPARE(qPrefDivePlanner::decopo2(), 1600);
+	qPrefDivePlanner::set_decopo2(1100);
+//TEMP	QCOMPARE(plannerShared::decopo2(), 1.1);
+	qPrefDivePlanner::set_decopo2(1000);
+	QCOMPARE(plannerShared::decopo2(), 1.0);
+
+	plannerShared::set_bestmixend(16);
+	QCOMPARE(qPrefDivePlanner::bestmixend(), 16000);
+	plannerShared::set_bestmixend(7);
+	QCOMPARE(qPrefDivePlanner::bestmixend(), 7000);
+	qPrefDivePlanner::set_bestmixend(8000);
+	QCOMPARE(plannerShared::bestmixend(), 8);
+	qPrefDivePlanner::set_bestmixend(10000);
+	QCOMPARE(plannerShared::bestmixend(), 10);
+
+	// Set system to use feet
+	qPrefUnits::set_unit_system(QStringLiteral("imperial"));
+
+	plannerShared::set_bottomsac(0.9);
+	QCOMPARE(qPrefDivePlanner::bottomsac(), 25485);
+	plannerShared::set_bottomsac(0.01);
+	QCOMPARE(qPrefDivePlanner::bottomsac(), 1416);
+	qPrefDivePlanner::set_bottomsac(11327);
+	QCOMPARE(plannerShared::bottomsac(), 0.4);
+	qPrefDivePlanner::set_bottomsac(19822);
+	QCOMPARE(plannerShared::bottomsac(), 0.7);
+
+	plannerShared::set_decosac(0.9);
+	QCOMPARE(qPrefDivePlanner::decosac(), 25485);
+	plannerShared::set_decosac(0.01);
+	QCOMPARE(qPrefDivePlanner::decosac(), 1416);
+	qPrefDivePlanner::set_decosac(11327);
+	QCOMPARE(plannerShared::decosac(), 0.4);
+	qPrefDivePlanner::set_decosac(19822);
+	QCOMPARE(plannerShared::decosac(), 0.7);
+
+	plannerShared::set_bottompo2(1.5);
+	QCOMPARE(qPrefDivePlanner::bottompo2(), 1500);
+	plannerShared::set_bottompo2(1.6);
+	QCOMPARE(qPrefDivePlanner::bottompo2(), 1600);
+	qPrefDivePlanner::set_bottompo2(1200);
+	QCOMPARE(plannerShared::bottompo2(), 1.2);
+	qPrefDivePlanner::set_bottompo2(1000);
+	QCOMPARE(plannerShared::bottompo2(), 1.0);
+
+	plannerShared::set_decopo2(1.5);
+	QCOMPARE(qPrefDivePlanner::decopo2(), 1500);
+	plannerShared::set_decopo2(1.6);
+	QCOMPARE(qPrefDivePlanner::decopo2(), 1600);
+	qPrefDivePlanner::set_decopo2(1200);
+	QCOMPARE(plannerShared::decopo2(), 1.2);
+	qPrefDivePlanner::set_decopo2(1000);
+	QCOMPARE(plannerShared::decopo2(), 1.0);
+
+	plannerShared::set_bestmixend(33);
+	QCOMPARE(qPrefDivePlanner::bestmixend(), 168);
+	plannerShared::set_bestmixend(27);
+	QCOMPARE(qPrefDivePlanner::bestmixend(), 137);
+	qPrefDivePlanner::set_bestmixend(203);
+	QCOMPARE(plannerShared::bestmixend(), 40);
+	qPrefDivePlanner::set_bestmixend(178);
+	QCOMPARE(plannerShared::bestmixend(), 35);
+
 	// Variables currently not tested
-	// bottomsac
-	// decosac
-	// problemsolvingtime
-	// sacfactor
 	// o2narcotic
-	// bottompo2
-	// decopo2
-	// bestmixend
 }
 
 void TestPlannerShared::test_notes()
