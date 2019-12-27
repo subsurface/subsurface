@@ -1,5 +1,6 @@
 Please note that many of the icons in the folder are under the Apache v2
-license, not the GPLv2.
+license, not the GPLv2. These icons have been copied from the material
+design icon set https://material.io/resources/icons/
 
 Usually, these two license are considered incompatible because of the
 patent termination clause in the Apache v2 license, however with icons
@@ -27,3 +28,5 @@ ic_location_off_black_24px.svg -> ic_location_off.svg
 ic_place_black_24px.svg -> ic_place.svg
 ic_settings_24px.svg -> ic_settings.svg
 ic_sync_24px.svg -> ic_sync.svg
+account_circle-24px.svg -> account_circle.svg
+contact_support-24px.svg -> contact_support.svg
