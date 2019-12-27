@@ -109,8 +109,10 @@ Item {
 				id: cancelpin
 				text: qsTr("Cancel")
 				onClicked: {
-					prefs.cancelCredentialsPinSetup()
-					rootItem.returnTopPage()
+					PrefCloudStorage.cloud_verification_status = CloudStatus.CS_UNKNOWN
+					prefs.cloudCredentials = CloudStatus.CS_UNKNOWN
+					manager.startPageText = qsTr("Check credentials...");
+					prefs.showPin = false;
 				}
 			}
 		}
