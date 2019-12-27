@@ -457,7 +457,7 @@ void QMLManager::finishSetup()
 	} else if (!empty_string(existing_filename) &&
 				QMLPrefs::instance()->credentialStatus() != qPrefCloudStorage::CS_UNKNOWN) {
 		QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_NOCLOUD);
-		saveCloudCredentials(qPrefCloudStorage::cloud_storage_email(), qPrefCloudStorage::cloud_storage_password());
+		saveCloudCredentials(qPrefCloudStorage::cloud_storage_email(), qPrefCloudStorage::cloud_storage_password(), qPrefCloudStorage::cloud_storage_pin());
 		appendTextToLog(tr("working in no-cloud mode"));
 		int error = parse_file(existing_filename, &dive_table, &trip_table, &dive_site_table);
 		if (error) {
@@ -493,7 +493,7 @@ QMLManager *QMLManager::instance()
 #define CLOUDURL QString(prefs.cloud_base_url)
 #define CLOUDREDIRECTURL CLOUDURL + "/cgi-bin/redirect.pl"
 
-void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &newPassword)
+void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &newPassword, const QString &pin)
 {
 	bool cloudCredentialsChanged = false;
 	bool noCloud = QMLPrefs::instance()->credentialStatus() == qPrefCloudStorage::CS_NOCLOUD;
@@ -530,7 +530,7 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 	}
 
 	if (!noCloud &&
-		!verifyCredentials(newEmail, newPassword, QMLPrefs::instance()->cloudPin()))
+		!verifyCredentials(newEmail, newPassword, pin))
 		return;
 
 	qPrefCloudStorage::set_cloud_storage_email(newEmail);

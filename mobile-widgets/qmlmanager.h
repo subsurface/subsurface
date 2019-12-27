@@ -167,7 +167,7 @@ public:
 public slots:
 	void appInitialized();
 	void applicationStateChanged(Qt::ApplicationState state);
-	void saveCloudCredentials(const QString &email, const QString &password);
+	void saveCloudCredentials(const QString &email, const QString &password, const QString &pin);
 	bool verifyCredentials(QString email, QString password, QString pin);
 	void tryRetrieveDataFromBackend();
 	void handleError(QNetworkReply::NetworkError nError);
