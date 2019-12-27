@@ -443,19 +443,34 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					name: ":/icons/ic_help_outline.svg"
 				}
 				text: qsTr("Help")
-				onTriggered: {
-					Qt.openUrlExternally("https://subsurface-divelog.org/documentation/subsurface-mobile-v2-user-manual/")
+				Kirigami.Action {
+					icon {
+						name: ":/go-previous-symbolic"
+					}
+					text: qsTr("Back")
+					onTriggered: globalDrawer.scrollViewItem.pop()
 				}
-			},
-			Kirigami.Action {
-				icon {
-					name: ":/icons/ic_help_outline.svg"
+				Kirigami.Action {
+					icon {
+						name: ":/icons/ic_help_outline.svg"
+					}
+					text: qsTr("Show user manual")
+					onTriggered: {
+						Qt.openUrlExternally("https://subsurface-divelog.org/documentation/subsurface-mobile-v2-user-manual/")
+					}
 				}
-				text: qsTr("Ask for support")
-				onTriggered: {
-					if (!manager.createSupportEmail()) {
-						manager.copyAppLogToClipboard()
-						showPassiveNotification(qsTr("failed to open email client, please manually create support email to support@subsurface-divelog.org - the logs have been copied to the clipboard and can be pasted into that email."), 6000)
+				Kirigami.Action {
+					icon {
+						name: ":/icons/contact_support.svg"
+					}
+					text: qsTr("Ask for support")
+					onTriggered: {
+						if (!manager.createSupportEmail()) {
+							manager.copyAppLogToClipboard()
+							showPassiveNotification(qsTr("failed to open email client, please manually create support email to support@subsurface-divelog.org - the logs have been copied to the clipboard and can be pasted into that email."), 6000)
+						} else {
+							globalDrawer.close()
+						}
 					}
 				}
 			},
