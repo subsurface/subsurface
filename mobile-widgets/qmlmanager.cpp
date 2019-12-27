@@ -565,10 +565,6 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 		currentGitLocalOnly = git_local_only;
 		git_local_only = false;
 		openLocalThenRemote(url);
-	} else if (prefs.cloud_verification_status == qPrefCloudStorage::CS_NEED_TO_VERIFY &&
-				!QMLPrefs::instance()->cloudPin().isEmpty()) {
-		// the user entered a PIN?
-		tryRetrieveDataFromBackend();
 	}
 }
 
