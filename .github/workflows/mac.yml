@@ -24,12 +24,22 @@ jobs:
       run: |
         cd ${GITHUB_WORKSPACE}/..
         export QT_ROOT=${GITHUB_WORKSPACE}/Qt/5.13.0/clang_64
+        export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
         export PATH=$QT_ROOT/bin:$PATH
         export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
         DIR=$(pwd)
 
         # first build Subsurface-mobile to ensure this didn't get broken
         bash -e -x ./subsurface/scripts/build.sh -mobile
+
+        # run tests
+        echo "------------------------------------"
+        echo "run tests for mobile build"
+        pushd ${GITHUB_WORKSPACE}/build-mobile/tests
+        make TestQPrefCloudStorage
+        ./TestQPrefCloudStorage
+        make check
+        popd
 
         # now Subsurface with WebKit
         bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -release
@@ -38,6 +48,15 @@ jobs:
 
         # build export-html to make sure that didn't get broken
         make export-html
+
+        # run the tests
+        echo "------------------------------------"
+        echo "run tests"
+        pushd ${GITHUB_WORKSPACE}/build/tests
+        make TestUnitConversion
+        ./TestUnitConversion
+        make check
+        popd
 
     - name: package Subsurface
       run: |
