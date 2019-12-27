@@ -163,6 +163,7 @@ Kirigami.ApplicationWindow {
 	globalDrawer: Kirigami.GlobalDrawer {
 		id: gDrawer
 		height: rootItem.height
+		rightPadding: 0
 		enabled: (prefs.credentialStatus === CloudStatus.CS_NOCLOUD ||
 					prefs.credentialStatus === CloudStatus.CS_VERIFIED)
 		topContent: Image {
