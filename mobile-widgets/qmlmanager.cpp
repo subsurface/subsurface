@@ -526,7 +526,7 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 	if (qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_NOCLOUD &&
 		!cloudCredentialsChanged) {
 		// just go back to the dive list
-		QMLPrefs::instance()->setCredentialStatus(QMLPrefs::instance()->oldStatus());
+		qPrefCloudStorage::set_cloud_verification_status(QMLPrefs::instance()->oldStatus());
 	}
 
 	if (!noCloud &&
