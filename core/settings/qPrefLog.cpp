@@ -24,15 +24,15 @@ void qPrefLog::set_default_file_behavior(enum def_file_behavior value)
 	if (value != prefs.default_file_behavior ||
 		prefs.default_file_behavior != UNDEFINED_DEFAULT_FILE) {
 
-	if (value == UNDEFINED_DEFAULT_FILE) {
-		// undefined, so check if there's a filename set and
-		// use that, otherwise go with no default file
-		prefs.default_file_behavior = QString(prefs.default_filename).isEmpty() ? NO_DEFAULT_FILE : LOCAL_DEFAULT_FILE;
-	} else {
-		prefs.default_file_behavior = value;
-	}
-	disk_default_file_behavior(true);
-	emit instance()->default_file_behaviorChanged(value);
+		if (value == UNDEFINED_DEFAULT_FILE) {
+			// undefined, so check if there's a filename set and
+			// use that, otherwise go with no default file
+			prefs.default_file_behavior = QString(prefs.default_filename).isEmpty() ? NO_DEFAULT_FILE : LOCAL_DEFAULT_FILE;
+		} else {
+			prefs.default_file_behavior = value;
+		}
+		disk_default_file_behavior(true);
+		emit instance()->default_file_behaviorChanged(value);
 	}
 }
 void qPrefLog::disk_default_file_behavior(bool doSync)

@@ -151,6 +151,14 @@ void TestQPrefLog::test_oldPreferences()
 
 void TestQPrefLog::test_signals()
 {
+	// create known baseline
+	qPrefLog::set_default_filename("new base01");
+	qPrefLog::set_default_file_behavior(LOCAL_DEFAULT_FILE);
+	qPrefLog::set_use_default_file(false);
+	qPrefLog::set_show_average_depth(true);
+	qPrefLog::set_extraEnvironmentalDefault(false);
+
+	// start checking signals
 	QSignalSpy spy1(qPrefLog::instance(), &qPrefLog::default_filenameChanged);
 	QSignalSpy spy2(qPrefLog::instance(), &qPrefLog::default_file_behaviorChanged);
 	QSignalSpy spy3(qPrefLog::instance(), &qPrefLog::use_default_fileChanged);
@@ -158,19 +166,15 @@ void TestQPrefLog::test_signals()
 	QSignalSpy spy5(qPrefLog::instance(), &qPrefLog::extraEnvironmentalDefaultChanged);
 
 	qPrefLog::set_default_filename("new base01");
-	qPrefLog::set_default_file_behavior(LOCAL_DEFAULT_FILE);
-	qPrefLog::set_use_default_file(false);
-	qPrefLog::set_show_average_depth(false);
-	qPrefLog::set_extraEnvironmentalDefault(false);
-
+	qPrefLog::set_default_filename("new base02");
 	prefs.default_file_behavior = NO_DEFAULT_FILE;
 	qPrefLog::set_default_file_behavior(LOCAL_DEFAULT_FILE);
 	prefs.use_default_file = true;
 	qPrefLog::set_use_default_file(false);
+	prefs.show_average_depth = false;
+	qPrefLog::set_show_average_depth(true);
 	prefs.extraEnvironmentalDefault = true;
 	qPrefLog::set_extraEnvironmentalDefault(false);
-	prefs.show_average_depth = true;
-	qPrefLog::set_show_average_depth(false);
 
 	QCOMPARE(spy1.count(), 1);
 	QCOMPARE(spy2.count(), 1);
@@ -178,11 +182,11 @@ void TestQPrefLog::test_signals()
 	QCOMPARE(spy4.count(), 1);
 	QCOMPARE(spy5.count(), 1);
 
-	QVERIFY(spy1.takeFirst().at(0).toBool() == false);
-	QVERIFY(spy2.takeFirst().at(0).toBool() == false);
-	QVERIFY(spy2.takeFirst().at(0).toBool() == false);
-	QVERIFY(spy4.takeFirst().at(0).toBool() == false);
-	QVERIFY(spy5.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy1.takeFirst().at(0).toBool() == true); // text was changed, so value is true
+	QVERIFY(spy2.takeFirst().at(0).toInt() == (int)LOCAL_DEFAULT_FILE);
+	QVERIFY(spy3.takeFirst().at(0).toBool() == false); // boolean value last changed to
+	QVERIFY(spy4.takeFirst().at(0).toBool() == true); // -"-
+	QVERIFY(spy5.takeFirst().at(0).toBool() == false); // -"-
 
 }
 
