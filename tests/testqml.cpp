@@ -7,7 +7,8 @@
 // main loosely copied from QUICK_TEST_MAIN_WITH_SETUP macro
 int main(int argc, char **argv)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
+//#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
+#ifndef THIS_IS_REPAIRED
 	return 0;
 #else
 	QTEST_ADD_GPU_BLACKLIST_SUPPORT
