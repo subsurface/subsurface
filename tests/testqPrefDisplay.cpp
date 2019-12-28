@@ -86,6 +86,8 @@ void TestQPrefDisplay::test_set_load_struct()
 	display->set_display_invalid_dives(true);
 	display->set_divelist_font("doNotCareString");
 	display->set_font_size(15.0);
+	qDebug() << "--> got prefs. " << prefs.font_size << " and " << qPrefDisplay::font_size();
+
 	display->set_show_developer(true);
 	display->set_theme("myTheme2");
 	display->set_lastDir("test2");
@@ -106,10 +108,13 @@ void TestQPrefDisplay::test_set_load_struct()
 	prefs.show_developer = false;
 
 	display->load();
+#ifndef SUBSURFACE_MOBILE
+	// Font size is never stored on disk, but qPref grabs the system default
+	QCOMPARE(prefs.font_size, 15.0);
+#endif
 	QCOMPARE(prefs.animation_speed, 33);
 	QCOMPARE(prefs.display_invalid_dives, true);
 	QCOMPARE(prefs.divelist_font, "doNotCareString");
-	QCOMPARE(prefs.font_size, 15.0);
 	QCOMPARE(prefs.show_developer, true);
 	QCOMPARE(display->theme(), QString("myTheme2"));
 	QCOMPARE(display->lastDir(), QString("test2"));
@@ -147,7 +152,10 @@ void TestQPrefDisplay::test_struct_disk()
 	QCOMPARE(prefs.animation_speed, 27);
 	QCOMPARE(prefs.display_invalid_dives, true);
 	QCOMPARE(prefs.divelist_font, "doNotCareAtAll");
+#ifndef SUBSURFACE_MOBILE
+	// Font size is never stored on disk, but qPref grabs the system default
 	QCOMPARE(prefs.font_size, 17.0);
+#endif
 	QCOMPARE(prefs.show_developer, false);
 }
 
