@@ -315,14 +315,14 @@ void QMLManager::openLocalThenRemote(QString url)
 		auto credStatus = qPrefCloudStorage::cloud_verification_status();
 		if (credStatus != qPrefCloudStorage::CS_NOCLOUD &&
 		    credStatus != qPrefCloudStorage::CS_INCORRECT_USER_PASSWD)
-			QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_NEED_TO_VERIFY);
+			qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NEED_TO_VERIFY);
 	} else {
 		// if we can load from the cache, we know that we have a valid cloud account
 		// and we know that there was at least one successful sync with the cloud when
 		// that local cache was created - so there is a common ancestor
 		setLoadFromCloud(true);
 		if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_UNKNOWN)
-			QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_VERIFIED);
+			qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_VERIFIED);
 		if (git_prefs.unit_system == IMPERIAL)
 			qPrefUnits::set_unit_system("imperial");
 		else if (git_prefs.unit_system == METRIC)
@@ -470,7 +470,7 @@ void QMLManager::finishSetup()
 			appendTextToLog(QString("working in no-cloud mode, finished loading %1 dives from %2").arg(dive_table.nr).arg(existing_filename));
 		}
 	} else {
-		QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_UNKNOWN);
+		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_UNKNOWN);
 		appendTextToLog(tr("no cloud credentials"));
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	}
@@ -673,7 +673,7 @@ void QMLManager::provideAuth(QNetworkReply *reply, QAuthenticator *auth)
 		// OK, credentials have been tried and didn't work, so they are invalid
 		appendTextToLog("Cloud credentials are invalid");
 		setStartPageText(RED_FONT + tr("Cloud credentials are invalid") + END_FONT);
-		QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_INCORRECT_USER_PASSWD);
+		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_INCORRECT_USER_PASSWD);
 		reply->disconnect();
 		reply->abort();
 		reply->deleteLater();
@@ -717,7 +717,7 @@ void QMLManager::retrieveUserid()
 		revertToNoCloudIfNeeded();
 		return;
 	}
-	QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_VERIFIED);
+	qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_VERIFIED);
 	setStartPageText(tr("Cloud credentials valid, loading dives..."));
 	// this only gets called with "alreadySaving" already locked
 	loadDivesWithValidCredentials();
