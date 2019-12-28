@@ -23,8 +23,6 @@ public:
 
 	static QMLPrefs *instance();
 
-	void setCredentialStatus(const qPrefCloudStorage::cloud_status value);
-
 	qPrefCloudStorage::cloud_status oldStatus() const;
 	void setOldStatus(const qPrefCloudStorage::cloud_status value);
 
