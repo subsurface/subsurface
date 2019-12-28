@@ -32,25 +32,6 @@ QMLPrefs *QMLPrefs::instance()
 
 
 /*** public functions ***/
-
-void QMLPrefs::setCredentialStatus(const qPrefCloudStorage::cloud_status value)
-{
-	if ((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status() != value) {
-		setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
-		if (value == qPrefCloudStorage::CS_NOCLOUD) {
-			QMLManager::instance()->appendTextToLog("Switching to no cloud mode");
-			set_filename(NOCLOUD_LOCALSTORAGE);
-			qPrefCloudStorage::set_cloud_storage_email(NULL);
-			qPrefCloudStorage::set_cloud_storage_password(NULL);
-			if (qPrefUnits::unit_system() == "imperial")
-				prefs.units = IMPERIAL_units;
-			else if (qPrefUnits::unit_system() == "metric")
-				prefs.units = SI_units;
-		}
-		qPrefCloudStorage::set_cloud_verification_status(value);
-	}
-}
-
 qPrefCloudStorage::cloud_status QMLPrefs::oldStatus() const
 {
 	return m_oldStatus;
