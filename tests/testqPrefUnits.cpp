@@ -159,7 +159,7 @@ void TestQPrefUnits::test_multiple()
 	QCOMPARE(tst->length(), qPrefUnits::length());
 	QCOMPARE(tst->length(), QStringLiteral("meters"));
 	QCOMPARE(tst->pressure(), qPrefUnits::pressure());
-	QCOMPARE(tst->pressure(), QStringLiteral("meters"));
+	QCOMPARE(tst->pressure(), QStringLiteral("bar"));
 }
 
 void TestQPrefUnits::test_unit_system()
