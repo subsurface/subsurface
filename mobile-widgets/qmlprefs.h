@@ -10,7 +10,7 @@
 class QMLPrefs : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(qPrefCloudStorage::cloud_status credentialStatus
-				MEMBER m_credentialStatus
+				READ credentialStatus
 				WRITE setCredentialStatus
 				NOTIFY credentialStatusChanged)
 	Q_PROPERTY(bool showPin
@@ -37,7 +37,6 @@ public:
 	void setShowPin(bool enable);
 
 private:
-	qPrefCloudStorage::cloud_status m_credentialStatus;
 	static QMLPrefs *m_instance;
 	qPrefCloudStorage::cloud_status m_oldStatus;
 	bool m_showPin;
