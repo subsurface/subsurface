@@ -456,7 +456,9 @@ void QMLManager::finishSetup()
 		openLocalThenRemote(url);
 	} else if (!empty_string(existing_filename) &&
 				qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_UNKNOWN) {
-		QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_NOCLOUD);
+		QMLPrefs::instance()->setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
+		set_filename(NOCLOUD_LOCALSTORAGE);
+		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 		saveCloudCredentials(qPrefCloudStorage::cloud_storage_email(), qPrefCloudStorage::cloud_storage_password(), qPrefCloudStorage::cloud_storage_pin());
 		appendTextToLog(tr("working in no-cloud mode"));
 		int error = parse_file(existing_filename, &dive_table, &trip_table, &dive_site_table);
