@@ -144,5 +144,12 @@ Item {
 				}
 			}
 		}
+		SsrfButton {
+			id: signin_forgot_password
+			text: qsTr("Forgot password?")
+			onClicked: {
+				Qt.openUrlExternally("https://cloud.subsurface-divelog.org/passwordreset")
+			}
+		}
 	}
 }
