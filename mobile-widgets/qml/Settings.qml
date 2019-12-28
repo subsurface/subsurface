@@ -55,7 +55,6 @@ Kirigami.ScrollablePage {
 				text: qsTr("Change")
 				onClicked: {
 					PrefCloudStorage.cloud_verification_status = CloudStatus.CS_UNKNOWN
-					prefs.credentialStatus = CloudStatus.CS_UNKNOWN
 					manager.startPageText  = qsTr("Starting...");
 					prefs.showPin = false;
 				}
@@ -68,7 +67,7 @@ Kirigami.ScrollablePage {
 				color: subsurfaceTheme.textColor
 			}
 			Controls.Label {
-				text: describe[prefs.credentialStatus]
+				text: describe[PrefCloudStorage.cloud_verification_status]
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.60
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 1.5
