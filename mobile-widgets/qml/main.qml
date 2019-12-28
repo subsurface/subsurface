@@ -275,8 +275,6 @@ Kirigami.ApplicationWindow {
 						name: ":/icons/ic_add.svg"
 					}
 					text: qsTr("Add dive manually")
-					enabled: prefs.credentialStatus === CloudStatus.CS_VERIFIED ||
-						        prefs.credentialStatus === CloudStatus.CS_NOCLOUD
 					onTriggered: {
 						globalDrawer.close()
 						returnTopPage()  // otherwise odd things happen with the page stack
