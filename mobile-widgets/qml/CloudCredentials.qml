@@ -110,7 +110,6 @@ Item {
 				text: qsTr("Cancel")
 				onClicked: {
 					PrefCloudStorage.cloud_verification_status = CloudStatus.CS_UNKNOWN
-					prefs.cloudCredentials = CloudStatus.CS_UNKNOWN
 					manager.startPageText = qsTr("Check credentials...");
 					prefs.showPin = false;
 				}
@@ -140,7 +139,8 @@ Item {
 				onClicked: {
 					manager.setGitLocalOnly(true)
 					PrefCloudStorage.cloud_auto_sync = false
-					prefs.credentialStatus = CloudStatus.CS_NOCLOUD
+					prefs.oldStatus = PrefCloudStorage.cloud_verification_status
+					PrefCloudStorage.cloud_verification_status = CloudStatus.CS_NOCLOUD
 					manager.saveCloudCredentials("", "", "")
 					manager.openNoCloudRepo()
 				}

@@ -33,11 +33,6 @@ QMLPrefs *QMLPrefs::instance()
 
 /*** public functions ***/
 
-qPrefCloudStorage::cloud_status QMLPrefs::credentialStatus() const
-{
-	return (qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status();
-}
-
 void QMLPrefs::setCredentialStatus(const qPrefCloudStorage::cloud_status value)
 {
 	if ((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status() != value) {
@@ -53,7 +48,6 @@ void QMLPrefs::setCredentialStatus(const qPrefCloudStorage::cloud_status value)
 				prefs.units = SI_units;
 		}
 		qPrefCloudStorage::set_cloud_verification_status(value);
-		emit credentialStatusChanged();
 	}
 }
 
