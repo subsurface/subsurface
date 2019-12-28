@@ -93,12 +93,18 @@ void TestQPrefEquipment::test_oldPreferences()
 
 void TestQPrefEquipment::test_signals()
 {
+	qPrefEquipment::set_default_cylinder("signal test");
 	QSignalSpy spy1(qPrefEquipment::instance(), &qPrefEquipment::default_cylinderChanged);
 	QSignalSpy spy2(qPrefEquipment::instance(), &qPrefEquipment::display_unused_tanksChanged);
 
-	qPrefEquipment::set_default_cylinder("new base21");
+	// set default cylinder to same value it already had
+	qPrefEquipment::set_default_cylinder("signal test");
+	QCOMPARE(spy1.count(), 0);
+
+	// change default cylinder to different value
+	qPrefEquipment::set_default_cylinder("different value");
 	QCOMPARE(spy1.count(), 1);
-	QVERIFY(spy1.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy1.takeFirst().at(0).toBool() == true);
 
 	prefs.display_unused_tanks = true;
 	qPrefEquipment::set_display_unused_tanks(false);
