@@ -321,21 +321,12 @@ Kirigami.ApplicationWindow {
 						name: ":/icons/cloud_sync.svg"
 					}
 					text: qsTr("Manual sync with cloud")
-					enabled: prefs.credentialStatus === CloudStatus.CS_VERIFIED ||
-						        prefs.credentialStatus === CloudStatus.CS_NOCLOUD
+					enabled: PrefCloudStorage.cloud_verification_status === CloudStatus.CS_VERIFIED
 					onTriggered: {
-						if (prefs.credentialStatus === CloudStatus.CS_NOCLOUD) {
-							returnTopPage()
-							prefs.oldStatus = prefs.credentialStatus
-							manager.startPageText = "Enter valid cloud storage credentials"
-							prefs.credentialStatus = CloudStatus.CS_UNKNOWN
-							globalDrawer.close()
-						} else {
-							globalDrawer.close()
-							detailsWindow.endEditMode()
-							manager.saveChangesCloud(true);
-							globalDrawer.close()
-						}
+						globalDrawer.close()
+						detailsWindow.endEditMode()
+						manager.saveChangesCloud(true);
+						globalDrawer.close()
 					}
 				}
 				Kirigami.Action {
