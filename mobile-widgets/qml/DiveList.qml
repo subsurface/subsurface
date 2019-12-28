@@ -30,12 +30,12 @@ Kirigami.ScrollablePage {
 	supportsRefreshing: true
 	onRefreshingChanged: {
 		if (refreshing) {
-			if (prefs.credentialStatus === CloudStatus.CS_VERIFIED) {
+			if (PrefCloudStorage.cloud_verification_status === CloudStatus.CS_VERIFIED) {
 				detailsWindow.endEditMode()
 				manager.saveChangesCloud(true)
 				refreshing = false
 			} else {
-				manager.appendTextToLog("sync with cloud storage requested, but credentialStatus is " + prefs.credentialStatus)
+				manager.appendTextToLog("sync with cloud storage requested, but credential status is " + PrefCloudStorage.cloud_verification_status)
 				manager.appendTextToLog("no syncing, turn off spinner")
 				refreshing = false
 			}
