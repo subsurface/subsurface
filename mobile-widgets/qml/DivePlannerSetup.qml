@@ -299,6 +299,10 @@ Kirigami.ScrollablePage {
 				}
 				TemplateCheckBox {
 					text: qsTr("O2 narcotic")
+					checked: Planner.o2narcotic
+					onClicked: {
+						Planner.o2narcotic = checked
+					}
 				}
 			}
 		}
@@ -311,18 +315,38 @@ Kirigami.ScrollablePage {
 
 				TemplateCheckBox {
 					text: qsTr("Display runtime")
+					checked: Planner.display_runtime
+					onClicked: {
+						Planner.display_runtime = checked
+					}
 				}
 				TemplateCheckBox {
 					text: qsTr("Display segment duration")
+					checked: Planner.display_duration
+					onClicked: {
+						Planner.display_duration = checked
+					}
 				}
 				TemplateCheckBox {
 					text: qsTr("Display transitions in deco")
+					checked: Planner.display_transitions
+					onClicked: {
+						Planner.display_transitions = checked
+					}
 				}
 				TemplateCheckBox {
 					text: qsTr("Verbatim dive plan")
+					checked: Planner.verbatim_plan
+					onClicked: {
+						Planner.verbatim_plan = checked
+					}
 				}
 				TemplateCheckBox {
 					text: qsTr("Display plan variations")
+					checked: Planner.display_variations
+					onClicked: {
+						Planner.display_variations = checked
+					}
 				}
 			}
 		}
