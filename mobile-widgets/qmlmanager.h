@@ -16,6 +16,7 @@
 #include "qt-models/divelistmodel.h"
 #include "qt-models/completionmodels.h"
 #include "qt-models/divelocationmodel.h"
+#include "core/settings/qPrefCloudStorage.h"
 
 #define NOCLOUD_LOCALSTORAGE format_string("%s/cloudstorage/localrepo[master]", system_default_directory())
 
@@ -49,6 +50,8 @@ class QMLManager : public QObject {
 	Q_PROPERTY(int DC_deviceId READ DC_deviceId WRITE DC_setDeviceId)
 	Q_PROPERTY(QString pluggedInDeviceName MEMBER m_pluggedInDeviceName NOTIFY pluggedInDeviceNameChanged)
 	Q_PROPERTY(bool showNonDiveComputers MEMBER m_showNonDiveComputers WRITE setShowNonDiveComputers NOTIFY showNonDiveComputersChanged)
+	Q_PROPERTY(qPrefCloudStorage::cloud_status oldStatus MEMBER m_oldStatus WRITE setOldStatus NOTIFY oldStatusChanged)
+
 public:
 	QMLManager();
 	~QMLManager();
@@ -163,6 +166,8 @@ public:
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	void writeToAppLogFile(QString logText);
 #endif
+	qPrefCloudStorage::cloud_status oldStatus() const;
+	void setOldStatus(const qPrefCloudStorage::cloud_status value);
 
 public slots:
 	void appInitialized();
@@ -273,6 +278,7 @@ private:
 	QFile appLogFile;
 	bool appLogFileOpen;
 #endif
+	qPrefCloudStorage::cloud_status m_oldStatus;
 
 signals:
 	void locationServiceEnabledChanged();
@@ -295,10 +301,12 @@ signals:
 	void pluggedInDeviceNameChanged();
 	void showNonDiveComputersChanged();
 	void DC_ForceDownloadChanged();
+	void oldStatusChanged();
 
 	// From upload process
 	void uploadFinish(bool success, const QString &text);
 	void uploadProgress(qreal percentage);
+
 
 private slots:
 	void uploadFinishSlot(bool success, const QString &text, const QByteArray &html);

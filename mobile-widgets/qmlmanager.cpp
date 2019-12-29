@@ -154,7 +154,8 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_selectedDiveTimestamp(0),
 	alreadySaving(false),
 	m_pluggedInDeviceName(""),
-	m_showNonDiveComputers(false)
+	m_showNonDiveComputers(false),
+	m_oldStatus(qPrefCloudStorage::CS_UNKNOWN)
 {
 	m_instance = this;
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
@@ -2196,3 +2197,15 @@ void QMLManager::uploadFinishSlot(bool success, const QString &text, const QByte
 	emit uploadFinish(success, text);
 }
 
+qPrefCloudStorage::cloud_status QMLManager::oldStatus() const
+{
+	return m_oldStatus;
+}
+
+void QMLManager::setOldStatus(const qPrefCloudStorage::cloud_status value)
+{
+	if (m_oldStatus != value) {
+		m_oldStatus = value;
+		emit oldStatusChanged();
+	}
+}
