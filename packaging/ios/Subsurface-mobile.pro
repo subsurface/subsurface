@@ -111,7 +111,6 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../backend-shared/exportfuncs.cpp \
 	../../backend-shared/plannershared.cpp \
 	../../mobile-widgets/qmlmanager.cpp \
-	../../mobile-widgets/qmlprefs.cpp \
 	../../qt-models/divelistmodel.cpp \
 	../../qt-models/diveplotdatamodel.cpp \
 	../../qt-models/gpslistmodel.cpp \
@@ -244,7 +243,6 @@ HEADERS += \
 	../../backend-shared/exportfuncs.h \
 	../../backend-shared/plannershared.h \
 	../../mobile-widgets/qmlmanager.h \
-	../../mobile-widgets/qmlprefs.h \
 	../../map-widget/qmlmapwidgethelper.h \
 	../../qt-models/divelistmodel.h \
 	../../qt-models/diveplotdatamodel.h \
