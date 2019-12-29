@@ -46,7 +46,7 @@ Item {
 
 		Controls.Label {
 			text: qsTr("Email")
-			visible: !prefs.showPin
+			visible: PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_NEED_TO_VERIFY
 			font.pointSize: subsurfaceTheme.smallPointSize
 			color: subsurfaceTheme.secondaryTextColor
 		}
@@ -54,7 +54,7 @@ Item {
 		Controls.TextField {
 			id: login
 			text: PrefCloudStorage.cloud_storage_email
-			visible: !prefs.showPin
+			visible: PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_NEED_TO_VERIFY
 			Layout.fillWidth: true
 			inputMethodHints: Qt.ImhEmailCharactersOnly |
 					  Qt.ImhNoAutoUppercase
@@ -62,7 +62,7 @@ Item {
 
 		Controls.Label {
 			text: qsTr("Password")
-			visible: !prefs.showPin
+			visible: PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_NEED_TO_VERIFY
 			font.pointSize: subsurfaceTheme.smallPointSize
 			color: subsurfaceTheme.secondaryTextColor
 		}
@@ -70,7 +70,7 @@ Item {
 		Controls.TextField {
 			id: password
 			text: PrefCloudStorage.cloud_storage_password
-			visible: !prefs.showPin
+			visible: PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_NEED_TO_VERIFY
 			echoMode: TextInput.PasswordEchoOnEdit
 			inputMethodHints: Qt.ImhSensitiveData |
 					  Qt.ImhHiddenText |
@@ -80,20 +80,20 @@ Item {
 
 		Controls.Label {
 			text: qsTr("PIN")
-			visible: prefs.showPin
+			visible: PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NEED_TO_VERIFY
 		}
 		Controls.TextField {
 			id: pin
 			text: ""
 			Layout.fillWidth: true
-			visible: prefs.showPin
+			visible: PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NEED_TO_VERIFY
 		}
 
 		RowLayout {
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.smallSpacing
 			spacing: Kirigami.Units.smallSpacing
-			visible: prefs.showPin
+			visible: PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NEED_TO_VERIFY
 			SsrfButton {
 				id: registerpin
 				text: qsTr("Register")
@@ -111,7 +111,6 @@ Item {
 				onClicked: {
 					PrefCloudStorage.cloud_verification_status = CloudStatus.CS_UNKNOWN
 					manager.startPageText = qsTr("Check credentials...");
-					prefs.showPin = false;
 				}
 			}
 		}
@@ -120,7 +119,7 @@ Item {
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.smallSpacing
 			spacing: Kirigami.Units.smallSpacing
-			visible: !prefs.showPin
+			visible: PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_NEED_TO_VERIFY
 
 			SsrfButton {
 				id: signin_register_normal

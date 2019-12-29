@@ -56,7 +56,6 @@ Kirigami.ScrollablePage {
 				onClicked: {
 					PrefCloudStorage.cloud_verification_status = CloudStatus.CS_UNKNOWN
 					manager.startPageText  = qsTr("Starting...");
-					prefs.showPin = false;
 				}
 			}
 			Controls.Label {

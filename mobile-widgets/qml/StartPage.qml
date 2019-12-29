@@ -27,7 +27,7 @@ Kirigami.ScrollablePage {
 		}
 		Controls.Label {
 			id: explanationTextBasic
-			visible: !prefs.showPin
+			visible: PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_NEED_TO_VERIFY
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.gridUnit
 			Layout.topMargin: Kirigami.Units.gridUnit * 3
@@ -40,7 +40,7 @@ Kirigami.ScrollablePage {
 		}
 		Controls.Label {
 			id: explanationTextPin
-			visible: prefs.showPin
+			visible: PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NEED_TO_VERIFY
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.gridUnit
 			Layout.topMargin: Kirigami.Units.gridUnit * 3
