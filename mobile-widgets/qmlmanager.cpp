@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qmlmanager.h"
-#include "qmlprefs.h"
 #include <QUrl>
 #include <QSettings>
 #include <QDebug>
@@ -347,7 +346,7 @@ void QMLManager::openLocalThenRemote(QString url)
 		appendTextToLog(QStringLiteral("incorrect password for cloud credentials"));
 		setNotificationText(tr("Incorrect cloud credentials"));
 	}
-	if (QMLPrefs::instance()->oldStatus() == qPrefCloudStorage::CS_NOCLOUD) {
+	if (m_oldStatus == qPrefCloudStorage::CS_NOCLOUD) {
 		// if we switch to credentials from CS_NOCLOUD, we take things online temporarily
 		git_local_only = false;
 		appendTextToLog(QStringLiteral("taking things online to be able to switch to cloud account"));
@@ -456,7 +455,7 @@ void QMLManager::finishSetup()
 		openLocalThenRemote(url);
 	} else if (!empty_string(existing_filename) &&
 				qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_UNKNOWN) {
-		QMLPrefs::instance()->setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
+		setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
 		set_filename(NOCLOUD_LOCALSTORAGE);
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 		saveCloudCredentials(qPrefCloudStorage::cloud_storage_email(), qPrefCloudStorage::cloud_storage_password(), qPrefCloudStorage::cloud_storage_pin());
@@ -528,7 +527,7 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 	if (qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_NOCLOUD &&
 		!cloudCredentialsChanged) {
 		// just go back to the dive list
-		qPrefCloudStorage::set_cloud_verification_status(QMLPrefs::instance()->oldStatus());
+		qPrefCloudStorage::set_cloud_verification_status(m_oldStatus);
 	}
 
 	if (!noCloud &&
@@ -799,7 +798,7 @@ void QMLManager::revertToNoCloudIfNeeded()
 		currentGitLocalOnly = false;
 		git_local_only = true;
 	}
-	if (QMLPrefs::instance()->oldStatus() == qPrefCloudStorage::CS_NOCLOUD) {
+	if (m_oldStatus == qPrefCloudStorage::CS_NOCLOUD) {
 		// we tried to switch to a cloud account and had previously used local data,
 		// but connecting to the cloud account (and subsequently merging the local
 		// and cloud data) failed - so let's delete the cloud credentials and go
@@ -815,7 +814,7 @@ void QMLManager::revertToNoCloudIfNeeded()
 		prefs.cloud_storage_password = NULL;
 		qPrefCloudStorage::set_cloud_storage_email("");
 		qPrefCloudStorage::set_cloud_storage_password("");
-		QMLPrefs::instance()->setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
+		setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 		set_filename(NOCLOUD_LOCALSTORAGE);
 		setStartPageText(RED_FONT + tr("Failed to connect to cloud server, reverting to no cloud status") + END_FONT);

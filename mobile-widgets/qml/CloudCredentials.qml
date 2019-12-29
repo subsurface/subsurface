@@ -138,7 +138,7 @@ Item {
 				onClicked: {
 					manager.setGitLocalOnly(true)
 					PrefCloudStorage.cloud_auto_sync = false
-					prefs.oldStatus = PrefCloudStorage.cloud_verification_status
+					manager.oldStatus = PrefCloudStorage.cloud_verification_status
 					PrefCloudStorage.cloud_verification_status = CloudStatus.CS_NOCLOUD
 					manager.saveCloudCredentials("", "", "")
 					manager.openNoCloudRepo()
