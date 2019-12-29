@@ -11,8 +11,7 @@
 QMLPrefs *QMLPrefs::m_instance = NULL;
 
 QMLPrefs::QMLPrefs() :
-	m_oldStatus(qPrefCloudStorage::CS_UNKNOWN),
-	m_showPin(false)
+	m_oldStatus(qPrefCloudStorage::CS_UNKNOWN)
 {
 	// This strange construct is needed because QMLEngine calls new and that
 	// cannot be overwritten
@@ -43,15 +42,4 @@ void QMLPrefs::setOldStatus(const qPrefCloudStorage::cloud_status value)
 		m_oldStatus = value;
 		emit oldStatusChanged();
 	}
-}
-
-bool QMLPrefs::showPin() const
-{
-	return m_showPin;
-}
-
-void QMLPrefs::setShowPin(bool enable)
-{
-	m_showPin = enable;
-	emit showPinChanged();
 }
