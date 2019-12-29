@@ -9,6 +9,7 @@
 #include "core/settings/qPrefProxy.h"
 #include "core/settings/qPrefCloudStorage.h"
 #include "core/trip.h"
+#include "core/git-access.h"
 
 #include <QDir>
 #include <QTextStream>
@@ -52,6 +53,9 @@ void TestGitStorage::initTestCase()
 	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
 	QDir localCacheDirectory(localCacheDir);
 	QCOMPARE(localCacheDirectory.removeRecursively(), true);
+
+	// make sure that regardless of whether this is a desktop or mobile build, we always check with the cloud
+	git_local_only = false;
 }
 
 void TestGitStorage::cleanup()
