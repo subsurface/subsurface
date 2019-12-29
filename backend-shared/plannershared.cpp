@@ -290,7 +290,7 @@ bool plannerShared::verbatim_plan()
 }
 void plannerShared::set_verbatim_plan(bool value)
 {
-	DivePlannerPointsModel::instance()->setSacFactor(value);
+	DivePlannerPointsModel::instance()->setVerbatim(value);
 }
 
 bool plannerShared::display_variations()
