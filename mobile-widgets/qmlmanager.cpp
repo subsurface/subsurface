@@ -237,7 +237,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_btEnabled = btDiscovery->btAvailable();
 	connect(&btDiscovery->localBtDevice, &QBluetoothLocalDevice::hostModeStateChanged,
 		this, &QMLManager::btHostModeChange);
-	QMLPrefs::instance()->setShowPin(false);
+
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
 	progress_callback = &progressCallback;
@@ -341,7 +341,6 @@ void QMLManager::openLocalThenRemote(QString url)
 	}
 	if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NEED_TO_VERIFY) {
 		appendTextToLog(QStringLiteral("have cloud credentials, but still needs PIN"));
-		QMLPrefs::instance()->setShowPin(true);
 	}
 	if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_INCORRECT_USER_PASSWD) {
 		appendTextToLog(QStringLiteral("incorrect password for cloud credentials"));
@@ -604,7 +603,6 @@ bool QMLManager::verifyCredentials(QString email, QString password, QString pin)
 			appendTextToLog(QStringLiteral("PIN provided but not accepted"));
 			setStartPageText(RED_FONT + tr("Incorrect PIN, please try again") + END_FONT);
 		}
-		QMLPrefs::instance()->setShowPin(true);
 		return false;
 	} else if (prefs.cloud_verification_status == qPrefCloudStorage::CS_VERIFIED) {
 		appendTextToLog(QStringLiteral("PIN accepted"));
@@ -649,11 +647,8 @@ void QMLManager::tryRetrieveDataFromBackend()
 			appendTextToLog(QStringLiteral("Need to verify the email address - enter PIN"));
 			setStartPageText(RED_FONT + tr("Cannot connect to cloud storage - cloud account not verified") + END_FONT);
 			revertToNoCloudIfNeeded();
-			QMLPrefs::instance()->setShowPin(true);
 			return;
 		}
-		if (QMLPrefs::instance()->showPin())
-			QMLPrefs::instance()->setShowPin(false);
 
 		// now check the redirect URL to make sure everything is set up on the cloud server
 		connect(manager(), &QNetworkAccessManager::authenticationRequired, this, &QMLManager::provideAuth, Qt::UniqueConnection);
