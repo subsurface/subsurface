@@ -14,7 +14,6 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "mobile-widgets/qmlmanager.h"
-#include "mobile-widgets/qmlprefs.h"
 #include "qt-models/divelistmodel.h"
 #include "qt-models/gpslistmodel.h"
 #include "qt-models/messagehandlermodel.h"
@@ -192,7 +191,6 @@ void register_qml_types(QQmlEngine *engine)
 	}
 
 	REGISTER_TYPE(QMLManager, "QMLManager");
-	REGISTER_TYPE(QMLPrefs, "QMLPrefs");
 	REGISTER_TYPE(QMLProfile, "QMLProfile");
 	REGISTER_TYPE(DiveImportedModel, "DCImportModel");
 #endif // not SUBSURFACE_MOBILE
