@@ -9,10 +9,6 @@
 
 class QMLPrefs : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(bool showPin
-				MEMBER m_showPin
-				WRITE setShowPin
-				NOTIFY showPinChanged)
 	Q_PROPERTY(qPrefCloudStorage::cloud_status oldStatus
 				MEMBER m_oldStatus
 				WRITE setOldStatus
@@ -26,17 +22,12 @@ public:
 	qPrefCloudStorage::cloud_status oldStatus() const;
 	void setOldStatus(const qPrefCloudStorage::cloud_status value);
 
-	bool showPin() const;
-	void setShowPin(bool enable);
-
 private:
 	static QMLPrefs *m_instance;
 	qPrefCloudStorage::cloud_status m_oldStatus;
-	bool m_showPin;
 
 signals:
 	void oldStatusChanged();
-	void showPinChanged();
 };
 
 #endif
