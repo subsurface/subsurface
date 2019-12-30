@@ -236,7 +236,7 @@ void plannerShared::set_bottompo2(double value)
 
 double plannerShared::decopo2()
 {
-	return qPrefDivePlanner::decopo2() / 1000;
+	return qPrefDivePlanner::decopo2() / 1000.0;
 }
 void plannerShared::set_decopo2(double value)
 {
