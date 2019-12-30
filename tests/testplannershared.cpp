@@ -288,13 +288,13 @@ void TestPlannerShared::test_gas()
 	QCOMPARE(plannerShared::decopo2(), 1.0);
 
 	plannerShared::set_bestmixend(33);
-//Not implemented	QCOMPARE(qPrefDivePlanner::bestmixend(), 168);
+	QCOMPARE(qPrefDivePlanner::bestmixend(), 10058);
 	plannerShared::set_bestmixend(27);
-//Not implemented	QCOMPARE(qPrefDivePlanner::bestmixend(), 137);
-	qPrefDivePlanner::set_bestmixend(203);
-//Not implemented	QCOMPARE(plannerShared::bestmixend(), 40);
-	qPrefDivePlanner::set_bestmixend(178);
-//Not implemented	QCOMPARE(plannerShared::bestmixend(), 35);
+	QCOMPARE(qPrefDivePlanner::bestmixend(), 8230);
+	qPrefDivePlanner::set_bestmixend(11000);
+	QCOMPARE(plannerShared::bestmixend(), 36);
+	qPrefDivePlanner::set_bestmixend(7000);
+	QCOMPARE(plannerShared::bestmixend(), 23);
 
 	// Variables currently not tested
 	// o2narcotic
