@@ -231,7 +231,7 @@ void TestPlannerShared::test_gas()
 	plannerShared::set_decopo2(1.6);
 	QCOMPARE(qPrefDivePlanner::decopo2(), 1600);
 	qPrefDivePlanner::set_decopo2(1100);
-//TEMP	QCOMPARE(plannerShared::decopo2(), 1.1);
+	QCOMPARE(plannerShared::decopo2(), 1.1);
 	qPrefDivePlanner::set_decopo2(1000);
 	QCOMPARE(plannerShared::decopo2(), 1.0);
 
@@ -265,6 +265,8 @@ void TestPlannerShared::test_gas()
 	qPrefDivePlanner::set_decosac(19822);
 //Not implemented	QCOMPARE(plannerShared::decosac(), 0.7);
 
+	// Remark bottompo2 is in BAR, even though unit system is
+	// Imperial, the desktop version is like that.
 	plannerShared::set_bottompo2(1.5);
 	QCOMPARE(qPrefDivePlanner::bottompo2(), 1500);
 	plannerShared::set_bottompo2(1.6);
@@ -274,6 +276,8 @@ void TestPlannerShared::test_gas()
 	qPrefDivePlanner::set_bottompo2(1000);
 	QCOMPARE(plannerShared::bottompo2(), 1.0);
 
+	// Remark decopo2 is in BAR, even though unit system is
+	// Imperial, the desktop version is like that.
 	plannerShared::set_decopo2(1.5);
 	QCOMPARE(qPrefDivePlanner::decopo2(), 1500);
 	plannerShared::set_decopo2(1.6);
