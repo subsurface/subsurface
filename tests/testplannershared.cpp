@@ -251,19 +251,23 @@ void TestPlannerShared::test_gas()
 	QCOMPARE(qPrefDivePlanner::bottomsac(), 25485);
 	plannerShared::set_bottomsac(0.01);
 	QCOMPARE(qPrefDivePlanner::bottomsac(), 283);
-	qPrefDivePlanner::set_bottomsac(11327);
-//Not implemented	QCOMPARE(plannerShared::bottomsac(), 0.4);
-	qPrefDivePlanner::set_bottomsac(19822);
-//Not implemented	QCOMPARE(plannerShared::bottomsac(), 0.7);
+
+	// Remark return will from qPref is in m / 1000.
+	qPrefDivePlanner::set_bottomsac(2830);
+	QCOMPARE(plannerShared::bottomsac(), 2.83);
+	qPrefDivePlanner::set_bottomsac(16000);
+	QCOMPARE(plannerShared::bottomsac(), 16);
 
 	plannerShared::set_decosac(0.9);
 	QCOMPARE(qPrefDivePlanner::decosac(), 25485);
 	plannerShared::set_decosac(0.01);
 	QCOMPARE(qPrefDivePlanner::decosac(), 283);
-	qPrefDivePlanner::set_decosac(11327);
-//Not implemented	QCOMPARE(plannerShared::decosac(), 0.4);
-	qPrefDivePlanner::set_decosac(19822);
-//Not implemented	QCOMPARE(plannerShared::decosac(), 0.7);
+
+	// Remark return will from qPref is in m / 1000.
+	qPrefDivePlanner::set_decosac(11500);
+	QCOMPARE(plannerShared::decosac(), 11.5);
+	qPrefDivePlanner::set_decosac(19800);
+	QCOMPARE(plannerShared::decosac(), 19.8);
 
 	// Remark bottompo2 is in BAR, even though unit system is
 	// Imperial, the desktop version is like that.
