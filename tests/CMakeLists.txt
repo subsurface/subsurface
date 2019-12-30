@@ -139,7 +139,7 @@ TEST(TestQPrefUpdateManager testqPrefUpdateManager.cpp)
 add_test(NAME TestQML COMMAND $<TARGET_FILE:TestQML> -input ${SUBSURFACE_SOURCE}/tests)
 
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
-	set(TEST_PLANNER_SHARDE TestPlannerShared)
+	set(TEST_PLANNER_SHARED TestPlannerShared)
 endif()
 
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
