@@ -37,12 +37,12 @@ Kirigami.ScrollablePage {
 					from: 1
 					to: 99
 					stepSize: 1
-					value: 15
+					value: Planner.ascrate75
 					textFromValue: function (value, locale) {
 						return value + qsTr("m/min")
 					}
 					onValueModified: {
-						console.log("got value: " + value)
+						Planner.ascrate75 = value
 					}
 				}
 				TemplateLabel {
@@ -52,12 +52,12 @@ Kirigami.ScrollablePage {
 					from: 1
 					to: 99
 					stepSize: 1
-					value: 15
+					value: Planner.ascrate50
 					textFromValue: function (value, locale) {
 						return value + qsTr("m/min")
 					}
 					onValueModified: {
-						console.log("got value: " + value)
+						Planner.ascrate50 = value
 					}
 				}
 				TemplateLabel {
@@ -67,12 +67,12 @@ Kirigami.ScrollablePage {
 					from: 1
 					to: 99
 					stepSize: 1
-					value: 15
+					value: Planner.ascratestops
 					textFromValue: function (value, locale) {
 						return value + qsTr("m/min")
 					}
 					onValueModified: {
-						console.log("got value: " + value)
+						Planner.ascratestops = value
 					}
 				}
 				TemplateLabel {
@@ -82,12 +82,12 @@ Kirigami.ScrollablePage {
 					from: 1
 					to: 99
 					stepSize: 1
-					value: 15
+					value: Planner.ascratelast6m
 					textFromValue: function (value, locale) {
 						return value + qsTr("m/min")
 					}
 					onValueModified: {
-						console.log("got value: " + value)
+						Planner.ascratelast6m = value
 					}
 				}
 				TemplateLabel {
@@ -102,12 +102,12 @@ Kirigami.ScrollablePage {
 					from: 1
 					to: 99
 					stepSize: 1
-					value: 15
+					value: Planner.descrate
 					textFromValue: function (value, locale) {
 						return value + qsTr("m/min")
 					}
 					onValueModified: {
-						console.log("got value: " + value)
+						Planner.descrate = value
 					}
 				}
 			}
@@ -199,12 +199,12 @@ Kirigami.ScrollablePage {
 					from: 1
 					to: 99
 					stepSize: 1
-					value: 20
+					value: Planner.bottomsac
 					textFromValue: function (value, locale) {
 						return value + qsTr("l/min")
 					}
 					onValueModified: {
-						console.log("got value: " + value)
+						Planner.bottomsac = value
 					}
 				}
 				TemplateLabel {
@@ -214,12 +214,12 @@ Kirigami.ScrollablePage {
 					from: 1
 					to: 99
 					stepSize: 1
-					value: 17
+					value: Planner.decosac
 					textFromValue: function (value, locale) {
 						return value + qsTr("l/min")
 					}
 					onValueModified: {
-						console.log("got value: " + value)
+						Planner.decosac = value
 					}
 				}
 				TemplateLabel {
@@ -229,12 +229,12 @@ Kirigami.ScrollablePage {
 					from: 20
 					to: 99
 					stepSize: 1
-					value: 20
+					value: Planner.sacfactor
 					textFromValue: function (value, locale) {
 						return (value / 10).toFixed(1)
 					}
 					onValueModified: {
-						console.log("got value: " + value)
+						Planner.sacfactor = value
 					}
 				}
 				TemplateLabel {
@@ -244,12 +244,12 @@ Kirigami.ScrollablePage {
 					from: 1
 					to: 9
 					stepSize: 1
-					value: 4
+					value: Planner.problemsolvingtime
 					textFromValue: function (value, locale) {
 						return value + qsTr("min")
 					}
 					onValueModified: {
-						console.log("got value: " + value)
+						Planner.problemsolvingtime = value
 					}
 				}
 				TemplateLabel {
@@ -259,12 +259,12 @@ Kirigami.ScrollablePage {
 					from: 0
 					to: 200
 					stepSize: 1
-					value: 120
+					value: Planner.bottompo2
 					textFromValue: function (value, locale) {
 						return (value / 100).toFixed(2) + "bar"
 					}
 					onValueModified: {
-						console.log("got value: " + value)
+						Planner.bottompo2 = value
 					}
 				}
 				TemplateLabel {
@@ -274,12 +274,12 @@ Kirigami.ScrollablePage {
 					from: 0
 					to: 200
 					stepSize: 1
-					value: 160
+					value: Planner.decopo2
 					textFromValue: function (value, locale) {
 						return (value / 100).toFixed(2) + "bar"
 					}
 					onValueModified: {
-						console.log("got value: " + value)
+						Planner.decopo2 = value
 					}
 				}
 				TemplateLabel {
@@ -289,12 +289,12 @@ Kirigami.ScrollablePage {
 					from: 1
 					to: 99
 					stepSize: 1
-					value: 20
+					value: Planner.bestmixend
 					textFromValue: function (value, locale) {
 						return value + qsTr("m")
 					}
 					onValueModified: {
-						console.log("got value: " + value)
+						Planner.bestmixend = value
 					}
 				}
 				TemplateCheckBox {
