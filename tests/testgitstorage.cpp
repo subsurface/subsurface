@@ -20,6 +20,12 @@
 // this is a local helper function in git-access.c
 extern "C" char *get_local_dir(const char *remote, const char *branch);
 
+QString email("ssrftest@hohndel.org");
+QString gitUrl;
+QString cloudTestRepo;
+QString localCacheDir;
+QString localCacheRepo;
+
 void TestGitStorage::initTestCase()
 {
 	// Set UTF8 text codec as in real applications
@@ -33,12 +39,24 @@ void TestGitStorage::initTestCase()
 	qPrefProxy::load();
 	qPrefCloudStorage::load();
 
-	QString gitUrl(prefs.cloud_base_url);
+	// setup our cloud test repo / credentials
+	gitUrl = prefs.cloud_base_url;
 	if (gitUrl.right(1) != "/")
 		gitUrl += "/";
-	prefs.cloud_git_url = copy_qstring(gitUrl + "git");
-	prefs.cloud_storage_email_encoded = strdup("ssrftest@hohndel.org");
+	gitUrl += "git";
+	prefs.cloud_git_url = copy_qstring(gitUrl);
+	prefs.cloud_storage_email_encoded = copy_qstring(email);
 	prefs.cloud_storage_password = strdup("geheim");
+	gitUrl += "/" + email;
+	cloudTestRepo = gitUrl + QStringLiteral("[%1]").arg(email);
+	localCacheDir = get_local_dir(qPrintable(gitUrl), qPrintable(email));
+	localCacheRepo = localCacheDir + QStringLiteral("[%1]").arg(email);
+
+	// now cleanup the cache dir in case there's something weird from previous runs
+	QDir localCacheDirectory(localCacheDir);
+	QCOMPARE(localCacheDirectory.removeRecursively(), true);
+
+	// make sure we deal with any proxy settings that are needed
 	QNetworkProxy proxy;
 	proxy.setType(QNetworkProxy::ProxyType(prefs.proxy_type));
 	proxy.setHostName(prefs.proxy_host);
@@ -48,11 +66,6 @@ void TestGitStorage::initTestCase()
 		proxy.setPassword(prefs.proxy_pass);
 	}
 	QNetworkProxy::setApplicationProxy(proxy);
-
-	// now cleanup the cache dir in case there's something weird from previous runs
-	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
-	QDir localCacheDirectory(localCacheDir);
-	QCOMPARE(localCacheDirectory.removeRecursively(), true);
 
 	// make sure that regardless of whether this is a desktop or mobile build, we always check with the cloud
 	git_local_only = false;
@@ -114,7 +127,6 @@ void TestGitStorage::testGitStorageCloud()
 	// test writing and reading back from cloud storage
 	// connect to the ssrftest repository on the cloud server
 	// and repeat the same test as before with the local git storage
-	QString cloudTestRepo("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org[ssrftest@hohndel.org]");
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/SampleDivesV2.ssrf", &dive_table, &trip_table, &dive_site_table), 0);
 	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
 	clear_dive_file_data();
@@ -135,9 +147,6 @@ void TestGitStorage::testGitStorageCloudOfflineSync()
 {
 	// make a change to local cache repo (pretending that we did some offline changes)
 	// and then open the remote one again and check that things were propagated correctly
-	QString cloudTestRepo("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org[ssrftest@hohndel.org]");
-	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
-	QString localCacheRepo = localCacheDir + "[ssrftest@hohndel.org]";
 	// read the local repo from the previous test and add dive 10
 	QCOMPARE(parse_file(qPrintable(localCacheRepo), &dive_table, &trip_table, &dive_site_table), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test10.xml", &dive_table, &trip_table, &dive_site_table), 0);
@@ -185,9 +194,7 @@ void TestGitStorage::testGitStorageCloudMerge()
 	// now we need to mess with the local git repo to get an actual merge
 	// first we add another dive to the "moved away" repository, pretending we did
 	// another offline change there
-	QString cloudTestRepo("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org[ssrftest@hohndel.org]");
-	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
-	QString localCacheRepoSave = localCacheDir + "save[ssrftest@hohndel.org]";
+	QString localCacheRepoSave = localCacheDir + QStringLiteral("save[%1]").arg(email);
 	QCOMPARE(parse_file(qPrintable(localCacheRepoSave), &dive_table, &trip_table, &dive_site_table), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test11.xml", &dive_table, &trip_table, &dive_site_table), 0);
 	process_loaded_dives();
@@ -232,9 +239,6 @@ void TestGitStorage::testGitStorageCloudMerge2()
 	// delete a dive offline
 	// edit the same dive in the cloud repo
 	// merge
-	QString cloudTestRepo("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org[ssrftest@hohndel.org]");
-	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
-	QString localCacheRepo = localCacheDir + "[ssrftest@hohndel.org]";
 	QCOMPARE(parse_file(qPrintable(localCacheRepo), &dive_table, &trip_table, &dive_site_table), 0);
 	process_loaded_dives();
 	struct dive *dive = get_dive(1);
@@ -288,9 +292,6 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	// edit the same dive notes in the cloud repo
 	// merge
 	clear_dive_file_data();
-	QString cloudTestRepo("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org[ssrftest@hohndel.org]");
-	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
-	QString localCacheRepo = localCacheDir + "[ssrftest@hohndel.org]";
 	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &dive_table, &trip_table, &dive_site_table), 0);
 	process_loaded_dives();
 	struct dive *dive = get_dive(0);
