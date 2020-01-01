@@ -29,15 +29,18 @@ jobs:
         qtpositioning5-dev qtscript5-dev qttools5-dev qttools5-dev-tools \
         qtquickcontrols2-5-dev xvfb
 
-    - name: run build
+    - name: build Subsurface
+      run: |
+        cd ..
+        bash -x subsurface/scripts/build.sh -desktop -build-with-webkit
+
+    - name: test desktop build
       env:
         SSRF_USER_EMAIL: ssrftest-u18@hohndel.org
         SSRF_USER_PASSWORD: ${{ secrets.cloudu18 }}
       run: |
-        cd ..
-        bash -x subsurface/scripts/build.sh -desktop -build-with-webkit
         # and now run the tests - with Qt 5.9 we can only run the desktop flavor
         echo "------------------------------------"
         echo "run tests"
-        cd subsurface/build
+        cd build
         xvfb-run --auto-servernum make check
