@@ -20,10 +20,7 @@ jobs:
         mkdir -p Qt/5.13.0
         curl --output Qt-5.13.0-mac.tar.xz https://f002.backblazeb2.com/file/Subsurface-Travis/Qt-5.13.0-mac.tar.xz
         tar -xJ -C Qt/5.13.0 -f Qt-5.13.0-mac.tar.xz
-    - name: build Subsurface
-      env:
-        SSRF_USER_EMAIL: ssrftest-mac@hohndel.org
-        SSRF_USER_PASSWORD: ${{ secrets.cloudmac }}
+    - name: build Subsurface-mobile
       run: |
         cd ${GITHUB_WORKSPACE}/..
         export QT_ROOT=${GITHUB_WORKSPACE}/Qt/5.13.0/clang_64
@@ -35,12 +32,26 @@ jobs:
         # first build Subsurface-mobile to ensure this didn't get broken
         bash -e -x ./subsurface/scripts/build.sh -mobile
 
-        # run tests
+    - name: test mobile build
+      env:
+        SSRF_USER_EMAIL: ssrftest-mac@hohndel.org
+        SSRF_USER_PASSWORD: ${{ secrets.cloudmac }}
+      run: |
         echo "------------------------------------"
         echo "run tests for mobile build"
-        pushd ${GITHUB_WORKSPACE}/build-mobile/tests
+        export QT_ROOT=${GITHUB_WORKSPACE}/Qt/5.13.0/clang_64
+        export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
+        cd ${GITHUB_WORKSPACE}/build-mobile/tests
         make check
-        popd
+
+    - name: build Subsurface
+      run: |
+        cd ${GITHUB_WORKSPACE}/..
+        export QT_ROOT=${GITHUB_WORKSPACE}/Qt/5.13.0/clang_64
+        export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
+        export PATH=$QT_ROOT/bin:$PATH
+        export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
+        DIR=$(pwd)
 
         # now Subsurface with WebKit
         bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -release
@@ -50,12 +61,17 @@ jobs:
         # build export-html to make sure that didn't get broken
         make export-html
 
-        # run the tests
+    - name: test desktop build
+      env:
+        SSRF_USER_EMAIL: ssrftest-mac@hohndel.org
+        SSRF_USER_PASSWORD: ${{ secrets.cloudmac }}
+      run: |
         echo "------------------------------------"
-        echo "run tests"
-        pushd ${GITHUB_WORKSPACE}/build/tests
+        echo "run tests for desktop build"
+        export QT_ROOT=${GITHUB_WORKSPACE}/Qt/5.13.0/clang_64
+        export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
+        cd ${GITHUB_WORKSPACE}/build/tests
         make check
-        popd
 
     - name: package Subsurface
       run: |
