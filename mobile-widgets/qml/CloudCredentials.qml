@@ -13,6 +13,7 @@ Item {
 
 	property string username: login.text;
 	property string password: password.text;
+	property bool showPin: (PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NEED_TO_VERIFY)
 
 	ColumnLayout {
 		id: outerLayout
@@ -46,7 +47,7 @@ Item {
 
 		Controls.Label {
 			text: qsTr("Email")
-			visible: PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_NEED_TO_VERIFY
+			visible: !showPin
 			font.pointSize: subsurfaceTheme.smallPointSize
 			color: subsurfaceTheme.secondaryTextColor
 		}
@@ -54,7 +55,7 @@ Item {
 		Controls.TextField {
 			id: login
 			text: PrefCloudStorage.cloud_storage_email
-			visible: PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_NEED_TO_VERIFY
+			visible: !showPin
 			Layout.fillWidth: true
 			inputMethodHints: Qt.ImhEmailCharactersOnly |
 					  Qt.ImhNoAutoUppercase
@@ -62,7 +63,7 @@ Item {
 
 		Controls.Label {
 			text: qsTr("Password")
-			visible: PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_NEED_TO_VERIFY
+			visible: !showPin
 			font.pointSize: subsurfaceTheme.smallPointSize
 			color: subsurfaceTheme.secondaryTextColor
 		}
@@ -70,7 +71,7 @@ Item {
 		Controls.TextField {
 			id: password
 			text: PrefCloudStorage.cloud_storage_password
-			visible: PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_NEED_TO_VERIFY
+			visible: !showPin
 			echoMode: TextInput.PasswordEchoOnEdit
 			inputMethodHints: Qt.ImhSensitiveData |
 					  Qt.ImhHiddenText |
@@ -80,20 +81,20 @@ Item {
 
 		Controls.Label {
 			text: qsTr("PIN")
-			visible: PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NEED_TO_VERIFY
+			visible: showPin
 		}
 		Controls.TextField {
 			id: pin
 			text: ""
 			Layout.fillWidth: true
-			visible: PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NEED_TO_VERIFY
+			visible: showPin
 		}
 
 		RowLayout {
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.smallSpacing
 			spacing: Kirigami.Units.smallSpacing
-			visible: PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NEED_TO_VERIFY
+			visible: showPin
 			SsrfButton {
 				id: registerpin
 				text: qsTr("Register")
@@ -119,7 +120,7 @@ Item {
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.smallSpacing
 			spacing: Kirigami.Units.smallSpacing
-			visible: PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_NEED_TO_VERIFY
+			visible: !showPin
 
 			SsrfButton {
 				id: signin_register_normal
