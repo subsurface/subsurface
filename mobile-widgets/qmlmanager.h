@@ -200,8 +200,7 @@ public slots:
 	bool toggleCylinders(bool toggle);
 	bool toggleWeights(bool toggle);
 	void undoDelete(int id);
-	QString addDive();
-	void addDiveAborted(int id);
+	int addDive();
 	void applyGpsData();
 	void populateGpsData();
 	void cancelDownloadDC();

@@ -1557,16 +1557,28 @@ void QMLManager::cancelDownloadDC()
 	import_thread_cancelled = true;
 }
 
-QString QMLManager::addDive()
+int QMLManager::addDive()
 {
-	appendTextToLog("Adding new dive.");
-	return DiveListModel::instance()->startAddDive();
-}
+	// TODO: Duplicate code with desktop-widgets/mainwindow.cpp
+	// create a dive an hour from now with a default depth (15m/45ft) and duration (40 minutes)
+	// as a starting point for the user to edit
+	struct dive d = { 0 };
+	int diveId = d.id = dive_getUniqID();
+	d.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
+	d.dc.duration.seconds = 40 * 60;
+	d.dc.maxdepth.mm = M_OR_FT(15, 45);
+	d.dc.meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
+	d.dc.model = strdup("manually added dive"); // don't translate! this is stored in the XML file
+	fake_dc(&d.dc);
+	fixup_dive(&d);
 
-void QMLManager::addDiveAborted(int id)
-{
-	DiveListModel::instance()->removeDiveById(id);
-	delete_single_dive(get_idx_by_uniq_id(id));
+	// addDive takes over the dive and clears out the structure passed in
+	Command::addDive(&d, autogroup, true);
+
+	if (verbose)
+		appendTextToLog(QString("Adding new dive with id '%1'").arg(diveId));
+	// the QML UI uses the return value to set up the edit screen
+	return diveId;
 }
 
 QString QMLManager::getCurrentPosition()
