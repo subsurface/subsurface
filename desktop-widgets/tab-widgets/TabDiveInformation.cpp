@@ -195,22 +195,21 @@ void TabDiveInformation::checkDcSalinityOverWritten()
 {
 	int dc_value = current_dive->dc.salinity;
 	int user_value = current_dive->user_salinity;
-	if (current_dive && dc_value && user_value) {
-		if (user_value != dc_value)
-			ui->salinityOverWrittenIcon->setVisible(true);
-	} else {
-		ui->salinityOverWrittenIcon->setVisible(false);
-	}
+	bool show_indicator = false;
+	if (current_dive && dc_value && user_value && (user_value != dc_value))
+		if ((dc_value < 10250) || (user_value < 10250))       // Provide for libdivecomputer that defines seawater density
+			show_indicator = true;                        // as 1.025 in contrast to Subsurface's value of 1.03
+	ui->salinityOverWrittenIcon->setVisible(show_indicator);
 }
 
 void TabDiveInformation::showCurrentWidget(bool show, int position)
 {
-		ui->groupBox_wavesize->setVisible(show);
-		ui->groupBox_surge->setVisible(show);
-		ui->groupBox_chill->setVisible(show);
-		int layoutPosition = ui->diveInfoScrollAreaLayout->indexOf(ui->groupBox_current);
-		ui->diveInfoScrollAreaLayout->takeAt(layoutPosition);
-		ui->diveInfoScrollAreaLayout->addWidget(ui->groupBox_current, 6, position, 1, 1);
+	ui->groupBox_wavesize->setVisible(show);
+	ui->groupBox_surge->setVisible(show);
+	ui->groupBox_chill->setVisible(show);
+	int layoutPosition = ui->diveInfoScrollAreaLayout->indexOf(ui->groupBox_current);
+	ui->diveInfoScrollAreaLayout->takeAt(layoutPosition);
+	ui->diveInfoScrollAreaLayout->addWidget(ui->groupBox_current, 6, position, 1, 1);
 }
 
 void TabDiveInformation::updateData()
