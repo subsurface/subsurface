@@ -20,7 +20,7 @@
 // this is a local helper function in git-access.c
 extern "C" char *get_local_dir(const char *remote, const char *branch);
 
-QString email("ssrftest@hohndel.org");
+QString email;
 QString gitUrl;
 QString cloudTestRepo;
 QString localCacheDir;
@@ -40,13 +40,23 @@ void TestGitStorage::initTestCase()
 	qPrefCloudStorage::load();
 
 	// setup our cloud test repo / credentials
+	// allow the caller to overwrite the cloud account we use; this way we
+	// can prevent the GitHub actions running tests in parallel from stepping
+	// on each other. Of course that email needs to exist as cloud storage account
+	// and have the given password
+	email = qgetenv("SSRF_USER_EMAIL");
+	QString password = qgetenv("SSRF_USER_PASSWORD");
+	if (email.isEmpty())
+		email = "ssrftest@hohndel.org";
+	if (password.isEmpty())
+		password = "geheim";
 	gitUrl = prefs.cloud_base_url;
 	if (gitUrl.right(1) != "/")
 		gitUrl += "/";
 	gitUrl += "git";
 	prefs.cloud_git_url = copy_qstring(gitUrl);
 	prefs.cloud_storage_email_encoded = copy_qstring(email);
-	prefs.cloud_storage_password = strdup("geheim");
+	prefs.cloud_storage_password = copy_qstring(password);
 	gitUrl += "/" + email;
 	cloudTestRepo = gitUrl + QStringLiteral("[%1]").arg(email);
 	localCacheDir = get_local_dir(qPrintable(gitUrl), qPrintable(email));
