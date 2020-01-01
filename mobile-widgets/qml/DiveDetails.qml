@@ -156,7 +156,6 @@ Kirigami.Page {
 		onTriggered: {
 			var deletedId = currentItem.modelData.id
 			manager.deleteDive(deletedId)
-			pageStack.pop()
 			showPassiveNotification("Dive deleted", 5000, "Undo",
 						function() {
 							manager.undoDelete(deletedId)
