@@ -10,6 +10,7 @@ import org.kde.kirigami 2.4 as Kirigami
 Kirigami.ScrollablePage {
 	title: qsTr("Dive planner setup")
 
+	property string speedUnit: (PrefUnits.length === "meters") ? qsTr("m/min") : qsTr("ft/min")
 	Column {
 		width: parent.width
 		spacing: 1
@@ -39,7 +40,7 @@ Kirigami.ScrollablePage {
 					stepSize: 1
 					value: Planner.ascrate75
 					textFromValue: function (value, locale) {
-						return value + qsTr("m/min")
+						return value + speedUnit
 					}
 					onValueModified: {
 						Planner.ascrate75 = value
@@ -54,7 +55,7 @@ Kirigami.ScrollablePage {
 					stepSize: 1
 					value: Planner.ascrate50
 					textFromValue: function (value, locale) {
-						return value + qsTr("m/min")
+						return value + speedUnit
 					}
 					onValueModified: {
 						Planner.ascrate50 = value
@@ -69,7 +70,7 @@ Kirigami.ScrollablePage {
 					stepSize: 1
 					value: Planner.ascratestops
 					textFromValue: function (value, locale) {
-						return value + qsTr("m/min")
+						return value + speedUnit
 					}
 					onValueModified: {
 						Planner.ascratestops = value
@@ -84,7 +85,7 @@ Kirigami.ScrollablePage {
 					stepSize: 1
 					value: Planner.ascratelast6m
 					textFromValue: function (value, locale) {
-						return value + qsTr("m/min")
+						return value + speedUnit
 					}
 					onValueModified: {
 						Planner.ascratelast6m = value
@@ -104,7 +105,7 @@ Kirigami.ScrollablePage {
 					stepSize: 1
 					value: Planner.descrate
 					textFromValue: function (value, locale) {
-						return value + qsTr("m/min")
+						return value + speedUnit
 					}
 					onValueModified: {
 						Planner.descrate = value
