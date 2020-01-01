@@ -228,9 +228,6 @@ Kirigami.Page {
 	}
 
 	function endEditMode() {
-		// if we were adding a dive, we need to remove it
-		if (state === "add")
-			manager.addDiveAborted(dive_id)
 		// just cancel the edit/add state
 		state = "view";
 		focus = false;
