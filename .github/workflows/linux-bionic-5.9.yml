@@ -30,6 +30,9 @@ jobs:
         qtquickcontrols2-5-dev xvfb
 
     - name: run build
+      env:
+        SSRF_USER_EMAIL: ssrftest-u18@hohndel.org
+        SSRF_USER_PASSWORD: ${{ secrets.cloudu18 }}
       run: |
         cd ..
         bash -x subsurface/scripts/build.sh -desktop -build-with-webkit

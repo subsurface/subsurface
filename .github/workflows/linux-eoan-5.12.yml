@@ -18,6 +18,9 @@ jobs:
       uses: actions/checkout@v1
 
     - name: run build
+      env:
+        SSRF_USER_EMAIL: ssrftest-u19@hohndel.org
+        SSRF_USER_PASSWORD: ${{ secrets.cloudu19 }}
       run: |
         cd ..
         bash -x subsurface/.github/workflows/scripts/ubuntu-in-container-build.sh
