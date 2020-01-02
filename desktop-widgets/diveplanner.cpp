@@ -458,11 +458,6 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 		rebreather_modes.append(gettextFromC::tr(divemode_text_ui[i]));
 	ui.rebreathermode->insertItems(0, rebreather_modes);
 
-	modeMapper = new QSignalMapper(this);
-	modeMapper->setMapping(ui.recreational_deco, int(RECREATIONAL));
-	modeMapper->setMapping(ui.buehlmann_deco, int(BUEHLMANN));
-	modeMapper->setMapping(ui.vpmb_deco, int(VPMB));
-
 	connect(ui.recreational_deco, &QAbstractButton::clicked, [=] { plannerShared::set_planner_deco_mode(RECREATIONAL); });
 	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [=] { plannerShared::set_planner_deco_mode(BUEHLMANN); });
 	connect(ui.vpmb_deco, &QAbstractButton::clicked, [=] { plannerShared::set_planner_deco_mode(VPMB); });
@@ -494,7 +489,10 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), plannerModel, SLOT(setRebreatherMode(int)));
 	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), this, SLOT(setBailoutVisibility(int)));
 
-	connect(modeMapper, SIGNAL(mapped(int)), this, SLOT(disableDecoElements(int)));
+	connect(ui.recreational_deco, &QAbstractButton::clicked, [=] { disableDecoElements(RECREATIONAL); });
+	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [=] { disableDecoElements(BUEHLMANN); });
+	connect(ui.vpmb_deco, &QAbstractButton::clicked, [=] { disableDecoElements(VPMB); });
+
 	connect(ui.ascRate75, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_ascrate75(int)));
 	connect(ui.ascRate50, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_ascrate50(int)));
 	connect(ui.descRate, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_descrate(int)));
