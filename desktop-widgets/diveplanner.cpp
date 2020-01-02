@@ -464,7 +464,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 
 	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_last_stop(bool)));
 	connect(ui.lastStop, SIGNAL(toggled(bool)), this, SLOT(disableBackgasBreaks(bool)));
-	connect(ui.verbatim_plan, SIGNAL(toggled(bool)), plannerModel, SLOT(set_verbatim_plan(bool)));
+	connect(ui.verbatim_plan, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_verbatim_plan(bool)));
 	connect(ui.display_duration, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_display_duration(bool)));
 	connect(ui.display_runtime, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_display_runtime(bool)));
 	connect(ui.display_transitions, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_display_transitions(bool)));
