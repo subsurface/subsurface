@@ -213,7 +213,7 @@ void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remote
 	QListWidgetItem *item = new QListWidgetItem(deviceLabel);
 
 	item->setData(Qt::UserRole, QVariant::fromValue(remoteDeviceInfo));
-	item->setBackgroundColor(pairingColor);
+	item->setBackground(pairingColor);
 
 	ui->discoveredDevicesList->addItem(item);
 }
@@ -342,7 +342,7 @@ void BtDeviceSelectionDialog::pairingFinished(const QBluetoothAddress &address, 
 		QString updatedDeviceLabel = item->text().replace(pairingExpression, pairingStatusLabel);
 
 		item->setText(updatedDeviceLabel);
-		item->setBackgroundColor(pairingColor);
+		item->setBackground(pairingColor);
 	}
 
 	// Check if the updated device is the selected one from the list and inform the user that it can/cannot start the download mode
