@@ -17,7 +17,7 @@
 #define TEXT_EDITED 1
 #define CSS_SET_HEADING_BLUE "QLabel { color: mediumblue;} "
 
-enum watertypes { FRESHWATER, SALTYWATER, EN13319WATER, SALTWATER };
+enum watertypes { FRESHWATER, SALTYWATER, EN13319WATER, SALTWATER, NO_WATERTYPE};
 
 TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(new Ui::TabDiveInformation())
 {
@@ -180,7 +180,9 @@ void TabDiveInformation::updateWhen()
 // Provide an index for the combobox that corresponds to the salinity value
 int TabDiveInformation::updateSalinityComboIndex(int salinity)
 {
-	if (salinity < 10050)
+	if (salinity == 0)
+		return NO_WATERTYPE;
+	else if (salinity < 10050)
 		return FRESHWATER;
 	else if (salinity < 10190)
 		return SALTYWATER;
@@ -248,7 +250,7 @@ void TabDiveInformation::updateData()
 		checkDcSalinityOverWritten();  // If exclamation is needed (i.e. salinity overwrite by user), then show it
 		ui->salinityText->setText(QString("%1g/ℓ").arg(salinity_value / 10.0));
 	} else {
-		ui->waterTypeCombo->setCurrentIndex(0);
+		ui->waterTypeCombo->setCurrentIndex(NO_WATERTYPE);
 		ui->waterTypeText->clear();
 		ui->salinityText->clear();
 	}
@@ -267,6 +269,7 @@ void TabDiveInformation::updateData()
 // From the index of the water type combo box, set the dive->salinity to an appropriate value
 void TabDiveInformation::on_waterTypeCombo_activated(int index) {
 	int combobox_salinity = 0;
+	int dc_salinity = current_dive->dc.salinity;
 	switch(ui->waterTypeCombo->currentIndex()) {
 	case 0: // Fresh
 		combobox_salinity = FRESHWATER_SALINITY;
@@ -279,12 +282,18 @@ void TabDiveInformation::on_waterTypeCombo_activated(int index) {
 		break;
 	case 3 : // Salt (sea)
 		combobox_salinity = SEAWATER_SALINITY;
-	// case(4): use dc: combobox_salinity is already set to 0 at the top, so no setting required here
+		break;
+	case 4 : // use dc
+		combobox_salinity = dc_salinity;
+		ui->waterTypeCombo->setCurrentIndex(updateSalinityComboIndex(combobox_salinity));
 	default:
 		break;
 	}                 // Save and display the new salinity value:
-	checkDcSalinityOverWritten(); // if exclamation is needed, then show it
 	ui->salinityText->setText(QString("%1g/ℓ").arg(combobox_salinity / 10.0));
+	if (dc_salinity == combobox_salinity) // If salinity differs from that of dc, then save it
+		ui->salinityOverWrittenIcon->setVisible(false);
+	else
+		ui->salinityOverWrittenIcon->setVisible(true);
 	divesEdited(Command::editWaterTypeUser(combobox_salinity, false));
 }
 
