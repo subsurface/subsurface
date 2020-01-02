@@ -89,18 +89,20 @@ DISK_LOADSYNC_ENUM_EXT(Units, "temperature", units::TEMPERATURE, temperature, un
 QString qPrefUnits::unit_system()
 {
 	return 	prefs.unit_system == METRIC ? QStringLiteral("metric") :
-			prefs.unit_system == IMPERIAL ? QStringLiteral("imperial") :
-											QStringLiteral("personalized");
+					      prefs.unit_system == IMPERIAL ? QStringLiteral("imperial") :
+									      QStringLiteral("personalized");
 }
 void qPrefUnits::set_unit_system(const QString& value)
 {
-	short int v = value == QStringLiteral("metric") ? METRIC :
-					value == QStringLiteral("imperial")? IMPERIAL :
-							PERSONALIZE;
-	if (v == METRIC) {
+	set_unit_system(value == QStringLiteral("metric") ? METRIC : value == QStringLiteral("imperial")? IMPERIAL : PERSONALIZE);
+	emit instance()->unit_systemStringChanged(value);
+}
+void qPrefUnits::set_unit_system(unit_system_values value)
+{
+	if (value == METRIC) {
 		prefs.unit_system = METRIC;
 		prefs.units = SI_units;
-	} else if (v == IMPERIAL) {
+	} else if (value == IMPERIAL) {
 		prefs.unit_system = IMPERIAL;
 		prefs.units = IMPERIAL_units;
 	} else {
