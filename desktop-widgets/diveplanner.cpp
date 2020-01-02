@@ -162,9 +162,9 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 
 	// Creating (and canceling) the plan
 	replanButton = ui.buttonBox->addButton(tr("Save new"), QDialogButtonBox::ActionRole);
-	connect(replanButton, SIGNAL(clicked()), plannerModel, SLOT(saveDuplicatePlan()));
-	connect(ui.buttonBox, SIGNAL(accepted()), plannerModel, SLOT(savePlan()));
-	connect(ui.buttonBox, SIGNAL(rejected()), plannerModel, SLOT(cancelPlan()));
+	connect(replanButton, &QAbstractButton::clicked, plannerModel, &DivePlannerPointsModel::saveDuplicatePlan);
+	connect(ui.buttonBox, &QDialogButtonBox::accepted, plannerModel, &DivePlannerPointsModel::savePlan);
+	connect(ui.buttonBox, &QDialogButtonBox::rejected, plannerModel, &DivePlannerPointsModel::cancelPlan);
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), this);
 	connect(closeKey, SIGNAL(activated()), plannerModel, SLOT(cancelPlan()));
 
