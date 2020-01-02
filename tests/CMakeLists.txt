@@ -111,7 +111,7 @@ TEST(TestParsePerformance testparseperformance.cpp)
 TEST(TestPlan testplan.cpp)
 TEST(TestDiveSiteDuplication testdivesiteduplication.cpp)
 TEST(TestRenumber testrenumber.cpp)
-# right now this causes random test failures... TEST(TestGitStorage testgitstorage.cpp)
+TEST(TestGitStorage testgitstorage.cpp)
 TEST(TestPicture testpicture.cpp)
 TEST(TestMerge testmerge.cpp)
 TEST(TestTagList testtaglist.cpp)
@@ -148,7 +148,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestProfile
 	TestGpsCoords
 	TestParse
-	# TestGitStorage
+	TestGitStorage
 	TestPlan
 	TestAirPressure
 	TestDiveSiteDuplication
