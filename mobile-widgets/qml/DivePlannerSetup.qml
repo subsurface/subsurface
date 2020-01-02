@@ -11,18 +11,18 @@ Kirigami.ScrollablePage {
 	title: qsTr("Dive planner setup")
 
 	property string speedUnit: (PrefUnits.length === "meters") ? qsTr("m/min") : qsTr("ft/min")
-	onSpeedUnitChanged: {
-		// this is only invoked, when user changes
-		// METERS <-> FEET,
-		//
-		// This secures user do not need to restart the program
-		// to see the change.
-		//
-		// The ++/-- is needed to get TemplateSpinBox to change
-		// the the text. Just setting the value to the same value
-		// is not enough to get the text changed.
-		spinAscrate75.value++
-		spinAscrate75.value--
+	Connections {
+		target: PrefUnits
+		onLengthChanged: {
+			spinAscrate75.value = Planner.ascrate75
+			spinAscrate50.value = Planner.ascrate50
+			spinAscratestops.value = Planner.ascratestops
+			spinAscratelast6m.value = Planner.ascratelast6m
+			spinDescrate.value = Planner.descrate
+		}
+	}
+	Component.onCompleted: {
+		console.log("----> STARTING")
 	}
 
 	Column {
@@ -65,6 +65,7 @@ Kirigami.ScrollablePage {
 					text: qsTr("75% to 50% avg. depth")
 				}
 				TemplateSpinBox {
+					id: spinAscrate50
 					from: 1
 					to: 99
 					stepSize: 1
@@ -80,6 +81,7 @@ Kirigami.ScrollablePage {
 					text: qsTr("50% avg. depth to 6m")
 				}
 				TemplateSpinBox {
+					id: spinAscratestops
 					from: 1
 					to: 99
 					stepSize: 1
@@ -95,6 +97,7 @@ Kirigami.ScrollablePage {
 					text: qsTr("6m to surface")
 				}
 				TemplateSpinBox {
+					id: spinAscratelast6m
 					from: 1
 					to: 99
 					stepSize: 1
@@ -115,6 +118,7 @@ Kirigami.ScrollablePage {
 					text: qsTr("Surface to the bottom")
 				}
 				TemplateSpinBox {
+					id: spinDescrate
 					from: 1
 					to: 99
 					stepSize: 1
