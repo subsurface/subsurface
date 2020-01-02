@@ -97,7 +97,11 @@ extern "C" int updateProgress(const char *text)
 	if (progressDialog) {
 		// apparently we don't always get enough space to show the full label
 		// so let's manually make enough space (but don't shrink the existing size)
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
 		int width = QFontMetrics(qApp->font()).width(text) + 100;
+#else // QT 5.11 or newer
+		int width = QFontMetrics(qApp->font()).horizontalAdvance(text) + 100;
+#endif
 		if (width > progressDialog->width())
 			progressDialog->resize(width + 20, progressDialog->height());
 		progressDialog->setLabelText(text);
