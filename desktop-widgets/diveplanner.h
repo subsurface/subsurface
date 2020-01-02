@@ -7,6 +7,7 @@
 #include <QAbstractButton>
 #include <QDateTime>
 #include <QSignalMapper>
+#include <QElapsedTimer>
 
 
 class QListView;
@@ -34,7 +35,7 @@ slots:
 	void selfRemove();
 	void changeGas();
 private:
-	QTime t;
+	QElapsedTimer t;
 };
 
 #include "ui_diveplanner.h"
