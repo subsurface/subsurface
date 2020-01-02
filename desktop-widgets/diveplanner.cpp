@@ -55,7 +55,7 @@ void DiveHandler::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 			QAction *action = new QAction(&m);
 			action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString());
 			action->setData(i);
-			connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
+			connect(action, &QAction::triggered, this, &DiveHandler::changeGas);
 			m.addAction(action);
 		}
 	}
