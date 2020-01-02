@@ -31,15 +31,14 @@ HANDLE_PREFERENCE_BOOL(Units, "coordinates", coordinates_traditional);
 QString qPrefUnits::duration_units()
 {
 	return 	prefs.units.duration_units == units::DURATION::ALWAYS_HOURS ? QStringLiteral("hours") :
-			prefs.units.duration_units == units::DURATION::MINUTES_ONLY ? QStringLiteral("minutes") :
-											QStringLiteral("mixed");
+									      prefs.units.duration_units == units::DURATION::MINUTES_ONLY ? QStringLiteral("minutes") :
+																	    QStringLiteral("mixed");
 }
 void qPrefUnits::set_duration_units(const QString& value)
 {
-	prefs.units.duration_units = value == QStringLiteral("hours") ? units::DURATION::ALWAYS_HOURS :
-								 value == QStringLiteral("minutes")? units::DURATION::MINUTES_ONLY :
-																	 units::DURATION::MIXED;
-	disk_duration_units(true);
+	set_duration_units(value == QStringLiteral("hours") ?  units::DURATION::ALWAYS_HOURS :
+							       value == QStringLiteral("minutes")? units::DURATION::MINUTES_ONLY :
+												   units::DURATION::MIXED);
 	emit instance()->duration_unitsStringChanged(value);
 }
 SET_PREFERENCE_ENUM_EXT(Units, units::DURATION, duration_units, units.);
@@ -51,8 +50,7 @@ QString qPrefUnits::length()
 }
 void qPrefUnits::set_length(const QString& value)
 {
-	prefs.units.length = value == QStringLiteral("meters") ? units::LENGTH::METERS : units::LENGTH::FEET;
-	disk_length(true);
+	set_length(value == QStringLiteral("meters") ? units::LENGTH::METERS : units::LENGTH::FEET);
 	emit instance()->lengthStringChanged(value);
 }
 SET_PREFERENCE_ENUM_EXT(Units, units::LENGTH, length, units.);
@@ -64,8 +62,7 @@ QString qPrefUnits::pressure()
 }
 void qPrefUnits::set_pressure(const QString& value)
 {
-	prefs.units.pressure = value == QStringLiteral("bar") ? units::PRESSURE::BAR : units::PRESSURE::PSI;
-	disk_pressure(true);
+	set_pressure(value == QStringLiteral("bar") ? units::PRESSURE::BAR : units::PRESSURE::PSI);
 	emit instance()->pressureStringChanged(value);
 }
 SET_PREFERENCE_ENUM_EXT(Units, units::PRESSURE, pressure, units.);
@@ -79,8 +76,7 @@ QString qPrefUnits::temperature()
 }
 void qPrefUnits::set_temperature(const QString& value)
 {
-	prefs.units.temperature = value == QStringLiteral("celcius") ? units::TEMPERATURE::CELSIUS : units::TEMPERATURE::FAHRENHEIT;
-	disk_temperature(true);
+	set_temperature(value == QStringLiteral("celcius") ? units::TEMPERATURE::CELSIUS : units::TEMPERATURE::FAHRENHEIT);
 	emit instance()->temperatureStringChanged(value);
 }
 SET_PREFERENCE_ENUM_EXT(Units, units::TEMPERATURE, temperature, units.);
@@ -142,8 +138,7 @@ QString qPrefUnits::vertical_speed_time()
 }
 void qPrefUnits::set_vertical_speed_time(const QString& value)
 {
-	prefs.units.vertical_speed_time = value == QStringLiteral("minutes") ? units::TIME::MINUTES : units::TIME::SECONDS;
-	disk_vertical_speed_time(true);
+	set_vertical_speed_time(value == QStringLiteral("minutes") ? units::TIME::MINUTES : units::TIME::SECONDS);
 	emit instance()->vertical_speed_timeStringChanged(value);
 }
 SET_PREFERENCE_ENUM_EXT(Units, units::TIME, vertical_speed_time, units.);
@@ -155,8 +150,7 @@ QString qPrefUnits::volume()
 }
 void qPrefUnits::set_volume(const QString& value)
 {
-	prefs.units.volume = value == QStringLiteral("liter") ? units::VOLUME::LITER : units::VOLUME::CUFT;
-	disk_volume(true);
+	set_volume(value == QStringLiteral("liter") ? units::VOLUME::LITER : units::VOLUME::CUFT);
 	emit instance()->volumeStringChanged(value);
 }
 SET_PREFERENCE_ENUM_EXT(Units, units::VOLUME, volume, units.);
@@ -168,8 +162,7 @@ QString qPrefUnits::weight()
 }
 void qPrefUnits::set_weight(const QString& value)
 {
-	prefs.units.weight = value == QStringLiteral("kg") ? units::WEIGHT::KG : units::WEIGHT::LBS;
-	disk_weight(true);
+	set_weight(value == QStringLiteral("kg") ? units::WEIGHT::KG : units::WEIGHT::LBS);
 	emit instance()->weightStringChanged(value);
 }
 SET_PREFERENCE_ENUM_EXT(Units, units::WEIGHT, weight, units.);
