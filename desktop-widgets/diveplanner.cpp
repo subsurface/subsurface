@@ -459,14 +459,13 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.rebreathermode->insertItems(0, rebreather_modes);
 
 	modeMapper = new QSignalMapper(this);
-	connect(modeMapper, SIGNAL(mapped(int)) , plannerShared::instance(), SLOT(set_planner_deco_mode(int)));
 	modeMapper->setMapping(ui.recreational_deco, int(RECREATIONAL));
 	modeMapper->setMapping(ui.buehlmann_deco, int(BUEHLMANN));
 	modeMapper->setMapping(ui.vpmb_deco, int(VPMB));
 
-	connect(ui.recreational_deco, SIGNAL(clicked()), modeMapper, SLOT(map()));
-	connect(ui.buehlmann_deco, SIGNAL(clicked()), modeMapper, SLOT(map()));
-	connect(ui.vpmb_deco, SIGNAL(clicked()), modeMapper, SLOT(map()));
+	connect(ui.recreational_deco, &QAbstractButton::clicked, [=] { plannerShared::set_planner_deco_mode(RECREATIONAL); });
+	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [=] { plannerShared::set_planner_deco_mode(BUEHLMANN); });
+	connect(ui.vpmb_deco, &QAbstractButton::clicked, [=] { plannerShared::set_planner_deco_mode(VPMB); });
 
 	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_last_stop(bool)));
 	connect(ui.lastStop, SIGNAL(toggled(bool)), this, SLOT(disableBackgasBreaks(bool)));
