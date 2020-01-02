@@ -503,7 +503,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.bottompo2, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(set_bottompo2(double)));
 	connect(ui.decopo2, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(set_decopo2(double)));
 	connect(ui.bestmixEND, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_bestmixend(int)));
-	connect(ui.bottomSAC, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(sec_bottomsac(double)));
+	connect(ui.bottomSAC, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(set_bottomsac(double)));
 	connect(ui.decoStopSAC, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(set_decosac(double)));
 
 	settingsChanged();
