@@ -35,7 +35,7 @@ jobs:
     - name: test mobile build
       env:
         SSRF_USER_EMAIL: ssrftest-mac@hohndel.org
-        SSRF_USER_PASSWORD: ${{ secrets.cloudmac }}
+        SSRF_USER_PASSWORD: geheim-mac
       run: |
         echo "------------------------------------"
         echo "run tests for mobile build"
@@ -64,7 +64,7 @@ jobs:
     - name: test desktop build
       env:
         SSRF_USER_EMAIL: ssrftest-mac@hohndel.org
-        SSRF_USER_PASSWORD: ${{ secrets.cloudmac }}
+        SSRF_USER_PASSWORD: geheim-mac
       run: |
         echo "------------------------------------"
         echo "run tests for desktop build"
