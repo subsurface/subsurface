@@ -484,7 +484,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.bailout, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_dobailout(bool)));
 	connect(ui.o2narcotic, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_o2narcotic(bool)));
 	connect(ui.switch_at_req_stop, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_switch_at_req_stop(bool)));
-	connect(ui.min_switch_duration, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_min_switch_duration()(int)));
+	connect(ui.min_switch_duration, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_min_switch_duration(int)));
 	connect(ui.surface_segment, SIGNAL(valueChanged(int)), plannerModel, SLOT(setSurfaceSegment(int)));
 	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), plannerModel, SLOT(setRebreatherMode(int)));
 	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), this, SLOT(setBailoutVisibility(int)));
