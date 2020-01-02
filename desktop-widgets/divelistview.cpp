@@ -90,11 +90,17 @@ void DiveListView::resetModel()
 void DiveListView::calculateInitialColumnWidth(int col)
 {
 	const QFontMetrics metrics(defaultModelFont());
+	QString header_txt = MultiFilterSortModel::instance()->headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
 	int em = metrics.width('m');
 	int zw = metrics.width('0');
-
-	QString header_txt = MultiFilterSortModel::instance()->headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();
 	int width = metrics.width(header_txt);
+#else // QT 5.11 or newer
+	int em = metrics.horizontalAdvance('m');
+	int zw = metrics.horizontalAdvance('0');
+	int width = metrics.horizontalAdvance(header_txt);
+#endif
 	int sw = 0;
 	switch (col) {
 	case DiveTripModelBase::NR:

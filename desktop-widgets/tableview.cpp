@@ -139,7 +139,12 @@ int TableView::defaultColumnWidth(int col)
 {
 	int width;
 	QString text = ui.tableView->model()->headerData(col, Qt::Horizontal).toString();
-	width = text.isEmpty() ? metrics.rm_col_width : defaultModelFontMetrics().width(text) + 4; // add small margin
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
+	int textSpace = defaultModelFontMetrics().width(text) + 4;
+#else // QT 5.11 or newer
+	int textSpace = defaultModelFontMetrics().horizontalAdvance(text) + 4;
+#endif
+	width = text.isEmpty() ? metrics.rm_col_width : textSpace + 4; // add small margin
 #if defined(Q_OS_MAC)
 	width += 10; // Mac needs more margin
 #endif
