@@ -264,12 +264,12 @@ void LocationInformationWidget::reverseGeocode()
 	location_t location = parseGpsText(ui.diveSiteCoordinates->text());
 	if (!diveSite || !has_location(&location))
 		return;
-	taxonomy_data taxonomy = { 0 };
+	taxonomy_data taxonomy = { 0, 0 };
 	reverseGeoLookup(location.lat, location.lon, &taxonomy);
 	Command::editDiveSiteTaxonomy(diveSite, taxonomy);
 }
 
-DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject *) : currentLocation({0, 0})
+DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject *) : currentLocation({{0}, {0}})
 {
 }
 
@@ -573,7 +573,7 @@ void DiveLocationLineEdit::setCurrentDiveSite(struct dive *d)
 		currentLocation = dive_get_gps_location(d);
 	} else {
 		currDs = nullptr;
-		currentLocation = location_t{0, 0};
+		currentLocation = location_t{{0}, {0}};
 	}
 	if (!currDs)
 		clear();
