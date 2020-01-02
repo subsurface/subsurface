@@ -154,8 +154,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	ui.tableWidget->setBtnToolTip(tr("Add dive data point"));
 	connect(ui.startTime, SIGNAL(timeChanged(QTime)), plannerModel, SLOT(setStartTime(QTime)));
 	connect(ui.dateEdit, SIGNAL(dateChanged(QDate)), plannerModel, SLOT(setStartDate(QDate)));
-	connect(ui.ATMPressure, SIGNAL(valueChanged(int)), this, SLOT(atmPressureChanged(int)));
-	connect(ui.atmHeight, SIGNAL(valueChanged(int)), this, SLOT(heightChanged(int)));
+	connect(ui.ATMPressure, QOverload<int>::of(&QSpinBox::valueChanged), this, &DivePlannerWidget::atmPressureChanged);
+	connect(ui.atmHeight, QOverload<int>::of(&QSpinBox::valueChanged), this, &DivePlannerWidget::heightChanged);
 	connect(ui.waterType, SIGNAL(currentIndexChanged(int)), this, SLOT(waterTypeChanged(int)));
 	connect(ui.customSalinity, SIGNAL(valueChanged(double)), this, SLOT(customSalinityChanged(double)));
 	connect(plannerModel, SIGNAL(startTimeChanged(QDateTime)), this, SLOT(setupStartTime(QDateTime)));
@@ -469,22 +469,22 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.display_runtime, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_display_runtime);
 	connect(ui.display_transitions, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_display_transitions);
 	connect(ui.safetystop, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_safetystop);
-	connect(ui.reserve_gas, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_reserve_gas(int)));
-	connect(ui.ascRate75, SIGNAL(valueChanged(int)), plannerModel, SLOT(setAscrate75(int)));
-	connect(ui.ascRate50, SIGNAL(valueChanged(int)), plannerModel, SLOT(setAscrate50(int)));
-	connect(ui.ascRateStops, SIGNAL(valueChanged(int)), plannerModel, SLOT(setAscratestops(int)));
-	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), plannerModel, SLOT(setAscratelast6m(int)));
-	connect(ui.descRate, SIGNAL(valueChanged(int)), plannerModel, SLOT(setDescrate(int)));
+	connect(ui.reserve_gas, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_reserve_gas);
+	connect(ui.ascRate75, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscrate75);
+	connect(ui.ascRate50, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscrate50);
+	connect(ui.ascRateStops, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscratestops);
+	connect(ui.ascRateLast6m, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscratelast6m);
+	connect(ui.descRate, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setDescrate);
 	connect(ui.drop_stone_mode, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_drop_stone_mode);
-	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_gfhigh(int)));
-	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_gflow(int)));
-	connect(ui.vpmb_conservatism, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_vpmb_conservatism(int)));
+	connect(ui.gfhigh, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_gfhigh);
+	connect(ui.gflow, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_gflow);
+	connect(ui.vpmb_conservatism, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_vpmb_conservatism);
 	connect(ui.backgasBreaks, &QAbstractButton::toggled, this, &PlannerSettingsWidget::setBackgasBreaks);
 	connect(ui.bailout, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_dobailout);
 	connect(ui.o2narcotic, &QAbstractButton::toggled, plannerShared::instance(), plannerShared::set_o2narcotic);
 	connect(ui.switch_at_req_stop, &QAbstractButton::toggled, plannerShared::instance(), plannerShared::set_switch_at_req_stop);
-	connect(ui.min_switch_duration, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_min_switch_duration(int)));
-	connect(ui.surface_segment, SIGNAL(valueChanged(int)), plannerModel, SLOT(setSurfaceSegment(int)));
+	connect(ui.min_switch_duration, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_min_switch_duration);
+	connect(ui.surface_segment, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setSurfaceSegment);
 	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), plannerModel, SLOT(setRebreatherMode(int)));
 	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), this, SLOT(setBailoutVisibility(int)));
 
@@ -492,16 +492,16 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [=] { disableDecoElements(BUEHLMANN); });
 	connect(ui.vpmb_deco, &QAbstractButton::clicked, [=] { disableDecoElements(VPMB); });
 
-	connect(ui.ascRate75, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_ascrate75(int)));
-	connect(ui.ascRate50, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_ascrate50(int)));
-	connect(ui.descRate, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_descrate(int)));
-	connect(ui.ascRateStops, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_ascratestops(int)));
-	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_ascratelast6m(int)));
+	connect(ui.ascRate75, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_ascrate75);
+	connect(ui.ascRate50, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_ascrate50);
+	connect(ui.descRate, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_descrate);
+	connect(ui.ascRateStops, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_ascratestops);
+	connect(ui.ascRateLast6m, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_ascratelast6m);
 	connect(ui.sacfactor, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(set_sacfactor(double)));
-	connect(ui.problemsolvingtime, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_problemsolvingtime(int)));
+	connect(ui.problemsolvingtime, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_problemsolvingtime);
 	connect(ui.bottompo2, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(set_bottompo2(double)));
 	connect(ui.decopo2, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(set_decopo2(double)));
-	connect(ui.bestmixEND, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_bestmixend(int)));
+	connect(ui.bestmixEND, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_bestmixend);
 	connect(ui.bottomSAC, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(set_bottomsac(double)));
 	connect(ui.decoStopSAC, SIGNAL(valueChanged(double)), plannerShared::instance(), SLOT(set_decosac(double)));
 
