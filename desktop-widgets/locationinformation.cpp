@@ -54,6 +54,7 @@ void LocationInformationWidget::keyPressEvent(QKeyEvent *e)
 
 bool LocationInformationWidget::eventFilter(QObject *object, QEvent *ev)
 {
+	Q_UNUSED(object)
 	if (ev->type() == QEvent::ContextMenu) {
 		QContextMenuEvent *ctx = (QContextMenuEvent *)ev;
 		QMenu contextMenu;
