@@ -11,6 +11,16 @@ Kirigami.ScrollablePage {
 	title: qsTr("Dive planner setup")
 
 	property string speedUnit: (PrefUnits.length === "meters") ? qsTr("m/min") : qsTr("ft/min")
+	Connections {
+		target: PrefUnits
+		onLengthChanged: {
+			spinAscrate75.value = Planner.ascrate75
+			spinAscrate50.value = Planner.ascrate50
+			spinAscratestops.value = Planner.ascratestops
+			spinAscratelast6m.value = Planner.ascratelast6m
+			spinDescrate.value = Planner.descrate
+		}
+	}
 	Column {
 		width: parent.width
 		spacing: 1
@@ -35,6 +45,7 @@ Kirigami.ScrollablePage {
 					text: qsTr("below 75% avg. depth")
 				}
 				TemplateSpinBox {
+					id: spinAscrate75
 					from: 1
 					to: 99
 					stepSize: 1
@@ -50,6 +61,7 @@ Kirigami.ScrollablePage {
 					text: qsTr("75% to 50% avg. depth")
 				}
 				TemplateSpinBox {
+					id: spinAscrate50
 					from: 1
 					to: 99
 					stepSize: 1
@@ -65,6 +77,7 @@ Kirigami.ScrollablePage {
 					text: qsTr("50% avg. depth to 6m")
 				}
 				TemplateSpinBox {
+					id: spinAscratestops
 					from: 1
 					to: 99
 					stepSize: 1
@@ -80,6 +93,7 @@ Kirigami.ScrollablePage {
 					text: qsTr("6m to surface")
 				}
 				TemplateSpinBox {
+					id: spinAscratelast6m
 					from: 1
 					to: 99
 					stepSize: 1
@@ -100,6 +114,7 @@ Kirigami.ScrollablePage {
 					text: qsTr("Surface to the bottom")
 				}
 				TemplateSpinBox {
+					id: spinDescrate
 					from: 1
 					to: 99
 					stepSize: 1
