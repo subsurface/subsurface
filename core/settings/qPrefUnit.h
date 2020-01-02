@@ -14,7 +14,7 @@ class qPrefUnits : public QObject {
 	Q_PROPERTY(QString pressure READ pressure WRITE set_pressure NOTIFY pressureStringChanged)
 	Q_PROPERTY(bool show_units_table READ show_units_table WRITE set_show_units_table NOTIFY show_units_tableChanged)
 	Q_PROPERTY(QString temperature READ temperature WRITE set_temperature NOTIFY temperatureStringChanged)
-	Q_PROPERTY(QString unit_system READ unit_system WRITE set_unit_system NOTIFY unit_systemChanged)
+	Q_PROPERTY(QString unit_system READ unit_system WRITE set_unit_system NOTIFY unit_systemStringChanged)
 	Q_PROPERTY(QString vertical_speed_time READ vertical_speed_time WRITE set_vertical_speed_time NOTIFY vertical_speed_timeStringChanged)
 	Q_PROPERTY(QString volume READ volume WRITE set_volume NOTIFY volumeStringChanged)
 	Q_PROPERTY(QString weight READ weight WRITE set_weight NOTIFY weightStringChanged)
@@ -50,6 +50,7 @@ public slots:
 	static void set_show_units_table(bool value);
 	static void set_temperature(units::TEMPERATURE value);
 	static void set_temperature(const QString& value);
+	static void set_unit_system(unit_system_values value);
 	static void set_unit_system(const QString& value);
 	static void set_vertical_speed_time(units::TIME value);
 	static void set_vertical_speed_time(const QString& value);
@@ -77,7 +78,8 @@ signals:
 	void show_units_tableChanged(bool value);
 	void temperatureChanged(int value);
 	void temperatureStringChanged(const QString& value);
-	void unit_systemChanged(const QString& value);
+	void unit_systemChanged(int value);
+	void unit_systemStringChanged(const QString& value);
 	void vertical_speed_timeChanged(int value);
 	void vertical_speed_timeStringChanged(const QString& value);
 	void volumeChanged(int value);
