@@ -432,18 +432,13 @@ Kirigami.Page {
 					manager.appendTextToLog("Save downloaded dives that were selected")
 					busy = true
 					rootItem.showBusy("Save selected dives")
-					manager.appendTextToLog("temporary disconnecting dive list model")
-					diveList.diveListModel = null
 					manager.appendTextToLog("Record dives")
 					importModel.recordDives()
+					// it's important to save the changes because the app could get killed once
+					// it's in the background - and the freshly downloaded dives would get lost
 					manager.saveChangesLocal()
-					manager.appendTextToLog("resetting model and refreshing the dive list")
-					diveModel.resetInternalData()
-					manager.refreshDiveList()
 					manager.appendTextToLog("pageStack popping Download page")
 					pageStack.pop()
-					manager.appendTextToLog("setting up the dive list model again")
-					diveList.diveListModel = diveModel
 					manager.appendTextToLog("pageStack switching to dive list")
 					showDiveList()
 					download.text = qsTr("Download")
