@@ -2,6 +2,7 @@
 #include "plannershared.h"
 #include "core/settings/qPrefDivePlanner.h"
 #include "core/settings/qPrefTechnicalDetails.h"
+#include "core/settings/qPrefUnit.h"
 #include "qt-models/diveplannermodel.h"
 #include "qt-models/cylindermodel.h"
 
@@ -10,6 +11,12 @@ plannerShared *plannerShared::instance()
     static plannerShared *self = new plannerShared;
     return self;
 }
+plannerShared::plannerShared()
+{
+	// Be informed when user switches METER <-> FEET
+	connect(qPrefUnits::instance(), &qPrefUnits::lengthChanged, this, &unit_lengthChangedSlot);
+}
+
 
 // Used to convert between meter/feet and keep the qPref variables independent
 #define TO_MM_BY_SEC ((prefs.units.length == units::METERS) ? 1000.0 / 60.0 : feet_to_mm(1) / 60.0)
@@ -300,4 +307,15 @@ bool plannerShared::display_variations()
 void plannerShared::set_display_variations(bool value)
 {
 	DivePlannerPointsModel::instance()->setDisplayVariations(value);
+}
+
+// Handle when user changes length measurement type
+void plannerShared::unit_lengthChangedSlot(int value)
+{
+	// Provoke recalculation of model and send of signals
+	set_ascratelast6m(ascratelast6m());
+	set_ascratestops(ascratestops());
+	set_ascrate50(ascrate50());
+	set_ascrate75(ascrate75());
+	set_descrate(descrate());
 }

@@ -174,8 +174,11 @@ signals:
 	void verbatim_planChanged(bool value);
 	void display_variationsChanged(bool value);
 
+private slots:
+	static void unit_lengthChangedSlot(int value);
+
 private:
-	plannerShared() {}
+	plannerShared();
 };
 
 #endif // PLANNERSHARED_H
