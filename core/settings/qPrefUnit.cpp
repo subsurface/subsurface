@@ -102,9 +102,23 @@ void qPrefUnits::set_unit_system(unit_system_values value)
 	if (value == METRIC) {
 		prefs.unit_system = METRIC;
 		prefs.units = SI_units;
+
+		// make sure all types are updated when changing
+		set_volume(units::VOLUME::LITER);
+		set_weight(units::WEIGHT::KG);
+		set_length(units::LENGTH::METERS);
+		set_pressure(units::PRESSURE::BAR);
+		set_temperature(units::TEMPERATURE::CELSIUS);
 	} else if (value == IMPERIAL) {
 		prefs.unit_system = IMPERIAL;
 		prefs.units = IMPERIAL_units;
+
+		// make sure all types are updated when changing
+		set_volume(units::VOLUME::CUFT);
+		set_weight(units::WEIGHT::LBS);
+		set_length(units::LENGTH::FEET);
+		set_pressure(units::PRESSURE::PSI);
+		set_temperature(units::TEMPERATURE::FAHRENHEIT);
 	} else {
 		prefs.unit_system = PERSONALIZE;
 	}
