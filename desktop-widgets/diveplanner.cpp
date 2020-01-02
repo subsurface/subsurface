@@ -481,7 +481,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_gflow(int)));
 	connect(ui.vpmb_conservatism, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_vpmb_conservatism(int)));
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
-	connect(ui.bailout, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_bailout(bool)));
+	connect(ui.bailout, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_dobailout(bool)));
 	connect(ui.o2narcotic, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_o2narcotic(bool)));
 	connect(ui.switch_at_req_stop, SIGNAL(toggled(bool)), plannerShared::instance(), SLOT(set_switch_at_req_stop(bool)));
 	connect(ui.min_switch_duration, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_min_switch_duration()(int)));
