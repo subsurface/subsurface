@@ -461,7 +461,7 @@ Kirigami.ScrollablePage {
 				enabled: PrefUnits.unit_system === "metric"
 				Layout.preferredWidth: gridWidth * 0.25
 				onClicked: {
-					PrefUnits.set_unit_system("imperial")
+					PrefUnits.unit_system = "imperial"
 					manager.changesNeedSaving()
 					manager.refreshDiveList()
 				}
@@ -478,7 +478,7 @@ Kirigami.ScrollablePage {
 				enabled: PrefUnits.unit_system === "imperial"
 				Layout.preferredWidth: gridWidth * 0.25
 				onClicked: {
-					PrefUnits.set_unit_system("metric")
+					PrefUnits.unit_system = "metric"
 					manager.changesNeedSaving()
 					manager.refreshDiveList()
 				}
@@ -516,7 +516,7 @@ Kirigami.ScrollablePage {
 				checked: PrefGeneral.filterFullTextNotes
 				Layout.preferredWidth: gridWidth * 0.25
 				onClicked: {
-					PrefGeneral.set_filterFullTextNotes(checked)
+					PrefGeneral.filterFullTextNotes = checked
 				}
 			}
 
@@ -532,7 +532,7 @@ Kirigami.ScrollablePage {
 				checked: PrefGeneral.filterCaseSensitive
 				Layout.preferredWidth: gridWidth * 0.25
 				onClicked: {
-					PrefGeneral.set_filterCaseSensitive(checked)
+					PrefGeneral.filterCaseSensitive = checked
 				}
 			}
 
