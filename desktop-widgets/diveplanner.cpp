@@ -468,7 +468,6 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.display_duration, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_display_duration);
 	connect(ui.display_runtime, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_display_runtime);
 	connect(ui.display_transitions, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_display_transitions);
-	connect(ui.display_variations, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_display_variations);
 	connect(ui.safetystop, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_safetystop);
 	connect(ui.reserve_gas, SIGNAL(valueChanged(int)), plannerShared::instance(), SLOT(set_reserve_gas(int)));
 	connect(ui.ascRate75, SIGNAL(valueChanged(int)), plannerModel, SLOT(setAscrate75(int)));
