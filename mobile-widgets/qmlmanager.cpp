@@ -1529,24 +1529,11 @@ void QMLManager::copyDiveData(int id)
 
 void QMLManager::pasteDiveData(int id)
 {
-	struct dive *d = get_dive_by_uniq_id(id);
-	if (!d) {
-		appendTextToLog("trying to paste to non-existing dive");
-		return;
-	}
 	if (!m_copyPasteDive) {
 		appendTextToLog("dive to paste is not selected");
 		return;
 	}
-	selective_copy_dive(m_copyPasteDive, d, what, false);
-
-	invalidate_dive_cache(d);
-	mark_divelist_changed(true);
-	changesNeedSaving();
-	setNotificationText("Paste");
-
-	int modelIdx = DiveListModel::instance()->getDiveIdx(id);
-	DiveListModel::instance()->updateDive(modelIdx, d);
+	Command::pasteDives(m_copyPasteDive, what);
 }
 
 void QMLManager::cancelDownloadDC()
