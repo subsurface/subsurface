@@ -222,17 +222,8 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton *button)
 		amount = ui.timeEdit->time().hour() * 3600 + ui.timeEdit->time().minute() * 60;
 		if (ui.backwards->isChecked())
 			amount *= -1;
-		if (amount != 0) {
-			// DANGER, DANGER - this could get our dive_table unsorted...
-			int i;
-			struct dive *d;
-			QVector<dive *> affectedDives;
-			for_each_dive (i, d) {
-				if (d->selected)
-					affectedDives.append(d);
-			}
-			Command::shiftTime(affectedDives, amount);
-		}
+		if (amount != 0)
+			Command::shiftTime(getDiveSelection(), amount);
 	}
 }
 

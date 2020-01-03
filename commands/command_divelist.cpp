@@ -579,10 +579,10 @@ void DeleteDive::redoit()
 }
 
 
-ShiftTime::ShiftTime(const QVector<dive *> &changedDives, int amount)
+ShiftTime::ShiftTime(std::vector<dive *> changedDives, int amount)
 	: diveList(changedDives), timeChanged(amount)
 {
-	setText(tr("shift time of %n dives", "", changedDives.count()));
+	setText(tr("shift time of %n dives", "", changedDives.size()));
 }
 
 void ShiftTime::redoit()
@@ -601,11 +601,12 @@ void ShiftTime::redoit()
 		sort_dive_table(&trip->dives); // Keep the trip-table in order
 
 	// Send signals
-	emit diveListNotifier.divesTimeChanged(timeChanged, diveList);
-	emit diveListNotifier.divesChanged(diveList, DiveField::DATETIME);
+	QVector<dive *> dives = QVector<dive *>::fromStdVector(diveList);
+	emit diveListNotifier.divesTimeChanged(timeChanged, dives);
+	emit diveListNotifier.divesChanged(dives, DiveField::DATETIME);
 
 	// Select the changed dives
-	setSelection(std::vector<dive *>(diveList.begin(), diveList.end()), diveList[0]);
+	setSelection(diveList, diveList[0]);
 
 	// Negate the time-shift so that the next call does the reverse
 	timeChanged = -timeChanged;
@@ -613,7 +614,7 @@ void ShiftTime::redoit()
 
 bool ShiftTime::workToBeDone()
 {
-	return !diveList.isEmpty();
+	return !diveList.empty();
 }
 
 void ShiftTime::undoit()
