@@ -48,6 +48,7 @@
 #include "core/worldmap-save.h"
 #include "core/uploadDiveLogsDE.h"
 #include "core/uploadDiveShare.h"
+#include "core/statistics.h"
 
 
 QMLManager *QMLManager::m_instance = NULL;
@@ -230,6 +231,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	appendTextToLog(getAndroidHWInfo());
 #endif
 	setStartPageText(tr("Starting..."));
+	setStatisticsPageText(tr("Annual Statistics"));
 
 	// ensure that we start the BTDiscovery - this should be triggered by the export of the class
 	// to QML, but that doesn't seem to always work
@@ -375,6 +377,7 @@ void QMLManager::updateAllGlobalLists()
 	divemasterModel.updateModel(); emit divemasterListChanged();
 	// TODO: Probably not needed anymore, as the dive site list is generated on the fly!
 	updateSiteList();
+	updateStatistics();
 }
 
 void QMLManager::mergeLocalRepo()
@@ -1684,6 +1687,58 @@ void QMLManager::setStartPageText(const QString& text)
 	m_startPageText = text;
 	emit startPageTextChanged();
 }
+
+void QMLManager::setStatisticsPageText(const QString& text)
+{
+	m_statisticsPageText = text;
+	emit statisticsPageTextChanged();
+}
+
+void QMLManager::updateStatistics()
+{
+	QString summary;
+	QTextStream out(&summary);
+	stats_summary_auto_free stats;
+
+	stats_t total_stats;
+
+	calculate_stats_summary(&stats, false);
+	total_stats.selection_size = 0;
+	total_stats.total_time.seconds = 0;
+
+	int i = 0;
+	while (stats.stats_yearly != NULL && stats.stats_yearly[i].period)
+		i++;
+	while (--i >= 0) {
+		out << "YEAR: " << stats.stats_yearly[i].period << "\n";
+		out << "DIVES: " << stats.stats_yearly[i].selection_size << "\n";
+		out << "TOTAL_TIME: " << get_dive_duration_string(stats.stats_yearly[i].total_time.seconds,
+								       gettextFromC::tr("h"), gettextFromC::tr("min"), gettextFromC::tr("sec"), " ") << "\n";
+		out << "TIME: avg: " << get_minutes(stats.stats_yearly[i].total_time.seconds / stats.stats_yearly[i].selection_size) << gettextFromC::tr("min");
+		out << " min: " << get_minutes(stats.stats_yearly[i].shortest_time.seconds) << gettextFromC::tr("min");
+		out << " max: " << get_minutes(stats.stats_yearly[i].longest_time.seconds) << gettextFromC::tr("min")<< "\n";
+		out << "DEPTH: avg: " << get_depth_string(stats.stats_yearly[i].avg_depth) << get_depth_unit();
+		out << " min: " << get_depth_string(stats.stats_yearly[i].min_depth) << get_depth_unit();
+		out << " max: " << get_depth_string(stats.stats_yearly[i].max_depth) << get_depth_unit() << "\n";
+		out << "SAC: avg: " << get_volume_string(stats.stats_yearly[i].avg_sac) << get_volume_unit();
+		out << " min: " << get_volume_string(stats.stats_yearly[i].min_sac) << get_volume_unit();
+		out << " max: " << get_volume_string(stats.stats_yearly[i].max_sac) << get_volume_unit() << "\n";
+		out << "TEMP:";
+		if (stats.stats_yearly[i].combined_count) {
+			temperature_t avg_temp;
+			avg_temp.mkelvin = stats.stats_yearly[i].combined_temp.mkelvin / stats.stats_yearly[i].combined_count;
+			out << " avg:" << get_temperature_string(avg_temp) << get_temp_unit();
+		}
+		out << " min: " << (stats.stats_yearly[i].min_temp.mkelvin == 0 ? 0 : get_temperature_string(stats.stats_yearly[i].min_temp)) << get_temp_unit();
+		out << " max: " << (stats.stats_yearly[i].max_temp.mkelvin == 0 ? 0 : get_temperature_string(stats.stats_yearly[i].max_temp)) << get_temp_unit()<< "\n";
+		out << "\n\n";
+		total_stats.selection_size += stats.stats_yearly[i].selection_size;
+		total_stats.total_time.seconds += stats.stats_yearly[i].total_time.seconds;
+	}
+
+	setStatisticsPageText(summary);
+}
+
 
 QString QMLManager::getNumber(const QString& diveId)
 {

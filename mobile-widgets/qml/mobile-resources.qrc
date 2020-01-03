@@ -22,6 +22,7 @@
 		<file>DivePlannerSetup.qml</file>
 		<file>DivePlannerView.qml</file>
 		<file>Export.qml</file>
+		<file>Statistics.qml</file>
 		<file>GpsList.qml</file>
 		<file>HintsTextEdit.qml</file>
 		<file>Log.qml</file>

@@ -430,6 +430,17 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			},
 			Kirigami.Action {
 				icon {
+					name: ":icons/edit-paste.svg"
+				}
+				text: qsTr("Statistics")
+				onTriggered: {
+					globalDrawer.close()
+					pageStack.push(statisticsWindow)
+					detailsWindow.endEditMode()
+				}
+			},
+			Kirigami.Action {
+				icon {
 					name: ":/icons/ic_help_outline.svg"
 				}
 				text: qsTr("Help")
@@ -867,6 +878,11 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	Export {
 		id: exportWindow
+		visible: false
+	}
+
+	Statistics {
+		id: statisticsWindow
 		visible: false
 	}
 

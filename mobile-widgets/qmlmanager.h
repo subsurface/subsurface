@@ -27,6 +27,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(bool locationServiceAvailable MEMBER m_locationServiceAvailable WRITE setLocationServiceAvailable NOTIFY locationServiceAvailableChanged)
 	Q_PROPERTY(bool loadFromCloud MEMBER m_loadFromCloud WRITE setLoadFromCloud NOTIFY loadFromCloudChanged)
 	Q_PROPERTY(QString startPageText MEMBER m_startPageText WRITE setStartPageText NOTIFY startPageTextChanged)
+	Q_PROPERTY(QString statisticsPageText MEMBER m_statisticsPageText WRITE setStatisticsPageText NOTIFY statisticsPageTextChanged)
 	Q_PROPERTY(bool verboseEnabled MEMBER m_verboseEnabled WRITE setVerboseEnabled NOTIFY verboseEnabledChanged)
 	Q_PROPERTY(QString notificationText MEMBER m_notificationText WRITE setNotificationText NOTIFY notificationTextChanged)
 	Q_PROPERTY(int updateSelectedDive MEMBER m_updateSelectedDive WRITE setUpdateSelectedDive NOTIFY updateSelectedDiveChanged)
@@ -132,6 +133,9 @@ public:
 	QString startPageText() const;
 	void setStartPageText(const QString& text);
 
+	QString statisticsPageText() const;
+	void setStatisticsPageText(const QString& text);
+
 	QString logText() const;
 	void setLogText(const QString &logText);
 
@@ -232,6 +236,7 @@ public slots:
 	void hasLocationSourceChanged();
 	void btRescan();
 	void showDownloadPage(QString deviceString);
+	void updateStatistics();
 
 private:
 	BuddyCompletionModel buddyModel;
@@ -239,6 +244,7 @@ private:
 	DiveMasterCompletionModel divemasterModel;
 	DiveSiteSortedModel locationModel;
 	QString m_startPageText;
+	QString m_statisticsPageText;
 	QString m_logText;
 	QString m_lastError;
 	bool m_locationServiceEnabled;
@@ -287,6 +293,7 @@ signals:
 	void logTextChanged();
 	void loadFromCloudChanged();
 	void startPageTextChanged();
+	void statisticsPageTextChanged();
 	void notificationTextChanged();
 	void updateSelectedDiveChanged();
 	void selectedDiveTimestampChanged();
