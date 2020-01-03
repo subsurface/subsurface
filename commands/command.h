@@ -28,7 +28,7 @@ void addDive(dive *d, bool autogroup, bool newNumber);
 void importDives(struct dive_table *dives, struct trip_table *trips,
 		 struct dive_site_table *sites, int flags, const QString &source); // The tables are consumed!
 void deleteDive(const QVector<struct dive*> &divesToDelete);
-void shiftTime(const QVector<dive *> &changedDives, int amount);
+void shiftTime(const std::vector<dive *> &changedDives, int amount);
 void renumberDives(const QVector<QPair<dive *, int>> &divesToRenumber);
 void removeDivesFromTrip(const QVector<dive *> &divesToRemove);
 void removeAutogenTrips();

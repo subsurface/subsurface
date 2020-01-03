@@ -24,7 +24,7 @@ void deleteDive(const QVector<struct dive*> &divesToDelete)
 	execute(new DeleteDive(divesToDelete));
 }
 
-void shiftTime(const QVector<dive *> &changedDives, int amount)
+void shiftTime(const std::vector<dive *> &changedDives, int amount)
 {
 	execute(new ShiftTime(changedDives, amount));
 }

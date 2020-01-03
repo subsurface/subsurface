@@ -133,14 +133,14 @@ private:
 
 class ShiftTime : public DiveListBase {
 public:
-	ShiftTime(const QVector<dive *> &changedDives, int amount);
+	ShiftTime(std::vector<dive *> changedDives, int amount);
 private:
 	void undoit() override;
 	void redoit() override;
 	bool workToBeDone() override;
 
 	// For redo and undo
-	QVector<dive *> diveList;
+	std::vector<dive *> diveList;
 	int timeChanged;
 };
 
