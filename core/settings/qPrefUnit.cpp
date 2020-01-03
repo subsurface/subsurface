@@ -124,6 +124,15 @@ void qPrefUnits::set_unit_system(unit_system_values value)
 	}
 	disk_unit_system(true);
 	emit instance()->unit_systemChanged(value);
+	emit instance()->unit_systemStringChanged(unit_system());
+	emit instance()->volumeChanged(prefs.units.volume);
+	emit instance()->volumeStringChanged(volume());
+	emit instance()->weightChanged(prefs.units.weight);
+	emit instance()->weightStringChanged(weight());
+	emit instance()->lengthChanged(prefs.units.length);
+	emit instance()->lengthStringChanged(length());
+	emit instance()->temperatureChanged(prefs.units.temperature);
+	emit instance()->temperatureStringChanged(temperature());
 }
 DISK_LOADSYNC_ENUM(Units, "unit_system", unit_system_values, unit_system);
 
