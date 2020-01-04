@@ -1710,28 +1710,30 @@ void QMLManager::updateStatistics()
 	while (stats.stats_yearly != NULL && stats.stats_yearly[i].period)
 		i++;
 	while (--i >= 0) {
-		out << "YEAR: " << stats.stats_yearly[i].period << "\n";
-		out << "DIVES: " << stats.stats_yearly[i].selection_size << "\n";
-		out << "TOTAL_TIME: " << get_dive_duration_string(stats.stats_yearly[i].total_time.seconds,
-								       gettextFromC::tr("h"), gettextFromC::tr("min"), gettextFromC::tr("sec"), " ") << "\n";
-		out << "TIME: avg: " << get_minutes(stats.stats_yearly[i].total_time.seconds / stats.stats_yearly[i].selection_size) << gettextFromC::tr("min");
-		out << " min: " << get_minutes(stats.stats_yearly[i].shortest_time.seconds) << gettextFromC::tr("min");
-		out << " max: " << get_minutes(stats.stats_yearly[i].longest_time.seconds) << gettextFromC::tr("min")<< "\n";
-		out << "DEPTH: avg: " << get_depth_string(stats.stats_yearly[i].avg_depth) << get_depth_unit();
-		out << " min: " << get_depth_string(stats.stats_yearly[i].min_depth) << get_depth_unit();
-		out << " max: " << get_depth_string(stats.stats_yearly[i].max_depth) << get_depth_unit() << "\n";
-		out << "SAC: avg: " << get_volume_string(stats.stats_yearly[i].avg_sac) << get_volume_unit();
-		out << " min: " << get_volume_string(stats.stats_yearly[i].min_sac) << get_volume_unit();
-		out << " max: " << get_volume_string(stats.stats_yearly[i].max_sac) << get_volume_unit() << "\n";
-		out << "TEMP:";
+		out << "<h3>Year: " << stats.stats_yearly[i].period << "</h3>\n";
+		out << "dives: " << stats.stats_yearly[i].selection_size << "<br>\n";
+		out << "total dive time: " << get_dive_duration_string(stats.stats_yearly[i].total_time.seconds,
+								       gettextFromC::tr("h"), gettextFromC::tr("min"), gettextFromC::tr("sec"), " ") << "<br>\n";
+		out << "<table><tr><th></th><th>AVG</th><th>MIN</th><th>MAX</th></tr>\n";
+		out << "<tr><td>time</td><td align=\"right\">" << get_minutes(stats.stats_yearly[i].total_time.seconds / stats.stats_yearly[i].selection_size) << gettextFromC::tr("min</td>");
+		out << "<td align=\"right\">" << get_minutes(stats.stats_yearly[i].shortest_time.seconds) << gettextFromC::tr("min</td>");
+		out << "<td align=\"right\">" << get_minutes(stats.stats_yearly[i].longest_time.seconds) << gettextFromC::tr("min</td>")<< "</tr>\n";
+		out << "<tr><td>depth</td><td align=\"right\">" << get_depth_string(stats.stats_yearly[i].avg_depth) << get_depth_unit() << "</td>";
+		out << "<td align=\"right\">" << get_depth_string(stats.stats_yearly[i].min_depth) << get_depth_unit() << "</td>";
+		out << "<td align=\"right\">" << get_depth_string(stats.stats_yearly[i].max_depth) << get_depth_unit() << "</td></tr>\n";
+		out << "<tr><td>SAC</td><td align=\"right\">" << get_volume_string(stats.stats_yearly[i].avg_sac) << get_volume_unit() << "</td>";
+		out << "<td align=\"right\">" << get_volume_string(stats.stats_yearly[i].min_sac) << get_volume_unit() << "</td>";
+		out << "<td align=\"right\">" << get_volume_string(stats.stats_yearly[i].max_sac) << get_volume_unit() << "</td></tr>\n";
+		out << "<tr><td>temperature</td><td align=\"right\">";
 		if (stats.stats_yearly[i].combined_count) {
 			temperature_t avg_temp;
 			avg_temp.mkelvin = stats.stats_yearly[i].combined_temp.mkelvin / stats.stats_yearly[i].combined_count;
-			out << " avg:" << get_temperature_string(avg_temp) << get_temp_unit();
+			out << get_temperature_string(avg_temp) << get_temp_unit();
 		}
-		out << " min: " << (stats.stats_yearly[i].min_temp.mkelvin == 0 ? 0 : get_temperature_string(stats.stats_yearly[i].min_temp)) << get_temp_unit();
-		out << " max: " << (stats.stats_yearly[i].max_temp.mkelvin == 0 ? 0 : get_temperature_string(stats.stats_yearly[i].max_temp)) << get_temp_unit()<< "\n";
-		out << "\n\n";
+		out << "</td>";
+		out << "<td align=\"right\">" << (stats.stats_yearly[i].min_temp.mkelvin == 0 ? 0 : get_temperature_string(stats.stats_yearly[i].min_temp)) << get_temp_unit() << "</td>";
+		out << "<td align=\"right\">" << (stats.stats_yearly[i].max_temp.mkelvin == 0 ? 0 : get_temperature_string(stats.stats_yearly[i].max_temp)) << get_temp_unit()<< "</td></tr>\n";
+		out << "</table><br>\n\n";
 		total_stats.selection_size += stats.stats_yearly[i].selection_size;
 		total_stats.total_time.seconds += stats.stats_yearly[i].total_time.seconds;
 	}

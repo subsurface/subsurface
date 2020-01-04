@@ -14,6 +14,7 @@ Kirigami.ScrollablePage {
 	    width: parent.width
 	    height: parent.height
 	    readOnly: true
+	    textFormat: TextEdit.RichText
 
 	    text: manager.statisticsPageText
 	}
