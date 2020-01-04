@@ -129,9 +129,9 @@ int ImportGPS::getCoordsFromFile()
 
 	do {
 		line++;  // this is the sequence number of the trkpt xml element processed
-		// Find next trkpt xml element
-		if (findXmlElement(&f1, QString("trkpt"), &buf, ' ')) // find next trackpoint element
-			break;           // (This function also detects </trk> and signals EOF)
+		// Find next trkpt xml element (This function also detects </trk> that signals EOF):
+		if (findXmlElement(&f1, QString("trkpt"), &buf, ' ')) // This is the normal exit point
+			break;                                        //    for this routine
 		// == Get coordinates: ==
 		if (getSubstring(&f1, &buf, '"'))  // read up to the end of the "lat=" label
 			break; // on EOF
@@ -139,7 +139,7 @@ int ImportGPS::getCoordsFromFile()
 			fprintf(stderr, "GPX parse error: cannot find latitude (trkpt #%d)\n", line);
 			return 1;
 		}
-		if (getSubstring(&f1, &buf, '"'))  // get string with latitude
+		if (getSubstring(&f1, &buf, '"'))  // read up to the end of the latitude value
 			break; // on EOF
 		lat = buf.toDouble();                  // Convert lat to decimal
 		if (getSubstring(&f1, &buf, ' '))  // Read past space char
@@ -168,9 +168,9 @@ int ImportGPS::getCoordsFromFile()
 		when = utc_mktime(&tm1) + time_offset;
 		if (first_line) {
 			first_line = false;
-			coords.start_track = when;
+			coords.start_track = when;   // Local time of start of GPS track
 		}
-		if ((when > divetime) && (found == false)) {   // This GPS time corresponds to the start of the dive
+		if ((when > divetime) && (found == false)) {   // This GPS local time corresponds to the start time of the dive
 			coords.lon = lon; // save the coordinates
 			coords.lat = lat;
 			found = true;
@@ -181,7 +181,7 @@ int ImportGPS::getCoordsFromFile()
 		lon, when, time_offset, time.tm_year, time.tm_mon+1, time.tm_mday, time.tm_hour, time.tm_min, divetime, dyr, dmon+1, dday,dhr, dmin );
 #endif
 	} while (true); // This loop executes until EOF causes a break out of the loop
-	coords.end_track = when;
+	coords.end_track = when;  // This is the local time of the end of the GPS track
 	f1.close();
 	return 0;
 }
@@ -194,7 +194,7 @@ void  ImportGPS::updateUI()
 	char datestr[50];
 	QString problemString = "";
 
-	utc_mkdate(coords.start_track, &time); // Display GPS date and start and end times:
+	utc_mkdate(coords.start_track, &time); // Display GPS date and local start and end times of track:
 	gps_day = time.tm_mday;
 	datestr[0] = 0x0;
 	strftime(datestr, sizeof(datestr), "%A %d %B ", &time); // GPS date
@@ -203,7 +203,7 @@ void  ImportGPS::updateUI()
 	utc_mkdate(coords.end_track, &time);
 	ui.endTimeLabel->setText(QString::number(time.tm_hour) + ":" + QString::number(time.tm_min));  // track end time
 
-	utc_mkdate(coords.start_dive, &time); // Display dive date and start and end times:
+	utc_mkdate(coords.start_dive, &time); // Display dive date and start and end times of dive:
 	dive_day = time.tm_mday;
 	datestr[0] = 0x0;
 	strftime(datestr, sizeof(datestr), "%A %d %B ", localtime(&(coords.start_dive))); // dive date

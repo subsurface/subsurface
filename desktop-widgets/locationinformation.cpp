@@ -223,8 +223,9 @@ void LocationInformationWidget::initFields(dive_site *ds)
 
 void LocationInformationWidget::on_GPSbutton_clicked()
 {
+	QFileInfo finfo(system_default_filename());
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Select GPS file to open"),
-								tr("/home"),
+								finfo.absolutePath(),
 								tr("GPS files (*.gpx *.GPX)"));
 	ImportGPS GPSDialog(this, fileName, &ui); // Create a GPS import QDialog
 	GPSDialog.coords.start_dive = current_dive->when; // initialise
