@@ -1,6 +1,7 @@
 # mobile backend functions
 
 set(SUBSURFACE_MOBILE_SRCS
+	qmlinterface.cpp
 	qmlmanager.cpp
 	qml/kirigami/src/columnview.cpp
 	qml/kirigami/src/delegaterecycler.cpp
