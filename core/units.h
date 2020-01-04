@@ -275,6 +275,7 @@ static inline int32_t pressure_to_altitude(int32_t pressure)	// pressure in mbar
  * keeps track of those units.
  */
 /* turns out in Win32 PASCAL is defined as a calling convention */
+/* NOTE: these enums are duplicated in mobile-widgets/qmlinterface.h */
 struct units {
 	enum LENGTH {
 		METERS,

@@ -59,6 +59,7 @@ typedef struct {
 	const char *device_name;
 } dive_computer_prefs_t;
 
+// NOTE: these enums are duplicated in mobile-widgets/qmlinterface.h
 enum unit_system_values {
 	METRIC,
 	IMPERIAL,
