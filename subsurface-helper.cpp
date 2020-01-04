@@ -8,6 +8,7 @@
 #include "core/qt-gui.h"
 #include "core/settings/qPref.h"
 #include "core/ssrf.h"
+#include "backend-shared/typeenum.h"
 
 #ifdef SUBSURFACE_MOBILE
 #include <QApplication>
@@ -181,6 +182,9 @@ void register_qml_types(QQmlEngine *engine)
 
 #ifndef SUBSURFACE_TEST_DATA
 	int rc;
+
+	// Register shared enum
+	qmlRegisterUncreatableType<typeEnum>("org.subsurfacedivelog.mobile",1,0,"Enums","Enum is not a type");
 
 #ifdef SUBSURFACE_MOBILE
 	// register shared diveplanner class
