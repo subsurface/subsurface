@@ -14,6 +14,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "mobile-widgets/qmlmanager.h"
+#include "mobile-widgets/qmlinterface.h"
 #include "qt-models/divelistmodel.h"
 #include "qt-models/gpslistmodel.h"
 #include "qt-models/messagehandlermodel.h"
@@ -188,6 +189,9 @@ void register_qml_types(QQmlEngine *engine)
 		QQmlContext *ct = engine->rootContext();
 
 		ct->setContextProperty("Planner", plannerShared::instance());
+
+		// Register qml interface class
+		QMLInterface::setup(ct);
 	}
 
 	REGISTER_TYPE(QMLManager, "QMLManager");
