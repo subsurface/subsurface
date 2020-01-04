@@ -242,6 +242,7 @@ HEADERS += \
 	../../core/subsurface-qt/DiveListNotifier.h \
 	../../backend-shared/exportfuncs.h \
 	../../backend-shared/plannershared.h \
+	../../backend-shared/typeenum.h \
 	../../mobile-widgets/qmlmanager.h \
 	../../map-widget/qmlmapwidgethelper.h \
 	../../qt-models/divelistmodel.h \
