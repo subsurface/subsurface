@@ -224,15 +224,16 @@ void LocationInformationWidget::initFields(dive_site *ds)
 void LocationInformationWidget::on_GPSbutton_clicked()
 {
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Select GPS file to open"),
-								tr("/home/willem/Desktop"),
+								tr("/home"),
 								tr("GPS files (*.gpx *.GPX)"));
 	ImportGPS GPSDialog(this, fileName, &ui); // Create a GPS import QDialog
 	GPSDialog.coords.start_dive = current_dive->when; // initialise
 	GPSDialog.coords.end_dive = dive_endtime(current_dive);
-	GPSDialog.getCoordsFromFile(); // Get coordinates from GPS file
-	GPSDialog.updateUI();          // Put results in Dialog
-	if (!GPSDialog.exec())         // Show QDialog
-		return;
+	if (!GPSDialog.getCoordsFromFile()) { // Get coordinates from GPS file
+		GPSDialog.updateUI();         // If successful, put results in Dialog
+		if (!GPSDialog.exec())        // and show QDialog
+			return;
+	}
 }
 
 void LocationInformationWidget::on_diveSiteCoordinates_editingFinished()

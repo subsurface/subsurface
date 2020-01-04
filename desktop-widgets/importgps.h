@@ -5,9 +5,8 @@
 #include "ui_importgps.h"
 #include "desktop-widgets/locationinformation.h"
 #include "build/desktop-widgets/ui_locationinformation.h"
-#include <time.h>
-#include <QFile>
 
+#include <QFile>
 #include <QDialog>
 
 struct dive_coords {         // This structure holds important information after parsing the GPX file:

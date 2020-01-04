@@ -4,15 +4,10 @@
 #include "desktop-widgets/locationinformation.h"
 #include "core/dive.h"
 
-#include <time.h>
 #include <QFileDialog>
 #include <QProcess>
 #include <QDateTime>
 #include <QDate>
-#include <stdlib.h>
-#include <stdio.h>
-
-#define BUFFER_SIZE 5000
 
 /* Import dive coordinates from a GPS device and synchronise them with the dive profile information
    of a dive computer. This file contains the infrastructure to:
@@ -81,9 +76,9 @@ int ImportGPS::findXmlElement(QFile *fileptr, QString target, QString *bufptr, c
 			return 1;  // EOF
 		bufptr->clear();
 		do {  // Read name of following element and store it in buf
-			if (fileptr->read(&c, 1) <= 0)  // EOF
+			if (fileptr->read(&c, 1) <= 0)  // EOF encountered
 				return 1;
-			if ((c == '>') || (c == ' '))
+			if ((c == '>') || (c == ' '))   // found a valid delimiter
 				break;
 			bufptr->append(QChar(c));
 		} while ((c != '>') && (c != ' '));
@@ -98,7 +93,8 @@ int ImportGPS::findXmlElement(QFile *fileptr, QString target, QString *bufptr, c
 }
 
 // Find the coordinates at the time specified in coords.start_dive
-// by searching the gpx file "fileName"
+// by searching the gpx file "fileName". Here is a typical trkpt element in GPX:
+// <trkpt lat="-26.84" lon="32.88"><ele>-53.7</ele><time>2017-08-06T04:56:42Z</time></trkpt>
 int ImportGPS::getCoordsFromFile() 
 {
 	struct tm tm1;
@@ -114,14 +110,13 @@ int ImportGPS::getCoordsFromFile()
 	QFile f1;
 	f1.setFileName(fileName);
 	if (!f1.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		fprintf(stderr, "GPS file open error\n");
+		QByteArray local8bitBAString1 = fileName.toLocal8Bit();
+		char * fname = local8bitBAString1.data();   // convert QString to a C string filename
+		fprintf(stderr, "GPS file open error: file name = %s\n", fname);
 		return 1;
 	}
 
 #ifdef GPSDEBUG
-	QByteArray local8bitBAString1 = fileName.toLocal8Bit();
-	char * fname = local8bitBAString1.data();               // convert QString to a C string filename
-	fprintf(stderr, "GPS file name = %s\n", fname);
 	struct tm time; // decode the time of start of dive:
 	utc_mkdate(divetime, &time);
 	int dyr,dmon,dday,dhr,dmin;
@@ -135,22 +130,21 @@ int ImportGPS::getCoordsFromFile()
 	do {
 		line++;  // this is the sequence number of the trkpt xml element processed
 		// Find next trkpt xml element
-		if (findXmlElement(&f1, QString("trkpt"), &buf, ' ')) // find start of next trackpoint
+		if (findXmlElement(&f1, QString("trkpt"), &buf, ' ')) // find next trackpoint element
 			break;           // (This function also detects </trk> and signals EOF)
 		// == Get coordinates: ==
-		if (getSubstring(&f1, &buf, '"'))  // read up to the start of the "lat" attribute
+		if (getSubstring(&f1, &buf, '"'))  // read up to the end of the "lat=" label
 			break; // on EOF
 		if (buf != "lat=") {
 			fprintf(stderr, "GPX parse error: cannot find latitude (trkpt #%d)\n", line);
 			return 1;
 		}
-		if (getSubstring(&f1, &buf, '"')) { // get string with latitude
+		if (getSubstring(&f1, &buf, '"'))  // get string with latitude
 			break; // on EOF
-		}
 		lat = buf.toDouble();                  // Convert lat to decimal
 		if (getSubstring(&f1, &buf, ' '))  // Read past space char
 			break; // on EOF
-		if (getSubstring(&f1, &buf, '"'))  // Read up to start of "lon" attribute
+		if (getSubstring(&f1, &buf, '"'))  // Read up to end of "lon=" label
 			break; // on EOF
 		if (buf != "lon=") {
 			fprintf(stderr, "GPX parse error: cannot find longitude (trkpt #%d)\n", line);
