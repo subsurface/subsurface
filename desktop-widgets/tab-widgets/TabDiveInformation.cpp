@@ -17,7 +17,7 @@
 #define TEXT_EDITED 1
 #define CSS_SET_HEADING_BLUE "QLabel { color: mediumblue;} "
 
-enum watertypes { FRESHWATER, SALTYWATER, EN13319WATER, SALTWATER, NO_WATERTYPE};
+enum watertypes { FRESHWATER, SALTYWATER, EN13319WATER, SALTWATER, DC_WATERTYPE};
 
 TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(new Ui::TabDiveInformation())
 {
@@ -26,7 +26,8 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 	QStringList atmPressTypes { "mbar", get_depth_unit() ,tr("use dc")};
 	ui->atmPressType->insertItems(0, atmPressTypes);
 	pressTypeIndex = 0;
-	QStringList waterTypes {tr("Fresh"), tr("Salty"), "EN13319", tr("Salt"), tr("use dc")};
+	// the water types need to match the enum above
+	waterTypes = QStringList({tr("Fresh"), tr("Salty"), "EN13319", tr("Salt"), tr("use dc")});
 	ui->waterTypeCombo->insertItems(0, waterTypes);
 
 	// This needs to be the same order as enum dive_comp_type in dive.h!
@@ -179,7 +180,7 @@ void TabDiveInformation::updateWhen()
 int TabDiveInformation::updateSalinityComboIndex(int salinity)
 {
 	if (salinity == 0)
-		return NO_WATERTYPE;
+		return -1; // we don't know
 	else if (salinity < 10050)
 		return FRESHWATER;
 	else if (salinity < 10190)
@@ -237,19 +238,19 @@ void TabDiveInformation::updateData()
 			ui->waterTypeCombo->setCurrentIndex(updateSalinityComboIndex(salinity_value));
 		} else {         // If water salinity is not editable: show water type as a text label
 			if (salinity_value < 10050)
-				ui->waterTypeText->setText(tr("Fresh"));
+				ui->waterTypeText->setText(waterTypes[FRESHWATER]);
 			else if (salinity_value < 10190)
-				ui->waterTypeText->setText(tr("Salty"));
+				ui->waterTypeText->setText(waterTypes[SALTYWATER]);
 			else if (salinity_value < 10210)
-				ui->waterTypeText->setText("EN13319");
+				ui->waterTypeText->setText(waterTypes[EN13319WATER]);
 			else
-				ui->waterTypeText->setText(tr("Salt"));
+				ui->waterTypeText->setText(waterTypes[SALTWATER]);
 		}
 		checkDcSalinityOverWritten();  // If exclamation is needed (i.e. salinity overwrite by user), then show it
 		ui->salinityText->setText(QString("%1g/ℓ").arg(salinity_value / 10.0));
 	} else {
-		ui->waterTypeCombo->setCurrentIndex(NO_WATERTYPE);
-		ui->waterTypeText->clear();
+		ui->waterTypeCombo->setCurrentIndex(-1);
+		ui->waterTypeText->setText(tr("unknown"));
 		ui->salinityText->clear();
 	}
 	updateMode(current_dive);
@@ -282,16 +283,20 @@ void TabDiveInformation::on_waterTypeCombo_activated(int index) {
 	case SALTWATER:
 		combobox_salinity = SEAWATER_SALINITY;
 		break;
-	case NO_WATERTYPE:
+	case DC_WATERTYPE:
 		combobox_salinity = dc_salinity;
 		ui->waterTypeCombo->setCurrentIndex(updateSalinityComboIndex(combobox_salinity));
 		break;
 	default:
-		// we really should never get here... do nothing
+		// the index was set to -1 to indicate an unknown water type
+		combobox_salinity = 0;
 		break;
 	}
 	// Save and display the new salinity value
-	ui->salinityText->setText(QString("%1g/ℓ").arg(combobox_salinity / 10.0));
+	if (combobox_salinity)
+		ui->salinityText->setText(QString("%1g/ℓ").arg(combobox_salinity / 10.0));
+	else
+		ui->salinityText->clear();
 	divesEdited(Command::editWaterTypeUser(combobox_salinity, false));
 	if (dc_salinity == combobox_salinity) // If salinity differs from that of dc, then save it
 		ui->salinityOverWrittenIcon->setVisible(false);

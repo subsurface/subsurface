@@ -43,6 +43,7 @@ private:
 	void divesEdited(int);
 	void closeWarning();
 	void showCurrentWidget(bool show, int position);
+	QStringList waterTypes;
 };
 
 #endif
