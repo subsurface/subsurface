@@ -2173,6 +2173,12 @@ mean expected atmospheric pressure (mbar) at the specified altitude.
 In the case of "use dc", no value is required in the text box. Atmospheric pressure provided by a dive
 computer does not need any editing.
 
+The *Water type/density* field shows the information reported by the dive computer. In order to
+manually enter the water type (also referred to as salinity) you have to enable this feature in the
+*Log Preferences*. Once this is enabled, you can pick the desired water type here. A warning icon
+will be shown if the water type reported by the dive computer currently displayed is different from
+the value manually set here.
+
 [icon="images/icons/info.jpg"]
 [NOTE]
 Gas consumption and SAC calculations:
