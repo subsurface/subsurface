@@ -38,7 +38,6 @@ public:
 		CS_VERIFIED,
 		CS_NOCLOUD
 	};
-	Q_ENUM(cloud_status);
 
 	static bool cloud_auto_sync() { return prefs.cloud_auto_sync; }
 	static QString cloud_base_url() { return prefs.cloud_base_url; }
