@@ -266,6 +266,7 @@ void TabDiveInformation::updateData()
 
 // From the index of the water type combo box, set the dive->salinity to an appropriate value
 void TabDiveInformation::on_waterTypeCombo_activated(int index) {
+	Q_UNUSED(index)
 	int combobox_salinity = 0;
 	int dc_salinity = current_dive->dc.salinity;
 	switch(ui->waterTypeCombo->currentIndex()) {
@@ -397,7 +398,11 @@ void TabDiveInformation::on_watertemp_editingFinished()
 	if (ui->watertemp->isModified() && current_dive)
 		divesEdited(Command::editWaterTemp(parseTemperatureToMkelvin(ui->watertemp->text()), false));
 }
-void TabDiveInformation::on_atmPressType_currentIndexChanged(int index) { updateTextBox(COMBO_CHANGED); }
+
+void TabDiveInformation::on_atmPressType_currentIndexChanged(int index) {
+	Q_UNUSED(index)
+	updateTextBox(COMBO_CHANGED);
+}
 
 void TabDiveInformation::on_atmPressVal_editingFinished() { updateTextBox(TEXT_EDITED); }
 
