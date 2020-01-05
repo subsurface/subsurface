@@ -57,6 +57,8 @@ set(SUBSURFACE_MOBILE_MODELS_LIB_SRCS
 	gpslistmodel.h
 	messagehandlermodel.cpp
 	messagehandlermodel.h
+	mobilestatisticsmodel.cpp
+	mobilestatisticsmodel.h
 )
 
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
