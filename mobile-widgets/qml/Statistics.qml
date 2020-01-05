@@ -8,7 +8,8 @@ import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami 2.4 as Kirigami
 
 Kirigami.ScrollablePage {
-	title: qsTr("Hier bauen wir für Sie eine Statistikseite")
+	title: qsTr("Annual statistics")
+	objectName: "statistics" // we mainly use this in debug messages to the log
 
 	TextArea {
 	    width: parent.width
