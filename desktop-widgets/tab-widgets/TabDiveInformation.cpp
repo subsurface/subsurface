@@ -66,6 +66,7 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 	ui->salinityOverWrittenIcon->setPixmap(warning);
 	ui->salinityOverWrittenIcon->setToolTip("Water type differs from that of dc");
 	ui->salinityOverWrittenIcon->setToolTipDuration(2500);
+	ui->salinityOverWrittenIcon->setVisible(false);
 }
 
 TabDiveInformation::~TabDiveInformation()
@@ -194,12 +195,13 @@ int TabDiveInformation::updateSalinityComboIndex(int salinity)
 // If dive->user_salinity != dive->salinity (i.e. dc value) then show the salinity-overwrite indicator
 void TabDiveInformation::checkDcSalinityOverWritten()
 {
+	if (!current_dive)
+		return;
 	int dc_value = current_dive->dc.salinity;
 	int user_value = current_dive->user_salinity;
 	bool show_indicator = false;
-	if (current_dive && dc_value && user_value && (user_value != dc_value))
-		if ((dc_value < 10250) || (user_value < 10250))       // Provide for libdivecomputer that defines seawater density
-			show_indicator = true;                        // as 1.025 in contrast to Subsurface's value of 1.03
+	if (user_value != dc_value)
+		show_indicator = true;
 	ui->salinityOverWrittenIcon->setVisible(show_indicator);
 }
 
@@ -246,13 +248,14 @@ void TabDiveInformation::updateData()
 			else
 				ui->waterTypeText->setText(waterTypes[SALTWATER]);
 		}
-		checkDcSalinityOverWritten();  // If exclamation is needed (i.e. salinity overwrite by user), then show it
 		ui->salinityText->setText(QString("%1g/ℓ").arg(salinity_value / 10.0));
 	} else {
 		ui->waterTypeCombo->setCurrentIndex(-1);
 		ui->waterTypeText->setText(tr("unknown"));
 		ui->salinityText->clear();
 	}
+	checkDcSalinityOverWritten();  // If exclamation is needed (i.e. salinity overwrite by user), then show it
+
 	updateMode(current_dive);
 	ui->visibility->setCurrentStars(current_dive->visibility);
 	ui->wavesize->setCurrentStars(current_dive->wavesize);
