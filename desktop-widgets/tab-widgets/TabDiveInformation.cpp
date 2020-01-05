@@ -161,9 +161,7 @@ void TabDiveInformation::updateProfile()
 		ui->atmPressVal->clear();			// If no atm pressure for dive then clear text box
 	} else {
 		ui->atmPressVal->setEnabled(true);
-		QString pressStr;
-		pressStr.sprintf("%d",current_dive->surface_pressure.mbar);
-		ui->atmPressVal->setText(pressStr);		// else display atm pressure
+		ui->atmPressVal->setText(QString::number(current_dive->surface_pressure.mbar));		// else display atm pressure
 	}
 }
 
@@ -329,7 +327,7 @@ void TabDiveInformation::divesChanged(const QVector<dive *> &dives, DiveField fi
 	if (field.water_temp)
 		ui->watertemp->setText(get_temperature_string(current_dive->watertemp, true));
 	if (field.atm_press)
-		ui->atmPressVal->setText(ui->atmPressVal->text().sprintf("%d",current_dive->surface_pressure.mbar));
+		ui->atmPressVal->setText(QString::number(current_dive->surface_pressure.mbar));
 	if (field.salinity)
 		checkDcSalinityOverWritten();
 	if (current_dive->user_salinity)
@@ -423,7 +421,7 @@ void TabDiveInformation::updateTextBox(int event) // Either the text box has bee
 				else
 					altitudeVal = altitudeVal * 1000;     // metric: convert altitude from meters to mm
 				atmpress.mbar = altitude_to_pressure((int32_t) altitudeVal); // convert altitude (mm) to pressure (mbar)
-				ui->atmPressVal->setText(ui->atmPressVal->text().sprintf("%d",atmpress.mbar));
+				ui->atmPressVal->setText(QString::number(atmpress.mbar));
 				ui->atmPressType->setCurrentIndex(0);    // reset combobox to mbar
 			} else { // i.e. event == COMBO_CHANGED, that is, "m" or "ft" was selected from combobox
 				 // Show estimated altitude
