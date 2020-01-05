@@ -13,7 +13,7 @@ Item {
 
 	property string username: login.text;
 	property string password: password.text;
-	property bool showPin: (PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NEED_TO_VERIFY)
+	property bool showPin: (Backend.cloud_verification_status === Enums.CS_NEED_TO_VERIFY)
 
 	ColumnLayout {
 		id: outerLayout
@@ -110,7 +110,7 @@ Item {
 				id: cancelpin
 				text: qsTr("Cancel")
 				onClicked: {
-					PrefCloudStorage.cloud_verification_status = CloudStatus.CS_UNKNOWN
+					Backend.cloud_verification_status = Enums.CS_UNKNOWN
 					manager.startPageText = qsTr("Check credentials...");
 				}
 			}
@@ -139,8 +139,8 @@ Item {
 				onClicked: {
 					manager.setGitLocalOnly(true)
 					PrefCloudStorage.cloud_auto_sync = false
-					manager.oldStatus = PrefCloudStorage.cloud_verification_status
-					PrefCloudStorage.cloud_verification_status = CloudStatus.CS_NOCLOUD
+					manager.oldStatus = Backend.cloud_verification_status
+					Backend.cloud_verification_status = Enums.CS_NOCLOUD
 					manager.saveCloudCredentials("", "", "")
 					manager.openNoCloudRepo()
 				}

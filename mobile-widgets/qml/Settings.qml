@@ -45,7 +45,7 @@ Kirigami.ScrollablePage {
 				color: subsurfaceTheme.textColor
 			}
 			Controls.Label {
-				text: PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NOCLOUD ? qsTr("Not applicable") : PrefCloudStorage.cloud_storage_email
+				text: Backend.cloud_verification_status === Enums.CS_NOCLOUD ? qsTr("Not applicable") : PrefCloudStorage.cloud_storage_email
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.60
 				color: subsurfaceTheme.textColor
@@ -54,7 +54,7 @@ Kirigami.ScrollablePage {
 				id: changeCloudSettings
 				text: qsTr("Change")
 				onClicked: {
-					PrefCloudStorage.cloud_verification_status = CloudStatus.CS_UNKNOWN
+					Backend.cloud_verification_status = Enums.CS_UNKNOWN
 					manager.startPageText  = qsTr("Starting...");
 				}
 			}
@@ -66,7 +66,7 @@ Kirigami.ScrollablePage {
 				color: subsurfaceTheme.textColor
 			}
 			Controls.Label {
-				text: describe[PrefCloudStorage.cloud_verification_status]
+				text: describe[Backend.cloud_verification_status]
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.60
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 1.5

@@ -164,8 +164,8 @@ Kirigami.ApplicationWindow {
 		id: globalDrawer
 		height: rootItem.height
 		rightPadding: 0
-		enabled: (PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NOCLOUD ||
-				  PrefCloudStorage.cloud_verification_status === CloudStatus.CS_VERIFIED)
+		enabled: (Backend.cloud_verification_status === Enums.CS_NOCLOUD ||
+				  Backend.cloud_verification_status === Enums.CS_VERIFIED)
 		topContent: Image {
 			source: "qrc:/qml/icons/dive.jpg"
 			Layout.fillWidth: true
@@ -244,7 +244,7 @@ Kirigami.ApplicationWindow {
 				}
 				text: qsTr("Dive list")
 				onTriggered: {
-					manager.appendTextToLog("requested dive list with credential status " + PrefCloudStorage.cloud_verification_status)
+					manager.appendTextToLog("requested dive list with credential status " + Backend.cloud_verification_status)
 					returnTopPage()
 					globalDrawer.close()
 				}
@@ -319,7 +319,7 @@ Kirigami.ApplicationWindow {
 						name: ":/icons/cloud_sync.svg"
 					}
 					text: qsTr("Manual sync with cloud")
-					enabled: PrefCloudStorage.cloud_verification_status === CloudStatus.CS_VERIFIED
+					enabled: Backend.cloud_verification_status === Enums.CS_VERIFIED
 					onTriggered: {
 						globalDrawer.close()
 						detailsWindow.endEditMode()
@@ -332,7 +332,7 @@ Kirigami.ApplicationWindow {
 					name: PrefCloudStorage.cloud_auto_sync ?  ":/icons/ic_cloud_off.svg" : ":/icons/ic_cloud_done.svg"
 				}
 				text: PrefCloudStorage.cloud_auto_sync ? qsTr("Disable auto cloud sync") : qsTr("Enable auto cloud sync")
-					visible: PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_NOCLOUD
+					visible: Backend.cloud_verification_status !== Enums.CS_NOCLOUD
 					onTriggered: {
 						PrefCloudStorage.cloud_auto_sync = !PrefCloudStorage.cloud_auto_sync
 						manager.setGitLocalOnly(PrefCloudStorage.cloud_auto_sync)
@@ -840,8 +840,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	StartPage {
 		id: startPage
 		anchors.fill: parent
-		visible: PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_NOCLOUD &&
-			 PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_VERIFIED
+		visible: Backend.cloud_verification_status !== Enums.CS_NOCLOUD &&
+			 Backend.cloud_verification_status !== Enums.CS_VERIFIED
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 
 		onVisibleChanged: {

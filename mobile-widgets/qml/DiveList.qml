@@ -30,7 +30,7 @@ Kirigami.ScrollablePage {
 	supportsRefreshing: true
 	onRefreshingChanged: {
 		if (refreshing) {
-			if (PrefCloudStorage.cloud_verification_status === CloudStatus.CS_VERIFIED) {
+			if (Backend.cloud_verification_status === Enums.CS_VERIFIED) {
 				detailsWindow.endEditMode()
 				manager.saveChangesCloud(true)
 				refreshing = false
