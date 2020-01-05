@@ -200,7 +200,7 @@ void TabDiveInformation::checkDcSalinityOverWritten()
 	int dc_value = current_dc->salinity;
 	int user_value = current_dive->user_salinity;
 	bool show_indicator = false;
-	if (user_value != dc_value)
+	if (!manualDive && user_value != 0 && user_value != dc_value)
 		show_indicator = true;
 	ui->salinityOverWrittenIcon->setVisible(show_indicator);
 }
@@ -301,7 +301,8 @@ void TabDiveInformation::on_waterTypeCombo_activated(int index) {
 	else
 		ui->salinityText->clear();
 	divesEdited(Command::editWaterTypeUser(combobox_salinity, false));
-	if (dc_salinity == combobox_salinity) // If salinity differs from that of dc, then save it
+	// If salinity differs from that downloaded from dc, show warning
+	if (manualDive || dc_salinity == combobox_salinity)
 		ui->salinityOverWrittenIcon->setVisible(false);
 	else
 		ui->salinityOverWrittenIcon->setVisible(true);
