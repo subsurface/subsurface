@@ -132,6 +132,10 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	view->setColumnHidden(CylindersModel::DEPTH, false);
 	view->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
 	connect(ui.cylinderTableWidget, &TableView::addButtonClicked, plannerModel, &DivePlannerPointsModel::addCylinder_clicked);
+
+	// addStop actually accept a call with no parameters, due to default parameters, but the connect() syntax without SIGNAL/SLOT
+	// does not understand default parameters and causes errors to be thrown.
+	// Continue to use old syntax, to avoid problems.
 	connect(ui.tableWidget, SIGNAL(addButtonClicked()), plannerModel, SLOT(addStop()));
 
 	connect(CylindersModel::instance(), &CylindersModel::dataChanged, GasSelectionModel::instance(), &GasSelectionModel::repopulate);
