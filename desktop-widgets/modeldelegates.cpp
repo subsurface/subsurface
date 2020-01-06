@@ -114,8 +114,7 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	QComboBox *comboDelegate = new QComboBox(parent);
 	comboDelegate->setModel(model);
 	comboDelegate->setEditable(true);
-	comboDelegate->setAutoCompletion(true);
-	comboDelegate->setAutoCompletionCaseSensitivity(Qt::CaseInsensitive);
+	comboDelegate->completer()->setCaseSensitivity(Qt::CaseInsensitive);
 	comboDelegate->completer()->setCompletionMode(QCompleter::PopupCompletion);
 	comboDelegate->view()->setEditTriggers(QAbstractItemView::AllEditTriggers);
 	comboDelegate->lineEdit()->installEventFilter(const_cast<QObject *>(qobject_cast<const QObject *>(this)));
