@@ -540,9 +540,12 @@ extern "C" mediatype_t get_metadata(const char *filename_in, metadata *data)
 
 	// If we couldn't get a creation date from the file (for example AVI files don't
 	// have a standard way of storing this datum), use the file creation date of the file.
-	// TODO: QFileInfo::created is deprecated in newer Qt versions.
 	if (data->timestamp == 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+		data->timestamp = QFileInfo(filename).birthTime().toMSecsSinceEpoch() / 1000;
+#else
 		data->timestamp = QFileInfo(filename).created().toMSecsSinceEpoch() / 1000;
+#endif
 	return res;
 }
 
