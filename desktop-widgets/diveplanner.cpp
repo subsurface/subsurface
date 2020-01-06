@@ -134,20 +134,13 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(ui.cylinderTableWidget, &TableView::addButtonClicked, plannerModel, &DivePlannerPointsModel::addCylinder_clicked);
 	connect(ui.tableWidget, SIGNAL(addButtonClicked()), plannerModel, SLOT(addStop()));
 
-	connect(CylindersModel::instance(), SIGNAL(dataChanged(QModelIndex, QModelIndex)),
-		GasSelectionModel::instance(), SLOT(repopulate()));
-	connect(CylindersModel::instance(), SIGNAL(rowsInserted(QModelIndex, int, int)),
-		GasSelectionModel::instance(), SLOT(repopulate()));
-	connect(CylindersModel::instance(), SIGNAL(rowsRemoved(QModelIndex, int, int)),
-		GasSelectionModel::instance(), SLOT(repopulate()));
-	connect(CylindersModel::instance(), SIGNAL(dataChanged(QModelIndex, QModelIndex)),
-		plannerModel, SLOT(emitDataChanged()));
-	connect(CylindersModel::instance(), SIGNAL(dataChanged(QModelIndex, QModelIndex)),
-		plannerModel, SIGNAL(cylinderModelEdited()));
-	connect(CylindersModel::instance(), SIGNAL(rowsInserted(QModelIndex, int, int)),
-		plannerModel, SIGNAL(cylinderModelEdited()));
-	connect(CylindersModel::instance(), SIGNAL(rowsRemoved(QModelIndex, int, int)),
-		plannerModel, SIGNAL(cylinderModelEdited()));
+	connect(CylindersModel::instance(), &CylindersModel::dataChanged, GasSelectionModel::instance(), &GasSelectionModel::repopulate);
+	connect(CylindersModel::instance(), &CylindersModel::rowsInserted, GasSelectionModel::instance(), &GasSelectionModel::repopulate);
+	connect(CylindersModel::instance(), &CylindersModel::rowsRemoved, GasSelectionModel::instance(), &GasSelectionModel::repopulate);
+	connect(CylindersModel::instance(), &CylindersModel::dataChanged, plannerModel, &DivePlannerPointsModel::emitDataChanged);
+	connect(CylindersModel::instance(), &CylindersModel::dataChanged, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
+	connect(CylindersModel::instance(), &CylindersModel::rowsInserted, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
+	connect(CylindersModel::instance(), &CylindersModel::rowsRemoved, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
 	connect(plannerModel, &DivePlannerPointsModel::calculatedPlanNotes, MainWindow::instance(), &MainWindow::setPlanNotes);
 
 
