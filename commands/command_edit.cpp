@@ -910,10 +910,16 @@ void PasteDives::redo()
 	undo();
 }
 
-// ***** Paste *****
+// ***** ReplanDive *****
 ReplanDive::ReplanDive(dive *source, bool edit_profile) : d(current_dive),
+	when(0),
+	maxdepth({0}),
+	meandepth({0}),
 	dc({ 0 }),
-	notes(nullptr)
+	notes(nullptr),
+	surface_pressure({0}),
+	duration({0}),
+	salinity(0)
 {
 	memset(&cylinders, 0, sizeof(cylinders));
 	if (!d)
