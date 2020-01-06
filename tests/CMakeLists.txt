@@ -92,6 +92,8 @@ add_definitions(-DSUBSURFACE_TEST_DATA="${SUBSURFACE_TEST_DATA}")
 add_executable(TestQML testqml.cpp ../subsurface-helper.cpp )
 target_link_libraries(
 	TestQML
+	subsurface_backend_shared
+	${TEST_SPECIFIC_LIBRARIES}
 	subsurface_corelib
 	RESOURCE_LIBRARY
 	${QT_TEST_LIBRARIES}
