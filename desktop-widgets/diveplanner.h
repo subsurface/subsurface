@@ -82,7 +82,6 @@ slots:
 private:
 	Ui::plannerSettingsWidget ui;
 	void updateUnitsUI();
-	QSignalMapper *modeMapper;
 };
 
 #include "ui_plannerDetails.h"
