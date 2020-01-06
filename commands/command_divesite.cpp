@@ -131,7 +131,7 @@ void ImportDiveSites::undo()
 	sitesToAdd = removeDiveSites(sitesToRemove);
 }
 
-DeleteDiveSites::DeleteDiveSites(const QVector<dive_site *> &sites) : sitesToRemove(sites.toStdVector())
+DeleteDiveSites::DeleteDiveSites(const QVector<dive_site *> &sites) : sitesToRemove(std::vector<dive_site *>(sites.begin(),sites.end()))
 {
 	setText(tr("delete %n dive site(s)", "", sites.size()));
 }
