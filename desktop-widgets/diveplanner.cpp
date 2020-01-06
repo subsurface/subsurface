@@ -131,7 +131,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	view->setColumnHidden(CylindersModel::END, true);
 	view->setColumnHidden(CylindersModel::DEPTH, false);
 	view->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
-	connect(ui.cylinderTableWidget, SIGNAL(addButtonClicked()), plannerModel, SLOT(addCylinder_clicked()));
+	connect(ui.cylinderTableWidget, &TableView::addButtonClicked, plannerModel, &DivePlannerPointsModel::addCylinder_clicked);
 	connect(ui.tableWidget, SIGNAL(addButtonClicked()), plannerModel, SLOT(addStop()));
 
 	connect(CylindersModel::instance(), SIGNAL(dataChanged(QModelIndex, QModelIndex)),
@@ -148,7 +148,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 		plannerModel, SIGNAL(cylinderModelEdited()));
 	connect(CylindersModel::instance(), SIGNAL(rowsRemoved(QModelIndex, int, int)),
 		plannerModel, SIGNAL(cylinderModelEdited()));
-	connect(plannerModel, SIGNAL(calculatedPlanNotes()), MainWindow::instance(), SLOT(setPlanNotes()));
+	connect(plannerModel, &DivePlannerPointsModel::calculatedPlanNotes, MainWindow::instance(), &MainWindow::setPlanNotes);
 
 
 	ui.tableWidget->setBtnToolTip(tr("Add dive data point"));
@@ -156,7 +156,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(ui.dateEdit, &QDateEdit::dateChanged, plannerModel, &DivePlannerPointsModel::setStartDate);
 	connect(ui.ATMPressure, QOverload<int>::of(&QSpinBox::valueChanged), this, &DivePlannerWidget::atmPressureChanged);
 	connect(ui.atmHeight, QOverload<int>::of(&QSpinBox::valueChanged), this, &DivePlannerWidget::heightChanged);
-	connect(ui.waterType, SIGNAL(currentIndexChanged(int)), this, SLOT(waterTypeChanged(int)));
+	connect(ui.waterType, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DivePlannerWidget::waterTypeChanged);
 	connect(ui.customSalinity, SIGNAL(valueChanged(double)), this, SLOT(customSalinityChanged(double)));
 	connect(plannerModel, &DivePlannerPointsModel::startTimeChanged, this, &DivePlannerWidget::setupStartTime);
 
