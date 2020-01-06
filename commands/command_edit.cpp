@@ -865,8 +865,7 @@ void PasteState::swap(dive_components what)
 }
 
 // ***** Paste *****
-PasteDives::PasteDives(const dive *data, dive_components whatIn) : what(whatIn),
-	current(current_dive)
+PasteDives::PasteDives(const dive *data, dive_components whatIn) : what(whatIn)
 {
 	std::vector<dive *> selection = getDiveSelection();
 	dives.reserve(selection.size());
