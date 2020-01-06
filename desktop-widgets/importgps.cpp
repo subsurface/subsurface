@@ -111,7 +111,7 @@ int ImportGPS::getCoordsFromFile()
 	f1.setFileName(fileName);
 	if (!f1.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		QByteArray local8bitBAString1 = fileName.toLocal8Bit();
-		char * fname = local8bitBAString1.data();   // convert QString to a C string filename
+		char *fname = local8bitBAString1.data();   // convert QString to a C string filename
 		fprintf(stderr, "GPS file open error: file name = %s\n", fname);
 		return 1;
 	}
