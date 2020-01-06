@@ -28,7 +28,7 @@ QImage focusedImage(const QImage& coloredImg)
 				continue;
 
 			QColor c(rgb);
-			c = c.dark();
+			c = c.darker();
 			img.setPixel(i, j, c.rgb());
 		}
 	}
