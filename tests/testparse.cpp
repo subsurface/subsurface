@@ -247,7 +247,7 @@ void TestParse::testParseNewFormat()
 	 * Set the directory location and file filter for H3 CSV files.
 	 */
 
-	dir = QString::fromLatin1(SUBSURFACE_TEST_DATA "/dives");
+	dir.setPath(QString::fromLatin1(SUBSURFACE_TEST_DATA "/dives"));
 	filter << "TestDiveSeabearH3*.csv";
 	filter << "TestDiveSeabearT1*.csv";
 	files = dir.entryList(filter, QDir::Files);
