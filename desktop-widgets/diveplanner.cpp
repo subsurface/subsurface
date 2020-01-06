@@ -166,7 +166,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(ui.buttonBox, &QDialogButtonBox::accepted, plannerModel, &DivePlannerPointsModel::savePlan);
 	connect(ui.buttonBox, &QDialogButtonBox::rejected, plannerModel, &DivePlannerPointsModel::cancelPlan);
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), this);
-	connect(closeKey, SIGNAL(activated()), plannerModel, SLOT(cancelPlan()));
+	connect(closeKey, &QShortcut::activated, plannerModel, &DivePlannerPointsModel::cancelPlan);
 
 	// This makes shure the spinbox gets a setMinimum(0) on it so we can't have negative time or depth.
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::DEPTH, new SpinBoxDelegate(0, INT_MAX, 1, this));
