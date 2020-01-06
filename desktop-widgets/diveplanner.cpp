@@ -485,8 +485,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.switch_at_req_stop, &QAbstractButton::toggled, plannerShared::instance(), plannerShared::set_switch_at_req_stop);
 	connect(ui.min_switch_duration, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_min_switch_duration);
 	connect(ui.surface_segment, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setSurfaceSegment);
-	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), plannerModel, SLOT(setRebreatherMode(int)));
-	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), this, SLOT(setBailoutVisibility(int)));
+	connect(ui.rebreathermode, QOverload<int>::of(&QComboBox::currentIndexChanged), plannerModel, &DivePlannerPointsModel::setRebreatherMode);
+	connect(ui.rebreathermode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &PlannerSettingsWidget::setBailoutVisibility);
 
 	connect(ui.recreational_deco, &QAbstractButton::clicked, [=] { disableDecoElements(RECREATIONAL); });
 	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [=] { disableDecoElements(BUEHLMANN); });
