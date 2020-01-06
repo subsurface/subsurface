@@ -36,7 +36,7 @@
 				set.insert(value.trimmed());                                     \
 			}                                                                        \
 		}                                                                                \
-		QStringList setList = set.toList();                                              \
+		QStringList setList = set.values();                                              \
 		std::sort(setList.begin(), setList.end());                                       \
 		setStringList(setList);                                                     \
 	}

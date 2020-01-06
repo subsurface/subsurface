@@ -544,7 +544,7 @@ void ImportDives::undoit()
 
 DeleteDive::DeleteDive(const QVector<struct dive*> &divesToDeleteIn)
 {
-	divesToDelete.dives = divesToDeleteIn.toStdVector();
+	divesToDelete.dives = std::vector<dive *>(divesToDeleteIn.begin(), divesToDeleteIn.end());
 	setText(tr("delete %n dive(s)", "", divesToDelete.dives.size()));
 }
 
@@ -604,7 +604,7 @@ void ShiftTime::redoit()
 	emit diveListNotifier.divesChanged(diveList, DiveField::DATETIME);
 
 	// Select the changed dives
-	setSelection(diveList.toStdVector(), diveList[0]);
+	setSelection(std::vector<dive *>(diveList.begin(), diveList.end()), diveList[0]);
 
 	// Negate the time-shift so that the next call does the reverse
 	timeChanged = -timeChanged;
@@ -985,7 +985,7 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 	mergedDive.dives[0].dive = std::move(d);
 	mergedDive.dives[0].trip = preferred_trip;
 	mergedDive.dives[0].site = preferred_site;
-	divesToMerge.dives = dives.toStdVector();
+	divesToMerge.dives = std::vector<dive *>(dives.begin(), dives.end());
 }
 
 bool MergeDives::workToBeDone()
