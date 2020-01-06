@@ -22,6 +22,7 @@
 #include "backend-shared/plannershared.h"
 #include "qt-models/diveimportedmodel.h"
 #include "mobile-widgets/qml/kirigami/src/kirigamiplugin.h"
+#include "qt-models/mobilestatisticsmodel.h"
 #else
 #include "desktop-widgets/mainwindow.h"
 #endif
@@ -109,6 +110,10 @@ void run_ui()
 	ctxt->setContextProperty("connectionListModel", &connectionListModel);
 	ctxt->setContextProperty("logModel", MessageHandlerModel::self());
 
+	MobileStatisticsModel *mobileStatisticsModel = new MobileStatisticsModel();
+	ctxt->setContextProperty("mobileStatisticsModel", mobileStatisticsModel);
+
+	// the QMLManager object gets instantiated when main.qml is loaded
 	qmlRegisterUncreatableType<QMLManager>("org.subsurfacedivelog.mobile",1,0,"ExportType","Enum is not a type");
 
 #ifdef SUBSURFACE_MOBILE_DESKTOP
@@ -123,6 +128,7 @@ void run_ui()
 	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
 #endif
 	qDebug() << "loaded main.qml";
+
 	qqWindowObject = engine.rootObjects().value(0);
 	if (!qqWindowObject) {
 		fprintf(stderr, "can't create window object\n");
@@ -136,8 +142,11 @@ void run_ui()
 	int qmlSW = screen->size().width();
 	qDebug() << "qml_window reports width as" << qmlWW << "associated screen width" << qmlSW << "Qt screen reports width as" << availableScreenWidth;
 	QObject::connect(qml_window, &QQuickWindow::screenChanged, QMLManager::instance(), &QMLManager::screenChanged);
-	QMLManager *manager = QMLManager::instance();
 
+	// now that main.qml has been loaded we have an object that we can access
+	QMLManager *manager = QMLManager::instance();
+	manager->setStatisticsModel(mobileStatisticsModel);
+	manager->updateStatistics();
 	manager->setDevicePixelRatio(qml_window->devicePixelRatio(), qml_window->screen());
 	manager->qmlWindow = qqWindowObject;
 	manager->screenChanged(screen);
