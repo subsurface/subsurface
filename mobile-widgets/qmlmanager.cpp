@@ -155,6 +155,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	alreadySaving(false),
 	m_pluggedInDeviceName(""),
 	m_showNonDiveComputers(false),
+	mobileStatisticsModel(0),
 	m_oldStatus(qPrefCloudStorage::CS_UNKNOWN)
 {
 	m_instance = this;
@@ -231,7 +232,6 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	appendTextToLog(getAndroidHWInfo());
 #endif
 	setStartPageText(tr("Starting..."));
-	setStatisticsPageText(tr("Annual Statistics"));
 
 	// ensure that we start the BTDiscovery - this should be triggered by the export of the class
 	// to QML, but that doesn't seem to always work
@@ -1688,59 +1688,16 @@ void QMLManager::setStartPageText(const QString& text)
 	emit startPageTextChanged();
 }
 
-void QMLManager::setStatisticsPageText(const QString& text)
-{
-	m_statisticsPageText = text;
-	emit statisticsPageTextChanged();
-}
-
 void QMLManager::updateStatistics()
 {
-	QString summary;
-	QTextStream out(&summary);
-	stats_summary_auto_free stats;
-
-	stats_t total_stats;
-
-	calculate_stats_summary(&stats, false);
-	total_stats.selection_size = 0;
-	total_stats.total_time.seconds = 0;
-
-	int i = 0;
-	while (stats.stats_yearly != NULL && stats.stats_yearly[i].period)
-		i++;
-	while (--i >= 0) {
-		out << "<h3>Year: " << stats.stats_yearly[i].period << "</h3>\n";
-		out << "dives: " << stats.stats_yearly[i].selection_size << "<br>\n";
-		out << "total dive time: " << get_dive_duration_string(stats.stats_yearly[i].total_time.seconds,
-								       gettextFromC::tr("h"), gettextFromC::tr("min"), gettextFromC::tr("sec"), " ") << "<br>\n";
-		out << "<table><tr><th></th><th>AVG</th><th>MIN</th><th>MAX</th></tr>\n";
-		out << "<tr><td>time</td><td align=\"right\">" << get_minutes(stats.stats_yearly[i].total_time.seconds / stats.stats_yearly[i].selection_size) << gettextFromC::tr("min</td>");
-		out << "<td align=\"right\">" << get_minutes(stats.stats_yearly[i].shortest_time.seconds) << gettextFromC::tr("min</td>");
-		out << "<td align=\"right\">" << get_minutes(stats.stats_yearly[i].longest_time.seconds) << gettextFromC::tr("min</td>")<< "</tr>\n";
-		out << "<tr><td>depth</td><td align=\"right\">" << get_depth_string(stats.stats_yearly[i].avg_depth) << get_depth_unit() << "</td>";
-		out << "<td align=\"right\">" << get_depth_string(stats.stats_yearly[i].min_depth) << get_depth_unit() << "</td>";
-		out << "<td align=\"right\">" << get_depth_string(stats.stats_yearly[i].max_depth) << get_depth_unit() << "</td></tr>\n";
-		out << "<tr><td>SAC</td><td align=\"right\">" << get_volume_string(stats.stats_yearly[i].avg_sac) << get_volume_unit() << "</td>";
-		out << "<td align=\"right\">" << get_volume_string(stats.stats_yearly[i].min_sac) << get_volume_unit() << "</td>";
-		out << "<td align=\"right\">" << get_volume_string(stats.stats_yearly[i].max_sac) << get_volume_unit() << "</td></tr>\n";
-		out << "<tr><td>temperature</td><td align=\"right\">";
-		if (stats.stats_yearly[i].combined_count) {
-			temperature_t avg_temp;
-			avg_temp.mkelvin = stats.stats_yearly[i].combined_temp.mkelvin / stats.stats_yearly[i].combined_count;
-			out << get_temperature_string(avg_temp) << get_temp_unit();
-		}
-		out << "</td>";
-		out << "<td align=\"right\">" << (stats.stats_yearly[i].min_temp.mkelvin == 0 ? 0 : get_temperature_string(stats.stats_yearly[i].min_temp)) << get_temp_unit() << "</td>";
-		out << "<td align=\"right\">" << (stats.stats_yearly[i].max_temp.mkelvin == 0 ? 0 : get_temperature_string(stats.stats_yearly[i].max_temp)) << get_temp_unit()<< "</td></tr>\n";
-		out << "</table><br>\n\n";
-		total_stats.selection_size += stats.stats_yearly[i].selection_size;
-		total_stats.total_time.seconds += stats.stats_yearly[i].total_time.seconds;
-	}
-
-	setStatisticsPageText(summary);
+	if (mobileStatisticsModel)
+		mobileStatisticsModel->updateData();
 }
 
+void QMLManager::setStatisticsModel(MobileStatisticsModel *msm)
+{
+	mobileStatisticsModel = msm;
+}
 
 QString QMLManager::getNumber(const QString& diveId)
 {

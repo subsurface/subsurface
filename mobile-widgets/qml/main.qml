@@ -165,7 +165,7 @@ Kirigami.ApplicationWindow {
 		height: rootItem.height
 		rightPadding: 0
 		enabled: (PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NOCLOUD ||
-				  PrefCloudStorage.cloud_verification_status === CloudStatus.CS_VERIFIED)
+			          PrefCloudStorage.cloud_verification_status === CloudStatus.CS_VERIFIED)
 		topContent: Image {
 			source: "qrc:/qml/icons/dive.jpg"
 			Layout.fillWidth: true
@@ -435,6 +435,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				text: qsTr("Statistics")
 				onTriggered: {
 					globalDrawer.close()
+					manager.updateStatistics()
 					pageStack.push(statisticsWindow)
 					detailsWindow.endEditMode()
 				}
