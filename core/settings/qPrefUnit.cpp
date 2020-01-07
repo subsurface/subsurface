@@ -31,15 +31,6 @@ HANDLE_PREFERENCE_BOOL(Units, "coordinates", coordinates_traditional);
 SET_PREFERENCE_ENUM_EXT(Units, units::DURATION, duration_units, units.);
 DISK_LOADSYNC_ENUM_EXT(Units, "duration_units", units::DURATION, duration_units, units.);
 
-QString qPrefUnits::length()
-{
-	return 	prefs.units.length == units::LENGTH::METERS ? QStringLiteral("meters") : QStringLiteral("feet");
-}
-void qPrefUnits::set_length(const QString& value)
-{
-	set_length(value == QStringLiteral("meters") ? units::LENGTH::METERS : units::LENGTH::FEET);
-	emit instance()->lengthStringChanged(value);
-}
 SET_PREFERENCE_ENUM_EXT(Units, units::LENGTH, length, units.);
 DISK_LOADSYNC_ENUM_EXT(Units, "length", units::LENGTH, length, units.);
 
