@@ -343,7 +343,7 @@ void copy_cylinder_types(const struct dive *s, struct dive *d)
 
 cylinder_t *add_empty_cylinder(struct cylinder_table *t)
 {
-	cylinder_t cyl = { 0 };
+	cylinder_t cyl = empty_cylinder;
 	cyl.type.description = strdup("");
 	add_to_cylinder_table(t, t->nr, cyl);
 	return &t->cylinders[t->nr - 1];

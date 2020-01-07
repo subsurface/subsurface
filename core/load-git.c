@@ -405,7 +405,7 @@ static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const char
 
 static void parse_dive_cylinder(char *line, struct membuffer *str, struct git_parser_state *state)
 {
-	cylinder_t cylinder = { 0 };
+	cylinder_t cylinder = empty_cylinder;
 
 	cylinder.type.description = get_utf8(str);
 	for (;;) {
@@ -437,7 +437,7 @@ static void parse_weightsystem_keyvalue(void *_ws, const char *key, const char *
 
 static void parse_dive_weightsystem(char *line, struct membuffer *str, struct git_parser_state *state)
 {
-	weightsystem_t ws = { 0 };
+	weightsystem_t ws = empty_weightsystem;
 
 	ws.description = get_utf8(str);
 	for (;;) {
