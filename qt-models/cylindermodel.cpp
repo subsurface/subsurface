@@ -421,7 +421,7 @@ int CylindersModel::rowCount(const QModelIndex&) const
 void CylindersModel::add()
 {
 	int row = rows;
-	cylinder_t cyl = { 0 };
+	cylinder_t cyl = empty_cylinder;
 	fill_default_cylinder(&displayed_dive, &cyl);
 	cyl.start = cyl.type.workingpressure;
 	cyl.manually_added = true;

@@ -33,6 +33,8 @@ typedef struct
 	bool bestmix_he;
 } cylinder_t;
 
+static const cylinder_t empty_cylinder = { { { 0 }, { 0 }, (const char *)0}, { { 0 }, { 0 } } , { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, false, { 0 }, { 0 }, OC_GAS, false, false };
+
 /* Table of cylinders. Attention: this stores cylinders,
  * *not* pointers to cylinders. This has two crucial consequences:
  * 1) Pointers to cylinders are not stable. They may be

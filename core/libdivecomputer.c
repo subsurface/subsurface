@@ -114,7 +114,7 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 
 	clear_cylinder_table(&dive->cylinders);
 	for (i = 0; i < ngases || i < ntanks; i++) {
-		cylinder_t cyl = { 0 };
+		cylinder_t cyl = empty_cylinder;
 		if (i < ngases) {
 			dc_gasmix_t gasmix = { 0 };
 			int o2, he;

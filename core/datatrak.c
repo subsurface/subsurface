@@ -317,7 +317,7 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 	 */
 	read_bytes(2);
 	if (tmp_2bytes != 0x7FFF) {
-		cylinder_t cyl = { 0 };
+		cylinder_t cyl = empty_cylinder;
 		cyl.type.size.mliter = tmp_2bytes * 10;
 		cyl.type.description = "";
 		cyl.start.mbar = 200000;

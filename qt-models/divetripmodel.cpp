@@ -515,7 +515,7 @@ void processRangesZip(Vector1 &items1, Vector2 &items2, Predicate cond, Action a
 			return 1;
 		      },
 		      [&](Vector1 &v1, int from, int to) { // Action
-		      	return action(v1, items2, from, to, actItem);
+			return action(v1, items2, from, to, actItem);
 		      });
 }
 
@@ -653,7 +653,7 @@ QModelIndex DiveTripModelTree::parent(const QModelIndex &index) const
 }
 
 DiveTripModelTree::Item::Item(dive_trip *t, const QVector<dive *> &divesIn) : d_or_t{nullptr, t},
-	dives(divesIn.toStdVector()),
+	dives(std::vector<dive *>(divesIn.begin(), divesIn.end())),
 	shown(std::any_of(dives.begin(), dives.end(), [](dive *d){ return !d->hidden_by_filter; }))
 {
 }

@@ -149,7 +149,7 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 
 		/* Just the main cylinder until we can handle the buddy cylinder porperly */
 		for (i = 0; i < 1; i++) {
-			cylinder_t cyl = { 0 };
+			cylinder_t cyl = empty_cylinder;
 			fill_default_cylinder(dive, &cyl);
 			add_to_cylinder_table(&dive->cylinders, i, cyl);
 		}
