@@ -39,15 +39,6 @@ DISK_LOADSYNC_ENUM_EXT(Units, "pressure", units::PRESSURE, pressure, units.);
 
 HANDLE_PREFERENCE_BOOL_EXT(Units, "show_units_table", show_units_table, units.);
 
-QString qPrefUnits::temperature()
-{
-	return 	prefs.units.temperature == units::TEMPERATURE::CELSIUS ? QStringLiteral("celcius") : QStringLiteral("fahrenheit");
-}
-void qPrefUnits::set_temperature(const QString& value)
-{
-	set_temperature(value == QStringLiteral("celcius") ? units::TEMPERATURE::CELSIUS : units::TEMPERATURE::FAHRENHEIT);
-	emit instance()->temperatureStringChanged(value);
-}
 SET_PREFERENCE_ENUM_EXT(Units, units::TEMPERATURE, temperature, units.);
 DISK_LOADSYNC_ENUM_EXT(Units, "temperature", units::TEMPERATURE, temperature, units.);
 
@@ -81,10 +72,6 @@ void qPrefUnits::set_unit_system(unit_system_values value)
 	emit instance()->volumeStringChanged(volume());
 	emit instance()->weightChanged(prefs.units.weight);
 	emit instance()->weightStringChanged(weight());
-	emit instance()->lengthChanged(prefs.units.length);
-	emit instance()->lengthStringChanged(length());
-	emit instance()->temperatureChanged(prefs.units.temperature);
-	emit instance()->temperatureStringChanged(temperature());
 }
 DISK_LOADSYNC_ENUM(Units, "unit_system", unit_system_values, unit_system);
 
