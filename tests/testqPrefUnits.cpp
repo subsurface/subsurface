@@ -40,8 +40,8 @@ void TestQPrefUnits::test_struct_get()
 	QCOMPARE(tst->show_units_table(), true);
 	QCOMPARE(tst->temperature(), units::CELSIUS);
 	QCOMPARE(tst->vertical_speed_time(), units::SECONDS);
-	QCOMPARE(tst->volume(), QStringLiteral("liter"));
-	QCOMPARE(tst->weight(), QStringLiteral("kg"));
+	QCOMPARE(tst->volume(), units::LITER);
+	QCOMPARE(tst->weight(), units::KG);
 }
 
 void TestQPrefUnits::test_set_struct()
@@ -209,9 +209,11 @@ void TestQPrefUnits::test_oldPreferences()
 
 	TEST(units->length(), units::METERS);
 	TEST(units->pressure(), units::BAR);
-	TEST(units->volume(), QStringLiteral("liter"));
+	TEST(units->volume(), units::LITER);
 	TEST(units->temperature(), units::CELSIUS);
-	TEST(units->weight(), QStringLiteral("kg"));
+	TEST(units->weight(), units::KG);
+	TEST(units->vertical_speed_time(), units::SECONDS);
+	TEST(units->unit_system(), METRIC);
 	TEST(units->vertical_speed_time(), units::SECONDS);
 	TEST(units->unit_system(), METRIC);
 	TEST(units->coordinates_traditional(), false);
@@ -226,9 +228,9 @@ void TestQPrefUnits::test_oldPreferences()
 
 	TEST(units->length(), units::FEET);
 	TEST(units->pressure(), units::PSI);
-	TEST(units->volume(), QStringLiteral("cuft"));
+	TEST(units->volume(), units::CUFT);
 	TEST(units->temperature(), units::FAHRENHEIT);
-	TEST(units->weight(), QStringLiteral("lbs"));
+	TEST(units->weight(), units::LBS);
 	TEST(units->vertical_speed_time(), units::MINUTES);
 	TEST(units->coordinates_traditional(), true);
 }

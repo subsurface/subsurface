@@ -68,36 +68,14 @@ void qPrefUnits::set_unit_system(unit_system_values value)
 	}
 	disk_unit_system(true);
 	emit instance()->unit_systemChanged(value);
-	emit instance()->volumeChanged(prefs.units.volume);
-	emit instance()->volumeStringChanged(volume());
-	emit instance()->weightChanged(prefs.units.weight);
-	emit instance()->weightStringChanged(weight());
 }
 DISK_LOADSYNC_ENUM(Units, "unit_system", unit_system_values, unit_system);
 
 SET_PREFERENCE_ENUM_EXT(Units, units::TIME, vertical_speed_time, units.);
 DISK_LOADSYNC_ENUM_EXT(Units, "vertical_speed_time", units::TIME, vertical_speed_time, units.);
 
-QString qPrefUnits::volume()
-{
-	return 	prefs.units.volume == units::VOLUME::LITER ? QStringLiteral("liter") : QStringLiteral("cuft");
-}
-void qPrefUnits::set_volume(const QString& value)
-{
-	set_volume(value == QStringLiteral("liter") ? units::VOLUME::LITER : units::VOLUME::CUFT);
-	emit instance()->volumeStringChanged(value);
-}
 SET_PREFERENCE_ENUM_EXT(Units, units::VOLUME, volume, units.);
 DISK_LOADSYNC_ENUM_EXT(Units, "volume", units::VOLUME, volume, units.);
 
-QString qPrefUnits::weight()
-{
-	return 	prefs.units.weight == units::WEIGHT::KG ? QStringLiteral("kg") : QStringLiteral("lbs");
-}
-void qPrefUnits::set_weight(const QString& value)
-{
-	set_weight(value == QStringLiteral("kg") ? units::WEIGHT::KG : units::WEIGHT::LBS);
-	emit instance()->weightStringChanged(value);
-}
 SET_PREFERENCE_ENUM_EXT(Units, units::WEIGHT, weight, units.);
 DISK_LOADSYNC_ENUM_EXT(Units, "weight", units::WEIGHT, weight, units.);
