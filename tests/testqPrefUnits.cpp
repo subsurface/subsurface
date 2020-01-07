@@ -39,7 +39,7 @@ void TestQPrefUnits::test_struct_get()
 	QCOMPARE(tst->pressure(), units::BAR);
 	QCOMPARE(tst->show_units_table(), true);
 	QCOMPARE(tst->temperature(), units::CELSIUS);
-	QCOMPARE(tst->vertical_speed_time(), QStringLiteral("seconds"));
+	QCOMPARE(tst->vertical_speed_time(), units::SECONDS);
 	QCOMPARE(tst->volume(), QStringLiteral("liter"));
 	QCOMPARE(tst->weight(), QStringLiteral("kg"));
 }
@@ -212,7 +212,7 @@ void TestQPrefUnits::test_oldPreferences()
 	TEST(units->volume(), QStringLiteral("liter"));
 	TEST(units->temperature(), units::CELSIUS);
 	TEST(units->weight(), QStringLiteral("kg"));
-	TEST(units->vertical_speed_time(), QStringLiteral("seconds"));
+	TEST(units->vertical_speed_time(), units::SECONDS);
 	TEST(units->unit_system(), METRIC);
 	TEST(units->coordinates_traditional(), false);
 
@@ -229,7 +229,7 @@ void TestQPrefUnits::test_oldPreferences()
 	TEST(units->volume(), QStringLiteral("cuft"));
 	TEST(units->temperature(), units::FAHRENHEIT);
 	TEST(units->weight(), QStringLiteral("lbs"));
-	TEST(units->vertical_speed_time(), QStringLiteral("minutes"));
+	TEST(units->vertical_speed_time(), units::MINUTES);
 	TEST(units->coordinates_traditional(), true);
 }
 

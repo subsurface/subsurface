@@ -75,15 +75,6 @@ void qPrefUnits::set_unit_system(unit_system_values value)
 }
 DISK_LOADSYNC_ENUM(Units, "unit_system", unit_system_values, unit_system);
 
-QString qPrefUnits::vertical_speed_time()
-{
-	return 	prefs.units.vertical_speed_time == units::TIME::MINUTES ? QStringLiteral("minutes") : QStringLiteral("seconds");
-}
-void qPrefUnits::set_vertical_speed_time(const QString& value)
-{
-	set_vertical_speed_time(value == QStringLiteral("minutes") ? units::TIME::MINUTES : units::TIME::SECONDS);
-	emit instance()->vertical_speed_timeStringChanged(value);
-}
 SET_PREFERENCE_ENUM_EXT(Units, units::TIME, vertical_speed_time, units.);
 DISK_LOADSYNC_ENUM_EXT(Units, "vertical_speed_time", units::TIME, vertical_speed_time, units.);
 

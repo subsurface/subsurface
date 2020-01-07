@@ -10,7 +10,6 @@ class qPrefUnits : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(bool coordinates_traditional READ coordinates_traditional WRITE set_coordinates_traditional NOTIFY coordinates_traditionalChanged)
 	Q_PROPERTY(bool show_units_table READ show_units_table WRITE set_show_units_table NOTIFY show_units_tableChanged)
-	Q_PROPERTY(QString vertical_speed_time READ vertical_speed_time WRITE set_vertical_speed_time NOTIFY vertical_speed_timeStringChanged)
 	Q_PROPERTY(QString volume READ volume WRITE set_volume NOTIFY volumeStringChanged)
 	Q_PROPERTY(QString weight READ weight WRITE set_weight NOTIFY weightStringChanged)
 
@@ -30,7 +29,7 @@ public:
 	static bool show_units_table() { return prefs.units.show_units_table; }
 	static unit_system_values unit_system() { return prefs.unit_system; }
 	static units::TEMPERATURE temperature() { return prefs.units.temperature; }
-	static QString vertical_speed_time();
+	static units::TIME vertical_speed_time() { return prefs.units.vertical_speed_time; }
 	static QString volume();
 	static QString weight();
 
@@ -43,7 +42,6 @@ public slots:
 	static void set_temperature(units::TEMPERATURE value);
 	static void set_unit_system(unit_system_values value);
 	static void set_vertical_speed_time(units::TIME value);
-	static void set_vertical_speed_time(const QString& value);
 	static void set_volume(units::VOLUME value);
 	static void set_volume(const QString& value);
 	static void set_weight(units::WEIGHT value);
@@ -57,8 +55,7 @@ signals:
 	void show_units_tableChanged(bool value);
 	void temperatureChanged(units::TEMPERATURE value);
 	void unit_systemChanged(unit_system_values value);
-	void vertical_speed_timeChanged(int value);
-	void vertical_speed_timeStringChanged(const QString& value);
+	void vertical_speed_timeChanged(units::TIME value);
 	void volumeChanged(int value);
 	void volumeStringChanged(const QString& value);
 	void weightChanged(int value);
