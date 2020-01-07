@@ -34,7 +34,7 @@ void TestQPrefUnits::test_struct_get()
 	prefs.units.weight = units::KG;
 
 	QCOMPARE(tst->coordinates_traditional(), true);
-	QCOMPARE(tst->duration_units(), QStringLiteral("mixed"));
+	QCOMPARE(tst->duration_units(), units::MIXED);
 	QCOMPARE(tst->length(), QStringLiteral("meters"));
 	QCOMPARE(tst->pressure(), QStringLiteral("bar"));
 	QCOMPARE(tst->show_units_table(), true);

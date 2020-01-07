@@ -28,19 +28,6 @@ void qPrefUnits::loadSync(bool doSync)
 
 HANDLE_PREFERENCE_BOOL(Units, "coordinates", coordinates_traditional);
 
-QString qPrefUnits::duration_units()
-{
-	return 	prefs.units.duration_units == units::DURATION::ALWAYS_HOURS ? QStringLiteral("hours") :
-									      prefs.units.duration_units == units::DURATION::MINUTES_ONLY ? QStringLiteral("minutes") :
-																	    QStringLiteral("mixed");
-}
-void qPrefUnits::set_duration_units(const QString& value)
-{
-	set_duration_units(value == QStringLiteral("hours") ?  units::DURATION::ALWAYS_HOURS :
-							       value == QStringLiteral("minutes")? units::DURATION::MINUTES_ONLY :
-												   units::DURATION::MIXED);
-	emit instance()->duration_unitsStringChanged(value);
-}
 SET_PREFERENCE_ENUM_EXT(Units, units::DURATION, duration_units, units.);
 DISK_LOADSYNC_ENUM_EXT(Units, "duration_units", units::DURATION, duration_units, units.);
 
