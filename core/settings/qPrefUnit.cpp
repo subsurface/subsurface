@@ -34,15 +34,6 @@ DISK_LOADSYNC_ENUM_EXT(Units, "duration_units", units::DURATION, duration_units,
 SET_PREFERENCE_ENUM_EXT(Units, units::LENGTH, length, units.);
 DISK_LOADSYNC_ENUM_EXT(Units, "length", units::LENGTH, length, units.);
 
-QString qPrefUnits::pressure()
-{
-	return 	prefs.units.pressure == units::PRESSURE::BAR ? QStringLiteral("bar") : QStringLiteral("psi");
-}
-void qPrefUnits::set_pressure(const QString& value)
-{
-	set_pressure(value == QStringLiteral("bar") ? units::PRESSURE::BAR : units::PRESSURE::PSI);
-	emit instance()->pressureStringChanged(value);
-}
 SET_PREFERENCE_ENUM_EXT(Units, units::PRESSURE, pressure, units.);
 DISK_LOADSYNC_ENUM_EXT(Units, "pressure", units::PRESSURE, pressure, units.);
 

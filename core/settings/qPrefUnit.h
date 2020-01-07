@@ -9,7 +9,6 @@
 class qPrefUnits : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(bool coordinates_traditional READ coordinates_traditional WRITE set_coordinates_traditional NOTIFY coordinates_traditionalChanged)
-	Q_PROPERTY(QString pressure READ pressure WRITE set_pressure NOTIFY pressureStringChanged)
 	Q_PROPERTY(bool show_units_table READ show_units_table WRITE set_show_units_table NOTIFY show_units_tableChanged)
 	Q_PROPERTY(QString temperature READ temperature WRITE set_temperature NOTIFY temperatureStringChanged)
 	Q_PROPERTY(QString vertical_speed_time READ vertical_speed_time WRITE set_vertical_speed_time NOTIFY vertical_speed_timeStringChanged)
@@ -28,7 +27,7 @@ public:
 	static bool coordinates_traditional() { return prefs.coordinates_traditional; }
 	static units::DURATION duration_units() { return prefs.units.duration_units; }
 	static units::LENGTH length() { return prefs.units.length; }
-	static QString pressure();
+	static units::PRESSURE pressure() { return prefs.units.pressure; }
 	static bool show_units_table() { return prefs.units.show_units_table; }
 	static QString temperature();
 	static unit_system_values unit_system() { return prefs.unit_system; }
@@ -41,7 +40,6 @@ public slots:
 	static void set_duration_units(units::DURATION value);
 	static void set_length(units::LENGTH value);
 	static void set_pressure(units::PRESSURE value);
-	static void set_pressure(const QString& value);
 	static void set_show_units_table(bool value);
 	static void set_temperature(units::TEMPERATURE value);
 	static void set_temperature(const QString& value);
@@ -57,8 +55,7 @@ signals:
 	void coordinates_traditionalChanged(bool value);
 	void duration_unitsChanged(units::DURATION value);
 	void lengthChanged(units::LENGTH value);
-	void pressureChanged(int value);
-	void pressureStringChanged(const QString& value);
+	void pressureChanged(units::PRESSURE value);
 	void show_units_tableChanged(bool value);
 	void temperatureChanged(int value);
 	void temperatureStringChanged(const QString& value);
