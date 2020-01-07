@@ -36,7 +36,7 @@ QVariant MobileStatisticsModel::data(const QModelIndex &index, int role) const
 	if (row < 0 || row >= numRows)
 		return QVariant();
 
-	stats_t stats_interval = stats.stats_yearly[row];
+	stats_t stats_interval = stats.stats_yearly[numRows - row -1];
 	switch(role) {
 	case YEAR:
 		return stats_interval.period;
