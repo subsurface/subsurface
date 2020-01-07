@@ -128,10 +128,10 @@ struct divecomputer {
 	struct divecomputer *next;
 };
 
-typedef struct dive_table {
+struct dive_table {
 	int nr, allocated;
 	struct dive **dives;
-} dive_table_t;
+};
 
 struct picture;
 struct dive_site;
