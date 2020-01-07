@@ -82,21 +82,10 @@ void qPrefUnits::set_temperature(const QString& value)
 SET_PREFERENCE_ENUM_EXT(Units, units::TEMPERATURE, temperature, units.);
 DISK_LOADSYNC_ENUM_EXT(Units, "temperature", units::TEMPERATURE, temperature, units.);
 
-QString qPrefUnits::unit_system()
-{
-	return 	prefs.unit_system == METRIC ? QStringLiteral("metric") :
-					      prefs.unit_system == IMPERIAL ? QStringLiteral("imperial") :
-									      QStringLiteral("personalized");
-}
-void qPrefUnits::set_unit_system(const QString& value)
-{
-	set_unit_system(value == QStringLiteral("metric") ? METRIC : value == QStringLiteral("imperial")? IMPERIAL : PERSONALIZE);
-	emit instance()->unit_systemStringChanged(value);
-}
 void qPrefUnits::set_unit_system(unit_system_values value)
 {
-	if (value == METRIC) {
-		prefs.unit_system = METRIC;
+	prefs.unit_system = value;
+	if (prefs.unit_system == METRIC) {
 		prefs.units = SI_units;
 
 		// make sure all types are updated when changing
@@ -105,8 +94,7 @@ void qPrefUnits::set_unit_system(unit_system_values value)
 		set_length(units::LENGTH::METERS);
 		set_pressure(units::PRESSURE::BAR);
 		set_temperature(units::TEMPERATURE::CELSIUS);
-	} else if (value == IMPERIAL) {
-		prefs.unit_system = IMPERIAL;
+	} else if (prefs.unit_system == IMPERIAL) {
 		prefs.units = IMPERIAL_units;
 
 		// make sure all types are updated when changing
@@ -120,7 +108,6 @@ void qPrefUnits::set_unit_system(unit_system_values value)
 	}
 	disk_unit_system(true);
 	emit instance()->unit_systemChanged(value);
-	emit instance()->unit_systemStringChanged(unit_system());
 	emit instance()->volumeChanged(prefs.units.volume);
 	emit instance()->volumeStringChanged(volume());
 	emit instance()->weightChanged(prefs.units.weight);

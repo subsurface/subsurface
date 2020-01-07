@@ -50,7 +50,7 @@ void PreferencesUnits::syncSettings()
 	QString unitSystem[] = {"metric", "imperial", "personal"};
 	short unitValue = ui->metric->isChecked() ? METRIC : (ui->imperial->isChecked() ? IMPERIAL : PERSONALIZE);
 
-	qPrefUnits::set_unit_system(unitSystem[unitValue]);
+	qPrefUnits::set_unit_system((unit_system_values)unitValue);
 	qPrefUnits::set_temperature(ui->fahrenheit->isChecked() ? units::FAHRENHEIT : units::CELSIUS);
 	qPrefUnits::set_length(ui->feet->isChecked() ? units::FEET : units::METERS);
 	qPrefUnits::set_pressure(ui->psi->isChecked() ? units::PSI : units::BAR);

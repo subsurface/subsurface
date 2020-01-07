@@ -61,7 +61,7 @@ void TestPlannerShared::test_rates()
 
 {
 	// Set system to use meters
-	qPrefUnits::set_unit_system(QStringLiteral("metric"));
+	qPrefUnits::set_unit_system(METRIC);
 
 	plannerShared::set_ascratelast6m(16);
 	QCOMPARE(qPrefDivePlanner::ascratelast6m(), 267);
@@ -109,7 +109,7 @@ void TestPlannerShared::test_rates()
 	QCOMPARE(plannerShared::descrate(), 10);
 
 	// Set system to use feet
-	qPrefUnits::set_unit_system(QStringLiteral("imperial"));
+	qPrefUnits::set_unit_system(IMPERIAL);
 
 	plannerShared::set_ascratelast6m(33);
 	QCOMPARE(qPrefDivePlanner::ascratelast6m(), 168);
@@ -197,7 +197,7 @@ void TestPlannerShared::test_gas()
 	QCOMPARE(plannerShared::problemsolvingtime(), 6);
 
 	// Set system to use meters
-	qPrefUnits::set_unit_system(QStringLiteral("metric"));
+	qPrefUnits::set_unit_system(METRIC);
 
 	plannerShared::set_bottomsac(30);
 	QCOMPARE(qPrefDivePlanner::bottomsac(), 30000);
@@ -245,7 +245,7 @@ void TestPlannerShared::test_gas()
 	QCOMPARE(plannerShared::bestmixend(), 10);
 
 	// Set system to use feet
-	qPrefUnits::set_unit_system(QStringLiteral("imperial"));
+	qPrefUnits::set_unit_system(IMPERIAL);
 
 	plannerShared::set_bottomsac(0.9);
 	QCOMPARE(qPrefDivePlanner::bottomsac(), 25485);
