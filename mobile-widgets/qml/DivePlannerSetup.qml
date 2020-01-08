@@ -220,6 +220,7 @@ Kirigami.ScrollablePage {
 					text: qsTr("Bottom SAC")
 				}
 				TemplateSpinBox {
+					id: spinBottomsac
 					from: 1
 					to: 99
 					stepSize: 1
@@ -235,6 +236,7 @@ Kirigami.ScrollablePage {
 					text: qsTr("Deco SAC")
 				}
 				TemplateSpinBox {
+					id: spinDecosac
 					from: 1
 					to: 99
 					stepSize: 1
