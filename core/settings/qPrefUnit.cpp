@@ -46,23 +46,29 @@ void qPrefUnits::set_unit_system(unit_system_values value)
 {
 	prefs.unit_system = value;
 	if (prefs.unit_system == METRIC) {
-		prefs.units = SI_units;
-
 		// make sure all types are updated when changing
 		set_volume(units::VOLUME::LITER);
 		set_weight(units::WEIGHT::KG);
 		set_length(units::LENGTH::METERS);
 		set_pressure(units::PRESSURE::BAR);
 		set_temperature(units::TEMPERATURE::CELSIUS);
-	} else if (prefs.unit_system == IMPERIAL) {
-		prefs.units = IMPERIAL_units;
 
+		// this statement need to be AFTER the setters are called
+		// because it sets all of prefs.units without calling the
+		// setters
+		prefs.units = SI_units;
+	} else if (prefs.unit_system == IMPERIAL) {
 		// make sure all types are updated when changing
 		set_volume(units::VOLUME::CUFT);
 		set_weight(units::WEIGHT::LBS);
 		set_length(units::LENGTH::FEET);
 		set_pressure(units::PRESSURE::PSI);
 		set_temperature(units::TEMPERATURE::FAHRENHEIT);
+
+		// this statement need to be AFTER the setters are called
+		// because it sets all of prefs.units without calling the
+		// setters
+		prefs.units = IMPERIAL_units;
 	} else {
 		prefs.unit_system = PERSONALIZE;
 	}
