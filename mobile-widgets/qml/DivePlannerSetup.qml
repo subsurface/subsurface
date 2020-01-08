@@ -10,8 +10,8 @@ import org.kde.kirigami 2.4 as Kirigami
 Kirigami.ScrollablePage {
 	title: qsTr("Dive planner setup")
 
-	property string speedUnit: (Backend.length === Enums.METERS) ? qsTr("m/min") : qsTr("ft/min")
-	property string volumeUnit: (Backend.volume === Enums.LITER) ? qsTr("l/min") : qsTr("cuft/min")
+	property string speedUnit: (Backend.length === Enums.METERS) ? qsTr(" m/min") : qsTr(" ft/min")
+	property string volumeUnit: (Backend.volume === Enums.LITER) ? qsTr(" l/min") : qsTr(" cuft/min")
 	Connections {
 		target: Backend
 		onLengthChanged: {
