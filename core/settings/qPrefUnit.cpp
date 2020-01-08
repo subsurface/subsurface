@@ -69,8 +69,6 @@ void qPrefUnits::set_unit_system(unit_system_values value)
 		// because it sets all of prefs.units without calling the
 		// setters
 		prefs.units = IMPERIAL_units;
-	} else {
-		prefs.unit_system = PERSONALIZE;
 	}
 	disk_unit_system(true);
 	emit instance()->unit_systemChanged(value);
