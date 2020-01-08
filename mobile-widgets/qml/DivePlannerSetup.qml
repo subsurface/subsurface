@@ -152,51 +152,143 @@ Kirigami.ScrollablePage {
 				columnSpacing: Kirigami.Units.smallSpacing
 				visible: planning.isExpanded
 
-				// Only support "Open circuit"
 				TemplateLabel {
-					text: "WORK in progress"
+					text: qsTr("Dive mode")
 				}
-
-				TemplateRadioButton {
-					text: qsTr("Recreational NO deco")
+				TemplateComboBox {
+					editable: false
+					model: ListModel {
+						ListElement {text: qsTr("Open circuit")}
+						ListElement {text: qsTr("CCR")}
+						ListElement {text: qsTr("pSCR")}
+					}
+					onActivated:  {
+					}
+				}
+				TemplateCheckBox {
+					text: qsTr("Bailout: Deco on OC")
 					Layout.columnSpan: 2
 				}
-				// Reserve gas is 50bar (PADI/SSI rules)
-				TemplateRadioButton {
-					text: qsTr("Bühlmann, GFLow/GFHigh:")
-				}
-				Row {
-					spacing: 0
 
-					TemplateSpinBox {
-						width: planning.width / 2 -30
-						from: 1
-						to: 99
-						stepSize: 1
-						value: 15
-						textFromValue: function (value, locale) {
-							return value + qsTr(" %")
-						}
-						onValueModified: {
-							console.log("got value: " + value)
-						}
+				TemplateRadioButton {
+					text: qsTr("Recreational mode")
+					Layout.columnSpan: 2
+				}
+
+				TemplateLabel {
+					text: qsTr("Reserve gas")
+					leftPadding: Kirigami.Units.smallSpacing * 2
+				}
+				TemplateSpinBox {
+					from: 1
+					to: 99
+					stepSize: 1
+					value: 50
+					textFromValue: function (value, locale) {
+						return value + volumeUnit
 					}
-					TemplateSpinBox {
-						width: planning.width / 2 -30
-						from: 1
-						to: 99
-						stepSize: 1
-						value: 15
-						textFromValue: function (value, locale) {
-							return value + qsTr(" %")
-						}
-						onValueModified: {
-							console.log("got value: " + value)
-						}
+					onValueModified: {
 					}
 				}
+
+				TemplateCheckBox {
+					text: qsTr("Safety stop")
+					Layout.columnSpan: 2
+					leftPadding: Kirigami.Units.smallSpacing * 6
+				}
+
 				TemplateRadioButton {
-					text: qsTr("VPM-B, Conservatism:")
+					text: qsTr("Bühlmannh deco")
+					Layout.columnSpan: 2
+				}
+
+				TemplateLabel {
+					text: qsTr("GFLow")
+					leftPadding: Kirigami.Units.smallSpacing * 2
+				}
+				TemplateSpinBox {
+					from: 1
+					to: 99
+					stepSize: 1
+					value: 50
+					textFromValue: function (value, locale) {
+						return value + volumeUnit
+					}
+					onValueModified: {
+					}
+				}
+
+				TemplateLabel {
+					text: qsTr("GFHigh")
+					leftPadding: Kirigami.Units.smallSpacing * 2
+				}
+				TemplateSpinBox {
+					from: 1
+					to: 99
+					stepSize: 1
+					value: 50
+					textFromValue: function (value, locale) {
+						return value + volumeUnit
+					}
+					onValueModified: {
+					}
+				}
+
+				TemplateRadioButton {
+					text: qsTr("VPM-B deco")
+					Layout.columnSpan: 2
+				}
+
+				TemplateLabel {
+					text: qsTr("Conservatism level")
+					leftPadding: 20
+				}
+				TemplateSpinBox {
+					from: 0
+					to: 4
+					stepSize: 1
+					value: 2
+					textFromValue: function (value, locale) {
+						return qsTr("+") + value
+					}
+					onValueModified: {
+						console.log("got value: " + value)
+					}
+				}
+
+				TemplateCheckBox {
+					text: qsTr("Last stop at ??")
+					Layout.columnSpan: 2
+				}
+
+				TemplateCheckBox {
+					text: qsTr("Plan backgas breaks")
+					Layout.columnSpan: 2
+				}
+
+				TemplateCheckBox {
+					text: qsTr("Only switch at required stops")
+					Layout.columnSpan: 2
+				}
+
+				TemplateLabel {
+					text: qsTr("Min switch time")
+				}
+				TemplateSpinBox {
+					from: 0
+					to: 4
+					stepSize: 1
+					value: 2
+					textFromValue: function (value, locale) {
+						return qsTr("+") + value
+					}
+					onValueModified: {
+						console.log("got value: " + value)
+					}
+				}
+
+				TemplateLabel {
+					text: qsTr("Surface segment")
 				}
 				TemplateSpinBox {
 					from: 0
