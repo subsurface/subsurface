@@ -11,6 +11,7 @@ Kirigami.ScrollablePage {
 	title: qsTr("Dive planner setup")
 
 	property string speedUnit: (Backend.length === Enums.METERS) ? qsTr("m/min") : qsTr("ft/min")
+	property string volumeUnit: (Backend.volume === Enums.LITER) ? qsTr("l/min") : qsTr("cuft/min")
 	Connections {
 		target: Backend
 		onLengthChanged: {
@@ -19,6 +20,10 @@ Kirigami.ScrollablePage {
 			spinAscratestops.value = Backend.ascratestops
 			spinAscratelast6m.value = Backend.ascratelast6m
 			spinDescrate.value = Backend.descrate
+		}
+		onVolumeChanged: {
+			spinBottomsac.value = Planner.bottomsac
+			spinDecosac.value = Planner.decosac
 		}
 	}
 	Column {
@@ -226,7 +231,7 @@ Kirigami.ScrollablePage {
 					stepSize: 1
 					value: Planner.bottomsac
 					textFromValue: function (value, locale) {
-						return value + qsTr("l/min")
+						return value + volumeUnit
 					}
 					onValueModified: {
 						Planner.bottomsac = value
@@ -242,7 +247,7 @@ Kirigami.ScrollablePage {
 					stepSize: 1
 					value: Planner.decosac
 					textFromValue: function (value, locale) {
-						return value + qsTr("l/min")
+						return value + volumeUnit
 					}
 					onValueModified: {
 						Planner.decosac = value
@@ -317,7 +322,7 @@ Kirigami.ScrollablePage {
 					stepSize: 1
 					value: Planner.bestmixend
 					textFromValue: function (value, locale) {
-						return value + qsTr("m")
+						return value + speedUnit
 					}
 					onValueModified: {
 						Planner.bestmixend = value
