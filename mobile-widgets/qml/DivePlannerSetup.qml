@@ -22,8 +22,8 @@ Kirigami.ScrollablePage {
 			spinDescrate.value = Backend.descrate
 		}
 		onVolumeChanged: {
-			spinBottomsac.value = Planner.bottomsac
-			spinDecosac.value = Planner.decosac
+			spinBottomsac.value = Backend.bottomsac
+			spinDecosac.value = Backend.decosac
 		}
 	}
 	Column {
@@ -227,14 +227,16 @@ Kirigami.ScrollablePage {
 				TemplateSpinBox {
 					id: spinBottomsac
 					from: 1
-					to: 99
+					to:  (Backend.volume === Enums.LITER) ? 85 : 300
 					stepSize: 1
-					value: Planner.bottomsac
+					value: Backend.bottomsac
 					textFromValue: function (value, locale) {
-						return value + volumeUnit
+						return (Backend.volume === Enums.LITER) ?
+									value + volumeUnit :
+									(value / 100).toFixed(2) + volumeUnit
 					}
 					onValueModified: {
-						Planner.bottomsac = value
+						Backend.bottomsac = value
 					}
 				}
 				TemplateLabel {
@@ -243,14 +245,16 @@ Kirigami.ScrollablePage {
 				TemplateSpinBox {
 					id: spinDecosac
 					from: 1
-					to: 99
+					to: (Backend.volume === Enums.LITER) ? 85 : 300
 					stepSize: 1
-					value: Planner.decosac
+					value: Backend.decosac
 					textFromValue: function (value, locale) {
-						return value + volumeUnit
+						return (Backend.volume === Enums.LITER) ?
+									value + volumeUnit :
+									(value / 100).toFixed(2) + volumeUnit
 					}
 					onValueModified: {
-						Planner.decosac = value
+						Backend.decosac = value
 					}
 				}
 				TemplateLabel {

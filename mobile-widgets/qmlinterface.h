@@ -6,6 +6,7 @@
 #include "core/settings/qPrefDivePlanner.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "qt-models/diveplannermodel.h"
+#include "backend-shared/plannershared.h"
 
 #include <QObject>
 #include <QQmlContext>

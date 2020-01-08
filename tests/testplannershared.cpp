@@ -145,9 +145,9 @@ void TestPlannerShared::test_gas()
 
 	// Remark return will from qPref is in m / 1000.
 	qPrefDivePlanner::set_bottomsac(2830);
-	QCOMPARE(plannerShared::bottomsac(), 2.83);
+	QCOMPARE(int(plannerShared::bottomsac() * 1000), 99);
 	qPrefDivePlanner::set_bottomsac(16000);
-	QCOMPARE(plannerShared::bottomsac(), 16);
+	QCOMPARE(int(plannerShared::bottomsac() * 1000), 565);
 
 	plannerShared::set_decosac(0.9);
 	QCOMPARE(qPrefDivePlanner::decosac(), 25485);
@@ -156,9 +156,9 @@ void TestPlannerShared::test_gas()
 
 	// Remark return will from qPref is in m / 1000.
 	qPrefDivePlanner::set_decosac(11500);
-	QCOMPARE(plannerShared::decosac(), 11.5);
+	QCOMPARE(int(plannerShared::decosac() * 1000), 406);
 	qPrefDivePlanner::set_decosac(19800);
-	QCOMPARE(plannerShared::decosac(), 19.8);
+	QCOMPARE(int(plannerShared::decosac() * 1000), 699);
 
 	// Remark bottompo2 is in BAR, even though unit system is
 	// Imperial, the desktop version is like that.

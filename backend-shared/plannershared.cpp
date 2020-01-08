@@ -63,20 +63,42 @@ void plannerShared::set_min_switch_duration(int value)
 
 double plannerShared::bottomsac()
 {
-	return qPrefDivePlanner::bottomsac() / 1000.0;
+	return (qPrefUnits::volume() == units::LITER) ?
+				qPrefDivePlanner::bottomsac() / 1000.0 :
+				ml_to_cuft(qPrefDivePlanner::bottomsac()
+#ifdef SUBSURFACE_MOBILE
+					* 100 // cuft without decimals (0 - 300)
+#endif
+				);
 }
 void plannerShared::set_bottomsac(double value)
 {
+#ifdef SUBSURFACE_MOBILE
+	if (qPrefUnits::volume() == units::CUFT)
+		value /= 100; // cuft without decimals (0 - 300)
+#endif
+
 	// NO conversion, this is done in the planner model.
 	DivePlannerPointsModel::instance()->setBottomSac(value);
 }
 
 double plannerShared::decosac()
 {
-	return qPrefDivePlanner::decosac() / 1000.0;
+	return (qPrefUnits::volume() == units::LITER) ?
+				qPrefDivePlanner::decosac() / 1000.0 :
+				ml_to_cuft(qPrefDivePlanner::decosac()
+#ifdef SUBSURFACE_MOBILE
+					* 100 // cuft without decimals (0 - 300)
+#endif
+				);
 }
 void plannerShared::set_decosac(double value)
 {
+#ifdef SUBSURFACE_MOBILE
+	if (qPrefUnits::volume() == units::CUFT)
+		value /= 100; // cuft without decimals (0 - 300)
+#endif
+
 	// NO conversion, this is done in the planner model.
 	DivePlannerPointsModel::instance()->setDecoSac(value);
 }

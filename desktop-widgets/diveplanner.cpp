@@ -554,8 +554,8 @@ void PlannerSettingsWidget::settingsChanged()
 		ui.bottomSAC->setSingleStep(0.1);
 		ui.decoStopSAC->setDecimals(2);
 		ui.decoStopSAC->setSingleStep(0.1);
-		ui.bottomSAC->setValue(ml_to_cuft(prefs.bottomsac));
-		ui.decoStopSAC->setValue(ml_to_cuft(prefs.decosac));
+		ui.bottomSAC->setValue(plannerShared::bottomsac());
+		ui.decoStopSAC->setValue(plannerShared::decosac());
 	} else {
 		ui.bottomSAC->setSuffix(tr("ℓ/min"));
 		ui.decoStopSAC->setSuffix(tr("ℓ/min"));
