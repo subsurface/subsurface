@@ -119,11 +119,19 @@ Kirigami.ScrollablePage {
 					to: 99
 					stepSize: 1
 					value: Backend.descrate
+					enabled: !Backend.drop_stone_mode
 					textFromValue: function (value, locale) {
 						return value + speedUnit
 					}
 					onValueModified: {
 						Backend.descrate = value
+					}
+				}
+				TemplateCheckBox {
+					text: qsTr("Drop to first depth")
+					checked: Backend.drop_stone_mode
+					onClicked: {
+						Backend.drop_stone_mode = checked
 					}
 				}
 			}
