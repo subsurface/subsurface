@@ -1219,6 +1219,14 @@ QString get_taglist_string(struct tag_entry *tag_list)
 	return ret;
 }
 
+QStringList stringToList(const QString &s)
+{
+	QStringList res = s.split(",", QString::SkipEmptyParts);
+	for (QString &str: res)
+		str = str.trimmed();
+	return res;
+}
+
 weight_t string_to_weight(const char *str)
 {
 	const char *end;

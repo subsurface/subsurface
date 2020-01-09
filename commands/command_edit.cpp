@@ -726,15 +726,6 @@ DiveField EditTags::fieldId() const
 	return DiveField::TAGS;
 }
 
-// String list helper
-static QStringList stringToList(const QString &s)
-{
-	QStringList res = s.split(",", QString::SkipEmptyParts);
-	for (QString &str: res)
-		str = str.trimmed();
-	return res;
-}
-
 // ***** Buddies *****
 QStringList EditBuddies::data(struct dive *d) const
 {
