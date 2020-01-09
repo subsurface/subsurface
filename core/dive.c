@@ -264,7 +264,7 @@ enum divemode_t get_current_divemode(const struct divecomputer *dc, int time, co
 
 struct gasmix get_gasmix_from_event(const struct dive *dive, const struct event *ev)
 {
-	struct gasmix dummy = { 0 };
+	struct gasmix dummy = gasmix_air;
 	if (ev && event_is_gaschange(ev)) {
 		int index = ev->gas.index;
 		if (index >= 0 && index < dive->cylinders.nr)
