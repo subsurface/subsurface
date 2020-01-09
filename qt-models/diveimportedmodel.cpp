@@ -3,8 +3,8 @@
 #include "core/divelist.h"
 
 DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
-	diveTable({ 0 }),
-	sitesTable({ 0 })
+	diveTable(empty_dive_table),
+	sitesTable(empty_dive_site_table)
 {
 	connect(&thread, &QThread::finished, this, &DiveImportedModel::downloadThreadFinished);
 }
@@ -147,8 +147,8 @@ std::pair<struct dive_table, struct dive_site_table> DiveImportedModel::consumeT
 	beginResetModel();
 
 	// Move tables to result
-	struct dive_table dives = { 0 };
-	struct dive_site_table sites = { 0 };
+	struct dive_table dives = empty_dive_table;
+	struct dive_site_table sites = empty_dive_site_table;
 	move_dive_table(&diveTable, &dives);
 	move_dive_site_table(&sitesTable, &sites);
 

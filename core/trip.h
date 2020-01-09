@@ -24,6 +24,8 @@ typedef struct trip_table {
 	struct dive_trip **trips;
 } trip_table_t;
 
+static const trip_table_t empty_trip_table = { 0, 0, (struct dive_trip **)0 };
+
 extern void add_dive_to_trip(struct dive *, dive_trip_t *);
 extern struct dive_trip *unregister_dive_from_trip(struct dive *dive);
 extern void remove_dive_from_trip(struct dive *dive, struct trip_table *trip_table_arg);

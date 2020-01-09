@@ -469,10 +469,10 @@ ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, str
 	// this only matters if undoit were called before redoit
 	currentDive = nullptr;
 
-	struct dive_table dives_to_add = { 0, 0, 0 };
-	struct dive_table dives_to_remove = { 0, 0, 0 };
-	struct trip_table trips_to_add = { 0, 0, 0 };
-	struct dive_site_table sites_to_add = { 0, 0, 0 };
+	struct dive_table dives_to_add = empty_dive_table;
+	struct dive_table dives_to_remove = empty_dive_table;
+	struct trip_table trips_to_add = empty_trip_table;
+	struct dive_site_table sites_to_add = empty_dive_site_table;
 	process_imported_dives(dives, trips, sites, flags, &dives_to_add, &dives_to_remove, &trips_to_add, &sites_to_add);
 
 	// Add trips to the divesToAdd.trips structure
