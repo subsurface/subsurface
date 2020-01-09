@@ -1662,9 +1662,9 @@ void MainWindow::importFiles(const QStringList fileNames)
 		return;
 
 	QByteArray fileNamePtr;
-	struct dive_table table = { 0 };
-	struct trip_table trips = { 0 };
-	struct dive_site_table sites = { 0 };
+	struct dive_table table = empty_dive_table;
+	struct trip_table trips = empty_trip_table;
+	struct dive_site_table sites = empty_dive_site_table;
 
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
@@ -1757,9 +1757,9 @@ void MainWindow::on_actionImportDiveSites_triggered()
 		return;
 	updateLastUsedDir(QFileInfo(fileNames[0]).dir().path());
 
-	struct dive_table table = { 0 };
-	struct trip_table trips = { 0 };
-	struct dive_site_table sites = { 0 };
+	struct dive_table table = empty_dive_table;
+	struct trip_table trips = empty_trip_table;
+	struct dive_site_table sites = empty_dive_site_table;
 
 	for (const QString &s: fileNames) {
 		QByteArray fileNamePtr = QFile::encodeName(s);

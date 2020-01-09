@@ -133,6 +133,8 @@ typedef struct dive_table {
 	struct dive **dives;
 } dive_table_t;
 
+static const dive_table_t empty_dive_table = { 0, 0, (struct dive **)0 };
+
 struct picture;
 struct dive_site;
 struct dive_site_table;

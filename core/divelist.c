@@ -992,10 +992,10 @@ static bool merge_dive_tables(struct dive_table *dives_from, struct dive_table *
 void add_imported_dives(struct dive_table *import_table, struct trip_table *import_trip_table, struct dive_site_table *import_sites_table, int flags)
 {
 	int i, idx;
-	struct dive_table dives_to_add = { 0 };
-	struct dive_table dives_to_remove = { 0 };
-	struct trip_table trips_to_add = { 0 };
-	struct dive_site_table dive_sites_to_add = { 0 };
+	struct dive_table dives_to_add = empty_dive_table;
+	struct dive_table dives_to_remove = empty_dive_table;
+	struct trip_table trips_to_add = empty_trip_table;
+	struct dive_site_table dive_sites_to_add = empty_dive_site_table;
 
 	/* Process imported dives and generate lists of dives
 	 * to-be-added and to-be-removed */
@@ -1121,7 +1121,7 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 	/* If the caller didn't pass an import_trip_table because all
 	 * dives are tripless, provide a local table. This may be
 	 * necessary if the trips are autogrouped */
-	struct trip_table local_trip_table = { 0 };
+	struct trip_table local_trip_table = empty_trip_table;
 	if (!import_trip_table)
 		import_trip_table = &local_trip_table;
 

@@ -31,6 +31,8 @@ typedef struct dive_site_table {
 	struct dive_site **dive_sites;
 } dive_site_table_t;
 
+static const dive_site_table_t empty_dive_site_table = { 0, 0, (struct dive_site **)0 };
+
 extern struct dive_site_table dive_site_table;
 
 static inline struct dive_site *get_dive_site(int nr, struct dive_site_table *ds_table)

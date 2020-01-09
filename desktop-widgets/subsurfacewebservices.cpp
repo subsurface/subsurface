@@ -453,9 +453,9 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton *button)
 			break;
 		}
 		/* parse file and import dives */
-		struct dive_table table = { 0 };
-		struct trip_table trips = { 0 };
-		struct dive_site_table sites = { 0 };
+		struct dive_table table = empty_dive_table;
+		struct trip_table trips = empty_trip_table;
+		struct dive_site_table sites = empty_dive_site_table;
 		parse_file(QFile::encodeName(zipFile.fileName()), &table, &trips, &sites);
 		Command::importDives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS, QStringLiteral("divelogs.de"));
 

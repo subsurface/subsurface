@@ -65,7 +65,7 @@ void DivesiteImportDialog::on_cancel_clicked()
 void DivesiteImportDialog::on_ok_clicked()
 {
 	// delete non-selected dive sites
-	struct dive_site_table selectedSites = { 0 };
+	struct dive_site_table selectedSites = empty_dive_site_table;
 	for (int i = 0; i < importedSites.nr; i++)
 		if (divesiteImportedModel->data(divesiteImportedModel->index(i, 0), Qt::CheckStateRole) == Qt::Checked) {
 			struct dive_site *newSite = alloc_dive_site();

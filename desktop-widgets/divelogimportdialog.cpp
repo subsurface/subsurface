@@ -904,9 +904,9 @@ int DiveLogImportDialog::parseTxtHeader(QString fileName, char **params, int pnr
 
 void DiveLogImportDialog::on_buttonBox_accepted()
 {
-	struct dive_table table = { 0 };
-	struct trip_table trips = { 0 };
-	struct dive_site_table sites = { 0 };
+	struct dive_table table = empty_dive_table;
+	struct trip_table trips = empty_trip_table;
+	struct dive_site_table sites = empty_dive_site_table;
 	QStringList r = resultModel->result();
 	if (ui->knownImports->currentText() != "Manual import") {
 		for (int i = 0; i < fileNames.size(); ++i) {
