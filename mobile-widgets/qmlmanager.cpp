@@ -146,15 +146,15 @@ void QMLManager::btRescan()
 }
 
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
-	m_verboseEnabled(false),
-	deletedDive(0),
-	deletedTrip(0),
-	m_updateSelectedDive(-1),
-	m_selectedDiveTimestamp(0),
-	alreadySaving(false),
-	m_pluggedInDeviceName(""),
-	m_showNonDiveComputers(false),
-	m_oldStatus(qPrefCloudStorage::CS_UNKNOWN)
+        m_verboseEnabled(false),
+        deletedDive(0),
+        deletedTrip(0),
+        m_updateSelectedDive(-1),
+        m_selectedDiveTimestamp(0),
+        alreadySaving(false),
+        m_pluggedInDeviceName(""),
+        m_showNonDiveComputers(false),
+        m_oldStatus(qPrefCloudStorage::CS_UNKNOWN)
 {
 	m_instance = this;
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
@@ -164,31 +164,31 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	// make upload signals available in QML
 	// Remark: signal - signal connect
 	connect(uploadDiveLogsDE::instance(), &uploadDiveLogsDE::uploadFinish,
-			this, &QMLManager::uploadFinish);
+	                this, &QMLManager::uploadFinish);
 	connect(uploadDiveLogsDE::instance(), &uploadDiveLogsDE::uploadProgress,
-			this, &QMLManager::uploadProgress);
+	                this, &QMLManager::uploadProgress);
 	connect(uploadDiveShare::instance(), &uploadDiveShare::uploadProgress,
-			this, &QMLManager::uploadProgress);
+	                this, &QMLManager::uploadProgress);
 
 	// uploadDiveShare::uploadFinish() is defined with 3 parameters,
 	// whereas QMLManager::uploadFinish() is defined with 2 parameters,
 	// Solution add a slot as landing zone.
 	connect(uploadDiveShare::instance(), &uploadDiveShare::uploadFinish,
-			this, &QMLManager::uploadFinishSlot);
+	                this, &QMLManager::uploadFinishSlot);
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 #if defined(Q_OS_ANDROID)
 	// on Android we first try the GenericDataLocation (typically /storage/emulated/0) and if that fails
 	// (as happened e.g. on a Sony Xperia phone) we try several other default locations, with the TempLocation as last resort
 	QStringList fileLocations =
-		QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation) +
-		QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation) +
-		QStandardPaths::standardLocations(QStandardPaths::DownloadLocation) +
-		QStandardPaths::standardLocations(QStandardPaths::TempLocation);
+	        QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation) +
+	        QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation) +
+	        QStandardPaths::standardLocations(QStandardPaths::DownloadLocation) +
+	        QStandardPaths::standardLocations(QStandardPaths::TempLocation);
 #elif defined(Q_OS_IOS)
 	// on iOS we should save the data to the DocumentsLocation so it becomes accessible to the user
 	QStringList fileLocations =
-		QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+	        QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
 #endif
 	appLogFileOpen = false;
 	for (const QString &fileLocation : fileLocations) {
@@ -196,8 +196,8 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 		appLogFile.setFileName(appLogFileName);
 		if (!appLogFile.open(QIODevice::ReadWrite|QIODevice::Truncate)) {
 			appendTextToLog("Failed to open logfile " + appLogFileName
-					+ " at " + QDateTime::currentDateTime().toString()
-					+ " error: " + appLogFile.errorString());
+			                + " at " + QDateTime::currentDateTime().toString()
+			                + " error: " + appLogFile.errorString());
 		} else {
 			// found a directory that works
 			appLogFileOpen = true;
@@ -206,7 +206,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	}
 	if (appLogFileOpen) {
 		appendTextToLog("Successfully opened logfile " + appLogFileName
-				+ " at " + QDateTime::currentDateTime().toString());
+		                + " at " + QDateTime::currentDateTime().toString());
 		// if we were able to write the overall logfile, also write the libdivecomputer logfile
 		QString libdcLogFileName = appLogFileName.replace("/subsurface.log", "/libdivecomputer.log");
 		// remove the existing libdivecomputer logfile so we don't copy an old one by mistake
@@ -236,7 +236,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	BTDiscovery *btDiscovery = BTDiscovery::instance();
 	m_btEnabled = btDiscovery->btAvailable();
 	connect(&btDiscovery->localBtDevice, &QBluetoothLocalDevice::hostModeStateChanged,
-		this, &QMLManager::btHostModeChange);
+	        this, &QMLManager::btHostModeChange);
 
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
@@ -454,7 +454,7 @@ void QMLManager::finishSetup()
 		alreadySaving = true;
 		openLocalThenRemote(url);
 	} else if (!empty_string(existing_filename) &&
-				qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_UNKNOWN) {
+	                        qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_UNKNOWN) {
 		setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
 		set_filename(NOCLOUD_LOCALSTORAGE);
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
@@ -504,8 +504,8 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 	if (!noCloud) {
 		// in case of NO_CLOUD, the email address + passwd do not care, so do not check it.
 		if (newPassword.isEmpty() ||
-			!regExp.match(newPassword).hasMatch() ||
-			!regExp.match(newEmail).hasMatch()) {
+		        !regExp.match(newPassword).hasMatch() ||
+		        !regExp.match(newEmail).hasMatch()) {
 			setStartPageText(RED_FONT + tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.") + END_FONT);
 			return;
 		}
@@ -525,13 +525,13 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 	}
 
 	if (qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_NOCLOUD &&
-		!cloudCredentialsChanged) {
+	        !cloudCredentialsChanged) {
 		// just go back to the dive list
 		qPrefCloudStorage::set_cloud_verification_status(m_oldStatus);
 	}
 
 	if (!noCloud &&
-		!verifyCredentials(newEmail, newPassword, pin))
+	        !verifyCredentials(newEmail, newPassword, pin))
 		return;
 
 	qPrefCloudStorage::set_cloud_storage_email(newEmail);
@@ -544,7 +544,7 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 		appendTextToLog("transitioning from no-cloud to cloud and have dives");
 	}
 	if (qPrefCloudStorage::cloud_storage_email().isEmpty() ||
-		qPrefCloudStorage::cloud_storage_password().isEmpty()) {
+	        qPrefCloudStorage::cloud_storage_password().isEmpty()) {
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	} else if (cloudCredentialsChanged) {
 		// let's make sure there are no unsaved changes
@@ -708,8 +708,8 @@ void QMLManager::retrieveUserid()
 	auto *reply = qobject_cast<QNetworkReply *>(sender());
 	if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 302) {
 		appendTextToLog(QStringLiteral("Cloud storage connection not working correctly: (%1) %2")
-				.arg(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt())
-				.arg(QString(reply->readAll())));
+		                .arg(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt())
+		                .arg(QString(reply->readAll())));
 		setStartPageText(RED_FONT + tr("Cannot connect to cloud storage") + END_FONT);
 		revertToNoCloudIfNeeded();
 		return;
@@ -1074,8 +1074,8 @@ bool QMLManager::checkDepth(const DiveObjectHelper &myDive, dive *d, QString dep
 
 // update the dive and return the notes field, stripped of the HTML junk
 void QMLManager::commitChanges(QString diveId, QString number, QString date, QString location, QString gps, QString duration, QString depth,
-			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString weight, QString notes,
-			       QStringList startpressure, QStringList endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility, QString state)
+                               QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString weight, QString notes,
+                               QStringList startpressure, QStringList endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility, QString state)
 {
 	struct dive *d = get_dive_by_uniq_id(diveId.toInt());
 
@@ -1150,8 +1150,8 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 			int he = parseGasMixHE(gasmix[j]);
 			// the QML code SHOULD only accept valid gas mixes, but just to make sure
 			if (o2 >= 0 && o2 <= 1000 &&
-				he >= 0 && he <= 1000 &&
-				o2 + he <= 1000) {
+			        he >= 0 && he <= 1000 &&
+			        o2 + he <= 1000) {
 				diveChanged = true;
 				get_cylinder(d, i)->gasmix.o2.permille = o2;
 				get_cylinder(d, i)->gasmix.he.permille = he;
@@ -2016,74 +2016,74 @@ void QMLManager::showDownloadPage(QString deviceString)
 	// the rest is based on the vendor and product IDs
 	if (deviceString.contains("HeinrichsWeikamp OSTC3")) {
 		name = QString("%1;%2;%3")
-				.arg(vendorList.indexOf("Heinrichs Weikamp"))
-				.arg(productList["Heinrichs Weikamp"].indexOf("OSTC 3"))
-				.arg(connectionListModel.indexOf("FTDI"));
+		                .arg(vendorList.indexOf("Heinrichs Weikamp"))
+		                .arg(productList["Heinrichs Weikamp"].indexOf("OSTC 3"))
+		                .arg(connectionListModel.indexOf("FTDI"));
 	} else if (deviceString.contains("HeinrichsWeikamp OSTC 2N")) {
-			name = QString("%1;%2;%3")
-					.arg(vendorList.indexOf("Heinrichs Weikamp"))
-					.arg(productList["Heinrichs Weikamp"].indexOf("OSTC 2N"))
-					.arg(connectionListModel.indexOf("FTDI"));
+		        name = QString("%1;%2;%3")
+			                .arg(vendorList.indexOf("Heinrichs Weikamp"))
+			                .arg(productList["Heinrichs Weikamp"].indexOf("OSTC 2N"))
+			                .arg(connectionListModel.indexOf("FTDI"));
 	} else if (deviceString.contains("mManufacturerName=ATOMIC AQUATICS") &&
-		   deviceString.contains("mProductName=COBALT")) {
+	           deviceString.contains("mProductName=COBALT")) {
 		if (deviceString.contains("mVersion=2")) {
 			name = QString("%1;%2;%3")
-					.arg(vendorList.indexOf("Atomic Aquatics"))
-					.arg(productList["Atomic Aquatics"].indexOf("Cobalt 2"))
-					.arg(connectionListModel.indexOf("USB device"));
+			                .arg(vendorList.indexOf("Atomic Aquatics"))
+			                .arg(productList["Atomic Aquatics"].indexOf("Cobalt 2"))
+			                .arg(connectionListModel.indexOf("USB device"));
 		} else {
 			name = QString("%1;%2;%3")
-					.arg(vendorList.indexOf("Atomic Aquatics"))
-					.arg(productList["Atomic Aquatics"].indexOf("Cobalt"))
-					.arg(connectionListModel.indexOf("USB device"));
+			                .arg(vendorList.indexOf("Atomic Aquatics"))
+			                .arg(productList["Atomic Aquatics"].indexOf("Cobalt"))
+			                .arg(connectionListModel.indexOf("USB device"));
 		}
 	} else if (deviceString.contains("mVendorId=5267") && // 0x1493 / 0x0030
-		   deviceString.contains("mProductId=48")) {
+	           deviceString.contains("mProductId=48")) {
 		name = QString("%1;%2;%3")
-				.arg(connectionListModel.indexOf("Suunto"))
-				.arg(productList["Suunto"].indexOf("EON Steel"))
-				.arg(connectionListModel.indexOf("USB device"));
+		                .arg(connectionListModel.indexOf("Suunto"))
+		                .arg(productList["Suunto"].indexOf("EON Steel"))
+		                .arg(connectionListModel.indexOf("USB device"));
 	} else if (deviceString.contains("mVendorId=5267") && // 0x1493 / 0x0033
-		   deviceString.contains("mProductId=51")) {
+	           deviceString.contains("mProductId=51")) {
 		name = QString("%1;%2;%3")
-				.arg(connectionListModel.indexOf("Suunto"))
-				.arg(productList["Suunto"].indexOf("EON Core"))
-				.arg(connectionListModel.indexOf("USB device"));
+		                .arg(connectionListModel.indexOf("Suunto"))
+		                .arg(productList["Suunto"].indexOf("EON Core"))
+		                .arg(connectionListModel.indexOf("USB device"));
 	} else if (deviceString.contains("mVendorId=11884") && // 0x2e6c / 0x3201,0x3211,0x4201
-		   (deviceString.contains("mProductId=12801") ||
-		    deviceString.contains("mProductId=12817") ||
-		    deviceString.contains("mProductId=16897"))) {
+	           (deviceString.contains("mProductId=12801") ||
+	            deviceString.contains("mProductId=12817") ||
+	            deviceString.contains("mProductId=16897"))) {
 		name = QString("%1;%2;%3")
-				.arg(connectionListModel.indexOf("Scubapro"))
-				.arg(productList["Scubapro"].indexOf("G2"))
-				.arg(connectionListModel.indexOf("USB device"));
+		                .arg(connectionListModel.indexOf("Scubapro"))
+		                .arg(productList["Scubapro"].indexOf("G2"))
+		                .arg(connectionListModel.indexOf("USB device"));
 	} else if (deviceString.contains("mVendorId=49745") && // 0xc251 / 0x2006
-		   deviceString.contains("mProductId=8198")) {
+	           deviceString.contains("mProductId=8198")) {
 		name = QString("%1;%2;%3")
-				.arg(connectionListModel.indexOf("Scubapro"))
-				.arg(productList["Scubapro"].indexOf("Aladin Square"))
-				.arg(connectionListModel.indexOf("USB device"));
+		                .arg(connectionListModel.indexOf("Scubapro"))
+		                .arg(productList["Scubapro"].indexOf("Aladin Square"))
+		                .arg(connectionListModel.indexOf("USB device"));
 	} else if (deviceString.contains("mVendorId=1027") && // 0x0403 / 0x6001,0x6010,0x6011,0x6015
-		   (deviceString.contains("mProductId=24577") ||
-		    deviceString.contains("mProductId=24592") ||
-		    deviceString.contains("mProductId=24593") ||
-		    deviceString.contains("mProductId=24597"))) {
+	           (deviceString.contains("mProductId=24577") ||
+	            deviceString.contains("mProductId=24592") ||
+	            deviceString.contains("mProductId=24593") ||
+	            deviceString.contains("mProductId=24597"))) {
 		name = QString("-1;-1;%1").arg(connectionListModel.indexOf("FTDI"));
 	} else if (deviceString.contains("mVendorId=1027") && // 0x0403 / 0xf460
-		   deviceString.contains("mProductId=62560")) {
+	           deviceString.contains("mProductId=62560")) {
 		name = QString("%1;-1;%2")
-				.arg(vendorList.indexOf("Oceanic"))
-				.arg(connectionListModel.indexOf("FTDI"));
+		                .arg(vendorList.indexOf("Oceanic"))
+		                .arg(connectionListModel.indexOf("FTDI"));
 	} else if (deviceString.contains("mVendorId=1027") && // 0x0403 / 0xf680
-		   deviceString.contains("mProductId=63104")) {
+	           deviceString.contains("mProductId=63104")) {
 		name = QString("%1;-1;%2")
-				.arg(vendorList.indexOf("Suunto"))
-				.arg(connectionListModel.indexOf("FTDI"));
+		                .arg(vendorList.indexOf("Suunto"))
+		                .arg(connectionListModel.indexOf("FTDI"));
 	} else if (deviceString.contains("mVendorId=1027") && // 0x0403 / 0x87d0
-		   deviceString.contains("mProductId=34768")) {
+	           deviceString.contains("mProductId=34768")) {
 		name = QString("%1;-1;%2")
-				.arg(vendorList.indexOf("Cressi"))
-				.arg(connectionListModel.indexOf("FTDI"));
+		                .arg(vendorList.indexOf("Cressi"))
+		                .arg(connectionListModel.indexOf("FTDI"));
 	}
 	// inform the QML UI that it should show the download page
 	m_pluggedInDeviceName = strdup(qPrintable(name));
@@ -2095,11 +2095,11 @@ void QMLManager::setFilter(const QString filterText)
 	// show that we are doing something, then do something in another thread in order not to block the UI
 	QMetaObject::invokeMethod(qmlWindow, "showBusyAndDisconnectModel");
 	QtConcurrent::run(QThreadPool::globalInstance(),
-			  [=]{
-				DiveListSortModel::instance()->setFilter(filterText);
+	                  [=]{
+		                DiveListSortModel::instance()->setFilter(filterText);
 				CollapsedDiveListSortModel::instance()->updateFilterState();
 				QMetaObject::invokeMethod(qmlWindow, "hideBusyAndConnectModel");
-			  });
+	                  });
 }
 
 void QMLManager::setShowNonDiveComputers(bool show)
@@ -2128,45 +2128,45 @@ void QMLManager::exportToFile(export_types type, QString dir, bool anonymize)
 
 	switch (type)
 	{
-		case EX_DIVES_XML:
-			save_dives_logic(qPrintable(fileName + ".ssrf"), false, anonymize);
-			break;
-		case EX_DIVE_SITES_XML:
-			{
-				std::vector<const dive_site *> sites = exportFuncs::instance()->getDiveSitesToExport(false);
+	        case EX_DIVES_XML:
+		        save_dives_logic(qPrintable(fileName + ".ssrf"), false, anonymize);
+		        break;
+	        case EX_DIVE_SITES_XML:
+	                {
+		                std::vector<const dive_site *> sites = exportFuncs::instance()->getDiveSitesToExport(false);
 				save_dive_sites_logic(qPrintable(fileName + ".xml"), &sites[0], (int)sites.size(), anonymize);
 				break;
-			}
-		case EX_UDDF:
-			exportFuncs::instance()->exportUsingStyleSheet(fileName + ".uddf", true, 0, "uddf-export.xslt", anonymize);
-			break;
-		case EX_CSV_DIVE_PROFILE:
-			exportFuncs::instance()->exportUsingStyleSheet(fileName + ".uddf", true, 0, "xml2csv.xslt", anonymize);
-			break;
-		case EX_CSV_DETAILS:
-			exportFuncs::instance()->exportUsingStyleSheet(fileName + ".uddf", true, 0, "xml2manualcsv.xslt", anonymize);
-			break;
-		case EX_CSV_PROFILE:
-			save_profiledata(qPrintable(fileName + ".csv"), true);
-			break;
-		case EX_PROFILE_PNG:
-			exportFuncs::instance()->exportProfile(qPrintable(fileName + ".png"), false);
-			break;
-		case EX_WORLD_MAP:
-			export_worldmap_HTML(qPrintable(fileName + ".html"), true);
-			break;
-		case EX_TEX:
-			exportFuncs::instance()->export_TeX(qPrintable(fileName + ".tex"), true, true);
-			break;
-		case EX_LATEX:
-			exportFuncs::instance()->export_TeX(qPrintable(fileName + ".tex"), true, false);
-			break;
-		case EX_IMAGE_DEPTHS:
-			exportFuncs::instance()->export_depths(qPrintable(fileName), false);
-			break;
-		default:
-			qDebug() << "export to unknown type " << type << " using " << dir << " remove names " << anonymize;
-			break;
+	                }
+	        case EX_UDDF:
+		        exportFuncs::instance()->exportUsingStyleSheet(fileName + ".uddf", true, 0, "uddf-export.xslt", anonymize);
+		        break;
+	        case EX_CSV_DIVE_PROFILE:
+		        exportFuncs::instance()->exportUsingStyleSheet(fileName + ".uddf", true, 0, "xml2csv.xslt", anonymize);
+		        break;
+	        case EX_CSV_DETAILS:
+		        exportFuncs::instance()->exportUsingStyleSheet(fileName + ".uddf", true, 0, "xml2manualcsv.xslt", anonymize);
+		        break;
+	        case EX_CSV_PROFILE:
+		        save_profiledata(qPrintable(fileName + ".csv"), true);
+		        break;
+	        case EX_PROFILE_PNG:
+		        exportFuncs::instance()->exportProfile(qPrintable(fileName + ".png"), false);
+		        break;
+	        case EX_WORLD_MAP:
+		        export_worldmap_HTML(qPrintable(fileName + ".html"), true);
+		        break;
+	        case EX_TEX:
+		        exportFuncs::instance()->export_TeX(qPrintable(fileName + ".tex"), true, true);
+		        break;
+	        case EX_LATEX:
+		        exportFuncs::instance()->export_TeX(qPrintable(fileName + ".tex"), true, false);
+		        break;
+	        case EX_IMAGE_DEPTHS:
+		        exportFuncs::instance()->export_depths(qPrintable(fileName), false);
+		        break;
+	        default:
+		        qDebug() << "export to unknown type " << type << " using " << dir << " remove names " << anonymize;
+		        break;
 	}
 }
 
@@ -2179,15 +2179,15 @@ void QMLManager::exportToWEB(export_types type, QString userId, QString password
 {
 	switch (type)
 	{
-		case EX_DIVELOGS_DE:
-			uploadDiveLogsDE::instance()->doUpload(false, userId, password);
-			break;
-		case EX_DIVESHARE:
-			uploadDiveShare::instance()->doUpload(false, userId, anonymize);
-			break;
-		default:
-			qDebug() << "upload to unknown type " << type << " using " << userId << "/" <<  password << " remove names " << anonymize;
-			break;
+	        case EX_DIVELOGS_DE:
+		        uploadDiveLogsDE::instance()->doUpload(false, userId, password);
+		        break;
+	        case EX_DIVESHARE:
+		        uploadDiveShare::instance()->doUpload(false, userId, anonymize);
+		        break;
+	        default:
+		        qDebug() << "upload to unknown type " << type << " using " << userId << "/" <<  password << " remove names " << anonymize;
+		        break;
 	}
 }
 
