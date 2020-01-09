@@ -177,7 +177,7 @@ static location_t parseGpsText(const QString &text)
 	double lat, lon;
 	if (parseGpsText(text, &lat, &lon))
 		return create_location(lat, lon);
-	return { {0}, {0} };
+	return zero_location;
 }
 
 void LocationInformationWidget::diveSiteDeleted(struct dive_site *ds, int)
@@ -215,7 +215,7 @@ void LocationInformationWidget::initFields(dive_site *ds)
 		DiveFilter::instance()->startFilterDiveSites(QVector<dive_site *>{ ds });
 		filter_model.invalidate();
 	} else {
-		filter_model.set(0, location_t { degrees_t{ 0 }, degrees_t{ 0 } });
+		filter_model.set(0, zero_location);
 		clearLabels();
 	}
 }
@@ -270,7 +270,7 @@ void LocationInformationWidget::reverseGeocode()
 	Command::editDiveSiteTaxonomy(diveSite, taxonomy);
 }
 
-DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject *) : currentLocation({{0}, {0}})
+DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject *) : currentLocation(zero_location)
 {
 }
 
@@ -574,7 +574,7 @@ void DiveLocationLineEdit::setCurrentDiveSite(struct dive *d)
 		currentLocation = dive_get_gps_location(d);
 	} else {
 		currDs = nullptr;
-		currentLocation = location_t{{0}, {0}};
+		currentLocation = zero_location;
 	}
 	if (!currDs)
 		clear();

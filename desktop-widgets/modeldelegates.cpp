@@ -419,7 +419,7 @@ QWidget *DoubleSpinBoxDelegate::createEditor(QWidget *parent, const QStyleOption
 	return w;
 }
 
-LocationFilterDelegate::LocationFilterDelegate(QObject *) : currentLocation({0, 0})
+LocationFilterDelegate::LocationFilterDelegate(QObject *) : currentLocation(zero_location)
 {
 }
 
