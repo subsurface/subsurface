@@ -631,14 +631,6 @@ void MainTab::divesEdited(int i)
 	ui.multiDiveWarningMessage->show();
 }
 
-static QStringList stringToList(const QString &s)
-{
-	QStringList res = s.split(",", QString::SkipEmptyParts);
-	for (QString &str: res)
-		str = str.trimmed();
-	return res;
-}
-
 void MainTab::on_buddy_editingFinished()
 {
 	if (editMode == IGNORE_MODE || !current_dive)
