@@ -5,5 +5,5 @@ import QtQuick.Layouts 1.11
 
 ComboBox {
 	Layout.fillWidth: true
-	font.pointSize: theme.regularPointSize
+	font.pointSize: subsurfaceTheme.regularPointSize
 }
