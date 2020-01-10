@@ -214,8 +214,6 @@ Kirigami.Page {
 
 	onCurrentItemChanged: {
 		if (currentItem && currentItem.modelData) {
-			// this is used when loading dives to maintain relative position in the dive list
-			manager.selectedDiveTimestamp = currentItem.modelData.date
 			// make sure the core data structures reflect that this dive is selected
 			manager.selectDive(currentItem.modelData.id)
 			// update the map to show the highlighted flag and center on it
