@@ -140,6 +140,9 @@ Kirigami.ApplicationWindow {
 		pageStack.push(detailsWindow)
 	}
 
+	contextDrawer: Kirigami.ContextDrawer {
+	}
+
 	globalDrawer: Kirigami.GlobalDrawer {
 		id: globalDrawer
 		height: rootItem.height
