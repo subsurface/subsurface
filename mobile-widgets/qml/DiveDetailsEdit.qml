@@ -112,29 +112,12 @@ Item {
 				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText,
 				      suitBox.editText, buddyBox.editText, divemasterBox.editText,
 				      detailsEdit.weightText, detailsEdit.notesText, startpressure,
-				      endpressure, usedGas, usedCyl ,
+				      endpressure, usedGas, usedCyl,
 				      detailsEdit.rating,
 				      detailsEdit.visibility, state)
 		// trigger the profile to be redrawn
 		QMLProfile.diveId = dive_id
 
-		// apply the changes to the dive detail view - since the edit could have changed the order
-		// first make sure that we are looking at the correct dive - our model allows us to look
-		// up the index based on the unique dive_id
-		var newIdx = diveModel.getIdxForId(dive_id)
-		diveDetailsListView.currentIndex = newIdx
-		diveDetailsListView.currentItem.modelData.date = detailsEdit.dateText
-		diveDetailsListView.currentItem.modelData.location = locationBox.currentText
-		diveDetailsListView.currentItem.modelData.duration = detailsEdit.durationText
-		diveDetailsListView.currentItem.modelData.depth = detailsEdit.depthText
-		diveDetailsListView.currentItem.modelData.airtemp = detailsEdit.airtempText
-		diveDetailsListView.currentItem.modelData.watertemp = detailsEdit.watertempText
-		diveDetailsListView.currentItem.modelData.suit = suitBox.currentText
-		diveDetailsListView.currentItem.modelData.buddy = buddyBox.currentText
-		diveDetailsListView.currentItem.modelData.divemaster = divemasterBox.currentText
-		diveDetailsListView.currentItem.modelData.notes = detailsEdit.notesText
-		diveDetailsListView.currentItem.modelData.rating = detailsEdit.rating
-		diveDetailsListView.currentItem.modelData.visibility = detailsEdit.visibility
 		Qt.inputMethod.hide()
 		// now make sure we directly show the saved dive (this may be a new dive, or it may have moved)
 		clearDetailsEdit()

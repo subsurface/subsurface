@@ -7,6 +7,9 @@
 #include "core/subsurface-string.h"
 #include "core/tag.h"
 #include "qt-models/weightsysteminfomodel.h"
+#ifdef SUBSURFACE_MOBILE
+#include "qt-models/divelocationmodel.h"
+#endif
 
 namespace Command {
 
@@ -1144,5 +1147,135 @@ void EditWeight::undo()
 {
 	redo();
 }
+
+#ifdef SUBSURFACE_MOBILE
+
+EditDive::EditDive(dive *oldDiveIn, dive *newDiveIn, dive_site *createDs, dive_site *editDs, location_t dsLocationIn)
+	: oldDive(oldDiveIn)
+	, newDive(newDiveIn)
+	, changedFields(DiveField::NONE)
+	, siteToRemove(nullptr)
+	, siteToAdd(createDs)
+	, siteToEdit(editDs)
+	, dsLocation(dsLocationIn)
+{
+	if (!oldDive || ! newDive)
+		return;
+
+	setText(tr("Edit dive"));
+
+	// Calculate the fields that changed.
+	// Note: Probably not needed, as on mobile we don't have that granularity.
+	// However, for future-proofeness let's just do it.
+	changedFields = DiveField::NONE;
+	if (oldDive->number != newDive->number)
+		changedFields |= DiveField::NR;
+	if (oldDive->when != newDive->when)
+		changedFields |= DiveField::DATETIME;
+	if (oldDive->maxdepth.mm != newDive->maxdepth.mm)
+		changedFields |= DiveField::DEPTH;
+	if (oldDive->duration.seconds != newDive->duration.seconds)
+		changedFields |= DiveField::DURATION;
+	if (oldDive->airtemp.mkelvin != newDive->airtemp.mkelvin)
+		changedFields |= DiveField::AIR_TEMP;
+	if (oldDive->watertemp.mkelvin != newDive->watertemp.mkelvin)
+		changedFields |= DiveField::WATER_TEMP;
+	if (oldDive->surface_pressure.mbar != newDive->surface_pressure.mbar)
+		changedFields |= DiveField::ATM_PRESS;
+	if (oldDive->dive_site != newDive->dive_site)
+		changedFields |= DiveField::DIVESITE;
+	if (!same_string(oldDive->divemaster, newDive->divemaster))
+		changedFields |= DiveField::DIVEMASTER;
+	if (!same_string(oldDive->buddy, newDive->buddy))
+		changedFields |= DiveField::BUDDY;
+	if (oldDive->rating != newDive->rating)
+		changedFields |= DiveField::RATING;
+	if (oldDive->visibility != newDive->visibility)
+		changedFields |= DiveField::VISIBILITY;
+	if (oldDive->wavesize != newDive->wavesize)
+		changedFields |= DiveField::WAVESIZE;
+	if (oldDive->current != newDive->current)
+		changedFields |= DiveField::CURRENT;
+	if (oldDive->surge != newDive->surge)
+		changedFields |= DiveField::SURGE;
+	if (oldDive->chill != newDive->chill)
+		changedFields |= DiveField::CHILL;
+	if (!same_string(oldDive->suit, newDive->suit))
+		changedFields |= DiveField::SUIT;
+	if (get_taglist_string(oldDive->tag_list) != get_taglist_string(newDive->tag_list)) // This is cheating. Do we have a taglist comparison function?
+		changedFields |= DiveField::TAGS;
+	if (oldDive->dc.divemode != newDive->dc.divemode)
+		changedFields |= DiveField::MODE;
+	if (!same_string(oldDive->notes, newDive->notes))
+		changedFields |= DiveField::NOTES;
+	if (oldDive->salinity != newDive->salinity)
+		changedFields |= DiveField::SALINITY;
+}
+
+void EditDive::undo()
+{
+	if (siteToRemove) {
+		int idx = unregister_dive_site(siteToRemove);
+		siteToAdd.reset(siteToRemove);
+		emit diveListNotifier.diveSiteDeleted(siteToRemove, idx); // Inform frontend of removed dive site.
+	}
+
+	exchangeDives();
+	editDs();
+}
+
+void EditDive::redo()
+{
+	if (siteToAdd) {
+		siteToRemove = siteToAdd.get();
+		int idx = register_dive_site(siteToAdd.release()); // Return ownership to backend.
+		emit diveListNotifier.diveSiteAdded(siteToRemove, idx); // Inform frontend of new dive site.
+	}
+
+	exchangeDives();
+	editDs();
+}
+
+void EditDive::exchangeDives()
+{
+	// Bluntly exchange dive data by shallow copy
+	std::swap(*newDive, *oldDive);
+	invalidate_dive_cache(oldDive);
+
+	// Changing times may have unsorted the dive and trip tables
+	QVector<dive *> dives = { oldDive };
+	timestamp_t delta = oldDive->when - newDive->when;
+	if (delta != 0) {
+		sort_dive_table(&dive_table);
+		sort_trip_table(&trip_table);
+		if (newDive->divetrip != oldDive->divetrip)
+			qWarning("Command::EditDive::redo(): This command does not support moving between trips!");
+		if (oldDive->divetrip)
+			sort_dive_table(&newDive->divetrip->dives); // Keep the trip-table in order
+		emit diveListNotifier.divesTimeChanged(delta, dives);
+	}
+
+	// Send signals
+	emit diveListNotifier.divesChanged(dives, changedFields);
+
+	// Select the changed dives
+	setSelection( { oldDive }, oldDive);
+}
+
+void EditDive::editDs()
+{
+	if (siteToEdit) {
+		std::swap(siteToEdit->location, dsLocation);
+		emit diveListNotifier.diveSiteChanged(siteToEdit, LocationInformationModel::LOCATION); // Inform frontend of changed dive site.
+	}
+}
+
+bool EditDive::workToBeDone()
+{
+	// We trust the frontend that an EditDive command is only created if there are changes.
+	return true;
+}
+
+#endif // SUBSURFACE_MOBILE
 
 } // namespace Command

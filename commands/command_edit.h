@@ -375,6 +375,33 @@ private:
 	void redo() override;
 };
 
+#ifdef SUBSURFACE_MOBILE
+// Edit a full dive. This is used on mobile where we don't have per-field granularity.
+// It may add or edit a dive site.
+class EditDive : public Base {
+public:
+	EditDive(dive *oldDive, dive *newDive, dive_site *createDs, dive_site *editDs, location_t dsLocation); // Takes ownership of newDive
+private:
+	dive *oldDive; // Dive that is going to be overwritten
+	OwningDivePtr newDive; // New data
+	int changedFields;
+
+	dive_site *siteToRemove;
+	OwningDiveSitePtr siteToAdd;
+
+	dive_site *siteToEdit;
+	location_t dsLocation;
+
+	void undo() override;
+	void redo() override;
+	bool workToBeDone() override;
+
+	void exchangeDives();
+	void editDs();
+};
+
+#endif // SUBSURFACE_MOBILE
+
 } // namespace Command
 
 #endif
