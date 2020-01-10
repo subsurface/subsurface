@@ -34,7 +34,6 @@ extern void free_trip(dive_trip_t *trip);
 extern timestamp_t trip_date(const struct dive_trip *trip);
 extern timestamp_t trip_enddate(const struct dive_trip *trip);
 
-extern bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b);
 extern int comp_trips(const struct dive_trip *a, const struct dive_trip *b);
 extern void sort_trip_table(struct trip_table *table);
 

@@ -23,13 +23,13 @@
 	}
 
 /* get the index where we want to insert an object so that everything stays
- * ordered according to a comparison function() */
+ * ordered according to a comparison function() that returns <0, 0 or >0 (see qsort). */
 #define MAKE_GET_INSERTION_INDEX(table_type, item_type, array_name, fun)		\
 	int table_type##_get_insertion_index(struct table_type *table, item_type item)	\
 	{										\
 		/* we might want to use binary search here */				\
 		for (int i = 0; i < table->nr; i++) {					\
-			if (fun(item, table->array_name[i]))				\
+			if (fun(item, table->array_name[i]) < 0)			\
 				return i;						\
 		}									\
 		return table->nr;							\

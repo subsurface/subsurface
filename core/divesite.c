@@ -118,13 +118,8 @@ static int compare_sites(const struct dive_site *a, const struct dive_site *b)
 	return a->uuid > b->uuid ? 1 : a->uuid == b->uuid ? 0 : -1;
 }
 
-static int site_less_than(const struct dive_site *a, const struct dive_site *b)
-{
-	return compare_sites(a, b) < 0;
-}
-
 static MAKE_GROW_TABLE(dive_site_table, struct dive_site *, dive_sites)
-static MAKE_GET_INSERTION_INDEX(dive_site_table, struct dive_site *, dive_sites, site_less_than)
+static MAKE_GET_INSERTION_INDEX(dive_site_table, struct dive_site *, dive_sites, compare_sites)
 static MAKE_ADD_TO(dive_site_table, struct dive_site *, dive_sites)
 static MAKE_REMOVE_FROM(dive_site_table, dive_sites)
 static MAKE_GET_IDX(dive_site_table, struct dive_site *, dive_sites)

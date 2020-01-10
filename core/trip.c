@@ -45,7 +45,7 @@ void free_trip(dive_trip_t *trip)
 /* Trip table functions */
 static MAKE_GET_IDX(trip_table, struct dive_trip *, trips)
 static MAKE_GROW_TABLE(trip_table, struct dive_trip *, trips)
-static MAKE_GET_INSERTION_INDEX(trip_table, struct dive_trip *, trips, trip_less_than)
+static MAKE_GET_INSERTION_INDEX(trip_table, struct dive_trip *, trips, comp_trips)
 static MAKE_ADD_TO(trip_table, struct dive_trip *, trips)
 static MAKE_REMOVE_FROM(trip_table, trips)
 MAKE_SORT(trip_table, struct dive_trip *, trips, comp_trips)
@@ -321,11 +321,6 @@ int comp_trips(const struct dive_trip *a, const struct dive_trip *b)
 	if (b->dives.nr <= 0)
 		return 1;
 	return comp_dives(a->dives.dives[0], b->dives.dives[0]);
-}
-
-bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b)
-{
-	return comp_trips(a, b) < 0;
 }
 
 static bool is_same_day(timestamp_t trip_when, timestamp_t dive_when)

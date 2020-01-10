@@ -45,7 +45,7 @@ void copy_weights(const struct weightsystem_table *s, struct weightsystem_table 
 /* weightsystem table functions */
 //static MAKE_GET_IDX(weightsystem_table, weightsystem_t, weightsystems)
 static MAKE_GROW_TABLE(weightsystem_table, weightsystem_t, weightsystems)
-//static MAKE_GET_INSERTION_INDEX(weightsystem_table, weightsystem_t, weightsystems, weightsystem_less_than)
+//static MAKE_GET_INSERTION_INDEX(weightsystem_table, weightsystem_t, weightsystems, comp_weightsystems)
 MAKE_ADD_TO(weightsystem_table, weightsystem_t, weightsystems)
 MAKE_REMOVE_FROM(weightsystem_table, weightsystems)
 //MAKE_SORT(weightsystem_table, weightsystem_t, weightsystems, comp_weightsystems)
@@ -55,7 +55,7 @@ MAKE_CLEAR_TABLE(weightsystem_table, weightsystems, weightsystem)
 /* cylinder table functions */
 //static MAKE_GET_IDX(cylinder_table, cylinder_t, cylinders)
 static MAKE_GROW_TABLE(cylinder_table, cylinder_t, cylinders)
-//static MAKE_GET_INSERTION_INDEX(cylinder_table, cylinder_t, cylinders, cylinder_less_than)
+//static MAKE_GET_INSERTION_INDEX(cylinder_table, cylinder_t, cylinders, comp_cylinders)
 MAKE_ADD_TO(cylinder_table, cylinder_t, cylinders)
 MAKE_REMOVE_FROM(cylinder_table, cylinders)
 //MAKE_SORT(cylinder_table, cylinder_t, cylinders, comp_cylinders)
