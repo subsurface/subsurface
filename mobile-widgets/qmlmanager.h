@@ -13,7 +13,6 @@
 #include "core/btdiscovery.h"
 #include "core/gpslocation.h"
 #include "core/downloadfromdcthread.h"
-#include "qt-models/divelistmodel.h"
 #include "qt-models/completionmodels.h"
 #include "qt-models/divelocationmodel.h"
 #include "core/settings/qPrefCloudStorage.h"
@@ -142,8 +141,6 @@ public:
 	void setBtEnabled(bool value);
 
 	void setShowNonDiveComputers(bool show);
-
-	DiveListSortModel *dlSortModel;
 
 	QStringList suitList() const;
 	QStringList buddyList() const;

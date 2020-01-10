@@ -124,7 +124,6 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../mobile-widgets/qmlinterface.cpp \
 	../../mobile-widgets/qmlmanager.cpp \
 	../../mobile-widgets/themeinterface.cpp \
-	../../qt-models/divelistmodel.cpp \
 	../../qt-models/divesummarymodel.cpp \
 	../../qt-models/diveplotdatamodel.cpp \
 	../../qt-models/gpslistmodel.cpp \
@@ -271,7 +270,6 @@ HEADERS += \
 	../../mobile-widgets/qmlmanager.h \
 	../../mobile-widgets/themeinterface.h \
 	../../map-widget/qmlmapwidgethelper.h \
-	../../qt-models/divelistmodel.h \
 	../../qt-models/divesummarymodel.h \
 	../../qt-models/diveplotdatamodel.h \
 	../../qt-models/gpslistmodel.h \

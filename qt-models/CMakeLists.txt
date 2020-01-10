@@ -57,8 +57,6 @@ set(SUBSURFACE_DESKTOP_MODELS_LIB_SRCS
 
 # models exclusively used in mobile builds
 set(SUBSURFACE_MOBILE_MODELS_LIB_SRCS
-	divelistmodel.cpp
-	divelistmodel.h
 	divesummarymodel.cpp
 	divesummarymodel.h
 	gpslistmodel.cpp
