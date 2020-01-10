@@ -61,6 +61,17 @@ void plannerShared::set_min_switch_duration(int value)
 	DivePlannerPointsModel::instance()->setMinSwitchDuration(value);
 }
 
+int plannerShared::surface_segment()
+{
+	return qPrefDivePlanner::surface_segment() / 60;
+}
+void plannerShared::set_surface_segment(int value)
+{
+	// NO conversion, this is done in the planner model.
+	DivePlannerPointsModel::instance()->setSurfaceSegment(value);
+	emit instance()->surface_segmentChanged(surface_segment());
+}
+
 double plannerShared::bottomsac()
 {
 	return (qPrefUnits::volume() == units::LITER) ?

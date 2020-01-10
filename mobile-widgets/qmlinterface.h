@@ -57,6 +57,7 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(bool switch_at_req_stop READ switch_at_req_stop WRITE set_switch_at_req_stop NOTIFY switch_at_req_stopChanged);
 	Q_PROPERTY(bool doo2breaks READ doo2breaks WRITE set_doo2breaks NOTIFY doo2breaksChanged);
 	Q_PROPERTY(int min_switch_duration READ min_switch_duration WRITE set_min_switch_duration NOTIFY min_switch_durationChanged);
+	Q_PROPERTY(int surface_segment READ surface_segment WRITE set_surface_segment NOTIFY surface_segmentChanged);
 
 	Q_PROPERTY(int bottomsac READ bottomsac WRITE set_bottomsac NOTIFY bottomsacChanged);
 	Q_PROPERTY(int decosac READ decosac WRITE set_decosac NOTIFY decosacChanged);
@@ -191,6 +192,7 @@ public:
 	bool switch_at_req_stop() { return prefs.switch_at_req_stop; }
 	bool doo2breaks() { return plannerShared::doo2breaks(); }
 	int min_switch_duration() { return plannerShared::min_switch_duration(); }
+	int surface_segment() { return plannerShared::surface_segment(); }
 
 	int bottomsac() { return (int)plannerShared::bottomsac(); }
 	int decosac() { return (int)plannerShared::decosac(); }
@@ -236,6 +238,7 @@ public slots:
 	void set_switch_at_req_stop(bool value) { DivePlannerPointsModel::instance()->setSwitchAtReqStop(value); }
 	void set_doo2breaks(bool value) { plannerShared::set_doo2breaks(value); }
 	void set_min_switch_duration(int value) { plannerShared::set_min_switch_duration(value); }
+	void set_surface_segment(int value) { plannerShared::set_surface_segment(value); }
 
 	void set_bottomsac(int value) { plannerShared::set_bottomsac((double)value); }
 	void set_decosac(int value) { plannerShared::set_decosac((double)value); }
@@ -281,6 +284,7 @@ signals:
 	void switch_at_req_stopChanged(bool value);
 	void doo2breaksChanged(bool value);
 	void min_switch_durationChanged(int value);
+	void surface_segmentChanged(int value);
 
 	void bottomsacChanged(int value);
 	void decosacChanged(int value);

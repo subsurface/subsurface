@@ -21,6 +21,7 @@ class plannerShared: public QObject {
 	Q_PROPERTY(bool dobailout READ dobailout WRITE set_dobailout NOTIFY dobailoutChanged);
 	Q_PROPERTY(bool doo2breaks READ doo2breaks WRITE set_doo2breaks NOTIFY doo2breaksChanged);
 	Q_PROPERTY(int min_switch_duration READ min_switch_duration WRITE set_min_switch_duration NOTIFY min_switch_durationChanged);
+	Q_PROPERTY(int surface_segment READ surface_segment WRITE set_surface_segment NOTIFY surface_segmentChanged);
 
 	// Gas data
 	Q_PROPERTY(double bottomsac READ bottomsac WRITE set_bottomsac NOTIFY bottomsacChanged);
@@ -40,6 +41,7 @@ public:
 	static bool dobailout();
 	static bool doo2breaks();
 	static int min_switch_duration();
+	static int surface_segment();
 
 	// Gas data
 	static double bottomsac();
@@ -58,6 +60,7 @@ public slots:
 	static void set_dobailout(bool value);
 	static void set_doo2breaks(bool value);
 	static void set_min_switch_duration(int value);
+	static void set_surface_segment(int value);
 
 	// Gas data
 	static void set_bottomsac(double value);
@@ -75,6 +78,7 @@ signals:
 	void dobailoutChanged(bool value);
 	void doo2breaksChanged(bool value);
 	void min_switch_durationChanged(int value);
+	void surface_segmentChanged(int value);
 
 	// Gas data
 	void bottomsacChanged(double value);
