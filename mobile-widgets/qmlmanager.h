@@ -32,7 +32,6 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QString startPageText MEMBER m_startPageText WRITE setStartPageText NOTIFY startPageTextChanged)
 	Q_PROPERTY(bool verboseEnabled MEMBER m_verboseEnabled WRITE setVerboseEnabled NOTIFY verboseEnabledChanged)
 	Q_PROPERTY(QString notificationText MEMBER m_notificationText WRITE setNotificationText NOTIFY notificationTextChanged)
-	Q_PROPERTY(int selectedDiveTimestamp MEMBER m_selectedDiveTimestamp WRITE setSelectedDiveTimestamp NOTIFY selectedDiveTimestampChanged)
 	Q_PROPERTY(QStringList suitList READ suitList NOTIFY suitListChanged)
 	Q_PROPERTY(QStringList buddyList READ buddyList NOTIFY buddyListChanged)
 	Q_PROPERTY(QStringList divemasterList READ divemasterList NOTIFY divemasterListChanged)
@@ -135,9 +134,6 @@ public:
 
 	QString notificationText() const;
 	void setNotificationText(QString text);
-
-	int selectedDiveTimestamp() const;
-	void setSelectedDiveTimestamp(int when);
 
 	QString progressMessage() const;
 	void setProgressMessage(QString text);
@@ -243,7 +239,6 @@ private:
 	bool m_loadFromCloud;
 	static QMLManager *m_instance;
 	QString m_notificationText;
-	int m_selectedDiveTimestamp;
 	qreal m_lastDevicePixelRatio;
 	QElapsedTimer timer;
 	bool alreadySaving;
@@ -282,7 +277,6 @@ signals:
 	void loadFromCloudChanged();
 	void startPageTextChanged();
 	void notificationTextChanged();
-	void selectedDiveTimestampChanged();
 	void sendScreenChanged(QScreen *screen);
 	void progressMessageChanged();
 	void btEnabledChanged();
