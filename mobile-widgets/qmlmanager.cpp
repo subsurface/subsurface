@@ -149,7 +149,6 @@ void QMLManager::btRescan()
 
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
-	m_selectedDiveTimestamp(0),
 	alreadySaving(false),
 	m_pluggedInDeviceName(""),
 	m_showNonDiveComputers(false),
@@ -1709,12 +1708,6 @@ void QMLManager::setNotificationText(QString text)
 {
 	m_notificationText = text;
 	emit notificationTextChanged();
-}
-
-void QMLManager::setSelectedDiveTimestamp(int when)
-{
-	m_selectedDiveTimestamp = when;
-	emit selectedDiveTimestampChanged();
 }
 
 qreal QMLManager::lastDevicePixelRatio()
