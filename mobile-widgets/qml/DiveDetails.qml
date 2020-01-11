@@ -193,6 +193,20 @@ Kirigami.Page {
 		}
 	}
 
+	contextualActions: [
+		Kirigami.Action {
+			text: qsTr("Undo") + " " + manager.undoText
+			enabled: manager.undoText !== ""
+			onTriggered: manager.undo()
+		},
+		Kirigami.Action {
+			text: qsTr("Redo") + " " + manager.redoText
+			enabled: manager.redoText !== ""
+			onTriggered: manager.redo()
+		}
+	]
+
+
 	onBackRequested: {
 		if (state === "edit") {
 			endEditMode()
