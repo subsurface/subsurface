@@ -172,6 +172,8 @@ public:
 // If nothing is to be done, the command will be deleted and false is returned.
 bool execute(Base *cmd);
 
+QUndoStack *getUndoStack();
+
 } // namespace Command
 
 #endif // COMMAND_BASE_H

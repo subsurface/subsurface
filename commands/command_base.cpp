@@ -29,6 +29,12 @@ bool isClean()
 	return undoStack.isClean();
 }
 
+// this can be used to get access to the signals emitted by the QUndoStack
+QUndoStack *getUndoStack()
+{
+	return &undoStack;
+}
+
 QAction *undoAction(QObject *parent)
 {
 	return undoStack.createUndoAction(parent, QCoreApplication::translate("Command", "&Undo"));
