@@ -51,6 +51,8 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QString pluggedInDeviceName MEMBER m_pluggedInDeviceName NOTIFY pluggedInDeviceNameChanged)
 	Q_PROPERTY(bool showNonDiveComputers MEMBER m_showNonDiveComputers WRITE setShowNonDiveComputers NOTIFY showNonDiveComputersChanged)
 	Q_PROPERTY(qPrefCloudStorage::cloud_status oldStatus MEMBER m_oldStatus WRITE setOldStatus NOTIFY oldStatusChanged)
+	Q_PROPERTY(QString undoText READ getUndoText NOTIFY undoTextChanged) // this is a read-only property
+	Q_PROPERTY(QString redoText READ getRedoText NOTIFY redoTextChanged) // this is a read-only property
 
 public:
 	QMLManager();
@@ -97,6 +99,9 @@ public:
 
 	int DC_deviceId() const;
 	void DC_setDeviceId(int deviceId);
+
+	QString getUndoText() const;
+	QString getRedoText() const;
 
 	Q_INVOKABLE QStringList getProductListFromVendor(const QString& vendor);
 	Q_INVOKABLE int getMatchingAddress(const QString &vendor, const QString &product);
@@ -191,6 +196,7 @@ public slots:
 	bool toggleCylinders(bool toggle);
 	bool toggleWeights(bool toggle);
 	void undoDelete(int id);
+	void redo();
 	int addDive();
 	void applyGpsData();
 	void populateGpsData();
@@ -286,6 +292,8 @@ signals:
 	void showNonDiveComputersChanged();
 	void DC_ForceDownloadChanged();
 	void oldStatusChanged();
+	void undoTextChanged();
+	void redoTextChanged();
 
 	// From upload process
 	void uploadFinish(bool success, const QString &text);
