@@ -152,14 +152,7 @@ Kirigami.Page {
 		icon {
 			name: ":/icons/trash-empty.svg"
 		}
-		onTriggered: {
-			var deletedId = currentItem.modelData.id
-			manager.deleteDive(deletedId)
-			showPassiveNotification("Dive deleted", 5000, "Undo",
-						function() {
-							manager.undoDelete(deletedId)
-						});
-		}
+		onTriggered: manager.deleteDive(currentItem.modelData.id)
 	}
 
 	property QtObject cancelAction: Kirigami.Action {
