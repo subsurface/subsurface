@@ -16,6 +16,7 @@
 #include <QFile>
 #include <QtConcurrent>
 #include <QFuture>
+#include <QUndoStack>
 
 #include <QBluetoothLocalDevice>
 
@@ -269,6 +270,10 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	// careful - changing verbose at runtime isn't enough (of course that could be added if we want it)
 	if (verbose)
 		connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &QMLManager::divesChanged);
+
+	// get updates to the undo/redo texts
+	connect(Command::getUndoStack(), &QUndoStack::undoTextChanged, this, &QMLManager::undoTextChanged);
+	connect(Command::getUndoStack(), &QUndoStack::redoTextChanged, this, &QMLManager::redoTextChanged);
 }
 
 void QMLManager::applicationStateChanged(Qt::ApplicationState state)
@@ -1392,7 +1397,13 @@ void QMLManager::saveChangesCloud(bool forceRemoteSync)
 
 void QMLManager::undoDelete(int)
 {
-	undoAction->activate(QAction::Trigger);
+	Command::getUndoStack()->undo();
+	changesNeedSaving();
+}
+
+void QMLManager::redo()
+{
+	Command::getUndoStack()->redo();
 	changesNeedSaving();
 }
 
@@ -2198,4 +2209,16 @@ void QMLManager::divesChanged(const QVector<dive *> &dives, DiveField field)
 		// a brute force way to deal with that would of course be to call
 		// invalidate_dive_cache(d);
 	}
+}
+
+QString QMLManager::getUndoText() const
+{
+	QString undoText = Command::getUndoStack()->undoText();
+	return undoText;
+}
+
+QString QMLManager::getRedoText() const
+{
+	QString redoText = Command::getUndoStack()->redoText();
+	return redoText;
 }
