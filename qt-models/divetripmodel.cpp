@@ -255,6 +255,8 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		return get_divenr(d);
 	case SELECTED_ROLE:
 		return d->selected;
+	case CURRENT_ROLE:
+		return d == current_dive;
 	}
 	return QVariant();
 }
