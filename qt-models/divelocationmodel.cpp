@@ -198,18 +198,18 @@ bool DiveSiteSortedModel::lessThan(const QModelIndex &i1, const QModelIndex &i2)
 	switch (i1.column()) {
 	case LocationInformationModel::NAME:
 	default:
-		return QString::localeAwareCompare(QString(ds1->name), QString(ds2->name)) < 0; // TODO: avoid copy
+		return strcoll(ds1->name, ds2->name) < 0;
 	case LocationInformationModel::DESCRIPTION: {
-		int cmp = QString::localeAwareCompare(QString(ds1->description), QString(ds2->description)); // TODO: avoid copy
+		int cmp = strcoll(ds1->description, ds2->description);
 		return cmp != 0 ? cmp < 0 :
-		       QString::localeAwareCompare(QString(ds1->name), QString(ds2->name)) < 0; // TODO: avoid copy
+		       strcoll(ds1->name, ds2->name) < 0;
 	}
 	case LocationInformationModel::NUM_DIVES: {
 		int cmp = ds1->dives.nr - ds2->dives.nr;
 		// Since by default nr dives is descending, invert sort direction of names, such that
 		// the names are listed as ascending.
 		return cmp != 0 ? cmp < 0 :
-		       QString::localeAwareCompare(QString(ds1->name), QString(ds2->name)) < 0; // TODO: avoid copy
+		       strcoll(ds1->name, ds2->name) < 0;
 	}
 	}
 }

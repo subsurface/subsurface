@@ -1507,7 +1507,7 @@ static int strCmp(const char *s1, const char *s2)
 		return !s2 ? 0 : -1;
 	if (!s2)
 		return 1;
-	return QString::localeAwareCompare(QString(s1), QString(s2)); // TODO: avoid copy
+	return strcoll(s1, s2);
 }
 
 bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
