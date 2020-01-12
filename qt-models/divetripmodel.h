@@ -49,7 +49,8 @@ public:
 		DIVE_ROLE,
 		TRIP_ROLE,
 		DIVE_IDX,
-		SELECTED_ROLE
+		SELECTED_ROLE,
+		CURRENT_ROLE
 	};
 	enum Layout {
 		TREE,
