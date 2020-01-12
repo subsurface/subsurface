@@ -257,7 +257,7 @@ extern bool autogroup;
 struct dive *unregister_dive(int idx);
 extern void delete_single_dive(int idx);
 
-extern int run_survey, quit, force_root;
+extern int run_survey, quit, force_root, ignore_bt;
 #ifdef SUBSURFACE_MOBILE_DESKTOP
 extern char *testqml;
 #endif

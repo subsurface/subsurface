@@ -104,6 +104,7 @@ struct preferences default_prefs = {
 };
 
 int run_survey;
+int ignore_bt;
 #ifdef SUBSURFACE_MOBILE_DESKTOP
 char *testqml = NULL;
 #endif
@@ -179,6 +180,7 @@ static void print_help()
 	printf("\nUsage: subsurface [options] [logfile ...] [--import logfile ...]");
 	printf("\n\noptions include:");
 	printf("\n --help|-h             This help text");
+	printf("\n --ignore-bt           Don't enable Bluetooth support");
 	printf("\n --import logfile ...  Logs before this option is treated as base, everything after is imported");
 	printf("\n --verbose|-v          Verbose debug (repeat to increase verbosity)");
 	printf("\n --version             Prints current version");
@@ -223,6 +225,10 @@ void parse_argument(const char *arg)
 			if (strcmp(arg, "--help") == 0) {
 				print_help();
 				exit(0);
+			}
+			if (strcmp(arg, "--ignore-bt") == 0) {
+				ignore_bt = true;
+				return;
 			}
 			if (strcmp(arg, "--import") == 0) {
 				imported = true; /* mark the dives so far as the base, * everything after is imported */

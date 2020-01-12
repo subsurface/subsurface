@@ -230,14 +230,16 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	appendTextToLog(getAndroidHWInfo());
 #endif
 	setStartPageText(tr("Starting..."));
-
-	// ensure that we start the BTDiscovery - this should be triggered by the export of the class
-	// to QML, but that doesn't seem to always work
-	BTDiscovery *btDiscovery = BTDiscovery::instance();
-	m_btEnabled = btDiscovery->btAvailable();
-	connect(&btDiscovery->localBtDevice, &QBluetoothLocalDevice::hostModeStateChanged,
-		this, &QMLManager::btHostModeChange);
-
+	if (ignore_bt) {
+		m_btEnabled = false;
+	} else {
+		// ensure that we start the BTDiscovery - this should be triggered by the export of the class
+		// to QML, but that doesn't seem to always work
+		BTDiscovery *btDiscovery = BTDiscovery::instance();
+		m_btEnabled = btDiscovery->btAvailable();
+		connect(&btDiscovery->localBtDevice, &QBluetoothLocalDevice::hostModeStateChanged,
+			this, &QMLManager::btHostModeChange);
+	}
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
 	progress_callback = &progressCallback;
