@@ -13,6 +13,7 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include "mobile-widgets/themeinterface.h"
 #include "mobile-widgets/qmlmanager.h"
 #include "mobile-widgets/qmlinterface.h"
 #include "qt-models/divelistmodel.h"
@@ -188,6 +189,9 @@ void register_qml_types(QQmlEngine *engine)
 
 		// Register qml interface class
 		QMLInterface::setup(ct);
+
+		themeInterface::instance()->setup();
+		ct->setContextProperty("ThemeNew", themeInterface::instance());
 	}
 
 	REGISTER_TYPE(QMLManager, "QMLManager");
