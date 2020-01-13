@@ -557,7 +557,9 @@ void addInBatches(Vector1 &v1, const Vector2 &v2, Comparator comp, Inserter inse
 }
 // 2) TreeModel functions
 
-DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent)
+DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent),
+	sort(dive_less_than),
+	sortTopLevel(dive_or_trip_less_than)
 {
 	// Stay informed of changes to the divelist
 	connect(&diveListNotifier, &DiveListNotifier::divesAdded, this, &DiveTripModelTree::divesAdded);
@@ -868,7 +870,7 @@ void DiveTripModelTree::addDivesToTrip(int trip, const QVector<dive *> &dives)
 	QModelIndex parent = createIndex(trip, 0, noParent);
 
 	addInBatches(items[trip].dives, dives,
-		     [](dive *d, dive *d2) { return dive_less_than(d, d2); }, // comp
+		     [this](dive *d, dive *d2) { return sort(d, d2); }, // comp
 		     [&](std::vector<dive *> &items, const QVector<dive *> &dives, int idx, int from, int to) { // inserter
 			beginInsertRows(parent, idx, idx + to - from - 1);
 			items.insert(items.begin() + idx, dives.begin() + from, dives.begin() + to);
@@ -1009,11 +1011,11 @@ void DiveTripModelTree::divesDeleted(dive_trip *trip, bool deleteTrip, const QVe
 // The tree-version of the model wants to process the dives per trip.
 // This template takes a vector of dives and calls a function batchwise for each trip.
 template<typename Function>
-void processByTrip(QVector<dive *> dives, Function action)
+void processByTrip(QVector<dive *> dives, DiveTripModelTree::dive_less_than_t sort, Function action)
 {
-	// Sort lexicographically by trip then according to the dive_less_than() function.
-	std::sort(dives.begin(), dives.end(), [](const dive *d1, const dive *d2)
-		  { return d1->divetrip == d2->divetrip ? dive_less_than(d1, d2) : d1->divetrip < d2->divetrip; });
+	// Sort lexicographically by trip then according to the current sort function.
+	std::sort(dives.begin(), dives.end(), [sort](const dive *d1, const dive *d2)
+		  { return d1->divetrip == d2->divetrip ? sort(d1, d2) : d1->divetrip < d2->divetrip; });
 
 	// Then, process the dives in batches by trip
 	int i, j; // Begin and end of batch
@@ -1061,7 +1063,7 @@ void DiveTripModelTree::diveSiteChanged(dive_site *ds, int field)
 
 void DiveTripModelTree::divesChanged(const QVector<dive *> &dives)
 {
-	processByTrip(dives, [this] (dive_trip *trip, const QVector<dive *> &divesInTrip)
+	processByTrip(dives, sort, [this] (dive_trip *trip, const QVector<dive *> &divesInTrip)
 		      { divesChangedTrip(trip, divesInTrip); });
 }
 
@@ -1170,7 +1172,7 @@ void DiveTripModelTree::divesMovedBetweenTrips(dive_trip *from, dive_trip *to, b
 
 void DiveTripModelTree::divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives)
 {
-	processByTrip(dives, [this, delta] (dive_trip *trip, const QVector<dive *> &divesInTrip)
+	processByTrip(dives, sort, [this, delta] (dive_trip *trip, const QVector<dive *> &divesInTrip)
 		      { divesTimeChangedTrip(trip, delta, divesInTrip); });
 }
 
@@ -1198,7 +1200,7 @@ void DiveTripModelTree::divesSelected(const QVector<dive *> &dives, dive *curren
 	QVector<QModelIndex> indexes;
 	indexes.reserve(dives.count());
 
-	processByTrip(dives, [this, &indexes] (dive_trip *trip, const QVector<dive *> &divesInTrip)
+	processByTrip(dives, sort, [this, &indexes] (dive_trip *trip, const QVector<dive *> &divesInTrip)
 		      { divesSelectedTrip(trip, divesInTrip, indexes); });
 
 	emit selectionChanged(indexes);

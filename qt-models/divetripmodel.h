@@ -161,6 +161,14 @@ private:
 	int findDiveInTrip(int tripIdx, const dive *d) const;	// Find dive inside trip. Second parameter is index of trip
 	int findInsertionIndex(const dive_trip *trip) const;	// Where to insert trip
 
+	// There are two sort functions: one for top-level items, one for dives inside trips
+public:
+	typedef bool(*dive_less_than_t)(const dive *a, const dive *b);
+	typedef bool(*dive_or_trip_less_than_t)(dive_or_trip a, dive_or_trip b);
+private:
+	dive_less_than_t sort;
+	dive_or_trip_less_than_t sortTopLevel;
+
 	// Comparison function between dive and arbitrary entry
 	static bool dive_before_entry(const dive *d, const Item &entry);
 };
