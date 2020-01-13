@@ -24,6 +24,7 @@ class themeInterface : public QObject {
 
 	// Support
 	Q_PROPERTY(QString currentTheme MEMBER m_currentTheme WRITE set_currentTheme NOTIFY currentThemeChanged)
+	Q_PROPERTY(QString iconStyle MEMBER m_iconStyle CONSTANT)
 
 	// Compatibility existing code
 	Q_PROPERTY(QColor blueBackgroundColor MEMBER m_blueBackgroundColor CONSTANT)
@@ -107,6 +108,7 @@ private:
 	QColor m_textColor;
 
 	QString m_currentTheme;
+	QString m_iconStyle;
 
 	// Compatibility existing code
 	const QColor m_blueBackgroundColor = "#eff0f1";
