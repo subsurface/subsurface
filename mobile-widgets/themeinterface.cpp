@@ -23,8 +23,6 @@ void themeInterface::set_currentTheme(const QString &theme)
 
 void themeInterface::update_theme()
 {
-	m_contrastAccentColor = "#FF5722";
-	m_lightDrawerColor = "#FFFFFF";
 }
 
 
