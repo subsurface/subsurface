@@ -253,7 +253,6 @@ Kirigami.Page {
 
 		// set things up for editing - so make sure that the detailsEdit has
 		// all the right data (using the property aliases set up above)
-		var dive = currentItem.modelData.dive
 		var modelData = currentItem.modelData
 		dive_id = modelData.id
 		number = modelData.number
