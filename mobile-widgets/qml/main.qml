@@ -560,69 +560,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		] // end actions
 		Image {
 			fillMode: Image.PreserveAspectFit
-			source: "qrc:///icons/" + (subsurfaceTheme.currentTheme != "" ? subsurfaceTheme.currentTheme : "Blue") + "_gps.svg"
+			source: "qrc:///icons/" + (ThemeNew.currentTheme !== "" ? ThemeNew.currentTheme : "Blue") + "_gps.svg"
 			visible: locationServiceEnabled
 		}
-	}
-
-	function blueTheme() {
-		Material.theme = Material.Light
-		Material.accent = subsurfaceTheme.bluePrimaryColor
-		subsurfaceTheme.currentTheme = "Blue"
-		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.blueDarkerPrimaryColor
-		subsurfaceTheme.darkerPrimaryTextColor= subsurfaceTheme.blueDarkerPrimaryTextColor
-		subsurfaceTheme.primaryColor = subsurfaceTheme.bluePrimaryColor
-		subsurfaceTheme.primaryTextColor = subsurfaceTheme.bluePrimaryTextColor
-		subsurfaceTheme.lightPrimaryColor = subsurfaceTheme.blueLightPrimaryColor
-		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.blueLightPrimaryTextColor
-		subsurfaceTheme.backgroundColor = subsurfaceTheme.blueBackgroundColor
-		subsurfaceTheme.textColor = subsurfaceTheme.blueTextColor
-		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.blueSecondaryTextColor
-		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
-		subsurfaceTheme.drawerColor = subsurfaceTheme.blueLightDrawerColor
-		subsurfaceTheme.contrastAccentColor = subsurfaceTheme.blueContrastAccentColor
-		subsurfaceTheme.lightDrawerColor = subsurfaceTheme.blueLightDrawerColor
-		subsurfaceTheme.iconStyle = "-dark"
-	}
-
-	function pinkTheme() {
-		Material.theme = Material.Light
-		Material.accent = subsurfaceTheme.pinkPrimaryColor
-		subsurfaceTheme.currentTheme = "Pink"
-		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.pinkDarkerPrimaryColor
-		subsurfaceTheme.darkerPrimaryTextColor = subsurfaceTheme.pinkDarkerPrimaryTextColor
-		subsurfaceTheme.primaryColor = subsurfaceTheme.pinkPrimaryColor
-		subsurfaceTheme.primaryTextColor = subsurfaceTheme.pinkPrimaryTextColor
-		subsurfaceTheme.lightPrimaryColor = subsurfaceTheme.pinkLightPrimaryColor
-		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.pinkLightPrimaryTextColor
-		subsurfaceTheme.backgroundColor = subsurfaceTheme.pinkBackgroundColor
-		subsurfaceTheme.textColor = subsurfaceTheme.pinkTextColor
-		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.pinkSecondaryTextColor
-		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
-		subsurfaceTheme.drawerColor = subsurfaceTheme.pinkLightDrawerColor
-		subsurfaceTheme.contrastAccentColor = subsurfaceTheme.pinkContrastAccentColor
-		subsurfaceTheme.lightDrawerColor = subsurfaceTheme.pinkLightDrawerColor
-		subsurfaceTheme.iconStyle = ""
-	}
-
-	function darkTheme() {
-		Material.theme = Material.Dark
-		Material.accent = subsurfaceTheme.darkPrimaryColor
-		subsurfaceTheme.currentTheme = "Dark"
-		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.darkDarkerPrimaryColor
-		subsurfaceTheme.darkerPrimaryTextColor= subsurfaceTheme.darkDarkerPrimaryTextColor
-		subsurfaceTheme.primaryColor = subsurfaceTheme.darkPrimaryColor
-		subsurfaceTheme.primaryTextColor = subsurfaceTheme.darkPrimaryTextColor
-		subsurfaceTheme.lightPrimaryColor = subsurfaceTheme.darkLightPrimaryColor
-		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.darkLightPrimaryTextColor
-		subsurfaceTheme.backgroundColor = subsurfaceTheme.darkBackgroundColor
-		subsurfaceTheme.textColor = subsurfaceTheme.darkTextColor
-		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.darkSecondaryTextColor
-		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
-		subsurfaceTheme.drawerColor = subsurfaceTheme.darkDrawerColor
-		subsurfaceTheme.contrastAccentColor = subsurfaceTheme.darkContrastAccentColor
-		subsurfaceTheme.lightDrawerColor = subsurfaceTheme.darkLightDrawerColor
-		subsurfaceTheme.iconStyle = "-dark"
 	}
 
 	function setupUnits() {
@@ -667,65 +607,19 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property double headingPointSize: regularPointSize * 1.2
 		property double smallPointSize: regularPointSize * 0.8
 
-		// icon Theme
-		property string iconStyle: ""
-
 		// colors currently in use
-		property string currentTheme
-		property color darkerPrimaryColor
-		property color darkerPrimaryTextColor
-		property color primaryColor
-		property color primaryTextColor
-		property color lightPrimaryColor
-		property color lightPrimaryTextColor
-		property color backgroundColor
-		property color textColor
-		property color secondaryTextColor
-		property color drawerColor
-		property color contrastAccentColor: "#FF5722" // used for delete button
-		property color lightDrawerColor: "#FFFFFF"
-
-		// colors for the blue theme
-		property color blueDarkerPrimaryColor: "#303F9f"
-		property color blueDarkerPrimaryTextColor: "#ECECEC"
-		property color bluePrimaryColor: "#3F51B5"
-		property color bluePrimaryTextColor: "#FFFFFF"
-		property color blueLightPrimaryColor: "#C5CAE9"
-		property color blueLightPrimaryTextColor: "#212121"
-		property color blueBackgroundColor: "#eff0f1"
-		property color blueTextColor: blueLightPrimaryTextColor
-		property color blueSecondaryTextColor: "#757575"
-		property color blueLightDrawerColor: "#FFFFFF"
-		property color blueDrawerColor: blueLightDrawerColor
-		property color blueContrastAccentColor: "#FF5722" // used for delete button
-
-		// colors for the pink theme
-		property color pinkDarkerPrimaryColor: "#C2185B"
-		property color pinkDarkerPrimaryTextColor: "#ECECEC"
-		property color pinkPrimaryColor: "#FF69B4"
-		property color pinkPrimaryTextColor: "#212121"
-		property color pinkLightPrimaryColor: "#FFDDF4"
-		property color pinkLightPrimaryTextColor: "#212121"
-		property color pinkBackgroundColor: "#eff0f1"
-		property color pinkTextColor: pinkLightPrimaryTextColor
-		property color pinkSecondaryTextColor: "#757575"
-		property color pinkLightDrawerColor: "#FFFFFF"
-		property color pinkDrawerColor: pinkLightDrawerColor
-		property color pinkContrastAccentColor: "#FF5722" // used for delete button
-
-		// colors for the dark theme
-		property color darkDarkerPrimaryColor: "#303F9f"
-		property color darkDarkerPrimaryTextColor: "#ECECEC"
-		property color darkPrimaryColor: "#3F51B5"
-		property color darkPrimaryTextColor: "#ECECEC"
-		property color darkLightPrimaryColor: "#C5CAE9"
-		property color darkLightPrimaryTextColor: "#ECECEC"
-		property color darkBackgroundColor: "#303030"
-		property color darkTextColor: darkPrimaryTextColor
-		property color darkSecondaryTextColor: "#757575"
-		property color darkDrawerColor: "#424242"
-		property color darkLightDrawerColor: "#FFFFFF"
-		property color darkContrastAccentColor: "#FF5722" // used for delete button
+		property color darkerPrimaryColor: ThemeNew.darkerPrimaryColor
+		property color darkerPrimaryTextColor: ThemeNew.darkerPrimaryTextColor
+		property color primaryColor: ThemeNew.primaryColor
+		property color primaryTextColor: ThemeNew.primaryTextColor
+		property color lightPrimaryColor: ThemeNew.lightPrimaryColor
+		property color lightPrimaryTextColor: ThemeNew.lightPrimaryTextColor
+		property color backgroundColor: ThemeNew.backgroundColor
+		property color textColor: ThemeNew.textColor
+		property color secondaryTextColor: ThemeNew.secondaryTextColor
+		property color drawerColor: ThemeNew.drawerColor
+		property color contrastAccentColor: ThemeNew.contrastAccentColor
+		property color lightDrawerColor: ThemeNew.lightDrawerColor
 
 		property int initialWidth: rootItem.width
 		property int initialHeight: rootItem.height
@@ -738,15 +632,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				setupUnits() // but don't count this as a change (after all, it's not)
 			else
 				manager.appendTextToLog("Already adjusted size, ignoring this")
-
-			// this needs to pick the theme from persistent preference settings
-			var theme = PrefDisplay.theme
-			if (theme === "Blue")
-				blueTheme()
-			else if (theme === "Pink")
-				pinkTheme()
-			else
-				darkTheme()
 		}
 	}
 
