@@ -25,8 +25,6 @@ Kirigami.Page {
 	property alias depth: detailsEdit.depthText
 	property alias duration: detailsEdit.durationText
 	property alias location: detailsEdit.locationText
-	property alias locationModel: detailsEdit.locationModel
-	property alias locationIndex: detailsEdit.locationIndex
 	property alias gps: detailsEdit.gpsText
 	property alias notes: detailsEdit.notesText
 	property alias suitIndex: detailsEdit.suitIndex
@@ -251,8 +249,14 @@ Kirigami.Page {
 		dive_id = modelData.id
 		number = modelData.number
 		date = modelData.dateTime
-		location = modelData.location !== undefined ? location : ""
-		locationIndex = manager.locationList.indexOf(modelData.location)
+		var locationText = modelData.location !== undefined ? modelData.location : ""
+		var locationIndex = manager.locationList.indexOf(modelData.location)
+		if (locationIndex >= 0) {
+			detailsEdit.locationIndex = locationIndex
+			detailsEdit.locationText  = manager.locationList[locationIndex] // this shouldn't be necessary, but apparently it is
+		} else {
+			detailsEdit.locationText = locationText
+		}
 		gps = modelData.gps
 		gpsCheckbox = false
 		duration = modelData.duration
