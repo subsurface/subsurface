@@ -1288,7 +1288,8 @@ bool DiveTripModelTree::lessThan(const QModelIndex &i1, const QModelIndex &i2) c
 
 // 3) ListModel functions
 
-DiveTripModelList::DiveTripModelList(QObject *parent) : DiveTripModelBase(parent)
+DiveTripModelList::DiveTripModelList(QObject *parent) : DiveTripModelBase(parent),
+	sort(dive_less_than)
 {
 	// Stay informed of changes to the divelist
 	connect(&diveListNotifier, &DiveListNotifier::divesAdded, this, &DiveTripModelList::divesAdded);
@@ -1397,9 +1398,9 @@ QVariant DiveTripModelList::data(const QModelIndex &index, int role) const
 void DiveTripModelList::divesAdded(dive_trip *, bool, const QVector<dive *> &divesIn)
 {
 	QVector<dive *> dives = divesIn;
-	std::sort(dives.begin(), dives.end(), dive_less_than);
+	std::sort(dives.begin(), dives.end(), sort);
 	addInBatches(items, dives,
-		     &dive_less_than, // comp
+		     sort, // comp
 		     [&](std::vector<dive *> &items, const QVector<dive *> &dives, int idx, int from, int to) { // inserter
 			beginInsertRows(QModelIndex(), idx, idx + to - from - 1);
 			items.insert(items.begin() + idx, dives.begin() + from, dives.begin() + to);
@@ -1410,7 +1411,7 @@ void DiveTripModelList::divesAdded(dive_trip *, bool, const QVector<dive *> &div
 void DiveTripModelList::divesDeleted(dive_trip *, bool, const QVector<dive *> &divesIn)
 {
 	QVector<dive *> dives = divesIn;
-	std::sort(dives.begin(), dives.end(), dive_less_than);
+	std::sort(dives.begin(), dives.end(), sort);
 	processRangesZip(items, dives,
 			 std::equal_to<const dive *>(), // Condition: dive-pointers are equal
 			 [&](std::vector<dive *> &items, const QVector<dive *> &, int from, int to, int) -> int { // Action
@@ -1431,7 +1432,7 @@ void DiveTripModelList::diveSiteChanged(dive_site *ds, int field)
 void DiveTripModelList::divesChanged(const QVector<dive *> &divesIn)
 {
 	QVector<dive *> dives = divesIn;
-	std::sort(dives.begin(), dives.end(), dive_less_than);
+	std::sort(dives.begin(), dives.end(), sort);
 
 	updateShown(dives);
 
@@ -1450,7 +1451,7 @@ void DiveTripModelList::divesChanged(const QVector<dive *> &divesIn)
 void DiveTripModelList::divesTimeChanged(timestamp_t delta, const QVector<dive *> &divesIn)
 {
 	QVector<dive *> dives = divesIn;
-	std::sort(dives.begin(), dives.end(), dive_less_than);
+	std::sort(dives.begin(), dives.end(), sort);
 
 	// See comment for DiveTripModelTree::divesTimeChanged above.
 	QVector<dive *> selectedDives = filterSelectedDives(dives);

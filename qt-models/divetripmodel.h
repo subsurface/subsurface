@@ -190,6 +190,9 @@ public slots:
 public:
 	DiveTripModelList(QObject *parent = nullptr);
 private:
+	typedef bool(*dive_less_than_t)(const dive *a, const dive *b);
+	dive_less_than_t sort;
+
 	int rowCount(const QModelIndex &parent) const override;
 	void clearData() override;
 	void populate() override;
