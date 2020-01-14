@@ -23,7 +23,7 @@ void themeInterface::setup(QQmlContext *ct)
 	instance()->m_basePointSize = defaultModelFont().pointSize();
 
 	// set initial font size
-	defaultModelFont().setPointSize(m_basePointSize * qPrefDisplay::mobile_scale());
+	instance()->set_currentScale(qPrefDisplay::mobile_scale());
 }
 
 void themeInterface::set_currentTheme(const QString &theme)
@@ -33,6 +33,36 @@ void themeInterface::set_currentTheme(const QString &theme)
 	update_theme();
 	emit currentThemeChanged(theme);
 }
+
+double themeInterface::currentScale()
+{
+	return qPrefDisplay::mobile_scale();
+}
+void themeInterface::set_currentScale(double newScale)
+{
+	if (newScale != qPrefDisplay::mobile_scale()) {
+		qPrefDisplay::set_mobile_scale(newScale);
+		emit currentScaleChanged(qPrefDisplay::mobile_scale());
+	}
+
+	// Set current font size
+	defaultModelFont().setPointSize(m_basePointSize * qPrefDisplay::mobile_scale());
+
+	// adjust all used font sizes
+	m_regularPointSize = defaultModelFont().pointSize();
+	emit regularPointSizeChanged(m_regularPointSize);
+
+	m_headingPointSize = m_regularPointSize * 1.2;
+	emit headingPointSizeChanged(m_headingPointSize);
+
+	m_smallPointSize = m_regularPointSize * 0.8;
+	emit smallPointSizeChanged(m_smallPointSize);
+
+	m_titlePointSize = m_regularPointSize * 1.5;
+	emit titlePointSizeChanged(m_titlePointSize);
+}
+
+
 
 void themeInterface::update_theme()
 {

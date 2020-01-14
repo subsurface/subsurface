@@ -315,26 +315,23 @@ Kirigami.ScrollablePage {
 					spacing: Kirigami.Units.largeSpacing
 					SsrfButton {
 						text: qsTr("smaller")
-						enabled: subsurfaceTheme.currentScale !== 0.85
+						enabled: ThemeNew.currentScale !== 0.85
 						onClicked: {
-							PrefDisplay.mobile_scale = 0.85
-							fontMetrics.font.pointSize = themeNew.basePointSize * PrefDisplay.mobile_scale;
+							ThemeNew.currentScale = 0.85
 						}
 					}
 					SsrfButton {
 						text: qsTr("regular")
-						enabled: subsurfaceTheme.currentScale !== 1.0
+						enabled: ThemeNew.currentScale !== 1.0
 						onClicked: {
-							PrefDisplay.mobile_scale = 1.0
-							fontMetrics.font.pointSize = themeNew.basePointSize * PrefDisplay.mobile_scale;
+							ThemeNew.currentScale = 1.0
 						}
 					}
 					SsrfButton {
 						text: qsTr("larger")
-						enabled: subsurfaceTheme.currentScale !== 1.15
+						enabled: ThemeNew.currentScale !== 1.15
 						onClicked: {
-							PrefDisplay.mobile_scale = 1.15
-							fontMetrics.font.pointSize = themeNew.basePointSize * PrefDisplay.mobile_scale;
+							ThemeNew.currentScale = 1.15
 						}
 					}
 				}

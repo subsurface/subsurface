@@ -596,10 +596,10 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	QtObject {
 		id: subsurfaceTheme
 
-		property double regularPointSize: fontMetrics.font.pointSize
-		property double titlePointSize: regularPointSize * 1.5
-		property double headingPointSize: regularPointSize * 1.2
-		property double smallPointSize: regularPointSize * 0.8
+		property double regularPointSize: ThemeNew.regularPointSize
+		property double titlePointSize: ThemeNew.titlePointSize
+		property double headingPointSize: ThemeNew.headingPointSize
+		property double smallPointSize: ThemeNew.smallPointSize
 
 		// colors currently in use
 		property color darkerPrimaryColor: ThemeNew.darkerPrimaryColor
