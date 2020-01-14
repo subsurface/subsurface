@@ -91,9 +91,6 @@ Kirigami.ScrollablePage {
 				}
 				TemplateComboBox {
 					id: defaultCylinderBox
-					Layout.preferredHeight: fontMetrics.height * 2.5
-					inputMethodHints: Qt.ImhNoPredictiveText
-					Layout.fillWidth: true
 					onActivated: {
 						// the entry for 'no default cylinder' is known to be the top, but its text
 						// is possibly translated so check against the index
