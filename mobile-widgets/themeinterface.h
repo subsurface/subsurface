@@ -25,6 +25,11 @@ class themeInterface : public QObject {
 
 	// Font
 	Q_PROPERTY(double basePointSize MEMBER m_basePointSize CONSTANT)
+	Q_PROPERTY(double headingPointSize MEMBER m_headingPointSize NOTIFY headingPointSizeChanged)
+	Q_PROPERTY(double regularPointSize MEMBER m_regularPointSize NOTIFY regularPointSizeChanged)
+	Q_PROPERTY(double smallPointSize MEMBER m_smallPointSize NOTIFY smallPointSizeChanged)
+	Q_PROPERTY(double titlePointSize MEMBER m_titlePointSize NOTIFY titlePointSizeChanged)
+	Q_PROPERTY(double currentScale READ currentScale WRITE set_currentScale NOTIFY currentScaleChanged)
 
 	// Support
 	Q_PROPERTY(QString currentTheme MEMBER m_currentTheme WRITE set_currentTheme NOTIFY currentThemeChanged)
@@ -78,6 +83,9 @@ public:
 public slots:
 	void set_currentTheme(const QString &theme);
 
+	double currentScale();
+	void set_currentScale(double);
+
 signals:
 	void backgroundColorChanged(QColor);
 	void contrastAccentColorChanged(QColor);
@@ -91,6 +99,12 @@ signals:
 	void primaryTextColorChanged(QColor);
 	void secondaryTextColorChanged(QColor);
 	void textColorChanged(QColor);
+
+	void headingPointSizeChanged(double);
+	void regularPointSizeChanged(double);
+	void smallPointSizeChanged(double);
+	void titlePointSizeChanged(double);
+	void currentScaleChanged(double);
 
 	void currentThemeChanged(const QString &);
 
@@ -112,6 +126,10 @@ private:
 	QColor m_textColor;
 
 	double m_basePointSize;
+	double m_headingPointSize;
+	double m_regularPointSize;
+	double m_smallPointSize;
+	double m_titlePointSize;
 
 	QString m_currentTheme;
 	QString m_iconStyle;
