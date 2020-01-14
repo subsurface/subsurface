@@ -318,7 +318,7 @@ Kirigami.ScrollablePage {
 						enabled: subsurfaceTheme.currentScale !== 0.85
 						onClicked: {
 							PrefDisplay.mobile_scale = 0.85
-							fontMetrics.font.pointSize = subsurfaceTheme.basePointSize * PrefDisplay.mobile_scale;
+							fontMetrics.font.pointSize = themeNew.basePointSize * PrefDisplay.mobile_scale;
 						}
 					}
 					SsrfButton {
@@ -326,7 +326,7 @@ Kirigami.ScrollablePage {
 						enabled: subsurfaceTheme.currentScale !== 1.0
 						onClicked: {
 							PrefDisplay.mobile_scale = 1.0
-							fontMetrics.font.pointSize = subsurfaceTheme.basePointSize * PrefDisplay.mobile_scale;
+							fontMetrics.font.pointSize = themeNew.basePointSize * PrefDisplay.mobile_scale;
 						}
 					}
 					SsrfButton {
@@ -334,7 +334,7 @@ Kirigami.ScrollablePage {
 						enabled: subsurfaceTheme.currentScale !== 1.15
 						onClicked: {
 							PrefDisplay.mobile_scale = 1.15
-							fontMetrics.font.pointSize = subsurfaceTheme.basePointSize * PrefDisplay.mobile_scale;
+							fontMetrics.font.pointSize = themeNew.basePointSize * PrefDisplay.mobile_scale;
 						}
 					}
 				}

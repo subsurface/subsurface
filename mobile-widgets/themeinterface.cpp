@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "themeinterface.h"
+#include "qmlmanager.h"
+#include "core/metrics.h"
 #include "core/settings/qPrefDisplay.h"
 
 themeInterface *themeInterface::instance()
@@ -16,6 +18,12 @@ void themeInterface::setup(QQmlContext *ct)
 	// get current theme
 	instance()->m_currentTheme = qPrefDisplay::theme();
 	instance()->update_theme();
+
+	// check system font
+	instance()->m_basePointSize = defaultModelFont().pointSize();
+
+	// set initial font size
+	defaultModelFont().setPointSize(m_basePointSize * qPrefDisplay::mobile_scale());
 }
 
 void themeInterface::set_currentTheme(const QString &theme)

@@ -23,6 +23,9 @@ class themeInterface : public QObject {
 	Q_PROPERTY(QColor secondaryTextColor MEMBER m_secondaryTextColor NOTIFY secondaryTextColorChanged)
 	Q_PROPERTY(QColor textColor MEMBER m_textColor NOTIFY textColorChanged)
 
+	// Font
+	Q_PROPERTY(double basePointSize MEMBER m_basePointSize CONSTANT)
+
 	// Support
 	Q_PROPERTY(QString currentTheme MEMBER m_currentTheme WRITE set_currentTheme NOTIFY currentThemeChanged)
 	Q_PROPERTY(QString iconStyle MEMBER m_iconStyle CONSTANT)
@@ -107,6 +110,8 @@ private:
 	QColor m_primaryTextColor;
 	QColor m_secondaryTextColor;
 	QColor m_textColor;
+
+	double m_basePointSize;
 
 	QString m_currentTheme;
 	QString m_iconStyle;

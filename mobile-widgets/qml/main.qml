@@ -48,11 +48,6 @@ Kirigami.ApplicationWindow {
 	}
 	FontMetrics {
 		id: fontMetrics
-		Component.onCompleted: {
-			manager.appendTextToLog("Using the following font: " + fontMetrics.font.family +
-					" at " + subsurfaceTheme.basePointSize + "pt" +
-					" with mobile_scale: " + PrefDisplay.mobile_scale)
-		}
 	}
 	visible: false
 
@@ -595,23 +590,11 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			// change our glabal grid unit
 			Kirigami.Units.gridUnit = kirigamiGridUnit
 		}
-		// break binding explicitly. Now we have a basePointSize that we can
-		// use to easily scale against
-		subsurfaceTheme.basePointSize = subsurfaceTheme.basePointSize * factor;
-
-		// set the initial UI scaling as in the the preferences
-		fontMetrics.font.pointSize = subsurfaceTheme.basePointSize * PrefDisplay.mobile_scale;
 		manager.appendTextToLog("Done setting up sizes")
 	}
 
 	QtObject {
 		id: subsurfaceTheme
-
-		// basePointSize is determinded based on the width of the screen (typically at start of the app)
-		// and must not be changed if we change font size. This is tricky in QML. In order to break the
-		// binding between basePointSize and fontMetrics.font.pointSize we explicitly multipy it by 1.0
-		// in the onComplete handler of this object.
-		property double basePointSize: fontMetrics.font.pointSize;
 
 		property double regularPointSize: fontMetrics.font.pointSize
 		property double titlePointSize: regularPointSize * 1.5
