@@ -98,6 +98,38 @@ Kirigami.ScrollablePage {
 					}
 				}
 			}
+			TemplateLine {
+				visible: sectionGeneral.isExpanded
+			}
+			GridLayout {
+				id: divecomputers
+				visible: sectionGeneral.isExpanded
+				columns: 2
+				TemplateLabel {
+					text: qsTr("Dive computers")
+					font.pointSize: subsurfaceTheme.headingPointSize
+					font.weight: Font.Light
+					Layout.topMargin: Kirigami.Units.largeSpacing
+					Layout.bottomMargin: Kirigami.Units.largeSpacing
+					Layout.columnSpan: 2
+				}
+				TemplateLabel {
+					text: qsTr("Forget remembered dive computers")
+					Layout.preferredWidth: gridWidth * 0.75
+				}
+				SsrfButton {
+					id: forgetDCButton
+					text: qsTr("Forget")
+					enabled: PrefDiveComputer.vendor1 !== ""
+					onClicked: {
+						PrefDiveComputer.vendor1 = PrefDiveComputer.product1 = PrefDiveComputer.device1 = ""
+						PrefDiveComputer.vendor2 = PrefDiveComputer.product2 = PrefDiveComputer.device2 = ""
+						PrefDiveComputer.vendor3 = PrefDiveComputer.product3 = PrefDiveComputer.device3 = ""
+						PrefDiveComputer.vendor4 = PrefDiveComputer.product4 = PrefDiveComputer.device4 = ""
+						PrefDiveComputer.vendor = PrefDiveComputer.product = PrefDiveComputer.device = ""
+					}
+				}
+			}
 		}
 
 
@@ -365,41 +397,6 @@ Kirigami.ScrollablePage {
 			Layout.fillWidth: true
 		}
 
-		GridLayout {
-			id: divecomputers
-			columns: 2
-			TemplateLabel {
-				text: qsTr("Dive computers")
-				font.pointSize: subsurfaceTheme.headingPointSize
-				font.weight: Font.Light
-				Layout.topMargin: Kirigami.Units.largeSpacing
-				Layout.bottomMargin: Kirigami.Units.largeSpacing
-				Layout.columnSpan: 2
-			}
-			TemplateLabel {
-				text: qsTr("Forget remembered dive computers")
-				Layout.preferredWidth: gridWidth * 0.75
-			}
-			SsrfButton {
-				id: forgetDCButton
-				text: qsTr("Forget")
-				enabled: PrefDiveComputer.vendor1 !== ""
-				onClicked: {
-					PrefDiveComputer.vendor1 = PrefDiveComputer.product1 = PrefDiveComputer.device1 = ""
-					PrefDiveComputer.vendor2 = PrefDiveComputer.product2 = PrefDiveComputer.device2 = ""
-					PrefDiveComputer.vendor3 = PrefDiveComputer.product3 = PrefDiveComputer.device3 = ""
-					PrefDiveComputer.vendor4 = PrefDiveComputer.product4 = PrefDiveComputer.device4 = ""
-					PrefDiveComputer.vendor = PrefDiveComputer.product = PrefDiveComputer.device = ""
-				}
-			}
-		}
-
-		Rectangle {
-			color: subsurfaceTheme.darkerPrimaryColor
-			height: 1
-			opacity: 0.5
-			Layout.fillWidth: true
-		}
 		GridLayout {
 			id: unit_system
 			columns: 2
