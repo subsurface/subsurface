@@ -113,6 +113,9 @@ public slots:
 
 public:
 	DiveTripModelTree(QObject *parent = nullptr);
+
+	typedef bool(*dive_less_than_t)(const dive *a, const dive *b);
+	typedef bool(*dive_or_trip_less_than_t)(dive_or_trip a, dive_or_trip b);
 private:
 	int rowCount(const QModelIndex &parent) const override;
 	void clearData() override;
@@ -140,7 +143,7 @@ private:
 		std::vector<dive *>	dives;			// std::vector<> instead of QVector for insert() with three iterators
 		bool			shown;
 		Item(dive_trip *t, const QVector<dive *> &dives);
-		Item(dive_trip *t, dive *d);			// Initialize a trip with one dive
+		Item(dive_trip *t, dive_less_than_t sort);	// Initialize a trip with dives
 		Item(dive *d);					// Initialize a top-level dive
 		bool isDive(const dive *) const;		// Helper function: is this the give dive?
 		dive *getDive() const;				// Helper function: returns top-level-dive or null
@@ -161,10 +164,6 @@ private:
 	int findDiveInTrip(int tripIdx, const dive *d) const;	// Find dive inside trip. Second parameter is index of trip
 	int findInsertionIndex(const dive_trip *trip) const;	// Where to insert trip
 
-	// There are two sort functions: one for top-level items, one for dives inside trips
-public:
-	typedef bool(*dive_less_than_t)(const dive *a, const dive *b);
-	typedef bool(*dive_or_trip_less_than_t)(dive_or_trip a, dive_or_trip b);
 private:
 	dive_less_than_t sort;
 	dive_or_trip_less_than_t sortTopLevel;

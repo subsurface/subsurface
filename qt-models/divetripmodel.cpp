@@ -577,29 +577,19 @@ DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent
 
 void DiveTripModelTree::populate()
 {
-	for (int i = 0; i < dive_table.nr ; ++i) {
+	// Populate the top level in two steps: first the trips, then all non-trip dives
+	for (int i = 0; i < trip_table.nr; ++i)
+		items.emplace_back(trip_table.trips[i], sort);
+
+	for (int i = 0; i < dive_table.nr; ++i) {
 		dive *d = get_dive(i);
-		update_cylinder_related_info(d);
-		dive_trip_t *trip = d->divetrip;
-
-		// If this dive doesn't have a trip, add as top-level item.
-		if (!trip) {
-			items.emplace_back(d);
-			continue;
-		}
-
-		// Check if that trip is already known to us: search for the first item
-		// that corresponds to that trip
-		auto it = std::find_if(items.begin(), items.end(), [trip](const Item &item)
-				       { return item.d_or_t.trip == trip; });
-		if (it == items.end()) {
-			// We didn't find an entry for this trip -> add one
-			items.emplace_back(trip, d);
-		} else {
-			// We found the trip -> simply add the dive
-			it->dives.push_back(d);
-		}
+		if (!d->divetrip)
+			items.emplace_back(get_dive(i));
 	}
+
+	// Now sort the table
+	std::sort(items.begin(), items.end(), [this](const Item &a, const Item &b)
+		  { return sortTopLevel(a.d_or_t, b.d_or_t); });
 }
 
 int DiveTripModelTree::rowCount(const QModelIndex &parent) const
@@ -660,10 +650,11 @@ DiveTripModelTree::Item::Item(dive_trip *t, const QVector<dive *> &divesIn) : d_
 {
 }
 
-DiveTripModelTree::Item::Item(dive_trip *t, dive *d) : d_or_t{nullptr, t},
-	dives({ d }),
-	shown(!d->hidden_by_filter)
+DiveTripModelTree::Item::Item(dive_trip *t, dive_less_than_t sort) : d_or_t{nullptr, t},
+	dives(t->dives.dives, t->dives.dives + t->dives.nr),
+	shown(std::any_of(dives.begin(), dives.end(), [](dive *d){ return !d->hidden_by_filter; }))
 {
+	std::sort(dives.begin(), dives.end(), sort);
 }
 
 DiveTripModelTree::Item::Item(dive *d) : d_or_t{d, nullptr},
