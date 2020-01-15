@@ -26,7 +26,6 @@ void themeInterface::setup(QQmlContext *ct)
 	instance()->set_currentScale(qPrefDisplay::mobile_scale());
 }
 
-
 void themeInterface::set_currentTheme(const QString &theme)
 {
 	m_currentTheme = theme;
@@ -62,8 +61,6 @@ void themeInterface::set_currentScale(double newScale)
 	m_titlePointSize = m_regularPointSize * 1.5;
 	emit titlePointSizeChanged(m_titlePointSize);
 }
-
-
 
 void themeInterface::update_theme()
 {
@@ -111,5 +108,3 @@ void themeInterface::update_theme()
 		m_iconStyle = ":/icons-dark";
 	}
 }
-
-
