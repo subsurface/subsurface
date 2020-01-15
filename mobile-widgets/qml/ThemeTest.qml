@@ -11,6 +11,10 @@ Kirigami.Page {
 	title: "Theme Information"
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 
+	FontMetrics {
+		id: fontMetrics
+	}
+
 	GridLayout {
 		id: themetest
 		columns: 2
