@@ -563,7 +563,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		] // end actions
 		Image {
 			fillMode: Image.PreserveAspectFit
-			source: "qrc:///icons/" + (ThemeNew.currentTheme !== "" ? ThemeNew.currentTheme : "Blue") + "_gps.svg"
+			source: "qrc:///icons/" + (subsurfaceTheme.currentTheme !== "" ? subsurfaceTheme.currentTheme : "Blue") + "_gps.svg"
 			visible: locationServiceEnabled
 		}
 	}
@@ -605,30 +605,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			else
 				manager.appendTextToLog("Already adjusted size, ignoring this")
 		}
-	}
-
-	QtObject {
-		id: subsurfaceTheme
-
-		property double regularPointSize: ThemeNew.regularPointSize
-		property double titlePointSize: ThemeNew.titlePointSize
-		property double headingPointSize: ThemeNew.headingPointSize
-		property double smallPointSize: ThemeNew.smallPointSize
-
-		// colors currently in use
-		property color darkerPrimaryColor: ThemeNew.darkerPrimaryColor
-		property color darkerPrimaryTextColor: ThemeNew.darkerPrimaryTextColor
-		property color primaryColor: ThemeNew.primaryColor
-		property color primaryTextColor: ThemeNew.primaryTextColor
-		property color lightPrimaryColor: ThemeNew.lightPrimaryColor
-		property color lightPrimaryTextColor: ThemeNew.lightPrimaryTextColor
-		property color backgroundColor: ThemeNew.backgroundColor
-		property color textColor: ThemeNew.textColor
-		property color secondaryTextColor: ThemeNew.secondaryTextColor
-		property color drawerColor: ThemeNew.drawerColor
-		property color contrastAccentColor: ThemeNew.contrastAccentColor
-		property color lightDrawerColor: ThemeNew.lightDrawerColor
-
 	}
 
 	onWidthChanged: {

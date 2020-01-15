@@ -69,7 +69,7 @@ Kirigami.Page {
 			text: "basePointSize:"
 		}
 		Controls.Label {
-			text: ThemeNew.basePointSize
+			text: subsurfaceTheme.basePointSize
 		}
 
 		Controls.Label {

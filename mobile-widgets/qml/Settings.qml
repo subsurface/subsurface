@@ -145,15 +145,15 @@ TemplatePage {
 				TemplateComboBox {
 					editable: false
 					Layout.columnSpan: 2
-					currentIndex: (ThemeNew.currentTheme === "Blue") ? 0 :
-								  (ThemeNew.currentTheme === "Pink") ? 1 : 2
+					currentIndex: (subsurfaceTheme.currentTheme === "Blue") ? 0 :
+								  (subsurfaceTheme.currentTheme === "Pink") ? 1 : 2
 					model: ListModel {
 						   ListElement {text: qsTr("Blue")}
 						   ListElement {text: qsTr("Pink")}
 						   ListElement {text: qsTr("Dark")}
 					}
 					onActivated:  {
-						ThemeNew.currentTheme = currentIndex === 0 ? "Blue" :
+						subsurfaceTheme.currentTheme = currentIndex === 0 ? "Blue" :
 												currentIndex === 1 ? "Pink" : "Dark"
 					}
 				}

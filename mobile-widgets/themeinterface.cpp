@@ -74,7 +74,7 @@ themeInterface *themeInterface::instance()
 void themeInterface::setup(QQmlContext *ct)
 {
 	// Register interface class
-	ct->setContextProperty("ThemeNew", instance());
+	ct->setContextProperty("subsurfaceTheme", instance());
 
 	// get current theme
 	m_currentTheme = qPrefDisplay::theme();
