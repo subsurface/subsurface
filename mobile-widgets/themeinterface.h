@@ -33,7 +33,7 @@ class themeInterface : public QObject {
 
 	// Support
 	Q_PROPERTY(QString currentTheme MEMBER m_currentTheme WRITE set_currentTheme NOTIFY currentThemeChanged)
-	Q_PROPERTY(QString iconStyle MEMBER m_iconStyle CONSTANT)
+	Q_PROPERTY(QString iconStyle MEMBER m_iconStyle NOTIFY iconStyleChanged)
 
 	// Compatibility existing code
 	Q_PROPERTY(QColor blueBackgroundColor MEMBER m_blueBackgroundColor CONSTANT)
@@ -107,6 +107,7 @@ signals:
 	void currentScaleChanged(double);
 
 	void currentThemeChanged(const QString &);
+	void iconStyleChanged(const QString &);
 
 private:
 	themeInterface() {}

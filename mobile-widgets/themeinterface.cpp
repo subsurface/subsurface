@@ -107,4 +107,17 @@ void themeInterface::update_theme()
 		m_textColor = m_darkTextColor;
 		m_iconStyle = ":/icons-dark";
 	}
+	emit backgroundColorChanged(m_backgroundColor);
+	emit contrastAccentColorChanged(m_contrastAccentColor);
+	emit darkerPrimaryColorChanged(m_darkerPrimaryColor);
+	emit darkerPrimaryTextColorChanged(m_darkerPrimaryTextColor);
+	emit drawerColorChanged(m_drawerColor);
+	emit lightDrawerColorChanged(m_lightDrawerColor);
+	emit lightPrimaryColorChanged(m_lightPrimaryColor);
+	emit lightPrimaryTextColorChanged(m_lightPrimaryTextColor);
+	emit primaryColorChanged(m_primaryColor);
+	emit primaryTextColorChanged(m_primaryTextColor);
+	emit secondaryTextColorChanged(m_secondaryTextColor);
+	emit textColorChanged(m_textColor);
+	emit iconStyleChanged(m_iconStyle);
 }
