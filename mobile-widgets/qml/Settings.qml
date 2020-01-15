@@ -29,26 +29,22 @@ Kirigami.ScrollablePage {
 			id: cloudSetting
 			columns: 3
 
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Cloud status")
 				font.pointSize: subsurfaceTheme.headingPointSize
 				font.weight: Font.Light
-				color: subsurfaceTheme.textColor
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 3
 			}
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Email")
-				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.15
-				color: subsurfaceTheme.textColor
 			}
-			Controls.Label {
+			TemplateLabel {
 				text: Backend.cloud_verification_status === Enums.CS_NOCLOUD ? qsTr("Not applicable") : PrefCloudStorage.cloud_storage_email
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.60
-				color: subsurfaceTheme.textColor
 			}
 			SsrfButton {
 				id: changeCloudSettings
@@ -58,19 +54,15 @@ Kirigami.ScrollablePage {
 					manager.startPageText  = qsTr("Starting...");
 				}
 			}
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Status")
-				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.15
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 1.5
-				color: subsurfaceTheme.textColor
 			}
-			Controls.Label {
+			TemplateLabel {
 				text: describe[Backend.cloud_verification_status]
-				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.60
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 1.5
-				color: subsurfaceTheme.textColor
 			}
 		}
 
@@ -84,19 +76,16 @@ Kirigami.ScrollablePage {
 			id: themeSettings
 			columns: 3
 
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Theme")
 				font.pointSize: subsurfaceTheme.headingPointSize
 				font.weight: Font.Light
-				color: subsurfaceTheme.textColor
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 3
 			}
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Blue")
-				font.pointSize: subsurfaceTheme.regularPointSize
-				color: subsurfaceTheme.textColor
 				rightPadding: Kirigami.Units.gridUnit
 				Layout.preferredWidth: gridWidth * 0.15
 			}
@@ -147,13 +136,11 @@ Kirigami.ScrollablePage {
 				}
 			}
 
-			Controls.Label {
+			TemplateLabel {
 				id: pinkLabel
 				text: qsTr("Pink")
-				font.pointSize: subsurfaceTheme.regularPointSize
 				rightPadding: Kirigami.Units.gridUnit
 				Layout.preferredWidth: gridWidth * 0.15
-				color: subsurfaceTheme.textColor
 			}
 			Row {
 				Layout.preferredWidth: gridWidth * 0.6
@@ -203,10 +190,8 @@ Kirigami.ScrollablePage {
 				}
 			}
 
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Dark")
-				font.pointSize: subsurfaceTheme.regularPointSize
-				color: subsurfaceTheme.textColor
 				rightPadding: Kirigami.Units.gridUnit
 				Layout.preferredWidth: gridWidth * 0.15
 			}
@@ -256,11 +241,10 @@ Kirigami.ScrollablePage {
 					PrefDisplay.theme = subsurfaceTheme.currentTheme
 				}
 			}
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Scaling")
 				font.pointSize: subsurfaceTheme.headingPointSize
 				font.weight: Font.Light
-				color: subsurfaceTheme.textColor
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 3
@@ -307,21 +291,18 @@ Kirigami.ScrollablePage {
 			id: gpsPrefs
 			columns: 2
 
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("GPS location service")
 				font.pointSize: subsurfaceTheme.headingPointSize
 				font.weight: Font.Light
-				color: subsurfaceTheme.textColor
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 2
 			}
 
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Distance threshold (meters)")
-				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
-				color: subsurfaceTheme.textColor
 			}
 
 			Controls.TextField {
@@ -335,11 +316,9 @@ Kirigami.ScrollablePage {
 				}
 			}
 
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Time threshold (minutes)")
-				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
-				color: subsurfaceTheme.textColor
 			}
 
 			Controls.TextField {
@@ -366,19 +345,16 @@ Kirigami.ScrollablePage {
 			columns: 2
 			Layout.rightMargin: Kirigami.Units.gridUnit * 1.5
 
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Default Cylinder")
 				font.pointSize: subsurfaceTheme.headingPointSize
 				font.weight: Font.Light
-				color: subsurfaceTheme.textColor
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 2
 			}
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Cylinder:")
-				font.pointSize: subsurfaceTheme.regularPointSize
-				color: subsurfaceTheme.textColor
 			}
 			Controls.ComboBox {
 				id: defaultCylinderBox
@@ -401,20 +377,17 @@ Kirigami.ScrollablePage {
 		GridLayout {
 			id: divecomputers
 			columns: 2
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Dive computers")
 				font.pointSize: subsurfaceTheme.headingPointSize
 				font.weight: Font.Light
-				color: subsurfaceTheme.textColor
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing
 				Layout.columnSpan: 2
 			}
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Forget remembered dive computers")
-				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
-				color: subsurfaceTheme.textColor
 			}
 			SsrfButton {
 				id: forgetDCButton
@@ -439,21 +412,18 @@ Kirigami.ScrollablePage {
 		GridLayout {
 			id: unit_system
 			columns: 2
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Units")
 				font.pointSize: subsurfaceTheme.headingPointSize
 				font.weight: Font.Light
-				color: subsurfaceTheme.textColor
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 2
 			}
 
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Use Imperial Units")
-				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
-				color: subsurfaceTheme.textColor
 			}
 			SsrfSwitch {
 				id: imperialButton
@@ -466,11 +436,9 @@ Kirigami.ScrollablePage {
 					manager.refreshDiveList()
 				}
 			}
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Use Metric Units")
-				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
-				color: subsurfaceTheme.textColor
 			}
 			SsrfSwitch {
 				id: metricButtton
@@ -495,20 +463,17 @@ Kirigami.ScrollablePage {
 			id: filterPrefs
 			columns: 2
 
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Filter preferences")
 				font.pointSize: subsurfaceTheme.headingPointSize
 				font.weight: Font.Light
-				color: subsurfaceTheme.textColor
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 2
 			}
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Include notes in full text filtering")
-				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
-				color: subsurfaceTheme.textColor
 			}
 
 			SsrfSwitch {
@@ -520,11 +485,9 @@ Kirigami.ScrollablePage {
 				}
 			}
 
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Match filter case sensitive")
-				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
-				color: subsurfaceTheme.textColor
 			}
 
 			SsrfSwitch {
@@ -548,21 +511,18 @@ Kirigami.ScrollablePage {
 		GridLayout {
 			id: whichBluetoothDevices
 			columns: 2
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Bluetooth")
 				font.pointSize: subsurfaceTheme.headingPointSize
 				font.weight: Font.Light
-				color: subsurfaceTheme.textColor
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 2
 			}
 
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Temporarily show all bluetooth devices \neven if not recognized as dive computers.\nPlease report DCs that need this setting")
-				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
-				color: subsurfaceTheme.textColor
 			}
 			SsrfSwitch {
 				id: nonDCButton
@@ -584,21 +544,18 @@ Kirigami.ScrollablePage {
 		GridLayout {
 			id: developer
 			columns: 2
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Developer")
 				font.pointSize: subsurfaceTheme.headingPointSize
 				font.weight: Font.Light
-				color: subsurfaceTheme.textColor
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 2
 			}
 
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Display Developer menu")
-				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
-				color: subsurfaceTheme.textColor
 			}
 			SsrfSwitch {
 				id: developerButton
