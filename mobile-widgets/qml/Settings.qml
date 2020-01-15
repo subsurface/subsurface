@@ -68,6 +68,36 @@ Kirigami.ScrollablePage {
 					Layout.preferredHeight: Kirigami.Units.gridUnit * 1.5
 				}
 			}
+			TemplateLine {
+				visible: sectionGeneral.isExpanded
+			}
+			GridLayout {
+				id: defaultCylinder
+				visible: sectionGeneral.isExpanded
+				columns: 2
+				Layout.rightMargin: Kirigami.Units.gridUnit * 1.5
+
+				TemplateLabel {
+					text: qsTr("Default Cylinder")
+					font.pointSize: subsurfaceTheme.headingPointSize
+					font.weight: Font.Light
+					Layout.topMargin: Kirigami.Units.largeSpacing
+					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+					Layout.columnSpan: 2
+				}
+				TemplateLabel {
+					text: qsTr("Cylinder:")
+				}
+				TemplateComboBox {
+					id: defaultCylinderBox
+					Layout.preferredHeight: fontMetrics.height * 2.5
+					inputMethodHints: Qt.ImhNoPredictiveText
+					Layout.fillWidth: true
+					onActivated: {
+						PrefEquipment.default_cylinder = defaultCylinderBox.currentText
+					}
+				}
+			}
 		}
 
 
@@ -327,39 +357,6 @@ Kirigami.ScrollablePage {
 				}
 			}
 
-		}
-		Rectangle {
-			color: subsurfaceTheme.darkerPrimaryColor
-			height: 1
-			opacity: 0.5
-			Layout.fillWidth: true
-		}
-
-		GridLayout {
-			id: defaultCylinder
-			columns: 2
-			Layout.rightMargin: Kirigami.Units.gridUnit * 1.5
-
-			TemplateLabel {
-				text: qsTr("Default Cylinder")
-				font.pointSize: subsurfaceTheme.headingPointSize
-				font.weight: Font.Light
-				Layout.topMargin: Kirigami.Units.largeSpacing
-				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-				Layout.columnSpan: 2
-			}
-			TemplateLabel {
-				text: qsTr("Cylinder:")
-			}
-			TemplateComboBox {
-				id: defaultCylinderBox
-				Layout.preferredHeight: fontMetrics.height * 2.5
-				inputMethodHints: Qt.ImhNoPredictiveText
-				Layout.fillWidth: true
-				onActivated: {
-					PrefEquipment.default_cylinder = defaultCylinderBox.currentText
-				}
-			}
 		}
 		Rectangle {
 			color: subsurfaceTheme.darkerPrimaryColor
