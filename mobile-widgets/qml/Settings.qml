@@ -338,12 +338,48 @@ Kirigami.ScrollablePage {
 			}
 		}
 
-		Rectangle {
-			color: subsurfaceTheme.darkerPrimaryColor
-			height: 1
-			opacity: 0.5
-			Layout.fillWidth: true
+		TemplateSection {
+			id: sectionUnits
+			title: qsTr("Units")
+
+			GridLayout {
+				id: unit_system
+				visible: sectionUnits.isExpanded
+				columns: 2
+
+				TemplateLabel {
+					text: qsTr("Use Imperial Units")
+					Layout.preferredWidth: gridWidth * 0.75
+				}
+				SsrfSwitch {
+					id: imperialButton
+					checked: PrefUnits.unit_system === "imperial"
+					enabled: PrefUnits.unit_system === "metric"
+					Layout.preferredWidth: gridWidth * 0.25
+					onClicked: {
+						PrefUnits.unit_system = "imperial"
+						manager.changesNeedSaving()
+						manager.refreshDiveList()
+					}
+				}
+				TemplateLabel {
+					text: qsTr("Use Metric Units")
+					Layout.preferredWidth: gridWidth * 0.75
+				}
+				SsrfSwitch {
+					id: metricButtton
+					checked: PrefUnits.unit_system === "metric"
+					enabled: PrefUnits.unit_system === "imperial"
+					Layout.preferredWidth: gridWidth * 0.25
+					onClicked: {
+						PrefUnits.unit_system = "metric"
+						manager.changesNeedSaving()
+						manager.refreshDiveList()
+					}
+				}
+			}
 		}
+
 		GridLayout {
 			id: gpsPrefs
 			columns: 2
@@ -393,56 +429,6 @@ Kirigami.ScrollablePage {
 			Layout.fillWidth: true
 		}
 
-		GridLayout {
-			id: unit_system
-			columns: 2
-			TemplateLabel {
-				text: qsTr("Units")
-				font.pointSize: subsurfaceTheme.headingPointSize
-				font.weight: Font.Light
-				Layout.topMargin: Kirigami.Units.largeSpacing
-				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-				Layout.columnSpan: 2
-			}
-
-			TemplateLabel {
-				text: qsTr("Use Imperial Units")
-				Layout.preferredWidth: gridWidth * 0.75
-			}
-			SsrfSwitch {
-				id: imperialButton
-				checked: PrefUnits.unit_system === "imperial"
-				enabled: PrefUnits.unit_system === "metric"
-				Layout.preferredWidth: gridWidth * 0.25
-				onClicked: {
-					PrefUnits.unit_system = "imperial"
-					manager.changesNeedSaving()
-					manager.refreshDiveList()
-				}
-			}
-			TemplateLabel {
-				text: qsTr("Use Metric Units")
-				Layout.preferredWidth: gridWidth * 0.75
-			}
-			SsrfSwitch {
-				id: metricButtton
-				checked: PrefUnits.unit_system === "metric"
-				enabled: PrefUnits.unit_system === "imperial"
-				Layout.preferredWidth: gridWidth * 0.25
-				onClicked: {
-					PrefUnits.unit_system = "metric"
-					manager.changesNeedSaving()
-					manager.refreshDiveList()
-				}
-			}
-		}
-
-		Rectangle {
-			color: subsurfaceTheme.darkerPrimaryColor
-			height: 1
-			opacity: 0.5
-			Layout.fillWidth: true
-		}
 		GridLayout {
 			id: filterPrefs
 			columns: 2
