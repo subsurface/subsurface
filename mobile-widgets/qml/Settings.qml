@@ -305,12 +305,10 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 
-			Controls.TextField {
+			TemplateTextField {
 				id: distanceThreshold
 				text: PrefLocationService.distance_threshold
-				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.25
-				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					PrefLocationService.distance_threshold = distanceThreshold.text
 				}
@@ -321,12 +319,10 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 
-			Controls.TextField {
+			TemplateTextField {
 				id: timeThreshold
 				text: PrefLocationService.time_threshold / 60
-				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.25
-				color: subsurfaceTheme.textColor
 				onEditingFinished: {
 					PrefLocationService.time_threshold = timeThreshold.text * 60
 				}
