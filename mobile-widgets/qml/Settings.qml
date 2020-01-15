@@ -356,9 +356,8 @@ Kirigami.ScrollablePage {
 			TemplateLabel {
 				text: qsTr("Cylinder:")
 			}
-			Controls.ComboBox {
+			TemplateComboBox {
 				id: defaultCylinderBox
-				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredHeight: fontMetrics.height * 2.5
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
