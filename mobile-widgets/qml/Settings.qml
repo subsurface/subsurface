@@ -28,55 +28,49 @@ Kirigami.ScrollablePage {
 			title: qsTr("General settings")
 			isExpanded: true
 
-		}
+			GridLayout {
+				id: cloudSetting
+				visible: sectionGeneral.isExpanded
+				columns: 3
 
-		GridLayout {
-			id: cloudSetting
-			columns: 3
-
-			TemplateLabel {
-				text: qsTr("Cloud status")
-				font.pointSize: subsurfaceTheme.headingPointSize
-				font.weight: Font.Light
-				Layout.topMargin: Kirigami.Units.largeSpacing
-				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-				Layout.columnSpan: 3
-			}
-			TemplateLabel {
-				text: qsTr("Email")
-				Layout.preferredWidth: gridWidth * 0.15
-			}
-			TemplateLabel {
-				text: Backend.cloud_verification_status === Enums.CS_NOCLOUD ? qsTr("Not applicable") : PrefCloudStorage.cloud_storage_email
-				font.pointSize: subsurfaceTheme.regularPointSize
-				Layout.preferredWidth: gridWidth * 0.60
-			}
-			SsrfButton {
-				id: changeCloudSettings
-				text: qsTr("Change")
-				onClicked: {
-					Backend.cloud_verification_status = Enums.CS_UNKNOWN
-					manager.startPageText  = qsTr("Starting...");
+				TemplateLabel {
+					text: qsTr("Cloud status")
+					font.pointSize: subsurfaceTheme.headingPointSize
+					font.weight: Font.Light
+					Layout.topMargin: Kirigami.Units.largeSpacing
+					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+					Layout.columnSpan: 3
+				}
+				TemplateLabel {
+					text: qsTr("Email")
+					Layout.preferredWidth: gridWidth * 0.15
+				}
+				TemplateLabel {
+					text: Backend.cloud_verification_status === Enums.CS_NOCLOUD ? qsTr("Not applicable") : PrefCloudStorage.cloud_storage_email
+					Layout.preferredWidth: gridWidth * 0.60
+				}
+				SsrfButton {
+					id: changeCloudSettings
+					text: qsTr("Change")
+					onClicked: {
+						Backend.cloud_verification_status = Enums.CS_UNKNOWN
+						manager.startPageText  = qsTr("Starting...");
+					}
+				}
+				TemplateLabel {
+					text: qsTr("Status")
+					Layout.preferredWidth: gridWidth * 0.15
+					Layout.preferredHeight: Kirigami.Units.gridUnit * 1.5
+				}
+				TemplateLabel {
+					text: describe[Backend.cloud_verification_status]
+					Layout.preferredWidth: gridWidth * 0.60
+					Layout.preferredHeight: Kirigami.Units.gridUnit * 1.5
 				}
 			}
-			TemplateLabel {
-				text: qsTr("Status")
-				Layout.preferredWidth: gridWidth * 0.15
-				Layout.preferredHeight: Kirigami.Units.gridUnit * 1.5
-			}
-			TemplateLabel {
-				text: describe[Backend.cloud_verification_status]
-				Layout.preferredWidth: gridWidth * 0.60
-				Layout.preferredHeight: Kirigami.Units.gridUnit * 1.5
-			}
 		}
 
-		Rectangle {
-			color: subsurfaceTheme.darkerPrimaryColor
-			height: 1
-			opacity: 0.5
-			Layout.fillWidth: true
-		}
+
 		GridLayout {
 			id: themeSettings
 			columns: 3
