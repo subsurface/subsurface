@@ -62,8 +62,6 @@ void themeInterface::set_currentScale(double newScale)
 	emit titlePointSizeChanged(m_titlePointSize);
 }
 
-
-
 void themeInterface::update_theme()
 {
 	if (m_currentTheme == "Blue") {
@@ -110,5 +108,3 @@ void themeInterface::update_theme()
 		m_iconStyle = ":/icons-dark";
 	}
 }
-
-
