@@ -46,9 +46,6 @@ Kirigami.ApplicationWindow {
 			hidePassiveNotification();
 		}
 	}
-	FontMetrics {
-		id: fontMetrics
-	}
 	visible: false
 
 	BusyIndicator {
