@@ -591,6 +591,23 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	}
 
 	QtObject {
+		id: placeHolder
+
+		property int initialWidth: rootItem.width
+		property int initialHeight: rootItem.height
+
+		Component.onCompleted: {
+			// break the binding
+			initialWidth = initialWidth * 1
+			manager.appendTextToLog("SubsufaceTheme constructor completed, initial width " + initialWidth)
+			if (rootItem.firstChange) // only run the setup if we haven't seen a change, yet
+				setupUnits() // but don't count this as a change (after all, it's not)
+			else
+				manager.appendTextToLog("Already adjusted size, ignoring this")
+		}
+	}
+
+	QtObject {
 		id: subsurfaceTheme
 
 		property double regularPointSize: ThemeNew.regularPointSize
@@ -612,28 +629,16 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color contrastAccentColor: ThemeNew.contrastAccentColor
 		property color lightDrawerColor: ThemeNew.lightDrawerColor
 
-		property int initialWidth: rootItem.width
-		property int initialHeight: rootItem.height
-
-		Component.onCompleted: {
-			// break the binding
-			initialWidth = initialWidth * 1
-			manager.appendTextToLog("SubsufaceTheme constructor completed, initial width " + initialWidth)
-			if (rootItem.firstChange) // only run the setup if we haven't seen a change, yet
-				setupUnits() // but don't count this as a change (after all, it's not)
-			else
-				manager.appendTextToLog("Already adjusted size, ignoring this")
-		}
 	}
 
 	onWidthChanged: {
 		manager.appendTextToLog("Window width changed to " + width + " orientation " + Screen.primaryOrientation)
-		if (subsurfaceTheme.initialWidth !== undefined) {
-			if (width !== subsurfaceTheme.initialWidth && rootItem.firstChange) {
+		if (placeHolder.initialWidth !== undefined) {
+			if (width !== placeHolder.initialWidth && rootItem.firstChange) {
 				rootItem.firstChange = false
 				rootItem.lastOrientation = Screen.primaryOrientation
-				subsurfaceTheme.initialWidth = width
-				subsurfaceTheme.initialHeight = height
+				placeHolder.initialWidth = width
+				placeHolder.initialHeight = height
 				manager.appendTextToLog("first real change, so recalculating units and recording size as " + width + " x " + height)
 				setupUnits()
 			} else if (rootItem.lastOrientation !== undefined && rootItem.lastOrientation !== Screen.primaryOrientation) {
@@ -642,10 +647,10 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				setupUnits()
 			} else {
 				manager.appendTextToLog("size change without rotation to " + width + " x " + height)
-				if (width > subsurfaceTheme.initialWidth) {
-					manager.appendTextToLog("resetting to initial width " + subsurfaceTheme.initialWidth + " and height " + subsurfaceTheme.initialHeight)
-					rootItem.width = subsurfaceTheme.initialWidth
-					rootItem.height = subsurfaceTheme.initialHeight
+				if (width > placeHolder.initialWidth) {
+					manager.appendTextToLog("resetting to initial width " + placeHolder.initialWidth + " and height " + placeHolder.initialHeight)
+					rootItem.width = placeHolder.initialWidth
+					rootItem.height = placeHolder.initialHeight
 				}
 			}
 		} else {
