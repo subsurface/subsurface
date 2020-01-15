@@ -380,164 +380,154 @@ Kirigami.ScrollablePage {
 			}
 		}
 
-		GridLayout {
-			id: gpsPrefs
-			columns: 2
+		TemplateSection {
+			id: sectionAdvanced
+			title: qsTr("Advanced")
 
-			TemplateLabel {
-				text: qsTr("GPS location service")
-				font.pointSize: subsurfaceTheme.headingPointSize
-				font.weight: Font.Light
-				Layout.topMargin: Kirigami.Units.largeSpacing
-				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-				Layout.columnSpan: 2
-			}
+			GridLayout {
+				id: gpsPrefs
+				visible: sectionAdvanced.isExpanded
+				columns: 2
 
-			TemplateLabel {
-				text: qsTr("Distance threshold (meters)")
-				Layout.preferredWidth: gridWidth * 0.75
-			}
+				TemplateLabel {
+					text: qsTr("GPS location service")
+					font.pointSize: subsurfaceTheme.headingPointSize
+					font.weight: Font.Light
+					Layout.topMargin: Kirigami.Units.largeSpacing
+					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+					Layout.columnSpan: 2
+				}
 
-			TemplateTextField {
-				id: distanceThreshold
-				text: PrefLocationService.distance_threshold
-				Layout.preferredWidth: gridWidth * 0.25
-				onEditingFinished: {
-					PrefLocationService.distance_threshold = distanceThreshold.text
+				TemplateLabel {
+					text: qsTr("Distance threshold (meters)")
+					Layout.preferredWidth: gridWidth * 0.75
+				}
+
+				TemplateTextField {
+					id: distanceThreshold
+					text: PrefLocationService.distance_threshold
+					Layout.preferredWidth: gridWidth * 0.25
+					onEditingFinished: {
+						PrefLocationService.distance_threshold = distanceThreshold.text
+					}
+				}
+
+				TemplateLabel {
+					text: qsTr("Time threshold (minutes)")
+					Layout.preferredWidth: gridWidth * 0.75
+				}
+
+				TemplateTextField {
+					id: timeThreshold
+					text: PrefLocationService.time_threshold / 60
+					Layout.preferredWidth: gridWidth * 0.25
+					onEditingFinished: {
+						PrefLocationService.time_threshold = timeThreshold.text * 60
+					}
 				}
 			}
-
-			TemplateLabel {
-				text: qsTr("Time threshold (minutes)")
-				Layout.preferredWidth: gridWidth * 0.75
+			TemplateLine {
+				visible: sectionAdvanced.isExpanded
 			}
+			GridLayout {
+				id: filterPrefs
+				visible: sectionAdvanced.isExpanded
+				columns: 2
 
-			TemplateTextField {
-				id: timeThreshold
-				text: PrefLocationService.time_threshold / 60
-				Layout.preferredWidth: gridWidth * 0.25
-				onEditingFinished: {
-					PrefLocationService.time_threshold = timeThreshold.text * 60
+				TemplateLabel {
+					text: qsTr("Filter preferences")
+					font.pointSize: subsurfaceTheme.headingPointSize
+					font.weight: Font.Light
+					Layout.topMargin: Kirigami.Units.largeSpacing
+					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+					Layout.columnSpan: 2
+				}
+				TemplateLabel {
+					text: qsTr("Include notes in full text filtering")
+					Layout.preferredWidth: gridWidth * 0.75
+				}
+
+				SsrfSwitch {
+					id: fullTextNotes
+					checked: PrefGeneral.filterFullTextNotes
+					Layout.preferredWidth: gridWidth * 0.25
+					onClicked: {
+						PrefGeneral.filterFullTextNotes = checked
+					}
+				}
+
+				TemplateLabel {
+					text: qsTr("Match filter case sensitive")
+					Layout.preferredWidth: gridWidth * 0.75
+				}
+
+				SsrfSwitch {
+					id: filterCaseSensitive
+					checked: PrefGeneral.filterCaseSensitive
+					Layout.preferredWidth: gridWidth * 0.25
+					onClicked: {
+						PrefGeneral.filterCaseSensitive = checked
+					}
 				}
 			}
-
-		}
-		Rectangle {
-			color: subsurfaceTheme.darkerPrimaryColor
-			height: 1
-			opacity: 0.5
-			Layout.fillWidth: true
-		}
-
-		GridLayout {
-			id: filterPrefs
-			columns: 2
-
-			TemplateLabel {
-				text: qsTr("Filter preferences")
-				font.pointSize: subsurfaceTheme.headingPointSize
-				font.weight: Font.Light
-				Layout.topMargin: Kirigami.Units.largeSpacing
-				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-				Layout.columnSpan: 2
+			TemplateLine {
+				visible: sectionAdvanced.isExpanded
 			}
-			TemplateLabel {
-				text: qsTr("Include notes in full text filtering")
-				Layout.preferredWidth: gridWidth * 0.75
-			}
+			GridLayout {
+				id: whichBluetoothDevices
+				visible: sectionAdvanced.isExpanded
+				columns: 2
+				TemplateLabel {
+					text: qsTr("Bluetooth")
+					font.pointSize: subsurfaceTheme.headingPointSize
+					font.weight: Font.Light
+					Layout.topMargin: Kirigami.Units.largeSpacing
+					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+					Layout.columnSpan: 2
+				}
 
-			SsrfSwitch {
-				id: fullTextNotes
-				checked: PrefGeneral.filterFullTextNotes
-				Layout.preferredWidth: gridWidth * 0.25
-				onClicked: {
-					PrefGeneral.filterFullTextNotes = checked
+				TemplateLabel {
+					text: qsTr("Temporarily show all bluetooth devices \neven if not recognized as dive computers.\nPlease report DCs that need this setting")
+					Layout.preferredWidth: gridWidth * 0.75
+				}
+				SsrfSwitch {
+					id: nonDCButton
+					checked: manager.showNonDiveComputers
+					Layout.preferredWidth: gridWidth * 0.25
+					onClicked: {
+						manager.showNonDiveComputers = checked
+					}
 				}
 			}
-
-			TemplateLabel {
-				text: qsTr("Match filter case sensitive")
-				Layout.preferredWidth: gridWidth * 0.75
+			TemplateLine {
+				visible: sectionAdvanced.isExpanded
 			}
+			GridLayout {
+				id: developer
+				visible: sectionAdvanced.isExpanded
+				columns: 2
+				TemplateLabel {
+					text: qsTr("Developer")
+					font.pointSize: subsurfaceTheme.headingPointSize
+					font.weight: Font.Light
+					Layout.topMargin: Kirigami.Units.largeSpacing
+					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+					Layout.columnSpan: 2
+				}
 
-			SsrfSwitch {
-				id: filterCaseSensitive
-				checked: PrefGeneral.filterCaseSensitive
-				Layout.preferredWidth: gridWidth * 0.25
-				onClicked: {
-					PrefGeneral.filterCaseSensitive = checked
+				TemplateLabel {
+					text: qsTr("Display Developer menu")
+					Layout.preferredWidth: gridWidth * 0.75
+				}
+				SsrfSwitch {
+					id: developerButton
+					checked: PrefDisplay.show_developer
+					Layout.preferredWidth: gridWidth * 0.25
+					onClicked: {
+						PrefDisplay.show_developer = checked
+					}
 				}
 			}
-
-		}
-
-		Rectangle {
-			color: subsurfaceTheme.darkerPrimaryColor
-			height: 1
-			opacity: 0.5
-			Layout.fillWidth: true
-		}
-
-		GridLayout {
-			id: whichBluetoothDevices
-			columns: 2
-			TemplateLabel {
-				text: qsTr("Bluetooth")
-				font.pointSize: subsurfaceTheme.headingPointSize
-				font.weight: Font.Light
-				Layout.topMargin: Kirigami.Units.largeSpacing
-				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-				Layout.columnSpan: 2
-			}
-
-			TemplateLabel {
-				text: qsTr("Temporarily show all bluetooth devices \neven if not recognized as dive computers.\nPlease report DCs that need this setting")
-				Layout.preferredWidth: gridWidth * 0.75
-			}
-			SsrfSwitch {
-				id: nonDCButton
-				checked: manager.showNonDiveComputers
-				Layout.preferredWidth: gridWidth * 0.25
-				onClicked: {
-					manager.showNonDiveComputers = checked
-				}
-			}
-		}
-
-		Rectangle {
-			color: subsurfaceTheme.darkerPrimaryColor
-			height: 1
-			opacity: 0.5
-			Layout.fillWidth: true
-		}
-
-		GridLayout {
-			id: developer
-			columns: 2
-			TemplateLabel {
-				text: qsTr("Developer")
-				font.pointSize: subsurfaceTheme.headingPointSize
-				font.weight: Font.Light
-				Layout.topMargin: Kirigami.Units.largeSpacing
-				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-				Layout.columnSpan: 2
-			}
-
-			TemplateLabel {
-				text: qsTr("Display Developer menu")
-				Layout.preferredWidth: gridWidth * 0.75
-			}
-			SsrfSwitch {
-				id: developerButton
-				checked: PrefDisplay.show_developer
-				Layout.preferredWidth: gridWidth * 0.25
-				onClicked: {
-					PrefDisplay.show_developer = checked
-				}
-			}
-		}
-		Item {
-			height: Kirigami.Units.gridUnit * 6
 		}
 	}
 }
