@@ -20,8 +20,16 @@ Kirigami.ScrollablePage {
 		qsTr("Credentials verified"),
 		qsTr("No cloud mode")]
 
-	ColumnLayout {
+	Column {
 		width: gridWidth
+
+		TemplateSection {
+			id: sectionGeneral
+			title: qsTr("General settings")
+			isExpanded: true
+
+		}
+
 		GridLayout {
 			id: cloudSetting
 			columns: 3
