@@ -67,10 +67,10 @@ void qPref::registerQML(QQmlEngine *engine)
 		ct->setContextProperty("PrefTechnicalDetails", qPrefTechnicalDetails::instance());
 		ct->setContextProperty("PrefUnits", qPrefUnits::instance());
 		ct->setContextProperty("PrefUpdateManager", qPrefUpdateManager::instance());
-		ct->setContextProperty("PrefEquipment", qPrefUpdateManager::instance());
-		ct->setContextProperty("PrefMedia", qPrefUpdateManager::instance());
+		ct->setContextProperty("PrefEquipment", qPrefEquipment::instance());
+		ct->setContextProperty("PrefMedia", qPrefMedia::instance());
 		ct->setContextProperty("PrefClearDc", qPrefUpdateManager::instance());
-		ct->setContextProperty("PrefLog", qPrefUpdateManager::instance());
+		ct->setContextProperty("PrefLog", qPrefLog::instance());
 	}
 
 	// Register special types
