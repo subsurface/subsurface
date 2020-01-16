@@ -17,6 +17,7 @@
 #include "mobile-widgets/themeinterface.h"
 #include "mobile-widgets/qmlmanager.h"
 #include "qt-models/divelistmodel.h"
+#include "qt-models/diveplannermodel.h"
 #include "qt-models/gpslistmodel.h"
 #include "qt-models/messagehandlermodel.h"
 #include "profile-widget/qmlprofile.h"
@@ -102,6 +103,7 @@ void run_ui()
 	gpsSortModel->setSortRole(GpsListModel::GpsWhenRole);
 	gpsSortModel->sort(0, Qt::DescendingOrder);
 	QQmlContext *ctxt = engine.rootContext();
+	ctxt->setContextProperty("divePlannerModel", DivePlannerPointsModel::instance());
 	ctxt->setContextProperty("diveModel", DiveListSortModel::instance());
 	ctxt->setContextProperty("diveTripModel", CollapsedDiveListSortModel::instance());
 	ctxt->setContextProperty("gpsModel", gpsSortModel);
