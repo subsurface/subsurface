@@ -69,7 +69,6 @@ void qPref::registerQML(QQmlEngine *engine)
 		ct->setContextProperty("PrefUpdateManager", qPrefUpdateManager::instance());
 		ct->setContextProperty("PrefEquipment", qPrefEquipment::instance());
 		ct->setContextProperty("PrefMedia", qPrefMedia::instance());
-		ct->setContextProperty("PrefClearDc", qPrefUpdateManager::instance());
 		ct->setContextProperty("PrefLog", qPrefLog::instance());
 	}
 
