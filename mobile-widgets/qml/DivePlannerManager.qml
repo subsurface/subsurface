@@ -13,7 +13,7 @@ Kirigami.ScrollablePage {
 	ColumnLayout {
 		width: parent.width
 		spacing: 1
-		Layout.margins: 10
+		Layout.margins: 0
 
 		Text {
 			text: "Dive planner manager"
