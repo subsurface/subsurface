@@ -150,7 +150,7 @@ Kirigami.ApplicationWindow {
 		detailsWindow.cylinderModel2 = manager.cylinderInit
 		detailsWindow.cylinderModel3 = manager.cylinderInit
 		detailsWindow.cylinderModel4 = manager.cylinderInit
-		detailsWindow.cylinderIndex0 = PrefGeneral.default_cylinder == "" ? -1 : detailsWindow.cylinderModel0.indexOf(PrefGeneral.default_cylinder)
+		detailsWindow.cylinderIndex0 = PrefEquipment.default_cylinder == "" ? -1 : detailsWindow.cylinderModel0.indexOf(PrefEquipment.default_cylinder)
 		detailsWindow.usedCyl = ["",]
 		detailsWindow.weight = ""
 		detailsWindow.usedGas = []
@@ -412,7 +412,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				onTriggered: {
 					globalDrawer.close()
 					settingsWindow.defaultCylinderModel = manager.cylinderInit
-					PrefGeneral.default_cylinder === "" ? defaultCylinderIndex = "-1" : defaultCylinderIndex = settingsWindow.defaultCylinderModel.indexOf(PrefGeneral.default_cylinder)
+					PrefEquipment.default_cylinder === "" ? defaultCylinderIndex = "-1" : defaultCylinderIndex = settingsWindow.defaultCylinderModel.indexOf(PrefEquipment.default_cylinder)
 					pageStack.push(settingsWindow)
 					detailsWindow.endEditMode()
 				}
