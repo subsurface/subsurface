@@ -323,10 +323,7 @@ void QMLManager::openLocalThenRemote(QString url)
 		setLoadFromCloud(true);
 		if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_UNKNOWN)
 			qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_VERIFIED);
-		if (git_prefs.unit_system == IMPERIAL)
-			qPrefUnits::set_unit_system("imperial");
-		else if (git_prefs.unit_system == METRIC)
-			qPrefUnits::set_unit_system("metric");
+		qPrefUnits::set_unit_system(git_prefs.unit_system);
 		qPrefTechnicalDetails::set_tankbar(git_prefs.tankbar);
 		qPrefTechnicalDetails::set_dcceiling(git_prefs.dcceiling);
 		qPrefTechnicalDetails::set_show_ccr_setpoint(git_prefs.show_ccr_setpoint);

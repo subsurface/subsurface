@@ -73,7 +73,6 @@ void qPref::registerQML(QQmlEngine *engine)
 	}
 
 	// Register special types
-	qmlRegisterUncreatableType<qPrefCloudStorage>("org.subsurfacedivelog.mobile",1,0,"CloudStatus","Enum is not a type");
 	qRegisterMetaType<deco_mode>();
 	qRegisterMetaType<def_file_behavior>();
 	qRegisterMetaType<taxonomy_category>();

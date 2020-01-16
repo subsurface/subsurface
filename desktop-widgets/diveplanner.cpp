@@ -443,7 +443,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.drop_stone_mode->setChecked(prefs.drop_stone_mode);
 	ui.switch_at_req_stop->setChecked(prefs.switch_at_req_stop);
 	ui.min_switch_duration->setValue(plannerShared::min_switch_duration());
-	ui.surface_segment->setValue(prefs.surface_segment / 60);
+	ui.surface_segment->setValue(plannerShared::surface_segment());
 	ui.recreational_deco->setChecked(prefs.planner_deco_mode == RECREATIONAL);
 	ui.buehlmann_deco->setChecked(prefs.planner_deco_mode == BUEHLMANN);
 	ui.vpmb_deco->setChecked(prefs.planner_deco_mode == VPMB);
@@ -481,7 +481,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.o2narcotic, &QAbstractButton::toggled, plannerShared::instance(), plannerShared::set_o2narcotic);
 	connect(ui.switch_at_req_stop, &QAbstractButton::toggled, plannerShared::instance(), plannerShared::set_switch_at_req_stop);
 	connect(ui.min_switch_duration, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_min_switch_duration);
-	connect(ui.surface_segment, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setSurfaceSegment);
+	connect(ui.surface_segment, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), plannerShared::set_surface_segment);
 	connect(ui.rebreathermode, QOverload<int>::of(&QComboBox::currentIndexChanged), plannerModel, &DivePlannerPointsModel::setRebreatherMode);
 	connect(ui.rebreathermode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &PlannerSettingsWidget::setBailoutVisibility);
 
@@ -559,8 +559,8 @@ void PlannerSettingsWidget::settingsChanged()
 		ui.bottomSAC->setSingleStep(0.1);
 		ui.decoStopSAC->setDecimals(2);
 		ui.decoStopSAC->setSingleStep(0.1);
-		ui.bottomSAC->setValue(ml_to_cuft(prefs.bottomsac));
-		ui.decoStopSAC->setValue(ml_to_cuft(prefs.decosac));
+		ui.bottomSAC->setValue(plannerShared::bottomsac());
+		ui.decoStopSAC->setValue(plannerShared::decosac());
 	} else {
 		ui.bottomSAC->setSuffix(tr("ℓ/min"));
 		ui.decoStopSAC->setSuffix(tr("ℓ/min"));
@@ -574,14 +574,13 @@ void PlannerSettingsWidget::settingsChanged()
 	if(get_units()->pressure == units::BAR) {
 		ui.reserve_gas->setSuffix(tr("bar"));
 		ui.reserve_gas->setSingleStep(1);
-		ui.reserve_gas->setValue(prefs.reserve_gas / 1000);
 		ui.reserve_gas->setMaximum(300);
 	} else {
 		ui.reserve_gas->setSuffix(tr("psi"));
 		ui.reserve_gas->setSingleStep(10);
 		ui.reserve_gas->setMaximum(5000);
-		ui.reserve_gas->setValue(mbar_to_PSI(prefs.reserve_gas));
 	}
+	ui.reserve_gas->setValue(plannerShared::reserve_gas());
 
 	ui.bottomSAC->blockSignals(false);
 	ui.decoStopSAC->blockSignals(false);

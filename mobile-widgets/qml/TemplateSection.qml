@@ -4,7 +4,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 
 Column {
-	width: parent.width -20
+	width: parent.width -2
 	property string title: "no title"
 	property bool isExpanded: false
 

@@ -35,6 +35,8 @@ Kirigami.ApplicationWindow {
 	property bool firstChange: true
 	property int lastOrientation: undefined
 	property int colWidth: undefined
+	property int initialWidth: width
+	property int initialHeight: height
 
 	onNotificationTextChanged: {
 		if (notificationText != "") {
@@ -44,14 +46,6 @@ Kirigami.ApplicationWindow {
 		} else {
 			// hiding the notification right away may be a mistake as it hides the last warning / error
 			hidePassiveNotification();
-		}
-	}
-	FontMetrics {
-		id: fontMetrics
-		Component.onCompleted: {
-			manager.appendTextToLog("Using the following font: " + fontMetrics.font.family +
-					" at " + subsurfaceTheme.basePointSize + "pt" +
-					" with mobile_scale: " + PrefDisplay.mobile_scale)
 		}
 	}
 	visible: false
@@ -164,8 +158,8 @@ Kirigami.ApplicationWindow {
 		id: globalDrawer
 		height: rootItem.height
 		rightPadding: 0
-		enabled: (PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NOCLOUD ||
-				  PrefCloudStorage.cloud_verification_status === CloudStatus.CS_VERIFIED)
+		enabled: (PrefCloudStorage.cloud_verification_status === Enums.CS_NOCLOUD ||
+				  PrefCloudStorage.cloud_verification_status === Enums.CS_VERIFIED)
 		topContent: Image {
 			source: "qrc:/qml/icons/dive.jpg"
 			Layout.fillWidth: true
@@ -319,7 +313,7 @@ Kirigami.ApplicationWindow {
 						name: ":/icons/cloud_sync.svg"
 					}
 					text: qsTr("Manual sync with cloud")
-					enabled: PrefCloudStorage.cloud_verification_status === CloudStatus.CS_VERIFIED
+					enabled: PrefCloudStorage.cloud_verification_status === Enums.CS_VERIFIED
 					onTriggered: {
 						globalDrawer.close()
 						detailsWindow.endEditMode()
@@ -332,7 +326,7 @@ Kirigami.ApplicationWindow {
 					name: PrefCloudStorage.cloud_auto_sync ?  ":/icons/ic_cloud_off.svg" : ":/icons/ic_cloud_done.svg"
 				}
 				text: PrefCloudStorage.cloud_auto_sync ? qsTr("Disable auto cloud sync") : qsTr("Enable auto cloud sync")
-					visible: PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_NOCLOUD
+					visible: PrefCloudStorage.cloud_verification_status !== Enums.CS_NOCLOUD
 					onTriggered: {
 						PrefCloudStorage.cloud_auto_sync = !PrefCloudStorage.cloud_auto_sync
 						manager.setGitLocalOnly(PrefCloudStorage.cloud_auto_sync)
@@ -560,63 +554,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		] // end actions
 		Image {
 			fillMode: Image.PreserveAspectFit
-			source: "qrc:///icons/" + (subsurfaceTheme.currentTheme != "" ? subsurfaceTheme.currentTheme : "Blue") + "_gps.svg"
+			source: "qrc:///icons/" + (subsurfaceTheme.currentTheme !== "" ? subsurfaceTheme.currentTheme : "Blue") + "_gps.svg"
 			visible: locationServiceEnabled
 		}
-	}
-
-	function blueTheme() {
-		Material.theme = Material.Light
-		Material.accent = subsurfaceTheme.bluePrimaryColor
-		subsurfaceTheme.currentTheme = "Blue"
-		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.blueDarkerPrimaryColor
-		subsurfaceTheme.darkerPrimaryTextColor= subsurfaceTheme.blueDarkerPrimaryTextColor
-		subsurfaceTheme.primaryColor = subsurfaceTheme.bluePrimaryColor
-		subsurfaceTheme.primaryTextColor = subsurfaceTheme.bluePrimaryTextColor
-		subsurfaceTheme.lightPrimaryColor = subsurfaceTheme.blueLightPrimaryColor
-		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.blueLightPrimaryTextColor
-		subsurfaceTheme.backgroundColor = subsurfaceTheme.blueBackgroundColor
-		subsurfaceTheme.textColor = subsurfaceTheme.blueTextColor
-		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.blueSecondaryTextColor
-		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
-		subsurfaceTheme.drawerColor = subsurfaceTheme.lightDrawerColor
-		subsurfaceTheme.iconStyle = "-dark"
-	}
-
-	function pinkTheme() {
-		Material.theme = Material.Light
-		Material.accent = subsurfaceTheme.pinkPrimaryColor
-		subsurfaceTheme.currentTheme = "Pink"
-		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.pinkDarkerPrimaryColor
-		subsurfaceTheme.darkerPrimaryTextColor = subsurfaceTheme.pinkDarkerPrimaryTextColor
-		subsurfaceTheme.primaryColor = subsurfaceTheme.pinkPrimaryColor
-		subsurfaceTheme.primaryTextColor = subsurfaceTheme.pinkPrimaryTextColor
-		subsurfaceTheme.lightPrimaryColor = subsurfaceTheme.pinkLightPrimaryColor
-		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.pinkLightPrimaryTextColor
-		subsurfaceTheme.backgroundColor = subsurfaceTheme.pinkBackgroundColor
-		subsurfaceTheme.textColor = subsurfaceTheme.pinkTextColor
-		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.pinkSecondaryTextColor
-		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
-		subsurfaceTheme.drawerColor = subsurfaceTheme.lightDrawerColor
-		subsurfaceTheme.iconStyle = ""
-	}
-
-	function darkTheme() {
-		Material.theme = Material.Dark
-		Material.accent = subsurfaceTheme.darkPrimaryColor
-		subsurfaceTheme.currentTheme = "Dark"
-		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.darkDarkerPrimaryColor
-		subsurfaceTheme.darkerPrimaryTextColor= subsurfaceTheme.darkDarkerPrimaryTextColor
-		subsurfaceTheme.primaryColor = subsurfaceTheme.darkPrimaryColor
-		subsurfaceTheme.primaryTextColor = subsurfaceTheme.darkPrimaryTextColor
-		subsurfaceTheme.lightPrimaryColor = subsurfaceTheme.darkLightPrimaryColor
-		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.darkLightPrimaryTextColor
-		subsurfaceTheme.backgroundColor = subsurfaceTheme.darkBackgroundColor
-		subsurfaceTheme.textColor = subsurfaceTheme.darkTextColor
-		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.darkSecondaryTextColor
-		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
-		subsurfaceTheme.drawerColor = subsurfaceTheme.darkDrawerColor
-		subsurfaceTheme.iconStyle = "-dark"
 	}
 
 	function setupUnits() {
@@ -638,111 +578,17 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			// change our glabal grid unit
 			Kirigami.Units.gridUnit = kirigamiGridUnit
 		}
-		// break binding explicitly. Now we have a basePointSize that we can
-		// use to easily scale against
-		subsurfaceTheme.basePointSize = subsurfaceTheme.basePointSize * factor;
-
-		// set the initial UI scaling as in the the preferences
-		fontMetrics.font.pointSize = subsurfaceTheme.basePointSize * PrefDisplay.mobile_scale;
 		manager.appendTextToLog("Done setting up sizes")
-	}
-
-	QtObject {
-		id: subsurfaceTheme
-
-		// basePointSize is determinded based on the width of the screen (typically at start of the app)
-		// and must not be changed if we change font size. This is tricky in QML. In order to break the
-		// binding between basePointSize and fontMetrics.font.pointSize we explicitly multipy it by 1.0
-		// in the onComplete handler of this object.
-		property double basePointSize: fontMetrics.font.pointSize;
-
-		property double regularPointSize: fontMetrics.font.pointSize
-		property double titlePointSize: regularPointSize * 1.5
-		property double headingPointSize: regularPointSize * 1.2
-		property double smallPointSize: regularPointSize * 0.8
-
-		// icon Theme
-		property string iconStyle: ""
-
-		// colors currently in use
-		property string currentTheme
-		property color darkerPrimaryColor
-		property color darkerPrimaryTextColor
-		property color primaryColor
-		property color primaryTextColor
-		property color lightPrimaryColor
-		property color lightPrimaryTextColor
-		property color backgroundColor
-		property color textColor
-		property color secondaryTextColor
-		property color drawerColor
-
-		// colors for the blue theme
-		property color blueDarkerPrimaryColor: "#303F9f"
-		property color blueDarkerPrimaryTextColor: "#ECECEC"
-		property color bluePrimaryColor: "#3F51B5"
-		property color bluePrimaryTextColor: "#FFFFFF"
-		property color blueLightPrimaryColor: "#C5CAE9"
-		property color blueLightPrimaryTextColor: "#212121"
-		property color blueBackgroundColor: "#eff0f1"
-		property color blueTextColor: blueLightPrimaryTextColor
-		property color blueSecondaryTextColor: "#757575"
-
-		// colors for the pink theme
-		property color pinkDarkerPrimaryColor: "#C2185B"
-		property color pinkDarkerPrimaryTextColor: "#ECECEC"
-		property color pinkPrimaryColor: "#FF69B4"
-		property color pinkPrimaryTextColor: "#212121"
-		property color pinkLightPrimaryColor: "#FFDDF4"
-		property color pinkLightPrimaryTextColor: "#212121"
-		property color pinkBackgroundColor: "#eff0f1"
-		property color pinkTextColor: pinkLightPrimaryTextColor
-		property color pinkSecondaryTextColor: "#757575"
-
-		// colors for the dark theme
-		property color darkDarkerPrimaryColor: "#303F9f"
-		property color darkDarkerPrimaryTextColor: "#ECECEC"
-		property color darkPrimaryColor: "#3F51B5"
-		property color darkPrimaryTextColor: "#ECECEC"
-		property color darkLightPrimaryColor: "#C5CAE9"
-		property color darkLightPrimaryTextColor: "#ECECEC"
-		property color darkBackgroundColor: "#303030"
-		property color darkTextColor: darkPrimaryTextColor
-		property color darkSecondaryTextColor: "#757575"
-
-		property color contrastAccentColor: "#FF5722" // used for delete button
-		property color lightDrawerColor: "#FFFFFF"
-		property color darkDrawerColor: "#424242"
-		property int initialWidth: rootItem.width
-		property int initialHeight: rootItem.height
-		Component.onCompleted: {
-			// break the binding
-			initialWidth = initialWidth * 1
-			manager.appendTextToLog("SubsufaceTheme constructor completed, initial width " + initialWidth)
-			if (rootItem.firstChange) // only run the setup if we haven't seen a change, yet
-				setupUnits() // but don't count this as a change (after all, it's not)
-			else
-				manager.appendTextToLog("Already adjusted size, ignoring this")
-
-			// this needs to pick the theme from persistent preference settings
-			var theme = PrefDisplay.theme
-			if (theme == "Blue")
-				blueTheme()
-			else if (theme == "Pink")
-				pinkTheme()
-			else
-				darkTheme()
-		}
 	}
 
 	onWidthChanged: {
 		manager.appendTextToLog("Window width changed to " + width + " orientation " + Screen.primaryOrientation)
-		if (subsurfaceTheme.initialWidth !== undefined) {
-			if (width !== subsurfaceTheme.initialWidth && rootItem.firstChange) {
+		if (initialWidth !== undefined) {
+			if (width !== initialWidth && rootItem.firstChange) {
 				rootItem.firstChange = false
 				rootItem.lastOrientation = Screen.primaryOrientation
-				subsurfaceTheme.initialWidth = width
-				subsurfaceTheme.initialHeight = height
+				initialWidth = width
+				initialHeight = height
 				manager.appendTextToLog("first real change, so recalculating units and recording size as " + width + " x " + height)
 				setupUnits()
 			} else if (rootItem.lastOrientation !== undefined && rootItem.lastOrientation != Screen.primaryOrientation) {
@@ -751,10 +597,10 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				setupUnits()
 			} else {
 				manager.appendTextToLog("size change without rotation to " + width + " x " + height)
-				if (width > subsurfaceTheme.initialWidth) {
-					manager.appendTextToLog("resetting to initial width " + subsurfaceTheme.initialWidth + " and height " + subsurfaceTheme.initialHeight)
-					rootItem.width = subsurfaceTheme.initialWidth
-					rootItem.height = subsurfaceTheme.initialHeight
+				if (width > initialWidth) {
+					manager.appendTextToLog("resetting to initial width " + initialWidth + " and height " + initialHeight)
+					rootItem.width = initialWidth
+					rootItem.height = initialHeight
 				}
 			}
 		} else {
@@ -788,8 +634,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					manager.appendTextToLog("pageStack forced back to map")
 				}
 			} else if (pageStack.currentItem.objectName !== mapPage.objectName &&
-				        pageStack.lastItem.objectName === mapPage.objectName &&
-				        hackToOpenMap === 1 /* MapSelected */) {
+						pageStack.lastItem.objectName === mapPage.objectName &&
+						hackToOpenMap === 1 /* MapSelected */) {
 				// if we just picked the mapPage and are suddenly back on a different page
 				// force things back to the mapPage
 				manager.appendTextToLog("pageStack wrong page, switching back to map")
@@ -825,8 +671,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	StartPage {
 		id: startPage
 		anchors.fill: parent
-		visible: PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_NOCLOUD &&
-			 PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_VERIFIED
+		visible: PrefCloudStorage.cloud_verification_status !== Enums.CS_NOCLOUD &&
+			 PrefCloudStorage.cloud_verification_status !== Enums.CS_VERIFIED
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 
 		onVisibleChanged: {
@@ -937,6 +783,11 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	}
 
 	Component.onCompleted: {
+		// break the binding
+		initialWidth = initialWidth * 1
+		if (firstChange) // only run the setup if we haven't seen a change, yet
+			setupUnits() // but don't count this as a change (after all, it's not)
+
 		// try to see if we can detect certain device vendors through these properties
 		if (Screen.manufacturer + " " + Screen.model + " " + Screen.name !== "  ")
 			manager.appendTextToLog("Running on " + Screen.manufacturer + " " + Screen.model + " " + Screen.name)

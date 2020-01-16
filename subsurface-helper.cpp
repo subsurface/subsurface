@@ -8,11 +8,13 @@
 #include "core/qt-gui.h"
 #include "core/settings/qPref.h"
 #include "core/ssrf.h"
+#include "backend-shared/typeenum.h"
 
 #ifdef SUBSURFACE_MOBILE
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include "mobile-widgets/themeinterface.h"
 #include "mobile-widgets/qmlmanager.h"
 #include "qt-models/divelistmodel.h"
 #include "qt-models/gpslistmodel.h"
@@ -182,12 +184,18 @@ void register_qml_types(QQmlEngine *engine)
 #ifndef SUBSURFACE_TEST_DATA
 	int rc;
 
+	// Register shared enum
+	qmlRegisterUncreatableType<typeEnum>("org.subsurfacedivelog.mobile",1,0,"Enums","Enum is not a type");
+
 #ifdef SUBSURFACE_MOBILE
 	// register shared diveplanner class
 	if (engine != NULL) {
 		QQmlContext *ct = engine->rootContext();
 
 		ct->setContextProperty("Planner", plannerShared::instance());
+		themeInterface::instance()->setup();
+		ct->setContextProperty("ThemeNew", themeInterface::instance());
+		ct->setContextProperty("subsurfaceTheme", themeInterface::instance());
 	}
 
 	REGISTER_TYPE(QMLManager, "QMLManager");

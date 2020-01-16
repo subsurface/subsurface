@@ -10,7 +10,6 @@ import org.kde.kirigami 2.4 as Kirigami
 
 Kirigami.ScrollablePage {
 	id: logWindow
-	width: subsurfaceTheme.columnWidth
 	objectName: "Log"
 	title: qsTr("Application Log")
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }

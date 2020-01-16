@@ -53,7 +53,7 @@ Kirigami.Page {
 	property alias cylinderModel4: detailsEdit.cylinderModel4
 
 	title: currentItem && currentItem.modelData && currentItem.modelData.location && "" !== currentItem.modelData.location ?
-		       currentItem.modelData.location : qsTr("Dive details")
+			   currentItem.modelData.location : qsTr("Dive details")
 	state: "view"
 	leftPadding: 0
 	topPadding: Kirigami.Units.gridUnit / 2
@@ -188,8 +188,8 @@ Kirigami.Page {
 
 	actions.main: Kirigami.Action {
 		icon {
-			name: state !== "view" ? ":/icons" + subsurfaceTheme.iconStyle + "/document-save.svg" :
-						 ":/icons" + subsurfaceTheme.iconStyle + "/document-edit.svg"
+			name: state !== "view" ? subsurfaceTheme.iconStyle + "/document-save.svg" :
+						 subsurfaceTheme.iconStyle + "/document-edit.svg"
 			color: subsurfaceTheme.primaryColor
 		}
 		text: state !== "view" ? qsTr("Save edits") : qsTr("Edit dive")

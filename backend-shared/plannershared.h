@@ -25,7 +25,8 @@ class plannerShared: public QObject {
 	Q_PROPERTY(int descrate READ descrate WRITE set_descrate NOTIFY descrateChanged);
 
 	// Planning data
-	Q_PROPERTY(deco_mode planner_deco_mode READ planner_deco_mode WRITE set_planner_deco_mode NOTIFY planner_deco_modeChanged);
+	Q_PROPERTY(int planner_deco_mode READ planner_deco_mode WRITE set_planner_deco_mode NOTIFY planner_deco_modeChanged);
+	Q_PROPERTY(int dive_mode READ dive_mode WRITE set_dive_mode NOTIFY dive_modeChanged);
 	Q_PROPERTY(int reserve_gas READ reserve_gas WRITE set_reserve_gas NOTIFY reserve_gasChanged);
 	Q_PROPERTY(bool safetystop READ safetystop WRITE set_safetystop NOTIFY safetystopChanged);
 	Q_PROPERTY(int gflow READ gflow WRITE set_gflow NOTIFY gflowChanged);
@@ -37,6 +38,7 @@ class plannerShared: public QObject {
 	Q_PROPERTY(bool switch_at_req_stop READ switch_at_req_stop WRITE set_switch_at_req_stop NOTIFY switch_at_req_stopChanged);
 	Q_PROPERTY(bool doo2breaks READ doo2breaks WRITE set_doo2breaks NOTIFY doo2breaksChanged);
 	Q_PROPERTY(int min_switch_duration READ min_switch_duration WRITE set_min_switch_duration NOTIFY min_switch_durationChanged);
+	Q_PROPERTY(int surface_segment READ surface_segment WRITE set_surface_segment NOTIFY surface_segmentChanged);
 
 	// Gas data
 	Q_PROPERTY(double bottomsac READ bottomsac WRITE set_bottomsac NOTIFY bottomsacChanged);
@@ -66,7 +68,8 @@ public:
 	static int descrate();
 
 	// Planning data
-	static deco_mode planner_deco_mode();
+	static int planner_deco_mode();
+	static int dive_mode();
 	static int reserve_gas();
 	static bool safetystop();
 	static int gflow();
@@ -78,6 +81,7 @@ public:
 	static bool switch_at_req_stop();
 	static bool doo2breaks();
 	static int min_switch_duration();
+	static int surface_segment();
 
 	// Gas data
 	static double bottomsac();
@@ -105,7 +109,8 @@ public slots:
 	static void set_descrate(int value);
 
 	// Planning data
-	static void set_planner_deco_mode(deco_mode value);
+	static void set_planner_deco_mode(int value);
+	static void set_dive_mode(int value);
 	static void set_reserve_gas(int value);
 	static void set_safetystop(bool value);
 	static void set_gflow(int value);
@@ -117,6 +122,7 @@ public slots:
 	static void set_switch_at_req_stop(bool value);
 	static void set_doo2breaks(bool value);
 	static void set_min_switch_duration(int value);
+	static void set_surface_segment(int value);
 
 	// Gas data
 	static void set_bottomsac(double value);
@@ -144,7 +150,8 @@ signals:
 	void descrateChanged(int value);
 
 	// Planning data
-	void planner_deco_modeChanged(deco_mode value);
+	void planner_deco_modeChanged(int value);
+	void dive_modeChanged(int value);
 	void dobailoutChanged(bool value);
 	void reserve_gasChanged(int value);
 	void safetystopChanged(bool value);
@@ -156,6 +163,7 @@ signals:
 	void switch_at_req_stopChanged(bool value);
 	void doo2breaksChanged(bool value);
 	void min_switch_durationChanged(int value);
+	void surface_segmentChanged(int value);
 
 	// Gas data
 	void bottomsacChanged(double value);
@@ -176,9 +184,12 @@ signals:
 
 private slots:
 	static void unit_lengthChangedSlot(int value);
+	static void unit_volumeChangedSlot(int value);
 
 private:
 	plannerShared();
+
+	static int divemode;
 };
 
 #endif // PLANNERSHARED_H

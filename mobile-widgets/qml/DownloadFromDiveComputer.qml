@@ -57,12 +57,12 @@ Kirigami.Page {
 			Controls.ComboBox {
 				id: comboVendor
 				Layout.fillWidth: true
-				Layout.preferredHeight: fontMetrics.height * 2.5
+				Layout.preferredHeight: subsurfaceTheme.height * 2.5
 				model: vendorList
 				currentIndex: -1
 				delegate: Controls.ItemDelegate {
 					width: comboVendor.width
-					height: fontMetrics.height * 2.0
+					height: subsurfaceTheme.height * 2.0
 					contentItem: Text {
 						text: modelData
 						font.pointSize: subsurfaceTheme.regularPointSize
@@ -99,12 +99,12 @@ Kirigami.Page {
 			Controls.ComboBox {
 				id: comboProduct
 				Layout.fillWidth: true
-				Layout.preferredHeight: fontMetrics.height * 2.5
+				Layout.preferredHeight: subsurfaceTheme.height * 2.5
 				model: null
 				currentIndex: -1
 				delegate: Controls.ItemDelegate {
 					width: comboProduct.width
-					height: fontMetrics.height * 2.0
+					height: subsurfaceTheme.height * 2.0
 					contentItem: Text {
 						text: modelData
 						font.pointSize: subsurfaceTheme.regularPointSize
@@ -139,12 +139,12 @@ Kirigami.Page {
 			Controls.ComboBox {
 				id: comboConnection
 				Layout.fillWidth: true
-				Layout.preferredHeight: fontMetrics.height * 2.5
+				Layout.preferredHeight: subsurfaceTheme.height * 2.5
 				model: connectionListModel
 				currentIndex: -1
 				delegate: Controls.ItemDelegate {
 					width: comboConnection.width
-					height: fontMetrics.height * 2.0
+					height: subsurfaceTheme.height * 2.0
 					contentItem: Text {
 						text: modelData
 						font.pointSize: subsurfaceTheme.smallPointSize
