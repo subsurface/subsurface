@@ -2,6 +2,7 @@
 #ifndef QMLINTERFACE_H
 #define QMLINTERFACE_H
 #include "core/settings/qPrefCloudStorage.h"
+#include "core/settings/qPrefUnit.h"
 
 #include <QObject>
 #include <QQmlContext>
@@ -25,6 +26,14 @@ class QMLInterface : public QObject {
 
 	// Q_PROPERTY used in QML
 	Q_PROPERTY(CLOUD_STATUS cloud_verification_status READ cloud_verification_status WRITE set_cloud_verification_status NOTIFY cloud_verification_statusChanged)
+	Q_PROPERTY(DURATION duration_units READ duration_units WRITE set_duration_units NOTIFY duration_unitsChanged)
+	Q_PROPERTY(LENGTH length READ length WRITE set_length NOTIFY lengthChanged)
+	Q_PROPERTY(PRESSURE pressure READ pressure WRITE set_pressure NOTIFY pressureChanged)
+	Q_PROPERTY(TEMPERATURE temperature READ temperature WRITE set_temperature NOTIFY temperatureChanged)
+	Q_PROPERTY(UNIT_SYSTEM unit_system READ unit_system WRITE set_unit_system NOTIFY unit_systemChanged)
+	Q_PROPERTY(TIME vertical_speed_time READ vertical_speed_time WRITE set_vertical_speed_time NOTIFY vertical_speed_timeChanged)
+	Q_PROPERTY(VOLUME volume READ volume WRITE set_volume NOTIFY volumeChanged)
+	Q_PROPERTY(WEIGHT weight READ weight WRITE set_weight NOTIFY weightChanged)
 
 public:
 	static QMLInterface *instance();
@@ -102,12 +111,36 @@ public:
 
 public:
 	CLOUD_STATUS cloud_verification_status() { return (CLOUD_STATUS)prefs.cloud_verification_status; }
+	DURATION duration_units() { return (DURATION)prefs.units.duration_units; }
+	LENGTH length() { return (LENGTH)prefs.units.length; }
+	PRESSURE pressure() { return (PRESSURE)prefs.units.pressure; }
+	TEMPERATURE temperature() { return (TEMPERATURE)prefs.units.temperature; }
+	UNIT_SYSTEM unit_system() { return (UNIT_SYSTEM)prefs.unit_system; }
+	TIME vertical_speed_time() { return (TIME)prefs.units.vertical_speed_time; }
+	VOLUME volume() { return (VOLUME)prefs.units.volume; }
+	WEIGHT weight() { return (WEIGHT)prefs.units.weight; }
 
 public slots:
 	void set_cloud_verification_status(CLOUD_STATUS value) {  qPrefCloudStorage::set_cloud_verification_status(value); }
+	void set_duration_units(DURATION value) { qPrefUnits::set_duration_units((units::DURATION)value); }
+	void set_length(LENGTH value) { qPrefUnits::set_length((units::LENGTH)value); }
+	void set_pressure(PRESSURE value) { qPrefUnits::set_pressure((units::PRESSURE)value); }
+	void set_temperature(TEMPERATURE value) { qPrefUnits::set_temperature((units::TEMPERATURE)value); }
+	void set_unit_system(UNIT_SYSTEM value) { qPrefUnits::set_unit_system((unit_system_values)value); }
+	void set_vertical_speed_time(TIME value) { qPrefUnits::set_vertical_speed_time((units::TIME)value); }
+	void set_volume(VOLUME value) { qPrefUnits::set_volume((units::VOLUME)value); }
+	void set_weight(WEIGHT value) { qPrefUnits::set_weight((units::WEIGHT)value); }
 
 signals:
 	void cloud_verification_statusChanged(CLOUD_STATUS);
+	void duration_unitsChanged(DURATION);
+	void lengthChanged(LENGTH);
+	void pressureChanged(PRESSURE);
+	void temperatureChanged(TEMPERATURE);
+	void unit_systemChanged(UNIT_SYSTEM);
+	void vertical_speed_timeChanged(TIME);
+	void volumeChanged(VOLUME);
+	void weightChanged(WEIGHT);
 
 private:
 	QMLInterface() {}
