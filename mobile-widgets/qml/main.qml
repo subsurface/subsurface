@@ -726,9 +726,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 			// this needs to pick the theme from persistent preference settings
 			var theme = PrefDisplay.theme
-			if (theme == "Blue")
+			if (theme === "Blue")
 				blueTheme()
-			else if (theme == "Pink")
+			else if (theme === "Pink")
 				pinkTheme()
 			else
 				darkTheme()
@@ -745,7 +745,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				subsurfaceTheme.initialHeight = height
 				manager.appendTextToLog("first real change, so recalculating units and recording size as " + width + " x " + height)
 				setupUnits()
-			} else if (rootItem.lastOrientation !== undefined && rootItem.lastOrientation != Screen.primaryOrientation) {
+			} else if (rootItem.lastOrientation !== undefined && rootItem.lastOrientation !== Screen.primaryOrientation) {
 				manager.appendTextToLog("Screen rotated, no action necessary")
 				rootItem.lastOrientation = Screen.primaryOrientation
 				setupUnits()
@@ -788,8 +788,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					manager.appendTextToLog("pageStack forced back to map")
 				}
 			} else if (pageStack.currentItem.objectName !== mapPage.objectName &&
-				        pageStack.lastItem.objectName === mapPage.objectName &&
-				        hackToOpenMap === 1 /* MapSelected */) {
+					   pageStack.lastItem.objectName === mapPage.objectName &&
+					   hackToOpenMap === 1 /* MapSelected */) {
 				// if we just picked the mapPage and are suddenly back on a different page
 				// force things back to the mapPage
 				manager.appendTextToLog("pageStack wrong page, switching back to map")
