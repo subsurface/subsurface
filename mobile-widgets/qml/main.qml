@@ -599,7 +599,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		subsurfaceTheme.textColor = subsurfaceTheme.pinkTextColor
 		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.pinkSecondaryTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
-		subsurfaceTheme.drawerColor = subsurfaceTheme.lightDrawerColor
+		subsurfaceTheme.drawerColor = subsurfaceTheme.pinkLightDrawerColor
+		subsurfaceTheme.contrastAccentColor = subsurfaceTheme.pinkContrastAccentColor
+		subsurfaceTheme.lightDrawerColor = subsurfaceTheme.pinkLightDrawerColor
 		subsurfaceTheme.iconStyle = ""
 	}
 
@@ -705,6 +707,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color pinkBackgroundColor: "#eff0f1"
 		property color pinkTextColor: pinkLightPrimaryTextColor
 		property color pinkSecondaryTextColor: "#757575"
+		property color pinkLightDrawerColor: "#FFFFFF"
+		property color pinkDrawerColor: pinkLightDrawerColor
+		property color pinkContrastAccentColor: "#FF5722" // used for delete button
 
 		// colors for the dark theme
 		property color darkDarkerPrimaryColor: "#303F9f"
