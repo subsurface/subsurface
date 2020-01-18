@@ -676,6 +676,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color textColor
 		property color secondaryTextColor
 		property color drawerColor
+		property color contrastAccentColor: "#FF5722" // used for delete button
+		property color lightDrawerColor: "#FFFFFF"
 
 		// colors for the blue theme
 		property color blueDarkerPrimaryColor: "#303F9f"
@@ -709,12 +711,10 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color darkBackgroundColor: "#303030"
 		property color darkTextColor: darkPrimaryTextColor
 		property color darkSecondaryTextColor: "#757575"
-
-		property color contrastAccentColor: "#FF5722" // used for delete button
-		property color lightDrawerColor: "#FFFFFF"
 		property color darkDrawerColor: "#424242"
 		property int initialWidth: rootItem.width
 		property int initialHeight: rootItem.height
+
 		Component.onCompleted: {
 			// break the binding
 			initialWidth = initialWidth * 1
