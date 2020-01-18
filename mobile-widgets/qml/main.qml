@@ -620,6 +620,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.darkSecondaryTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
 		subsurfaceTheme.drawerColor = subsurfaceTheme.darkDrawerColor
+		subsurfaceTheme.contrastAccentColor = subsurfaceTheme.darkContrastAccentColor
+		subsurfaceTheme.lightDrawerColor = subsurfaceTheme.darkLightDrawerColor
 		subsurfaceTheme.iconStyle = "-dark"
 	}
 
@@ -722,6 +724,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color darkTextColor: darkPrimaryTextColor
 		property color darkSecondaryTextColor: "#757575"
 		property color darkDrawerColor: "#424242"
+		property color darkLightDrawerColor: "#FFFFFF"
+		property color darkContrastAccentColor: "#FF5722" // used for delete button
+
 		property int initialWidth: rootItem.width
 		property int initialHeight: rootItem.height
 
