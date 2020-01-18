@@ -31,6 +31,7 @@ public:
 	static void sync() { loadSync(true); }
 
 public:
+	// NOTE: these enums are duplicated in mobile-widgets/qmlinterface.h
 	enum cloud_status {
 		CS_UNKNOWN,
 		CS_INCORRECT_USER_PASSWD,

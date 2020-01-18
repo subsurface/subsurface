@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #ifndef QMLINTERFACE_H
 #define QMLINTERFACE_H
+#include "core/settings/qPrefCloudStorage.h"
+
 #include <QObject>
 #include <QQmlContext>
 // This class is a pure interface class and may not contain any implementation code
@@ -22,6 +24,7 @@ class QMLInterface : public QObject {
 	Q_OBJECT
 
 	// Q_PROPERTY used in QML
+	Q_PROPERTY(CLOUD_STATUS cloud_verification_status READ cloud_verification_status WRITE set_cloud_verification_status NOTIFY cloud_verification_statusChanged)
 
 public:
 	static QMLInterface *instance();
@@ -87,6 +90,24 @@ public:
 		ALWAYS_HOURS
 	};
 	Q_ENUM(DURATION);
+
+	enum CLOUD_STATUS {
+			CS_UNKNOWN,
+			CS_INCORRECT_USER_PASSWD,
+			CS_NEED_TO_VERIFY,
+			CS_VERIFIED,
+			CS_NOCLOUD
+	};
+	Q_ENUM(CLOUD_STATUS);
+
+public:
+	CLOUD_STATUS cloud_verification_status() { return (CLOUD_STATUS)prefs.cloud_verification_status; }
+
+public slots:
+	void set_cloud_verification_status(CLOUD_STATUS value) {  qPrefCloudStorage::set_cloud_verification_status(value); }
+
+signals:
+	void cloud_verification_statusChanged(CLOUD_STATUS);
 
 private:
 	QMLInterface() {}
