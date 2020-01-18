@@ -18,4 +18,6 @@ void QMLInterface::setup(QQmlContext *ct)
 	qmlRegisterUncreatableType<QMLInterface>("org.subsurfacedivelog.mobile",1,0,"Enums","Enum is not a type");
 
 	// relink signals to QML
+	connect(qPrefCloudStorage::instance(), &qPrefCloudStorage::cloud_verification_statusChanged,
+		[=] (int value) { emit instance()->cloud_verification_statusChanged(CLOUD_STATUS(value)); });
 }
