@@ -1,3 +1,4 @@
+Mobile: new layout for Settings page
 Desktop: add the ability to modify dive salinity
 Mobile: add menu item for cloud password reset
 Mobile: add DivePlanner setup, as first part of a mobile diveplanner
