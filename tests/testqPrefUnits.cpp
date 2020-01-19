@@ -3,6 +3,7 @@
 
 #include "core/pref.h"
 #include "core/qthelper.h"
+#include "core/settings/qPref.h"
 #include "core/settings/qPrefUnit.h"
 
 #include <QTest>
@@ -13,6 +14,7 @@ void TestQPrefUnits::initTestCase()
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("SubsurfaceTestQPrefUnits");
+	qPref::registerQML(NULL);
 }
 
 void TestQPrefUnits::test_struct_get()
