@@ -47,6 +47,13 @@ public:
 	bool tankInUse(int cylinderid);
 	void setupCylinders();
 	bool updateMaxDepth();
+
+	int ascrate75Display();
+	int ascrate50Display();
+	int ascratestopsDisplay();
+	int ascratelast6mDisplay();
+	int descrateDisplay();
+
 	/**
 	 * @return the row number.
 	 */

@@ -520,11 +520,19 @@ void DivePlannerPointsModel::setAscrate75(int rate)
 	qPrefDivePlanner::set_ascrate75(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
+int DivePlannerPointsModel::ascrate75Display()
+{
+	return lrint((float)prefs.ascrate75 / UNIT_FACTOR);
+}
 
 void DivePlannerPointsModel::setAscrate50(int rate)
 {
 	qPrefDivePlanner::set_ascrate50(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
+}
+int DivePlannerPointsModel::ascrate50Display()
+{
+	return lrint((float)prefs.ascrate50 / UNIT_FACTOR);
 }
 
 void DivePlannerPointsModel::setAscratestops(int rate)
@@ -532,17 +540,29 @@ void DivePlannerPointsModel::setAscratestops(int rate)
 	qPrefDivePlanner::set_ascratestops(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
+int DivePlannerPointsModel::ascratestopsDisplay()
+{
+	return lrint((float)prefs.ascratestops / UNIT_FACTOR);
+}
 
 void DivePlannerPointsModel::setAscratelast6m(int rate)
 {
 	qPrefDivePlanner::set_ascratelast6m(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
+int DivePlannerPointsModel::ascratelast6mDisplay()
+{
+	return lrint((float)prefs.ascratelast6m / UNIT_FACTOR);
+}
 
 void DivePlannerPointsModel::setDescrate(int rate)
 {
 	qPrefDivePlanner::set_descrate(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
+}
+int DivePlannerPointsModel::descrateDisplay()
+{
+	return lrint((float)prefs.descrate / UNIT_FACTOR);
 }
 
 void DivePlannerPointsModel::setVerbatim(bool value)
