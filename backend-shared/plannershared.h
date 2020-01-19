@@ -15,15 +15,6 @@
 class plannerShared: public QObject {
 	Q_OBJECT
 
-	// Ascend/Descend data, converted to meter/feet depending on user selection
-	// Settings these will automatically update the corresponding qPrefDivePlanner
-	// Variables
-	Q_PROPERTY(int ascratelast6m READ ascratelast6m WRITE set_ascratelast6m NOTIFY ascratelast6mChanged);
-	Q_PROPERTY(int ascratestops READ ascratestops WRITE set_ascratestops NOTIFY ascratestopsChanged);
-	Q_PROPERTY(int ascrate50 READ ascrate50 WRITE set_ascrate50 NOTIFY ascrate50Changed);
-	Q_PROPERTY(int ascrate75 READ ascrate75 WRITE set_ascrate75 NOTIFY ascrate75Changed);
-	Q_PROPERTY(int descrate READ descrate WRITE set_descrate NOTIFY descrateChanged);
-
 	// Planning data
 	Q_PROPERTY(deco_mode planner_deco_mode READ planner_deco_mode WRITE set_planner_deco_mode NOTIFY planner_deco_modeChanged);
 	Q_PROPERTY(int reserve_gas READ reserve_gas WRITE set_reserve_gas NOTIFY reserve_gasChanged);
@@ -58,13 +49,6 @@ class plannerShared: public QObject {
 public:
 	static plannerShared *instance();
 
-	// Ascend/Descend data, converted to meter/feet depending on user selection
-	static int ascratelast6m();
-	static int ascratestops();
-	static int ascrate50();
-	static int ascrate75();
-	static int descrate();
-
 	// Planning data
 	static deco_mode planner_deco_mode();
 	static int reserve_gas();
@@ -97,12 +81,6 @@ public:
 	static bool display_variations();
 
 public slots:
-	// Ascend/Descend data, converted to meter/feet depending on user selection
-	static void set_ascratelast6m(int value);
-	static void set_ascratestops(int value);
-	static void set_ascrate50(int value);
-	static void set_ascrate75(int value);
-	static void set_descrate(int value);
 
 	// Planning data
 	static void set_planner_deco_mode(deco_mode value);
@@ -136,13 +114,6 @@ public slots:
 	static void set_display_variations(bool value);
 
 signals:
-	// Ascend/Descend data, converted to meter/feet depending on user selection
-	void ascratelast6mChanged(int value);
-	void ascratestopsChanged(int value);
-	void ascrate50Changed(int value);
-	void ascrate75Changed(int value);
-	void descrateChanged(int value);
-
 	// Planning data
 	void planner_deco_modeChanged(deco_mode value);
 	void dobailoutChanged(bool value);
