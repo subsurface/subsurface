@@ -353,11 +353,11 @@ Kirigami.ScrollablePage {
 				}
 				SsrfSwitch {
 					id: imperialButton
-					checked: PrefUnits.unit_system === "imperial"
-					enabled: PrefUnits.unit_system === "metric"
+					checked: Backend.unit_system === Enums.IMPERIAL
+					enabled: Backend.unit_system === Enums.METRIC
 					Layout.preferredWidth: gridWidth * 0.25
 					onClicked: {
-						PrefUnits.unit_system = "imperial"
+						Backend.unit_system = Enums.IMPERIAL
 						manager.changesNeedSaving()
 						manager.refreshDiveList()
 					}
@@ -368,11 +368,11 @@ Kirigami.ScrollablePage {
 				}
 				SsrfSwitch {
 					id: metricButtton
-					checked: PrefUnits.unit_system === "metric"
-					enabled: PrefUnits.unit_system === "imperial"
+					checked: Backend.unit_system === Enums.METRIC
+					enabled: Backend.unit_system === Enums.IMPERIAL
 					Layout.preferredWidth: gridWidth * 0.25
 					onClicked: {
-						PrefUnits.unit_system = "metric"
+						Backend.unit_system = Enums.METRIC
 						manager.changesNeedSaving()
 						manager.refreshDiveList()
 					}
