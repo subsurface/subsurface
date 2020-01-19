@@ -10,7 +10,6 @@ private slots:
 	void initTestCase();
 
 	// test case grouping correspond to panels diveplanner window
-	void test_rates();
 	void test_planning();
 	void test_gas();
 	void test_notes();

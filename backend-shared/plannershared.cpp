@@ -17,56 +17,6 @@ plannerShared::plannerShared()
 	connect(qPrefUnits::instance(), &qPrefUnits::lengthChanged, this, &unit_lengthChangedSlot);
 }
 
-
-// Used to convert between meter/feet and keep the qPref variables independent
-#define TO_MM_BY_SEC ((prefs.units.length == units::METERS) ? 1000.0 / 60.0 : feet_to_mm(1) / 60.0)
-
-// Converted meter/feet qPrefDivePlanner values
-int plannerShared::ascratelast6m()
-{
-	return lrint((float)prefs.ascratelast6m / TO_MM_BY_SEC);
-}
-void plannerShared::set_ascratelast6m(int value)
-{
-	qPrefDivePlanner::set_ascratelast6m(lrint((float)value * TO_MM_BY_SEC));
-}
-
-int plannerShared::ascratestops()
-{
-	return lrint((float)prefs.ascratestops / TO_MM_BY_SEC);
-}
-void plannerShared::set_ascratestops(int value)
-{
-	qPrefDivePlanner::set_ascratestops(lrint((float)value * TO_MM_BY_SEC));
-}
-
-int plannerShared::ascrate50()
-{
-	return lrint((float)prefs.ascrate50 / TO_MM_BY_SEC);
-}
-void plannerShared::set_ascrate50(int value)
-{
-	qPrefDivePlanner::set_ascrate50(lrint((float)value * TO_MM_BY_SEC));
-}
-
-int plannerShared::ascrate75()
-{
-	return lrint((float)prefs.ascrate75 / TO_MM_BY_SEC);
-}
-void plannerShared::set_ascrate75(int value)
-{
-	qPrefDivePlanner::set_ascrate75(lrint((float)value * TO_MM_BY_SEC));
-}
-
-int plannerShared::descrate()
-{
-	return lrint((float)prefs.descrate / TO_MM_BY_SEC);
-}
-void plannerShared::set_descrate(int value)
-{
-	qPrefDivePlanner::set_descrate(lrint((float)value * TO_MM_BY_SEC));
-}
-
 // Planning values
 deco_mode plannerShared::planner_deco_mode()
 {
@@ -312,10 +262,4 @@ void plannerShared::set_display_variations(bool value)
 // Handle when user changes length measurement type
 void plannerShared::unit_lengthChangedSlot(int value)
 {
-	// Provoke recalculation of model and send of signals
-	set_ascratelast6m(ascratelast6m());
-	set_ascratestops(ascratestops());
-	set_ascrate50(ascrate50());
-	set_ascrate75(ascrate75());
-	set_descrate(descrate());
 }
