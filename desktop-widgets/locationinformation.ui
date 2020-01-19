@@ -44,16 +44,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="2">
-    <widget class="QLineEdit" name="diveSiteCoordinates"/>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Coordinates</string>
-     </property>
-    </widget>
-   </item>
+
    <item row="7" column="2" rowspan="2" colspan="3">
     <widget class="TextEdit" name="diveSiteNotes">
      <property name="focusPolicy">
@@ -61,12 +52,37 @@
      </property>
     </widget>
    </item>
+
    <item row="1" column="2" colspan="3">
     <widget class="QLineEdit" name="diveSiteName"/>
    </item>
+
    <item row="5" column="2" colspan="3">
     <widget class="QLineEdit" name="diveSiteDescription"/>
    </item>
+
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Coordinates</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QLineEdit" name="diveSiteCoordinates"/>
+   </item>
+
+   <item row="3" column="3">
+    <widget class="QPushButton" name="GPSbutton">
+      <property name="toolTip">
+      <string>Load dive coordinates from GPS file</string>
+     </property>
+     <property name="text">
+      <string>Use GPS file</string>
+     </property>
+    </widget>
+   </item>
+
    <item row="3" column="4">
     <widget class="QToolButton" name="geoCodeButton">
      <property name="toolTip">
@@ -81,6 +97,7 @@
      </property>
     </widget>
    </item>
+
    <item row="0" column="0" colspan="5">
     <widget class="KMessageWidget" name="diveSiteMessage">
      <property name="sizePolicy">
