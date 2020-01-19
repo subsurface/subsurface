@@ -10,9 +10,9 @@ import org.kde.kirigami 2.4 as Kirigami
 Kirigami.ScrollablePage {
 	title: qsTr("Dive planner setup")
 
-	property string speedUnit: (PrefUnits.length === "meters") ? qsTr("m/min") : qsTr("ft/min")
+	property string speedUnit: (Backend.length === Enums.METERS) ? qsTr("m/min") : qsTr("ft/min")
 	Connections {
-		target: PrefUnits
+		target: Backend
 		onLengthChanged: {
 			spinAscrate75.value = Planner.ascrate75
 			spinAscrate50.value = Planner.ascrate50
