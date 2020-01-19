@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ImportGPS</class>
+ <widget class="QDialog" name="ImportGPS">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Get dive coordinates from GPS</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normalon>:subsurface-icon</normalon>
+   </iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <property name="spacing">
+     <number>0</number>
+    </property>
+
+    <item>
+     <widget class="QGroupBox" name="groupBox">  <!-- Main group box -->
+      <property name="title">
+       <string>Synchronise the dive and the GPS track</string>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+
+       <item>
+        <layout class="QGridLayout" name="gridLayout1">
+
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <property name="horizontalSpacing">
+          <number>2</number>
+         </property>
+         <property name="verticalSpacing">
+          <number>0</number>
+         </property>
+
+         <item row="0" column="0" colspan="4">
+          <widget class="QLabel" name="trackDateLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>GPS strack date </string>
+           </property>
+          </widget>
+         </item>
+
+         <item row="1" column="0" colspan="4">
+          <widget class="QLabel" name="diveDateLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Dive date </string>
+           </property>
+          </widget>
+         </item>
+
+         <item row="3" column="0" >
+          <widget class="QLabel" name="startEndTextLabel">
+           <property name="text">
+            <string>Start and end times:</string>
+           </property>
+          </widget>
+         </item>
+
+         <item row="2" column="1" colspan="3" rowspan="3">
+          <widget class="QGroupBox" name="TimesBox">   <!-- Start and end times GroupBox -->
+           <layout class="QGridLayout" name="TimesLayout">
+
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <property name="horizontalSpacing">
+             <number>2</number>
+            </property>
+            <property name="verticalSpacing">
+             <number>0</number>
+            </property>
+
+            <item row="0" column="1" alignment="Qt::AlignCenter">
+             <widget class="QLabel" name="trackTextLabel">
+              <property name="text">
+               <string>   GPS   </string>
+              </property>
+             </widget>
+            </item>
+
+            <item row="0" column="2" alignment="Qt::AlignCenter">
+             <widget class="QLabel" name="diveTextLabel">
+              <property name="text">
+               <string>   Dive   </string>
+              </property>
+             </widget>
+            </item>
+
+            <item row="1" column="0" alignment="Qt::AlignRight">
+             <widget class="QLabel" name="startTextLabel">
+              <property name="text">
+               <string>Start:  </string>
+              </property>
+             </widget>
+            </item>
+
+
+            <item row="1" column="1" alignment="Qt::AlignCenter">
+             <widget class="QLabel" name="startTimeLabel">
+              <property name="text">
+               <string></string>
+              </property>
+             </widget>
+            </item>
+
+            <item row="1" column="2" alignment="Qt::AlignCenter">
+             <widget class="QLabel" name="startTimeSyncLabel">
+              <property name="text">
+               <string></string>
+              </property>
+             </widget>
+            </item>
+
+            <item row="2" column="0" alignment="Qt::AlignRight">
+             <widget class="QLabel" name="endTextLabel">
+              <property name="text">
+               <string>End:  </string>
+              </property>
+             </widget>
+            </item>
+
+            <item row="2" column="1" alignment="Qt::AlignCenter">
+             <widget class="QLabel" name="endTimeLabel">
+              <property name="text">
+               <string></string>
+              </property>
+             </widget>
+           </item>
+
+            <item row="2" column="2" alignment="Qt::AlignCenter">
+             <widget class="QLabel" name="endTimeSyncLabel">
+             <property name="text">
+               <string></string>
+              </property>
+             </widget>
+            </item>
+
+           </layout>
+          </widget> <!-- TimesBox: Start and end times GroupBox -->
+         </item>
+
+         <item row="3" column="5"  alignment="Qt::AlignCenter">
+          <widget class="QLabel" name="goodIconLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+            </sizepolicy>
+            </property>
+           <property name="text">
+            <string></string>
+           </property>
+          </widget>
+         </item>
+
+         <item row="3" column="6"  alignment="Qt::AlignCenter">
+          <widget class="QLabel" name="warningIconLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           <property name="text">
+            <string></string>
+           </property>
+         </widget>
+         </item>
+
+         <item row="3" column="7"  alignment="Qt::AlignCenter">
+          <widget class="QLabel" name="badIconLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           <property name="text">
+            <string></string>
+           </property>
+          </widget>
+         </item>
+
+         <item row="3" column="8">
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+         </item>
+
+        </layout>
+        </item>
+
+        <item>
+         <widget class="QLabel" name="resultLabel">
+          <property name="text">
+           <string></string>
+          </property>
+         </widget>
+        </item>
+
+        <item>
+         <widget class="QGroupBox" name="timeZoneGroupBox">
+          <property name="title">
+           <string>International time zone correction</string>
+          </property>
+          <layout class="QVBoxLayout" name="TimeZoneLayout">
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <property name="spacing">
+            <number>0</number>
+           </property>
+
+           <item>
+            <widget class="QLabel" name="timeZoneInstructionLabel">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>60</height>
+              </size>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="text">
+              <string>By how many hours did the international time zone at the dive site differ from UCT (also regarded as Greenwich Mean Time)? Normally one would specify this value in whole hours (h:00):</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+
+          <item>
+           <widget class="QTimeEdit" name="timeZoneEdit">
+            <property name="date">
+             <date>
+              <year>2000</year>
+              <month>1</month>
+              <day>1</day>
+             </date>
+            </property>
+            <property name="maximumDateTime">
+             <datetime>
+              <hour>23</hour>
+              <minute>59</minute>
+              <second>59</second>
+              <year>2010</year>
+              <month>12</month>
+              <day>31</day>
+             </datetime>
+            </property>
+            <property name="minimumDateTime">
+             <datetime>
+              <hour>0</hour>
+              <minute>0</minute>
+              <second>0</second>
+              <year>2000</year>
+              <month>1</month>
+              <day>1</day>
+             </datetime>
+            </property>
+            <property name="maximumDate">
+             <date>
+              <year>2010</year>
+              <month>12</month>
+              <day>31</day>
+             </date>
+            </property>
+            <property name="minimumDate">
+             <date>
+              <year>2000</year>
+              <month>1</month>
+              <day>1</day>
+             </date>
+            </property>
+            <property name="maximumTime">
+             <time>
+              <hour>23</hour>
+              <minute>59</minute>
+              <second>59</second>
+             </time>
+            </property>
+            <property name="minimumTime">
+             <time>
+              <hour>0</hour>
+              <minute>0</minute>
+              <second>0</second>
+             </time>
+            </property>
+            <property name="displayFormat">
+             <string>h:mm</string>
+            </property>
+            <property name="timeSpec">
+             <enum>Qt::LocalTime</enum>
+            </property>
+           </widget>
+          </item>
+
+          <item>
+           <widget class="QRadioButton" name="timezone_backwards">
+            <property name="text">
+             <string>Earlier</string>
+            </property>
+           </widget>
+          </item>
+
+          <item>
+           <widget class="QRadioButton" name="timezone_forward">
+            <property name="text">
+             <string>Later</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+
+         </layout>
+        </widget> <!-- timeZoneGroupBox -->
+       </item>
+
+       <item>
+         <widget class="QGroupBox" name="timeDiffGroupBox">
+          <property name="title">
+           <string>Equipment time settings correction</string>
+          </property>
+          <layout class="QVBoxLayout" name="TimeDiffLayout">
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <property name="spacing">
+            <number>0</number>
+           </property>
+
+           <item>
+            <widget class="QLabel" name="timeDiffInstructionLabel">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>90</height>
+              </size>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="text">
+              <string>This setting deals with differences in time settings between the GPS and the dive computer that recorded the dive. Ensure that the GPS equipment and your dive computer show the same local time. If not, adjust the time of the GPS earlier or later to coincide with that of the dive (h:min):</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+
+           <item>
+            <widget class="QTimeEdit" name="timeDiffEdit">
+             <property name="date">
+              <date>
+               <year>2000</year>
+               <month>1</month>
+               <day>1</day>
+              </date>
+             </property>
+             <property name="maximumDateTime">
+              <datetime>
+               <hour>23</hour>
+               <minute>59</minute>
+               <second>59</second>
+               <year>2010</year>
+               <month>12</month>
+               <day>31</day>
+              </datetime>
+             </property>
+             <property name="minimumDateTime">
+              <datetime>
+               <hour>0</hour>
+               <minute>0</minute>
+               <second>0</second>
+               <year>2000</year>
+               <month>1</month>
+               <day>1</day>
+              </datetime>
+             </property>
+             <property name="maximumDate">
+              <date>
+               <year>2010</year>
+               <month>12</month>
+               <day>31</day>
+              </date>
+             </property>
+             <property name="minimumDate">
+              <date>
+               <year>2000</year>
+               <month>1</month>
+               <day>1</day>
+              </date>
+             </property>
+             <property name="maximumTime">
+              <time>
+               <hour>23</hour>
+               <minute>59</minute>
+               <second>59</second>
+              </time>
+             </property>
+             <property name="minimumTime">
+              <time>
+               <hour>0</hour>
+               <minute>0</minute>
+               <second>0</second>
+              </time>
+             </property>
+             <property name="displayFormat">
+              <string>h:mm</string>
+             </property>
+             <property name="timeSpec">
+              <enum>Qt::LocalTime</enum>
+             </property>
+            </widget>
+           </item>
+
+           <item>
+            <widget class="QRadioButton" name="diff_backwards">
+             <property name="text">
+              <string>Earlier</string>
+             </property>
+            </widget>
+           </item>
+
+           <item>
+            <widget class="QRadioButton" name="diff_forward">
+             <property name="text">
+              <string>Later</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+
+         </layout>
+        </widget> <!-- TimeDiffGroupBox -->
+       </item>
+
+       <item>
+        <widget class="QDialogButtonBox" name="GPSbuttonBox">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="standardButtons">
+          <set>QDialogButtonBox::Close|QDialogButtonBox::Save</set>
+         </property>
+        </widget>
+       </item>
+
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+
+
+      </layout>
+     </widget>
+    </item> <!-- Main Group box -->
+
+  </layout>
+ </widget> <!-- QDialog -->
+
+ <resources>
+  <include location="../subsurface.qrc"/>
+ </resources>
+</ui>

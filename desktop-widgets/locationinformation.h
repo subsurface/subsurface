@@ -7,6 +7,7 @@
 #include "ui_locationinformation.h"
 #include "modeldelegates.h"
 #include "qt-models/divelocationmodel.h"
+#include "desktop-widgets/importgps.h"
 #include <stdint.h>
 #include <QAbstractListModel>
 #include <QSortFilterProxyModel>
@@ -17,6 +18,7 @@ public:
 	LocationInformationWidget(QWidget *parent = 0);
 	bool eventFilter(QObject*, QEvent*) override;
 	void initFields(dive_site *ds);
+	Ui::LocationInformation ui;
 
 protected:
 	void enableLocationButtons(bool enable);
@@ -31,6 +33,7 @@ public slots:
 	void on_diveSiteDistance_textChanged(const QString &s);
 	void reverseGeocode();
 	void mergeSelectedDiveSites();
+	void on_GPSbutton_clicked();
 private slots:
 	void updateLabels();
 	void diveSiteChanged(struct dive_site *ds, int field);
@@ -39,7 +42,6 @@ private slots:
 private:
 	void keyPressEvent(QKeyEvent *e) override;
 	void clearLabels();
-	Ui::LocationInformation ui;
 	GPSLocationInformationModel filter_model;
 	dive_site *diveSite;
 	int64_t closeDistance; // Distance of "close" dive sites in mm
