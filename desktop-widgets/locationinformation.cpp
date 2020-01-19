@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/locationinformation.h"
+#include "desktop-widgets/importgps.h"
 #include "core/subsurface-string.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/divelistview.h"
@@ -13,12 +14,12 @@
 #include "core/settings/qPrefUnit.h"
 #include "commands/command.h"
 
-#include <QDebug>
 #include <QShowEvent>
 #include <QItemSelectionModel>
 #include <qmessagebox.h>
 #include <cstdlib>
 #include <QDesktopWidget>
+#include <QFileDialog>
 #include <QScrollBar>
 
 LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent), diveSite(nullptr), closeDistance(0)
@@ -217,6 +218,27 @@ void LocationInformationWidget::initFields(dive_site *ds)
 	} else {
 		filter_model.set(0, zero_location);
 		clearLabels();
+	}
+}
+
+
+void LocationInformationWidget::on_GPSbutton_clicked()
+{
+	QFileInfo finfo(system_default_filename());
+	QString fileName = QFileDialog::getOpenFileName(this,
+							tr("Select GPS file to open"),
+							finfo.absolutePath(),
+							tr("GPS files (*.gpx *.GPX)"));
+	if (fileName.isEmpty())
+		return;
+
+	ImportGPS GPSDialog(this, fileName, &ui); // Create a GPS import QDialog
+	GPSDialog.coords.start_dive = current_dive->when; // initialise
+	GPSDialog.coords.end_dive = dive_endtime(current_dive);
+	if (!GPSDialog.getCoordsFromFile()) { // Get coordinates from GPS file
+		GPSDialog.updateUI();         // If successful, put results in Dialog
+		if (!GPSDialog.exec())        // and show QDialog
+			return;
 	}
 }
 

@@ -105,5 +105,8 @@
         <file alias="video-overlay">icons/video_overlay.svg</file>
         <file alias="unknown-icon">icons/unknown.svg</file>
         <file alias="tissue-icon">icons/tissue.png</file>
+        <file alias="gps_good_result-icon">icons/resultgreen.png</file>
+        <file alias="gps_warning_result-icon">icons/resultyellow.png</file>
+        <file alias="gps_bad_result-icon">icons/resultred.png</file>
     </qresource>
 </RCC>
