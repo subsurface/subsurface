@@ -489,11 +489,6 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [=] { disableDecoElements(BUEHLMANN); });
 	connect(ui.vpmb_deco, &QAbstractButton::clicked, [=] { disableDecoElements(VPMB); });
 
-	connect(ui.ascRate75, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_ascrate75);
-	connect(ui.ascRate50, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_ascrate50);
-	connect(ui.descRate, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_descrate);
-	connect(ui.ascRateStops, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_ascratestops);
-	connect(ui.ascRateLast6m, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_ascratelast6m);
 	connect(ui.sacfactor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_sacfactor);
 	connect(ui.problemsolvingtime, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_problemsolvingtime);
 	connect(ui.bottompo2, QOverload<double>::of(&QDoubleSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_bottompo2);
@@ -521,11 +516,11 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 
 void PlannerSettingsWidget::updateUnitsUI()
 {
-	ui.ascRate75->setValue(plannerShared::ascrate75());
-	ui.ascRate50->setValue(plannerShared::ascrate50());
-	ui.ascRateStops->setValue(plannerShared::ascratestops());
-	ui.ascRateLast6m->setValue(plannerShared::ascratelast6m());
-	ui.descRate->setValue(lrint(plannerShared::descrate()));
+	ui.ascRate75->setValue(plannerModel->ascrate75Display());
+	ui.ascRate50->setValue(plannerModel->ascrate50Display());
+	ui.ascRateStops->setValue(plannerModel->ascratestopsDisplay());
+	ui.ascRateLast6m->setValue(plannerModel->ascratelast6mDisplay());
+	ui.descRate->setValue(lrint(plannerModel->descrateDisplay()));
 	ui.bestmixEND->setValue(lrint(get_depth_units(prefs.bestmixend.mm, NULL, NULL)));
 }
 
