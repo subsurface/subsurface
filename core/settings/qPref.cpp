@@ -49,6 +49,15 @@ void qPref::loadSync(bool doSync)
 Q_DECLARE_METATYPE(deco_mode);
 Q_DECLARE_METATYPE(def_file_behavior);
 Q_DECLARE_METATYPE(taxonomy_category);
+Q_DECLARE_METATYPE(units::DURATION);
+Q_DECLARE_METATYPE(units::LENGTH);
+Q_DECLARE_METATYPE(units::PRESSURE);
+Q_DECLARE_METATYPE(units::TEMPERATURE);
+Q_DECLARE_METATYPE(unit_system_values);
+Q_DECLARE_METATYPE(units::TIME);
+Q_DECLARE_METATYPE(units::VOLUME);
+Q_DECLARE_METATYPE(units::WEIGHT);
+
 void qPref::registerQML(QQmlEngine *engine)
 {
 	if (engine) {
@@ -77,4 +86,12 @@ void qPref::registerQML(QQmlEngine *engine)
 	qRegisterMetaType<deco_mode>();
 	qRegisterMetaType<def_file_behavior>();
 	qRegisterMetaType<taxonomy_category>();
+	qRegisterMetaType<units::DURATION>();
+	qRegisterMetaType<units::LENGTH>();
+	qRegisterMetaType<units::PRESSURE>();
+	qRegisterMetaType<units::TEMPERATURE>();
+	qRegisterMetaType<unit_system_values>();
+	qRegisterMetaType<units::TIME>();
+	qRegisterMetaType<units::VOLUME>();
+	qRegisterMetaType<units::WEIGHT>();
 }
