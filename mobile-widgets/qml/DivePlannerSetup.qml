@@ -14,11 +14,11 @@ Kirigami.ScrollablePage {
 	Connections {
 		target: Backend
 		onLengthChanged: {
-			spinAscrate75.value = Planner.ascrate75
-			spinAscrate50.value = Planner.ascrate50
-			spinAscratestops.value = Planner.ascratestops
-			spinAscratelast6m.value = Planner.ascratelast6m
-			spinDescrate.value = Planner.descrate
+			spinAscrate75.value = Backend.ascrate75
+			spinAscrate50.value = Backend.ascrate50
+			spinAscratestops.value = Backend.ascratestops
+			spinAscratelast6m.value = Backend.ascratelast6m
+			spinDescrate.value = Backend.descrate
 		}
 	}
 	Column {
@@ -49,12 +49,12 @@ Kirigami.ScrollablePage {
 					from: 1
 					to: 99
 					stepSize: 1
-					value: Planner.ascrate75
+					value: Backend.ascrate75
 					textFromValue: function (value, locale) {
 						return value + speedUnit
 					}
 					onValueModified: {
-						Planner.ascrate75 = value
+						Backend.ascrate75 = value
 					}
 				}
 				TemplateLabel {
@@ -65,12 +65,12 @@ Kirigami.ScrollablePage {
 					from: 1
 					to: 99
 					stepSize: 1
-					value: Planner.ascrate50
+					value: Backend.ascrate50
 					textFromValue: function (value, locale) {
 						return value + speedUnit
 					}
 					onValueModified: {
-						Planner.ascrate50 = value
+						Backend.ascrate50 = value
 					}
 				}
 				TemplateLabel {
@@ -81,12 +81,12 @@ Kirigami.ScrollablePage {
 					from: 1
 					to: 99
 					stepSize: 1
-					value: Planner.ascratestops
+					value: Backend.ascratestops
 					textFromValue: function (value, locale) {
 						return value + speedUnit
 					}
 					onValueModified: {
-						Planner.ascratestops = value
+						Backend.ascratestops = value
 					}
 				}
 				TemplateLabel {
@@ -97,12 +97,12 @@ Kirigami.ScrollablePage {
 					from: 1
 					to: 99
 					stepSize: 1
-					value: Planner.ascratelast6m
+					value: Backend.ascratelast6m
 					textFromValue: function (value, locale) {
 						return value + speedUnit
 					}
 					onValueModified: {
-						Planner.ascratelast6m = value
+						Backend.ascratelast6m = value
 					}
 				}
 				TemplateLabel {
@@ -118,12 +118,12 @@ Kirigami.ScrollablePage {
 					from: 1
 					to: 99
 					stepSize: 1
-					value: Planner.descrate
+					value: Backend.descrate
 					textFromValue: function (value, locale) {
 						return value + speedUnit
 					}
 					onValueModified: {
-						Planner.descrate = value
+						Backend.descrate = value
 					}
 				}
 			}
