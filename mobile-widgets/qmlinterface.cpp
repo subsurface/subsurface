@@ -36,4 +36,15 @@ void QMLInterface::setup(QQmlContext *ct)
 			[=] (int value) { emit instance()->volumeChanged(VOLUME(value)); });
 	connect(qPrefUnits::instance(), &qPrefUnits::weightChanged,
 			[=] (int value) { emit instance()->weightChanged(WEIGHT(value)); });
+
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::ascratelast6mChanged,
+			instance(), &QMLInterface::ascratelast6mChanged);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::ascratestopsChanged,
+			instance(), &QMLInterface::ascratestopsChanged);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::ascrate50Changed,
+			instance(), &QMLInterface::ascrate50Changed);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::ascrate75Changed,
+			instance(), &QMLInterface::ascrate75Changed);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::descrateChanged,
+			instance(), &QMLInterface::descrateChanged);
 }

@@ -3,6 +3,8 @@
 #define QMLINTERFACE_H
 #include "core/settings/qPrefCloudStorage.h"
 #include "core/settings/qPrefUnit.h"
+#include "core/settings/qPrefDivePlanner.h"
+#include "qt-models/diveplannermodel.h"
 
 #include <QObject>
 #include <QQmlContext>
@@ -34,6 +36,12 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(TIME vertical_speed_time READ vertical_speed_time WRITE set_vertical_speed_time NOTIFY vertical_speed_timeChanged)
 	Q_PROPERTY(VOLUME volume READ volume WRITE set_volume NOTIFY volumeChanged)
 	Q_PROPERTY(WEIGHT weight READ weight WRITE set_weight NOTIFY weightChanged)
+
+	Q_PROPERTY(int ascratelast6m READ ascratelast6m WRITE set_ascratelast6m NOTIFY ascratelast6mChanged);
+	Q_PROPERTY(int ascratestops READ ascratestops WRITE set_ascratestops NOTIFY ascratestopsChanged);
+	Q_PROPERTY(int ascrate50 READ ascrate50 WRITE set_ascrate50 NOTIFY ascrate50Changed);
+	Q_PROPERTY(int ascrate75 READ ascrate75 WRITE set_ascrate75 NOTIFY ascrate75Changed);
+	Q_PROPERTY(int descrate READ descrate WRITE set_descrate NOTIFY descrateChanged);
 
 public:
 	static QMLInterface *instance();
@@ -120,6 +128,12 @@ public:
 	VOLUME volume() { return (VOLUME)prefs.units.volume; }
 	WEIGHT weight() { return (WEIGHT)prefs.units.weight; }
 
+	int ascratelast6m() { return DivePlannerPointsModel::instance()->ascratelast6mDisplay(); }
+	int ascratestops() { return DivePlannerPointsModel::instance()->ascratestopsDisplay(); }
+	int ascrate50() { return DivePlannerPointsModel::instance()->ascrate50Display(); }
+	int ascrate75() { return DivePlannerPointsModel::instance()->ascrate75Display(); }
+	int descrate() { return DivePlannerPointsModel::instance()->descrateDisplay(); }
+
 public slots:
 	void set_cloud_verification_status(CLOUD_STATUS value) {  qPrefCloudStorage::set_cloud_verification_status(value); }
 	void set_duration_units(DURATION value) { qPrefUnits::set_duration_units((units::DURATION)value); }
@@ -131,6 +145,12 @@ public slots:
 	void set_volume(VOLUME value) { qPrefUnits::set_volume((units::VOLUME)value); }
 	void set_weight(WEIGHT value) { qPrefUnits::set_weight((units::WEIGHT)value); }
 
+	void set_ascratelast6m(int value) { DivePlannerPointsModel::instance()->setAscratelast6mDisplay(value); }
+	void set_ascratestops(int value) { DivePlannerPointsModel::instance()->setAscratestopsDisplay(value); }
+	void set_ascrate50(int value) { DivePlannerPointsModel::instance()->setAscrate50Display(value); }
+	void set_ascrate75(int value) { DivePlannerPointsModel::instance()->setAscrate75Display(value); }
+	void set_descrate(int value) { DivePlannerPointsModel::instance()->setDescrateDisplay(value); }
+
 signals:
 	void cloud_verification_statusChanged(CLOUD_STATUS);
 	void duration_unitsChanged(DURATION);
@@ -141,6 +161,12 @@ signals:
 	void vertical_speed_timeChanged(TIME);
 	void volumeChanged(VOLUME);
 	void weightChanged(WEIGHT);
+
+	void ascratelast6mChanged(int);
+	void ascratestopsChanged(int);
+	void ascrate50Changed(int);
+	void ascrate75Changed(int);
+	void descrateChanged(int);
 
 private:
 	QMLInterface() {}
