@@ -47,4 +47,15 @@ void QMLInterface::setup(QQmlContext *ct)
 			instance(), &QMLInterface::ascrate75Changed);
 	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::descrateChanged,
 			instance(), &QMLInterface::descrateChanged);
+
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_runtimeChanged,
+			instance(), &QMLInterface::display_runtimeChanged);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_durationChanged,
+			instance(), &QMLInterface::display_durationChanged);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_transitionsChanged,
+			instance(), &QMLInterface::display_transitionsChanged);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::verbatim_planChanged,
+			instance(), &QMLInterface::verbatim_planChanged);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_variationsChanged,
+			instance(), &QMLInterface::display_variationsChanged);
 }
