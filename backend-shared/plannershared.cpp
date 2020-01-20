@@ -11,11 +11,6 @@ plannerShared *plannerShared::instance()
     static plannerShared *self = new plannerShared;
     return self;
 }
-plannerShared::plannerShared()
-{
-	// Be informed when user switches METER <-> FEET
-	connect(qPrefUnits::instance(), &qPrefUnits::lengthChanged, this, &unit_lengthChangedSlot);
-}
 
 // Planning values
 deco_mode plannerShared::planner_deco_mode()
@@ -212,9 +207,4 @@ void plannerShared::set_bestmixend(int value)
 {
 	qPrefDivePlanner::set_bestmixend(units_to_depth(value).mm);
 	CylindersModel::instance()->updateBestMixes();
-}
-
-// Handle when user changes length measurement type
-void plannerShared::unit_lengthChangedSlot(int value)
-{
 }

@@ -117,11 +117,8 @@ signals:
 	void decopo2Changed(double value);
 	void bestmixendChanged(int value);
 
-private slots:
-	static void unit_lengthChangedSlot(int value);
-
 private:
-	plannerShared();
+	plannerShared() {}
 };
 
 #endif // PLANNERSHARED_H
