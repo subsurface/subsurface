@@ -467,11 +467,11 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.display_transitions, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_display_transitions);
 	connect(ui.safetystop, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_safetystop);
 	connect(ui.reserve_gas, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_reserve_gas);
-	connect(ui.ascRate75, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscrate75);
-	connect(ui.ascRate50, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscrate50);
-	connect(ui.ascRateStops, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscratestops);
-	connect(ui.ascRateLast6m, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscratelast6m);
-	connect(ui.descRate, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setDescrate);
+	connect(ui.ascRate75, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscrate75Display);
+	connect(ui.ascRate50, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscrate50Display);
+	connect(ui.ascRateStops, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscratestopsDisplay);
+	connect(ui.ascRateLast6m, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscratelast6mDisplay);
+	connect(ui.descRate, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setDescrateDisplay);
 	connect(ui.drop_stone_mode, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_drop_stone_mode);
 	connect(ui.gfhigh, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_gfhigh);
 	connect(ui.gflow, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_gflow);
