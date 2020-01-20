@@ -43,6 +43,12 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(int ascrate75 READ ascrate75 WRITE set_ascrate75 NOTIFY ascrate75Changed);
 	Q_PROPERTY(int descrate READ descrate WRITE set_descrate NOTIFY descrateChanged);
 
+	Q_PROPERTY(bool display_runtime READ display_runtime WRITE set_display_runtime NOTIFY display_runtimeChanged);
+	Q_PROPERTY(bool display_duration READ display_duration WRITE set_display_duration NOTIFY display_durationChanged);
+	Q_PROPERTY(bool display_transitions READ display_transitions WRITE set_display_transitions NOTIFY display_transitionsChanged);
+	Q_PROPERTY(bool verbatim_plan READ verbatim_plan WRITE set_verbatim_plan NOTIFY verbatim_planChanged);
+	Q_PROPERTY(bool display_variations READ display_variations WRITE set_display_variations NOTIFY display_variationsChanged);
+
 public:
 	static QMLInterface *instance();
 
@@ -134,6 +140,12 @@ public:
 	int ascrate75() { return DivePlannerPointsModel::instance()->ascrate75Display(); }
 	int descrate() { return DivePlannerPointsModel::instance()->descrateDisplay(); }
 
+	bool display_runtime() { return prefs.display_runtime; }
+	bool display_duration() { return prefs.display_duration; }
+	bool display_transitions() { return prefs.display_transitions; }
+	bool verbatim_plan() { return prefs.verbatim_plan; }
+	bool display_variations() { return prefs.display_variations; }
+
 public slots:
 	void set_cloud_verification_status(CLOUD_STATUS value) {  qPrefCloudStorage::set_cloud_verification_status(value); }
 	void set_duration_units(DURATION value) { qPrefUnits::set_duration_units((units::DURATION)value); }
@@ -150,6 +162,12 @@ public slots:
 	void set_ascrate50(int value) { DivePlannerPointsModel::instance()->setAscrate50Display(value); }
 	void set_ascrate75(int value) { DivePlannerPointsModel::instance()->setAscrate75Display(value); }
 	void set_descrate(int value) { DivePlannerPointsModel::instance()->setDescrateDisplay(value); }
+
+	void set_display_runtime(bool value) { DivePlannerPointsModel::instance()->setDisplayRuntime(value); }
+	void set_display_duration(bool value) { DivePlannerPointsModel::instance()->setDisplayDuration(value); }
+	void set_display_transitions(bool value) { DivePlannerPointsModel::instance()->setDisplayTransitions(value); }
+	void set_verbatim_plan(bool value) { DivePlannerPointsModel::instance()->setVerbatim(value); }
+	void set_display_variations(bool value) { DivePlannerPointsModel::instance()->setDisplayVariations(value); }
 
 signals:
 	void cloud_verification_statusChanged(CLOUD_STATUS);
@@ -168,8 +186,13 @@ signals:
 	void ascrate75Changed(int);
 	void descrateChanged(int);
 
+	void display_runtimeChanged(bool value);
+	void display_durationChanged(bool value);
+	void display_transitionsChanged(bool value);
+	void verbatim_planChanged(bool value);
+	void display_variationsChanged(bool value);
+
 private:
 	QMLInterface() {}
 };
 #endif // QMLINTERFACE_H
-

@@ -331,37 +331,37 @@ Kirigami.ScrollablePage {
 
 				TemplateCheckBox {
 					text: qsTr("Display runtime")
-					checked: Planner.display_runtime
+					checked: Backend.display_runtime
 					onClicked: {
-						Planner.display_runtime = checked
+						Backend.display_runtime = checked
 					}
 				}
 				TemplateCheckBox {
 					text: qsTr("Display segment duration")
-					checked: Planner.display_duration
+					checked: Backend.display_duration
 					onClicked: {
-						Planner.display_duration = checked
+						Backend.display_duration = checked
 					}
 				}
 				TemplateCheckBox {
 					text: qsTr("Display transitions in deco")
-					checked: Planner.display_transitions
+					checked: Backend.display_transitions
 					onClicked: {
-						Planner.display_transitions = checked
+						Backend.display_transitions = checked
 					}
 				}
 				TemplateCheckBox {
 					text: qsTr("Verbatim dive plan")
-					checked: Planner.verbatim_plan
+					checked: Backend.verbatim_plan
 					onClicked: {
-						Planner.verbatim_plan = checked
+						Backend.verbatim_plan = checked
 					}
 				}
 				TemplateCheckBox {
 					text: qsTr("Display plan variations")
-					checked: Planner.display_variations
+					checked: Backend.display_variations
 					onClicked: {
-						Planner.display_variations = checked
+						Backend.display_variations = checked
 					}
 				}
 			}
