@@ -43,6 +43,28 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(int ascrate75 READ ascrate75 WRITE set_ascrate75 NOTIFY ascrate75Changed);
 	Q_PROPERTY(int descrate READ descrate WRITE set_descrate NOTIFY descrateChanged);
 
+//	Q_PROPERTY(deco_mode planner_deco_mode READ planner_deco_mode WRITE set_planner_deco_mode NOTIFY planner_deco_modeChanged);
+//	Q_PROPERTY(int reserve_gas READ reserve_gas WRITE set_reserve_gas NOTIFY reserve_gasChanged);
+//	Q_PROPERTY(bool safetystop READ safetystop WRITE set_safetystop NOTIFY safetystopChanged);
+//	Q_PROPERTY(int gflow READ gflow WRITE set_gflow NOTIFY gflowChanged);
+//	Q_PROPERTY(int gfhigh READ gfhigh WRITE set_gfhigh NOTIFY gfhighChanged);
+//	Q_PROPERTY(int vpmb_conservatism READ vpmb_conservatism WRITE set_vpmb_conservatism NOTIFY vpmb_conservatismChanged);
+//	Q_PROPERTY(bool dobailout READ dobailout WRITE set_dobailout NOTIFY dobailoutChanged);
+//	Q_PROPERTY(bool drop_stone_mode READ drop_stone_mode WRITE set_drop_stone_mode NOTIFY drop_stone_modeChanged);
+//	Q_PROPERTY(bool last_stop READ last_stop WRITE set_last_stop NOTIFY last_stopChanged);
+//	Q_PROPERTY(bool switch_at_req_stop READ switch_at_req_stop WRITE set_switch_at_req_stop NOTIFY switch_at_req_stopChanged);
+//	Q_PROPERTY(bool doo2breaks READ doo2breaks WRITE set_doo2breaks NOTIFY doo2breaksChanged);
+//	Q_PROPERTY(int min_switch_duration READ min_switch_duration WRITE set_min_switch_duration NOTIFY min_switch_durationChanged);
+
+//	Q_PROPERTY(double bottomsac READ bottomsac WRITE set_bottomsac NOTIFY bottomsacChanged);
+//	Q_PROPERTY(double decosac READ decosac WRITE set_decosac NOTIFY decosacChanged);
+//	Q_PROPERTY(int problemsolvingtime READ problemsolvingtime WRITE set_problemsolvingtime NOTIFY problemsolvingtimeChanged);
+//	Q_PROPERTY(double sacfactor READ sacfactor WRITE set_sacfactor NOTIFY sacfactorChanged);
+//	Q_PROPERTY(bool o2narcotic READ o2narcotic WRITE set_o2narcotic NOTIFY o2narcoticChanged);
+//	Q_PROPERTY(double bottompo2 READ bottompo2 WRITE set_bottompo2 NOTIFY bottompo2Changed);
+//	Q_PROPERTY(double decopo2 READ decopo2 WRITE set_decopo2 NOTIFY decopo2Changed);
+//	Q_PROPERTY(int bestmixend READ bestmixend WRITE set_bestmixend NOTIFY bestmixendChanged);
+
 	Q_PROPERTY(bool display_runtime READ display_runtime WRITE set_display_runtime NOTIFY display_runtimeChanged);
 	Q_PROPERTY(bool display_duration READ display_duration WRITE set_display_duration NOTIFY display_durationChanged);
 	Q_PROPERTY(bool display_transitions READ display_transitions WRITE set_display_transitions NOTIFY display_transitionsChanged);
@@ -140,6 +162,28 @@ public:
 	int ascrate75() { return DivePlannerPointsModel::instance()->ascrate75Display(); }
 	int descrate() { return DivePlannerPointsModel::instance()->descrateDisplay(); }
 
+//	deco_mode planner_deco_mode();
+//	int reserve_gas();
+//	bool safetystop();
+//	int gflow();
+//	int gfhigh();
+//	int vpmb_conservatism();
+//	bool dobailout();
+//	bool drop_stone_mode();
+//	bool last_stop();
+//	bool switch_at_req_stop();
+//	bool doo2breaks();
+//	int min_switch_duration();
+
+//	double bottomsac();
+//	double decosac();
+//	int problemsolvingtime();
+//	double sacfactor();
+//	bool o2narcotic();
+//	double bottompo2();
+//	double decopo2();
+//	int bestmixend();
+
 	bool display_runtime() { return prefs.display_runtime; }
 	bool display_duration() { return prefs.display_duration; }
 	bool display_transitions() { return prefs.display_transitions; }
@@ -163,6 +207,28 @@ public slots:
 	void set_ascrate75(int value) { DivePlannerPointsModel::instance()->setAscrate75Display(value); }
 	void set_descrate(int value) { DivePlannerPointsModel::instance()->setDescrateDisplay(value); }
 
+//	void set_planner_deco_mode(deco_mode value);
+//	void set_reserve_gas(int value);
+//	void set_safetystop(bool value);
+//	void set_gflow(int value);
+//	void set_gfhigh(int value);
+//	void set_vpmb_conservatism(int value);
+//	void set_dobailout(bool value);
+//	void set_drop_stone_mode(bool value);
+//	void set_last_stop(bool value);
+//	void set_switch_at_req_stop(bool value);
+//	void set_doo2breaks(bool value);
+//	void set_min_switch_duration(int value);
+
+//	void set_bottomsac(double value);
+//	void set_decosac(double value);
+//	void set_problemsolvingtime(int value);
+//	void set_sacfactor(double value);
+//	void set_o2narcotic(bool value);
+//	void set_bottompo2(double value);
+//	void set_decopo2(double value);
+//	void set_bestmixend(int value);
+
 	void set_display_runtime(bool value) { DivePlannerPointsModel::instance()->setDisplayRuntime(value); }
 	void set_display_duration(bool value) { DivePlannerPointsModel::instance()->setDisplayDuration(value); }
 	void set_display_transitions(bool value) { DivePlannerPointsModel::instance()->setDisplayTransitions(value); }
@@ -185,6 +251,28 @@ signals:
 	void ascrate50Changed(int);
 	void ascrate75Changed(int);
 	void descrateChanged(int);
+
+//	void planner_deco_modeChanged(deco_mode value);
+//	void reserve_gasChanged(int value);
+//	void safetystopChanged(bool value);
+//	void gflowChanged(int value);
+//	void gfhighChanged(int value);
+//	void vpmb_conservatismChanged(int value);
+//	void dobailoutChanged(bool value);
+//	void drop_stone_modeChanged(bool value);
+//	void last_stopChanged(bool value);
+//	void switch_at_req_stopChanged(bool value);
+//	void doo2breaksChanged(bool value);
+//	void min_switch_durationChanged(int value);
+
+//	void bottomsacChanged(double value);
+//	void decosacChanged(double value);
+//	void problemsolvingtimeChanged(int value);
+//	void sacfactorChanged(double value);
+//	void o2narcoticChanged(bool value);
+//	void bottompo2Changed(double value);
+//	void decopo2Changed(double value);
+//	void bestmixendChanged(int value);
 
 	void display_runtimeChanged(bool value);
 	void display_durationChanged(bool value);
