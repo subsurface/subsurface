@@ -461,10 +461,10 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 
 	connect(ui.lastStop, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_last_stop);
 	connect(ui.lastStop, &QAbstractButton::toggled, this, &PlannerSettingsWidget::disableBackgasBreaks);
-	connect(ui.verbatim_plan, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_verbatim_plan);
-	connect(ui.display_duration, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_display_duration);
-	connect(ui.display_runtime, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_display_runtime);
-	connect(ui.display_transitions, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_display_transitions);
+	connect(ui.verbatim_plan, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setVerbatim);
+	connect(ui.display_duration, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setDisplayDuration);
+	connect(ui.display_runtime, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setDisplayRuntime);
+	connect(ui.display_transitions, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setDisplayTransitions);
 	connect(ui.safetystop, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_safetystop);
 	connect(ui.reserve_gas, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_reserve_gas);
 	connect(ui.ascRate75, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscrate75Display);
