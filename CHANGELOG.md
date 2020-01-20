@@ -1,3 +1,4 @@
+Mobile: option to reset default cylinder
 Mobile: new layout for Settings page
 Desktop: add the ability to modify dive salinity
 Mobile: add menu item for cloud password reset
