@@ -4,6 +4,7 @@
 #include "core/settings/qPrefCloudStorage.h"
 #include "core/settings/qPrefUnit.h"
 #include "core/settings/qPrefDivePlanner.h"
+#include "core/settings/qPrefTechnicalDetails.h"
 #include "qt-models/diveplannermodel.h"
 
 #include <QObject>
@@ -42,6 +43,14 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(int ascrate50 READ ascrate50 WRITE set_ascrate50 NOTIFY ascrate50Changed);
 	Q_PROPERTY(int ascrate75 READ ascrate75 WRITE set_ascrate75 NOTIFY ascrate75Changed);
 	Q_PROPERTY(int descrate READ descrate WRITE set_descrate NOTIFY descrateChanged);
+
+	Q_PROPERTY(bool safetystop READ safetystop WRITE set_safetystop NOTIFY safetystopChanged);
+	Q_PROPERTY(int gflow READ gflow WRITE set_gflow NOTIFY gflowChanged);
+	Q_PROPERTY(int gfhigh READ gfhigh WRITE set_gfhigh NOTIFY gfhighChanged);
+	Q_PROPERTY(int vpmb_conservatism READ vpmb_conservatism WRITE set_vpmb_conservatism NOTIFY vpmb_conservatismChanged);
+	Q_PROPERTY(bool drop_stone_mode READ drop_stone_mode WRITE set_drop_stone_mode NOTIFY drop_stone_modeChanged);
+	Q_PROPERTY(bool last_stop6m READ last_stop6m WRITE set_last_stop6m NOTIFY last_stop6mChanged);
+	Q_PROPERTY(bool switch_at_req_stop READ switch_at_req_stop WRITE set_switch_at_req_stop NOTIFY switch_at_req_stopChanged);
 
 	Q_PROPERTY(bool display_runtime READ display_runtime WRITE set_display_runtime NOTIFY display_runtimeChanged);
 	Q_PROPERTY(bool display_duration READ display_duration WRITE set_display_duration NOTIFY display_durationChanged);
@@ -140,6 +149,14 @@ public:
 	int ascrate75() { return DivePlannerPointsModel::instance()->ascrate75Display(); }
 	int descrate() { return DivePlannerPointsModel::instance()->descrateDisplay(); }
 
+	bool safetystop() { return prefs.safetystop; }
+	int gflow() { return prefs.gflow; }
+	int gfhigh() { return prefs.gfhigh; }
+	int vpmb_conservatism() { return prefs.vpmb_conservatism; }
+	bool drop_stone_mode() { return prefs.drop_stone_mode; }
+	bool last_stop6m() { return prefs.last_stop; }
+	bool switch_at_req_stop() { return prefs.switch_at_req_stop; }
+
 	bool display_runtime() { return prefs.display_runtime; }
 	bool display_duration() { return prefs.display_duration; }
 	bool display_transitions() { return prefs.display_transitions; }
@@ -163,6 +180,14 @@ public slots:
 	void set_ascrate75(int value) { DivePlannerPointsModel::instance()->setAscrate75Display(value); }
 	void set_descrate(int value) { DivePlannerPointsModel::instance()->setDescrateDisplay(value); }
 
+	void set_safetystop(bool value) { DivePlannerPointsModel::instance()->setSafetyStop(value); }
+	void set_gflow(int value) { DivePlannerPointsModel::instance()->setGFLow(value); }
+	void set_gfhigh(int value) { DivePlannerPointsModel::instance()->setGFHigh(value); }
+	void set_vpmb_conservatism(int value) { DivePlannerPointsModel::instance()->setVpmbConservatism(value); }
+	void set_drop_stone_mode(bool value) { DivePlannerPointsModel::instance()->setDropStoneMode(value); }
+	void set_last_stop6m(bool value) { DivePlannerPointsModel::instance()->setLastStop6m(value); }
+	void set_switch_at_req_stop(bool value) { DivePlannerPointsModel::instance()->setSwitchAtReqStop(value); }
+
 	void set_display_runtime(bool value) { DivePlannerPointsModel::instance()->setDisplayRuntime(value); }
 	void set_display_duration(bool value) { DivePlannerPointsModel::instance()->setDisplayDuration(value); }
 	void set_display_transitions(bool value) { DivePlannerPointsModel::instance()->setDisplayTransitions(value); }
@@ -185,6 +210,14 @@ signals:
 	void ascrate50Changed(int);
 	void ascrate75Changed(int);
 	void descrateChanged(int);
+
+	void safetystopChanged(bool value);
+	void gflowChanged(int value);
+	void gfhighChanged(int value);
+	void vpmb_conservatismChanged(int value);
+	void drop_stone_modeChanged(bool value);
+	void last_stop6mChanged(bool value);
+	void switch_at_req_stopChanged(bool value);
 
 	void display_runtimeChanged(bool value);
 	void display_durationChanged(bool value);

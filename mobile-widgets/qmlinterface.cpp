@@ -48,6 +48,21 @@ void QMLInterface::setup(QQmlContext *ct)
 	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::descrateChanged,
 			instance(), &QMLInterface::descrateChanged);
 
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::safetystopChanged,
+			instance(), &QMLInterface::safetystopChanged);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::gflowChanged,
+			instance(), &QMLInterface::gflowChanged);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::gfhighChanged,
+			instance(), &QMLInterface::gfhighChanged);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::vpmb_conservatismChanged,
+			instance(), &QMLInterface::vpmb_conservatismChanged);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::drop_stone_modeChanged,
+			instance(), &QMLInterface::drop_stone_modeChanged);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::last_stopChanged,
+			instance(), &QMLInterface::last_stop6mChanged);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::switch_at_req_stopChanged,
+			instance(), &QMLInterface::switch_at_req_stopChanged);
+
 	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_runtimeChanged,
 			instance(), &QMLInterface::display_runtimeChanged);
 	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_durationChanged,
