@@ -39,13 +39,6 @@ class plannerShared: public QObject {
 	Q_PROPERTY(double decopo2 READ decopo2 WRITE set_decopo2 NOTIFY decopo2Changed);
 	Q_PROPERTY(int bestmixend READ bestmixend WRITE set_bestmixend NOTIFY bestmixendChanged);
 
-	// Notes data
-	Q_PROPERTY(bool display_runtime READ display_runtime WRITE set_display_runtime NOTIFY display_runtimeChanged);
-	Q_PROPERTY(bool display_duration READ display_duration WRITE set_display_duration NOTIFY display_durationChanged);
-	Q_PROPERTY(bool display_transitions READ display_transitions WRITE set_display_transitions NOTIFY display_transitionsChanged);
-	Q_PROPERTY(bool verbatim_plan READ verbatim_plan WRITE set_verbatim_plan NOTIFY verbatim_planChanged);
-	Q_PROPERTY(bool display_variations READ display_variations WRITE set_display_variations NOTIFY display_variationsChanged);
-
 public:
 	static plannerShared *instance();
 
@@ -73,13 +66,6 @@ public:
 	static double decopo2();
 	static int bestmixend();
 
-	// Notes data
-	static bool display_runtime();
-	static bool display_duration();
-	static bool display_transitions();
-	static bool verbatim_plan();
-	static bool display_variations();
-
 public slots:
 
 	// Planning data
@@ -106,13 +92,6 @@ public slots:
 	static void set_decopo2(double value);
 	static void set_bestmixend(int value);
 
-	// Notes data
-	static void set_display_runtime(bool value);
-	static void set_display_duration(bool value);
-	static void set_display_transitions(bool value);
-	static void set_verbatim_plan(bool value);
-	static void set_display_variations(bool value);
-
 signals:
 	// Planning data
 	void planner_deco_modeChanged(deco_mode value);
@@ -137,13 +116,6 @@ signals:
 	void bottompo2Changed(double value);
 	void decopo2Changed(double value);
 	void bestmixendChanged(int value);
-
-	// Notes data
-	void display_runtimeChanged(bool value);
-	void display_durationChanged(bool value);
-	void display_transitionsChanged(bool value);
-	void verbatim_planChanged(bool value);
-	void display_variationsChanged(bool value);
 
 private slots:
 	static void unit_lengthChangedSlot(int value);
