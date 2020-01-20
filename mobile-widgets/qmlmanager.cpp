@@ -1807,6 +1807,8 @@ QStringList QMLManager::cylinderInit() const
 
 	cylinders.removeDuplicates();
 	cylinders.sort();
+	// now add fist one that indicates that the user wants no default cylinder
+	cylinders.prepend(tr("no default cylinder"));
 	return cylinders;
 }
 

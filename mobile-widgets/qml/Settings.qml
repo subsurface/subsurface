@@ -94,7 +94,12 @@ Kirigami.ScrollablePage {
 					inputMethodHints: Qt.ImhNoPredictiveText
 					Layout.fillWidth: true
 					onActivated: {
-						PrefEquipment.default_cylinder = defaultCylinderBox.currentText
+						// the entry for 'no default cylinder' is known to be the top, but its text
+						// is possibly translated so check against the index
+						if (currentIndex === 0)
+							PrefEquipment.default_cylinder = ""
+						else
+							PrefEquipment.default_cylinder = defaultCylinderBox.currentText
 					}
 				}
 			}
