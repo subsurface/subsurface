@@ -104,11 +104,11 @@ slots:
 	void setSurfaceSegment(int duration);
 	void setSacFactor(double factor);
 	void setProblemSolvingTime(int minutes);
-	void setAscrate75(int rate);
-	void setAscrate50(int rate);
-	void setAscratestops(int rate);
-	void setAscratelast6m(int rate);
-	void setDescrate(int rate);
+	void setAscrate75Display(int rate);
+	void setAscrate50Display(int rate);
+	void setAscratestopsDisplay(int rate);
+	void setAscratelast6mDisplay(int rate);
+	void setDescrateDisplay(int rate);
 
 signals:
 	void planCreated();
