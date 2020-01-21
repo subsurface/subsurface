@@ -14,13 +14,13 @@ ImportGPS::ImportGPS(QWidget *parent, QString fileName, class Ui::LocationInform
 	fileName(fileName), LocationUI(LocationUI)
 {
 	ui.setupUi(this);
-	connect(ui.timeDiffEdit, SIGNAL(timeChanged(const QTime)), this, SLOT(timeDiffEditChanged()));
-	connect(ui.timeZoneEdit, SIGNAL(timeChanged(const QTime)), this, SLOT(timeZoneEditChanged()));
-	connect(ui.timezone_backwards, SIGNAL(toggled(bool)), this, SLOT(changeZoneBackwards()));
-	connect(ui.timezone_forward, SIGNAL(toggled(bool)), this, SLOT(changeZoneForward()));
-	connect(ui.diff_backwards, SIGNAL(toggled(bool)), this, SLOT(changeDiffBackwards()));
-	connect(ui.diff_forward, SIGNAL(toggled(bool)), this, SLOT(changeDiffForward()));
-	connect(ui.GPSbuttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
+	connect(ui.timeDiffEdit, &QTimeEdit::timeChanged, this, &ImportGPS::timeDiffEditChanged);
+	connect(ui.timeZoneEdit, &QTimeEdit::timeChanged, this, &ImportGPS::timeZoneEditChanged);
+	connect(ui.timezone_backwards, &QRadioButton::toggled, this, &ImportGPS::changeZoneBackwards);
+	connect(ui.timezone_forward, &QRadioButton::toggled, this, &ImportGPS::changeZoneForward);
+	connect(ui.diff_backwards, &QRadioButton::toggled, this, &ImportGPS::changeDiffBackwards);
+	connect(ui.diff_forward, &QRadioButton::toggled, this, &ImportGPS::changeDiffForward);
+	connect(ui.GPSbuttonBox, &QDialogButtonBox::clicked, this, &ImportGPS::buttonClicked);
 	coords.settingsDiff_offset = 0;
 	coords.timeZone_offset = 0;
 	coords.lat = 0;
@@ -103,7 +103,7 @@ int ImportGPS::getCoordsFromFile()
 	f1.setFileName(fileName);
 	if (!f1.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		QByteArray local8bitBAString1 = fileName.toLocal8Bit();
-		char *fname = local8bitBAString1.data();   // convert QString to a C string filename
+		char *fname = local8bitBAString1.data();   // convert QString to a C string fileName
 		fprintf(stderr, "GPS file open error: file name = %s\n", fname);
 		return 1;
 	}
