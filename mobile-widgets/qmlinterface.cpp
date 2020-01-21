@@ -71,6 +71,16 @@ void QMLInterface::setup(QQmlContext *ct)
 			instance(), &QMLInterface::decosacChanged);
 	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::sacfactorChanged,
 			instance(), &QMLInterface::sacfactorChanged);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::problemsolvingtimeChanged,
+			instance(), &QMLInterface::problemsolvingtimeChanged);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::o2narcoticChanged,
+			instance(), &QMLInterface::o2narcoticChanged);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::bottompo2Changed,
+			instance(), &QMLInterface::bottompo2Changed);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::decopo2Changed,
+			instance(), &QMLInterface::decopo2Changed);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::bestmixendChanged,
+			instance(), &QMLInterface::bestmixendChanged);
 
 	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_runtimeChanged,
 			instance(), &QMLInterface::display_runtimeChanged);
