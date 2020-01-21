@@ -87,15 +87,6 @@ void TestPlannerShared::test_gas()
 	qPrefDivePlanner::set_sacfactor(200);
 	QCOMPARE(plannerShared::sacfactor(), 2.0);
 
-	plannerShared::set_problemsolvingtime(4);
-	QCOMPARE(qPrefDivePlanner::problemsolvingtime(), 4);
-	plannerShared::set_problemsolvingtime(5);
-	QCOMPARE(qPrefDivePlanner::problemsolvingtime(), 5);
-	qPrefDivePlanner::set_problemsolvingtime(2);
-	QCOMPARE(plannerShared::problemsolvingtime(), 2);
-	qPrefDivePlanner::set_problemsolvingtime(6);
-	QCOMPARE(plannerShared::problemsolvingtime(), 6);
-
 	// Set system to use meters
 	qPrefUnits::set_unit_system(METRIC);
 
