@@ -105,10 +105,18 @@ void plannerShared::set_decosac(double value)
 
 double plannerShared::sacfactor()
 {
-	return qPrefDivePlanner::sacfactor() / 100.0;
+	return qPrefDivePlanner::sacfactor() /
+#ifdef SUBSURFACE_MOBILE
+			10.0;
+#else
+			100.0;
+#endif
 }
 void plannerShared::set_sacfactor(double value)
 {
+#ifdef SUBSURFACE_MOBILE
+	value /= 10.0;
+#endif
 	// NO conversion, this is done in the planner model.
 	DivePlannerPointsModel::instance()->setSacFactor(value);
 }
