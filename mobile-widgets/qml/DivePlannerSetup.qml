@@ -275,12 +275,12 @@ Kirigami.ScrollablePage {
 					from: 1
 					to: 9
 					stepSize: 1
-					value: Planner.problemsolvingtime
+					value: Backend.problemsolvingtime
 					textFromValue: function (value, locale) {
-						return value + qsTr("min")
+						return value + qsTr(" min")
 					}
 					onValueModified: {
-						Planner.problemsolvingtime = value
+						Backend.problemsolvingtime = value
 					}
 				}
 				TemplateLabel {

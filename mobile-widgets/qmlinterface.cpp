@@ -63,6 +63,8 @@ void QMLInterface::setup(QQmlContext *ct)
 	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::switch_at_req_stopChanged,
 			instance(), &QMLInterface::switch_at_req_stopChanged);
 
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::problemsolvingtimeChanged,
+			instance(), &QMLInterface::problemsolvingtimeChanged);
 	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_runtimeChanged,
 			instance(), &QMLInterface::display_runtimeChanged);
 	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_durationChanged,

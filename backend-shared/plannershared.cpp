@@ -31,42 +31,6 @@ void plannerShared::set_reserve_gas(int value)
 	DivePlannerPointsModel::instance()->setReserveGas(value);
 }
 
-bool plannerShared::safetystop()
-{
-	return qPrefDivePlanner::safetystop();
-}
-void plannerShared::set_safetystop(bool value)
-{
-	DivePlannerPointsModel::instance()->setSafetyStop(value);
-}
-
-int plannerShared::gflow()
-{
-	return qPrefTechnicalDetails::gflow();
-}
-void plannerShared::set_gflow(int value)
-{
-	DivePlannerPointsModel::instance()->setGFLow(value);
-}
-
-int plannerShared::gfhigh()
-{
-	return qPrefTechnicalDetails::gflow();
-}
-void plannerShared::set_gfhigh(int value)
-{
-	DivePlannerPointsModel::instance()->setGFHigh(value);
-}
-
-int plannerShared::vpmb_conservatism()
-{
-	return qPrefTechnicalDetails::vpmb_conservatism();
-}
-void plannerShared::set_vpmb_conservatism(int value)
-{
-	DivePlannerPointsModel::instance()->setVpmbConservatism(value);
-}
-
 bool plannerShared::dobailout()
 {
 	return qPrefDivePlanner::dobailout();
@@ -75,33 +39,6 @@ void plannerShared::set_dobailout(bool value)
 {
 	qPrefDivePlanner::set_dobailout(value);
 	DivePlannerPointsModel::instance()->emitDataChanged();
-}
-
-bool plannerShared::drop_stone_mode()
-{
-	return qPrefDivePlanner::drop_stone_mode();
-}
-void plannerShared::set_drop_stone_mode(bool value)
-{
-	DivePlannerPointsModel::instance()->setDropStoneMode(value);
-}
-
-bool plannerShared::last_stop()
-{
-	return qPrefDivePlanner::last_stop();
-}
-void plannerShared::set_last_stop(bool value)
-{
-	DivePlannerPointsModel::instance()->setLastStop6m(value);
-}
-
-bool plannerShared::switch_at_req_stop()
-{
-	return qPrefDivePlanner::switch_at_req_stop();
-}
-void plannerShared::set_switch_at_req_stop(bool value)
-{
-	DivePlannerPointsModel::instance()->setSwitchAtReqStop(value);
 }
 
 bool plannerShared::doo2breaks()
@@ -142,16 +79,6 @@ void plannerShared::set_decosac(double value)
 {
 	// NO conversion, this is done in the planner model.
 	DivePlannerPointsModel::instance()->setDecoSac(value);
-}
-
-int plannerShared::problemsolvingtime()
-{
-	return qPrefDivePlanner::problemsolvingtime();
-}
-void plannerShared::set_problemsolvingtime(int value)
-{
-	// NO conversion, this is done in the planner model.
-	DivePlannerPointsModel::instance()->setProblemSolvingTime(value);
 }
 
 double plannerShared::sacfactor()
