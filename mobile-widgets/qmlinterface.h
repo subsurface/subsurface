@@ -53,6 +53,15 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(bool last_stop6m READ last_stop6m WRITE set_last_stop6m NOTIFY last_stop6mChanged);
 	Q_PROPERTY(bool switch_at_req_stop READ switch_at_req_stop WRITE set_switch_at_req_stop NOTIFY switch_at_req_stopChanged);
 
+	Q_PROPERTY(int bottomsac READ bottomsac WRITE set_bottomsac NOTIFY bottomsacChanged);
+	Q_PROPERTY(int decosac READ decosac WRITE set_decosac NOTIFY decosacChanged);
+	Q_PROPERTY(int problemsolvingtime READ problemsolvingtime WRITE set_problemsolvingtime NOTIFY problemsolvingtimeChanged);
+	Q_PROPERTY(int sacfactor READ sacfactor WRITE set_sacfactor NOTIFY sacfactorChanged);
+	Q_PROPERTY(bool o2narcotic READ o2narcotic WRITE set_o2narcotic NOTIFY o2narcoticChanged);
+	Q_PROPERTY(int bottompo2 READ bottompo2 WRITE set_bottompo2 NOTIFY bottompo2Changed);
+	Q_PROPERTY(int decopo2 READ decopo2 WRITE set_decopo2 NOTIFY decopo2Changed);
+	Q_PROPERTY(int bestmixend READ bestmixend WRITE set_bestmixend NOTIFY bestmixendChanged);
+
 	Q_PROPERTY(bool display_runtime READ display_runtime WRITE set_display_runtime NOTIFY display_runtimeChanged);
 	Q_PROPERTY(bool display_duration READ display_duration WRITE set_display_duration NOTIFY display_durationChanged);
 	Q_PROPERTY(bool display_transitions READ display_transitions WRITE set_display_transitions NOTIFY display_transitionsChanged);
@@ -158,6 +167,15 @@ public:
 	bool last_stop6m() { return prefs.last_stop; }
 	bool switch_at_req_stop() { return prefs.switch_at_req_stop; }
 
+	int bottomsac() { return (int)plannerShared::bottomsac(); }
+	int decosac() { return (int)plannerShared::decosac(); }
+	int problemsolvingtime() { return prefs.problemsolvingtime; }
+	int sacfactor() { return (int)plannerShared::sacfactor(); }
+	bool o2narcotic() { return (int)plannerShared::o2narcotic(); }
+	int bottompo2() { return (int)plannerShared::bottompo2(); }
+	int decopo2() { return (int)plannerShared::decopo2(); }
+	int bestmixend() { return plannerShared::bestmixend(); }
+
 	bool display_runtime() { return prefs.display_runtime; }
 	bool display_duration() { return prefs.display_duration; }
 	bool display_transitions() { return prefs.display_transitions; }
@@ -189,6 +207,15 @@ public slots:
 	void set_last_stop6m(bool value) { DivePlannerPointsModel::instance()->setLastStop6m(value); }
 	void set_switch_at_req_stop(bool value) { DivePlannerPointsModel::instance()->setSwitchAtReqStop(value); }
 
+	void set_bottomsac(int value) { plannerShared::set_bottomsac((double)value); }
+	void set_decosac(int value) { plannerShared::set_decosac((double)value); }
+	void set_problemsolvingtime(int value) { DivePlannerPointsModel::instance()->setProblemSolvingTime(value); }
+	void set_sacfactor(int value) { plannerShared::set_sacfactor((double)value); }
+	void set_o2narcotic(bool value) { plannerShared::set_o2narcotic(value); }
+	void set_bottompo2(int value) { plannerShared::set_bottompo2((double)value); }
+	void set_decopo2(int value) { plannerShared::set_decopo2((double)value); }
+	void set_bestmixend(int value) { plannerShared::set_bestmixend(value); }
+
 	void set_display_runtime(bool value) { DivePlannerPointsModel::instance()->setDisplayRuntime(value); }
 	void set_display_duration(bool value) { DivePlannerPointsModel::instance()->setDisplayDuration(value); }
 	void set_display_transitions(bool value) { DivePlannerPointsModel::instance()->setDisplayTransitions(value); }
@@ -219,6 +246,15 @@ signals:
 	void drop_stone_modeChanged(bool value);
 	void last_stop6mChanged(bool value);
 	void switch_at_req_stopChanged(bool value);
+
+	void bottomsacChanged(int value);
+	void decosacChanged(int value);
+	void sacfactorChanged(int value);
+	void problemsolvingtimeChanged(int value);
+	void o2narcoticChanged(bool value);
+	void bottompo2Changed(int value);
+	void decopo2Changed(int value);
+	void bestmixendChanged(int value);
 
 	void display_runtimeChanged(bool value);
 	void display_durationChanged(bool value);

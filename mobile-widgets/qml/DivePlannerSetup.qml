@@ -20,6 +20,7 @@ Kirigami.ScrollablePage {
 			spinAscratestops.value = Backend.ascratestops
 			spinAscratelast6m.value = Backend.ascratelast6m
 			spinDescrate.value = Backend.descrate
+			spinBestmixend.value = Backend.bestmixend
 		}
 		onVolumeChanged: {
 			spinBottomsac.value = Backend.bottomsac
@@ -292,14 +293,14 @@ Kirigami.ScrollablePage {
 				}
 				TemplateSpinBox {
 					from: 0
-					to: 200
+					to: 250
 					stepSize: 1
-					value: Planner.bottompo2
+					value: Backend.bottompo2
 					textFromValue: function (value, locale) {
 						return (value / 100).toFixed(2) + "bar"
 					}
 					onValueModified: {
-						Planner.bottompo2 = value
+						Backend.bottompo2 = value
 					}
 				}
 				TemplateLabel {
@@ -307,36 +308,37 @@ Kirigami.ScrollablePage {
 				}
 				TemplateSpinBox {
 					from: 0
-					to: 200
+					to: 250
 					stepSize: 1
-					value: Planner.decopo2
+					value: Backend.decopo2
 					textFromValue: function (value, locale) {
 						return (value / 100).toFixed(2) + "bar"
 					}
 					onValueModified: {
-						Planner.decopo2 = value
+						Backend.decopo2 = value
 					}
 				}
 				TemplateLabel {
 					text: qsTr("Best mix END")
 				}
 				TemplateSpinBox {
+					id: spinBestmixend
 					from: 1
 					to: 99
 					stepSize: 1
-					value: Planner.bestmixend
+					value: Backend.bestmixend
 					textFromValue: function (value, locale) {
 						return value + speedUnit
 					}
 					onValueModified: {
-						Planner.bestmixend = value
+						Backend.bestmixend = value
 					}
 				}
 				TemplateCheckBox {
 					text: qsTr("O2 narcotic")
-					checked: Planner.o2narcotic
+					checked: Backend.o2narcotic
 					onClicked: {
-						Planner.o2narcotic = checked
+						Backend.o2narcotic = checked
 					}
 				}
 			}
