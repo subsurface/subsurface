@@ -69,6 +69,9 @@ void QMLInterface::setup(QQmlContext *ct)
 			instance(), &QMLInterface::bottomsacChanged);
 	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::decosacChanged,
 			instance(), &QMLInterface::decosacChanged);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::sacfactorChanged,
+			instance(), &QMLInterface::sacfactorChanged);
+
 	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_runtimeChanged,
 			instance(), &QMLInterface::display_runtimeChanged);
 	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_durationChanged,

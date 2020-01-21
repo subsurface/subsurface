@@ -79,13 +79,13 @@ void TestPlannerShared::test_gas()
 {
 	// test independent of metric/imperial
 	plannerShared::set_sacfactor(4.2);
-	QCOMPARE(qPrefDivePlanner::sacfactor(), 420);
+	QCOMPARE(qPrefDivePlanner::sacfactor(), 42);
 	plannerShared::set_sacfactor(3.5);
-	QCOMPARE(qPrefDivePlanner::sacfactor(), 350);
+	QCOMPARE(qPrefDivePlanner::sacfactor(), 35);
 	qPrefDivePlanner::set_sacfactor(280);
-	QCOMPARE(plannerShared::sacfactor(), 2.8);
+	QCOMPARE(plannerShared::sacfactor(), 28);
 	qPrefDivePlanner::set_sacfactor(200);
-	QCOMPARE(plannerShared::sacfactor(), 2.0);
+	QCOMPARE(plannerShared::sacfactor(), 20);
 
 	// Set system to use meters
 	qPrefUnits::set_unit_system(METRIC);
@@ -139,26 +139,26 @@ void TestPlannerShared::test_gas()
 	qPrefUnits::set_unit_system(IMPERIAL);
 
 	plannerShared::set_bottomsac(0.9);
-	QCOMPARE(qPrefDivePlanner::bottomsac(), 25485);
+	QCOMPARE(qPrefDivePlanner::bottomsac(), 255);
 	plannerShared::set_bottomsac(0.01);
-	QCOMPARE(qPrefDivePlanner::bottomsac(), 283);
+	QCOMPARE(qPrefDivePlanner::bottomsac(), 3);
 
 	// Remark return will from qPref is in m / 1000.
 	qPrefDivePlanner::set_bottomsac(2830);
-	QCOMPARE(int(plannerShared::bottomsac() * 1000), 99);
+	QCOMPARE(int(plannerShared::bottomsac()), 9);
 	qPrefDivePlanner::set_bottomsac(16000);
-	QCOMPARE(int(plannerShared::bottomsac() * 1000), 565);
+	QCOMPARE(int(plannerShared::bottomsac()), 56);
 
 	plannerShared::set_decosac(0.9);
-	QCOMPARE(qPrefDivePlanner::decosac(), 25485);
+	QCOMPARE(qPrefDivePlanner::decosac(), 255);
 	plannerShared::set_decosac(0.01);
-	QCOMPARE(qPrefDivePlanner::decosac(), 283);
+	QCOMPARE(qPrefDivePlanner::decosac(), 3);
 
 	// Remark return will from qPref is in m / 1000.
 	qPrefDivePlanner::set_decosac(11500);
-	QCOMPARE(int(plannerShared::decosac() * 1000), 406);
+	QCOMPARE(int(plannerShared::decosac()), 40);
 	qPrefDivePlanner::set_decosac(19800);
-	QCOMPARE(int(plannerShared::decosac() * 1000), 699);
+	QCOMPARE(int(plannerShared::decosac()), 69);
 
 	// Remark bottompo2 is in BAR, even though unit system is
 	// Imperial, the desktop version is like that.

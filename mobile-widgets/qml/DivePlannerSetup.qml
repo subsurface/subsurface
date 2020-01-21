@@ -261,15 +261,15 @@ Kirigami.ScrollablePage {
 					text: qsTr("SAC factor")
 				}
 				TemplateSpinBox {
-					from: 20
+					from: 10
 					to: 99
 					stepSize: 1
-					value: Planner.sacfactor
+					value: Backend.sacfactor
 					textFromValue: function (value, locale) {
 						return (value / 10).toFixed(1)
 					}
 					onValueModified: {
-						Planner.sacfactor = value
+						Backend.sacfactor = value
 					}
 				}
 				TemplateLabel {
