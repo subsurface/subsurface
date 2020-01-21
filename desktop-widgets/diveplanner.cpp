@@ -478,7 +478,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.vpmb_conservatism, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setVpmbConservatism);
 	connect(ui.backgasBreaks, &QAbstractButton::toggled, this, &PlannerSettingsWidget::setBackgasBreaks);
 	connect(ui.bailout, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_dobailout);
-	connect(ui.o2narcotic, &QAbstractButton::toggled, plannerShared::instance(), plannerShared::set_o2narcotic);
+	connect(ui.o2narcotic, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_o2narcotic);
 	connect(ui.switch_at_req_stop, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setSwitchAtReqStop);
 	connect(ui.min_switch_duration, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_min_switch_duration);
 	connect(ui.surface_segment, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setSurfaceSegment);
