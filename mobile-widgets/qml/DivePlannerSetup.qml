@@ -32,7 +32,7 @@ Kirigami.ScrollablePage {
 
 			GridLayout {
 				columns: 2
-				rowSpacing: 10
+				rowSpacing: Kirigami.Units.smallSpacing * 2
 				columnSpacing: 20
 				visible: rates.isExpanded
 
@@ -134,7 +134,7 @@ Kirigami.ScrollablePage {
 
 			GridLayout {
 				columns: 2
-				rowSpacing: 10
+				rowSpacing: Kirigami.Units.smallSpacing * 2
 				columnSpacing: 20
 				visible: planning.isExpanded
 
@@ -204,7 +204,7 @@ Kirigami.ScrollablePage {
 
 			GridLayout {
 				columns: 2
-				rowSpacing: 10
+				rowSpacing: Kirigami.Units.smallSpacing * 2
 				columnSpacing: 20
 				visible: gasoptions.isExpanded
 

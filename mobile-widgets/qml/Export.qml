@@ -34,7 +34,7 @@ Kirigami.ScrollablePage {
 		standardButtons: StandardButton.Apply | StandardButton.Cancel
 
 		GridLayout {
-			rowSpacing: 10
+			rowSpacing: Kirigami.Units.smallSpacing * 2
 			columnSpacing: 10
 			columns: 2
 
