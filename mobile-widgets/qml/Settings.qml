@@ -347,37 +347,30 @@ Kirigami.ScrollablePage {
 			id: sectionUnits
 			title: qsTr("Units")
 
-			GridLayout {
-				id: unit_system
-				visible: sectionUnits.isExpanded
-				columns: 2
-
-				TemplateLabel {
-					text: qsTr("Use Imperial Units")
-					Layout.preferredWidth: gridWidth * 0.75
+			Row {
+				TemplateRadioButton {
+					text: qsTr("Metric")
+					checked: (Backend.unit_system === Enums.METRIC)
+					onClicked: {
+						Backend.unit_system = Enums.METRIC
+						manager.changesNeedSaving()
+						manager.refreshDiveList()
+					}
 				}
-				SsrfSwitch {
-					id: imperialButton
-					checked: Backend.unit_system === Enums.IMPERIAL
-					enabled: Backend.unit_system === Enums.METRIC
-					Layout.preferredWidth: gridWidth * 0.25
+				TemplateRadioButton {
+					text: qsTr("Imperial")
+					checked:  (Backend.unit_system === Enums.IMPERIAL)
 					onClicked: {
 						Backend.unit_system = Enums.IMPERIAL
 						manager.changesNeedSaving()
 						manager.refreshDiveList()
 					}
 				}
-				TemplateLabel {
-					text: qsTr("Use Metric Units")
-					Layout.preferredWidth: gridWidth * 0.75
-				}
-				SsrfSwitch {
-					id: metricButtton
-					checked: Backend.unit_system === Enums.METRIC
-					enabled: Backend.unit_system === Enums.IMPERIAL
-					Layout.preferredWidth: gridWidth * 0.25
+				TemplateRadioButton {
+					text: qsTr("Personalize")
+					checked:  (Backend.unit_system === Enums.PERSONALIZE)
 					onClicked: {
-						Backend.unit_system = Enums.METRIC
+						Backend.unit_system = Enums.PERSONALIZE
 						manager.changesNeedSaving()
 						manager.refreshDiveList()
 					}
