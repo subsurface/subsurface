@@ -24,7 +24,7 @@ Kirigami.ScrollablePage {
 	Column {
 		width: parent.width
 		spacing: 1
-		Layout.margins: 10
+		Layout.margins: Kirigami.Units.gridUnit
 
 		TemplateSection {
 			id: rates
