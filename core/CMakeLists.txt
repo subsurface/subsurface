@@ -119,6 +119,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	metrics.cpp
 	metrics.h
 	ostctools.c
+	parse-gpx.cpp
 	parse-xml.c
 	parse.c
 	parse.h
