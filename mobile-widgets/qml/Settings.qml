@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
+import QtQuick.Controls 2.12
 import org.kde.kirigami 2.4 as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
@@ -348,6 +349,8 @@ Kirigami.ScrollablePage {
 			title: qsTr("Units")
 
 			Row {
+				visible: sectionUnits.isExpanded
+
 				TemplateRadioButton {
 					text: qsTr("Metric")
 					checked: (Backend.unit_system === Enums.METRIC)
@@ -373,6 +376,119 @@ Kirigami.ScrollablePage {
 						Backend.unit_system = Enums.PERSONALIZE
 						manager.changesNeedSaving()
 						manager.refreshDiveList()
+					}
+				}
+			}
+
+			GridLayout {
+				visible: sectionUnits.isExpanded
+				enabled: (Backend.unit_system === Enums.PERSONALIZE)
+				columns: 3
+
+				ButtonGroup { id: unitDepth }
+				ButtonGroup { id: unitPressure }
+				ButtonGroup { id: unitVolume }
+				ButtonGroup { id: unitTemperature }
+				ButtonGroup { id: unitWeight }
+
+				TemplateLabel {
+					text: qsTr("Depth")
+					font.bold: (Backend.unit_system === Enums.PERSONALIZE)
+				}
+				TemplateRadioButton {
+					text: qsTr("meters")
+					checked: (Backend.length === Enums.METERS)
+					ButtonGroup.group: unitDepth
+					onClicked: {
+						Backend.length = Enums.METERS
+					}
+				}
+				TemplateRadioButton {
+					text: qsTr("feet")
+					checked: (Backend.length === Enums.FEET)
+					ButtonGroup.group: unitDepth
+					onClicked: {
+						Backend.length = Enums.FEET
+					}
+				}
+				TemplateLabel {
+					text: qsTr("Pressure")
+					font.bold: (Backend.unit_system === Enums.PERSONALIZE)
+				}
+				TemplateRadioButton {
+					text: qsTr("bar")
+					checked: (Backend.pressure === Enums.BAR)
+					ButtonGroup.group: unitPressure
+					onClicked: {
+						Backend.pressure = Enums.BAR
+					}
+				}
+				TemplateRadioButton {
+					text: qsTr("psi")
+					checked: (Backend.pressure === Enums.PSI)
+					ButtonGroup.group: unitPressure
+					onClicked: {
+						Backend.pressure = Enums.PSI
+					}
+				}
+				TemplateLabel {
+					text: qsTr("Volume")
+					font.bold: (Backend.unit_system === Enums.PERSONALIZE)
+				}
+				TemplateRadioButton {
+					text: qsTr("liter")
+					checked: (Backend.volume === Enums.LITER)
+					ButtonGroup.group: unitVolume
+					onClicked: {
+						Backend.volume = Enums.LITER
+					}
+				}
+				TemplateRadioButton {
+					text: qsTr("cuft")
+					checked: (Backend.volume === Enums.CUFT)
+					ButtonGroup.group: unitVolume
+					onClicked: {
+						Backend.volume = Enums.CUFT
+					}
+				}
+				TemplateLabel {
+					text: qsTr("Temperature")
+					font.bold: (Backend.unit_system === Enums.PERSONALIZE)
+				}
+				TemplateRadioButton {
+					text: qsTr("celcius")
+					checked: (Backend.temperature === Enums.CELSIUS)
+					ButtonGroup.group: unitTemperature
+					onClicked: {
+						Backend.temperature = Enums.CELSIUS
+					}
+				}
+				TemplateRadioButton {
+					text: qsTr("fahrenheit")
+					checked: (Backend.temperature === Enums.FAHRENHEIT)
+					ButtonGroup.group: unitTemperature
+					onClicked: {
+						Backend.temperature = Enums.FAHRENHEIT
+					}
+				}
+				TemplateLabel {
+					text: qsTr("Weight")
+					font.bold: (Backend.unit_system === Enums.PERSONALIZE)
+				}
+				TemplateRadioButton {
+					text: qsTr("kg")
+					checked: (Backend.weight === Enums.KG)
+					ButtonGroup.group: unitWeight
+					onClicked: {
+						Backend.weight = Enums.KG
+					}
+				}
+				TemplateRadioButton {
+					text: qsTr("lbs")
+					checked: (Backend.weight === Enums.LBS)
+					ButtonGroup.group: unitWeight
+					onClicked: {
+						Backend.weight = Enums.LBS
 					}
 				}
 			}
