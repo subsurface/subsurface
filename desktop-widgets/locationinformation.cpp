@@ -224,7 +224,7 @@ void LocationInformationWidget::initFields(dive_site *ds)
 
 void LocationInformationWidget::on_GPSbutton_clicked()
 {
-	QFileInfo finfo(system_default_filename());
+	QFileInfo finfo(system_default_directory());
 	QString fileName = QFileDialog::getOpenFileName(this,
 							tr("Select GPS file to open"),
 							finfo.absolutePath(),

@@ -48,7 +48,7 @@ int ImportGPS::getSubstring(QFile *file, QString *bufptr, char delim)
 	do {
 		if (file->read(&c, 1) <= 0) // EOF
 			return 1;
-		if ( c == delim) break;
+		if (c == delim) break;
 		bufptr->append(QChar(c));
 	} while (c != delim);
 	return 0;
@@ -77,7 +77,7 @@ int ImportGPS::findXmlElement(QFile *fileptr, QString target, QString *bufptr, c
 		if (*bufptr == "/trk") // End of GPS track found: return EOF
 			return 1;
 		if (c == skipdelim)
-			continue;  // if wrong delimiter for this element was found, redo from start
+			continue;  // if inappropriate delimiter was found, redo from start
 		if (*bufptr == target)       // Compare xml element name from gpx file with the
 			match = true;    // the target element searched for.
 	} while (match == false);
@@ -162,7 +162,7 @@ int ImportGPS::getCoordsFromFile()
 			first_line = false;
 			coords.start_track = when;   // Local time of start of GPS track
 		}
-		if ((when > divetime) && (found == false)) {   // This GPS local time corresponds to the start time of the dive
+		if ((when > divetime && found == false)) {   // This GPS local time corresponds to the start time of the dive
 			coords.lon = lon; // save the coordinates
 			coords.lat = lat;
 			found = true;
