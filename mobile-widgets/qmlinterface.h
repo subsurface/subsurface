@@ -45,13 +45,18 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(int ascrate75 READ ascrate75 WRITE set_ascrate75 NOTIFY ascrate75Changed);
 	Q_PROPERTY(int descrate READ descrate WRITE set_descrate NOTIFY descrateChanged);
 
+	Q_PROPERTY(DECO_MODE planner_deco_mode READ planner_deco_mode WRITE set_planner_deco_mode NOTIFY planner_deco_modeChanged);
+	Q_PROPERTY(int reserve_gas READ reserve_gas WRITE set_reserve_gas NOTIFY reserve_gasChanged);
 	Q_PROPERTY(bool safetystop READ safetystop WRITE set_safetystop NOTIFY safetystopChanged);
 	Q_PROPERTY(int gflow READ gflow WRITE set_gflow NOTIFY gflowChanged);
 	Q_PROPERTY(int gfhigh READ gfhigh WRITE set_gfhigh NOTIFY gfhighChanged);
 	Q_PROPERTY(int vpmb_conservatism READ vpmb_conservatism WRITE set_vpmb_conservatism NOTIFY vpmb_conservatismChanged);
+	Q_PROPERTY(bool dobailout READ dobailout WRITE set_dobailout NOTIFY dobailoutChanged);
 	Q_PROPERTY(bool drop_stone_mode READ drop_stone_mode WRITE set_drop_stone_mode NOTIFY drop_stone_modeChanged);
 	Q_PROPERTY(bool last_stop6m READ last_stop6m WRITE set_last_stop6m NOTIFY last_stop6mChanged);
 	Q_PROPERTY(bool switch_at_req_stop READ switch_at_req_stop WRITE set_switch_at_req_stop NOTIFY switch_at_req_stopChanged);
+	Q_PROPERTY(bool doo2breaks READ doo2breaks WRITE set_doo2breaks NOTIFY doo2breaksChanged);
+	Q_PROPERTY(int min_switch_duration READ min_switch_duration WRITE set_min_switch_duration NOTIFY min_switch_durationChanged);
 
 	Q_PROPERTY(int bottomsac READ bottomsac WRITE set_bottomsac NOTIFY bottomsacChanged);
 	Q_PROPERTY(int decosac READ decosac WRITE set_decosac NOTIFY decosacChanged);
@@ -174,13 +179,18 @@ public:
 	int ascrate75() { return DivePlannerPointsModel::instance()->ascrate75Display(); }
 	int descrate() { return DivePlannerPointsModel::instance()->descrateDisplay(); }
 
+	DECO_MODE planner_deco_mode() { return (DECO_MODE)plannerShared::planner_deco_mode(); }
+	int reserve_gas() { return plannerShared::reserve_gas(); }
 	bool safetystop() { return prefs.safetystop; }
 	int gflow() { return prefs.gflow; }
 	int gfhigh() { return prefs.gfhigh; }
 	int vpmb_conservatism() { return prefs.vpmb_conservatism; }
+	bool dobailout() { return plannerShared::dobailout(); }
 	bool drop_stone_mode() { return prefs.drop_stone_mode; }
 	bool last_stop6m() { return prefs.last_stop; }
 	bool switch_at_req_stop() { return prefs.switch_at_req_stop; }
+	bool doo2breaks() { return plannerShared::doo2breaks(); }
+	int min_switch_duration() { return plannerShared::min_switch_duration(); }
 
 	int bottomsac() { return (int)plannerShared::bottomsac(); }
 	int decosac() { return (int)plannerShared::decosac(); }
@@ -214,13 +224,18 @@ public slots:
 	void set_ascrate75(int value) { DivePlannerPointsModel::instance()->setAscrate75Display(value); }
 	void set_descrate(int value) { DivePlannerPointsModel::instance()->setDescrateDisplay(value); }
 
+	void set_planner_deco_mode(DECO_MODE value) { plannerShared::set_planner_deco_mode((deco_mode)value); }
+	void set_reserve_gas(int value) { plannerShared::set_reserve_gas(value); }
 	void set_safetystop(bool value) { DivePlannerPointsModel::instance()->setSafetyStop(value); }
 	void set_gflow(int value) { DivePlannerPointsModel::instance()->setGFLow(value); }
 	void set_gfhigh(int value) { DivePlannerPointsModel::instance()->setGFHigh(value); }
 	void set_vpmb_conservatism(int value) { DivePlannerPointsModel::instance()->setVpmbConservatism(value); }
+	void set_dobailout(bool value) { plannerShared::set_dobailout(value); }
 	void set_drop_stone_mode(bool value) { DivePlannerPointsModel::instance()->setDropStoneMode(value); }
 	void set_last_stop6m(bool value) { DivePlannerPointsModel::instance()->setLastStop6m(value); }
 	void set_switch_at_req_stop(bool value) { DivePlannerPointsModel::instance()->setSwitchAtReqStop(value); }
+	void set_doo2breaks(bool value) { plannerShared::set_doo2breaks(value); }
+	void set_min_switch_duration(int value) { plannerShared::set_min_switch_duration(value); }
 
 	void set_bottomsac(int value) { plannerShared::set_bottomsac((double)value); }
 	void set_decosac(int value) { plannerShared::set_decosac((double)value); }
@@ -254,13 +269,18 @@ signals:
 	void ascrate75Changed(int);
 	void descrateChanged(int);
 
+	void planner_deco_modeChanged(DECO_MODE value);
+	void reserve_gasChanged(int value);
 	void safetystopChanged(bool value);
 	void gflowChanged(int value);
 	void gfhighChanged(int value);
 	void vpmb_conservatismChanged(int value);
+	void dobailoutChanged(bool value);
 	void drop_stone_modeChanged(bool value);
 	void last_stop6mChanged(bool value);
 	void switch_at_req_stopChanged(bool value);
+	void doo2breaksChanged(bool value);
+	void min_switch_durationChanged(int value);
 
 	void bottomsacChanged(int value);
 	void decosacChanged(int value);
