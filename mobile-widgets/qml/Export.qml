@@ -35,7 +35,7 @@ Kirigami.ScrollablePage {
 
 		GridLayout {
 			rowSpacing: Kirigami.Units.smallSpacing * 2
-			columnSpacing: 10
+			columnSpacing: Kirigami.Units.smallSpacing
 			columns: 2
 
 			Text {

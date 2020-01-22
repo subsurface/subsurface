@@ -33,7 +33,7 @@ Kirigami.ScrollablePage {
 			GridLayout {
 				columns: 2
 				rowSpacing: Kirigami.Units.smallSpacing * 2
-				columnSpacing: 20
+				columnSpacing: Kirigami.Units.smallSpacing
 				visible: rates.isExpanded
 
 				TemplateLabel {
@@ -135,7 +135,7 @@ Kirigami.ScrollablePage {
 			GridLayout {
 				columns: 2
 				rowSpacing: Kirigami.Units.smallSpacing * 2
-				columnSpacing: 20
+				columnSpacing: Kirigami.Units.smallSpacing
 				visible: planning.isExpanded
 
 				// Only support "Open circuit"
@@ -205,7 +205,7 @@ Kirigami.ScrollablePage {
 			GridLayout {
 				columns: 2
 				rowSpacing: Kirigami.Units.smallSpacing * 2
-				columnSpacing: 20
+				columnSpacing: Kirigami.Units.smallSpacing
 				visible: gasoptions.isExpanded
 
 				TemplateLabel {
