@@ -47,6 +47,7 @@ PLATFORM=$(uname)
 
 BTSUPPORT="ON"
 DEBUGRELEASE="Debug"
+SRC_DIR="subsurface"
 
 # deal with all the command line arguments
 while [[ $# -gt 0 ]] ; do
@@ -60,6 +61,15 @@ while [[ $# -gt 0 ]] ; do
 			# only build libdivecomputer and Subsurface - this assumes that all other dependencies don't need rebuilding
 			QUICK="1"
 			;;
+		-src-dir)
+			# instead of using "subsurface" as source directory, use src/<srcdir>
+			# this is convinient when using "git worktree" to have multiple branches
+			# checked out on the computer.
+			# remark <srcdir> must be in src (in parallel to subsurface), in order to
+			# use the same 3rd party set.
+			shift
+			SRC_DIR="$1"
+			;;			
 		-build-deps)
 			# in order to build the dependencies on Mac for release builds (to deal with the macosx-version-min for those
 			# call this script with -build-deps
@@ -105,7 +115,7 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-build-prefix <PREFIX>] [-build-with-webkit] [-mobile] [-desktop] [-both] [-create-appdir] [-release]"
+			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-src-dir <SUBSURFACE directory>] [-build-prefix <PREFIX>] [-build-with-webkit] [-mobile] [-desktop] [-both] [-create-appdir] [-release]"
 			exit 1
 			;;
 	esac
@@ -147,7 +157,7 @@ fi
 BUILDGRANTLEE=0
 
 if [ "$BUILD_MOBILE" = "1" ] ; then
-	echo "building Subsurface-mobile in subsurface/build-mobile"
+	echo "building Subsurface-mobile in ${SRC_DIR}/build-mobile"
 	BUILDS=( "MobileExecutable" )
 	BUILDDIRS=( "${BUILD_PREFIX}build-mobile" )
 else
@@ -156,7 +166,7 @@ else
 fi
 
 if [ "$BUILD_DESKTOP" = "1" ] ; then
-	echo "building Subsurface in subsurface/build"
+	echo "building Subsurface in ${SRC_DIR}/build"
 	BUILDS+=( "DesktopExecutable" )
 	BUILDDIRS+=( "${BUILD_PREFIX}build" )
 	if [ "$BUILD_WITH_WEBKIT" = "1" ] ; then
@@ -169,7 +179,7 @@ if [ "$BUILD_DESKTOP" = "1" ] ; then
 	fi
 fi
 
-if [[ ! -d "subsurface" ]] ; then
+if [[ ! -d "${SRC_DIR}" ]] ; then
 	echo "please start this script from the directory containing the Subsurface source directory"
 	exit 1
 fi
@@ -262,7 +272,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	# because that always requires the latest OS (how stupid is that - and they consider it a
 	# feature). So we painfully need to build the dependencies ourselves.
 	cd "$SRC"
-	./subsurface/scripts/get-dep-lib.sh single . libcurl
+	./${SRC_DIR}/scripts/get-dep-lib.sh single . libcurl
 	pushd libcurl
 	bash ./buildconf
 	mkdir -p build
@@ -273,7 +283,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	make install
 	popd
 
-	./subsurface/scripts/get-dep-lib.sh single . openssl
+	./${SRC_DIR}/scripts/get-dep-lib.sh single . openssl
 	pushd openssl
 	mkdir -p build
 	cd build
@@ -284,7 +294,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	make -k install
 	popd
 
-	./subsurface/scripts/get-dep-lib.sh single . libssh2
+	./${SRC_DIR}/scripts/get-dep-lib.sh single . libssh2
 	pushd libssh2
 	mkdir -p build
 	cd build
@@ -307,7 +317,7 @@ if [[ "$LIBGIT" -lt "26" ]] ; then
 
 	cd "$SRC"
 
-	./subsurface/scripts/get-dep-lib.sh single . libgit2
+	./${SRC_DIR}/scripts/get-dep-lib.sh single . libgit2
 	pushd libgit2
 	mkdir -p build
 	cd build
@@ -331,7 +341,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	# because that always requires the latest OS (how stupid is that - and they consider it a
 	# feature). So we painfully need to build the dependencies ourselves.
 	cd "$SRC"
-	./subsurface/scripts/get-dep-lib.sh single . libzip
+	./${SRC_DIR}/scripts/get-dep-lib.sh single . libzip
 	pushd libzip
 	mkdir -p build
 	cd build
@@ -342,7 +352,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	make install
 	popd
 
-	./subsurface/scripts/get-dep-lib.sh single . hidapi
+	./${SRC_DIR}/scripts/get-dep-lib.sh single . hidapi
 	pushd hidapi
 	# there is no good tag, so just build master
 	bash ./bootstrap
@@ -353,7 +363,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	make install
 	popd
 
-	./subsurface/scripts/get-dep-lib.sh single . libusb
+	./${SRC_DIR}/scripts/get-dep-lib.sh single . libusb
 	pushd libusb
 	bash ./bootstrap.sh
 	mkdir -p build
@@ -369,7 +379,7 @@ cd "$SRC"
 
 # build libdivecomputer
 
-cd subsurface
+cd ${SRC_DIR}
 
 if [ ! -d libdivecomputer/src ] ; then
 	git submodule init
@@ -379,14 +389,14 @@ fi
 mkdir -p "${BUILD_PREFIX}libdivecomputer/build"
 cd "${BUILD_PREFIX}libdivecomputer/build"
 
-if [ ! -f "$SRC"/subsurface/libdivecomputer/configure ] ; then
+if [ ! -f "$SRC"/${SRC_DIR}/libdivecomputer/configure ] ; then
 	# this is not a typo
 	# in some scenarios it appears that autoreconf doesn't copy the
 	# ltmain.sh file; running it twice, however, fixes that problem
-	autoreconf --install "$SRC"/subsurface/libdivecomputer
-	autoreconf --install "$SRC"/subsurface/libdivecomputer
+	autoreconf --install "$SRC"/${SRC_DIR}/libdivecomputer
+	autoreconf --install "$SRC"/${SRC_DIR}/libdivecomputer
 fi
-CFLAGS="$OLDER_MAC -I$INSTALL_ROOT/include $LIBDC_CFLAGS" "$SRC"/subsurface/libdivecomputer/configure --prefix="$INSTALL_ROOT" --disable-examples
+CFLAGS="$OLDER_MAC -I$INSTALL_ROOT/include $LIBDC_CFLAGS" "$SRC"/${SRC_DIR}/libdivecomputer/configure --prefix="$INSTALL_ROOT" --disable-examples
 if [ "$PLATFORM" = Darwin ] ; then
 	# remove some copmpiler options that aren't supported on Mac
 	# otherwise the log gets very noisy
@@ -446,7 +456,7 @@ fi
 if [ "$BUILDGRANTLEE" = "1" ] ; then
 	# build grantlee
 	cd "$SRC"
-	./subsurface/scripts/get-dep-lib.sh single . grantlee
+	./${SRC_DIR}/scripts/get-dep-lib.sh single . grantlee
 	pushd grantlee
 	mkdir -p build
 	cd build
@@ -463,7 +473,7 @@ if [ "$QUICK" != "1" ] ; then
 	# build the googlemaps map plugin
 
 	cd "$SRC"
-	./subsurface/scripts/get-dep-lib.sh single . googlemaps
+	./${SRC_DIR}/scripts/get-dep-lib.sh single . googlemaps
 	pushd googlemaps
 	mkdir -p build
 	mkdir -p J10build
@@ -490,7 +500,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	BUILDDIR=${BUILDDIRS[$i]}
 	echo "build $SUBSURFACE_EXECUTABLE in $BUILDDIR"
 
-	cd "$SRC"/subsurface
+	cd "$SRC"/${SRC_DIR}
 
 	# pull the plasma-mobile components from upstream if building Subsurface-mobile
 	if [ "$SUBSURFACE_EXECUTABLE" = "MobileExecutable" ] ; then
@@ -511,7 +521,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		$LIBGIT2_FROM_PKGCONFIG \
 		-DFORCE_LIBSSH=OFF \
 		$PRINTING $EXTRA_OPTS \
-		"$SRC"/subsurface
+		"$SRC"/${SRC_DIR}
 
 	if [ "$PLATFORM" = Darwin ] ; then
 		rm -rf Subsurface.app
@@ -528,7 +538,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		mkdir -p appdir/usr/share/metainfo
 		mkdir -p appdir/usr/share/icons/hicolor/256x256/apps
 		cp -r ./install-root/* ./appdir/usr
-		cp subsurface/appdata/subsurface.appdata.xml appdir/usr/share/metainfo/
-		cp subsurface/icons/subsurface-icon.png appdir/usr/share/icons/hicolor/256x256/apps/
+		cp ${SRC_DIR}/appdata/subsurface.appdata.xml appdir/usr/share/metainfo/
+		cp ${SRC_DIR}/icons/subsurface-icon.png appdir/usr/share/icons/hicolor/256x256/apps/
 	fi
 done
