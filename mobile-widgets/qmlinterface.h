@@ -142,6 +142,21 @@ public:
 	};
 	Q_ENUM(CLOUD_STATUS);
 
+	enum DECO_MODE {
+		BUEHLMANN,
+		RECREATIONAL,
+		VPMB
+	};
+	Q_ENUM(DECO_MODE);
+
+	enum DIVE_MODE {
+		OC,
+		CCR,
+		PSCR,
+		FREEDIVE
+	};
+	Q_ENUM(DIVE_MODE);
+
 public:
 	CLOUD_STATUS cloud_verification_status() { return (CLOUD_STATUS)prefs.cloud_verification_status; }
 	DURATION duration_units() { return (DURATION)prefs.units.duration_units; }
