@@ -12,6 +12,7 @@ Kirigami.ScrollablePage {
 
 	property string speedUnit: (Backend.length === Enums.METERS) ? qsTr(" m/min") : qsTr(" ft/min")
 	property string volumeUnit: (Backend.volume === Enums.LITER) ? qsTr(" l/min") : qsTr(" cuft/min")
+	property string pressureUnit: (Backend.pressure === Enums.BAR) ? qsTr(" BAR") : qsTr(" PSI")
 	Connections {
 		target: Backend
 		onLengthChanged: {
@@ -25,6 +26,8 @@ Kirigami.ScrollablePage {
 		onVolumeChanged: {
 			spinBottomsac.value = Backend.bottomsac
 			spinDecosac.value = Backend.decosac
+		}
+		onPressureChanged: {
 		}
 	}
 	Column {
@@ -157,37 +160,46 @@ Kirigami.ScrollablePage {
 				}
 				TemplateComboBox {
 					editable: false
+					currentIndex: Backend.dive_mode
 					model: ListModel {
 						ListElement {text: qsTr("Open circuit")}
 						ListElement {text: qsTr("CCR")}
 						ListElement {text: qsTr("pSCR")}
 					}
 					onActivated:  {
+						Backend.dive_mode = currentIndex
 					}
 				}
 				TemplateCheckBox {
 					text: qsTr("Bailout: Deco on OC")
 					Layout.columnSpan: 2
+					checked: Backend.dobailout
 				}
 
 				TemplateRadioButton {
 					text: qsTr("Recreational mode")
 					Layout.columnSpan: 2
+					checked: Backend.planner_deco_mode === Enums.RECREATIONAL
+					onClicked: {
+						Backend.planner_deco_mode = Enums.RECREATIONAL
+					}
 				}
 
 				TemplateLabel {
 					text: qsTr("Reserve gas")
 					leftPadding: Kirigami.Units.smallSpacing * 2
+					enabled: Backend.planner_deco_mode === Enums.RECREATIONAL
 				}
 				TemplateSpinBox {
 					from: 1
 					to: 99
 					stepSize: 1
-					value: 50
+					value: Backend.reserve_gas
 					textFromValue: function (value, locale) {
 						return value + volumeUnit
 					}
 					onValueModified: {
+						Backend.reserve_gas = value
 					}
 				}
 
@@ -195,11 +207,19 @@ Kirigami.ScrollablePage {
 					text: qsTr("Safety stop")
 					Layout.columnSpan: 2
 					leftPadding: Kirigami.Units.smallSpacing * 6
+					checked: Backend.safetystop
+					onClicked: {
+						Backend.safetystop = checked
+					}
 				}
 
 				TemplateRadioButton {
 					text: qsTr("Bühlmannh deco")
 					Layout.columnSpan: 2
+					checked: Backend.planner_deco_mode === Enums.BUEHLMANN
+					onClicked: {
+						Backend.planner_deco_mode = Enums.BUEHLMANN
+					}
 				}
 
 				TemplateLabel {
@@ -210,11 +230,12 @@ Kirigami.ScrollablePage {
 					from: 1
 					to: 99
 					stepSize: 1
-					value: 50
+					value: Backend.gflow
 					textFromValue: function (value, locale) {
 						return value + volumeUnit
 					}
 					onValueModified: {
+						Backend.gflow = value
 					}
 				}
 
@@ -226,17 +247,22 @@ Kirigami.ScrollablePage {
 					from: 1
 					to: 99
 					stepSize: 1
-					value: 50
+					value: Backend.gfhigh
 					textFromValue: function (value, locale) {
 						return value + volumeUnit
 					}
 					onValueModified: {
+						Backend.gfhigh = value
 					}
 				}
 
 				TemplateRadioButton {
 					text: qsTr("VPM-B deco")
 					Layout.columnSpan: 2
+					checked: Backend.planner_deco_mode === Enums.VPMB
+					onClicked: {
+						Backend.planner_deco_mode = Enums.VPMB
+					}
 				}
 
 				TemplateLabel {
@@ -247,12 +273,12 @@ Kirigami.ScrollablePage {
 					from: 0
 					to: 4
 					stepSize: 1
-					value: 2
+					value: Backend.vpmb_conservatism
 					textFromValue: function (value, locale) {
 						return qsTr("+") + value
 					}
 					onValueModified: {
-						console.log("got value: " + value)
+						Backend.vpmb_conservatism = value
 					}
 				}
 
@@ -264,11 +290,19 @@ Kirigami.ScrollablePage {
 				TemplateCheckBox {
 					text: qsTr("Plan backgas breaks")
 					Layout.columnSpan: 2
+					checked: Backend.last_stop6m
+					onClicked: {
+						Backend.last_stop6m = checked
+					}
 				}
 
 				TemplateCheckBox {
 					text: qsTr("Only switch at required stops")
 					Layout.columnSpan: 2
+					checked: Backend.switch_at_req_stop
+					onClicked: {
+						Backend.switch_at_req_stop = checked
+					}
 				}
 
 				TemplateLabel {
@@ -278,12 +312,12 @@ Kirigami.ScrollablePage {
 					from: 0
 					to: 4
 					stepSize: 1
-					value: 2
+					value: Backend.min_switch_duration
 					textFromValue: function (value, locale) {
 						return qsTr("+") + value
 					}
 					onValueModified: {
-						console.log("got value: " + value)
+						Backend.min_switch_duration = value
 					}
 				}
 
@@ -294,12 +328,12 @@ Kirigami.ScrollablePage {
 					from: 0
 					to: 4
 					stepSize: 1
-					value: 2
+					value: Backend.surface_segment
 					textFromValue: function (value, locale) {
 						return qsTr("+") + value
 					}
 					onValueModified: {
-						console.log("got value: " + value)
+						Backend.surface_segment = value
 					}
 				}
 			}
