@@ -38,12 +38,14 @@ Kirigami.ScrollablePage {
 		TemplateSection {
 			id: rates
 			title: qsTr("Rates")
+			width: parent.width
 
 			GridLayout {
 				columns: 2
 				rowSpacing: Kirigami.Units.smallSpacing * 2
 				columnSpacing: Kirigami.Units.smallSpacing
 				visible: rates.isExpanded
+				width: parent.width
 
 				TemplateLabel {
 					Layout.columnSpan: 2
