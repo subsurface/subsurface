@@ -7,6 +7,7 @@
 #include "core/device.h"
 #include "core/qthelper.h"
 #include "core/settings/qPrefDivePlanner.h"
+#include "core/settings/qPrefUnit.h"
 #if not defined(SUBSURFACE_MOBILE) && not defined(SUBSURFACE_TESTING)
 #include "commands/command.h"
 #endif // SUBSURFACE_MOBILE SUBSURFACE_TESTING
@@ -433,6 +434,10 @@ void DivePlannerPointsModel::emitDataChanged()
 
 void DivePlannerPointsModel::setBottomSac(double sac)
 {
+#ifdef SUBSURFACE_MOBILE
+	if (qPrefUnits::volume() == units::CUFT)
+		sac /= 100; // cuft without decimals (0 - 300)
+#endif
 	diveplan.bottomsac = units_to_sac(sac);
 	qPrefDivePlanner::set_bottomsac(diveplan.bottomsac);
 	emitDataChanged();
@@ -440,6 +445,10 @@ void DivePlannerPointsModel::setBottomSac(double sac)
 
 void DivePlannerPointsModel::setDecoSac(double sac)
 {
+#ifdef SUBSURFACE_MOBILE
+	if (qPrefUnits::volume() == units::CUFT)
+		sac /= 100; // cuft without decimals (0 - 300)
+#endif
 	diveplan.decosac = units_to_sac(sac);
 	qPrefDivePlanner::set_decosac(diveplan.decosac);
 	emitDataChanged();
@@ -447,6 +456,9 @@ void DivePlannerPointsModel::setDecoSac(double sac)
 
 void DivePlannerPointsModel::setSacFactor(double factor)
 {
+#ifdef SUBSURFACE_MOBILE
+	factor /= 10.0;
+#endif
 	qPrefDivePlanner::set_sacfactor((int) round(factor * 100));
 	emitDataChanged();
 }
