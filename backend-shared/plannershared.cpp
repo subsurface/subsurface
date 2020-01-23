@@ -135,7 +135,6 @@ double plannerShared::bottompo2()
 }
 void plannerShared::set_bottompo2(double value)
 {
-	// NO conversion, this is done in the planner model.
 	qPrefDivePlanner::set_bottompo2((int) (value * 1000.0));
 	CylindersModel::instance()->updateBestMixes();
 }
