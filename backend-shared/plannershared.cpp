@@ -83,11 +83,6 @@ double plannerShared::bottomsac()
 }
 void plannerShared::set_bottomsac(double value)
 {
-#ifdef SUBSURFACE_MOBILE
-	if (qPrefUnits::volume() == units::CUFT)
-		value /= 100; // cuft without decimals (0 - 300)
-#endif
-
 	// NO conversion, this is done in the planner model.
 	DivePlannerPointsModel::instance()->setBottomSac(value);
 }
@@ -104,11 +99,6 @@ double plannerShared::decosac()
 }
 void plannerShared::set_decosac(double value)
 {
-#ifdef SUBSURFACE_MOBILE
-	if (qPrefUnits::volume() == units::CUFT)
-		value /= 100; // cuft without decimals (0 - 300)
-#endif
-
 	// NO conversion, this is done in the planner model.
 	DivePlannerPointsModel::instance()->setDecoSac(value);
 }
@@ -124,9 +114,6 @@ double plannerShared::sacfactor()
 }
 void plannerShared::set_sacfactor(double value)
 {
-#ifdef SUBSURFACE_MOBILE
-	value /= 10.0;
-#endif
 	// NO conversion, this is done in the planner model.
 	DivePlannerPointsModel::instance()->setSacFactor(value);
 }
