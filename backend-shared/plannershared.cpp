@@ -69,7 +69,6 @@ void plannerShared::set_surface_segment(int value)
 {
 	// NO conversion, this is done in the planner model.
 	DivePlannerPointsModel::instance()->setSurfaceSegment(value);
-	emit instance()->surface_segmentChanged(surface_segment());
 }
 
 double plannerShared::bottomsac()

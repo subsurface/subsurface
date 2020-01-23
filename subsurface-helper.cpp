@@ -20,7 +20,6 @@
 #include "qt-models/messagehandlermodel.h"
 #include "profile-widget/qmlprofile.h"
 #include "core/downloadfromdcthread.h"
-#include "backend-shared/plannershared.h"
 #include "qt-models/diveimportedmodel.h"
 #include "mobile-widgets/qml/kirigami/src/kirigamiplugin.h"
 #else
@@ -184,11 +183,8 @@ void register_qml_types(QQmlEngine *engine)
 	int rc;
 
 #ifdef SUBSURFACE_MOBILE
-	// register shared diveplanner class
 	if (engine != NULL) {
 		QQmlContext *ct = engine->rootContext();
-
-		ct->setContextProperty("Planner", plannerShared::instance());
 
 		// Register qml interface class
 		QMLInterface::setup(ct);

@@ -15,23 +15,6 @@
 class plannerShared: public QObject {
 	Q_OBJECT
 
-	// Planning data
-	Q_PROPERTY(deco_mode planner_deco_mode READ planner_deco_mode WRITE set_planner_deco_mode NOTIFY planner_deco_modeChanged);
-	Q_PROPERTY(int reserve_gas READ reserve_gas WRITE set_reserve_gas NOTIFY reserve_gasChanged);
-	Q_PROPERTY(bool dobailout READ dobailout WRITE set_dobailout NOTIFY dobailoutChanged);
-	Q_PROPERTY(bool doo2breaks READ doo2breaks WRITE set_doo2breaks NOTIFY doo2breaksChanged);
-	Q_PROPERTY(int min_switch_duration READ min_switch_duration WRITE set_min_switch_duration NOTIFY min_switch_durationChanged);
-	Q_PROPERTY(int surface_segment READ surface_segment WRITE set_surface_segment NOTIFY surface_segmentChanged);
-
-	// Gas data
-	Q_PROPERTY(double bottomsac READ bottomsac WRITE set_bottomsac NOTIFY bottomsacChanged);
-	Q_PROPERTY(double decosac READ decosac WRITE set_decosac NOTIFY decosacChanged);
-	Q_PROPERTY(double sacfactor READ sacfactor WRITE set_sacfactor NOTIFY sacfactorChanged);
-	Q_PROPERTY(bool o2narcotic READ o2narcotic WRITE set_o2narcotic NOTIFY o2narcoticChanged);
-	Q_PROPERTY(double bottompo2 READ bottompo2 WRITE set_bottompo2 NOTIFY bottompo2Changed);
-	Q_PROPERTY(double decopo2 READ decopo2 WRITE set_decopo2 NOTIFY decopo2Changed);
-	Q_PROPERTY(int bestmixend READ bestmixend WRITE set_bestmixend NOTIFY bestmixendChanged);
-
 public:
 	static plannerShared *instance();
 
@@ -70,24 +53,6 @@ public slots:
 	static void set_bottompo2(double value);
 	static void set_decopo2(double value);
 	static void set_bestmixend(int value);
-
-signals:
-	// Planning data
-	void planner_deco_modeChanged(deco_mode value);
-	void reserve_gasChanged(int value);
-	void dobailoutChanged(bool value);
-	void doo2breaksChanged(bool value);
-	void min_switch_durationChanged(int value);
-	void surface_segmentChanged(int value);
-
-	// Gas data
-	void bottomsacChanged(double value);
-	void decosacChanged(double value);
-	void sacfactorChanged(double value);
-	void o2narcoticChanged(bool value);
-	void bottompo2Changed(double value);
-	void decopo2Changed(double value);
-	void bestmixendChanged(int value);
 
 private:
 	plannerShared() {}
