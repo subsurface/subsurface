@@ -15,7 +15,7 @@ Item {
 		font.pointSize: subsurfaceTheme.titlePointSize
 		font.bold: true
 		anchors.horizontalCenter: parent.horizontalCenter
-		text: "using the TemplateTilte you need to set the title text"
+		text: "using the TemplateTitle you need to set the title text"
 	}
 	TemplateLine {
 		anchors.top: myLabel.bottom
