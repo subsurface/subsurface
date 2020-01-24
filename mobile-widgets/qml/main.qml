@@ -394,6 +394,14 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
+				text: qsTr("Dive summary")
+				onTriggered: {
+					globalDrawer.close()
+					pageStack.push(diveSummaryWindow)
+					detailsWindow.endEditMode()
+				}
+			},
+			Kirigami.Action {
 				icon {
 					name: ":/icons/ic_info_outline.svg"
 				}
@@ -812,6 +820,11 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	DivePlannerManager {
 		id: divePlannerManagerWindow
+		visible: false
+	}
+
+	DiveSummary {
+		id: diveSummaryWindow
 		visible: false
 	}
 
