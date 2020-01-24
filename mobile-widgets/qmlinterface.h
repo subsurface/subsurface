@@ -7,9 +7,12 @@
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "qt-models/diveplannermodel.h"
 #include "backend-shared/plannershared.h"
+#include "backend-shared/divesummary.h"
 
 #include <QObject>
 #include <QQmlContext>
+#include <QStringList>
+
 // This class is a pure interface class and may not contain any implementation code
 // Allowed are:
 //     header
@@ -73,6 +76,8 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(bool display_transitions READ display_transitions WRITE set_display_transitions NOTIFY display_transitionsChanged);
 	Q_PROPERTY(bool verbatim_plan READ verbatim_plan WRITE set_verbatim_plan NOTIFY verbatim_planChanged);
 	Q_PROPERTY(bool display_variations READ display_variations WRITE set_display_variations NOTIFY display_variationsChanged);
+
+	Q_PROPERTY(QStringList resultCalculation READ resultCalculation NOTIFY resultCalculationChanged);
 
 public:
 	static QMLInterface *instance();
@@ -163,6 +168,9 @@ public:
 	};
 	Q_ENUM(DIVE_MODE);
 
+	// Function to calculate dive summary
+	Q_INVOKABLE void summaryCalculation(int primaryPeriod, int secondaryPeriod);
+	
 public:
 	CLOUD_STATUS cloud_verification_status() { return (CLOUD_STATUS)prefs.cloud_verification_status; }
 	DURATION duration_units() { return (DURATION)prefs.units.duration_units; }
@@ -208,6 +216,8 @@ public:
 	bool display_transitions() { return prefs.display_transitions; }
 	bool verbatim_plan() { return prefs.verbatim_plan; }
 	bool display_variations() { return prefs.display_variations; }
+
+	const QStringList &resultCalculation() { return diveSummary::resultCalculation; }
 
 public slots:
 	void set_cloud_verification_status(CLOUD_STATUS value) {  qPrefCloudStorage::set_cloud_verification_status(value); }
@@ -301,6 +311,7 @@ signals:
 	void verbatim_planChanged(bool value);
 	void display_variationsChanged(bool value);
 
+	void resultCalculationChanged(QStringList);
 private:
 	QMLInterface() {}
 };
