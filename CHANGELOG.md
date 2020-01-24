@@ -1,4 +1,5 @@
 Mobile: add personalized option for units
+Mobile: add Dive Summary page
 Mobile: option to reset default cylinder
 Mobile: new layout for Settings page
 Desktop: add the ability to modify dive salinity
