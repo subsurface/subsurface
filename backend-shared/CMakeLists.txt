@@ -1,6 +1,7 @@
 # backend functionality shared between Desktop (UI) and Mobile (QML)
 
 set(BACKEND_SRCS
+	divesummary.cpp
 	exportfuncs.cpp
 	exportfuncs.h
 	plannershared.cpp

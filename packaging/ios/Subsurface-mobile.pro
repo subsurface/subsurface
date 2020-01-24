@@ -108,6 +108,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/subsurface-qt/CylinderObjectHelper.cpp \
 	../../core/subsurface-qt/DiveObjectHelper.cpp \
 	../../core/subsurface-qt/DiveListNotifier.cpp \
+	../../backend-shared/divesummary.cpp \
 	../../backend-shared/exportfuncs.cpp \
 	../../backend-shared/plannershared.cpp \
 	../../mobile-widgets/qmlinterface.cpp \
@@ -242,6 +243,7 @@ HEADERS += \
 	../../core/subsurface-qt/CylinderObjectHelper.h \
 	../../core/subsurface-qt/DiveObjectHelper.h \
 	../../core/subsurface-qt/DiveListNotifier.h \
+	../../backend-shared/divesummary.h \
 	../../backend-shared/exportfuncs.h \
 	../../backend-shared/plannershared.h \
 	../../mobile-widgets/qmlinterface.h \
