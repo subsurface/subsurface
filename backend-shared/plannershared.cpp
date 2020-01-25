@@ -89,6 +89,9 @@ void plannerShared::set_bottomsac(double value)
 
 double plannerShared::decosac()
 {
+// Mobile and desktop use the same values when using units::LITER,
+// however when using units::CUFT desktop want 0.00 - 3.00 while
+// mobile wants 0 - 300, therefore multiply by 100 for mobile
 	return (qPrefUnits::volume() == units::LITER) ?
 				qPrefDivePlanner::decosac() / 1000.0 :
 				ml_to_cuft(qPrefDivePlanner::decosac()
@@ -105,6 +108,9 @@ void plannerShared::set_decosac(double value)
 
 double plannerShared::sacfactor()
 {
+// mobile want 0 - 100 which are shown with 1 decimal as 0.0 - 10.0
+// whereas desktop wants 0.0 - 10.0
+// as a consequence divide by 10 or 100
 	return qPrefDivePlanner::sacfactor() /
 #ifdef SUBSURFACE_MOBILE
 			10.0;
