@@ -434,6 +434,10 @@ void DivePlannerPointsModel::emitDataChanged()
 
 void DivePlannerPointsModel::setBottomSac(double sac)
 {
+// mobile delivers the same value as desktop when using
+// units:METERS
+// however when using units:CUFT mobile deliver 0-300 which
+// are really 0.00 - 3.00 so start be correcting that
 #ifdef SUBSURFACE_MOBILE
 	if (qPrefUnits::volume() == units::CUFT)
 		sac /= 100; // cuft without decimals (0 - 300)
@@ -445,6 +449,10 @@ void DivePlannerPointsModel::setBottomSac(double sac)
 
 void DivePlannerPointsModel::setDecoSac(double sac)
 {
+// mobile delivers the same value as desktop when using
+// units:METERS
+// however when using units:CUFT mobile deliver 0-300 which
+// are really 0.00 - 3.00 so start be correcting that
 #ifdef SUBSURFACE_MOBILE
 	if (qPrefUnits::volume() == units::CUFT)
 		sac /= 100; // cuft without decimals (0 - 300)
@@ -456,6 +464,9 @@ void DivePlannerPointsModel::setDecoSac(double sac)
 
 void DivePlannerPointsModel::setSacFactor(double factor)
 {
+// sacfactor is normal x.y (one decimal), however mobile
+// delivers 0 - 100 so adjust that to 0.0 - 10.0, to have
+// the same value as desktop
 #ifdef SUBSURFACE_MOBILE
 	factor /= 10.0;
 #endif
