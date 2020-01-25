@@ -91,6 +91,10 @@ void QMLInterface::setup(QQmlContext *ct)
 			instance(), &QMLInterface::verbatim_planChanged);
 	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_variationsChanged,
 			instance(), &QMLInterface::display_variationsChanged);
+
+	// calculate divesummary first time.
+	// this is needed in order to load the divesummary page
+	diveSummary::summaryCalculation(0, 3);
 }
 
 
