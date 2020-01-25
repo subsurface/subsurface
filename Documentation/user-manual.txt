@@ -222,13 +222,13 @@ some remarks about the dive. _Subsurface_ can store much more
 information for each dive.  To add a dive to a dive log, select _Log
 ->  Add Dive_ from the Main Menu. The program then shows three panels
 on which to enter
-information for a dive: two tabs in the *Info* panel (*Notes* and
-*Equipment*), as well as the *Dive Profile* panel that displays a graphical profile
-of each dive. These panels are respectively marked [red]#A#, [red]#B# and
-[red]#C#
+information for a dive: three tabs in the *Info* panel (*Notes*,
+*Equipment* and *Information*), as well as the *Dive Profile* panel that displays a graphical profile
+of each dive. These panels are respectively marked [red]#A#, [red]#B#, [red]#C# and
+[red]#D#
 in the figure below. Each of these tabs will now be explained for data entry.
 
-image::images/AddDive1_f22.jpg["FIGURE: Add dive",align="center"]
+image::images/AddDive1.jpg["FIGURE: Add dive",align="center"]
 
 Most actions when editing a new dive can be individually undone, as described in the
 section on <<S_undo,undoing edits>>, but changes
@@ -240,13 +240,16 @@ image::images/BlueEditBar_f22.jpg["Blue edit bar",align="center"]
 
 The _Apply changes_ button should be selected after all the equipment for a dive has been entered.
 
-If this hand-entered dive was not in the sea but in a body of water above sea level you may wish to edit the xref:S_altitude[*altitude setting in the
-Information panel*] because dives at altitude need special calculations.
+If this hand-entered dive was not in the sea but at altitude away from the sea, you may wish to edit the xref:S_altitude[*altitude setting*] in the
+*Information tab* because dives at altitude need special calculations.
 
-All edits to a new dive, including changes to the equipment after
-selecting the _Apply changes_ button, are
-saved in memory but NOT written to storage.
-If you don't manually save them before closing Subsurface, the program will
+In addition, the water type of this dive (e.g. sea water; fresh water) can be entered in the xref:S_salinity[*water type setting*] in the
+*Information tab*. In order to do this, enable editing of water type in the
+Log Preferences (_File->Preferences->Dive log_).
+
+All edits to a new dive, including changes to the equipment after selecting the
+_Apply changes_ button, are saved in memory but NOT written to storage. If you
+don't manually save them before closing Subsurface, the program will
 ask again, this time whether the complete dive log should be saved to storage or not.
 
 [[S_CreateProfile]]
@@ -685,24 +688,40 @@ are not affected by the specific dive computer that is selected.
 With the uploaded dives in the *Dive List*, the information from the dive
 computer is not complete and more details must be added to have
 a full record of the dives. To do this,
-the *Notes* and the *Equipment* tabs on the top left hand of the
-_Subsurface_ window should be used.
+the *Notes*, *Equipment* and *Information* tabs on the top left hand of the
+_Subsurface_ window should be used. These three tabs represent a
+increase in the amount of information stored for a dive.
+
+1. The *Notes* tab
+holds basic information about the dive, the date and time, locality,
+budiy, divemaster and some dive notes. This is about the minimum amount of
+information required for a coherent dive log. 
+
+2. If one wishes, one can expand the dive information by using the
+*Equipment* tab to record information about the equipment used: cylinders
+and their start and end pressures, dive suit used and weight system used.
+
+3. Expanding the dive information even more, the *Information* tab is used
+to record environmental information such as water type (usually fresh water or salt water),
+temperatures, surface conditions and conditions during the dive, e.g. visibility
+and current. For dives downloaded from a dive computer, water type and water temperature 
+are automatically provided in the *Information* tab. Some dive computers also
+provide air temperature and altitude.
 
 [[S_Notes_dc]]
-===== Notes
+===== The *Notes* tab
 
-To have a more complete dive record, the user needs to add
-additional information by hand. The procedure
+The procedure
 below is virtually identical for hand-entered dives and for dives downloaded from a dive computer.
 
-Usually the date and time of the dive, gas mixture and water temperature are
+The date and time of the dive are
 shown as obtained from the dive computer. In some cases,
 provide the date and time of the dive, for example when entering a dive by hand or when a
 dive computer doesn’t provide this information. If you
 click on the *Notes* tab, the following fields are
 visible (left hand image, below):
 
-image::images/AddDive3_f22.jpg["FIGURE: The Notes tab",align="center"]
+image::images/AddDive3.jpg["FIGURE: The Notes tab",align="center"]
 
 The right hand image, above, shows a *Notes tab* filled with dive information.
 The *Date* and *Time* fields reflect the date and time of the dive. By clicking
@@ -713,6 +732,7 @@ edited directly by clicking on each of them in the text box and by over-typing t
 information displayed.
 
 [[S_undo]]
+****
 *How to UNDO information that has been typed.* While editing a dive log you frequently
 replace or modify existing information. Sometimes this is unintended. Let's say, for the moment,
 the time of your dive computer was set incorrectly and the dive time in the
@@ -731,15 +751,7 @@ to a specific dive and changes to multiple dives can be undone.
 
 image::images/undo.jpg["FIGURE:Performing an undo",align="center"]
 
-*Air/water temperatures*: Air and water temperatures during the dive are shown
-in text boxes to the right of the Start time. Many dive computers supply water
-temperature information and this box may have information.
-If air temperature isn’t provided by the dive computer, the first temperature reading
-might be used for the air temperature. Generally this is close to the real air temperature.
-If editing is required, only a value is required, the units of temperature will be
-automatically supplied by
-_Subsurface_ (following the _Preferences_, metric or imperial units will
-be used).
+****
 
 [[S_locations]]
 *Location*:
@@ -840,10 +852,8 @@ then select _Apply Changes_ to save the geolocation for this dive site.
 The dive site information can later be edited by clicking the globe icon to the right of the
 dive site name in the *Notes tab*.
 
-*Dive mode*: This is a dropdown box allowing you to choose the type of dive
-performed. The options are OC (Open Circuit SCUBA, the default setting, for most recreational dives),
-Freedive (dive without SCUBA equipment), CCR (Closed-circuit
-rebreather) and pSCR (Passive semi-closed rebreather).
+Having entered information about the dive site into the *Notes* tab, the following
+additional information can be typed in:
 
 *Divemaster*: The name of the divemaster or dive guide should be
 entered in this field
@@ -855,16 +865,8 @@ the current logbook.
 dive. Auto selection based on the list of buddies in the current logbook is
 offered.
 
-*Suit*: Here the type of dive suit used can be entered.
-Auto selection of the suit description is available.
-Some dry-suit users may choose to use this field to record what combination of
-suit and thermal under suit was used.
-
 *Rating*: Provide a subjective overall rating of the dive on a
 5-point scale by clicking the appropriate star on the rating scale.
-
-*Visibility*: Provide a rating of visibility during the
-dive on a 5-point scale by clicking the appropriate star.
 
 *Tags*: Tags that describe the type of dive done can be entered
 here (separated by commas). Examples of common tags are boat, drift, training,
@@ -875,16 +877,12 @@ the tags that correspond to the typing. For instance, by typing
 
 *Notes*: Any additional information for the dive can be entered here.
 
-If this dive was away from the sea and your dive computer does not record atmospheric
-pressure or altitude you may wish to edit the xref:S_altitude[*altitude setting in the
-Information panel*] because dives at altitude require special calculations.
-
 The image xref:S_Notes_dc[at the beginning of this section]
 shows an example of a *Notes tab* after completing the dive information.
 
-===== Equipment
+===== The *Equipment* tab
 
-The Equipment tab allow entering information about the type of
+The Equipment tab allows entering information about the type of
 cylinder and gas used, as well as the weights used for the dive. The
 message in the blue box at the top of the panel:
 
@@ -948,6 +946,11 @@ for a dive using two cylinders (air and EAN50):
 
 image::images/CylinderDataEntry3_f20.jpg["FIGURE: a completed cylinder dive information table",align="center"]
 
+*Suit*: Here the type of dive suit used can be entered.
+Auto selection of the suit description is available.
+Some dry-suit users may choose to use this field to record what combination of
+suit and thermal undersuit was used.
+
 *Weights*: Information about the weight system used can be entered
 using a dialog similar to that of the cylinder information. If you click
 the + button on the top right of the weights dialog, the table looks like
@@ -974,6 +977,90 @@ the dust bin icon on the left hand. Here is an example of information for a dive
 with two types of weights: integrated as well as a weight belt:
 
 image::images/WeightsDataEntry3_f20.jpg["FIGURE: A completed weights information table",align="center"]
+
+===== The *Information* tab
+
+The Information tab serves two purposes:
+
+1. Allow divers to enter information about the environment with respect to a specific dive.
+2. Show some dive information that is not displayed elsewhere.
+
+Below is an example of an Information tab with complete information:
+
+image::images/Infotab.jpg["FIGURE: A Information tab showing full information",align="center"]
+
+
+For technical or freedivers, the *Dive mode* can be selected. *Dive mode*: This is a dropdown box
+allowing you to choose the type of dive
+performed. The options are OC (Open Circuit SCUBA, the default setting, for most recreational dives),
+Freedive (dive without SCUBA equipment), CCR (Closed-circuit
+rebreather) and pSCR (Passive semi-closed rebreather). 
+
+Use the Information tab to also enter environmental information for a dive.
+
+*Air/water temperatures*: Air and water temperatures during the dive are shown
+in text boxes to the right of the Start time. Many dive computers supply water
+temperature information and this box may contain that.
+If air temperature isn’t provided by the dive computer, the first temperature reading
+might be used for the air temperature. Generally this is close to the real air temperature.
+If editing is required, only a value is required, the units of temperature will be
+automatically supplied by
+_Subsurface_ (following the _Preferences_, metric or imperial units will
+be used).
+
+[[S_salinity]]
+The *Water type/density* field shows the information reported by the dive computer. _This field is
+editable only if it is enabled in the Log Preferences (File->Preferences->Dive log)_. When enabled, for instance for manually-entered dives
+without dive computer information, select the desired water type
+using the dropdown box. The following water types are available:
+
+1. Fresh water, usually at inland dive sites or in caves.
+2. Salty water, i.e. water that contains a little salt (called brackish water).
+3. EN13319, an average value that represents neither fresh water or sea water. This value is available
+on some dive computers and is regarded by some as a safe value for both fresh water and sea water.
+4. Salt water encountered in the sea.
+
+The topic of water salinity is complex because it differs sonewhat between different oceans. A warning icon
+is shown if the water type reported by the dive computer currently displayed is different from
+the value that is typed here. The water density value (corresponding to salinity) is automatically calculated
+from the choice of water type.
+
+[[S_altitude]]
+[icon="images/atmpress.jpg"]
+[NOTE]
+*Altitude* If this dive was away from the sea and your dive computer does not record atmospheric
+pressure or altitude you may wish to edit the altitude because dives at altitude require special calculations.
+The text box *Atm. pressure/Altitude* allows this. If this text box
+contains a value, dive calculations take into account altitude. The dropbox on the
+right allows two ways of expressing atmospheric pressure: mbar or m/ft above sea level.
+The altitude unit (metric/imperial) is taken from the settings in the *Preferences* screen. A
+third option is to use the atmospheric pressure provided by the dive computer. In order to specify
+the pressure/altitude, first select the appropriate unit in the dropbox (in the case of the image on the left
+these are "mbar/m/use dc", then type an appropriate value into the text box. In the case
+of m/ft the altitude typed into the text box is automatically converted to the
+mean expected atmospheric pressure (mbar) at the specified altitude.
+In the case of "use dc", no value is required in the text box. Atmospheric pressure provided by a dive
+computer does not need any editing.
+
+Recording of five dive conditions that can be done on a five star rating scale. The convention is that the most comfortable
+environmental condition is marked with five stars, while the most unpleasant condition only
+gets one star. An environmental condition with no stars is assumed to have no rating, e.g. surface waves in a cave.
+
+*Visibility*: Provide a qualitative rating of visibility during the
+dive on a 5-point scale by clicking the appropriate star.
+
+*Current*: Provide a qualitative rating of water current strength during the
+dive on a 5-point scale by clicking the appropriate star.
+
+The following three environmental parameters can be entered _if they are enabled in the Log Preferences (File->Preferences->Dive log)_:
+
+*Surface waves*: Provide a qualitative rating of the size of surface waves (swell/chop) when entering or leaving the water.
+
+*Surge*: Provide a qualitative rating of water surge strength during the
+dive on a 5-point scale by clicking the appropriate star.
+
+*Chill*: Provide a qualitative rating of your perception of how cold you got during the
+dive.
 
 ==== Editing several selected dives simultaneously
 
@@ -2149,6 +2236,7 @@ activates the Map menu. The items are:
 * Select visible dive locations. In the Dive List panel, highlight all the dive sites visible in the Dive Map. This allows easy
   selection of the dives within a particular geographical area to inspect them or to calculate statistics for them.
 
+
 === The *Information* tab (for individual dives)
 
 The Information tab gives some summary information about a particular dive that
@@ -2157,46 +2245,12 @@ surface interval before the dive, the maximum and mean depths of the dive, the
 gas volume consumed, the surface air consumption (SAC) and the number of oxygen
 toxicity units (OTU) incurred.
 
-[[S_altitude]]
-[icon="images/atmpress.jpg"]
-[NOTE]
-The text box *Atm. pressure* allows one to specify
-the altitude or the atmospheric pressure of the dive site while diving. If this text box
-contains a value, dive calculations take into account altitude. The dropbox on the
-right allows two ways of expressing atmospheric pressure: mbar or m/ft above sea level.
-The altitude unit (metric/imperial) is taken from the settings in the *Preferences* screen. A
-third option is to use the atmospheric pressure provided by the dive computer. In order to specify
-the pressure/altitude, first select the appropriate unit (in the case of the image on the left
-these are "mbar/m/use dc", then type an appropriate value into the text box. In the case
-of m/ft the altitude typed into the text box is automatically converted to the
-mean expected atmospheric pressure (mbar) at the specified altitude.
-In the case of "use dc", no value is required in the text box. Atmospheric pressure provided by a dive
-computer does not need any editing.
-
-The *Water type/density* field shows the information reported by the dive computer. In order to
-manually enter the water type (also referred to as salinity) you have to enable this feature in the
-*Log Preferences*. Once this is enabled, you can pick the desired water type here. A warning icon
-will be shown if the water type reported by the dive computer currently displayed is different from
-the value manually set here.
-
 [icon="images/icons/info.jpg"]
 [NOTE]
 Gas consumption and SAC calculations:
 _Subsurface_ calculates SAC and Gas consumption taking in account gas
 incompressibility, particularly at tank pressures above 200 bar, making them more accurate.
 Refer to xref:SAC_CALCULATION[Appendix F] for more information.
-
-[[S_ExtraDataTab]]
-=== The *Extra Data* tab (usually for individual dives)
-
-When using a dive computer, it often reports several data items that cannot easily be
-presented in a standardised way because the nature of the information differs from one
-dive computer to another. These data often comprise setup information, metadata about
-a dive, battery levels, no fly times, or gradient factors used during the dive. When
-possible, this information is presented in the *Extra Data* tab. Below is an
-image showing extra data for a dive using a Poseidon rebreather.
-
-image::images/ExtraDataTab_f20.jpg["FIGURE: Extra Data tab",align="center"]
 
 === The *Stats* tab (for groups of dives)
 
@@ -2209,6 +2263,18 @@ dives,
 as well as the minimum, maximum and mean for the dive duration,
 water temperature and surface air consumption (SAC). It also shows the depth of the
 shallowest and deepest dives of those selected.
+
+[[S_ExtraDataTab]]
+=== The *Extra Data* tab (usually for individual dives)
+
+When using a dive computer, it often reports several data items that cannot easily be
+presented in a standardised way because the nature of the information differs from one
+dive computer to another. These data often comprise setup information, metadata about
+a dive, battery levels, no fly times, or gradient factors used during the dive. When
+possible, this information is presented in the *Extra Data* tab. Below is an
+image showing extra data for a dive using a Poseidon rebreather.
+
+image::images/ExtraDataTab_f20.jpg["FIGURE: Extra Data tab",align="center"]
 
 [[S_DiveProfile]]
 === The *Dive Profile*
