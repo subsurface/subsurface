@@ -23,7 +23,13 @@ public:
 	inline void set_timeout(int value) { timeout = value; }
 	dc_status_t write(const void* data, size_t size, size_t *actual);
 	dc_status_t read(void* data, size_t size, size_t *actual);
-	inline const char *get_name() { return device->btname; }
+	inline dc_status_t get_name(char *res, size_t size)
+	{
+		if (!device->btname) return DC_STATUS_UNSUPPORTED;
+		strncpy(res, device->btname, size);
+		return DC_STATUS_SUCCESS;
+	}
+	dc_status_t poll(int timeout);
 
 	inline QLowEnergyService *preferredService() { return preferred; }
 	inline int descriptorWritten() { return desc_written; }
@@ -61,10 +67,11 @@ private:
 extern "C" {
 dc_status_t qt_ble_open(void **io, dc_context_t *context, const char *devaddr, dc_user_device_t *user_device);
 dc_status_t qt_ble_set_timeout(void *io, int timeout);
+dc_status_t qt_ble_poll(void *io, int timeout);
 dc_status_t qt_ble_read(void *io, void* data, size_t size, size_t *actual);
 dc_status_t qt_ble_write(void *io, const void* data, size_t size, size_t *actual);
+dc_status_t qt_ble_ioctl(void *io, unsigned int request, void *data, size_t size);
 dc_status_t qt_ble_close(void *io);
-const char *qt_ble_get_name(void *io);
 }
 
 #endif
