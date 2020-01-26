@@ -4,7 +4,7 @@
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
 // Ferguson, Salvador Cuñat, Pedro Neves
 // :revnumber: 4.9
-// :revdate:July 2019
+// :revdate:February 2020
 :icons:
 :toc2:
 :toc-placement: manual
@@ -19,7 +19,7 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves,
 Stefan Fuchs
 
-[blue]#_Version 4.9, July 2019_#
+[blue]#_Version 4.9, February 2020_#
 
 Welcome as a user of _Subsurface_, an advanced dive logging program with
 extensive infrastructure to describe, organize, interpret and print scuba
@@ -164,7 +164,7 @@ Decide which of the four panels are displayed by selecting the
 *Info*: Show only the Notes about the last selected dive and statistics for
 all highlighted dives.
 
-*Globe*: Show only the world map, centered on the last selected dive.
+*Map*: Show only the world map, centered on the last selected dive.
 
 Like other functions that can be accessed via the Main Menu, these options
 can also be triggered using keyboard shortcuts. The shortcuts
@@ -244,8 +244,7 @@ If this hand-entered dive was not in the sea but at altitude away from the sea, 
 *Information tab* because dives at altitude need special calculations.
 
 In addition, the water type of this dive (e.g. sea water; fresh water) can be entered in the xref:S_salinity[*water type setting*] in the
-*Information tab*. In order to do this, enable editing of water type in the
-Log Preferences (_File->Preferences->Dive log_).
+*Information tab*.
 
 All edits to a new dive, including changes to the equipment after selecting the
 _Apply changes_ button, are saved in memory but NOT written to storage. If you
@@ -760,8 +759,7 @@ image::images/undo.jpg["FIGURE:Performing an undo",align="center"]
 Dive locations are managed as a *separate* part of the dive log (See the section entitled xref:S_DiveSiteManagement[Manipulating Dive Site Information]).
 The dive information in the *Notes* and *Equipment* tabs can therefore NOT be edited at the same
 time as the dive site information. Save all the other dive information (e.g.
-divemaster, buddy, protective gear, notes about the dive) by selecting _Apply changes_ on the
-*Notes* tab BEFORE editing the dive site information. Then supply a dive site name in the
+divemaster, buddy, protective gear, notes about the dive) BEFORE editing the dive site information. Then supply a dive site name in the
 textbox labelled _Location_ on the *Notes* tab.
 
 *Using existing dive locations:* Type in the name of the dive site, e.g. "Tihany, Lake Balaton, Hungary".
@@ -789,9 +787,15 @@ data here are the geographic coordinates of the dive location.
 
 image::images/Globe_image2.jpg["FIGURE:Location creation panel",align="center"]
 
-There are three ways of adding the coordinates:
+New dive locations can be recorded in one of four ways:
 
-*(1):* Enter coordinates by hand if they are known, using one of
+1. xref:S_existing_locations[Typing in known coordinates by hand]
+2. xref:S_dive_map_location[Positioning the dive site flag on the dive map]
+3. xref:S_Subsurface_mobile[Dive site coordinates from the Subsurface-Mobile phone app]
+4. xref:S_GPS[Dive site coordinates from a GPS track]
+
+[[S_existing_locations]]
+*(1): Enter coordinates by hand* if they are known, using one of
    four formats with latitude followed by longitude:
 
 	ISO 6709 Annex D format e.g. 30°13'28.9"N 30°49'1.5"E
@@ -807,8 +811,17 @@ Enter any other contextual information about the dive site (Description and Note
 then select _Apply Changes_ to save the geolocation for this dive site.
 The dive site information can later be edited by clicking the globe icon to the right of the
 dive site name in the *Notes tab*.
+[icon="images/icons/warning2.png"]
+[WARNING]
+GPS coordinates of a dive site are linked to the location
+name - so *saving* a dive site with only coordinates and no name
+causes problems. (Subsurface will think all of these
+dives have the same location and try to keep their GPS coordinates the
+same).
 
-*(2):* Use the Dive Map to specify the coordinates. The Dive map now shows
+
+[[S_dive_map_location]]
+*(2): Use the Dive Map to specify the coordinates.* The Dive map now shows
 all the existing dive locations in grey as well as an additional marker in red
 (image B above). Drag the red marker to the location of the dive site being entered.
 The map can be dragged and zoomed using the mouse wheel. Position the red marker
@@ -825,17 +838,61 @@ image::images/Globe_image3.jpg["FIGURE:Location creation panel",align="center"]
 Once the dive location data have been saved, the dive on the Dive List has
 a globe icon immediately to the left of the location name of a particular dive.
 
-*(3):* Obtain the coordinates using the _Subsurface-mobile_ App on an
+[[S_Subsurface_mobile]]
+*(3): Obtain the coordinates using the _Subsurface-mobile_ App* on an
    Android or iPhone device with GPS and if the dive site coordinates
-   were stored using one of this app.
+   were stored using this app. Click xref:S_Using_mobile[here] for complete
+information.
 
-[icon="images/icons/warning2.png"]
-[WARNING]
-GPS coordinates of a dive site are linked to the location
-name - so *saving* a dive site with only coordinates and no name
-causes problems. (Subsurface will think all of these
-dives have the same location and try to keep their GPS coordinates the
-same).
+[[S_GPS]]
+*(4): Import coordinates from GPS equipment.* Some divers prefer to take a GPS
+onto the boat and record a GPS track while diving. Subsurface can extract the
+dive site from this track and store the dive site coordinates as part of the dive log.
+Follow the next steps:
+
+1. Connect the GPS to your desktop computer. Most GPS equipment have a USB
+port for connecting to a desktop computer and GPS track recordings can be
+opened from the desktop computer. Make sure you can see the correct track
+on the GPS as a .GPX file. Alternatively copy the appropriate .GPX file
+from the GPS to a directory on your desktop computer.
+
+2. In the *Dive List*, select the dive to be edited and specify a name for the dive site
+using the Locality field in the *Notes* panel.
+
+3. Open the *Dive site managment panel* by selecting the blue globe icon to the right
+of the Locality text box of the *Notes* tab.
+
+4. Select the button "Use GPS file" to the right of the Coordinates text box (see image A
+above). This opens a file selection dialog. 
+
+5. Select the appropriate .GPX file on the GPS, or alternatively, the .GPX file that
+has been copied from the GPS to the desktop computer. Subsurface reads the .GPX file
+and compares the dive time with the times of the GPS track. The result is shown in
+the panel in the image below.
+
+6. GPS tracks are recorded in UTC time, that is the time at a longitude of zero degrees,
+often referred to as "Greenwich time". In order to obtain the local time for the
+GPS track, it is necessary to know the time zone of the dive site. For instance, in the
+above example the time zone was UTC+2, that is 2 hours after UTC. Set the
+UTC time zone in the appropriate text field shown in the image below.
+
+7. Even though the .GPX standard requires dive tracks in UTC time, most GPS devices can
+show the local time. Make sure your GPS device shows the same local time as your
+dive computer. If the times are not identical, then specify a correction in the bottom
+text box of the panel illustrated below.
+
+8. The coloured icon to the right of the _Start and end times_ in the above panel shows the
+degree of synchronisation between dive computer and GPS device. A green icon
+indicates that the GPS track coincides with the time of the dive. A yellow icon
+indicates partial synchronisation while a red icon indicates that the dive and the
+GPS track are at different times and that coordinates cannot be extracted. Make
+sure that the GPS date and the dive date are the same.
+
+9. Finally, select the _Save_ button at the bottom right of the panel. This updates
+the coordinates in the *Dive site management* panel and moves the flag on the map
+to the locality corresponding to the coordinates. Then close the panel.
+
+image::images/gpx_read.jpg["FIGURE:Import GPs coordinates",align="center"]
 
 *Dive site name lookup:* If you typed coordinates into the appropriate
 text box, you can do an automated name lookup based on the coordinates.
@@ -1005,7 +1062,7 @@ If air temperature isn’t provided by the dive computer, the first temperature 
 might be used for the air temperature. Generally this is close to the real air temperature.
 If editing is required, only a value is required, the units of temperature will be
 automatically supplied by
-_Subsurface_ (following the _Preferences_, metric or imperial units will
+_Subsurface_ (following the _Preferences Units_, metric or imperial units will
 be used).
 
 [[S_salinity]]
@@ -1033,7 +1090,7 @@ pressure or altitude you may wish to edit the altitude because dives at altitude
 The text box *Atm. pressure/Altitude* allows this. If this text box
 contains a value, dive calculations take into account altitude. The dropbox on the
 right allows two ways of expressing atmospheric pressure: mbar or m/ft above sea level.
-The altitude unit (metric/imperial) is taken from the settings in the *Preferences* screen. A
+The altitude unit (metric/imperial) is taken from the settings in the _Units Preferences_ screen. A
 third option is to use the atmospheric pressure provided by the dive computer. In order to specify
 the pressure/altitude, first select the appropriate unit in the dropbox (in the case of the image on the left
 these are "mbar/m/use dc", then type an appropriate value into the text box. In the case
@@ -1052,7 +1109,7 @@ dive on a 5-point scale by clicking the appropriate star.
 *Current*: Provide a qualitative rating of water current strength during the
 dive on a 5-point scale by clicking the appropriate star.
 
-The following three environmental parameters can be entered _if they are enabled in the Log Preferences (File->Preferences->Dive log)_:
+The following three environmental parameters can be entered _if they are enabled in the _Log Preferences_ (File->Preferences->Dive log)_:
 
 *Surface waves*: Provide a qualitative rating of the size of surface waves (swell/chop) when entering or leaving the water.
 
@@ -1625,7 +1682,8 @@ list becomes a repository of useful information outside of the dive list.
 At the top left of the dive sites management panel is a button "Purge unused dive sites". Selecting this button
 deletes all the dive sites that do not have associated dives.
 
-=== Importing Dive coordinates from a mobile device with GPS.
+[[S_Using_mobile]]
+=== Importing Dive coordinates from a mobile device with GPS using Subsurface-Mobile.
 
 A smartphone with built-in GPS facilities can be used to store the locations of dives.
 This is performed by:
@@ -1807,7 +1865,7 @@ that allows listing many images. For a photograph, a thumbnail can easily be
 created because the image is well defined. But, since a video comprises many images, the question arises of
 which image should be used for the thumbnail. Two actions are required to create thumbnails of videos:
 
-* The appropriate settings need to be set in the _Preferences_.
+* The appropriate settings need to be set in the _Media Preferences_ (_File->Preferences->Media).
 
 * The program _ffmpeg_ needs to be installed in the computer that runs Subsurface.
 
@@ -2018,7 +2076,7 @@ image::images/pSCR_profile.jpg["FIGURE: pSCR profile",align="center"]
 
 _Visualising the pO~2~ drop_: The difference between the pO~2~ of the fresh cylinder gas and the pO~2~
 in the loop can be visualised in _Subsurface_ by opening the _Profile_
-panel in the _File -> Preferences_ menu item and then providing suitable information in the section
+panel in the _File -> Preferences->Tech setup_ menu item and then providing suitable information in the section
 labelled _pSCR options_. The _pSCR metabolic rate_ is your rate of oxygen metabolism in liters/min (commonly
 between 0.5 and 2.5). The _Dilution ratio_ is the ratio indicating how much gas in the loop is replaced with
 fresh gas, relative to the gas being breathed (common values are between 1:3 and 1:10). These values are also
@@ -2026,7 +2084,7 @@ used when planning pSCR dives. If the oxygen content of the loop is not recorded
 estimates the pO~2~ in the loop using the information supplied above. This pO~2~ is shown as the green line
 representing the oxygen partial pressure in the dive profile. If the oxygen pressure in the loop is measured using
 an oxygen sensor connected to a dive computer, this information is probably recorded by the dive computer and these
-measured pO~2~ values are shown on the dive profile. In addition, the _Preferences_ panel allows one to activate
+measured pO~2~ values are shown on the dive profile. In addition, the _Tech setup Preferences_ panel allows one to activate
 a checkbox labelled _Show equivalent OC pO~2~ with pSCR pO~2~_. This activates display of the pO~2~ in the
 fresh gas from the cylinder (an orange line). The vertical distance between the orange graph and the green graph
 indicates the "pO~2~ drop over the mouthpiece". Much of pSCR diving involves managing this pO~2~ difference.
@@ -2112,8 +2170,8 @@ The mean pO~2~ of the sensors is indicated with a green line,
 
 The oxygen setpoint values as well as the readings from the individual
 oxygen sensors can be shown. The display of additional CCR information is turned on by
-checking the appropriate boxes in the _Preferences_ panel (accessible by
-selecting xref:S_CCR_options[_File ->  Preferences ->  Profile_]). This part of
+checking the appropriate boxes in the _Tech setup Preferences_ panel (accessible by
+selecting xref:S_CCR_options[_File->Preferences->Tech setup_]). This part of
 the _Preferences_ panel is shown in the image below, representing two checkboxes that modify
 the display of pO~2~ when the appropriate toolbar button on the Dive Profile
 has been checked.
@@ -2180,7 +2238,7 @@ by clicking the appropriate button to the left of the dive profile:
 image::images/icons/cceiling.jpg["DC ceiling icon"]
 
 The default color of the computer-generated deco ceiling is white. This can be set to red
-by checking the appropriate check box after selecting _File  ->  Preferences  ->  Profile_.
+by checking the appropriate check box after selecting _File->Preferences->Tech setup_.
 The profile above indicates the dive computer-generated deco ceiling in red.
 
 _Cylinder pressures_: Some CCR dive computers like Poseidon record the
@@ -2345,7 +2403,7 @@ buttons on the left of the profile panel. These are:
 Show the *Maximum Operating Depth (MOD)* of the dive, given the
 gas mixture used. MOD is dependent on the oxygen concentration in the breathing gas.
 For air (21% oxygen) it is around 57 m if a maximum pO~2~ of 1.4 is specified in the *Preferences* section
-(select _File -> Preferences -> Profile_ and edit the text box _pO~2~ in calculating MOD_.
+(select _File -> Preferences -> Tech setup_ and edit the text box _pO~2~ in calculating MOD_.
 When diving below the MOD there is a markedly increased risk of exposure to the dangers of oxygen toxicity.
 
 [icon="images/icons/NDL.jpg"]
@@ -2434,8 +2492,8 @@ image::images/GasPressureBarGraph.jpg["FIGURE:Gas Pressure bar Graph",align="cen
 - The top black horizontal line indicates the inert gas pressure limit determined by the gradient
   factor that applies to the depth of
   the diver at the particular point on the *Dive Profile*. The gradient factor shown is an
-  interpolation between the GFLow and GFHigh values specified in the _Profile_ tab of the *Preferences
-  Panel* of _Subsurface_.
+  interpolation between the GFLow and GFHigh values specified in the _Profile_ tab of the _Tech setup Preferences
+  Panel_ of _Subsurface_.
 
 - The bottom margin of the red area in the graph indicates the Bühlman-derived M-value. That is the
   pressure value of inert gases at which bubble formation is expected to be severe, resulting
@@ -3122,9 +3180,11 @@ To use _Subsurface cloud storage_ , follow these steps:
 
 === Create a cloud storage account
 
-** Open the *Network Preferences* by selecting _File_ -> _Preferences_ -> _Network_.
+** Open the *Cloud Preferences* by selecting _File_ -> _Preferences_ -> _Cloud_. (See image of the
+Clod Preference panel xref:S_Pref_cloud[here]).
 ** In the section headed _Subsurface cloud storage_, enter an email address that
-   _Subsurface_ can use for user registration.
+   _Subsurface_ can use for user registration. This is the only step that requires an email address.
+Subsurface will never use this email address again.
 ** Enter a novel password that _Subsurface_ will use to store the
   dive log in the cloud.
 ** Click _Apply_ to send the above email address and password to the
@@ -3132,7 +3192,7 @@ To use _Subsurface cloud storage_ , follow these steps:
   the above email address (This is the *only* occasion that _Subsurface_ uses the
   email address provided above). The *Network Preferences* dialog now has a new PIN text
    box, not visible previously.
-** Enter the PIN in the corresponding text box in the *Network Preferences* dialog
+** Enter the PIN in the corresponding text box in the _Cloud Preferences_ dialog
 (this field is only visible while the server is waiting for email
 address confirmation)
 ** Click _Apply_ again. The _Subsurface cloud storage_ account
@@ -3144,7 +3204,7 @@ will be marked as verified and the _Subsurface cloud storage_ service is initial
    _File_ menu of the main menu system: _Open cloud storage_ and _Save to cloud storage_.
 These options let you load and save data to the _Subsurface
 cloud storage_ server.
-** In the _Defaults Preferences_ tab, you can select to use the _Subsurface cloud
+** In the _Dive Log Preferences_ tab, you can select to use the _Subsurface cloud
 storage_ data as the default data file by checking the box marked _Cloud storage default file_.
  This means the data from
 the _Subsurface cloud storage_ is loaded when _Subsurface_ starts and saved there when _Subsurface_ closes.
@@ -3337,38 +3397,22 @@ Using the appropriate buttons on the configuration panel, the following actions 
 There are several user-definable settings within _Subsurface_, found by selecting
 _File ->  Preferences_, mostly affecting the way in which _Subsurface_
 shows dive information to the user. The settings are in
-six panels: _General_, _Units_, _Profile_, _Language_, _Network_, and _Georeference_,
+twelve panels: _Display_, _Language_, _Units_, _Dive Download_, _Dive log_, _Equipment_, 
+_Media_, _Tech setup_, _Georeference_, _Cloud_, _Network_ and _Reset_,
 all of which operate on the same principles: specified settings can be applied to the display of
 the dive log by selecting _Apply_. At this stage, any new settings only apply to the present
 session and are not saved. In order to apply
 new settings permanently, select the _Save_ button. If you do not wish to
 apply the new preferences, select _Cancel_.
 
-=== General
+=== Display
+These settings control the screen display of Subsurface.
 
-There are several headings in the *General* panel:
+image::images/Pref_display.jpg["FIGURE: Preferences: Display",align="center"]
 
-image::images/Pref1.jpg["FIGURE: Preferences general page",align="center"]
-
-  ** *Lists and tables*: Specify the font type and font size of the
-     *Dive Table* panel: decreasing the font size allows one to see more dives on a screen.
-
-  ** *Dives*: For the _Default Dive Log File_ specify the directory and
-     file name of your
-     electronic dive log book. This is a file with filename extension of either _.xml_ or _.ssrf_. When
-     launched, _Subsurface_ will automatically load the specified dive log book. There are three options:
-     - _No default file_: When checked, _Subsurface_ does not automatically load a dive log at startup.
-     - _Local default file_: When checked, _Subsurface_ automatically loads a dive log from the local hard disk.
-     - _Cloud storage default file_: When checked, _Subsurface automatically loads the dive log from the cloud
-       device that was initialized using the *Preferences* _Network_ tab (see below).
-
-  ** *Display invalid*:  Dives can be marked as invalid (when a user wishes to hide
-     dives that he/she doesn't consider valid dives, e.g. pool dives, but still want to
-     keep them in the dive log). This controls whether those dives are displayed in
-     the dive list.
-
-  ** *Default cylinder*: From the dropdown list, select the default cylinder to be used in
-     the *Equipment* tab of the *Notes* panel.
+  ** *Font for lists and tables*: Specify the font type and font size of the
+     tabular data, e.g. *Dive Table* and Cylinder: decreasing the font size allows one to see more
+     information on a screen.
 
   ** *Animations*: Some actions in showing the dive profile are performed using
      animations. For instance, the axis values for depth and time change from dive to
@@ -3378,17 +3422,23 @@ image::images/Pref1.jpg["FIGURE: Preferences general page",align="center"]
      with faster animation speed to the left, and a 0 value representing no animation
      at all.
 
-  ** *Video thumbnails*: In generating thumbnails for videos associated with dives, _Subsurface_
-     needs to have the appropriate information (see section on <<S_ViewMedia,View Images>>). Three preferences need to be set
-     as explained in <<S_APPENDIX_F, APPENDIX F>>. These are: a) switch on thumbnails, b) specify
-     the location of the _ffmpeg_ program and c) set the place within video where the thumbnail needs
-     to be obtained from.
+=== Language
+Choose a language that _Subsurface_ will use.
 
-  ** *Clear all settings*: As indicated in the button below this heading, all settings are
-     cleared and set to default values.
+image::images/Pref_lang.jpg["FIGURE: Preferences: Language",align="center"]
+
+Check the _System Default_ language i.e. the language of the underlying operating system
+if this is appropriate. This is the default setting in _Subsurface_.
+To change it, uncheck this checkbox and pick a language / country
+combination from the list of locations. The _Filter_ text box
+to list similar languages. For instance there are several system variants of English
+or French. *This particular preference requires a restart of _Subsurface_ to take
+effect*.
+
+In this panel also specify appropriate date and time formats for showing dive details.
 
 === Units
-image::images/Pref2_f23.jpg["FIGURE: Preferences Units page",align="center"]
+image::images/Pref_units.jpg["FIGURE: Preferences: Units",align="center"]
 
 Choose between metric and imperial units of depth, pressure,
 volume, temperature and mass. By selecting the Metric or Imperial radio button
@@ -3402,14 +3452,100 @@ Choose the appropriate option. GPS coordinates can be represented either as
 traditional coordinates (degrees, minutes, seconds) or as decimal degrees
 Choose the appropriate option.
 
-=== Profile
-This panel has three sections:
+=== Dive download
+
+image::images/Pref_downld.jpg["FIGURE: Preferences: Dive download",align="center"]
+
+_Subsurface_ remembers connections that are made with dive computers for downloading dives, shown as connection
+buttons in the _Dive download panel_. This enables a user to establish a previously-used dive computer connection
+by simply selecting one of the connection buttons. This is especially useful when using Bluetooth-equipped dive
+computers that need to establish a Bluetooth connection each time a download is done. However, when using more
+than one dive computer, several connection buttons are shown and this can be confusing. Delete all the connection
+buttons by selecting the button marked "Delete all dive computer connections'. Clearing the connection buttons
+requires that when the next download is done, a new connection needs to be established first.
+
+=== Dive log
+This panel controls many options for recording information in the log and for displaying
+the log.
+
+image::images/Pref_log.jpg["FIGURE: Preferences: Dive log",align="center"]
+
+  ** *Default dive log file*: For the _Default Dive Log File_ specify the directory and
+     file name of your
+     electronic dive log book. This is a file with filename extension of either _.xml_ or _.ssrf_. When
+     launched, _Subsurface_ will automatically load the specified dive log book. There are three options:
+     - _No default file_: When checked, _Subsurface_ does not automatically load a dive log at startup.
+     - _Local default file_: When checked, _Subsurface_ automatically loads a dive log from the local hard disk.
+     Specify the default file path and divelog name in the text box.
+     - _Cloud storage default file_: When checked, _Subsurface automatically loads the dive log from the cloud
+       device that was initialized using the _Cloud_ tab (see below).
+
+  ** *Display invalid dives*:  Dives can be marked as invalid (when a user wishes to hide
+     dives that he/she doesn't consider valid dives, e.g. pool dives, but still want to
+     keep them in the dive log). This controls whether those dives are displayed in
+     the dive list.
+
+  ** *Show tools for recording wave height, surge and chill during a dive*. Some divers like to record
+     the sea conditions during a dive. Checking this checkbox allows these tools to be displayed
+     in the Information tab of the Info panel. The tools for visibility and current are always shown,
+     irrespective of whether this radio button has been checked or not.
+
+  ** *Allow editing of water salinity*: The *Information* tab has a tool for displaying the water salinity, i.e the type of
+     water dived in and its salinity. In the case of manually-entered dives, editing of water type is *always* active.
+     In some cases one may want to edit the water type of a dive derived from a dive log. For instance you left the dive computer
+     setting as "Salt water" while actually diving in an inland lake with fresh water. In this case you may wish to edit the
+     water type in the dive log and change it to Fresh water. Checking this checkbox allows editing of the water type
+     of a dive. If the water type of a dive differs from that of the dive computer setting during the dive, a warning is
+     shown to alert you. This does *not* indicate an error: it is just a useful indication that the water type has been edited.
+     IMPORTANT: Editing the water type does not change the information of depth,
+     partial pressures and deco ceiling values for that dive: the information from the dive computer is *always* used.
+     However, editing the water type gives a useful indication to a diver of what the water type really was during the dive.
+
+**  _Show mean depth_: If this box is checked, the *Dive Profile* panel contains a grey line that shows
+    the mean depth of the dive, up to any time instant during the dive. Normally this is a u-shaped line indicating the deepest mean depth just before
+   ascent.
+
+
+=== Equipment
+
+This tab sets some dedault values relating to equipment.
+
+image::images/Pref_eqpmnt.jpg["FIGURE: Preferences: equipment",align="center"]
+
+  ** *Default cylinder*: From the dropdown list, select the default cylinder to be used in
+     the *Equipment* tab of the *Notes* panel. This makes it quicker to enter dive equipment
+     specifications in the *Equipment* tab.
+
+  ** *Show unused cylinders*: Checking this checkbox allows showing all cylinders entered for a dive
+     in the Cylinder Table of the *Equipment* tab, even if one or more cylinders were actually not used.
+
+=== Media
+
+This tab sets some defaults relating to photos or videos during dives.
+
+image::images/Pref_media.jpg["FIGURE: Preferences: media",align="center"]
+
+  ** *Update thumbnails*: Photographs or videos are sometimes edited after being uploaded and linked to _Subsurface_. If
+     a photo is therefore more recent than its original thumbnail, checking this checkbox allows a new thumbnail to be created
+     after a photo or video has been edited. 
+
+  ** *Video thumbnails*: In generating thumbnails for videos associated with dives, _Subsurface_
+     needs to have the appropriate information (see section on <<S_ViewMedia,View Images>>). Three preferences need to be set
+     as explained in <<S_APPENDIX_F, APPENDIX F>>. These are: a) switch on thumbnails, b) specify
+     the location of the _ffmpeg_ program and c) set the place within video where the thumbnail needs
+     to be obtained from.
+
+=== Tech setup
+
+This tab sets common variables used for decompression calculations pertaining to technical diving.
+
+image::images/Pref_tech.jpg["FIGURE: Preferences: Tech setup",align="center"]
 
 [[S_CCR_options]]
-image::images/Pref4_f23.jpg["FIGURE: Preferences Graph page",align="center"]
-
 [[S_GradientFactors]]
-* *Gas pressure display setup*. Even though nitrogen and helium pressures are also included here, these items mainly pertain to oxygen management:
+
+* *Gas pressure display setup*. Even though nitrogen and helium pressures are also included here,
+these items mainly pertain to oxygen management:
 ** _Thresholds_: _Subsurface_ can display graphs of the nitrogen, oxygen and the helium
    partial pressures during
    the dive, activated using the toolbar on the left of the *Dive Profile*
@@ -3439,7 +3575,7 @@ image::images/Pref4_f23.jpg["FIGURE: Preferences Graph page",align="center"]
     are planned and how the pSCR deco ceiling is calculated:
 
 *** _Metabolic rate:_ this is the
-    volume of oxygen used by a diver during a minute. Set this value for pSCR dive planning
+    volume of *oxygen* used by a diver during a minute. Set this value for pSCR dive planning
     and decompression calculations.
 
 *** _pSCR ratio:_ The dilution ratio (or dump ratio) is the ratio of gas released to the
@@ -3461,12 +3597,12 @@ image::images/Pref4_f23.jpg["FIGURE: Preferences Graph page",align="center"]
 
 ** _Algorithm for calculating ceiling_. Choose between the Bühlmann Z1H-L16
    decompression model and the VPM-B model:
-*** _VPM-B_: Provide a conservatism level for calculating the VPM-B ceiling. Values between 0
+*** *VPM-B*: Provide a conservatism level for calculating the VPM-B ceiling. Values between 0
     (least conservative) and 4 (most conservative) are valid.
 
 [[GradientFactors_Ref]]
 
-*** Bühlmann: Set the _gradient factors_ (GFLow and GFHigh) for calculating the deco ceiling following
+*** *Bühlmann*: Set the _gradient factors_ (GFLow and GFHigh) for calculating the deco ceiling following
    the ZH-L16 algorithm. GF_Low is the gradient factor at depth and GF_High is used at the surface.
    At intermediate depths gradient factors between GF_Low and GF_High are used.
    Gradient factors add conservatism to nitrogen and helium exposure during a dive, in a
@@ -3481,70 +3617,58 @@ image::images/Pref4_f23.jpg["FIGURE: Preferences Graph page",align="center"]
 
  *** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
+=== Georeference
 
-* *Misc*
+image::images/Pref_georef.jpg["FIGURE: Georeference panel",align="center"]
 
-** _Show unused cylinders in Equipment Tab_: This checkbox allows display of information about unused cylinders when viewing the
-*Equipment Tab*. If this box is not checked, and if any cylinders entered using the *Equipment Tab* are not used (e.g. there
-was no gas switch to such a cylinder), then these cylinders are omitted from that list.
-**  _Show mean depth_: If this box is checked, the *Dive Profile* panel contains a grey line that shows
-    the mean depth of the dive, up to any time instant during the dive. Normally this is a u-shaped line indicating the deepest mean depth just before
-   ascent.
+_Subsurface_ provides a geo-lookup service (that is, given the coordinates of a dive site) derived from
+a click on the *Dive Map panel* at the bottom right of the _Subsurface_ window, or from a GPS instrument or from the _Subsurface-Mobile_ app). A search on the Internet is done to find
+the name of the closest known location. This function only works if _Subsurface_ has an
+Internet connection. The preference of the dive site name can be configured, e.g. _Country/State/City_
+or _City/State/Country_.
 
+[[S_Pref_cloud]]
+=== Cloud
 
-=== Language
-Choose a language that _Subsurface_ will use.
+These setting allow storing the dive log in the digital cloud.
 
-image::images/Pref3_f23.jpg["FIGURE: Preferences Language page",align="center"]
+image::images/Pref_cloud.jpg["FIGURE: Cloud panel",align="center"]
 
-Check the _System Default_ language i.e. the language of the underlying operating system
-if this is appropriate. This is the default setting in _Subsurface_.
-To change it, uncheck this checkbox and pick a language / country
-combination from the list of locations. The _Filter_ text box
-to list similar languages. For instance there are several system variants of English
-or French. *This particular preference requires a restart of _Subsurface_ to take
-effect*.
+** _Subsurface cloud storage_: To store your dive log in the cloud, a valid email address
+   and password are required. This lets _Subsurface_ email security information
+   regarding cloud storage to you, and to set up cloud storage appropriately. Detailed
+   instructions for registering
+   on the cloud server are provided in the Cloud preference panel (see above image), as well as in the section of this manual dealing with:
+   xref:S_Cloud_access[Keeping a Subsurface dive log in the cloud].
 
-In this section also specify appropriate date and time formats for showing dive details.
+** _Save password locally_: This allows local storage of the cloud storage password. Note that this
+   information is saved in raw text form, not encoded in any way.
 
 === Network
+
 This panel facilitates communication between _Subsurface_ and data sources on the Internet.
 This is important, for instance, when _Subsurface_ needs to communicate with web
 services such as Cloud storage, or when you want to communicate through a proxy.
 
+image::images/Pref_network.jpg["FIGURE: Preferences Network page",align="center"]
 
-image::images/Pref5_f23.jpg["FIGURE: Preferences Network page",align="center"]
-
-This dialog has three sections:
-
-** _Proxy_:
-If a proxy server is used for Internet access, the type of proxy needs to be selected from the dropdown list,
+_Proxy server_: A proxy server is a computer serving as a link between a user and the Internet. It
+serves to protect the user from illegal access from users on the Internet to the desktop
+computer of the user. Proxy servers are commonly used in a corporate environment. If a proxy server is used for Internet access, the type of proxy needs to be selected from the dropdown list,
 after which the IP address of the host and the appropriate port number should
 be provided. If the proxy server uses authentication, the appropriate userID and
 password are required so that _Subsurface_ can automatically pass
 through the proxy server to access the Internet. This information is usually obtained
-from your ISP.
+from your ISP or your network technician.
 
-** _Subsurface cloud storage_: To store your dive log in the cloud, a valid email address
-   and password are required. This lets _Subsurface_ email security information
-   regarding cloud storage to you, and to set up cloud storage appropriately.
-   Two additional options are given:
-   - _Sync to cloud in the background_: This option allows saving of dive information to the cloud storage
-   while you do other things within _Subsurface_.
-   - _Save password locally_: This allows local storage of the cloud storage password. Note that this
-   information is saved in raw text form, not encoded in any way.
+=== Reset
 
+image::images/Pref_reset.jpg["FIGURE: Preferences: Reset defaults",align="center"]
 
-=== Georeference
+_Reset all preferences_: Selecting the button in this panel will clear all the preference settings
+in _Subsurface_ and set them to default values. Since there are many settings, this is an action that is not lightly done, as it may take some time before all the preferences have been set to convenient values again. Resetting to default values also affects Internet and cloud access.
 
-_Subsurface_ provides a geo-lookup service (that is, given the coordinates of a dive site) derived from
-a click on the *Dive Map panel* at the bottom right of the _Subsurface_ window, or from a GPS instrument or
-from the _Subsurface-Mobile_ app). A search on the Internet is done to find
-the name of the closest known location. This function only works if _Subsurface_ has an
-Internet connection. The preference of the dive site name can be configured, e.g. _Country/State/City_
-or _City/State/Country_ (see image below).
-
-image::images/Pref7_f23.jpg["FIGURE: Georeference panel",align="center"]
+- This brings us to the end of the section dealing with _Subsurface_ Preferences.
 
 [[S_DivePlanner]]
 == The _Subsurface_ dive planner
@@ -3971,7 +4095,7 @@ within the framework of your formal training to perform dive planning.
 
 To plan a dive using a passive semi-closed rebreather (pSCR), select _pSCR_ rather than
 _Open circuit_ in the dropdown list.
-The parameters of the pSCR dive can be set by selecting  _File ->   Preferences ->   Profile_
+The parameters of the pSCR dive can be set by selecting  _File ->   Preferences ->   Tech setup_
 from the main menu, where the gas consumption calculation takes into account the pSCR dump
 ratio (default 1:8) as well as the metabolic rate. Specify the bottom and deco SAC rates.
 Here the SAC in the planner is the volume of gas per minute
@@ -4039,7 +4163,7 @@ list, circled in blue in the image below.
 diluent cylinder and for any bail-out cylinders. Do NOT enter the information for the oxygen
 cylinder since it is implied when the _CCR_ dropdown selection is made.
 
-*Entering setpoints*: Specify a default setpoint in the Preferences tab, by selecting _File ->  Preferences ->  Profile_ from
+*Entering setpoints*: Specify a default setpoint in the Preferences tab, by selecting _File ->  Preferences ->  Tech setup_ from
 the main menu. All user-entered segments in the _Dive planner points_ table
 use the default setpoint value. Then, different setpoints can be specified for dive segments
 in the _Dive planner points_ table. A zero setpoint
@@ -4189,7 +4313,7 @@ dealing with the appropriate operations.
 - _Save as_ - Save the current logbook under a different file name.
 - _Open cloud storage_ - Open the dive log previously saved in <<S_Cloud_storage,_Cloud storage_>>.
 - _Save to cloud storage_ - Save the current dive log to <<S_Cloud_storage,_Cloud storage_>>.
-- _Cloud storage online_ - Switch between the online version of the logbook,  and the locally stored one.
+- _Cloud storage online_ - Switch between the online version of the logbook, and the locally stored one.
 - _Close_ -  Close the dive logbook currently open.
 - <<S_ExportLog,_Export_>> -  Export the currently open dive logbook (or
   the selected dives in the logbook) to one of several formats.
@@ -4197,7 +4321,7 @@ dealing with the appropriate operations.
 - <<S_Preferences,_Preferences_>> -  Set the _Subsurface_ preferences.
 - <<S_FindMovedImages, _Find moved media_>> - If photos/videos taken during dives have been moved to
       a different disk or directory, locate them and link them to the appropriate dives.
-- <<S_Configure,_Configure dive computer_>> - Edit the configuration of a dive computer.
+- <<S_Configure,_Change settings on dive computer_>> - Edit the configuration of a dive computer.
 - _Quit_ - Quit _Subsurface_.
 
 
@@ -4209,6 +4333,7 @@ dealing with the appropriate operations.
   from a dive computer.
 - <<Unified_import,_Import Log Files_>> - Import dive information from a file in
   in a _Subsurface_-compatible format.
+- _Import dive sites_: Import a XML dive site file that someone else shared with you.
 - <<S_ImportingDivelogsDe,_Import from Divelogs.de_>> - Import dive information
   from _www.Divelogs.de_.
 
@@ -4233,14 +4358,13 @@ dealing with the appropriate operations.
 - <<S_ViewPanels,_Dive List_>> - View only the *Dive List* panel.
 - <<S_ViewPanels,_Profile_>> - View only the *Dive Profile* panel.
 - <<S_ViewPanels,_Info_>> - View only the *Notes* panel.
-- <<S_ViewPanels,_Globe_>> - View only the *World Map* panel.
+- <<S_ViewPanels,_Map_>> - View only the *World Map* panel.
 - _Yearly Statistics_ - Display summary statistics about dives during this and past
   years.
 - _Prev DC_ - Switch to data from previous dive computer, if a single dive was logged from more than one.
   See the sections on <<S_MultipleDiveComputers,using multiple dive computers for the same dive>> and <<S_MergeDivePlan,
   Saving an uploaded dive with its dive plan>>.
 - _Next DC_ - Switch to next dive computer.
-- _Full Screen_ - Toggles Full Screen mode.
 
 === Help
 - _About Subsurface_ - Show a panel with the version number of _Subsurface_ as
@@ -5144,7 +5268,7 @@ On Mac and Linux, make sure the _ffmpeg_ command is in the path. This should be 
 _FFmpeg_ installed from official packages.
 
 
-2. In the _General_ tab of the <<S_Preferences, _Preferences_>>, set the preferences for generating video thumbnails. This is achieved by:
+2. In the _Media_ tab of the <<S_Preferences, _Preferences_>>, set the preferences for generating video thumbnails. This is achieved by:
 
 ** Checking the _Extract video thumbnails_ box. If _Subsurface_ fails to load the _FFmpeg_ executable,
 this option will be turned off. Re-enable it after successfully installing _FFmpeg_.
