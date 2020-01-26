@@ -17,6 +17,7 @@ private:
 
 	static void loopDives(timestamp_t primaryStart, timestamp_t secondaryStart);
 	static void calculateDive(int inx, struct dive *dive);
+	static void buildStringList(int inx);
 
 	static timestamp_t firstDive, lastDive;
 	static int dives[2], divesEAN[2], divesDeep[2], diveplans[2];

@@ -2,9 +2,10 @@
 #include "divesummary.h"
 #include "core/qthelper.h"
 #include "core/dive.h"
+#include "core/settings/qPrefUnit.h"
 
 #include <QDateTime>
-
+#include <QTextStream>
 
 QStringList diveSummary::resultCalculation;
 
@@ -15,30 +16,41 @@ long diveSummary::divetimeMax[2], diveSummary::depthMax[2], diveSummary::sacMin[
 
 void diveSummary::summaryCalculation(int primaryPeriod, int secondaryPeriod)
 {
+	QDateTime localTime;
+
 	// Calculate Start of the 2 periods.
 	timestamp_t now, primaryStart, secondaryStart;
 	now = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset();
 	primaryStart = (primaryPeriod == 0) ? 0 : now - primaryPeriod * 30 * 24 * 60 * 60;
 	secondaryStart = (secondaryPeriod == 0) ? 0 : now - secondaryPeriod * 30 * 24 * 60 * 60;
 
-	resultCalculation.clear();
-
 	// Loop over all dives and sum up data
 	loopDives(primaryStart, secondaryStart);
 
-	// change data into strings to be used in the UI
-	resultCalculation << "13/12/2001" << "10/1/2020" <<
-						"120" << "8" <<
-					   "12"  << "1" <<
-					   "50"  << "10" <<
-					   "200h" << "10h" <<
-					   "2:31" << "0:51" <<
-					   "1:15" << "0:41" <<
-					   "62m" << "31m" <<
-					   "23m" << "29m" <<
-					   "11 l/min" << "12 l/min" <<
-					   "12 l/min" << "16 l/min" <<
-					   "4" << "1";
+	// prepare stringlist
+	resultCalculation.clear();
+	resultCalculation << "??" << "??" << "??" << "??" << "??" <<
+						 "??" << "??" << "??" <<
+						 "?:??" << "?:??" << "?:??" <<
+						 "?:??" << "?:??" << "?:??" <<
+						 "??" << "??" << "??" << "??" << "??" <<
+						 "??" << "??" << "??" << "??" << "??";
+
+	// set oldest/newest date
+	if (firstDive) {
+		localTime = QDateTime::fromMSecsSinceEpoch(1000 * firstDive, Qt::UTC);
+		localTime.setTimeSpec(Qt::UTC);
+		resultCalculation[0] = QStringLiteral("%1").arg(localTime.date().toString(prefs.date_format_short));
+	}
+	if (lastDive) {
+		localTime = QDateTime::fromMSecsSinceEpoch(1000 * lastDive, Qt::UTC);
+		localTime.setTimeSpec(Qt::UTC);
+		resultCalculation[1] = QStringLiteral("%1").arg(localTime.date().toString(prefs.date_format_short));
+	}
+
+	// and add data
+	buildStringList(0);
+	buildStringList(1);
 }
 
 void diveSummary::loopDives(timestamp_t primaryStart, timestamp_t secondaryStart)
@@ -114,3 +126,46 @@ void diveSummary::calculateDive(int inx, struct dive *dive)
 	}
 }
 
+void diveSummary::buildStringList(int inx)
+{
+	int temp1, temp2;
+	QString tempStr;
+
+	if (!dives[inx])
+		return;
+
+	// dives
+	resultCalculation[2+inx] = QStringLiteral("%1").arg(dives[inx]);
+	resultCalculation[4+inx] = QStringLiteral("%1").arg(divesEAN[inx]);
+	resultCalculation[6+inx] = QStringLiteral("%1").arg(divesDeep[inx]);
+
+	// time
+	temp1 = divetime[inx] / 60;
+	temp2 = divetime[inx] - temp1 * 60;
+	if (temp1 >= 100)
+		resultCalculation[8+inx] = QStringLiteral("%1h").arg(temp1);
+	else
+		resultCalculation[8+inx] = QStringLiteral("%1:%2").arg(temp1).arg(temp2);
+	temp1 = divetimeMax[inx] / 60;
+	temp2 = divetimeMax[inx] - temp1 * 60;
+	resultCalculation[10+inx] = QStringLiteral("%1:%2").arg(temp1).arg(temp2);
+	temp2 = divetime[inx] / dives[inx];
+	temp1 = temp2 / 60;
+	temp2 = temp2 - temp1 * 60;
+	resultCalculation[12+inx] = QStringLiteral("%1:%2").arg(temp1).arg(temp2);
+
+	// depth
+	tempStr = (qPrefUnits::length() == units::METERS) ? "m" : "ft";
+	resultCalculation[14+inx] = QStringLiteral("%1%2").arg(depthMax[inx]).arg(tempStr);
+	temp1 = depth[inx] / dives[inx];
+	resultCalculation[16+inx] = QStringLiteral("%1%2").arg(temp1).arg(tempStr);
+
+	// SAC
+	tempStr = (qPrefUnits::volume() == units::LITER) ? "l/min" : "cuft/min";
+	resultCalculation[18+inx] = QStringLiteral("%1 %2").arg(sacMin[inx]).arg(tempStr);
+	temp1 = depth[inx] / dives[inx];
+	resultCalculation[20+inx] = QStringLiteral("%1%2").arg(temp1).arg(tempStr);
+
+	// Diveplan(s)
+	resultCalculation[22+inx] = QStringLiteral("%1").arg(diveplans[inx]);
+}
