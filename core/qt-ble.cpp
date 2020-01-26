@@ -14,6 +14,7 @@
 #include <QLoggingCategory>
 
 #include <libdivecomputer/version.h>
+#include <libdivecomputer/ble.h>
 
 #include "libdivecomputer.h"
 #include "core/qt-ble.h"
@@ -198,10 +199,8 @@ dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 	return DC_STATUS_IO;
 }
 
-dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
+dc_status_t BLEObject::poll(int timeout)
 {
-	if (actual)
-		*actual = 0;
 	if (receivedPackets.isEmpty()) {
 		QList<QLowEnergyCharacteristic> list = preferredService()->characteristics();
 		if (list.isEmpty())
@@ -214,6 +213,21 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 		if (receivedPackets.isEmpty())
 			return DC_STATUS_TIMEOUT;
 	}
+
+	return DC_STATUS_SUCCESS;
+}
+
+dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
+{
+	dc_status_t rc;
+
+	if (actual)
+		*actual = 0;
+
+	// Wait for a packet
+	rc = poll(timeout);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
 
 	QByteArray packet = receivedPackets.takeFirst();
 
@@ -549,10 +563,24 @@ dc_status_t qt_ble_write(void *io, const void* data, size_t size, size_t *actual
 	return ble->write(data, size, actual);
 }
 
-const char *qt_ble_get_name(void *io)
+dc_status_t qt_ble_poll(void *io, int timeout)
 {
 	BLEObject *ble = (BLEObject *) io;
-	return ble->get_name();
+
+	return ble->poll(timeout);
 }
+
+dc_status_t qt_ble_ioctl(void *io, unsigned int request, void *data, size_t size)
+{
+	BLEObject *ble = (BLEObject *) io;
+
+	switch (request) {
+	case DC_IOCTL_BLE_GET_NAME:
+		return ble->get_name((char *) data, size);
+	default:
+		return DC_STATUS_UNSUPPORTED;
+	}
+}
+
 
 } /* extern "C" */

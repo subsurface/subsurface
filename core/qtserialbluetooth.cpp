@@ -12,6 +12,7 @@
 #include <libdivecomputer/version.h>
 #include <libdivecomputer/context.h>
 #include <libdivecomputer/custom.h>
+#include <libdivecomputer/serial.h>
 
 #if defined(Q_OS_WIN)
 	#include <winsock2.h>
@@ -302,6 +303,33 @@ static dc_status_t qt_serial_write(void *io, const void* data, size_t size, size
 	return DC_STATUS_SUCCESS;
 }
 
+static dc_status_t qt_serial_poll(void *io, int timeout)
+{
+	qt_serial_t *device = (qt_serial_t*) io;
+
+	if (!device)
+		return DC_STATUS_INVALIDARGS;
+
+#if defined(Q_OS_WIN)
+	// FIXME FIXME FIXME!! But how ?
+	// I have no idea about windows socket programming - Linus
+	// We'll just pretend it's always readable, and hope for the best
+	// Why is the windows side not using QBluetoothSocket?
+	return DC_STATUS_SUCCESS;
+#else
+	if (!device->socket)
+		return DC_STATUS_INVALIDARGS;
+	if (device->socket->waitForReadyRead(timeout))
+		return DC_STATUS_SUCCESS;
+	return DC_STATUS_TIMEOUT;
+#endif
+}
+
+static dc_status_t qt_serial_ioctl(void *io, unsigned int request, void *data, size_t size)
+{
+	return DC_STATUS_UNSUPPORTED;
+}
+
 static dc_status_t qt_serial_purge(void *io, dc_direction_t)
 {
 	qt_serial_t *device = (qt_serial_t*) io;
@@ -385,20 +413,20 @@ ble_packet_open(dc_iostream_t **iostream, dc_context_t *context, const char* dev
 
 	static const dc_custom_cbs_t callbacks = {
 		qt_ble_set_timeout, /* set_timeout */
-		NULL, /* set_latency */
 		NULL, /* set_break */
 		NULL, /* set_dtr */
 		NULL, /* set_rts */
 		NULL, /* get_lines */
 		NULL, /* get_received */
 		NULL, /* configure */
+		qt_ble_poll, /* poll */
 		qt_ble_read, /* read */
 		qt_ble_write, /* write */
+		qt_ble_ioctl, /* ioctl */
 		NULL, /* flush */
 		NULL, /* purge */
 		qt_custom_sleep, /* sleep */
 		qt_ble_close, /* close */
-		qt_ble_get_name, /* get_name */
 	};
 
 	rc = qt_ble_open(&io, context, devaddr, (dc_user_device_t *) userdata);
@@ -419,15 +447,16 @@ rfcomm_stream_open(dc_iostream_t **iostream, dc_context_t *context, const char* 
 
 	static const dc_custom_cbs_t callbacks = {
 		qt_serial_set_timeout, /* set_timeout */
-		NULL, /* set_latency */
 		NULL, /* set_break */
 		NULL, /* set_dtr */
 		NULL, /* set_rts */
 		NULL, /* get_lines */
 		qt_serial_get_available, /* get_received */
 		NULL, /* configure */
+		qt_serial_poll, /* poll */
 		qt_serial_read, /* read */
 		qt_serial_write, /* write */
+		qt_serial_ioctl, /* ioctl */
 		NULL, /* flush */
 		qt_serial_purge, /* purge */
 		qt_custom_sleep, /* sleep */
