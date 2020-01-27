@@ -20,6 +20,7 @@ jobs:
     - name: run build
       run: |
         cd ..
+        rm -rf /install-root/include/libdivecomputer
         bash -x subsurface/.github/workflows/scripts/linux-in-container-build.sh
 
     - name: create CI release
