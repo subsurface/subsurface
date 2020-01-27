@@ -14,12 +14,6 @@
 #include <libdivecomputer/custom.h>
 #include <libdivecomputer/serial.h>
 
-#if defined(Q_OS_WIN)
-	#include <winsock2.h>
-	#include <windows.h>
-	#include <ws2bth.h>
-#endif
-
 #ifdef BLE_SUPPORT
 # include "qt-ble.h"
 #endif
@@ -36,11 +30,7 @@ typedef struct qt_serial_t {
 	/*
 	 * RFCOMM socket used for Bluetooth Serial communication.
 	 */
-#if defined(Q_OS_WIN)
-	SOCKET socket;
-#else
 	QBluetoothSocket *socket;
-#endif
 	long timeout;
 } qt_serial_t;
 
@@ -55,53 +45,6 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char* d
 	// Default to blocking reads.
 	serial_port->timeout = -1;
 
-#if defined(Q_OS_WIN)
-	// Create a RFCOMM socket
-	serial_port->socket = ::socket(AF_BTH, SOCK_STREAM, BTHPROTO_RFCOMM);
-
-	if (serial_port->socket == INVALID_SOCKET) {
-		free(serial_port);
-		return DC_STATUS_IO;
-	}
-
-	SOCKADDR_BTH socketBthAddress;
-	int socketBthAddressBth = sizeof (socketBthAddress);
-	char *address = strdup(devaddr);
-
-	ZeroMemory(&socketBthAddress, socketBthAddressBth);
-	qDebug() << "Trying to connect to address " << devaddr;
-
-	if (WSAStringToAddressA(address,
-				AF_BTH,
-				NULL,
-				(LPSOCKADDR) &socketBthAddress,
-				&socketBthAddressBth
-				) != 0) {
-		qDebug() << "Failed to convert the address " << address;
-		free(address);
-
-		return DC_STATUS_IO;
-	}
-
-	free(address);
-
-	socketBthAddress.addressFamily = AF_BTH;
-	socketBthAddress.port = BT_PORT_ANY;
-	memset(&socketBthAddress.serviceClassId, 0, sizeof(socketBthAddress.serviceClassId));
-	socketBthAddress.serviceClassId = SerialPortServiceClass_UUID;
-
-	// Try to connect to the device
-	if (::connect(serial_port->socket,
-		      (struct sockaddr *) &socketBthAddress,
-		      socketBthAddressBth
-		      ) != 0) {
-		qDebug() << "Failed to connect to device";
-
-		return DC_STATUS_NODEVICE;
-	}
-
-	qDebug() << "Successfully connected to device";
-#else
 	// Create a RFCOMM socket
 	serial_port->socket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol);
 
@@ -160,7 +103,6 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char* d
 			return DC_STATUS_IO;
 		}
 	}
-#endif
 
 	*io = serial_port;
 
@@ -174,11 +116,6 @@ static dc_status_t qt_serial_close(void *io)
 	if (device == NULL)
 		return DC_STATUS_SUCCESS;
 
-#if defined(Q_OS_WIN)
-	// Cleanup
-	closesocket(device->socket);
-	free(device);
-#else
 	if (device->socket == NULL) {
 		free(device);
 		return DC_STATUS_SUCCESS;
@@ -188,7 +125,6 @@ static dc_status_t qt_serial_close(void *io)
 
 	delete device->socket;
 	free(device);
-#endif
 
 	return DC_STATUS_SUCCESS;
 }
@@ -197,25 +133,6 @@ static dc_status_t qt_serial_read(void *io, void* data, size_t size, size_t *act
 {
 	qt_serial_t *device = (qt_serial_t*) io;
 
-#if defined(Q_OS_WIN)
-	if (device == NULL)
-		return DC_STATUS_INVALIDARGS;
-
-	size_t nbytes = 0;
-	int rc;
-
-	while (nbytes < size) {
-		rc = recv (device->socket, (char *) data + nbytes, size - nbytes, 0);
-
-		if (rc < 0) {
-			return DC_STATUS_IO; // Error during recv call.
-		} else if (rc == 0) {
-			break; // EOF reached.
-		}
-
-		nbytes += rc;
-	}
-#else
 	if (device == NULL || device->socket == NULL)
 		return DC_STATUS_INVALIDARGS;
 
@@ -247,7 +164,7 @@ static dc_status_t qt_serial_read(void *io, void* data, size_t size, size_t *act
 
 		nbytes += rc;
 	}
-#endif
+
 	if (actual)
 		*actual = nbytes;
 
@@ -258,23 +175,6 @@ static dc_status_t qt_serial_write(void *io, const void* data, size_t size, size
 {
 	qt_serial_t *device = (qt_serial_t*) io;
 
-#if defined(Q_OS_WIN)
-	if (device == NULL)
-		return DC_STATUS_INVALIDARGS;
-
-	size_t nbytes = 0;
-	int rc;
-
-	while (nbytes < size) {
-	    rc = send(device->socket, (char *) data + nbytes, size - nbytes, 0);
-
-	    if (rc < 0) {
-	       return DC_STATUS_IO; // Error during send call.
-	    }
-
-	    nbytes += rc;
-	}
-#else
 	if (device == NULL || device->socket == NULL)
 		return DC_STATUS_INVALIDARGS;
 
@@ -296,7 +196,7 @@ static dc_status_t qt_serial_write(void *io, const void* data, size_t size, size
 
 		nbytes += rc;
 	}
-#endif
+
 	if (actual)
 		*actual = nbytes;
 
@@ -310,19 +210,11 @@ static dc_status_t qt_serial_poll(void *io, int timeout)
 	if (!device)
 		return DC_STATUS_INVALIDARGS;
 
-#if defined(Q_OS_WIN)
-	// FIXME FIXME FIXME!! But how ?
-	// I have no idea about windows socket programming - Linus
-	// We'll just pretend it's always readable, and hope for the best
-	// Why is the windows side not using QBluetoothSocket?
-	return DC_STATUS_SUCCESS;
-#else
 	if (!device->socket)
 		return DC_STATUS_INVALIDARGS;
 	if (device->socket->waitForReadyRead(timeout))
 		return DC_STATUS_SUCCESS;
 	return DC_STATUS_TIMEOUT;
-#endif
 }
 
 static dc_status_t qt_serial_ioctl(void *io, unsigned int request, void *data, size_t size)
@@ -336,10 +228,6 @@ static dc_status_t qt_serial_purge(void *io, dc_direction_t)
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
-#if !defined(Q_OS_WIN)
-	if (device->socket == NULL)
-		return DC_STATUS_INVALIDARGS;
-#endif
 	// TODO: add implementation
 
 	return DC_STATUS_SUCCESS;
@@ -349,19 +237,10 @@ static dc_status_t qt_serial_get_available(void *io, size_t *available)
 {
 	qt_serial_t *device = (qt_serial_t*) io;
 
-#if defined(Q_OS_WIN)
-	if (device == NULL)
-		return DC_STATUS_INVALIDARGS;
-
-	// TODO use WSAIoctl to get the information
-
-	*available = 0;
-#else
 	if (device == NULL || device->socket == NULL)
 		return DC_STATUS_INVALIDARGS;
 
 	*available = device->socket->bytesAvailable();
-#endif
 
 	return DC_STATUS_SUCCESS;
 }
@@ -371,19 +250,10 @@ static int qt_serial_get_transmitted(qt_serial_t *device) __attribute__ ((unused
 
 static int qt_serial_get_transmitted(qt_serial_t *device)
 {
-#if defined(Q_OS_WIN)
-	if (device == NULL)
-		return DC_STATUS_INVALIDARGS;
-
-	// TODO add implementation
-
-	return 0;
-#else
 	if (device == NULL || device->socket == NULL)
 		return DC_STATUS_INVALIDARGS;
 
 	return device->socket->bytesToWrite();
-#endif
 }
 
 static dc_status_t qt_serial_set_timeout(void *io, int timeout)
