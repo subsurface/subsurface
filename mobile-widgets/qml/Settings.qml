@@ -139,171 +139,181 @@ TemplatePage {
 			title: qsTr("Theme")
 
 			GridLayout {
-				id: themeSettings
 				visible: sectionTheme.isExpanded
-				columns: 3
+				columns: 2
 
-				TemplateLabel {
-					text: qsTr("Blue")
-					rightPadding: Kirigami.Units.gridUnit
-					Layout.preferredWidth: gridWidth * 0.15
-				}
-				Row {
-					Layout.preferredWidth: gridWidth * 0.6
-					Rectangle {
-						id: blueRect
-						color: ThemeNew.blueBackgroundColor
-						border.color: "black"
-						width: sampleRegularBlue.width + Kirigami.Units.gridUnit
-						height: Kirigami.Units.gridUnit * 2
-						Text {
-							id: sampleRegularBlue
-							text: qsTr("regular text")
-							font.pointSize: subsurfaceTheme.regularPointSize
-							color: ThemeNew.blueTextColor
-							anchors {
-								horizontalCenter: parent.horizontalCenter
-								verticalCenter: parent.verticalCenter
-							}
-						}
+				TemplateComboBox {
+					editable: false
+					Layout.columnSpan: 2
+					currentIndex: (ThemeNew.currentTheme === "Blue") ? 0 :
+								  (ThemeNew.currentTheme === "Pink") ? 1 : 2
+					model: ListModel {
+						   ListElement {text: qsTr("Blue")}
+						   ListElement {text: qsTr("Pink")}
+						   ListElement {text: qsTr("Dark")}
 					}
-					Rectangle {
-						color: ThemeNew.bluePrimaryColor
-						border.color: "black"
-						width: sampleHighlightBlue.width + Kirigami.Units.gridUnit
-						height: Kirigami.Units.gridUnit * 2
-						Text {
-							id: sampleHighlightBlue
-							text: qsTr("Highlight")
-							font.pointSize: subsurfaceTheme.regularPointSize
-							color: ThemeNew.bluePrimaryTextColor
-							anchors {
-								horizontalCenter: parent.horizontalCenter
-								verticalCenter: parent.verticalCenter
-							}
-						}
-					}
-				}
-				SsrfSwitch {
-					id: blueButton
-					Layout.preferredWidth: gridWidth * 0.25
-					checked: ThemeNew.currentTheme === "Blue"
-					enabled: ThemeNew.currentTheme !== "Blue"
-					onClicked: {
-						ThemeNew.currentTheme = "Blue"
+					onActivated:  {
+						ThemeNew.currentTheme = currentIndex === 0 ? "Blue" :
+												currentIndex === 1 ? "Pink" : "Dark"
 					}
 				}
 
-				TemplateLabel {
-					id: pinkLabel
-					text: qsTr("Pink")
-					rightPadding: Kirigami.Units.gridUnit
-					Layout.preferredWidth: gridWidth * 0.15
-				}
-				Row {
-					Layout.preferredWidth: gridWidth * 0.6
-					Rectangle {
-						id: pinkRect
-						color: ThemeNew.pinkBackgroundColor
-						border.color: "black"
-						width: sampleRegularPink.width + Kirigami.Units.gridUnit
-						height: Kirigami.Units.gridUnit * 2
-						Text {
-							id: sampleRegularPink
-							text: qsTr("regular text")
-							font.pointSize: subsurfaceTheme.regularPointSize
-							color: ThemeNew.pinkTextColor
-							anchors {
-								horizontalCenter: parent.horizontalCenter
-								verticalCenter: parent.verticalCenter
-							}
-						}
+				Rectangle {
+					border.width: 2
+					border.color: "black"
+					color: 	subsurfaceTheme.backgroundColor
+
+					width: rootItem.width / 2 - 20
+					height: subsurfaceTheme.regularPointSize + 10
+
+					TemplateLabel {
+						text: qsTr("background")
+						color: "black"
+						anchors.horizontalCenter: parent.horizontalCenter
+						anchors.verticalCenter: parent.verticalCenter
 					}
-					Rectangle {
-						color: ThemeNew.pinkPrimaryColor
-						border.color: "black"
-						width: sampleHighlightPink.width + Kirigami.Units.gridUnit
-						height: Kirigami.Units.gridUnit * 2
-						Text {
-							id: sampleHighlightPink
-							text: qsTr("Highlight")
-							font.pointSize: subsurfaceTheme.regularPointSize
-							color: ThemeNew.pinkPrimaryTextColor
-							anchors {
-								horizontalCenter: parent.horizontalCenter
-								verticalCenter: parent.verticalCenter
-							}
-						}
+				}
+				Rectangle {
+					border.width: 2
+					border.color: "black"
+					color: "white"
+					width: rootItem.width / 2 - 60
+					height: subsurfaceTheme.regularPointSize + 10
+
+					TemplateLabel {
+						text: qsTr("text")
+						color: subsurfaceTheme.textColor
+						anchors.horizontalCenter: parent.horizontalCenter
+						anchors.verticalCenter: parent.verticalCenter
 					}
 				}
 
-				SsrfSwitch {
-					id: pinkButton
-					Layout.preferredWidth: gridWidth * 0.25
-					checked: ThemeNew.currentTheme === "Pink"
-					enabled: ThemeNew.currentTheme !== "Pink"
-					onClicked: {
-						ThemeNew.currentTheme = "Pink"
+				Rectangle {
+					border.width: 2
+					border.color: "black"
+					color: 	subsurfaceTheme.primaryColor
+
+					width: rootItem.width / 2 - 20
+					height: subsurfaceTheme.regularPointSize + 10
+
+					TemplateLabel {
+						text: qsTr("primary")
+						color: "black"
+						anchors.horizontalCenter: parent.horizontalCenter
+						anchors.verticalCenter: parent.verticalCenter
+					}
+				}
+				Rectangle {
+					border.width: 2
+					border.color: "black"
+					color: "white"
+					width: rootItem.width / 2 - 60
+					height: subsurfaceTheme.regularPointSize + 10
+
+					TemplateLabel {
+						text: qsTr("text")
+						color: subsurfaceTheme.primaryTextColor
+						anchors.horizontalCenter: parent.horizontalCenter
+						anchors.verticalCenter: parent.verticalCenter
 					}
 				}
 
+				Rectangle {
+					border.width: 2
+					border.color: "black"
+					color: 	subsurfaceTheme.darkerPrimaryColor
+
+					width: rootItem.width / 2 - 20
+					height: subsurfaceTheme.regularPointSize + 10
+
+					TemplateLabel {
+						text: qsTr("darker primary")
+						color: "black"
+						anchors.horizontalCenter: parent.horizontalCenter
+						anchors.verticalCenter: parent.verticalCenter
+					}
+				}
+				Rectangle {
+					border.width: 2
+					border.color: "black"
+					color: "white"
+					width: rootItem.width / 2 - 60
+					height: subsurfaceTheme.regularPointSize + 10
+
+					TemplateLabel {
+						text: qsTr("text")
+						color: subsurfaceTheme.darkerPrimaryTextColor
+						anchors.horizontalCenter: parent.horizontalCenter
+						anchors.verticalCenter: parent.verticalCenter
+					}
+				}
+
+				Rectangle {
+					border.width: 2
+					border.color: "black"
+					color: 	subsurfaceTheme.lightPrimaryColor
+
+					width: rootItem.width / 2 - 20
+					height: subsurfaceTheme.regularPointSize + 10
+
+					TemplateLabel {
+						text: qsTr("light primary")
+						color: "black"
+						anchors.horizontalCenter: parent.horizontalCenter
+						anchors.verticalCenter: parent.verticalCenter
+					}
+				}
+				Rectangle {
+					border.width: 2
+					border.color: "black"
+					color: "white"
+					width: rootItem.width / 2 - 60
+					height: subsurfaceTheme.regularPointSize + 10
+
+					TemplateLabel {
+						text: qsTr("text")
+						color: subsurfaceTheme.lightPrimaryTextColor
+						anchors.horizontalCenter: parent.horizontalCenter
+						anchors.verticalCenter: parent.verticalCenter
+					}
+				}
+
+
 				TemplateLabel {
-					text: qsTr("Dark")
-					rightPadding: Kirigami.Units.gridUnit
-					Layout.preferredWidth: gridWidth * 0.15
+					text: ""
 				}
-				Row {
-					Layout.preferredWidth: gridWidth * 0.6
-					Rectangle {
-						id: blackRect
-						color: ThemeNew.darkBackgroundColor
-						border.color: "black"
-						width: sampleRegularDark.width + Kirigami.Units.gridUnit
-						height: Kirigami.Units.gridUnit * 2
-						Text {
-							id: sampleRegularDark
-							text: qsTr("regular text")
-							font.pointSize: subsurfaceTheme.regularPointSize
-							color: ThemeNew.darkTextColor
-							anchors {
-								horizontalCenter: parent.horizontalCenter
-								verticalCenter: parent.verticalCenter
-							}
-						}
-					}
-					Rectangle {
-						color: ThemeNew.darkPrimaryColor
-						border.color: "black"
-						width: sampleHighlightDark.width + Kirigami.Units.gridUnit
-						height: Kirigami.Units.gridUnit * 2
-						Text {
-							id: sampleHighlightDark
-							text: qsTr("Highlight")
-							font.pointSize: subsurfaceTheme.regularPointSize
-							color: ThemeNew.darkPrimaryTextColor
-							anchors {
-								horizontalCenter: parent.horizontalCenter
-								verticalCenter: parent.verticalCenter
-							}
-						}
+				Rectangle {
+					border.width: 2
+					border.color: "black"
+					color: "white"
+					width: rootItem.width / 2 - 60
+					height: subsurfaceTheme.regularPointSize + 10
+
+					TemplateLabel {
+						text: qsTr("secondary text")
+						color: subsurfaceTheme.secondaryTextColor
+						anchors.horizontalCenter: parent.horizontalCenter
+						anchors.verticalCenter: parent.verticalCenter
 					}
 				}
-				SsrfSwitch {
-					id: darkButton
-					Layout.preferredWidth: gridWidth * 0.25
-					checked: ThemeNew.currentTheme === "Dark"
-					enabled: ThemeNew.currentTheme !== "Dark"
-					onClicked: {
-						ThemeNew.currentTheme = "Dark"
+
+				Rectangle {
+					border.width: 2
+					border.color: "black"
+					color: 	subsurfaceTheme.drawerColor
+
+					width: rootItem.width / 2 - 20
+					height: subsurfaceTheme.regularPointSize + 10
+
+					TemplateLabel {
+						text: qsTr("drawer")
+						color: "black"
+						anchors.horizontalCenter: parent.horizontalCenter
+						anchors.verticalCenter: parent.verticalCenter
 					}
 				}
 				TemplateLabel {
-					text: qsTr("Scaling")
-					font.pointSize: subsurfaceTheme.headingPointSize
-					font.weight: Font.Light
-					Layout.topMargin: Kirigami.Units.largeSpacing
-					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-					Layout.columnSpan: 3
+					text: ""
 				}
 				Row {
 					Layout.preferredWidth: gridWidth * 0.8
@@ -331,9 +341,10 @@ TemplatePage {
 						}
 					}
 				}
+				Rectangle {
+				}
 			}
 		}
-
 		TemplateSection {
 			id: sectionUnits
 			title: qsTr("Units")
