@@ -5,14 +5,13 @@ import QtQuick.Controls 2.12
 import org.kde.kirigami 2.4 as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
-Kirigami.ScrollablePage {
+TemplatePage {
 	objectName: "Settings"
 	id: settingsPage
 	property alias defaultCylinderModel: defaultCylinderBox.model
 	property alias defaultCylinderIndex: defaultCylinderBox.currentIndex
 
 	title: qsTr("Settings")
-	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 
 	property real gridWidth: settingsPage.width - Kirigami.Units.gridUnit
 	property var describe: [qsTr("Undefined"),
