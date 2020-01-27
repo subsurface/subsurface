@@ -76,9 +76,9 @@ void init_qt_late()
 	qtTranslator = new QTranslator;
 	QString translationLocation;
 #if defined(Q_OS_ANDROID)
-	translationLocation = QLatin1Literal("assets:/translations");
+	translationLocation = QLatin1String("assets:/translations");
 #elif defined(Q_OS_IOS)
-	translationLocation = QLatin1Literal(":/");
+	translationLocation = QLatin1String(":/");
 #else
 	translationLocation = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
 #endif

@@ -53,8 +53,8 @@
 QMLManager *QMLManager::m_instance = NULL;
 bool noCloudToCloud = false;
 
-#define RED_FONT QLatin1Literal("<font color=\"red\">")
-#define END_FONT QLatin1Literal("</font>")
+#define RED_FONT QLatin1String("<font color=\"red\">")
+#define END_FONT QLatin1String("</font>")
 
 extern "C" void showErrorFromC(char *buf)
 {
@@ -276,9 +276,9 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 	}
 	stateText.prepend("AppState changed to ");
 	stateText.append(" with ");
-	stateText.append((alreadySaving ? QLatin1Literal("") : QLatin1Literal("no ")) + QLatin1Literal("save ongoing"));
+	stateText.append((alreadySaving ? QLatin1String("") : QLatin1String("no ")) + QLatin1String("save ongoing"));
 	stateText.append(" and ");
-	stateText.append((unsaved_changes() ? QLatin1Literal("") : QLatin1Literal("no ")) + QLatin1Literal("unsaved changes"));
+	stateText.append((unsaved_changes() ? QLatin1String("") : QLatin1String("no ")) + QLatin1String("unsaved changes"));
 	appendTextToLog(stateText);
 
 	if (!alreadySaving && state == Qt::ApplicationInactive && unsaved_changes()) {
@@ -1663,14 +1663,14 @@ void QMLManager::setVerboseEnabled(bool verboseMode)
 void QMLManager::syncLoadFromCloud()
 {
 	QSettings s;
-	QString cloudMarker = QLatin1Literal("loadFromCloud") + QString(prefs.cloud_storage_email);
+	QString cloudMarker = QLatin1String("loadFromCloud") + QString(prefs.cloud_storage_email);
 	m_loadFromCloud = s.contains(cloudMarker) && s.value(cloudMarker).toBool();
 }
 
 void QMLManager::setLoadFromCloud(bool done)
 {
 	QSettings s;
-	QString cloudMarker = QLatin1Literal("loadFromCloud") + QString(prefs.cloud_storage_email);
+	QString cloudMarker = QLatin1String("loadFromCloud") + QString(prefs.cloud_storage_email);
 	s.setValue(cloudMarker, done);
 	m_loadFromCloud = done;
 	emit loadFromCloudChanged();
