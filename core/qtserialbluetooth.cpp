@@ -212,7 +212,16 @@ static dc_status_t qt_serial_poll(void *io, int timeout)
 
 	if (!device->socket)
 		return DC_STATUS_INVALIDARGS;
-	if (device->socket->waitForReadyRead(timeout))
+
+	QEventLoop loop;
+	QTimer timer;
+	timer.setSingleShot(true);
+	loop.connect(&timer, SIGNAL(timeout()), SLOT(quit()));
+	loop.connect(device->socket, SIGNAL(readyRead()), SLOT(quit()));
+	timer.start(timeout);
+	loop.exec();
+
+	if (!timer.isActive())
 		return DC_STATUS_SUCCESS;
 	return DC_STATUS_TIMEOUT;
 }
