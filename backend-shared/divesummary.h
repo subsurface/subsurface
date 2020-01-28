@@ -24,5 +24,6 @@ private:
 	static long divetime[2], depth[2], sac[2];
 	static long divetimeMax[2], depthMax[2], sacMin[2];
 	static long divetimeAvg[2], depthAvg[2], sacAvg[2];
+	static int divesSAC[2];
 };
 #endif // DIVESUMMARY_H
