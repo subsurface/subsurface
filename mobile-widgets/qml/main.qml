@@ -394,6 +394,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
+				icon {
+					name: ":/icons/sigma.svg"
+				}
 				text: qsTr("Dive summary")
 				onTriggered: {
 					globalDrawer.close()
