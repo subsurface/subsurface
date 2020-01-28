@@ -298,13 +298,13 @@ ble_packet_open(dc_iostream_t **iostream, dc_context_t *context, const char* dev
 		NULL, /* get_lines */
 		NULL, /* get_received */
 		NULL, /* configure */
-		qt_ble_poll, /* poll */
+		qt_ble_poll, /* poll */    /* fails on mac 6 parm vs 2 */
 		qt_ble_read, /* read */
 		qt_ble_write, /* write */
-		qt_ble_ioctl, /* ioctl */
+		qt_ble_ioctl, /* ioctl */  /* fails on mac 1 parm vs 4 */
 		NULL, /* flush */
 		NULL, /* purge */
-		qt_custom_sleep, /* sleep */
+		qt_custom_sleep, /* sleep */ /* fails on mac 1 parm vs 2 */
 		qt_ble_close, /* close */
 	};
 
