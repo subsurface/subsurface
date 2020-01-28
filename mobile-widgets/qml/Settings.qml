@@ -156,7 +156,7 @@ Kirigami.ScrollablePage {
 					Layout.preferredWidth: gridWidth * 0.6
 					Rectangle {
 						id: blueRect
-						color: subsurfaceTheme.blueBackgroundColor
+						color: ThemeNew.blueBackgroundColor
 						border.color: "black"
 						width: sampleRegularBlue.width + Kirigami.Units.gridUnit
 						height: Kirigami.Units.gridUnit * 2
@@ -164,7 +164,7 @@ Kirigami.ScrollablePage {
 							id: sampleRegularBlue
 							text: qsTr("regular text")
 							font.pointSize: subsurfaceTheme.regularPointSize
-							color: subsurfaceTheme.blueTextColor
+							color: ThemeNew.blueTextColor
 							anchors {
 								horizontalCenter: parent.horizontalCenter
 								verticalCenter: parent.verticalCenter
@@ -172,7 +172,7 @@ Kirigami.ScrollablePage {
 						}
 					}
 					Rectangle {
-						color: subsurfaceTheme.bluePrimaryColor
+						color: ThemeNew.bluePrimaryColor
 						border.color: "black"
 						width: sampleHighlightBlue.width + Kirigami.Units.gridUnit
 						height: Kirigami.Units.gridUnit * 2
@@ -180,7 +180,7 @@ Kirigami.ScrollablePage {
 							id: sampleHighlightBlue
 							text: qsTr("Highlight")
 							font.pointSize: subsurfaceTheme.regularPointSize
-							color: subsurfaceTheme.bluePrimaryTextColor
+							color: ThemeNew.bluePrimaryTextColor
 							anchors {
 								horizontalCenter: parent.horizontalCenter
 								verticalCenter: parent.verticalCenter
@@ -191,11 +191,10 @@ Kirigami.ScrollablePage {
 				SsrfSwitch {
 					id: blueButton
 					Layout.preferredWidth: gridWidth * 0.25
-					checked: subsurfaceTheme.currentTheme === "Blue"
-					enabled: subsurfaceTheme.currentTheme !== "Blue"
+					checked: ThemeNew.currentTheme === "Blue"
+					enabled: ThemeNew.currentTheme !== "Blue"
 					onClicked: {
-						blueTheme()
-						PrefDisplay.theme = subsurfaceTheme.currentTheme
+						ThemeNew.currentTheme = "Blue"
 					}
 				}
 
@@ -209,7 +208,7 @@ Kirigami.ScrollablePage {
 					Layout.preferredWidth: gridWidth * 0.6
 					Rectangle {
 						id: pinkRect
-						color: subsurfaceTheme.pinkBackgroundColor
+						color: ThemeNew.pinkBackgroundColor
 						border.color: "black"
 						width: sampleRegularPink.width + Kirigami.Units.gridUnit
 						height: Kirigami.Units.gridUnit * 2
@@ -217,7 +216,7 @@ Kirigami.ScrollablePage {
 							id: sampleRegularPink
 							text: qsTr("regular text")
 							font.pointSize: subsurfaceTheme.regularPointSize
-							color: subsurfaceTheme.pinkTextColor
+							color: ThemeNew.pinkTextColor
 							anchors {
 								horizontalCenter: parent.horizontalCenter
 								verticalCenter: parent.verticalCenter
@@ -225,7 +224,7 @@ Kirigami.ScrollablePage {
 						}
 					}
 					Rectangle {
-						color: subsurfaceTheme.pinkPrimaryColor
+						color: ThemeNew.pinkPrimaryColor
 						border.color: "black"
 						width: sampleHighlightPink.width + Kirigami.Units.gridUnit
 						height: Kirigami.Units.gridUnit * 2
@@ -233,7 +232,7 @@ Kirigami.ScrollablePage {
 							id: sampleHighlightPink
 							text: qsTr("Highlight")
 							font.pointSize: subsurfaceTheme.regularPointSize
-							color: subsurfaceTheme.pinkPrimaryTextColor
+							color: ThemeNew.pinkPrimaryTextColor
 							anchors {
 								horizontalCenter: parent.horizontalCenter
 								verticalCenter: parent.verticalCenter
@@ -245,11 +244,10 @@ Kirigami.ScrollablePage {
 				SsrfSwitch {
 					id: pinkButton
 					Layout.preferredWidth: gridWidth * 0.25
-					checked: subsurfaceTheme.currentTheme === "Pink"
-					enabled: subsurfaceTheme.currentTheme !== "Pink"
+					checked: ThemeNew.currentTheme === "Pink"
+					enabled: ThemeNew.currentTheme !== "Pink"
 					onClicked: {
-						pinkTheme()
-						PrefDisplay.theme = subsurfaceTheme.currentTheme
+						ThemeNew.currentTheme = "Pink"
 					}
 				}
 
@@ -262,7 +260,7 @@ Kirigami.ScrollablePage {
 					Layout.preferredWidth: gridWidth * 0.6
 					Rectangle {
 						id: blackRect
-						color: subsurfaceTheme.darkBackgroundColor
+						color: ThemeNew.darkBackgroundColor
 						border.color: "black"
 						width: sampleRegularDark.width + Kirigami.Units.gridUnit
 						height: Kirigami.Units.gridUnit * 2
@@ -270,7 +268,7 @@ Kirigami.ScrollablePage {
 							id: sampleRegularDark
 							text: qsTr("regular text")
 							font.pointSize: subsurfaceTheme.regularPointSize
-							color: subsurfaceTheme.darkTextColor
+							color: ThemeNew.darkTextColor
 							anchors {
 								horizontalCenter: parent.horizontalCenter
 								verticalCenter: parent.verticalCenter
@@ -278,7 +276,7 @@ Kirigami.ScrollablePage {
 						}
 					}
 					Rectangle {
-						color: subsurfaceTheme.darkPrimaryColor
+						color: ThemeNew.darkPrimaryColor
 						border.color: "black"
 						width: sampleHighlightDark.width + Kirigami.Units.gridUnit
 						height: Kirigami.Units.gridUnit * 2
@@ -286,7 +284,7 @@ Kirigami.ScrollablePage {
 							id: sampleHighlightDark
 							text: qsTr("Highlight")
 							font.pointSize: subsurfaceTheme.regularPointSize
-							color: subsurfaceTheme.darkPrimaryTextColor
+							color: ThemeNew.darkPrimaryTextColor
 							anchors {
 								horizontalCenter: parent.horizontalCenter
 								verticalCenter: parent.verticalCenter
@@ -297,11 +295,10 @@ Kirigami.ScrollablePage {
 				SsrfSwitch {
 					id: darkButton
 					Layout.preferredWidth: gridWidth * 0.25
-					checked: subsurfaceTheme.currentTheme === "Dark"
-					enabled: subsurfaceTheme.currentTheme !== "Dark"
+					checked: ThemeNew.currentTheme === "Dark"
+					enabled: ThemeNew.currentTheme !== "Dark"
 					onClicked: {
-						darkTheme()
-						PrefDisplay.theme = subsurfaceTheme.currentTheme
+						ThemeNew.currentTheme = "Dark"
 					}
 				}
 				TemplateLabel {
