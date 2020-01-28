@@ -4,6 +4,67 @@
 #include "core/metrics.h"
 #include "core/settings/qPrefDisplay.h"
 
+QColor themeInterface::m_backgroundColor;
+QColor themeInterface::m_contrastAccentColor;
+QColor themeInterface::m_darkerPrimaryColor;
+QColor themeInterface::m_darkerPrimaryTextColor;
+QColor themeInterface::m_drawerColor;
+QColor themeInterface::m_lightDrawerColor;
+QColor themeInterface::m_lightPrimaryColor;
+QColor themeInterface::m_lightPrimaryTextColor;
+QColor themeInterface::m_primaryColor;
+QColor themeInterface::m_primaryTextColor;
+QColor themeInterface::m_secondaryTextColor;
+QColor themeInterface::m_textColor;
+
+double themeInterface::m_basePointSize;
+double themeInterface::m_headingPointSize;
+double themeInterface::m_regularPointSize;
+double themeInterface::m_smallPointSize;
+double themeInterface::m_titlePointSize;
+
+QString themeInterface::m_currentTheme;
+QString themeInterface::m_iconStyle;
+
+const QColor themeInterface::m_blueBackgroundColor = "#eff0f1";
+const QColor themeInterface::m_blueContrastAccentColor = "#FF5722";
+const QColor themeInterface::m_blueDarkerPrimaryColor = "#303F9f";
+const QColor themeInterface::m_blueDarkerPrimaryTextColor = "#ECECEC";
+const QColor themeInterface::m_blueDrawerColor = "#FFFFFF";
+const QColor themeInterface::m_blueLightDrawerColor = "#FFFFFF";
+const QColor themeInterface::m_blueLightPrimaryColor = "#C5CAE9";
+const QColor themeInterface::m_blueLightPrimaryTextColor = "#212121";
+const QColor themeInterface::m_bluePrimaryColor = "#3F51B5";
+const QColor themeInterface::m_bluePrimaryTextColor = "#FFFFFF";
+const QColor themeInterface::m_blueSecondaryTextColor = "#757575";
+const QColor themeInterface::m_blueTextColor = "#212121";
+
+const QColor themeInterface::m_pinkBackgroundColor = "#eff0f1";
+const QColor themeInterface::m_pinkContrastAccentColor = "#FF5722";
+const QColor themeInterface::m_pinkDarkerPrimaryColor = "#C2185B";
+const QColor themeInterface::m_pinkDarkerPrimaryTextColor = "#ECECEC";
+const QColor themeInterface::m_pinkDrawerColor = "#FFFFFF";
+const QColor themeInterface::m_pinkLightDrawerColor = "#FFFFFF";
+const QColor themeInterface::m_pinkLightPrimaryColor = "#FFDDF4";
+const QColor themeInterface::m_pinkLightPrimaryTextColor = "#212121";
+const QColor themeInterface::m_pinkPrimaryColor = "#FF69B4";
+const QColor themeInterface::m_pinkPrimaryTextColor = "#212121";
+const QColor themeInterface::m_pinkSecondaryTextColor = "#757575";
+const QColor themeInterface::m_pinkTextColor = "#212121";
+
+const QColor themeInterface::m_darkBackgroundColor = "#303030";
+const QColor themeInterface::m_darkContrastAccentColor = "#FF5722";
+const QColor themeInterface::m_darkDarkerPrimaryColor = "#303F9f";
+const QColor themeInterface::m_darkDarkerPrimaryTextColor = "#ECECEC";
+const QColor themeInterface::m_darkDrawerColor = "#424242";
+const QColor themeInterface::m_darkLightDrawerColor = "#FFFFFF";
+const QColor themeInterface::m_darkLightPrimaryColor = "#C5CAE9";
+const QColor themeInterface::m_darkLightPrimaryTextColor = "#ECECEC";
+const QColor themeInterface::m_darkPrimaryColor = "#3F51B5";
+const QColor themeInterface::m_darkPrimaryTextColor = "#ECECEC";
+const QColor themeInterface::m_darkSecondaryTextColor = "#757575";
+const QColor themeInterface::m_darkTextColor = "#ECECEC";
+
 themeInterface *themeInterface::instance()
 {
 	static themeInterface *self = new themeInterface;
@@ -16,22 +77,22 @@ void themeInterface::setup(QQmlContext *ct)
 	ct->setContextProperty("ThemeNew", instance());
 
 	// get current theme
-	instance()->m_currentTheme = qPrefDisplay::theme();
-	instance()->update_theme();
+	m_currentTheme = qPrefDisplay::theme();
+	update_theme();
 
 	// check system font
-	instance()->m_basePointSize = defaultModelFont().pointSize();
+	m_basePointSize = defaultModelFont().pointSize();
 
 	// set initial font size
-	instance()->set_currentScale(qPrefDisplay::mobile_scale());
+	set_currentScale(qPrefDisplay::mobile_scale());
 }
 
 void themeInterface::set_currentTheme(const QString &theme)
 {
 	m_currentTheme = theme;
 	qPrefDisplay::set_theme(m_currentTheme);
-	update_theme();
-	emit currentThemeChanged(theme);
+	instance()->update_theme();
+	emit instance()->currentThemeChanged(theme);
 }
 
 double themeInterface::currentScale()
@@ -42,7 +103,7 @@ void themeInterface::set_currentScale(double newScale)
 {
 	if (newScale != qPrefDisplay::mobile_scale()) {
 		qPrefDisplay::set_mobile_scale(newScale);
-		emit currentScaleChanged(qPrefDisplay::mobile_scale());
+		emit instance()->currentScaleChanged(qPrefDisplay::mobile_scale());
 	}
 
 	// Set current font size
@@ -50,16 +111,16 @@ void themeInterface::set_currentScale(double newScale)
 
 	// adjust all used font sizes
 	m_regularPointSize = defaultModelFont().pointSize();
-	emit regularPointSizeChanged(m_regularPointSize);
+	emit instance()->regularPointSizeChanged(m_regularPointSize);
 
 	m_headingPointSize = m_regularPointSize * 1.2;
-	emit headingPointSizeChanged(m_headingPointSize);
+	emit instance()->headingPointSizeChanged(m_headingPointSize);
 
 	m_smallPointSize = m_regularPointSize * 0.8;
-	emit smallPointSizeChanged(m_smallPointSize);
+	emit instance()->smallPointSizeChanged(m_smallPointSize);
 
 	m_titlePointSize = m_regularPointSize * 1.5;
-	emit titlePointSizeChanged(m_titlePointSize);
+	emit instance()->titlePointSizeChanged(m_titlePointSize);
 }
 
 void themeInterface::update_theme()
@@ -107,17 +168,17 @@ void themeInterface::update_theme()
 		m_textColor = m_darkTextColor;
 		m_iconStyle = ":/icons-dark";
 	}
-	emit backgroundColorChanged(m_backgroundColor);
-	emit contrastAccentColorChanged(m_contrastAccentColor);
-	emit darkerPrimaryColorChanged(m_darkerPrimaryColor);
-	emit darkerPrimaryTextColorChanged(m_darkerPrimaryTextColor);
-	emit drawerColorChanged(m_drawerColor);
-	emit lightDrawerColorChanged(m_lightDrawerColor);
-	emit lightPrimaryColorChanged(m_lightPrimaryColor);
-	emit lightPrimaryTextColorChanged(m_lightPrimaryTextColor);
-	emit primaryColorChanged(m_primaryColor);
-	emit primaryTextColorChanged(m_primaryTextColor);
-	emit secondaryTextColorChanged(m_secondaryTextColor);
-	emit textColorChanged(m_textColor);
-	emit iconStyleChanged(m_iconStyle);
+	emit instance()->backgroundColorChanged(m_backgroundColor);
+	emit instance()->contrastAccentColorChanged(m_contrastAccentColor);
+	emit instance()->darkerPrimaryColorChanged(m_darkerPrimaryColor);
+	emit instance()->darkerPrimaryTextColorChanged(m_darkerPrimaryTextColor);
+	emit instance()->drawerColorChanged(m_drawerColor);
+	emit instance()->lightDrawerColorChanged(m_lightDrawerColor);
+	emit instance()->lightPrimaryColorChanged(m_lightPrimaryColor);
+	emit instance()->lightPrimaryTextColorChanged(m_lightPrimaryTextColor);
+	emit instance()->primaryColorChanged(m_primaryColor);
+	emit instance()->primaryTextColorChanged(m_primaryTextColor);
+	emit instance()->secondaryTextColorChanged(m_secondaryTextColor);
+	emit instance()->textColorChanged(m_textColor);
+	emit instance()->iconStyleChanged(m_iconStyle);
 }
