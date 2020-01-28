@@ -11,6 +11,7 @@ timestamp_t diveSummary::firstDive, diveSummary::lastDive;
 int diveSummary::dives[2], diveSummary::divesEAN[2], diveSummary::divesDeep[2], diveSummary::diveplans[2];
 long diveSummary::divetime[2], diveSummary::depth[2], diveSummary::sac[2];
 long diveSummary::divetimeMax[2], diveSummary::depthMax[2], diveSummary::sacMin[2];
+int diveSummary::divesSAC[2];
 
 void diveSummary::summaryCalculation(int primaryPeriod, int secondaryPeriod)
 {
@@ -64,6 +65,7 @@ void diveSummary::loopDives(timestamp_t primaryStart, timestamp_t secondaryStart
 	sac[0] = sac[1] = 0;
 	divetimeMax[0] = divetimeMax[1] = depthMax[0] = depthMax[1] = 0;
 	sacMin[0] = sacMin[1] = 99999;
+	divesSAC[0] = divesSAC[1] = 0;
 
 	for_each_dive (i, dive) {
 		// remember time of oldest and newest dive
@@ -113,9 +115,12 @@ void diveSummary::calculateDive(int inx, struct dive *dive)
 
 	// sum SAC in liters, check for new max.
 	temp = dive->sac / 1000;
-	sac[inx] += temp;
-	if (temp < sacMin[inx])
-		sacMin[inx] = temp;
+	if (temp) {
+		divesSAC[inx]++;
+		sac[inx] += temp;
+		if (temp < sacMin[inx])
+			sacMin[inx] = temp;
+	}
 
 	// EAN dive ?
 	for (int j = 0; j < dive->cylinders.nr; ++j) {
@@ -161,8 +166,10 @@ void diveSummary::buildStringList(int inx)
 	// SAC
 	tempStr = (qPrefUnits::volume() == units::LITER) ? "l/min" : "cuft/min";
 	diveSummaryText[18+inx] = QStringLiteral("%1 %2").arg(sacMin[inx]).arg(tempStr);
-	temp1 = depth[inx] / dives[inx];
-	diveSummaryText[20+inx] = QStringLiteral("%1%2").arg(temp1).arg(tempStr);
+	if (divesSAC[inx]) {
+		temp1 = depth[inx] / divesSAC[inx];
+		diveSummaryText[20+inx] = QStringLiteral("%1%2").arg(temp1).arg(tempStr);
+	}
 
 	// Diveplan(s)
 	diveSummaryText[22+inx] = QStringLiteral("%1").arg(diveplans[inx]);
