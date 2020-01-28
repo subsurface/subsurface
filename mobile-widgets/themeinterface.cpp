@@ -8,11 +8,14 @@ themeInterface *themeInterface::instance()
 	return self;
 }
 
-void themeInterface::setup()
+void themeInterface::setup(QQmlContext *ct)
 {
+	// Register interface class
+	ct->setContextProperty("ThemeNew", instance());
+
 	// get current theme
-	m_currentTheme = qPrefDisplay::theme();
-	update_theme();
+	instance()->m_currentTheme = qPrefDisplay::theme();
+	instance()->update_theme();
 }
 
 void themeInterface::set_currentTheme(const QString &theme)

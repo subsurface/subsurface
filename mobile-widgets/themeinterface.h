@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QColor>
 #include <QSettings>
+#include <QQmlContext>
 
 class themeInterface : public QObject {
 	Q_OBJECT
@@ -69,7 +70,7 @@ class themeInterface : public QObject {
 public:
 	static themeInterface *instance();
 
-	void setup();
+	static void setup(QQmlContext *ct);
 
 public slots:
 	void set_currentTheme(const QString &theme);

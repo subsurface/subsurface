@@ -187,11 +187,9 @@ void register_qml_types(QQmlEngine *engine)
 	if (engine != NULL) {
 		QQmlContext *ct = engine->rootContext();
 
-		// Register qml interface class
+		// Register qml interface classes
 		QMLInterface::setup(ct);
-
-		themeInterface::instance()->setup();
-		ct->setContextProperty("ThemeNew", themeInterface::instance());
+		themeInterface::setup(ct);
 	}
 
 	REGISTER_TYPE(QMLManager, "QMLManager");
