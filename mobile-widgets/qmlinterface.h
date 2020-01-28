@@ -48,6 +48,7 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(int ascrate75 READ ascrate75 WRITE set_ascrate75 NOTIFY ascrate75Changed);
 	Q_PROPERTY(int descrate READ descrate WRITE set_descrate NOTIFY descrateChanged);
 
+	Q_PROPERTY(DIVE_MODE dive_mode READ dive_mode WRITE set_dive_mode NOTIFY dive_modeChanged);
 	Q_PROPERTY(DECO_MODE planner_deco_mode READ planner_deco_mode WRITE set_planner_deco_mode NOTIFY planner_deco_modeChanged);
 	Q_PROPERTY(int reserve_gas READ reserve_gas WRITE set_reserve_gas NOTIFY reserve_gasChanged);
 	Q_PROPERTY(bool safetystop READ safetystop WRITE set_safetystop NOTIFY safetystopChanged);
@@ -188,6 +189,7 @@ public:
 	int ascrate75() { return DivePlannerPointsModel::instance()->ascrate75Display(); }
 	int descrate() { return DivePlannerPointsModel::instance()->descrateDisplay(); }
 
+	DIVE_MODE dive_mode() { return OC; }
 	DECO_MODE planner_deco_mode() { return (DECO_MODE)plannerShared::planner_deco_mode(); }
 	int reserve_gas() { return plannerShared::reserve_gas(); }
 	bool safetystop() { return prefs.safetystop; }
@@ -236,6 +238,7 @@ public slots:
 	void set_ascrate75(int value) { DivePlannerPointsModel::instance()->setAscrate75Display(value); }
 	void set_descrate(int value) { DivePlannerPointsModel::instance()->setDescrateDisplay(value); }
 
+	void set_dive_mode(DIVE_MODE value) { DivePlannerPointsModel::instance()->setRebreatherMode((int)value); }
 	void set_planner_deco_mode(DECO_MODE value) { plannerShared::set_planner_deco_mode((deco_mode)value); }
 	void set_reserve_gas(int value) { plannerShared::set_reserve_gas(value); }
 	void set_safetystop(bool value) { DivePlannerPointsModel::instance()->setSafetyStop(value); }
@@ -282,6 +285,7 @@ signals:
 	void ascrate75Changed(int);
 	void descrateChanged(int);
 
+	void dive_modeChanged(DIVE_MODE value);
 	void planner_deco_modeChanged(DECO_MODE value);
 	void reserve_gasChanged(int value);
 	void safetystopChanged(bool value);
