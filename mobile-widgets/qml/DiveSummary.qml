@@ -11,23 +11,6 @@ Kirigami.ScrollablePage {
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 	title: qsTr("Dive summary")
 
-	ListModel {
-		id: monthModel
-		ListElement {text: qsTr("Total")}
-		ListElement {text: qsTr(" 1 month [ 30 days]")}
-		ListElement {text: qsTr(" 2 month [ 60 days]")}
-		ListElement {text: qsTr(" 3 month [ 90 days]")}
-		ListElement {text: qsTr(" 4 month [120 days]")}
-		ListElement {text: qsTr(" 5 month [150 days]")}
-		ListElement {text: qsTr(" 6 month [180 days]")}
-		ListElement {text: qsTr(" 7 month [210 days]")}
-		ListElement {text: qsTr(" 8 month [240 days]")}
-		ListElement {text: qsTr(" 9 month [270 days]")}
-		ListElement {text: qsTr("10 month [300 days]")}
-		ListElement {text: qsTr("11 month [330 days]")}
-		ListElement {text: qsTr("12 month [360 days]")}
-	}
-
 	onVisibleChanged: {
 		if (visible)
 			Backend.summaryCalculation(selectionPrimary.currentIndex, selectionSecondary.currentIndex)
@@ -38,6 +21,23 @@ Kirigami.ScrollablePage {
 		width: parent.width
 		columnSpacing: Kirigami.Units.smallSpacing
 		rowSpacing: Kirigami.Units.smallSpacing
+
+		ListModel {
+			id: monthModel
+			ListElement {text: qsTr("Total")}
+			ListElement {text: qsTr(" 1 month [ 30 days]")}
+			ListElement {text: qsTr(" 2 month [ 60 days]")}
+			ListElement {text: qsTr(" 3 month [ 90 days]")}
+			ListElement {text: qsTr(" 4 month [120 days]")}
+			ListElement {text: qsTr(" 5 month [150 days]")}
+			ListElement {text: qsTr(" 6 month [180 days]")}
+			ListElement {text: qsTr(" 7 month [210 days]")}
+			ListElement {text: qsTr(" 8 month [240 days]")}
+			ListElement {text: qsTr(" 9 month [270 days]")}
+			ListElement {text: qsTr("10 month [300 days]")}
+			ListElement {text: qsTr("11 month [330 days]")}
+			ListElement {text: qsTr("12 month [360 days]")}
+		}
 
 		TemplateLabel {
 			text: qsTr("oldest/newest dive")
