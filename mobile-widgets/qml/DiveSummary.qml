@@ -181,7 +181,7 @@ Kirigami.ScrollablePage {
 			text: Backend.diveSummaryText[19]
 		}
 		TemplateLabel {
-			text: qsTr("avg. SAC")
+			text: qsTr("max. SAC")
 			font.bold: true
 		}
 		TemplateLabel {
@@ -189,6 +189,16 @@ Kirigami.ScrollablePage {
 		}
 		TemplateLabel {
 			text: Backend.diveSummaryText[21]
+		}
+		TemplateLabel {
+			text: qsTr("avg. SAC")
+			font.bold: true
+		}
+		TemplateLabel {
+			text: Backend.diveSummaryText[22]
+		}
+		TemplateLabel {
+			text: Backend.diveSummaryText[23]
 		}
 
 		TemplateLabel {
@@ -200,10 +210,10 @@ Kirigami.ScrollablePage {
 			font.bold: true
 		}
 		TemplateLabel {
-			text: Backend.diveSummaryText[22]
+			text: Backend.diveSummaryText[24]
 		}
 		TemplateLabel {
-			text: Backend.diveSummaryText[23]
+			text: Backend.diveSummaryText[25]
 		}
 
 	}
