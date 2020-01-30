@@ -134,6 +134,11 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 	if (!index.isValid() || index.row() >= rows)
 		return QVariant();
 
+	if (index.row() >= displayed_dive.cylinders.nr) {
+		qWarning("CylindersModel and displayed_dive are out of sync!");
+		return QVariant();
+	}
+
 	const cylinder_t *cyl = get_cylinder(&displayed_dive, index.row());
 
 	switch (role) {
