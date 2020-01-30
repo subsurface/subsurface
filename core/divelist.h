@@ -49,6 +49,7 @@ extern void delete_dive_from_table(struct dive_table *table, int idx);
 extern struct dive *find_next_visible_dive(timestamp_t when);
 
 extern int comp_dives(const struct dive *a, const struct dive *b);
+extern int comp_dive_or_trip(struct dive_or_trip a, struct dive_or_trip b);
 
 int get_min_datafile_version();
 void reset_min_datafile_version();

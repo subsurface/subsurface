@@ -14,9 +14,9 @@ class MultiFilterSortModel : public QSortFilterProxyModel {
 public:
 	static MultiFilterSortModel *instance();
 	bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
-	bool lessThan(const QModelIndex &, const QModelIndex &) const override;
+	void sort(int column, Qt::SortOrder order) override;
 
-	void resetModel(DiveTripModelBase::Layout layout);
+	void resetModel(DiveTripModelBase::Column row, Qt::SortOrder direction);
 	void clear();
 signals:
 	void selectionChanged(const QVector<QModelIndex> &indexes);

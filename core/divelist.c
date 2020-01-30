@@ -1370,7 +1370,7 @@ static int comp_dive_to_trip(struct dive *a, struct dive_trip *b)
 	return comp_dives(a, b->dives.dives[0]);
 }
 
-static int comp_dive_or_trip(struct dive_or_trip a, struct dive_or_trip b)
+int comp_dive_or_trip(struct dive_or_trip a, struct dive_or_trip b)
 {
 	/* we should only be called with both a and b having exactly one of
 	 * dive or trip not NULL. But in an abundance of caution, make sure

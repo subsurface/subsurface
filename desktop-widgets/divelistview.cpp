@@ -31,7 +31,8 @@
 #include "desktop-widgets/mapwidget.h"
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent),
-	currentLayout(DiveTripModelBase::TREE),
+	sortRow(DiveTripModelBase::NR),
+	sortOrder(Qt::DescendingOrder),
 	initialColumnWidths(DiveTripModelBase::COLUMNS, 50)	// Set up with default length 50
 {
 	setItemDelegate(new DiveListDelegate(this));
@@ -84,7 +85,7 @@ DiveListView::~DiveListView()
 void DiveListView::resetModel()
 {
 	MultiFilterSortModel *m = MultiFilterSortModel::instance();
-	m->resetModel(currentLayout);
+	m->resetModel(sortRow, sortOrder);
 }
 
 void DiveListView::calculateInitialColumnWidth(int col)
@@ -413,23 +414,11 @@ bool DiveListView::eventFilter(QObject *, QEvent *event)
 	return true;
 }
 
+// When the sort indicator changed, remember the sort direction, so that we can sort properly on reload.
 void DiveListView::sortIndicatorChanged(int i, Qt::SortOrder order)
 {
-	DiveTripModelBase::Layout newLayout = i == (int)DiveTripModelBase::NR ? DiveTripModelBase::TREE : DiveTripModelBase::LIST;
-	/* No layout change? Just re-sort, and scroll to first selection, making sure all selections are expanded */
-	if (currentLayout == newLayout) {
-		sortByColumn(i, order);
-	} else {
-		// clear the model, repopulate with new indexes.
-		std::vector<int> expandedRows;
-		if(currentLayout == DiveTripModelBase::TREE)
-			expandedRows = backupExpandedRows();
-		currentLayout = newLayout;
-		resetModel();
-		sortByColumn(i, order);
-		if (newLayout == DiveTripModelBase::TREE)
-			restoreExpandedRows(expandedRows);
-	}
+	sortRow = static_cast<DiveTripModelBase::Column>(i);
+	sortOrder = order;
 }
 
 void DiveListView::setSortOrder(int i, Qt::SortOrder order)
@@ -832,7 +821,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	struct dive *d = contextMenuIndex.data(DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
 	dive_trip_t *trip = contextMenuIndex.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
 	QMenu popup(this);
-	if (currentLayout == DiveTripModelBase::TREE) {
+	if (sortRow == DiveTripModelBase::NR) {
 		// verify if there is a node that`s not expanded.
 		bool needs_expand = false;
 		bool needs_collapse = false;

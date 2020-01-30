@@ -555,11 +555,22 @@ void addInBatches(Vector1 &v1, const Vector2 &v2, Comparator comp, Inserter inse
 		idx += j - i + 1;
 	}
 }
+
 // 2) TreeModel functions
 
-DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent),
-	sort(dive_less_than),
-	sortTopLevel(dive_or_trip_less_than)
+static bool dive_greater_than(const dive *a, const dive *b)
+{
+	return comp_dives(a, b) > 0;
+}
+
+static bool dive_or_trip_greater_than(dive_or_trip a, dive_or_trip b)
+{
+	return comp_dive_or_trip(a, b) > 0;
+}
+
+DiveTripModelTree::DiveTripModelTree(bool ascending, QObject *parent) : DiveTripModelBase(parent),
+	sort(ascending ? dive_less_than : dive_greater_than),
+	sortTopLevel(ascending ? dive_or_trip_less_than : dive_or_trip_greater_than)
 {
 	// Stay informed of changes to the divelist
 	connect(&diveListNotifier, &DiveListNotifier::divesAdded, this, &DiveTripModelTree::divesAdded);
@@ -1270,17 +1281,10 @@ void DiveTripModelTree::divesSelectedTrip(dive_trip *trip, const QVector<dive *>
 	}
 }
 
-bool DiveTripModelTree::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
-{
-	// In tree mode we don't support any sorting!
-	// Simply keep the original position.
-	return i1.row() < i2.row();
-}
-
 // 3) ListModel functions
 
-DiveTripModelList::DiveTripModelList(QObject *parent) : DiveTripModelBase(parent),
-	sort(dive_less_than)
+DiveTripModelList::DiveTripModelList(DiveTripModelBase::Column row, bool ascending, QObject *parent) : DiveTripModelBase(parent),
+	sort(get_dive_less_than_function(row, ascending))
 {
 	// Stay informed of changes to the divelist
 	connect(&diveListNotifier, &DiveListNotifier::divesAdded, this, &DiveTripModelList::divesAdded);
@@ -1302,6 +1306,7 @@ void DiveTripModelList::populate()
 	items.reserve(dive_table.nr);
 	for (int i = 0; i < dive_table.nr ; ++i)
 		items.push_back(get_dive(i));
+	std::sort(items.begin(), items.end(), sort);
 }
 
 int DiveTripModelList::rowCount(const QModelIndex &parent) const
@@ -1486,13 +1491,13 @@ void DiveTripModelList::divesSelected(const QVector<dive *> &dives, dive *curren
 	emit currentDiveChanged(createIndex(it - items.begin(), 0));
 }
 
-// Simple sorting helper for sorting against a criterium and if
-// that is undefined against a different criterium.
-// Return true if diff1 < 0, false if diff1 > 0.
-// If diff1 == 0 return true if diff2 < 0;
-static bool lessThanHelper(int diff1, int diff2)
+// Simple sorting helper for sorting against a criterium and if that is undefined against default sort order.
+// Return true if diff1 < 0, false if diff1 > 0. If diff1 == 0 return according to the dive_less_than function.
+static bool lessThanHelper(int diff, const dive *a, const dive *b)
 {
-	return diff1 < 0 || (diff1 == 0 && diff2 < 0);
+	// Note that if the primary sort criterion is equal, we sort in opposite direction
+	// than in the core, because by default we show dives descending by date.
+	return diff < 0 || (diff == 0 && dive_less_than(b, a));
 }
 
 static int strCmp(const char *s1, const char *s2)
@@ -1504,61 +1509,81 @@ static int strCmp(const char *s1, const char *s2)
 	return QString::localeAwareCompare(QString(s1), QString(s2)); // TODO: avoid copy
 }
 
-bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
+static int taglist_diff(const dive *a, const dive *b)
 {
-	// We assume that i1.column() == i2.column().
-	int row1 = i1.row();
-	int row2 = i2.row();
-	if (row1 < 0 || row1 >= (int)items.size() || row2 < 0 || row2 >= (int)items.size())
-		return false;
-	const dive *d1 = items[row1];
-	const dive *d2 = items[row2];
-	// This is used as a second sort criterion: For equal values, sorting is chronologically *descending*.
-	int row_diff = row2 - row1;
-	switch (i1.column()) {
+	char *s1 = taglist_get_tagstring(a->tag_list);
+	char *s2 = taglist_get_tagstring(b->tag_list);
+	int diff = strCmp(s1, s2);
+	free(s1);
+	free(s2);
+	return diff;
+}
+
+static int cylinder_diff(const dive *a, const dive *b)
+{
+	if (a->cylinders.nr > 0 && b->cylinders.nr > 0)
+		return strCmp(get_cylinder(a, 0)->type.description, get_cylinder(b, 0)->type.description);
+	return a->cylinders.nr - b->cylinders.nr;
+}
+
+// Returns a pointer to a less_than function, given the column that it should sort by.
+// For bervity, instead of defining all the functions in the global scope, we return lambdas.
+// Yes, some will consider that an eye sore, but it is so much more compact.
+DiveTripModelList::dive_less_than_t DiveTripModelList::get_dive_less_than_function(DiveTripModelBase::Column row, bool ascending)
+{
+	switch (row) {
 	case NR:
 	case DATE:
 	default:
-		return row1 < row2;
+		return ascending ? [](const dive *a, const dive *b) { return dive_less_than(a, b); }  // Default sort according to order in core
+				 : [](const dive *a, const dive *b) { return dive_less_than(b, a); }; // Default sort according to order in core
 	case RATING:
-		return lessThanHelper(d1->rating - d2->rating, row_diff);
+		return ascending ? [](const dive *a, const dive *b) { return lessThanHelper(a->rating - b->rating, a, b); }
+				 : [](const dive *a, const dive *b) { return lessThanHelper(b->rating - a->rating, b, a); };
 	case DEPTH:
-		return lessThanHelper(d1->maxdepth.mm - d2->maxdepth.mm, row_diff);
+		return ascending ? [](const dive *a, const dive *b) { return lessThanHelper(a->maxdepth.mm - b->maxdepth.mm, a, b); }
+				 : [](const dive *a, const dive *b) { return lessThanHelper(b->maxdepth.mm - a->maxdepth.mm, b, a); };
 	case DURATION:
-		return lessThanHelper(d1->duration.seconds - d2->duration.seconds, row_diff);
+		return ascending ? [](const dive *a, const dive *b) { return lessThanHelper(a->duration.seconds - b->duration.seconds, a, b); }
+				 : [](const dive *a, const dive *b) { return lessThanHelper(b->duration.seconds - a->duration.seconds, b, a); };
 	case TEMPERATURE:
-		return lessThanHelper(d1->watertemp.mkelvin - d2->watertemp.mkelvin, row_diff);
+		return ascending ? [](const dive *a, const dive *b) { return lessThanHelper(a->watertemp.mkelvin - b->watertemp.mkelvin, a, b); }
+				 : [](const dive *a, const dive *b) { return lessThanHelper(b->watertemp.mkelvin - a->watertemp.mkelvin, b, a); };
 	case TOTALWEIGHT:
-		return lessThanHelper(total_weight(d1) - total_weight(d2), row_diff);
+		return ascending ? [](const dive *a, const dive *b) { return lessThanHelper(total_weight(a) - total_weight(b), a, b); }
+				 : [](const dive *a, const dive *b) { return lessThanHelper(total_weight(b) - total_weight(a), b, a); };
 	case SUIT:
-		return lessThanHelper(strCmp(d1->suit, d2->suit), row_diff);
+		return ascending ? [](const dive *a, const dive *b) { return lessThanHelper(strCmp(a->suit, b->suit), a, b); }
+				 : [](const dive *a, const dive *b) { return lessThanHelper(strCmp(b->suit, a->suit), b, a); };
 	case CYLINDER:
-		if (d1->cylinders.nr > 0 && d2->cylinders.nr > 0)
-			return lessThanHelper(strCmp(get_cylinder(d1, 0)->type.description, get_cylinder(d2, 0)->type.description), row_diff);
-		return d1->cylinders.nr - d2->cylinders.nr < 0;
+		return ascending ? [](const dive *a, const dive *b) { return lessThanHelper(cylinder_diff(a, b), a, b); }
+				 : [](const dive *a, const dive *b) { return lessThanHelper(cylinder_diff(b, a), b, a); };
 	case GAS:
-		return lessThanHelper(nitrox_sort_value(d1) - nitrox_sort_value(d2), row_diff);
+		return ascending ? [](const dive *a, const dive *b) { return lessThanHelper(nitrox_sort_value(a) - nitrox_sort_value(b), a, b); }
+				 : [](const dive *a, const dive *b) { return lessThanHelper(nitrox_sort_value(b) - nitrox_sort_value(a), b, a); };
 	case SAC:
-		return lessThanHelper(d1->sac - d2->sac, row_diff);
+		return ascending ? [](const dive *a, const dive *b) { return lessThanHelper(a->sac - b->sac, a, b); }
+				 : [](const dive *a, const dive *b) { return lessThanHelper(b->sac - a->sac, b, a); };
 	case OTU:
-		return lessThanHelper(d1->otu - d2->otu, row_diff);
+		return ascending ? [](const dive *a, const dive *b) { return lessThanHelper(a->otu - b->otu, a, b); }
+				 : [](const dive *a, const dive *b) { return lessThanHelper(b->otu - a->otu, b, a); };
 	case MAXCNS:
-		return lessThanHelper(d1->maxcns - d2->maxcns, row_diff);
-	case TAGS: {
-		char *s1 = taglist_get_tagstring(d1->tag_list);
-		char *s2 = taglist_get_tagstring(d2->tag_list);
-		int diff = strCmp(s1, s2);
-		free(s1);
-		free(s2);
-		return lessThanHelper(diff, row_diff);
-	}
+		return ascending ? [](const dive *a, const dive *b) { return lessThanHelper(a->maxcns - b->maxcns, a, b); }
+				 : [](const dive *a, const dive *b) { return lessThanHelper(b->maxcns - a->maxcns, b, a); };
+	case TAGS:
+		return ascending ? [](const dive *a, const dive *b) { return lessThanHelper(taglist_diff(a, b), a, b); }
+				 : [](const dive *a, const dive *b) { return lessThanHelper(taglist_diff(b, a), b, a); };
 	case PHOTOS:
-		return lessThanHelper(countPhotos(d1) - countPhotos(d2), row_diff);
+		return ascending ? [](const dive *a, const dive *b) { return lessThanHelper(countPhotos(a) - countPhotos(b), a, b); }
+				 : [](const dive *a, const dive *b) { return lessThanHelper(countPhotos(b) - countPhotos(a), b, a); };
 	case COUNTRY:
-		return lessThanHelper(strCmp(get_dive_country(d1), get_dive_country(d2)), row_diff);
+		return ascending ? [](const dive *a, const dive *b) { return lessThanHelper(strCmp(get_dive_country(a), get_dive_country(b)), a, b); }
+				 : [](const dive *a, const dive *b) { return lessThanHelper(strCmp(get_dive_country(b), get_dive_country(a)), b, a); };
 	case BUDDIES:
-		return lessThanHelper(strCmp(d1->buddy, d2->buddy), row_diff);
+		return ascending ? [](const dive *a, const dive *b) { return lessThanHelper(strCmp(a->buddy, b->buddy), a, b); }
+				 : [](const dive *a, const dive *b) { return lessThanHelper(strCmp(b->buddy, a->buddy), b, a); };
 	case LOCATION:
-		return lessThanHelper(strCmp(get_dive_location(d1), get_dive_location(d2)), row_diff);
+		return ascending ? [](const dive *a, const dive *b) { return lessThanHelper(strCmp(get_dive_location(a), get_dive_location(b)), a, b); }
+				 : [](const dive *a, const dive *b) { return lessThanHelper(strCmp(get_dive_location(b), get_dive_location(a)), b, a); };
 	}
 }

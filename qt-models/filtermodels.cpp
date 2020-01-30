@@ -15,18 +15,19 @@ MultiFilterSortModel *MultiFilterSortModel::instance()
 
 MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
-	resetModel(DiveTripModelBase::TREE);
+	resetModel(DiveTripModelBase::NR, Qt::AscendingOrder);
 	setFilterKeyColumn(-1); // filter all columns
 	setFilterRole(DiveTripModelBase::SHOWN_ROLE); // Let the proxy-model known that is has to react to change events involving SHOWN_ROLE
 	setFilterCaseSensitivity(Qt::CaseInsensitive);
 }
 
-void MultiFilterSortModel::resetModel(DiveTripModelBase::Layout layout)
+void MultiFilterSortModel::resetModel(DiveTripModelBase::Column row, Qt::SortOrder direction)
 {
-	if (layout == DiveTripModelBase::TREE)
-		model.reset(new DiveTripModelTree);
+	bool ascending = direction == Qt::AscendingOrder;
+	if (row == DiveTripModelBase::NR)
+		model.reset(new DiveTripModelTree(ascending));
 	else
-		model.reset(new DiveTripModelList);
+		model.reset(new DiveTripModelList(row, ascending));
 
 	setSourceModel(model.get());
 	connect(model.get(), &DiveTripModelBase::selectionChanged, this, &MultiFilterSortModel::selectionChangedSlot);
@@ -67,8 +68,7 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 	return m->data(index0, DiveTripModelBase::SHOWN_ROLE).value<bool>();
 }
 
-bool MultiFilterSortModel::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
+void MultiFilterSortModel::sort(int column, Qt::SortOrder order = Qt::AscendingOrder)
 {
-	// Hand sorting down to the source model.
-	return model->lessThan(i1, i2);
+	resetModel(static_cast<DiveTripModelBase::Column>(column), order);
 }

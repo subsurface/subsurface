@@ -72,10 +72,6 @@ public:
 	DiveTripModelBase(QObject *parent = 0);
 	int columnCount(const QModelIndex&) const;
 
-	// Used for sorting. This is a bit of a layering violation, as sorting should be performed
-	// by the higher-up QSortFilterProxyModel, but it makes things so much easier!
-	virtual bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const = 0;
-
 signals:
 	// The propagation of selection changes is complex.
 	// The control flow of dive-selection goes:
@@ -112,7 +108,7 @@ public slots:
 	void filterReset();
 
 public:
-	DiveTripModelTree(QObject *parent = nullptr);
+	DiveTripModelTree(bool ascending, QObject *parent = nullptr);
 
 	typedef bool(*dive_less_than_t)(const dive *a, const dive *b);
 	typedef bool(*dive_or_trip_less_than_t)(dive_or_trip a, dive_or_trip b);
@@ -123,7 +119,6 @@ private:
 	QModelIndex index(int row, int column, const QModelIndex &parent) const override;
 	QModelIndex parent(const QModelIndex &index) const override;
 	QVariant data(const QModelIndex &index, int role) const override;
-	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
 	void divesSelectedTrip(dive_trip *trip, const QVector<dive *> &dives, QVector<QModelIndex> &);
 	dive *diveOrNull(const QModelIndex &index) const override;
 	void divesChangedTrip(dive_trip *trip, const QVector<dive *> &dives);
@@ -187,10 +182,11 @@ public slots:
 	void filterReset();
 
 public:
-	DiveTripModelList(QObject *parent = nullptr);
+	DiveTripModelList(DiveTripModelBase::Column row, bool ascending, QObject *parent = nullptr);
 private:
 	typedef bool(*dive_less_than_t)(const dive *a, const dive *b);
 	dive_less_than_t sort;
+	static dive_less_than_t get_dive_less_than_function(DiveTripModelBase::Column row, bool ascending);
 
 	int rowCount(const QModelIndex &parent) const override;
 	void clearData() override;
@@ -198,7 +194,6 @@ private:
 	QModelIndex index(int row, int column, const QModelIndex &parent) const override;
 	QModelIndex parent(const QModelIndex &index) const override;
 	QVariant data(const QModelIndex &index, int role) const override;
-	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
 	dive *diveOrNull(const QModelIndex &index) const override;
 
 	std::vector<dive *> items;				// TODO: access core data directly

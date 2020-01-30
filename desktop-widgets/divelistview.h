@@ -67,7 +67,8 @@ private:
 	void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags flags) override;
 	void selectAll() override;
 	void selectionChangeDone();
-	DiveTripModelBase::Layout currentLayout;
+	DiveTripModelBase::Column sortRow;
+	Qt::SortOrder sortOrder;
 	QModelIndex contextMenuIndex;
 	// Remember the initial column widths, to avoid writing unchanged widths to the settings
 	QVector<int> initialColumnWidths;
