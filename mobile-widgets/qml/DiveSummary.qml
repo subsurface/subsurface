@@ -15,6 +15,16 @@ Kirigami.ScrollablePage {
 		if (visible)
 			Backend.summaryCalculation(selectionPrimary.currentIndex, selectionSecondary.currentIndex)
 	}
+	Connections {
+		target: Backend
+		onLengthChanged: {
+			Backend.summaryCalculation(selectionPrimary.currentIndex, selectionSecondary.currentIndex)
+		}
+		onVolumeChanged: {
+			Backend.summaryCalculation(selectionPrimary.currentIndex, selectionSecondary.currentIndex)
+		}
+	}
+
 
 	GridLayout {
 		columns: 3
