@@ -1442,6 +1442,9 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		}
 	}
 	// create the profile context menu
+	QPointF scenePos = mapToScene(mapFromGlobal(event->globalPos()));
+	qreal sec_val = timeAxis->valueAt(scenePos);
+	int seconds = (sec_val < 0.0) ? 0 : (int)sec_val;
 	GasSelectionModel *model = GasSelectionModel::instance();
 	model->repopulate();
 	int rowCount = model->rowCount();
@@ -1451,8 +1454,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		for (int i = 0; i < rowCount; i++) {
 			QAction *action = new QAction(&m);
 			action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString() + QString(tr(" (cyl. %1)")).arg(i + 1));
-			connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
-			action->setData(event->globalPos());
+			connect(action, &QAction::triggered, [this, i, seconds] { changeGas(i, seconds); } );
 			gasChange->addAction(action);
 		}
 	}
@@ -1464,10 +1466,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	splitAction->setData(event->globalPos());
 	const struct event *ev = NULL;
 	enum divemode_t divemode = UNDEF_COMP_TYPE;
-	QPointF scenePos = mapToScene(mapFromGlobal(event->globalPos()));
 	QString gas = action->text();
-	qreal sec_val = timeAxis->valueAt(scenePos);
-	int seconds = (sec_val < 0.0) ? 0 : (int)sec_val;
 
 	get_current_divemode(current_dc, seconds, &ev, &divemode);
 	QMenu *changeMode = m.addMenu(tr("Change divemode"));
@@ -1685,19 +1684,10 @@ void ProfileWidget2::splitDive()
 #endif
 }
 
-void ProfileWidget2::changeGas()
+void ProfileWidget2::changeGas(int tank, int seconds)
 {
-	QAction *action = qobject_cast<QAction *>(sender());
-	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
-	QString gas = action->text();
-	gas.remove(QRegExp(" \\(.*\\)"));
-
-	// backup the things on the dataModel, since we will clear that out.
-	struct gasmix gasmix;
-	qreal sec_val = timeAxis->valueAt(scenePos);
-
-	// no gas changes before the dive starts
-	int seconds = (sec_val < 0.0) ? 0 : (int)sec_val;
+	if (!current_dive || tank < 0 || tank >= current_dive->cylinders.nr)
+		return;
 
 	// if there is a gas change at this time stamp, remove it before adding the new one
 	struct event *gasChangeEvent = current_dc->events;
@@ -1708,15 +1698,6 @@ void ProfileWidget2::changeGas()
 		} else {
 			gasChangeEvent = gasChangeEvent->next;
 		}
-	}
-	validate_gas(qPrintable(gas), &gasmix);
-	QRegExp rx("\\(\\D*(\\d+)");
-	int tank;
-	if (rx.indexIn(action->text()) > -1) {
-		tank = rx.cap(1).toInt() - 1; // we display the tank 1 based
-	} else {
-		qDebug() << "failed to parse tank number";
-		tank = get_gasidx(&displayed_dive, gasmix);
 	}
 	// add this both to the displayed dive and the current dive
 	add_gas_switch_event(current_dive, current_dc, seconds, tank);
