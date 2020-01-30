@@ -95,6 +95,13 @@ void diveSummary::loopDives(timestamp_t primaryStart, timestamp_t secondaryStart
 
 void diveSummary::calculateDive(int inx, struct dive *dive)
 {
+	// Check for dive validity
+	// Swimmingpool dives (4 meters) are not counted, nor
+	// are very short dives (5 minutes)
+	if (dive->maxdepth.mm < 4000 ||
+		dive->duration.seconds < 5 * 60)
+		return;
+
 	// one more real dive
 	dives[inx]++;
 
@@ -111,7 +118,9 @@ void diveSummary::calculateDive(int inx, struct dive *dive)
 		divesDeep[inx]++;
 
 	// sum SAC, check for new min/max.
-	if (dive->sac) {
+	// Do not include dives with SAC > 40 l/min (probably a free flow regulator)
+	// and SAC < 4 l/min (probably a faulty transmittor)
+	if (dive->sac <= 40000 && dive->sac >= 4000) {
 		totalSACTime[inx] += dive->duration.seconds;
 		totalSacVolume[inx] += dive->sac * dive->duration.seconds;
 		if (dive->sac < sacMin[inx])
@@ -175,9 +184,14 @@ void diveSummary::buildStringList(int inx)
 	unitText = (qPrefUnits::volume() == units::LITER) ? " l/min" : " cuft/min";
 	diveSummaryText[18+inx] = volumeString(sacMin[inx]) + unitText;
 	diveSummaryText[20+inx] = volumeString(sacMax[inx]) + unitText;
+
 	// finally the weighted average
-	long avgSac = totalSacVolume[inx] / totalSACTime[inx];
-	diveSummaryText[22+inx] = volumeString(avgSac) + unitText;
+	if (totalSACTime[inx]) {
+		long avgSac = totalSacVolume[inx] / totalSACTime[inx];
+		diveSummaryText[22+inx] = volumeString(avgSac) + unitText;
+	} else {
+		diveSummaryText[22+inx] = QObject::tr("no dives");
+	}
 
 	// Diveplan(s)
 	diveSummaryText[24+inx] = QStringLiteral("%1").arg(diveplans[inx]);

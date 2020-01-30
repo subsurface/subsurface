@@ -226,5 +226,26 @@ Kirigami.ScrollablePage {
 			text: Backend.diveSummaryText[25]
 		}
 
+
+		TemplateLabel {
+			Layout.columnSpan: 3
+		}
+
+		TemplateLabel {
+			font.bold: true
+			Layout.columnSpan: 3
+			text: qsTr("Note on calculation")
+		}
+		TemplateLabel {
+			Layout.columnSpan: 3
+			Layout.maximumWidth: parent.width
+			wrapMode: Text.WordWrap
+			property string depthLimit: (Backend.length === Enums.METERS) ? qsTr("4 meters") : qsTr("13 feet")
+			property string sacLimitMax: (Backend.volume === Enums.LITER) ? qsTr("40 l/min") : qsTr("1.41 cuft/min")
+			property string sacLimitMin: (Backend.volume === Enums.LITER) ? qsTr("4 l/min") : qsTr("0.14 cuft/min")
+
+			text: "Dives shorter than 5 minutes or shallower than " + depthLimit + " are excluded." +
+				  " SAC higher than " + sacLimitMax + " or lower than " + sacLimitMin + " are excluded from the SAC calculation."
+		}
 	}
 }
