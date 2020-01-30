@@ -247,5 +247,14 @@ Kirigami.ScrollablePage {
 			text: "Dives shorter than 5 minutes or shallower than " + depthLimit + " are excluded." +
 				  " SAC higher than " + sacLimitMax + " or lower than " + sacLimitMin + " are excluded from the SAC calculation."
 		}
+		TemplateCheckBox {
+			Layout.columnSpan: 3
+			text: "bypass limitations"
+			checked: Backend.diveSummaryLimit
+			onClicked: {
+				Backend.diveSummaryLimit = checked
+				Backend.summaryCalculation(selectionPrimary.currentIndex, selectionSecondary.currentIndex)
+			}
+		}
 	}
 }

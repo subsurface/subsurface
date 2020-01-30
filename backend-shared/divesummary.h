@@ -11,6 +11,8 @@ public:
 	static void summaryCalculation(int primaryPeriod, int secondaryPeriod);
 
 	static QStringList diveSummaryText;
+	static bool diveSummaryLimit;
+	static void set_diveSummaryLimit(bool value) { diveSummaryLimit = value; }
 
 private:
 	diveSummary() {}

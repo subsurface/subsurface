@@ -12,6 +12,7 @@ int diveSummary::dives[2], diveSummary::divesEAN[2], diveSummary::divesDeep[2], 
 long diveSummary::divetime[2], diveSummary::depth[2];
 long diveSummary::divetimeMax[2], diveSummary::depthMax[2], diveSummary::sacMin[2], diveSummary::sacMax[2];
 long diveSummary::totalSACTime[2], diveSummary::totalSacVolume[2];
+bool diveSummary::diveSummaryLimit;
 
 void diveSummary::summaryCalculation(int primaryPeriod, int secondaryPeriod)
 {
@@ -98,8 +99,8 @@ void diveSummary::calculateDive(int inx, struct dive *dive)
 	// Check for dive validity
 	// Swimmingpool dives (4 meters) are not counted, nor
 	// are very short dives (5 minutes)
-	if (dive->maxdepth.mm < 4000 ||
-		dive->duration.seconds < 5 * 60)
+	if (!diveSummaryLimit && (dive->maxdepth.mm < 4000 ||
+		dive->duration.seconds < 5 * 60))
 		return;
 
 	// one more real dive
@@ -120,7 +121,7 @@ void diveSummary::calculateDive(int inx, struct dive *dive)
 	// sum SAC, check for new min/max.
 	// Do not include dives with SAC > 40 l/min (probably a free flow regulator)
 	// and SAC < 4 l/min (probably a faulty transmittor)
-	if (dive->sac <= 40000 && dive->sac >= 4000) {
+	if (!diveSummaryLimit && dive->sac <= 40000 && dive->sac >= 4000) {
 		totalSACTime[inx] += dive->duration.seconds;
 		totalSacVolume[inx] += dive->sac * dive->duration.seconds;
 		if (dive->sac < sacMin[inx])

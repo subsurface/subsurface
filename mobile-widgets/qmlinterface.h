@@ -79,6 +79,7 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(bool display_variations READ display_variations WRITE set_display_variations NOTIFY display_variationsChanged);
 
 	Q_PROPERTY(QStringList diveSummaryText READ diveSummaryText NOTIFY diveSummaryTextChanged);
+	Q_PROPERTY(bool diveSummaryLimit READ diveSummaryLimit WRITE set_diveSummaryLimit NOTIFY diveSummaryLimitChanged);
 
 public:
 	static QMLInterface *instance();
@@ -220,6 +221,7 @@ public:
 	bool display_variations() { return prefs.display_variations; }
 
 	const QStringList &diveSummaryText() { return diveSummary::diveSummaryText; }
+	bool diveSummaryLimit() { return diveSummary::diveSummaryLimit; }
 
 public slots:
 	void set_cloud_verification_status(CLOUD_STATUS value) {  qPrefCloudStorage::set_cloud_verification_status(value); }
@@ -267,6 +269,8 @@ public slots:
 	void set_display_transitions(bool value) { DivePlannerPointsModel::instance()->setDisplayTransitions(value); }
 	void set_verbatim_plan(bool value) { DivePlannerPointsModel::instance()->setVerbatim(value); }
 	void set_display_variations(bool value) { DivePlannerPointsModel::instance()->setDisplayVariations(value); }
+
+	void set_diveSummaryLimit(bool value) { return diveSummary::set_diveSummaryLimit(value); }
 
 signals:
 	void cloud_verification_statusChanged(CLOUD_STATUS);
@@ -316,6 +320,7 @@ signals:
 	void display_variationsChanged(bool value);
 
 	void diveSummaryTextChanged(QStringList);
+	void diveSummaryLimitChanged(bool);
 private:
 	QMLInterface() {}
 };
