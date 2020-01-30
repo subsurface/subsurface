@@ -159,8 +159,7 @@ protected:
 	void dragEnterEvent(QDragEnterEvent *event) override;
 	void dragMoveEvent(QDragMoveEvent *event) override;
 
-
-private: /*methods*/
+private:
 	void changeGas(int tank, int seconds);
 	void fixBackgroundPos();
 	void scrollViewTo(const QPoint &pos);
