@@ -12,7 +12,7 @@ namespace Ui {
 };
 
 class WeightModel;
-class CylindersModel;
+class CylindersModelFiltered;
 
 class TabDiveEquipment : public TabBase {
 	Q_OBJECT
@@ -38,7 +38,7 @@ private slots:
 private:
 	Ui::TabDiveEquipment ui;
 	SuitCompletionModel suitModel;
-	CylindersModel *cylindersModel;
+	CylindersModelFiltered *cylindersModel;
 	WeightModel *weightModel;
 };
 

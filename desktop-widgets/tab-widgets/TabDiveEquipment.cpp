@@ -17,7 +17,7 @@
 #include <QCompleter>
 
 TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
-	cylindersModel(new CylindersModel(this)),
+	cylindersModel(new CylindersModelFiltered(this)),
 	weightModel(new WeightModel(this))
 {
 	QCompleter *suitCompleter;
@@ -33,7 +33,7 @@ TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 	ui.weights->setModel(weightModel);
 
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &TabDiveEquipment::divesChanged);
-	connect(ui.cylinders, &TableView::itemClicked, cylindersModel, &CylindersModel::remove);
+	connect(ui.cylinders, &TableView::itemClicked, cylindersModel, &CylindersModelFiltered::remove);
 	connect(ui.cylinders, &TableView::itemClicked, this, &TabDiveEquipment::editCylinderWidget);
 	connect(ui.weights, &TableView::itemClicked, this, &TabDiveEquipment::editWeightWidget);
 
@@ -164,7 +164,7 @@ void TabDiveEquipment::addWeight_clicked()
 
 void TabDiveEquipment::editCylinderWidget(const QModelIndex &index)
 {
-	if (cylindersModel->changed && !MainWindow::instance()->mainTab->isEditing()) {
+	if (cylindersModel->model()->changed && !MainWindow::instance()->mainTab->isEditing()) {
 		MainWindow::instance()->mainTab->enableEdition();
 		return;
 	}
@@ -228,7 +228,7 @@ void TabDiveEquipment::acceptChanges()
 	// to the original value in current_dive like it should
 	QVector<dive *> selectedDives = getSelectedDivesCurrentLast();
 
-	if (cylindersModel->changed) {
+	if (cylindersModel->model()->changed) {
 		mark_divelist_changed(true);
 		MODIFY_DIVES(selectedDives,
 			// if we started out with the same cylinder description (for multi-edit) or if we do copt & paste
@@ -257,12 +257,12 @@ void TabDiveEquipment::acceptChanges()
 	if (do_replot)
 		MainWindow::instance()->graphics->replot();
 
-	cylindersModel->changed = false;
+	cylindersModel->model()->changed = false;
 }
 
 void TabDiveEquipment::rejectChanges()
 {
-	cylindersModel->changed = false;
+	cylindersModel->model()->changed = false;
 	cylindersModel->updateDive();
 	weightModel->updateDive(current_dive);
 }

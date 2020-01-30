@@ -238,7 +238,7 @@ static struct RevertCylinderData {
 
 void TankInfoDelegate::setModelData(QWidget*, QAbstractItemModel*, const QModelIndex&) const
 {
-	CylindersModel *mymodel = qobject_cast<CylindersModel *>(currCombo.model);
+	CylindersModelFiltered *mymodel = qobject_cast<CylindersModelFiltered *>(currCombo.model);
 	TankInfoModel *tanks = TankInfoModel::instance();
 	QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, currCombo.activeText);
 	int row;
@@ -277,7 +277,7 @@ void TankInfoDelegate::editorClosed(QWidget*, QAbstractItemDelegate::EndEditHint
 {
 	if (hint == QAbstractItemDelegate::NoHint ||
 	    hint == QAbstractItemDelegate::RevertModelCache) {
-		CylindersModel *mymodel = qobject_cast<CylindersModel *>(currCombo.model);
+		CylindersModelFiltered *mymodel = qobject_cast<CylindersModelFiltered *>(currCombo.model);
 		mymodel->setData(IDX(CylindersModel::TYPE), currCylinderData.type, Qt::EditRole);
 		mymodel->passInData(IDX(CylindersModel::WORKINGPRESS), currCylinderData.pressure);
 		mymodel->passInData(IDX(CylindersModel::SIZE), currCylinderData.size);
@@ -289,7 +289,7 @@ QWidget *TankInfoDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	// ncreate editor needs to be called before because it will populate a few
 	// things in the currCombo global var.
 	QWidget *delegate = ComboBoxDelegate::createEditor(parent, option, index);
-	CylindersModel *mymodel = qobject_cast<CylindersModel *>(currCombo.model);
+	CylindersModelFiltered *mymodel = qobject_cast<CylindersModelFiltered *>(currCombo.model);
 	cylinder_t *cyl = mymodel->cylinderAt(index);
 	currCylinderData.type = cyl->type.description;
 	currCylinderData.pressure = cyl->type.workingpressure.mbar;
