@@ -175,9 +175,14 @@ void diveSummary::buildStringList(int inx)
 	unitText = (qPrefUnits::volume() == units::LITER) ? " l/min" : " cuft/min";
 	diveSummaryText[18+inx] = volumeString(sacMin[inx]) + unitText;
 	diveSummaryText[20+inx] = volumeString(sacMax[inx]) + unitText;
+
 	// finally the weighted average
-	long avgSac = totalSacVolume[inx] / totalSACTime[inx];
-	diveSummaryText[22+inx] = volumeString(avgSac) + unitText;
+	if (totalSACTime[inx]) {
+		long avgSac = totalSacVolume[inx] / totalSACTime[inx];
+		diveSummaryText[22+inx] = volumeString(avgSac) + unitText;
+	} else {
+		diveSummaryText[22+inx] = QObject::tr("no dives");
+	}
 
 	// Diveplan(s)
 	diveSummaryText[24+inx] = QStringLiteral("%1").arg(diveplans[inx]);
