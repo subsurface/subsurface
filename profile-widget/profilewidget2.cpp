@@ -1445,15 +1445,12 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	QPointF scenePos = mapToScene(mapFromGlobal(event->globalPos()));
 	qreal sec_val = timeAxis->valueAt(scenePos);
 	int seconds = (sec_val < 0.0) ? 0 : (int)sec_val;
-	GasSelectionModel *model = GasSelectionModel::instance();
-	model->repopulate();
-	int rowCount = model->rowCount();
-	if (rowCount > 1) {
+	if (current_dive && current_dive->cylinders.nr > 1) {
 		// if we have more than one gas, offer to switch to another one
 		QMenu *gasChange = m.addMenu(tr("Add gas change"));
-		for (int i = 0; i < rowCount; i++) {
+		for (int i = 0; i < current_dive->cylinders.nr; i++) {
 			QAction *action = new QAction(&m);
-			action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString() + QString(tr(" (cyl. %1)")).arg(i + 1));
+			action->setText(QString(current_dive->cylinders.cylinders[i].type.description) + tr(" (cyl. %1)").arg(i + 1));
 			connect(action, &QAction::triggered, [this, i, seconds] { changeGas(i, seconds); } );
 			gasChange->addAction(action);
 		}
@@ -1699,11 +1696,9 @@ void ProfileWidget2::changeGas(int tank, int seconds)
 			gasChangeEvent = gasChangeEvent->next;
 		}
 	}
-	// add this both to the displayed dive and the current dive
 	add_gas_switch_event(current_dive, current_dc, seconds, tank);
-	add_gas_switch_event(&displayed_dive, get_dive_dc(&displayed_dive, dc_number), seconds, tank);
 	// this means we potentially have a new tank that is being used and needs to be shown
-	fixup_dive(&displayed_dive);
+	fixup_dive(current_dive);
 	invalidate_dive_cache(current_dive);
 
 	// FIXME - this no longer gets written to the dive list - so we need to enableEdition() here
