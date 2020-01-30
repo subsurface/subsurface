@@ -115,7 +115,6 @@ slots: // Necessary to call from QAction's signals.
 	void removePictures(const QVector<QString> &fileUrls);
 	void setPlanState();
 	void setAddState();
-	void changeGas();
 	void addSetpointChange();
 	void splitDive();
 	void addBookmark();
@@ -162,6 +161,7 @@ protected:
 
 
 private: /*methods*/
+	void changeGas(int tank, int seconds);
 	void fixBackgroundPos();
 	void scrollViewTo(const QPoint &pos);
 	void setupSceneAndFlags();
