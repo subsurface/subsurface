@@ -2,6 +2,8 @@
 #ifndef CYLINDERMODEL_H
 #define CYLINDERMODEL_H
 
+#include <QSortFilterProxyModel>
+
 #include "cleanertablemodel.h"
 #include "core/dive.h"
 
@@ -27,7 +29,6 @@ public:
 	};
 
 	explicit CylindersModel(QObject *parent = 0);
-	static CylindersModel *instance();
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
@@ -44,6 +45,7 @@ public:
 	bool changed;
 	QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 	bool updateBestMixes();
+	bool cylinderUsed(int i) const;
 
 public
 slots:
@@ -52,6 +54,27 @@ slots:
 
 private:
 	int rows;
+};
+
+// Cylinder model that hides unused cylinders if the pref.show_unused_cylinders flag is not set
+class CylindersModelFiltered : public QSortFilterProxyModel {
+	Q_OBJECT
+public:
+	CylindersModelFiltered(QObject *parent = 0);
+	static CylindersModelFiltered *instance();
+	CylindersModel *model(); // Access to unfiltered base model
+
+	void clear();
+	void add();
+	void updateDive();
+	cylinder_t *cylinderAt(const QModelIndex &index);
+	void passInData(const QModelIndex &index, const QVariant &value);
+public
+slots:
+	void remove(QModelIndex index);
+private:
+	CylindersModel source;
+	bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 };
 
 #endif

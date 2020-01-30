@@ -14,9 +14,9 @@ CylindersModel::CylindersModel(QObject *parent) :
 	changed(false),
 	rows(0)
 {
-	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, MOD, MND, USE};
+	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, MOD, MND, USE, IS_USED};
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << tr("O₂%") << tr("He%")
-						 << tr("Deco switch at") <<tr("Bot. MOD") <<tr("MND") << tr("Use"));
+						 << tr("Deco switch at") <<tr("Bot. MOD") <<tr("MND") << tr("Use") << "Is used");
 
 	connect(&diveListNotifier, &DiveListNotifier::cylindersReset, this, &CylindersModel::cylindersReset);
 }
@@ -27,12 +27,6 @@ QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, in
 		return tr("Start press.");
 	else
 		return CleanerTableModel::headerData(section, orientation, role);
-}
-
-CylindersModel *CylindersModel::instance()
-{
-	static CylindersModel self;
-	return &self;
 }
 
 static QString get_cylinder_string(const cylinder_t *cyl)
@@ -127,6 +121,28 @@ static QVariant percent_string(fraction_t fraction)
 	if (!permille)
 		return QVariant();
 	return QString("%L1%").arg(permille / 10.0, 0, 'f', 1);
+}
+
+bool CylindersModel::cylinderUsed(int i) const
+{
+	const struct dive *dive = &displayed_dive;
+	if (i < 0 || i >= dive->cylinders.nr)
+		return false;
+	if (is_cylinder_used(dive, i))
+		return true;
+
+	cylinder_t *cyl = get_cylinder(dive, i);
+	if (cyl->start.mbar || cyl->sample_start.mbar ||
+	    cyl->end.mbar || cyl->sample_end.mbar)
+		return true;
+	if (cyl->manually_added)
+		return true;
+
+	/*
+	 * The cylinder has some data, but none of it is very interesting,
+	 * it has no pressures and no gas switches. Do we want to show it?
+	 */
+	return false;
 }
 
 QVariant CylindersModel::data(const QModelIndex &index, int role) const
@@ -447,40 +463,13 @@ void CylindersModel::clear()
 	}
 }
 
-static bool show_cylinder(struct dive *dive, int i)
-{
-	if (i < 0 || i >= dive->cylinders.nr)
-		return false;
-	if (is_cylinder_used(dive, i))
-		return true;
-
-	cylinder_t *cyl = get_cylinder(dive, i);
-	if (cyl->start.mbar || cyl->sample_start.mbar ||
-	    cyl->end.mbar || cyl->sample_end.mbar)
-		return true;
-	if (cyl->manually_added)
-		return true;
-
-	/*
-	 * The cylinder has some data, but none of it is very interesting,
-	 * it has no pressures and no gas switches. Do we want to show it?
-	 */
-	return prefs.display_unused_tanks;
-}
-
 void CylindersModel::updateDive()
 {
 #ifdef DEBUG_CYL
 	dump_cylinders(&displayed_dive, true);
 #endif
 	beginResetModel();
-	// TODO: this is fundamentally broken - it assumes that unused cylinders are at
-	// the end. Fix by using a QSortFilterProxyModel.
-	rows = 0;
-	for (int i = 0; i < displayed_dive.cylinders.nr; ++i) {
-		if (show_cylinder(&displayed_dive, i))
-			++rows;
-	}
+	rows = displayed_dive.cylinders.nr;
 	endResetModel();
 }
 
@@ -493,7 +482,6 @@ Qt::ItemFlags CylindersModel::flags(const QModelIndex &index) const
 
 void CylindersModel::remove(QModelIndex index)
 {
-
 	if (index.column() == USE) {
 		cylinder_t *cyl = cylinderAt(index);
 		if (cyl->cylinder_use == OC_GAS)
@@ -621,4 +609,55 @@ void CylindersModel::cylindersReset(const QVector<dive *> &dives)
 
 	// And update the model..
 	updateDive();
+}
+
+CylindersModelFiltered *CylindersModelFiltered::instance()
+{
+	static CylindersModelFiltered self;
+	return &self;
+}
+
+CylindersModelFiltered::CylindersModelFiltered(QObject *parent) : QSortFilterProxyModel(parent)
+{
+	setSourceModel(&source);
+}
+
+void CylindersModelFiltered::updateDive()
+{
+	source.updateDive();
+}
+
+void CylindersModelFiltered::clear()
+{
+	source.clear();
+}
+
+void CylindersModelFiltered::add()
+{
+	source.add();
+}
+
+CylindersModel *CylindersModelFiltered::model()
+{
+	return &source;
+}
+
+void CylindersModelFiltered::remove(QModelIndex index)
+{
+	source.remove(mapToSource(index));
+}
+
+void CylindersModelFiltered::passInData(const QModelIndex &index, const QVariant &value)
+{
+	source.passInData(mapToSource(index), value);
+}
+
+cylinder_t *CylindersModelFiltered::cylinderAt(const QModelIndex &index)
+{
+	return source.cylinderAt(mapToSource(index));
+}
+
+bool CylindersModelFiltered::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+{
+	return prefs.display_unused_tanks || source.cylinderUsed(source_row);
 }
