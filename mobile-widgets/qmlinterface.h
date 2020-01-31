@@ -81,9 +81,7 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(QStringList diveSummaryText READ diveSummaryText NOTIFY diveSummaryTextChanged);
 
 public:
-	static QMLInterface *instance();
-
-	// function to do the needed setup and do connect of signal/signal
+	// function to do the needed setup
 	static void setup(QQmlContext *ct);
 
 	// Duplicated enums, these enums are properly defined in the C/C++ structure
