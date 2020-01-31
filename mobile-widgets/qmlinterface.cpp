@@ -11,30 +11,30 @@ QMLInterface *QMLInterface::instance()
 void QMLInterface::setup(QQmlContext *ct)
 {
 	// Register interface class
-	ct->setContextProperty("Backend", QMLInterface::instance());
+	ct->setContextProperty("Backend", this);
 
 	// Make enums available as types
 	qmlRegisterUncreatableType<QMLInterface>("org.subsurfacedivelog.mobile",1,0,"Enums","Enum is not a type");
 
 	// relink signals to QML
 	connect(qPrefCloudStorage::instance(), &qPrefCloudStorage::cloud_verification_statusChanged,
-		[=] (int value) { emit instance()->cloud_verification_statusChanged(CLOUD_STATUS(value)); });
+		[this] (int value) { emit cloud_verification_statusChanged(CLOUD_STATUS(value)); });
 	connect(qPrefUnits::instance(), &qPrefUnits::duration_unitsChanged,
-			[=] (int value) { emit instance()->duration_unitsChanged(DURATION(value)); });
+			[this] (int value) { emit duration_unitsChanged(DURATION(value)); });
 	connect(qPrefUnits::instance(), &qPrefUnits::lengthChanged,
-			[=] (int value) { emit instance()->lengthChanged(LENGTH(value)); });
+			[this] (int value) { emit lengthChanged(LENGTH(value)); });
 	connect(qPrefUnits::instance(), &qPrefUnits::pressureChanged,
-			[=] (int value) { emit instance()->pressureChanged(PRESSURE(value)); });
+			[this] (int value) { emit pressureChanged(PRESSURE(value)); });
 	connect(qPrefUnits::instance(), &qPrefUnits::temperatureChanged,
-			[=] (int value) { emit instance()->temperatureChanged(TEMPERATURE(value)); });
+			[this] (int value) { emit temperatureChanged(TEMPERATURE(value)); });
 	connect(qPrefUnits::instance(), &qPrefUnits::unit_systemChanged,
-			[=] (int value) { emit instance()->unit_systemChanged(UNIT_SYSTEM(value)); });
+			[this] (int value) { emit unit_systemChanged(UNIT_SYSTEM(value)); });
 	connect(qPrefUnits::instance(), &qPrefUnits::vertical_speed_timeChanged,
-			[=] (int value) { emit instance()->vertical_speed_timeChanged(TIME(value)); });
+			[this] (int value) { emit vertical_speed_timeChanged(TIME(value)); });
 	connect(qPrefUnits::instance(), &qPrefUnits::volumeChanged,
-			[=] (int value) { emit instance()->volumeChanged(VOLUME(value)); });
+			[this] (int value) { emit volumeChanged(VOLUME(value)); });
 	connect(qPrefUnits::instance(), &qPrefUnits::weightChanged,
-			[=] (int value) { emit instance()->weightChanged(WEIGHT(value)); });
+			[this] (int value) { emit weightChanged(WEIGHT(value)); });
 
 	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::ascratelast6mChanged,
 			instance(), &QMLInterface::ascratelast6mChanged);

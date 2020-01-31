@@ -84,7 +84,7 @@ public:
 	static QMLInterface *instance();
 
 	// function to do the needed setup and do connect of signal/signal
-	static void setup(QQmlContext *ct);
+	void setup(QQmlContext *ct);
 
 	// Duplicated enums, these enums are properly defined in the C/C++ structure
 	// but duplicated here to make them available to QML.
