@@ -81,16 +81,11 @@ QMLInterface::QMLInterface()
 			this, &QMLInterface::display_variationsChanged);
 }
 
-QMLInterface *QMLInterface::instance()
-{
-	static QMLInterface *self = new QMLInterface;
-	return self;
-}
-
 void QMLInterface::setup(QQmlContext *ct)
 {
 	// Register interface class
-	ct->setContextProperty("Backend", QMLInterface::instance());
+	static QMLInterface self;
+	ct->setContextProperty("Backend", &self);
 
 	// Make enums available as types
 	qmlRegisterUncreatableType<QMLInterface>("org.subsurfacedivelog.mobile",1,0,"Enums","Enum is not a type");
@@ -99,7 +94,6 @@ void QMLInterface::setup(QQmlContext *ct)
 	// this is needed in order to load the divesummary page
 	diveSummary::summaryCalculation(0, 3);
 }
-
 
 void QMLInterface::summaryCalculation(int primaryPeriod, int secondaryPeriod)
 {
