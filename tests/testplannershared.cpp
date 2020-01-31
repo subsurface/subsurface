@@ -12,7 +12,6 @@ void TestPlannerShared::initTestCase()
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("SubsurfaceTestPlannerShared");
-	plannerShared::instance();
 }
 
 
