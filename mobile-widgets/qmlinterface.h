@@ -317,6 +317,6 @@ signals:
 
 	void diveSummaryTextChanged(QStringList);
 private:
-	QMLInterface() {}
+	QMLInterface();
 };
 #endif // QMLINTERFACE_H
