@@ -466,7 +466,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.display_runtime, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setDisplayRuntime);
 	connect(ui.display_transitions, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setDisplayTransitions);
 	connect(ui.safetystop, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setSafetyStop);
-	connect(ui.reserve_gas, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_reserve_gas);
+	connect(ui.reserve_gas, QOverload<int>::of(&QSpinBox::valueChanged), &plannerShared::set_reserve_gas);
 	connect(ui.ascRate75, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscrate75Display);
 	connect(ui.ascRate50, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscrate50Display);
 	connect(ui.ascRateStops, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscratestopsDisplay);
@@ -477,11 +477,11 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.gflow, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setGFLow);
 	connect(ui.vpmb_conservatism, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setVpmbConservatism);
 	connect(ui.backgasBreaks, &QAbstractButton::toggled, this, &PlannerSettingsWidget::setBackgasBreaks);
-	connect(ui.bailout, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_dobailout);
-	connect(ui.o2narcotic, &QAbstractButton::toggled, plannerShared::instance(), &plannerShared::set_o2narcotic);
+	connect(ui.bailout, &QAbstractButton::toggled, &plannerShared::set_dobailout);
+	connect(ui.o2narcotic, &QAbstractButton::toggled, &plannerShared::set_o2narcotic);
 	connect(ui.switch_at_req_stop, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setSwitchAtReqStop);
-	connect(ui.min_switch_duration, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_min_switch_duration);
-	connect(ui.surface_segment, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), plannerShared::set_surface_segment);
+	connect(ui.min_switch_duration, QOverload<int>::of(&QSpinBox::valueChanged), &plannerShared::set_min_switch_duration);
+	connect(ui.surface_segment, QOverload<int>::of(&QSpinBox::valueChanged), &plannerShared::set_surface_segment);
 	connect(ui.rebreathermode, QOverload<int>::of(&QComboBox::currentIndexChanged), plannerModel, &DivePlannerPointsModel::setRebreatherMode);
 	connect(ui.rebreathermode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &PlannerSettingsWidget::setBailoutVisibility);
 
@@ -489,13 +489,13 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [=] { disableDecoElements(BUEHLMANN); });
 	connect(ui.vpmb_deco, &QAbstractButton::clicked, [=] { disableDecoElements(VPMB); });
 
-	connect(ui.sacfactor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_sacfactor);
+	connect(ui.sacfactor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &plannerShared::set_sacfactor);
 	connect(ui.problemsolvingtime, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setProblemSolvingTime);
-	connect(ui.bottompo2, QOverload<double>::of(&QDoubleSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_bottompo2);
-	connect(ui.decopo2, QOverload<double>::of(&QDoubleSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_decopo2);
-	connect(ui.bestmixEND, QOverload<int>::of(&QSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_bestmixend);
-	connect(ui.bottomSAC, QOverload<double>::of(&QDoubleSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_bottomsac);
-	connect(ui.decoStopSAC, QOverload<double>::of(&QDoubleSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_decosac);
+	connect(ui.bottompo2, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &plannerShared::set_bottompo2);
+	connect(ui.decopo2, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &plannerShared::set_decopo2);
+	connect(ui.bestmixEND, QOverload<int>::of(&QSpinBox::valueChanged), &plannerShared::set_bestmixend);
+	connect(ui.bottomSAC, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &plannerShared::set_bottomsac);
+	connect(ui.decoStopSAC, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &plannerShared::set_decosac);
 
 	settingsChanged();
 	ui.gflow->setValue(prefs.gflow);

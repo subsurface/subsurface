@@ -6,12 +6,6 @@
 #include "qt-models/diveplannermodel.h"
 #include "qt-models/cylindermodel.h"
 
-plannerShared *plannerShared::instance()
-{
-    static plannerShared *self = new plannerShared;
-    return self;
-}
-
 // Planning values
 deco_mode plannerShared::planner_deco_mode()
 {

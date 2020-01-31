@@ -16,8 +16,6 @@ class plannerShared: public QObject {
 	Q_OBJECT
 
 public:
-	static plannerShared *instance();
-
 	// Planning data
 	static deco_mode planner_deco_mode();
 	static int reserve_gas();
@@ -53,9 +51,6 @@ public slots:
 	static void set_bottompo2(double value);
 	static void set_decopo2(double value);
 	static void set_bestmixend(int value);
-
-private:
-	plannerShared() {}
 };
 
 #endif // PLANNERSHARED_H
