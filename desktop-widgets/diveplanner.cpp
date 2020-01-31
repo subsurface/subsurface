@@ -455,9 +455,9 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 		rebreather_modes.append(gettextFromC::tr(divemode_text_ui[i]));
 	ui.rebreathermode->insertItems(0, rebreather_modes);
 
-	connect(ui.recreational_deco, &QAbstractButton::clicked, [=] { plannerShared::set_planner_deco_mode(RECREATIONAL); });
-	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [=] { plannerShared::set_planner_deco_mode(BUEHLMANN); });
-	connect(ui.vpmb_deco, &QAbstractButton::clicked, [=] { plannerShared::set_planner_deco_mode(VPMB); });
+	connect(ui.recreational_deco, &QAbstractButton::clicked, [] { plannerShared::set_planner_deco_mode(RECREATIONAL); });
+	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [] { plannerShared::set_planner_deco_mode(BUEHLMANN); });
+	connect(ui.vpmb_deco, &QAbstractButton::clicked, [] { plannerShared::set_planner_deco_mode(VPMB); });
 
 	connect(ui.lastStop, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setLastStop6m);
 	connect(ui.lastStop, &QAbstractButton::toggled, this, &PlannerSettingsWidget::disableBackgasBreaks);
@@ -485,9 +485,9 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.rebreathermode, QOverload<int>::of(&QComboBox::currentIndexChanged), plannerModel, &DivePlannerPointsModel::setRebreatherMode);
 	connect(ui.rebreathermode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &PlannerSettingsWidget::setBailoutVisibility);
 
-	connect(ui.recreational_deco, &QAbstractButton::clicked, [=] { disableDecoElements(RECREATIONAL); });
-	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [=] { disableDecoElements(BUEHLMANN); });
-	connect(ui.vpmb_deco, &QAbstractButton::clicked, [=] { disableDecoElements(VPMB); });
+	connect(ui.recreational_deco, &QAbstractButton::clicked, [this] { disableDecoElements(RECREATIONAL); });
+	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [this] { disableDecoElements(BUEHLMANN); });
+	connect(ui.vpmb_deco, &QAbstractButton::clicked, [this] { disableDecoElements(VPMB); });
 
 	connect(ui.sacfactor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), plannerShared::instance(), &plannerShared::set_sacfactor);
 	connect(ui.problemsolvingtime, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setProblemSolvingTime);
