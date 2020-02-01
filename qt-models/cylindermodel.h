@@ -43,12 +43,12 @@ public:
 	cylinder_t *cylinderAt(const QModelIndex &index);
 	bool changed;
 	QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
+	bool updateBestMixes();
 
 public
 slots:
 	void remove(QModelIndex index);
 	void cylindersReset(const QVector<dive *> &dives);
-	bool updateBestMixes();
 
 private:
 	int rows;
