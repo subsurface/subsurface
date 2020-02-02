@@ -114,6 +114,25 @@ information is stored on the cloud server and access to the cloud is enabled. In
 the dive list is initially empty. Start entering dives in the dive
 log or download dive information from a supported dive computer.
 
+****
+[icon="images/icons/important.png"]
+[IMPORTANT]
+*Cloud problems: FAQ*
+
+[blue]#After filling in the correct information and submitting it, I did not receive a PIN by email#
+
+1. Check *carefully* that there is not a spelling mistake in the email address you provided.
+2. Check that the return email containing the PIN is not in the SPAM folder of your email client.
+3. Wait for 24 hours and check again for an email with a PIN. 
+4. If there is still no email containing a PIN, send mail to in-app-support@subsurface-divelog.org
+
+[blue]#I want to access the Subsurface cloud facility but I have forgotten my password. How can I reset my password?#
+
+Open the following web address: https://cloud.subsurface-divelog.org/passwordreset
+
+This will require that you enter the same email address that you used during cloud registration.
+****
+
 The dive log can be updated automatically. If there is Internet connectivity, _Subsurface-mobile_ accesses
 the cloud-based dive log to verify that the local copy of the dive log is still the
 same as the log in the cloud server. If not, the local copy and the copy on
@@ -186,45 +205,37 @@ on iOS; tap the GPS icon on the Action Bar.).
 
 Use this action button:
 
-image::mobile-images/FilterButton.jpg["FIGURE: Filter button",align="center"] 
+image::mobile-images/FilterButton.jpg["FIGURE: Filter button",align="center"]
 
-at the bottom of the dive list to perform filtering of the dive list (see image above).
+at the bottom of the dive list to perform filtering of the dive list (see image on left above).
 
-[width="100%", frame="None"]
-|=======
-a|image::mobile-images/Filter.jpg["FIGURE: Filter",align="center"] | [[S_Edit_Dive]]
+image::mobile-images/Filter.jpg["FIGURE: Filter tool",align="center"]
+
 By default, all the dives in the dive log are shown in the dive list. After several years one's dive log can become quite long and, sometimes, one would like to list only the dives of a particular type, e.g. those at a particular dive site or those with a specific buddy or dive master. Use the Filter to achieve this. The filter mechanism searches through all the information for each dive, looking for one or more key words. Only the dives containing these key words are listed in the dive list. In the xref:S_Settings[_Settings_] screen there two options that affect the way the filter searches for appropriate information. Firstly, one can select _Match filter case sensitive_ which causes the search of key words to be case sensitive. Secondly, one can select _Include notes in full text filtering_. If this option is not selected, the filter does not search through the dive notes for key words. Selecting the _Filter_ action button brings up a text box at the top of the dive list. Type the key words to be searched for. In the image on the left, the dive list has been filtered for the word "Nitrox" and 265 dives were found containing this word as a tag. For each trip in the dive list the number of dives containing "Nitrox" as a tag is shown. To clear the filter, remove the key words from the text box and select the Filter action button to switch off filtering.
-|=======
 
 == Viewing the locations of all dives in the dive list
 
-[width="100%", frame="None"]
-|=======
-a|image::mobile-images/DivesMap.jpg["FIGURE: Map of all dive sites",align="center"] | 
+image::mobile-images/DivesMap.jpg["FIGURE: Map of all dive sites",align="center"]
+
 The locations of all dives in the dive list can be viewed from the _Main Menu_ by selecting the _Map_ option.
 A satellite image of the world is shown. At that scale no dive sites are shown. If one zooms into a particular region
 of the world the dive sites appear, indicated by red flags. Zooming in even closer indicates the names of each
 of the different dive sites.
-|=======
 
 == Viewing the location of a dive on _Google Maps_
 
-[width="100%", frame="None"]
-|=======
-a|image::mobile-images/Map.jpg["FIGURE: Map of dive site",align="center"] | 
+image::mobile-images/Map.jpg["FIGURE: Map of dive site",align="center"]
 In the _Details View_, the Action Bar at the bottom has a GPS pin on the
 left hand side. Tap that pin and the dive site is shown in Google Maps. Close Google Maps by using the Android _Back_ button
 or tapping on the _Subsurface-mobile_ link in the top left corner on iOS.
 
 Alternatively, the _Details View_ has a button at the top right hand marked
 _Map it_. Tap this button to open Google Maps showing the dive site (image on left).
-|=======
 
+[[S_Edit_Dive]]
 == Edit a particular dive
 
-[width="100%", frame="None"]
-|=======
-a|image::mobile-images/Editdive.jpg["FIGURE: Dive edit screen",align="center"] | 
+image::mobile-images/Editdive.jpg["FIGURE: Dive edit screen",align="center"]
 At the bottom of the _Dive Details_ screen the action button is a pencil.
 Tapping the pencil button changes the page and enables edit boxes that allow
 modifying the existing dive information, e.g. adding text to the dive notes
@@ -234,9 +245,6 @@ At the bottom of the edit screen is a _Save_ action button. Tap this to save
 the new information, after which the dive list screen is
 updated and shown. To cancel any edits, tap the Android _Back_ Button or
 the application back button at the top left of the screen on iOS.
-
-|=======
-
 
 [[S_Add_Dive]]
 == Manually adding a new dive to the dive list
