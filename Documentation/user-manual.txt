@@ -244,7 +244,8 @@ If this hand-entered dive was not in the sea but at altitude away from the sea, 
 *Information tab* because dives at altitude need special calculations.
 
 In addition, the water type of this dive (e.g. sea water; fresh water) can be entered in the xref:S_salinity[*water type setting*] in the
-*Information tab*.
+*Information tab*. In order to do this, enable editing of water type in the
+Dive log Preferences (_File->Preferences->Dive log_).
 
 All edits to a new dive, including changes to the equipment after selecting the
 _Apply changes_ button, are saved in memory but NOT written to storage. If you
@@ -759,7 +760,8 @@ image::images/undo.jpg["FIGURE:Performing an undo",align="center"]
 Dive locations are managed as a *separate* part of the dive log (See the section entitled xref:S_DiveSiteManagement[Manipulating Dive Site Information]).
 The dive information in the *Notes* and *Equipment* tabs can therefore NOT be edited at the same
 time as the dive site information. Save all the other dive information (e.g.
-divemaster, buddy, protective gear, notes about the dive) BEFORE editing the dive site information. Then supply a dive site name in the
+divemaster, buddy, protective gear, notes about the dive) by selecting _Apply changes_ on the
+*Notes* tab BEFORE editing the dive site information. Then supply a dive site name in the
 textbox labelled _Location_ on the *Notes* tab.
 
 *Using existing dive locations:* Type in the name of the dive site, e.g. "Tihany, Lake Balaton, Hungary".
@@ -1865,7 +1867,7 @@ that allows listing many images. For a photograph, a thumbnail can easily be
 created because the image is well defined. But, since a video comprises many images, the question arises of
 which image should be used for the thumbnail. Two actions are required to create thumbnails of videos:
 
-* The appropriate settings need to be set in the _Media Preferences_ (_File->Preferences->Media).
+* The appropriate settings need to be set in the _Media Preferences_ (_File->Preferences->Media_).
 
 * The program _ffmpeg_ needs to be installed in the computer that runs Subsurface.
 
@@ -2075,8 +2077,8 @@ over two hours.
 image::images/pSCR_profile.jpg["FIGURE: pSCR profile",align="center"]
 
 _Visualising the pO~2~ drop_: The difference between the pO~2~ of the fresh cylinder gas and the pO~2~
-in the loop can be visualised in _Subsurface_ by opening the _Profile_
-panel in the _File -> Preferences->Tech setup_ menu item and then providing suitable information in the section
+in the loop can be visualised in _Subsurface_ by opening the _Tech setup_
+panel in the _File -> Preferences_ menu item and then providing suitable information in the section
 labelled _pSCR options_. The _pSCR metabolic rate_ is your rate of oxygen metabolism in liters/min (commonly
 between 0.5 and 2.5). The _Dilution ratio_ is the ratio indicating how much gas in the loop is replaced with
 fresh gas, relative to the gas being breathed (common values are between 1:3 and 1:10). These values are also
@@ -2403,7 +2405,7 @@ buttons on the left of the profile panel. These are:
 Show the *Maximum Operating Depth (MOD)* of the dive, given the
 gas mixture used. MOD is dependent on the oxygen concentration in the breathing gas.
 For air (21% oxygen) it is around 57 m if a maximum pO~2~ of 1.4 is specified in the *Preferences* section
-(select _File -> Preferences -> Tech setup_ and edit the text box _pO~2~ in calculating MOD_.
+(select _File -> Preferences -> Tech setup_) and edit the text box _pO~2~ in calculating MOD_.
 When diving below the MOD there is a markedly increased risk of exposure to the dangers of oxygen toxicity.
 
 [icon="images/icons/NDL.jpg"]
@@ -2492,7 +2494,7 @@ image::images/GasPressureBarGraph.jpg["FIGURE:Gas Pressure bar Graph",align="cen
 - The top black horizontal line indicates the inert gas pressure limit determined by the gradient
   factor that applies to the depth of
   the diver at the particular point on the *Dive Profile*. The gradient factor shown is an
-  interpolation between the GFLow and GFHigh values specified in the _Profile_ tab of the _Tech setup Preferences
+  interpolation between the GFLow and GFHigh values specified in the _Ceiling Display_ part of the _Tech setup Preferences
   Panel_ of _Subsurface_.
 
 - The bottom margin of the red area in the graph indicates the Bühlman-derived M-value. That is the
@@ -3180,7 +3182,7 @@ To use _Subsurface cloud storage_ , follow these steps:
 
 === Create a cloud storage account
 
-** Open the *Cloud Preferences* by selecting _File_ -> _Preferences_ -> _Cloud_. (See image of the
+** Open the _Cloud Preferences_ by selecting _File_ -> _Preferences_ -> _Cloud_. (See image of the
 Clod Preference panel xref:S_Pref_cloud[here]).
 ** In the section headed _Subsurface cloud storage_, enter an email address that
    _Subsurface_ can use for user registration. This is the only step that requires an email address.
@@ -3190,13 +3192,19 @@ Subsurface will never use this email address again.
 ** Click _Apply_ to send the above email address and password to the
   (remote) cloud server. The server responds by sending a verification PIN to
   the above email address (This is the *only* occasion that _Subsurface_ uses the
-  email address provided above). The *Network Preferences* dialog now has a new PIN text
+  email address provided above). The _Cloud Preferences_ dialog now has a new PIN text
    box, not visible previously.
 ** Enter the PIN in the corresponding text box in the _Cloud Preferences_ dialog
 (this field is only visible while the server is waiting for email
 address confirmation)
 ** Click _Apply_ again. The _Subsurface cloud storage_ account
 will be marked as verified and the _Subsurface cloud storage_ service is initialised for use.
+
+****
+[icon="images/icons/important.png"]
+[IMPORTANT]
+If you encounter any problems during the cloud registration process, read the xref:S_APPENDIX_G[Cloud FAQ]
+****
 
 === Using _Subsurface cloud storage_
 
@@ -3861,7 +3869,7 @@ These dives are planned in three stages:
 as well as the deco model (GFLow, GFHigh or Conservatism level) under the headings _Rates_ and _Planning_
 to the bottom left of the planning screen. Two deco models are supported the Bühlmann model and the VPM-B
 model. Select one of the two models. When selecting the Bühlmann model, the gradient factors (GFHigh and GFLow
-need to be specified. Initially, the GFHigh and GFLow values in the _Preferences_
+need to be specified. Initially, the GFHigh and GFLow values in the _Tech setup preferences_
 panel of _Subsurface_ is used. If these are changed within the planner (see _Gas Options_ within
 the planner), the new values are
 used without changing the original values in the _Preferences_.
@@ -5285,6 +5293,20 @@ This should complete the setup of video thumbnails and they should now appear on
 
 == APPENDIX G: FAQs.
 [[S_APPENDIX_G]]
+
+=== Cloud FAQ
+
+==== After filling in the correct information and submitting it, I do not receive a PIN by email
+1. Check *carefully* that there is not a spelling mistake in the email address you provided.
+2. Check that the return email containing the PIN is not in the SPAM folder of your email client.
+3. Wait for 24 hours and check again for an email with a PIN. 
+4. If there is still no email containing a PIN, send mail to in-app-support@subsurface-divelog.org
+
+==== I want to access the Subsurface cloud facility but I have forgotten my password. How can I reset my password?
+Open the following web address: https://cloud.subsurface-divelog.org/passwordreset
+
+This will require that you enter the same email address that you used during cloud registration.
+
 === Subsurface appears to miscalculate gas consumption and SAC
 [[SAC_CALCULATION]]
 'Question': I dived with a 12.2 l tank, starting with 220 bar and ending with 100 bar, and I calculate a different SAC compared what _Subsurface_ calculates. Is _Subsurface_
