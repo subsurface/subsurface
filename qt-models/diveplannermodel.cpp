@@ -21,7 +21,7 @@
 
 #define UNIT_FACTOR ((prefs.units.length == units::METERS) ? 1000.0 / 60.0 : feet_to_mm(1.0) / 60.0)
 
-CylindersModelFiltered *DivePlannerPointsModel::cylindersModel()
+CylindersModel *DivePlannerPointsModel::cylindersModel()
 {
 	return &cylinders;
 }
@@ -42,7 +42,7 @@ void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
 		divepoints.remove(v2[i]);
 	}
 	endRemoveRows();
-	cylinders.model()->updateTrashIcon();
+	cylinders.updateTrashIcon();
 }
 
 void DivePlannerPointsModel::createSimpleDive()
@@ -320,7 +320,7 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 			if (value.toInt() >= 0) {
 				p.depth = units_to_depth(value.toInt());
 				if (updateMaxDepth())
-					cylinders.model()->updateBestMixes();
+					cylinders.updateBestMixes();
 			}
 			break;
 		case RUNTIME:
@@ -346,8 +346,8 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 				p.cylinderid = value.toInt();
 			/* Did we change the start (dp 0) cylinder to another cylinderid than 0? */
 			if (value.toInt() != 0 && index.row() == 0)
-				cylinders.model()->moveAtFirst(value.toInt());
-			cylinders.model()->updateTrashIcon();
+				cylinders.moveAtFirst(value.toInt());
+			cylinders.updateTrashIcon();
 			break;
 		case DIVEMODE:
 			if (value.toInt() < FREEDIVE) {
@@ -802,9 +802,9 @@ void DivePlannerPointsModel::editStop(int row, divedatapoint newData)
 	divepoints[row] = newData;
 	std::sort(divepoints.begin(), divepoints.end(), divePointsLessThan);
 	if (updateMaxDepth())
-		cylinders.model()->updateBestMixes();
+		cylinders.updateBestMixes();
 	if (divepoints[0].cylinderid != old_first_cylid)
-		cylinders.model()->moveAtFirst(divepoints[0].cylinderid);
+		cylinders.moveAtFirst(divepoints[0].cylinderid);
 	emitDataChanged();
 }
 
@@ -853,9 +853,9 @@ void DivePlannerPointsModel::remove(const QModelIndex &index)
 		divepoints.remove(index.row());
 	}
 	endRemoveRows();
-	cylinders.model()->updateTrashIcon();
+	cylinders.updateTrashIcon();
 	if (divepoints[0].cylinderid != old_first_cylid)
-		cylinders.model()->moveAtFirst(divepoints[0].cylinderid);
+		cylinders.moveAtFirst(divepoints[0].cylinderid);
 }
 
 struct diveplan &DivePlannerPointsModel::getDiveplan()
