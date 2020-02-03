@@ -9,7 +9,7 @@
 #include "core/divefilter.h"
 #include "core/divesitehelpers.h"
 #include "desktop-widgets/modeldelegates.h"
-#include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include "core/taxonomy.h"
 #include "core/settings/qPrefUnit.h"
 #include "commands/command.h"

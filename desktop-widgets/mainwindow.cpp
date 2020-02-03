@@ -38,7 +38,7 @@
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 
-#include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 
 #include "desktop-widgets/about.h"
 #include "desktop-widgets/divecomputermanagementdialog.h"

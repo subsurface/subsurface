@@ -3,7 +3,7 @@
 #define DIVETRIPMODEL_H
 
 #include "core/dive.h"
-#include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include <QAbstractItemModel>
 
 class DiveFilter;

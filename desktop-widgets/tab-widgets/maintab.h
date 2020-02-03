@@ -17,7 +17,7 @@
 #include "qt-models/completionmodels.h"
 #include "qt-models/divelocationmodel.h"
 #include "core/dive.h"
-#include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 
 class ExtraDataModel;
 class DivePictureModel;

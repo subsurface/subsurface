@@ -5,7 +5,7 @@
 #include "core/display.h" // for amount_selected
 #include "core/qthelper.h"
 #include "core/selection.h"
-#include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include "qt-models/filtermodels.h"
 #include "../profile-widget/profilewidget2.h"
 #include "core/divefilter.h"
@@ -143,7 +143,7 @@ DivesAndTripsToAdd DiveListBase::removeDives(DivesAndSitesToRemove &divesAndSite
 	}
 	divesAndSitesToDelete.sites.clear();
 
-	// We send one dives-deleted signal per trip (see comments in DiveListNotifier.h).
+	// We send one dives-deleted signal per trip (see comments in divelistnotifier.h).
 	// Therefore, collect all dives in an array and sort by trip.
 	std::vector<std::pair<dive_trip *, dive *>> dives;
 	dives.reserve(divesToAdd.size());

@@ -5,7 +5,7 @@
 #define COMMAND_EDIT_TRIP_H
 
 #include "command_base.h"
-#include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 
 #include <QVector>
 

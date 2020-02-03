@@ -3,7 +3,7 @@
 #define QMLMAPWIDGETHELPER_H
 
 #include "core/units.h"
-#include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include <QObject>
 #include <QGeoCoordinate>
 

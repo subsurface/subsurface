@@ -3,7 +3,7 @@
 #define TAB_DIVE_INFORMATION_H
 
 #include "TabBase.h"
-#include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 
 namespace Ui {
 	class TabDiveInformation;

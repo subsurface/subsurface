@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-#include "CylinderObjectHelper.h"
+#include "cylinderobjecthelper.h"
 #include "../qthelper.h"
 
 static QString EMPTY_CYLINDER_STRING = QStringLiteral("");
