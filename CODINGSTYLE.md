@@ -87,16 +87,21 @@ other editors that implement this coding style, please add them here.
 
 * unfortunate inconsistency
   - C code usually uses underscores to structure names
-  ```
+    ```
 	variable_in_C
-  ```
+    ```
   - In contrast, C++ code usually uses camelCase
-  ```
+    ```
 	variableInCPlusPlus
-  ```
+    ```
+    for variable names and PascalCase
+    ```
+	ClassInCPlusPlus
+    ```
+    for names of classes and other types
 
   where the two meet, use your best judgment and go for best consistency
-  (i.e., where does the variable "originate")
+  (i.e., where does the name "originate")
 
 * there is a strong preference for lower case file names; sometimes conventions
   or outside requirements make camelCase filenames the better (or only) choice,
