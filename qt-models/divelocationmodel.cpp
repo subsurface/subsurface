@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "core/units.h"
 #include "qt-models/divelocationmodel.h"
-#include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include "core/qthelper.h"
 #include "core/divesite.h"
 #include "core/metrics.h"

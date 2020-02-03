@@ -4,7 +4,7 @@
 #include "core/qthelper.h"
 #include "core/trip.h"
 #include "core/subsurface-string.h"
-#include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include "qt-models/divetripmodel.h"
 
 MultiFilterSortModel *MultiFilterSortModel::instance()

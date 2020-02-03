@@ -16,7 +16,7 @@
 #include <QLineEdit>
 #include <QNetworkAccessManager>
 #include "qt-models/divetripmodel.h"
-#include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 
 class DiveListView : public QTreeView {
 	Q_OBJECT

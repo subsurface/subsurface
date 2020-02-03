@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "TabDiveSite.h"
-#include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include "core/divesite.h"
 #include "core/divefilter.h"
 #include "qt-models/divelocationmodel.h"

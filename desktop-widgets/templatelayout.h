@@ -8,8 +8,8 @@
 #include "printoptions.h"
 #include "core/statistics.h"
 #include "core/qthelper.h"
-#include "core/subsurface-qt/DiveObjectHelper.h"
-#include "core/subsurface-qt/CylinderObjectHelper.h" // TODO: remove once grantlee supports Q_GADGET objects
+#include "core/subsurface-qt/diveobjecthelper.h"
+#include "core/subsurface-qt/cylinderobjecthelper.h" // TODO: remove once grantlee supports Q_GADGET objects
 
 int getTotalWork(print_options *printOptions);
 void find_all_templates();

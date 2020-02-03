@@ -5,7 +5,7 @@
 #include <QAbstractListModel>
 #include <QSortFilterProxyModel>
 
-#include "core/subsurface-qt/DiveObjectHelper.h"
+#include "core/subsurface-qt/diveobjecthelper.h"
 
 class CollapsedDiveListSortModel : public QSortFilterProxyModel
 {

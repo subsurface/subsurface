@@ -4,7 +4,7 @@
 #include "selection.h"
 #include "divelist.h"
 #include "display.h" // for amount_selected
-#include "subsurface-qt/DiveListNotifier.h"
+#include "subsurface-qt/divelistnotifier.h"
 
 #include <QVector>
 

@@ -2,7 +2,7 @@
 
 #include "command_base.h"
 #include "core/qthelper.h" // for updateWindowTitle()
-#include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 
 namespace Command {
 

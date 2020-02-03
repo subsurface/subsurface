@@ -2,7 +2,7 @@
 #ifndef MAPLOCATIONMODEL_H
 #define MAPLOCATIONMODEL_H
 
-#include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include <QObject>
 #include <QVector>
 #include <QHash>

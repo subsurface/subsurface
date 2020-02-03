@@ -7,7 +7,7 @@
 #include "core/color.h"
 #include "qt-models/diveplannermodel.h"
 #include "core/gettextfromc.h"
-#include "core/subsurface-qt/DiveListNotifier.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 
 CylindersModel::CylindersModel(QObject *parent) :
 	CleanerTableModel(parent),
