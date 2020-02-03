@@ -77,118 +77,118 @@ void TestPlannerShared::test_planning()
 void TestPlannerShared::test_gas()
 {
 	// test independent of metric/imperial
-	plannerShared::set_sacfactor(4.2);
+	PlannerShared::set_sacfactor(4.2);
 	QCOMPARE(qPrefDivePlanner::sacfactor(), 42);
-	plannerShared::set_sacfactor(3.5);
+	PlannerShared::set_sacfactor(3.5);
 	QCOMPARE(qPrefDivePlanner::sacfactor(), 35);
 	qPrefDivePlanner::set_sacfactor(280);
-	QCOMPARE(plannerShared::sacfactor(), 28);
+	QCOMPARE(PlannerShared::sacfactor(), 28);
 	qPrefDivePlanner::set_sacfactor(200);
-	QCOMPARE(plannerShared::sacfactor(), 20);
+	QCOMPARE(PlannerShared::sacfactor(), 20);
 
 	// Set system to use meters
 	qPrefUnits::set_unit_system(METRIC);
 
-	plannerShared::set_bottomsac(30);
+	PlannerShared::set_bottomsac(30);
 	QCOMPARE(qPrefDivePlanner::bottomsac(), 30000);
-	plannerShared::set_bottomsac(5);
+	PlannerShared::set_bottomsac(5);
 	QCOMPARE(qPrefDivePlanner::bottomsac(), 5000);
 	qPrefDivePlanner::set_bottomsac(8000);
-	QCOMPARE(plannerShared::bottomsac(), 8);
+	QCOMPARE(PlannerShared::bottomsac(), 8);
 	qPrefDivePlanner::set_bottomsac(10000);
-	QCOMPARE(plannerShared::bottomsac(), 10);
+	QCOMPARE(PlannerShared::bottomsac(), 10);
 
-	plannerShared::set_decosac(30);
+	PlannerShared::set_decosac(30);
 	QCOMPARE(qPrefDivePlanner::decosac(), 30000);
-	plannerShared::set_decosac(5);
+	PlannerShared::set_decosac(5);
 	QCOMPARE(qPrefDivePlanner::decosac(), 5000);
 	qPrefDivePlanner::set_decosac(8000);
-	QCOMPARE(plannerShared::decosac(), 8);
+	QCOMPARE(PlannerShared::decosac(), 8);
 	qPrefDivePlanner::set_decosac(10000);
-	QCOMPARE(plannerShared::decosac(), 10);
+	QCOMPARE(PlannerShared::decosac(), 10);
 
-	plannerShared::set_bottompo2(1.5);
+	PlannerShared::set_bottompo2(1.5);
 	QCOMPARE(qPrefDivePlanner::bottompo2(), 1500);
-	plannerShared::set_bottompo2(1.6);
+	PlannerShared::set_bottompo2(1.6);
 	QCOMPARE(qPrefDivePlanner::bottompo2(), 1600);
 	qPrefDivePlanner::set_bottompo2(1200);
-	QCOMPARE(plannerShared::bottompo2(), 1.2);
+	QCOMPARE(PlannerShared::bottompo2(), 1.2);
 	qPrefDivePlanner::set_bottompo2(1000);
-	QCOMPARE(plannerShared::bottompo2(), 1.0);
+	QCOMPARE(PlannerShared::bottompo2(), 1.0);
 
-	plannerShared::set_decopo2(1.5);
+	PlannerShared::set_decopo2(1.5);
 	QCOMPARE(qPrefDivePlanner::decopo2(), 1500);
-	plannerShared::set_decopo2(1.6);
+	PlannerShared::set_decopo2(1.6);
 	QCOMPARE(qPrefDivePlanner::decopo2(), 1600);
 	qPrefDivePlanner::set_decopo2(1100);
-	QCOMPARE(plannerShared::decopo2(), 1.1);
+	QCOMPARE(PlannerShared::decopo2(), 1.1);
 	qPrefDivePlanner::set_decopo2(1000);
-	QCOMPARE(plannerShared::decopo2(), 1.0);
+	QCOMPARE(PlannerShared::decopo2(), 1.0);
 
-	plannerShared::set_bestmixend(16);
+	PlannerShared::set_bestmixend(16);
 	QCOMPARE(qPrefDivePlanner::bestmixend(), 16000);
-	plannerShared::set_bestmixend(7);
+	PlannerShared::set_bestmixend(7);
 	QCOMPARE(qPrefDivePlanner::bestmixend(), 7000);
 	qPrefDivePlanner::set_bestmixend(8000);
-	QCOMPARE(plannerShared::bestmixend(), 8);
+	QCOMPARE(PlannerShared::bestmixend(), 8);
 	qPrefDivePlanner::set_bestmixend(10000);
-	QCOMPARE(plannerShared::bestmixend(), 10);
+	QCOMPARE(PlannerShared::bestmixend(), 10);
 
 	// Set system to use feet
 	qPrefUnits::set_unit_system(IMPERIAL);
 
-	plannerShared::set_bottomsac(0.9);
+	PlannerShared::set_bottomsac(0.9);
 	QCOMPARE(qPrefDivePlanner::bottomsac(), 255);
-	plannerShared::set_bottomsac(0.01);
+	PlannerShared::set_bottomsac(0.01);
 	QCOMPARE(qPrefDivePlanner::bottomsac(), 3);
 
 	// Remark return will from qPref is in m / 1000.
 	qPrefDivePlanner::set_bottomsac(2830);
-	QCOMPARE(int(plannerShared::bottomsac()), 9);
+	QCOMPARE(int(PlannerShared::bottomsac()), 9);
 	qPrefDivePlanner::set_bottomsac(16000);
-	QCOMPARE(int(plannerShared::bottomsac()), 56);
+	QCOMPARE(int(PlannerShared::bottomsac()), 56);
 
-	plannerShared::set_decosac(0.9);
+	PlannerShared::set_decosac(0.9);
 	QCOMPARE(qPrefDivePlanner::decosac(), 255);
-	plannerShared::set_decosac(0.01);
+	PlannerShared::set_decosac(0.01);
 	QCOMPARE(qPrefDivePlanner::decosac(), 3);
 
 	// Remark return will from qPref is in m / 1000.
 	qPrefDivePlanner::set_decosac(11500);
-	QCOMPARE(int(plannerShared::decosac()), 40);
+	QCOMPARE(int(PlannerShared::decosac()), 40);
 	qPrefDivePlanner::set_decosac(19800);
-	QCOMPARE(int(plannerShared::decosac()), 69);
+	QCOMPARE(int(PlannerShared::decosac()), 69);
 
 	// Remark bottompo2 is in BAR, even though unit system is
 	// Imperial, the desktop version is like that.
-	plannerShared::set_bottompo2(1.5);
+	PlannerShared::set_bottompo2(1.5);
 	QCOMPARE(qPrefDivePlanner::bottompo2(), 1500);
-	plannerShared::set_bottompo2(1.6);
+	PlannerShared::set_bottompo2(1.6);
 	QCOMPARE(qPrefDivePlanner::bottompo2(), 1600);
 	qPrefDivePlanner::set_bottompo2(1200);
-	QCOMPARE(plannerShared::bottompo2(), 1.2);
+	QCOMPARE(PlannerShared::bottompo2(), 1.2);
 	qPrefDivePlanner::set_bottompo2(1000);
-	QCOMPARE(plannerShared::bottompo2(), 1.0);
+	QCOMPARE(PlannerShared::bottompo2(), 1.0);
 
 	// Remark decopo2 is in BAR, even though unit system is
 	// Imperial, the desktop version is like that.
-	plannerShared::set_decopo2(1.5);
+	PlannerShared::set_decopo2(1.5);
 	QCOMPARE(qPrefDivePlanner::decopo2(), 1500);
-	plannerShared::set_decopo2(1.6);
+	PlannerShared::set_decopo2(1.6);
 	QCOMPARE(qPrefDivePlanner::decopo2(), 1600);
 	qPrefDivePlanner::set_decopo2(1200);
-//Not implemented	QCOMPARE(plannerShared::decopo2(), 1.2);
+//Not implemented	QCOMPARE(PlannerShared::decopo2(), 1.2);
 	qPrefDivePlanner::set_decopo2(1000);
-	QCOMPARE(plannerShared::decopo2(), 1.0);
+	QCOMPARE(PlannerShared::decopo2(), 1.0);
 
-	plannerShared::set_bestmixend(33);
+	PlannerShared::set_bestmixend(33);
 	QCOMPARE(qPrefDivePlanner::bestmixend(), 10058);
-	plannerShared::set_bestmixend(27);
+	PlannerShared::set_bestmixend(27);
 	QCOMPARE(qPrefDivePlanner::bestmixend(), 8230);
 	qPrefDivePlanner::set_bestmixend(11000);
-	QCOMPARE(plannerShared::bestmixend(), 36);
+	QCOMPARE(PlannerShared::bestmixend(), 36);
 	qPrefDivePlanner::set_bestmixend(7000);
-	QCOMPARE(plannerShared::bestmixend(), 23);
+	QCOMPARE(PlannerShared::bestmixend(), 23);
 
 	// Variables currently not tested
 	// o2narcotic

@@ -188,28 +188,28 @@ public:
 	int descrate() { return DivePlannerPointsModel::instance()->descrateDisplay(); }
 
 	DIVE_MODE dive_mode() { return OC; }
-	DECO_MODE planner_deco_mode() { return (DECO_MODE)plannerShared::planner_deco_mode(); }
-	int reserve_gas() { return plannerShared::reserve_gas(); }
+	DECO_MODE planner_deco_mode() { return (DECO_MODE)PlannerShared::planner_deco_mode(); }
+	int reserve_gas() { return PlannerShared::reserve_gas(); }
 	bool safetystop() { return prefs.safetystop; }
 	int gflow() { return prefs.gflow; }
 	int gfhigh() { return prefs.gfhigh; }
 	int vpmb_conservatism() { return prefs.vpmb_conservatism; }
-	bool dobailout() { return plannerShared::dobailout(); }
+	bool dobailout() { return PlannerShared::dobailout(); }
 	bool drop_stone_mode() { return prefs.drop_stone_mode; }
 	bool last_stop6m() { return prefs.last_stop; }
 	bool switch_at_req_stop() { return prefs.switch_at_req_stop; }
-	bool doo2breaks() { return plannerShared::doo2breaks(); }
-	int min_switch_duration() { return plannerShared::min_switch_duration(); }
-	int surface_segment() { return plannerShared::surface_segment(); }
+	bool doo2breaks() { return PlannerShared::doo2breaks(); }
+	int min_switch_duration() { return PlannerShared::min_switch_duration(); }
+	int surface_segment() { return PlannerShared::surface_segment(); }
 
-	int bottomsac() { return (int)plannerShared::bottomsac(); }
-	int decosac() { return (int)plannerShared::decosac(); }
+	int bottomsac() { return (int)PlannerShared::bottomsac(); }
+	int decosac() { return (int)PlannerShared::decosac(); }
 	int problemsolvingtime() { return prefs.problemsolvingtime; }
-	int sacfactor() { return (int)plannerShared::sacfactor(); }
-	bool o2narcotic() { return (int)plannerShared::o2narcotic(); }
-	int bottompo2() { return (int)plannerShared::bottompo2(); }
-	int decopo2() { return (int)plannerShared::decopo2(); }
-	int bestmixend() { return plannerShared::bestmixend(); }
+	int sacfactor() { return (int)PlannerShared::sacfactor(); }
+	bool o2narcotic() { return (int)PlannerShared::o2narcotic(); }
+	int bottompo2() { return (int)PlannerShared::bottompo2(); }
+	int decopo2() { return (int)PlannerShared::decopo2(); }
+	int bestmixend() { return PlannerShared::bestmixend(); }
 
 	bool display_runtime() { return prefs.display_runtime; }
 	bool display_duration() { return prefs.display_duration; }
@@ -237,28 +237,28 @@ public slots:
 	void set_descrate(int value) { DivePlannerPointsModel::instance()->setDescrateDisplay(value); }
 
 	void set_dive_mode(DIVE_MODE value) { DivePlannerPointsModel::instance()->setRebreatherMode((int)value); }
-	void set_planner_deco_mode(DECO_MODE value) { plannerShared::set_planner_deco_mode((deco_mode)value); }
-	void set_reserve_gas(int value) { plannerShared::set_reserve_gas(value); }
+	void set_planner_deco_mode(DECO_MODE value) { PlannerShared::set_planner_deco_mode((deco_mode)value); }
+	void set_reserve_gas(int value) { PlannerShared::set_reserve_gas(value); }
 	void set_safetystop(bool value) { DivePlannerPointsModel::instance()->setSafetyStop(value); }
 	void set_gflow(int value) { DivePlannerPointsModel::instance()->setGFLow(value); }
 	void set_gfhigh(int value) { DivePlannerPointsModel::instance()->setGFHigh(value); }
 	void set_vpmb_conservatism(int value) { DivePlannerPointsModel::instance()->setVpmbConservatism(value); }
-	void set_dobailout(bool value) { plannerShared::set_dobailout(value); }
+	void set_dobailout(bool value) { PlannerShared::set_dobailout(value); }
 	void set_drop_stone_mode(bool value) { DivePlannerPointsModel::instance()->setDropStoneMode(value); }
 	void set_last_stop6m(bool value) { DivePlannerPointsModel::instance()->setLastStop6m(value); }
 	void set_switch_at_req_stop(bool value) { DivePlannerPointsModel::instance()->setSwitchAtReqStop(value); }
-	void set_doo2breaks(bool value) { plannerShared::set_doo2breaks(value); }
-	void set_min_switch_duration(int value) { plannerShared::set_min_switch_duration(value); }
-	void set_surface_segment(int value) { plannerShared::set_surface_segment(value); }
+	void set_doo2breaks(bool value) { PlannerShared::set_doo2breaks(value); }
+	void set_min_switch_duration(int value) { PlannerShared::set_min_switch_duration(value); }
+	void set_surface_segment(int value) { PlannerShared::set_surface_segment(value); }
 
-	void set_bottomsac(int value) { plannerShared::set_bottomsac((double)value); }
-	void set_decosac(int value) { plannerShared::set_decosac((double)value); }
+	void set_bottomsac(int value) { PlannerShared::set_bottomsac((double)value); }
+	void set_decosac(int value) { PlannerShared::set_decosac((double)value); }
 	void set_problemsolvingtime(int value) { DivePlannerPointsModel::instance()->setProblemSolvingTime(value); }
-	void set_sacfactor(int value) { plannerShared::set_sacfactor((double)value); }
-	void set_o2narcotic(bool value) { plannerShared::set_o2narcotic(value); }
-	void set_bottompo2(int value) { plannerShared::set_bottompo2((double)value); }
-	void set_decopo2(int value) { plannerShared::set_decopo2((double)value); }
-	void set_bestmixend(int value) { plannerShared::set_bestmixend(value); }
+	void set_sacfactor(int value) { PlannerShared::set_sacfactor((double)value); }
+	void set_o2narcotic(bool value) { PlannerShared::set_o2narcotic(value); }
+	void set_bottompo2(int value) { PlannerShared::set_bottompo2((double)value); }
+	void set_decopo2(int value) { PlannerShared::set_decopo2((double)value); }
+	void set_bestmixend(int value) { PlannerShared::set_bestmixend(value); }
 
 	void set_display_runtime(bool value) { DivePlannerPointsModel::instance()->setDisplayRuntime(value); }
 	void set_display_duration(bool value) { DivePlannerPointsModel::instance()->setDisplayDuration(value); }
