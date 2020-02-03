@@ -21,6 +21,11 @@
 
 #define UNIT_FACTOR ((prefs.units.length == units::METERS) ? 1000.0 / 60.0 : feet_to_mm(1.0) / 60.0)
 
+CylindersModelFiltered *DivePlannerPointsModel::cylindersModel()
+{
+	return &cylinders;
+}
+
 /* TODO: Port this to CleanerTableModel to remove a bit of boilerplate and
  * use the signal warningMessage() to communicate errors to the MainWindow.
  */
@@ -37,7 +42,7 @@ void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
 		divepoints.remove(v2[i]);
 	}
 	endRemoveRows();
-	CylindersModelFiltered::instance()->model()->updateTrashIcon();
+	cylinders.model()->updateTrashIcon();
 }
 
 void DivePlannerPointsModel::createSimpleDive()
@@ -89,7 +94,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	const struct event *evd = NULL;
 	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 	recalc = false;
-	CylindersModelFiltered::instance()->updateDive();
+	cylinders.updateDive();
 	duration_t lasttime = { 0 };
 	duration_t lastrecordedtime = {};
 	duration_t newtime = {};
@@ -162,7 +167,7 @@ void DivePlannerPointsModel::setupCylinders()
 		reset_cylinders(&displayed_dive, true);
 
 		if (displayed_dive.cylinders.nr > 0) {
-			CylindersModelFiltered::instance()->updateDive();
+			cylinders.updateDive();
 			return;		// We have at least one cylinder
 		}
 	}
@@ -180,7 +185,7 @@ void DivePlannerPointsModel::setupCylinders()
 		add_to_cylinder_table(&displayed_dive.cylinders, 0, cyl);
 	}
 	reset_cylinders(&displayed_dive, false);
-	CylindersModelFiltered::instance()->updateDive();
+	cylinders.updateDive();
 }
 
 // Update the dive's maximum depth.  Returns true if max. depth changed
@@ -209,10 +214,8 @@ void DivePlannerPointsModel::removeDeco()
 
 void DivePlannerPointsModel::addCylinder_clicked()
 {
-	CylindersModelFiltered::instance()->add();
+	cylinders.add();
 }
-
-
 
 void DivePlannerPointsModel::setPlanMode(Mode m)
 {
@@ -317,7 +320,7 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 			if (value.toInt() >= 0) {
 				p.depth = units_to_depth(value.toInt());
 				if (updateMaxDepth())
-					CylindersModelFiltered::instance()->model()->updateBestMixes();
+					cylinders.model()->updateBestMixes();
 			}
 			break;
 		case RUNTIME:
@@ -343,8 +346,8 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 				p.cylinderid = value.toInt();
 			/* Did we change the start (dp 0) cylinder to another cylinderid than 0? */
 			if (value.toInt() != 0 && index.row() == 0)
-				CylindersModelFiltered::instance()->model()->moveAtFirst(value.toInt());
-			CylindersModelFiltered::instance()->model()->updateTrashIcon();
+				cylinders.model()->moveAtFirst(value.toInt());
+			cylinders.model()->updateTrashIcon();
 			break;
 		case DIVEMODE:
 			if (value.toInt() < FREEDIVE) {
@@ -799,9 +802,9 @@ void DivePlannerPointsModel::editStop(int row, divedatapoint newData)
 	divepoints[row] = newData;
 	std::sort(divepoints.begin(), divepoints.end(), divePointsLessThan);
 	if (updateMaxDepth())
-		CylindersModelFiltered::instance()->model()->updateBestMixes();
+		cylinders.model()->updateBestMixes();
 	if (divepoints[0].cylinderid != old_first_cylid)
-		CylindersModelFiltered::instance()->model()->moveAtFirst(divepoints[0].cylinderid);
+		cylinders.model()->moveAtFirst(divepoints[0].cylinderid);
 	emitDataChanged();
 }
 
@@ -850,9 +853,9 @@ void DivePlannerPointsModel::remove(const QModelIndex &index)
 		divepoints.remove(index.row());
 	}
 	endRemoveRows();
-	CylindersModelFiltered::instance()->model()->updateTrashIcon();
+	cylinders.model()->updateTrashIcon();
 	if (divepoints[0].cylinderid != old_first_cylid)
-		CylindersModelFiltered::instance()->model()->moveAtFirst(divepoints[0].cylinderid);
+		cylinders.model()->moveAtFirst(divepoints[0].cylinderid);
 }
 
 struct diveplan &DivePlannerPointsModel::getDiveplan()
@@ -907,13 +910,13 @@ void DivePlannerPointsModel::clear()
 {
 	bool oldRecalc = setRecalc(false);
 
-	CylindersModelFiltered::instance()->updateDive();
+	cylinders.updateDive();
 	if (rowCount() > 0) {
 		beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
 		divepoints.clear();
 		endRemoveRows();
 	}
-	CylindersModelFiltered::instance()->clear();
+	cylinders.clear();
 	setRecalc(oldRecalc);
 }
 

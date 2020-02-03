@@ -61,7 +61,6 @@ class CylindersModelFiltered : public QSortFilterProxyModel {
 	Q_OBJECT
 public:
 	CylindersModelFiltered(QObject *parent = 0);
-	static CylindersModelFiltered *instance();
 	CylindersModel *model(); // Access to unfiltered base model
 
 	void clear();

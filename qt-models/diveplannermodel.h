@@ -7,6 +7,7 @@
 
 #include "core/deco.h"
 #include "core/planner.h"
+#include "qt-models/cylindermodel.h"
 
 class DivePlannerPointsModel : public QAbstractTableModel {
 	Q_OBJECT
@@ -47,6 +48,7 @@ public:
 	bool tankInUse(int cylinderid);
 	void setupCylinders();
 	bool updateMaxDepth();
+	CylindersModelFiltered *cylindersModel();
 
 	int ascrate75Display();
 	int ascrate50Display();
@@ -127,6 +129,7 @@ private:
 	void computeVariations(struct diveplan *diveplan, const struct deco_state *ds);
 	void computeVariationsFreeDeco(struct diveplan *diveplan, struct deco_state *ds);
 	int analyzeVariations(struct decostop *min, struct decostop *mid, struct decostop *max, const char *unit);
+	CylindersModelFiltered cylinders;
 	Mode mode;
 	bool recalc;
 	QVector<divedatapoint> divepoints;

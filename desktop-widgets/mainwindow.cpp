@@ -918,7 +918,7 @@ void MainWindow::on_actionReplanDive_triggered()
 		divePlannerWidget->setSalinity(current_dive->salinity);
 	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
 	reset_cylinders(&displayed_dive, true);
-	CylindersModelFiltered::instance()->updateDive();
+	DivePlannerPointsModel::instance()->cylindersModel()->updateDive();
 }
 
 void MainWindow::on_actionDivePlanner_triggered()
