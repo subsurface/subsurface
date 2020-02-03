@@ -555,10 +555,10 @@ void DiveListView::selectionChangeDone()
 	// by the selected dives.
 	if (!DiveFilter::instance()->diveSiteMode()) {
 		QVector<dive_site *> selectedSites;
-		for (QModelIndex index: selectionModel()->selection().indexes()) {
+		for (QModelIndex index: selectionModel()->selectedRows()) {
 			const QAbstractItemModel *model = index.model();
 			struct dive *dive = model->data(index, DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
-			if (dive && dive->dive_site)
+			if (dive && dive->dive_site && !selectedSites.contains(dive->dive_site))
 				selectedSites.push_back(dive->dive_site);
 		}
 		MapWidget::instance()->setSelected(selectedSites);
