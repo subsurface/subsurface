@@ -10,6 +10,8 @@ on:
 jobs:
   buildOnBionic:
     runs-on: ubuntu-18.04
+    container:
+      image: ubuntu:18.04 # yes, this looks redundant, but something is messed up with their Ubuntu image that causes our builds to fail
 
     steps:
     - name: checkout sources
@@ -17,8 +19,8 @@ jobs:
 
     - name: add build dependencies
       run: |
-        sudo apt update
-        sudo apt install -y \
+        apt update
+        apt install -y \
         autoconf automake cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
         libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \
         libqt5webkit5-dev libsqlite3-dev libssh2-1-dev libssl-dev libssl-dev \
