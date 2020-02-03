@@ -24,8 +24,6 @@
 #define MAX_DEPTH M_OR_FT(150, 450)
 #define MIN_DEPTH M_OR_FT(20, 60)
 
-static DivePlannerPointsModel* plannerModel = DivePlannerPointsModel::instance();
-
 DiveHandler::DiveHandler() : QGraphicsEllipseItem()
 {
 	setRect(-5, -5, 10, 10);
@@ -46,6 +44,7 @@ void DiveHandler::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 	QMenu m;
 	// Don't have a gas selection for the last point
 	emit released();
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	QModelIndex index = plannerModel->index(parentIndex(), DivePlannerPointsModel::GAS);
 	if (index.sibling(index.row() + 1, index.column()).isValid()) {
 		GasSelectionModel *model = GasSelectionModel::instance();
@@ -77,6 +76,7 @@ void DiveHandler::selfRemove()
 void DiveHandler::changeGas()
 {
 	QAction *action = qobject_cast<QAction *>(sender());
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	QModelIndex index = plannerModel->index(parentIndex(), DivePlannerPointsModel::GAS);
 	plannerModel->gasChange(index.sibling(index.row() + 1, index.column()), action->data().toInt());
 }
@@ -109,6 +109,7 @@ void DiveHandler::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f)
 {
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	ui.setupUi(this);
 	ui.dateEdit->setDisplayFormat(prefs.date_format);
 	ui.tableWidget->setTitle(tr("Dive planner points"));
@@ -218,7 +219,7 @@ void DivePlannerWidget::setSalinity(int salinity)
 		ui.customSalinity->setEnabled(true);
 		ui.customSalinity->setValue(salinity / 10000.0);
 	}
-	plannerModel->setSalinity(salinity);
+	DivePlannerPointsModel::instance()->setSalinity(salinity);
 }
 
 void DivePlannerWidget::settingsChanged()
@@ -234,13 +235,13 @@ void DivePlannerWidget::settingsChanged()
 		ui.atmHeight->setMaximum(3000);
 	}
 	ui.atmHeight->blockSignals(true);
-	ui.atmHeight->setValue((int) get_depth_units((int) pressure_to_altitude(plannerModel->getSurfacePressure()), NULL,NULL));
+	ui.atmHeight->setValue((int) get_depth_units((int) pressure_to_altitude(DivePlannerPointsModel::instance()->getSurfacePressure()), NULL,NULL));
 	ui.atmHeight->blockSignals(false);
 }
 
 void DivePlannerWidget::atmPressureChanged(const int pressure)
 {
-	plannerModel->setSurfacePressure(pressure);
+	DivePlannerPointsModel::instance()->setSurfacePressure(pressure);
 	ui.atmHeight->blockSignals(true);
 	ui.atmHeight->setValue((int) get_depth_units((int) pressure_to_altitude(pressure), NULL,NULL));
 	ui.atmHeight->blockSignals(false);
@@ -252,7 +253,7 @@ void DivePlannerWidget::heightChanged(const int height)
 	ui.ATMPressure->blockSignals(true);
 	ui.ATMPressure->setValue(pressure);
 	ui.ATMPressure->blockSignals(false);
-	plannerModel->setSurfacePressure(pressure);
+	DivePlannerPointsModel::instance()->setSurfacePressure(pressure);
 }
 
 void DivePlannerWidget::waterTypeUpdateTexts()
@@ -273,7 +274,7 @@ void DivePlannerWidget::waterTypeChanged(const int index)
 {
 	ui.customSalinity->setEnabled(index == ui.waterType->count() - 1);
 	ui.customSalinity->setValue(ui.waterType->itemData(index).toInt() / 10000.0);
-	plannerModel->setSalinity(ui.waterType->itemData(index).toInt());
+	DivePlannerPointsModel::instance()->setSalinity(ui.waterType->itemData(index).toInt());
 }
 
 void DivePlannerWidget::customSalinityChanged(double density)
@@ -281,7 +282,7 @@ void DivePlannerWidget::customSalinityChanged(double density)
 	if (ui.customSalinity->isEnabled()) {
 		int newSalinity = (int)(density * 10000.0);
 		ui.waterType->setItemData(ui.waterType->count() - 1, newSalinity);
-		plannerModel->setSalinity(newSalinity);
+		DivePlannerPointsModel::instance()->setSalinity(newSalinity);
 	}
 }
 
@@ -421,6 +422,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 {
 	ui.setupUi(this);
 
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	plannerModel->getDiveplan().bottomsac = prefs.bottomsac;
 	plannerModel->getDiveplan().decosac = prefs.decosac;
 
@@ -516,6 +518,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 
 void PlannerSettingsWidget::updateUnitsUI()
 {
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	ui.ascRate75->setValue(plannerModel->ascrate75Display());
 	ui.ascRate50->setValue(plannerModel->ascrate50Display());
 	ui.ascRateStops->setValue(plannerModel->ascratestopsDisplay());
