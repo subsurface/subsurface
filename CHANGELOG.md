@@ -1,3 +1,4 @@
+Desktop: ignore dive sites without location in proximity search
 Mobile: add personalized option for units
 Mobile: add Dive Summary page
 Mobile: option to reset default cylinder

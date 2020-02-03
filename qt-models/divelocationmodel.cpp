@@ -285,8 +285,11 @@ GeoReferencingOptionsModel::GeoReferencingOptionsModel(QObject *parent) : QStrin
 
 bool GPSLocationInformationModel::filterAcceptsRow(int sourceRow, const QModelIndex &parent) const
 {
+	if (!has_location(&location))
+		return false;
+
 	struct dive_site *ds = sourceModel()->index(sourceRow, LocationInformationModel::DIVESITE, parent).data().value<dive_site *>();
-	if (!ds || ds == ignoreDs || ds == RECENTLY_ADDED_DIVESITE)
+	if (!ds || ds == ignoreDs || ds == RECENTLY_ADDED_DIVESITE || !has_location(&ds->location))
 		return false;
 
 	return distance <= 0 ? same_location(&ds->location, &location)
