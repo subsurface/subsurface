@@ -12,7 +12,7 @@
 // The mobile diveplanner shows all diveplans, but the editing functionality is
 // limited to keep the UI simpler.
 
-class plannerShared: public QObject {
+class PlannerShared: public QObject {
 	Q_OBJECT
 
 public:

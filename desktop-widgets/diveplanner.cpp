@@ -353,7 +353,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.label_min_switch_duration->setDisabled(false);
 		ui.sacfactor->setDisabled(false);
 		ui.problemsolvingtime->setDisabled(false);
-		ui.sacfactor->setValue(plannerShared::sacfactor());
+		ui.sacfactor->setValue(PlannerShared::sacfactor());
 		ui.problemsolvingtime->setValue(prefs.problemsolvingtime);
 		ui.display_variations->setDisabled(false);
 	}
@@ -388,7 +388,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.label_min_switch_duration->setDisabled(false);
 		ui.sacfactor->setDisabled(false);
 		ui.problemsolvingtime->setDisabled(false);
-		ui.sacfactor->setValue(plannerShared::sacfactor());
+		ui.sacfactor->setValue(PlannerShared::sacfactor());
 		ui.problemsolvingtime->setValue(prefs.problemsolvingtime);
 		ui.display_variations->setDisabled(false);
 	}
@@ -432,18 +432,18 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.display_transitions->setChecked(prefs.display_transitions);
 	ui.display_variations->setChecked(prefs.display_variations);
 	ui.safetystop->setChecked(prefs.safetystop);
-	ui.sacfactor->setValue(plannerShared::sacfactor());
+	ui.sacfactor->setValue(PlannerShared::sacfactor());
 	ui.problemsolvingtime->setValue(prefs.problemsolvingtime);
-	ui.bottompo2->setValue(plannerShared::bottompo2());
-	ui.decopo2->setValue(plannerShared::decopo2());
+	ui.bottompo2->setValue(PlannerShared::bottompo2());
+	ui.decopo2->setValue(PlannerShared::decopo2());
 	ui.backgasBreaks->setChecked(prefs.doo2breaks);
-	plannerShared::set_dobailout(false);
+	PlannerShared::set_dobailout(false);
 	setBailoutVisibility(false);
 	ui.o2narcotic->setChecked(prefs.o2narcotic);
 	ui.drop_stone_mode->setChecked(prefs.drop_stone_mode);
 	ui.switch_at_req_stop->setChecked(prefs.switch_at_req_stop);
-	ui.min_switch_duration->setValue(plannerShared::min_switch_duration());
-	ui.surface_segment->setValue(plannerShared::surface_segment());
+	ui.min_switch_duration->setValue(PlannerShared::min_switch_duration());
+	ui.surface_segment->setValue(PlannerShared::surface_segment());
 	ui.recreational_deco->setChecked(prefs.planner_deco_mode == RECREATIONAL);
 	ui.buehlmann_deco->setChecked(prefs.planner_deco_mode == BUEHLMANN);
 	ui.vpmb_deco->setChecked(prefs.planner_deco_mode == VPMB);
@@ -455,9 +455,9 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 		rebreather_modes.append(gettextFromC::tr(divemode_text_ui[i]));
 	ui.rebreathermode->insertItems(0, rebreather_modes);
 
-	connect(ui.recreational_deco, &QAbstractButton::clicked, [=] { plannerShared::set_planner_deco_mode(RECREATIONAL); });
-	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [=] { plannerShared::set_planner_deco_mode(BUEHLMANN); });
-	connect(ui.vpmb_deco, &QAbstractButton::clicked, [=] { plannerShared::set_planner_deco_mode(VPMB); });
+	connect(ui.recreational_deco, &QAbstractButton::clicked, [=] { PlannerShared::set_planner_deco_mode(RECREATIONAL); });
+	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [=] { PlannerShared::set_planner_deco_mode(BUEHLMANN); });
+	connect(ui.vpmb_deco, &QAbstractButton::clicked, [=] { PlannerShared::set_planner_deco_mode(VPMB); });
 
 	connect(ui.lastStop, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setLastStop6m);
 	connect(ui.lastStop, &QAbstractButton::toggled, this, &PlannerSettingsWidget::disableBackgasBreaks);
@@ -466,7 +466,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.display_runtime, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setDisplayRuntime);
 	connect(ui.display_transitions, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setDisplayTransitions);
 	connect(ui.safetystop, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setSafetyStop);
-	connect(ui.reserve_gas, QOverload<int>::of(&QSpinBox::valueChanged), &plannerShared::set_reserve_gas);
+	connect(ui.reserve_gas, QOverload<int>::of(&QSpinBox::valueChanged), &PlannerShared::set_reserve_gas);
 	connect(ui.ascRate75, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscrate75Display);
 	connect(ui.ascRate50, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscrate50Display);
 	connect(ui.ascRateStops, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscratestopsDisplay);
@@ -477,11 +477,11 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.gflow, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setGFLow);
 	connect(ui.vpmb_conservatism, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setVpmbConservatism);
 	connect(ui.backgasBreaks, &QAbstractButton::toggled, this, &PlannerSettingsWidget::setBackgasBreaks);
-	connect(ui.bailout, &QAbstractButton::toggled, &plannerShared::set_dobailout);
-	connect(ui.o2narcotic, &QAbstractButton::toggled, &plannerShared::set_o2narcotic);
+	connect(ui.bailout, &QAbstractButton::toggled, &PlannerShared::set_dobailout);
+	connect(ui.o2narcotic, &QAbstractButton::toggled, &PlannerShared::set_o2narcotic);
 	connect(ui.switch_at_req_stop, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setSwitchAtReqStop);
-	connect(ui.min_switch_duration, QOverload<int>::of(&QSpinBox::valueChanged), &plannerShared::set_min_switch_duration);
-	connect(ui.surface_segment, QOverload<int>::of(&QSpinBox::valueChanged), &plannerShared::set_surface_segment);
+	connect(ui.min_switch_duration, QOverload<int>::of(&QSpinBox::valueChanged), &PlannerShared::set_min_switch_duration);
+	connect(ui.surface_segment, QOverload<int>::of(&QSpinBox::valueChanged), &PlannerShared::set_surface_segment);
 	connect(ui.rebreathermode, QOverload<int>::of(&QComboBox::currentIndexChanged), plannerModel, &DivePlannerPointsModel::setRebreatherMode);
 	connect(ui.rebreathermode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &PlannerSettingsWidget::setBailoutVisibility);
 
@@ -489,13 +489,13 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [=] { disableDecoElements(BUEHLMANN); });
 	connect(ui.vpmb_deco, &QAbstractButton::clicked, [=] { disableDecoElements(VPMB); });
 
-	connect(ui.sacfactor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &plannerShared::set_sacfactor);
+	connect(ui.sacfactor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &PlannerShared::set_sacfactor);
 	connect(ui.problemsolvingtime, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setProblemSolvingTime);
-	connect(ui.bottompo2, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &plannerShared::set_bottompo2);
-	connect(ui.decopo2, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &plannerShared::set_decopo2);
-	connect(ui.bestmixEND, QOverload<int>::of(&QSpinBox::valueChanged), &plannerShared::set_bestmixend);
-	connect(ui.bottomSAC, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &plannerShared::set_bottomsac);
-	connect(ui.decoStopSAC, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &plannerShared::set_decosac);
+	connect(ui.bottompo2, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &PlannerShared::set_bottompo2);
+	connect(ui.decopo2, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &PlannerShared::set_decopo2);
+	connect(ui.bestmixEND, QOverload<int>::of(&QSpinBox::valueChanged), &PlannerShared::set_bestmixend);
+	connect(ui.bottomSAC, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &PlannerShared::set_bottomsac);
+	connect(ui.decoStopSAC, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &PlannerShared::set_decosac);
 
 	settingsChanged();
 	ui.gflow->setValue(prefs.gflow);
@@ -554,8 +554,8 @@ void PlannerSettingsWidget::settingsChanged()
 		ui.bottomSAC->setSingleStep(0.1);
 		ui.decoStopSAC->setDecimals(2);
 		ui.decoStopSAC->setSingleStep(0.1);
-		ui.bottomSAC->setValue(plannerShared::bottomsac());
-		ui.decoStopSAC->setValue(plannerShared::decosac());
+		ui.bottomSAC->setValue(PlannerShared::bottomsac());
+		ui.decoStopSAC->setValue(PlannerShared::decosac());
 	} else {
 		ui.bottomSAC->setSuffix(tr("ℓ/min"));
 		ui.decoStopSAC->setSuffix(tr("ℓ/min"));
@@ -563,8 +563,8 @@ void PlannerSettingsWidget::settingsChanged()
 		ui.bottomSAC->setSingleStep(1);
 		ui.decoStopSAC->setDecimals(0);
 		ui.decoStopSAC->setSingleStep(1);
-		ui.bottomSAC->setValue(plannerShared::bottomsac());
-		ui.decoStopSAC->setValue(plannerShared::decosac());
+		ui.bottomSAC->setValue(PlannerShared::bottomsac());
+		ui.decoStopSAC->setValue(PlannerShared::decosac());
 	}
 	if(get_units()->pressure == units::BAR) {
 		ui.reserve_gas->setSuffix(tr("bar"));
@@ -594,7 +594,7 @@ void PlannerSettingsWidget::printDecoPlan()
 
 void PlannerSettingsWidget::setBackgasBreaks(bool dobreaks)
 {
-	plannerShared::set_doo2breaks(dobreaks);
+	PlannerShared::set_doo2breaks(dobreaks);
 }
 
 void PlannerSettingsWidget::setBailoutVisibility(int mode)
