@@ -110,6 +110,8 @@ void DiveHandler::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f)
 {
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	CylindersModelFiltered *cylinders = DivePlannerPointsModel::instance()->cylindersModel();
+
 	ui.setupUi(this);
 	ui.dateEdit->setDisplayFormat(prefs.date_format);
 	ui.tableWidget->setTitle(tr("Dive planner points"));
@@ -120,8 +122,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::DIVEMODE, new DiveTypesDelegate(this));
 	ui.cylinderTableWidget->setTitle(tr("Available gases"));
 	ui.cylinderTableWidget->setBtnToolTip(tr("Add cylinder"));
-	ui.cylinderTableWidget->setModel(CylindersModelFiltered::instance());
-	connect(ui.cylinderTableWidget, &TableView::itemClicked, CylindersModelFiltered::instance(), &CylindersModelFiltered::remove);
+	ui.cylinderTableWidget->setModel(cylinders);
+	connect(ui.cylinderTableWidget, &TableView::itemClicked, cylinders, &CylindersModelFiltered::remove);
 	ui.waterType->setItemData(0, FRESHWATER_SALINITY);
 	ui.waterType->setItemData(1, SEAWATER_SALINITY);
 	ui.waterType->setItemData(2, EN13319_SALINITY);
@@ -139,13 +141,13 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	// Continue to use old syntax, to avoid problems.
 	connect(ui.tableWidget, SIGNAL(addButtonClicked()), plannerModel, SLOT(addStop()));
 
-	connect(CylindersModelFiltered::instance(), &CylindersModelFiltered::dataChanged, GasSelectionModel::instance(), &GasSelectionModel::repopulate);
-	connect(CylindersModelFiltered::instance(), &CylindersModelFiltered::rowsInserted, GasSelectionModel::instance(), &GasSelectionModel::repopulate);
-	connect(CylindersModelFiltered::instance(), &CylindersModelFiltered::rowsRemoved, GasSelectionModel::instance(), &GasSelectionModel::repopulate);
-	connect(CylindersModelFiltered::instance(), &CylindersModelFiltered::dataChanged, plannerModel, &DivePlannerPointsModel::emitDataChanged);
-	connect(CylindersModelFiltered::instance(), &CylindersModelFiltered::dataChanged, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
-	connect(CylindersModelFiltered::instance(), &CylindersModelFiltered::rowsInserted, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
-	connect(CylindersModelFiltered::instance(), &CylindersModelFiltered::rowsRemoved, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
+	connect(cylinders, &CylindersModelFiltered::dataChanged, GasSelectionModel::instance(), &GasSelectionModel::repopulate);
+	connect(cylinders, &CylindersModelFiltered::rowsInserted, GasSelectionModel::instance(), &GasSelectionModel::repopulate);
+	connect(cylinders, &CylindersModelFiltered::rowsRemoved, GasSelectionModel::instance(), &GasSelectionModel::repopulate);
+	connect(cylinders, &CylindersModelFiltered::dataChanged, plannerModel, &DivePlannerPointsModel::emitDataChanged);
+	connect(cylinders, &CylindersModelFiltered::dataChanged, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
+	connect(cylinders, &CylindersModelFiltered::rowsInserted, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
+	connect(cylinders, &CylindersModelFiltered::rowsRemoved, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
 	connect(plannerModel, &DivePlannerPointsModel::calculatedPlanNotes, MainWindow::instance(), &MainWindow::setPlanNotes);
 
 

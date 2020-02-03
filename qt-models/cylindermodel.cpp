@@ -611,12 +611,6 @@ void CylindersModel::cylindersReset(const QVector<dive *> &dives)
 	updateDive();
 }
 
-CylindersModelFiltered *CylindersModelFiltered::instance()
-{
-	static CylindersModelFiltered self;
-	return &self;
-}
-
 CylindersModelFiltered::CylindersModelFiltered(QObject *parent) : QSortFilterProxyModel(parent)
 {
 	setSourceModel(&source);

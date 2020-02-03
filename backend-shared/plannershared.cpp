@@ -126,7 +126,7 @@ void PlannerShared::set_o2narcotic(bool value)
 {
 	qPrefDivePlanner::set_o2narcotic(value);
 	DivePlannerPointsModel::instance()->emitDataChanged();
-	CylindersModelFiltered::instance()->model()->updateBestMixes();
+	DivePlannerPointsModel::instance()->cylindersModel()->model()->updateBestMixes();
 }
 
 double PlannerShared::bottompo2()
@@ -136,7 +136,7 @@ double PlannerShared::bottompo2()
 void PlannerShared::set_bottompo2(double value)
 {
 	qPrefDivePlanner::set_bottompo2((int) (value * 1000.0));
-	CylindersModelFiltered::instance()->model()->updateBestMixes();
+	DivePlannerPointsModel::instance()->cylindersModel()->model()->updateBestMixes();
 }
 
 double PlannerShared::decopo2()
@@ -148,8 +148,8 @@ void PlannerShared::set_decopo2(double value)
 	pressure_t olddecopo2;
 	olddecopo2.mbar = prefs.decopo2;
 	qPrefDivePlanner::instance()->set_decopo2((int) (value * 1000.0));
-	CylindersModelFiltered::instance()->model()->updateDecoDepths(olddecopo2);
-	CylindersModelFiltered::instance()->model()->updateBestMixes();
+	DivePlannerPointsModel::instance()->cylindersModel()->model()->updateDecoDepths(olddecopo2);
+	DivePlannerPointsModel::instance()->cylindersModel()->model()->updateBestMixes();
 }
 
 int PlannerShared::bestmixend()
@@ -159,5 +159,5 @@ int PlannerShared::bestmixend()
 void PlannerShared::set_bestmixend(int value)
 {
 	qPrefDivePlanner::set_bestmixend(units_to_depth(value).mm);
-	CylindersModelFiltered::instance()->model()->updateBestMixes();
+	DivePlannerPointsModel::instance()->cylindersModel()->model()->updateBestMixes();
 }
