@@ -120,9 +120,9 @@ extern "C" char *printGPSCoordsC(const location_t *location)
 /**
 * Try to parse in a generic manner a coordinate.
 */
-static bool parseCoord(const QString& txt, int& pos, const QString& positives,
-		       const QString& negatives, const QString& others,
-		       double& value)
+static bool parseCoord(const QString &txt, int &pos, const QString &positives,
+		       const QString &negatives, const QString &others,
+		       double &value)
 {
 	bool numberDefined = false, degreesDefined = false,
 		minutesDefined = false, secondsDefined = false;
@@ -221,7 +221,7 @@ static bool parseCoord(const QString& txt, int& pos, const QString& positives,
 /**
 * Parse special coordinate formats that cannot be handled by parseCoord.
 */
-static bool parseSpecialCoords(const QString& txt, double& latitude, double& longitude) {
+static bool parseSpecialCoords(const QString &txt, double &latitude, double &longitude) {
 	QRegExp xmlFormat("(-?\\d+(?:\\.\\d+)?),?\\s+(-?\\d+(?:\\.\\d+)?)");
 	if (xmlFormat.exactMatch(txt)) {
 		latitude = xmlFormat.cap(1).toDouble();
