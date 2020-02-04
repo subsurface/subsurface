@@ -237,10 +237,16 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 	static const QString POS_LON = QString("+E") + gettextFromC::tr("E");
 	static const QString NEG_LON = QString("-W") + gettextFromC::tr("W");
 
-	//remove the useless spaces (but keep the ones separating numbers)
+	// Remove the useless spaces (but keep the ones separating numbers)
+	// and normalize different ways of writing separators.
 	static const QRegExp SPACE_CLEANER("\\s*([" + POS_LAT + NEG_LAT + POS_LON +
 		NEG_LON + degreeSigns() + "'\"\\s])\\s*");
-	const QString normalized = gps_text.trimmed().toUpper().replace(SPACE_CLEANER, "\\1");
+	const QString normalized = gps_text.trimmed().toUpper().
+		replace(SPACE_CLEANER, "\\1").
+		replace(QStringLiteral("′"), "'").
+		replace(QStringLiteral("’"), "'").
+		replace(QStringLiteral("''"), "\"").
+		replace(QStringLiteral("″"), "\"");
 
 	if (normalized.isEmpty()) {
 		*latitude = 0.0;
