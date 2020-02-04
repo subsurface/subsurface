@@ -92,14 +92,14 @@ void QMLInterface::setup(QQmlContext *ct)
 
 	// calculate divesummary first time.
 	// this is needed in order to load the divesummary page
-	diveSummary::summaryCalculation(0, 3);
+	self.summaryCalculation(0, 3);
 }
 
 static QStringList diveSummaryTextCached;
 
 void QMLInterface::summaryCalculation(int primaryPeriod, int secondaryPeriod)
 {
-	diveSummaryTextCached = diveSummary::summaryCalculation(primaryPeriod, secondaryPeriod);
+	diveSummaryTextCached = ::summaryCalculation(primaryPeriod, secondaryPeriod);
 	emit diveSummaryTextChanged(diveSummaryTextCached);
 }
 
