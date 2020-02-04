@@ -70,26 +70,23 @@ std::array<timestamp_t, 2> diveSummary::loopDives(timestamp_t primaryStart, time
 			lastDive = dive->when;
 
 		// check if dive is newer than primaryStart (add to first column)
-		if (dive->when > primaryStart) {
-			if (is_dc_planner(&dive->dc))
-				stats0.diveplans++;
-			else
-				calculateDive(dive, stats0);
-		}
+		if (dive->when > primaryStart)
+			calculateDive(dive, stats0);
 
 		// check if dive is newer than secondaryStart (add to second column)
-		if (dive->when > secondaryStart) {
-			if (is_dc_planner(&dive->dc))
-				stats1.diveplans++;
-			else
-				calculateDive(dive, stats1);
-		}
+		if (dive->when > secondaryStart)
+			calculateDive(dive, stats1);
 	}
 	return { firstDive, lastDive };
 }
 
 void diveSummary::calculateDive(struct dive *dive, Stats &stats)
 {
+	if (is_dc_planner(&dive->dc)) {
+		stats.diveplans++;
+		return;
+	}
+
 	// one more real dive
 	stats.dives++;
 
