@@ -351,16 +351,26 @@ int parse_csv_file(const char *filename, char **params, int pnr, const char *csv
 static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, const char *tag)
 {
 	char *buf;
+	size_t i, amp = 0, rest = 0;
 
 	if (mem->size == 0 && readfile(filename, mem) < 0)
 		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
+
+	/* Count ampersand characters */
+	for (i = 0; i < mem->size; ++i) {
+		if (((char *)mem->buffer)[i] == '&') {
+			++amp;
+		}
+	}
+
 
 	/* Surround the CSV file content with XML tags to enable XSLT
 	 * parsing
 	 *
 	 * Tag markers take: strlen("<></>") = 5
+	 * Reserve also room for encoding ampersands "&" => "&amp;"
 	 */
-	buf = realloc(mem->buffer, mem->size + 7 + strlen(tag) * 2);
+	buf = realloc(mem->buffer, mem->size + 7 + strlen(tag) * 2 + amp * 4);
 	if (buf != NULL) {
 		char *starttag = NULL;
 		char *endtag = NULL;
@@ -389,6 +399,16 @@ static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, cons
 
 		free(starttag);
 		free(endtag);
+
+		/* Expand ampersands to encoded version */
+		for (i = mem->size, rest = 0; i > 0; --i, ++rest) {
+			if (((char *)mem->buffer)[i] == '&') {
+				memmove(((char *)mem->buffer) + i + 4 + 1, ((char *)mem->buffer) + i + 1, rest);
+				memcpy(((char *)mem->buffer) + i + 1, "amp;", 4);
+				rest += 4;
+				mem->size += 4;
+			}
+		}
 	} else {
 		free(mem->buffer);
 		return report_error("realloc failed in %s", __func__);
