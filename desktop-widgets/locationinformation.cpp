@@ -267,7 +267,7 @@ void LocationInformationWidget::on_GPSbutton_clicked()
 
 void LocationInformationWidget::on_diveSiteCoordinates_editingFinished()
 {
-	if (diveSite)
+	if (diveSite && validateGpsText(ui.diveSiteCoordinates->text()))
 		Command::editDiveSiteLocation(diveSite, parseGpsText(ui.diveSiteCoordinates->text()));
 }
 
