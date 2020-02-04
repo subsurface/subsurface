@@ -217,7 +217,7 @@ public:
 	bool verbatim_plan() { return prefs.verbatim_plan; }
 	bool display_variations() { return prefs.display_variations; }
 
-	const QStringList &diveSummaryText() { return diveSummary::diveSummaryText; }
+	const QStringList diveSummaryText();
 
 public slots:
 	void set_cloud_verification_status(CLOUD_STATUS value) {  qPrefCloudStorage::set_cloud_verification_status(value); }

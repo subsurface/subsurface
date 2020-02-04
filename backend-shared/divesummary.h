@@ -8,9 +8,7 @@
 class diveSummary {
 
 public:
-	static void summaryCalculation(int primaryPeriod, int secondaryPeriod);
-
-	static QStringList diveSummaryText;
+	static QStringList summaryCalculation(int primaryPeriod, int secondaryPeriod);
 
 private:
 	diveSummary() {}
@@ -27,6 +25,6 @@ private:
 	// Returns a (first_dive, last_dive) pair
 	static std::array<timestamp_t, 2> loopDives(timestamp_t primaryStart, timestamp_t secondaryStart, Stats &stats0, Stats &stats1);
 	static void calculateDive(struct dive *dive, Stats &stats);
-	static void buildStringList(int inx, const Stats &stats);
+	static void buildStringList(int inx, const Stats &stats, QStringList &diveSummaryText);
 };
 #endif // DIVESUMMARY_H

@@ -5,9 +5,7 @@
 
 #include <QDateTime>
 
-QStringList diveSummary::diveSummaryText;
-
-void diveSummary::summaryCalculation(int primaryPeriod, int secondaryPeriod)
+QStringList diveSummary::summaryCalculation(int primaryPeriod, int secondaryPeriod)
 {
 	QDateTime localTime;
 
@@ -24,29 +22,31 @@ void diveSummary::summaryCalculation(int primaryPeriod, int secondaryPeriod)
 	timestamp_t lastDive = firstLast[1];
 
 	// prepare stringlist
-	diveSummaryText.clear();
-	diveSummaryText << "??" << "??" << QObject::tr("no dives in period") << QObject::tr("no divies in period")  << "??" <<
-						 "??" << "??" << "??" <<
-						 "?:??" << "?:??" << "?:??" <<
-						 "?:??" << "?:??" << "?:??" <<
-						 "??" << "??" << "??" << "??" << "??" <<
-						 "??" << "??" << "??" << "??" << "??" << "??" << "??";
+	QStringList res = {
+		"??", "??", QObject::tr("no dives in period"), QObject::tr("no dives in period"), "??",
+		"??", "??", "??",
+		"?:??", "?:??", "?:??",
+		"?:??", "?:??", "?:??",
+		"??", "??", "??", "??", "??",
+		"??", "??", "??", "??", "??", "??", "??"
+	};
 
 	// set oldest/newest date
 	if (firstDive) {
 		localTime = QDateTime::fromMSecsSinceEpoch(1000 * firstDive, Qt::UTC);
 		localTime.setTimeSpec(Qt::UTC);
-		diveSummaryText[0] = QStringLiteral("%1").arg(localTime.date().toString(prefs.date_format_short));
+		res[0] = QStringLiteral("%1").arg(localTime.date().toString(prefs.date_format_short));
 	}
 	if (lastDive) {
 		localTime = QDateTime::fromMSecsSinceEpoch(1000 * lastDive, Qt::UTC);
 		localTime.setTimeSpec(Qt::UTC);
-		diveSummaryText[1] = QStringLiteral("%1").arg(localTime.date().toString(prefs.date_format_short));
+		res[1] = QStringLiteral("%1").arg(localTime.date().toString(prefs.date_format_short));
 	}
 
 	// and add data
-	buildStringList(0, stats0);
-	buildStringList(1, stats1);
+	buildStringList(0, stats0, res);
+	buildStringList(1, stats1, res);
+	return res;
 }
 
 diveSummary::Stats::Stats() :
@@ -141,7 +141,7 @@ static QString volumeString(long volume)
 	return QString("%1").arg((qPrefUnits::volume() == units::LITER) ? volume / 1000 : round(100.0 * ml_to_cuft(volume)) / 100.0);
 }
 
-void diveSummary::buildStringList(int inx, const Stats &stats)
+void diveSummary::buildStringList(int inx, const Stats &stats, QStringList &diveSummaryText)
 {
 	if (!stats.dives) {
 		diveSummaryText[2+inx] = QObject::tr("no dives in period");

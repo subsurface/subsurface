@@ -95,8 +95,15 @@ void QMLInterface::setup(QQmlContext *ct)
 	diveSummary::summaryCalculation(0, 3);
 }
 
+static QStringList diveSummaryTextCached;
+
 void QMLInterface::summaryCalculation(int primaryPeriod, int secondaryPeriod)
 {
-	diveSummary::summaryCalculation(primaryPeriod, secondaryPeriod);
-	emit diveSummaryTextChanged(diveSummary::diveSummaryText);
+	diveSummaryTextCached = diveSummary::summaryCalculation(primaryPeriod, secondaryPeriod);
+	emit diveSummaryTextChanged(diveSummaryTextCached);
+}
+
+const QStringList QMLInterface::diveSummaryText()
+{
+	return diveSummaryTextCached;
 }
