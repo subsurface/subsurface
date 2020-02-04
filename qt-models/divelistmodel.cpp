@@ -106,7 +106,7 @@ void CollapsedDiveListSortModel::setActiveTrip(const QString &trip)
 	// to be destroyed before this function returns.
 	// Instead do this asynchronously
 	QtConcurrent::run(QThreadPool::globalInstance(),
-			  [=]{
+			  []{
 				CollapsedDiveListSortModel::instance()->updateFilterState();
 			  });
 }

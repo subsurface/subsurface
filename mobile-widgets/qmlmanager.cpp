@@ -1859,7 +1859,7 @@ void QMLManager::writeToAppLogFile(QString logText)
 
 void QMLManager::setStatusbarColor(QColor color)
 {
-	QtAndroid::runOnAndroidThread([=]() {
+	QtAndroid::runOnAndroidThread([color]() {
 		QAndroidJniObject window = QtAndroid::androidActivity().callObjectMethod("getWindow", "()Landroid/view/Window;");
 		window.callMethod<void>("addFlags", "(I)V", FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 		window.callMethod<void>("clearFlags", "(I)V", FLAG_TRANSLUCENT_STATUS);
@@ -2094,7 +2094,7 @@ void QMLManager::setFilter(const QString filterText)
 	// show that we are doing something, then do something in another thread in order not to block the UI
 	QMetaObject::invokeMethod(qmlWindow, "showBusyAndDisconnectModel");
 	QtConcurrent::run(QThreadPool::globalInstance(),
-			  [=]{
+			  [this,filterText]{
 				DiveListSortModel::instance()->setFilter(filterText);
 				CollapsedDiveListSortModel::instance()->updateFilterState();
 				QMetaObject::invokeMethod(qmlWindow, "hideBusyAndConnectModel");
