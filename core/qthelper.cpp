@@ -205,15 +205,14 @@ static bool parseCoord(const QString &txt, int &pos, const QString &positives,
 		}
 		++pos;
 	}
-	if (!degreesDefined && numberDefined) {
+	if (!degreesDefined && numberDefined)
 		value = number; //just a single number => degrees
-	} else if (!minutesDefined && numberDefined) {
+	else if (!minutesDefined && numberDefined)
 		value += number / 60.0;
-	} else if (!secondsDefined && numberDefined) {
+	else if (!secondsDefined && numberDefined)
 		value += number / 3600.0;
-	} else if (numberDefined) {
+	else if (numberDefined)
 		return false;
-	}
 	if (sign == -1) value *= -1.0;
 	return true;
 }
