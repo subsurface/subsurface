@@ -2,8 +2,8 @@
 #ifndef DIVESUMMARY_H
 #define DIVESUMMARY_H
 #include <QStringList>
+#include <array>
 #include "core/dive.h"
-
 
 class diveSummary {
 
@@ -15,15 +15,18 @@ public:
 private:
 	diveSummary() {}
 
-	static void loopDives(timestamp_t primaryStart, timestamp_t secondaryStart);
-	static void calculateDive(int inx, struct dive *dive);
-	static void buildStringList(int inx);
+	struct Stats {
+		Stats();
+		int dives, divesEAN, divesDeep, diveplans;
+		long divetime, depth;
+		long divetimeMax, depthMax, sacMin, sacMax;
+		long divetimeAvg, depthAvg, sacAvg;
+		long totalSACTime, totalSacVolume;
+	};
 
-	static timestamp_t firstDive, lastDive;
-	static int dives[2], divesEAN[2], divesDeep[2], diveplans[2];
-	static long divetime[2], depth[2];
-	static long divetimeMax[2], depthMax[2], sacMin[2], sacMax[2];
-	static long divetimeAvg[2], depthAvg[2], sacAvg[2];
-	static long totalSACTime[2], totalSacVolume[2];
+	// Returns a (first_dive, last_dive) pair
+	static std::array<timestamp_t, 2> loopDives(timestamp_t primaryStart, timestamp_t secondaryStart, Stats &stats0, Stats &stats1);
+	static void calculateDive(struct dive *dive, Stats &stats);
+	static void buildStringList(int inx, const Stats &stats);
 };
 #endif // DIVESUMMARY_H
