@@ -6,6 +6,7 @@
 #include "desktop-widgets/divelistview.h"
 #include "core/qthelper.h"
 #include "desktop-widgets/mapwidget.h"
+#include "core/color.h"
 #include "core/divefilter.h"
 #include "core/divesitehelpers.h"
 #include "desktop-widgets/modeldelegates.h"
@@ -87,6 +88,17 @@ void LocationInformationWidget::mergeSelectedDiveSites()
 	Command::mergeDiveSites(diveSite, selected_dive_sites);
 }
 
+// If we can't parse the coordinates, inform the user with a visual clue
+void LocationInformationWidget::coordinatesSetWarning(bool warn)
+{
+	QPalette palette;
+	if (warn) {
+		palette.setColor(QPalette::Base, REDORANGE1_MED_TRANS);
+		palette.setColor(QPalette::Text, WHITE1);
+	}
+	ui.diveSiteCoordinates->setPalette(palette);
+}
+
 void LocationInformationWidget::updateLabels()
 {
 	if (!diveSite) {
@@ -114,6 +126,7 @@ void LocationInformationWidget::updateLabels()
 		ui.diveSiteCoordinates->setText(printGPSCoords(&diveSite->location));
 	else
 		ui.diveSiteCoordinates->clear();
+	coordinatesSetWarning(false);
 
 	ui.locationTags->setText(constructLocationTags(&diveSite->taxonomy, false));
 }
@@ -156,6 +169,7 @@ void LocationInformationWidget::diveSiteChanged(struct dive_site *ds, int field)
 			enableLocationButtons(false);
 			ui.diveSiteCoordinates->clear();
 		}
+		coordinatesSetWarning(false);
 		return;
 	default:
 		return;
@@ -169,6 +183,7 @@ void LocationInformationWidget::clearLabels()
 	ui.diveSiteDescription->clear();
 	ui.diveSiteNotes->clear();
 	ui.diveSiteCoordinates->clear();
+	coordinatesSetWarning(false);
 	ui.locationTags->clear();
 }
 
@@ -176,9 +191,17 @@ void LocationInformationWidget::clearLabels()
 static location_t parseGpsText(const QString &text)
 {
 	double lat, lon;
-	if (parseGpsText(text, &lat, &lon))
+	if (parseGpsText(text.trimmed(), &lat, &lon))
 		return create_location(lat, lon);
 	return zero_location;
+}
+
+// Check if GPS text is parseable
+static bool validateGpsText(const QString &textIn)
+{
+	double lat, lon;
+	QString text = textIn.trimmed();
+	return text.isEmpty() || parseGpsText(text.trimmed(), &lat, &lon);
 }
 
 void LocationInformationWidget::diveSiteDeleted(struct dive_site *ds, int)
@@ -246,6 +269,11 @@ void LocationInformationWidget::on_diveSiteCoordinates_editingFinished()
 {
 	if (diveSite)
 		Command::editDiveSiteLocation(diveSite, parseGpsText(ui.diveSiteCoordinates->text()));
+}
+
+void LocationInformationWidget::on_diveSiteCoordinates_textEdited(const QString &s)
+{
+	coordinatesSetWarning(!validateGpsText(s));
 }
 
 void LocationInformationWidget::on_diveSiteCountry_editingFinished()

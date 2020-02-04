@@ -27,6 +27,7 @@ public slots:
 	void acceptChanges();
 	void on_diveSiteCountry_editingFinished();
 	void on_diveSiteCoordinates_editingFinished();
+	void on_diveSiteCoordinates_textEdited(const QString &s);
 	void on_diveSiteDescription_editingFinished();
 	void on_diveSiteName_editingFinished();
 	void on_diveSiteNotes_editingFinished();
@@ -42,6 +43,7 @@ private slots:
 private:
 	void keyPressEvent(QKeyEvent *e) override;
 	void clearLabels();
+	void coordinatesSetWarning(bool warn);
 	GPSLocationInformationModel filter_model;
 	dive_site *diveSite;
 	int64_t closeDistance; // Distance of "close" dive sites in mm
