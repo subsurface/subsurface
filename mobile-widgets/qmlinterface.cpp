@@ -8,11 +8,21 @@ QMLInterface *QMLInterface::instance()
 	return self;
 }
 
-QMLInterface::QMLInterface()
+void QMLInterface::setup(QQmlContext *ct)
 {
+	// Register interface class
+	ct->setContextProperty("Backend", instance());
+
+	// Make enums available as types
+	qmlRegisterUncreatableType<QMLInterface>("org.subsurfacedivelog.mobile",1,0,"Enums","Enum is not a type");
+
+	// calculate divesummary first time.
+	// this is needed in order to load the divesummary page
+	diveSummary::summaryCalculation(0, 3);
+
 	// relink signals to QML
 	connect(qPrefCloudStorage::instance(), &qPrefCloudStorage::cloud_verification_statusChanged,
-		[this] (int value) { emit cloud_verification_statusChanged(CLOUD_STATUS(value)); });
+			[this] (int value) { emit cloud_verification_statusChanged(CLOUD_STATUS(value)); });
 	connect(qPrefUnits::instance(), &qPrefUnits::duration_unitsChanged,
 			[this] (int value) { emit duration_unitsChanged(DURATION(value)); });
 	connect(qPrefUnits::instance(), &qPrefUnits::lengthChanged,
@@ -85,19 +95,6 @@ QMLInterface::QMLInterface()
 			this, &QMLInterface::verbatim_planChanged);
 	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_variationsChanged,
 			this, &QMLInterface::display_variationsChanged);
-}
-
-void QMLInterface::setup(QQmlContext *ct)
-{
-	// Register interface class
-	ct->setContextProperty("Backend", instance());
-
-	// Make enums available as types
-	qmlRegisterUncreatableType<QMLInterface>("org.subsurfacedivelog.mobile",1,0,"Enums","Enum is not a type");
-
-	// calculate divesummary first time.
-	// this is needed in order to load the divesummary page
-	diveSummary::summaryCalculation(0, 3);
 }
 
 void QMLInterface::summaryCalculation(int primaryPeriod, int secondaryPeriod)

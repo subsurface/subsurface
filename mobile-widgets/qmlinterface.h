@@ -86,7 +86,7 @@ public:
 	static QMLInterface *instance();
 	
 	// function to do the needed setup
-	static void setup(QQmlContext *ct);
+	void setup(QQmlContext *ct);
 
 	// Duplicated enums, these enums are properly defined in the C/C++ structure
 	// but duplicated here to make them available to QML.
@@ -319,6 +319,6 @@ signals:
 
 	void diveSummaryTextChanged(QStringList);
 private:
-	QMLInterface();
+	QMLInterface() {}
 };
 #endif // QMLINTERFACE_H

@@ -188,7 +188,7 @@ void register_qml_types(QQmlEngine *engine)
 		QQmlContext *ct = engine->rootContext();
 
 		// Register qml interface classes
-		QMLInterface::setup(ct);
+		QMLInterface::instance()->setup(ct);
 		themeInterface::setup(ct);
 	}
 
