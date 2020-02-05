@@ -569,13 +569,13 @@ void PlannerSettingsWidget::settingsChanged()
 	if(get_units()->pressure == units::BAR) {
 		ui.reserve_gas->setSuffix(tr("bar"));
 		ui.reserve_gas->setSingleStep(1);
-		ui.reserve_gas->setValue(prefs.reserve_gas / 1000);
+		ui.reserve_gas->setValue(PlannerShared::reserve_gas());
 		ui.reserve_gas->setMaximum(300);
 	} else {
 		ui.reserve_gas->setSuffix(tr("psi"));
 		ui.reserve_gas->setSingleStep(10);
 		ui.reserve_gas->setMaximum(5000);
-		ui.reserve_gas->setValue(mbar_to_PSI(prefs.reserve_gas));
+		ui.reserve_gas->setValue(PlannerShared::reserve_gas());
 	}
 
 	ui.bottomSAC->blockSignals(false);

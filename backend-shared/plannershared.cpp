@@ -18,7 +18,9 @@ void PlannerShared::set_planner_deco_mode(deco_mode value)
 
 int PlannerShared::reserve_gas()
 {
-	return qPrefDivePlanner::reserve_gas();
+	return (get_units()->pressure == units::BAR) ?
+				prefs.reserve_gas / 1000 :
+				mbar_to_PSI(prefs.reserve_gas);
 }
 void PlannerShared::set_reserve_gas(int value)
 {
