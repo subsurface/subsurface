@@ -28,6 +28,8 @@ TemplatePage {
 			spinDecosac.value = Backend.decosac
 		}
 		onPressureChanged: {
+			console.log("----> reserve_gas")
+			spinReserveGas.value = Backend.reserve_gas
 		}
 	}
 	Column {
@@ -191,12 +193,13 @@ TemplatePage {
 					enabled: Backend.planner_deco_mode === Enums.RECREATIONAL
 				}
 				TemplateSpinBox {
+					id: spinReserveGas
 					from: 1
-					to: 99
-					stepSize: 1
+					to: (Backend.pressure === Enums.BAR) ? 300 : 5000
+					stepSize: (Backend.pressure === Enums.BAR) ? 1 : 10
 					value: Backend.reserve_gas
 					textFromValue: function (value, locale) {
-						return value + volumeUnit
+						return value + pressureUnit
 					}
 					onValueModified: {
 						Backend.reserve_gas = value
