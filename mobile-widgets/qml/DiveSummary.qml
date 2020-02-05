@@ -16,8 +16,11 @@ Kirigami.ScrollablePage {
 	title: qsTr("Dive summary")
 
 	onVisibleChanged: {
-		if (visible)
+		if (visible) {
 			Backend.summaryCalculation(selectionPrimary.currentIndex, selectionSecondary.currentIndex)
+			firstDive = Backend.firstDiveDate()
+			lastDive = Backend.lastDiveDate()
+		}
 	}
 	Connections {
 		target: Backend
