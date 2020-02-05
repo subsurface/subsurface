@@ -2,6 +2,12 @@
 #include "qmlinterface.h"
 #include <QQmlEngine>
 
+QMLInterface *QMLInterface::instance()
+{
+	static QMLInterface *self = new QMLInterface;
+	return self;
+}
+
 QMLInterface::QMLInterface()
 {
 	// relink signals to QML
@@ -84,8 +90,7 @@ QMLInterface::QMLInterface()
 void QMLInterface::setup(QQmlContext *ct)
 {
 	// Register interface class
-	static QMLInterface self;
-	ct->setContextProperty("Backend", &self);
+	ct->setContextProperty("Backend", instance());
 
 	// Make enums available as types
 	qmlRegisterUncreatableType<QMLInterface>("org.subsurfacedivelog.mobile",1,0,"Enums","Enum is not a type");

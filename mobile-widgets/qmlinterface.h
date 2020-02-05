@@ -81,6 +81,10 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(QStringList diveSummaryText READ diveSummaryText NOTIFY diveSummaryTextChanged);
 
 public:
+	// function to address the object, which is not needed in production code,
+	// but highly needed when testing signal/slot.
+	static QMLInterface *instance();
+	
 	// function to do the needed setup
 	static void setup(QQmlContext *ct);
 
