@@ -239,7 +239,7 @@ void save_subtitles_buffer(struct membuffer *b, struct dive *dive, int offset, i
 	free_plot_info_data(&pi);
 }
 
-int save_profiledata(const char *filename, const bool select_only)
+int save_profiledata(const char *filename, bool select_only)
 {
 	struct membuffer buf = { 0 };
 	FILE *f;

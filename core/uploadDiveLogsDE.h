@@ -30,7 +30,7 @@ private:
 	void uploadDives(const QString &filename, const QString &userid, const QString &password);
 
 	// only to be used in desktop-widgets::subsurfacewebservices
-	bool prepareDives(const QString &tempfile, const bool selected);
+	bool prepareDives(const QString &tempfile, bool selected);
 
 	QNetworkReply *reply;
 	QHttpMultiPart *multipart;

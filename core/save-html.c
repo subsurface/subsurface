@@ -344,7 +344,7 @@ void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pre, cons
 }
 
 /* if exporting list_only mode, we neglect exporting the samples, bookmarks and cylinders */
-void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_dir, int *dive_no, const bool list_only)
+void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_dir, int *dive_no, bool list_only)
 {
 	put_string(b, "{");
 	put_format(b, "\"number\":%d,", *dive_no);

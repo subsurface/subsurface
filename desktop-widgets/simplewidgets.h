@@ -156,7 +156,7 @@ private:
 	void handleUrlClick(const QString &urlStr);
 	void handleUrlTooltip(const QString &urlStr, const QPoint &pos);
 	bool stringMeetsOurUrlRequirements(const QString &maybeUrlStr);
-	QString fromCursorTilWhitespace(QTextCursor *cursor, const bool searchBackwards);
+	QString fromCursorTilWhitespace(QTextCursor *cursor, bool searchBackwards);
 	QString tryToFormulateUrl(QTextCursor *cursor);
 
 	QTextEdit const *const textEdit;

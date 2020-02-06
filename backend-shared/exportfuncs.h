@@ -7,9 +7,9 @@
 
 struct dive_site;
 
-void exportProfile(QString filename, const bool selected_only);
-void export_TeX(const char *filename, const bool selected_only, bool plain);
-void export_depths(const char *filename, const bool selected_only);
+void exportProfile(QString filename, bool selected_only);
+void export_TeX(const char *filename, bool selected_only, bool plain);
+void export_depths(const char *filename, bool selected_only);
 std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly);
 QFuture<int> exportUsingStyleSheet(QString filename, bool doExport, int units, QString stylesheet, bool anonymize);
 
