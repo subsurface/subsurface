@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #ifndef QMLINTERFACE_H
 #define QMLINTERFACE_H
+#include "core/qthelper.h"
 #include "core/settings/qPrefCloudStorage.h"
 #include "core/settings/qPrefUnit.h"
 #include "core/settings/qPrefDivePlanner.h"
@@ -265,6 +266,8 @@ public slots:
 	void set_display_transitions(bool value) { DivePlannerPointsModel::instance()->setDisplayTransitions(value); }
 	void set_verbatim_plan(bool value) { DivePlannerPointsModel::instance()->setVerbatim(value); }
 	void set_display_variations(bool value) { DivePlannerPointsModel::instance()->setDisplayVariations(value); }
+	QString firstDiveDate() { return get_first_dive_date_string(); }
+	QString lastDiveDate() { return get_last_dive_date_string(); }
 
 signals:
 	void cloud_verification_statusChanged(CLOUD_STATUS);
