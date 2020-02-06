@@ -159,8 +159,6 @@ TemplatePage {
 				}
 
 				Rectangle {
-					border.width: 2
-					border.color: "black"
 					color: 	subsurfaceTheme.backgroundColor
 
 					width: rootItem.width / 2 - 20
@@ -174,8 +172,6 @@ TemplatePage {
 					}
 				}
 				Rectangle {
-					border.width: 2
-					border.color: "black"
 					color: "white"
 					width: rootItem.width / 2 - 60
 					height: subsurfaceTheme.regularPointSize + 10
