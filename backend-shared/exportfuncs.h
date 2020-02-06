@@ -2,9 +2,10 @@
 #ifndef EXPORTFUNCS_H
 #define EXPORTFUNCS_H
 
-#include <QObject>
+#include <QString>
 #include <QFuture>
-#include "core/dive.h"
+
+struct dive_site;
 
 void exportProfile(QString filename, const bool selected_only);
 void export_TeX(const char *filename, const bool selected_only, bool plain);
