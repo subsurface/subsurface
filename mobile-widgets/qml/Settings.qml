@@ -153,14 +153,12 @@ TemplatePage {
 						   ListElement {text: qsTr("Dark")}
 					}
 					onActivated:  {
-						subsurfaceTheme.currentTheme = currentIndex === 0 ? "Blue" :
-												currentIndex === 1 ? "Pink" : "Dark"
+						subsurfaceTheme.currentTheme = currentIndex === 0 ? "Blue" : currentIndex === 1 ? "Pink" : "Dark"
 					}
 				}
 
 				Rectangle {
 					color: 	subsurfaceTheme.backgroundColor
-
 					width: rootItem.width / 2 - 20
 					height: subsurfaceTheme.regularPointSize + 10
 
@@ -190,7 +188,6 @@ TemplatePage {
 					border.width: 2
 					border.color: "black"
 					color: 	subsurfaceTheme.primaryColor
-
 					width: rootItem.width / 2 - 20
 					height: subsurfaceTheme.regularPointSize + 10
 
@@ -304,7 +301,6 @@ TemplatePage {
 					border.width: 2
 					border.color: "black"
 					color: 	subsurfaceTheme.drawerColor
-
 					width: rootItem.width / 2 - 20
 					height: subsurfaceTheme.regularPointSize + 10
 
