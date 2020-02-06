@@ -16,9 +16,8 @@ public:
 	void export_TeX(const char *filename, const bool selected_only, bool plain);
 	void export_depths(const char *filename, const bool selected_only);
 	std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly);
-	void exportUsingStyleSheet(QString filename, bool doExport, int units,
+	QFuture<int> exportUsingStyleSheet(QString filename, bool doExport, int units,
 		QString stylesheet, bool anonymize);
-	QFuture<int> future;
 
 	// prepareDivesForUploadDiveLog
 	// prepareDivesForUploadDiveShare

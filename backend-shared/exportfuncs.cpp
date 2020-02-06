@@ -311,8 +311,8 @@ std::vector<const dive_site *> exportFuncs::getDiveSitesToExport(bool selectedOn
 	return res;
 }
 
-void exportFuncs::exportUsingStyleSheet(QString filename, bool doExport, int units,
+QFuture<int> exportFuncs::exportUsingStyleSheet(QString filename, bool doExport, int units,
 	QString stylesheet, bool anonymize)
 {
-	future = QtConcurrent::run(export_dives_xslt, filename.toUtf8(), doExport, units, stylesheet.toUtf8(), anonymize);
+	return QtConcurrent::run(export_dives_xslt, filename.toUtf8(), doExport, units, stylesheet.toUtf8(), anonymize);
 }
