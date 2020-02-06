@@ -317,7 +317,7 @@ TemplatePage {
 				}
 				Row {
 					Layout.preferredWidth: gridWidth * 0.8
-					Layout.columnSpan: 3
+					Layout.columnSpan: 2
 					spacing: Kirigami.Units.largeSpacing
 					TemplateButton {
 						text: qsTr("smaller")
