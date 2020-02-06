@@ -155,7 +155,7 @@ Kirigami.ApplicationWindow {
 		height: rootItem.height
 		rightPadding: 0
 		enabled: (Backend.cloud_verification_status === Enums.CS_NOCLOUD ||
-				  Backend.cloud_verification_status === Enums.CS_VERIFIED)
+			          Backend.cloud_verification_status === Enums.CS_VERIFIED)
 		topContent: Image {
 			source: "qrc:/qml/icons/dive.jpg"
 			Layout.fillWidth: true
@@ -659,8 +659,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					manager.appendTextToLog("pageStack forced back to map")
 				}
 			} else if (pageStack.currentItem.objectName !== mapPage.objectName &&
-					   pageStack.lastItem.objectName === mapPage.objectName &&
-					   hackToOpenMap === 1 /* MapSelected */) {
+				           pageStack.lastItem.objectName === mapPage.objectName &&
+				           hackToOpenMap === 1 /* MapSelected */) {
 				// if we just picked the mapPage and are suddenly back on a different page
 				// force things back to the mapPage
 				manager.appendTextToLog("pageStack wrong page, switching back to map")
