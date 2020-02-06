@@ -520,6 +520,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						pageStack.push(themetest)
 					}
 				}
+				/* disable for now
 				Kirigami.Action {
 					text: qsTr("Dive planner")
 
@@ -559,6 +560,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						}
 					}
 				}
+				*/
 			}
 		] // end actions
 		Image {
@@ -766,7 +768,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		id: mapPage
 		visible: false
 	}
-
+/* this shouldn't be exposed unless someone will finish the work
 	DivePlannerSetup {
 		id: divePlannerSetupWindow
 		visible: false
@@ -786,7 +788,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		id: divePlannerManagerWindow
 		visible: false
 	}
-
+ */
 	DiveSummary {
 		id: diveSummaryWindow
 		visible: false
