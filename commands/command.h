@@ -24,7 +24,7 @@ QAction *redoAction(QObject *parent);	// Create an redo action.
 // distance are added to a trip. dive d is consumed (the structure is reset)!
 // If newNumber is true, the dive is assigned a new number, depending on the
 // insertion position.
-void addDive(dive *d, const bool autogroup, bool newNumber);
+void addDive(dive *d, bool autogroup, bool newNumber);
 void importDives(struct dive_table *dives, struct trip_table *trips,
 		 struct dive_site_table *sites, int flags, const QString &source); // The tables are consumed!
 void deleteDive(const QVector<struct dive*> &divesToDelete);

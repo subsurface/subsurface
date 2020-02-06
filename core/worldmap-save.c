@@ -24,7 +24,7 @@ char *getGoogleApi()
 	return "https://maps.googleapis.com/maps/api/js?";
 }
 
-void writeMarkers(struct membuffer *b, const bool selected_only)
+void writeMarkers(struct membuffer *b, bool selected_only)
 {
 	int i, dive_no = 0;
 	struct dive *dive;

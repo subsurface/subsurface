@@ -12,7 +12,7 @@
 #include "core/divesite.h"
 #include "exportfuncs.h"
 
-void exportProfile(QString filename, const bool selected_only)
+void exportProfile(QString filename, bool selected_only)
 {
 	struct dive *dive;
 	int i;
@@ -33,7 +33,7 @@ void exportProfile(QString filename, const bool selected_only)
 }
 
 
-void export_TeX(const char *filename, const bool selected_only, bool plain)
+void export_TeX(const char *filename, bool selected_only, bool plain)
 {
 	FILE *f;
 	QDir texdir = QFileInfo(filename).dir();
@@ -233,7 +233,7 @@ void export_TeX(const char *filename, const bool selected_only, bool plain)
 
 }
 
-void export_depths(const char *filename, const bool selected_only)
+void export_depths(const char *filename, bool selected_only)
 {
 	FILE *f;
 	struct dive *dive;

@@ -637,7 +637,7 @@ QString TextHyperlinkEventFilter::tryToFormulateUrl(QTextCursor *cursor)
 	return stringMeetsOurUrlRequirements(maybeUrlStr) ? maybeUrlStr : QString();
 }
 
-QString TextHyperlinkEventFilter::fromCursorTilWhitespace(QTextCursor *cursor, const bool searchBackwards)
+QString TextHyperlinkEventFilter::fromCursorTilWhitespace(QTextCursor *cursor, bool searchBackwards)
 {
 	// fromCursorTilWhitespace calls cursor->movePosition repeatedly, while
 	// preserving the original 'anchor' (qt terminology) of the cursor.

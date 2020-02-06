@@ -595,7 +595,7 @@ int save_dives(const char *filename)
 	return save_dives_logic(filename, false, false);
 }
 
-static void save_dives_buffer(struct membuffer *b, const bool select_only, bool anonymize)
+static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonymize)
 {
 	int i;
 	struct dive *dive;

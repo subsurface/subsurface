@@ -61,7 +61,7 @@ void uploadDiveLogsDE::doUpload(bool selected, const QString &userid, const QStr
 }
 
 
-bool uploadDiveLogsDE::prepareDives(const QString &tempfile, const bool selected)
+bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 {
 	static const char errPrefix[] = "divelog.de-upload:";
 #ifndef SUBSURFACE_MOBILE
