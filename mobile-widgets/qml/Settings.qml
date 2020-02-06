@@ -167,6 +167,7 @@ TemplatePage {
 					TemplateLabel {
 						text: qsTr("background")
 						color: "black"
+						colorBackground: parent.color
 						anchors.horizontalCenter: parent.horizontalCenter
 						anchors.verticalCenter: parent.verticalCenter
 					}
@@ -179,6 +180,7 @@ TemplatePage {
 					TemplateLabel {
 						text: qsTr("text")
 						color: subsurfaceTheme.textColor
+						colorBackground: parent.color
 						anchors.horizontalCenter: parent.horizontalCenter
 						anchors.verticalCenter: parent.verticalCenter
 					}
@@ -195,6 +197,7 @@ TemplatePage {
 					TemplateLabel {
 						text: qsTr("primary")
 						color: "black"
+						colorBackground: parent.color
 						anchors.horizontalCenter: parent.horizontalCenter
 						anchors.verticalCenter: parent.verticalCenter
 					}
@@ -209,6 +212,7 @@ TemplatePage {
 					TemplateLabel {
 						text: qsTr("text")
 						color: subsurfaceTheme.primaryTextColor
+						colorBackground: parent.color
 						anchors.horizontalCenter: parent.horizontalCenter
 						anchors.verticalCenter: parent.verticalCenter
 					}
@@ -225,6 +229,7 @@ TemplatePage {
 					TemplateLabel {
 						text: qsTr("darker primary")
 						color: "black"
+						colorBackground: parent.color
 						anchors.horizontalCenter: parent.horizontalCenter
 						anchors.verticalCenter: parent.verticalCenter
 					}
@@ -239,6 +244,7 @@ TemplatePage {
 					TemplateLabel {
 						text: qsTr("text")
 						color: subsurfaceTheme.darkerPrimaryTextColor
+						colorBackground: parent.color
 						anchors.horizontalCenter: parent.horizontalCenter
 						anchors.verticalCenter: parent.verticalCenter
 					}
@@ -255,6 +261,7 @@ TemplatePage {
 					TemplateLabel {
 						text: qsTr("light primary")
 						color: "black"
+						colorBackground: parent.color
 						anchors.horizontalCenter: parent.horizontalCenter
 						anchors.verticalCenter: parent.verticalCenter
 					}
@@ -269,6 +276,7 @@ TemplatePage {
 					TemplateLabel {
 						text: qsTr("text")
 						color: subsurfaceTheme.lightPrimaryTextColor
+						colorBackground: parent.color
 						anchors.horizontalCenter: parent.horizontalCenter
 						anchors.verticalCenter: parent.verticalCenter
 					}
@@ -288,6 +296,7 @@ TemplatePage {
 					TemplateLabel {
 						text: qsTr("secondary text")
 						color: subsurfaceTheme.secondaryTextColor
+						colorBackground: parent.color
 						anchors.horizontalCenter: parent.horizontalCenter
 						anchors.verticalCenter: parent.verticalCenter
 					}
@@ -304,6 +313,7 @@ TemplatePage {
 					TemplateLabel {
 						text: qsTr("drawer")
 						color: "black"
+						colorBackground: parent.color
 						anchors.horizontalCenter: parent.horizontalCenter
 						anchors.verticalCenter: parent.verticalCenter
 					}
