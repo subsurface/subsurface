@@ -6,33 +6,22 @@
 #include <QFuture>
 #include "core/dive.h"
 
-class exportFuncs: public QObject {
-	Q_OBJECT
+void exportProfile(QString filename, const bool selected_only);
+void export_TeX(const char *filename, const bool selected_only, bool plain);
+void export_depths(const char *filename, const bool selected_only);
+std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly);
+QFuture<int> exportUsingStyleSheet(QString filename, bool doExport, int units, QString stylesheet, bool anonymize);
 
-public:
-	static exportFuncs *instance();
+// prepareDivesForUploadDiveLog
+// prepareDivesForUploadDiveShare
 
-	void exportProfile(QString filename, const bool selected_only);
-	void export_TeX(const char *filename, const bool selected_only, bool plain);
-	void export_depths(const char *filename, const bool selected_only);
-	std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly);
-	QFuture<int> exportUsingStyleSheet(QString filename, bool doExport, int units,
-		QString stylesheet, bool anonymize);
-
-	// prepareDivesForUploadDiveLog
-	// prepareDivesForUploadDiveShare
-
-private:
-	exportFuncs() {}
-
-	// WARNING
-	// saveProfile uses the UI and are therefore different between
-	// Desktop (UI) and Mobile (QML)
-	// In order to solve this difference, the actual implementations
-	// are done in
-	// desktop-widgets/divelogexportdialog.cpp and
-	// mobile-widgets/qmlmanager.cpp
-	void saveProfile(const struct dive *dive, const QString filename);
-};
+// WARNING
+// exportProfile uses the UI and are therefore different between
+// Desktop (UI) and Mobile (QML)
+// In order to solve this difference, the actual implementations
+// are done in
+// desktop-widgets/divelogexportdialog.cpp and
+// mobile-widgets/qmlmanager.cpp
+void exportProfile(const struct dive *dive, const QString filename);
 
 #endif // EXPORT_FUNCS_H

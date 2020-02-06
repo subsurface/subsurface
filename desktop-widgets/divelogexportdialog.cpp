@@ -179,21 +179,21 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 				if (!filename.contains('.'))
 					filename.append(".xml");
 				QByteArray bt = QFile::encodeName(filename);
-				std::vector<const dive_site *> sites = exportFuncs::instance()->getDiveSitesToExport(ui->exportSelected->isChecked());
+				std::vector<const dive_site *> sites = getDiveSitesToExport(ui->exportSelected->isChecked());
 				save_dive_sites_logic(bt.data(), &sites[0], (int)sites.size(), ui->anonymize->isChecked());
 			}
 		} else if (ui->exportImageDepths->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Save image depths"), lastDir);
 			if (!filename.isNull() && !filename.isEmpty())
-				exportFuncs::instance()->export_depths(qPrintable(filename), ui->exportSelected->isChecked());
+				export_depths(qPrintable(filename), ui->exportSelected->isChecked());
 		} else if (ui->exportTeX->isChecked() || ui->exportLaTeX->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Export to TeX file"), lastDir, tr("TeX files") + " (*.tex)");
 			if (!filename.isNull() && !filename.isEmpty())
-				exportFuncs::instance()->export_TeX(qPrintable(filename), ui->exportSelected->isChecked(), ui->exportTeX->isChecked());
+				export_TeX(qPrintable(filename), ui->exportSelected->isChecked(), ui->exportTeX->isChecked());
 		} else if (ui->exportProfile->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Save profile image"), lastDir);
 			if (!filename.isNull() && !filename.isEmpty())
-				exportFuncs::instance()->exportProfile(qPrintable(filename), ui->exportSelected->isChecked());
+				exportProfile(qPrintable(filename), ui->exportSelected->isChecked());
 		} else if (ui->exportProfileData->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Save profile data"), lastDir);
 			if (!filename.isNull() && !filename.isEmpty())
@@ -214,7 +214,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		qPrefDisplay::set_lastDir(fileInfo.dir().path());
 		// the non XSLT exports are called directly above, the XSLT based ons are called here
 		if (!stylesheet.isEmpty()) {
-			QFuture<void> future = exportFuncs::instance()->exportUsingStyleSheet(filename, ui->exportSelected->isChecked(),
+			QFuture<void> future = exportUsingStyleSheet(filename, ui->exportSelected->isChecked(),
 					ui->CSVUnits_2->currentIndex(), stylesheet.toUtf8(), ui->anonymize->isChecked());
 			MainWindow::instance()->getNotificationWidget()->showNotification(tr("Please wait, exporting..."), KMessageWidget::Information);
 			MainWindow::instance()->getNotificationWidget()->setFuture(future);
@@ -222,7 +222,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 	}
 }
 
-void exportFuncs::saveProfile(const struct dive *dive, const QString filename)
+void exportProfile(const struct dive *dive, const QString filename)
 {
 	ProfileWidget2 *profile = MainWindow::instance()->graphics;
 	profile->plotDive(dive, true, false, true);
