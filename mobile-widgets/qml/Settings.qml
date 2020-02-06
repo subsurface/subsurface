@@ -321,23 +321,23 @@ TemplatePage {
 					spacing: Kirigami.Units.largeSpacing
 					TemplateButton {
 						text: qsTr("smaller")
-						enabled: ThemeNew.currentScale !== 0.85
+						enabled: subsurfaceTheme.currentScale !== 0.85
 						onClicked: {
-							ThemeNew.currentScale = 0.85
+							subsurfaceTheme.currentScale = 0.85
 						}
 					}
 					TemplateButton {
 						text: qsTr("regular")
-						enabled: ThemeNew.currentScale !== 1.0
+						enabled: subsurfaceTheme.currentScale !== 1.0
 						onClicked: {
-							ThemeNew.currentScale = 1.0
+							subsurfaceTheme.currentScale = 1.0
 						}
 					}
 					TemplateButton {
 						text: qsTr("larger")
-						enabled: ThemeNew.currentScale !== 1.15
+						enabled: subsurfaceTheme.currentScale !== 1.15
 						onClicked: {
-							ThemeNew.currentScale = 1.15
+							subsurfaceTheme.currentScale = 1.15
 						}
 					}
 				}
