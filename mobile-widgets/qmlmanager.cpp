@@ -2137,36 +2137,36 @@ void QMLManager::exportToFile(export_types type, QString dir, bool anonymize)
 			break;
 		case EX_DIVE_SITES_XML:
 			{
-				std::vector<const dive_site *> sites = exportFuncs::instance()->getDiveSitesToExport(false);
+				std::vector<const dive_site *> sites = getDiveSitesToExport(false);
 				save_dive_sites_logic(qPrintable(fileName + ".xml"), &sites[0], (int)sites.size(), anonymize);
 				break;
 			}
 		case EX_UDDF:
-			exportFuncs::instance()->exportUsingStyleSheet(fileName + ".uddf", true, 0, "uddf-export.xslt", anonymize);
+			exportUsingStyleSheet(fileName + ".uddf", true, 0, "uddf-export.xslt", anonymize);
 			break;
 		case EX_CSV_DIVE_PROFILE:
-			exportFuncs::instance()->exportUsingStyleSheet(fileName + ".uddf", true, 0, "xml2csv.xslt", anonymize);
+			exportUsingStyleSheet(fileName + ".uddf", true, 0, "xml2csv.xslt", anonymize);
 			break;
 		case EX_CSV_DETAILS:
-			exportFuncs::instance()->exportUsingStyleSheet(fileName + ".uddf", true, 0, "xml2manualcsv.xslt", anonymize);
+			exportUsingStyleSheet(fileName + ".uddf", true, 0, "xml2manualcsv.xslt", anonymize);
 			break;
 		case EX_CSV_PROFILE:
 			save_profiledata(qPrintable(fileName + ".csv"), true);
 			break;
 		case EX_PROFILE_PNG:
-			exportFuncs::instance()->exportProfile(qPrintable(fileName + ".png"), false);
+			exportProfile(qPrintable(fileName + ".png"), false);
 			break;
 		case EX_WORLD_MAP:
 			export_worldmap_HTML(qPrintable(fileName + ".html"), true);
 			break;
 		case EX_TEX:
-			exportFuncs::instance()->export_TeX(qPrintable(fileName + ".tex"), true, true);
+			export_TeX(qPrintable(fileName + ".tex"), true, true);
 			break;
 		case EX_LATEX:
-			exportFuncs::instance()->export_TeX(qPrintable(fileName + ".tex"), true, false);
+			export_TeX(qPrintable(fileName + ".tex"), true, false);
 			break;
 		case EX_IMAGE_DEPTHS:
-			exportFuncs::instance()->export_depths(qPrintable(fileName), false);
+			export_depths(qPrintable(fileName), false);
 			break;
 		default:
 			qDebug() << "export to unknown type " << type << " using " << dir << " remove names " << anonymize;
@@ -2174,7 +2174,7 @@ void QMLManager::exportToFile(export_types type, QString dir, bool anonymize)
 	}
 }
 
-void exportFuncs::saveProfile(const struct dive *dive, const QString filename)
+void exportProfile(const struct dive *, const QString)
 {
 	// TBD
 }

@@ -4,6 +4,7 @@
 #include <QtConcurrent>
 #include "core/membuffer.h"
 #include "core/divesite.h"
+#include "core/gettextfromc.h"
 #include "core/tag.h"
 #include "core/file.h"
 #include "core/errorhelper.h"
@@ -11,14 +12,7 @@
 #include "core/divesite.h"
 #include "exportfuncs.h"
 
-
-exportFuncs *exportFuncs::instance()
-{
-    static exportFuncs *self = new exportFuncs;
-    return self;
-}
-
-void exportFuncs::exportProfile(QString filename, const bool selected_only)
+void exportProfile(QString filename, const bool selected_only)
 {
 	struct dive *dive;
 	int i;
@@ -31,15 +25,15 @@ void exportFuncs::exportProfile(QString filename, const bool selected_only)
 		if (selected_only && !dive->selected)
 			continue;
 		if (count)
-			saveProfile(dive, fi.path() + QDir::separator() + fi.completeBaseName().append(QString("-%1.").arg(count)) + fi.suffix());
+			exportProfile(dive, fi.path() + QDir::separator() + fi.completeBaseName().append(QString("-%1.").arg(count)) + fi.suffix());
 		else
-			saveProfile(dive, filename);
+			exportProfile(dive, filename);
 		++count;
 	}
 }
 
 
-void exportFuncs::export_TeX(const char *filename, const bool selected_only, bool plain)
+void export_TeX(const char *filename, const bool selected_only, bool plain)
 {
 	FILE *f;
 	QDir texdir = QFileInfo(filename).dir();
@@ -96,7 +90,7 @@ void exportFuncs::export_TeX(const char *filename, const bool selected_only, boo
 		if (selected_only && !dive->selected)
 			continue;
 
-		saveProfile(dive, texdir.filePath(QString("profile%1.png").arg(dive->number)));
+		exportProfile(dive, texdir.filePath(QString("profile%1.png").arg(dive->number)));
 		struct tm tm;
 		utc_mkdate(dive->when, &tm);
 
@@ -230,7 +224,7 @@ void exportFuncs::export_TeX(const char *filename, const bool selected_only, boo
 
 	f = subsurface_fopen(filename, "w+");
 	if (!f) {
-		report_error(qPrintable(tr("Can't open file %s")), filename);
+		report_error(qPrintable(gettextFromC::tr("Can't open file %s")), filename);
 	} else {
 		flush_buffer(&buf, f); /*check for writing errors? */
 		fclose(f);
@@ -239,7 +233,7 @@ void exportFuncs::export_TeX(const char *filename, const bool selected_only, boo
 
 }
 
-void exportFuncs::export_depths(const char *filename, const bool selected_only)
+void export_depths(const char *filename, const bool selected_only)
 {
 	FILE *f;
 	struct dive *dive;
@@ -268,7 +262,7 @@ void exportFuncs::export_depths(const char *filename, const bool selected_only)
 
 	f = subsurface_fopen(filename, "w+");
 	if (!f) {
-		report_error(qPrintable(tr("Can't open file %s")), filename);
+		report_error(qPrintable(gettextFromC::tr("Can't open file %s")), filename);
 	} else {
 		flush_buffer(&buf, f); /*check for writing errors? */
 		fclose(f);
@@ -276,7 +270,7 @@ void exportFuncs::export_depths(const char *filename, const bool selected_only)
 	free_buffer(&buf);
 }
 
-std::vector<const dive_site *> exportFuncs::getDiveSitesToExport(bool selectedOnly)
+std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly)
 {
 	std::vector<const dive_site *> res;
 #ifndef SUBSURFACE_MOBILE
@@ -311,7 +305,7 @@ std::vector<const dive_site *> exportFuncs::getDiveSitesToExport(bool selectedOn
 	return res;
 }
 
-QFuture<int> exportFuncs::exportUsingStyleSheet(QString filename, bool doExport, int units,
+QFuture<int> exportUsingStyleSheet(QString filename, bool doExport, int units,
 	QString stylesheet, bool anonymize)
 {
 	return QtConcurrent::run(export_dives_xslt, filename.toUtf8(), doExport, units, stylesheet.toUtf8(), anonymize);
