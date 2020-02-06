@@ -214,9 +214,10 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		qPrefDisplay::set_lastDir(fileInfo.dir().path());
 		// the non XSLT exports are called directly above, the XSLT based ons are called here
 		if (!stylesheet.isEmpty()) {
-			exportFuncs::instance()->exportUsingStyleSheet(filename, ui->exportSelected->isChecked(), ui->CSVUnits_2->currentIndex(), stylesheet.toUtf8(), ui->anonymize->isChecked());
-		MainWindow::instance()->getNotificationWidget()->showNotification(tr("Please wait, exporting..."), KMessageWidget::Information);
-		MainWindow::instance()->getNotificationWidget()->setFuture(exportFuncs::instance()->future);
+			QFuture<void> future = exportFuncs::instance()->exportUsingStyleSheet(filename, ui->exportSelected->isChecked(),
+					ui->CSVUnits_2->currentIndex(), stylesheet.toUtf8(), ui->anonymize->isChecked());
+			MainWindow::instance()->getNotificationWidget()->showNotification(tr("Please wait, exporting..."), KMessageWidget::Information);
+			MainWindow::instance()->getNotificationWidget()->setFuture(future);
 		}
 	}
 }
