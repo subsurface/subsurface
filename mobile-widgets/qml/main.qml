@@ -32,8 +32,6 @@ Kirigami.ApplicationWindow {
 	property alias defaultCylinderIndex: settingsWindow.defaultCylinderIndex
 	property bool filterToggle: false
 	property string filterPattern: ""
-	property bool firstChange: true
-	property int lastOrientation: undefined
 	property int colWidth: undefined
 
 	onNotificationTextChanged: {
@@ -593,42 +591,41 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	}
 
 	QtObject {
-		id: placeHolder
+		id: screenSizeObject
 
 		property int initialWidth: rootItem.width
 		property int initialHeight: rootItem.height
+		property bool firstChange: true
+		property int lastOrientation: undefined
 
 		Component.onCompleted: {
 			// break the binding
 			initialWidth = initialWidth * 1
-			manager.appendTextToLog("SubsufaceTheme constructor completed, initial width " + initialWidth)
-			if (rootItem.firstChange) // only run the setup if we haven't seen a change, yet
-				setupUnits() // but don't count this as a change (after all, it's not)
-			else
-				manager.appendTextToLog("Already adjusted size, ignoring this")
+			manager.appendTextToLog("screenSizeObject constructor completed, initial width " + initialWidth)
+			setupUnits()
 		}
 	}
 
 	onWidthChanged: {
 		manager.appendTextToLog("Window width changed to " + width + " orientation " + Screen.primaryOrientation)
-		if (placeHolder.initialWidth !== undefined) {
-			if (width !== placeHolder.initialWidth && rootItem.firstChange) {
-				rootItem.firstChange = false
-				rootItem.lastOrientation = Screen.primaryOrientation
-				placeHolder.initialWidth = width
-				placeHolder.initialHeight = height
+		if (screenSizeObject.initialWidth !== undefined) {
+			if (width !== screenSizeObject.initialWidth && screenSizeObject.firstChange) {
+				screenSizeObject.firstChange = false
+				screenSizeObject.lastOrientation = Screen.primaryOrientation
+				screenSizeObject.initialWidth = width
+				screenSizeObject.initialHeight = height
 				manager.appendTextToLog("first real change, so recalculating units and recording size as " + width + " x " + height)
 				setupUnits()
-			} else if (rootItem.lastOrientation !== undefined && rootItem.lastOrientation !== Screen.primaryOrientation) {
+			} else if (screenSizeObject.lastOrientation !== undefined && screenSizeObject.lastOrientation !== Screen.primaryOrientation) {
 				manager.appendTextToLog("Screen rotated, no action necessary")
-				rootItem.lastOrientation = Screen.primaryOrientation
+				screenSizeObject.lastOrientation = Screen.primaryOrientation
 				setupUnits()
 			} else {
 				manager.appendTextToLog("size change without rotation to " + width + " x " + height)
-				if (width > placeHolder.initialWidth) {
-					manager.appendTextToLog("resetting to initial width " + placeHolder.initialWidth + " and height " + placeHolder.initialHeight)
-					rootItem.width = placeHolder.initialWidth
-					rootItem.height = placeHolder.initialHeight
+				if ((Qt.platform.os === "android" || Qt.platform.os === "ios") && width > screenSizeObject.initialWidth) {
+					manager.appendTextToLog("resetting to initial width " + screenSizeObject.initialWidth + " and height " + screenSizeObject.initialHeight)
+					rootItem.width = screenSizeObject.initialWidth
+					rootItem.height = screenSizeObject.initialHeight
 				}
 			}
 		} else {
