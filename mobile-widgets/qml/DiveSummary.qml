@@ -8,6 +8,10 @@ import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami 2.4 as Kirigami
 
 Kirigami.ScrollablePage {
+	id: summary
+	property string firstDive: ""
+	property string lastDive: ""
+
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 	title: qsTr("Dive summary")
 
@@ -54,10 +58,10 @@ Kirigami.ScrollablePage {
 			font.bold: true
 		}
 		TemplateLabel {
-			text: Backend.diveSummaryText[0]
+			text: summary.firstDive
 		}
 		TemplateLabel {
-			text: Backend.diveSummaryText[1]
+			text: summary.lastDive
 		}
 
 		TemplateLabel {

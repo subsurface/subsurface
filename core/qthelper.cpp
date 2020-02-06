@@ -948,6 +948,23 @@ char *get_dive_date_c_string(timestamp_t when)
 	return copy_qstring(text);
 }
 
+static QString get_dive_only_date_string(timestamp_t when)
+{
+	QDateTime ts;
+	ts.setMSecsSinceEpoch(when * 1000L);
+	return loc.toString(ts.toUTC(), QString(prefs.date_format));
+}
+
+QString get_first_dive_date_string()
+{
+	return dive_table.nr > 0 ? get_dive_only_date_string(dive_table.dives[0]->when) : gettextFromC::tr("no dives");
+}
+
+QString get_last_dive_date_string()
+{
+	return dive_table.nr > 0 ? get_dive_only_date_string(dive_table.dives[dive_table.nr - 1]->when) : gettextFromC::tr("no dives");
+}
+
 extern "C" char *get_current_date()
 {
 	QDateTime ts(QDateTime::currentDateTime());;
