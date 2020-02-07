@@ -123,7 +123,7 @@ Kirigami.ScrollablePage {
 					height: headerLabel.height + Kirigami.Units.largeSpacing
 					TemplateLabel {
 						id: headerLabel
-						verticalAlignment: Qt.AlignVCenter
+						anchors.verticalCenter: parent.verticalCenter
 						colorBackground: parent.color
 						leftPadding: Kirigami.Units.largeSpacing
 						text: header !== undefined ? header : ""
@@ -135,7 +135,7 @@ Kirigami.ScrollablePage {
 					width: headerColumnWidth * 1.5 - Kirigami.Units.gridUnit
 					height: headerLabel.height + Kirigami.Units.largeSpacing
 					TemplateLabel {
-						verticalAlignment: Qt.AlignVCenter
+						anchors.verticalCenter: parent.verticalCenter
 						colorBackground: parent.color
 						text: col0 !== undefined ? col0 : ""
 					}
@@ -145,7 +145,7 @@ Kirigami.ScrollablePage {
 					width: headerColumnWidth * 1.5 - Kirigami.Units.gridUnit
 					height: headerLabel.height + Kirigami.Units.largeSpacing
 					TemplateLabel {
-						verticalAlignment: Qt.AlignVCenter
+						anchors.verticalCenter: parent.verticalCenter
 						colorBackground: parent.color
 						text: col1 !== undefined ? col1 : ""
 					}
@@ -160,7 +160,7 @@ Kirigami.ScrollablePage {
 				height: headerLabel.height + Kirigami.Units.largeSpacing
 				TemplateLabel {
 					id: headerLabel
-					verticalAlignment: Qt.AlignVCenter
+					anchors.verticalCenter: parent.verticalCenter
 					colorBackground: parent.color
 					text: section
 					font.bold: true
