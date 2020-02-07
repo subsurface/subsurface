@@ -4,7 +4,7 @@ import QtQuick.Controls 2.12
 import org.kde.kirigami 2.4 as Kirigami
 
 Kirigami.ScrollablePage {
-	width: parent.width
+	width: rootItem.colWidth
 	height: parent.height
 	visible: false
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
