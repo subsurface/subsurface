@@ -75,7 +75,7 @@ TemplatePage {
 				id: defaultCylinder
 				visible: sectionGeneral.isExpanded
 				columns: 2
-				Layout.rightMargin: Kirigami.Units.gridUnit * 1.5
+				width: parent.width
 
 				TemplateLabel {
 					text: qsTr("Default Cylinder")
@@ -90,6 +90,7 @@ TemplatePage {
 				}
 				TemplateComboBox {
 					id: defaultCylinderBox
+					Layout.fillWidth: true
 					onActivated: {
 						// the entry for 'no default cylinder' is known to be the top, but its text
 						// is possibly translated so check against the index
