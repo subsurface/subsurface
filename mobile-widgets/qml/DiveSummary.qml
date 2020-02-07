@@ -12,7 +12,7 @@ Kirigami.ScrollablePage {
 	DiveSummaryModel { id: summaryModel }
 	property string firstDive: ""
 	property string lastDive: ""
-	property int headerColumnWidth: Math.floor(width / 4)
+	property int headerColumnWidth: Math.floor(width / 3)
 
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 	title: qsTr("Dive summary")
@@ -118,13 +118,18 @@ Kirigami.ScrollablePage {
 			Row {
 				height: headerLabel.height + Kirigami.Units.largeSpacing
 				Rectangle {
+					width: Kirigami.Units.gridUnit * 2
+					height: parent.height
+					color: "transparent"
+				}
+				Rectangle {
 					color: index & 1 ? subsurfaceTheme.backgroundColor : subsurfaceTheme.lightPrimaryColor
 					width: headerColumnWidth
 					height: headerLabel.height + Kirigami.Units.largeSpacing
-					TemplateLabel {
+					Label {
 						id: headerLabel
+						color: subsurfaceTheme.textColor
 						anchors.verticalCenter: parent.verticalCenter
-						colorBackground: parent.color
 						leftPadding: Kirigami.Units.largeSpacing
 						text: header !== undefined ? header : ""
 						font.bold: true
@@ -132,21 +137,21 @@ Kirigami.ScrollablePage {
 				}
 				Rectangle {
 					color: index & 1 ? subsurfaceTheme.backgroundColor : subsurfaceTheme.lightPrimaryColor
-					width: headerColumnWidth * 1.5 - Kirigami.Units.gridUnit
+					width: headerColumnWidth - 2 * Kirigami.Units.gridUnit
 					height: headerLabel.height + Kirigami.Units.largeSpacing
-					TemplateLabel {
+					Label {
+						color: subsurfaceTheme.textColor
 						anchors.verticalCenter: parent.verticalCenter
-						colorBackground: parent.color
 						text: col0 !== undefined ? col0 : ""
 					}
 				}
 				Rectangle {
 					color: index & 1 ? subsurfaceTheme.backgroundColor : subsurfaceTheme.lightPrimaryColor
-					width: headerColumnWidth * 1.5 - Kirigami.Units.gridUnit
+					width: headerColumnWidth - 2 * Kirigami.Units.gridUnit
 					height: headerLabel.height + Kirigami.Units.largeSpacing
-					TemplateLabel {
+					Label {
+						color: subsurfaceTheme.textColor
 						anchors.verticalCenter: parent.verticalCenter
-						colorBackground: parent.color
 						text: col1 !== undefined ? col1 : ""
 					}
 				}
@@ -156,12 +161,13 @@ Kirigami.ScrollablePage {
 		Component {
 			id: sectionDelegate
 			Rectangle {
-				width: headerColumnWidth * 4 - Kirigami.Units.gridUnit * 2
-				height: headerLabel.height + Kirigami.Units.largeSpacing
-				TemplateLabel {
-					id: headerLabel
+				width: headerColumnWidth * 3 - Kirigami.Units.gridUnit * 2
+				height: sectionLabel.height + Kirigami.Units.largeSpacing
+				Label {
+					id: sectionLabel
 					anchors.verticalCenter: parent.verticalCenter
-					colorBackground: parent.color
+					leftPadding: Kirigami.Units.largeSpacing
+					color: subsurfaceTheme.textColor
 					text: section
 					font.bold: true
 				}
