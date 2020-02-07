@@ -716,11 +716,22 @@ Item {
 				selectByMouse: true
 				wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 				property bool firstTime: true
+				property int visibleTop: detailsEditFlickable.contentY
+				property int visibleBottom: visibleTop + detailsEditFlickable.height - 4 * Kirigami.Units.gridUnit
 				onPressed: waitForKeyboard.start()
+				onCursorRectangleChanged: {
+					ensureVisible(y + cursorRectangle.y)
+				}
+				onContentHeightChanged: {
+					console.log("content height changed")
+				}
 
-				// we repeat the Timer / Function from the SsrfTextField here (no point really in creating a matching customized TextArea)
+				// ensure that the y coordinate is inside the visible part of the detailsEditFlickable (our flickable)
 				function ensureVisible(yDest) {
-					detailsEditFlickable.contentY = yDest
+					if (yDest > visibleBottom)
+						detailsEditFlickable.contentY += yDest - visibleBottom
+					if (yDest < visibleTop)
+						detailsEditFlickable.contentY -= visibleTop - yDest
 				}
 
 				// give the OS enough time to actually resize the flickable
@@ -729,15 +740,14 @@ Item {
 					interval: 300 // 300ms seems like FOREVER
 					onTriggered: {
 						if (!Qt.inputMethod.visible) {
-							if (firstTime) {
-								firstTime = false
+							if (txtNotes.firstTime) {
+								txtNotes.firstTime = false
 								restart()
 							}
 							return
 						}
 						// make sure at least half the Notes field is visible
-						if (txtNotes.y + txtNotes.height / 2 > detailsEditFlickable.contentY + detailsEditFlickable.height - 3 * Kirigami.Units.gridUnit || txtNotes.y < detailsEditFlickable.contentY)
-							txtNotes.ensureVisible(Math.max(0, 3 * Kirigami.Units.gridUnit + txtNotes.y + txtNotes.height / 2 - detailsEditFlickable.height))
+						txtNotes.ensureVisible(txtNotes.y + txtNotes.cursorRectangle.y)
 					}
 				}
 			}
