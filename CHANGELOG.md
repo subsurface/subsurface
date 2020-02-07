@@ -1,3 +1,4 @@
+Mobile: automatically scroll the dive edit screen so that the notes edit cursor stays visible
 Desktop: ignore dive sites without location in proximity search
 Mobile: add personalized option for units
 Mobile: add Dive Summary page
