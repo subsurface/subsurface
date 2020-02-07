@@ -242,12 +242,28 @@ void DiveSummaryModel::calc(int column, int period)
 	if (column >= (int)results.size())
 		return;
 
-	QDateTime localTime;
+	QDateTime currentTime = QDateTime::currentDateTime();
+	QDateTime startTime = currentTime;
 
-	// Calculate Start of the 2 periods.
-	timestamp_t now, start;
-	now = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset();
-	start = (period == 0) ? 0 : now - period * 30 * 24 * 60 * 60;
+	// Calculate Start of the periods.
+	switch (period) {
+	case 0: // having startTime == currentTime is used as special case below
+		break;
+	case 1: startTime = currentTime.addMonths(-1);
+		break;
+	case 2: startTime = currentTime.addMonths(-3);
+		break;
+	case 3: startTime = currentTime.addMonths(-6);
+		break;
+	case 4: startTime = currentTime.addYears(-1);
+		break;
+	default: qWarning("DiveSummaryModel::calc called with invalid period");
+	}
+	timestamp_t start;
+	if (startTime == currentTime)
+		start = 0;
+	else
+		start = startTime.toMSecsSinceEpoch() / 1000L + gettimezoneoffset();
 
 	// Loop over all dives and sum up data
 	Stats stats = loopDives(start);

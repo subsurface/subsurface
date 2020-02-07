@@ -48,19 +48,11 @@ Kirigami.ScrollablePage {
 
 		ListModel {
 			id: monthModel
-			ListElement {text: qsTr("Total")}
-			ListElement {text: qsTr(" 1 month [ 30 days]")}
-			ListElement {text: qsTr(" 2 month [ 60 days]")}
-			ListElement {text: qsTr(" 3 month [ 90 days]")}
-			ListElement {text: qsTr(" 4 month [120 days]")}
-			ListElement {text: qsTr(" 5 month [150 days]")}
-			ListElement {text: qsTr(" 6 month [180 days]")}
-			ListElement {text: qsTr(" 7 month [210 days]")}
-			ListElement {text: qsTr(" 8 month [240 days]")}
-			ListElement {text: qsTr(" 9 month [270 days]")}
-			ListElement {text: qsTr("10 month [300 days]")}
-			ListElement {text: qsTr("11 month [330 days]")}
-			ListElement {text: qsTr("12 month [360 days]")}
+			ListElement {text: qsTr("All")}
+			ListElement {text: qsTr("1 month")}
+			ListElement {text: qsTr("3 months")}
+			ListElement {text: qsTr("6 months")}
+			ListElement {text: qsTr("1 year")}
 		}
 
 		TemplateLabel {
