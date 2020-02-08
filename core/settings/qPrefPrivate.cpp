@@ -18,10 +18,6 @@ QString keyFromGroupAndName(QString group, QString name)
 
 void qPrefPrivate::propSetValue(const QString &key, const QVariant &value, const QVariant &defaultValue)
 {
-	// REMARK: making s static (which would be logical) does NOT work
-	// because it gets initialized too early.
-	// Having it as a local variable is light weight, because it is an
-	// interface class.
 	QSettings s;
 	bool isDefault = false;
 	if (value.isValid() && value.type() == QVariant::Double)
@@ -37,10 +33,6 @@ void qPrefPrivate::propSetValue(const QString &key, const QVariant &value, const
 
 QVariant qPrefPrivate::propValue(const QString &key, const QVariant &defaultValue)
 {
-	// REMARK: making s static (which would be logical) does NOT work
-	// because it gets initialized too early.
-	// Having it as a local variable is light weight, because it is an
-	// interface class.
 	QSettings s;
 	return  s.value(key, defaultValue);
 }
