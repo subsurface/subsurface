@@ -1,3 +1,4 @@
+Mobile: add option to only show one column in portrait mode
 Mobile: fix potential crash when adding / editing dives
 Mobile: automatically scroll the dive edit screen so that the notes edit cursor stays visible
 Desktop: ignore dive sites without location in proximity search
