@@ -20,7 +20,8 @@ QHash<int, QByteArray> DiveSummaryModel::roleNames() const
 {
 	return { { HEADER_ROLE, "header" },
 		 { COLUMN0_ROLE, "col0"  },
-		 { COLUMN1_ROLE, "col1"  } };
+		 { COLUMN1_ROLE, "col1"  },
+       		 { SECTION_ROLE, "section" } };
 }
 
 QVariant DiveSummaryModel::dataDisplay(int row, int col) const
@@ -61,6 +62,14 @@ QVariant DiveSummaryModel::data(const QModelIndex &index, int role) const
 		return dataDisplay(row, 0);
 	case COLUMN1_ROLE:
 		return dataDisplay(row, 1);
+	case SECTION_ROLE:
+		switch (row) {
+		case DIVES ... PLANS: return tr("Number of dives");
+		case TIME ... TIME_AVG: return tr("Time");
+		case DEPTH_MAX ... DEPTH_AVG: return tr("Depth");
+		case SAC_MIN ... SAC_AVG: return tr("SAC");
+		default: return QVariant();
+		}
 	}
 
 	// The unsupported case

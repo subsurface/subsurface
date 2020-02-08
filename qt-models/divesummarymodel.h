@@ -32,6 +32,7 @@ public:
 		HEADER_ROLE = Qt::UserRole + 1,
 		COLUMN0_ROLE,
 		COLUMN1_ROLE,
+		SECTION_ROLE,
 	};
 
 	struct Result {
