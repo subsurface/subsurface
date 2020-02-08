@@ -9,17 +9,25 @@ import org.kde.kirigami 2.4 as Kirigami
 
 Kirigami.ScrollablePage {
 	id: summary
+	DiveSummaryModel { id: summaryModel }
 	property string firstDive: ""
 	property string lastDive: ""
+	property int headerColumnWidth: Math.floor(width / 4)
 
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 	title: qsTr("Dive summary")
 
+	function reload() {
+		summaryModel.setNumData(2)
+		summaryModel.calc(0, selectionPrimary.currentIndex)
+		summaryModel.calc(1, selectionSecondary.currentIndex)
+		firstDive = Backend.firstDiveDate()
+		lastDive = Backend.lastDiveDate()
+	}
+
 	onVisibleChanged: {
 		if (visible) {
-			Backend.summaryCalculation(selectionPrimary.currentIndex, selectionSecondary.currentIndex)
-			firstDive = Backend.firstDiveDate()
-			lastDive = Backend.lastDiveDate()
+			reload()
 		}
 	}
 	Connections {
@@ -57,15 +65,25 @@ Kirigami.ScrollablePage {
 		}
 
 		TemplateLabel {
-			text: qsTr("oldest/newest dive")
+			text: qsTr("last dive:")
 			font.bold: true
+			width: headerColumnWidth
 		}
 		TemplateLabel {
-			text: summary.firstDive
-		}
-		TemplateLabel {
+			Layout.alignment: Qt.AlignCenter
 			text: summary.lastDive
 		}
+		TemplateLabel { /* just filling the third column with nothing */ }
+		TemplateLabel {
+			text: qsTr("first dive:")
+			font.bold: true
+			width: headerColumnWidth
+		}
+		TemplateLabel {
+			Layout.alignment: Qt.AlignCenter
+			text: summary.firstDive
+		}
+		TemplateLabel { /* just filling the third column with nothing */ }
 
 		TemplateLabel {
 			Layout.columnSpan: 3
@@ -73,6 +91,7 @@ Kirigami.ScrollablePage {
 
 		TemplateLabel {
 			text: ""
+			width: headerColumnWidth
 		}
 		TemplateComboBox {
 			id: selectionPrimary
@@ -80,7 +99,7 @@ Kirigami.ScrollablePage {
 			currentIndex: 0
 			model: monthModel
 			onActivated:  {
-				Backend.summaryCalculation(selectionPrimary.currentIndex, selectionSecondary.currentIndex)
+				summaryModel.calc(0, currentIndex)
 			}
 		}
 		TemplateComboBox {
@@ -89,149 +108,62 @@ Kirigami.ScrollablePage {
 			currentIndex: 3
 			model: monthModel
 			onActivated:  {
-				Backend.summaryCalculation(selectionPrimary.currentIndex, selectionSecondary.currentIndex)
+				summaryModel.calc(1, currentIndex)
 			}
 		}
-		TemplateLabel {
-			text: qsTr("dives")
-			font.bold: true
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[2]
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[3]
-		}
-		TemplateLabel {
-			text: qsTr("- EANx")
-			font.bold: true
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[4]
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[5]
-		}
-		TemplateLabel {
-			text: qsTr("- depth > 39m")
-			font.bold: true
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[6]
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[7]
+
+		Component {
+			id: rowDelegate
+			Row {
+				height: headerLabel.height + Kirigami.Units.largeSpacing
+				Rectangle {
+					color: index & 1 ? subsurfaceTheme.backgroundColor : subsurfaceTheme.lightPrimaryColor
+					width: headerColumnWidth
+					height: headerLabel.height + Kirigami.Units.largeSpacing
+					TemplateLabel {
+						id: headerLabel
+						verticalAlignment: Qt.AlignVCenter
+						colorBackground: parent.color
+						text: header !== undefined ? header : ""
+						font.bold: true
+					}
+				}
+				Rectangle {
+					color: index & 1 ? subsurfaceTheme.backgroundColor : subsurfaceTheme.lightPrimaryColor
+					width: headerColumnWidth * 1.5 - Kirigami.Units.gridUnit
+					height: headerLabel.height + Kirigami.Units.largeSpacing
+					TemplateLabel {
+						verticalAlignment: Qt.AlignVCenter
+						colorBackground: parent.color
+						text: col0 !== undefined ? col0 : ""
+					}
+				}
+				Rectangle {
+					color: index & 1 ? subsurfaceTheme.backgroundColor : subsurfaceTheme.lightPrimaryColor
+					width: headerColumnWidth * 1.5 - Kirigami.Units.gridUnit
+					height: headerLabel.height + Kirigami.Units.largeSpacing
+					TemplateLabel {
+						verticalAlignment: Qt.AlignVCenter
+						colorBackground: parent.color
+						text: col1 !== undefined ? col1 : ""
+					}
+				}
+			}
 		}
 
-		TemplateLabel {
+		ListView {
+			id: resultsTable
+			model: summaryModel
 			Layout.columnSpan: 3
+			width: summary.width
+			height: summaryModel.rowCount() * 2 * Kirigami.Units.gridUnit
+			delegate: rowDelegate
+			Component.onCompleted: {
+				manager.appendTextToLog("SUMMARY: width: " + width + " height: " + height + " rows: " + model.rowCount())
+			}
+			onModelChanged: {
+				manager.appendTextToLog("SUMMARY model changed; now width: " + width + " height: " + height + " rows: " + model.rowCount())
+			}
 		}
-
-		TemplateLabel {
-			text: qsTr("dive time")
-			font.bold: true
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[8]
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[9]
-		}
-		TemplateLabel {
-			text: qsTr("max dive time")
-			font.bold: true
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[10]
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[11]
-		}
-		TemplateLabel {
-			text: qsTr("avg. dive time")
-			font.bold: true
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[12]
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[13]
-		}
-
-		TemplateLabel {
-			Layout.columnSpan: 3
-		}
-
-		TemplateLabel {
-			text: qsTr("max depth")
-			font.bold: true
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[14]
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[15]
-		}
-		TemplateLabel {
-			text: qsTr("avg. max depth")
-			font.bold: true
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[16]
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[17]
-		}
-
-		TemplateLabel {
-			Layout.columnSpan: 3
-		}
-
-		TemplateLabel {
-			text: qsTr("min. SAC")
-			font.bold: true
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[18]
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[19]
-		}
-		TemplateLabel {
-			text: qsTr("max. SAC")
-			font.bold: true
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[20]
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[21]
-		}
-		TemplateLabel {
-			text: qsTr("avg. SAC")
-			font.bold: true
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[22]
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[23]
-		}
-
-		TemplateLabel {
-			Layout.columnSpan: 3
-		}
-
-		TemplateLabel {
-			text: qsTr("dive plan(s)")
-			font.bold: true
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[24]
-		}
-		TemplateLabel {
-			text: Backend.diveSummaryText[25]
-		}
-
 	}
 }
