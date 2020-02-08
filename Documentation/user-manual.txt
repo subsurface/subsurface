@@ -801,6 +801,7 @@ New dive locations can be recorded in one of four ways:
    four formats with latitude followed by longitude:
 
 	ISO 6709 Annex D format e.g. 30°13'28.9"N 30°49'1.5"E
+		or, alternatively,   30d13'28.9"N 30d49'1.5"E
 	Degrees and decimal minutes, e.g. N30° 13.49760' , E30° 49.30788'
 	Degrees minutes seconds, e.g. N30° 13' 29.8" , E30° 49' 1.5"
 	Decimal degrees, e.g. 30.22496 , 30.821798
@@ -808,10 +809,13 @@ New dive locations can be recorded in one of four ways:
 Southern hemisphere latitudes are given with a *S*, e.g. S30°, or with a
 negative value, e.g. -30.22496. Similarly western longitudes are given with a
 *W*, e.g. W07°, or with a negative value, e.g. -7.34323. Some keyboards
-don't have the degree sign (°). It can be replaced by a *d* like this: N30d W20d.
+don't have the degree sign (°). It can be replaced by a *d* like this: N30d W20d (see example above).
 Enter any other contextual information about the dive site (Description and Notes),
 then select _Apply Changes_ to save the geolocation for this dive site.
-The dive site information can later be edited by clicking the globe icon to the right of the
+If the typed coordinate information does not conform to one of the above formats, the background
+of the text box turns [white red-background]#RED#. Correct the typing error(s) and the background of the text box
+turns white again as it should be.
+Dive site information can later be added or edited by clicking the globe icon to the right of the
 dive site name in the *Notes tab*.
 [icon="images/icons/warning2.png"]
 [WARNING]
