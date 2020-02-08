@@ -571,7 +571,12 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	function setupUnits() {
 		// some screens are too narrow for Subsurface-mobile to render well
 		// try to hack around that by making sure that we can fit at least 21 gridUnits in a row
-		var numColumns = Math.floor(rootItem.width/pageStack.defaultColumnWidth)
+		var numColumns = Math.max(Math.floor(rootItem.width / (21 * Kirigami.Units.gridUnit)), 1)
+		if (Screen.primaryOrientation === Qt.PortraitOrientation && PrefDisplay.singleColumnPortrait) {
+			manager.appendTextToLog("show only one column in portrait mode");
+			numColumns = 1;
+		}
+
 		rootItem.colWidth = numColumns > 1 ? Math.floor(rootItem.width / numColumns) : rootItem.width;
 		var kirigamiGridUnit = Kirigami.Units.gridUnit
 		var widthInGridUnits = Math.floor(rootItem.colWidth / kirigamiGridUnit)
@@ -587,6 +592,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			// change our glabal grid unit
 			Kirigami.Units.gridUnit = kirigamiGridUnit
 		}
+		pageStack.defaultColumnWidth = rootItem.colWidth
 		manager.appendTextToLog("Done setting up sizes")
 	}
 
