@@ -88,9 +88,11 @@ Kirigami.ScrollablePage {
 			Layout.columnSpan: 3
 		}
 
-		TemplateLabel {
-			text: ""
+		TemplateButton {
+			/* Replace by signals from the core in due course. */
+			text: "Refresh"
 			width: headerColumnWidth
+			onClicked: reload()
 		}
 		TemplateComboBox {
 			id: selectionPrimary
