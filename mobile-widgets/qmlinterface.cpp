@@ -89,14 +89,4 @@ void QMLInterface::setup(QQmlContext *ct)
 
 	// Make enums available as types
 	qmlRegisterUncreatableType<QMLInterface>("org.subsurfacedivelog.mobile",1,0,"Enums","Enum is not a type");
-
-	// calculate divesummary first time.
-	// this is needed in order to load the divesummary page
-	diveSummary::summaryCalculation(0, 3);
-}
-
-void QMLInterface::summaryCalculation(int primaryPeriod, int secondaryPeriod)
-{
-	diveSummary::summaryCalculation(primaryPeriod, secondaryPeriod);
-	emit diveSummaryTextChanged(diveSummary::diveSummaryText);
 }

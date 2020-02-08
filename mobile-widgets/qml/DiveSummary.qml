@@ -33,13 +33,12 @@ Kirigami.ScrollablePage {
 	Connections {
 		target: Backend
 		onLengthChanged: {
-			Backend.summaryCalculation(selectionPrimary.currentIndex, selectionSecondary.currentIndex)
+			reload()
 		}
 		onVolumeChanged: {
-			Backend.summaryCalculation(selectionPrimary.currentIndex, selectionSecondary.currentIndex)
+			reload()
 		}
 	}
-
 
 	GridLayout {
 		columns: 3
