@@ -41,6 +41,9 @@ static const QByteArray st_windowState_default;
 int qPrefDisplay::st_lastState;
 static int st_lastState_default = false;
 
+bool qPrefDisplay::st_singleColumnPortrait;
+static bool st_singleColumnPortrait_default = false;
+
 qPrefDisplay *qPrefDisplay::instance()
 {
 	static qPrefDisplay *self = new qPrefDisplay;
@@ -66,7 +69,7 @@ void qPrefDisplay::loadSync(bool doSync)
 		load_geometry();
 		load_windowState();
 		load_lastState();
-
+		load_singleColumnPortrait();
 	}
 }
 
@@ -198,3 +201,5 @@ HANDLE_PROP_QBYTEARRAY(Display, "MainWindow/geometry", geometry);
 HANDLE_PROP_QBYTEARRAY(Display, "MainWindow/windowState", windowState);
 
 HANDLE_PROP_INT(Display, "MainWindow/lastState", lastState);
+
+HANDLE_PROP_BOOL(Display, "singleColumnPortrait", singleColumnPortrait);
