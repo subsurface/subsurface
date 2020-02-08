@@ -1122,14 +1122,19 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 			d->weightsystems.weightsystems[0].weight.grams = parseWeightToGrams(weight);
 		}
 	}
-	// start and end pressures for first cylinder only
+	// start and end pressures
+	// first, normalize the lists - QML gives us a list with just one empty string if nothing was entered
+	if (startpressure == QStringList(QString()))
+		startpressure = QStringList();
+	if (endpressure == QStringList(QString()))
+		endpressure = QStringList();
 	if (myDive.startPressure != startpressure || myDive.endPressure != endpressure) {
 		diveChanged = true;
 		for ( int i = 0, j = 0 ; j < startpressure.length() && j < endpressure.length() ; i++ ) {
 			if (state != "add" && !is_cylinder_used(d, i))
 				continue;
 
-			get_cylinder(d, i)->start.mbar = parsePressureToMbar(startpressure[j]);
+			get_or_create_cylinder(d, i)->start.mbar = parsePressureToMbar(startpressure[j]);
 			get_cylinder(d, i)->end.mbar = parsePressureToMbar(endpressure[j]);
 			if (get_cylinder(d, i)->end.mbar > get_cylinder(d, i)->start.mbar)
 				get_cylinder(d, i)->end.mbar = get_cylinder(d, i)->start.mbar;
@@ -1150,7 +1155,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 				he >= 0 && he <= 1000 &&
 				o2 + he <= 1000) {
 				diveChanged = true;
-				get_cylinder(d, i)->gasmix.o2.permille = o2;
+				get_or_create_cylinder(d, i)->gasmix.o2.permille = o2;
 				get_cylinder(d, i)->gasmix.he.permille = he;
 			}
 			j++;
@@ -1177,7 +1182,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 					break;
 				}
 			}
-			get_cylinder(d, j)->type.description = copy_qstring(usedCylinder[k]);
+			get_or_create_cylinder(d, j)->type.description = copy_qstring(usedCylinder[k]);
 			get_cylinder(d, j)->type.size.mliter = size;
 			get_cylinder(d, j)->type.workingpressure.mbar = wp;
 			k++;
