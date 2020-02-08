@@ -17,6 +17,7 @@
 #include "mobile-widgets/qmlmanager.h"
 #include "mobile-widgets/qmlinterface.h"
 #include "qt-models/divelistmodel.h"
+#include "qt-models/divesummarymodel.h"
 #include "qt-models/gpslistmodel.h"
 #include "qt-models/messagehandlermodel.h"
 #include "profile-widget/qmlprofile.h"
@@ -195,6 +196,7 @@ void register_qml_types(QQmlEngine *engine)
 	REGISTER_TYPE(QMLManager, "QMLManager");
 	REGISTER_TYPE(QMLProfile, "QMLProfile");
 	REGISTER_TYPE(DiveImportedModel, "DCImportModel");
+	REGISTER_TYPE(DiveSummaryModel, "DiveSummaryModel");
 #endif // not SUBSURFACE_MOBILE
 
 	REGISTER_TYPE(MapWidgetHelper, "MapWidgetHelper");
