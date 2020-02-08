@@ -216,16 +216,16 @@ for ARCH in $ARCHS; do
 		autoreconf --install
 		popd
 	fi
-	mkdir -p ../../libdivecomputer/build-ios/$ARCH
-	if [ ! -f ../../libdivecomputer/build-ios/${ARCH}/git.SHA ] ; then
-		echo "" > ../../libdivecomputer/build-ios/${ARCH}/git.SHA
+	mkdir -p ${PARENT_DIR}/libdivecomputer-build-ios/$ARCH
+	if [ ! -f ${PARENT_DIR}/libdivecomputer-build-ios/${ARCH}/git.SHA ] ; then
+		echo "" > ${PARENT_DIR}/libdivecomputer-build-ios/${ARCH}/git.SHA
 	fi
 	CURRENT_SHA=$(cd ../../libdivecomputer ; git describe)
-	PREVIOUS_SHA=$(cat ../../libdivecomputer/build-ios/${ARCH}/git.SHA)
+	PREVIOUS_SHA=$(cat ${PARENT_DIR}/libdivecomputer-build-ios/${ARCH}/git.SHA)
 	if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" ] ; then
-		echo $CURRENT_SHA > ../../libdivecomputer/build-ios/${ARCH}/git.SHA
-		pushd ../../libdivecomputer/build-ios/$ARCH
-		../../configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no --without-libusb --without-hidapi --enable-ble
+		echo $CURRENT_SHA > ${PARENT_DIR}/libdivecomputer-build-ios/${ARCH}/git.SHA
+		pushd ${PARENT_DIR}/libdivecomputer-build-ios/$ARCH
+		${SUBSURFACE_SOURCE}/libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no --without-libusb --without-hidapi --enable-ble
 		make
 		make install
 		popd
