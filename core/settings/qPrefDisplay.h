@@ -25,6 +25,7 @@ class qPrefDisplay : public QObject {
 	Q_PROPERTY(QByteArray geometry READ geometry WRITE set_geometry NOTIFY geometryChanged)
 	Q_PROPERTY(QByteArray windowState READ windowState WRITE set_windowState NOTIFY windowStateChanged)
 	Q_PROPERTY(int lastState READ lastState WRITE set_lastState NOTIFY lastStateChanged)
+	Q_PROPERTY(bool singleColumnPortrait READ singleColumnPortrait WRITE set_singleColumnPortrait NOTIFY singleColumnPortraitChanged)
 
 public:
 	static qPrefDisplay *instance();
@@ -52,6 +53,7 @@ public:
 	static QByteArray geometry() { return st_geometry; }
 	static QByteArray windowState() { return st_windowState; }
 	static int lastState() { return st_lastState; }
+	static bool singleColumnPortrait() { return st_singleColumnPortrait; }
 
 public slots:
 	static void set_animation_speed(int value);
@@ -71,6 +73,7 @@ public slots:
 	static void set_geometry(const QByteArray& value);
 	static void set_windowState(const QByteArray& value);
 	static void set_lastState(int value);
+	static void set_singleColumnPortrait(bool value);
 
 signals:
 	void animation_speedChanged(int value);
@@ -90,6 +93,7 @@ signals:
 	void geometryChanged(const QByteArray& value);
 	void windowStateChanged(const QByteArray& value);
 	void lastStateChanged(int value);
+	void singleColumnPortraitChanged(bool value);
 
 private:
 	qPrefDisplay() {}
@@ -114,6 +118,7 @@ private:
 	static void load_geometry();
 	static void load_windowState();
 	static void load_lastState();
+	static void load_singleColumnPortrait();
 
 	// font helper function
 	static void setCorrectFont();
@@ -130,5 +135,6 @@ private:
 	static QByteArray st_geometry;
 	static QByteArray st_windowState;
 	static int st_lastState;
+	static bool st_singleColumnPortrait;
 };
 #endif
