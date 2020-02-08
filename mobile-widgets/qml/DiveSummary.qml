@@ -123,6 +123,7 @@ Kirigami.ScrollablePage {
 						id: headerLabel
 						verticalAlignment: Qt.AlignVCenter
 						colorBackground: parent.color
+						leftPadding: Kirigami.Units.largeSpacing
 						text: header !== undefined ? header : ""
 						font.bold: true
 					}
@@ -150,6 +151,20 @@ Kirigami.ScrollablePage {
 			}
 		}
 
+		Component {
+			id: sectionDelegate
+			Rectangle {
+				width: headerColumnWidth * 4 - Kirigami.Units.gridUnit * 2
+				height: headerLabel.height + Kirigami.Units.largeSpacing
+				TemplateLabel {
+					id: headerLabel
+					verticalAlignment: Qt.AlignVCenter
+					colorBackground: parent.color
+					text: section
+					font.bold: true
+				}
+			}
+		}
 		ListView {
 			id: resultsTable
 			model: summaryModel
@@ -157,6 +172,8 @@ Kirigami.ScrollablePage {
 			width: summary.width
 			height: summaryModel.rowCount() * 2 * Kirigami.Units.gridUnit
 			delegate: rowDelegate
+			section.property: "section"
+			section.delegate: sectionDelegate
 			Component.onCompleted: {
 				manager.appendTextToLog("SUMMARY: width: " + width + " height: " + height + " rows: " + model.rowCount())
 			}
