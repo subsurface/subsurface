@@ -619,6 +619,35 @@ TemplatePage {
 				visible: sectionAdvanced.isExpanded
 			}
 			GridLayout {
+				id: display
+				visible: sectionAdvanced.isExpanded
+				columns: 2
+				TemplateLabel {
+					text: qsTr("Display")
+					font.pointSize: subsurfaceTheme.headingPointSize
+					font.weight: Font.Light
+					Layout.topMargin: Kirigami.Units.largeSpacing
+					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+					Layout.columnSpan: 2
+				}
+				TemplateLabel {
+					text: qsTr("Show only one column in Portrait mode")
+					Layout.preferredWidth: gridWidth * 0.75
+				}
+				SsrfSwitch {
+					id: singleColumnButton
+					checked: PrefDisplay.singleColumnPortrait
+					Layout.preferredWidth: gridWidth * 0.25
+					onClicked: {
+						PrefDisplay.singleColumnPortrait = checked
+					}
+				}
+			}
+
+			TemplateLine {
+				visible: sectionAdvanced.isExpanded
+			}
+			GridLayout {
 				id: developer
 				visible: sectionAdvanced.isExpanded
 				columns: 2
