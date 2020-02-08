@@ -42,7 +42,7 @@ done
 TOP=$(pwd)
 SUBSURFACE_SOURCE=${TOP}/../../../subsurface
 pushd ${SUBSURFACE_SOURCE}/..
-SSRF_CLONE=$(pwd)
+PARENT_DIR=$(pwd)
 popd
 
 # prepare build dir
@@ -87,13 +87,13 @@ popd
 # now build all the dependencies for the three relevant architectures (x86_64 is for the simulator)
 
 # get all 3rd part libraries
-../../scripts/get-dep-lib.sh ios ${SSRF_CLONE}
+../../scripts/get-dep-lib.sh ios ${PARENT_DIR}
 
 for ARCH in $ARCHS; do
 
 	echo next building for $ARCH
 
-	INSTALL_ROOT=$SSRF_CLONE/install-root/ios/$ARCH
+	INSTALL_ROOT=$PARENT_DIR/install-root/ios/$ARCH
 	mkdir -p $INSTALL_ROOT/lib $INSTALL_ROOT/bin $INSTALL_ROOT/include
 	PKG_CONFIG_LIBDIR=$INSTALL_ROOT/lib/pkgconfig
 
@@ -141,24 +141,24 @@ for ARCH in $ARCHS; do
 	hosttarget=$ARCH
 
 	# libxslt have too old config.sub
-	pushd ${SSRF_CLONE}/libxslt
+	pushd ${PARENT_DIR}/libxslt
 	autoreconf --install
 	popd
 	if [ ! -e $PKG_CONFIG_LIBDIR/libxslt.pc ] ; then
-		mkdir -p ${SSRF_CLONE}/libxslt/build-ios/$ARCH_NAME
-		pushd ${SSRF_CLONE}/libxslt/build-ios/$ARCH_NAME
-		${SSRF_CLONE}/libxslt/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --without-python --without-crypto --enable-static --disable-shared
+		mkdir -p ${PARENT_DIR}/libxslt/build-ios/$ARCH_NAME
+		pushd ${PARENT_DIR}/libxslt/build-ios/$ARCH_NAME
+		${PARENT_DIR}/libxslt/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --without-python --without-crypto --enable-static --disable-shared
 		make
 		make install
 		popd
 	fi
 
 	if [ ! -e $PKG_CONFIG_LIBDIR/libzip.pc ] ; then
-		pushd ${SSRF_CLONE}/libzip
+		pushd ${PARENT_DIR}/libzip
 		# don't waste time on building command line tools, examples, manual, and regression tests - and don't build the BZIP2 support we don't need
 		sed -i.bak 's/ADD_SUBDIRECTORY(src)//;s/ADD_SUBDIRECTORY(examples)//;s/ADD_SUBDIRECTORY(man)//;s/ADD_SUBDIRECTORY(regress)//' CMakeLists.txt
-		mkdir -p ${SSRF_CLONE}/libzip/build-ios/$ARCH_NAME
-		pushd ${SSRF_CLONE}/libzip/build-ios/$ARCH_NAME
+		mkdir -p ${PARENT_DIR}/libzip/build-ios/$ARCH_NAME
+		pushd ${PARENT_DIR}/libzip/build-ios/$ARCH_NAME
 		cmake -DBUILD_SHARED_LIBS="OFF" \
 			-DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
 			-DCMAKE_INSTALL_PREFIX=${PREFIX} \
@@ -166,7 +166,7 @@ for ARCH in $ARCHS; do
 			-DCMAKE_DISABLE_FIND_PACKAGE_BZip2=TRUE \
 			-DENABLE_OPENSSL=FALSE \
 			-DENABLE_GNUTLS=FALSE \
-			${SSRF_CLONE}/libzip
+			${PARENT_DIR}/libzip
 		# quiet the super noise warnings
 		sed -i.bak 's/C_FLAGS = /C_FLAGS = -Wno-nullability-completeness -Wno-expansion-to-defined /' lib/CMakeFiles/zip.dir/flags.make
 		make
@@ -176,15 +176,15 @@ for ARCH in $ARCHS; do
 		popd
 	fi
 
-	pushd ${SSRF_CLONE}/libgit2
+	pushd ${PARENT_DIR}/libgit2
 	# libgit2 with -Wall on iOS creates megabytes of warnings...
 	sed -i.bak 's/ADD_C_FLAG_IF_SUPPORTED(-W/# ADD_C_FLAG_IF_SUPPORTED(-W/' CMakeLists.txt
 	popd
 
 	if [ ! -e $PKG_CONFIG_LIBDIR/libgit2.pc ] ; then
-		mkdir -p ${SSRF_CLONE}/libgit2/build-ios/$ARCH
-		pushd ${SSRF_CLONE}/libgit2/build-ios/$ARCH
-		cmake ${SSRF_CLONE}/libgit2 \
+		mkdir -p ${PARENT_DIR}/libgit2/build-ios/$ARCH
+		pushd ${PARENT_DIR}/libgit2/build-ios/$ARCH
+		cmake ${PARENT_DIR}/libgit2 \
 		    -G "Unix Makefiles" \
 		    -DBUILD_SHARED_LIBS="OFF" \
 		    -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
@@ -194,7 +194,7 @@ for ARCH in $ARCHS; do
 			-DCMAKE_PREFIX_PATH=${PREFIX} \
 			-DCURL=OFF \
 			-DUSE_SSH=OFF \
-			${SSRF_CLONE}/libgit2/
+			${PARENT_DIR}/libgit2/
 		sed -i.bak 's/C_FLAGS = /C_FLAGS = -Wno-nullability-completeness -Wno-expansion-to-defined /' CMakeFiles/git2.dir/flags.make
 		make
 		make install
@@ -234,19 +234,19 @@ for ARCH in $ARCHS; do
 done
 
 # build googlemaps
-mkdir -p ${SSRF_CLONE}/googlemaps/build-ios
-pushd ${SSRF_CLONE}/googlemaps/build-ios
-${IOS_QT}/${QT_VERSION}/ios/bin/qmake ${SSRF_CLONE}/googlemaps/googlemaps.pro CONFIG+=release
+mkdir -p ${PARENT_DIR}/googlemaps/build-ios
+pushd ${PARENT_DIR}/googlemaps/build-ios
+${IOS_QT}/${QT_VERSION}/ios/bin/qmake ${PARENT_DIR}/googlemaps/googlemaps.pro CONFIG+=release
 make
 if [ "$DEBUGRELEASE" != "Release" ] ; then
-	${IOS_QT}/${QT_VERSION}/ios/bin/qmake ${SSRF_CLONE}/googlemaps/googlemaps.pro CONFIG+=debug
+	${IOS_QT}/${QT_VERSION}/ios/bin/qmake ${PARENT_DIR}/googlemaps/googlemaps.pro CONFIG+=debug
 	make clean
 	make
 fi
 popd
 
 # now combine the libraries into fat libraries
-ARCH_ROOT=$SSRF_CLONE/install-root/ios
+ARCH_ROOT=$PARENT_DIR/install-root/ios
 cp -a $ARCH_ROOT/x86_64/* $ARCH_ROOT
 if [ "$TARGET" = "iphoneos" ] ; then
 	pushd $ARCH_ROOT/lib
