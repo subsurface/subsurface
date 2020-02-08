@@ -65,6 +65,7 @@ slots:
 	void tripChanged(dive_trip *trip, TripField);
 private:
 	void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags flags) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
 	void selectAll() override;
 	void selectionChangeDone();
 	DiveTripModelBase::Layout currentLayout;
