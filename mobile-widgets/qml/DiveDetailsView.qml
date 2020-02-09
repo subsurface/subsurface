@@ -59,6 +59,7 @@ Item {
 		TemplateButton {
 			id: gpsButton
 			anchors.right: parent.right
+			anchors.verticalCenter: locationText.verticalCenter
 			enabled: gps !== ""
 			text: qsTr("Map it")
 			onClicked: {
@@ -70,7 +71,7 @@ Item {
 			id: dateRow
 			anchors {
 				left: locationText.left
-				top: locationText.bottom
+				top: gpsButton.bottom
 				topMargin: Kirigami.Units.smallSpacing
 				bottom: numberText.bottom
 
@@ -102,7 +103,7 @@ Item {
 			color: subsurfaceTheme.textColor
 			anchors {
 				right: parent.right
-				top: locationText.bottom
+				top: gpsButton.bottom
 				topMargin: Kirigami.Units.smallSpacing
 			}
 		}
