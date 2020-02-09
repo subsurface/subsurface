@@ -42,7 +42,7 @@ struct FilterData {
 	int maxRating = 5;
 	// The default minimum and maximum temperatures are set such that all
 	// physically reasonable dives are shown. Note that these values should
-	// work for both Celcius and Fahrenheit scales.
+	// work for both Celsius and Fahrenheit scales.
 	double minWaterTemp = -10;
 	double maxWaterTemp = 200;
 	double minAirTemp = -50;
