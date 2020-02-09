@@ -13,9 +13,9 @@ If you would like to contribute patches that fix bugs or add new features, that 
 Here is a very brief introduction on creating commits that you can either send as [pull requests][6] on our main GitHub repository or send as emails to the mailing list. Much more details on how to use git can be found at the [git user manual][7].
 
 Start with getting the latest source (look at the [Building Page][8] to find out how).  
-`cd subsurface  
-git checkout master  
-git pull`  
+`cd subsurface`  
+`git checkout master`  
+`git pull`  
 ok, now we know you're on the latest version. Create a working branch to keep your development in:  
 `git checkout -b devel`  
 Edit the code (or documentation), compile, test… then create a commit:  
