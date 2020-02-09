@@ -458,7 +458,7 @@ TemplatePage {
 					font.bold: (Backend.unit_system === Enums.PERSONALIZE)
 				}
 				TemplateRadioButton {
-					text: qsTr("celcius")
+					text: qsTr("celsius")
 					checked: (Backend.temperature === Enums.CELSIUS)
 					ButtonGroup.group: unitTemperature
 					onClicked: {
