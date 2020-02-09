@@ -12,7 +12,7 @@ If you would like to contribute patches that fix bugs or add new features, that 
 
 Here is a very brief introduction on creating commits that you can either send as [pull requests][6] on our main GitHub repository or send as emails to the mailing list. Much more details on how to use git can be found at the [git user manual][7].
 
-Start with getting the latest source (look at the [Building Page][8] to find out how).  
+Start with getting the latest source.  
 `cd subsurface`  
 `git checkout master`  
 `git pull`  
@@ -27,7 +27,7 @@ Which creates a number of files that have names like 0001-Commit-title.patch, wh
 
 When sending code, please either send signed-off patches or a pull request with signed-off commits. If you don't sign off on them, we will not accept them. This means adding a line that says "Signed-off-by: Name \<Email\>" at the end of each commit, indicating that you wrote the code and have the right to pass it on as an open source patch.
 
-See: [Signed-off-by Lines][9]
+See: [Signed-off-by Lines][8]
 
 Also, please write good git commit messages. A good commit message looks like this:
 
@@ -50,7 +50,7 @@ That header line really should be meaningful, and really should be just one line
 The preferred way to write a commit message is using imperative mood, e.g. "Make foo do xyz" instead of "This patch makes foo do xyz" or "I made foo do xyz", as if you are giving commands or requests to the code base.
 https://en.wikipedia.org/wiki/Imperative_mood
 
-![gitk sample][10]
+![gitk sample][9]
 
 Example with gitk
 
@@ -75,7 +75,7 @@ Here is a (non exhaustive) list of Areas that can be used:
 * Printing
 * Profile
 
-In order to make reviews simpler and have contributions merged faster in the code base, please follow Subsurface project's coding style and coding conventions described in the [CodingStyle][11] file.
+In order to make reviews simpler and have contributions merged faster in the code base, please follow Subsurface project's coding style and coding conventions described in the [CodingStyle][10] file.
 
 [1]: http://lists.subsurface-divelog.org/cgi-bin/mailman/listinfo/subsurface
 [2]: http://freenode.net/
@@ -84,8 +84,6 @@ In order to make reviews simpler and have contributions merged faster in the cod
 [5]: https://github.com/Subsurface-divelog/subsurface/issues
 [6]: https://github.com/Subsurface-divelog/subsurface/pulls
 [7]: https://www.kernel.org/pub/software/scm/git/docs/user-manual.html
-[8]: https://subsurface-divelog.org/building/
-[9]: https://gerrit-review.googlesource.com/Documentation/user-signedoffby.html
-[10]: https://subsurface-divelog.org/wp-content/uploads/2011/10/Screenshot-gitk-subsurface-1.png "Example with gitk"
-[11]: https://github.com/Subsurface-divelog/subsurface/blob/master/CodingStyle
-[12]: https://github.com/Subsurface-divelog/subsurface/blob/master/CONVENTIONS.md
+[8]: https://gerrit-review.googlesource.com/Documentation/user-signedoffby.html
+[9]: https://subsurface-divelog.org/wp-content/uploads/2011/10/Screenshot-gitk-subsurface-1.png "Example with gitk"
+[10]: https://github.com/Subsurface-divelog/subsurface/blob/master/CodingStyle
