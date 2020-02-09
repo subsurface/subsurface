@@ -740,7 +740,7 @@ int parse_txt_file(const char *filename, const char *csv, struct dive_table *tab
 						add_sample_data(sample, POSEIDON_NDL, value);
 						break;
 					case 39:
-						// Water Temperature in Celcius
+						// Water Temperature in Celsius
 						add_sample_data(sample, POSEIDON_TEMP, value);
 						break;
 					case 85:
