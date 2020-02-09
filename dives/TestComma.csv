@@ -1,4 +1,4 @@
-Dive Time (s),Depth (m),PPO2 - Setpoint (Bar),PPO2 - C1 Cell 1 (Bar),PPO2 - C1 Cell 2 (Bar),PPO2 - C1 Cell 3 (Bar),PPO2 - C1 Measured (Bar),PPO2 - C2 Cell 1 (Bar),PPO2 - C2 Cell 2 (Bar),PPO2 - C2 Cell 3 (Bar),PPO2 - C2 Measured (Bar),C1 Battery 1 (Volts),C1 Battery 2 (Volts),C2 Battery 1 (Volts),C2 Battery 2 (Volts),Ambient Temp. (Celcius),OTU Exposure (%),CNS Exposure (%),Deco Ceiling (m),Gradient Factor
+Dive Time (s),Depth (m),PPO2 - Setpoint (Bar),PPO2 - C1 Cell 1 (Bar),PPO2 - C1 Cell 2 (Bar),PPO2 - C1 Cell 3 (Bar),PPO2 - C1 Measured (Bar),PPO2 - C2 Cell 1 (Bar),PPO2 - C2 Cell 2 (Bar),PPO2 - C2 Cell 3 (Bar),PPO2 - C2 Measured (Bar),C1 Battery 1 (Volts),C1 Battery 2 (Volts),C2 Battery 1 (Volts),C2 Battery 2 (Volts),Ambient Temp. (Celsius),OTU Exposure (%),CNS Exposure (%),Deco Ceiling (m),Gradient Factor
 0,0.0,0,0,0,0,0,0,0,0,0,0,0,0,0,19.00,0,0,0,0
 60,2.5,0,0,0,0,0,0,0,0,0,0,0,0,0,18.00,0,0,0,0
 120,4.5,0,0,0,0,0,0,0,0,0,0,0,0,0,18.00,0,0,0,0
