@@ -432,6 +432,53 @@ bool DiveTripModelBase::setData(const QModelIndex &index, const QVariant &value,
 	return true;
 }
 
+// Structure describing changes of shown status
+struct ShownChange {
+	QVector<dive *> newShown;
+	QVector<dive *> newHidden;
+	void filterDive(dive *d, const DiveFilter *filter);
+};
+
+void ShownChange::filterDive(dive *d, const DiveFilter *filter)
+{
+	bool newStatus = filter->showDive(d);
+	if (filter_dive(d, newStatus)) {
+		if (newStatus)
+			newShown.push_back(d);
+		else
+			newHidden.push_back(d);
+	}
+}
+
+// Update visibility status of dive and return dives whose visibility changed.
+// Attention: the changed dives are removed from the original vector!
+static ShownChange updateShown(QVector<dive *> &dives)
+{
+	DiveFilter *filter = DiveFilter::instance();
+	ShownChange res;
+	for (dive *d: dives)
+		res.filterDive(d, filter);
+	if (!res.newShown.empty() || !res.newHidden.empty())
+		emit diveListNotifier.numShownChanged();
+	for (dive *d: res.newHidden)
+		dives.removeAll(d);
+	for (dive *d: res.newShown)
+		dives.removeAll(d);
+	return res;
+}
+
+// Update shown status of *all* dives, i.e. reset the filter
+static ShownChange updateShownAll()
+{
+	DiveFilter *filter = DiveFilter::instance();
+	ShownChange res;
+	for (int i = 0; i < dive_table.nr; ++i)
+		res.filterDive(get_dive(i), filter);
+	if (!res.newShown.empty() || !res.newHidden.empty())
+		emit diveListNotifier.numShownChanged();
+	return res;
+}
+
 // Find a range of matching elements in a vector.
 // Input parameters:
 //	v: vector to be searched
@@ -575,9 +622,11 @@ DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent
 
 void DiveTripModelTree::populate()
 {
-	for (int i = 0; i < dive_table.nr ; ++i) {
+	for (int i = 0; i < dive_table.nr; ++i) {
 		dive *d = get_dive(i);
 		update_cylinder_related_info(d);
+		if (d->hidden_by_filter)
+			continue;
 		dive_trip_t *trip = d->divetrip;
 
 		// If this dive doesn't have a trip, add as top-level item.
@@ -743,56 +792,44 @@ bool DiveTripModelTree::calculateFilterForTrip(const std::vector<dive *> &dives,
 	return showTrip;
 }
 
-// This recalculates the filters and sends appropriate changed signals.
+// The tree-version of the model wants to process the dives per trip.
+// This template takes a vector of dives and calls a function batchwise for each trip.
+template<typename Function>
+void processByTrip(QVector<dive *> dives, Function action)
+{
+	// Sort lexicographically by trip then according to the dive_less_than() function.
+	std::sort(dives.begin(), dives.end(), [](const dive *d1, const dive *d2)
+		  { return d1->divetrip == d2->divetrip ? dive_less_than(d1, d2) : d1->divetrip < d2->divetrip; });
+
+	// Then, process the dives in batches by trip
+	int i, j; // Begin and end of batch
+	for (i = 0; i < dives.size(); i = j) {
+		dive_trip *trip = dives[i]->divetrip;
+		for (j = i + 1; j < dives.size() && dives[j]->divetrip == trip; ++j)
+			; // pass
+		// Copy dives into a QVector. Some sort of "range_view" would be ideal.
+		QVector<dive *> divesInTrip(j - i);
+		for (int k = i; k < j; ++k)
+			divesInTrip[k - i] = dives[k];
+
+		// Finally, emit the signal
+		action(trip, divesInTrip);
+	}
+}
+
+// This recalculates the filters and add / removes the newly shown / hidden dives
 // Attention: Since this uses / modifies the hidden_by_filter flag of the
 // core dive structure, only one DiveTripModel[Tree|List] must exist at
 // a given time!
 void DiveTripModelTree::filterReset()
 {
-	// Collect the changes in a vector used later to send signals.
-	// This could be solved more efficiently in one pass, but
-	// doing it in two passes allows us to use a common function without
-	// resorting to co-routines, lambdas or similar techniques.
-	std::vector<char> changed;
-	changed.reserve(items.size());
 	dive *old_current = current_dive;
-	{
-		// This marker prevents the UI from getting notifications on selection changes.
-		// It is active until the end of the scope.
-		// This was actually designed for the undo-commands, so that they can do their work
-		// without having the UI updated.
-		// Here, it is used because invalidating the filter can generate numerous
-		// selection changes, which do full ui reloads. Instead, do that all at once
-		// as a consequence of the filterReset signal right after the local scope.
-		auto marker = diveListNotifier.enterCommand();
-		DiveFilter *filter = DiveFilter::instance();
 
-		for (size_t i = 0; i < items.size(); ++i) {
-			Item &item = items[i];
-			bool oldShown = item.shown;
-			if (item.d_or_t.dive) {
-				dive *d = item.d_or_t.dive;
-				item.shown = filter->showDive(item.d_or_t.dive);
-				filter_dive(d, item.shown);
-			} else {
-				// Trips are shown if any of the dives is shown
-				item.shown = calculateFilterForTrip(item.dives, filter, i);
-			}
-			changed.push_back(item.shown != oldShown);
-		}
-	}
-
-	// Send the data-changed signals if some items changed visibility.
-	sendShownChangedSignals(changed, noParent);
-
-	// Rerender all trip headers. TODO: be smarter about this and only rerender if the number
-	// of shown dives changed.
-	for (int idx = 0; idx < (int)items.size(); ++idx) {
-		QModelIndex tripIndex = createIndex(idx, 0, noParent);
-		dataChanged(tripIndex, tripIndex);
-	}
-
-	emit diveListNotifier.numShownChanged();
+	ShownChange change = updateShownAll();
+	processByTrip(change.newHidden, [this] (dive_trip *trip, const QVector<dive *> &divesInTrip)
+		      { divesHidden(trip, divesInTrip); });
+	processByTrip(change.newShown, [this] (dive_trip *trip, const QVector<dive *> &divesInTrip)
+		      { divesShown(trip, divesInTrip); });
 
 	// If the current dive changed, instruct the UI of the changed selection
 	// TODO: This is way to heavy, as it reloads the whole selection!
@@ -800,6 +837,47 @@ void DiveTripModelTree::filterReset()
 		initSelection();
 }
 
+void DiveTripModelTree::divesShown(dive_trip *trip, const QVector<dive *> &dives)
+{
+	if (dives.empty())
+		return;
+	if (trip) {
+		// Find the trip
+		int idx = findTripIdx(trip);
+		if (idx < 0) {
+			addTrip(trip, dives);	// Trip had no visible dives.
+		} else {
+			addDivesToTrip(idx, dives);
+			// Update the shown-count of the trip.
+			dataChanged(createIndex(idx, 0, noParent), createIndex(idx, 0, noParent));
+		}
+	} else {
+		addDivesTopLevel(dives);
+	}
+}
+
+void DiveTripModelTree::divesHidden(dive_trip *trip, const QVector<dive *> &dives)
+{
+	if (dives.empty())
+		return;
+	if (trip) {
+		// Find the trip
+		int idx = findTripIdx(trip);
+		if (idx < 0) {
+			qWarning("DiveTripModelTree::divesHidden(): unknown trip");
+			return;
+		}
+		if (dives.size() == (int)items[idx].dives.size()) {
+			removeTrip(idx); // If all dives are hidden, remove the whole trip!
+		} else {
+			removeDivesFromTrip(idx, dives);
+			// Note: if dives are shown and hidden from a trip, we send to signals. Shrug.
+			dataChanged(createIndex(idx, 0, noParent), createIndex(idx, 0, noParent));
+		}
+	} else {
+		removeDivesTopLevel(dives);
+	}
+}
 
 QVariant DiveTripModelTree::data(const QModelIndex &index, int role) const
 {
@@ -925,51 +1003,109 @@ bool DiveTripModelTree::dive_before_entry(const dive *d, const Item &entry)
 	return dive_or_trip_less_than(d_or_t, entry.d_or_t);
 }
 
-void DiveTripModelTree::divesAdded(dive_trip *trip, bool addTrip, const QVector<dive *> &dives)
+void DiveTripModelTree::addDivesTopLevel(const QVector<dive *> &dives)
 {
+	addInBatches(items, dives,
+		     &dive_before_entry, // comp
+		     [&](std::vector<Item> &items, const QVector<dive *> &dives, int idx, int from, int to) { // inserter
+			beginInsertRows(QModelIndex(), idx, idx + to - from - 1);
+			items.insert(items.begin() + idx, dives.begin() + from, dives.begin() + to);
+			endInsertRows();
+		     });
+}
+
+void DiveTripModelTree::removeDivesTopLevel(const QVector<dive *> &dives)
+{
+	processRangesZip(items, dives,
+			 [](const Item &e, dive *d) { return e.getDive() == d; }, // Condition
+			 [&](std::vector<Item> &items, const QVector<dive *> &, int from, int to, int) -> int { // Action
+				beginRemoveRows(QModelIndex(), from, to - 1);
+				items.erase(items.begin() + from, items.begin() + to);
+				endRemoveRows();
+				return from - to; // Delta: negate the number of items deleted
+				 });
+}
+
+void DiveTripModelTree::addTrip(dive_trip *trip, const QVector<dive *> &dives)
+{
+	int idx = findInsertionIndex(trip); // Find the place where to insert the trip
+	beginInsertRows(QModelIndex(), idx, idx);
+	items.insert(items.begin() + idx, { trip, dives });
+	endInsertRows();
+}
+
+void DiveTripModelTree::removeTrip(int idx)
+{
+	beginRemoveRows(QModelIndex(), idx, idx);
+	items.erase(items.begin() + idx);
+	endRemoveRows();
+}
+
+void DiveTripModelTree::removeDivesFromTrip(int idx, const QVector<dive *> &dives)
+{
+	// Construct the parent index, ie. the index of the trip.
+	QModelIndex parent = createIndex(idx, 0, noParent);
+
+	// Delete a number of dives in a trip. We do this range-wise.
+	processRangesZip(items[idx].dives, dives,
+			 [](dive *d1, dive *d2) { return d1 == d2; }, // Condition
+			 [&](std::vector<dive *> &diveList, const QVector<dive *> &, int from, int to, int) -> int { // Action
+				beginRemoveRows(parent, from, to - 1);
+				diveList.erase(diveList.begin() + from, diveList.begin() + to);
+				endRemoveRows();
+				return from - to; // Delta: negate the number of items deleted
+			 });
+}
+
+// Filter out hidden dives
+static QVector<dive *> visibleDives(const QVector<dive *> &dives)
+{
+	QVector<dive *> res;
+	res.reserve(dives.size());
+	// std::copy_if with a lambda might be more compact and elegant, but a simple loop is probably more readable.
+	for (dive *d: dives) {
+		if (!d->hidden_by_filter)
+			res.push_back(d);
+	}
+	return res;
+}
+
+void DiveTripModelTree::divesAdded(dive_trip *trip, bool newTrip, const QVector<dive *> &divesIn)
+{
+	QVector <dive *> dives = visibleDives(divesIn);
+	if (dives.empty())
+		return;
+
 	if (!trip) {
 		// This is outside of a trip. Add dives at the top-level in batches.
-		addInBatches(items, dives,
-			     &dive_before_entry, // comp
-			     [&](std::vector<Item> &items, const QVector<dive *> &dives, int idx, int from, int to) { // inserter
-				beginInsertRows(QModelIndex(), idx, idx + to - from - 1);
-				items.insert(items.begin() + idx, dives.begin() + from, dives.begin() + to);
-				endInsertRows();
-			     });
-	} else if (addTrip) {
+		addDivesTopLevel(dives);
+	} else if (newTrip) {
 		// We're supposed to add the whole trip. Just insert the trip.
-		int idx = findInsertionIndex(trip); // Find the place where to insert the trip
-		beginInsertRows(QModelIndex(), idx, idx);
-		items.insert(items.begin() + idx, { trip, dives });
-		endInsertRows();
+		addTrip(trip, dives);
 	} else {
 		// Ok, we have to add dives to an existing trip
 		// Find the trip...
 		int idx = findTripIdx(trip);
 		if (idx < 0) {
-			// We don't know the trip - this shouldn't happen. We seem to have
-			// missed some signals!
-			qWarning() << "DiveTripModelTree::divesAdded(): unknown trip";
-			return;
+			// We don't know the trip - this may happen if all the old
+			// dives are hidden by the filter.
+			addTrip(trip, dives);
+		} else {
+			// ...and add dives.
+			addDivesToTrip(idx, dives);
 		}
-
-		// ...and add dives.
-		addDivesToTrip(idx, dives);
 	}
 }
 
-void DiveTripModelTree::divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives)
+void DiveTripModelTree::divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &divesIn)
 {
+	QVector <dive *> dives = visibleDives(divesIn);
+	if (dives.empty())
+		return;
+
 	if (!trip) {
 		// This is outside of a trip. Delete top-level dives in batches.
-		processRangesZip(items, dives,
-				 [](const Item &e, dive *d) { return e.getDive() == d; }, // Condition
-				 [&](std::vector<Item> &items, const QVector<dive *> &, int from, int to, int) -> int { // Action
-					beginRemoveRows(QModelIndex(), from, to - 1);
-					items.erase(items.begin() + from, items.begin() + to);
-					endRemoveRows();
-					return from - to; // Delta: negate the number of items deleted
-					 });
+		removeDivesTopLevel(dives);
 	} else {
 		// Find the trip
 		int idx = findTripIdx(trip);
@@ -980,54 +1116,14 @@ void DiveTripModelTree::divesDeleted(dive_trip *trip, bool deleteTrip, const QVe
 			return;
 		}
 
-		if (deleteTrip) {
+		if (deleteTrip || dives.size() >= (int)items[idx].dives.size()) {
 			// We're supposed to delete the whole trip. Nice, we don't have to
 			// care about individual dives. Just remove the row.
-			beginRemoveRows(QModelIndex(), idx, idx);
-			items.erase(items.begin() + idx);
-			endRemoveRows();
+			removeTrip(idx);
 		} else {
-			// Construct the parent index, ie. the index of the trip.
-			QModelIndex parent = createIndex(idx, 0, noParent);
-
-			// Delete a number of dives in a trip. We do this range-wise.
-			processRangesZip(items[idx].dives, dives,
-					 [](dive *d1, dive *d2) { return d1 == d2; }, // Condition
-					 [&](std::vector<dive *> &diveList, const QVector<dive *> &, int from, int to, int) -> int { // Action
-						beginRemoveRows(parent, from, to - 1);
-						diveList.erase(diveList.begin() + from, diveList.begin() + to);
-						endRemoveRows();
-						return from - to; // Delta: negate the number of items deleted
-					 });
-
-			// If necessary, move the trip
-			topLevelChanged(idx);
+			removeDivesFromTrip(idx, dives);
+			topLevelChanged(idx); // If necessary, move the trip
 		}
-	}
-}
-
-// The tree-version of the model wants to process the dives per trip.
-// This template takes a vector of dives and calls a function batchwise for each trip.
-template<typename Function>
-void processByTrip(QVector<dive *> dives, Function action)
-{
-	// Sort lexicographically by trip then according to the dive_less_than() function.
-	std::sort(dives.begin(), dives.end(), [](const dive *d1, const dive *d2)
-		  { return d1->divetrip == d2->divetrip ? dive_less_than(d1, d2) : d1->divetrip < d2->divetrip; });
-
-	// Then, process the dives in batches by trip
-	int i, j; // Begin and end of batch
-	for (i = 0; i < dives.size(); i = j) {
-		dive_trip *trip = dives[i]->divetrip;
-		for (j = i + 1; j < dives.size() && dives[j]->divetrip == trip; ++j)
-			; // pass
-		// Copy dives into a QVector. Some sort of "range_view" would be ideal.
-		QVector<dive *> divesInTrip(j - i);
-		for (int k = i; k < j; ++k)
-			divesInTrip[k - i] = dives[k];
-
-		// Finally, emit the signal
-		action(trip, divesInTrip);
 	}
 }
 
@@ -1065,23 +1161,12 @@ void DiveTripModelTree::divesChanged(const QVector<dive *> &dives)
 		      { divesChangedTrip(trip, divesInTrip); });
 }
 
-// Update visibility status of dive and return true if visibility changed
-static bool updateShown(const QVector<dive *> &dives)
+void DiveTripModelTree::divesChangedTrip(dive_trip *trip, const QVector<dive *> &divesIn)
 {
-	bool changed = false;
-	DiveFilter *filter = DiveFilter::instance();
-	for (dive *d: dives) {
-		bool newStatus = filter->showDive(d);
-		changed |= filter_dive(d, newStatus);
-	}
-	if (changed)
-		emit diveListNotifier.numShownChanged();
-	return changed;
-}
-
-void DiveTripModelTree::divesChangedTrip(dive_trip *trip, const QVector<dive *> &dives)
-{
-	bool diveChanged = updateShown(dives);
+	QVector<dive *> dives = divesIn;
+	ShownChange shownChange = updateShown(dives);
+	divesShown(trip, shownChange.newShown);
+	divesHidden(trip, shownChange.newHidden);
 
 	if (!trip) {
 		// This is outside of a trip. Process top-level items range-wise.
@@ -1100,8 +1185,7 @@ void DiveTripModelTree::divesChangedTrip(dive_trip *trip, const QVector<dive *> 
 		// Find the trip.
 		int idx = findTripIdx(trip);
 		if (idx < 0) {
-			// We don't know the trip - this shouldn't happen. We seem to have
-			// missed some signals!
+			// We don't know the trip! We seem to have missed some signals!
 			qWarning() << "DiveTripModelTree::divesChanged(): unknown trip";
 			return;
 		}
@@ -1117,28 +1201,24 @@ void DiveTripModelTree::divesChangedTrip(dive_trip *trip, const QVector<dive *> 
 
 		// If necessary, move the trip
 		topLevelChanged(idx);
-
-		// If a dive changed, re-render the trip in the list [or actually make it (in)visible].
-		if (diveChanged)
-			dataChanged(createIndex(idx, 0, noParent), createIndex(idx, 0, noParent));
 	}
 }
 
 void DiveTripModelTree::tripChanged(dive_trip *trip, TripField)
 {
 	int idx = findTripIdx(trip);
-	if (idx < 0) {
-		// We don't know the trip - this shouldn't happen. We seem to have
-		// missed some signals!
-		qWarning() << "DiveTripModelTree::divesChanged(): unknown trip";
-		return;
-	}
+	if (idx < 0)
+		return; // We don't know the trip - this happens if all dives are hidden
 
 	dataChanged(createIndex(idx, 0, noParent), createIndex(idx, COLUMNS - 1, noParent));
 }
 
-void DiveTripModelTree::divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives)
+void DiveTripModelTree::divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &divesIn)
 {
+	QVector <dive *> dives = visibleDives(divesIn);
+	if (dives.empty())
+		return;
+
 	// Move dives between trips. This is an "interesting" problem, as we might
 	// move from trip to trip, from trip to top-level or from top-level to trip.
 	// Moreover, we might have to add a trip first or delete an old trip.
@@ -1163,8 +1243,12 @@ void DiveTripModelTree::divesTimeChanged(timestamp_t delta, const QVector<dive *
 		      { divesTimeChangedTrip(trip, delta, divesInTrip); });
 }
 
-void DiveTripModelTree::divesTimeChangedTrip(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives)
+void DiveTripModelTree::divesTimeChangedTrip(dive_trip *trip, timestamp_t delta, const QVector<dive *> &divesIn)
 {
+	QVector <dive *> dives = visibleDives(divesIn);
+	if (dives.empty())
+		return;
+
 	// As in the case of divesMovedBetweenTrips(), this is a tricky, but solvable, problem.
 	// We have to consider the direction (delta < 0 or delta >0) and that dives at their destination
 	// position have different contiguous batches than at their original position. For now,
@@ -1179,8 +1263,12 @@ void DiveTripModelTree::divesTimeChangedTrip(dive_trip *trip, timestamp_t delta,
 	divesAdded(trip, false, dives);
 }
 
-void DiveTripModelTree::divesSelected(const QVector<dive *> &dives, dive *current)
+void DiveTripModelTree::divesSelected(const QVector<dive *> &divesIn, dive *current)
 {
+	QVector <dive *> dives = visibleDives(divesIn);
+	if (dives.empty())
+		return;
+
 	// We got a number of dives that have been selected. Turn this into QModelIndexes and
 	// emit a signal, so that views can change the selection.
 	QVector<QModelIndex> indexes;
@@ -1294,8 +1382,12 @@ void DiveTripModelList::populate()
 {
 	// Fill model
 	items.reserve(dive_table.nr);
-	for (int i = 0; i < dive_table.nr ; ++i)
-		items.push_back(get_dive(i));
+	for (int i = 0; i < dive_table.nr; ++i) {
+		dive *d = get_dive(i);
+		if (d->hidden_by_filter)
+			continue;
+		items.push_back(d);
+	}
 }
 
 int DiveTripModelList::rowCount(const QModelIndex &parent) const
@@ -1338,29 +1430,11 @@ dive *DiveTripModelList::diveOrNull(const QModelIndex &index) const
 // a given time!
 void DiveTripModelList::filterReset()
 {
-	// Collect the changes in a vector used later to send signals.
-	// This could be solved more efficiently in one pass, but
-	// doing it in two passes allows us to use a common function without
-	// resorting to co-routines, lambdas or similar techniques.
-	std::vector<char> changed;
-	changed.reserve(items.size());
 	dive *old_current = current_dive;
-	{
-		// This marker prevents the UI from getting notifications on selection changes.
-		// It is active until the end of the scope. See comment in DiveTripModelTree::filterReset().
-		auto marker = diveListNotifier.enterCommand();
-		DiveFilter *filter = DiveFilter::instance();
 
-		for (dive *d: items) {
-			bool shown = filter->showDive(d);
-			changed.push_back(filter_dive(d, shown));
-		}
-	}
-
-	// Send the data-changed signals if some items changed visibility.
-	sendShownChangedSignals(changed, noParent);
-
-	emit diveListNotifier.numShownChanged();
+	ShownChange change = updateShownAll();
+	removeDives(change.newHidden);
+	addDives(change.newShown);
 
 	// If the current dive changed, instruct the UI of the changed selection
 	// TODO: This is way to heavy, as it reloads the whole selection!
@@ -1380,9 +1454,8 @@ QVariant DiveTripModelList::data(const QModelIndex &index, int role) const
 	return d ? diveData(d, index.column(), role) : QVariant();
 }
 
-void DiveTripModelList::divesAdded(dive_trip *, bool, const QVector<dive *> &divesIn)
+void DiveTripModelList::addDives(QVector<dive *> &dives)
 {
-	QVector<dive *> dives = divesIn;
 	std::sort(dives.begin(), dives.end(), dive_less_than);
 	addInBatches(items, dives,
 		     &dive_less_than, // comp
@@ -1393,9 +1466,8 @@ void DiveTripModelList::divesAdded(dive_trip *, bool, const QVector<dive *> &div
 		     });
 }
 
-void DiveTripModelList::divesDeleted(dive_trip *, bool, const QVector<dive *> &divesIn)
+void DiveTripModelList::removeDives(QVector<dive *> &dives)
 {
-	QVector<dive *> dives = divesIn;
 	std::sort(dives.begin(), dives.end(), dive_less_than);
 	processRangesZip(items, dives,
 			 std::equal_to<const dive *>(), // Condition: dive-pointers are equal
@@ -1405,6 +1477,18 @@ void DiveTripModelList::divesDeleted(dive_trip *, bool, const QVector<dive *> &d
 				endRemoveRows();
 				return from - to; // Delta: negate the number of items deleted
 				 });
+}
+
+void DiveTripModelList::divesAdded(dive_trip *, bool, const QVector<dive *> &divesIn)
+{
+	QVector<dive *> dives = visibleDives(divesIn);
+	addDives(dives);
+}
+
+void DiveTripModelList::divesDeleted(dive_trip *, bool, const QVector<dive *> &divesIn)
+{
+	QVector<dive *> dives = visibleDives(divesIn);
+	removeDives(dives);
 }
 
 void DiveTripModelList::diveSiteChanged(dive_site *ds, int field)
@@ -1419,7 +1503,9 @@ void DiveTripModelList::divesChanged(const QVector<dive *> &divesIn)
 	QVector<dive *> dives = divesIn;
 	std::sort(dives.begin(), dives.end(), dive_less_than);
 
-	updateShown(dives);
+	ShownChange shownChange = updateShown(dives);
+	removeDives(shownChange.newHidden);
+	addDives(shownChange.newShown);
 
 	// Since we know that the dive list is sorted, we will only ever search for the first element
 	// in dives as this must be the first that we encounter. Once we find a range, increase the
@@ -1435,7 +1521,9 @@ void DiveTripModelList::divesChanged(const QVector<dive *> &divesIn)
 
 void DiveTripModelList::divesTimeChanged(timestamp_t delta, const QVector<dive *> &divesIn)
 {
-	QVector<dive *> dives = divesIn;
+	QVector<dive *> dives = visibleDives(divesIn);
+	if (dives.empty())
+		return;
 	std::sort(dives.begin(), dives.end(), dive_less_than);
 
 	// See comment for DiveTripModelTree::divesTimeChanged above.
@@ -1443,8 +1531,10 @@ void DiveTripModelList::divesTimeChanged(timestamp_t delta, const QVector<dive *
 	divesAdded(nullptr, false, dives);
 }
 
-void DiveTripModelList::divesSelected(const QVector<dive *> &dives, dive *current)
+void DiveTripModelList::divesSelected(const QVector<dive *> &divesIn, dive *current)
 {
+	QVector<dive *> dives = visibleDives(divesIn);
+
 	// We got a number of dives that have been selected. Turn this into QModelIndexes and
 	// emit a signal, so that views can change the selection.
 	QVector<QModelIndex> indexes;

@@ -124,6 +124,8 @@ private:
 	void divesSelectedTrip(dive_trip *trip, const QVector<dive *> &dives, QVector<QModelIndex> &);
 	dive *diveOrNull(const QModelIndex &index) const override;
 	void divesChangedTrip(dive_trip *trip, const QVector<dive *> &dives);
+	void divesShown(dive_trip *trip, const QVector<dive *> &dives);
+	void divesHidden(dive_trip *trip, const QVector<dive *> &dives);
 	void divesTimeChangedTrip(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
 	bool calculateFilterForTrip(const std::vector<dive *> &dives, const DiveFilter *filter, quintptr parentIndex);
 
@@ -151,8 +153,13 @@ private:
 	dive_or_trip tripOrDive(const QModelIndex &index) const;
 								// Returns either a pointer to a trip or a dive, or twice null of index is invalid
 								// null, something is really wrong
-	// Addition and deletion of dives
+	// Addition and deletion of dives and trips
+	void addTrip(dive_trip *trip, const QVector<dive *> &dives);
 	void addDivesToTrip(int idx, const QVector<dive *> &dives);
+	void addDivesTopLevel(const QVector<dive *> &dives);
+	void removeDivesFromTrip(int idx, const QVector<dive *> &dives);
+	void removeDivesTopLevel(const QVector<dive *> &dives);
+	void removeTrip(int idx);
 	void topLevelChanged(int idx);
 
 	// Access trips and dives
@@ -190,6 +197,8 @@ private:
 	QVariant data(const QModelIndex &index, int role) const override;
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
 	dive *diveOrNull(const QModelIndex &index) const override;
+	void addDives(QVector<dive *> &dives);
+	void removeDives(QVector<dive *> &dives);
 
 	std::vector<dive *> items;				// TODO: access core data directly
 };
