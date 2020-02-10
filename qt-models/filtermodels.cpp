@@ -16,9 +16,6 @@ MultiFilterSortModel *MultiFilterSortModel::instance()
 MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
 	resetModel(DiveTripModelBase::TREE);
-	setFilterKeyColumn(-1); // filter all columns
-	setFilterRole(DiveTripModelBase::SHOWN_ROLE); // Let the proxy-model known that is has to react to change events involving SHOWN_ROLE
-	setFilterCaseSensitivity(Qt::CaseInsensitive);
 }
 
 void MultiFilterSortModel::resetModel(DiveTripModelBase::Layout layout)
@@ -62,9 +59,7 @@ void MultiFilterSortModel::currentDiveChangedSlot(QModelIndex index)
 
 bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
-	QAbstractItemModel *m = sourceModel();
-	QModelIndex index0 = m->index(source_row, 0, source_parent);
-	return m->data(index0, DiveTripModelBase::SHOWN_ROLE).value<bool>();
+	return true;
 }
 
 bool MultiFilterSortModel::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
