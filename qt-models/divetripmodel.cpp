@@ -702,19 +702,15 @@ QModelIndex DiveTripModelTree::parent(const QModelIndex &index) const
 }
 
 DiveTripModelTree::Item::Item(dive_trip *t, const QVector<dive *> &divesIn) : d_or_t{nullptr, t},
-	dives(std::vector<dive *>(divesIn.begin(), divesIn.end())),
-	shown(std::any_of(dives.begin(), dives.end(), [](dive *d){ return !d->hidden_by_filter; }))
+	dives(std::vector<dive *>(divesIn.begin(), divesIn.end()))
 {
 }
 
-DiveTripModelTree::Item::Item(dive_trip *t, dive *d) : d_or_t{nullptr, t},
-	dives({ d }),
-	shown(!d->hidden_by_filter)
+DiveTripModelTree::Item::Item(dive_trip *t, dive *d) : d_or_t{nullptr, t}, dives({ d })
 {
 }
 
-DiveTripModelTree::Item::Item(dive *d) : d_or_t{d, nullptr},
-	shown(!d->hidden_by_filter)
+DiveTripModelTree::Item::Item(dive *d) : d_or_t{d, nullptr}
 {
 }
 
