@@ -137,7 +137,6 @@ private:
 	struct Item {
 		dive_or_trip		d_or_t;
 		std::vector<dive *>	dives;			// std::vector<> instead of QVector for insert() with three iterators
-		bool			shown;
 		Item(dive_trip *t, const QVector<dive *> &dives);
 		Item(dive_trip *t, dive *d);			// Initialize a trip with one dive
 		Item(dive *d);					// Initialize a top-level dive
