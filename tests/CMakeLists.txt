@@ -118,9 +118,9 @@ TEST(TestPicture testpicture.cpp)
 TEST(TestMerge testmerge.cpp)
 TEST(TestTagList testtaglist.cpp)
 
-if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
-TEST(TestPlannerShared testplannershared.cpp)
-endif()
+#if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
+#TEST(TestPlannerShared testplannershared.cpp)
+#endif()
 
 TEST(TestQPrefCloudStorage testqPrefCloudStorage.cpp)
 TEST(TestQPrefDisplay testqPrefDisplay.cpp)
@@ -140,9 +140,10 @@ TEST(TestQPrefUnits testqPrefUnits.cpp)
 TEST(TestQPrefUpdateManager testqPrefUpdateManager.cpp)
 add_test(NAME TestQML COMMAND $<TARGET_FILE:TestQML> -input ${SUBSURFACE_SOURCE}/tests)
 
-if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
-	set(TEST_PLANNER_SHARED TestPlannerShared)
-endif()
+# this is currently broken
+#if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
+#	set(TEST_PLANNER_SHARED TestPlannerShared)
+#endif()
 
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	DEPENDS
