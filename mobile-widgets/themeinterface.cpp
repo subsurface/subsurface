@@ -3,6 +3,7 @@
 #include "qmlmanager.h"
 #include "core/metrics.h"
 #include "core/settings/qPrefDisplay.h"
+#include <QFontInfo>
 
 QColor themeInterface::m_backgroundColor;
 QColor themeInterface::m_contrastAccentColor;
@@ -80,8 +81,9 @@ void themeInterface::setup(QQmlContext *ct)
 	m_currentTheme = qPrefDisplay::theme();
 	update_theme();
 
-	// check system font
-	m_basePointSize = defaultModelFont().pointSize();
+	// check system font and create QFontInfo in order to reliably get the point size
+	QFontInfo qfi(defaultModelFont());
+	m_basePointSize = qfi.pointSize();
 
 	// set initial font size
 	set_currentScale(qPrefDisplay::mobile_scale());
@@ -110,7 +112,7 @@ void themeInterface::set_currentScale(double newScale)
 	defaultModelFont().setPointSize(m_basePointSize * qPrefDisplay::mobile_scale());
 
 	// adjust all used font sizes
-	m_regularPointSize = defaultModelFont().pointSize();
+	m_regularPointSize = m_basePointSize * qPrefDisplay::mobile_scale();
 	emit instance()->regularPointSizeChanged(m_regularPointSize);
 
 	m_headingPointSize = m_regularPointSize * 1.2;
