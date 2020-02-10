@@ -752,46 +752,6 @@ dive *DiveTripModelTree::diveOrNull(const QModelIndex &index) const
 	return tripOrDive(index).dive;
 }
 
-// Send data changed signals blockwise. Which entries are changed is collected
-// in the first parameter "changed".
-void DiveTripModelBase::sendShownChangedSignals(const std::vector<char> &changed, quintptr parentIndex)
-{
-	static const QVector<int> roles { SHOWN_ROLE };
-	for (size_t i = 0; i < changed.size(); ++i) {
-		// Find first and last block of changed items
-		if (!changed[i])
-			continue;
-		size_t j;
-		for (j = i + 1; j < changed.size() && changed[j]; ++j)
-			; // Pass
-		dataChanged(createIndex(i, 0, parentIndex), createIndex(j - 1, 0, parentIndex), roles);
-		i = j - 1;
-	}
-}
-
-// Applying the filter to trip-items is a bit tricky:
-// We only want to send changed-signals if one of the dives remains visible.
-// Because if no dive remains visible, we'll simply send a signal on the parent trip,
-// which will then be hidden and all the dives will be hidden implicitly as well.
-// Thus, do this in two passes: collect changed dives and only if any dive is visible,
-// send the signals.
-bool DiveTripModelTree::calculateFilterForTrip(const std::vector<dive *> &dives, const DiveFilter *filter, quintptr parentIndex)
-{
-	bool showTrip = false;
-	std::vector<char> changed;
-	changed.reserve(dives.size());
-	for (dive *d: dives) {
-		bool shown = filter->showDive(d);
-		changed.push_back(filter_dive(d, shown));
-		showTrip |= shown;
-	}
-
-	// If any dive is shown, send changed-signals
-	if (showTrip)
-		sendShownChangedSignals(changed, parentIndex);
-	return showTrip;
-}
-
 // The tree-version of the model wants to process the dives per trip.
 // This template takes a vector of dives and calls a function batchwise for each trip.
 template<typename Function>
