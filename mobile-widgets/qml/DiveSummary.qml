@@ -82,8 +82,8 @@ Kirigami.ScrollablePage {
 
 		TemplateButton {
 			/* Replace by signals from the core in due course. */
-			text: "Refresh"
-			width: headerColumnWidth
+			text: qsTr("Refresh")
+			implicitWidth: headerColumnWidth
 			onClicked: reload()
 		}
 		TemplateComboBox {
