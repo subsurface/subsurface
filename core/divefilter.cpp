@@ -25,46 +25,57 @@ bool DiveFilter::showDive(const struct dive *d) const
 #include "qt-models/filtermodels.h"
 
 namespace {
+	// Pointer to function that takes two strings and returns whether
+	// the first matches the second according to a criterion (substring, starts-with, exact).
+	using StrCheck = bool (*) (const QString &s1, const QString &s2);
+
 	// Check if a string-list contains at least one string containing the second argument.
 	// Comparison is non case sensitive and removes white space.
-	bool listContainsSuperstring(const QStringList &list, const QString &s)
+	bool listContainsSuperstring(const QStringList &list, const QString &s, StrCheck strchk)
 	{
-		return std::any_of(list.begin(), list.end(), [&s](const QString &s2)
-				   { return s2.trimmed().contains(s.trimmed(), Qt::CaseInsensitive); } );
+		return std::any_of(list.begin(), list.end(), [&s,strchk](const QString &s2)
+				   { return strchk(s2, s); } );
 	}
 
 	// Check whether either all, any or none of the items of the first list is
 	// in the second list as a super string.
 	// The mode is controlled by the second argument
-	bool check(const QStringList &items, const QStringList &list, FilterData::Mode mode)
+	bool check(const QStringList &items, const QStringList &list, FilterData::Mode mode, FilterData::StringMode stringMode)
 	{
 		bool negate = mode == FilterData::Mode::NONE_OF;
 		bool any_of = mode == FilterData::Mode::ANY_OF;
-		auto fun = [&list, negate](const QString &item)
-			   { return listContainsSuperstring(list, item) != negate; };
+		StrCheck strchk =
+			stringMode == FilterData::StringMode::SUBSTRING ?
+				[](const QString &s1, const QString &s2) { return s1.contains(s2, Qt::CaseInsensitive); } :
+			stringMode == FilterData::StringMode::STARTSWITH ?
+				[](const QString &s1, const QString &s2) { return s1.startsWith(s2, Qt::CaseInsensitive); } :
+			/* FilterData::StringMode::EXACT */
+				[](const QString &s1, const QString &s2) { return s1.compare(s2, Qt::CaseInsensitive) == 0; };
+		auto fun = [&list, negate, strchk](const QString &item)
+			   { return listContainsSuperstring(list, item, strchk) != negate; };
 		return any_of ? std::any_of(items.begin(), items.end(), fun)
 			      : std::all_of(items.begin(), items.end(), fun);
 	}
 
-	bool hasTags(const QStringList &tags, const struct dive *d, FilterData::Mode mode)
+	bool hasTags(const QStringList &tags, const struct dive *d, FilterData::Mode mode, FilterData::StringMode stringMode)
 	{
 		if (tags.isEmpty())
 			return true;
 		QStringList dive_tags = get_taglist_string(d->tag_list).split(",");
 		dive_tags.append(gettextFromC::tr(divemode_text_ui[d->dc.divemode]));
-		return check(tags, dive_tags, mode);
+		return check(tags, dive_tags, mode, stringMode);
 	}
 
-	bool hasPersons(const QStringList &people, const struct dive *d, FilterData::Mode mode)
+	bool hasPersons(const QStringList &people, const struct dive *d, FilterData::Mode mode, FilterData::StringMode stringMode)
 	{
 		if (people.isEmpty())
 			return true;
 		QStringList dive_people = QString(d->buddy).split(",", QString::SkipEmptyParts)
 			+ QString(d->divemaster).split(",", QString::SkipEmptyParts);
-		return check(people, dive_people, mode);
+		return check(people, dive_people, mode, stringMode);
 	}
 
-	bool hasLocations(const QStringList &locations, const struct dive *d, FilterData::Mode mode)
+	bool hasLocations(const QStringList &locations, const struct dive *d, FilterData::Mode mode, FilterData::StringMode stringMode)
 	{
 		if (locations.isEmpty())
 			return true;
@@ -75,35 +86,34 @@ namespace {
 		if (d->dive_site)
 			diveLocations.push_back(QString(d->dive_site->name));
 
-		return check(locations, diveLocations, mode);
+		return check(locations, diveLocations, mode, stringMode);
 	}
 
 	// TODO: Finish this implementation.
-	bool hasEquipment(const QStringList &, const struct dive *, FilterData::Mode)
+	bool hasEquipment(const QStringList &, const struct dive *, FilterData::Mode, FilterData::StringMode)
 	{
 		return true;
 	}
 
-	bool hasSuits(const QStringList &suits, const struct dive *d, FilterData::Mode mode)
+	bool hasSuits(const QStringList &suits, const struct dive *d, FilterData::Mode mode, FilterData::StringMode stringMode)
 	{
 		if (suits.isEmpty())
 			return true;
 		QStringList diveSuits;
 		if (d->suit)
 			diveSuits.push_back(QString(d->suit));
-		return check(suits, diveSuits, mode);
+		return check(suits, diveSuits, mode, stringMode);
 	}
 
-	bool hasNotes(const QStringList &dnotes, const struct dive *d, FilterData::Mode mode)
+	bool hasNotes(const QStringList &dnotes, const struct dive *d, FilterData::Mode mode, FilterData::StringMode stringMode)
 	{
 		if (dnotes.isEmpty())
 			return true;
 		QStringList diveNotes;
 		if (d->notes)
 			diveNotes.push_back(QString(d->notes));
-		return check(dnotes, diveNotes, mode);
+		return check(dnotes, diveNotes, mode, stringMode);
 	}
-
 }
 
 DiveFilter *DiveFilter::instance()
@@ -152,26 +162,26 @@ bool DiveFilter::showDive(const struct dive *d) const
 		return false;
 
 	// tags.
-	if (!hasTags(filterData.tags, d, filterData.tagsMode))
+	if (!hasTags(filterData.tags, d, filterData.tagsMode, filterData.tagsStringMode))
 		return false;
 
 	// people
-	if (!hasPersons(filterData.people, d, filterData.peopleMode))
+	if (!hasPersons(filterData.people, d, filterData.peopleMode, filterData.peopleStringMode))
 		return false;
 
 	// Location
-	if (!hasLocations(filterData.location, d, filterData.locationMode))
+	if (!hasLocations(filterData.location, d, filterData.locationMode, filterData.locationStringMode))
 		return false;
 
 	// Suit
-	if (!hasSuits(filterData.suit, d, filterData.suitMode))
+	if (!hasSuits(filterData.suit, d, filterData.suitMode, filterData.suitStringMode))
 		return false;
 
 	// Notes
-	if (!hasNotes(filterData.dnotes, d, filterData.dnotesMode))
+	if (!hasNotes(filterData.dnotes, d, filterData.dnotesMode, filterData.dnotesStringMode))
 		return false;
 
-	if (!hasEquipment(filterData.equipment, d, filterData.equipmentMode))
+	if (!hasEquipment(filterData.equipment, d, filterData.equipmentMode, filterData.equipmentStringMode))
 		return false;
 
 	// Planned/Logged

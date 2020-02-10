@@ -34,6 +34,11 @@ struct FilterData {
 		ANY_OF = 1,
 		NONE_OF = 2
 	};
+	enum class StringMode {
+		SUBSTRING = 0,
+		STARTSWITH = 1,
+		EXACT = 2
+	};
 
 	bool validFilter = false;
 	int minVisibility = 0;
@@ -63,6 +68,12 @@ struct FilterData {
 	Mode dnotesMode = Mode::ALL_OF;
 	Mode suitMode = Mode::ANY_OF;
 	Mode equipmentMode = Mode::ALL_OF;
+	StringMode tagsStringMode = StringMode::SUBSTRING;
+	StringMode peopleStringMode = StringMode::SUBSTRING;
+	StringMode locationStringMode = StringMode::SUBSTRING;
+	StringMode dnotesStringMode = StringMode::SUBSTRING;
+	StringMode suitStringMode = StringMode::SUBSTRING;
+	StringMode equipmentStringMode = StringMode::SUBSTRING;
 	bool logged = true;
 	bool planned = true;
 };
