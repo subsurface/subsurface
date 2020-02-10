@@ -1137,16 +1137,6 @@ void DiveTripModelTree::tripChanged(dive_trip *trip, TripField)
 	dataChanged(createIndex(idx, 0, noParent), createIndex(idx, COLUMNS - 1, noParent));
 }
 
-static QVector<dive *> filterSelectedDives(const QVector<dive *> &dives)
-{
-	QVector<dive *> res;
-	res.reserve(dives.size());
-	for (dive *d: dives)
-		if (d->selected)
-			res.append(d);
-	return res;
-}
-
 void DiveTripModelTree::divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives)
 {
 	// Move dives between trips. This is an "interesting" problem, as we might
@@ -1163,7 +1153,6 @@ void DiveTripModelTree::divesMovedBetweenTrips(dive_trip *from, dive_trip *to, b
 	// Cheating!
 	// Unfortunately, removing the dives means that their selection is lost.
 	// Thus, remember the selection and re-add it later.
-	QVector<dive *> selectedDives = filterSelectedDives(dives);
 	divesAdded(to, createTo, dives);
 	divesDeleted(from, deleteFrom, dives);
 }
@@ -1186,7 +1175,6 @@ void DiveTripModelTree::divesTimeChangedTrip(dive_trip *trip, timestamp_t delta,
 	// Cheating!
 	// Unfortunately, removing the dives means that their selection is lost.
 	// Thus, remember the selection and re-add it later.
-	QVector<dive *> selectedDives = filterSelectedDives(dives);
 	divesDeleted(trip, false, dives);
 	divesAdded(trip, false, dives);
 }
@@ -1451,7 +1439,6 @@ void DiveTripModelList::divesTimeChanged(timestamp_t delta, const QVector<dive *
 	std::sort(dives.begin(), dives.end(), dive_less_than);
 
 	// See comment for DiveTripModelTree::divesTimeChanged above.
-	QVector<dive *> selectedDives = filterSelectedDives(dives);
 	divesDeleted(nullptr, false, dives);
 	divesAdded(nullptr, false, dives);
 }
