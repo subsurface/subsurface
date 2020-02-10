@@ -24,6 +24,7 @@ FilterWidget2::FilterWidget2(QWidget* parent) :
 	// TODO: unhide this when we discover how to search for equipment.
 	ui.equipment->hide();
 	ui.equipmentMode->hide();
+	ui.equipmentStringMode->hide();
 	ui.labelEquipment->hide();
 
 	ui.fromDate->setDisplayFormat(prefs.date_format);
@@ -154,6 +155,12 @@ void FilterWidget2::clearFilter()
 	ui.suitMode->setCurrentIndex((int)filterData.suitMode);
 	ui.dnotesMode->setCurrentIndex((int)filterData.dnotesMode);
 	ui.equipmentMode->setCurrentIndex((int)filterData.equipmentMode);
+	ui.tagsStringMode->setCurrentIndex((int)filterData.tagsStringMode);
+	ui.peopleStringMode->setCurrentIndex((int)filterData.peopleStringMode);
+	ui.locationStringMode->setCurrentIndex((int)filterData.locationStringMode);
+	ui.suitStringMode->setCurrentIndex((int)filterData.suitStringMode);
+	ui.dnotesStringMode->setCurrentIndex((int)filterData.dnotesStringMode);
+	ui.equipmentStringMode->setCurrentIndex((int)filterData.equipmentStringMode);
 
 	ignoreSignal = false;
 
@@ -204,6 +211,12 @@ void FilterWidget2::updateFilter()
 	filterData.suitMode = (FilterData::Mode)ui.suitMode->currentIndex();
 	filterData.dnotesMode = (FilterData::Mode)ui.dnotesMode->currentIndex();
 	filterData.equipmentMode = (FilterData::Mode)ui.equipmentMode->currentIndex();
+	filterData.tagsStringMode = (FilterData::StringMode)ui.tagsStringMode->currentIndex();
+	filterData.peopleStringMode = (FilterData::StringMode)ui.peopleStringMode->currentIndex();
+	filterData.locationStringMode = (FilterData::StringMode)ui.locationStringMode->currentIndex();
+	filterData.suitStringMode = (FilterData::StringMode)ui.suitStringMode->currentIndex();
+	filterData.dnotesStringMode = (FilterData::StringMode)ui.dnotesStringMode->currentIndex();
+	filterData.equipmentStringMode = (FilterData::StringMode)ui.equipmentStringMode->currentIndex();
 	filterData.logged = ui.logged->isChecked();
 	filterData.planned = ui.planned->isChecked();
 
