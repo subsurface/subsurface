@@ -181,12 +181,6 @@ Kirigami.ScrollablePage {
 			delegate: rowDelegate
 			section.property: "section"
 			section.delegate: sectionDelegate
-			Component.onCompleted: {
-				manager.appendTextToLog("SUMMARY: width: " + width + " height: " + height + " rows: " + model.rowCount())
-			}
-			onModelChanged: {
-				manager.appendTextToLog("SUMMARY model changed; now width: " + width + " height: " + height + " rows: " + model.rowCount())
-			}
 		}
 	}
 }
