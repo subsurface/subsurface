@@ -49,7 +49,6 @@ public:
 		DIVE_ROLE,
 		TRIP_ROLE,
 		DIVE_IDX,
-		SHOWN_ROLE,
 		SELECTED_ROLE
 	};
 	enum Layout {

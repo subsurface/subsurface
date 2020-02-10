@@ -841,14 +841,6 @@ void DiveTripModelTree::divesHidden(dive_trip *trip, const QVector<dive *> &dive
 
 QVariant DiveTripModelTree::data(const QModelIndex &index, int role) const
 {
-	if (role == SHOWN_ROLE) {
-		QModelIndex parent = index.parent();
-		// An invalid parent means that we're at the top-level
-		if (!parent.isValid())
-			return items[index.row()].shown;
-		return !items[parent.row()].dives[index.row()]->hidden_by_filter;
-	}
-
 	// Set the font for all items alike
 	if (role == Qt::FontRole)
 		return defaultModelFont();
@@ -1409,8 +1401,6 @@ QVariant DiveTripModelList::data(const QModelIndex &index, int role) const
 		return defaultModelFont();
 
 	dive *d = diveOrNull(index);
-	if (role == SHOWN_ROLE)
-		return d && !d->hidden_by_filter;
 	return d ? diveData(d, index.column(), role) : QVariant();
 }
 
