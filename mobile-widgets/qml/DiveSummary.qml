@@ -110,13 +110,13 @@ Kirigami.ScrollablePage {
 			Row {
 				height: headerLabel.height + Kirigami.Units.largeSpacing
 				Rectangle {
-					width: Kirigami.Units.gridUnit * 2
+					width: Kirigami.Units.gridUnit
 					height: parent.height
 					color: "transparent"
 				}
 				Rectangle {
 					color: index & 1 ? subsurfaceTheme.backgroundColor : subsurfaceTheme.lightPrimaryColor
-					width: headerColumnWidth
+					width: headerColumnWidth + Kirigami.Units.gridUnit
 					height: headerLabel.height + Kirigami.Units.largeSpacing
 					Label {
 						id: headerLabel
@@ -152,16 +152,23 @@ Kirigami.ScrollablePage {
 
 		Component {
 			id: sectionDelegate
-			Rectangle {
-				width: headerColumnWidth * 3 - Kirigami.Units.gridUnit * 2
-				height: sectionLabel.height + Kirigami.Units.largeSpacing
-				Label {
-					id: sectionLabel
-					anchors.verticalCenter: parent.verticalCenter
-					leftPadding: Kirigami.Units.largeSpacing
-					color: subsurfaceTheme.textColor
-					text: section
-					font.bold: true
+			Column {
+				Rectangle {
+					width: headerColumnWidth * 3 - Kirigami.Units.gridUnit * 2
+					height: Kirigami.Units.largeSpacing
+					color: subsurfaceTheme.backgroundColor
+				}
+				Rectangle {
+					width: headerColumnWidth * 3 - Kirigami.Units.gridUnit * 2
+					height: sectionLabel.height + Kirigami.Units.largeSpacing
+					Label {
+						id: sectionLabel
+						anchors.verticalCenter: parent.verticalCenter
+						leftPadding: Kirigami.Units.largeSpacing
+						color: subsurfaceTheme.textColor
+						text: section
+						font.bold: true
+					}
 				}
 			}
 		}
