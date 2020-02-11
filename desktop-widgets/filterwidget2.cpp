@@ -84,10 +84,16 @@ FilterWidget2::FilterWidget2(QWidget* parent) :
 	connect(ui.tagsMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
 		this, &FilterWidget2::updateFilter);
 
+	connect(ui.tagsStringMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
+		this, &FilterWidget2::updateFilter);
+
 	connect(ui.people, &QLineEdit::textChanged,
 		this, &FilterWidget2::updateFilter);
 
 	connect(ui.peopleMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
+		this, &FilterWidget2::updateFilter);
+
+	connect(ui.peopleStringMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
 		this, &FilterWidget2::updateFilter);
 
 	connect(ui.location, &QLineEdit::textChanged,
@@ -96,16 +102,25 @@ FilterWidget2::FilterWidget2(QWidget* parent) :
 	connect(ui.locationMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
 		this, &FilterWidget2::updateFilter);
 
+	connect(ui.locationStringMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
+		this, &FilterWidget2::updateFilter);
+
 	connect(ui.suit, &QLineEdit::textChanged,
 		this, &FilterWidget2::updateFilter);
 
 	connect(ui.suitMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
 		this, &FilterWidget2::updateFilter);
 
+	connect(ui.suitStringMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
+		this, &FilterWidget2::updateFilter);
+
 	connect(ui.dnotes, &QLineEdit::textChanged,
 		this, &FilterWidget2::updateFilter);
 
 	connect(ui.dnotesMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+		this, &FilterWidget2::updateFilter);
+
+	connect(ui.dnotesStringMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
 		this, &FilterWidget2::updateFilter);
 
 	connect(ui.logged, &QCheckBox::stateChanged,
