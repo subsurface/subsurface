@@ -241,15 +241,6 @@ Kirigami.ApplicationWindow {
 			},
 			Kirigami.Action {
 				icon {
-					name: ":/icons/map-globe.svg"
-				}
-				text: mapPage.title
-				onTriggered: {
-					showMap()
-				}
-			},
-			Kirigami.Action {
-				icon {
 					name: ":/icons/ic_sync.svg"
 				}
 				text: qsTr("Dive management")
@@ -333,20 +324,50 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						}
 					}
 				}
+				Kirigami.Action {
+					icon {
+						name: ":/icons/sigma.svg"
+					}
+					text: qsTr("Dive summary")
+					onTriggered: {
+						globalDrawer.close()
+						pageStack.push(diveSummaryWindow)
+						detailsWindow.endEditMode()
+					}
+				}
+				Kirigami.Action {
+					icon {
+						name: ":/icons/ic_cloud_upload.svg"
+					}
+					text: qsTr("Export")
+					onTriggered: {
+						globalDrawer.close()
+						pageStack.push(exportWindow)
+						detailsWindow.endEditMode()
+					}
+				}
 			},
 			Kirigami.Action {
 				icon {
-					name: ":/icons/ic_place.svg"
+					name: ":/icons/map-globe.svg"
 				}
-				text: qsTr("GPS")
+				text: qsTr("Location")
 				visible: true
-
 				Kirigami.Action {
 					icon {
 						name: ":/go-previous-symbolic"
 					}
 					text: qsTr("Back")
 					onTriggered: globalDrawer.scrollViewItem.pop()
+				}
+				Kirigami.Action {
+					icon {
+						name: ":/icons/map-globe.svg"
+					}
+					text: mapPage.title
+					onTriggered: {
+						showMap()
+					}
 				}
 				Kirigami.Action {
 					icon {
@@ -385,28 +406,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			},
 			Kirigami.Action {
 				icon {
-					name: ":/icons/sigma.svg"
-				}
-				text: qsTr("Dive summary")
-				onTriggered: {
-					globalDrawer.close()
-					pageStack.push(diveSummaryWindow)
-					detailsWindow.endEditMode()
-				}
-			},
-			Kirigami.Action {
-				icon {
-					name: ":/icons/ic_info_outline.svg"
-				}
-				text: qsTr("About")
-				onTriggered: {
-					globalDrawer.close()
-					pageStack.push(aboutWindow)
-					detailsWindow.endEditMode()
-				}
-			},
-			Kirigami.Action {
-				icon {
 					name: ":/icons/ic_settings.svg"
 				}
 				text: qsTr("Settings")
@@ -415,17 +414,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					settingsWindow.defaultCylinderModel = manager.cylinderInit
 					PrefEquipment.default_cylinder === "" ? defaultCylinderIndex = "-1" : defaultCylinderIndex = settingsWindow.defaultCylinderModel.indexOf(PrefEquipment.default_cylinder)
 					pageStack.push(settingsWindow)
-					detailsWindow.endEditMode()
-				}
-			},
-			Kirigami.Action {
-				icon {
-					name: ":/icons/ic_cloud_upload.svg"
-				}
-				text: qsTr("Export")
-				onTriggered: {
-					globalDrawer.close()
-					pageStack.push(exportWindow)
 					detailsWindow.endEditMode()
 				}
 			},
@@ -440,6 +428,17 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					}
 					text: qsTr("Back")
 					onTriggered: globalDrawer.scrollViewItem.pop()
+				}
+				Kirigami.Action {
+					icon {
+						name: ":/icons/ic_info_outline.svg"
+					}
+					text: qsTr("About")
+					onTriggered: {
+						globalDrawer.close()
+						pageStack.push(aboutWindow)
+						detailsWindow.endEditMode()
+					}
 				}
 				Kirigami.Action {
 					icon {
