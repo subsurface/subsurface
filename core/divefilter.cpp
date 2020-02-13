@@ -8,10 +8,12 @@ DiveFilter::DiveFilter()
 {
 }
 
-bool DiveFilter::showDive(const struct dive *d) const
+ShownChange DiveFilter::update(const QVector<dive *> &) const
 {
-	// TODO: Do something useful
-	return true;
+}
+
+ShownChange DiveFilter::updateAll() const
+{
 }
 
 #else // SUBSURFACE_MOBILE
@@ -23,6 +25,37 @@ bool DiveFilter::showDive(const struct dive *d) const
 #include "core/trip.h"
 #include "core/divesite.h"
 #include "qt-models/filtermodels.h"
+
+void DiveFilter::updateDiveStatus(dive *d, ShownChange &change) const
+{
+	bool newStatus = showDive(d);
+	if (filter_dive(d, newStatus)) {
+		if (newStatus)
+			change.newShown.push_back(d);
+		else
+			change.newHidden.push_back(d);
+	}
+}
+
+ShownChange DiveFilter::update(const QVector<dive *> &dives) const
+{
+	dive *old_current = current_dive;
+	ShownChange res;
+	for (dive *d: dives)
+		updateDiveStatus(d, res);
+	res.currentChanged = old_current != current_dive;
+	return res;
+}
+
+ShownChange DiveFilter::updateAll() const
+{
+	dive *old_current = current_dive;
+	ShownChange res;
+	for (int i = 0; i < dive_table.nr; ++i)
+		updateDiveStatus(get_dive(i), res);
+	res.currentChanged = old_current != current_dive;
+	return res;
+}
 
 namespace {
 	// Pointer to function that takes two strings and returns whether
