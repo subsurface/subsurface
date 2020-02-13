@@ -225,6 +225,7 @@ static void copy_gps_location(struct gpsTracker &gps, struct dive *d)
 #define SET_LOCATION(_dive, _gpsfix, _mark)	\
 {						\
 	copy_gps_location(_gpsfix, _dive);	\
+	invalidate_dive_cache(_dive);		\
 	changed++;				\
 	last = _mark;				\
 }
