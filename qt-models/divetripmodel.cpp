@@ -436,6 +436,7 @@ bool DiveTripModelBase::setData(const QModelIndex &index, const QVariant &value,
 struct ShownChange {
 	QVector<dive *> newShown;
 	QVector<dive *> newHidden;
+	bool currentChanged;
 	void filterDive(dive *d, const DiveFilter *filter);
 };
 
@@ -455,6 +456,7 @@ void ShownChange::filterDive(dive *d, const DiveFilter *filter)
 static ShownChange updateShown(QVector<dive *> &dives)
 {
 	DiveFilter *filter = DiveFilter::instance();
+	dive *old_current = current_dive;
 	ShownChange res;
 	for (dive *d: dives)
 		res.filterDive(d, filter);
@@ -464,6 +466,7 @@ static ShownChange updateShown(QVector<dive *> &dives)
 		dives.removeAll(d);
 	for (dive *d: res.newShown)
 		dives.removeAll(d);
+	res.currentChanged = old_current != current_dive;
 	return res;
 }
 
@@ -471,11 +474,13 @@ static ShownChange updateShown(QVector<dive *> &dives)
 static ShownChange updateShownAll()
 {
 	DiveFilter *filter = DiveFilter::instance();
+	dive *old_current = current_dive;
 	ShownChange res;
 	for (int i = 0; i < dive_table.nr; ++i)
 		res.filterDive(get_dive(i), filter);
 	if (!res.newShown.empty() || !res.newHidden.empty())
 		emit diveListNotifier.numShownChanged();
+	res.currentChanged = old_current != current_dive;
 	return res;
 }
 
@@ -779,8 +784,6 @@ void processByTrip(QVector<dive *> dives, Function action)
 // a given time!
 void DiveTripModelTree::filterReset()
 {
-	dive *old_current = current_dive;
-
 	ShownChange change = updateShownAll();
 	processByTrip(change.newHidden, [this] (dive_trip *trip, const QVector<dive *> &divesInTrip)
 		      { divesHidden(trip, divesInTrip); });
@@ -789,7 +792,7 @@ void DiveTripModelTree::filterReset()
 
 	// If the current dive changed, instruct the UI of the changed selection
 	// TODO: This is way to heavy, as it reloads the whole selection!
-	if (old_current != current_dive)
+	if (change.currentChanged)
 		initSelection();
 }
 
@@ -1150,6 +1153,12 @@ void DiveTripModelTree::divesChangedTrip(dive_trip *trip, const QVector<dive *> 
 		// If necessary, move the trip
 		topLevelChanged(idx);
 	}
+
+	// If the current dive changed (because the change caused it to become hidden
+	// by the filter), instruct the UI of the changed selection.
+	// TODO: This is way to heavy, as it reloads the whole selection!
+	if (shownChange.currentChanged)
+		initSelection();
 }
 
 void DiveTripModelTree::tripChanged(dive_trip *trip, TripField)
@@ -1378,15 +1387,13 @@ dive *DiveTripModelList::diveOrNull(const QModelIndex &index) const
 // a given time!
 void DiveTripModelList::filterReset()
 {
-	dive *old_current = current_dive;
-
 	ShownChange change = updateShownAll();
 	removeDives(change.newHidden);
 	addDives(change.newShown);
 
 	// If the current dive changed, instruct the UI of the changed selection
 	// TODO: This is way to heavy, as it reloads the whole selection!
-	if (old_current != current_dive)
+	if (change.currentChanged)
 		initSelection();
 }
 
@@ -1463,6 +1470,12 @@ void DiveTripModelList::divesChanged(const QVector<dive *> &divesIn)
 				dataChanged(createIndex(from, 0, noParent), createIndex(to - 1, COLUMNS - 1, noParent));
 				return 0; // No items added or deleted
 			 });
+
+	// If the current dive changed (because the change caused it to become hidden
+	// by the filter), instruct the UI of the changed selection.
+	// TODO: This is way to heavy, as it reloads the whole selection!
+	if (shownChange.currentChanged)
+		initSelection();
 }
 
 void DiveTripModelList::divesTimeChanged(timestamp_t delta, const QVector<dive *> &divesIn)
