@@ -432,41 +432,18 @@ bool DiveTripModelBase::setData(const QModelIndex &index, const QVariant &value,
 	return true;
 }
 
-// Structure describing changes of shown status
-struct ShownChange {
-	QVector<dive *> newShown;
-	QVector<dive *> newHidden;
-	bool currentChanged;
-	void filterDive(dive *d, const DiveFilter *filter);
-};
-
-void ShownChange::filterDive(dive *d, const DiveFilter *filter)
-{
-	bool newStatus = filter->showDive(d);
-	if (filter_dive(d, newStatus)) {
-		if (newStatus)
-			newShown.push_back(d);
-		else
-			newHidden.push_back(d);
-	}
-}
-
 // Update visibility status of dive and return dives whose visibility changed.
 // Attention: the changed dives are removed from the original vector!
 static ShownChange updateShown(QVector<dive *> &dives)
 {
 	DiveFilter *filter = DiveFilter::instance();
-	dive *old_current = current_dive;
-	ShownChange res;
-	for (dive *d: dives)
-		res.filterDive(d, filter);
+	ShownChange res = filter->update(dives);
 	if (!res.newShown.empty() || !res.newHidden.empty())
 		emit diveListNotifier.numShownChanged();
 	for (dive *d: res.newHidden)
 		dives.removeAll(d);
 	for (dive *d: res.newShown)
 		dives.removeAll(d);
-	res.currentChanged = old_current != current_dive;
 	return res;
 }
 
@@ -474,13 +451,9 @@ static ShownChange updateShown(QVector<dive *> &dives)
 static ShownChange updateShownAll()
 {
 	DiveFilter *filter = DiveFilter::instance();
-	dive *old_current = current_dive;
-	ShownChange res;
-	for (int i = 0; i < dive_table.nr; ++i)
-		res.filterDive(get_dive(i), filter);
+	ShownChange res = filter->updateAll();
 	if (!res.newShown.empty() || !res.newHidden.empty())
 		emit diveListNotifier.numShownChanged();
-	res.currentChanged = old_current != current_dive;
 	return res;
 }
 

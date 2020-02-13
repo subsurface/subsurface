@@ -68,11 +68,9 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 	}
 	dive *res = d.dive.release();		// Give up ownership of dive
 
-	// Set the filter flag according to current filter settings
-	bool show = DiveFilter::instance()->showDive(res);
-	res->hidden_by_filter = !show;
-	if (show)
-		++shown_dives;
+	// When we add dives, we start in hidden-by-filter status. Once all
+	// dives have been added, their status will be updated.
+	res->hidden_by_filter = true;
 
 	int idx = dive_table_get_insertion_index(&dive_table, res);
 	add_to_dive_table(&dive_table, idx, res);	// Return ownership to backend
@@ -185,18 +183,20 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 		  [](const DiveToAdd &d, const DiveToAdd &d2)
 		  { return dive_less_than(d.dive.get(), d2.dive.get()); });
 
-	// Remember old number of shown dives
-	int oldShown = shown_dives;
-
 	// Now, add the dives
 	// Note: the idiomatic STL-way would be std::transform, but let's use a loop since
 	// that is closer to classical C-style.
 	auto it2 = res.rbegin();
+	QVector<dive *> divesToFilter;
+	divesToFilter.reserve(toAdd.dives.size());
 	for (auto it = toAdd.dives.rbegin(); it != toAdd.dives.rend(); ++it, ++it2) {
 		*it2 = addDive(*it);
 		dives.push_back({ (*it2)->divetrip, *it2 });
+		divesToFilter.push_back(*it2);
 	}
 	toAdd.dives.clear();
+
+	ShownChange change = DiveFilter::instance()->update(divesToFilter);
 
 	// If the dives belong to new trips, add these as well.
 	// Remember the pointers so that we can later check if a trip was newly added
@@ -224,7 +224,7 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 		emit diveListNotifier.divesAdded(trip, createTrip, divesInTrip);
 	});
 
-	if (oldShown != shown_dives)
+	if (!change.newShown.empty() || !change.newHidden.empty())
 		emit diveListNotifier.numShownChanged();
 
 	return { res, sites };

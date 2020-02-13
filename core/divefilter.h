@@ -3,6 +3,16 @@
 #ifndef DIVE_FILTER_H
 #define DIVE_FILTER_H
 
+#include <QVector>
+struct dive;
+
+// Structure describing changes of shown status upon applying the filter
+struct ShownChange {
+	QVector<dive *> newShown;
+	QVector<dive *> newHidden;
+	bool currentChanged;
+};
+
 // The dive filter for mobile is currently much simpler than for desktop.
 // Therefore, for now we have two completely separate implementations.
 // This should be unified in the future.
@@ -12,7 +22,8 @@ class DiveFilter {
 public:
 	static DiveFilter *instance();
 
-	bool showDive(const struct dive *d) const;
+	ShownChange update(const QVector<dive *> &dives) const; // Update filter status of given dives and return dives whose status changed
+	ShownChange updateAll() const; // Update filter status of all dives and return dives whose status changed
 private:
 	DiveFilter();
 };
@@ -21,9 +32,7 @@ private:
 
 #include <QDateTime>
 #include <QStringList>
-#include <QVector>
 
-struct dive;
 struct dive_trip;
 struct dive_site;
 
@@ -82,15 +91,18 @@ class DiveFilter {
 public:
 	static DiveFilter *instance();
 
-	bool showDive(const struct dive *d) const;
 	bool diveSiteMode() const; // returns true if we're filtering on dive site
 	const QVector<dive_site *> &filteredDiveSites() const;
 	void startFilterDiveSites(QVector<dive_site *> ds);
 	void setFilterDiveSite(QVector<dive_site *> ds);
 	void stopFilterDiveSites();
 	void setFilter(const FilterData &data);
+	ShownChange update(const QVector<dive *> &dives) const; // Update filter status of given dives and return dives whose status changed
+	ShownChange updateAll() const; // Update filter status of all dives and return dives whose status changed
 private:
 	DiveFilter();
+	void updateDiveStatus(dive *d, ShownChange &change) const;
+	bool showDive(const struct dive *d) const; // Should that dive be shown?
 
 	QVector<dive_site *> dive_sites;
 	FilterData filterData;
