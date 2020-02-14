@@ -73,16 +73,16 @@ namespace {
 	// Check whether either all, any or none of the items of the first list is
 	// in the second list as a super string.
 	// The mode is controlled by the second argument
-	bool check(const QStringList &items, const QStringList &list, FilterData::Mode mode, FilterData::StringMode stringMode)
+	bool check(const QStringList &items, const QStringList &list, FilterData::Mode mode, StringFilterMode stringMode)
 	{
 		bool negate = mode == FilterData::Mode::NONE_OF;
 		bool any_of = mode == FilterData::Mode::ANY_OF;
 		StrCheck strchk =
-			stringMode == FilterData::StringMode::SUBSTRING ?
+			stringMode == StringFilterMode::SUBSTRING ?
 				[](const QString &s1, const QString &s2) { return s1.contains(s2, Qt::CaseInsensitive); } :
-			stringMode == FilterData::StringMode::STARTSWITH ?
+			stringMode == StringFilterMode::STARTSWITH ?
 				[](const QString &s1, const QString &s2) { return s1.startsWith(s2, Qt::CaseInsensitive); } :
-			/* FilterData::StringMode::EXACT */
+			/* StringFilterMode::EXACT */
 				[](const QString &s1, const QString &s2) { return s1.compare(s2, Qt::CaseInsensitive) == 0; };
 		auto fun = [&list, negate, strchk](const QString &item)
 			   { return listContainsSuperstring(list, item, strchk) != negate; };
@@ -90,7 +90,7 @@ namespace {
 			      : std::all_of(items.begin(), items.end(), fun);
 	}
 
-	bool hasTags(const QStringList &tags, const struct dive *d, FilterData::Mode mode, FilterData::StringMode stringMode)
+	bool hasTags(const QStringList &tags, const struct dive *d, FilterData::Mode mode, StringFilterMode stringMode)
 	{
 		if (tags.isEmpty())
 			return true;
@@ -99,7 +99,7 @@ namespace {
 		return check(tags, dive_tags, mode, stringMode);
 	}
 
-	bool hasPersons(const QStringList &people, const struct dive *d, FilterData::Mode mode, FilterData::StringMode stringMode)
+	bool hasPersons(const QStringList &people, const struct dive *d, FilterData::Mode mode, StringFilterMode stringMode)
 	{
 		if (people.isEmpty())
 			return true;
@@ -108,7 +108,7 @@ namespace {
 		return check(people, dive_people, mode, stringMode);
 	}
 
-	bool hasLocations(const QStringList &locations, const struct dive *d, FilterData::Mode mode, FilterData::StringMode stringMode)
+	bool hasLocations(const QStringList &locations, const struct dive *d, FilterData::Mode mode, StringFilterMode stringMode)
 	{
 		if (locations.isEmpty())
 			return true;
@@ -123,12 +123,12 @@ namespace {
 	}
 
 	// TODO: Finish this implementation.
-	bool hasEquipment(const QStringList &, const struct dive *, FilterData::Mode, FilterData::StringMode)
+	bool hasEquipment(const QStringList &, const struct dive *, FilterData::Mode, StringFilterMode)
 	{
 		return true;
 	}
 
-	bool hasSuits(const QStringList &suits, const struct dive *d, FilterData::Mode mode, FilterData::StringMode stringMode)
+	bool hasSuits(const QStringList &suits, const struct dive *d, FilterData::Mode mode, StringFilterMode stringMode)
 	{
 		if (suits.isEmpty())
 			return true;
@@ -138,7 +138,7 @@ namespace {
 		return check(suits, diveSuits, mode, stringMode);
 	}
 
-	bool hasNotes(const QStringList &dnotes, const struct dive *d, FilterData::Mode mode, FilterData::StringMode stringMode)
+	bool hasNotes(const QStringList &dnotes, const struct dive *d, FilterData::Mode mode, StringFilterMode stringMode)
 	{
 		if (dnotes.isEmpty())
 			return true;

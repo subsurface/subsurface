@@ -226,12 +226,12 @@ void FilterWidget2::updateFilter()
 	filterData.suitMode = (FilterData::Mode)ui.suitMode->currentIndex();
 	filterData.dnotesMode = (FilterData::Mode)ui.dnotesMode->currentIndex();
 	filterData.equipmentMode = (FilterData::Mode)ui.equipmentMode->currentIndex();
-	filterData.tagsStringMode = (FilterData::StringMode)ui.tagsStringMode->currentIndex();
-	filterData.peopleStringMode = (FilterData::StringMode)ui.peopleStringMode->currentIndex();
-	filterData.locationStringMode = (FilterData::StringMode)ui.locationStringMode->currentIndex();
-	filterData.suitStringMode = (FilterData::StringMode)ui.suitStringMode->currentIndex();
-	filterData.dnotesStringMode = (FilterData::StringMode)ui.dnotesStringMode->currentIndex();
-	filterData.equipmentStringMode = (FilterData::StringMode)ui.equipmentStringMode->currentIndex();
+	filterData.tagsStringMode = (StringFilterMode)ui.tagsStringMode->currentIndex();
+	filterData.peopleStringMode = (StringFilterMode)ui.peopleStringMode->currentIndex();
+	filterData.locationStringMode = (StringFilterMode)ui.locationStringMode->currentIndex();
+	filterData.suitStringMode = (StringFilterMode)ui.suitStringMode->currentIndex();
+	filterData.dnotesStringMode = (StringFilterMode)ui.dnotesStringMode->currentIndex();
+	filterData.equipmentStringMode = (StringFilterMode)ui.equipmentStringMode->currentIndex();
 	filterData.logged = ui.logged->isChecked();
 	filterData.planned = ui.planned->isChecked();
 
