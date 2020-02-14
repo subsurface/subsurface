@@ -13,6 +13,12 @@ struct ShownChange {
 	bool currentChanged;
 };
 
+enum class StringFilterMode {
+	SUBSTRING = 0,
+	STARTSWITH = 1,
+	EXACT = 2
+};
+
 // The dive filter for mobile is currently much simpler than for desktop.
 // Therefore, for now we have two completely separate implementations.
 // This should be unified in the future.
@@ -43,11 +49,6 @@ struct FilterData {
 		ANY_OF = 1,
 		NONE_OF = 2
 	};
-	enum class StringMode {
-		SUBSTRING = 0,
-		STARTSWITH = 1,
-		EXACT = 2
-	};
 
 	bool validFilter = false;
 	int minVisibility = 0;
@@ -77,12 +78,12 @@ struct FilterData {
 	Mode dnotesMode = Mode::ALL_OF;
 	Mode suitMode = Mode::ANY_OF;
 	Mode equipmentMode = Mode::ALL_OF;
-	StringMode tagsStringMode = StringMode::SUBSTRING;
-	StringMode peopleStringMode = StringMode::SUBSTRING;
-	StringMode locationStringMode = StringMode::SUBSTRING;
-	StringMode dnotesStringMode = StringMode::SUBSTRING;
-	StringMode suitStringMode = StringMode::SUBSTRING;
-	StringMode equipmentStringMode = StringMode::SUBSTRING;
+	StringFilterMode tagsStringMode = StringFilterMode::SUBSTRING;
+	StringFilterMode peopleStringMode = StringFilterMode::SUBSTRING;
+	StringFilterMode locationStringMode = StringFilterMode::SUBSTRING;
+	StringFilterMode dnotesStringMode = StringFilterMode::SUBSTRING;
+	StringFilterMode suitStringMode = StringFilterMode::SUBSTRING;
+	StringFilterMode equipmentStringMode = StringFilterMode::SUBSTRING;
 	bool logged = true;
 	bool planned = true;
 };
