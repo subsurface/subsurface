@@ -722,7 +722,7 @@ static int get_divemode(const char *divemodestring) {
 		if (!strcmp(divemodestring, divemode_text[i]))
 			return i;
 	}
-	return 0;
+	return -1;
 }
 
 static void parse_event_keyvalue(void *_event, const char *key, const char *value)
@@ -799,6 +799,11 @@ static void parse_dc_event(char *line, struct membuffer *str, struct git_parser_
 	name = "";
 	if (str->len)
 		name = mb_cstring(str);
+	int divemode = get_divemode(name);
+	if (divemode >= 0) {
+		name = strdup("modechange");
+		event.value = divemode;
+	}
 	ev = add_event(state->active_dc, event.time.seconds, event.type, event.flags, event.value, name);
 
 	/*
