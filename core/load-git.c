@@ -761,6 +761,7 @@ static int get_divemode(const char *divemodestring) {
 struct parse_event {
 	const char *name;
 	struct event ev;
+	int has_divemode;
 };
 
 static void parse_event_keyvalue(void *_parse, const char *key, const char *value)
@@ -778,6 +779,7 @@ static void parse_event_keyvalue(void *_parse, const char *key, const char *valu
 		parse->name = value;
 	} else if (!strcmp(key,"divemode")) {
 		parse->ev.value = get_divemode(value);
+		parse->has_divemode = 1;
 	} else if (!strcmp(key, "cylinder")) {
 		/* NOTE! We add one here as a marker that "yes, we got a cylinder index" */
 		parse->ev.gas.index = 1 + get_index(value);
@@ -833,6 +835,10 @@ static void parse_dc_event(char *line, struct membuffer *str, struct git_parser_
 			break;
 		line = parse_keyvalue_entry(parse_event_keyvalue, &p, line, str);
 	}
+
+	/* Only modechange events should have a divemode - fix up any corrupted names */
+	if (p.has_divemode && strcmp(p.name, "modechange"))
+		p.name = "modechange";
 
 	ev = add_event(state->active_dc, p.ev.time.seconds, p.ev.type, p.ev.flags, p.ev.value, p.name);
 
