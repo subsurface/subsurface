@@ -45,21 +45,6 @@ struct keyword_action {
 
 static git_blob *git_tree_entry_blob(git_repository *repo, const git_tree_entry *entry);
 
-static char *get_utf8(struct membuffer *b)
-{
-	int len = b->len;
-	char *res;
-
-	if (!len)
-		return NULL;
-	res = malloc(len + 1);
-	if (res) {
-		memcpy(res, b->buffer, len);
-		res[len] = 0;
-	}
-	return res;
-}
-
 static temperature_t get_temperature(const char *line)
 {
 	temperature_t t;
@@ -193,7 +178,7 @@ static void parse_dive_gps(char *line, struct membuffer *str, struct git_parser_
 static void parse_dive_location(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	UNUSED(line);
-	char *name = get_utf8(str);
+	char *name = detach_cstring(str);
 	struct dive_site *ds = get_dive_site_for_dive(state->active_dive);
 	if (!ds) {
 		ds = get_dive_site_by_name(name, &dive_site_table);
@@ -214,16 +199,16 @@ static void parse_dive_location(char *line, struct membuffer *str, struct git_pa
 }
 
 static void parse_dive_divemaster(char *line, struct membuffer *str, struct git_parser_state *state)
-{ UNUSED(line); state->active_dive->divemaster = get_utf8(str); }
+{ UNUSED(line); state->active_dive->divemaster = detach_cstring(str); }
 
 static void parse_dive_buddy(char *line, struct membuffer *str, struct git_parser_state *state)
-{ UNUSED(line); state->active_dive->buddy = get_utf8(str); }
+{ UNUSED(line); state->active_dive->buddy = detach_cstring(str); }
 
 static void parse_dive_suit(char *line, struct membuffer *str, struct git_parser_state *state)
-{ UNUSED(line); state->active_dive->suit = get_utf8(str); }
+{ UNUSED(line); state->active_dive->suit = detach_cstring(str); }
 
 static void parse_dive_notes(char *line, struct membuffer *str, struct git_parser_state *state)
-{ UNUSED(line); state->active_dive->notes = get_utf8(str); }
+{ UNUSED(line); state->active_dive->notes = detach_cstring(str); }
 
 static void parse_dive_divesiteid(char *line, struct membuffer *str, struct git_parser_state *state)
 { UNUSED(str); add_dive_to_dive_site(state->active_dive, get_dive_site_by_uuid(get_hex(line), &dive_site_table)); }
@@ -296,13 +281,13 @@ static void parse_dive_notrip(char *line, struct membuffer *str, struct git_pars
 }
 
 static void parse_site_description(char *line, struct membuffer *str, struct git_parser_state *state)
-{ UNUSED(line); state->active_site->description = strdup(mb_cstring(str)); }
+{ UNUSED(line); state->active_site->description = detach_cstring(str); }
 
 static void parse_site_name(char *line, struct membuffer *str, struct git_parser_state *state)
-{ UNUSED(line); state->active_site->name = strdup(mb_cstring(str)); }
+{ UNUSED(line); state->active_site->name = detach_cstring(str); }
 
 static void parse_site_notes(char *line, struct membuffer *str, struct git_parser_state *state)
-{ UNUSED(line); state->active_site->notes = strdup(mb_cstring(str)); }
+{ UNUSED(line); state->active_site->notes = detach_cstring(str); }
 
 static void parse_site_gps(char *line, struct membuffer *str, struct git_parser_state *state)
 {
@@ -317,14 +302,50 @@ static void parse_site_geo(char *line, struct membuffer *str, struct git_parser_
 	int nr = state->active_site->taxonomy.nr;
 	if (nr < TC_NR_CATEGORIES) {
 		struct taxonomy *t = &state->active_site->taxonomy.category[nr];
-		t->value = strdup(mb_cstring(str));
+		t->value = detach_cstring(str);
 		sscanf(line, "cat %d origin %d \"", &t->category, (int *)&t->origin);
 		state->active_site->taxonomy.nr++;
 	}
 }
 
+static char *remove_from_front(struct membuffer *str, int len)
+{
+	char *prefix;
+
+	if (len >= str->len)
+		return detach_cstring(str);
+
+	/* memdup() - oh well */
+	prefix = malloc(len);
+	if (!prefix) {
+		report_error("git-load: out of memory");
+		return NULL;
+	}
+	memcpy(prefix, str->buffer, len);
+
+	str->len -= len;
+	memmove(str->buffer, str->buffer+len, str->len);
+	return prefix;
+}
+
+static char *pop_cstring(struct membuffer *str, const char *err)
+{
+	int len;
+
+	if (!str) {
+		report_error("git-load: string marker without any strings ('%s')", err);
+		return "";
+	}
+	if (!str->len) {
+		report_error("git-load: string marker after running out of strings ('%s')", err);
+		return "";
+	}
+	len = strlen(mb_cstring(str)) + 1;
+	return remove_from_front(str, len);
+}
+
 /* Parse key=val parts of samples and cylinders etc */
-static char *parse_keyvalue_entry(void (*fn)(void *, const char *, const char *), void *fndata, char *line)
+static char *parse_keyvalue_entry(void (*fn)(void *, const char *, const char *), void *fndata, char *line, struct membuffer *str)
 {
 	char *key = line, *val, c;
 
@@ -337,6 +358,10 @@ static char *parse_keyvalue_entry(void (*fn)(void *, const char *, const char *)
 	if (c == '=')
 		*line++ = 0;
 	val = line;
+
+	/* Did we get a string? Take it from the list of strings */
+	if (*val == '"')
+		val = pop_cstring(str, key);
 
 	while ((c = *line) != 0) {
 		if (isspace(c))
@@ -361,9 +386,10 @@ static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const char
 		cylinder->type.workingpressure = get_pressure(value);
 		return;
 	}
-	/* This is handled by the "get_utf8()" */
-	if (!strcmp(key, "description"))
+	if (!strcmp(key, "description")) {
+		cylinder->type.description = value;
 		return;
+	}
 	if (!strcmp(key, "o2")) {
 		cylinder->gasmix.o2 = get_fraction(value);
 		return;
@@ -407,14 +433,13 @@ static void parse_dive_cylinder(char *line, struct membuffer *str, struct git_pa
 {
 	cylinder_t cylinder = empty_cylinder;
 
-	cylinder.type.description = get_utf8(str);
 	for (;;) {
 		char c;
 		while (isspace(c = *line))
 			line++;
 		if (!c)
 			break;
-		line = parse_keyvalue_entry(parse_cylinder_keyvalue, &cylinder, line);
+		line = parse_keyvalue_entry(parse_cylinder_keyvalue, &cylinder, line, str);
 	}
 	if (cylinder.cylinder_use == OXYGEN)
 		state->o2pressure_sensor = state->active_dive->cylinders.nr;
@@ -429,9 +454,10 @@ static void parse_weightsystem_keyvalue(void *_ws, const char *key, const char *
 		ws->weight = get_weight(value);
 		return;
 	}
-	/* This is handled by the "get_utf8()" */
-	if (!strcmp(key, "description"))
+	if (!strcmp(key, "description")) {
+		ws->description = value;
 		return;
+	}
 	report_error("Unknown weightsystem key/value pair (%s/%s)", key, value);
 }
 
@@ -439,14 +465,13 @@ static void parse_dive_weightsystem(char *line, struct membuffer *str, struct gi
 {
 	weightsystem_t ws = empty_weightsystem;
 
-	ws.description = get_utf8(str);
 	for (;;) {
 		char c;
 		while (isspace(c = *line))
 			line++;
 		if (!c)
 			break;
-		line = parse_keyvalue_entry(parse_weightsystem_keyvalue, &ws, line);
+		line = parse_keyvalue_entry(parse_weightsystem_keyvalue, &ws, line, str);
 	}
 
 	add_to_weightsystem_table(&state->active_dive->weightsystems, state->active_dive->weightsystems.nr, ws);
@@ -653,7 +678,7 @@ static void sample_parser(char *line, struct git_parser_state *state)
 			break;
 		/* Less common sample entries have a name */
 		if (c >= 'a' && c <= 'z') {
-			line = parse_keyvalue_entry(parse_sample_keyvalue, sample, line);
+			line = parse_keyvalue_entry(parse_sample_keyvalue, sample, line, NULL);
 		} else {
 			const char *end;
 			double val = ascii_strtod(line, &end);
@@ -696,7 +721,7 @@ static void parse_dc_meandepth(char *line, struct membuffer *str, struct git_par
 { UNUSED(str); state->active_dc->meandepth = get_depth(line); }
 
 static void parse_dc_model(char *line, struct membuffer *str, struct git_parser_state *state)
-{ UNUSED(line); state->active_dc->model = get_utf8(str); }
+{ UNUSED(line); state->active_dc->model = detach_cstring(str); }
 
 static void parse_dc_numberofoxygensensors(char *line, struct membuffer *str, struct git_parser_state *state)
 { UNUSED(str); state->active_dc->no_o2sensors = get_index(line); }
@@ -725,28 +750,41 @@ static int get_divemode(const char *divemodestring) {
 	return 0;
 }
 
-static void parse_event_keyvalue(void *_event, const char *key, const char *value)
+/*
+ * A 'struct event' has a variable-sized name allocation at the
+ * end. So when we parse the event data, we can't fill in the
+ * event directly, because we don't know how to allocate one
+ * before we have the size of the name.
+ *
+ * Thus this initial 'parse_event' with a separate name pointer.
+ */
+struct parse_event {
+	const char *name;
+	struct event ev;
+};
+
+static void parse_event_keyvalue(void *_parse, const char *key, const char *value)
 {
-	struct event *event = _event;
+	struct parse_event *parse = _parse;
 	int val = atoi(value);
 
 	if (!strcmp(key, "type")) {
-		event->type = val;
+		parse->ev.type = val;
 	} else if (!strcmp(key, "flags")) {
-		event->flags = val;
+		parse->ev.flags = val;
 	} else if (!strcmp(key, "value")) {
-		event->value = val;
+		parse->ev.value = val;
 	} else if (!strcmp(key, "name")) {
-		/* We get the name from the string handling */
+		parse->name = value;
 	} else if (!strcmp(key,"divemode")) {
-		event->value = get_divemode(value);
+		parse->ev.value = get_divemode(value);
 	} else if (!strcmp(key, "cylinder")) {
 		/* NOTE! We add one here as a marker that "yes, we got a cylinder index" */
-		event->gas.index = 1 + get_index(value);
+		parse->ev.gas.index = 1 + get_index(value);
 	} else if (!strcmp(key, "o2")) {
-		event->gas.mix.o2 = get_fraction(value);
+		parse->ev.gas.mix.o2 = get_fraction(value);
 	} else if (!strcmp(key, "he")) {
-		event->gas.mix.he = get_fraction(value);
+		parse->ev.gas.mix.he = get_fraction(value);
 	} else
 		report_error("Unexpected event key/value pair (%s/%s)", key, value);
 }
@@ -779,13 +817,13 @@ static void parse_dc_keyvalue(char *line, struct membuffer *str, struct git_pars
 static void parse_dc_event(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	int m, s = 0;
-	const char *name;
-	struct event event = { 0 }, *ev;
+	struct parse_event p = { NULL, };
+	struct event *ev;
 
 	m = strtol(line, &line, 10);
 	if (*line == ':')
 		s = strtol(line + 1, &line, 10);
-	event.time.seconds = m * 60 + s;
+	p.ev.time.seconds = m * 60 + s;
 
 	for (;;) {
 		char c;
@@ -793,20 +831,17 @@ static void parse_dc_event(char *line, struct membuffer *str, struct git_parser_
 			line++;
 		if (!c)
 			break;
-		line = parse_keyvalue_entry(parse_event_keyvalue, &event, line);
+		line = parse_keyvalue_entry(parse_event_keyvalue, &p, line, str);
 	}
 
-	name = "";
-	if (str->len)
-		name = mb_cstring(str);
-	ev = add_event(state->active_dc, event.time.seconds, event.type, event.flags, event.value, name);
+	ev = add_event(state->active_dc, p.ev.time.seconds, p.ev.type, p.ev.flags, p.ev.value, p.name);
 
 	/*
 	 * Older logs might mark the dive to be CCR by having an "SP change" event at time 0:00.
 	 * Better to mark them being CCR on import so no need for special treatments elsewhere on
 	 * the code.
 	 */
-	if (ev && event.time.seconds == 0 && event.type == SAMPLE_EVENT_PO2 && event.value && state->active_dc->divemode==OC)
+	if (ev && p.ev.time.seconds == 0 && p.ev.type == SAMPLE_EVENT_PO2 && p.ev.value && state->active_dc->divemode==OC)
 		state->active_dc->divemode = CCR;
 
 	if (ev && event_is_gaschange(ev)) {
@@ -815,9 +850,9 @@ static void parse_dc_event(char *line, struct membuffer *str, struct git_parser_
 		 * and the parsing will add one for actual cylinder
 		 * index data (see parse_event_keyvalue)
 		 */
-		ev->gas.index = event.gas.index-1;
-		if (event.gas.mix.o2.permille || event.gas.mix.he.permille)
-			ev->gas.mix = event.gas.mix;
+		ev->gas.index = p.ev.gas.index-1;
+		if (p.ev.gas.mix.o2.permille || p.ev.gas.mix.he.permille)
+			ev->gas.mix = p.ev.gas.mix;
 	}
 }
 
@@ -830,10 +865,10 @@ static void parse_trip_time(char *line, struct membuffer *str, struct git_parser
 { UNUSED(line); UNUSED(str); UNUSED(state); }
 
 static void parse_trip_location(char *line, struct membuffer *str, struct git_parser_state *state)
-{ UNUSED(line); state->active_trip->location = get_utf8(str); }
+{ UNUSED(line); state->active_trip->location = detach_cstring(str); }
 
 static void parse_trip_notes(char *line, struct membuffer *str, struct git_parser_state *state)
-{ UNUSED(line); state->active_trip->notes = get_utf8(str); }
+{ UNUSED(line); state->active_trip->notes = detach_cstring(str); }
 
 static void parse_settings_autogroup(char *line, struct membuffer *str, struct git_parser_state *_unused)
 {
@@ -899,7 +934,6 @@ struct divecomputerid {
 	const char *nickname;
 	const char *firmware;
 	const char *serial;
-	const char *cstr;
 	unsigned int deviceid;
 };
 
@@ -907,10 +941,6 @@ static void parse_divecomputerid_keyvalue(void *_cid, const char *key, const cha
 {
 	struct divecomputerid *cid = _cid;
 
-	if (*value == '"') {
-		value = cid->cstr;
-		cid->cstr += strlen(cid->cstr) + 1;
-	}
 	if (!strcmp(key, "deviceid")) {
 		cid->deviceid = get_hex(value);
 		return;
@@ -934,26 +964,23 @@ static void parse_divecomputerid_keyvalue(void *_cid, const char *key, const cha
  * The 'divecomputerid' is a bit harder to parse than some other things, because
  * it can have multiple strings (but see the tag parsing for another example of
  * that) in addition to the non-string entries.
- *
- * We keep the "next" string in "id.cstr" and update it as we use it.
  */
 static void parse_settings_divecomputerid(char *line, struct membuffer *str, struct git_parser_state *_unused)
 {
 	UNUSED(_unused);
-	struct divecomputerid id = { mb_cstring(str) };
-
-	id.cstr = id.model + strlen(id.model) + 1;
+	struct divecomputerid id = { pop_cstring(str, line) };
 
 	/* Skip the '"' that stood for the model string */
 	line++;
 
+	/* Parse the rest of the entries */
 	for (;;) {
 		char c;
 		while (isspace(c = *line))
 			line++;
 		if (!c)
 			break;
-		line = parse_keyvalue_entry(parse_divecomputerid_keyvalue, &id, line);
+		line = parse_keyvalue_entry(parse_divecomputerid_keyvalue, &id, line, str);
 	}
 	create_device_node(id.model, id.deviceid, id.serial, id.firmware, id.nickname);
 }
@@ -961,7 +988,7 @@ static void parse_settings_divecomputerid(char *line, struct membuffer *str, str
 static void parse_picture_filename(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	UNUSED(line);
-	state->active_pic->filename = get_utf8(str);
+	state->active_pic->filename = detach_cstring(str);
 }
 
 static void parse_picture_gps(char *line, struct membuffer *str, struct git_parser_state *state)
