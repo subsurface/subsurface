@@ -2124,6 +2124,7 @@ void QMLManager::appInitialized()
 #endif
 }
 
+#if !defined(Q_OS_ANDROID)
 void QMLManager::exportToFile(export_types type, QString dir, bool anonymize)
 {
 	// dir starts with "file://" e.g. "file:///tmp"
@@ -2144,40 +2145,12 @@ void QMLManager::exportToFile(export_types type, QString dir, bool anonymize)
 		case EX_UDDF:
 			exportUsingStyleSheet(fileName + ".uddf", true, 0, "uddf-export.xslt", anonymize);
 			break;
-		case EX_CSV_DIVE_PROFILE:
-			exportUsingStyleSheet(fileName + ".uddf", true, 0, "xml2csv.xslt", anonymize);
-			break;
-		case EX_CSV_DETAILS:
-			exportUsingStyleSheet(fileName + ".uddf", true, 0, "xml2manualcsv.xslt", anonymize);
-			break;
-		case EX_CSV_PROFILE:
-			save_profiledata(qPrintable(fileName + ".csv"), true);
-			break;
-		case EX_PROFILE_PNG:
-			exportProfile(qPrintable(fileName + ".png"), false);
-			break;
-		case EX_WORLD_MAP:
-			export_worldmap_HTML(qPrintable(fileName + ".html"), true);
-			break;
-		case EX_TEX:
-			export_TeX(qPrintable(fileName + ".tex"), true, true);
-			break;
-		case EX_LATEX:
-			export_TeX(qPrintable(fileName + ".tex"), true, false);
-			break;
-		case EX_IMAGE_DEPTHS:
-			export_depths(qPrintable(fileName), false);
-			break;
 		default:
 			qDebug() << "export to unknown type " << type << " using " << dir << " remove names " << anonymize;
 			break;
 	}
 }
-
-void exportProfile(const struct dive *, const QString)
-{
-	// TBD
-}
+#endif
 
 void QMLManager::exportToWEB(export_types type, QString userId, QString password, bool anonymize)
 {
