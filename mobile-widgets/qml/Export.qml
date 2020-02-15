@@ -55,8 +55,8 @@ Kirigami.ScrollablePage {
 				id: fieldPassword
 				Layout.fillWidth: true
 				inputMethodHints: Qt.ImhSensitiveData |
-								  Qt.ImhHiddenText |
-								  Qt.ImhNoAutoUppercase
+						  Qt.ImhHiddenText |
+						  Qt.ImhNoAutoUppercase
 				echoMode: TextInput.PasswordEchoOnEdit
 			}
 			CheckBox {
