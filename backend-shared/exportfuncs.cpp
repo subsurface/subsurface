@@ -12,6 +12,7 @@
 #include "core/divesite.h"
 #include "exportfuncs.h"
 
+#if !defined(SUBSURFACE_MOBILE)
 void exportProfile(QString filename, bool selected_only)
 {
 	struct dive *dive;
@@ -31,7 +32,6 @@ void exportProfile(QString filename, bool selected_only)
 		++count;
 	}
 }
-
 
 void export_TeX(const char *filename, bool selected_only, bool plain)
 {
@@ -269,6 +269,7 @@ void export_depths(const char *filename, bool selected_only)
 	}
 	free_buffer(&buf);
 }
+#endif /* ! SUBSURFACE_MOBILE */
 
 std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly)
 {
