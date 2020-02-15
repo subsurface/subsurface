@@ -64,12 +64,6 @@ void uploadDiveLogsDE::doUpload(bool selected, const QString &userid, const QStr
 bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 {
 	static const char errPrefix[] = "divelog.de-upload:";
-#ifndef SUBSURFACE_MOBILE
-	if (!amount_selected) {
-		report_error(tr("No dives were selected").toUtf8());
-		return false;
-	}
-#endif // SUBSURFACE_MOBILE
 
 	xsltStylesheetPtr xslt = NULL;
 	struct zip *zip;
@@ -265,7 +259,7 @@ void uploadDiveLogsDE::updateProgressSlot(qint64 current, qint64 total)
 {
 	if (!reply)
 		return;
-	
+
 	if (total <= 0 || current <= 0)
 		return;
 
