@@ -7,7 +7,7 @@ import QtQuick.Dialogs 1.3
 import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami 2.4 as Kirigami
 
-Kirigami.ScrollablePage {
+TemplatePage {
 	title: qsTr("Export Divelog information")
 
 	property int selectedExport: ExportType.EX_DIVES_XML
@@ -28,82 +28,93 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	Dialog {
+	GridLayout {
 		id: uploadDialog
-		title: radioGroup.current.text
-		standardButtons: StandardButton.Apply | StandardButton.Cancel
-
-		GridLayout {
-			rowSpacing: Kirigami.Units.smallSpacing * 2
-			columnSpacing: Kirigami.Units.smallSpacing
-			columns: 2
-
-			Text {
-				id: textUserID
-				text: qsTr("User ID")
-			}
-			TextField {
-				id: fieldUserID
-				Layout.fillWidth: true
-				inputMethodHints: Qt.ImhNoAutoUppercase
-			}
-			Text {
-				id: textPassword
-				text: qsTr("Password:")
-			}
-			TextField {
-				id: fieldPassword
-				Layout.fillWidth: true
-				inputMethodHints: Qt.ImhSensitiveData |
-						  Qt.ImhHiddenText |
-						  Qt.ImhNoAutoUppercase
-				echoMode: TextInput.PasswordEchoOnEdit
-			}
-			CheckBox {
-				id: fieldPrivate
-				Layout.fillWidth: true
-				text: qsTr("Private")
-			}
-			ProgressBar {
-				id: progress
-				value: 0.0
-			}
-			Text {
-				id: statusText
-				Layout.fillWidth: true
-				Layout.columnSpan: 2
-				wrapMode: Text.Wrap
-			}
-
+		visible: false
+		anchors {
+			top: parent.top
+			left: parent.left
+			right: parent.right
+			margins: Kirigami.Units.gridUnit / 2
+		}
+		rowSpacing: Kirigami.Units.smallSpacing * 2
+		columnSpacing: Kirigami.Units.smallSpacing
+		columns: 3
+		TemplateLabel {
+			text: qsTr("Export credentials")
+			Layout.columnSpan: 3
+		}
+		TemplateLabel {
+			id: textUserID
+			text: qsTr("User ID")
+		}
+		TemplateTextField {
+			id: fieldUserID
+			Layout.columnSpan: 2
+			Layout.fillWidth: true
+			inputMethodHints: Qt.ImhNoAutoUppercase
+		}
+		TemplateLabel {
+			id: textPassword
+			text: qsTr("Password:")
+		}
+		TemplateTextField {
+			id: fieldPassword
+			Layout.columnSpan: 2
+			Layout.fillWidth: true
+			inputMethodHints: Qt.ImhSensitiveData |
+					  Qt.ImhHiddenText |
+					  Qt.ImhNoAutoUppercase
+			echoMode: TextInput.PasswordEchoOnEdit
+		}
+		TemplateCheckBox {
+			id: fieldPrivate
+			visible: selectedExport === ExportType.EX_DIVESHARE
+			Layout.fillWidth: true
+			text: qsTr("Private")
+		}
+		ProgressBar {
+			id: progress
+			value: 0.0
+			Layout.columnSpan: 2
+		}
+		TemplateLabel {
+			id: statusText
+			Layout.fillWidth: true
+			Layout.columnSpan: 3
+			wrapMode: Text.Wrap
 		}
 
-		onApply: {
-			if (selectedExport === ExportType.EX_DIVELOGS_DE) {
-				if (fieldUserID.text !== PrefCloudStorage.divelogde_user) {
-					PrefCloudStorage.divelogde_user = fieldUserID.text
+		TemplateButton {
+			text: qsTr("Export")
+			onClicked: {
+				if (selectedExport === ExportType.EX_DIVELOGS_DE) {
+					if (fieldUserID.text !== PrefCloudStorage.divelogde_user) {
+						PrefCloudStorage.divelogde_user = fieldUserID.text
+					}
+					if (fieldPassword.text !== PrefCloudStorage.divelogde_pass)
+						PrefCloudStorage.divelogde_pass = fieldPassword.text
+					manager.exportToWEB(selectedExport, fieldUserID.text, fieldPassword.text, anonymize.checked)
+				} else {
+					if (fieldUserID.text !== PrefCloudStorage.diveshare_uid) {
+						        PrefCloudStorage.diveshare_uid = fieldUserID.text
+					}
+					PrefCloudStorage.diveshare_private = fieldPrivate.checked
+					manager.exportToWEB(selectedExport, fieldUserID.text, fieldPassword.text, fieldPrivate.checked)
 				}
-				if (fieldPassword.text !== PrefCloudStorage.divelogde_pass)
-					PrefCloudStorage.divelogde_pass = fieldPassword.text
-				manager.exportToWEB(selectedExport, fieldUserID.text, fieldPassword.text, anonymize.checked)
-			} else {
-				if (fieldUserID.text !== PrefCloudStorage.diveshare_uid) {
-					PrefCloudStorage.diveshare_uid = fieldUserID.text
-				}
-				PrefCloudStorage.diveshare_private = fieldPrivate.checked
-				manager.exportToWEB(selectedExport, fieldUserID.text, fieldPassword.text, fieldPrivate.checked)
 			}
 		}
-		onRejected: {
-			pageStack.pop()
-			close()
+		TemplateButton {
+			text: qsTr("Cancel")
+			onClicked: {
+				pageStack.pop()
+			}
 		}
-
 		Connections {
 			target: manager
 			onUploadFinish: {
 				if (success) {
 					pageStack.pop()
-					uploadDialog.close()
 				}
 				statusText.text = text
 				progress.value = 0
@@ -119,9 +130,11 @@ Kirigami.ScrollablePage {
 	// export really doesn't make sense on Android
 
 	ColumnLayout {
+		id: exportSelection
+		visible: true
 		width: parent.width
-		spacing: 1
-		Layout.margins: 10
+		spacing: 3
+		Layout.margins: Kirigami.Units.gridUnit / 2
 
 		ExclusiveGroup { id: radioGroup }
 		RadioButton {
@@ -173,12 +186,22 @@ Kirigami.ScrollablePage {
 				explain.text = qsTr("Send the dive data to dive-share.appspot.com website.")
 			}
 		}
-		Text {
+		Rectangle {
+			width: 1
+			height: Kirigami.Units.gridUnit
+			color: "transparent"
+		}
+		TemplateLabel {
 			id: explain
 			Layout.fillWidth: true
 			wrapMode: Text.Wrap
 		}
-		CheckBox {
+		Rectangle {
+			width: 1
+			height: Kirigami.Units.gridUnit
+			color: "transparent"
+		}
+		TemplateCheckBox {
 			id: anonymize
 			Layout.fillWidth: true
 			text: qsTr("Anonymize")
@@ -195,17 +218,17 @@ Kirigami.ScrollablePage {
 					fieldPassword.text = PrefCloudStorage.divelogde_pass
 					anonymize.visible = false
 					statusText.text = ""
-					fieldPrivate.visible = false
-					uploadDialog.open()
+					exportSelection.visible = false
+					uploadDialog.visible = true
 				} else if (selectedExport === ExportType.EX_DIVESHARE) {
 					textUserID.visible = true
 					fieldUserID.visible = true
 					fieldUserID.text = PrefCloudStorage.diveshare_uid
 					fieldPrivate.visible = true
 					fieldPrivate.checked = PrefCloudStorage.diveshare_private
+					exportSelection.visible = false
 					textPassword.visible = false
-					fieldPassword.visible = false
-					uploadDialog.open()
+					uploadDialog.visible = true
 				} else if (Qt.platform.os !== "android") {
 					saveAsDialog.open()
 				}
