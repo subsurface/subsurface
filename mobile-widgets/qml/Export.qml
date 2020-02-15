@@ -114,6 +114,10 @@ Kirigami.ScrollablePage {
 		}
 	}
 
+	// given that there is no native file dialog on Android and that access to
+	// the file system is increasingly restrictive in future versions, file based
+	// export really doesn't make sense on Android
+
 	ColumnLayout {
 		width: parent.width
 		spacing: 1
@@ -123,6 +127,7 @@ Kirigami.ScrollablePage {
 		RadioButton {
 			Layout.fillWidth: true
 			text: qsTr("Export Subsurface XML")
+			visible: Qt.platform.os !== "android"
 			checked: true
 			exclusiveGroup: radioGroup
 			onClicked: {
@@ -133,6 +138,7 @@ Kirigami.ScrollablePage {
 		RadioButton {
 			Layout.fillWidth: true
 			text: qsTr("Export Subsurface dive sites XML")
+			visible: Qt.platform.os !== "android"
 			exclusiveGroup: radioGroup
 			onClicked: {
 				selectedExport = ExportType.EX_DIVE_SITES_XML
@@ -142,6 +148,7 @@ Kirigami.ScrollablePage {
 		RadioButton {
 			Layout.fillWidth: true
 			text: qsTr("Export UDDF")
+			visible: Qt.platform.os !== "android"
 			exclusiveGroup: radioGroup
 			onClicked: {
 				selectedExport = ExportType.EX_UDDF
@@ -199,7 +206,7 @@ Kirigami.ScrollablePage {
 					textPassword.visible = false
 					fieldPassword.visible = false
 					uploadDialog.open()
-				} else {
+				} else if (Qt.platform.os !== "android") {
 					saveAsDialog.open()
 				}
 			}
