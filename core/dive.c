@@ -17,6 +17,10 @@
 #include "tag.h"
 #include "trip.h"
 #include "structured_list.h"
+#ifndef SUBSURFACE_MOBILE
+#include "fulltext.h"
+#endif
+
 
 /* one could argue about the best place to have this variable -
  * it's used in the UI, but it seems to make the most sense to have it
@@ -356,6 +360,9 @@ static void free_dive_structures(struct dive *d)
 {
 	if (!d)
 		return;
+#ifndef SUBSURFACE_MOBILE
+	fulltext_unregister(d);
+#endif
 	/* free the strings */
 	free(d->buddy);
 	free(d->divemaster);
@@ -401,6 +408,9 @@ static void copy_dive_nodc(const struct dive *s, struct dive *d)
 	*d = *s;
 	memset(&d->cylinders, 0, sizeof(d->cylinders));
 	memset(&d->weightsystems, 0, sizeof(d->weightsystems));
+#ifndef SUBSURFACE_MOBILE
+	d->full_text = NULL;
+#endif
 	invalidate_dive_cache(d);
 	d->buddy = copy_string(s->buddy);
 	d->divemaster = copy_string(s->divemaster);
