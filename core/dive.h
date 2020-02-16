@@ -170,6 +170,9 @@ struct dive {
 	bool notrip; /* Don't autogroup this dive to a trip */
 	bool selected;
 	bool hidden_by_filter;
+#if !defined(SUBSURFACE_MOBILE)
+	struct full_text_cache *full_text; /* word cache for full text search */
+#endif
 #if defined(SUBSURFACE_MOBILE)
 	uint8_t collapsed; /* four values: 0 = don't show, 1 = show as dive, 2 = show corresponding trip, 3 = show dive and trip */
 #endif
