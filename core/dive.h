@@ -140,6 +140,7 @@ struct dive_site;
 struct dive_site_table;
 struct dive_trip;
 struct trip_table;
+struct full_text_cache;
 struct dive {
 	struct dive_trip *divetrip;
 	timestamp_t when;

@@ -5,6 +5,7 @@
 #include "deco.h"
 #include "divesite.h"
 #include "divelist.h"
+#include "fulltext.h"
 #include "planner.h"
 #include "qthelper.h"
 #include "gettext.h"
@@ -829,6 +830,10 @@ void process_loaded_dives()
 
 	/* Autogroup dives if desired by user. */
 	autogroup_dives(&dive_table, &trip_table);
+
+#ifndef SUBSURFACE_MOBILE
+	fulltext_reload();
+#endif
 }
 
 /*
@@ -1338,6 +1343,10 @@ int get_dive_id_closest_to(timestamp_t when)
 
 void clear_dive_file_data()
 {
+#ifndef SUBSURFACE_MOBILE
+	fulltext_unregister_all();
+#endif
+
 	while (dive_table.nr)
 		delete_single_dive(0);
 	current_dive = NULL;
