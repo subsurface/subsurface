@@ -13,12 +13,6 @@ struct ShownChange {
 	bool currentChanged;
 };
 
-enum class StringFilterMode {
-	SUBSTRING = 0,
-	STARTSWITH = 1,
-	EXACT = 2
-};
-
 // The dive filter for mobile is currently much simpler than for desktop.
 // Therefore, for now we have two completely separate implementations.
 // This should be unified in the future.
@@ -36,6 +30,7 @@ private:
 
 #else
 
+#include "fulltext.h"
 #include <QDateTime>
 #include <QStringList>
 
@@ -72,12 +67,14 @@ struct FilterData {
 	QStringList suit;
 	QStringList dnotes;
 	QStringList equipment;
+	FullTextQuery fullText;
 	Mode tagsMode = Mode::ALL_OF;
 	Mode peopleMode = Mode::ALL_OF;
 	Mode locationMode = Mode::ANY_OF;
 	Mode dnotesMode = Mode::ALL_OF;
 	Mode suitMode = Mode::ANY_OF;
 	Mode equipmentMode = Mode::ALL_OF;
+	StringFilterMode fulltextStringMode = StringFilterMode::STARTSWITH;
 	StringFilterMode tagsStringMode = StringFilterMode::SUBSTRING;
 	StringFilterMode peopleStringMode = StringFilterMode::SUBSTRING;
 	StringFilterMode locationStringMode = StringFilterMode::SUBSTRING;
@@ -102,7 +99,7 @@ public:
 	ShownChange updateAll() const; // Update filter status of all dives and return dives whose status changed
 private:
 	DiveFilter();
-	void updateDiveStatus(dive *d, ShownChange &change) const;
+	void updateDiveStatus(dive *d, bool newStatus, ShownChange &change) const;
 	bool showDive(const struct dive *d) const; // Should that dive be shown?
 
 	QVector<dive_site *> dive_sites;
