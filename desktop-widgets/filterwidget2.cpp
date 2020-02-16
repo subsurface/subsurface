@@ -78,6 +78,12 @@ FilterWidget2::FilterWidget2(QWidget* parent) :
 	connect(ui.toTime, &QDateTimeEdit::timeChanged,
 		this, &FilterWidget2::updateFilter);
 
+	connect(ui.fullText, &QLineEdit::textChanged,
+		this, &FilterWidget2::updateFilter);
+
+	connect(ui.fulltextStringMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
+		this, &FilterWidget2::updateFilter);
+
 	connect(ui.tags, &QLineEdit::textChanged,
 		this, &FilterWidget2::updateFilter);
 
@@ -170,6 +176,7 @@ void FilterWidget2::clearFilter()
 	ui.suitMode->setCurrentIndex((int)filterData.suitMode);
 	ui.dnotesMode->setCurrentIndex((int)filterData.dnotesMode);
 	ui.equipmentMode->setCurrentIndex((int)filterData.equipmentMode);
+	ui.fulltextStringMode->setCurrentIndex((int)filterData.fulltextStringMode);
 	ui.tagsStringMode->setCurrentIndex((int)filterData.tagsStringMode);
 	ui.peopleStringMode->setCurrentIndex((int)filterData.peopleStringMode);
 	ui.locationStringMode->setCurrentIndex((int)filterData.locationStringMode);
@@ -214,6 +221,7 @@ void FilterWidget2::updateFilter()
 	filterData.fromTime = ui.fromTime->time();
 	filterData.toDate = ui.toDate->dateTime();
 	filterData.toTime = ui.toTime->time();
+	filterData.fullText = ui.fullText->text();
 	filterData.tags = ui.tags->text().split(",", QString::SkipEmptyParts);
 	filterData.people = ui.people->text().split(",", QString::SkipEmptyParts);
 	filterData.location = ui.location->text().split(",", QString::SkipEmptyParts);
@@ -226,6 +234,7 @@ void FilterWidget2::updateFilter()
 	filterData.suitMode = (FilterData::Mode)ui.suitMode->currentIndex();
 	filterData.dnotesMode = (FilterData::Mode)ui.dnotesMode->currentIndex();
 	filterData.equipmentMode = (FilterData::Mode)ui.equipmentMode->currentIndex();
+	filterData.fulltextStringMode = (StringFilterMode)ui.fulltextStringMode->currentIndex();
 	filterData.tagsStringMode = (StringFilterMode)ui.tagsStringMode->currentIndex();
 	filterData.peopleStringMode = (StringFilterMode)ui.peopleStringMode->currentIndex();
 	filterData.locationStringMode = (StringFilterMode)ui.locationStringMode->currentIndex();

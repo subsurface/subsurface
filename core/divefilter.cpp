@@ -21,14 +21,14 @@ ShownChange DiveFilter::updateAll() const
 #include "desktop-widgets/mapwidget.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/divelistview.h"
+#include "core/fulltext.h"
 #include "core/qthelper.h"
 #include "core/trip.h"
 #include "core/divesite.h"
 #include "qt-models/filtermodels.h"
 
-void DiveFilter::updateDiveStatus(dive *d, ShownChange &change) const
+void DiveFilter::updateDiveStatus(dive *d, bool newStatus, ShownChange &change) const
 {
-	bool newStatus = showDive(d);
 	if (filter_dive(d, newStatus)) {
 		if (newStatus)
 			change.newShown.push_back(d);
@@ -40,9 +40,17 @@ void DiveFilter::updateDiveStatus(dive *d, ShownChange &change) const
 ShownChange DiveFilter::update(const QVector<dive *> &dives) const
 {
 	dive *old_current = current_dive;
+
 	ShownChange res;
-	for (dive *d: dives)
-		updateDiveStatus(d, res);
+	bool doDS = diveSiteMode();
+	bool doFullText = filterData.fullText.doit();
+	for (dive *d: dives) {
+		// There are three modes: divesite, fulltext, normal
+		bool newStatus = doDS        ? dive_sites.contains(d->dive_site) :
+				 doFullText  ? fulltext_dive_matches(d, filterData.fullText, filterData.fulltextStringMode) && showDive(d) :
+					       showDive(d);
+		updateDiveStatus(d, newStatus, res);
+	}
 	res.currentChanged = old_current != current_dive;
 	return res;
 }
@@ -50,9 +58,28 @@ ShownChange DiveFilter::update(const QVector<dive *> &dives) const
 ShownChange DiveFilter::updateAll() const
 {
 	dive *old_current = current_dive;
+
 	ShownChange res;
-	for (int i = 0; i < dive_table.nr; ++i)
-		updateDiveStatus(get_dive(i), res);
+	int i;
+	dive *d;
+	// There are three modes: divesite, fulltext, normal
+	if (diveSiteMode()) {
+		for_each_dive(i, d) {
+			bool newStatus = dive_sites.contains(d->dive_site);
+			updateDiveStatus(d, newStatus, res);
+		}
+	} else if (filterData.fullText.doit()) {
+		FullTextResult ft = fulltext_find_dives(filterData.fullText, filterData.fulltextStringMode);
+		for_each_dive(i, d) {
+			bool newStatus = ft.dive_matches(d) && showDive(d);
+			updateDiveStatus(d, newStatus, res);
+		}
+	} else {
+		for_each_dive(i, d) {
+			bool newStatus = showDive(d);
+			updateDiveStatus(d, newStatus, res);
+		}
+	}
 	res.currentChanged = old_current != current_dive;
 	return res;
 }
@@ -161,9 +188,6 @@ DiveFilter::DiveFilter() : diveSiteRefCount(0)
 
 bool DiveFilter::showDive(const struct dive *d) const
 {
-	if (diveSiteMode())
-		return dive_sites.contains(d->dive_site);
-
 	if (!filterData.validFilter)
 		return true;
 
