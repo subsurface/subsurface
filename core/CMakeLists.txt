@@ -88,6 +88,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	file.h
 	format.cpp
 	format.h
+	fulltext.cpp
+	fulltext.h
 	gas.c
 	gas.h
 	gas-model.c
