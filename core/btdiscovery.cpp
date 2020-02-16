@@ -82,6 +82,16 @@ static dc_descriptor_t *getDeviceType(QString btName)
 			product = "Genius";
 	}
 
+	if (btName.startsWith("CARTESIO_")) {
+		vendor = "Cressi";
+		product = "Cartesio";
+	}
+
+	if (btName.startsWith("GOA_")) {
+		vendor = "Cressi";
+		product = "Goa";
+	}
+
 	// The Pelagic dive computers (generally branded as Oceanic or Aqualung)
 	// show up with a two-byte model code followed by six bytes of serial
 	// number. The model code matches the hex model (so "FQ" is 0x4651,
