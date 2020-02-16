@@ -15,7 +15,6 @@
 #include <QStatusBar>
 #include <QNetworkProxy>
 #include <QUndoStack>
-#include <QtConcurrentRun>
 
 #include "core/color.h"
 #include "core/device.h"

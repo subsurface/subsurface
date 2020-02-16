@@ -5,8 +5,6 @@
 #include "core/dive.h"
 #include "core/divelist.h"
 #include <unistd.h>
-#include <QtConcurrentMap>
-#include <QtConcurrentRun>
 #include <QFuture>
 #include <QDir>
 #include <QCryptographicHash>
