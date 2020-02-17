@@ -211,14 +211,14 @@ at the bottom of the dive list to perform filtering of the dive list (see image 
 
 image::mobile-images/Filter.jpg["FIGURE: Filter tool",align="center"]
 
-By default, all the dives in the dive log are shown in the dive list. After several years one's dive log can become quite long and, sometimes, one would like to list only the dives of a particular type, e.g. those at a particular dive site or those with a specific buddy or dive master. Use the Filter to achieve this. The filter mechanism searches through all the information for each dive, looking for one or more key words. Only the dives containing these key words are listed in the dive list. In the xref:S_Settings[_Settings_] screen there two options that affect the way the filter searches for appropriate information. Firstly, one can select _Match filter case sensitive_ which causes the search of key words to be case sensitive. Secondly, one can select _Include notes in full text filtering_. If this option is not selected, the filter does not search through the dive notes for key words. Selecting the _Filter_ action button brings up a text box at the top of the dive list. Type the key words to be searched for. In the image on the left, the dive list has been filtered for the word "Nitrox" and 265 dives were found containing this word as a tag. For each trip in the dive list the number of dives containing "Nitrox" as a tag is shown. To clear the filter, remove the key words from the text box and select the Filter action button to switch off filtering.
+By default, all the dives in the dive log are shown in the dive list. After several years your dive log can become quite long and, sometimes, you might like to list only the dives of a particular type, e.g. those at a particular dive site or those with a specific buddy or dive master. Use the Filter to achieve this. The filter mechanism searches through all the information for each dive, looking for one or more key words. Only the dives containing these key words are listed in the dive list. In the xref:S_Settings[_Settings_] screen there two options that affect the way the filter searches for appropriate information. Firstly, you can select _Match filter case sensitive_ which causes the search of key words to be case sensitive. Secondly, you can select _Include notes in full text filtering_. If this option is not selected, the filter does not search through the dive notes for key words. Selecting the _Filter_ action button brings up a text box at the top of the dive list. Type the key words to be searched for. In the image on the left, the dive list has been filtered for the word "Nitrox" and 265 dives were found containing this word as a tag. For each trip in the dive list the number of dives containing "Nitrox" as a tag is shown. To clear the filter, remove the key words from the text box and select the Filter action button to switch off filtering.
 
 == Viewing the locations of all dives in the dive list
 
 image::mobile-images/DivesMap.jpg["FIGURE: Map of all dive sites",align="center"]
 
 The locations of all dives in the dive list can be viewed from the _Main Menu_ by selecting the _Map_ option.
-A satellite image of the world is shown. At that scale no dive sites are shown. If one zooms into a particular region
+A satellite image of the world is shown. At that scale no dive sites are shown. If you zoom into a particular region
 of the world the dive sites appear, indicated by red flags. Zooming in even closer indicates the names of each
 of the different dive sites.
 
@@ -258,7 +258,7 @@ the application back button at the top left of the screen on iOS.
 [[S_Add_Dive]]
 == Manually adding a new dive to the dive list
 
-One can manually add a dive to the existing dive list. On the dive list
+You can manually add a dive to the existing dive list. On the dive list
 tap the "plus" sign in the action bar, or use the
 main menu and tap _Dive management  ->  Add dive manually_. This opens  a screen that is
 identical to the editing screen discussed above. When a dive is added manually, you
@@ -325,13 +325,16 @@ download of dive data from a handful of Bluetooth LE enabled dive
 computers. Use the _Vendor name_ and _Dive Computer_ drop-downs to pick the correct
 dive computer. When downloading from multiple different dive computers, shortcut
 buttons appear below the drop-downs to easily switch between them. In the xref:S_Settings[_Settings_] menu
-one can remove these buttons, a useful feature for removing buttons of dive
+you can remove these buttons, a useful feature for removing buttons of dive
 computers that are not used any more. Achieve this by selecting the option 
 _Forget remembered dive computers_ in the xref:S_Settings[_Settings_] menu.
 After all these caveats, let us proceed with download. 
 
-*For USB FTDI dive computers:* USB cables "normally" used
-for uploading dives to a desktop/laptop computer do NOT work: these
+*For USB FTDI dive computers:*
+This feature is not supported on iOS and on most newer Android devices. It still works on some older
+Android devices (typically Android 7 and older) and is kept enabled for this
+reason. Note: USB cables "normally" used for uploading dives to a
+desktop/laptop computer do NOT work; these
 cables usually have a full-sized ("Type A") male USB plug
 on one end which plugs into the USB port of a desktop/laptop computer. For downloads to a mobile device
 one needs a USB OTG (USB On-The-Go) cable.
@@ -347,9 +350,8 @@ OTG cable usually has a full-size ("Type A") female receptacle at one end which
 accommodates the full-sized male plug
 of the USB cable "normally" used (see image below). This means that two cables are used to connect
 the dive computer to the mobile device. *Not all Android devices support OTG cables*
-and even on some devices that do support those cables in general, _Subsurface-mobile_ can in
-some cases still not access a dive computer through a serial port due to
-limitations in the Android and iOS operating systems.
+and even on some devices that do support those cables in general, as mentioned above _Subsurface-mobile_
+does usually not support cable based downloads, except on some older Android devices.
 |=======
 
 _Subsurface_ remembers the settings for dive computers that
