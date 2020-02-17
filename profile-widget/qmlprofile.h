@@ -10,6 +10,8 @@ class QMLProfile : public QQuickPaintedItem
 	Q_OBJECT
 	Q_PROPERTY(int diveId MEMBER m_diveId WRITE setDiveId)
 	Q_PROPERTY(qreal devicePixelRatio READ devicePixelRatio WRITE setDevicePixelRatio NOTIFY devicePixelRatioChanged)
+	Q_PROPERTY(qreal xOffset MEMBER m_xOffset WRITE setXOffset NOTIFY xOffsetChanged)
+	Q_PROPERTY(qreal yOffset MEMBER m_yOffset WRITE setYOffset NOTIFY yOffsetChanged)
 
 public:
 	explicit QMLProfile(QQuickItem *parent = 0);
@@ -30,12 +32,15 @@ private:
 	int m_diveId;
 	qreal m_devicePixelRatio;
 	int m_margin;
+	qreal m_xOffset, m_yOffset;
 	QScopedPointer<ProfileWidget2> m_profileWidget;
 	void updateProfile();
 
 signals:
 	void rightAlignedChanged();
 	void devicePixelRatioChanged();
+	void xOffsetChanged();
+	void yOffsetChanged();
 };
 
 #endif // QMLPROFILE_H

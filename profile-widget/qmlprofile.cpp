@@ -12,9 +12,12 @@ QMLProfile::QMLProfile(QQuickItem *parent) :
 	QQuickPaintedItem(parent),
 	m_devicePixelRatio(1.0),
 	m_margin(0),
-	m_profileWidget(new ProfileWidget2)
+	m_profileWidget(new ProfileWidget2),
+	m_xOffset(0.0),
+	m_yOffset(0.0)
 {
 	setAntialiasing(true);
+	setFlags(QQuickItem::ItemClipsChildrenToShape | QQuickItem::ItemHasContents );
 	m_profileWidget->setProfileState();
 	m_profileWidget->setPrintMode(true);
 	m_profileWidget->setFontPrintScale(0.8);
@@ -58,7 +61,7 @@ void QMLProfile::paint(QPainter *painter)
 	QTransform profileTransform = QTransform();
 	profileTransform.scale(sx, sy);
 	QTransform painterTransform = painter->transform();
-	painterTransform.translate(-painterRect.width() * magicShiftFactor ,-painterRect.height() * magicShiftFactor);
+	painterTransform.translate(dpr * m_xOffset - painterRect.width() * magicShiftFactor, dpr * m_yOffset - painterRect.height() * magicShiftFactor);
 
 #if defined(PROFILE_SCALING_DEBUG)
 	// some debugging messages to help adjust this in case the magic above is insufficient
@@ -79,7 +82,7 @@ void QMLProfile::paint(QPainter *painter)
 	// finally, render the profile
 	m_profileWidget->render(painter);
 	if (verbose)
-		qDebug() << "finished rendering profile in" << timer.elapsed() << "ms";
+		qDebug() << "finished rendering profile with offset" << QString::number(m_xOffset, 'f', 1) << "/" << QString::number(m_yOffset, 'f', 1)  << "in" << timer.elapsed() << "ms";
 }
 
 void QMLProfile::setMargin(int margin)
@@ -98,7 +101,7 @@ void QMLProfile::updateProfile()
 	if (!d)
 		return;
 	if (verbose)
-		qDebug() << "update profile for dive #" << d->number;
+		qDebug() << "update profile for dive #" << d->number << "offeset" << QString::number(m_xOffset, 'f', 1) << "/" << QString::number(m_yOffset, 'f', 1);
 	m_profileWidget->plotDive(d, true);
 }
 
@@ -123,6 +126,24 @@ void QMLProfile::setDevicePixelRatio(qreal dpr)
 		updateDevicePixelRatio(dpr);
 		emit devicePixelRatioChanged();
 	}
+}
+
+// don't update the profile here, have the user update x and y and then manually trigger an update
+void QMLProfile::setXOffset(qreal value)
+{
+	if (IS_FP_SAME(value, m_xOffset))
+		return;
+	m_xOffset = value;
+	emit xOffsetChanged();
+}
+
+// don't update the profile here, have the user update x and y and then manually trigger an update
+void QMLProfile::setYOffset(qreal value)
+{
+	if (IS_FP_SAME(value, m_yOffset))
+		return;
+	m_yOffset = value;
+	emit yOffsetChanged();
 }
 
 void QMLProfile::screenChanged(QScreen *screen)
