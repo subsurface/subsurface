@@ -517,6 +517,16 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						pageStack.push(themetest)
 					}
 				}
+
+				Kirigami.Action {
+					text: qsTr("Enable verbose logging")
+					onTriggered: {
+						showPassiveNotification(qsTr("Not persistent"), 3000)
+						globalDrawer.close()
+						manager.verboseEnabled = true
+					}
+				}
+
 				/* disable for now
 				Kirigami.Action {
 					text: qsTr("Dive planner")
