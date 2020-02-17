@@ -136,51 +136,40 @@ TemplatePage {
 		spacing: 3
 		Layout.margins: Kirigami.Units.gridUnit / 2
 
-		ExclusiveGroup { id: radioGroup }
-		RadioButton {
-			Layout.fillWidth: true
+		TemplateRadioButton {
 			text: qsTr("Export Subsurface XML")
 			visible: Qt.platform.os !== "android"
 			checked: true
-			exclusiveGroup: radioGroup
 			onClicked: {
 				selectedExport = ExportType.EX_DIVES_XML
 				explain.text = qsTr("Subsurface native XML format.")
 			}
 		}
-		RadioButton {
-			Layout.fillWidth: true
+		TemplateRadioButton {
 			text: qsTr("Export Subsurface dive sites XML")
 			visible: Qt.platform.os !== "android"
-			exclusiveGroup: radioGroup
 			onClicked: {
 				selectedExport = ExportType.EX_DIVE_SITES_XML
 				explain.text = qsTr("Subsurface dive sites native XML format.")
 			}
 		}
-		RadioButton {
-			Layout.fillWidth: true
+		TemplateRadioButton {
 			text: qsTr("Export UDDF")
 			visible: Qt.platform.os !== "android"
-			exclusiveGroup: radioGroup
 			onClicked: {
 				selectedExport = ExportType.EX_UDDF
 				explain.text = qsTr("Generic format that is used for data exchange between a variety of diving related programs.")
 			}
 		}
-		RadioButton {
-			Layout.fillWidth: true
+		TemplateRadioButton {
 			text: qsTr("Upload divelogs.de")
-			exclusiveGroup: radioGroup
 			onClicked: {
 				selectedExport = ExportType.EX_DIVELOGS_DE
 				explain.text = qsTr("Send the dive data to divelogs.de website.")
 			}
 		}
-		RadioButton {
-			Layout.fillWidth: true
+		TemplateRadioButton {
 			text: qsTr("Upload DiveShare")
-			exclusiveGroup: radioGroup
 			onClicked: {
 				selectedExport = ExportType.EX_DIVESHARE
 				explain.text = qsTr("Send the dive data to dive-share.appspot.com website.")
