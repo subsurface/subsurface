@@ -85,17 +85,22 @@ int QMLProfile::diveId() const
 	return m_diveId;
 }
 
+void QMLProfile::updateProfile()
+{
+	struct dive *d = get_dive_by_uniq_id(m_diveId);
+	if (!d)
+		return;
+	if (verbose)
+		qDebug() << "update profile for dive #" << d->number;
+	m_profileWidget->plotDive(d, true);
+}
+
 void QMLProfile::setDiveId(int diveId)
 {
 	m_diveId = diveId;
 	if (m_diveId < 0)
 		return;
-	struct dive *d = get_dive_by_uniq_id(diveId);
-	if (!d)
-		return;
-	if (verbose)
-		qDebug() << "setDiveId(" << d->number << ")";
-	m_profileWidget->plotDive(d, true);
+	updateProfile();
 }
 
 qreal QMLProfile::devicePixelRatio() const

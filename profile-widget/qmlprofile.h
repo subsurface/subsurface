@@ -20,6 +20,8 @@ public:
 	void setDiveId(int diveId);
 	qreal devicePixelRatio() const;
 	void setDevicePixelRatio(qreal dpr);
+	void setXOffset(qreal value);
+	void setYOffset(qreal value);
 
 public slots:
 	void setMargin(int margin);
@@ -29,6 +31,7 @@ private:
 	qreal m_devicePixelRatio;
 	int m_margin;
 	QScopedPointer<ProfileWidget2> m_profileWidget;
+	void updateProfile();
 
 signals:
 	void rightAlignedChanged();
