@@ -218,20 +218,24 @@ Item {
 		rowSpacing: Kirigami.Units.smallSpacing * 2
 		columnSpacing: Kirigami.Units.smallSpacing
 
-		QMLProfile {
-			id: qmlProfile
-			visible: !noDive
+		Rectangle {
 			Layout.fillWidth: true
 			Layout.preferredHeight: Layout.minimumHeight
 			Layout.minimumHeight: width * 0.75
 			Layout.columnSpan: 3
-			clip: false
-			Rectangle {
-				color: "transparent"
-				opacity: 0.6
-				border.width: 1
-				border.color: subsurfaceTheme.primaryColor
+			clip: true
+
+			QMLProfile {
+				id: qmlProfile
+				visible: !noDive
 				anchors.fill: parent
+				Rectangle {
+					color: "transparent"
+					opacity: 0.6
+					border.width: 1
+					border.color: subsurfaceTheme.primaryColor
+					anchors.fill: parent
+				}
 			}
 		}
 		Controls.Label {
