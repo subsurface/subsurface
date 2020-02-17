@@ -1,8 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
-/*
-import QtWebView 1.0
-*/
+import QtQuick 2.10
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.2
 import QtQuick.Controls 2.2 as Controls
@@ -229,12 +226,77 @@ Item {
 				id: qmlProfile
 				visible: !noDive
 				anchors.fill: parent
+				clip: true
+				property real lastScale: 1.0 // final scale at the end of previous pinch
 				Rectangle {
 					color: "transparent"
 					opacity: 0.6
 					border.width: 1
 					border.color: subsurfaceTheme.primaryColor
 					anchors.fill: parent
+				}
+				PinchArea {
+					anchors.fill: parent
+					pinch.dragAxis: Pinch.XAndYAxis
+					onPinchStarted: {
+						if (manager.verboseEnabebled)
+							manager.appendTextToLog("pinch started w/ previousScale " + qmlProfile.lastScale)
+					}
+					onPinchUpdated: {
+						if (pinch.scale * qmlProfile.lastScale < 1.0)
+							qmlProfile.lastScale = 1.0 / pinch.scale // this way we never shrink and the changes stay smooth
+						// the underlying widget deals with the scaling, no need to send an update request
+						qmlProfile.scale = pinch.scale * qmlProfile.lastScale
+						if (manager.verboseEnabled)
+							manager.appendTextToLog("pinch updated to scale " + qmlProfile.scale);
+					}
+					onPinchFinished: {
+						// remember the final scale value so we can continue from there next time the user pinches
+						qmlProfile.lastScale = pinch.scale * qmlProfile.lastScale
+					}
+
+					MouseArea {
+						anchors.fill: parent
+						drag.target: qmlProfile
+						drag.axis: Drag.XAndYAxis
+						drag.smoothed: true
+						pressAndHoldInterval: 150 // very short - feels about right
+						// cursor/finger position as we start dragging
+						property real initialX
+						property real initialY
+						// the offset previously used to show the profile
+						property real oldXOffset
+						property real oldYOffset
+						// this indicates that we are actually dragging
+						property bool dragging: false
+						onPressAndHold: {
+							dragging = true;
+							oldXOffset = qmlProfile.xOffset
+							oldYOffset = qmlProfile.yOffset
+							initialX = mouse.x
+							initialY = mouse.y
+							if (manager.verboseEnabled)
+								manager.appendTextToLog("press and hold at mouse" + Math.round(10 * mouse.x) / 10 + " / " + Math.round(10 * mouse.y) / 10)
+							// give visual feedback to the user that they now can drag
+							qmlProfile.opacity = 0.5
+						}
+						onPositionChanged: {
+							if (dragging) {
+								var x = (mouse.x - initialX) / qmlProfile.scale
+								var y = (mouse.y - initialY) / qmlProfile.scale
+								if (manager.verboseEnabled)
+									manager.appendTextToLog("drag mouse "  + Math.round(10 * mouse.x) / 10 + " / " + Math.round(10 * mouse.y) / 10 + " delta " + Math.round(x) + " / " + Math.round(y))
+								qmlProfile.xOffset = oldXOffset + x
+								qmlProfile.yOffset = oldYOffset + y
+								qmlProfile.update()
+							}
+						}
+						onReleased: {
+							// reset things
+							dragging = false
+							qmlProfile.opacity = 1.0
+						}
+					}
 				}
 			}
 		}
