@@ -1,3 +1,4 @@
+Mobile: enable profile zoom and pan
 Mobile: fix saving newly applied GPS fixes to storage
 Desktop: add starts-with and exact filter modes for textual search
 Mobile: add option to only show one column in portrait mode
