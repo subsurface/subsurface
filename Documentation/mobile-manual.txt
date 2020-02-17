@@ -232,6 +232,15 @@ or tapping on the _Subsurface-mobile_ link in the top left corner on iOS.
 Alternatively, the _Details View_ has a button at the top right hand marked
 _Map it_. Tap this button to open Google Maps showing the dive site (image on left).
 
+[[S_View_Dive]]
+== View a dive
+
+When you tap on a dive in the _Dive List_, a new screen with the dive profile
+and many important details about the dive is opened. You can use a pich gesture
+to zoom into the profile, and tapping with one finger, waiting briefly until
+the profile becomes translucent, and then dragging the finger around allows you
+to pan the profile so the interesting parts are shown.
+
 [[S_Edit_Dive]]
 == Edit a particular dive
 
