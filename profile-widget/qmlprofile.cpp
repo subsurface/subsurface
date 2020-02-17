@@ -6,6 +6,7 @@
 #include "core/metrics.h"
 #include <QTransform>
 #include <QScreen>
+#include <QElapsedTimer>
 
 QMLProfile::QMLProfile(QQuickItem *parent) :
 	QQuickPaintedItem(parent),
@@ -23,6 +24,10 @@ QMLProfile::QMLProfile(QQuickItem *parent) :
 
 void QMLProfile::paint(QPainter *painter)
 {
+	QElapsedTimer timer;
+	if (verbose)
+		timer.start();
+
 	// let's look at the intended size of the content and scale our scene accordingly
 	QRect painterRect = painter->viewport();
 	QRect profileRect = m_profileWidget->viewport()->rect();
@@ -73,6 +78,8 @@ void QMLProfile::paint(QPainter *painter)
 
 	// finally, render the profile
 	m_profileWidget->render(painter);
+	if (verbose)
+		qDebug() << "finished rendering profile in" << timer.elapsed() << "ms";
 }
 
 void QMLProfile::setMargin(int margin)
