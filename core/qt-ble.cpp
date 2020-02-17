@@ -123,6 +123,11 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 		}
 	}
 
+	// Is it a Nordic UART service?
+	// If so, throw out any earlier services, we'll pick this one
+	if (newService == QUuid("{6e400001-b5a3-f393-e0a9-e50e24dcca9e}"))
+		services.clear();
+
 	auto service = controller->createServiceObject(newService, this);
 	qDebug() << " .. created service object" << service;
 	if (service) {
