@@ -7,8 +7,6 @@
 #include <QLocale>
 #include <map>
 
-#ifndef SUBSURFACE_MOBILE
-
 // This class caches each dives words, so that we can unregister a dive from the full text search
 struct full_text_cache {
 	std::vector<QString> words;
@@ -287,5 +285,3 @@ bool FullTextResult::dive_matches(const struct dive *d) const
 {
 	return std::find(dives.begin(), dives.end(), d) != dives.end();
 }
-
-#endif
