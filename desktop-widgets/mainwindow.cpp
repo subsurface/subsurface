@@ -37,8 +37,6 @@
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 
-#include "core/subsurface-qt/divelistnotifier.h"
-
 #include "desktop-widgets/about.h"
 #include "desktop-widgets/divecomputermanagementdialog.h"
 #include "desktop-widgets/divelistview.h"
@@ -218,6 +216,11 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	connect(&windowTitleUpdate, &WindowTitleUpdate::updateTitle, this, &MainWindow::setAutomaticTitle);
 	connect(&diveListNotifier, &DiveListNotifier::numShownChanged, this, &MainWindow::setAutomaticTitle);
+	// monitor when dives changed - but only in verbose mode
+	// careful - changing verbose at runtime isn't enough (of course that could be added if we want it)
+	if (verbose)
+		connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &MainWindow::divesChanged);
+
 #ifdef NO_PRINTING
 	plannerDetails->printPlan()->hide();
 	ui.menuFile->removeAction(ui.actionPrint);
@@ -1943,4 +1946,14 @@ void MainWindow::unsetProfTissues()
 {
 	ui.profTissues->setChecked(false);
 	qPrefTechnicalDetails::set_percentagegraph(false);
+}
+
+void MainWindow::divesChanged(const QVector<dive *> &dives, DiveField field)
+{
+	Q_UNUSED(field)
+	for (struct dive *d: dives) {
+		qDebug() << "dive #" << d->number << "changed, cache is" << (dive_cache_is_valid(d) ? "valid" : "invalidated");
+		// a brute force way to deal with that would of course be to call
+		// invalidate_dive_cache(d);
+	}
 }

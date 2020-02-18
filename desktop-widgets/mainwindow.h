@@ -22,6 +22,7 @@
 #include "core/applicationstate.h"
 #include "core/gpslocation.h"
 #include "core/dive.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 
 #define NUM_RECENT_FILES 4
 
@@ -252,6 +253,7 @@ private:
 	GpsLocation *locationProvider;
 	QMenu *connections;
 	QAction *share_on_fb;
+	void divesChanged(const QVector<dive *> &dives, DiveField field);
 };
 
 #endif // MAINWINDOW_H

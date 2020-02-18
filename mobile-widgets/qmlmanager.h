@@ -17,6 +17,7 @@
 #include "qt-models/completionmodels.h"
 #include "qt-models/divelocationmodel.h"
 #include "core/settings/qPrefCloudStorage.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 
 #define NOCLOUD_LOCALSTORAGE format_string("%s/cloudstorage/localrepo[master]", system_default_directory())
 
@@ -226,6 +227,7 @@ public slots:
 	void hasLocationSourceChanged();
 	void btRescan();
 	void showDownloadPage(QString deviceString);
+	void divesChanged(const QVector<dive *> &dives, DiveField field);
 
 private:
 	BuddyCompletionModel buddyModel;
