@@ -1,4 +1,7 @@
 Mobile: enable profile zoom and pan
+Mobile: add people- and tags-filter modes
+Desktop: fix tab-order in filter widget
+Desktop: implement fulltext search
 Mobile: fix saving newly applied GPS fixes to storage
 Desktop: add starts-with and exact filter modes for textual search
 Mobile: add option to only show one column in portrait mode
