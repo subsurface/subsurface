@@ -688,7 +688,6 @@ void EditTagsBase::undo()
 #else
 	emit diveListNotifier.divesChanged(QVector<dive *>::fromStdVector(dives), id);
 #endif
-
 	setSelection(selectedDives, current);
 }
 
