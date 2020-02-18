@@ -617,20 +617,43 @@
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>fulltextStringMode</tabstop>
+  <tabstop>fullText</tabstop>
   <tabstop>minRating</tabstop>
   <tabstop>maxRating</tabstop>
   <tabstop>minVisibility</tabstop>
   <tabstop>maxVisibility</tabstop>
+  <tabstop>minWaterTemp</tabstop>
+  <tabstop>maxWaterTemp</tabstop>
+  <tabstop>minAirTemp</tabstop>
+  <tabstop>maxAirTemp</tabstop>
   <tabstop>fromDate</tabstop>
   <tabstop>fromTime</tabstop>
   <tabstop>toDate</tabstop>
   <tabstop>toTime</tabstop>
   <tabstop>logged</tabstop>
   <tabstop>planned</tabstop>
+  <tabstop>tagsMode</tabstop>
+  <tabstop>tagsStringMode</tabstop>
   <tabstop>tags</tabstop>
+  <tabstop>peopleMode</tabstop>
+  <tabstop>peopleStringMode</tabstop>
   <tabstop>people</tabstop>
+  <tabstop>locationMode</tabstop>
+  <tabstop>locationStringMode</tabstop>
   <tabstop>location</tabstop>
+  <tabstop>suitMode</tabstop>
+  <tabstop>suitStringMode</tabstop>
+  <tabstop>suit</tabstop>
+  <tabstop>dnotesMode</tabstop>
+  <tabstop>dnotesStringMode</tabstop>
+  <tabstop>dnotes</tabstop>
+  <tabstop>equipmentMode</tabstop>
+  <tabstop>equipmentStringMode</tabstop>
   <tabstop>equipment</tabstop>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>clear</tabstop>
+  <tabstop>close</tabstop>
  </tabstops>
  <resources/>
  <connections/>
