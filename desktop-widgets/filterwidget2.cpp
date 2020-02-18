@@ -264,6 +264,7 @@ void FilterWidget2::updatePlanned(int value)
 void FilterWidget2::showEvent(QShowEvent *event)
 {
 	QWidget::showEvent(event);
+	ui.fullText->setFocus();
 	filterDataChanged(filterData);
 }
 
