@@ -172,9 +172,6 @@ struct dive {
 	bool selected;
 	bool hidden_by_filter;
 	struct full_text_cache *full_text; /* word cache for full text search */
-#if defined(SUBSURFACE_MOBILE)
-	uint8_t collapsed; /* four values: 0 = don't show, 1 = show as dive, 2 = show corresponding trip, 3 = show dive and trip */
-#endif
 };
 
 /* For the top-level list: an entry is either a dive or a trip */
