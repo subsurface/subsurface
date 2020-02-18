@@ -41,11 +41,13 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/subsurfacesysinfo.cpp \
 	../../core/windowtitleupdate.cpp \
 	../../core/file.c \
+	../../core/fulltext.cpp \
 	../../core/subsurfacestartup.c \
 	../../core/ios.cpp \
 	../../core/profile.c \
 	../../core/device.c \
 	../../core/dive.c \
+	../../core/divefilter.cpp \
 	../../core/divelist.c \
 	../../core/gas-model.c \
 	../../core/gaspressures.c \
@@ -195,11 +197,13 @@ HEADERS += \
 	../../core/deco.h \
 	../../core/display.h \
 	../../core/divecomputer.h \
+	../../core/divefilter.h \
 	../../core/divelist.h \
 	../../core/divelogexportlogic.h \
 	../../core/divesitehelpers.h \
 	../../core/exif.h \
 	../../core/file.h \
+	../../core/fulltext.h \
 	../../core/gaspressures.h \
 	../../core/gettext.h \
 	../../core/gettextfromc.h \

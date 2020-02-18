@@ -10,10 +10,14 @@ DiveFilter::DiveFilter()
 
 ShownChange DiveFilter::update(const QVector<dive *> &) const
 {
+	ShownChange res;
+	return res;
 }
 
 ShownChange DiveFilter::updateAll() const
 {
+	ShownChange res;
+	return res;
 }
 
 #else // SUBSURFACE_MOBILE

@@ -13,9 +13,6 @@
 #ifndef FULLTEXT_H
 #define FULLTEXT_H
 
-// For now only compile on desktop
-#ifndef SUBSURFACE_MOBILE
-
 // 1) The C-accessible interface
 
 #ifdef __cplusplus
@@ -65,5 +62,4 @@ FullTextResult fulltext_find_dives(const FullTextQuery &q, StringFilterMode);
 bool fulltext_dive_matches(const struct dive *d, const FullTextQuery &q, StringFilterMode);
 
 #endif
-#endif // SUBSURFACE_MOBILE
 #endif
