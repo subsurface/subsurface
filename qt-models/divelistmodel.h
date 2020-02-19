@@ -43,7 +43,6 @@ class DiveListSortModel : public QSortFilterProxyModel
 public:
 	static DiveListSortModel *instance();
 	void setSourceModel(QAbstractItemModel *sourceModel);
-	QString getFilterString() const;
 	Q_INVOKABLE void reload();
 	QString filterString;
 	void updateFilterState();

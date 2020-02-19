@@ -191,11 +191,6 @@ DiveListSortModel *DiveListSortModel::instance()
 	return &self;
 }
 
-QString DiveListSortModel::getFilterString() const
-{
-	return filterString;
-}
-
 void DiveListSortModel::updateFilterState()
 {
 	if (filterString.isEmpty()) {
