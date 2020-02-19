@@ -207,13 +207,16 @@ void DiveListSortModel::setSourceModel(QAbstractItemModel *sourceModel)
 	updateFilterState();
 }
 
-void DiveListSortModel::setFilter(QString f)
+void DiveListSortModel::setFilter(QString f, FilterData::Mode mode)
 {
 	f = f.trimmed();
 	FilterData data;
 	if (!f.isEmpty()) {
-		data.mode = FilterData::Mode::FULLTEXT;
-		data.fullText = f;
+		data.mode = mode;
+		if (mode == FilterData::Mode::FULLTEXT)
+			data.fullText = f;
+		else
+			data.tags = f.split(",", QString::SkipEmptyParts);
 	}
 	DiveFilter::instance()->setFilter(data);
 	CollapsedDiveListSortModel::instance()->updateFilterState();

@@ -444,6 +444,21 @@ Kirigami.ScrollablePage {
 				anchors.right: parent.right
 				anchors.leftMargin: Kirigami.Units.gridUnit / 2
 				anchors.rightMargin: Kirigami.Units.gridUnit / 2
+				TemplateComboBox {
+					id: sitefilterMode
+					editable: false
+					model: ListModel {
+						ListElement {text: qsTr("Fulltext")}
+						ListElement {text: qsTr("People")}
+						ListElement {text: qsTr("Tags")}
+					}
+					font.pointSize: subsurfaceTheme.smallPointSize
+					Layout.preferredWidth: parent.width * 0.2
+					Layout.maximumWidth: parent.width * 0.3
+					onActivated:  {
+						manager.setFilter(sitefilter.text, currentIndex)
+					}
+				}
 				Controls.TextField  {
 					id: sitefilter
 					z: 10
@@ -452,7 +467,7 @@ Kirigami.ScrollablePage {
 					text: ""
 					placeholderText: "Full text search"
 					onAccepted: {
-						manager.setFilter(text)
+						manager.setFilter(text, sitefilterMode.currentIndex)
 					}
 					onEnabledChanged: {
 						// reset the filter when it gets toggled
@@ -539,7 +554,7 @@ Kirigami.ScrollablePage {
 		text: qsTr("Filter dives")
 		onTriggered: {
 			rootItem.filterToggle = !rootItem.filterToggle
-			manager.setFilter("")
+			manager.setFilter("", 0)
 			numShownText = diveModel.shown()
 		}
 	}
