@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/divelistmodel.h"
+#include "core/divefilter.h"
 #include "core/divesite.h"
 #include "core/qthelper.h"
 #include "core/trip.h"
@@ -193,18 +194,7 @@ DiveListSortModel *DiveListSortModel::instance()
 
 void DiveListSortModel::updateFilterState()
 {
-	if (filterString.isEmpty()) {
-		resetFilter();
-		return;
-	}
-	// store this in local variables to avoid having to call these methods over and over
-	bool includeNotes = qPrefGeneral::filterFullTextNotes();
-	Qt::CaseSensitivity cs = qPrefGeneral::filterCaseSensitive() ? Qt::CaseSensitive : Qt::CaseInsensitive;
-
-	int i;
-	struct dive *d;
-	for_each_dive(i, d)
-		d->hidden_by_filter = !diveContainsText(d, filterString, cs, includeNotes);
+	DiveFilter::instance()->updateAll();
 }
 
 void DiveListSortModel::setSourceModel(QAbstractItemModel *sourceModel)
@@ -219,7 +209,13 @@ void DiveListSortModel::setSourceModel(QAbstractItemModel *sourceModel)
 
 void DiveListSortModel::setFilter(QString f)
 {
-	filterString = f;
+	f = f.trimmed();
+	FilterData data;
+	if (!f.isEmpty()) {
+		data.mode = FilterData::Mode::FULLTEXT;
+		data.fullText = f;
+	}
+	DiveFilter::instance()->setFilter(data);
 	CollapsedDiveListSortModel::instance()->updateFilterState();
 	invalidateFilter();
 }
