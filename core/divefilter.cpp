@@ -15,20 +15,66 @@ static void updateDiveStatus(dive *d, bool newStatus, ShownChange &change)
 
 #ifdef SUBSURFACE_MOBILE
 
+DiveFilter *DiveFilter::instance()
+{
+	static DiveFilter self;
+	return &self;
+}
+
 DiveFilter::DiveFilter()
 {
 }
 
-ShownChange DiveFilter::update(const QVector<dive *> &) const
+ShownChange DiveFilter::update(const QVector<dive *> &dives) const
 {
+	dive *old_current = current_dive;
+
 	ShownChange res;
+	switch (filterData.mode) {
+	default:
+	case FilterData::Mode::NONE:
+		for (dive *d: dives)
+			updateDiveStatus(d, true, res);
+		break;
+	case FilterData::Mode::FULLTEXT:
+		for (dive *d: dives)
+			updateDiveStatus(d, fulltext_dive_matches(d, filterData.fullText, StringFilterMode::STARTSWITH), res);
+		break;
+	}
+
+	res.currentChanged = old_current != current_dive;
 	return res;
 }
 
 ShownChange DiveFilter::updateAll() const
 {
+	dive *old_current = current_dive;
+
 	ShownChange res;
+	int i;
+	dive *d;
+	switch (filterData.mode) {
+	default:
+	case FilterData::Mode::NONE:
+		for_each_dive(i, d)
+			updateDiveStatus(d, true, res);
+		break;
+	case FilterData::Mode::FULLTEXT: {
+		FullTextResult ft = fulltext_find_dives(filterData.fullText, StringFilterMode::STARTSWITH);
+		for_each_dive(i, d)
+			updateDiveStatus(d, ft.dive_matches(d), res);
+		break;
+	}
+	}
+
+	res.currentChanged = old_current != current_dive;
 	return res;
+}
+
+void DiveFilter::setFilter(const FilterData &data)
+{
+	filterData = data;
+	//emit diveListNotifier.filterReset(); // Not yet using common models
 }
 
 #else // SUBSURFACE_MOBILE
@@ -36,7 +82,6 @@ ShownChange DiveFilter::updateAll() const
 #include "desktop-widgets/mapwidget.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/divelistview.h"
-#include "core/fulltext.h"
 #include "core/qthelper.h"
 #include "core/trip.h"
 #include "core/divesite.h"

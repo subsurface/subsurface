@@ -4,6 +4,8 @@
 #define DIVE_FILTER_H
 
 #include <QVector>
+#include "fulltext.h"
+
 struct dive;
 
 // Structure describing changes of shown status upon applying the filter
@@ -18,19 +20,35 @@ struct ShownChange {
 // This should be unified in the future.
 #ifdef SUBSURFACE_MOBILE
 
+struct FilterData {
+	// On mobile, we support searching fulltext (all fields), people (buddies and divemasters) and tags
+	enum class Mode {
+		NONE = 0,
+		FULLTEXT = 1,
+		PEOPLE = 2,
+		TAGS = 3
+	};
+
+	Mode mode = Mode::NONE;
+	FullTextQuery fullText; // For fulltext
+	QString text; // For people and tags
+};
+
 class DiveFilter {
 public:
 	static DiveFilter *instance();
 
 	ShownChange update(const QVector<dive *> &dives) const; // Update filter status of given dives and return dives whose status changed
 	ShownChange updateAll() const; // Update filter status of all dives and return dives whose status changed
+	void setFilter(const FilterData &data);
 private:
 	DiveFilter();
+
+	FilterData filterData;
 };
 
 #else
 
-#include "fulltext.h"
 #include <QDateTime>
 #include <QStringList>
 
