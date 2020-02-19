@@ -2,6 +2,7 @@
 
 #include "divefilter.h"
 #include "divelist.h"
+#include "qthelper.h"
 
 static void updateDiveStatus(dive *d, bool newStatus, ShownChange &change)
 {
@@ -14,6 +15,38 @@ static void updateDiveStatus(dive *d, bool newStatus, ShownChange &change)
 }
 
 #ifdef SUBSURFACE_MOBILE
+
+// Check if a string-list contains at least one string that starts with the second argument.
+// Comparison is non case sensitive and removes white space.
+static bool listContainsSuperstring(const QStringList &list, const QString &s)
+{
+	return std::any_of(list.begin(), list.end(), [&s](const QString &s2)
+			   { return s2.startsWith(s, Qt::CaseInsensitive); } );
+}
+
+static bool check(const QStringList &items, const QStringList &list)
+{
+	return std::all_of(items.begin(), items.end(), [&list](const QString &item)
+			   { return listContainsSuperstring(list, item); });
+}
+
+bool hasTags(const QStringList &tags, const struct dive *d)
+{
+	if (tags.isEmpty())
+		return true;
+	QStringList dive_tags = get_taglist_string(d->tag_list).split(",");
+	dive_tags.append(gettextFromC::tr(divemode_text_ui[d->dc.divemode]));
+	return check(tags, dive_tags);
+}
+
+bool hasPersons(const QStringList &people, const struct dive *d)
+{
+	if (people.isEmpty())
+		return true;
+	QStringList dive_people = QString(d->buddy).split(",", QString::SkipEmptyParts)
+		+ QString(d->divemaster).split(",", QString::SkipEmptyParts);
+	return check(people, dive_people);
+}
 
 DiveFilter *DiveFilter::instance()
 {
@@ -40,6 +73,14 @@ ShownChange DiveFilter::update(const QVector<dive *> &dives) const
 		for (dive *d: dives)
 			updateDiveStatus(d, fulltext_dive_matches(d, filterData.fullText, StringFilterMode::STARTSWITH), res);
 		break;
+	case FilterData::Mode::PEOPLE:
+		for (dive *d: dives)
+			updateDiveStatus(d, hasPersons(filterData.tags, d), res);
+		break;
+	case FilterData::Mode::TAGS:
+		for (dive *d: dives)
+			updateDiveStatus(d, hasTags(filterData.tags, d), res);
+		break;
 	}
 
 	res.currentChanged = old_current != current_dive;
@@ -65,6 +106,14 @@ ShownChange DiveFilter::updateAll() const
 			updateDiveStatus(d, ft.dive_matches(d), res);
 		break;
 	}
+	case FilterData::Mode::PEOPLE:
+		for_each_dive(i, d)
+			updateDiveStatus(d, hasPersons(filterData.tags, d), res);
+		break;
+	case FilterData::Mode::TAGS:
+		for_each_dive(i, d)
+			updateDiveStatus(d, hasTags(filterData.tags, d), res);
+		break;
 	}
 
 	res.currentChanged = old_current != current_dive;
@@ -82,7 +131,6 @@ void DiveFilter::setFilter(const FilterData &data)
 #include "desktop-widgets/mapwidget.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/divelistview.h"
-#include "core/qthelper.h"
 #include "core/trip.h"
 #include "core/divesite.h"
 #include "qt-models/filtermodels.h"
