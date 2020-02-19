@@ -104,7 +104,7 @@ public:
 	Q_INVOKABLE int getDetectedProductIndex(const QString &currentVendorText);
 	Q_INVOKABLE int getConnectionIndex(const QString &deviceSubstr);
 	Q_INVOKABLE void setGitLocalOnly(const bool &value);
-	Q_INVOKABLE void setFilter(const QString filterText);
+	Q_INVOKABLE void setFilter(const QString filterText, int mode);
 
 	static QMLManager *instance();
 	Q_INVOKABLE void registerError(QString error);

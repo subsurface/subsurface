@@ -5,6 +5,7 @@
 #include <QAbstractListModel>
 #include <QSortFilterProxyModel>
 
+#include "core/divefilter.h"
 #include "core/subsurface-qt/diveobjecthelper.h"
 
 class CollapsedDiveListSortModel : public QSortFilterProxyModel
@@ -48,7 +49,7 @@ public:
 	void updateFilterState();
 public slots:
 	int getIdxForId(int id);
-	void setFilter(QString f);
+	void setFilter(QString f, FilterData::Mode mode);
 	void resetFilter();
 	int shown();
 protected:
