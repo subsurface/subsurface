@@ -59,7 +59,14 @@ Kirigami.Page {
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 	width: rootItem.colWidth
 
-	property QtObject removeDiveFromTripAction: Kirigami.Action { text: qsTr ("Remove dive from trip <TBD>") }
+	property QtObject removeDiveFromTripAction: Kirigami.Action {
+		text: qsTr ("Remove this dive from trip")
+		enabled: currentItem && currentItem.modelData.diveInTrip
+		onTriggered: {
+			manager.appendTextToLog("remove dive #" + currentItem.modelData.number + " from its trip")
+			manager.removeDiveFromTrip(currentItem.modelData.id)
+		}
+	}
 	property QtObject addDiveToTripAction: Kirigami.Action { text: qsTr ("Add dive to trip <TBD>") }
 	property QtObject undoAction: Kirigami.Action {
 		text: qsTr("Undo") + " " + manager.undoText

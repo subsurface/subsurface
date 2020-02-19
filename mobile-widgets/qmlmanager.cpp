@@ -1282,6 +1282,23 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	}
 }
 
+void QMLManager::removeDiveFromTrip(int id)
+{
+	struct dive *d = get_dive_by_uniq_id(id);
+	if (!d) {
+		appendTextToLog(QString("Asked to remove non-existing dive with id %1 from its trip.").arg(id));
+		return;
+	}
+	if (!d->divetrip) {
+		appendTextToLog(QString("Asked to remove dive with id %1 from its trip (but it's not part of a trip).").arg(id));
+		return;
+	}
+	QVector <dive *> dives;
+	dives.append(d);
+	Command::removeDivesFromTrip(dives);
+	changesNeedSaving();
+}
+
 void QMLManager::changesNeedSaving()
 {
 	// we no longer save right away on iOS because file access is so slow; on the other hand,

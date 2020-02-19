@@ -177,6 +177,7 @@ public slots:
 			   QString watertemp, QString suit, QString buddy,
 			   QString diveMaster, QString weight, QString notes, QStringList startpressure,
 			   QStringList endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility, QString state);
+	void removeDiveFromTrip(int id);
 	void changesNeedSaving();
 	void openNoCloudRepo();
 	void saveChangesLocal();
