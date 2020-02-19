@@ -59,6 +59,20 @@ Kirigami.Page {
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 	width: rootItem.colWidth
 
+	property QtObject removeDiveFromTripAction: Kirigami.Action { text: qsTr ("Remove dive from trip <TBD>") }
+	property QtObject addDiveToTripAction: Kirigami.Action { text: qsTr ("Add dive to trip <TBD>") }
+	property QtObject undoAction: Kirigami.Action {
+		text: qsTr("Undo") + " " + manager.undoText
+		enabled: manager.undoText !== ""
+		onTriggered: manager.undo()
+	}
+	property QtObject redoAction: Kirigami.Action {
+		text: qsTr("Redo") + " " + manager.redoText
+		enabled: manager.redoText !== ""
+		onTriggered: manager.redo()
+	}
+	property variant contextactions: [ removeDiveFromTripAction, addDiveToTripAction, undoAction, redoAction ]
+
 	states: [
 		State {
 			name: "view"
@@ -68,6 +82,7 @@ Kirigami.Page {
 					right: deleteAction
 					left: currentItem ? (currentItem.modelData && currentItem.modelData.gps !== "" ? mapAction : null) : null
 				}
+				contextualActions: contextactions
 			}
 		},
 		State {
@@ -78,6 +93,7 @@ Kirigami.Page {
 					right: cancelAction
 					left: null
 				}
+				contextualActions: []
 			}
 		},
 		State {
@@ -88,6 +104,7 @@ Kirigami.Page {
 					right: cancelAction
 					left: null
 				}
+				contextualActions: []
 			}
 		}
 	]
@@ -190,20 +207,6 @@ Kirigami.Page {
 			}
 		}
 	}
-
-	contextualActions: [
-		Kirigami.Action {
-			text: qsTr("Undo") + " " + manager.undoText
-			enabled: manager.undoText !== ""
-			onTriggered: manager.undo()
-		},
-		Kirigami.Action {
-			text: qsTr("Redo") + " " + manager.redoText
-			enabled: manager.redoText !== ""
-			onTriggered: manager.redo()
-		}
-	]
-
 
 	onBackRequested: {
 		if (state === "edit") {
