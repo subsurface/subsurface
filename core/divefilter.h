@@ -99,7 +99,6 @@ public:
 	ShownChange updateAll() const; // Update filter status of all dives and return dives whose status changed
 private:
 	DiveFilter();
-	void updateDiveStatus(dive *d, bool newStatus, ShownChange &change) const;
 	bool showDive(const struct dive *d) const; // Should that dive be shown?
 
 	QVector<dive_site *> dive_sites;
