@@ -1,6 +1,17 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "divefilter.h"
+#include "divelist.h"
+
+static void updateDiveStatus(dive *d, bool newStatus, ShownChange &change)
+{
+	if (filter_dive(d, newStatus)) {
+		if (newStatus)
+			change.newShown.push_back(d);
+		else
+			change.newHidden.push_back(d);
+	}
+}
 
 #ifdef SUBSURFACE_MOBILE
 
@@ -30,16 +41,6 @@ ShownChange DiveFilter::updateAll() const
 #include "core/trip.h"
 #include "core/divesite.h"
 #include "qt-models/filtermodels.h"
-
-void DiveFilter::updateDiveStatus(dive *d, bool newStatus, ShownChange &change) const
-{
-	if (filter_dive(d, newStatus)) {
-		if (newStatus)
-			change.newShown.push_back(d);
-		else
-			change.newHidden.push_back(d);
-	}
-}
 
 ShownChange DiveFilter::update(const QVector<dive *> &dives) const
 {
