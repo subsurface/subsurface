@@ -546,50 +546,6 @@ TemplatePage {
 				visible: sectionAdvanced.isExpanded
 			}
 			GridLayout {
-				id: filterPrefs
-				visible: sectionAdvanced.isExpanded
-				columns: 2
-
-				TemplateLabel {
-					text: qsTr("Filter preferences")
-					font.pointSize: subsurfaceTheme.headingPointSize
-					font.weight: Font.Light
-					Layout.topMargin: Kirigami.Units.largeSpacing
-					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-					Layout.columnSpan: 2
-				}
-				TemplateLabel {
-					text: qsTr("Include notes in full text filtering")
-					Layout.preferredWidth: gridWidth * 0.75
-				}
-
-				SsrfSwitch {
-					id: fullTextNotes
-					checked: PrefGeneral.filterFullTextNotes
-					Layout.preferredWidth: gridWidth * 0.25
-					onClicked: {
-						PrefGeneral.filterFullTextNotes = checked
-					}
-				}
-
-				TemplateLabel {
-					text: qsTr("Match filter case sensitive")
-					Layout.preferredWidth: gridWidth * 0.75
-				}
-
-				SsrfSwitch {
-					id: filterCaseSensitive
-					checked: PrefGeneral.filterCaseSensitive
-					Layout.preferredWidth: gridWidth * 0.25
-					onClicked: {
-						PrefGeneral.filterCaseSensitive = checked
-					}
-				}
-			}
-			TemplateLine {
-				visible: sectionAdvanced.isExpanded
-			}
-			GridLayout {
 				id: whichBluetoothDevices
 				visible: sectionAdvanced.isExpanded
 				columns: 2
