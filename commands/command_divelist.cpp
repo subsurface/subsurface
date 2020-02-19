@@ -271,7 +271,8 @@ static OwningTripPtr moveDiveToTrip(DiveToTrip &diveToTrip)
 
 	// Store old trip and get new trip we should associate this dive with
 	std::swap(trip, diveToTrip.trip);
-	add_dive_to_trip(diveToTrip.dive, trip);
+	if (trip)
+		add_dive_to_trip(diveToTrip.dive, trip);
 	invalidate_dive_cache(diveToTrip.dive);		// Ensure that dive is written in git_save()
 	return res;
 }
