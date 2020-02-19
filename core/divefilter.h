@@ -4,6 +4,7 @@
 #define DIVE_FILTER_H
 
 #include <QVector>
+#include <QStringList>
 #include "fulltext.h"
 
 struct dive;
@@ -31,7 +32,7 @@ struct FilterData {
 
 	Mode mode = Mode::NONE;
 	FullTextQuery fullText; // For fulltext
-	QString text; // For people and tags
+	QStringList tags; // For people and tags
 };
 
 class DiveFilter {
@@ -50,7 +51,6 @@ private:
 #else
 
 #include <QDateTime>
-#include <QStringList>
 
 struct dive_trip;
 struct dive_site;
