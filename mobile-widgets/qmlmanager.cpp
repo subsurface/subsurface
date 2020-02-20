@@ -1299,6 +1299,24 @@ void QMLManager::removeDiveFromTrip(int id)
 	changesNeedSaving();
 }
 
+void QMLManager::addDiveToTrip(int id, int tripId)
+{
+	struct dive *d = get_dive_by_uniq_id(id);
+	if (!d) {
+		appendTextToLog(QString("Asked to add non-existing dive with id %1 to trip %2.").arg(id).arg(tripId));
+		return;
+	}
+	struct dive_trip *dt = get_trip_by_uniq_id(tripId);
+	if (!dt) {
+		appendTextToLog(QString("Asked to add dive with id %1 to trip with id %2 which cannot be found.").arg(id).arg(tripId));
+		return;
+	}
+	QVector <dive *> dives;
+	dives.append(d);
+	Command::addDivesToTrip(dives, dt);
+	changesNeedSaving();
+}
+
 void QMLManager::changesNeedSaving()
 {
 	// we no longer save right away on iOS because file access is so slow; on the other hand,
