@@ -964,10 +964,19 @@ QVariant DiveTripModelTree::data(const QModelIndex &index, int role) const
 		const Item &item = items[index.row()];
 		return std::find(item.dives.begin(), item.dives.end(), current_dive) != item.dives.end();
 	}
-	if (entry.trip)
+	if (entry.trip) {
 		return tripData(entry.trip, index.column(), role);
-	else
+	} else if (entry.dive) {
+#if defined(SUBSURFACE_MOBILE)
+		if (role == MobileListModel::TripAbove)
+			return tripInDirection(entry.dive, +1);
+		if (role == MobileListModel::TripBelow)
+			return tripInDirection(entry.dive, -1);
+#endif
 		return diveData(entry.dive, index.column(), role);
+	} else {
+		return QVariant();
+	}
 }
 
 // After a trip changed, the top level might need to be reordered.
@@ -1135,6 +1144,26 @@ static QVector<dive *> visibleDives(const QVector<dive *> &dives)
 	}
 	return res;
 }
+
+#ifdef SUBSURFACE_MOBILE
+int DiveTripModelTree::tripInDirection(const struct dive *d, int direction) const
+{
+	for (int i = 0; i < (int)items.size(); ++i) {
+		if (items[i].d_or_t.dive == d || (items[i].d_or_t.trip && findDiveInTrip(i, d) != -1)) {
+			// now walk in the direction given to find a trip
+			int offset = direction;
+			while (i + offset >= 0 && i + offset < (int)items.size()) {
+				if (items[i + offset].d_or_t.trip && (!d->divetrip || items[i + offset].d_or_t.trip->id != d->divetrip->id))
+					// we found a trip (and if the dive is already in a trip, we make sure this is a different trip)
+					return items[i + offset].d_or_t.trip->id;
+				offset += direction;
+			}
+			break;
+		}
+	}
+	return -1;
+}
+#endif
 
 void DiveTripModelTree::divesAdded(dive_trip *trip, bool newTrip, const QVector<dive *> &divesIn)
 {

@@ -77,7 +77,6 @@ public:
 	// Used for sorting. This is a bit of a layering violation, as sorting should be performed
 	// by the higher-up QSortFilterProxyModel, but it makes things so much easier!
 	virtual bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const = 0;
-
 signals:
 	// The propagation of selection changes is complex.
 	// The control flow of dive-selection goes:
@@ -120,6 +119,7 @@ public slots:
 
 public:
 	DiveTripModelTree(QObject *parent = nullptr);
+	int tripInDirection(const struct dive *d, int direction) const;
 private:
 	int rowCount(const QModelIndex &parent) const override;
 	void clearData() override;
