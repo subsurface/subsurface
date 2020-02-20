@@ -195,6 +195,16 @@ dive_trip_t *get_trip_for_new_dive(struct dive *new_dive, bool *allocated)
 	return trip;
 }
 
+/* lookup of trip in main trip_table based on its id */
+dive_trip_t *get_trip_by_uniq_id(int tripId)
+{
+	for (int i = 0; i < trip_table.nr; i++) {
+		if (trip_table.trips[i]->id == tripId)
+			return trip_table.trips[i];
+	}
+	return NULL;
+}
+
 /* Check if two trips overlap time-wise up to trip threshold. */
 bool trips_overlap(const struct dive_trip *t1, const struct dive_trip *t2)
 {
