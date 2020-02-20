@@ -61,13 +61,28 @@ Kirigami.Page {
 
 	property QtObject removeDiveFromTripAction: Kirigami.Action {
 		text: qsTr ("Remove this dive from trip")
-		enabled: currentItem && currentItem.modelData.diveInTrip
+		enabled: currentItem && currentItem.modelData && currentItem.modelData.diveInTrip
 		onTriggered: {
 			manager.appendTextToLog("remove dive #" + currentItem.modelData.number + " from its trip")
 			manager.removeDiveFromTrip(currentItem.modelData.id)
 		}
 	}
-	property QtObject addDiveToTripAction: Kirigami.Action { text: qsTr ("Add dive to trip <TBD>") }
+	property QtObject addDiveToTripAboveAction: Kirigami.Action {
+		text: qsTr ("Add dive to trip above")
+		enabled: currentItem && currentItem.modelData && !currentItem.modelData.diveInTrip && currentItem.modelData.tripAbove !== -1
+		onTriggered: {
+			manager.appendTextToLog("add dive #" + currentItem.modelData.number + " to trip with id " + currentItem.modelData.tripAbove)
+			manager.addDiveToTrip(currentItem.modelData.id, currentItem.modelData.tripAbove)
+		}
+	}
+	property QtObject addDiveToTripBelowAction: Kirigami.Action {
+		text: qsTr ("Add dive to trip below")
+		enabled: currentItem && currentItem.modelData && !currentItem.modelData.diveInTrip && currentItem.modelData.tripBelow !== -1
+		onTriggered: {
+			manager.appendTextToLog("add dive #" + currentItem.modelData.number + " to trip with id " + currentItem.modelData.tripBelow)
+			manager.addDiveToTrip(currentItem.modelData.id, currentItem.modelData.tripBelow)
+		}
+	}
 	property QtObject undoAction: Kirigami.Action {
 		text: qsTr("Undo") + " " + manager.undoText
 		enabled: manager.undoText !== ""
@@ -78,7 +93,7 @@ Kirigami.Page {
 		enabled: manager.redoText !== ""
 		onTriggered: manager.redo()
 	}
-	property variant contextactions: [ removeDiveFromTripAction, addDiveToTripAction, undoAction, redoAction ]
+	property variant contextactions: [ removeDiveFromTripAction, addDiveToTripAboveAction, addDiveToTripBelowAction, undoAction, redoAction ]
 
 	states: [
 		State {
