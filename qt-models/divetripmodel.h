@@ -101,7 +101,7 @@ protected:
 	virtual QModelIndex diveToIdx(const dive *d) const = 0;
 };
 
-class DiveTripModelTree : public DiveTripModelBase
+class DiveTripModelTree final : public DiveTripModelBase
 {
 	Q_OBJECT
 public slots:
@@ -176,7 +176,7 @@ private:
 	static bool dive_before_entry(const dive *d, const Item &entry);
 };
 
-class DiveTripModelList : public DiveTripModelBase
+class DiveTripModelList final : public DiveTripModelBase
 {
 	Q_OBJECT
 public slots:
