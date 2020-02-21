@@ -239,6 +239,41 @@ Kirigami.ScrollablePage {
 		}
 	}
 
+	property alias currentItem: diveListView.currentItem
+
+	property QtObject removeDiveFromTripAction: Kirigami.Action {
+		text: visible ? qsTr ("Remove dive %1 from trip").arg(currentItem.myData.number) : ""
+		visible: currentItem && currentItem.myData && currentItem.myData.diveInTrip === true
+		onTriggered: {
+			manager.removeDiveFromTrip(currentItem.myData.id)
+		}
+	}
+	property QtObject addDiveToTripAboveAction: Kirigami.Action {
+		text: visible ? qsTr ("Add dive %1 to trip above").arg(currentItem.myData.number) : ""
+		visible: currentItem && currentItem.myData && !currentItem.myData.diveInTrip && currentItem.myData.tripAbove !== -1
+		onTriggered: {
+			manager.addDiveToTrip(currentItem.myData.id, currentItem.myData.tripAbove)
+		}
+	}
+	property QtObject addDiveToTripBelowAction: Kirigami.Action {
+		text: visible ? qsTr ("Add dive %1 to trip below").arg(currentItem.myData.number) : ""
+		visible: currentItem && currentItem.myData && !currentItem.myData.diveInTrip && currentItem.myData.tripBelow !== -1
+		onTriggered: {
+			manager.addDiveToTrip(currentItem.myData.id, currentItem.myData.tripBelow)
+		}
+	}
+	property QtObject undoAction: Kirigami.Action {
+		text: qsTr("Undo") + " " + manager.undoText
+		enabled: manager.undoText !== ""
+		onTriggered: manager.undo()
+	}
+	property QtObject redoAction: Kirigami.Action {
+		text: qsTr("Redo") + " " + manager.redoText
+		enabled: manager.redoText !== ""
+		onTriggered: manager.redo()
+	}
+	property variant contextactions: [ removeDiveFromTripAction, addDiveToTripAboveAction, addDiveToTripBelowAction, undoAction, redoAction ]
+
 	StartPage {
 		id: startPage
 		anchors.fill: parent
@@ -252,6 +287,7 @@ Kirigami.ScrollablePage {
 				page.actions.main = page.downloadFromDCAction
 				page.actions.right = page.addDiveAction
 				page.actions.left = page.filterToggleAction
+				page.contextualActions = contextactions
 				page.title = qsTr("Dive list")
 				if (diveListView.count === 0)
 					showPassiveNotification(qsTr("Please tap the '+' button to add a dive (or download dives from a supported dive computer)"), 3000)
@@ -259,6 +295,7 @@ Kirigami.ScrollablePage {
 				page.actions.main = null
 				page.actions.right = null
 				page.actions.left = null
+				page.contextualActions = null
 				page.title = qsTr("Cloud credentials")
 			}
 		}
