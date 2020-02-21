@@ -74,6 +74,18 @@ Kirigami.ScrollablePage {
 					}
 				}
 			}
+			// use this to select a dive without switching to dive details; instead open context drawer
+			onPressAndHold: {
+				view.currentIndex = index
+				if (isTrip) {
+					manager.appendTextToLog("press and hold on trip is same as click")
+					manager.toggle(model.row)
+				} else {
+					manager.appendTextToLog("press and hold on dive; open context drawer")
+					manager.selectRow(model.row)
+					contextDrawer.open()
+				}
+			}
 
 			// first we look at the trip
 			Item {
