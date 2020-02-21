@@ -274,6 +274,20 @@ Kirigami.ScrollablePage {
 			manager.addDiveToTrip(currentItem.myData.id, currentItem.myData.tripBelow)
 		}
 	}
+	property QtObject deleteAction: Kirigami.Action {
+		text: qsTr("Delete dive")
+		icon { name: ":/icons/trash-empty.svg" }
+		onTriggered: manager.deleteDive(currentItem.myData.id)
+	}
+	property QtObject mapAction: Kirigami.Action {
+		text: qsTr("Show on map")
+		icon { name: ":/icons/gps" }
+		visible: currentItem && currentItem.myData && currentItem.myData.gps !== ""
+		onTriggered: {
+			showMap()
+			mapPage.centerOnDiveSite(currentItem.myData.diveSite)
+		}
+	}
 	property QtObject undoAction: Kirigami.Action {
 		text: qsTr("Undo") + " " + manager.undoText
 		enabled: manager.undoText !== ""
@@ -284,8 +298,7 @@ Kirigami.ScrollablePage {
 		enabled: manager.redoText !== ""
 		onTriggered: manager.redo()
 	}
-	property variant contextactions: [ removeDiveFromTripAction, addDiveToTripAboveAction, addDiveToTripBelowAction, undoAction, redoAction ]
-
+	property variant contextactions: [ removeDiveFromTripAction, addDiveToTripAboveAction, addDiveToTripBelowAction, deleteAction, mapAction, undoAction, redoAction ]
 	StartPage {
 		id: startPage
 		anchors.fill: parent
