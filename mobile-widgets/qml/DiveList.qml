@@ -262,14 +262,14 @@ Kirigami.ScrollablePage {
 	}
 	property QtObject addDiveToTripAboveAction: Kirigami.Action {
 		text: visible ? qsTr ("Add dive %1 to trip above").arg(currentItem.myData.number) : ""
-		visible: currentItem && currentItem.myData && !currentItem.myData.diveInTrip && currentItem.myData.tripAbove !== -1
+		visible: currentItem && currentItem.myData && currentItem.myData.tripAbove !== -1
 		onTriggered: {
 			manager.addDiveToTrip(currentItem.myData.id, currentItem.myData.tripAbove)
 		}
 	}
 	property QtObject addDiveToTripBelowAction: Kirigami.Action {
 		text: visible ? qsTr ("Add dive %1 to trip below").arg(currentItem.myData.number) : ""
-		visible: currentItem && currentItem.myData && !currentItem.myData.diveInTrip && currentItem.myData.tripBelow !== -1
+		visible: currentItem && currentItem.myData && currentItem.myData.tripBelow !== -1
 		onTriggered: {
 			manager.addDiveToTrip(currentItem.myData.id, currentItem.myData.tripBelow)
 		}
