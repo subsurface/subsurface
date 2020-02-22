@@ -762,6 +762,11 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		visible: false
 	}
 
+	TripDetails {
+		id: tripEditWindow
+		visible: false
+	}
+
 	Log {
 		id: logWindow
 		visible: false
