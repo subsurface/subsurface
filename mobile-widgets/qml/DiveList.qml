@@ -77,14 +77,9 @@ Kirigami.ScrollablePage {
 			// use this to select a dive without switching to dive details; instead open context drawer
 			onPressAndHold: {
 				view.currentIndex = index
-				if (isTrip) {
-					manager.appendTextToLog("press and hold on trip is same as click")
-					manager.toggle(model.row)
-				} else {
-					manager.appendTextToLog("press and hold on dive; open context drawer")
-					manager.selectRow(model.row)
-					contextDrawer.open()
-				}
+				manager.appendTextToLog("press and hold on trip or dive; open context drawer")
+				manager.selectRow(model.row)
+				contextDrawer.open()
 			}
 
 			// first we look at the trip
@@ -255,21 +250,21 @@ Kirigami.ScrollablePage {
 
 	property QtObject removeDiveFromTripAction: Kirigami.Action {
 		text: visible ? qsTr ("Remove dive %1 from trip").arg(currentItem.myData.number) : ""
-		visible: currentItem && currentItem.myData && currentItem.myData.diveInTrip === true
+		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.diveInTrip === true
 		onTriggered: {
 			manager.removeDiveFromTrip(currentItem.myData.id)
 		}
 	}
 	property QtObject addDiveToTripAboveAction: Kirigami.Action {
 		text: visible ? qsTr ("Add dive %1 to trip above").arg(currentItem.myData.number) : ""
-		visible: currentItem && currentItem.myData && currentItem.myData.tripAbove !== -1
+		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.tripAbove !== -1
 		onTriggered: {
 			manager.addDiveToTrip(currentItem.myData.id, currentItem.myData.tripAbove)
 		}
 	}
 	property QtObject addDiveToTripBelowAction: Kirigami.Action {
 		text: visible ? qsTr ("Add dive %1 to trip below").arg(currentItem.myData.number) : ""
-		visible: currentItem && currentItem.myData && currentItem.myData.tripBelow !== -1
+		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.tripBelow !== -1
 		onTriggered: {
 			manager.addDiveToTrip(currentItem.myData.id, currentItem.myData.tripBelow)
 		}
@@ -277,12 +272,13 @@ Kirigami.ScrollablePage {
 	property QtObject deleteAction: Kirigami.Action {
 		text: qsTr("Delete dive")
 		icon { name: ":/icons/trash-empty.svg" }
+		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip
 		onTriggered: manager.deleteDive(currentItem.myData.id)
 	}
 	property QtObject mapAction: Kirigami.Action {
 		text: qsTr("Show on map")
 		icon { name: ":/icons/gps" }
-		visible: currentItem && currentItem.myData && currentItem.myData.gps !== ""
+		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.gps !== ""
 		onTriggered: {
 			showMap()
 			mapPage.centerOnDiveSite(currentItem.myData.diveSite)
