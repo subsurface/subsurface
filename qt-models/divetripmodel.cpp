@@ -103,6 +103,8 @@ QVariant DiveTripModelBase::tripData(const dive_trip *trip, int column, int role
 	case MobileListModel::TripNrDivesRole: return trip->dives.nr;
 	case MobileListModel::TripShortDateRole: return tripShortDate(trip);
 	case MobileListModel::TripTitleRole: return tripTitle(trip);
+	case MobileListModel::TripLocationRole: return QString(trip->location);
+	case MobileListModel::TripNotesRole: return QString(trip->notes);
 	}
 #endif
 
