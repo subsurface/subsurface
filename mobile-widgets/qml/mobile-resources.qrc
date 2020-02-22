@@ -59,11 +59,14 @@
 		<!-- ********** icons ********** -->
 		<file>icons/account_circle.svg</file>
 		<file>icons/Blue_gps.svg</file>
+		<file>icons/chevron_left.svg</file>
 		<file>icons/cloud_sync.svg</file>
 		<file>icons/contact_support.svg</file>
 		<file>icons/Dark_gps.svg</file>
 		<file alias="icons/downloadDC.svg">icons/button-download-dc_icon.svg</file>
 		<file alias="icons/downloadDC-black.svg">icons/button-download-dc-black_icon.svg</file>
+		<file>icons/expand_less.svg</file>
+		<file>icons/expand_more.svg</file>
 		<file>icons/ic_adb.svg</file>
 		<file>icons/ic_add.svg</file>
 		<file>icons/ic_add_location.svg</file>
@@ -83,9 +86,12 @@
 		<file>icons/ic_star_border.svg</file>
 		<file>icons/ic_sync.svg</file>
 		<file>icons/Pink_gps.svg</file>
+		<file>icons/redo.svg</file>
 		<file>icons/sigma.svg</file>
+		<file>icons/undo.svg</file>
 		<file alias="icons/ic_filter_list.svg">icons/ic_filter_list_24px.svg</file>
 		<file alias="icons/ic_sort.svg">icons/ic_sort_24px.svg</file>
+		<file alias="icons/trip_details.svg">icons/local_offer.svg</file>
 
 		<!-- ********** kirigami icons ********** -->
 		<file alias="icons/application-menu.svg">kirigami/icons/application-menu.svg</file>

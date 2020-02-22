@@ -61,6 +61,7 @@ Kirigami.Page {
 
 	property QtObject removeDiveFromTripAction: Kirigami.Action {
 		text: qsTr ("Remove this dive from trip")
+		icon { name: ":/icons/chevron_left.svg" }
 		enabled: currentItem && currentItem.modelData && currentItem.modelData.diveInTrip
 		onTriggered: {
 			manager.appendTextToLog("remove dive #" + currentItem.modelData.number + " from its trip")
@@ -69,6 +70,7 @@ Kirigami.Page {
 	}
 	property QtObject addDiveToTripAboveAction: Kirigami.Action {
 		text: qsTr ("Add dive to trip above")
+		icon { name: ":/icons/expand_less.svg" }
 		enabled: currentItem && currentItem.modelData && !currentItem.modelData.diveInTrip && currentItem.modelData.tripAbove !== -1
 		onTriggered: {
 			manager.appendTextToLog("add dive #" + currentItem.modelData.number + " to trip with id " + currentItem.modelData.tripAbove)
@@ -77,6 +79,7 @@ Kirigami.Page {
 	}
 	property QtObject addDiveToTripBelowAction: Kirigami.Action {
 		text: qsTr ("Add dive to trip below")
+		icon { name: ":/icons/expand_more.svg" }
 		enabled: currentItem && currentItem.modelData && !currentItem.modelData.diveInTrip && currentItem.modelData.tripBelow !== -1
 		onTriggered: {
 			manager.appendTextToLog("add dive #" + currentItem.modelData.number + " to trip with id " + currentItem.modelData.tripBelow)
@@ -85,11 +88,13 @@ Kirigami.Page {
 	}
 	property QtObject undoAction: Kirigami.Action {
 		text: qsTr("Undo") + " " + manager.undoText
+		icon { name: ":/icons/undo.svg" }
 		enabled: manager.undoText !== ""
 		onTriggered: manager.undo()
 	}
 	property QtObject redoAction: Kirigami.Action {
 		text: qsTr("Redo") + " " + manager.redoText
+		icon { name: ":/icons/redo.svg" }
 		enabled: manager.redoText !== ""
 		onTriggered: manager.redo()
 	}
