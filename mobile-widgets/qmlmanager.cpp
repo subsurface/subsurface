@@ -1282,6 +1282,27 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	}
 }
 
+void QMLManager::updateTripDetails(QString tripIdString, QString tripLocation, QString tripNotes)
+{
+	int tripId = tripIdString.toInt();
+	dive_trip_t *trip = get_trip_by_uniq_id(tripId);
+	if (!trip) {
+		qDebug() << "updateTripData: cannot find trip for tripId" << tripIdString;
+		return;
+	}
+	bool changed = false;
+	if (tripLocation != trip->location) {
+		changed = true;
+		Command::editTripLocation(trip, tripLocation);
+	}
+	if (tripNotes != trip->notes) {
+		changed = true;
+		Command::editTripNotes(trip, tripNotes);
+	}
+	if (changed)
+		changesNeedSaving();
+}
+
 void QMLManager::removeDiveFromTrip(int id)
 {
 	struct dive *d = get_dive_by_uniq_id(id);
