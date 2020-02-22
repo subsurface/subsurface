@@ -38,6 +38,7 @@
 		<file>Settings.qml</file>
 		<file>CopySettings.qml</file>
 		<file>ThemeTest.qml</file>
+		<file>TripDetails.qml</file>
 		<file>StartPage.qml</file>
 		<file>SsrfCheckBox.qml</file>
 		<file>SsrfSwitch.qml</file>

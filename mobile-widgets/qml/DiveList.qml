@@ -284,6 +284,16 @@ Kirigami.ScrollablePage {
 			mapPage.centerOnDiveSite(currentItem.myData.diveSite)
 		}
 	}
+	property QtObject tripDetailsEdit: Kirigami.Action {
+		text: qsTr("Edit trip details")
+		visible: currentItem && currentItem.myData && currentItem.myData.isTrip
+		onTriggered: {
+			tripEditWindow.tripLocation = currentItem.myData.tripLocation
+			tripEditWindow.tripNotes = currentItem.myData.tripNotes
+			pageStack.push(tripEditWindow)
+		}
+	}
+
 	property QtObject undoAction: Kirigami.Action {
 		text: qsTr("Undo") + " " + manager.undoText
 		enabled: manager.undoText !== ""
@@ -294,7 +304,7 @@ Kirigami.ScrollablePage {
 		enabled: manager.redoText !== ""
 		onTriggered: manager.redo()
 	}
-	property variant contextactions: [ removeDiveFromTripAction, addDiveToTripAboveAction, addDiveToTripBelowAction, deleteAction, mapAction, undoAction, redoAction ]
+	property variant contextactions: [ removeDiveFromTripAction, addDiveToTripAboveAction, addDiveToTripBelowAction, deleteAction, mapAction, tripDetailsEdit, undoAction, redoAction ]
 	StartPage {
 		id: startPage
 		anchors.fill: parent
