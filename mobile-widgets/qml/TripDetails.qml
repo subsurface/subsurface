@@ -8,6 +8,7 @@ import org.kde.kirigami 2.4 as Kirigami
 Kirigami.Page {
 	id: tripEditPage
 	objectName: "TripDetails"
+	property string tripId
 	property string tripLocation
 	property string tripNotes
 
@@ -15,7 +16,60 @@ Kirigami.Page {
 	state: "view"
 	padding: Kirigami.largeSpacing
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
-	width: rootItem.colWidth
+	actions.main: saveAction
+	actions.right: cancelAction
+	onVisibleChanged: {
+		resetState()
+	}
+	onTripIdChanged: {
+		resetState()
+	}
+
+	function resetState() {
+		// make sure we have the right width and reset focus / state if there aren't any unsaved changes
+		width = parent.width
+		if (tripLocation === tripLocationField.text && tripNotes === tripNotesField.text) {
+			tripLocationField.focus = false
+			tripNotesField.focus = false
+			state = "view"
+		}
+
+	}
+
+	states: [
+		State {
+			name: "view"
+			PropertyChanges { target: saveAction; enabled: false }
+		},
+		State {
+			name: "edit"
+			PropertyChanges { target: saveAction; enabled: true }
+		}
+	]
+
+	property QtObject saveAction: Kirigami.Action {
+		icon {
+			name: subsurfaceTheme.iconStyle + "/document-save.svg"
+			color: enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
+		}
+		text: enabled ? qsTr("Save edits") : ""
+		onTriggered: {
+			manager.appendTextToLog("Save trip details triggered")
+			manager.updateTripDetails(tripId, tripLocationField.text, tripNotesField.text)
+		}
+	}
+	property QtObject cancelAction: Kirigami.Action {
+		text: qsTr("Cancel edit")
+		icon {
+			name: ":/icons/dialog-cancel.svg"
+		}
+		onTriggered: {
+			manager.appendTextToLog("Cancel trip details edit")
+			state = "view"
+			pageStack.pop("TripDetails")
+		}
+	}
+
 	Flickable {
 		id: tripEditFlickable
 		anchors.fill: parent
@@ -42,9 +96,13 @@ Kirigami.Page {
 				opacity: 0.6
 			}
 			SsrfTextField {
+				id: tripLocationField
 				Layout.fillWidth: true
 				text: tripLocation
 				flickable: tripEditFlickable
+				onFocusChanged: {
+					tripEditPage.state = "edit"
+				}
 			}
 			TemplateLabel {
 				Layout.columnSpan: 2
@@ -52,14 +110,18 @@ Kirigami.Page {
 				opacity: 0.6
 			}
 			Controls.TextArea {
+				id: tripNotesField
 				text: tripNotes
-				textFormat: TextEdit.RichText
+				textFormat: TextEdit.PlainText
 				Layout.columnSpan: 2
 				Layout.fillWidth: true
 				Layout.fillHeight: true
 				Layout.minimumHeight: Kirigami.Units.gridUnit * 6
 				selectByMouse: true
 				wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+				onActiveFocusChanged: {
+					tripEditPage.state = "edit"
+				}
 			}
 		}
 	}
