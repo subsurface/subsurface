@@ -103,9 +103,9 @@ extern "C" int gitProgressCB(const char *text)
 		qint64 elapsed = timer.elapsed();
 		self->appendTextToLog(text);
 		self->setNotificationText(text);
-		if (elapsed - lastTime > 50) { // 20 Hz refresh
-			qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
-		}
+		//if (elapsed - lastTime > 50) { // 20 Hz refresh
+		//	qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
+		//}
 		lastTime = elapsed;
 	}
 	// return 0 so that we don't end the download
