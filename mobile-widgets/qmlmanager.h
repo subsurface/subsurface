@@ -177,6 +177,7 @@ public slots:
 			   QString watertemp, QString suit, QString buddy,
 			   QString diveMaster, QString weight, QString notes, QStringList startpressure,
 			   QStringList endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility, QString state);
+	void updateTripDetails(QString tripIdString, QString tripLocation, QString tripNotes);
 	void removeDiveFromTrip(int id);
 	void addDiveToTrip(int id, int tripId);
 	void changesNeedSaving();
