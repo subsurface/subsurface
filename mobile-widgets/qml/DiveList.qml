@@ -250,6 +250,7 @@ Kirigami.ScrollablePage {
 
 	property QtObject removeDiveFromTripAction: Kirigami.Action {
 		text: visible ? qsTr ("Remove dive %1 from trip").arg(currentItem.myData.number) : ""
+		icon { name: ":/icons/chevron_left.svg" }
 		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.diveInTrip === true
 		onTriggered: {
 			manager.removeDiveFromTrip(currentItem.myData.id)
@@ -257,6 +258,7 @@ Kirigami.ScrollablePage {
 	}
 	property QtObject addDiveToTripAboveAction: Kirigami.Action {
 		text: visible ? qsTr ("Add dive %1 to trip above").arg(currentItem.myData.number) : ""
+		icon { name: ":/icons/expand_less.svg" }
 		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.tripAbove !== -1
 		onTriggered: {
 			manager.addDiveToTrip(currentItem.myData.id, currentItem.myData.tripAbove)
@@ -264,6 +266,7 @@ Kirigami.ScrollablePage {
 	}
 	property QtObject addDiveToTripBelowAction: Kirigami.Action {
 		text: visible ? qsTr ("Add dive %1 to trip below").arg(currentItem.myData.number) : ""
+		icon { name: ":/icons/expand_more.svg" }
 		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.tripBelow !== -1
 		onTriggered: {
 			manager.addDiveToTrip(currentItem.myData.id, currentItem.myData.tripBelow)
@@ -286,6 +289,7 @@ Kirigami.ScrollablePage {
 	}
 	property QtObject tripDetailsEdit: Kirigami.Action {
 		text: qsTr("Edit trip details")
+		icon { name: ":/icons/trip_details.svg" }
 		visible: currentItem && currentItem.myData && currentItem.myData.isTrip
 		onTriggered: {
 			tripEditWindow.tripId = currentItem.myData.tripId
@@ -297,11 +301,13 @@ Kirigami.ScrollablePage {
 
 	property QtObject undoAction: Kirigami.Action {
 		text: qsTr("Undo") + " " + manager.undoText
+		icon { name: ":/icons/undo.svg" }
 		enabled: manager.undoText !== ""
 		onTriggered: manager.undo()
 	}
 	property QtObject redoAction: Kirigami.Action {
 		text: qsTr("Redo") + " " + manager.redoText
+		icon { name: ":/icons/redo.svg" }
 		enabled: manager.redoText !== ""
 		onTriggered: manager.redo()
 	}
