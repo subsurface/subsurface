@@ -17,7 +17,6 @@ Kirigami.ScrollablePage {
 	property color secondaryTextColor: subsurfaceTheme.secondaryTextColor
 	property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
 	property QtObject diveListModel: diveTripModel
-	property string numShownText
 
 	opacity: 0
 	Behavior on opacity {
@@ -481,7 +480,7 @@ Kirigami.ScrollablePage {
 					id: numShown
 					z: 10
 					verticalAlignment: Text.AlignVCenter
-					text: numShownText
+					text: diveModel.shown
 				}
 			}
 		}
@@ -503,9 +502,6 @@ Kirigami.ScrollablePage {
 		section.criteria: ViewSection.FullString
 		section.delegate: tripHeading
 		section.labelPositioning: ViewSection.CurrentLabelAtStart | ViewSection.InlineLabels
-		onModelChanged: {
-			numShownText = diveModel.shown()
-		}
 		Connections {
 			target: detailsWindow
 			onCurrentIndexChanged: diveListView.currentIndex = detailsWindow.currentIndex
@@ -555,7 +551,6 @@ Kirigami.ScrollablePage {
 		onTriggered: {
 			rootItem.filterToggle = !rootItem.filterToggle
 			manager.setFilter("", 0)
-			numShownText = diveModel.shown()
 		}
 	}
 
