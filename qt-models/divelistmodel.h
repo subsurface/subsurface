@@ -47,11 +47,14 @@ public:
 	Q_INVOKABLE void reload();
 	QString filterString;
 	void updateFilterState();
+	Q_PROPERTY(int shown READ shown NOTIFY shownChanged);
+	int shown();
 public slots:
 	int getIdxForId(int id);
 	void setFilter(QString f, FilterData::Mode mode);
 	void resetFilter();
-	int shown();
+signals:
+	void shownChanged();
 protected:
 	bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 private:

@@ -195,6 +195,7 @@ DiveListSortModel *DiveListSortModel::instance()
 void DiveListSortModel::updateFilterState()
 {
 	DiveFilter::instance()->updateAll();
+	emit shownChanged();
 }
 
 void DiveListSortModel::setSourceModel(QAbstractItemModel *sourceModel)
