@@ -26,9 +26,7 @@ CylindersModel *DivePlannerPointsModel::cylindersModel()
 	return &cylinders;
 }
 
-/* TODO: Port this to CleanerTableModel to remove a bit of boilerplate and
- * use the signal warningMessage() to communicate errors to the MainWindow.
- */
+/* TODO: Port this to CleanerTableModel to remove a bit of boilerplate. */
 void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
 {
 	if (!rows.count())
