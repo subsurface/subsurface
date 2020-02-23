@@ -12,8 +12,7 @@
 
 CylindersModel::CylindersModel(QObject *parent) : CleanerTableModel(parent),
 	changed(false),
-	d(nullptr),
-	rows(0)
+	d(nullptr)
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, MOD, MND, USE, IS_USED};
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << tr("O₂%") << tr("He%")
@@ -147,7 +146,7 @@ bool CylindersModel::cylinderUsed(int i) const
 
 QVariant CylindersModel::data(const QModelIndex &index, int role) const
 {
-	if (!d || !index.isValid() || index.row() >= rows)
+	if (!d || !index.isValid() || index.row() >= d->cylinders.nr)
 		return QVariant();
 
 	if (index.row() >= d->cylinders.nr) {
@@ -446,18 +445,17 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 
 int CylindersModel::rowCount(const QModelIndex&) const
 {
-	return rows;
+	return d ? d->cylinders.nr : 0;
 }
 
 void CylindersModel::add()
 {
 	if (!d)
 		return;
-	int row = rows;
+	int row = d->cylinders.nr;
 	cylinder_t cyl = create_new_cylinder(d);
 	beginInsertRows(QModelIndex(), row, row);
 	add_to_cylinder_table(&d->cylinders, row, cyl);
-	rows++;
 	changed = true;
 	endInsertRows();
 	emit dataChanged(createIndex(row, 0), createIndex(row, COLUMNS - 1));
@@ -465,10 +463,9 @@ void CylindersModel::add()
 
 void CylindersModel::clear()
 {
-	if (rows > 0) {
-		beginRemoveRows(QModelIndex(), 0, rows - 1);
-		endRemoveRows();
-	}
+	beginResetModel();
+	d = nullptr;
+	endResetModel();
 }
 
 void CylindersModel::updateDive(dive *dIn)
@@ -479,7 +476,6 @@ void CylindersModel::updateDive(dive *dIn)
 #endif
 	beginResetModel();
 	d = dIn;
-	rows = d ? d->cylinders.nr : 0;
 	endResetModel();
 }
 
@@ -513,7 +509,6 @@ void CylindersModel::remove(QModelIndex index)
 			return;
 
 	beginRemoveRows(QModelIndex(), index.row(), index.row());
-	rows--;
 	remove_cylinder(d, index.row());
 	changed = true;
 	endRemoveRows();
@@ -630,7 +625,6 @@ void CylindersModel::cylindersReset(const QVector<dive *> &dives)
 
 	// And update the model (the actual change was already performed in the backend)..
 	beginResetModel();
-	rows = d->cylinders.nr;
 	endResetModel();
 }
 

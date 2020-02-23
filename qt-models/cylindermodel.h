@@ -57,7 +57,6 @@ slots:
 
 private:
 	dive *d;
-	int rows;
 	cylinder_t *cylinderAt(const QModelIndex &index);
 };
 
