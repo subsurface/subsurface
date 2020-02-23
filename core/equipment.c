@@ -29,7 +29,7 @@ void free_weightsystem(weightsystem_t ws)
 	ws.description = NULL;
 }
 
-static void free_cylinder(cylinder_t c)
+void free_cylinder(cylinder_t c)
 {
 	free((void *)c.type.description);
 	c.type.description = NULL;
