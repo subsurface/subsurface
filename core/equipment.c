@@ -291,6 +291,15 @@ void remove_cylinder(struct dive *dive, int idx)
 	remove_from_cylinder_table(&dive->cylinders, idx);
 }
 
+// cyl is cloned.
+void set_cylinder(struct dive *dive, int idx, cylinder_t cyl)
+{
+	if (idx < 0 || idx >= dive->cylinders.nr)
+		return;
+	free_cylinder(dive->cylinders.cylinders[idx]);
+	dive->cylinders.cylinders[idx] = clone_cylinder(cyl);
+}
+
 void remove_weightsystem(struct dive *dive, int idx)
 {
 	remove_from_weightsystem_table(&dive->weightsystems, idx);
