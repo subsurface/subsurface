@@ -92,7 +92,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	const struct event *evd = NULL;
 	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 	recalc = false;
-	cylinders.updateDive();
+	cylinders.updateDive(&displayed_dive);
 	duration_t lasttime = { 0 };
 	duration_t lastrecordedtime = {};
 	duration_t newtime = {};
@@ -165,7 +165,7 @@ void DivePlannerPointsModel::setupCylinders()
 		reset_cylinders(&displayed_dive, true);
 
 		if (displayed_dive.cylinders.nr > 0) {
-			cylinders.updateDive();
+			cylinders.updateDive(&displayed_dive);
 			return;		// We have at least one cylinder
 		}
 	}
@@ -183,7 +183,7 @@ void DivePlannerPointsModel::setupCylinders()
 		add_to_cylinder_table(&displayed_dive.cylinders, 0, cyl);
 	}
 	reset_cylinders(&displayed_dive, false);
-	cylinders.updateDive();
+	cylinders.updateDive(&displayed_dive);
 }
 
 // Update the dive's maximum depth.  Returns true if max. depth changed
@@ -908,7 +908,7 @@ void DivePlannerPointsModel::clear()
 {
 	bool oldRecalc = setRecalc(false);
 
-	cylinders.updateDive();
+	cylinders.updateDive(&displayed_dive);
 	if (rowCount() > 0) {
 		beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
 		divepoints.clear();

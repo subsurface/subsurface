@@ -129,7 +129,7 @@ void TabDiveEquipment::toggleTriggeredColumn()
 
 void TabDiveEquipment::updateData()
 {
-	cylindersModel->updateDive();
+	cylindersModel->updateDive(current_dive);
 	weightModel->updateDive(current_dive);
 	suitModel.updateModel();
 
@@ -262,7 +262,7 @@ void TabDiveEquipment::acceptChanges()
 void TabDiveEquipment::rejectChanges()
 {
 	cylindersModel->model()->changed = false;
-	cylindersModel->updateDive();
+	cylindersModel->updateDive(current_dive);
 	weightModel->updateDive(current_dive);
 }
 

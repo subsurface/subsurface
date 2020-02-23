@@ -41,7 +41,7 @@ public:
 
 	void add();
 	void clear();
-	void updateDive();
+	void updateDive(dive *d);
 	void updateDecoDepths(pressure_t olddecopo2);
 	void updateTrashIcon();
 	void moveAtFirst(int cylid);
@@ -56,6 +56,7 @@ slots:
 	void cylindersReset(const QVector<dive *> &dives);
 
 private:
+	dive *d;
 	int rows;
 	cylinder_t *cylinderAt(const QModelIndex &index);
 };
@@ -69,7 +70,7 @@ public:
 
 	void clear();
 	void add();
-	void updateDive();
+	void updateDive(dive *d);
 public
 slots:
 	void remove(QModelIndex index);

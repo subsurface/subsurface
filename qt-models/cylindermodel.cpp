@@ -10,9 +10,9 @@
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "core/subsurface-string.h"
 
-CylindersModel::CylindersModel(QObject *parent) :
-	CleanerTableModel(parent),
+CylindersModel::CylindersModel(QObject *parent) : CleanerTableModel(parent),
 	changed(false),
+	d(nullptr),
 	rows(0)
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, MOD, MND, USE, IS_USED};
@@ -126,13 +126,12 @@ static QVariant percent_string(fraction_t fraction)
 
 bool CylindersModel::cylinderUsed(int i) const
 {
-	const struct dive *dive = &displayed_dive;
-	if (i < 0 || i >= dive->cylinders.nr)
+	if (i < 0 || i >= d->cylinders.nr)
 		return false;
-	if (is_cylinder_used(dive, i))
+	if (is_cylinder_used(d, i))
 		return true;
 
-	cylinder_t *cyl = get_cylinder(dive, i);
+	cylinder_t *cyl = get_cylinder(d, i);
 	if (cyl->start.mbar || cyl->sample_start.mbar ||
 	    cyl->end.mbar || cyl->sample_end.mbar)
 		return true;
@@ -148,15 +147,15 @@ bool CylindersModel::cylinderUsed(int i) const
 
 QVariant CylindersModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid() || index.row() >= rows)
+	if (!d || !index.isValid() || index.row() >= rows)
 		return QVariant();
 
-	if (index.row() >= displayed_dive.cylinders.nr) {
-		qWarning("CylindersModel and displayed_dive are out of sync!");
+	if (index.row() >= d->cylinders.nr) {
+		qWarning("CylindersModel and dive are out of sync!");
 		return QVariant();
 	}
 
-	const cylinder_t *cyl = get_cylinder(&displayed_dive, index.row());
+	const cylinder_t *cyl = get_cylinder(d, index.row());
 
 	switch (role) {
 	case Qt::BackgroundRole: {
@@ -227,13 +226,13 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			} else {
 				pressure_t modpO2;
 				modpO2.mbar = prefs.bottompo2;
-				return get_depth_string(gas_mod(cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(1,1)), true);
+				return get_depth_string(gas_mod(cyl->gasmix, modpO2, d, M_OR_FT(1,1)), true);
 			}
 		case MND:
 			if (cyl->bestmix_he)
 				return QStringLiteral("*");
 			else
-				return get_depth_string(gas_mnd(cyl->gasmix, prefs.bestmixend, &displayed_dive, M_OR_FT(1,1)), true);
+				return get_depth_string(gas_mnd(cyl->gasmix, prefs.bestmixend, d, M_OR_FT(1,1)), true);
 			break;
 		case USE:
 			return gettextFromC::tr(cylinderuse_text[cyl->cylinder_use]);
@@ -247,7 +246,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 	case Qt::SizeHintRole:
 		if (index.column() == REMOVE) {
 			if ((in_planner() && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
-				(!in_planner() && is_cylinder_prot(&displayed_dive, index.row()))) {
+				(!in_planner() && is_cylinder_prot(d, index.row()))) {
 					return trashForbiddenIcon();
 			}
 			return trashIcon();
@@ -257,7 +256,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		switch (index.column()) {
 		case REMOVE:
 			if ((in_planner() && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
-				(!in_planner() && is_cylinder_prot(&displayed_dive, index.row()))) {
+				(!in_planner() && is_cylinder_prot(d, index.row()))) {
 					return tr("This gas is in use. Only cylinders that are not used in the dive can be removed.");
 			}
 			return tr("Clicking here will remove this cylinder.");
@@ -285,12 +284,17 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 
 cylinder_t *CylindersModel::cylinderAt(const QModelIndex &index)
 {
-	return get_cylinder(&displayed_dive, index.row());
+	if (!d)
+		return nullptr;
+	return get_cylinder(d, index.row());
 }
 
 bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
 	QString vString;
+
+	if (!d)
+		return false;
 
 	cylinder_t *cyl = cylinderAt(index);
 	if (!cyl)
@@ -369,12 +373,12 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
 				cyl->gasmix.he.permille = 1000 - get_o2(cyl->gasmix);
 			pressure_t modpO2;
-			if (displayed_dive.dc.divemode == PSCR)
+			if (d->dc.divemode == PSCR)
 				modpO2.mbar = prefs.decopo2 + (1000 - get_o2(cyl->gasmix)) * SURFACE_PRESSURE *
 						prefs.o2consumption / prefs.decosac / prefs.pscr_ratio;
 			else
 				modpO2.mbar = prefs.decopo2;
-			cyl->depth = gas_mod(cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(3, 10));
+			cyl->depth = gas_mod(cyl->gasmix, modpO2, d, M_OR_FT(3, 10));
 			cyl->bestmix_o2 = false;
 			changed = true;
 		}
@@ -400,15 +404,15 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			if (QString::compare(qPrintable(vString), "*") == 0) {
 				cyl->bestmix_o2 = true;
 				// Calculate fO2 for max. depth
-				cyl->gasmix.o2 = best_o2(displayed_dive.maxdepth, &displayed_dive);
+				cyl->gasmix.o2 = best_o2(d->maxdepth, d);
 			} else {
 				cyl->bestmix_o2 = false;
 				// Calculate fO2 for input depth
-				cyl->gasmix.o2 = best_o2(string_to_depth(qPrintable(vString)), &displayed_dive);
+				cyl->gasmix.o2 = best_o2(string_to_depth(qPrintable(vString)), d);
 			}
 			pressure_t modpO2;
 			modpO2.mbar = prefs.decopo2;
-			cyl->depth = gas_mod(cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(3, 10));
+			cyl->depth = gas_mod(cyl->gasmix, modpO2, d, M_OR_FT(3, 10));
 			changed = true;
 		}
 		break;
@@ -417,11 +421,11 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			if (QString::compare(qPrintable(vString), "*") == 0) {
 				cyl->bestmix_he = true;
 				// Calculate fO2 for max. depth
-				cyl->gasmix.he = best_he(displayed_dive.maxdepth, &displayed_dive, prefs.o2narcotic, cyl->gasmix.o2);
+				cyl->gasmix.he = best_he(d->maxdepth, d, prefs.o2narcotic, cyl->gasmix.o2);
 			} else {
 				cyl->bestmix_he = false;
 				// Calculate fHe for input depth
-				cyl->gasmix.he = best_he(string_to_depth(qPrintable(vString)), &displayed_dive, prefs.o2narcotic, cyl->gasmix.o2);
+				cyl->gasmix.he = best_he(string_to_depth(qPrintable(vString)), d, prefs.o2narcotic, cyl->gasmix.o2);
 			}
 			changed = true;
 		}
@@ -447,10 +451,12 @@ int CylindersModel::rowCount(const QModelIndex&) const
 
 void CylindersModel::add()
 {
+	if (!d)
+		return;
 	int row = rows;
-	cylinder_t cyl = create_new_cylinder(&displayed_dive);
+	cylinder_t cyl = create_new_cylinder(d);
 	beginInsertRows(QModelIndex(), row, row);
-	add_to_cylinder_table(&displayed_dive.cylinders, row, cyl);
+	add_to_cylinder_table(&d->cylinders, row, cyl);
 	rows++;
 	changed = true;
 	endInsertRows();
@@ -465,13 +471,15 @@ void CylindersModel::clear()
 	}
 }
 
-void CylindersModel::updateDive()
+void CylindersModel::updateDive(dive *dIn)
 {
 #ifdef DEBUG_CYL
-	dump_cylinders(&displayed_dive, true);
+	if (d)
+		dump_cylinders(dIn, true);
 #endif
 	beginResetModel();
-	rows = displayed_dive.cylinders.nr;
+	d = dIn;
+	rows = d ? d->cylinders.nr : 0;
 	endResetModel();
 }
 
@@ -484,6 +492,8 @@ Qt::ItemFlags CylindersModel::flags(const QModelIndex &index) const
 
 void CylindersModel::remove(QModelIndex index)
 {
+	if (!d)
+		return;
 	if (index.column() == USE) {
 		cylinder_t *cyl = cylinderAt(index);
 		if (cyl->cylinder_use == OC_GAS)
@@ -499,12 +509,12 @@ void CylindersModel::remove(QModelIndex index)
 		return;
 
 	if ((in_planner() && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
-		(!in_planner() && is_cylinder_prot(&displayed_dive, index.row())))
+		(!in_planner() && is_cylinder_prot(d, index.row())))
 			return;
 
 	beginRemoveRows(QModelIndex(), index.row(), index.row());
 	rows--;
-	remove_cylinder(&displayed_dive, index.row());
+	remove_cylinder(d, index.row());
 	changed = true;
 	endRemoveRows();
 
@@ -512,12 +522,12 @@ void CylindersModel::remove(QModelIndex index)
 	// 1) Fill mapping[0]..mapping[index-1] with 0..index
 	// 2) Set mapping[index] to -1
 	// 3) Fill mapping[index+1]..mapping[end] with index..
-	std::vector<int> mapping(displayed_dive.cylinders.nr + 1);
+	std::vector<int> mapping(d->cylinders.nr + 1);
 	std::iota(mapping.begin(), mapping.begin() + index.row(), 0);
 	mapping[index.row()] = -1;
 	std::iota(mapping.begin() + index.row() + 1, mapping.end(), index.row());
 
-	cylinder_renumber(&displayed_dive, &mapping[0]);
+	cylinder_renumber(d, &mapping[0]);
 	if (in_planner())
 		DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
 	changed = true;
@@ -525,23 +535,26 @@ void CylindersModel::remove(QModelIndex index)
 
 void CylindersModel::moveAtFirst(int cylid)
 {
+	if (!d)
+		return;
+
 	cylinder_t temp_cyl;
 
 	beginMoveRows(QModelIndex(), cylid, cylid, QModelIndex(), 0);
-	memmove(&temp_cyl, get_cylinder(&displayed_dive, cylid), sizeof(temp_cyl));
+	memmove(&temp_cyl, get_cylinder(d, cylid), sizeof(temp_cyl));
 	for (int i = cylid - 1; i >= 0; i--)
-		memmove(get_cylinder(&displayed_dive, i + 1), get_cylinder(&displayed_dive, i), sizeof(temp_cyl));
-	memmove(get_cylinder(&displayed_dive, 0), &temp_cyl, sizeof(temp_cyl));
+		memmove(get_cylinder(d, i + 1), get_cylinder(d, i), sizeof(temp_cyl));
+	memmove(get_cylinder(d, 0), &temp_cyl, sizeof(temp_cyl));
 
 	// Create a mapping of cylinder indices:
 	// 1) Fill mapping[0]..mapping[cyl] with 0..index
 	// 2) Set mapping[cyl] to 0
 	// 3) Fill mapping[cyl+1]..mapping[end] with cyl..
-	std::vector<int> mapping(displayed_dive.cylinders.nr);
+	std::vector<int> mapping(d->cylinders.nr);
 	std::iota(mapping.begin(), mapping.begin() + cylid, 1);
 	mapping[cylid] = 0;
 	std::iota(mapping.begin() + (cylid + 1), mapping.end(), cylid);
-	cylinder_renumber(&displayed_dive, &mapping[0]);
+	cylinder_renumber(d, &mapping[0]);
 	if (in_planner())
 		DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
 	changed = true;
@@ -550,42 +563,51 @@ void CylindersModel::moveAtFirst(int cylid)
 
 void CylindersModel::updateDecoDepths(pressure_t olddecopo2)
 {
+	if (!d)
+		return;
+
 	pressure_t decopo2;
 	decopo2.mbar = prefs.decopo2;
-	for (int i = 0; i < displayed_dive.cylinders.nr; i++) {
-		cylinder_t *cyl = get_cylinder(&displayed_dive, i);
+	for (int i = 0; i < d->cylinders.nr; i++) {
+		cylinder_t *cyl = get_cylinder(d, i);
 		/* If the gas's deco MOD matches the old pO2, it will have been automatically calculated and should be updated.
 		 * If they don't match, we should leave the user entered depth as it is */
-		if (cyl->depth.mm == gas_mod(cyl->gasmix, olddecopo2, &displayed_dive, M_OR_FT(3, 10)).mm) {
-			cyl->depth = gas_mod(cyl->gasmix, decopo2, &displayed_dive, M_OR_FT(3, 10));
+		if (cyl->depth.mm == gas_mod(cyl->gasmix, olddecopo2, d, M_OR_FT(3, 10)).mm) {
+			cyl->depth = gas_mod(cyl->gasmix, decopo2, d, M_OR_FT(3, 10));
 		}
 	}
-	emit dataChanged(createIndex(0, 0), createIndex(displayed_dive.cylinders.nr - 1, COLUMNS - 1));
+	emit dataChanged(createIndex(0, 0), createIndex(d->cylinders.nr - 1, COLUMNS - 1));
 }
 
 void CylindersModel::updateTrashIcon()
 {
-	emit dataChanged(createIndex(0, 0), createIndex(displayed_dive.cylinders.nr - 1, 0));
+	if (!d)
+		return;
+
+	emit dataChanged(createIndex(0, 0), createIndex(d->cylinders.nr - 1, 0));
 }
 
 bool CylindersModel::updateBestMixes()
 {
+	if (!d)
+		return false;
+
 	// Check if any of the cylinders are best mixes, update if needed
 	bool gasUpdated = false;
-	for (int i = 0; i < displayed_dive.cylinders.nr; i++) {
-		cylinder_t *cyl = get_cylinder(&displayed_dive, i);
+	for (int i = 0; i < d->cylinders.nr; i++) {
+		cylinder_t *cyl = get_cylinder(d, i);
 		if (cyl->bestmix_o2) {
-			cyl->gasmix.o2 = best_o2(displayed_dive.maxdepth, &displayed_dive);
+			cyl->gasmix.o2 = best_o2(d->maxdepth, d);
 			// fO2 + fHe must not be greater than 1
 			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
 				cyl->gasmix.he.permille = 1000 - get_o2(cyl->gasmix);
 			pressure_t modpO2;
 			modpO2.mbar = prefs.decopo2;
-			cyl->depth = gas_mod(cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(3, 10));
+			cyl->depth = gas_mod(cyl->gasmix, modpO2, d, M_OR_FT(3, 10));
 			gasUpdated = true;
 		}
 		if (cyl->bestmix_he) {
-			cyl->gasmix.he = best_he(displayed_dive.maxdepth, &displayed_dive, prefs.o2narcotic, cyl->gasmix.o2);
+			cyl->gasmix.he = best_he(d->maxdepth, d, prefs.o2narcotic, cyl->gasmix.o2);
 			// fO2 + fHe must not be greater than 1
 			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
 				cyl->gasmix.o2.permille = 1000 - get_he(cyl->gasmix);
@@ -595,7 +617,7 @@ bool CylindersModel::updateBestMixes()
 	/* This slot is called when the bottom pO2 and END preferences are updated, we want to
 	 * emit dataChanged so MOD and MND are refreshed, even if the gas mix hasn't been changed */
 	if (gasUpdated)
-		emit dataChanged(createIndex(0, 0), createIndex(displayed_dive.cylinders.nr - 1, COLUMNS - 1));
+		emit dataChanged(createIndex(0, 0), createIndex(d->cylinders.nr - 1, COLUMNS - 1));
 	return gasUpdated;
 }
 
@@ -603,14 +625,13 @@ void CylindersModel::cylindersReset(const QVector<dive *> &dives)
 {
 	// This model only concerns the currently displayed dive. If this is not among the
 	// dives that had their cylinders reset, exit.
-	if (!current_dive || std::find(dives.begin(), dives.end(), current_dive) == dives.end())
+	if (!d || std::find(dives.begin(), dives.end(), d) == dives.end())
 		return;
 
-	// Copy the cylinders from the current dive to the displayed dive.
-	copy_cylinders(&current_dive->cylinders, &displayed_dive.cylinders);
-
-	// And update the model..
-	updateDive();
+	// And update the model (the actual change was already performed in the backend)..
+	beginResetModel();
+	rows = d->cylinders.nr;
+	endResetModel();
 }
 
 CylindersModelFiltered::CylindersModelFiltered(QObject *parent) : QSortFilterProxyModel(parent)
@@ -618,9 +639,9 @@ CylindersModelFiltered::CylindersModelFiltered(QObject *parent) : QSortFilterPro
 	setSourceModel(&source);
 }
 
-void CylindersModelFiltered::updateDive()
+void CylindersModelFiltered::updateDive(dive *d)
 {
-	source.updateDive();
+	source.updateDive(d);
 }
 
 void CylindersModelFiltered::clear()
