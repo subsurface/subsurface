@@ -377,6 +377,45 @@ private:
 	void redo() override;
 };
 
+class AddCylinder : public EditDivesBase {
+public:
+	AddCylinder(bool currentDiveOnly);
+	~AddCylinder();
+private:
+	cylinder_t cyl;
+	void undo() override;
+	void redo() override;
+	bool workToBeDone() override;
+};
+
+class EditCylinderBase : public EditDivesBase {
+protected:
+	EditCylinderBase(int index, bool currentDiveOnly);
+	~EditCylinderBase();
+
+	cylinder_t cyl;
+	std::vector<int> indexes; // An index for each dive in the dives vector.
+	bool workToBeDone() override;
+};
+
+class RemoveCylinder : public EditCylinderBase {
+public:
+	RemoveCylinder(int index, bool currentDiveOnly);
+private:
+	void undo() override;
+	void redo() override;
+};
+
+class EditCylinder : public EditCylinderBase {
+public:
+	EditCylinder(int index, cylinder_t cyl, bool currentDiveOnly); // Clones cylinder
+	~EditCylinder();
+private:
+	cylinder_t new_cyl;
+	void undo() override;
+	void redo() override;
+};
+
 #ifdef SUBSURFACE_MOBILE
 // Edit a full dive. This is used on mobile where we don't have per-field granularity.
 // It may add or edit a dive site.
@@ -406,5 +445,4 @@ private:
 #endif // SUBSURFACE_MOBILE
 
 } // namespace Command
-
 #endif

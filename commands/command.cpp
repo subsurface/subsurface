@@ -293,6 +293,21 @@ int editWeight(int index, weightsystem_t ws, bool currentDiveOnly)
 	return execute_edit(new EditWeight(index, ws, currentDiveOnly));
 }
 
+int addCylinder(bool currentDiveOnly)
+{
+	return execute_edit(new AddCylinder(currentDiveOnly));
+}
+
+int removeCylinder(int index, bool currentDiveOnly)
+{
+	return execute_edit(new RemoveCylinder(index, currentDiveOnly));
+}
+
+int editCylinder(int index, cylinder_t cyl, bool currentDiveOnly)
+{
+	return execute_edit(new EditCylinder(index, cyl, currentDiveOnly));
+}
+
 // Trip editing related commands
 void editTripLocation(dive_trip *trip, const QString &s)
 {

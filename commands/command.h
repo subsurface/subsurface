@@ -90,6 +90,9 @@ void editProfile(dive *d); // dive computer(s) and cylinder(s) will be reset!
 int addWeight(bool currentDiveOnly);
 int removeWeight(int index, bool currentDiveOnly);
 int editWeight(int index, weightsystem_t ws, bool currentDiveOnly);
+int addCylinder(bool currentDiveOnly);
+int removeCylinder(int index, bool currentDiveOnly);
+int editCylinder(int index, cylinder_t cyl, bool currentDiveOnly);
 #ifdef SUBSURFACE_MOBILE
 // Edits a dive and creates a divesite (if createDs != NULL) or edits a divesite (if changeDs != NULL).
 // Takes ownership of newDive and createDs!
