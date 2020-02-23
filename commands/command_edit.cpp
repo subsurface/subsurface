@@ -1106,6 +1106,7 @@ RemoveCylinder::RemoveCylinder(int index, bool currentDiveOnly) :
 void RemoveCylinder::undo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
+		std::vector<int> mapping = get_cylinder_map_for_add(dives[i]->cylinders.nr, indexes[i]);
 		add_to_cylinder_table(&dives[i]->cylinders, indexes[i], clone_cylinder(cyl));
 		emit diveListNotifier.cylinderAdded(dives[i], indexes[i]);
 	}
@@ -1114,7 +1115,9 @@ void RemoveCylinder::undo()
 void RemoveCylinder::redo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
+		std::vector<int> mapping = get_cylinder_map_for_remove(dives[i]->cylinders.nr, indexes[i]);
 		remove_cylinder(dives[i], indexes[i]);
+		cylinder_renumber(dives[i], &mapping[0]);
 		emit diveListNotifier.cylinderRemoved(dives[i], indexes[i]);
 	}
 }

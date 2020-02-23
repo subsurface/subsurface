@@ -513,15 +513,7 @@ void CylindersModel::remove(QModelIndex index)
 	changed = true;
 	endRemoveRows();
 
-	// Create a mapping of cylinder indices:
-	// 1) Fill mapping[0]..mapping[index-1] with 0..index
-	// 2) Set mapping[index] to -1
-	// 3) Fill mapping[index+1]..mapping[end] with index..
-	std::vector<int> mapping(d->cylinders.nr + 1);
-	std::iota(mapping.begin(), mapping.begin() + index.row(), 0);
-	mapping[index.row()] = -1;
-	std::iota(mapping.begin() + index.row() + 1, mapping.end(), index.row());
-
+	std::vector<int> mapping = get_cylinder_map_for_remove(d->cylinders.nr + 1, index.row());
 	cylinder_renumber(d, &mapping[0]);
 	if (in_planner())
 		DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
