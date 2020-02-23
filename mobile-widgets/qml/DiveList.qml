@@ -465,7 +465,7 @@ Kirigami.ScrollablePage {
 					verticalAlignment: TextInput.AlignVCenter
 					Layout.fillWidth: true
 					text: ""
-					placeholderText: "Full text search"
+					placeholderText: sitefilterMode.currentText
 					onAccepted: {
 						manager.setFilter(text, sitefilterMode.currentIndex)
 					}
