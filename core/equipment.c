@@ -137,12 +137,18 @@ void add_cloned_weightsystem_at(struct weightsystem_table *t, weightsystem_t ws)
 	add_to_weightsystem_table(t, t->nr, clone_weightsystem(ws));
 }
 
+cylinder_t clone_cylinder(cylinder_t cyl)
+{
+	cylinder_t res = cyl;
+	res.type.description = copy_string(res.type.description);
+	return res;
+}
+
 /* Add a clone of a cylinder to the end of a cylinder table.
  * Cloned in means that the description-string is copied. */
 void add_cloned_cylinder(struct cylinder_table *t, cylinder_t cyl)
 {
-	cyl.type.description = copy_string(cyl.type.description);
-	add_to_cylinder_table(t, t->nr, cyl);
+	add_to_cylinder_table(t, t->nr, clone_cylinder(cyl));
 }
 
 bool same_weightsystem(weightsystem_t w1, weightsystem_t w2)
