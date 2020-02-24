@@ -33,7 +33,6 @@ TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 	ui.weights->setModel(weightModel);
 
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &TabDiveEquipment::divesChanged);
-	connect(ui.cylinders, &TableView::itemClicked, cylindersModel, &CylindersModelFiltered::remove);
 	connect(ui.cylinders, &TableView::itemClicked, this, &TabDiveEquipment::editCylinderWidget);
 	connect(ui.weights, &TableView::itemClicked, this, &TabDiveEquipment::editWeightWidget);
 
@@ -164,14 +163,13 @@ void TabDiveEquipment::addWeight_clicked()
 
 void TabDiveEquipment::editCylinderWidget(const QModelIndex &index)
 {
-	if (cylindersModel->model()->changed && !MainWindow::instance()->mainTab->isEditing()) {
-		MainWindow::instance()->mainTab->enableEdition();
+	if (!index.isValid())
 		return;
-	}
-	if (index.isValid() && index.column() != CylindersModel::REMOVE) {
-		MainWindow::instance()->mainTab->enableEdition();
+
+	if (index.column() == CylindersModel::REMOVE)
+		divesEdited(Command::removeCylinder(cylindersModel->mapToSource(index).row(), false));
+	else
 		ui.cylinders->edit(index);
-	}
 }
 
 void TabDiveEquipment::editWeightWidget(const QModelIndex &index)
