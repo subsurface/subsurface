@@ -14,7 +14,7 @@ CURRENT_SQLITE="3190200"
 CURRENT_LIBXML2="v2.9.4"
 CURRENT_LIBFTDI="1.3"
 CURRENT_KIRIGAMI="v5.62.0"
-CURRENT_BREEZE_ICONS=""
+CURRENT_BREEZE_ICONS="4daac191fb33c8c03bba8356db9767816cb8ee02"
 CURRENT_GRANTLEE="v5.1.0"
 CURRENT_MDBTOOLS="master"
 CURRENT_QT_ANDROID_CMAKE="e3bd0c4930dfa154cacb71d8960474ec00ceca4f"
@@ -163,7 +163,7 @@ for package in "${PACKAGES[@]}" ; do
 			git_checkout_library libxslt $CURRENT_XSLT https://github.com/GNOME/libxslt.git
 			;;
 		breeze-icons)
-			git_checkout_library breeze-icons master https://github.com/kde/breeze-icons.git
+			git_checkout_library breeze-icons $CURRENT_BREEZE_ICONS https://github.com/kde/breeze-icons.git
 			;;
 		googlemaps)
 			git_checkout_library googlemaps master https://github.com/Subsurface-divelog/googlemaps.git
