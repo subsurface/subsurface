@@ -260,7 +260,7 @@ Item {
 						drag.target: qmlProfile
 						drag.axis: Drag.XAndYAxis
 						drag.smoothed: true
-						pressAndHoldInterval: 150 // very short - feels about right
+						pressAndHoldInterval: 50 // very short - feels about right
 						// cursor/finger position as we start dragging
 						property real initialX
 						property real initialY
