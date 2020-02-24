@@ -16,7 +16,7 @@ CylindersModel::CylindersModel(QObject *parent) :
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, MOD, MND, USE, IS_USED};
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << tr("O₂%") << tr("He%")
-						 << tr("Deco switch at") <<tr("Bot. MOD") <<tr("MND") << tr("Use") << "Is used");
+						 << tr("Deco switch at") <<tr("Bot. MOD") <<tr("MND") << tr("Use"));
 
 	connect(&diveListNotifier, &DiveListNotifier::cylindersReset, this, &CylindersModel::cylindersReset);
 }
