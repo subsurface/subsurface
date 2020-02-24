@@ -8,6 +8,8 @@
 #include <QScreen>
 #include <QElapsedTimer>
 
+const double fontScale = 0.6; // profile looks less cluttered with smaller font
+
 QMLProfile::QMLProfile(QQuickItem *parent) :
 	QQuickPaintedItem(parent),
 	m_devicePixelRatio(1.0),
@@ -20,7 +22,7 @@ QMLProfile::QMLProfile(QQuickItem *parent) :
 	setFlags(QQuickItem::ItemClipsChildrenToShape | QQuickItem::ItemHasContents );
 	m_profileWidget->setProfileState();
 	m_profileWidget->setPrintMode(true);
-	m_profileWidget->setFontPrintScale(0.8);
+	m_profileWidget->setFontPrintScale(fontScale);
 	connect(QMLManager::instance(), &QMLManager::sendScreenChanged, this, &QMLProfile::screenChanged);
 	setDevicePixelRatio(QMLManager::instance()->lastDevicePixelRatio());
 }
@@ -122,7 +124,7 @@ void QMLProfile::setDevicePixelRatio(qreal dpr)
 {
 	if (dpr != m_devicePixelRatio) {
 		m_devicePixelRatio = dpr;
-		m_profileWidget->setFontPrintScale(0.8 * dpr);
+		m_profileWidget->setFontPrintScale(fontScale * dpr);
 		updateDevicePixelRatio(dpr);
 		emit devicePixelRatioChanged();
 	}
