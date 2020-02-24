@@ -334,8 +334,14 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		// values will be overwritten by new data if available
 		sample->in_deco = in_deco;
 		sample->ndl.seconds = ndl;
-		sample->stoptime.seconds = stoptime;
-		sample->stopdepth.mm = stopdepth;
+		// A positive NDL erases any previous deco obligations
+		if (ndl > 0) {
+			sample->stoptime.seconds = 0;
+			sample->stopdepth.mm = 0;
+		} else {
+			sample->stoptime.seconds = stoptime;
+			sample->stopdepth.mm = stopdepth;
+		}
 		sample->setpoint.mbar = po2;
 		sample->cns = cns;
 		sample->heartbeat = heartbeat;
@@ -363,6 +369,11 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 #ifdef DC_SAMPLE_TTS
 	case DC_SAMPLE_TTS:
 		sample->tts.seconds = value.time;
+		if (value.time == 0xFFFFFFFF) {
+			// This is libdivecomputer's way to say INVALID
+			sample->stoptime.seconds = 0;
+			sample->stopdepth.mm = 0;
+		}
 		break;
 #endif
 	case DC_SAMPLE_HEARTBEAT:
