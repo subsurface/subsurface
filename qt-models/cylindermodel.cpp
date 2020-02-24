@@ -486,6 +486,9 @@ Qt::ItemFlags CylindersModel::flags(const QModelIndex &index) const
 	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
+// This function is only invoked from the planner! Therefore, there is
+// no need to check whether we are in the planner. Perhaps move some
+// of this functionality to the planner itself.
 void CylindersModel::remove(QModelIndex index)
 {
 	if (!d)
@@ -504,8 +507,7 @@ void CylindersModel::remove(QModelIndex index)
 	if (index.column() != REMOVE)
 		return;
 
-	if ((in_planner() && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
-		(!in_planner() && is_cylinder_prot(d, index.row())))
+	if (DivePlannerPointsModel::instance()->tankInUse(index.row()))
 			return;
 
 	beginRemoveRows(QModelIndex(), index.row(), index.row());
@@ -515,8 +517,7 @@ void CylindersModel::remove(QModelIndex index)
 
 	std::vector<int> mapping = get_cylinder_map_for_remove(d->cylinders.nr + 1, index.row());
 	cylinder_renumber(d, &mapping[0]);
-	if (in_planner())
-		DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
+	DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
 	changed = true;
 }
 
