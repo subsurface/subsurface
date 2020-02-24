@@ -1053,7 +1053,7 @@ static int find_cylinder_index(const struct dive *d, const cylinder_t &cyl)
 	return -1;
 }
 
-EditCylinderBase::EditCylinderBase(int index, bool currentDiveOnly) :
+EditCylinderBase::EditCylinderBase(int index, bool currentDiveOnly, bool nonProtectedOnly) :
 	EditDivesBase(currentDiveOnly),
 	cyl(empty_cylinder)
 {
@@ -1070,15 +1070,17 @@ EditCylinderBase::EditCylinderBase(int index, bool currentDiveOnly) :
 
 	for (dive *d: dives) {
 		if (d == current) {
+			if (nonProtectedOnly && is_cylinder_prot(d, index))
+				continue;
 			divesNew.push_back(d);
 			indexes.push_back(index);
 			continue;
 		}
 		int idx = find_cylinder_index(d, cyl);
-		if (idx >= 0) {
-			divesNew.push_back(d);
-			indexes.push_back(idx);
-		}
+		if (idx < 0 || (nonProtectedOnly && is_cylinder_prot(d, idx)))
+			continue;
+		divesNew.push_back(d);
+		indexes.push_back(idx);
 	}
 	dives = std::move(divesNew);
 }
@@ -1095,7 +1097,7 @@ bool EditCylinderBase::workToBeDone()
 
 // ***** Remove Cylinder *****
 RemoveCylinder::RemoveCylinder(int index, bool currentDiveOnly) :
-	EditCylinderBase(index, currentDiveOnly)
+	EditCylinderBase(index, currentDiveOnly, true)
 {
 	if (dives.size() == 1)
 		setText(tr("Remove cylinder"));
@@ -1124,7 +1126,7 @@ void RemoveCylinder::redo()
 
 // ***** Edit Cylinder *****
 EditCylinder::EditCylinder(int index, cylinder_t cylIn, bool currentDiveOnly) :
-	EditCylinderBase(index, currentDiveOnly),
+	EditCylinderBase(index, currentDiveOnly, false),
 	new_cyl(empty_cylinder)
 {
 	if (dives.empty())
