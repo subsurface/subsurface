@@ -4406,7 +4406,18 @@ computer prefers (e.g. Bluetooth, USB, infra-red).
 
 	* On Windows, the OS should offer to download the correct
 	  driver once the user connects the dive computer to the USB port and
-	  operating system sees the equipment for the first time.
+	  operating system sees the equipment for the first time. In some instances this
+	  seems to fail, but regardless, every USB device (with the exception of HID devices
+	  like the Suunto EON Steel family) needs a driver. For many divecomputer this means
+	  downloading a cable specific driver (these tend to be for example FTDI, Silicon Labs,
+	  or Prolific drivers). In other cases (for example for dive computers with a "real" USB
+	  interface like the Atomics Cobalt) it is sufficient to have the WinUSB (or the libusbK)
+	  driver installed. In current Windows versions the WinUSB binary is already part of Windows
+	  and the "driver" is a simple inf file that tell Windows to use the WinUSB driver. But it
+	  still needs to be "installed". Often it is sufficient to install the dive log app that is
+	  provided by the dive computer vendor to trigger the driver installation. But in cases
+	  where that doesn't work, some googling to find the correct driver for a specific download
+	  cable may be necessary.
 
 	* On a Mac users sometimes have to manually hunt for the correct
 	  driver. For example the correct driver for the Mares Puck
