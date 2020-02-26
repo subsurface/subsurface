@@ -80,7 +80,6 @@ private:
 	BuddyCompletionModel buddyModel;
 	DiveMasterCompletionModel diveMasterModel;
 	TagCompletionModel tagModel;
-	bool modified;
 	bool lastSelectedDive;
 	int lastTabSelectedDive;
 	int lastTabSelectedDiveTrip;
