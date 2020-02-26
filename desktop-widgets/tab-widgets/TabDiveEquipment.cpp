@@ -210,9 +210,8 @@ static QVector<dive *> getSelectedDivesCurrentLast()
 	return res;
 }
 
-// TODO: This are only temporary functions until undo of weightsystems and cylinders is implemented.
+// TODO: This is a temporary functions until undo of cylinders is implemented.
 // Therefore it is not worth putting it in a header.
-extern bool weightsystems_equal(const dive *d1, const dive *d2);
 extern bool cylinders_equal(const dive *d1, const dive *d2);
 
 void TabDiveEquipment::acceptChanges()
