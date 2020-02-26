@@ -19,6 +19,9 @@ CylindersModel::CylindersModel(QObject *parent) : CleanerTableModel(parent),
 						 << tr("Deco switch at") <<tr("Bot. MOD") <<tr("MND") << tr("Use"));
 
 	connect(&diveListNotifier, &DiveListNotifier::cylindersReset, this, &CylindersModel::cylindersReset);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &CylindersModel::cylinderAdded);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &CylindersModel::cylinderRemoved);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &CylindersModel::cylinderEdited);
 }
 
 QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -519,6 +522,34 @@ void CylindersModel::remove(QModelIndex index)
 	cylinder_renumber(d, &mapping[0]);
 	DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
 	changed = true;
+}
+
+void CylindersModel::cylinderAdded(struct dive *changed, int pos)
+{
+	if (d != changed)
+		return;
+
+	// The row was already inserted by the undo command. Just inform the model.
+	beginInsertRows(QModelIndex(), pos, pos);
+	endInsertRows();
+}
+
+void CylindersModel::cylinderRemoved(struct dive *changed, int pos)
+{
+	if (d != changed)
+		return;
+
+	// The row was already deleted by the undo command. Just inform the model.
+	beginRemoveRows(QModelIndex(), pos, pos);
+	endRemoveRows();
+}
+
+void CylindersModel::cylinderEdited(struct dive *changed, int pos)
+{
+	if (d != changed)
+		return;
+
+	dataChanged(index(pos, TYPE), index(pos, USE));
 }
 
 void CylindersModel::moveAtFirst(int cylid)

@@ -54,6 +54,9 @@ public
 slots:
 	void remove(QModelIndex index);
 	void cylindersReset(const QVector<dive *> &dives);
+	void cylinderAdded(dive *d, int pos);
+	void cylinderRemoved(dive *d, int pos);
+	void cylinderEdited(dive *d, int pos);
 
 private:
 	dive *d;
