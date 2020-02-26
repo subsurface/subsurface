@@ -611,10 +611,6 @@ void MainTab::rejectChanges()
 		clear_dive(&displayed_dive);
 	updateDiveInfo();
 
-	for (auto widget: extraWidgets) {
-		widget->updateData();
-	}
-
 	// TODO: This is a temporary hack until the equipment tab is included in the undo system:
 	// The equipment tab is hardcoded at the first place of the "extra widgets".
 	((TabDiveEquipment *)extraWidgets[0])->rejectChanges();
