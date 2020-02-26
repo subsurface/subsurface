@@ -50,7 +50,6 @@ struct Completers {
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	editMode(NONE),
-	modified(false),
 	lastSelectedDive(true),
 	lastTabSelectedDive(0),
 	lastTabSelectedDiveTrip(0),
@@ -211,7 +210,6 @@ void MainTab::enableEdition(EditMode newEditMode)
 {
 	if (((newEditMode == DIVE || newEditMode == NONE) && current_dive == NULL) || editMode != NONE)
 		return;
-	modified = false;
 	if ((newEditMode == DIVE || newEditMode == NONE) &&
 	    current_dive->dc.model &&
 	    strcmp(current_dive->dc.model, "manually added dive") == 0) {
@@ -592,8 +590,7 @@ void MainTab::rejectChanges()
 	EditMode lastMode = editMode;
 
 	if (lastMode != NONE && current_dive &&
-	    (modified ||
-	     !cylinders_equal(current_dive, &displayed_dive) ||
+	    (!cylinders_equal(current_dive, &displayed_dive) ||
 	     !weightsystems_equal(current_dive, &displayed_dive))) {
 		if (QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(tr("Discard the changes?"),
 									       tr("You are about to discard your changes.")),
