@@ -45,7 +45,6 @@ public:
 	void updateDecoDepths(pressure_t olddecopo2);
 	void updateTrashIcon();
 	void moveAtFirst(int cylid);
-	cylinder_t *cylinderAt(const QModelIndex &index);
 	bool changed;
 	QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 	bool updateBestMixes();
@@ -58,6 +57,7 @@ slots:
 
 private:
 	int rows;
+	cylinder_t *cylinderAt(const QModelIndex &index);
 };
 
 // Cylinder model that hides unused cylinders if the pref.show_unused_cylinders flag is not set
@@ -70,7 +70,6 @@ public:
 	void clear();
 	void add();
 	void updateDive();
-	cylinder_t *cylinderAt(const QModelIndex &index);
 public
 slots:
 	void remove(QModelIndex index);
