@@ -9,7 +9,6 @@
         <file alias="list-remove-icon">icons/trash.png</file>
         <file alias="list-remove-disabled-icon">icons/trash-forbidden.png</file>
         <file alias="units-icon">icons/units.png</file>
-        <file alias="advanced-icon">icons/advanced.png</file>
         <file alias="preferences-system-network-icon">icons/network.png</file>
         <file alias="preferences-cloud-icon">icons/pref_cloud.png</file>
         <file alias="preferences-equipment-icon">icons/pref_equipment.png</file>
