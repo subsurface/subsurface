@@ -24,7 +24,6 @@
         <file alias="value-minimum-icon">icons/minimum.png</file>
         <file alias="value-maximum-icon">icons/maximum.png</file>
         <file alias="value-average-icon">icons/average.png</file>
-        <file alias="duplicate-warning-icon">icons/warning.png</file>
         <file alias="status-warning-icon">icons/warning-icon.png</file>
         <file alias="status-violation-icon">icons/violation-icon.png</file>
         <file alias="status-info-icon">icons/info-icon.png</file>
@@ -88,7 +87,6 @@
         <file alias="dc-ostc-3-icon">icons/ostc3.png</file>
         <file alias="dc-ostc-4-icon">icons/ostc4.png</file>
         <file alias="dc-suunto-vyper-icon">icons/suunto_vyper.png</file>
-        <file alias="duplicate-geotag-icon">icons/georeference.png</file>
         <file alias="edit-clear-icon">icons/edit-undo.svg</file>
         <file alias="show-icon">icons/go-top.svg</file>
         <file alias="filter-close">icons/process-stop.svg</file>
