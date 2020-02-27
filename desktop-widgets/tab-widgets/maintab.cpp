@@ -560,9 +560,6 @@ void MainTab::rejectChanges()
 		clear_dive(&displayed_dive);
 	updateDiveInfo();
 
-	// the user could have edited the location and then canceled the edit
-	// let's get the correct location back in view
-	MapWidget::instance()->centerOnDiveSite(current_dive ? current_dive->dive_site : nullptr);
 	// show the profile and dive info
 	MainWindow::instance()->graphics->replot();
 	MainWindow::instance()->setEnabledToolbar(true);
