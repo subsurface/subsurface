@@ -220,11 +220,8 @@ void MainTab::enableEdition(EditMode newEditMode)
 	ui.tabWidget->setTabEnabled(5, false);
 
 	ui.dateEdit->setEnabled(true);
-	if (amount_selected > 1) {
-		displayMessage(tr("Multiple dives are being edited."));
-	} else {
-		displayMessage(tr("This dive is being edited."));
-	}
+	displayMessage(tr("This dive is being edited."));
+
 	editMode = newEditMode != NONE ? newEditMode : DIVE;
 }
 
