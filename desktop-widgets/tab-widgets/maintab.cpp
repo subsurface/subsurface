@@ -215,9 +215,6 @@ void MainTab::enableEdition(EditMode newEditMode)
 	MainWindow::instance()->diveList->setEnabled(false);
 	MainWindow::instance()->setEnabledToolbar(false);
 	MainWindow::instance()->enterEditState();
-	ui.tabWidget->setTabEnabled(2, false);
-	ui.tabWidget->setTabEnabled(3, false);
-	ui.tabWidget->setTabEnabled(5, false);
 
 	ui.dateEdit->setEnabled(true);
 	displayMessage(tr("This dive is being edited."));
@@ -375,9 +372,6 @@ void MainTab::updateDiveInfo()
 			if (lastSelectedDive && !onDiveSiteTab)
 				lastTabSelectedDive = ui.tabWidget->currentIndex();
 			ui.tabWidget->setTabText(0, tr("Trip notes"));
-			ui.tabWidget->setTabEnabled(1, false);
-			ui.tabWidget->setTabEnabled(2, false);
-			ui.tabWidget->setTabEnabled(5, false);
 			// Recover the tab selected for last dive trip but only if we're not on the dive site tab
 			if (lastSelectedDive && !onDiveSiteTab)
 				ui.tabWidget->setCurrentIndex(lastTabSelectedDiveTrip);
@@ -416,11 +410,6 @@ void MainTab::updateDiveInfo()
 			if (!lastSelectedDive && !onDiveSiteTab)
 				lastTabSelectedDiveTrip = ui.tabWidget->currentIndex();
 			ui.tabWidget->setTabText(0, tr("Notes"));
-			ui.tabWidget->setTabEnabled(1, true);
-			ui.tabWidget->setTabEnabled(2, true);
-			ui.tabWidget->setTabEnabled(3, true);
-			ui.tabWidget->setTabEnabled(4, true);
-			ui.tabWidget->setTabEnabled(5, true);
 			// Recover the tab selected for last dive but only if we're not on the dive site tab
 			if (!lastSelectedDive && !onDiveSiteTab)
 				ui.tabWidget->setCurrentIndex(lastTabSelectedDive);
