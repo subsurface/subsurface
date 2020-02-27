@@ -25,16 +25,20 @@ public:
 		MOD,
 		MND,
 		USE,
+		WORKINGPRESS_INT,
+		SIZE_INT,
 		COLUMNS
 	};
 
+	enum Roles {
+		PASS_IN_ROLE = Qt::UserRole + 1 // For setting data: don't do any conversions
+	};
 	explicit CylindersModel(QObject *parent = 0);
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
-	void passInData(const QModelIndex &index, const QVariant &value);
 	void add();
 	void clear();
 	void updateDive();
@@ -67,7 +71,6 @@ public:
 	void add();
 	void updateDive();
 	cylinder_t *cylinderAt(const QModelIndex &index);
-	void passInData(const QModelIndex &index, const QVariant &value);
 public
 slots:
 	void remove(QModelIndex index);
