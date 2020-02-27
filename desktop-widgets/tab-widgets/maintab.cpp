@@ -540,9 +540,7 @@ void MainTab::acceptChanges()
 
 void MainTab::rejectChanges()
 {
-	EditMode lastMode = editMode;
-
-	if (lastMode != NONE && current_dive) {
+	if (editMode != NONE && current_dive) {
 		if (QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(tr("Discard the changes?"),
 									       tr("You are about to discard your changes.")),
 					 QMessageBox::Discard | QMessageBox::Cancel, QMessageBox::Discard) != QMessageBox::Discard) {
