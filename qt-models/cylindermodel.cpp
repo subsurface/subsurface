@@ -647,11 +647,6 @@ void CylindersModelFiltered::remove(QModelIndex index)
 	source.remove(mapToSource(index));
 }
 
-cylinder_t *CylindersModelFiltered::cylinderAt(const QModelIndex &index)
-{
-	return source.cylinderAt(mapToSource(index));
-}
-
 bool CylindersModelFiltered::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
 	return prefs.display_unused_tanks || source.cylinderUsed(source_row);
