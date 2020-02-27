@@ -40,7 +40,6 @@
         <file alias="bailout-icon">icons/OC.png</file>
         <file alias="salinity-warning-icon">icons/bluewarning.png</file>
         <file alias="dive-bookmark-icon">icons/flag.png</file>
-        <file alias="scale-icon">icons/scale.png</file>
         <file alias="ruler-icon">icons/ruler.png</file>
         <file alias="poster-icon">icons/poster.png</file>
         <file>xslt/commonTemplates.xsl</file>
