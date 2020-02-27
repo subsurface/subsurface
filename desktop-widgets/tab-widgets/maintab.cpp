@@ -532,8 +532,6 @@ void MainTab::acceptChanges()
 
 	EditMode lastMode = editMode;
 	editMode = IGNORE_MODE;
-	tabBar()->setTabIcon(0, QIcon()); // Notes
-	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	ui.dateEdit->setEnabled(true);
 	hideMessage();
 
@@ -598,8 +596,6 @@ void MainTab::rejectChanges()
 	}
 	ui.dateEdit->setEnabled(true);
 	editMode = NONE;
-	tabBar()->setTabIcon(0, QIcon()); // Notes
-	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	hideMessage();
 	// no harm done to call cancelPlan even if we were not PLAN mode...
 	DivePlannerPointsModel::instance()->cancelPlan();
