@@ -3,7 +3,6 @@
 #include "tankinfomodel.h"
 #include "models.h"
 #include "core/qthelper.h"
-#include "core/divelist.h" // for mark_divelist_changed()
 #include "core/color.h"
 #include "qt-models/diveplannermodel.h"
 #include "core/gettextfromc.h"
@@ -337,7 +336,6 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cyl->type.description);
 
 			cyl->type.size = string_to_volume(qPrintable(vString), cyl->type.workingpressure);
-			mark_divelist_changed(true);
 			if (!matches.isEmpty())
 				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl->type.size.mliter);
 		}
