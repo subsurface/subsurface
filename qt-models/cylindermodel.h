@@ -45,7 +45,6 @@ public:
 	void updateDecoDepths(pressure_t olddecopo2);
 	void updateTrashIcon();
 	void moveAtFirst(int cylid);
-	bool changed;
 	QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 	bool updateBestMixes();
 	bool cylinderUsed(int i) const;

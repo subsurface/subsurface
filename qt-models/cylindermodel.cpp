@@ -11,7 +11,6 @@
 #include "core/subsurface-string.h"
 
 CylindersModel::CylindersModel(QObject *parent) : CleanerTableModel(parent),
-	changed(false),
 	d(nullptr)
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, MOD, MND, USE, IS_USED};
@@ -329,7 +328,6 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			if (!same_string(qPrintable(type), cyl->type.description)) {
 				free((void *)cyl->type.description);
 				cyl->type.description = strdup(qPrintable(type));
-				changed = true;
 			}
 		}
 		break;
@@ -342,7 +340,6 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			mark_divelist_changed(true);
 			if (!matches.isEmpty())
 				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl->type.size.mliter);
-			changed = true;
 		}
 		break;
 	case WORKINGPRESS:
@@ -352,21 +349,16 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			cyl->type.workingpressure = string_to_pressure(qPrintable(vString));
 			if (!matches.isEmpty())
 				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::BAR), cyl->type.workingpressure.mbar / 1000.0);
-			changed = true;
 		}
 		break;
 	case START:
-		if (CHANGED()) {
+		if (CHANGED())
 			cyl->start = string_to_pressure(qPrintable(vString));
-			changed = true;
-		}
 		break;
 	case END:
-		if (CHANGED()) {
+		if (CHANGED())
 			//&& (!cyl->start.mbar || string_to_pressure(qPrintable(vString)).mbar <= cyl->start.mbar)) {
 			cyl->end = string_to_pressure(qPrintable(vString));
-			changed = true;
-		}
 		break;
 	case O2:
 		if (CHANGED()) {
@@ -382,7 +374,6 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 				modpO2.mbar = prefs.decopo2;
 			cyl->depth = gas_mod(cyl->gasmix, modpO2, d, M_OR_FT(3, 10));
 			cyl->bestmix_o2 = false;
-			changed = true;
 		}
 		break;
 	case HE:
@@ -392,14 +383,11 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
 				cyl->gasmix.o2.permille = 1000 - get_he(cyl->gasmix);
 			cyl->bestmix_he = false;
-			changed = true;
 		}
 		break;
 	case DEPTH:
-		if (CHANGED()) {
+		if (CHANGED())
 			cyl->depth = string_to_depth(qPrintable(vString));
-			changed = true;
-		}
 		break;
 	case MOD:
 		if (CHANGED()) {
@@ -415,7 +403,6 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			pressure_t modpO2;
 			modpO2.mbar = prefs.decopo2;
 			cyl->depth = gas_mod(cyl->gasmix, modpO2, d, M_OR_FT(3, 10));
-			changed = true;
 		}
 		break;
 	case MND:
@@ -429,7 +416,6 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 				// Calculate fHe for input depth
 				cyl->gasmix.he = best_he(string_to_depth(qPrintable(vString)), d, prefs.o2narcotic, cyl->gasmix.o2);
 			}
-			changed = true;
 		}
 		break;
 	case USE:
@@ -438,7 +424,6 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			if (use > NUM_GAS_USE - 1 || use < 0)
 				use = 0;
 			cyl->cylinder_use = (enum cylinderuse)use;
-			changed = true;
 		}
 		break;
 	}
@@ -459,7 +444,6 @@ void CylindersModel::add()
 	cylinder_t cyl = create_new_cylinder(d);
 	beginInsertRows(QModelIndex(), row, row);
 	add_to_cylinder_table(&d->cylinders, row, cyl);
-	changed = true;
 	endInsertRows();
 	emit dataChanged(createIndex(row, 0), createIndex(row, COLUMNS - 1));
 }
@@ -502,7 +486,6 @@ void CylindersModel::remove(QModelIndex index)
 			cyl->cylinder_use = NOT_USED;
 		else if (cyl->cylinder_use == NOT_USED)
 			cyl->cylinder_use = OC_GAS;
-		changed = true;
 		dataChanged(index, index);
 		return;
 	}
@@ -515,13 +498,11 @@ void CylindersModel::remove(QModelIndex index)
 
 	beginRemoveRows(QModelIndex(), index.row(), index.row());
 	remove_cylinder(d, index.row());
-	changed = true;
 	endRemoveRows();
 
 	std::vector<int> mapping = get_cylinder_map_for_remove(d->cylinders.nr + 1, index.row());
 	cylinder_renumber(d, &mapping[0]);
 	DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
-	changed = true;
 }
 
 void CylindersModel::cylinderAdded(struct dive *changed, int pos)
@@ -576,7 +557,6 @@ void CylindersModel::moveAtFirst(int cylid)
 	cylinder_renumber(d, &mapping[0]);
 	if (in_planner())
 		DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
-	changed = true;
 	endMoveRows();
 }
 
