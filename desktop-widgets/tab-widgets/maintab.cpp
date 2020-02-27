@@ -210,21 +210,6 @@ void MainTab::enableEdition(EditMode newEditMode)
 {
 	if (((newEditMode == DIVE || newEditMode == NONE) && current_dive == NULL) || editMode != NONE)
 		return;
-	if ((newEditMode == DIVE || newEditMode == NONE) &&
-	    current_dive->dc.model &&
-	    strcmp(current_dive->dc.model, "manually added dive") == 0) {
-		// editCurrentDive will call enableEdition with newEditMode == MANUALLY_ADDED_DIVE
-		// so exit this function here after editCurrentDive() returns
-
-
-
-		// FIXME : can we get rid of this recursive crap?
-
-
-
-		MainWindow::instance()->editCurrentDive();
-		return;
-	}
 
 	ui.editDiveSiteButton->setEnabled(false);
 	MainWindow::instance()->diveList->setEnabled(false);
