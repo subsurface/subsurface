@@ -236,6 +236,10 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			break;
 		case USE:
 			return gettextFromC::tr(cylinderuse_text[cyl->cylinder_use]);
+		case WORKINGPRESS_INT:
+			return static_cast<int>(cyl->type.workingpressure.mbar);
+		case SIZE_INT:
+			return static_cast<int>(cyl->type.size.mliter);
 		}
 		break;
 	case Qt::DecorationRole:
@@ -283,33 +287,35 @@ cylinder_t *CylindersModel::cylinderAt(const QModelIndex &index)
 	return get_cylinder(&displayed_dive, index.row());
 }
 
-// this is our magic 'pass data in' function that allows the delegate to get
-// the data here without silly unit conversions;
-// so we only implement the two columns we care about
-void CylindersModel::passInData(const QModelIndex &index, const QVariant &value)
-{
-	cylinder_t *cyl = cylinderAt(index);
-	switch (index.column()) {
-	case SIZE:
-		if (cyl->type.size.mliter != value.toInt()) {
-			cyl->type.size.mliter = value.toInt();
-			dataChanged(index, index);
-		}
-		break;
-	case WORKINGPRESS:
-		if (cyl->type.workingpressure.mbar != value.toInt()) {
-			cyl->type.workingpressure.mbar = value.toInt();
-			dataChanged(index, index);
-		}
-		break;
-	}
-}
-
 bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
 	QString vString;
 
 	cylinder_t *cyl = cylinderAt(index);
+	if (!cyl)
+		return false;
+
+	if (role == PASS_IN_ROLE) {
+		// this is our magic 'pass data in' function that allows the delegate to get
+		// the data here without silly unit conversions;
+		// so we only implement the two columns we care about
+		switch (index.column()) {
+		case SIZE:
+			if (cyl->type.size.mliter != value.toInt()) {
+				cyl->type.size.mliter = value.toInt();
+				dataChanged(index, index);
+			}
+			return true;
+		case WORKINGPRESS:
+			if (cyl->type.workingpressure.mbar != value.toInt()) {
+				cyl->type.workingpressure.mbar = value.toInt();
+				dataChanged(index, index);
+			}
+			return true;
+		}
+		return false;
+	}
+
 	switch (index.column()) {
 	case TYPE:
 		if (!value.isNull()) {
@@ -639,11 +645,6 @@ CylindersModel *CylindersModelFiltered::model()
 void CylindersModelFiltered::remove(QModelIndex index)
 {
 	source.remove(mapToSource(index));
-}
-
-void CylindersModelFiltered::passInData(const QModelIndex &index, const QVariant &value)
-{
-	source.passInData(mapToSource(index), value);
 }
 
 cylinder_t *CylindersModelFiltered::cylinderAt(const QModelIndex &index)
