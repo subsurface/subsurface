@@ -636,19 +636,9 @@ void CylindersModelFiltered::clear()
 	source.clear();
 }
 
-void CylindersModelFiltered::add()
-{
-	source.add();
-}
-
 CylindersModel *CylindersModelFiltered::model()
 {
 	return &source;
-}
-
-void CylindersModelFiltered::remove(QModelIndex index)
-{
-	source.remove(mapToSource(index));
 }
 
 bool CylindersModelFiltered::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const

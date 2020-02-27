@@ -70,11 +70,7 @@ public:
 	CylindersModel *model(); // Access to unfiltered base model
 
 	void clear();
-	void add();
 	void updateDive(dive *d);
-public
-slots:
-	void remove(QModelIndex index);
 private:
 	CylindersModel source;
 	bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
