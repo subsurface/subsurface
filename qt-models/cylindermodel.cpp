@@ -291,7 +291,6 @@ cylinder_t *CylindersModel::cylinderAt(const QModelIndex &index)
 
 bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	QString vString;
 
 	if (!d)
 		return false;
@@ -321,7 +320,9 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		return false;
 	}
 
-	bool changed = CHANGED();
+	QString vString = value.toString();
+	bool changed = vString != data(index, role).toString();
+
 	if (index.column() != TYPE && !changed)
 		return false;
 
