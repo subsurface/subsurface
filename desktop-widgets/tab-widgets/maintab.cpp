@@ -534,10 +534,6 @@ void MainTab::acceptChanges()
 	ui.dateEdit->setEnabled(true);
 	hideMessage();
 
-	// TODO: This is a temporary hack until the equipment tab is included in the undo system:
-	// The equipment tab is hardcoded at the first place of the "extra widgets".
-	((TabDiveEquipment *)extraWidgets[0])->acceptChanges();
-
 	if (lastMode == MANUALLY_ADDED_DIVE) {
 		MainWindow::instance()->showProfile();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
@@ -605,10 +601,6 @@ void MainTab::rejectChanges()
 	else
 		clear_dive(&displayed_dive);
 	updateDiveInfo();
-
-	// TODO: This is a temporary hack until the equipment tab is included in the undo system:
-	// The equipment tab is hardcoded at the first place of the "extra widgets".
-	((TabDiveEquipment *)extraWidgets[0])->rejectChanges();
 
 	// the user could have edited the location and then canceled the edit
 	// let's get the correct location back in view

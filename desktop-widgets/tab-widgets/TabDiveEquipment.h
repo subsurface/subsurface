@@ -21,8 +21,6 @@ public:
 	~TabDiveEquipment();
 	void updateData() override;
 	void clear() override;
-	void acceptChanges();
-	void rejectChanges();
 	void divesEdited(int i);
 	void closeWarning();
 
