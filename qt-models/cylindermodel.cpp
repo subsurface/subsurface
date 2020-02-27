@@ -321,17 +321,18 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		return false;
 	}
 
+	bool changed = CHANGED();
+	if (index.column() != TYPE && !changed)
+		return false;
+
 	switch (index.column()) {
-	case TYPE: {
-			QString type = value.toString();
-			if (!same_string(qPrintable(type), cyl->type.description)) {
-				free((void *)cyl->type.description);
-				cyl->type.description = strdup(qPrintable(type));
-			}
+	case TYPE:
+		if (!same_string(qPrintable(vString), cyl->type.description)) {
+			free((void *)cyl->type.description);
+			cyl->type.description = strdup(qPrintable(vString));
 		}
 		break;
-	case SIZE:
-		if (CHANGED()) {
+	case SIZE: {
 			TankInfoModel *tanks = TankInfoModel::instance();
 			QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cyl->type.description);
 
@@ -340,8 +341,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl->type.size.mliter);
 		}
 		break;
-	case WORKINGPRESS:
-		if (CHANGED()) {
+	case WORKINGPRESS: {
 			TankInfoModel *tanks = TankInfoModel::instance();
 			QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cyl->type.description);
 			cyl->type.workingpressure = string_to_pressure(qPrintable(vString));
@@ -350,16 +350,13 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		}
 		break;
 	case START:
-		if (CHANGED())
-			cyl->start = string_to_pressure(qPrintable(vString));
+		cyl->start = string_to_pressure(qPrintable(vString));
 		break;
 	case END:
-		if (CHANGED())
-			//&& (!cyl->start.mbar || string_to_pressure(qPrintable(vString)).mbar <= cyl->start.mbar)) {
-			cyl->end = string_to_pressure(qPrintable(vString));
+		//if (!cyl->start.mbar || string_to_pressure(qPrintable(vString)).mbar <= cyl->start.mbar) {
+		cyl->end = string_to_pressure(qPrintable(vString));
 		break;
-	case O2:
-		if (CHANGED()) {
+	case O2: {
 			cyl->gasmix.o2 = string_to_fraction(qPrintable(vString));
 			// fO2 + fHe must not be greater than 1
 			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
@@ -375,20 +372,16 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		}
 		break;
 	case HE:
-		if (CHANGED()) {
-			cyl->gasmix.he = string_to_fraction(qPrintable(vString));
-			// fO2 + fHe must not be greater than 1
-			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
-				cyl->gasmix.o2.permille = 1000 - get_he(cyl->gasmix);
-			cyl->bestmix_he = false;
-		}
+		cyl->gasmix.he = string_to_fraction(qPrintable(vString));
+		// fO2 + fHe must not be greater than 1
+		if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
+			cyl->gasmix.o2.permille = 1000 - get_he(cyl->gasmix);
+		cyl->bestmix_he = false;
 		break;
 	case DEPTH:
-		if (CHANGED())
-			cyl->depth = string_to_depth(qPrintable(vString));
+		cyl->depth = string_to_depth(qPrintable(vString));
 		break;
-	case MOD:
-		if (CHANGED()) {
+	case MOD: {
 			if (QString::compare(qPrintable(vString), "*") == 0) {
 				cyl->bestmix_o2 = true;
 				// Calculate fO2 for max. depth
@@ -404,20 +397,17 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		}
 		break;
 	case MND:
-		if (CHANGED()) {
-			if (QString::compare(qPrintable(vString), "*") == 0) {
-				cyl->bestmix_he = true;
-				// Calculate fO2 for max. depth
-				cyl->gasmix.he = best_he(d->maxdepth, d, prefs.o2narcotic, cyl->gasmix.o2);
-			} else {
-				cyl->bestmix_he = false;
-				// Calculate fHe for input depth
-				cyl->gasmix.he = best_he(string_to_depth(qPrintable(vString)), d, prefs.o2narcotic, cyl->gasmix.o2);
-			}
+		if (QString::compare(qPrintable(vString), "*") == 0) {
+			cyl->bestmix_he = true;
+			// Calculate fO2 for max. depth
+			cyl->gasmix.he = best_he(d->maxdepth, d, prefs.o2narcotic, cyl->gasmix.o2);
+		} else {
+			cyl->bestmix_he = false;
+			// Calculate fHe for input depth
+			cyl->gasmix.he = best_he(string_to_depth(qPrintable(vString)), d, prefs.o2narcotic, cyl->gasmix.o2);
 		}
 		break;
-	case USE:
-		if (CHANGED()) {
+	case USE: {
 			int use = vString.toInt();
 			if (use > NUM_GAS_USE - 1 || use < 0)
 				use = 0;
