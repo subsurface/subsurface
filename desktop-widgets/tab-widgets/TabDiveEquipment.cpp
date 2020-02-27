@@ -152,8 +152,7 @@ void TabDiveEquipment::clear()
 
 void TabDiveEquipment::addCylinder_clicked()
 {
-	MainWindow::instance()->mainTab->enableEdition();
-	cylindersModel->add();
+	divesEdited(Command::addCylinder(false));
 }
 
 void TabDiveEquipment::addWeight_clicked()
