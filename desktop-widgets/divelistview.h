@@ -66,6 +66,7 @@ slots:
 private:
 	void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags flags) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
+	void keyPressEvent(QKeyEvent *event) override;
 	void selectAll() override;
 	void selectionChangeDone();
 	DiveTripModelBase::Layout currentLayout;
