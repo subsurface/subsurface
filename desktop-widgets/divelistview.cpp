@@ -554,6 +554,19 @@ void DiveListView::mouseReleaseEvent(QMouseEvent *event)
 		selectionChangeDone();
 }
 
+void DiveListView::keyPressEvent(QKeyEvent *event)
+{
+	// Hook into cursor-up and cursor-down events and update selection if necessary.
+	// See comment in mouseReleaseEvent()
+	if (event->key() != Qt::Key_Down && event->key() != Qt::Key_Up)
+		return QTreeView::keyPressEvent(event);
+	QModelIndexList selectionBefore = selectionModel()->selectedRows();
+	QTreeView::keyPressEvent(event);
+	QModelIndexList selectionAfter = selectionModel()->selectedRows();
+	if (selectionBefore != selectionAfter)
+		selectionChangeDone();
+}
+
 void DiveListView::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags flags)
 {
 	// We hook into QTreeView's setSelection() to update the UI
