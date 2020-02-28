@@ -322,6 +322,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			QByteArray ba = value.toByteArray();
 			const char *text = ba.constData();
 			if (!cyl->type.description || strcmp(cyl->type.description, text)) {
+				free((void *)cyl->type.description);
 				cyl->type.description = strdup(text);
 				changed = true;
 			}
