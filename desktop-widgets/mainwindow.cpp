@@ -1793,21 +1793,19 @@ void MainWindow::editCurrentDive()
 	struct dive *d = current_dive;
 	QString defaultDC(d->dc.model);
 	DivePlannerPointsModel::instance()->clear();
-	disableShortcuts();
 	if (defaultDC == "manually added dive") {
+		disableShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 		graphics->setAddState();
 		setApplicationState(ApplicationState::EditDive);
 		DivePlannerPointsModel::instance()->loadFromDive(d);
 		mainTab->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
 	} else if (defaultDC == "planned dive") {
+		disableShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 		setApplicationState(ApplicationState::EditPlannedDive);
 		DivePlannerPointsModel::instance()->loadFromDive(d);
 		mainTab->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
-	} else {
-		setApplicationState(ApplicationState::EditDive);
-		mainTab->enableEdition();
 	}
 }
 
