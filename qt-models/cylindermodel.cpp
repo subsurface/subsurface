@@ -8,6 +8,7 @@
 #include "qt-models/diveplannermodel.h"
 #include "core/gettextfromc.h"
 #include "core/subsurface-qt/divelistnotifier.h"
+#include "core/subsurface-string.h"
 
 CylindersModel::CylindersModel(QObject *parent) :
 	CleanerTableModel(parent),
@@ -317,13 +318,11 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	}
 
 	switch (index.column()) {
-	case TYPE:
-		if (!value.isNull()) {
-			QByteArray ba = value.toByteArray();
-			const char *text = ba.constData();
-			if (!cyl->type.description || strcmp(cyl->type.description, text)) {
+	case TYPE: {
+			QString type = value.toString();
+			if (!same_string(qPrintable(type), cyl->type.description)) {
 				free((void *)cyl->type.description);
-				cyl->type.description = strdup(text);
+				cyl->type.description = strdup(qPrintable(type));
 				changed = true;
 			}
 		}
