@@ -31,7 +31,9 @@ public:
 	};
 
 	enum Roles {
-		PASS_IN_ROLE = Qt::UserRole + 1 // For setting data: don't do any conversions
+		TEMP_ROLE = Qt::UserRole + 1, // Temporarily set data, but don't store in dive
+		COMMIT_ROLE, // Save the temporary data to the dive. Must be set with Column == TYPE.
+		REVERT_ROLE // Revert to original data from dive. Must be set with Column == TYPE.
 	};
 	explicit CylindersModel(QObject *parent = 0);
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -59,7 +61,14 @@ slots:
 
 private:
 	dive *d;
+	// Used if we temporarily change a line because the user is selecting a weight type
+	int tempRow;
+	cylinder_t tempCyl;
+
 	cylinder_t *cylinderAt(const QModelIndex &index);
+	void initTempCyl(int row);
+	void clearTempCyl();
+	void commitTempCyl(int row);
 };
 
 // Cylinder model that hides unused cylinders if the pref.show_unused_cylinders flag is not set

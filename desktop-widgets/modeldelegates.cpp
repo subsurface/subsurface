@@ -230,12 +230,6 @@ void ComboBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionV
 	editor->setGeometry(defaultRect);
 }
 
-static struct RevertCylinderData {
-	QString type;
-	int pressure;
-	int size;
-} currCylinderData;
-
 void TankInfoDelegate::setModelData(QWidget*, QAbstractItemModel*, const QModelIndex&) const
 {
 	QAbstractItemModel *mymodel = currCombo.model;
@@ -254,9 +248,9 @@ void TankInfoDelegate::setModelData(QWidget*, QAbstractItemModel*, const QModelI
 	int tankSize = tanks->data(tanks->index(row, TankInfoModel::ML)).toInt();
 	int tankPressure = tanks->data(tanks->index(row, TankInfoModel::BAR)).toInt();
 
-	mymodel->setData(IDX(CylindersModel::TYPE), cylinderName, Qt::EditRole);
-	mymodel->setData(IDX(CylindersModel::WORKINGPRESS), tankPressure, CylindersModel::PASS_IN_ROLE);
-	mymodel->setData(IDX(CylindersModel::SIZE), tankSize, CylindersModel::PASS_IN_ROLE);
+	mymodel->setData(IDX(CylindersModel::TYPE), cylinderName, CylindersModel::TEMP_ROLE);
+	mymodel->setData(IDX(CylindersModel::WORKINGPRESS), tankPressure, CylindersModel::TEMP_ROLE);
+	mymodel->setData(IDX(CylindersModel::SIZE), tankSize, CylindersModel::TEMP_ROLE);
 }
 
 TankInfoDelegate::TankInfoDelegate(QObject *parent) : ComboBoxDelegate(TankInfoModel::instance(), parent, true)
@@ -275,25 +269,19 @@ void TankInfoDelegate::reenableReplot(QWidget*, QAbstractItemDelegate::EndEditHi
 
 void TankInfoDelegate::editorClosed(QWidget*, QAbstractItemDelegate::EndEditHint hint)
 {
-	if (hint == QAbstractItemDelegate::NoHint ||
-	    hint == QAbstractItemDelegate::RevertModelCache) {
-		QAbstractItemModel *mymodel = currCombo.model;
-		mymodel->setData(IDX(CylindersModel::TYPE), currCylinderData.type, Qt::EditRole);
-		mymodel->setData(IDX(CylindersModel::WORKINGPRESS), currCylinderData.pressure, CylindersModel::PASS_IN_ROLE);
-		mymodel->setData(IDX(CylindersModel::SIZE), currCylinderData.size, CylindersModel::PASS_IN_ROLE);
-	}
+	QAbstractItemModel *mymodel = currCombo.model;
+	// Ugly hack: We misuse setData() with COMMIT_ROLE or REVERT_ROLE to commit or
+	// revert the current row. We send in the type, because we may get multiple
+	// end events and thus can prevent multiple commits.
+	if (hint == QAbstractItemDelegate::RevertModelCache)
+		mymodel->setData(IDX(CylindersModel::TYPE), currCombo.activeText, CylindersModel::REVERT_ROLE);
+	else
+		mymodel->setData(IDX(CylindersModel::TYPE), currCombo.activeText, CylindersModel::COMMIT_ROLE);
 }
 
 QWidget *TankInfoDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	// ncreate editor needs to be called before because it will populate a few
-	// things in the currCombo global var.
 	QWidget *delegate = ComboBoxDelegate::createEditor(parent, option, index);
-	QAbstractItemModel *model = currCombo.model;
-	int row = index.row();
-	currCylinderData.type = model->data(model->index(row, CylindersModel::TYPE)).value<QString>();
-	currCylinderData.pressure = model->data(model->index(row, CylindersModel::WORKINGPRESS_INT)).value<int>();
-	currCylinderData.size = model->data(model->index(row, CylindersModel::SIZE_INT)).value<int>();
 	MainWindow::instance()->graphics->setReplot(false);
 	return delegate;
 }

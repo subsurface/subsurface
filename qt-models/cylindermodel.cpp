@@ -2,6 +2,7 @@
 #include "cylindermodel.h"
 #include "tankinfomodel.h"
 #include "models.h"
+#include "commands/command.h"
 #include "core/qthelper.h"
 #include "core/color.h"
 #include "qt-models/diveplannermodel.h"
@@ -10,7 +11,9 @@
 #include "core/subsurface-string.h"
 
 CylindersModel::CylindersModel(QObject *parent) : CleanerTableModel(parent),
-	d(nullptr)
+	d(nullptr),
+	tempRow(-1),
+	tempCyl(empty_cylinder)
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, MOD, MND, USE, IS_USED};
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << tr("O₂%") << tr("He%")
@@ -155,7 +158,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 	}
 
-	const cylinder_t *cyl = get_cylinder(d, index.row());
+	const cylinder_t *cyl = index.row() == tempRow ? &tempCyl : get_cylinder(d, index.row());
 
 	switch (role) {
 	case Qt::BackgroundRole: {
@@ -299,25 +302,49 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	if (!cyl)
 		return false;
 
-	if (role == PASS_IN_ROLE) {
-		// this is our magic 'pass data in' function that allows the delegate to get
-		// the data here without silly unit conversions;
-		// so we only implement the two columns we care about
+	// Here we handle a few cases that allow us to set / commit / revert
+	// a temporary row. This is a horribly misuse of the model/view system.
+	// The reason it is done this way is that the planner and the equipment
+	// tab use different model-classes which are not in a superclass / subclass
+	// relationship.
+	switch (role) {
+	case TEMP_ROLE:
+		// TEMP_ROLE means that we are not supposed to write through to the
+		// actual dive, but a temporary cylinder that is displayed while the
+		// user browses throught the cylinder types.
+		initTempCyl(index.row());
+
 		switch (index.column()) {
+		case TYPE: {
+			QString type = value.toString();
+			if (!same_string(qPrintable(type), tempCyl.type.description)) {
+				free((void *)tempCyl.type.description);
+				tempCyl.type.description = strdup(qPrintable(type));
+				dataChanged(index, index);
+			}
+		}
 		case SIZE:
-			if (cyl->type.size.mliter != value.toInt()) {
-				cyl->type.size.mliter = value.toInt();
+			if (tempCyl.type.size.mliter != value.toInt()) {
+				tempCyl.type.size.mliter = value.toInt();
 				dataChanged(index, index);
 			}
 			return true;
 		case WORKINGPRESS:
-			if (cyl->type.workingpressure.mbar != value.toInt()) {
-				cyl->type.workingpressure.mbar = value.toInt();
+			if (tempCyl.type.workingpressure.mbar != value.toInt()) {
+				tempCyl.type.workingpressure.mbar = value.toInt();
 				dataChanged(index, index);
 			}
 			return true;
 		}
 		return false;
+	case COMMIT_ROLE:
+		commitTempCyl(index.row());
+		return true;
+	case REVERT_ROLE:
+		clearTempCyl();
+		return true;
+	default:
+		break;
 	}
 
 	QString vString = value.toString();
@@ -619,6 +646,54 @@ void CylindersModel::cylindersReset(const QVector<dive *> &dives)
 	// And update the model (the actual change was already performed in the backend)..
 	beginResetModel();
 	endResetModel();
+}
+
+// Save the cylinder in the given row so that we can revert if the user cancels a type-editing action.
+void CylindersModel::initTempCyl(int row)
+{
+	if (!d || tempRow == row)
+		return;
+	clearTempCyl();
+	const cylinder_t *cyl = get_cylinder(d, row);
+	if (!cyl)
+		return;
+
+	tempRow = row;
+	tempCyl = clone_cylinder(*cyl);
+
+	dataChanged(index(row, TYPE), index(row, USE));
+}
+
+void CylindersModel::clearTempCyl()
+{
+	if (tempRow < 0)
+		return;
+	int oldRow = tempRow;
+	tempRow = -1;
+	free_cylinder(tempCyl);
+	dataChanged(index(oldRow, TYPE), index(oldRow, USE));
+}
+
+void CylindersModel::commitTempCyl(int row)
+{
+#ifndef SUBSURFACE_MOBILE
+	if (tempRow < 0)
+		return;
+	if (row != tempRow)
+		return clearTempCyl(); // Huh? We are supposed to commit a different row than the one we stored?
+	cylinder_t *cyl = get_cylinder(d, tempRow);
+	if (!cyl)
+		return;
+	// Only submit a command if the type changed
+	if (!same_string(cyl->type.description, tempCyl.type.description) || gettextFromC::tr(cyl->type.description) != QString(tempCyl.type.description)) {
+		if (in_planner())
+			std::swap(*cyl, tempCyl);
+		else
+			Command::editCylinder(tempRow, tempCyl, false);
+	}
+	free_cylinder(tempCyl);
+	tempRow = -1;
+#endif
 }
 
 CylindersModelFiltered::CylindersModelFiltered(QObject *parent) : QSortFilterProxyModel(parent)
