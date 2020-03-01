@@ -392,6 +392,16 @@ cylinder_t *get_or_create_cylinder(struct dive *d, int idx)
 	return &d->cylinders.cylinders[idx];
 }
 
+cylinder_t create_new_cylinder(const struct dive *d)
+{
+	cylinder_t cyl = empty_cylinder;
+	fill_default_cylinder(d, &cyl);
+	cyl.start = cyl.type.workingpressure;
+	cyl.manually_added = true;
+	cyl.cylinder_use = OC_GAS;
+	return cyl;
+}
+
 #ifdef DEBUG_CYL
 void dump_cylinders(struct dive *dive, bool verbose)
 {

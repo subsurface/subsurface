@@ -448,11 +448,7 @@ int CylindersModel::rowCount(const QModelIndex&) const
 void CylindersModel::add()
 {
 	int row = rows;
-	cylinder_t cyl = empty_cylinder;
-	fill_default_cylinder(&displayed_dive, &cyl);
-	cyl.start = cyl.type.workingpressure;
-	cyl.manually_added = true;
-	cyl.cylinder_use = OC_GAS;
+	cylinder_t cyl = create_new_cylinder(&displayed_dive);
 	beginInsertRows(QModelIndex(), row, row);
 	add_to_cylinder_table(&displayed_dive.cylinders, row, cyl);
 	rows++;
