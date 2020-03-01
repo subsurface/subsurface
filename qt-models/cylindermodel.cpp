@@ -9,6 +9,7 @@
 #include "core/gettextfromc.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "core/subsurface-string.h"
+#include <string>
 
 CylindersModel::CylindersModel(QObject *parent) : CleanerTableModel(parent),
 	d(nullptr),
@@ -298,8 +299,8 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	if (!d)
 		return false;
 
-	cylinder_t *cyl = cylinderAt(index);
-	if (!cyl)
+	int row = index.row();
+	if (row < 0 || row >= d->cylinders.nr)
 		return false;
 
 	// Here we handle a few cases that allow us to set / commit / revert
@@ -350,100 +351,118 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	QString vString = value.toString();
 	bool changed = vString != data(index, role).toString();
 
+	std::string newType; // If we allocate a new type string, this makes sure that it is freed at the end of the function
+
+	// First, we make a shallow copy of the old cylinder. Then we modify the fields inside that copy.
+	// At the end, we either place an EditCylinder undo command (EquipmentTab) or copy the cylinder back (planner).
+	// Yes, this is not ideal, but the pragmatic thing to do for now.
+	cylinder_t cyl = d->cylinders.cylinders[row];
+
 	if (index.column() != TYPE && !changed)
 		return false;
 
 	switch (index.column()) {
 	case TYPE:
-		if (!same_string(qPrintable(vString), cyl->type.description)) {
-			free((void *)cyl->type.description);
-			cyl->type.description = strdup(qPrintable(vString));
-		}
+		newType = qPrintable(vString);
+		cyl.type.description = newType.c_str();
 		break;
 	case SIZE: {
 			TankInfoModel *tanks = TankInfoModel::instance();
-			QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cyl->type.description);
+			QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cyl.type.description);
 
-			cyl->type.size = string_to_volume(qPrintable(vString), cyl->type.workingpressure);
+			cyl.type.size = string_to_volume(qPrintable(vString), cyl.type.workingpressure);
 			if (!matches.isEmpty())
-				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl->type.size.mliter);
+				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl.type.size.mliter);
 		}
 		break;
 	case WORKINGPRESS: {
 			TankInfoModel *tanks = TankInfoModel::instance();
-			QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cyl->type.description);
-			cyl->type.workingpressure = string_to_pressure(qPrintable(vString));
+			QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cyl.type.description);
+			cyl.type.workingpressure = string_to_pressure(qPrintable(vString));
 			if (!matches.isEmpty())
-				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::BAR), cyl->type.workingpressure.mbar / 1000.0);
+				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::BAR), cyl.type.workingpressure.mbar / 1000.0);
 		}
 		break;
 	case START:
-		cyl->start = string_to_pressure(qPrintable(vString));
+		cyl.start = string_to_pressure(qPrintable(vString));
 		break;
 	case END:
 		//if (!cyl->start.mbar || string_to_pressure(qPrintable(vString)).mbar <= cyl->start.mbar) {
-		cyl->end = string_to_pressure(qPrintable(vString));
+		cyl.end = string_to_pressure(qPrintable(vString));
 		break;
 	case O2: {
-			cyl->gasmix.o2 = string_to_fraction(qPrintable(vString));
+			cyl.gasmix.o2 = string_to_fraction(qPrintable(vString));
 			// fO2 + fHe must not be greater than 1
-			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
-				cyl->gasmix.he.permille = 1000 - get_o2(cyl->gasmix);
+			if (get_o2(cyl.gasmix) + get_he(cyl.gasmix) > 1000)
+				cyl.gasmix.he.permille = 1000 - get_o2(cyl.gasmix);
 			pressure_t modpO2;
 			if (d->dc.divemode == PSCR)
-				modpO2.mbar = prefs.decopo2 + (1000 - get_o2(cyl->gasmix)) * SURFACE_PRESSURE *
+				modpO2.mbar = prefs.decopo2 + (1000 - get_o2(cyl.gasmix)) * SURFACE_PRESSURE *
 						prefs.o2consumption / prefs.decosac / prefs.pscr_ratio;
 			else
 				modpO2.mbar = prefs.decopo2;
-			cyl->depth = gas_mod(cyl->gasmix, modpO2, d, M_OR_FT(3, 10));
-			cyl->bestmix_o2 = false;
+			cyl.depth = gas_mod(cyl.gasmix, modpO2, d, M_OR_FT(3, 10));
+			cyl.bestmix_o2 = false;
 		}
 		break;
 	case HE:
-		cyl->gasmix.he = string_to_fraction(qPrintable(vString));
+		cyl.gasmix.he = string_to_fraction(qPrintable(vString));
 		// fO2 + fHe must not be greater than 1
-		if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
-			cyl->gasmix.o2.permille = 1000 - get_he(cyl->gasmix);
-		cyl->bestmix_he = false;
+		if (get_o2(cyl.gasmix) + get_he(cyl.gasmix) > 1000)
+			cyl.gasmix.o2.permille = 1000 - get_he(cyl.gasmix);
+		cyl.bestmix_he = false;
 		break;
 	case DEPTH:
-		cyl->depth = string_to_depth(qPrintable(vString));
+		cyl.depth = string_to_depth(qPrintable(vString));
 		break;
 	case MOD: {
 			if (QString::compare(qPrintable(vString), "*") == 0) {
-				cyl->bestmix_o2 = true;
+				cyl.bestmix_o2 = true;
 				// Calculate fO2 for max. depth
-				cyl->gasmix.o2 = best_o2(d->maxdepth, d);
+				cyl.gasmix.o2 = best_o2(d->maxdepth, d);
 			} else {
-				cyl->bestmix_o2 = false;
+				cyl.bestmix_o2 = false;
 				// Calculate fO2 for input depth
-				cyl->gasmix.o2 = best_o2(string_to_depth(qPrintable(vString)), d);
+				cyl.gasmix.o2 = best_o2(string_to_depth(qPrintable(vString)), d);
 			}
 			pressure_t modpO2;
 			modpO2.mbar = prefs.decopo2;
-			cyl->depth = gas_mod(cyl->gasmix, modpO2, d, M_OR_FT(3, 10));
+			cyl.depth = gas_mod(cyl.gasmix, modpO2, d, M_OR_FT(3, 10));
 		}
 		break;
 	case MND:
 		if (QString::compare(qPrintable(vString), "*") == 0) {
-			cyl->bestmix_he = true;
+			cyl.bestmix_he = true;
 			// Calculate fO2 for max. depth
-			cyl->gasmix.he = best_he(d->maxdepth, d, prefs.o2narcotic, cyl->gasmix.o2);
+			cyl.gasmix.he = best_he(d->maxdepth, d, prefs.o2narcotic, cyl.gasmix.o2);
 		} else {
-			cyl->bestmix_he = false;
+			cyl.bestmix_he = false;
 			// Calculate fHe for input depth
-			cyl->gasmix.he = best_he(string_to_depth(qPrintable(vString)), d, prefs.o2narcotic, cyl->gasmix.o2);
+			cyl.gasmix.he = best_he(string_to_depth(qPrintable(vString)), d, prefs.o2narcotic, cyl.gasmix.o2);
 		}
 		break;
 	case USE: {
 			int use = vString.toInt();
 			if (use > NUM_GAS_USE - 1 || use < 0)
 				use = 0;
-			cyl->cylinder_use = (enum cylinderuse)use;
+			cyl.cylinder_use = (enum cylinderuse)use;
 		}
 		break;
 	}
-	dataChanged(index, index);
+
+	if (in_planner()) {
+		// In the planner - simply overwrite the cylinder in the dive with the modified cylinder.
+		// We have only made a shallow copy, therefore copy the new cylinder first.
+		cylinder_t copy = clone_cylinder(cyl);
+		std::swap(copy, d->cylinders.cylinders[row]);
+		free_cylinder(copy);
+		dataChanged(index, index);
+	} else {
+#ifndef SUBSURFACE_MOBILE
+		// On the EquipmentTab - place an editCylinder command.
+		Command::editCylinder(index.row(), cyl, false);
+#endif
+	}
 	return true;
 }
 
