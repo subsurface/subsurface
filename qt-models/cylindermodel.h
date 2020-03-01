@@ -35,7 +35,7 @@ public:
 		COMMIT_ROLE, // Save the temporary data to the dive. Must be set with Column == TYPE.
 		REVERT_ROLE // Revert to original data from dive. Must be set with Column == TYPE.
 	};
-	explicit CylindersModel(QObject *parent = 0);
+	explicit CylindersModel(bool planner, QObject *parent = 0); // First argument: true if this model is used for the planner
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
@@ -61,6 +61,7 @@ slots:
 
 private:
 	dive *d;
+	bool inPlanner;
 	// Used if we temporarily change a line because the user is selecting a weight type
 	int tempRow;
 	cylinder_t tempCyl;

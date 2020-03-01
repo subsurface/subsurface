@@ -11,8 +11,9 @@
 #include "core/subsurface-string.h"
 #include <string>
 
-CylindersModel::CylindersModel(QObject *parent) : CleanerTableModel(parent),
+CylindersModel::CylindersModel(bool planner, QObject *parent) : CleanerTableModel(parent),
 	d(nullptr),
+	inPlanner(planner),
 	tempRow(-1),
 	tempCyl(empty_cylinder)
 {
@@ -28,7 +29,7 @@ CylindersModel::CylindersModel(QObject *parent) : CleanerTableModel(parent),
 
 QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-	if (role == Qt::DisplayRole && orientation == Qt::Horizontal && in_planner() && section == WORKINGPRESS)
+	if (role == Qt::DisplayRole && orientation == Qt::Horizontal && inPlanner && section == WORKINGPRESS)
 		return tr("Start press.");
 	else
 		return CleanerTableModel::headerData(section, orientation, role);
@@ -249,8 +250,8 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 	case Qt::DecorationRole:
 	case Qt::SizeHintRole:
 		if (index.column() == REMOVE) {
-			if ((in_planner() && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
-				(!in_planner() && is_cylinder_prot(d, index.row()))) {
+			if ((inPlanner && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
+				(!inPlanner && is_cylinder_prot(d, index.row()))) {
 					return trashForbiddenIcon();
 			}
 			return trashIcon();
@@ -259,8 +260,8 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 	case Qt::ToolTipRole:
 		switch (index.column()) {
 		case REMOVE:
-			if ((in_planner() && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
-				(!in_planner() && is_cylinder_prot(d, index.row()))) {
+			if ((inPlanner && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
+				(!inPlanner && is_cylinder_prot(d, index.row()))) {
 					return tr("This gas is in use. Only cylinders that are not used in the dive can be removed.");
 			}
 			return tr("Clicking here will remove this cylinder.");
@@ -450,7 +451,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		break;
 	}
 
-	if (in_planner()) {
+	if (inPlanner) {
 		// In the planner - simply overwrite the cylinder in the dive with the modified cylinder.
 		// We have only made a shallow copy, therefore copy the new cylinder first.
 		cylinder_t copy = clone_cylinder(cyl);
@@ -590,7 +591,7 @@ void CylindersModel::moveAtFirst(int cylid)
 	mapping[cylid] = 0;
 	std::iota(mapping.begin() + (cylid + 1), mapping.end(), cylid);
 	cylinder_renumber(d, &mapping[0]);
-	if (in_planner())
+	if (inPlanner)
 		DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
 	endMoveRows();
 }
@@ -705,7 +706,7 @@ void CylindersModel::commitTempCyl(int row)
 		return;
 	// Only submit a command if the type changed
 	if (!same_string(cyl->type.description, tempCyl.type.description) || gettextFromC::tr(cyl->type.description) != QString(tempCyl.type.description)) {
-		if (in_planner())
+		if (inPlanner)
 			std::swap(*cyl, tempCyl);
 		else
 			Command::editCylinder(tempRow, tempCyl, false);
@@ -715,7 +716,8 @@ void CylindersModel::commitTempCyl(int row)
 #endif
 }
 
-CylindersModelFiltered::CylindersModelFiltered(QObject *parent) : QSortFilterProxyModel(parent)
+CylindersModelFiltered::CylindersModelFiltered(QObject *parent) : QSortFilterProxyModel(parent),
+	source(false) // Currently, only the EquipmentTab uses the filtered model.
 {
 	setSourceModel(&source);
 }
