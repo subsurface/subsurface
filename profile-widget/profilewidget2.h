@@ -129,6 +129,7 @@ slots: // Necessary to call from QAction's signals.
 	void pointInserted(const QModelIndex &parent, int start, int end);
 	void pointsRemoved(const QModelIndex &, int start, int end);
 	void updateThumbnail(QString filename, QImage thumbnail, duration_t duration);
+	void cylinderChanged(dive *d);
 
 	/* this is called for every move on the handlers. maybe we can speed up this a bit? */
 	void recreatePlannedDive();

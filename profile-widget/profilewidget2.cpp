@@ -29,6 +29,7 @@
 #include "core/qthelper.h"
 #include "core/gettextfromc.h"
 #include "core/imagedownloader.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #endif
 
 #include <libdivecomputer/parser.h>
@@ -169,6 +170,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	connect(DivePictureModel::instance(), &DivePictureModel::rowsInserted, this, &ProfileWidget2::plotPictures);
 	connect(DivePictureModel::instance(), &DivePictureModel::picturesRemoved, this, &ProfileWidget2::removePictures);
 	connect(DivePictureModel::instance(), &DivePictureModel::modelReset, this, &ProfileWidget2::plotPictures);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &ProfileWidget2::cylinderChanged);
 #endif // SUBSURFACE_MOBILE
 
 #if !defined(QT_NO_DEBUG) && defined(SHOW_PLOT_INFO_TABLE)
@@ -2242,6 +2244,13 @@ void ProfileWidget2::removePictures(const QVector<QString> &fileUrls)
 			{ return std::find(fileUrls.begin(), fileUrls.end(), e.filename) != fileUrls.end(); });
 	pictures.erase(it, pictures.end());
 	calculatePictureYPositions();
+}
+
+void ProfileWidget2::cylinderChanged(dive *d)
+{
+	if (!d || d->id != displayed_dive.id)
+		return; // Cylinders of a differnt dive than the shown one changed.
+	replot();
 }
 
 #endif
