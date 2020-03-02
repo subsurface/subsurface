@@ -1450,12 +1450,9 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	if (current_dive && current_dive->cylinders.nr > 1) {
 		// if we have more than one gas, offer to switch to another one
 		QMenu *gasChange = m.addMenu(tr("Add gas change"));
-		for (int i = 0; i < current_dive->cylinders.nr; i++) {
-			QAction *action = new QAction(&m);
-			action->setText(QString(current_dive->cylinders.cylinders[i].type.description) + tr(" (cyl. %1)").arg(i + 1));
-			connect(action, &QAction::triggered, [this, i, seconds] { changeGas(i, seconds); } );
-			gasChange->addAction(action);
-		}
+		for (int i = 0; i < current_dive->cylinders.nr; i++)
+			gasChange->addAction(QString(current_dive->cylinders.cylinders[i].type.description) + tr(" (cyl. %1)").arg(i + 1),
+					     [this, i, seconds] { changeGas(i, seconds); });
 	}
 	m.addAction(tr("Add setpoint change"), [this, seconds]() { ProfileWidget2::addSetpointChange(seconds); });
 	m.addAction(tr("Add bookmark"), [this, seconds]() { addBookmark(seconds); });
@@ -1465,44 +1462,25 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 
 	get_current_divemode(current_dc, seconds, &ev, &divemode);
 	QMenu *changeMode = m.addMenu(tr("Change divemode"));
-	if (divemode != OC) {
-		QAction *action = new QAction(&m);
-		action->setText(gettextFromC::tr(divemode_text_ui[OC]));
-		connect(action, &QAction::triggered, [this, seconds](){ addDivemodeSwitch(seconds, OC); });
-		changeMode->addAction(action);
-	}
-	if (divemode != CCR) {
-		QAction *action = new QAction(&m);
-		action->setText(gettextFromC::tr(divemode_text_ui[CCR]));
-		connect(action, &QAction::triggered, [this, seconds](){ addDivemodeSwitch(seconds, CCR); });
-		changeMode->addAction(action);
-	}
-	if (divemode != PSCR) {
-		QAction *action = new QAction(&m);
-		action->setText(gettextFromC::tr(divemode_text_ui[PSCR]));
-		connect(action, &QAction::triggered, [this, seconds](){ addDivemodeSwitch(seconds, PSCR); });
-		changeMode->addAction(action);
-	}
+	if (divemode != OC)
+		changeMode->addAction(gettextFromC::tr(divemode_text_ui[OC]),
+				      [this, seconds](){ addDivemodeSwitch(seconds, OC); });
+	if (divemode != CCR)
+		changeMode->addAction(gettextFromC::tr(divemode_text_ui[CCR]),
+				      [this, seconds](){ addDivemodeSwitch(seconds, CCR); });
+	if (divemode != PSCR)
+		changeMode->addAction(gettextFromC::tr(divemode_text_ui[PSCR]),
+				      [this, seconds](){ addDivemodeSwitch(seconds, PSCR); });
 
 	if (same_string(current_dc->model, "manually added dive"))
 		m.addAction(tr("Edit the profile"), this, SIGNAL(editCurrentDive()));
 
 	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
-		QAction *action = new QAction(&m);
-		action->setText(tr("Remove event"));
-		connect(action, &QAction::triggered, [this,item] { removeEvent(item); });
-		m.addAction(action);
-		action = new QAction(&m);
-		action->setText(tr("Hide similar events"));
-		connect(action, &QAction::triggered, [this, item] { hideEvents(item); });
-		m.addAction(action);
+		m.addAction(tr("Remove event"), [this,item] { removeEvent(item); });
+		m.addAction(tr("Hide similar events"), [this, item] { hideEvents(item); });
 		struct event *dcEvent = item->getEvent();
-		if (dcEvent->type == SAMPLE_EVENT_BOOKMARK) {
-			action = new QAction(&m);
-			action->setText(tr("Edit name"));
-			connect(action, &QAction::triggered, [this, item] { editName(item); });
-			m.addAction(action);
-		}
+		if (dcEvent->type == SAMPLE_EVENT_BOOKMARK)
+			m.addAction(tr("Edit name"), [this, item] { editName(item); });
 #if 0 // TODO::: FINISH OR DISABLE
 		QPointF scenePos = mapToScene(event->pos());
 		int idx = getEntryFromPos(scenePos);
