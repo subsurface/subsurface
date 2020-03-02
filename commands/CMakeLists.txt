@@ -15,10 +15,5 @@ set(SUBSURFACE_GENERIC_COMMANDS_SRCS
 	command_edit_trip.cpp
 	command_edit_trip.h
 )
-if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
-	add_library(subsurface_commands_desktop STATIC ${SUBSURFACE_GENERIC_COMMANDS_SRCS})
-	target_link_libraries(subsurface_commands_desktop ${QT_LIBRARIES})
-elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
-	add_library(subsurface_commands_mobile STATIC ${SUBSURFACE_GENERIC_COMMANDS_SRCS})
-	target_link_libraries(subsurface_commands_mobile ${QT_LIBRARIES})
-endif()
+add_library(subsurface_commands STATIC ${SUBSURFACE_GENERIC_COMMANDS_SRCS})
+target_link_libraries(subsurface_commands ${QT_LIBRARIES})
