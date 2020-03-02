@@ -28,7 +28,6 @@ class MainTab : public QTabWidget {
 public:
 	enum EditMode {
 		NONE,
-		DIVE,
 		MANUALLY_ADDED_DIVE,
 		IGNORE_MODE
 	};
