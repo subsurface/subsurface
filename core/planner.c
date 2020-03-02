@@ -284,7 +284,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 		}
 		if (dp->divemode != type) {
 			type = dp->divemode;
-			add_event(dc, lasttime, 8, 0, type, "modechange");
+			add_event(dc, lasttime, SAMPLE_EVENT_BOOKMARK, 0, type, "modechange");
 		}
 
 		/* Create sample */
