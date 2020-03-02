@@ -710,6 +710,8 @@ void MainWindow::on_actionPrint_triggered()
 
 void MainWindow::disableShortcuts(bool disablePaste)
 {
+	undoAction->setEnabled(false);
+	redoAction->setEnabled(false);
 	ui.actionPreviousDC->setShortcut(QKeySequence());
 	ui.actionNextDC->setShortcut(QKeySequence());
 	ui.copy->setShortcut(QKeySequence());
@@ -719,6 +721,8 @@ void MainWindow::disableShortcuts(bool disablePaste)
 
 void MainWindow::enableShortcuts()
 {
+	undoAction->setEnabled(true);
+	redoAction->setEnabled(true);
 	ui.actionPreviousDC->setShortcut(Qt::Key_Left);
 	ui.actionNextDC->setShortcut(Qt::Key_Right);
 	ui.copy->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
@@ -1090,8 +1094,6 @@ void MainWindow::on_actionViewAll_triggered()
 
 void MainWindow::enterEditState()
 {
-	undoAction->setEnabled(false);
-	redoAction->setEnabled(false);
 	stateBeforeEdit = state;
 	if (state == VIEWALL || state == INFO_MAXIMIZED)
 		return;
@@ -1115,8 +1117,6 @@ void MainWindow::enterEditState()
 
 void MainWindow::exitEditState()
 {
-	undoAction->setEnabled(true);
-	redoAction->setEnabled(true);
 	if (stateBeforeEdit == state)
 		return;
 	enterState(stateBeforeEdit);
