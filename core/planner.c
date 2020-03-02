@@ -175,37 +175,6 @@ static int tissue_at_end(struct deco_state *ds, struct dive *dive, struct deco_s
 	return surface_interval;
 }
 
-
-/* if a default cylinder is set, use that */
-void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl)
-{
-	const char *cyl_name = prefs.default_cylinder;
-	struct tank_info_t *ti = tank_info;
-	pressure_t pO2 = {.mbar = 1600};
-
-	if (!cyl_name)
-		return;
-	while (ti->name != NULL && ti < tank_info + MAX_TANK_INFO) {
-		if (strcmp(ti->name, cyl_name) == 0)
-			break;
-		ti++;
-	}
-	if (ti->name == NULL)
-		/* didn't find it */
-		return;
-	cyl->type.description = strdup(ti->name);
-	if (ti->ml) {
-		cyl->type.size.mliter = ti->ml;
-		cyl->type.workingpressure.mbar = ti->bar * 1000;
-	} else {
-		cyl->type.workingpressure.mbar = psi_to_mbar(ti->psi);
-		if (ti->psi)
-			cyl->type.size.mliter = lrint(cuft_to_l(ti->cuft) * 1000 / bar_to_atm(psi_to_bar(ti->psi)));
-	}
-	// MOD of air
-	cyl->depth = gas_mod(cyl->gasmix, pO2, dive, 1);
-}
-
 /* calculate the new end pressure of the cylinder, based on its current end pressure and the
  * latest segment. */
 static void update_cylinder_pressure(struct dive *d, int old_depth, int new_depth, int duration, int sac, cylinder_t *cyl, bool in_deco, enum divemode_t divemode)

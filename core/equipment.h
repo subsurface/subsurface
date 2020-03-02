@@ -92,6 +92,7 @@ extern void set_weightsystem(struct dive *dive, int idx, weightsystem_t ws);
 extern void reset_cylinders(struct dive *dive, bool track_gas);
 extern int gas_volume(const cylinder_t *cyl, pressure_t p); /* Volume in mliter of a cylinder at pressure 'p' */
 extern int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table *cylinders);
+extern void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl); /* dive is needed to fill out MOD, which depends on salinity. */
 extern cylinder_t create_new_cylinder(const struct dive *dive); /* dive is needed to fill out MOD, which depends on salinity. */
 #ifdef DEBUG_CYL
 extern void dump_cylinders(struct dive *dive, bool verbose);

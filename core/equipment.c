@@ -392,6 +392,36 @@ cylinder_t *get_or_create_cylinder(struct dive *d, int idx)
 	return &d->cylinders.cylinders[idx];
 }
 
+/* if a default cylinder is set, use that */
+void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl)
+{
+	const char *cyl_name = prefs.default_cylinder;
+	struct tank_info_t *ti = tank_info;
+	pressure_t pO2 = {.mbar = 1600};
+
+	if (!cyl_name)
+		return;
+	while (ti->name != NULL && ti < tank_info + MAX_TANK_INFO) {
+		if (strcmp(ti->name, cyl_name) == 0)
+			break;
+		ti++;
+	}
+	if (ti->name == NULL)
+		/* didn't find it */
+		return;
+	cyl->type.description = strdup(ti->name);
+	if (ti->ml) {
+		cyl->type.size.mliter = ti->ml;
+		cyl->type.workingpressure.mbar = ti->bar * 1000;
+	} else {
+		cyl->type.workingpressure.mbar = psi_to_mbar(ti->psi);
+		if (ti->psi)
+			cyl->type.size.mliter = lrint(cuft_to_l(ti->cuft) * 1000 / bar_to_atm(psi_to_bar(ti->psi)));
+	}
+	// MOD of air
+	cyl->depth = gas_mod(cyl->gasmix, pO2, dive, 1);
+}
+
 cylinder_t create_new_cylinder(const struct dive *d)
 {
 	cylinder_t cyl = empty_cylinder;
