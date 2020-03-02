@@ -115,10 +115,7 @@ slots: // Necessary to call from QAction's signals.
 	void removePictures(const QVector<QString> &fileUrls);
 	void setPlanState();
 	void setAddState();
-	void hideEvents();
 	void unhideEvents();
-	void removeEvent();
-	void editName();
 	void makeFirstDC();
 	void deleteCurrentDC();
 	void splitCurrentDC();
@@ -175,6 +172,9 @@ private:
 	void addBookmark(int seconds);
 	void splitDive(int seconds);
 	void addSetpointChange(int seconds);
+	void removeEvent(DiveEventItem *item);
+	void hideEvents(DiveEventItem *item);
+	void editName(DiveEventItem *item);
 private:
 	DivePlotDataModel *dataModel;
 	int zoomLevel;

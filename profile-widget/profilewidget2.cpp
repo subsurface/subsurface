@@ -1490,20 +1490,17 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
 		QAction *action = new QAction(&m);
 		action->setText(tr("Remove event"));
-		action->setData(QVariant::fromValue<void *>(item)); // so we know what to remove.
-		connect(action, SIGNAL(triggered(bool)), this, SLOT(removeEvent()));
+		connect(action, &QAction::triggered, [this,item] { removeEvent(item); });
 		m.addAction(action);
 		action = new QAction(&m);
 		action->setText(tr("Hide similar events"));
-		action->setData(QVariant::fromValue<void *>(item));
-		connect(action, SIGNAL(triggered(bool)), this, SLOT(hideEvents()));
+		connect(action, &QAction::triggered, [this, item] { hideEvents(item); });
 		m.addAction(action);
 		struct event *dcEvent = item->getEvent();
 		if (dcEvent->type == SAMPLE_EVENT_BOOKMARK) {
 			action = new QAction(&m);
 			action->setText(tr("Edit name"));
-			action->setData(QVariant::fromValue<void *>(item));
-			connect(action, SIGNAL(triggered(bool)), this, SLOT(editName()));
+			connect(action, &QAction::triggered, [this, item] { editName(item); });
 			m.addAction(action);
 		}
 #if 0 // TODO::: FINISH OR DISABLE
@@ -1575,10 +1572,8 @@ void ProfileWidget2::makeFirstDC()
 	Command::moveDiveComputerToFront(current_dive, dc_number);
 }
 
-void ProfileWidget2::hideEvents()
+void ProfileWidget2::hideEvents(DiveEventItem *item)
 {
-	QAction *action = qobject_cast<QAction *>(sender());
-	DiveEventItem *item = static_cast<DiveEventItem *>(action->data().value<void *>());
 	struct event *event = item->getEvent();
 
 	if (QMessageBox::question(this,
@@ -1610,10 +1605,8 @@ void ProfileWidget2::unhideEvents()
 		item->show();
 }
 
-void ProfileWidget2::removeEvent()
+void ProfileWidget2::removeEvent(DiveEventItem *item)
 {
-	QAction *action = qobject_cast<QAction *>(sender());
-	DiveEventItem *item = static_cast<DiveEventItem *>(action->data().value<void *>());
 	struct event *event = item->getEvent();
 
 	if (QMessageBox::question(this, TITLE_OR_TEXT(
@@ -1730,10 +1723,8 @@ double ProfileWidget2::getFontPrintScale()
 }
 
 #ifndef SUBSURFACE_MOBILE
-void ProfileWidget2::editName()
+void ProfileWidget2::editName(DiveEventItem *item)
 {
-	QAction *action = qobject_cast<QAction *>(sender());
-	DiveEventItem *item = static_cast<DiveEventItem *>(action->data().value<void *>());
 	struct event *event = item->getEvent();
 	bool ok;
 	QString newName = QInputDialog::getText(this, tr("Edit name of bookmark"),
