@@ -1559,10 +1559,8 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 			break;
 		}
 	}
-	if (some_hidden) {
-		action = m.addAction(tr("Unhide all events"), this, &ProfileWidget2::unhideEvents);
-		action->setData(event->globalPos());
-	}
+	if (some_hidden)
+		m.addAction(tr("Unhide all events"), this, &ProfileWidget2::unhideEvents);
 	m.exec(event->globalPos());
 }
 
