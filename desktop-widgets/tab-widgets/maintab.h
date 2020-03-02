@@ -72,7 +72,7 @@ slots:
 	void closeMessage();
 	void closeWarning();
 	void displayMessage(QString str);
-	void enableEdition(EditMode newEditMode = NONE);
+	void enableEdition();
 	void escDetected(void);
 private:
 	Ui::MainTab ui;

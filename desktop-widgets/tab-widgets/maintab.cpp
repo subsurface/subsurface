@@ -206,9 +206,9 @@ void MainTab::displayMessage(QString str)
 	ui.diveNotesMessage->animatedShow();
 }
 
-void MainTab::enableEdition(EditMode newEditMode)
+void MainTab::enableEdition()
 {
-	if (((newEditMode == DIVE || newEditMode == NONE) && current_dive == NULL) || editMode != NONE)
+	if (current_dive == NULL || editMode != NONE)
 		return;
 
 	ui.editDiveSiteButton->setEnabled(false);
@@ -218,7 +218,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 	ui.dateEdit->setEnabled(true);
 	displayMessage(tr("This dive is being edited."));
 
-	editMode = newEditMode != NONE ? newEditMode : DIVE;
+	editMode = MANUALLY_ADDED_DIVE;
 }
 
 // This function gets called if a field gets updated by an undo command.

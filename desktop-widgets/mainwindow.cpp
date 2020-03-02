@@ -1767,13 +1767,13 @@ void MainWindow::editCurrentDive()
 		graphics->setAddState();
 		setApplicationState(ApplicationState::EditDive);
 		DivePlannerPointsModel::instance()->loadFromDive(d);
-		mainTab->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
+		mainTab->enableEdition();
 	} else if (defaultDC == "planned dive") {
 		disableShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 		setApplicationState(ApplicationState::EditPlannedDive);
 		DivePlannerPointsModel::instance()->loadFromDive(d);
-		mainTab->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
+		mainTab->enableEdition();
 	}
 }
 
