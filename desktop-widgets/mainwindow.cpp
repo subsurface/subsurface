@@ -1092,36 +1092,6 @@ void MainWindow::on_actionViewAll_triggered()
 	ui.bottomSplitter->setCollapsible(1,false);
 }
 
-void MainWindow::enterEditState()
-{
-	stateBeforeEdit = state;
-	if (state == VIEWALL || state == INFO_MAXIMIZED)
-		return;
-	toggleCollapsible(true);
-	beginChangeState(EDIT);
-	ui.topSplitter->setSizes({ EXPANDED, EXPANDED });
-	ui.mainSplitter->setSizes({ EXPANDED, COLLAPSED });
-	int appW = qApp->desktop()->size().width();
-	QList<int> infoProfileSizes { round_int(appW * 0.3), round_int(appW * 0.7) };
-
-	QSettings settings;
-	settings.beginGroup("MainWindow");
-	if (settings.value("mainSplitter").isValid()) {
-		ui.topSplitter->restoreState(settings.value("topSplitter").toByteArray());
-		if (ui.topSplitter->sizes().first() == 0 || ui.topSplitter->sizes().last() == 0)
-			ui.topSplitter->setSizes(infoProfileSizes);
-	} else {
-		ui.topSplitter->setSizes(infoProfileSizes);
-	}
-}
-
-void MainWindow::exitEditState()
-{
-	if (stateBeforeEdit == state)
-		return;
-	enterState(stateBeforeEdit);
-}
-
 void MainWindow::enterState(CurrentState newState)
 {
 	state = newState;
@@ -1140,8 +1110,6 @@ void MainWindow::enterState(CurrentState newState)
 		break;
 	case PROFILE_MAXIMIZED:
 		on_actionViewProfile_triggered();
-		break;
-	case EDIT:
 		break;
 	}
 }

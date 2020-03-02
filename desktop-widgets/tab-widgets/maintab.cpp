@@ -214,7 +214,6 @@ void MainTab::enableEdition(EditMode newEditMode)
 	ui.editDiveSiteButton->setEnabled(false);
 	MainWindow::instance()->diveList->setEnabled(false);
 	MainWindow::instance()->setEnabledToolbar(false);
-	MainWindow::instance()->enterEditState();
 
 	ui.dateEdit->setEnabled(true);
 	displayMessage(tr("This dive is being edited."));
@@ -521,7 +520,6 @@ void MainTab::acceptChanges()
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	MainWindow::instance()->diveList->verticalScrollBar()->setSliderPosition(scrolledBy);
 	MainWindow::instance()->diveList->setFocus();
-	MainWindow::instance()->exitEditState();
 	MainWindow::instance()->setEnabledToolbar(true);
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 	editMode = NONE;
@@ -552,7 +550,6 @@ void MainTab::rejectChanges()
 	// show the profile and dive info
 	MainWindow::instance()->graphics->replot();
 	MainWindow::instance()->setEnabledToolbar(true);
-	MainWindow::instance()->exitEditState();
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 }
 
