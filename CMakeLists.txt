@@ -314,7 +314,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		subsurface_mapwidget
 		subsurface_backend_shared
 		subsurface_models_mobile
-		subsurface_commands_mobile
+		subsurface_commands
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
@@ -339,7 +339,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 		subsurface_mapwidget
 		subsurface_backend_shared
 		subsurface_models_desktop
-		subsurface_commands_desktop
+		subsurface_commands
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
