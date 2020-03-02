@@ -118,7 +118,6 @@ slots: // Necessary to call from QAction's signals.
 	void addSetpointChange();
 	void splitDive();
 	void addBookmark();
-	void addDivemodeSwitch();
 	void hideEvents();
 	void unhideEvents();
 	void removeEvent();
@@ -175,6 +174,7 @@ private:
 			 const double *thresholdSettingsMin, const double *thresholdSettingsMax);
 	void clearPictures();
 	void plotPicturesInternal(const struct dive *d, bool synchronous);
+	void addDivemodeSwitch(int seconds, int divemode);
 private:
 	DivePlotDataModel *dataModel;
 	int zoomLevel;

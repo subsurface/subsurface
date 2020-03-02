@@ -1472,22 +1472,19 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	if (divemode != OC) {
 		QAction *action = new QAction(&m);
 		action->setText(gettextFromC::tr(divemode_text_ui[OC]));
-		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwitch()));
-		action->setData(event->globalPos());
+		connect(action, &QAction::triggered, [this, seconds](){ addDivemodeSwitch(seconds, OC); });
 		changeMode->addAction(action);
 	}
 	if (divemode != CCR) {
 		QAction *action = new QAction(&m);
 		action->setText(gettextFromC::tr(divemode_text_ui[CCR]));
-		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwitch()));
-		action->setData(event->globalPos());
+		connect(action, &QAction::triggered, [this, seconds](){ addDivemodeSwitch(seconds, CCR); });
 		changeMode->addAction(action);
 	}
 	if (divemode != PSCR) {
 		QAction *action = new QAction(&m);
 		action->setText(gettextFromC::tr(divemode_text_ui[PSCR]));
-		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwitch()));
-		action->setData(event->globalPos());
+		connect(action, &QAction::triggered, [this, seconds](){ addDivemodeSwitch(seconds, PSCR); });
 		changeMode->addAction(action);
 	}
 
@@ -1646,15 +1643,9 @@ void ProfileWidget2::addBookmark()
 	replot();
 }
 
-void ProfileWidget2::addDivemodeSwitch()
+void ProfileWidget2::addDivemodeSwitch(int seconds, int divemode)
 {
-	int i;
-	QAction *action = qobject_cast<QAction *>(sender());
-	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
-	for (i = 0; i < NUM_DIVEMODE; i++)
-		if (gettextFromC::tr(divemode_text_ui[i]) == action->text())
-			add_event(current_dc, lrint(timeAxis->valueAt(scenePos)), SAMPLE_EVENT_BOOKMARK, 0, i,
-				QT_TRANSLATE_NOOP("gettextFromC", "modechange"));
+	add_event(current_dc, seconds, SAMPLE_EVENT_BOOKMARK, 0, divemode, QT_TRANSLATE_NOOP("gettextFromC", "modechange"));
 	invalidate_dive_cache(current_dive);
 	mark_divelist_changed(true);
 	replot();
