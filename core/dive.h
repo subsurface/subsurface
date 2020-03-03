@@ -377,6 +377,8 @@ extern void copy_samples(const struct divecomputer *s, struct divecomputer *d);
 extern bool is_cylinder_used(const struct dive *dive, int idx);
 extern bool is_cylinder_prot(const struct dive *dive, int idx);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
+extern struct event *create_event(unsigned int time, int type, int flags, int value, const char *name);
+extern void add_event_to_dc(struct divecomputer *dc, struct event *ev);
 extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name);
 extern void remove_event(struct event *event);
 extern void update_event_name(struct dive *d, struct event *event, const char *name);

@@ -125,10 +125,10 @@ int event_is_gaschange(const struct event *ev)
 		ev->type == SAMPLE_EVENT_GASCHANGE2;
 }
 
-struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name)
+struct event *create_event(unsigned int time, int type, int flags, int value, const char *name)
 {
 	int gas_index = -1;
-	struct event *ev, **p;
+	struct event *ev;
 	unsigned int size, len = strlen(name);
 
 	size = sizeof(*ev) + len + 1;
@@ -163,13 +163,31 @@ struct event *add_event(struct divecomputer *dc, unsigned int time, int type, in
 		break;
 	}
 
+	return ev;
+}
+
+void add_event_to_dc(struct divecomputer *dc, struct event *ev)
+{
+	struct event **p;
+
 	p = &dc->events;
 
 	/* insert in the sorted list of events */
-	while (*p && (*p)->time.seconds <= time)
+	while (*p && (*p)->time.seconds <= ev->time.seconds)
 		p = &(*p)->next;
 	ev->next = *p;
 	*p = ev;
+}
+
+struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name)
+{
+	struct event *ev = create_event(time, type, flags, value, name);
+
+	if (!ev)
+		return NULL;
+
+	add_event_to_dc(dc, ev);
+
 	remember_event(name);
 	return ev;
 }
