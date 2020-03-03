@@ -39,6 +39,11 @@ public:
 	AddEventBookmark(struct dive *d, int dcNr, int seconds);
 };
 
+class AddEventDivemodeSwitch : public AddEventBase {
+public:
+	AddEventDivemodeSwitch(struct dive *d, int dcNr, int seconds, int divemode);
+};
+
 } // namespace Command
 
 #endif // COMMAND_EVENT_H

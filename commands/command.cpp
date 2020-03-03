@@ -334,4 +334,9 @@ void addEventBookmark(struct dive *d, int dcNr, int seconds)
 	execute(new AddEventBookmark(d, dcNr, seconds));
 }
 
+void addEventDivemodeSwitch(struct dive *d, int dcNr, int seconds, int divemode)
+{
+	execute(new AddEventDivemodeSwitch(d, dcNr, seconds, divemode));
+}
+
 } // namespace Command

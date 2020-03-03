@@ -1606,10 +1606,7 @@ void ProfileWidget2::addBookmark(int seconds)
 
 void ProfileWidget2::addDivemodeSwitch(int seconds, int divemode)
 {
-	add_event(current_dc, seconds, SAMPLE_EVENT_BOOKMARK, 0, divemode, QT_TRANSLATE_NOOP("gettextFromC", "modechange"));
-	invalidate_dive_cache(current_dive);
-	mark_divelist_changed(true);
-	replot();
+	Command::addEventDivemodeSwitch(current_dive, dc_number, seconds, divemode);
 }
 
 void ProfileWidget2::addSetpointChange(int seconds)

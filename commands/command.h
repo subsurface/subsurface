@@ -107,6 +107,7 @@ void editTripNotes(dive_trip *trip, const QString &s);
 // 6) Event commands
 
 void addEventBookmark(struct dive *d, int dcNr, int seconds);
+void addEventDivemodeSwitch(struct dive *d, int dcNr, int seconds, int divemode);
 
 } // namespace Command
 
