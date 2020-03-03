@@ -205,7 +205,21 @@ static int same_event(const struct event *a, const struct event *b)
 	return !strcmp(a->name, b->name);
 }
 
-void remove_event(struct event *event)
+/* Remove given event from dive computer. Does *not* free the event. */
+void remove_event_from_dc(struct divecomputer *dc, struct event *event)
+{
+	for (struct event **ep = &dc->events; *ep; ep = &(*ep)->next) {
+		if (*ep == event) {
+			*ep = event->next;
+			event->next = NULL; // For good measure.
+			break;
+		}
+	}
+}
+
+/* Remove an event from current dive computer that is identical to the passed in event.
+ * Frees the event. */
+void remove_event(const struct event *event)
 {
 	struct event **ep = &current_dc->events;
 	while (ep && !same_event(*ep, event))

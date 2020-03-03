@@ -380,7 +380,8 @@ extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int
 extern struct event *create_event(unsigned int time, int type, int flags, int value, const char *name);
 extern void add_event_to_dc(struct divecomputer *dc, struct event *ev);
 extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name);
-extern void remove_event(struct event *event);
+extern void remove_event_from_dc(struct divecomputer *dc, struct event *event);
+extern void remove_event(const struct event *event);
 extern void update_event_name(struct dive *d, struct event *event, const char *name);
 extern void add_extra_data(struct divecomputer *dc, const char *key, const char *value);
 extern void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
