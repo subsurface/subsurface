@@ -189,11 +189,11 @@ SetpointDialog::SetpointDialog(struct divecomputer *dcIn, int seconds) : QDialog
 	dc(dcIn), time(seconds < 0 ? 0 : seconds)
 {
 	ui.setupUi(this);
-	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
+	connect(ui.buttonBox, &QDialogButtonBox::clicked, this, &SetpointDialog::buttonClicked);
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
-	connect(close, SIGNAL(activated()), this, SLOT(close()));
+	connect(close, &QShortcut::activated, this, &QDialog::close);
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
-	connect(quit, SIGNAL(activated()), parent(), SLOT(close()));
+	connect(quit, &QShortcut::activated, MainWindow::instance(), &QWidget::close);
 }
 
 ShiftTimesDialog *ShiftTimesDialog::instance()
