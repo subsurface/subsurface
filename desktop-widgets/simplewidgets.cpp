@@ -174,18 +174,6 @@ RenumberDialog::RenumberDialog(QWidget *parent) : QDialog(parent), selectedOnly(
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 }
 
-SetpointDialog *SetpointDialog::instance()
-{
-	static SetpointDialog *self = new SetpointDialog(MainWindow::instance());
-	return self;
-}
-
-void SetpointDialog::setpointData(struct divecomputer *divecomputer, int second)
-{
-	dc = divecomputer;
-	time = second < 0 ? 0 : second;
-}
-
 void SetpointDialog::buttonClicked(QAbstractButton *button)
 {
 	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole && dc) {
@@ -197,15 +185,15 @@ void SetpointDialog::buttonClicked(QAbstractButton *button)
 	MainWindow::instance()->graphics->replot();
 }
 
-SetpointDialog::SetpointDialog(QWidget *parent) : QDialog(parent),
-	dc(0), time(0)
+SetpointDialog::SetpointDialog(struct divecomputer *dcIn, int seconds) : QDialog(MainWindow::instance()),
+	dc(dcIn), time(seconds < 0 ? 0 : seconds)
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
-	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
+	connect(quit, SIGNAL(activated()), parent(), SLOT(close()));
 }
 
 ShiftTimesDialog *ShiftTimesDialog::instance()

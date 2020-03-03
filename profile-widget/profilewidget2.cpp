@@ -1611,8 +1611,8 @@ void ProfileWidget2::addDivemodeSwitch(int seconds, int divemode)
 
 void ProfileWidget2::addSetpointChange(int seconds)
 {
-	SetpointDialog::instance()->setpointData(current_dc, seconds);
-	SetpointDialog::instance()->show();
+	SetpointDialog dialog(current_dc, seconds);
+	dialog.exec();
 }
 
 void ProfileWidget2::splitDive(int seconds)
