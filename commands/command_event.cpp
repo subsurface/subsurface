@@ -23,6 +23,7 @@ void AddEventBase::redo()
 	eventToRemove = eventToAdd.get();
 	add_event_to_dc(dc, eventToAdd.release()); // return ownership to backend
 	invalidate_dive_cache(d);
+	emit diveListNotifier.eventsChanged(d);
 }
 
 void AddEventBase::undo()
@@ -32,6 +33,7 @@ void AddEventBase::undo()
 	eventToAdd.reset(eventToRemove); // take ownership of event
 	eventToRemove = nullptr;
 	invalidate_dive_cache(d);
+	emit diveListNotifier.eventsChanged(d);
 }
 
 AddEventBookmark::AddEventBookmark(struct dive *d, int dcNr, int seconds) :
