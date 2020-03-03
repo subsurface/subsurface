@@ -44,6 +44,11 @@ public:
 	AddEventDivemodeSwitch(struct dive *d, int dcNr, int seconds, int divemode);
 };
 
+class AddEventSetpointChange : public AddEventBase {
+public:
+	AddEventSetpointChange(struct dive *d, int dcNr, int seconds, pressure_t pO2);
+};
+
 } // namespace Command
 
 #endif // COMMAND_EVENT_H

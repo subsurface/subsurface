@@ -49,4 +49,10 @@ AddEventDivemodeSwitch::AddEventDivemodeSwitch(struct dive *d, int dcNr, int sec
 	setText(tr("Add dive mode switch to %1").arg(gettextFromC::tr(divemode_text_ui[divemode])));
 }
 
+AddEventSetpointChange::AddEventSetpointChange(struct dive *d, int dcNr, int seconds, pressure_t pO2) :
+	AddEventBase(d, dcNr, create_event(seconds, SAMPLE_EVENT_PO2, 0, pO2.mbar, QT_TRANSLATE_NOOP("gettextFromC", "SP change")))
+{
+	setText(tr("Add set point change")); // TODO: format pO2 value in bar or psi.
+}
+
 } // namespace Command

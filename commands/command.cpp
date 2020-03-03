@@ -339,4 +339,9 @@ void addEventDivemodeSwitch(struct dive *d, int dcNr, int seconds, int divemode)
 	execute(new AddEventDivemodeSwitch(d, dcNr, seconds, divemode));
 }
 
+void addEventSetpointChange(struct dive *d, int dcNr, int seconds, pressure_t pO2)
+{
+	execute(new AddEventSetpointChange(d, dcNr, seconds, pO2));
+}
+
 } // namespace Command

@@ -23,7 +23,6 @@
 #include "commands/command.h"
 #include "core/metadata.h"
 #include "core/tag.h"
-#include "core/divelist.h" // for mark_divelist_changed
 
 double MinMaxAvgWidget::average() const
 {
@@ -176,13 +175,8 @@ RenumberDialog::RenumberDialog(QWidget *parent) : QDialog(parent), selectedOnly(
 
 void SetpointDialog::buttonClicked(QAbstractButton *button)
 {
-	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
-		add_event(get_dive_dc(d, dcNr), time, SAMPLE_EVENT_PO2, 0, (int)(1000.0 * ui.spinbox->value()),
-			QT_TRANSLATE_NOOP("gettextFromC", "SP change"));
-		invalidate_dive_cache(current_dive);
-	}
-	mark_divelist_changed(true);
-	MainWindow::instance()->graphics->replot();
+	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole)
+		Command::addEventSetpointChange(d, dcNr, time, pressure_t { (int)(1000.0 * ui.spinbox->value()) });
 }
 
 SetpointDialog::SetpointDialog(struct dive *dIn, int dcNrIn, int seconds) : QDialog(MainWindow::instance()),
