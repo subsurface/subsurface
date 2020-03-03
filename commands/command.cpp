@@ -5,6 +5,7 @@
 #include "command_divesite.h"
 #include "command_edit.h"
 #include "command_edit_trip.h"
+#include "command_event.h"
 
 namespace Command {
 
@@ -325,5 +326,12 @@ void editDive(dive *oldDive, dive *newDive, dive_site *createDs, dive_site *chan
 	execute(new EditDive(oldDive, newDive, createDs, changeDs, dsLocation));
 }
 #endif // SUBSURFACE_MOBILE
+
+// Event commands
+
+void addEventBookmark(struct dive *d, int dcNr, int seconds)
+{
+	execute(new AddEventBookmark(d, dcNr, seconds));
+}
 
 } // namespace Command

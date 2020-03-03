@@ -1,0 +1,44 @@
+// SPDX-License-Identifier: GPL-2.0
+// Note: this header file is used by the undo-machinery and should not be included elsewhere.
+
+#ifndef COMMAND_EVENT_H
+#define COMMAND_EVENT_H
+
+#include "command_base.h"
+
+
+// We put everything in a namespace, so that we can shorten names without polluting the global namespace
+namespace Command {
+
+// Events are a strange thing: they contain there own description which means
+// that on changing the description a new object must be allocated. Moreover,
+// it means that these objects can't be collected in a table.
+// Therefore, the undo commands work on events as they do with dives: using
+// owning pointers. See comments in command_base.h
+
+class AddEventBase : public Base {
+public:
+	AddEventBase(struct dive *d, int dcNr, struct event *ev); // Takes ownership of event!
+private:
+	bool workToBeDone() override;
+	void undo() override;
+	void redo() override;
+
+	// Note: we store dive and the divecomputer-number instead of a pointer to the divecomputer.
+	// Since one divecomputer is integrated into the dive structure, pointers to divecomputers
+	// are probably not stable.
+	struct dive *d;
+	int dcNr;
+
+	OwningEventPtr eventToAdd;	// for redo
+	event *eventToRemove;		// for undo
+};
+
+class AddEventBookmark : public AddEventBase {
+public:
+	AddEventBookmark(struct dive *d, int dcNr, int seconds);
+};
+
+} // namespace Command
+
+#endif // COMMAND_EVENT_H

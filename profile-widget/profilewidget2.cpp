@@ -1600,10 +1600,7 @@ void ProfileWidget2::removeEvent(DiveEventItem *item)
 
 void ProfileWidget2::addBookmark(int seconds)
 {
-	add_event(current_dc, seconds, SAMPLE_EVENT_BOOKMARK, 0, 0, "bookmark");
-	invalidate_dive_cache(current_dive);
-	mark_divelist_changed(true);
-	replot();
+	Command::addEventBookmark(current_dive, dc_number, seconds);
 }
 
 void ProfileWidget2::addDivemodeSwitch(int seconds, int divemode)

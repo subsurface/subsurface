@@ -104,6 +104,10 @@ void editDive(dive *oldDive, dive *newDive, dive_site *createDs, dive_site *chan
 void editTripLocation(dive_trip *trip, const QString &s);
 void editTripNotes(dive_trip *trip, const QString &s);
 
+// 6) Event commands
+
+void addEventBookmark(struct dive *d, int dcNr, int seconds);
+
 } // namespace Command
 
 #endif // COMMAND_H

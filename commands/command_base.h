@@ -141,7 +141,7 @@
 // We put everything in a namespace, so that we can shorten names without polluting the global namespace
 namespace Command {
 
-// Classes used to automatically call free_dive()/free_trip for owning pointers that go out of scope.
+// Classes used to automatically call the appropriate free_*() function for owning pointers that go out of scope.
 struct DiveDeleter {
 	void operator()(dive *d) { free_dive(d); }
 };
@@ -151,11 +151,15 @@ struct TripDeleter {
 struct DiveSiteDeleter {
 	void operator()(dive_site *ds) { free_dive_site(ds); }
 };
+struct EventDeleter {
+	void operator()(event *ev) { free(ev); }
+};
 
-// Owning pointers to dive and dive_trip objects.
+// Owning pointers to dive, dive_trip, dive_site and event objects.
 typedef std::unique_ptr<dive, DiveDeleter> OwningDivePtr;
 typedef std::unique_ptr<dive_trip, TripDeleter> OwningTripPtr;
 typedef std::unique_ptr<dive_site, DiveSiteDeleter> OwningDiveSitePtr;
+typedef std::unique_ptr<event, EventDeleter> OwningEventPtr;
 
 // This is the base class of all commands.
 // It defines the Qt-translation functions
@@ -182,4 +186,3 @@ QString getListOfDives(QVector<struct dive *> dives);
 } // namespace Command
 
 #endif // COMMAND_BASE_H
-
