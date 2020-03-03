@@ -1611,7 +1611,7 @@ void ProfileWidget2::addDivemodeSwitch(int seconds, int divemode)
 
 void ProfileWidget2::addSetpointChange(int seconds)
 {
-	SetpointDialog dialog(current_dc, seconds);
+	SetpointDialog dialog(current_dive, dc_number, seconds);
 	dialog.exec();
 }
 

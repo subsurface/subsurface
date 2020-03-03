@@ -176,8 +176,8 @@ RenumberDialog::RenumberDialog(QWidget *parent) : QDialog(parent), selectedOnly(
 
 void SetpointDialog::buttonClicked(QAbstractButton *button)
 {
-	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole && dc) {
-		add_event(dc, time, SAMPLE_EVENT_PO2, 0, (int)(1000.0 * ui.spinbox->value()),
+	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
+		add_event(get_dive_dc(d, dcNr), time, SAMPLE_EVENT_PO2, 0, (int)(1000.0 * ui.spinbox->value()),
 			QT_TRANSLATE_NOOP("gettextFromC", "SP change"));
 		invalidate_dive_cache(current_dive);
 	}
@@ -185,8 +185,8 @@ void SetpointDialog::buttonClicked(QAbstractButton *button)
 	MainWindow::instance()->graphics->replot();
 }
 
-SetpointDialog::SetpointDialog(struct divecomputer *dcIn, int seconds) : QDialog(MainWindow::instance()),
-	dc(dcIn), time(seconds < 0 ? 0 : seconds)
+SetpointDialog::SetpointDialog(struct dive *dIn, int dcNrIn, int seconds) : QDialog(MainWindow::instance()),
+	d(dIn), dcNr(dcNrIn), time(seconds < 0 ? 0 : seconds)
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, &QDialogButtonBox::clicked, this, &SetpointDialog::buttonClicked);
