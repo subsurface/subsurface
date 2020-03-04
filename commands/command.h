@@ -111,6 +111,7 @@ void addEventDivemodeSwitch(struct dive *d, int dcNr, int seconds, int divemode)
 void addEventSetpointChange(struct dive *d, int dcNr, int seconds, pressure_t pO2);
 void renameEvent(struct dive *d, int dcNr, struct event *ev, const char *name);
 void removeEvent(struct dive *d, int dcNr, struct event *ev);
+void addGasSwitch(struct dive *d, int dcNr, int seconds, int tank);
 
 } // namespace Command
 

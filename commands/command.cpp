@@ -354,4 +354,9 @@ void removeEvent(struct dive *d, int dcNr, struct event *ev)
 	execute(new RemoveEvent(d, dcNr, ev));
 }
 
+void addGasSwitch(struct dive *d, int dcNr, int seconds, int tank)
+{
+	execute(new AddGasSwitch(d, dcNr, seconds, tank));
+}
+
 } // namespace Command

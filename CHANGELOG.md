@@ -16,6 +16,7 @@ Mobile: make sure filter header and virtual keyboard are shown when tapping on f
 Mobile: fix issue where in some circumstances changes weren't written to storage
 Mobile: fix issues with filtering while editing dives
 Desktop: implement dive invalidation
+Undo: implement undo of event handling (viz. bookmarks, setpoints, gas switches)
 Desktop: fix tab-order in filter widget
 Desktop: implement fulltext search
 Desktop: add starts-with and exact filter modes for textual search

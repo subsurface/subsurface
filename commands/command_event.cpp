@@ -5,6 +5,7 @@
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "core/libdivecomputer.h"
 #include "core/gettextfromc.h"
+#include <QVector>
 
 namespace Command {
 
@@ -121,6 +122,67 @@ void RemoveEvent::undoit()
 	struct divecomputer *dc = get_dive_dc(d, dcNr);
 	eventToRemove = eventToAdd.get();
 	add_event_to_dc(dc, eventToAdd.release()); // return ownership to backend
+}
+
+AddGasSwitch::AddGasSwitch(struct dive *d, int dcNr, int seconds, int tank) : EventBase(d, dcNr)
+{
+	// If there is a gas change at this time stamp, remove it before adding the new one.
+	// There shouldn't be more than one gas change per time stamp. Just in case we'll
+	// support that anyway.
+	struct divecomputer *dc = get_dive_dc(d, dcNr);
+	struct event *gasChangeEvent = dc->events;
+	while ((gasChangeEvent = get_next_event_mutable(gasChangeEvent, "gaschange")) != NULL) {
+		if (gasChangeEvent->time.seconds == seconds) {
+			eventsToRemove.push_back(gasChangeEvent);
+			int idx = gasChangeEvent->gas.index;
+			if (std::find(cylinders.begin(), cylinders.end(), idx) == cylinders.end())
+				cylinders.push_back(idx); // cylinders might have changed their status
+		}
+		gasChangeEvent = gasChangeEvent->next;
+	}
+
+	eventsToAdd.emplace_back(create_gas_switch_event(d, dc, seconds, tank));
+}
+
+bool AddGasSwitch::workToBeDone()
+{
+	return true;
+}
+
+void AddGasSwitch::redoit()
+{
+	std::vector<OwningEventPtr> newEventsToAdd;
+	std::vector<event *> newEventsToRemove;
+	newEventsToAdd.reserve(eventsToRemove.size());
+	newEventsToRemove.reserve(eventsToAdd.size());
+	struct divecomputer *dc = get_dive_dc(d, dcNr);
+
+	for (event *ev: eventsToRemove) {
+		remove_event_from_dc(dc, ev);
+		newEventsToAdd.emplace_back(ev); // take ownership of event
+	}
+	for (OwningEventPtr &ev: eventsToAdd) {
+		newEventsToRemove.push_back(ev.get());
+		add_event_to_dc(dc, ev.release()); // return ownership to backend
+	}
+	eventsToAdd = std::move(newEventsToAdd);
+	eventsToRemove = std::move(newEventsToRemove);
+
+	// this means we potentially have a new tank that is being used and needs to be shown
+	fixup_dive(d);
+
+	for (int idx: cylinders)
+		emit diveListNotifier.cylinderEdited(d, idx);
+
+	// TODO: This is silly we send a DURATION change event so that the statistics are recalculated.
+	// We should instead define a proper DiveField that expresses the change caused by a gas switch.
+	emit diveListNotifier.divesChanged(QVector<dive *>{ d }, DiveField::DURATION | DiveField::DEPTH);
+}
+
+void AddGasSwitch::undoit()
+{
+	// Undo and redo do the same thing, as the dives-to-be-added and dives-to-be-removed are exchanged.
+	redoit();
 }
 
 } // namespace Command

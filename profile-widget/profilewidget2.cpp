@@ -1645,26 +1645,7 @@ void ProfileWidget2::changeGas(int tank, int seconds)
 	if (!current_dive || tank < 0 || tank >= current_dive->cylinders.nr)
 		return;
 
-	// if there is a gas change at this time stamp, remove it before adding the new one
-	struct event *gasChangeEvent = current_dc->events;
-	while ((gasChangeEvent = get_next_event_mutable(gasChangeEvent, "gaschange")) != NULL) {
-		if (gasChangeEvent->time.seconds == seconds) {
-			remove_event(gasChangeEvent);
-			gasChangeEvent = current_dc->events;
-		} else {
-			gasChangeEvent = gasChangeEvent->next;
-		}
-	}
-	add_gas_switch_event(current_dive, current_dc, seconds, tank);
-	// this means we potentially have a new tank that is being used and needs to be shown
-	fixup_dive(current_dive);
-	invalidate_dive_cache(current_dive);
-
-	// FIXME - this no longer gets written to the dive list - so we need to enableEdition() here
-
-	emit updateDiveInfo();
-	mark_divelist_changed(true);
-	replot();
+	Command::addGasSwitch(current_dive, dc_number, seconds, tank);
 }
 #endif
 

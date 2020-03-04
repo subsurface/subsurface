@@ -82,6 +82,19 @@ private:
 	event *eventToRemove;		// for redo
 };
 
+class AddGasSwitch : public EventBase {
+public:
+	AddGasSwitch(struct dive *d, int dcNr, int seconds, int tank);
+private:
+	bool workToBeDone() override;
+	void undoit() override;
+	void redoit() override;
+
+	std::vector<int> cylinders; // cylinders that are modified
+	std::vector<OwningEventPtr> eventsToAdd;
+	std::vector<event *> eventsToRemove;
+};
+
 } // namespace Command
 
 #endif // COMMAND_EVENT_H
