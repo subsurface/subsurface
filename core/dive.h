@@ -396,8 +396,6 @@ extern int nr_weightsystems(const struct dive *dive);
 
 /* UI related protopypes */
 
-// extern void report_error(GError* error);
-
 extern void remember_event(const char *eventname);
 extern void invalidate_dive_cache(struct dive *dc);
 
