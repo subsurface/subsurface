@@ -8,8 +8,27 @@
 
 namespace Command {
 
-AddEventBase::AddEventBase(struct dive *dIn, int dcNrIn, struct event *ev) :
-	d(dIn), dcNr(dcNrIn), eventToAdd(ev)
+EventBase::EventBase(struct dive *dIn, int dcNrIn) :
+	d(dIn), dcNr(dcNrIn)
+{
+}
+
+void EventBase::redo()
+{
+	redoit(); // Call actual function in base class
+	invalidate_dive_cache(d);
+	emit diveListNotifier.eventsChanged(d);
+}
+
+void EventBase::undo()
+{
+	undoit(); // Call actual function in base class
+	invalidate_dive_cache(d);
+	emit diveListNotifier.eventsChanged(d);
+}
+
+AddEventBase::AddEventBase(struct dive *d, int dcNr, struct event *ev) : EventBase(d, dcNr),
+	eventToAdd(ev)
 {
 }
 
@@ -18,23 +37,19 @@ bool AddEventBase::workToBeDone()
 	return true;
 }
 
-void AddEventBase::redo()
+void AddEventBase::redoit()
 {
 	struct divecomputer *dc = get_dive_dc(d, dcNr);
 	eventToRemove = eventToAdd.get();
 	add_event_to_dc(dc, eventToAdd.release()); // return ownership to backend
-	invalidate_dive_cache(d);
-	emit diveListNotifier.eventsChanged(d);
 }
 
-void AddEventBase::undo()
+void AddEventBase::undoit()
 {
 	struct divecomputer *dc = get_dive_dc(d, dcNr);
 	remove_event_from_dc(dc, eventToRemove);
 	eventToAdd.reset(eventToRemove); // take ownership of event
 	eventToRemove = nullptr;
-	invalidate_dive_cache(d);
-	emit diveListNotifier.eventsChanged(d);
 }
 
 AddEventBookmark::AddEventBookmark(struct dive *d, int dcNr, int seconds) :

@@ -16,19 +16,28 @@ namespace Command {
 // Therefore, the undo commands work on events as they do with dives: using
 // owning pointers. See comments in command_base.h
 
-class AddEventBase : public Base {
-public:
-	AddEventBase(struct dive *d, int dcNr, struct event *ev); // Takes ownership of event!
-private:
-	bool workToBeDone() override;
+class EventBase : public Base {
+protected:
+	EventBase(struct dive *d, int dcNr);
 	void undo() override;
 	void redo() override;
+	virtual void redoit() = 0;
+	virtual void undoit() = 0;
 
 	// Note: we store dive and the divecomputer-number instead of a pointer to the divecomputer.
 	// Since one divecomputer is integrated into the dive structure, pointers to divecomputers
 	// are probably not stable.
 	struct dive *d;
 	int dcNr;
+};
+
+class AddEventBase : public EventBase {
+public:
+	AddEventBase(struct dive *d, int dcNr, struct event *ev); // Takes ownership of event!
+private:
+	bool workToBeDone() override;
+	void undoit() override;
+	void redoit() override;
 
 	OwningEventPtr eventToAdd;	// for redo
 	event *eventToRemove;		// for undo
