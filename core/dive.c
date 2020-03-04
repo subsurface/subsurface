@@ -11,6 +11,7 @@
 #include "device.h"
 #include "divelist.h"
 #include "divesite.h"
+#include "errorhelper.h"
 #include "qthelper.h"
 #include "metadata.h"
 #include "membuffer.h"
@@ -195,6 +196,31 @@ struct event *add_event(struct divecomputer *dc, unsigned int time, int type, in
 
 	remember_event(name);
 	return ev;
+}
+
+void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx)
+{
+	/* sanity check so we don't crash */
+	if (idx < 0 || idx >= dive->cylinders.nr) {
+		report_error("Unknown cylinder index: %d", idx);
+		return;
+	}
+	/* The gas switch event format is insane for historical reasons */
+	struct gasmix mix = get_cylinder(dive, idx)->gasmix;
+	int o2 = get_o2(mix);
+	int he = get_he(mix);
+	struct event *ev;
+	int value;
+
+	o2 = (o2 + 5) / 10;
+	he = (he + 5) / 10;
+	value = o2 + (he << 16);
+
+	ev = add_event(dc, seconds, he ? SAMPLE_EVENT_GASCHANGE2 : SAMPLE_EVENT_GASCHANGE, 0, value, "gaschange");
+	if (ev) {
+		ev->gas.index = idx;
+		ev->gas.mix = mix;
+	}
 }
 
 /* Substitutes an event in a divecomputer for another. No reordering is performed! */
