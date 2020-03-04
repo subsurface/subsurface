@@ -398,10 +398,6 @@ extern int nr_weightsystems(const struct dive *dive);
 extern void remember_event(const char *eventname);
 extern void invalidate_dive_cache(struct dive *dc);
 
-#if WE_DONT_USE_THIS /* this is a missing feature in Qt - selecting which events to display */
-extern int evn_foreach(void (*callback)(const char *, bool *, void *), void *data);
-#endif /* WE_DONT_USE_THIS */
-
 extern void clear_events(void);
 
 extern void set_dc_nickname(struct dive *dive);
