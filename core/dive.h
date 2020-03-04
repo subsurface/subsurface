@@ -385,7 +385,6 @@ extern void swap_event(struct divecomputer *dc, struct event *from, struct event
 extern bool same_event(const struct event *a, const struct event *b);
 extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name);
 extern void remove_event_from_dc(struct divecomputer *dc, struct event *event);
-extern void remove_event(const struct event *event);
 extern void update_event_name(struct dive *d, struct event *event, const char *name);
 extern void add_extra_data(struct divecomputer *dc, const char *key, const char *value);
 extern void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, int *mean, int *duration);

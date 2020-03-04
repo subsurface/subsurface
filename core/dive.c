@@ -267,24 +267,6 @@ void remove_event_from_dc(struct divecomputer *dc, struct event *event)
 	}
 }
 
-/* Remove an event from current dive computer that is identical to the passed in event.
- * Frees the event. */
-void remove_event(const struct event *event)
-{
-	struct event **ep = &current_dc->events;
-	while (ep && !same_event(*ep, event))
-		ep = &(*ep)->next;
-	if (ep) {
-		/* we can't link directly with event->next
-		 * because 'event' can be a copy from another
-		 * dive (for instance the displayed_dive
-		 * that we use on the interface to show things). */
-		struct event *temp = (*ep)->next;
-		free(*ep);
-		*ep = temp;
-	}
-}
-
 /* since the name is an array as part of the structure (how silly is that?) we
  * have to actually remove the existing event and replace it with a new one.
  * WARNING, WARNING... this may end up freeing event in case that event is indeed
