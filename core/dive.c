@@ -167,6 +167,26 @@ struct event *create_event(unsigned int time, int type, int flags, int value, co
 	return ev;
 }
 
+/* warning: does not test idx for validity */
+struct event *create_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx)
+{
+	/* The gas switch event format is insane for historical reasons */
+	struct gasmix mix = get_cylinder(dive, idx)->gasmix;
+	int o2 = get_o2(mix);
+	int he = get_he(mix);
+	struct event *ev;
+	int value;
+
+	o2 = (o2 + 5) / 10;
+	he = (he + 5) / 10;
+	value = o2 + (he << 16);
+
+	ev = create_event(seconds, he ? SAMPLE_EVENT_GASCHANGE2 : SAMPLE_EVENT_GASCHANGE, 0, value, "gaschange");
+	ev->gas.index = idx;
+	ev->gas.mix = mix;
+	return ev;
+}
+
 struct event *clone_event_rename(const struct event *ev, const char *name)
 {
 	return create_event(ev->time.seconds, ev->type, ev->flags, ev->value, name);
@@ -205,22 +225,8 @@ void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int second
 		report_error("Unknown cylinder index: %d", idx);
 		return;
 	}
-	/* The gas switch event format is insane for historical reasons */
-	struct gasmix mix = get_cylinder(dive, idx)->gasmix;
-	int o2 = get_o2(mix);
-	int he = get_he(mix);
-	struct event *ev;
-	int value;
-
-	o2 = (o2 + 5) / 10;
-	he = (he + 5) / 10;
-	value = o2 + (he << 16);
-
-	ev = add_event(dc, seconds, he ? SAMPLE_EVENT_GASCHANGE2 : SAMPLE_EVENT_GASCHANGE, 0, value, "gaschange");
-	if (ev) {
-		ev->gas.index = idx;
-		ev->gas.mix = mix;
-	}
+	struct event *ev = create_gas_switch_event(dive, dc, seconds, idx);
+	add_event_to_dc(dc, ev);
 }
 
 /* Substitutes an event in a divecomputer for another. No reordering is performed! */
