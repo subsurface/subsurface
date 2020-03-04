@@ -166,6 +166,11 @@ struct event *create_event(unsigned int time, int type, int flags, int value, co
 	return ev;
 }
 
+struct event *clone_event_rename(const struct event *ev, const char *name)
+{
+	return create_event(ev->time.seconds, ev->type, ev->flags, ev->value, name);
+}
+
 void add_event_to_dc(struct divecomputer *dc, struct event *ev)
 {
 	struct event **p;
@@ -192,7 +197,20 @@ struct event *add_event(struct divecomputer *dc, unsigned int time, int type, in
 	return ev;
 }
 
-static int same_event(const struct event *a, const struct event *b)
+/* Substitutes an event in a divecomputer for another. No reordering is performed! */
+void swap_event(struct divecomputer *dc, struct event *from, struct event *to)
+{
+	for (struct event **ep = &dc->events; *ep; ep = &(*ep)->next) {
+		if (*ep == from) {
+			to->next = from->next;
+			*ep = to;
+			from->next = NULL; // For good measure.
+			break;
+		}
+	}
+}
+
+bool same_event(const struct event *a, const struct event *b)
 {
 	if (a->time.seconds != b->time.seconds)
 		return 0;

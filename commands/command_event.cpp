@@ -70,4 +70,31 @@ AddEventSetpointChange::AddEventSetpointChange(struct dive *d, int dcNr, int sec
 	setText(tr("Add set point change")); // TODO: format pO2 value in bar or psi.
 }
 
+RenameEvent::RenameEvent(struct dive *d, int dcNr, struct event *ev, const char *name) : EventBase(d, dcNr),
+	eventToAdd(clone_event_rename(ev, name)),
+	eventToRemove(ev)
+{
+	setText(tr("Rename bookmark to %1").arg(name));
+}
+
+bool RenameEvent::workToBeDone()
+{
+	return true;
+}
+
+void RenameEvent::redoit()
+{
+	struct divecomputer *dc = get_dive_dc(d, dcNr);
+	swap_event(dc, eventToRemove, eventToAdd.get());
+	event *tmp = eventToRemove;
+	eventToRemove = eventToAdd.release();
+	eventToAdd.reset(tmp);
+}
+
+void RenameEvent::undoit()
+{
+	// Undo and redo do the same thing - they simply swap events
+	redoit();
+}
+
 } // namespace Command

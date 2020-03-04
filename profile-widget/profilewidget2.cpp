@@ -1584,6 +1584,22 @@ void ProfileWidget2::unhideEvents()
 		item->show();
 }
 
+// The profile displays a copy of the current_dive, namely displayed_dive.
+// Therefore, the events we get are likewise copies. This function finds
+// the original event. TODO: Remove function once the profile can display
+// arbitrary dives.
+static event *find_event(const struct event *ev)
+{
+	struct divecomputer *dc = current_dc;
+	if (!dc)
+		return nullptr;
+	for (struct event *act = current_dc->events; act; act = act->next) {
+		if (same_event(act, ev))
+			return act;
+	}
+	return nullptr;
+}
+
 void ProfileWidget2::removeEvent(DiveEventItem *item)
 {
 	struct event *event = item->getEvent();
@@ -1698,7 +1714,9 @@ double ProfileWidget2::getFontPrintScale()
 #ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::editName(DiveEventItem *item)
 {
-	struct event *event = item->getEvent();
+	struct event *event = find_event(item->getEvent());
+	if (!event)
+		return;
 	bool ok;
 	QString newName = QInputDialog::getText(this, tr("Edit name of bookmark"),
 						tr("Custom name:"), QLineEdit::Normal,
@@ -1710,14 +1728,7 @@ void ProfileWidget2::editName(DiveEventItem *item)
 			lengthWarning.exec();
 			return;
 		}
-		// order is important! first update the current dive (by matching the unchanged event),
-		// then update the displayed dive (as event is part of the events on displayed dive
-		// and will be freed as part of changing the name!
-		update_event_name(current_dive, event, qPrintable(newName));
-		update_event_name(&displayed_dive, event, qPrintable(newName));
-		invalidate_dive_cache(current_dive);
-		mark_divelist_changed(true);
-		replot();
+		Command::renameEvent(current_dive, dc_number, event, qPrintable(newName));
 	}
 }
 #endif

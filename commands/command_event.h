@@ -58,6 +58,18 @@ public:
 	AddEventSetpointChange(struct dive *d, int dcNr, int seconds, pressure_t pO2);
 };
 
+class RenameEvent : public EventBase {
+public:
+	RenameEvent(struct dive *d, int dcNr, struct event *ev, const char *name);
+private:
+	bool workToBeDone() override;
+	void undoit() override;
+	void redoit() override;
+
+	OwningEventPtr eventToAdd;	// for undo and redo
+	event *eventToRemove;		// for undo and redo
+};
+
 } // namespace Command
 
 #endif // COMMAND_EVENT_H
