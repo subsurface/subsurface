@@ -214,7 +214,7 @@ TemplatePage {
 				}
 
 				TemplateRadioButton {
-					text: qsTr("Bühlmannh deco")
+					text: qsTr("Bühlmann deco")
 					Layout.columnSpan: 2
 					checked: Backend.planner_deco_mode === Enums.BUEHLMANN
 					onClicked: {
