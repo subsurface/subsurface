@@ -70,6 +70,18 @@ private:
 	event *eventToRemove;		// for undo and redo
 };
 
+class RemoveEvent : public EventBase {
+public:
+	RemoveEvent(struct dive *d, int dcNr, struct event *ev);
+private:
+	bool workToBeDone() override;
+	void undoit() override;
+	void redoit() override;
+
+	OwningEventPtr eventToAdd;	// for undo
+	event *eventToRemove;		// for redo
+};
+
 } // namespace Command
 
 #endif // COMMAND_EVENT_H

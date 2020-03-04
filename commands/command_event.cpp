@@ -97,4 +97,30 @@ void RenameEvent::undoit()
 	redoit();
 }
 
+RemoveEvent::RemoveEvent(struct dive *d, int dcNr, struct event *ev) : EventBase(d, dcNr),
+	eventToRemove(ev)
+{
+	setText(tr("Remove %1 event").arg(ev->name));
+}
+
+bool RemoveEvent::workToBeDone()
+{
+	return true;
+}
+
+void RemoveEvent::redoit()
+{
+	struct divecomputer *dc = get_dive_dc(d, dcNr);
+	remove_event_from_dc(dc, eventToRemove);
+	eventToAdd.reset(eventToRemove); // take ownership of event
+	eventToRemove = nullptr;
+}
+
+void RemoveEvent::undoit()
+{
+	struct divecomputer *dc = get_dive_dc(d, dcNr);
+	eventToRemove = eventToAdd.get();
+	add_event_to_dc(dc, eventToAdd.release()); // return ownership to backend
+}
+
 } // namespace Command

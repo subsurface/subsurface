@@ -1602,17 +1602,15 @@ static event *find_event(const struct event *ev)
 
 void ProfileWidget2::removeEvent(DiveEventItem *item)
 {
-	struct event *event = item->getEvent();
+	struct event *event = find_event(item->getEvent());
+	if (!event)
+		return;
 
 	if (QMessageBox::question(this, TITLE_OR_TEXT(
 					  tr("Remove the selected event?"),
 					  tr("%1 @ %2:%3").arg(event->name).arg(event->time.seconds / 60).arg(event->time.seconds % 60, 2, 10, QChar('0'))),
-				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
-		remove_event(event);
-		invalidate_dive_cache(current_dive);
-		mark_divelist_changed(true);
-		replot();
-	}
+				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
+		Command::removeEvent(current_dive, dc_number, event);
 }
 
 void ProfileWidget2::addBookmark(int seconds)

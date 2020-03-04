@@ -349,4 +349,9 @@ void renameEvent(struct dive *d, int dcNr, struct event *ev, const char *name)
 	execute(new RenameEvent(d, dcNr, ev, name));
 }
 
+void removeEvent(struct dive *d, int dcNr, struct event *ev)
+{
+	execute(new RemoveEvent(d, dcNr, ev));
+}
+
 } // namespace Command
