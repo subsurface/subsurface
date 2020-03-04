@@ -128,9 +128,9 @@ const char *monthname(int mon)
  */
 bool imported = false;
 
-bool version_printed = false;
 void print_version()
 {
+	static bool version_printed = false;
 	if (version_printed)
 		return;
 	printf("Subsurface v%s,\n", subsurface_git_version());
