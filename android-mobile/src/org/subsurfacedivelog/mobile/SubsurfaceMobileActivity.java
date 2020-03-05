@@ -28,6 +28,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 	public static boolean isInitialized;
 	private static final String TAG = "subsurfacedivelog.mobile";
 	public static native void setDeviceString(String deviceString);
+	private static Context appContext;
 
 	// we need to provide two endpoints:
 	// onNewIntent if we receive an Intent while running
@@ -36,6 +37,8 @@ public class SubsurfaceMobileActivity extends QtActivity
 	public void onCreate(Bundle savedInstanceState) {
 		Log.i(TAG + " onCreate", "onCreate SubsurfaceMobileActivity");
 		super.onCreate(savedInstanceState);
+
+		appContext = getApplicationContext();
 
 		// now we're checking if the App was started from another Android App via Intent
 		Intent theIntent = getIntent();
@@ -95,4 +98,9 @@ public class SubsurfaceMobileActivity extends QtActivity
 		Log.i(TAG + " processIntent device name", device.getDeviceName());
 		setDeviceString(device.toString());
 	} // processIntent
+
+
+	public static Context getAppContext() {
+		return appContext;
+	}
 }
