@@ -3,6 +3,7 @@
 #include "command_base.h"
 #include "core/qthelper.h" // for updateWindowTitle()
 #include "core/subsurface-qt/divelistnotifier.h"
+#include <QVector>
 
 namespace Command {
 
@@ -48,6 +49,37 @@ QAction *redoAction(QObject *parent)
 {
 	return undoStack.createRedoAction(parent, QCoreApplication::translate("Command", "&Redo"));
 }
+
+QString diveNumberOrDate(struct dive *d)
+{
+	if (d->number != 0)
+		return QStringLiteral("#%1").arg(d->number);
+	else
+		return QStringLiteral("@%1").arg(get_short_dive_date_string(d->when));
+}
+
+QString getListOfDives(const std::vector<struct dive*> &dives)
+{
+	QString listOfDives;
+	if ((int)dives.size() == dive_table.nr)
+		return Base::tr("all dives");
+	int i = 0;
+	for (dive *d: dives) {
+		// we show a maximum of five dive numbers, or 4 plus ellipsis
+		if (++i == 4 && dives.size() >= 5)
+			return listOfDives + "...";
+		listOfDives += diveNumberOrDate(d) + ", ";
+	}
+	if (!listOfDives.isEmpty())
+		listOfDives.truncate(listOfDives.length() - 2);
+	return listOfDives;
+}
+
+QString getListOfDives(QVector<struct dive *> dives)
+{
+	return getListOfDives(std::vector<struct dive *>(dives.begin(), dives.end()));
+}
+
 
 // return a string that can be used for the commit message and should list the changes that
 // were made to the dive list

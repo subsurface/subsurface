@@ -91,9 +91,9 @@ bool EditBase<T>::workToBeDone()
 	// Create a text for the menu entry. In the case of multiple dives add the number
 	size_t num_dives = dives.size();
 	if (num_dives == 1)
-		setText(tr("Edit %1").arg(fieldName()));
+		setText(QStringLiteral("%1 [%2]").arg(tr("Edit %1").arg(fieldName())).arg(diveNumberOrDate(dives[0])));
 	else if (num_dives > 0)
-		setText(tr("Edit %1 (%n dive(s))", "", num_dives).arg(fieldName()));
+		setText(QStringLiteral("%1 [%2]").arg(tr("Edit %1 (%n dive(s))", "", num_dives).arg(fieldName())).arg(getListOfDives(dives)));
 
 	return num_dives > 0;
 }
@@ -656,9 +656,9 @@ bool EditTagsBase::workToBeDone()
 	// Create a text for the menu entry. In the case of multiple dives add the number
 	size_t num_dives = dives.size();
 	if (num_dives == 1)
-		setText(tr("Edit %1").arg(fieldName()));
+		setText(QStringLiteral("%1 [%2]").arg(tr("Edit %1").arg(fieldName())).arg(diveNumberOrDate(dives[0])));
 	else if (num_dives > 0)
-		setText(tr("Edit %1 (%n dive(s))", "", num_dives).arg(fieldName()));
+		setText(QStringLiteral("%1 [%2]").arg(tr("Edit %1 (%n dive(s))", "", num_dives).arg(fieldName())).arg(getListOfDives(dives)));
 
 	return num_dives != 0;
 }
@@ -865,7 +865,7 @@ PasteDives::PasteDives(const dive *data, dive_components whatIn) : what(whatIn)
 	for (dive *d: selection)
 		dives.emplace_back(d, data, what);
 
-	setText(tr("Paste onto %n dive(s)", "", dives.size()));
+	setText(QStringLiteral("%1 [%2]").arg(tr("Paste onto %n dive(s)", "", dives.size())).arg(getListOfDives(selection)));
 }
 
 bool PasteDives::workToBeDone()
@@ -941,7 +941,7 @@ ReplanDive::ReplanDive(dive *source, bool edit_profile) : d(current_dive),
 	std::swap(source->cylinders, cylinders);
 	std::swap(source->dc, dc);
 
-	setText(edit_profile ? tr("Replan dive") : tr("Edit profile"));
+	setText((edit_profile ? tr("Replan dive") : tr("Edit profile")) + diveNumberOrDate(d));
 }
 
 ReplanDive::~ReplanDive()
@@ -988,9 +988,9 @@ AddWeight::AddWeight(bool currentDiveOnly) :
 	EditDivesBase(currentDiveOnly)
 {
 	if (dives.size() == 1)
-		setText(tr("Add weight"));
+		setText(QStringLiteral("%1 [%2]").arg(tr("Add weight")).arg(diveNumberOrDate(dives[0])));
 	else
-		setText(tr("Add weight (%n dive(s))", "", dives.size()));
+		setText(QStringLiteral("%1 [%2]").arg(tr("Add weight (%n dive(s))", "", dives.size())).arg(getListOfDives(dives)));
 }
 
 bool AddWeight::workToBeDone()
@@ -1071,10 +1071,11 @@ bool EditWeightBase::workToBeDone()
 RemoveWeight::RemoveWeight(int index, bool currentDiveOnly) :
 	EditWeightBase(index, currentDiveOnly)
 {
-	if (dives.size() == 1)
-		setText(tr("Remove weight"));
+	size_t num_dives = dives.size();
+	if (num_dives == 1)
+		setText(QStringLiteral("%1 [%2]").arg(tr("Remove weight")).arg(diveNumberOrDate(dives[0])));
 	else
-		setText(tr("Remove weight (%n dive(s))", "", dives.size()));
+		setText(QStringLiteral("%1 [%2]").arg(tr("Remove weight (%n dive(s))", "", num_dives)).arg(getListOfDives(dives)));
 }
 
 void RemoveWeight::undo()
@@ -1100,10 +1101,11 @@ EditWeight::EditWeight(int index, weightsystem_t wsIn, bool currentDiveOnly) :
 	if (dives.empty())
 		return;
 
-	if (dives.size() == 1)
-		setText(tr("Edit weight"));
+	size_t num_dives = dives.size();
+	if (num_dives == 1)
+		setText(QStringLiteral("%1 [%2]").arg(tr("Edit weight")).arg(diveNumberOrDate(dives[0])));
 	else
-		setText(tr("Edit weight (%n dive(s))", "", dives.size()));
+		setText(QStringLiteral("%1 [%2]").arg(tr("Edit weight (%n dive(s))", "", num_dives)).arg(getListOfDives(dives)));
 
 	// Try to untranslate the weightsystem name
 	new_ws = clone_weightsystem(wsIn);
@@ -1162,7 +1164,7 @@ EditDive::EditDive(dive *oldDiveIn, dive *newDiveIn, dive_site *createDs, dive_s
 	if (!oldDive || ! newDive)
 		return;
 
-	setText(tr("Edit dive"));
+	setText(tr("Edit dive [%1]").arg(diveNumberOrDate(oldDive)));
 
 	// Calculate the fields that changed.
 	// Note: Probably not needed, as on mobile we don't have that granularity.

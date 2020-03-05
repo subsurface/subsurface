@@ -546,7 +546,7 @@ void ImportDives::undoit()
 DeleteDive::DeleteDive(const QVector<struct dive*> &divesToDeleteIn)
 {
 	divesToDelete.dives = std::vector<dive *>(divesToDeleteIn.begin(), divesToDeleteIn.end());
-	setText(tr("delete %n dive(s)", "", divesToDelete.dives.size()));
+	setText(QStringLiteral("%1 [%2]").arg(tr("delete %n dive(s)", "", divesToDelete.dives.size())).arg(getListOfDives(divesToDelete.dives)));
 }
 
 bool DeleteDive::workToBeDone()
@@ -582,7 +582,7 @@ void DeleteDive::redoit()
 ShiftTime::ShiftTime(std::vector<dive *> changedDives, int amount)
 	: diveList(changedDives), timeChanged(amount)
 {
-	setText(tr("shift time of %n dives", "", changedDives.size()));
+	setText(QStringLiteral("%1 [%2]").arg(tr("shift time of %n dives", "", changedDives.size())).arg(getListOfDives(changedDives)));
 }
 
 void ShiftTime::redoit()
@@ -626,7 +626,11 @@ void ShiftTime::undoit()
 
 RenumberDives::RenumberDives(const QVector<QPair<dive *, int>> &divesToRenumberIn) : divesToRenumber(divesToRenumberIn)
 {
-	setText(tr("renumber %n dive(s)", "", divesToRenumber.count()));
+	std::vector<struct dive *> dives;
+	dives.reserve(divesToRenumber.length());
+	for (QPair<dive *, int>divePlusNumber: divesToRenumber)
+		dives.push_back(divePlusNumber.first);
+	setText(QStringLiteral("%1 [%2]").arg(tr("renumber %n dive(s)", "", divesToRenumber.count())).arg(getListOfDives(dives)));
 }
 
 void RenumberDives::undoit()
@@ -678,7 +682,7 @@ void TripBase::undoit()
 
 RemoveDivesFromTrip::RemoveDivesFromTrip(const QVector<dive *> &divesToRemove)
 {
-	setText(tr("remove %n dive(s) from trip", "", divesToRemove.size()));
+	setText(QStringLiteral("%1 [%2]").arg(tr("remove %n dive(s) from trip", "", divesToRemove.size())).arg(getListOfDives(divesToRemove)));
 	divesToMove.divesToMove.reserve(divesToRemove.size());
 	for (dive *d: divesToRemove) {
 		// If a user manually removes a dive from a trip, don't autogroup this dive.
@@ -702,7 +706,7 @@ RemoveAutogenTrips::RemoveAutogenTrips()
 
 AddDivesToTrip::AddDivesToTrip(const QVector<dive *> &divesToAddIn, dive_trip *trip)
 {
-	setText(tr("add %n dives to trip", "", divesToAddIn.size()));
+	setText(QStringLiteral("%1 [%2]").arg(tr("add %n dives to trip", "", divesToAddIn.size())).arg(getListOfDives(divesToAddIn)));
 	for (dive *d: divesToAddIn)
 		divesToMove.divesToMove.push_back( {d, trip} );
 }
