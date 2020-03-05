@@ -45,6 +45,16 @@ QAction *redoAction(QObject *parent)
 	return undoStack.createRedoAction(parent, QCoreApplication::translate("Command", "&Redo"));
 }
 
+// return a string that can be used for the commit message and should list the changes that
+// were made to the dive list
+QString changesMade()
+{
+	QString changeTexts;
+	for (int i = 0; i < undoStack.index(); i++)
+		changeTexts += undoStack.text(i) + "\n";
+	return changeTexts;
+}
+
 bool execute(Base *cmd)
 {
 	if (cmd->workToBeDone()) {
