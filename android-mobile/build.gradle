@@ -19,6 +19,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://dl.bintray.com/android/android-tools/" }
+        maven { url 'https://jitpack.io' }
 	google()
     }
 }
@@ -27,6 +28,7 @@ apply plugin: 'com.android.application'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.github.mik3y:usb-serial-for-android:v2.2.2'
 }
 
 android {
