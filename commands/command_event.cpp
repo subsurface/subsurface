@@ -2,6 +2,7 @@
 
 #include "command_event.h"
 #include "core/dive.h"
+#include "core/selection.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "core/libdivecomputer.h"
 #include "core/gettextfromc.h"
@@ -17,15 +18,21 @@ EventBase::EventBase(struct dive *dIn, int dcNrIn) :
 void EventBase::redo()
 {
 	redoit(); // Call actual function in base class
-	invalidate_dive_cache(d);
-	emit diveListNotifier.eventsChanged(d);
+	updateDive();
 }
 
 void EventBase::undo()
 {
 	undoit(); // Call actual function in base class
+	updateDive();
+}
+
+void EventBase::updateDive()
+{
 	invalidate_dive_cache(d);
 	emit diveListNotifier.eventsChanged(d);
+	dc_number = dcNr;
+	setSelection({ d }, d);
 }
 
 AddEventBase::AddEventBase(struct dive *d, int dcNr, struct event *ev) : EventBase(d, dcNr),

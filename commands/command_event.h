@@ -29,6 +29,8 @@ protected:
 	// are probably not stable.
 	struct dive *d;
 	int dcNr;
+private:
+	void updateDive();
 };
 
 class AddEventBase : public EventBase {
