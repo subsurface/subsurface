@@ -83,6 +83,8 @@ QVector<QPair<QString, int>> selectedDivesGasUsed();
 QString getUserAgent();
 QString printGPSCoords(const location_t *loc);
 
+extern QString (*changesCallback)();
+
 #if defined __APPLE__
 #define TITLE_OR_TEXT(_t, _m) "", _t + "\n" + _m
 #else
@@ -150,7 +152,7 @@ depth_t string_to_depth(const char *str);
 pressure_t string_to_pressure(const char *str);
 volume_t string_to_volume(const char *str, pressure_t workp);
 fraction_t string_to_fraction(const char *str);
-
+char *get_changes_made();
 #ifdef __cplusplus
 }
 #endif
