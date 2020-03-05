@@ -3,6 +3,7 @@
 #include "divefilter.h"
 #include "divelist.h"
 #include "qthelper.h"
+#include "subsurface-qt/divelistnotifier.h"
 
 static void updateDiveStatus(dive *d, bool newStatus, ShownChange &change)
 {
@@ -123,7 +124,7 @@ ShownChange DiveFilter::updateAll() const
 void DiveFilter::setFilter(const FilterData &data)
 {
 	filterData = data;
-	//emit diveListNotifier.filterReset(); // Not yet using common models
+	emit diveListNotifier.filterReset();
 }
 
 #else // SUBSURFACE_MOBILE
