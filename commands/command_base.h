@@ -172,7 +172,12 @@ public:
 // If nothing is to be done, the command will be deleted and false is returned.
 bool execute(Base *cmd);
 
+// helper function to create more meaningful undo/redo texts (and get the list
+// of those texts for the git storage commit message)
 QUndoStack *getUndoStack();
+QString diveNumberOrDate(struct dive *d);
+QString getListOfDives(const std::vector<dive *> &dives);
+QString getListOfDives(QVector<struct dive *> dives);
 
 } // namespace Command
 
