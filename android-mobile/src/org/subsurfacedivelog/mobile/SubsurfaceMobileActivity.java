@@ -28,14 +28,18 @@ public class SubsurfaceMobileActivity extends QtActivity
 	public static boolean isInitialized;
 	private static final String TAG = "subsurfacedivelog.mobile";
 	public static native void setDeviceString(String deviceString);
+	private static Context appContext;
 
 	// we need to provide two endpoints:
 	// onNewIntent if we receive an Intent while running
 	// onCreate    if we were started by an Intent
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		Log.i(TAG + " onCreate", "onCreate SubsurfaceMobileActivity");
 		super.onCreate(savedInstanceState);
+
+		appContext = getApplicationContext();
 
 		// now we're checking if the App was started from another Android App via Intent
 		Intent theIntent = getIntent();
@@ -50,7 +54,8 @@ public class SubsurfaceMobileActivity extends QtActivity
 
 	// if we are opened from other apps:
 	@Override
-	public void onNewIntent(Intent intent) {
+	public void onNewIntent(Intent intent)
+	{
 		Log.i(TAG + " onNewIntent", intent.getAction());
 		UsbDevice device = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
 		if (device == null) {
@@ -68,7 +73,8 @@ public class SubsurfaceMobileActivity extends QtActivity
 		}
 	} // onNewIntent
 
-	public void checkPendingIntents() {
+	public void checkPendingIntents()
+	{
 		isInitialized = true;
 		if (isIntentPending) {
 			isIntentPending = false;
@@ -80,7 +86,8 @@ public class SubsurfaceMobileActivity extends QtActivity
 	} // checkPendingIntents
 
 
-	private void processIntent() {
+	private void processIntent()
+	{
 		Intent intent = getIntent();
 		if (intent == null) {
 			Log.i(TAG + " processIntent", "intent is null");
@@ -95,4 +102,10 @@ public class SubsurfaceMobileActivity extends QtActivity
 		Log.i(TAG + " processIntent device name", device.getDeviceName());
 		setDeviceString(device.toString());
 	} // processIntent
+
+
+	public static Context getAppContext()
+	{
+		return appContext;
+	}
 }
