@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/divetripmodel.h"
 #include "core/divefilter.h"
+#ifdef SUBSURFACE_MOBILE
+#include "qt-models/mobilelistmodel.h"
+#endif
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
 #include "core/selection.h"
@@ -13,6 +16,7 @@
 #include "commands/command.h"
 #include <QIcon>
 #include <QDebug>
+#include <QDateTime>
 #include <memory>
 #include <algorithm>
 
@@ -56,6 +60,13 @@ static QVariant dive_table_alignment(int column)
 
 QVariant DiveTripModelBase::tripData(const dive_trip *trip, int column, int role)
 {
+#ifdef SUBSURFACE_MOBILE
+	// Special roles for mobile
+	switch(role) {
+	case MobileListModel::TripIdRole: return QString::number(trip->id);
+	case MobileListModel::TripNrDivesRole: return trip->dives.nr;
+	}
+#endif
 
 	if (role == TRIP_ROLE)
 		return QVariant::fromValue(const_cast<dive_trip *>(trip)); // Not nice: casting away a const
@@ -138,6 +149,50 @@ static QString displayWeight(const struct dive *d, bool units)
 
 QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 {
+#ifdef SUBSURFACE_MOBILE
+	// Special roles for mobile
+	switch (role) {
+	case MobileListModel::DiveDateRole: return (qlonglong)d->when;
+	// We have to return a QString as trip-id, because that will be used as section
+	// variable in the QtQuick list view. That has to be a string because it will try
+	// to do locale-aware sorting. And amazingly this can't be changed.
+	case MobileListModel::DateTimeRole: {
+		QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000 * d->when, Qt::UTC);
+		localTime.setTimeSpec(Qt::UTC);
+		return QStringLiteral("%1 %2").arg(localTime.date().toString(prefs.date_format_short),
+						   localTime.time().toString(prefs.time_format));
+		}
+	case MobileListModel::IdRole: return d->id;
+	case MobileListModel::NumberRole: return d->number;
+	case MobileListModel::LocationRole: return get_dive_location(d);
+	case MobileListModel::DepthRole: return get_depth_string(d->dc.maxdepth.mm, true, true);
+	case MobileListModel::DurationRole: return get_dive_duration_string(d->duration.seconds, gettextFromC::tr("h"), gettextFromC::tr("min"));
+	case MobileListModel::DepthDurationRole: return QStringLiteral("%1 / %2").arg(get_depth_string(d->dc.maxdepth.mm, true, true),
+								     get_dive_duration_string(d->duration.seconds, gettextFromC::tr("h"), gettextFromC::tr("min")));
+	case MobileListModel::RatingRole: return d->rating;
+	case MobileListModel::VizRole: return d->visibility;
+	case MobileListModel::SuitRole: return d->suit;
+	case MobileListModel::AirTempRole: return get_temperature_string(d->airtemp, true);
+	case MobileListModel::WaterTempRole: return get_temperature_string(d->watertemp, true);
+	case MobileListModel::SacRole: return formatSac(d);
+	case MobileListModel::SumWeightRole: return get_weight_string(weight_t { total_weight(d) }, true);
+	case MobileListModel::DiveMasterRole: return d->divemaster ? d->divemaster : QString();
+	case MobileListModel::BuddyRole: return d->buddy ? d->buddy : QString();
+	case MobileListModel::NotesRole: return formatNotes(d);
+	case MobileListModel::GpsRole: return d->dive_site ? printGPSCoords(&d->dive_site->location) : QString();
+	case MobileListModel::GpsDecimalRole: return format_gps_decimal(d);
+	case MobileListModel::NoDiveRole: return d->duration.seconds == 0 && d->dc.duration.seconds == 0;
+	case MobileListModel::DiveSiteRole: return QVariant::fromValue(d->dive_site);
+	case MobileListModel::CylinderRole: return formatGetCylinder(d).join(", ");
+	case MobileListModel::GetCylinderRole: return formatGetCylinder(d);
+	case MobileListModel::CylinderListRole: return getFullCylinderList();
+	case MobileListModel::SingleWeightRole: return d->weightsystems.nr <= 1;
+	case MobileListModel::StartPressureRole: return getStartPressure(d);
+	case MobileListModel::EndPressureRole: return getEndPressure(d);
+	case MobileListModel::FirstGasRole: return getFirstGas(d);
+	case MobileListModel::SelectedRole: return d->selected;
+	}
+#endif
 	switch (role) {
 	case Qt::TextAlignmentRole:
 		return dive_table_alignment(column);
