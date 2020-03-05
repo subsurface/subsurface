@@ -82,7 +82,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>GPS strack date </string>
+            <string>GPS track date </string>
            </property>
           </widget>
          </item>
