@@ -88,10 +88,8 @@ int main(int argc, char **argv)
 
 void set_non_bt_addresses()
 {
-#if SERIAL_FTDI
-	connectionListModel.addAddress("FTDI");
-#endif
 #if defined(Q_OS_ANDROID)
+	connectionListModel.addAddress("usb-serial");
 #elif defined(Q_OS_LINUX) // since this is in the else, it does NOT include Android
 	connectionListModel.addAddress("/dev/ttyS0");
 	connectionListModel.addAddress("/dev/ttyS1");
@@ -99,6 +97,9 @@ void set_non_bt_addresses()
 	connectionListModel.addAddress("/dev/ttyS3");
 	// this makes debugging so much easier - use the simulator
 	connectionListModel.addAddress("/tmp/ttyS1");
+#endif
+#if defined(SERIAL_FTDI)
+	connectionListModel.addAddress("FTDI");
 #endif
 }
 
