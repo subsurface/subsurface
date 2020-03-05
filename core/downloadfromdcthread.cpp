@@ -180,8 +180,8 @@ void fill_computer_list()
 		const char *vendor = dc_descriptor_get_vendor(descriptor);
 		const char *product = dc_descriptor_get_product(descriptor);
 #if defined(Q_OS_ANDROID)
-		if ((transports & ~(DC_TRANSPORT_SERIAL | DC_TRANSPORT_USB | DC_TRANSPORT_USBHID)) == 0)
-			// if the only available transports are serial/USB, then check against
+		if ((transports & ~(DC_TRANSPORT_USB | DC_TRANSPORT_USBHID)) == 0)
+			// if the only available transports are USB, then check against
 			// the ones that we explicitly support on Android
 			if (!mobileProductList.contains(vendor) || !mobileProductList[vendor].contains(product))
 				continue;
