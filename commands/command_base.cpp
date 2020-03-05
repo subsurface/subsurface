@@ -8,10 +8,14 @@ namespace Command {
 
 static QUndoStack undoStack;
 
+// forward declaration
+QString changesMade();
+
 // General commands
 void init()
 {
 	QObject::connect(&undoStack, &QUndoStack::cleanChanged, &updateWindowTitle);
+	changesCallback = &changesMade;
 }
 
 void clear()

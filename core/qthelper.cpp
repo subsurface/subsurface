@@ -46,7 +46,7 @@ static QLocale loc;
 
 static inline QString degreeSigns()
 {
-    return QStringLiteral("dD\u00b0");
+	return QStringLiteral("dD\u00b0");
 }
 
 QString weight_string(int weight_in_grams)
@@ -1643,4 +1643,15 @@ extern "C" void unlock_planner()
 char *copy_qstring(const QString &s)
 {
 	return strdup(qPrintable(s));
+}
+
+// function to call to get changes for a git commit
+QString (*changesCallback)() = nullptr;
+
+extern "C" char *get_changes_made()
+{
+	if (changesCallback != nullptr)
+		return copy_qstring(changesCallback());
+	else
+		return nullptr;
 }
