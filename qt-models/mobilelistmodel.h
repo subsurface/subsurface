@@ -49,7 +49,7 @@ public:
 	void resetModel();
 	void expand(int row);
 	void unexpand();
-	void toggle(int row);
+	Q_INVOKABLE void toggle(int row);
 	Q_PROPERTY(int shown READ shown NOTIFY shownChanged);
 signals:
 	void shownChanged();
