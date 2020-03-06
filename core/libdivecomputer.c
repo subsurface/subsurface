@@ -1320,7 +1320,7 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 			return ftdi_open(&data->iostream, context);
 #endif
 #ifdef __ANDROID__
-		if (!strcasecmp(data->devname, "usb-serial-for-android"))
+		if (!strcasecmp(data->devname, "usb-serial"))
 			return serial_usb_android_open(&data->iostream, context);
 #endif
 		rc = dc_serial_open(&data->iostream, context, data->devname);

@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 void set_non_bt_addresses()
 {
 #if defined(Q_OS_ANDROID)
-	connectionListModel.addAddress("usb-serial-for-android");
+	connectionListModel.addAddress("usb-serial");
 	connectionListModel.addAddress("FTDI");
 #elif defined(Q_OS_LINUX) // since this is in the else, it does NOT include Android
 	connectionListModel.addAddress("/dev/ttyS0");
