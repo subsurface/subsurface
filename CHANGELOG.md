@@ -1,3 +1,4 @@
+Mobile-android: Add usb-serial-for-android driver support
 Mobile: enable profile zoom and pan
 Mobile: add people- and tags-filter modes
 Desktop: fix tab-order in filter widget
