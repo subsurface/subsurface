@@ -53,7 +53,7 @@ public class AndroidSerial {
 	 */
 	private static final int DC_STOPBITS_ONE = 0;          /**< 1 stop bit */
 	private static final int DC_STOPBITS_ONEPOINTFIVE = 1; /**< 1.5 stop bits*/
-    private static final int DC_STOPBITS_TWO = 2;              /**< 2 stop bits */
+	private static final int DC_STOPBITS_TWO = 2;          /**< 2 stop bits */
 
 	/**
 	 * The direction of the data transmission.
