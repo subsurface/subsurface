@@ -50,7 +50,8 @@ public:
 		TRIP_ROLE,
 		DIVE_IDX,
 		SELECTED_ROLE,
-		CURRENT_ROLE
+		CURRENT_ROLE,
+		TRIP_HAS_CURRENT_ROLE // Returns true if this is a trip and it contains the current dive
 	};
 	enum Layout {
 		TREE,

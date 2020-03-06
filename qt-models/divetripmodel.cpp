@@ -820,14 +820,21 @@ QVariant DiveTripModelTree::data(const QModelIndex &index, int role) const
 		return defaultModelFont();
 
 	dive_or_trip entry = tripOrDive(index);
-	if (role == IS_TRIP_ROLE)
+	if (!entry.trip && !entry.dive)
+		return QVariant();			// That's an invalid index!
+	if (role == IS_TRIP_ROLE) {
 		return !!entry.trip;
+	} else if (role == TRIP_HAS_CURRENT_ROLE) {
+		if (!entry.trip)
+			return false;
+
+		const Item &item = items[index.row()];
+		return std::find(item.dives.begin(), item.dives.end(), current_dive) != item.dives.end();
+	}
 	if (entry.trip)
 		return tripData(entry.trip, index.column(), role);
-	else if (entry.dive)
-		return diveData(entry.dive, index.column(), role);
 	else
-		return QVariant();
+		return diveData(entry.dive, index.column(), role);
 }
 
 // After a trip changed, the top level might need to be reordered.
