@@ -50,7 +50,7 @@ Kirigami.ScrollablePage {
 				if (isTrip) {
 					manager.appendTextToLog("clicked on trip " + tripTitle)
 					// toggle expand (backend to deal with unexpand other trip)
-					manager.toggle(model.row);
+					diveModel.toggle(model.row);
 				} else {
 					manager.appendTextToLog("clicked on dive")
 					if (detailsWindow.state === "view") {
