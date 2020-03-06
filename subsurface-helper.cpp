@@ -105,6 +105,7 @@ void run_ui()
 	QQmlContext *ctxt = engine.rootContext();
 	ctxt->setContextProperty("gpsModel", gpsSortModel);
 	ctxt->setContextProperty("vendorList", vendorList);
+	ctxt->setContextProperty("swipeModel", MobileModels::instance()->swipeModel());
 	ctxt->setContextProperty("diveModel", MobileModels::instance()->listModel());
 	set_non_bt_addresses();
 
