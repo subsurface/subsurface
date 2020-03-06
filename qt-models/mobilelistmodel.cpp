@@ -527,6 +527,388 @@ void MobileListModel::toggle(int row)
 	else
 		expand(row);
 }
+
+MobileSwipeModel::MobileSwipeModel(DiveTripModelBase *source) : MobileListModelBase(source)
+{
+	connect(source, &DiveTripModelBase::modelAboutToBeReset, this, &MobileSwipeModel::beginResetModel);
+	connect(source, &DiveTripModelBase::modelReset, this, &MobileSwipeModel::doneReset);
+	connect(source, &DiveTripModelBase::rowsAboutToBeRemoved, this, &MobileSwipeModel::prepareRemove);
+	connect(source, &DiveTripModelBase::rowsRemoved, this, &MobileSwipeModel::doneRemove);
+	connect(source, &DiveTripModelBase::rowsAboutToBeInserted, this, &MobileSwipeModel::prepareInsert);
+	connect(source, &DiveTripModelBase::rowsInserted, this, &MobileSwipeModel::doneInsert);
+	connect(source, &DiveTripModelBase::rowsAboutToBeMoved, this, &MobileSwipeModel::prepareMove);
+	connect(source, &DiveTripModelBase::rowsMoved, this, &MobileSwipeModel::doneMove);
+	connect(source, &DiveTripModelBase::dataChanged, this, &MobileSwipeModel::changed);
+
+	initData();
+}
+
+// Return the size of a top level item in the source model. Whereby size
+// is the number of items it represents in the swipe model:
+// A dive has size one, a trip has the size of the number of its items.
+// Attention: the given row is expressed in source-coordinates!
+int MobileSwipeModel::topLevelRowCountInSource(int sourceRow) const
+{
+	QModelIndex index = source->index(sourceRow, 0, QModelIndex());
+	return source->data(index, DiveTripModelBase::IS_TRIP_ROLE).value<bool>() ?
+		source->rowCount(index) : 1;
+}
+
+void MobileSwipeModel::initData()
+{
+	rows = 0;
+	int act = 0;
+	int topLevelRows = source->rowCount();
+	firstElement.resize(topLevelRows);
+	for (int i = 0; i < topLevelRows; ++i) {
+		firstElement[i] = act;
+		// Note: we populate the model in reverse order, because we show the newest dives first.
+		act += topLevelRowCountInSource(topLevelRows - i - 1);
+	}
+	rows = act;
+	invalidateSourceRowCache();
+}
+
+void MobileSwipeModel::doneReset()
+{
+	initData();
+	endResetModel();
+}
+
+void MobileSwipeModel::invalidateSourceRowCache() const
+{
+	cachedRow = -1;
+	cacheSourceParent = QModelIndex();
+	cacheSourceRow = -1;
+}
+
+void MobileSwipeModel::updateSourceRowCache(int localRow) const
+{
+	if (firstElement.empty())
+		return invalidateSourceRowCache();
+
+	cachedRow = localRow;
+
+	// Do a binary search for the first top-level item that starts after the given row
+	auto idx = std::upper_bound(firstElement.begin(), firstElement.end(), localRow);
+	if (idx == firstElement.begin())
+		return invalidateSourceRowCache(); // Huh? localRow was negative? Then index->isValid() should have returned true.
+
+	--idx;
+	int topLevelRow = idx - firstElement.begin();
+	int topLevelRowSource = firstElement.end() - idx - 1; // Reverse direction.
+	int indexInRow = localRow - *idx;
+	if (indexInRow == 0) {
+		// This might be a top-level dive or a one-dive trip. Perhaps we should save which one it is.
+		if (!source->data(source->index(topLevelRowSource, 0), DiveTripModelBase::IS_TRIP_ROLE).value<bool>()) {
+			cacheSourceParent = QModelIndex();
+			cacheSourceRow = topLevelRowSource;
+			return;
+		}
+	}
+	cacheSourceParent = source->index(topLevelRowSource, 0);
+	int numElements = elementCountInTopLevel(topLevelRow);
+	cacheSourceRow = numElements - indexInRow - 1;
+}
+
+QModelIndex MobileSwipeModel::mapToSource(const QModelIndex &index) const
+{
+	if (!index.isValid())
+		return QModelIndex();
+	if (index.row() != cachedRow)
+		updateSourceRowCache(index.row());
+
+	return cacheSourceRow >= 0 ? source->index(cacheSourceRow, index.column(), cacheSourceParent) : QModelIndex();
+}
+
+int MobileSwipeModel::mapTopLevelFromSource(int row) const
+{
+	return firstElement.size() - row - 1;
+}
+
+int MobileSwipeModel::mapTopLevelFromSourceForInsert(int row) const
+{
+	return firstElement.size() - row;
+}
+
+int MobileSwipeModel::elementCountInTopLevel(int row) const
+{
+	if (row < 0 || row >= (int)firstElement.size())
+		return 0;
+	if (row + 1 < (int)firstElement.size())
+		return firstElement[row + 1] - firstElement[row];
+	else
+		return rows - firstElement[row];
+}
+
+int MobileSwipeModel::mapRowFromSource(const QModelIndex &parent, int row) const
+{
+	if (parent.isValid()) {
+		int topLevelRow = mapTopLevelFromSource(parent.row());
+		int count = elementCountInTopLevel(topLevelRow);
+		return firstElement[topLevelRow] + count - row - 1; // Note: we invert the direction!
+	} else {
+		int topLevelRow = mapTopLevelFromSource(row);
+		return firstElement[topLevelRow];
+	}
+}
+
+int MobileSwipeModel::mapRowFromSource(const QModelIndex &idx) const
+{
+	return mapRowFromSource(idx.parent(), idx.row());
+}
+
+int MobileSwipeModel::mapRowFromSourceForInsert(const QModelIndex &parent, int row) const
+{
+	if (parent.isValid()) {
+		int topLevelRow = mapTopLevelFromSource(parent.row());
+		int count = elementCountInTopLevel(topLevelRow);
+		return firstElement[topLevelRow] + count - row; // Note: we invert the direction!
+	} else {
+		if (row == 0)
+			return rows;	// Insert at the end
+		int topLevelRow = mapTopLevelFromSource(row - 1);
+		return firstElement[topLevelRow]; // Note: we invert the direction!
+	}
+}
+
+MobileSwipeModel::IndexRange MobileSwipeModel::mapRangeFromSource(const QModelIndex &parent, int first, int last) const
+{
+	// Since we invert the direction, the last will be the first.
+	if (!parent.isValid()) {
+		int localFirst = mapRowFromSource(QModelIndex(), last);
+		// Point to the *last* item in the topLevelRange. Yay for Qt's bizzare [first,last] range-semantics.
+		int localLast = mapRowFromSource(QModelIndex(), first);
+		int topLevelLast = mapTopLevelFromSource(first);
+		localLast += elementCountInTopLevel(topLevelLast) - 1;
+		return { localFirst, localLast };
+	} else {
+		// For items inside trips we can simply translate them, as they cannot contain subitems.
+		// Remember to reverse the direction, though.
+		return { mapRowFromSource(parent, last), mapRowFromSource(parent, first) };
+	}
+}
+
+// Remove top-level items. Parameters with standard range semantics (pointer to first and past last element).
+int MobileSwipeModel::removeTopLevel(int begin, int end)
+{
+	auto it1 = firstElement.begin() + begin;
+	auto it2 = firstElement.begin() + end;
+	int count = 0; // Number of items we have to subtract from rest
+	for (int row = begin; row < end; ++row)
+		count += elementCountInTopLevel(row);
+	firstElement.erase(it1, it2); // Remove items
+	for (auto act = firstElement.begin() + begin; act != firstElement.end(); ++act)
+		*act -= count; // Subtract removed items
+	rows -= count;
+	return count;
+}
+
+// Add or remove subitems from top-level items
+void MobileSwipeModel::updateTopLevel(int row, int delta)
+{
+	for (int i = row + 1; i < (int)firstElement.size(); ++i)
+		firstElement[i] += delta;
+	rows += delta;
+}
+
+// Add items at top-level. The number of subelements of each items is given in the second parameter.
+void MobileSwipeModel::addTopLevel(int row, std::vector<int> items)
+{
+	// We get an array with the number of items per inserted row.
+	// Transform that to the first element in each row.
+	int nextEl = row < (int)firstElement.size() ? firstElement[row] : rows;
+	int count = 0;
+	for (int &item: items) {
+		int num = item;
+		item = nextEl;
+		nextEl += num;
+		count += num;
+	}
+
+	// Now, increase the first element of the items after the inserted range
+	// by the number of inserted items.
+	auto it = firstElement.begin() + row;
+	for (auto act = it; act != firstElement.end(); ++act)
+		*act += count;
+	rows += count;
+
+	// Insert the range
+	firstElement.insert(it, items.begin(), items.end());
+}
+
+void MobileSwipeModel::prepareRemove(const QModelIndex &parent, int first, int last)
+{
+	IndexRange range = mapRangeFromSource(parent, first, last);
+	rangeStack.push_back(range);
+	if (range.last >= range.first)
+		beginRemoveRows(QModelIndex(), range.first, range.last);
+}
+
+void MobileSwipeModel::doneRemove(const QModelIndex &parent, int first, int last)
+{
+	IndexRange range = pop(rangeStack);
+	if (range.last < range.first)
+		return;
+	if (!parent.isValid()) {
+		// This is a top-level range. This means that we have to remove top-level items.
+		// Remember to invert the direction.
+		removeTopLevel(mapTopLevelFromSource(last), mapTopLevelFromSource(first) + 1);
+	} else {
+		// This is part of a trip. Only the number of items has to be changed.
+		updateTopLevel(mapTopLevelFromSource(parent.row()), -(last - first + 1));
+	}
+	invalidateSourceRowCache();
+	endRemoveRows();
+}
+
+void MobileSwipeModel::prepareInsert(const QModelIndex &parent, int first, int last)
+{
+	// We can not call beginInsertRows here, because before the source model
+	// has inserted its rows we don't know how many subitems there are!
+}
+
+void MobileSwipeModel::doneInsert(const QModelIndex &parent, int first, int last)
+{
+	if (!parent.isValid()) {
+		// This is a top-level range. This means that we have to add top-level items.
+
+		// Create vector of new top-level items
+		std::vector<int> items;
+		items.reserve(last - first + 1);
+		int count = 0;
+		for (int row = last; row >= first; --row) {
+			items.push_back(topLevelRowCountInSource(row));
+			count += items.back();
+		}
+
+		int firstLocal = mapTopLevelFromSourceForInsert(first);
+		if (firstLocal >= 0) {
+			beginInsertRows(QModelIndex(), firstLocal, firstLocal + count - 1);
+			addTopLevel(firstLocal, std::move(items));
+			endInsertRows();
+		} else {
+			qWarning("MobileSwipeModel::doneInsert(): invalid source index!\n");
+		}
+	} else {
+		// This is part of a trip. Only the number of items has to be changed.
+		int row = mapRowFromSourceForInsert(parent, first);
+		int count = last - first + 1;
+		beginInsertRows(QModelIndex(), row, row + count - 1);
+		updateTopLevel(mapTopLevelFromSource(parent.row()), count);
+		endInsertRows();
+	}
+	invalidateSourceRowCache();
+}
+
+void MobileSwipeModel::prepareMove(const QModelIndex &parent, int first, int last, const QModelIndex &dest, int destRow)
+{
+	IndexRange range = mapRangeFromSource(parent, first, last);
+	rangeStack.push_back(range);
+	if (range.last >= range.first)
+		beginMoveRows(QModelIndex(), range.first, range.last, QModelIndex(), mapRowFromSourceForInsert(dest, destRow));
+}
+
+void MobileSwipeModel::doneMove(const QModelIndex &parent, int first, int last, const QModelIndex &dest, int destRow)
+{
+	IndexRange range = pop(rangeStack);
+	if (range.last < range.first)
+		return;
+
+	// Moving is annoying. There are four cases to consider, depending whether
+	// we move in / out of a top-level item!
+	if (!parent.isValid() && !dest.isValid()) {
+		// From top-level to top-level
+		if (destRow < first || destRow > last + 1) {
+			int beginLocal = mapTopLevelFromSource(last);
+			int endLocal = mapTopLevelFromSource(first) + 1;
+			int destLocal = mapTopLevelFromSourceForInsert(destRow);
+			int count = endLocal - beginLocal;
+			std::vector<int> items;
+			items.reserve(count);
+			for (int row = beginLocal; row < endLocal; ++row) {
+				items.push_back(row < (int)firstElement.size() - 1 ? firstElement[row + 1] - firstElement[row]
+									      : rows - firstElement[row]);
+			}
+			removeTopLevel(mapTopLevelFromSource(last), mapTopLevelFromSource(first) + 1);
+
+			if (destLocal >= beginLocal)
+				destLocal -= count;
+			addTopLevel(destLocal, std::move(items));
+		}
+	} else if (!parent.isValid() && dest.isValid()) {
+		// From top-level to trip
+		int beginLocal = mapTopLevelFromSource(last);
+		int endLocal = mapTopLevelFromSource(first) + 1;
+		int destLocal = mapTopLevelFromSourceForInsert(dest.row());
+		int count = endLocal - beginLocal;
+		int numMoved = removeTopLevel(beginLocal, endLocal);
+		if (destLocal >= beginLocal)
+			destLocal -= count;
+		updateTopLevel(destLocal, numMoved);
+	} else if (parent.isValid() && !dest.isValid()) {
+		// From trip to top-level
+		int fromLocal = mapTopLevelFromSource(parent.row());
+		int toLocal = mapTopLevelFromSourceForInsert(dest.row());
+		int numMoved = last - first + 1;
+		std::vector<int> items(numMoved, 1); // This can only be dives -> item count is 1
+		updateTopLevel(fromLocal, -numMoved);
+		addTopLevel(toLocal, std::move(items));
+	} else {
+		// From trip to other trip
+		int fromLocal = mapTopLevelFromSource(parent.row());
+		int toLocal = mapTopLevelFromSourceForInsert(dest.row());
+		int numMoved = last - first + 1;
+		if (fromLocal != toLocal) {
+			updateTopLevel(fromLocal, -numMoved);
+			updateTopLevel(toLocal, numMoved);
+		}
+	}
+	invalidateSourceRowCache();
+	endMoveRows();
+}
+
+void MobileSwipeModel::changed(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles)
+{
+	if (!topLeft.isValid() || !bottomRight.isValid())
+		return;
+
+	// We don't display trips in the swipe model. If we get changed signals for that - ignore it.
+	// Subtle: we only check that for single-row changes, because the source model sends changes
+	// to trips one-by-one. The way we query the source model is ... not nice to read.
+	if (topLeft.row() == bottomRight.row() &&
+	    source->data(topLeft, DiveTripModelBase::IS_TRIP_ROLE).value<bool>())
+		return;
+
+	int fromSource = mapRowFromSource(bottomRight);
+	int toSource = mapRowFromSource(topLeft);
+	QModelIndex fromIdx = createIndex(fromSource, topLeft.column());
+	QModelIndex toIdx = createIndex(toSource, bottomRight.column());
+
+	dataChanged(fromIdx, toIdx, roles);
+
+	// Special case CURRENT_ROLE: if a dive becomes current, we send a signal so that the
+	// dive-details page can update the current dive. It would be nicer if the frontend could
+	// hook into the changed-signal, but currently I don't know how this works in QML.
+	// Note: changes to current must not be combined with other changes, therefore we can
+	// assume that roles.size() == 1.
+	if (roles.size() == 1 && roles[0] == DiveTripModelBase::CURRENT_ROLE &&
+	    source->data(topLeft, DiveTripModelBase::CURRENT_ROLE).value<bool>())
+		emit currentDiveChanged(fromIdx);
+}
+
+QVariant MobileSwipeModel::data(const QModelIndex &index, int role) const
+{
+	return source->data(mapToSource(index), role);
+}
+
+int MobileSwipeModel::rowCount(const QModelIndex &parent) const
+{
+	if (parent.isValid())
+		return 0; // There is no parent
+	return rows;
+}
+
 MobileModels *MobileModels::instance()
 {
 	static MobileModels self;
@@ -534,7 +916,8 @@ MobileModels *MobileModels::instance()
 }
 
 MobileModels::MobileModels() :
-	lm(&source)
+	lm(&source),
+	sm(&source)
 {
 	reset();
 }
@@ -542,6 +925,11 @@ MobileModels::MobileModels() :
 MobileListModel *MobileModels::listModel()
 {
 	return &lm;
+}
+
+MobileSwipeModel *MobileModels::swipeModel()
+{
+	return &sm;
 }
 
 void MobileModels::clear()

@@ -4,7 +4,7 @@
 // MobileListModel presents a list of trips and optionally the dives of
 // one expanded trip. It is used for quick navigation through trips.
 //
-// MobileDiveListModel gives a linearized view of all dives, sorted by
+// MobileSwipeModel gives a linearized view of all dives, sorted by
 // trip. Even if there is temporal overlap of trips, all dives of
 // a trip are listed in a contiguous block. This model is used for
 // swiping through dives.
@@ -109,18 +109,73 @@ private slots:
 	void changed(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles);
 };
 
+class MobileSwipeModel : public MobileListModelBase {
+	Q_OBJECT
+public:
+	MobileSwipeModel(DiveTripModelBase *source);
+	static MobileSwipeModel *instance();
+	void resetModel(DiveTripModelBase::Layout layout);	// Switch between tree and list view
+private:
+	struct IndexRange {
+		int first, last;
+	};
+	std::vector<IndexRange> rangeStack;
+	std::vector<int> firstElement; // First element of top level item.
+	int rows;
+	QVariant data(const QModelIndex &index, int role) const override;
+	int rowCount(const QModelIndex &parent) const override;
+
+	// Since accesses to data come in bursts, we cache map-to-source lookup.
+	// Note that this is not thread safe. We suppose that the model is only ever accessed from the UI thread.
+	mutable int cachedRow = -1;
+	mutable QModelIndex cacheSourceParent;
+	mutable int cacheSourceRow = -1;
+
+	// Translate indexes from/to source
+	int topLevelRowCountInSource(int sourceRow) const;
+	QModelIndex mapToSource(const QModelIndex &index) const;
+	int mapTopLevelFromSource(int row) const;
+	int mapTopLevelFromSourceForInsert(int row) const;
+	int elementCountInTopLevel(int row) const;
+	int mapRowFromSource(const QModelIndex &parent, int row) const;
+	int mapRowFromSource(const QModelIndex &parent) const;
+	int mapRowFromSourceForInsert(const QModelIndex &parent, int row) const;
+	IndexRange mapRangeFromSource(const QModelIndex &parent, int first, int last) const;
+	void invalidateSourceRowCache() const;
+	void updateSourceRowCache(int row) const;
+
+	// Update elements
+	void initData();
+	int removeTopLevel(int begin, int end);
+	void addTopLevel(int row, std::vector<int> items);
+	void updateTopLevel(int row, int delta);
+signals:
+	void currentDiveChanged(QModelIndex index);
+private slots:
+	void doneReset();
+	void prepareRemove(const QModelIndex &parent, int first, int last);
+	void doneRemove(const QModelIndex &parent, int first, int last);
+	void prepareInsert(const QModelIndex &parent, int first, int last);
+	void doneInsert(const QModelIndex &parent, int first, int last);
+	void prepareMove(const QModelIndex &parent, int first, int last, const QModelIndex &dest, int destRow);
+	void doneMove(const QModelIndex &parent, int first, int last, const QModelIndex &dest, int destRow);
+	void changed(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles);
+};
+
 // This convenience class provides access to the two mobile models.
 // Moreover, it provides an interface to the source trip-model.
 class MobileModels {
 public:
 	static MobileModels *instance();
 	MobileListModel *listModel();
+	MobileSwipeModel *swipeModel();
 	void clear(); // Clear all dive data
 	void reset(); // Reset model after having reloaded the core data
 private:
 	MobileModels();
 	DiveTripModelTree source;
 	MobileListModel lm;
+	MobileSwipeModel sm;
 };
 
 // Helper functions - these are actually defined in DiveObjectHelper.cpp. Why declare them here?
