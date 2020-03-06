@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- FTDI Chips -->
-    <!-- (Smart Interface), Heinrichs Weikamp -->
+    <!-- FTDI_FT232R -->
     <usb-device vendor-id="0x0403" product-id="0x6001"/>
+    <!-- FTDI_FT2232H -->
     <usb-device vendor-id="0x0403" product-id="0x6010"/>
+    <!-- FTDI_FT4232H -->
     <usb-device vendor-id="0x0403" product-id="0x6011"/>
-    <!-- May be Aqualung custom PID? -->
+    <!--FTDI_FT232H -->
+    <usb-device vendor-id="0x0403" product-id="0x6014"/>
+    <!--FTDI_FT231X -->
     <usb-device vendor-id="0x0403" product-id="0x6015"/>
     <!-- Oceanic Custom PID -->
     <usb-device vendor-id="0x0403" product-id="0xf460"/>
@@ -13,6 +17,8 @@
     <usb-device vendor-id="0x0403" product-id="0xf680"/>
     <!-- Cressi (Leonardo) Custom PID -->
     <usb-device vendor-id="0x0403" product-id="0x87d0"/>
+    <!-- Mares Icon HD Custom PID -->
+    <usb-device vendor-id="0xFFFF" product-id="0x0005"/>
 
     <!-- USB devices -->
     <!-- EON Steel -->
@@ -27,4 +33,28 @@
     <usb-device vendor-id="0xc251" product-id="0x2006"/>
     <!-- Atomics Aquatics Cobalt -->
     <usb-device vendor-id="0x0471" product-id="0x0888"/>
+
+    <!-- devices supported by usb-serial-for-android which aren't included in FTDI chips -->
+    <!-- Don't support Arduino / Teensyduino / Leaflabs Maple -->
+    <!-- SiLabs CP2102 -->
+    <usb-device vendor-id="0x10c4" product-id="0xea60"/>
+    <!-- SiLabs CP2105 -->
+    <usb-device vendor-id="0x10c4" product-id="0xea70"/>
+    <!-- SiLabs CP2108 -->
+    <usb-device vendor-id="0x10c4" product-id="0xea71"/>
+    <!-- SiLabs CP2110 -->
+    <usb-device vendor-id="0x10c4" product-id="0xea80"/>
+
+    <!-- PROLIFIC_PL2303 -->
+    <usb-device vendor-id="0x067b" product-id="0x2303"/>
+    <usb-device vendor-id="0x04B8" product-id="0x0521"/>
+    <usb-device vendor-id="0x04B8" product-id="0x0522"/>
+
+    <!-- QINHENG_HL340 -->
+    <usb-device vendor-id="0x1a86" product-id="0x7523"/>
+    <!-- ARM mBed (possibly not used) -->
+    <usb-device vendor-id="0x0d28" product-id="0x0204"/>
+
+
+
 </resources>
