@@ -88,13 +88,17 @@ signals:
 	void selectionChanged(const QVector<QModelIndex> &indexes);
 	void currentDiveChanged(QModelIndex index);
 protected:
+	dive *oldCurrent;
+
 	// Access trip and dive data
 	static QVariant diveData(const struct dive *d, int column, int role);
 	static QVariant tripData(const dive_trip *trip, int column, int role);
+	void currentChanged();
 
 	virtual dive *diveOrNull(const QModelIndex &index) const = 0;	// Returns a dive if this index represents a dive, null otherwise
 	virtual void clearData() = 0;
 	virtual void populate() = 0;
+	virtual QModelIndex diveToIdx(const dive *d) const = 0;
 };
 
 class DiveTripModelTree : public DiveTripModelBase
@@ -127,6 +131,7 @@ private:
 	void divesShown(dive_trip *trip, const QVector<dive *> &dives);
 	void divesHidden(dive_trip *trip, const QVector<dive *> &dives);
 	void divesTimeChangedTrip(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
+	void divesDeletedInternal(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives);
 
 	// The tree model has two levels. At the top level, we have either trips or dives
 	// that do not belong to trips. Such a top-level item is represented by the "Item"
@@ -163,6 +168,7 @@ private:
 	// Access trips and dives
 	int findTripIdx(const dive_trip *trip) const;
 	int findDiveIdx(const dive *d) const;			// Find _top_level_ dive
+	QModelIndex diveToIdx(const dive *d) const;		// Find _any_ dive
 	int findDiveInTrip(int tripIdx, const dive *d) const;	// Find dive inside trip. Second parameter is index of trip
 	int findInsertionIndex(const dive_trip *trip) const;	// Where to insert trip
 
@@ -196,7 +202,9 @@ private:
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
 	dive *diveOrNull(const QModelIndex &index) const override;
 	void addDives(QVector<dive *> &dives);
-	void removeDives(QVector<dive *> &dives);
+	void removeDives(QVector<dive *> dives);
+	QModelIndex diveToIdx(const dive *d) const;
+	void divesDeletedInternal(const QVector<dive *> &dives);
 
 	std::vector<dive *> items;				// TODO: access core data directly
 };
