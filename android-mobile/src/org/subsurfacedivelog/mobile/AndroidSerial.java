@@ -1,8 +1,6 @@
 package org.subsurfacedivelog.mobile;
 
-import com.hoho.android.usbserial.driver.UsbSerialDriver;
-import com.hoho.android.usbserial.driver.UsbSerialPort;
-import com.hoho.android.usbserial.driver.UsbSerialProber;
+import com.hoho.android.usbserial.driver.*;
 
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
@@ -91,9 +89,17 @@ public class AndroidSerial {
 			// Find all available drivers from attached devices.
 			Context context = SubsurfaceMobileActivity.getAppContext();
 			UsbManager manager = (UsbManager) context.getSystemService(Context.USB_SERVICE);
-			UsbSerialProber usbSerialProber = UsbSerialProber.getDefaultProber();
+			ProbeTable usbSerialProbetable = UsbSerialProber.getDefaultProbeTable();
 
-			// TODO attach custom VID / PID / Drivers
+			usbSerialProbetable.addProduct(0x0403, 0xf460, FtdiSerialDriver.class); // Oceanic Custom PID
+			usbSerialProbetable.addProduct(0x0403, 0xf680, FtdiSerialDriver.class); // Suunto Custom PID
+			usbSerialProbetable.addProduct(0x0403, 0x87d0, FtdiSerialDriver.class); // Cressi (Leonardo) Custom PID
+
+			usbSerialProbetable.addProduct(0x04B8, 0x0521, ProlificSerialDriver.class); // Mares (Nemo Sport) / Cressi Custom PID
+			usbSerialProbetable.addProduct(0x04B8, 0x0521, ProlificSerialDriver.class); // Zeagle Custom PID
+			usbSerialProbetable.addProduct(0xFFFF, 0x0005, CdcAcmSerialDriver.class); // Mares Icon HD Custom PID
+
+			UsbSerialProber usbSerialProber = new UsbSerialProber(usbSerialProbetable);
 
 			List<UsbSerialDriver> availableDrivers = usbSerialProber.findAllDrivers(manager);
 			if (availableDrivers.isEmpty()) {
