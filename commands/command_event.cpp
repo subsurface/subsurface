@@ -106,7 +106,9 @@ void RenameEvent::undoit()
 }
 
 RemoveEvent::RemoveEvent(struct dive *d, int dcNr, struct event *ev) : EventBase(d, dcNr),
-	eventToRemove(ev)
+	eventToRemove(ev),
+	cylinder(ev->type == SAMPLE_EVENT_GASCHANGE2 || ev->type == SAMPLE_EVENT_GASCHANGE ?
+		 ev->gas.index : -1)
 {
 	setText(tr("Remove %1 event").arg(ev->name));
 }
@@ -129,6 +131,19 @@ void RemoveEvent::undoit()
 	struct divecomputer *dc = get_dive_dc(d, dcNr);
 	eventToRemove = eventToAdd.get();
 	add_event_to_dc(dc, eventToAdd.release()); // return ownership to backend
+}
+
+void RemoveEvent::post() const
+{
+	if (cylinder < 0)
+		return;
+
+	fixup_dive(d);
+	emit diveListNotifier.cylinderEdited(d, cylinder);
+
+	// TODO: This is silly we send a DURATION change event so that the statistics are recalculated.
+	// We should instead define a proper DiveField that expresses the change caused by a gas switch.
+	emit diveListNotifier.divesChanged(QVector<dive *>{ d }, DiveField::DURATION | DiveField::DEPTH);
 }
 
 AddGasSwitch::AddGasSwitch(struct dive *d, int dcNr, int seconds, int tank) : EventBase(d, dcNr)

@@ -79,9 +79,11 @@ private:
 	bool workToBeDone() override;
 	void undoit() override;
 	void redoit() override;
+	void post() const; // Called to fix up dives should a gas-change have happened.
 
 	OwningEventPtr eventToAdd;	// for undo
 	event *eventToRemove;		// for redo
+	int cylinder;			// affected cylinder (if removing gas switch). <0: not a gas switch.
 };
 
 class AddGasSwitch : public EventBase {
