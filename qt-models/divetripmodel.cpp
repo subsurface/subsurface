@@ -380,6 +380,7 @@ void DiveTripModelBase::clear()
 	oldCurrent = nullptr;
 	emit diveListNotifier.divesSelected({}, nullptr); // Inform profile, etc of changed selection
 	endResetModel();
+	emit diveListNotifier.numShownChanged();
 }
 
 void DiveTripModelBase::reset()
@@ -389,6 +390,7 @@ void DiveTripModelBase::reset()
 	populate();
 	endResetModel();
 	initSelection();
+	emit diveListNotifier.numShownChanged();
 }
 
 DiveTripModelBase::DiveTripModelBase(QObject *parent) : QAbstractItemModel(parent)
