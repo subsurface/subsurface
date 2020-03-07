@@ -2093,15 +2093,22 @@ void QMLManager::showDownloadPage(QString deviceString)
 
 void QMLManager::setFilter(const QString filterText, int index)
 {
-	FilterData::Mode mode;
-	// This is ugly - the indexes of the mode are hardcoded!
-	switch(index) {
-		default:
-		case 0: mode = FilterData::Mode::FULLTEXT; break;
-		case 1: mode = FilterData::Mode::PEOPLE; break;
-		case 2: mode = FilterData::Mode::TAGS; break;
+	QString f = filterText.trimmed();
+	FilterData data;
+	if (!f.isEmpty()) {
+		// This is ugly - the indexes of the mode are hardcoded!
+		switch(index) {
+			default:
+			case 0: data.mode = FilterData::Mode::FULLTEXT; break;
+			case 1: data.mode = FilterData::Mode::PEOPLE; break;
+			case 2: data.mode = FilterData::Mode::TAGS; break;
+		}
+		if (data.mode == FilterData::Mode::FULLTEXT)
+			data.fullText = f;
+		else
+			data.tags = f.split(",", QString::SkipEmptyParts);
 	}
-	DiveListSortModel::instance()->setFilter(filterText, mode);
+	DiveFilter::instance()->setFilter(data);
 }
 
 void QMLManager::setShowNonDiveComputers(bool show)
