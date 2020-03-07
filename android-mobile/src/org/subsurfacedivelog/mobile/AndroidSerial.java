@@ -95,6 +95,8 @@ public class AndroidSerial {
 
 			usbSerialProbetable.addProduct(0x04B8, 0x0521, ProlificSerialDriver.class); // Mares (Nemo Sport) / Cressi Custom PID
 			usbSerialProbetable.addProduct(0x04B8, 0x0521, ProlificSerialDriver.class); // Zeagle Custom PID
+			usbSerialProbetable.addProduct(0xFFFF, 0x0005, CdcAcmSerialDriver.class); // Mares Icon HD Custom PID
+
 
             UsbSerialProber usbSerialProber = new UsbSerialProber(usbSerialProbetable);
 			List<UsbSerialDriver> availableDrivers = usbSerialProber.findAllDrivers(manager);

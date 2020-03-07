@@ -17,6 +17,8 @@
     <usb-device vendor-id="0x0403" product-id="0xf680"/>
     <!-- Cressi (Leonardo) Custom PID -->
     <usb-device vendor-id="0x0403" product-id="0x87d0"/>
+    <!-- Mares Icon HD Custom PID -->
+    <usb-device vendor-id="0xFFFF" product-id="0x0005"/>
 
     <!-- USB devices -->
     <!-- EON Steel -->
@@ -52,4 +54,7 @@
     <usb-device vendor-id="0x1a86" product-id="0x7523"/>
     <!-- ARM mBed (possibly not used) -->
     <usb-device vendor-id="0x0d28" product-id="0x0204"/>
+
+
+
 </resources>
