@@ -329,6 +329,7 @@ Kirigami.Page {
 					message += " downloading " + (manager.DC_forceDownload ? "all" : "only new" ) + " dives";
 					manager.appendTextToLog(message)
 					progressBar.visible = true
+					divesDownloaded = false // this allows the progressMessage to be displayed
 					importModel.startDownload()
 				}
 			}
