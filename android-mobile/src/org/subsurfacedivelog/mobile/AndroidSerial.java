@@ -98,7 +98,7 @@ public class AndroidSerial {
 			usbSerialProbetable.addProduct(0xFFFF, 0x0005, CdcAcmSerialDriver.class); // Mares Icon HD Custom PID
 
 
-            UsbSerialProber usbSerialProber = new UsbSerialProber(usbSerialProbetable);
+			UsbSerialProber usbSerialProber = new UsbSerialProber(usbSerialProbetable);
 			List<UsbSerialDriver> availableDrivers = usbSerialProber.findAllDrivers(manager);
 			if (availableDrivers.isEmpty()) {
 				Log.w(TAG, "no usb-to-serial devices found!");
