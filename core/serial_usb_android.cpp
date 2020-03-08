@@ -141,7 +141,11 @@ static dc_status_t serial_usb_android_read(void *io, void *data, size_t size, si
 	env->GetByteArrayRegion(array, 0, retval, (jbyte *) data);
 	env->DeleteLocalRef(array);
 	TRACE (device->context, "%s: actual read size: %i", __FUNCTION__, retval);
-	return DC_STATUS_SUCCESS;
+
+	if (retval < size)
+		return DC_STATUS_TIMEOUT;
+	else
+		return DC_STATUS_SUCCESS;
 }
 
 
