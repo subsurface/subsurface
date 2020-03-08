@@ -19,6 +19,7 @@ import java.util.Queue;
 import java.util.List;
 import java.util.LinkedList;
 import java.lang.Math;
+import java.util.Date;
 
 public class AndroidSerial {
 
@@ -221,17 +222,20 @@ public class AndroidSerial {
 			Log.d(TAG, "read length: " + data.length);
 
 			int toReadFromHwLength = data.length - readBuffer.size();
-
 			int arraylength = (toReadFromHwLength % 64) != 0 ? toReadFromHwLength + (64 - (toReadFromHwLength % 64)): toReadFromHwLength; // use blocks of 64 for reading
 
-			// When we don't have enough in the buffer, try to read from HW
-			if (toReadFromHwLength > 0) {
+			long startTime =  (new Date()).getTime();
+
+			// while we don't have enough in the buffer, try to read from HW until there is enough or timeout is reached.
+			while (toReadFromHwLength > 0 && (startTime + timeout > (new Date()).getTime() || timeout == 0)) {
 				// Read and append to buffer
 				byte[] readFromHwData = new byte[arraylength];
-				int actuallyReadFromHwLength = usbSerialPort.read(readFromHwData, 0); // With this it works... But the timeout is ignored! Fix this!
+				int actuallyReadFromHwLength = usbSerialPort.read(readFromHwData, 0); // This behaves differently on different chipsets. CP210x blocks, FTDI seems to return instantly.
 				for (int i = 0; i < actuallyReadFromHwLength; i++ ) {
 					readBuffer.add(readFromHwData[i]);
 				}
+				toReadFromHwLength = data.length - readBuffer.size();
+				arraylength = (toReadFromHwLength % 64) != 0 ? toReadFromHwLength + (64 - (toReadFromHwLength % 64)): toReadFromHwLength; // use blocks of 64 for reading
 			}
 
 			//Log.d(TAG, "read buffer: " + printQueue(readBuffer));
