@@ -2029,12 +2029,12 @@ void QMLManager::showDownloadPage(QString deviceString)
 		name = QString("%1;%2;%3")
 				.arg(vendorList.indexOf("Heinrichs Weikamp"))
 				.arg(productList["Heinrichs Weikamp"].indexOf("OSTC 3"))
-				.arg(connectionListModel.indexOf("FTDI"));
+				.arg(connectionListModel.indexOf("usb-serial"));
 	} else if (deviceString.contains("HeinrichsWeikamp OSTC 2N")) {
 			name = QString("%1;%2;%3")
 					.arg(vendorList.indexOf("Heinrichs Weikamp"))
 					.arg(productList["Heinrichs Weikamp"].indexOf("OSTC 2N"))
-					.arg(connectionListModel.indexOf("FTDI"));
+					.arg(connectionListModel.indexOf("usb-serial"));
 	} else if (deviceString.contains("mManufacturerName=ATOMIC AQUATICS") &&
 		   deviceString.contains("mProductName=COBALT")) {
 		if (deviceString.contains("mVersion=2")) {
@@ -2074,27 +2074,58 @@ void QMLManager::showDownloadPage(QString deviceString)
 				.arg(connectionListModel.indexOf("Scubapro"))
 				.arg(productList["Scubapro"].indexOf("Aladin Square"))
 				.arg(connectionListModel.indexOf("USB device"));
-	} else if (deviceString.contains("mVendorId=1027") && // 0x0403 / 0x6001,0x6010,0x6011,0x6015
+	} else if (deviceString.contains("mVendorId=1027") && // FTDI: 0x0403 / 0x6001,0x6010,0x6011,0x6014,0x6015
 		   (deviceString.contains("mProductId=24577") ||
 		    deviceString.contains("mProductId=24592") ||
 		    deviceString.contains("mProductId=24593") ||
+		    deviceString.contains("mProductId=24596") ||
 		    deviceString.contains("mProductId=24597"))) {
-		name = QString("-1;-1;%1").arg(connectionListModel.indexOf("FTDI"));
+		name = QString("-1;-1;%1").arg(connectionListModel.indexOf("usb-serial"));
 	} else if (deviceString.contains("mVendorId=1027") && // 0x0403 / 0xf460
 		   deviceString.contains("mProductId=62560")) {
 		name = QString("%1;-1;%2")
 				.arg(vendorList.indexOf("Oceanic"))
-				.arg(connectionListModel.indexOf("FTDI"));
+				.arg(connectionListModel.indexOf("usb-serial"));
 	} else if (deviceString.contains("mVendorId=1027") && // 0x0403 / 0xf680
 		   deviceString.contains("mProductId=63104")) {
 		name = QString("%1;-1;%2")
 				.arg(vendorList.indexOf("Suunto"))
-				.arg(connectionListModel.indexOf("FTDI"));
+				.arg(connectionListModel.indexOf("usb-serial"));
 	} else if (deviceString.contains("mVendorId=1027") && // 0x0403 / 0x87d0
 		   deviceString.contains("mProductId=34768")) {
 		name = QString("%1;-1;%2")
 				.arg(vendorList.indexOf("Cressi"))
-				.arg(connectionListModel.indexOf("FTDI"));
+				.arg(connectionListModel.indexOf("usb-serial"));
+	} else if (deviceString.contains("mVendorId=65535") && // 0xffff / 0x0005
+		   deviceString.contains("mProductId=5")) {
+		name = QString("%1;%2;%3")
+				.arg(vendorList.indexOf("Mares"))
+				.arg(productList["Mares"].indexOf("Icon HD"))
+				.arg(connectionListModel.indexOf("usb-serial"));
+	} else if (deviceString.contains("mVendorId=4292") && // SiLabs: 0x10c4 / 0xea60,0xea70,0xea71,0xea80
+		   (deviceString.contains("mProductId=60000") ||
+		    deviceString.contains("mProductId=60016") ||
+		    deviceString.contains("mProductId=60017") ||
+		    deviceString.contains("mProductId=60032"))) {
+		name = QString("-1;-1;%1")
+				.arg(connectionListModel.indexOf("usb-serial"));
+	} else if (deviceString.contains("mVendorId=1659") && // Prolific: 0x067b / 0x2303
+		   deviceString.contains("mProductId=8963")) {
+		name = QString("-1;-1;%1")
+				.arg(connectionListModel.indexOf("usb-serial"));
+	} else if (deviceString.contains("mVendorId=1208") && // Prolific: 0x04b8 / 0x0521,0x0522
+		   (deviceString.contains("mProductId=1313") ||
+		    deviceString.contains("mProductId=1314"))) {
+		name = QString("-1;-1;%1")
+				.arg(connectionListModel.indexOf("usb-serial"));
+	} else if (deviceString.contains("mVendorId=6790") && // QINHENG: 0x1a86 / 0x7523
+		   deviceString.contains("mProductId=29987")) {
+		name = QString("-1;-1;%1")
+				.arg(connectionListModel.indexOf("usb-serial"));
+	} else if (deviceString.contains("mVendorId=3368") && // ARM mBed: 0x0d28 / 0x0204
+		   deviceString.contains("mProductId=516")) {
+		name = QString("-1;-1;%1")
+				.arg(connectionListModel.indexOf("usb-serial"));
 	}
 	// inform the QML UI that it should show the download page
 	m_pluggedInDeviceName = strdup(qPrintable(name));
