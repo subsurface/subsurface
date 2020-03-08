@@ -168,7 +168,7 @@ Kirigami.Page {
 					dc1.enabled = dc2.enabled = dc3.enabled = dc4.enabled = true
 					for (var i = 1; i < 5; i++) {
 						switch (i) {
-							case 1:
+						        case 1:
 								curVendor = PrefDiveComputer.vendor1
 								curProduct = PrefDiveComputer.product1
 								curDevice = PrefDiveComputer.device1
@@ -230,7 +230,7 @@ Kirigami.Page {
 			}
 			function disableDC(inx) {
 				switch (inx) {
-					case 1:
+				        case 1:
 						dc1.enabled = false
 						break;
 					case 2:
@@ -479,7 +479,6 @@ Kirigami.Page {
 				comboVendor.currentIndex = manager.getDetectedVendorIndex()
 				comboProduct.currentIndex = manager.getDetectedProductIndex(comboVendor.currentText)
 				comboConnection.currentIndex = manager.getMatchingAddress(comboVendor.currentText, comboProduct.currentText)
-
 			}
 		}
 	}
