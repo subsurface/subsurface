@@ -222,15 +222,6 @@ public:
 	DiveField fieldId() const override;
 };
 
-class EditNumber : public EditBase<int> {
-public:
-	using EditBase<int>::EditBase;	// Use constructor of base class.
-	void set(struct dive *d, int number) const override;
-	int data(struct dive *d) const override;
-	QString fieldName() const override;
-	DiveField fieldId() const override;
-};
-
 // Fields that work with tag-lists (tags, buddies, divemasters) work differently and therefore
 // have their own base class. In this case, it's not a template, as all these lists are base
 // on strings.

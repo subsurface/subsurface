@@ -574,28 +574,6 @@ DiveField EditMode::fieldId() const
 	return DiveField::MODE;
 }
 
-// ***** Number *****
-void EditNumber::set(struct dive *d, int number) const
-{
-	d->number = number;
-}
-
-int EditNumber::data(struct dive *d) const
-{
-	return d->number;
-}
-
-QString EditNumber::fieldName() const
-{
-	return tr("number");
-}
-
-DiveField EditNumber::fieldId() const
-{
-	return DiveField::NR;
-}
-
-
 // ***** Tag based commands *****
 EditTagsBase::EditTagsBase(const QStringList &newListIn, bool currentDiveOnly) :
 	EditDivesBase(currentDiveOnly),
