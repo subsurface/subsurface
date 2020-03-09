@@ -374,13 +374,17 @@ void QMLManager::updateAllGlobalLists()
 	updateSiteList();
 }
 
+static QString nocloud_localstorage()
+{
+	return QString(system_default_directory()) + "/cloudstorage/localrepo[master]";
+}
+
 void QMLManager::mergeLocalRepo()
 {
-	char *filename = NOCLOUD_LOCALSTORAGE;
 	struct dive_table table = empty_dive_table;
 	struct trip_table trips = empty_trip_table;
 	struct dive_site_table sites = empty_dive_site_table;
-	parse_file(filename, &table, &trips, &sites);
+	parse_file(qPrintable(nocloud_localstorage()), &table, &trips, &sites);
 	add_imported_dives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS);
 }
 
@@ -453,7 +457,7 @@ void QMLManager::finishSetup()
 	} else if (!empty_string(existing_filename) &&
 				qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_UNKNOWN) {
 		setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
-		set_filename(NOCLOUD_LOCALSTORAGE);
+		set_filename(qPrintable(nocloud_localstorage()));
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 		saveCloudCredentials(qPrefCloudStorage::cloud_storage_email(), qPrefCloudStorage::cloud_storage_password(), qPrefCloudStorage::cloud_storage_pin());
 		appendTextToLog(tr("working in no-cloud mode"));
@@ -813,7 +817,7 @@ void QMLManager::revertToNoCloudIfNeeded()
 		qPrefCloudStorage::set_cloud_storage_password("");
 		setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
-		set_filename(NOCLOUD_LOCALSTORAGE);
+		set_filename(qPrintable(nocloud_localstorage()));
 		setStartPageText(RED_FONT + tr("Failed to connect to cloud server, reverting to no cloud status") + END_FONT);
 	}
 	alreadySaving = false;
@@ -1285,17 +1289,17 @@ void QMLManager::openNoCloudRepo()
  * is obviously empty when just created.
  */
 {
-	char *filename = NOCLOUD_LOCALSTORAGE;
+	QString filename = nocloud_localstorage();
 	const char *branch;
 	struct git_repository *git;
 
-	git = is_git_repository(filename, &branch, NULL, false);
+	git = is_git_repository(qPrintable(filename), &branch, NULL, false);
 
 	if (git == dummy_git_repository) {
-		git_create_local_repo(filename);
-		set_filename(filename);
+		git_create_local_repo(qPrintable(filename));
+		set_filename(qPrintable(filename));
 		auto s = qPrefLog::instance();
-		s->set_default_filename(filename);
+		s->set_default_filename(qPrintable(filename));
 		s->set_default_file_behavior(LOCAL_DEFAULT_FILE);
 	}
 
@@ -1307,11 +1311,11 @@ void QMLManager::saveChangesLocal()
 	if (unsaved_changes()) {
 		if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NOCLOUD) {
 			if (empty_string(existing_filename)) {
-				char *filename = NOCLOUD_LOCALSTORAGE;
-				git_create_local_repo(filename);
-				set_filename(filename);
+				QString filename = nocloud_localstorage();
+				git_create_local_repo(qPrintable(filename));
+				set_filename(qPrintable(filename));
 				auto s = qPrefLog::instance();
-				s->set_default_filename(filename);
+				s->set_default_filename(qPrintable(filename));
 				s->set_default_file_behavior(LOCAL_DEFAULT_FILE);
 			}
 		} else if (!m_loadFromCloud) {

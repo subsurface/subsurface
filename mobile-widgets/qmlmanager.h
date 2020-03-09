@@ -18,8 +18,6 @@
 #include "qt-models/divelocationmodel.h"
 #include "core/settings/qPrefCloudStorage.h"
 
-#define NOCLOUD_LOCALSTORAGE format_string("%s/cloudstorage/localrepo[master]", system_default_directory())
-
 class QMLManager : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(QString logText READ logText WRITE setLogText NOTIFY logTextChanged)
