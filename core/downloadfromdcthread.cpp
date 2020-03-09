@@ -110,64 +110,12 @@ void DownloadThread::run()
 	updateRememberedDCs();
 }
 
-static void fill_supported_mobile_list()
-{
-#if defined(Q_OS_ANDROID)
-	/* USB or FTDI devices that are supported on Android - this does NOT include the BLE or BT only devices */
-	mobileProductList["Aeris"] =
-		QStringList({{"500 AI"}, {"A300"}, {"A300 AI"}, {"A300CS"}, {"Atmos 2"}, {"Atmos AI"}, {"Atmos AI 2"}, {"Compumask"}, {"Elite"}, {"Elite T3"}, {"Epic"}, {"F10"}, {"F11"}, {"Manta"}, {"XR-1 NX"}, {"XR-2"}});
-	mobileProductList["Aqualung"] =
-		QStringList({{"i200"}, {"i300"}, {"i450T"}, {"i550"}, {"i750TC"}});
-	mobileProductList["Beuchat"] =
-		QStringList({{"Mundial 2"}, {"Mundial 3"}, {"Voyager 2G"}});
-	mobileProductList["Cochran"] =
-		QStringList({{"Commander I"}, {"Commander II"}, {"Commander TM"}, {"EMC-14"}, {"EMC-16"}, {"EMC-20H"}});
-	mobileProductList["Cressi"] =
-		QStringList({{"Leonardo"}, {"Giotto"}, {"Newton"}, {"Drake"}, {"Cartesio"}, {"Goa"}});
-	mobileProductList["DiveSystem"] =
-		QStringList({{"Orca"}, {"iDive Pro"}, {"iDive DAN"}, {"iDive Tech"}, {"iDive Reb"}, {"iDive Stealth"}, {"iDive Free"}, {"iDive Easy"}, {"iDive X3M"}, {"iDive Deep"}});
-	mobileProductList["Genesis"] =
-		QStringList({{"React Pro"}, {"React Pro White"}});
-	mobileProductList["Heinrichs Weikamp"] =
-		QStringList({{"Frog"}, {"OSTC"}, {"OSTC 2"}, {"OSTC 2C"}, {"OSTC 2N"}, {"OSTC 3"}, {"OSTC 3+"}, {"OSTC 4"}, {"OSTC Mk2"}, {"OSTC Plus"}, {"OSTC Sport"}, {"OSTC cR"}, {"OSTC 2 TR"}});
-	mobileProductList["Hollis"] =
-		QStringList({{"DG02"}, {"DG03"}, {"TX1"}});
-	mobileProductList["Mares"] =
-		QStringList({{"Puck Pro"}, {"Smart"}, {"Quad"}});
-	mobileProductList["Oceanic"] =
-		QStringList({{"Atom 1.0"}, {"Atom 2.0"}, {"Atom 3.0"}, {"Atom 3.1"}, {"Datamask"}, {"F10"}, {"F11"}, {"Geo"}, {"Geo 2.0"}, {"OC1"}, {"OCS"}, {"OCi"}, {"Pro Plus 2"}, {"Pro Plus 2.1"}, {"Pro Plus 3"}, {"VT 4.1"}, {"VT Pro"}, {"VT3"}, {"VT4"}, {"VTX"}, {"Veo 1.0"}, {"Veo 180"}, {"Veo 2.0"}, {"Veo 200"}, {"Veo 250"}, {"Veo 3.0"}, {"Versa Pro"}});
-	mobileProductList["Ratio"] =
-		QStringList({{"iX3M Pro Fancy"}, {"iX3M Pro Easy"}, {"iX3M Pro Pro"}, {"iX3M Pro Deep"}, {"iX3M Pro Tech+"}, {"iX3M Pro Reb"}, {"iDive Free"}, {"iDive Fancy"}, {"iDive Easy"}, {"iDive Pro"}, {"iDive Deep"}, {"iDive Tech+"}, {"iDive Reb"}, {"iDive Color Free"}, {"iDive Color Fancy"}, {"iDive Color Easy"}, {"iDive Color Pro"}, {"iDive Color Deep"}, {"iDive Color Tech+"}, {"iDive Color Reb"}});
-	mobileProductList["Scubapro"] =
-		QStringList({{"Aladin Square"}, {"G2"}});
-	mobileProductList["Seac"] =
-		QStringList({{"Jack"}, {"Guru"}});
-	mobileProductList["Seemann"] =
-		QStringList({{"XP5"}});
-	mobileProductList["Sherwood"] =
-		QStringList({{"Amphos"}, {"Amphos Air"}, {"Insight"}, {"Insight 2"}, {"Vision"}, {"Wisdom"}, {"Wisdom 2"}, {"Wisdom 3"}});
-	mobileProductList["Subgear"] =
-		QStringList({{"XP-Air"}});
-	mobileProductList["Suunto"] =
-		QStringList({{"Cobra"}, {"Cobra 2"}, {"Cobra 3"}, {"D3"}, {"D4"}, {"D4f"}, {"D4i"}, {"D6"}, {"D6i"}, {"D9"}, {"D9tx"}, {"DX"}, {"EON Core"}, {"EON Steel"}, {"Eon"}, {"Gekko"}, {"HelO2"}, {"Mosquito"}, {"Solution"}, {"Solution Alpha"}, {"Solution Nitrox"}, {"Spyder"}, {"Stinger"}, {"Vyper"}, {"Vyper 2"}, {"Vyper Air"}, {"Vyper Novo"}, {"Vytec"}, {"Zoop"}, {"Zoop Novo"}});
-	mobileProductList["Tusa"] =
-		QStringList({{"Element II (IQ-750)"}, {"Zen (IQ-900)"}, {"Zen Air (IQ-950)"}});
-	mobileProductList["Uwatec"] =
-		QStringList({{"Aladin Air Twin"}, {"Aladin Air Z"}, {"Aladin Air Z Nitrox"}, {"Aladin Air Z O2"}, {"Aladin Pro"}, {"Aladin Pro Ultra"}, {"Aladin Sport Plus"}, {"Memomouse"}});
-	mobileProductList["Atomic Aquatics"] =
-		QStringList({{"Cobalt"}, {"Cobalt 2"}});
-
-#endif
-}
-
 void fill_computer_list()
 {
 	dc_iterator_t *iterator = NULL;
 	dc_descriptor_t *descriptor = NULL;
 
 	unsigned int transportMask = get_supported_transports(NULL);
-
-	fill_supported_mobile_list();
 
 	dc_descriptor_iterator(&iterator);
 	while (dc_iterator_next(iterator, &descriptor) == DC_STATUS_SUCCESS) {
@@ -179,13 +127,6 @@ void fill_computer_list()
 
 		const char *vendor = dc_descriptor_get_vendor(descriptor);
 		const char *product = dc_descriptor_get_product(descriptor);
-#if defined(Q_OS_ANDROID)
-		if ((transports & ~(DC_TRANSPORT_USB | DC_TRANSPORT_USBHID)) == 0)
-			// if the only available transports are USB, then check against
-			// the ones that we explicitly support on Android
-			if (!mobileProductList.contains(vendor) || !mobileProductList[vendor].contains(product))
-				continue;
-#endif
 		if (!vendorList.contains(vendor))
 			vendorList.append(vendor);
 		if (!productList[vendor].contains(product))
