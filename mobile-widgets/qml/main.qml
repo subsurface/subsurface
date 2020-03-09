@@ -76,30 +76,31 @@ Kirigami.ApplicationWindow {
 		diveList.scrollToTop()
 	}
 
-	function showMap() {
+	function showPage(page) {
 		if (globalDrawer.drawerOpen)
 			globalDrawer.close()
-		var i=pageIndex(mapPage)
+		var i=pageIndex(page)
 		if (i === -1)
-			pageStack.push(mapPage)
+			pageStack.push(page)
 		else
 			pageStack.currentIndex = i
+		manager.appendTextToLog("switched to page " + page.title)
+	}
+
+	function showMap() {
+		showPage(mapPage)
 	}
 
 	function showDiveList() {
-		if (globalDrawer.drawerOpen)
-			globalDrawer.close()
-		var i=pageIndex(diveList)
-		if (i === -1)
-			pageStack.push(diveList)
-		else
-			pageStack.currentIndex = i
+		showPage(diveList)
 	}
 
 	function pageIndex(pageToFind) {
-		for (var i = 0; i < pageStack.contentItem.contentChildren.length; i++) {
-			if (pageStack.contentItem.contentChildren[i] === pageToFind)
-				return i
+		if (pageStack.contentItem !== null) {
+			for (var i = 0; i < pageStack.contentItem.contentChildren.length; i++) {
+				if (pageStack.contentItem.contentChildren[i] === pageToFind)
+					return i
+			}
 		}
 		return -1
 	}
