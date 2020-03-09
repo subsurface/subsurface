@@ -194,7 +194,7 @@ Kirigami.Page {
 							if ( curVendor === comboVendor.currentText && curDevice.toUpperCase() === currentText)
 								rememberedDCsGrid.setDC(curVendor, curProduct, curDevice)
 						}else if (comboProduct.currentIndex !== -1 && currentText === "FTDI") {
-							if ( curVendor === comboVendor.currentText && cyrProduct === comboProduct.currentText && curDevice.toUpperCase() === currentText) {
+							if ( curVendor === comboVendor.currentText && curProduct === comboProduct.currentText && curDevice.toUpperCase() === currentText) {
 								disableDC(i)
 								break
 							}
@@ -339,12 +339,16 @@ Kirigami.Page {
 				onClicked: {
 					manager.cancelDownloadDC()
 					if (!progressBar.visible) {
-						pageStack.pop();
+						// remove the download page and show dive list
+						pageStack.pop(downloadFromDc)
+						rootItem.showDiveList()
 						download.text = qsTr("Download")
 						divesDownloaded = false
 						manager.progressMessage = ""
+						manager.appendTextToLog("exit DCDownload screen")
+					} else {
+						manager.appendTextToLog("cancel download")
 					}
-					manager.appendTextToLog("exit DCDownload screen")
 				}
 			}
 			TemplateButton {
