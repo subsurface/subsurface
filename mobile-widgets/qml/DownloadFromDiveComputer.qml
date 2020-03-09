@@ -23,6 +23,7 @@ Kirigami.Page {
 	property alias vendor: comboVendor.currentIndex
 	property alias product: comboProduct.currentIndex
 	property alias connection: comboConnection.currentIndex
+	property bool setupUSB: false
 
 	DCImportModel {
 		id: importModel
@@ -224,6 +225,7 @@ Kirigami.Page {
 			spacing: Kirigami.Units.smallSpacing;
 			Layout.fillWidth: true
 			function setDC(vendor, product, device) {
+				manager.appendTextToLog("setDC called with " + vendor + "/" + product + "/" + device)
 				comboVendor.currentIndex = comboVendor.find(vendor);
 				comboProduct.currentIndex = comboProduct.find(product);
 				comboConnection.currentIndex = manager.getConnectionIndex(device);
@@ -477,12 +479,17 @@ Kirigami.Page {
 		}
 
 		onVisibleChanged: {
-			comboVendor.currentIndex = comboProduct.currentIndex = comboConnection.currentIndex = -1
-			dc1.enabled = dc2.enabled = dc3.enabled = dc4.enabled = true
-			if (visible) {
-				comboVendor.currentIndex = manager.getDetectedVendorIndex()
-				comboProduct.currentIndex = manager.getDetectedProductIndex(comboVendor.currentText)
-				comboConnection.currentIndex = manager.getMatchingAddress(comboVendor.currentText, comboProduct.currentText)
+			if (!setupUSB) {
+				// if we aren't called with a known USB connection, check if we can find
+				// a known BT/BLE device
+				manager.appendTextToLog("download page -- looking for known BT/BLE device")
+				comboVendor.currentIndex = comboProduct.currentIndex = comboConnection.currentIndex = -1
+				dc1.enabled = dc2.enabled = dc3.enabled = dc4.enabled = true
+				if (visible) {
+					comboVendor.currentIndex = manager.getDetectedVendorIndex()
+					comboProduct.currentIndex = manager.getDetectedProductIndex(comboVendor.currentText)
+					comboConnection.currentIndex = manager.getMatchingAddress(comboVendor.currentText, comboProduct.currentText)
+				}
 			}
 		}
 	}
