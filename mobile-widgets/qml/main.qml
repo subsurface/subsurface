@@ -710,14 +710,18 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			if (visible) {
 				pageStack.clear()
 				diveList.visible = false
-			} else {
-				pageStack.push(diveList)
 			}
 		}
 
 		Component.onCompleted: {
 			if (!visible) {
-				showDiveList()
+				manager.appendTextToLog("StartPage completed - showing the dive list")
+				showPage(diveList) // we want to make sure that gets on the stack
+				manager.appendTextToLog("if we got started by a plugged in device, switch to download page -- pluggedInDeviceName = " + pluggedInDeviceName)
+				if (pluggedInDeviceName !== "")
+					// if we were started with a dive computer plugged in,
+					// immediately switch to download page
+					showDownloadForPluggedInDevice()
 			}
 		}
 	}
@@ -818,6 +822,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	}
 
 	function showDownloadForPluggedInDevice() {
+		// don't add this unless the dive list is already shown
+		if (pageIndex(diveList) === -1)
+			return
 		manager.appendTextToLog("plugged in device name changed to " + pluggedInDeviceName)
 		/* if we recognized the device, we'll pass in a triple of ComboBox indeces as "vendor;product;connection" */
 		var vendorProductConnection = pluggedInDeviceName.split(';')
@@ -825,7 +832,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			showDownloadPage(vendorProductConnection[0], vendorProductConnection[1], vendorProductConnection[2])
 		else
 			showDownloadPage()
-		manager.appendTextToLog("done showing download page")
 	}
 
 	onPluggedInDeviceNameChanged: {
@@ -834,6 +840,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			manager.appendTextToLog("Download page requested by Android Intent, but adding/editing dive; no action taken")
 		} else {
 			// we want to show the downloads page
+			// note that if Subsurface-mobile was started because a USB device was plugged in, this is run too early;
+			// we catch this in the function below and instead switch to the download page in the completion signal
+			// handler for the startPage
 			showDownloadForPluggedInDevice()
 		}
 	}
