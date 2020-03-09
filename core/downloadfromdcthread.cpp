@@ -76,11 +76,6 @@ void DownloadThread::run()
 		qDebug() << "No download possible when DC type is unknown";
 		return;
 	}
-#if defined(Q_OS_ANDROID)
-	// on Android we either use BT, a USB device, or we download via FTDI cable
-	if (!internalData->bluetooth_mode && (same_string(internalData->devname, "FTDI") || same_string(internalData->devname, "")))
-		internalData->devname = "ftdi";
-#endif
 	qDebug() << "Starting download from " << (internalData->bluetooth_mode ? "BT" : internalData->devname);
 	qDebug() << "downloading" << (internalData->force_download ? "all" : "only new") << "dives";
 	clear_dive_table(&downloadTable);
