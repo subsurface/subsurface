@@ -508,20 +508,6 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	function showDownloadPage(vendor, product, connection) {
-		downloadFromDc.dcImportModel.clearTable()
-		pageStack.push(downloadFromDc)
-		if (vendor !== undefined && product !== undefined && connection !== undefined) {
-			/* set up the correct values on the download page */
-			if (vendor !== -1)
-				downloadFromDc.vendor = vendor
-			if (product !== -1)
-				downloadFromDc.product = product
-			if (connection !== -1)
-				downloadFromDc.connection = connection
-		}
-	}
-
 	property QtObject downloadFromDCAction: Kirigami.Action {
 		icon {
 			name: ":/icons/downloadDC"
@@ -529,7 +515,7 @@ Kirigami.ScrollablePage {
 		}
 		text: qsTr("Download dives")
 		onTriggered: {
-			showDownloadPage()
+			rootItem.showDownloadPage()
 		}
 	}
 

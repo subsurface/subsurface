@@ -802,19 +802,39 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		visible: false
 	}
 
+	function showDownloadPage(vendor, product, connection) {
+		manager.appendTextToLog("show download page for " + vendor + " / " + product + " / " + connection)
+		downloadFromDc.dcImportModel.clearTable()
+		if (vendor !== undefined && product !== undefined && connection !== undefined) {
+			/* set up the correct values on the download page */
+			if (vendor !== -1)
+				downloadFromDc.vendor = vendor
+			if (product !== -1)
+				downloadFromDc.product = product
+			if (connection !== -1)
+				downloadFromDc.connection = connection
+		}
+		showPage(downloadFromDc)
+	}
+
+	function showDownloadForPluggedInDevice() {
+		manager.appendTextToLog("plugged in device name changed to " + pluggedInDeviceName)
+		/* if we recognized the device, we'll pass in a triple of ComboBox indeces as "vendor;product;connection" */
+		var vendorProductConnection = pluggedInDeviceName.split(';')
+		if (vendorProductConnection.length === 3)
+			showDownloadPage(vendorProductConnection[0], vendorProductConnection[1], vendorProductConnection[2])
+		else
+			showDownloadPage()
+		manager.appendTextToLog("done showing download page")
+	}
+
 	onPluggedInDeviceNameChanged: {
 		if (detailsWindow.state === 'edit' || detailsWindow.state === 'add') {
 			/* we're in the middle of editing / adding a dive */
 			manager.appendTextToLog("Download page requested by Android Intent, but adding/editing dive; no action taken")
 		} else {
-			manager.appendTextToLog("Show download page for device " + pluggedInDeviceName)
-			/* if we recognized the device, we'll pass in a triple of ComboBox indeces as "vendor;product;connection" */
-			var vendorProductConnection = pluggedInDeviceName.split(';')
-			if (vendorProductConnection.length === 3)
-				diveList.showDownloadPage(vendorProductConnection[0], vendorProductConnection[1], vendorProductConnection[2])
-			else
-				diveList.showDownloadPage()
-			manager.appendTextToLog("done showing download page")
+			// we want to show the downloads page
+			showDownloadForPluggedInDevice()
 		}
 	}
 
