@@ -1235,7 +1235,10 @@ unsigned int get_supported_transports(device_data_t *data)
 #if defined(BLE_SUPPORT)
 	supported |= DC_TRANSPORT_BLE;
 #endif
-
+#if defined(Q_OS_ANDROID)
+	// we cannot support transports that need libusb, hid, filesystem access, or IRDA on Android
+	supported &= ~(DC_TRANSPORT_USB | DC_TRANSPORT_USBHID | DC_TRANSPORT_IRDA | DC_TRANSPORT_USBSTORAGE);
+#endif
 	if (data) {
 		/*
 		 * If we have device data available, we can refine this:
