@@ -2056,49 +2056,10 @@ void QMLManager::showDownloadPage(QString deviceString)
 				.arg(productList["Heinrichs Weikamp"].indexOf("OSTC 3"))
 				.arg(connectionListModel.indexOf("usb-serial"));
 	} else if (deviceString.contains("HeinrichsWeikamp OSTC 2N")) {
-			name = QString("%1;%2;%3")
-					.arg(vendorList.indexOf("Heinrichs Weikamp"))
-					.arg(productList["Heinrichs Weikamp"].indexOf("OSTC 2N"))
-					.arg(connectionListModel.indexOf("usb-serial"));
-	} else if (deviceString.contains("mManufacturerName=ATOMIC AQUATICS") &&
-		   deviceString.contains("mProductName=COBALT")) {
-		if (deviceString.contains("mVersion=2")) {
-			name = QString("%1;%2;%3")
-					.arg(vendorList.indexOf("Atomic Aquatics"))
-					.arg(productList["Atomic Aquatics"].indexOf("Cobalt 2"))
-					.arg(connectionListModel.indexOf("USB device"));
-		} else {
-			name = QString("%1;%2;%3")
-					.arg(vendorList.indexOf("Atomic Aquatics"))
-					.arg(productList["Atomic Aquatics"].indexOf("Cobalt"))
-					.arg(connectionListModel.indexOf("USB device"));
-		}
-	} else if (deviceString.contains("mVendorId=5267") && // 0x1493 / 0x0030
-		   deviceString.contains("mProductId=48")) {
 		name = QString("%1;%2;%3")
-				.arg(connectionListModel.indexOf("Suunto"))
-				.arg(productList["Suunto"].indexOf("EON Steel"))
-				.arg(connectionListModel.indexOf("USB device"));
-	} else if (deviceString.contains("mVendorId=5267") && // 0x1493 / 0x0033
-		   deviceString.contains("mProductId=51")) {
-		name = QString("%1;%2;%3")
-				.arg(connectionListModel.indexOf("Suunto"))
-				.arg(productList["Suunto"].indexOf("EON Core"))
-				.arg(connectionListModel.indexOf("USB device"));
-	} else if (deviceString.contains("mVendorId=11884") && // 0x2e6c / 0x3201,0x3211,0x4201
-		   (deviceString.contains("mProductId=12801") ||
-		    deviceString.contains("mProductId=12817") ||
-		    deviceString.contains("mProductId=16897"))) {
-		name = QString("%1;%2;%3")
-				.arg(connectionListModel.indexOf("Scubapro"))
-				.arg(productList["Scubapro"].indexOf("G2"))
-				.arg(connectionListModel.indexOf("USB device"));
-	} else if (deviceString.contains("mVendorId=49745") && // 0xc251 / 0x2006
-		   deviceString.contains("mProductId=8198")) {
-		name = QString("%1;%2;%3")
-				.arg(connectionListModel.indexOf("Scubapro"))
-				.arg(productList["Scubapro"].indexOf("Aladin Square"))
-				.arg(connectionListModel.indexOf("USB device"));
+				.arg(vendorList.indexOf("Heinrichs Weikamp"))
+				.arg(productList["Heinrichs Weikamp"].indexOf("OSTC 2N"))
+				.arg(connectionListModel.indexOf("usb-serial"));
 	} else if (deviceString.contains("mVendorId=1027") && // FTDI: 0x0403 / 0x6001,0x6010,0x6011,0x6014,0x6015
 		   (deviceString.contains("mProductId=24577") ||
 		    deviceString.contains("mProductId=24592") ||
