@@ -508,36 +508,6 @@ Qt::ItemFlags DiveTripModelBase::flags(const QModelIndex &index) const
 	return d && index.column() == NR ? base | Qt::ItemIsEditable : base;
 }
 
-bool DiveTripModelBase::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-	// We only support setting of data for dives and there, only the number.
-	dive *d = diveOrNull(index);
-	if (!d)
-		return false;
-	if (role != Qt::EditRole)
-		return false;
-	if (index.column() != NR)
-		return false;
-
-	int v = value.toInt();
-	if (v == 0)
-		return false;
-
-	// Only accept numbers that are not already in use by other dives.
-	int i;
-	struct dive *dive;
-	for_each_dive (i, dive) {
-		if (dive->number == v)
-			return false;
-	}
-#if defined(SUBSURFACE_MOBILE)
-	d->number = v;
-#else
-	Command::editNumber(v, d);
-#endif
-	return true;
-}
-
 // Update visibility status of dive and return dives whose visibility changed.
 // Attention: the changed dives are removed from the original vector!
 static ShownChange updateShown(QVector<dive *> &dives)
