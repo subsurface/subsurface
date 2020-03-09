@@ -819,6 +819,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		manager.appendTextToLog("show download page for " + vendor + " / " + product + " / " + connection)
 		downloadFromDc.dcImportModel.clearTable()
 		if (vendor !== undefined && product !== undefined && connection !== undefined) {
+			downloadFromDc.setupUSB = true
 			/* set up the correct values on the download page */
 			if (vendor !== -1)
 				downloadFromDc.vendor = vendor
@@ -826,7 +827,10 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				downloadFromDc.product = product
 			if (connection !== -1)
 				downloadFromDc.connection = connection
+		} else {
+			downloadFromDc.setupUSB = false
 		}
+
 		showPage(downloadFromDc)
 	}
 
