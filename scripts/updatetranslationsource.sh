@@ -19,6 +19,10 @@ pushd $SRC
 git status | grep "Changes not staged for commit" 2>/dev/null && echo "tree not clean" && exit 1
 git status | grep "Changes to be committed" 2>/dev/null && echo "tree not clean" && exit 1
 
+# now remove the translations and remove access to the kirigami sources
+chmod 000 mobile-widgets/qml/kirigami
+rm translations/subsurface_source.ts
+
 # enable creating the translation strings
 sed -i.bak 's/# qt5_create_translation/ qt5_create_translation/ ; s/# add_custom_target(translations_update/ add_custom_target(translations_update/' translations/CMakeLists.txt
 
@@ -44,6 +48,9 @@ mv translations/subsurface_source.ts.new translations/subsurface_source.ts
 git add translations/subsurface_source.ts
 git commit -s -m "Update translation source strings"
 git reset --hard
+
+# now enable access to kirigami again
+chmod 755 mobile-widgets/qml/kirigami
 
 # this really depends on my filesystem layout
 # push sources to Transifex
