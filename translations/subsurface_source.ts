@@ -35,54 +35,6 @@
     </message>
 </context>
 <context>
-    <name>AboutPage</name>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/AboutPage.qml" line="79"/>
-        <source>About</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/AboutPage.qml" line="105"/>
-        <source>%1 &lt;%2&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/AboutPage.qml" line="143"/>
-        <source>Copyright</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/AboutPage.qml" line="166"/>
-        <source>License:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/AboutPage.qml" line="179"/>
-        <source>License: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/AboutPage.qml" line="190"/>
-        <source>Libraries in use</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/AboutPage.qml" line="204"/>
-        <source>Authors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/AboutPage.qml" line="214"/>
-        <source>Credits</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/AboutPage.qml" line="225"/>
-        <source>Translators</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>AddWeight</name>
     <message>
         <location filename="../commands/command_edit.cpp" line="991"/>
@@ -96,14 +48,6 @@
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
-    </message>
-</context>
-<context>
-    <name>BackButton</name>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/templates/private/BackButton.qml" line="48"/>
-        <source>Navigate Back</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2617,14 +2561,6 @@
     </message>
 </context>
 <context>
-    <name>ContextDrawer</name>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/ContextDrawer.qml" line="79"/>
-        <source>Actions</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CopySettings</name>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="14"/>
@@ -3308,6 +3244,11 @@ GPS location:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="188"/>
+        <source>&lt;unnamed dive site&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="252"/>
         <source>Remove dive %1 from trip</source>
         <translation type="unfinished"></translation>
@@ -3353,16 +3294,6 @@ GPS location:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="354"/>
-        <source>Please wait, updating the dive list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="188"/>
-        <source>&lt;unnamed dive site&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="337"/>
         <source>Cloud credentials</source>
         <translation type="unfinished"></translation>
@@ -3370,6 +3301,11 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="354"/>
         <source>No dives in dive list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="354"/>
+        <source>Please wait, updating the dive list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6074,14 +6010,6 @@ Existing Site</source>
     </message>
 </context>
 <context>
-    <name>ForwardButton</name>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/templates/private/ForwardButton.qml" line="44"/>
-        <source>Navigate Forward</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>GasSelectionModel</name>
     <message>
         <location filename="../qt-models/models.cpp" line="37"/>
@@ -7488,38 +7416,6 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="324"/>
         <source>Firmware files</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Page1Form.ui</name>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/examples/minimalqmake/Page1Form.ui.qml" line="26"/>
-        <location filename="../mobile-widgets/qml/kirigami/examples/qmakewithstaticplugin/src/Page1Form.ui.qml" line="26"/>
-        <location filename="../mobile-widgets/qml/kirigami/examples/staticcmake/src/Page1Form.ui.qml" line="26"/>
-        <source>Page 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/examples/minimalqmake/Page1Form.ui.qml" line="37"/>
-        <location filename="../mobile-widgets/qml/kirigami/examples/qmakewithstaticplugin/src/Page1Form.ui.qml" line="37"/>
-        <location filename="../mobile-widgets/qml/kirigami/examples/staticcmake/src/Page1Form.ui.qml" line="44"/>
-        <source>Text Field</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/examples/minimalqmake/Page1Form.ui.qml" line="42"/>
-        <location filename="../mobile-widgets/qml/kirigami/examples/qmakewithstaticplugin/src/Page1Form.ui.qml" line="42"/>
-        <location filename="../mobile-widgets/qml/kirigami/examples/staticcmake/src/Page1Form.ui.qml" line="49"/>
-        <source>Press Me</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PasswordField</name>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/PasswordField.qml" line="45"/>
-        <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -9387,14 +9283,6 @@ Please export this template to a different file.</source>
     </message>
 </context>
 <context>
-    <name>SearchField</name>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/SearchField.qml" line="44"/>
-        <source>Search...</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>SetpointDialog</name>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="17"/>
@@ -9739,21 +9627,6 @@ Please report DCs that need this setting</source>
         <source>Display Developer menu</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/settings.cpp" line="155"/>
-        <source>KDE Frameworks %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/settings.cpp" line="157"/>
-        <source>The %1 windowing system</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/settings.cpp" line="158"/>
-        <source>Qt %2 (built against %3)</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ShiftImageTimesDialog</name>
@@ -9912,69 +9785,6 @@ Files with inappropriate date/time</source>
         <location filename="../desktop-widgets/shifttimes.ui" line="143"/>
         <location filename="../subsurface/desktop-widgets/ui_shifttimes.h" line="144"/>
         <source>Later</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Sidebar</name>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/examples/simpleexamples/Sidebar.qml" line="94"/>
-        <source>&amp;File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/examples/simpleexamples/Sidebar.qml" line="95"/>
-        <source>&amp;New...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/examples/simpleexamples/Sidebar.qml" line="96"/>
-        <source>&amp;Open...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/examples/simpleexamples/Sidebar.qml" line="97"/>
-        <source>&amp;Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/examples/simpleexamples/Sidebar.qml" line="98"/>
-        <source>Save &amp;As...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/examples/simpleexamples/Sidebar.qml" line="100"/>
-        <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/examples/simpleexamples/Sidebar.qml" line="103"/>
-        <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/examples/simpleexamples/Sidebar.qml" line="104"/>
-        <source>Cu&amp;t</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/examples/simpleexamples/Sidebar.qml" line="105"/>
-        <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/examples/simpleexamples/Sidebar.qml" line="106"/>
-        <source>&amp;Paste</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/examples/simpleexamples/Sidebar.qml" line="109"/>
-        <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/examples/simpleexamples/Sidebar.qml" line="110"/>
-        <source>&amp;About</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -10923,22 +10733,6 @@ mixed from Air and using:
     </message>
 </context>
 <context>
-    <name>ToolBarApplicationHeader</name>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/ToolBarApplicationHeader.qml" line="126"/>
-        <source>More Actions</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ToolBarPageHeader</name>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/private/globaltoolbar/ToolBarPageHeader.qml" line="107"/>
-        <source>More Actions</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ToolTipItem</name>
     <message>
         <location filename="../profile-widget/divetooltipitem.cpp" line="137"/>
@@ -11065,14 +10859,6 @@ If you don&apos;t want Subsurface to continue checking, please click Decline.</s
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="119"/>
         <source>Automatic check for updates</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>UrlButton</name>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/UrlButton.qml" line="51"/>
-        <source>Copy link address</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -13978,13 +13764,6 @@ Is the Uemis Zurich plugged in correctly?</source>
 </context>
 <context>
     <name>main</name>
-    <message>
-        <location filename="../mobile-widgets/qml/kirigami/examples/minimalqmake/main.qml" line="28"/>
-        <location filename="../mobile-widgets/qml/kirigami/examples/qmakewithstaticplugin/src/main.qml" line="28"/>
-        <location filename="../mobile-widgets/qml/kirigami/examples/staticcmake/src/main.qml" line="28"/>
-        <source>Hello World</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="16"/>
         <source>Subsurface-mobile</source>
