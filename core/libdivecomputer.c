@@ -21,6 +21,7 @@
 #include "display.h"
 #include "errorhelper.h"
 #include "sha1.h"
+#include "timer.h"
 
 #include <libdivecomputer/version.h>
 #include <libdivecomputer/usbhid.h>
@@ -1188,17 +1189,29 @@ static const char *do_device_import(device_data_t *data)
 	return NULL;
 }
 
+static dc_timer_t *logfunc_timer = NULL;
 void logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *msg, void *userdata)
 {
 	UNUSED(context);
 	const char *loglevels[] = { "NONE", "ERROR", "WARNING", "INFO", "DEBUG", "ALL" };
 
+	if (logfunc_timer == NULL)
+		dc_timer_new(&logfunc_timer);
+
 	FILE *fp = (FILE *)userdata;
 
+	dc_usecs_t now = 0;
+	dc_timer_now(logfunc_timer, &now);
+
+	unsigned long seconds = now / 1000000;
+	unsigned long microseconds = now % 1000000;
+
 	if (loglevel == DC_LOGLEVEL_ERROR || loglevel == DC_LOGLEVEL_WARNING) {
-		fprintf(fp, "%s: %s [in %s:%d (%s)]\n", loglevels[loglevel], msg, file, line, function);
+		fprintf(fp, "[%li.%06li] %s: %s [in %s:%d (%s)]\n",
+			seconds, microseconds,
+			loglevels[loglevel], msg, file, line, function);
 	} else {
-		fprintf(fp, "%s: %s\n", loglevels[loglevel], msg);
+		fprintf(fp, "[%li.%06li] %s: %s\n", seconds, microseconds, loglevels[loglevel], msg);
 	}
 }
 
