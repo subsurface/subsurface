@@ -6,10 +6,13 @@
 
 #include <QAndroidJniObject>
 #include <QAndroidJniEnvironment>
+#include <QtAndroid>
 
 #include <thread>
 
 #include <android/log.h>
+
+#include "serial_usb_android.h"
 
 #define INFO(context, fmt, ...)	 __android_log_print(ANDROID_LOG_DEBUG, __FILE__, "INFO: " fmt "\n", ##__VA_ARGS__)
 #define ERROR(context, fmt, ...) __android_log_print(ANDROID_LOG_DEBUG, __FILE__, "ERROR: " fmt "\n", ##__VA_ARGS__)
@@ -172,7 +175,9 @@ static dc_status_t serial_usb_android_write(void *io, const void *data, size_t s
 	return DC_STATUS_SUCCESS;
 }
 
-dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *context)
+
+
+dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *context, QAndroidJniObject usbDevice, std::string driverClassName)
 {
 	TRACE(device->contxt, "%s", __FUNCTION__);
 
@@ -190,12 +195,89 @@ dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *cont
 	};
 
 	QAndroidJniObject localdevice = QAndroidJniObject::callStaticObjectMethod("org/subsurfacedivelog/mobile/AndroidSerial",
-										  "open_android_serial",
-										  "()Lorg/subsurfacedivelog/mobile/AndroidSerial;");
+	                                                                          "open_android_serial",
+	                                                                          "(Landroid/hardware/usb/UsbDevice;Ljava/lang/String;)Lorg/subsurfacedivelog/mobile/AndroidSerial;",
+	                                                                          usbDevice.object<jobject>(),
+	                                                                          QAndroidJniObject::fromString(driverClassName.c_str()).object());
 	if (localdevice == nullptr) {
 		return DC_STATUS_IO;
 	}
 	QAndroidJniObject *device = new QAndroidJniObject(localdevice);
 	TRACE(device->contxt, "%s", "calling dc_custom_open())");
 	return dc_custom_open(iostream, context, DC_TRANSPORT_SERIAL, &callbacks, device);
+}
+
+std::vector<android_usb_serial_device_descriptor>
+serial_usb_android_get_devices(bool driverSelection)
+{
+	std::vector<std::string> driverNames;
+	if (driverSelection)
+		driverNames = { "", "CdcAcmSerialDriver", "Ch34xSerialDriver", "Cp21xxSerialDriver", "FtdiSerialDriver", "ProlificSerialDriver" };
+	else
+		driverNames = {""};
+
+	// Get the current main activity of the application.
+	QAndroidJniObject activity = QtAndroid::androidActivity();
+	QAndroidJniObject usb_service = QAndroidJniObject::fromString("usb");
+	QAndroidJniEnvironment env;
+
+	// Get UsbManager from activity
+	QAndroidJniObject usbManager = activity.callObjectMethod("getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;", QAndroidJniObject::fromString("usb").object());
+
+	//UsbDevice[] arrayOfDevices = usbManager.getDeviceList().values().toArray();
+	QAndroidJniObject deviceListHashMap = usbManager.callObjectMethod("getDeviceList","()Ljava/util/HashMap;");
+	QAndroidJniObject deviceListCollection = deviceListHashMap.callObjectMethod("values", "()Ljava/util/Collection;");
+	jint numDevices = deviceListCollection.callMethod<jint>("size");
+	QAndroidJniObject arrayOfDevices = deviceListCollection.callObjectMethod("toArray", "()[Ljava/lang/Object;");
+
+	// Special case to keep a generic user-facing name if only one device is present.
+	if (numDevices == 1 && !driverSelection) {
+		// UsbDevice usbDevice = arrayOfDevices[0]
+		jobject value = env->GetObjectArrayElement(arrayOfDevices.object<jobjectArray>(), 0);
+		QAndroidJniObject usbDevice(value);
+		return std::vector<android_usb_serial_device_descriptor> { {QAndroidJniObject(usbDevice), "", "USB Connection"} };
+	}
+	else {
+		std::vector<android_usb_serial_device_descriptor> retval;
+		for (int i = 0; i < numDevices ; i++) {
+			// UsbDevice usbDevice = arrayOfDevices[i]
+			jobject value = env->GetObjectArrayElement(arrayOfDevices.object<jobjectArray>(), i);
+			QAndroidJniObject usbDevice(value);
+
+			// std::string deviceName = usbDevice.getDeviceName()
+			QAndroidJniObject usbDeviceNameString = usbDevice.callObjectMethod<jstring>("getDeviceName");
+			const char *charArray = env->GetStringUTFChars(usbDeviceNameString.object<jstring>(), nullptr);
+			std::string deviceName(charArray);
+			env->ReleaseStringUTFChars(usbDeviceNameString.object<jstring>(), charArray);
+
+			// TODO the deviceName should probably be something better... Currently it's the /dev-filename.
+
+			for (std::string driverName : driverNames) {
+				std::string uiDeviceName;
+				if (driverName != "") {
+					uiDeviceName = deviceName + " (" + driverName + ")";
+				}
+				else {
+					uiDeviceName = deviceName + " (autoselect driver)";
+				}
+				retval.push_back({QAndroidJniObject(usbDevice), driverName, uiDeviceName});
+			}
+		}
+		return retval;
+	}
+}
+
+/*
+ * For testing and compatibility only, can be removed after the UI changes. Behaves exactly like the "old"
+ * implementation if only one device is attached.
+ */
+dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *context)
+{
+	std::vector<android_usb_serial_device_descriptor> devices = serial_usb_android_get_devices(false);
+
+	if(devices.empty())
+		return DC_STATUS_NODEVICE;
+
+	return serial_usb_android_open(iostream, context, devices[0].usbDevice, devices[0].className);
+
 }
