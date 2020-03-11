@@ -715,10 +715,10 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		onVisibleChanged: {
 			if (visible) {
 				pageStack.clear()
-				diveList.visible = false
+			} else {
+				showDiveList()
 			}
 		}
-
 		Component.onCompleted: {
 			if (!visible) {
 				manager.appendTextToLog("StartPage completed - showing the dive list")
