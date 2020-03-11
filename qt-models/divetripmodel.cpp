@@ -475,7 +475,7 @@ void DiveTripModelBase::clear()
 	clear_dive_file_data();
 	clearData();
 	oldCurrent = nullptr;
-	emit diveListNotifier.divesSelected({}, nullptr); // Inform profile, etc of changed selection
+	emit diveListNotifier.divesSelected({}); // Inform profile, etc of changed selection
 	endResetModel();
 	emit diveListNotifier.numShownChanged();
 }
@@ -1404,7 +1404,7 @@ QModelIndex DiveTripModelTree::diveToIdx(const dive *d) const
 	}
 }
 
-void DiveTripModelTree::divesSelected(const QVector<dive *> &divesIn, dive *current)
+void DiveTripModelTree::divesSelected(const QVector<dive *> &divesIn)
 {
 	QVector <dive *> dives = visibleDives(divesIn);
 
@@ -1664,7 +1664,7 @@ QModelIndex DiveTripModelList::diveToIdx(const dive *d) const
 	return createIndex(it - items.begin(), 0);
 }
 
-void DiveTripModelList::divesSelected(const QVector<dive *> &divesIn, dive *current)
+void DiveTripModelList::divesSelected(const QVector<dive *> &divesIn)
 {
 	QVector<dive *> dives = visibleDives(divesIn);
 

@@ -192,7 +192,7 @@ void setSelection(const std::vector<dive *> &selection, dive *currentDive)
 	}
 
 	// Send the new selection
-	emit diveListNotifier.divesSelected(divesToSelect, current_dive);
+	emit diveListNotifier.divesSelected(divesToSelect);
 }
 
 extern "C" void select_single_dive(dive *d)
