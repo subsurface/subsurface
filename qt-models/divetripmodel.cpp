@@ -1407,8 +1407,6 @@ QModelIndex DiveTripModelTree::diveToIdx(const dive *d) const
 void DiveTripModelTree::divesSelected(const QVector<dive *> &divesIn, dive *current)
 {
 	QVector <dive *> dives = visibleDives(divesIn);
-	if (dives.empty())
-		return;
 
 	// We got a number of dives that have been selected. Turn this into QModelIndexes and
 	// emit a signal, so that views can change the selection.
