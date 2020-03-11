@@ -60,7 +60,7 @@ slots:
 	void shiftTimes();
 	void loadImages();
 	void loadWebImages();
-	void diveSelectionChanged(const QVector<QModelIndex> &indexes);
+	void diveSelectionChanged(const QVector<QModelIndex> &indices);
 	void currentDiveChanged(QModelIndex index);
 	void tripChanged(dive_trip *trip, TripField);
 private:

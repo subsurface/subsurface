@@ -512,7 +512,7 @@ void CylindersModel::remove(QModelIndex index)
 	changed = true;
 	endRemoveRows();
 
-	// Create a mapping of cylinder indexes:
+	// Create a mapping of cylinder indices:
 	// 1) Fill mapping[0]..mapping[index-1] with 0..index
 	// 2) Set mapping[index] to -1
 	// 3) Fill mapping[index+1]..mapping[end] with index..
@@ -537,7 +537,7 @@ void CylindersModel::moveAtFirst(int cylid)
 		memmove(get_cylinder(&displayed_dive, i + 1), get_cylinder(&displayed_dive, i), sizeof(temp_cyl));
 	memmove(get_cylinder(&displayed_dive, 0), &temp_cyl, sizeof(temp_cyl));
 
-	// Create a mapping of cylinder indexes:
+	// Create a mapping of cylinder indices:
 	// 1) Fill mapping[0]..mapping[cyl] with 0..index
 	// 2) Set mapping[cyl] to 0
 	// 3) Fill mapping[cyl+1]..mapping[end] with cyl..

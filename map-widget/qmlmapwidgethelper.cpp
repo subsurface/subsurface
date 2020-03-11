@@ -178,7 +178,7 @@ void MapWidgetHelper::selectVisibleLocations()
 		QMetaObject::invokeMethod(m_map, "fromCoordinate", Q_RETURN_ARG(QPointF, point),
 		                          Q_ARG(QGeoCoordinate, dsCoord));
 		if (!qIsNaN(point.x()))
-#ifndef SUBSURFACE_MOBILE // indexes on desktop
+#ifndef SUBSURFACE_MOBILE // indices on desktop
 			selectedDiveIds.append(idx);
 	}
 #else // use id on mobile instead of index

@@ -7,7 +7,7 @@
 # 	- 2015-01-14:	Initial release
 #
 # Known bugs:
-# 	- Some list item indexes are lost during PO to ASCII conversion (see asciidoc warning messages)
+# 	- Some list item indices are lost during PO to ASCII conversion (see asciidoc warning messages)
 #
 # Package deps:	- po4a (for po4a-translate)
 # 		- git (for git sync)

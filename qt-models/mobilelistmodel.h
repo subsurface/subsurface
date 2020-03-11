@@ -136,7 +136,7 @@ private:
 	mutable QModelIndex cacheSourceParent;
 	mutable int cacheSourceRow = -1;
 
-	// Translate indexes from/to source
+	// Translate indices from/to source
 	int topLevelRowCountInSource(int sourceRow) const;
 	QModelIndex mapToSource(const QModelIndex &index) const;
 	int mapTopLevelFromSource(int row) const;

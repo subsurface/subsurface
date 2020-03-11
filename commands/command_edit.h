@@ -353,7 +353,7 @@ protected:
 	~EditWeightBase();
 
 	weightsystem_t ws;
-	std::vector<int> indexes; // An index for each dive in the dives vector.
+	std::vector<int> indices; // An index for each dive in the dives vector.
 	bool workToBeDone() override;
 };
 

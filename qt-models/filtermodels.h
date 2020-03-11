@@ -19,10 +19,10 @@ public:
 	void resetModel(DiveTripModelBase::Layout layout);
 	void clear();
 signals:
-	void selectionChanged(const QVector<QModelIndex> &indexes);
+	void selectionChanged(const QVector<QModelIndex> &indices);
 	void currentDiveChanged(QModelIndex index);
 private slots:
-	void selectionChangedSlot(const QVector<QModelIndex> &indexes);
+	void selectionChangedSlot(const QVector<QModelIndex> &indices);
 	void currentDiveChangedSlot(QModelIndex index);
 private:
 	MultiFilterSortModel(QObject *parent = 0);

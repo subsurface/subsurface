@@ -1412,19 +1412,19 @@ void DiveTripModelTree::divesSelected(const QVector<dive *> &divesIn, dive *curr
 
 	// We got a number of dives that have been selected. Turn this into QModelIndexes and
 	// emit a signal, so that views can change the selection.
-	QVector<QModelIndex> indexes;
-	indexes.reserve(dives.count());
+	QVector<QModelIndex> indices;
+	indices.reserve(dives.count());
 
-	processByTrip(dives, [this, &indexes] (dive_trip *trip, const QVector<dive *> &divesInTrip)
-		      { divesSelectedTrip(trip, divesInTrip, indexes); });
+	processByTrip(dives, [this, &indices] (dive_trip *trip, const QVector<dive *> &divesInTrip)
+		      { divesSelectedTrip(trip, divesInTrip, indices); });
 
-	emit selectionChanged(indexes);
+	emit selectionChanged(indices);
 
 	// The current dive has changed. Transform the current dive into an index and pass it on to the view.
 	currentChanged();
 }
 
-void DiveTripModelTree::divesSelectedTrip(dive_trip *trip, const QVector<dive *> &dives, QVector<QModelIndex> &indexes)
+void DiveTripModelTree::divesSelectedTrip(dive_trip *trip, const QVector<dive *> &dives, QVector<QModelIndex> &indices)
 {
 	if (!trip) {
 		// This is at the top level.
@@ -1436,7 +1436,7 @@ void DiveTripModelTree::divesSelectedTrip(dive_trip *trip, const QVector<dive *>
 				++j;
 			if (j >= (int)items.size())
 				break;
-			indexes.append(createIndex(j, 0, noParent));
+			indices.append(createIndex(j, 0, noParent));
 		}
 	} else {
 		// Find the trip.
@@ -1457,7 +1457,7 @@ void DiveTripModelTree::divesSelectedTrip(dive_trip *trip, const QVector<dive *>
 				++j;
 			if (j >= (int)entry.dives.size())
 				break;
-			indexes.append(createIndex(j, 0, idx));
+			indices.append(createIndex(j, 0, idx));
 		}
 	}
 }
@@ -1672,8 +1672,8 @@ void DiveTripModelList::divesSelected(const QVector<dive *> &divesIn, dive *curr
 
 	// We got a number of dives that have been selected. Turn this into QModelIndexes and
 	// emit a signal, so that views can change the selection.
-	QVector<QModelIndex> indexes;
-	indexes.reserve(dives.count());
+	QVector<QModelIndex> indices;
+	indices.reserve(dives.count());
 
 	// Since both lists are sorted, we can do this linearly. Perhaps a binary search
 	// would be better?
@@ -1683,10 +1683,10 @@ void DiveTripModelList::divesSelected(const QVector<dive *> &divesIn, dive *curr
 			++j;
 		if (j >= (int)items.size())
 			break;
-		indexes.append(createIndex(j, 0, noParent));
+		indices.append(createIndex(j, 0, noParent));
 	}
 
-	emit selectionChanged(indexes);
+	emit selectionChanged(indices);
 
 	// The current dive has changed. Transform the current dive into an index and pass it on to the view.
 	currentChanged();

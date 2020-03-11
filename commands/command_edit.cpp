@@ -1041,18 +1041,18 @@ EditWeightBase::EditWeightBase(int index, bool currentDiveOnly) :
 	// For that purpose, we will determine the indices of the same weightsystem.
 	std::vector<dive *> divesNew;
 	divesNew.reserve(dives.size());
-	indexes.reserve(dives.size());
+	indices.reserve(dives.size());
 
 	for (dive *d: dives) {
 		if (d == current) {
 			divesNew.push_back(d);
-			indexes.push_back(index);
+			indices.push_back(index);
 			continue;
 		}
 		int idx = find_weightsystem_index(d, ws);
 		if (idx >= 0) {
 			divesNew.push_back(d);
-			indexes.push_back(idx);
+			indices.push_back(idx);
 		}
 	}
 	dives = std::move(divesNew);
@@ -1081,16 +1081,16 @@ RemoveWeight::RemoveWeight(int index, bool currentDiveOnly) :
 void RemoveWeight::undo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
-		add_to_weightsystem_table(&dives[i]->weightsystems, indexes[i], clone_weightsystem(ws));
-		emit diveListNotifier.weightAdded(dives[i], indexes[i]);
+		add_to_weightsystem_table(&dives[i]->weightsystems, indices[i], clone_weightsystem(ws));
+		emit diveListNotifier.weightAdded(dives[i], indices[i]);
 	}
 }
 
 void RemoveWeight::redo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
-		remove_weightsystem(dives[i], indexes[i]);
-		emit diveListNotifier.weightRemoved(dives[i], indexes[i]);
+		remove_weightsystem(dives[i], indices[i]);
+		emit diveListNotifier.weightRemoved(dives[i], indices[i]);
 	}
 }
 
@@ -1138,8 +1138,8 @@ EditWeight::~EditWeight()
 void EditWeight::redo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
-		set_weightsystem(dives[i], indexes[i], new_ws);
-		emit diveListNotifier.weightEdited(dives[i], indexes[i]);
+		set_weightsystem(dives[i], indices[i], new_ws);
+		emit diveListNotifier.weightEdited(dives[i], indices[i]);
 	}
 	std::swap(ws, new_ws);
 }

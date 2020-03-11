@@ -217,7 +217,7 @@ static void analyze_plot_info_minmax(struct plot_info *pi, int entry_index)
 		p--;
 	}
 
-	// indexes to the min/max entries
+	// indices to the min/max entries
 	min = max = entry_index;
 
 	/* Then go forward until we hit an entry past the time */
@@ -314,7 +314,7 @@ struct plot_info *analyze_plot_info(struct plot_info *pi)
  * we return that. If it doesn't, we return the best
  * match based on the gasmix.
  *
- * Some dive computers give cylinder indexes, some
+ * Some dive computers give cylinder indices, some
  * give just the gas mix.
  */
 int get_cylinder_index(const struct dive *dive, const struct event *ev)

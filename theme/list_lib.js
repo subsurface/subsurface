@@ -1,9 +1,9 @@
-var itemsToShow = new Array();	//list of indexes to all dives to view
+var itemsToShow = new Array();	//list of indices to all dives to view
 var items = new Array();
 var start;			//index of first element viewed in itemsToShow
 var sizeofpage;			//size of viewed page
 var numberofwords = 0;		//just for stats
-var olditemstoshow;		//to reference the indexes to all dives if changed
+var olditemstoshow;		//to reference the indices to all dives if changed
 //////////////////////////////////
 //				//
 //		View Model	//
@@ -40,8 +40,8 @@ function viewInPage()
 }
 
 /**
-*addHTML this Method puts the HTML of items of given indexes
-*@param {array} indexes array of indexes to put in HTML
+*addHTML this Method puts the HTML of items of given indices
+*@param {array} indices array of indices to put in HTML
 */
 function updateView(start, end)
 {
@@ -56,17 +56,17 @@ function updateView(start, end)
 }
 
 /**
-*addHTML this Method puts the HTML of items of given indexes
-*@param {array} indexes array of indexes to put in HTML
+*addHTML this Method puts the HTML of items of given indices
+*@param {array} indices array of indices to put in HTML
 */
-function addHTML(indexes)
+function addHTML(indices)
 {
 	var divelist = document.getElementById('diveslist');
 	divelist.innerHTML = "";
-	for (var i = 0; i < indexes.length; i++) {
-		divelist.innerHTML += '<ul id="' + indexes[i] + '" onclick="toggleExpansion(event, this)"></ul>';
-		expand(document.getElementById(indexes[i]));
-		itemsToShow[indexes[i]].expanded = true;
+	for (var i = 0; i < indices.length; i++) {
+		divelist.innerHTML += '<ul id="' + indices[i] + '" onclick="toggleExpansion(event, this)"></ul>';
+		expand(document.getElementById(indices[i]));
+		itemsToShow[indices[i]].expanded = true;
 	};
 }
 
