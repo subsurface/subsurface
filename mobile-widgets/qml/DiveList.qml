@@ -312,38 +312,22 @@ Kirigami.ScrollablePage {
 		onTriggered: manager.redo()
 	}
 	property variant contextactions: [ removeDiveFromTripAction, addDiveToTripAboveAction, addDiveToTripBelowAction, deleteAction, mapAction, tripDetailsEdit, undoAction, redoAction ]
-	StartPage {
-		id: startPage
-		anchors.fill: parent
-		opacity: (Backend.cloud_verification_status === Enums.CS_NOCLOUD ||
-			 Backend.cloud_verification_status === Enums.CS_VERIFIED) ? 0 : 1
-		visible: opacity > 0
-		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
-		function setupActions() {
-			if (Backend.cloud_verification_status === Enums.CS_VERIFIED ||
-					Backend.cloud_verification_status === Enums.CS_NOCLOUD) {
-				page.actions.main = page.downloadFromDCAction
-				page.actions.right = page.addDiveAction
-				page.actions.left = page.filterToggleAction
-				page.contextualActions = contextactions
-				page.title = qsTr("Dive list")
-				if (diveListView.count === 0)
-					showPassiveNotification(qsTr("Please tap the '+' button to add a dive (or download dives from a supported dive computer)"), 3000)
-			} else {
-				page.actions.main = null
-				page.actions.right = null
-				page.actions.left = null
-				page.contextualActions = null
-				page.title = qsTr("Cloud credentials")
-			}
-		}
-		onVisibleChanged: {
-			setupActions();
-		}
 
-		Component.onCompleted: {
-			manager.finishSetup();
-			setupActions();
+	function setupActions() {
+		if (Backend.cloud_verification_status === Enums.CS_VERIFIED || Backend.cloud_verification_status === Enums.CS_NOCLOUD) {
+			page.actions.main = page.downloadFromDCAction
+			page.actions.right = page.addDiveAction
+			page.actions.left = page.filterToggleAction
+			page.contextualActions = contextactions
+			page.title = qsTr("Dive list")
+			if (diveListView.count === 0)
+				showPassiveNotification(qsTr("Please tap the '+' button to add a dive (or download dives from a supported dive computer)"), 3000)
+		} else {
+			page.actions.main = null
+			page.actions.right = null
+			page.actions.left = null
+			page.contextualActions = null
+			page.title = qsTr("Cloud credentials")
 		}
 	}
 
@@ -450,6 +434,7 @@ Kirigami.ScrollablePage {
 		Component.onCompleted: {
 			manager.appendTextToLog("finished setting up the diveListView")
 		}
+		onVisibleChanged: setupActions()
 	}
 
 	property QtObject downloadFromDCAction: Kirigami.Action {
