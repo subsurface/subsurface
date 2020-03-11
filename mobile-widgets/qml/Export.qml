@@ -16,7 +16,6 @@ TemplatePage {
 		id: saveAsDialog
 		folder: shortcuts.documents
 		selectFolder: true
-		title: radioGroup.current.text
 		onAccepted: {
 			manager.exportToFile(selectedExport, fileUrls, anonymize.checked)
 			pageStack.pop()
