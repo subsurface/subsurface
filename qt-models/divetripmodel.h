@@ -83,9 +83,9 @@ signals:
 	// Commands/DiveListNotifier ---(dive */dive_trip *)---> DiveTripModel ---(QModelIndex)---> DiveListView
 	// i.e. The command objects send changes in terms of pointer-to-dives, which the DiveTripModel transforms
 	// into QModelIndexes according to the current view (tree/list). Finally, the DiveListView transforms these
-	// indexes into local indexes according to current sorting/filtering and instructs the QSelectionModel to
+	// indices into local indices according to current sorting/filtering and instructs the QSelectionModel to
 	// perform the appropriate actions.
-	void selectionChanged(const QVector<QModelIndex> &indexes);
+	void selectionChanged(const QVector<QModelIndex> &indices);
 	void currentDiveChanged(QModelIndex index);
 protected:
 	dive *oldCurrent;

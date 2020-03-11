@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
  * An .slg file is composed of a main table (Dives), a bunch of tables directly
- * linked to Dives by their indexes (Site, Suit, Tank, etc) and another group of
+ * linked to Dives by their indices (Site, Suit, Tank, etc) and another group of
  * independent tables (Activity, Type, Gear, Fish ...) which connect with the dives
  * via a related group of tables (ActivityRelation, TypeRelation ...) that contain
  * just the dive index number and the related table index number.

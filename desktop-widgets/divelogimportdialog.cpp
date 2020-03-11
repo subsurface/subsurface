@@ -362,7 +362,7 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 	hw = "";
 	txtLog = false;
 
-	/* Add indexes of XSLTs requiring special handling to the list */
+	/* Add indices of XSLTs requiring special handling to the list */
 	specialCSV << SENSUS;
 	specialCSV << SUBSURFACE;
 	specialCSV << DL7;

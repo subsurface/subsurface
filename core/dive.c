@@ -43,10 +43,10 @@ const char *divemode_text[] = {"OC", "CCR", "PSCR", "Freedive"};
  * We try to keep the same sensor index for the same sensor, so that even
  * if the dive computer doesn't give pressure information for every sample,
  * we don't move pressure information around between the different sensor
- * indexes.
+ * indices.
  *
  * The "prepare_sample()" function will always copy the sensor indices
- * from the previous sample, so the indexes are pre-populated (but the
+ * from the previous sample, so the indices are pre-populated (but the
  * pressures obviously are not)
  */
 void add_sample_pressure(struct sample *sample, int sensor, int mbar)
@@ -83,7 +83,7 @@ void add_sample_pressure(struct sample *sample, int sensor, int mbar)
  * "o2pressure" that is fixed to the Oxygen sensor for a CCR dive.
  *
  * For more complex pressure data, we have to use explicit
- * cylinder indexes for each sample.
+ * cylinder indices for each sample.
  *
  * This function returns a negative number for "no legacy mode",
  * or a non-negative number that indicates the o2 sensor index.
@@ -2049,11 +2049,11 @@ static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, con
 	int i;
 	struct event *ev;
 
-	/* Remap or delete the sensor indexes */
+	/* Remap or delete the sensor indices */
 	for (i = 0; i < dc->samples; i++)
 		sample_renumber(dc->sample + i, i, mapping);
 
-	/* Remap the gas change indexes */
+	/* Remap the gas change indices */
 	for (ev = dc->events; ev; ev = ev->next)
 		event_renumber(ev, mapping);
 
@@ -2063,8 +2063,8 @@ static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, con
 }
 
 /*
- * If the cylinder indexes change (due to merging dives or deleting
- * cylinders in the middle), we need to change the indexes in the
+ * If the cylinder indices change (due to merging dives or deleting
+ * cylinders in the middle), we need to change the indices in the
  * dive computer data for this dive.
  *
  * Also note that we assume that the initial cylinder is cylinder 0,

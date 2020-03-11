@@ -2036,14 +2036,14 @@ void ProfileWidget2::keyDeleteAction()
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	int selCount = scene()->selectedItems().count();
 	if (selCount) {
-		QVector<int> selectedIndexes;
+		QVector<int> selectedIndices;
 		Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 			if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
-				selectedIndexes.push_back(handles.indexOf(handler));
+				selectedIndices.push_back(handles.indexOf(handler));
 				handler->hide();
 			}
 		}
-		plannerModel->removeSelectedPoints(selectedIndexes);
+		plannerModel->removeSelectedPoints(selectedIndices);
 	}
 }
 

@@ -357,7 +357,7 @@ int TestParse::parseCSVmanual(int units, std::string file)
 	params[pnr++] = intdup(21);
 	params[pnr++] = strdup("tagsField");
 	params[pnr++] = intdup(22);
-	// Numbers are indexes of possible options
+	// Numbers are indices of possible options
 	params[pnr++] = strdup("separatorIndex");
 	params[pnr++] = intdup(0);
 	params[pnr++] = strdup("datefmt");
@@ -410,7 +410,7 @@ int TestParse::parseCSVprofile(int units, std::string file)
 	params[pnr++] = intdup(5);
 	params[pnr++] = strdup("pressureField");
 	params[pnr++] = intdup(6);
-	// Numbers are indexes of possible options
+	// Numbers are indices of possible options
 	params[pnr++] = strdup("datefmt");
 	params[pnr++] = intdup(2);
 	params[pnr++] = strdup("units");

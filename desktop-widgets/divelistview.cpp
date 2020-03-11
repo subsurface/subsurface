@@ -199,11 +199,11 @@ void DiveListView::reset()
 }
 
 // If items were selected, inform the selection model
-void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indexes)
+void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indices)
 {
 	clearSelection();
 	QItemSelectionModel *s = selectionModel();
-	for (const QModelIndex &index: indexes) {
+	for (const QModelIndex &index: indices) {
 		s->select(index, QItemSelectionModel::Rows | QItemSelectionModel::Select);
 
 		// If an item of a not-yet expanded trip is selected, expand the trip.
@@ -420,7 +420,7 @@ void DiveListView::sortIndicatorChanged(int i, Qt::SortOrder order)
 	if (currentLayout == newLayout) {
 		sortByColumn(i, order);
 	} else {
-		// clear the model, repopulate with new indexes.
+		// clear the model, repopulate with new indices.
 		std::vector<int> expandedRows;
 		if(currentLayout == DiveTripModelBase::TREE)
 			expandedRows = backupExpandedRows();

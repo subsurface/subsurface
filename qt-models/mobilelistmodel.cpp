@@ -94,7 +94,7 @@ MobileListModel::MobileListModel(DiveTripModelBase *source) : MobileListModelBas
 }
 
 // We want to show the newest dives first. Therefore, we have to invert
-// the indexes with respect to the source model. To avoid mental gymnastics
+// the indices with respect to the source model. To avoid mental gymnastics
 // in the rest of the code, we do this right before sending to the
 // source model and just after recieving from the source model, respectively.
 QModelIndex MobileListModel::sourceIndex(int row, int col, int parentRow) const

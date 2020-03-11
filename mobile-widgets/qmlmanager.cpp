@@ -2123,7 +2123,7 @@ void QMLManager::setFilter(const QString filterText, int index)
 	QString f = filterText.trimmed();
 	FilterData data;
 	if (!f.isEmpty()) {
-		// This is ugly - the indexes of the mode are hardcoded!
+		// This is ugly - the indices of the mode are hardcoded!
 		switch(index) {
 			default:
 			case 0: data.mode = FilterData::Mode::FULLTEXT; break;

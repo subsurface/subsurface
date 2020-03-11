@@ -153,7 +153,7 @@ std::pair<struct dive_table, struct dive_site_table> DiveImportedModel::consumeT
 	move_dive_table(&diveTable, &dives);
 	move_dive_site_table(&sitesTable, &sites);
 
-	// Reset indexes
+	// Reset indices
 	checkStates.clear();
 
 	endResetModel();

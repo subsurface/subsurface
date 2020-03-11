@@ -69,11 +69,11 @@ QVector<QString> TabDivePhotos::getSelectedFilenames() const
 	QVector<QString> selectedPhotos;
 	if (!ui->photosView->selectionModel()->hasSelection())
 		return selectedPhotos;
-	QModelIndexList indexes = ui->photosView->selectionModel()->selectedRows();
-	if (indexes.count() == 0)
-		indexes = ui->photosView->selectionModel()->selectedIndexes();
-	selectedPhotos.reserve(indexes.count());
-	for (const auto &photo: indexes) {
+	QModelIndexList indices = ui->photosView->selectionModel()->selectedRows();
+	if (indices.count() == 0)
+		indices = ui->photosView->selectionModel()->selectedIndexes();
+	selectedPhotos.reserve(indices.count());
+	for (const auto &photo: indices) {
 		if (photo.isValid()) {
 			QString fileUrl = photo.data(Qt::DisplayPropertyRole).toString();
 			if (!fileUrl.isEmpty())
@@ -114,11 +114,11 @@ void TabDivePhotos::saveSubtitles()
 	QVector<QString> selectedPhotos;
 	if (!ui->photosView->selectionModel()->hasSelection())
 		return;
-	QModelIndexList indexes = ui->photosView->selectionModel()->selectedRows();
-	if (indexes.count() == 0)
-		indexes = ui->photosView->selectionModel()->selectedIndexes();
-	selectedPhotos.reserve(indexes.count());
-	for (const auto &photo: indexes) {
+	QModelIndexList indices = ui->photosView->selectionModel()->selectedRows();
+	if (indices.count() == 0)
+		indices = ui->photosView->selectionModel()->selectedIndexes();
+	selectedPhotos.reserve(indices.count());
+	for (const auto &photo: indices) {
 		if (photo.isValid()) {
 			QString fileUrl = photo.data(Qt::DisplayPropertyRole).toString();
 			if (!fileUrl.isEmpty()) {
