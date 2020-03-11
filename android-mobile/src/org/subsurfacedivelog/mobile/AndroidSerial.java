@@ -14,6 +14,8 @@ import android.content.Intent;
 import org.subsurfacedivelog.mobile.SubsurfaceMobileActivity;
 
 import java.lang.System;
+import java.lang.Class;
+import java.lang.reflect.Constructor;
 import java.lang.Thread;
 import java.util.Queue;
 import java.util.List;
@@ -83,38 +85,68 @@ public class AndroidSerial {
 		this.usbSerialPort = usbSerialPort;
 	}
 
-	public static AndroidSerial open_android_serial()
+	public static AndroidSerial open_android_serial(UsbDevice usbDevice, String driverClassName)
 	{
 		try {
 			Log.d(TAG, "in " + Thread.currentThread().getStackTrace()[2].getMethodName());
 			// Find all available drivers from attached devices.
 			Context context = SubsurfaceMobileActivity.getAppContext();
 			UsbManager manager = (UsbManager) context.getSystemService(Context.USB_SERVICE);
-			ProbeTable usbSerialProbetable = UsbSerialProber.getDefaultProbeTable();
 
-			usbSerialProbetable.addProduct(0x0403, 0xf460, FtdiSerialDriver.class); // Oceanic Custom PID
-			usbSerialProbetable.addProduct(0x0403, 0xf680, FtdiSerialDriver.class); // Suunto Custom PID
-			usbSerialProbetable.addProduct(0x0403, 0x87d0, FtdiSerialDriver.class); // Cressi (Leonardo) Custom PID
+			if (usbDevice == null) {
+					Log.e(TAG, "usbDevice == null");
+					return null;
+			}
 
-			usbSerialProbetable.addProduct(0x04B8, 0x0521, ProlificSerialDriver.class); // Mares (Nemo Sport) / Cressi Custom PID
-			usbSerialProbetable.addProduct(0x04B8, 0x0521, ProlificSerialDriver.class); // Zeagle Custom PID
-			usbSerialProbetable.addProduct(0xFFFF, 0x0005, CdcAcmSerialDriver.class); // Mares Icon HD Custom PID
+			UsbSerialDriver driver = null;
 
-			UsbSerialProber usbSerialProber = new UsbSerialProber(usbSerialProbetable);
+			if (driverClassName.length() == 0) {
+				ProbeTable usbSerialProbetable = UsbSerialProber.getDefaultProbeTable();
 
-			List<UsbSerialDriver> availableDrivers = usbSerialProber.findAllDrivers(manager);
-			if (availableDrivers.isEmpty()) {
-				Log.w(TAG, "no usb-to-serial devices found!");
-				return null;
+				usbSerialProbetable.addProduct(0x0403, 0xf460, FtdiSerialDriver.class); // Oceanic Custom PID
+				usbSerialProbetable.addProduct(0x0403, 0xf680, FtdiSerialDriver.class); // Suunto Custom PID
+				usbSerialProbetable.addProduct(0x0403, 0x87d0, FtdiSerialDriver.class); // Cressi (Leonardo) Custom PID
+
+				usbSerialProbetable.addProduct(0x04B8, 0x0521, ProlificSerialDriver.class); // Mares (Nemo Sport) / Cressi Custom PID
+				usbSerialProbetable.addProduct(0x04B8, 0x0521, ProlificSerialDriver.class); // Zeagle Custom PID
+				usbSerialProbetable.addProduct(0xFFFF, 0x0005, CdcAcmSerialDriver.class); // Mares Icon HD Custom PID
+
+				UsbSerialProber usbSerialProber = new UsbSerialProber(usbSerialProbetable);
+
+				driver = usbSerialProber.probeDevice(usbDevice);
+
+				if (driver == null) {
+					Log.w(TAG, "Could not find a driver for the usb device " + usbDevice);
+					return null;
+				}
+
+				Log.i(TAG, "Using autodetected driver class " + driver.getClass().getSimpleName());
+
+			} else {
+				final Class<? extends UsbSerialDriver> driverClass = Class.forName("com.hoho.android.usbserial.driver." + driverClassName).asSubclass(UsbSerialDriver.class);
+
+				if (driverClass == null) {
+					Log.w(TAG, "Could not find driver class " + driverClassName);
+					return null;
+				}
+
+				try {
+					final Constructor<? extends UsbSerialDriver> ctor =
+							driverClass.getConstructor(UsbDevice.class);
+					driver = ctor.newInstance(usbDevice);
+				} catch (Exception e) {
+					Log.w(TAG, "Could not load user-specified driver class " + driverClassName, e);
+					return null;
+				}
+				Log.i(TAG, "Using user-specified driver class " + driver.getClass().getSimpleName());
 			}
 
 			// Open a connection to the first available driver.
-			UsbSerialDriver driver = availableDrivers.get(0);
-			UsbDeviceConnection connection = manager.openDevice(driver.getDevice());
+			UsbDeviceConnection connection = manager.openDevice(usbDevice);
 
 			if (connection == null) {
-				manager.requestPermission(driver.getDevice(), PendingIntent.getBroadcast(context, 0, new Intent("org.subsurfacedivelog.mobile.USB_PERMISSION"), 0));
-				Log.w(TAG, "Could not open device!");
+				manager.requestPermission(usbDevice, PendingIntent.getBroadcast(context, 0, new Intent("org.subsurfacedivelog.mobile.USB_PERMISSION"), 0));
+				Log.w(TAG, "Could not open device. Requesting permission.");
 				return null;
 			}
 
