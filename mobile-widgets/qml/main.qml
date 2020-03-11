@@ -710,8 +710,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		anchors.fill: parent
 		visible: Backend.cloud_verification_status !== Enums.CS_NOCLOUD &&
 			 Backend.cloud_verification_status !== Enums.CS_VERIFIED
-		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
-
 		onVisibleChanged: {
 			if (visible) {
 				pageStack.clear()
@@ -863,20 +861,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		if (Screen.manufacturer + " " + Screen.model + " " + Screen.name !== "  ")
 			manager.appendTextToLog("Running on " + Screen.manufacturer + " " + Screen.model + " " + Screen.name)
 		rootItem.visible = true
-		diveList.opacity = 1
-		rootItem.opacity = 1
 		manager.appendTextToLog("setting the defaultColumnWidth to " + Kirigami.Units.gridUnit * 21)
 		pageStack.defaultColumnWidth = Kirigami.Units.gridUnit * 21
 		manager.finishSetup()
 		manager.appInitialized()
 	}
-
-	/* TODO: Verify where opacity went to.
-	Behavior on opacity {
-		NumberAnimation {
-			duration: 200
-			easing.type: Easing.OutQuad
-		}
-	}
-	*/
 }
