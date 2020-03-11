@@ -306,14 +306,14 @@ void QMLManager::openLocalThenRemote(QString url)
 {
 	MobileModels::instance()->clear();
 	setNotificationText(tr("Open local dive data file"));
+	if (verbose)
+		appendTextToLog(QString("Open local dive data file %1").arg(url));
 	QByteArray fileNamePrt = QFile::encodeName(url);
 	/* if this is a cloud storage repo and we have no local cache (i.e., it's the first time
 	 * we try to open this), parse_file will ALWAYS connect to the remote and populate the cache.
 	 * Otherwise parse_file will respect the git_local_only flag and only update if that isn't set */
 	int error = parse_file(fileNamePrt.data(), &dive_table, &trip_table, &dive_site_table);
 	if (error) {
-		appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
-		setNotificationText(tr("Opening local data file failed"));
 		/* there can be 2 reasons for this:
 		 * 1) we have cloud credentials, but there is no local repo (yet).
 		 *    This implies that the PIN verify is still to be done.
@@ -324,9 +324,12 @@ void QMLManager::openLocalThenRemote(QString url)
 		 *    no cloud repo solves this.
 		 */
 		auto credStatus = qPrefCloudStorage::cloud_verification_status();
-		if (credStatus != qPrefCloudStorage::CS_NOCLOUD &&
-		    credStatus != qPrefCloudStorage::CS_INCORRECT_USER_PASSWD)
-			qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NEED_TO_VERIFY);
+		if (credStatus != qPrefCloudStorage::CS_NOCLOUD) {
+			appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
+			setNotificationText(tr("Opening local data file failed"));
+			if (credStatus != qPrefCloudStorage::CS_INCORRECT_USER_PASSWD)
+				qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NEED_TO_VERIFY);
+		}
 	} else {
 		// if we can load from the cache, we know that we have a valid cloud account
 		// and we know that there was at least one successful sync with the cloud when
@@ -359,7 +362,8 @@ void QMLManager::openLocalThenRemote(QString url)
 	}
 	set_filename(fileNamePrt.data());
 	if (git_local_only) {
-		appendTextToLog(QStringLiteral("have cloud credentials, but user asked not to connect to network"));
+		if (qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_NOCLOUD)
+			appendTextToLog(QStringLiteral("have cloud credentials, but user asked not to connect to network"));
 		alreadySaving = false;
 	} else {
 		appendTextToLog(QStringLiteral("have cloud credentials, trying to connect"));
@@ -1366,10 +1370,13 @@ void QMLManager::openNoCloudRepo()
 	const char *branch;
 	struct git_repository *git;
 
+	appendTextToLog(QString("User asked not to connect to cloud, using %1 as repo.").arg(filename));
 	git = is_git_repository(qPrintable(filename), &branch, NULL, false);
 
 	if (git == dummy_git_repository) {
+		// repo doesn't exist, create it and write the empty dive list to it
 		git_create_local_repo(qPrintable(filename));
+		save_dives(qPrintable(filename));
 		set_filename(qPrintable(filename));
 		auto s = qPrefLog::instance();
 		s->set_default_filename(qPrintable(filename));
