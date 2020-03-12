@@ -1002,9 +1002,10 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), &d);
 	connect(quit, SIGNAL(activated()), this, SLOT(close()));
 	d.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint
-		| Qt::WindowCloseButtonHint | Qt::WindowTitleHint);
+		| Qt::WindowCloseButtonHint | Qt::WindowTitleHint | Qt::WindowMaximizeButtonHint);
 	d.setWindowTitle(tr("Yearly statistics"));
 	d.setWindowIcon(QIcon(":subsurface-icon"));
+	d.setSizeGripEnabled(true);
 	d.exec();
 }
 
