@@ -172,32 +172,27 @@ static dc_status_t qt_serial_write(void *io, const void* data, size_t size, size
 {
 	qt_serial_t *device = (qt_serial_t*) io;
 
-	if (device == NULL || device->socket == NULL)
+	if (device == NULL || device->socket == NULL || !actual)
 		return DC_STATUS_INVALIDARGS;
 
-	size_t nbytes = 0;
-	int rc;
+	*actual = 0;
+	for (;;) {
+		int rc;
 
-	while(nbytes < size && device->socket->state() == QBluetoothSocket::ConnectedState)
-	{
-		rc = device->socket->write((char *) data + nbytes, size - nbytes);
+		if (device->socket->state() != QBluetoothSocket::ConnectedState)
+			return DC_STATUS_IO;
+
+		rc = device->socket->write((char *) data, size);
 
 		if (rc < 0) {
 			if (errno == EINTR || errno == EAGAIN)
-			    continue; // Retry.
-
-			return DC_STATUS_IO; // Something really bad happened :-(
-		} else if (rc == 0) {
-			break;
+				continue;
+			return DC_STATUS_IO;
 		}
 
-		nbytes += rc;
+		*actual = rc;
+		return rc ? DC_STATUS_SUCCESS : DC_STATUS_IO;
 	}
-
-	if (actual)
-		*actual = nbytes;
-
-	return DC_STATUS_SUCCESS;
 }
 
 static dc_status_t qt_serial_poll(void *io, int timeout)
