@@ -92,6 +92,7 @@
         android:normalScreens="true"
         android:smallScreens="true" />
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!--
          The following comment will be replaced upon deployment with default permissions based on the dependencies of the application.
          Remove the comment if you do not require these default permissions.
