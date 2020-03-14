@@ -124,7 +124,7 @@ static dc_status_t serial_usb_android_get_available (void *io, size_t *value)
 
 static dc_status_t serial_usb_android_read(void *io, void *data, size_t size, size_t *actual)
 {
-	TRACE (device->context, "%s: size: %i", __FUNCTION__, size);
+	TRACE (device->context, "%s: size: %zu", __FUNCTION__, size);
 
 	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
 	if (device == NULL)
@@ -154,7 +154,7 @@ static dc_status_t serial_usb_android_read(void *io, void *data, size_t size, si
 
 static dc_status_t serial_usb_android_write(void *io, const void *data, size_t size, size_t *actual)
 {
-	TRACE (device->context, "%s: size: %i", __FUNCTION__, size);
+	TRACE (device->context, "%s: size: %zu", __FUNCTION__, size);
 
 	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
 	if (device == NULL)
