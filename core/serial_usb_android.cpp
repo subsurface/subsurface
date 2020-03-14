@@ -7,6 +7,7 @@
 #include <QAndroidJniObject>
 #include <QAndroidJniEnvironment>
 #include <QtAndroid>
+#include <QRegularExpression>
 
 #include <thread>
 
@@ -203,7 +204,56 @@ dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *cont
 	return dc_custom_open(iostream, context, DC_TRANSPORT_SERIAL, &callbacks, device);
 }
 
-std::vector<android_usb_serial_device_descriptor> serial_usb_android_get_devices(bool driverSelection)
+android_usb_serial_device_descriptor getDescriptor(QAndroidJniObject usbDevice)
+{
+	QAndroidJniEnvironment env;
+
+	android_usb_serial_device_descriptor descriptor;
+
+	descriptor.usbDevice = usbDevice;
+	descriptor.pid = usbDevice.callMethod<jint>("getProductId");
+	descriptor.vid = usbDevice.callMethod<jint>("getVendorId");
+
+	// descriptor.manufacturer = UsbDevice.getManufacturerName();
+	QAndroidJniObject usbManufacturerName = usbDevice.callObjectMethod<jstring>("getManufacturerName");
+	if (usbManufacturerName.isValid()) {
+		const char *charArray = env->GetStringUTFChars(usbManufacturerName.object<jstring>(), nullptr);
+		descriptor.manufacturer = std::string(charArray);
+		env->ReleaseStringUTFChars(usbManufacturerName.object<jstring>(), charArray);
+	}
+
+	// descriptor.product = UsbDevice.getProductName();
+	QAndroidJniObject usbProductName = usbDevice.callObjectMethod<jstring>("getProductName");
+	if (usbManufacturerName.isValid()) {
+		const char *charArray = env->GetStringUTFChars(usbProductName.object<jstring>(), nullptr);
+		descriptor.product = std::string(charArray);
+		env->ReleaseStringUTFChars(usbProductName.object<jstring>(), charArray);
+	}
+
+	// Get busnum and portnum
+	QAndroidJniObject usbDeviceNameString = usbDevice.callObjectMethod<jstring>("getDeviceName");
+	const char *charArray = env->GetStringUTFChars(usbDeviceNameString.object<jstring>(), nullptr);
+	QRegularExpression reg("/dev/bus/usb/(\\d*)/(\\d*)");
+	QRegularExpressionMatch match = reg.match(charArray);
+	int busnum = match.captured(1).toInt();
+	int portnum = match.captured(2).toInt();
+	env->ReleaseStringUTFChars(usbDeviceNameString.object<jstring>(), charArray);
+
+	// The ui representation
+	char buffer[128];
+	if (descriptor.manufacturer.empty()) {
+		sprintf(buffer, "USB Device [%i:%i]", busnum, portnum);
+	} else if (descriptor.manufacturer.size() <= 16) {
+		sprintf(buffer, "%s [%i:%i]", descriptor.manufacturer.c_str(), busnum, portnum);
+	} else {
+		sprintf(buffer, "%.16s… [%i:%i]", descriptor.manufacturer.c_str(), busnum, portnum);
+	}
+	descriptor.uiRepresentation = buffer;
+
+	return descriptor;
+}
+
+std::vector<android_usb_serial_device_descriptor> serial_usb_android_get_devices(book driverSelection)
 {
 	std::vector<std::string> driverNames;
 	if (driverSelection)
@@ -230,7 +280,10 @@ std::vector<android_usb_serial_device_descriptor> serial_usb_android_get_devices
 		// UsbDevice usbDevice = arrayOfDevices[0]
 		jobject value = env->GetObjectArrayElement(arrayOfDevices.object<jobjectArray>(), 0);
 		QAndroidJniObject usbDevice(value);
-		return std::vector<android_usb_serial_device_descriptor> { {QAndroidJniObject(usbDevice), "", "USB Connection"} };
+		android_usb_serial_device_descriptor descriptor = getDescriptor(usbDevice);
+		descriptor.uiRepresentation = "USB Connection";
+
+		return {descriptor};
 	} else {
 		std::vector<android_usb_serial_device_descriptor> retval;
 		for (int i = 0; i < numDevices ; i++) {
@@ -238,21 +291,15 @@ std::vector<android_usb_serial_device_descriptor> serial_usb_android_get_devices
 			jobject value = env->GetObjectArrayElement(arrayOfDevices.object<jobjectArray>(), i);
 			QAndroidJniObject usbDevice(value);
 
-			// std::string deviceName = usbDevice.getDeviceName()
-			QAndroidJniObject usbDeviceNameString = usbDevice.callObjectMethod<jstring>("getDeviceName");
-			const char *charArray = env->GetStringUTFChars(usbDeviceNameString.object<jstring>(), nullptr);
-			std::string deviceName(charArray);
-			env->ReleaseStringUTFChars(usbDeviceNameString.object<jstring>(), charArray);
-
-			// TODO the deviceName should probably be something better... Currently it's the /dev-filename.
-
 			for (std::string driverName : driverNames) {
-				std::string uiDeviceName;
+				android_usb_serial_device_descriptor descriptor = getDescriptor(usbDevice);
+
+				descriptor.className = driverName;
 				if (driverName != "")
-					uiDeviceName = deviceName + " (" + driverName + ")";
+					descriptor.uiRepresentation += " (" + driverName + ")";
 				else
-					uiDeviceName = deviceName + " (autoselect driver)";
-				retval.push_back({QAndroidJniObject(usbDevice), driverName, uiDeviceName});
+					descriptor.uiRepresentation += " (autoselect driver)";
+				retval.push_back(descriptor);
 			}
 		}
 		return retval;
@@ -265,6 +312,27 @@ std::vector<android_usb_serial_device_descriptor> serial_usb_android_get_devices
  */
 dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *context)
 {
+	// Testing of the method only!
+	{
+		TRACE(device->contxt, "List of devices with specific drivers:");
+		      std::vector<android_usb_serial_device_descriptor> devices = serial_usb_android_get_devices(true);
+		for (auto device : devices) {
+			TRACE(device->contxt,
+			      "USB Device: uiRepresentation=%s, className=%s, manufacturer=%s, product=%s, pid=%i, vid=%i",
+			      device.uiRepresentation.c_str(), device.className.c_str(), device.manufacturer.c_str(),
+			      device.product.c_str(), device.pid, device.vid);
+		}
+
+		TRACE(device->contxt, "List of devices simple:");
+		devices = serial_usb_android_get_devices(false);
+		for (auto device : devices) {
+			TRACE(device->contxt,
+			      "USB Device: uiRepresentation=%s, className=%s, manufacturer=%s, product=%s, pid=%i, vid=%i",
+			      device.uiRepresentation.c_str(), device.className.c_str(), device.manufacturer.c_str(),
+			      device.product.c_str(), device.pid, device.vid);
+		}
+	}
+
 	std::vector<android_usb_serial_device_descriptor> devices = serial_usb_android_get_devices(false);
 
 	if(devices.empty())
