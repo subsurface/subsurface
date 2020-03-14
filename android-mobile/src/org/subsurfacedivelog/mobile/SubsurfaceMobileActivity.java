@@ -50,6 +50,11 @@ public class SubsurfaceMobileActivity extends QtActivity
 				isIntentPending = true;
 			}
 		}
+
+		// Register the usb permission intent filter.
+		IntentFilter filter = new IntentFilter("org.subsurfacedivelog.mobile.USB_PERMISSION");
+		registerReceiver(usbReceiver, filter);
+
 	} // onCreate
 
 	// if we are opened from other apps:
@@ -103,6 +108,23 @@ public class SubsurfaceMobileActivity extends QtActivity
 		setDeviceString(device.toString());
 	} // processIntent
 
+
+	private final BroadcastReceiver usbReceiver = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if ("org.subsurfacedivelog.mobile.USB_PERMISSION".equals(action)) {
+				synchronized (this) {
+					if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+						Log.d(TAG, "USB device permission granted");
+						// Stub: press the download button here :)
+					}
+					else {
+						Log.d(TAG, "USB device permission granted");
+					}
+				}
+			}
+		}
+	};
 
 	public static Context getAppContext()
 	{
