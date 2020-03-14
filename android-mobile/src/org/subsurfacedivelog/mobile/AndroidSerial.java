@@ -5,6 +5,8 @@ import com.hoho.android.usbserial.driver.*;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
 import android.hardware.usb.UsbDevice;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 
 import android.content.Context;
 import android.util.Log;
@@ -69,6 +71,7 @@ public class AndroidSerial {
 	private UsbSerialPort usbSerialPort;
 	private int timeout = 0;
 	private LinkedList<Byte> readBuffer = new LinkedList<Byte>();
+	private WakeLock wakeLock = null;
 
 	private static String printQueue(LinkedList<Byte> readBuffer)
 	{
@@ -83,6 +86,10 @@ public class AndroidSerial {
 	private AndroidSerial(UsbSerialPort usbSerialPort)
 	{
 		this.usbSerialPort = usbSerialPort;
+
+		PowerManager powerManager = (PowerManager) SubsurfaceMobileActivity.getAppContext().getSystemService(Context.POWER_SERVICE);
+		wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Subsurface::AndroidSerialWakelock");
+		wakeLock.acquire();
 	}
 
 	public static AndroidSerial open_android_serial(UsbDevice usbDevice, String driverClassName)
@@ -320,6 +327,8 @@ public class AndroidSerial {
 		Log.d(TAG, "in " + Thread.currentThread().getStackTrace()[2].getMethodName());
 		try {
 			usbSerialPort.close();
+			if(wakeLock != null)
+				wakeLock.release();
 			return AndroidSerial.DC_STATUS_SUCCESS;
 		} catch (Exception e) {
 			Log.e(TAG, "Error in " + Thread.currentThread().getStackTrace()[2].getMethodName(), e);
