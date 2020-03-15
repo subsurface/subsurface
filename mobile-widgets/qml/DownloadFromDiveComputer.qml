@@ -481,9 +481,13 @@ Kirigami.Page {
 				comboVendor.currentIndex = comboProduct.currentIndex = comboConnection.currentIndex = -1
 				dc1.enabled = dc2.enabled = dc3.enabled = dc4.enabled = true
 				if (visible) {
+					// we started the BT/BLE scan when Subsurface-mobile started, let's see if
+					// that found something
 					comboVendor.currentIndex = manager.getDetectedVendorIndex()
 					comboProduct.currentIndex = manager.getDetectedProductIndex(comboVendor.currentText)
 					comboConnection.currentIndex = manager.getMatchingAddress(comboVendor.currentText, comboProduct.currentText)
+					// also check if there are USB devices (this only has an effect on Android)
+					manager.usbRescan()
 				}
 			}
 		}
