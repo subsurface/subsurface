@@ -12,6 +12,10 @@
 #if BT_SUPPORT
 #include "core/btdiscovery.h"
 #endif
+#if defined(Q_OS_ANDROID)
+#include "core/serial_usb_android.h"
+#endif
+
 /* Helper object for access of Device Data in QML */
 class DCDeviceData {
 public:
@@ -50,9 +54,12 @@ public:
 	void setSaveDump(bool dumpMode);
 	void setSaveLog(bool saveLog);
 #if defined(Q_OS_ANDROID)
-	void setUsbDevice(void *device);
+	void setUsbDevice(const android_usb_serial_device_descriptor &usbDescriptor);
 #endif
 private:
+#if defined(Q_OS_ANDROID)
+	struct android_usb_serial_device_descriptor androidUsbDescriptor;
+#endif
 	device_data_t data;
 
 	// Bluetooth name is managed outside of libdivecomputer

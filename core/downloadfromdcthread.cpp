@@ -324,9 +324,10 @@ void DCDeviceData::setDevName(const QString &devName)
 }
 
 #if defined(Q_OS_ANDROID)
-void DCDeviceData::setUsbDevice(void *device)
+void DCDeviceData::setUsbDevice(const android_usb_serial_device_descriptor &usbDescriptor)
 {
-	data.androidUsbDeviceDescriptor = device;
+	androidUsbDescriptor = usbDescriptor;
+	data.androidUsbDeviceDescriptor = &androidUsbDescriptor;
 }
 #endif
 
