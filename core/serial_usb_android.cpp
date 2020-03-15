@@ -204,6 +204,35 @@ dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *cont
 	return dc_custom_open(iostream, context, DC_TRANSPORT_SERIAL, &callbacks, device);
 }
 
+static void guessVendorProduct(android_usb_serial_device_descriptor &descriptor)
+{
+	// for a couple of devices we get enough information that we can guess which dive computer this is
+	QString product = QString::fromStdString(descriptor.usbProduct);
+	int vid = descriptor.vid;
+	int pid = descriptor.pid;
+
+	if (product.contains("HeinrichsWeikamp OSTC3")) {
+		descriptor.manufacturer = "Heinrichs Weikamp";
+		descriptor.product = "OSTC 3";
+	} else if (product.contains("HeinrichsWeikamp OSTC 2N")) {
+		descriptor.manufacturer = "Heinrichs Weikamp";
+		descriptor.product = "OSTC 2N";
+	} else if (vid == 0x0403 && pid == 0xf460) {
+		// some form of Oceanic
+		descriptor.manufacturer = "Oceanic";
+	} else if (vid == 0x0403 && pid == 0xf680) {
+		// some form of Suunto
+		descriptor.manufacturer = "Suunto";
+	} else if (vid == 0x0403 && pid == 0x87d0) {
+		// some form of Cressi
+		descriptor.manufacturer = "Cressi";
+	} else if (vid == 0xffff && pid == 0x0005) {
+		// Mares Icon HD
+		descriptor.manufacturer = "Mares";
+		descriptor.product = "Icon HD";
+	}
+}
+
 android_usb_serial_device_descriptor getDescriptor(QAndroidJniObject usbDevice)
 {
 	QAndroidJniEnvironment env;
@@ -218,7 +247,7 @@ android_usb_serial_device_descriptor getDescriptor(QAndroidJniObject usbDevice)
 	QAndroidJniObject usbManufacturerName = usbDevice.callObjectMethod<jstring>("getManufacturerName");
 	if (usbManufacturerName.isValid()) {
 		const char *charArray = env->GetStringUTFChars(usbManufacturerName.object<jstring>(), nullptr);
-		descriptor.manufacturer = std::string(charArray);
+		descriptor.usbManufacturer = std::string(charArray);
 		env->ReleaseStringUTFChars(usbManufacturerName.object<jstring>(), charArray);
 	}
 
@@ -226,9 +255,12 @@ android_usb_serial_device_descriptor getDescriptor(QAndroidJniObject usbDevice)
 	QAndroidJniObject usbProductName = usbDevice.callObjectMethod<jstring>("getProductName");
 	if (usbManufacturerName.isValid()) {
 		const char *charArray = env->GetStringUTFChars(usbProductName.object<jstring>(), nullptr);
-		descriptor.product = std::string(charArray);
+		descriptor.usbProduct = std::string(charArray);
 		env->ReleaseStringUTFChars(usbProductName.object<jstring>(), charArray);
 	}
+
+	// guess the actual manufacturer / product if we happen to be able to guess
+	guessVendorProduct(descriptor);
 
 	// Get busnum and portnum
 	QAndroidJniObject usbDeviceNameString = usbDevice.callObjectMethod<jstring>("getDeviceName");
@@ -241,12 +273,15 @@ android_usb_serial_device_descriptor getDescriptor(QAndroidJniObject usbDevice)
 
 	// The ui representation
 	char buffer[128];
-	if (descriptor.manufacturer.empty()) {
-		sprintf(buffer, "USB Device [%i:%i]", busnum, portnum);
-	} else if (descriptor.manufacturer.size() <= 16) {
+	if (!descriptor.manufacturer.empty()) {
+		// Heinrichs Weikamp is the longest, so let's just take the name
 		sprintf(buffer, "%s [%i:%i]", descriptor.manufacturer.c_str(), busnum, portnum);
+	} else if (descriptor.usbManufacturer.empty()) {
+		sprintf(buffer, "USB Device [%i:%i]", busnum, portnum);
+	} else if (descriptor.usbManufacturer.size() <= 16) {
+		sprintf(buffer, "%s [%i:%i]", descriptor.usbManufacturer.c_str(), busnum, portnum);
 	} else {
-		sprintf(buffer, "%.16s… [%i:%i]", descriptor.manufacturer.c_str(), busnum, portnum);
+		sprintf(buffer, "%.16s… [%i:%i]", descriptor.usbManufacturer.c_str(), busnum, portnum);
 	}
 	descriptor.uiRepresentation = buffer;
 

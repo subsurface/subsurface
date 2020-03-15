@@ -11,6 +11,8 @@ struct android_usb_serial_device_descriptor {
 	std::string uiRepresentation; /* The string that can be used for the user interface. */
 
 	// Device information
+	std::string usbManufacturer;
+	std::string usbProduct;
 	std::string manufacturer;
 	std::string product;
 	uint16_t pid;
