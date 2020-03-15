@@ -181,10 +181,29 @@ Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_setUsbDevice(JNIEnv *
 	if (usbDevice.isValid()) {
 		android_usb_serial_device_descriptor descriptor = getDescriptor(usbDevice);
 
-		LOG(QString("called by intent for device %1").arg(QString::fromStdString(descriptor.uiRepresentation)));
+		LOG(QString("called by connect intent for device %1").arg(QString::fromStdString(descriptor.uiRepresentation)));
 	}
 #if defined(SUBSURFACE_MOBILE)
 	QMLManager::instance()->showDownloadPage(usbDevice);
+#endif
+	return;
+}
+
+JNIEXPORT void JNICALL
+Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_restartDownload(JNIEnv *env,
+	jobject obj,
+	jobject javaUsbDevice)
+{
+	Q_UNUSED (obj)
+	Q_UNUSED (env)
+	QAndroidJniObject usbDevice(javaUsbDevice);
+	if (usbDevice.isValid()) {
+		android_usb_serial_device_descriptor descriptor = getDescriptor(usbDevice);
+
+		LOG(QString("called by permission granted intent for device %1").arg(QString::fromStdString(descriptor.uiRepresentation)));
+	}
+#if defined(SUBSURFACE_MOBILE)
+	QMLManager::instance()->restartDownload(usbDevice);
 #endif
 	return;
 }

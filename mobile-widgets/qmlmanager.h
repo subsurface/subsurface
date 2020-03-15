@@ -235,6 +235,7 @@ public slots:
 	void rescanConnections();
 #if defined(Q_OS_ANDROID)
 	void showDownloadPage(QAndroidJniObject usbDevice);
+	void restartDownload(QAndroidJniObject usbDevice);
 	void androidUsbPopoulateConnections();
 	QString getProductVendorConnectionIdx(android_usb_serial_device_descriptor descriptor);
 #endif
@@ -307,6 +308,7 @@ signals:
 	void oldStatusChanged();
 	void undoTextChanged();
 	void redoTextChanged();
+	void restartDownloadSignal();
 
 	// From upload process
 	void uploadFinish(bool success, const QString &text);
