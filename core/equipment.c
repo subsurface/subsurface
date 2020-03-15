@@ -397,7 +397,7 @@ void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl)
 {
 	const char *cyl_name = prefs.default_cylinder;
 	struct tank_info_t *ti = tank_info;
-	pressure_t pO2 = {.mbar = 1600};
+	pressure_t pO2 = {.mbar = lrint(prefs.modpO2 * 1000.0)};
 
 	if (!cyl_name)
 		return;
