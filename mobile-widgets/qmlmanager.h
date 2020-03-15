@@ -18,6 +18,10 @@
 #include "core/settings/qPrefCloudStorage.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
+#if defined(Q_OS_ANDROID)
+#include "core/serial_usb_android.h"
+#endif
+
 class QAction;
 class DiveObjectHelper;
 class DiveSiteChange; // An obscure implementation artifact - remove in due course.
@@ -227,7 +231,9 @@ public slots:
 	void quit();
 	void hasLocationSourceChanged();
 	void btRescan();
-	void showDownloadPage(QString deviceString);
+#if defined(Q_OS_ANDROID)
+	void showDownloadPage(QAndroidJniObject usbDevice);
+#endif
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
 
 private:
