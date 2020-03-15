@@ -155,6 +155,23 @@ void QMLManager::btRescan()
 	BTDiscovery::instance()->BTDiscoveryReDiscover();
 }
 
+void QMLManager::rescanConnections()
+{
+	connectionListModel.removeAllAddresses();
+	btRescan();
+	usbRescan();
+#if defined(SERIAL_FTDI)
+	connectionListModel.addAddress("FTDI");
+#endif
+}
+
+void QMLManager::usbRescan()
+{
+#if defined(Q_OS_ANDROID)
+	androidUsbPopoulateConnections();
+#endif
+}
+
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
 	alreadySaving(false),
@@ -2086,6 +2103,20 @@ QString QMLManager::getProductVendorConnectionIdx(android_usb_serial_device_desc
 	return QString("%1;%2;%3").arg(vendIdx).arg(prodIdx).arg(connIdx);
 }
 
+void QMLManager::androidUsbPopoulateConnections()
+{
+	// let's understand what devices are available
+	androidSerialDevices = serial_usb_android_get_devices();
+	appendTextToLog(QString("rescanning USB: %1 devices reported").arg(androidSerialDevices.size()));
+
+	// list all USB devices, this will include the one that triggered the intent
+	for (unsigned int i = 0; i < androidSerialDevices.size(); i++) {
+		QString uiString = QString::fromStdString(androidSerialDevices[i].uiRepresentation);
+		appendTextToLog(QString("found USB device with ui string %1").arg(uiString));
+		connectionListModel.addAddress(uiString);
+	}
+}
+
 void QMLManager::showDownloadPage(QAndroidJniObject usbDevice)
 {
 	if (!usbDevice.isValid()) {
@@ -2093,26 +2124,12 @@ void QMLManager::showDownloadPage(QAndroidJniObject usbDevice)
 		// if that happens, just make sure the DownloadPage is reopened
 		m_pluggedInDeviceName = QString("reopen");
 	} else {
+		// repopulate the connection list
+		rescanConnections();
+
 		// parse the usbDevice
 		android_usb_serial_device_descriptor usbDeviceDescriptor = getDescriptor(usbDevice);
 
-		// let's understand what devices are available
-		androidSerialDevices = serial_usb_android_get_devices();
-		appendTextToLog(QString("entered showDownloadPage with %1 devices reported").arg(androidSerialDevices.size()));
-
-		// list all USB devices, this will include the one that triggered the intent
-		for (unsigned int i = 0; i < androidSerialDevices.size(); i++) {
-			// the expected case -- does this match the deviceString we got from the intent?
-			QString uiString = QString::fromStdString(androidSerialDevices[i].uiRepresentation);
-			//QString deviceName = uiString.left(uiString.indexOf(QString(" (")) + 1);
-			appendTextToLog(QString("looking at USB device with ui representation %1").arg(uiString));
-			if (androidSerialDevices[i].uiRepresentation == usbDeviceDescriptor.uiRepresentation) {
-				appendTextToLog("matches the information we received from the intent");
-			} else {
-				appendTextToLog("doesn't match the device received from the intent");
-			}
-			connectionListModel.addAddress(QString::fromStdString(androidSerialDevices[i].uiRepresentation));
-		}
 		// inform the QML UI that it should show the download page
 		m_pluggedInDeviceName = getProductVendorConnectionIdx(usbDeviceDescriptor);
 	}
