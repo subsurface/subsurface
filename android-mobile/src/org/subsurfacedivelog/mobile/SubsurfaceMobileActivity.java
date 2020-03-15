@@ -109,17 +109,17 @@ public class SubsurfaceMobileActivity extends QtActivity
 	} // processIntent
 
 
-	private final BroadcastReceiver usbReceiver = new BroadcastReceiver() {
+	private final BroadcastReceiver usbReceiver = new BroadcastReceiver()
+	{
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			if ("org.subsurfacedivelog.mobile.USB_PERMISSION".equals(action)) {
 				synchronized (this) {
 					if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
 						Log.d(TAG, "USB device permission granted");
-						// Stub: press the download button here :)
-					}
-					else {
-						Log.d(TAG, "USB device permission granted");
+						setUsbDevice(null);
+					} else {
+						Log.d(TAG, "USB device permission denied");
 					}
 				}
 			}
