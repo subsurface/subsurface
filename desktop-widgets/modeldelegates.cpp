@@ -129,6 +129,7 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	currCombo.comboEditor = comboDelegate;
 	currCombo.currRow = index.row();
 	currCombo.model = const_cast<QAbstractItemModel *>(index.model());
+	currCombo.activeText = currCombo.model->data(index).toString();
 	keyboardFinished = false;
 
 	// Current display of things on Gnome3 looks like shit, so
