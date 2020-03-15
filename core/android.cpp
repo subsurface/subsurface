@@ -17,6 +17,7 @@
 #include <QtAndroidExtras/QAndroidJniObject>
 #include <QtAndroid>
 #include <QDebug>
+#include <core/serial_usb_android.h>
 
 #if defined(SUBSURFACE_MOBILE)
 #include "mobile-widgets/qmlmanager.h"
@@ -170,17 +171,21 @@ int get_usb_fd(uint16_t idVendor, uint16_t idProduct)
 }
 
 JNIEXPORT void JNICALL
-Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_setDeviceString(JNIEnv *env,
+Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_setUsbDevice(JNIEnv *env,
 	jobject obj,
-	jstring javaDeviceString)
+	jobject javaUsbDevice)
 {
-	const char *deviceString = env->GetStringUTFChars(javaDeviceString, NULL);
 	Q_UNUSED (obj)
-	LOG(deviceString);
+	Q_UNUSED (env)
+	QAndroidJniObject usbDevice(javaUsbDevice);
+	if (usbDevice.isValid()) {
+		android_usb_serial_device_descriptor descriptor = getDescriptor(usbDevice);
+
+		LOG(QString("called by intent for device %1").arg(QString::fromStdString(descriptor.uiRepresentation)));
+	}
 #if defined(SUBSURFACE_MOBILE)
-	QMLManager::instance()->showDownloadPage(deviceString);
+	QMLManager::instance()->showDownloadPage(usbDevice);
 #endif
-	env->ReleaseStringUTFChars(javaDeviceString, deviceString);
 	return;
 }
 
