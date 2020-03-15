@@ -2024,7 +2024,7 @@ void QMLManager::DC_setDevName(const QString& devName)
 	for (unsigned int i = 0; i < androidSerialDevices.size(); i++) {
 		if (androidSerialDevices[i].uiRepresentation == connection) {
 			appendTextToLog(QString("setDevName matches USB device %1").arg(i));
-			DCDeviceData::instance()->setUsbDevice((void *)&androidSerialDevices[i]);
+			DCDeviceData::instance()->setUsbDevice(androidSerialDevices[i]);
 		}
 	}
 #endif
