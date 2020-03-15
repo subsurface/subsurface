@@ -305,7 +305,7 @@ android_usb_serial_device_descriptor getDescriptor(QAndroidJniObject usbDevice)
 
 std::vector<android_usb_serial_device_descriptor> serial_usb_android_get_devices()
 {
-	std::vector<std::string> driverNames = { "", "CdcAcmSerialDriver", "Ch34xSerialDriver", "Cp21xxSerialDriver", "FtdiSerialDriver", "ProlificSerialDriver" };
+	std::vector<std::string> driverNames = { "CdcAcmSerialDriver", "Ch34xSerialDriver", "Cp21xxSerialDriver", "FtdiSerialDriver", "ProlificSerialDriver" };
 
 	// Get the current main activity of the application.
 	QAndroidJniObject activity = QtAndroid::androidActivity();
@@ -333,10 +333,7 @@ std::vector<android_usb_serial_device_descriptor> serial_usb_android_get_devices
 			std::string ui = descriptor.uiRepresentation;
 			for (std::string driverName : driverNames) {
 				descriptor.className = driverName;
-				if (driverName != "")
-					descriptor.uiRepresentation = ui + " (" + driverName + ")";
-				else
-					descriptor.uiRepresentation = ui + " (autoselect driver)";
+				descriptor.uiRepresentation = ui + " (" + driverName + ")";
 				retval.push_back(descriptor);
 			}
 		}
@@ -345,10 +342,9 @@ std::vector<android_usb_serial_device_descriptor> serial_usb_android_get_devices
 }
 
 /*
- * For testing and compatibility only, can be removed after the UI changes. Behaves exactly like the "old"
- * implementation if only one device is attached.
+ * Open the USB Device described by androidUsbDevice
  */
-dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *context, void *androidUsbDevice)
+dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *context, /*android_usb_serial_device_descriptor*/ void *androidUsbDevice)
 {
 	if (!androidUsbDevice)
 		return DC_STATUS_NODEVICE;
