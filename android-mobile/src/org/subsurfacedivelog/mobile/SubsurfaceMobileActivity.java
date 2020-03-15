@@ -27,7 +27,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 	public static boolean isIntentPending;
 	public static boolean isInitialized;
 	private static final String TAG = "subsurfacedivelog.mobile";
-	public static native void setDeviceString(String deviceString);
+	public static native void setUsbDevice(UsbDevice usbDevice);
 	private static Context appContext;
 
 	// we need to provide two endpoints:
@@ -105,7 +105,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 			return;
 		}
 		Log.i(TAG + " processIntent device name", device.getDeviceName());
-		setDeviceString(device.toString());
+		setUsbDevice(device);
 	} // processIntent
 
 
