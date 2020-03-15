@@ -303,13 +303,9 @@ android_usb_serial_device_descriptor getDescriptor(QAndroidJniObject usbDevice)
 	return descriptor;
 }
 
-std::vector<android_usb_serial_device_descriptor> serial_usb_android_get_devices(book driverSelection)
+std::vector<android_usb_serial_device_descriptor> serial_usb_android_get_devices()
 {
-	std::vector<std::string> driverNames;
-	if (driverSelection)
-		driverNames = { "", "CdcAcmSerialDriver", "Ch34xSerialDriver", "Cp21xxSerialDriver", "FtdiSerialDriver", "ProlificSerialDriver" };
-	else
-		driverNames = {""};
+	std::vector<std::string> driverNames = { "", "CdcAcmSerialDriver", "Ch34xSerialDriver", "Cp21xxSerialDriver", "FtdiSerialDriver", "ProlificSerialDriver" };
 
 	// Get the current main activity of the application.
 	QAndroidJniObject activity = QtAndroid::androidActivity();
@@ -325,35 +321,27 @@ std::vector<android_usb_serial_device_descriptor> serial_usb_android_get_devices
 	jint numDevices = deviceListCollection.callMethod<jint>("size");
 	QAndroidJniObject arrayOfDevices = deviceListCollection.callObjectMethod("toArray", "()[Ljava/lang/Object;");
 
-	// Special case to keep a generic user-facing name if only one device is present.
-	if (numDevices == 1 && !driverSelection) {
-		// UsbDevice usbDevice = arrayOfDevices[0]
-		jobject value = env->GetObjectArrayElement(arrayOfDevices.object<jobjectArray>(), 0);
+	std::vector<android_usb_serial_device_descriptor> retval;
+	for (int i = 0; i < numDevices ; i++) {
+		// UsbDevice usbDevice = arrayOfDevices[i]
+		jobject value = env->GetObjectArrayElement(arrayOfDevices.object<jobjectArray>(), i);
 		QAndroidJniObject usbDevice(value);
 		android_usb_serial_device_descriptor descriptor = getDescriptor(usbDevice);
-		descriptor.uiRepresentation = "USB Connection";
-
-		return {descriptor};
-	} else {
-		std::vector<android_usb_serial_device_descriptor> retval;
-		for (int i = 0; i < numDevices ; i++) {
-			// UsbDevice usbDevice = arrayOfDevices[i]
-			jobject value = env->GetObjectArrayElement(arrayOfDevices.object<jobjectArray>(), i);
-			QAndroidJniObject usbDevice(value);
-
+		if (knownChipset(descriptor.vid, descriptor.pid)) {
+			retval.push_back(descriptor);
+		} else {
+			std::string ui = descriptor.uiRepresentation;
 			for (std::string driverName : driverNames) {
-				android_usb_serial_device_descriptor descriptor = getDescriptor(usbDevice);
-
 				descriptor.className = driverName;
 				if (driverName != "")
-					descriptor.uiRepresentation += " (" + driverName + ")";
+					descriptor.uiRepresentation = ui + " (" + driverName + ")";
 				else
-					descriptor.uiRepresentation += " (autoselect driver)";
+					descriptor.uiRepresentation = ui + " (autoselect driver)";
 				retval.push_back(descriptor);
 			}
 		}
-		return retval;
 	}
+	return retval;
 }
 
 /*
@@ -362,28 +350,7 @@ std::vector<android_usb_serial_device_descriptor> serial_usb_android_get_devices
  */
 dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *context)
 {
-	// Testing of the method only!
-	{
-		TRACE(device->contxt, "List of devices with specific drivers:");
-		      std::vector<android_usb_serial_device_descriptor> devices = serial_usb_android_get_devices(true);
-		for (auto device : devices) {
-			TRACE(device->contxt,
-			      "USB Device: uiRepresentation=%s, className=%s, manufacturer=%s, product=%s, pid=%i, vid=%i",
-			      device.uiRepresentation.c_str(), device.className.c_str(), device.manufacturer.c_str(),
-			      device.product.c_str(), device.pid, device.vid);
-		}
-
-		TRACE(device->contxt, "List of devices simple:");
-		devices = serial_usb_android_get_devices(false);
-		for (auto device : devices) {
-			TRACE(device->contxt,
-			      "USB Device: uiRepresentation=%s, className=%s, manufacturer=%s, product=%s, pid=%i, vid=%i",
-			      device.uiRepresentation.c_str(), device.className.c_str(), device.manufacturer.c_str(),
-			      device.product.c_str(), device.pid, device.vid);
-		}
-	}
-
-	std::vector<android_usb_serial_device_descriptor> devices = serial_usb_android_get_devices(false);
+	std::vector<android_usb_serial_device_descriptor> devices = serial_usb_android_get_devices();
 
 	if(devices.empty())
 		return DC_STATUS_NODEVICE;
