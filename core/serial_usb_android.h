@@ -19,6 +19,7 @@ struct android_usb_serial_device_descriptor {
 	uint16_t vid;
 };
 
-std::vector<android_usb_serial_device_descriptor> serial_usb_android_get_devices(bool driverSelection);
+std::vector<android_usb_serial_device_descriptor> serial_usb_android_get_devices();
+android_usb_serial_device_descriptor getDescriptor(QAndroidJniObject usbDevice);
 
 #endif

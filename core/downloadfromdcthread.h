@@ -31,7 +31,7 @@ public:
 	int diveId() const;
 
 	/* this needs to be a pointer to make the C-API happy */
-	device_data_t* internalData();
+	device_data_t *internalData();
 
 	QStringList getProductListFromVendor(const QString& vendor);
 	int getMatchingAddress(const QString &vendor, const QString &product);
@@ -49,6 +49,9 @@ public:
 	void setForceDownload(bool force);
 	void setSaveDump(bool dumpMode);
 	void setSaveLog(bool saveLog);
+#if defined(Q_OS_ANDROID)
+	void setUsbDevice(void *device);
+#endif
 private:
 	device_data_t data;
 

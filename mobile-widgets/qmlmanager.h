@@ -233,6 +233,7 @@ public slots:
 	void btRescan();
 #if defined(Q_OS_ANDROID)
 	void showDownloadPage(QAndroidJniObject usbDevice);
+	QString getProductVendorConnectionIdx(android_usb_serial_device_descriptor descriptor);
 #endif
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
 
