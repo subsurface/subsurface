@@ -353,7 +353,7 @@ Kirigami.Page {
 				text: qsTr("Rescan")
 				enabled: manager.btEnabled
 				onClicked: {
-					manager.btRescan()
+					manager.rescanConnections()
 				}
 			}
 
