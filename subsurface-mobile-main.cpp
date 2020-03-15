@@ -88,9 +88,7 @@ int main(int argc, char **argv)
 
 void set_non_bt_addresses()
 {
-#if defined(Q_OS_ANDROID)
-	connectionListModel.addAddress("usb-serial"); /* obsolete, can be removed when the new USB device selection is implemented. */
-#elif defined(Q_OS_LINUX) // since this is in the else, it does NOT include Android
+#if defined(Q_OS_LINUX) // since this is in the else, it does NOT include Android
 	connectionListModel.addAddress("/dev/ttyS0");
 	connectionListModel.addAddress("/dev/ttyS1");
 	connectionListModel.addAddress("/dev/ttyS2");
