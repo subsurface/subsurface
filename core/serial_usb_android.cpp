@@ -233,6 +233,21 @@ static void guessVendorProduct(android_usb_serial_device_descriptor &descriptor)
 	}
 }
 
+static bool knownChipset(int vid, int pid)
+{
+	if ((vid == 0x0403 && (pid == 0x6001 || pid == 0x6010 || pid == 0x6011 || pid == 0x6014 || pid == 0x6015 || pid == 0xf460 || pid == 0xf680)) ||
+	    (vid == 0xffff && pid == 0x0005) ||
+	    (vid == 0x10c4 && (pid == 0xea60 || pid == 0xea70 || pid == 0xea71 || pid == 0xea80)) ||
+	    (vid == 0x067b && pid == 0x2303) ||
+	    (vid == 0x04b8 && (pid == 0x0521 || pid == 0x0522)) ||
+	    (vid == 0x1a86 && pid == 0x7523) ||
+	    (vid == 0x0d28 && pid == 0x0204))
+		return true;
+
+	// not a known chipset
+	return false;
+}
+
 android_usb_serial_device_descriptor getDescriptor(QAndroidJniObject usbDevice)
 {
 	QAndroidJniEnvironment env;
