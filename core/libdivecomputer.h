@@ -48,6 +48,7 @@ typedef struct dc_user_device_t
 	FILE *libdc_logfile;
 	struct dive_table *download_table;
 	struct dive_site_table *sites;
+	void *androidUsbDeviceDescriptor;
 } device_data_t;
 
 const char *errmsg (dc_status_t rc);
@@ -67,7 +68,7 @@ extern char *dumpfile_name;
 dc_status_t ble_packet_open(dc_iostream_t **iostream, dc_context_t *context, const char* devaddr, void *userdata);
 dc_status_t rfcomm_stream_open(dc_iostream_t **iostream, dc_context_t *context, const char* devaddr);
 dc_status_t ftdi_open(dc_iostream_t **iostream, dc_context_t *context);
-dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *context);
+dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *context, void *androidUsbDevice);
 
 dc_status_t divecomputer_device_open(device_data_t *data);
 
