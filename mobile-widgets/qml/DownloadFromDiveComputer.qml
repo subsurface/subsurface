@@ -83,14 +83,9 @@ Kirigami.Page {
 				onCurrentTextChanged: {
 					manager.DC_vendor = currentText
 					comboProduct.model = manager.getProductListFromVendor(currentText)
-					if (currentIndex == manager.getDetectedVendorIndex())
+					// try to be clever if there is just one BT/BLE dive computer paired
+					if (currentIndex === manager.getDetectedVendorIndex())
 						comboProduct.currentIndex = manager.getDetectedProductIndex(currentText)
-					if (currentText === "Atomic Aquatics") {
-						comboConnection.model = [ qsTr("USB device") ]
-						comboConnection.currentIndex = 0
-					} else {
-						comboConnection.model = connectionListModel
-					}
 				}
 			}
 			Controls.Label {
