@@ -293,6 +293,24 @@ Kirigami.Page {
 			Layout.fillWidth: true
 			Layout.topMargin: Kirigami.Units.smallSpacing
 			spacing: Kirigami.Units.smallSpacing
+
+
+			function doDownload() {
+				var message = "DCDownloadThread started for " + manager.DC_vendor + " " + manager.DC_product + " on " + manager.DC_devName;
+				message += " downloading " + (manager.DC_forceDownload ? "all" : "only new" ) + " dives";
+				manager.appendTextToLog(message)
+				progressBar.visible = true
+				divesDownloaded = false // this allows the progressMessage to be displayed
+				importModel.startDownload()
+			}
+
+			Connections {
+				target: manager
+				onRestartDownloadSignal: {
+					buttonBar.doDownload()
+				}
+			}
+
 			TemplateButton {
 				id: download
 				text: qsTr("Download")
@@ -322,12 +340,7 @@ Kirigami.Page {
 						manager.DC_bluetoothMode = false;
 						manager.DC_devName = connectionString;
 					}
-					var message = "DCDownloadThread started for " + manager.DC_vendor + " " + manager.DC_product + " on " + manager.DC_devName;
-					message += " downloading " + (manager.DC_forceDownload ? "all" : "only new" ) + " dives";
-					manager.appendTextToLog(message)
-					progressBar.visible = true
-					divesDownloaded = false // this allows the progressMessage to be displayed
-					importModel.startDownload()
+					buttonBar.doDownload()
 				}
 			}
 			TemplateButton {

@@ -28,6 +28,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 	public static boolean isInitialized;
 	private static final String TAG = "subsurfacedivelog.mobile";
 	public static native void setUsbDevice(UsbDevice usbDevice);
+	public static native void restartDownload(UsbDevice usbDevice);
 	private static Context appContext;
 
 	// we need to provide two endpoints:
@@ -116,8 +117,13 @@ public class SubsurfaceMobileActivity extends QtActivity
 			if ("org.subsurfacedivelog.mobile.USB_PERMISSION".equals(action)) {
 				synchronized (this) {
 					if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
-						Log.d(TAG, "USB device permission granted");
-						setUsbDevice(null);
+						UsbDevice device = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+						if (device == null) {
+							Log.i(TAG, " permission granted but null device");
+							return;
+						}
+						Log.d(TAG, "USB device permission granted for " + device.getDeviceName());
+						restartDownload(device);
 					} else {
 						Log.d(TAG, "USB device permission denied");
 					}

@@ -2120,9 +2120,8 @@ void QMLManager::androidUsbPopoulateConnections()
 void QMLManager::showDownloadPage(QAndroidJniObject usbDevice)
 {
 	if (!usbDevice.isValid()) {
-		// this happens if we get called by the permission granted intent
-		// if that happens, just make sure the DownloadPage is reopened
-		m_pluggedInDeviceName = QString("reopen");
+		// this really shouldn't happen anymore, but just in case...
+		m_pluggedInDeviceName = "";
 	} else {
 		// repopulate the connection list
 		rescanConnections();
@@ -2135,6 +2134,25 @@ void QMLManager::showDownloadPage(QAndroidJniObject usbDevice)
 	}
 	emit pluggedInDeviceNameChanged();
 }
+
+void QMLManager::restartDownload(QAndroidJniObject usbDevice)
+{
+	// this gets called if we received a permission intent after
+	// already trying to download from USB
+	if (!usbDevice.isValid()) {
+		appendTextToLog("permission intent with invalid UsbDevice - ignoring");
+	} else {
+		// inform that QML code that it should retry downloading
+		// we get the usbDevice again and could verify that this is
+		// still the same - but I don't see how this could change while we are waiting
+		// for permission
+		android_usb_serial_device_descriptor usbDeviceDescriptor = getDescriptor(usbDevice);
+		appendTextToLog(QString("got permission from Android, restarting download for %1")
+				.arg(QString::fromStdString(usbDeviceDescriptor.uiRepresentation)));
+		emit restartDownloadSignal();
+	}
+}
+
 #endif
 
 void QMLManager::setFilter(const QString filterText, int index)
