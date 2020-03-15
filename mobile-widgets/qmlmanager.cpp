@@ -1999,6 +1999,18 @@ void QMLManager::DC_setProduct(const QString& product)
 void QMLManager::DC_setDevName(const QString& devName)
 {
 	DCDeviceData::instance()->setDevName(devName);
+#if defined(Q_OS_ANDROID)
+	// get the currently valid list of devices and set up the USB device descriptor
+	// if the connection string matches a connection in that list
+	androidSerialDevices = serial_usb_android_get_devices();
+	std::string connection = devName.toStdString();
+	for (unsigned int i = 0; i < androidSerialDevices.size(); i++) {
+		if (androidSerialDevices[i].uiRepresentation == connection) {
+			appendTextToLog(QString("setDevName matches USB device %1").arg(i));
+			DCDeviceData::instance()->setUsbDevice((void *)&androidSerialDevices[i]);
+		}
+	}
+#endif
 }
 
 void QMLManager::DC_setDevBluetoothName(const QString& devBluetoothName)

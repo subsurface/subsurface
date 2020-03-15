@@ -220,6 +220,9 @@ DCDeviceData::DCDeviceData()
 #else
 	data.libdc_log = false;
 #endif
+#if defined(Q_OS_ANDROID)
+	data.androidUsbDeviceDescriptor = nullptr;
+#endif
 }
 
 DCDeviceData *DCDeviceData::instance()
@@ -318,6 +321,11 @@ void DCDeviceData::setDevName(const QString &devName)
 		}
 	}
 	data.devname = copy_qstring(devName);
+}
+
+void DCDeviceData::setUsbDevice(void *device)
+{
+	data.androidUsbDeviceDescriptor = device;
 }
 
 void DCDeviceData::setDevBluetoothName(const QString &name)

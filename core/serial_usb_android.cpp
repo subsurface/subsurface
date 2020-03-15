@@ -348,13 +348,12 @@ std::vector<android_usb_serial_device_descriptor> serial_usb_android_get_devices
  * For testing and compatibility only, can be removed after the UI changes. Behaves exactly like the "old"
  * implementation if only one device is attached.
  */
-dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *context)
+dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *context, void *androidUsbDevice)
 {
-	std::vector<android_usb_serial_device_descriptor> devices = serial_usb_android_get_devices();
-
-	if(devices.empty())
+	if (!androidUsbDevice)
 		return DC_STATUS_NODEVICE;
+	android_usb_serial_device_descriptor *usbDeviceDescriptor = (android_usb_serial_device_descriptor *)androidUsbDevice;
 
-	return serial_usb_android_open(iostream, context, devices[0].usbDevice, devices[0].className);
-
+	// danger, danger, we need to pick the correct device here - passing the index around assumes that the table didn't change
+	return serial_usb_android_open(iostream, context, usbDeviceDescriptor->usbDevice, usbDeviceDescriptor->className);
 }
