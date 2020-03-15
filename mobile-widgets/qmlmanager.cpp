@@ -54,6 +54,12 @@
 #include "commands/command_base.h"
 #include "commands/command.h"
 
+#if defined(Q_OS_ANDROID)
+#include "core/serial_usb_android.h"
+std::vector<android_usb_serial_device_descriptor> androidSerialDevices;
+
+#endif
+
 QMLManager *QMLManager::m_instance = NULL;
 bool noCloudToCloud = false;
 
@@ -2046,84 +2052,61 @@ void QMLManager::setGitLocalOnly(const bool &value)
 	git_local_only = value;
 }
 
-void QMLManager::showDownloadPage(QString deviceString)
+#if defined(Q_OS_ANDROID)
+// try to guess which dive computer was plugged into the USB port
+QString QMLManager::getProductVendorConnectionIdx(android_usb_serial_device_descriptor descriptor)
 {
-	// we pass the indices for the three combo boxes for vendor, product, and connection
-	// to the QML UI
+	// convert the information we get from the Android USB layer into indices for the three
+	// combo boxes for vendor, product, and connection in the QML UI
 	// for each of these values '-1' means that no entry should be pre-selected
-	QString name("-1;-1;-1");
+	QString uiString = QString::fromStdString(descriptor.uiRepresentation);
+	QString product = QString::fromStdString(descriptor.usbProduct);
+	int connIdx = connectionListModel.indexOf(uiString);
+	int vendIdx = -1;
+	int prodIdx = -1;
 
-	// try to guess the dive computer (or at least vendor) from the string that
-	// we get from the Intent
-	// the first couple we do text based because we know exactly what to look for,
-	// the rest is based on the vendor and product IDs
-	if (deviceString.contains("HeinrichsWeikamp OSTC3")) {
-		name = QString("%1;%2;%3")
-				.arg(vendorList.indexOf("Heinrichs Weikamp"))
-				.arg(productList["Heinrichs Weikamp"].indexOf("OSTC 3"))
-				.arg(connectionListModel.indexOf("usb-serial"));
-	} else if (deviceString.contains("HeinrichsWeikamp OSTC 2N")) {
-		name = QString("%1;%2;%3")
-				.arg(vendorList.indexOf("Heinrichs Weikamp"))
-				.arg(productList["Heinrichs Weikamp"].indexOf("OSTC 2N"))
-				.arg(connectionListModel.indexOf("usb-serial"));
-	} else if (deviceString.contains("mVendorId=1027") && // FTDI: 0x0403 / 0x6001,0x6010,0x6011,0x6014,0x6015
-		   (deviceString.contains("mProductId=24577") ||
-		    deviceString.contains("mProductId=24592") ||
-		    deviceString.contains("mProductId=24593") ||
-		    deviceString.contains("mProductId=24596") ||
-		    deviceString.contains("mProductId=24597"))) {
-		name = QString("-1;-1;%1").arg(connectionListModel.indexOf("usb-serial"));
-	} else if (deviceString.contains("mVendorId=1027") && // 0x0403 / 0xf460
-		   deviceString.contains("mProductId=62560")) {
-		name = QString("%1;-1;%2")
-				.arg(vendorList.indexOf("Oceanic"))
-				.arg(connectionListModel.indexOf("usb-serial"));
-	} else if (deviceString.contains("mVendorId=1027") && // 0x0403 / 0xf680
-		   deviceString.contains("mProductId=63104")) {
-		name = QString("%1;-1;%2")
-				.arg(vendorList.indexOf("Suunto"))
-				.arg(connectionListModel.indexOf("usb-serial"));
-	} else if (deviceString.contains("mVendorId=1027") && // 0x0403 / 0x87d0
-		   deviceString.contains("mProductId=34768")) {
-		name = QString("%1;-1;%2")
-				.arg(vendorList.indexOf("Cressi"))
-				.arg(connectionListModel.indexOf("usb-serial"));
-	} else if (deviceString.contains("mVendorId=65535") && // 0xffff / 0x0005
-		   deviceString.contains("mProductId=5")) {
-		name = QString("%1;%2;%3")
-				.arg(vendorList.indexOf("Mares"))
-				.arg(productList["Mares"].indexOf("Icon HD"))
-				.arg(connectionListModel.indexOf("usb-serial"));
-	} else if (deviceString.contains("mVendorId=4292") && // SiLabs: 0x10c4 / 0xea60,0xea70,0xea71,0xea80
-		   (deviceString.contains("mProductId=60000") ||
-		    deviceString.contains("mProductId=60016") ||
-		    deviceString.contains("mProductId=60017") ||
-		    deviceString.contains("mProductId=60032"))) {
-		name = QString("-1;-1;%1")
-				.arg(connectionListModel.indexOf("usb-serial"));
-	} else if (deviceString.contains("mVendorId=1659") && // Prolific: 0x067b / 0x2303
-		   deviceString.contains("mProductId=8963")) {
-		name = QString("-1;-1;%1")
-				.arg(connectionListModel.indexOf("usb-serial"));
-	} else if (deviceString.contains("mVendorId=1208") && // Prolific: 0x04b8 / 0x0521,0x0522
-		   (deviceString.contains("mProductId=1313") ||
-		    deviceString.contains("mProductId=1314"))) {
-		name = QString("-1;-1;%1")
-				.arg(connectionListModel.indexOf("usb-serial"));
-	} else if (deviceString.contains("mVendorId=6790") && // QINHENG: 0x1a86 / 0x7523
-		   deviceString.contains("mProductId=29987")) {
-		name = QString("-1;-1;%1")
-				.arg(connectionListModel.indexOf("usb-serial"));
-	} else if (deviceString.contains("mVendorId=3368") && // ARM mBed: 0x0d28 / 0x0204
-		   deviceString.contains("mProductId=516")) {
-		name = QString("-1;-1;%1")
-				.arg(connectionListModel.indexOf("usb-serial"));
+	if (!descriptor.manufacturer.empty())
+		vendIdx = vendorList.indexOf(QString::fromStdString(descriptor.manufacturer));
+	if (!descriptor.product.empty())
+		prodIdx = productList[vendorList[vendIdx]].indexOf(QString::fromStdString(descriptor.product));
+
+	// the rest of them simply will get the default -1:-1:index of the uiString
+	return QString("%1;%2;%3").arg(vendIdx).arg(prodIdx).arg(connIdx);
+}
+
+void QMLManager::showDownloadPage(QAndroidJniObject usbDevice)
+{
+	if (!usbDevice.isValid()) {
+		// this happens if we get called by the permission granted intent
+		// if that happens, just make sure the DownloadPage is reopened
+		m_pluggedInDeviceName = QString("reopen");
+	} else {
+		// parse the usbDevice
+		android_usb_serial_device_descriptor usbDeviceDescriptor = getDescriptor(usbDevice);
+
+		// let's understand what devices are available
+		androidSerialDevices = serial_usb_android_get_devices();
+		appendTextToLog(QString("entered showDownloadPage with %1 devices reported").arg(androidSerialDevices.size()));
+
+		// list all USB devices, this will include the one that triggered the intent
+		for (unsigned int i = 0; i < androidSerialDevices.size(); i++) {
+			// the expected case -- does this match the deviceString we got from the intent?
+			QString uiString = QString::fromStdString(androidSerialDevices[i].uiRepresentation);
+			//QString deviceName = uiString.left(uiString.indexOf(QString(" (")) + 1);
+			appendTextToLog(QString("looking at USB device with ui representation %1").arg(uiString));
+			if (androidSerialDevices[i].uiRepresentation == usbDeviceDescriptor.uiRepresentation) {
+				appendTextToLog("matches the information we received from the intent");
+			} else {
+				appendTextToLog("doesn't match the device received from the intent");
+			}
+			connectionListModel.addAddress(QString::fromStdString(androidSerialDevices[i].uiRepresentation));
+		}
+		// inform the QML UI that it should show the download page
+		m_pluggedInDeviceName = getProductVendorConnectionIdx(usbDeviceDescriptor);
 	}
-	// inform the QML UI that it should show the download page
-	m_pluggedInDeviceName = strdup(qPrintable(name));
 	emit pluggedInDeviceNameChanged();
 }
+#endif
 
 void QMLManager::setFilter(const QString filterText, int index)
 {
