@@ -1,5 +1,16 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="en_US" version="2.1">
 <context>
+    <name>AddWeight</name>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="993"/>
+        <source>Add weight (%n dive(s))</source>
+        <translation>
+            <numerusform>Add weight (%1 dive)</numerusform>
+            <numerusform>Add weight (%1 dives)</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>AddDivesToTrip</name>
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="700"/>
@@ -74,6 +85,17 @@
         <source>Edit %1 (%n dive(s))</source>
         <extracomment>remove the part in parentheses for %n = 1</extracomment>
         <translation><numerusform>Edit %1 (%n dive)</numerusform><numerusform>Edit %1 (%n dives)</numerusform></translation>
+    </message>
+</context>
+<context>
+    <name>EditWeight</name>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1108"/>
+        <source>Edit weight (%n dive(s))</source>
+        <translation>
+            <numerusform>Edit weight (%n dive)</numerusform>
+            <numerusform>Edit weight (%n dives)</numerusform>
+        </translation>
     </message>
 </context>
 <context>
