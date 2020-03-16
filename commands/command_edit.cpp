@@ -2,6 +2,7 @@
 
 #include "command_edit.h"
 #include "core/divelist.h"
+#include "core/fulltext.h"
 #include "core/qthelper.h" // for copy_qstring
 #include "core/selection.h"
 #include "core/subsurface-string.h"
@@ -108,6 +109,7 @@ void EditBase<T>::undo()
 
 	for (dive *d: dives) {
 		set(d, value);
+		fulltext_register(d); // Update the fulltext cache
 		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
 	}
 
@@ -678,8 +680,9 @@ void EditTagsBase::undo()
 			if (!tags.contains(tag))
 				tags.push_back(tag);
 		}
-		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
 		set(d, tags);
+		fulltext_register(d); // Update the fulltext cache
+		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
 	}
 
 	std::swap(tagsToAdd, tagsToRemove);
