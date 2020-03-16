@@ -158,8 +158,8 @@ void QMLManager::btRescan()
 void QMLManager::rescanConnections()
 {
 	connectionListModel.removeAllAddresses();
-	btRescan();
 	usbRescan();
+	btRescan();
 #if defined(SERIAL_FTDI)
 	connectionListModel.addAddress("FTDI");
 #endif
