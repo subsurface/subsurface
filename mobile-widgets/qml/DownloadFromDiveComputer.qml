@@ -366,7 +366,14 @@ Kirigami.Page {
 				text: qsTr("Rescan")
 				enabled: manager.btEnabled
 				onClicked: {
+					// refresh both USB and BT/BLE and make sure a reasonable entry is selected
+					var current = comboConnection.currentText
 					manager.rescanConnections()
+					// check if the same entry is still available; if not pick the first entry
+					var idx = comboConnection.find(current)
+					if (idx === -1)
+						idx = 0
+					comboConnection.currentIndex = idx
 				}
 			}
 
