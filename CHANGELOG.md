@@ -1,3 +1,5 @@
+Mobile-android: remove libusb/FTDI support (largely non-functional)
+Mobile-android: Continue download after obtaining USB permission
 Mobile-android: Add usb-serial-for-android driver support
 Mobile: fix missing download info on retry
 Mobile: enable profile zoom and pan
