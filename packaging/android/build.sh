@@ -344,20 +344,6 @@ if [ "$QUICK" = "" ] ; then
 		popd
 	fi
 
-	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libftdi1
-	if [ ! -e "$PKG_CONFIG_LIBDIR/libftdi1.pc" ] && [ "$PLATFORM" != "Darwin" ] ; then
-		mkdir -p libftdi1-build-"$ARCH"
-		pushd libftdi1-build-"$ARCH"
-		cmake ../libftdi1 -DCMAKE_C_COMPILER="$CC" -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_PREFIX_PATH="$PREFIX" -DSTATICLIBS=ON -DPYTHON_BINDINGS=OFF -DDOCUMENTATION=OFF -DFTDIPP=OFF -DBUILD_TESTS=OFF -DEXAMPLES=OFF -DFTDI_EEPROM=OFF
-		make
-		make install
-		popd
-	fi
-	# Blast away the shared version to force static linking
-	if [ -e "$PREFIX/lib/libftdi1.so" ] ; then
-		rm "$PREFIX"/lib/libftdi1.so*
-	fi
-
 fi # QUICK
 
 pushd "$SUBSURFACE_SOURCE"
@@ -408,12 +394,6 @@ else
 	BUILD_NAME=Subsurface
 fi
 
-if [ "$PLATFORM" = "Darwin" ] ; then
-	FTDI=OFF
-else
-	FTDI=ON
-fi
-
 PKGCONF=$(which pkg-config)
 cmake $MOBILE_CMAKE \
 	-DCMAKE_SYSTEM_NAME="Android" \
@@ -434,7 +414,7 @@ cmake $MOBILE_CMAKE \
 	-DCMAKE_PREFIX_PATH:UNINITIALIZED="$QT5_ANDROID_CMAKE" \
 	-DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
 	-DMAKE_TESTS=OFF \
-	-DFTDISUPPORT=${FTDI} \
+	-DFTDISUPPORT=OFF \
 	-DANDROID_NATIVE_LIBSSL="$BUILDROOT/ndk-$ARCH/sysroot/usr/lib/libssl_1_1.so" \
 	-DANDROID_NATIVE_LIBCRYPT="$BUILDROOT/ndk-$ARCH/sysroot/usr/lib/libcrypto_1_1.so" \
 	-DCMAKE_MAKE_PROGRAM="make" \
