@@ -170,12 +170,7 @@ public slots:
 	void appInitialized();
 	void applicationStateChanged(Qt::ApplicationState state);
 	void saveCloudCredentials(const QString &email, const QString &password, const QString &pin);
-	void tryRetrieveDataFromBackend();
-	void handleError(QNetworkReply::NetworkError nError);
-	void handleSslErrors(const QList<QSslError> &errors);
-	void retrieveUserid();
 	void loadDivesWithValidCredentials();
-	void provideAuth(QNetworkReply *reply, QAuthenticator *auth);
 	void commitChanges(QString diveId, QString number, QString date, QString location, QString gps,
 			   QString duration, QString depth, QString airtemp,
 			   QString watertemp, QString suit, QString buddy,
