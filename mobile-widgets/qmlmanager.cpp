@@ -388,9 +388,6 @@ void QMLManager::openLocalThenRemote(QString url)
 		if (qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_NOCLOUD)
 			appendTextToLog(QStringLiteral("have cloud credentials, but user asked not to connect to network"));
 		alreadySaving = false;
-	} else {
-		appendTextToLog(QStringLiteral("have cloud credentials, trying to connect"));
-		tryRetrieveDataFromBackend();
 	}
 	updateAllGlobalLists();
 }
@@ -665,115 +662,6 @@ bool QMLManager::verifyCredentials(QString email, QString password, QString pin)
 		setStartPageText(RED_FONT + tr("PIN accepted, credentials verified") + END_FONT);
 	}
 	return true;
-}
-
-void QMLManager::tryRetrieveDataFromBackend()
-{
-	// if the cloud credentials are present, we should try to get the GPS Webservice ID
-	// and (if we haven't done so) load the dive list
-	if (!empty_string(prefs.cloud_storage_email) &&
-	    !empty_string(prefs.cloud_storage_password)) {
-		setStartPageText(tr("Testing cloud credentials"));
-		appendTextToLog("Have credentials, let's see if they are valid");
-		CloudStorageAuthenticate *csa = new CloudStorageAuthenticate(this);
-		csa->backend(prefs.cloud_storage_email, prefs.cloud_storage_password, "");
-
-		// let's wait here for the signal to avoid too many more nested functions
-		QTimer myTimer;
-		myTimer.setSingleShot(true);
-		QEventLoop loop;
-		connect(csa, &CloudStorageAuthenticate::finishedAuthenticate, &loop, &QEventLoop::quit);
-		connect(&myTimer, &QTimer::timeout, &loop, &QEventLoop::quit);
-		myTimer.start(5000);
-		loop.exec();
-		if (!myTimer.isActive()) {
-			// got no response from the server
-			setStartPageText(RED_FONT + tr("No response from cloud server to validate the credentials") + END_FONT);
-			revertToNoCloudIfNeeded();
-			return;
-		}
-		myTimer.stop();
-		if (prefs.cloud_verification_status == qPrefCloudStorage::CS_INCORRECT_USER_PASSWD) {
-			appendTextToLog(QStringLiteral("Incorrect cloud credentials"));
-			setStartPageText(RED_FONT + tr("Incorrect cloud credentials") + END_FONT);
-			revertToNoCloudIfNeeded();
-			return;
-		} else if (prefs.cloud_verification_status != qPrefCloudStorage::CS_VERIFIED) {
-			// here we need to enter the PIN
-			appendTextToLog(QStringLiteral("Need to verify the email address - enter PIN"));
-			setStartPageText(RED_FONT + tr("Cannot connect to cloud storage - cloud account not verified") + END_FONT);
-			revertToNoCloudIfNeeded();
-			return;
-		}
-
-		// now check the redirect URL to make sure everything is set up on the cloud server
-		connect(manager(), &QNetworkAccessManager::authenticationRequired, this, &QMLManager::provideAuth, Qt::UniqueConnection);
-		QUrl url(CLOUDREDIRECTURL);
-		QNetworkRequest request(url);
-		request.setRawHeader("User-Agent", getUserAgent().toUtf8());
-		request.setRawHeader("Accept", "text/html");
-		QNetworkReply *reply = manager()->get(request);
-		connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(handleError(QNetworkReply::NetworkError)));
-		connect(reply, &QNetworkReply::sslErrors, this, &QMLManager::handleSslErrors);
-		connect(reply, &QNetworkReply::finished, this, &QMLManager::retrieveUserid);
-	}
-}
-
-void QMLManager::provideAuth(QNetworkReply *reply, QAuthenticator *auth)
-{
-	if (auth->user() == QString(prefs.cloud_storage_email) &&
-	    auth->password() == QString(prefs.cloud_storage_password)) {
-		// OK, credentials have been tried and didn't work, so they are invalid
-		appendTextToLog("Cloud credentials are invalid");
-		setStartPageText(RED_FONT + tr("Cloud credentials are invalid") + END_FONT);
-		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_INCORRECT_USER_PASSWD);
-		reply->disconnect();
-		reply->abort();
-		reply->deleteLater();
-		return;
-	}
-	auth->setUser(prefs.cloud_storage_email);
-	auth->setPassword(prefs.cloud_storage_password);
-}
-
-void QMLManager::handleSslErrors(const QList<QSslError> &errors)
-{
-	auto *reply = qobject_cast<QNetworkReply *>(sender());
-	setStartPageText(RED_FONT + tr("Cannot open cloud storage: Error creating https connection") + END_FONT);
-	for (QSslError e: errors) {
-		appendTextToLog(e.errorString());
-	}
-	reply->abort();
-	reply->deleteLater();
-	setNotificationText(QStringLiteral(""));
-}
-
-void QMLManager::handleError(QNetworkReply::NetworkError nError)
-{
-	auto *reply = qobject_cast<QNetworkReply *>(sender());
-	QString errorString = reply->errorString();
-	appendTextToLog(QStringLiteral("handleError ") + nError + QStringLiteral(": ") + errorString);
-	setStartPageText(RED_FONT + tr("Cannot open cloud storage: %1").arg(errorString) + END_FONT);
-	reply->abort();
-	reply->deleteLater();
-	setNotificationText(QStringLiteral(""));
-}
-
-void QMLManager::retrieveUserid()
-{
-	auto *reply = qobject_cast<QNetworkReply *>(sender());
-	if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 302) {
-		appendTextToLog(QStringLiteral("Cloud storage connection not working correctly: (%1) %2")
-				.arg(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt())
-				.arg(QString(reply->readAll())));
-		setStartPageText(RED_FONT + tr("Cannot connect to cloud storage") + END_FONT);
-		revertToNoCloudIfNeeded();
-		return;
-	}
-	qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_VERIFIED);
-	setStartPageText(tr("Cloud credentials valid, loading dives..."));
-	// this only gets called with "alreadySaving" already locked
-	loadDivesWithValidCredentials();
 }
 
 void QMLManager::loadDivesWithValidCredentials()
