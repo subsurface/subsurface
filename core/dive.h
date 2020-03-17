@@ -340,7 +340,6 @@ extern struct dive *alloc_dive(void);
 extern void free_dive(struct dive *);
 extern void free_dive_dcs(struct divecomputer *dc);
 extern void record_dive_to_table(struct dive *dive, struct dive_table *table);
-extern void record_dive(struct dive *dive);
 extern void clear_dive(struct dive *dive);
 extern void copy_dive(const struct dive *s, struct dive *d);
 extern void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear);
