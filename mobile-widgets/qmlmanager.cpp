@@ -327,11 +327,12 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 
 void QMLManager::openLocalThenRemote(QString url)
 {
+	// clear out the models and the fulltext index
 	MobileModels::instance()->clear();
 	setNotificationText(tr("Open local dive data file"));
-	if (verbose)
-		appendTextToLog(QString("Open local dive data file %1").arg(url));
+	appendTextToLog(QString("Open dive data file %1 - git_local only is %2").arg(url).arg(git_local_only));
 	QByteArray fileNamePrt = QFile::encodeName(url);
+
 	/* if this is a cloud storage repo and we have no local cache (i.e., it's the first time
 	 * we try to open this), parse_file will ALWAYS connect to the remote and populate the cache.
 	 * Otherwise parse_file will respect the git_local_only flag and only update if that isn't set */
@@ -494,6 +495,7 @@ QString QMLManager::getCombinedLogs()
 
 void QMLManager::finishSetup()
 {
+	appendTextToLog("finishSetup called");
 	// Initialize cloud credentials.
 	git_local_only = !prefs.cloud_auto_sync;
 
