@@ -19,7 +19,7 @@ extern struct git_repository *is_git_repository(const char *filename, const char
 extern int check_git_sha(const char *filename, git_repository **git_p, const char **branch_p);
 extern int sync_with_remote(struct git_repository *repo, const char *remote, const char *branch, enum remote_transport rt);
 extern int git_save_dives(struct git_repository *, const char *, const char *remote, bool select_only);
-extern int git_load_dives(struct git_repository *, const char *);
+extern int git_load_dives(struct git_repository *repo, const char *branch, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
 extern const char *get_sha(git_repository *repo, const char *branch);
 extern int do_git_save(git_repository *repo, const char *branch, const char *remote, bool select_only, bool create_empty);
 extern const char *saved_git_id;
