@@ -81,11 +81,6 @@ void record_dive_to_table(struct dive *dive, struct dive_table *table)
 	add_to_dive_table(table, table->nr, fixup_dive(dive));
 }
 
-void record_dive(struct dive *dive)
-{
-	record_dive_to_table(dive, &dive_table);
-}
-
 void start_match(const char *type, const char *name, char *buffer)
 {
 	if (verbose > 2)
