@@ -922,7 +922,7 @@ static void setupDivesite(DiveSiteChange &res, struct dive *d, struct dive_site 
 		res.editDs = ds;
 		res.location = location;
 	} else {
-		res.createdDs.reset(create_dive_site_with_gps(locationtext, &location, &dive_site_table));
+		res.createdDs.reset(alloc_dive_site_with_name(locationtext));
 		add_dive_to_dive_site(d, res.createdDs.get());
 	}
 	res.changed = true;
@@ -1040,7 +1040,7 @@ bool QMLManager::checkLocation(DiveSiteChange &res, const DiveObjectHelper &myDi
 	if (myDive.location != location) {
 		ds = get_dive_site_by_name(qPrintable(location), &dive_site_table);
 		if (!ds && !location.isEmpty()) {
-			res.createdDs.reset(create_dive_site(qPrintable(location), &dive_site_table));
+			res.createdDs.reset(alloc_dive_site_with_name(qPrintable(location)));
 			res.changed = true;
 			ds = res.createdDs.get();
 		}

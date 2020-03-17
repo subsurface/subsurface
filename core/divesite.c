@@ -171,6 +171,21 @@ struct dive_site *alloc_dive_site()
 	return ds;
 }
 
+struct dive_site *alloc_dive_site_with_name(const char *name)
+{
+	struct dive_site *ds = alloc_dive_site();
+	ds->name = copy_string(name);
+	return ds;
+}
+
+struct dive_site *alloc_dive_site_with_gps(const char *name, const location_t *loc)
+{
+	struct dive_site *ds = alloc_dive_site_with_name(name);
+	ds->location = *loc;
+
+	return ds;
+}
+
 /* when parsing, dive sites are identified by uuid */
 struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *ds_table)
 {
@@ -231,8 +246,7 @@ void delete_dive_site(struct dive_site *ds, struct dive_site_table *ds_table)
 /* allocate a new site and add it to the table */
 struct dive_site *create_dive_site(const char *name, struct dive_site_table *ds_table)
 {
-	struct dive_site *ds = alloc_dive_site();
-	ds->name = copy_string(name);
+	struct dive_site *ds = alloc_dive_site_with_name(name);
 	add_dive_site_to_table(ds, ds_table);
 	return ds;
 }
@@ -240,11 +254,8 @@ struct dive_site *create_dive_site(const char *name, struct dive_site_table *ds_
 /* same as before, but with GPS data */
 struct dive_site *create_dive_site_with_gps(const char *name, const location_t *loc, struct dive_site_table *ds_table)
 {
-	struct dive_site *ds = alloc_dive_site();
-	ds->name = copy_string(name);
-	ds->location = *loc;
+	struct dive_site *ds = alloc_dive_site_with_gps(name, loc);
 	add_dive_site_to_table(ds, ds_table);
-
 	return ds;
 }
 
