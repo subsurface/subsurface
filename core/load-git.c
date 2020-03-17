@@ -34,6 +34,9 @@ struct git_parser_state {
 	dive_trip_t *active_trip;
 	struct picture *active_pic;
 	struct dive_site *active_site;
+	struct dive_table *table;
+	struct trip_table *trips;
+	struct dive_site_table *sites;
 	int o2pressure_sensor;
 };
 
@@ -159,7 +162,7 @@ static void parse_dive_gps(char *line, struct membuffer *str, struct git_parser_
 
 	parse_location(line, &location);
 	if (!ds) {
-		ds = get_dive_site_by_gps(&location, &dive_site_table);
+		ds = get_dive_site_by_gps(&location, state->sites);
 		if (!ds)
 			ds = create_dive_site_with_gps("", &location, &dive_site_table);
 		add_dive_to_dive_site(state->active_dive, ds);
@@ -1225,7 +1228,7 @@ static void finish_active_trip(struct git_parser_state *state)
 
 	if (trip) {
 		state->active_trip = NULL;
-		insert_trip(trip, &trip_table);
+		insert_trip(trip, state->trips);
 	}
 }
 
@@ -1235,7 +1238,7 @@ static void finish_active_dive(struct git_parser_state *state)
 
 	if (dive) {
 		state->active_dive = NULL;
-		record_dive(dive);
+		record_dive_to_table(dive, state->table);
 	}
 }
 
@@ -1729,11 +1732,14 @@ const char *get_sha(git_repository *repo, const char *branch)
  * If it is a git repository, we return zero for success,
  * or report an error and return 1 if the load failed.
  */
-int git_load_dives(struct git_repository *repo, const char *branch)
+int git_load_dives(struct git_repository *repo, const char *branch, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
 {
 	int ret;
 	struct git_parser_state state = { 0 };
 	state.repo = repo;
+	state.table = table;
+	state.trips = trips;
+	state.sites = sites;
 
 	if (repo == dummy_git_repository)
 		return report_error("Unable to open git repository at '%s'", branch);

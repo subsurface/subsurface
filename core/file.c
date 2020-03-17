@@ -325,7 +325,7 @@ int parse_file(const char *filename, struct dive_table *table, struct trip_table
 	}
 	free(current_sha);
 	if (git)
-		return git_load_dives(git, branch);
+		return git_load_dives(git, branch, table, trips, sites);
 
 	if ((ret = readfile(filename, &mem)) < 0) {
 		/* we don't want to display an error if this was the default file  */
