@@ -49,7 +49,7 @@ struct Completers {
 };
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
-	editMode(NONE),
+	editMode(false),
 	ignoreInput(false),
 	lastSelectedDive(true),
 	lastTabSelectedDive(0),
@@ -209,7 +209,7 @@ void MainTab::displayMessage(QString str)
 
 void MainTab::enableEdition()
 {
-	if (current_dive == NULL || editMode != NONE)
+	if (current_dive == NULL || editMode)
 		return;
 
 	ui.editDiveSiteButton->setEnabled(false);
@@ -219,7 +219,7 @@ void MainTab::enableEdition()
 	ui.dateEdit->setEnabled(true);
 	displayMessage(tr("This dive is being edited."));
 
-	editMode = MANUALLY_ADDED_DIVE;
+	editMode = true;
 }
 
 // This function gets called if a field gets updated by an undo command.
@@ -284,7 +284,7 @@ void MainTab::nextInputField(QKeyEvent *event)
 
 bool MainTab::isEditing()
 {
-	return editMode != NONE;
+	return editMode;
 }
 
 static bool isHtml(const QString &s)
@@ -343,7 +343,7 @@ void MainTab::updateDiveInfo()
 {
 	ui.location->refreshDiveSiteCache();
 	// don't execute this while adding / planning a dive
-	if (editMode == MANUALLY_ADDED_DIVE || MainWindow::instance()->graphics->isPlanner())
+	if (editMode || MainWindow::instance()->graphics->isPlanner())
 		return;
 
 	// If there is no current dive, disable all widgets except the last, which is the dive site tab.
@@ -503,13 +503,13 @@ void MainTab::acceptChanges()
 	ui.dateEdit->setEnabled(true);
 	hideMessage();
 
-	if (editMode == MANUALLY_ADDED_DIVE) {
+	if (editMode) {
 		MainWindow::instance()->showProfile();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 		Command::editProfile(&displayed_dive);
 	}
 	int scrolledBy = MainWindow::instance()->diveList->verticalScrollBar()->sliderPosition();
-	if (editMode == MANUALLY_ADDED_DIVE) {
+	if (editMode) {
 		MainWindow::instance()->diveList->reload();
 		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->graphics->replot();
@@ -522,12 +522,12 @@ void MainTab::acceptChanges()
 	MainWindow::instance()->setEnabledToolbar(true);
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 	ignoreInput = false;
-	editMode = NONE;
+	editMode = false;
 }
 
 void MainTab::rejectChanges()
 {
-	if (editMode != NONE && current_dive) {
+	if (editMode && current_dive) {
 		if (QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(tr("Discard the changes?"),
 									       tr("You are about to discard your changes.")),
 					 QMessageBox::Discard | QMessageBox::Cancel, QMessageBox::Discard) != QMessageBox::Discard) {
@@ -535,7 +535,7 @@ void MainTab::rejectChanges()
 		}
 	}
 	ui.dateEdit->setEnabled(true);
-	editMode = NONE;
+	editMode = false;
 	hideMessage();
 	// no harm done to call cancelPlan even if we were not PLAN mode...
 	DivePlannerPointsModel::instance()->cancelPlan();
@@ -693,7 +693,7 @@ void MainTab::escDetected()
 {
 	// In edit mode, pressing escape cancels the current changes.
 	// In standard mode, remove focus of any active widget to
-	if (editMode != NONE)
+	if (editMode)
 		rejectChanges();
 	else
 		stealFocus();
