@@ -50,6 +50,7 @@ struct Completers {
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	editMode(NONE),
+	ignoreInput(false),
 	lastSelectedDive(true),
 	lastTabSelectedDive(0),
 	lastTabSelectedDiveTrip(0),
@@ -341,7 +342,6 @@ void MainTab::updateDiveSite(struct dive *d)
 void MainTab::updateDiveInfo()
 {
 	ui.location->refreshDiveSiteCache();
-	EditMode rememberEM = editMode;
 	// don't execute this while adding / planning a dive
 	if (editMode == MANUALLY_ADDED_DIVE || MainWindow::instance()->graphics->isPlanner())
 		return;
@@ -353,7 +353,7 @@ void MainTab::updateDiveInfo()
 	for (int i = 0; i < extraWidgets.size() - 1; ++i)
 		extraWidgets[i]->setEnabled(enabled);
 
-	editMode = IGNORE_MODE; // don't trigger on changes to the widgets
+	ignoreInput = true; // don't trigger on changes to the widgets
 
 	for (TabBase *widget: extraWidgets)
 		widget->updateData();
@@ -476,7 +476,7 @@ void MainTab::updateDiveInfo()
 		ui.timeEdit->setTime(QTime(0, 0, 0, 0));
 		ui.tagWidget->clear();
 	}
-	editMode = rememberEM;
+	ignoreInput = false;
 
 	if (verbose && current_dive && current_dive->dive_site)
 		qDebug() << "Set the current dive site:" << current_dive->dive_site->uuid;
@@ -499,18 +499,17 @@ void MainTab::acceptChanges()
 	if (ui.location->hasFocus())
 		stealFocus();
 
-	EditMode lastMode = editMode;
-	editMode = IGNORE_MODE;
+	ignoreInput = true;
 	ui.dateEdit->setEnabled(true);
 	hideMessage();
 
-	if (lastMode == MANUALLY_ADDED_DIVE) {
+	if (editMode == MANUALLY_ADDED_DIVE) {
 		MainWindow::instance()->showProfile();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 		Command::editProfile(&displayed_dive);
 	}
 	int scrolledBy = MainWindow::instance()->diveList->verticalScrollBar()->sliderPosition();
-	if (lastMode == MANUALLY_ADDED_DIVE) {
+	if (editMode == MANUALLY_ADDED_DIVE) {
 		MainWindow::instance()->diveList->reload();
 		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->graphics->replot();
@@ -522,6 +521,7 @@ void MainTab::acceptChanges()
 	MainWindow::instance()->diveList->setFocus();
 	MainWindow::instance()->setEnabledToolbar(true);
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
+	ignoreInput = false;
 	editMode = NONE;
 }
 
@@ -565,7 +565,7 @@ void MainTab::divesEdited(int i)
 
 void MainTab::on_buddy_editingFinished()
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 
 	divesEdited(Command::editBuddies(stringToList(ui.buddy->toPlainText()), false));
@@ -573,7 +573,7 @@ void MainTab::on_buddy_editingFinished()
 
 void MainTab::on_divemaster_editingFinished()
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 
 	divesEdited(Command::editDiveMaster(stringToList(ui.divemaster->toPlainText()), false));
@@ -581,7 +581,7 @@ void MainTab::on_divemaster_editingFinished()
 
 void MainTab::on_duration_editingFinished()
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 
 	// Duration editing is special: we only edit the current dive.
@@ -590,7 +590,7 @@ void MainTab::on_duration_editingFinished()
 
 void MainTab::on_depth_editingFinished()
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 
 	// Depth editing is special: we only edit the current dive.
@@ -610,7 +610,7 @@ static void shiftTime(QDateTime &dateTime)
 
 void MainTab::on_dateEdit_dateChanged(const QDate &date)
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*current_dive->when, Qt::UTC);
 	dateTime.setTimeSpec(Qt::UTC);
@@ -620,7 +620,7 @@ void MainTab::on_dateEdit_dateChanged(const QDate &date)
 
 void MainTab::on_timeEdit_timeChanged(const QTime &time)
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*current_dive->when, Qt::UTC);
 	dateTime.setTimeSpec(Qt::UTC);
@@ -630,7 +630,7 @@ void MainTab::on_timeEdit_timeChanged(const QTime &time)
 
 void MainTab::on_tagWidget_editingFinished()
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 
 	divesEdited(Command::editTags(ui.tagWidget->getBlockStringList(), false));
@@ -638,7 +638,7 @@ void MainTab::on_tagWidget_editingFinished()
 
 void MainTab::on_location_diveSiteSelected()
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 
 	struct dive_site *newDs = ui.location->currDiveSite();
@@ -676,7 +676,7 @@ void MainTab::on_notes_editingFinished()
 
 void MainTab::on_rating_valueChanged(int value)
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 
 	divesEdited(Command::editRating(value, false));

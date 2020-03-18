@@ -28,8 +28,7 @@ class MainTab : public QTabWidget {
 public:
 	enum EditMode {
 		NONE,
-		MANUALLY_ADDED_DIVE,
-		IGNORE_MODE
+		MANUALLY_ADDED_DIVE
 	};
 
 	MainTab(QWidget *parent = 0);
@@ -76,6 +75,7 @@ slots:
 private:
 	Ui::MainTab ui;
 	EditMode editMode;
+	bool ignoreInput; // When computionally editing fields, we have to ignore changed-signals
 	BuddyCompletionModel buddyModel;
 	DiveMasterCompletionModel diveMasterModel;
 	TagCompletionModel tagModel;
