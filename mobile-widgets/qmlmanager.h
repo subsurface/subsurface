@@ -263,7 +263,6 @@ private:
 	QString m_progressMessage;
 	bool m_btEnabled;
 	void updateAllGlobalLists();
-	void updateSiteList();
 
 	location_t getGps(QString &gps);
 	QString m_pluggedInDeviceName;
