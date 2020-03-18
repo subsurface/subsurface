@@ -474,6 +474,7 @@ void DiveTripModelBase::clear()
 	beginResetModel();
 	clear_dive_file_data();
 	clearData();
+	LocationInformationModel::instance()->update();
 	oldCurrent = nullptr;
 	emit diveListNotifier.divesSelected({}); // Inform profile, etc of changed selection
 	endResetModel();
@@ -485,6 +486,7 @@ void DiveTripModelBase::reset()
 	beginResetModel();
 	clearData();
 	populate();
+	LocationInformationModel::instance()->update();
 	endResetModel();
 	initSelection();
 	emit diveListNotifier.numShownChanged();

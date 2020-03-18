@@ -517,7 +517,6 @@ void MainTab::reload()
 	buddyModel.updateModel();
 	diveMasterModel.updateModel();
 	tagModel.updateModel();
-	LocationInformationModel::instance()->update();
 }
 
 void MainTab::refreshDisplayedDiveSite()
