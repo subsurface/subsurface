@@ -412,19 +412,13 @@ void QMLManager::selectSwipeRow(int row)
 	select_single_dive(d);
 }
 
-void QMLManager::updateSiteList()
-{
-	LocationInformationModel::instance()->update();
-	emit locationListChanged();
-}
-
 void QMLManager::updateAllGlobalLists()
 {
 	buddyModel.updateModel(); emit buddyListChanged();
 	suitModel.updateModel(); emit suitListChanged();
 	divemasterModel.updateModel(); emit divemasterListChanged();
-	// TODO: Probably not needed anymore, as the dive site list is generated on the fly!
-	updateSiteList();
+	// TODO: It would be nice if we could export the list of locations via model/view instead of a Q_PROPERTY
+	emit locationListChanged();
 }
 
 static QString nocloud_localstorage()
