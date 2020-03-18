@@ -660,7 +660,6 @@ void MainWindow::closeCurrentFile()
 	setCurrentFile(nullptr);
 	diveList->setSortOrder(DiveTripModelBase::NR, Qt::DescendingOrder);
 	MapWidget::instance()->reload();
-	LocationInformationModel::instance()->update();
 	if (!existing_filename)
 		setTitle();
 	disableShortcuts();
