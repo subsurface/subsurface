@@ -305,7 +305,7 @@
               <enum>Qt::LeftToRight</enum>
              </property>
              <property name="text">
-              <string>By how many hours did the international time zone at the dive site differ from UCT (also regarded as Greenwich Mean Time)? Normally one would specify this value in whole hours (h:00):</string>
+              <string>By how many hours did the international time zone at the dive site differ from UTC (also regarded as Greenwich Mean Time)? Normally one would specify this value in whole hours (h:00):</string>
              </property>
              <property name="wordWrap">
               <bool>true</bool>
