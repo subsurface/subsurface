@@ -39,12 +39,12 @@
 <context>
     <name>AddWeight</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="991"/>
+        <location filename="../commands/command_edit.cpp" line="972"/>
         <source>Add weight</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="993"/>
+        <location filename="../commands/command_edit.cpp" line="974"/>
         <source>Add weight (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -631,12 +631,12 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="94"/>
+        <location filename="../commands/command_edit.cpp" line="95"/>
         <source>Edit %1</source>
         <translation>Edita %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="96"/>
+        <location filename="../commands/command_edit.cpp" line="97"/>
         <source>Edit %1 (%n dive(s))</source>
         <translation><numerusform>Edita %1 (%n immersió)</numerusform><numerusform>Edita %1 (%n immersions)</numerusform></translation>
     </message>
@@ -716,7 +716,7 @@
 <context>
     <name>Command::EditAirTemp</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="333"/>
+        <location filename="../commands/command_edit.cpp" line="335"/>
         <source>air temperature</source>
         <translation>temperatura de l&apos;aire</translation>
     </message>
@@ -724,7 +724,7 @@
 <context>
     <name>Command::EditAtmPress</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="399"/>
+        <location filename="../commands/command_edit.cpp" line="401"/>
         <source>Atm. pressure</source>
         <translation>Pressió atm.</translation>
     </message>
@@ -732,7 +732,7 @@
 <context>
     <name>Command::EditChill</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="312"/>
+        <location filename="../commands/command_edit.cpp" line="314"/>
         <source>chill</source>
         <translation type="unfinished"/>
     </message>
@@ -740,7 +740,7 @@
 <context>
     <name>Command::EditCurrent</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="270"/>
+        <location filename="../commands/command_edit.cpp" line="272"/>
         <source>current</source>
         <translation type="unfinished"/>
     </message>
@@ -748,7 +748,7 @@
 <context>
     <name>Command::EditDepth</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="447"/>
+        <location filename="../commands/command_edit.cpp" line="449"/>
         <source>depth</source>
         <translation>profunditat</translation>
     </message>
@@ -756,7 +756,7 @@
 <context>
     <name>Command::EditDiveSite</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="469"/>
+        <location filename="../commands/command_edit.cpp" line="471"/>
         <source>dive site</source>
         <translation>Punt de la immersió</translation>
     </message>
@@ -812,7 +812,7 @@
 <context>
     <name>Command::EditDuration</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="423"/>
+        <location filename="../commands/command_edit.cpp" line="425"/>
         <source>duration</source>
         <translation>durada</translation>
     </message>
@@ -820,7 +820,7 @@
 <context>
     <name>Command::EditNotes</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="164"/>
+        <location filename="../commands/command_edit.cpp" line="166"/>
         <source>notes</source>
         <translation>notes</translation>
     </message>
@@ -828,7 +828,7 @@
 <context>
     <name>Command::EditRating</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="207"/>
+        <location filename="../commands/command_edit.cpp" line="209"/>
         <source>rating</source>
         <translation>valoració</translation>
     </message>
@@ -836,7 +836,7 @@
 <context>
     <name>Command::EditSuit</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="186"/>
+        <location filename="../commands/command_edit.cpp" line="188"/>
         <source>suit</source>
         <translation>vestit</translation>
     </message>
@@ -844,7 +844,7 @@
 <context>
     <name>Command::EditSurge</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="291"/>
+        <location filename="../commands/command_edit.cpp" line="293"/>
         <source>surge</source>
         <translation type="unfinished"/>
     </message>
@@ -876,7 +876,7 @@
 <context>
     <name>Command::EditVisibility</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="228"/>
+        <location filename="../commands/command_edit.cpp" line="230"/>
         <source>visibility</source>
         <translation>visibilitat</translation>
     </message>
@@ -884,7 +884,7 @@
 <context>
     <name>Command::EditWaterTemp</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="357"/>
+        <location filename="../commands/command_edit.cpp" line="359"/>
         <source>water temperature</source>
         <translation>temperatura de l&apos;aigua</translation>
     </message>
@@ -892,7 +892,7 @@
 <context>
     <name>Command::EditWaterTypeUser</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="378"/>
+        <location filename="../commands/command_edit.cpp" line="380"/>
         <source>salinity</source>
         <translation type="unfinished"/>
     </message>
@@ -900,7 +900,7 @@
 <context>
     <name>Command::EditWaveSize</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="249"/>
+        <location filename="../commands/command_edit.cpp" line="251"/>
         <source>wavesize</source>
         <translation type="unfinished"/>
     </message>
@@ -5367,7 +5367,7 @@ a la llista d&apos;immersions.</translation>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="205"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="316"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="355"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="458"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="465"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="334"/>
         <source>Download</source>
         <translation>Baixa</translation>
@@ -5449,37 +5449,37 @@ a la llista d&apos;immersions.</translation>
         <translation>Torna a explorar</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="375"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="382"/>
         <source> Downloaded dives</source>
         <translation>Immersions baixades</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="376"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="383"/>
         <source>Info:</source>
         <translation>Informació:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="399"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="406"/>
         <source>force downloading all dives</source>
         <translation>Força la baixada de totes les immersions</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="428"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="435"/>
         <source>Please wait while we record these dives...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="443"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="450"/>
         <source>Accept</source>
         <translation>Accepta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="472"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="479"/>
         <source>Select All</source>
         <translation>Selecciona-ho tot</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="481"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="488"/>
         <source>Unselect All</source>
         <translation>Desselecciona-ho tot</translation>
     </message>
@@ -5495,7 +5495,7 @@ a la llista d&apos;immersions.</translation>
 <context>
     <name>EditBuddies</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="746"/>
+        <location filename="../commands/command_edit.cpp" line="727"/>
         <source>buddies</source>
         <translation>companys</translation>
     </message>
@@ -5503,7 +5503,7 @@ a la llista d&apos;immersions.</translation>
 <context>
     <name>EditDive</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1167"/>
+        <location filename="../commands/command_edit.cpp" line="1148"/>
         <source>Edit dive [%1]</source>
         <translation type="unfinished"/>
     </message>
@@ -5511,7 +5511,7 @@ a la llista d&apos;immersions.</translation>
 <context>
     <name>EditDiveMaster</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="769"/>
+        <location filename="../commands/command_edit.cpp" line="750"/>
         <source>dive master</source>
         <translation>líder de busseig</translation>
     </message>
@@ -5519,23 +5519,15 @@ a la llista d&apos;immersions.</translation>
 <context>
     <name>EditMode</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="567"/>
+        <location filename="../commands/command_edit.cpp" line="569"/>
         <source>dive mode</source>
         <translation>mode de busseig</translation>
     </message>
 </context>
 <context>
-    <name>EditNumber</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="588"/>
-        <source>number</source>
-        <translation>número</translation>
-    </message>
-</context>
-<context>
     <name>EditTags</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="723"/>
+        <location filename="../commands/command_edit.cpp" line="704"/>
         <source>tags</source>
         <translation>etiquetes</translation>
     </message>
@@ -5543,12 +5535,12 @@ a la llista d&apos;immersions.</translation>
 <context>
     <name>EditTagsBase</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="659"/>
+        <location filename="../commands/command_edit.cpp" line="639"/>
         <source>Edit %1</source>
         <translation>Edita %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="661"/>
+        <location filename="../commands/command_edit.cpp" line="641"/>
         <source>Edit %1 (%n dive(s))</source>
         <translation><numerusform>Edita %1 (%n immersió)</numerusform><numerusform>Edita %1 (%n immersions)</numerusform></translation>
     </message>
@@ -5556,12 +5548,12 @@ a la llista d&apos;immersions.</translation>
 <context>
     <name>EditWeight</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1106"/>
+        <location filename="../commands/command_edit.cpp" line="1087"/>
         <source>Edit weight</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1108"/>
+        <location filename="../commands/command_edit.cpp" line="1089"/>
         <source>Edit weight (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -6024,7 +6016,7 @@ relacionats amb el busseig.</translation>
 <context>
     <name>GpsLocation</name>
     <message>
-        <location filename="../core/gpslocation.cpp" line="134"/>
+        <location filename="../core/gpslocation.cpp" line="133"/>
         <source>Unknown GPS location (no GPS source)</source>
         <translation>Ubicació de GPS desconeguda (sense GPS d&apos;origen)</translation>
     </message>
@@ -6083,7 +6075,7 @@ relacionats amb el busseig.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="308"/>
-        <source>By how many hours did the international time zone at the dive site differ from UCT (also regarded as Greenwich Mean Time)? Normally one would specify this value in whole hours (h:00):</source>
+        <source>By how many hours did the international time zone at the dive site differ from UTC (also regarded as Greenwich Mean Time)? Normally one would specify this value in whole hours (h:00):</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -6498,17 +6490,17 @@ relacionats amb el busseig.</translation>
         <translation>Ubicació del viatge</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="591"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="590"/>
         <source>Discard the changes?</source>
         <translation>Descarto els canvis?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="592"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="591"/>
         <source>You are about to discard your changes.</source>
         <translation>Esteu a punt de descartar els vostres canvis.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="630"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="629"/>
         <source>Warning: edited %1 dives</source>
         <translation>Avís: s&apos;han editat %1 immersions</translation>
     </message>
@@ -7008,9 +7000,9 @@ relacionats amb el busseig.</translation>
         <location filename="../desktop-widgets/divelistview.cpp" line="680"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="606"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="640"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="793"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="903"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1790"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="792"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="902"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1789"/>
         <source>Warning</source>
         <translation>Avís</translation>
     </message>
@@ -7050,7 +7042,7 @@ directament, ja que l&apos;aplicació les pot sobreescriure quan s&apos;inicia.<
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="486"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="533"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1520"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1519"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Si us plau, deseu o cancel·leu l&apos;edició de la immersió actual abans d&apos;obrir un altre fitxer.</translation>
     </message>
@@ -7061,7 +7053,7 @@ directament, ja que l&apos;aplicació les pot sobreescriure quan s&apos;inicia.<
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="496"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1916"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1915"/>
         <source>Cancel</source>
         <translation>Cancel·la</translation>
     </message>
@@ -7072,7 +7064,7 @@ directament, ja que l&apos;aplicació les pot sobreescriure quan s&apos;inicia.<
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="618"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1340"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1339"/>
         <source>Save changes?</source>
         <translation>Deso els canvis?</translation>
     </message>
@@ -7089,208 +7081,208 @@ Si responeu no, el núvol només se sincronitzarà en la següent crida a «Obre
         <translation>Ha fallat en posar l&apos;emmagatzematge al núvol en línia</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="691"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="690"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Si us plau, deseu o cancel·leu l&apos;edició de la immersió actual abans de tancar el fitxer.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="793"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="792"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Si us plau, deseu o cancel·leu l&apos;edició de la immersió actual abans d&apos;intentar afegir-ne una altra.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="847"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="846"/>
         <source>Print runtime table</source>
         <translation>Imprimeix la taula del temps acumulat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="903"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="902"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
         <translation>S&apos;està intentant tornar a planificar una immersió que encara havia estat planificada.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1006"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1005"/>
         <source>Yearly statistics</source>
         <translation>Estadístiques anuals</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1234"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1275"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1233"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1274"/>
         <source>Dive log files</source>
         <translation>Fitxers del diari de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1254"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1296"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1549"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1253"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1295"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1548"/>
         <source>Subsurface files</source>
         <translation>Fitxers del Subsurface</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1255"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1297"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1254"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1296"/>
         <source>Cochran</source>
         <translation>Cochran</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1256"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1299"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1255"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1298"/>
         <source>DiveLogs.de</source>
         <translation>DiveLogs.de</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1257"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1300"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1256"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1299"/>
         <source>JDiveLog</source>
         <translation>JDiveLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1258"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1301"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1257"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1300"/>
         <source>Liquivision</source>
         <translation>Liquivision</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1259"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1302"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1258"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1301"/>
         <source>Suunto</source>
         <translation>Suunto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1260"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1303"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1259"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1302"/>
         <source>UDCF</source>
         <translation>UDCF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1261"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1304"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1260"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1303"/>
         <source>UDDF</source>
         <translation>UDDF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1262"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1305"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1261"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1304"/>
         <source>XML</source>
         <translation>XML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1263"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1306"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1262"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1305"/>
         <source>Divesoft</source>
         <translation>Divesoft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1264"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1307"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1263"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1306"/>
         <source>Datatrak/WLog</source>
         <translation>Datatrak/WLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1265"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1308"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1264"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1307"/>
         <source>MkVI files</source>
         <translation>Fitxers MkVI</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1266"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1309"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1265"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1308"/>
         <source>APD log viewer</source>
         <translation>Visor del registre de l&apos;APD</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1267"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1310"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1266"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1309"/>
         <source>OSTCtools</source>
         <translation>OSTCtools</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1268"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1311"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1267"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1310"/>
         <source>DAN DL7</source>
         <translation>DAN DL7</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1298"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1297"/>
         <source>CSV</source>
         <translation>CSV</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1312"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1324"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1311"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1323"/>
         <source>All files</source>
         <translation>Tots els fitxers</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1319"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1318"/>
         <source>Dive site files</source>
         <translation>Fitxers amb punts d&apos;immersió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1334"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1333"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Voleu desar els canvis que heu fet en el fitxer %1?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1335"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1334"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Voleu desar els canvis que heu fet en el fitxer de dades?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1341"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1340"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Si sortiu sense desar, els canvis es perdran.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1548"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1547"/>
         <source>Save file as</source>
         <translation>Desa el fitxer com a</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1636"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1635"/>
         <source>[local cache for] %1</source>
         <translation>[cau local per a] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1637"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1636"/>
         <source>[cloud storage for] %1</source>
         <translation>[emmagatzematge al núvol de] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1675"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1777"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1674"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1776"/>
         <source>multiple files</source>
         <translation>múltiples fitxers</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1703"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1702"/>
         <source>Opening datafile from older version</source>
         <translation>S&apos;està obrint el fitxer de dades d&apos;una versió anterior</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1704"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1703"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation>Has obert un fitxer de dades d&apos;una versió anterior del Subsurface. Recomanem llegir el manual per aprendre sobre els canvis en la nova versió, especialment la gestió dels punts d&apos;immersió que ha variat significativament.
 El Subsurface ja ha intentat omplir les dades, però potser valdrà la pena perdre un moment en donar una ullada al nou sistema per a la gestió dels punts d&apos;immersió, per assegurar-vos que tot està correcte.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1728"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1727"/>
         <source>Open dive log file</source>
         <translation>Obre un fitxer de diari de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1755"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1754"/>
         <source>Open dive site file</source>
         <translation>Obre el fitxer amb punts d&apos;immersió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1790"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1789"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Si us plau, finalitzeu l&apos;edició actual abans d&apos;intentar fer-ne una altra.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1916"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1915"/>
         <source>Contacting cloud service...</source>
         <translation>S&apos;està contactant amb el servei al núvol...</translation>
     </message>
@@ -7409,7 +7401,7 @@ Si el vostre dispositiu usa Bluetooth, feu els mateixos preparatius que per a ba
 <context>
     <name>PasteDives</name>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="868"/>
+        <location filename="../commands/command_edit.cpp" line="849"/>
         <source>Paste onto %n dive(s)</source>
         <translation><numerusform>Enganxa a %n immersió</numerusform><numerusform>Enganxa a %n immersions</numerusform></translation>
     </message>
@@ -8986,179 +8978,146 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
         <translation>S&apos;està començant...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="331"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="332"/>
         <source>Open local dive data file</source>
         <translation>Obre un fitxer de dades de busseig local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="352"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="353"/>
         <source>Opening local data file failed</source>
         <translation>Ha fallat en obrir el fitxer de dades local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="372"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="373"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation>S&apos;han carregat %1 immersions des del fitxer de dades de busseig local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="379"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="698"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="380"/>
         <source>Incorrect cloud credentials</source>
         <translation>Credencials per al núvol incorrectes</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="518"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="511"/>
         <source>working in no-cloud mode</source>
         <translation>Es treballa en el mode sense el núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="522"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="515"/>
         <source>Error parsing local storage, giving up</source>
         <translation>Error en analitzar l&apos;emmagatzematge local i s&apos;abandona</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="531"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="524"/>
         <source>no cloud credentials</source>
         <translation>Sense les credencials del núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="532"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="604"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="525"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="597"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>Introduïu unes credencials vàlides pel núvol.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="565"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="558"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>El correu i la contrasenya de l&apos;emmagatzematge en el núvol només pot contenir lletres, números i els caràcters «.», «-», «_» i «+».</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="571"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="564"/>
         <source>Invalid format for email address</source>
         <translation>Format no vàlid per a l&apos;adreça de correu electrònic</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="615"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="608"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>S&apos;està intentant obrir l&apos;emmagatzematge en el núvol amb les credencials noves</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="629"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="676"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="622"/>
         <source>Testing cloud credentials</source>
         <translation>S&apos;estan provant les credencials del núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="646"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="691"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="639"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>No hi ha resposta del servidor al núvol per a validar les credencials</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="652"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="645"/>
         <source>Incorrect email / password combination</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="657"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="650"/>
         <source>Cloud credentials require verification PIN</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="660"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="653"/>
         <source>Incorrect PIN, please try again</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="665"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="658"/>
         <source>PIN accepted, credentials verified</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="704"/>
-        <source>Cannot connect to cloud storage - cloud account not verified</source>
-        <translation>No s&apos;ha pogut connectar amb l&apos;emmagatzematge en el núvol -el compte al núvol no ha estat verificat-</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="728"/>
-        <source>Cloud credentials are invalid</source>
-        <translation>Les credencials del núvol no són vàlides</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="742"/>
-        <source>Cannot open cloud storage: Error creating https connection</source>
-        <translation>No s&apos;ha pogut obrir l&apos;emmagatzematge en el núvol: un error en crear la connexió HTTPS</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="756"/>
-        <source>Cannot open cloud storage: %1</source>
-        <translation>No s&apos;ha pogut obrir l&apos;emmagatzematge en el núvol: %1</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="769"/>
-        <source>Cannot connect to cloud storage</source>
-        <translation>No s&apos;ha pogut connectar amb l&apos;emmagatzematge en el núvol</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="774"/>
-        <source>Cloud credentials valid, loading dives...</source>
-        <translation>Les credencials del núvol són vàlides, s&apos;estan carregant les immersions...</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="783"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="667"/>
         <source>Cloud storage error: %1</source>
         <translation>Error amb l&apos;emmagatzematge al núvol: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="829"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="713"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation>S&apos;estan carregant les immersions des de l&apos;emmagatzematge local («Mode sense el núvol»)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="875"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="759"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>Ha fallat en connectar amb el servidor en el núvol, no s&apos;ha rebut l&apos;estat</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="897"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="781"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>L&apos;emmagatzematge al núvol s&apos;ha obert amb èxit. No hi ha immersions a la llista de busseig.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1082"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1083"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="966"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="967"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1082"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1083"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1084"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="966"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="967"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="968"/>
         <source>min</source>
         <translation> min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1082"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="966"/>
         <source>sec</source>
         <translation>seg</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1186"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1070"/>
         <source>weight</source>
         <translation>llast</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1471"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1355"/>
         <source>Fatal error: cannot save data file. Please copy log file and report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1660"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1544"/>
         <source>Unknown GPS location</source>
         <translation>Ubicació GPS desconeguda</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1878"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1762"/>
         <source>no default cylinder</source>
         <translation type="unfinished"/>
     </message>
@@ -9190,12 +9149,12 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
 <context>
     <name>RemoveWeight</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1076"/>
+        <location filename="../commands/command_edit.cpp" line="1057"/>
         <source>Remove weight</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1078"/>
+        <location filename="../commands/command_edit.cpp" line="1059"/>
         <source>Remove weight (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -9240,12 +9199,12 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
 <context>
     <name>ReplanDive</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="944"/>
+        <location filename="../commands/command_edit.cpp" line="925"/>
         <source>Replan dive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="944"/>
+        <location filename="../commands/command_edit.cpp" line="925"/>
         <source>Edit profile</source>
         <translation type="unfinished"/>
     </message>
@@ -12103,26 +12062,26 @@ Podeu crear aquest fitxer de registre seleccionant la casella de selecció corre
         <translation>No hi ha cap immersió nova baixada des de l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="170"/>
+        <location filename="../core/load-git.c" line="173"/>
         <location filename="../core/parse-xml.c" line="1229"/>
         <source>multiple GPS locations for this dive site; also %s
 </source>
         <translation>múltiples posicions GPS per aquest lloc d&apos;immersió; també %s</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="195"/>
-        <location filename="../core/parse.c" line="441"/>
+        <location filename="../core/load-git.c" line="198"/>
+        <location filename="../core/parse.c" line="436"/>
         <source>additional name for site: %s
 </source>
         <translation>nom addicional per aquest lloc: %s</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1703"/>
+        <location filename="../core/load-git.c" line="1706"/>
         <source>Load dives from local cache</source>
         <translation>Carrega les immersions des del cau local</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1707"/>
+        <location filename="../core/load-git.c" line="1710"/>
         <source>Successfully opened dive data</source>
         <translation>S&apos;han obert amb èxit les dades de busseig</translation>
     </message>

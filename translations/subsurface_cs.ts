@@ -39,12 +39,12 @@
 <context>
     <name>AddWeight</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="991"/>
+        <location filename="../commands/command_edit.cpp" line="972"/>
         <source>Add weight</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="993"/>
+        <location filename="../commands/command_edit.cpp" line="974"/>
         <source>Add weight (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -631,12 +631,12 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="94"/>
+        <location filename="../commands/command_edit.cpp" line="95"/>
         <source>Edit %1</source>
         <translation>Upravit %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="96"/>
+        <location filename="../commands/command_edit.cpp" line="97"/>
         <source>Edit %1 (%n dive(s))</source>
         <translation><numerusform>Upravit %1 (%n ponor)</numerusform><numerusform>Upravit %1 (%n ponory)</numerusform><numerusform>Upravit %1 (%n ponorů)</numerusform><numerusform>Upravit %1 (%n ponorů)</numerusform></translation>
     </message>
@@ -716,7 +716,7 @@
 <context>
     <name>Command::EditAirTemp</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="333"/>
+        <location filename="../commands/command_edit.cpp" line="335"/>
         <source>air temperature</source>
         <translation>Teplota vzduchu</translation>
     </message>
@@ -724,7 +724,7 @@
 <context>
     <name>Command::EditAtmPress</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="399"/>
+        <location filename="../commands/command_edit.cpp" line="401"/>
         <source>Atm. pressure</source>
         <translation type="unfinished"/>
     </message>
@@ -732,7 +732,7 @@
 <context>
     <name>Command::EditChill</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="312"/>
+        <location filename="../commands/command_edit.cpp" line="314"/>
         <source>chill</source>
         <translation type="unfinished"/>
     </message>
@@ -740,7 +740,7 @@
 <context>
     <name>Command::EditCurrent</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="270"/>
+        <location filename="../commands/command_edit.cpp" line="272"/>
         <source>current</source>
         <translation type="unfinished"/>
     </message>
@@ -748,7 +748,7 @@
 <context>
     <name>Command::EditDepth</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="447"/>
+        <location filename="../commands/command_edit.cpp" line="449"/>
         <source>depth</source>
         <translation>Hloubka</translation>
     </message>
@@ -756,7 +756,7 @@
 <context>
     <name>Command::EditDiveSite</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="469"/>
+        <location filename="../commands/command_edit.cpp" line="471"/>
         <source>dive site</source>
         <translation>Potápěčské místo</translation>
     </message>
@@ -812,7 +812,7 @@
 <context>
     <name>Command::EditDuration</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="423"/>
+        <location filename="../commands/command_edit.cpp" line="425"/>
         <source>duration</source>
         <translation>trvání</translation>
     </message>
@@ -820,7 +820,7 @@
 <context>
     <name>Command::EditNotes</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="164"/>
+        <location filename="../commands/command_edit.cpp" line="166"/>
         <source>notes</source>
         <translation>Poznámky</translation>
     </message>
@@ -828,7 +828,7 @@
 <context>
     <name>Command::EditRating</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="207"/>
+        <location filename="../commands/command_edit.cpp" line="209"/>
         <source>rating</source>
         <translation>Hodnocení</translation>
     </message>
@@ -836,7 +836,7 @@
 <context>
     <name>Command::EditSuit</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="186"/>
+        <location filename="../commands/command_edit.cpp" line="188"/>
         <source>suit</source>
         <translation>Oblek</translation>
     </message>
@@ -844,7 +844,7 @@
 <context>
     <name>Command::EditSurge</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="291"/>
+        <location filename="../commands/command_edit.cpp" line="293"/>
         <source>surge</source>
         <translation type="unfinished"/>
     </message>
@@ -876,7 +876,7 @@
 <context>
     <name>Command::EditVisibility</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="228"/>
+        <location filename="../commands/command_edit.cpp" line="230"/>
         <source>visibility</source>
         <translation>Viditelnost</translation>
     </message>
@@ -884,7 +884,7 @@
 <context>
     <name>Command::EditWaterTemp</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="357"/>
+        <location filename="../commands/command_edit.cpp" line="359"/>
         <source>water temperature</source>
         <translation>Teplota vody</translation>
     </message>
@@ -892,7 +892,7 @@
 <context>
     <name>Command::EditWaterTypeUser</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="378"/>
+        <location filename="../commands/command_edit.cpp" line="380"/>
         <source>salinity</source>
         <translation type="unfinished"/>
     </message>
@@ -900,7 +900,7 @@
 <context>
     <name>Command::EditWaveSize</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="249"/>
+        <location filename="../commands/command_edit.cpp" line="251"/>
         <source>wavesize</source>
         <translation type="unfinished"/>
     </message>
@@ -5361,7 +5361,7 @@ Existing Site</source>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="205"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="316"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="355"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="458"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="465"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="334"/>
         <source>Download</source>
         <translation>Stáhnout</translation>
@@ -5443,37 +5443,37 @@ Existing Site</source>
         <translation>Prohledat znovu</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="375"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="382"/>
         <source> Downloaded dives</source>
         <translation>Stažené ponory</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="376"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="383"/>
         <source>Info:</source>
         <translation>Info:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="399"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="406"/>
         <source>force downloading all dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="428"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="435"/>
         <source>Please wait while we record these dives...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="443"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="450"/>
         <source>Accept</source>
         <translation>Přijmout</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="472"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="479"/>
         <source>Select All</source>
         <translation>Označit vše</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="481"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="488"/>
         <source>Unselect All</source>
         <translation>Odznačit vše</translation>
     </message>
@@ -5489,7 +5489,7 @@ Existing Site</source>
 <context>
     <name>EditBuddies</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="746"/>
+        <location filename="../commands/command_edit.cpp" line="727"/>
         <source>buddies</source>
         <translation>Partneři</translation>
     </message>
@@ -5497,7 +5497,7 @@ Existing Site</source>
 <context>
     <name>EditDive</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1167"/>
+        <location filename="../commands/command_edit.cpp" line="1148"/>
         <source>Edit dive [%1]</source>
         <translation type="unfinished"/>
     </message>
@@ -5505,7 +5505,7 @@ Existing Site</source>
 <context>
     <name>EditDiveMaster</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="769"/>
+        <location filename="../commands/command_edit.cpp" line="750"/>
         <source>dive master</source>
         <translation>Mistr potápění</translation>
     </message>
@@ -5513,23 +5513,15 @@ Existing Site</source>
 <context>
     <name>EditMode</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="567"/>
+        <location filename="../commands/command_edit.cpp" line="569"/>
         <source>dive mode</source>
         <translation>Režim potápění</translation>
     </message>
 </context>
 <context>
-    <name>EditNumber</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="588"/>
-        <source>number</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>EditTags</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="723"/>
+        <location filename="../commands/command_edit.cpp" line="704"/>
         <source>tags</source>
         <translation>Značky</translation>
     </message>
@@ -5537,12 +5529,12 @@ Existing Site</source>
 <context>
     <name>EditTagsBase</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="659"/>
+        <location filename="../commands/command_edit.cpp" line="639"/>
         <source>Edit %1</source>
         <translation>Upravit %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="661"/>
+        <location filename="../commands/command_edit.cpp" line="641"/>
         <source>Edit %1 (%n dive(s))</source>
         <translation><numerusform>Upravit %1 (%n ponor)</numerusform><numerusform>Upravit %1 (%n ponory)</numerusform><numerusform>Upravit %1 (%n ponorů)</numerusform><numerusform>Upravit %1 (%n ponorů)</numerusform></translation>
     </message>
@@ -5550,12 +5542,12 @@ Existing Site</source>
 <context>
     <name>EditWeight</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1106"/>
+        <location filename="../commands/command_edit.cpp" line="1087"/>
         <source>Edit weight</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1108"/>
+        <location filename="../commands/command_edit.cpp" line="1089"/>
         <source>Edit weight (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -6017,7 +6009,7 @@ Existing Site</source>
 <context>
     <name>GpsLocation</name>
     <message>
-        <location filename="../core/gpslocation.cpp" line="134"/>
+        <location filename="../core/gpslocation.cpp" line="133"/>
         <source>Unknown GPS location (no GPS source)</source>
         <translation>Neznámá poloha GPS (žádný zdroj GPS)</translation>
     </message>
@@ -6076,7 +6068,7 @@ Existing Site</source>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="308"/>
-        <source>By how many hours did the international time zone at the dive site differ from UCT (also regarded as Greenwich Mean Time)? Normally one would specify this value in whole hours (h:00):</source>
+        <source>By how many hours did the international time zone at the dive site differ from UTC (also regarded as Greenwich Mean Time)? Normally one would specify this value in whole hours (h:00):</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -6491,17 +6483,17 @@ Existing Site</source>
         <translation>Lokalita výletu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="591"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="590"/>
         <source>Discard the changes?</source>
         <translation>Zahodit změny?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="592"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="591"/>
         <source>You are about to discard your changes.</source>
         <translation>Chystáte se zahodit změny.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="630"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="629"/>
         <source>Warning: edited %1 dives</source>
         <translation type="unfinished"/>
     </message>
@@ -7001,9 +6993,9 @@ Existing Site</source>
         <location filename="../desktop-widgets/divelistview.cpp" line="680"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="606"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="640"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="793"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="903"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1790"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="792"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="902"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1789"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
@@ -7043,7 +7035,7 @@ je může při startu přepsat.</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="486"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="533"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1520"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1519"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Před otevřením nového souboru prosím uložte, nebo zrušte nynější úpravy ponoru.</translation>
     </message>
@@ -7054,7 +7046,7 @@ je může při startu přepsat.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="496"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1916"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1915"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
@@ -7065,7 +7057,7 @@ je může při startu přepsat.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="618"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1340"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1339"/>
         <source>Save changes?</source>
         <translation>Uložit změny?</translation>
     </message>
@@ -7082,208 +7074,208 @@ Pokud odpovíte ne, serverové úložiště bude synchronizováno pouze při př
         <translation>Chyba online připojení serverového úložiště.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="691"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="690"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Před zavřením souboru přosím uložte, nebo zrušte nynější úpravy ponoru.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="793"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="792"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Před přidáním ponoru prosím uložte, nebo zrušte nynější úpravy ponoru.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="847"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="846"/>
         <source>Print runtime table</source>
         <translation>Vypsat tabulku koncových časů</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="903"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="902"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
         <translation>Pokus o přeplánování ponoru, který není plánem ponoru.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1006"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1005"/>
         <source>Yearly statistics</source>
         <translation>Roční statistiky</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1234"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1275"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1233"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1274"/>
         <source>Dive log files</source>
         <translation>Soubory potápěčského deníku</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1254"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1296"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1549"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1253"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1295"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1548"/>
         <source>Subsurface files</source>
         <translation>Soubory Subsurface</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1255"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1297"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1254"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1296"/>
         <source>Cochran</source>
         <translation>Cochran</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1256"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1299"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1255"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1298"/>
         <source>DiveLogs.de</source>
         <translation>DiveLogs.de</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1257"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1300"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1256"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1299"/>
         <source>JDiveLog</source>
         <translation>JDiveLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1258"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1301"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1257"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1300"/>
         <source>Liquivision</source>
         <translation>Liquivision</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1259"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1302"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1258"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1301"/>
         <source>Suunto</source>
         <translation>Suunto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1260"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1303"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1259"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1302"/>
         <source>UDCF</source>
         <translation>UDCF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1261"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1304"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1260"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1303"/>
         <source>UDDF</source>
         <translation>UDDF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1262"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1305"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1261"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1304"/>
         <source>XML</source>
         <translation>XML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1263"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1306"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1262"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1305"/>
         <source>Divesoft</source>
         <translation>Divesoft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1264"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1307"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1263"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1306"/>
         <source>Datatrak/WLog</source>
         <translation>Datatrak/WLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1265"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1308"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1264"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1307"/>
         <source>MkVI files</source>
         <translation>MkVI soubory</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1266"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1309"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1265"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1308"/>
         <source>APD log viewer</source>
         <translation>Prohlížeč záznamů APD</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1267"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1310"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1266"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1309"/>
         <source>OSTCtools</source>
         <translation>OSTCtools</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1268"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1311"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1267"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1310"/>
         <source>DAN DL7</source>
         <translation>DAN DL7</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1298"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1297"/>
         <source>CSV</source>
         <translation>CSV</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1312"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1324"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1311"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1323"/>
         <source>All files</source>
         <translation>Všechny soubory</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1319"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1318"/>
         <source>Dive site files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1334"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1333"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Chcete uložit změny provedené v souboru %1?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1335"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1334"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Chcete uložit změny provedené v souboru s daty?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1341"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1340"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Změny budou ztraceny, pokud je neuložíte.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1548"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1547"/>
         <source>Save file as</source>
         <translation>Uložit soubor jako</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1636"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1635"/>
         <source>[local cache for] %1</source>
         <translation>[místní vyrovnávací paměť pro] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1637"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1636"/>
         <source>[cloud storage for] %1</source>
         <translation>[serverové úložiště pro] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1675"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1777"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1674"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1776"/>
         <source>multiple files</source>
         <translation>více souborů</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1703"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1702"/>
         <source>Opening datafile from older version</source>
         <translation>Otevírání datového souboru ze starší verze</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1704"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1703"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation>Otevřeli jste datový soubor starší verze Subsurface. Doporučujeme vám přečíst příručku, abyste zjistili změny v nové verzi, zvláště o správě potápěčských lokalit, která se značně změnila.
 Subsurface se pokusil předvyplnit data, ale může být užitečné podívat se na systém nové správy potápěčských lokalit a ujistit se, že vše vypadá správně.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1728"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1727"/>
         <source>Open dive log file</source>
         <translation>Otevřít soubor potápěčského deníku</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1755"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1754"/>
         <source>Open dive site file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1790"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1789"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Před prováděním dalších úprav dokončete stávající úpravy.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1916"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1915"/>
         <source>Contacting cloud service...</source>
         <translation>Spojení se serverovou službou...</translation>
     </message>
@@ -7401,7 +7393,7 @@ Pokud vaše zařízení používá Bluetooth, udělejte stejné přípravy jako 
 <context>
     <name>PasteDives</name>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="868"/>
+        <location filename="../commands/command_edit.cpp" line="849"/>
         <source>Paste onto %n dive(s)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -8978,179 +8970,146 @@ Uložte, prosím, šablonu do jiného souboru.</translation>
         <translation>Spouštění...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="331"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="332"/>
         <source>Open local dive data file</source>
         <translation>Otevřít místní soubor s údaji o ponoru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="352"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="353"/>
         <source>Opening local data file failed</source>
         <translation>Otevřít místní soubor s daty se nepodařilo</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="372"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="373"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation>%1 ponorů nahráno z místního souboru s údaji o ponoru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="379"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="698"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="380"/>
         <source>Incorrect cloud credentials</source>
         <translation>Nesprávné přístupové údaje k serveru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="518"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="511"/>
         <source>working in no-cloud mode</source>
         <translation>režim práce bez serveru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="522"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="515"/>
         <source>Error parsing local storage, giving up</source>
         <translation>Chyba při zpracování místního úložiště. Vzdává se</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="531"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="524"/>
         <source>no cloud credentials</source>
         <translation>žádné přístupové údaje k serveru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="532"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="604"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="525"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="597"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>Prosím zadejte platné přístupové údaje k serveru.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="565"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="558"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>E-mail a heslo k serverovému úložišti mohou obsahovat pouze písmena, čísla a &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="571"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="564"/>
         <source>Invalid format for email address</source>
         <translation>Neplatný formát pro adresy elektronické pošty</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="615"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="608"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>Pokus o otevření serverového úložiště s novými přístupovými údaji</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="629"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="676"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="622"/>
         <source>Testing cloud credentials</source>
         <translation>Zkoušení přístupových údajů k serveru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="646"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="691"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="639"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>Žádná odpověď serveru k ověření přístupových údajů</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="652"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="645"/>
         <source>Incorrect email / password combination</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="657"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="650"/>
         <source>Cloud credentials require verification PIN</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="660"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="653"/>
         <source>Incorrect PIN, please try again</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="665"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="658"/>
         <source>PIN accepted, credentials verified</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="704"/>
-        <source>Cannot connect to cloud storage - cloud account not verified</source>
-        <translation>Nelze se připojit k serverovému úložišti - serverový účet neověřen</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="728"/>
-        <source>Cloud credentials are invalid</source>
-        <translation>Neplatné přístupové údaje k serveru</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="742"/>
-        <source>Cannot open cloud storage: Error creating https connection</source>
-        <translation>Nelze otevřít serverové úložiště: Chyba vytvoření https spojení</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="756"/>
-        <source>Cannot open cloud storage: %1</source>
-        <translation>Nelze otevřít serverové úložiště: %1</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="769"/>
-        <source>Cannot connect to cloud storage</source>
-        <translation>Nelze se připojit k serverovému úložišti</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="774"/>
-        <source>Cloud credentials valid, loading dives...</source>
-        <translation>Přihlašovací údaje k serveru platné. Nahrávají se ponory...</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="783"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="667"/>
         <source>Cloud storage error: %1</source>
         <translation>Chyba serverového úložiště: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="829"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="713"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation>Nahrávají se ponory s místního úložiště (režim žádný server)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="875"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="759"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>Selhalo připojení k serveru, návrat ke stavu bez serveru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="897"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="781"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>Serverové úložiště úspěšně otevřeno. Žádné ponory v seznamu.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1082"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1083"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="966"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="967"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1082"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1083"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1084"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="966"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="967"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="968"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1082"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="966"/>
         <source>sec</source>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1186"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1070"/>
         <source>weight</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1471"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1355"/>
         <source>Fatal error: cannot save data file. Please copy log file and report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1660"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1544"/>
         <source>Unknown GPS location</source>
         <translation>Neznámá GPS pozice</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1878"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1762"/>
         <source>no default cylinder</source>
         <translation type="unfinished"/>
     </message>
@@ -9182,12 +9141,12 @@ Uložte, prosím, šablonu do jiného souboru.</translation>
 <context>
     <name>RemoveWeight</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1076"/>
+        <location filename="../commands/command_edit.cpp" line="1057"/>
         <source>Remove weight</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1078"/>
+        <location filename="../commands/command_edit.cpp" line="1059"/>
         <source>Remove weight (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -9232,12 +9191,12 @@ Uložte, prosím, šablonu do jiného souboru.</translation>
 <context>
     <name>ReplanDive</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="944"/>
+        <location filename="../commands/command_edit.cpp" line="925"/>
         <source>Replan dive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="944"/>
+        <location filename="../commands/command_edit.cpp" line="925"/>
         <source>Edit profile</source>
         <translation type="unfinished"/>
     </message>
@@ -12094,7 +12053,7 @@ Tento log soubor můžete vytvořit vybráním odpovídajícího checkboxu v sta
         <translation>Z potápěčského počítače nebyl stažen žádný ponor</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="170"/>
+        <location filename="../core/load-git.c" line="173"/>
         <location filename="../core/parse-xml.c" line="1229"/>
         <source>multiple GPS locations for this dive site; also %s
 </source>
@@ -12102,20 +12061,20 @@ Tento log soubor můžete vytvořit vybráním odpovídajícího checkboxu v sta
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="195"/>
-        <location filename="../core/parse.c" line="441"/>
+        <location filename="../core/load-git.c" line="198"/>
+        <location filename="../core/parse.c" line="436"/>
         <source>additional name for site: %s
 </source>
         <translation>dodatečný název lokality: %s
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1703"/>
+        <location filename="../core/load-git.c" line="1706"/>
         <source>Load dives from local cache</source>
         <translation>Nahrát ponory s místní vyrovnávací paměti</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1707"/>
+        <location filename="../core/load-git.c" line="1710"/>
         <source>Successfully opened dive data</source>
         <translation>Úspěšně otevřena data ponoru</translation>
     </message>

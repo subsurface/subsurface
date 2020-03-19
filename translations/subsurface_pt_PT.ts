@@ -39,12 +39,12 @@
 <context>
     <name>AddWeight</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="991"/>
+        <location filename="../commands/command_edit.cpp" line="972"/>
         <source>Add weight</source>
         <translation>Adicionar lastro</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="993"/>
+        <location filename="../commands/command_edit.cpp" line="974"/>
         <source>Add weight (%n dive(s))</source>
         <translation><numerusform>Adicionar lastro (%n mergulho)</numerusform><numerusform>Adicionar lastro (%n mergulho(s))</numerusform></translation>
     </message>
@@ -631,12 +631,12 @@
         <translation>todos os mergulhos</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="94"/>
+        <location filename="../commands/command_edit.cpp" line="95"/>
         <source>Edit %1</source>
         <translation>Editar %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="96"/>
+        <location filename="../commands/command_edit.cpp" line="97"/>
         <source>Edit %1 (%n dive(s))</source>
         <translation><numerusform>Editar %1 mergulho</numerusform><numerusform>Editar %n mergulhos</numerusform></translation>
     </message>
@@ -716,7 +716,7 @@
 <context>
     <name>Command::EditAirTemp</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="333"/>
+        <location filename="../commands/command_edit.cpp" line="335"/>
         <source>air temperature</source>
         <translation>temperatura do ar</translation>
     </message>
@@ -724,7 +724,7 @@
 <context>
     <name>Command::EditAtmPress</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="399"/>
+        <location filename="../commands/command_edit.cpp" line="401"/>
         <source>Atm. pressure</source>
         <translation>Pressão atmosférica</translation>
     </message>
@@ -732,7 +732,7 @@
 <context>
     <name>Command::EditChill</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="312"/>
+        <location filename="../commands/command_edit.cpp" line="314"/>
         <source>chill</source>
         <translation>chill</translation>
     </message>
@@ -740,7 +740,7 @@
 <context>
     <name>Command::EditCurrent</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="270"/>
+        <location filename="../commands/command_edit.cpp" line="272"/>
         <source>current</source>
         <translation>corrente</translation>
     </message>
@@ -748,7 +748,7 @@
 <context>
     <name>Command::EditDepth</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="447"/>
+        <location filename="../commands/command_edit.cpp" line="449"/>
         <source>depth</source>
         <translation>profundidade</translation>
     </message>
@@ -756,7 +756,7 @@
 <context>
     <name>Command::EditDiveSite</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="469"/>
+        <location filename="../commands/command_edit.cpp" line="471"/>
         <source>dive site</source>
         <translation>local de mergulho</translation>
     </message>
@@ -812,7 +812,7 @@
 <context>
     <name>Command::EditDuration</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="423"/>
+        <location filename="../commands/command_edit.cpp" line="425"/>
         <source>duration</source>
         <translation>duração</translation>
     </message>
@@ -820,7 +820,7 @@
 <context>
     <name>Command::EditNotes</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="164"/>
+        <location filename="../commands/command_edit.cpp" line="166"/>
         <source>notes</source>
         <translation>notas</translation>
     </message>
@@ -828,7 +828,7 @@
 <context>
     <name>Command::EditRating</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="207"/>
+        <location filename="../commands/command_edit.cpp" line="209"/>
         <source>rating</source>
         <translation>classificação</translation>
     </message>
@@ -836,7 +836,7 @@
 <context>
     <name>Command::EditSuit</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="186"/>
+        <location filename="../commands/command_edit.cpp" line="188"/>
         <source>suit</source>
         <translation>fato</translation>
     </message>
@@ -844,7 +844,7 @@
 <context>
     <name>Command::EditSurge</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="291"/>
+        <location filename="../commands/command_edit.cpp" line="293"/>
         <source>surge</source>
         <translation>vaga</translation>
     </message>
@@ -876,7 +876,7 @@
 <context>
     <name>Command::EditVisibility</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="228"/>
+        <location filename="../commands/command_edit.cpp" line="230"/>
         <source>visibility</source>
         <translation>visibilidade</translation>
     </message>
@@ -884,7 +884,7 @@
 <context>
     <name>Command::EditWaterTemp</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="357"/>
+        <location filename="../commands/command_edit.cpp" line="359"/>
         <source>water temperature</source>
         <translation>temperatura da água</translation>
     </message>
@@ -892,7 +892,7 @@
 <context>
     <name>Command::EditWaterTypeUser</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="378"/>
+        <location filename="../commands/command_edit.cpp" line="380"/>
         <source>salinity</source>
         <translation>salinidade</translation>
     </message>
@@ -900,7 +900,7 @@
 <context>
     <name>Command::EditWaveSize</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="249"/>
+        <location filename="../commands/command_edit.cpp" line="251"/>
         <source>wavesize</source>
         <translation>altura da ondulação</translation>
     </message>
@@ -5363,7 +5363,7 @@ Local existente</translation>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="205"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="316"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="355"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="458"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="465"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="334"/>
         <source>Download</source>
         <translation>Transferir</translation>
@@ -5445,37 +5445,37 @@ Local existente</translation>
         <translation>Voltar a procurar</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="375"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="382"/>
         <source> Downloaded dives</source>
         <translation>Mergulhos descarregados</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="376"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="383"/>
         <source>Info:</source>
         <translation>Informação:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="399"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="406"/>
         <source>force downloading all dives</source>
         <translation>forçar a transferência de todos os mergulhos</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="428"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="435"/>
         <source>Please wait while we record these dives...</source>
         <translation>Por favor aguarde enquanto registamos estes mergulhos...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="443"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="450"/>
         <source>Accept</source>
         <translation>Aceitar</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="472"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="479"/>
         <source>Select All</source>
         <translation>Seleccionar todos</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="481"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="488"/>
         <source>Unselect All</source>
         <translation>Desmarcar todos</translation>
     </message>
@@ -5491,7 +5491,7 @@ Local existente</translation>
 <context>
     <name>EditBuddies</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="746"/>
+        <location filename="../commands/command_edit.cpp" line="727"/>
         <source>buddies</source>
         <translation>companheiiros</translation>
     </message>
@@ -5499,7 +5499,7 @@ Local existente</translation>
 <context>
     <name>EditDive</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1167"/>
+        <location filename="../commands/command_edit.cpp" line="1148"/>
         <source>Edit dive [%1]</source>
         <translation>Editar mergulho [%1]</translation>
     </message>
@@ -5507,7 +5507,7 @@ Local existente</translation>
 <context>
     <name>EditDiveMaster</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="769"/>
+        <location filename="../commands/command_edit.cpp" line="750"/>
         <source>dive master</source>
         <translation>guia de mergulho</translation>
     </message>
@@ -5515,23 +5515,15 @@ Local existente</translation>
 <context>
     <name>EditMode</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="567"/>
+        <location filename="../commands/command_edit.cpp" line="569"/>
         <source>dive mode</source>
         <translation>modo de mergulho</translation>
     </message>
 </context>
 <context>
-    <name>EditNumber</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="588"/>
-        <source>number</source>
-        <translation>número</translation>
-    </message>
-</context>
-<context>
     <name>EditTags</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="723"/>
+        <location filename="../commands/command_edit.cpp" line="704"/>
         <source>tags</source>
         <translation>categorias</translation>
     </message>
@@ -5539,12 +5531,12 @@ Local existente</translation>
 <context>
     <name>EditTagsBase</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="659"/>
+        <location filename="../commands/command_edit.cpp" line="639"/>
         <source>Edit %1</source>
         <translation>Editar %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="661"/>
+        <location filename="../commands/command_edit.cpp" line="641"/>
         <source>Edit %1 (%n dive(s))</source>
         <translation><numerusform>Editar %1 mergulho</numerusform><numerusform>Editar %n mergulhos</numerusform></translation>
     </message>
@@ -5552,12 +5544,12 @@ Local existente</translation>
 <context>
     <name>EditWeight</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1106"/>
+        <location filename="../commands/command_edit.cpp" line="1087"/>
         <source>Edit weight</source>
         <translation>Editar lastro</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1108"/>
+        <location filename="../commands/command_edit.cpp" line="1089"/>
         <source>Edit weight (%n dive(s))</source>
         <translation><numerusform>Editar lastro (%n mergulho)</numerusform><numerusform>Editar lastro (%n mergulho(s))</numerusform></translation>
     </message>
@@ -6019,7 +6011,7 @@ Local existente</translation>
 <context>
     <name>GpsLocation</name>
     <message>
-        <location filename="../core/gpslocation.cpp" line="134"/>
+        <location filename="../core/gpslocation.cpp" line="133"/>
         <source>Unknown GPS location (no GPS source)</source>
         <translation>Localização GPS desconhecida (não há GPS)</translation>
     </message>
@@ -6078,7 +6070,7 @@ Local existente</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="308"/>
-        <source>By how many hours did the international time zone at the dive site differ from UCT (also regarded as Greenwich Mean Time)? Normally one would specify this value in whole hours (h:00):</source>
+        <source>By how many hours did the international time zone at the dive site differ from UTC (also regarded as Greenwich Mean Time)? Normally one would specify this value in whole hours (h:00):</source>
         <translation>Em quantas horas difere o fuso horário no local de mergulho do fuso UTC (também chamado Greenwich Mean Time - GMT)? Normalmente especifica-se este valor em horas (h:00):</translation>
     </message>
     <message>
@@ -6493,17 +6485,17 @@ Local existente</translation>
         <translation>Local da viagem</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="591"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="590"/>
         <source>Discard the changes?</source>
         <translation>Eliminar as alterações?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="592"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="591"/>
         <source>You are about to discard your changes.</source>
         <translation>Está prestes a eliminar as alterações.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="630"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="629"/>
         <source>Warning: edited %1 dives</source>
         <translation>Aviso: editados %1 mergulhos</translation>
     </message>
@@ -7003,9 +6995,9 @@ Local existente</translation>
         <location filename="../desktop-widgets/divelistview.cpp" line="680"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="606"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="640"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="793"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="903"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1790"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="792"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="902"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1789"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
@@ -7043,7 +7035,7 @@ Por favor tenha em atenção que a partir desta versão do Subsurface os modelos
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="486"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="533"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1520"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1519"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Por favor grave ou cancele as edições feitas a este mergulho antes de abrir um novo ficheiro.</translation>
     </message>
@@ -7054,7 +7046,7 @@ Por favor tenha em atenção que a partir desta versão do Subsurface os modelos
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="496"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1916"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1915"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -7065,7 +7057,7 @@ Por favor tenha em atenção que a partir desta versão do Subsurface os modelos
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="618"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1340"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1339"/>
         <source>Save changes?</source>
         <translation>Guardar alterações?</translation>
     </message>
@@ -7082,208 +7074,208 @@ Se responder não, o armazenamento remoto será sincronizado apenas da próxima 
         <translation>Falha ao colocar o armazenamento remoto em linha</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="691"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="690"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Por favor grave ou cancele as edições feitas a este mergulho antes de fechar o ficheiro.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="793"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="792"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Por favor grave ou cancele as edições feitas a este mergulho antes de adicionar outro mergulho.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="847"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="846"/>
         <source>Print runtime table</source>
         <translation>Imprimir tabela de runtime</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="903"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="902"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
         <translation>Está a tentar planear novamente um mergulho que não foi criado no planeador de mergulhos</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1006"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1005"/>
         <source>Yearly statistics</source>
         <translation>Estatísticas anuais</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1234"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1275"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1233"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1274"/>
         <source>Dive log files</source>
         <translation>Ficheiros de registo de mergulhos</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1254"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1296"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1549"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1253"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1295"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1548"/>
         <source>Subsurface files</source>
         <translation>Ficheiros do Subsurface</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1255"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1297"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1254"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1296"/>
         <source>Cochran</source>
         <translation>Cochran</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1256"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1299"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1255"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1298"/>
         <source>DiveLogs.de</source>
         <translation>DiveLogs.de</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1257"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1300"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1256"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1299"/>
         <source>JDiveLog</source>
         <translation>JDiveLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1258"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1301"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1257"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1300"/>
         <source>Liquivision</source>
         <translation>Liquivision</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1259"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1302"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1258"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1301"/>
         <source>Suunto</source>
         <translation>Suunto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1260"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1303"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1259"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1302"/>
         <source>UDCF</source>
         <translation>UDCF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1261"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1304"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1260"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1303"/>
         <source>UDDF</source>
         <translation>UDDF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1262"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1305"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1261"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1304"/>
         <source>XML</source>
         <translation>XML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1263"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1306"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1262"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1305"/>
         <source>Divesoft</source>
         <translation>Divesoft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1264"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1307"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1263"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1306"/>
         <source>Datatrak/WLog</source>
         <translation>Datatrak/WLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1265"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1308"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1264"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1307"/>
         <source>MkVI files</source>
         <translation>MkVI files</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1266"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1309"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1265"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1308"/>
         <source>APD log viewer</source>
         <translation>APD log viewer</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1267"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1310"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1266"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1309"/>
         <source>OSTCtools</source>
         <translation>OSTCtools</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1268"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1311"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1267"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1310"/>
         <source>DAN DL7</source>
         <translation>DAN DL7</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1298"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1297"/>
         <source>CSV</source>
         <translation>CSV</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1312"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1324"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1311"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1323"/>
         <source>All files</source>
         <translation>Todos os ficheiros</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1319"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1318"/>
         <source>Dive site files</source>
         <translation>Ficheiros de locais de mergulho</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1334"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1333"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Deseja gravar as alterações feitas no ficheiro %1?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1335"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1334"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Deseja gravar as alterações feitas no ficheiro de dados?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1341"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1340"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>As alterações serão perdidas se não forem gravadas.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1548"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1547"/>
         <source>Save file as</source>
         <translation>Guardar ficheiro como</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1636"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1635"/>
         <source>[local cache for] %1</source>
         <translation>[cache local para] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1637"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1636"/>
         <source>[cloud storage for] %1</source>
         <translation>[armazenamento remoto para] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1675"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1777"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1674"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1776"/>
         <source>multiple files</source>
         <translation>múltiplos ficheiros</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1703"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1702"/>
         <source>Opening datafile from older version</source>
         <translation>A abrir ficheiro de uma versão mais antiga</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1704"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1703"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation>Abriu  um ficheiro de uma versão antiga do Subsurface. Recomendamos que leia o manual para saber mais sobre as alterações para esta nova versão, especialmente no que respeita a gestão de locais de mergulho, que sofreu alterações importantes.
 O Subsurface tentou preencher os dados, mas pode ser importante rever o novo sistema de gestão dos locais de mergulho para garantir que tudo está correcto.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1728"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1727"/>
         <source>Open dive log file</source>
         <translation>Abrir ficheiro de registo de mergulhos</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1755"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1754"/>
         <source>Open dive site file</source>
         <translation>Abrir ficheiro dos locais de mergulho</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1790"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1789"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Por favor, termine a edição em curso antes de iniciar outra.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1916"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1915"/>
         <source>Contacting cloud service...</source>
         <translation>A contactar o serviço remoto...</translation>
     </message>
@@ -7402,7 +7394,7 @@ Se o seu computador de mergulho usa Bluetooth, prepare o update do mesmo modo qu
 <context>
     <name>PasteDives</name>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="868"/>
+        <location filename="../commands/command_edit.cpp" line="849"/>
         <source>Paste onto %n dive(s)</source>
         <translation><numerusform>Colar em %1 mergulho</numerusform><numerusform>Colar em %n mergulhos</numerusform></translation>
     </message>
@@ -8978,179 +8970,146 @@ Por favor exporte o modelo para outro ficheiro.</translation>
         <translation>A inicial...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="331"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="332"/>
         <source>Open local dive data file</source>
         <translation>Abrir ficheiro local com dados de mergulho</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="352"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="353"/>
         <source>Opening local data file failed</source>
         <translation>Não foi possível abrir o ficheiro local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="372"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="373"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation>%1 mergulhos carregados a partir do ficheiro local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="379"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="698"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="380"/>
         <source>Incorrect cloud credentials</source>
         <translation>Credenciais remotas inválidas</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="518"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="511"/>
         <source>working in no-cloud mode</source>
         <translation>A trabalhar em modo local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="522"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="515"/>
         <source>Error parsing local storage, giving up</source>
         <translation>Erro na análise do armazenamento local, a cancelar</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="531"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="524"/>
         <source>no cloud credentials</source>
         <translation>Não existem credenciais da nuvem</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="532"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="604"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="525"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="597"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>Por favor insira credenciais de nuvem válidas</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="565"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="558"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>O endereço de email e a palavra-chave para o armazenamento remoto apenas pode conter letras, números e &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, e &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="571"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="564"/>
         <source>Invalid format for email address</source>
         <translation>Formato de endereço de correio electrónico inválido</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="615"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="608"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>A tentar abrir o armazenamento remoto com as novas credenciais</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="629"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="676"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="622"/>
         <source>Testing cloud credentials</source>
         <translation>A testar as credenciais da nuvem</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="646"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="691"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="639"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>Não houve resposta do servidor remoto para validar as credenciais</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="652"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="645"/>
         <source>Incorrect email / password combination</source>
         <translation>Combinação endereço de email/password incorrecta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="657"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="650"/>
         <source>Cloud credentials require verification PIN</source>
         <translation>As credenciais do armazenamento remoto requerem a verificação do PIN</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="660"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="653"/>
         <source>Incorrect PIN, please try again</source>
         <translation>PIN incorrecto; por favor tente novamente</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="665"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="658"/>
         <source>PIN accepted, credentials verified</source>
         <translation>PIN aceite; credenciais verificadas</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="704"/>
-        <source>Cannot connect to cloud storage - cloud account not verified</source>
-        <translation>Não foi possível ligar-se ao armazenamento remoto - conta remota não verificada</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="728"/>
-        <source>Cloud credentials are invalid</source>
-        <translation>As credenciais são inválidas</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="742"/>
-        <source>Cannot open cloud storage: Error creating https connection</source>
-        <translation>Não foi possível abrir o armazenamento remoto: erro ao criar a ligação HTTPS</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="756"/>
-        <source>Cannot open cloud storage: %1</source>
-        <translation>Não é possível abrir o armazenamento remoto: %1</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="769"/>
-        <source>Cannot connect to cloud storage</source>
-        <translation>Não é possível ligar-se com o armazenamento remoto</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="774"/>
-        <source>Cloud credentials valid, loading dives...</source>
-        <translation>Credenciais remotas válidas, a carregar os mergulhos...</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="783"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="667"/>
         <source>Cloud storage error: %1</source>
         <translation>Erro no armazenamento remoto: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="829"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="713"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation>A carregar mergulhos do armazenamento local (modo &apos;no cloud&apos;)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="875"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="759"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>Falha na ligação ao servidor remoto. A passar para modo local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="897"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="781"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>Armazenamento remoto aberto com sucesso. Não existem mergulhos na lista.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1082"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1083"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="966"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="967"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1082"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1083"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1084"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="966"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="967"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="968"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1082"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="966"/>
         <source>sec</source>
         <translation>seg</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1186"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1070"/>
         <source>weight</source>
         <translation>peso</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1471"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1355"/>
         <source>Fatal error: cannot save data file. Please copy log file and report.</source>
         <translation>Erro fatal: não foi possível gravar o ficheiro. Por favor copie o ficheiro de registo e reporte o problema.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1660"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1544"/>
         <source>Unknown GPS location</source>
         <translation>Localização GPS desconhecida</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1878"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1762"/>
         <source>no default cylinder</source>
         <translation>não há garrafa predefinida</translation>
     </message>
@@ -9182,12 +9141,12 @@ Por favor exporte o modelo para outro ficheiro.</translation>
 <context>
     <name>RemoveWeight</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1076"/>
+        <location filename="../commands/command_edit.cpp" line="1057"/>
         <source>Remove weight</source>
         <translation>Remover lastro</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1078"/>
+        <location filename="../commands/command_edit.cpp" line="1059"/>
         <source>Remove weight (%n dive(s))</source>
         <translation><numerusform>Remover lastro (%n mergulho)</numerusform><numerusform>Remover lastro (%n mergulho(s))</numerusform></translation>
     </message>
@@ -9232,12 +9191,12 @@ Por favor exporte o modelo para outro ficheiro.</translation>
 <context>
     <name>ReplanDive</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="944"/>
+        <location filename="../commands/command_edit.cpp" line="925"/>
         <source>Replan dive</source>
         <translation>Planear mergulho novamente</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="944"/>
+        <location filename="../commands/command_edit.cpp" line="925"/>
         <source>Edit profile</source>
         <translation>Editar perfil</translation>
     </message>
@@ -12099,7 +12058,7 @@ Poderá criar este ficheiro seleccionando a opção respectiva no menu de downlo
         <translation>Não foram descarregados novos mergulhos do computador de mergulho</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="170"/>
+        <location filename="../core/load-git.c" line="173"/>
         <location filename="../core/parse-xml.c" line="1229"/>
         <source>multiple GPS locations for this dive site; also %s
 </source>
@@ -12107,20 +12066,20 @@ Poderá criar este ficheiro seleccionando a opção respectiva no menu de downlo
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="195"/>
-        <location filename="../core/parse.c" line="441"/>
+        <location filename="../core/load-git.c" line="198"/>
+        <location filename="../core/parse.c" line="436"/>
         <source>additional name for site: %s
 </source>
         <translation>nome adicional para o local: %s
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1703"/>
+        <location filename="../core/load-git.c" line="1706"/>
         <source>Load dives from local cache</source>
         <translation>Carregar dados do armazenamento local</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1707"/>
+        <location filename="../core/load-git.c" line="1710"/>
         <source>Successfully opened dive data</source>
         <translation>Dados de mergulho abertos com sucesso</translation>
     </message>

@@ -36,12 +36,12 @@
 <context>
     <name>AddWeight</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="991"/>
+        <location filename="../commands/command_edit.cpp" line="972"/>
         <source>Add weight</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="993"/>
+        <location filename="../commands/command_edit.cpp" line="974"/>
         <source>Add weight (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -628,12 +628,12 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="94"/>
+        <location filename="../commands/command_edit.cpp" line="95"/>
         <source>Edit %1</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="96"/>
+        <location filename="../commands/command_edit.cpp" line="97"/>
         <source>Edit %1 (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -713,7 +713,7 @@
 <context>
     <name>Command::EditAirTemp</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="333"/>
+        <location filename="../commands/command_edit.cpp" line="335"/>
         <source>air temperature</source>
         <translation type="unfinished"/>
     </message>
@@ -721,7 +721,7 @@
 <context>
     <name>Command::EditAtmPress</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="399"/>
+        <location filename="../commands/command_edit.cpp" line="401"/>
         <source>Atm. pressure</source>
         <translation type="unfinished"/>
     </message>
@@ -729,7 +729,7 @@
 <context>
     <name>Command::EditChill</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="312"/>
+        <location filename="../commands/command_edit.cpp" line="314"/>
         <source>chill</source>
         <translation type="unfinished"/>
     </message>
@@ -737,7 +737,7 @@
 <context>
     <name>Command::EditCurrent</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="270"/>
+        <location filename="../commands/command_edit.cpp" line="272"/>
         <source>current</source>
         <translation type="unfinished"/>
     </message>
@@ -745,7 +745,7 @@
 <context>
     <name>Command::EditDepth</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="447"/>
+        <location filename="../commands/command_edit.cpp" line="449"/>
         <source>depth</source>
         <translation>profundidade</translation>
     </message>
@@ -753,7 +753,7 @@
 <context>
     <name>Command::EditDiveSite</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="469"/>
+        <location filename="../commands/command_edit.cpp" line="471"/>
         <source>dive site</source>
         <translation type="unfinished"/>
     </message>
@@ -809,7 +809,7 @@
 <context>
     <name>Command::EditDuration</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="423"/>
+        <location filename="../commands/command_edit.cpp" line="425"/>
         <source>duration</source>
         <translation>duração</translation>
     </message>
@@ -817,7 +817,7 @@
 <context>
     <name>Command::EditNotes</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="164"/>
+        <location filename="../commands/command_edit.cpp" line="166"/>
         <source>notes</source>
         <translation type="unfinished"/>
     </message>
@@ -825,7 +825,7 @@
 <context>
     <name>Command::EditRating</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="207"/>
+        <location filename="../commands/command_edit.cpp" line="209"/>
         <source>rating</source>
         <translation type="unfinished"/>
     </message>
@@ -833,7 +833,7 @@
 <context>
     <name>Command::EditSuit</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="186"/>
+        <location filename="../commands/command_edit.cpp" line="188"/>
         <source>suit</source>
         <translation>roupa</translation>
     </message>
@@ -841,7 +841,7 @@
 <context>
     <name>Command::EditSurge</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="291"/>
+        <location filename="../commands/command_edit.cpp" line="293"/>
         <source>surge</source>
         <translation type="unfinished"/>
     </message>
@@ -873,7 +873,7 @@
 <context>
     <name>Command::EditVisibility</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="228"/>
+        <location filename="../commands/command_edit.cpp" line="230"/>
         <source>visibility</source>
         <translation type="unfinished"/>
     </message>
@@ -881,7 +881,7 @@
 <context>
     <name>Command::EditWaterTemp</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="357"/>
+        <location filename="../commands/command_edit.cpp" line="359"/>
         <source>water temperature</source>
         <translation type="unfinished"/>
     </message>
@@ -889,7 +889,7 @@
 <context>
     <name>Command::EditWaterTypeUser</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="378"/>
+        <location filename="../commands/command_edit.cpp" line="380"/>
         <source>salinity</source>
         <translation type="unfinished"/>
     </message>
@@ -897,7 +897,7 @@
 <context>
     <name>Command::EditWaveSize</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="249"/>
+        <location filename="../commands/command_edit.cpp" line="251"/>
         <source>wavesize</source>
         <translation type="unfinished"/>
     </message>
@@ -5356,7 +5356,7 @@ Existing Site</source>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="205"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="316"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="355"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="458"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="465"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="334"/>
         <source>Download</source>
         <translation>Baixar</translation>
@@ -5438,37 +5438,37 @@ Existing Site</source>
         <translation>Procurar novamente</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="375"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="382"/>
         <source> Downloaded dives</source>
         <translation>Mergulhos baixados</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="376"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="383"/>
         <source>Info:</source>
         <translation>Info:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="399"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="406"/>
         <source>force downloading all dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="428"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="435"/>
         <source>Please wait while we record these dives...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="443"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="450"/>
         <source>Accept</source>
         <translation>Aceitar</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="472"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="479"/>
         <source>Select All</source>
         <translation>Selecionar tudo</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="481"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="488"/>
         <source>Unselect All</source>
         <translation>Desfazer seleções</translation>
     </message>
@@ -5484,7 +5484,7 @@ Existing Site</source>
 <context>
     <name>EditBuddies</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="746"/>
+        <location filename="../commands/command_edit.cpp" line="727"/>
         <source>buddies</source>
         <translation type="unfinished"/>
     </message>
@@ -5492,7 +5492,7 @@ Existing Site</source>
 <context>
     <name>EditDive</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1167"/>
+        <location filename="../commands/command_edit.cpp" line="1148"/>
         <source>Edit dive [%1]</source>
         <translation type="unfinished"/>
     </message>
@@ -5500,7 +5500,7 @@ Existing Site</source>
 <context>
     <name>EditDiveMaster</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="769"/>
+        <location filename="../commands/command_edit.cpp" line="750"/>
         <source>dive master</source>
         <translation type="unfinished"/>
     </message>
@@ -5508,23 +5508,15 @@ Existing Site</source>
 <context>
     <name>EditMode</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="567"/>
+        <location filename="../commands/command_edit.cpp" line="569"/>
         <source>dive mode</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>EditNumber</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="588"/>
-        <source>number</source>
         <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>EditTags</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="723"/>
+        <location filename="../commands/command_edit.cpp" line="704"/>
         <source>tags</source>
         <translation type="unfinished"/>
     </message>
@@ -5532,12 +5524,12 @@ Existing Site</source>
 <context>
     <name>EditTagsBase</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="659"/>
+        <location filename="../commands/command_edit.cpp" line="639"/>
         <source>Edit %1</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="661"/>
+        <location filename="../commands/command_edit.cpp" line="641"/>
         <source>Edit %1 (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -5545,12 +5537,12 @@ Existing Site</source>
 <context>
     <name>EditWeight</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1106"/>
+        <location filename="../commands/command_edit.cpp" line="1087"/>
         <source>Edit weight</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1108"/>
+        <location filename="../commands/command_edit.cpp" line="1089"/>
         <source>Edit weight (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -7395,7 +7387,7 @@ Se o seu computador de mergulho usa Bluetooth, prepare do mesmo modo que prepara
 <context>
     <name>PasteDives</name>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="868"/>
+        <location filename="../commands/command_edit.cpp" line="849"/>
         <source>Paste onto %n dive(s)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -8971,179 +8963,146 @@ Please export this template to a different file.</source>
         <translation>Iniciando...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="331"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="332"/>
         <source>Open local dive data file</source>
         <translation>Abrir arquivo local com dados de mergulho</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="352"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="353"/>
         <source>Opening local data file failed</source>
         <translation>Falha ao abrir arquivo local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="372"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="373"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation>%1 mergulhos carregados do arquivo local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="379"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="698"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="380"/>
         <source>Incorrect cloud credentials</source>
         <translation>Credenciais incorretas</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="518"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="517"/>
         <source>working in no-cloud mode</source>
         <translation>Trabalhando em modo local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="522"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="521"/>
         <source>Error parsing local storage, giving up</source>
         <translation>Erro ao ler armazenamento local. Cancelando</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="531"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="530"/>
         <source>no cloud credentials</source>
         <translation>Sem credenciais para a nuvem</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="532"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="604"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="531"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="603"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>Favor inserir credenciais válidas</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="565"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="564"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>Email e senha do armazenamento na nuvem pode conter somente letras, números, &apos;.&apos;, &apos;-&apos;, &apos;_&apos; e &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="571"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="570"/>
         <source>Invalid format for email address</source>
         <translation>Formato de email inválido</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="615"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="614"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>Tentando abrir armazenamento na nuvem com as novas credenciais</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="629"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="676"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="628"/>
         <source>Testing cloud credentials</source>
         <translation>Testando credenciais da nuvem</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="646"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="691"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="645"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>Não houve resposta da nuvem para validar as credenciais</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="652"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="651"/>
         <source>Incorrect email / password combination</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="657"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="656"/>
         <source>Cloud credentials require verification PIN</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="660"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="659"/>
         <source>Incorrect PIN, please try again</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="665"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="664"/>
         <source>PIN accepted, credentials verified</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="704"/>
-        <source>Cannot connect to cloud storage - cloud account not verified</source>
-        <translation>Não foi possível conectar ao armazenamento na nuvem - conta não verificada</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="728"/>
-        <source>Cloud credentials are invalid</source>
-        <translation>Credenciais inválidas</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="742"/>
-        <source>Cannot open cloud storage: Error creating https connection</source>
-        <translation>Não foi possível abrir o armazenamento na nuvem: Erro criando conexão segura</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="756"/>
-        <source>Cannot open cloud storage: %1</source>
-        <translation>Não foi possível abrir o armazenamento na nuvem: %1</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="769"/>
-        <source>Cannot connect to cloud storage</source>
-        <translation>Não foi possível conectar o armazenamento na nuvem</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="774"/>
-        <source>Cloud credentials valid, loading dives...</source>
-        <translation>Credenciais da nuvem válidas, carregando mergulhos...</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="783"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="673"/>
         <source>Cloud storage error: %1</source>
         <translation>Erro no armazenamento na nuvem: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="829"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="719"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation>Carregando mergulhos do armazenamento local (modo local)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="875"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="765"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>Falha na conexão à nuvem, alterando para modo local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="897"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="787"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>Armazenamento na nuvem aberto com sucesso. Sem mergulhos na lista.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1082"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1083"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="972"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="973"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1082"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1083"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1084"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="972"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="973"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="974"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1082"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="972"/>
         <source>sec</source>
         <translation>seg</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1186"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1076"/>
         <source>weight</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1471"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1361"/>
         <source>Fatal error: cannot save data file. Please copy log file and report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1660"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1550"/>
         <source>Unknown GPS location</source>
         <translation>Localização GPS desconhecida</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1878"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1768"/>
         <source>no default cylinder</source>
         <translation type="unfinished"/>
     </message>
@@ -9175,12 +9134,12 @@ Please export this template to a different file.</source>
 <context>
     <name>RemoveWeight</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1076"/>
+        <location filename="../commands/command_edit.cpp" line="1057"/>
         <source>Remove weight</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1078"/>
+        <location filename="../commands/command_edit.cpp" line="1059"/>
         <source>Remove weight (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -9225,12 +9184,12 @@ Please export this template to a different file.</source>
 <context>
     <name>ReplanDive</name>
     <message>
-        <location filename="../commands/command_edit.cpp" line="944"/>
+        <location filename="../commands/command_edit.cpp" line="925"/>
         <source>Replan dive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="944"/>
+        <location filename="../commands/command_edit.cpp" line="925"/>
         <source>Edit profile</source>
         <translation type="unfinished"/>
     </message>
@@ -12087,7 +12046,7 @@ Você pode criar este arquivo de log selecionando a opção correspondente no di
         <translation>Não foram baixados novos mergulhos do computador de mergulho</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="170"/>
+        <location filename="../core/load-git.c" line="173"/>
         <location filename="../core/parse-xml.c" line="1229"/>
         <source>multiple GPS locations for this dive site; also %s
 </source>
@@ -12095,20 +12054,20 @@ Você pode criar este arquivo de log selecionando a opção correspondente no di
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="195"/>
-        <location filename="../core/parse.c" line="441"/>
+        <location filename="../core/load-git.c" line="198"/>
+        <location filename="../core/parse.c" line="436"/>
         <source>additional name for site: %s
 </source>
         <translation>nome adicional para ponto de mergulho: %s
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1703"/>
+        <location filename="../core/load-git.c" line="1706"/>
         <source>Load dives from local cache</source>
         <translation>Carregar dados do armazenamento local</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1707"/>
+        <location filename="../core/load-git.c" line="1710"/>
         <source>Successfully opened dive data</source>
         <translation>Dados dos mergulhos abertos com sucesso</translation>
     </message>
