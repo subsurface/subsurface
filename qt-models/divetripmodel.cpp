@@ -244,6 +244,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 	case MobileListModel::FirstGasRole: return getFirstGas(d);
 	case MobileListModel::SelectedRole: return d->selected;
 	case MobileListModel::DiveInTripRole: return d->divetrip != NULL;
+	case MobileListModel::IsInvalidRole: return d->invalid;
 	}
 #endif
 	switch (role) {
