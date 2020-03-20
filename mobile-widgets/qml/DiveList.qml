@@ -276,6 +276,12 @@ Kirigami.ScrollablePage {
 			manager.addDiveToTrip(currentItem.myData.id, currentItem.myData.tripBelow)
 		}
 	}
+	property QtObject toggleInvalidAction: Kirigami.Action {
+		text: currentItem && currentItem.myData && currentItem.myData.isInvalid ? qsTr("Mark dive as valid") : qsTr("Mark dive as invalid")
+		// icon: { name: "TBD" }
+		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip
+		onTriggered: manager.toggleDiveInvalid(currentItem.myData.id)
+	}
 	property QtObject deleteAction: Kirigami.Action {
 		text: qsTr("Delete dive")
 		icon { name: ":/icons/trash-empty.svg" }
@@ -315,7 +321,7 @@ Kirigami.ScrollablePage {
 		enabled: manager.redoText !== ""
 		onTriggered: manager.redo()
 	}
-	property variant contextactions: [ removeDiveFromTripAction, addDiveToTripAboveAction, addDiveToTripBelowAction, deleteAction, mapAction, tripDetailsEdit, undoAction, redoAction ]
+	property variant contextactions: [ removeDiveFromTripAction, addDiveToTripAboveAction, addDiveToTripBelowAction, toggleInvalidAction, deleteAction, mapAction, tripDetailsEdit, undoAction, redoAction ]
 
 	function setupActions() {
 		if (Backend.cloud_verification_status === Enums.CS_VERIFIED || Backend.cloud_verification_status === Enums.CS_NOCLOUD) {

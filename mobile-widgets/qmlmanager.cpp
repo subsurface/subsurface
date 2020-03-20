@@ -1404,6 +1404,16 @@ void QMLManager::deleteDive(int id)
 	changesNeedSaving();
 }
 
+void QMLManager::toggleDiveInvalid(int id)
+{
+	struct dive *d = get_dive_by_uniq_id(id);
+	if (!d) {
+		appendTextToLog("trying to toggle invalid flag of non-existing dive");
+		return;
+	}
+	Command::editInvalid(!d->invalid, true);
+}
+
 bool QMLManager::toggleDiveSite(bool toggle)
 {
 	if (toggle)
