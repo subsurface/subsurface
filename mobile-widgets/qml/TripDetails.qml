@@ -49,7 +49,7 @@ Kirigami.Page {
 
 	property QtObject saveAction: Kirigami.Action {
 		icon {
-			name: subsurfaceTheme.iconStyle + "/document-save.svg"
+			name: ":/icons/document-save.svg"
 			color: enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 		}
 		text: enabled ? qsTr("Save edits") : ""

@@ -25,7 +25,6 @@ double themeInterface::m_smallPointSize;
 double themeInterface::m_titlePointSize;
 
 QString themeInterface::m_currentTheme;
-QString themeInterface::m_iconStyle;
 
 const QColor BLUE_BACKGROUND_COLOR = "#eff0f1";
 const QColor BLUE_CONTRAST_ACCENT_COLOR = "#FF5722";
@@ -140,7 +139,6 @@ void themeInterface::update_theme()
 		m_primaryTextColor = BLUE_PRIMARY_TEXT_COLOR;
 		m_secondaryTextColor = BLUE_SECONDARY_TEXT_COLOR;
 		m_textColor = BLUE_TEXT_COLOR;
-		m_iconStyle = ":/icons";
 	} else if (m_currentTheme == "Pink") {
 		m_backgroundColor = PINK_BACKGROUND_COLOR;
 		m_contrastAccentColor = PINK_CONTRAST_ACCENT_COLOR;
@@ -154,7 +152,6 @@ void themeInterface::update_theme()
 		m_primaryTextColor = PINK_PRIMARY_TEXT_COLOR;
 		m_secondaryTextColor = PINK_SECONDARY_TEXT_COLOR;
 		m_textColor = PINK_TEXT_COLOR;
-		m_iconStyle = ":/icons";
 	} else {
 		m_backgroundColor = DARK_BACKGROUND_COLOR;
 		m_contrastAccentColor = DARK_CONTRAST_ACCENT_COLOR;
@@ -168,7 +165,6 @@ void themeInterface::update_theme()
 		m_primaryTextColor = DARK_PRIMARY_TEXT_COLOR;
 		m_secondaryTextColor = DARK_SECONDARY_TEXT_COLOR;
 		m_textColor = DARK_TEXT_COLOR;
-		m_iconStyle = ":/icons-dark";
 	}
 	emit instance()->backgroundColorChanged(m_backgroundColor);
 	emit instance()->contrastAccentColorChanged(m_contrastAccentColor);
@@ -182,5 +178,4 @@ void themeInterface::update_theme()
 	emit instance()->primaryTextColorChanged(m_primaryTextColor);
 	emit instance()->secondaryTextColorChanged(m_secondaryTextColor);
 	emit instance()->textColorChanged(m_textColor);
-	emit instance()->iconStyleChanged(m_iconStyle);
 }

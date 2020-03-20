@@ -220,8 +220,8 @@ Kirigami.Page {
 
 	actions.main: Kirigami.Action {
 		icon {
-			name: state !== "view" ? subsurfaceTheme.iconStyle + "/document-save.svg" :
-						 subsurfaceTheme.iconStyle + "/document-edit.svg"
+			name: state !== "view" ? ":/icons/document-save.svg" :
+						 ":/icons/document-edit.svg"
 			color: subsurfaceTheme.primaryColor
 		}
 		text: state !== "view" ? qsTr("Save edits") : qsTr("Edit dive")

@@ -33,18 +33,14 @@ class themeInterface : public QObject {
 
 	// Support
 	Q_PROPERTY(QString currentTheme MEMBER m_currentTheme WRITE set_currentTheme NOTIFY currentThemeChanged)
-	Q_PROPERTY(QString iconStyle MEMBER m_iconStyle NOTIFY iconStyleChanged)
 
 public:
 	static themeInterface *instance();
-
 	static void setup(QQmlContext *ct);
-
 	static double currentScale();
 
 public slots:
 	static void set_currentTheme(const QString &theme);
-
 	static void set_currentScale(double);
 
 signals:
@@ -68,7 +64,6 @@ signals:
 	void currentScaleChanged(double);
 
 	void currentThemeChanged(const QString &);
-	void iconStyleChanged(const QString &);
 
 private:
 	themeInterface() {}
@@ -94,6 +89,5 @@ private:
 	static double m_titlePointSize;
 
 	static QString m_currentTheme;
-	static QString m_iconStyle;
 };
 #endif
