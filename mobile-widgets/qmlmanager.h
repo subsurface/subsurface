@@ -185,6 +185,7 @@ public slots:
 	void saveChangesCloud(bool forceRemoteSync);
 	void selectDive(int id);
 	void deleteDive(int id);
+	void toggleDiveInvalid(int id);
 	void copyDiveData(int id);
 	void pasteDiveData(int id);
 	bool toggleDiveSite(bool toggle);
