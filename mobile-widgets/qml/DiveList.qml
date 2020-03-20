@@ -187,6 +187,7 @@ Kirigami.ScrollablePage {
 								id: locationText
 								text: (undefined !== location && "" != location) ? location : qsTr("<unnamed dive site>")
 								font.weight: Font.Medium
+								font.strikeout: isInvalid
 								font.pointSize: subsurfaceTheme.smallPointSize
 								elide: Text.ElideRight
 								maximumLineCount: 1 // needed for elide to work at all
@@ -211,6 +212,7 @@ Kirigami.ScrollablePage {
 									text: (undefined !== dateTime) ? dateTime : ""
 									width: Math.max(locationText.width * 0.45, paintedWidth) // helps vertical alignment throughout listview
 									font.pointSize: subsurfaceTheme.smallPointSize
+									font.strikeout: isInvalid
 									color: selected ? subsurfaceTheme.darkerPrimaryTextColor : subsurfaceTheme.secondaryTextColor
 								}
 								// spacer, just in case
@@ -223,6 +225,7 @@ Kirigami.ScrollablePage {
 									text: (undefined !== depthDuration) ? depthDuration : ""
 									width: Math.max(Kirigami.Units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
 									font.pointSize: subsurfaceTheme.smallPointSize
+									font.strikeout: isInvalid
 									color: selected ? subsurfaceTheme.darkerPrimaryTextColor : subsurfaceTheme.secondaryTextColor
 								}
 							}
@@ -230,6 +233,7 @@ Kirigami.ScrollablePage {
 								id: numberText
 								text: "#" + number
 								font.pointSize: subsurfaceTheme.smallPointSize
+								font.strikeout: isInvalid
 								color: selected ? subsurfaceTheme.darkerPrimaryTextColor : subsurfaceTheme.secondaryTextColor
 								anchors {
 									right: parent.right
