@@ -820,13 +820,21 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		downloadFromDc.dcImportModel.clearTable()
 		if (vendor !== undefined && product !== undefined && connection !== undefined) {
 			downloadFromDc.setupUSB = true
-			/* set up the correct values on the download page */
-			if (vendor !== -1)
+			// set up the correct values on the download page
+			// setting the currentIndex to -1, first, helps to ensure
+			// that the comboBox does get updated in the UI
+			if (vendor !== -1) {
+				downloadFromDc.vendor = -1
 				downloadFromDc.vendor = vendor
-			if (product !== -1)
+			}
+			if (product !== -1) {
+				downloadFromDc.product = -1
 				downloadFromDc.product = product
-			if (connection !== -1)
+			}
+			if (connection !== -1) {
+				downloadFromDc.connection = -1
 				downloadFromDc.connection = connection
+			}
 		} else {
 			downloadFromDc.setupUSB = false
 		}

@@ -157,6 +157,16 @@ Kirigami.Page {
 					verticalAlignment: Text.AlignVCenter
 					elide: Text.ElideRight
 				}
+				onCountChanged: {
+					// ensure that pick the first entry once we have any
+					// entries in the connection list
+					if (count === 0)
+						currentIndex = -1
+					else if (currentIndex === -1)
+						currentIndex = 0
+
+				}
+
 				onCurrentTextChanged: {
 					var curVendor
 					var curProduct
