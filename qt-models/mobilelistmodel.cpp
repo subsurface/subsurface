@@ -51,6 +51,7 @@ QHash<int, QByteArray> MobileListModelBase::roleNames() const
 	roles[TripBelow] = "tripBelow";
 	roles[TripLocationRole] = "tripLocation";
 	roles[TripNotesRole] = "tripNotes";
+	roles[IsInvalidRole] = "isInvalid";
 	return roles;
 }
 

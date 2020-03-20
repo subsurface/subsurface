@@ -59,6 +59,7 @@ public:
 		TripBelow,
 		TripLocationRole,
 		TripNotesRole,
+		IsInvalidRole
 	};
 	QHash<int, QByteArray> roleNames() const override;
 protected:
