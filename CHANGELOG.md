@@ -1,3 +1,4 @@
+Mobile: support marking dives as invalid
 Desktop: implement dive invalidation
 Mobile-android: remove libusb/FTDI support (largely non-functional)
 Mobile-android: Continue download after obtaining USB permission
