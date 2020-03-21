@@ -84,19 +84,25 @@ private:
 	T data(struct dive *d) const override final;	// final prevents further overriding - then just don't use this template
 };
 
-class EditNotes : public EditTemplate<QString, DiveField::NOTES> {
+// Automatically generate getter and setter in the case for string assignments.
+// The third parameter is a pointer to a C-style string in the dive structure.
+template <DiveField::Flags ID, char *dive::*PTR>
+class EditStringSetter : public EditTemplate<QString, ID> {
+private:
+	using EditTemplate<QString, ID>::EditTemplate;
+	void set(struct dive *d, QString) const override final;	// final prevents further overriding - then just don't use this template
+	QString data(struct dive *d) const override final;	// final prevents further overriding - then just don't use this template
+};
+
+class EditNotes : public EditStringSetter<DiveField::NOTES, &dive::notes> {
 public:
-	using EditTemplate::EditTemplate;	// Use constructor of base class.
-	void set(struct dive *d, QString s) const override;
-	QString data(struct dive *d) const override;
+	using EditStringSetter::EditStringSetter;	// Use constructor of base class.
 	QString fieldName() const override;
 };
 
-class EditSuit : public EditTemplate<QString, DiveField::SUIT> {
+class EditSuit : public EditStringSetter<DiveField::SUIT, &dive::suit> {
 public:
-	using EditTemplate::EditTemplate;	// Use constructor of base class.
-	void set(struct dive *d, QString s) const override;
-	QString data(struct dive *d) const override;
+	using EditStringSetter::EditStringSetter;	// Use constructor of base class.
 	QString fieldName() const override;
 };
 
