@@ -92,9 +92,9 @@ bool EditBase<T>::workToBeDone()
 	// Create a text for the menu entry. In the case of multiple dives add the number
 	size_t num_dives = dives.size();
 	if (num_dives == 1)
-		setText(QStringLiteral("%1 [%2]").arg(tr("Edit %1").arg(fieldName())).arg(diveNumberOrDate(dives[0])));
+		setText(QStringLiteral("%1 [%2]").arg(Command::Base::tr("Edit %1").arg(fieldName())).arg(diveNumberOrDate(dives[0])));
 	else if (num_dives > 0)
-		setText(QStringLiteral("%1 [%2]").arg(tr("Edit %1 (%n dive(s))", "", num_dives).arg(fieldName())).arg(getListOfDives(dives)));
+		setText(QStringLiteral("%1 [%2]").arg(Command::Base::tr("Edit %1 (%n dive(s))", "", num_dives).arg(fieldName())).arg(getListOfDives(dives)));
 
 	return num_dives > 0;
 }
@@ -163,7 +163,7 @@ QString EditNotes::data(struct dive *d) const
 
 QString EditNotes::fieldName() const
 {
-	return tr("notes");
+	return Command::Base::tr("notes");
 }
 
 DiveField EditNotes::fieldId() const
@@ -185,7 +185,7 @@ QString EditSuit::data(struct dive *d) const
 
 QString EditSuit::fieldName() const
 {
-	return tr("suit");
+	return Command::Base::tr("suit");
 }
 
 DiveField EditSuit::fieldId() const
@@ -206,7 +206,7 @@ int EditRating::data(struct dive *d) const
 
 QString EditRating::fieldName() const
 {
-	return tr("rating");
+	return Command::Base::tr("rating");
 }
 
 DiveField EditRating::fieldId() const
@@ -227,7 +227,7 @@ int EditVisibility::data(struct dive *d) const
 
 QString EditVisibility::fieldName() const
 {
-	return tr("visibility");
+	return Command::Base::tr("visibility");
 }
 
 DiveField EditVisibility::fieldId() const
@@ -248,7 +248,7 @@ int EditWaveSize::data(struct dive *d) const
 
 QString EditWaveSize::fieldName() const
 {
-	return tr("wavesize");
+	return Command::Base::tr("wavesize");
 }
 
 DiveField EditWaveSize::fieldId() const
@@ -269,7 +269,7 @@ int EditCurrent::data(struct dive *d) const
 
 QString EditCurrent::fieldName() const
 {
-	return tr("current");
+	return Command::Base::tr("current");
 }
 
 DiveField EditCurrent::fieldId() const
@@ -290,7 +290,7 @@ int EditSurge::data(struct dive *d) const
 
 QString EditSurge::fieldName() const
 {
-	return tr("surge");
+	return Command::Base::tr("surge");
 }
 
 DiveField EditSurge::fieldId() const
@@ -311,7 +311,7 @@ int EditChill::data(struct dive *d) const
 
 QString EditChill::fieldName() const
 {
-	return tr("chill");
+	return Command::Base::tr("chill");
 }
 
 DiveField EditChill::fieldId() const
@@ -332,7 +332,7 @@ int EditAirTemp::data(struct dive *d) const
 
 QString EditAirTemp::fieldName() const
 {
-	return tr("air temperature");
+	return Command::Base::tr("air temperature");
 }
 
 DiveField EditAirTemp::fieldId() const
@@ -356,7 +356,7 @@ int EditWaterTemp::data(struct dive *d) const
 
 QString EditWaterTemp::fieldName() const
 {
-	return tr("water temperature");
+	return Command::Base::tr("water temperature");
 }
 
 DiveField EditWaterTemp::fieldId() const
@@ -377,7 +377,7 @@ int EditWaterTypeUser::data(struct dive *d) const
 
 QString EditWaterTypeUser::fieldName() const
 {
-	return tr("salinity");
+	return Command::Base::tr("salinity");
 }
 
 DiveField EditWaterTypeUser::fieldId() const
@@ -398,7 +398,7 @@ int EditAtmPress::data(struct dive *d) const
 
 QString EditAtmPress::fieldName() const
 {
-	return tr("Atm. pressure");
+	return Command::Base::tr("Atm. pressure");
 }
 
 DiveField EditAtmPress::fieldId() const
@@ -422,7 +422,7 @@ int EditDuration::data(struct dive *d) const
 
 QString EditDuration::fieldName() const
 {
-	return tr("duration");
+	return Command::Base::tr("duration");
 }
 
 DiveField EditDuration::fieldId() const
@@ -446,7 +446,7 @@ int EditDepth::data(struct dive *d) const
 
 QString EditDepth::fieldName() const
 {
-	return tr("depth");
+	return Command::Base::tr("depth");
 }
 
 DiveField EditDepth::fieldId() const
@@ -468,7 +468,7 @@ struct dive_site *EditDiveSite::data(struct dive *d) const
 
 QString EditDiveSite::fieldName() const
 {
-	return tr("dive site");
+	return Command::Base::tr("dive site");
 }
 
 DiveField EditDiveSite::fieldId() const
@@ -566,7 +566,7 @@ int EditMode::data(struct dive *d) const
 
 QString EditMode::fieldName() const
 {
-	return tr("dive mode");
+	return Command::Base::tr("dive mode");
 }
 
 DiveField EditMode::fieldId() const
@@ -587,7 +587,7 @@ int EditInvalid::data(struct dive *d) const
 
 QString EditInvalid::fieldName() const
 {
-	return tr("invalid");
+	return Command::Base::tr("invalid");
 }
 
 DiveField EditInvalid::fieldId() const
@@ -657,9 +657,9 @@ bool EditTagsBase::workToBeDone()
 	// Create a text for the menu entry. In the case of multiple dives add the number
 	size_t num_dives = dives.size();
 	if (num_dives == 1)
-		setText(QStringLiteral("%1 [%2]").arg(tr("Edit %1").arg(fieldName())).arg(diveNumberOrDate(dives[0])));
+		setText(QStringLiteral("%1 [%2]").arg(Command::Base::tr("Edit %1").arg(fieldName())).arg(diveNumberOrDate(dives[0])));
 	else if (num_dives > 0)
-		setText(QStringLiteral("%1 [%2]").arg(tr("Edit %1 (%n dive(s))", "", num_dives).arg(fieldName())).arg(getListOfDives(dives)));
+		setText(QStringLiteral("%1 [%2]").arg(Command::Base::tr("Edit %1 (%n dive(s))", "", num_dives).arg(fieldName())).arg(getListOfDives(dives)));
 
 	return num_dives != 0;
 }
@@ -722,7 +722,7 @@ void EditTags::set(struct dive *d, const QStringList &v) const
 
 QString EditTags::fieldName() const
 {
-	return tr("tags");
+	return Command::Base::tr("tags");
 }
 
 DiveField EditTags::fieldId() const
@@ -745,7 +745,7 @@ void EditBuddies::set(struct dive *d, const QStringList &v) const
 
 QString EditBuddies::fieldName() const
 {
-	return tr("buddies");
+	return Command::Base::tr("buddies");
 }
 
 DiveField EditBuddies::fieldId() const
@@ -768,7 +768,7 @@ void EditDiveMaster::set(struct dive *d, const QStringList &v) const
 
 QString EditDiveMaster::fieldName() const
 {
-	return tr("dive master");
+	return Command::Base::tr("dive master");
 }
 
 DiveField EditDiveMaster::fieldId() const
@@ -867,7 +867,7 @@ PasteDives::PasteDives(const dive *data, dive_components whatIn) : what(whatIn)
 	for (dive *d: selection)
 		dives.emplace_back(d, data, what);
 
-	setText(QStringLiteral("%1 [%2]").arg(tr("Paste onto %n dive(s)", "", dives.size())).arg(getListOfDives(selection)));
+	setText(QStringLiteral("%1 [%2]").arg(Command::Base::tr("Paste onto %n dive(s)", "", dives.size())).arg(getListOfDives(selection)));
 }
 
 bool PasteDives::workToBeDone()
@@ -943,7 +943,7 @@ ReplanDive::ReplanDive(dive *source, bool edit_profile) : d(current_dive),
 	std::swap(source->cylinders, cylinders);
 	std::swap(source->dc, dc);
 
-	setText((edit_profile ? tr("Replan dive") : tr("Edit profile")) + diveNumberOrDate(d));
+	setText((edit_profile ? Command::Base::tr("Replan dive") : Command::Base::tr("Edit profile")) + diveNumberOrDate(d));
 }
 
 ReplanDive::~ReplanDive()
@@ -990,9 +990,9 @@ AddWeight::AddWeight(bool currentDiveOnly) :
 	EditDivesBase(currentDiveOnly)
 {
 	if (dives.size() == 1)
-		setText(QStringLiteral("%1 [%2]").arg(tr("Add weight")).arg(diveNumberOrDate(dives[0])));
+		setText(QStringLiteral("%1 [%2]").arg(Command::Base::tr("Add weight")).arg(diveNumberOrDate(dives[0])));
 	else
-		setText(QStringLiteral("%1 [%2]").arg(tr("Add weight (%n dive(s))", "", dives.size())).arg(getListOfDives(dives)));
+		setText(QStringLiteral("%1 [%2]").arg(Command::Base::tr("Add weight (%n dive(s))", "", dives.size())).arg(getListOfDives(dives)));
 }
 
 bool AddWeight::workToBeDone()
@@ -1075,9 +1075,9 @@ RemoveWeight::RemoveWeight(int index, bool currentDiveOnly) :
 {
 	size_t num_dives = dives.size();
 	if (num_dives == 1)
-		setText(QStringLiteral("%1 [%2]").arg(tr("Remove weight")).arg(diveNumberOrDate(dives[0])));
+		setText(QStringLiteral("%1 [%2]").arg(Command::Base::tr("Remove weight")).arg(diveNumberOrDate(dives[0])));
 	else
-		setText(QStringLiteral("%1 [%2]").arg(tr("Remove weight (%n dive(s))", "", num_dives)).arg(getListOfDives(dives)));
+		setText(QStringLiteral("%1 [%2]").arg(Command::Base::tr("Remove weight (%n dive(s))", "", num_dives)).arg(getListOfDives(dives)));
 }
 
 void RemoveWeight::undo()
@@ -1105,9 +1105,9 @@ EditWeight::EditWeight(int index, weightsystem_t wsIn, bool currentDiveOnly) :
 
 	size_t num_dives = dives.size();
 	if (num_dives == 1)
-		setText(QStringLiteral("%1 [%2]").arg(tr("Edit weight")).arg(diveNumberOrDate(dives[0])));
+		setText(QStringLiteral("%1 [%2]").arg(Command::Base::tr("Edit weight")).arg(diveNumberOrDate(dives[0])));
 	else
-		setText(QStringLiteral("%1 [%2]").arg(tr("Edit weight (%n dive(s))", "", num_dives)).arg(getListOfDives(dives)));
+		setText(QStringLiteral("%1 [%2]").arg(Command::Base::tr("Edit weight (%n dive(s))", "", num_dives)).arg(getListOfDives(dives)));
 
 	// Try to untranslate the weightsystem name
 	new_ws = clone_weightsystem(wsIn);
@@ -1166,7 +1166,7 @@ EditDive::EditDive(dive *oldDiveIn, dive *newDiveIn, dive_site *createDs, dive_s
 	if (!oldDive || ! newDive)
 		return;
 
-	setText(tr("Edit dive [%1]").arg(diveNumberOrDate(oldDive)));
+	setText(Command::Base::tr("Edit dive [%1]").arg(diveNumberOrDate(oldDive)));
 
 	// Calculate the fields that changed.
 	// Note: Probably not needed, as on mobile we don't have that granularity.
