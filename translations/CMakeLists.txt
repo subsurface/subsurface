@@ -13,7 +13,6 @@ set(TRANSLATION_FILES
 	subsurface_de_DE.ts
 	subsurface_el_GR.ts
 	subsurface_en_GB.ts
-	subsurface_en_US.ts
 	subsurface_es_ES.ts
 	subsurface_et_EE.ts
 	subsurface_fi_FI.ts
@@ -34,10 +33,12 @@ set(TRANSLATION_FILES
 	subsurface_zh_TW.ts
 )
 
+set(US_EN_PLURALS subsurface_en_US.ts)
+
 # disabled translations as they are below 40%:
 #	subsurface_hu.ts
 
-qt5_add_translation(TRANSLATIONS ${TRANSLATION_FILES})
+qt5_add_translation(TRANSLATIONS ${TRANSLATION_FILES} ${US_EN_PLURALS})
 set(TRANSLATIONS ${TRANSLATIONS} PARENT_SCOPE)
 add_custom_target (translations ALL DEPENDS ${TRANSLATIONS})
 
@@ -47,4 +48,5 @@ add_custom_target (translations ALL DEPENDS ${TRANSLATIONS})
 #  DO NOT DO THIS MANUALLY -- USE THE SCRIPT IN ORDER TO FIX NUMERUSFORM
 #  =====================================================================
 # qt5_create_translation(TRANSLATION_MESSAGES ${CMAKE_SOURCE_DIR} ${TRANSLATION_FILES})
+# qt5_create_translation(TRANSLATION_MESSAGES ${CMAKE_SOURCE_DIR} ${US_EN_PLURALS} OPTIONS -pluralonly)
 # add_custom_target(translations_update DEPENDS ${TRANSLATION_MESSAGES})
