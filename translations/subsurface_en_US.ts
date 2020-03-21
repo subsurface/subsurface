@@ -1,96 +1,142 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en_US" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="en_US">
 <context>
     <name>AddWeight</name>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="993"/>
+        <location filename="../commands/command_edit.cpp" line="974"/>
         <source>Add weight (%n dive(s))</source>
         <translation>
-            <numerusform>Add weight (%1 dive)</numerusform>
-            <numerusform>Add weight (%1 dives)</numerusform>
+            <numerusform>Add weight (%n dive)</numerusform>
+            <numerusform>Add weight (%n dives)</numerusform>
         </translation>
-    </message>
-</context>
-<context>
-    <name>AddDivesToTrip</name>
-    <message numerus="yes">
-        <location filename="../desktop-widgets/command_divelist.cpp" line="700"/>
-        <source>add %n dives to trip</source>
-        <translation><numerusform>add %n dive to trip</numerusform><numerusform>add %n dives to trip</numerusform></translation>
     </message>
 </context>
 <context>
     <name>CheckCloudConnection</name>
     <message numerus="yes">
         <location filename="../core/checkcloudconnection.cpp" line="58"/>
-        <source>Waiting for cloud connetion (%n second(s) passed)</source>
-        <translation><numerusform>Waiting for cloud connetion (%n second passed)</numerusform><numerusform>Waiting for cloud connetion (%n seconds passed)</numerusform></translation>
+        <source>Waiting for cloud connection (%n second(s) passed)</source>
+        <translation>
+            <numerusform>Waiting for cloud connection (%n second passed)</numerusform>
+            <numerusform>Waiting for cloud connection (%n seconds passed)</numerusform>
+        </translation>
     </message>
 </context>
 <context>
     <name>Command</name>
     <message numerus="yes">
-        <location filename="../desktop-widgets/command_edit.cpp" line="77"/>
+        <location filename="../commands/command_edit.cpp" line="97"/>
         <source>Edit %1 (%n dive(s))</source>
-        <extracomment>remove the part in parentheses for %n = 1</extracomment>
-        <translation><numerusform>Edit %1 (%n dive)</numerusform><numerusform>Edit %1 (%n dives)</numerusform></translation>
+        <translation>
+            <numerusform>Edit %1 (%n dive)</numerusform>
+            <numerusform>Edit %1 (%n dives)</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>Command::AddDivesToTrip</name>
+    <message numerus="yes">
+        <location filename="../commands/command_divelist.cpp" line="709"/>
+        <source>add %n dives to trip</source>
+        <translation>
+            <numerusform>add %n dive to trip</numerusform>
+            <numerusform>add %n dives to trip</numerusform>
+        </translation>
     </message>
 </context>
 <context>
     <name>Command::DeleteDive</name>
     <message numerus="yes">
-        <location filename="../desktop-widgets/command_divelist.cpp" line="558"/>
+        <location filename="../commands/command_divelist.cpp" line="549"/>
         <source>delete %n dive(s)</source>
-        <translation><numerusform>delete %n dive</numerusform><numerusform>delete %n dives</numerusform></translation>
+        <translation>
+            <numerusform>delete %n dive</numerusform>
+            <numerusform>delete %n dives</numerusform>
+        </translation>
     </message>
 </context>
 <context>
     <name>Command::DeleteDiveSites</name>
     <message numerus="yes">
-        <location filename="../desktop-widgets/command_divesite.cpp" line="141"/>
+        <location filename="../commands/command_divesite.cpp" line="136"/>
         <source>delete %n dive site(s)</source>
-        <translation><numerusform>delete %n dive site</numerusform><numerusform>delete %n dive sites</numerusform></translation>
+        <translation>
+            <numerusform>delete %n dive site</numerusform>
+            <numerusform>delete %n dive sites</numerusform>
+        </translation>
     </message>
 </context>
 <context>
     <name>Command::ImportDives</name>
     <message numerus="yes">
-        <location filename="../desktop-widgets/command_divelist.cpp" line="452"/>
+        <location filename="../commands/command_divelist.cpp" line="468"/>
         <source>import %n dive(s) from %1</source>
-        <translation><numerusform>import %n dive from %1</numerusform><numerusform>import %n dives from %1</numerusform></translation>
+        <translation>
+            <numerusform>import %n dive from %1</numerusform>
+            <numerusform>import %n dives from %1</numerusform>
+        </translation>
     </message>
 </context>
 <context>
-    <name>DiveObjectHelper</name>
+    <name>Command::RemoveDivesFromTrip</name>
     <message numerus="yes">
-        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="336"/>
+        <location filename="../commands/command_divelist.cpp" line="685"/>
+        <source>remove %n dive(s) from trip</source>
+        <translation>
+            <numerusform>remove %n dive from trip</numerusform>
+            <numerusform>remove %n dives from trip</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>Command::RenumberDives</name>
+    <message numerus="yes">
+        <location filename="../commands/command_divelist.cpp" line="633"/>
+        <source>renumber %n dive(s)</source>
+        <translation>
+            <numerusform>renumber %n dive</numerusform>
+            <numerusform>renumber %n dives</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>Command::ShiftTime</name>
+    <message numerus="yes">
+        <location filename="../commands/command_divelist.cpp" line="585"/>
+        <source>shift time of %n dives</source>
+        <translation>
+            <numerusform>shift time of %n dive</numerusform>
+            <numerusform>shift time of %n dives</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>DiveTripModelBase</name>
+    <message numerus="yes">
+        <location filename="../qt-models/divetripmodel.cpp" line="74"/>
         <source>(%n dive(s))</source>
-        <translation><numerusform>(%n dive)</numerusform><numerusform>(%n dives)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>DiveSiteSortedModel</name>
-    <message numerus="yes">
-        <location filename="../qt-models/divelocationmodel.cpp" line="272"/>
-        <source>This dive site has %n dive(s). Do you really want to delete it?
-</source>
-        <translation><numerusform>This dive site has %n dive. Do you really want to delete it?
-</numerusform><numerusform>This dive site has %n dives. Do you really want to delete it?
-</numerusform></translation>
+        <translation>
+            <numerusform>(%n dive)</numerusform>
+            <numerusform>(%n dives)</numerusform>
+        </translation>
     </message>
 </context>
 <context>
     <name>EditTagsBase</name>
     <message numerus="yes">
-        <location filename="../desktop-widgets/command_edit.cpp" line="513"/>
+        <location filename="../commands/command_edit.cpp" line="641"/>
         <source>Edit %1 (%n dive(s))</source>
-        <extracomment>remove the part in parentheses for %n = 1</extracomment>
-        <translation><numerusform>Edit %1 (%n dive)</numerusform><numerusform>Edit %1 (%n dives)</numerusform></translation>
+        <translation>
+            <numerusform>Edit %1 (%n dive)</numerusform>
+            <numerusform>Edit %1 (%n dives)</numerusform>
+        </translation>
     </message>
 </context>
 <context>
     <name>EditWeight</name>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1108"/>
+        <location filename="../commands/command_edit.cpp" line="1089"/>
         <source>Edit weight (%n dive(s))</source>
         <translation>
             <numerusform>Edit weight (%n dive)</numerusform>
@@ -101,57 +147,59 @@
 <context>
     <name>LocationFilterDelegate</name>
     <message numerus="yes">
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="504"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="482"/>
         <source>, %n dive(s) here)</source>
-        <translation><numerusform>, %n dive here)</numerusform><numerusform>, %n dives here)</numerusform></translation>
+        <translation>
+            <numerusform>, %n dive here)</numerusform>
+            <numerusform>, %n dives here)</numerusform>
+        </translation>
     </message>
 </context>
 <context>
     <name>PasteDives</name>
     <message numerus="yes">
-        <location filename="../desktop-widgets/command_edit.cpp" line="733"/>
+        <location filename="../commands/command_edit.cpp" line="849"/>
         <source>Paste onto %n dive(s)</source>
-        <translation><numerusform>Paste onto %n dive</numerusform><numerusform>Paste onto %n dives</numerusform></translation>
+        <translation>
+            <numerusform>Paste onto %n dive</numerusform>
+            <numerusform>Paste onto %n dives</numerusform>
+        </translation>
     </message>
 </context>
 <context>
-    <name>RemoveDivesFromTrip</name>
+    <name>RemoveWeight</name>
     <message numerus="yes">
-        <location filename="../desktop-widgets/command_divelist.cpp" line="680"/>
-        <source>remove %n dive(s) from trip</source>
-        <translation><numerusform>remove %n dive from trip</numerusform><numerusform>remove %n dives from trip</numerusform></translation>
+        <location filename="../commands/command_edit.cpp" line="1059"/>
+        <source>Remove weight (%n dive(s))</source>
+        <translation>
+            <numerusform>Remove weight (%n dive)</numerusform>
+            <numerusform>Remove weight (%n dives)</numerusform>
+        </translation>
     </message>
 </context>
 <context>
-    <name>RenumberDives</name>
+    <name>TabDiveSite</name>
     <message numerus="yes">
-        <location filename="../desktop-widgets/command_divelist.cpp" line="640"/>
-        <source>renumber %n dive(s)</source>
-        <translation><numerusform>renumber %n dive</numerusform><numerusform>renumber %n dives</numerusform></translation>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="57"/>
+        <source>This dive site has %n dive(s). Do you really want to delete it?
+</source>
+        <translation>
+            <numerusform>This dive site has %n dive. Do you really want to delete it?
+</numerusform>
+            <numerusform>This dive site has %n dives. Do you really want to delete it?
+</numerusform>
+        </translation>
     </message>
 </context>
 <context>
-    <name>DiveListSortModel</name>
+    <name>gettextFromC</name>
     <message numerus="yes">
-        <location filename="../qt-models/divelistmodel.cpp" line="107"/>
+        <location filename="../core/qthelper.cpp" line="985"/>
         <source>(%n dive(s))</source>
-        <translation><numerusform>(%n dive)</numerusform><numerusform>(%n dives)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>ShiftTime</name>
-    <message numerus="yes">
-        <location filename="../desktop-widgets/command_divelist.cpp" line="597"/>
-        <source>shift time of %n dives</source>
-        <translation><numerusform>shift time of %n dive</numerusform><numerusform>shift time of %n dives</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>QObject</name>
-    <message numerus="yes">
-        <location filename="../core/qthelper.cpp" line="997"/>
-        <source>(%n dive(s))</source>
-        <translation><numerusform>(%n dive)</numerusform><numerusform>(%n dives)</numerusform></translation>
+        <translation>
+            <numerusform>(%n dive)</numerusform>
+            <numerusform>(%n dives)</numerusform>
+        </translation>
     </message>
 </context>
 </TS>
