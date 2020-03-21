@@ -198,7 +198,8 @@ inline DiveField::DiveField(int flags) :
 	tags((flags & TAGS) != 0),
 	mode((flags & MODE) != 0),
 	notes((flags & NOTES) != 0),
-	salinity((flags & SALINITY) != 0)
+	salinity((flags & SALINITY) != 0),
+	invalid((flags & INVALID) != 0)
 {
 }
 
