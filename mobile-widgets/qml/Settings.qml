@@ -7,32 +7,29 @@ import org.subsurfacedivelog.mobile 1.0
 
 TemplatePage {
 	objectName: "Settings"
-	id: settingsPage
+	title: qsTr("Settings")
+	width: rootItem.colWidth - Kirigami.Units.gridUnit
 	property alias defaultCylinderModel: defaultCylinderBox.model
 	property alias defaultCylinderIndex: defaultCylinderBox.currentIndex
-
-	title: qsTr("Settings")
-
-	property real gridWidth: settingsPage.width - Kirigami.Units.gridUnit
+	property real contentColumeWidth: width - 2 * Kirigami.Units.gridUnit
 	property var describe: [qsTr("Undefined"),
 		qsTr("Incorrect username/password combination"),
 		qsTr("Credentials need to be verified"),
 		qsTr("Credentials verified"),
 		qsTr("No cloud mode")]
-
 	Column {
-		width: gridWidth
-
+		width: contentColumeWidth
 		TemplateSection {
 			id: sectionGeneral
 			title: qsTr("General settings")
 			isExpanded: true
+			width: parent.width
 
 			GridLayout {
 				id: cloudSetting
 				visible: sectionGeneral.isExpanded
 				columns: 3
-
+				width: parent.width
 				TemplateLabel {
 					text: qsTr("Cloud status")
 					font.pointSize: subsurfaceTheme.headingPointSize
@@ -43,11 +40,10 @@ TemplatePage {
 				}
 				TemplateLabel {
 					text: qsTr("Email")
-					Layout.preferredWidth: gridWidth * 0.15
 				}
 				TemplateLabel {
 					text: Backend.cloud_verification_status === Enums.CS_NOCLOUD ? qsTr("Not applicable") : PrefCloudStorage.cloud_storage_email
-					Layout.preferredWidth: gridWidth * 0.60
+					Layout.fillWidth: true
 				}
 				TemplateButton {
 					id: changeCloudSettings
@@ -59,12 +55,10 @@ TemplatePage {
 				}
 				TemplateLabel {
 					text: qsTr("Status")
-					Layout.preferredWidth: gridWidth * 0.15
 					Layout.preferredHeight: Kirigami.Units.gridUnit * 1.5
 				}
 				TemplateLabel {
 					text: describe[Backend.cloud_verification_status]
-					Layout.preferredWidth: gridWidth * 0.60
 					Layout.preferredHeight: Kirigami.Units.gridUnit * 1.5
 				}
 			}
@@ -76,7 +70,6 @@ TemplatePage {
 				visible: sectionGeneral.isExpanded
 				columns: 2
 				width: parent.width
-
 				TemplateLabel {
 					text: qsTr("Default Cylinder")
 					font.pointSize: subsurfaceTheme.headingPointSize
@@ -108,6 +101,7 @@ TemplatePage {
 				id: divecomputers
 				visible: sectionGeneral.isExpanded
 				columns: 2
+				width: parent.width
 				TemplateLabel {
 					text: qsTr("Dive computers")
 					font.pointSize: subsurfaceTheme.headingPointSize
@@ -118,7 +112,7 @@ TemplatePage {
 				}
 				TemplateLabel {
 					text: qsTr("Forget remembered dive computers")
-					Layout.preferredWidth: gridWidth * 0.75
+					Layout.fillWidth: true
 				}
 				TemplateButton {
 					id: forgetDCButton
@@ -133,16 +127,24 @@ TemplatePage {
 					}
 				}
 			}
-		}
 
+		}
 		TemplateSection {
 			id: sectionTheme
 			title: qsTr("Theme")
-
+			width: parent.width
 			GridLayout {
 				visible: sectionTheme.isExpanded
 				columns: 2
-
+				width: parent.width
+				TemplateLabel {
+					text: qsTr("Color theme")
+					font.pointSize: subsurfaceTheme.headingPointSize
+					font.weight: Font.Light
+					Layout.topMargin: Kirigami.Units.largeSpacing
+					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+					Layout.columnSpan: 2
+				}
 				TemplateComboBox {
 					editable: false
 					Layout.columnSpan: 2
@@ -157,12 +159,10 @@ TemplatePage {
 						subsurfaceTheme.currentTheme = currentIndex === 0 ? "Blue" : currentIndex === 1 ? "Pink" : "Dark"
 					}
 				}
-
 				Rectangle {
 					color: 	subsurfaceTheme.backgroundColor
-					width: rootItem.width / 2 - 20
-					height: subsurfaceTheme.regularPointSize + 10
-
+					Layout.fillWidth: true
+					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("background")
 						color: subsurfaceTheme.textColor
@@ -173,9 +173,8 @@ TemplatePage {
 				}
 				Rectangle {
 					color: subsurfaceTheme.backgroundColor
-					width: rootItem.width / 2 - 60
-					height: subsurfaceTheme.regularPointSize + 10
-
+					Layout.fillWidth: true
+					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("text")
 						color: subsurfaceTheme.textColor
@@ -184,14 +183,12 @@ TemplatePage {
 						anchors.verticalCenter: parent.verticalCenter
 					}
 				}
-
 				Rectangle {
 					border.width: 2
 					border.color: "black"
 					color: 	subsurfaceTheme.primaryColor
-					width: rootItem.width / 2 - 20
-					height: subsurfaceTheme.regularPointSize + 10
-
+					Layout.fillWidth: true
+					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("primary")
 						color: subsurfaceTheme.primaryTextColor
@@ -204,9 +201,8 @@ TemplatePage {
 					border.width: 2
 					border.color: "black"
 					color: subsurfaceTheme.primaryTextColor
-					width: rootItem.width / 2 - 60
-					height: subsurfaceTheme.regularPointSize + 10
-
+					Layout.fillWidth: true
+					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("primary text")
 						color: subsurfaceTheme.primaryColor
@@ -215,14 +211,12 @@ TemplatePage {
 						anchors.verticalCenter: parent.verticalCenter
 					}
 				}
-
 				Rectangle {
 					border.width: 2
 					border.color: "black"
 					color: 	subsurfaceTheme.darkerPrimaryColor
-					width: rootItem.width / 2 - 20
-					height: subsurfaceTheme.regularPointSize + 10
-
+					Layout.fillWidth: true
+					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("darker primary")
 						color: subsurfaceTheme.darkerPrimaryTextColor
@@ -235,9 +229,8 @@ TemplatePage {
 					border.width: 2
 					border.color: "black"
 					color: subsurfaceTheme.darkerPrimaryTextColor
-					width: rootItem.width / 2 - 60
-					height: subsurfaceTheme.regularPointSize + 10
-
+					Layout.fillWidth: true
+					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("darker primary text")
 						color: subsurfaceTheme.darkerPrimaryColor
@@ -246,14 +239,12 @@ TemplatePage {
 						anchors.verticalCenter: parent.verticalCenter
 					}
 				}
-
 				Rectangle {
 					border.width: 2
 					border.color: "black"
 					color: 	subsurfaceTheme.lightPrimaryColor
-					width: rootItem.width / 2 - 20
-					height: subsurfaceTheme.regularPointSize + 10
-
+					Layout.fillWidth: true
+					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("light primary")
 						color: subsurfaceTheme.lightPrimaryTextColor
@@ -266,9 +257,8 @@ TemplatePage {
 					border.width: 2
 					border.color: "black"
 					color: subsurfaceTheme.lightPrimaryTextColor
-					width: rootItem.width / 2 - 60
-					height: subsurfaceTheme.regularPointSize + 10
-
+					Layout.fillWidth: true
+					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("light primary text")
 						color: subsurfaceTheme.lightPrimaryColor
@@ -277,8 +267,6 @@ TemplatePage {
 						anchors.verticalCenter: parent.verticalCenter
 					}
 				}
-
-
 				TemplateLabel {
 					text: ""
 				}
@@ -286,9 +274,8 @@ TemplatePage {
 					border.width: 2
 					border.color: "black"
 					color: subsurfaceTheme.secondaryTextColor
-					width: rootItem.width / 2 - 60
-					height: subsurfaceTheme.regularPointSize + 10
-
+					Layout.fillWidth: true
+					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("secondary text")
 						color: subsurfaceTheme.primaryColor
@@ -297,14 +284,12 @@ TemplatePage {
 						anchors.verticalCenter: parent.verticalCenter
 					}
 				}
-
 				Rectangle {
 					border.width: 2
 					border.color: "black"
 					color: 	subsurfaceTheme.drawerColor
-					width: rootItem.width / 2 - 20
-					height: subsurfaceTheme.regularPointSize + 10
-
+					Layout.fillWidth: true
+					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("drawer")
 						color: subsurfaceTheme.textColor
@@ -316,12 +301,20 @@ TemplatePage {
 				TemplateLabel {
 					text: ""
 				}
-				Row {
-					Layout.preferredWidth: gridWidth * 0.8
+				TemplateLabel {
+					text: qsTr("Font size")
+					font.pointSize: subsurfaceTheme.headingPointSize
+					font.weight: Font.Light
+					Layout.topMargin: Kirigami.Units.largeSpacing
+					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+					Layout.columnSpan: 2
+				}
+				RowLayout {
 					Layout.columnSpan: 2
 					spacing: Kirigami.Units.largeSpacing
 					TemplateButton {
 						text: qsTr("smaller")
+						Layout.fillWidth: true
 						enabled: subsurfaceTheme.currentScale !== 0.85
 						onClicked: {
 							subsurfaceTheme.currentScale = 0.85
@@ -329,6 +322,7 @@ TemplatePage {
 					}
 					TemplateButton {
 						text: qsTr("regular")
+						Layout.fillWidth: true
 						enabled: subsurfaceTheme.currentScale !== 1.0
 						onClicked: {
 							subsurfaceTheme.currentScale = 1.0
@@ -336,6 +330,7 @@ TemplatePage {
 					}
 					TemplateButton {
 						text: qsTr("larger")
+						Layout.fillWidth: true
 						enabled: subsurfaceTheme.currentScale !== 1.15
 						onClicked: {
 							subsurfaceTheme.currentScale = 1.15
@@ -349,12 +344,13 @@ TemplatePage {
 		TemplateSection {
 			id: sectionUnits
 			title: qsTr("Units")
-
-			Row {
+			width: parent.width
+			RowLayout {
 				visible: sectionUnits.isExpanded
-
+				width: parent.width
 				TemplateRadioButton {
 					text: qsTr("Metric")
+					Layout.fillWidth: true
 					checked: (Backend.unit_system === Enums.METRIC)
 					onClicked: {
 						Backend.unit_system = Enums.METRIC
@@ -364,6 +360,7 @@ TemplatePage {
 				}
 				TemplateRadioButton {
 					text: qsTr("Imperial")
+					Layout.fillWidth: true
 					checked:  (Backend.unit_system === Enums.IMPERIAL)
 					onClicked: {
 						Backend.unit_system = Enums.IMPERIAL
@@ -373,6 +370,7 @@ TemplatePage {
 				}
 				TemplateRadioButton {
 					text: qsTr("Personalize")
+					Layout.fillWidth: true
 					checked:  (Backend.unit_system === Enums.PERSONALIZE)
 					onClicked: {
 						Backend.unit_system = Enums.PERSONALIZE
@@ -384,7 +382,9 @@ TemplatePage {
 
 			GridLayout {
 				visible: sectionUnits.isExpanded
+				width: parent.width - 2 * Kirigami.Units.gridUnit
 				enabled: (Backend.unit_system === Enums.PERSONALIZE)
+				anchors.horizontalCenter: parent.horizontalCenter
 				columns: 3
 
 				ButtonGroup { id: unitDepth }
@@ -499,12 +499,13 @@ TemplatePage {
 		TemplateSection {
 			id: sectionAdvanced
 			title: qsTr("Advanced")
+			width: parent.width
 
 			GridLayout {
 				id: gpsPrefs
 				visible: sectionAdvanced.isExpanded
+				width: parent.width
 				columns: 2
-
 				TemplateLabel {
 					text: qsTr("GPS location service")
 					font.pointSize: subsurfaceTheme.headingPointSize
@@ -513,30 +514,26 @@ TemplatePage {
 					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 					Layout.columnSpan: 2
 				}
-
 				TemplateLabel {
 					text: qsTr("Distance threshold (meters)")
-					Layout.preferredWidth: gridWidth * 0.75
+					//Layout.preferredWidth: gridWidth * 0.75
 				}
-
 				TemplateTextField {
 					id: distanceThreshold
 					text: PrefLocationService.distance_threshold
-					Layout.preferredWidth: gridWidth * 0.25
+					//Layout.preferredWidth: gridWidth * 0.25
 					onEditingFinished: {
 						PrefLocationService.distance_threshold = distanceThreshold.text
 					}
 				}
-
 				TemplateLabel {
 					text: qsTr("Time threshold (minutes)")
-					Layout.preferredWidth: gridWidth * 0.75
+					//Layout.preferredWidth: gridWidth * 0.75
 				}
-
 				TemplateTextField {
 					id: timeThreshold
 					text: PrefLocationService.time_threshold / 60
-					Layout.preferredWidth: gridWidth * 0.25
+					//Layout.preferredWidth: gridWidth * 0.25
 					onEditingFinished: {
 						PrefLocationService.time_threshold = timeThreshold.text * 60
 					}
@@ -548,6 +545,7 @@ TemplatePage {
 			GridLayout {
 				id: whichBluetoothDevices
 				visible: sectionAdvanced.isExpanded
+				width: parent.width
 				columns: 2
 				TemplateLabel {
 					text: qsTr("Bluetooth")
@@ -557,15 +555,15 @@ TemplatePage {
 					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 					Layout.columnSpan: 2
 				}
-
 				TemplateLabel {
 					text: qsTr("Temporarily show all bluetooth devices \neven if not recognized as dive computers.\nPlease report DCs that need this setting")
-					Layout.preferredWidth: gridWidth * 0.75
+					Layout.fillWidth: true
+					//Layout.preferredWidth: gridWidth * 0.75
 				}
 				SsrfSwitch {
 					id: nonDCButton
 					checked: manager.showNonDiveComputers
-					Layout.preferredWidth: gridWidth * 0.25
+					//Layout.preferredWidth: gridWidth * 0.25
 					onClicked: {
 						manager.showNonDiveComputers = checked
 					}
@@ -577,6 +575,7 @@ TemplatePage {
 			GridLayout {
 				id: display
 				visible: sectionAdvanced.isExpanded
+				width: parent.width
 				columns: 2
 				TemplateLabel {
 					text: qsTr("Display")
@@ -588,24 +587,25 @@ TemplatePage {
 				}
 				TemplateLabel {
 					text: qsTr("Show only one column in Portrait mode")
-					Layout.preferredWidth: gridWidth * 0.75
+					Layout.fillWidth: true
+					//Layout.preferredWidth: gridWidth * 0.75
 				}
 				SsrfSwitch {
 					id: singleColumnButton
 					checked: PrefDisplay.singleColumnPortrait
-					Layout.preferredWidth: gridWidth * 0.25
+					//Layout.preferredWidth: gridWidth * 0.25
 					onClicked: {
 						PrefDisplay.singleColumnPortrait = checked
 					}
 				}
 			}
-
 			TemplateLine {
 				visible: sectionAdvanced.isExpanded
 			}
 			GridLayout {
 				id: developer
 				visible: sectionAdvanced.isExpanded
+				width: parent.width
 				columns: 2
 				TemplateLabel {
 					text: qsTr("Developer")
@@ -615,15 +615,15 @@ TemplatePage {
 					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 					Layout.columnSpan: 2
 				}
-
 				TemplateLabel {
 					text: qsTr("Display Developer menu")
-					Layout.preferredWidth: gridWidth * 0.75
+					Layout.fillWidth: true
+					//Layout.preferredWidth: gridWidth * 0.75
 				}
 				SsrfSwitch {
 					id: developerButton
 					checked: PrefDisplay.show_developer
-					Layout.preferredWidth: gridWidth * 0.25
+					//sLayout.preferredWidth: gridWidth * 0.25
 					onClicked: {
 						PrefDisplay.show_developer = checked
 					}
