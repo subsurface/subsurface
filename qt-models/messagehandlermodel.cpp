@@ -6,7 +6,7 @@
 #define INFO(fmt, ...)	fprintf(stderr, "INFO: " fmt "\n", ##__VA_ARGS__)
 #else
 #include <android/log.h>
-#define INFO(fmt, ...)	__android_log_print(ANDROID_LOG_DEBUG, __FILE__, "INFO: " fmt "\n", ##__VA_ARGS__);
+#define INFO(fmt, ...)	__android_log_print(ANDROID_LOG_DEBUG, "Subsurface", "INFO: " fmt "\n", ##__VA_ARGS__);
 #endif
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
