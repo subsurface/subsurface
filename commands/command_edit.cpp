@@ -14,6 +14,18 @@
 
 namespace Command {
 
+template <typename T, DiveField::Flags ID>
+DiveField EditTemplate<T, ID>::fieldId() const
+{
+	return ID;
+}
+
+template <DiveField::Flags ID>
+DiveField EditTagsTemplate<ID>::fieldId() const
+{
+	return ID;
+}
+
 static std::vector<dive *> getDives(bool currentDiveOnly)
 {
 	if (currentDiveOnly)
@@ -166,11 +178,6 @@ QString EditNotes::fieldName() const
 	return Command::Base::tr("notes");
 }
 
-DiveField EditNotes::fieldId() const
-{
-	return DiveField::NOTES;
-}
-
 // ***** Suit *****
 void EditSuit::set(struct dive *d, QString s) const
 {
@@ -186,11 +193,6 @@ QString EditSuit::data(struct dive *d) const
 QString EditSuit::fieldName() const
 {
 	return Command::Base::tr("suit");
-}
-
-DiveField EditSuit::fieldId() const
-{
-	return DiveField::SUIT;
 }
 
 // ***** Rating *****
@@ -209,11 +211,6 @@ QString EditRating::fieldName() const
 	return Command::Base::tr("rating");
 }
 
-DiveField EditRating::fieldId() const
-{
-	return DiveField::RATING;
-}
-
 // ***** Visibility *****
 void EditVisibility::set(struct dive *d, int value) const
 {
@@ -228,11 +225,6 @@ int EditVisibility::data(struct dive *d) const
 QString EditVisibility::fieldName() const
 {
 	return Command::Base::tr("visibility");
-}
-
-DiveField EditVisibility::fieldId() const
-{
-	return DiveField::VISIBILITY;
 }
 
 // ***** WaveSize *****
@@ -251,11 +243,6 @@ QString EditWaveSize::fieldName() const
 	return Command::Base::tr("wavesize");
 }
 
-DiveField EditWaveSize::fieldId() const
-{
-	return DiveField::WAVESIZE;
-}
-
 // ***** Current *****
 void EditCurrent::set(struct dive *d, int value) const
 {
@@ -270,11 +257,6 @@ int EditCurrent::data(struct dive *d) const
 QString EditCurrent::fieldName() const
 {
 	return Command::Base::tr("current");
-}
-
-DiveField EditCurrent::fieldId() const
-{
-	return DiveField::CURRENT;
 }
 
 // ***** Surge *****
@@ -293,11 +275,6 @@ QString EditSurge::fieldName() const
 	return Command::Base::tr("surge");
 }
 
-DiveField EditSurge::fieldId() const
-{
-	return DiveField::SURGE;
-}
-
 // ***** Chill *****
 void EditChill::set(struct dive *d, int value) const
 {
@@ -314,11 +291,6 @@ QString EditChill::fieldName() const
 	return Command::Base::tr("chill");
 }
 
-DiveField EditChill::fieldId() const
-{
-	return DiveField::CHILL;
-}
-
 // ***** Air Temperature *****
 void EditAirTemp::set(struct dive *d, int value) const
 {
@@ -333,11 +305,6 @@ int EditAirTemp::data(struct dive *d) const
 QString EditAirTemp::fieldName() const
 {
 	return Command::Base::tr("air temperature");
-}
-
-DiveField EditAirTemp::fieldId() const
-{
-	return DiveField::AIR_TEMP;
 }
 
 // ***** Water Temperature *****
@@ -359,11 +326,6 @@ QString EditWaterTemp::fieldName() const
 	return Command::Base::tr("water temperature");
 }
 
-DiveField EditWaterTemp::fieldId() const
-{
-	return DiveField::WATER_TEMP;
-}
-
 // ***** Water Type *****
 void EditWaterTypeUser::set(struct dive *d, int value) const
 {
@@ -380,11 +342,6 @@ QString EditWaterTypeUser::fieldName() const
 	return Command::Base::tr("salinity");
 }
 
-DiveField EditWaterTypeUser::fieldId() const
-{
-	return DiveField::SALINITY;
-}
-
 // ***** Atmospheric pressure *****
 void EditAtmPress::set(struct dive *d, int value) const
 {
@@ -399,11 +356,6 @@ int EditAtmPress::data(struct dive *d) const
 QString EditAtmPress::fieldName() const
 {
 	return Command::Base::tr("Atm. pressure");
-}
-
-DiveField EditAtmPress::fieldId() const
-{
-	return DiveField::ATM_PRESS;
 }
 
 // ***** Duration *****
@@ -425,11 +377,6 @@ QString EditDuration::fieldName() const
 	return Command::Base::tr("duration");
 }
 
-DiveField EditDuration::fieldId() const
-{
-	return DiveField::DURATION;
-}
-
 // ***** Depth *****
 void EditDepth::set(struct dive *d, int value) const
 {
@@ -449,11 +396,6 @@ QString EditDepth::fieldName() const
 	return Command::Base::tr("depth");
 }
 
-DiveField EditDepth::fieldId() const
-{
-	return DiveField::DEPTH;
-}
-
 // ***** DiveSite *****
 void EditDiveSite::set(struct dive *d, struct dive_site *dive_site) const
 {
@@ -469,11 +411,6 @@ struct dive_site *EditDiveSite::data(struct dive *d) const
 QString EditDiveSite::fieldName() const
 {
 	return Command::Base::tr("dive site");
-}
-
-DiveField EditDiveSite::fieldId() const
-{
-	return DiveField::DIVESITE;
 }
 
 void EditDiveSite::undo()
@@ -549,7 +486,7 @@ void EditDiveSiteNew::redo()
 //	- Change the semantics of the mode-editing.
 // The future will tell.
 EditMode::EditMode(int indexIn, int newValue, bool currentDiveOnly)
-	: EditBase(newValue, currentDiveOnly), index(indexIn)
+	: EditTemplate(newValue, currentDiveOnly), index(indexIn)
 {
 }
 
@@ -569,11 +506,6 @@ QString EditMode::fieldName() const
 	return Command::Base::tr("dive mode");
 }
 
-DiveField EditMode::fieldId() const
-{
-	return DiveField::MODE;
-}
-
 // ***** Invalid *****
 void EditInvalid::set(struct dive *d, int invalid) const
 {
@@ -588,11 +520,6 @@ int EditInvalid::data(struct dive *d) const
 QString EditInvalid::fieldName() const
 {
 	return Command::Base::tr("invalid");
-}
-
-DiveField EditInvalid::fieldId() const
-{
-	return DiveField::INVALID;
 }
 
 // ***** Tag based commands *****
@@ -725,11 +652,6 @@ QString EditTags::fieldName() const
 	return Command::Base::tr("tags");
 }
 
-DiveField EditTags::fieldId() const
-{
-	return DiveField::TAGS;
-}
-
 // ***** Buddies *****
 QStringList EditBuddies::data(struct dive *d) const
 {
@@ -748,11 +670,6 @@ QString EditBuddies::fieldName() const
 	return Command::Base::tr("buddies");
 }
 
-DiveField EditBuddies::fieldId() const
-{
-	return DiveField::BUDDY;
-}
-
 // ***** DiveMaster *****
 QStringList EditDiveMaster::data(struct dive *d) const
 {
@@ -769,11 +686,6 @@ void EditDiveMaster::set(struct dive *d, const QStringList &v) const
 QString EditDiveMaster::fieldName() const
 {
 	return Command::Base::tr("dive master");
-}
-
-DiveField EditDiveMaster::fieldId() const
-{
-	return DiveField::DIVEMASTER;
 }
 
 static void swapCandQString(QString &q, char *&c)
