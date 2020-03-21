@@ -464,7 +464,7 @@ int init_decompression(struct deco_state *ds, struct dive *dive)
 		struct dive *pdive = get_dive(i);
 		/* we don't want to mix dives from different trips as we keep looking
 		 * for how far back we need to go */
-		if (dive->divetrip && pdive->divetrip != dive->divetrip) {
+		if (dive->divetrip && pdive && pdive->divetrip != dive->divetrip) {
 #if DECO_CALC_DEBUG & 2
 			printf("No - other dive trip\n");
 #endif
@@ -488,14 +488,14 @@ int init_decompression(struct deco_state *ds, struct dive *dive)
 #endif
 		struct dive *pdive = get_dive(i);
 		/* again skip dives from different trips */
-		if (dive->divetrip && dive->divetrip != pdive->divetrip) {
+		if (dive->divetrip && pdive && dive->divetrip != pdive->divetrip) {
 #if DECO_CALC_DEBUG & 2
 			printf("No - other dive trip\n");
 #endif
 			continue;
 		}
 		/* Don't add future dives */
-		if (pdive->when >= dive->when) {
+		if (pdive && pdive->when >= dive->when) {
 #if DECO_CALC_DEBUG & 2
 			printf("No - future or same dive\n");
 #endif
