@@ -56,6 +56,8 @@ Kirigami.Page {
 		onTriggered: {
 			manager.appendTextToLog("Save trip details triggered")
 			manager.updateTripDetails(tripId, tripLocationField.text, tripNotesField.text)
+			Qt.inputMethod.hide()
+			pageStack.pop("TripDetails")
 		}
 	}
 	property QtObject cancelAction: Kirigami.Action {
