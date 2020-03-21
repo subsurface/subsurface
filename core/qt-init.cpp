@@ -69,6 +69,9 @@ void init_qt_late()
 	} else if (loc.language() == QLocale::Spanish) {
 		loc.setDefault(QLocale("es_ES"));
 		loc = QLocale();
+	} else if (loc.language() == QLocale::German && loc.country() != QLocale::Switzerland) {
+		loc.setDefault(QLocale("de_DE"));
+		loc = QLocale();
 	}
 	QString uiLang = uiLanguage(&loc);
 	QLocale::setDefault(loc);
