@@ -15,7 +15,7 @@ EditTripBase::EditTripBase(dive_trip *tripIn, const QString &newValue) : trip(tr
 // Therefore, setting of the title is done here.
 bool EditTripBase::workToBeDone()
 {
-	setText(tr("Edit %1").arg(fieldName()));
+	setText(Command::Base::tr("Edit %1").arg(fieldName()));
 	return data(trip) != value;
 }
 
@@ -50,7 +50,7 @@ QString EditTripLocation::data(dive_trip *t) const
 
 QString EditTripLocation::fieldName() const
 {
-	return tr("trip location");
+	return Command::Base::tr("trip location");
 }
 
 TripField EditTripLocation::fieldId() const
@@ -72,7 +72,7 @@ QString EditTripNotes::data(dive_trip *t) const
 
 QString EditTripNotes::fieldName() const
 {
-	return tr("trip notes");
+	return Command::Base::tr("trip notes");
 }
 
 TripField EditTripNotes::fieldId() const

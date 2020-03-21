@@ -75,7 +75,7 @@ static std::vector<OwningDiveSitePtr> removeDiveSites(std::vector<dive_site *> &
 
 AddDiveSite::AddDiveSite(const QString &name)
 {
-	setText(tr("add dive site"));
+	setText(Command::Base::tr("add dive site"));
 	sitesToAdd.emplace_back(alloc_dive_site());
 	sitesToAdd.back()->name = copy_qstring(name);
 }
@@ -97,7 +97,7 @@ void AddDiveSite::undo()
 
 ImportDiveSites::ImportDiveSites(struct dive_site_table *sites, const QString &source)
 {
-	setText(tr("import dive sites from %1").arg(source));
+	setText(Command::Base::tr("import dive sites from %1").arg(source));
 
 	for (int i = 0; i < sites->nr; ++i) {
 		struct dive_site *new_ds = sites->dive_sites[i];
@@ -133,7 +133,7 @@ void ImportDiveSites::undo()
 
 DeleteDiveSites::DeleteDiveSites(const QVector<dive_site *> &sites) : sitesToRemove(std::vector<dive_site *>(sites.begin(),sites.end()))
 {
-	setText(tr("delete %n dive site(s)", "", sites.size()));
+	setText(Command::Base::tr("delete %n dive site(s)", "", sites.size()));
 }
 
 bool DeleteDiveSites::workToBeDone()
@@ -153,7 +153,7 @@ void DeleteDiveSites::undo()
 
 PurgeUnusedDiveSites::PurgeUnusedDiveSites()
 {
-	setText(tr("purge unused dive sites"));
+	setText(Command::Base::tr("purge unused dive sites"));
 	for (int i = 0; i < dive_site_table.nr; ++i) {
 		dive_site *ds = dive_site_table.dive_sites[i];
 		if (ds->dives.nr == 0)
@@ -188,7 +188,7 @@ static void swap(char *&c, QString &q)
 EditDiveSiteName::EditDiveSiteName(dive_site *dsIn, const QString &name) : ds(dsIn),
 	value(name)
 {
-	setText(tr("Edit dive site name"));
+	setText(Command::Base::tr("Edit dive site name"));
 }
 
 bool EditDiveSiteName::workToBeDone()
@@ -211,7 +211,7 @@ void EditDiveSiteName::undo()
 EditDiveSiteDescription::EditDiveSiteDescription(dive_site *dsIn, const QString &description) : ds(dsIn),
 	value(description)
 {
-	setText(tr("Edit dive site description"));
+	setText(Command::Base::tr("Edit dive site description"));
 }
 
 bool EditDiveSiteDescription::workToBeDone()
@@ -234,7 +234,7 @@ void EditDiveSiteDescription::undo()
 EditDiveSiteNotes::EditDiveSiteNotes(dive_site *dsIn, const QString &notes) : ds(dsIn),
 	value(notes)
 {
-	setText(tr("Edit dive site notes"));
+	setText(Command::Base::tr("Edit dive site notes"));
 }
 
 bool EditDiveSiteNotes::workToBeDone()
@@ -257,7 +257,7 @@ void EditDiveSiteNotes::undo()
 EditDiveSiteCountry::EditDiveSiteCountry(dive_site *dsIn, const QString &country) : ds(dsIn),
 	value(country)
 {
-	setText(tr("Edit dive site country"));
+	setText(Command::Base::tr("Edit dive site country"));
 }
 
 bool EditDiveSiteCountry::workToBeDone()
@@ -282,7 +282,7 @@ void EditDiveSiteCountry::undo()
 EditDiveSiteLocation::EditDiveSiteLocation(dive_site *dsIn, const location_t location) : ds(dsIn),
 	value(location)
 {
-	setText(tr("Edit dive site location"));
+	setText(Command::Base::tr("Edit dive site location"));
 }
 
 bool EditDiveSiteLocation::workToBeDone()
@@ -311,7 +311,7 @@ EditDiveSiteTaxonomy::EditDiveSiteTaxonomy(dive_site *dsIn, taxonomy_data &taxon
 {
 	// We did a dumb copy. Erase the source to remove double references to strings.
 	memset(&taxonomy, 0, sizeof(taxonomy));
-	setText(tr("Edit dive site taxonomy"));
+	setText(Command::Base::tr("Edit dive site taxonomy"));
 }
 
 EditDiveSiteTaxonomy::~EditDiveSiteTaxonomy()
@@ -339,7 +339,7 @@ void EditDiveSiteTaxonomy::undo()
 
 MergeDiveSites::MergeDiveSites(dive_site *dsIn, const QVector<dive_site *> &sites) : ds(dsIn)
 {
-	setText(tr("merge dive sites"));
+	setText(Command::Base::tr("merge dive sites"));
 	sitesToRemove.reserve(sites.size());
 	for (dive_site *site: sites) {
 		if (site != ds)
@@ -393,7 +393,7 @@ void MergeDiveSites::undo()
 
 ApplyGPSFixes::ApplyGPSFixes(const std::vector<DiveAndLocation> &fixes)
 {
-	setText(tr("apply GPS fixes"));
+	setText(Command::Base::tr("apply GPS fixes"));
 
 	for (const DiveAndLocation &dl: fixes) {
 		struct dive_site *ds = dl.d->dive_site;
