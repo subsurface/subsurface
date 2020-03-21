@@ -471,7 +471,7 @@ QString uiLanguage(QLocale *callerLoc)
 	else
 		uiLang = languages[0];
 
-	qPrefLanguage::set_lang_locale(uiLang);
+	prefs.locale.lang_locale = copy_qstring(uiLang);
 
 	// there's a stupid Qt bug on MacOS where uiLanguages doesn't give us the country info
 	if (!uiLang.contains('-') && uiLang != loc.bcp47Name()) {
