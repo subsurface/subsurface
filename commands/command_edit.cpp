@@ -38,6 +38,19 @@ T EditDefaultSetter<T, ID, PTR>::data(struct dive *d) const
 	return d->*PTR;
 }
 
+template <DiveField::Flags ID, char *dive::*PTR>
+void EditStringSetter<ID, PTR>::set(struct dive *d, QString v) const
+{
+	free(d->*PTR);
+	d->*PTR = copy_qstring(v);
+}
+
+template <DiveField::Flags ID, char *dive::*PTR>
+QString EditStringSetter<ID, PTR>::data(struct dive *d) const
+{
+	return QString(d->*PTR);
+}
+
 static std::vector<dive *> getDives(bool currentDiveOnly)
 {
 	if (currentDiveOnly)
@@ -176,34 +189,12 @@ void EditBase<T>::redo()
 // Implementation of virtual functions
 
 // ***** Notes *****
-void EditNotes::set(struct dive *d, QString s) const
-{
-	free(d->notes);
-	d->notes = strdup(qPrintable(s));
-}
-
-QString EditNotes::data(struct dive *d) const
-{
-	return QString(d->notes);
-}
-
 QString EditNotes::fieldName() const
 {
 	return Command::Base::tr("notes");
 }
 
 // ***** Suit *****
-void EditSuit::set(struct dive *d, QString s) const
-{
-	free(d->suit);
-	d->suit = strdup(qPrintable(s));
-}
-
-QString EditSuit::data(struct dive *d) const
-{
-	return QString(d->suit);
-}
-
 QString EditSuit::fieldName() const
 {
 	return Command::Base::tr("suit");
