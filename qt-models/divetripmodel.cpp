@@ -726,7 +726,7 @@ void DiveTripModelTree::populate()
 	for (int i = 0; i < dive_table.nr; ++i) {
 		dive *d = get_dive(i);
 		update_cylinder_related_info(d);
-		if (d->hidden_by_filter)
+		if (!d || d->hidden_by_filter)
 			continue;
 		dive_trip_t *trip = d->divetrip;
 
@@ -1476,7 +1476,7 @@ void DiveTripModelList::populate()
 	items.reserve(dive_table.nr);
 	for (int i = 0; i < dive_table.nr; ++i) {
 		dive *d = get_dive(i);
-		if (d->hidden_by_filter)
+		if (!d || d->hidden_by_filter)
 			continue;
 		items.push_back(d);
 	}
