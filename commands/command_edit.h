@@ -61,140 +61,138 @@ protected:
 	virtual DiveField fieldId() const = 0;
 };
 
-class EditNotes : public EditBase<QString> {
+// The individual Edit-commands define a virtual function that return the field-id.
+// For reasons, which I don't fully understand, the C++ makers are strictly opposed
+// to "virtual member constants" so we have to define these functions. To make
+// things a bit more compact we do this automatically with the following template.
+// Of course, we could directly encode the value in the EditBase-template, but
+// that would lead to a multiplication of the created code.
+template <typename T, DiveField::Flags ID>
+class EditTemplate : public EditBase<T> {
+private:
+	using EditBase<T>::EditBase;	// Use constructor of base class.
+	DiveField fieldId() const override final;	// final prevents further overriding - then just don't use this template
+};
+
+class EditNotes : public EditTemplate<QString, DiveField::NOTES> {
 public:
-	using EditBase<QString>::EditBase;	// Use constructor of base class.
+	using EditTemplate::EditTemplate;	// Use constructor of base class.
 	void set(struct dive *d, QString s) const override;
 	QString data(struct dive *d) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 };
 
-class EditSuit : public EditBase<QString> {
+class EditSuit : public EditTemplate<QString, DiveField::SUIT> {
 public:
-	using EditBase<QString>::EditBase;	// Use constructor of base class.
+	using EditTemplate::EditTemplate;	// Use constructor of base class.
 	void set(struct dive *d, QString s) const override;
 	QString data(struct dive *d) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 };
 
-class EditRating : public EditBase<int> {
+class EditRating : public EditTemplate<int, DiveField::RATING> {
 public:
-	using EditBase<int>::EditBase;	// Use constructor of base class.
+	using EditTemplate::EditTemplate;	// Use constructor of base class.
 	void set(struct dive *d, int value) const override;
 	int data(struct dive *d) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 };
 
-class EditVisibility : public EditBase<int> {
+class EditVisibility : public EditTemplate<int, DiveField::VISIBILITY> {
 public:
-	using EditBase<int>::EditBase;	// Use constructor of base class.
+	using EditTemplate::EditTemplate;	// Use constructor of base class.
 	void set(struct dive *d, int value) const override;
 	int data(struct dive *d) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 };
 
 
-class EditWaveSize : public EditBase<int> {
+class EditWaveSize : public EditTemplate<int, DiveField::WAVESIZE> {
 public:
-	using EditBase<int>::EditBase;	// Use constructor of base class.
+	using EditTemplate::EditTemplate;	// Use constructor of base class.
 	void set(struct dive *d, int value) const override;
 	int data(struct dive *d) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 };
 
-class EditCurrent : public EditBase<int> {
+class EditCurrent : public EditTemplate<int, DiveField::CURRENT> {
 public:
-	using EditBase<int>::EditBase;	// Use constructor of base class.
+	using EditTemplate::EditTemplate;	// Use constructor of base class.
 	void set(struct dive *d, int value) const override;
 	int data(struct dive *d) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 };
 
-class EditSurge : public EditBase<int> {
+class EditSurge : public EditTemplate<int, DiveField::SURGE> {
 public:
-	using EditBase<int>::EditBase;	// Use constructor of base class.
+	using EditTemplate::EditTemplate;	// Use constructor of base class.
 	void set(struct dive *d, int value) const override;
 	int data(struct dive *d) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 };
 
-class EditChill : public EditBase<int> {
+class EditChill : public EditTemplate<int, DiveField::CHILL> {
 public:
-	using EditBase<int>::EditBase;	// Use constructor of base class.
+	using EditTemplate::EditTemplate;	// Use constructor of base class.
 	void set(struct dive *d, int value) const override;
 	int data(struct dive *d) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 };
 
-class EditAirTemp : public EditBase<int> {
+class EditAirTemp : public EditTemplate<int, DiveField::AIR_TEMP> {
 public:
-	using EditBase<int>::EditBase;	// Use constructor of base class.
+	using EditTemplate::EditTemplate;	// Use constructor of base class.
 	void set(struct dive *d, int value) const override;
 	int data(struct dive *d) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 };
 
-class EditWaterTemp : public EditBase<int> {
+class EditWaterTemp : public EditTemplate<int, DiveField::WATER_TEMP> {
 public:
-	using EditBase<int>::EditBase;	// Use constructor of base class.
+	using EditTemplate::EditTemplate;	// Use constructor of base class.
 	void set(struct dive *d, int value) const override;
 	int data(struct dive *d) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 };
 
-class EditAtmPress : public EditBase<int> {
+class EditAtmPress : public EditTemplate<int, DiveField::ATM_PRESS> {
 public:
-	using EditBase<int>::EditBase;	// Use constructor of base class.
+	using EditTemplate::EditTemplate;	// Use constructor of base class.
 	void set(struct dive *d, int value) const override;
 	int data(struct dive *d) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 };
 
-class EditWaterTypeUser : public EditBase<int> {
+class EditWaterTypeUser : public EditTemplate<int, DiveField::SALINITY> {
 public:
-	using EditBase<int>::EditBase;	// Use constructor of base class.
+	using EditTemplate::EditTemplate;	// Use constructor of base class.
 	void set(struct dive *d, int value) const override;
 	int data(struct dive *d) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 };
 
-class EditDuration : public EditBase<int> {
+class EditDuration : public EditTemplate<int, DiveField::DURATION> {
 public:
-	using EditBase<int>::EditBase;	// Use constructor of base class.
+	using EditTemplate::EditTemplate;	// Use constructor of base class.
 	void set(struct dive *d, int value) const override;
 	int data(struct dive *d) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 };
 
-class EditDepth : public EditBase<int> {
+class EditDepth : public EditTemplate<int, DiveField::DEPTH> {
 public:
-	using EditBase<int>::EditBase;	// Use constructor of base class.
+	using EditTemplate::EditTemplate;	// Use constructor of base class.
 	void set(struct dive *d, int value) const override;
 	int data(struct dive *d) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 };
 
-class EditDiveSite : public EditBase<struct dive_site *> {
+class EditDiveSite : public EditTemplate<struct dive_site *, DiveField::DIVESITE> {
 public:
-	using EditBase<struct dive_site *>::EditBase;	// Use constructor of base class.
+	using EditTemplate::EditTemplate;	// Use constructor of base class.
 	void set(struct dive *d, struct dive_site *value) const override;
 	struct dive_site *data(struct dive *d) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 
 	// We specialize these so that we can send dive-site changed signals.
 	void undo() override;
@@ -212,23 +210,21 @@ public:
 	void redo() override;
 };
 
-class EditMode : public EditBase<int> {
+class EditMode : public EditTemplate<int, DiveField::MODE> {
 	int index;
 public:
 	EditMode(int indexIn, int newValue, bool currentDiveOnly);
 	void set(struct dive *d, int i) const override;
 	int data(struct dive *d) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 };
 
-class EditInvalid : public EditBase<int> {
+class EditInvalid : public EditTemplate<int, DiveField::INVALID> {
 public:
-	using EditBase<int>::EditBase;	// Use constructor of base class.
+	using EditTemplate::EditTemplate;	// Use constructor of base class.
 	void set(struct dive *d, int number) const override;
 	int data(struct dive *d) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 };
 
 // Fields that work with tag-lists (tags, buddies, divemasters) work differently and therefore
@@ -254,31 +250,36 @@ protected:
 	virtual DiveField fieldId() const = 0;
 };
 
-class EditTags : public EditTagsBase {
-public:
-	using EditTagsBase::EditTagsBase;	// Use constructor of base class.
-	QStringList data(struct dive *d) const override;
-	void set(struct dive *d, const QStringList &v) const override;
-	QString fieldName() const override;
-	DiveField fieldId() const override;
+// See comments for EditTemplate
+template <DiveField::Flags ID>
+class EditTagsTemplate : public EditTagsBase {
+private:
+	using EditTagsBase::EditTagsBase;		// Use constructor of base class.
+	DiveField fieldId() const override final;	// final prevents further overriding - then just don't use this template
 };
 
-class EditBuddies : public EditTagsBase {
+class EditTags : public EditTagsTemplate<DiveField::TAGS> {
 public:
-	using EditTagsBase::EditTagsBase;	// Use constructor of base class.
+	using EditTagsTemplate::EditTagsTemplate;	// Use constructor of base class.
 	QStringList data(struct dive *d) const override;
 	void set(struct dive *d, const QStringList &v) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
 };
 
-class EditDiveMaster : public EditTagsBase {
+class EditBuddies : public EditTagsTemplate<DiveField::BUDDY> {
 public:
-	using EditTagsBase::EditTagsBase;	// Use constructor of base class.
+	using EditTagsTemplate::EditTagsTemplate;	// Use constructor of base class.
 	QStringList data(struct dive *d) const override;
 	void set(struct dive *d, const QStringList &v) const override;
 	QString fieldName() const override;
-	DiveField fieldId() const override;
+};
+
+class EditDiveMaster : public EditTagsTemplate<DiveField::DIVEMASTER> {
+public:
+	using EditTagsTemplate::EditTagsTemplate;	// Use constructor of base class.
+	QStringList data(struct dive *d) const override;
+	void set(struct dive *d, const QStringList &v) const override;
+	QString fieldName() const override;
 };
 
 // Fields we have to remember to undo paste
