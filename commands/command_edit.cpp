@@ -26,6 +26,18 @@ DiveField EditTagsTemplate<ID>::fieldId() const
 	return ID;
 }
 
+template <typename T, DiveField::Flags ID, T dive::*PTR>
+void EditDefaultSetter<T, ID, PTR>::set(struct dive *d, T v) const
+{
+	d->*PTR = v;
+}
+
+template <typename T, DiveField::Flags ID, T dive::*PTR>
+T EditDefaultSetter<T, ID, PTR>::data(struct dive *d) const
+{
+	return d->*PTR;
+}
+
 static std::vector<dive *> getDives(bool currentDiveOnly)
 {
 	if (currentDiveOnly)
@@ -147,6 +159,8 @@ EditBase<QString>::EditBase(QString newValue, bool currentDiveOnly);
 template
 EditBase<int>::EditBase(int newValue, bool currentDiveOnly);
 template
+EditBase<bool>::EditBase(bool newValue, bool currentDiveOnly);
+template
 EditBase<struct dive_site *>::EditBase(struct dive_site *newValue, bool currentDiveOnly);
 
 // Undo and redo do the same as just the stored value is exchanged
@@ -196,96 +210,36 @@ QString EditSuit::fieldName() const
 }
 
 // ***** Rating *****
-void EditRating::set(struct dive *d, int value) const
-{
-	d->rating = value;
-}
-
-int EditRating::data(struct dive *d) const
-{
-	return d->rating;
-}
-
 QString EditRating::fieldName() const
 {
 	return tr("rating");
 }
 
 // ***** Visibility *****
-void EditVisibility::set(struct dive *d, int value) const
-{
-	d->visibility = value;
-}
-
-int EditVisibility::data(struct dive *d) const
-{
-	return d->visibility;
-}
-
 QString EditVisibility::fieldName() const
 {
 	return tr("visibility");
 }
 
 // ***** WaveSize *****
-void EditWaveSize::set(struct dive *d, int value) const
-{
-	d->wavesize = value;
-}
-
-int EditWaveSize::data(struct dive *d) const
-{
-	return d->wavesize;
-}
-
 QString EditWaveSize::fieldName() const
 {
 	return tr("wavesize");
 }
 
 // ***** Current *****
-void EditCurrent::set(struct dive *d, int value) const
-{
-	d->current = value;
-}
-
-int EditCurrent::data(struct dive *d) const
-{
-	return d->current;
-}
-
 QString EditCurrent::fieldName() const
 {
 	return tr("current");
 }
 
 // ***** Surge *****
-void EditSurge::set(struct dive *d, int value) const
-{
-	d->surge = value;
-}
-
-int EditSurge::data(struct dive *d) const
-{
-	return d->surge;
-}
-
 QString EditSurge::fieldName() const
 {
 	return tr("surge");
 }
 
 // ***** Chill *****
-void EditChill::set(struct dive *d, int value) const
-{
-	d->chill = value;
-}
-
-int EditChill::data(struct dive *d) const
-{
-	return d->chill;
-}
-
 QString EditChill::fieldName() const
 {
 	return tr("chill");
@@ -507,16 +461,6 @@ QString EditMode::fieldName() const
 }
 
 // ***** Invalid *****
-void EditInvalid::set(struct dive *d, int invalid) const
-{
-	d->invalid = invalid;
-}
-
-int EditInvalid::data(struct dive *d) const
-{
-	return d->invalid;
-}
-
 QString EditInvalid::fieldName() const
 {
 	return tr("invalid");

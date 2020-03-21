@@ -74,6 +74,16 @@ private:
 	DiveField fieldId() const override final;	// final prevents further overriding - then just don't use this template
 };
 
+// Automatically generate getter and setter in the case of simple assignments.
+// The third parameter is a pointer to a member of the dive structure.
+template <typename T, DiveField::Flags ID, T dive::*PTR>
+class EditDefaultSetter : public EditTemplate<T, ID> {
+private:
+	using EditTemplate<T, ID>::EditTemplate;
+	void set(struct dive *d, T) const override final;	// final prevents further overriding - then just don't use this template
+	T data(struct dive *d) const override final;	// final prevents further overriding - then just don't use this template
+};
+
 class EditNotes : public EditTemplate<QString, DiveField::NOTES> {
 public:
 	using EditTemplate::EditTemplate;	// Use constructor of base class.
@@ -90,52 +100,39 @@ public:
 	QString fieldName() const override;
 };
 
-class EditRating : public EditTemplate<int, DiveField::RATING> {
+class EditRating : public EditDefaultSetter<int, DiveField::RATING, &dive::rating> {
 public:
-	using EditTemplate::EditTemplate;	// Use constructor of base class.
-	void set(struct dive *d, int value) const override;
-	int data(struct dive *d) const override;
+	using EditDefaultSetter::EditDefaultSetter;	// Use constructor of base class.
 	QString fieldName() const override;
 };
 
-class EditVisibility : public EditTemplate<int, DiveField::VISIBILITY> {
+class EditVisibility : public EditDefaultSetter<int, DiveField::VISIBILITY, &dive::visibility> {
 public:
-	using EditTemplate::EditTemplate;	// Use constructor of base class.
-	void set(struct dive *d, int value) const override;
-	int data(struct dive *d) const override;
+	using EditDefaultSetter::EditDefaultSetter;	// Use constructor of base class.
 	QString fieldName() const override;
 };
 
-
-class EditWaveSize : public EditTemplate<int, DiveField::WAVESIZE> {
+class EditWaveSize : public EditDefaultSetter<int, DiveField::WAVESIZE, &dive::wavesize> {
 public:
-	using EditTemplate::EditTemplate;	// Use constructor of base class.
-	void set(struct dive *d, int value) const override;
-	int data(struct dive *d) const override;
+	using EditDefaultSetter::EditDefaultSetter;	// Use constructor of base class.
 	QString fieldName() const override;
 };
 
-class EditCurrent : public EditTemplate<int, DiveField::CURRENT> {
+class EditCurrent : public EditDefaultSetter<int, DiveField::CURRENT, &dive::current> {
 public:
-	using EditTemplate::EditTemplate;	// Use constructor of base class.
-	void set(struct dive *d, int value) const override;
-	int data(struct dive *d) const override;
+	using EditDefaultSetter::EditDefaultSetter;	// Use constructor of base class.
 	QString fieldName() const override;
 };
 
-class EditSurge : public EditTemplate<int, DiveField::SURGE> {
+class EditSurge : public EditDefaultSetter<int, DiveField::SURGE, &dive::surge> {
 public:
-	using EditTemplate::EditTemplate;	// Use constructor of base class.
-	void set(struct dive *d, int value) const override;
-	int data(struct dive *d) const override;
+	using EditDefaultSetter::EditDefaultSetter;	// Use constructor of base class.
 	QString fieldName() const override;
 };
 
-class EditChill : public EditTemplate<int, DiveField::CHILL> {
+class EditChill : public EditDefaultSetter<int, DiveField::CHILL, &dive::chill> {
 public:
-	using EditTemplate::EditTemplate;	// Use constructor of base class.
-	void set(struct dive *d, int value) const override;
-	int data(struct dive *d) const override;
+	using EditDefaultSetter::EditDefaultSetter;	// Use constructor of base class.
 	QString fieldName() const override;
 };
 
@@ -219,11 +216,9 @@ public:
 	QString fieldName() const override;
 };
 
-class EditInvalid : public EditTemplate<int, DiveField::INVALID> {
+class EditInvalid : public EditDefaultSetter<bool, DiveField::INVALID, &dive::invalid> {
 public:
-	using EditTemplate::EditTemplate;	// Use constructor of base class.
-	void set(struct dive *d, int number) const override;
-	int data(struct dive *d) const override;
+	using EditDefaultSetter::EditDefaultSetter;	// Use constructor of base class.
 	QString fieldName() const override;
 };
 
