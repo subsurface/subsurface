@@ -60,7 +60,6 @@ void PreferencesLanguage::refreshSettings()
 		ui->languageDropdown->setCurrentIndex(languages.first().row());
 }
 
-#include <QDebug>
 void PreferencesLanguage::syncSettings()
 {
 	bool useSystemLang = prefs.locale.use_system_language;
