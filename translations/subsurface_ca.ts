@@ -37,19 +37,6 @@
     </message>
 </context>
 <context>
-    <name>AddWeight</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="972"/>
-        <source>Add weight</source>
-        <translation type="unfinished"/>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="974"/>
-        <source>Add weight (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
-    </message>
-</context>
-<context>
     <name>BtDeviceSelectionDialog</name>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="14"/>
@@ -631,374 +618,312 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="95"/>
-        <source>Edit %1</source>
-        <translation>Edita %1</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="97"/>
-        <source>Edit %1 (%n dive(s))</source>
-        <translation><numerusform>Edita %1 (%n immersió)</numerusform><numerusform>Edita %1 (%n immersions)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command::AddDive</name>
-    <message>
         <location filename="../commands/command_divelist.cpp" line="399"/>
         <source>add dive</source>
         <translation>s&apos;afegeix la immersió</translation>
     </message>
-</context>
-<context>
-    <name>Command::AddDiveSite</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="78"/>
-        <source>add dive site</source>
-        <translation>s&apos;afegeix el punt de la immersió</translation>
-    </message>
-</context>
-<context>
-    <name>Command::AddDivesToTrip</name>
-    <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="709"/>
-        <source>add %n dives to trip</source>
-        <translation><numerusform>s&apos;afegeix %n immersió al viatge</numerusform><numerusform>s&apos;afegeixen %n immersions al viatge</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command::ApplyGPSFixes</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="396"/>
-        <source>apply GPS fixes</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>Command::AutogroupDives</name>
-    <message>
-        <location filename="../commands/command_divelist.cpp" line="729"/>
-        <source>autogroup dives</source>
-        <translation>immersions en autogrup</translation>
-    </message>
-</context>
-<context>
-    <name>Command::CreateTrip</name>
-    <message>
-        <location filename="../commands/command_divelist.cpp" line="716"/>
-        <source>create trip</source>
-        <translation>es crea el viatge</translation>
-    </message>
-</context>
-<context>
-    <name>Command::DeleteDive</name>
-    <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="549"/>
-        <source>delete %n dive(s)</source>
-        <translation><numerusform>se suprimeix %n inmersió</numerusform><numerusform>se suprimeixen %n inmersions</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command::DeleteDiveComputer</name>
-    <message>
-        <location filename="../commands/command_divelist.cpp" line="904"/>
-        <source>delete dive computer</source>
-        <translation>Suprimeix l&apos;ordinador de busseig</translation>
-    </message>
-</context>
-<context>
-    <name>Command::DeleteDiveSites</name>
-    <message numerus="yes">
-        <location filename="../commands/command_divesite.cpp" line="136"/>
-        <source>delete %n dive site(s)</source>
-        <translation><numerusform>se suprimeix %n punt d&apos;immersió</numerusform><numerusform>se suprimeixen %n punts d&apos;immersió</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditAirTemp</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="335"/>
-        <source>air temperature</source>
-        <translation>temperatura de l&apos;aire</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditAtmPress</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="401"/>
-        <source>Atm. pressure</source>
-        <translation>Pressió atm.</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditChill</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="314"/>
-        <source>chill</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>Command::EditCurrent</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="272"/>
-        <source>current</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>Command::EditDepth</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="449"/>
-        <source>depth</source>
-        <translation>profunditat</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditDiveSite</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="471"/>
-        <source>dive site</source>
-        <translation>Punt de la immersió</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditDiveSiteCountry</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="260"/>
-        <source>Edit dive site country</source>
-        <translation>Edita el país del punt de la immersió</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditDiveSiteDescription</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="214"/>
-        <source>Edit dive site description</source>
-        <translation>Edita la descripció del punt de la immersió</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditDiveSiteLocation</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="285"/>
-        <source>Edit dive site location</source>
-        <translation>Edita la ubicació del punt de la immersió</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditDiveSiteName</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="191"/>
-        <source>Edit dive site name</source>
-        <translation>Edita el nom del punt de la immersió</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditDiveSiteNotes</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="237"/>
-        <source>Edit dive site notes</source>
-        <translation>Edita les notes del punt de la immersió</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditDiveSiteTaxonomy</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="314"/>
-        <source>Edit dive site taxonomy</source>
-        <translation>Editeu la taxonomia del punt de la immersió</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditDuration</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="425"/>
-        <source>duration</source>
-        <translation>durada</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditNotes</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="166"/>
-        <source>notes</source>
-        <translation>notes</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditRating</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="209"/>
-        <source>rating</source>
-        <translation>valoració</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditSuit</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="188"/>
-        <source>suit</source>
-        <translation>vestit</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditSurge</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="293"/>
-        <source>surge</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>Command::EditTripBase</name>
-    <message>
-        <location filename="../commands/command_edit_trip.cpp" line="18"/>
-        <source>Edit %1</source>
-        <translation>Edita %1</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditTripLocation</name>
-    <message>
-        <location filename="../commands/command_edit_trip.cpp" line="53"/>
-        <source>trip location</source>
-        <translation>ubicació del viatge</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditTripNotes</name>
-    <message>
-        <location filename="../commands/command_edit_trip.cpp" line="75"/>
-        <source>trip notes</source>
-        <translation>notes del viatge</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditVisibility</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="230"/>
-        <source>visibility</source>
-        <translation>visibilitat</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditWaterTemp</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="359"/>
-        <source>water temperature</source>
-        <translation>temperatura de l&apos;aigua</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditWaterTypeUser</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="380"/>
-        <source>salinity</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>Command::EditWaveSize</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="251"/>
-        <source>wavesize</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>Command::ImportDiveSites</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="100"/>
-        <source>import dive sites from %1</source>
-        <translation>s&apos;importen punts d&apos;immersió des de %1</translation>
-    </message>
-</context>
-<context>
-    <name>Command::ImportDives</name>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="468"/>
         <source>import %n dive(s) from %1</source>
         <translation><numerusform>s&apos;importa %n inmersió des de %1</numerusform><numerusform>s&apos;importen %n inmersions des de %1</numerusform></translation>
     </message>
-</context>
-<context>
-    <name>Command::MergeDiveSites</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="342"/>
-        <source>merge dive sites</source>
-        <translation>es fusionen els punts d&apos;immersió</translation>
-    </message>
-</context>
-<context>
-    <name>Command::MergeDives</name>
-    <message>
-        <location filename="../commands/command_divelist.cpp" line="909"/>
-        <source>merge dive</source>
-        <translation>es fusionen les inmersions</translation>
-    </message>
-</context>
-<context>
-    <name>Command::MoveDiveComputerToFront</name>
-    <message>
-        <location filename="../commands/command_divelist.cpp" line="898"/>
-        <source>move dive computer to front</source>
-        <translation>Mou l&apos;ordinador de busseig al davant</translation>
-    </message>
-</context>
-<context>
-    <name>Command::PurgeUnusedDiveSites</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="156"/>
-        <source>purge unused dive sites</source>
-        <translation>es purguen els llocs d&apos;immersió no utilitzats</translation>
-    </message>
-</context>
-<context>
-    <name>Command::RemoveAutogenTrips</name>
-    <message>
-        <location filename="../commands/command_divelist.cpp" line="697"/>
-        <source>remove autogenerated trips</source>
-        <translation>s&apos;eliminen els viatges generats automàticament</translation>
-    </message>
-</context>
-<context>
-    <name>Command::RemoveDivesFromTrip</name>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="685"/>
-        <source>remove %n dive(s) from trip</source>
-        <translation><numerusform>s&apos;elimina %n inmersió del viatge</numerusform><numerusform>s&apos;eliminen %n inmersions del viatge</numerusform></translation>
+        <location filename="../commands/command_divelist.cpp" line="549"/>
+        <source>delete %n dive(s)</source>
+        <translation><numerusform>se suprimeix %n inmersió</numerusform><numerusform>se suprimeixen %n inmersions</numerusform></translation>
     </message>
-</context>
-<context>
-    <name>Command::RenumberDives</name>
-    <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="633"/>
-        <source>renumber %n dive(s)</source>
-        <translation><numerusform>es renumera %n immersió</numerusform><numerusform>es renumeren %n immersions</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command::ShiftTime</name>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="585"/>
         <source>shift time of %n dives</source>
         <translation><numerusform>es canvia el temps d&apos;%n immersió</numerusform><numerusform>es canvia el temps de %n immersions</numerusform></translation>
     </message>
-</context>
-<context>
-    <name>Command::SplitDiveComputer</name>
+    <message numerus="yes">
+        <location filename="../commands/command_divelist.cpp" line="633"/>
+        <source>renumber %n dive(s)</source>
+        <translation><numerusform>es renumera %n immersió</numerusform><numerusform>es renumeren %n immersions</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_divelist.cpp" line="685"/>
+        <source>remove %n dive(s) from trip</source>
+        <translation><numerusform>s&apos;elimina %n inmersió del viatge</numerusform><numerusform>s&apos;eliminen %n inmersions del viatge</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divelist.cpp" line="697"/>
+        <source>remove autogenerated trips</source>
+        <translation>s&apos;eliminen els viatges generats automàticament</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_divelist.cpp" line="709"/>
+        <source>add %n dives to trip</source>
+        <translation><numerusform>s&apos;afegeix %n immersió al viatge</numerusform><numerusform>s&apos;afegeixen %n immersions al viatge</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divelist.cpp" line="716"/>
+        <source>create trip</source>
+        <translation>es crea el viatge</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divelist.cpp" line="729"/>
+        <source>autogroup dives</source>
+        <translation>immersions en autogrup</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divelist.cpp" line="824"/>
+        <source>split dive</source>
+        <translation>es divideix la immersió</translation>
+    </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="842"/>
         <source>split dive computer</source>
         <translation>Divideix l&apos;ordinador de busseig</translation>
     </message>
-</context>
-<context>
-    <name>Command::SplitDives</name>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="824"/>
-        <source>split dive</source>
-        <translation>es divideix la immersió</translation>
+        <location filename="../commands/command_divelist.cpp" line="898"/>
+        <source>move dive computer to front</source>
+        <translation>Mou l&apos;ordinador de busseig al davant</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divelist.cpp" line="904"/>
+        <source>delete dive computer</source>
+        <translation>Suprimeix l&apos;ordinador de busseig</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divelist.cpp" line="909"/>
+        <source>merge dive</source>
+        <translation>es fusionen les inmersions</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="78"/>
+        <source>add dive site</source>
+        <translation>s&apos;afegeix el punt de la immersió</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="100"/>
+        <source>import dive sites from %1</source>
+        <translation>s&apos;importen punts d&apos;immersió des de %1</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_divesite.cpp" line="136"/>
+        <source>delete %n dive site(s)</source>
+        <translation><numerusform>se suprimeix %n punt d&apos;immersió</numerusform><numerusform>se suprimeixen %n punts d&apos;immersió</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="156"/>
+        <source>purge unused dive sites</source>
+        <translation>es purguen els llocs d&apos;immersió no utilitzats</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="191"/>
+        <source>Edit dive site name</source>
+        <translation>Edita el nom del punt de la immersió</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="214"/>
+        <source>Edit dive site description</source>
+        <translation>Edita la descripció del punt de la immersió</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="237"/>
+        <source>Edit dive site notes</source>
+        <translation>Edita les notes del punt de la immersió</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="260"/>
+        <source>Edit dive site country</source>
+        <translation>Edita el país del punt de la immersió</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="285"/>
+        <source>Edit dive site location</source>
+        <translation>Edita la ubicació del punt de la immersió</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="314"/>
+        <source>Edit dive site taxonomy</source>
+        <translation>Editeu la taxonomia del punt de la immersió</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="342"/>
+        <source>merge dive sites</source>
+        <translation>es fusionen els punts d&apos;immersió</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="396"/>
+        <source>apply GPS fixes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="95"/>
+        <location filename="../commands/command_edit.cpp" line="660"/>
+        <location filename="../commands/command_edit_trip.cpp" line="18"/>
+        <source>Edit %1</source>
+        <translation>Edita %1</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="97"/>
+        <location filename="../commands/command_edit.cpp" line="662"/>
+        <source>Edit %1 (%n dive(s))</source>
+        <translation><numerusform>Edita %1 (%n immersió)</numerusform><numerusform>Edita %1 (%n immersions)</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="166"/>
+        <source>notes</source>
+        <translation>notes</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="188"/>
+        <source>suit</source>
+        <translation>vestit</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="209"/>
+        <source>rating</source>
+        <translation>valoració</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="230"/>
+        <source>visibility</source>
+        <translation>visibilitat</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="251"/>
+        <source>wavesize</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="272"/>
+        <source>current</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="293"/>
+        <source>surge</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="314"/>
+        <source>chill</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="335"/>
+        <source>air temperature</source>
+        <translation>temperatura de l&apos;aire</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="359"/>
+        <source>water temperature</source>
+        <translation>temperatura de l&apos;aigua</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="380"/>
+        <source>salinity</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="401"/>
+        <source>Atm. pressure</source>
+        <translation>Pressió atm.</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="425"/>
+        <source>duration</source>
+        <translation>durada</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="449"/>
+        <source>depth</source>
+        <translation>profunditat</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="471"/>
+        <source>dive site</source>
+        <translation>Punt de la immersió</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="569"/>
+        <source>dive mode</source>
+        <translation>mode de busseig</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="590"/>
+        <source>invalid</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="725"/>
+        <source>tags</source>
+        <translation>etiquetes</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="748"/>
+        <source>buddies</source>
+        <translation>companys</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="771"/>
+        <source>dive master</source>
+        <translation>líder de busseig</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="870"/>
+        <source>Paste onto %n dive(s)</source>
+        <translation><numerusform>Enganxa a %n immersió</numerusform><numerusform>Enganxa a %n immersions</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="946"/>
+        <source>Replan dive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="946"/>
+        <source>Edit profile</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="993"/>
+        <source>Add weight</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="995"/>
+        <source>Add weight (%n dive(s))</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1078"/>
+        <source>Remove weight</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1080"/>
+        <source>Remove weight (%n dive(s))</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1108"/>
+        <source>Edit weight</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1110"/>
+        <source>Edit weight (%n dive(s))</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1169"/>
+        <source>Edit dive [%1]</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../commands/command_edit_trip.cpp" line="53"/>
+        <source>trip location</source>
+        <translation>ubicació del viatge</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit_trip.cpp" line="75"/>
+        <source>trip notes</source>
+        <translation>notes del viatge</translation>
     </message>
 </context>
 <context>
@@ -3321,89 +3246,124 @@ GPS actual:</translation>
 <context>
     <name>DiveListView</name>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="900"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="890"/>
         <source>Expand all</source>
         <translation>Expandeix-ho tot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="902"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="892"/>
         <source>Collapse all</source>
         <translation>Redueix-ho tot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="906"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="896"/>
         <source>Collapse others</source>
         <translation>Redueix les altres</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="910"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="900"/>
         <source>Remove dive(s) from trip</source>
         <translation>Elimina la/es immersió/ns del viatge</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="911"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="901"/>
         <source>Create new trip above</source>
         <translation>Crea un nou viatge per sobre</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="926"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="916"/>
         <source>Add dive(s) to trip immediately above</source>
         <translation>Afegeix una/es immersió/ns al viatge de sobre</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="928"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="918"/>
         <source>Add dive(s) to trip immediately below</source>
         <translation>Afegeix una/es immersió/ns al viatge de sota</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="932"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="922"/>
         <source>Merge trip with trip above</source>
         <translation>Combina un viatge amb el viatge de sobre</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="933"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="923"/>
         <source>Merge trip with trip below</source>
         <translation>Combina un viatge amb el viatge de sota</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="937"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="927"/>
         <source>Delete dive(s)</source>
         <translation>Suprimeix la/es immersió/ns</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="939"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="929"/>
+        <source>Mark dive(s) valid</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelistview.cpp" line="931"/>
         <source>Mark dive(s) invalid</source>
         <translation>Marca la/es immersió/ns com a no vàlida/es</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="943"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="934"/>
         <source>Merge selected dives</source>
         <translation>Fusiona les immersions seleccionades</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="945"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="936"/>
         <source>Renumber dive(s)</source>
         <translation>Torna a numerar la/es immersions</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="946"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="937"/>
         <source>Shift dive times</source>
         <translation>Desplaça l&apos;hora de la immersió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="947"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="938"/>
         <source>Split selected dives</source>
         <translation>Divideix les immersions seleccionades</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="948"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="939"/>
         <source>Load media from file(s)</source>
         <translation>Carrega el/s suport/s des de fitxer/s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="949"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="940"/>
         <source>Load media from web</source>
         <translation>Carrega el suport des del web</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelistview.cpp" line="966"/>
+        <source>Open media files</source>
+        <translation>Obre fitxers de suport</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelistview.cpp" line="969"/>
+        <source>Media files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelistview.cpp" line="970"/>
+        <source>Image files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelistview.cpp" line="971"/>
+        <source>Video files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelistview.cpp" line="972"/>
+        <source>All files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelistview.cpp" line="1021"/>
+        <source>%1 does not appear to be an image</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4908,186 +4868,186 @@ p, li { white-space: pre-wrap; }
         <translation>(%1 visibles)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="121"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="124"/>
         <source>(%1 shown)</source>
         <translation>(%1 visibles)</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="307"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="376"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="416"/>
-        <source>#</source>
-        <translation>Núm.</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="309"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="378"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="418"/>
-        <source>Date</source>
-        <translation>Data</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="311"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="380"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="420"/>
-        <source>Rating</source>
-        <translation>Valoració</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="313"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="422"/>
-        <source>Depth(%1)</source>
-        <translation>Prof.(%1)</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="313"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="422"/>
-        <source>m</source>
-        <translation> m</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="313"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="422"/>
-        <source>ft</source>
-        <translation>ft</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="315"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="384"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="424"/>
-        <source>Duration</source>
-        <translation>Durada</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="317"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="426"/>
-        <source>Temp.(°%1)</source>
-        <translation>Temp.(°%1)</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="319"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="428"/>
-        <source>Weight(%1)</source>
-        <translation>Llast(%1)</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="319"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="428"/>
-        <source>kg</source>
-        <translation>kg</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="319"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="428"/>
-        <source>lbs</source>
-        <translation>lbs</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="321"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="390"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="430"/>
-        <source>Suit</source>
-        <translation>Vestit</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="323"/>
         <location filename="../qt-models/divetripmodel.cpp" line="392"/>
         <location filename="../qt-models/divetripmodel.cpp" line="432"/>
-        <source>Cylinder</source>
-        <translation>Ampolla</translation>
+        <source>#</source>
+        <translation>Núm.</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="325"/>
         <location filename="../qt-models/divetripmodel.cpp" line="394"/>
         <location filename="../qt-models/divetripmodel.cpp" line="434"/>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="327"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="396"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="436"/>
+        <source>Rating</source>
+        <translation>Valoració</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="329"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="438"/>
+        <source>Depth(%1)</source>
+        <translation>Prof.(%1)</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="329"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="438"/>
+        <source>m</source>
+        <translation> m</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="329"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="438"/>
+        <source>ft</source>
+        <translation>ft</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="331"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="400"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="440"/>
+        <source>Duration</source>
+        <translation>Durada</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="333"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="442"/>
+        <source>Temp.(°%1)</source>
+        <translation>Temp.(°%1)</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="335"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="444"/>
+        <source>Weight(%1)</source>
+        <translation>Llast(%1)</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="335"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="444"/>
+        <source>kg</source>
+        <translation>kg</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="335"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="444"/>
+        <source>lbs</source>
+        <translation>lbs</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="337"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="406"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="446"/>
+        <source>Suit</source>
+        <translation>Vestit</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="339"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="408"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="448"/>
+        <source>Cylinder</source>
+        <translation>Ampolla</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="341"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="410"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="450"/>
         <source>Gas</source>
         <translation>Gas</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="329"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="438"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="345"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="454"/>
         <source>SAC(%1)</source>
         <translation>CAS(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="329"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="438"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="345"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="454"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="331"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="398"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="440"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="347"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="414"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="456"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="333"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="349"/>
         <source>Max. CNS</source>
         <translation>SNC màx.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="335"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="402"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="444"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="351"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="418"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="460"/>
         <source>Tags</source>
         <translation>Etiquetes</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="337"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="446"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="353"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="462"/>
         <source>Media before/during/after dive</source>
         <translation>Suport abans/durant/després de la immersió</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="339"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="406"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="355"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="422"/>
         <source>Country</source>
         <translation>País</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="341"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="408"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="448"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="357"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="424"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="464"/>
         <source>Buddy</source>
         <translation>Company</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="343"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="410"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="450"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="359"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="426"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="466"/>
         <source>Location</source>
         <translation>Ubicació</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="382"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="398"/>
         <source>Depth</source>
         <translation>Profunditat</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="386"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="402"/>
         <source>Temp.</source>
         <translation>Temp.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="388"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="404"/>
         <source>Weight</source>
         <translation>Llast</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="396"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="412"/>
         <source>SAC</source>
         <translation>CAS</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="400"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="442"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="416"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="458"/>
         <source>Max CNS</source>
         <translation>SNC màx.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="404"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="420"/>
         <source>Media</source>
         <translation>Suport</translation>
     </message>
@@ -5364,10 +5324,10 @@ a la llista d&apos;immersions.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="211"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="205"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="316"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="355"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="465"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="215"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="326"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="365"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="475"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="334"/>
         <source>Download</source>
         <translation>Baixa</translation>
@@ -5398,7 +5358,7 @@ a la llista d&apos;immersions.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="330"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="348"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="358"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="340"/>
         <source>Cancel</source>
         <translation>Cancel·la</translation>
@@ -5429,57 +5389,57 @@ a la llista d&apos;immersions.</translation>
         <translation>Connexió:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="211"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="221"/>
         <source> Previously used dive computers: </source>
         <translation>Ordinadors de busseig utilitzats anteriorment:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="320"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="330"/>
         <source>Retry</source>
         <translation>Torna a intentar-ho</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="348"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="358"/>
         <source>Quit</source>
         <translation>Surt</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="366"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="376"/>
         <source>Rescan</source>
         <translation>Torna a explorar</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="382"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="392"/>
         <source> Downloaded dives</source>
         <translation>Immersions baixades</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="383"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="393"/>
         <source>Info:</source>
         <translation>Informació:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="406"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="416"/>
         <source>force downloading all dives</source>
         <translation>Força la baixada de totes les immersions</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="435"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="445"/>
         <source>Please wait while we record these dives...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="450"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="460"/>
         <source>Accept</source>
         <translation>Accepta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="479"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="489"/>
         <source>Select All</source>
         <translation>Selecciona-ho tot</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="488"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="498"/>
         <source>Unselect All</source>
         <translation>Desselecciona-ho tot</translation>
     </message>
@@ -5490,72 +5450,6 @@ a la llista d&apos;immersions.</translation>
         <location filename="../core/downloadfromdcthread.cpp" line="97"/>
         <source>No new dives downloaded from dive computer</source>
         <translation>No hi ha cap immersió nova baixada des de l&apos;ordinador de busseig</translation>
-    </message>
-</context>
-<context>
-    <name>EditBuddies</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="727"/>
-        <source>buddies</source>
-        <translation>companys</translation>
-    </message>
-</context>
-<context>
-    <name>EditDive</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1148"/>
-        <source>Edit dive [%1]</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>EditDiveMaster</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="750"/>
-        <source>dive master</source>
-        <translation>líder de busseig</translation>
-    </message>
-</context>
-<context>
-    <name>EditMode</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="569"/>
-        <source>dive mode</source>
-        <translation>mode de busseig</translation>
-    </message>
-</context>
-<context>
-    <name>EditTags</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="704"/>
-        <source>tags</source>
-        <translation>etiquetes</translation>
-    </message>
-</context>
-<context>
-    <name>EditTagsBase</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="639"/>
-        <source>Edit %1</source>
-        <translation>Edita %1</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="641"/>
-        <source>Edit %1 (%n dive(s))</source>
-        <translation><numerusform>Edita %1 (%n immersió)</numerusform><numerusform>Edita %1 (%n immersions)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>EditWeight</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1087"/>
-        <source>Edit weight</source>
-        <translation type="unfinished"/>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1089"/>
-        <source>Edit weight (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
@@ -7399,14 +7293,6 @@ Si el vostre dispositiu usa Bluetooth, feu els mateixos preparatius que per a ba
     </message>
 </context>
 <context>
-    <name>PasteDives</name>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="849"/>
-        <source>Paste onto %n dive(s)</source>
-        <translation><numerusform>Enganxa a %n immersió</numerusform><numerusform>Enganxa a %n immersions</numerusform></translation>
-    </message>
-</context>
-<context>
     <name>PlannerSettingsWidget</name>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="543"/>
@@ -8220,17 +8106,17 @@ Vegeu http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="14"/>
+        <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="15"/>
         <source> Dive log</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="27"/>
+        <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="28"/>
         <source>Open default log file</source>
         <translation>Obre el fitxer de registre per omissió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="27"/>
+        <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="28"/>
         <source>Subsurface files</source>
         <translation>Fitxers del Subsurface</translation>
     </message>
@@ -9147,19 +9033,6 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
     </message>
 </context>
 <context>
-    <name>RemoveWeight</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1057"/>
-        <source>Remove weight</source>
-        <translation type="unfinished"/>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1059"/>
-        <source>Remove weight (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
-    </message>
-</context>
-<context>
     <name>RenumberDialog</name>
     <message>
         <location filename="../desktop-widgets/renumber.ui" line="17"/>
@@ -9194,19 +9067,6 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="144"/>
         <source>Renumber all dives</source>
         <translation>Torna a numerar totes les immersions</translation>
-    </message>
-</context>
-<context>
-    <name>ReplanDive</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="925"/>
-        <source>Replan dive</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="925"/>
-        <source>Edit profile</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -9250,112 +9110,117 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="14"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="10"/>
         <source>Settings</source>
         <translation>Ajustaments</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="17"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="15"/>
         <source>Undefined</source>
         <translation>Sense definir</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="18"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="16"/>
         <source>Incorrect username/password combination</source>
         <translation>La combinació, nom d&apos;usuari/contrasenya és incorrecta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="19"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="17"/>
         <source>Credentials need to be verified</source>
         <translation>Cal verificar les credencials</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="20"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="18"/>
         <source>Credentials verified</source>
         <translation>S&apos;han verificat les credencials</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="21"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="19"/>
         <source>No cloud mode</source>
         <translation>Mode sense el núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="28"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="24"/>
         <source>General settings</source>
         <translation>Arranjament general</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="37"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="34"/>
         <source>Cloud status</source>
         <translation>Estat del núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="45"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="42"/>
         <source>Email</source>
         <translation>Correu-e</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="49"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="45"/>
         <source>Not applicable</source>
         <translation>No aplicable</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="54"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="50"/>
         <source>Change</source>
         <translation>Canvia</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="57"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="53"/>
         <source>Starting...</source>
         <translation>S&apos;està començant...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="61"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="57"/>
         <source>Status</source>
         <translation>Estat</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="81"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="74"/>
         <source>Default Cylinder</source>
         <translation>Cilindre predeterminat</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="89"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="82"/>
         <source>Cylinder:</source>
         <translation>Ampolla:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="112"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="106"/>
         <source>Dive computers</source>
         <translation>Ordinadors de busseig</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="120"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="114"/>
         <source>Forget remembered dive computers</source>
         <translation>Oblida els ordinadors de busseig recordats</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="125"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="119"/>
         <source>Forget</source>
         <translation>Oblida</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="140"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="134"/>
         <source>Theme</source>
         <translation>Tema</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="152"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="141"/>
+        <source>Color theme</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="154"/>
         <source>Blue</source>
         <translation>Blau</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="153"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="155"/>
         <source>Pink</source>
         <translation>Rosa</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="154"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="156"/>
         <source>Dark</source>
         <translation>Fosc</translation>
     </message>
@@ -9365,82 +9230,87 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="180"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="179"/>
         <source>text</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="196"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="193"/>
         <source>primary</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="211"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="207"/>
         <source>primary text</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="227"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="221"/>
         <source>darker primary</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="242"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="235"/>
         <source>darker primary text</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="258"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="249"/>
         <source>light primary</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="273"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="263"/>
         <source>light primary text</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="293"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="280"/>
         <source>secondary text</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="309"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="294"/>
         <source>drawer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="324"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="305"/>
+        <source>Font size</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="316"/>
         <source>smaller</source>
         <translation>Petit</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="331"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="324"/>
         <source>regular</source>
         <translation>Normal</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="338"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="332"/>
         <source>larger</source>
         <translation>Gran</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="351"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="346"/>
         <source>Units</source>
         <translation>Unitats</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="357"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="352"/>
         <source>Metric</source>
         <translation>Mètric</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="366"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="362"/>
         <source>Imperial</source>
         <translation>Imperial</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="375"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="372"/>
         <source>Personalize</source>
         <translation type="unfinished"/>
     </message>
@@ -9525,7 +9395,7 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="509"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="510"/>
         <source>GPS location service</source>
         <translation>Servei d&apos;ubicació GPS</translation>
     </message>
@@ -9535,29 +9405,29 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
         <translation>Llindar de la distància (metres)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="532"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="530"/>
         <source>Time threshold (minutes)</source>
         <translation>Llindar del temps (minuts)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="553"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="551"/>
         <source>Bluetooth</source>
         <translation>Bluetooth</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="562"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="559"/>
         <source>Temporarily show all bluetooth devices 
 even if not recognized as dive computers.
 Please report DCs that need this setting</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="582"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="581"/>
         <source>Display</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="590"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="589"/>
         <source>Show only one column in Portrait mode</source>
         <translation type="unfinished"/>
     </message>
@@ -9567,7 +9437,7 @@ Please report DCs that need this setting</source>
         <translation>Desenvolupador</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="620"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="619"/>
         <source>Display Developer menu</source>
         <translation>Mostra el menú del desenvolupador</translation>
     </message>
@@ -10698,22 +10568,22 @@ mixed from Air and using:
         <translation>Desa les edicions</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/TripDetails.qml" line="62"/>
+        <location filename="../mobile-widgets/qml/TripDetails.qml" line="64"/>
         <source>Cancel edit</source>
         <translation>Cancel·la l&apos;edició</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/TripDetails.qml" line="82"/>
+        <location filename="../mobile-widgets/qml/TripDetails.qml" line="84"/>
         <source>Edit trip details</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/TripDetails.qml" line="95"/>
+        <location filename="../mobile-widgets/qml/TripDetails.qml" line="97"/>
         <source>Trip location:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/TripDetails.qml" line="109"/>
+        <location filename="../mobile-widgets/qml/TripDetails.qml" line="111"/>
         <source>Trip notes</source>
         <translation>Notes del viatge</translation>
     </message>
@@ -11546,9 +11416,9 @@ Màxim</translation>
         <location filename="../core/divelogexportlogic.cpp" line="95"/>
         <location filename="../core/subsurface-qt/diveobjecthelper.cpp" line="266"/>
         <location filename="../desktop-widgets/templatelayout.h" line="101"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="159"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="209"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="211"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="162"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="221"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="223"/>
         <source>h</source>
         <translation>h</translation>
     </message>
@@ -11560,9 +11430,9 @@ Màxim</translation>
         <location filename="../core/subsurface-qt/diveobjecthelper.cpp" line="266"/>
         <location filename="../core/worldmap-save.c" line="49"/>
         <location filename="../desktop-widgets/templatelayout.h" line="102"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="159"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="209"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="211"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="162"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="221"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="223"/>
         <source>min</source>
         <translation> min</translation>
     </message>
@@ -12076,12 +11946,12 @@ Podeu crear aquest fitxer de registre seleccionant la casella de selecció corre
         <translation>nom addicional per aquest lloc: %s</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1706"/>
+        <location filename="../core/load-git.c" line="1713"/>
         <source>Load dives from local cache</source>
         <translation>Carrega les immersions des del cau local</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1710"/>
+        <location filename="../core/load-git.c" line="1717"/>
         <source>Successfully opened dive data</source>
         <translation>S&apos;han obert amb èxit les dades de busseig</translation>
     </message>
@@ -12103,12 +11973,12 @@ Podeu crear aquest fitxer de registre seleccionant la casella de selecció corre
         <translation>Percentatge estrany en llegir %s</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="1701"/>
+        <location filename="../core/parse-xml.c" line="1703"/>
         <source>Failed to parse &apos;%s&apos;</source>
         <translation>Ha fallat en analitzar «%s»</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2297"/>
+        <location filename="../core/parse-xml.c" line="2299"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>No s&apos;ha pogut obrir el full d&apos;estil %s</translation>
     </message>
@@ -12791,7 +12661,7 @@ EADD: %d% s / %.1fg/ℓ
         <location filename="../core/qthelper.cpp" line="795"/>
         <location filename="../core/qthelper.cpp" line="1235"/>
         <location filename="../core/units.c" line="166"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="185"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="188"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
@@ -12801,7 +12671,7 @@ EADD: %d% s / %.1fg/ℓ
         <location filename="../core/qthelper.cpp" line="797"/>
         <location filename="../core/qthelper.cpp" line="1236"/>
         <location filename="../core/units.c" line="162"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="187"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="190"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
@@ -12869,22 +12739,22 @@ EADD: %d% s / %.1fg/ℓ
         <translation>cuft</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="922"/>
+        <location filename="../core/save-git.c" line="923"/>
         <source>Start saving data</source>
         <translation>Comença a desar les dades</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="931"/>
+        <location filename="../core/save-git.c" line="932"/>
         <source>Start saving dives</source>
         <translation>Comença a desar les immersions</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="964"/>
+        <location filename="../core/save-git.c" line="965"/>
         <source>Done creating local cache</source>
         <translation>S&apos;ha realitzat la creació del cau local</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1221"/>
+        <location filename="../core/save-git.c" line="1222"/>
         <source>Preparing to save data</source>
         <translation>S&apos;està realitzant la preparació per a desar les dades</translation>
     </message>
@@ -13172,12 +13042,12 @@ EADD: %d% s / %.1fg/ℓ
         <translation>Estat de la immersió</translation>
     </message>
     <message>
-        <location filename="../core/save-xml.c" line="758"/>
+        <location filename="../core/save-xml.c" line="760"/>
         <source>Failed to save dives to %s (%s)</source>
         <translation>Ha fallat en desar les immersions a %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/save-xml.c" line="874"/>
+        <location filename="../core/save-xml.c" line="876"/>
         <source>Failed to save divesites to %s (%s)</source>
         <translation>Ha fallat en desar els punts d&apos;immersió a %s (%s)</translation>
     </message>
@@ -13197,7 +13067,7 @@ EADD: %d% s / %.1fg/ℓ
         <translation>Tots (per estadístiques de la temperatura mínima)</translation>
     </message>
     <message>
-        <location filename="../core/statistics.c" line="226"/>
+        <location filename="../core/statistics.c" line="228"/>
         <source>All (by trip stats)</source>
         <translation>Tots (per estadístiques del viatge)</translation>
     </message>
@@ -13682,7 +13552,7 @@ Està connectat correctament el Uemis Zurich?</translation>
         <translation>Canvi de mode</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="176"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="179"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>

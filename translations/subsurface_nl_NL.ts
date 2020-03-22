@@ -37,19 +37,6 @@
     </message>
 </context>
 <context>
-    <name>AddWeight</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="972"/>
-        <source>Add weight</source>
-        <translation>Gewicht toevoegen</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="974"/>
-        <source>Add weight (%n dive(s))</source>
-        <translation><numerusform>Gewicht toevoegen (%n duik)</numerusform><numerusform>Gewicht toevoegen (%n duiken)</numerusform></translation>
-    </message>
-</context>
-<context>
     <name>BtDeviceSelectionDialog</name>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="14"/>
@@ -146,7 +133,7 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="221"/>
         <source>even if not recognized as dive computer</source>
-        <translation>zelfs als deze niet als duikcomputer worden herkend</translation>
+        <translation>zelfs als deze niet wordt herkend als duikcomputer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="224"/>
@@ -631,374 +618,312 @@
         <translation>Alle duiken</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="95"/>
-        <source>Edit %1</source>
-        <translation>Bewerk %1</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="97"/>
-        <source>Edit %1 (%n dive(s))</source>
-        <translation><numerusform>Bewerk %1 (%n duik)</numerusform><numerusform>Bewerk %1 (%n duiken)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command::AddDive</name>
-    <message>
         <location filename="../commands/command_divelist.cpp" line="399"/>
         <source>add dive</source>
         <translation>duik toevoegen</translation>
     </message>
-</context>
-<context>
-    <name>Command::AddDiveSite</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="78"/>
-        <source>add dive site</source>
-        <translation>duikstek toevoegen</translation>
-    </message>
-</context>
-<context>
-    <name>Command::AddDivesToTrip</name>
-    <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="709"/>
-        <source>add %n dives to trip</source>
-        <translation><numerusform>%n duik aan trip toevoegen</numerusform><numerusform>%n duiken aan trip toevoegen</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command::ApplyGPSFixes</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="396"/>
-        <source>apply GPS fixes</source>
-        <translation>GPS fixes toepassen</translation>
-    </message>
-</context>
-<context>
-    <name>Command::AutogroupDives</name>
-    <message>
-        <location filename="../commands/command_divelist.cpp" line="729"/>
-        <source>autogroup dives</source>
-        <translation>groepeer duiken</translation>
-    </message>
-</context>
-<context>
-    <name>Command::CreateTrip</name>
-    <message>
-        <location filename="../commands/command_divelist.cpp" line="716"/>
-        <source>create trip</source>
-        <translation>Maak trip</translation>
-    </message>
-</context>
-<context>
-    <name>Command::DeleteDive</name>
-    <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="549"/>
-        <source>delete %n dive(s)</source>
-        <translation><numerusform>verwijder %n duik</numerusform><numerusform>verwijder %n duiken</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command::DeleteDiveComputer</name>
-    <message>
-        <location filename="../commands/command_divelist.cpp" line="904"/>
-        <source>delete dive computer</source>
-        <translation>verwijder duikcomputer</translation>
-    </message>
-</context>
-<context>
-    <name>Command::DeleteDiveSites</name>
-    <message numerus="yes">
-        <location filename="../commands/command_divesite.cpp" line="136"/>
-        <source>delete %n dive site(s)</source>
-        <translation><numerusform>verwijder %n duikstek</numerusform><numerusform>verwijder %n duikstekken</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditAirTemp</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="335"/>
-        <source>air temperature</source>
-        <translation>luchttemperatuur</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditAtmPress</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="401"/>
-        <source>Atm. pressure</source>
-        <translation>Atm. druk</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditChill</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="314"/>
-        <source>chill</source>
-        <translation>koude</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditCurrent</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="272"/>
-        <source>current</source>
-        <translation>stroming</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditDepth</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="449"/>
-        <source>depth</source>
-        <translation>diepte</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditDiveSite</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="471"/>
-        <source>dive site</source>
-        <translation>duikstek</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditDiveSiteCountry</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="260"/>
-        <source>Edit dive site country</source>
-        <translation>Duikstek land bewerken</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditDiveSiteDescription</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="214"/>
-        <source>Edit dive site description</source>
-        <translation>Duikstek beschrijving bewerken</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditDiveSiteLocation</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="285"/>
-        <source>Edit dive site location</source>
-        <translation>Duikstek locatie bewerken</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditDiveSiteName</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="191"/>
-        <source>Edit dive site name</source>
-        <translation>Duikstek naam bewerken</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditDiveSiteNotes</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="237"/>
-        <source>Edit dive site notes</source>
-        <translation>Duikstek notities bewerken</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditDiveSiteTaxonomy</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="314"/>
-        <source>Edit dive site taxonomy</source>
-        <translation>Duikstek taxonomie bewerken</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditDuration</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="425"/>
-        <source>duration</source>
-        <translation>duur</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditNotes</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="166"/>
-        <source>notes</source>
-        <translation>notities</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditRating</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="209"/>
-        <source>rating</source>
-        <translation>waardering</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditSuit</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="188"/>
-        <source>suit</source>
-        <translation>duikpak</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditSurge</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="293"/>
-        <source>surge</source>
-        <translation>golven</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditTripBase</name>
-    <message>
-        <location filename="../commands/command_edit_trip.cpp" line="18"/>
-        <source>Edit %1</source>
-        <translation>Bewerk %1</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditTripLocation</name>
-    <message>
-        <location filename="../commands/command_edit_trip.cpp" line="53"/>
-        <source>trip location</source>
-        <translation>trip locatie</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditTripNotes</name>
-    <message>
-        <location filename="../commands/command_edit_trip.cpp" line="75"/>
-        <source>trip notes</source>
-        <translation>trip notities</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditVisibility</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="230"/>
-        <source>visibility</source>
-        <translation>Zicht</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditWaterTemp</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="359"/>
-        <source>water temperature</source>
-        <translation>watertemperatuur</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditWaterTypeUser</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="380"/>
-        <source>salinity</source>
-        <translation>zoutgehalte</translation>
-    </message>
-</context>
-<context>
-    <name>Command::EditWaveSize</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="251"/>
-        <source>wavesize</source>
-        <translation>golfhoogte</translation>
-    </message>
-</context>
-<context>
-    <name>Command::ImportDiveSites</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="100"/>
-        <source>import dive sites from %1</source>
-        <translation>importeer duikstekken van %1</translation>
-    </message>
-</context>
-<context>
-    <name>Command::ImportDives</name>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="468"/>
         <source>import %n dive(s) from %1</source>
         <translation><numerusform>importeer %n duik van %1</numerusform><numerusform>importeer %n duiken van %1</numerusform></translation>
     </message>
-</context>
-<context>
-    <name>Command::MergeDiveSites</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="342"/>
-        <source>merge dive sites</source>
-        <translation>duikstekken samenvoegen</translation>
-    </message>
-</context>
-<context>
-    <name>Command::MergeDives</name>
-    <message>
-        <location filename="../commands/command_divelist.cpp" line="909"/>
-        <source>merge dive</source>
-        <translation>Duik samenvoegen</translation>
-    </message>
-</context>
-<context>
-    <name>Command::MoveDiveComputerToFront</name>
-    <message>
-        <location filename="../commands/command_divelist.cpp" line="898"/>
-        <source>move dive computer to front</source>
-        <translation>Duikcomputer naar voren brengen</translation>
-    </message>
-</context>
-<context>
-    <name>Command::PurgeUnusedDiveSites</name>
-    <message>
-        <location filename="../commands/command_divesite.cpp" line="156"/>
-        <source>purge unused dive sites</source>
-        <translation>ongebruikte duikstekken verwijderen</translation>
-    </message>
-</context>
-<context>
-    <name>Command::RemoveAutogenTrips</name>
-    <message>
-        <location filename="../commands/command_divelist.cpp" line="697"/>
-        <source>remove autogenerated trips</source>
-        <translation>verwijder automatisch aangemaakte trips</translation>
-    </message>
-</context>
-<context>
-    <name>Command::RemoveDivesFromTrip</name>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="685"/>
-        <source>remove %n dive(s) from trip</source>
-        <translation><numerusform>%n duik uit trip verwijderen</numerusform><numerusform>%n duiken uit trip verwijderen</numerusform></translation>
+        <location filename="../commands/command_divelist.cpp" line="549"/>
+        <source>delete %n dive(s)</source>
+        <translation><numerusform>verwijder %n duik</numerusform><numerusform>verwijder %n duiken</numerusform></translation>
     </message>
-</context>
-<context>
-    <name>Command::RenumberDives</name>
-    <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="633"/>
-        <source>renumber %n dive(s)</source>
-        <translation><numerusform>%n duik hernummeren</numerusform><numerusform>%n duiken hernummeren</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command::ShiftTime</name>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="585"/>
         <source>shift time of %n dives</source>
         <translation><numerusform>Tijdstip van %n duik verschuiven</numerusform><numerusform>Tijdstip van %n duiken verschuiven</numerusform></translation>
     </message>
-</context>
-<context>
-    <name>Command::SplitDiveComputer</name>
+    <message numerus="yes">
+        <location filename="../commands/command_divelist.cpp" line="633"/>
+        <source>renumber %n dive(s)</source>
+        <translation><numerusform>%n duik hernummeren</numerusform><numerusform>%n duiken hernummeren</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_divelist.cpp" line="685"/>
+        <source>remove %n dive(s) from trip</source>
+        <translation><numerusform>%n duik uit trip verwijderen</numerusform><numerusform>%n duiken uit trip verwijderen</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divelist.cpp" line="697"/>
+        <source>remove autogenerated trips</source>
+        <translation>verwijder automatisch aangemaakte trips</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_divelist.cpp" line="709"/>
+        <source>add %n dives to trip</source>
+        <translation><numerusform>%n duik aan trip toevoegen</numerusform><numerusform>%n duiken aan trip toevoegen</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divelist.cpp" line="716"/>
+        <source>create trip</source>
+        <translation>Maak trip</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divelist.cpp" line="729"/>
+        <source>autogroup dives</source>
+        <translation>groepeer duiken</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divelist.cpp" line="824"/>
+        <source>split dive</source>
+        <translation>duik splitsen </translation>
+    </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="842"/>
         <source>split dive computer</source>
         <translation>duikcomputer splitsen</translation>
     </message>
-</context>
-<context>
-    <name>Command::SplitDives</name>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="824"/>
-        <source>split dive</source>
-        <translation>duik splitsen </translation>
+        <location filename="../commands/command_divelist.cpp" line="898"/>
+        <source>move dive computer to front</source>
+        <translation>Duikcomputer naar voren brengen</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divelist.cpp" line="904"/>
+        <source>delete dive computer</source>
+        <translation>verwijder duikcomputer</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divelist.cpp" line="909"/>
+        <source>merge dive</source>
+        <translation>Duik samenvoegen</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="78"/>
+        <source>add dive site</source>
+        <translation>duikstek toevoegen</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="100"/>
+        <source>import dive sites from %1</source>
+        <translation>importeer duikstekken van %1</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_divesite.cpp" line="136"/>
+        <source>delete %n dive site(s)</source>
+        <translation><numerusform>verwijder %n duikstek</numerusform><numerusform>verwijder %n duikstekken</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="156"/>
+        <source>purge unused dive sites</source>
+        <translation>ongebruikte duikstekken verwijderen</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="191"/>
+        <source>Edit dive site name</source>
+        <translation>Duikstek naam bewerken</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="214"/>
+        <source>Edit dive site description</source>
+        <translation>Duikstek beschrijving bewerken</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="237"/>
+        <source>Edit dive site notes</source>
+        <translation>Duikstek notities bewerken</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="260"/>
+        <source>Edit dive site country</source>
+        <translation>Duikstek land bewerken</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="285"/>
+        <source>Edit dive site location</source>
+        <translation>Duikstek locatie bewerken</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="314"/>
+        <source>Edit dive site taxonomy</source>
+        <translation>Duikstek taxonomie bewerken</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="342"/>
+        <source>merge dive sites</source>
+        <translation>duikstekken samenvoegen</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_divesite.cpp" line="396"/>
+        <source>apply GPS fixes</source>
+        <translation>GPS fixes toepassen</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="95"/>
+        <location filename="../commands/command_edit.cpp" line="660"/>
+        <location filename="../commands/command_edit_trip.cpp" line="18"/>
+        <source>Edit %1</source>
+        <translation>Bewerk %1</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="97"/>
+        <location filename="../commands/command_edit.cpp" line="662"/>
+        <source>Edit %1 (%n dive(s))</source>
+        <translation><numerusform>Bewerk %1 (%n duik)</numerusform><numerusform>Bewerk %1 (%n duiken)</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="166"/>
+        <source>notes</source>
+        <translation>notities</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="188"/>
+        <source>suit</source>
+        <translation>duikpak</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="209"/>
+        <source>rating</source>
+        <translation>waardering</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="230"/>
+        <source>visibility</source>
+        <translation>Zicht</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="251"/>
+        <source>wavesize</source>
+        <translation>golfhoogte</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="272"/>
+        <source>current</source>
+        <translation>stroming</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="293"/>
+        <source>surge</source>
+        <translation>golven</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="314"/>
+        <source>chill</source>
+        <translation>koude</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="335"/>
+        <source>air temperature</source>
+        <translation>luchttemperatuur</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="359"/>
+        <source>water temperature</source>
+        <translation>watertemperatuur</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="380"/>
+        <source>salinity</source>
+        <translation>zoutgehalte</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="401"/>
+        <source>Atm. pressure</source>
+        <translation>Atm. druk</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="425"/>
+        <source>duration</source>
+        <translation>duur</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="449"/>
+        <source>depth</source>
+        <translation>diepte</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="471"/>
+        <source>dive site</source>
+        <translation>duikstek</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="569"/>
+        <source>dive mode</source>
+        <translation>duikmodus</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="590"/>
+        <source>invalid</source>
+        <translation>ongeldig</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="725"/>
+        <source>tags</source>
+        <translation>trefwoorden</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="748"/>
+        <source>buddies</source>
+        <translation>buddy’s</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="771"/>
+        <source>dive master</source>
+        <translation>duikleider</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="870"/>
+        <source>Paste onto %n dive(s)</source>
+        <translation><numerusform>In %n duik plakken</numerusform><numerusform>In %n duiken plakken</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="946"/>
+        <source>Replan dive</source>
+        <translation>Duik herplannen</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="946"/>
+        <source>Edit profile</source>
+        <translation>Profiel bewerken</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="993"/>
+        <source>Add weight</source>
+        <translation>Gewicht toevoegen</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="995"/>
+        <source>Add weight (%n dive(s))</source>
+        <translation><numerusform>Gewicht toevoegen (%n duik)</numerusform><numerusform>Gewicht toevoegen (%n duiken)</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1078"/>
+        <source>Remove weight</source>
+        <translation>Gewicht verwijderen</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1080"/>
+        <source>Remove weight (%n dive(s))</source>
+        <translation><numerusform>Gewicht verwijderen (%n duik)</numerusform><numerusform>Gewicht verwijderen (%n duiken)</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1108"/>
+        <source>Edit weight</source>
+        <translation>Gewicht bewerken</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1110"/>
+        <source>Edit weight (%n dive(s))</source>
+        <translation><numerusform>Gewicht bewerken (%n duik)</numerusform><numerusform>Gewicht bewerken (%n duiken)</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1169"/>
+        <source>Edit dive [%1]</source>
+        <translation>Bewerk duik [%1]</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit_trip.cpp" line="53"/>
+        <source>trip location</source>
+        <translation>trip locatie</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit_trip.cpp" line="75"/>
+        <source>trip notes</source>
+        <translation>trip notities</translation>
     </message>
 </context>
 <context>
@@ -3318,89 +3243,124 @@ GPS locatie:</translation>
 <context>
     <name>DiveListView</name>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="900"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="890"/>
         <source>Expand all</source>
         <translation>Alles uitklappen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="902"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="892"/>
         <source>Collapse all</source>
         <translation>Alles inklappen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="906"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="896"/>
         <source>Collapse others</source>
         <translation>Andere samenklappen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="910"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="900"/>
         <source>Remove dive(s) from trip</source>
         <translation>Duik(en) uit trip verwijderen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="911"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="901"/>
         <source>Create new trip above</source>
         <translation>Nieuwe trip hierboven invoegen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="926"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="916"/>
         <source>Add dive(s) to trip immediately above</source>
         <translation>Duik(en) toevoegen aan de trip hierboven</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="928"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="918"/>
         <source>Add dive(s) to trip immediately below</source>
         <translation>Duik(en) toevoegen aan de trip hieronder</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="932"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="922"/>
         <source>Merge trip with trip above</source>
         <translation>Trip met bovenstaande samenvoegen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="933"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="923"/>
         <source>Merge trip with trip below</source>
         <translation>Trip met onderstaande samenvoegen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="937"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="927"/>
         <source>Delete dive(s)</source>
         <translation>Duik(en) verwijderen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="939"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="929"/>
+        <source>Mark dive(s) valid</source>
+        <translation>Duik(en) als geldig markeren</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelistview.cpp" line="931"/>
         <source>Mark dive(s) invalid</source>
         <translation>Duik(en) als ongeldig markeren</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="943"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="934"/>
         <source>Merge selected dives</source>
         <translation>Geselecteerde duiken samenvoegen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="945"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="936"/>
         <source>Renumber dive(s)</source>
         <translation>Duik(en) hernummeren</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="946"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="937"/>
         <source>Shift dive times</source>
         <translation>Tijdstip verschuiven</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="947"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="938"/>
         <source>Split selected dives</source>
         <translation>Geselecteerde duiken splitsen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="948"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="939"/>
         <source>Load media from file(s)</source>
         <translation>Laad media van bestand(en)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="949"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="940"/>
         <source>Load media from web</source>
         <translation>Laad media van het web</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelistview.cpp" line="966"/>
+        <source>Open media files</source>
+        <translation>Open media bestanden</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelistview.cpp" line="969"/>
+        <source>Media files</source>
+        <translation>Media bestanden</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelistview.cpp" line="970"/>
+        <source>Image files</source>
+        <translation>Afbeeldingen</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelistview.cpp" line="971"/>
+        <source>Video files</source>
+        <translation>Video bestanden</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelistview.cpp" line="972"/>
+        <source>All files</source>
+        <translation>Alle bestanden</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelistview.cpp" line="1021"/>
+        <source>%1 does not appear to be an image</source>
+        <translation>%1 lijkt geen afbeelding te zijn</translation>
     </message>
 </context>
 <context>
@@ -4205,7 +4165,7 @@ GPS locatie:</translation>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="11"/>
         <source>Dive planner edit</source>
-        <translation type="unfinished"/>
+        <translation>Duikplanner bewerken</translation>
     </message>
 </context>
 <context>
@@ -4213,7 +4173,7 @@ GPS locatie:</translation>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerManager.qml" line="11"/>
         <source>Dive planner manager</source>
-        <translation type="unfinished"/>
+        <translation>Duikplanner manager</translation>
     </message>
 </context>
 <context>
@@ -4246,7 +4206,7 @@ GPS locatie:</translation>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="392"/>
         <source>Used gas</source>
-        <translation>Gebruikt Gas</translation>
+        <translation>Gebruikt gas</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="394"/>
@@ -4284,7 +4244,7 @@ GPS locatie:</translation>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="11"/>
         <source>Dive planner setup</source>
-        <translation type="unfinished"/>
+        <translation>Duikplanner instellingen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
@@ -4549,7 +4509,7 @@ GPS locatie:</translation>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerView.qml" line="11"/>
         <source>Dive planner view</source>
-        <translation type="unfinished"/>
+        <translation>Duikplanner wweergave</translation>
     </message>
 </context>
 <context>
@@ -4729,7 +4689,7 @@ GPS locatie:</translation>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="104"/>
         <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="187"/>
         <source>Private dives will not appear in &quot;related dives&quot; lists, and will only be accessible if their URL is known.</source>
-        <translation>Privé duiken verschijnen niet in &apos;verwante duiken&apos;, en zijn enkel toegankelijk als hun URL gekend is.</translation>
+        <translation>Privé duiken verschijnen niet in &apos;verwante duiken&apos; en zijn enkel toegankelijk als de URL bekend is.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="107"/>
@@ -4763,7 +4723,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="18"/>
         <source>Dive summary</source>
-        <translation type="unfinished"/>
+        <translation>Duikoverzicht</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="51"/>
@@ -4902,186 +4862,186 @@ p, li { white-space: pre-wrap; }
         <translation>(%L1 getoond)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="121"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="124"/>
         <source>(%1 shown)</source>
         <translation>(%1 getoond)</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="307"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="376"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="416"/>
-        <source>#</source>
-        <translation>Nr.</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="309"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="378"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="418"/>
-        <source>Date</source>
-        <translation>Datum</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="311"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="380"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="420"/>
-        <source>Rating</source>
-        <translation>Waardering</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="313"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="422"/>
-        <source>Depth(%1)</source>
-        <translation>Diepte (%1)</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="313"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="422"/>
-        <source>m</source>
-        <translation>m</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="313"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="422"/>
-        <source>ft</source>
-        <translation>ft</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="315"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="384"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="424"/>
-        <source>Duration</source>
-        <translation>Duur</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="317"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="426"/>
-        <source>Temp.(°%1)</source>
-        <translation>Temp.(°%1)</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="319"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="428"/>
-        <source>Weight(%1)</source>
-        <translation>Gewicht (%1)</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="319"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="428"/>
-        <source>kg</source>
-        <translation>kg</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="319"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="428"/>
-        <source>lbs</source>
-        <translation>US pond</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="321"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="390"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="430"/>
-        <source>Suit</source>
-        <translation>Pak</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="323"/>
         <location filename="../qt-models/divetripmodel.cpp" line="392"/>
         <location filename="../qt-models/divetripmodel.cpp" line="432"/>
-        <source>Cylinder</source>
-        <translation>Fles</translation>
+        <source>#</source>
+        <translation>Nr.</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="325"/>
         <location filename="../qt-models/divetripmodel.cpp" line="394"/>
         <location filename="../qt-models/divetripmodel.cpp" line="434"/>
+        <source>Date</source>
+        <translation>Datum</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="327"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="396"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="436"/>
+        <source>Rating</source>
+        <translation>Waardering</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="329"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="438"/>
+        <source>Depth(%1)</source>
+        <translation>Diepte (%1)</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="329"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="438"/>
+        <source>m</source>
+        <translation>m</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="329"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="438"/>
+        <source>ft</source>
+        <translation>ft</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="331"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="400"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="440"/>
+        <source>Duration</source>
+        <translation>Duur</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="333"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="442"/>
+        <source>Temp.(°%1)</source>
+        <translation>Temp.(°%1)</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="335"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="444"/>
+        <source>Weight(%1)</source>
+        <translation>Gewicht (%1)</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="335"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="444"/>
+        <source>kg</source>
+        <translation>kg</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="335"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="444"/>
+        <source>lbs</source>
+        <translation>US pond</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="337"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="406"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="446"/>
+        <source>Suit</source>
+        <translation>Pak</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="339"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="408"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="448"/>
+        <source>Cylinder</source>
+        <translation>Fles</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="341"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="410"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="450"/>
         <source>Gas</source>
         <translation>Gas</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="329"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="438"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="345"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="454"/>
         <source>SAC(%1)</source>
         <translation>Gasverbruik (%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="329"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="438"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="345"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="454"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="331"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="398"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="440"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="347"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="414"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="456"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="333"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="349"/>
         <source>Max. CNS</source>
         <translation>Max. CNS</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="335"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="402"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="444"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="351"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="418"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="460"/>
         <source>Tags</source>
         <translation>Trefwoorden</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="337"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="446"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="353"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="462"/>
         <source>Media before/during/after dive</source>
         <translation>Media voor/gedurende/na duik</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="339"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="406"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="355"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="422"/>
         <source>Country</source>
         <translation>Land</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="341"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="408"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="448"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="357"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="424"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="464"/>
         <source>Buddy</source>
         <translation>Buddy</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="343"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="410"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="450"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="359"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="426"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="466"/>
         <source>Location</source>
         <translation>Locatie</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="382"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="398"/>
         <source>Depth</source>
         <translation>Diepte</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="386"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="402"/>
         <source>Temp.</source>
         <translation>Temp.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="388"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="404"/>
         <source>Weight</source>
         <translation>Gewicht</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="396"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="412"/>
         <source>SAC</source>
         <translation>Gasverbruik</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="400"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="442"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="416"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="458"/>
         <source>Max CNS</source>
         <translation>Max CNS</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="404"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="420"/>
         <source>Media</source>
         <translation>Media</translation>
     </message>
@@ -5357,10 +5317,10 @@ Bestaande duikstek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="211"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="205"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="316"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="355"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="465"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="215"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="326"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="365"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="475"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="334"/>
         <source>Download</source>
         <translation>Downloaden</translation>
@@ -5391,7 +5351,7 @@ Bestaande duikstek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="330"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="348"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="358"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="340"/>
         <source>Cancel</source>
         <translation>Annuleren</translation>
@@ -5422,57 +5382,57 @@ Bestaande duikstek</translation>
         <translation>Verbinding:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="211"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="221"/>
         <source> Previously used dive computers: </source>
         <translation>Voorheen gebruikte duikcomputers:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="320"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="330"/>
         <source>Retry</source>
         <translation>Opnieuw</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="348"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="358"/>
         <source>Quit</source>
         <translation>Afsluiten</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="366"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="376"/>
         <source>Rescan</source>
         <translation>Scan opnieuw</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="382"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="392"/>
         <source> Downloaded dives</source>
         <translation>Geladen duiken</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="383"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="393"/>
         <source>Info:</source>
         <translation>Informatie:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="406"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="416"/>
         <source>force downloading all dives</source>
         <translation>forceer downloaden van alle duiken</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="435"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="445"/>
         <source>Please wait while we record these dives...</source>
-        <translation type="unfinished"/>
+        <translation>Even geduld terwijl de duiken worden opgeslagen...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="450"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="460"/>
         <source>Accept</source>
         <translation>Aanvaarden</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="479"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="489"/>
         <source>Select All</source>
         <translation>Alles selecteren</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="488"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="498"/>
         <source>Unselect All</source>
         <translation>Selectie ongedaan maken</translation>
     </message>
@@ -5486,72 +5446,6 @@ Bestaande duikstek</translation>
     </message>
 </context>
 <context>
-    <name>EditBuddies</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="727"/>
-        <source>buddies</source>
-        <translation>buddy’s</translation>
-    </message>
-</context>
-<context>
-    <name>EditDive</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1148"/>
-        <source>Edit dive [%1]</source>
-        <translation>Bewerk duik [%1]</translation>
-    </message>
-</context>
-<context>
-    <name>EditDiveMaster</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="750"/>
-        <source>dive master</source>
-        <translation>duikleider</translation>
-    </message>
-</context>
-<context>
-    <name>EditMode</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="569"/>
-        <source>dive mode</source>
-        <translation>duikmodus</translation>
-    </message>
-</context>
-<context>
-    <name>EditTags</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="704"/>
-        <source>tags</source>
-        <translation>trefwoorden</translation>
-    </message>
-</context>
-<context>
-    <name>EditTagsBase</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="639"/>
-        <source>Edit %1</source>
-        <translation>Bewerk %1</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="641"/>
-        <source>Edit %1 (%n dive(s))</source>
-        <translation><numerusform>Bewerk %1 (%n duik)</numerusform><numerusform>Bewerk %1 (%n duiken)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>EditWeight</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1087"/>
-        <source>Edit weight</source>
-        <translation>Gewicht bewerken</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1089"/>
-        <source>Edit weight (%n dive(s))</source>
-        <translation><numerusform>Gewicht bewerken (%n duik)</numerusform><numerusform>Gewicht bewerken (%n duiken)</numerusform></translation>
-    </message>
-</context>
-<context>
     <name>Export</name>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="11"/>
@@ -5561,7 +5455,7 @@ Bestaande duikstek</translation>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="43"/>
         <source>Export credentials</source>
-        <translation>Rechten exporteren</translation>
+        <translation>Export rechten</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="48"/>
@@ -5576,7 +5470,7 @@ Bestaande duikstek</translation>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="73"/>
         <source>Private</source>
-        <translation type="unfinished"/>
+        <translation>Privé</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="88"/>
@@ -5898,13 +5792,13 @@ Bestaande duikstek</translation>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="23"/>
         <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="154"/>
         <source>Find moved media files</source>
-        <translation>Vind verplaatste media bestanden</translation>
+        <translation>Vind verplaatste mediabestanden</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="37"/>
         <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="155"/>
         <source>Found media files</source>
-        <translation>Gevonden media bestanden</translation>
+        <translation>Gevonden mediabestanden</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="71"/>
@@ -5948,12 +5842,12 @@ Bestaande duikstek</translation>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="266"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; media files at their current place.</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; media bestanden gevonden op hun huidige locatie.</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; mediabestanden gevonden op hun huidige locatie.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="268"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; media files at new locations:</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; media bestanden gevonden op nieuwe locaties:</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; mediabestanden gevonden op nieuwe locaties:</translation>
     </message>
 </context>
 <context>
@@ -6018,17 +5912,17 @@ Bestaande duikstek</translation>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="23"/>
         <source>Get dive coordinates from GPS</source>
-        <translation type="unfinished"/>
+        <translation>Duikcoördinaten van GPS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="44"/>
         <source>Synchronise the dive and the GPS track</source>
-        <translation type="unfinished"/>
+        <translation>Duik en GPS-route synchroniseren</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="85"/>
         <source>GPS track date </source>
-        <translation type="unfinished"/>
+        <translation>GPS-route datum</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="99"/>
@@ -6091,12 +5985,12 @@ Bestaande duikstek</translation>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="408"/>
         <source>Equipment time settings correction</source>
-        <translation type="unfinished"/>
+        <translation>Uitrusting correctie tijdsinstelling</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="433"/>
         <source>This setting deals with differences in time settings between the GPS and the dive computer that recorded the dive. Ensure that the GPS equipment and your dive computer show the same local time. If not, adjust the time of the GPS earlier or later to coincide with that of the dive (h:min):</source>
-        <translation type="unfinished"/>
+        <translation>Deze instelling betreft verschillen in tijdinstellingen tussen de GPS en de duikcomputer die de duik heeft geregistreerd. Zorg ervoor dat de GPS-apparatuur en de duikcomputer dezelfde lokale tijd weergeven. Zo niet, pas dan de tijd van de GPS eerder of later aan zodat deze samenvalt met die van de duik (h:min):</translation>
     </message>
 </context>
 <context>
@@ -6951,7 +6845,7 @@ Bestaande duikstek</translation>
         <location filename="../desktop-widgets/mainwindow.ui" line="685"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="607"/>
         <source>&amp;Find moved media files</source>
-        <translation>&amp;Vind verplaatste media bestanden</translation>
+        <translation>&amp;Vind verplaatste mediabestanden</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="690"/>
@@ -7391,14 +7285,6 @@ Als je toestel Bluetooth gebruikt, doe de gelijke voorbereidingen als voor een l
     </message>
 </context>
 <context>
-    <name>PasteDives</name>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="849"/>
-        <source>Paste onto %n dive(s)</source>
-        <translation><numerusform>In %n duik plakken</numerusform><numerusform>In %n duiken plakken</numerusform></translation>
-    </message>
-</context>
-<context>
     <name>PlannerSettingsWidget</name>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="543"/>
@@ -7524,12 +7410,12 @@ Als je toestel Bluetooth gebruikt, doe de gelijke voorbereidingen als voor een l
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="130"/>
         <source>2) The server responds by sending a verification PIN to the above email address (This is the only occasion that Subsurface uses the email address provided above). The above dialog now has a new PIN text box, not visible previously.</source>
-        <translation type="unfinished"/>
+        <translation>2) De server stuurt daarna een verificatie PIN naar het bovenstaande e-mailadres (dit is de enige keer dat Subsurface het hierboven opgegeven e-mailadres gebruikt). Het bovenstaande dialoogvenster heeft nu een nieuw PIN-tekstvak, dat voorheen niet zichtbaar was.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="140"/>
         <source>3) Enter the PIN in the corresponding text box in the above dialog (this field is only visible while the server is waiting for email address confirmation). Click Apply again. The Subsurface cloud storage account will be marked as verified and the Subsurface cloud storage service is initialised for use.</source>
-        <translation type="unfinished"/>
+        <translation>3) Voer de pincode in het bijbehorende tekstvak in het bovenstaande dialoogvenster in (dit veld is alleen zichtbaar terwijl de server wacht op bevestiging van het e-mailadres). Klik nogmaals op Toepassen. Het Subsurface-cloudopslagaccount wordt gemarkeerd als geverifieerd en de Subsurface-cloudopslagservice wordt geïnitialiseerd voor gebruik.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="10"/>
@@ -7588,7 +7474,7 @@ Als je toestel Bluetooth gebruikt, doe de gelijke voorbereidingen als voor een l
     <message>
         <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="53"/>
         <source>When importing dives from a dive computer (DC), Subsurface remembers the connection(s), showing them as selectable buttons in the Download panel. This is useful for DCs using Bluetooth for communication. In order to clear all this information, click on the button below. After clearing the information the buttons on the Download panel disappear and it is necessary to establish new connection(s) with dive computer(s) before importing dives again.</source>
-        <translation type="unfinished"/>
+        <translation>Bij het importeren van duiken vanuit een duikcomputer (DC), onthoudt Subsurface de verbinding(en) en toont deze als selecteerbare knoppen in het downloadvenster. Dit is handig voor DC&apos;s die Bluetooth gebruiken voor communicatie. Klik op de onderstaande knop om al deze informatie te wissen. Na het wissen van de informatie verdwijnen de knoppen op het downloadvenster en is het noodzakelijk om nieuwe verbinding(en) met duikcomputer(s) tot stand te brengen voordat u opnieuw duiken importeert.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="61"/>
@@ -7598,7 +7484,7 @@ Als je toestel Bluetooth gebruikt, doe de gelijke voorbereidingen als voor een l
     <message>
         <location filename="../desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
         <source>Dive download</source>
-        <translation type="unfinished"/>
+        <translation>Duik downloaden</translation>
     </message>
 </context>
 <context>
@@ -7612,7 +7498,7 @@ Als je toestel Bluetooth gebruikt, doe de gelijke voorbereidingen als voor een l
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="21"/>
         <source>Font for lists and tables</source>
-        <translation type="unfinished"/>
+        <translation>Lettertype voor rijen en tabellen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="31"/>
@@ -7635,7 +7521,7 @@ Als je toestel Bluetooth gebruikt, doe de gelijke voorbereidingen als voor een l
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="84"/>
         <source>In some actions, e.g. when zooming the dive profile, the changing axis values are animated. Select the speed with which this animation should occur (maximum = 500):</source>
-        <translation type="unfinished"/>
+        <translation>Bij sommige acties, bv. bij het inzoomen op het duikprofiel worden de veranderende aswaarden geanimeerd. Selecteer de snelheid waarmee deze animatie moet gebeuren (maximum = 500):</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="94"/>
@@ -7646,7 +7532,7 @@ Als je toestel Bluetooth gebruikt, doe de gelijke voorbereidingen als voor een l
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="15"/>
         <source>Display</source>
-        <translation type="unfinished"/>
+        <translation>Weergave</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="330"/>
@@ -7763,22 +7649,22 @@ Als je toestel Bluetooth gebruikt, doe de gelijke voorbereidingen als voor een l
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="24"/>
         <source>CYLINDERS</source>
-        <translation type="unfinished"/>
+        <translation>FLESSEN</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="32"/>
         <source>Default cylinder in the Cylinders table of the Equipment tab</source>
-        <translation type="unfinished"/>
+        <translation>Standaard fles in de Flessen tabel op het tabblad Uitrusting</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="48"/>
         <source>Select a default cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Selecteer een standaard fles</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="68"/>
         <source>Show unused cylinders in the Cylinders table of the Equipment tab</source>
-        <translation type="unfinished"/>
+        <translation>Toon ongebruikte flessen in de Flessen tabel op het tabblad Uitrusting</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.cpp" line="12"/>
@@ -7797,12 +7683,12 @@ Als je toestel Bluetooth gebruikt, doe de gelijke voorbereidingen als voor een l
     <message>
         <location filename="../desktop-widgets/preferences/preferences_georeference.ui" line="24"/>
         <source>Reverse dive site lookup format</source>
-        <translation type="unfinished"/>
+        <translation>Omgekeerde duikstek opzoekformaat</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_georeference.ui" line="38"/>
         <source>Selecting the blue globe icon to the right of Location in the Notes tab opens the Edit Dive Site panel. There, an icon to the right of the dive site coordinates allows reverse lookup of the dive site. This finds the country and closest town to the divesite and adds them as dive site tags above the dive site name in the Notes tab. The combo boxes below allow one to select the order in which these tags are shown in the Notes tab. This requires an Internet connection.</source>
-        <translation type="unfinished"/>
+        <translation>Als u het blauwe wereldbolpictogram rechts van Locatie op het tabblad Notities selecteert, wordt het Duikstek bewerken venster geopend. Daar maakt een pictogram rechts van de coördinaten van de duikstek de omgekeerde opzoeking van de duikstek mogelijk. Dit vindt het land en de dichtstbijzijnde plaats bij de duikstek en voegt deze toe als tags voor de duikstek boven de naam van de duikstek op het tabblad Notities. Met de onderstaande keuzelijsten kunt u de volgorde selecteren waarin deze tags worden weergegeven op het tabblad Notities. Dit vereist een internetverbinding.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_georeference.ui" line="65"/>
@@ -8008,7 +7894,7 @@ Als je toestel Bluetooth gebruikt, doe de gelijke voorbereidingen als voor een l
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.cpp" line="12"/>
         <source>Tech setup</source>
-        <translation type="unfinished"/>
+        <translation>Tech instellingen</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="372"/>
@@ -8018,7 +7904,7 @@ Als je toestel Bluetooth gebruikt, doe de gelijke voorbereidingen als voor een l
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="373"/>
         <source>Show unused cylinders in Equipment tab</source>
-        <translation>Toon niet gebruikte flessen in het Uitrusting tabblad</translation>
+        <translation>Toon niet gebruikte flessen op het tabblad Uitrusting</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="374"/>
@@ -8028,7 +7914,7 @@ Als je toestel Bluetooth gebruikt, doe de gelijke voorbereidingen als voor een l
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="375"/>
         <source>Recalculate thumbnails if older than media file</source>
-        <translation>Thumbnails opnieuw berekenen indien ouder dan media bestand</translation>
+        <translation>Thumbnails opnieuw berekenen indien ouder dan mediabestand</translation>
     </message>
 </context>
 <context>
@@ -8154,7 +8040,7 @@ Zie http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="21"/>
         <source>DIVE LOG</source>
-        <translation type="unfinished"/>
+        <translation>LOGBOEK</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="44"/>
@@ -8199,7 +8085,7 @@ Zie http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="119"/>
         <source>In the Information tab, show tools for recording wave height, surge and chill during a dive</source>
-        <translation type="unfinished"/>
+        <translation>Toon gereedschappen om de golfhoogte, branding and koude van een duik vast te leggen op het tabblad Informatie</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="127"/>
@@ -8209,20 +8095,20 @@ Zie http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="135"/>
         <source>In the Information tab, allow editing of water salinity</source>
-        <translation>In de Informatie tab, sta het bewerken van het waterzoutgehalte toe</translation>
+        <translation>Op het tabblad Informatie, sta het bewerken van het waterzoutgehalte toe</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="14"/>
+        <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="15"/>
         <source> Dive log</source>
-        <translation type="unfinished"/>
+        <translation>Duiklogboek</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="27"/>
+        <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="28"/>
         <source>Open default log file</source>
         <translation>Standaard logboek openen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="27"/>
+        <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="28"/>
         <source>Subsurface files</source>
         <translation>Subsurface bestanden</translation>
     </message>
@@ -8237,22 +8123,22 @@ Zie http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="24"/>
         <source>UPDATE THUMBNAILS</source>
-        <translation type="unfinished"/>
+        <translation>THUMBNAILS BIJWERKEN</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="38"/>
         <source>Photographs or videos are sometimes edited after being uploaded and linked to Subsurface. If a photo is therefore more recent than its original thumbnail, checking the checkbox below will allow creating a new thumbnail after the media has been edited.</source>
-        <translation type="unfinished"/>
+        <translation>Foto&apos;s of video&apos;s worden soms bewerkt nadat ze zijn geüpload en aan Subsurface zijn gekoppeld. Als een foto daarom recenter is dan de originele thumbnail, kunt u door het selectievakje hieronder aan te vinken een nieuwe thumbnail maken nadat de media is bewerkt.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="46"/>
         <source>Recalculate thumbnail if older than media file</source>
-        <translation type="unfinished"/>
+        <translation>Thumbnail opnieuw berekenen indien ouder dan mediabestand</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="68"/>
         <source>VIDEOS</source>
-        <translation type="unfinished"/>
+        <translation>VIDEOS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="76"/>
@@ -8262,7 +8148,7 @@ Zie http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="98"/>
         <source>One can view video files through thumbnail(s) in the Media tab, created using the external programm FFmpeg which needs to be installed on your machine. Check the checkbox below to allow this. Then, in the text box below, specify the path to FFmpeg. In Linux, a typical path is:  /usr/bin/ffmpeg. If FFmpeg is installed in the system area of your computer, just type ffmpeg in the text box below. For more info see Appendix F of the User Manual.</source>
-        <translation type="unfinished"/>
+        <translation>Men kan videobestanden bekijken via thumbnail(s) op het tabblad Media, gemaakt met het externe programma FFmpeg dat op uw computer moet zijn geïnstalleerd. Vink het onderstaande selectievakje aan om dit toe te staan. Geef vervolgens in het onderstaande tekstvak het pad naar FFmpeg op. In Linux is een typisch pad: /usr/bin/ffmpeg. Als FFmpeg systeembreed is geïnstalleerd op uw computer, typt u gewoon ffmpeg in het onderstaande tekstvak. Zie Bijlage F van de gebruikershandleiding voor meer informatie.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="106"/>
@@ -8272,7 +8158,7 @@ Zie http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="114"/>
         <source>Path to ffmpeg:</source>
-        <translation type="unfinished"/>
+        <translation>ffmpeg pad:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="126"/>
@@ -8282,7 +8168,7 @@ Zie http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="142"/>
         <source>One can specify te relative position within the video from where the thumbnail is retrieved. Use the slider below do do that.</source>
-        <translation type="unfinished"/>
+        <translation>Men kan de relatieve positie binnen de video specificeren van waaruit de thumbnail wordt opgehaald. Gebruik de onderstaande schuifregelaar om dat te doen.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="150"/>
@@ -8321,7 +8207,7 @@ Zie http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="20"/>
         <source>If your Internet access is through a proxy server, provide details for using that proxy</source>
-        <translation type="unfinished"/>
+        <translation>Als de internettoegang via een proxyserver is, geef dan de details op voor het gebruik van die proxy</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="32"/>
@@ -8426,7 +8312,7 @@ Zie http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_reset.ui" line="39"/>
         <source>Selecting this button will reset all preferences to their default values</source>
-        <translation type="unfinished"/>
+        <translation>Hiermee worden alle instellingen teruggezet naar hun standaardwaarde</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_reset.ui" line="50"/>
@@ -8684,7 +8570,7 @@ Zie http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/printdialog.cpp" line="112"/>
         <source>Export Html</source>
-        <translation type="unfinished"/>
+        <translation>Html exporteren</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printdialog.cpp" line="125"/>
@@ -8694,7 +8580,7 @@ Zie http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/printdialog.cpp" line="196"/>
         <source>Filename to export html to</source>
-        <translation type="unfinished"/>
+        <translation>Bestandsnaam voor html export</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printdialog.cpp" line="197"/>
@@ -9102,7 +8988,7 @@ Kan niet verbinden met de Subsurface cloud opslag, terug naar lokale mode</trans
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1355"/>
         <source>Fatal error: cannot save data file. Please copy log file and report.</source>
-        <translation type="unfinished"/>
+        <translation>Fatale fout: kan gegevensbestand niet opslaan. Kopieer a.u.b. het logbestand en meld dit aan support.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1544"/>
@@ -9112,7 +8998,7 @@ Kan niet verbinden met de Subsurface cloud opslag, terug naar lokale mode</trans
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1762"/>
         <source>no default cylinder</source>
-        <translation type="unfinished"/>
+        <translation>geen standaard fles</translation>
     </message>
 </context>
 <context>
@@ -9120,7 +9006,7 @@ Kan niet verbinden met de Subsurface cloud opslag, terug naar lokale mode</trans
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="197"/>
         <source>no dives in period</source>
-        <translation type="unfinished"/>
+        <translation>geen duiken in de periode</translation>
     </message>
 </context>
 <context>
@@ -9137,19 +9023,6 @@ Kan niet verbinden met de Subsurface cloud opslag, terug naar lokale mode</trans
         <location filename="../core/configuredivecomputerthreads.cpp" line="2150"/>
         <source>Failed!</source>
         <translation>Mislukt!</translation>
-    </message>
-</context>
-<context>
-    <name>RemoveWeight</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1057"/>
-        <source>Remove weight</source>
-        <translation>Gewicht verwijderen</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1059"/>
-        <source>Remove weight (%n dive(s))</source>
-        <translation><numerusform>Gewicht verwijderen (%n duik)</numerusform><numerusform>Gewicht verwijderen (%n duiken)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -9187,19 +9060,6 @@ Kan niet verbinden met de Subsurface cloud opslag, terug naar lokale mode</trans
         <location filename="../desktop-widgets/simplewidgets.cpp" line="144"/>
         <source>Renumber all dives</source>
         <translation>Alle duiken hernummeren</translation>
-    </message>
-</context>
-<context>
-    <name>ReplanDive</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="925"/>
-        <source>Replan dive</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="925"/>
-        <source>Edit profile</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -9243,197 +9103,207 @@ Kan niet verbinden met de Subsurface cloud opslag, terug naar lokale mode</trans
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="14"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="10"/>
         <source>Settings</source>
         <translation>Instellingen</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="17"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="15"/>
         <source>Undefined</source>
         <translation>Ongedefinieerd</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="18"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="16"/>
         <source>Incorrect username/password combination</source>
         <translation>Onjuiste email/wachtwoord combinatie</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="19"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="17"/>
         <source>Credentials need to be verified</source>
         <translation>Rechten moeten nog worden gecontroleerd</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="20"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="18"/>
         <source>Credentials verified</source>
         <translation>Rechten gecontroleerd</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="21"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="19"/>
         <source>No cloud mode</source>
         <translation>Geen cloud</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="28"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="24"/>
         <source>General settings</source>
         <translation>Algemene instellingen</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="37"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="34"/>
         <source>Cloud status</source>
         <translation>Cloud status</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="45"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="42"/>
         <source>Email</source>
         <translation>E-mail</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="49"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="45"/>
         <source>Not applicable</source>
         <translation>Niet van toepassing</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="54"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="50"/>
         <source>Change</source>
         <translation>Wijzigen</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="57"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="53"/>
         <source>Starting...</source>
         <translation>Starten...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="61"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="57"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="81"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="74"/>
         <source>Default Cylinder</source>
         <translation>Standaard fles</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="89"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="82"/>
         <source>Cylinder:</source>
         <translation>Fles:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="112"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="106"/>
         <source>Dive computers</source>
         <translation>Duikcomputers</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="120"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="114"/>
         <source>Forget remembered dive computers</source>
         <translation>Wis voorheen gebruikte duikcomputers</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="125"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="119"/>
         <source>Forget</source>
         <translation>Wis</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="140"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="134"/>
         <source>Theme</source>
         <translation>Thema</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="152"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="141"/>
+        <source>Color theme</source>
+        <translation>Kleurenpalet</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="154"/>
         <source>Blue</source>
         <translation>Blauw</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="153"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="155"/>
         <source>Pink</source>
         <translation>Roze</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="154"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="156"/>
         <source>Dark</source>
         <translation>Donker</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="167"/>
         <source>background</source>
-        <translation type="unfinished"/>
+        <translation>achtergrond</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="180"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="179"/>
         <source>text</source>
         <translation>tekst</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="196"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="193"/>
         <source>primary</source>
-        <translation type="unfinished"/>
+        <translation>primair</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="211"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="207"/>
         <source>primary text</source>
-        <translation type="unfinished"/>
+        <translation>hoofdtekst</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="227"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="221"/>
         <source>darker primary</source>
-        <translation type="unfinished"/>
+        <translation>donkere primair</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="242"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="235"/>
         <source>darker primary text</source>
-        <translation type="unfinished"/>
+        <translation>donkere hoofdtekst</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="258"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="249"/>
         <source>light primary</source>
-        <translation type="unfinished"/>
+        <translation>lichter primair</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="273"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="263"/>
         <source>light primary text</source>
-        <translation type="unfinished"/>
+        <translation>lichtere hoofdtekst</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="293"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="280"/>
         <source>secondary text</source>
-        <translation type="unfinished"/>
+        <translation>secundaire tekst</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="309"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="294"/>
         <source>drawer</source>
-        <translation type="unfinished"/>
+        <translation>lade</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="324"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="305"/>
+        <source>Font size</source>
+        <translation>Lettertype grootte</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="316"/>
         <source>smaller</source>
         <translation>kleiner</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="331"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="324"/>
         <source>regular</source>
         <translation>normaal</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="338"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="332"/>
         <source>larger</source>
         <translation>groter</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="351"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="346"/>
         <source>Units</source>
         <translation>Eenheden</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="357"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="352"/>
         <source>Metric</source>
         <translation>Metrisch</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="366"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="362"/>
         <source>Imperial</source>
         <translation>Imperiaal</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="375"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="372"/>
         <source>Personalize</source>
         <translation>Personaliseren</translation>
     </message>
@@ -9445,7 +9315,7 @@ Kan niet verbinden met de Subsurface cloud opslag, terug naar lokale mode</trans
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="401"/>
         <source>meters</source>
-        <translation type="unfinished"/>
+        <translation>meters</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="409"/>
@@ -9515,10 +9385,10 @@ Kan niet verbinden met de Subsurface cloud opslag, terug naar lokale mode</trans
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="501"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Geavanceerd</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="509"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="510"/>
         <source>GPS location service</source>
         <translation>GPS locatie service</translation>
     </message>
@@ -9528,31 +9398,33 @@ Kan niet verbinden met de Subsurface cloud opslag, terug naar lokale mode</trans
         <translation>Afstandsdrempel (meters)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="532"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="530"/>
         <source>Time threshold (minutes)</source>
         <translation>Tijdsdrempel (minuten)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="553"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="551"/>
         <source>Bluetooth</source>
         <translation>Bluetooth</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="562"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="559"/>
         <source>Temporarily show all bluetooth devices 
 even if not recognized as dive computers.
 Please report DCs that need this setting</source>
-        <translation type="unfinished"/>
+        <translation>Toon tijdelijk alle bluetooth-apparaten
+zelfs als ze niet worden herkend als duikcomputers.
+Rapporteer a.u.b. DC&apos;s die deze instelling nodig hebben</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="582"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="581"/>
         <source>Display</source>
-        <translation type="unfinished"/>
+        <translation>Weergave</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="590"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="589"/>
         <source>Show only one column in Portrait mode</source>
-        <translation type="unfinished"/>
+        <translation>Toon slechts één kolom in portretmodus</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="611"/>
@@ -9560,7 +9432,7 @@ Please report DCs that need this setting</source>
         <translation>Ontwikkelaar</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="620"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="619"/>
         <source>Display Developer menu</source>
         <translation>Toon ontwikkelaars menu</translation>
     </message>
@@ -9604,13 +9476,13 @@ Please report DCs that need this setting</source>
 Not all media files have timestamps in the range between
 30 minutes before the start and 30 minutes after the end of any selected dive.</source>
         <translation>Waarschuwing!
-Niet alle media bestanden hebben tijdstippen tussen 30 minuten voor de start en 30 minuten na het eind van enige geselecteerde duik.</translation>
+Niet alle mediabestanden hebben tijdstippen tussen 30 minuten voor de start en 30 minuten na het eind van enige geselecteerde duik.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="137"/>
         <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="202"/>
         <source>Load media files even if the time does not match the dive time</source>
-        <translation>Laad media bestanden zelfs als de tijd niet overeenkomt met de duiktijd</translation>
+        <translation>Laad mediabestanden zelfs als de tijd niet overeenkomt met de duiktijd</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="186"/>
@@ -9916,7 +9788,7 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="63"/>
         <source>DIVE</source>
-        <translation type="unfinished"/>
+        <translation>DUIK</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="71"/>
@@ -9949,12 +9821,12 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="209"/>
         <source>GAS</source>
-        <translation type="unfinished"/>
+        <translation>GAS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="217"/>
         <source>Gas name</source>
-        <translation type="unfinished"/>
+        <translation>Gasnaam</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="245"/>
@@ -9983,7 +9855,7 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="364"/>
         <source>ENVIRONMENT</source>
-        <translation type="unfinished"/>
+        <translation>OMGEVING</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="372"/>
@@ -10000,22 +9872,22 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="436"/>
         <source>Water type/Density</source>
-        <translation type="unfinished"/>
+        <translation>Watertype/Dichtheid</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="473"/>
         <source>Atm. pressure/Altitude</source>
-        <translation type="unfinished"/>
+        <translation>Atm. druk/Hoogte</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="506"/>
         <source>Surface waves</source>
-        <translation type="unfinished"/>
+        <translation>Golven</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="537"/>
         <source>Large</source>
-        <translation type="unfinished"/>
+        <translation>Groot</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="544"/>
@@ -10030,12 +9902,12 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="586"/>
         <source>Bad</source>
-        <translation type="unfinished"/>
+        <translation>Slecht</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="593"/>
         <source>Good</source>
-        <translation type="unfinished"/>
+        <translation>Goed</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="604"/>
@@ -10057,7 +9929,7 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="653"/>
         <source>Surge</source>
-        <translation type="unfinished"/>
+        <translation>Branding</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="702"/>
@@ -10078,7 +9950,7 @@ Bestanden met onjuiste datum/tijd</translation>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="26"/>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="30"/>
         <source>use dc</source>
-        <translation type="unfinished"/>
+        <translation>van duikcomputer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="30"/>
@@ -10190,22 +10062,22 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="56"/>
         <source>Load media file(s) from web</source>
-        <translation>Laad media bestand(en) van het web</translation>
+        <translation>Laad mediabestand(en) van het web</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="58"/>
         <source>Delete selected media files</source>
-        <translation>Verwijder geselecteerde media bestanden</translation>
+        <translation>Verwijder geselecteerde mediabestanden</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="59"/>
         <source>Delete all media files</source>
-        <translation>Verwijder alle media bestanden</translation>
+        <translation>Verwijder alle mediabestanden</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="60"/>
         <source>Open folder of selected media files</source>
-        <translation>Open map van geselecteerde media bestanden</translation>
+        <translation>Open map van geselecteerde mediabestanden</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="61"/>
@@ -10220,12 +10092,12 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="159"/>
         <source>Deleting media files</source>
-        <translation>Media bestanden worden verwijderd</translation>
+        <translation>Mediabestanden worden verwijderd</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="159"/>
         <source>Are you sure you want to delete all media files?</source>
-        <translation>Weet je zeker dat je alle media bestanden wilt verwijderen?</translation>
+        <translation>Weet je zeker dat je alle mediabestanden wilt verwijderen?</translation>
     </message>
 </context>
 <context>
@@ -10250,7 +10122,9 @@ Bestanden met onjuiste datum/tijd</translation>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="57"/>
         <source>This dive site has %n dive(s). Do you really want to delete it?
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Deze duikstek heeft %n duik. Echt verwijderen?
+</numerusform><numerusform>Deze duikstek heeft %n duiken. Echt verwijderen?
+</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="74"/>
@@ -10683,7 +10557,7 @@ worden uit lucht en:
     <message>
         <location filename="../mobile-widgets/qml/TripDetails.qml" line="15"/>
         <source>Trip details</source>
-        <translation type="unfinished"/>
+        <translation>Tripdetails</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/TripDetails.qml" line="55"/>
@@ -10691,22 +10565,22 @@ worden uit lucht en:
         <translation>Wijzigingen opslaan</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/TripDetails.qml" line="62"/>
+        <location filename="../mobile-widgets/qml/TripDetails.qml" line="64"/>
         <source>Cancel edit</source>
         <translation>Bewerking annuleren</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/TripDetails.qml" line="82"/>
+        <location filename="../mobile-widgets/qml/TripDetails.qml" line="84"/>
         <source>Edit trip details</source>
         <translation>Tripdetails bewerken</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/TripDetails.qml" line="95"/>
+        <location filename="../mobile-widgets/qml/TripDetails.qml" line="97"/>
         <source>Trip location:</source>
         <translation>Trip locatie:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/TripDetails.qml" line="109"/>
+        <location filename="../mobile-widgets/qml/TripDetails.qml" line="111"/>
         <source>Trip notes</source>
         <translation>Trip notities</translation>
     </message>
@@ -10723,7 +10597,7 @@ worden uit lucht en:
         <location filename="../desktop-widgets/urldialog.ui" line="52"/>
         <location filename="../subsurface/desktop-widgets/ui_urldialog.h" line="58"/>
         <source>Enter URL for media files</source>
-        <translation>Geef URL voor media bestanden</translation>
+        <translation>Geef URL voor mediabestanden</translation>
     </message>
 </context>
 <context>
@@ -11539,9 +11413,9 @@ Maximum</translation>
         <location filename="../core/divelogexportlogic.cpp" line="95"/>
         <location filename="../core/subsurface-qt/diveobjecthelper.cpp" line="266"/>
         <location filename="../desktop-widgets/templatelayout.h" line="101"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="159"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="209"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="211"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="162"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="221"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="223"/>
         <source>h</source>
         <translation>h</translation>
     </message>
@@ -11553,9 +11427,9 @@ Maximum</translation>
         <location filename="../core/subsurface-qt/diveobjecthelper.cpp" line="266"/>
         <location filename="../core/worldmap-save.c" line="49"/>
         <location filename="../desktop-widgets/templatelayout.h" line="102"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="159"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="209"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="211"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="162"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="221"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="223"/>
         <source>min</source>
         <translation>min</translation>
     </message>
@@ -11686,7 +11560,7 @@ Maximum</translation>
         <location filename="../core/git-access.c" line="187"/>
         <location filename="../core/git-access.c" line="207"/>
         <source>Could not update local cache to newer remote data</source>
-        <translation>Kan de lokale cache niet aanpassen naar nieuwere data in de Sursurface cloud</translation>
+        <translation>Kan de lokale cache niet aanpassen naar nieuwere data uit de Sursurface cloud</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="200"/>
@@ -12071,12 +11945,12 @@ Dit log bestand kan worden aangemaakt door het selecteren van het juiste keuzeve
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1706"/>
+        <location filename="../core/load-git.c" line="1713"/>
         <source>Load dives from local cache</source>
         <translation>Duiken uit lokale cache laden</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1710"/>
+        <location filename="../core/load-git.c" line="1717"/>
         <source>Successfully opened dive data</source>
         <translation>Duikgegevens openen gelukt</translation>
     </message>
@@ -12099,12 +11973,12 @@ Dit log bestand kan worden aangemaakt door het selecteren van het juiste keuzeve
 </translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="1701"/>
+        <location filename="../core/parse-xml.c" line="1703"/>
         <source>Failed to parse &apos;%s&apos;</source>
         <translation>Fout bij analyse van &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2297"/>
+        <location filename="../core/parse-xml.c" line="2299"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Kan stylesheet %s niet openen</translation>
     </message>
@@ -12339,7 +12213,9 @@ Dit log bestand kan worden aangemaakt door het selecteren van het juiste keuzeve
         <source>ATM pressure: %dmbar (%d%s)&lt;br/&gt;
 &lt;/div&gt;
 </source>
-        <translation type="unfinished"/>
+        <translation>ATM druk: %dmbar (%d%s)&lt;br/&gt;
+&lt;/div&gt;
+</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="456"/>
@@ -12794,7 +12670,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/qthelper.cpp" line="795"/>
         <location filename="../core/qthelper.cpp" line="1235"/>
         <location filename="../core/units.c" line="166"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="185"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="188"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
@@ -12804,7 +12680,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/qthelper.cpp" line="797"/>
         <location filename="../core/qthelper.cpp" line="1236"/>
         <location filename="../core/units.c" line="162"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="187"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="190"/>
         <source>lbs</source>
         <translation>US pond</translation>
     </message>
@@ -12872,22 +12748,22 @@ EADD: %d%s / %.1fg/ℓ
         <translation>cuft</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="922"/>
+        <location filename="../core/save-git.c" line="923"/>
         <source>Start saving data</source>
         <translation>Opslaan data gestart</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="931"/>
+        <location filename="../core/save-git.c" line="932"/>
         <source>Start saving dives</source>
         <translation>Opslaan duiken gestart</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="964"/>
+        <location filename="../core/save-git.c" line="965"/>
         <source>Done creating local cache</source>
         <translation>Lokale cache aangemaakt</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1221"/>
+        <location filename="../core/save-git.c" line="1222"/>
         <source>Preparing to save data</source>
         <translation>Voorbereiden data opslag</translation>
     </message>
@@ -12959,7 +12835,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="521"/>
         <source>WaveSize</source>
-        <translation type="unfinished"/>
+        <translation>Golfhoogte</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="522"/>
@@ -12974,7 +12850,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="524"/>
         <source>Surge</source>
-        <translation type="unfinished"/>
+        <translation>Branding</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="525"/>
@@ -13175,12 +13051,12 @@ EADD: %d%s / %.1fg/ℓ
         <translation>Duikstatus</translation>
     </message>
     <message>
-        <location filename="../core/save-xml.c" line="758"/>
+        <location filename="../core/save-xml.c" line="760"/>
         <source>Failed to save dives to %s (%s)</source>
         <translation>Fout bij opslaan duiken naar %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/save-xml.c" line="874"/>
+        <location filename="../core/save-xml.c" line="876"/>
         <source>Failed to save divesites to %s (%s)</source>
         <translation>Fout bij opslaan duikstekken naar %s (%s)</translation>
     </message>
@@ -13200,7 +13076,7 @@ EADD: %d%s / %.1fg/ℓ
         <translation>Alle (op min. temp statistiek)</translation>
     </message>
     <message>
-        <location filename="../core/statistics.c" line="226"/>
+        <location filename="../core/statistics.c" line="228"/>
         <source>All (by trip stats)</source>
         <translation>Alle (op trip statistiek)</translation>
     </message>
@@ -13685,7 +13561,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
         <translation>Duikmodus wijziging</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="176"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="179"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
@@ -13828,7 +13704,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="328"/>
         <source>Dive summary</source>
-        <translation type="unfinished"/>
+        <translation>Duikoverzicht</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="339"/>
@@ -13848,7 +13724,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="386"/>
         <source>Clear GPS cache</source>
-        <translation>Maak GPS cache leeg</translation>
+        <translation>GPS cache leegmaken</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="397"/>
@@ -13878,22 +13754,22 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="444"/>
         <source>Show user manual</source>
-        <translation type="unfinished"/>
+        <translation>Toon gebruikershandleiding</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="453"/>
         <source>Ask for support</source>
-        <translation type="unfinished"/>
+        <translation>Vraag om support</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="457"/>
         <source>failed to open email client, please manually create support email to support@subsurface-divelog.org - the logs have been copied to the clipboard and can be pasted into that email.</source>
-        <translation type="unfinished"/>
+        <translation>Kan de e-mailclient niet openen, maak handmatig een support e-mail aan support@subsurface-divelog.org - de logs zijn naar het klembord gekopieerd en kunnen in die e-mail worden geplakt.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="467"/>
         <source>Reset forgotten Subsurface Cloud password</source>
-        <translation type="unfinished"/>
+        <translation>Vergeten Subsurface Cloud-wachtwoord herstellen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="478"/>
@@ -13908,13 +13784,13 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="495"/>
         <source>Test busy indicator (toggle)</source>
-        <translation type="unfinished"/>
+        <translation>Bezet indicator testen (wisselen)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="505"/>
         <location filename="../mobile-widgets/qml/main.qml" line="507"/>
         <source>Test notification text</source>
-        <translation type="unfinished"/>
+        <translation>Meldingstekst testen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="511"/>
@@ -13924,12 +13800,12 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="519"/>
         <source>Enable verbose logging</source>
-        <translation type="unfinished"/>
+        <translation>Uitgebreide logging inschakelen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="521"/>
         <source>Not persistent</source>
-        <translation type="unfinished"/>
+        <translation>Niet persistent</translation>
     </message>
 </context>
 <context>
@@ -14343,7 +14219,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="71"/>
         <source>building zip file to upload</source>
-        <translation type="unfinished"/>
+        <translation>Zipbestand wordt gemaakt om te uploaden</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="76"/>
@@ -14373,7 +14249,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="213"/>
         <source>Uploading dives</source>
-        <translation type="unfinished"/>
+        <translation>Duiken uploaden</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="294"/>
