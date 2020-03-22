@@ -256,19 +256,35 @@ Item {
 					}
 
 					MouseArea {
-						anchors.fill: parent
-						drag.target: qmlProfile
-						drag.axis: Drag.XAndYAxis
-						drag.smoothed: true
-						pressAndHoldInterval: 50 // very short - feels about right
+						// we want to pan the profile if we are zoomed in, but we want to immediately
+						// pass the mouse events through to the ListView if we are not. That way you
+						// can swipe through the dive list, even if you happen to swipe the profile
+						property bool isZoomed: qmlProfile.scale - 1.0 > 0.02
+
+						// this indicates that we are actually dragging
+						property bool dragging: false
 						// cursor/finger position as we start dragging
 						property real initialX
 						property real initialY
 						// the offset previously used to show the profile
 						property real oldXOffset
 						property real oldYOffset
-						// this indicates that we are actually dragging
-						property bool dragging: false
+
+						// if the profile is not scaled in, don't start panning
+						// but if the profile is scaled in, then start almost immediately
+						pressAndHoldInterval: isZoomed ? 50 : 50000
+
+						// pass events through to the parent and eventually into the ListView
+						propagateComposedEvents: true
+
+						anchors.fill: parent
+						drag.target: qmlProfile
+						drag.axis: Drag.XAndYAxis
+						drag.smoothed: true
+						onPressed: {
+							if (!isZoomed)
+								mouse.accepted = false
+						}
 						onPressAndHold: {
 							dragging = true;
 							oldXOffset = qmlProfile.xOffset
@@ -289,12 +305,24 @@ Item {
 								qmlProfile.xOffset = oldXOffset + x
 								qmlProfile.yOffset = oldYOffset + y
 								qmlProfile.update()
+							} else {
+								mouse.accepted = false
 							}
 						}
 						onReleased: {
-							// reset things
-							dragging = false
-							qmlProfile.opacity = 1.0
+							if (dragging) {
+								// reset things
+								dragging = false
+								qmlProfile.opacity = 1.0
+							}
+							mouse.accepted = false
+						}
+						onClicked: {
+							// reset the position if not zoomed in
+							if (!isZoomed) {
+								qmlProfile.xOffset = qmlProfile.yOffset = oldXOffset = oldYOffset = 0
+								mouse.accepted = false
+							}
 						}
 					}
 				}
