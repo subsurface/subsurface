@@ -23,9 +23,6 @@
 
 void qPref::loadSync(bool doSync)
 {
-	if (!doSync)
-		uiLanguage(NULL);
-
 	// the following calls, ensures qPref* is instanciated, registred and
 	// that properties are loaded
 	qPrefCloudStorage::loadSync(doSync);
