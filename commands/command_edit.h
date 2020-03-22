@@ -390,7 +390,7 @@ private:
 
 class EditCylinderBase : public EditDivesBase {
 protected:
-	EditCylinderBase(int index, bool currentDiveOnly, bool nonProtectedOnly);
+	EditCylinderBase(int index, bool currentDiveOnly, bool nonProtectedOnly, int sameCylinderFlags);
 	~EditCylinderBase();
 
 	cylinder_t cyl;

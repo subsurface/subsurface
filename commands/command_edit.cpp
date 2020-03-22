@@ -1044,16 +1044,48 @@ void AddCylinder::redo()
 	}
 }
 
-static int find_cylinder_index(const struct dive *d, const cylinder_t &cyl)
+static bool same_cylinder_type(const cylinder_t &cyl1, const cylinder_t &cyl2)
+{
+	return same_string(cyl1.type.description, cyl2.type.description) &&
+	       cyl1.cylinder_use == cyl2.cylinder_use;
+}
+
+static bool same_cylinder_size(const cylinder_t &cyl1, const cylinder_t &cyl2)
+{
+	return cyl1.type.size.mliter == cyl2.type.size.mliter &&
+	       cyl1.type.workingpressure.mbar == cyl2.type.workingpressure.mbar;
+}
+
+static bool same_cylinder_pressure(const cylinder_t &cyl1, const cylinder_t &cyl2)
+{
+	return cyl1.start.mbar == cyl2.start.mbar &&
+	       cyl1.end.mbar == cyl2.end.mbar;
+}
+
+// Flags for comparing cylinders
+static const constexpr int SAME_TYPE = 1 << 0;
+static const constexpr int SAME_SIZE = 1 << 1;
+static const constexpr int SAME_PRESS = 1 << 2;
+static const constexpr int SAME_GAS = 1 << 3;
+
+static bool same_cylinder_with_flags(const cylinder_t &cyl1, const cylinder_t &cyl2, int sameCylinderFlags)
+{
+	return (((sameCylinderFlags & SAME_TYPE)  == 0 || same_cylinder_type(cyl1, cyl2)) &&
+		((sameCylinderFlags & SAME_SIZE)  == 0 || same_cylinder_size(cyl1, cyl2)) &&
+		((sameCylinderFlags & SAME_PRESS) == 0 || same_cylinder_pressure(cyl1, cyl2)) &&
+		((sameCylinderFlags & SAME_GAS)   == 0 || same_gasmix(cyl1.gasmix, cyl2.gasmix)));
+}
+
+static int find_cylinder_index(const struct dive *d, const cylinder_t &cyl, int sameCylinderFlags)
 {
 	for (int idx = 0; idx < d->cylinders.nr; ++idx) {
-		if (same_cylinder(d->cylinders.cylinders[idx], cyl))
+		if (same_cylinder_with_flags(cyl, d->cylinders.cylinders[idx], sameCylinderFlags))
 			return idx;
 	}
 	return -1;
 }
 
-EditCylinderBase::EditCylinderBase(int index, bool currentDiveOnly, bool nonProtectedOnly) :
+EditCylinderBase::EditCylinderBase(int index, bool currentDiveOnly, bool nonProtectedOnly, int sameCylinderFlags) :
 	EditDivesBase(currentDiveOnly),
 	cyl(empty_cylinder)
 {
@@ -1076,7 +1108,7 @@ EditCylinderBase::EditCylinderBase(int index, bool currentDiveOnly, bool nonProt
 			indexes.push_back(index);
 			continue;
 		}
-		int idx = find_cylinder_index(d, cyl);
+		int idx = find_cylinder_index(d, cyl, sameCylinderFlags);
 		if (idx < 0 || (nonProtectedOnly && is_cylinder_prot(d, idx)))
 			continue;
 		divesNew.push_back(d);
@@ -1097,7 +1129,7 @@ bool EditCylinderBase::workToBeDone()
 
 // ***** Remove Cylinder *****
 RemoveCylinder::RemoveCylinder(int index, bool currentDiveOnly) :
-	EditCylinderBase(index, currentDiveOnly, true)
+	EditCylinderBase(index, currentDiveOnly, true, SAME_TYPE | SAME_PRESS | SAME_GAS)
 {
 	if (dives.size() == 1)
 		setText(tr("Remove cylinder"));
@@ -1126,7 +1158,7 @@ void RemoveCylinder::redo()
 
 // ***** Edit Cylinder *****
 EditCylinder::EditCylinder(int index, cylinder_t cylIn, bool currentDiveOnly) :
-	EditCylinderBase(index, currentDiveOnly, false),
+	EditCylinderBase(index, currentDiveOnly, false, SAME_TYPE | SAME_PRESS | SAME_GAS),
 	new_cyl(empty_cylinder)
 {
 	if (dives.empty())
@@ -1149,7 +1181,7 @@ EditCylinder::EditCylinder(int index, cylinder_t cylIn, bool currentDiveOnly) :
 	}
 
 	// If that doesn't change anything, do nothing
-	if (same_cylinder(cyl, new_cyl)) {
+	if (same_cylinder_with_flags(cyl, new_cyl, SAME_TYPE | SAME_PRESS | SAME_GAS)) {
 		dives.clear();
 		return;
 	}
