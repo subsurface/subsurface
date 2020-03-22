@@ -89,7 +89,7 @@ void PreferencesLanguage::syncSettings()
 	qPrefLanguage::set_time_format(ui->timeFormatEntry->currentText());
 	qPrefLanguage::set_date_format(ui->dateFormatEntry->currentText());
 	qPrefLanguage::set_date_format_short(ui->shortDateFormatEntry->text());
-	uiLanguage(NULL);
+	initUiLanguage();
 
 	QString qDateTimeWeb = tr("These will be used as is. This might not be what you intended.\nSee http://doc.qt.io/qt-5/qdatetime.html#toString");
 	QRegExp tfillegalchars("[^hHmszaApPt\\s:;\\.,]");

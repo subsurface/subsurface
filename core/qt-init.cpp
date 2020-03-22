@@ -70,7 +70,9 @@ void init_qt_late()
 		loc.setDefault(QLocale("es_ES"));
 		loc = QLocale();
 	}
-	QString uiLang = uiLanguage(&loc);
+	initUiLanguage();
+	QString uiLang = getUiLanguage();
+	loc = getLocale();
 	QLocale::setDefault(loc);
 
 	qtTranslator = new QTranslator;

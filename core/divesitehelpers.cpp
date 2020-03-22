@@ -39,7 +39,7 @@ void reverseGeoLookup(degrees_t latitude, degrees_t longitude, taxonomy_data *ta
 	QObject::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
 
 	// first check the findNearbyPlaces API from geonames - that should give us country, state, city
-	request.setUrl(geonamesURL.arg(uiLanguage(NULL).section(QRegExp("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0));
+	request.setUrl(geonamesURL.arg(getUiLanguage().section(QRegExp("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0));
 
 	// By using a std::unique_ptr<>, we can exit from the function at any point
 	// and the reply will be freed. Likewise, when overwriting the pointer with
@@ -119,7 +119,7 @@ void reverseGeoLookup(degrees_t latitude, degrees_t longitude, taxonomy_data *ta
 		reply->abort();
 	}
 	// next check the oceans API to figure out the body of water
-	request.setUrl(geonamesOceanURL.arg(uiLanguage(NULL).section(QRegExp("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0));
+	request.setUrl(geonamesOceanURL.arg(getUiLanguage().section(QRegExp("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0));
 	reply.reset(rgl.get(request)); // Note: frees old reply.
 	QObject::connect(&*reply, SIGNAL(finished()), &loop, SLOT(quit()));
 	timer.start(5000);   // 5 secs. timeout

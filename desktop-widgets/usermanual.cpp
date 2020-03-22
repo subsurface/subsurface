@@ -64,7 +64,7 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 	QString searchPath = getSubsurfaceDataPath("Documentation");
 	if (searchPath.size()) {
 		// look for localized versions of the manual first
-		QString lang = uiLanguage(NULL);
+		QString lang = getUiLanguage();
 		QString prefix = searchPath.append("/user-manual");
 		QFile manual(prefix + "_" + lang + ".html");
 		if (!manual.exists())
