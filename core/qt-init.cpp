@@ -9,7 +9,7 @@
 #include "core/settings/qPref.h"
 
 char *settings_suffix = NULL;
-static QTranslator *qtTranslator, *ssrfTranslator;
+static QTranslator qtTranslator, ssrfTranslator;
 
 void init_qt_late()
 {
@@ -75,7 +75,6 @@ void init_qt_late()
 	loc = getLocale();
 	QLocale::setDefault(loc);
 
-	qtTranslator = new QTranslator;
 	QString translationLocation;
 #if defined(Q_OS_ANDROID)
 	translationLocation = QLatin1String("assets:/translations");
@@ -84,18 +83,17 @@ void init_qt_late()
 #else
 	translationLocation = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
 #endif
-	if (qtTranslator->load(loc, "qt", "_", translationLocation)) {
-		application->installTranslator(qtTranslator);
+	if (qtTranslator.load(loc, "qt", "_", translationLocation)) {
+		application->installTranslator(&qtTranslator);
 	} else {
 		if (verbose && uiLang != "en_US" && uiLang != "en-US")
 			qDebug() << "can't find Qt localization for locale" << uiLang << "searching in" << translationLocation;
 	}
-	ssrfTranslator = new QTranslator;
-	if (ssrfTranslator->load(loc, "subsurface", "_") ||
-	    ssrfTranslator->load(loc, "subsurface", "_", translationLocation) ||
-	    ssrfTranslator->load(loc, "subsurface", "_", getSubsurfaceDataPath("translations")) ||
-	    ssrfTranslator->load(loc, "subsurface", "_", getSubsurfaceDataPath("../translations"))) {
-		application->installTranslator(ssrfTranslator);
+	if (ssrfTranslator.load(loc, "subsurface", "_") ||
+	    ssrfTranslator.load(loc, "subsurface", "_", translationLocation) ||
+	    ssrfTranslator.load(loc, "subsurface", "_", getSubsurfaceDataPath("translations")) ||
+	    ssrfTranslator.load(loc, "subsurface", "_", getSubsurfaceDataPath("../translations"))) {
+		application->installTranslator(&ssrfTranslator);
 	} else {
 		qDebug() << "can't find Subsurface localization for locale" << uiLang;
 	}
