@@ -31,7 +31,7 @@ UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),
 		QString osArch = SubsurfaceSysInfo::currentCpuArchitecture();
 		os.append(QString("&osCpuArch=%1").arg(osArch));
 	}
-	os.append(QString("&uiLang=%1").arg(uiLanguage(NULL)));
+	os.append(QString("&uiLang=%1").arg(getUiLanguage()));
 	os.append(QString("&uuid=%1").arg(getUUID()));
 	ui->system->setPlainText(getVersion());
 }
@@ -46,7 +46,7 @@ QString UserSurvey::getVersion()
 	sysInfo.append(tr("\nCPU architecture: %1").arg(arch));
 	if (arch == "i386")
 		sysInfo.append(tr("\nOS CPU architecture: %1").arg(SubsurfaceSysInfo::currentCpuArchitecture()));
-	sysInfo.append(tr("\nLanguage: %1").arg(uiLanguage(NULL)));
+	sysInfo.append(tr("\nLanguage: %1").arg(getUiLanguage()));
 	return sysInfo;
 }
 

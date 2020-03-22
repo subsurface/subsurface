@@ -426,7 +426,7 @@ QString getUserAgent()
 	userAgent.append(arch);
 	if (arch == "i386")
 		userAgent.append("/" + SubsurfaceSysInfo::currentCpuArchitecture());
-	userAgent.append(":" + uiLanguage(NULL));
+	userAgent.append(":" + getUiLanguage());
 	return userAgent;
 
 }
@@ -438,20 +438,19 @@ extern "C" const char *subsurface_user_agent()
 	return copy_qstring(uA);
 }
 
+QString getUiLanguage()
+{
+	return prefs.locale.lang_locale;
+}
+
 /* TOOD: Move this to SettingsObjectWrapper, and also fix this complexity.
  * gezus.
  */
-QString uiLanguage(QLocale *callerLoc)
+void initUiLanguage()
 {
 	QString shortDateFormat;
 	QString dateFormat;
 	QString timeFormat;
-
-	// Language settings are already loaded, see qPref::load()
-	// so no need to reload them
-
-	// remark this method used "useSystemLanguage", which is not set
-	// instead use_system_language is loaded from disk
 
 	// set loc as system language or selected language
 	if (!qPrefLanguage::use_system_language()) {
@@ -483,8 +482,6 @@ QString uiLanguage(QLocale *callerLoc)
 		else if (languages.count() > 2 && languages[2].contains('-'))
 			uiLang = languages[2];
 	}
-	if (callerLoc)
-		*callerLoc = loc;
 
 	prefs.locale.lang_locale = copy_qstring(uiLang);
 
@@ -515,7 +512,6 @@ QString uiLanguage(QLocale *callerLoc)
 		free((void *)prefs.time_format);
 		prefs.time_format = copy_qstring(timeFormat);
 	}
-	return uiLang;
 }
 
 QLocale getLocale()
