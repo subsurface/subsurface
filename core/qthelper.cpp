@@ -471,8 +471,6 @@ QString uiLanguage(QLocale *callerLoc)
 	else
 		uiLang = languages[0];
 
-	prefs.locale.lang_locale = copy_qstring(uiLang);
-
 	// there's a stupid Qt bug on MacOS where uiLanguages doesn't give us the country info
 	if (!uiLang.contains('-') && uiLang != loc.bcp47Name()) {
 		QLocale loc2(loc.bcp47Name());
@@ -487,6 +485,8 @@ QString uiLanguage(QLocale *callerLoc)
 	}
 	if (callerLoc)
 		*callerLoc = loc;
+
+	prefs.locale.lang_locale = copy_qstring(uiLang);
 
 	if (!prefs.date_format_override || empty_string(prefs.date_format_short) || empty_string(prefs.date_format)) {
 		// derive our standard date format from what the locale gives us
