@@ -157,15 +157,6 @@ bool same_weightsystem(weightsystem_t w1, weightsystem_t w2)
 	       same_string(w1.description, w2.description);
 }
 
-bool same_cylinder(cylinder_t cyl1, cylinder_t cyl2)
-{
-	return same_string(cyl1.type.description, cyl2.type.description) &&
-	       same_gasmix(cyl1.gasmix, cyl2.gasmix) &&
-	       cyl1.start.mbar == cyl2.start.mbar &&
-	       cyl1.end.mbar == cyl2.end.mbar &&
-	       cyl1.cylinder_use == cyl2.cylinder_use;
-}
-
 void get_gas_string(struct gasmix gasmix, char *text, int len)
 {
 	if (gasmix_is_air(gasmix))
