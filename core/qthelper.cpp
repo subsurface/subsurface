@@ -483,6 +483,7 @@ void initUiLanguage()
 			uiLang = languages[2];
 	}
 
+	free((void*)prefs.locale.lang_locale);
 	prefs.locale.lang_locale = copy_qstring(uiLang);
 
 	if (!prefs.date_format_override || empty_string(prefs.date_format_short) || empty_string(prefs.date_format)) {
