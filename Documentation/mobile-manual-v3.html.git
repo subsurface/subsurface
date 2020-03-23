@@ -1,0 +1,1199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.10" />
+<title></title>
+<style type="text/css">
+/*
+ * compact_subsurface.css, a special style sheet for Subsurface,
+ *  modified by Willem Ferguson and derived from:
+ *		compact.css, version 1.3 by Alex Efros <powerman@powerman.name>
+ * Licence: Public Domain
+ *
+ * Usage: asciidoc -a theme=compact_subsurface ...
+ */
+
+*   { padding: 0;  margin: 0; }
+img { border: 0; margin: 15px; }
+
+/*** Layout ***/
+
+body                        { margin: 10px 20px; }
+#header br                  { display: none; }
+#revnumber                  { display: block; }
+#toc                        { margin: 1em 0; }
+.toclevel2                  { margin-left: 1em; }
+.toclevel3		    { margin-left: 2em; }
+#footer                     { margin-top: 2em; }
+
+#preamble .sectionbody,
+h2,
+h3,
+h4,
+h5                          { margin: 1em 0 0 0; }
+
+.admonitionblock,
+.listingblock,
+.sidebarblock,
+.exampleblock,
+.tableblock,
+.literalblock               { margin: 1em 0; }
+.admonitionblock td.icon    { padding-right: 0.5em; }
+.admonitionblock td.content { padding-left:  0.5em; }
+.listingblock .content      { padding: 0.5em; }
+.sidebarblock > .content    { padding: 0.5em; }
+.exampleblock > .content    { padding: 0 0.5em; }
+.tableblock caption         { padding: 0 0 0.5em 0; }
+.tableblock thead th,
+.tableblock tbody td,
+.tableblock tfoot td        { padding: 0 0.5em; }
+.quoteblock                 { padding: 0 2.0em; }
+
+.paragraph                  { margin: 1em 0 0 0; }
+.sidebarblock .paragraph:first-child,
+.exampleblock .paragraph:first-child,
+.admonitionblock .paragraph:first-child  { margin: 0; }
+
+   .ulist,    .olist,    .dlist,    .hdlist,    .qlist   { margin: 1em 0; }
+li .ulist, li .olist, li .dlist, li .hdlist, li .qlist,
+dd .ulist, dd .olist, dd .dlist, dd .hdlist, dd .qlist   { margin: 0; }
+ul                          { margin-left: 1.5em; }
+ol                          { margin-left: 2em; }
+dd                          { margin-left: 3em; }
+td.hdlist1                  { padding-right: 1em; }
+
+/*** Fonts ***/
+
+body                        { font-family: Verdana, sans-serif; }
+#header                     { font-family: Arial,   sans-serif; }
+#header h1                  { font-family: Arial,   sans-serif; }
+#footer                     { font-family: Georgia, serif;      }
+#email                      { font-size: 0.85em; }
+#revnumber                  { font-size: 0.75em; }
+#toc                        { font-size: 0.9em;  }
+#toctitle                   { font-weight: bold; }
+#footer                     { font-size: 0.8em; }
+
+h2, h3, h4, h5, .title      { font-family: Arial,   sans-serif; }
+h2                          { font-size: 1.5em; }
+.sectionbody                { font-size: 0.85em; }
+.sectionbody .sectionbody   { font-size: inherit; }
+h3                          { font-size: 159%; } /* 1.35em */
+h4                          { font-size: 141%; } /* 1.2em */
+h5                          { font-size: 118%; } /* 1em */
+.title                      { font-size: 106%;   /* 0.9em */
+			      font-weight: bold;
+			    }
+
+tt, .monospaced             { font-family: monospace; font-size: 106%; } /* 0.9em */
+dt, td.hdlist1, .qlist em   { font-family: Times New Roman, serif;
+			      font-size: 118%;   /* 1em */
+			      font-style: italic;
+			    }
+.tableblock tfoot td        { font-weight: bold; }
+
+/*** Colors and Backgrounds ***/
+
+h1                          { color: #527bbd; border-bottom: 2px solid silver; }
+#footer                     {                 border-top:    2px solid silver; }
+
+h2                          { color: #527bbd; border-bottom: 2px solid silver; }
+h3                          { color: #5D7EAE; border-bottom: 2px solid silver; }
+h3                          { display: inline-block; }
+h4,h5                       { color: #5D7EAE; }
+
+.admonitionblock td.content { border-left: 2px solid silver; }
+.listingblock .content      { background: #f4f4f4;   border: 1px solid silver; border-left: 5px solid #e0e0e0; }
+.sidebarblock > .content    { background: #ffffee;   border: 1px solid silver; border-left: 5px solid #e0e0e0; }
+.exampleblock > .content    {                   border-left: 2px solid silver; }
+.quoteblock                 {                   border-left: 5px solid #e0e0e0; }
+.tableblock table {
+    border-collapse: collapse;
+    border-width: 3px;
+    border-color: #527bbd;
+}
+.tableblock table[frame=hsides] { border-style: solid none; }
+.tableblock table[frame=border] { border-style: solid;      }
+.tableblock table[frame=void]   { border-style: none;       }
+.tableblock table[frame=vsides] { border-style: none solid; }
+.tableblock table[rules=all] tbody tr *,
+.tableblock table[rules=rows] tbody tr * {
+    border-top: 1px solid #527bbd;
+}
+.tableblock table[rules=all] tr *,
+.tableblock table[rules=cols] tr * {
+    border-left: 1px solid #527bbd;
+}
+.tableblock table tbody tr:first-child * {
+    border-top: 1px solid white; /* none don't work here... %-[] */
+}
+.tableblock table tr *:first-child {
+    border-left: none;
+}
+.tableblock table[frame] thead tr *,
+.tableblock table[frame] thead tr * {
+    border-top: 1px solid white;
+    border-bottom: 2px solid #527bbd;
+}
+.tableblock table tr td p.table,
+.tableblock table tr td p.table * {
+    border: 0px;
+}
+
+tt, .monospaced             { color: navy; }
+
+li                          { color: #a0a0a0; }
+li > *                      { color: black; }
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+/*** Misc ***/
+
+.admonitionblock td.icon    { vertical-align: top; }
+.attribution                { text-align: right; }
+
+ul                          { list-style-type: disc; }
+ol.arabic                   { list-style-type: decimal; }
+ol.loweralpha               { list-style-type: lower-alpha; }
+ol.upperalpha               { list-style-type: upper-alpha; }
+ol.lowerroman               { list-style-type: lower-roman; }
+ol.upperroman               { list-style-type: upper-roman; }
+.hdlist td                  { vertical-align: top; }
+
+
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install(3);
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+</div>
+<div id="content">
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/Banner.jpg" alt="Banner" />
+</div>
+</div>
+<div class="paragraph"><p><span class="big"><em>Subsurface-mobile</em> User Manual</span></p></div>
+<div class="paragraph"><p><strong>Manual authors</strong>: Willem Ferguson, Dirk Hohndel</p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 3.0.0, March 2020</em></span></p></div>
+<div class="sect1">
+<h2 id="_introducing_em_subsurface_mobile_em">1. Introducing <em>Subsurface-mobile</em></h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Welcome to <em>Subsurface-mobile</em>, the mobile version of <em>Subsurface</em>, advanced dive logging
+software with extensive infrastructure to describe, organize, and interpret scuba
+and free dives. <em>Subsurface</em> runs on Windows, macOS, most common distributions of Linux.
+<em>Subsurface-mobile</em> is available for Android and iOS. Both are
+open-source software (in simple terms that means that there is no commercial interest behind
+them, all the sources code needed to build them is available, there are no ads, no one is
+monetizing your data, etc).</p></div>
+<div class="paragraph"><p><em>Subsurface-mobile</em> is a limited mobile version of <em>Subsurface</em>
+aimed at Android and iOS smartphone and tablet devices.
+While the desktop version of <em>Subsurface</em> shows much more detailed information
+for each dive, the mobile version allows a more accessible dive log on the go, for example
+on a dive trip, useful for proving dive experience to dive shops or to review
+previous dives. <em>Subsurface-mobile</em> also allows
+the gathering of GPS locations where dives are performed.
+Assuming you have a dive computer that is supported by the mobile OS of
+your choice, <em>Subsurface-mobile</em> even supports the downloading of dive
+information.</p></div>
+<div class="paragraph"><p>Users of <em>Subsurface-mobile</em> typically use the
+mobile app  together with the desktop version of <em>Subsurface</em>,  sharing dive information
+between the mobile and the desktop versions using a free <em>Subsurface Cloud</em> account.
+However <em>Subsurface-mobile</em> can
+also be used independently of the desktop version and does not require the use of cloud storage.</p></div>
+<div class="paragraph"><p><em>Subsurface-mobile</em> allows:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Download and storage of dive log information using the <em>Subsurface</em> cloud.
+</p>
+</li>
+<li>
+<p>
+Viewing this information on a mobile device.
+</p>
+</li>
+<li>
+<p>
+Manually creating and adding new dive records to your dive log.
+</p>
+</li>
+<li>
+<p>
+Download dive data directly from some dive computers.
+</p>
+</li>
+<li>
+<p>
+Editing most of the dive log data, e.g. dive-master, buddy,
+  equipment or notes relating to a dive.
+</p>
+</li>
+<li>
+<p>
+Recording, storing and applying GPS positions of dives.
+</p>
+</li>
+<li>
+<p>
+Viewing the locations of recorded GPS positions and of dives
+  on a map.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>These items are discussed in greater detail in the following text.</p></div>
+<div class="paragraph"><p><em>Subsurface-mobile</em> has some limitations compared to <em>Subsurface</em>:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Only a subset of the dive computers supported for download by the desktop
+version work with <em>Subsurface-mobile</em>. This limitation is
+mainly caused by hardware and OS limitations in the two
+two mobile platforms. On Android, a subset of
+dive computers that use USB serial cables or a Bluetooth / Bluetooth LE interface
+are accessible by <em>Subsurface-mobile</em>. On iOS, only Bluetooth LE based
+dive computers are supported.
+</p>
+</li>
+<li>
+<p>
+No dive planner.
+</p>
+</li>
+<li>
+<p>
+No printing.
+</p>
+</li>
+<li>
+<p>
+No support for media embedded in dive profiles (<em>Subsurface</em> allows to refernce images and video clips directly in the dive profile).
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installing_em_subsurface_mobile_em_on_your_mobile_device">2. Installing <em>Subsurface-mobile</em> on your mobile device</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Find <em>Subsurface-mobile</em> in the <em>Google Play Store</em> or the <em>iTunes Store</em>
+and install it. For Android devices without access to the <em>Google Play Store</em>
+APKs can be found in the downloads folder on the <em>Subsurface</em> website.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_getting_support">3. Getting Support</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The best place to get support is the <em>Subsurface</em> User Forum. Additionally, <em>Subsurface-mobile</em> allows
+you to send a support email by tapping on <em>Ask for support</em> in the <em>Help</em> menu. This will open an
+email to our in app support address in the native email client, including the relevant logs.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_user_interface">4. User Interface</h2>
+<div class="sectionbody">
+<div class="paragraph"><p><em>Subsurface-mobile</em> uses the same user interface philosophy on both Android and iOS, based on an
+open source project called <em>Kirigami</em> that is maintained by the <em>KDE/Plasma</em> development community.
+This user interface has a slightly different look and feel than many native Android and iOS apps,
+but we (the developers) feel that it is very easy and intuitive to work with.</p></div>
+<div class="paragraph"><p>On every screen you have access to the <em>Main menu</em> through a <em>Hamburger</em> button (three short
+horizontal lines) in the lower left corner. Additionally, the <em>Main menu</em> can be opened by swiping
+towards the the right across the left edge of the screen. The entries in the main menu are all explain
+starting in section <a href="#S_DiveManagement"><em>Dive Management</em></a></p></div>
+<div class="paragraph"><p>On many pages there is also a <em>Context menu</em> available through a button with three vertical dots in
+the lower right corner.
+In the dive list this <em>Context menu</em> can also be opened by tapping and holding a dive or trip header.</p></div>
+<div class="imageblock" style="float:left;">
+<div class="content">
+<img src="mobile-images/ActionButton.jpg" alt="FIGURE: Action Button" />
+</div>
+</div>
+<div class="paragraph"><p>Additionally, at the bottom of many <em>Subsurface-mobile</em> screens is a round
+<em>Action button</em> that provides quick access to the most commonly needed
+actions on that screen (see image on the left). On some screens there is only
+the round center button enabled, on others there are one or two additional
+actions available on either side of that center button.</p></div>
+<div style="clear:both;"></div>
+<div class="paragraph"><p>On Android devices, use the Android Back
+button for "cancel", "discard" or "back" actions. For example, when
+editing dive information, tapping the action button saves the changes while the
+Android back button can be used to cancel the edit without saving changes.</p></div>
+<div class="paragraph"><p>The image below indicates some of the important features of the menu system.
+On the left is the main menu, activated as described above. On the right of the image
+are the items of all the sub-menus accessible.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/Subsurface-mobile-menu-system.jpg" alt="FIGURE: Subsurface-mobile menu system" width="80%" />
+</div>
+</div>
+<div class="paragraph"><p>All screenshots in this user manual are currently from the Android
+version. The iOS screens look similar.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_em_subsurface_mobile_em_for_the_first_time">5. Using <em>Subsurface-mobile</em> for the first time</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>When you start <em>Subsurface-mobile</em> for the first time, a <em>Subsurface</em>
+splash screen is shown while the program loads. On some devices this
+may take several seconds. Afterwards the <em>Cloud Credentials screen</em> appears
+m(see image below on left).</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/Credentials.jpg" alt="FIGURE: Mobile credentials screen" />
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_em_subsurface_mobile_em_without_cloud_storage">5.1. Using <em>Subsurface-mobile</em> without Cloud Storage</h3>
+<div class="paragraph"><p>Tap the "No cloud mode" button. The app will only store dive log information locally
+on your device. After the first start the dive log will therefore be empty.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_using_cloud_storage">5.2. Using Cloud Storage</h3>
+<div class="paragraph"><p>The <em>Subsurface</em> maintainer provides a dedicated and
+free Internet cloud storage account for users of <em>Subsurface</em> and <em>Subsurface-mobile</em>.
+You can use this to store your dive log and to share your data between various computers
+and devices. The <em>Subsurface</em> team never accesses your dive data without explicit
+permission to do so, the data are not used for any purpose other than providing them to the user who
+created them. There are no ads and no harvesting / analysis of the data
+stored in the <em>Subsurface Cloud</em> storage. There is no monetization whatsoever.</p></div>
+<div class="paragraph"><p><em>Subsurface-mobile</em> is sufficient to do full maintenance of a dive log. In addition you can use the
+more advanced features in <em>Subsurface</em> when you have access to a computer while still
+being able to work with your dive data when only a mobile device is available.</p></div>
+<div class="paragraph"><p>The dive data in the cloud are cached locally on any device or computer that is connected to
+the <em>Subsurface Cloud</em> account.
+It is easy to create backups of the data (for example in XML format) on the desktop: both mobile
+device and desktop keep a local copy of the data so that the dive log is always accessible, even
+without Internet connection.</p></div>
+<div class="paragraph"><p>To create a <em>Subsurface Cloud</em> account follow these steps:</p></div>
+<div class="paragraph"><p>1) Enter an e-mail address and a password in the fields indicated on the screen (see image above).
+The e-mail address should be in lower case and the password should contain a combination of
+upper and lower case letters and/or numbers.</p></div>
+<div class="paragraph"><p>2) Tap the "Sign-in or Register" button.</p></div>
+<div class="paragraph"><p>If you have already set
+up an account on a different computer or device, simply enter the same credentials here.
+<em>Subsurface-mobile</em> will now download your existing dive log data. Once the dive
+list has been downloaded from the cloud, <em>Subsurface-mobile</em> usually works only with the the local
+copy on the mobile device. This avoids long delays or even failure of operations if there is a bad
+(or no) internet connection, a situation fairly common at many dive sites. Remember to manually sync
+with the server after making local changes (either by pulling down on the dive list, or by using the
+manual sync entry in the Dive management menu entry).</p></div>
+<div class="paragraph"><p>3) If this is a new cloud account, a PIN screen will open (see image on right, above). A PIN is e-mailed
+to the email address entered in the previous step. Enter this PIN into the field indicated
+and tap the <em>Register</em> button. After the PIN has been entered it
+is no longer needed - it just proves that this is indeed your email account.</p></div>
+<div class="paragraph"><p>At this point a new account for you has been created on the cloud server and access to the cloud is
+enabled. In this case the dive list is initially empty. Start entering dives in the dive
+log or download dive information from a supported dive computer.</p></div>
+<div class="paragraph"><p>Once registered, <em>Subsurface-mobile</em> remembers the cloud credentials and it is not necessary to
+provide these again when launching the program.</p></div>
+<div class="sidebarblock">
+<div class="content">
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Important" />
+</td>
+<td class="content"><strong>Cloud problems: FAQ</strong></td>
+</tr></table>
+</div>
+<div class="paragraph"><p><span class="blue">After filling in the correct information and submitting it, I did not receive a PIN by email</span></p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Check <strong>carefully</strong> that didn&#8217;t make a spelling mistake in the email address you provided. You would be surprised how often this is the problem that people encouter, as autocorrect often mangles email addresses.
+</p>
+</li>
+<li>
+<p>
+Check that the return email containing the PIN is not in the SPAM folder of your email client.
+</p>
+</li>
+<li>
+<p>
+Wait for a few hours and check again for an email with a PIN.
+</p>
+</li>
+<li>
+<p>
+If there is still no email containing a PIN, send mail to <a href="mailto:in-app-support@subsurface-divelog.org">in-app-support@subsurface-divelog.org</a>
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p><span class="blue">I want to access the <em>Subsurface Cloud</em> storage but I have forgotten my password. How can I reset my password?</span></p></div>
+<div class="paragraph"><p>There is a <em>Reset forgotten Subsurface Cloud password</em> entry in the <em>Help</em> menu in <em>Subsurface-mobile</em>, or you can go to the following web address: <a href="https://cloud.subsurface-divelog.org/passwordreset">https://cloud.subsurface-divelog.org/passwordreset</a></p></div>
+<div class="paragraph"><p>Simply enter the same email address that you used during cloud registration and follow the indicated steps. A confirmation email will be sent to your account to prevent abuse of this system.</p></div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_dive_list">6. The Dive List</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Most of the actions of <em>Subsurface-mobile</em> center around the dives in the
+dive list. While the dive list is loading from the cloud,
+a message appears at the bottom of the screen, indicating that the cloud is
+being accessed, after which the dive list is shown. Once the list is loaded you can scroll up
+and down through your dive history.
+<em>Subsurface</em> typically structures your dive list by dive trips, but using those is optional
+(and for divers who are lucky enough to be able to dive all the time at local dive sites,
+trips might only make sense for dive vacations).</p></div>
+<div class="paragraph"><p>Two <a href="#S_Dive_Management"><em>Dive Management</em></a> actions are available by tapping on the
+action buttons at the bottom of the <em>Dive List</em> page:
+To <a href="#S_Download"><em>Download dives from a dive computer</em></a>, tap the main action button. If you wish
+to <a href="#S_Add_Dive"><em>Manually add a dive</em></a>, tap the + button in the action bar. Both of these
+actions are described in detail below.</p></div>
+<div class="paragraph"><p>Tapping an existing dive on the list brings up a display of the <a href="#S_ViewDive"><em>Details View</em></a>
+for that dive including the dive profile, notes, and additional information.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/DiveListAndDetails.jpg" alt="FIGURE: Dive list screen" />
+</div>
+</div>
+<div class="paragraph"><p>A tap and hold on a dive or a trip header opens the context menu for that entry.</p></div>
+<div class="paragraph"><p>For a dive this allows moving the dive into or out of trips or between trips, deleting
+the dive or showing the dive on an integrated map viewer (assuming the dive has the
+necessary GPS information). The context menu also allows access to the undo and redo
+system that allows you to step backwards and forwards through recent actions.</p></div>
+<div class="paragraph"><p>For a trip header the context menu gives you an option to edit the trip title (typically
+the trip location) and some quick notes for the trip.</p></div>
+<div class="sect2">
+<h3 id="_filter_the_dive_list">6.1. Filter the dive list</h3>
+<div style="clear:both;"></div>
+<div class="imageblock" style="float:right;">
+<div class="content">
+<img src="mobile-images/FilterButton.jpg" alt="FIGURE: Filter button" />
+</div>
+</div>
+<div class="paragraph"><p>The left action button shows three horizontal lines of declining length, symbolizing a filter.
+When you tap this button, a text entry line appears at the top of screen which will allow you to
+enter a filter search term that is either used in a full text search, a search just of the people
+involved in a dive (in the Divemaster and Buddy fields), or a search of the tags you have used
+to classify your dives. Tapping the filter button again clears the filter and shows the full
+dive list.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/FilteredDivelist.jpg" alt="FIGURE: Filter tool" />
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="S_View_Dive">6.2. View a dive</h3>
+<div class="paragraph"><p>When you tap on a dive in the <em>Dive List</em>, a <em>Dive Details</em> page with the dive profile
+and many important details about the dive is opened. You can use a pich gesture
+to zoom into the profile, and tapping with one finger, waiting briefly until
+the profile becomes translucent, and then dragging the finger around allows you
+to pan the profile and see more details in specific parts of the profile.</p></div>
+<div class="paragraph"><p>You can view other dives by swiping the <em>Details view</em> to the right (for the
+previous dive) or to the left (following dive).
+Using the Action Bar, it is also possible to delete the dive (tap the dustbin
+on the Action Bar) or to view the dive location on an integrated map viewer.</p></div>
+<div class="paragraph"><p>The context menu (accessible by tapping on the vertical three dots in the lower right corner of the
+screen) offers additional options to move dives between trips, the same delete and map options
+already mentioned, and access to the undo and redo facility that allows you to step backwards and
+forwards through recent actions.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_viewing_the_location_of_a_dive_on_a_map">6.3. Viewing the location of a dive on a map</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/DiveSiteMap.jpg" alt="FIGURE: Map of dive site" />
+</div>
+</div>
+<div class="paragraph"><p>In the <em>Details View</em>, you can either tap the <em>Map it</em> button on top of the
+page to the right of the dive site name, or the GPS pin on the
+left hand side of the <em>Action Button</em> at the bottom of the screen.
+The dive site is shown in an integrated map viewer.</p></div>
+</div>
+<div class="sect2">
+<h3 id="S_Edit_Dive">6.4. Edit a dive</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/DiveDetailsEdit.jpg" alt="FIGURE: Dive edit screen" />
+</div>
+</div>
+<div class="paragraph"><p>At the bottom of the <em>Dive Details</em> screen the action button is a pencil.
+Tapping the pencil button changes the page and enables edit boxes that allow
+modifying the existing dive information, e.g. adding text to the dive notes
+or changing the names or values of some of the information (see image on left).
+It may be necessary to scroll the window to access all the information.
+At the bottom of the edit screen is a <em>Save</em> action button. Tap this to save
+the new information, after which the dive list screen is
+updated and shown. To cancel any edits, tap the Android <em>Back</em> Button or
+the application back button at the top left of the screen on iOS.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_deleting_a_dive">6.5. Deleting a dive</h3>
+<div class="paragraph"><p>You can delete a dive from the dive list by long-pressing a dive and selecting delete in the context menu.
+You can also delete a dive from the <em>Details View</em> by tapping on the trash can icon on the right
+side of the <em>Action Button</em></p></div>
+<div class="paragraph"><p>If you deleted the wrong dive by mistake you can easily undo the operation in the context menu.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/UndoDelete.jpg" alt="FIGURE: Undo delete dive" />
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_Dive_Managent">7. Dive Managent</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>A central  part of <em>Subsurface-mobile</em> is the ability to store the dive
+log using the <em>Subsurface</em> cloud storage.
+This provides security against loss or damage of the dive information in a local copy
+and allows the desktop version of <em>Subsurface</em> to
+access changes made using the mobile device. This ability is accessed
+through the <em>Dive management</em> option in the main menu.</p></div>
+<div class="sect2">
+<h3 id="S_Add_Dive">7.1. Manually adding a new dive to the dive list</h3>
+<div class="paragraph"><p>You can manually add a dive to the existing dive list. On the dive list
+tap the "plus" sign in the action bar, or use the
+main menu and tap <em>Dive management  &#8594;  Add dive manually</em>. This opens  a screen that is
+identical to the editing screen discussed above. When a dive is added manually, you
+cannot directly add a dive profile from a dive computer. However, if you do not use a
+dive computer, the duration, depth and several other bits of information about
+the new dive can be entered. The <em>Action button</em> at the bottom of the screen
+contains a disk symbol. Tap this to save the new dive. To cancel any edits, tap the <em>Back</em> button.
+The left-hand image below shows a screenshot of a dive being created and the right-hand image shows
+the same dive in <em>Details View</em>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/Manualdive.jpg" alt="FIGURE: Manual dive entry screen" />
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="S_Download">7.2. Download dives from a dive computer</h3>
+<div class="paragraph"><p>There are several ways to get to the <em>Download Page</em>. You can either tap on the main <em>Action Button</em> on
+the bottom of the <em>Dive List</em>, or you can select <em>Dive management &#8594;  Download from DC</em> in the main menu.
+On Android devices, when you plug in a USB serial cable for a dive computer, the <em>Download Page</em> will be
+opened automatically.</p></div>
+<div class="paragraph"><p>The download feature in smartphones supports only a limited number of dive computers. On
+Android devices these are typically dive computers using a serial USB interface
+using a USB OTG cable or a simple USB C-A adapter on newer devices.
+Android devices also support Bluetooth dive computers that
+are supported in <em>Subsurface</em> on the desktop. Both Android and iOS devices allow direct
+download of dive data from a handful of Bluetooth LE enabled dive
+computers.</p></div>
+<div class="paragraph"><p>Use the <em>Vendor name</em> and <em>Dive Computer</em> drop-downs to pick the correct
+dive computer.
+For instance, when using a Shearwater Petrel dive
+computer, the vendor is <em>Shearwater</em> and the product is <em>Petrel</em>(see image on the left, below).</p></div>
+<div class="paragraph"><p>When downloading from multiple different dive computers, shortcut
+buttons appear below the drop-downs to easily switch between them. In the <a href="#S_Settings"><em>Settings</em></a> menu
+you can remove these buttons, a useful feature for removing buttons of dive
+computers that you do not use any more. Achieve this by selecting the option
+<em>Forget remembered dive computers</em> in the <a href="#S_Settings"><em>Settings</em></a> menu.</p></div>
+<div class="sect3">
+<h4 id="_download_from_usb_serial_dive_computers">7.2.1. Download from USB serial dive computers</h4>
+<div class="paragraph"><p>This feature is not supported on iOS.</p></div>
+<div class="tableblock">
+<table rules="all"
+width="100%"
+frame=""
+cellspacing="0" cellpadding="4">
+<col width="50%" />
+<col width="50%" />
+<tbody>
+<tr>
+<td align="left" valign="top"><div><div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/USB-OTG.jpg" alt="FIGURE: USB-OTG cable" />
+</div>
+</div></div></td>
+<td align="left" valign="top"><p class="table">Most current Android devices now have a USB
+Type C port and come with a simple A-to-C adapter plug, which allows to plug in
+the dive computer cable into the phone or tablet.
+For older Android devices with micro USB connector you will need to plug the USB
+cable used with the dive computer into a USB OTG cable which,
+in turn, plugs into the micro-USB port.
+The OTG cable usually has a full-size ("Type A") female receptacle at one end which
+accommodates the full-sized male plug
+of the dive computer  USB cable (see image below). This means that two cables are used to connect
+the dive computer to the mobile device. <strong>Not all Android devices support OTG cables</strong>
+but usually all modern Android devices with a USB C plug can be used with a USB A-to-C adapter.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="paragraph"><p><em>Subsurface-mobile</em> remembers the settings for dive computers that
+have been successfully used (image on right, below). These appear
+as buttons under a heading "<em>Previously used dive computers</em>".
+Select the appropriate button. Having connected the USB dive computer to the
+<em>Subsurface</em> computer and having selected the appropriate vendor and dive computer,
+ensure that the Connection text box shows the corresponding connection. For a small number of dive
+computers the connection name shows the dive computer vendor, for most only the cable chipset vendor
+(and USB connection number) is shown. Most users of course only connect one USB dive computer to
+their Android device and then things are fairly straight forward. A dialog will pop up and ask if
+you want to use <em>Subsurface-mobile</em> to connect to the device. If you confirm, then <em>Subsurface-mobile</em> will
+open to the dive computer download screen with the correct connection selected (and if it can deduce
+the correct dive computer based on the cable used, even that information is already pre-filled).</p></div>
+</div>
+<div class="sect3">
+<h4 id="_download_from_bt_blw_dive_computers">7.2.2. Download from BT/BLW dive computers</h4>
+<div class="paragraph"><p>The process for Bluetooth download is slightly different between Android and iOS.</p></div>
+<div class="paragraph"><p>In our testing we got the best results on iOS when the dive computer was
+in Bluetooth mode before <em>Subsurface-mobile</em> is started. On most dive
+computers this is done through a menu entry, others (like the Suunto
+models) always respond to Bluetooth LE requests. However, on Android devices,
+you should first establish a link between the
+Bluetooth or Bluetooth LE dive computer and the mobile device using
+Android utilities. See below for more details.</p></div>
+<div class="paragraph"><p>For Bluetooth-equipped dive computers and Android devices, establish a Bluetooth connection between the dive computer and the
+mobile device using Android system tools to achieve pairing.
+For many Android devices,
+the Settings &#8594; Bluetooth tool of Android is probably appropriate.
+<em>Subsurface-mobile</em> performs communication using both Bluetooth and Bluetooth-low-energy (BLE).
+The appropriate choice of Bluetooth communication is often made by the software and the user need not be concerned with this.
+For dive computers with both Bluetooth and BLE, a separate button is presented on the download
+screen for each mode of communication, allowing a choice. Use the <em>Connection</em> value to distinguish between the
+two options. In the image on the right, below, there are three buttons labeled "Shearwater Petrel 2". These represent two Shearwater Petrel dive computers, one of which can communicate in both Bluetooth as well as BLE. The <em>Connection</em>
+information indicates that the Petrel with no BLE is selected.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_start_the_download">7.2.3. Start the download</h4>
+<div class="paragraph"><p>With communication between dive computer and <em>Subsurface-mobile</em>
+having been set up, tap the <em>Download</em> button. Be patient because the download can take a while - with many
+long dives and a slow BLE connection we have seen download times of 45 minutes or longer. But usually downloading
+a day&#8217;s worth of diving happens reasonably quickly.
+The downloaded dives appear in the bottom part of the screen,
+the most recent dive at the top (see image on right, below).</p></div>
+<div class="paragraph"><p>Each dive has a check-box on the left hand side, used for selecting which dives you want to add to the
+<em>Subsurface-mobile</em> dive list: dives that are not checked are ignored. Once you picked the dives
+you want to add to the dive list, tap the button at the bottom left labeled <em>Accept</em>. The selected dives will
+now appear as part of
+the <em>Subsurface-mobile</em> dive list. The downloaded dive information can be edited as described in the section
+above <a href="#S_Edit_Dive">Edit a dive</a>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/DC-Download.jpg" alt="FIGURE: DC download screen" />
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_apply_gps_fixes">7.3. Apply GPS fixes</h3>
+<div class="paragraph"><p>This is described in the following main section, below.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_manually_sync_the_dive_log_with_the_em_subsurface_cloud_em">7.4. Manually sync the dive log with the <em>Subsurface Cloud</em></h3>
+<div class="paragraph"><p>As the name indicates, this ensures that the local changes on the mobile device and changes
+made by other devices and computers to the data stored in the <em>Subsurface Cloud</em> are synchronized.
+It is highly recommended to sync with cloud storage after downloading new dives from a dive computer
+or manually adding or editing dive information on the mobile device.</p></div>
+<div class="paragraph"><p>This can also be triggered by pulling down (and briefly holding) the <em>Dive List</em>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_enable_cloud_auto_sync">7.5. Enable cloud auto sync</h3>
+<div class="paragraph"><p>By default <em>Subsurface-mobile</em> runs offline and only syncs the dive list
+with cloud storage when explicitly told to do so (see the previous entry above).
+You can choose to always sync with the cloud servers. This is not
+recommended unless you are in
+an area with a fast and reliable internet connection, as otherwise
+<em>Subsurface-mobile</em> might appear to hang between operations as it tries to
+connect to the cloud server. Selecting <em>Enable cloud auto sync</em> causes
+the local dive log to be synchronized with the copy in the cloud after most changes as well
+as (on Android) every time that <em>Subsurface-mobile</em> is closed. iOS doesn&#8217;t support the concept
+of closing an app (you can just kill it, which doesn&#8217;t allow for a final sync with the cloud).
+In general it is safer to manually sync with the cloud once you are done making changes in
+<em>Subsurface-mobile</em>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_dive_summary">7.6. Dive Summary</h3>
+<div class="paragraph"><p>The <em>Dive Summary</em> page provides a very simple overview of your diving activities - which can for example
+be useful when documenting total dive experience and recent dive activity for a dive center at
+the beginning of a dive trip.</p></div>
+<div class="paragraph"><p>The summary page lists the date of your first dive in the dive list as well as your most recent dive.
+It also provides two columns of data for selectable time ranges (by default all dives in the dive list
+and the dives during the last six months.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_export">7.7. Export</h3>
+<div class="paragraph"><p>The <em>Export</em> feature is somewhat experimental. On Andtoid it only allows the upload of your dive list
+to two websites (divelogs.de and diveshare). On iOS it also allws local file based exports as <em>Subsurface</em>
+specific XML files (both for dives and dive sites) as well as <em>UDDF</em>.</p></div>
+<div class="paragraph"><p>Tapping on <em>Next</em> opens an additional page for login information (or a file selection dialog).</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_location">8. Location</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The fact that almost all smartphones have GPS facilities allows
+<em>Subsurface-mobile</em> to record
+the locations of dives. <strong>IMPORTANT: GPS-derived coordinates on a smartphone
+are not always accurate and can have an error greater than 1 km. GPS accuracy
+is determined by the hardware and software of the
+smartphone as well as by the GPS settings selected within Android/iOS.
+As of Android V6 select Android <em>Settings &#8594; Communication &#8594; Location &#8594; High accuracy.</em></strong>
+If the smartphone is taken on the boat
+during a dive, locations will be automatically recorded at regular intervals.
+These locations can then be applied to dives in the dive list. Here is how it&#8217;s done:</p></div>
+<div class="sect2">
+<h3 id="S_ConfigureGPS">8.1. Configuring the GPS service</h3>
+<div class="paragraph"><p>From the <em>Main Menu</em>, select <a href="#S_Settings"><em>Settings</em></a> screen which has a section for
+configuring the GPS service (image below). GPS location data
+are collected at regular intervals, e.g. every 5 minutes, or at regular
+distances, e.g. after the boat has moved more than 200m, or a combination of
+both of these approaches. Provide the appropriate information and
+tap the <em>Back</em> button. The program is now ready to collect GPS positions.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/GPS-config.jpg" alt="FIGURE: GPS configure" />
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_collecting_gps_positions">8.2. Collecting GPS positions</h3>
+<div class="tableblock">
+<table rules="all"
+width="100%"
+frame=""
+cellspacing="0" cellpadding="4">
+<col width="50%" />
+<col width="50%" />
+<tbody>
+<tr>
+<td align="left" valign="top"><div><div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/GPSstart.jpg" alt="FIGURE: GPS start" />
+</div>
+</div></div></td>
+<td align="left" valign="top"><p class="table">In the <em>Location</em> menu select <em>Run location service</em>.
+<em>Subsurface-mobile</em> starts to collect GPS locations automatically,
+following the preferences specified as described above. While the GPS
+location service is running, all menus have a GPS symbol at the bottom
+of the menu, indicating that the service is active. After return from
+the dive trip, deactivate the collection of GPS data by tapping
+the option <em>GPS &#8594; Disable location service</em>. The GPS symbol at the bottom
+of all menus disappears.</p>
+<p class="table">Collecting GPS fixes like this is relatively battery intensive and unfortunately
+both Android and especially iOS have become increasingly aggressive in killing
+applications that are running while the screen is turned off. It may make sense
+to check between dives that the location service is still running.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_viewing_gps_data">8.3. Viewing GPS data</h3>
+<div class="paragraph"><p>From the <em>Location</em> menu select <em>Show GPS fixes</em>. This brings
+up a list of GPS positions obtained by the location service (image
+below). Two actions are possible for each of the locations, enabled by
+dragging the right part of a location to the left. This exposes two
+options. Tapping the dustbin deletes this particular GPS location. Tapping the
+GPS map pin opens up Google Maps with a pin
+indicating the exact map position of the GPS record being viewed. The two above
+options can be hidden by drawing the GPS record to the right.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/gpsmanagement.jpg" alt="FIGURE: GPS management" />
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_applying_gps_data_to_dives_in_the_dive_log">8.4. Applying GPS data to dives in the dive log</h3>
+<div class="paragraph"><p>After running the location service during a dive trip, first either download
+the dives from your divecomputer or manually enter the dives into the dive list.
+Now you can apply the GPS positions to these dives.
+From the <em>Dive management</em> menu, tap <em>Apply GPS fixes</em>. The dive list contains the start
+and end times of each dive. Now, <em>Subsurface-mobile</em> applies the first
+GPS position that falls within the dive period of each dive. This results
+in a GPS position for each dive that is saved as part of the dive log.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_viewing_the_locations_of_all_dives_in_the_dive_list">8.5. Viewing the locations of all dives in the dive list</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/DivesMap.jpg" alt="FIGURE: Map of all dive sites" />
+</div>
+</div>
+<div class="paragraph"><p>The locations of all dives in the dive list can be viewed from the <em>Location</em> menu by selecting the <em>Map</em> option.
+A satellite image of the world is shown. At that scale no dive sites are shown. If you zoom into a particular region
+of the world the dive sites appear, indicated by red flags. Zooming in even closer indicates the names of each
+of the different dive sites.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_Settings">9. Settings</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The <em>Settings</em> page allows the customization of <em>Subsurface-mobile</em>.
+It is grouped into four sections.</p></div>
+<div class="sect2">
+<h3 id="_em_general_settings_em_section">9.1. <em>General settings</em> section</h3>
+<div class="sect3">
+<h4 id="S_ChangeCloudAccount">9.1.1. Changing to a different <em>Subsurface</em> cloud account</h4>
+<div class="paragraph"><p>Some users have more than one <em>Subsurface</em> cloud account and have a need to switch between accounts.
+Tap on the <em>Change</em> button next to the <em>Email address</em> in the <em>General settings</em> on the <em>Settings</em> page.
+This opens the <em>Cloud credentials</em> page.
+Here you can change the email address and password used and then tap the button <em>Sign-in or register</em>.
+The appropriate dive list is shown.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_default_cylinder">9.1.2. Default cylinder</h4>
+<div class="paragraph"><p>When manually entering a dive or when downloading from a dive computer that doesn&#8217;t explicitly
+include cylinder size information (very few dive computers support that feature), <em>Subsurface-mobile</em>
+uses the cylinder that you select here as the default. If you don&#8217;t set this entry, no default
+cylinder is used.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_forget_the_remembered_dive_computers">9.1.3. Forget the remembered dive computers</h4>
+<div class="paragraph"><p>Tap the <em>Forget</em> button to reset the dive computers that are stored in the up to four shortcut
+buttons on the <em>Download from dive computer</em> page.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_em_theme_em_section">9.2. <em>Theme</em> section</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/SettingsCloudTheme.jpg" alt="FIGURE: Settings: Cloud &amp; Theme" />
+</div>
+</div>
+<div class="sect3">
+<h4 id="_color_theme">9.2.1. Color theme</h4>
+<div class="tableblock">
+<table rules="all"
+width="100%"
+frame=""
+cellspacing="0" cellpadding="4">
+<col width="50%" />
+<col width="50%" />
+<tbody>
+<tr>
+<td align="left" valign="top"><div><div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/PinkTheme.jpg" alt="FIGURE: GPS start" />
+</div>
+</div></div></td>
+<td align="left" valign="top"><p class="table">Besides the default blue color scheme, <em>Subsurface-mobile</em> supports two additional color schemes
+for users with different tastes (see image above). All screenshots in this user manual shows are
+based on the the blue default color scheme. You can pick the <em>pink</em> or <em>dark</em> color scheme from
+the drop down menu.</p>
+<p class="table">The boxes below show the various color choices in the theme of your choice.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_font_size">9.2.2. Font size</h4>
+<div class="paragraph"><p>Depending on the size and the screen resolution of your mobile device, you may prefer slightly
+smaller or slightly larger fonts. You can make this selection with the three buttons here.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_em_units_em_section">9.3. <em>Units</em> section</h3>
+<div class="paragraph"><p>Here you can pick <em>metric</em>, <em>imperial</em>, or <em>personalized</em> units for the user interface.
+In most cases <em>Subsurface-mobile</em> should pick the regionally typical unit system for
+your location.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_em_advanced_em_section">9.4. <em>Advanced</em> section</h3>
+<div class="paragraph"><p>As the name indicates, most users will not need to make changes here.</p></div>
+<div class="sect3">
+<h4 id="_gps_location_service_thresholds">9.4.1. GPS location service thresholds</h4>
+<div class="paragraph"><p>As indicated above in the <em>Location</em> section of this manual, here you can set the distance and time
+thresholds for the <em>location service</em></p></div>
+</div>
+<div class="sect3">
+<h4 id="_bluetooth">9.4.2. Bluetooth</h4>
+<div class="paragraph"><p>Since most devices tend to find a <em>LOT</em> of BT/BLE devices that aren&#8217;t dive computers, by
+default <em>Subsurface-mobile</em> only shows known dive computers to make the connection list
+easier to use.</p></div>
+<div class="paragraph"><p>This setting tells <em>Subsurface-mobile</em> to temporarily show <em>ALL</em> Bluetooth and BLE devices as
+possible connections on the <em>Download Page</em>, not just the ones recognized as dive computers.
+If you end up needing this option in order to select a dive computer that is not recognized
+by <em>Subsurface-mobile</em>, please send an email to the developers (using the <em>Help &#8594; Ask for support</em>
+menu entry) so we can add the missing code to recognize your dive computer as well.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_display">9.4.3. Display</h4>
+<div class="paragraph"><p><em>Subsurface-mobile</em> tries to make efficient use of the available screen real estate of your
+mobile device. In most cases this leads to reasonable choices regarding the number of parallel
+columns that are being displayed. Some users have expressed the desire to force <em>Subsurface-mobile</em>
+to show only one column in portrait mode, even on large devices like tablets, as this results
+in a larger profile on the <em>Dive Details</em> page. Select this option if you want to enable that
+feature.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_activating_the_developer_sub_menu">9.4.4. Activating the Developer sub-menu</h4>
+<div class="paragraph"><p>This enables an additional menu item in the <em>Main</em> menu which contains options which are almost
+never useful for a regular users. Here you can find the detailed app log file as well as several
+test screens that help the developers track down issues you might encounter.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_help">10. Help</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_about">10.1. About</h3>
+<div class="paragraph"><p>This page shows you the exact version of <em>Subsurface-mobile</em> that you are running and provides
+a convenient way to copy the application logs to the clipboard.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_show_user_manual">10.2. Show user manual</h3>
+<div class="paragraph"><p>This menu entry opens the online version of this user manual in the native browser of your
+device. Unfortunately this option isn&#8217;t available if your device is offline.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_ask_for_support">10.3. Ask for support</h3>
+<div class="paragraph"><p>This item opens your default email client with a pre-populated email to the <em>Subsurface</em>
+support alias and copies the app logs into that email. Simply add your question or the
+but that you are reporting and send us your message.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_reset_forgotten_em_subsurface_cloud_em_password">10.4. Reset forgotten <em>Subsurface Cloud</em> password</h3>
+<div class="paragraph"><p>As mentioned earlier in this manual, this is a convenient link to a web page that allows
+you to reset the password for your <em>Subsurface Cloud</em> account.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated
+ 2020-03-22 23:29:37 PDT
+</div>
+</div>
+</body>
+</html>
