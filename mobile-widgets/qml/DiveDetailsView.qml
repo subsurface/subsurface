@@ -277,6 +277,16 @@ Item {
 						// pass events through to the parent and eventually into the ListView
 						propagateComposedEvents: true
 
+						// for testing / debugging on a desktop
+						scrollGestureEnabled: true
+						onWheel: {
+							manager.appendTextToLog("wheel " + wheel.angleDelta)
+							if (wheel.angleDelta.y > 0)
+								qmlProfile.scale += 0.2
+							if (wheel.angleDelta.y < 0 && qmlProfile.scale > 1.1)
+								qmlProfile.scale -= 0.2
+						}
+
 						anchors.fill: parent
 						drag.target: qmlProfile
 						drag.axis: Drag.XAndYAxis
