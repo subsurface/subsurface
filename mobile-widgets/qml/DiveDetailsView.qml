@@ -239,6 +239,10 @@ Item {
 					anchors.fill: parent
 					pinch.dragAxis: Pinch.XAndYAxis
 					onPinchStarted: {
+						// it's possible that we thought this was a pan and reduced opacity
+						// before realizing that this is actually a pinch/zoom. So let's reset this
+						// just in case
+						qmlProfile.opacity = 1.0
 						if (manager.verboseEnabebled)
 							manager.appendTextToLog("pinch started w/ previousScale " + qmlProfile.lastScale)
 					}
