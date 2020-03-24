@@ -28,6 +28,8 @@ public:
 public slots:
 	void setMargin(int margin);
 	void screenChanged(QScreen *screen);
+	void triggerUpdate();
+
 private:
 	int m_diveId;
 	qreal m_devicePixelRatio;

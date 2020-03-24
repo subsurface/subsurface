@@ -24,7 +24,18 @@ QMLProfile::QMLProfile(QQuickItem *parent) :
 	m_profileWidget->setPrintMode(true);
 	m_profileWidget->setFontPrintScale(fontScale);
 	connect(QMLManager::instance(), &QMLManager::sendScreenChanged, this, &QMLProfile::screenChanged);
+	connect(this, &QMLProfile::scaleChanged, this, &QMLProfile::triggerUpdate);
 	setDevicePixelRatio(QMLManager::instance()->lastDevicePixelRatio());
+}
+
+// we need this so we can connect update() to the scaleChanged() signal - which the connect above cannot do
+// directly as it chokes on the default parameter for update().
+// If the scale changes we may need to change our offsets to ensure that we still only show a subset of
+// the profile and not empty space around it, which the paint() method below will take care of, which will
+// eventually get called after we call update()
+void QMLProfile::triggerUpdate()
+{
+	update();
 }
 
 void QMLProfile::paint(QPainter *painter)
