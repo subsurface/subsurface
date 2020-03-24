@@ -102,7 +102,7 @@ On many pages there is also a _Context menu_ available through a button with thr
 the lower right corner.
 In the dive list this _Context menu_ can also be opened by tapping and holding a dive or trip header.
 
-image::mobile-images/ActionButton.jpg["FIGURE: Action Button",float="left"]
+image::mobile-images/ActionButton2.jpg["FIGURE: Action Button",float="left"]
 Additionally, at the bottom of many _Subsurface-mobile_ screens is a round
 _Action button_ that provides quick access to the most commonly needed
 actions on that screen (see image on the left). On some screens there is only
