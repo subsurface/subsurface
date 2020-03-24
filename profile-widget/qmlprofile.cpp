@@ -62,6 +62,25 @@ void QMLProfile::paint(QPainter *painter)
 	// shift the painter (taking its existing transformation into account)
 	QTransform profileTransform = QTransform();
 	profileTransform.scale(sx, sy);
+
+	// this is a bit complex because of the interaction with the Qt widget scaling
+	// logic. We use the default setup where the scale happens with the center of the
+	// widget as transformation center.
+	// The QML code *should* already ensure that we don't shrink the profile, but for
+	// the math below to work, let's make sure
+	qreal profileScale = scale();
+	if (profileScale < 1.0) {
+		profileScale = 1.0;
+		setScale(profileScale);
+	}
+	// When zooming and panning we want to ensure that we always show a subset of the
+	// profile and not the "empty space" around the profile.
+	// a bit of math on a piece of paper shows that our offsets need to stay within +/- dx and dy
+	qreal dx = width() * (profileScale - 1) / (2 * dpr * profileScale);
+	qreal dy = height() * (profileScale - 1) / (2 * dpr * profileScale);
+	m_xOffset = std::max(-dx, std::min(m_xOffset, dx));
+	m_yOffset = std::max(-dy, std::min(m_yOffset, dy));
+
 	QTransform painterTransform = painter->transform();
 	painterTransform.translate(dpr * m_xOffset - painterRect.width() * magicShiftFactor, dpr * m_yOffset - painterRect.height() * magicShiftFactor);
 
