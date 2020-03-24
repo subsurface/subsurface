@@ -72,7 +72,7 @@ are accessible by _Subsurface-mobile_. On iOS, only Bluetooth LE based
 dive computers are supported.
 - No dive planner.
 - No printing.
-- No support for media embedded in dive profiles (_Subsurface_ allows to refernce images and video clips directly in the dive profile).
+- No support for media embedded in dive profiles (_Subsurface_ allows to reference images and video clips directly in the dive profile).
 
 == Installing _Subsurface-mobile_ on your mobile device
 
@@ -95,7 +95,7 @@ but we (the developers) feel that it is very easy and intuitive to work with.
 
 On every screen you have access to the _Main menu_ through a _Hamburger_ button (three short
 horizontal lines) in the lower left corner. Additionally, the _Main menu_ can be opened by swiping
-towards the the right from the very left edge of the screen. The entries in the main menu are all explained
+towards the right from the very left edge of the screen. The entries in the main menu are all explained
 starting in section xref:S_DiveManagement[_Dive Management_]
 
 On many pages there is also a _Context menu_ available through a button with three vertical dots in
@@ -194,7 +194,7 @@ provide these again when launching the program.
 
 [blue]#After filling in the correct information and submitting it, I did not receive a PIN by email#
 
-1. Check *carefully* that you didn't make a spelling mistake in the email address you provided. You would be surprised how often this is the problem that people encouter, as autocorrect often mangles email addresses.
+1. Check *carefully* that you didn't make a spelling mistake in the email address you provided. You would be surprised how often this is the problem that people encounter, as autocorrect often mangles email addresses.
 2. Check that the return email containing the PIN is not in the SPAM folder of your email client.
 3. Wait for a few hours and check again for an email with a PIN.
 4. If there is still no email containing a PIN, send mail to in-app-support@subsurface-divelog.org
@@ -499,7 +499,7 @@ and the dives during the last six months.
 === Export
 
 The _Export_ feature is somewhat experimental. On Android it only allows the upload of your dive list
-to two websites (divelogs.de and diveshare). On iOS it also allws local file based exports as _Subsurface_
+to two websites (divelogs.de and diveshare). On iOS it also allows local file based exports as _Subsurface_
 specific XML files (both for dives and dive sites) as well as _UDDF_.
 
 Tapping on _Next_ opens an additional page for login information (or a file selection dialog).
@@ -611,7 +611,7 @@ buttons on the _Download from dive computer_ page.
 a|image::mobile-images/ThemeSettings.jpg["FIGURE: Theme Settings",align="center"] |
 Besides the default blue color scheme, _Subsurface-mobile_ supports two additional color schemes
 for users with different tastes (see image above). All screenshots in this user manual shows are
-based on the the blue default color scheme. You can pick the _pink_ or _dark_ color scheme from
+based on the blue default color scheme. You can pick the _pink_ or _dark_ color scheme from
 the drop down menu.
 
 The boxes below show the various color choices in the theme of your choice.
