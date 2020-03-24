@@ -190,16 +190,7 @@ static QString displayWeight(const struct dive *d, bool units)
 		return s + gettextFromC::tr("lbs");
 }
 
-static QFont struckOutFont()
-{
-	QFont font;
-	font.setStrikeOut(true);
-	return font;
-}
-static QBrush invalidForeground(Qt::gray);
-static QFont invalidFont = struckOutFont();
-
-QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
+QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role) const
 {
 #ifdef SUBSURFACE_MOBILE
 	// Special roles for mobile
@@ -509,8 +500,10 @@ void DiveTripModelBase::reset()
 	emit diveListNotifier.numShownChanged();
 }
 
-DiveTripModelBase::DiveTripModelBase(QObject *parent) : QAbstractItemModel(parent)
+DiveTripModelBase::DiveTripModelBase(QObject *parent) : QAbstractItemModel(parent),
+	invalidForeground(Qt::gray)
 {
+	invalidFont.setStrikeOut(true);
 }
 
 int DiveTripModelBase::columnCount(const QModelIndex&) const

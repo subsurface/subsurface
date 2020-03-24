@@ -5,6 +5,8 @@
 #include "core/dive.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include <QAbstractItemModel>
+#include <QBrush>
+#include <QFont>
 
 class DiveFilter;
 
@@ -88,9 +90,11 @@ signals:
 	void currentDiveChanged(QModelIndex index);
 protected:
 	dive *oldCurrent;
+	QBrush invalidForeground;
+	QFont invalidFont;
 
 	// Access trip and dive data
-	static QVariant diveData(const struct dive *d, int column, int role);
+	QVariant diveData(const struct dive *d, int column, int role) const;	// Not static because we have to access invalidFont
 	static QVariant tripData(const dive_trip *trip, int column, int role);
 	static QString tripTitle(const dive_trip *trip);
 	static QString tripShortDate(const dive_trip *trip);
