@@ -31,11 +31,11 @@ open-source software (in simple terms that means that there is no commercial int
 them, all the source code needed to build them is available, there are no ads, no one is
 monetizing your data, etc).
 
-_Subsurface-mobile_ is a limited mobile version of _Subsurface_
+_Subsurface-mobile_ is a limited mobile version of _Subsurface_,
 aimed at Android and iOS smartphone and tablet devices.
 While the desktop version of _Subsurface_ shows much more detailed information
-for each dive, the mobile version allows a more accessible dive log on the go, for example
-on a dive trip, useful for proving dive experience to dive shops or to review
+for each dive, the mobile version allows a more accessible dive log on the go. For example,
+you can prove dive experience on a dive trip to dive shops or to review
 previous dives. _Subsurface-mobile_ also allows
 the gathering of GPS locations where dives are performed.
 Assuming you have a dive computer that is supported by the mobile OS of
@@ -59,7 +59,7 @@ _Subsurface-mobile_ allows:
 - Viewing the locations of recorded GPS positions and of dives
   on a map.
 
-These items are discussed in greater detail in the following text.
+These items are discussed in greater detail in the following chapters.
 
 _Subsurface-mobile_ has some limitations compared to _Subsurface_:
 
@@ -76,7 +76,7 @@ dive computers are supported.
 
 == Installing _Subsurface-mobile_ on your mobile device
 
-Find _Subsurface-mobile_ in the _Google Play Store_ or the _iTunes Store_
+Find _Subsurface-mobile_ in the _Google Play Store_ or the _Apple App Store_
 and install it. For Android devices without access to the _Google Play Store_
 APKs can be found in the downloads folder on the _Subsurface_ website.
 
@@ -96,7 +96,7 @@ but we (the developers) feel that it is very easy and intuitive to work with.
 On every screen you have access to the _Main menu_ through a _Hamburger_ button (three short
 horizontal lines) in the lower left corner. Additionally, the _Main menu_ can be opened by swiping
 towards the right from the very left edge of the screen. The entries in the main menu are all explained
-starting in section xref:S_DiveManagement[_Dive Management_]
+starting in section xref:S_DiveManagement[_Dive Management_].
 
 On many pages there is also a _Context menu_ available through a button with three vertical dots in
 the lower right corner.
@@ -131,7 +131,7 @@ version. The iOS screens look similar.
 When you start _Subsurface-mobile_ for the first time, a _Subsurface_
 splash screen is shown while the program loads. On some devices this
 may take several seconds. Afterwards the _Cloud Credentials screen_ appears
-(see image below on left).
+(see left image below).
 
 image::mobile-images/Credentials.jpg["FIGURE: Mobile credentials screen",align="center"]
 
@@ -144,7 +144,7 @@ The _Subsurface_ maintainer provides a dedicated and
 free Internet cloud storage account for users of _Subsurface_ and _Subsurface-mobile_.
 You can use this to store your dive log and to share your data between various computers
 and devices. The _Subsurface_ team never accesses your dive data without explicit
-permission to do so, the data are not used for any purpose other than providing them to the user who
+permission to do so, the data is not used for any other purpose than providing them to the user who
 created them. There are no ads and no harvesting / analysis of the data
 stored in the _Subsurface Cloud_ storage. There is no monetization whatsoever.
 
@@ -152,7 +152,7 @@ _Subsurface-mobile_ is sufficient to fully maintain a dive log. In addition you 
 more advanced features in _Subsurface_ when you have access to a computer while still
 being able to work with your dive data when only a mobile device is available.
 
-The dive data in the cloud are cached locally on any device or computer that is connected to
+The dive data in the cloud is cached locally on any device or computer that is connected to
 the _Subsurface Cloud_ account.
 It is easy to create backups of the data (for example in XML format) on the desktop: both the mobile
 device and the desktop keep a local copy of the data so that the dive log is always accessible, even
@@ -175,7 +175,7 @@ copy on the mobile device. This avoids long delays or even failure of operations
 with the server after making local changes (either by pulling down on the dive list, or by using the
 manual sync entry in the Dive management menu entry).
 
-3) If this is a new cloud account, a PIN screen will open (see image on right, above). A PIN is e-mailed
+3) If this is a new cloud account, a PIN screen will open (see right image above). A PIN is e-mailed
 to the email address entered in the previous step. Enter this PIN into the field indicated
 and tap the _Register_ button. After the PIN has been entered it
 is no longer needed - it just proves that this is indeed your email account.
@@ -195,7 +195,7 @@ provide these again when launching the program.
 [blue]#After filling in the correct information and submitting it, I did not receive a PIN by email#
 
 1. Check *carefully* that you didn't make a spelling mistake in the email address you provided. You would be surprised how often this is the problem that people encounter, as autocorrect often mangles email addresses.
-2. Check that the return email containing the PIN is not in the SPAM folder of your email client.
+2. Check that the return email containing the PIN is not in the SPAM/Junk folder of your email client.
 3. Wait for a few hours and check again for an email with a PIN.
 4. If there is still no email containing a PIN, send mail to in-app-support@subsurface-divelog.org
 
@@ -235,7 +235,7 @@ A tap and hold on a dive or a trip header opens the context menu for that entry.
 For a dive this allows moving the dive into or out of trips or between trips, deleting
 the dive or showing the dive on an integrated map viewer (assuming the dive has the
 necessary GPS information). The context menu also allows access to the undo and redo
-system that allows you to step backwards and forwards through recent actions.
+system that allows you to step backwards and forwards through recent changes.
 
 For a trip header the context menu gives you an option to edit the trip title (typically
 the trip location) and some quick notes for the trip.
@@ -271,7 +271,7 @@ on the Action Bar) or to view the dive location on an integrated map viewer.
 The context menu (accessible by tapping on the vertical three dots in the lower right corner of the
 screen) offers additional options to move dives between trips, the same delete and map options
 already mentioned, and access to the undo and redo facility that allows you to step backwards and
-forwards through recent actions.
+forwards through recent changes.
 
 === Viewing the location of a dive on a map
 
@@ -376,8 +376,10 @@ computers.
 Use the _Vendor name_ and _Dive Computer_ drop-downs to pick the correct
 dive computer.
 For instance, when using a Shearwater Petrel dive
-computer, the vendor is _Shearwater_ and the product is _Petrel_(see image on the left, below).
+computer, the vendor is _Shearwater_ and the product is _Petrel_(see left image below -
+section Start the download).
 
+TODO: image of DL missing - or link to the 7.2.3 Start the download
 
 When downloading from multiple different dive computers, shortcut
 buttons appear below the drop-downs to easily switch between them. In the xref:S_Settings[_Settings_] menu
@@ -399,7 +401,7 @@ cable used with the dive computer into a USB OTG cable which,
 in turn, plugs into the micro-USB port.
 The OTG cable usually has a full-size ("Type A") female receptacle at one end which
 accommodates the full-sized male plug
-of the dive computer USB cable (see image below). This means that two cables are used to connect
+of the dive computer USB cable (see image on left). This means that two cables are used to connect
 the dive computer to the mobile device. *Not all Android devices support OTG cables*
 but usually all modern Android devices with a USB C plug can be used with a USB A-to-C adapter.
 |=======
@@ -447,7 +449,7 @@ having been set up, tap the _Download_ button. Be patient because the download c
 long dives and a slow BLE connection we have seen download times of 45 minutes or longer. But usually downloading
 a day's worth of diving happens reasonably quickly.
 The downloaded dives appear in the bottom part of the screen,
-the most recent dive at the top (see image on right, below).
+the most recent dive at the top (see right image below).
 
 Each dive has a check-box on the left hand side, used for selecting which dives you want to add to the
 _Subsurface-mobile_ dive list: dives that are not checked are ignored. Once you picked the dives
@@ -457,10 +459,6 @@ the _Subsurface-mobile_ dive list. The downloaded dive information can be edited
 above xref:S_Edit_Dive[Edit a dive].
 
 image::mobile-images/DC-Download.jpg["FIGURE: DC download screen",align="center"]
-
-=== Apply GPS fixes
-
-This is described in the following main section below.
 
 === Manually sync the dive log with the _Subsurface Cloud_
 
@@ -514,8 +512,8 @@ is determined by the hardware and software of the
 smartphone as well as by the GPS settings selected within Android/iOS.
 As of Android V6 select Android _Settings -> Communication -> Location -> High accuracy._*
 If the smartphone is taken on the boat
-during a dive, locations will be automatically be recorded at regular intervals.
-These locations can then be applied to dives in the dive list. Here is how it's done:
+during a dive, locations will be automatically recorded at regular intervals.
+These locations can then be applied to dives in the dive list as described in following chapters.
 
 [[S_ConfigureGPS]]
 === Configuring the GPS service
@@ -525,7 +523,7 @@ appropriate. If you would like to change them, go to
 the _Main Menu_, select the xref:S_Settings[_Settings_] screen, and open
 the _Advanced_ area on that page. Here you will find the section for
 configuring the GPS service (see image below). GPS location data
-are collected at regular intervals, e.g. every 5 minutes, or at regular
+is collected at regular intervals, e.g. every 5 minutes, or at regular
 distances, e.g. after the boat has moved more than 200m, or a combination of
 both of these approaches. Provide the appropriate information and
 tap the _Back_ button. The program is now ready to collect GPS positions.
@@ -542,7 +540,7 @@ _Subsurface-mobile_ starts to collect GPS locations automatically,
 following the preferences specified as described above. While the GPS
 location service is running, all menus have a GPS symbol at the bottom
 of the menu, indicating that the service is active. After returning from
-the dive trip, deactivate the collection of GPS data by tapping
+the dive, deactivate the collection of GPS data by tapping
 the option _GPS -> Disable location service_. The GPS symbol at the bottom
 of all menus disappears.
 
@@ -610,7 +608,7 @@ buttons on the _Download from dive computer_ page.
 |=======
 a|image::mobile-images/ThemeSettings.jpg["FIGURE: Theme Settings",align="center"] |
 Besides the default blue color scheme, _Subsurface-mobile_ supports two additional color schemes
-for users with different tastes (see image above). All screenshots in this user manual shows are
+for users with different tastes (see image on left). All screenshots shown in this user manual are
 based on the blue default color scheme. You can pick the _pink_ or _dark_ color scheme from
 the drop down menu.
 
