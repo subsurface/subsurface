@@ -848,7 +848,7 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="590"/>
         <source>invalid</source>
-        <translation type="unfinished"/>
+        <translation>שגויים</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="725"/>
@@ -888,7 +888,7 @@
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="995"/>
         <source>Add weight (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>הוסיף משקל %1 (%n צלילות) </numerusform><numerusform>הוסיף משקל %1 (%n צלילות) </numerusform><numerusform>הוסיף משקל %1 (%n צלילות) </numerusform><numerusform>הוסיף משקל %1 (%n צלילות) </numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="1078"/>
@@ -898,7 +898,7 @@
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1080"/>
         <source>Remove weight (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>הוריד משקל %1 (%n צלילות) </numerusform><numerusform>הוריד משקל %1 (%n צלילות) </numerusform><numerusform>הוריד משקל %1 (%n צלילות) </numerusform><numerusform>הוריד משקל %1 (%n צלילות) </numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="1108"/>
@@ -908,7 +908,7 @@
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1110"/>
         <source>Edit weight (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>עריכת משקל %1 (%n צלילות) </numerusform><numerusform>עריכת משקל %1 (%n צלילות) </numerusform><numerusform>עריכת משקל %1 (%n צלילות) </numerusform><numerusform>עריכת משקל %1 (%n צלילות) </numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="1169"/>
@@ -3297,7 +3297,7 @@ GPS הנוכחי:</translation>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="929"/>
         <source>Mark dive(s) valid</source>
-        <translation type="unfinished"/>
+        <translation>סמן את הצלילות כתקינות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="931"/>

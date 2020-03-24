@@ -33,7 +33,7 @@
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
         <source>Copy logs to clipboard</source>
-        <translation>Kopieer logboek naar klembord</translation>
+        <translation>Logbestanden naar klembord kopiëren</translation>
     </message>
 </context>
 <context>
@@ -635,7 +635,7 @@
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="585"/>
         <source>shift time of %n dives</source>
-        <translation><numerusform>Tijdstip van %n duik verschuiven</numerusform><numerusform>Tijdstip van %n duiken verschuiven</numerusform></translation>
+        <translation><numerusform>Tijdstip van %n duik verschuiven</numerusform><numerusform>tijdstip van %n duiken verschuiven</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="633"/>
@@ -690,7 +690,7 @@
     <message>
         <location filename="../commands/command_divelist.cpp" line="909"/>
         <source>merge dive</source>
-        <translation>Duik samenvoegen</translation>
+        <translation>duik samenvoegen</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="78"/>
@@ -848,7 +848,7 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="590"/>
         <source>invalid</source>
-        <translation>ongeldig</translation>
+        <translation>Ongeldig</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="725"/>
@@ -987,19 +987,19 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="47"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2537"/>
         <source>Connect via Bluetooth</source>
-        <translation>Aansluiten via Bluetooth</translation>
+        <translation>Via Bluetooth verbinden</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="54"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2538"/>
         <source>Connect</source>
-        <translation>Verbind</translation>
+        <translation>Verbinden</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="64"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2539"/>
         <source>Disconnect</source>
-        <translation>Verbreek verbinding</translation>
+        <translation>Verbinding verbreken</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="80"/>
@@ -3350,7 +3350,7 @@ GPS locatie:</translation>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="971"/>
         <source>Video files</source>
-        <translation>Video bestanden</translation>
+        <translation>Videobestanden</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="972"/>
@@ -3536,7 +3536,7 @@ GPS locatie:</translation>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="425"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="396"/>
         <source>Export yearly statistics</source>
-        <translation>Jaarlijkse statistieken uitvoeren</translation>
+        <translation>Jaarlijkse statistieken exporteren</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="441"/>
@@ -3638,7 +3638,7 @@ GPS locatie:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="85"/>
         <source>Generic format that is used for data exchange between a variety of diving related programs.</source>
-        <translation>Algemene bestandsindeling die gebruikt wordt om gegevens uit te wisselen tussen verschillende duik programma&apos;s.</translation>
+        <translation>Algemene bestandsindeling die gebruikt wordt om gegevens uit te wisselen tussen verschillende duikprogramma&apos;s.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="87"/>
@@ -3648,7 +3648,7 @@ GPS locatie:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="89"/>
         <source>Comma separated values of the dive information. This includes most of the dive details but no profile information.</source>
-        <translation>Waarden gescheiden komma&apos;s met duikinformatie. Deze omvatten een groot deel van de informatie, uitgezonderd het duikprofiel.</translation>
+        <translation>Waarden gescheiden door komma&apos;s met duikinformatie. Deze omvatten een groot deel van de informatie, uitgezonderd het duikprofiel.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="91"/>
@@ -3678,7 +3678,7 @@ GPS locatie:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="101"/>
         <source>Write depths of images to file.</source>
-        <translation>Voeg dieptes waarop foto&apos;s genomen zijn toe aan het bestand.</translation>
+        <translation>Bestand maken met dieptes waarop foto&apos;s genomen zijn.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="103"/>
@@ -3693,12 +3693,12 @@ GPS locatie:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="107"/>
         <source>Write the profile image as PNG file.</source>
-        <translation>Profielafbeelding als PNG bestand schrijven</translation>
+        <translation>Profielafbeelding als PNG bestand opslaan.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="109"/>
         <source>Write profile data to a CSV file.</source>
-        <translation>Profielgegevens naar een CSV bestand schrijven</translation>
+        <translation>Profielgegevens naar een CSV bestand schrijven.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="147"/>
@@ -4509,7 +4509,7 @@ GPS locatie:</translation>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerView.qml" line="11"/>
         <source>Dive planner view</source>
-        <translation>Duikplanner wweergave</translation>
+        <translation>Duikplanner weergave</translation>
     </message>
 </context>
 <context>
@@ -5510,7 +5510,7 @@ Bestaande duikstek</translation>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="160"/>
         <source>Generic format that is used for data exchange between a variety of diving related programs.</source>
-        <translation>Algemene bestandsindeling die gebruikt wordt om gegevens uit te wisselen tussen verschillende duik programma&apos;s.</translation>
+        <translation>Algemene bestandsindeling die gebruikt wordt om gegevens uit te wisselen tussen verschillende duikprogramma&apos;s.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="164"/>
@@ -6457,7 +6457,7 @@ Bestaande duikstek</translation>
         <location filename="../desktop-widgets/mainwindow.ui" line="138"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="619"/>
         <source>&amp;Edit</source>
-        <translation>Bewerken</translation>
+        <translation>B&amp;ewerken</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="150"/>
@@ -6584,7 +6584,7 @@ Bestaande duikstek</translation>
         <location filename="../desktop-widgets/mainwindow.ui" line="288"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="559"/>
         <source>&amp;Yearly statistics</source>
-        <translation>Jaarlijkse statistieken</translation>
+        <translation>&amp;Jaarlijkse statistieken</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="296"/>
@@ -6626,13 +6626,13 @@ Bestaande duikstek</translation>
         <location filename="../desktop-widgets/mainwindow.ui" line="344"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="566"/>
         <source>&amp;About Subsurface</source>
-        <translation>Over Subsurface</translation>
+        <translation>&amp;Over Subsurface</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="352"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="567"/>
         <source>User &amp;manual</source>
-        <translation>Handleiding</translation>
+        <translation>&amp;Handleiding</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="360"/>
@@ -6666,13 +6666,13 @@ Bestaande duikstek</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="390"/>
         <source>Import dive sites from other users</source>
-        <translation>Importeer duikstekken van andere gebruikers</translation>
+        <translation>Duikstekken van andere gebruikers importeren</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="398"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="574"/>
         <source>Import &amp;from divelogs.de</source>
-        <translation>Importeren van divelogs.de</translation>
+        <translation>Importeren &amp;vanuit divelogs.de</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="406"/>
@@ -6690,7 +6690,7 @@ Bestaande duikstek</translation>
         <location filename="../desktop-widgets/mainwindow.ui" line="417"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="579"/>
         <source>&amp;Check for updates</source>
-        <translation>Zoek naar updates</translation>
+        <translation>&amp;Zoek naar updates</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="422"/>
@@ -6702,7 +6702,7 @@ Bestaande duikstek</translation>
         <location filename="../desktop-widgets/mainwindow.ui" line="425"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="582"/>
         <source>Export dive logs</source>
-        <translation>Exporteer logboek</translation>
+        <translation>Duiklogboek exporteren</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="433"/>
@@ -6827,7 +6827,7 @@ Bestaande duikstek</translation>
         <location filename="../desktop-widgets/mainwindow.ui" line="664"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="604"/>
         <source>User &amp;survey</source>
-        <translation>Gebruikersenquête</translation>
+        <translation>Gebruikers&amp;enquête</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="669"/>
@@ -6914,7 +6914,7 @@ Location:
 Please note that as of this version of Subsurface the default templates
 are read-only and should not be edited directly, since the application
 can overwrite them on startup.</source>
-        <translation>De volgende backup afdruk sjablonen zijn aangemaakt:
+        <translation>De volgende backup afdruksjablonen zijn aangemaakt:
 
 %1
 
@@ -6922,7 +6922,7 @@ Locatie:
 %2
 
 Let op dat sinds deze versie van Subsurface de standaard sjablonen 
-alleen leesbaar zijn, en deze dienen niet gewerkt te worden, want de
+alleen leesbaar zijn, en deze dienen niet bewerkt te worden, want de
 applicatie kan deze overschrijven bij opnieuw opstarten.</translation>
     </message>
     <message>
@@ -6958,7 +6958,7 @@ applicatie kan deze overschrijven bij opnieuw opstarten.</translation>
         <location filename="../desktop-widgets/mainwindow.cpp" line="619"/>
         <source>You have unsaved changes. Do you want to commit them to the cloud storage?
 If answering no, the cloud will only be synced on next call to &quot;Open cloud storage&quot; or &quot;Save to cloud storage&quot;.</source>
-        <translation>Er zijn niet bewaarde wijzigingen. Wilt u deze opslaan in de cloud opslag?
+        <translation>Er zijn niet-opgeslagen wijzigingen. Wilt u deze opslaan in de cloud opslag?
 Bij antwoord nee, zal de cloud pas gesynchroniseerd worden bij de eerstvolgende &quot;Open cloud opslag&quot; of &quot;Opslaan in cloud opslag&quot;.</translation>
     </message>
     <message>
@@ -7117,7 +7117,7 @@ Bij antwoord nee, zal de cloud pas gesynchroniseerd worden bij de eerstvolgende 
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1340"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
-        <translation>Wijzigingen gaan verloren als u deze niet bewaart.</translation>
+        <translation>Wijzigingen gaan verloren als u deze niet opslaat.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1547"/>
@@ -7276,7 +7276,7 @@ Als je toestel Bluetooth gebruikt, doe de gelijke voorbereidingen als voor een l
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="323"/>
         <source>Save the downloaded firmware as</source>
-        <translation>Bewaar de firmware als</translation>
+        <translation>De gedownloade firmware opslaan als</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="324"/>
@@ -7395,7 +7395,7 @@ Als je toestel Bluetooth gebruikt, doe de gelijke voorbereidingen als voor een l
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="97"/>
         <source>Save Password locally?</source>
-        <translation>Wachtwoord lokaal bewaren?</translation>
+        <translation>Wachtwoord lokaal opslaan?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="110"/>
@@ -8299,7 +8299,7 @@ Zie http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="255"/>
         <source>Save Password locally?</source>
-        <translation>Wachtwoord lokaal bewaren?</translation>
+        <translation>Wachtwoord lokaal opslaan?</translation>
     </message>
 </context>
 <context>
@@ -8600,13 +8600,13 @@ Zie http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <location filename="../desktop-widgets/printoptions.ui" line="41"/>
         <location filename="../subsurface/desktop-widgets/ui_printoptions.h" line="169"/>
         <source>&amp;Dive list print</source>
-        <translation>&amp;Duiklijst print</translation>
+        <translation>&amp;Duiklijst afdrukkken</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="57"/>
         <location filename="../subsurface/desktop-widgets/ui_printoptions.h" line="170"/>
         <source>&amp;Statistics print</source>
-        <translation>&amp;Statistieken print</translation>
+        <translation>&amp;Statistieken afdrukken</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="67"/>
@@ -8691,7 +8691,7 @@ Exporteer naar een ander bestand.</translation>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="179"/>
         <source>Export template files as</source>
-        <translation>Exporteer sjabloonbestand als</translation>
+        <translation>Sjabloonbestand exporteren als</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="219"/>
@@ -10533,7 +10533,7 @@ worden uit lucht en:
     <message>
         <location filename="../desktop-widgets/templateedit.cpp" line="142"/>
         <source>Do you want to save your changes?</source>
-        <translation>Wilt u de wijzigingen bewaren?</translation>
+        <translation>Wilt u de wijzigingen opslaan?</translation>
     </message>
 </context>
 <context>
@@ -10921,7 +10921,7 @@ Taal: %1</translation>
         <location filename="../desktop-widgets/webservices.ui" line="85"/>
         <location filename="../subsurface/desktop-widgets/ui_webservices.h" line="135"/>
         <source>Save user ID locally?</source>
-        <translation>Bewaar gebruikers ID lokaal?</translation>
+        <translation>Gebruikers ID lokaal opslaan?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/webservices.ui" line="92"/>
@@ -11449,7 +11449,7 @@ Maximum</translation>
     <message>
         <location filename="../core/divesite-helper.cpp" line="21"/>
         <source>No dive site layout categories set in preferences!</source>
-        <translation>Geen duikplek layout categorieën in voorkeuren!</translation>
+        <translation>Geen duikplek layout categorieën ingesteld in de voorkeuren!</translation>
     </message>
     <message>
         <location filename="../core/divesite-helper.cpp" line="29"/>
@@ -13513,7 +13513,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="558"/>
         <source>Don&apos;t save an empty log to the cloud</source>
-        <translation>Bewaar geen lege duiklog in de cloud</translation>
+        <translation>Sla geen lege duiklog op in de cloud</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="47"/>
@@ -13699,7 +13699,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="318"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
-        <translation>Door automatische synchronisatie uit te zetten, wordt de data alleen lokaal opgeslagen. Dit kan nuttig zijn op plekken zonder mobiele data. Door &quot;Handmatig synchroniseren met cloud&quot;, wordt de data alsnog met de cloud gesynchroniseerd.</translation>
+        <translation>Door automatische synchronisatie uit te zetten, wordt de data alleen lokaal opgeslagen. Dit kan nuttig zijn op plekken zonder mobiel netwerk. Door &quot;Handmatig synchroniseren met cloud&quot; te kiezen, wordt de data alsnog met de cloud gesynchroniseerd.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="328"/>
@@ -14280,7 +14280,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="336"/>
         <source>network error %1</source>
-        <translation>netwerk fout %1</translation>
+        <translation>netwerkfout %1</translation>
     </message>
 </context>
 <context>
@@ -14298,7 +14298,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core/uploadDiveShare.cpp" line="110"/>
         <source>network error %1</source>
-        <translation>netwerk fout %1</translation>
+        <translation>netwerkfout %1</translation>
     </message>
 </context>
 </TS>

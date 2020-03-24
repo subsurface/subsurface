@@ -11,7 +11,7 @@
         <location filename="../mobile-widgets/qml/About.qml" line="37"/>
         <source>A mobile version of the free Subsurface divelog software.
 </source>
-        <translation>Una versión móvil del software libre de divelog Subsurface.
+        <translation>Una versión móvil del software libre de registro de inmersiones, Subsurface.
 </translation>
     </message>
     <message>

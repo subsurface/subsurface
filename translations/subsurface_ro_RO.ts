@@ -3298,7 +3298,7 @@ GPS curenta:</translation>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="929"/>
         <source>Mark dive(s) valid</source>
-        <translation type="unfinished"/>
+        <translation>Marchează scufundare(i) ca valid</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="931"/>

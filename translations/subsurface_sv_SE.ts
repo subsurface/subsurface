@@ -3739,7 +3739,7 @@ GPS-position:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="167"/>
         <source>Export Subsurface XML</source>
-        <translation>Exportera Subsurface XML</translation>
+        <translation>Exportera som Subsurface XML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="168"/>
@@ -3750,7 +3750,7 @@ GPS-position:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="176"/>
         <source>Export Subsurface dive sites XML</source>
-        <translation>Exportera Subsurface dykplatser XML</translation>
+        <translation>Exportera dykplatser som Subsurface XML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="186"/>
@@ -5250,7 +5250,7 @@ Existerande dykplats</translation>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="52"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="318"/>
         <source>Force download of all dives</source>
-        <translation>Tvinga nedladdning av alla dyk</translation>
+        <translation>Tvinga hämtning av alla dyk</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="59"/>
@@ -5262,7 +5262,7 @@ Existerande dykplats</translation>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="69"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="320"/>
         <source>Always prefer downloaded dives</source>
-        <translation>Föredra alltid nedladdad dykinformation</translation>
+        <translation>Föredra alltid hämtad dykinformation</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="76"/>
@@ -5310,7 +5310,7 @@ Existerande dykplats</translation>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="142"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="332"/>
         <source>Download into new trip</source>
-        <translation>Ladda ner till ny resa</translation>
+        <translation>Hämta och skapa ny resa</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="149"/>
@@ -5417,7 +5417,7 @@ Existerande dykplats</translation>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="416"/>
         <source>force downloading all dives</source>
-        <translation>Tvinga nedladdning av alla dyk</translation>
+        <translation>Tvinga hämtning av alla dyk</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="445"/>
@@ -7232,7 +7232,7 @@ Subsurface har redan försökt att fylla i data korrekt men kontrollera dina dyk
     <message>
         <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="18"/>
         <source>Select visible dive locations</source>
-        <translation>Välj synliga dykplatser</translation>
+        <translation>Markera synliga dykplatser</translation>
     </message>
 </context>
 <context>
@@ -7279,7 +7279,7 @@ Om din enhet använder Bluetooth, genomför samma förberedelser som vid nerladd
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="323"/>
         <source>Save the downloaded firmware as</source>
-        <translation>Spara nedladdad firmware som</translation>
+        <translation>Spara hämtad firmware som</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="324"/>
@@ -8088,7 +8088,7 @@ Se https://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="119"/>
         <source>In the Information tab, show tools for recording wave height, surge and chill during a dive</source>
-        <translation>Under fliken Information, visa verktyg för registering av våghöjd, svall och kyleffekt under ett dyk</translation>
+        <translation>Under fliken Information, tillåt redigering av våghöjd, svall och kyleffekt under ett dyk</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="127"/>
@@ -8151,7 +8151,7 @@ Se https://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="98"/>
         <source>One can view video files through thumbnail(s) in the Media tab, created using the external programm FFmpeg which needs to be installed on your machine. Check the checkbox below to allow this. Then, in the text box below, specify the path to FFmpeg. In Linux, a typical path is:  /usr/bin/ffmpeg. If FFmpeg is installed in the system area of your computer, just type ffmpeg in the text box below. For more info see Appendix F of the User Manual.</source>
-        <translation>Det är möjligt att visa videor med hjälp av miniatyrer i Mediafliken, under förutsättning att de är skapade genom att använda det externa programmet FFmpeg som behöver vara installerat på din dator. Markera kryssrutan nedan för att möjliggöra det för att sedan, i textrutan nedan, specificera sökvägen till FFmpeg. I Linux är en typisk genväg: /usr/bin/ffmpeg. Om FFmpeg är installerat under en standardsökväg i systemet, skriv bara in ffmpeg i textrutan nedan. För mer information se Appendix F av användarmanualen.</translation>
+        <translation>Det är möjligt att visa videor med hjälp av miniatyrer i fliken Media, under förutsättning att de är skapade genom att använda det externa programmet FFmpeg som behöver vara installerat på din dator. Markera kryssrutan nedan för att möjliggöra det för att sedan, i textrutan nedan, specificera sökvägen till FFmpeg. I Linux är en typisk genväg: /usr/bin/ffmpeg. Om FFmpeg är installerat under en standardsökväg i systemet, skriv bara in ffmpeg i textrutan nedan. För mer information se Appendix F av användarmanualen.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="106"/>
@@ -8912,7 +8912,7 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="608"/>
         <source>Attempting to open cloud storage with new credentials</source>
-        <translation>Försöker öppna molnlagringstjänst med nya uppgifter</translation>
+        <translation>Försöker ansluta till molntjänsten med nya inloggningsuppgifter</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="622"/>
@@ -9187,12 +9187,12 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="114"/>
         <source>Forget remembered dive computers</source>
-        <translation>Rensa ihågkomna dykdatorer</translation>
+        <translation>Glöm ihågkomna dykdatorer</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="119"/>
         <source>Forget</source>
-        <translation>Rensa</translation>
+        <translation>Glöm</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="134"/>
@@ -9307,7 +9307,7 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="372"/>
         <source>Personalize</source>
-        <translation>Personifiera</translation>
+        <translation>Anpassad</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="397"/>
@@ -9415,8 +9415,9 @@ Vänligen exportera mallen till en ny fil.</translation>
 even if not recognized as dive computers.
 Please report DCs that need this setting</source>
         <translation>Visa temporärt alla bluetooth-enheter
-även om de inte identifieras som en dykdatorer.
-Vänligen rapportera dykdatorer som kräver den här inställningen</translation>
+även om de inte identifieras som en
+dykdator. Vänligen rapportera dykdatorer
+som kräver den här inställningen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="581"/>
@@ -9677,7 +9678,7 @@ Filer med felaktig datum/tid</translation>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="34"/>
         <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.&lt;br/&gt;&lt;br/&gt;If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) and a password of your choice (letters and numbers).&lt;br/&gt;&lt;br/&gt;To use Subsurface-mobile only with local data on this device, select the no cloud button above.</source>
-        <translation>För att använda Subsurface-mobile med molnlagringstjänsten, vänligen ange dina uppgifter.&lt;br/&gt;&lt;br/&gt;Om det är första gången du använder tjänsten, ange en giltig e-postadress (bara små bokstäver) och ett lösenord (bokstäver och siffror).&lt;br/&gt;&lt;br/&gt;För att endast använda Subsurface-mobile med lokalt sparad data, klicka på lokalt läge ovan.</translation>
+        <translation>För att använda Subsurface-mobile med molnlagringstjänsten, vänligen ange dina inloggningsuppgifter.&lt;br/&gt;&lt;br/&gt;Om det är första gången du använder tjänsten, ange en giltig e-postadress (bara små bokstäver) och ett lösenord (bokstäver och siffror).&lt;br/&gt;&lt;br/&gt;För att endast använda Subsurface-mobile med lokalt sparad data, klicka på lokalt läge ovan.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="47"/>
@@ -11927,7 +11928,7 @@ Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogf�
     <message>
         <location filename="../core/libdivecomputer.c" line="1433"/>
         <source>No new dives downloaded from dive computer</source>
-        <translation>Inga nya dyk att ladda ner från dykdator</translation>
+        <translation>Inga nya dyk finns att hämta från dykdator</translation>
     </message>
     <message>
         <location filename="../core/load-git.c" line="173"/>
@@ -13675,7 +13676,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="267"/>
         <source>Download from DC</source>
-        <translation>Ladda ner från dykdator</translation>
+        <translation>Nedladdning från dykdator</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="279"/>
@@ -13770,7 +13771,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="467"/>
         <source>Reset forgotten Subsurface Cloud password</source>
-        <translation>Återställ lösenord för Subsurface Cloud</translation>
+        <translation>Återställ lösenord</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="478"/>

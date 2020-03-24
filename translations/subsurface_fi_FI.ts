@@ -888,7 +888,7 @@
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="995"/>
         <source>Add weight (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Lisää paino (%n sukellus)</numerusform><numerusform>Lisää paino (%n sukellusta)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="1078"/>
@@ -898,7 +898,7 @@
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1080"/>
         <source>Remove weight (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Poista paino (%n sukellus)</numerusform><numerusform>Poista paino (%n sukellusta)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="1108"/>
@@ -908,7 +908,7 @@
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1110"/>
         <source>Edit weight (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Muokkaa painoa (%n sukellus)</numerusform><numerusform>Muokkaa painoa (%n sukellusta)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="1169"/>
@@ -3297,7 +3297,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="929"/>
         <source>Mark dive(s) valid</source>
-        <translation type="unfinished"/>
+        <translation>Merkitse sukellukset epäkelvoiksi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="931"/>
