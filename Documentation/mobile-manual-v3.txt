@@ -35,8 +35,8 @@ _Subsurface-mobile_ is a limited mobile version of _Subsurface_,
 aimed at Android and iOS smartphone and tablet devices.
 While the desktop version of _Subsurface_ shows much more detailed information
 for each dive, the mobile version allows a more accessible dive log on the go. For example,
-you can prove dive experience on a dive trip to dive shops or to review
-previous dives. _Subsurface-mobile_ also allows
+you can prove dive experience on a dive trip to dive shops or review
+previous dives while on a dive boat. _Subsurface-mobile_ also allows
 the gathering of GPS locations where dives are performed.
 Assuming you have a dive computer that is supported by the mobile OS of
 your choice, _Subsurface-mobile_ even supports the downloading of dives from your dive computer.
@@ -96,7 +96,7 @@ but we (the developers) feel that it is very easy and intuitive to work with.
 On every screen you have access to the _Main menu_ through a _Hamburger_ button (three short
 horizontal lines) in the lower left corner. Additionally, the _Main menu_ can be opened by swiping
 towards the right from the very left edge of the screen. The entries in the main menu are all explained
-starting in section xref:S_DiveManagement[_Dive Management_].
+starting in section xref:S_Dive_Management[_Dive Management_].
 
 On many pages there is also a _Context menu_ available through a button with three vertical dots in
 the lower right corner.
@@ -331,8 +331,8 @@ If you deleted the wrong dive by mistake you can easily undo the operation in th
 image::mobile-images/UndoDelete.jpg["FIGURE: Undo delete dive",align="center"]
 
 
-[[S_Dive_Managent]]
-== Dive Managent
+[[S_Dive_Management]]
+== Dive Management
 
 A central  part of _Subsurface-mobile_ is the ability to store the dive
 log using the _Subsurface_ cloud storage.
@@ -394,7 +394,7 @@ This feature is not supported on iOS.
 |=======
 a|image::mobile-images/USB-OTG.jpg["FIGURE: USB-OTG cable",align="center"] |
 Most current Android devices now have a USB
-Type C port and come with a simple A-to-C adapter plug, which allows to plug in
+Type C port and come with a simple A-to-C adapter plug, which lets you plug in
 the dive computer cable into the phone or tablet.
 For older Android devices with micro USB connector you will need to plug the USB
 cable used with the dive computer into a USB OTG cable which,
@@ -553,7 +553,7 @@ to check between dives that the location service is still running.
 === Applying GPS data to dives in the dive log
 
 After running the location service during a dive trip, first either download
-the dives from your divecomputer or manually enter the dives into the dive list.
+the dives from your dive computer or manually enter the dives into the dive list.
 Now you can apply the GPS positions to these dives.
 From the _Dive management_ menu, tap _Apply GPS fixes_. The dive list contains the start
 and end times of each dive. Now, _Subsurface-mobile_ applies the first
