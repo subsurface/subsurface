@@ -1,0 +1,70 @@
+= _Subsurface-mobile_ Release Notes
+
+_Subsurface-mobile_ is the mobile version of _Subsurface_, advanced dive logging software with
+extensive infrastructure to display, organize, and interpret scuba and free dives.
+_Subsurface-mobile_ is available for Android and iOS. It is open-source software (in simple terms
+that means that there is no commercial interest behind it, all the source code needed to build the
+app is available, there are no ads, no one is monetizing your data, etc).
+
+_Subsurface-mobile_ allows a more accessible dive log on the go. For example, you can prove dive
+experience on a dive trip to dive shops or review previous dives while on a dive boat.
+_Subsurface-mobile_ also allows the gathering of GPS locations where dives are performed.
+Assuming you have a dive computer that is supported by the mobile OS of your choice,
+_Subsurface-mobile_ even supports the downloading of dives from your dive computer.
+
+Users of _Subsurface-mobile_ typically use the mobile app together with the desktop version of
+_Subsurface_, sharing dive information between the mobile and the desktop versions using a free
+_Subsurface Cloud_ account. However, _Subsurface-mobile_ can also be used independently of the
+desktop version and does not require the use of cloud storage.
+
+_Subsurface-mobile_ 3.0 is a fairly significant rewrite of our mobile app, which we believe
+justifies the jump in major version number.
+
+== Major new features
+
+- We completely re-implemented the dive list and as a result you should see a very noticeable
+  performance improvement compared to earlier versions. As part of this rewrite, we have added a
+  context menu to several screens, which gives you access to additional operations.  For example,
+  you are now able to manage dive trips in the mobile app, move dives between trips, edit trip
+  notes, etc.
+
+- You can now zoom into the dive profile with a pinch gesture and pan the zoomed-in profile by
+  dragging with a finger in order to better see details in the profile.
+
+- We added an undo and redo system which makes it much easier to deal with errors or unintended
+  actions that you may have taken in the mobile UI.
+
+- For _Android_ users, we are bringing back a major feature that we used to have a partial
+  implementation of: downloads from USB-serial dive computers should once again work for all Android
+  devices. This means you can download dive information directly to your mobile Android device from
+  most older Suunto dive computers, most Mares, Oceanic, Scubapro, etc. Actually, this new feature
+  supports quite a few more dive computer families for USB serial download than what we had before,
+  as now more USB serial chipsets are supported.
+
+== Other improvements
+
+- We restructured the menu system which is now more intuitive, bundling related topics together
+  and reducing clutter.
+- You can now initiate a reset of your _Subsurface Cloud_ password from within the mobile app.
+- We rewrote the _Settings_ page to make it easier to use.
+- You can now select the unit system that _Subsurface-mobile_ uses to display your dive data.
+- We added a new _Dive summary_ which should make it easier to give a dive center a quick overview
+  of your dive experience.
+- We made small improvements (as a result of a complete behind-the-scenes rewrite) to the filter
+  code.
+- You should see various usability improvements in the UI.
+- You are now able to upload dive data to divelogs.de and DiveShare.com directly from your mobile
+  device.
+
+
+== Bug fixes
+- Several of the small oddities with the dive list in our last version should be gone; in the
+  previous version sometimes after editing a dive you were shown the wrong dive; sometimes after
+  larger operations like downloading from a dive computer or applying GPS fixes the dive list would
+  get completely confused and you had to restart _Subsurface-mobile_ for things to work correctly
+  again. Many other small improvements along those same lines.
+- We made many small bug fixes in the download UI and the handling of downloaded dives.
+- We fixed an issue with GPS positions that were applied to otherwise unchanged dives not being
+  saved to storage.
+
+// vim: textwidth=100
