@@ -1231,6 +1231,23 @@ void QMLManager::removeDiveFromTrip(int id)
 	changesNeedSaving();
 }
 
+void QMLManager::addTripForDive(int id)
+{
+	struct dive *d = get_dive_by_uniq_id(id);
+	if (!d) {
+		appendTextToLog(QString("Asked to create trip for non-existing dive with id %1").arg(id));
+		return;
+	}
+	if (d->divetrip) {
+		appendTextToLog(QString("Asked to create trip for dive %1 with id %2 but it's already part of a trip with location %3.").arg(d->number).arg(id).arg(d->divetrip->location));
+		return;
+	}
+	QVector <dive *> dives;
+	dives.append(d);
+	Command::createTrip(dives);
+	changesNeedSaving();
+}
+
 void QMLManager::addDiveToTrip(int id, int tripId)
 {
 	struct dive *d = get_dive_by_uniq_id(id);
