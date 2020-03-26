@@ -94,25 +94,14 @@ static void appendTextToLogStandalone(const char *text)
 // show the git progress in the passive notification area
 extern "C" int gitProgressCB(const char *text)
 {
-	static QElapsedTimer timer;
-	static qint64 lastTime = 0;
 	static QMLManager *self;
 
 	if (!self)
 		self = QMLManager::instance();
 
-	if (!timer.isValid()) {
-		timer.restart();
-		lastTime = 0;
-	}
 	if (self) {
-		qint64 elapsed = timer.elapsed();
 		self->appendTextToLog(text);
 		self->setNotificationText(text);
-		//if (elapsed - lastTime > 50) { // 20 Hz refresh
-		//	qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
-		//}
-		lastTime = elapsed;
 	}
 	// return 0 so that we don't end the download
 	return 0;
