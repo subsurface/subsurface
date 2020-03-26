@@ -78,6 +78,8 @@ Kirigami.ApplicationWindow {
 	}
 
 	function showPage(page) {
+		if (page !== mapPage)
+			hackToOpenMap = 0 // we really want a different page
 		if (globalDrawer.drawerOpen)
 			globalDrawer.close()
 		var i=pageIndex(page)
@@ -139,7 +141,7 @@ Kirigami.ApplicationWindow {
 		detailsWindow.startpressure = []
 		detailsWindow.endpressure = []
 		detailsWindow.gpsCheckbox = false
-		pageStack.push(detailsWindow)
+		showPage(detailsWindow)
 	}
 
 	contextDrawer: Kirigami.ContextDrawer {
@@ -152,7 +154,7 @@ Kirigami.ApplicationWindow {
 		height: rootItem.height
 		rightPadding: 0
 		enabled: (Backend.cloud_verification_status === Enums.CS_NOCLOUD ||
-			          Backend.cloud_verification_status === Enums.CS_VERIFIED)
+				  Backend.cloud_verification_status === Enums.CS_VERIFIED)
 		topContent: Image {
 			source: "qrc:/qml/icons/dive.jpg"
 			Layout.fillWidth: true
@@ -269,7 +271,7 @@ Kirigami.ApplicationWindow {
 					onTriggered: {
 						globalDrawer.close()
 						downloadFromDc.dcImportModel.clearTable()
-						pageStack.push(downloadFromDc)
+						showPage(downloadFromDc)
 					}
 				}
 				Kirigami.Action {
@@ -328,7 +330,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("Dive summary")
 					onTriggered: {
 						globalDrawer.close()
-						pageStack.push(diveSummaryWindow)
+						showPage(diveSummaryWindow)
 						detailsWindow.endEditMode()
 					}
 				}
@@ -339,7 +341,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("Export")
 					onTriggered: {
 						globalDrawer.close()
-						pageStack.push(exportWindow)
+						showPage(exportWindow)
 						detailsWindow.endEditMode()
 					}
 				}
@@ -375,7 +377,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						globalDrawer.close()
 						returnTopPage()
 						manager.populateGpsData();
-						pageStack.push(gpsWindow)
+						showPage(gpsWindow)
 					}
 				}
 
@@ -410,7 +412,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					globalDrawer.close()
 					settingsWindow.defaultCylinderModel = manager.cylinderInit
 					PrefEquipment.default_cylinder === "" ? defaultCylinderIndex = "-1" : defaultCylinderIndex = settingsWindow.defaultCylinderModel.indexOf(PrefEquipment.default_cylinder)
-					pageStack.push(settingsWindow)
+					showPage(settingsWindow)
 					detailsWindow.endEditMode()
 				}
 			},
@@ -433,7 +435,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("About")
 					onTriggered: {
 						globalDrawer.close()
-						pageStack.push(aboutWindow)
+						showPage(aboutWindow)
 						detailsWindow.endEditMode()
 					}
 				}
@@ -488,7 +490,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("App log")
 					onTriggered: {
 						globalDrawer.close()
-						pageStack.push(logWindow)
+						showPage(logWindow)
 					}
 				}
 				Kirigami.Action {
@@ -511,7 +513,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("Theme information")
 					onTriggered: {
 						globalDrawer.close()
-						pageStack.push(themetest)
+						showPage(themetest)
 					}
 				}
 
@@ -649,7 +651,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	/* I really want an enum, but those are painful in QML, so let's use numbers
 	 * 0 (Otherpage)   - the last page selected was a non-map page
 	 * 1 (MapSelected) - the map page was selected by the user
-	 * 2 (MapForced)   - the map page was forced by out hack
+	 * 2 (MapForced)   - the map page was forced by this hack
 	 */
 
 	pageStack.onCurrentItemChanged: {
@@ -671,8 +673,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					manager.appendTextToLog("pageStack forced back to map")
 				}
 			} else if (pageStack.currentItem.objectName !== mapPage.objectName &&
-				           pageStack.lastItem.objectName === mapPage.objectName &&
-				           hackToOpenMap === 1 /* MapSelected */) {
+					   pageStack.lastItem.objectName === mapPage.objectName &&
+					   hackToOpenMap === 1 /* MapSelected */) {
 				// if we just picked the mapPage and are suddenly back on a different page
 				// force things back to the mapPage
 				manager.appendTextToLog("pageStack wrong page, switching back to map")

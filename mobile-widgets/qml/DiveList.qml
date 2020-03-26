@@ -65,12 +65,7 @@ Kirigami.ScrollablePage {
 					manager.appendTextToLog("clicked on dive")
 					if (detailsWindow.state === "view") {
 						manager.selectRow(model.row);
-						// switch to detailsWindow (or push it if it's not in the stack)
-						var i = rootItem.pageIndex(detailsWindow)
-						if (i === -1)
-							pageStack.push(detailsWindow)
-						else
-							pageStack.currentIndex = i
+						showPage(detailsWindow)
 					}
 				}
 			}
@@ -305,7 +300,7 @@ Kirigami.ScrollablePage {
 			tripEditWindow.tripId = currentItem.myData.tripId
 			tripEditWindow.tripLocation = currentItem.myData.tripLocation
 			tripEditWindow.tripNotes = currentItem.myData.tripNotes
-			pageStack.push(tripEditWindow)
+			showPage(tripEditWindow)
 		}
 	}
 
