@@ -86,6 +86,14 @@ Kirigami.Page {
 			manager.addDiveToTrip(currentItem.modelData.id, currentItem.modelData.tripBelow)
 		}
 	}
+	property QtObject createTripForDiveAction: Kirigami.Action {
+		text: qsTr("Create trip with dive")
+		icon { name: ":/icons/list-add" }
+		enabled: currentItem && currentItem.modelData && !currentItem.modelData.isTrip && currentItem.modelData.isTopLevel
+		onTriggered: {
+			manager.addTripForDive(currentItem.myData.id)
+		}
+	}
 	property QtObject undoAction: Kirigami.Action {
 		text: qsTr("Undo") + " " + manager.undoText
 		icon { name: ":/icons/undo.svg" }
