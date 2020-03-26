@@ -260,7 +260,15 @@ Kirigami.Page {
 	}
 
 	function endEditMode() {
-		// just cancel the edit/add state
+		// we need to clean up either an edit or an add - and in case this
+		// was an add, we need to undo the addDive action that created the empty dive
+		// and we should also go back to the DiveDetails where we came from...
+		manager.appendTextToLog("endEditMode called with state " + state)
+		if (state === "add") {
+			manager.undo()
+			pageStack.pop()
+		}
+		// now all that is left is to cancel the edit/add state
 		state = "view";
 		focus = false;
 		Qt.inputMethod.hide();
