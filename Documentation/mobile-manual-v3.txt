@@ -82,7 +82,7 @@ APKs can be found in the downloads folder on the _Subsurface_ website.
 
 == Getting Support
 
-The best place to get support is the _Subsurface_ User Forum. Additionally, _Subsurface-mobile_ allows
+The best place to get support is the https://subsurface-divelog.org/user-forum[_Subsurface_ User Forum]. Additionally, _Subsurface-mobile_ allows
 you to send a support email by tapping on _Ask for support_ in the _Help_ menu. This will open an
 email to our in-app-support address in the native email client, including the relevant logs.
 
@@ -201,7 +201,8 @@ provide these again when launching the program.
 
 [blue]#I want to access the _Subsurface Cloud_ storage but I have forgotten my password. How can I reset my password?#
 
-There is a _Reset forgotten Subsurface Cloud password_ entry in the _Help_ menu in _Subsurface-mobile_, or you can go to the following web address: https://cloud.subsurface-divelog.org/passwordreset
+There is a _Reset forgotten Subsurface Cloud password_ entry in the _Help_ menu in
+_Subsurface-mobile_, or you can go to the https://cloud.subsurface-divelog.org/passwordreset[password reset website]
 
 Simply enter the same email address that you used during cloud registration and follow the indicated steps. A confirmation email will be sent to your account to prevent abuse of this system.
 
