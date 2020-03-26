@@ -1264,9 +1264,8 @@ void QMLManager::changesNeedSaving()
 	// on iOS
 	// on all other platforms we just save the changes and be done with it
 	mark_divelist_changed(true);
-#if defined(Q_OS_ANDROID)
 	saveChangesLocal();
-#elif !defined(Q_OS_IOS)
+#if !defined(Q_OS_IOS)
 	saveChangesCloud(false);
 #endif
 	updateAllGlobalLists();
