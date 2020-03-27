@@ -473,7 +473,8 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	} else {
 #ifndef SUBSURFACE_MOBILE
 		// On the EquipmentTab - place an editCylinder command.
-		Command::editCylinder(index.row(), cyl, type, false);
+		int count = Command::editCylinder(index.row(), cyl, type, false);
+		emit divesEdited(count);
 #endif
 	}
 	return true;
@@ -718,10 +719,12 @@ void CylindersModel::commitTempCyl(int row)
 		return;
 	// Only submit a command if the type changed
 	if (!same_string(cyl->type.description, tempCyl.type.description) || gettextFromC::tr(cyl->type.description) != QString(tempCyl.type.description)) {
-		if (inPlanner)
+		if (inPlanner) {
 			std::swap(*cyl, tempCyl);
-		else
-			Command::editCylinder(tempRow, tempCyl, Command::EditCylinderType::TYPE, false);
+		} else {
+			int count = Command::editCylinder(tempRow, tempCyl, Command::EditCylinderType::TYPE, false);
+			emit divesEdited(count);
+		}
 	}
 	free_cylinder(tempCyl);
 	tempRow = -1;

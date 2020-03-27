@@ -51,6 +51,9 @@ public:
 	bool updateBestMixes();
 	bool cylinderUsed(int i) const;
 
+signals:
+	void divesEdited(int num);
+
 public
 slots:
 	void remove(QModelIndex index);

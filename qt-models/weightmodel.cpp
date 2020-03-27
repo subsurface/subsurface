@@ -112,8 +112,10 @@ void WeightModel::commitTempWS()
 		return;
 	// Only submit a command if the type changed
 	weightsystem_t ws = d->weightsystems.weightsystems[tempRow];
-	if (!same_string(ws.description, tempWS.description) || gettextFromC::tr(ws.description) != QString(tempWS.description))
-		Command::editWeight(tempRow, tempWS, false);
+	if (!same_string(ws.description, tempWS.description) || gettextFromC::tr(ws.description) != QString(tempWS.description)) {
+		int count = Command::editWeight(tempRow, tempWS, false);
+		emit divesEdited(count);
+	}
 	tempRow = -1;
 #endif
 }
@@ -126,7 +128,8 @@ bool WeightModel::setData(const QModelIndex &index, const QVariant &value, int r
 	switch (index.column()) {
 	case WEIGHT:
 		ws.weight = string_to_weight(qPrintable(vString));
-		Command::editWeight(index.row(), ws, false);
+		int count = Command::editWeight(index.row(), ws, false);
+		emit divesEdited(count);
 		return true;
 	}
 	return false;

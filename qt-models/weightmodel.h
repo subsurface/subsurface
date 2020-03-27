@@ -29,6 +29,9 @@ public:
 	void updateDive(dive *d);
 	weightsystem_t weightSystemAt(const QModelIndex &index) const;
 
+signals:
+	void divesEdited(int num);
+
 public
 slots:
 	void weightsystemsReset(const QVector<dive *> &dives);

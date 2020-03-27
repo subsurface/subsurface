@@ -21,7 +21,6 @@ public:
 	~TabDiveEquipment();
 	void updateData() override;
 	void clear() override;
-	void divesEdited(int i);
 	void closeWarning();
 
 private slots:
@@ -32,6 +31,7 @@ private slots:
 	void editCylinderWidget(const QModelIndex &index);
 	void editWeightWidget(const QModelIndex &index);
 	void on_suit_editingFinished();
+	void divesEdited(int count);
 
 private:
 	Ui::TabDiveEquipment ui;
