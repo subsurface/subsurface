@@ -3019,52 +3019,52 @@ GPS actuelle :</translation>
         <translation>Visibilité :</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="310"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="352"/>
         <source>No profile to show</source>
         <translation>Aucun profile à afficher</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="316"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="358"/>
         <source>Suit:</source>
         <translation>Combinaison :</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="323"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="365"/>
         <source>Air Temp:</source>
         <translation>Température de l&apos;air :</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="330"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="372"/>
         <source>Water Temp:</source>
         <translation>Température de l&apos;eau :</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="372"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="414"/>
         <source>Cylinder:</source>
         <translation>Bloc :</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="380"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="422"/>
         <source>Weight:</source>
         <translation>Poids:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="388"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="430"/>
         <source>SAC:</source>
         <translation>SAC :</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="431"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="473"/>
         <source>Divemaster:</source>
         <translation>Moniteur / Guide de palanquée :</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="439"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="481"/>
         <source>Buddy:</source>
         <translation>Équipier :</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="478"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="520"/>
         <source>Notes</source>
         <translation>Notes</translation>
     </message>
@@ -3141,102 +3141,117 @@ GPS actuelle :</translation>
     <name>DiveList</name>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="13"/>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="322"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="336"/>
         <source>Dive list</source>
         <translation>Liste de plongée</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="188"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="183"/>
         <source>&lt;unnamed dive site&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="252"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="251"/>
         <source>Remove dive %1 from trip</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="260"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="259"/>
         <source>Add dive %1 to trip above</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="268"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="267"/>
         <source>Add dive %1 to trip below</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="276"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="275"/>
+        <source>Create trip with dive %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="284"/>
+        <source>Mark dive as valid</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="284"/>
+        <source>Mark dive as invalid</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="290"/>
         <source>Delete dive</source>
         <translation>Supprimer la plongée</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="282"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="296"/>
         <source>Show on map</source>
         <translation>Afficher sur la carte</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="291"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="305"/>
         <source>Edit trip details</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="303"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="317"/>
         <source>Undo</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="309"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="323"/>
         <source>Redo</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="324"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="338"/>
         <source>Please tap the &apos;+&apos; button to add a dive (or download dives from a supported dive computer)</source>
         <translation>Veuillez cliquer sur le bouton &apos;+&apos; pour ajouter une plongée (ou télécharger des plongées depuis un ordinateur supporté)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="330"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="344"/>
         <source>Cloud credentials</source>
         <translation>Informations de connexion pour le cloud</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="338"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="352"/>
         <source>No dives in dive list</source>
         <translation>Aucune plongée dans la liste de plongée</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="338"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="352"/>
         <source>Please wait, updating the dive list</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="381"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="395"/>
         <source>Fulltext</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="382"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="396"/>
         <source>People</source>
         <translation>Personnes</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="383"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="397"/>
         <source>Tags</source>
         <translation>Étiquettes</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="443"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="457"/>
         <source>Download dives</source>
         <translation>Télécharger les plongées</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="453"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="467"/>
         <source>Add dive</source>
         <translation>Ajouter une plongée</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="463"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="477"/>
         <source>Filter dives</source>
         <translation>Filtrer les plongées</translation>
     </message>
@@ -4868,181 +4883,181 @@ p, li { white-space: pre-wrap; }
         <translation>(%1 affiché(s))</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="323"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="392"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="432"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="315"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="384"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="424"/>
         <source>#</source>
         <translation>N°</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="325"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="394"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="434"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="317"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="386"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="426"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="327"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="396"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="436"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="319"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="388"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="428"/>
         <source>Rating</source>
         <translation>Évaluation</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="329"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="438"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="321"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="430"/>
         <source>Depth(%1)</source>
         <translation>Profondeur (%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="329"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="438"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="321"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="430"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="329"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="438"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="321"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="430"/>
         <source>ft</source>
         <translation>ft</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="323"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="392"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="432"/>
+        <source>Duration</source>
+        <translation>Durée</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="325"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="434"/>
+        <source>Temp.(°%1)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="327"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="436"/>
+        <source>Weight(%1)</source>
+        <translation>Poids (%1)</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="327"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="436"/>
+        <source>kg</source>
+        <translation>kg</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="327"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="436"/>
+        <source>lbs</source>
+        <translation>lbs</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="329"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="398"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="438"/>
+        <source>Suit</source>
+        <translation>Combinaison</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="331"/>
         <location filename="../qt-models/divetripmodel.cpp" line="400"/>
         <location filename="../qt-models/divetripmodel.cpp" line="440"/>
-        <source>Duration</source>
-        <translation>Durée</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="333"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="442"/>
-        <source>Temp.(°%1)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="335"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="444"/>
-        <source>Weight(%1)</source>
-        <translation>Poids (%1)</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="335"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="444"/>
-        <source>kg</source>
-        <translation>kg</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="335"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="444"/>
-        <source>lbs</source>
-        <translation>lbs</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="337"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="406"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="446"/>
-        <source>Suit</source>
-        <translation>Combinaison</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="339"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="408"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="448"/>
         <source>Cylinder</source>
         <translation>Bloc</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="341"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="410"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="450"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="333"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="402"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="442"/>
         <source>Gas</source>
         <translation>Gaz</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="345"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="454"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="337"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="446"/>
         <source>SAC(%1)</source>
         <translation>SAC (%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="345"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="454"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="337"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="446"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="347"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="414"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="456"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="339"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="406"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="448"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="349"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="341"/>
         <source>Max. CNS</source>
         <translation>SNC Max.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="351"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="418"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="460"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="343"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="410"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="452"/>
         <source>Tags</source>
         <translation>Étiquettes</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="353"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="462"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="345"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="454"/>
         <source>Media before/during/after dive</source>
         <translation>Médias avant/pendant/après la plongée</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="355"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="422"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="347"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="414"/>
         <source>Country</source>
         <translation>Pays</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="357"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="424"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="464"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="349"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="416"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="456"/>
         <source>Buddy</source>
         <translation>Partenaire</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="359"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="426"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="466"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="351"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="418"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="458"/>
         <source>Location</source>
         <translation>Lieu</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="398"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="390"/>
         <source>Depth</source>
         <translation>Profondeur</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="402"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="394"/>
         <source>Temp.</source>
         <translation>Temp.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="404"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="396"/>
         <source>Weight</source>
         <translation>Poids</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="412"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="404"/>
         <source>SAC</source>
         <translation>Consommation d&apos;air (SAC)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="416"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="458"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="408"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="450"/>
         <source>Max CNS</source>
         <translation>SNC max</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="420"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="412"/>
         <source>Media</source>
         <translation>Média</translation>
     </message>
@@ -7993,37 +8008,37 @@ Si votre périphérique utilise le Bluetooth, effectuez la même préparation qu
         <translation>Langue</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="75"/>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="74"/>
         <source>Restart required</source>
         <translation>Redémarrage nécessaire</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="76"/>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="75"/>
         <source>To correctly load a new language you must restart Subsurface.</source>
         <translation>Vous devez redémarrer Subsurface pour prendre en compte la nouvelle langue.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="94"/>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="93"/>
         <source>These will be used as is. This might not be what you intended.
 See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <translation>Cela sera utilisé tel quel. Ce n&apos;est peut-être pas ce que vous attendiez.
 Voir http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="97"/>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="103"/>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="96"/>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="102"/>
         <source>Literal characters</source>
         <translation>Caractères littéraux</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="98"/>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="97"/>
         <source>Non-special character(s) in time format.
 </source>
         <translation>Caractères non spéciaux dans le format de date.
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="104"/>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="103"/>
         <source>Non-special character(s) in date format.
 </source>
         <translation>Caractères non spéciaux dans le format de date.
@@ -8147,7 +8162,7 @@ Voir http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="98"/>
-        <source>One can view video files through thumbnail(s) in the Media tab, created using the external programm FFmpeg which needs to be installed on your machine. Check the checkbox below to allow this. Then, in the text box below, specify the path to FFmpeg. In Linux, a typical path is:  /usr/bin/ffmpeg. If FFmpeg is installed in the system area of your computer, just type ffmpeg in the text box below. For more info see Appendix F of the User Manual.</source>
+        <source>One can view video files through thumbnail(s) in the Media tab, created using the external program FFmpeg which needs to be installed on your machine. Check the checkbox below to allow this. Then, in the text box below, specify the path to FFmpeg. In Linux, a typical path is:  /usr/bin/ffmpeg. If FFmpeg is installed in the system area of your computer, just type ffmpeg in the text box below. For more info see Appendix F of the User Manual.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -8851,151 +8866,151 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
 <context>
     <name>QMLManager</name>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="256"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="245"/>
         <source>Starting...</source>
         <translation>Démarrage</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="332"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="321"/>
         <source>Open local dive data file</source>
         <translation>Ouvrir les données de plongée local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="353"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="342"/>
         <source>Opening local data file failed</source>
         <translation>L&apos;ouverture du fichier local de données a échoué</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="373"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="362"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation>%1 plongées chargées depuis le fichier local de données de plongées</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="380"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="369"/>
         <source>Incorrect cloud credentials</source>
         <translation>Informations de connexion au cloud incorrectes</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="511"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="500"/>
         <source>working in no-cloud mode</source>
         <translation>Travail hors-ligne</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="515"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="504"/>
         <source>Error parsing local storage, giving up</source>
         <translation>Erreur d&apos;analyse du fichier de stockage local, abandon</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="524"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="513"/>
         <source>no cloud credentials</source>
         <translation>Pas d&apos;information de connexion pour le cloud</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="525"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="597"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="514"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="586"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>Entrez vos informations de connexion pour le cloud</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="558"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="547"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>L&apos;e-mail et le mot de passe du stockage dans le cloud peuvent uniquement comporter des lettres, nombres et &apos;.&apos;, &apos;-&apos;, &apos;_&apos; et &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="564"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="553"/>
         <source>Invalid format for email address</source>
         <translation>Format invalide pour l&apos;adresse e-mail</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="608"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="597"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>Essais d&apos;ouverture du stockage dans le cloud avec les nouvelles informations de connexion</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="622"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="611"/>
         <source>Testing cloud credentials</source>
         <translation>Test des informations de connexion pour le cloud</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="639"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="628"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>Pas de réponses du serveur pour la validation des informations de connexion</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="645"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="634"/>
         <source>Incorrect email / password combination</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="650"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="639"/>
         <source>Cloud credentials require verification PIN</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="653"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="642"/>
         <source>Incorrect PIN, please try again</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="658"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="647"/>
         <source>PIN accepted, credentials verified</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="667"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="656"/>
         <source>Cloud storage error: %1</source>
         <translation>Erreur cloud : %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="713"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="702"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation>Chargement des plongées depuis le stockage local (mode &apos;no cloud&apos;)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="759"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="748"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>Echec de la connexion vers le serveur cloud, retour vers l&apos;état sans cloud</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="781"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="770"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>Stockage cloud ouvert avec succès. Aucune plongée dans la liste.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="966"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="967"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="955"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="956"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="966"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="967"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="968"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="955"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="956"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="957"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="966"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="955"/>
         <source>sec</source>
         <translation>sec</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1070"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1059"/>
         <source>weight</source>
         <translation>poids</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1355"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1361"/>
         <source>Fatal error: cannot save data file. Please copy log file and report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1544"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1560"/>
         <source>Unknown GPS location</source>
         <translation>Location GPS inconnue</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1762"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1778"/>
         <source>no default cylinder</source>
         <translation type="unfinished"/>
     </message>
@@ -11412,8 +11427,8 @@ Maximum</translation>
         <location filename="../core/subsurface-qt/diveobjecthelper.cpp" line="266"/>
         <location filename="../desktop-widgets/templatelayout.h" line="101"/>
         <location filename="../qt-models/divetripmodel.cpp" line="162"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="221"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="223"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="212"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="214"/>
         <source>h</source>
         <translation>h</translation>
     </message>
@@ -11426,8 +11441,8 @@ Maximum</translation>
         <location filename="../core/worldmap-save.c" line="49"/>
         <location filename="../desktop-widgets/templatelayout.h" line="102"/>
         <location filename="../qt-models/divetripmodel.cpp" line="162"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="221"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="223"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="212"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="214"/>
         <source>min</source>
         <translation>min</translation>
     </message>
@@ -12026,9 +12041,9 @@ Vous pouvez créer ce fichier log en sélectionnant la case correspondante dans 
         <location filename="../core/plannernotes.c" line="72"/>
         <location filename="../core/plannernotes.c" line="73"/>
         <location filename="../core/plannernotes.c" line="74"/>
-        <location filename="../core/qthelper.cpp" line="630"/>
-        <location filename="../core/qthelper.cpp" line="822"/>
-        <location filename="../core/qthelper.cpp" line="1285"/>
+        <location filename="../core/qthelper.cpp" line="627"/>
+        <location filename="../core/qthelper.cpp" line="819"/>
+        <location filename="../core/qthelper.cpp" line="1282"/>
         <location filename="../core/units.c" line="19"/>
         <source>bar</source>
         <translation>bar</translation>
@@ -12638,102 +12653,102 @@ EADD : %d%s / %.1fg/ℓ
         <translation>O</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="546"/>
-        <location filename="../core/qthelper.cpp" line="561"/>
-        <location filename="../core/qthelper.cpp" line="740"/>
-        <location filename="../core/qthelper.cpp" line="1260"/>
+        <location filename="../core/qthelper.cpp" line="543"/>
+        <location filename="../core/qthelper.cpp" line="558"/>
+        <location filename="../core/qthelper.cpp" line="737"/>
+        <location filename="../core/qthelper.cpp" line="1257"/>
         <location filename="../core/units.c" line="106"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="549"/>
-        <location filename="../core/qthelper.cpp" line="563"/>
-        <location filename="../core/qthelper.cpp" line="742"/>
-        <location filename="../core/qthelper.cpp" line="1259"/>
+        <location filename="../core/qthelper.cpp" line="546"/>
+        <location filename="../core/qthelper.cpp" line="560"/>
+        <location filename="../core/qthelper.cpp" line="739"/>
+        <location filename="../core/qthelper.cpp" line="1256"/>
         <location filename="../core/units.c" line="111"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="570"/>
-        <location filename="../core/qthelper.cpp" line="580"/>
-        <location filename="../core/qthelper.cpp" line="795"/>
-        <location filename="../core/qthelper.cpp" line="1235"/>
+        <location filename="../core/qthelper.cpp" line="567"/>
+        <location filename="../core/qthelper.cpp" line="577"/>
+        <location filename="../core/qthelper.cpp" line="792"/>
+        <location filename="../core/qthelper.cpp" line="1232"/>
         <location filename="../core/units.c" line="166"/>
         <location filename="../qt-models/divetripmodel.cpp" line="188"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="572"/>
-        <location filename="../core/qthelper.cpp" line="582"/>
-        <location filename="../core/qthelper.cpp" line="797"/>
-        <location filename="../core/qthelper.cpp" line="1236"/>
+        <location filename="../core/qthelper.cpp" line="569"/>
+        <location filename="../core/qthelper.cpp" line="579"/>
+        <location filename="../core/qthelper.cpp" line="794"/>
+        <location filename="../core/qthelper.cpp" line="1233"/>
         <location filename="../core/units.c" line="162"/>
         <location filename="../qt-models/divetripmodel.cpp" line="190"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="591"/>
-        <location filename="../core/qthelper.cpp" line="768"/>
+        <location filename="../core/qthelper.cpp" line="588"/>
+        <location filename="../core/qthelper.cpp" line="765"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="594"/>
-        <location filename="../core/qthelper.cpp" line="770"/>
+        <location filename="../core/qthelper.cpp" line="591"/>
+        <location filename="../core/qthelper.cpp" line="767"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="633"/>
-        <location filename="../core/qthelper.cpp" line="824"/>
-        <location filename="../core/qthelper.cpp" line="1284"/>
+        <location filename="../core/qthelper.cpp" line="630"/>
+        <location filename="../core/qthelper.cpp" line="821"/>
+        <location filename="../core/qthelper.cpp" line="1281"/>
         <location filename="../core/units.c" line="23"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="845"/>
-        <location filename="../core/qthelper.cpp" line="1204"/>
+        <location filename="../core/qthelper.cpp" line="842"/>
+        <location filename="../core/qthelper.cpp" line="1201"/>
         <source>AIR</source>
         <translation>AIR</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="847"/>
+        <location filename="../core/qthelper.cpp" line="844"/>
         <source>EAN</source>
         <translation>Nitrox</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="922"/>
+        <location filename="../core/qthelper.cpp" line="919"/>
         <source>more than %1 days</source>
         <translation>plus de %1 jours</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="960"/>
-        <location filename="../core/qthelper.cpp" line="965"/>
+        <location filename="../core/qthelper.cpp" line="957"/>
+        <location filename="../core/qthelper.cpp" line="962"/>
         <source>no dives</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../core/qthelper.cpp" line="985"/>
+        <location filename="../core/qthelper.cpp" line="982"/>
         <source>(%n dive(s))</source>
         <translation><numerusform>(%n plongée(s))</numerusform><numerusform>(%n plongée(s))</numerusform></translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1204"/>
+        <location filename="../core/qthelper.cpp" line="1201"/>
         <source>OXYGEN</source>
         <translation>OXYGÈNE</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1307"/>
+        <location filename="../core/qthelper.cpp" line="1304"/>
         <source>l</source>
         <translation>l</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1308"/>
+        <location filename="../core/qthelper.cpp" line="1305"/>
         <location filename="../core/units.c" line="65"/>
         <source>cuft</source>
         <translation>cuft</translation>
@@ -13640,161 +13655,161 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
         <translation>Subsurface mobile</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="232"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="234"/>
         <source>Dive list</source>
         <translation>Liste des plongées</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="243"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="245"/>
         <source>Dive management</source>
         <translation>Gestion des plongées</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="248"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="357"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="426"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="484"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="250"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="359"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="428"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="486"/>
         <source>Back</source>
         <translation>Retour</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="255"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="257"/>
         <source>Add dive manually</source>
         <translation>Ajouter une plongée manuellement</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="267"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="269"/>
         <source>Download from DC</source>
         <translation>Télécharger depuis l&apos;ordinateur de plongée</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="279"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="281"/>
         <source>Apply GPS fixes</source>
         <translation>Appliquer les points GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="299"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="301"/>
         <source>Manual sync with cloud</source>
         <translation>Synchro manuelle avec le cloud</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="312"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="314"/>
         <source>Disable auto cloud sync</source>
         <translation>Désactiver la synchro auto vers le cloud</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="312"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="314"/>
         <source>Enable auto cloud sync</source>
         <translation>Activer la synchro automatique vers le cloud</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="318"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="320"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
         <translation>Désactiver la synchronisation automatique vers le cloud entraîne un enregistrement des données localement uniquement. Cela peut être utile dans des situations avec un accès au réseau limité ou inexistant. Veuillez choisir &apos;Synchro manuelle avec le cloud&apos; si vous avez une connexion réseau et que vous souhaitez synchroniser vos données vers le stockage cloud.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="328"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="330"/>
         <source>Dive summary</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="339"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="341"/>
         <source>Export</source>
         <translation>Exporter</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="351"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="353"/>
         <source>Location</source>
         <translation>Lieu</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="373"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="375"/>
         <source>Show GPS fixes</source>
         <translation>Afficher les points GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="386"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="388"/>
         <source>Clear GPS cache</source>
         <translation>Vider le cache GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="397"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="399"/>
         <source>Disable location service</source>
         <translation>Désactiver le service de localisation</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="397"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="399"/>
         <source>Run location service</source>
         <translation>Démarrer le service de localisation</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="408"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="410"/>
         <source>Settings</source>
         <translation>Paramètres</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="421"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="423"/>
         <source>Help</source>
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="433"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="435"/>
         <source>About</source>
         <translation>Au sujet de</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="444"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="446"/>
         <source>Show user manual</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="453"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="455"/>
         <source>Ask for support</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="457"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="459"/>
         <source>failed to open email client, please manually create support email to support@subsurface-divelog.org - the logs have been copied to the clipboard and can be pasted into that email.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="467"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="469"/>
         <source>Reset forgotten Subsurface Cloud password</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="478"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="480"/>
         <source>Developer</source>
         <translation>Développeur</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="488"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="490"/>
         <source>App log</source>
         <translation>App log</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="495"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="497"/>
         <source>Test busy indicator (toggle)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="505"/>
         <location filename="../mobile-widgets/qml/main.qml" line="507"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="509"/>
         <source>Test notification text</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="511"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="513"/>
         <source>Theme information</source>
         <translation>Informations de thème</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="519"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="521"/>
         <source>Enable verbose logging</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="521"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="523"/>
         <source>Not persistent</source>
         <translation type="unfinished"/>
     </message>
