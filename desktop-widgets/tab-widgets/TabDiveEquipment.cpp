@@ -1,17 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "TabDiveEquipment.h"
 #include "maintab.h"
-#include "desktop-widgets/mainwindow.h" // TODO: Only used temporarilly for edit mode changes
 #include "desktop-widgets/simplewidgets.h" // For isGnome3Session()
 #include "desktop-widgets/modeldelegates.h"
 #include "commands/command.h"
-#include "profile-widget/profilewidget2.h"
 
 #include "qt-models/cylindermodel.h"
 #include "qt-models/weightmodel.h"
-
-#include "core/subsurface-string.h"
-#include "core/divelist.h"
 
 #include <QSettings>
 #include <QCompleter>
