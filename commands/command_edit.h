@@ -393,7 +393,7 @@ protected:
 	EditCylinderBase(int index, bool currentDiveOnly, bool nonProtectedOnly, int sameCylinderFlags);
 	~EditCylinderBase();
 
-	cylinder_t cyl;
+	std::vector<cylinder_t> cyl;
 	std::vector<int> indexes; // An index for each dive in the dives vector.
 	bool workToBeDone() override;
 };
@@ -409,9 +409,7 @@ private:
 class EditCylinder : public EditCylinderBase {
 public:
 	EditCylinder(int index, cylinder_t cyl, bool currentDiveOnly); // Clones cylinder
-	~EditCylinder();
 private:
-	cylinder_t new_cyl;
 	void undo() override;
 	void redo() override;
 };
