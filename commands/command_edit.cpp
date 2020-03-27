@@ -1248,8 +1248,11 @@ void EditDive::exchangeDives()
 	// it by swapping the dive data.
 	newDive->hidden_by_filter = oldDive->hidden_by_filter;
 
-	// Bluntly exchange dive data by shallow copy
+	// Bluntly exchange dive data by shallow copy.
+	// Don't forget to unregister the old and register the new dive!
+	fulltext_unregister(oldDive);
 	std::swap(*newDive, *oldDive);
+	fulltext_register(oldDive);
 	invalidate_dive_cache(oldDive);
 
 	// Changing times may have unsorted the dive and trip tables
