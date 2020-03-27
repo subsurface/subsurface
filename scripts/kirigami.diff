@@ -204,15 +204,100 @@ diff -rwu ../kirigami/src/kirigamiplugin.cpp ./src/kirigamiplugin.cpp
 diff -rwu ../kirigami/src/controls/private/ActionButton.qml ./src/controls/private/ActionButton.qml
 --- ../kirigami/src/controls/private/ActionButton.qml	2019-10-11 14:00:51.783839545 -0400
 +++ ./src/controls/private/ActionButton.qml	2019-10-27 17:12:04.339302719 -0400
-@@ -70,7 +70,7 @@
+@@ -70,12 +70,12 @@
  
          anchors.bottom: edgeMouseArea.bottom
  
 -        implicitWidth: implicitHeight + Units.iconSizes.smallMedium*2 + Units.gridUnit
-+	implicitWidth: implicitHeight + Units.iconSizes.smallMedium*4 + Units.gridUnit
++        implicitWidth: implicitHeight + Units.iconSizes.smallMedium*4 + Units.gridUnit
          implicitHeight: Units.iconSizes.medium + Units.largeSpacing * 2
  
  
+         onXChanged: {
+-            if (mouseArea.pressed || edgeMouseArea.pressed || fakeContextMenuButton.pressed) {
++            if (0 && (mouseArea.pressed || edgeMouseArea.pressed || fakeContextMenuButton.pressed)) {
+                 if (root.hasGlobalDrawer && globalDrawer.enabled && globalDrawer.modal) {
+                     globalDrawer.peeking = true;
+                     globalDrawer.visible = true;
+@@ -97,13 +97,13 @@
+             property bool internalVisibility: (!root.hasApplicationWindow || (applicationWindow().controlsVisible && applicationWindow().height > root.height*2)) && (root.action === null || root.action.visible === undefined || root.action.visible)
+             preventStealing: true
+ 
+-            drag {
+-                target: button
+-                //filterChildren: true
+-                axis: Drag.XAxis
+-                minimumX: root.hasContextDrawer && contextDrawer.enabled && contextDrawer.modal ? 0 : root.width/2 - button.width/2
+-                maximumX: root.hasGlobalDrawer && globalDrawer.enabled && globalDrawer.modal ? root.width : root.width/2 - button.width/2
+-            }
++//            drag {
++//                target: button
++//                //filterChildren: true
++//                axis: Drag.XAxis
++//                minimumX: root.hasContextDrawer && contextDrawer.enabled && contextDrawer.modal ? 0 : root.width/2 - button.width/2
++//                maximumX: root.hasGlobalDrawer && globalDrawer.enabled && globalDrawer.modal ? root.width : root.width/2 - button.width/2
++//            }
+ 
+             property var downTimestamp;
+             property int startX
+@@ -147,24 +147,24 @@
+                 drawerShowAdjust = 0;
+ 
+                 //project where it would be a full second in the future
+-                if (root.hasContextDrawer && root.hasGlobalDrawer && globalDrawer.modal && x + speed > Math.min(root.width/4*3, root.width/2 + globalDrawer.contentItem.width/2)) {
+-                    globalDrawer.open();
+-                    contextDrawer.close();
+-                } else if (root.hasContextDrawer && x + speed < Math.max(root.width/4, root.width/2 - contextDrawer.contentItem.width/2)) {
+-                    if (root.hasContextDrawer && contextDrawer.modal) {
+-                        contextDrawer.open();
+-                    }
+-                    if (root.hasGlobalDrawer && globalDrawer.modal) {
+-                        globalDrawer.close();
+-                    }
+-                } else {
+-                    if (root.hasGlobalDrawer && globalDrawer.modal) {
+-                        globalDrawer.close();
+-                    }
+-                    if (root.hasContextDrawer && contextDrawer.modal) {
+-                        contextDrawer.close();
+-                    }
+-                }
++//                if (root.hasContextDrawer && root.hasGlobalDrawer && globalDrawer.modal && x + speed > Math.min(root.width/4*3, root.width/2 + globalDrawer.contentItem.width/2)) {
++//                    globalDrawer.open();
++//                    contextDrawer.close();
++//                } else if (root.hasContextDrawer && x + speed < Math.max(root.width/4, root.width/2 - contextDrawer.contentItem.width/2)) {
++//                    if (root.hasContextDrawer && contextDrawer.modal) {
++//                        contextDrawer.open();
++//                    }
++//                    if (root.hasGlobalDrawer && globalDrawer.modal) {
++//                        globalDrawer.close();
++//                    }
++//                } else {
++//                    if (root.hasGlobalDrawer && globalDrawer.modal) {
++//                        globalDrawer.close();
++//                    }
++//                    if (root.hasContextDrawer && contextDrawer.modal) {
++//                        contextDrawer.close();
++//                    }
++//                }
+                 //Don't rely on native onClicked, but fake it here:
+                 //Qt.startDragDistance is not adapted to devices dpi in case
+                 //of Android, so consider the button "clicked" when:
+@@ -201,10 +201,10 @@
+                 }
+             }
+ 
+-            onPositionChanged: {
+-                drawerShowAdjust = Math.min(0.3, Math.max(0, (startMouseY - mouse.y)/(Units.gridUnit*15)));
+-                button.xChanged();
+-            }
++//            onPositionChanged: {
++//                drawerShowAdjust = Math.min(0.3, Math.max(0, (startMouseY - mouse.y)/(Units.gridUnit*15)));
++//                button.xChanged();
++//            }
+             onPressAndHold: {
+                 if (!actionUnderMouse) {
+                     return;
 @@ -291,7 +291,7 @@
                          bottomMargin: Units.smallSpacing
                      }
