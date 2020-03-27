@@ -48,8 +48,16 @@ slots:
 	virtual void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) = 0;
 private:
 	bool editable;
+	mutable bool keyboardFinished;
 protected:
 	QAbstractItemModel *model;
+	mutable struct CurrSelected {
+		QComboBox *comboEditor;
+		int currRow;
+		QString activeText;
+		QAbstractItemModel *model;
+		bool ignoreSelection;
+	} currCombo;
 };
 
 class TankInfoDelegate : public ComboBoxDelegate {

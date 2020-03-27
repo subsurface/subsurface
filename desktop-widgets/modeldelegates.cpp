@@ -38,7 +38,6 @@ QSize DiveListDelegate::sizeHint(const QStyleOptionViewItem&, const QModelIndex&
 // Gets the index of the model in the currentRow and column.
 // currCombo is defined below.
 #define IDX(_XX) mymodel->index(currCombo.currRow, (_XX))
-static bool keyboardFinished = false;
 
 StarWidgetsDelegate::StarWidgetsDelegate(QWidget *parent) : QStyledItemDelegate(parent),
 	parentWidget(parent)
@@ -100,14 +99,6 @@ void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) 
 		c->setEditText(data);
 	c->lineEdit()->setSelection(0, c->lineEdit()->text().length());
 }
-
-static struct CurrSelected {
-	QComboBox *comboEditor;
-	int currRow;
-	QString activeText;
-	QAbstractItemModel *model;
-	bool ignoreSelection;
-} currCombo;
 
 QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem&, const QModelIndex &index) const
 {
