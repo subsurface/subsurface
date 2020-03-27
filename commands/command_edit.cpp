@@ -1242,6 +1242,12 @@ void EditDive::redo()
 
 void EditDive::exchangeDives()
 {
+	// Set the filter flag of the new dive to the old dive.
+	// Reason: When we send the dive-changed signal, the model will
+	// track the *change* of the filter flag, so we must not overwrite
+	// it by swapping the dive data.
+	newDive->hidden_by_filter = oldDive->hidden_by_filter;
+
 	// Bluntly exchange dive data by shallow copy
 	std::swap(*newDive, *oldDive);
 	invalidate_dive_cache(oldDive);
