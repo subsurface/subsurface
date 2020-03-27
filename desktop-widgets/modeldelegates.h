@@ -61,7 +61,6 @@ public:
 public
 slots:
 	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
-	void reenableReplot(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
 };
 
 class TankUseDelegate : public QStyledItemDelegate {

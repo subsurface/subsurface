@@ -256,16 +256,6 @@ void TankInfoDelegate::setModelData(QWidget*, QAbstractItemModel*, const QModelI
 
 TankInfoDelegate::TankInfoDelegate(QObject *parent) : ComboBoxDelegate(TankInfoModel::instance(), parent, true)
 {
-	connect(this, SIGNAL(closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint)),
-		this, SLOT(reenableReplot(QWidget *, QAbstractItemDelegate::EndEditHint)));
-}
-
-void TankInfoDelegate::reenableReplot(QWidget*, QAbstractItemDelegate::EndEditHint)
-{
-	MainWindow::instance()->graphics->setReplot(true);
-	// FIXME: We need to replot after a cylinder is selected but the replot below overwrites
-	//        the newly selected cylinder.
-	//	MainWindow::instance()->graphics->replot();
 }
 
 void TankInfoDelegate::editorClosed(QWidget*, QAbstractItemDelegate::EndEditHint hint)
