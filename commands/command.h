@@ -92,7 +92,12 @@ int removeWeight(int index, bool currentDiveOnly);
 int editWeight(int index, weightsystem_t ws, bool currentDiveOnly);
 int addCylinder(bool currentDiveOnly);
 int removeCylinder(int index, bool currentDiveOnly);
-int editCylinder(int index, cylinder_t cyl, bool currentDiveOnly);
+enum class EditCylinderType {
+	TYPE,
+	PRESSURE,
+	GASMIX
+};
+int editCylinder(int index, cylinder_t cyl, EditCylinderType type, bool currentDiveOnly);
 #ifdef SUBSURFACE_MOBILE
 // Edits a dive and creates a divesite (if createDs != NULL) or edits a divesite (if changeDs != NULL).
 // Takes ownership of newDive and createDs!

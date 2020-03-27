@@ -304,9 +304,9 @@ int removeCylinder(int index, bool currentDiveOnly)
 	return execute_edit(new RemoveCylinder(index, currentDiveOnly));
 }
 
-int editCylinder(int index, cylinder_t cyl, bool currentDiveOnly)
+int editCylinder(int index, cylinder_t cyl, EditCylinderType type, bool currentDiveOnly)
 {
-	return execute_edit(new EditCylinder(index, cyl, currentDiveOnly));
+	return execute_edit(new EditCylinder(index, cyl, type, currentDiveOnly));
 }
 
 // Trip editing related commands

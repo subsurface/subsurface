@@ -5,6 +5,7 @@
 #define COMMAND_EDIT_H
 
 #include "command_base.h"
+#include "command.h" // for EditCylinderType
 #include "core/subsurface-qt/divelistnotifier.h"
 
 #include <QVector>
@@ -406,10 +407,16 @@ private:
 	void redo() override;
 };
 
+// Instead of implementing an undo command for every single field in a cylinder,
+// we only have one and pass an edit "type". We either edit the type, pressure
+// or gasmix fields. This has mostly historical reasons rooted in the way the
+// CylindersModel code works. The model works for undo and also in the planner
+// without undo. Having a single undo-command simplifies the code there.
 class EditCylinder : public EditCylinderBase {
 public:
-	EditCylinder(int index, cylinder_t cyl, bool currentDiveOnly); // Clones cylinder
+	EditCylinder(int index, cylinder_t cyl, EditCylinderType type, bool currentDiveOnly); // Clones cylinder
 private:
+	EditCylinderType type;
 	void undo() override;
 	void redo() override;
 };

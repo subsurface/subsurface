@@ -1151,9 +1151,23 @@ void RemoveCylinder::redo()
 	}
 }
 
+static int editCylinderTypeToFlags(EditCylinderType type)
+{
+	switch (type) {
+	default:
+	case EditCylinderType::TYPE:
+		return SAME_TYPE | SAME_SIZE;
+	case EditCylinderType::PRESSURE:
+		return SAME_PRESS;
+	case EditCylinderType::GASMIX:
+		return SAME_GAS;
+	}
+}
+
 // ***** Edit Cylinder *****
-EditCylinder::EditCylinder(int index, cylinder_t cylIn, bool currentDiveOnly) :
-	EditCylinderBase(index, currentDiveOnly, false, SAME_TYPE | SAME_PRESS | SAME_GAS)
+EditCylinder::EditCylinder(int index, cylinder_t cylIn, EditCylinderType typeIn, bool currentDiveOnly) :
+	EditCylinderBase(index, currentDiveOnly, false, editCylinderTypeToFlags(typeIn)),
+	type(typeIn)
 {
 	if (dives.empty())
 		return;
@@ -1184,9 +1198,23 @@ EditCylinder::EditCylinder(int index, cylinder_t cylIn, bool currentDiveOnly) :
 
 	// The base class copied the cylinders for us, let's edit them
 	for (int i = 0; i < (int)indexes.size(); ++i) {
-		free_cylinder(cyl[i]);
-		cyl[i] = cylIn;
-		cyl[i].type.description = copy_qstring(description);
+		switch (type) {
+		case EditCylinderType::TYPE:
+			free((void *)cyl[i].type.description);
+			cyl[i].type = cylIn.type;
+			cyl[i].type.description = copy_qstring(description);
+			cyl[i].cylinder_use = cylIn.cylinder_use;
+			break;
+		case EditCylinderType::PRESSURE:
+			cyl[i].start.mbar = cylIn.start.mbar;
+			cyl[i].end.mbar = cylIn.end.mbar;
+			break;
+		case EditCylinderType::GASMIX:
+			cyl[i].gasmix = cylIn.gasmix;
+			cyl[i].bestmix_o2 = cylIn.bestmix_o2;
+			cyl[i].bestmix_he = cylIn.bestmix_he;
+			break;
+		}
 	}
 }
 

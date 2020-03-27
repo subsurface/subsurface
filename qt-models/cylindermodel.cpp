@@ -296,7 +296,6 @@ cylinder_t *CylindersModel::cylinderAt(const QModelIndex &index)
 
 bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-
 	if (!d)
 		return false;
 
@@ -324,6 +323,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 				tempCyl.type.description = strdup(qPrintable(type));
 				dataChanged(index, index);
 			}
+			return true;
 		}
 		case SIZE:
 			if (tempCyl.type.size.mliter != value.toInt()) {
@@ -362,10 +362,12 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	if (index.column() != TYPE && !changed)
 		return false;
 
+	Command::EditCylinderType type = Command::EditCylinderType::TYPE;
 	switch (index.column()) {
 	case TYPE:
 		newType = qPrintable(vString);
 		cyl.type.description = newType.c_str();
+		type = Command::EditCylinderType::TYPE;
 		break;
 	case SIZE: {
 			TankInfoModel *tanks = TankInfoModel::instance();
@@ -375,6 +377,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			if (!matches.isEmpty())
 				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl.type.size.mliter);
 		}
+		type = Command::EditCylinderType::TYPE;
 		break;
 	case WORKINGPRESS: {
 			TankInfoModel *tanks = TankInfoModel::instance();
@@ -383,13 +386,16 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			if (!matches.isEmpty())
 				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::BAR), cyl.type.workingpressure.mbar / 1000.0);
 		}
+		type = Command::EditCylinderType::TYPE;
 		break;
 	case START:
 		cyl.start = string_to_pressure(qPrintable(vString));
+		type = Command::EditCylinderType::PRESSURE;
 		break;
 	case END:
 		//if (!cyl->start.mbar || string_to_pressure(qPrintable(vString)).mbar <= cyl->start.mbar) {
 		cyl.end = string_to_pressure(qPrintable(vString));
+		type = Command::EditCylinderType::PRESSURE;
 		break;
 	case O2: {
 			cyl.gasmix.o2 = string_to_fraction(qPrintable(vString));
@@ -405,6 +411,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			cyl.depth = gas_mod(cyl.gasmix, modpO2, d, M_OR_FT(3, 10));
 			cyl.bestmix_o2 = false;
 		}
+		type = Command::EditCylinderType::GASMIX;
 		break;
 	case HE:
 		cyl.gasmix.he = string_to_fraction(qPrintable(vString));
@@ -412,9 +419,11 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		if (get_o2(cyl.gasmix) + get_he(cyl.gasmix) > 1000)
 			cyl.gasmix.o2.permille = 1000 - get_he(cyl.gasmix);
 		cyl.bestmix_he = false;
+		type = Command::EditCylinderType::GASMIX;
 		break;
 	case DEPTH:
 		cyl.depth = string_to_depth(qPrintable(vString));
+		type = Command::EditCylinderType::GASMIX;
 		break;
 	case MOD: {
 			if (QString::compare(qPrintable(vString), "*") == 0) {
@@ -430,6 +439,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			modpO2.mbar = prefs.decopo2;
 			cyl.depth = gas_mod(cyl.gasmix, modpO2, d, M_OR_FT(3, 10));
 		}
+		type = Command::EditCylinderType::GASMIX;
 		break;
 	case MND:
 		if (QString::compare(qPrintable(vString), "*") == 0) {
@@ -441,6 +451,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			// Calculate fHe for input depth
 			cyl.gasmix.he = best_he(string_to_depth(qPrintable(vString)), d, prefs.o2narcotic, cyl.gasmix.o2);
 		}
+		type = Command::EditCylinderType::GASMIX;
 		break;
 	case USE: {
 			int use = vString.toInt();
@@ -448,6 +459,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 				use = 0;
 			cyl.cylinder_use = (enum cylinderuse)use;
 		}
+		type = Command::EditCylinderType::TYPE;
 		break;
 	}
 
@@ -461,7 +473,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	} else {
 #ifndef SUBSURFACE_MOBILE
 		// On the EquipmentTab - place an editCylinder command.
-		Command::editCylinder(index.row(), cyl, false);
+		Command::editCylinder(index.row(), cyl, type, false);
 #endif
 	}
 	return true;
@@ -709,7 +721,7 @@ void CylindersModel::commitTempCyl(int row)
 		if (inPlanner)
 			std::swap(*cyl, tempCyl);
 		else
-			Command::editCylinder(tempRow, tempCyl, false);
+			Command::editCylinder(tempRow, tempCyl, Command::EditCylinderType::TYPE, false);
 	}
 	free_cylinder(tempCyl);
 	tempRow = -1;
