@@ -1272,12 +1272,12 @@ void QMLManager::changesNeedSaving()
 }
 
 void QMLManager::openNoCloudRepo()
-/*
- * Open the No Cloud repo. In case this repo does not (yet)
- * exists, create one first. When done, open the repo, which
- * is obviously empty when just created.
- */
 {
+	/*
+	 * Open the No Cloud repo. In case this repo does not (yet)
+	 * exists, create one first. When done, open the repo, which
+	 * is obviously empty when just created.
+	 */
 	QString filename = nocloud_localstorage();
 	const char *branch;
 	struct git_repository *git;
