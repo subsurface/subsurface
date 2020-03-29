@@ -164,6 +164,7 @@ void QMLManager::usbRescan()
 
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
+	m_diveListProcessing(false),
 	m_pluggedInDeviceName(""),
 	m_showNonDiveComputers(false),
 	undoAction(Command::undoAction(this)),
@@ -324,6 +325,7 @@ void QMLManager::openLocalThenRemote(QString url)
 {
 	// clear out the models and the fulltext index
 	MobileModels::instance()->clear();
+	setDiveListProcessing(true);
 	setNotificationText(tr("Open local dive data file"));
 	appendTextToLog(QString("Open dive data file %1 - git_local only is %2").arg(url).arg(git_local_only));
 	QByteArray encodedFilename = QFile::encodeName(url);
@@ -385,6 +387,7 @@ void QMLManager::openLocalThenRemote(QString url)
 		appendTextToLog(QStringLiteral("have cloud credentials, but user asked not to connect to network"));
 
 	updateAllGlobalLists();
+	setDiveListProcessing(false);
 }
 
 // Convenience function to accesss dive directly via its row.
@@ -664,7 +667,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		appendTextToLog("Cloud sync shows local cache was current");
 	} else {
 		appendTextToLog("Cloud sync brought newer data, reloading the dive list");
-
+		setDiveListProcessing(true);
 		// if we aren't switching from no-cloud mode, let's clear the dive data
 		if (!noCloudToCloud) {
 			appendTextToLog("Clear out in memory dive data");
@@ -684,6 +687,7 @@ void QMLManager::loadDivesWithValidCredentials()
 			error = parse_file(fileNamePrt.data(), &dive_table, &trip_table, &dive_site_table);
 		}
 		lockAlreadySaving.unlock();
+		setDiveListProcessing(false);
 		if (!error) {
 			report_error("filename is now %s", fileNamePrt.data());
 			set_filename(fileNamePrt.data());
@@ -2171,4 +2175,13 @@ QString QMLManager::getRedoText() const
 {
 	QString redoText = Command::getUndoStack()->redoText();
 	return redoText;
+}
+
+void QMLManager::setDiveListProcessing(bool value)
+{
+	if (m_diveListProcessing != value) {
+		m_diveListProcessing = value;
+		emit diveListProcessingChanged();
+	}
+
 }
