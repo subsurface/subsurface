@@ -58,6 +58,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(qPrefCloudStorage::cloud_status oldStatus MEMBER m_oldStatus WRITE setOldStatus NOTIFY oldStatusChanged)
 	Q_PROPERTY(QString undoText READ getUndoText NOTIFY undoTextChanged) // this is a read-only property
 	Q_PROPERTY(QString redoText READ getRedoText NOTIFY redoTextChanged) // this is a read-only property
+	Q_PROPERTY(bool diveListProcessing MEMBER m_diveListProcessing  WRITE setDiveListProcessing NOTIFY diveListProcessingChanged)
 
 public:
 	QMLManager();
@@ -151,6 +152,8 @@ public:
 	void setBtEnabled(bool value);
 
 	void setShowNonDiveComputers(bool show);
+
+	void setDiveListProcessing(bool value);
 
 	QStringList suitList() const;
 	QStringList buddyList() const;
@@ -250,6 +253,7 @@ private:
 	bool m_locationServiceEnabled;
 	bool m_locationServiceAvailable;
 	bool m_verboseEnabled;
+	bool m_diveListProcessing;
 	GpsLocation *locationProvider;
 	bool m_loadFromCloud;
 	static QMLManager *m_instance;
@@ -288,6 +292,7 @@ signals:
 	void locationServiceEnabledChanged();
 	void locationServiceAvailableChanged();
 	void verboseEnabledChanged();
+	void diveListProcessingChanged();
 	void logTextChanged();
 	void loadFromCloudChanged();
 	void startPageTextChanged();

@@ -346,11 +346,15 @@ Kirigami.ScrollablePage {
 	}
 
 	Controls.Label {
+		property bool showProcessingText: manager.diveListProcessing
 		anchors.fill: parent
 		horizontalAlignment: Text.AlignHCenter
 		verticalAlignment: Text.AlignVCenter
-		text: diveListModel ? qsTr("No dives in dive list") : qsTr("Please wait, updating the dive list")
+		text: diveListModel && !showProcessingText ? qsTr("No dives in dive list") : qsTr("Please wait, updating the dive list")
 		visible: diveListView.visible && diveListView.count === 0
+		onShowProcessingTextChanged: {
+			manager.appendTextToLog("============diveListProcessing is " + showProcessingText)
+		}
 	}
 
 	Rectangle {
