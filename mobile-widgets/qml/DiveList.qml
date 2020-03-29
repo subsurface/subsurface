@@ -473,6 +473,10 @@ Kirigami.ScrollablePage {
 		onTriggered: {
 			rootItem.filterToggle = !rootItem.filterToggle
 			manager.setFilter("", 0)
+			if (rootItem.filterToggle)
+				Qt.inputMethod.show()
+			else
+				Qt.inputMethod.hide()
 		}
 	}
 
