@@ -17,6 +17,7 @@
 #include <QtConcurrent>
 #include <QFuture>
 #include <QUndoStack>
+#include <QMutexLocker>
 
 #include <QBluetoothLocalDevice>
 
@@ -163,7 +164,6 @@ void QMLManager::usbRescan()
 
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
-	alreadySaving(false),
 	m_pluggedInDeviceName(""),
 	m_showNonDiveComputers(false),
 	undoAction(Command::undoAction(this)),
@@ -300,8 +300,6 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 	}
 	stateText.prepend("AppState changed to ");
 	stateText.append(" with ");
-	stateText.append((alreadySaving ? QLatin1String("") : QLatin1String("no ")) + QLatin1String("save ongoing"));
-	stateText.append(" and ");
 	stateText.append((unsaved_changes() ? QLatin1String("") : QLatin1String("no ")) + QLatin1String("unsaved changes"));
 	appendTextToLog(stateText);
 
@@ -317,9 +315,8 @@ int QMLManager::openAndMaybeSync(const char *filename)
 {
 	// parse_file will potentially sync with the git server - so make sure we don't start
 	// a save in the middle of that (for example if the user switches away from the app)
-	alreadySaving = true;
+	QMutexLocker lockAlreadySaving(&alreadySaving);
 	int error = parse_file(filename, &dive_table, &trip_table, &dive_site_table);
-	alreadySaving = false;
 	return error;
 }
 
@@ -665,40 +662,40 @@ void QMLManager::loadDivesWithValidCredentials()
 	int error;
 	if (check_git_sha(fileNamePrt.data(), &git, &branch) == 0) {
 		appendTextToLog("Cloud sync shows local cache was current");
-		goto successful_exit;
-	}
-	appendTextToLog("Cloud sync brought newer data, reloading the dive list");
+	} else {
+		appendTextToLog("Cloud sync brought newer data, reloading the dive list");
 
-	// if we aren't switching from no-cloud mode, let's clear the dive data
-	if (!noCloudToCloud) {
-		appendTextToLog("Clear out in memory dive data");
-		MobileModels::instance()->clear();
-	} else {
-		appendTextToLog("Switching from no cloud mode; keep in memory dive data");
+		// if we aren't switching from no-cloud mode, let's clear the dive data
+		if (!noCloudToCloud) {
+			appendTextToLog("Clear out in memory dive data");
+			MobileModels::instance()->clear();
+		} else {
+			appendTextToLog("Switching from no cloud mode; keep in memory dive data");
+		}
+		// this might sync with the remote server and therefore change our git repo
+		// we need a block to enforce a short lifetime for the QMutexLocker (otherwise
+		// we get an error with the 'goto' above)
+		QMutexLocker lockAlreadySaving(&alreadySaving);
+		if (git != dummy_git_repository) {
+			appendTextToLog(QString("have repository and branch %1").arg(branch));
+			error = git_load_dives(git, branch, &dive_table, &trip_table, &dive_site_table);
+		} else {
+			appendTextToLog(QString("didn't receive valid git repo, try again"));
+			error = parse_file(fileNamePrt.data(), &dive_table, &trip_table, &dive_site_table);
+		}
+		lockAlreadySaving.unlock();
+		if (!error) {
+			report_error("filename is now %s", fileNamePrt.data());
+			set_filename(fileNamePrt.data());
+		} else {
+			report_error("failed to open file %s", fileNamePrt.data());
+			setNotificationText(consumeError());
+			revertToNoCloudIfNeeded();
+			set_filename(NULL);
+			return;
+		}
+		consumeFinishedLoad();
 	}
-	// this might sync with the remote server and therefore change our git repo
-	alreadySaving = true;
-	if (git != dummy_git_repository) {
-		appendTextToLog(QString("have repository and branch %1").arg(branch));
-		error = git_load_dives(git, branch, &dive_table, &trip_table, &dive_site_table);
-	} else {
-		appendTextToLog(QString("didn't receive valid git repo, try again"));
-		error = parse_file(fileNamePrt.data(), &dive_table, &trip_table, &dive_site_table);
-	}
-	alreadySaving = false;
-	if (!error) {
-		report_error("filename is now %s", fileNamePrt.data());
-		set_filename(fileNamePrt.data());
-	} else {
-		report_error("failed to open file %s", fileNamePrt.data());
-		setNotificationText(consumeError());
-		revertToNoCloudIfNeeded();
-		set_filename(NULL);
-		return;
-	}
-	consumeFinishedLoad();
-
-successful_exit:
 	setLoadFromCloud(true);
 	// if we came from local storage mode, let's merge the local data into the local cache
 	// for the remote data - which then later gets merged with the remote data if necessary
@@ -1290,9 +1287,8 @@ void QMLManager::openNoCloudRepo()
 	if (git == dummy_git_repository) {
 		// repo doesn't exist, create it and write the empty dive list to it
 		git_create_local_repo(qPrintable(filename));
-		alreadySaving = true;
+		QMutexLocker lockAlreadySaving(&alreadySaving);
 		save_dives(qPrintable(filename));
-		alreadySaving = false;
 		set_filename(qPrintable(filename));
 		auto s = qPrefLog::instance();
 		s->set_default_filename(qPrintable(filename));
@@ -1319,15 +1315,15 @@ void QMLManager::saveChangesLocal()
 			appendTextToLog("Don't save dives without loading from the cloud, first.");
 			return;
 		}
-		if (alreadySaving) {
+		// try for 10ms, move on if we can't get the lock
+		if (!alreadySaving.tryLock(10)) {
 			appendTextToLog("save operation already in progress, can't save locally");
 			return;
 		}
 		bool glo = git_local_only;
 		git_local_only = true;
-		alreadySaving = true;
 		int error = save_dives(existing_filename);
-		alreadySaving = false;
+		alreadySaving.unlock();
 		git_local_only = glo;
 		if (error) {
 			setNotificationText(consumeError());
@@ -1346,14 +1342,15 @@ void QMLManager::saveChangesCloud(bool forceRemoteSync)
 		appendTextToLog("asked to save changes but no unsaved changes");
 		return;
 	}
-	if (alreadySaving) {
+	// try for 10ms, move on if we can't get the lock
+	if (!alreadySaving.tryLock(10)) {
 		appendTextToLog("save operation in progress already");
 		return;
 	}
 	// first we need to store any unsaved changes to the local repo
 	gitProgressCB("Save changes to local cache");
 	saveChangesLocal();
-
+	alreadySaving.unlock();
 	// if the user asked not to push to the cloud we are done
 	if (git_local_only && !forceRemoteSync)
 		return;

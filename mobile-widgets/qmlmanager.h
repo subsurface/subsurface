@@ -9,6 +9,7 @@
 #include <QElapsedTimer>
 #include <QColor>
 #include <QFile>
+#include <QMutex>
 
 #include "core/btdiscovery.h"
 #include "core/gpslocation.h"
@@ -255,7 +256,7 @@ private:
 	QString m_notificationText;
 	qreal m_lastDevicePixelRatio;
 	QElapsedTimer timer;
-	bool alreadySaving;
+	QMutex alreadySaving;
 	bool checkDate(const DiveObjectHelper &myDive, struct dive *d, QString date);
 	bool checkLocation(DiveSiteChange &change, const DiveObjectHelper &myDive, struct dive *d, QString location, QString gps);
 	bool checkDuration(const DiveObjectHelper &myDive, struct dive *d, QString duration);
