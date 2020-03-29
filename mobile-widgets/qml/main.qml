@@ -880,4 +880,14 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		manager.finishSetup()
 		manager.appInitialized()
 	}
+	onClosing: {
+		if (globalDrawer.visible) {
+			globalDrawer.close()
+			close.accepted = false
+		}
+		if (contextDrawer.visible) {
+			contextDrawer.close()
+			close.accepted = false
+		}
+	}
 }
