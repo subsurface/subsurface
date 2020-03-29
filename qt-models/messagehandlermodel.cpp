@@ -39,6 +39,13 @@ int MessageHandlerModel::rowCount(const QModelIndex&) const
 
 void MessageHandlerModel::addLog(QtMsgType type, const QString& message)
 {
+	if (!m_data.isEmpty()) {
+		struct MessageData *lm = &m_data.last();
+		QString lastMessage = lm->message.mid(lm->message.indexOf(':'));
+		QString newMessage = message.mid(message.indexOf(':'));
+		if (lastMessage == newMessage)
+			return;
+	}
 	beginInsertRows(QModelIndex(), rowCount(), rowCount());
 	m_data.append({message, type});
 	endInsertRows();
