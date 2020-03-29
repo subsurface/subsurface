@@ -353,92 +353,87 @@ Kirigami.ScrollablePage {
 		visible: diveListView.visible && diveListView.count === 0
 	}
 
-	Component {
+	Rectangle {
 		id: filterHeader
-		Rectangle {
-			id: filterRectangle
-			visible: filterBar.height > 0
-			implicitHeight: filterBar.implicitHeight
-			implicitWidth: filterBar.implicitWidth
-			height: filterBar.height
+		visible: filterBar.height > 0
+		implicitHeight: filterBar.implicitHeight
+		implicitWidth: filterBar.implicitWidth
+		height: filterBar.height
+		anchors {
+			top: parent.top
+			left: parent.left
+			right: parent.right
+		}
+		color: subsurfaceTheme.backgroundColor
+		enabled: rootItem.filterToggle
+		RowLayout {
+			id: filterBar
+			states: [
+				State {
+					name: "isVisible"
+					when: rootItem.filterToggle
+					PropertyChanges { target: filterBar; height: sitefilter.implicitHeight }
+				},
+				State {
+					name: "isHidden"
+					when: !rootItem.filterToggle
+					PropertyChanges { target: filterBar; height: 0 }
+				}
+			]
+			transitions: [
+				Transition { NumberAnimation { property: "height"; duration: 400; easing.type: Easing.InOutQuad }}
+			]
 			anchors.left: parent.left
 			anchors.right: parent.right
-			color: subsurfaceTheme.backgroundColor
-			enabled: rootItem.filterToggle
-			RowLayout {
-				id: filterBar
-				z: 5 //make sure it sits on top
-				states: [
-					State {
-						name: "isVisible"
-						when: rootItem.filterToggle
-						PropertyChanges { target: filterBar; height: sitefilter.implicitHeight }
-					},
-					State {
-						name: "isHidden"
-						when: !rootItem.filterToggle
-						PropertyChanges { target: filterBar; height: 0 }
-					}
-
-				]
-				transitions: [
-					Transition { NumberAnimation { property: "height"; duration: 400; easing.type: Easing.InOutQuad }}
-				]
-				anchors.left: parent.left
-				anchors.right: parent.right
-				anchors.leftMargin: Kirigami.Units.gridUnit / 2
-				anchors.rightMargin: Kirigami.Units.gridUnit / 2
-				TemplateComboBox {
-					id: sitefilterMode
-					editable: false
-					model: ListModel {
-						ListElement {text: qsTr("Fulltext")}
-						ListElement {text: qsTr("People")}
-						ListElement {text: qsTr("Tags")}
-					}
-					font.pointSize: subsurfaceTheme.smallPointSize
-					Layout.preferredWidth: parent.width * 0.2
-					Layout.maximumWidth: parent.width * 0.3
-					onActivated:  {
-						manager.setFilter(sitefilter.text, currentIndex)
+			anchors.leftMargin: Kirigami.Units.gridUnit / 2
+			anchors.rightMargin: Kirigami.Units.gridUnit / 2
+			TemplateComboBox {
+				visible: filterBar.height === sitefilter.implicitHeight
+				id: sitefilterMode
+				editable: false
+				model: ListModel {
+					ListElement {text: qsTr("Fulltext")}
+					ListElement {text: qsTr("People")}
+					ListElement {text: qsTr("Tags")}
+				}
+				font.pointSize: subsurfaceTheme.smallPointSize
+				Layout.preferredWidth: parent.width * 0.2
+				Layout.maximumWidth: parent.width * 0.3
+				onActivated:  {
+					manager.setFilter(sitefilter.text, currentIndex)
+				}
+			}
+			Controls.TextField  {
+				id: sitefilter
+				verticalAlignment: TextInput.AlignVCenter
+				Layout.fillWidth: true
+				text: ""
+				placeholderText: sitefilterMode.currentText
+				onAccepted: {
+					manager.setFilter(text, sitefilterMode.currentIndex)
+				}
+				onEnabledChanged: {
+					// reset the filter when it gets toggled
+					text = ""
+					if (visible) {
+						forceActiveFocus()
 					}
 				}
-				Controls.TextField  {
-					id: sitefilter
-					z: 10
-					verticalAlignment: TextInput.AlignVCenter
-					Layout.fillWidth: true
-					text: ""
-					placeholderText: sitefilterMode.currentText
-					onAccepted: {
-						manager.setFilter(text, sitefilterMode.currentIndex)
-					}
-					onEnabledChanged: {
-						// reset the filter when it gets toggled
-						text = ""
-						if (visible) {
-							forceActiveFocus()
-						}
-					}
-				}
-				Controls.Label {
-					id: numShown
-					z: 10
-					verticalAlignment: Text.AlignVCenter
-					text: diveModel.shown
-				}
+			}
+			Controls.Label {
+				id: numShown
+				verticalAlignment: Text.AlignVCenter
+				text: diveModel.shown
 			}
 		}
 	}
-
 	ListView {
 		id: diveListView
+		topMargin: filterHeader.height
 		anchors.fill: parent
 		model: diveListModel
 		currentIndex: -1
 		delegate: diveOrTripDelegate
-		header: filterHeader
-		headerPositioning: ListView.OverlayHeader
 		boundsBehavior: Flickable.DragOverBounds
 		maximumFlickVelocity: parent.height * 5
 		bottomMargin: Kirigami.Units.iconSizes.medium + Kirigami.Units.gridUnit
