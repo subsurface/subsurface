@@ -110,6 +110,7 @@ void run_ui()
 
 	ctxt->setContextProperty("connectionListModel", &connectionListModel);
 	ctxt->setContextProperty("logModel", MessageHandlerModel::self());
+	ctxt->setContextProperty("subsurfaceTheme", ThemeInterface::instance());
 
 	qmlRegisterUncreatableType<QMLManager>("org.subsurfacedivelog.mobile",1,0,"ExportType","Enum is not a type");
 
@@ -199,7 +200,6 @@ void register_qml_types(QQmlEngine *engine)
 
 		// Register qml interface classes
 		QMLInterface::setup(ct);
-		ct->setContextProperty("subsurfaceTheme", ThemeInterface::instance());
 	}
 
 	REGISTER_TYPE(QMLManager, "QMLManager");
