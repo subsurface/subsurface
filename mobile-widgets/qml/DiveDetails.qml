@@ -197,6 +197,23 @@ Kirigami.Page {
 		}
 	]
 
+	Component.onCompleted: {
+		// when we first create this page, we are in "view" mode and shouldn't show
+		// a virtual keyboard. This should be unnecessary, but in some circumstances,
+		// when the user editied a dive, went back to the dive list, and then tried to
+		// view a different dive, the Android keyboard would pop up
+		Qt.inputMethod.hide()
+	}
+
+	onHeightChanged: {
+		// even with the explicit attempt to hide the keyboard above, it STILL sometimes
+		// pops up when first showing a dive. So let's get more aggressive
+		// QML doesn't let me trigger this based on the visible property of the inputMethod,
+		// but when it becomes visible, the height of the page changes, so let's use that
+		if (Qt.inputMethod.visible && state === "view")
+			Qt.inputMethod.hide()
+	}
+
 	property QtObject deleteAction: Kirigami.Action {
 		text: qsTr("Delete dive")
 		icon {
