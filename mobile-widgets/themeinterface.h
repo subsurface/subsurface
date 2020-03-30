@@ -6,7 +6,7 @@
 #include <QSettings>
 #include <QQmlContext>
 
-class themeInterface : public QObject {
+class ThemeInterface : public QObject {
 	Q_OBJECT
 
 	// Color themes
@@ -35,7 +35,7 @@ class themeInterface : public QObject {
 	Q_PROPERTY(QString currentTheme MEMBER m_currentTheme WRITE set_currentTheme NOTIFY currentThemeChanged)
 
 public:
-	static themeInterface *instance();
+	static ThemeInterface *instance();
 	void setup(QQmlContext *ct);
 	double currentScale();
 
@@ -66,7 +66,7 @@ signals:
 	void currentThemeChanged(const QString &);
 
 private:
-	themeInterface() {}
+	ThemeInterface() {}
 	void update_theme();
 
 	QColor m_backgroundColor;

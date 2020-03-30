@@ -44,13 +44,13 @@ static const QColor DARK_PRIMARY_TEXT_COLOR = "#ECECEC";
 static const QColor DARK_SECONDARY_TEXT_COLOR = "#757575";
 static const QColor DARK_TEXT_COLOR = "#ECECEC";
 
-themeInterface *themeInterface::instance()
+ThemeInterface *ThemeInterface::instance()
 {
-	static themeInterface *self = new themeInterface;
+	static ThemeInterface *self = new ThemeInterface;
 	return self;
 }
 
-void themeInterface::setup(QQmlContext *ct)
+void ThemeInterface::setup(QQmlContext *ct)
 {
 	// Register interface class
 	ct->setContextProperty("subsurfaceTheme", this);
@@ -67,7 +67,7 @@ void themeInterface::setup(QQmlContext *ct)
 	set_currentScale(qPrefDisplay::mobile_scale());
 }
 
-void themeInterface::set_currentTheme(const QString &theme)
+void ThemeInterface::set_currentTheme(const QString &theme)
 {
 	m_currentTheme = theme;
 	qPrefDisplay::set_theme(m_currentTheme);
@@ -75,11 +75,11 @@ void themeInterface::set_currentTheme(const QString &theme)
 	emit currentThemeChanged(theme);
 }
 
-double themeInterface::currentScale()
+double ThemeInterface::currentScale()
 {
 	return qPrefDisplay::mobile_scale();
 }
-void themeInterface::set_currentScale(double newScale)
+void ThemeInterface::set_currentScale(double newScale)
 {
 	if (newScale != qPrefDisplay::mobile_scale()) {
 		qPrefDisplay::set_mobile_scale(newScale);
@@ -103,7 +103,7 @@ void themeInterface::set_currentScale(double newScale)
 	emit titlePointSizeChanged(m_titlePointSize);
 }
 
-void themeInterface::update_theme()
+void ThemeInterface::update_theme()
 {
 	if (m_currentTheme == "Blue") {
 		m_backgroundColor = BLUE_BACKGROUND_COLOR;
