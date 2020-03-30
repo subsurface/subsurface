@@ -21,7 +21,7 @@ QHash<int, QByteArray> DiveSummaryModel::roleNames() const
 	return { { HEADER_ROLE, "header" },
 		 { COLUMN0_ROLE, "col0"  },
 		 { COLUMN1_ROLE, "col1"  },
-       		 { SECTION_ROLE, "section" } };
+		 { SECTION_ROLE, "section" } };
 }
 
 QVariant DiveSummaryModel::dataDisplay(int row, int col) const
@@ -101,10 +101,10 @@ QVariant DiveSummaryModel::headerData(int section, Qt::Orientation orientation, 
 struct Stats {
 	Stats();
 	int dives, divesEAN, divesDeep, diveplans;
-	long divetime, depth;
-	long divetimeMax, depthMax, sacMin, sacMax;
-	long divetimeAvg, depthAvg, sacAvg;
-	long totalSACTime, totalSacVolume;
+	int64_t divetime, depth;
+	int64_t divetimeMax, depthMax, sacMin, sacMax;
+	int64_t divetimeAvg, depthAvg, sacAvg;
+	int64_t totalSACTime, totalSacVolume;
 };
 
 Stats::Stats() :
@@ -170,22 +170,22 @@ static Stats loopDives(timestamp_t start)
 	return stats;
 }
 
-static QString timeString(long duration)
+static QString timeString(int64_t duration)
 {
-	long hours = duration / 3600;
-	long minutes = (duration - hours * 3600) / 60;
+	int64_t hours = duration / 3600;
+	int64_t minutes = (duration - hours * 3600) / 60;
 	if (hours >= 100)
 		return QStringLiteral("%1 h").arg(hours);
 	else
 		return QStringLiteral("%1:%2").arg(hours).arg(minutes, 2, 10, QChar('0'));
 }
 
-static QString depthString(long depth)
+static QString depthString(int64_t depth)
 {
 	return QStringLiteral("%L1").arg(prefs.units.length == units::METERS ? depth / 1000 : lrint(mm_to_feet(depth)));
 }
 
-static QString volumeString(long volume)
+static QString volumeString(int64_t volume)
 {
 	return QStringLiteral("%L1").arg(prefs.units.volume == units::LITER ? volume / 1000 : round(100.0 * ml_to_cuft(volume)) / 100.0);
 }
@@ -221,7 +221,7 @@ static DiveSummaryModel::Result formatResults(const Stats &stats)
 	// SAC
 	if (stats.totalSACTime) {
 		unitText = (prefs.units.volume == units::LITER) ? " l/min" : " cuft/min";
-		long avgSac = stats.totalSacVolume / stats.totalSACTime;
+		int64_t avgSac = stats.totalSacVolume / stats.totalSACTime;
 		res.sac_avg = volumeString(avgSac) + unitText;
 		res.sac_min = volumeString(stats.sacMin) + unitText;
 		res.sac_max = volumeString(stats.sacMax) + unitText;
