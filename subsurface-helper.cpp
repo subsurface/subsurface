@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <QQmlEngine>
-#include <QDebug>
 #include <QQuickItem>
 
 #include "map-widget/qmlmapwidgethelper.h"
@@ -184,27 +183,28 @@ static void register_meta_types()
 }
 #endif // not SUBSURFACE_TEST_DATA
 
-#define REGISTER_TYPE(useClass, useQML) \
-	rc = qmlRegisterType<useClass>("org.subsurfacedivelog.mobile", 1, 0, useQML); \
-	if (rc < 0) \
-		qWarning() << "ERROR: Cannot register " << useQML << ", QML will not work!!";
+template <typename T>
+static void register_qml_type(const char *name)
+{
+	if(qmlRegisterType<T>("org.subsurfacedivelog.mobile", 1, 0, name) < 0)
+		qWarning("ERROR: Cannot register %s, QML will not work!!", name);
+}
 
-void register_qml_types(QQmlEngine *engine)
+static void register_qml_types(QQmlEngine *engine)
 {
 	// register qPref*
 	qPref::registerQML(engine);
 
 #ifndef SUBSURFACE_TEST_DATA
-	int rc;
 
 #ifdef SUBSURFACE_MOBILE
-	REGISTER_TYPE(QMLManager, "QMLManager");
-	REGISTER_TYPE(QMLProfile, "QMLProfile");
-	REGISTER_TYPE(DiveImportedModel, "DCImportModel");
-	REGISTER_TYPE(DiveSummaryModel, "DiveSummaryModel");
+	register_qml_type<QMLManager>("QMLManager");
+	register_qml_type<QMLProfile>("QMLProfile");
+	register_qml_type<DiveImportedModel>("DCImportModel");
+	register_qml_type<DiveSummaryModel>("DiveSummaryModel");
 #endif // not SUBSURFACE_MOBILE
 
-	REGISTER_TYPE(MapWidgetHelper, "MapWidgetHelper");
-	REGISTER_TYPE(MapLocationModel, "MapLocationModel");
+	register_qml_type<MapWidgetHelper>("MapWidgetHelper");
+	register_qml_type<MapLocationModel>("MapLocationModel");
 #endif // not SUBSURFACE_TEST_DATA
 }
