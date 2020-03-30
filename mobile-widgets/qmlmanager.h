@@ -152,6 +152,8 @@ public:
 	void setBtEnabled(bool value);
 
 	void setShowNonDiveComputers(bool show);
+	qreal lastDevicePixelRatio();
+	void setDevicePixelRatio(qreal dpr, QScreen *screen);
 
 	void setDiveListProcessing(bool value);
 
@@ -174,7 +176,6 @@ public slots:
 	void appInitialized();
 	void applicationStateChanged(Qt::ApplicationState state);
 	void saveCloudCredentials(const QString &email, const QString &password, const QString &pin);
-	void loadDivesWithValidCredentials();
 	void commitChanges(QString diveId, QString number, QString date, QString location, QString gps,
 			   QString duration, QString depth, QString airtemp,
 			   QString watertemp, QString suit, QString buddy,
@@ -222,12 +223,8 @@ public slots:
 	QString getGpsFromSiteName(const QString& siteName);
 	QString getVersion() const;
 	void deleteGpsFix(quint64 when);
-	void revertToNoCloudIfNeeded();
-	void consumeFinishedLoad();
 	void refreshDiveList();
 	void screenChanged(QScreen *screen);
-	qreal lastDevicePixelRatio();
-	void setDevicePixelRatio(qreal dpr, QScreen *screen);
 	void appendTextToLog(const QString &newText);
 	void quit();
 	void hasLocationSourceChanged();
@@ -280,6 +277,9 @@ private:
 	QAction *undoAction;
 
 	bool verifyCredentials(QString email, QString password, QString pin);
+	void loadDivesWithValidCredentials();
+	void revertToNoCloudIfNeeded();
+	void consumeFinishedLoad();
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	QString appLogFileName;
