@@ -1,3 +1,6 @@
+Mobile: calculate dive summary statistics in 64 bit values even on 32bit ARM
+Mobile: fix strange issue where sometimes the keyboard would pop up in dive view mode
+Mobile: remove 'map it' button on dive view page - it was redundant and took space from location field
 Mobile: show better placeholder text while processing dive list
 Mobile: Android: don't quit the app when trying to close a drawer/menu with back button
 Mobile: make sure filter header and virtual keyboard are shown when tapping on filter icon
