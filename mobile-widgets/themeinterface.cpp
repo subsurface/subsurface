@@ -108,7 +108,7 @@ void themeInterface::set_currentScale(double newScale)
 	}
 
 	// Set current font size
-	defaultModelFont().setPointSize(m_basePointSize * qPrefDisplay::mobile_scale());
+	defaultModelFont().setPointSizeF(m_basePointSize * qPrefDisplay::mobile_scale());
 
 	// adjust all used font sizes
 	m_regularPointSize = m_basePointSize * qPrefDisplay::mobile_scale();
