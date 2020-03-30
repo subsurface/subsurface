@@ -41,7 +41,7 @@ Item {
 			anchors {
 				left: parent.left
 				top: parent.top
-				right: gpsButton.left
+				right: parent.right
 				margins: Math.round(Kirigami.Units.gridUnit / 2)
 			}
 			MouseArea {
@@ -53,22 +53,11 @@ Item {
 				}
 			}
 		}
-		TemplateButton {
-			id: gpsButton
-			anchors.right: parent.right
-			anchors.verticalCenter: locationText.verticalCenter
-			enabled: gps !== ""
-			text: qsTr("Map it")
-			onClicked: {
-				showMap()
-				mapPage.centerOnDiveSite(diveSite)
-			}
-		}
 		Row {
 			id: dateRow
 			anchors {
 				left: locationText.left
-				top: gpsButton.bottom
+				top: locationText.bottom
 				topMargin: Kirigami.Units.smallSpacing
 				bottom: numberText.bottom
 
@@ -100,7 +89,7 @@ Item {
 			color: subsurfaceTheme.textColor
 			anchors {
 				right: parent.right
-				top: gpsButton.bottom
+				top: locationText.bottom
 				topMargin: Kirigami.Units.smallSpacing
 			}
 		}
