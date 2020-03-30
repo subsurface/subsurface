@@ -5,44 +5,44 @@
 #include "core/settings/qPrefDisplay.h"
 #include <QFontInfo>
 
-const QColor BLUE_BACKGROUND_COLOR = "#eff0f1";
-const QColor BLUE_CONTRAST_ACCENT_COLOR = "#FF5722";
-const QColor BLUE_DARKER_PRIMARY_COLOR = "#303F9f";
-const QColor BLUE_DARKER_PRIMARY_TEXT_COLOR = "#ECECEC";
-const QColor BLUE_DRAWER_COLOR = "#FFFFFF";
-const QColor BLUE_LIGHT_DRAWER_COLOR = "#FFFFFF";
-const QColor BLUE_LIGHT_PRIMARY_COLOR = "#C5CAE9";
-const QColor BLUE_LIGHT_PRIMARY_TEXT_COLOR = "#212121";
-const QColor BLUE_PRIMARY_COLOR = "#3F51B5";
-const QColor BLUE_PRIMARY_TEXT_COLOR = "#FFFFFF";
-const QColor BLUE_SECONDARY_TEXT_COLOR = "#757575";
-const QColor BLUE_TEXT_COLOR = "#212121";
+static const QColor BLUE_BACKGROUND_COLOR = "#eff0f1";
+static const QColor BLUE_CONTRAST_ACCENT_COLOR = "#FF5722";
+static const QColor BLUE_DARKER_PRIMARY_COLOR = "#303F9f";
+static const QColor BLUE_DARKER_PRIMARY_TEXT_COLOR = "#ECECEC";
+static const QColor BLUE_DRAWER_COLOR = "#FFFFFF";
+static const QColor BLUE_LIGHT_DRAWER_COLOR = "#FFFFFF";
+static const QColor BLUE_LIGHT_PRIMARY_COLOR = "#C5CAE9";
+static const QColor BLUE_LIGHT_PRIMARY_TEXT_COLOR = "#212121";
+static const QColor BLUE_PRIMARY_COLOR = "#3F51B5";
+static const QColor BLUE_PRIMARY_TEXT_COLOR = "#FFFFFF";
+static const QColor BLUE_SECONDARY_TEXT_COLOR = "#757575";
+static const QColor BLUE_TEXT_COLOR = "#212121";
 
-const QColor PINK_BACKGROUND_COLOR = "#eff0f1";
-const QColor PINK_CONTRAST_ACCENT_COLOR = "#FF5722";
-const QColor PINK_DARKER_PRIMARY_COLOR = "#C2185B";
-const QColor PINK_DARKER_PRIMARY_TEXT_COLOR = "#ECECEC";
-const QColor PINK_DRAWER_COLOR = "#FFFFFF";
-const QColor PINK_LIGHT_DRAWER_COLOR = "#FFFFFF";
-const QColor PINK_LIGHT_PRIMARY_COLOR = "#FFDDF4";
-const QColor PINK_LIGHT_PRIMARY_TEXT_COLOR = "#212121";
-const QColor PINK_PRIMARY_COLOR = "#FF69B4";
-const QColor PINK_PRIMARY_TEXT_COLOR = "#212121";
-const QColor PINK_SECONDARY_TEXT_COLOR = "#757575";
-const QColor PINK_TEXT_COLOR = "#212121";
+static const QColor PINK_BACKGROUND_COLOR = "#eff0f1";
+static const QColor PINK_CONTRAST_ACCENT_COLOR = "#FF5722";
+static const QColor PINK_DARKER_PRIMARY_COLOR = "#C2185B";
+static const QColor PINK_DARKER_PRIMARY_TEXT_COLOR = "#ECECEC";
+static const QColor PINK_DRAWER_COLOR = "#FFFFFF";
+static const QColor PINK_LIGHT_DRAWER_COLOR = "#FFFFFF";
+static const QColor PINK_LIGHT_PRIMARY_COLOR = "#FFDDF4";
+static const QColor PINK_LIGHT_PRIMARY_TEXT_COLOR = "#212121";
+static const QColor PINK_PRIMARY_COLOR = "#FF69B4";
+static const QColor PINK_PRIMARY_TEXT_COLOR = "#212121";
+static const QColor PINK_SECONDARY_TEXT_COLOR = "#757575";
+static const QColor PINK_TEXT_COLOR = "#212121";
 
-const QColor DARK_BACKGROUND_COLOR = "#303030";
-const QColor DARK_CONTRAST_ACCENT_COLOR = "#FF5722";
-const QColor DARK_DARKER_PRIMARY_COLOR = "#303F9f";
-const QColor DARK_DARKER_PRIMARY_TEXT_COLOR = "#ECECEC";
-const QColor DARK_DRAWER_COLOR = "#424242";
-const QColor DARK_LIGHT_DRAWER_COLOR = "#FFFFFF";
-const QColor DARK_LIGHT_PRIMARY_COLOR = "#C5CAE9";
-const QColor DARK_LIGHT_PRIMARY_TEXT_COLOR = "#ECECEC";
-const QColor DARK_PRIMARY_COLOR = "#3F51B5";
-const QColor DARK_PRIMARY_TEXT_COLOR = "#ECECEC";
-const QColor DARK_SECONDARY_TEXT_COLOR = "#757575";
-const QColor DARK_TEXT_COLOR = "#ECECEC";
+static const QColor DARK_BACKGROUND_COLOR = "#303030";
+static const QColor DARK_CONTRAST_ACCENT_COLOR = "#FF5722";
+static const QColor DARK_DARKER_PRIMARY_COLOR = "#303F9f";
+static const QColor DARK_DARKER_PRIMARY_TEXT_COLOR = "#ECECEC";
+static const QColor DARK_DRAWER_COLOR = "#424242";
+static const QColor DARK_LIGHT_DRAWER_COLOR = "#FFFFFF";
+static const QColor DARK_LIGHT_PRIMARY_COLOR = "#C5CAE9";
+static const QColor DARK_LIGHT_PRIMARY_TEXT_COLOR = "#ECECEC";
+static const QColor DARK_PRIMARY_COLOR = "#3F51B5";
+static const QColor DARK_PRIMARY_TEXT_COLOR = "#ECECEC";
+static const QColor DARK_SECONDARY_TEXT_COLOR = "#757575";
+static const QColor DARK_TEXT_COLOR = "#ECECEC";
 
 themeInterface *themeInterface::instance()
 {
