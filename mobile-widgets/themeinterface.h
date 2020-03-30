@@ -36,7 +36,6 @@ class ThemeInterface : public QObject {
 
 public:
 	static ThemeInterface *instance();
-	void setup(QQmlContext *ct);
 	double currentScale();
 
 public slots:
@@ -66,7 +65,7 @@ signals:
 	void currentThemeChanged();
 
 private:
-	ThemeInterface() {}
+	ThemeInterface();
 	void update_theme();
 
 	QColor m_backgroundColor;

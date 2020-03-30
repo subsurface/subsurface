@@ -199,7 +199,7 @@ void register_qml_types(QQmlEngine *engine)
 
 		// Register qml interface classes
 		QMLInterface::setup(ct);
-		ThemeInterface::instance()->setup(ct);
+		ct->setContextProperty("subsurfaceTheme", ThemeInterface::instance());
 	}
 
 	REGISTER_TYPE(QMLManager, "QMLManager");
