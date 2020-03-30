@@ -14,9 +14,9 @@ QMLProfile::QMLProfile(QQuickItem *parent) :
 	QQuickPaintedItem(parent),
 	m_devicePixelRatio(1.0),
 	m_margin(0),
-	m_profileWidget(new ProfileWidget2),
 	m_xOffset(0.0),
-	m_yOffset(0.0)
+	m_yOffset(0.0),
+	m_profileWidget(new ProfileWidget2)
 {
 	setAntialiasing(true);
 	setFlags(QQuickItem::ItemClipsChildrenToShape | QQuickItem::ItemHasContents );
