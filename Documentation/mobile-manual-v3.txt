@@ -277,10 +277,12 @@ forwards through recent changes.
 === Viewing the location of a dive on a map
 
 image::mobile-images/DiveSiteMap.jpg["FIGURE: Map of dive site",align="center"]
-In the _Details View_, you can either tap the _Map it_ button on top of the
-page to the right of the dive site name, or the GPS pin on the
-left hand side of the _Action Button_ at the bottom of the screen.
-The dive site is shown in an integrated map viewer.
+In the _Details View_, you can either tap the name of a dive site
+or the GPS pin on the
+left hand side of the _Action Button_ at the bottom of the screen in order
+to open a map with the dive site in an integrated map viewer.
+This of course is only possible if the dive site is associated with GPS
+information.
 
 [[S_Edit_Dive]]
 === Edit a dive
