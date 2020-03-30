@@ -734,10 +734,12 @@ forwards through recent changes.</p></div>
 <img src="mobile-images/DiveSiteMap.jpg" alt="FIGURE: Map of dive site" />
 </div>
 </div>
-<div class="paragraph"><p>In the <em>Details View</em>, you can either tap the <em>Map it</em> button on top of the
-page to the right of the dive site name, or the GPS pin on the
-left hand side of the <em>Action Button</em> at the bottom of the screen.
-The dive site is shown in an integrated map viewer.</p></div>
+<div class="paragraph"><p>In the <em>Details View</em>, you can either tap the name of a dive site
+or the GPS pin on the
+left hand side of the <em>Action Button</em> at the bottom of the screen in order
+to open a map with the dive site in an integrated map viewer.
+This of course is only possible if the dive site is associated with GPS
+information.</p></div>
 </div>
 <div class="sect2">
 <h3 id="S_Edit_Dive">6.4. Edit a dive</h3>
@@ -1177,7 +1179,7 @@ you to reset the password for your <em>Subsurface Cloud</em> account.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-03-26 10:06:13 PDT
+ 2020-03-30 14:00:22 PDT
 </div>
 </div>
 </body>
