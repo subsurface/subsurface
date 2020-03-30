@@ -36,12 +36,12 @@ class themeInterface : public QObject {
 
 public:
 	static themeInterface *instance();
-	static void setup(QQmlContext *ct);
-	static double currentScale();
+	void setup(QQmlContext *ct);
+	double currentScale();
 
 public slots:
-	static void set_currentTheme(const QString &theme);
-	static void set_currentScale(double);
+	void set_currentTheme(const QString &theme);
+	void set_currentScale(double);
 
 signals:
 	void backgroundColorChanged(QColor);
@@ -67,27 +67,27 @@ signals:
 
 private:
 	themeInterface() {}
-	static void update_theme();
+	void update_theme();
 
-	static QColor m_backgroundColor;
-	static QColor m_contrastAccentColor;
-	static QColor m_darkerPrimaryColor;
-	static QColor m_darkerPrimaryTextColor;
-	static QColor m_drawerColor;
-	static QColor m_lightDrawerColor;
-	static QColor m_lightPrimaryColor;
-	static QColor m_lightPrimaryTextColor;
-	static QColor m_primaryColor;
-	static QColor m_primaryTextColor;
-	static QColor m_secondaryTextColor;
-	static QColor m_textColor;
+	QColor m_backgroundColor;
+	QColor m_contrastAccentColor;
+	QColor m_darkerPrimaryColor;
+	QColor m_darkerPrimaryTextColor;
+	QColor m_drawerColor;
+	QColor m_lightDrawerColor;
+	QColor m_lightPrimaryColor;
+	QColor m_lightPrimaryTextColor;
+	QColor m_primaryColor;
+	QColor m_primaryTextColor;
+	QColor m_secondaryTextColor;
+	QColor m_textColor;
 
-	static double m_basePointSize;
-	static double m_headingPointSize;
-	static double m_regularPointSize;
-	static double m_smallPointSize;
-	static double m_titlePointSize;
+	double m_basePointSize;
+	double m_headingPointSize;
+	double m_regularPointSize;
+	double m_smallPointSize;
+	double m_titlePointSize;
 
-	static QString m_currentTheme;
+	QString m_currentTheme;
 };
 #endif

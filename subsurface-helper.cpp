@@ -199,7 +199,7 @@ void register_qml_types(QQmlEngine *engine)
 
 		// Register qml interface classes
 		QMLInterface::setup(ct);
-		themeInterface::setup(ct);
+		themeInterface::instance()->setup(ct);
 	}
 
 	REGISTER_TYPE(QMLManager, "QMLManager");
