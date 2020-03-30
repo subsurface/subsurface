@@ -264,7 +264,6 @@ private:
 	bool checkDepth(const DiveObjectHelper &myDive, struct dive *d, QString depth);
 	int openAndMaybeSync(const char *filename);
 	bool currentGitLocalOnly;
-	Q_INVOKABLE DCDeviceData *m_device_data;
 	QString m_progressMessage;
 	bool m_btEnabled;
 	void updateAllGlobalLists();
