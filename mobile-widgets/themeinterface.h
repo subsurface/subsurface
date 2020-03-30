@@ -44,26 +44,26 @@ public slots:
 	void set_currentScale(double);
 
 signals:
-	void backgroundColorChanged(QColor);
-	void contrastAccentColorChanged(QColor);
-	void darkerPrimaryColorChanged(QColor);
-	void darkerPrimaryTextColorChanged(QColor);
-	void drawerColorChanged(QColor);
-	void lightDrawerColorChanged(QColor);
-	void lightPrimaryColorChanged(QColor);
-	void lightPrimaryTextColorChanged(QColor);
-	void primaryColorChanged(QColor);
-	void primaryTextColorChanged(QColor);
-	void secondaryTextColorChanged(QColor);
-	void textColorChanged(QColor);
+	void backgroundColorChanged();
+	void contrastAccentColorChanged();
+	void darkerPrimaryColorChanged();
+	void darkerPrimaryTextColorChanged();
+	void drawerColorChanged();
+	void lightDrawerColorChanged();
+	void lightPrimaryColorChanged();
+	void lightPrimaryTextColorChanged();
+	void primaryColorChanged();
+	void primaryTextColorChanged();
+	void secondaryTextColorChanged();
+	void textColorChanged();
 
-	void headingPointSizeChanged(double);
-	void regularPointSizeChanged(double);
-	void smallPointSizeChanged(double);
-	void titlePointSizeChanged(double);
-	void currentScaleChanged(double);
+	void headingPointSizeChanged();
+	void regularPointSizeChanged();
+	void smallPointSizeChanged();
+	void titlePointSizeChanged();
+	void currentScaleChanged();
 
-	void currentThemeChanged(const QString &);
+	void currentThemeChanged();
 
 private:
 	ThemeInterface() {}
