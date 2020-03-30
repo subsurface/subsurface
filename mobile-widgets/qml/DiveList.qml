@@ -491,7 +491,15 @@ Kirigami.ScrollablePage {
 			event.accepted = true;
 		}
 		if (!startPage.visible) {
-			if (Qt.platform.os != "ios") {
+			if (globalDrawer.visible) {
+				globalDrawer.close()
+				event.accepted = true
+			}
+			if (contextDrawer.visible) {
+				contextDrawer.close()
+				event.accepted = true
+			}
+			if (event.accepted === false && Qt.platform.os !== "ios") {
 				manager.quit()
 			}
 			// let's make sure Kirigami doesn't quit on our behalf
