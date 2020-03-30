@@ -80,6 +80,10 @@ void run_ui()
 	QScreen *appScreen = QApplication::screens().at(0);
 	int availableScreenWidth = appScreen->availableSize().width();
 	QQmlApplicationEngine engine;
+	QQmlContext *ctxt = engine.rootContext();
+
+	// Register qml interface classes
+	QMLInterface::setup(ctxt);
 	register_qml_types(&engine);
 	KirigamiPlugin::getInstance().registerTypes();
 #if defined(__APPLE__) && !defined(Q_OS_IOS)
@@ -101,7 +105,6 @@ void run_ui()
 	gpsSortModel->setDynamicSortFilter(true);
 	gpsSortModel->setSortRole(GpsListModel::GpsWhenRole);
 	gpsSortModel->sort(0, Qt::DescendingOrder);
-	QQmlContext *ctxt = engine.rootContext();
 	ctxt->setContextProperty("gpsModel", gpsSortModel);
 	ctxt->setContextProperty("vendorList", vendorList);
 	ctxt->setContextProperty("swipeModel", MobileModels::instance()->swipeModel());
@@ -195,13 +198,6 @@ void register_qml_types(QQmlEngine *engine)
 	int rc;
 
 #ifdef SUBSURFACE_MOBILE
-	if (engine != NULL) {
-		QQmlContext *ct = engine->rootContext();
-
-		// Register qml interface classes
-		QMLInterface::setup(ct);
-	}
-
 	REGISTER_TYPE(QMLManager, "QMLManager");
 	REGISTER_TYPE(QMLProfile, "QMLProfile");
 	REGISTER_TYPE(DiveImportedModel, "DCImportModel");
