@@ -72,18 +72,19 @@ void ThemeInterface::set_currentTheme(const QString &theme)
 	m_currentTheme = theme;
 	qPrefDisplay::set_theme(m_currentTheme);
 	update_theme();
-	emit currentThemeChanged(theme);
+	emit currentThemeChanged();
 }
 
 double ThemeInterface::currentScale()
 {
 	return qPrefDisplay::mobile_scale();
 }
+
 void ThemeInterface::set_currentScale(double newScale)
 {
 	if (newScale != qPrefDisplay::mobile_scale()) {
 		qPrefDisplay::set_mobile_scale(newScale);
-		emit currentScaleChanged(qPrefDisplay::mobile_scale());
+		emit currentScaleChanged();
 	}
 
 	// Set current font size
@@ -91,16 +92,16 @@ void ThemeInterface::set_currentScale(double newScale)
 
 	// adjust all used font sizes
 	m_regularPointSize = m_basePointSize * qPrefDisplay::mobile_scale();
-	emit regularPointSizeChanged(m_regularPointSize);
+	emit regularPointSizeChanged();
 
 	m_headingPointSize = m_regularPointSize * 1.2;
-	emit headingPointSizeChanged(m_headingPointSize);
+	emit headingPointSizeChanged();
 
 	m_smallPointSize = m_regularPointSize * 0.8;
-	emit smallPointSizeChanged(m_smallPointSize);
+	emit smallPointSizeChanged();
 
 	m_titlePointSize = m_regularPointSize * 1.5;
-	emit titlePointSizeChanged(m_titlePointSize);
+	emit titlePointSizeChanged();
 }
 
 void ThemeInterface::update_theme()
@@ -145,16 +146,16 @@ void ThemeInterface::update_theme()
 		m_secondaryTextColor = DARK_SECONDARY_TEXT_COLOR;
 		m_textColor = DARK_TEXT_COLOR;
 	}
-	emit backgroundColorChanged(m_backgroundColor);
-	emit contrastAccentColorChanged(m_contrastAccentColor);
-	emit darkerPrimaryColorChanged(m_darkerPrimaryColor);
-	emit darkerPrimaryTextColorChanged(m_darkerPrimaryTextColor);
-	emit drawerColorChanged(m_drawerColor);
-	emit lightDrawerColorChanged(m_lightDrawerColor);
-	emit lightPrimaryColorChanged(m_lightPrimaryColor);
-	emit lightPrimaryTextColorChanged(m_lightPrimaryTextColor);
-	emit primaryColorChanged(m_primaryColor);
-	emit primaryTextColorChanged(m_primaryTextColor);
-	emit secondaryTextColorChanged(m_secondaryTextColor);
-	emit textColorChanged(m_textColor);
+	emit backgroundColorChanged();
+	emit contrastAccentColorChanged();
+	emit darkerPrimaryColorChanged();
+	emit darkerPrimaryTextColorChanged();
+	emit drawerColorChanged();
+	emit lightDrawerColorChanged();
+	emit lightPrimaryColorChanged();
+	emit lightPrimaryTextColorChanged();
+	emit primaryColorChanged();
+	emit primaryTextColorChanged();
+	emit secondaryTextColorChanged();
+	emit textColorChanged();
 }
