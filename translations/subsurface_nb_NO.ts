@@ -23,11 +23,11 @@
         <source>Version: %1
 
 © Subsurface developer team
-2011-2019</source>
+2011-2020</source>
         <translation>Versjon: %1
 
 © Utviklerteamet til Subsurface
-2011-2019</translation>
+2011-2020</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
@@ -9727,7 +9727,7 @@ Filer med upassende dykkedato/-tid</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="20"/>
-        <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2019&lt;/span&gt;</source>
+        <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2020&lt;/span&gt;</source>
         <translation type="unfinished"/>
     </message>
 </context>
