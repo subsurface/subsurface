@@ -88,8 +88,7 @@ add_definitions(-g)
 add_definitions(-DSUBSURFACE_TEST_DATA="${SUBSURFACE_TEST_DATA}")
 
 # Build QML test runner
-# add_executable demands relative path, therefore ../
-add_executable(TestQML testqml.cpp ../subsurface-helper.cpp )
+add_executable(TestQML testqml.cpp)
 target_link_libraries(
 	TestQML
 	subsurface_corelib
