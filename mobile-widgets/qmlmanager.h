@@ -215,8 +215,6 @@ public slots:
 	void copyAppLogToClipboard();
 	bool createSupportEmail();
 	void finishSetup();
-	void openLocalThenRemote(QString url);
-	void mergeLocalRepo();
 	QString getNumber(const QString& diveId);
 	QString getDate(const QString& diveId);
 	QString getCurrentPosition();
@@ -279,6 +277,8 @@ private:
 	void loadDivesWithValidCredentials();
 	void revertToNoCloudIfNeeded();
 	void consumeFinishedLoad();
+	void mergeLocalRepo();
+	void openLocalThenRemote(QString url);
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	QString appLogFileName;
