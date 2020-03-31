@@ -416,7 +416,7 @@ Kirigami.ScrollablePage {
 				onAccepted: {
 					manager.setFilter(text, sitefilterMode.currentIndex)
 				}
-				onEnabledChanged: {
+				onVisibleChanged: {
 					// reset the filter when it gets toggled
 					text = ""
 					if (visible) {
