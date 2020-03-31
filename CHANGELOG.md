@@ -1,3 +1,7 @@
+Mobile: ensure filter text field has focus when opened
+Mobile: dive summary: make time drop downs smaller
+Mobile: close menus with Android back button on dive details
+Mobile: add ability to toggle dive invalid flag from dive details context menu
 Mobile: calculate dive summary statistics in 64 bit values even on 32bit ARM
 Mobile: fix strange issue where sometimes the keyboard would pop up in dive view mode
 Mobile: remove 'map it' button on dive view page - it was redundant and took space from location field
