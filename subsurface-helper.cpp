@@ -33,7 +33,6 @@ QString getAndroidHWInfo(); // from android.cpp
 #include <QFontDatabase>
 #endif /* Q_OS_ANDROID */
 
-#ifndef SUBSURFACE_TEST_DATA
 QObject *qqWindowObject = NULL;
 
 // Forward declaration
@@ -181,7 +180,6 @@ static void register_meta_types()
 {
 	qRegisterMetaType<duration_t>();
 }
-#endif // not SUBSURFACE_TEST_DATA
 
 template <typename T>
 static void register_qml_type(const char *name)
@@ -195,8 +193,6 @@ static void register_qml_types(QQmlEngine *engine)
 	// register qPref*
 	qPref::registerQML(engine);
 
-#ifndef SUBSURFACE_TEST_DATA
-
 #ifdef SUBSURFACE_MOBILE
 	register_qml_type<QMLManager>("QMLManager");
 	register_qml_type<QMLProfile>("QMLProfile");
@@ -206,5 +202,4 @@ static void register_qml_types(QQmlEngine *engine)
 
 	register_qml_type<MapWidgetHelper>("MapWidgetHelper");
 	register_qml_type<MapLocationModel>("MapLocationModel");
-#endif // not SUBSURFACE_TEST_DATA
 }
