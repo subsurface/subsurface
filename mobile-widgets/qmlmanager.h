@@ -132,7 +132,6 @@ public:
 	bool verboseEnabled() const;
 	void setVerboseEnabled(bool verboseMode);
 
-	bool loadFromCloud() const;
 	void setLoadFromCloud(bool done);
 	void syncLoadFromCloud();
 
