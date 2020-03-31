@@ -91,6 +91,7 @@ Kirigami.ScrollablePage {
 			editable: false
 			currentIndex: 0
 			model: monthModel
+			font.pointSize: subsurfaceTheme.smallPointSize
 			onActivated:  {
 				summaryModel.calc(0, currentIndex)
 			}
@@ -100,6 +101,7 @@ Kirigami.ScrollablePage {
 			editable: false
 			currentIndex: 3
 			model: monthModel
+			font.pointSize: subsurfaceTheme.smallPointSize
 			onActivated:  {
 				summaryModel.calc(1, currentIndex)
 			}
