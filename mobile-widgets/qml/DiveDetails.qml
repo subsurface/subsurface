@@ -92,6 +92,11 @@ Kirigami.Page {
 		enabled: currentItem && currentItem.modelData && !currentItem.modelData.isTrip && currentItem.modelData.isTopLevel
 		onTriggered: manager.addTripForDive(currentItem.modelData.id)
 	}
+	property QtObject toggleInvalidAction: Kirigami.Action {
+		text: currentItem && currentItem.modelData && currentItem.modelData.isInvalid ? qsTr("Mark dive as valid") : qsTr("Mark dive as invalid")
+		visible: currentItem && currentItem.modelData
+		onTriggered: manager.toggleDiveInvalid(currentItem.modelData.id)
+	}
 	property QtObject undoAction: Kirigami.Action {
 		text: qsTr("Undo") + " " + manager.undoText
 		icon { name: ":/icons/undo.svg" }
