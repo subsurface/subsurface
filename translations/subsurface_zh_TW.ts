@@ -24,11 +24,11 @@
         <source>Version: %1
 
 © Subsurface developer team
-2011-2019</source>
+2011-2020</source>
         <translation>版本: %1
 
 © Subsurface 開發團隊
-2011-2019</translation>
+2011-2020</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
@@ -9731,8 +9731,8 @@ Files with inappropriate date/time</source>
     </message>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="20"/>
-        <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2019&lt;/span&gt;</source>
-        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;跨平台潛水日誌軟體&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava 與其他協助者, 2011-2019&lt;/span&gt;</translation>
+        <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2020&lt;/span&gt;</source>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;跨平台潛水日誌軟體&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava 與其他協助者, 2011-2020&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
