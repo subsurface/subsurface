@@ -261,15 +261,27 @@ Kirigami.Page {
 	}
 
 	onBackRequested: {
-		if (state === "edit") {
-			endEditMode()
-			event.accepted = true;
-		} else if (state === "add") {
-			endEditMode()
-			pageStack.pop()
-			event.accepted = true;
+		// if one of the drawers/menus is open, the back button should close those
+		if (globalDrawer.visible) {
+			globalDrawer.close()
+			event.accepted = true
 		}
-		// if we were in view mode, don't accept the event and pop the page
+		if (contextDrawer.visible) {
+			contextDrawer.close()
+			event.accepted = true
+		}
+		// if we didn't close either of the drawer, check if we need to close add/edit
+		if (event.accepted === false) {
+			if (state === "edit") {
+				endEditMode()
+				event.accepted = true;
+			} else if (state === "add") {
+				endEditMode()
+				pageStack.pop()
+				event.accepted = true;
+			}
+		}
+		// if we were in view mode and no menus are open, don't accept the event and pop the page
 	}
 
 	onCurrentItemChanged: {
