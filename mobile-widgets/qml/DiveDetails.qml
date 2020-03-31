@@ -90,9 +90,7 @@ Kirigami.Page {
 		text: qsTr("Create trip with dive")
 		icon { name: ":/icons/list-add" }
 		enabled: currentItem && currentItem.modelData && !currentItem.modelData.isTrip && currentItem.modelData.isTopLevel
-		onTriggered: {
-			manager.addTripForDive(currentItem.myData.id)
-		}
+		onTriggered: manager.addTripForDive(currentItem.modelData.id)
 	}
 	property QtObject undoAction: Kirigami.Action {
 		text: qsTr("Undo") + " " + manager.undoText
