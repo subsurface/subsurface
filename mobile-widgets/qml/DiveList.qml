@@ -445,7 +445,10 @@ Kirigami.ScrollablePage {
 		Component.onCompleted: {
 			manager.appendTextToLog("finished setting up the diveListView")
 		}
-		onVisibleChanged: setupActions()
+		onVisibleChanged: {
+			if (visible)
+				setupActions()
+		}
 	}
 
 	property QtObject downloadFromDCAction: Kirigami.Action {
