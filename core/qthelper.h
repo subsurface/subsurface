@@ -85,6 +85,7 @@ QString getUserAgent();
 QString printGPSCoords(const location_t *loc);
 
 extern QString (*changesCallback)();
+void uiNotification(const QString &msg);
 
 #if defined __APPLE__
 #define TITLE_OR_TEXT(_t, _m) "", _t + "\n" + _m

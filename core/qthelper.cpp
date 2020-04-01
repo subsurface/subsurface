@@ -1642,6 +1642,15 @@ char *copy_qstring(const QString &s)
 	return strdup(qPrintable(s));
 }
 
+// function to call to allow the UI to show updates for longer running activities
+void (*uiNotificationCallback)(QString msg) = nullptr;
+
+void uiNotification(const QString &msg)
+{
+	if (uiNotificationCallback != nullptr)
+		uiNotificationCallback(msg);
+}
+
 // function to call to get changes for a git commit
 QString (*changesCallback)() = nullptr;
 
