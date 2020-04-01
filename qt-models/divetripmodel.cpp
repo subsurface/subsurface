@@ -494,10 +494,14 @@ void DiveTripModelBase::reset()
 	beginResetModel();
 	clearData();
 	populate();
+	uiNotification(tr("setting up dive sites"));
 	LocationInformationModel::instance()->update();
+	uiNotification(tr("finish populating data store"));
 	endResetModel();
+	uiNotification(tr("setting up internal data structures"));
 	initSelection();
 	emit diveListNotifier.numShownChanged();
+	uiNotification(tr("done setting up internal data structures"));
 }
 
 DiveTripModelBase::DiveTripModelBase(QObject *parent) : QAbstractItemModel(parent),
@@ -716,7 +720,12 @@ DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent
 
 void DiveTripModelTree::populate()
 {
+	// we want this to be two calls as the second text is overwritten below by the lines starting with "\r"
+	uiNotification(QObject::tr("populate data model"));
+	uiNotification(QObject::tr("start processing"));
 	for (int i = 0; i < dive_table.nr; ++i) {
+		if (i  % 100 == 99)
+			uiNotification(QObject::tr("\r%1 dives processed").arg(i + 1));
 		dive *d = get_dive(i);
 		update_cylinder_related_info(d);
 		if (d->hidden_by_filter)
@@ -744,6 +753,7 @@ void DiveTripModelTree::populate()
 
 	// Remember the index of the current dive
 	oldCurrent = current_dive;
+	uiNotification(QObject::tr("\r%1 dives processed").arg(dive_table.nr));
 }
 
 int DiveTripModelTree::rowCount(const QModelIndex &parent) const
