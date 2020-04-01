@@ -76,6 +76,7 @@ extern "C" void showErrorFromC(char *buf)
 	QMetaObject::invokeMethod(QMLManager::instance(), "registerError", Qt::AutoConnection, Q_ARG(QString, error));
 }
 
+// this gets called from libdivecomputer
 static void progressCallback(const char *text)
 {
 	QMLManager *self = QMLManager::instance();
@@ -92,18 +93,24 @@ static void appendTextToLogStandalone(const char *text)
 		self->appendTextToLog(QString(text));
 }
 
+// this callback is used from the uiNotification() function
+// the detour via callback allows us to keep the core code independent from QMLManager
+// I'm not sure it makes sense to have three different progress callbacks,
+// but the usage models (and the situations in the program flow where they are used)
+// are really vastly different...
+// this is mainly intended for the early stages of the app so the user sees that
+// things are progressing
+static void showProgress(QString msg)
+{
+	QMLManager *self = QMLManager::instance();
+	if (self)
+		self->setNotificationText(msg);
+}
+
 // show the git progress in the passive notification area
 extern "C" int gitProgressCB(const char *text)
 {
-	static QMLManager *self;
-
-	if (!self)
-		self = QMLManager::instance();
-
-	if (self) {
-		self->appendTextToLog(text);
-		self->setNotificationText(text);
-	}
+	showProgress(QString(text));
 	// return 0 so that we don't end the download
 	return 0;
 }
@@ -161,6 +168,8 @@ void QMLManager::usbRescan()
 	androidUsbPopoulateConnections();
 #endif
 }
+
+extern void (*uiNotificationCallback)(QString);
 
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
@@ -233,6 +242,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	}
 #endif
 	set_error_cb(&showErrorFromC);
+	uiNotificationCallback = showProgress;
 	appendTextToLog("Starting " + getUserAgent());
 	appendTextToLog(QStringLiteral("built with libdivecomputer v%1").arg(dc_version(NULL)));
 	appendTextToLog(QStringLiteral("built with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()));
@@ -244,7 +254,6 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	extern QString getAndroidHWInfo();
 	appendTextToLog(getAndroidHWInfo());
 #endif
-	setStartPageText(tr("Starting..."));
 	if (ignore_bt) {
 		m_btEnabled = false;
 	} else {
@@ -1705,8 +1714,10 @@ QString QMLManager::getGpsFromSiteName(const QString &siteName)
 
 void QMLManager::setNotificationText(QString text)
 {
+	appendTextToLog(QStringLiteral("showProgress: ") + text);
 	m_notificationText = text;
 	emit notificationTextChanged();
+	qApp->processEvents();
 }
 
 qreal QMLManager::lastDevicePixelRatio()
