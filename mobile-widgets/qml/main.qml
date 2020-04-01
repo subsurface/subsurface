@@ -36,13 +36,28 @@ Kirigami.ApplicationWindow {
 	property int colWidth: undefined
 
 	onNotificationTextChanged: {
-		if (notificationText != "") {
-			// there's a risk that we have a >5 second gap in update events;
-			// still, keep the timeout at 5s to avoid odd unchanging notifications
-			showPassiveNotification(notificationText, 5000)
+		// once the app is fully initialized and the UI is running, we use passive
+		// notifications to show the notification text, but during initialization
+		// we instead dump the information into the textBlock below - and to make
+		// this visually more useful we interpret a "\r" at the beginning of a notification
+		// to mean that we want to simply over-write the last line, not create a new one
+		if (initialized) {
+			// make sure any old notification is hidden
+			hidePassiveNotification()
+			if (notificationText !== "") {
+				// there's a risk that we have a >5 second gap in update events;
+				// still, keep the timeout at 5s to avoid odd unchanging notifications
+				showPassiveNotification(notificationText, 5000)
+			}
 		} else {
-			// hiding the notification right away may be a mistake as it hides the last warning / error
-			hidePassiveNotification();
+			var oldText = textBlock.text
+			if (notificationText.startsWith("\r")) {
+				// replace the last line that was sent
+				oldText = oldText.substr(0, oldText.lastIndexOf("\n"))
+				textBlock.text = oldText + "\n" + notificationText.substr(1)
+			} else {
+				textBlock.text = oldText + "\n" + notificationText
+			}
 		}
 	}
 	visible: false
@@ -63,7 +78,7 @@ Kirigami.ApplicationWindow {
 
 	function hideBusy() {
 		busy.running = false
-		showPassiveNotification("", 10) // this hides a notification messssage that's still shown
+		hidePassiveNotification()
 	}
 
 	function returnTopPage() {
@@ -707,28 +722,51 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		id: manager
 	}
 
+	property bool initialized: manager.initialized
+
+	onInitializedChanged: {
+		if (initialized) {
+			hideBusy()
+			manager.appendTextToLog("initialization completed - showing the dive list")
+			showPage(diveList) // we want to make sure that gets on the stack
+			diveList.diveListModel = diveModel
+			manager.appendTextToLog("if we got started by a plugged in device, switch to download page -- pluggedInDeviceName = " + pluggedInDeviceName)
+			if (pluggedInDeviceName !== "")
+				// if we were started with a dive computer plugged in,
+				// immediately switch to download page
+				showDownloadForPluggedInDevice()
+		}
+	}
+
+	Label {
+		id: textBlock
+		visible: !initialized
+		text: qsTr("Subsurface-mobile starting up")
+		font.pointSize: subsurfaceTheme.headingPointSize
+		topPadding: 2 * Kirigami.Units.gridUnit
+		leftPadding: Kirigami.Units.gridUnit
+	}
+
 	StartPage {
 		id: startPage
 		anchors.fill: parent
-		visible: Backend.cloud_verification_status !== Enums.CS_NOCLOUD &&
+		visible: initialized &&
+			 Backend.cloud_verification_status !== Enums.CS_NOCLOUD &&
 			 Backend.cloud_verification_status !== Enums.CS_VERIFIED
 		onVisibleChanged: {
+			manager.appendTextToLog("StartPage visibility changed to " + visible)
+			if (!initialized) {
+				manager.appendTextToLog("not yet initialized, show busy spinner")
+				showBusy()
+			}
 			if (visible) {
 				pageStack.clear()
-			} else {
+			} else if (initialized) {
 				showDiveList()
 			}
 		}
 		Component.onCompleted: {
-			if (!visible) {
-				manager.appendTextToLog("StartPage completed - showing the dive list")
-				showPage(diveList) // we want to make sure that gets on the stack
-				manager.appendTextToLog("if we got started by a plugged in device, switch to download page -- pluggedInDeviceName = " + pluggedInDeviceName)
-				if (pluggedInDeviceName !== "")
-					// if we were started with a dive computer plugged in,
-					// immediately switch to download page
-					showDownloadForPluggedInDevice()
-			}
+			manager.appendTextToLog("StartPage completed -- initialized is " + initialized)
 		}
 	}
 

@@ -13,7 +13,7 @@ Kirigami.ScrollablePage {
 	title: qsTr("Dive list")
 	verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 	property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
-	property QtObject diveListModel: diveModel
+	property QtObject diveListModel: null
 
 	supportsRefreshing: true
 	onRefreshingChanged: {
