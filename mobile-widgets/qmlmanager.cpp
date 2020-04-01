@@ -165,6 +165,7 @@ void QMLManager::usbRescan()
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
 	m_diveListProcessing(false),
+	m_initialized(false),
 	m_pluggedInDeviceName(""),
 	m_showNonDiveComputers(false),
 	undoAction(Command::undoAction(this)),
@@ -518,6 +519,8 @@ void QMLManager::finishSetup()
 		appendTextToLog(tr("no cloud credentials"));
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	}
+	m_initialized = true;
+	emit initializedChanged();
 }
 
 QMLManager::~QMLManager()

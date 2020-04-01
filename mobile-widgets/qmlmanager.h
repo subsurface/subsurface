@@ -59,6 +59,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QString undoText READ getUndoText NOTIFY undoTextChanged) // this is a read-only property
 	Q_PROPERTY(QString redoText READ getRedoText NOTIFY redoTextChanged) // this is a read-only property
 	Q_PROPERTY(bool diveListProcessing MEMBER m_diveListProcessing  WRITE setDiveListProcessing NOTIFY diveListProcessingChanged)
+	Q_PROPERTY(bool initialized MEMBER m_initialized NOTIFY initializedChanged)
 
 public:
 	QMLManager();
@@ -248,6 +249,7 @@ private:
 	bool m_locationServiceAvailable;
 	bool m_verboseEnabled;
 	bool m_diveListProcessing;
+	bool m_initialized;
 	GpsLocation *locationProvider;
 	bool m_loadFromCloud;
 	static QMLManager *m_instance;
@@ -291,6 +293,7 @@ signals:
 	void locationServiceAvailableChanged();
 	void verboseEnabledChanged();
 	void diveListProcessingChanged();
+	void initializedChanged();
 	void logTextChanged();
 	void loadFromCloudChanged();
 	void startPageTextChanged();
