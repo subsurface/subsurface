@@ -4,6 +4,7 @@
 #include "dive.h"
 #include "divesite.h"
 #include "trip.h"
+#include "qthelper.h"
 #include <QLocale>
 #include <map>
 
@@ -142,11 +143,20 @@ static std::vector<QString> getWords(const dive *d)
 
 void FullText::reload()
 {
+	// we want this to be two calls as the second text is overwritten below by the lines starting with "\r"
+	uiNotification(QObject::tr("Create full text index"));
+	uiNotification(QObject::tr("start processing"));
 	words.clear();
 	int i;
 	dive *d;
-	for_each_dive(i, d)
+	for_each_dive(i, d) {
+		// this makes sure that every once in a while we allow the
+		// UI to respond to events
+		if (i % 100 == 99)
+			uiNotification(QObject::tr("\r%1 dives processed").arg(i + 1));
 		registerDive(d);
+	}
+	uiNotification(QObject::tr("\r%1 dives processed").arg(dive_table.nr));
 }
 
 void FullText::registerDive(struct dive *d)
