@@ -430,8 +430,8 @@ void DivelogsDeWebServices::downloadError(QNetworkReply::NetworkError)
 
 void DivelogsDeWebServices::updateProgress(qreal current, qreal total)
 {
-	ui.progressBar->setRange(0, total);
-	ui.progressBar->setValue(current);
+	ui.progressBar->setRange(0, lrint(total));
+	ui.progressBar->setValue(lrint(current));
 	ui.status->setText(tr("Transferring data..."));
 }
 
