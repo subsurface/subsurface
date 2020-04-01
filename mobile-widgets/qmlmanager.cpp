@@ -375,9 +375,10 @@ void QMLManager::openLocalThenRemote(QString url)
 		qPrefTechnicalDetails::set_show_ccr_setpoint(git_prefs.show_ccr_setpoint);
 		qPrefTechnicalDetails::set_show_ccr_sensors(git_prefs.show_ccr_sensors);
 		qPrefPartialPressureGas::set_po2(git_prefs.pp_graphs.po2);
+		// the following steps can take a long time, so provide updates
+		setNotificationText(tr("Processing %1 dives").arg(dive_table.nr));
 		process_loaded_dives();
 		MobileModels::instance()->reset();
-		appendTextToLog(QStringLiteral("%1 dives loaded from cache").arg(dive_table.nr));
 		setNotificationText(tr("%1 dives loaded from local dive data file").arg(dive_table.nr));
 	}
 	if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NEED_TO_VERIFY) {
