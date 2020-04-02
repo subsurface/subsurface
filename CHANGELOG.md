@@ -1,3 +1,6 @@
+Mobile: remove locking of data storage access
+Mobile: performance improvements for dive list
+Mobile: user notification of progress during startup
 Mobile: ensure filter text field has focus when opened
 Mobile: dive summary: make time drop downs smaller
 Mobile: close menus with Android back button on dive details
