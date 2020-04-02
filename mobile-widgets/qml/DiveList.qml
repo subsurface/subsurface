@@ -37,6 +37,7 @@ Kirigami.ScrollablePage {
 			property variant myData: model
 			property var view: ListView.view
 			property bool selected: !isTrip && current // don't use 'checked' for this as that confuses QML as it tries
+			property bool invalid: isInvalid === true
 			id: diveOrTripDelegateItem
 			padding: 0
 			supportsMouseEvents: true
@@ -182,7 +183,7 @@ Kirigami.ScrollablePage {
 								id: locationText
 								text: (undefined !== location && "" != location) ? location : qsTr("<unnamed dive site>")
 								font.weight: Font.Medium
-								font.strikeout: isInvalid !== undefined ? isInvalid : false
+								font.strikeout: invalid
 								font.pointSize: subsurfaceTheme.smallPointSize
 								elide: Text.ElideRight
 								maximumLineCount: 1 // needed for elide to work at all
@@ -207,7 +208,7 @@ Kirigami.ScrollablePage {
 									text: (undefined !== dateTime) ? dateTime : ""
 									width: Math.max(locationText.width * 0.45, paintedWidth) // helps vertical alignment throughout listview
 									font.pointSize: subsurfaceTheme.smallPointSize
-									font.strikeout: isInvalid !== undefined ? isInvalid : false
+									font.strikeout: invalid
 									color: selected ? subsurfaceTheme.darkerPrimaryTextColor : subsurfaceTheme.secondaryTextColor
 								}
 								// spacer, just in case
@@ -220,7 +221,7 @@ Kirigami.ScrollablePage {
 									text: (undefined !== depthDuration) ? depthDuration : ""
 									width: Math.max(Kirigami.Units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
 									font.pointSize: subsurfaceTheme.smallPointSize
-									font.strikeout: isInvalid !== undefined ? isInvalid : false
+									font.strikeout: invalid
 									color: selected ? subsurfaceTheme.darkerPrimaryTextColor : subsurfaceTheme.secondaryTextColor
 								}
 							}
@@ -228,7 +229,7 @@ Kirigami.ScrollablePage {
 								id: numberText
 								text: "#" + number
 								font.pointSize: subsurfaceTheme.smallPointSize
-								font.strikeout: isInvalid !== undefined ? isInvalid : false
+								font.strikeout: invalid
 								color: selected ? subsurfaceTheme.darkerPrimaryTextColor : subsurfaceTheme.secondaryTextColor
 								anchors {
 									right: parent.right
