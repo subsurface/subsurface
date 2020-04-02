@@ -442,7 +442,7 @@ Kirigami.ScrollablePage {
 		boundsBehavior: Flickable.DragOverBounds
 		maximumFlickVelocity: parent.height * 5
 		bottomMargin: Kirigami.Units.iconSizes.medium + Kirigami.Units.gridUnit
-		cacheBuffer: 40 // this will increase memory use, but should help with scrolling
+		cacheBuffer: 0
 		Component.onCompleted: {
 			manager.appendTextToLog("finished setting up the diveListView")
 		}
