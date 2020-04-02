@@ -313,6 +313,11 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 	stateText.append((unsaved_changes() ? QLatin1String("") : QLatin1String("no ")) + QLatin1String("unsaved changes"));
 	appendTextToLog(stateText);
 
+	if (state == Qt::ApplicationActive && !m_initialized) {
+		// once the app UI is displayed, finish our setup and mark the app as initialized
+		finishSetup();
+		appInitialized();
+	}
 	if (state == Qt::ApplicationInactive && unsaved_changes()) {
 		// saveChangesCloud ensures that we don't have two conflicting saves going on
 		appendTextToLog("trying to save data as user switched away from app");

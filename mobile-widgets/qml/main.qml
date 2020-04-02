@@ -769,6 +769,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			}
 		}
 		Component.onCompleted: {
+			if (Screen.manufacturer + " " + Screen.model + " " + Screen.name !== "  ")
+				manager.appendTextToLog("Running on " + Screen.manufacturer + " " + Screen.model + " " + Screen.name)
 			manager.appendTextToLog("StartPage completed -- initialized is " + initialized)
 		}
 	}
@@ -909,17 +911,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			// handler for the startPage
 			showDownloadForPluggedInDevice()
 		}
-	}
-
-	Component.onCompleted: {
-		// try to see if we can detect certain device vendors through these properties
-		if (Screen.manufacturer + " " + Screen.model + " " + Screen.name !== "  ")
-			manager.appendTextToLog("Running on " + Screen.manufacturer + " " + Screen.model + " " + Screen.name)
-		rootItem.visible = true
-		manager.appendTextToLog("setting the defaultColumnWidth to " + Kirigami.Units.gridUnit * 21)
-		pageStack.defaultColumnWidth = Kirigami.Units.gridUnit * 21
-		manager.finishSetup()
-		manager.appInitialized()
 	}
 	onClosing: {
 		// this duplicates the check that is already in the onBackRequested signal handler of the DiveList
