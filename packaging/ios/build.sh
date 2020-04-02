@@ -137,10 +137,24 @@ for ARCH in $ARCHS; do
 	export OSX_PLATFORM=$(xcrun --sdk macosx --show-sdk-platform-path)
 	export OSX_SDK=$(xcrun --sdk macosx --show-sdk-path)
 
-	target=$ARCH
-	hosttarget=$ARCH
+	# build libxml2 and libxslt
+	if [ ! -e "$PKG_CONFIG_LIBDIR"/libxml-2.0.pc ] ; then
+		if [ ! -e "$PARENT_DIR"/libxml2/configure ] ; then
+			pushd "$PARENT_DIR"/libxml2
+			autoreconf --install
+			popd
+		fi
+		mkdir -p "$PARENT_DIR"/libxml2-build-"$ARCH"
+		pushd "$PARENT_DIR"/libxml2-build-"$ARCH"
+		"$PARENT_DIR"/libxml2/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --without-python --without-iconv --enable-static --disable-shared
+		perl -pi -e 's/runtest\$\(EXEEXT\)//' Makefile
+		perl -pi -e 's/testrecurse\$\(EXEEXT\)//' Makefile
+		make
+		make install
+		popd
+	fi
 
-	# libxslt have too old config.sub
+	# the config.sub in libxslt is too old
 	pushd ${PARENT_DIR}/libxslt
 	autoreconf --install
 	popd

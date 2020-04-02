@@ -119,7 +119,7 @@ case ${PLATFORM} in
 		PACKAGES=("${COMMON_PACKAGES[@]}" hidapi libcurl libusb openssl libssh2)
 		;;
 	ios)
-		PACKAGES=("${COMMON_PACKAGES[@]}" libxslt)
+		PACKAGES=("${COMMON_PACKAGES[@]}" libxml2 libxslt)
 		;;
 	android)
 		PACKAGES=("${COMMON_PACKAGES[@]}" libxslt sqlite libxml2 openssl libftdi1 libusb)
