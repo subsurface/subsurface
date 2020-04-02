@@ -730,11 +730,14 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			manager.appendTextToLog("initialization completed - showing the dive list")
 			showPage(diveList) // we want to make sure that gets on the stack
 			diveList.diveListModel = diveModel
-			manager.appendTextToLog("if we got started by a plugged in device, switch to download page -- pluggedInDeviceName = " + pluggedInDeviceName)
-			if (pluggedInDeviceName !== "")
-				// if we were started with a dive computer plugged in,
-				// immediately switch to download page
-				showDownloadForPluggedInDevice()
+
+			if (Qt.platform.os === "android") {
+				manager.appendTextToLog("if we got started by a plugged in device, switch to download page -- pluggedInDeviceName = " + pluggedInDeviceName)
+				if (pluggedInDeviceName !== "")
+					// if we were started with a dive computer plugged in,
+					// immediately switch to download page
+					showDownloadForPluggedInDevice()
+			}
 		}
 	}
 
