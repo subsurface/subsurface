@@ -17,7 +17,6 @@
 #include <QtConcurrent>
 #include <QFuture>
 #include <QUndoStack>
-#include <QMutexLocker>
 
 #include <QBluetoothLocalDevice>
 
@@ -322,15 +321,6 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 	}
 }
 
-int QMLManager::openAndMaybeSync(const char *filename)
-{
-	// parse_file will potentially sync with the git server - so make sure we don't start
-	// a save in the middle of that (for example if the user switches away from the app)
-	QMutexLocker lockAlreadySaving(&alreadySaving);
-	int error = parse_file(filename, &dive_table, &trip_table, &dive_site_table);
-	return error;
-}
-
 void QMLManager::openLocalThenRemote(QString url)
 {
 	// clear out the models and the fulltext index
@@ -344,7 +334,7 @@ void QMLManager::openLocalThenRemote(QString url)
 	 * we try to open this), parse_file (which is called by openAndMaybeSync) will ALWAYS connect
 	 * to the remote and populate the cache.
 	 * Otherwise parse_file will respect the git_local_only flag and only update if that isn't set */
-	int error = openAndMaybeSync(encodedFilename.constData());
+	int error = parse_file(encodedFilename.constData(), &dive_table, &trip_table, &dive_site_table);
 	if (error) {
 		/* there can be 2 reasons for this:
 		 * 1) we have cloud credentials, but there is no local repo (yet).
@@ -514,7 +504,7 @@ void QMLManager::finishSetup()
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 		saveCloudCredentials(qPrefCloudStorage::cloud_storage_email(), qPrefCloudStorage::cloud_storage_password(), qPrefCloudStorage::cloud_storage_pin());
 		appendTextToLog(tr("working in no-cloud mode"));
-		int error = openAndMaybeSync(existing_filename);
+		int error = parse_file(existing_filename, &dive_table, &trip_table, &dive_site_table);
 		if (error) {
 			// we got an error loading the local file
 			setNotificationText(tr("Error parsing local storage, giving up"));
@@ -688,10 +678,6 @@ void QMLManager::loadDivesWithValidCredentials()
 		} else {
 			appendTextToLog("Switching from no cloud mode; keep in memory dive data");
 		}
-		// this might sync with the remote server and therefore change our git repo
-		// we need a block to enforce a short lifetime for the QMutexLocker (otherwise
-		// we get an error with the 'goto' above)
-		QMutexLocker lockAlreadySaving(&alreadySaving);
 		if (git != dummy_git_repository) {
 			appendTextToLog(QString("have repository and branch %1").arg(branch));
 			error = git_load_dives(git, branch, &dive_table, &trip_table, &dive_site_table);
@@ -699,7 +685,6 @@ void QMLManager::loadDivesWithValidCredentials()
 			appendTextToLog(QString("didn't receive valid git repo, try again"));
 			error = parse_file(fileNamePrt.data(), &dive_table, &trip_table, &dive_site_table);
 		}
-		lockAlreadySaving.unlock();
 		setDiveListProcessing(false);
 		if (!error) {
 			report_error("filename is now %s", fileNamePrt.data());
@@ -1304,7 +1289,6 @@ void QMLManager::openNoCloudRepo()
 	if (git == dummy_git_repository) {
 		// repo doesn't exist, create it and write the empty dive list to it
 		git_create_local_repo(qPrintable(filename));
-		QMutexLocker lockAlreadySaving(&alreadySaving);
 		save_dives(qPrintable(filename));
 		set_filename(qPrintable(filename));
 		auto s = qPrefLog::instance();
@@ -1332,15 +1316,9 @@ void QMLManager::saveChangesLocal()
 			appendTextToLog("Don't save dives without loading from the cloud, first.");
 			return;
 		}
-		// try for 10ms, move on if we can't get the lock
-		if (!alreadySaving.tryLock(10)) {
-			appendTextToLog("save operation already in progress, can't save locally");
-			return;
-		}
 		bool glo = git_local_only;
 		git_local_only = true;
 		int error = save_dives(existing_filename);
-		alreadySaving.unlock();
 		git_local_only = glo;
 		if (error) {
 			setNotificationText(consumeError());
@@ -1359,15 +1337,9 @@ void QMLManager::saveChangesCloud(bool forceRemoteSync)
 		appendTextToLog("asked to save changes but no unsaved changes");
 		return;
 	}
-	// try for 10ms, move on if we can't get the lock
-	if (!alreadySaving.tryLock(10)) {
-		appendTextToLog("save operation in progress already");
-		return;
-	}
 	// first we need to store any unsaved changes to the local repo
 	gitProgressCB("Save changes to local cache");
 	saveChangesLocal();
-	alreadySaving.unlock();
 	// if the user asked not to push to the cloud we are done
 	if (git_local_only && !forceRemoteSync)
 		return;
