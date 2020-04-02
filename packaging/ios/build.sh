@@ -41,7 +41,7 @@ done
 # set up easy to use variables with the important paths
 TOP=$(pwd)
 SUBSURFACE_SOURCE=${TOP}/../../../subsurface
-pushd ${SUBSURFACE_SOURCE}/..
+pushd "$SUBSURFACE_SOURCE"/..
 PARENT_DIR=$(pwd)
 popd
 
@@ -49,7 +49,7 @@ popd
 mkdir -p build-ios
 
 IOS_QT=~/Qt
-QT_VERSION=$(cd ${IOS_QT}; ls -d [1-9]* | awk -F. '{ printf("%02d.%02d.%02d\n", $1,$2,$3); }' | sort -n | tail -1 | sed -e 's/\.0/\./g;s/^0//')
+QT_VERSION=$(cd "$IOS_QT"; ls -d [1-9]* | awk -F. '{ printf("%02d.%02d.%02d\n", $1,$2,$3); }' | sort -n | tail -1 | sed -e 's/\.0/\./g;s/^0//')
 
 if [ -z $QT_VERSION ] ; then
 	echo "Couldn't determine Qt version; giving up"
@@ -79,7 +79,7 @@ fi
 # Build Subsurface-mobile by default
 SUBSURFACE_MOBILE=1
 
-pushd ${SUBSURFACE_SOURCE}
+pushd "$SUBSURFACE_SOURCE"
 bash scripts/mobilecomponents.sh
 popd
 
@@ -87,15 +87,15 @@ popd
 # now build all the dependencies for the three relevant architectures (x86_64 is for the simulator)
 
 # get all 3rd part libraries
-../../scripts/get-dep-lib.sh ios ${PARENT_DIR}
+../../scripts/get-dep-lib.sh ios "$PARENT_DIR"
 
 for ARCH in $ARCHS; do
 
 	echo next building for $ARCH
 
 	INSTALL_ROOT=$PARENT_DIR/install-root/ios/$ARCH
-	mkdir -p $INSTALL_ROOT/lib $INSTALL_ROOT/bin $INSTALL_ROOT/include
-	PKG_CONFIG_LIBDIR=$INSTALL_ROOT/lib/pkgconfig
+	mkdir -p "$INSTALL_ROOT"/lib "$INSTALL_ROOT"/bin "$INSTALL_ROOT"/include
+	PKG_CONFIG_LIBDIR="$INSTALL_ROOT"/lib/pkgconfig
 
 	declare -x PKG_CONFIG_PATH=$PKG_CONFIG_LIBDIR
 	declare -x PREFIX=$INSTALL_ROOT
@@ -113,12 +113,12 @@ for ARCH in $ARCHS; do
 	fi
 	declare -x ARCH_NAME=$ARCH
 	declare -x SDK=$SDK_NAME
-	declare -x SDK_DIR=`xcrun --sdk $SDK_NAME --show-sdk-path`
-	declare -x PLATFORM_DIR=`xcrun --sdk $SDK_NAME --show-sdk-platform-path`
+	declare -x SDK_DIR=$(xcrun --sdk $SDK_NAME --show-sdk-path)
+	declare -x PLATFORM_DIR=$(xcrun --sdk $SDK_NAME --show-sdk-platform-path)
 
-	declare -x CC=`xcrun -sdk $SDK_NAME -find clang`
-	declare -x CXX=`xcrun -sdk $SDK_NAME -find clang++`
-	declare -x LD=`xcrun -sdk $SDK_NAME -find ld`
+	declare -x CC=$(xcrun -sdk $SDK_NAME -find clang)
+	declare -x CXX=$(xcrun -sdk $SDK_NAME -find clang++)
+	declare -x LD=$(xcrun -sdk $SDK_NAME -find ld)
 	declare -x CFLAGS="-arch $ARCH_NAME -isysroot $SDK_DIR -miphoneos-version-min=6.0 -I$SDK_DIR/usr/include -fembed-bitcode"
 	declare -x CXXFLAGS="$CFLAGS"
 	declare -x LDFLAGS="$CFLAGS -lsqlite3 -lpthread -lc++ -L$SDK_DIR/usr/lib -fembed-bitcode"
@@ -155,32 +155,32 @@ for ARCH in $ARCHS; do
 	fi
 
 	# the config.sub in libxslt is too old
-	pushd ${PARENT_DIR}/libxslt
+	pushd "$PARENT_DIR"/libxslt
 	autoreconf --install
 	popd
-	if [ ! -e $PKG_CONFIG_LIBDIR/libxslt.pc ] ; then
-		mkdir -p ${PARENT_DIR}/libxslt/build-ios/$ARCH_NAME
-		pushd ${PARENT_DIR}/libxslt/build-ios/$ARCH_NAME
-		${PARENT_DIR}/libxslt/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --without-python --without-crypto --enable-static --disable-shared
+	if [ ! -e "$PKG_CONFIG_LIBDIR"/libxslt.pc ] ; then
+		mkdir -p "$PARENT_DIR"/libxslt-build-$ARCH
+		pushd "$PARENT_DIR"/libxslt-build-$ARCH
+		"$PARENT_DIR"/libxslt/configure --host=$BUILDCHAIN --prefix="$PREFIX" --without-python --without-crypto --enable-static --disable-shared
 		make
 		make install
 		popd
 	fi
 
-	if [ ! -e $PKG_CONFIG_LIBDIR/libzip.pc ] ; then
-		pushd ${PARENT_DIR}/libzip
+	if [ ! -e "$PKG_CONFIG_LIBDIR"/libzip.pc ] ; then
+		pushd "$PARENT_DIR"/libzip
 		# don't waste time on building command line tools, examples, manual, and regression tests - and don't build the BZIP2 support we don't need
 		sed -i.bak 's/ADD_SUBDIRECTORY(src)//;s/ADD_SUBDIRECTORY(examples)//;s/ADD_SUBDIRECTORY(man)//;s/ADD_SUBDIRECTORY(regress)//' CMakeLists.txt
-		mkdir -p ${PARENT_DIR}/libzip/build-ios/$ARCH_NAME
-		pushd ${PARENT_DIR}/libzip/build-ios/$ARCH_NAME
+		mkdir -p "$PARENT_DIR"/libzip-build-$ARCH
+		pushd "$PARENT_DIR"/libzip-build-$ARCH
 		cmake -DBUILD_SHARED_LIBS="OFF" \
 			-DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
-			-DCMAKE_INSTALL_PREFIX=${PREFIX} \
-			-DCMAKE_PREFIX_PATH=${PREFIX} \
+			-DCMAKE_INSTALL_PREFIX="$PREFIX" \
+			-DCMAKE_PREFIX_PATH="$PREFIX" \
 			-DCMAKE_DISABLE_FIND_PACKAGE_BZip2=TRUE \
 			-DENABLE_OPENSSL=FALSE \
 			-DENABLE_GNUTLS=FALSE \
-			${PARENT_DIR}/libzip
+			"$PARENT_DIR"/libzip
 		# quiet the super noise warnings
 		sed -i.bak 's/C_FLAGS = /C_FLAGS = -Wno-nullability-completeness -Wno-expansion-to-defined /' lib/CMakeFiles/zip.dir/flags.make
 		make
@@ -190,25 +190,25 @@ for ARCH in $ARCHS; do
 		popd
 	fi
 
-	pushd ${PARENT_DIR}/libgit2
+	pushd "$PARENT_DIR"/libgit2
 	# libgit2 with -Wall on iOS creates megabytes of warnings...
 	sed -i.bak 's/ADD_C_FLAG_IF_SUPPORTED(-W/# ADD_C_FLAG_IF_SUPPORTED(-W/' CMakeLists.txt
 	popd
 
 	if [ ! -e $PKG_CONFIG_LIBDIR/libgit2.pc ] ; then
-		mkdir -p ${PARENT_DIR}/libgit2/build-ios/$ARCH
-		pushd ${PARENT_DIR}/libgit2/build-ios/$ARCH
-		cmake ${PARENT_DIR}/libgit2 \
+		mkdir -p "$PARENT_DIR"/libgit2-build-$ARCH
+		pushd "$PARENT_DIR"/libgit2-build-$ARCH
+		cmake "$PARENT_DIR"/libgit2 \
 		    -G "Unix Makefiles" \
 		    -DBUILD_SHARED_LIBS="OFF" \
 		    -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
 			-DSHA1_TYPE=builtin \
 			-DBUILD_CLAR=OFF \
-			-DCMAKE_INSTALL_PREFIX=${PREFIX} \
-			-DCMAKE_PREFIX_PATH=${PREFIX} \
+			-DCMAKE_INSTALL_PREFIX="$PREFIX" \
+			-DCMAKE_PREFIX_PATH="$PREFIX" \
 			-DCURL=OFF \
 			-DUSE_SSH=OFF \
-			${PARENT_DIR}/libgit2/
+			"$PARENT_DIR"/libgit2/
 		sed -i.bak 's/C_FLAGS = /C_FLAGS = -Wno-nullability-completeness -Wno-expansion-to-defined /' CMakeFiles/git2.dir/flags.make
 		make
 		make install
@@ -230,16 +230,16 @@ for ARCH in $ARCHS; do
 		autoreconf --install
 		popd
 	fi
-	mkdir -p ${PARENT_DIR}/libdivecomputer-build-ios/$ARCH
-	if [ ! -f ${PARENT_DIR}/libdivecomputer-build-ios/${ARCH}/git.SHA ] ; then
-		echo "" > ${PARENT_DIR}/libdivecomputer-build-ios/${ARCH}/git.SHA
+	mkdir -p "$PARENT_DIR"/libdivecomputer-build-$ARCH
+	if [ ! -f "$PARENT_DIR"/libdivecomputer-build-$ARCH/git.SHA ] ; then
+		echo "" > "$PARENT_DIR"/libdivecomputer-build-$ARCH/git.SHA
 	fi
 	CURRENT_SHA=$(cd ../../libdivecomputer ; git describe)
-	PREVIOUS_SHA=$(cat ${PARENT_DIR}/libdivecomputer-build-ios/${ARCH}/git.SHA)
+	PREVIOUS_SHA=$(cat "$PARENT_DIR"/libdivecomputer-build-$ARCH/git.SHA)
 	if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" ] ; then
-		echo $CURRENT_SHA > ${PARENT_DIR}/libdivecomputer-build-ios/${ARCH}/git.SHA
-		pushd ${PARENT_DIR}/libdivecomputer-build-ios/$ARCH
-		${SUBSURFACE_SOURCE}/libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no --without-libusb --without-hidapi --enable-ble
+		echo $CURRENT_SHA > "$PARENT_DIR"/libdivecomputer-build-$ARCH/git.SHA
+		pushd "$PARENT_DIR"/libdivecomputer-build-$ARCH
+		${SUBSURFACE_SOURCE}/libdivecomputer/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared --enable-examples=no --without-libusb --without-hidapi --enable-ble
 		make
 		make install
 		popd
@@ -248,12 +248,12 @@ for ARCH in $ARCHS; do
 done
 
 # build googlemaps
-mkdir -p ${PARENT_DIR}/googlemaps/build-ios
-pushd ${PARENT_DIR}/googlemaps/build-ios
-${IOS_QT}/${QT_VERSION}/ios/bin/qmake ${PARENT_DIR}/googlemaps/googlemaps.pro CONFIG+=release
+mkdir -p "$PARENT_DIR"/googlemaps/build-ios
+pushd "$PARENT_DIR"/googlemaps/build-ios
+"$IOS_QT"/"$QT_VERSION"/ios/bin/qmake "$PARENT_DIR"/googlemaps/googlemaps.pro CONFIG+=release
 make
 if [ "$DEBUGRELEASE" != "Release" ] ; then
-	${IOS_QT}/${QT_VERSION}/ios/bin/qmake ${PARENT_DIR}/googlemaps/googlemaps.pro CONFIG+=debug
+	"$IOS_QT"/"$QT_VERSION"/ios/bin/qmake "$PARENT_DIR"/googlemaps/googlemaps.pro CONFIG+=debug
 	make clean
 	make
 fi
@@ -261,21 +261,21 @@ popd
 
 # now combine the libraries into fat libraries
 ARCH_ROOT=$PARENT_DIR/install-root/ios
-cp -a $ARCH_ROOT/x86_64/* $ARCH_ROOT
+cp -a "$ARCH_ROOT"/x86_64/* "$ARCH_ROOT"
 if [ "$TARGET" = "iphoneos" ] ; then
-	pushd $ARCH_ROOT/lib
+	pushd "$ARCH_ROOT"/lib
 	for LIB in $(find . -type f -name \*.a); do
-		lipo $ARCH_ROOT/armv7/lib/$LIB $ARCH_ROOT/arm64/lib/$LIB $ARCH_ROOT/x86_64/lib/$LIB -create -output $LIB
+		lipo "$ARCH_ROOT"/armv7/lib/"$LIB" "$ARCH_ROOT"/arm64/lib/"$LIB" "$ARCH_ROOT"/x86_64/lib/"$LIB" -create -output "$LIB"
 	done
 	popd
 fi
 
-pushd ${SUBSURFACE_SOURCE}/translations
-SRCS=$(ls *.ts | grep -v source)
+pushd "$SUBSURFACE_SOURCE"/translations
+SRCS=$(ls ./*.ts | grep -v source)
 popd
 mkdir -p build-ios/translations
 for src in $SRCS; do
-	${IOS_QT}/${QT_VERSION}/ios/bin/lrelease ${SUBSURFACE_SOURCE}/translations/$src -qm build-ios/translations/${src/.ts/.qm}
+	"$IOS_QT"/"$QT_VERSION"/ios/bin/lrelease "$SUBSURFACE_SOURCE"/translations/"$src" -qm build-ios/translations/"${src/.ts/.qm}"
 done
 
 # in order to be able to use xcode without going through Qt Creator
@@ -293,10 +293,10 @@ for BUILD_NOW in $BUILD_LOOP; do
 	else
 		DRCONFIG="release"
 	fi
-	BUILDX=build-Subsurface-mobile-Qt_$(echo ${QT_VERSION} | tr . _)_for_iOS-${BUILD_NOW}
-	mkdir -p ${BUILDX}
-	pushd ${BUILDX}
-	${IOS_QT}/${QT_VERSION}/ios/bin/qmake ../Subsurface-mobile.pro \
+	BUILDX=build-Subsurface-mobile-Qt_$(echo "$QT_VERSION" | tr .  _)_for_iOS-"$BUILD_NOW"
+	mkdir -p "$BUILDX"
+	pushd "$BUILDX"
+	"$IOS_QT"/"$QT_VERSION"/ios/bin/qmake ../Subsurface-mobile.pro \
 		-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=$DRCONFIG
 
 	make 
