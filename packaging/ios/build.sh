@@ -146,7 +146,7 @@ for ARCH in $ARCHS; do
 		fi
 		mkdir -p "$PARENT_DIR"/libxml2-build-"$ARCH"
 		pushd "$PARENT_DIR"/libxml2-build-"$ARCH"
-		"$PARENT_DIR"/libxml2/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --without-python --without-iconv --enable-static --disable-shared
+		"$PARENT_DIR"/libxml2/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --without-lzma --without-python --without-iconv --enable-static --disable-shared
 		perl -pi -e 's/runtest\$\(EXEEXT\)//' Makefile
 		perl -pi -e 's/testrecurse\$\(EXEEXT\)//' Makefile
 		make
@@ -161,7 +161,7 @@ for ARCH in $ARCHS; do
 	if [ ! -e "$PKG_CONFIG_LIBDIR"/libxslt.pc ] ; then
 		mkdir -p "$PARENT_DIR"/libxslt-build-$ARCH
 		pushd "$PARENT_DIR"/libxslt-build-$ARCH
-		"$PARENT_DIR"/libxslt/configure --host=$BUILDCHAIN --prefix="$PREFIX" --without-python --without-crypto --enable-static --disable-shared
+		"$PARENT_DIR"/libxslt/configure --host=$BUILDCHAIN --prefix="$PREFIX" --with-libxml-include-prefix="$INSTALL_ROOT"/include/libxml2 --without-python --without-crypto --enable-static --disable-shared
 		make
 		make install
 		popd
