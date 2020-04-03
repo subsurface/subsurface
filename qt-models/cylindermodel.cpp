@@ -471,11 +471,9 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		free_cylinder(copy);
 		dataChanged(index, index);
 	} else {
-#ifndef SUBSURFACE_MOBILE
 		// On the EquipmentTab - place an editCylinder command.
 		int count = Command::editCylinder(index.row(), cyl, type, false);
 		emit divesEdited(count);
-#endif
 	}
 	return true;
 }
@@ -709,7 +707,6 @@ void CylindersModel::clearTempCyl()
 
 void CylindersModel::commitTempCyl(int row)
 {
-#ifndef SUBSURFACE_MOBILE
 	if (tempRow < 0)
 		return;
 	if (row != tempRow)
@@ -728,7 +725,6 @@ void CylindersModel::commitTempCyl(int row)
 	}
 	free_cylinder(tempCyl);
 	tempRow = -1;
-#endif
 }
 
 CylindersModelFiltered::CylindersModelFiltered(QObject *parent) : QSortFilterProxyModel(parent),
