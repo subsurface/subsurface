@@ -186,7 +186,6 @@ public slots:
 	void addDiveToTrip(int id, int tripId);
 	void changesNeedSaving();
 	void openNoCloudRepo();
-	void saveChangesLocal();
 	void saveChangesCloud(bool forceRemoteSync);
 	void selectDive(int id);
 	void deleteDive(int id);
@@ -277,6 +276,7 @@ private:
 	void consumeFinishedLoad();
 	void mergeLocalRepo();
 	void openLocalThenRemote(QString url);
+	void saveChangesLocal();
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	QString appLogFileName;
