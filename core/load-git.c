@@ -348,10 +348,6 @@ static char *pop_cstring(struct membuffer *str, const char *err)
 		report_error("git-load: string marker without any strings ('%s')", err);
 		return strdup("");
 	}
-	if (!str->len) {
-		report_error("git-load: string marker after running out of strings ('%s')", err);
-		return strdup("");
-	}
 	len = strlen(mb_cstring(str)) + 1;
 	return remove_from_front(str, len);
 }
