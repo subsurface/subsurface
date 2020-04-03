@@ -174,7 +174,7 @@ Kirigami.Page {
 					dc1.enabled = dc2.enabled = dc3.enabled = dc4.enabled = true
 					for (var i = 1; i < 5; i++) {
 						switch (i) {
-						        case 1:
+							case 1:
 								curVendor = PrefDiveComputer.vendor1
 								curProduct = PrefDiveComputer.product1
 								curDevice = PrefDiveComputer.device1
@@ -237,7 +237,7 @@ Kirigami.Page {
 			}
 			function disableDC(inx) {
 				switch (inx) {
-				        case 1:
+					case 1:
 						dc1.enabled = false
 						break;
 					case 2:
@@ -468,15 +468,12 @@ Kirigami.Page {
 					// it's important to save the changes because the app could get killed once
 					// it's in the background - and the freshly downloaded dives would get lost
 					manager.saveChangesLocal()
-					manager.appendTextToLog("pageStack popping Download page")
 					pageStack.pop()
-					manager.appendTextToLog("pageStack switching to dive list")
 					showDiveList()
 					download.text = qsTr("Download")
 					busy = false
 					rootItem.hideBusy()
 					divesDownloaded = false
-					manager.appendTextToLog("switch to dive list has completed")
 				}
 			}
 			Controls.Label {
