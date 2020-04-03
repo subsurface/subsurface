@@ -467,7 +467,7 @@ Kirigami.Page {
 					importModel.recordDives()
 					// it's important to save the changes because the app could get killed once
 					// it's in the background - and the freshly downloaded dives would get lost
-					manager.saveChangesLocal()
+					manager.changesNeedSaving()
 					pageStack.pop()
 					showDiveList()
 					download.text = qsTr("Download")
