@@ -1033,6 +1033,7 @@ void AddCylinder::undo()
 			continue;
 		remove_cylinder(d, d->cylinders.nr - 1);
 		emit diveListNotifier.cylinderRemoved(d, d->cylinders.nr);
+		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
 	}
 }
 
@@ -1041,6 +1042,7 @@ void AddCylinder::redo()
 	for (dive *d: dives) {
 		add_cloned_cylinder(&d->cylinders, cyl);
 		emit diveListNotifier.cylinderAdded(d, d->cylinders.nr - 1);
+		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
 	}
 }
 
@@ -1138,6 +1140,7 @@ void RemoveCylinder::undo()
 		std::vector<int> mapping = get_cylinder_map_for_add(dives[i]->cylinders.nr, indexes[i]);
 		add_to_cylinder_table(&dives[i]->cylinders, indexes[i], clone_cylinder(cyl[i]));
 		emit diveListNotifier.cylinderAdded(dives[i], indexes[i]);
+		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
 	}
 }
 
@@ -1148,6 +1151,7 @@ void RemoveCylinder::redo()
 		remove_cylinder(dives[i], indexes[i]);
 		cylinder_renumber(dives[i], &mapping[0]);
 		emit diveListNotifier.cylinderRemoved(dives[i], indexes[i]);
+		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
 	}
 }
 
@@ -1223,6 +1227,7 @@ void EditCylinder::redo()
 	for (size_t i = 0; i < dives.size(); ++i) {
 		std::swap(dives[i]->cylinders.cylinders[indexes[i]], cyl[i]);
 		emit diveListNotifier.cylinderEdited(dives[i], indexes[i]);
+		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
 	}
 }
 
