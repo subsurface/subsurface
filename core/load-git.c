@@ -1677,15 +1677,17 @@ static int load_dives_from_tree(git_repository *repo, git_tree *tree, struct git
 
 void clear_git_id(void)
 {
+	free((void *)saved_git_id);
 	saved_git_id = NULL;
 }
 
 void set_git_id(const struct git_oid *id)
 {
-	static char git_id_buffer[GIT_OID_HEXSZ + 1];
+	char git_id_buffer[GIT_OID_HEXSZ + 1];
 
 	git_oid_tostr(git_id_buffer, sizeof(git_id_buffer), id);
-	saved_git_id = git_id_buffer;
+	free((void *)saved_git_id);
+	saved_git_id = strdup(git_id_buffer);
 }
 
 static int find_commit(git_repository *repo, const char *branch, git_commit **commit_p)
