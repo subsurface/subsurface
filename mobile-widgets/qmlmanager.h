@@ -170,6 +170,7 @@ public:
 #endif
 	qPrefCloudStorage::cloud_status oldStatus() const;
 	void setOldStatus(const qPrefCloudStorage::cloud_status value);
+	void rememberOldStatus();
 
 public slots:
 	void appInitialized();
