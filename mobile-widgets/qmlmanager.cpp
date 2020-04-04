@@ -935,7 +935,7 @@ bool QMLManager::checkLocation(DiveSiteChange &res, const DiveObjectHelper &myDi
 		if (parseGpsText(gps, &lat, &lon)) {
 			qDebug() << "parsed GPS, using it";
 			// there are valid GPS coordinates - just use them
-			setupDivesite(res, d, ds, lat, lon, qPrintable(myDive.location));
+			setupDivesite(res, d, ds, lat, lon, qPrintable(location));
 		} else if (gps == GPS_CURRENT_POS) {
 			qDebug() << "gps was our default text for no GPS";
 			// user asked to use current pos
@@ -943,7 +943,7 @@ bool QMLManager::checkLocation(DiveSiteChange &res, const DiveObjectHelper &myDi
 			if (gpsString != GPS_CURRENT_POS) {
 				qDebug() << "but now I got a valid location" << gpsString;
 				if (parseGpsText(qPrintable(gpsString), &lat, &lon))
-					setupDivesite(res, d, ds, lat, lon, qPrintable(myDive.location));
+					setupDivesite(res, d, ds, lat, lon, qPrintable(location));
 			} else {
 				appendTextToLog("couldn't get GPS location in time");
 			}
