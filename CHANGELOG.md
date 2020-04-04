@@ -1,3 +1,4 @@
+Mobile: fix no-cloud to cloud transition
 Mobile: remove locking of data storage access
 Mobile: performance improvements for dive list
 Mobile: user notification of progress during startup
