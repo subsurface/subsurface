@@ -386,6 +386,7 @@ public:
 private:
 	dive *oldDive; // Dive that is going to be overwritten
 	OwningDivePtr newDive; // New data
+	dive_site *newDiveSite;
 	int changedFields;
 
 	dive_site *siteToRemove;

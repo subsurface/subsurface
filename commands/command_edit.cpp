@@ -1004,13 +1004,14 @@ void EditWeight::undo()
 EditDive::EditDive(dive *oldDiveIn, dive *newDiveIn, dive_site *createDs, dive_site *editDs, location_t dsLocationIn)
 	: oldDive(oldDiveIn)
 	, newDive(newDiveIn)
+	, newDiveSite(newDiveIn->dive_site)
 	, changedFields(DiveField::NONE)
 	, siteToRemove(nullptr)
 	, siteToAdd(createDs)
 	, siteToEdit(editDs)
 	, dsLocation(dsLocationIn)
 {
-	if (!oldDive || ! newDive)
+	if (!oldDive || !newDive)
 		return;
 
 	setText(Command::Base::tr("Edit dive [%1]").arg(diveNumberOrDate(oldDive)));
@@ -1061,6 +1062,8 @@ EditDive::EditDive(dive *oldDiveIn, dive *newDiveIn, dive_site *createDs, dive_s
 		changedFields |= DiveField::NOTES;
 	if (oldDive->salinity != newDive->salinity)
 		changedFields |= DiveField::SALINITY;
+
+	newDive->dive_site = nullptr; // We will add the dive to the site manually and therefore saved the dive site.
 }
 
 void EditDive::undo()
@@ -1097,9 +1100,16 @@ void EditDive::exchangeDives()
 
 	// Bluntly exchange dive data by shallow copy.
 	// Don't forget to unregister the old and register the new dive!
+	// Likewise take care to add/remove the dive from the dive site.
 	fulltext_unregister(oldDive);
+	dive_site *oldDiveSite = oldDive->dive_site;
+	if (oldDiveSite)
+		unregister_dive_from_dive_site(oldDive); // the dive-site pointer in the dive is now NULL
 	std::swap(*newDive, *oldDive);
 	fulltext_register(oldDive);
+	if (newDiveSite)
+		add_dive_to_dive_site(oldDive, newDiveSite);
+	newDiveSite = oldDiveSite; // remember the previous dive site
 	invalidate_dive_cache(oldDive);
 
 	// Changing times may have unsorted the dive and trip tables
