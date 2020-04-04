@@ -915,6 +915,7 @@ parsed:
 bool QMLManager::checkLocation(DiveSiteChange &res, const DiveObjectHelper &myDive, struct dive *d, QString location, QString gps)
 {
 	struct dive_site *ds = get_dive_site_for_dive(d);
+	bool changed = false;
 	qDebug() << "checkLocation" << location << "gps" << gps << "dive had" << myDive.location << "gps" << myDive.gas;
 	if (myDive.location != location) {
 		ds = get_dive_site_by_name(qPrintable(location), &dive_site_table);
@@ -924,6 +925,7 @@ bool QMLManager::checkLocation(DiveSiteChange &res, const DiveObjectHelper &myDi
 			ds = res.createdDs.get();
 		}
 		d->dive_site = ds;
+		changed = true;
 	}
 	// now make sure that the GPS coordinates match - if the user changed the name but not
 	// the GPS coordinates, this still does the right thing as the now new dive site will
@@ -950,7 +952,7 @@ bool QMLManager::checkLocation(DiveSiteChange &res, const DiveObjectHelper &myDi
 			appendTextToLog(QString("wasn't able to parse gps string '%1'").arg(gps));
 		}
 	}
-	return res.changed;
+	return changed | res.changed;
 }
 
 bool QMLManager::checkDuration(const DiveObjectHelper &myDive, struct dive *d, QString duration)
