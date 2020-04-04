@@ -504,14 +504,13 @@ void QMLManager::finishSetup()
 	// Initialize cloud credentials.
 	git_local_only = !prefs.cloud_auto_sync;
 
-	// if the cloud credentials are valid, we should get the GPS Webservice ID as well
 	QString url;
 	if (!qPrefCloudStorage::cloud_storage_email().isEmpty() &&
 	    !qPrefCloudStorage::cloud_storage_password().isEmpty() &&
 	    getCloudURL(url) == 0) {
 		openLocalThenRemote(url);
 	} else if (!empty_string(existing_filename) &&
-				qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_UNKNOWN) {
+		   qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_UNKNOWN) {
 		setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
 		set_filename(qPrintable(nocloud_localstorage()));
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
@@ -589,10 +588,10 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 		qPrefCloudStorage::set_cloud_verification_status(m_oldStatus);
 	}
 
-	if (!noCloud &&
-		!verifyCredentials(newEmail, newPassword, pin))
+	if (!noCloud && !verifyCredentials(newEmail, newPassword, pin)) {
+		appendTextToLog("saveCloudCredentials: given cloud credentials didn't verify");
 		return;
-
+	}
 	qPrefCloudStorage::set_cloud_storage_email(newEmail);
 	qPrefCloudStorage::set_cloud_storage_password(newPassword);
 
