@@ -1410,6 +1410,7 @@ void QMLManager::toggleDiveInvalid(int id)
 		return;
 	}
 	Command::editInvalid(!d->invalid, true);
+	changesNeedSaving();
 }
 
 bool QMLManager::toggleDiveSite(bool toggle)
@@ -1510,6 +1511,7 @@ void QMLManager::pasteDiveData(int id)
 		return;
 	}
 	Command::pasteDives(m_copyPasteDive, what);
+	changesNeedSaving();
 }
 
 void QMLManager::cancelDownloadDC()
@@ -1533,6 +1535,8 @@ int QMLManager::addDive()
 	fixup_dive(&d);
 
 	// addDive takes over the dive and clears out the structure passed in
+	// we do NOT save the modified data at this stage because of the UI flow here... this will
+	// be saved once the user finishes editing the newly added dive
 	Command::addDive(&d, autogroup, true);
 
 	if (verbose)
