@@ -600,8 +600,6 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 		// let's make sure there are no unsaved changes
 		saveChangesLocal();
 		syncLoadFromCloud();
-		QString url;
-		getCloudURL(url);
 		manager()->clearAccessCache(); // remove any chached credentials
 		clear_git_id(); // invalidate our remembered GIT SHA
 		MobileModels::instance()->clear();
@@ -611,8 +609,9 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 		// of whether we're in offline mode or not, to make sure the repository is synced
 		currentGitLocalOnly = git_local_only;
 		git_local_only = false;
-		openLocalThenRemote(url);
+		loadDivesWithValidCredentials();
 	}
+	setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
 }
 
 bool QMLManager::verifyCredentials(QString email, QString password, QString pin)
