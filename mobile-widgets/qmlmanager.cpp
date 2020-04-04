@@ -301,10 +301,10 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 	}
 	stateText.prepend("AppState changed to ");
 	stateText.append(" with ");
-	stateText.append((unsaved_changes() ? QLatin1String("") : QLatin1String("no ")) + QLatin1String("unsaved changes"));
+	stateText.append((!Command::isClean() ? QLatin1String("") : QLatin1String("no ")) + QLatin1String("unsaved changes"));
 	appendTextToLog(stateText);
 
-	if (state == Qt::ApplicationInactive && unsaved_changes()) {
+	if (state == Qt::ApplicationInactive && !Command::isClean()) {
 		// saveChangesCloud ensures that we don't have two conflicting saves going on
 		appendTextToLog("trying to save data as user switched away from app");
 		saveChangesCloud(false);
@@ -1304,7 +1304,7 @@ void QMLManager::openNoCloudRepo()
 
 void QMLManager::saveChangesLocal()
 {
-	if (unsaved_changes()) {
+	if (!Command::isClean()) {
 		if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NOCLOUD) {
 			if (empty_string(existing_filename)) {
 				QString filename = nocloud_localstorage();
@@ -1335,7 +1335,7 @@ void QMLManager::saveChangesLocal()
 			set_filename(NULL);
 			return;
 		}
-		mark_divelist_changed(false);
+		Command::setClean();
 	} else {
 		appendTextToLog("local save requested with no unsaved changes");
 	}
@@ -1343,7 +1343,7 @@ void QMLManager::saveChangesLocal()
 
 void QMLManager::saveChangesCloud(bool forceRemoteSync)
 {
-	if (!unsaved_changes() && !forceRemoteSync) {
+	if (Command::isClean() && !forceRemoteSync) {
 		appendTextToLog("asked to save changes but no unsaved changes");
 		return;
 	}
@@ -1729,7 +1729,7 @@ void QMLManager::screenChanged(QScreen *screen)
 
 void QMLManager::quit()
 {
-	if (unsaved_changes())
+	if (!Command::isClean())
 		saveChangesCloud(false);
 	QApplication::quit();
 }
