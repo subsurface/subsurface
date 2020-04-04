@@ -2,6 +2,7 @@
 
 #include "command_base.h"
 #include "core/qthelper.h" // for updateWindowTitle()
+#include "core/divelist.h" // for unsaved_changes()
 #include "core/subsurface-qt/divelistnotifier.h"
 #include <QVector>
 
@@ -31,7 +32,7 @@ void setClean()
 
 bool isClean()
 {
-	return undoStack.isClean();
+	return !unsaved_changes() && undoStack.isClean();
 }
 
 // this can be used to get access to the signals emitted by the QUndoStack
