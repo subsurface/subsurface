@@ -300,6 +300,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 
 void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 {
+	static bool initializeOnce = false;
 	QString stateText;
 	switch (state) {
 	case Qt::ApplicationActive: stateText = "active"; break;
@@ -313,8 +314,9 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 	stateText.append((unsaved_changes() ? QLatin1String("") : QLatin1String("no ")) + QLatin1String("unsaved changes"));
 	appendTextToLog(stateText);
 
-	if (state == Qt::ApplicationActive && !m_initialized) {
+	if (state == Qt::ApplicationActive && !m_initialized && !initializeOnce) {
 		// once the app UI is displayed, finish our setup and mark the app as initialized
+		initializeOnce = true;
 		finishSetup();
 		appInitialized();
 	}
