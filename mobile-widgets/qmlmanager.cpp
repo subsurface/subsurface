@@ -511,7 +511,7 @@ void QMLManager::finishSetup()
 		openLocalThenRemote(url);
 	} else if (!empty_string(existing_filename) &&
 		   qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_UNKNOWN) {
-		setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
+		rememberOldStatus();
 		set_filename(qPrintable(nocloud_localstorage()));
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 		saveCloudCredentials(qPrefCloudStorage::cloud_storage_email(), qPrefCloudStorage::cloud_storage_password(), qPrefCloudStorage::cloud_storage_pin());
@@ -619,7 +619,7 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 		git_local_only = false;
 		loadDivesWithValidCredentials();
 	}
-	setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
+	rememberOldStatus();
 }
 
 bool QMLManager::verifyCredentials(QString email, QString password, QString pin)
@@ -756,7 +756,7 @@ void QMLManager::revertToNoCloudIfNeeded()
 		prefs.cloud_storage_password = NULL;
 		qPrefCloudStorage::set_cloud_storage_email("");
 		qPrefCloudStorage::set_cloud_storage_password("");
-		setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
+		rememberOldStatus();
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 		set_filename(qPrintable(nocloud_localstorage()));
 		setStartPageText(RED_FONT + tr("Failed to connect to cloud server, reverting to no cloud status") + END_FONT);
@@ -2158,6 +2158,11 @@ void QMLManager::setOldStatus(const qPrefCloudStorage::cloud_status value)
 		m_oldStatus = value;
 		emit oldStatusChanged();
 	}
+}
+
+void QMLManager::rememberOldStatus()
+{
+	setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
 }
 
 void QMLManager::divesChanged(const QVector<dive *> &dives, DiveField field)
