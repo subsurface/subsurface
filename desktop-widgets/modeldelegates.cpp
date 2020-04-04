@@ -84,7 +84,6 @@ const QSize& StarWidgetsDelegate::starSize() const
 ComboBoxDelegate::ComboBoxDelegate(QAbstractItemModel *model, QObject *parent, bool allowEdit) : QStyledItemDelegate(parent), model(model)
 {
 	editable = allowEdit;
-	connect(this, &ComboBoxDelegate::closeEditor, this, &ComboBoxDelegate::fixTabBehavior);
 	connect(this, &ComboBoxDelegate::closeEditor, this, &ComboBoxDelegate::editorClosed);
 }
 
@@ -121,7 +120,6 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	currCombo.currRow = index.row();
 	currCombo.model = const_cast<QAbstractItemModel *>(index.model());
 	currCombo.activeText = currCombo.model->data(index).toString();
-	keyboardFinished = false;
 
 	// Current display of things on Gnome3 looks like shit, so
 	// let`s fix that.
@@ -169,16 +167,6 @@ void ComboBoxDelegate::fakeActivation()
 	QStyledItemDelegate::eventFilter(currCombo.comboEditor, &ev);
 }
 
-// This 'reverts' the model data to what we actually choosed,
-// becaus e a TAB is being understood by Qt as 'cancel' while
-// we are on a QComboBox ( but not on a QLineEdit.
-void ComboBoxDelegate::fixTabBehavior()
-{
-	if (keyboardFinished) {
-		setModelData(0, 0, QModelIndex());
-	}
-}
-
 bool ComboBoxDelegate::eventFilter(QObject *object, QEvent *event)
 {
 	// Reacts on Key_UP and Key_DOWN to show the QComboBox - list of choices.
@@ -192,10 +180,8 @@ bool ComboBoxDelegate::eventFilter(QObject *object, QEvent *event)
 					return true;
 				}
 			}
-			if (ev->key() == Qt::Key_Tab || ev->key() == Qt::Key_Enter || ev->key() == Qt::Key_Return) {
+			if (ev->key() == Qt::Key_Tab || ev->key() == Qt::Key_Enter || ev->key() == Qt::Key_Return)
 				currCombo.activeText = currCombo.comboEditor->currentText();
-				keyboardFinished = true;
-			}
 		} else { // the 'Drop Down Menu' part.
 			QKeyEvent *ev = static_cast<QKeyEvent *>(event);
 			if (ev->key() == Qt::Key_Enter || ev->key() == Qt::Key_Return ||

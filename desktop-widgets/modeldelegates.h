@@ -44,11 +44,9 @@ slots:
 	void testActivation(const QModelIndex &currIndex);
 	//HACK: try to get rid of this in the future.
 	void fakeActivation();
-	void fixTabBehavior();
 	virtual void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) = 0;
 private:
 	bool editable;
-	mutable bool keyboardFinished;
 protected:
 	QAbstractItemModel *model;
 	mutable struct CurrSelected {
