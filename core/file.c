@@ -12,7 +12,6 @@
 
 #include "dive.h"
 #include "subsurface-string.h"
-#include "divelist.h"
 #include "errorhelper.h"
 #include "file.h"
 #include "git-access.h"
@@ -297,7 +296,6 @@ int parse_file(const char *filename, struct dive_table *table, struct trip_table
 {
 	struct git_repository *git;
 	const char *branch = NULL;
-	char *current_sha = copy_string(saved_git_id);
 	struct memblock mem;
 	char *fmt;
 	int ret;
@@ -308,22 +306,8 @@ int parse_file(const char *filename, struct dive_table *table, struct trip_table
 	    && git == dummy_git_repository) {
 		/* opening the cloud storage repository failed for some reason
 		 * give up here and don't send errors about git repositories */
-		free(current_sha);
 		return -1;
 	}
-	/* if this is a git repository, do we already have this exact state loaded ?
-	 * get the SHA and compare with what we currently have */
-	if (git && git != dummy_git_repository) {
-		const char *sha = get_sha(git, branch);
-		if (!empty_string(sha) &&
-		    same_string(sha, current_sha) &&
-		    !unsaved_changes()) {
-			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);
-			free(current_sha);
-			return 0;
-		}
-	}
-	free(current_sha);
 	if (git)
 		return git_load_dives(git, branch, table, trips, sites);
 
