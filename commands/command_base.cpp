@@ -2,7 +2,7 @@
 
 #include "command_base.h"
 #include "core/qthelper.h" // for updateWindowTitle()
-#include "core/divelist.h" // for unsaved_changes()
+#include "core/divelist.h" // for unsaved_changes() and mark_divelist_changed
 #include "core/subsurface-qt/divelistnotifier.h"
 #include <QVector>
 
@@ -27,6 +27,7 @@ void clear()
 
 void setClean()
 {
+	mark_divelist_changed(false);
 	undoStack.setClean();
 }
 
