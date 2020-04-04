@@ -587,7 +587,7 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 	qPrefCloudStorage::set_cloud_storage_email(newEmail);
 	qPrefCloudStorage::set_cloud_storage_password(newPassword);
 
-	if (noCloud && cloudCredentialsChanged && dive_table.nr) {
+	if (m_oldStatus == qPrefCloudStorage::CS_NOCLOUD && cloudCredentialsChanged && dive_table.nr) {
 		// we came from NOCLOUD and are connecting to a cloud account;
 		// since we already have dives in the table, let's remember that so we can keep them
 		noCloudToCloud = true;
