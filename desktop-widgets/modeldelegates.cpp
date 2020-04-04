@@ -84,8 +84,8 @@ const QSize& StarWidgetsDelegate::starSize() const
 ComboBoxDelegate::ComboBoxDelegate(QAbstractItemModel *model, QObject *parent, bool allowEdit) : QStyledItemDelegate(parent), model(model)
 {
 	editable = allowEdit;
-	connect(this, &ComboBoxDelegate::closeEditor, this, &ComboBoxDelegate::editorClosed);
 	connect(this, &ComboBoxDelegate::closeEditor, this, &ComboBoxDelegate::fixTabBehavior);
+	connect(this, &ComboBoxDelegate::closeEditor, this, &ComboBoxDelegate::editorClosed);
 }
 
 void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
