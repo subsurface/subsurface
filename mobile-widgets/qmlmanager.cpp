@@ -170,6 +170,14 @@ void QMLManager::usbRescan()
 
 extern void (*uiNotificationCallback)(QString);
 
+// Currently we have two markers for unsaved changes:
+// 1) unsaved_changes() returns true for non-undoable changes.
+// 2) Command::isClean() returns false for undoable changes.
+static bool unsavedChanges()
+{
+	return unsaved_changes() || !Command::isClean();
+}
+
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
 	m_diveListProcessing(false),
@@ -310,7 +318,7 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 	}
 	stateText.prepend("AppState changed to ");
 	stateText.append(" with ");
-	stateText.append((unsaved_changes() ? QLatin1String("") : QLatin1String("no ")) + QLatin1String("unsaved changes"));
+	stateText.append((unsavedChanges() ? QLatin1String("") : QLatin1String("no ")) + QLatin1String("unsaved changes"));
 	appendTextToLog(stateText);
 
 	if (state == Qt::ApplicationActive && !m_initialized) {
@@ -318,7 +326,7 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 		finishSetup();
 		appInitialized();
 	}
-	if (state == Qt::ApplicationInactive && unsaved_changes()) {
+	if (state == Qt::ApplicationInactive && unsavedChanges()) {
 		// saveChangesCloud ensures that we don't have two conflicting saves going on
 		appendTextToLog("trying to save data as user switched away from app");
 		saveChangesCloud(false);
@@ -1307,7 +1315,7 @@ void QMLManager::openNoCloudRepo()
 
 void QMLManager::saveChangesLocal()
 {
-	if (unsaved_changes()) {
+	if (unsavedChanges()) {
 		if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NOCLOUD) {
 			if (empty_string(existing_filename)) {
 				QString filename = nocloud_localstorage();
@@ -1340,7 +1348,7 @@ void QMLManager::saveChangesLocal()
 
 void QMLManager::saveChangesCloud(bool forceRemoteSync)
 {
-	if (!unsaved_changes() && !forceRemoteSync) {
+	if (!unsavedChanges() && !forceRemoteSync) {
 		appendTextToLog("asked to save changes but no unsaved changes");
 		return;
 	}
@@ -1726,7 +1734,7 @@ void QMLManager::screenChanged(QScreen *screen)
 
 void QMLManager::quit()
 {
-	if (unsaved_changes())
+	if (unsavedChanges())
 		saveChangesCloud(false);
 	QApplication::quit();
 }
