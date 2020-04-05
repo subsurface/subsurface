@@ -1,3 +1,4 @@
+Desktop: fix creation of new cylinder types (names couldn't be the start of already existing names)
 Mobile: remove locking of data storage access
 Mobile: performance improvements for dive list
 Mobile: user notification of progress during startup
