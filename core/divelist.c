@@ -807,7 +807,7 @@ void mark_divelist_changed(bool changed)
 	updateWindowTitle();
 }
 
-int unsaved_changes()
+bool is_divelist_changed()
 {
 	return dive_list_changed;
 }

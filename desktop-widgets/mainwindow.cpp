@@ -586,11 +586,11 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 }
 
 // Currently we have two markers for unsaved changes:
-// 1) unsaved_changes() returns true for non-undoable changes.
+// 1) is_divelist_changed() returns true for non-undoable changes.
 // 2) Command::isClean() returns false for undoable changes.
 static bool unsavedChanges()
 {
-	return unsaved_changes() || !Command::isClean();
+	return is_divelist_changed() || !Command::isClean();
 }
 
 void MainWindow::on_actionCloudOnline_triggered()
