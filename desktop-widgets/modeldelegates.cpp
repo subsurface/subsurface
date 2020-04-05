@@ -336,19 +336,16 @@ void WSInfoDelegate::setModelData(QWidget*, QAbstractItemModel*, const QModelInd
 {
 	WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
 	WSInfoModel *wsim = WSInfoModel::instance();
-	QModelIndexList matches = wsim->match(wsim->index(0, 0), Qt::DisplayRole, currCombo.activeText, 1, Qt::MatchFixedString | Qt::MatchWrap);
-	int row;
-	if (matches.isEmpty()) {
-		// we need to add this puppy
-		wsim->insertRows(wsim->rowCount(), 1);
-		wsim->setData(wsim->index(wsim->rowCount() - 1, 0), currCombo.activeText);
-		row = wsim->rowCount() - 1;
-	} else {
-		row = matches.first().row();
+	QString weightName = currCombo.activeText;
+	QModelIndexList matches = wsim->match(wsim->index(0, 0), Qt::DisplayRole, weightName, 1, Qt::MatchFixedString | Qt::MatchWrap);
+	int grams = 0;
+	if (!matches.isEmpty()) {
+		int row = matches.first().row();
+		weightName = matches.first().data().toString();
+		grams = wsim->data(wsim->index(row, WSInfoModel::GR)).toInt();
 	}
-	int grams = wsim->data(wsim->index(row, WSInfoModel::GR)).toInt();
 
-	mymodel->setTempWS(currCombo.currRow, weightsystem_t{ { grams }, copy_qstring(currCombo.activeText) });
+	mymodel->setTempWS(currCombo.currRow, weightsystem_t{ { grams }, copy_qstring(weightName) });
 }
 
 WSInfoDelegate::WSInfoDelegate(QObject *parent) : ComboBoxDelegate(WSInfoModel::instance(), parent, true)
