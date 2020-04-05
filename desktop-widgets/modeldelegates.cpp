@@ -240,7 +240,7 @@ void TankInfoDelegate::setModelData(QWidget*, QAbstractItemModel*, const QModelI
 {
 	QAbstractItemModel *mymodel = currCombo.model;
 	TankInfoModel *tanks = TankInfoModel::instance();
-	QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, currCombo.activeText);
+	QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, currCombo.activeText, 1, Qt::MatchFixedString | Qt::MatchWrap);
 	int row;
 	QString cylinderName = currCombo.activeText;
 	if (matches.isEmpty()) {
@@ -336,7 +336,7 @@ void WSInfoDelegate::setModelData(QWidget*, QAbstractItemModel*, const QModelInd
 {
 	WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
 	WSInfoModel *wsim = WSInfoModel::instance();
-	QModelIndexList matches = wsim->match(wsim->index(0, 0), Qt::DisplayRole, currCombo.activeText);
+	QModelIndexList matches = wsim->match(wsim->index(0, 0), Qt::DisplayRole, currCombo.activeText, 1, Qt::MatchFixedString | Qt::MatchWrap);
 	int row;
 	if (matches.isEmpty()) {
 		// we need to add this puppy
