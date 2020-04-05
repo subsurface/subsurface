@@ -638,12 +638,6 @@ bool MainWindow::okToClose(QString message)
 	return true;
 }
 
-void MainWindow::setFileClean()
-{
-	mark_divelist_changed(false);
-	Command::setClean();
-}
-
 void MainWindow::closeCurrentFile()
 {
 	/* free the dives and trips */

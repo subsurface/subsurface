@@ -23,7 +23,7 @@
 #include "trip.h"
 #include "imagedownloader.h"
 #if defined(SUBSURFACE_DESKTOP) | defined(SUBSURFACE_MOBILE)
-#include "commands/command.h" // For Command::isClean()
+#include "commands/command.h" // For Command::isClean() and Command::setFileClean()
 #endif
 #include <QFile>
 #include <QRegExp>
@@ -1674,5 +1674,13 @@ extern "C" bool unsavedChanges()
 	return is_divelist_changed() || !Command::isClean();
 #else
 	return is_divelist_changed();
+#endif
+}
+
+extern "C" void setFileClean()
+{
+	mark_divelist_changed(false);
+#if defined(SUBSURFACE_DESKTOP) | defined(SUBSURFACE_MOBILE)
+	Command::setClean();
 #endif
 }

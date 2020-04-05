@@ -21,7 +21,7 @@ void TestRenumber::testMerge()
 	add_imported_dives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS);
 	QCOMPARE(dive_table.nr, 1);
 	QCOMPARE(unsavedChanges(), 1);
-	mark_divelist_changed(false);
+	setFileClean();
 }
 
 void TestRenumber::testMergeAndAppend()

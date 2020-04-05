@@ -1332,8 +1332,7 @@ void QMLManager::saveChangesLocal()
 			set_filename(NULL);
 			return;
 		}
-		mark_divelist_changed(false);
-		Command::setClean();
+		setFileClean();
 	} else {
 		appendTextToLog("local save requested with no unsaved changes");
 	}
