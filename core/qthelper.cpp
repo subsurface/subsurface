@@ -22,6 +22,9 @@
 #include "tag.h"
 #include "trip.h"
 #include "imagedownloader.h"
+#if defined(SUBSURFACE_DESKTOP) | defined(SUBSURFACE_MOBILE)
+#include "commands/command.h" // For Command::isClean()
+#endif
 #include <QFile>
 #include <QRegExp>
 #include <QDir>
@@ -1660,4 +1663,16 @@ extern "C" char *get_changes_made()
 		return copy_qstring(changesCallback());
 	else
 		return nullptr;
+}
+
+// Currently we have two markers for unsaved changes:
+// 1) is_divelist_changed() returns true for non-undoable changes.
+// 2) Command::isClean() returns false for undoable changes.
+extern "C" bool unsavedChanges()
+{
+#if defined(SUBSURFACE_DESKTOP) | defined(SUBSURFACE_MOBILE)
+	return is_divelist_changed() || !Command::isClean();
+#else
+	return is_divelist_changed();
+#endif
 }

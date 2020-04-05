@@ -155,6 +155,7 @@ pressure_t string_to_pressure(const char *str);
 volume_t string_to_volume(const char *str, pressure_t workp);
 fraction_t string_to_fraction(const char *str);
 char *get_changes_made();
+bool unsavedChanges();
 #ifdef __cplusplus
 }
 #endif

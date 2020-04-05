@@ -3,6 +3,7 @@
 #include "core/divesite.h"
 #include "core/trip.h"
 #include "core/file.h"
+#include "core/qthelper.h"
 #include <QTextStream>
 
 void TestRenumber::setup()
@@ -19,7 +20,7 @@ void TestRenumber::testMerge()
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47b.xml", &table, &trips, &sites), 0);
 	add_imported_dives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS);
 	QCOMPARE(dive_table.nr, 1);
-	QCOMPARE(is_divelist_changed(), 1);
+	QCOMPARE(unsavedChanges(), 1);
 	mark_divelist_changed(false);
 }
 
