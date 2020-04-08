@@ -660,8 +660,37 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 		divesite = data->dive_site;
 	if (what.tags)
 		tags = taglist_copy(data->tag_list);
-	if (what.cylinders)
+	if (what.cylinders) {
 		copy_cylinders(&data->cylinders, &cylinders);
+		// Paste cylinders is "special":
+		// 1) For cylinders that exist in the destination dive we keep the gas-mix and pressures.
+		// 2) For cylinders that do not yet exist in the destination dive, we set the pressures to 0, i.e. unset.
+		//    Moreover, for these we set the manually_added flag, because they weren't downloaded from a DC.
+		for (int i = 0; i < d->cylinders.nr && i < cylinders.nr; ++i) {
+			const cylinder_t &src = d->cylinders.cylinders[i];
+			cylinder_t &dst = cylinders.cylinders[i];
+			dst.gasmix = src.gasmix;
+			dst.start = src.start;
+			dst.end = src.end;
+			dst.sample_start = src.sample_start;
+			dst.sample_end = src.sample_end;
+			dst.depth = src.depth;
+			dst.manually_added = src.manually_added;
+			dst.gas_used = src.gas_used;
+			dst.deco_gas_used = src.deco_gas_used;
+			dst.cylinder_use = src.cylinder_use;
+			dst.bestmix_o2 = src.bestmix_o2;
+			dst.bestmix_he = src.bestmix_he;
+		}
+		for (int i = d->cylinders.nr; i < cylinders.nr; ++i) {
+			cylinder_t &cyl = cylinders.cylinders[i];
+			cyl.start.mbar = 0;
+			cyl.end.mbar = 0;
+			cyl.sample_start.mbar = 0;
+			cyl.sample_end.mbar = 0;
+			cyl.manually_added = true;
+		}
+	}
 	if (what.weights)
 		copy_weights(&data->weightsystems, &weightsystems);
 }
