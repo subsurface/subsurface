@@ -146,7 +146,6 @@ void FullText::populate()
 	// we want this to be two calls as the second text is overwritten below by the lines starting with "\r"
 	uiNotification(QObject::tr("Create full text index"));
 	uiNotification(QObject::tr("start processing"));
-	words.clear();
 	int i;
 	dive *d;
 	for_each_dive(i, d) {
