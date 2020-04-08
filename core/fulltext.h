@@ -24,7 +24,7 @@ struct dive;
 void fulltext_register(struct dive *d); // Note: can be called repeatedly
 void fulltext_unregister(struct dive *d); // Note: can be called repeatedly
 void fulltext_unregister_all(); // Unregisters all dives in the dive table
-void fulltext_reload(); // Registers all dives in the dive table
+void fulltext_populate(); // Registers all dives in the dive table
 
 #ifdef __cplusplus
 }

@@ -831,7 +831,7 @@ void process_loaded_dives()
 	/* Autogroup dives if desired by user. */
 	autogroup_dives(&dive_table, &trip_table);
 
-	fulltext_reload();
+	fulltext_populate();
 }
 
 /*

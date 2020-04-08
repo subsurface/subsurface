@@ -18,7 +18,7 @@ class FullText {
 	std::map<QString, std::vector<dive *>> words; // Dives that belong to each word
 public:
 
-	void reload(); // Rebuild from current dive_table
+	void populate(); // Rebuild from current dive_table
 	void registerDive(struct dive *d); // Note: can be called repeatedly
 	void unregisterDive(struct dive *d); // Note: can be called repeatedly
 	void unregisterAll(); // Unregister all dives in the dive table
@@ -51,9 +51,9 @@ void fulltext_unregister_all()
 	self.unregisterAll();
 }
 
-void fulltext_reload()
+void fulltext_populate()
 {
-	self.reload();
+	self.populate();
 }
 
 } // extern "C"
@@ -141,7 +141,7 @@ static std::vector<QString> getWords(const dive *d)
 	return res;
 }
 
-void FullText::reload()
+void FullText::populate()
 {
 	// we want this to be two calls as the second text is overwritten below by the lines starting with "\r"
 	uiNotification(QObject::tr("Create full text index"));
