@@ -97,7 +97,7 @@ Other third party library dependencies
 --------------------------------------
 
 In order for our cloud storage to be fully functional you need
-libgit2 0.23 or newer.
+libgit2 0.26 or newer.
 
 
 cmake build system

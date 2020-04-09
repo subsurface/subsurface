@@ -1022,10 +1022,8 @@ int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree
 
 static int get_authorship(git_repository *repo, git_signature **authorp)
 {
-#if LIBGIT2_VER_MAJOR || LIBGIT2_VER_MINOR >= 20
 	if (git_signature_default(authorp, repo) == 0)
 		return 0;
-#endif
 	/* try to fetch the user info from the OS, otherwise use default values. */
 	struct user_info user = { .name = NULL, .email = NULL };
 	subsurface_user_info(&user);
