@@ -120,7 +120,6 @@ mkdir -p install-root
 		-DLIBGIT2_INCLUDE_DIR=$RPM_BUILD_DIR/install-root/include \
 		-DLIBDIVECOMPUTER_LIBRARIES=$RPM_BUILD_DIR/install-root/lib/libdivecomputer.a \
 		-DLIBGIT2_LIBRARIES=$RPM_BUILD_DIR/install-root/lib/libgit2.a \
-		-DUSE_LIBGIT23_API=ON \
 		-DCMAKE_C_FLAGS:STRING="%optflags" \
 		-DCMAKE_CXX_FLAGS:STRING="%optflags" \
 		-DNO_PRINTING=OFF \
