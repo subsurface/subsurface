@@ -245,8 +245,8 @@ fi
 if [ "$PLATFORM" = Darwin ] ; then
 	SH_LIB_EXT=dylib
 	if [ ! "$BUILD_DEPS" == "1" ] ; then
-		pkg-config --exists libgit2 && LIBGIT=$(pkg-config --modversion libgit2 | cut -d. -f2)
-		if [[ "$LIBGIT" -gt "23" ]] ; then
+		pkg-config --exists libgit2 && LIBGIT=$(pkg-config --modversion libgit2) && LIBGITMAJ=$(echo $LIBGIT | cut -d. -f1) && LIBGIT=$(echo $LIBGIT | cut -d. -f2)
+		if [[ "$LIBGITMAJ" -gt "0" || "$LIBGIT" -gt "25" ]] ; then
 			LIBGIT2_FROM_PKGCONFIG="-DLIBGIT2_FROM_PKGCONFIG=ON"
 		fi
 	fi
@@ -258,12 +258,20 @@ else
 	# first check pkgconfig (that will capture our own local build if
 	# this script has been run before)
 	if pkg-config --exists libgit2 ; then
-		LIBGIT=$(pkg-config --modversion libgit2 | cut -d. -f2)
-		LIBGIT2_FROM_PKGCONFIG="-DLIBGIT2_FROM_PKGCONFIG=ON"
+		LIBGIT=$(pkg-config --modversion libgit2)
+		LIBGITMAJ=$(echo $LIBGIT | cut -d. -f1)
+		LIBGIT=$(echo $LIBGIT | cut -d. -f2)
+		if [[ "$LIBGITMAJ" -gt "0" || "$LIBGIT" -gt "25" ]] ; then
+			LIBGIT2_FROM_PKGCONFIG="-DLIBGIT2_FROM_PKGCONFIG=ON"
+		fi
 	fi
-	if [[ "$LIBGIT" -lt "26" ]] ; then
+	if [[ "$LIBGITMAJ" -lt "1" && "$LIBGIT" -lt "26" ]] ; then
 		# maybe there's a system version that's new enough?
-		LIBGIT=$(ldconfig -p | grep libgit2\\.so\\. | awk -F. '{ print $NF }')
+		# Ugh that's uggly - read the ultimate filename, split at the last 'o' which gets us ".0.26.3" or ".1.0.0"
+		# since that starts with a dot, the field numbers in the cut need to be one higher
+		LIBGIT=$(realpath $(ldconfig -p | grep libgit2\\.so\\. | cut -d\  -f4) | awk -Fo '{ print $NF }')
+		LIBGITMAJ=$(echo $LIBGIT | cut -d. -f2)
+		LIBGIT=$(echo $LIBGIT | cut -d. -f3)
 	fi
 fi
 
@@ -312,7 +320,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	fi
 fi
 
-if [[ "$LIBGIT" -lt "26" ]] ; then
+if [[ "$LIBGITMAJ" -lt "1" && "$LIBGIT" -lt "26" ]] ; then
 	LIBGIT_ARGS=" -DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include -DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT "
 
 	cd "$SRC"
