@@ -79,42 +79,34 @@ int DivePictureModel::columnCount(const QModelIndex&) const
 
 QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 {
-	QVariant ret;
 	if (!index.isValid())
-		return ret;
+		return QVariant();
 
 	const PictureEntry &entry = pictures.at(index.row());
 	if (index.column() == 0) {
 		switch (role) {
 		case Qt::ToolTipRole:
-			ret = entry.filename;
-			break;
+			return entry.filename;
 		case Qt::DecorationRole:
-			ret = entry.image.scaled(size, size, Qt::KeepAspectRatio);
-			break;
+			return entry.image.scaled(size, size, Qt::KeepAspectRatio);
 		case Qt::DisplayRole:
-			ret = QFileInfo(entry.filename).fileName();
-			break;
+			return QFileInfo(entry.filename).fileName();
 		case Qt::DisplayPropertyRole:
-			ret = QFileInfo(entry.filename).filePath();
-			break;
+			return QFileInfo(entry.filename).filePath();
 		case Qt::UserRole:
-			ret = entry.diveId;
-			break;
+			return entry.diveId;
 		case Qt::UserRole + 1:
-			ret = entry.offsetSeconds;
-			break;
+			return entry.offsetSeconds;
 		case Qt::UserRole + 2:
-			ret = entry.length.seconds;
+			return entry.length.seconds;
 		}
 	} else if (index.column() == 1) {
 		switch (role) {
 		case Qt::DisplayRole:
-			ret = entry.filename;
-			break;
+			return entry.filename;
 		}
 	}
-	return ret;
+	return QVariant();
 }
 
 // Return true if we actually removed a picture
