@@ -228,7 +228,6 @@ extern void create_picture(const char *filename, int shift_time, bool match_all)
 extern void dive_add_picture(struct dive *d, struct picture *newpic);
 extern bool dive_remove_picture(struct dive *d, const char *filename);
 extern bool picture_check_valid_time(timestamp_t timestamp, int shift_time);
-extern void picture_free(struct picture *picture);
 
 extern bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc, int idx);
 extern int explicit_first_cylinder(const struct dive *dive, const struct divecomputer *dc);

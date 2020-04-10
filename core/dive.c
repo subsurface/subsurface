@@ -3538,14 +3538,6 @@ void dive_add_picture(struct dive *dive, struct picture *newpic)
 	return;
 }
 
-void picture_free(struct picture *picture)
-{
-	if (!picture)
-		return;
-	free(picture->filename);
-	free(picture);
-}
-
 // Return true if picture was found and deleted
 bool dive_remove_picture(struct dive *d, const char *filename)
 {
@@ -3554,7 +3546,7 @@ bool dive_remove_picture(struct dive *d, const char *filename)
 		picture = &(*picture)->next;
 	if (*picture) {
 		struct picture *temp = (*picture)->next;
-		picture_free(*picture);
+		free_picture(*picture);
 		*picture = temp;
 		invalidate_dive_cache(current_dive);
 		return true;
