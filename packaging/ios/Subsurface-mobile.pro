@@ -62,6 +62,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/load-git.c \
 	../../core/parse-xml.c \
 	../../core/parse.c \
+	../../core/picture.c \
 	../../core/import-suunto.c \
 	../../core/import-shearwater.c \
 	../../core/import-cobalt.c \
@@ -201,6 +202,7 @@ HEADERS += \
 	../../core/statistics.h \
 	../../core/units.h \
 	../../core/version.h \
+	../../core/picture.h \
 	../../core/planner.h \
 	../../core/divesite.h \
 	../../core/checkcloudconnection.h \

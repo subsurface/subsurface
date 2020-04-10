@@ -19,6 +19,7 @@
 #include <sys/time.h>
 #include "exif.h"
 #include "file.h"
+#include "picture.h"
 #include "tag.h"
 #include "trip.h"
 #include "imagedownloader.h"

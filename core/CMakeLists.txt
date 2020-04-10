@@ -125,6 +125,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	parse-xml.c
 	parse.c
 	parse.h
+	picture.c
+	picture.h
 	planner.c
 	planner.h
 	plannernotes.c

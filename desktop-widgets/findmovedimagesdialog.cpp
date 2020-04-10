@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "findmovedimagesdialog.h"
+#include "core/picture.h"
 #include "core/qthelper.h"
 #include "desktop-widgets/divelistview.h"	// TODO: used for lastUsedImageDir()
 #include "qt-models/divepicturemodel.h"

@@ -22,6 +22,7 @@
 #include "device.h"
 #include "membuffer.h"
 #include "git-access.h"
+#include "picture.h"
 #include "qthelper.h"
 #include "tag.h"
 

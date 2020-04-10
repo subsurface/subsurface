@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/divepicturemodel.h"
-#include "core/dive.h"
 #include "core/metrics.h"
-#include "core/divelist.h"
+#include "core/divelist.h" // for mark_divelist_changed()
 #include "core/imagedownloader.h"
+#include "core/picture.h"
 #include "core/qthelper.h"
 
 #include <QFileInfo>

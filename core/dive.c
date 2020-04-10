@@ -14,6 +14,7 @@
 #include "qthelper.h"
 #include "metadata.h"
 #include "membuffer.h"
+#include "picture.h"
 #include "tag.h"
 #include "trip.h"
 #include "structured_list.h"
@@ -2697,14 +2698,6 @@ static void free_dc(struct divecomputer *dc)
 	free(dc);
 }
 
-void free_picture(struct picture *picture)
-{
-	if (picture) {
-		free(picture->filename);
-		free(picture);
-	}
-}
-
 static int same_sample(struct sample *a, struct sample *b)
 {
 	if (a->time.seconds != b->time.seconds)
@@ -3408,15 +3401,6 @@ void set_git_prefs(const char *prefs)
 		git_prefs.show_ccr_sensors = 1;
 	if (strstr(prefs, "PO2_GRAPH"))
 		git_prefs.pp_graphs.po2 = 1;
-}
-
-struct picture *alloc_picture()
-{
-	struct picture *pic = malloc(sizeof(struct picture));
-	if (!pic)
-		exit(1);
-	memset(pic, 0, sizeof(struct picture));
-	return pic;
 }
 
 static bool new_picture_for_dive(struct dive *d, const char *filename)

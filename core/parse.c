@@ -11,6 +11,7 @@
 #include "errorhelper.h"
 #include "subsurface-string.h"
 #include "parse.h"
+#include "picture.h"
 #include "trip.h"
 #include "device.h"
 #include "gettext.h"

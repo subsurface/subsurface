@@ -10,6 +10,7 @@
 #include "divesite.h"
 #include "errorhelper.h"
 #include "file.h"
+#include "picture.h"
 #include "tag.h"
 #include "trip.h"
 #include <stdio.h>
