@@ -1,3 +1,4 @@
+Mobile: fix misdetection of Shearwater Petrel 2 on iOS
 Desktop: fix creation of new cylinder types (names couldn't be the start of already existing names)
 Mobile: fix no-cloud to cloud transition
 Mobile: remove locking of data storage access
