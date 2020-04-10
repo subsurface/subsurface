@@ -2,6 +2,7 @@
 #include "testpicture.h"
 #include "core/divesite.h"
 #include "core/errorhelper.h"
+#include "core/picture.h"
 #include "core/trip.h"
 #include "core/file.h"
 #include <QString>

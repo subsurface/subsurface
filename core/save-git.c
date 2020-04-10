@@ -25,6 +25,7 @@
 #include "membuffer.h"
 #include "git-access.h"
 #include "version.h"
+#include "picture.h"
 #include "qthelper.h"
 #include "gettext.h"
 #include "tag.h"

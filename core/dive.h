@@ -211,19 +211,9 @@ extern struct event *get_next_divemodechange(const struct event **evd, bool upda
 extern enum divemode_t get_divemode_at_time(const struct divecomputer *dc, int dtime, const struct event **ev_dmc);
 
 /* picture list and methods related to dive picture handling */
-struct picture {
-	char *filename;
-	offset_t offset;
-	location_t location;
-	struct picture *next;
-};
-
 #define FOR_EACH_PICTURE(_dive) \
 	if (_dive)              \
 		for (struct picture *picture = (_dive)->picture_list; picture; picture = picture->next)
-
-extern struct picture *alloc_picture();
-extern void free_picture(struct picture *picture);
 extern void create_picture(const char *filename, int shift_time, bool match_all);
 extern void dive_add_picture(struct dive *d, struct picture *newpic);
 extern bool dive_remove_picture(struct dive *d, const char *filename);

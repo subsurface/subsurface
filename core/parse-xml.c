@@ -29,6 +29,7 @@
 #include "trip.h"
 #include "device.h"
 #include "membuffer.h"
+#include "picture.h"
 #include "qthelper.h"
 #include "tag.h"
 

@@ -10,6 +10,7 @@
 #include "core/trip.h"
 #include "core/qthelper.h"
 #include "core/divesite.h"
+#include "core/picture.h"
 #include "core/subsurface-string.h"
 #include "core/tag.h"
 #include "qt-models/divelocationmodel.h" // For the dive-site field ids

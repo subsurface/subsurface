@@ -3,6 +3,7 @@
 #include "qt-models/diveplotdatamodel.h"
 #include "core/subsurface-string.h"
 #include "core/qthelper.h"
+#include "core/picture.h"
 #include "core/profile.h"
 #include "core/settings/qPrefDisplay.h"
 #include "core/settings/qPrefTechnicalDetails.h"
