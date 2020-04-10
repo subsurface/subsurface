@@ -1020,7 +1020,7 @@ int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree
 	return git_checkout_tree(repo, (git_object *) tree, &opts);
 }
 
-static int get_authorship(git_repository *repo, git_signature **authorp)
+int get_authorship(git_repository *repo, git_signature **authorp)
 {
 	if (git_signature_default(authorp, repo) == 0)
 		return 0;

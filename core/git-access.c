@@ -349,6 +349,7 @@ static int try_to_git_merge(git_repository *repo, git_reference **local_p, git_r
 	git_commit *local_commit, *remote_commit, *base_commit;
 	git_index *merged_index;
 	git_merge_options merge_options;
+	struct membuffer msg = { 0, 0, NULL};
 
 	if (verbose) {
 		char outlocal[41], outremote[41];
@@ -430,10 +431,12 @@ static int try_to_git_merge(git_repository *repo, git_reference **local_p, git_r
 		goto write_error;
 	if (git_tree_lookup(&merged_tree, repo, &merge_oid))
 		goto write_error;
-	if (git_signature_default(&author, repo) < 0)
-		if (git_signature_now(&author, "Subsurface", "noemail@given") < 0)
-			goto write_error;
-	if (git_commit_create_v(&commit_oid, repo, NULL, author, author, NULL, "automatic merge", merged_tree, 2, local_commit, remote_commit))
+	if (get_authorship(repo, &author) < 0)
+		goto write_error;
+	const char *user_agent = subsurface_user_agent();
+	put_format(&msg, "Automatic merge\n\nCreated by %s\n", user_agent);
+	free((void *)user_agent);
+	if (git_commit_create_v(&commit_oid, repo, NULL, author, author, NULL, mb_cstring(&msg), merged_tree, 2, local_commit, remote_commit))
 		goto write_error;
 	if (git_commit_lookup(&commit, repo, &commit_oid))
 		goto write_error;
@@ -450,12 +453,14 @@ static int try_to_git_merge(git_repository *repo, git_reference **local_p, git_r
 	git_signature_free(author);
 	if (verbose)
 		fprintf(stderr, "Successfully merged repositories");
+	free_buffer(&msg);
 	return 0;
 
 diverged_error:
 	return report_error(translate("gettextFromC", "Remote storage and local data diverged"));
 
 write_error:
+	free_buffer(&msg);
 	return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: writing the data failed (%s)"), giterr_last()->message);
 }
 
