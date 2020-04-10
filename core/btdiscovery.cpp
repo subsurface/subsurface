@@ -42,7 +42,10 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	    btName.startsWith("Teric") ||
 	    btName.startsWith("NERD")) {
 		vendor = "Shearwater";
-		if (btName.startsWith("Petrel")) product = "Petrel"; // or petrel 2?
+		// both the Petrel and Petrel 2 identify as "Petrel" as BT/BLE device
+		// but only the Petrel 2 is listed as available dive computer on iOS (which requires BLE support)
+		// so always pick the "Petrel 2" as product when seeing a Petrel
+		if (btName.startsWith("Petrel")) product = "Petrel 2";
 		if (btName.startsWith("Perdix")) product = "Perdix";
 		if (btName.startsWith("Predator")) product = "Predator";
 		if (btName.startsWith("Teric")) product = "Teric";
