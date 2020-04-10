@@ -227,7 +227,6 @@ extern void free_picture(struct picture *picture);
 extern void create_picture(const char *filename, int shift_time, bool match_all);
 extern void dive_add_picture(struct dive *d, struct picture *newpic);
 extern bool dive_remove_picture(struct dive *d, const char *filename);
-extern unsigned int dive_get_picture_count(struct dive *d);
 extern bool picture_check_valid_time(timestamp_t timestamp, int shift_time);
 extern void picture_free(struct picture *picture);
 
