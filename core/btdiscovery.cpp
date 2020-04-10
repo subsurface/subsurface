@@ -34,13 +34,11 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		// just use a default product that allows the codoe to download from the
 		// user's dive computer
 		else product = "OSTC 2";
-	}
-
-	if (btName.startsWith("Predator") ||
-	    btName.startsWith("Petrel") ||
-	    btName.startsWith("Perdix") ||
-	    btName.startsWith("Teric") ||
-	    btName.startsWith("NERD")) {
+	} else if (btName.startsWith("Predator") ||
+		    btName.startsWith("Petrel") ||
+		    btName.startsWith("Perdix") ||
+		    btName.startsWith("Teric") ||
+		    btName.startsWith("NERD")) {
 		vendor = "Shearwater";
 		// both the Petrel and Petrel 2 identify as "Petrel" as BT/BLE device
 		// but only the Petrel 2 is listed as available dive computer on iOS (which requires BLE support)
@@ -51,31 +49,21 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		if (btName.startsWith("Teric")) product = "Teric";
 		if (btName.startsWith("NERD")) product = "Nerd"; // next line might override this
 		if (btName.startsWith("NERD 2")) product = "Nerd 2";
-	}
-
-	if (btName.startsWith("EON Steel")) {
+	} else if (btName.startsWith("EON Steel")) {
 		vendor = "Suunto";
 		product = "EON Steel";
-	}
-
-	if (btName.startsWith("EON Core")) {
+	} else if (btName.startsWith("EON Core")) {
 		vendor = "Suunto";
 		product = "EON Core";
-	}
-
-	if (btName.startsWith("Suunto D5")) {
+	} else if (btName.startsWith("Suunto D5")) {
 		vendor = "Suunto";
 		product = "D5";
-	}
-
-	if (btName.startsWith("G2")  || btName.startsWith("Aladin") || btName.startsWith("HUD")) {
+	} else if (btName.startsWith("G2")  || btName.startsWith("Aladin") || btName.startsWith("HUD")) {
 		vendor = "Scubapro";
 		if (btName.startsWith("G2")) product = "G2";
 		if (btName.startsWith("HUD")) product = "G2 HUD";
 		if (btName.startsWith("Aladin")) product = "Aladin Sport Matrix";
-	}
-
-	if (btName.startsWith("Mares")) {
+	} else if (btName.startsWith("Mares")) {
 		vendor = "Mares";
 		// we don't know which of the dive computers it is,
 		// so let's just randomly pick one
@@ -83,66 +71,51 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		// Some we can pick out directly
 		if (btName.startsWith("Mares Genius"))
 			product = "Genius";
-	}
-
-	if (btName.startsWith("CARTESIO_")) {
+	} else if (btName.startsWith("CARTESIO_")) {
 		vendor = "Cressi";
 		product = "Cartesio";
-	}
-
-	if (btName.startsWith("GOA_")) {
+	} else if (btName.startsWith("GOA_")) {
 		vendor = "Cressi";
 		product = "Goa";
-	}
-
-	// The Pelagic dive computers (generally branded as Oceanic or Aqualung)
-	// show up with a two-byte model code followed by six bytes of serial
-	// number. The model code matches the hex model (so "FQ" is 0x4651,
-	// where 'F' is 46h and 'Q' is 51h in ASCII).
-	if (btName.contains(QRegularExpression("^FI\\d{6}$"))) {
+	} else if (btName.contains(QRegularExpression("^FI\\d{6}$"))) {
+		// The Pelagic dive computers (generally branded as Oceanic or Aqualung)
+		// show up with a two-byte model code followed by six bytes of serial
+		// number. The model code matches the hex model (so "FQ" is 0x4651,
+		// where 'F' is 46h and 'Q' is 51h in ASCII).
 		vendor = "Aqualung";
 		product = "i200c";
-	}
-
-	if (btName.contains(QRegularExpression("^FH\\d{6}$"))) {
+	} else if (btName.contains(QRegularExpression("^FH\\d{6}$"))) {
 		vendor = "Aqualung";
 		product = "i300c";
-	}
-
-	if (btName.contains(QRegularExpression("^FQ\\d{6}$"))) {
+	} else if (btName.contains(QRegularExpression("^FQ\\d{6}$"))) {
 		vendor = "Aqualung";
 		product = "i770R";
-	}
-
-	if (btName.contains(QRegularExpression("^FR\\d{6}$"))) {
+	} else if (btName.contains(QRegularExpression("^FR\\d{6}$"))) {
 		vendor = "Aqualung";
 		product = "i550c";
-	}
-
-	if (btName.contains(QRegularExpression("^ER\\d{6}$"))) {
+	} else if (btName.contains(QRegularExpression("^ER\\d{6}$"))) {
 		vendor = "Oceanic";
 		product = "Pro Plus X";
-	}
-
-	if (btName.contains(QRegularExpression("^FS\\d{6}$"))) {
+	} else if (btName.contains(QRegularExpression("^FS\\d{6}$"))) {
 		vendor = "Oceanic";
 		product = "Geo 4.0";
-	}
-
-	// The Ratio bluetooth name looks like the Pelagic ones,
-	// but that seems to be just happenstance.
-	if (btName.contains(QRegularExpression("^DS\\d{6}"))) {
+	} else if (btName.contains(QRegularExpression("^DS\\d{6}"))) {
+		// The Ratio bluetooth name looks like the Pelagic ones,
+		// but that seems to be just happenstance.
 		vendor = "Ratio";
 		product = "iX3M GPS Easy"; // we don't know which of the GPS models, so set one
-	}
-
-	if (btName == "COSMIQ") {
+	} else if (btName == "COSMIQ") {
 		vendor = "Deepblu";
 		product = "Cosmiq+";
 	}
 
-	if (!vendor.isEmpty() && !product.isEmpty())
-		return descriptorLookup.value(vendor + product);
+	// check if we found a known dive computer
+	if (!vendor.isEmpty() && !product.isEmpty()) {
+		dc_descriptor_t *lookup = descriptorLookup.value(vendor + product);
+		if (!lookup)
+			qWarning("known dive computer %s not found in descriptorLookup", qPrintable(QString(vendor + product)));
+		return lookup;
+	}
 
 	return nullptr;
 }
