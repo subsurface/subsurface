@@ -3538,14 +3538,6 @@ void dive_add_picture(struct dive *dive, struct picture *newpic)
 	return;
 }
 
-unsigned int dive_get_picture_count(struct dive *dive)
-{
-	unsigned int i = 0;
-	FOR_EACH_PICTURE (dive)
-		i++;
-	return i;
-}
-
 void picture_free(struct picture *picture)
 {
 	if (!picture)
