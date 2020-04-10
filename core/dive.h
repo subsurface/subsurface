@@ -322,12 +322,6 @@ extern int save_dive_sites_logic(const char *filename, const struct dive_site *s
 struct membuffer;
 extern void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize);
 
-struct user_info {
-	char *name;
-	char *email;
-};
-
-extern void subsurface_user_info(struct user_info *);
 extern void subsurface_console_init(void);
 extern void subsurface_console_exit(void);
 extern bool subsurface_user_is_root(void);

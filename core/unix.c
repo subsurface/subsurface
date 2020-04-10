@@ -34,36 +34,6 @@ bool subsurface_ignore_font(const char *font)
 	return false;
 }
 
-void subsurface_user_info(struct user_info *user)
-{
-	struct passwd *pwd = getpwuid(getuid());
-	const char *username = getenv("USER");
-
-	if (pwd) {
-		if (!empty_string(pwd->pw_gecos)) {
-			user->name = strdup(pwd->pw_gecos);
-			// We only want the name, not the office or phone number
-			char *c = user->name;
-			while (*c) {
-				if (*c == ',') {
-					*c = '\0';
-					break;
-				}
-				++c;
-			}
-		}
-		if (!username)
-			username = pwd->pw_name;
-	}
-	if (!empty_string(username)) {
-		char hostname[64];
-		struct membuffer mb = {};
-		gethostname(hostname, sizeof(hostname));
-		put_format(&mb, "%s@%s", username, hostname);
-		user->email = detach_cstring(&mb);
-	}
-}
-
 static const char *system_default_path_append(const char *append)
 {
 	const char *home = getenv("HOME");

@@ -20,12 +20,6 @@
 #include <zip.h>
 #include <sys/stat.h>
 
-void subsurface_user_info(struct user_info *info)
-{
-	UNUSED(info);
-	/* Nothing, let's use libgit2-20 on MacOS */
-}
-
 /* macos defines CFSTR to create a CFString object from a constant,
  * but no similar macros if a C string variable is supposed to be
  * the argument. We add this here (hardcoding the default allocator
