@@ -345,7 +345,6 @@ extern struct event *clone_event(const struct event *src_ev);
 extern void copy_events(const struct divecomputer *s, struct divecomputer *d);
 extern void copy_events_until(const struct dive *sd, struct dive *dd, int time);
 extern void free_events(struct event *ev);
-extern void copy_cylinders(const struct cylinder_table *s, struct cylinder_table *d);
 extern void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_only);
 extern void copy_samples(const struct divecomputer *s, struct divecomputer *d);
 extern bool is_cylinder_used(const struct dive *dive, int idx);

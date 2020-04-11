@@ -619,14 +619,6 @@ int nr_weightsystems(const struct dive *dive)
 	return dive->weightsystems.nr;
 }
 
-void copy_cylinders(const struct cylinder_table *s, struct cylinder_table *d)
-{
-	int i;
-	clear_cylinder_table(d);
-	for (i = 0; i < s->nr; i++)
-		add_cloned_cylinder(d, s->cylinders[i]);
-}
-
 void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_only)
 {
 	int i;

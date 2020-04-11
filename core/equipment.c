@@ -42,6 +42,14 @@ void copy_weights(const struct weightsystem_table *s, struct weightsystem_table 
 		add_cloned_weightsystem(d, s->weightsystems[i]);
 }
 
+void copy_cylinders(const struct cylinder_table *s, struct cylinder_table *d)
+{
+	int i;
+	clear_cylinder_table(d);
+	for (i = 0; i < s->nr; i++)
+		add_cloned_cylinder(d, s->cylinders[i]);
+}
+
 /* weightsystem table functions */
 //static MAKE_GET_IDX(weightsystem_table, weightsystem_t, weightsystems)
 static MAKE_GROW_TABLE(weightsystem_table, weightsystem_t, weightsystems)
