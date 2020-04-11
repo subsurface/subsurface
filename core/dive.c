@@ -3532,7 +3532,7 @@ bool dive_remove_picture(struct dive *d, const char *filename)
 		struct picture *temp = (*picture)->next;
 		free_picture(*picture);
 		*picture = temp;
-		invalidate_dive_cache(current_dive);
+		invalidate_dive_cache(d);
 		return true;
 	}
 	return false;
