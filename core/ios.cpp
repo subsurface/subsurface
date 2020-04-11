@@ -37,11 +37,6 @@ bool subsurface_ignore_font(const char*)
 	return false;
 }
 
-void subsurface_user_info(struct user_info *)
-{
-	// We use of at least libgit2-0.20
-}
-
 static const char *system_default_path_append(const char *append)
 {
 	// Qt appears to find a working path for us - let's just go with that

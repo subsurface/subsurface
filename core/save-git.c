@@ -1021,25 +1021,18 @@ int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree
 	return git_checkout_tree(repo, (git_object *) tree, &opts);
 }
 
-static int get_authorship(git_repository *repo, git_signature **authorp)
+int get_authorship(git_repository *repo, git_signature **authorp)
 {
-#if LIBGIT2_VER_MAJOR || LIBGIT2_VER_MINOR >= 20
 	if (git_signature_default(authorp, repo) == 0)
 		return 0;
-#endif
-	/* try to fetch the user info from the OS, otherwise use default values. */
-	struct user_info user = { .name = NULL, .email = NULL };
-	subsurface_user_info(&user);
-	if (!user.name || !*user.name)
-		user.name = strdup("Subsurface");
-	if (!user.email)
-		user.email = strdup("subsurface-app-account@subsurface-divelog.org");
 
-	/* git_signature_default() is too recent */
-	int ret = git_signature_now(authorp, user.name, user.email);
-	free((void *)user.name);
-	free((void *)user.email);
-	return ret;
+#ifdef SUBSURFACE_MOBILE
+#define APPNAME "Subsurface-mobile"
+#else
+#define APPNAME "Subsurface"
+#endif
+	return git_signature_now(authorp, APPNAME, "subsurface-app-account@subsurface-divelog.org");
+#undef APPNAME
 }
 
 static void create_commit_message(struct membuffer *msg, bool create_empty)
