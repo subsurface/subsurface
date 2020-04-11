@@ -11,6 +11,7 @@
 #include "device.h"
 #include "divelist.h"
 #include "divesite.h"
+#include "errorhelper.h"
 #include "qthelper.h"
 #include "metadata.h"
 #include "membuffer.h"
@@ -126,10 +127,10 @@ int event_is_gaschange(const struct event *ev)
 		ev->type == SAMPLE_EVENT_GASCHANGE2;
 }
 
-struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name)
+struct event *create_event(unsigned int time, int type, int flags, int value, const char *name)
 {
 	int gas_index = -1;
-	struct event *ev, **p;
+	struct event *ev;
 	unsigned int size, len = strlen(name);
 
 	size = sizeof(*ev) + len + 1;
@@ -164,18 +165,85 @@ struct event *add_event(struct divecomputer *dc, unsigned int time, int type, in
 		break;
 	}
 
+	return ev;
+}
+
+/* warning: does not test idx for validity */
+struct event *create_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx)
+{
+	/* The gas switch event format is insane for historical reasons */
+	struct gasmix mix = get_cylinder(dive, idx)->gasmix;
+	int o2 = get_o2(mix);
+	int he = get_he(mix);
+	struct event *ev;
+	int value;
+
+	o2 = (o2 + 5) / 10;
+	he = (he + 5) / 10;
+	value = o2 + (he << 16);
+
+	ev = create_event(seconds, he ? SAMPLE_EVENT_GASCHANGE2 : SAMPLE_EVENT_GASCHANGE, 0, value, "gaschange");
+	ev->gas.index = idx;
+	ev->gas.mix = mix;
+	return ev;
+}
+
+struct event *clone_event_rename(const struct event *ev, const char *name)
+{
+	return create_event(ev->time.seconds, ev->type, ev->flags, ev->value, name);
+}
+
+void add_event_to_dc(struct divecomputer *dc, struct event *ev)
+{
+	struct event **p;
+
 	p = &dc->events;
 
 	/* insert in the sorted list of events */
-	while (*p && (*p)->time.seconds <= time)
+	while (*p && (*p)->time.seconds <= ev->time.seconds)
 		p = &(*p)->next;
 	ev->next = *p;
 	*p = ev;
+}
+
+struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name)
+{
+	struct event *ev = create_event(time, type, flags, value, name);
+
+	if (!ev)
+		return NULL;
+
+	add_event_to_dc(dc, ev);
+
 	remember_event(name);
 	return ev;
 }
 
-static int same_event(const struct event *a, const struct event *b)
+void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx)
+{
+	/* sanity check so we don't crash */
+	if (idx < 0 || idx >= dive->cylinders.nr) {
+		report_error("Unknown cylinder index: %d", idx);
+		return;
+	}
+	struct event *ev = create_gas_switch_event(dive, dc, seconds, idx);
+	add_event_to_dc(dc, ev);
+}
+
+/* Substitutes an event in a divecomputer for another. No reordering is performed! */
+void swap_event(struct divecomputer *dc, struct event *from, struct event *to)
+{
+	for (struct event **ep = &dc->events; *ep; ep = &(*ep)->next) {
+		if (*ep == from) {
+			to->next = from->next;
+			*ep = to;
+			from->next = NULL; // For good measure.
+			break;
+		}
+	}
+}
+
+bool same_event(const struct event *a, const struct event *b)
 {
 	if (a->time.seconds != b->time.seconds)
 		return 0;
@@ -188,19 +256,15 @@ static int same_event(const struct event *a, const struct event *b)
 	return !strcmp(a->name, b->name);
 }
 
-void remove_event(struct event *event)
+/* Remove given event from dive computer. Does *not* free the event. */
+void remove_event_from_dc(struct divecomputer *dc, struct event *event)
 {
-	struct event **ep = &current_dc->events;
-	while (ep && !same_event(*ep, event))
-		ep = &(*ep)->next;
-	if (ep) {
-		/* we can't link directly with event->next
-		 * because 'event' can be a copy from another
-		 * dive (for instance the displayed_dive
-		 * that we use on the interface to show things). */
-		struct event *temp = (*ep)->next;
-		free(*ep);
-		*ep = temp;
+	for (struct event **ep = &dc->events; *ep; ep = &(*ep)->next) {
+		if (*ep == event) {
+			*ep = event->next;
+			event->next = NULL; // For good measure.
+			break;
+		}
 	}
 }
 

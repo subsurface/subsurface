@@ -87,6 +87,9 @@ signals:
 	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
 
 	void cylindersReset(const QVector<dive *> &dives);
+	void cylinderAdded(dive *d, int pos);
+	void cylinderRemoved(dive *d, int pos);
+	void cylinderEdited(dive *d, int pos);
 	void weightsystemsReset(const QVector<dive *> &dives);
 	void weightAdded(dive *d, int pos);
 	void weightRemoved(dive *d, int pos);
@@ -109,6 +112,9 @@ signals:
 	// Filter-related signals
 	void numShownChanged();
 	void filterReset();
+
+	// Event-related signals. Currently, we're very blunt: only one signal for any changes to the events.
+	void eventsChanged(dive *d);
 
 	// This signal is emited every time a command is executed.
 	// This is used to hide an old multi-dives-edited warning message.

@@ -120,19 +120,6 @@ struct ev_select *ev_namelist;
 int evn_allocated;
 int evn_used;
 
-#if WE_DONT_USE_THIS /* we need to implement event filters in Qt */
-int evn_foreach (void (*callback)(const char *, bool *, void *), void *data)
-{
-	int i;
-
-	for (i = 0; i < evn_used; i++) {
-		/* here we display an event name on screen - so translate */
-		callback(translate("gettextFromC", ev_namelist[i].ev_name), &ev_namelist[i].plot_ev, data);
-	}
-	return i;
-}
-#endif /* WE_DONT_USE_THIS */
-
 void clear_events(void)
 {
 	for (int i = 0; i < evn_used; i++)

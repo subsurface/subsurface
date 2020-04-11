@@ -5,6 +5,7 @@
 #define COMMAND_EDIT_H
 
 #include "command_base.h"
+#include "command.h" // for EditCylinderType
 #include "core/subsurface-qt/divelistnotifier.h"
 
 #include <QVector>
@@ -377,6 +378,49 @@ private:
 	void redo() override;
 };
 
+class AddCylinder : public EditDivesBase {
+public:
+	AddCylinder(bool currentDiveOnly);
+	~AddCylinder();
+private:
+	cylinder_t cyl;
+	void undo() override;
+	void redo() override;
+	bool workToBeDone() override;
+};
+
+class EditCylinderBase : public EditDivesBase {
+protected:
+	EditCylinderBase(int index, bool currentDiveOnly, bool nonProtectedOnly, int sameCylinderFlags);
+	~EditCylinderBase();
+
+	std::vector<cylinder_t> cyl;
+	std::vector<int> indexes; // An index for each dive in the dives vector.
+	bool workToBeDone() override;
+};
+
+class RemoveCylinder : public EditCylinderBase {
+public:
+	RemoveCylinder(int index, bool currentDiveOnly);
+private:
+	void undo() override;
+	void redo() override;
+};
+
+// Instead of implementing an undo command for every single field in a cylinder,
+// we only have one and pass an edit "type". We either edit the type, pressure
+// or gasmix fields. This has mostly historical reasons rooted in the way the
+// CylindersModel code works. The model works for undo and also in the planner
+// without undo. Having a single undo-command simplifies the code there.
+class EditCylinder : public EditCylinderBase {
+public:
+	EditCylinder(int index, cylinder_t cyl, EditCylinderType type, bool currentDiveOnly); // Clones cylinder
+private:
+	EditCylinderType type;
+	void undo() override;
+	void redo() override;
+};
+
 #ifdef SUBSURFACE_MOBILE
 // Edit a full dive. This is used on mobile where we don't have per-field granularity.
 // It may add or edit a dive site.
@@ -406,5 +450,4 @@ private:
 #endif // SUBSURFACE_MOBILE
 
 } // namespace Command
-
 #endif

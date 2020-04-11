@@ -83,6 +83,8 @@ QLocale getLocale();
 QVector<QPair<QString, int>> selectedDivesGasUsed();
 QString getUserAgent();
 QString printGPSCoords(const location_t *loc);
+std::vector<int> get_cylinder_map_for_remove(int count, int n);
+std::vector<int> get_cylinder_map_for_add(int count, int n);
 
 extern QString (*changesCallback)();
 void uiNotification(const QString &msg);

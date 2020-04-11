@@ -710,6 +710,8 @@ void MainWindow::on_actionPrint_triggered()
 
 void MainWindow::disableShortcuts(bool disablePaste)
 {
+	undoAction->setEnabled(false);
+	redoAction->setEnabled(false);
 	ui.actionPreviousDC->setShortcut(QKeySequence());
 	ui.actionNextDC->setShortcut(QKeySequence());
 	ui.copy->setShortcut(QKeySequence());
@@ -719,6 +721,8 @@ void MainWindow::disableShortcuts(bool disablePaste)
 
 void MainWindow::enableShortcuts()
 {
+	undoAction->setEnabled(true);
+	redoAction->setEnabled(true);
 	ui.actionPreviousDC->setShortcut(Qt::Key_Left);
 	ui.actionNextDC->setShortcut(Qt::Key_Right);
 	ui.copy->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
@@ -918,7 +922,7 @@ void MainWindow::on_actionReplanDive_triggered()
 		divePlannerWidget->setSalinity(current_dive->salinity);
 	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
 	reset_cylinders(&displayed_dive, true);
-	DivePlannerPointsModel::instance()->cylindersModel()->updateDive();
+	DivePlannerPointsModel::instance()->cylindersModel()->updateDive(&displayed_dive);
 }
 
 void MainWindow::on_actionDivePlanner_triggered()
@@ -1088,40 +1092,6 @@ void MainWindow::on_actionViewAll_triggered()
 	ui.bottomSplitter->setCollapsible(1,false);
 }
 
-void MainWindow::enterEditState()
-{
-	undoAction->setEnabled(false);
-	redoAction->setEnabled(false);
-	stateBeforeEdit = state;
-	if (state == VIEWALL || state == INFO_MAXIMIZED)
-		return;
-	toggleCollapsible(true);
-	beginChangeState(EDIT);
-	ui.topSplitter->setSizes({ EXPANDED, EXPANDED });
-	ui.mainSplitter->setSizes({ EXPANDED, COLLAPSED });
-	int appW = qApp->desktop()->size().width();
-	QList<int> infoProfileSizes { round_int(appW * 0.3), round_int(appW * 0.7) };
-
-	QSettings settings;
-	settings.beginGroup("MainWindow");
-	if (settings.value("mainSplitter").isValid()) {
-		ui.topSplitter->restoreState(settings.value("topSplitter").toByteArray());
-		if (ui.topSplitter->sizes().first() == 0 || ui.topSplitter->sizes().last() == 0)
-			ui.topSplitter->setSizes(infoProfileSizes);
-	} else {
-		ui.topSplitter->setSizes(infoProfileSizes);
-	}
-}
-
-void MainWindow::exitEditState()
-{
-	undoAction->setEnabled(true);
-	redoAction->setEnabled(true);
-	if (stateBeforeEdit == state)
-		return;
-	enterState(stateBeforeEdit);
-}
-
 void MainWindow::enterState(CurrentState newState)
 {
 	state = newState;
@@ -1140,8 +1110,6 @@ void MainWindow::enterState(CurrentState newState)
 		break;
 	case PROFILE_MAXIMIZED:
 		on_actionViewProfile_triggered();
-		break;
-	case EDIT:
 		break;
 	}
 }
@@ -1793,20 +1761,18 @@ void MainWindow::editCurrentDive()
 	struct dive *d = current_dive;
 	QString defaultDC(d->dc.model);
 	DivePlannerPointsModel::instance()->clear();
-	disableShortcuts();
 	if (defaultDC == "manually added dive") {
+		disableShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 		graphics->setAddState();
 		setApplicationState(ApplicationState::EditDive);
 		DivePlannerPointsModel::instance()->loadFromDive(d);
-		mainTab->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
+		mainTab->enableEdition();
 	} else if (defaultDC == "planned dive") {
+		disableShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 		setApplicationState(ApplicationState::EditPlannedDive);
 		DivePlannerPointsModel::instance()->loadFromDive(d);
-		mainTab->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
-	} else {
-		setApplicationState(ApplicationState::EditDive);
 		mainTab->enableEdition();
 	}
 }

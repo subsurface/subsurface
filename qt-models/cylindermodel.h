@@ -31,9 +31,11 @@ public:
 	};
 
 	enum Roles {
-		PASS_IN_ROLE = Qt::UserRole + 1 // For setting data: don't do any conversions
+		TEMP_ROLE = Qt::UserRole + 1, // Temporarily set data, but don't store in dive
+		COMMIT_ROLE, // Save the temporary data to the dive. Must be set with Column == TYPE.
+		REVERT_ROLE // Revert to original data from dive. Must be set with Column == TYPE.
 	};
-	explicit CylindersModel(QObject *parent = 0);
+	explicit CylindersModel(bool planner, QObject *parent = 0); // First argument: true if this model is used for the planner
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
@@ -41,23 +43,36 @@ public:
 
 	void add();
 	void clear();
-	void updateDive();
+	void updateDive(dive *d);
 	void updateDecoDepths(pressure_t olddecopo2);
 	void updateTrashIcon();
 	void moveAtFirst(int cylid);
-	bool changed;
 	QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 	bool updateBestMixes();
 	bool cylinderUsed(int i) const;
+
+signals:
+	void divesEdited(int num);
 
 public
 slots:
 	void remove(QModelIndex index);
 	void cylindersReset(const QVector<dive *> &dives);
+	void cylinderAdded(dive *d, int pos);
+	void cylinderRemoved(dive *d, int pos);
+	void cylinderEdited(dive *d, int pos);
 
 private:
-	int rows;
+	dive *d;
+	bool inPlanner;
+	// Used if we temporarily change a line because the user is selecting a weight type
+	int tempRow;
+	cylinder_t tempCyl;
+
 	cylinder_t *cylinderAt(const QModelIndex &index);
+	void initTempCyl(int row);
+	void clearTempCyl();
+	void commitTempCyl(int row);
 };
 
 // Cylinder model that hides unused cylinders if the pref.show_unused_cylinders flag is not set
@@ -68,11 +83,7 @@ public:
 	CylindersModel *model(); // Access to unfiltered base model
 
 	void clear();
-	void add();
-	void updateDive();
-public
-slots:
-	void remove(QModelIndex index);
+	void updateDive(dive *d);
 private:
 	CylindersModel source;
 	bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;

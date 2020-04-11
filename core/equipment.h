@@ -75,6 +75,8 @@ extern weightsystem_t clone_weightsystem(weightsystem_t ws);
 extern void free_weightsystem(weightsystem_t ws);
 extern void copy_cylinder_types(const struct dive *s, struct dive *d);
 extern void add_cloned_weightsystem(struct weightsystem_table *t, weightsystem_t ws);
+extern cylinder_t clone_cylinder(cylinder_t cyl);
+extern void free_cylinder(cylinder_t cyl);
 extern cylinder_t *add_empty_cylinder(struct cylinder_table *t);
 extern void add_cloned_cylinder(struct cylinder_table *t, cylinder_t cyl);
 extern cylinder_t *get_cylinder(const struct dive *d, int idx);
@@ -82,13 +84,14 @@ extern cylinder_t *get_or_create_cylinder(struct dive *d, int idx);
 extern void add_cylinder_description(const cylinder_type_t *);
 extern void add_weightsystem_description(const weightsystem_t *);
 extern bool same_weightsystem(weightsystem_t w1, weightsystem_t w2);
-extern bool same_cylinder(cylinder_t cyl1, cylinder_t cyl2);
 extern void remove_cylinder(struct dive *dive, int idx);
 extern void remove_weightsystem(struct dive *dive, int idx);
 extern void set_weightsystem(struct dive *dive, int idx, weightsystem_t ws);
 extern void reset_cylinders(struct dive *dive, bool track_gas);
 extern int gas_volume(const cylinder_t *cyl, pressure_t p); /* Volume in mliter of a cylinder at pressure 'p' */
 extern int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table *cylinders);
+extern void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl); /* dive is needed to fill out MOD, which depends on salinity. */
+extern cylinder_t create_new_cylinder(const struct dive *dive); /* dive is needed to fill out MOD, which depends on salinity. */
 #ifdef DEBUG_CYL
 extern void dump_cylinders(struct dive *dive, bool verbose);
 #endif

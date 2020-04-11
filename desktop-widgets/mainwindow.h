@@ -58,7 +58,6 @@ public:
 		INFO_MAXIMIZED,
 		PROFILE_MAXIMIZED,
 		LIST_MAXIMIZED,
-		EDIT,
 	};
 
 	MainWindow();
@@ -81,8 +80,6 @@ public:
 	NotificationWidget *getNotificationWidget();
 	void enableDisableCloudActions();
 	void enableDisableOtherDCsActions();
-	void enterEditState();
-	void exitEditState();
 	void editDiveSite(dive_site *ds);
 
 	std::unique_ptr<MainTab> mainTab;

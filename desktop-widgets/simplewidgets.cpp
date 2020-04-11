@@ -23,7 +23,6 @@
 #include "commands/command.h"
 #include "core/metadata.h"
 #include "core/tag.h"
-#include "core/divelist.h" // for mark_divelist_changed
 
 double MinMaxAvgWidget::average() const
 {
@@ -174,38 +173,21 @@ RenumberDialog::RenumberDialog(QWidget *parent) : QDialog(parent), selectedOnly(
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 }
 
-SetpointDialog *SetpointDialog::instance()
-{
-	static SetpointDialog *self = new SetpointDialog(MainWindow::instance());
-	return self;
-}
-
-void SetpointDialog::setpointData(struct divecomputer *divecomputer, int second)
-{
-	dc = divecomputer;
-	time = second < 0 ? 0 : second;
-}
-
 void SetpointDialog::buttonClicked(QAbstractButton *button)
 {
-	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole && dc) {
-		add_event(dc, time, SAMPLE_EVENT_PO2, 0, (int)(1000.0 * ui.spinbox->value()),
-			QT_TRANSLATE_NOOP("gettextFromC", "SP change"));
-		invalidate_dive_cache(current_dive);
-	}
-	mark_divelist_changed(true);
-	MainWindow::instance()->graphics->replot();
+	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole)
+		Command::addEventSetpointChange(d, dcNr, time, pressure_t { (int)(1000.0 * ui.spinbox->value()) });
 }
 
-SetpointDialog::SetpointDialog(QWidget *parent) : QDialog(parent),
-	dc(0), time(0)
+SetpointDialog::SetpointDialog(struct dive *dIn, int dcNrIn, int seconds) : QDialog(MainWindow::instance()),
+	d(dIn), dcNr(dcNrIn), time(seconds < 0 ? 0 : seconds)
 {
 	ui.setupUi(this);
-	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
+	connect(ui.buttonBox, &QDialogButtonBox::clicked, this, &SetpointDialog::buttonClicked);
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
-	connect(close, SIGNAL(activated()), this, SLOT(close()));
+	connect(close, &QShortcut::activated, this, &QDialog::close);
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
-	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
+	connect(quit, &QShortcut::activated, MainWindow::instance(), &QWidget::close);
 }
 
 ShiftTimesDialog *ShiftTimesDialog::instance()

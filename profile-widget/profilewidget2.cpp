@@ -30,6 +30,7 @@
 #include "core/qthelper.h"
 #include "core/gettextfromc.h"
 #include "core/imagedownloader.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #endif
 
 #include <libdivecomputer/parser.h>
@@ -170,6 +171,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	connect(DivePictureModel::instance(), &DivePictureModel::rowsInserted, this, &ProfileWidget2::plotPictures);
 	connect(DivePictureModel::instance(), &DivePictureModel::picturesRemoved, this, &ProfileWidget2::removePictures);
 	connect(DivePictureModel::instance(), &DivePictureModel::modelReset, this, &ProfileWidget2::plotPictures);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &ProfileWidget2::profileChanged);
+	connect(&diveListNotifier, &DiveListNotifier::eventsChanged, this, &ProfileWidget2::profileChanged);
 #endif // SUBSURFACE_MOBILE
 
 #if !defined(QT_NO_DEBUG) && defined(SHOW_PLOT_INFO_TABLE)
@@ -1449,69 +1452,37 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	if (current_dive && current_dive->cylinders.nr > 1) {
 		// if we have more than one gas, offer to switch to another one
 		QMenu *gasChange = m.addMenu(tr("Add gas change"));
-		for (int i = 0; i < current_dive->cylinders.nr; i++) {
-			QAction *action = new QAction(&m);
-			action->setText(QString(current_dive->cylinders.cylinders[i].type.description) + tr(" (cyl. %1)").arg(i + 1));
-			connect(action, &QAction::triggered, [this, i, seconds] { changeGas(i, seconds); } );
-			gasChange->addAction(action);
-		}
+		for (int i = 0; i < current_dive->cylinders.nr; i++)
+			gasChange->addAction(QString(current_dive->cylinders.cylinders[i].type.description) + tr(" (cyl. %1)").arg(i + 1),
+					     [this, i, seconds] { changeGas(i, seconds); });
 	}
-	QAction *setpointAction = m.addAction(tr("Add setpoint change"), this, &ProfileWidget2::addSetpointChange);
-	setpointAction->setData(event->globalPos());
-	QAction *action = m.addAction(tr("Add bookmark"), this, &ProfileWidget2::addBookmark);
-	action->setData(event->globalPos());
-	QAction *splitAction = m.addAction(tr("Split dive into two"), this, &ProfileWidget2::splitDive);
-	splitAction->setData(event->globalPos());
+	m.addAction(tr("Add setpoint change"), [this, seconds]() { ProfileWidget2::addSetpointChange(seconds); });
+	m.addAction(tr("Add bookmark"), [this, seconds]() { addBookmark(seconds); });
+	m.addAction(tr("Split dive into two"), [this, seconds]() { splitDive(seconds); });
 	const struct event *ev = NULL;
 	enum divemode_t divemode = UNDEF_COMP_TYPE;
-	QString gas = action->text();
 
 	get_current_divemode(current_dc, seconds, &ev, &divemode);
 	QMenu *changeMode = m.addMenu(tr("Change divemode"));
-	if (divemode != OC) {
-		QAction *action = new QAction(&m);
-		action->setText(gettextFromC::tr(divemode_text_ui[OC]));
-		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwitch()));
-		action->setData(event->globalPos());
-		changeMode->addAction(action);
-	}
-	if (divemode != CCR) {
-		QAction *action = new QAction(&m);
-		action->setText(gettextFromC::tr(divemode_text_ui[CCR]));
-		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwitch()));
-		action->setData(event->globalPos());
-		changeMode->addAction(action);
-	}
-	if (divemode != PSCR) {
-		QAction *action = new QAction(&m);
-		action->setText(gettextFromC::tr(divemode_text_ui[PSCR]));
-		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwitch()));
-		action->setData(event->globalPos());
-		changeMode->addAction(action);
-	}
+	if (divemode != OC)
+		changeMode->addAction(gettextFromC::tr(divemode_text_ui[OC]),
+				      [this, seconds](){ addDivemodeSwitch(seconds, OC); });
+	if (divemode != CCR)
+		changeMode->addAction(gettextFromC::tr(divemode_text_ui[CCR]),
+				      [this, seconds](){ addDivemodeSwitch(seconds, CCR); });
+	if (divemode != PSCR)
+		changeMode->addAction(gettextFromC::tr(divemode_text_ui[PSCR]),
+				      [this, seconds](){ addDivemodeSwitch(seconds, PSCR); });
 
 	if (same_string(current_dc->model, "manually added dive"))
 		m.addAction(tr("Edit the profile"), this, SIGNAL(editCurrentDive()));
 
 	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
-		action = new QAction(&m);
-		action->setText(tr("Remove event"));
-		action->setData(QVariant::fromValue<void *>(item)); // so we know what to remove.
-		connect(action, SIGNAL(triggered(bool)), this, SLOT(removeEvent()));
-		m.addAction(action);
-		action = new QAction(&m);
-		action->setText(tr("Hide similar events"));
-		action->setData(QVariant::fromValue<void *>(item));
-		connect(action, SIGNAL(triggered(bool)), this, SLOT(hideEvents()));
-		m.addAction(action);
+		m.addAction(tr("Remove event"), [this,item] { removeEvent(item); });
+		m.addAction(tr("Hide similar events"), [this, item] { hideEvents(item); });
 		struct event *dcEvent = item->getEvent();
-		if (dcEvent->type == SAMPLE_EVENT_BOOKMARK) {
-			action = new QAction(&m);
-			action->setText(tr("Edit name"));
-			action->setData(QVariant::fromValue<void *>(item));
-			connect(action, SIGNAL(triggered(bool)), this, SLOT(editName()));
-			m.addAction(action);
-		}
+		if (dcEvent->type == SAMPLE_EVENT_BOOKMARK)
+			m.addAction(tr("Edit name"), [this, item] { editName(item); });
 #if 0 // TODO::: FINISH OR DISABLE
 		QPointF scenePos = mapToScene(event->pos());
 		int idx = getEntryFromPos(scenePos);
@@ -1561,10 +1532,8 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 			break;
 		}
 	}
-	if (some_hidden) {
-		action = m.addAction(tr("Unhide all events"), this, &ProfileWidget2::unhideEvents);
-		action->setData(event->globalPos());
-	}
+	if (some_hidden)
+		m.addAction(tr("Unhide all events"), this, &ProfileWidget2::unhideEvents);
 	m.exec(event->globalPos());
 }
 
@@ -1583,10 +1552,8 @@ void ProfileWidget2::makeFirstDC()
 	Command::moveDiveComputerToFront(current_dive, dc_number);
 }
 
-void ProfileWidget2::hideEvents()
+void ProfileWidget2::hideEvents(DiveEventItem *item)
 {
-	QAction *action = qobject_cast<QAction *>(sender());
-	DiveEventItem *item = static_cast<DiveEventItem *>(action->data().value<void *>());
 	struct event *event = item->getEvent();
 
 	if (QMessageBox::question(this,
@@ -1618,67 +1585,59 @@ void ProfileWidget2::unhideEvents()
 		item->show();
 }
 
-void ProfileWidget2::removeEvent()
+// The profile displays a copy of the current_dive, namely displayed_dive.
+// Therefore, the events we get are likewise copies. This function finds
+// the original event. TODO: Remove function once the profile can display
+// arbitrary dives.
+static event *find_event(const struct event *ev)
 {
-	QAction *action = qobject_cast<QAction *>(sender());
-	DiveEventItem *item = static_cast<DiveEventItem *>(action->data().value<void *>());
-	struct event *event = item->getEvent();
+	struct divecomputer *dc = current_dc;
+	if (!dc)
+		return nullptr;
+	for (struct event *act = current_dc->events; act; act = act->next) {
+		if (same_event(act, ev))
+			return act;
+	}
+	return nullptr;
+}
+
+void ProfileWidget2::removeEvent(DiveEventItem *item)
+{
+	struct event *event = find_event(item->getEvent());
+	if (!event)
+		return;
 
 	if (QMessageBox::question(this, TITLE_OR_TEXT(
 					  tr("Remove the selected event?"),
 					  tr("%1 @ %2:%3").arg(event->name).arg(event->time.seconds / 60).arg(event->time.seconds % 60, 2, 10, QChar('0'))),
-				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
-		remove_event(event);
-		invalidate_dive_cache(current_dive);
-		mark_divelist_changed(true);
-		replot();
-	}
+				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
+		Command::removeEvent(current_dive, dc_number, event);
 }
 
-void ProfileWidget2::addBookmark()
+void ProfileWidget2::addBookmark(int seconds)
 {
-	QAction *action = qobject_cast<QAction *>(sender());
-	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
-	add_event(current_dc, lrint(timeAxis->valueAt(scenePos)), SAMPLE_EVENT_BOOKMARK, 0, 0, "bookmark");
-	invalidate_dive_cache(current_dive);
-	mark_divelist_changed(true);
-	replot();
+	Command::addEventBookmark(current_dive, dc_number, seconds);
 }
 
-void ProfileWidget2::addDivemodeSwitch()
+void ProfileWidget2::addDivemodeSwitch(int seconds, int divemode)
 {
-	int i;
-	QAction *action = qobject_cast<QAction *>(sender());
-	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
-	for (i = 0; i < NUM_DIVEMODE; i++)
-		if (gettextFromC::tr(divemode_text_ui[i]) == action->text())
-			add_event(current_dc, lrint(timeAxis->valueAt(scenePos)), 8, 0, i,
-				QT_TRANSLATE_NOOP("gettextFromC", "modechange"));
-	invalidate_dive_cache(current_dive);
-	mark_divelist_changed(true);
-	replot();
+	Command::addEventDivemodeSwitch(current_dive, dc_number, seconds, divemode);
 }
 
-void ProfileWidget2::addSetpointChange()
+void ProfileWidget2::addSetpointChange(int seconds)
 {
-	QAction *action = qobject_cast<QAction *>(sender());
-	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
-	SetpointDialog::instance()->setpointData(current_dc, lrint(timeAxis->valueAt(scenePos)));
-	SetpointDialog::instance()->show();
+	SetpointDialog dialog(current_dive, dc_number, seconds);
+	dialog.exec();
 }
 
-void ProfileWidget2::splitDive()
+void ProfileWidget2::splitDive(int seconds)
 {
 #ifndef SUBSURFACE_MOBILE
 	// Make sure that this is an actual dive and we're not in add mode
 	dive *d = get_dive_by_uniq_id(displayed_dive.id);
 	if (!d)
 		return;
-	QAction *action = qobject_cast<QAction *>(sender());
-	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
-	duration_t time;
-	time.seconds = lrint(timeAxis->valueAt(scenePos));
-	Command::splitDives(d, time);
+	Command::splitDives(d, duration_t{ seconds });
 #endif
 }
 
@@ -1687,26 +1646,7 @@ void ProfileWidget2::changeGas(int tank, int seconds)
 	if (!current_dive || tank < 0 || tank >= current_dive->cylinders.nr)
 		return;
 
-	// if there is a gas change at this time stamp, remove it before adding the new one
-	struct event *gasChangeEvent = current_dc->events;
-	while ((gasChangeEvent = get_next_event_mutable(gasChangeEvent, "gaschange")) != NULL) {
-		if (gasChangeEvent->time.seconds == seconds) {
-			remove_event(gasChangeEvent);
-			gasChangeEvent = current_dc->events;
-		} else {
-			gasChangeEvent = gasChangeEvent->next;
-		}
-	}
-	add_gas_switch_event(current_dive, current_dc, seconds, tank);
-	// this means we potentially have a new tank that is being used and needs to be shown
-	fixup_dive(current_dive);
-	invalidate_dive_cache(current_dive);
-
-	// FIXME - this no longer gets written to the dive list - so we need to enableEdition() here
-
-	emit updateDiveInfo();
-	mark_divelist_changed(true);
-	replot();
+	Command::addGasSwitch(current_dive, dc_number, seconds, tank);
 }
 #endif
 
@@ -1752,11 +1692,11 @@ double ProfileWidget2::getFontPrintScale()
 }
 
 #ifndef SUBSURFACE_MOBILE
-void ProfileWidget2::editName()
+void ProfileWidget2::editName(DiveEventItem *item)
 {
-	QAction *action = qobject_cast<QAction *>(sender());
-	DiveEventItem *item = static_cast<DiveEventItem *>(action->data().value<void *>());
-	struct event *event = item->getEvent();
+	struct event *event = find_event(item->getEvent());
+	if (!event)
+		return;
 	bool ok;
 	QString newName = QInputDialog::getText(this, tr("Edit name of bookmark"),
 						tr("Custom name:"), QLineEdit::Normal,
@@ -1768,14 +1708,7 @@ void ProfileWidget2::editName()
 			lengthWarning.exec();
 			return;
 		}
-		// order is important! first update the current dive (by matching the unchanged event),
-		// then update the displayed dive (as event is part of the events on displayed dive
-		// and will be freed as part of changing the name!
-		update_event_name(current_dive, event, qPrintable(newName));
-		update_event_name(&displayed_dive, event, qPrintable(newName));
-		invalidate_dive_cache(current_dive);
-		mark_divelist_changed(true);
-		replot();
+		Command::renameEvent(current_dive, dc_number, event, qPrintable(newName));
 	}
 }
 #endif
@@ -2243,6 +2176,13 @@ void ProfileWidget2::removePictures(const QVector<QString> &fileUrls)
 			{ return std::find(fileUrls.begin(), fileUrls.end(), e.filename) != fileUrls.end(); });
 	pictures.erase(it, pictures.end());
 	calculatePictureYPositions();
+}
+
+void ProfileWidget2::profileChanged(dive *d)
+{
+	if (!d || d->id != displayed_dive.id)
+		return; // Cylinders of a differnt dive than the shown one changed.
+	replot();
 }
 
 #endif

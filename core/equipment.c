@@ -29,7 +29,7 @@ void free_weightsystem(weightsystem_t ws)
 	ws.description = NULL;
 }
 
-static void free_cylinder(cylinder_t c)
+void free_cylinder(cylinder_t c)
 {
 	free((void *)c.type.description);
 	c.type.description = NULL;
@@ -137,27 +137,24 @@ void add_cloned_weightsystem_at(struct weightsystem_table *t, weightsystem_t ws)
 	add_to_weightsystem_table(t, t->nr, clone_weightsystem(ws));
 }
 
+cylinder_t clone_cylinder(cylinder_t cyl)
+{
+	cylinder_t res = cyl;
+	res.type.description = copy_string(res.type.description);
+	return res;
+}
+
 /* Add a clone of a cylinder to the end of a cylinder table.
  * Cloned in means that the description-string is copied. */
 void add_cloned_cylinder(struct cylinder_table *t, cylinder_t cyl)
 {
-	cyl.type.description = copy_string(cyl.type.description);
-	add_to_cylinder_table(t, t->nr, cyl);
+	add_to_cylinder_table(t, t->nr, clone_cylinder(cyl));
 }
 
 bool same_weightsystem(weightsystem_t w1, weightsystem_t w2)
 {
 	return w1.weight.grams == w2.weight.grams &&
 	       same_string(w1.description, w2.description);
-}
-
-bool same_cylinder(cylinder_t cyl1, cylinder_t cyl2)
-{
-	return same_string(cyl1.type.description, cyl2.type.description) &&
-	       same_gasmix(cyl1.gasmix, cyl2.gasmix) &&
-	       cyl1.start.mbar == cyl2.start.mbar &&
-	       cyl1.end.mbar == cyl2.end.mbar &&
-	       cyl1.cylinder_use == cyl2.cylinder_use;
 }
 
 void get_gas_string(struct gasmix gasmix, char *text, int len)
@@ -375,6 +372,46 @@ cylinder_t *get_or_create_cylinder(struct dive *d, int idx)
 	while (idx >= d->cylinders.nr)
 		add_empty_cylinder(&d->cylinders);
 	return &d->cylinders.cylinders[idx];
+}
+
+/* if a default cylinder is set, use that */
+void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl)
+{
+	const char *cyl_name = prefs.default_cylinder;
+	struct tank_info_t *ti = tank_info;
+	pressure_t pO2 = {.mbar = lrint(prefs.modpO2 * 1000.0)};
+
+	if (!cyl_name)
+		return;
+	while (ti->name != NULL && ti < tank_info + MAX_TANK_INFO) {
+		if (strcmp(ti->name, cyl_name) == 0)
+			break;
+		ti++;
+	}
+	if (ti->name == NULL)
+		/* didn't find it */
+		return;
+	cyl->type.description = strdup(ti->name);
+	if (ti->ml) {
+		cyl->type.size.mliter = ti->ml;
+		cyl->type.workingpressure.mbar = ti->bar * 1000;
+	} else {
+		cyl->type.workingpressure.mbar = psi_to_mbar(ti->psi);
+		if (ti->psi)
+			cyl->type.size.mliter = lrint(cuft_to_l(ti->cuft) * 1000 / bar_to_atm(psi_to_bar(ti->psi)));
+	}
+	// MOD of air
+	cyl->depth = gas_mod(cyl->gasmix, pO2, dive, 1);
+}
+
+cylinder_t create_new_cylinder(const struct dive *d)
+{
+	cylinder_t cyl = empty_cylinder;
+	fill_default_cylinder(d, &cyl);
+	cyl.start = cyl.type.workingpressure;
+	cyl.manually_added = true;
+	cyl.cylinder_use = OC_GAS;
+	return cyl;
 }
 
 #ifdef DEBUG_CYL

@@ -90,6 +90,14 @@ void editProfile(dive *d); // dive computer(s) and cylinder(s) will be reset!
 int addWeight(bool currentDiveOnly);
 int removeWeight(int index, bool currentDiveOnly);
 int editWeight(int index, weightsystem_t ws, bool currentDiveOnly);
+int addCylinder(bool currentDiveOnly);
+int removeCylinder(int index, bool currentDiveOnly);
+enum class EditCylinderType {
+	TYPE,
+	PRESSURE,
+	GASMIX
+};
+int editCylinder(int index, cylinder_t cyl, EditCylinderType type, bool currentDiveOnly);
 #ifdef SUBSURFACE_MOBILE
 // Edits a dive and creates a divesite (if createDs != NULL) or edits a divesite (if changeDs != NULL).
 // Takes ownership of newDive and createDs!
@@ -100,6 +108,15 @@ void editDive(dive *oldDive, dive *newDive, dive_site *createDs, dive_site *chan
 
 void editTripLocation(dive_trip *trip, const QString &s);
 void editTripNotes(dive_trip *trip, const QString &s);
+
+// 6) Event commands
+
+void addEventBookmark(struct dive *d, int dcNr, int seconds);
+void addEventDivemodeSwitch(struct dive *d, int dcNr, int seconds, int divemode);
+void addEventSetpointChange(struct dive *d, int dcNr, int seconds, pressure_t pO2);
+void renameEvent(struct dive *d, int dcNr, struct event *ev, const char *name);
+void removeEvent(struct dive *d, int dcNr, struct event *ev);
+void addGasSwitch(struct dive *d, int dcNr, int seconds, int tank);
 
 } // namespace Command
 

@@ -49,7 +49,8 @@ struct Completers {
 };
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
-	editMode(NONE),
+	editMode(false),
+	ignoreInput(false),
 	lastSelectedDive(true),
 	lastTabSelectedDive(0),
 	lastTabSelectedDiveTrip(0),
@@ -206,41 +207,19 @@ void MainTab::displayMessage(QString str)
 	ui.diveNotesMessage->animatedShow();
 }
 
-void MainTab::enableEdition(EditMode newEditMode)
+void MainTab::enableEdition()
 {
-	if (((newEditMode == DIVE || newEditMode == NONE) && current_dive == NULL) || editMode != NONE)
+	if (current_dive == NULL || editMode)
 		return;
-	if ((newEditMode == DIVE || newEditMode == NONE) &&
-	    current_dive->dc.model &&
-	    strcmp(current_dive->dc.model, "manually added dive") == 0) {
-		// editCurrentDive will call enableEdition with newEditMode == MANUALLY_ADDED_DIVE
-		// so exit this function here after editCurrentDive() returns
-
-
-
-		// FIXME : can we get rid of this recursive crap?
-
-
-
-		MainWindow::instance()->editCurrentDive();
-		return;
-	}
 
 	ui.editDiveSiteButton->setEnabled(false);
 	MainWindow::instance()->diveList->setEnabled(false);
 	MainWindow::instance()->setEnabledToolbar(false);
-	MainWindow::instance()->enterEditState();
-	ui.tabWidget->setTabEnabled(2, false);
-	ui.tabWidget->setTabEnabled(3, false);
-	ui.tabWidget->setTabEnabled(5, false);
 
 	ui.dateEdit->setEnabled(true);
-	if (amount_selected > 1) {
-		displayMessage(tr("Multiple dives are being edited."));
-	} else {
-		displayMessage(tr("This dive is being edited."));
-	}
-	editMode = newEditMode != NONE ? newEditMode : DIVE;
+	displayMessage(tr("This dive is being edited."));
+
+	editMode = true;
 }
 
 // This function gets called if a field gets updated by an undo command.
@@ -305,7 +284,7 @@ void MainTab::nextInputField(QKeyEvent *event)
 
 bool MainTab::isEditing()
 {
-	return editMode != NONE;
+	return editMode;
 }
 
 static bool isHtml(const QString &s)
@@ -363,9 +342,8 @@ void MainTab::updateDiveSite(struct dive *d)
 void MainTab::updateDiveInfo()
 {
 	ui.location->refreshDiveSiteCache();
-	EditMode rememberEM = editMode;
 	// don't execute this while adding / planning a dive
-	if (editMode == MANUALLY_ADDED_DIVE || MainWindow::instance()->graphics->isPlanner())
+	if (editMode || MainWindow::instance()->graphics->isPlanner())
 		return;
 
 	// If there is no current dive, disable all widgets except the last, which is the dive site tab.
@@ -375,7 +353,7 @@ void MainTab::updateDiveInfo()
 	for (int i = 0; i < extraWidgets.size() - 1; ++i)
 		extraWidgets[i]->setEnabled(enabled);
 
-	editMode = IGNORE_MODE; // don't trigger on changes to the widgets
+	ignoreInput = true; // don't trigger on changes to the widgets
 
 	for (TabBase *widget: extraWidgets)
 		widget->updateData();
@@ -393,9 +371,6 @@ void MainTab::updateDiveInfo()
 			if (lastSelectedDive && !onDiveSiteTab)
 				lastTabSelectedDive = ui.tabWidget->currentIndex();
 			ui.tabWidget->setTabText(0, tr("Trip notes"));
-			ui.tabWidget->setTabEnabled(1, false);
-			ui.tabWidget->setTabEnabled(2, false);
-			ui.tabWidget->setTabEnabled(5, false);
 			// Recover the tab selected for last dive trip but only if we're not on the dive site tab
 			if (lastSelectedDive && !onDiveSiteTab)
 				ui.tabWidget->setCurrentIndex(lastTabSelectedDiveTrip);
@@ -434,11 +409,6 @@ void MainTab::updateDiveInfo()
 			if (!lastSelectedDive && !onDiveSiteTab)
 				lastTabSelectedDiveTrip = ui.tabWidget->currentIndex();
 			ui.tabWidget->setTabText(0, tr("Notes"));
-			ui.tabWidget->setTabEnabled(1, true);
-			ui.tabWidget->setTabEnabled(2, true);
-			ui.tabWidget->setTabEnabled(3, true);
-			ui.tabWidget->setTabEnabled(4, true);
-			ui.tabWidget->setTabEnabled(5, true);
 			// Recover the tab selected for last dive but only if we're not on the dive site tab
 			if (!lastSelectedDive && !onDiveSiteTab)
 				ui.tabWidget->setCurrentIndex(lastTabSelectedDive);
@@ -506,7 +476,7 @@ void MainTab::updateDiveInfo()
 		ui.timeEdit->setTime(QTime(0, 0, 0, 0));
 		ui.tagWidget->clear();
 	}
-	editMode = rememberEM;
+	ignoreInput = false;
 
 	if (verbose && current_dive && current_dive->dive_site)
 		qDebug() << "Set the current dive site:" << current_dive->dive_site->uuid;
@@ -529,22 +499,17 @@ void MainTab::acceptChanges()
 	if (ui.location->hasFocus())
 		stealFocus();
 
-	EditMode lastMode = editMode;
-	editMode = IGNORE_MODE;
+	ignoreInput = true;
 	ui.dateEdit->setEnabled(true);
 	hideMessage();
 
-	// TODO: This is a temporary hack until the equipment tab is included in the undo system:
-	// The equipment tab is hardcoded at the first place of the "extra widgets".
-	((TabDiveEquipment *)extraWidgets[0])->acceptChanges();
-
-	if (lastMode == MANUALLY_ADDED_DIVE) {
+	if (editMode) {
 		MainWindow::instance()->showProfile();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 		Command::editProfile(&displayed_dive);
 	}
 	int scrolledBy = MainWindow::instance()->diveList->verticalScrollBar()->sliderPosition();
-	if (lastMode == MANUALLY_ADDED_DIVE) {
+	if (editMode) {
 		MainWindow::instance()->diveList->reload();
 		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->graphics->replot();
@@ -554,39 +519,15 @@ void MainTab::acceptChanges()
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	MainWindow::instance()->diveList->verticalScrollBar()->setSliderPosition(scrolledBy);
 	MainWindow::instance()->diveList->setFocus();
-	MainWindow::instance()->exitEditState();
 	MainWindow::instance()->setEnabledToolbar(true);
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
-	editMode = NONE;
-}
-
-bool weightsystems_equal(const dive *d1, const dive *d2)
-{
-	if (d1->weightsystems.nr != d2->weightsystems.nr)
-		return false;
-	for (int i = 0; i < d1->weightsystems.nr; ++i) {
-		if (!same_weightsystem(d1->weightsystems.weightsystems[i], d2->weightsystems.weightsystems[i]))
-			return false;
-	}
-	return true;
-}
-
-bool cylinders_equal(const dive *d1, const dive *d2)
-{
-	if (d1->cylinders.nr != d2->cylinders.nr)
-		return false;
-	for (int i = 0; i < d1->cylinders.nr; ++i) {
-		if (!same_cylinder(*get_cylinder(d1, i), *get_cylinder(d2, i)))
-			return false;
-	}
-	return true;
+	ignoreInput = false;
+	editMode = false;
 }
 
 void MainTab::rejectChanges()
 {
-	EditMode lastMode = editMode;
-
-	if (lastMode != NONE && current_dive && !cylinders_equal(current_dive, &displayed_dive)) {
+	if (editMode && current_dive) {
 		if (QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(tr("Discard the changes?"),
 									       tr("You are about to discard your changes.")),
 					 QMessageBox::Discard | QMessageBox::Cancel, QMessageBox::Discard) != QMessageBox::Discard) {
@@ -594,7 +535,7 @@ void MainTab::rejectChanges()
 		}
 	}
 	ui.dateEdit->setEnabled(true);
-	editMode = NONE;
+	editMode = false;
 	hideMessage();
 	// no harm done to call cancelPlan even if we were not PLAN mode...
 	DivePlannerPointsModel::instance()->cancelPlan();
@@ -606,17 +547,9 @@ void MainTab::rejectChanges()
 		clear_dive(&displayed_dive);
 	updateDiveInfo();
 
-	// TODO: This is a temporary hack until the equipment tab is included in the undo system:
-	// The equipment tab is hardcoded at the first place of the "extra widgets".
-	((TabDiveEquipment *)extraWidgets[0])->rejectChanges();
-
-	// the user could have edited the location and then canceled the edit
-	// let's get the correct location back in view
-	MapWidget::instance()->centerOnDiveSite(current_dive ? current_dive->dive_site : nullptr);
 	// show the profile and dive info
 	MainWindow::instance()->graphics->replot();
 	MainWindow::instance()->setEnabledToolbar(true);
-	MainWindow::instance()->exitEditState();
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 }
 
@@ -632,7 +565,7 @@ void MainTab::divesEdited(int i)
 
 void MainTab::on_buddy_editingFinished()
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 
 	divesEdited(Command::editBuddies(stringToList(ui.buddy->toPlainText()), false));
@@ -640,7 +573,7 @@ void MainTab::on_buddy_editingFinished()
 
 void MainTab::on_divemaster_editingFinished()
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 
 	divesEdited(Command::editDiveMaster(stringToList(ui.divemaster->toPlainText()), false));
@@ -648,7 +581,7 @@ void MainTab::on_divemaster_editingFinished()
 
 void MainTab::on_duration_editingFinished()
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 
 	// Duration editing is special: we only edit the current dive.
@@ -657,7 +590,7 @@ void MainTab::on_duration_editingFinished()
 
 void MainTab::on_depth_editingFinished()
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 
 	// Depth editing is special: we only edit the current dive.
@@ -677,7 +610,7 @@ static void shiftTime(QDateTime &dateTime)
 
 void MainTab::on_dateEdit_dateChanged(const QDate &date)
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*current_dive->when, Qt::UTC);
 	dateTime.setTimeSpec(Qt::UTC);
@@ -687,7 +620,7 @@ void MainTab::on_dateEdit_dateChanged(const QDate &date)
 
 void MainTab::on_timeEdit_timeChanged(const QTime &time)
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*current_dive->when, Qt::UTC);
 	dateTime.setTimeSpec(Qt::UTC);
@@ -697,7 +630,7 @@ void MainTab::on_timeEdit_timeChanged(const QTime &time)
 
 void MainTab::on_tagWidget_editingFinished()
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 
 	divesEdited(Command::editTags(ui.tagWidget->getBlockStringList(), false));
@@ -705,7 +638,7 @@ void MainTab::on_tagWidget_editingFinished()
 
 void MainTab::on_location_diveSiteSelected()
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 
 	struct dive_site *newDs = ui.location->currDiveSite();
@@ -743,7 +676,7 @@ void MainTab::on_notes_editingFinished()
 
 void MainTab::on_rating_valueChanged(int value)
 {
-	if (editMode == IGNORE_MODE || !current_dive)
+	if (ignoreInput || !current_dive)
 		return;
 
 	divesEdited(Command::editRating(value, false));
@@ -760,7 +693,7 @@ void MainTab::escDetected()
 {
 	// In edit mode, pressing escape cancels the current changes.
 	// In standard mode, remove focus of any active widget to
-	if (editMode != NONE)
+	if (editMode)
 		rejectChanges();
 	else
 		stealFocus();

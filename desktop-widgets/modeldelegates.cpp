@@ -38,7 +38,6 @@ QSize DiveListDelegate::sizeHint(const QStyleOptionViewItem&, const QModelIndex&
 // Gets the index of the model in the currentRow and column.
 // currCombo is defined below.
 #define IDX(_XX) mymodel->index(currCombo.currRow, (_XX))
-static bool keyboardFinished = false;
 
 StarWidgetsDelegate::StarWidgetsDelegate(QWidget *parent) : QStyledItemDelegate(parent),
 	parentWidget(parent)
@@ -86,7 +85,6 @@ ComboBoxDelegate::ComboBoxDelegate(QAbstractItemModel *model, QObject *parent, b
 {
 	editable = allowEdit;
 	connect(this, &ComboBoxDelegate::closeEditor, this, &ComboBoxDelegate::editorClosed);
-	connect(this, &ComboBoxDelegate::closeEditor, this, &ComboBoxDelegate::fixTabBehavior);
 }
 
 void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
@@ -100,14 +98,6 @@ void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) 
 		c->setEditText(data);
 	c->lineEdit()->setSelection(0, c->lineEdit()->text().length());
 }
-
-static struct CurrSelected {
-	QComboBox *comboEditor;
-	int currRow;
-	QString activeText;
-	QAbstractItemModel *model;
-	bool ignoreSelection;
-} currCombo;
 
 QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem&, const QModelIndex &index) const
 {
@@ -129,7 +119,7 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	currCombo.comboEditor = comboDelegate;
 	currCombo.currRow = index.row();
 	currCombo.model = const_cast<QAbstractItemModel *>(index.model());
-	keyboardFinished = false;
+	currCombo.activeText = currCombo.model->data(index).toString();
 
 	// Current display of things on Gnome3 looks like shit, so
 	// let`s fix that.
@@ -177,16 +167,6 @@ void ComboBoxDelegate::fakeActivation()
 	QStyledItemDelegate::eventFilter(currCombo.comboEditor, &ev);
 }
 
-// This 'reverts' the model data to what we actually choosed,
-// becaus e a TAB is being understood by Qt as 'cancel' while
-// we are on a QComboBox ( but not on a QLineEdit.
-void ComboBoxDelegate::fixTabBehavior()
-{
-	if (keyboardFinished) {
-		setModelData(0, 0, QModelIndex());
-	}
-}
-
 bool ComboBoxDelegate::eventFilter(QObject *object, QEvent *event)
 {
 	// Reacts on Key_UP and Key_DOWN to show the QComboBox - list of choices.
@@ -200,10 +180,8 @@ bool ComboBoxDelegate::eventFilter(QObject *object, QEvent *event)
 					return true;
 				}
 			}
-			if (ev->key() == Qt::Key_Tab || ev->key() == Qt::Key_Enter || ev->key() == Qt::Key_Return) {
+			if (ev->key() == Qt::Key_Tab || ev->key() == Qt::Key_Enter || ev->key() == Qt::Key_Return)
 				currCombo.activeText = currCombo.comboEditor->currentText();
-				keyboardFinished = true;
-			}
 		} else { // the 'Drop Down Menu' part.
 			QKeyEvent *ev = static_cast<QKeyEvent *>(event);
 			if (ev->key() == Qt::Key_Enter || ev->key() == Qt::Key_Return ||
@@ -230,12 +208,6 @@ void ComboBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionV
 	editor->setGeometry(defaultRect);
 }
 
-static struct RevertCylinderData {
-	QString type;
-	int pressure;
-	int size;
-} currCylinderData;
-
 void TankInfoDelegate::setModelData(QWidget*, QAbstractItemModel*, const QModelIndex&) const
 {
 	QAbstractItemModel *mymodel = currCombo.model;
@@ -254,46 +226,30 @@ void TankInfoDelegate::setModelData(QWidget*, QAbstractItemModel*, const QModelI
 	int tankSize = tanks->data(tanks->index(row, TankInfoModel::ML)).toInt();
 	int tankPressure = tanks->data(tanks->index(row, TankInfoModel::BAR)).toInt();
 
-	mymodel->setData(IDX(CylindersModel::TYPE), cylinderName, Qt::EditRole);
-	mymodel->setData(IDX(CylindersModel::WORKINGPRESS), tankPressure, CylindersModel::PASS_IN_ROLE);
-	mymodel->setData(IDX(CylindersModel::SIZE), tankSize, CylindersModel::PASS_IN_ROLE);
+	mymodel->setData(IDX(CylindersModel::TYPE), cylinderName, CylindersModel::TEMP_ROLE);
+	mymodel->setData(IDX(CylindersModel::WORKINGPRESS), tankPressure, CylindersModel::TEMP_ROLE);
+	mymodel->setData(IDX(CylindersModel::SIZE), tankSize, CylindersModel::TEMP_ROLE);
 }
 
 TankInfoDelegate::TankInfoDelegate(QObject *parent) : ComboBoxDelegate(TankInfoModel::instance(), parent, true)
 {
-	connect(this, SIGNAL(closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint)),
-		this, SLOT(reenableReplot(QWidget *, QAbstractItemDelegate::EndEditHint)));
-}
-
-void TankInfoDelegate::reenableReplot(QWidget*, QAbstractItemDelegate::EndEditHint)
-{
-	MainWindow::instance()->graphics->setReplot(true);
-	// FIXME: We need to replot after a cylinder is selected but the replot below overwrites
-	//        the newly selected cylinder.
-	//	MainWindow::instance()->graphics->replot();
 }
 
 void TankInfoDelegate::editorClosed(QWidget*, QAbstractItemDelegate::EndEditHint hint)
 {
-	if (hint == QAbstractItemDelegate::NoHint ||
-	    hint == QAbstractItemDelegate::RevertModelCache) {
-		QAbstractItemModel *mymodel = currCombo.model;
-		mymodel->setData(IDX(CylindersModel::TYPE), currCylinderData.type, Qt::EditRole);
-		mymodel->setData(IDX(CylindersModel::WORKINGPRESS), currCylinderData.pressure, CylindersModel::PASS_IN_ROLE);
-		mymodel->setData(IDX(CylindersModel::SIZE), currCylinderData.size, CylindersModel::PASS_IN_ROLE);
-	}
+	QAbstractItemModel *mymodel = currCombo.model;
+	// Ugly hack: We misuse setData() with COMMIT_ROLE or REVERT_ROLE to commit or
+	// revert the current row. We send in the type, because we may get multiple
+	// end events and thus can prevent multiple commits.
+	if (hint == QAbstractItemDelegate::RevertModelCache)
+		mymodel->setData(IDX(CylindersModel::TYPE), currCombo.activeText, CylindersModel::REVERT_ROLE);
+	else
+		mymodel->setData(IDX(CylindersModel::TYPE), currCombo.activeText, CylindersModel::COMMIT_ROLE);
 }
 
 QWidget *TankInfoDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	// ncreate editor needs to be called before because it will populate a few
-	// things in the currCombo global var.
 	QWidget *delegate = ComboBoxDelegate::createEditor(parent, option, index);
-	QAbstractItemModel *model = currCombo.model;
-	int row = index.row();
-	currCylinderData.type = model->data(model->index(row, CylindersModel::TYPE)).value<QString>();
-	currCylinderData.pressure = model->data(model->index(row, CylindersModel::WORKINGPRESS_INT)).value<int>();
-	currCylinderData.size = model->data(model->index(row, CylindersModel::SIZE_INT)).value<int>();
 	MainWindow::instance()->graphics->setReplot(false);
 	return delegate;
 }

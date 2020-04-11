@@ -5,6 +5,7 @@
 #include "command_divesite.h"
 #include "command_edit.h"
 #include "command_edit_trip.h"
+#include "command_event.h"
 
 namespace Command {
 
@@ -293,6 +294,21 @@ int editWeight(int index, weightsystem_t ws, bool currentDiveOnly)
 	return execute_edit(new EditWeight(index, ws, currentDiveOnly));
 }
 
+int addCylinder(bool currentDiveOnly)
+{
+	return execute_edit(new AddCylinder(currentDiveOnly));
+}
+
+int removeCylinder(int index, bool currentDiveOnly)
+{
+	return execute_edit(new RemoveCylinder(index, currentDiveOnly));
+}
+
+int editCylinder(int index, cylinder_t cyl, EditCylinderType type, bool currentDiveOnly)
+{
+	return execute_edit(new EditCylinder(index, cyl, type, currentDiveOnly));
+}
+
 // Trip editing related commands
 void editTripLocation(dive_trip *trip, const QString &s)
 {
@@ -310,5 +326,37 @@ void editDive(dive *oldDive, dive *newDive, dive_site *createDs, dive_site *chan
 	execute(new EditDive(oldDive, newDive, createDs, changeDs, dsLocation));
 }
 #endif // SUBSURFACE_MOBILE
+
+// Event commands
+
+void addEventBookmark(struct dive *d, int dcNr, int seconds)
+{
+	execute(new AddEventBookmark(d, dcNr, seconds));
+}
+
+void addEventDivemodeSwitch(struct dive *d, int dcNr, int seconds, int divemode)
+{
+	execute(new AddEventDivemodeSwitch(d, dcNr, seconds, divemode));
+}
+
+void addEventSetpointChange(struct dive *d, int dcNr, int seconds, pressure_t pO2)
+{
+	execute(new AddEventSetpointChange(d, dcNr, seconds, pO2));
+}
+
+void renameEvent(struct dive *d, int dcNr, struct event *ev, const char *name)
+{
+	execute(new RenameEvent(d, dcNr, ev, name));
+}
+
+void removeEvent(struct dive *d, int dcNr, struct event *ev)
+{
+	execute(new RemoveEvent(d, dcNr, ev));
+}
+
+void addGasSwitch(struct dive *d, int dcNr, int seconds, int tank)
+{
+	execute(new AddGasSwitch(d, dcNr, seconds, tank));
+}
 
 } // namespace Command

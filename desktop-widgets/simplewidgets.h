@@ -65,16 +65,15 @@ private:
 class SetpointDialog : public QDialog {
 	Q_OBJECT
 public:
-	static SetpointDialog *instance();
-	void setpointData(struct divecomputer *divecomputer, int time);
+	SetpointDialog(struct dive *d, int dcNr, int time);
 private
 slots:
 	void buttonClicked(QAbstractButton *button);
 
 private:
-	explicit SetpointDialog(QWidget *parent);
 	Ui::SetpointDialog ui;
-	struct divecomputer *dc;
+	struct dive *d;
+	int dcNr;
 	int time;
 };
 

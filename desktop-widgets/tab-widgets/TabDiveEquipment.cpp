@@ -1,17 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "TabDiveEquipment.h"
 #include "maintab.h"
-#include "desktop-widgets/mainwindow.h" // TODO: Only used temporarilly for edit mode changes
 #include "desktop-widgets/simplewidgets.h" // For isGnome3Session()
 #include "desktop-widgets/modeldelegates.h"
 #include "commands/command.h"
-#include "profile-widget/profilewidget2.h"
 
 #include "qt-models/cylindermodel.h"
 #include "qt-models/weightmodel.h"
-
-#include "core/subsurface-string.h"
-#include "core/divelist.h"
 
 #include <QSettings>
 #include <QCompleter>
@@ -33,9 +28,10 @@ TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 	ui.weights->setModel(weightModel);
 
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &TabDiveEquipment::divesChanged);
-	connect(ui.cylinders, &TableView::itemClicked, cylindersModel, &CylindersModelFiltered::remove);
 	connect(ui.cylinders, &TableView::itemClicked, this, &TabDiveEquipment::editCylinderWidget);
 	connect(ui.weights, &TableView::itemClicked, this, &TabDiveEquipment::editWeightWidget);
+	connect(cylindersModel->model(), &CylindersModel::divesEdited, this, &TabDiveEquipment::divesEdited);
+	connect(weightModel, &WeightModel::divesEdited, this, &TabDiveEquipment::divesEdited);
 
 	// Current display of things on Gnome3 looks like shit, so
 	// let's fix that.
@@ -129,7 +125,7 @@ void TabDiveEquipment::toggleTriggeredColumn()
 
 void TabDiveEquipment::updateData()
 {
-	cylindersModel->updateDive();
+	cylindersModel->updateDive(current_dive);
 	weightModel->updateDive(current_dive);
 	suitModel.updateModel();
 
@@ -153,8 +149,7 @@ void TabDiveEquipment::clear()
 
 void TabDiveEquipment::addCylinder_clicked()
 {
-	MainWindow::instance()->mainTab->enableEdition();
-	cylindersModel->add();
+	divesEdited(Command::addCylinder(false));
 }
 
 void TabDiveEquipment::addWeight_clicked()
@@ -164,14 +159,13 @@ void TabDiveEquipment::addWeight_clicked()
 
 void TabDiveEquipment::editCylinderWidget(const QModelIndex &index)
 {
-	if (cylindersModel->model()->changed && !MainWindow::instance()->mainTab->isEditing()) {
-		MainWindow::instance()->mainTab->enableEdition();
+	if (!index.isValid())
 		return;
-	}
-	if (index.isValid() && index.column() != CylindersModel::REMOVE) {
-		MainWindow::instance()->mainTab->enableEdition();
+
+	if (index.column() == CylindersModel::REMOVE)
+		divesEdited(Command::removeCylinder(cylindersModel->mapToSource(index).row(), false));
+	else
 		ui.cylinders->edit(index);
-	}
 }
 
 void TabDiveEquipment::editWeightWidget(const QModelIndex &index)
@@ -183,87 +177,6 @@ void TabDiveEquipment::editWeightWidget(const QModelIndex &index)
 		divesEdited(Command::removeWeight(index.row(), false));
 	else
 		ui.weights->edit(index);
-}
-
-// tricky little macro to edit all the selected dives
-// loop ove all DIVES and do WHAT.
-#define MODIFY_DIVES(DIVES, WHAT)                            \
-	do {                                                 \
-		for (dive *mydive: DIVES) {                  \
-			invalidate_dive_cache(mydive);       \
-			WHAT;                                \
-		}					     \
-		mark_divelist_changed(true);                 \
-	} while (0)
-
-// Get the list of selected dives, but put the current dive at the last position of the vector
-static QVector<dive *> getSelectedDivesCurrentLast()
-{
-	QVector<dive *> res;
-	struct dive *d;
-	int i;
-	for_each_dive (i, d) {
-		if (d->selected && d != current_dive)
-			res.append(d);
-	}
-	res.append(current_dive);
-	return res;
-}
-
-// TODO: This is a temporary functions until undo of cylinders is implemented.
-// Therefore it is not worth putting it in a header.
-extern bool cylinders_equal(const dive *d1, const dive *d2);
-
-void TabDiveEquipment::acceptChanges()
-{
-	bool do_replot = false;
-
-	// now check if something has changed and if yes, edit the selected dives that
-	// were identical with the master dive shown (and mark the divelist as changed)
-	struct dive *cd = current_dive;
-
-	// Get list of selected dives, but put the current dive last;
-	// this is required in case the invocation wants to compare things
-	// to the original value in current_dive like it should
-	QVector<dive *> selectedDives = getSelectedDivesCurrentLast();
-
-	if (cylindersModel->model()->changed) {
-		mark_divelist_changed(true);
-		MODIFY_DIVES(selectedDives,
-			// if we started out with the same cylinder description (for multi-edit) or if we do copt & paste
-			// make sure that we have the same cylinder type and copy the gasmix, but DON'T copy the start
-			// and end pressures (those are per dive after all)
-			if (cylinders_equal(mydive, cd) && mydive != cd)
-				copy_cylinder_types(&displayed_dive, cd);
-			copy_cylinders(&displayed_dive.cylinders, &cd->cylinders);
-		);
-		/* if cylinders changed we may have changed gas change events
-		 * and sensor idx in samples as well
-		 * - so far this is ONLY supported for a single selected dive */
-		struct divecomputer *tdc = &current_dive->dc;
-		struct divecomputer *sdc = &displayed_dive.dc;
-		while(tdc && sdc) {
-			free_events(tdc->events);
-			copy_events(sdc, tdc);
-			free(tdc->sample);
-			copy_samples(sdc, tdc);
-			tdc = tdc->next;
-			sdc = sdc->next;
-		}
-		do_replot = true;
-	}
-
-	if (do_replot)
-		MainWindow::instance()->graphics->replot();
-
-	cylindersModel->model()->changed = false;
-}
-
-void TabDiveEquipment::rejectChanges()
-{
-	cylindersModel->model()->changed = false;
-	cylindersModel->updateDive();
-	weightModel->updateDive(current_dive);
 }
 
 void TabDiveEquipment::divesEdited(int i)

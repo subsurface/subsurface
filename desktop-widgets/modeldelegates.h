@@ -44,12 +44,18 @@ slots:
 	void testActivation(const QModelIndex &currIndex);
 	//HACK: try to get rid of this in the future.
 	void fakeActivation();
-	void fixTabBehavior();
 	virtual void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) = 0;
 private:
 	bool editable;
 protected:
 	QAbstractItemModel *model;
+	mutable struct CurrSelected {
+		QComboBox *comboEditor;
+		int currRow;
+		QString activeText;
+		QAbstractItemModel *model;
+		bool ignoreSelection;
+	} currCombo;
 };
 
 class TankInfoDelegate : public ComboBoxDelegate {
@@ -61,7 +67,6 @@ public:
 public
 slots:
 	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
-	void reenableReplot(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
 };
 
 class TankUseDelegate : public QStyledItemDelegate {

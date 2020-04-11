@@ -115,20 +115,10 @@ slots: // Necessary to call from QAction's signals.
 	void removePictures(const QVector<QString> &fileUrls);
 	void setPlanState();
 	void setAddState();
-	void addSetpointChange();
-	void splitDive();
-	void addBookmark();
-	void addDivemodeSwitch();
-	void hideEvents();
-	void unhideEvents();
-	void removeEvent();
-	void editName();
-	void makeFirstDC();
-	void deleteCurrentDC();
-	void splitCurrentDC();
 	void pointInserted(const QModelIndex &parent, int start, int end);
 	void pointsRemoved(const QModelIndex &, int start, int end);
 	void updateThumbnail(QString filename, QImage thumbnail, duration_t duration);
+	void profileChanged(dive *d);
 
 	/* this is called for every move on the handlers. maybe we can speed up this a bit? */
 	void recreatePlannedDive();
@@ -174,6 +164,17 @@ private:
 			 const double *thresholdSettingsMin, const double *thresholdSettingsMax);
 	void clearPictures();
 	void plotPicturesInternal(const struct dive *d, bool synchronous);
+	void addDivemodeSwitch(int seconds, int divemode);
+	void addBookmark(int seconds);
+	void splitDive(int seconds);
+	void addSetpointChange(int seconds);
+	void removeEvent(DiveEventItem *item);
+	void hideEvents(DiveEventItem *item);
+	void editName(DiveEventItem *item);
+	void unhideEvents();
+	void makeFirstDC();
+	void deleteCurrentDC();
+	void splitCurrentDC();
 private:
 	DivePlotDataModel *dataModel;
 	int zoomLevel;

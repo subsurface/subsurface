@@ -31,8 +31,4 @@ private:
 	QStringList headers;
 };
 
-/* Has the string value changed */
-#define CHANGED() \
-	(vString = value.toString()) != data(index, role).toString()
-
 #endif

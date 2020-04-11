@@ -2,29 +2,34 @@
 #include "cylindermodel.h"
 #include "tankinfomodel.h"
 #include "models.h"
+#include "commands/command.h"
 #include "core/qthelper.h"
-#include "core/divelist.h" // for mark_divelist_changed()
 #include "core/color.h"
 #include "qt-models/diveplannermodel.h"
 #include "core/gettextfromc.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "core/subsurface-string.h"
+#include <string>
 
-CylindersModel::CylindersModel(QObject *parent) :
-	CleanerTableModel(parent),
-	changed(false),
-	rows(0)
+CylindersModel::CylindersModel(bool planner, QObject *parent) : CleanerTableModel(parent),
+	d(nullptr),
+	inPlanner(planner),
+	tempRow(-1),
+	tempCyl(empty_cylinder)
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, MOD, MND, USE, IS_USED};
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << tr("O₂%") << tr("He%")
 						 << tr("Deco switch at") <<tr("Bot. MOD") <<tr("MND") << tr("Use"));
 
 	connect(&diveListNotifier, &DiveListNotifier::cylindersReset, this, &CylindersModel::cylindersReset);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &CylindersModel::cylinderAdded);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &CylindersModel::cylinderRemoved);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &CylindersModel::cylinderEdited);
 }
 
 QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-	if (role == Qt::DisplayRole && orientation == Qt::Horizontal && in_planner() && section == WORKINGPRESS)
+	if (role == Qt::DisplayRole && orientation == Qt::Horizontal && inPlanner && section == WORKINGPRESS)
 		return tr("Start press.");
 	else
 		return CleanerTableModel::headerData(section, orientation, role);
@@ -126,13 +131,12 @@ static QVariant percent_string(fraction_t fraction)
 
 bool CylindersModel::cylinderUsed(int i) const
 {
-	const struct dive *dive = &displayed_dive;
-	if (i < 0 || i >= dive->cylinders.nr)
+	if (i < 0 || i >= d->cylinders.nr)
 		return false;
-	if (is_cylinder_used(dive, i))
+	if (is_cylinder_used(d, i))
 		return true;
 
-	cylinder_t *cyl = get_cylinder(dive, i);
+	cylinder_t *cyl = get_cylinder(d, i);
 	if (cyl->start.mbar || cyl->sample_start.mbar ||
 	    cyl->end.mbar || cyl->sample_end.mbar)
 		return true;
@@ -148,15 +152,15 @@ bool CylindersModel::cylinderUsed(int i) const
 
 QVariant CylindersModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid() || index.row() >= rows)
+	if (!d || !index.isValid() || index.row() >= d->cylinders.nr)
 		return QVariant();
 
-	if (index.row() >= displayed_dive.cylinders.nr) {
-		qWarning("CylindersModel and displayed_dive are out of sync!");
+	if (index.row() >= d->cylinders.nr) {
+		qWarning("CylindersModel and dive are out of sync!");
 		return QVariant();
 	}
 
-	const cylinder_t *cyl = get_cylinder(&displayed_dive, index.row());
+	const cylinder_t *cyl = index.row() == tempRow ? &tempCyl : get_cylinder(d, index.row());
 
 	switch (role) {
 	case Qt::BackgroundRole: {
@@ -227,13 +231,13 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			} else {
 				pressure_t modpO2;
 				modpO2.mbar = prefs.bottompo2;
-				return get_depth_string(gas_mod(cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(1,1)), true);
+				return get_depth_string(gas_mod(cyl->gasmix, modpO2, d, M_OR_FT(1,1)), true);
 			}
 		case MND:
 			if (cyl->bestmix_he)
 				return QStringLiteral("*");
 			else
-				return get_depth_string(gas_mnd(cyl->gasmix, prefs.bestmixend, &displayed_dive, M_OR_FT(1,1)), true);
+				return get_depth_string(gas_mnd(cyl->gasmix, prefs.bestmixend, d, M_OR_FT(1,1)), true);
 			break;
 		case USE:
 			return gettextFromC::tr(cylinderuse_text[cyl->cylinder_use]);
@@ -246,8 +250,8 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 	case Qt::DecorationRole:
 	case Qt::SizeHintRole:
 		if (index.column() == REMOVE) {
-			if ((in_planner() && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
-				(!in_planner() && is_cylinder_prot(&displayed_dive, index.row()))) {
+			if ((inPlanner && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
+				(!inPlanner && is_cylinder_prot(d, index.row()))) {
 					return trashForbiddenIcon();
 			}
 			return trashIcon();
@@ -256,8 +260,8 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 	case Qt::ToolTipRole:
 		switch (index.column()) {
 		case REMOVE:
-			if ((in_planner() && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
-				(!in_planner() && is_cylinder_prot(&displayed_dive, index.row()))) {
+			if ((inPlanner && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
+				(!inPlanner && is_cylinder_prot(d, index.row()))) {
 					return tr("This gas is in use. Only cylinders that are not used in the dive can be removed.");
 			}
 			return tr("Clicking here will remove this cylinder.");
@@ -285,197 +289,227 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 
 cylinder_t *CylindersModel::cylinderAt(const QModelIndex &index)
 {
-	return get_cylinder(&displayed_dive, index.row());
+	if (!d)
+		return nullptr;
+	return get_cylinder(d, index.row());
 }
 
 bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	QString vString;
-
-	cylinder_t *cyl = cylinderAt(index);
-	if (!cyl)
+	if (!d)
 		return false;
 
-	if (role == PASS_IN_ROLE) {
-		// this is our magic 'pass data in' function that allows the delegate to get
-		// the data here without silly unit conversions;
-		// so we only implement the two columns we care about
+	int row = index.row();
+	if (row < 0 || row >= d->cylinders.nr)
+		return false;
+
+	// Here we handle a few cases that allow us to set / commit / revert
+	// a temporary row. This is a horribly misuse of the model/view system.
+	// The reason it is done this way is that the planner and the equipment
+	// tab use different model-classes which are not in a superclass / subclass
+	// relationship.
+	switch (role) {
+	case TEMP_ROLE:
+		// TEMP_ROLE means that we are not supposed to write through to the
+		// actual dive, but a temporary cylinder that is displayed while the
+		// user browses throught the cylinder types.
+		initTempCyl(index.row());
+
 		switch (index.column()) {
+		case TYPE: {
+			QString type = value.toString();
+			if (!same_string(qPrintable(type), tempCyl.type.description)) {
+				free((void *)tempCyl.type.description);
+				tempCyl.type.description = strdup(qPrintable(type));
+				dataChanged(index, index);
+			}
+			return true;
+		}
 		case SIZE:
-			if (cyl->type.size.mliter != value.toInt()) {
-				cyl->type.size.mliter = value.toInt();
+			if (tempCyl.type.size.mliter != value.toInt()) {
+				tempCyl.type.size.mliter = value.toInt();
 				dataChanged(index, index);
 			}
 			return true;
 		case WORKINGPRESS:
-			if (cyl->type.workingpressure.mbar != value.toInt()) {
-				cyl->type.workingpressure.mbar = value.toInt();
+			if (tempCyl.type.workingpressure.mbar != value.toInt()) {
+				tempCyl.type.workingpressure.mbar = value.toInt();
 				dataChanged(index, index);
 			}
 			return true;
 		}
 		return false;
+	case COMMIT_ROLE:
+		commitTempCyl(index.row());
+		return true;
+	case REVERT_ROLE:
+		clearTempCyl();
+		return true;
+	default:
+		break;
 	}
 
-	switch (index.column()) {
-	case TYPE: {
-			QString type = value.toString();
-			if (!same_string(qPrintable(type), cyl->type.description)) {
-				free((void *)cyl->type.description);
-				cyl->type.description = strdup(qPrintable(type));
-				changed = true;
-			}
-		}
-		break;
-	case SIZE:
-		if (CHANGED()) {
-			TankInfoModel *tanks = TankInfoModel::instance();
-			QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cyl->type.description);
+	QString vString = value.toString();
+	bool changed = vString != data(index, role).toString();
 
-			cyl->type.size = string_to_volume(qPrintable(vString), cyl->type.workingpressure);
-			mark_divelist_changed(true);
-			if (!matches.isEmpty())
-				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl->type.size.mliter);
-			changed = true;
-		}
+	std::string newType; // If we allocate a new type string, this makes sure that it is freed at the end of the function
+
+	// First, we make a shallow copy of the old cylinder. Then we modify the fields inside that copy.
+	// At the end, we either place an EditCylinder undo command (EquipmentTab) or copy the cylinder back (planner).
+	// Yes, this is not ideal, but the pragmatic thing to do for now.
+	cylinder_t cyl = d->cylinders.cylinders[row];
+
+	if (index.column() != TYPE && !changed)
+		return false;
+
+	Command::EditCylinderType type = Command::EditCylinderType::TYPE;
+	switch (index.column()) {
+	case TYPE:
+		newType = qPrintable(vString);
+		cyl.type.description = newType.c_str();
+		type = Command::EditCylinderType::TYPE;
 		break;
-	case WORKINGPRESS:
-		if (CHANGED()) {
+	case SIZE: {
 			TankInfoModel *tanks = TankInfoModel::instance();
-			QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cyl->type.description);
-			cyl->type.workingpressure = string_to_pressure(qPrintable(vString));
+			QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cyl.type.description);
+
+			cyl.type.size = string_to_volume(qPrintable(vString), cyl.type.workingpressure);
 			if (!matches.isEmpty())
-				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::BAR), cyl->type.workingpressure.mbar / 1000.0);
-			changed = true;
+				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl.type.size.mliter);
 		}
+		type = Command::EditCylinderType::TYPE;
+		break;
+	case WORKINGPRESS: {
+			TankInfoModel *tanks = TankInfoModel::instance();
+			QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cyl.type.description);
+			cyl.type.workingpressure = string_to_pressure(qPrintable(vString));
+			if (!matches.isEmpty())
+				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::BAR), cyl.type.workingpressure.mbar / 1000.0);
+		}
+		type = Command::EditCylinderType::TYPE;
 		break;
 	case START:
-		if (CHANGED()) {
-			cyl->start = string_to_pressure(qPrintable(vString));
-			changed = true;
-		}
+		cyl.start = string_to_pressure(qPrintable(vString));
+		type = Command::EditCylinderType::PRESSURE;
 		break;
 	case END:
-		if (CHANGED()) {
-			//&& (!cyl->start.mbar || string_to_pressure(qPrintable(vString)).mbar <= cyl->start.mbar)) {
-			cyl->end = string_to_pressure(qPrintable(vString));
-			changed = true;
-		}
+		//if (!cyl->start.mbar || string_to_pressure(qPrintable(vString)).mbar <= cyl->start.mbar) {
+		cyl.end = string_to_pressure(qPrintable(vString));
+		type = Command::EditCylinderType::PRESSURE;
 		break;
-	case O2:
-		if (CHANGED()) {
-			cyl->gasmix.o2 = string_to_fraction(qPrintable(vString));
+	case O2: {
+			cyl.gasmix.o2 = string_to_fraction(qPrintable(vString));
 			// fO2 + fHe must not be greater than 1
-			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
-				cyl->gasmix.he.permille = 1000 - get_o2(cyl->gasmix);
+			if (get_o2(cyl.gasmix) + get_he(cyl.gasmix) > 1000)
+				cyl.gasmix.he.permille = 1000 - get_o2(cyl.gasmix);
 			pressure_t modpO2;
-			if (displayed_dive.dc.divemode == PSCR)
-				modpO2.mbar = prefs.decopo2 + (1000 - get_o2(cyl->gasmix)) * SURFACE_PRESSURE *
+			if (d->dc.divemode == PSCR)
+				modpO2.mbar = prefs.decopo2 + (1000 - get_o2(cyl.gasmix)) * SURFACE_PRESSURE *
 						prefs.o2consumption / prefs.decosac / prefs.pscr_ratio;
 			else
 				modpO2.mbar = prefs.decopo2;
-			cyl->depth = gas_mod(cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(3, 10));
-			cyl->bestmix_o2 = false;
-			changed = true;
+			cyl.depth = gas_mod(cyl.gasmix, modpO2, d, M_OR_FT(3, 10));
+			cyl.bestmix_o2 = false;
 		}
+		type = Command::EditCylinderType::GASMIX;
 		break;
 	case HE:
-		if (CHANGED()) {
-			cyl->gasmix.he = string_to_fraction(qPrintable(vString));
-			// fO2 + fHe must not be greater than 1
-			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
-				cyl->gasmix.o2.permille = 1000 - get_he(cyl->gasmix);
-			cyl->bestmix_he = false;
-			changed = true;
-		}
+		cyl.gasmix.he = string_to_fraction(qPrintable(vString));
+		// fO2 + fHe must not be greater than 1
+		if (get_o2(cyl.gasmix) + get_he(cyl.gasmix) > 1000)
+			cyl.gasmix.o2.permille = 1000 - get_he(cyl.gasmix);
+		cyl.bestmix_he = false;
+		type = Command::EditCylinderType::GASMIX;
 		break;
 	case DEPTH:
-		if (CHANGED()) {
-			cyl->depth = string_to_depth(qPrintable(vString));
-			changed = true;
-		}
+		cyl.depth = string_to_depth(qPrintable(vString));
+		type = Command::EditCylinderType::GASMIX;
 		break;
-	case MOD:
-		if (CHANGED()) {
+	case MOD: {
 			if (QString::compare(qPrintable(vString), "*") == 0) {
-				cyl->bestmix_o2 = true;
+				cyl.bestmix_o2 = true;
 				// Calculate fO2 for max. depth
-				cyl->gasmix.o2 = best_o2(displayed_dive.maxdepth, &displayed_dive);
+				cyl.gasmix.o2 = best_o2(d->maxdepth, d);
 			} else {
-				cyl->bestmix_o2 = false;
+				cyl.bestmix_o2 = false;
 				// Calculate fO2 for input depth
-				cyl->gasmix.o2 = best_o2(string_to_depth(qPrintable(vString)), &displayed_dive);
+				cyl.gasmix.o2 = best_o2(string_to_depth(qPrintable(vString)), d);
 			}
 			pressure_t modpO2;
 			modpO2.mbar = prefs.decopo2;
-			cyl->depth = gas_mod(cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(3, 10));
-			changed = true;
+			cyl.depth = gas_mod(cyl.gasmix, modpO2, d, M_OR_FT(3, 10));
 		}
+		type = Command::EditCylinderType::GASMIX;
 		break;
 	case MND:
-		if (CHANGED()) {
-			if (QString::compare(qPrintable(vString), "*") == 0) {
-				cyl->bestmix_he = true;
-				// Calculate fO2 for max. depth
-				cyl->gasmix.he = best_he(displayed_dive.maxdepth, &displayed_dive, prefs.o2narcotic, cyl->gasmix.o2);
-			} else {
-				cyl->bestmix_he = false;
-				// Calculate fHe for input depth
-				cyl->gasmix.he = best_he(string_to_depth(qPrintable(vString)), &displayed_dive, prefs.o2narcotic, cyl->gasmix.o2);
-			}
-			changed = true;
+		if (QString::compare(qPrintable(vString), "*") == 0) {
+			cyl.bestmix_he = true;
+			// Calculate fO2 for max. depth
+			cyl.gasmix.he = best_he(d->maxdepth, d, prefs.o2narcotic, cyl.gasmix.o2);
+		} else {
+			cyl.bestmix_he = false;
+			// Calculate fHe for input depth
+			cyl.gasmix.he = best_he(string_to_depth(qPrintable(vString)), d, prefs.o2narcotic, cyl.gasmix.o2);
 		}
+		type = Command::EditCylinderType::GASMIX;
 		break;
-	case USE:
-		if (CHANGED()) {
+	case USE: {
 			int use = vString.toInt();
 			if (use > NUM_GAS_USE - 1 || use < 0)
 				use = 0;
-			cyl->cylinder_use = (enum cylinderuse)use;
-			changed = true;
+			cyl.cylinder_use = (enum cylinderuse)use;
 		}
+		type = Command::EditCylinderType::TYPE;
 		break;
 	}
-	dataChanged(index, index);
+
+	if (inPlanner) {
+		// In the planner - simply overwrite the cylinder in the dive with the modified cylinder.
+		// We have only made a shallow copy, therefore copy the new cylinder first.
+		cylinder_t copy = clone_cylinder(cyl);
+		std::swap(copy, d->cylinders.cylinders[row]);
+		free_cylinder(copy);
+		dataChanged(index, index);
+	} else {
+		// On the EquipmentTab - place an editCylinder command.
+		int count = Command::editCylinder(index.row(), cyl, type, false);
+		emit divesEdited(count);
+	}
 	return true;
 }
 
 int CylindersModel::rowCount(const QModelIndex&) const
 {
-	return rows;
+	return d ? d->cylinders.nr : 0;
 }
 
 void CylindersModel::add()
 {
-	int row = rows;
-	cylinder_t cyl = empty_cylinder;
-	fill_default_cylinder(&displayed_dive, &cyl);
-	cyl.start = cyl.type.workingpressure;
-	cyl.manually_added = true;
-	cyl.cylinder_use = OC_GAS;
+	if (!d)
+		return;
+	int row = d->cylinders.nr;
+	cylinder_t cyl = create_new_cylinder(d);
 	beginInsertRows(QModelIndex(), row, row);
-	add_to_cylinder_table(&displayed_dive.cylinders, row, cyl);
-	rows++;
-	changed = true;
+	add_to_cylinder_table(&d->cylinders, row, cyl);
 	endInsertRows();
 	emit dataChanged(createIndex(row, 0), createIndex(row, COLUMNS - 1));
 }
 
 void CylindersModel::clear()
 {
-	if (rows > 0) {
-		beginRemoveRows(QModelIndex(), 0, rows - 1);
-		endRemoveRows();
-	}
+	beginResetModel();
+	d = nullptr;
+	endResetModel();
 }
 
-void CylindersModel::updateDive()
+void CylindersModel::updateDive(dive *dIn)
 {
 #ifdef DEBUG_CYL
-	dump_cylinders(&displayed_dive, true);
+	if (d)
+		dump_cylinders(dIn, true);
 #endif
 	beginResetModel();
-	rows = displayed_dive.cylinders.nr;
+	d = dIn;
 	endResetModel();
 }
 
@@ -486,15 +520,19 @@ Qt::ItemFlags CylindersModel::flags(const QModelIndex &index) const
 	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
+// This function is only invoked from the planner! Therefore, there is
+// no need to check whether we are in the planner. Perhaps move some
+// of this functionality to the planner itself.
 void CylindersModel::remove(QModelIndex index)
 {
+	if (!d)
+		return;
 	if (index.column() == USE) {
 		cylinder_t *cyl = cylinderAt(index);
 		if (cyl->cylinder_use == OC_GAS)
 			cyl->cylinder_use = NOT_USED;
 		else if (cyl->cylinder_use == NOT_USED)
 			cyl->cylinder_use = OC_GAS;
-		changed = true;
 		dataChanged(index, index);
 		return;
 	}
@@ -502,94 +540,120 @@ void CylindersModel::remove(QModelIndex index)
 	if (index.column() != REMOVE)
 		return;
 
-	if ((in_planner() && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
-		(!in_planner() && is_cylinder_prot(&displayed_dive, index.row())))
+	if (DivePlannerPointsModel::instance()->tankInUse(index.row()))
 			return;
 
 	beginRemoveRows(QModelIndex(), index.row(), index.row());
-	rows--;
-	remove_cylinder(&displayed_dive, index.row());
-	changed = true;
+	remove_cylinder(d, index.row());
 	endRemoveRows();
 
-	// Create a mapping of cylinder indices:
-	// 1) Fill mapping[0]..mapping[index-1] with 0..index
-	// 2) Set mapping[index] to -1
-	// 3) Fill mapping[index+1]..mapping[end] with index..
-	std::vector<int> mapping(displayed_dive.cylinders.nr + 1);
-	std::iota(mapping.begin(), mapping.begin() + index.row(), 0);
-	mapping[index.row()] = -1;
-	std::iota(mapping.begin() + index.row() + 1, mapping.end(), index.row());
+	std::vector<int> mapping = get_cylinder_map_for_remove(d->cylinders.nr + 1, index.row());
+	cylinder_renumber(d, &mapping[0]);
+	DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
+}
 
-	cylinder_renumber(&displayed_dive, &mapping[0]);
-	if (in_planner())
-		DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
-	changed = true;
+void CylindersModel::cylinderAdded(struct dive *changed, int pos)
+{
+	if (d != changed)
+		return;
+
+	// The row was already inserted by the undo command. Just inform the model.
+	beginInsertRows(QModelIndex(), pos, pos);
+	endInsertRows();
+}
+
+void CylindersModel::cylinderRemoved(struct dive *changed, int pos)
+{
+	if (d != changed)
+		return;
+
+	// The row was already deleted by the undo command. Just inform the model.
+	beginRemoveRows(QModelIndex(), pos, pos);
+	endRemoveRows();
+}
+
+void CylindersModel::cylinderEdited(struct dive *changed, int pos)
+{
+	if (d != changed)
+		return;
+
+	dataChanged(index(pos, TYPE), index(pos, USE));
 }
 
 void CylindersModel::moveAtFirst(int cylid)
 {
+	if (!d)
+		return;
+
 	cylinder_t temp_cyl;
 
 	beginMoveRows(QModelIndex(), cylid, cylid, QModelIndex(), 0);
-	memmove(&temp_cyl, get_cylinder(&displayed_dive, cylid), sizeof(temp_cyl));
+	memmove(&temp_cyl, get_cylinder(d, cylid), sizeof(temp_cyl));
 	for (int i = cylid - 1; i >= 0; i--)
-		memmove(get_cylinder(&displayed_dive, i + 1), get_cylinder(&displayed_dive, i), sizeof(temp_cyl));
-	memmove(get_cylinder(&displayed_dive, 0), &temp_cyl, sizeof(temp_cyl));
+		memmove(get_cylinder(d, i + 1), get_cylinder(d, i), sizeof(temp_cyl));
+	memmove(get_cylinder(d, 0), &temp_cyl, sizeof(temp_cyl));
 
 	// Create a mapping of cylinder indices:
 	// 1) Fill mapping[0]..mapping[cyl] with 0..index
 	// 2) Set mapping[cyl] to 0
 	// 3) Fill mapping[cyl+1]..mapping[end] with cyl..
-	std::vector<int> mapping(displayed_dive.cylinders.nr);
+	std::vector<int> mapping(d->cylinders.nr);
 	std::iota(mapping.begin(), mapping.begin() + cylid, 1);
 	mapping[cylid] = 0;
 	std::iota(mapping.begin() + (cylid + 1), mapping.end(), cylid);
-	cylinder_renumber(&displayed_dive, &mapping[0]);
-	if (in_planner())
+	cylinder_renumber(d, &mapping[0]);
+	if (inPlanner)
 		DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
-	changed = true;
 	endMoveRows();
 }
 
 void CylindersModel::updateDecoDepths(pressure_t olddecopo2)
 {
+	if (!d)
+		return;
+
 	pressure_t decopo2;
 	decopo2.mbar = prefs.decopo2;
-	for (int i = 0; i < displayed_dive.cylinders.nr; i++) {
-		cylinder_t *cyl = get_cylinder(&displayed_dive, i);
+	for (int i = 0; i < d->cylinders.nr; i++) {
+		cylinder_t *cyl = get_cylinder(d, i);
 		/* If the gas's deco MOD matches the old pO2, it will have been automatically calculated and should be updated.
 		 * If they don't match, we should leave the user entered depth as it is */
-		if (cyl->depth.mm == gas_mod(cyl->gasmix, olddecopo2, &displayed_dive, M_OR_FT(3, 10)).mm) {
-			cyl->depth = gas_mod(cyl->gasmix, decopo2, &displayed_dive, M_OR_FT(3, 10));
+		if (cyl->depth.mm == gas_mod(cyl->gasmix, olddecopo2, d, M_OR_FT(3, 10)).mm) {
+			cyl->depth = gas_mod(cyl->gasmix, decopo2, d, M_OR_FT(3, 10));
 		}
 	}
-	emit dataChanged(createIndex(0, 0), createIndex(displayed_dive.cylinders.nr - 1, COLUMNS - 1));
+	emit dataChanged(createIndex(0, 0), createIndex(d->cylinders.nr - 1, COLUMNS - 1));
 }
 
 void CylindersModel::updateTrashIcon()
 {
-	emit dataChanged(createIndex(0, 0), createIndex(displayed_dive.cylinders.nr - 1, 0));
+	if (!d)
+		return;
+
+	emit dataChanged(createIndex(0, 0), createIndex(d->cylinders.nr - 1, 0));
 }
 
 bool CylindersModel::updateBestMixes()
 {
+	if (!d)
+		return false;
+
 	// Check if any of the cylinders are best mixes, update if needed
 	bool gasUpdated = false;
-	for (int i = 0; i < displayed_dive.cylinders.nr; i++) {
-		cylinder_t *cyl = get_cylinder(&displayed_dive, i);
+	for (int i = 0; i < d->cylinders.nr; i++) {
+		cylinder_t *cyl = get_cylinder(d, i);
 		if (cyl->bestmix_o2) {
-			cyl->gasmix.o2 = best_o2(displayed_dive.maxdepth, &displayed_dive);
+			cyl->gasmix.o2 = best_o2(d->maxdepth, d);
 			// fO2 + fHe must not be greater than 1
 			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
 				cyl->gasmix.he.permille = 1000 - get_o2(cyl->gasmix);
 			pressure_t modpO2;
 			modpO2.mbar = prefs.decopo2;
-			cyl->depth = gas_mod(cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(3, 10));
+			cyl->depth = gas_mod(cyl->gasmix, modpO2, d, M_OR_FT(3, 10));
 			gasUpdated = true;
 		}
 		if (cyl->bestmix_he) {
-			cyl->gasmix.he = best_he(displayed_dive.maxdepth, &displayed_dive, prefs.o2narcotic, cyl->gasmix.o2);
+			cyl->gasmix.he = best_he(d->maxdepth, d, prefs.o2narcotic, cyl->gasmix.o2);
 			// fO2 + fHe must not be greater than 1
 			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
 				cyl->gasmix.o2.permille = 1000 - get_he(cyl->gasmix);
@@ -599,7 +663,7 @@ bool CylindersModel::updateBestMixes()
 	/* This slot is called when the bottom pO2 and END preferences are updated, we want to
 	 * emit dataChanged so MOD and MND are refreshed, even if the gas mix hasn't been changed */
 	if (gasUpdated)
-		emit dataChanged(createIndex(0, 0), createIndex(displayed_dive.cylinders.nr - 1, COLUMNS - 1));
+		emit dataChanged(createIndex(0, 0), createIndex(d->cylinders.nr - 1, COLUMNS - 1));
 	return gasUpdated;
 }
 
@@ -607,24 +671,71 @@ void CylindersModel::cylindersReset(const QVector<dive *> &dives)
 {
 	// This model only concerns the currently displayed dive. If this is not among the
 	// dives that had their cylinders reset, exit.
-	if (!current_dive || std::find(dives.begin(), dives.end(), current_dive) == dives.end())
+	if (!d || std::find(dives.begin(), dives.end(), d) == dives.end())
 		return;
 
-	// Copy the cylinders from the current dive to the displayed dive.
-	copy_cylinders(&current_dive->cylinders, &displayed_dive.cylinders);
-
-	// And update the model..
-	updateDive();
+	// And update the model (the actual change was already performed in the backend)..
+	beginResetModel();
+	endResetModel();
 }
 
-CylindersModelFiltered::CylindersModelFiltered(QObject *parent) : QSortFilterProxyModel(parent)
+// Save the cylinder in the given row so that we can revert if the user cancels a type-editing action.
+void CylindersModel::initTempCyl(int row)
+{
+	if (!d || tempRow == row)
+		return;
+	clearTempCyl();
+	const cylinder_t *cyl = get_cylinder(d, row);
+	if (!cyl)
+		return;
+
+	tempRow = row;
+	tempCyl = clone_cylinder(*cyl);
+
+	dataChanged(index(row, TYPE), index(row, USE));
+}
+
+void CylindersModel::clearTempCyl()
+{
+	if (tempRow < 0)
+		return;
+	int oldRow = tempRow;
+	tempRow = -1;
+	free_cylinder(tempCyl);
+	dataChanged(index(oldRow, TYPE), index(oldRow, USE));
+}
+
+void CylindersModel::commitTempCyl(int row)
+{
+	if (tempRow < 0)
+		return;
+	if (row != tempRow)
+		return clearTempCyl(); // Huh? We are supposed to commit a different row than the one we stored?
+	cylinder_t *cyl = get_cylinder(d, tempRow);
+	if (!cyl)
+		return;
+	// Only submit a command if the type changed
+	if (!same_string(cyl->type.description, tempCyl.type.description) || gettextFromC::tr(cyl->type.description) != QString(tempCyl.type.description)) {
+		if (inPlanner) {
+			std::swap(*cyl, tempCyl);
+		} else {
+			int count = Command::editCylinder(tempRow, tempCyl, Command::EditCylinderType::TYPE, false);
+			emit divesEdited(count);
+		}
+	}
+	free_cylinder(tempCyl);
+	tempRow = -1;
+}
+
+CylindersModelFiltered::CylindersModelFiltered(QObject *parent) : QSortFilterProxyModel(parent),
+	source(false) // Currently, only the EquipmentTab uses the filtered model.
 {
 	setSourceModel(&source);
 }
 
-void CylindersModelFiltered::updateDive()
+void CylindersModelFiltered::updateDive(dive *d)
 {
-	source.updateDive();
+	source.updateDive(d);
 }
 
 void CylindersModelFiltered::clear()
@@ -632,19 +743,9 @@ void CylindersModelFiltered::clear()
 	source.clear();
 }
 
-void CylindersModelFiltered::add()
-{
-	source.add();
-}
-
 CylindersModel *CylindersModelFiltered::model()
 {
 	return &source;
-}
-
-void CylindersModelFiltered::remove(QModelIndex index)
-{
-	source.remove(mapToSource(index));
 }
 
 bool CylindersModelFiltered::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const

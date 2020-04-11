@@ -358,10 +358,15 @@ extern void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_
 extern void copy_samples(const struct divecomputer *s, struct divecomputer *d);
 extern bool is_cylinder_used(const struct dive *dive, int idx);
 extern bool is_cylinder_prot(const struct dive *dive, int idx);
-extern void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
+extern struct event *create_event(unsigned int time, int type, int flags, int value, const char *name);
+extern struct event *create_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx);
+extern struct event *clone_event_rename(const struct event *ev, const char *name);
+extern void add_event_to_dc(struct divecomputer *dc, struct event *ev);
+extern void swap_event(struct divecomputer *dc, struct event *from, struct event *to);
+extern bool same_event(const struct event *a, const struct event *b);
 extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name);
-extern void remove_event(struct event *event);
+extern void remove_event_from_dc(struct divecomputer *dc, struct event *event);
 extern void update_event_name(struct dive *d, struct event *event, const char *name);
 extern void add_extra_data(struct divecomputer *dc, const char *key, const char *value);
 extern void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
@@ -372,14 +377,8 @@ extern int nr_weightsystems(const struct dive *dive);
 
 /* UI related protopypes */
 
-// extern void report_error(GError* error);
-
 extern void remember_event(const char *eventname);
 extern void invalidate_dive_cache(struct dive *dc);
-
-#if WE_DONT_USE_THIS /* this is a missing feature in Qt - selecting which events to display */
-extern int evn_foreach(void (*callback)(const char *, bool *, void *), void *data);
-#endif /* WE_DONT_USE_THIS */
 
 extern void clear_events(void);
 
