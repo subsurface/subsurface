@@ -10,7 +10,6 @@
 
 struct PictureEntry {
 	int diveId;
-	struct picture *picture;
 	QString filename;
 	QImage image;
 	int offsetSeconds;
