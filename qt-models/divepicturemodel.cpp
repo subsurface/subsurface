@@ -116,8 +116,10 @@ static bool removePictureFromSelectedDive(const char *fileUrl)
 	int i;
 	struct dive *dive;
 	for_each_dive (i, dive) {
-		if (dive->selected && dive_remove_picture(dive, fileUrl))
+		if (dive->selected && remove_picture(&dive->pictures, fileUrl)) {
+			invalidate_dive_cache(dive);
 			return true;
+		}
 	}
 	return false;
 }

@@ -636,7 +636,7 @@ static int save_one_picture(git_repository *repo, struct dir *dir, struct pictur
 
 static int save_pictures(git_repository *repo, struct dir *dir, struct dive *dive)
 {
-	if (dive->picture_list) {
+	if (dive->pictures.nr > 0) {
 		dir = mktree(repo, dir, "Pictures");
 		FOR_EACH_PICTURE(dive) {
 			save_one_picture(repo, dir, picture);

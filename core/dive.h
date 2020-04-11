@@ -14,6 +14,7 @@
 
 #include "divemode.h"
 #include "equipment.h"
+#include "picture.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -128,7 +129,6 @@ struct divecomputer {
 	struct divecomputer *next;
 };
 
-struct picture;
 struct dive_site;
 struct dive_site_table;
 struct dive_table;
@@ -160,7 +160,7 @@ struct dive {
 	struct tag_entry *tag_list;
 	struct divecomputer dc;
 	int id; // unique ID for this dive
-	struct picture *picture_list;
+	struct picture_table pictures;
 	unsigned char git_id[20];
 	bool notrip; /* Don't autogroup this dive to a trip */
 	bool selected;
@@ -205,12 +205,12 @@ extern struct event *get_next_divemodechange(const struct event **evd, bool upda
 extern enum divemode_t get_divemode_at_time(const struct divecomputer *dc, int dtime, const struct event **ev_dmc);
 
 /* picture list and methods related to dive picture handling */
-#define FOR_EACH_PICTURE(_dive) \
-	if (_dive)              \
-		for (struct picture *picture = (_dive)->picture_list; picture; picture = picture->next)
+#define FOR_EACH_PICTURE(_dive)								\
+	if ((_dive) && (_dive)->pictures.nr)						\
+		for (struct picture *picture = (_dive)->pictures.pictures;		\
+		     picture < (_dive)->pictures.pictures + (_dive)->pictures.nr;	\
+		     picture++)
 extern void create_picture(const char *filename, int shift_time, bool match_all);
-extern void dive_add_picture(struct dive *d, struct picture *newpic);
-extern bool dive_remove_picture(struct dive *d, const char *filename);
 extern bool picture_check_valid_time(timestamp_t timestamp, int shift_time);
 
 extern bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc, int idx);

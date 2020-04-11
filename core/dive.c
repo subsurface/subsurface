@@ -415,13 +415,6 @@ static void copy_dc_renumber(struct dive *d, const struct divecomputer *sdc, str
 	ddc->next = NULL;
 }
 
-/* copy an element in a list of pictures */
-static void copy_pl(struct picture *sp, struct picture *dp)
-{
-	*dp = *sp;
-	dp->filename = copy_string(sp->filename);
-}
-
 /* The first divecomputer is embedded in the dive structure. Free its data but not
  * the structure itself. For all remainding dcs in the list, free data *and* structures. */
 void free_dive_dcs(struct divecomputer *dc)
@@ -443,11 +436,12 @@ static void free_dive_structures(struct dive *d)
 	/* free tags, additional dive computers, and pictures */
 	taglist_free(d->tag_list);
 	free_dive_dcs(&d->dc);
-	STRUCTURED_LIST_FREE(struct picture, d->picture_list, free_picture);
 	clear_cylinder_table(&d->cylinders);
 	free(d->cylinders.cylinders);
 	clear_weightsystem_table(&d->weightsystems);
 	free(d->weightsystems.weightsystems);
+	clear_picture_table(&d->pictures);
+	free(d->pictures.pictures);
 }
 
 void free_dive(struct dive *d)
@@ -480,6 +474,7 @@ static void copy_dive_nodc(const struct dive *s, struct dive *d)
 	*d = *s;
 	memset(&d->cylinders, 0, sizeof(d->cylinders));
 	memset(&d->weightsystems, 0, sizeof(d->weightsystems));
+	memset(&d->pictures, 0, sizeof(d->pictures));
 	d->full_text = NULL;
 	invalidate_dive_cache(d);
 	d->buddy = copy_string(s->buddy);
@@ -488,7 +483,7 @@ static void copy_dive_nodc(const struct dive *s, struct dive *d)
 	d->suit = copy_string(s->suit);
 	copy_cylinders(&s->cylinders, &d->cylinders);
 	copy_weights(&s->weightsystems, &d->weightsystems);
-	STRUCTURED_LIST_COPY(struct picture, s->picture_list, d->picture_list, copy_pl);
+	copy_pictures(&s->pictures, &d->pictures);
 	d->tag_list = taglist_copy(s->tag_list);
 }
 
@@ -3062,7 +3057,7 @@ struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset,
 	MERGE_MAX(res, a, b, number);
 	MERGE_NONZERO(res, a, b, cns);
 	MERGE_NONZERO(res, a, b, visibility);
-	STRUCTURED_LIST_COPY(struct picture, a->picture_list ? a->picture_list : b->picture_list, res->picture_list, copy_pl);
+	copy_pictures(a->pictures.nr ? &a->pictures : &b->pictures, &res->pictures);
 	taglist_merge(&res->tag_list, a->tag_list, b->tag_list);
 	cylinders_map_a = malloc(a->cylinders.nr * sizeof(*cylinders_map_a));
 	cylinders_map_b = malloc(b->cylinders.nr * sizeof(*cylinders_map_b));
@@ -3601,41 +3596,14 @@ void create_picture(const char *filename, int shift_time, bool match_all)
 	if (!match_all && !dive_check_picture_time(dive, timestamp))
 		return;
 
-	struct picture *picture = alloc_picture();
-	picture->filename = strdup(filename);
-	picture->offset.seconds = metadata.timestamp - dive->when + shift_time;
-	picture->location = metadata.location;
+	struct picture picture;
+	picture.filename = strdup(filename);
+	picture.offset.seconds = metadata.timestamp - dive->when + shift_time;
+	picture.location = metadata.location;
 
-	dive_add_picture(dive, picture);
-	dive_set_geodata_from_picture(dive, picture, &dive_site_table);
+	add_picture(&dive->pictures, picture);
+	dive_set_geodata_from_picture(dive, &picture, &dive_site_table);
 	invalidate_dive_cache(dive);
-}
-
-void dive_add_picture(struct dive *dive, struct picture *newpic)
-{
-	struct picture **pic_ptr = &dive->picture_list;
-	/* let's keep the list sorted by time */
-	while (*pic_ptr && (*pic_ptr)->offset.seconds <= newpic->offset.seconds)
-		pic_ptr = &(*pic_ptr)->next;
-	newpic->next = *pic_ptr;
-	*pic_ptr = newpic;
-	return;
-}
-
-// Return true if picture was found and deleted
-bool dive_remove_picture(struct dive *d, const char *filename)
-{
-	struct picture **picture = &d->picture_list;
-	while (*picture && !same_string((*picture)->filename, filename))
-		picture = &(*picture)->next;
-	if (*picture) {
-		struct picture *temp = (*picture)->next;
-		free_picture(*picture);
-		*picture = temp;
-		invalidate_dive_cache(d);
-		return true;
-	}
-	return false;
 }
 
 /* clones a dive and moves given dive computer to front */

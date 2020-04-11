@@ -34,7 +34,7 @@ struct git_parser_state {
 	struct divecomputer *active_dc;
 	struct dive *active_dive;
 	dive_trip_t *active_trip;
-	struct picture *active_pic;
+	struct picture active_pic;
 	struct dive_site *active_site;
 	struct dive_table *table;
 	struct trip_table *trips;
@@ -1006,13 +1006,13 @@ static void parse_settings_divecomputerid(char *line, struct membuffer *str, str
 static void parse_picture_filename(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	UNUSED(line);
-	state->active_pic->filename = detach_cstring(str);
+	state->active_pic.filename = detach_cstring(str);
 }
 
 static void parse_picture_gps(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	UNUSED(str);
-	parse_location(line, &state->active_pic->location);
+	parse_location(line, &state->active_pic.location);
 }
 
 static void parse_picture_hash(char *line, struct membuffer *str, struct git_parser_state *state)
@@ -1615,13 +1615,15 @@ static int parse_picture_entry(struct git_parser_state *state, const git_tree_en
 	if (!blob)
 		return report_error("Unable to read picture file");
 
-	state->active_pic = alloc_picture();
-	state->active_pic->offset.seconds = offset;
+	state->active_pic.offset.seconds = offset;
 
 	for_each_line(blob, picture_parser, state);
-	dive_add_picture(state->active_dive, state->active_pic);
+	add_picture(&state->active_dive->pictures, state->active_pic);
 	git_blob_free(blob);
-	state->active_pic = NULL;
+
+	/* add_picture took ownership of the data -
+	 * clear out our copy just to be sure. */
+	state->active_pic = empty_picture;
 	return 0;
 }
 
