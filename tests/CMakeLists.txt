@@ -112,7 +112,7 @@ TEST(TestDiveSiteDuplication testdivesiteduplication.cpp)
 TEST(TestRenumber testrenumber.cpp)
 # this keeps randomly failing and I don't understand why
 # too many false positives, so disabling this test for now
-# TEST(TestGitStorage testgitstorage.cpp)
+TEST(TestGitStorage testgitstorage.cpp)
 TEST(TestPicture testpicture.cpp)
 TEST(TestMerge testmerge.cpp)
 TEST(TestTagList testtaglist.cpp)
