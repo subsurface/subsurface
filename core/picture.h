@@ -5,6 +5,10 @@
 // picture (more precisely media) related strutures and functions
 #include "units.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct picture {
 	char *filename;
 	offset_t offset;
@@ -14,5 +18,9 @@ struct picture {
 
 extern struct picture *alloc_picture();
 extern void free_picture(struct picture *picture);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // PICTURE_H
