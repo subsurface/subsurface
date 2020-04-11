@@ -2,7 +2,7 @@
 #ifndef STRUCTURED_LIST_H
 #define STRUCTURED_LIST_H
 
-/* Clear whole list; this works for taglist, picturelist and dive computers */
+/* Clear whole list; this works for taglist and dive computers */
 #define STRUCTURED_LIST_FREE(_type, _start, _free) \
 	{                                          \
 		_type *_ptr = _start;              \

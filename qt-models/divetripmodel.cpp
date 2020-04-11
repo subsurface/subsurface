@@ -302,8 +302,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 			}
 			break;
 		case PHOTOS:
-			if (d->picture_list)
-			{
+			if (d->pictures.nr > 0) {
 				IconMetrics im = defaultIconMetrics();
 				return QIcon(icon_names[countPhotos(d)]).pixmap(im.sz_small, im.sz_small);
 			}	 // If there are photos, show one of the three photo icons: fish= photos during dive;

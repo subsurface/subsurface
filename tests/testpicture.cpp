@@ -31,17 +31,15 @@ void TestPicture::addPicture()
 	// Pictures will be added to selected dives
 	dive->selected = true;
 	QVERIFY(dive != NULL);
-	pic1 = dive->picture_list;
 	// So far no picture in dive
-	QVERIFY(pic1 == NULL);
+	QVERIFY(dive->pictures.nr == 0);
 
 	create_picture(SUBSURFACE_TEST_DATA "/dives/images/wreck.jpg", 0, false);
 	create_picture(SUBSURFACE_TEST_DATA "/dives/images/data_after_EOI.jpg", 0, false);
-	pic1 = dive->picture_list;
-	pic2 = pic1->next;
 	// Now there are two picture2
-	QVERIFY(pic1 != NULL);
-	QVERIFY(pic2 != NULL);
+	QVERIFY(dive->pictures.nr == 2);
+	pic1 = &dive->pictures.pictures[0];
+	pic2 = &dive->pictures.pictures[1];
 	// 1st appearing at time 21:01
 	// 2nd appearing at time 22:01
 	QVERIFY(pic1->offset.seconds == 1261);
@@ -54,6 +52,5 @@ void TestPicture::addPicture()
 	QCOMPARE(localFilePath(pic1->filename), QString(PIC1_NAME));
 	QCOMPARE(localFilePath(pic2->filename), QString(PIC2_NAME));
 }
-
 
 QTEST_GUILESS_MAIN(TestPicture)

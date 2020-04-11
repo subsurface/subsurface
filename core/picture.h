@@ -4,6 +4,7 @@
 
 // picture (more precisely media) related strutures and functions
 #include "units.h"
+#include <stddef.h> // For NULL
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,11 +14,26 @@ struct picture {
 	char *filename;
 	offset_t offset;
 	location_t location;
-	struct picture *next;
+};
+static const struct picture empty_picture = { NULL, { 0 }, { { 0 }, { 0 } } };
+
+/* Table of pictures. Attention: this stores pictures,
+ * *not* pointers to pictures. This has two crucial consequences:
+ * 1) Pointers to pictures are not stable. They may be
+ *    invalidated if the table is reallocated.
+ * 2) add_to_picture_table(), etc. take ownership of the
+ *    picture. Notably of the filename. */
+struct picture_table {
+	int nr, allocated;
+	struct picture *pictures;
 };
 
-extern struct picture *alloc_picture();
-extern void free_picture(struct picture *picture);
+/* picture table functions */
+extern void clear_picture_table(struct picture_table *);
+extern void add_to_picture_table(struct picture_table *, int idx, struct picture pic);
+extern void copy_pictures(const struct picture_table *s, struct picture_table *d);
+extern void add_picture(struct picture_table *, struct picture newpic);
+extern bool remove_picture(struct picture_table *, const char *filename);
 
 #ifdef __cplusplus
 }

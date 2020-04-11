@@ -31,7 +31,6 @@ void free_parser_state(struct parser_state *state)
 	free_dive(state->cur_dive);
 	free_trip(state->cur_trip);
 	free_dive_site(state->cur_dive_site);
-	free_picture(state->cur_picture);
 	free((void *)state->cur_extra_data.key);
 	free((void *)state->cur_extra_data.value);
 	free((void *)state->cur_settings.dc.model);
@@ -106,11 +105,11 @@ void event_end(struct parser_state *state)
 {
 	struct divecomputer *dc = get_dc(state);
 	if (state->cur_event.type == 123) {
-		struct picture *pic = alloc_picture();
-		pic->filename = strdup(state->cur_event.name);
+		struct picture pic;
+		pic.filename = strdup(state->cur_event.name);
 		/* theoretically this could fail - but we didn't support multi year offsets */
-		pic->offset.seconds = state->cur_event.time.seconds;
-		dive_add_picture(state->cur_dive, pic);
+		pic.offset.seconds = state->cur_event.time.seconds;
+		add_picture(&state->cur_dive->pictures, pic); /* Takes ownership. */
 	} else {
 		struct event *ev;
 		/* At some point gas change events did not have any type. Thus we need to add
@@ -274,13 +273,13 @@ void trip_end(struct parser_state *state)
 
 void picture_start(struct parser_state *state)
 {
-	state->cur_picture = alloc_picture();
 }
 
 void picture_end(struct parser_state *state)
 {
-	dive_add_picture(state->cur_dive, state->cur_picture);
-	state->cur_picture = NULL;
+	add_picture(&state->cur_dive->pictures, state->cur_picture);
+	/* dive_add_picture took ownership, we can just clear out copy of the data */
+	state->cur_picture = empty_picture;
 }
 
 cylinder_t *cylinder_start(struct parser_state *state)

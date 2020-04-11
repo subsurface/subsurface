@@ -50,7 +50,7 @@ struct parser_state {
 	location_t cur_location;
 	struct dive_trip *cur_trip;		/* owning */
 	struct sample *cur_sample;		/* non-owning */
-	struct picture *cur_picture;		/* owning */
+	struct picture cur_picture;		/* owning */
 	char *country, *city;			/* owning */
 
 	bool in_settings;

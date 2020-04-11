@@ -1258,11 +1258,11 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 	if (match_dc_data_fields(&dive->dc, name, buf, state))
 		return;
 
-	if (MATCH("filename.picture", utf8_string, &state->cur_picture->filename))
+	if (MATCH("filename.picture", utf8_string, &state->cur_picture.filename))
 		return;
-	if (MATCH("offset.picture", offsettime, &state->cur_picture->offset))
+	if (MATCH("offset.picture", offsettime, &state->cur_picture.offset))
 		return;
-	if (MATCH("gps.picture", gps_picture_location, state->cur_picture))
+	if (MATCH("gps.picture", gps_picture_location, &state->cur_picture))
 		return;
 	if (MATCH("hash.picture", utf8_string, &hash)) {
 		/* Legacy -> ignore. */

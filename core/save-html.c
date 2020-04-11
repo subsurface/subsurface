@@ -28,23 +28,20 @@ void write_attribute(struct membuffer *b, const char *att_name, const char *valu
 
 void save_photos(struct membuffer *b, const char *photos_dir, struct dive *dive)
 {
-	struct picture *pic = dive->picture_list;
-
-	if (!pic)
+	if (dive->pictures.nr <= 0)
 		return;
 
 	char *separator = "\"photos\":[";
-	do {
+	FOR_EACH_PICTURE(dive) {
 		put_string(b, separator);
 		separator = ", ";
-		char *fname = get_file_name(local_file_path(pic));
+		char *fname = get_file_name(local_file_path(picture));
 		put_string(b, "{\"filename\":\"");
 		put_quoted(b, fname, 1, 0);
 		put_string(b, "\"}");
-		copy_image_and_overwrite(local_file_path(pic), photos_dir, fname);
+		copy_image_and_overwrite(local_file_path(picture), photos_dir, fname);
 		free(fname);
-		pic = pic->next;
-	} while (pic);
+	}
 	put_string(b, "],");
 }
 
