@@ -9,6 +9,7 @@ class TestGitStorage : public QObject {
 private slots:
 	void initTestCase();
 	void cleanup();
+	void cleanupTestCase();
 
 	void testGitStorageLocal_data();
 	void testGitStorageLocal();
