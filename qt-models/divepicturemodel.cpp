@@ -59,7 +59,7 @@ void DivePictureModel::updateDivePictures()
 		if (dive->selected) {
 			int first = pictures.count();
 			FOR_EACH_PICTURE(dive)
-				pictures.push_back({ dive->id, picture, picture->filename, {}, picture->offset.seconds, {.seconds = 0}});
+				pictures.push_back({ dive->id, picture->filename, {}, picture->offset.seconds, {.seconds = 0}});
 
 			// Sort pictures of this dive by offset.
 			// Thus, the list will be sorted by (diveId, offset).
