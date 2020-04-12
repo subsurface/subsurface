@@ -379,10 +379,10 @@ void ProfileWidget2::setupItemOnScene()
 	gasYAxis->setZValue(timeAxis->zValue() + 1);
 }
 
-void ProfileWidget2::replot(struct dive *d)
+void ProfileWidget2::replot()
 {
 	dataModel->clear();
-	plotDive(d, true, false);
+	plotDive(nullptr, true, false);
 }
 
 void ProfileWidget2::createPPGas(PartialPressureGasItem *item, int verticalColumn, color_index_t color, color_index_t colorAlert,

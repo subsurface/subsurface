@@ -795,7 +795,7 @@ void MainWindow::refreshProfile()
 {
 	showProfile();
 	configureToolbar();
-	graphics->replot(current_dive);
+	graphics->plotDive(current_dive, true);
 	DivePictureModel::instance()->updateDivePictures();
 }
 
