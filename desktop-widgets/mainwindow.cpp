@@ -86,7 +86,6 @@ namespace {
 	};
 }
 
-
 extern "C" int updateProgress(const char *text)
 {
 	if (verbose)
@@ -969,10 +968,6 @@ void MainWindow::on_actionAddDive_triggered()
 	fixup_dive(&d);
 
 	Command::addDive(&d, autogroup, true);
-
-	// Plot dive actually copies current_dive to displayed_dive and therefore ensures that the
-	// correct data are displayed!
-	graphics->plotDive(nullptr, false, true);
 }
 
 void MainWindow::on_actionRenumber_triggered()
