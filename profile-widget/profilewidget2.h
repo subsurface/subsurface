@@ -108,7 +108,6 @@ slots: // Necessary to call from QAction's signals.
 	void actionRequestedReplot(bool triggered);
 	void setEmptyState();
 	void setProfileState();
-	void replot();
 #ifndef SUBSURFACE_MOBILE
 	void plotPictures();
 	void removePictures(const QVector<QString> &fileUrls);
@@ -148,6 +147,7 @@ private:
 	void dragEnterEvent(QDragEnterEvent *event) override;
 	void dragMoveEvent(QDragMoveEvent *event) override;
 
+	void replot();
 	void changeGas(int tank, int seconds);
 	void fixBackgroundPos();
 	void scrollViewTo(const QPoint &pos);
