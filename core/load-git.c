@@ -771,8 +771,8 @@ static int get_divemode(const char *divemodestring) {
  */
 struct parse_event {
 	const char *name;
-	struct event ev;
 	int has_divemode;
+	struct event ev;
 };
 
 static void parse_event_keyvalue(void *_parse, const char *key, const char *value)
