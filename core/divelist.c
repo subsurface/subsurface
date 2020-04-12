@@ -1287,7 +1287,9 @@ static struct dive *get_last_valid_dive()
  */
 int get_dive_nr_at_idx(int idx)
 {
-	struct dive *last_dive = get_last_valid_dive(dive_table.nr - 1);
+	if (idx < dive_table.nr)
+		return 0;
+	struct dive *last_dive = get_last_valid_dive();
 	if (!last_dive)
 		return 1;
 	return last_dive->number ? last_dive->number + 1 : 0;
