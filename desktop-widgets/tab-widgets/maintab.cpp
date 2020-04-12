@@ -511,7 +511,7 @@ void MainTab::acceptChanges()
 	if (editMode) {
 		MainWindow::instance()->diveList->reload();
 		MainWindow::instance()->refreshDisplay();
-		MainWindow::instance()->graphics->replot();
+		MainWindow::instance()->graphics->plotDive(current_dive, true);
 	} else {
 		MainWindow::instance()->refreshDisplay();
 	}
@@ -547,7 +547,7 @@ void MainTab::rejectChanges()
 	updateDiveInfo();
 
 	// show the profile and dive info
-	MainWindow::instance()->graphics->replot();
+	MainWindow::instance()->graphics->plotDive(current_dive, true);
 	MainWindow::instance()->setEnabledToolbar(true);
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 }
