@@ -1331,13 +1331,11 @@ void ProfileWidget2::setAddState()
 	actionsForKeys[Qt::Key_Delete]->setShortcut(Qt::Key_Delete);
 
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
-	connect(plannerModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(replot()));
-	connect(plannerModel, SIGNAL(cylinderModelEdited()), this, SLOT(replot()));
+	connect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
+	connect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
 #ifndef SUBSURFACE_MOBILE
-	connect(plannerModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-		this, SLOT(pointInserted(const QModelIndex &, int, int)));
-	connect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-		this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
+	connect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileWidget2::pointInserted);
+	connect(plannerModel, &DivePlannerPointsModel::rowsRemoved, this, &ProfileWidget2::pointsRemoved);
 #endif
 	/* show the same stuff that the profile shows. */
 	currentState = ADD; /* enable the add state. */
@@ -1366,12 +1364,10 @@ void ProfileWidget2::setPlanState()
 	actionsForKeys[Qt::Key_Delete]->setShortcut(Qt::Key_Delete);
 
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
-	connect(plannerModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(replot()));
-	connect(plannerModel, SIGNAL(cylinderModelEdited()), this, SLOT(replot()));
-	connect(plannerModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-		this, SLOT(pointInserted(const QModelIndex &, int, int)));
-	connect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-		this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
+	connect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
+	connect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
+	connect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileWidget2::pointInserted);
+	connect(plannerModel, &DivePlannerPointsModel::rowsRemoved, this, &ProfileWidget2::pointsRemoved);
 	/* show the same stuff that the profile shows. */
 	currentState = PLAN; /* enable the add state. */
 	diveCeiling->setVisible(true);
@@ -1471,7 +1467,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 				      [this, seconds](){ addDivemodeSwitch(seconds, PSCR); });
 
 	if (same_string(current_dc->model, "manually added dive"))
-		m.addAction(tr("Edit the profile"), this, SIGNAL(editCurrentDive()));
+		m.addAction(tr("Edit the profile"), this, &ProfileWidget2::editCurrentDive);
 
 	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
 		m.addAction(tr("Remove event"), [this,item] { removeEvent(item); });
@@ -1713,13 +1709,11 @@ void ProfileWidget2::disconnectTemporaryConnections()
 {
 #ifndef SUBSURFACE_MOBILE
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
-	disconnect(plannerModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(replot()));
-	disconnect(plannerModel, SIGNAL(cylinderModelEdited()), this, SLOT(replot()));
+	disconnect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
+	disconnect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
 
-	disconnect(plannerModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-		   this, SLOT(pointInserted(const QModelIndex &, int, int)));
-	disconnect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-		   this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
+	disconnect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileWidget2::pointInserted);
+	disconnect(plannerModel, &DivePlannerPointsModel::rowsRemoved, this, &ProfileWidget2::pointsRemoved);
 #endif
 	Q_FOREACH (QAction *action, actionsForKeys.values()) {
 		action->setShortcut(QKeySequence());
@@ -1734,9 +1728,9 @@ void ProfileWidget2::pointInserted(const QModelIndex&, int, int)
 	scene()->addItem(item);
 	handles << item;
 
-	connect(item, SIGNAL(moved()), this, SLOT(recreatePlannedDive()));
-	connect(item, SIGNAL(clicked()), this, SLOT(divePlannerHandlerClicked()));
-	connect(item, SIGNAL(released()), this, SLOT(divePlannerHandlerReleased()));
+	connect(item, &DiveHandler::moved, this, &ProfileWidget2::recreatePlannedDive);
+	connect(item, &DiveHandler::clicked, this, &ProfileWidget2::divePlannerHandlerClicked);
+	connect(item, &DiveHandler::released, this, &ProfileWidget2::divePlannerHandlerReleased);
 	QGraphicsSimpleTextItem *gasChooseBtn = new QGraphicsSimpleTextItem();
 	scene()->addItem(gasChooseBtn);
 	gasChooseBtn->setZValue(10);
