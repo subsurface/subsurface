@@ -127,6 +127,11 @@ int event_is_gaschange(const struct event *ev)
 		ev->type == SAMPLE_EVENT_GASCHANGE2;
 }
 
+bool event_is_divemodechange(const struct event *ev)
+{
+	return same_string(ev->name, "modechange");
+}
+
 struct event *create_event(unsigned int time, int type, int flags, int value, const char *name)
 {
 	int gas_index = -1;
@@ -571,6 +576,31 @@ void copy_events(const struct divecomputer *s, struct divecomputer *d)
 		ev = ev->next;
 	}
 	*pev = NULL;
+}
+
+/* copies all events from all dive computers before a given time
+   this is used when editing a dive in the planner to preserve the events
+   of the old dive */
+void copy_events_until(const struct dive *sd, struct dive *dd, int time)
+{
+	if (!sd || !dd)
+		return;
+
+	const struct divecomputer *s = &sd->dc;
+	struct divecomputer *d = &dd->dc;
+
+	while (s && d) {
+		const struct event *ev;
+		ev = s->events;
+		while (ev != NULL) {
+			// Don't add events the planner knows about
+			if (ev->time.seconds < time && !event_is_gaschange(ev) && !event_is_divemodechange(ev))
+				add_event(d, ev->time.seconds, ev->type, ev->flags, ev->value, ev->name);
+			ev = ev->next;
+		}
+		s = s->next;
+		d = d->next;
+	}
 }
 
 int nr_cylinders(const struct dive *dive)
