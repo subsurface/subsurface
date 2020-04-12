@@ -247,13 +247,6 @@ void TankInfoDelegate::editorClosed(QWidget*, QAbstractItemDelegate::EndEditHint
 		mymodel->setData(IDX(CylindersModel::TYPE), currCombo.activeText, CylindersModel::COMMIT_ROLE);
 }
 
-QWidget *TankInfoDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-	QWidget *delegate = ComboBoxDelegate::createEditor(parent, option, index);
-	MainWindow::instance()->graphics->setReplot(false);
-	return delegate;
-}
-
 TankUseDelegate::TankUseDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {
 }
