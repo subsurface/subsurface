@@ -350,7 +350,7 @@ void TabDiveInformation::divesChanged(const QVector<dive *> &dives, DiveField fi
 	// TODO: The profile should recognize itself when the dive mode changed.
 	// It seem awkward to route this via the dive-information tab.
 	if (replot)
-		MainWindow::instance()->graphics->replot();
+		MainWindow::instance()->graphics->plotDive(current_dive, true);
 }
 
 void TabDiveInformation::on_visibility_valueChanged(int value)
