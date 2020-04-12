@@ -376,14 +376,10 @@ void ProfileWidget2::setupItemOnScene()
 	timeAxis->setLinesVisible(true);
 	profileYAxis->setLinesVisible(true);
 	gasYAxis->setZValue(timeAxis->zValue() + 1);
-
-	replotEnabled = true;
 }
 
 void ProfileWidget2::replot(struct dive *d)
 {
-	if (!replotEnabled)
-		return;
 	dataModel->clear();
 	plotDive(d, true, false);
 }
@@ -1401,11 +1397,6 @@ struct int ProfileWidget2::getEntryFromPos(QPointF pos)
 	return plotInfo.nr - 1;
 }
 #endif
-
-void ProfileWidget2::setReplot(bool state)
-{
-	replotEnabled = state;
-}
 
 #ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)

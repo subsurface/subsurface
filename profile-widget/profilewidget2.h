@@ -108,7 +108,6 @@ slots: // Necessary to call from QAction's signals.
 	void actionRequestedReplot(bool triggered);
 	void setEmptyState();
 	void setProfileState();
-	void setReplot(bool state);
 	void replot(dive *d = 0);
 #ifndef SUBSURFACE_MOBILE
 	void plotPictures();
@@ -185,7 +184,6 @@ private:
 	ToolTipItem *toolTipItem;
 #endif
 	bool isPlotZoomed;
-	bool replotEnabled;
 	// All those here should probably be merged into one structure,
 	// So it's esyer to replicate for more dives later.
 	// In the meantime, keep it here.
