@@ -108,7 +108,7 @@ slots: // Necessary to call from QAction's signals.
 	void actionRequestedReplot(bool triggered);
 	void setEmptyState();
 	void setProfileState();
-	void replot(dive *d = 0);
+	void replot();
 #ifndef SUBSURFACE_MOBILE
 	void plotPictures();
 	void removePictures(const QVector<QString> &fileUrls);
