@@ -63,7 +63,6 @@ class TankInfoDelegate : public ComboBoxDelegate {
 public:
 	explicit TankInfoDelegate(QObject *parent = 0);
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
-	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 public
 slots:
 	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
