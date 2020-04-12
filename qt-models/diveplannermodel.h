@@ -136,6 +136,7 @@ private:
 	QDateTime startTime;
 	int instanceCounter = 0;
 	struct deco_state ds_after_previous_dives;
+	duration_t preserved_until;
 };
 
 #endif

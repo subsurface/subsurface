@@ -150,6 +150,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 		addStop(0, d->dc.duration.seconds,cylinderid, last_sp.mbar, true, current_divemode);
 	recalc = oldRec;
 	DiveTypeSelectionModel::instance()->repopulate();
+	preserved_until = d->duration;
 	emitDataChanged();
 }
 
@@ -844,10 +845,13 @@ void DivePlannerPointsModel::remove(const QModelIndex &index)
 	int i;
 	int rows = rowCount();
 	if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
+		preserved_until.seconds = divepoints.at(index.row()).time;
 		beginRemoveRows(QModelIndex(), index.row(), rows - 1);
 		for (i = rows - 1; i >= index.row(); i--)
 			divepoints.remove(i);
 	} else {
+		if (index.row() == rows -1)
+			preserved_until.seconds = divepoints.at(rows - 1).time;
 		beginRemoveRows(QModelIndex(), index.row(), index.row());
 		divepoints.remove(index.row());
 	}
@@ -916,6 +920,7 @@ void DivePlannerPointsModel::clear()
 		endRemoveRows();
 	}
 	cylinders.clear();
+	preserved_until.seconds = 0;
 	setRecalc(oldRecalc);
 }
 
@@ -1219,17 +1224,20 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 #if not defined(SUBSURFACE_MOBILE) && not defined(SUBSURFACE_TESTING)
 		Command::addDive(&displayed_dive, autogroup, true);
 #endif // SUBSURFACE_MOBILE SUBSURFACE_TESTING
-	} else if (replanCopy) {
-		// we were planning an old dive and save as a new dive
-		displayed_dive.id = dive_getUniqID(); // Things will break horribly if we create dives with the same id.
-#if not defined(SUBSURFACE_MOBILE) && not defined(SUBSURFACE_TESTING)
-		Command::addDive(&displayed_dive, false, false);
-#endif // SUBSURFACE_MOBILE SUBSURFACE_TESTING
 	} else {
-		// we were planning an old dive and rewrite the plan
+		copy_events_until(current_dive, &displayed_dive, preserved_until.seconds);
+		if (replanCopy) {
+			// we were planning an old dive and save as a new dive
+			displayed_dive.id = dive_getUniqID(); // Things will break horribly if we create dives with the same id.
 #if not defined(SUBSURFACE_MOBILE) && not defined(SUBSURFACE_TESTING)
-		Command::replanDive(&displayed_dive);
+			Command::addDive(&displayed_dive, false, false);
 #endif // SUBSURFACE_MOBILE SUBSURFACE_TESTING
+		} else {
+			// we were planning an old dive and rewrite the plan
+#if not defined(SUBSURFACE_MOBILE) && not defined(SUBSURFACE_TESTING)
+			Command::replanDive(&displayed_dive);
+#endif // SUBSURFACE_MOBILE SUBSURFACE_TESTING
+		}
 	}
 
 	// Remove and clean the diveplan, so we don't delete

@@ -352,6 +352,7 @@ extern struct dive *merge_dives(const struct dive *a, const struct dive *b, int 
 extern struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded);
 extern struct event *clone_event(const struct event *src_ev);
 extern void copy_events(const struct divecomputer *s, struct divecomputer *d);
+extern void copy_events_until(const struct dive *sd, struct dive *dd, int time);
 extern void free_events(struct event *ev);
 extern void copy_cylinders(const struct cylinder_table *s, struct cylinder_table *d);
 extern void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_only);
