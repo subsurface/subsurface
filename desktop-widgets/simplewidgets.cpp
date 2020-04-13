@@ -440,7 +440,7 @@ DiveComponentSelection::DiveComponentSelection(QWidget *parent, struct dive *tar
 
 void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 {
-	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
+	if (current_dive && ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
 		COMPONENT_FROM_UI(divesite);
 		COMPONENT_FROM_UI(divemaster);
 		COMPONENT_FROM_UI(buddy);
@@ -451,28 +451,28 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 		COMPONENT_FROM_UI(tags);
 		COMPONENT_FROM_UI(cylinders);
 		COMPONENT_FROM_UI(weights);
-		selective_copy_dive(&displayed_dive, targetDive, *what, true);
+		selective_copy_dive(current_dive, targetDive, *what, true);
 		QClipboard *clipboard = QApplication::clipboard();
 		QTextStream text;
 		QString cliptext;
 		text.setString(&cliptext);
-		if (what->divesite && displayed_dive.dive_site)
-			text << tr("Dive site: ") << displayed_dive.dive_site->name << "\n";
+		if (what->divesite && current_dive->dive_site)
+			text << tr("Dive site: ") << current_dive->dive_site->name << "\n";
 		if (what->divemaster)
-			text << tr("Dive master: ") << displayed_dive.divemaster << "\n";
+			text << tr("Dive master: ") << current_dive->divemaster << "\n";
 		if (what->buddy)
-			text << tr("Buddy: ") << displayed_dive.buddy << "\n";
+			text << tr("Buddy: ") << current_dive->buddy << "\n";
 		if (what->rating)
-			text << tr("Rating: ") + QString("*").repeated(displayed_dive.rating) << "\n";
+			text << tr("Rating: ") + QString("*").repeated(current_dive->rating) << "\n";
 		if (what->visibility)
-			text << tr("Visibility: ") + QString("*").repeated(displayed_dive.visibility) << "\n";
+			text << tr("Visibility: ") + QString("*").repeated(current_dive->visibility) << "\n";
 		if (what->notes)
-			text << tr("Notes:\n") << displayed_dive.notes << "\n";
+			text << tr("Notes:\n") << current_dive->notes << "\n";
 		if (what->suit)
-			text << tr("Suit: ") << displayed_dive.suit << "\n";
+			text << tr("Suit: ") << current_dive->suit << "\n";
 		if (what-> tags) {
 			text << tr("Tags: ");
-			tag_entry *entry = displayed_dive.tag_list;
+			tag_entry *entry = current_dive->tag_list;
 			while (entry) {
 				text << entry->tag->name << " ";
 				entry = entry->next;
@@ -482,16 +482,16 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 		if (what->cylinders) {
 			int cyl;
 			text << tr("Cylinders:\n");
-			for (cyl = 0; cyl < displayed_dive.cylinders.nr; cyl++) {
-				if (is_cylinder_used(&displayed_dive, cyl))
-					text << get_cylinder(&displayed_dive, cyl)->type.description << " " << gasname(get_cylinder(&displayed_dive, cyl)->gasmix) << "\n";
+			for (cyl = 0; cyl < current_dive->cylinders.nr; cyl++) {
+				if (is_cylinder_used(current_dive, cyl))
+					text << get_cylinder(current_dive, cyl)->type.description << " " << gasname(get_cylinder(current_dive, cyl)->gasmix) << "\n";
 			}
 		}
 		if (what->weights) {
 			int w;
 			text << tr("Weights:\n");
-			for (w = 0; w < displayed_dive.weightsystems.nr; w++) {
-				weightsystem_t ws = displayed_dive.weightsystems.weightsystems[w];
+			for (w = 0; w < current_dive->weightsystems.nr; w++) {
+				weightsystem_t ws = current_dive->weightsystems.weightsystems[w];
 				text << ws.description << ws.weight.grams / 1000 << "kg\n";
 			}
 		}
