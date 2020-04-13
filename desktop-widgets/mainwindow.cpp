@@ -852,19 +852,6 @@ void MainWindow::printPlan()
 #endif
 }
 
-void MainWindow::setupForAddAndPlan(const char *model)
-{
-	// clean out the dive and give it an id and the correct dc model
-	clear_dive(&displayed_dive);
-	displayed_dive.id = dive_getUniqID();
-	displayed_dive.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
-	displayed_dive.dc.model = strdup(model); // don't translate! this is stored in the XML file
-	dc_number = 1;
-	// setup the dive cylinders
-	DivePlannerPointsModel::instance()->clear();
-	DivePlannerPointsModel::instance()->setupCylinders();
-}
-
 void MainWindow::on_actionReplanDive_triggered()
 {
 	if (!plannerStateClean() || !current_dive)
@@ -902,10 +889,9 @@ void MainWindow::on_actionDivePlanner_triggered()
 	setApplicationState(ApplicationState::PlanDive);
 
 	graphics->setPlanState();
+	dc_number = 1;
 
 	// create a simple starting dive, using the first gas from the just copied cylinders
-	setupForAddAndPlan("planned dive"); // don't translate, stored in XML file
-	DivePlannerPointsModel::instance()->setupStartTime();
 	DivePlannerPointsModel::instance()->createSimpleDive();
 	// plan the dive in the same mode as the currently selected one
 	if (current_dive) {

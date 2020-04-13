@@ -211,7 +211,6 @@ private:
 	LocationInformationWidget *diveSiteEdit;
 
 	bool plannerStateClean();
-	void setupForAddAndPlan(const char *model);
 	void configureToolbar();
 	void setupSocialNetworkMenu();
 	QDialog *findMovedImagesDialog;
