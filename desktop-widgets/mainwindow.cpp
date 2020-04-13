@@ -1668,31 +1668,21 @@ void MainWindow::on_actionImportDiveSites_triggered()
 
 void MainWindow::editCurrentDive()
 {
-	if (!current_dive)
+	// We only allow editing of the profile for manually added dives.
+	if (!current_dive || !same_string(current_dive->dc.model, "manually added dive"))
 		return;
 
-	if (mainTab->isEditing() || DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) {
-		QMessageBox::warning(this, tr("Warning"), tr("Please, first finish the current edition before trying to do another."));
+	// This shouldn't be possible, but let's make sure no weird "double editing" takes place.
+	if (mainTab->isEditing() || DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING)
 		return;
-	}
 
-	struct dive *d = current_dive;
-	QString defaultDC(d->dc.model);
+	disableShortcuts();
 	DivePlannerPointsModel::instance()->clear();
-	if (defaultDC == "manually added dive") {
-		disableShortcuts();
-		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
-		graphics->setAddState();
-		setApplicationState(ApplicationState::EditDive);
-		DivePlannerPointsModel::instance()->loadFromDive(d);
-		mainTab->enableEdition();
-	} else if (defaultDC == "planned dive") {
-		disableShortcuts();
-		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
-		setApplicationState(ApplicationState::EditPlannedDive);
-		DivePlannerPointsModel::instance()->loadFromDive(d);
-		mainTab->enableEdition();
-	}
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
+	graphics->setAddState();
+	setApplicationState(ApplicationState::EditDive);
+	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
+	mainTab->enableEdition();
 }
 
 void MainWindow::turnOffNdlTts()
