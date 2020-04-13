@@ -148,14 +148,9 @@ void FullText::populate()
 	uiNotification(QObject::tr("start processing"));
 	int i;
 	dive *d;
-	for_each_dive(i, d) {
-		// this makes sure that every once in a while we allow the
-		// UI to respond to events
-		if (i % 100 == 99)
-			uiNotification(QObject::tr("\r%1 dives processed").arg(i + 1));
+	for_each_dive(i, d)
 		registerDive(d);
-	}
-	uiNotification(QObject::tr("\r%1 dives processed").arg(dive_table.nr));
+	uiNotification(QObject::tr("%1 dives processed").arg(dive_table.nr));
 }
 
 void FullText::registerDive(struct dive *d)
