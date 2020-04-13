@@ -355,10 +355,10 @@ void MainTab::updateDiveInfo()
 
 	ignoreInput = true; // don't trigger on changes to the widgets
 
-	for (TabBase *widget: extraWidgets)
-		widget->updateData();
-
 	if (current_dive) {
+		for (TabBase *widget: extraWidgets)
+			widget->updateData();
+
 		// If we're on the dive-site tab, we don't want to switch tab when entering / exiting
 		// trip mode. The reason is that
 		// 1) this disrupts the user-experience and
