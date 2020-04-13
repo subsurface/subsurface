@@ -808,8 +808,11 @@ void MainWindow::printPlan()
 {
 #ifndef NO_PRINTING
 	char *disclaimer = get_planner_disclaimer_formatted();
+	// Prepend a logo and a disclaimer to the plan.
+	// Save the old plan so that it can be restored at the end of the function.
+	QString origPlan = plannerDetails->divePlanOutput()->toHtml();
 	QString diveplan = QStringLiteral("<img height=50 src=\":subsurface-icon\"> ") +
-			   QString(disclaimer) + plannerDetails->divePlanOutput()->toHtml();
+			   QString(disclaimer) + origPlan;
 	free(disclaimer);
 
 	QPrinter printer;
@@ -848,7 +851,7 @@ void MainWindow::printPlan()
 
 	plannerDetails->divePlanOutput()->setHtml(diveplan);
 	plannerDetails->divePlanOutput()->print(&printer);
-	plannerDetails->divePlanOutput()->setHtml(displayed_dive.notes);
+	plannerDetails->divePlanOutput()->setHtml(origPlan); // restore original plan
 #endif
 }
 
