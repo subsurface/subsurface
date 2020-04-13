@@ -118,7 +118,7 @@ signals:
 	void cylinderModelEdited();
 	void startTimeChanged(QDateTime);
 	void recreationChanged(bool);
-	void calculatedPlanNotes();
+	void calculatedPlanNotes(QString);
 	void variationsComputed(QString);
 
 private:

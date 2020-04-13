@@ -984,7 +984,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		computeVariations(plan_copy, &plan_deco_state);
 #endif
 		final_deco_state = plan_deco_state;
-		emit calculatedPlanNotes();
+		emit calculatedPlanNotes(QString(displayed_dive.notes));
 	}
 	// throw away the cache
 	free(cache);
@@ -1169,7 +1169,7 @@ void DivePlannerPointsModel::computeVariationsDone(QString variations)
 	QString notes = QString(displayed_dive.notes);
 	free(displayed_dive.notes);
 	displayed_dive.notes = copy_qstring(notes.replace("VARIATIONS", variations));
-	emit calculatedPlanNotes();
+	emit calculatedPlanNotes(QString(displayed_dive.notes));
 }
 
 void DivePlannerPointsModel::createPlan(bool replanCopy)
