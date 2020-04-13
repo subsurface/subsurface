@@ -183,10 +183,8 @@ public
 slots:
 	void recalc();
 
-protected:
-	ProfileWidget2 *profileWidget;
-
 private:
+	ProfileWidget2 *profileWidget;
 	bool is3mIncrement;
 };
 
