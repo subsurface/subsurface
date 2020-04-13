@@ -450,11 +450,8 @@ void MainWindow::configureToolbar()
 
 void MainWindow::selectionChanged()
 {
-	if (!current_dive) {
-		mainTab->clearTabs();
-		mainTab->updateDiveInfo();
-	} else {
-		mainTab->updateDiveInfo();
+	mainTab->updateDiveInfo();
+	if (current_dive) {
 		configureToolbar();
 		enableDisableOtherDCsActions();
 	}
