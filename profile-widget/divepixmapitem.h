@@ -19,11 +19,11 @@ class CloseButtonItem : public DivePixmapItem {
 	Q_OBJECT
 public:
 	CloseButtonItem(QGraphicsItem *parent = 0);
-protected:
-	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 public slots:
 	void hide();
 	void show();
+private:
+	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 class DivePictureItem : public DivePixmapItem {
@@ -37,11 +37,10 @@ public slots:
 	void settingsChanged();
 	void removePicture();
 	void setFileUrl(const QString& s);
-protected:
+private:
 	void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
 	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
-private:
 	QString fileUrl;
 	QGraphicsRectItem *canvas;
 	QGraphicsRectItem *shadow;

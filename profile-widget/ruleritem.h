@@ -21,9 +21,8 @@ public:
 	void setPlotInfo(const struct plot_info &info);
 	void recalculate();
 
-protected:
-	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 private:
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 	struct plot_info pInfo;
 	int idx;
 	RulerItem2 *ruler;

@@ -81,7 +81,7 @@ class DepthAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
 	DepthAxis(ProfileWidget2 *widget);
-protected:
+private:
 	QString textForValue(double value);
 	QColor colorForValue(double value);
 private
@@ -94,8 +94,7 @@ class TimeAxis : public DiveCartesianAxis {
 public:
 	TimeAxis(ProfileWidget2 *widget);
 	void updateTicks(color_index_t color = TIME_GRID);
-
-protected:
+private:
 	QString textForValue(double value);
 	QColor colorForValue(double value);
 };
@@ -104,7 +103,7 @@ class TemperatureAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
 	TemperatureAxis(ProfileWidget2 *widget);
-protected:
+private:
 	QString textForValue(double value);
 };
 
@@ -116,7 +115,6 @@ public:
 public
 slots:
 	void settingsChanged();
-
 private:
 	DivePlotDataModel *model;
 };
