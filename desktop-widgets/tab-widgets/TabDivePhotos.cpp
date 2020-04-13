@@ -111,6 +111,8 @@ void TabDivePhotos::recalculateSelectedThumbnails()
 
 void TabDivePhotos::saveSubtitles()
 {
+	if (!current_dive)
+		return;
 	if (!ui->photosView->selectionModel()->hasSelection())
 		return;
 	QModelIndexList indices = ui->photosView->selectionModel()->selectedRows();
@@ -127,7 +129,7 @@ void TabDivePhotos::saveSubtitles()
 				if (!duration)
 					continue;
 				struct membuffer b = { 0 };
-				save_subtitles_buffer(&b, &displayed_dive, offset, duration);
+				save_subtitles_buffer(&b, current_dive, offset, duration);
 				char *data = detach_cstring(&b);
 				subtitlefile.open(QIODevice::WriteOnly);
 				subtitlefile.write(data, strlen(data));
