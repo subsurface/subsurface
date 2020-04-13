@@ -185,7 +185,7 @@ void Printer::render(int Pages = 0)
 	qPrefDisplay::set_animation_speed(animationOriginal);
 
 	//replot the dive after returning the settings
-	profile->plotDive(0, true, true);
+	profile->plotDive(current_dive, true, true);
 }
 
 //value: ranges from 0 : 100 and shows the progress of the templating engine

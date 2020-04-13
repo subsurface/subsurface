@@ -76,7 +76,7 @@ public:
 	~ProfileWidget2();
 	void resetZoom();
 	void scale(qreal sx, qreal sy);
-	void plotDive(const struct dive *d = 0, bool force = false, bool clearPictures = false, bool instant = false);
+	void plotDive(const struct dive *d, bool force = false, bool clearPictures = false, bool instant = false);
 	void setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *vAxis, int vData, int hData, int zValue);
 	void setPrintMode(bool mode, bool grayscale = false);
 	bool getPrintMode();
