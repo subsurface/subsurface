@@ -1710,7 +1710,12 @@ void QMLManager::setNotificationText(QString text)
 	appendTextToLog(QStringLiteral("showProgress: ") + text);
 	m_notificationText = text;
 	emit notificationTextChanged();
-	qApp->processEvents();
+	// Once we're initialized, this may be called from signal context, notably when selecting an action from a context menu.
+	// Processing events may now cause the menu to be deleted. Deleting a QML object which sent a signal causes QML to quit the application.
+	// Therefore, don't process events once the application is started.
+	// During startup this is needed so that the notifications are shown.
+	if (!m_initialized)
+		qApp->processEvents();
 }
 
 qreal QMLManager::lastDevicePixelRatio()
