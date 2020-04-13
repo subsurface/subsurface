@@ -423,6 +423,9 @@ DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTable
 {
 	memset(&diveplan, 0, sizeof(diveplan));
 	startTime.setTimeSpec(Qt::UTC);
+	// use a Qt-connection to send the variations text across thread boundary (in case we
+	// are calculating the variations in a background thread).
+	connect(this, &DivePlannerPointsModel::variationsComputed, this, &DivePlannerPointsModel::computeVariationsDone);
 }
 
 DivePlannerPointsModel *DivePlannerPointsModel::instance()
@@ -1147,6 +1150,7 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 			FRACTION(analyzeVariations(shallower, original, deeper, qPrintable(depth_units)), 60), qPrintable(depth_units),
 			FRACTION(analyzeVariations(shorter, original, longer, qPrintable(time_units)), 60));
 
+		// By using a signal, we can transport the variations to the main thread.
 		emit variationsComputed(QString(buf));
 #ifdef DEBUG_STOPVAR
 		printf("\n\n");
@@ -1159,6 +1163,14 @@ finish:
 	free(cache);
 	free(dive);
 //	setRecalc(oldRecalc);
+}
+
+void DivePlannerPointsModel::computeVariationsDone(QString variations)
+{
+	QString notes = QString(displayed_dive.notes);
+	free(displayed_dive.notes);
+	displayed_dive.notes = copy_qstring(notes.replace("VARIATIONS", variations));
+	emit calculatedPlanNotes();
 }
 
 void DivePlannerPointsModel::createPlan(bool replanCopy)
