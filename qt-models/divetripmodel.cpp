@@ -725,8 +725,6 @@ void DiveTripModelTree::populate()
 	uiNotification(QObject::tr("populate data model"));
 	uiNotification(QObject::tr("start processing"));
 	for (int i = 0; i < dive_table.nr; ++i) {
-		if (i  % 100 == 99)
-			uiNotification(QObject::tr("\r%1 dives processed").arg(i + 1));
 		dive *d = get_dive(i);
 		update_cylinder_related_info(d);
 		if (d->hidden_by_filter)
@@ -754,7 +752,7 @@ void DiveTripModelTree::populate()
 
 	// Remember the index of the current dive
 	oldCurrent = current_dive;
-	uiNotification(QObject::tr("\r%1 dives processed").arg(dive_table.nr));
+	uiNotification(QObject::tr("%1 dives processed").arg(dive_table.nr));
 }
 
 int DiveTripModelTree::rowCount(const QModelIndex &parent) const
