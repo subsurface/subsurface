@@ -676,7 +676,6 @@ void MainWindow::on_actionClose_triggered()
 {
 	if (okToClose(tr("Please save or cancel the current dive edit before closing the file."))) {
 		closeCurrentFile();
-		DivePictureModel::instance()->updateDivePictures();
 		setApplicationState(ApplicationState::Default);
 	}
 }
@@ -779,7 +778,6 @@ void MainWindow::refreshProfile()
 	showProfile();
 	configureToolbar();
 	graphics->plotDive(current_dive, true);
-	DivePictureModel::instance()->updateDivePictures();
 }
 
 void MainWindow::planCanceled()
@@ -903,7 +901,6 @@ void MainWindow::on_actionDivePlanner_triggered()
 		if (current_dive->salinity)
 			divePlannerWidget->setSalinity(current_dive->salinity);
 	}
-	DivePictureModel::instance()->updateDivePictures();
 	divePlannerWidget->setReplanButton(false);
 }
 
