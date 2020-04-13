@@ -6,6 +6,7 @@
 #include "core/subsurface-string.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "qt-models/divetripmodel.h"
+#include "qt-models/divelocationmodel.h"
 
 MultiFilterSortModel *MultiFilterSortModel::instance()
 {
@@ -29,6 +30,7 @@ void MultiFilterSortModel::resetModel(DiveTripModelBase::Layout layout)
 	connect(model.get(), &DiveTripModelBase::selectionChanged, this, &MultiFilterSortModel::selectionChangedSlot);
 	connect(model.get(), &DiveTripModelBase::currentDiveChanged, this, &MultiFilterSortModel::currentDiveChangedSlot);
 	model->initSelection();
+	LocationInformationModel::instance()->update();
 }
 
 void MultiFilterSortModel::clear()

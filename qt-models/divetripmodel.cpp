@@ -490,6 +490,7 @@ void DiveTripModelBase::clear()
 	emit diveListNotifier.numShownChanged();
 }
 
+// Currently only used by the mobile models
 void DiveTripModelBase::reset()
 {
 	beginResetModel();
