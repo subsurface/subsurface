@@ -753,6 +753,9 @@ struct dive *unregister_dive(int idx)
 	struct dive *dive = get_dive(idx);
 	if (!dive)
 		return NULL; /* this should never happen */
+	/* When removing a dive from the global dive table,
+	 * we also have to unregister its fulltext cache. */
+	fulltext_unregister(dive);
 	remove_from_dive_table(&dive_table, idx);
 	if (dive->selected)
 		amount_selected--;

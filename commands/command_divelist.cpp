@@ -73,6 +73,7 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 	res->hidden_by_filter = true;
 
 	int idx = dive_table_get_insertion_index(&dive_table, res);
+	fulltext_register(res);				// Register the dive's fulltext cache
 	add_to_dive_table(&dive_table, idx, res);	// Return ownership to backend
 	invalidate_dive_cache(res);		// Ensure that dive is written in git_save()
 
