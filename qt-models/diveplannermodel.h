@@ -126,6 +126,7 @@ private:
 	void createPlan(bool replanCopy);
 	struct diveplan diveplan;
 	struct divedatapoint *cloneDiveplan(struct diveplan *plan_src, struct diveplan *plan_copy);
+	void computeVariationsDone(QString text);
 	void computeVariations(struct diveplan *diveplan, const struct deco_state *ds);
 	void computeVariationsFreeDeco(struct diveplan *diveplan, struct deco_state *ds);
 	int analyzeVariations(struct decostop *min, struct decostop *mid, struct decostop *max, const char *unit);

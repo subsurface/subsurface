@@ -209,7 +209,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.menuFile->insertSeparator(ui.actionQuit);
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
-	connect(DivePlannerPointsModel::instance(), SIGNAL(variationsComputed(QString)), this, SLOT(updateVariations(QString)));
 	connect(plannerDetails->printPlan(), SIGNAL(pressed()), divePlannerWidget, SLOT(printDecoPlan()));
 	connect(this, &MainWindow::showError, ui.mainErrorMessage, &NotificationWidget::showError, Qt::AutoConnection);
 
@@ -825,14 +824,6 @@ void MainWindow::planCreated()
 
 void MainWindow::setPlanNotes()
 {
-	plannerDetails->divePlanOutput()->setHtml(displayed_dive.notes);
-}
-
-void MainWindow::updateVariations(QString variations)
-{
-	QString notes = QString(displayed_dive.notes);
-	free(displayed_dive.notes);
-	displayed_dive.notes = copy_qstring(notes.replace("VARIATIONS", variations));
 	plannerDetails->divePlanOutput()->setHtml(displayed_dive.notes);
 }
 

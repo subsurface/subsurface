@@ -172,7 +172,6 @@ slots:
 	// should only be enabled when the profile's visible.
 	void disableShortcuts(bool disablePaste = true);
 	void enableShortcuts();
-	void updateVariations(QString);
 	void startDiveSiteEdit();
 
 private:
