@@ -799,9 +799,9 @@ void MainWindow::planCreated()
 	diveList->setFocus();
 }
 
-void MainWindow::setPlanNotes()
+void MainWindow::setPlanNotes(QString plan)
 {
-	plannerDetails->divePlanOutput()->setHtml(displayed_dive.notes);
+	plannerDetails->divePlanOutput()->setHtml(plan);
 }
 
 void MainWindow::printPlan()

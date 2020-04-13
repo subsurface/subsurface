@@ -165,7 +165,7 @@ slots:
 	void planCanceled();
 	void planCreated();
 	void setEnabledToolbar(bool arg1);
-	void setPlanNotes();
+	void setPlanNotes(QString plan);
 	// Some shortcuts like "change DC" or "copy/paste dive components"
 	// should only be enabled when the profile's visible.
 	void disableShortcuts(bool disablePaste = true);
