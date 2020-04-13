@@ -58,17 +58,17 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 {
 	ui.setupUi(this);
 
-	extraWidgets << new TabDiveEquipment();
+	extraWidgets << new TabDiveEquipment(this);
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Equipment"));
-	extraWidgets << new TabDiveInformation();
+	extraWidgets << new TabDiveInformation(this);
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Information"));
-	extraWidgets << new TabDiveStatistics();
+	extraWidgets << new TabDiveStatistics(this);
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Statistics"));
-	extraWidgets << new TabDivePhotos();
+	extraWidgets << new TabDivePhotos(this);
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Media"));
-	extraWidgets << new TabDiveExtraInfo();
+	extraWidgets << new TabDiveExtraInfo(this);
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Extra Info"));
-	extraWidgets << new TabDiveSite();
+	extraWidgets << new TabDiveSite(this);
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Dive sites"));
 
 	ui.dateEdit->setDisplayFormat(prefs.date_format);
@@ -176,10 +176,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	new TextHyperlinkEventFilter(ui.notes);//destroyed when ui.notes is destroyed
 
 	ui.diveTripLocation->hide();
-}
-
-MainTab::~MainTab()
-{
 }
 
 void MainTab::hideMessage()

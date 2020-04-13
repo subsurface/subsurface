@@ -27,7 +27,6 @@ class MainTab : public QTabWidget {
 	Q_OBJECT
 public:
 	MainTab(QWidget *parent = 0);
-	~MainTab();
 	void clearTabs();
 	void reload();
 	void initialUiSetup();
