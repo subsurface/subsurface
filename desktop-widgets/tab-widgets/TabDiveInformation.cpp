@@ -38,11 +38,7 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 	connect(ui->diveType, SIGNAL(currentIndexChanged(int)), this, SLOT(diveModeChanged(int)));
 	QString CSSSetSmallLabel = "QLabel { color: mediumblue; font-size: " +                           // Using label height
 		QString::number((int)(0.5 + ui->diveHeadingLabel->geometry().height() * 0.66)) + "px;}"; // .. set CSS font size of star widget subscripts
-#if defined(Q_OS_WIN)
 	ui->scrollAreaWidgetContents_3->setStyleSheet("QGroupBox::title { color: mediumblue;} ");
-#else
-	ui->scrollAreaWidgetContents_3->setStyleSheet("QGroupBox { border: 1px solid silver; border-radius: 4px; margin-top: 0.65em; background-color: #e7e4e4;} QGroupBox::title { color: mediumblue;} ");
-#endif
 	ui->diveHeadingLabel->setStyleSheet(CSS_SET_HEADING_BLUE);
 	ui->gasHeadingLabel->setStyleSheet(CSS_SET_HEADING_BLUE);
 	ui->environmentHeadingLabel->setStyleSheet(CSS_SET_HEADING_BLUE);
