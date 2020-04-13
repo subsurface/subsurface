@@ -50,14 +50,7 @@ Kirigami.ApplicationWindow {
 				showPassiveNotification(notificationText, 5000)
 			}
 		} else {
-			var oldText = textBlock.text
-			if (notificationText.startsWith("\r")) {
-				// replace the last line that was sent
-				oldText = oldText.substr(0, oldText.lastIndexOf("\n"))
-				textBlock.text = oldText + "\n" + notificationText.substr(1)
-			} else {
-				textBlock.text = oldText + "\n" + notificationText
-			}
+			textBlock.text = textBlock.text + "\n" + notificationText
 		}
 	}
 	visible: false
