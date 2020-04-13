@@ -381,8 +381,7 @@ void ProfileWidget2::setupItemOnScene()
 
 void ProfileWidget2::replot()
 {
-	dataModel->clear();
-	plotDive(nullptr, true, false);
+	plotDive(current_dive, true, false);
 }
 
 void ProfileWidget2::createPPGas(PartialPressureGasItem *item, int verticalColumn, color_index_t color, color_index_t colorAlert,
@@ -566,11 +565,8 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 #endif
 	if (currentState != ADD && currentState != PLAN) {
 		if (!d) {
-			if (!current_dive) {
-				setEmptyState();
-				return;
-			}
-			d = current_dive; // display the current dive
+			setEmptyState();
+			return;
 		}
 
 		// No need to do this again if we are already showing the same dive
