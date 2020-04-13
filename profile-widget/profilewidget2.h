@@ -134,7 +134,7 @@ slots: // Necessary to call from QAction's signals.
 	void divePlannerHandlerReleased();
 #endif
 
-protected:
+private:
 	void resizeEvent(QResizeEvent *event) override;
 #ifndef SUBSURFACE_MOBILE
 	void wheelEvent(QWheelEvent *event) override;
@@ -148,7 +148,6 @@ protected:
 	void dragEnterEvent(QDragEnterEvent *event) override;
 	void dragMoveEvent(QDragMoveEvent *event) override;
 
-private:
 	void changeGas(int tank, int seconds);
 	void fixBackgroundPos();
 	void scrollViewTo(const QPoint &pos);
@@ -174,7 +173,7 @@ private:
 	void makeFirstDC();
 	void deleteCurrentDC();
 	void splitCurrentDC();
-private:
+
 	DivePlotDataModel *dataModel;
 	int zoomLevel;
 	qreal zoomFactor;
