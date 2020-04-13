@@ -74,8 +74,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.dateEdit->setDisplayFormat(prefs.date_format);
 	ui.timeEdit->setDisplayFormat(prefs.time_format);
 
-	memset(&displayed_dive, 0, sizeof(displayed_dive));
-
 	closeMessage();
 
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &MainTab::divesChanged);
