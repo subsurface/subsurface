@@ -18,6 +18,7 @@ struct PictureEntry {
 	duration_t length;
 };
 
+struct dive;
 class DivePictureModel : public QAbstractTableModel {
 	Q_OBJECT
 public:
@@ -27,12 +28,12 @@ public:
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	void updateDivePictures();
 	void removePictures(const QVector<QString> &fileUrls);
-	void updateDivePictureOffset(int diveId, const QString &filename, int offsetSeconds);
 signals:
 	void picturesRemoved(const QVector<QString> &fileUrls);
 public slots:
 	void setZoomLevel(int level);
 	void updateThumbnail(QString filename, QImage thumbnail, duration_t duration);
+	void pictureOffsetChanged(dive *d, const QString filename, offset_t offset);
 private:
 	DivePictureModel();
 	QVector<PictureEntry> pictures;

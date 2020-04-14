@@ -118,6 +118,10 @@ void renameEvent(struct dive *d, int dcNr, struct event *ev, const char *name);
 void removeEvent(struct dive *d, int dcNr, struct event *ev);
 void addGasSwitch(struct dive *d, int dcNr, int seconds, int tank);
 
+// 7) Picture (media) commands
+
+void setPictureOffset(dive *d, const QString &filename, offset_t offset);
+
 } // namespace Command
 
 #endif // COMMAND_H

@@ -6,6 +6,7 @@
 #include "core/imagedownloader.h"
 #include "core/picture.h"
 #include "core/qthelper.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 
 #include <QFileInfo>
 #include <QPainter>
@@ -20,6 +21,8 @@ DivePictureModel::DivePictureModel() : zoomLevel(0.0)
 {
 	connect(Thumbnailer::instance(), &Thumbnailer::thumbnailChanged,
 		this, &DivePictureModel::updateThumbnail, Qt::QueuedConnection);
+	connect(&diveListNotifier, &DiveListNotifier::pictureOffsetChanged,
+		this, &DivePictureModel::pictureOffsetChanged);
 }
 
 void DivePictureModel::setZoomLevel(int level)
@@ -212,13 +215,13 @@ void DivePictureModel::updateThumbnail(QString filename, QImage thumbnail, durat
 	}
 }
 
-void DivePictureModel::updateDivePictureOffset(int diveId, const QString &filenameIn, int offsetSeconds)
+void DivePictureModel::pictureOffsetChanged(dive *d, const QString filenameIn, offset_t offset)
 {
 	std::string filename = filenameIn.toStdString();
 
 	// Find the pictures of the given dive.
-	auto from = std::find_if(pictures.begin(), pictures.end(), [diveId](const PictureEntry &e) { return e.diveId == diveId; });
-	auto to = std::find_if(from, pictures.end(), [diveId](const PictureEntry &e) { return e.diveId != diveId; });
+	auto from = std::find_if(pictures.begin(), pictures.end(), [d](const PictureEntry &e) { return e.diveId == d->id; });
+	auto to = std::find_if(from, pictures.end(), [d](const PictureEntry &e) { return e.diveId != d->id; });
 
 	// Find picture with the given filename
 	auto oldPos = std::find_if(from, to, [filename](const PictureEntry &e) { return e.filename == filename; });
@@ -226,20 +229,11 @@ void DivePictureModel::updateDivePictureOffset(int diveId, const QString &filena
 		return;
 
 	// Find new position
-	auto newPos = std::find_if(from, to, [offsetSeconds](const PictureEntry &e) { return e.offsetSeconds > offsetSeconds; });
+	auto newPos = std::find_if(from, to, [offset](const PictureEntry &e) { return e.offsetSeconds > offset.seconds; });
 
 	// Update the offset here and in the backend
-	oldPos->offsetSeconds = offsetSeconds;
-	if (struct dive *dive = get_dive_by_uniq_id(diveId)) {
-		FOR_EACH_PICTURE(dive) {
-			if (picture->filename == filename) {
-				picture->offset.seconds = offsetSeconds;
-				mark_divelist_changed(true);
-				break;
-			}
-		}
-		copy_dive(current_dive, &displayed_dive);
-	}
+	oldPos->offsetSeconds = offset.seconds;
+	copy_dive(current_dive, &displayed_dive); // TODO: remove once profile can display arbitrary dives
 
 	// Henceforth we will work with indices instead of iterators
 	int oldIndex = oldPos - pictures.begin();

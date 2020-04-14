@@ -6,6 +6,7 @@
 #include "command_edit.h"
 #include "command_edit_trip.h"
 #include "command_event.h"
+#include "command_pictures.h"
 
 namespace Command {
 
@@ -357,6 +358,13 @@ void removeEvent(struct dive *d, int dcNr, struct event *ev)
 void addGasSwitch(struct dive *d, int dcNr, int seconds, int tank)
 {
 	execute(new AddGasSwitch(d, dcNr, seconds, tank));
+}
+
+// Picture (media) commands
+
+void setPictureOffset(dive *d, const QString &filename, offset_t offset)
+{
+	execute(new SetPictureOffset(d, filename, offset));
 }
 
 } // namespace Command

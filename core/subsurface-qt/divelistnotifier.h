@@ -116,6 +116,9 @@ signals:
 	// Event-related signals. Currently, we're very blunt: only one signal for any changes to the events.
 	void eventsChanged(dive *d);
 
+	// Picture (media) related signals
+	void pictureOffsetChanged(dive *d, QString filename, offset_t offset);
+
 	// This signal is emited every time a command is executed.
 	// This is used to hide an old multi-dives-edited warning message.
 	// This is necessary, so that the user can't click on the "undo" button and undo
