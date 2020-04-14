@@ -10,15 +10,15 @@
 
 // We use std::string instead of QString to use the same character-encoding
 // as in the C core (UTF-8). This is crucial to guarantee the same sort-order.
+struct dive;
 struct PictureEntry {
-	int diveId;
+	dive *d;
 	std::string filename;
 	QImage image;
 	int offsetSeconds;
 	duration_t length;
 };
 
-struct dive;
 class DivePictureModel : public QAbstractTableModel {
 	Q_OBJECT
 public:

@@ -63,10 +63,10 @@ void DivePictureModel::updateDivePictures()
 		if (dive->selected) {
 			int first = pictures.count();
 			FOR_EACH_PICTURE(dive)
-				pictures.push_back({ dive->id, picture->filename, {}, picture->offset.seconds, {.seconds = 0}});
+				pictures.push_back({ dive, picture->filename, {}, picture->offset.seconds, {.seconds = 0}});
 
 			// Sort pictures of this dive by offset.
-			// Thus, the list will be sorted by (diveId, offset).
+			// Thus, the list will be sorted by (dive, offset).
 			std::sort(pictures.begin() + first, pictures.end(),
 				  [](const PictureEntry &a, const PictureEntry &b) { return a.offsetSeconds < b.offsetSeconds; });
 		}
@@ -218,8 +218,8 @@ void DivePictureModel::pictureOffsetChanged(dive *d, const QString filenameIn, o
 	std::string filename = filenameIn.toStdString();
 
 	// Find the pictures of the given dive.
-	auto from = std::find_if(pictures.begin(), pictures.end(), [d](const PictureEntry &e) { return e.diveId == d->id; });
-	auto to = std::find_if(from, pictures.end(), [d](const PictureEntry &e) { return e.diveId != d->id; });
+	auto from = std::find_if(pictures.begin(), pictures.end(), [d](const PictureEntry &e) { return e.d == d; });
+	auto to = std::find_if(from, pictures.end(), [d](const PictureEntry &e) { return e.d != d; });
 
 	// Find picture with the given filename
 	auto oldPos = std::find_if(from, to, [filename](const PictureEntry &e) { return e.filename == filename; });
