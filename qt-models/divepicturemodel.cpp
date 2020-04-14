@@ -97,8 +97,6 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 			return QFileInfo(QString::fromStdString(entry.filename)).fileName();
 		case Qt::DisplayPropertyRole:
 			return QFileInfo(QString::fromStdString(entry.filename)).filePath();
-		case Qt::UserRole:
-			return entry.diveId;
 		case Qt::UserRole + 1:
 			return entry.offsetSeconds;
 		case Qt::UserRole + 2:
