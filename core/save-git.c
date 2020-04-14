@@ -1196,6 +1196,11 @@ static int write_git_tree(git_repository *repo, struct dir *tree, git_oid *resul
 
 	/* .. write out the resulting treebuilder */
 	ret = git_treebuilder_write(result, tree->files);
+	if (ret && verbose) {
+		const git_error *gerr = giterr_last();
+		if (gerr)
+			fprintf(stderr, "tree_insert failed with return %d error %s\n", ret, gerr->message);
+	}
 
 	/* .. and free the now useless treebuilder */
 	git_treebuilder_free(tree->files);
