@@ -58,14 +58,21 @@ void add_picture(struct picture_table *t, struct picture newpic)
 	add_to_picture_table(t, idx, newpic);
 }
 
+int get_picture_idx(const struct picture_table *t, const char *filename)
+{
+	for (int i = 0; i < t->nr; ++i) {
+		if (same_string(t->pictures[i].filename, filename))
+			return i;
+	}
+	return -1;
+}
+
 // Return true if picture was found and deleted
 bool remove_picture(struct picture_table *t, const char *filename)
 {
-	for (int i = 0; i < t->nr; ++i) {
-		if (same_string(t->pictures[i].filename, filename)) {
-			remove_from_picture_table(t, i);
-			return true;
-		}
-	}
-	return false;
+	int idx = get_picture_idx(t, filename);
+	if (idx < 0)
+		return false;
+	remove_from_picture_table(t, idx);
+	return true;
 }
