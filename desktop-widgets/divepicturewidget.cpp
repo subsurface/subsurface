@@ -32,7 +32,6 @@ void DivePictureWidget::mousePressEvent(QMouseEvent *event)
 	if (event->button() == Qt::LeftButton && event->modifiers() == Qt::NoModifier) {
 		QModelIndex index = indexAt(event->pos());
 		QString filename = model()->data(index, Qt::DisplayPropertyRole).toString();
-		int diveId = model()->data(index, Qt::UserRole).toInt();
 
 		if (!filename.isEmpty()) {
 			int dim = lrint(defaultIconMetrics().sz_pic * 0.2);
@@ -42,7 +41,7 @@ void DivePictureWidget::mousePressEvent(QMouseEvent *event)
 			
 			QByteArray itemData;
 			QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-			dataStream << filename << diveId;
+			dataStream << filename;
 
 			QMimeData *mimeData = new QMimeData;
 			mimeData->setData("application/x-subsurfaceimagedrop", itemData);
