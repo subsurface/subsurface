@@ -652,6 +652,7 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 {
 	int error;
 	git_repository *repo = NULL;
+	git_reference *head;
 
 	if (verbose)
 		fprintf(stderr, "git storage: update local repo\n");
@@ -664,6 +665,21 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 			report_error("Unable to open git cache repository at %s: %s", localdir, giterr_last()->message);
 		return NULL;
 	}
+
+	/* Check the HEAD being the right branch */
+	if (!git_repository_head(&head, repo)) {
+		const char *name;
+		if (!git_branch_name(&name, head)) {
+			if (strcmp(name, branch)) {
+				char *branchref = format_string("refs/heads/%s", branch);
+				fprintf(stderr, "Setting cache branch from '%s' to '%s'", name, branch);
+				git_repository_set_head(repo, branchref);
+				free(branchref);
+			}
+		}
+		git_reference_free(head);
+	}
+
 	if (!git_local_only)
 		sync_with_remote(repo, remote, branch, rt);
 
