@@ -572,6 +572,57 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 	return error;
 }
 
+/* this is (so far) only used by the git storage tests to remove a remote branch
+ * it will print out errors, but not return an error (as this isn't a function that
+ * we test as part of the tests, it's a helper to not leave loads of dead branches on
+ * the server)
+ */
+void delete_remote_branch(git_repository *repo, const char *remote, const char *branch)
+{
+	int error;
+	char *proxy_string;
+	git_remote *origin;
+	git_config *conf;
+
+	/* set up the config and proxy information in order to connect to the server */
+	git_repository_config(&conf, repo);
+	if (getProxyString(&proxy_string)) {
+		git_config_set_string(conf, "http.proxy", proxy_string);
+		free(proxy_string);
+	} else {
+		git_config_delete_entry(conf, "http.proxy");
+	}
+	if (git_remote_lookup(&origin, repo, "origin")) {
+		fprintf(stderr, "Repository '%s' origin lookup failed (%s)", remote, giterr_last() ? giterr_last()->message : "(unspecified)");
+		return;
+	}
+	/* fetch the remote state */
+	git_fetch_options f_opts = GIT_FETCH_OPTIONS_INIT;
+	auth_attempt = 0;
+	f_opts.callbacks.credentials = credential_https_cb;
+	error = git_remote_fetch(origin, NULL, &f_opts, NULL);
+	if (error) {
+		fprintf(stderr, "remote fetch failed (%s)\n", giterr_last() ? giterr_last()->message : "authentication failed");
+		return;
+	}
+	/* delete the remote branch by pushing to ":refs/heads/<branch>" */
+	git_strarray refspec;
+	char *branch_ref = format_string(":refs/heads/%s", branch);
+	refspec.count = 1;
+	refspec.strings = &branch_ref;
+	git_push_options p_opts = GIT_PUSH_OPTIONS_INIT;
+	auth_attempt = 0;
+	p_opts.callbacks.credentials = credential_https_cb;
+	error = git_remote_push(origin, &refspec, &p_opts);
+	free(branch_ref);
+	if (error) {
+		fprintf(stderr, "Unable to delete branch '%s'", branch);
+		fprintf(stderr, "error was (%s)\n", giterr_last() ? giterr_last()->message : "(unspecified)");
+	}
+	git_remote_free(origin);
+	return;
+}
+
 int sync_with_remote(git_repository *repo, const char *remote, const char *branch, enum remote_transport rt)
 {
 	int error;
