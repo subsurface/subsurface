@@ -44,9 +44,6 @@ jobs:
         bash -e -x subsurface/scripts/build.sh -mobile
 
     - name: test mobile build
-      env:
-        SSRF_USER_EMAIL: ssrftest-u19@hohndel.org
-        SSRF_USER_PASSWORD: geheim-u19
       run: |
         echo "--------------------------------------------------------------"
         echo "running tests for mobile"
@@ -64,9 +61,6 @@ jobs:
         bash -e -x subsurface/scripts/build.sh -desktop -build-with-webkit
 
     - name: test desktop build
-      env:
-        SSRF_USER_EMAIL: ssrftest-u19@hohndel.org
-        SSRF_USER_PASSWORD: geheim-u19
       run: |
         echo "--------------------------------------------------------------"
         echo "running tests for desktop"

@@ -37,9 +37,6 @@ jobs:
         bash -x subsurface/scripts/build.sh -desktop -build-with-webkit
 
     - name: test desktop build
-      env:
-        SSRF_USER_EMAIL: ssrftest-u18@hohndel.org
-        SSRF_USER_PASSWORD: geheim-u18
       run: |
         # and now run the tests - with Qt 5.9 we can only run the desktop flavor
         echo "------------------------------------"
