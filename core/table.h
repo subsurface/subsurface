@@ -72,8 +72,8 @@
 #define MAKE_SORT(table_type, item_type, array_name, fun)					\
 	static int sortfn_##table_type(const void *_a, const void *_b)				\
 	{											\
-		const item_type a = (const item_type)*(const void **)_a;			\
-		const item_type b = (const item_type)*(const void **)_b;			\
+		const item_type a = *(const item_type *)_a;					\
+		const item_type b = *(const item_type *)_b;					\
 		return fun(a, b);								\
 	}											\
 												\
