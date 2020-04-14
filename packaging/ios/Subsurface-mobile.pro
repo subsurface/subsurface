@@ -21,6 +21,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../commands/command_divesite.cpp \
 	../../commands/command_edit.cpp \
 	../../commands/command_edit_trip.cpp \
+	../../commands/command_pictures.cpp \
 	../../core/cloudstorage.cpp \
 	../../core/configuredivecomputerthreads.cpp \
 	../../core/devicedetails.cpp \
@@ -186,6 +187,7 @@ HEADERS += \
 	../../commands/command_divesite.h \
 	../../commands/command_edit.h \
 	../../commands/command_edit_trip.h \
+	../../commands/command_pictures.h \
 	../../core/libdivecomputer.h \
 	../../core/cloudstorage.h \
 	../../core/configuredivecomputerthreads.h \

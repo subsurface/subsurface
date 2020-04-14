@@ -19,7 +19,7 @@
 #include "core/pref.h"
 #include "qt-models/diveplannermodel.h"
 #include "qt-models/models.h"
-#include "qt-models/divepicturemodel.h"
+#include "qt-models/divepicturemodel.h" // TODO: remove once divepictures have been undo-ified
 #include "core/divelist.h"
 #include "core/errorhelper.h"
 #ifndef SUBSURFACE_MOBILE
@@ -174,6 +174,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	connect(DivePictureModel::instance(), &DivePictureModel::modelReset, this, &ProfileWidget2::plotPictures);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &ProfileWidget2::profileChanged);
 	connect(&diveListNotifier, &DiveListNotifier::eventsChanged, this, &ProfileWidget2::profileChanged);
+	connect(&diveListNotifier, &DiveListNotifier::pictureOffsetChanged, this, &ProfileWidget2::pictureOffsetChanged);
 #endif // SUBSURFACE_MOBILE
 
 #if !defined(QT_NO_DEBUG) && defined(SHOW_PLOT_INFO_TABLE)
@@ -2175,86 +2176,16 @@ void ProfileWidget2::profileChanged(dive *d)
 
 void ProfileWidget2::dropEvent(QDropEvent *event)
 {
+#ifndef SUBSURFACE_MOBILE
 	if (event->mimeData()->hasFormat("application/x-subsurfaceimagedrop")) {
 		QByteArray itemData = event->mimeData()->data("application/x-subsurfaceimagedrop");
 		QDataStream dataStream(&itemData, QIODevice::ReadOnly);
 
 		QString filename;
-		int diveId;
-		dataStream >> filename >> diveId;
-
-		// If the id of the drag & dropped picture belongs to a different dive, then
-		// the offset we determine makes no sense what so ever. Simply ignore such an event.
-		// In the future, we might think about duplicating the picture or moving the picture
-		// from one dive to the other.
-		if (!current_dive || displayed_dive.id != diveId) {
-			event->ignore();
-			return;
-		}
-
-#ifndef SUBSURFACE_MOBILE
-		// Calculate time in dive where picture was dropped and whether the new position is during the dive.
+		dataStream >> filename;
 		QPointF mappedPos = mapToScene(event->pos());
 		offset_t offset { (int32_t)lrint(timeAxis->valueAt(mappedPos)) };
-		bool duringDive = current_dive && offset.seconds > 0 && offset.seconds < current_dive->duration.seconds;
-
-		// A picture was drag&dropped onto the profile: We have four cases to consider:
-		//	1a) The image was already shown on the profile and is moved to a different position on the profile.
-		//	    Calculate the new position and move the picture.
-		//	1b) The image was on the profile and is moved outside of the dive time.
-		//	    Remove the picture.
-		//	2a) The image was not on the profile and is moved into the dive time.
-		//	    Add the picture to the profile.
-		//	2b) The image was not on the profile and is moved outside of the dive time.
-		//	    Do nothing.
-		auto oldPos = std::find_if(pictures.begin(), pictures.end(), [filename](const PictureEntry &e)
-					   { return e.filename == filename; });
-		if (oldPos != pictures.end()) {
-			// Cases 1a) and 1b): picture is on profile
-			if (duringDive) {
-				// Case 1a): move to new position
-				// First, find new position. Note that we also have to compare filenames,
-				// because it is quite easy to generate equal offsets.
-				auto newPos = std::find_if(pictures.begin(), pictures.end(), [offset, &filename](const PictureEntry &e)
-							   { return std::tie(e.offset.seconds, e.filename) > std::tie(offset.seconds, filename); });
-				// Set new offset
-				oldPos->offset.seconds = offset.seconds;
-				updateThumbnailXPos(*oldPos);
-
-				// Move image from old to new position
-				int oldIndex = oldPos - pictures.begin();
-				int newIndex = newPos - pictures.begin();
-				moveInVector(pictures, oldIndex, oldIndex + 1, newIndex);
-			} else {
-				// Case 1b): remove picture
-				pictures.erase(oldPos);
-			}
-
-			// In both cases the picture list changed, therefore we must recalculate the y-coordinatesA.
-			calculatePictureYPositions();
-		} else {
-			// Cases 2a) and 2b): picture not on profile. We only have to take action for
-			// the first case: picture is moved into dive-time.
-			if (duringDive) {
-				// Case 2a): add the picture at the appropriate position.
-				// The case move from outside-to-outside of the profile plot was handled by
-				// the "&& duringDive" condition in the if above.
-				// As for case 1a), we have to also consider filenames in the case of equal offsets.
-				auto newPos = std::find_if(pictures.begin(), pictures.end(), [offset, &filename](const PictureEntry &e)
-							   { return std::tie(e.offset.seconds, e.filename) > std::tie(offset.seconds, filename); });
-				// emplace() constructs the element at the given position in the vector.
-				// The parameters are passed directly to the contructor.
-				// The call returns an iterator to the new element (which might differ from
-				// the old iterator, since the buffer might have been reallocated).
-				newPos = pictures.emplace(newPos, offset, filename, scene(), false);
-				updateThumbnailXPos(*newPos);
-				calculatePictureYPositions();
-			}
-		}
-
-		// Only signal the drag&drop action if the picture actually belongs to the dive.
-		DivePictureModel::instance()->updateDivePictureOffset(displayed_dive.id, filename, offset.seconds);
-#endif
+		Command::setPictureOffset(current_dive, filename, offset);
 
 		if (event->source() == this) {
 			event->setDropAction(Qt::MoveAction);
@@ -2265,7 +2196,73 @@ void ProfileWidget2::dropEvent(QDropEvent *event)
 	} else {
 		event->ignore();
 	}
+#endif
 }
+
+#ifndef SUBSURFACE_MOBILE
+void ProfileWidget2::pictureOffsetChanged(dive *d, QString filename, offset_t offset)
+{
+	if (d->id != displayed_dive.id)
+		return; // Picture of a different dive than the one shown changed.
+
+	// Calculate time in dive where picture was dropped and whether the new position is during the dive.
+	bool duringDive = current_dive && offset.seconds > 0 && offset.seconds < current_dive->duration.seconds;
+
+	// A picture was drag&dropped onto the profile: We have four cases to consider:
+	//	1a) The image was already shown on the profile and is moved to a different position on the profile.
+	//	    Calculate the new position and move the picture.
+	//	1b) The image was on the profile and is moved outside of the dive time.
+	//	    Remove the picture.
+	//	2a) The image was not on the profile and is moved into the dive time.
+	//	    Add the picture to the profile.
+	//	2b) The image was not on the profile and is moved outside of the dive time.
+	//	    Do nothing.
+	auto oldPos = std::find_if(pictures.begin(), pictures.end(), [filename](const PictureEntry &e)
+				   { return e.filename == filename; });
+	if (oldPos != pictures.end()) {
+		// Cases 1a) and 1b): picture is on profile
+		if (duringDive) {
+			// Case 1a): move to new position
+			// First, find new position. Note that we also have to compare filenames,
+			// because it is quite easy to generate equal offsets.
+			auto newPos = std::find_if(pictures.begin(), pictures.end(), [offset, &filename](const PictureEntry &e)
+						   { return std::tie(e.offset.seconds, e.filename) > std::tie(offset.seconds, filename); });
+			// Set new offset
+			oldPos->offset.seconds = offset.seconds;
+			updateThumbnailXPos(*oldPos);
+
+			// Move image from old to new position
+			int oldIndex = oldPos - pictures.begin();
+			int newIndex = newPos - pictures.begin();
+			moveInVector(pictures, oldIndex, oldIndex + 1, newIndex);
+		} else {
+			// Case 1b): remove picture
+			pictures.erase(oldPos);
+		}
+
+		// In both cases the picture list changed, therefore we must recalculate the y-coordinatesA.
+		calculatePictureYPositions();
+	} else {
+		// Cases 2a) and 2b): picture not on profile. We only have to take action for
+		// the first case: picture is moved into dive-time.
+		if (duringDive) {
+			// Case 2a): add the picture at the appropriate position.
+			// The case move from outside-to-outside of the profile plot was handled by
+			// the "&& duringDive" condition in the if above.
+			// As for case 1a), we have to also consider filenames in the case of equal offsets.
+			auto newPos = std::find_if(pictures.begin(), pictures.end(), [offset, &filename](const PictureEntry &e)
+						   { return std::tie(e.offset.seconds, e.filename) > std::tie(offset.seconds, filename); });
+			// emplace() constructs the element at the given position in the vector.
+			// The parameters are passed directly to the contructor.
+			// The call returns an iterator to the new element (which might differ from
+			// the old iterator, since the buffer might have been reallocated).
+			newPos = pictures.emplace(newPos, offset, filename, scene(), false);
+			updateThumbnailXPos(*newPos);
+			calculatePictureYPositions();
+		}
+	}
+}
+#endif
 
 void ProfileWidget2::dragEnterEvent(QDragEnterEvent *event)
 {

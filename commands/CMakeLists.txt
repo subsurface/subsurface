@@ -16,6 +16,8 @@ set(SUBSURFACE_GENERIC_COMMANDS_SRCS
 	command_edit_trip.h
 	command_event.cpp
 	command_event.h
+	command_pictures.cpp
+	command_pictures.h
 )
 add_library(subsurface_commands STATIC ${SUBSURFACE_GENERIC_COMMANDS_SRCS})
 target_link_libraries(subsurface_commands ${QT_LIBRARIES})

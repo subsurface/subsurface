@@ -117,6 +117,7 @@ slots: // Necessary to call from QAction's signals.
 	void pointsRemoved(const QModelIndex &, int start, int end);
 	void updateThumbnail(QString filename, QImage thumbnail, duration_t duration);
 	void profileChanged(dive *d);
+	void pictureOffsetChanged(dive *d, QString filename, offset_t offset);
 
 	/* this is called for every move on the handlers. maybe we can speed up this a bit? */
 	void recreatePlannedDive();
