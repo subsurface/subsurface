@@ -703,7 +703,7 @@ static git_repository *create_and_push_remote(const char *localdir, const char *
 {
 	git_repository *repo;
 	git_config *conf;
-	char *variable_name, *merge_head;
+	char *variable_name, *head;
 
 	if (verbose)
 		fprintf(stderr, "git storage: create and push remote\n");
@@ -711,9 +711,12 @@ static git_repository *create_and_push_remote(const char *localdir, const char *
 	/* first make sure the directory for the local cache exists */
 	subsurface_mkdir(localdir);
 
+	head = format_string("refs/heads/%s", branch);
+
 	/* set up the origin to point to our remote */
 	git_repository_init_options init_opts = GIT_REPOSITORY_INIT_OPTIONS_INIT;
 	init_opts.origin_url = remote;
+	init_opts.initial_head = head;
 
 	/* now initialize the repository with */
 	git_repository_init_ext(&repo, localdir, &init_opts);
@@ -725,9 +728,8 @@ static git_repository *create_and_push_remote(const char *localdir, const char *
 	free(variable_name);
 
 	variable_name = format_string("branch.%s.merge", branch);
-	merge_head = format_string("refs/heads/%s", branch);
-	git_config_set_string(conf, variable_name, merge_head);
-	free(merge_head);
+	git_config_set_string(conf, variable_name, head);
+	free(head);
 	free(variable_name);
 
 	/* finally create an empty commit and push it to the remote */
