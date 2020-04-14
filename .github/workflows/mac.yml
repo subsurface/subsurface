@@ -33,9 +33,6 @@ jobs:
         bash -e -x ./subsurface/scripts/build.sh -mobile
 
     - name: test mobile build
-      env:
-        SSRF_USER_EMAIL: ssrftest-mac@hohndel.org
-        SSRF_USER_PASSWORD: geheim-mac
       run: |
         echo "------------------------------------"
         echo "run tests for mobile build"
@@ -62,9 +59,6 @@ jobs:
         make export-html
 
     - name: test desktop build
-      env:
-        SSRF_USER_EMAIL: ssrftest-mac@hohndel.org
-        SSRF_USER_PASSWORD: geheim-mac
       run: |
         echo "------------------------------------"
         echo "run tests for desktop build"
