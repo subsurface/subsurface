@@ -110,11 +110,9 @@ void TabDivePhotos::recalculateSelectedThumbnails()
 
 void TabDivePhotos::saveSubtitles()
 {
-	QVector<QString> selectedPhotos;
 	if (!ui->photosView->selectionModel()->hasSelection())
 		return;
 	QModelIndexList indices = ui->photosView->selectionModel()->selectedRows();
-	selectedPhotos.reserve(indices.count());
 	for (const auto &photo: indices) {
 		if (photo.isValid()) {
 			QString fileUrl = photo.data(Qt::DisplayPropertyRole).toString();
@@ -135,7 +133,6 @@ void TabDivePhotos::saveSubtitles()
 				subtitlefile.close();
 				free(data);
 			}
-
 		}
 	}
 }
