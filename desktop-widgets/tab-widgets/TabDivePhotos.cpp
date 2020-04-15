@@ -26,6 +26,7 @@ TabDivePhotos::TabDivePhotos(QWidget *parent)
 	ui->setupUi(this);
 	ui->photosView->setModel(divePictureModel);
 	ui->photosView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+	ui->photosView->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui->photosView->setResizeMode(QListView::Adjust);
 
 	connect(ui->photosView, &DivePictureWidget::photoDoubleClicked,
@@ -70,8 +71,6 @@ QVector<QString> TabDivePhotos::getSelectedFilenames() const
 	if (!ui->photosView->selectionModel()->hasSelection())
 		return selectedPhotos;
 	QModelIndexList indices = ui->photosView->selectionModel()->selectedRows();
-	if (indices.count() == 0)
-		indices = ui->photosView->selectionModel()->selectedIndexes();
 	selectedPhotos.reserve(indices.count());
 	for (const auto &photo: indices) {
 		if (photo.isValid()) {
@@ -115,8 +114,6 @@ void TabDivePhotos::saveSubtitles()
 	if (!ui->photosView->selectionModel()->hasSelection())
 		return;
 	QModelIndexList indices = ui->photosView->selectionModel()->selectedRows();
-	if (indices.count() == 0)
-		indices = ui->photosView->selectionModel()->selectedIndexes();
 	selectedPhotos.reserve(indices.count());
 	for (const auto &photo: indices) {
 		if (photo.isValid()) {
