@@ -16,7 +16,9 @@
 #include <QNetworkProxy>
 #include <QTextCodec>
 #include <QDebug>
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 #include <QRandomGenerator>
+#endif
 
 // provide declarations for two local helper functions in git-access.c
 extern "C" char *get_local_dir(const char *remote, const char *branch);
@@ -88,8 +90,15 @@ void TestGitStorage::initTestCase()
 	email = qgetenv("SSRF_USER_EMAIL");
 	QString password = qgetenv("SSRF_USER_PASSWORD");
 
-	if (email.isEmpty())
+	if (email.isEmpty()) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 		email = QString("gitstorage%1@hohndel.org").arg(QRandomGenerator::global()->bounded(10));
+#else
+		// on Qt 5.9 we go back to using qsrand()/qrand()
+		qsrand(time(NULL));
+		email = QString("gitstorage%1@hohndel.org").arg(qrand() % 10);
+#endif
+	}
 	if (password.isEmpty())
 		password = "please-only-use-this-in-the-git-tests";
 	gitUrl = prefs.cloud_base_url;
@@ -105,8 +114,15 @@ void TestGitStorage::initTestCase()
 	// runs we'll use actually random branch names - yes, this still has a chance of
 	// conflict, but I'm not going to implement a distributed locak manager for this
 	if (email.startsWith("gitstorage")) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 		randomBranch = QString::number(QRandomGenerator::global()->bounded(0x1000000), 16) +
 				QString::number(QRandomGenerator::global()->bounded(0x1000000), 16);
+#else
+		// on Qt 5.9 we go back to using qsrand()/qrand() -- if we get to this code, qsrand() was already called
+		// even on a 32bit system RAND_MAX is at least 32767 so this will also give us 12 random hex digits
+		randomBranch = QString::number(qrand() % 0x1000, 16) + QString::number(qrand() % 0x1000, 16) +
+				QString::number(qrand() % 0x1000, 16) + QString::number(qrand() % 0x1000, 16);
+#endif
 	} else {
 		// user supplied their own credentials, fall back to the usual "email is branch" pattern
 		randomBranch = email;
