@@ -33,7 +33,7 @@ extern void clear_picture_table(struct picture_table *);
 extern void add_to_picture_table(struct picture_table *, int idx, struct picture pic);
 extern void copy_pictures(const struct picture_table *s, struct picture_table *d);
 extern void add_picture(struct picture_table *, struct picture newpic);
-extern bool remove_picture(struct picture_table *, const char *filename);
+extern void remove_from_picture_table(struct picture_table *, int idx);
 extern int get_picture_idx(const struct picture_table *, const char *filename); /* Return -1 if not found */
 extern void sort_picture_table(struct picture_table *);
 

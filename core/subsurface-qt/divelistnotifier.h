@@ -6,6 +6,7 @@
 #define DIVELISTNOTIFIER_H
 
 #include "core/dive.h"
+#include "core/pictureobj.h"
 
 #include <QObject>
 
@@ -118,6 +119,8 @@ signals:
 
 	// Picture (media) related signals
 	void pictureOffsetChanged(dive *d, QString filename, offset_t offset);
+	void picturesRemoved(dive *d, QVector<QString> filenames);
+	void picturesAdded(dive *d, QVector<PictureObj> pics);
 
 	// This signal is emited every time a command is executed.
 	// This is used to hide an old multi-dives-edited warning message.

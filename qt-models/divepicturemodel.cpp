@@ -1,15 +1,41 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/divepicturemodel.h"
+#include "core/divelist.h" // for comp_dives
 #include "core/metrics.h"
-#include "core/divelist.h" // for mark_divelist_changed()
-#include "core/dive.h"
 #include "core/imagedownloader.h"
 #include "core/picture.h"
 #include "core/qthelper.h"
 #include "core/subsurface-qt/divelistnotifier.h"
+#include "commands/command.h"
 
 #include <QFileInfo>
 #include <QPainter>
+
+PictureEntry::PictureEntry(dive *dIn, const PictureObj &p) : d(dIn),
+	filename(p.filename),
+	offsetSeconds(p.offset.seconds),
+	length({ 0 })
+{
+}
+
+PictureEntry::PictureEntry(dive *dIn, const picture &p) : d(dIn),
+	filename(p.filename),
+	offsetSeconds(p.offset.seconds),
+	length({ 0 })
+{
+}
+
+// Note: it is crucial that this uses the same sorting as the core.
+// Therefore, we use the C strcmp functions [std::string::operator<()
+// should give the same result].
+bool PictureEntry::operator<(const PictureEntry &p2) const
+{
+	if (int cmp = comp_dives(d, p2.d))
+		return cmp < 0;
+	if (offsetSeconds != p2.offsetSeconds)
+		return offsetSeconds < p2.offsetSeconds;
+	return strcmp(filename.c_str(), p2.filename.c_str()) < 0;
+}
 
 DivePictureModel *DivePictureModel::instance()
 {
@@ -23,6 +49,10 @@ DivePictureModel::DivePictureModel() : zoomLevel(0.0)
 		this, &DivePictureModel::updateThumbnail, Qt::QueuedConnection);
 	connect(&diveListNotifier, &DiveListNotifier::pictureOffsetChanged,
 		this, &DivePictureModel::pictureOffsetChanged);
+	connect(&diveListNotifier, &DiveListNotifier::picturesRemoved,
+		this, &DivePictureModel::picturesRemoved);
+	connect(&diveListNotifier, &DiveListNotifier::picturesAdded,
+		this, &DivePictureModel::picturesAdded);
 }
 
 void DivePictureModel::setZoomLevel(int level)
@@ -63,7 +93,7 @@ void DivePictureModel::updateDivePictures()
 		if (dive->selected) {
 			size_t first = pictures.size();
 			FOR_EACH_PICTURE(dive)
-				pictures.push_back({ dive, picture->filename, {}, picture->offset.seconds, {.seconds = 0}});
+				pictures.push_back(PictureEntry(dive, *picture));
 
 			// Sort pictures of this dive by offset.
 			// Thus, the list will be sorted by (dive, offset).
@@ -111,43 +141,51 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-// Return true if we actually removed a picture
-static bool removePictureFromSelectedDive(const char *fileUrl)
+void DivePictureModel::removePictures(const QModelIndexList &indices)
 {
-	int i;
-	struct dive *dive;
-	for_each_dive (i, dive) {
-		if (dive->selected && remove_picture(&dive->pictures, fileUrl)) {
-			invalidate_dive_cache(dive);
-			return true;
-		}
+	// Collect pictures to remove by dive
+	std::vector<Command::PictureListForDeletion> pics;
+	for (const QModelIndex &idx: indices) {
+		if (!idx.isValid())
+			continue;
+		const PictureEntry &item = pictures[idx.row()];
+		// Check if we already have pictures for that dive.
+		auto it = find_if(pics.begin(), pics.end(),
+				  [&item](const Command::PictureListForDeletion &list)
+				  { return list.d == item.d; });
+		// If not found, add a new list
+		if (it == pics.end())
+			pics.push_back({ item.d, { item.filename }});
+		else
+			it->filenames.push_back(item.filename);
 	}
-	return false;
+	Command::removePictures(pics);
 }
 
-void DivePictureModel::removePictures(const QVector<QString> &fileUrlsIn)
+void DivePictureModel::picturesRemoved(dive *d, QVector<QString> filenamesIn)
 {
 	// Transform vector of QStrings into vector of std::strings
-	std::vector<std::string> fileUrls;
-	fileUrls.reserve(fileUrlsIn.size());
-	std::transform(fileUrlsIn.begin(), fileUrlsIn.end(), std::back_inserter(fileUrls),
+	std::vector<std::string> filenames;
+	filenames.reserve(filenamesIn.size());
+	std::transform(filenamesIn.begin(), filenamesIn.end(), std::back_inserter(filenames),
 		       [] (const QString &s) { return s.toStdString(); });
 
-	bool removed = false;
-	for (const std::string &fileUrl: fileUrls)
-		removed |= removePictureFromSelectedDive(fileUrl.c_str());
-	if (!removed)
+	// Get range of pictures of the given dive.
+	// Note: we could be more efficient by either using a binary search or a two-level data structure.
+	auto from = std::find_if(pictures.begin(), pictures.end(), [d](const PictureEntry &e) { return e.d == d; });
+	auto to = std::find_if(from, pictures.end(), [d](const PictureEntry &e) { return e.d != d; });
+	if (from == pictures.end())
 		return;
-	copy_dive(current_dive, &displayed_dive);
-	mark_divelist_changed(true);
 
-	for (size_t i = 0; i < pictures.size(); ++i) {
+	size_t fromIdx = from - pictures.begin();
+	size_t toIdx = to - pictures.begin();
+	for (size_t i = fromIdx; i < toIdx; ++i) {
 		// Find range [i j) of pictures to remove
-		if (std::find(fileUrls.begin(), fileUrls.end(), pictures[i].filename) == fileUrls.end())
+		if (std::find(filenames.begin(), filenames.end(), pictures[i].filename) == filenames.end())
 			continue;
 		size_t j;
-		for (j = i + 1; j < pictures.size(); ++j) {
-			if (std::find(fileUrls.begin(), fileUrls.end(), pictures[j].filename) == fileUrls.end())
+		for (j = i + 1; j < toIdx; ++j) {
+			if (std::find(filenames.begin(), filenames.end(), pictures[j].filename) == filenames.end())
 				break;
 		}
 
@@ -156,8 +194,48 @@ void DivePictureModel::removePictures(const QVector<QString> &fileUrlsIn)
 		beginRemoveRows(QModelIndex(), i, j - 1);
 		pictures.erase(pictures.begin() + i, pictures.begin() + j);
 		endRemoveRows();
+		toIdx -= j - i;
 	}
-	emit picturesRemoved(fileUrlsIn);
+	copy_dive(current_dive, &displayed_dive); // TODO: Remove once displayed_dive is moved to the planner
+}
+
+// Assumes that pics is sorted!
+void DivePictureModel::picturesAdded(dive *d, QVector<PictureObj> picsIn)
+{
+	// We only display pictures of selected dives
+	if (!d->selected || picsIn.empty())
+		return;
+
+	// Convert the picture-data into our own format
+	std::vector<PictureEntry> pics;
+	pics.reserve(picsIn.size());
+	for (int i = 0; i < picsIn.size(); ++i)
+		pics.push_back(PictureEntry(d, picsIn[i]));
+
+	// Insert batch-wise to avoid too many reloads
+	pictures.reserve(pictures.size() + pics.size());
+	auto from = pics.begin();
+	int dest = 0;
+	while (from != pics.end()) {
+		// Search for the insertion index. This supposes a lexicographical sort for the [dive, offset, filename] triple.
+		// TODO: currently this works, because all undo commands that manipulate the dive list also reset the selection
+		// and thus the model is rebuilt. However, we might catch the respective signals here and not rely on being
+		// called by the tab-widgets.
+		auto dest_it = std::lower_bound(pictures.begin() + dest, pictures.end(), *from);
+		int dest = dest_it - pictures.begin();
+		auto to = dest_it == pictures.end() ? pics.end() : from + 1; // If at the end - just add the rest
+		while (to != pics.end() && *to < *dest_it)
+			++to;
+		int batch_size = to - from;
+		beginInsertRows(QModelIndex(), dest, dest + batch_size - 1);
+		pictures.insert(pictures.begin() + dest, from, to);
+		// Get thumbnails of inserted pictures
+		for (auto it = pictures.begin() + dest; it < pictures.begin() + dest + batch_size; ++it)
+			it->image = Thumbnailer::instance()->fetchThumbnail(QString::fromStdString(it->filename), false);
+		endInsertRows();
+		from = to;
+		dest += batch_size;
+	}
 }
 
 int DivePictureModel::rowCount(const QModelIndex&) const

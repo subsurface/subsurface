@@ -84,7 +84,8 @@ QVector<QString> TabDivePhotos::getSelectedFilenames() const
 
 void TabDivePhotos::removeSelectedPhotos()
 {
-	DivePictureModel::instance()->removePictures(getSelectedFilenames());
+	QModelIndexList indices = ui->photosView->selectionModel()->selectedRows();
+	DivePictureModel::instance()->removePictures(indices);
 }
 
 void TabDivePhotos::openFolderOfSelectedFiles()

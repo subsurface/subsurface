@@ -20,6 +20,7 @@
 #include "profile-widget/diveprofileitem.h"
 #include "core/display.h"
 #include "core/color.h"
+#include "core/pictureobj.h"
 #include "core/units.h"
 
 class RulerItem2;
@@ -110,7 +111,8 @@ slots: // Necessary to call from QAction's signals.
 	void setProfileState();
 #ifndef SUBSURFACE_MOBILE
 	void plotPictures();
-	void removePictures(const QVector<QString> &fileUrls);
+	void picturesRemoved(dive *d, QVector<QString> filenames);
+	void picturesAdded(dive *d, QVector<PictureObj> pics);
 	void setPlanState();
 	void setAddState();
 	void pointInserted(const QModelIndex &parent, int start, int end);
