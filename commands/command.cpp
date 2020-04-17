@@ -367,4 +367,9 @@ void setPictureOffset(dive *d, const QString &filename, offset_t offset)
 	execute(new SetPictureOffset(d, filename, offset));
 }
 
+void removePictures(const std::vector<PictureListForDeletion> &pictures)
+{
+	execute(new RemovePictures(pictures));
+}
+
 } // namespace Command

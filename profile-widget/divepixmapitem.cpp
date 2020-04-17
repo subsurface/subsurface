@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/divepixmapitem.h"
 #include "profile-widget/animationfunctions.h"
-#include "qt-models/divepicturemodel.h"
 #include "core/pref.h"
 #include "core/qthelper.h"
 #include "core/settings/qPrefDisplay.h"
 #ifndef SUBSURFACE_MOBILE
 #include "desktop-widgets/preferences/preferencesdialog.h"
+#include "core/dive.h" // for displayed_dive
+#include "commands/command.h"
 #endif
 
 #include <QDesktopServices>
@@ -123,6 +124,8 @@ void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void DivePictureItem::removePicture()
 {
 #ifndef SUBSURFACE_MOBILE
-	DivePictureModel::instance()->removePictures({ fileUrl });
+	struct dive *d = get_dive_by_uniq_id(displayed_dive.id);
+	if (d)
+		Command::removePictures({ { d, { fileUrl.toStdString() } } });
 #endif
 }

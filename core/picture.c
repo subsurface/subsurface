@@ -30,7 +30,7 @@ static bool picture_less_than(struct picture a, struct picture b)
 static MAKE_GROW_TABLE(picture_table, struct picture, pictures)
 static MAKE_GET_INSERTION_INDEX(picture_table, struct picture, pictures, picture_less_than)
 MAKE_ADD_TO(picture_table, struct picture, pictures)
-static MAKE_REMOVE_FROM(picture_table, pictures)
+MAKE_REMOVE_FROM(picture_table, pictures)
 MAKE_SORT(picture_table, struct picture, pictures, comp_pictures)
 //MAKE_REMOVE(picture_table, struct picture, picture)
 MAKE_CLEAR_TABLE(picture_table, pictures, picture)
@@ -65,14 +65,4 @@ int get_picture_idx(const struct picture_table *t, const char *filename)
 			return i;
 	}
 	return -1;
-}
-
-// Return true if picture was found and deleted
-bool remove_picture(struct picture_table *t, const char *filename)
-{
-	int idx = get_picture_idx(t, filename);
-	if (idx < 0)
-		return false;
-	remove_from_picture_table(t, idx);
-	return true;
 }

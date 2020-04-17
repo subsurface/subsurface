@@ -169,9 +169,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	addActionShortcut(Qt::Key_Right, &ProfileWidget2::keyRightAction);
 
 	connect(Thumbnailer::instance(), &Thumbnailer::thumbnailChanged, this, &ProfileWidget2::updateThumbnail, Qt::QueuedConnection);
-	connect(DivePictureModel::instance(), &DivePictureModel::rowsInserted, this, &ProfileWidget2::plotPictures);
-	connect(DivePictureModel::instance(), &DivePictureModel::picturesRemoved, this, &ProfileWidget2::removePictures);
-	connect(DivePictureModel::instance(), &DivePictureModel::modelReset, this, &ProfileWidget2::plotPictures);
+	connect(&diveListNotifier, &DiveListNotifier::picturesRemoved, this, &ProfileWidget2::picturesRemoved);
+	connect(&diveListNotifier, &DiveListNotifier::picturesAdded, this, &ProfileWidget2::picturesAdded);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &ProfileWidget2::profileChanged);
 	connect(&diveListNotifier, &DiveListNotifier::eventsChanged, this, &ProfileWidget2::profileChanged);
 	connect(&diveListNotifier, &DiveListNotifier::pictureOffsetChanged, this, &ProfileWidget2::pictureOffsetChanged);
@@ -2147,11 +2146,10 @@ void ProfileWidget2::plotPicturesInternal(const struct dive *d, bool synchronous
 }
 
 // Remove the pictures with the given filenames from the profile plot.
-// TODO: This does not check for the fact that the same image may be attributed
-// to different dives! Deleting the picture from one dive may therefore remove
-// it from the profile of a different dive.
-void ProfileWidget2::removePictures(const QVector<QString> &fileUrls)
+void ProfileWidget2::picturesRemoved(dive *d, QVector<QString> fileUrls)
 {
+	if (d->id != displayed_dive.id)
+		return;
 	// To remove the pictures, we use the std::remove_if() algorithm.
 	// std::remove_if() does not actually delete the elements, but moves
 	// them to the end of the given range. It returns an iterator to the
@@ -2162,6 +2160,25 @@ void ProfileWidget2::removePictures(const QVector<QString> &fileUrls)
 			// Check whether filename of entry is in list of provided filenames
 			{ return std::find(fileUrls.begin(), fileUrls.end(), e.filename) != fileUrls.end(); });
 	pictures.erase(it, pictures.end());
+	calculatePictureYPositions();
+}
+
+void ProfileWidget2::picturesAdded(dive *d, QVector<PictureObj> pics)
+{
+	if (d->id != displayed_dive.id)
+		return;
+
+	for (const PictureObj &pic: pics) {
+		if (pic.offset.seconds > 0 && pic.offset.seconds <= d->duration.seconds) {
+			pictures.emplace_back(pic.offset, QString::fromStdString(pic.filename), scene(), false);
+			updateThumbnailXPos(pictures.back());
+		}
+	}
+
+	// Sort pictures by timestamp (and filename if equal timestamps).
+	// This will allow for proper location of the pictures on the profile plot.
+	std::sort(pictures.begin(), pictures.end());
+
 	calculatePictureYPositions();
 }
 

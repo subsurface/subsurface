@@ -3,6 +3,7 @@
 #define DIVEPICTUREMODEL_H
 
 #include "core/units.h"
+#include "core/pictureobj.h"
 
 #include <QAbstractTableModel>
 #include <QImage>
@@ -16,6 +17,9 @@ struct PictureEntry {
 	QImage image;
 	int offsetSeconds;
 	duration_t length;
+	PictureEntry(dive *, const PictureObj &);
+	PictureEntry(dive *, const picture &);
+	bool operator<(const PictureEntry &) const;
 };
 
 class DivePictureModel : public QAbstractTableModel {
@@ -26,13 +30,13 @@ public:
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	void updateDivePictures();
-	void removePictures(const QVector<QString> &fileUrls);
-signals:
-	void picturesRemoved(const QVector<QString> &fileUrls);
+	void removePictures(const QModelIndexList &);
 public slots:
 	void setZoomLevel(int level);
 	void updateThumbnail(QString filename, QImage thumbnail, duration_t duration);
 	void pictureOffsetChanged(dive *d, const QString filename, offset_t offset);
+	void picturesRemoved(dive *d, QVector<QString> filenames);
+	void picturesAdded(dive *d, QVector<PictureObj> pics);
 private:
 	DivePictureModel();
 	std::vector<PictureEntry> pictures;

@@ -3,6 +3,7 @@
 #define COMMAND_H
 
 #include "core/dive.h"
+#include "core/pictureobj.h"
 #include <QVector>
 #include <QAction>
 #include <vector>
@@ -120,7 +121,16 @@ void addGasSwitch(struct dive *d, int dcNr, int seconds, int tank);
 
 // 7) Picture (media) commands
 
+struct PictureListForDeletion {
+	dive *d;
+	std::vector<std::string> filenames;
+};
+struct PictureListForAddition {
+	dive *d;
+	std::vector<PictureObj> pics;
+};
 void setPictureOffset(dive *d, const QString &filename, offset_t offset);
+void removePictures(const std::vector<PictureListForDeletion> &pictures);
 
 } // namespace Command
 
