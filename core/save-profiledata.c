@@ -13,14 +13,24 @@ static void put_int(struct membuffer *b, int val)
 	put_format(b, "\"%d\", ", val);
 }
 
+static void put_int_with_nl(struct membuffer *b, int val)
+{
+	put_format(b, "\"%d\"\n", val);
+}
+
 static void put_csv_string(struct membuffer *b, const char *val)
 {
 	put_format(b, "\"%s\", ", val);
 }
 
+static void put_csv_string_with_nl(struct membuffer *b, const char *val)
+{
+	put_format(b, "\"%s\"\n", val);
+}
+
 static void put_double(struct membuffer *b, double val)
 {
-	put_format(b, "\"%f\" ", val);
+	put_format(b, "\"%f\", ", val);
 }
 
 static void put_video_time(struct membuffer *b, int secs)
@@ -101,7 +111,7 @@ static void put_pd(struct membuffer *b, const struct plot_info *pi, int idx)
 	put_double(b, entry->gfline);
 	put_double(b, entry->surface_gf);
 	put_double(b, entry->density);
-	put_int(b, entry->icd_warning ? 1 : 0);
+	put_int_with_nl(b, entry->icd_warning ? 1 : 0);
 }
 
 static void put_headers(struct membuffer *b, int nr_cylinders)
@@ -155,7 +165,7 @@ static void put_headers(struct membuffer *b, int nr_cylinders)
 	put_csv_string(b, "gfline");
 	put_csv_string(b, "surface_gf");
 	put_csv_string(b, "density");
-	put_csv_string(b, "icd_warning");
+	put_csv_string_with_nl(b, "icd_warning");
 }
 
 static void put_st_event(struct membuffer *b, struct plot_data *entry, int offset, int length)
@@ -205,12 +215,9 @@ static void save_profiles_buffer(struct membuffer *b, bool select_only)
 			continue;
 		create_plot_info_new(dive, &dive->dc, &pi, false, planner_deco_state);
 		put_headers(b, pi.nr_cylinders);
-		put_format(b, "\n");
 
-		for (int i = 0; i < pi.nr; i++) {
+		for (int i = 0; i < pi.nr; i++)
 			put_pd(b, &pi, i);
-			put_format(b, "\n");
-		}
 		put_format(b, "\n");
 		free_plot_info_data(&pi);
 	}
