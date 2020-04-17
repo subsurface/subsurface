@@ -127,6 +127,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	parse.h
 	picture.c
 	picture.h
+	pictureobj.cpp
+	pictureobj.h
 	planner.c
 	planner.h
 	plannernotes.c
