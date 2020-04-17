@@ -52,7 +52,7 @@ void DivePictureModel::updateThumbnails()
 void DivePictureModel::updateDivePictures()
 {
 	beginResetModel();
-	if (!pictures.isEmpty()) {
+	if (!pictures.empty()) {
 		pictures.clear();
 		Thumbnailer::instance()->clearWorkQueue();
 	}
@@ -61,7 +61,7 @@ void DivePictureModel::updateDivePictures()
 	struct dive *dive;
 	for_each_dive (i, dive) {
 		if (dive->selected) {
-			int first = pictures.count();
+			size_t first = pictures.size();
 			FOR_EACH_PICTURE(dive)
 				pictures.push_back({ dive, picture->filename, {}, picture->offset.seconds, {.seconds = 0}});
 
@@ -141,11 +141,11 @@ void DivePictureModel::removePictures(const QVector<QString> &fileUrlsIn)
 	copy_dive(current_dive, &displayed_dive);
 	mark_divelist_changed(true);
 
-	for (int i = 0; i < pictures.size(); ++i) {
+	for (size_t i = 0; i < pictures.size(); ++i) {
 		// Find range [i j) of pictures to remove
 		if (std::find(fileUrls.begin(), fileUrls.end(), pictures[i].filename) == fileUrls.end())
 			continue;
-		int j;
+		size_t j;
 		for (j = i + 1; j < pictures.size(); ++j) {
 			if (std::find(fileUrls.begin(), fileUrls.end(), pictures[j].filename) == fileUrls.end())
 				break;
@@ -162,12 +162,12 @@ void DivePictureModel::removePictures(const QVector<QString> &fileUrlsIn)
 
 int DivePictureModel::rowCount(const QModelIndex&) const
 {
-	return pictures.count();
+	return (int)pictures.size();
 }
 
 int DivePictureModel::findPictureId(const std::string &filename)
 {
-	for (int i = 0; i < pictures.size(); ++i)
+	for (int i = 0; i < (int)pictures.size(); ++i)
 		if (pictures[i].filename == filename)
 			return i;
 	return -1;
