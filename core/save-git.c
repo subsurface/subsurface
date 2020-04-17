@@ -448,7 +448,7 @@ static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 	if (dive->dive_site)
 		put_format(b, "divesiteid %08x\n", dive->dive_site->uuid);
 	if (verbose && dive->dive_site)
-		fprintf(stderr, "removed reference to non-existant dive site with uuid %08x\n", dive->dive_site->uuid);
+		SSRF_INFO("removed reference to non-existant dive site with uuid %08x\n", dive->dive_site->uuid);
 	save_overview(b, dive);
 	save_cylinder_info(b, dive);
 	save_weightsystem_info(b, dive);
@@ -491,7 +491,7 @@ static int tree_insert(git_treebuilder *dir, const char *name, int mkunique, git
 	if (ret) {
 		const git_error *gerr = giterr_last();
 		if (gerr) {
-			fprintf(stderr, "tree_insert failed with return %d error %s\n", ret, gerr->message);
+			SSRF_INFO("tree_insert failed with return %d error %s\n", ret, gerr->message);
 		}
 	}
 	return ret;
@@ -1071,7 +1071,7 @@ static void create_commit_message(struct membuffer *msg, bool create_empty)
 	free((void *)user_agent);
 	free(changes_made);
 	if (verbose)
-		fprintf(stderr, "Commit message:\n\n%s\n", mb_cstring(msg));
+		SSRF_INFO("Commit message:\n\n%s\n", mb_cstring(msg));
 }
 
 static int create_new_commit(git_repository *repo, const char *remote, const char *branch, git_oid *tree_id, bool create_empty)
@@ -1100,7 +1100,7 @@ static int create_new_commit(git_repository *repo, const char *remote, const cha
 
 		if (saved_git_id) {
 			if (existing_filename && verbose)
-				fprintf(stderr, "existing filename %s\n", existing_filename);
+				SSRF_INFO("existing filename %s\n", existing_filename);
 			const git_oid *id = git_commit_id((const git_commit *) parent);
 			/* if we are saving to the same git tree we got this from, let's make
 			 * sure there is no confusion */
@@ -1199,7 +1199,7 @@ static int write_git_tree(git_repository *repo, struct dir *tree, git_oid *resul
 	if (ret && verbose) {
 		const git_error *gerr = giterr_last();
 		if (gerr)
-			fprintf(stderr, "tree_insert failed with return %d error %s\n", ret, gerr->message);
+			SSRF_INFO("tree_insert failed with return %d error %s\n", ret, gerr->message);
 	}
 
 	/* .. and free the now useless treebuilder */
@@ -1215,7 +1215,7 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 	bool cached_ok;
 
 	if (verbose)
-		fprintf(stderr, "git storage: do git save\n");
+		SSRF_INFO("git storage: do git save\n");
 
 	if (!create_empty) // so we are actually saving the dives
 		git_storage_update_progress(translate("gettextFromC", "Preparing to save data"));
@@ -1238,7 +1238,7 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 			return -1;
 
 	if (verbose)
-		fprintf(stderr, "git storage, write git tree\n");
+		SSRF_INFO("git storage, write git tree\n");
 
 	if (write_git_tree(repo, &tree, &id))
 		return report_error("git tree write failed");
