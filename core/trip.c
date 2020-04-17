@@ -4,6 +4,7 @@
 #include "subsurface-string.h"
 #include "selection.h"
 #include "table.h"
+#include "core/qthelper.h"
 
 struct trip_table trip_table;
 
@@ -87,7 +88,7 @@ void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 	if (dive->divetrip == trip)
 		return;
 	if (dive->divetrip)
-		fprintf(stderr, "Warning: adding dive to trip that has trip set\n");
+		SSRF_INFO("Warning: adding dive to trip that has trip set\n");
 	insert_dive(&trip->dives, dive);
 	dive->divetrip = trip;
 }

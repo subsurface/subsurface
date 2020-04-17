@@ -161,4 +161,13 @@ char *get_changes_made();
 }
 #endif
 
+// 4) SSRF_INFO macro to replace fprintf calls in our code
+//    (originally based on logging bits from libdivecomputer)
+#if !defined(Q_OS_ANDROID) && !defined(__ANDROID__)
+#define SSRF_INFO(fmt, ...)	fprintf(stderr, "INFO: " fmt "\n", ##__VA_ARGS__)
+#else
+#include <android/log.h>
+#define SSRF_INFO(fmt, ...)	__android_log_print(ANDROID_LOG_INFO, "Subsurface", "INFO: " fmt "\n", ##__VA_ARGS__);
+#endif
+
 #endif // QTHELPER_H

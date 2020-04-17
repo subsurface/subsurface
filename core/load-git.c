@@ -1630,7 +1630,7 @@ static int walk_tree_file(const char *root, const git_tree_entry *entry, struct 
 	dive_trip_t *trip = state->active_trip;
 	const char *name = git_tree_entry_name(entry);
 	if (verbose > 1)
-		fprintf(stderr, "git load handling file %s\n", name);
+		SSRF_INFO("git load handling file %s\n", name);
 	switch (*name) {
 	case '-': case '+':
 		if (dive)
