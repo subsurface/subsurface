@@ -499,6 +499,7 @@ void free_plot_info_data(struct plot_info *pi)
 	free(pi->entry);
 	free(pi->pressures);
 	pi->entry = NULL;
+	pi->pressures = NULL;
 }
 
 static void populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
