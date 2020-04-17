@@ -526,7 +526,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 
 				Kirigami.Action {
-					text: qsTr("Enable verbose logging")
+					text: qsTr("Enable verbose logging (currently: %1)").arg(manager.verboseEnabled)
 					onTriggered: {
 						showPassiveNotification(qsTr("Not persistent"), 3000)
 						globalDrawer.close()
