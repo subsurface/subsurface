@@ -286,6 +286,20 @@ int credential_https_cb(git_cred **out,
 	return git_cred_userpass_plaintext_new(out, username, password);
 }
 
+int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payload)
+{
+	UNUSED(payload);
+	if (same_string(host, "cloud.subsurface-divelog.org") && cert->cert_type == GIT_CERT_X509) {
+		// for some reason the LetsEncrypt certificate makes libgit2 throw up on some
+		// platforms but not on others
+		// if we are connecting to the cloud server we alrady called 'canReachCloudServer()'
+		// which will fail if the SSL certificate isn't valid, so let's simply always
+		// tell the caller that this certificate is valid
+		return 1;
+	}
+	return valid;
+}
+
 static int update_remote(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_transport rt)
 {
 	UNUSED(repo);
@@ -307,6 +321,7 @@ static int update_remote(git_repository *repo, git_remote *origin, git_reference
 		opts.callbacks.credentials = credential_ssh_cb;
 	else if (rt == RT_HTTPS)
 		opts.callbacks.credentials = credential_https_cb;
+	opts.callbacks.certificate_check = certificate_check_cb;
 
 	if (git_remote_push(origin, &refspec, &opts)) {
 		if (is_subsurface_cloud)
@@ -562,6 +577,7 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 			opts.callbacks.credentials = credential_ssh_cb;
 		else if (rt == RT_HTTPS)
 			opts.callbacks.credentials = credential_https_cb;
+		opts.callbacks.certificate_check = certificate_check_cb;
 		git_storage_update_progress(translate("gettextFromC", "Store data into cloud storage"));
 		error = git_remote_push(origin, &refspec, &opts);
 	} else {
@@ -676,6 +692,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 		opts.callbacks.credentials = credential_ssh_cb;
 	else if (rt == RT_HTTPS)
 		opts.callbacks.credentials = credential_https_cb;
+	opts.callbacks.certificate_check = certificate_check_cb;
 	git_storage_update_progress(translate("gettextFromC", "Successful cloud connection, fetch remote"));
 	error = git_remote_fetch(origin, NULL, &opts, NULL);
 	// NOTE! A fetch error is not fatal, we just report it
@@ -821,6 +838,7 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	else if (rt == RT_HTTPS)
 		opts.fetch_opts.callbacks.credentials = credential_https_cb;
 	opts.repository_cb = repository_create_cb;
+	opts.fetch_opts.callbacks.certificate_check = certificate_check_cb;
 
 	opts.checkout_branch = branch;
 	if (is_subsurface_cloud && !canReachCloudServer())
