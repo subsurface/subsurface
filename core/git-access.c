@@ -289,6 +289,8 @@ int credential_https_cb(git_cred **out,
 int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payload)
 {
 	UNUSED(payload);
+	if (verbose)
+		SSRF_INFO("certificate callback for host %s with validity %d\n", host, valid);
 	if (same_string(host, "cloud.subsurface-divelog.org") && cert->cert_type == GIT_CERT_X509) {
 		// for some reason the LetsEncrypt certificate makes libgit2 throw up on some
 		// platforms but not on others
