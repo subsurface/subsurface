@@ -1,3 +1,4 @@
+Mobile: fix false rejection of Subsurface cloud SSL certificate
 Mobile: fix misdetection of Shearwater Petrel 2 on iOS
 Desktop: fix creation of new cylinder types (names couldn't be the start of already existing names)
 Mobile: fix no-cloud to cloud transition
