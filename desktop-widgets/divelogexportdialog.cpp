@@ -84,7 +84,7 @@ void DiveLogExportDialog::showExplanation()
 	if (ui->exportUDDF->isChecked()) {
 		ui->description->setText(tr("Generic format that is used for data exchange between a variety of diving related programs."));
 	} else if (ui->exportCSV->isChecked()) {
-		ui->description->setText(tr("Comma separated values describing the dive profile."));
+		ui->description->setText(tr("Comma separated values describing the dive profile as downloaded from dive computer."));
 	} else if (ui->exportCSVDetails->isChecked()) {
 		ui->description->setText(tr("Comma separated values of the dive information. This includes most of the dive details but no profile information."));
 	} else if (ui->exportDivelogs->isChecked()) {
@@ -106,7 +106,7 @@ void DiveLogExportDialog::showExplanation()
 	} else if (ui->exportProfile->isChecked()) {
 		ui->description->setText(tr("Write the profile image as PNG file."));
 	} else if (ui->exportProfileData->isChecked()) {
-		ui->description->setText(tr("Write profile data to a CSV file."));
+		ui->description->setText(tr("Write the computed Profile Panel data to a CSV file."));
 	}
 }
 

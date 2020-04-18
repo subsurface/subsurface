@@ -255,9 +255,9 @@
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="exportCSV">
+           <widget class="QRadioButton" name="exportCSVDetails">
             <property name="text">
-             <string>CSV dive profile</string>
+             <string>CSV summary dive details</string>
             </property>
             <attribute name="buttonGroup">
              <string notr="true">exportGroup</string>
@@ -265,9 +265,19 @@
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="exportCSVDetails">
+           <widget class="QRadioButton" name="exportCSV">
             <property name="text">
-             <string>CSV dive details</string>
+             <string>CSV Dive computer dive profile</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">exportGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="exportProfileData">
+            <property name="text">
+             <string>CSV Computed Profile Panel data</string>
             </property>
             <attribute name="buttonGroup">
              <string notr="true">exportGroup</string>
@@ -318,16 +328,6 @@
            <widget class="QRadioButton" name="exportImageDepths">
             <property name="text">
              <string>I&amp;mage depths</string>
-            </property>
-            <attribute name="buttonGroup">
-             <string notr="true">exportGroup</string>
-            </attribute>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="exportProfileData">
-            <property name="text">
-             <string>Profile Data CSV</string>
             </property>
             <attribute name="buttonGroup">
              <string notr="true">exportGroup</string>
