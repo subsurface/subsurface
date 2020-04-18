@@ -15,7 +15,7 @@ By far the easiest way to do this is using the Android build container which is
 used to create the official builds. That has all the dependencies ready and
 makes things a lot easier.
 
-Run the docker image: docker://dirkhh/android-builder:5.13.01
+Run the docker image: docker://subsurface/android-builder:5.13.10
 
 Check out the sources inside the container, make sure the following links
 are available in parallel to the source directory
