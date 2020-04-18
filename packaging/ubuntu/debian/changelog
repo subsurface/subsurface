@@ -1,3 +1,7 @@
+subsurface (4.9.3-1~xenial) xenial; urgency=medium
 
-  * Daily build - check git revision for full changelog
+  * Next release build - please check https://subsurface-
+    divelog.org/category/news/ for details
+
+ -- Dirk Hohndel <dirk@hohndel.org>  Sun, 08 Sep 2019 23:45:38 -0700
 
