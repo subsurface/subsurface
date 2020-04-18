@@ -1,10 +1,9 @@
 // Subsurface 4.9 User Manual
 // ==========================
-// :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
-// Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
-// Ferguson, Salvador Cuñat, Pedro Neves
+// :author: Manual authors: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
+// Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves
 // :revnumber: 4.9
-// :revdate:February 2020
+// :revdate:April 2020
 :icons:
 :toc2:
 :toc-placement: manual
@@ -19,35 +18,11 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves,
 Stefan Fuchs
 
-[blue]#_Version 4.9, February 2020_#
+[blue]#_Version 4.9, April 2020_#
 
 Welcome as a user of _Subsurface_, an advanced dive logging program with
 extensive infrastructure to describe, organize, interpret and print scuba
-and free dives. _Subsurface_ offers many advantages over other similar
-software solutions:
-
- - Do you need a flexible way of logging dives using recreational equipment,
-   even without a dive computer?
- - Do you wish to seamlessly include GPS locations of dive sites into your dive log?
- - Do you use two different dive computer brands, each with its own proprietary
-   software for downloading dive logs? Do you dive with rebreathers as well
-   as open circuit or recreational equipment? Do you use a Reefnet Sensus time-depth
-   recorder along with a dive computer? _Subsurface_ offers a standard
-   interface for downloading dive logs from all of these different pieces of
-   equipment, storing and analyzing the dive logs within a unified system.
- - Do you use more than one operating system? _Subsurface_ is fully compatible
-   with Mac, Linux and Windows, letting you access your dive log on a range of
-   operating systems using a single application.
- - Do you use Linux or Mac, but your dive computer has only Windows-based software
-   for downloading dive information (e.g. Mares or Scubapro)? _Subsurface_ provides a way of
-   downloading and analyzing your dive logs on other operating systems.
- - Do you need an intuitive graphical dive planner that integrates with, and takes
-   into account, dives you’ve already logged?
- - Do you need a way of storing or backing up your dive log on the Internet, letting
-   you view your dive log from anywhere using an Internet browser?
- - Do you wish to access or modify your dive log using a mobile phone?
-
-_Subsurface_ binaries are available for Windows PCs (Win 7 or later from
+and free dives. _Subsurface_ binaries are available for Windows PCs (Win 7 or later from
 version 4.6 of _Subsurface_ onwards), Intel based Macs (OS/X) and many
 Linux distributions. _Subsurface_ can be built for
 many more hardware platforms and software environments where Qt and
@@ -95,20 +70,6 @@ option reloads the complete user manual into the window.
 
 image::images/UserManualLinksBack.jpg["User manual functions",align="center"]
 
-
-[[S_UserSurvey]]
-The user survey
----------------
-In order to develop _Subsurface_ to serve its users in the best possible way,
-it’s important to have user information. Upon launching _Subsurface_
-and using the software for a week or so, a one-box user survey pops up. It is entirely
-optional and the user controls what, if any, data are sent to the _Subsurface_ development
-team. All data the user sends is useful, and will only be
-used to steer future development and to customize the software to fit the needs of
-the _Subsurface_ users. If you complete the survey, or click the option not to
-be asked again, that should be the last communication of this type you receive.
-However, if your diving and/or subsurface habits change and you wish to fill in
-another survey, just launch _Subsurface_ with the _--survey_ option on the command line.
 
 [[S_StartUsing]]
 Start Using the Program
@@ -232,13 +193,13 @@ image::images/AddDive1.jpg["FIGURE: Add dive",align="center"]
 
 Most actions when editing a new dive can be individually undone, as described in the
 section on <<S_undo,undoing edits>>, but changes
-in the Equipment panel are not yet included in that in-depth undo implementations, and therefore
+in the Profile panel are not yet included in that in-depth undo implementations, and therefore
 _Subsurface_ enters *Editing Mode* when changes are made in this panel. This is
 indicated by the message in the blue box at the top of the panels (see the image below).
 
 image::images/BlueEditBar_f22.jpg["Blue edit bar",align="center"]
 
-The _Apply changes_ button should be selected after all the equipment for a dive has been entered.
+The _Apply changes_ button should be selected after all the profile segments for a dive has been entered.
 
 If this hand-entered dive was not in the sea but at altitude away from the sea, you may wish to edit the xref:S_altitude[*altitude setting*] in the
 *Information tab* because dives at altitude need special calculations.
@@ -505,21 +466,20 @@ link:https://subsurface-divelog.org/documentation/supported-dive-computers/[list
 Bluetooth communication is often more reliable if all Bluetooth devices seen by the
 _Subsurface_ computer are removed and pairing with the Bluetooth dive computer
 is performed from afresh. The Bluetooth and BTLE interfaces are under active development
-with respect to new dive computers that use this mechanism of communication.
+with respect to new dive computers that use these mechanisms of communication. 
 
 Setting up _Subsurface_ for Bluetooth communication requires
 four steps:
 
-- Ensure Bluetooth is activated on the host computer running _Subsurface_.
-- Ensure _Subsurface_ sees the Bluetooth adapter on the host computer.
-- Ensure the Bluetooth-enabled dive computer is Bluetooth-discoverable and in PC upload mode.
-- Ensure _Subsurface_ is paired with the Bluetooth-enabled dive computer.
+- 1.Ensure Bluetooth is activated on the host computer running _Subsurface_.
+- 2.Ensure _Subsurface_ sees the Bluetooth adapter on the host computer.
+- 3.Ensure the Bluetooth-enabled dive computer is Bluetooth-discoverable and in PC upload mode.
+- 4.Ensure _Subsurface_ is paired with the Bluetooth-enabled dive computer.
+- 5.If more than one Bluetooth mode is available, select the appropriate mount point.
 
 Select the Download dialog by selecting
 _Import -> Import from dive computer_ from the *Main Menu*. After checking the
 box labelled _"Choose Bluetooth download mode"_, the dialog below appears.
-
-===== On Linux or MacOS:
 
 image::images/DC_import_Bluetooth.jpg["FIGURE: Download Bluetooth",align="center"]
 
@@ -556,11 +516,9 @@ address and its pairing status. For BTLE devices the address often starts with "
 If the device is not paired and has a red
 background color, a context menu can be opened by selecting the item with a
 right-click.
-Select the _Pair_ option and wait for the task to complete. If this dive computer
-is being paired to Subsurface for the first time, it’s possible Subsurface will
-request a Pass Code or PIN number. The most commonly-used Pass Code is 0000,
-and this works for the Shearwater Petrel. If necessary, consult the user manual of the
-dive computer being used.
+Select the _Pair_ option and wait for the task to complete. 
+If necessary, consult the user manual of the
+dive computer being used. This accomplishes steps 4 and 5, above.
 
 ****
 [icon="images/icons/important.png"]
@@ -589,23 +547,11 @@ dive computer_ dialog which should still be open. The downloaded dives are
 shown on the righthand side of the download dialog.
 
 ===== On Windows:
-image::images/DC_import_Bluetooth_Windows.png["FIGURE: Download Bluetooth on Windows",align="center"]
+image::images/DC_import_Bluetooth_Windows.jpg["FIGURE: Download Bluetooth on Windows",align="center"]
 
-On _Windows_ platforms the _Local Bluetooth device details section_ on the right is not displayed as
-is the case on the Linux/Mac systems.
-To start a scan (by pressing the _Scan_ button)
-check that the Bluetooth device on the _Subsurface_ computer is turned on by selecting
-the dive computer from the list of available Bluetooth devices (see image above). If the dive computer
-is being accessed by Subsurface for the first time, it’s possible Subsurface will
-request a Pass Code or PIN number. Supply the Pass Code recommended in the user manual of the dive computer.
-A Pass Code or PIN of 0000 is often the default.
-
-The pairing step is checked and done automatically during
-the download process. If the devices have never been paired the system will ask
-permission and put a message on the right side of the screen: _Add a
-device, Tap to set up your DC device_. Always allow this pairing. After a
-discovered item is selected, select the _Save_ button.
-Finally select the _Download_ button on the _Download_ dialog and wait for the process to complete.
+Bluetooth download on Windows is much the same as on Linux and MacOS.
+A log message on the bottom left of the _Remote Bluetooth device selection_
+shows details about the current status of the Bluetooth agent (see image above).
 
 [icon="images/icons/important.png"]
 [IMPORTANT]
@@ -614,11 +560,6 @@ adapters which use Microsoft Bluetooth Stack. If the local device uses
 _Widcomm_,  _Stonestreet One Bluetopia Bluetooth_ or _BlueSoleil_ drivers it
 will not work. However, Bluetooth hardware/dongles from these manufacturers
 (e.g. iSonic) that support the Microsoft Bluetooth Stack do work.
-
-A log message on the bottom left of the _Remote Bluetooth device selection_
-shows details about the current status of the Bluetooth agent. To
-select another dive computer for download using the "Remote Bluetooth selection dialog"
-press the three-dots button from the _"Choose Bluetooth download mode"_ option.
 
 [icon="images/icons/important.png"]
 [IMPORTANT]
@@ -845,10 +786,14 @@ Once the dive location data have been saved, the dive on the Dive List has
 a globe icon immediately to the left of the location name of a particular dive.
 
 [[S_Subsurface_mobile]]
-*(3): Obtain the coordinates using the _Subsurface-mobile_ App* on an
-   Android or iPhone device with GPS and if the dive site coordinates
-   were stored using this app. Click xref:S_Using_mobile[here] for complete
-information.
+
+[[S_Using_mobile]]
+*(3): Dive coordinates from a mobile device with GPS using Subsurface-Mobile.*
+Most smartphones have an integrated GPS, useful for collecting the coordinates of dive sites.
+The https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[user manual for _Subsurface-mobile_] (accessible from within that app)
+contains detailed instructions for
+performing the collection of GPS data and for managing, uploading and
+synchronising the coordinates with a dive log.
 
 [[S_GPS]]
 *(4): Import coordinates from GPS equipment.* Some divers prefer to take a GPS
@@ -946,13 +891,8 @@ shows an example of a *Notes tab* after completing the dive information.
 ===== The *Equipment* tab
 
 The Equipment tab allows entering information about the type of
-cylinder and gas used, as well as the weights used for the dive. The
-message in the blue box at the top of the panel:
-
-image::images/BlueEditBar_f22.jpg["FIGURE: Blue edit bar",align="center"]
-
-shows the equipment is being edited. This is a highly interactive part of
-_Subsurface_ and the information on
+cylinder and gas used, as well as the weights used for the dive. This is a
+highly interactive part of _Subsurface_ and the information on
 cylinders and gases (entered here) determines the behavior of the *Dive profile*
 (top right-hand panel).
 
@@ -1115,7 +1055,7 @@ dive on a 5-point scale by clicking the appropriate star.
 *Current*: Provide a qualitative rating of water current strength during the
 dive on a 5-point scale by clicking the appropriate star.
 
-The following three environmental parameters can be entered _if they are enabled in the _Log Preferences_ (File->Preferences->Dive log)_:
+The following three environmental parameters can be entered if they are enabled in the _Log Preferences_ (File->Preferences->Dive log)_:
 
 *Surface waves*: Provide a qualitative rating of the size of surface waves (swell/chop) when entering or leaving the water.
 
@@ -1687,98 +1627,6 @@ list becomes a repository of useful information outside of the dive list.
 
 At the top left of the dive sites management panel is a button "Purge unused dive sites". Selecting this button
 deletes all the dive sites that do not have associated dives.
-
-[[S_Using_mobile]]
-=== Importing Dive coordinates from a mobile device with GPS using Subsurface-Mobile.
-
-A smartphone with built-in GPS facilities can be used to store the locations of dives.
-This is performed by:
-
-1) Taking the mobile device along on the dive boat / liveabord while
-automatically collecting dive site coordinate information.
-
-2) Adding collected coordinate information to the dives using the _Subsurface-mobile_ app.
-
-3) Synchronizing the logbook with the _Subsurface_ cloud using the _Subsurface-mobile_ app.
-
-Existing users might still be using the legacy _Companion app_. However, the Companion App
-hasn't been under development in several years and has now been removed from both Android
-and iOS app stores. The functionality is fully integrated into _Subsurface-mobile_.
-Please note that the old GPS fix internet service will be shut down by the end 2018 at which
-point the _Companion app_ will no longer be usable. Please switch to _Subsurface-mobile_ instead.
-
-==== Storing and and using GPS locations using  _Subsurface-mobile_
-
-===== Install _Subsurface-mobile_
-
-Find _Subsurface-mobile_ on Google Play and install it on an Android device. The app
-is free. The iOS version is currently experimental. _Subsurface-mobile_ has an extensive
-https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[user manual]
-accessible from within that app.
-
-===== Create a _Subsurface-mobile_ account
-
-This topic is discussed at length in the _Subsurface-mobile_ user manual. In the
-Credentials screen of _Subsurface-mobile_ provide an e-mail address and a user
-password that enables subsequent access. A PIN number is e-mailed from the
-_Subsurface_ Internet server to the e-mail address that has been provided.
-Type the PIN into the appropriate text field in the Credentials screen (see image below).
-The _Subsurface_ Internet server notifies the user that a new user has been registered.
-
-*N.B.:* To successfully create a user account, the mobile device must have Internet connectivity,
-either through the cellular network or via wifi.
-
-image::images/MobileCredentials.jpg["FIGURE: Subsurface-mobile, credentials screen",align="center"]
-
-
-===== Configure auto-collecting of GPS coordinates
-
-Activate the main menu of _Subsurface-mobile_ by selecting the "hamburger" menu button
-at the bottom left of the _Subsurface-mobile_ screen (see image above), then select
-_GPS_  -> _Preferences_ (see image below). The collection of GPS locations is done in the background and
-automatically, using two settings:
-
-- _Time threshold._ (minutes). The app will try to get a location every X minutes
-
-- _Distance threshold._ (meters). Minimum distance between two locations.
-
-*How are GPS coordinates collected?* Assuming the diver sets 5 minutes and 50
-meters in the settings above, the app will start by recording a location at the current
-location, followed by another one at every 5 minutes *or* every time you move 50 m
-from previous location, whichever happens first.
-If subsequent locations are within a radius of 50 meters from the previous one,
-a new location is not saved. If the diver is not moving, only one location is
-saved, at least until the _Time-threshold_ period has elapsed.
-If the diver moves, a trace of the route is obtained by saving a location every 50 meters.
-
-===== Activate the automated recording of GPS locations
-
-The _Subsurface-mobile_ GPS menu has an option at the bottom labled
-_Run location service_ (see image below). Selecting this starts the automated recording
-of GPS positions.
-
-image::images/MobileGpsMenu.jpg["FIGURE: Subsurface-mobile GPS menu",align="center"]
-
-===== After the dive, stop the automated recording of GPS locations
-
-Select the menu option _Disable location service_ at the bottom of the _Subsurface-mobile_ GPS menu.
-
-
-===== Apply the stored GPS locations to dives on the _Subsurface_ dive list.
-
-_Subsurface_ collects the first GPS location recorded after the start of a dive
-(obtained within _Subsurface_ from either the dive computer or from the
-manually-entered dive information) and before the end of a dive. These
-coordinates are shown in the _Coordinates_ field of the dive site panel
-for each dive. Within the dive site panel, provide a name for the
-coordinates that have been assigned to the dive, following the instructions
-under the heading above xref:S_locations[_Location_ management].
-
-The https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[user manual for _Subsurface-mobile_] (accessible from within that app)
-contains detailed instructions for
-performing the collection of GPS data and for managing, uploading and
-synchronising this information.
-
 
 [[S_LoadImage]]
 === Adding photographs or videos to dives
@@ -2821,7 +2669,7 @@ The dives in the *Dive List* can be filtered, selecting only some
 of the dives based on attributes such as dive tags, dive site, divemaster or buddy.
 For instance, filtering lets you list the dives during a particular year at a specific
 dive site, or otherwise the cave dives with a particular buddy. Filtering can be performed
-based on any information in the _Info Panel_.
+based on any information in the _Information Panel_.
 
 To open the filter, select _Log ->  Filter divelist_ from the main menu. This replaces the
 _Dive Map Panel_ with a _Filter Panel_. The top window bar contains the number of dives that satisfy the
@@ -2842,7 +2690,9 @@ useful for rebreather divers and free divers who also do some open circuit divin
 
 image::images/FilterPanel.jpg["Figure: Filter panel",align="center"]
 
-The filter criteria can be any of the following:
+The top text box is a full-text filter: dives are searched in their entirety (notes and all other fields) for the word(s) in the text box. Let us assume the text box contains the word "whale". There are three ways the dive contents is filtered: 1) Starts with: all words starting with the text in the text box are used to filter the dive list. This means that a dive containing the word "whaleshark" is included in the divelist. 2) Substring: dives with all words that _include_ the text in the full text search box are included in the list. If the full-text box contains "shark", dives containing the word "whaleshark" are also included in the dive list. 3) Full word: filtering is performed strictly using the word in the full-text box. If the full-text box contains "shark", dives containing "whaleshark" are NOT included in the dive list. However if a dive contains "bull shark" it is included in the dive list.
+
+For the fields in the lower half of the panel the filter criteria can be any of the following:
 
 1) Using different text boxes in the _Filter panel_ performs an AND operator on different attributes. For example,
    typing "Peter" for the Persons attribute and "Sipadan" for the Location attribute results in a dive list containing
@@ -3062,7 +2912,9 @@ To do this after performing any of these actions, from the *Main Menu* select
 _Edit_. This brings up the possibility to _Undo_ or _Redo_ an action.
 
 [[S_ExportLog]]
-== Exporting the dive log or parts of the dive log
+== Exporting the dive log or dive sites
+
+=== Exporting the dive log
 
 The export function can be found by selecting _File ->  Export_, which brings up
 the Export dialog. This dialog always gives two options: save ALL dives, or save only
@@ -3074,6 +2926,9 @@ image::images/Export_f20.jpg["Figure: Export dialog",align="center"]
 A dive log or part of it can be saved in several formats:
 
 * _Subsurface XML_ format. This is the native format used by _Subsurface_.
+
+* _Subsurface dive sites XML_. Export the dive sites in XML format. This allows the
+  sharing of dive sites with other divers or software.
 
 * Universal Dive Data Format (_UDDF_). Refer to _http://uddf.org_ for more information.
   UDDF is a generic format that enables communication among many dive computers
@@ -3192,7 +3047,8 @@ Clod Preference panel xref:S_Pref_cloud[here]).
    _Subsurface_ can use for user registration. This is the only step that requires an email address.
 Subsurface will never use this email address again.
 ** Enter a novel password that _Subsurface_ will use to store the
-  dive log in the cloud.
+  dive log in the cloud. The password can comprise lower case letters,
+  numbers, plus(+), minus(-) and underscore(_).
 ** Click _Apply_ to send the above email address and password to the
   (remote) cloud server. The server responds by sending a verification PIN to
   the above email address (This is the *only* occasion that _Subsurface_ uses the
@@ -4432,7 +4288,7 @@ https://www.silabs.com/support/pages/document-library.aspx?p=Interface&f=USB%20B
 [NOTE]
 When connecting a dive computer by using a USB connector, usually
 _Subsurface_ will either propose a drop down list with the
-correct device name (or mount point for the Uemis Zurich), or it will
+correct device name or it will
 disable the device select drop down if no device name is needed at
 all. In the rare cases where this doesn't work, here are some
 ways to find out what the device name is:
@@ -4715,41 +4571,6 @@ After establishing the RFCOMM connection and while the dive computer's upload mo
 [[_appendix_b_dive_computer_specific_information_for_importing_dive_information]]
 
 == APPENDIX B: Dive Computer specific information for importing dive data.
-
-[[S_ImportUemis]]
-=== Importing from Uemis Zurich
-
-[icon="images/icons/iumis.jpg"]
-[NOTE]
-_Subsurface_ downloads the information
-stored on the SDA (the built-in file system of the Uemis) including
-information about dive spots and
-equipment. Buddy information is not yet downloadable.
-Things are very similar to a normal USB-connected dive computer
-(the Uemis is one of those that recharge when connected to the USB port).
-The main difference is that you don’t enter a
-device name, but instead the location where the UEMISSDA file system is
-mounted once connected to the dive computer. On Windows this is a drive letter (
-often 'E:' or 'F:'), on a Mac this is
-'/Volumes/UEMISSDA' and on Linux systems this differs depending on the
-distribution. On Fedora it usually is
-'/var/run/media/<your_username>/UEMISSDA'. In all cases _Subsurface_
-should suggest the correct location in the drop down list.
-
-After selecting the above device name, download the
-dives from the Uemis Zurich. One technical issue with the Uemis Zurich
-download implementation (this is a Uemis firmware limitation, not a
-_Subsurface_ issue) is that you cannot download more than about 40-50
-dives without running out of memory on the SDA. This will usually only
-happen the very first time you download dives from the Uemis Zurich.
-Normally when downloading at the end of a day or even after a dive
-trip, the capacity is sufficient. If _Subsurface_ displays an error
-that the dive computer ran out of space, the solution is straightforward.
-Disconnect the SDA, turn it off and on again, and reconnect
-it. You can now retry (or start a new download session) and the
-download will continue where it stopped previously. You
-may have to do this more than once, depending on how many dives are
-stored on the dive computer.
 
 [[S_ImportingGalileo]]
 === Importing from Uwatec Galileo
