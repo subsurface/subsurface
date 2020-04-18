@@ -54,7 +54,7 @@ override_dh_auto_configure:
 		make -j8 ; \
 		make install)
 	(mkdir libgit2/build ; cd libgit2/build ; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(MY_INSTALL_ROOT) -DBUILD_SHARED_LIBS=OFF -DBUILD_CLAR=OFF -DBUILD_EXAMPLES=OFF .. ; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(MY_INSTALL_ROOT) -DBUILD_SHARED_LIBS=OFF -DBUILD_CLAR=OFF -DREGEX_BACKEND=builtin .. ; \
 		make -j8 ; \
 		make install)
 	(mkdir subsurface-build ; cd subsurface-build ;  \
