@@ -2942,13 +2942,21 @@ A dive log or part of it can be saved in several formats:
   dives. To upload dives, you need a user ID, so registration with
   _http://scubadiveshare.com_ is required.
 
-* _CSV dive details_, that includes the most critical information of the dive
+* _CSV summary dive details_, that includes the most critical information of the dive
   profile. Included information of a dive is: dive number, date, time, buddy,
-  duration, depth, temperature and pressure: in short, most of the information
-  that recreational divers enter into handwritten log books.
+  duration, depth, temperature and atmospheric pressure: in short, most of the information
+  that recreational divers enter into handwritten log books. It does not include the dive profile.
 
-* _CSV dive profile_, that includes a large amount of detail for each dive, including
-  the depth profile, temperature and pressure information of each dive.
+* _CSV Dive computer dive profile_, that includes a large amount of detail for each dive, including
+  the depth profile, temperature and pressure information of each dive. The source of the data
+  being saved are the data as downloaded from your dive computer.
+
+* _CSV Computer Profile Panel daata_. This option exports the information presented in the _Profile Panel_.
+  The _Profile panel_ contains many calculated  and interpolated values, e.g. SAC,
+  cylinder pressure, decompression ceilings, gas partial pressures and interpolated depths. These
+  data therefore differ from the raw dive information imported from a dive computer. This export option
+  is primarily intended to be accessible to external software for further processing of the _Profile Panel_
+  information.
 
 * _Dive profile_, which enables easy sharing of the dive profile using social media.
   This option writes the image of the dive profile(s) in a _.png_ graphics
@@ -2958,19 +2966,6 @@ A dive log or part of it can be saved in several formats:
   selected, the images are written as separate graphics files. Selecting the
   _Dive profile_ option opens a window to name the file(s) to which the profile(s)
   is written. Provide a filename and select _Save_ to create the graphics output.
-
-* _HTML_ format, in which the dive(s) are stored in HTML files, readable
-  with an Internet browser. Most modern web browsers are supported, but JavaScript
-  must be enabled. The HTML export cannot be changed or edited.
-  It contains most of the information recorded in the dive log. However, it does not show the
-  calculated values in the *Dive Profile* panel, e.g. dive ceiling, calculated cylinder pressure, gas
-  pressures and MOD. The HTML export contains a search
-  option to search the dive log. HTML export is specified on the second tab of the
-  Export dialog (image *B* above). A typical use of this option is to export all your
-  dives to a smartphone or a tablet where it would serve as a  portable record
-  of dives, useful for dive companies wishing to verify the dive history of a diver,
-  and doing away with the need to carry an original logbook
-  when doing dives with dive companies.
 
 * _Worldmap_ format, an HTML file with a world map upon which each dive and
   some information about it are indicated. This map is not editable. If you select any
@@ -3004,6 +2999,19 @@ purposes without revealing personal information. Please note, though, that other
 characters are not replaced, so this is not useful for languages with non-latin
 characters and GPS coordinates of dive sites are preserved as well.
 
+* _HTML_. This export is provided by selecting the appropriate tab at the top of the panel.
+  The dive(s) are stored in HTML files, readable
+  with an Internet browser. Most modern web browsers are supported, but JavaScript
+  must be enabled. The HTML export cannot be changed or edited.
+  It contains most of the information recorded in the dive log. However, it does not show the
+  calculated values in the *Dive Profile* panel, e.g. dive ceiling, calculated cylinder pressure, gas
+  pressures and MOD. The HTML export contains a search
+  option to search the dive log. HTML export is specified on the second tab of the
+  Export dialog (image *B* above). A typical use of this option is to export all your
+  dives to a smartphone or a tablet where it would serve as a  portable record
+  of dives, useful for dive companies wishing to verify the dive history of a diver,
+  and doing away with the need to carry an original logbook
+  when doing dives with dive companies.
 
 * _General Settings_, under the HTML tab, provides the following options:
 
