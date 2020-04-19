@@ -715,9 +715,12 @@ DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelTree::divesSelected);
 	connect(&diveListNotifier, &DiveListNotifier::tripChanged, this, &DiveTripModelTree::tripChanged);
 	connect(&diveListNotifier, &DiveListNotifier::filterReset, this, &DiveTripModelTree::filterReset);
-	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &DiveTripModelTree::cylinderChanged);
-	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &DiveTripModelTree::cylinderChanged);
-	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &DiveTripModelTree::cylinderChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &DiveTripModelTree::diveChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &DiveTripModelTree::diveChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &DiveTripModelTree::diveChanged);
+	connect(&diveListNotifier, &DiveListNotifier::pictureOffsetChanged, this, &DiveTripModelTree::diveChanged);
+	connect(&diveListNotifier, &DiveListNotifier::picturesRemoved, this, &DiveTripModelTree::diveChanged);
+	connect(&diveListNotifier, &DiveListNotifier::picturesAdded, this, &DiveTripModelTree::diveChanged);
 
 	populate();
 }
@@ -1255,7 +1258,7 @@ void DiveTripModelTree::divesChanged(const QVector<dive *> &dives)
 		      { divesChangedTrip(trip, divesInTrip); });
 }
 
-void DiveTripModelTree::cylinderChanged(dive *d)
+void DiveTripModelTree::diveChanged(dive *d)
 {
 	divesChanged(QVector<dive *> { d });
 }
@@ -1476,9 +1479,12 @@ DiveTripModelList::DiveTripModelList(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::divesTimeChanged, this, &DiveTripModelList::divesTimeChanged);
 	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelList::divesSelected);
 	connect(&diveListNotifier, &DiveListNotifier::filterReset, this, &DiveTripModelList::filterReset);
-	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &DiveTripModelList::cylinderChanged);
-	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &DiveTripModelList::cylinderChanged);
-	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &DiveTripModelList::cylinderChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &DiveTripModelList::diveChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &DiveTripModelList::diveChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &DiveTripModelList::diveChanged);
+	connect(&diveListNotifier, &DiveListNotifier::pictureOffsetChanged, this, &DiveTripModelList::diveChanged);
+	connect(&diveListNotifier, &DiveListNotifier::picturesRemoved, this, &DiveTripModelList::diveChanged);
+	connect(&diveListNotifier, &DiveListNotifier::picturesAdded, this, &DiveTripModelList::diveChanged);
 
 	populate();
 }
@@ -1632,7 +1638,7 @@ void DiveTripModelList::divesChanged(const QVector<dive *> &divesIn)
 		initSelection();
 }
 
-void DiveTripModelList::cylinderChanged(dive *d)
+void DiveTripModelList::diveChanged(dive *d)
 {
 	divesChanged(QVector<dive *> { d });
 }
