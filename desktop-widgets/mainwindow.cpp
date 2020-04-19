@@ -51,7 +51,6 @@
 #include "desktop-widgets/subsurfacewebservices.h"
 #include "desktop-widgets/tab-widgets/maintab.h"
 #include "desktop-widgets/updatemanager.h"
-#include "desktop-widgets/usersurvey.h"
 #include "desktop-widgets/simplewidgets.h"
 #include "commands/command.h"
 
@@ -125,7 +124,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	helpView(0),
 #endif
 	state(VIEWALL),
-	survey(nullptr),
 	findMovedImagesDialog(nullptr)
 {
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
@@ -1177,13 +1175,6 @@ void MainWindow::on_actionUserManual_triggered()
 #endif
 }
 
-void MainWindow::on_actionUserSurvey_triggered()
-{
-	if(!survey)
-		survey = new UserSurvey(this);
-	survey->show();
-}
-
 void MainWindow::on_actionHash_images_triggered()
 {
 	if(!findMovedImagesDialog)
@@ -1333,39 +1324,15 @@ void MainWindow::initialUiSetup()
 
 void MainWindow::readSettings()
 {
-	static bool firstRun = true;
 	init_proxy();
 
 	// now make sure that the cloud menu items are enabled IFF cloud account is verified
 	enableDisableCloudActions();
 
 	loadRecentFiles();
-	if (firstRun) {
-		checkSurvey();
-		firstRun = false;
-	}
 }
 
 #undef TOOLBOX_PREF_BUTTON
-
-void MainWindow::checkSurvey()
-{
-	QSettings s;
-	s.beginGroup("UserSurvey");
-	if (!s.contains("FirstUse42")) {
-		QVariant value = QDate().currentDate();
-		s.setValue("FirstUse42", value);
-	}
-	// wait a week for production versions, but not at all for non-tagged builds
-	int waitTime = 7;
-	QDate firstUse42 = s.value("FirstUse42").toDate();
-	if (run_survey || (firstUse42.daysTo(QDate().currentDate()) > waitTime && !s.contains("SurveyDone"))) {
-		if (!survey)
-			survey = new UserSurvey(this);
-		survey->show();
-	}
-	s.endGroup();
-}
 
 void MainWindow::writeSettings()
 {

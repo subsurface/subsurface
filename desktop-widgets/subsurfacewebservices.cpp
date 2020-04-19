@@ -4,7 +4,6 @@
 #include "core/webservice.h"
 #include "core/settings/qPrefCloudStorage.h"
 #include "desktop-widgets/mainwindow.h"
-#include "desktop-widgets/usersurvey.h"
 #include "commands/command.h"
 #include "core/trip.h"
 #include "core/errorhelper.h"
@@ -477,18 +476,4 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton *button)
 	default:
 		break;
 	}
-}
-
-UserSurveyServices::UserSurveyServices(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
-{
-}
-
-QNetworkReply *UserSurveyServices::sendSurvey(QString values)
-{
-	QNetworkRequest request;
-	request.setUrl(QString("http://subsurface-divelog.org/survey?%1").arg(values));
-	request.setRawHeader("Accept", "text/xml");
-	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
-	QNetworkReply *reply = manager()->get(request);
-	return reply;
 }
