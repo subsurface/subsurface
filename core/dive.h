@@ -210,8 +210,9 @@ extern enum divemode_t get_divemode_at_time(const struct divecomputer *dc, int d
 		for (struct picture *picture = (_dive)->pictures.pictures;		\
 		     picture < (_dive)->pictures.pictures + (_dive)->pictures.nr;	\
 		     picture++)
-extern void create_picture(const char *filename, int shift_time, bool match_all);
+extern struct picture *create_picture(const char *filename, int shift_time, bool match_all, struct dive **dive);
 extern bool picture_check_valid_time(timestamp_t timestamp, int shift_time);
+extern void dive_set_geodata_from_picture(struct dive *dive, struct picture *picture, struct dive_site_table *table);
 
 extern bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc, int idx);
 extern int explicit_first_cylinder(const struct dive *dive, const struct divecomputer *dc);

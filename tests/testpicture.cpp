@@ -22,7 +22,7 @@ void TestPicture::initTestCase()
 
 void TestPicture::addPicture()
 {
-	struct dive *dive;
+	struct dive *dive, *dive1, *dive2;
 	struct picture *pic1, *pic2;
 	verbose = 1;
 
@@ -34,9 +34,19 @@ void TestPicture::addPicture()
 	// So far no picture in dive
 	QVERIFY(dive->pictures.nr == 0);
 
-	create_picture(SUBSURFACE_TEST_DATA "/dives/images/wreck.jpg", 0, false);
-	create_picture(SUBSURFACE_TEST_DATA "/dives/images/data_after_EOI.jpg", 0, false);
-	// Now there are two picture2
+	pic1 = create_picture(SUBSURFACE_TEST_DATA "/dives/images/wreck.jpg", 0, false, &dive1);
+	pic2 = create_picture(SUBSURFACE_TEST_DATA "/dives/images/data_after_EOI.jpg", 0, false, &dive2);
+	QVERIFY(pic1 != NULL);
+	QVERIFY(pic2 != NULL);
+	QVERIFY(dive1 == dive);
+	QVERIFY(dive2 == dive);
+
+	add_picture(&dive->pictures, *pic1);
+	add_picture(&dive->pictures, *pic2);
+	free(pic1);
+	free(pic2);
+
+	// Now there are two pictures
 	QVERIFY(dive->pictures.nr == 2);
 	pic1 = &dive->pictures.pictures[0];
 	pic2 = &dive->pictures.pictures[1];

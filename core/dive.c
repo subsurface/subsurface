@@ -3556,7 +3556,7 @@ bool picture_check_valid_time(timestamp_t timestamp, int shift_time)
 	return false;
 }
 
-static void dive_set_geodata_from_picture(struct dive *dive, struct picture *picture, struct dive_site_table *table)
+void dive_set_geodata_from_picture(struct dive *dive, struct picture *picture, struct dive_site_table *table)
 {
 	struct dive_site *ds = dive->dive_site;
 	if (!dive_site_has_gps_location(ds) && has_location(&picture->location)) {
@@ -3570,31 +3570,31 @@ static void dive_set_geodata_from_picture(struct dive *dive, struct picture *pic
 	}
 }
 
-void create_picture(const char *filename, int shift_time, bool match_all)
+/* Creates a picture and indicates the dive to which this picture should be added.
+ * The caller is responsible for actually adding the picture to the dive.
+ * If no appropriate dive was found, no picture is created and NULL is returned.
+ */
+struct picture *create_picture(const char *filename, int shift_time, bool match_all, struct dive **dive)
 {
 	struct metadata metadata;
-	struct dive *dive;
 	timestamp_t timestamp;
 
 	get_metadata(filename, &metadata);
 	timestamp = metadata.timestamp + shift_time;
-	dive = nearest_selected_dive(timestamp);
+	*dive = nearest_selected_dive(timestamp);
 
-	if (!dive)
-		return;
-	if (get_picture_idx(&dive->pictures, filename) >= 0)
-		return;
-	if (!match_all && !dive_check_picture_time(dive, timestamp))
-		return;
+	if (!*dive)
+		return NULL;
+	if (get_picture_idx(&(*dive)->pictures, filename) >= 0)
+		return NULL;
+	if (!match_all && !dive_check_picture_time(*dive, timestamp))
+		return NULL;
 
-	struct picture picture;
-	picture.filename = strdup(filename);
-	picture.offset.seconds = metadata.timestamp - dive->when + shift_time;
-	picture.location = metadata.location;
-
-	add_picture(&dive->pictures, picture);
-	dive_set_geodata_from_picture(dive, &picture, &dive_site_table);
-	invalidate_dive_cache(dive);
+	struct picture *picture = malloc(sizeof(struct picture));
+	picture->filename = strdup(filename);
+	picture->offset.seconds = metadata.timestamp - (*dive)->when + shift_time;
+	picture->location = metadata.location;
+	return picture;
 }
 
 /* clones a dive and moves given dive computer to front */
