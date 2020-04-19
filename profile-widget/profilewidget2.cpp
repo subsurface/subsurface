@@ -1109,6 +1109,9 @@ void ProfileWidget2::setEmptyState()
 	if (currentState == EMPTY)
 		return;
 
+#ifndef SUBSURFACE_MOBILE
+	clearPictures();
+#endif
 	disconnectTemporaryConnections();
 	setBackgroundBrush(getColor(::BACKGROUND, isGrayscale));
 	dataModel->clear();
