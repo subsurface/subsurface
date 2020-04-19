@@ -14,7 +14,6 @@
 #include "divesite.h"
 #include "errorhelper.h"
 #include "qthelper.h"
-#include "metadata.h"
 #include "membuffer.h"
 #include "picture.h"
 #include "tag.h"
@@ -3498,64 +3497,6 @@ void set_git_prefs(const char *prefs)
 		git_prefs.pp_graphs.po2 = 1;
 }
 
-/* Return distance of timestamp to time of dive. Result is always positive, 0 means during dive. */
-static timestamp_t time_from_dive(const struct dive *d, timestamp_t timestamp)
-{
-	timestamp_t end_time = dive_endtime(d);
-	if (timestamp < d->when)
-		return d->when - timestamp;
-	else if (timestamp > end_time)
-		return timestamp - end_time;
-	else
-		return 0;
-}
-
-// only add pictures that have timestamps between 30 minutes before the dive and
-// 30 minutes after the dive ends
-#define D30MIN (30 * 60)
-static bool dive_check_picture_time(const struct dive *d, timestamp_t timestamp)
-{
-	return time_from_dive(d, timestamp) < D30MIN;
-}
-
-/* Return dive closest selected dive to given timestamp or NULL if no dives are selected. */
-static struct dive *nearest_selected_dive(timestamp_t timestamp)
-{
-	struct dive *d, *res = NULL;
-	int i;
-	timestamp_t offset, min = 0;
-
-	for_each_dive(i, d) {
-		if (!d->selected)
-			continue;
-		offset = time_from_dive(d, timestamp);
-		if (!res || offset < min) {
-			res = d;
-			min = offset;
-		}
-
-		/* We suppose that dives are sorted chronologically. Thus
-		 * if the offset starts to increase, we can end. This ignores
-		 * pathological cases such as overlapping dives. In such a
-		 * case the user will have to add pictures manually.
-		 */
-		if (offset == 0 || offset > min)
-			break;
-	}
-	return res;
-}
-
-bool picture_check_valid_time(timestamp_t timestamp, int shift_time)
-{
-	int i;
-	struct dive *dive;
-
-	for_each_dive (i, dive)
-		if (dive->selected && dive_check_picture_time(dive, timestamp + shift_time))
-			return true;
-	return false;
-}
-
 void dive_set_geodata_from_picture(struct dive *dive, struct picture *picture, struct dive_site_table *table)
 {
 	struct dive_site *ds = dive->dive_site;
@@ -3568,33 +3509,6 @@ void dive_set_geodata_from_picture(struct dive *dive, struct picture *picture, s
 			invalidate_dive_cache(dive);
 		}
 	}
-}
-
-/* Creates a picture and indicates the dive to which this picture should be added.
- * The caller is responsible for actually adding the picture to the dive.
- * If no appropriate dive was found, no picture is created and NULL is returned.
- */
-struct picture *create_picture(const char *filename, int shift_time, bool match_all, struct dive **dive)
-{
-	struct metadata metadata;
-	timestamp_t timestamp;
-
-	get_metadata(filename, &metadata);
-	timestamp = metadata.timestamp + shift_time;
-	*dive = nearest_selected_dive(timestamp);
-
-	if (!*dive)
-		return NULL;
-	if (get_picture_idx(&(*dive)->pictures, filename) >= 0)
-		return NULL;
-	if (!match_all && !dive_check_picture_time(*dive, timestamp))
-		return NULL;
-
-	struct picture *picture = malloc(sizeof(struct picture));
-	picture->filename = strdup(filename);
-	picture->offset.seconds = metadata.timestamp - (*dive)->when + shift_time;
-	picture->location = metadata.location;
-	return picture;
 }
 
 /* clones a dive and moves given dive computer to front */
