@@ -3498,15 +3498,6 @@ void set_git_prefs(const char *prefs)
 		git_prefs.pp_graphs.po2 = 1;
 }
 
-static bool new_picture_for_dive(struct dive *d, const char *filename)
-{
-	FOR_EACH_PICTURE (d) {
-		if (same_string(picture->filename, filename))
-			return false;
-	}
-	return true;
-}
-
 /* Return distance of timestamp to time of dive. Result is always positive, 0 means during dive. */
 static timestamp_t time_from_dive(const struct dive *d, timestamp_t timestamp)
 {
@@ -3591,7 +3582,7 @@ void create_picture(const char *filename, int shift_time, bool match_all)
 
 	if (!dive)
 		return;
-	if (!new_picture_for_dive(dive, filename))
+	if (get_picture_idx(&dive->pictures, filename) >= 0)
 		return;
 	if (!match_all && !dive_check_picture_time(dive, timestamp))
 		return;
