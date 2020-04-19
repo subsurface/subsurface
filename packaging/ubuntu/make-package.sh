@@ -49,14 +49,6 @@ cd distrobuilds
 
 if [[ ! -d subsurface_$VERSION ]]; then
 	mkdir subsurface_$VERSION
-	if [[ "$GITREVISION" != "" ]] ; then
-		rm -f subsurfacedaily-$VERSION
-		ln -s subsurface_$VERSION subsurfacedaily-$VERSION
-	else
-		rm -f subsurface-$VERSION
-		ln -s subsurface_$VERSION subsurface-$VERSION
-	fi
-
 	echo "copying sources"
 
 	(cd ../subsurface ; tar cf - . ) | (cd subsurface_$VERSION ; tar xf - )
