@@ -26,10 +26,12 @@ VERSION=$(echo $GITVERSION | sed -e 's/-/./')
 GITDATE=$(cd subsurface ; git log -1 --format="%at" | xargs -I{} date -d @{} +%Y-%m-%d)
 LIBDCREVISION=$(cd subsurface/libdivecomputer ; git rev-parse --verify HEAD)
 
-if [[ "$GITVERSION" = "" ]] ; then
+if [[ "$GITREVISION" = "" ]] ; then
 	SUFFIX=".release"
+	FOLDER="subsurface-$VERSION"
 else
 	SUFFIX=".daily"
+	FOLDER="subsurfacedaily-$VERSION"
 fi
 
 echo "building Subsurface" $VERSION "with libdivecomputer" $LIBDCREVISION
@@ -38,20 +40,12 @@ echo "building Subsurface" $VERSION "with libdivecomputer" $LIBDCREVISION
 mkdir -p distrobuilds
 cd distrobuilds
 
-if [[ ! -d subsurface_$VERSION ]]; then
-	mkdir subsurface_$VERSION
-	if [[ "$GITREVISION" != "" ]] ; then
-		rm -f subsurfacedaily-$VERSION
-		ln -s subsurface_$VERSION subsurfacedaily-$VERSION
-	else
-		rm -f subsurface-$VERSION
-		ln -s subsurface_$VERSION subsurface-$VERSION
-	fi
-
+if [[ ! -d $FOLDER ]]; then
+	mkdir $FOLDER
 	echo "copying sources"
 
-	(cd ../subsurface ; tar cf - . ) | (cd subsurface_$VERSION ; tar xf - )
-	cd subsurface_$VERSION;
+	(cd ../subsurface ; tar cf - . ) | (cd $FOLDER ; tar xf - )
+	cd $FOLDER
 	cp -a ../../googlemaps .
 
 	rm -rf .git libdivecomputer/.git googlemaps/.git build build-mobile libdivecomputer/build googlemaps/build
@@ -60,27 +54,29 @@ if [[ ! -d subsurface_$VERSION ]]; then
 	echo $LIBDCREVISION > libdivecomputer/revision
 
 	if [[ "$GITREVISION" != "" ]] ; then
-		(cd .. ; tar ch subsurfacedaily-$VERSION | xz > home:Subsurface-Divelog/Subsurface-daily/subsurface-$VERSION.orig.tar.xz) &
+		(cd .. ; tar ch $FOLDER | xz > home:Subsurface-Divelog/Subsurface-daily/subsurface-$VERSION.orig.tar.xz) &
 	else
-		(cd .. ; tar ch subsurface-$VERSION | xz > home:Subsurface-Divelog/Subsurface/subsurface-$VERSION.orig.tar.xz) &
+		(cd .. ; tar ch $FOLDER | xz > home:Subsurface-Divelog/Subsurface/subsurface-$VERSION.orig.tar.xz) &
 	fi
+	cd ..
 else
 	echo "using existing source tree"
 fi
 
+# if the user wanted to post this automatically, do so
 if [[ "$1" = "post" ]] ; then
 	# daily vs. release
 	if [[ "$GITREVISION" == "" ]] ; then
 		# this is a release
 		cd home:Subsurface-Divelog/Subsurface
-		osc rm $(ls subsurface*.tar.xz | grep -v $VERSION)
+		ls subsurface*.tar.xz | grep -v $VERSION 2>/dev/null && osc rm $(ls subsurface*.tar.xz | grep -v $VERSION)
 		osc add subsurface-$VERSION.orig.tar.xz
 		sed -i "s/%define latestVersion.*/%define latestVersion $VERSION/" subsurface.spec
 		sed -i "s/%define gitVersion .*/%define gitVersion 0/" subsurface.spec
 		osc commit -m "next release build"
 	else
 		cd home:Subsurface-Divelog/Subsurface-daily
-		osc rm $(ls subsurface*.tar.xz | grep -v $VERSION)
+		ls subsurface*.tar.xz | grep -v $VERSION 2>/dev/null && osc rm $(ls subsurface*.tar.xz | grep -v $VERSION)
 		osc add subsurface-$VERSION.orig.tar.xz
 		sed -i "s/%define latestVersion.*/%define latestVersion $VERSION/" subsurfacedaily.spec
 		sed -i "s/%define gitVersion .*/%define gitVersion $GITREVISION/" subsurfacedaily.spec
