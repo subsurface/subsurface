@@ -23,11 +23,6 @@ if [[ ! -d libgit2 ]] ; then
 	exit 1;
 fi
 
-if [[ "$1" = "-obs" ]] ; then
-	echo "Also pushing update to OBS"
-	OBS="1"
-fi
-
 # ensure that the libdivecomputer module is there and current
 cd subsurface
 git submodule init
@@ -79,17 +74,7 @@ if [[ ! -d subsurface_$VERSION ]]; then
 	echo $GITDATE > .gitdate
 	echo $LIBDCREVISION > libdivecomputer/revision
 
-	if [[ "$OBS" = "1" ]]; then
-		# oops, this isn't really for Debian/Ubuntu... it just creates corresponding source tar files for
-		# the Open Build Service to create SUSE and Fedora packages while we are at it
-		if [[ "$GITREVISION" != "" ]] ; then
-			(cd .. ; tar ch subsurfacedaily-$VERSION | xz > home:Subsurface-Divelog/Subsurface-daily/subsurface-$VERSION.orig.tar.xz) &
-		else
-			(cd .. ; tar ch subsurface-$VERSION | xz > home:Subsurface-Divelog/Subsurface/subsurface-$VERSION.orig.tar.xz) &
-		fi
-	fi
-
-	echo "creating source tar file for OBS and Ununtu PPA"
+	echo "creating source tar file for Ubuntu PPA"
 
 	tar cf - . | xz > ../subsurface_$VERSION.orig.tar.xz
 else
@@ -150,27 +135,7 @@ if [[ "$1" = "post" ]] ; then
 	if [[ "$GITREVISION" == "" ]] ; then
 		# this is a release
 		dput ppa:subsurface/subsurface subsurface_$VERSION-$rev~*.changes
-
-		if [[ "$OBS" = "1" ]]; then
-			# more stuff for OBS / SUSE / Fedora
-			cd home:Subsurface-Divelog/Subsurface
-			osc rm $(ls subsurface*.tar.xz | grep -v $VERSION)
-			osc add subsurface-$VERSION.orig.tar.xz
-			sed -i "s/%define latestVersion.*/%define latestVersion $VERSION/" subsurface.spec
-			sed -i "s/%define gitVersion .*/%define gitVersion 0/" subsurface.spec
-			osc commit -m "next release build"
-		fi
 	else
 		dput ppa:subsurface/subsurface-daily subsurface_$VERSION-$rev~*.changes
-
-		if [[ "$OBS" = "1" ]]; then
-			# more stuff for OBS / SUSE / Fedora
-			cd home:Subsurface-Divelog/Subsurface-daily
-			osc rm $(ls subsurface*.tar.xz | grep -v $VERSION)
-			osc add subsurface-$VERSION.orig.tar.xz
-			sed -i "s/%define latestVersion.*/%define latestVersion $VERSION/" subsurfacedaily.spec
-			sed -i "s/%define gitVersion .*/%define gitVersion $GITREVISION/" subsurfacedaily.spec
-			osc commit -m "next daily build"
-		fi
 	fi
 fi
