@@ -1,12 +1,12 @@
 #
 # spec file for package subsurface
 #
-# Copyright (c) 2014 Dirk Hohndel
+# Copyright (c) 2014-2020 Dirk Hohndel
 #
 
-%define latestVersion 4.6.4.1031
+%define latestVersion 4.9.3.1464
 
-%define gitVersion 1031
+%define gitVersion 1464
 
 
 Name:           subsurfacedaily
@@ -28,7 +28,7 @@ BuildRequires:	automake
 BuildRequires:	libtool
 BuildRequires:	cmake
 %if 0%{?suse_version}
-# kde4-filesystem needed for some folders not owned (%{_datadir}/icons/hicolor and others)
+# kde4-filesystem needed for some folders not owned (% {_datadir}/icons/hicolor and others)
 BuildRequires:  kde4-filesystem
 %endif
 BuildRequires:	libzip-devel
@@ -36,6 +36,7 @@ BuildRequires:	libxml2-devel
 BuildRequires:	libxslt-devel
 BuildRequires:	libssh2-devel
 BuildRequires:	libcurl-devel
+BuildRequires:  libgit2-devel
 BuildRequires:	grantlee5-devel
 %if  0%{?fedora_version} || 0%{?rhel_version} || 0%{?centos_version}
 BuildRequires:	netpbm-devel
@@ -55,6 +56,7 @@ BuildRequires:	qt5-qtbase-odbc
 BuildRequires:	qt5-qtbase-tds
 BuildRequires:	qt5-qtconnectivity-devel
 BuildRequires:	qt5-qtlocation-devel
+BuildRequires:  libappstream-glib
 %else
 BuildRequires:	update-desktop-files
 BuildRequires:	libopenssl-devel
@@ -102,13 +104,6 @@ mkdir -p install-root
 	./configure --prefix=$RPM_BUILD_DIR/install-root --disable-shared --disable-examples ; \
 	make %{?_smp_mflags} ; \
 	make install)
-(cd libgit2; mkdir build; cd build; \
-	cmake -DCMAKE_INSTALL_PREFIX=$RPM_BUILD_DIR/install-root -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_CLAR=OFF \
-    	-DCMAKE_C_FLAGS:STRING="%optflags" \
-		-DCMAKE_CXX_FLAGS:STRING="%optflags" \
-        .. ; \
-	make %{?_smp_mflags} ; \
-	make install)
 ( cd googlemaps ; mkdir -p build ; cd build ; \
 	qmake-qt5 "INCLUDEPATH=$INSTALL_ROOT/include" ../googlemaps.pro ; \
 	make -j4 )
@@ -119,7 +114,6 @@ mkdir -p install-root
 		-DLIBDIVECOMPUTER_INCLUDE_DIR=$RPM_BUILD_DIR/install-root/include \
 		-DLIBGIT2_INCLUDE_DIR=$RPM_BUILD_DIR/install-root/include \
 		-DLIBDIVECOMPUTER_LIBRARIES=$RPM_BUILD_DIR/install-root/lib/libdivecomputer.a \
-		-DLIBGIT2_LIBRARIES=$RPM_BUILD_DIR/install-root/lib/libgit2.a \
 		-DCMAKE_C_FLAGS:STRING="%optflags" \
 		-DCMAKE_CXX_FLAGS:STRING="%optflags" \
 		-DNO_PRINTING=OFF \
@@ -131,8 +125,11 @@ mkdir -p %{buildroot}/%{_libdir}
 (cd googlemaps/build ; make install_target INSTALL_ROOT=$RPM_BUILD_ROOT )
 (cd subsurface-build ; make VERBOSE=1 install )
 install subsurface.debug %{buildroot}%{_bindir}
+install appdata/subsurface.appdata.xml %{buildroot}%{_datadir}/metainfo
 %if 0%{?fedora_version} || 0%{?rhel_version} || 0%{?centos_version}
 desktop-file-install --dir=%{buildroot}/%{_datadir}/applications subsurface.desktop
+cat %{buildroot}%{_datadir}/metainfo/subsurface.appdata.xml
+appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/subsurface.appdata.xml
 %else
 %suse_update_desktop_file -r subsurface Utility DesktopUtility
 %endif
@@ -152,6 +149,8 @@ desktop-file-install --dir=%{buildroot}/%{_datadir}/applications subsurface.desk
 %{_bindir}/subsurface*
 %{_libdir}/qt5/plugins/geoservices/libqtgeoservices_googlemaps.so
 %{_datadir}/applications/subsurface.desktop
+%dir %{_datadir}/metainfo
+%{_datadir}/metainfo/subsurface.appdata.xml
 %{_datadir}/icons/hicolor/*/apps/subsurface-icon.*
 %{_datadir}/subsurface/
 
