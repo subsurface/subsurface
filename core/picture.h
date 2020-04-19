@@ -10,12 +10,21 @@
 extern "C" {
 #endif
 
+struct dive;
+
 struct picture {
 	char *filename;
 	offset_t offset;
 	location_t location;
 };
 static const struct picture empty_picture = { NULL, { 0 }, { { 0 }, { 0 } } };
+
+/* loop through all pictures of a dive */
+#define FOR_EACH_PICTURE(_dive)								\
+	if ((_dive) && (_dive)->pictures.nr)						\
+		for (struct picture *picture = (_dive)->pictures.pictures;		\
+		     picture < (_dive)->pictures.pictures + (_dive)->pictures.nr;	\
+		     picture++)
 
 /* Table of pictures. Attention: this stores pictures,
  * *not* pointers to pictures. This has two crucial consequences:
@@ -36,6 +45,9 @@ extern void add_picture(struct picture_table *, struct picture newpic);
 extern void remove_from_picture_table(struct picture_table *, int idx);
 extern int get_picture_idx(const struct picture_table *, const char *filename); /* Return -1 if not found */
 extern void sort_picture_table(struct picture_table *);
+
+extern struct picture *create_picture(const char *filename, int shift_time, bool match_all, struct dive **dive);
+extern bool picture_check_valid_time(timestamp_t timestamp, int shift_time);
 
 #ifdef __cplusplus
 }

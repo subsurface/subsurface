@@ -204,14 +204,6 @@ extern enum divemode_t get_current_divemode(const struct divecomputer *dc, int t
 extern struct event *get_next_divemodechange(const struct event **evd, bool update_pointer);
 extern enum divemode_t get_divemode_at_time(const struct divecomputer *dc, int dtime, const struct event **ev_dmc);
 
-/* picture list and methods related to dive picture handling */
-#define FOR_EACH_PICTURE(_dive)								\
-	if ((_dive) && (_dive)->pictures.nr)						\
-		for (struct picture *picture = (_dive)->pictures.pictures;		\
-		     picture < (_dive)->pictures.pictures + (_dive)->pictures.nr;	\
-		     picture++)
-extern struct picture *create_picture(const char *filename, int shift_time, bool match_all, struct dive **dive);
-extern bool picture_check_valid_time(timestamp_t timestamp, int shift_time);
 extern void dive_set_geodata_from_picture(struct dive *dive, struct picture *picture, struct dive_site_table *table);
 
 extern bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc, int idx);
