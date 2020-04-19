@@ -131,6 +131,7 @@ struct PictureListForAddition {
 };
 void setPictureOffset(dive *d, const QString &filename, offset_t offset);
 void removePictures(const std::vector<PictureListForDeletion> &pictures);
+void addPictures(const std::vector<PictureListForAddition> &pictures);
 
 } // namespace Command
 

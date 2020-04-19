@@ -204,8 +204,6 @@ extern enum divemode_t get_current_divemode(const struct divecomputer *dc, int t
 extern struct event *get_next_divemodechange(const struct event **evd, bool update_pointer);
 extern enum divemode_t get_divemode_at_time(const struct divecomputer *dc, int dtime, const struct event **ev_dmc);
 
-extern void dive_set_geodata_from_picture(struct dive *dive, struct picture *picture, struct dive_site_table *table);
-
 extern bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc, int idx);
 extern int explicit_first_cylinder(const struct dive *dive, const struct divecomputer *dc);
 extern int get_depth_at_time(const struct divecomputer *dc, unsigned int time);

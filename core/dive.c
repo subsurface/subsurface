@@ -3497,20 +3497,6 @@ void set_git_prefs(const char *prefs)
 		git_prefs.pp_graphs.po2 = 1;
 }
 
-void dive_set_geodata_from_picture(struct dive *dive, struct picture *picture, struct dive_site_table *table)
-{
-	struct dive_site *ds = dive->dive_site;
-	if (!dive_site_has_gps_location(ds) && has_location(&picture->location)) {
-		if (ds) {
-			ds->location = picture->location;
-		} else {
-			ds = create_dive_site_with_gps("", &picture->location, table);
-			add_dive_to_dive_site(dive, ds);
-			invalidate_dive_cache(dive);
-		}
-	}
-}
-
 /* clones a dive and moves given dive computer to front */
 struct dive *make_first_dc(const struct dive *d, int dc_number)
 {

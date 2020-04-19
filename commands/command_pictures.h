@@ -35,5 +35,31 @@ private:
 	bool workToBeDone() override;
 };
 
+class AddPictures final : public Base {
+public:
+	AddPictures(const std::vector<PictureListForAddition> &pictures);
+private:
+	struct DiveSiteEntry {
+		dive *d;
+		dive_site *ds;
+	};
+	struct DiveSiteEditEntry {
+		dive_site *ds;
+		location_t location;
+	};
+	std::vector<PictureListForAddition> picturesToAdd; // for redo
+	std::vector<OwningDiveSitePtr> sitesToAdd; //for redo
+	std::vector<PictureListForDeletion> picturesToRemove; // for undo
+	std::vector<dive_site *> sitesToRemove; // for undo
+	std::vector<DiveSiteEntry> sitesToSet; // for redo and undo
+	std::vector<DiveSiteEditEntry> sitesToEdit; // for redo and undo
+
+	void swapDiveSites();
+
+	void undo() override;
+	void redo() override;
+	bool workToBeDone() override;
+};
+
 } // namespace Command
 #endif
