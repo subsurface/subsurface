@@ -11,6 +11,7 @@
 #include "desktop-widgets/divepicturewidget.h"
 #include "core/selection.h"
 #include "core/divefilter.h"
+#include "core/divesite.h" // for dive_site_table. TODO: remove once adding pictures is undoified
 #include <unistd.h>
 #include <QSettings>
 #include <QKeyEvent>
@@ -890,8 +891,16 @@ void DiveListView::matchImagesToDives(QStringList fileNames)
 		return;
 	updateLastImageTimeOffset(shiftDialog.amount());
 
-	for (const QString &fileName: fileNames)
-		create_picture(qPrintable(fileName), shiftDialog.amount(), shiftDialog.matchAll());
+	for (const QString &fileName: fileNames) {
+		struct dive *d;
+		picture *pic = create_picture(qPrintable(fileName), shiftDialog.amount(), shiftDialog.matchAll(), &d);
+		if (!pic)
+			continue;
+		add_picture(&d->pictures, *pic);
+		dive_set_geodata_from_picture(d, pic, &dive_site_table);
+		invalidate_dive_cache(d);
+		free(pic);
+	}
 
 	mark_divelist_changed(true);
 	copy_dive(current_dive, &displayed_dive);
