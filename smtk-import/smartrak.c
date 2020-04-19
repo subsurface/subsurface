@@ -44,8 +44,7 @@ static void smtk_free(char **array, int count)
 {
 	int n;
 	for (n = 0; n < count; n++)
-		if (array[n])
-			free(array[n]);
+		free(array[n]);
 	array = NULL;
 }
 
@@ -728,7 +727,7 @@ static void smtk_parse_relations(MdbHandle *mdb, struct dive *dive, char *dive_i
 
 	/* Get the text associated with the relations */
 	for (d_runner = diverel_head; d_runner; d_runner = d_runner->next) {
-		if (! list[d_runner->idx - 1])
+		if (!list[d_runner->idx - 1])
 			continue;
 		if (tag)
 			taglist_add_tag(&dive->tag_list, list[d_runner->idx - 1]);
@@ -1040,7 +1039,7 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 
 		for (i = 0; i < tanks; i++) {
 			cylinder_t *tmptank = get_or_create_cylinder(smtkdive, i);
-			if (! tmptank)
+			if (!tmptank)
 				break;
 			if (tmptank->start.mbar == 0)
 				tmptank->start.mbar = lrint(strtod(col[(i * 2) + pstartcol]->bind_ptr, NULL) * 1000);
@@ -1050,7 +1049,7 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 			 * and collect the data registered  by the user in mdb
 			 */
 			if (tmptank->end.mbar == 0 && tmptank->start.mbar != 0)
-					tmptank->end.mbar = lrint(strtod(col[(i * 2) + 1 + pstartcol]->bind_ptr, NULL) * 1000 ? : 1000);
+				tmptank->end.mbar = lrint(strtod(col[(i * 2) + 1 + pstartcol]->bind_ptr, NULL) * 1000 ? : 1000);
 			if (tmptank->gasmix.o2.permille == 0)
 				tmptank->gasmix.o2.permille = lrint(strtod(col[i + o2fraccol]->bind_ptr, NULL) * 10);
 			if (smtk_version == 10213) {
