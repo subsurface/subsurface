@@ -74,7 +74,6 @@ public:
 	void importFiles(const QStringList importFiles);
 	void setToolButtonsEnabled(bool enabled);
 	void printPlan();
-	void checkSurvey();
 	void setApplicationState(ApplicationState state);
 	bool inPlanner();
 	NotificationWidget *getNotificationWidget();
@@ -127,7 +126,6 @@ slots:
 	/* other menu actions */
 	void on_actionAboutSubsurface_triggered();
 	void on_actionUserManual_triggered();
-	void on_actionUserSurvey_triggered();
 	void on_actionDivePlanner_triggered();
 	void on_actionReplanDive_triggered();
 	void on_action_Check_for_Updates_triggered();
@@ -217,7 +215,6 @@ private:
 	void setupForAddAndPlan(const char *model);
 	void configureToolbar();
 	void setupSocialNetworkMenu();
-	QDialog *survey;
 	QDialog *findMovedImagesDialog;
 	struct dive copyPasteDive;
 	struct dive_components what;

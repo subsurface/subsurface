@@ -44,10 +44,6 @@ TestCase {
 		PrefDisplay.lastDir = "myDir"
 		compare(PrefDisplay.lastDir, "myDir")
 
-		var x9 = PrefDisplay.UserSurvey
-		PrefDisplay.UserSurvey = "yes"
-		compare(PrefDisplay.UserSurvey, "yes")
-
 //TBD		var x10 = PrefDisplay.mainSplitter
 //TBD		PrefDisplay.mainSplitter =  ???
 //TBD		compare(PrefDisplay.mainSplitter, ???)
@@ -100,7 +96,6 @@ TestCase {
 			onShow_developerChanged: {spyCatcher.spy5 = true }
 			onThemeChanged: {spyCatcher.spy6 = true }
 			onLastDirChanged: {spyCatcher.spy8 = true }
-			onUserSurveyChanged: {spyCatcher.spy9 = true }
 			onMaximizedChanged: {spyCatcher.spy13 = true }
 			onLastStateChanged: {spyCatcher.spy16 = true }
 		}
@@ -114,7 +109,6 @@ TestCase {
 		PrefDisplay.theme = "qml"
 		// 7 has no signal
 		PrefDisplay.lastDir = "qml"
-		PrefDisplay.userSurvey = "qml"
 		// 10, 11, 12 have no signal
 		PrefDisplay.maximized = ! PrefDisplay.maximized
 		// 14,15 have no signal

@@ -103,7 +103,6 @@ struct preferences default_prefs = {
 	.extract_video_thumbnails_position = 20,		// The first fifth seems like a reasonable place
 };
 
-int run_survey;
 int ignore_bt;
 #ifdef SUBSURFACE_MOBILE_DESKTOP
 char *testqml = NULL;
@@ -184,7 +183,6 @@ static void print_help()
 	printf("\n --import logfile ...  Logs before this option is treated as base, everything after is imported");
 	printf("\n --verbose|-v          Verbose debug (repeat to increase verbosity)");
 	printf("\n --version             Prints current version");
-	printf("\n --survey              Offer to submit a user survey");
 	printf("\n --user=<test>         Choose configuration space for user <test>");
 #ifdef SUBSURFACE_MOBILE_DESKTOP
 	printf("\n --testqml=<dir>       Use QML files from <dir> instead of QML resources");
@@ -242,10 +240,6 @@ void parse_argument(const char *arg)
 			if (strcmp(arg, "--version") == 0) {
 				print_version();
 				exit(0);
-			}
-			if (strcmp(arg, "--survey") == 0) {
-				run_survey = true;
-				return;
 			}
 			if (strcmp(arg, "--allow_run_as_root") == 0) {
 				++force_root;

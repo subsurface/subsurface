@@ -76,11 +76,4 @@ private:
 	bool useSelectedDives;
 };
 
-class UserSurveyServices : public QDialog {
-	Q_OBJECT
-public:
-	QNetworkReply* sendSurvey(QString values);
-	explicit UserSurveyServices(QWidget *parent = 0, Qt::WindowFlags f = 0);
-};
-
 #endif // SUBSURFACEWEBSERVICES_H

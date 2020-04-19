@@ -121,7 +121,6 @@
     </property>
     <addaction name="actionAboutSubsurface"/>
     <addaction name="action_Check_for_Updates"/>
-    <addaction name="actionUserSurvey"/>
     <addaction name="actionUserManual"/>
    </widget>
    <widget class="QMenu" name="menuImport">
@@ -657,11 +656,6 @@
    </property>
    <property name="text">
     <string>Toggle tissue heat-map</string>
-   </property>
-  </action>
-  <action name="actionUserSurvey">
-   <property name="text">
-    <string>User &amp;survey</string>
    </property>
   </action>
   <action name="action_Undo">

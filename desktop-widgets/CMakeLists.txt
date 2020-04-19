@@ -43,7 +43,6 @@ set (SUBSURFACE_UI
 	tableview.ui
 	templateedit.ui
 	urldialog.ui
-	usersurvey.ui
 	webservices.ui
 	tab-widgets/maintab.ui
 	tab-widgets/TabDiveStatistics.ui
@@ -130,8 +129,6 @@ set(SUBSURFACE_INTERFACE
 	textedit.h
 	updatemanager.cpp
 	updatemanager.h
-	usersurvey.cpp
-	usersurvey.h
 )
 
 if(NOT NO_USERMANUAL)

@@ -188,11 +188,11 @@ other editors that implement this coding style, please add them here.
   translation into other languages.
   - like this
     ```
-	QString msgTitle = tr("Submit user survey.");
+	QString msgTitle = tr("Check for updates.");
     ```
   - rather than
     ```
-	QString msgTitle = "Submit user survey.";
+	QString msgTitle = "Check for updates.";
     ```
 
   This works by default in classes (indirectly) derived from QObject. Each

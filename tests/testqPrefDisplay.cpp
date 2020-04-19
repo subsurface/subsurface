@@ -49,7 +49,6 @@ void TestQPrefDisplay::test_set_struct()
 	display->set_theme("myTheme");
 	display->set_lastDir("test1");
 	display->set_tooltip_position(QPointF(512, 3));
-	display->set_userSurvey("my1");
 	display->set_mainSplitter("main1");
 	display->set_topSplitter("top1");
 	display->set_bottomSplitter("bottom1");
@@ -66,7 +65,6 @@ void TestQPrefDisplay::test_set_struct()
 	QCOMPARE(display->theme(), QString("myTheme"));
 	QCOMPARE(display->lastDir(), QString("test1"));
 	QCOMPARE(display->tooltip_position(), QPointF(512, 3));
-	QCOMPARE(display->userSurvey(), QString("my1"));
 	QCOMPARE(display->mainSplitter(), QByteArray("main1"));
 	QCOMPARE(display->topSplitter(), QByteArray("top1"));
 	QCOMPARE(display->bottomSplitter(), QByteArray("bottom1"));
@@ -90,7 +88,6 @@ void TestQPrefDisplay::test_set_load_struct()
 	display->set_theme("myTheme2");
 	display->set_lastDir("test2");
 	display->set_tooltip_position(QPointF(612, 3));
-	display->set_userSurvey("my2");
 	display->set_mainSplitter("main2");
 	display->set_topSplitter("top2");
 	display->set_bottomSplitter("bottom2");
@@ -117,7 +114,6 @@ void TestQPrefDisplay::test_set_load_struct()
 	QCOMPARE(display->theme(), QString("myTheme2"));
 	QCOMPARE(display->lastDir(), QString("test2"));
 	QCOMPARE(display->tooltip_position(), QPointF(612, 3));
-	QCOMPARE(display->userSurvey(), QString("my2"));
 	QCOMPARE(display->mainSplitter(), QByteArray("main2"));
 	QCOMPARE(display->topSplitter(), QByteArray("top2"));
 	QCOMPARE(display->bottomSplitter(), QByteArray("bottom2"));
@@ -180,7 +176,6 @@ void TestQPrefDisplay::test_signals()
 	QSignalSpy spy6(qPrefDisplay::instance(), &qPrefDisplay::themeChanged);
 	QSignalSpy spy7(qPrefDisplay::instance(), &qPrefDisplay::lastDirChanged);
 	QSignalSpy spy8(qPrefDisplay::instance(), &qPrefDisplay::tooltip_positionChanged);
-	QSignalSpy spy9(qPrefDisplay::instance(), &qPrefDisplay::userSurveyChanged);
 	QSignalSpy spy10(qPrefDisplay::instance(), &qPrefDisplay::mainSplitterChanged);
 	QSignalSpy spy11(qPrefDisplay::instance(), &qPrefDisplay::topSplitterChanged);
 	QSignalSpy spy12(qPrefDisplay::instance(), &qPrefDisplay::bottomSplitterChanged);
@@ -197,7 +192,6 @@ void TestQPrefDisplay::test_signals()
 	qPrefDisplay::set_theme("signal myTheme");
 	qPrefDisplay::set_lastDir("signal test1");
 	qPrefDisplay::set_tooltip_position(QPointF(12, 3));
-	qPrefDisplay::set_userSurvey("signal my1");
 	qPrefDisplay::set_mainSplitter("signal main1");
 	qPrefDisplay::set_topSplitter("signal top1");
 	qPrefDisplay::set_bottomSplitter("signal bottom1");
@@ -214,7 +208,6 @@ void TestQPrefDisplay::test_signals()
 	QCOMPARE(spy6.count(), 1);
 	QCOMPARE(spy7.count(), 1);
 	QCOMPARE(spy8.count(), 1);
-	QCOMPARE(spy9.count(), 1);
 	QCOMPARE(spy10.count(), 1);
 	QCOMPARE(spy11.count(), 1);
 	QCOMPARE(spy12.count(), 1);
@@ -230,7 +223,6 @@ void TestQPrefDisplay::test_signals()
 	QVERIFY(spy6.takeFirst().at(0).toString() == "signal myTheme");
 	QVERIFY(spy7.takeFirst().at(0).toString() == "signal test1");
 	QVERIFY(spy8.takeFirst().at(0).toPointF() == QPointF(12, 3));
-	QVERIFY(spy9.takeFirst().at(0).toString() == "signal my1");
 	QVERIFY(spy10.takeFirst().at(0).toByteArray() == QByteArray("signal main1"));
 	QVERIFY(spy11.takeFirst().at(0).toByteArray() == QByteArray("signal top1"));
 	QVERIFY(spy12.takeFirst().at(0).toByteArray() == QByteArray("signal bottom1"));
