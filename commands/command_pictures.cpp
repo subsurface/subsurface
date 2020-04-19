@@ -2,6 +2,7 @@
 
 #include "command_pictures.h"
 #include "core/subsurface-qt/divelistnotifier.h"
+#include "qt-models/divelocationmodel.h"
 
 namespace Command {
 
@@ -151,6 +152,89 @@ void RemovePictures::undo()
 void RemovePictures::redo()
 {
 	picturesToAdd = removePictures(picturesToRemove);
+}
+
+AddPictures::AddPictures(const std::vector<PictureListForAddition> &pictures) : picturesToAdd(pictures)
+{
+	// Sort the pictures according to the backend-rules. Moreover see if we have to set / create divesites.
+	size_t count = 0;
+	for (PictureListForAddition &p: picturesToAdd) {
+		count += p.pics.size();
+		std::sort(p.pics.begin(), p.pics.end());
+
+		// Find a picture with a location
+		auto it = std::find_if(p.pics.begin(), p.pics.end(), [](const PictureObj &p) { return has_location(&p.location); });
+		if (it != p.pics.end()) {
+			// There is a dive with a location, we might want to modify the dive accordingly.
+			struct dive_site *ds = p.d->dive_site;
+			if (!ds) {
+				// This dive doesn't yet have a dive site -> add a new dive site.
+				dive_site *ds = alloc_dive_site_with_gps("", &it->location);
+				sitesToAdd.emplace_back(ds);
+				sitesToSet.push_back({ p.d, ds });
+			} else if (!dive_site_has_gps_location(ds)) {
+				// This dive has a dive site, but without coordinates. Let's add them.
+				sitesToEdit.push_back({ ds, it->location });
+			}
+		}
+	}
+
+	if (count == 0) {
+		picturesToAdd.clear(); // This signals that nothing is to be done
+		return;
+	}
+	setText(Command::Base::tr("add %n pictures(s)", "", count));
+}
+
+bool AddPictures::workToBeDone()
+{
+	return !picturesToAdd.empty();
+}
+
+void AddPictures::swapDiveSites()
+{
+	for (DiveSiteEntry &entry: sitesToSet) {
+		dive_site *ds = entry.d->dive_site;
+		if (ds)
+			unregister_dive_from_dive_site(entry.d); // the dive-site pointer in the dive is now NULL
+		std::swap(ds, entry.ds);
+		if (ds)
+			add_dive_to_dive_site(entry.d, ds);
+		emit diveListNotifier.divesChanged(QVector<dive *>{ entry.d }, DiveField::DIVESITE);
+	}
+
+	for (DiveSiteEditEntry &entry: sitesToEdit) {
+		std::swap(entry.ds->location, entry.location);
+		emit diveListNotifier.diveSiteChanged(entry.ds, LocationInformationModel::LOCATION); // Inform frontend of changed dive site.
+	}
+}
+
+void AddPictures::undo()
+{
+	swapDiveSites();
+	picturesToAdd = removePictures(picturesToRemove);
+
+	// Remove dive sites
+	for (dive_site *siteToRemove: sitesToRemove) {
+		int idx = unregister_dive_site(siteToRemove);
+		sitesToAdd.emplace_back(siteToRemove);
+		emit diveListNotifier.diveSiteDeleted(siteToRemove, idx); // Inform frontend of removed dive site.
+	}
+	sitesToRemove.clear();
+}
+
+void AddPictures::redo()
+{
+	// Add dive sites
+	for (OwningDiveSitePtr &siteToAdd: sitesToAdd) {
+		sitesToRemove.push_back(siteToAdd.get());
+		int idx = register_dive_site(siteToAdd.release()); // Return ownership to backend.
+		emit diveListNotifier.diveSiteAdded(sitesToRemove.back(), idx); // Inform frontend of new dive site.
+	}
+	sitesToAdd.clear();
+
+	swapDiveSites();
+	picturesToRemove = addPictures(picturesToAdd);
 }
 
 } // namespace Command

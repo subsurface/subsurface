@@ -372,4 +372,9 @@ void removePictures(const std::vector<PictureListForDeletion> &pictures)
 	execute(new RemovePictures(pictures));
 }
 
+void addPictures(const std::vector<PictureListForAddition> &pictures)
+{
+	execute(new AddPictures(pictures));
+}
+
 } // namespace Command

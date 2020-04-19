@@ -891,20 +891,27 @@ void DiveListView::matchImagesToDives(QStringList fileNames)
 		return;
 	updateLastImageTimeOffset(shiftDialog.amount());
 
+	// Create the data structure of pictures to be added: a list of pictures per dive.
+	std::vector<Command::PictureListForAddition> pics;
 	for (const QString &fileName: fileNames) {
 		struct dive *d;
 		picture *pic = create_picture(qPrintable(fileName), shiftDialog.amount(), shiftDialog.matchAll(), &d);
 		if (!pic)
 			continue;
-		add_picture(&d->pictures, *pic);
-		dive_set_geodata_from_picture(d, pic, &dive_site_table);
-		invalidate_dive_cache(d);
+		PictureObj pObj(*pic);
 		free(pic);
+
+		auto it = std::find_if(pics.begin(), pics.end(), [d](const Command::PictureListForAddition &l) { return l.d == d; });
+		if (it == pics.end())
+			pics.push_back(Command::PictureListForAddition { d, { pObj } });
+		else
+			it->pics.push_back(pObj);
 	}
 
-	mark_divelist_changed(true);
-	copy_dive(current_dive, &displayed_dive);
-	DivePictureModel::instance()->updateDivePictures();
+	if (pics.empty())
+		return;
+
+	Command::addPictures(pics);
 }
 
 void DiveListView::loadWebImages()
