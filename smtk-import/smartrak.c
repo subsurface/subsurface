@@ -44,7 +44,8 @@ static void smtk_free(char **array, int count)
 {
 	int n;
 	for (n = 0; n < count; n++)
-		free(array[n]);
+		if (array[n])
+			free(array[n]);
 	array = NULL;
 }
 
@@ -727,6 +728,8 @@ static void smtk_parse_relations(MdbHandle *mdb, struct dive *dive, char *dive_i
 
 	/* Get the text associated with the relations */
 	for (d_runner = diverel_head; d_runner; d_runner = d_runner->next) {
+		if (! list[d_runner->idx - 1])
+			continue;
 		if (tag)
 			taglist_add_tag(&dive->tag_list, list[d_runner->idx - 1]);
 		else
