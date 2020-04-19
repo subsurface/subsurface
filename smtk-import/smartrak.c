@@ -976,8 +976,6 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		dc_family_t dc_fam = DC_FAMILY_NULL;
 		unsigned char *prf_buffer, *hdr_buffer, *compl_buffer;
 		struct dive *smtkdive = alloc_dive();
-		for (i = 0; i < tanks; ++i)
-			add_empty_cylinder(&smtkdive->cylinders);
 		struct tm *tm_date = malloc(sizeof(struct tm));
 		size_t hdr_length, prf_length;
 		dc_status_t rc = 0;
@@ -1038,24 +1036,27 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		int tankidxcol = coln(TANKIDX);
 
 		for (i = 0; i < tanks; i++) {
-			if (get_cylinder(smtkdive, i)->start.mbar == 0)
-				get_cylinder(smtkdive, i)->start.mbar = lrint(strtod(col[(i * 2) + pstartcol]->bind_ptr, NULL) * 1000);
+			cylinder_t *tmptank = get_or_create_cylinder(smtkdive, i);
+			if (! tmptank)
+				break;
+			if (tmptank->start.mbar == 0)
+				tmptank->start.mbar = lrint(strtod(col[(i * 2) + pstartcol]->bind_ptr, NULL) * 1000);
 			/*
 			 * If there is a start pressure ensure that end pressure is not zero as
 			 * will be registered in DCs which only keep track of differential pressures,
 			 * and collect the data registered  by the user in mdb
 			 */
-			if (get_cylinder(smtkdive, i)->end.mbar == 0 && get_cylinder(smtkdive, i)->start.mbar != 0)
-					get_cylinder(smtkdive, i)->end.mbar = lrint(strtod(col[(i * 2) + 1 + pstartcol]->bind_ptr, NULL) * 1000 ? : 1000);
-			if (get_cylinder(smtkdive, i)->gasmix.o2.permille == 0)
-				get_cylinder(smtkdive, i)->gasmix.o2.permille = lrint(strtod(col[i + o2fraccol]->bind_ptr, NULL) * 10);
+			if (tmptank->end.mbar == 0 && tmptank->start.mbar != 0)
+					tmptank->end.mbar = lrint(strtod(col[(i * 2) + 1 + pstartcol]->bind_ptr, NULL) * 1000 ? : 1000);
+			if (tmptank->gasmix.o2.permille == 0)
+				tmptank->gasmix.o2.permille = lrint(strtod(col[i + o2fraccol]->bind_ptr, NULL) * 10);
 			if (smtk_version == 10213) {
-				if (get_cylinder(smtkdive, i)->gasmix.he.permille == 0)
-					get_cylinder(smtkdive, i)->gasmix.he.permille = lrint(strtod(col[i + hefraccol]->bind_ptr, NULL) * 10);
+				if (tmptank->gasmix.he.permille == 0)
+					tmptank->gasmix.he.permille = lrint(strtod(col[i + hefraccol]->bind_ptr, NULL) * 10);
 			} else {
-				get_cylinder(smtkdive, i)->gasmix.he.permille = 0;
+				tmptank->gasmix.he.permille = 0;
 			}
-			smtk_build_tank_info(mdb_clon, get_cylinder(smtkdive, i), col[i + tankidxcol]->bind_ptr);
+			smtk_build_tank_info(mdb_clon, tmptank, col[i + tankidxcol]->bind_ptr);
 		}
 		/* Check for duplicated cylinders and clean them */
 		smtk_clean_cylinders(smtkdive);
