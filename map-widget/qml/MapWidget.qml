@@ -344,11 +344,12 @@ Item {
 	 */
 	function openLocationInGoogleMaps(latitude, longitude) {
 		var loc = latitude + "," + longitude
+		var poi = latitude + "+" + longitude
 		var x = map.zoomLevel
 		var a = 53864950.831693
 		var b = -0.60455861606547030630
 		var zoom = Math.floor(a * Math.exp(b * x))
-		var url = "https://www.google.com/maps/place/@" + loc + "," + zoom + "m/data=!3m1!1e3!4m2!3m1!1s0x0:0x0"
+		var url = "https://www.google.com/maps/place/" + poi + "/@" + loc + "," + zoom + "m/data=!3m1!1e3!4m2!3m1!1s0x0:0x0"
 		Qt.openUrlExternally(url)
 		console.log("openLocationInGoogleMaps() map.zoomLevel: " + x + ", url: " + url)
 	}
