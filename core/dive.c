@@ -961,10 +961,13 @@ static int same_rounded_pressure(pressure_t a, pressure_t b)
  * tell us what the first gas is with a gas change event in the first sample.
  * Sneakily we'll use a return value of 0 (or FALSE) when there is no explicit
  * first cylinder - in which case cylinder 0 is indeed the first cylinder.
- * We likewise return 0 if the event concerns a cylinder that doesn't exist. */
+ * We likewise return 0 if the event concerns a cylinder that doesn't exist.
+ * If the dive has no cylinders, -1 is returned. */
 int explicit_first_cylinder(const struct dive *dive, const struct divecomputer *dc)
 {
 	int res = 0;
+	if (!dive->cylinders.nr)
+		return -1;
 	if (dc) {
 		const struct event *ev = get_next_event(dc->events, "gaschange");
 		if (ev && ((dc->sample && ev->time.seconds == dc->sample[0].time.seconds) || ev->time.seconds <= 1))
