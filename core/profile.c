@@ -844,6 +844,10 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 {
 	int prev, i;
 	const struct event *ev;
+
+	if (pi->nr_cylinders == 0)
+		return;
+
 	int *seen = malloc(pi->nr_cylinders * sizeof(*seen));
 	int *first = malloc(pi->nr_cylinders * sizeof(*first));
 	int *last = malloc(pi->nr_cylinders * sizeof(*last));
