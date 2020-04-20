@@ -6,16 +6,16 @@ Item {
 	signal actionSelected(int action)
 
 	readonly property var actions: {
-		"OPEN_LOCATION_IN_GOOGLE_MAPS": 0,
-		"COPY_LOCATION_DECIMAL":        1,
-		"COPY_LOCATION_SEXAGESIMAL":    2,
-		"SELECT_VISIBLE_LOCATIONS":     3
+		"COPY_LOCATION_DECIMAL":        0,
+		"COPY_LOCATION_SEXAGESIMAL":    1,
+		"SELECT_VISIBLE_LOCATIONS":     2,
+		"OPEN_LOCATION_IN_GOOGLE_MAPS": 3
 	}
 	readonly property var menuItemData: [
-		{ idx: actions.OPEN_LOCATION_IN_GOOGLE_MAPS, itemText: qsTr("Open in Google Maps") },
 		{ idx: actions.COPY_LOCATION_DECIMAL,        itemText: qsTr("Copy coordinates to clipboard (decimal)") },
 		{ idx: actions.COPY_LOCATION_SEXAGESIMAL,    itemText: qsTr("Copy coordinates to clipboard (sexagesimal)") },
-		{ idx: actions.SELECT_VISIBLE_LOCATIONS,     itemText: qsTr("Select visible dive locations") }
+		{ idx: actions.SELECT_VISIBLE_LOCATIONS,     itemText: qsTr("Select visible dive locations") },
+		{ idx: actions.OPEN_LOCATION_IN_GOOGLE_MAPS, itemText: qsTr("Open in Google Maps") }
 	]
 	readonly property real itemTextPadding: 10.0
 	readonly property real itemHeight: 34.0
@@ -52,7 +52,12 @@ Item {
 		id: listModel
 		property int selectedIdx: -1
 		Component.onCompleted: {
-			for (var i = 0; i < menuItemData.length; i++)
+			var l = menuItemData.length
+			// don't offer Google map on iOS or Android (as the link doesn't
+			// work on those platforms without a paid API key)
+			if (Qt.platform.os === "android" || Qt.platform.os === "ios")
+				l--
+			for (var i = 0; i < l; i++)
 				append(menuItemData[i]);
 		}
 	}
