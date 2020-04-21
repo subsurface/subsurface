@@ -128,7 +128,8 @@ void TabDiveInformation::updateProfile()
 	volume_t *gases = get_gas_used(current_dive);
 	QString volumes;
 	std::vector<int> mean(current_dive->cylinders.nr), duration(current_dive->cylinders.nr);
-	per_cylinder_mean_depth(current_dive, select_dc(current_dive), &mean[0], &duration[0]);
+	if (current_dive->cylinders.nr >= 0)
+		per_cylinder_mean_depth(current_dive, select_dc(current_dive), mean.data(), duration.data());
 	volume_t sac;
 	QString gaslist, SACs, separator;
 
