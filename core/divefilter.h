@@ -77,7 +77,7 @@ struct FilterData {
 	double maxAirTemp = 200;
 	QDateTime fromDate = QDateTime(QDate(1980,1,1));
 	QTime fromTime = QTime(0,0);
-	QDateTime toDate = QDateTime::currentDateTime();
+	QDateTime toDate = QDateTime::currentDateTime().addDays(7);
 	QTime toTime = QTime::currentTime();
 	QStringList tags;
 	QStringList people;
