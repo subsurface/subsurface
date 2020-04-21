@@ -548,8 +548,8 @@ void CylindersModel::remove(QModelIndex index)
 	endRemoveRows();
 
 	std::vector<int> mapping = get_cylinder_map_for_remove(d->cylinders.nr + 1, index.row());
-	cylinder_renumber(d, &mapping[0]);
-	DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
+	cylinder_renumber(d, mapping.data());
+	DivePlannerPointsModel::instance()->cylinderRenumber(mapping.data());
 }
 
 void CylindersModel::cylinderAdded(struct dive *changed, int pos)
@@ -601,9 +601,9 @@ void CylindersModel::moveAtFirst(int cylid)
 	std::iota(mapping.begin(), mapping.begin() + cylid, 1);
 	mapping[cylid] = 0;
 	std::iota(mapping.begin() + (cylid + 1), mapping.end(), cylid);
-	cylinder_renumber(d, &mapping[0]);
+	cylinder_renumber(d, mapping.data());
 	if (inPlanner)
-		DivePlannerPointsModel::instance()->cylinderRenumber(&mapping[0]);
+		DivePlannerPointsModel::instance()->cylinderRenumber(mapping.data());
 	endMoveRows();
 }
 

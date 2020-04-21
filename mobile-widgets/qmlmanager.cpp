@@ -2120,7 +2120,7 @@ void QMLManager::exportToFile(export_types type, QString dir, bool anonymize)
 		case EX_DIVE_SITES_XML:
 			{
 				std::vector<const dive_site *> sites = getDiveSitesToExport(false);
-				save_dive_sites_logic(qPrintable(fileName + ".xml"), &sites[0], (int)sites.size(), anonymize);
+				save_dive_sites_logic(qPrintable(fileName + ".xml"), sites.data(), (int)sites.size(), anonymize);
 				break;
 			}
 		case EX_UDDF:
