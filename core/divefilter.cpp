@@ -349,6 +349,10 @@ bool DiveFilter::showDive(const struct dive *d) const
 	if (!filterData.planned && !has_planned(d, false))
 		return false;
 
+	// Dive mode
+	if (filterData.diveMode >= 0 && d->dc.divemode != (divemode_t)filterData.diveMode)
+		return false;
+
 	return true;
 }
 

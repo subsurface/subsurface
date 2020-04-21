@@ -21,6 +21,13 @@ FilterWidget2::FilterWidget2(QWidget* parent) :
 	ui.minWaterTemp->setRange(data.minWaterTemp, data.maxWaterTemp);
 	ui.maxWaterTemp->setRange(data.minWaterTemp, data.maxWaterTemp);
 
+	// This needs to be the same order as enum dive_comp_type in dive.h!
+	QStringList types;
+	types.append(""); // Empty means don't filter on dive mode
+	for (int i = 0; i < NUM_DIVEMODE; i++)
+		types.append(gettextFromC::tr(divemode_text_ui[i]));
+	ui.diveMode->insertItems(0, types);
+
 	// TODO: unhide this when we discover how to search for equipment.
 	ui.equipment->hide();
 	ui.equipmentMode->hide();
@@ -135,6 +142,9 @@ FilterWidget2::FilterWidget2(QWidget* parent) :
 	connect(ui.planned, &QCheckBox::stateChanged,
 		this, &FilterWidget2::updatePlanned);
 
+	connect(ui.diveMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
+		this, &FilterWidget2::updateFilter);
+
 	// Update temperature fields if user changes temperature-units in preferences.
 	connect(qPrefUnits::instance(), &qPrefUnits::temperatureChanged,
 		this, &FilterWidget2::temperatureChanged);
@@ -183,6 +193,7 @@ void FilterWidget2::clearFilter()
 	ui.suitStringMode->setCurrentIndex((int)filterData.suitStringMode);
 	ui.dnotesStringMode->setCurrentIndex((int)filterData.dnotesStringMode);
 	ui.equipmentStringMode->setCurrentIndex((int)filterData.equipmentStringMode);
+	ui.diveMode->setCurrentIndex(filterData.diveMode + 1); // -1 means don't filter, transform that into index 0
 
 	ignoreSignal = false;
 
@@ -243,6 +254,7 @@ void FilterWidget2::updateFilter()
 	filterData.equipmentStringMode = (StringFilterMode)ui.equipmentStringMode->currentIndex();
 	filterData.logged = ui.logged->isChecked();
 	filterData.planned = ui.planned->isChecked();
+	filterData.diveMode = ui.diveMode->currentIndex() - 1; // The first entry means don't filter, transform that to -1.
 
 	filterDataChanged(filterData);
 }

@@ -101,6 +101,7 @@ struct FilterData {
 	StringFilterMode equipmentStringMode = StringFilterMode::SUBSTRING;
 	bool logged = true;
 	bool planned = true;
+	int diveMode = -1; // -1: don't filter, >= 0: corresponds to divemode_t
 };
 
 class DiveFilter {
