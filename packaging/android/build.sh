@@ -93,16 +93,8 @@ if [ -n "${QT5_ANDROID+X}" ] ; then
 	echo "Using Qt5 in $QT5_ANDROID"
 elif [ -d "$SUBSURFACE_SOURCE/../Qt/${LATEST_QT}" ] ; then
 	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/${LATEST_QT}
-elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.9.3" ] ; then
-	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.9.3
-elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.9.1" ] ; then
-	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.9.1
-elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.9" ] ; then
-	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.9
-elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.8" ] ; then
-	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.8
 else
-	echo "Cannot find Qt 5.8 or newer under $SUBSURFACE_SOURCE/../Qt"
+	echo "Cannot find Qt 5.12 or newer under $SUBSURFACE_SOURCE/../Qt"
 	exit 1
 fi
 
