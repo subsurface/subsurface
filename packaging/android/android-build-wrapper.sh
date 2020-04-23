@@ -53,7 +53,6 @@ PLATFORM=$(uname)
 export SUBSURFACE_SOURCE="$SCRIPTDIR"/../..
 
 if [ "$PLATFORM" = Linux ] ; then
-	QT_BINARIES=qt-opensource-linux-x64-${LATEST_QT}.run
 	NDK_BINARIES=${ANDROID_NDK}-linux-x86_64.zip
 	SDK_TOOLS=sdk-tools-linux-${SDK_VERSION}.zip
 else
@@ -117,24 +116,21 @@ fi
 # due to https://bugreports.qt.io/browse/QTBUG-69494
 cp "$ANDROID_SDK"/platforms/"${ANDROID_PLATFORM}"/data/fonts/Roboto-Regular.ttf "$SUBSURFACE_SOURCE"/android-mobile || exit 1
 
-# download the Qt installer including Android bits and unpack / install
-QT_DOWNLOAD_URL=https://download.qt.io/archive/qt/${QT_VERSION}/${LATEST_QT}/${QT_BINARIES}
 if [ ! -d Qt/"${LATEST_QT}"/android_armv7 ] ; then
-	if [ -d Qt ] ; then
-		# Over writing an exsisting installation stalls the installation script,
-		# rename the exsisting Qt folder and notify then user.
-		mv Qt Qt_OLD
-		echo "Qt installation found, backing it up to Qt_OLD."
-	fi
-	if [ ! -f "${QT_BINARIES}" ] ; then
-		wget -q "${QT_DOWNLOAD_URL}"
-	fi
-	chmod +x ./"${QT_BINARIES}"
-	./"${QT_BINARIES}" --platform minimal --script "$SCRIPTDIR"/qt-installer-noninteractive.qs --no-force-installations
+	# download the Qt installer including Android bits and unpack / install
+	bash "$SCRIPTDIR"/install-qt.sh --version ${LATEST_QT} --target android --toolchain android_armv7 \
+		qtbase qtdeclarative qttranslations qttools qtsvg \
+		qtquickcontrols qtquickcontrols2 qtlocation qtimageformats \
+		qtgraphicaleffects qtconnectivity qtandroidextras \
+		--directory Qt
 fi
-
-# patch the cmake / Qt5.7.1 incompatibility mentioned above
-sed -i 's/set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/# &/' Qt/"${LATEST_QT}"/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
+if [ ! -d Qt/"${LATEST_QT}"/android_arm64_v8a ] ; then
+	bash "$SCRIPTDIR"/install-qt.sh --version ${LATEST_QT} --target android --toolchain android_arm64_v8a \
+		qtbase qtdeclarative qttranslations qttools qtsvg \
+		qtquickcontrols qtquickcontrols2 qtlocation qtimageformats \
+		qtgraphicaleffects qtconnectivity qtandroidextras \
+		--directory Qt
+fi
 
 if [ ! -z ${PREP_ONLY+x} ] ; then
 	exit 0
