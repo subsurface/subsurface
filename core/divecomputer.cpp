@@ -117,8 +117,8 @@ extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *
 			found = true;
 		}
 		if (found)
-	callback(f, qPrintable(node.model), node.deviceId, qPrintable(node.nickName),
-				 qPrintable(node.serialNumber), qPrintable(node.firmware));
+			callback(f, qPrintable(node.model), node.deviceId, qPrintable(node.nickName),
+						 qPrintable(node.serialNumber), qPrintable(node.firmware));
 	}
 }
 
