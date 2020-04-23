@@ -660,8 +660,6 @@ void MainWindow::closeCurrentFile()
 		setTitle();
 	disableShortcuts();
 	setFileClean();
-
-	clear_events();
 }
 
 void MainWindow::updateCloudOnlineStatus()
