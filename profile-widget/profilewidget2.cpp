@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/profilewidget2.h"
 #include "qt-models/diveplotdatamodel.h"
+#include "core/divecomputer.h"
 #include "core/subsurface-string.h"
 #include "core/qthelper.h"
 #include "core/picture.h"
@@ -806,7 +807,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 	Q_FOREACH (DiveEventItem *event, eventItems) {
 		event->setVisible(!event->shouldBeHidden());
 	}
-	QString dcText = get_dc_nickname(currentdc->model, currentdc->deviceid);
+	QString dcText = get_dc_nickname(currentdc);
 	if (dcText == "planned dive")
 		dcText = tr("Planned dive");
 	else if (dcText == "manually added dive")

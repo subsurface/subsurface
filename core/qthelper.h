@@ -2,7 +2,6 @@
 #ifndef QTHELPER_H
 #define QTHELPER_H
 
-#include <stdint.h>
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
 #include "core/pref.h"
@@ -60,7 +59,6 @@ QString get_pressure_unit();
 QString getSubsurfaceDataPath(QString folderToFind);
 QString getPrintingTemplatePathUser();
 QString getPrintingTemplatePathBundle();
-QString get_dc_nickname(const char *model, uint32_t deviceid);
 int gettimezoneoffset(timestamp_t when = 0);
 int parseDurationToSeconds(const QString &text);
 int parseLengthToMm(const QString &text);

@@ -158,3 +158,13 @@ extern "C" void set_dc_nickname(struct dive *dive)
 		}
 	}
 }
+
+QString get_dc_nickname(const struct divecomputer *dc)
+{
+	const DiveComputerNode *existNode = dcList.getExact(dc->model, dc->deviceid);
+
+	if (existNode && !existNode->nickName.isEmpty())
+		return existNode->nickName;
+	else
+		return dc->model;
+}
