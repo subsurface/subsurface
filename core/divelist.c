@@ -3,6 +3,7 @@
 
 #include "subsurface-string.h"
 #include "deco.h"
+#include "device.h"
 #include "divesite.h"
 #include "divelist.h"
 #include "fulltext.h"
@@ -1367,6 +1368,7 @@ void clear_dive_file_data()
 	}
 
 	clear_dive(&displayed_dive);
+	clear_device_nodes();
 
 	reset_min_datafile_version();
 	clear_git_id();

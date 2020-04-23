@@ -18,7 +18,6 @@
 
 #include "core/color.h"
 #include "core/device.h"
-#include "core/divecomputer.h"
 #include "core/divesitehelpers.h"
 #include "core/errorhelper.h"
 #include "core/file.h"
@@ -653,7 +652,7 @@ void MainWindow::closeCurrentFile()
 {
 	/* free the dives and trips */
 	clear_git_id();
-	MultiFilterSortModel::instance()->clear();
+	MultiFilterSortModel::instance()->clear(); // this clears all the core data structures
 	setCurrentFile(nullptr);
 	diveList->setSortOrder(DiveTripModelBase::NR, Qt::DescendingOrder);
 	MapWidget::instance()->reload();
@@ -663,8 +662,6 @@ void MainWindow::closeCurrentFile()
 	setFileClean();
 
 	clear_events();
-
-	dcList.dcs.clear();
 }
 
 void MainWindow::updateCloudOnlineStatus()
