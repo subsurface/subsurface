@@ -17,7 +17,7 @@ CURRENT_KIRIGAMI="v5.62.0"
 CURRENT_BREEZE_ICONS="4daac191fb33c8c03bba8356db9767816cb8ee02"
 CURRENT_GRANTLEE="v5.1.0"
 CURRENT_MDBTOOLS="master"
-CURRENT_QT_ANDROID_CMAKE="e3bd0c4930dfa154cacb71d8960474ec00ceca4f"
+CURRENT_QT_ANDROID_CMAKE="master"
 
 # Checkout library from git
 # Ensure specified version is checked out,
