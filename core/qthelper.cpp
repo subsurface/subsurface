@@ -9,7 +9,6 @@
 #include "membuffer.h"
 #include "subsurfacesysinfo.h"
 #include "version.h"
-#include "divecomputer.h"
 #include "errorhelper.h"
 #include "planner.h"
 #include "time.h"
@@ -525,16 +524,6 @@ void set_filename(const char *filename)
 {
 	free((void *)existing_filename);
 	existing_filename = copy_string(filename);
-}
-
-QString get_dc_nickname(const char *model, uint32_t deviceid)
-{
-	const DiveComputerNode *existNode = dcList.getExact(model, deviceid);
-
-	if (existNode && !existNode->nickName.isEmpty())
-		return existNode->nickName;
-	else
-		return model;
 }
 
 QString get_depth_string(int mm, bool showunit, bool showdecimal)

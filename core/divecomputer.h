@@ -32,6 +32,7 @@ public:
 	QVector<DiveComputerNode> dcs;
 };
 
+QString get_dc_nickname(const struct divecomputer *dc);
 extern DiveComputerList dcList;
 
 #endif
