@@ -85,6 +85,11 @@ extern "C" void create_device_node(const char *model, uint32_t deviceid, const c
 	dcList.addDC(model, deviceid, nickname, serial, firmware);
 }
 
+extern "C" void clear_device_nodes()
+{
+	dcList.dcs.clear();
+}
+
 static bool compareDCById(const DiveComputerNode &a, const DiveComputerNode &b)
 {
 	return a.deviceId < b.deviceId;
