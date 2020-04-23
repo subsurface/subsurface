@@ -1369,6 +1369,7 @@ void clear_dive_file_data()
 
 	clear_dive(&displayed_dive);
 	clear_device_nodes();
+	clear_events();
 
 	reset_min_datafile_version();
 	clear_git_id();
