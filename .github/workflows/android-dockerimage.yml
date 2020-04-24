@@ -1,10 +1,12 @@
 name: Android Docker Image CI
 
-on:
-  push:
-    paths:
-    - scripts/docker/android-build-container/Dockerfile
-    - .github/workflows/android-docker*
+# -- disabled for now, as the resulting image is HUGE and causes our
+#    Android builds to fail
+#on:
+#  push:
+#    paths:
+#    - scripts/docker/android-build-container/Dockerfile
+#    - .github/workflows/android-docker*
 
 jobs:
   android-build-container:
