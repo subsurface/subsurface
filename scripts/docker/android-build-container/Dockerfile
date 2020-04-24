@@ -37,10 +37,6 @@ RUN cd /android/cmake-3.13.2 && \
 # run the build wrapper in prep mode
 RUN cd /android && bash -x /android/android-build-wrapper.sh -prep-only
 
-# uggly hack to work around some breakage in the NDK which makes our
-# compiles fail
-#RUN sed -i '313,+13s/^using/\/\/using/' /android/android-ndk-r21/sources/cxx-stl/llvm-libc++/include/cmath
-
 # clean up the files that we don't need to keep the container smaller
 RUN cd /android && \
     apt-get remove -y gcc g++-7 libstdc++-7-dev && \
