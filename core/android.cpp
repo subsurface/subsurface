@@ -8,7 +8,6 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <fcntl.h>
-#include <libusb.h>
 #include <errno.h>
 #include <unistd.h>
 #include <zip.h>
@@ -38,13 +37,6 @@ double system_divelist_default_font_size = -1;
 int get_usb_fd(uint16_t idVendor, uint16_t idProduct);
 void subsurface_OS_pref_setup(void)
 {
-	// Abusing this function to get a decent place where we can wire in
-	// our open callback into libusb
-#ifdef libusb_android_open_callback_func
-	libusb_set_android_open_callback(get_usb_fd);
-#elif __ANDROID__
-#error we need libusb_android_open_callback
-#endif
 }
 
 bool subsurface_ignore_font(const char *font)
