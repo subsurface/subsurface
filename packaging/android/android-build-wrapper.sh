@@ -87,6 +87,11 @@ if [ ! -d "$ANDROID_NDK" ] ; then
 	unzip -q "$NDK_BINARIES"
 fi
 
+if [ ! -e ndk-"$ARCH" ] ; then
+	"$ANDROID_NDK/build/tools/make_standalone_toolchain.py" --arch=arm --install-dir=ndk-arm --api=$ANDROID_PLATFORM_LEVEL
+	"$ANDROID_NDK/build/tools/make_standalone_toolchain.py" --arch=arm64 --install-dir=ndk-arm64 --api=$ANDROID_PLATFORM_LEVEL
+fi
+
 if [ ! -d "$ANDROID_SDK"/build-tools/"${ANDROID_BUILDTOOLS_REVISION}" ] ||
    [ ! -d "$ANDROID_SDK"/platforms/"${ANDROID_PLATFORMS}" ] ||
    [ ! -d "$ANDROID_SDK"/platforms/"${ANDROID_PLATFORM}" ] ; then
