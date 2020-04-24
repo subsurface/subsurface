@@ -315,29 +315,6 @@ if [ "$QUICK" = "" ] ; then
 		popd
 	fi
 
-	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libusb
-	if ! grep -q libusb_set_android_open_callback libusb/libusb/libusb.h ; then
-		# Patch in our libusb callback
-		pushd libusb
-		patch -p1 < "$SUBSURFACE_SOURCE"/packaging/android/patches/libusb-android.patch
-		popd
-	fi
-	if [ ! -e libusb/configure ] ; then
-		pushd libusb
-		mkdir m4
-		autoreconf -i
-		popd
-	fi
-	if [ ! -e "$PKG_CONFIG_LIBDIR/libusb-1.0.pc" ] ; then
-		mkdir -p libusb-build-"$ARCH"
-		pushd libusb-build-"$ARCH"
-		../libusb/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared --disable-udev --enable-system-log
-		# --enable-debug-log
-		make
-		make install
-		popd
-	fi
-
 fi # QUICK
 
 pushd "$SUBSURFACE_SOURCE"
