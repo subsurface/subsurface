@@ -178,5 +178,4 @@ else
 	bash "$SUBSURFACE_SOURCE"/packaging/android/build.sh -buildnr "$BUILDNR" arm64 $QUICK $RELEASE
 fi
 
-ls -l ./subsurface-mobile-build-arm/build/outputs/apk/debug/*.apk
-
+ls -l subsurface-mobile-build-arm*/*mobile*/build/outputs/apk/*/*.apk
