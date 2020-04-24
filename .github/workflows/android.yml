@@ -11,7 +11,7 @@ jobs:
   buildInContainer:
     runs-on: ubuntu-latest
     container:
-      image: docker://subsurface/android-build-container:5.13.10
+      image: docker://subsurface/android-build-container:5.13.12
 
     steps:
     - name: checkout sources
@@ -25,8 +25,8 @@ jobs:
         ln -s /android/android-sdk-linux .
         ls -l
         bash -x subsurface/packaging/android/android-build-wrapper.sh
-        cp /__w/subsurface/subsurface-mobile-build-arm64//build/outputs/apk/debug/subsurface-mobile-build-arm64-debug.apk ${GITHUB_WORKSPACE}/Subsurface-mobile.arm64.apk
-        cp /__w/subsurface/subsurface-mobile-build-arm//build/outputs/apk/debug/subsurface-mobile-build-arm-debug.apk ${GITHUB_WORKSPACE}/Subsurface-mobile.apk
+        cp /__w/subsurface/subsurface-mobile-build-arm64/*mobile*/build/outputs/apk/debug/subsurface-mobile-arm64-v8a-debug.apk ${GITHUB_WORKSPACE}/Subsurface-mobile.arm64.apk
+        cp /__w/subsurface/subsurface-mobile-build-arm/*mobile*/build/outputs/apk/debug/subsurface-mobile-armeabi-v7a-debug.apk ${GITHUB_WORKSPACE}/Subsurface-mobile.apk
 
     - name: create CI release
       if: github.event_name == 'push'
