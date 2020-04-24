@@ -143,9 +143,11 @@ fi
 if [ ! -e ndk-"$ARCH" ] ; then
 	"$ANDROID_NDK_ROOT/build/tools/make_standalone_toolchain.py" --arch="$ARCH" --install-dir=ndk-"$ARCH" --api=$ANDROID_PLATFORM_LEVEL
 fi
+
 export BUILDROOT=$PWD
+mkdir -p "${BUILDROOT}"/install-root-"${ARCH}"
+export PREFIX="${BUILDROOT}"/install-root-"${ARCH}"
 export PATH=${BUILDROOT}/ndk-$ARCH/bin:$PATH
-export PREFIX=${BUILDROOT}/ndk-$ARCH/sysroot/usr
 export PKG_CONFIG_LIBDIR=$PREFIX/lib/pkgconfig
 export CC=${BUILDROOT}/ndk-$ARCH/bin/clang
 export CXX=${BUILDROOT}/ndk-$ARCH/bin/clang++
@@ -261,7 +263,7 @@ if [ "$QUICK" = "" ] ; then
 		popd
 	fi
 
-"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libzip
+	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libzip
 	if [ ! -e "$PKG_CONFIG_LIBDIR/libzip.pc" ] ; then
 		# libzip expects a predefined macro that isn't there for our compiler
 		pushd libzip
@@ -302,7 +304,7 @@ if [ "$QUICK" = "" ] ; then
 			-DUSE_SSH=OFF \
 			-DOPENSSL_SSL_LIBRARY="$PREFIX"/lib/libssl_1_1.so \
 			-DOPENSSL_CRYPTO_LIBRARY="$PREFIX"/lib/libcrypto_1_1.so \
-			-DOPENSSL_INCLUDE_DIR="$PREFIX"/include/openssl \
+			-DOPENSSL_INCLUDE_DIR="$PREFIX"/include \
 			-D_OPENSSL_VERSION="${OPENSSL_VERSION}" \
 			-DCMAKE_DISABLE_FIND_PACKAGE_HTTP_Parser=TRUE \
 			../libgit2/
@@ -407,8 +409,8 @@ cmake $MOBILE_CMAKE \
 	-DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
 	-DMAKE_TESTS=OFF \
 	-DFTDISUPPORT=OFF \
-	-DANDROID_NATIVE_LIBSSL="$BUILDROOT/ndk-$ARCH/sysroot/usr/lib/libssl_1_1.so" \
-	-DANDROID_NATIVE_LIBCRYPT="$BUILDROOT/ndk-$ARCH/sysroot/usr/lib/libcrypto_1_1.so" \
+	-DANDROID_NATIVE_LIBSSL="$PREFIX/lib/libssl_1_1.so" \
+	-DANDROID_NATIVE_LIBCRYPT="$PREFIX/lib/libcrypto_1_1.so" \
 	-DCMAKE_MAKE_PROGRAM="make" \
 	"$SUBSURFACE_SOURCE"
 
