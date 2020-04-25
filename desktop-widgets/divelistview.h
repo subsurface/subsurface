@@ -30,7 +30,6 @@ public:
 	void reload(); // Call to reload model data
 	bool eventFilter(QObject *, QEvent *);
 	void unselectDives();
-	void selectDives(const QList<int> &newDiveSelection);
 	void contextMenuEvent(QContextMenuEvent *event);
 	QList<dive_trip *> selectedTrips();
 	static QString lastUsedImageDir();
@@ -86,7 +85,6 @@ private:
 	void addToTrip(int delta);
 	void matchImagesToDives(QStringList fileNames);
 	void loadImageFromURL(QUrl url);
-	void selectDive(int dive_table_idx);
 	QNetworkAccessManager manager;
 };
 
