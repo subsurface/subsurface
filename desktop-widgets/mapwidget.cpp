@@ -6,11 +6,10 @@
 
 #include "mapwidget.h"
 #include "core/divesite.h"
+#include "core/selection.h"
 #include "map-widget/qmlmapwidgethelper.h"
 #include "qt-models/maplocationmodel.h"
 #include "qt-models/divelocationmodel.h"
-#include "mainwindow.h"
-#include "divelistview.h"
 #include "commands/command.h"
 
 static const QUrl urlMapWidget = QUrl(QStringLiteral("qrc:/qml/MapWidget.qml"));
@@ -94,7 +93,15 @@ void MapWidget::selectionChanged()
 void MapWidget::selectedDivesChanged(const QList<int> &list)
 {
 	CHECK_IS_READY_RETURN_VOID();
-	MainWindow::instance()->diveList->selectDives(list);
+	// We get a list of dive indices, but the selection code wants a list of dives.
+	// Therefore, transform them here.
+	std::vector<dive *> selection;
+	selection.reserve(list.size());
+	for (int idx: list) {
+		if (dive *d = get_dive(idx))
+			selection.push_back(d);
+	}
+	setSelection(selection, current_dive);
 }
 
 void MapWidget::coordinatesChanged(struct dive_site *ds, const location_t &location)
