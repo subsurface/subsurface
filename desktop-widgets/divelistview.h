@@ -23,14 +23,8 @@ class DiveListView : public QTreeView {
 public:
 	DiveListView(QWidget *parent = 0);
 	~DiveListView();
-	void mouseDoubleClickEvent(QMouseEvent * event);
-	void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
-	void currentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void setSortOrder(int i, Qt::SortOrder order); // Call to set sort order
 	void reload(); // Call to reload model data
-	bool eventFilter(QObject *, QEvent *);
-	void unselectDives();
-	void contextMenuEvent(QContextMenuEvent *event);
 	QList<dive_trip *> selectedTrips();
 	static QString lastUsedImageDir();
 	static void updateLastUsedImageDir(const QString &s);
@@ -63,9 +57,11 @@ slots:
 	void tripChanged(dive_trip *trip, TripField);
 private:
 	void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags flags) override;
+	void unselectDives();
 	void mouseReleaseEvent(QMouseEvent *event) override;
 	void keyPressEvent(QKeyEvent *event) override;
 	void selectAll() override;
+	void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 	void selectionChangeDone();
 	DiveTripModelBase::Layout currentLayout;
 	QModelIndex contextMenuIndex;
@@ -85,6 +81,10 @@ private:
 	void addToTrip(int delta);
 	void matchImagesToDives(QStringList fileNames);
 	void loadImageFromURL(QUrl url);
+	bool eventFilter(QObject *, QEvent *) override;
+	void mouseDoubleClickEvent(QMouseEvent *event) override;
+	void contextMenuEvent(QContextMenuEvent *event) override;
+	void currentChanged(const QModelIndex &current, const QModelIndex &previous) override;
 	QNetworkAccessManager manager;
 };
 
