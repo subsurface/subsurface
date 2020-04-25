@@ -945,7 +945,6 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	QAction *actionTaken = popup.exec(event->globalPos());
 	if (actionTaken == collapseAction && collapseAction) {
 		this->setAnimated(false);
-		selectDive(get_divenr(current_dive), true);
 		scrollTo(selectedIndexes().first());
 		this->setAnimated(true);
 	}
