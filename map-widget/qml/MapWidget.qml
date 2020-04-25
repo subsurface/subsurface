@@ -9,13 +9,10 @@ Item {
 	property alias mapHelper: mapHelper
 	property alias map: map
 
-	signal selectedDivesChanged(var list)
-
 	MapWidgetHelper {
 		id: mapHelper
 		map: map
 		editMode: false
-		onSelectedDivesChanged: rootItem.selectedDivesChanged(list)
 		onEditModeChanged: editMessage.isVisible = editMode === true ? 1 : 0
 		onCoordinatesChanged: {}
 		Component.onCompleted: {
