@@ -322,7 +322,6 @@ void DiveListView::selectDive(int i)
 		expand(idx.parent());
 		setAnimated(true);
 	}
-	selectionChangeDone();
 }
 
 void DiveListView::selectDives(const QList<int> &newDiveSelection)
