@@ -337,9 +337,6 @@ void DiveListView::selectDive(int i, bool scrollto)
 
 void DiveListView::selectDives(const QList<int> &newDiveSelection)
 {
-	int firstInList, newSelection;
-	struct dive *d;
-
 	if (!newDiveSelection.count())
 		return;
 
@@ -350,22 +347,10 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 	// becomes the selected_dive that we scroll to
 	QList<int> sortedSelection = newDiveSelection;
 	std::sort(sortedSelection.begin(), sortedSelection.end());
-	newSelection = firstInList = sortedSelection.first();
 
 	while (!sortedSelection.isEmpty())
 		selectDive(sortedSelection.takeLast());
 
-	while (!current_dive) {
-		// that can happen if we restored a selection after edit
-		// and the only selected dive is no longer visible because of a filter
-		newSelection--;
-		if (newSelection < 0)
-			newSelection = dive_table.nr - 1;
-		if (newSelection == firstInList)
-			break;
-		if ((d = get_dive(newSelection)) != NULL && !d->hidden_by_filter)
-			selectDive(newSelection);
-	}
 	QAbstractItemModel *m = model();
 	QModelIndexList idxList = m->match(m->index(0, 0), DiveTripModelBase::DIVE_IDX, get_divenr(current_dive), 2, Qt::MatchRecursive);
 	if (!idxList.isEmpty()) {
