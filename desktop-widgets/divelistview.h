@@ -86,8 +86,8 @@ private:
 	void addToTrip(int delta);
 	void matchImagesToDives(QStringList fileNames);
 	void loadImageFromURL(QUrl url);
-	void selectDive(QModelIndex index, bool scrollto = false);
-	void selectDive(int dive_table_idx, bool scrollto = false);
+	void selectDive(QModelIndex index);
+	void selectDive(int dive_table_idx);
 	QNetworkAccessManager manager;
 };
 

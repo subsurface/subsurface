@@ -306,7 +306,7 @@ QList<dive_trip_t *> DiveListView::selectedTrips()
 	return ret;
 }
 
-void DiveListView::selectDive(QModelIndex idx, bool scrollto)
+void DiveListView::selectDive(QModelIndex idx)
 {
 	if (!idx.isValid())
 		return;
@@ -314,16 +314,12 @@ void DiveListView::selectDive(QModelIndex idx, bool scrollto)
 	if (idx.parent().isValid()) {
 		setAnimated(false);
 		expand(idx.parent());
-		if (scrollto)
-			scrollTo(idx.parent());
 		setAnimated(true);
 	}
-	if (scrollto)
-		scrollTo(idx, PositionAtCenter);
 	selectionChangeDone();
 }
 
-void DiveListView::selectDive(int i, bool scrollto)
+void DiveListView::selectDive(int i)
 {
 	if (i == -1)
 		return;
@@ -332,7 +328,7 @@ void DiveListView::selectDive(int i, bool scrollto)
 	if (match.isEmpty())
 		return;
 	QModelIndex idx = match.first();
-	selectDive(idx, scrollto);
+	selectDive(idx);
 }
 
 void DiveListView::selectDives(const QList<int> &newDiveSelection)
