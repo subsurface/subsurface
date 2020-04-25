@@ -306,19 +306,6 @@ QList<dive_trip_t *> DiveListView::selectedTrips()
 	return ret;
 }
 
-void DiveListView::selectDive(QModelIndex idx)
-{
-	if (!idx.isValid())
-		return;
-	selectionModel()->setCurrentIndex(idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
-	if (idx.parent().isValid()) {
-		setAnimated(false);
-		expand(idx.parent());
-		setAnimated(true);
-	}
-	selectionChangeDone();
-}
-
 void DiveListView::selectDive(int i)
 {
 	if (i == -1)
@@ -328,7 +315,14 @@ void DiveListView::selectDive(int i)
 	if (match.isEmpty())
 		return;
 	QModelIndex idx = match.first();
-	selectDive(idx);
+
+	selectionModel()->setCurrentIndex(idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+	if (idx.parent().isValid()) {
+		setAnimated(false);
+		expand(idx.parent());
+		setAnimated(true);
+	}
+	selectionChangeDone();
 }
 
 void DiveListView::selectDives(const QList<int> &newDiveSelection)
