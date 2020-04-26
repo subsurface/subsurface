@@ -86,6 +86,7 @@ private:
 	void contextMenuEvent(QContextMenuEvent *event) override;
 	void currentChanged(const QModelIndex &current, const QModelIndex &previous) override;
 	QNetworkAccessManager manager;
+	bool programmaticalSelectionChange;
 };
 
 #endif // DIVELISTVIEW_H
