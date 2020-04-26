@@ -28,19 +28,21 @@ public:
 	QList<dive_trip *> selectedTrips();
 	static QString lastUsedImageDir();
 	static void updateLastUsedImageDir(const QString &s);
+	void loadImages();
+	void loadWebImages();
 signals:
 	void divesSelected();
 public
 slots:
-	void toggleColumnVisibilityByIndex();
 	void reloadHeaderActions();
+private
+slots:
+	void toggleColumnVisibilityByIndex();
 	void sortIndicatorChanged(int index, Qt::SortOrder order);
 	void removeFromTrip();
 	void deleteDive();
 	void markDiveInvalid();
 	void markDiveValid();
-	void rowsInserted(const QModelIndex &parent, int start, int end) override;
-	void reset() override;
 	void mergeTripAbove();
 	void mergeTripBelow();
 	void newTripAbove();
@@ -50,12 +52,12 @@ slots:
 	void splitDives();
 	void renumberDives();
 	void shiftTimes();
-	void loadImages();
-	void loadWebImages();
 	void diveSelectionChanged(const QVector<QModelIndex> &indices);
 	void currentDiveChanged(QModelIndex index);
 	void tripChanged(dive_trip *trip, TripField);
 private:
+	void rowsInserted(const QModelIndex &parent, int start, int end) override;
+	void reset() override;
 	void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags flags) override;
 	void unselectDives();
 	void mouseReleaseEvent(QMouseEvent *event) override;
