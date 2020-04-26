@@ -208,16 +208,24 @@ void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indices)
 	programmaticalSelectionChange = true;
 
 	clearSelection();
-	QItemSelectionModel *s = selectionModel();
-	for (const QModelIndex &index: indices) {
-		s->select(index, QItemSelectionModel::Rows | QItemSelectionModel::Select);
+	QItemSelection selection;
+	for (const QModelIndex &index: indices)
+		selection.select(index, index); // Is there a faster way to do this?
+	selectionModel()->select(selection, QItemSelectionModel::Rows | QItemSelectionModel::Select);
 
-		// If an item of a not-yet expanded trip is selected, expand the trip.
-		if (index.parent().isValid() && !isExpanded(index.parent())) {
-			setAnimated(false);
-			expand(index.parent());
-			setAnimated(true);
-		}
+	// Expand all unexpanded trips
+	std::vector<int> affectedTrips;
+	for (const QModelIndex &index: indices) {
+		if (!index.parent().isValid())
+			continue;
+		int row = index.parent().row();
+		if (std::find(affectedTrips.begin(), affectedTrips.end(), row) == affectedTrips.end())
+			affectedTrips.push_back(row);
+	}
+	MultiFilterSortModel *m = MultiFilterSortModel::instance();
+	for (int row: affectedTrips) {
+		QModelIndex idx = m->index(row, 0);
+		expand(idx);
 	}
 
 	selectionChangeDone();
