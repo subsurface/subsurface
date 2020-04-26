@@ -25,7 +25,7 @@ public:
 	~DiveListView();
 	void setSortOrder(int i, Qt::SortOrder order); // Call to set sort order
 	void reload(); // Call to reload model data
-	QList<dive_trip *> selectedTrips();
+	dive_trip *singleSelectedTrip();
 	static QString lastUsedImageDir();
 	static void updateLastUsedImageDir(const QString &s);
 	void loadImages();

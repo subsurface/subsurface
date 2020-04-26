@@ -265,8 +265,7 @@ void DiveListView::tripChanged(dive_trip *trip, TripField)
 {
 	// First check if the trip is already selected (and only
 	// this trip, as only then is it displayed). Is so, then do nothing.
-	QList<dive_trip *> selected = selectedTrips();
-	if (selected.size() == 1 && selected[0] == trip)
+	if (singleSelectedTrip() == trip)
 		return;
 
 	unselectDives();
@@ -309,16 +308,21 @@ void DiveListView::unselectDives()
 	}
 }
 
-QList<dive_trip_t *> DiveListView::selectedTrips()
+// This function returns a trip if there is one selected trip or NULL.
+// Returning all selected trips turned out to be too slow.
+dive_trip_t *DiveListView::singleSelectedTrip()
 {
-	QList<dive_trip_t *> ret;
-	Q_FOREACH (const QModelIndex &index, selectionModel()->selectedRows()) {
-		dive_trip_t *trip = index.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
-		if (!trip)
+	dive_trip_t *res = nullptr;
+	for (const QModelIndex &index: selectionModel()->selectedRows()) {
+		if (index.parent().isValid())
 			continue;
-		ret.push_back(trip);
+		if (dive_trip_t *trip = index.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>()) {
+			if (res)
+				return nullptr; // More than one
+			res = trip;
+		}
 	}
-	return ret;
+	return res;
 }
 
 bool DiveListView::eventFilter(QObject *, QEvent *event)

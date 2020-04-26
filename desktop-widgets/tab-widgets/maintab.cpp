@@ -365,8 +365,7 @@ void MainTab::updateDiveInfo()
 		// 2) the filter is reset, potentially erasing the current trip under our feet.
 		// TODO: Don't hard code tab location!
 		bool onDiveSiteTab = ui.tabWidget->currentIndex() == 6;
-		if (MainWindow::instance() && MainWindow::instance()->diveList->selectedTrips().count() == 1) {
-			currentTrip = MainWindow::instance()->diveList->selectedTrips().front();
+		if (dive_trip *currentTrip = MainWindow::instance()->diveList->singleSelectedTrip()) {
 			// Remember the tab selected for last dive but only if we're not on the dive site tab
 			if (lastSelectedDive && !onDiveSiteTab)
 				lastTabSelectedDive = ui.tabWidget->currentIndex();
