@@ -515,12 +515,16 @@ void DiveListView::selectionChangeDone()
 	// the dive-site selection is controlled by the filter not
 	// by the selected dives.
 	if (!DiveFilter::instance()->diveSiteMode()) {
+		// This is truly sad, but taking the list of selected indices and turning them
+		// into dive sites turned out to be unreasonably slow. Therefore, let's access
+		// the core list directly. In my tests, this went down from 700 to 0 ms!
 		QVector<dive_site *> selectedSites;
-		for (QModelIndex index: selectionModel()->selectedRows()) {
-			const QAbstractItemModel *model = index.model();
-			struct dive *dive = model->data(index, DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
-			if (dive && dive->dive_site && !selectedSites.contains(dive->dive_site))
-				selectedSites.push_back(dive->dive_site);
+		selectedSites.reserve(amount_selected);
+		int i;
+		dive *d;
+		for_each_dive(i, d) {
+			if (d->selected && !d->hidden_by_filter && d->dive_site && !selectedSites.contains(d->dive_site))
+				selectedSites.push_back(d->dive_site);
 		}
 		MapWidget::instance()->setSelected(selectedSites);
 	}
