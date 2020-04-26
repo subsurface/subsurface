@@ -381,7 +381,6 @@ void DiveListBase::finishWork()
 
 void DiveListBase::undo()
 {
-	auto marker = diveListNotifier.enterCommand();
 	initWork();
 	undoit();
 	finishWork();
@@ -389,7 +388,6 @@ void DiveListBase::undo()
 
 void DiveListBase::redo()
 {
-	auto marker = diveListNotifier.enterCommand();
 	initWork();
 	redoit();
 	finishWork();
