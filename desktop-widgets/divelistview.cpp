@@ -32,7 +32,8 @@
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent),
 	currentLayout(DiveTripModelBase::TREE),
-	initialColumnWidths(DiveTripModelBase::COLUMNS, 50)	// Set up with default length 50
+	initialColumnWidths(DiveTripModelBase::COLUMNS, 50),	// Set up with default length 50
+	programmaticalSelectionChange(false)
 {
 	setItemDelegate(new DiveListDelegate(this));
 	setUniformRowHeights(true);
@@ -201,6 +202,11 @@ void DiveListView::reset()
 // If items were selected, inform the selection model
 void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indices)
 {
+	// This is the entry point for programmatical selection changes.
+	// Set a flag so that selection changes are not further processed,
+	// since the core structures were already set.
+	programmaticalSelectionChange = true;
+
 	clearSelection();
 	QItemSelectionModel *s = selectionModel();
 	for (const QModelIndex &index: indices) {
@@ -215,6 +221,7 @@ void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indices)
 	}
 
 	selectionChangeDone();
+	programmaticalSelectionChange = false;
 }
 
 void DiveListView::currentDiveChanged(QModelIndex index)
@@ -522,7 +529,7 @@ void DiveListView::selectionChangeDone()
 
 void DiveListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
-	if (diveListNotifier.inCommand()) {
+	if (programmaticalSelectionChange) {
 		// This is a programmatical change of the selection.
 		// Call the QTreeView base function to reflect the selection in the display,
 		// but don't process it any further.
