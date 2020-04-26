@@ -166,7 +166,7 @@ for package in "${PACKAGES[@]}" ; do
 			git_checkout_library breeze-icons $CURRENT_BREEZE_ICONS https://github.com/kde/breeze-icons.git
 			;;
 		googlemaps)
-			git_checkout_library googlemaps master https://github.com/Subsurface-divelog/googlemaps.git
+			git_checkout_library googlemaps master https://github.com/Subsurface/googlemaps.git
 			;;
 		hidapi)
 			git_checkout_library hidapi master https://github.com/signal11/hidapi.git

@@ -74,7 +74,7 @@ RUN apt-get remove -y libqt5core5a libqt5dbus5 libqt5gui5 ruby openssh-client
 
 # now build Subsurface once to populate the dependencies we don't get from
 # Ubuntu but that aren't really part of Subsurface (libgit, grantlee, googlemaps)
-RUN git clone git://github.com/Subsurface-divelog/subsurface
+RUN git clone git://github.com/Subsurface/subsurface
 RUN bash -e -x ./subsurface/scripts/build.sh -desktop -create-appdir -build-with-webkit
 
 # remove the source, but keep the install-root

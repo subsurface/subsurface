@@ -28,6 +28,6 @@ sh -e /etc/init.d/xvfb start
 
 # TestParsePerformance needs this data file to test XML parsing performance
 pushd ..
-git clone https://github.com/Subsurface-divelog/large-anonymous-sample-data
+git clone https://github.com/Subsurface/large-anonymous-sample-data
 xzcat large-anonymous-sample-data/large-anon.ssrf.xz > subsurface/dives/large-anon.ssrf
 popd

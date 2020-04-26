@@ -57,7 +57,7 @@ moet installeren staat uitgelegd op _Downloaden_ page on the
 https://subsurface-divelog.org/[_Subsurface_ website]. Vragen over of problemen met
 het programma kunnen bij de ontwikkelaars gemeld worden via email op
 mailto:subsurface@subsurface-divelog.org[onze mailinglijst]. Fouten kunnen
-ook gemeld worden op https://github.com/Subsurface-divelog/subsurface/issues[onze bugtracker].
+ook gemeld worden op https://github.com/Subsurface/subsurface/issues[onze bugtracker].
 Instructies hoe _Subsurface_ zelf te compileren vanuit de broncode staan ook op
 onze website en in het INSTALL bestand in de broncode.
 

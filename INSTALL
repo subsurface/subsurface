@@ -18,7 +18,7 @@ Getting Subsurface source
 
 You can get the sources to the latest development version from our git
 repository:
-    git clone http://github.com/Subsurface-divelog/subsurface.git
+    git clone http://github.com/Subsurface/subsurface.git
 
 You keep it updated by doing:
     git checkout master
@@ -31,7 +31,7 @@ Getting our flavor of libdivecomputer
 
 All our prebuilt binaries (see https://subsurface-divelog.org/download)
 are built using our own custom "flavor" of libdivecomputer
-see https://github.com/Subsurface-divelog/libdc.git
+see https://github.com/Subsurface/libdc.git
 
 In order to get the modified sources, do
 - locate yourself in the subsurface repo on your local computer
@@ -213,7 +213,7 @@ like this:
 
 mkdir -p ~/src
 cd ~/src
-git clone https://github.com/Subsurface-divelog/subsurface.git
+git clone https://github.com/Subsurface/subsurface.git
 ./subsurface/scripts/build.sh # <- this step will take quite a while as it
                               #    compiles a handful of libraries before
 			      #    building Subsurface

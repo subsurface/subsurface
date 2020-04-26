@@ -1,4 +1,4 @@
 [submodule "libdivecomputer"]
 	path = libdivecomputer
-	url = git://github.com/Subsurface-divelog/libdc.git
+	url = git://github.com/Subsurface/libdc.git
 	branch = Subsurface-NG

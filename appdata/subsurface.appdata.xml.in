@@ -21,14 +21,14 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/Subsurface-divelog/subsurface/master/appdata/main.png</image>
+      <image>https://raw.githubusercontent.com/Subsurface/subsurface/master/appdata/main.png</image>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/Subsurface-divelog/subsurface/master/appdata/diveplanner.png</image>
+      <image>https://raw.githubusercontent.com/Subsurface/subsurface/master/appdata/diveplanner.png</image>
     </screenshot>
   </screenshots>
   <url type="homepage">https://subsurface-divelog.org</url>
-  <url type="bugtracker">https://github.com/Subsurface-divelog/subsurface/issues</url>
+  <url type="bugtracker">https://github.com/Subsurface/subsurface/issues</url>
   <url type="faq">https://subsurface-divelog.org/faq/</url>
   <url type="help">https://subsurface-divelog.org/documentation/</url>
   <url type="translate">https://www.transifex.com/subsurface/subsurface/</url>

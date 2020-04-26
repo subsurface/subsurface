@@ -10,14 +10,14 @@ Subsurface can be found at http://subsurface-divelog.org
 Our user forum is at http://subsurface-divelog.org/user-forum/
 
 Report bugs and issues at
-https://github.com/Subsurface-divelog/subsurface/issues
+https://github.com/Subsurface/subsurface/issues
 
 License: GPLv2
 
 We frequently make new test versions of Subsurface available at
 http://subsurface-divelog.org/downloads/test/ and you always can get the
 latest builds (with some caveats about installability) at
-https://github.com/Subsurface-divelog/subsurface/releases/tag/continuous
+https://github.com/subsurface/subsurface/releases/tag/ci-release
 
 These tend to contain the latest bug fixes and features, but also
 occasionally the latest bugs and issues. Please understand when using them
@@ -27,11 +27,11 @@ You can get the sources to the latest development version from the git
 repository:
 
 ```
-git clone https://github.com/Subsurface-divelog/subsurface.git
+git clone https://github.com/Subsurface/subsurface.git
 ```
 
 You can also fork the repository and browse the sources at the same site,
-simply using https://github.com/Subsurface-divelog/subsurface
+simply using https://github.com/Subsurface/subsurface
 
 If you want the latest release (instead of the bleeding edge
 development version) you can either get this via git or the release tar
@@ -102,7 +102,7 @@ Go to http://lists.subsurface-divelog.org/cgi-bin/mailman/listinfo/subsurface
 to subscribe.
 
 If you want to contribute code, please open a pull request with signed-off
-commits at https://github.com/Subsurface-divelog/subsurface/pulls
+commits at https://github.com/Subsurface/subsurface/pulls
 (alternatively, you can also send your patches as emails to the developer
 mailing list).
 

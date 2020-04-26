@@ -57,7 +57,7 @@ fi
 
 echo "Get googlemaps"
 cd ${TRAVIS_BUILD_DIR}/..
-git clone https://github.com/Subsurface-divelog/googlemaps.git
+git clone https://github.com/Subsurface/googlemaps.git
 
 echo "Get Grantlee"
 cd ${TRAVIS_BUILD_DIR}/..

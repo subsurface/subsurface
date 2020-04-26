@@ -10,7 +10,7 @@
 #include <QDebug>
 #include <QNetworkProxy>
 
-#define LARGE_TEST_REPO "https://github.com/Subsurface-divelog/large-anonymous-sample-data"
+#define LARGE_TEST_REPO "https://github.com/Subsurface/large-anonymous-sample-data"
 
 void TestParsePerformance::initTestCase()
 {

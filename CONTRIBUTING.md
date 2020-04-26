@@ -81,9 +81,9 @@ In order to make reviews simpler and have contributions merged faster in the cod
 [2]: http://freenode.net/
 [3]: https://www.transifex.com/
 [4]: https://www.transifex.com/projects/p/subsurface/
-[5]: https://github.com/Subsurface-divelog/subsurface/issues
-[6]: https://github.com/Subsurface-divelog/subsurface/pulls
+[5]: https://github.com/Subsurface/subsurface/issues
+[6]: https://github.com/Subsurface/subsurface/pulls
 [7]: https://www.kernel.org/pub/software/scm/git/docs/user-manual.html
 [8]: https://gerrit-review.googlesource.com/Documentation/user-signedoffby.html
 [9]: https://subsurface-divelog.org/wp-content/uploads/2011/10/Screenshot-gitk-subsurface-1.png "Example with gitk"
-[10]: https://github.com/Subsurface-divelog/subsurface/blob/master/CodingStyle
+[10]: https://github.com/Subsurface/subsurface/blob/master/CodingStyle

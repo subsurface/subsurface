@@ -30,7 +30,7 @@ apps:
 
 parts:
   googlemaps:
-    source: git://github.com/Subsurface-divelog/googlemaps.git
+    source: git://github.com/Subsurface/googlemaps.git
     build-packages:
     - wget
     override-pull: |
