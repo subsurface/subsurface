@@ -1192,12 +1192,6 @@ QString get_gas_string(struct gasmix gas)
 	return result;
 }
 
-QString get_divepoint_gas_string(struct dive *d, const divedatapoint &p)
-{
-	int idx = p.cylinderid;
-	return get_gas_string(get_cylinder(d, idx)->gasmix);
-}
-
 QString get_taglist_string(struct tag_entry *tag_list)
 {
 	char *buffer = taglist_get_tagstring(tag_list);
