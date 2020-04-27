@@ -227,7 +227,10 @@ struct event *add_event(struct divecomputer *dc, unsigned int time, int type, in
 void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx)
 {
 	/* sanity check so we don't crash */
-	if (idx < 0 || idx >= dive->cylinders.nr) {
+	/* FIXME: The planner uses a dummy cylinder one past the official number of cylinders
+	 * in the table to mark no-cylinder surface interavals. This is horrendous. Fix ASAP. */
+	//if (idx < 0 || idx >= dive->cylinders.nr) {
+	if (idx < 0 || idx >= dive->cylinders.nr + 1 || idx >= dive->cylinders.allocated) {
 		report_error("Unknown cylinder index: %d", idx);
 		return;
 	}
