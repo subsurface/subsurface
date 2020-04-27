@@ -272,7 +272,11 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 		if (dp->cylinderid != lastcylid) {
 			/* need to insert a first sample for the new gas */
 			add_gas_switch_event(dive, dc, lasttime + 1, dp->cylinderid);
-			cyl = get_or_create_cylinder(dive, dp->cylinderid);
+			cyl = get_cylinder(dive, dp->cylinderid); // FIXME: This actually may get one past the last cylinder for "surface air".
+			if (!cyl) {
+				report_error("Invalid cylinder in create_dive_from_plan(): %d", dp->cylinderid);
+				continue;
+			}
 			sample = prepare_sample(dc);
 			sample[-1].setpoint.mbar = po2;
 			sample->time.seconds = lasttime + 1;
@@ -1070,12 +1074,12 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	}
 
 	if (prefs.surface_segment != 0) {
-		// Switch to an empty air cylinder for breathing air at the surface
-		// If no empty cylinder is found, keep using last deco gas
-		cylinder_t cyl = empty_cylinder;
-		cyl.cylinder_use = NOT_USED;
-		add_cylinder(&dive->cylinders, dive->cylinders.nr, cyl);
-		current_cylinder = dive->cylinders.nr - 1;
+		// Switch to an empty air cylinder for breathing air at the surface.
+		// FIXME: This is incredibly silly and emulates the old code when
+		// we had a fixed cylinder table: It uses an extra fake cylinder
+		// past the regular cylinder table, which is not visible to the UI.
+		// Fix this as soon as possible!
+		current_cylinder = dive->cylinders.nr;
 		plan_add_segment(diveplan, prefs.surface_segment, 0, current_cylinder, 0, false, OC);
 	}
 	create_dive_from_plan(diveplan, dive, is_planner);

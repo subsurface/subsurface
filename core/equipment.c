@@ -368,7 +368,10 @@ cylinder_t *add_empty_cylinder(struct cylinder_table *t)
  */
 cylinder_t *get_cylinder(const struct dive *d, int idx)
 {
-	if (idx < 0 || idx >= d->cylinders.nr) {
+	/* FIXME: The planner uses a dummy cylinder one past the official number of cylinders
+	 * in the table to mark no-cylinder surface interavals. This is horrendous. Fix ASAP. */
+	// if (idx < 0 || idx >= d->cylinders.nr) {
+	if (idx < 0 || idx >= d->cylinders.nr + 1 || idx >= d->cylinders.allocated) {
 		fprintf(stderr, "Warning: accessing invalid cylinder %d (%d existing)\n", idx, d->cylinders.nr);
 		return NULL;
 	}
