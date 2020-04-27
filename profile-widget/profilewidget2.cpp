@@ -566,8 +566,10 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 #endif
 	if (currentState != ADD && currentState != PLAN) {
 		if (!d) {
-			if (!current_dive)
+			if (!current_dive) {
+				setEmptyState();
 				return;
+			}
 			d = current_dive; // display the current dive
 		}
 
