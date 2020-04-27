@@ -52,7 +52,7 @@ driver that has support for at least OpenGL 2.1. If your driver does not
 support that, you may have to run Subsurface in software renderer mode.
 
 Subsurface will automatically attempt to detect this scenario, but in case
-in doesn't you may have to enable the software renderer manually with
+it doesn't you may have to enable the software renderer manually with
 the following:
 1) Learn how to set persistent environment variables on your OS
 2) Set the environment variable 'QT_QUICK_BACKEND' with the value of 'software'
