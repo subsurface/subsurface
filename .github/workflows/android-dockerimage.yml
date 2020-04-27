@@ -8,6 +8,12 @@ name: Android Docker Image CI
 #    - scripts/docker/android-build-container/Dockerfile
 #    - .github/workflows/android-docker*
 
+# this is here to prevent errors about not having an on: clause
+on:
+  repository_dispatch:
+    types:
+    - unused
+
 jobs:
   android-build-container:
     runs-on: ubuntu-latest
