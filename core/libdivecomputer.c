@@ -228,7 +228,7 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 		if (empty_string(cyl.type.description))
 			cyl.type.description = strdup(translate("gettextFromC", "unknown"));
 
-		add_to_cylinder_table(&dive->cylinders, dive->cylinders.nr, cyl);
+		add_cylinder(&dive->cylinders, dive->cylinders.nr, cyl);
 	}
 	return DC_STATUS_SUCCESS;
 }

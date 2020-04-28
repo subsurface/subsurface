@@ -56,7 +56,7 @@ MAKE_CLEAR_TABLE(weightsystem_table, weightsystems, weightsystem)
 //static MAKE_GET_IDX(cylinder_table, cylinder_t, cylinders)
 static MAKE_GROW_TABLE(cylinder_table, cylinder_t, cylinders)
 //static MAKE_GET_INSERTION_INDEX(cylinder_table, cylinder_t, cylinders, cylinder_less_than)
-MAKE_ADD_TO(cylinder_table, cylinder_t, cylinders)
+static MAKE_ADD_TO(cylinder_table, cylinder_t, cylinders)
 MAKE_REMOVE_FROM(cylinder_table, cylinders)
 //MAKE_SORT(cylinder_table, cylinder_t, cylinders, comp_cylinders)
 //MAKE_REMOVE(cylinder_table, cylinder_t, cylinder)
@@ -144,11 +144,23 @@ cylinder_t clone_cylinder(cylinder_t cyl)
 	return res;
 }
 
+void add_cylinder(struct cylinder_table *t, int idx, cylinder_t cyl)
+{
+	add_to_cylinder_table(t, idx, cyl);
+	/* FIXME: This is a horrible hack: we make sure that at the end of
+	 * every single cylinder table there is an empty cylinder that can
+	 * be used by the planner as "surface air" cylinder. Fix this.
+	 */
+	add_to_cylinder_table(t, t->nr, empty_cylinder);
+	t->nr--;
+	t->cylinders[t->nr].cylinder_use = NOT_USED;
+}
+
 /* Add a clone of a cylinder to the end of a cylinder table.
  * Cloned in means that the description-string is copied. */
 void add_cloned_cylinder(struct cylinder_table *t, cylinder_t cyl)
 {
-	add_to_cylinder_table(t, t->nr, clone_cylinder(cyl));
+	add_cylinder(t, t->nr, clone_cylinder(cyl));
 }
 
 bool same_weightsystem(weightsystem_t w1, weightsystem_t w2)
@@ -342,7 +354,7 @@ cylinder_t *add_empty_cylinder(struct cylinder_table *t)
 {
 	cylinder_t cyl = empty_cylinder;
 	cyl.type.description = strdup("");
-	add_to_cylinder_table(t, t->nr, cyl);
+	add_cylinder(t, t->nr, cyl);
 	return &t->cylinders[t->nr - 1];
 }
 
