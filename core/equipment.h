@@ -39,7 +39,7 @@ static const cylinder_t empty_cylinder = { { { 0 }, { 0 }, (const char *)0}, { {
  * *not* pointers to cylinders. This has two crucial consequences:
  * 1) Pointers to cylinders are not stable. They may be
  *    invalidated if the table is reallocated.
- * 2) add_to_cylinder_table(), etc. take ownership of the
+ * 2) add_cylinder(), etc. take ownership of the
  *    cylinder. Notably of the description string. */
 struct cylinder_table {
 	int nr, allocated;
@@ -102,7 +102,7 @@ extern void add_to_weightsystem_table(struct weightsystem_table *, int idx, weig
 
 /* Cylinder table functions */
 extern void clear_cylinder_table(struct cylinder_table *);
-extern void add_to_cylinder_table(struct cylinder_table *, int idx, cylinder_t cyl);
+extern void add_cylinder(struct cylinder_table *, int idx, cylinder_t cyl);
 
 void get_gas_string(struct gasmix gasmix, char *text, int len);
 const char *gasname(struct gasmix gasmix);

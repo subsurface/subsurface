@@ -455,7 +455,7 @@ static void parse_dive_cylinder(char *line, struct membuffer *str, struct git_pa
 	if (cylinder.cylinder_use == OXYGEN)
 		state->o2pressure_sensor = state->active_dive->cylinders.nr;
 
-	add_to_cylinder_table(&state->active_dive->cylinders, state->active_dive->cylinders.nr, cylinder);
+	add_cylinder(&state->active_dive->cylinders, state->active_dive->cylinders.nr, cylinder);
 }
 
 static void parse_weightsystem_keyvalue(void *_ws, const char *key, const char *value)

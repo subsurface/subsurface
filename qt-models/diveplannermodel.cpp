@@ -174,14 +174,14 @@ void DivePlannerPointsModel::setupCylinders()
 		cylinder_t cyl = empty_cylinder;
 		fill_default_cylinder(&displayed_dive, &cyl);
 		cyl.start = cyl.type.workingpressure;
-		add_to_cylinder_table(&displayed_dive.cylinders, 0, cyl);
+		add_cylinder(&displayed_dive.cylinders, 0, cyl);
 	} else {
 		cylinder_t cyl = empty_cylinder;
 		// roughly an AL80
 		cyl.type.description = copy_qstring(tr("unknown"));
 		cyl.type.size.mliter = 11100;
 		cyl.type.workingpressure.mbar = 207000;
-		add_to_cylinder_table(&displayed_dive.cylinders, 0, cyl);
+		add_cylinder(&displayed_dive.cylinders, 0, cyl);
 	}
 	reset_cylinders(&displayed_dive, false);
 	cylinders.updateDive(&displayed_dive);

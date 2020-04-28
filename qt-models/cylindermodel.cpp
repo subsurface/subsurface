@@ -490,7 +490,7 @@ void CylindersModel::add()
 	int row = d->cylinders.nr;
 	cylinder_t cyl = create_new_cylinder(d);
 	beginInsertRows(QModelIndex(), row, row);
-	add_to_cylinder_table(&d->cylinders, row, cyl);
+	add_cylinder(&d->cylinders, row, cyl);
 	endInsertRows();
 	emit dataChanged(createIndex(row, 0), createIndex(row, COLUMNS - 1));
 }
