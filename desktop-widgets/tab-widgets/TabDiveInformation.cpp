@@ -316,6 +316,7 @@ void TabDiveInformation::divesChanged(const QVector<dive *> &dives, DiveField fi
 	if (!current_dive || !dives.contains(current_dive))
 		return;
 
+	bool replot = false;
 	if (field.visibility)
 		ui->visibility->setCurrentStars(current_dive->visibility);
 	if (field.wavesize)
@@ -326,8 +327,10 @@ void TabDiveInformation::divesChanged(const QVector<dive *> &dives, DiveField fi
 		ui->surge->setCurrentStars(current_dive->surge);
 	if (field.chill)
 		ui->chill->setCurrentStars(current_dive->chill);
-	if (field.mode)
+	if (field.mode) {
 		updateMode(current_dive);
+		replot = true;
+	}
 	if (field.duration || field.depth || field.mode)
 		updateProfile();
 	if (field.air_temp)
@@ -344,6 +347,10 @@ void TabDiveInformation::divesChanged(const QVector<dive *> &dives, DiveField fi
 		salinity_value = current_dive->salinity;
 	ui->waterTypeCombo->setCurrentIndex(updateSalinityComboIndex(salinity_value));
 	ui->salinityText->setText(QString("%1g/ℓ").arg(salinity_value / 10.0));
+	// TODO: The profile should recognize itself when the dive mode changed.
+	// It seem awkward to route this via the dive-information tab.
+	if (replot)
+		MainWindow::instance()->graphics->replot();
 }
 
 void TabDiveInformation::on_visibility_valueChanged(int value)
@@ -379,7 +386,6 @@ void TabDiveInformation::on_chill_valueChanged(int value)
 void TabDiveInformation::updateMode(struct dive *d)
 {
 	ui->diveType->setCurrentIndex(get_dive_dc(d, dc_number)->divemode);
-	MainWindow::instance()->graphics->replot();
 }
 
 void TabDiveInformation::diveModeChanged(int index)
