@@ -339,14 +339,16 @@ enum divemode_t get_current_divemode(const struct divecomputer *dc, int time, co
 
 struct gasmix get_gasmix_from_event(const struct dive *dive, const struct event *ev)
 {
-	struct gasmix dummy = gasmix_air;
 	if (ev && event_is_gaschange(ev)) {
 		int index = ev->gas.index;
+		// FIXME: The planner uses one past cylinder-count to signify "surface air". Remove in due course.
+		if (index == dive->cylinders.nr)
+			return gasmix_air;
 		if (index >= 0 && index < dive->cylinders.nr)
 			return get_cylinder(dive, index)->gasmix;
 		return ev->gas.mix;
 	}
-	return dummy;
+	return gasmix_air;
 }
 
 // we need this to be uniq. oh, and it has no meaning whatsoever
