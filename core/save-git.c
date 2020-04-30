@@ -144,6 +144,8 @@ static void save_cylinder_info(struct membuffer *b, struct dive *dive)
 		const char *description = cylinder->type.description;
 		int use = cylinder->cylinder_use;
 
+		if (description && !*description)
+			description = "unknown";
 		put_string(b, "cylinder");
 		if (volume)
 			put_milli(b, " vol=", volume, "l");
