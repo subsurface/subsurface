@@ -92,7 +92,6 @@ public:
 
 private:
 	struct plot_info pInfo;
-	int diveId;
 	unsigned int dcNr;
 	struct deco_state plot_deco_state;
 };

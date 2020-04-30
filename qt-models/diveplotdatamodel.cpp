@@ -7,7 +7,6 @@
 
 DivePlotDataModel::DivePlotDataModel(QObject *parent) :
 	QAbstractTableModel(parent),
-	diveId(0),
 	dcNr(0)
 {
 	init_plot_info(&pInfo);
@@ -176,7 +175,6 @@ void DivePlotDataModel::clear()
 		free(pInfo.pressures);
 		pInfo.entry = nullptr;
 		pInfo.pressures = nullptr;
-		diveId = -1;
 		dcNr = -1;
 		endRemoveRows();
 	}
@@ -185,7 +183,6 @@ void DivePlotDataModel::clear()
 void DivePlotDataModel::setDive(dive *d, const plot_info &info)
 {
 	beginResetModel();
-	diveId = d->id;
 	dcNr = dc_number;
 	free(pInfo.entry);
 	free(pInfo.pressures);
