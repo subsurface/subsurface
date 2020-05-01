@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "core/parse-gpx.h"
 #include "core/dive.h"
+#include <QFile>
 #include <QXmlStreamReader>
 
 // Find the coordinates at the time specified in coords.start_dive
