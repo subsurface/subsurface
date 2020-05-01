@@ -4,7 +4,7 @@
 
 #include "units.h"
 #include "taxonomy.h"
-#include "dive.h"
+#include "divelist.h"
 #include <stdlib.h>
 
 #ifdef __cplusplus

@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
 /* divelist.c */
 
+#include "divelist.h"
 #include "subsurface-string.h"
 #include "deco.h"
 #include "device.h"
 #include "divesite.h"
-#include "divelist.h"
+#include "dive.h"
 #include "fulltext.h"
 #include "planner.h"
 #include "qthelper.h"
@@ -743,6 +744,13 @@ void delete_dive_from_table(struct dive_table *table, int idx)
 {
 	free_dive(table->dives[idx]);
 	remove_from_dive_table(table, idx);
+}
+
+struct dive *get_dive_from_table(int nr, const struct dive_table *dt)
+{
+	if (nr >= dt->nr || nr < 0)
+		return NULL;
+	return dt->dives[nr];
 }
 
 /* This removes a dive from the global dive table but doesn't free the

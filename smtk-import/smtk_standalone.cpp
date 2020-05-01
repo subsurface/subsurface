@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "core/dive.h"
+#include "core/divelist.h"
 #include "smrtk2ssrfc_window.h"
 #include <QApplication>
 #include <QDebug>

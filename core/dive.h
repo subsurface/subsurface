@@ -128,16 +128,10 @@ struct divecomputer {
 	struct divecomputer *next;
 };
 
-typedef struct dive_table {
-	int nr, allocated;
-	struct dive **dives;
-} dive_table_t;
-
-static const dive_table_t empty_dive_table = { 0, 0, (struct dive **)0 };
-
 struct picture;
 struct dive_site;
 struct dive_site_table;
+struct dive_table;
 struct dive_trip;
 struct trip_table;
 struct full_text_cache;
@@ -248,7 +242,6 @@ extern int quit, force_root, ignore_bt;
 extern char *testqml;
 #endif
 
-extern struct dive_table dive_table;
 extern struct dive displayed_dive;
 extern unsigned int dc_number;
 extern struct dive *current_dive;

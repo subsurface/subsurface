@@ -3,6 +3,7 @@
 #define FILE_H
 
 #include <sys/stat.h>
+#include <stdio.h>
 
 struct memblock {
 	void *buffer;

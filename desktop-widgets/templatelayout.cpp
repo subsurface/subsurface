@@ -4,6 +4,7 @@
 #include <list>
 
 #include "templatelayout.h"
+#include "core/divelist.h"
 #include "core/selection.h"
 
 QList<QString> grantlee_templates, grantlee_statistics_templates;

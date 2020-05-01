@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include <QTextDocument>
 
+#include "core/dive.h"
 #include "core/qthelper.h"
 #include "core/divesite.h"
 #include "core/trip.h"

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/importgps.h"
+#include "core/dive.h" // for utc_mkdate()
 
 /* Import dive coordinates from a GPS device and synchronise them with the dive profile information
    of a dive computer. This file contains the infrastructure to:
@@ -152,4 +153,3 @@ void  ImportGPS::timeZoneEditChanged()
 	getCoordsFromGPXFile(&coords, fileName);
 	updateUI();
 }
-

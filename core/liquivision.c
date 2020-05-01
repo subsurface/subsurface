@@ -3,7 +3,7 @@
 
 #include "ssrf.h"
 #include "divesite.h"
-#include "divelist.h"
+#include "dive.h"
 #include "file.h"
 #include "strndup.h"
 

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "trip.h"
+#include "dive.h"
 #include "subsurface-string.h"
 #include "selection.h"
 #include "table.h"
