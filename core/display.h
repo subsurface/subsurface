@@ -34,7 +34,7 @@ extern int is_default_dive_computer(const char *, const char *);
 
 typedef void (*device_callback_t)(const char *name, void *userdata);
 
-int enumerate_devices(device_callback_t callback, void *userdata, unsigned int transport);
+extern int enumerate_devices(device_callback_t callback, void *userdata, unsigned int transport);
 
 #define AMB_PERCENTAGE 50.0
 
