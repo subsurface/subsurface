@@ -1,3 +1,4 @@
+Desktop: fix profile display of planned dives with surface segments
 maps: show the dive site as marker when opening Google Maps
 Mobile: fix false rejection of Subsurface cloud SSL certificate
 Mobile: fix misdetection of Shearwater Petrel 2 on iOS

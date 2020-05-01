@@ -391,6 +391,7 @@ static void calculate_max_limits_new(struct dive *dive, struct divecomputer *giv
 {
 	struct divecomputer *dc = &(dive->dc);
 	bool seen = false;
+	bool found_sample_beyond_last_event = false;
 	int maxdepth = dive->maxdepth.mm;
 	int maxtime = 0;
 	int maxpressure = 0, minpressure = INT_MAX;
@@ -418,6 +419,14 @@ static void calculate_max_limits_new(struct dive *dive, struct divecomputer *giv
 		struct sample *s = dc->sample;
 		struct event *ev;
 
+		/* Make sure we can fit all events */
+		ev = dc->events;
+		while (ev) {
+			if (ev->time.seconds > maxtime)
+				maxtime = ev->time.seconds;
+			ev = ev->next;
+		}
+
 		while (--i >= 0) {
 			int depth = s->depth.mm;
 			int pressure = s->pressure[0].mbar;
@@ -440,19 +449,16 @@ static void calculate_max_limits_new(struct dive *dive, struct divecomputer *giv
 
 			if (depth > maxdepth)
 				maxdepth = s->depth.mm;
-			if ((depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD || in_planner()) &&
-			    s->time.seconds > maxtime)
+			/* Make sure that we get the first sample beyond the last event.
+			 * If maxtime is somewhere in the middle of the last segment,
+			 * populate_plot_entries() gets confused leading to display artifacts. */
+			if ((depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD || in_planner() || !found_sample_beyond_last_event) &&
+			    s->time.seconds > maxtime) {
+				found_sample_beyond_last_event = true;
 				maxtime = s->time.seconds;
+			}
 			lastdepth = depth;
 			s++;
-		}
-
-		/* Make sure we can fit all events */
-		ev = dc->events;
-		while (ev) {
-			if (ev->time.seconds > maxtime)
-				maxtime = ev->time.seconds;
-			ev = ev->next;
 		}
 
 		dc = dc->next;
