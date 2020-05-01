@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#include "dive.h"
 #include "divesite.h"
 #include "errorhelper.h"
 #include "subsurface-string.h"

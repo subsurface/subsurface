@@ -6,6 +6,7 @@
 
 #include "core/divesite.h"
 #include "core/trip.h"
+#include "core/dive.h"
 
 #include <QUndoCommand>
 #include <QCoreApplication>	// For Q_DECLARE_TR_FUNCTIONS

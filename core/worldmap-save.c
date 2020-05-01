@@ -9,6 +9,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "dive.h"
 #include "membuffer.h"
 #include "divesite.h"
 #include "errorhelper.h"

@@ -2,6 +2,7 @@
 #include "qt-models/divepicturemodel.h"
 #include "core/metrics.h"
 #include "core/divelist.h" // for mark_divelist_changed()
+#include "core/dive.h"
 #include "core/imagedownloader.h"
 #include "core/picture.h"
 #include "core/qthelper.h"

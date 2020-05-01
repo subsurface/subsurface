@@ -16,6 +16,7 @@
 #include "device.h"
 #include "file.h"
 #include "divesite.h"
+#include "dive.h"
 #include "errorhelper.h"
 #include "ssrf.h"
 #include "tag.h"

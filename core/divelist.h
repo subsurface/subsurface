@@ -2,14 +2,24 @@
 #ifndef DIVELIST_H
 #define DIVELIST_H
 
-#include "dive.h"
+#include "units.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+struct dive;
+struct trip_table;
+struct dive_site_table;
 struct deco_state;
 extern int shown_dives;
+
+struct dive_table {
+	int nr, allocated;
+	struct dive **dives;
+};
+static const struct dive_table empty_dive_table = { 0, 0, (struct dive **)0 };
+extern struct dive_table dive_table;
 
 /* this is used for both git and xml format */
 #define DATAFORMAT_VERSION 3

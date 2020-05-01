@@ -4,6 +4,8 @@
 
 #define MAX_EVENT_NAME 128
 
+#include "dive.h" // for struct event!
+
 #include <sqlite3.h>
 
 typedef union {

@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include "dive.h"
 #include "gettext.h"
 #include "subsurface-string.h"
 #include "libdivecomputer.h"
@@ -3919,13 +3920,6 @@ struct dive *get_dive(int nr)
 	if (nr >= dive_table.nr || nr < 0)
 		return NULL;
 	return dive_table.dives[nr];
-}
-
-struct dive *get_dive_from_table(int nr, const struct dive_table *dt)
-{
-	if (nr >= dt->nr || nr < 0)
-		return NULL;
-	return dt->dives[nr];
 }
 
 struct dive_site *get_dive_site_for_dive(const struct dive *dive)

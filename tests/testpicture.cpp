@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testpicture.h"
+#include "core/dive.h"
 #include "core/divesite.h"
 #include "core/errorhelper.h"
 #include "core/picture.h"

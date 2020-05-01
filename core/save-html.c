@@ -5,6 +5,7 @@
 #endif
 
 #include "save-html.h"
+#include "dive.h"
 #include "qthelper.h"
 #include "gettext.h"
 #include "divesite.h"

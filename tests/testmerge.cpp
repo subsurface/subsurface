@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testmerge.h"
+#include "core/dive.h" // for save_dives()
 #include "core/divesite.h"
 #include "core/file.h"
 #include "core/trip.h"

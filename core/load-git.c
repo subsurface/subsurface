@@ -15,6 +15,7 @@
 
 #include "gettext.h"
 
+#include "dive.h"
 #include "divesite.h"
 #include "errorhelper.h"
 #include "trip.h"

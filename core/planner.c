@@ -10,7 +10,8 @@
 #include <ctype.h>
 #include <string.h>
 #include "ssrf.h"
-#include "divelist.h"
+#include "dive.h"
+#include "divelist.h" // for init_decompression()
 #include "subsurface-string.h"
 #include "deco.h"
 #include "errorhelper.h"

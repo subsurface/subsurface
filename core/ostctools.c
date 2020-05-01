@@ -7,7 +7,7 @@
 #include "ssrf.h"
 #include "subsurface-string.h"
 #include "gettext.h"
-#include "divelist.h"
+#include "dive.h"
 #include "file.h"
 #include "libdivecomputer.h"
 

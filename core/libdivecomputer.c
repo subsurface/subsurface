@@ -17,7 +17,7 @@
 #include "divesite.h"
 #include "subsurface-string.h"
 #include "device.h"
-#include "divelist.h"
+#include "dive.h"
 #include "display.h"
 #include "errorhelper.h"
 #include "sha1.h"

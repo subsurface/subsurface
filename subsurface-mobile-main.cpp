@@ -6,6 +6,7 @@
 #include <string.h>
 #include <time.h>
 
+#include "core/dive.h"
 #include "core/color.h"
 #include "core/downloadfromdcthread.h"
 #include "core/qt-gui.h"

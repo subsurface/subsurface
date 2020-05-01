@@ -3,6 +3,7 @@
 #include <QDir>
 #include <QtConcurrent>
 #include "core/membuffer.h"
+#include "core/dive.h"
 #include "core/divesite.h"
 #include "core/gettextfromc.h"
 #include "core/tag.h"
