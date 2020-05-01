@@ -398,8 +398,6 @@ extern void subsurface_command_line_exit(int *, char ***);
 
 #define FRACTION(n, x) ((unsigned)(n) / (x)), ((unsigned)(n) % (x))
 
-#define DECOTIMESTEP 60 /* seconds. Unit of deco stop times */
-
 extern bool is_dc_planner(const struct divecomputer *dc);
 extern bool has_planned(const struct dive *dive, bool planned);
 
