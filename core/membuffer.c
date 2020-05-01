@@ -9,7 +9,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "dive.h"
+#include "units.h"
 #include "membuffer.h"
 
 /* Only for internal use */

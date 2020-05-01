@@ -396,8 +396,6 @@ extern const char *existing_filename;
 extern void subsurface_command_line_init(int *, char ***);
 extern void subsurface_command_line_exit(int *, char ***);
 
-#define FRACTION(n, x) ((unsigned)(n) / (x)), ((unsigned)(n) % (x))
-
 extern bool is_dc_planner(const struct divecomputer *dc);
 extern bool has_planned(const struct dive *dive, bool planned);
 
