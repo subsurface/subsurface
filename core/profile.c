@@ -256,7 +256,7 @@ static velocity_t velocity(int speed)
 	return v;
 }
 
-struct plot_info *analyze_plot_info(struct plot_info *pi)
+static void analyze_plot_info(struct plot_info *pi)
 {
 	int i;
 	int nr = pi->nr;
@@ -292,8 +292,6 @@ struct plot_info *analyze_plot_info(struct plot_info *pi)
 	/* get minmax data */
 	for (i = 0; i < nr; i++)
 		analyze_plot_info_minmax(pi, i);
-
-	return pi;
 }
 
 /*
