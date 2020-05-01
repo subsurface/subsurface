@@ -195,7 +195,6 @@ void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)
 			name += QString::fromUtf8(mb.buffer, mb.len);
 			free_buffer(&mb);
 		}
-		lastgasmix = mix;
 	} else if (same_string(internalEvent->name, "modechange")) {
 		name += QString(": %1").arg(gettextFromC::tr(divemode_text_ui[internalEvent->value]));
 	} else if (value) {
