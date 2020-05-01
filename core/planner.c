@@ -16,6 +16,7 @@
 #include "deco.h"
 #include "errorhelper.h"
 #include "planner.h"
+#include "subsurface-time.h"
 #include "gettext.h"
 #include "libdivecomputer/parser.h"
 #include "qthelper.h"

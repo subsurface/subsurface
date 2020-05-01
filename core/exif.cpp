@@ -35,7 +35,7 @@
 #include <cstdint>
 #include <stdio.h>
 #include <vector>
-#include "dive.h"
+#include "subsurface-time.h"
 
 using std::string;
 

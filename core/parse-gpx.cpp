@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "core/parse-gpx.h"
-#include "core/dive.h"
+#include "core/subsurface-time.h"
 #include <QFile>
 #include <QXmlStreamReader>
 

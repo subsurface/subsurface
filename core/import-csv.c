@@ -8,6 +8,7 @@
 #include "divelist.h"
 #include "file.h"
 #include "parse.h"
+#include "subsurface-time.h"
 #include "divelist.h"
 #include "gettext.h"
 #include "import-csv.h"

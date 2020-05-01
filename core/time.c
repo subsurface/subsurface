@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
+#include "subsurface-time.h"
 #include <string.h>
-#include "dive.h"
 
 /*
  * The date handling internally works in seconds since

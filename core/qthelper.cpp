@@ -12,11 +12,10 @@
 #include "version.h"
 #include "errorhelper.h"
 #include "planner.h"
-#include "time.h"
+#include "subsurface-time.h"
 #include "gettextfromc.h"
 #include "applicationstate.h"
 #include "metadata.h"
-#include <sys/time.h>
 #include "exif.h"
 #include "file.h"
 #include "picture.h"

@@ -5,7 +5,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -26,6 +25,7 @@
 #include "picture.h"
 #include "qthelper.h"
 #include "tag.h"
+#include "subsurface-time.h"
 
 const char *saved_git_id = NULL;
 

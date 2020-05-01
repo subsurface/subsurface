@@ -29,6 +29,7 @@
 #include "errorhelper.h"
 #include "file.h"
 #include "tag.h"
+#include "subsurface-time.h"
 #include "core/subsurface-string.h"
 
 #define ERR_FS_ALMOST_FULL QT_TRANSLATE_NOOP("gettextFromC", "Uemis Zurich: the file system is almost full.\nDisconnect/reconnect the dive computer\nand click \'Retry\'")

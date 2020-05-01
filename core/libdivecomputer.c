@@ -12,7 +12,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <time.h>
 #include "gettext.h"
 #include "divesite.h"
 #include "subsurface-string.h"
@@ -21,6 +20,7 @@
 #include "display.h"
 #include "errorhelper.h"
 #include "sha1.h"
+#include "subsurface-time.h"
 #include "timer.h"
 
 #include <libdivecomputer/version.h>

@@ -15,6 +15,7 @@
 
 #include "dive.h"
 #include "file.h"
+#include "subsurface-time.h"
 #include "units.h"
 #include "sha1.h"
 #include "gettext.h"

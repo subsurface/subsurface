@@ -2,6 +2,7 @@
 
 #include "trip.h"
 #include "dive.h"
+#include "subsurface-time.h"
 #include "subsurface-string.h"
 #include "selection.h"
 #include "table.h"

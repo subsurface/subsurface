@@ -7,6 +7,7 @@
 #include "core/divesite.h"
 #include "core/gettextfromc.h"
 #include "core/tag.h"
+#include "core/subsurface-time.h"
 #include "core/file.h"
 #include "core/errorhelper.h"
 #include "core/divefilter.h"
