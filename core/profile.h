@@ -88,9 +88,9 @@ struct ev_select {
 extern void compare_samples(struct plot_info *p1, int idx1, int idx2, char *buf, int bufsize, bool sum);
 extern struct plot_info *analyze_plot_info(struct plot_info *pi);
 extern void init_plot_info(struct plot_info *pi);
-extern void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast, struct deco_state *planner_ds);
+extern void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast, const struct deco_state *planner_ds);
 extern void calculate_deco_information(struct deco_state *ds, const struct deco_state *planner_de, const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi, bool print_mode);
-extern int get_plot_details_new(struct plot_info *pi, int time, struct membuffer *);
+extern int get_plot_details_new(const struct plot_info *pi, int time, struct membuffer *);
 extern void free_plot_info_data(struct plot_info *pi);
 
 /*
@@ -101,12 +101,12 @@ extern void free_plot_info_data(struct plot_info *pi);
  * We also need to add 180 seconds at the end so the min/max
  * plots correctly
  */
-extern int get_maxtime(struct plot_info *pi);
+extern int get_maxtime(const struct plot_info *pi);
 
 /* get the maximum depth to which we want to plot
  * take into account the additional verical space needed to plot
  * partial pressure graphs */
-extern int get_maxdepth(struct plot_info *pi);
+extern int get_maxdepth(const struct plot_info *pi);
 
 static inline int get_plot_pressure_data(const struct plot_info *pi, int idx, enum plot_pressure sensor, int cylinder)
 {

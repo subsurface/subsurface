@@ -67,7 +67,7 @@ static void dump_pi(struct plot_info *pi)
  * We also need to add 180 seconds at the end so the min/max
  * plots correctly
  */
-int get_maxtime(struct plot_info *pi)
+int get_maxtime(const struct plot_info *pi)
 {
 	int seconds = pi->maxtime;
 
@@ -99,7 +99,7 @@ int get_maxtime(struct plot_info *pi)
 /* get the maximum depth to which we want to plot
  * take into account the additional vertical space needed to plot
  * partial pressure graphs */
-int get_maxdepth(struct plot_info *pi)
+int get_maxdepth(const struct plot_info *pi)
 {
 	unsigned mm = pi->maxdepth;
 	int md;
@@ -1367,7 +1367,7 @@ void init_plot_info(struct plot_info *pi)
  * The old data will be freed. Before the first call, the plot
  * info must be initialized with init_plot_info().
  */
-void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast, struct deco_state *planner_ds)
+void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast, const struct deco_state *planner_ds)
 {
 	int o2, he, o2max;
 #ifndef SUBSURFACE_MOBILE
@@ -1425,14 +1425,14 @@ struct divecomputer *select_dc(struct dive *dive)
 	return get_dive_dc(dive, i);
 }
 
-static void plot_string(struct plot_info *pi, int idx, struct membuffer *b)
+static void plot_string(const struct plot_info *pi, int idx, struct membuffer *b)
 {
 	int pressurevalue, mod, ead, end, eadd;
 	const char *depth_unit, *pressure_unit, *temp_unit, *vertical_speed_unit;
 	double depthvalue, tempvalue, speedvalue, sacvalue;
 	int decimals, cyl;
 	const char *unit;
-	struct plot_data *entry = pi->entry + idx;
+	const struct plot_data *entry = pi->entry + idx;
 
 	depthvalue = get_depth_units(entry->depth, NULL, &depth_unit);
 	put_format_loc(b, translate("gettextFromC", "@: %d:%02d\nD: %.1f%s\n"), FRACTION(entry->sec, 60), depthvalue, depth_unit);
@@ -1580,7 +1580,7 @@ static void plot_string(struct plot_info *pi, int idx, struct membuffer *b)
 	strip_mb(b);
 }
 
-int get_plot_details_new(struct plot_info *pi, int time, struct membuffer *mb)
+int get_plot_details_new(const struct plot_info *pi, int time, struct membuffer *mb)
 {
 	int i;
 
