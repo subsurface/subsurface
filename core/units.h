@@ -13,6 +13,8 @@ extern "C" {
 #include <stdbool.h>
 #endif
 
+#define FRACTION(n, x) ((unsigned)(n) / (x)), ((unsigned)(n) % (x))
+
 #define O2_IN_AIR 209 // permille
 #define N2_IN_AIR 781
 #define O2_DENSITY 1331 // mg/Liter
