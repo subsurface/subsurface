@@ -802,6 +802,8 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 		item->setZValue(2);
 		scene()->addItem(item);
 		eventItems.push_back(item);
+		if (event_is_gaschange(event))
+			lastgasmix = get_gasmix_from_event(&displayed_dive, event);
 		event = event->next;
 	}
 
