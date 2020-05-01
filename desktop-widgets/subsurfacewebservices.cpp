@@ -5,6 +5,7 @@
 #include "core/settings/qPrefCloudStorage.h"
 #include "desktop-widgets/mainwindow.h"
 #include "commands/command.h"
+#include "core/divesite.h"
 #include "core/trip.h"
 #include "core/errorhelper.h"
 #include "core/file.h"

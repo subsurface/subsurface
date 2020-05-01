@@ -8,6 +8,7 @@
 #include "desktop-widgets/mapwidget.h"
 #include "core/color.h"
 #include "core/divefilter.h"
+#include "core/divesite.h"
 #include "core/divesitehelpers.h"
 #include "desktop-widgets/modeldelegates.h"
 #include "core/subsurface-qt/divelistnotifier.h"
