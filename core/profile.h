@@ -86,7 +86,6 @@ struct ev_select {
 };
 
 extern void compare_samples(struct plot_info *p1, int idx1, int idx2, char *buf, int bufsize, bool sum);
-extern struct plot_info *analyze_plot_info(struct plot_info *pi);
 extern void init_plot_info(struct plot_info *pi);
 extern void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast, const struct deco_state *planner_ds);
 extern void calculate_deco_information(struct deco_state *ds, const struct deco_state *planner_de, const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi, bool print_mode);
