@@ -2,8 +2,7 @@
 #ifndef PARSE_GPX_H
 #define PARSE_GPX_H
 
-
-#include <QFile>
+#include <QString>
 
 struct dive_coords {         // This structure holds important information after parsing the GPX file:
 	time_t start_dive;            // Start time of the current dive, obtained using current_dive (local time)
@@ -19,4 +18,3 @@ struct dive_coords {         // This structure holds important information after
 int getCoordsFromGPXFile(dive_coords *coords, QString fileName);
 
 #endif
-
