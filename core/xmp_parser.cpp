@@ -1,11 +1,10 @@
 #include "xmp_parser.h"
 #include "subsurface-string.h"
+#include "subsurface-time.h"
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <cctype>
-
-extern "C" timestamp_t utc_mktime(struct tm *tm); // declared in core/dive.h
 
 static timestamp_t parse_xmp_date(const char *date)
 {

@@ -13,7 +13,6 @@
 #include <unistd.h>
 #include <assert.h>
 #define __USE_XOPEN
-#include <time.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
 #include <libxml/tree.h>
@@ -26,6 +25,7 @@
 #include "errorhelper.h"
 #include "subsurface-string.h"
 #include "parse.h"
+#include "subsurface-time.h"
 #include "trip.h"
 #include "device.h"
 #include "membuffer.h"

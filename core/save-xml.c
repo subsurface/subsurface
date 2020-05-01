@@ -9,7 +9,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <time.h>
 #include <unistd.h>
 #include <fcntl.h>
 
@@ -17,6 +16,7 @@
 #include "divesite.h"
 #include "errorhelper.h"
 #include "subsurface-string.h"
+#include "subsurface-time.h"
 #include "trip.h"
 #include "device.h"
 #include "file.h"

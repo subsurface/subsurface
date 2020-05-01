@@ -309,9 +309,6 @@ extern bool subsurface_user_is_root(void);
 
 extern timestamp_t get_times();
 
-extern timestamp_t utc_mktime(struct tm *tm);
-extern void utc_mkdate(timestamp_t, struct tm *tm);
-
 extern struct dive *alloc_dive(void);
 extern void free_dive(struct dive *);
 extern void free_dive_dcs(struct divecomputer *dc);
