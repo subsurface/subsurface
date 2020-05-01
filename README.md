@@ -1,9 +1,9 @@
 # Subsurface [![Build Status](https://travis-ci.org/Subsurface-divelog/subsurface.svg?branch=master)](https://travis-ci.org/Subsurface-divelog/subsurface)
 
-This is the README file for Subsurface 4.9.3
+This is the README file for Subsurface 4.9.4
 
 Please check the `ReleaseNotes.txt` for details about new features and
-changes since Subsurface 4.9.2 (and earlier versions).
+changes since Subsurface 4.9.3 (and earlier versions).
 
 Subsurface can be found at http://subsurface-divelog.org
 
@@ -16,7 +16,8 @@ License: GPLv2
 
 We frequently make new test versions of Subsurface available at
 http://subsurface-divelog.org/downloads/test/ and you always can get the
-latest builds (with some caveats about installability) at
+latest builds (with some caveats about installability) there, in the
+Subsurface-daily repos on Launchpad and OBS and at
 https://github.com/subsurface/subsurface/releases/tag/ci-release
 
 These tend to contain the latest bug fixes and features, but also
