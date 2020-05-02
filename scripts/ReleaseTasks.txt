@@ -1,0 +1,13 @@
+Work on release announcement draft in subsurface.github.io repo to get translations
+
+Run scripts/makeRelease.sh
+Upload sources to webserver
+Push sources and tags to github
+
+Check that automated Linux distro builds have succeeded and are pushed to RELEASE
+Notarize automated Mac build and upload to new and old webserver (for version check)
+Copy Windows installers and AppImages from GitHub to new and old webserver (for version check)
+
+Add date to release announcement draft and move to the corresponding _posts directories
+Update links on website
+Post to Scubaboard
