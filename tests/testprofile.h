@@ -8,7 +8,7 @@
 class TestProfile : public QObject {
 	Q_OBJECT
 private slots:
-	void testRedCeiling();
+	void testProfileExport();
 };
 
 #endif
