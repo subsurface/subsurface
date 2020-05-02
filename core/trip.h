@@ -17,6 +17,7 @@ typedef struct dive_trip
 	/* Used by the io-routines to mark trips that have already been written. */
 	bool saved;
 	bool autogen;
+	bool selected;
 } dive_trip_t;
 
 typedef struct trip_table {
