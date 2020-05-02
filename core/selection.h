@@ -23,6 +23,7 @@ extern void select_newest_visible_dive();
 extern void select_single_dive(struct dive *d); // wrapper for setSelection() with a single dive. NULL clears the selection.
 extern void select_trip(struct dive_trip *trip);
 extern void deselect_trip(struct dive_trip *trip);
+extern void clear_selection(void);
 
 #if DEBUG_SELECTION_TRACKING
 extern void dump_selection(void);

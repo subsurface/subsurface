@@ -1354,6 +1354,7 @@ int get_dive_id_closest_to(timestamp_t when)
 void clear_dive_file_data()
 {
 	fulltext_unregister_all();
+	clear_selection();
 
 	while (dive_table.nr)
 		delete_single_dive(0);

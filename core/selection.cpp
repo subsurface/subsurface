@@ -253,3 +253,16 @@ extern "C" void deselect_trip(struct dive_trip *trip)
 		amount_trips_selected--;
 	}
 }
+
+extern "C" void clear_selection(void)
+{
+	current_dive = nullptr;
+	amount_selected = 0;
+	amount_trips_selected = 0;
+	int i;
+	struct dive *dive;
+	for_each_dive (i, dive)
+		dive->selected = false;
+	for (int i = 0; i < trip_table.nr; ++i)
+		trip_table.trips[i]->selected = false;
+}
