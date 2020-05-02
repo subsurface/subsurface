@@ -46,7 +46,6 @@ extern char *get_dive_gas_string(const struct dive *dive);
 
 extern int dive_table_get_insertion_index(struct dive_table *table, struct dive *dive);
 extern void add_to_dive_table(struct dive_table *table, int idx, struct dive *dive);
-extern void append_dive(struct dive *dive);
 extern void insert_dive(struct dive_table *table, struct dive *d);
 extern void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
 extern int get_divenr(const struct dive *dive);
