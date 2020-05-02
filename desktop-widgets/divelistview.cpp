@@ -554,10 +554,13 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 			continue;
 		const QAbstractItemModel *model = index.model();
 		struct dive *dive = model->data(index, DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
-		if (!dive) // it's a trip!
-			deselect_dives_in_trip(model->data(index, DiveTripModelBase::TRIP_ROLE).value<dive_trip *>());
-		else
+		if (!dive) { // it's a trip!
+			dive_trip *trip = model->data(index, DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
+			deselect_trip(trip);
+			deselect_dives_in_trip(trip);
+		} else {
 			deselect_dive(dive);
+		}
 	}
 	Q_FOREACH (const QModelIndex &index, newSelected.indexes()) {
 		if (index.column() != 0)
@@ -566,9 +569,11 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 		const QAbstractItemModel *model = index.model();
 		struct dive *dive = model->data(index, DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
 		if (!dive) { // it's a trip!
+			dive_trip *trip = model->data(index, DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
+			select_trip(trip);
+			select_dives_in_trip(trip);
 			if (model->rowCount(index)) {
 				QItemSelection selection;
-				select_dives_in_trip(model->data(index, DiveTripModelBase::TRIP_ROLE).value<dive_trip *>());
 				selection.select(index.child(0, 0), index.child(model->rowCount(index) - 1, 0));
 				selectionModel()->select(selection, QItemSelectionModel::Select | QItemSelectionModel::Rows);
 				selectionModel()->setCurrentIndex(index, QItemSelectionModel::Select | QItemSelectionModel::NoUpdate);
