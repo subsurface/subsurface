@@ -25,7 +25,10 @@
 
 © Subsurface developer team
 2011-2020</source>
-        <translation type="unfinished"/>
+        <translation>Vesione: %1
+
+© Subsurface developer team
+2011-2020</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
@@ -383,7 +386,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="114"/>
         <source>Check credentials...</source>
-        <translation type="unfinished"/>
+        <translation>Controlle le credenziali...</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="127"/>
@@ -612,12 +615,12 @@
     <message>
         <location filename="../commands/command_base.cpp" line="65"/>
         <source>all dives</source>
-        <translation type="unfinished"/>
+        <translation>tutte le immersioni</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="400"/>
         <source>add dive</source>
-        <translation type="unfinished"/>
+        <translation>aggiungi immersione</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="469"/>
@@ -627,22 +630,22 @@
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="550"/>
         <source>delete %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>cancella %n immersione</numerusform><numerusform>cancella %n immersioni</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="586"/>
         <source>shift time of %n dives</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Cambia l&apos;orario delle %n immersione</numerusform><numerusform>Cambia l&apos;orario delle %n immersioni</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="634"/>
         <source>renumber %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>rinumera %n immersione</numerusform><numerusform>rinumera %n immersioni</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="686"/>
         <source>remove %n dive(s) from trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>rimuovi %n immersione dal viaggio</numerusform><numerusform>rimuovi %n immersioni dal viaggio</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="698"/>
@@ -657,22 +660,22 @@
     <message>
         <location filename="../commands/command_divelist.cpp" line="717"/>
         <source>create trip</source>
-        <translation type="unfinished"/>
+        <translation>crea un nuovo viaggio</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="730"/>
         <source>autogroup dives</source>
-        <translation type="unfinished"/>
+        <translation>raggruppa l&apos;immersioni</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="825"/>
         <source>split dive</source>
-        <translation type="unfinished"/>
+        <translation>dividi l&apos;immersione</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="843"/>
         <source>split dive computer</source>
-        <translation type="unfinished"/>
+        <translation>dividi il computer subacqueo</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="899"/>
@@ -682,17 +685,17 @@
     <message>
         <location filename="../commands/command_divelist.cpp" line="905"/>
         <source>delete dive computer</source>
-        <translation type="unfinished"/>
+        <translation>cancella computer subacqueo</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="910"/>
         <source>merge dive</source>
-        <translation type="unfinished"/>
+        <translation>unisci immersioni</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="78"/>
         <source>add dive site</source>
-        <translation type="unfinished"/>
+        <translation>aggiungi sito d&apos;immersione</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="100"/>
@@ -702,7 +705,7 @@
     <message numerus="yes">
         <location filename="../commands/command_divesite.cpp" line="136"/>
         <source>delete %n dive site(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>cancella %n sito di immersione</numerusform><numerusform>cancella %n siti di immersione</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="156"/>
@@ -9865,7 +9868,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="20"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2020&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Libretto delle immersioni multipiattaforma&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2020&lt;/span&gt;</translation>
     </message>
 </context>
 <context>

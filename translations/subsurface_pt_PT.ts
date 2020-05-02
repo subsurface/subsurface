@@ -25,7 +25,10 @@
 
 © Subsurface developer team
 2011-2020</source>
-        <translation type="unfinished"/>
+        <translation>Version: %1
+
+© Subsurface developer team
+2011-2020</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
@@ -933,7 +936,7 @@
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1044"/>
         <source>Add cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Adicionar garrafa (%n mergulho)</numerusform><numerusform>Adicionar garrafa (%n mergulhos)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -949,7 +952,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="72"/>
         <source>Add dive mode switch to %1</source>
-        <translation type="unfinished"/>
+        <translation>Adicionar alteração no modo de mergulho a %1</translation>
     </message>
 </context>
 <context>
@@ -957,7 +960,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="78"/>
         <source>Add set point change</source>
-        <translation type="unfinished"/>
+        <translation>Adicionar mudança no setpoint</translation>
     </message>
 </context>
 <context>
@@ -965,12 +968,12 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="1209"/>
         <source>Edit cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Editar garrafa</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1211"/>
         <source>Edit cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Editar garrafa (%n mergulho)</numerusform><numerusform>Editar garrafa (%n mergulhos)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -978,12 +981,12 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="1161"/>
         <source>Remove cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Remover garrafa</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1163"/>
         <source>Remove cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Remover garrafa (%n mergulho)</numerusform><numerusform>Remover garrafa (%n mergulhos)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -991,7 +994,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="113"/>
         <source>Remove %1 event</source>
-        <translation type="unfinished"/>
+        <translation>Remover %1 evento</translation>
     </message>
 </context>
 <context>
@@ -999,7 +1002,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="85"/>
         <source>Rename bookmark to %1</source>
-        <translation type="unfinished"/>
+        <translation>Alterar nome do marcador para %1</translation>
     </message>
 </context>
 <context>
@@ -2904,7 +2907,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="90"/>
         <source>Create trip with dive</source>
-        <translation type="unfinished"/>
+        <translation>Criar viagem com o mergulho</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="96"/>
@@ -3576,17 +3579,17 @@ do GPS actual:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="260"/>
         <source>CSV summary dive details</source>
-        <translation type="unfinished"/>
+        <translation>Sumário dos detalhes de mergulho em CSV</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="270"/>
         <source>CSV Dive computer dive profile</source>
-        <translation type="unfinished"/>
+        <translation>CSV do perfil de mergulho  do computador de mergulho</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="280"/>
         <source>CSV Computed Profile Panel data</source>
-        <translation type="unfinished"/>
+        <translation>CSV do perfil calculado</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="290"/>
@@ -3745,7 +3748,7 @@ do GPS actual:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="87"/>
         <source>Comma separated values describing the dive profile as downloaded from dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Valores separados por vírgulas que descrevem o perfil do mergulho tal como descarregado do computador de mergulho.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="89"/>
@@ -3800,7 +3803,7 @@ do GPS actual:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="109"/>
         <source>Write the computed Profile Panel data to a CSV file.</source>
-        <translation type="unfinished"/>
+        <translation>Gravar os dados do painel do perfil calculado para um ficheiro CSV.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="147"/>
@@ -5160,22 +5163,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="499"/>
         <source>setting up dive sites</source>
-        <translation type="unfinished"/>
+        <translation>preparar locais de mergulho</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="501"/>
         <source>finish populating data store</source>
-        <translation type="unfinished"/>
+        <translation>a terminar de popular o armazenamento</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="503"/>
         <source>setting up internal data structures</source>
-        <translation type="unfinished"/>
+        <translation>preparar as estruturas internas de dados</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="506"/>
         <source>done setting up internal data structures</source>
-        <translation type="unfinished"/>
+        <translation>preparadas as estruturas de dados internas</translation>
     </message>
 </context>
 <context>
@@ -8991,7 +8994,7 @@ Por favor exporte o modelo para outro ficheiro.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="384"/>
         <source>Processing %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>A processar %1 mergulhos</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="387"/>
@@ -9133,19 +9136,19 @@ Por favor exporte o modelo para outro ficheiro.</translation>
     <message>
         <location filename="../core/fulltext.cpp" line="147"/>
         <source>Create full text index</source>
-        <translation type="unfinished"/>
+        <translation>Criar índice de pesquisa de texto</translation>
     </message>
     <message>
         <location filename="../core/fulltext.cpp" line="148"/>
         <location filename="../qt-models/divetripmodel.cpp" line="727"/>
         <source>start processing</source>
-        <translation type="unfinished"/>
+        <translation>iniciar processamento</translation>
     </message>
     <message>
         <location filename="../core/fulltext.cpp" line="153"/>
         <location filename="../qt-models/divetripmodel.cpp" line="756"/>
         <source>%1 dives processed</source>
-        <translation type="unfinished"/>
+        <translation>%1 mergulhos processados</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="197"/>
@@ -9155,7 +9158,7 @@ Por favor exporte o modelo para outro ficheiro.</translation>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="726"/>
         <source>populate data model</source>
-        <translation type="unfinished"/>
+        <translation>popular modelo de dados</translation>
     </message>
 </context>
 <context>
@@ -9866,7 +9869,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="20"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2020&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Software de registo de mergulhos multi-plataforma&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, e outros, 2011-2020&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -13857,7 +13860,7 @@ O Uemis Zurich está correctamente ligado?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="529"/>
         <source>Enable verbose logging (currently: %1)</source>
-        <translation type="unfinished"/>
+        <translation>Ligar registo verboso (presentemente: %1)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="531"/>
@@ -13867,7 +13870,7 @@ O Uemis Zurich está correctamente ligado?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="740"/>
         <source>Subsurface-mobile starting up</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface-mobile a iniciar</translation>
     </message>
 </context>
 <context>

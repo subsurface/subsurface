@@ -25,7 +25,10 @@
 
 © Subsurface developer team
 2011-2020</source>
-        <translation type="unfinished"/>
+        <translation>Версия: %1
+
+© Subsurface екипа
+2011-2020</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
@@ -933,7 +936,7 @@
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1044"/>
         <source>Add cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Добави бутилка (%n гмуркане(гмуркания))</numerusform><numerusform>Добави бутилка (%n гмуркане(гмуркания))</numerusform></translation>
     </message>
 </context>
 <context>
@@ -949,7 +952,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="72"/>
         <source>Add dive mode switch to %1</source>
-        <translation type="unfinished"/>
+        <translation>Добави режим на превключване за %1</translation>
     </message>
 </context>
 <context>
@@ -957,7 +960,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="78"/>
         <source>Add set point change</source>
-        <translation type="unfinished"/>
+        <translation>Добави set-point промяна</translation>
     </message>
 </context>
 <context>
@@ -965,12 +968,12 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="1209"/>
         <source>Edit cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Редактирай бутилка</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1211"/>
         <source>Edit cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Редактирай бутилка (%n гмуркане(гмуркания))</numerusform><numerusform>Редактирай бутилка (%n гмуркане(гмуркания))</numerusform></translation>
     </message>
 </context>
 <context>
@@ -978,12 +981,12 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="1161"/>
         <source>Remove cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Премахни бутилка</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1163"/>
         <source>Remove cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Премахни бутилка (%n гмуркане(гмуркания))</numerusform><numerusform>Премахни бутилка (%n гмуркане(гмуркания))</numerusform></translation>
     </message>
 </context>
 <context>
@@ -991,7 +994,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="113"/>
         <source>Remove %1 event</source>
-        <translation type="unfinished"/>
+        <translation>Премахни %1 събитие</translation>
     </message>
 </context>
 <context>
@@ -999,7 +1002,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="85"/>
         <source>Rename bookmark to %1</source>
-        <translation type="unfinished"/>
+        <translation>Преименувай показалец в %1</translation>
     </message>
 </context>
 <context>
@@ -2904,7 +2907,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="90"/>
         <source>Create trip with dive</source>
-        <translation type="unfinished"/>
+        <translation>Създай пътуване с гмуркане</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="96"/>
@@ -3576,17 +3579,17 @@ GPS позиция:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="260"/>
         <source>CSV summary dive details</source>
-        <translation type="unfinished"/>
+        <translation>CSV сумарни данни</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="270"/>
         <source>CSV Dive computer dive profile</source>
-        <translation type="unfinished"/>
+        <translation>CSV профил за гмуркачески компютър</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="280"/>
         <source>CSV Computed Profile Panel data</source>
-        <translation type="unfinished"/>
+        <translation>CSV данни за изчислен профил панел</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="290"/>
@@ -3745,7 +3748,7 @@ GPS позиция:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="87"/>
         <source>Comma separated values describing the dive profile as downloaded from dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Данни разделени със запетая, описващи профил изтеглен от гмуркаческия компютър.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="89"/>
@@ -3800,7 +3803,7 @@ GPS позиция:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="109"/>
         <source>Write the computed Profile Panel data to a CSV file.</source>
-        <translation type="unfinished"/>
+        <translation>Запиши изчислените профил данни като CSV файл.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="147"/>
@@ -5160,22 +5163,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="499"/>
         <source>setting up dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Настройване на места за гмуркане</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="501"/>
         <source>finish populating data store</source>
-        <translation type="unfinished"/>
+        <translation>Завършване на попълването на хранилището на данни</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="503"/>
         <source>setting up internal data structures</source>
-        <translation type="unfinished"/>
+        <translation>Настройка на вътрешните структури за данни</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="506"/>
         <source>done setting up internal data structures</source>
-        <translation type="unfinished"/>
+        <translation>Настройка на вътрешните структури за данни приключена</translation>
     </message>
 </context>
 <context>
@@ -8993,7 +8996,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="384"/>
         <source>Processing %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Обработка на %1 гмуркания</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="387"/>
@@ -9135,19 +9138,19 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../core/fulltext.cpp" line="147"/>
         <source>Create full text index</source>
-        <translation type="unfinished"/>
+        <translation>Създаване на индекс за пълен текс</translation>
     </message>
     <message>
         <location filename="../core/fulltext.cpp" line="148"/>
         <location filename="../qt-models/divetripmodel.cpp" line="727"/>
         <source>start processing</source>
-        <translation type="unfinished"/>
+        <translation>Начало на обработка</translation>
     </message>
     <message>
         <location filename="../core/fulltext.cpp" line="153"/>
         <location filename="../qt-models/divetripmodel.cpp" line="756"/>
         <source>%1 dives processed</source>
-        <translation type="unfinished"/>
+        <translation>%1 обработени гмуркания</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="197"/>
@@ -9157,7 +9160,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="726"/>
         <source>populate data model</source>
-        <translation type="unfinished"/>
+        <translation>Попълване на модела за данни</translation>
     </message>
 </context>
 <context>
@@ -9868,7 +9871,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="20"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2020&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;мулти-платформен, гмуркачески регистър софтуер&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Линус Торвалдс, Дърк Хондел, Томаз Канабрава, и други, 2011-2020&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -13860,7 +13863,7 @@ Uemis Zurich включен ли е правилно?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="529"/>
         <source>Enable verbose logging (currently: %1)</source>
-        <translation type="unfinished"/>
+        <translation>Активиране на подробен лог (текущо състояние: %1)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="531"/>
@@ -13870,7 +13873,7 @@ Uemis Zurich включен ли е правилно?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="740"/>
         <source>Subsurface-mobile starting up</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface-mobile се стартира</translation>
     </message>
 </context>
 <context>

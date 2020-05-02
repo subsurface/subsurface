@@ -5,7 +5,7 @@
         <location filename="../mobile-widgets/qml/About.qml" line="10"/>
         <location filename="../mobile-widgets/qml/About.qml" line="20"/>
         <source>About Subsurface-mobile</source>
-        <translation>Tietoja Subsurface mobiilista sync</translation>
+        <translation>Tietoja Subsurface mobiilista</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="37"/>
@@ -25,7 +25,10 @@
 
 © Subsurface developer team
 2011-2020</source>
-        <translation type="unfinished"/>
+        <translation>Versio: %1
+
+© Subsurfacen kehitystiimi
+2011-2020</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
@@ -933,7 +936,7 @@
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1044"/>
         <source>Add cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Lisää säiliö (%n sukellus)</numerusform><numerusform>Lisää säiliö (%n sukellusta)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -949,7 +952,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="72"/>
         <source>Add dive mode switch to %1</source>
-        <translation type="unfinished"/>
+        <translation>Lisää sukellustyypin vaihto %1:ksi</translation>
     </message>
 </context>
 <context>
@@ -957,7 +960,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="78"/>
         <source>Add set point change</source>
-        <translation type="unfinished"/>
+        <translation>Aseta setpoint-muutos</translation>
     </message>
 </context>
 <context>
@@ -965,12 +968,12 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="1209"/>
         <source>Edit cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Muokkaa säiliötä</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1211"/>
         <source>Edit cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Muokkaa säiliötä (%n sukellus)</numerusform><numerusform>Muokkaa säiliötä (%n sukellusta)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -978,12 +981,12 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="1161"/>
         <source>Remove cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Poista säiliö</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1163"/>
         <source>Remove cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Poista säiliö (%n sukellus)</numerusform><numerusform>Poista säiliö (%n sukellusta)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -991,7 +994,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="113"/>
         <source>Remove %1 event</source>
-        <translation type="unfinished"/>
+        <translation>Poista %1 tapahtuma</translation>
     </message>
 </context>
 <context>
@@ -999,7 +1002,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="85"/>
         <source>Rename bookmark to %1</source>
-        <translation type="unfinished"/>
+        <translation>Vaihda kirjanmerkki %1:ksi</translation>
     </message>
 </context>
 <context>
@@ -2904,7 +2907,7 @@ poistaa valitun sukellustietokoneen?</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="90"/>
         <source>Create trip with dive</source>
-        <translation type="unfinished"/>
+        <translation>Luo sukelluksesta retki</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="96"/>
@@ -3575,17 +3578,17 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="260"/>
         <source>CSV summary dive details</source>
-        <translation type="unfinished"/>
+        <translation>CSV-yhteenveto sukelluksen tiedoista</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="270"/>
         <source>CSV Dive computer dive profile</source>
-        <translation type="unfinished"/>
+        <translation>CSV sukellusprofiili</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="280"/>
         <source>CSV Computed Profile Panel data</source>
-        <translation type="unfinished"/>
+        <translation>CSV laskettu profiilitiedot</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="290"/>
@@ -3744,7 +3747,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="87"/>
         <source>Comma separated values describing the dive profile as downloaded from dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Pilkulla erotettu lista, joka kuvaa sukelluksen syvyysprofiilin ladattuna sukellustietokoneesta.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="89"/>
@@ -3799,7 +3802,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="109"/>
         <source>Write the computed Profile Panel data to a CSV file.</source>
-        <translation type="unfinished"/>
+        <translation>Kirjoita laskettu profiilidata CSV-tiedostoon.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="147"/>
@@ -5159,22 +5162,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="499"/>
         <source>setting up dive sites</source>
-        <translation type="unfinished"/>
+        <translation>järjestä sukelluskohteet</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="501"/>
         <source>finish populating data store</source>
-        <translation type="unfinished"/>
+        <translation>lopeta tietosäilön muodostus</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="503"/>
         <source>setting up internal data structures</source>
-        <translation type="unfinished"/>
+        <translation>luodaan sisäiset tietorakenteet</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="506"/>
         <source>done setting up internal data structures</source>
-        <translation type="unfinished"/>
+        <translation>sisäisten tietorakenteiden luonti valmis</translation>
     </message>
 </context>
 <context>
@@ -8992,7 +8995,7 @@ Tallenna muokkauksesi eri nimelle.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="384"/>
         <source>Processing %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Käsitellään %1 sukellusta</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="387"/>
@@ -9134,19 +9137,19 @@ Tallenna muokkauksesi eri nimelle.</translation>
     <message>
         <location filename="../core/fulltext.cpp" line="147"/>
         <source>Create full text index</source>
-        <translation type="unfinished"/>
+        <translation>Luo täysi teksti-indeksi</translation>
     </message>
     <message>
         <location filename="../core/fulltext.cpp" line="148"/>
         <location filename="../qt-models/divetripmodel.cpp" line="727"/>
         <source>start processing</source>
-        <translation type="unfinished"/>
+        <translation>aloita käsittely</translation>
     </message>
     <message>
         <location filename="../core/fulltext.cpp" line="153"/>
         <location filename="../qt-models/divetripmodel.cpp" line="756"/>
         <source>%1 dives processed</source>
-        <translation type="unfinished"/>
+        <translation>%1 sukellusta käsitelty</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="197"/>
@@ -9156,7 +9159,7 @@ Tallenna muokkauksesi eri nimelle.</translation>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="726"/>
         <source>populate data model</source>
-        <translation type="unfinished"/>
+        <translation>luo tietomalli</translation>
     </message>
 </context>
 <context>
@@ -9867,7 +9870,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="20"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2020&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Sukelluslokiohjelmisto useille käyttöjärjestelmille&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, ja tiimi, 2011-2020 &lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -13857,7 +13860,7 @@ Onko Uemis Zurich kytketty oikein?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="529"/>
         <source>Enable verbose logging (currently: %1)</source>
-        <translation type="unfinished"/>
+        <translation>Ota käyttöön tarkempi lokitus (tällä hetkellä: %1)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="531"/>
@@ -13867,7 +13870,7 @@ Onko Uemis Zurich kytketty oikein?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="740"/>
         <source>Subsurface-mobile starting up</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface-mobiilin käynnistys</translation>
     </message>
 </context>
 <context>

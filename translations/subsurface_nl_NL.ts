@@ -25,7 +25,10 @@
 
 © Subsurface developer team
 2011-2020</source>
-        <translation type="unfinished"/>
+        <translation>Versie: %1
+
+© Subsurface ontwikkelteam
+2011-2020</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
@@ -632,7 +635,7 @@
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="586"/>
         <source>shift time of %n dives</source>
-        <translation><numerusform>Tijdstip van %n duik verschuiven</numerusform><numerusform>tijdstip van %n duiken verschuiven</numerusform></translation>
+        <translation><numerusform>tijdstip van %n duik verschuiven</numerusform><numerusform>tijdstip van %n duiken verschuiven</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="634"/>
@@ -933,7 +936,7 @@
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1044"/>
         <source>Add cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Fles toevoegen (%n duik)</numerusform><numerusform>Fles toevoegen (%n duiken)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -949,7 +952,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="72"/>
         <source>Add dive mode switch to %1</source>
-        <translation type="unfinished"/>
+        <translation>Duikmodus wissel naar %1 toevoegen</translation>
     </message>
 </context>
 <context>
@@ -957,7 +960,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="78"/>
         <source>Add set point change</source>
-        <translation type="unfinished"/>
+        <translation>Setpoint wissel toevoegen</translation>
     </message>
 </context>
 <context>
@@ -965,12 +968,12 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="1209"/>
         <source>Edit cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Fles bewerken</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1211"/>
         <source>Edit cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Fles bewerken (%n duik)</numerusform><numerusform>Fles bewerken (%n duiken)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -978,12 +981,12 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="1161"/>
         <source>Remove cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Fles verwijderen</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1163"/>
         <source>Remove cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Fles verwijderen (%n duik)</numerusform><numerusform>Fles verwijderen (%n duiken)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -991,7 +994,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="113"/>
         <source>Remove %1 event</source>
-        <translation type="unfinished"/>
+        <translation>Gebeurtenis %1 verwijderen</translation>
     </message>
 </context>
 <context>
@@ -999,7 +1002,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="85"/>
         <source>Rename bookmark to %1</source>
-        <translation type="unfinished"/>
+        <translation>Bladwijzer naar %1 hernoemen</translation>
     </message>
 </context>
 <context>
@@ -2723,7 +2726,8 @@
         <location filename="../desktop-widgets/simplewidgets.cpp" line="470"/>
         <source>Notes:
 </source>
-        <translation>Notities:</translation>
+        <translation>Notities:
+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="472"/>
@@ -2739,13 +2743,15 @@
         <location filename="../desktop-widgets/simplewidgets.cpp" line="484"/>
         <source>Cylinders:
 </source>
-        <translation>Flessen:</translation>
+        <translation>Flessen:
+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="492"/>
         <source>Weights:
 </source>
-        <translation>Gewichten</translation>
+        <translation>Gewichten:
+</translation>
     </message>
 </context>
 <context>
@@ -2901,7 +2907,7 @@ duikcomputer wilt verwijderen?</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="90"/>
         <source>Create trip with dive</source>
-        <translation type="unfinished"/>
+        <translation>Maak trip met duik</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="96"/>
@@ -3573,17 +3579,17 @@ GPS locatie:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="260"/>
         <source>CSV summary dive details</source>
-        <translation type="unfinished"/>
+        <translation>CSV overzicht duikdetails</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="270"/>
         <source>CSV Dive computer dive profile</source>
-        <translation type="unfinished"/>
+        <translation>CSV Duikcomputer duikprofiel</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="280"/>
         <source>CSV Computed Profile Panel data</source>
-        <translation type="unfinished"/>
+        <translation>CSV Berekende profielvenster gegevens</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="290"/>
@@ -3742,12 +3748,12 @@ GPS locatie:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="87"/>
         <source>Comma separated values describing the dive profile as downloaded from dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Door komma&apos;s gescheiden waarden die het duikprofiel beschrijven zoals gedownload van de duikcomputer.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="89"/>
         <source>Comma separated values of the dive information. This includes most of the dive details but no profile information.</source>
-        <translation>Waarden gescheiden door komma&apos;s met duikinformatie. Deze omvatten een groot deel van de informatie, uitgezonderd het duikprofiel.</translation>
+        <translation>Door komma&apos;s gescheiden waarden van de duikinformatie. Dit omvat een groot deel van de informatie, uitgezonderd het duikprofiel.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="91"/>
@@ -3797,7 +3803,7 @@ GPS locatie:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="109"/>
         <source>Write the computed Profile Panel data to a CSV file.</source>
-        <translation type="unfinished"/>
+        <translation>De berekende profielvenster gegevens naar een CSV-bestand schrijven.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="147"/>
@@ -5157,22 +5163,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="499"/>
         <source>setting up dive sites</source>
-        <translation type="unfinished"/>
+        <translation>opzetten van duikstekken</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="501"/>
         <source>finish populating data store</source>
-        <translation type="unfinished"/>
+        <translation>klaar met vullen van dataopslag</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="503"/>
         <source>setting up internal data structures</source>
-        <translation type="unfinished"/>
+        <translation>opzetten van interne datastructuren</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="506"/>
         <source>done setting up internal data structures</source>
-        <translation type="unfinished"/>
+        <translation>klaar met het opzetten van interne datastructuren</translation>
     </message>
 </context>
 <context>
@@ -6102,7 +6108,7 @@ Bestaande duikstek</translation>
         <location filename="../desktop-widgets/importgps.ui" line="374"/>
         <location filename="../desktop-widgets/importgps.ui" line="499"/>
         <source>h:mm</source>
-        <translation>u:mm</translation>
+        <translation>h:mm</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="385"/>
@@ -8892,7 +8898,7 @@ Exporteer naar een ander bestand.</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1451"/>
         <source>Add setpoint change</source>
-        <translation>Voeg setpoint wissel toe</translation>
+        <translation>Setpoint wissel toevoegen</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1452"/>
@@ -8938,7 +8944,7 @@ Exporteer naar een ander bestand.</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1528"/>
         <source>Unhide all events</source>
-        <translation>Toon alle gebeurtenissen</translation>
+        <translation>Alle gebeurtenissen tonen</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1552"/>
@@ -8991,7 +8997,7 @@ Exporteer naar een ander bestand.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="384"/>
         <source>Processing %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Verwerken van %1 duiken</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="387"/>
@@ -9134,19 +9140,19 @@ Kan niet verbinden met de Subsurface cloud opslag, terug naar lokale mode</trans
     <message>
         <location filename="../core/fulltext.cpp" line="147"/>
         <source>Create full text index</source>
-        <translation type="unfinished"/>
+        <translation>Textindex opbouwen</translation>
     </message>
     <message>
         <location filename="../core/fulltext.cpp" line="148"/>
         <location filename="../qt-models/divetripmodel.cpp" line="727"/>
         <source>start processing</source>
-        <translation type="unfinished"/>
+        <translation>bezig met verwerken</translation>
     </message>
     <message>
         <location filename="../core/fulltext.cpp" line="153"/>
         <location filename="../qt-models/divetripmodel.cpp" line="756"/>
         <source>%1 dives processed</source>
-        <translation type="unfinished"/>
+        <translation>%1 duiken verwerkt</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="197"/>
@@ -9156,7 +9162,7 @@ Kan niet verbinden met de Subsurface cloud opslag, terug naar lokale mode</trans
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="726"/>
         <source>populate data model</source>
-        <translation type="unfinished"/>
+        <translation>datamodel vullen</translation>
     </message>
 </context>
 <context>
@@ -9235,7 +9241,7 @@ Kan niet verbinden met de Subsurface cloud opslag, terug naar lokale mode</trans
         <location filename="../desktop-widgets/setpoint.ui" line="17"/>
         <location filename="../subsurface/desktop-widgets/ui_setpoint.h" line="82"/>
         <source>Add setpoint change</source>
-        <translation>Voeg setpoint wissel toe</translation>
+        <translation>Setpoint wissel toevoegen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="43"/>
@@ -9605,7 +9611,7 @@ Rapporteer a.u.b. DC&apos;s die deze instelling nodig hebben</translation>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="95"/>
         <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="196"/>
         <source>h:mm</source>
-        <translation>u:mm</translation>
+        <translation>h:mm</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="105"/>
@@ -9734,7 +9740,7 @@ Bestanden met onjuiste datum/tijd</translation>
         <location filename="../desktop-widgets/shifttimes.ui" line="126"/>
         <location filename="../subsurface/desktop-widgets/ui_shifttimes.h" line="142"/>
         <source>h:mm</source>
-        <translation>u:mm</translation>
+        <translation>h:mm</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shifttimes.ui" line="136"/>
@@ -9867,7 +9873,7 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="20"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2020&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform duiklog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava en anderen, 2011-2020&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -12950,7 +12956,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="533"/>
         <source>Show more details</source>
-        <translation>Toon meer details</translation>
+        <translation>Meer details tonen</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="536"/>
@@ -13858,7 +13864,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="529"/>
         <source>Enable verbose logging (currently: %1)</source>
-        <translation type="unfinished"/>
+        <translation>Uitgebreide logging inschakelen (momenteel: %1)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="531"/>
@@ -13868,7 +13874,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="740"/>
         <source>Subsurface-mobile starting up</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface-mobile is aan het opstarten</translation>
     </message>
 </context>
 <context>
