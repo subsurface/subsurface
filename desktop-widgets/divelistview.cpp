@@ -263,9 +263,8 @@ void DiveListView::rowsInserted(const QModelIndex &parent, int start, int end)
 // Shouldn't the core-layer call us?
 void DiveListView::tripChanged(dive_trip *trip, TripField)
 {
-	// First check if the trip is already selected (and only
-	// this trip, as only then is it displayed). Is so, then do nothing.
-	if (singleSelectedTrip() == trip)
+	// First check if the trip is already selected (and only this trip, as only then is it displayed).
+	if (single_selected_trip() == trip)
 		return;
 
 	unselectDives();
@@ -295,23 +294,6 @@ void DiveListView::unselectDives()
 	clear_selection();
 	// clear the Qt selection
 	selectionModel()->clearSelection();
-}
-
-// This function returns a trip if there is one selected trip or NULL.
-// Returning all selected trips turned out to be too slow.
-dive_trip_t *DiveListView::singleSelectedTrip()
-{
-	dive_trip_t *res = nullptr;
-	for (const QModelIndex &index: selectionModel()->selectedRows()) {
-		if (index.parent().isValid())
-			continue;
-		if (dive_trip_t *trip = index.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>()) {
-			if (res)
-				return nullptr; // More than one
-			res = trip;
-		}
-	}
-	return res;
 }
 
 bool DiveListView::eventFilter(QObject *, QEvent *event)

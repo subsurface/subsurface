@@ -254,6 +254,18 @@ extern "C" void deselect_trip(struct dive_trip *trip)
 	}
 }
 
+extern "C" struct dive_trip *single_selected_trip()
+{
+	if (amount_trips_selected != 1)
+		return NULL;
+	for (int i = 0; i < trip_table.nr; ++i) {
+		if (trip_table.trips[i]->selected)
+			return trip_table.trips[i];
+	}
+	fprintf(stderr, "warning: found no selected trip even though one should be selected\n");
+	return NULL; // shouldn't happen
+}
+
 extern "C" void clear_selection(void)
 {
 	current_dive = nullptr;
