@@ -13,6 +13,14 @@
 
 namespace Command {
 
+// Helper function that takes care to unselect trips that are removed from the backend
+static void remove_trip_from_backend(dive_trip *trip)
+{
+	if (trip->selected)
+		deselect_trip(trip);
+	remove_trip(trip, &trip_table);	// Remove trip from backend
+}
+
 // This helper function removes a dive, takes ownership of the dive and adds it to a DiveToAdd structure.
 // If the trip the dive belongs to becomes empty, it is removed and added to the tripsToAdd vector.
 // It is crucial that dives are added in reverse order of deletion, so that the indices are correctly
@@ -32,7 +40,7 @@ DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<OwningTripPtr> &t
 		diveSiteCountChanged(d->dive_site);
 	res.site = unregister_dive_from_dive_site(d);
 	if (res.trip && res.trip->dives.nr == 0) {
-		remove_trip(res.trip, &trip_table);	// Remove trip from backend
+		remove_trip_from_backend(res.trip);	// Remove trip from backend
 		tripsToAdd.emplace_back(res.trip);	// Take ownership of trip
 	}
 
@@ -265,7 +273,7 @@ static OwningTripPtr moveDiveToTrip(DiveToTrip &diveToTrip)
 	// Remove dive from trip - if this is the last dive in the trip, remove the whole trip.
 	dive_trip *trip = unregister_dive_from_trip(diveToTrip.dive);
 	if (trip && trip->dives.nr == 0) {
-		remove_trip(trip, &trip_table);	// Remove trip from backend
+		remove_trip_from_backend(trip);	// Remove trip from backend
 		res.reset(trip);
 	}
 

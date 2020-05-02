@@ -3,12 +3,13 @@
 
 #include "selection.h"
 #include "divelist.h"
-#include "display.h" // for amount_selected
+#include "trip.h"
 #include "subsurface-qt/divelistnotifier.h"
 
 #include <QVector>
 
 int amount_selected;
+static int amount_trips_selected;
 
 extern "C" void select_dive(struct dive *dive)
 {
@@ -155,6 +156,11 @@ void setSelection(const std::vector<dive *> &selection, dive *currentDive)
 	QVector<dive *> divesToSelect;
 	divesToSelect.reserve(selection.size());
 
+	// Since we select only dives, there are no selected trips!
+	amount_trips_selected = 0;
+	for (int i = 0; i < trip_table.nr; ++i)
+		trip_table.trips[i]->selected = false;
+
 	// TODO: We might want to keep track of selected dives in a more efficient way!
 	int i;
 	dive *d;
@@ -230,4 +236,20 @@ extern "C" void select_newest_visible_dive()
 
 	// No visible dive -> deselect all
 	select_single_dive(nullptr);
+}
+
+extern "C" void select_trip(struct dive_trip *trip)
+{
+	if (trip && !trip->selected) {
+		trip->selected = true;
+		amount_trips_selected++;
+	}
+}
+
+extern "C" void deselect_trip(struct dive_trip *trip)
+{
+	if (trip && trip->selected) {
+		trip->selected = false;
+		amount_trips_selected--;
+	}
 }
