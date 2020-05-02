@@ -786,15 +786,6 @@ void delete_single_dive(int idx)
 	delete_dive_from_table(&dive_table, idx);
 }
 
-/* add a dive at the end of the global dive table and keep track
- * of the number of selected dives. */
-void append_dive(struct dive *dive)
-{
-	add_to_dive_table(&dive_table, dive_table.nr, dive);
-	if (dive->selected)
-		amount_selected++;
-}
-
 int shown_dives = 0;
 bool filter_dive(struct dive *d, bool shown)
 {
