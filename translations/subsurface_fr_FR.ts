@@ -25,7 +25,10 @@
 
 © Subsurface developer team
 2011-2020</source>
-        <translation type="unfinished"/>
+        <translation>Version: %1
+
+© L’équipe de développement Subsurface
+2011-2020</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
@@ -444,7 +447,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="70"/>
         <source>Weight</source>
-        <translation>Poids</translation>
+        <translation>Lestage</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="70"/>
@@ -594,7 +597,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Fréquence cardiaque de l&apos;échantillon</translation>
     </message>
 </context>
 <context>
@@ -622,7 +625,7 @@
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="469"/>
         <source>import %n dive(s) from %1</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>importer %n plongée depuis %1</numerusform><numerusform>importer %n plongées depuis %1</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="550"/>
@@ -632,17 +635,17 @@
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="586"/>
         <source>shift time of %n dives</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Décaler les heures de %n plongée</numerusform><numerusform>Décaler les heures des %n plongées</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="634"/>
         <source>renumber %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>renuméroter %n plongées</numerusform><numerusform>renuméroter %n plongées</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="686"/>
         <source>remove %n dive(s) from trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>supprimer %n plongées du voyage</numerusform><numerusform>supprimer %n plongées du voyage</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="698"/>
@@ -697,7 +700,7 @@
     <message>
         <location filename="../commands/command_divesite.cpp" line="100"/>
         <source>import dive sites from %1</source>
-        <translation type="unfinished"/>
+        <translation>importer les sites de plongées depuis %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divesite.cpp" line="136"/>
@@ -707,32 +710,32 @@
     <message>
         <location filename="../commands/command_divesite.cpp" line="156"/>
         <source>purge unused dive sites</source>
-        <translation type="unfinished"/>
+        <translation>purger les sites de plongées inutilisés</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="191"/>
         <source>Edit dive site name</source>
-        <translation type="unfinished"/>
+        <translation>Modifier le nom du site de plongée</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="214"/>
         <source>Edit dive site description</source>
-        <translation type="unfinished"/>
+        <translation>Modifier la description du site de plongée</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="237"/>
         <source>Edit dive site notes</source>
-        <translation type="unfinished"/>
+        <translation>Modifier les notes du site de plongée</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="260"/>
         <source>Edit dive site country</source>
-        <translation type="unfinished"/>
+        <translation>Modifier le pays du site de plongée</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="285"/>
         <source>Edit dive site location</source>
-        <translation type="unfinished"/>
+        <translation>Modifier la localisation du site de plongée</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="314"/>
@@ -747,7 +750,7 @@
     <message>
         <location filename="../commands/command_divesite.cpp" line="396"/>
         <source>apply GPS fixes</source>
-        <translation type="unfinished"/>
+        <translation>Appliquer les corrections GPS</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="133"/>
@@ -775,7 +778,7 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="207"/>
         <source>rating</source>
-        <translation type="unfinished"/>
+        <translation>évaluation</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="213"/>
@@ -790,7 +793,7 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="225"/>
         <source>current</source>
-        <translation type="unfinished"/>
+        <translation>actuel</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="231"/>
@@ -850,32 +853,32 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="588"/>
         <source>tags</source>
-        <translation type="unfinished"/>
+        <translation>étiquettes</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="606"/>
         <source>buddies</source>
-        <translation type="unfinished"/>
+        <translation>Partenaires</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="624"/>
         <source>dive master</source>
-        <translation type="unfinished"/>
+        <translation>guide de palanquée</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="747"/>
         <source>Paste onto %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Copier sur %n plongée</numerusform><numerusform>Copier sur %n plongées</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="823"/>
         <source>Replan dive</source>
-        <translation type="unfinished"/>
+        <translation>Replannifier la plongée</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="823"/>
         <source>Edit profile</source>
-        <translation type="unfinished"/>
+        <translation>Modifier le profil</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="870"/>
@@ -890,22 +893,22 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="956"/>
         <source>Remove weight</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer le lestage</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="958"/>
         <source>Remove weight (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Supprimer le lestage (%n plongée)</numerusform><numerusform>Supprimer le lestage (%n plongées)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="987"/>
         <source>Edit weight</source>
-        <translation type="unfinished"/>
+        <translation>Modifier le lestage</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="989"/>
         <source>Edit weight (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Modifier le lestage (%n plongée)</numerusform><numerusform>Modifier le lestage (%n plongées)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="1284"/>
@@ -2595,7 +2598,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="144"/>
         <source>Weights</source>
-        <translation>Poids</translation>
+        <translation>Lestage</translation>
     </message>
 </context>
 <context>
@@ -2702,17 +2705,17 @@
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="462"/>
         <source>Dive master: </source>
-        <translation type="unfinished"/>
+        <translation>Moniteur/Guide :</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="464"/>
         <source>Buddy: </source>
-        <translation type="unfinished"/>
+        <translation>Équipier :</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="466"/>
         <source>Rating: </source>
-        <translation type="unfinished"/>
+        <translation>Évaluation :</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="468"/>
@@ -2723,7 +2726,8 @@
         <location filename="../desktop-widgets/simplewidgets.cpp" line="470"/>
         <source>Notes:
 </source>
-        <translation type="unfinished"/>
+        <translation>Notes :
+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="472"/>
@@ -2739,7 +2743,8 @@
         <location filename="../desktop-widgets/simplewidgets.cpp" line="484"/>
         <source>Cylinders:
 </source>
-        <translation type="unfinished"/>
+        <translation>Blocs :
+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="492"/>
@@ -2772,7 +2777,7 @@
         <location filename="../desktop-widgets/divecomponentselection.ui" line="80"/>
         <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="146"/>
         <source>Weights</source>
-        <translation>Poids</translation>
+        <translation>Lestage</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="87"/>
@@ -2907,22 +2912,22 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="96"/>
         <source>Mark dive as valid</source>
-        <translation type="unfinished"/>
+        <translation>Marquer la plongée comme valide</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="96"/>
         <source>Mark dive as invalid</source>
-        <translation type="unfinished"/>
+        <translation>Marquer la plongée comme invalide</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="101"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="107"/>
         <source>Redo</source>
-        <translation type="unfinished"/>
+        <translation>Refaire</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="221"/>
@@ -2955,7 +2960,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="139"/>
         <source>Dive number:</source>
-        <translation type="unfinished"/>
+        <translation>Numéro de la plongée:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="151"/>
@@ -3017,7 +3022,7 @@ GPS actuelle :</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="333"/>
         <source>Weight:</source>
-        <translation>Poids:</translation>
+        <translation>Lestage:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="347"/>
@@ -3132,7 +3137,7 @@ GPS actuelle :</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="411"/>
         <source>Weight:</source>
-        <translation>Poids:</translation>
+        <translation>Lestage:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="419"/>
@@ -3259,12 +3264,12 @@ GPS actuelle :</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="285"/>
         <source>Mark dive as valid</source>
-        <translation type="unfinished"/>
+        <translation>Marquer la comme valide</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="285"/>
         <source>Mark dive as invalid</source>
-        <translation type="unfinished"/>
+        <translation>Marquer la comme invalide</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="291"/>
@@ -3284,12 +3289,12 @@ GPS actuelle :</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="318"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="324"/>
         <source>Redo</source>
-        <translation type="unfinished"/>
+        <translation>Refaire</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="339"/>
@@ -3437,27 +3442,27 @@ GPS actuelle :</translation>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="872"/>
         <source>Open media files</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir les fichiers médias</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="875"/>
         <source>Media files</source>
-        <translation type="unfinished"/>
+        <translation>Fichiers médias</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="876"/>
         <source>Image files</source>
-        <translation type="unfinished"/>
+        <translation>Fichiers image</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="877"/>
         <source>Video files</source>
-        <translation type="unfinished"/>
+        <translation>Fichiers vidéos</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="878"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Tous les fichiers</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="927"/>
@@ -4182,7 +4187,7 @@ GPS actuelle :</translation>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="738"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="967"/>
         <source>Weight</source>
-        <translation>Poids</translation>
+        <translation>Lestage</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="739"/>
@@ -4193,7 +4198,7 @@ GPS actuelle :</translation>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="837"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Fréquence cardiaque de l&apos;échantillon</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="1020"/>
@@ -4359,12 +4364,12 @@ GPS actuelle :</translation>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
         <source> m/min</source>
-        <translation type="unfinished"/>
+        <translation> m/min</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
         <source> ft/min</source>
-        <translation type="unfinished"/>
+        <translation> ft/min</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
@@ -4379,12 +4384,12 @@ GPS actuelle :</translation>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="15"/>
         <source> BAR</source>
-        <translation type="unfinished"/>
+        <translation> BAR</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="15"/>
         <source> PSI</source>
-        <translation type="unfinished"/>
+        <translation> PSI</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="40"/>
@@ -4833,7 +4838,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="18"/>
         <source>Dive summary</source>
-        <translation type="unfinished"/>
+        <translation>Résumé de la plongée</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="51"/>
@@ -4843,22 +4848,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="52"/>
         <source>1 month</source>
-        <translation type="unfinished"/>
+        <translation>1 mois</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="53"/>
         <source>3 months</source>
-        <translation type="unfinished"/>
+        <translation>3 mois</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="54"/>
         <source>6 months</source>
-        <translation type="unfinished"/>
+        <translation>6 mois</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="55"/>
         <source>1 year</source>
-        <translation type="unfinished"/>
+        <translation>1 an</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="59"/>
@@ -4964,7 +4969,7 @@ p, li { white-space: pre-wrap; }
     <message numerus="yes">
         <location filename="../qt-models/divetripmodel.cpp" line="75"/>
         <source>(%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>(%n plongée)</numerusform><numerusform>(%n plongées)</numerusform></translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="77"/>
@@ -5026,13 +5031,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="326"/>
         <location filename="../qt-models/divetripmodel.cpp" line="435"/>
         <source>Temp.(°%1)</source>
-        <translation type="unfinished"/>
+        <translation>Temp.(°%1)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="328"/>
         <location filename="../qt-models/divetripmodel.cpp" line="437"/>
         <source>Weight(%1)</source>
-        <translation>Poids (%1)</translation>
+        <translation>Lestage (%1)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="328"/>
@@ -5137,7 +5142,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="397"/>
         <source>Weight</source>
-        <translation>Poids</translation>
+        <translation>Lestage</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="405"/>
@@ -5287,7 +5292,7 @@ Existing Site</source>
     <message>
         <location filename="../qt-models/divesiteimportmodel.cpp" line="38"/>
         <source>Distance</source>
-        <translation type="unfinished"/>
+        <translation>Distance</translation>
     </message>
 </context>
 <context>
@@ -5594,12 +5599,12 @@ Existing Site</source>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="58"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Mot de passe:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="73"/>
         <source>Private</source>
-        <translation type="unfinished"/>
+        <translation>Privé</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="88"/>
@@ -5669,7 +5674,7 @@ Existing Site</source>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="198"/>
         <source>Next</source>
-        <translation type="unfinished"/>
+        <translation>Suivant</translation>
     </message>
 </context>
 <context>
@@ -6071,12 +6076,12 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="138"/>
         <source>   GPS   </source>
-        <translation type="unfinished"/>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="146"/>
         <source>   Dive   </source>
-        <translation type="unfinished"/>
+        <translation>Plongée</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="154"/>
@@ -6241,7 +6246,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="81"/>
         <source>Use GPS file</source>
-        <translation type="unfinished"/>
+        <translation>Utiliser un fichier GPS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="89"/>
@@ -6336,12 +6341,12 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="252"/>
         <source>Select GPS file to open</source>
-        <translation type="unfinished"/>
+        <translation>Sélectionner le fichier GPS à ouvrir</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="254"/>
         <source>GPS files (*.gpx *.GPX)</source>
-        <translation type="unfinished"/>
+        <translation>Fichiers GPS (*.gpx *.GPX)</translation>
     </message>
 </context>
 <context>
@@ -6391,7 +6396,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="147"/>
         <source>Duration (h:mm)</source>
-        <translation type="unfinished"/>
+        <translation>Durée (h:mm)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="231"/>
@@ -6486,7 +6491,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="103"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="220"/>
@@ -6517,7 +6522,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="562"/>
         <source>Warning: edited %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Attention : %1 plongées modifiées</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="492"/>
@@ -7548,7 +7553,7 @@ Si votre périphérique utilise le Bluetooth, effectuez la même préparation qu
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="10"/>
         <source>Cloud</source>
-        <translation type="unfinished"/>
+        <translation>Cloud</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="47"/>
@@ -7660,7 +7665,7 @@ Si votre périphérique utilise le Bluetooth, effectuez la même préparation qu
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="15"/>
         <source>Display</source>
-        <translation type="unfinished"/>
+        <translation>Afficher</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="330"/>
@@ -8228,7 +8233,7 @@ Voir http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="15"/>
         <source> Dive log</source>
-        <translation type="unfinished"/>
+        <translation>Carnet de plongée</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="28"/>
@@ -8266,7 +8271,7 @@ Voir http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="68"/>
         <source>VIDEOS</source>
-        <translation type="unfinished"/>
+        <translation>VIDEOS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="76"/>
@@ -8286,7 +8291,7 @@ Voir http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="114"/>
         <source>Path to ffmpeg:</source>
-        <translation type="unfinished"/>
+        <translation>Chemin vers ffmpeg:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="126"/>
@@ -8445,12 +8450,12 @@ Voir http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_reset.ui" line="50"/>
         <source>Reset all preferences</source>
-        <translation type="unfinished"/>
+        <translation>Réinitialiser les préférences</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_reset.cpp" line="6"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Réinitialiser</translation>
     </message>
 </context>
 <context>
@@ -8573,7 +8578,7 @@ Voir http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="177"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="365"/>
         <source>Weight</source>
-        <translation>Poids</translation>
+        <translation>Lestage</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="184"/>
@@ -8698,7 +8703,7 @@ Voir http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/printdialog.cpp" line="112"/>
         <source>Export Html</source>
-        <translation type="unfinished"/>
+        <translation>Exporter en Html</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printdialog.cpp" line="125"/>
@@ -8713,7 +8718,7 @@ Voir http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/printdialog.cpp" line="197"/>
         <source>Html file</source>
-        <translation type="unfinished"/>
+        <translation>Fichier html</translation>
     </message>
 </context>
 <context>
@@ -8991,7 +8996,7 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="384"/>
         <source>Processing %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Traitement de %1 plongées</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="387"/>
@@ -9052,22 +9057,22 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="652"/>
         <source>Incorrect email / password combination</source>
-        <translation type="unfinished"/>
+        <translation>Couple e-mail / mot de passe incorrect</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="657"/>
         <source>Cloud credentials require verification PIN</source>
-        <translation type="unfinished"/>
+        <translation>La connexion pour le cloud necessite un code PIN de vérification</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="660"/>
         <source>Incorrect PIN, please try again</source>
-        <translation type="unfinished"/>
+        <translation>PIN incorrect, veuillez essayer à nouveau</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="665"/>
         <source>PIN accepted, credentials verified</source>
-        <translation type="unfinished"/>
+        <translation>PIN accepté, informations de connexion vérifiées</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="674"/>
@@ -9110,7 +9115,7 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1074"/>
         <source>weight</source>
-        <translation>poids</translation>
+        <translation>lestage</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1364"/>
@@ -9419,7 +9424,7 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="305"/>
         <source>Font size</source>
-        <translation type="unfinished"/>
+        <translation>Taille de police</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="316"/>
@@ -9464,7 +9469,7 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="401"/>
         <source>meters</source>
-        <translation type="unfinished"/>
+        <translation>mètres</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="409"/>
@@ -9519,7 +9524,7 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="477"/>
         <source>Weight</source>
-        <translation>Poids</translation>
+        <translation>Lestage</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="481"/>
@@ -9534,7 +9539,7 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="501"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Avancé</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="510"/>
@@ -9566,7 +9571,7 @@ Please report DCs that need this setting</source>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="581"/>
         <source>Display</source>
-        <translation type="unfinished"/>
+        <translation>Afficher</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="589"/>
@@ -9893,12 +9898,12 @@ Fichiers avec dates/heures incorrectes</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="53"/>
         <source>Weights</source>
-        <translation>Poids</translation>
+        <translation>Lestage</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="54"/>
         <source>Add weight system</source>
-        <translation>Ajouter un système de poids</translation>
+        <translation>Ajouter un type de lestage</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="57"/>
@@ -9908,12 +9913,12 @@ Fichiers avec dates/heures incorrectes</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="61"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="188"/>
         <source>Warning: edited %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Attention : %1 plongées modifiées</translation>
     </message>
 </context>
 <context>
@@ -10060,7 +10065,7 @@ Fichiers avec dates/heures incorrectes</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="604"/>
         <source>Current</source>
-        <translation type="unfinished"/>
+        <translation>Actuel</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="635"/>
@@ -10123,12 +10128,12 @@ Fichiers avec dates/heures incorrectes</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="55"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="99"/>
         <source>Warning: edited %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Attention : %1 plongées modifiées</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="148"/>
@@ -11010,12 +11015,12 @@ Si vous ne souhaitez plus que Subsurface fasse cette vérification, cliquez sur 
     <message>
         <location filename="../qt-models/weightmodel.cpp" line="19"/>
         <source>Weight</source>
-        <translation>Poids</translation>
+        <translation>Lestage</translation>
     </message>
     <message>
         <location filename="../qt-models/weightmodel.cpp" line="72"/>
         <source>Clicking here will remove this weight system.</source>
-        <translation>Cliquer ici retirera ce système de poids.</translation>
+        <translation>Cliquer ici retirera ce type de lestage.</translation>
     </message>
 </context>
 <context>
@@ -12898,7 +12903,7 @@ EADD : %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="524"/>
         <source>Current</source>
-        <translation type="unfinished"/>
+        <translation>Actuel</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="525"/>
@@ -13076,7 +13081,7 @@ EADD : %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="564"/>
         <source>Weight</source>
-        <translation>Poids</translation>
+        <translation>Lestage</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="566"/>
@@ -13752,7 +13757,7 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="338"/>
         <source>Dive summary</source>
-        <translation type="unfinished"/>
+        <translation>Résumé de la plongée</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="349"/>
@@ -14333,7 +14338,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="336"/>
         <source>network error %1</source>
-        <translation type="unfinished"/>
+        <translation>Erreur réseau %1</translation>
     </message>
 </context>
 <context>
@@ -14351,7 +14356,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core/uploadDiveShare.cpp" line="110"/>
         <source>network error %1</source>
-        <translation type="unfinished"/>
+        <translation>Erreur réseau %1</translation>
     </message>
 </context>
 </TS>

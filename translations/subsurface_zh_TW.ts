@@ -25,7 +25,10 @@
 
 © Subsurface developer team
 2011-2020</source>
-        <translation type="unfinished"/>
+        <translation>版本: %1
+
+© Subsurface 開發團隊
+2011-2020</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>

@@ -25,7 +25,9 @@
 
 © Subsurface developer team
 2011-2020</source>
-        <translation type="unfinished"/>
+        <translation>Vesrsion: %1
+© Subsurface developer team
+2011-20120</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>

@@ -25,7 +25,10 @@
 
 © Subsurface developer team
 2011-2020</source>
-        <translation type="unfinished"/>
+        <translation>Version: %1
+
+© Subsurface utvecklingsteam
+2011-2020</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
@@ -406,7 +409,7 @@
     <message>
         <location filename="../core/cloudstorage.cpp" line="65"/>
         <source>Cloud account verification required, enter PIN in preferences</source>
-        <translation>Verifiering av molntjänstkonto krävs, ange PIN under inställningar</translation>
+        <translation>Verifiering av konto för molntjänst krävs, ange PIN under inställningar</translation>
     </message>
 </context>
 <context>
@@ -622,7 +625,7 @@
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="469"/>
         <source>import %n dive(s) from %1</source>
-        <translation><numerusform>importera %n dyk från %1</numerusform><numerusform>importera %n dyk från %1</numerusform></translation>
+        <translation><numerusform>import av %n dyk från %1</numerusform><numerusform>import av %n dyk från %1</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="550"/>
@@ -697,7 +700,7 @@
     <message>
         <location filename="../commands/command_divesite.cpp" line="100"/>
         <source>import dive sites from %1</source>
-        <translation>Importera dykplatser från %1</translation>
+        <translation>import av dykplatser från %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divesite.cpp" line="136"/>
@@ -860,7 +863,7 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="624"/>
         <source>dive master</source>
-        <translation>dive master</translation>
+        <translation>divemaster</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="747"/>
@@ -933,7 +936,7 @@
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1044"/>
         <source>Add cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Lägg till flaska (%n dyk)</numerusform><numerusform>Lägg till flaska (%n dyk)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -949,7 +952,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="72"/>
         <source>Add dive mode switch to %1</source>
-        <translation type="unfinished"/>
+        <translation>Lägg till byte av dykläge till %1</translation>
     </message>
 </context>
 <context>
@@ -957,7 +960,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="78"/>
         <source>Add set point change</source>
-        <translation type="unfinished"/>
+        <translation>Lägg till byte av setpoint</translation>
     </message>
 </context>
 <context>
@@ -965,12 +968,12 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="1209"/>
         <source>Edit cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Redigera flaska</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1211"/>
         <source>Edit cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Redigera flaska (%n dyk)</numerusform><numerusform>Redigera flaska (%n dyk)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -978,12 +981,12 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="1161"/>
         <source>Remove cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Ta bort flaska</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1163"/>
         <source>Remove cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Ta bort flaska (%n dyk)</numerusform><numerusform>Ta bort flaska (%n dyk)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -991,7 +994,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="113"/>
         <source>Remove %1 event</source>
-        <translation type="unfinished"/>
+        <translation>Ta bort händelse %1</translation>
     </message>
 </context>
 <context>
@@ -999,7 +1002,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="85"/>
         <source>Rename bookmark to %1</source>
-        <translation type="unfinished"/>
+        <translation>Byt namn på bokmärke till %1</translation>
     </message>
 </context>
 <context>
@@ -2904,7 +2907,7 @@ radera den valda dykdatorn?</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="90"/>
         <source>Create trip with dive</source>
-        <translation type="unfinished"/>
+        <translation>Skapa resa för dyk</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="96"/>
@@ -3576,17 +3579,17 @@ GPS-position:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="260"/>
         <source>CSV summary dive details</source>
-        <translation type="unfinished"/>
+        <translation>CSV sammanfattning av dyk</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="270"/>
         <source>CSV Dive computer dive profile</source>
-        <translation type="unfinished"/>
+        <translation>CSV dykprofil från dykdator</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="280"/>
         <source>CSV Computed Profile Panel data</source>
-        <translation type="unfinished"/>
+        <translation>CSV beräknad profilpaneldata</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="290"/>
@@ -3745,7 +3748,7 @@ GPS-position:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="87"/>
         <source>Comma separated values describing the dive profile as downloaded from dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Dykinformation i kommaseparerat format. Innehåller dykprofilen från dykdatorn. </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="89"/>
@@ -3775,7 +3778,7 @@ GPS-position:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="99"/>
         <source>Subsurface dive sites native XML format.</source>
-        <translation>Subsurface dykplatser i XML format.</translation>
+        <translation>Subsurface dykplatser i XML-format.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="101"/>
@@ -3800,7 +3803,7 @@ GPS-position:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="109"/>
         <source>Write the computed Profile Panel data to a CSV file.</source>
-        <translation type="unfinished"/>
+        <translation>Spara beräknad profilpaneldata till en CSV-fil.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="147"/>
@@ -5160,22 +5163,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="499"/>
         <source>setting up dive sites</source>
-        <translation type="unfinished"/>
+        <translation>upprättar dykplatser</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="501"/>
         <source>finish populating data store</source>
-        <translation type="unfinished"/>
+        <translation>klar med populering av datalager</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="503"/>
         <source>setting up internal data structures</source>
-        <translation type="unfinished"/>
+        <translation>upprättar interna datastrukturer</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="506"/>
         <source>done setting up internal data structures</source>
-        <translation type="unfinished"/>
+        <translation>klar med upprättning av interna datastrukturer</translation>
     </message>
 </context>
 <context>
@@ -5329,7 +5332,7 @@ Existerande dykplats</translation>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="375"/>
         <source>Cancel download</source>
-        <translation>Avbryt nedladdning</translation>
+        <translation>Avbryt hämtning</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="454"/>
@@ -5364,7 +5367,7 @@ Existerande dykplats</translation>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="509"/>
         <source>Retry download</source>
-        <translation>Försök igen med nedladdning</translation>
+        <translation>Försök hämta igen</translation>
     </message>
 </context>
 <context>
@@ -6804,7 +6807,7 @@ Existerande dykplats</translation>
         <location filename="../desktop-widgets/mainwindow.ui" line="397"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="574"/>
         <source>Import &amp;from divelogs.de</source>
-        <translation>Importera från &amp;divelogs.de</translation>
+        <translation>Importera från di&amp;velogs.de</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="405"/>
@@ -7000,7 +7003,7 @@ Existerande dykplats</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="707"/>
         <source>Cloud stora&amp;ge online</source>
-        <translation>Molnlagrin&amp;g uppkopplad</translation>
+        <translation>Molnlagrin&amp;g ansluten</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="719"/>
@@ -7337,7 +7340,7 @@ Subsurface har redan försökt att fylla i data korrekt men kontrollera dina dyk
     <message>
         <location filename="../map-widget/qml/MapWidget.qml" line="252"/>
         <source>Drag the selected dive location</source>
-        <translation>Dra den valda dykplatsen</translation>
+        <translation>Dra flaggan till dykplatsen</translation>
     </message>
 </context>
 <context>
@@ -7501,7 +7504,7 @@ Om din enhet använder Bluetooth, genomför samma förberedelser som vid nerladd
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="32"/>
         <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="119"/>
         <source>Subsurface cloud storage</source>
-        <translation>Subsurface molnlagringstjänst</translation>
+        <translation>Subsurface Cloud</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="41"/>
@@ -7531,7 +7534,7 @@ Om din enhet använder Bluetooth, genomför samma förberedelser som vid nerladd
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="110"/>
         <source>To create a new cloud account:</source>
-        <translation>För att skapa ett nytt molnlagringskonto:</translation>
+        <translation>För att skapa ett nytt konto i Subsurface Cloud:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="120"/>
@@ -7551,7 +7554,7 @@ Om din enhet använder Bluetooth, genomför samma förberedelser som vid nerladd
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="10"/>
         <source>Cloud</source>
-        <translation>Moln</translation>
+        <translation>Cloud</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="47"/>
@@ -7904,7 +7907,7 @@ Om din enhet använder Bluetooth, genomför samma förberedelser som vid nerladd
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="138"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="349"/>
         <source>Dive planner default setpoint</source>
-        <translation>Standardsetpoint dykplanering</translation>
+        <translation>Standardsetpoint för dykplanering</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="161"/>
@@ -7916,7 +7919,7 @@ Om din enhet använder Bluetooth, genomför samma förberedelser som vid nerladd
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="168"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="352"/>
         <source>Show CCR setpoints when viewing pO₂</source>
-        <translation>Visa referensvärden för CCR när pO₂ visas</translation>
+        <translation>Visa setpoint för CCR när pO₂ visas</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="175"/>
@@ -8895,7 +8898,7 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1451"/>
         <source>Add setpoint change</source>
-        <translation>Lägg till setpoint byte</translation>
+        <translation>Lägg till byte av setpoint</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1452"/>
@@ -8994,7 +8997,7 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="384"/>
         <source>Processing %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Bearbetar %1 dyk</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="387"/>
@@ -9136,19 +9139,19 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../core/fulltext.cpp" line="147"/>
         <source>Create full text index</source>
-        <translation type="unfinished"/>
+        <translation>Skapa fulltextindex</translation>
     </message>
     <message>
         <location filename="../core/fulltext.cpp" line="148"/>
         <location filename="../qt-models/divetripmodel.cpp" line="727"/>
         <source>start processing</source>
-        <translation type="unfinished"/>
+        <translation>starta bearbetning</translation>
     </message>
     <message>
         <location filename="../core/fulltext.cpp" line="153"/>
         <location filename="../qt-models/divetripmodel.cpp" line="756"/>
         <source>%1 dives processed</source>
-        <translation type="unfinished"/>
+        <translation>%1 dyk bearbetade</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="197"/>
@@ -9158,7 +9161,7 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="726"/>
         <source>populate data model</source>
-        <translation type="unfinished"/>
+        <translation>populerar datamodell</translation>
     </message>
 </context>
 <context>
@@ -9237,7 +9240,7 @@ Vänligen exportera mallen till en ny fil.</translation>
         <location filename="../desktop-widgets/setpoint.ui" line="17"/>
         <location filename="../subsurface/desktop-widgets/ui_setpoint.h" line="82"/>
         <source>Add setpoint change</source>
-        <translation>Lägg till setpoint byte</translation>
+        <translation>Lägg till byte av setpoint</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="43"/>
@@ -9828,7 +9831,7 @@ Filer med felaktig datum/tid</translation>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="34"/>
         <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.&lt;br/&gt;&lt;br/&gt;If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) and a password of your choice (letters and numbers).&lt;br/&gt;&lt;br/&gt;To use Subsurface-mobile only with local data on this device, select the no cloud button above.</source>
-        <translation>För att använda Subsurface-mobile med molnlagringstjänsten, vänligen ange dina inloggningsuppgifter.&lt;br/&gt;&lt;br/&gt;Om det är första gången du använder tjänsten, ange en giltig e-postadress (bara små bokstäver) och ett lösenord (bokstäver och siffror).&lt;br/&gt;&lt;br/&gt;För att endast använda Subsurface-mobile med lokalt sparad data, klicka på lokalt läge ovan.</translation>
+        <translation>För att använda Subsurface-mobile med molnlagringstjänsten, vänligen ange dina inloggningsuppgifter.&lt;br/&gt;&lt;br/&gt;Är det första gången du använder tjänsten, ange en giltig e-postadress (bara små bokstäver) och ett lösenord (bokstäver och siffror).&lt;br/&gt;&lt;br/&gt;För att endast använda Subsurface-mobile med lokalt sparad data, klicka på lokalt läge ovan.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="47"/>
@@ -9871,7 +9874,7 @@ Filer med felaktig datum/tid</translation>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="20"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2020&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt; Dykprogramvara med stöd för flera plattformar &lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, och andra, 2011-2020&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -10270,7 +10273,7 @@ Filer med felaktig datum/tid</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.ui" line="49"/>
         <source>Purge unused dive sites</source>
-        <translation>Rensa bort oanvända dykplatser</translation>
+        <translation>Radera oanvända dykplatser</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="56"/>
@@ -13603,17 +13606,17 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="162"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
-        <translation>Förväntade XML tag &apos;DiveDateReader&apos; men fick istället &apos;%1</translation>
+        <translation>Förväntade XML-tagg &apos;DiveDateReader&apos;, fick istället &apos;%1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="208"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
-        <translation>Förväntad XML tagg &apos;DiveDates&apos; gick ej att finna</translation>
+        <translation>Förväntad XML-tagg &apos;DiveDates&apos; hittades ej</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="215"/>
         <source>Malformed XML response. Line %1: %2</source>
-        <translation>Felformaterat XML svar. Rad %1: %2</translation>
+        <translation>Felformaterat XML-svar. Rad %1: %2</translation>
     </message>
     <message>
         <location filename="../profile-widget/diveprofileitem.cpp" line="191"/>
@@ -13860,7 +13863,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="529"/>
         <source>Enable verbose logging (currently: %1)</source>
-        <translation type="unfinished"/>
+        <translation>Aktivera utökad logging (nu: %1)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="531"/>
@@ -13870,7 +13873,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="740"/>
         <source>Subsurface-mobile starting up</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface-mobile startar</translation>
     </message>
 </context>
 <context>
