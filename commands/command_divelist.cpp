@@ -2,7 +2,6 @@
 
 #include "command_divelist.h"
 #include "core/divelist.h"
-#include "core/display.h" // for amount_selected
 #include "core/qthelper.h"
 #include "core/selection.h"
 #include "core/subsurface-qt/divelistnotifier.h"
