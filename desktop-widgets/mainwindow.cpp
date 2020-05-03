@@ -741,21 +741,9 @@ void MainWindow::on_actionPreferences_triggered()
 
 void MainWindow::on_actionQuit_triggered()
 {
-	if (mainTab->isEditing()) {
-		mainTab->rejectChanges();
-		if (mainTab->isEditing())
-			// didn't discard the edits
-			return;
-	}
-	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) {
-		DivePlannerPointsModel::instance()->cancelPlan();
-		if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING)
-			// The planned dive was not discarded
-			return;
-	}
-
-	if (unsavedChanges() && (askSaveChanges() == false))
+	if (!okToClose(tr("Please save or cancel the current dive edit before quiting the application.")))
 		return;
+
 	writeSettings();
 	QApplication::quit();
 }
