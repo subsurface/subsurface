@@ -43,7 +43,7 @@ void DivePictureModel::updateThumbnails()
 {
 	updateZoom();
 	for (PictureEntry &entry: pictures)
-		entry.image = Thumbnailer::instance()->fetchThumbnail(entry.filename, false);
+		entry.image = Thumbnailer::instance()->fetchThumbnail(QString::fromStdString(entry.filename), false);
 }
 
 void DivePictureModel::updateDivePictures()
@@ -87,13 +87,13 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 	if (index.column() == 0) {
 		switch (role) {
 		case Qt::ToolTipRole:
-			return entry.filename;
+			return QString::fromStdString(entry.filename);
 		case Qt::DecorationRole:
 			return entry.image.scaled(size, size, Qt::KeepAspectRatio);
 		case Qt::DisplayRole:
-			return QFileInfo(entry.filename).fileName();
+			return QFileInfo(QString::fromStdString(entry.filename)).fileName();
 		case Qt::DisplayPropertyRole:
-			return QFileInfo(entry.filename).filePath();
+			return QFileInfo(QString::fromStdString(entry.filename)).filePath();
 		case Qt::UserRole:
 			return entry.diveId;
 		case Qt::UserRole + 1:
@@ -104,7 +104,7 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 	} else if (index.column() == 1) {
 		switch (role) {
 		case Qt::DisplayRole:
-			return entry.filename;
+			return QString::fromStdString(entry.filename);
 		}
 	}
 	return QVariant();
@@ -122,11 +122,17 @@ static bool removePictureFromSelectedDive(const char *fileUrl)
 	return false;
 }
 
-void DivePictureModel::removePictures(const QVector<QString> &fileUrls)
+void DivePictureModel::removePictures(const QVector<QString> &fileUrlsIn)
 {
+	// Transform vector of QStrings into vector of std::strings
+	std::vector<std::string> fileUrls;
+	fileUrls.reserve(fileUrlsIn.size());
+	std::transform(fileUrlsIn.begin(), fileUrlsIn.end(), std::back_inserter(fileUrls),
+		       [] (const QString &s) { return s.toStdString(); });
+
 	bool removed = false;
-	for (const QString &fileUrl: fileUrls)
-		removed |= removePictureFromSelectedDive(qPrintable(fileUrl));
+	for (const std::string &fileUrl: fileUrls)
+		removed |= removePictureFromSelectedDive(fileUrl.c_str());
 	if (!removed)
 		return;
 	copy_dive(current_dive, &displayed_dive);
@@ -148,7 +154,7 @@ void DivePictureModel::removePictures(const QVector<QString> &fileUrls)
 		pictures.erase(pictures.begin() + i, pictures.begin() + j);
 		endRemoveRows();
 	}
-	emit picturesRemoved(fileUrls);
+	emit picturesRemoved(fileUrlsIn);
 }
 
 int DivePictureModel::rowCount(const QModelIndex&) const
@@ -156,7 +162,7 @@ int DivePictureModel::rowCount(const QModelIndex&) const
 	return pictures.count();
 }
 
-int DivePictureModel::findPictureId(const QString &filename)
+int DivePictureModel::findPictureId(const std::string &filename)
 {
 	for (int i = 0; i < pictures.size(); ++i)
 		if (pictures[i].filename == filename)
@@ -193,7 +199,7 @@ static void addDurationToThumbnail(QImage &img, duration_t duration)
 
 void DivePictureModel::updateThumbnail(QString filename, QImage thumbnail, duration_t duration)
 {
-	int i = findPictureId(filename);
+	int i = findPictureId(filename.toStdString());
 	if (i >= 0) {
 		if (duration.seconds > 0) {
 			addDurationToThumbnail(thumbnail, duration);	// If we know the duration paint it on top of the thumbnail
@@ -204,8 +210,10 @@ void DivePictureModel::updateThumbnail(QString filename, QImage thumbnail, durat
 	}
 }
 
-void DivePictureModel::updateDivePictureOffset(int diveId, const QString &filename, int offsetSeconds)
+void DivePictureModel::updateDivePictureOffset(int diveId, const QString &filenameIn, int offsetSeconds)
 {
+	std::string filename = filenameIn.toStdString();
+
 	// Find the pictures of the given dive.
 	auto from = std::find_if(pictures.begin(), pictures.end(), [diveId](const PictureEntry &e) { return e.diveId == diveId; });
 	auto to = std::find_if(from, pictures.end(), [diveId](const PictureEntry &e) { return e.diveId != diveId; });
