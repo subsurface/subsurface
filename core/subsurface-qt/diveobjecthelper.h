@@ -84,6 +84,8 @@ public:
 	QStringList startPressure;
 	QStringList endPressure;
 	QStringList firstGas;
+	QString salinity;
+	QString waterType;
 };
 
 // This is an extended version of DiveObjectHelper that also keeps track of cylinder data.

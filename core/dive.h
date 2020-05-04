@@ -332,6 +332,7 @@ extern void sort_dive_table(struct dive_table *table);
 extern struct dive *fixup_dive(struct dive *dive);
 extern pressure_t calculate_surface_pressure(const struct dive *dive);
 extern pressure_t un_fixup_surface_pressure(const struct dive *d);
+extern int get_dive_salinity(const struct dive *dive);
 extern void fixup_dc_duration(struct divecomputer *dc);
 extern int dive_getUniqID();
 extern unsigned int dc_airtemp(const struct divecomputer *dc);

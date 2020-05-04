@@ -5011,6 +5011,8 @@ Only a subset of the dive data is exported:
 |startPressure| (*string*) the start pressure
 |endPressure| (*string*) the end pressure
 |firstGas| (*string*) first used gas
+|salinity| (*string*) the salinity of the water for the dive
+|waterType| (*string*) the type of the water for the dive
 |=====================
 
 Please note that some of the variables like 'notes' need to be extended with '|safe' to support HTML tags:
