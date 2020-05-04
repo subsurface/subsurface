@@ -26,6 +26,7 @@ LocationInformationModel::LocationInformationModel(QObject *obj) : QAbstractTabl
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteDeleted, this, &LocationInformationModel::diveSiteDeleted);
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &LocationInformationModel::diveSiteChanged);
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteDivesChanged, this, &LocationInformationModel::diveSiteDivesChanged);
+	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &LocationInformationModel::update);
 }
 
 int LocationInformationModel::columnCount(const QModelIndex &) const

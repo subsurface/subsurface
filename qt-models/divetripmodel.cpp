@@ -476,27 +476,13 @@ void DiveTripModelBase::initSelection()
 		select_newest_visible_dive();
 }
 
-void DiveTripModelBase::clear()
-{
-	Command::clear(); // If we clear the dive list, all undo-information becomes stalte.
-	beginResetModel();
-	clear_dive_file_data();
-	clearData();
-	LocationInformationModel::instance()->update();
-	oldCurrent = nullptr;
-	emit diveListNotifier.divesSelected({}); // Inform profile, etc of changed selection
-	endResetModel();
-	emit diveListNotifier.numShownChanged();
-}
-
 // Currently only used by the mobile models
 void DiveTripModelBase::reset()
 {
 	beginResetModel();
+	oldCurrent = nullptr;
 	clearData();
 	populate();
-	uiNotification(tr("setting up dive sites"));
-	LocationInformationModel::instance()->update();
 	uiNotification(tr("finish populating data store"));
 	endResetModel();
 	uiNotification(tr("setting up internal data structures"));
@@ -721,6 +707,7 @@ DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::pictureOffsetChanged, this, &DiveTripModelTree::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::picturesRemoved, this, &DiveTripModelTree::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::picturesAdded, this, &DiveTripModelTree::diveChanged);
+	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &DiveTripModelTree::reset);
 
 	populate();
 }
@@ -1485,6 +1472,7 @@ DiveTripModelList::DiveTripModelList(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::pictureOffsetChanged, this, &DiveTripModelList::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::picturesRemoved, this, &DiveTripModelList::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::picturesAdded, this, &DiveTripModelList::diveChanged);
+	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &DiveTripModelList::reset);
 
 	populate();
 }

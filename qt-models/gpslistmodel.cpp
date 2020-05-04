@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/gpslistmodel.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include "core/qthelper.h"
 #include <QVector>
 
 GpsListModel::GpsListModel()
 {
+	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &GpsListModel::update);
 }
 
 void GpsListModel::update()

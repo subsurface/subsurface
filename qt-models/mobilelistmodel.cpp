@@ -507,6 +507,18 @@ void MobileListModel::changed(const QModelIndex &topLeft, const QModelIndex &bot
 	}
 }
 
+void MobileListModel::invalidate()
+{
+	// Qt's model/view API can't handle empty ranges and we have to subtract one from the last item,
+	// because ranges are given as [first,last] (i.e. last inclusive).
+	int rows = rowCount(QModelIndex());
+	if (rows <= 0)
+		return;
+	QModelIndex fromIdx = createIndex(0, 0);
+	QModelIndex toIdx = createIndex(rows - 1, 0);
+	dataChanged(fromIdx, toIdx);
+}
+
 void MobileListModel::unexpand()
 {
 	if (expandedRow < 0)
@@ -903,6 +915,18 @@ void MobileSwipeModel::changed(const QModelIndex &topLeft, const QModelIndex &bo
 		emit currentDiveChanged(fromIdx);
 }
 
+void MobileSwipeModel::invalidate()
+{
+	// Qt's model/view API can't handle empty ranges and we have to subtract one from the last item,
+	// because ranges are given as [first,last] (i.e. last inclusive).
+	int rows = rowCount(QModelIndex());
+	if (rows <= 0)
+		return;
+	QModelIndex fromIdx = createIndex(0, 0);
+	QModelIndex toIdx = createIndex(rows - 1, 0);
+	dataChanged(fromIdx, toIdx);
+}
+
 QVariant MobileSwipeModel::data(const QModelIndex &index, int role) const
 {
 	return source->data(mapToSource(index), role);
@@ -925,7 +949,6 @@ MobileModels::MobileModels() :
 	lm(&source),
 	sm(&source)
 {
-	reset();
 }
 
 MobileListModel *MobileModels::listModel()
@@ -938,12 +961,9 @@ MobileSwipeModel *MobileModels::swipeModel()
 	return &sm;
 }
 
-void MobileModels::clear()
+// This is called when the settings changed. Instead of rebuilding the model, send a changed signal on all entries.
+void MobileModels::invalidate()
 {
-	source.clear();
-}
-
-void MobileModels::reset()
-{
-	source.reset();
+	sm.invalidate();
+	sm.invalidate();
 }

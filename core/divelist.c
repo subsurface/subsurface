@@ -835,6 +835,9 @@ void process_loaded_dives()
 	autogroup_dives(&dive_table, &trip_table);
 
 	fulltext_populate();
+
+	/* Inform frontend of reset data. This should reset all the models. */
+	emit_reset_signal();
 }
 
 /*
@@ -1045,6 +1048,9 @@ void add_imported_dives(struct dive_table *import_table, struct trip_table *impo
 	 * Choose the newest dive as selected (if any) */
 	current_dive = dive_table.nr > 0 ? dive_table.dives[dive_table.nr - 1] : NULL;
 	mark_divelist_changed(true);
+
+	/* Inform frontend of reset data. This should reset all the models. */
+	emit_reset_signal();
 }
 
 /* Helper function for process_imported_dives():
@@ -1373,6 +1379,9 @@ void clear_dive_file_data()
 
 	reset_min_datafile_version();
 	clear_git_id();
+
+	/* Inform frontend of reset data. This should reset all the models. */
+	emit_reset_signal();
 }
 
 bool dive_less_than(const struct dive *a, const struct dive *b)

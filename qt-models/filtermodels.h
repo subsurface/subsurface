@@ -17,7 +17,6 @@ public:
 	bool lessThan(const QModelIndex &, const QModelIndex &) const override;
 
 	void resetModel(DiveTripModelBase::Layout layout);
-	void clear();
 signals:
 	void selectionChanged(const QVector<QModelIndex> &indices);
 	void currentDiveChanged(QModelIndex index);

@@ -408,15 +408,12 @@ MainWindow *MainWindow::instance()
 void MainWindow::refreshDisplay(bool doRecreateDiveList)
 {
 	mainTab->reload();
-	TankInfoModel::instance()->update();
 	if (doRecreateDiveList)
 		diveList->reload();
 
-	MapWidget::instance()->reload();
 	setApplicationState(ApplicationState::Default);
 	diveList->setEnabled(true);
 	diveList->setFocus();
-	WSInfoModel::instance()->update();
 	ui.actionAutoGroup->setChecked(autogroup);
 }
 
@@ -647,7 +644,7 @@ void MainWindow::closeCurrentFile()
 {
 	/* free the dives and trips */
 	clear_git_id();
-	MultiFilterSortModel::instance()->clear(); // this clears all the core data structures
+	clear_dive_file_data(); // this clears all the core data structures and resets the models
 	setCurrentFile(nullptr);
 	diveList->setSortOrder(DiveTripModelBase::NR, Qt::DescendingOrder);
 	MapWidget::instance()->reload();

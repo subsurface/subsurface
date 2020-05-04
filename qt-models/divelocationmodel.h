@@ -31,6 +31,7 @@ public:
 
 public slots:
 	void update();
+private slots:
 	void diveSiteDiveCountChanged(struct dive_site *ds);
 	void diveSiteAdded(struct dive_site *ds, int idx);
 	void diveSiteDeleted(struct dive_site *ds, int idx);
