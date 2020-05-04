@@ -8,9 +8,11 @@
 #include <QImage>
 #include <QFuture>
 
+// We use std::string instead of QString to use the same character-encoding
+// as in the C core (UTF-8). This is crucial to guarantee the same sort-order.
 struct PictureEntry {
 	int diveId;
-	QString filename;
+	std::string filename;
 	QImage image;
 	int offsetSeconds;
 	duration_t length;
@@ -34,7 +36,7 @@ public slots:
 private:
 	DivePictureModel();
 	QVector<PictureEntry> pictures;
-	int findPictureId(const QString &filename);	// Return -1 if not found
+	int findPictureId(const std::string &filename);	// Return -1 if not found
 	double zoomLevel;	// -1.0: minimum, 0.0: standard, 1.0: maximum
 	int size;
 	void updateThumbnails();
