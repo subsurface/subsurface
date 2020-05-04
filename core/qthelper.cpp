@@ -3,6 +3,7 @@
 #include "dive.h"
 #include "core/settings/qPrefLanguage.h"
 #include "core/settings/qPrefUpdateManager.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include "subsurface-string.h"
 #include "subsurface-string.h"
 #include "gettextfromc.h"
@@ -1674,4 +1675,9 @@ std::vector<int> get_cylinder_map_for_add(int count, int n)
 	std::iota(mapping.begin(), mapping.begin() + n, 0);
 	std::iota(mapping.begin() + n, mapping.end(), n + 1);
 	return mapping;
+}
+
+extern "C" void emit_reset_signal()
+{
+	emit diveListNotifier.dataReset();
 }

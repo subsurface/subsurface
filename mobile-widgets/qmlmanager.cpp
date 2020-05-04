@@ -339,7 +339,7 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 void QMLManager::openLocalThenRemote(QString url)
 {
 	// clear out the models and the fulltext index
-	MobileModels::instance()->clear();
+	clear_dive_file_data();
 	setDiveListProcessing(true);
 	setNotificationText(tr("Open local dive data file"));
 	appendTextToLog(QString("Open dive data file %1 - git_local only is %2").arg(url).arg(git_local_only));
@@ -383,7 +383,6 @@ void QMLManager::openLocalThenRemote(QString url)
 		// the following steps can take a long time, so provide updates
 		setNotificationText(tr("Processing %1 dives").arg(dive_table.nr));
 		process_loaded_dives();
-		MobileModels::instance()->reset();
 		setNotificationText(tr("%1 dives loaded from local dive data file").arg(dive_table.nr));
 	}
 	if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NEED_TO_VERIFY) {
@@ -612,8 +611,7 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 		syncLoadFromCloud();
 		manager()->clearAccessCache(); // remove any chached credentials
 		clear_git_id(); // invalidate our remembered GIT SHA
-		MobileModels::instance()->clear();
-		GpsListModel::instance()->clear();
+		clear_dive_file_data();
 		setStartPageText(tr("Attempting to open cloud storage with new credentials"));
 		// since we changed credentials, we need to try to connect to the cloud, regardless
 		// of whether we're in offline mode or not, to make sure the repository is synced
@@ -687,7 +685,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		// if we aren't switching from no-cloud mode, let's clear the dive data
 		if (!noCloudToCloud) {
 			appendTextToLog("Clear out in memory dive data");
-			MobileModels::instance()->clear();
+			clear_dive_file_data();
 		} else {
 			appendTextToLog("Switching from no cloud mode; keep in memory dive data");
 		}
@@ -717,7 +715,6 @@ void QMLManager::loadDivesWithValidCredentials()
 	if (noCloudToCloud) {
 		git_storage_update_progress(qPrintable(tr("Loading dives from local storage ('no cloud' mode)")));
 		mergeLocalRepo();
-		MobileModels::instance()->reset();
 		appendTextToLog(QStringLiteral("%1 dives loaded after importing nocloud local storage").arg(dive_table.nr));
 		noCloudToCloud = false;
 		mark_divelist_changed(true);
@@ -779,7 +776,6 @@ void QMLManager::consumeFinishedLoad()
 	prefs.show_ccr_sensors = git_prefs.show_ccr_sensors;
 	prefs.pp_graphs.po2 = git_prefs.pp_graphs.po2;
 	process_loaded_dives();
-	MobileModels::instance()->reset();
 	appendTextToLog(QStringLiteral("%1 dives loaded").arg(dive_table.nr));
 	if (dive_table.nr == 0)
 		setStartPageText(tr("Cloud storage open successfully. No dives in dive list."));
@@ -787,7 +783,7 @@ void QMLManager::consumeFinishedLoad()
 
 void QMLManager::refreshDiveList()
 {
-	MobileModels::instance()->reset();
+	MobileModels::instance()->invalidate();
 }
 
 // Ouch. Editing a dive might create a dive site or change an existing dive site.

@@ -64,12 +64,6 @@ public:
 	// Call after having set the model to be informed of the current selection.
 	void initSelection();
 
-	// Clear all dives
-	void clear();
-
-	// Reload data
-	void reset();
-
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 	DiveTripModelBase(QObject *parent = 0);
@@ -78,6 +72,8 @@ public:
 	// Used for sorting. This is a bit of a layering violation, as sorting should be performed
 	// by the higher-up QSortFilterProxyModel, but it makes things so much easier!
 	virtual bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const = 0;
+protected slots:
+	void reset();
 signals:
 	// The propagation of selection changes is complex.
 	// The control flow of dive-selection goes:

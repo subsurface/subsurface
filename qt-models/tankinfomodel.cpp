@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/tankinfomodel.h"
 #include "core/dive.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
 
@@ -85,6 +86,7 @@ int TankInfoModel::rowCount(const QModelIndex&) const
 TankInfoModel::TankInfoModel()
 {
 	setHeaderDataStrings(QStringList() << tr("Description") << tr("ml") << tr("bar"));
+	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &TankInfoModel::update);
 	update();
 }
 

@@ -77,6 +77,7 @@ public:
 	MobileListModel(DiveTripModelBase *source);
 	void expand(int row);
 	void unexpand();
+	void invalidate();
 	Q_INVOKABLE void toggle(int row);
 	Q_PROPERTY(int shown READ shown NOTIFY shownChanged);
 signals:
@@ -121,6 +122,7 @@ public:
 	MobileSwipeModel(DiveTripModelBase *source);
 	static MobileSwipeModel *instance();
 	void resetModel(DiveTripModelBase::Layout layout);	// Switch between tree and list view
+	void invalidate();
 private:
 	struct IndexRange {
 		int first, last;
@@ -175,8 +177,7 @@ public:
 	static MobileModels *instance();
 	MobileListModel *listModel();
 	MobileSwipeModel *swipeModel();
-	void clear(); // Clear all dive data
-	void reset(); // Reset model after having reloaded the core data
+	void invalidate(); // Invalidate all entries to force a re-render.
 private:
 	MobileModels();
 	DiveTripModelTree source;

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/weightsysteminfomodel.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include "core/dive.h"
 #include "core/metrics.h"
 #include "core/gettextfromc.h"
@@ -74,6 +75,7 @@ int WSInfoModel::rowCount(const QModelIndex&) const
 WSInfoModel::WSInfoModel()
 {
 	setHeaderDataStrings(QStringList() << tr("Description") << tr("kg"));
+	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &WSInfoModel::update);
 	update();
 }
 

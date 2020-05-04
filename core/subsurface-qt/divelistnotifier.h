@@ -78,6 +78,9 @@ struct TripField {
 class DiveListNotifier : public QObject {
 	Q_OBJECT
 signals:
+	// The core structures were completely reset. Repopulate all models.
+	void dataReset();
+
 	// Note that there are no signals for trips being added and created
 	// because these events never happen without a dive being added, removed or moved.
 	// The dives are always sorted according to the dives_less_than() function of the core.

@@ -33,11 +33,6 @@ void MultiFilterSortModel::resetModel(DiveTripModelBase::Layout layout)
 	LocationInformationModel::instance()->update();
 }
 
-void MultiFilterSortModel::clear()
-{
-	model->clear();
-}
-
 // Translate selection into local indices and re-emit signal
 void MultiFilterSortModel::selectionChangedSlot(const QVector<QModelIndex> &indices)
 {
