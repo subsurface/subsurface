@@ -23,16 +23,6 @@ jobs:
         rm -rf /install-root/include/libdivecomputer
         bash -x subsurface/.github/workflows/scripts/linux-in-container-build.sh
 
-    - name: create CI release
-      if: github.event_name == 'push'
-      uses: ./.github/actions/release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_REPO: ${{ github.repository }}
-        REF: ${{ github.ref }}
-        COMMIT: ${{ github.sha }}
-        BIN1: ./Subsurface.AppImage
-
     - name: prepare PR artifacts
       if: github.event_name == 'pull_request'
       run: |

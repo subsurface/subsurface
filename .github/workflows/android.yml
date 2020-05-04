@@ -28,17 +28,6 @@ jobs:
         cp /__w/subsurface/subsurface-mobile-build-arm64/*mobile*/build/outputs/apk/debug/subsurface-mobile-arm64-v8a-debug.apk ${GITHUB_WORKSPACE}/Subsurface-mobile.arm64.apk
         cp /__w/subsurface/subsurface-mobile-build-arm/*mobile*/build/outputs/apk/debug/subsurface-mobile-armeabi-v7a-debug.apk ${GITHUB_WORKSPACE}/Subsurface-mobile.apk
 
-    - name: create CI release
-      if: github.event_name == 'push'
-      uses: ./.github/actions/release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_REPO: ${{ github.repository }}
-        REF: ${{ github.ref }}
-        COMMIT: ${{ github.sha }}
-        BIN1: ./Subsurface-mobile.apk
-        BIN2: ./Subsurface-mobile.arm64.apk
-
     - name: prepare PR artifacts
       if: github.event_name == 'pull_request'
       run: |

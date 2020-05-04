@@ -39,20 +39,6 @@ jobs:
         bash -x subsurface/.github/workflows/scripts/windows-in-container-build.sh 2>&1 | tee build.log
         grep "Built target installer" build.log
 
-    - name: create CI release
-      if: github.event_name == 'push'
-      uses: ./.github/actions/release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_REPO: ${{ github.repository }}
-        REF: ${{ github.ref }}
-        COMMIT: ${{ github.sha }}
-        BIN1: ./subsurface-installer.exe
-        BIN2: ./subsurface.exe
-        BIN3: ./subsurface.exe.debug
-        BIN4: ./smtk2ssrf-installer.exe
-        BIN5: ./smtk2ssrf.exe
-
     - name: prepare PR artifacts
       if: github.event_name == 'pull_request'
       run: |

@@ -1,4 +1,0 @@
-name: upload to release
-runs:
-  using: docker
-  image: Dockerfile
