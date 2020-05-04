@@ -15,10 +15,10 @@ https://github.com/Subsurface/subsurface/issues
 License: GPLv2
 
 We frequently make new test versions of Subsurface available at
-http://subsurface-divelog.org/downloads/test/ and you always can get the
-latest builds (with some caveats about installability) there, in the
-Subsurface-daily repos on Launchpad and OBS and at
-https://github.com/subsurface/subsurface/releases/tag/ci-release
+http://subsurface-divelog.org/downloads/test/ and there you can always get
+the latest builds for Mac, Windows, Linux AppImage and Android (with some
+caveats about installability). Additionally, those same versions are
+posted to the Subsurface-daily repos on Launchpad and OBS.
 
 These tend to contain the latest bug fixes and features, but also
 occasionally the latest bugs and issues. Please understand when using them
