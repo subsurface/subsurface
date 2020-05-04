@@ -16,9 +16,8 @@ image::mobile-images/Banner.jpg["Banner",align="center"]
 
 *Manual authors*: Willem Ferguson, Dirk Hohndel
 
-// toc::[]
 
-[blue]#_Version 3.0.0, March 2020_#
+[blue]#_Version 3.0.5, May 2020_#
 
 Welcome as a user of _Subsurface_ and _Subsurface-mobile_, advanced dive logging
 software with extensive infrastructure to describe, organize, and interpret scuba
@@ -27,6 +26,9 @@ software solutions, including compatibility with Windows, macOS, Linux (many
 distributions), Android and iOS. In addition, _Subsurface_ is
 open-source software that allows downloading dive
 information from many dive computers.
+
+toc::[]
+
 
 Introducing Subsurface-mobile
 -----------------------------
@@ -125,6 +127,9 @@ the dive list is initially empty. Start entering dives in the dive
 log or download dive information from a supported dive computer. After the PIN has been entered it
 is no longer needed - it just proves that this is indeed your email account.
 
+A https://www.youtube.com/watch?v=Vp_bEm5ZDRA[*video-tutorial*] is available that demonstrates
+how to connect to the cloud.
+
 ****
 [icon="images/icons/important.png"]
 [IMPORTANT]
@@ -135,11 +140,11 @@ is no longer needed - it just proves that this is indeed your email account.
 1. Check *carefully* that there is not a spelling mistake in the email address you provided.
 2. Check that the return email containing the PIN is not in the SPAM folder of your email client.
 3. Wait for 24 hours and check again for an email with a PIN. 
-4. If there is still no email containing a PIN, send mail to in-app-support@subsurface-divelog.org
+4. If there is still no email containing a PIN, send mail to mailto:in-app-support@subsurface-divelog.org[our in-app-support address]
 
 [blue]#I want to access the Subsurface cloud facility but I have forgotten my password. How can I reset my password?#
 
-Open the following web address: https://cloud.subsurface-divelog.org/passwordreset
+Use our https://cloud.subsurface-divelog.org/passwordreset[Internet-based password reset facility]. 
 
 This will require that you enter the same email address that you used during cloud registration.
 ****
@@ -200,23 +205,42 @@ version. The iOS screens look similar.
 
 == The Dive List
 
-Most of the actions of _Subsurface-mobile_ center around the dives on the
-dive list. While the dive list is loading from the cloud,
+The _Dive List_ is the heart of _Subsurface-mobile_ because most of the actions
+center around the dives on the dive list. While the dive list is loading from the cloud,
 a message appears at the bottom of the screen, indicating that the cloud is
-being accessed, after which the dive list is shown. Once the list is loaded you can scroll up and down through your dive history.
-To upload dives from a dive computer, tap the blue action button. If you wish
-to add a dive manually, tap the + button in the action bar (described below).
-Tapping an existing dive on the list brings up a display of the _Details View_ for that dive
-including the dive profile, notes and additional information.
+being accessed, after which the dive list is shown. Once the list is loaded you can scroll up and down
+through your dive history.
+
+The Dive List consists of two types of entries:
+
+1. *Trip headers*. A trip header is a line describing the year and month during which a dive trip 
+took place, as wel as the geographical area of the trip. The second line in the lefthand image below indicates that a 10-dive trip
+was made to Guinjata, Moçambique during December 2016.
+
+2. *Individual dive records*. Tapping a trip header expands the dive list to show (or hide) the individual dives performed during the trip. Each dive is represented by a dive record. By default the dives during the last trip are listed with older dives at the bottom and recent dives at the top of the list. In the lefthand image below the last dive during
+the Guinjata trip was in the Inhambane Estuary.
 
 image::mobile-images/Divelist2.jpg["FIGURE: Dive list screen",align="center"]
 
-You can view other dives by swiping the _Details view_ to the right (for the
-previous dive) or to the left (following dive).
-Using the Action Bar, it is also possible to delete the dive (tap the dustbin
-on the Action Bar) or to view the dive
+[[S_View_Dive]]
+== View a dive: the _Details View_
+
+Tapping on a dive in the _Dive List_ brings up a screen with the dive profile
+and many important details about the dive is opened (image on right, above). The dive details usually
+do not fit in a single screen and one needs to scroll the screen to see all the information.
+View other dives by swiping the _Details view_ to the right (for the
+previous dive) or to the left (following dive). Alternatively use a pinch gesture
+to zoom into the profile and tapping with one finger, waiting briefly until
+the profile becomes translucent, and then dragging the finger around
+to pan the profile so the interesting parts are shown. 
+To view the dive
 location on a map viewer (Google Maps on Android, the Google Maps web site
-on iOS; tap the GPS icon on the Action Bar.).
+on iOS) tap the GPS icon on the Action Bar (to the left of the pencil action button in image on the right, above).
+
+To upload dives from a dive computer, tap the blue action button. If you wish
+to add a dive manually, tap the + button in the action bar (described below).
+Using the Action Bar, it is also possible to delete the dive (tap the dustbin
+on the Action Bar).
 The context menu (accessible by tapping on the vertical three dots in the lower right corner of the
 screen) offers additional options to move dives between trips and to undo and redo previous actions.
 
@@ -235,10 +259,10 @@ log can become quite long and, sometimes, you might like to list only the dives 
 type, e.g. those at a particular dive site or those with a specific buddy or dive master. Use the
 Filter to achieve this. The filter mechanism searches through all the information for each dive,
 looking for one or more key words. Only the dives containing these key words are listed in the dive
-list. Three filter modes exist. Fulltext searches all text strings, People only looks at buddies and
-dive masters, and tags only filters for tags containing the given text.
+list. Three filter modes exist. "Fulltext" searches all text strings. Selecting "People" lists buddies and
+dive masters, while "Tags" only filters for tags containing the given text. Filters are not case-sensitive.
 To clear the filter, remove the key words from the text box and select the Filter action button to
-switch off filtering.
+switch off filtering. The image above represents a full-text search for dives with the word "nitrox".
 
 == Viewing the locations of all dives in the dive list
 
@@ -252,35 +276,9 @@ of the different dive sites.
 == Viewing the location of a dive on _Google Maps_
 
 image::mobile-images/Map.jpg["FIGURE: Map of dive site",align="center"]
-In the _Details View_, the Action Bar at the bottom has a GPS pin on the
+In the _Details View_, the Action Bar at the bottom of the screen has a GPS pin on the
 left hand side. Tap that pin and the dive site is shown in Google Maps. Close Google Maps by using the Android _Back_ button
 or tapping on the _Subsurface-mobile_ link in the top left corner on iOS.
-
-Alternatively, the _Details View_ has a button at the top right hand marked
-_Map it_. Tap this button to open Google Maps showing the dive site (image on left).
-
-[[S_View_Dive]]
-== View a dive
-
-When you tap on a dive in the _Dive List_, a new screen with the dive profile
-and many important details about the dive is opened. You can use a pich gesture
-to zoom into the profile, and tapping with one finger, waiting briefly until
-the profile becomes translucent, and then dragging the finger around allows you
-to pan the profile so the interesting parts are shown.
-
-[[S_Edit_Dive]]
-== Edit a particular dive
-
-image::mobile-images/Editdive.jpg["FIGURE: Dive edit screen",align="center"]
-At the bottom of the _Dive Details_ screen the action button is a pencil.
-Tapping the pencil button changes the page and enables edit boxes that allow
-modifying the existing dive information, e.g. adding text to the dive notes
-or changing the names or values of some of the information (see image on left).
-It may be necessary to scroll the window to access all the information.
-At the bottom of the edit screen is a _Save_ action button. Tap this to save
-the new information, after which the dive list screen is
-updated and shown. To cancel any edits, tap the Android _Back_ Button or
-the application back button at the top left of the screen on iOS.
 
 [[S_Add_Dive]]
 == Manually adding a new dive to the dive list
@@ -294,40 +292,13 @@ dive computer, the duration, depth and several other bits of information about
 the new dive can be entered. The _Action button_ at the bottom of the screen
 contains a disk symbol. Tap this to save the new dive. To cancel any edits, tap the _Back_ button.
 The left-hand image below shows a screenshot of a dive being created and the right-hand image shows
-the same dive in _Details View_.
+the same dive in _Details View_. After editing the dive information, the dive trip information
+needs to be edited as described in the section above on xref:S_Divetrip[Dive trip editing].
+
+This https://www.youtube.com/watch?v=sF8KB_r0rFw[*video-tutorial*] explains how to add information to a
+manually-entered dive.
 
 image::mobile-images/Manualdive.jpg["FIGURE: Manual dive entry screen",align="center"]
-
-// == Copy dive information from one dive to another
-// 
-// When editing dives it is possible to transfer information from one dive to another. For instance,
-// when diving with the same buddy and the same equipment configuration during a particular dive trip
-// it can be efficient to simply copy all this information from the previous dive into the dive that
-// is being edited. Currently a standard list of dive information is copied to the clipboard:
-// 
-// Divemaster, Buddy, Suit, Tags, Cylinders, Weights.
-// 
-// Copy and paste dive information is performed on the Dive List. Long-press on a dive. A panel
-// with three icons appears on top the selected dive :
-// 
-// image::mobile-images/CopyDeleteDive.jpg["FIGURE: Copy/Delete dive information",align="center"]
-// 
-// To copy the above information to the clipboard, select the leftmost of the three icons. A "Copy"
-// notification briefly appears on the screen. Now long-press the dive into which the copied information
-// needs to be pasted. The same three icons appear on the target dive. Select the middle icon. A "Paste"
-// notification briefly appears on the screen. This completes the copy-and-paste action. Continue by
-// reviewing this new (pasted) information by manually editing the target dive.
-// 
-// To choose what dive details to copy, long-press the copy button. This will open
-// up a configuration page where you can toggle the details you want to copy over
-// to the destination.
-
-== Deleting a dive
-
-Delete a dive from the dive list by long-pressing a dive and selecting delete in the context menu.
-If the wrong dive was deleted by mistake you can easily undo the operation in the context menu.
-
-image::mobile-images/Delete_undo.jpg["FIGURE: Undo delete dive",align="center"]
 
 [[S_Download]]
 == Download dives from a dive computer
@@ -400,6 +371,8 @@ screen for each mode of communication, allowing a choice. Use the _Connection_ v
 two options. In the image on the right, below, there are three buttons labeled "Shearwater Petrel 2". These represent two Shearwater Petrel dive computers, one of which can communicate in both Bluetooth as well as BTLE. The _Connection_
 information indicates that the Petrel with no BTLE is selected.
 
+This https://www.youtube.com/watch?v=4MtQqm4o7bw[*video-tutorial*] demonstrates setting up a Bluetooth connection with an Android device.
+
 *DOWNLOAD:* With communication between dive computer and _Subsurface-mobile_
 having been set up, tap the _Download_ button. Be patient because the download can take a few minutes.
 As a matter of fact, a complete first download from some dive computers can take 45 minutes or longer.
@@ -410,9 +383,72 @@ Each dive has a check-box on the left hand side, used for selecting which dives 
 _Subsurface-mobile_ dive list: dives that are not checked are ignored. With the appropriate downloaded dives
 having been checked, tap the button at the bottom left labeled _Accept_. All the selected dives appear on
 the _Subsurface-mobile_ dive list. The downloaded dive information can now be edited as described in the section
-above xref:S_Edit_Dive[Edit a dive].
+above xref:S_Edit_Dive[Edit the dive information]. After editing the dive information, the dive trip information
+needs to be edited as described in the section above on xref:S_Divetrip[Edit the dive trip information].
 
-image::mobile-images/DC-Download.jpg["FIGURE: DC download screen",align="center"]
+This https://www.youtube.com/watch?v=DCi70WZMTws[*video-tutorial*] demonstrates downloading dives from a Bluetooth-equipped dive computer.
+
+[[S_Edit_Dive]]
+== Edit the dive information
+
+image::mobile-images/Editdive.jpg["FIGURE: Dive edit screen",align="center"]
+At the bottom of the _Dive Details_ screen the action button is a pencil.
+Tapping the pencil button changes the page and enables edit boxes that allow
+modifying the existing dive information, e.g. adding text to the dive notes
+or changing the names or values of some of the information (see image on left).
+It may be necessary to scroll the window to access all the information.
+At the bottom of the edit screen is a _Save_ action button. Tap this to save
+the new information, after which the dive list screen is
+updated and shown. To cancel any edits, tap the Android _Back_ Button or
+the application back button at the top left of the screen on iOS.
+
+This https://www.youtube.com/watch?v=pE3ujzGw_7o[*video-tutorial*] explains how to add information about a dive.
+
+[[S_Divetrip]]
+== Edit the dive trip information
+
+When a new dive(s) is entered manually or downloaded from dive computer, a trip header is created at the
+top of the dive list only showing the month and the year of the dive trip as well as the number of dives
+during the trip (image on left below, showing a trip header with "May 2018", the trip comprising two dives).
+You would probably like to include information about the place
+where the trip took place, e.g. "Channel Islands" or the dive charter company used. In this case long-press
+the dive trip header to activate the context menu. Select the option "Edit trip details" to open a panel
+for typing information about the trip (image on right, below). Having provided the required information,
+tap the _Save_ action button at the bottom of the screen. This returns you to the dive list, showing some of
+the dive trip information that has just been provided.
+
+image::mobile-images/TripDetails.jpg["FIGURE: Edit trip details",align="center"]
+
+// == Copy dive information from one dive to another
+// 
+// When editing dives it is possible to transfer information from one dive to another. For instance,
+// when diving with the same buddy and the same equipment configuration during a particular dive trip
+// it can be efficient to simply copy all this information from the previous dive into the dive that
+// is being edited. Currently a standard list of dive information is copied to the clipboard:
+// 
+// Divemaster, Buddy, Suit, Tags, Cylinders, Weights.
+// 
+// Copy and paste dive information is performed on the Dive List. Long-press on a dive. A panel
+// with three icons appears on top the selected dive :
+// 
+// image::mobile-images/CopyDeleteDive.jpg["FIGURE: Copy/Delete dive information",align="center"]
+// 
+// To copy the above information to the clipboard, select the leftmost of the three icons. A "Copy"
+// notification briefly appears on the screen. Now long-press the dive into which the copied information
+// needs to be pasted. The same three icons appear on the target dive. Select the middle icon. A "Paste"
+// notification briefly appears on the screen. This completes the copy-and-paste action. Continue by
+// reviewing this new (pasted) information by manually editing the target dive.
+// 
+// To choose what dive details to copy, long-press the copy button. This will open
+// up a configuration page where you can toggle the details you want to copy over
+// to the destination.
+
+== Deleting a dive
+
+Delete a dive from the dive list by long-pressing a dive and selecting delete in the context menu.
+If the wrong dive was deleted by mistake you can easily undo the operation by using the context menu.
+
+image::mobile-images/Delete_undo.jpg["FIGURE: Undo delete dive",align="center"]
 
 == Dive log management
 
