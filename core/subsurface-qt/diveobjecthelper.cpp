@@ -249,6 +249,19 @@ QStringList getFullCylinderList()
 	return cylinders;
 }
 
+QString formatDiveSalinity(const dive *d)
+{
+	int salinity = get_dive_salinity(d);
+	if (!salinity)
+		return QString();
+	return get_salinity_string(salinity);
+}
+
+QString formatDiveWaterType(const dive *d)
+{
+	return get_water_type_string(get_dive_salinity(d));
+}
+
 // Qt's metatype system insists on generating a default constructed object, even if that makes no sense.
 DiveObjectHelper::DiveObjectHelper()
 {
@@ -286,7 +299,9 @@ DiveObjectHelper::DiveObjectHelper(const struct dive *d) :
 	getCylinder(formatGetCylinder(d)),
 	startPressure(getStartPressure(d)),
 	endPressure(getEndPressure(d)),
-	firstGas(getFirstGas(d))
+	firstGas(getFirstGas(d)),
+	salinity(formatDiveSalinity(d)),
+	waterType(formatDiveWaterType(d))
 {
 #if defined(DEBUG_DOH)
 	void *array[4];

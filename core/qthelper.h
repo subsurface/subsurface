@@ -11,6 +11,7 @@ struct picture;
 // 1) Types
 
 enum inertgas {N2, HE};
+enum watertypes {FRESHWATER, SALTYWATER, EN13319WATER, SALTWATER, DC_WATERTYPE};
 
 // 2) Functions visible only to C++ parts
 
@@ -37,6 +38,7 @@ int getCloudURL(QString &filename);
 bool parseGpsText(const QString &gps_text, double *latitude, double *longitude);
 void init_proxy();
 QString getUUID();
+extern const QStringList waterTypes;
 extern const QStringList videoExtensionsList;
 QStringList mediaExtensionFilters();
 QStringList imageExtensionFilters();
@@ -55,6 +57,8 @@ QString get_volume_string(int mliter, bool showunit = false);
 QString get_volume_unit();
 QString get_pressure_string(pressure_t pressure, bool showunit = false);
 QString get_pressure_unit();
+QString get_salinity_string(int salinity);
+QString get_water_type_string(int salinity);
 QString getSubsurfaceDataPath(QString folderToFind);
 QString getPrintingTemplatePathUser();
 QString getPrintingTemplatePathBundle();

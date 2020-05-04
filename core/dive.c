@@ -1196,6 +1196,11 @@ static void fixup_water_salinity(struct dive *dive)
 		dive->salinity = (sum + nr / 2) / nr;
 }
 
+int get_dive_salinity(const struct dive *dive)
+{
+	return dive->user_salinity ? dive->user_salinity : dive->salinity;
+}
+
 static void fixup_meandepth(struct dive *dive)
 {
 	struct divecomputer *dc;
