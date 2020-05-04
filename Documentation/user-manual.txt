@@ -1018,9 +1018,10 @@ without dive computer information, select the desired water type
 using the dropdown box. The following water types are available:
 
 1. Fresh water, usually at inland dive sites or in caves.
-2. Salty water, i.e. water that contains a little salt (called brackish water).
-3. EN13319, an average value that represents neither fresh water or sea water. This value is available
-on some dive computers and is regarded by some as a safe value for both fresh water and sea water.
+2. Brackish water, water that contains a little salt.
+3. EN13319, an value defined in the European CE standard for dive computers that represents neither
+ fresh water or sea water. This value is available on some dive computers and is regarded by some
+ as a safe value for both fresh water and sea water.
 4. Salt water encountered in the sea.
 
 The topic of water salinity is complex because it differs sonewhat between different oceans. A warning icon

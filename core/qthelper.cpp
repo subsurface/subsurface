@@ -631,7 +631,7 @@ QString get_water_type_string(int salinity)
 	if (salinity < 10050)
 		return waterTypes[FRESHWATER];
 	else if (salinity < 10190)
-		return waterTypes[SALTYWATER];
+		return waterTypes[BRACKISHWATER];
 	else if (salinity < 10210)
 		return waterTypes[EN13319WATER];
 	else
@@ -1162,7 +1162,7 @@ QString localFilePath(const QString &originalFilename)
 
 // the water types need to match the watertypes enum
 const QStringList waterTypes = {
-	gettextFromC::tr("Fresh"), gettextFromC::tr("Salty"), gettextFromC::tr("EN13319"), gettextFromC::tr("Salt"), gettextFromC::tr("use dc")
+	gettextFromC::tr("Fresh"), gettextFromC::tr("Brackish"), gettextFromC::tr("EN13319"), gettextFromC::tr("Salt"), gettextFromC::tr("use dc")
 };
 
 // TODO: Apparently Qt has no simple way of listing the supported video
