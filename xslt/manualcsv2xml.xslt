@@ -15,6 +15,7 @@
   <xsl:param name="gpsField" select="gpsField"/>
   <xsl:param name="maxDepthField" select="maxDepthField"/>
   <xsl:param name="meanDepthField" select="meanDepthField"/>
+  <xsl:param name="modeField" select="modeField"/>
   <xsl:param name="divemasterField" select="divemasterField"/>
   <xsl:param name="buddyField" select="buddyField"/>
   <xsl:param name="suitField" select="suitField"/>
@@ -225,7 +226,16 @@
         </xsl:attribute>
       </xsl:if>
 
-      <divecomputer deviceid="ffffffff" model="csv" />
+      <divecomputer deviceid="ffffffff" model="csv">
+        <xsl:if test="$modeField >= 0">
+          <xsl:attribute name="dctype">
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="$modeField"/>
+              <xsl:with-param name="line" select="$line"/>
+            </xsl:call-template>
+          </xsl:attribute>
+        </xsl:if>
+      </divecomputer>
 
       <xsl:if test="$locationField &gt;= 0 or $gpsField &gt;= 0">
         <location>

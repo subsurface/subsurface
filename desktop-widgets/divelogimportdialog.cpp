@@ -67,7 +67,7 @@ enum Known {
 
 ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(parent)
 {
-	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cyl. size") << tr("Start pressure") <<
+	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Mode") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cyl. size") << tr("Start pressure") <<
 		       tr("End pressure") << tr("Max. depth") << tr("Avg. depth") << tr("Divemaster") << tr("Buddy") << tr("Suit") << tr("Notes") << tr("Tags") << tr("Air temp.") << tr("Water temp.") <<
 		       tr("O₂") << tr("He") << tr("Sample time") << tr("Sample depth") << tr("Sample temperature") << tr("Sample pO₂") << tr("Sample CNS") << tr("Sample NDL") <<
 		       tr("Sample TTS") << tr("Sample stopdepth") << tr("Sample pressure") <<
@@ -720,23 +720,24 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			headers.replace(3, tr("Duration"));
 			headers.replace(4, tr("Max. depth"));
 			headers.replace(5, tr("Avg. depth"));
-			headers.replace(6, tr("Air temp."));
-			headers.replace(7, tr("Water temp."));
-			headers.replace(8, tr("Cyl. size"));
-			headers.replace(9, tr("Start pressure"));
-			headers.replace(10, tr("End pressure"));
-			headers.replace(11, tr("O₂"));
-			headers.replace(12, tr("He"));
-			headers.replace(13, tr("Location"));
-			headers.replace(14, tr("GPS"));
-			headers.replace(15, tr("Divemaster"));
-			headers.replace(16, tr("Buddy"));
-			headers.replace(17, tr("Suit"));
-			headers.replace(18, tr("Rating"));
-			headers.replace(19, tr("Visibility"));
-			headers.replace(20, tr("Notes"));
-			headers.replace(21, tr("Weight"));
-			headers.replace(22, tr("Tags"));
+			headers.replace(6, tr("Mode"));
+			headers.replace(7, tr("Air temp."));
+			headers.replace(8, tr("Water temp."));
+			headers.replace(9, tr("Cyl. size"));
+			headers.replace(10, tr("Start pressure"));
+			headers.replace(11, tr("End pressure"));
+			headers.replace(12, tr("O₂"));
+			headers.replace(13, tr("He"));
+			headers.replace(14, tr("Location"));
+			headers.replace(15, tr("GPS"));
+			headers.replace(16, tr("Divemaster"));
+			headers.replace(17, tr("Buddy"));
+			headers.replace(18, tr("Suit"));
+			headers.replace(19, tr("Rating"));
+			headers.replace(20, tr("Visibility"));
+			headers.replace(21, tr("Notes"));
+			headers.replace(22, tr("Weight"));
+			headers.replace(23, tr("Tags"));
 
 			blockSignals(true);
 			ui->CSVSeparator->setCurrentText(separator);
@@ -937,7 +938,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 	} else {
 		for (int i = 0; i < fileNames.size(); ++i) {
 			if (r.indexOf(tr("Sample time")) < 0) {
-				char *params[59];
+				char *params[61];
 				int pnr = 0;
 				params[pnr++] = strdup("numberField");
 				params[pnr++] = intdup(r.indexOf(tr("Dive #")));
@@ -947,6 +948,8 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				params[pnr++] = intdup(r.indexOf(tr("Time")));
 				params[pnr++] = strdup("durationField");
 				params[pnr++] = intdup(r.indexOf(tr("Duration")));
+				params[pnr++] = strdup("modeField");
+				params[pnr++] = intdup(r.indexOf(tr("Mode")));
 				params[pnr++] = strdup("locationField");
 				params[pnr++] = intdup(r.indexOf(tr("Location")));
 				params[pnr++] = strdup("gpsField");
