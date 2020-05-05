@@ -21,6 +21,9 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 {
 	ui->setupUi(this);
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &TabDiveInformation::divesChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &TabDiveInformation::cylinderChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &TabDiveInformation::cylinderChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &TabDiveInformation::cylinderChanged);
 	QStringList atmPressTypes { "mbar", get_depth_unit() ,tr("Use DC")};
 	ui->atmPressType->insertItems(0, atmPressTypes);
 	pressTypeIndex = 0;
@@ -290,6 +293,14 @@ void TabDiveInformation::on_waterTypeCombo_activated(int index) {
 		ui->salinityOverWrittenIcon->setVisible(false);
 	else
 		ui->salinityOverWrittenIcon->setVisible(true);
+}
+
+void TabDiveInformation::cylinderChanged(dive *d)
+{
+	// If this isn't the current dive, do nothing
+	if (current_dive != d)
+		return;
+	updateProfile();
 }
 
 // This function gets called if a field gets updated by an undo command.
