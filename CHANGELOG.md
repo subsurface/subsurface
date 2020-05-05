@@ -1,3 +1,4 @@
+Desktop: update SAC fields and other statistics when editing cylinders
 Desktop: Reconnect the variations checkbox in planner
 Desktop: add support for dive mode on CSV import and export
 Desktop: fix profile display of planned dives with surface segments
