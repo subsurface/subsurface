@@ -22,6 +22,9 @@ TabDiveStatistics::TabDiveStatistics(QWidget *parent) : TabBase(parent), ui(new 
 	ui->timeLimits->overrideAvgToolTipText(tr("Average length of all selected dives"));
 
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &TabDiveStatistics::divesChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &TabDiveStatistics::cylinderChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &TabDiveStatistics::cylinderChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &TabDiveStatistics::cylinderChanged);
 
 	const auto l = findChildren<QLabel *>(QString(), Qt::FindDirectChildrenOnly);
 	for (QLabel *label: l) {
@@ -55,6 +58,14 @@ void TabDiveStatistics::divesChanged(const QVector<dive *> &dives, DiveField fie
 	// TODO: make this more fine grained. Currently, the core can only calculate *all* statistics.
 	if (field.duration || field.depth || field.mode || field.air_temp || field.water_temp)
 		updateData();
+}
+
+void TabDiveStatistics::cylinderChanged(dive *d)
+{
+	// If the changed dive is not selected, do nothing
+	if (!d->selected)
+		return;
+	updateData();
 }
 
 void TabDiveStatistics::updateData()

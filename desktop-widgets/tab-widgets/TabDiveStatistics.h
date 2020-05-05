@@ -19,6 +19,7 @@ public:
 
 private slots:
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
+	void cylinderChanged(dive *d);
 
 private:
 	Ui::TabDiveStatistics *ui;
