@@ -716,6 +716,9 @@ DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelTree::divesSelected);
 	connect(&diveListNotifier, &DiveListNotifier::tripChanged, this, &DiveTripModelTree::tripChanged);
 	connect(&diveListNotifier, &DiveListNotifier::filterReset, this, &DiveTripModelTree::filterReset);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &DiveTripModelTree::cylinderChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &DiveTripModelTree::cylinderChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &DiveTripModelTree::cylinderChanged);
 
 	populate();
 }
@@ -1253,6 +1256,11 @@ void DiveTripModelTree::divesChanged(const QVector<dive *> &dives)
 		      { divesChangedTrip(trip, divesInTrip); });
 }
 
+void DiveTripModelTree::cylinderChanged(dive *d)
+{
+	divesChanged(QVector<dive *> { d });
+}
+
 void DiveTripModelTree::divesChangedTrip(dive_trip *trip, const QVector<dive *> &divesIn)
 {
 	QVector<dive *> dives = divesIn;
@@ -1469,6 +1477,9 @@ DiveTripModelList::DiveTripModelList(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::divesTimeChanged, this, &DiveTripModelList::divesTimeChanged);
 	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelList::divesSelected);
 	connect(&diveListNotifier, &DiveListNotifier::filterReset, this, &DiveTripModelList::filterReset);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &DiveTripModelList::cylinderChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &DiveTripModelList::cylinderChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &DiveTripModelList::cylinderChanged);
 
 	populate();
 }
@@ -1620,6 +1631,11 @@ void DiveTripModelList::divesChanged(const QVector<dive *> &divesIn)
 	// TODO: This is way to heavy, as it reloads the whole selection!
 	if (shownChange.currentChanged)
 		initSelection();
+}
+
+void DiveTripModelList::cylinderChanged(dive *d)
+{
+	divesChanged(QVector<dive *> { d });
 }
 
 void DiveTripModelList::divesTimeChanged(timestamp_t delta, const QVector<dive *> &divesIn)
