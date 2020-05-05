@@ -290,18 +290,10 @@ double tissue_tolerance_calc(struct deco_state *ds, const struct dive *dive, dou
 }
 
 /*
- * Return buelman factor for a particular period and tissue index.
- *
- * We cache the factor, since we commonly call this with the
- * same values... We have a special "fixed cache" for the one second
- * case, although I wonder if that's even worth it considering the
- * more general-purpose cache.
+ * Return Buehlmann factor for a particular period and tissue index.
  */
-
-
 static double factor(int period_in_seconds, int ci, enum inertgas gas)
 {
-	double factor;
 	if (period_in_seconds == 1) {
 		if (gas == N2)
 			return buehlmann_N2_factor_expositon_one_second[ci];
@@ -309,17 +301,11 @@ static double factor(int period_in_seconds, int ci, enum inertgas gas)
 			return buehlmann_He_factor_expositon_one_second[ci];
 	}
 
-	factor = cache_value(ci, period_in_seconds, gas);
-	if (!factor) {
-		// ln(2)/60 = 1.155245301e-02
-		if (gas == N2)
-			factor = 1 - exp(-period_in_seconds * 1.155245301e-02 / buehlmann_N2_t_halflife[ci]);
-		else
-			factor = 1 - exp(-period_in_seconds * 1.155245301e-02 / buehlmann_He_t_halflife[ci]);
-		cache_insert(ci, period_in_seconds, gas, factor);
-	}
-
-	return factor;
+	// ln(2)/60 = 1.155245301e-02
+	if (gas == N2)
+		return 1.0 - exp(-period_in_seconds * 1.155245301e-02 / buehlmann_N2_t_halflife[ci]);
+	else
+		return 1.0 - exp(-period_in_seconds * 1.155245301e-02 / buehlmann_He_t_halflife[ci]);
 }
 
 static double calc_surface_phase(double surface_pressure, double he_pressure, double n2_pressure, double he_time_constant, double n2_time_constant)
