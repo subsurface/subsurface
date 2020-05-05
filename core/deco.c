@@ -30,6 +30,7 @@
 #include "planner.h"
 #include "qthelper.h"
 
+enum inertgas { N2, HE };
 #define cube(x) (x * x * x)
 
 // Subsurface until v4.6.2 appeared to produce marginally less conservative plans than our benchmarks.

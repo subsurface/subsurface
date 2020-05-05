@@ -10,7 +10,6 @@ struct picture;
 
 // 1) Types
 
-enum inertgas {N2, HE};
 enum watertypes {FRESHWATER, BRACKISHWATER, EN13319WATER, SALTWATER, DC_WATERTYPE};
 
 // 2) Functions visible only to C++ parts
