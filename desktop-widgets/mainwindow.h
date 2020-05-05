@@ -158,7 +158,7 @@ public
 slots:
 	void turnOffNdlTts();
 	void readSettings();
-	void refreshDisplay(bool doRecreateDiveList = true);
+	void refreshDisplay();
 	void showProfile();
 	void refreshProfile();
 	void editCurrentDive();

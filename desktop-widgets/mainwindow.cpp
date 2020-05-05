@@ -405,11 +405,9 @@ MainWindow *MainWindow::instance()
 }
 
 // This gets called after one or more dives were added, edited or downloaded for a dive computer
-void MainWindow::refreshDisplay(bool doRecreateDiveList)
+void MainWindow::refreshDisplay()
 {
 	mainTab->reload();
-	if (doRecreateDiveList)
-		diveList->reload();
 
 	setApplicationState(ApplicationState::Default);
 	diveList->setEnabled(true);
@@ -782,7 +780,7 @@ void MainWindow::planCanceled()
 	// while planning we might have modified the displayed_dive
 	// let's refresh what's shown on the profile
 	refreshProfile();
-	refreshDisplay(false);
+	refreshDisplay();
 }
 
 void MainWindow::planCreated()
