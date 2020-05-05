@@ -21,7 +21,7 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 {
 	ui->setupUi(this);
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &TabDiveInformation::divesChanged);
-	QStringList atmPressTypes { "mbar", get_depth_unit() ,tr("use dc")};
+	QStringList atmPressTypes { "mbar", get_depth_unit() ,tr("Use DC")};
 	ui->atmPressType->insertItems(0, atmPressTypes);
 	pressTypeIndex = 0;
 	ui->waterTypeCombo->insertItems(0, waterTypes);

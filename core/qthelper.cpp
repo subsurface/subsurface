@@ -1162,7 +1162,7 @@ QString localFilePath(const QString &originalFilename)
 
 // the water types need to match the watertypes enum
 const QStringList waterTypes = {
-	gettextFromC::tr("Fresh"), gettextFromC::tr("Brackish"), gettextFromC::tr("EN13319"), gettextFromC::tr("Salt"), gettextFromC::tr("use dc")
+	gettextFromC::tr("Fresh"), gettextFromC::tr("Brackish"), gettextFromC::tr("EN13319"), gettextFromC::tr("Salt"), gettextFromC::tr("Use DC")
 };
 
 // TODO: Apparently Qt has no simple way of listing the supported video
