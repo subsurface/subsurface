@@ -18,6 +18,7 @@ public:
 	void clear() override;
 private slots:
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
+	void cylinderChanged(dive *d);
 	void diveModeChanged(int index);
 	void on_atmPressVal_editingFinished();
 	void on_atmPressType_currentIndexChanged(int index);
