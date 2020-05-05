@@ -1040,10 +1040,10 @@ right allows two ways of expressing atmospheric pressure: mbar or m/ft above sea
 The altitude unit (metric/imperial) is taken from the settings in the _Units Preferences_ screen. A
 third option is to use the atmospheric pressure provided by the dive computer. In order to specify
 the pressure/altitude, first select the appropriate unit in the dropbox (in the case of the image on the left
-these are "mbar/m/use dc", then type an appropriate value into the text box. In the case
+these are "mbar/m/Use DC", then type an appropriate value into the text box. In the case
 of m/ft the altitude typed into the text box is automatically converted to the
 mean expected atmospheric pressure (mbar) at the specified altitude.
-In the case of "use dc", no value is required in the text box. Atmospheric pressure provided by a dive
+In the case of "Use DC", no value is required in the text box. Atmospheric pressure provided by a dive
 computer does not need any editing.
 
 Recording of five dive conditions that can be done on a five star rating scale. The convention is that the most comfortable
