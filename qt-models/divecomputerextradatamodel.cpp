@@ -20,33 +20,28 @@ void ExtraDataModel::clear()
 
 QVariant ExtraDataModel::data(const QModelIndex &index, int role) const
 {
-	QVariant ret;
 	struct extra_data *ed = get_dive_dc(&displayed_dive, dc_number)->extra_data;
 	int i = -1;
 	while (ed && ++i < index.row())
 		ed = ed->next;
 	if (!ed)
-		return ret;
+		return QVariant();
 
 	switch (role) {
 	case Qt::FontRole:
-		ret = defaultModelFont();
-		break;
+		return defaultModelFont();
 	case Qt::TextAlignmentRole:
-		ret = int(Qt::AlignLeft | Qt::AlignVCenter);
-		break;
+		return static_cast<int>(Qt::AlignLeft | Qt::AlignVCenter);
 	case Qt::DisplayRole:
 		switch (index.column()) {
 		case KEY:
-			ret = QString(ed->key);
-			break;
+			return ed->key;
 		case VALUE:
-			ret = QString(ed->value);
-			break;
+			return ed->value;
 		}
-		break;
+		return QVariant();
 	}
-	return ret;
+	return QVariant();
 }
 
 int ExtraDataModel::rowCount(const QModelIndex&) const
