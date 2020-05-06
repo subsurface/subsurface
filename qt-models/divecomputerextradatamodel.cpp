@@ -13,10 +13,9 @@ ExtraDataModel::ExtraDataModel(QObject *parent) : CleanerTableModel(parent),
 
 void ExtraDataModel::clear()
 {
-	if (rows > 0) {
-		beginRemoveRows(QModelIndex(), 0, rows - 1);
-		endRemoveRows();
-	}
+	beginResetModel();
+	rows = 0;
+	endResetModel();
 }
 
 QVariant ExtraDataModel::data(const QModelIndex &index, int role) const
@@ -57,15 +56,12 @@ int ExtraDataModel::rowCount(const QModelIndex&) const
 
 void ExtraDataModel::updateDive()
 {
-	clear();
+	beginResetModel();
 	rows = 0;
 	struct extra_data *ed = get_dive_dc(&displayed_dive, dc_number)->extra_data;
 	while (ed) {
 		rows++;
 		ed = ed->next;
 	}
-	if (rows > 0) {
-		beginInsertRows(QModelIndex(), 0, rows - 1);
-		endInsertRows();
-	}
+	endResetModel();
 }
