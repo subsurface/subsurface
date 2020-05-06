@@ -57,8 +57,8 @@ slots:
 	void on_notes_editingFinished();
 	void on_duration_editingFinished();
 	void on_depth_editingFinished();
-	void on_dateEdit_dateChanged(const QDate &date);
-	void on_timeEdit_timeChanged(const QTime & time);
+	void on_dateEdit_editingFinished();
+	void on_timeEdit_editingFinished();
 	void on_rating_valueChanged(int value);
 	void on_tagWidget_editingFinished();
 	void hideMessage();

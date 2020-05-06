@@ -607,23 +607,23 @@ static void shiftTime(QDateTime &dateTime)
 	}
 }
 
-void MainTab::on_dateEdit_dateChanged(const QDate &date)
+void MainTab::on_dateEdit_editingFinished()
 {
 	if (ignoreInput || !current_dive)
 		return;
 	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*current_dive->when, Qt::UTC);
 	dateTime.setTimeSpec(Qt::UTC);
-	dateTime.setDate(date);
+	dateTime.setDate(ui.dateEdit->date());
 	shiftTime(dateTime);
 }
 
-void MainTab::on_timeEdit_timeChanged(const QTime &time)
+void MainTab::on_timeEdit_editingFinished()
 {
 	if (ignoreInput || !current_dive)
 		return;
 	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*current_dive->when, Qt::UTC);
 	dateTime.setTimeSpec(Qt::UTC);
-	dateTime.setTime(time);
+	dateTime.setTime(ui.timeEdit->time());
 	shiftTime(dateTime);
 }
 
