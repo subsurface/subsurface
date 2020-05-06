@@ -4170,7 +4170,6 @@ The options include:
 | -v|Print debug information while running _Subsurface_
 | -v -v| Print even more debug information while running _Subsurface_
 |--version|Prints the current version of _Subsurface_
-|--survey|Opens the xref:S_UserSurvey[user survey] immediately after starting _Subsurface_
 |--user=<username>|Choose the xref:S_user_space[configuration space] of user <username>
 |--cloud-timeout=<duration>|Set the timeout for cloud connection (0 < duration < 60). This enables longer timeouts for slow Internet connections
 |====================
@@ -4248,8 +4247,6 @@ dealing with the appropriate operations.
   well as licensing information.
 - _Check for updates_ - Find out whether a newer version of Subsurface is available
   on the https://subsurface-divelog.org/[_Subsurface_ web site].
-- <<S_UserSurvey,_User survey_>>  - Help to make _Subsurface_ even better by taking part in our user survey
-  or by completing another survey if your diving habits have changed.
 - _User manual_ - Open a window showing this user manual.
 
 
