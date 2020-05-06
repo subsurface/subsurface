@@ -13,7 +13,7 @@ HTMLDOCS = $(patsubst %,$(OUT)%.html,$(DOCNAMES))
 TEXTDOCS = $(patsubst %,$(OUT)%.text,$(DOCNAMES))
 PDFDOCS = $(patsubst %,$(OUT)%.pdf,$(DOCNAMES))
 
-ASCIIDOC = asciidoc
+ASCIIDOC = asciidoctor
 A2X = a2x
 BROWSER = firefox
 THEME = compact_subsurface
