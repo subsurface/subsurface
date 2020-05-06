@@ -4,6 +4,8 @@
 
 #include "cleanertablemodel.h"
 
+struct divecomputer;
+
 /* extra data model for additional dive computer data */
 class ExtraDataModel : public CleanerTableModel {
 	Q_OBJECT
@@ -17,10 +19,14 @@ public:
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
 	void clear();
-	void updateDive();
+	void updateDiveComputer(const struct divecomputer *dc);
 
 private:
-	int rows;
+	struct Item {
+		QString key;
+		QString value;
+	};
+	std::vector<Item> items;
 };
 
 #endif

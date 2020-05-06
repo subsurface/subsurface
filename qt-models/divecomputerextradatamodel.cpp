@@ -4,8 +4,7 @@
 #include "core/metrics.h"
 
 
-ExtraDataModel::ExtraDataModel(QObject *parent) : CleanerTableModel(parent),
-	rows(0)
+ExtraDataModel::ExtraDataModel(QObject *parent) : CleanerTableModel(parent)
 {
 	//enum Column {KEY, VALUE};
 	setHeaderDataStrings(QStringList() << tr("Key") << tr("Value"));
@@ -14,18 +13,15 @@ ExtraDataModel::ExtraDataModel(QObject *parent) : CleanerTableModel(parent),
 void ExtraDataModel::clear()
 {
 	beginResetModel();
-	rows = 0;
+	items.clear();
 	endResetModel();
 }
 
 QVariant ExtraDataModel::data(const QModelIndex &index, int role) const
 {
-	struct extra_data *ed = get_dive_dc(&displayed_dive, dc_number)->extra_data;
-	int i = -1;
-	while (ed && ++i < index.row())
-		ed = ed->next;
-	if (!ed)
+	if (!index.isValid() || index.row() > (int)items.size())
 		return QVariant();
+	const Item &item = items[index.row()];
 
 	switch (role) {
 	case Qt::FontRole:
@@ -35,9 +31,9 @@ QVariant ExtraDataModel::data(const QModelIndex &index, int role) const
 	case Qt::DisplayRole:
 		switch (index.column()) {
 		case KEY:
-			return ed->key;
+			return item.key;
 		case VALUE:
-			return ed->value;
+			return item.value;
 		}
 		return QVariant();
 	}
@@ -46,16 +42,16 @@ QVariant ExtraDataModel::data(const QModelIndex &index, int role) const
 
 int ExtraDataModel::rowCount(const QModelIndex&) const
 {
-	return rows;
+	return (int)items.size();
 }
 
-void ExtraDataModel::updateDive()
+void ExtraDataModel::updateDiveComputer(const struct divecomputer *dc)
 {
 	beginResetModel();
-	rows = 0;
-	struct extra_data *ed = get_dive_dc(&displayed_dive, dc_number)->extra_data;
+	struct extra_data *ed = dc ? dc->extra_data : nullptr;
+	items.clear();
 	while (ed) {
-		rows++;
+		items.push_back({ ed->key, ed->value });
 		ed = ed->next;
 	}
 	endResetModel();
