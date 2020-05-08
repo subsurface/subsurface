@@ -169,7 +169,8 @@ AddPictures::AddPictures(const std::vector<PictureListForAddition> &pictures) : 
 			struct dive_site *ds = p.d->dive_site;
 			if (!ds) {
 				// This dive doesn't yet have a dive site -> add a new dive site.
-				dive_site *ds = alloc_dive_site_with_gps("", &it->location);
+				QString name = Command::Base::tr("unnamed dive site");
+				dive_site *ds = alloc_dive_site_with_gps(qPrintable(name), &it->location);
 				sitesToAdd.emplace_back(ds);
 				sitesToSet.push_back({ p.d, ds });
 			} else if (!dive_site_has_gps_location(ds)) {
