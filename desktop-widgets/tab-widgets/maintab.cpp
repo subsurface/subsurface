@@ -331,6 +331,11 @@ void MainTab::updateDiveSite(struct dive *d)
 		ui.locationTags->clear();
 		ui.editDiveSiteButton->setEnabled(false);
 	}
+
+	if (ui.locationTags->text().isEmpty())
+		ui.locationTags->hide();
+	else
+		ui.locationTags->show();
 }
 
 void MainTab::updateDiveInfo()
@@ -444,10 +449,6 @@ void MainTab::updateDiveInfo()
 		ui.duration->setText(render_seconds_to_string(current_dive->duration.seconds));
 		ui.depth->setText(get_depth_string(current_dive->maxdepth, true));
 
-		if(ui.locationTags->text().isEmpty())
-			ui.locationTags->hide();
-		else
-			ui.locationTags->show();
 		ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 		/* unset the special value text for date and time, just in case someone dove at midnight */
 		ui.dateEdit->setSpecialValueText(QString());
