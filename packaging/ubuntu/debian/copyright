@@ -2,7 +2,7 @@ Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Source: <url://subsurface-divelog.org>
 
 Files: *
-Copyright: 2011-2020 Dirk Hohndel, Linus Torvalds, Tomaz Canabrava and others
+Copyright: 2011-2020 Dirk Hohndel, Linus Torvalds, Tomaz Canabrava, Berthold Stoeger, and others
 License: GPL-2.0
 
 Files: debian/*
