@@ -41,6 +41,7 @@ public:
 		SumWeightRole,
 		DiveMasterRole,
 		BuddyRole,
+		TagsRole,
 		NotesRole,
 		GpsDecimalRole,
 		GpsRole,
