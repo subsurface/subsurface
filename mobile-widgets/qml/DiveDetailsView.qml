@@ -63,26 +63,26 @@ Item {
 
 			}
 
-			Controls.Label {
+			TemplateLabel {
 				text: dateTime
 				width: Math.max(locationText.width * 0.45, paintedWidth)
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
 			// spacer, just in case
-			Controls.Label {
+			TemplateLabel {
 				text: " "
 				width: Kirigami.Units.largeSpacing
 			}
 			// let's try to show the depth / duration very compact
-			Controls.Label {
+			TemplateLabel {
 				text: depthDuration
 				width: Math.max(Kirigami.Units.gridUnit * 3, paintedWidth)
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
 		}
-		Controls.Label {
+		TemplateLabel {
 			id: numberText
 			text: "#" + number
 			font.pointSize: subsurfaceTheme.smallPointSize
@@ -99,7 +99,7 @@ Item {
 				top: numberText.bottom
 				topMargin: Kirigami.Units.smallSpacing
 			}
-			Controls.Label {
+			TemplateLabelSmall {
 				id: ratingText
 				text: qsTr("Rating:")
 				font.pointSize: subsurfaceTheme.smallPointSize
@@ -109,6 +109,7 @@ Item {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: ratingText.verticalCenter
+				anchors.verticalCenterOffset: height * 0.2
 				source: (rating >= 1) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
@@ -116,6 +117,7 @@ Item {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: ratingText.verticalCenter
+				anchors.verticalCenterOffset: height * 0.2
 				source: (rating >= 2) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
@@ -123,6 +125,7 @@ Item {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: ratingText.verticalCenter
+				anchors.verticalCenterOffset: height * 0.2
 				source: (rating >= 3) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
@@ -130,6 +133,7 @@ Item {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: ratingText.verticalCenter
+				anchors.verticalCenterOffset: height * 0.2
 				source: (rating >= 4) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
@@ -137,6 +141,7 @@ Item {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: ratingText.verticalCenter
+				anchors.verticalCenterOffset: height * 0.2
 				source: (rating === 5) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
@@ -147,7 +152,7 @@ Item {
 				top: numberText.bottom
 				topMargin: Kirigami.Units.smallSpacing
 			}
-			Controls.Label {
+			TemplateLabelSmall {
 				id: visibilityText
 				text: qsTr("Visibility:")
 				font.pointSize: subsurfaceTheme.smallPointSize
@@ -157,6 +162,7 @@ Item {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: visibilityText.verticalCenter
+				anchors.verticalCenterOffset: height * 0.2
 				source: (viz >= 1) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
@@ -164,6 +170,7 @@ Item {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: visibilityText.verticalCenter
+				anchors.verticalCenterOffset: height * 0.2
 				source: (viz >= 2) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
@@ -171,6 +178,7 @@ Item {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: visibilityText.verticalCenter
+				anchors.verticalCenterOffset: height * 0.2
 				source: (viz >= 3) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
@@ -178,6 +186,7 @@ Item {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: visibilityText.verticalCenter
+				anchors.verticalCenterOffset: height * 0.2
 				source: (viz >= 4) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
@@ -185,6 +194,7 @@ Item {
 				width: height
 				height: subsurfaceTheme.regularPointSize
 				anchors.verticalCenter: visibilityText.verticalCenter
+				anchors.verticalCenterOffset: height * 0.2
 				source: (viz === 5) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				color: subsurfaceTheme.textColor
 			}
@@ -331,7 +341,7 @@ Item {
 				}
 			}
 		}
-		Controls.Label {
+		TemplateLabelSmall {
 			id: noProfile
 			visible: noDive
 			Layout.fillWidth: true
@@ -343,21 +353,21 @@ Item {
 
 		// first row
 		//-----------
-		Controls.Label {
+		TemplateLabelSmall {
 			text: qsTr("Suit:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
 			color: subsurfaceTheme.textColor
 		}
-		Controls.Label {
+		TemplateLabelSmall {
 			text: qsTr("Air Temp:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
 			color: subsurfaceTheme.textColor
 		}
-		Controls.Label {
+		TemplateLabelSmall {
 			text: qsTr("Water Temp:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -367,21 +377,21 @@ Item {
 
 		// second row
 		//------------
-		Controls.Label {
+		TemplateLabelSmall {
 			id: txtSuit
 			text: suit
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
 			color: subsurfaceTheme.textColor
 		}
-		Controls.Label {
+		TemplateLabelSmall {
 			id: txtAirTemp
 			text: airTemp
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
 			color: subsurfaceTheme.textColor
 		}
-		Controls.Label {
+		TemplateLabelSmall {
 			id: txtWaterTemp
 			text: waterTemp
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -399,7 +409,7 @@ Item {
 
 		// thrid row
 		//------------
-		Controls.Label {
+		TemplateLabelSmall {
 			text: qsTr("Cylinder:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -407,7 +417,7 @@ Item {
 			Layout.bottomMargin: 0
 			color: subsurfaceTheme.textColor
 		}
-		Controls.Label {
+		TemplateLabelSmall {
 			text: qsTr("Weight:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -415,7 +425,7 @@ Item {
 			Layout.bottomMargin: 0
 			color: subsurfaceTheme.textColor
 		}
-		Controls.Label {
+		TemplateLabelSmall {
 			text: qsTr("SAC:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -426,21 +436,21 @@ Item {
 
 		// fourth row
 		//------------
-		Controls.Label {
+		TemplateLabelSmall {
 			id: txtCylinder
 			text: cylinder
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
 			color: subsurfaceTheme.textColor
 		}
-		Controls.Label {
+		TemplateLabelSmall {
 			id: txtWeight
 			text: sumWeight
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
 			color: subsurfaceTheme.textColor
 		}
-		Controls.Label {
+		TemplateLabelSmall {
 			id: txtSAC
 			text: sac
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -458,7 +468,7 @@ Item {
 
 		// fifth row
 		//-----------
-		Controls.Label {
+		TemplateLabelSmall {
 			text: qsTr("Divemaster:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -466,7 +476,7 @@ Item {
 			Layout.bottomMargin: 0
 			color: subsurfaceTheme.textColor
 		}
-		Controls.Label {
+		TemplateLabelSmall {
 			text: qsTr("Buddy:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -478,14 +488,14 @@ Item {
 
 		// sixth row
 		//-----------
-		Controls.Label {
+		TemplateLabelSmall {
 			id: txtDiveMaster
 			text: diveMaster
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
 			color: subsurfaceTheme.textColor
 		}
-		Controls.Label {
+		TemplateLabelSmall {
 			id: txtBuddy
 			text: buddy
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -502,8 +512,10 @@ Item {
 			Layout.fillWidth: true
 		}
 
+		// Notes on the bottom
+		//--------------------
 
-		Controls.Label {
+		TemplateLabelSmall {
 			Layout.fillWidth: true
 			opacity: 0.6
 			text: qsTr("Notes")
