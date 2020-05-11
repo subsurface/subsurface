@@ -31,6 +31,8 @@ Item {
 		width: parent.width - Kirigami.Units.gridUnit
 		height: childrenRect.height - Kirigami.Units.smallSpacing
 		anchors.left: parent.left
+		anchors.top: detailsView.top
+		anchors.topMargin: - Kirigami.Units.smallSpacing
 		Controls.Label {
 			id: locationText
 			text: (undefined !== location && "" !== location) ? location : qsTr("<unnamed dive site>")
