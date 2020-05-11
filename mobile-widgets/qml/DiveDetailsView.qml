@@ -514,6 +514,36 @@ Item {
 			Layout.fillWidth: true
 		}
 
+		// seventh row
+		//------------
+		TemplateLabelSmall {
+			text: qsTr("Tags:")
+			opacity: 0.6
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.columnSpan: 3
+			Layout.maximumWidth: detailsView.col2Width + detailsView.col3Width
+			Layout.bottomMargin: 0
+			color: subsurfaceTheme.textColor
+		}
+
+		// eighth row
+		//------------
+		TemplateLabelSmall {
+			id: txtTags
+			text: tags
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.columnSpan: 3
+			color: subsurfaceTheme.textColor
+		}
+
+		Rectangle {
+			color: subsurfaceTheme.primaryColor
+			height: 1
+			opacity: 0.5
+			Layout.columnSpan: 3
+			Layout.fillWidth: true
+		}
+
 		// Notes on the bottom
 		//--------------------
 
