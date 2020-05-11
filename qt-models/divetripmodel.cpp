@@ -222,6 +222,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 	case MobileListModel::SumWeightRole: return get_weight_string(weight_t { total_weight(d) }, true);
 	case MobileListModel::DiveMasterRole: return d->divemaster ? d->divemaster : QString();
 	case MobileListModel::BuddyRole: return d->buddy ? d->buddy : QString();
+	case MobileListModel::TagsRole: return get_taglist_string(d->tag_list);
 	case MobileListModel::NotesRole: return formatNotes(d);
 	case MobileListModel::GpsRole: return d->dive_site ? printGPSCoords(&d->dive_site->location) : QString();
 	case MobileListModel::GpsDecimalRole: return format_gps_decimal(d);
