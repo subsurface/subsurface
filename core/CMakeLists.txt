@@ -84,6 +84,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	exif.h
 	file.c
 	file.h
+	filterconstraint.cpp
+	filterconstraint.h
 	format.cpp
 	format.h
 	fulltext.cpp
