@@ -54,6 +54,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/device.cpp \
 	../../core/dive.c \
 	../../core/divefilter.cpp \
+	../../core/filterconstraint.cpp \
 	../../core/divelist.c \
 	../../core/gas-model.c \
 	../../core/gaspressures.c \
@@ -217,6 +218,7 @@ HEADERS += \
 	../../core/deco.h \
 	../../core/display.h \
 	../../core/divefilter.h \
+	../../core/filterconstraint.h \
 	../../core/divelist.h \
 	../../core/divelogexportlogic.h \
 	../../core/divesitehelpers.h \
