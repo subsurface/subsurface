@@ -502,6 +502,16 @@ void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 		put_format(b, " chill='%d'", dive->chill);
 	if (dive->invalid)
 		put_format(b, " invalid='1'");
+
+	// These three are calculated, and not read when loading.
+	// But saving them into the XML is useful for data export.
+	if (dive->sac > 100)
+		put_format(b, " sac='%d.%03d l/min'", FRACTION(dive->sac, 1000));
+	if (dive->otu)
+		put_format(b, " otu='%d'", dive->otu);
+	if (dive->maxcns)
+		put_format(b, " cns='%d%%'", dive->maxcns);
+
 	save_tags(b, dive->tag_list);
 	if (dive->dive_site)
 		put_format(b, " divesiteid='%8x'", dive->dive_site->uuid);
