@@ -83,16 +83,16 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		// number. The model code matches the hex model (so "FQ" is 0x4651,
 		// where 'F' is 46h and 'Q' is 51h in ASCII).
 		vendor = "Aqualung";
-		product = "i200c";
+		product = "i200C";
 	} else if (btName.contains(QRegularExpression("^FH\\d{6}$"))) {
 		vendor = "Aqualung";
-		product = "i300c";
+		product = "i300C";
 	} else if (btName.contains(QRegularExpression("^FQ\\d{6}$"))) {
 		vendor = "Aqualung";
 		product = "i770R";
 	} else if (btName.contains(QRegularExpression("^FR\\d{6}$"))) {
 		vendor = "Aqualung";
-		product = "i550c";
+		product = "i550C";
 	} else if (btName.contains(QRegularExpression("^ER\\d{6}$"))) {
 		vendor = "Oceanic";
 		product = "Pro Plus X";
@@ -111,7 +111,7 @@ static dc_descriptor_t *getDeviceType(QString btName)
 
 	// check if we found a known dive computer
 	if (!vendor.isEmpty() && !product.isEmpty()) {
-		dc_descriptor_t *lookup = descriptorLookup.value(vendor + product);
+		dc_descriptor_t *lookup = descriptorLookup.value(vendor.toLower() + product.toLower());
 		if (!lookup)
 			qWarning("known dive computer %s not found in descriptorLookup", qPrintable(QString(vendor + product)));
 		return lookup;

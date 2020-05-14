@@ -908,7 +908,7 @@ void ConfigureDiveComputerDialog::getDeviceData()
 	device_data.vendor = copy_qstring(selected_vendor);
 	device_data.product = copy_qstring(selected_product);
 
-	device_data.descriptor = descriptorLookup.value(selected_vendor + selected_product);
+	device_data.descriptor = descriptorLookup.value(selected_vendor.toLower() + selected_product.toLower());
 	device_data.deviceid = device_data.diveid = 0;
 
 	qPrefDiveComputer::set_device(device_data.devname);

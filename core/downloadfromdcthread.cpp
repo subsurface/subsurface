@@ -68,7 +68,7 @@ DownloadThread::DownloadThread() : downloadTable({ 0 }),
 void DownloadThread::run()
 {
 	auto internalData = m_data->internalData();
-	internalData->descriptor = descriptorLookup[m_data->vendor() + m_data->product()];
+	internalData->descriptor = descriptorLookup[m_data->vendor().toLower() + m_data->product().toLower()];
 	internalData->download_table = &downloadTable;
 	internalData->sites = &diveSiteTable;
 	internalData->btname = strdup(m_data->devBluetoothName().toUtf8());
@@ -127,7 +127,7 @@ void fill_computer_list()
 		if (!productList[vendor].contains(product))
 			productList[vendor].append(product);
 
-		descriptorLookup[QString(vendor) + QString(product)] = descriptor;
+		descriptorLookup[QString(vendor).toLower() + QString(product).toLower()] = descriptor;
 	}
 	dc_iterator_free(iterator);
 	Q_FOREACH (QString vendor, vendorList) {
@@ -157,7 +157,8 @@ void fill_computer_list()
 	if (!productList["Uemis"].contains("Zurich"))
 		productList["Uemis"].push_back("Zurich");
 
-	descriptorLookup["UemisZurich"] = (dc_descriptor_t *)mydescriptor;
+	// note: keys in the descriptorLookup are always lowercase
+	descriptorLookup["uemiszurich"] = (dc_descriptor_t *)mydescriptor;
 #endif
 
 	std::sort(vendorList.begin(), vendorList.end());
@@ -192,7 +193,7 @@ void show_computer_list()
 	Q_FOREACH (QString vendor, vendorList) {
 		QString msg = vendor + ": ";
 		Q_FOREACH (QString product, productList[vendor]) {
-			dc_descriptor_t *descriptor = descriptorLookup[vendor + product];
+			dc_descriptor_t *descriptor = descriptorLookup[vendor.toLower() + product.toLower()];
 			unsigned int transport = dc_descriptor_get_transports(descriptor) & transportMask;
 			QString transportString = getTransportString(transport);
 			msg += product + " (" + transportString + "), ";

@@ -1,3 +1,4 @@
+Mobile: fix failure to recognize several Aqualung BLE dive computers
 Mobile: show dive tags on dive details page
 Desktop: update SAC fields and other statistics when editing cylinders
 Desktop: Reconnect the variations checkbox in planner

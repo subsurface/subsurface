@@ -318,7 +318,7 @@ void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString &vendor)
 	productModel.setStringList(productList[vendor]);
 	ui.product->setCurrentIndex(0);
 
-	descriptor = descriptorLookup.value(ui.vendor->currentText() + ui.product->currentText());
+	descriptor = descriptorLookup.value(ui.vendor->currentText().toLower() + ui.product->currentText().toLower());
 	transport = dc_descriptor_get_transports(descriptor);
 	fill_device_list(transport);
 }
@@ -542,7 +542,7 @@ void DownloadFromDCWidget::updateDeviceEnabled()
 {
 	// Set up the DC descriptor
 	dc_descriptor_t *descriptor = NULL;
-	descriptor = descriptorLookup.value(ui.vendor->currentText() + ui.product->currentText());
+	descriptor = descriptorLookup.value(ui.vendor->currentText().toLower() + ui.product->currentText().toLower());
 
 	// call dc_descriptor_get_transport to see if the dc_transport_t is DC_TRANSPORT_SERIAL
 	if (dc_descriptor_get_transports(descriptor) & (DC_TRANSPORT_SERIAL | DC_TRANSPORT_USBSTORAGE)) {
