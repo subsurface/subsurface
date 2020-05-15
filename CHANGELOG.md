@@ -1,4 +1,5 @@
-Mobile: fix failure to recognize several Aqualung BLE dive computers
+Core: always include BT/BLE name, even for devices no recognized as dive computer
+Core: fix failure to recognize several Aqualung BLE dive computers
 Mobile: show dive tags on dive details page
 Desktop: update SAC fields and other statistics when editing cylinders
 Desktop: Reconnect the variations checkbox in planner

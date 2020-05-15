@@ -274,8 +274,11 @@ void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device)
 		return;
 	}
 	// Do we want only devices we recognize as dive computers?
-	if (m_showNonDiveComputers)
-		connectionListModel.addAddress(device.address);
+	if (m_showNonDiveComputers) {
+		if (!newDevice.isEmpty())
+			newDevice += " ";
+		connectionListModel.addAddress(newDevice + device.address);
+	}
 	qDebug() << "Not recognized as dive computer";
 }
 
