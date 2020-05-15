@@ -144,6 +144,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../qt-models/tankinfomodel.cpp \
 	../../qt-models/models.cpp \
 	../../qt-models/weightsysteminfomodel.cpp \
+	../../qt-models/filterconstraintmodel.cpp \
 	../../profile-widget/qmlprofile.cpp \
 	../../profile-widget/divecartesianaxis.cpp \
 	../../profile-widget/diveeventitem.cpp \
@@ -293,6 +294,7 @@ HEADERS += \
 	../../qt-models/tankinfomodel.h \
 	../../qt-models/models.h \
 	../../qt-models/weightsysteminfomodel.h \
+	../../qt-models/filterconstraintmodel.h \
 	../../profile-widget/qmlprofile.h \
 	../../profile-widget/diveprofileitem.h \
 	../../profile-widget/profilewidget2.h \

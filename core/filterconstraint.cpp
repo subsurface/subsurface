@@ -19,7 +19,8 @@ enum filter_constraint_units {
 	FILTER_CONSTRAINT_DURATION_UNIT,
 	FILTER_CONSTRAINT_TEMPERATURE_UNIT,
 	FILTER_CONSTRAINT_WEIGHT_UNIT,
-	FILTER_CONSTRAINT_VOLUMETRIC_FLOW_UNIT
+	FILTER_CONSTRAINT_VOLUMETRIC_FLOW_UNIT,
+	FILTER_CONSTRAINT_DENSITY_UNIT
 };
 
 static struct type_description {
@@ -52,6 +53,7 @@ static struct type_description {
 	{ FILTER_CONSTRAINT_WEIGHT, "weight", QT_TRANSLATE_NOOP("gettextFromC", "weight"), false, true, false, FILTER_CONSTRAINT_WEIGHT_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_WATER_TEMP, "water_temp", QT_TRANSLATE_NOOP("gettextFromC", "water temp."), false, true, false, FILTER_CONSTRAINT_TEMPERATURE_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_AIR_TEMP, "air_temp", QT_TRANSLATE_NOOP("gettextFromC", "air temp."), false, true, false, FILTER_CONSTRAINT_TEMPERATURE_UNIT, 1, false, false },
+	{ FILTER_CONSTRAINT_WATER_DENSITY, "water_density", QT_TRANSLATE_NOOP("gettextFromC", "water density"), false, true, false, FILTER_CONSTRAINT_DENSITY_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_SAC, "sac", QT_TRANSLATE_NOOP("gettextFromC", "SAC"), false, true, false, FILTER_CONSTRAINT_VOLUMETRIC_FLOW_UNIT, 1, false, false },
 
 	{ FILTER_CONSTRAINT_LOGGED, "logged", QT_TRANSLATE_NOOP("gettextFromC", "logged"), false, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
@@ -279,6 +281,8 @@ QString filter_constraint_get_unit(enum filter_constraint_type type)
 		return get_weight_unit();
 	case FILTER_CONSTRAINT_VOLUMETRIC_FLOW_UNIT:
 		return get_volume_unit() + "/min";
+	case FILTER_CONSTRAINT_DENSITY_UNIT:
+		return "g/ℓ";
 	}
 }
 
@@ -301,6 +305,8 @@ static int display_to_base_unit(double f, enum filter_constraint_type type)
 		return prefs.units.weight == units::KG ? lrint(f * 1000.0) : lbs_to_grams(f);
 	case FILTER_CONSTRAINT_VOLUMETRIC_FLOW_UNIT:
 		return prefs.units.volume == units::LITER ? lrint(f * 1000.0) : lrint(cuft_to_l(f) * 1000.0);
+	case FILTER_CONSTRAINT_DENSITY_UNIT:
+		return lrint(f * 10.0); // Yippie, only "sane" units for density (g/l)
 	}
 }
 
@@ -323,6 +329,8 @@ static double base_to_display_unit(int i, enum filter_constraint_type type)
 		return prefs.units.weight == units::KG ? (double)i / 1000.0 : grams_to_lbs(i);
 	case FILTER_CONSTRAINT_VOLUMETRIC_FLOW_UNIT:
 		return prefs.units.volume == units::LITER ? (double)i / 1000.0 : ml_to_cuft(i);
+	case FILTER_CONSTRAINT_DENSITY_UNIT:
+		return (double)i / 10.0; // Yippie, only "sane" units for density (g/l)
 	}
 }
 
@@ -445,7 +453,7 @@ extern "C" bool filter_constraint_has_time_widget(filter_constraint_type type)
 extern "C" int filter_constraint_num_decimals(enum filter_constraint_type type)
 {
 	const type_description *desc = get_type_description(type);
-	return desc && desc->decimal_places;
+	return desc ? desc->decimal_places : 1;
 }
 
 // String constraints are valid if there is at least one term.
@@ -1028,6 +1036,8 @@ bool filter_constraint_match_dive(const filter_constraint &c, const struct dive 
 		return check_numerical_range(c, d->watertemp.mkelvin);
 	case FILTER_CONSTRAINT_AIR_TEMP:
 		return check_numerical_range(c, d->airtemp.mkelvin);
+	case FILTER_CONSTRAINT_WATER_DENSITY:
+		return check_numerical_range(c, d->user_salinity ? d->user_salinity : d->salinity);
 	case FILTER_CONSTRAINT_SAC:
 		return check_numerical_range_non_zero(c, d->sac);
 	case FILTER_CONSTRAINT_LOGGED:
