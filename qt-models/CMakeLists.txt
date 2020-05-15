@@ -39,14 +39,8 @@ set(SUBSURFACE_DESKTOP_MODELS_LIB_SRCS
 	divepicturemodel.h
 	divesiteimportmodel.cpp
 	divesiteimportmodel.h
-	divetripmodel.cpp
-	divetripmodel.h
 	filtermodels.cpp
 	filtermodels.h
-	models.cpp
-	models.h
-	tankinfomodel.cpp
-	tankinfomodel.h
 	treemodel.cpp
 	treemodel.h
 	weightmodel.cpp
