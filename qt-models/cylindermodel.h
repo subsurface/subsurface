@@ -5,7 +5,7 @@
 #include <QSortFilterProxyModel>
 
 #include "cleanertablemodel.h"
-#include "core/dive.h"
+#include "core/equipment.h"
 
 /* Encapsulation of the Cylinder Model, that presents the
  * Current cylinders that are used on a dive. */
