@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "core/connectionlistmodel.h"
+#if defined(BT_SUPPORT)
+#include "core/btdiscovery.h"
+#endif
 
 ConnectionListModel::ConnectionListModel(QObject *parent) :
 	QAbstractListModel(parent)
@@ -31,8 +34,18 @@ int ConnectionListModel::rowCount(const QModelIndex&) const
 void ConnectionListModel::addAddress(const QString &address)
 {
 	if (!m_addresses.contains(address)) {
-		beginInsertRows(QModelIndex(), rowCount(), rowCount());
-		m_addresses.append(address);
+		int idx = rowCount();
+#if defined(BT_SUPPORT)
+		// make sure that addresses that are just a BT/BLE address without name stay at the end of the list
+		if (address != extractBluetoothAddress(address)) {
+			for (idx = 0; idx < rowCount(); idx++)
+				if (m_addresses[idx] == extractBluetoothAddress(m_addresses[idx]))
+					// found the first name-less BT/BLE address, insert before that
+					break;
+		}
+#endif
+		beginInsertRows(QModelIndex(), idx, idx);
+		m_addresses.insert(idx, address);
 		endInsertRows();
 	}
 }
