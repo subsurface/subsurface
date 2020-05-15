@@ -3,7 +3,7 @@
 #define WEIGHTMODEL_H
 
 #include "cleanertablemodel.h"
-#include "core/dive.h"
+#include "core/equipment.h"
 
 /* Encapsulation of the Weight Model, that represents
  * the current weights on a dive. */
