@@ -3,6 +3,7 @@
 #include "fulltext.h"
 #include "dive.h"
 #include "divesite.h"
+#include "tag.h"
 #include "trip.h"
 #include "qthelper.h"
 #include <QLocale>
@@ -123,6 +124,8 @@ static std::vector<QString> getWords(const dive *d)
 	tokenize(QString(d->divemaster), res);
 	tokenize(QString(d->buddy), res);
 	tokenize(QString(d->suit), res);
+	for (const tag_entry *tag = d->tag_list; tag; tag = tag->next)
+		tokenize(QString(tag->tag->name), res);
 	for (int i = 0; i < d->cylinders.nr; ++i) {
 		const cylinder_t &cyl = d->cylinders.cylinders[i];
 		tokenize(QString(cyl.type.description), res);
