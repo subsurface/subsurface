@@ -101,31 +101,118 @@ void BLEObject::writeCompleted(const QLowEnergyDescriptor&, const QByteArray&)
 	desc_written++;
 }
 
+struct uud_match {
+	const char *uuid, *details;
+};
+
+static const char *match_service(const QBluetoothUuid &service, const struct uud_match *array)
+{
+	const char *uuid;
+
+	while ((uuid = array->uuid) != NULL) {
+		if (service == QUuid(uuid))
+			return array->details;
+		array++;
+	}
+	return NULL;
+}
+
+//
+// Known BLE GATT service UUID's that we should prefer for the serial
+// emulation.
+//
+// The Bluetooth SIG is a disgrace, and never standardized any serial
+// communication over BLE. They should just have specified a standard
+// UUID for serial service, but preferred their idiotic model of
+// "vendor specific" garbage instead. So everybody has made their own
+// serial protocol over BLE GATT, which all look fairly similar, but
+// with pointless and stupid differences just because the BLE SIG
+// couldn't be arsed to do their job properly.
+//
+// Am I bitter? Just a bit. I know that "standards bodies" is just a
+// fancy way of saying "incompetent tech politics", but still.. It's
+// not like legacy BT didn't have a standard serial encapsulation.
+// Oh. It did, didn't it?
+//
+static const struct uud_match serial_service_uuids[] = {
+	{ "0000fefb-0000-1000-8000-00805f9b34fb", "Heinrichs-Weikamp" },
+	{ "544e326b-5b72-c6b0-1c46-41c1bc448118", "Mares BlueLink Pro" },
+	{ "cb3c4555-d670-4670-bc20-b61dbc851e9a", "Aqualung i770R" },
+	{ "6e400001-b5a3-f393-e0a9-e50e24dcca9e", "Nordic Semi UART" },
+	{ "98ae7120-e62e-11e3-badd-0002a5d5c51b", "Suunto EON Steel" },
+	{ NULL, }
+};
+
+//
+// Sometimes we don't know which is the good service, but we can tell
+// that a service is NOT a serial service because we've seen that
+// people use it for firmware upgrades.
+//
+static const struct uud_match upgrade_service_uuids[] = {
+	{ "9e5d1e47-5c13-43a0-8635-82ad38a1386f", "Flash Upgrade" },
+	{ "00001530-1212-efde-1523-785feabcd123", "Nordic Upgrade" },
+	{ NULL, }
+};
+
+static const char *is_known_serial_service(const QBluetoothUuid &service)
+{
+	return match_service(service, serial_service_uuids);
+}
+
+static const char *is_known_bad_service(const QBluetoothUuid &service)
+{
+	return match_service(service, upgrade_service_uuids);
+}
+
 void BLEObject::addService(const QBluetoothUuid &newService)
 {
+	const char *details;
+
 	qDebug() << "Found service" << newService;
 
-	if (IS_HW(device)) {
-		/* The HW BT/BLE piece or hardware uses, what we
-		 * call here, "a Standard UUID. It is standard because the Telit/Stollmann
-		 * manufacturer applied for an own UUID for its product, and this was granted
-		 * by the Bluetooth SIG.
-		 */
-		if (newService != QUuid("{0000fefb-0000-1000-8000-00805f9b34fb}"))
-			return; // skip all services except the right one
+	//
+	// Known bad service that we should ignore?
+	// (typically firmware update service).
+	//
+	details = is_known_bad_service(newService);
+	if (details) {
+		qDebug () << " .. ignoring service" << details;
+		return;
+	}
+
+	//
+	// If it's a known serial service, clear any other previous
+	// services we've found - we'll use this one.
+	//
+	// Note that if it's not _known_ to be good, we'll ignore
+	// any standard services. They are usually things like battery
+	// status or device name services.
+	//
+	// But Heinrich-Weicamp actually has a standard service ID in the
+	// known good category, because Telit/Stollmann (the manufacturer)
+	// applied for a UUID for its product.
+	//
+	// If it's not a known service, and not a standard one, we'll just
+	// add it to the list and then we'll try our heuristics on that
+	// list.
+	//
+	details = is_known_serial_service(newService);
+	if (details) {
+		qDebug () << " .. recognized service" << details;
+		services.clear();
 	} else {
 		bool isStandardUuid = false;
 
 		newService.toUInt16(&isStandardUuid);
 		if (isStandardUuid) {
-			qDebug () << " .. ignoring standard service" << newService;
+			qDebug () << " .. ignoring standard service";
 			return;
 		}
 	}
 
 	auto service = controller->createServiceObject(newService, this);
-	qDebug() << " .. created service object" << service;
 	if (service) {
+		qDebug() << " .. starting discovery";
 		services.append(service);
 		service->discoverDetails();
 	}
