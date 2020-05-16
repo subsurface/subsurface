@@ -306,7 +306,7 @@ void TestParse::testParseMerge()
 int TestParse::parseCSVmanual(int units, std::string file)
 {
 	verbose = 1;
-	char *params[57];
+	char *params[59];
 	int pnr = 0;
 
 	// Numbers are column numbers
@@ -318,42 +318,43 @@ int TestParse::parseCSVmanual(int units, std::string file)
 	params[pnr++] = intdup(2);
 	params[pnr++] = strdup("durationField");
 	params[pnr++] = intdup(3);
+	// 4 Will be SAC, once we add support for reading it
 	params[pnr++] = strdup("maxDepthField");
-	params[pnr++] = intdup(4);
-	params[pnr++] = strdup("meanDepthField");
 	params[pnr++] = intdup(5);
-	params[pnr++] = strdup("modeField");
+	params[pnr++] = strdup("meanDepthField");
 	params[pnr++] = intdup(6);
-	params[pnr++] = strdup("airtempField");
+	params[pnr++] = strdup("modeField");
 	params[pnr++] = intdup(7);
-	params[pnr++] = strdup("watertempField");
+	params[pnr++] = strdup("airtempField");
 	params[pnr++] = intdup(8);
-	params[pnr++] = strdup("cylindersizeField");
+	params[pnr++] = strdup("watertempField");
 	params[pnr++] = intdup(9);
-	params[pnr++] = strdup("startpressureField");
+	params[pnr++] = strdup("cylindersizeField");
 	params[pnr++] = intdup(10);
-	params[pnr++] = strdup("endpressureField");
+	params[pnr++] = strdup("startpressureField");
 	params[pnr++] = intdup(11);
-	params[pnr++] = strdup("o2Field");
+	params[pnr++] = strdup("endpressureField");
 	params[pnr++] = intdup(12);
-	params[pnr++] = strdup("heField");
+	params[pnr++] = strdup("o2Field");
 	params[pnr++] = intdup(13);
-	params[pnr++] = strdup("locationField");
+	params[pnr++] = strdup("heField");
 	params[pnr++] = intdup(14);
-	params[pnr++] = strdup("gpsField");
+	params[pnr++] = strdup("locationField");
 	params[pnr++] = intdup(15);
-	params[pnr++] = strdup("divemasterField");
+	params[pnr++] = strdup("gpsField");
 	params[pnr++] = intdup(16);
-	params[pnr++] = strdup("buddyField");
+	params[pnr++] = strdup("divemasterField");
 	params[pnr++] = intdup(17);
-	params[pnr++] = strdup("suitField");
+	params[pnr++] = strdup("buddyField");
 	params[pnr++] = intdup(18);
+	params[pnr++] = strdup("suitField");
+	params[pnr++] = intdup(19);
 	params[pnr++] = strdup("notesField");
-	params[pnr++] = intdup(21);
-	params[pnr++] = strdup("weightField");
 	params[pnr++] = intdup(22);
-	params[pnr++] = strdup("tagsField");
+	params[pnr++] = strdup("weightField");
 	params[pnr++] = intdup(23);
+	params[pnr++] = strdup("tagsField");
+	params[pnr++] = intdup(24);
 	// Numbers are indices of possible options
 	params[pnr++] = strdup("separatorIndex");
 	params[pnr++] = intdup(0);
@@ -378,6 +379,15 @@ void TestParse::exportCSVDiveDetails()
 	clear_dive_file_data();
 
 	parseCSVmanual(1, "testcsvexportmanualimperial.csv");
+
+	// We do not currently support reading SAC, thus faking it
+	if (dive_table.nr > 0) {
+		struct dive *dive = dive_table.dives[dive_table.nr - 1];
+		dive->sac = 1049;
+	}
+
+
+
 	export_dives_xslt("testcsvexportmanual2.csv", 0, 0, "xml2manualcsv.xslt", false);
 
 	FILE_COMPARE("testcsvexportmanual2.csv",
