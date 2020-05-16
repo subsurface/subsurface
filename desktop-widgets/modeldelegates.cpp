@@ -29,7 +29,7 @@
 #include <QAbstractItemView>
 #include <QSpinBox>
 
-QSize DiveListDelegate::sizeHint(const QStyleOptionViewItem&, const QModelIndex&) const
+QSize DiveListDelegate::sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const
 {
 	const QFontMetrics metrics(qApp->font());
 	return QSize(50, qMax(22, metrics.height()));
@@ -42,7 +42,7 @@ QSize DiveListDelegate::sizeHint(const QStyleOptionViewItem&, const QModelIndex&
 StarWidgetsDelegate::StarWidgetsDelegate(QWidget *parent) : QStyledItemDelegate(parent),
 	parentWidget(parent)
 {
-	const IconMetrics& metrics = defaultIconMetrics();
+	const IconMetrics &metrics = defaultIconMetrics();
 	minStarSize = QSize(metrics.sz_small * TOTALSTARS + metrics.spacing * (TOTALSTARS - 1), metrics.sz_small);
 }
 
@@ -62,7 +62,7 @@ void StarWidgetsDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	painter->setRenderHint(QPainter::Antialiasing, true);
 	const QPixmap active = QPixmap::fromImage(StarWidget::starActive());
 	const QPixmap inactive = QPixmap::fromImage(StarWidget::starInactive());
-	const IconMetrics& metrics = defaultIconMetrics();
+	const IconMetrics &metrics = defaultIconMetrics();
 
 	for (int i = 0; i < rating; i++)
 		painter->drawPixmap(option.rect.x() + i * metrics.sz_small + metrics.spacing, option.rect.y() + deltaY, active);
@@ -71,12 +71,12 @@ void StarWidgetsDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	painter->restore();
 }
 
-QSize StarWidgetsDelegate::sizeHint(const QStyleOptionViewItem&, const QModelIndex&) const
+QSize StarWidgetsDelegate::sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const
 {
 	return minStarSize;
 }
 
-const QSize& StarWidgetsDelegate::starSize() const
+const QSize &StarWidgetsDelegate::starSize() const
 {
 	return minStarSize;
 }
@@ -99,7 +99,7 @@ void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) 
 	c->lineEdit()->setSelection(0, c->lineEdit()->text().length());
 }
 
-QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem&, const QModelIndex &index) const
+QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
 {
 	QComboBox *comboDelegate = new QComboBox(parent);
 	comboDelegate->setModel(model);
@@ -122,7 +122,7 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	currCombo.activeText = currCombo.model->data(index).toString();
 
 	// Current display of things on Gnome3 looks like shit, so
-	// let`s fix that.
+	// let's fix that.
 	if (isGnome3Session()) {
 		QPalette p;
 		p.setColor(QPalette::Window, QColor(Qt::white));
@@ -198,7 +198,7 @@ bool ComboBoxDelegate::eventFilter(QObject *object, QEvent *event)
 	return QStyledItemDelegate::eventFilter(object, event);
 }
 
-void ComboBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex&) const
+void ComboBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &) const
 {
 	QRect defaultRect = option.rect;
 	defaultRect.setX(defaultRect.x() - 1);
@@ -208,7 +208,7 @@ void ComboBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionV
 	editor->setGeometry(defaultRect);
 }
 
-void TankInfoDelegate::setModelData(QWidget*, QAbstractItemModel*, const QModelIndex&) const
+void TankInfoDelegate::setModelData(QWidget *, QAbstractItemModel *, const QModelIndex &) const
 {
 	QAbstractItemModel *mymodel = currCombo.model;
 	TankInfoModel *tanks = TankInfoModel::instance();
@@ -235,7 +235,7 @@ TankInfoDelegate::TankInfoDelegate(QObject *parent) : ComboBoxDelegate(TankInfoM
 {
 }
 
-void TankInfoDelegate::editorClosed(QWidget*, QAbstractItemDelegate::EndEditHint hint)
+void TankInfoDelegate::editorClosed(QWidget *, QAbstractItemDelegate::EndEditHint hint)
 {
 	QAbstractItemModel *mymodel = currCombo.model;
 	// Ugly hack: We misuse setData() with COMMIT_ROLE or REVERT_ROLE to commit or
@@ -251,7 +251,7 @@ TankUseDelegate::TankUseDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {
 }
 
-QWidget *TankUseDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem&, const QModelIndex&) const
+QWidget *TankUseDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &) const
 {
 	QComboBox *comboBox = new QComboBox(parent);
 	for (int i = 0; i < NUM_GAS_USE; i++)
@@ -259,20 +259,20 @@ QWidget *TankUseDelegate::createEditor(QWidget * parent, const QStyleOptionViewI
 	return comboBox;
 }
 
-void TankUseDelegate::setEditorData(QWidget * editor, const QModelIndex & index) const
+void TankUseDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-	QComboBox *comboBox = qobject_cast<QComboBox*>(editor);
+	QComboBox *comboBox = qobject_cast<QComboBox *>(editor);
 	QString indexString = index.data().toString();
 	comboBox->setCurrentIndex(cylinderuse_from_text(qPrintable(indexString)));
 }
 
-void TankUseDelegate::setModelData(QWidget * editor, QAbstractItemModel * model, const QModelIndex & index) const
+void TankUseDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
-	QComboBox *comboBox = qobject_cast<QComboBox*>(editor);
+	QComboBox *comboBox = qobject_cast<QComboBox *>(editor);
 	model->setData(index, comboBox->currentIndex());
 }
 
-void WSInfoDelegate::editorClosed(QWidget*, QAbstractItemDelegate::EndEditHint hint)
+void WSInfoDelegate::editorClosed(QWidget *, QAbstractItemDelegate::EndEditHint hint)
 {
 	WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
 	if (hint == QAbstractItemDelegate::RevertModelCache)
@@ -281,7 +281,7 @@ void WSInfoDelegate::editorClosed(QWidget*, QAbstractItemDelegate::EndEditHint h
 		mymodel->commitTempWS();
 }
 
-void WSInfoDelegate::setModelData(QWidget*, QAbstractItemModel*, const QModelIndex&) const
+void WSInfoDelegate::setModelData(QWidget *, QAbstractItemModel *, const QModelIndex &) const
 {
 	WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
 	WSInfoModel *wsim = WSInfoModel::instance();
@@ -301,7 +301,7 @@ WSInfoDelegate::WSInfoDelegate(QObject *parent) : ComboBoxDelegate(WSInfoModel::
 {
 }
 
-void AirTypesDelegate::editorClosed(QWidget*, QAbstractItemDelegate::EndEditHint)
+void AirTypesDelegate::editorClosed(QWidget *, QAbstractItemDelegate::EndEditHint)
 {
 }
 
@@ -317,7 +317,7 @@ AirTypesDelegate::AirTypesDelegate(QObject *parent) : ComboBoxDelegate(GasSelect
 {
 }
 
-void DiveTypesDelegate::editorClosed(QWidget*, QAbstractItemDelegate::EndEditHint)
+void DiveTypesDelegate::editorClosed(QWidget *, QAbstractItemDelegate::EndEditHint)
 {
 }
 
@@ -380,7 +380,7 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	QFont fontSmaller = qApp->font();
 	QFontMetrics fmBigger(fontBigger);
 	QStyleOptionViewItem opt = option;
-	const QAbstractProxyModel *proxyModel = dynamic_cast<const QAbstractProxyModel*>(origIdx.model());
+	const QAbstractProxyModel *proxyModel = dynamic_cast<const QAbstractProxyModel *>(origIdx.model());
 	if (!proxyModel)
 		return;
 	QModelIndex index = proxyModel->mapToSource(origIdx);
