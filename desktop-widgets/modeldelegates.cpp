@@ -112,10 +112,10 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	comboDelegate->view()->installEventFilter(const_cast<QObject *>(qobject_cast<const QObject *>(this)));
 	QAbstractItemView *comboPopup = comboDelegate->lineEdit()->completer()->popup();
 	comboPopup->setMouseTracking(true);
-	connect(comboDelegate, SIGNAL(highlighted(QString)), this, SLOT(testActivation(QString)));
-	connect(comboDelegate, SIGNAL(activated(QString)), this, SLOT(fakeActivation()));
-	connect(comboPopup, SIGNAL(entered(QModelIndex)), this, SLOT(testActivation(QModelIndex)));
-	connect(comboPopup, SIGNAL(activated(QModelIndex)), this, SLOT(fakeActivation()));
+	connect(comboDelegate, QOverload<const QString &>::of(&QComboBox::highlighted), this, &ComboBoxDelegate::testActivationString);
+	connect(comboDelegate, QOverload<int>::of(&QComboBox::activated), this, &ComboBoxDelegate::fakeActivation);
+	connect(comboPopup, &QAbstractItemView::entered, this, &ComboBoxDelegate::testActivationIndex);
+	connect(comboPopup, &QAbstractItemView::activated, this, &ComboBoxDelegate::fakeActivation);
 	currCombo.comboEditor = comboDelegate;
 	currCombo.currRow = index.row();
 	currCombo.model = const_cast<QAbstractItemModel *>(index.model());
@@ -138,15 +138,15 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
  * One thing is important, if the user writes a *new* cylinder or weight type, it will
  * be ADDED to the list, and the user will need to fill the other data.
  */
-void ComboBoxDelegate::testActivation(const QString &currText)
+void ComboBoxDelegate::testActivationString(const QString &currText)
 {
 	currCombo.activeText = currText.isEmpty() ? currCombo.comboEditor->currentText() : currText;
 	setModelData(currCombo.comboEditor, currCombo.model, QModelIndex());
 }
 
-void ComboBoxDelegate::testActivation(const QModelIndex &currIndex)
+void ComboBoxDelegate::testActivationIndex(const QModelIndex &currIndex)
 {
-	testActivation(currIndex.data().toString());
+	testActivationString(currIndex.data().toString());
 }
 
 // HACK, send a fake event so Qt thinks we hit 'enter' on the line edit.
