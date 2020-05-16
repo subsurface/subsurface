@@ -2,7 +2,8 @@
 
 #include "divefilter.h"
 #include "divelist.h"
-#include "qthelper.h"
+#include "gettextfromc.h"
+#include "tag.h"
 #include "subsurface-qt/divelistnotifier.h"
 
 static void updateDiveStatus(dive *d, bool newStatus, ShownChange &change)
@@ -13,6 +14,15 @@ static void updateDiveStatus(dive *d, bool newStatus, ShownChange &change)
 		else
 			change.newHidden.push_back(d);
 	}
+}
+
+static QStringList getTagList(const dive *d)
+{
+	QStringList res;
+	for (const tag_entry *tag = d->tag_list; tag; tag = tag->next)
+		res.push_back(QString(tag->tag->name).trimmed());
+	res.append(gettextFromC::tr(divemode_text_ui[d->dc.divemode]));
+	return res;
 }
 
 #ifdef SUBSURFACE_MOBILE
@@ -31,16 +41,14 @@ static bool check(const QStringList &items, const QStringList &list)
 			   { return listContainsSuperstring(list, item); });
 }
 
-bool hasTags(const QStringList &tags, const struct dive *d)
+static bool hasTags(const QStringList &tags, const struct dive *d)
 {
 	if (tags.isEmpty())
 		return true;
-	QStringList dive_tags = get_taglist_string(d->tag_list).split(",");
-	dive_tags.append(gettextFromC::tr(divemode_text_ui[d->dc.divemode]));
-	return check(tags, dive_tags);
+	return check(tags, getTagList(d));
 }
 
-bool hasPersons(const QStringList &people, const struct dive *d)
+static bool hasPersons(const QStringList &people, const struct dive *d)
 {
 	if (people.isEmpty())
 		return true;
@@ -220,9 +228,7 @@ namespace {
 	{
 		if (tags.isEmpty())
 			return true;
-		QStringList dive_tags = get_taglist_string(d->tag_list).split(",");
-		dive_tags.append(gettextFromC::tr(divemode_text_ui[d->dc.divemode]));
-		return check(tags, dive_tags, mode, stringMode);
+		return check(tags, getTagList(d), mode, stringMode);
 	}
 
 	bool hasPersons(const QStringList &people, const struct dive *d, FilterData::Mode mode, StringFilterMode stringMode)
