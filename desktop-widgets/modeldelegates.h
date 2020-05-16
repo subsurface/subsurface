@@ -34,12 +34,14 @@ class ComboBoxDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
 	explicit ComboBoxDelegate(QAbstractItemModel *model, QObject *parent = 0, bool allowEdit = true);
-public
+private
 slots:
-	void testActivation(const QString &currString);
-	void testActivation(const QModelIndex &currIndex);
+	void testActivationString(const QString &currString);
+	void testActivationIndex(const QModelIndex &currIndex);
 	//HACK: try to get rid of this in the future.
 	void fakeActivation();
+protected
+slots:
 	virtual void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) = 0;
 private:
 	bool editable;
