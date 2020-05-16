@@ -22,6 +22,8 @@
           $fs,
           '&quot;duration (min)&quot;',
           $fs,
+          '&quot;sac (cuft/min)&quot;',
+          $fs,
           '&quot;maxdepth (ft)&quot;',
           $fs,
           '&quot;avgdepth (ft)&quot;',
@@ -71,6 +73,8 @@
           '&quot;time&quot;',
           $fs,
           '&quot;duration (min)&quot;',
+          $fs,
+          '&quot;sac (l/min)&quot;',
           $fs,
           '&quot;maxdepth (m)&quot;',
           $fs,
@@ -135,6 +139,17 @@
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="substring-before(@duration, ' ')"/>
+    <xsl:text>&quot;</xsl:text>
+    <xsl:value-of select="$fs"/>
+    <xsl:text>&quot;</xsl:text>
+    <xsl:choose>
+      <xsl:when test="$units = 1">
+        <xsl:value-of select="format-number(substring-before(@sac, ' ') * 0.035315, '#.##')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="substring-before(@sac, ' ')"/>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:text>&quot;</xsl:text>
     <xsl:choose>
       <xsl:when test="divecomputer[1]/depth/@mean|divecomputer[1]/depth/@max != ''">
