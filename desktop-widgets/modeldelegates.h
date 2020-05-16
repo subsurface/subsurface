@@ -21,11 +21,11 @@ class StarWidgetsDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
 	explicit StarWidgetsDelegate(QWidget *parent = 0);
-	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 	const QSize &starSize() const;
 
 private:
+	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 	QWidget *parentWidget;
 	QSize minStarSize;
 };
@@ -34,19 +34,19 @@ class ComboBoxDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
 	explicit ComboBoxDelegate(QAbstractItemModel *model, QObject *parent = 0, bool allowEdit = true);
-	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-	void setEditorData(QWidget *editor, const QModelIndex &index) const override;
-	void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-	bool eventFilter(QObject *object, QEvent *event) override;
 public
 slots:
-	void testActivation(const QString &currString = QString());
+	void testActivation(const QString &currString);
 	void testActivation(const QModelIndex &currIndex);
 	//HACK: try to get rid of this in the future.
 	void fakeActivation();
 	virtual void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) = 0;
 private:
 	bool editable;
+	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+	void setEditorData(QWidget *editor, const QModelIndex &index) const override;
+	void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+	bool eventFilter(QObject *object, QEvent *event) override;
 protected:
 	QAbstractItemModel *model;
 	mutable struct CurrSelected {
@@ -63,15 +63,15 @@ class TankInfoDelegate : public ComboBoxDelegate {
 public:
 	explicit TankInfoDelegate(QObject *parent = 0);
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
-public
-slots:
-	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
+private:
+	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) override;
 };
 
 class TankUseDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
 	explicit TankUseDelegate(QObject *parent = 0);
+private:
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 	void setEditorData(QWidget *editor, const QModelIndex &index) const override;
@@ -81,38 +81,35 @@ class WSInfoDelegate : public ComboBoxDelegate {
 	Q_OBJECT
 public:
 	explicit WSInfoDelegate(QObject *parent = 0);
+private:
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
-public
-slots:
-	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
+	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) override;
 };
 
 class AirTypesDelegate : public ComboBoxDelegate {
 	Q_OBJECT
 public:
 	explicit AirTypesDelegate(QObject *parent = 0);
+private:
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
-public
-slots:
-	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
+	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) override;
 };
 
 class DiveTypesDelegate : public ComboBoxDelegate {
 	Q_OBJECT
 public:
 	explicit DiveTypesDelegate(QObject *parent = 0);
+private:
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
-public
-slots:
-	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
+	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) override;
 };
 
 class SpinBoxDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
 	SpinBoxDelegate(int min, int max, int step, QObject *parent = 0);
-	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 private:
+	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 	int min;
 	int max;
 	int step;
@@ -122,8 +119,8 @@ class DoubleSpinBoxDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
 	DoubleSpinBoxDelegate(double min, double max, double step, QObject *parent = 0);
-	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 private:
+	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 	double min;
 	double max;
 	double step;
@@ -133,10 +130,10 @@ class LocationFilterDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
 	LocationFilterDelegate(QObject *parent = 0);
-	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 	void setCurrentLocation(location_t loc);
 private:
+	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 	location_t currentLocation;
 };
 
