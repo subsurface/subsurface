@@ -371,11 +371,17 @@ int TestParse::parseCSVmanual(int units, std::string file)
 
 void TestParse::exportCSVDiveDetails()
 {
+	int saved_sac;
+
 	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table, &trip_table, &dive_site_table);
 
 	export_dives_xslt("testcsvexportmanual.csv", 0, 0, "xml2manualcsv.xslt", false);
 	export_dives_xslt("testcsvexportmanualimperial.csv", 0, 1, "xml2manualcsv.xslt", false);
 
+	if (dive_table.nr > 0) {
+		struct dive *dive = dive_table.dives[dive_table.nr - 1];
+		saved_sac = dive->sac;
+	}
 	clear_dive_file_data();
 
 	parseCSVmanual(1, "testcsvexportmanualimperial.csv");
@@ -383,7 +389,7 @@ void TestParse::exportCSVDiveDetails()
 	// We do not currently support reading SAC, thus faking it
 	if (dive_table.nr > 0) {
 		struct dive *dive = dive_table.dives[dive_table.nr - 1];
-		dive->sac = 1049;
+		dive->sac = saved_sac;
 	}
 
 
