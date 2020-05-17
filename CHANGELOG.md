@@ -1,3 +1,4 @@
+Core: improve service selection for BLE, adding white list and black list
 Filter: fix searching for tags [#2842]
 Desktop: fix plotting of thumbnails on profile [#2833]
 Core: always include BT/BLE name, even for devices no recognized as dive computer
