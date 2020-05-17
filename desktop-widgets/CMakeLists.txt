@@ -77,6 +77,8 @@ set(SUBSURFACE_INTERFACE
 	divesiteimportdialog.h
 	downloadfromdivecomputer.cpp
 	downloadfromdivecomputer.h
+	filterconstraintwidget.cpp
+	filterconstraintwidget.h
 	filterwidget2.cpp
 	filterwidget2.h
 	findmovedimagesdialog.cpp
