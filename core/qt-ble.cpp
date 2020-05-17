@@ -137,9 +137,11 @@ static const char *match_service(const QBluetoothUuid &service, const struct uud
 static const struct uud_match serial_service_uuids[] = {
 	{ "0000fefb-0000-1000-8000-00805f9b34fb", "Heinrichs-Weikamp" },
 	{ "544e326b-5b72-c6b0-1c46-41c1bc448118", "Mares BlueLink Pro" },
-	{ "cb3c4555-d670-4670-bc20-b61dbc851e9a", "Aqualung i770R" },
 	{ "6e400001-b5a3-f393-e0a9-e50e24dcca9e", "Nordic Semi UART" },
-	{ "98ae7120-e62e-11e3-badd-0002a5d5c51b", "Suunto EON Steel" },
+	{ "98ae7120-e62e-11e3-badd-0002a5d5c51b", "Suunto (EON Steel/Core, G5)" },
+	{ "cb3c4555-d670-4670-bc20-b61dbc851e9a", "Pelagic (i770R, i200C, Pro Plus X, Geo 4.0)" },
+	{ "fdcdeaaa-295d-470e-bf15-04217b7aa0a0", "ScubaPro G2"},
+	{ "fe25c237-0ece-443c-b0aa-e02033e7029d", "Shearwater (Perdix/Teric)" },
 	{ NULL, }
 };
 
@@ -149,8 +151,9 @@ static const struct uud_match serial_service_uuids[] = {
 // people use it for firmware upgrades.
 //
 static const struct uud_match upgrade_service_uuids[] = {
-	{ "9e5d1e47-5c13-43a0-8635-82ad38a1386f", "Flash Upgrade" },
 	{ "00001530-1212-efde-1523-785feabcd123", "Nordic Upgrade" },
+	{ "9e5d1e47-5c13-43a0-8635-82ad38a1386f", "Broadcom Upgrade #1" },
+	{ "a86abc2d-d44c-442e-99f7-80059a873e36", "Broadcom Upgrade #2" },
 	{ NULL, }
 };
 
