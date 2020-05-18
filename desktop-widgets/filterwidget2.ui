@@ -10,6 +10,12 @@
     <height>349</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -34,207 +40,133 @@
         <height>487</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="13" column="2">
-        <widget class="QComboBox" name="suitStringMode">
-         <item>
-          <property name="text">
-           <string>Substring</string>
-          </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QGridLayout" name="constraintTable">
+         <item row="0" column="0" colspan="2">
+          <widget class="QLabel" name="title">
+           <property name="font">
+            <font>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Filter</string>
+           </property>
+          </widget>
          </item>
-         <item>
-          <property name="text">
-           <string>Starts with</string>
-          </property>
+         <item row="0" column="2" colspan="3">
+          <layout class="QHBoxLayout" name="titleLineLayout">
+           <item alignment="Qt::AlignLeft">
+            <widget class="QToolButton" name="clear">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Reset</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>:edit-clear-icon</normaloff>:edit-clear-icon</iconset>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item alignment="Qt::AlignLeft">
+            <widget class="QToolButton" name="close">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Close</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>:filter-close</normaloff>:filter-close</iconset>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item alignment="Qt::AlignLeft">
+            <widget class="QToolButton" name="addConstraintButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Add constraint</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="titleLineSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </item>
-         <item>
-          <property name="text">
-           <string>Exact</string>
-          </property>
+         <item row="1" column="0" colspan="2" alignment="Qt::AlignLeft">
+          <widget class="QLabel" name="fullTextLabel">
+           <property name="text">
+            <string>Fulltext</string>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
          </item>
-        </widget>
-       </item>
-       <item row="6" column="4">
-        <widget class="QTimeEdit" name="fromTime"/>
-       </item>
-       <item row="13" column="0">
-        <widget class="QLabel" name="label_10">
-         <property name="text">
-          <string>Suit</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="4">
-        <widget class="QLabel" name="label_18">
-         <property name="text">
-          <string>Max</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="4">
-        <widget class="QLabel" name="label_13">
-         <property name="text">
-          <string>Max</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLabel" name="label_17">
-         <property name="text">
-          <string>Min</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="5">
-        <widget class="StarWidget" name="maxRating" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::TabFocus</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="4">
-        <widget class="QTimeEdit" name="toTime"/>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Air Temp</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Min</string>
-         </property>
-        </widget>
-       </item>
-       <item row="16" column="0">
-        <widget class="QLabel" name="labelEquipment">
-         <property name="text">
-          <string>Equipment</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="StarWidget" name="minRating" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::TabFocus</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="12" column="2">
-        <widget class="QComboBox" name="locationStringMode">
-         <item>
-          <property name="text">
-           <string>Substring</string>
-          </property>
+         <item row="1" column="2" colspan="3" alignment="Qt::AlignLeft">
+          <layout class="QHBoxLayout" name="fulltextLayout">
+           <item>
+            <widget class="QComboBox" name="fulltextStringMode">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <item>
+              <property name="text">
+               <string>Substring</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Starts with</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Full word</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="1" column="2" colspan="3">
+            <widget class="QLineEdit" name="fullText"/>
+           </item>
+          </layout>
          </item>
-         <item>
-          <property name="text">
-           <string>Starts with</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Exact</string>
-          </property>
-         </item>
-        </widget>
+        </layout>
        </item>
-       <item row="3" column="5">
-        <widget class="StarWidget" name="maxVisibility" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::TabFocus</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="4">
-        <widget class="QLabel" name="label_16">
-         <property name="text">
-          <string>Max</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="0">
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>Tags</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="label_11">
-         <property name="text">
-          <string>Water Temp</string>
-         </property>
-        </widget>
-       </item>
-       <item row="16" column="1">
-        <widget class="QComboBox" name="equipmentMode">
-         <item>
-          <property name="text">
-           <string>All of</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Any of</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>None of</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="2" column="4">
-        <widget class="QLabel" name="label_15">
-         <property name="text">
-          <string>Max</string>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="0">
-        <widget class="QLabel" name="label_8">
-         <property name="text">
-          <string>People</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="5">
-        <widget class="QDoubleSpinBox" name="maxAirTemp"/>
-       </item>
-       <item row="5" column="2">
-        <widget class="QDoubleSpinBox" name="minAirTemp"/>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLabel" name="label_14">
-         <property name="text">
-          <string>Min</string>
-         </property>
-        </widget>
-       </item>
-       <item row="16" column="0">
+       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -247,423 +179,15 @@
          </property>
         </spacer>
        </item>
-       <item row="16" column="4" colspan="2">
-        <widget class="QLineEdit" name="equipment"/>
-       </item>
-       <item row="8" column="4">
-        <widget class="QCheckBox" name="planned">
-         <property name="text">
-          <string>Planned</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="14" column="1">
-        <widget class="QComboBox" name="dnotesMode">
-         <item>
-          <property name="text">
-           <string>All of</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Any of</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>None of</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="10" column="4" colspan="2">
-        <widget class="QLineEdit" name="tags"/>
-       </item>
-       <item row="12" column="0">
-        <widget class="QLabel" name="label_9">
-         <property name="text">
-          <string>Location</string>
-         </property>
-        </widget>
-       </item>
-       <item row="14" column="0">
-        <widget class="QLabel" name="label_19">
-         <property name="text">
-          <string>Notes</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Visibility</string>
-         </property>
-        </widget>
-       </item>
-       <item row="13" column="4" colspan="2">
-        <widget class="QLineEdit" name="suit"/>
-       </item>
-       <item row="3" column="2">
-        <widget class="StarWidget" name="minVisibility" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::TabFocus</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="14" column="2">
-        <widget class="QComboBox" name="dnotesStringMode">
-         <item>
-          <property name="text">
-           <string>Substring</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Starts with</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Exact</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="12" column="4" colspan="2">
-        <widget class="QLineEdit" name="location"/>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="filterButtonExplanation">
-         <property name="text">
-          <string>Reset / close</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Rating</string>
-         </property>
-        </widget>
-       </item>
-       <item row="14" column="4" colspan="2">
-        <widget class="QLineEdit" name="dnotes"/>
-       </item>
-       <item row="11" column="4" colspan="2">
-        <widget class="QLineEdit" name="people"/>
-       </item>
-       <item row="0" column="1">
-        <widget class="QToolButton" name="clear">
-         <property name="toolTip">
-          <string>Reset filters</string>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>:edit-clear-icon</normaloff>:edit-clear-icon</iconset>
-         </property>
-         <property name="autoRaise">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="2">
-        <widget class="QComboBox" name="peopleStringMode">
-         <item>
-          <property name="text">
-           <string>Substring</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Starts with</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Exact</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="4" column="2">
-        <widget class="QDoubleSpinBox" name="minWaterTemp"/>
-       </item>
-       <item row="6" column="1" colspan="2">
-        <widget class="QDateTimeEdit" name="fromDate">
-         <property name="calendarPopup">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="13" column="1">
-        <widget class="QComboBox" name="suitMode">
-         <item>
-          <property name="text">
-           <string>All of</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Any of</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>None of</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="4" column="5">
-        <widget class="QDoubleSpinBox" name="maxWaterTemp"/>
-       </item>
-       <item row="10" column="2">
-        <widget class="QComboBox" name="tagsStringMode">
-         <item>
-          <property name="text">
-           <string>Substring</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Starts with</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Exact</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>From</string>
-         </property>
-        </widget>
-       </item>
-       <item row="16" column="2">
-        <widget class="QComboBox" name="equipmentStringMode">
-         <item>
-          <property name="text">
-           <string>Substring</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Starts with</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Exact</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QLabel" name="label_12">
-         <property name="text">
-          <string>Min</string>
-         </property>
-        </widget>
-       </item>
-       <item row="12" column="1">
-        <widget class="QComboBox" name="locationMode">
-         <item>
-          <property name="text">
-           <string>All of</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Any of</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>None of</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="8" column="1">
-        <widget class="QCheckBox" name="logged">
-         <property name="text">
-          <string>Logged</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1" colspan="2">
-        <widget class="QDateTimeEdit" name="toDate">
-         <property name="calendarPopup">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="1">
-        <widget class="QComboBox" name="peopleMode">
-         <item>
-          <property name="text">
-           <string>All of</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Any of</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>None of</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="10" column="1">
-        <widget class="QComboBox" name="tagsMode">
-         <item>
-          <property name="text">
-           <string>All of</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Any of</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>None of</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>To</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QToolButton" name="close">
-         <property name="toolTip">
-          <string>Close filters</string>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>:filter-close</normaloff>:filter-close</iconset>
-         </property>
-         <property name="autoRaise">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_20">
-         <property name="text">
-          <string>Fulltext</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QComboBox" name="fulltextStringMode">
-         <item>
-          <property name="text">
-           <string>Substring</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Starts with</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Full word</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="1" column="2" colspan="4">
-        <widget class="QLineEdit" name="fullText"/>
-       </item>
-       <item row="15" column="0">
-        <widget class="QLabel" name="label_21">
-         <property name="text">
-          <string>Dive mode</string>
-         </property>
-        </widget>
-       </item>
-       <item row="15" column="1">
-        <widget class="QComboBox" name="diveMode">
-        </widget>
-       </item>
       </layout>
      </widget>
     </widget>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>StarWidget</class>
-   <extends>QWidget</extends>
-   <header>desktop-widgets/starwidget.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <tabstops>
   <tabstop>fulltextStringMode</tabstop>
   <tabstop>fullText</tabstop>
-  <tabstop>minRating</tabstop>
-  <tabstop>maxRating</tabstop>
-  <tabstop>minVisibility</tabstop>
-  <tabstop>maxVisibility</tabstop>
-  <tabstop>minWaterTemp</tabstop>
-  <tabstop>maxWaterTemp</tabstop>
-  <tabstop>minAirTemp</tabstop>
-  <tabstop>maxAirTemp</tabstop>
-  <tabstop>fromDate</tabstop>
-  <tabstop>fromTime</tabstop>
-  <tabstop>toDate</tabstop>
-  <tabstop>toTime</tabstop>
-  <tabstop>logged</tabstop>
-  <tabstop>planned</tabstop>
-  <tabstop>tagsMode</tabstop>
-  <tabstop>tagsStringMode</tabstop>
-  <tabstop>tags</tabstop>
-  <tabstop>peopleMode</tabstop>
-  <tabstop>peopleStringMode</tabstop>
-  <tabstop>people</tabstop>
-  <tabstop>locationMode</tabstop>
-  <tabstop>locationStringMode</tabstop>
-  <tabstop>location</tabstop>
-  <tabstop>suitMode</tabstop>
-  <tabstop>suitStringMode</tabstop>
-  <tabstop>suit</tabstop>
-  <tabstop>dnotesMode</tabstop>
-  <tabstop>dnotesStringMode</tabstop>
-  <tabstop>dnotes</tabstop>
-  <tabstop>diveMode</tabstop>
-  <tabstop>equipmentMode</tabstop>
-  <tabstop>equipmentStringMode</tabstop>
-  <tabstop>equipment</tabstop>
-  <tabstop>scrollArea</tabstop>
   <tabstop>clear</tabstop>
   <tabstop>close</tabstop>
  </tabstops>
