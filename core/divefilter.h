@@ -3,9 +3,11 @@
 #ifndef DIVE_FILTER_H
 #define DIVE_FILTER_H
 
+#include "fulltext.h"
+#include "filterconstraint.h"
+#include <vector>
 #include <QVector>
 #include <QStringList>
-#include "fulltext.h"
 
 struct dive;
 
@@ -50,8 +52,6 @@ private:
 
 #else
 
-#include <QDateTime>
-
 struct dive_trip;
 struct dive_site;
 
@@ -63,45 +63,10 @@ struct FilterData {
 		NONE_OF = 2
 	};
 
-	bool validFilter = false;
-	int minVisibility = 0;
-	int maxVisibility = 5;
-	int minRating = 0;
-	int maxRating = 5;
-	// The default minimum and maximum temperatures are set such that all
-	// physically reasonable dives are shown. Note that these values should
-	// work for both Celsius and Fahrenheit scales.
-	double minWaterTemp = -10;
-	double maxWaterTemp = 200;
-	double minAirTemp = -50;
-	double maxAirTemp = 200;
-	QDateTime fromDate = QDateTime(QDate(1980,1,1));
-	QTime fromTime = QTime(0,0);
-	QDateTime toDate = QDateTime::currentDateTime().addDays(7);
-	QTime toTime = QTime::currentTime();
-	QStringList tags;
-	QStringList people;
-	QStringList location;
-	QStringList suit;
-	QStringList dnotes;
-	QStringList equipment;
 	FullTextQuery fullText;
-	Mode tagsMode = Mode::ALL_OF;
-	Mode peopleMode = Mode::ALL_OF;
-	Mode locationMode = Mode::ANY_OF;
-	Mode dnotesMode = Mode::ALL_OF;
-	Mode suitMode = Mode::ANY_OF;
-	Mode equipmentMode = Mode::ALL_OF;
 	StringFilterMode fulltextStringMode = StringFilterMode::STARTSWITH;
-	StringFilterMode tagsStringMode = StringFilterMode::SUBSTRING;
-	StringFilterMode peopleStringMode = StringFilterMode::SUBSTRING;
-	StringFilterMode locationStringMode = StringFilterMode::SUBSTRING;
-	StringFilterMode dnotesStringMode = StringFilterMode::SUBSTRING;
-	StringFilterMode suitStringMode = StringFilterMode::SUBSTRING;
-	StringFilterMode equipmentStringMode = StringFilterMode::SUBSTRING;
-	bool logged = true;
-	bool planned = true;
-	int diveMode = -1; // -1: don't filter, >= 0: corresponds to divemode_t
+	std::vector<filter_constraint> constraints;
+	bool validFilter() const;
 };
 
 class DiveFilter {
