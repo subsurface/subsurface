@@ -51,9 +51,8 @@ Kirigami.Page {
 			Layout.topMargin: Kirigami.Units.smallSpacing * 4
 			columns: 2
 			rowSpacing: 0
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr(" Vendor name: ")
-				font.pointSize: subsurfaceTheme.regularPointSize
 			}
 			Controls.ComboBox {
 				id: comboVendor
@@ -88,9 +87,8 @@ Kirigami.Page {
 						comboProduct.currentIndex = manager.getDetectedProductIndex(currentText)
 				}
 			}
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr(" Dive Computer:")
-				font.pointSize: subsurfaceTheme.regularPointSize
 			}
 			Controls.ComboBox {
 				id: comboProduct
@@ -128,9 +126,8 @@ Kirigami.Page {
 					currentIndex = manager.getDetectedProductIndex(comboVendor.currentText)
 				}
 			}
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr(" Connection:")
-				font.pointSize: subsurfaceTheme.regularPointSize
 			}
 			Controls.ComboBox {
 				id: comboConnection
@@ -174,7 +171,7 @@ Kirigami.Page {
 					dc1.enabled = dc2.enabled = dc3.enabled = dc4.enabled = true
 					for (var i = 1; i < 5; i++) {
 						switch (i) {
-							case 1:
+						        case 1:
 								curVendor = PrefDiveComputer.vendor1
 								curProduct = PrefDiveComputer.product1
 								curDevice = PrefDiveComputer.device1
@@ -217,9 +214,8 @@ Kirigami.Page {
 			}
 		}
 
-		Controls.Label {
+		TemplateLabel {
 			text: qsTr(" Previously used dive computers: ")
-			font.pointSize: subsurfaceTheme.regularPointSize
 			visible: PrefDiveComputer.vendor1 !== ""
 		}
 		Flow {
@@ -237,7 +233,7 @@ Kirigami.Page {
 			}
 			function disableDC(inx) {
 				switch (inx) {
-					case 1:
+				        case 1:
 						dc1.enabled = false
 						break;
 					case 2:
@@ -387,7 +383,7 @@ Kirigami.Page {
 				}
 			}
 
-			Controls.Label {
+			TemplateLabel {
 				Layout.fillWidth: true
 				text: divesDownloaded ? qsTr(" Downloaded dives") :
 							(manager.progressMessage != "" ? qsTr("Info:") + " " + manager.progressMessage : btMessage)
@@ -411,7 +407,7 @@ Kirigami.Page {
 					manager.DC_forceDownload = !manager.DC_forceDownload;
 				}
 			}
-			Controls.Label {
+			TemplateLabel {
 				id: forceAllLabel
 				text: qsTr("force downloading all dives")
 				visible: comboVendor.currentIndex != -1 && comboProduct.currentIndex != -1 &&
@@ -441,7 +437,7 @@ Kirigami.Page {
 				}
 			}
 		}
-		Controls.Label {
+		TemplateLabel {
 			text: qsTr("Please wait while we record these dives...")
 			Layout.fillWidth: true
 			visible: acceptButton.busy
@@ -449,7 +445,7 @@ Kirigami.Page {
 		}
 		RowLayout {
 			id: bottomButtons
-			Controls.Label {
+			TemplateLabel {
 				text: ""  // Spacer on the left for hamburger menu
 				width: Kirigami.Units.gridUnit * 2.5
 			}
@@ -476,7 +472,7 @@ Kirigami.Page {
 					divesDownloaded = false
 				}
 			}
-			Controls.Label {
+			TemplateLabel {
 				text: ""  // Spacer between 2 button groups
 				Layout.fillWidth: true
 			}
