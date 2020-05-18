@@ -134,11 +134,9 @@ Item {
 			id: editorDetails
 			width: parent.width
 			columns: 2
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Dive number:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				id: txtNumber;
@@ -146,27 +144,28 @@ Item {
 				flickable: detailsEditFlickable
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Date:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				id: txtDate;
 				Layout.fillWidth: true
 				flickable: detailsEditFlickable
 			}
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Location:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			Controls.ComboBox {
 				id: locationBox
 				editable: true
 				flat: true
+				contentItem: Text {
+					text: parent.displayText
+					color: subsurfaceTheme.textColor
+					verticalAlignment: Text.AlignVCenter
+				}
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					manager.locationList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
@@ -274,6 +273,11 @@ Item {
 				id: suitBox
 				editable: true
 				flat: true
+				contentItem: Text {
+					text: parent.displayText
+					color: subsurfaceTheme.textColor
+					verticalAlignment: Text.AlignVCenter
+				}
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					manager.suitList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
@@ -295,6 +299,11 @@ Item {
 			Controls.ComboBox {
 				id: buddyBox
 				editable: true
+				contentItem: Text {
+					text: parent.displayText
+					color: subsurfaceTheme.textColor
+					verticalAlignment: Text.AlignVCenter
+				}
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					manager.buddyList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
@@ -316,6 +325,11 @@ Item {
 			Controls.ComboBox {
 				id: divemasterBox
 				editable: true
+				contentItem: Text {
+					text: parent.displayText
+					color: subsurfaceTheme.textColor
+					verticalAlignment: Text.AlignVCenter
+				}
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					manager.divemasterList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
@@ -351,6 +365,11 @@ Item {
 			Controls.ComboBox {
 				id: cylinderBox0
 				flat: true
+				contentItem: Text {
+					text: parent.displayText
+					color: subsurfaceTheme.textColor
+					verticalAlignment: Text.AlignVCenter
+				}
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					diveDetailsListView.currentItem.modelData.cylinderList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
@@ -408,6 +427,11 @@ Item {
 				visible: usedCyl[1] != null ? true : false
 				id: cylinderBox1
 				flat: true
+				contentItem: Text {
+					text: parent.displayText
+					color: subsurfaceTheme.textColor
+					verticalAlignment: Text.AlignVCenter
+				}
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					diveDetailsListView.currentItem.modelData.cylinderList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
@@ -472,6 +496,11 @@ Item {
 				id: cylinderBox2
 				currentIndex: find(usedCyl[2])
 				flat: true
+				contentItem: Text {
+					text: parent.displayText
+					color: subsurfaceTheme.textColor
+					verticalAlignment: Text.AlignVCenter
+				}
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					diveDetailsListView.currentItem.modelData.cylinderList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
@@ -535,6 +564,11 @@ Item {
 				id: cylinderBox3
 				currentIndex: find(usedCyl[3])
 				flat: true
+				contentItem: Text {
+					text: parent.displayText
+					color: subsurfaceTheme.textColor
+					verticalAlignment: Text.AlignVCenter
+				}
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					diveDetailsListView.currentItem.modelData.cylinderList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
@@ -599,6 +633,11 @@ Item {
 				id: cylinderBox4
 				currentIndex: find(usedCyl[4])
 				flat: true
+				contentItem: Text {
+					text: parent.displayText
+					color: subsurfaceTheme.textColor
+					verticalAlignment: Text.AlignVCenter
+				}
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					diveDetailsListView.currentItem.modelData.cylinderList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
@@ -657,7 +696,7 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.SpinBox {
+			TemplateSpinBox {
 				id: ratingPicker
 				from: 0
 				to: 5
@@ -671,7 +710,7 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.SpinBox {
+			TemplateSpinBox {
 				id: visibilityPicker
 				from: 0
 				to: 5
@@ -692,6 +731,7 @@ Item {
 				id: txtNotes
 				textFormat: TextEdit.RichText
 				focus: true
+				color: subsurfaceTheme.textColor
 				Layout.fillWidth: true
 				Layout.fillHeight: true
 				Layout.minimumHeight: Kirigami.Units.gridUnit * 6
