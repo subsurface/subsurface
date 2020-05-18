@@ -1,3 +1,4 @@
+mobile: small improvements to usability with dark theme
 Core: improve service selection for BLE, adding white list and black list
 Filter: fix searching for tags [#2842]
 Desktop: fix plotting of thumbnails on profile [#2833]
