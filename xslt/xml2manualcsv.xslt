@@ -13,6 +13,8 @@
   <xsl:template match="/divelog/dives">
     <xsl:choose>
       <xsl:when test="$units = 1">
+
+        <!-- Print beginning of the header -->
         <xsl:value-of select="concat(
           '&quot;dive number&quot;',
           $fs,
@@ -33,7 +35,10 @@
           '&quot;airtemp (F)&quot;',
           $fs,
           '&quot;watertemp (F)&quot;',
-          $fs,
+          $fs)"/>
+
+        <!-- Print cylinder info according to the amount of cylinders in dive -->
+        <xsl:value-of select="concat(
           '&quot;cylinder size (cuft)&quot;',
           $fs,
           '&quot;startpressure (psi)&quot;',
@@ -43,7 +48,10 @@
           '&quot;o2 (%)&quot;',
           $fs,
           '&quot;he (%)&quot;',
-          $fs,
+          $fs)"/>
+
+        <!-- Print rest of the header -->
+        <xsl:value-of select="concat(
           '&quot;location&quot;',
           $fs,
           '&quot;gps&quot;',
@@ -65,8 +73,10 @@
           '&quot;tags&quot;')"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="
-          concat('&quot;dive number&quot;',
+
+        <!-- Print beginning of the header -->
+        <xsl:value-of select="concat(
+          '&quot;dive number&quot;',
           $fs,
           '&quot;date&quot;',
           $fs,
@@ -85,7 +95,10 @@
           '&quot;airtemp (C)&quot;',
           $fs,
           '&quot;watertemp (C)&quot;',
-          $fs,
+          $fs)"/>
+
+        <!-- Print cylinder info according to the amount of cylinders in dive -->
+        <xsl:value-of select="concat(
           '&quot;cylinder size (l)&quot;',
           $fs,
           '&quot;startpressure (bar)&quot;',
@@ -95,7 +108,10 @@
           '&quot;o2 (%)&quot;',
           $fs,
           '&quot;he (%)&quot;',
-          $fs,
+          $fs)"/>
+
+        <!-- Print rest of the header -->
+        <xsl:value-of select="concat(
           '&quot;location&quot;',
           $fs,
           '&quot;gps&quot;',
