@@ -2,6 +2,8 @@
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
+import org.subsurfacedivelog.mobile 1.0
+import org.kde.kirigami 2.4 as Kirigami
 
 SpinBox {
 	id: control
@@ -11,9 +13,8 @@ SpinBox {
 	contentItem: TextInput {
 		z: 2
 		text: control.textFromValue(control.value, control.locale)
-
 		font: control.font
-		color: control.enabled ? "black" : "lightgrey"
+		color: control.enabled ? subsurfaceTheme.textColor : subsurfaceTheme.disabledTextColor
 		horizontalAlignment: Qt.AlignHCenter
 		verticalAlignment: Qt.AlignVCenter
 
@@ -24,16 +25,15 @@ SpinBox {
 
 	up.indicator: Rectangle {
 		x: control.mirrored ? 0 : parent.width - width
-		height: control.height
-		implicitWidth: 30
-		implicitHeight: 30
-		color: control.enabled ? "grey" : "lightgrey"
-		border.color: control.enabled ? "grey" : "lightgrey"
-
+		height: Kirigami.Units.gridUnit * 2
+		implicitWidth: Kirigami.Units.gridUnit * 1.5
+		implicitHeight: Kirigami.Units.gridUnit * 1.5
+		color: control.enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
+		border.color: control.enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 		Text {
 			text: "+"
 			font.pixelSize: control.font.pixelSize * 2
-			color: control.enabled ? "black" : "lightgrey"
+			color: control.enabled ? subsurfaceTheme.textColor : subsurfaceTheme.disabledTextColor
 			anchors.fill: parent
 			fontSizeMode: Text.Fit
 			horizontalAlignment: Text.AlignHCenter
@@ -43,16 +43,15 @@ SpinBox {
 
 	down.indicator: Rectangle {
 		x: control.mirrored ? parent.width - width : 0
-		height: control.height
-		implicitWidth: 30
-		implicitHeight: 30
-		color: control.enabled ? "grey" : "lightgrey"
-		border.color: control.enabled ? "grey" : "lightgrey"
-
+		height: Kirigami.Units.gridUnit * 2
+		implicitWidth: Kirigami.Units.gridUnit * 1.5
+		implicitHeight: Kirigami.Units.gridUnit * 1.5
+		color: control.enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
+		border.color: control.enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 		Text {
 			text: "-"
 			font.pixelSize: control.font.pixelSize * 2
-			color: control.enabled ? "black" : "lightgrey"
+			color: control.enabled ? subsurfaceTheme.textColor : subsurfaceTheme.disabledTextColor
 			anchors.fill: parent
 			fontSizeMode: Text.Fit
 			horizontalAlignment: Text.AlignHCenter
@@ -61,7 +60,7 @@ SpinBox {
 	}
 
 	background: Rectangle {
-		implicitWidth: 140
+		implicitWidth: 5* Kirigami.Units.gridUnit
 		color: subsurfaceTheme.backgroundColor
 		border.color: subsurfaceTheme.backgroundColor
 	}
