@@ -371,7 +371,7 @@ int TestParse::parseCSVmanual(int units, std::string file)
 
 void TestParse::exportCSVDiveDetails()
 {
-	int saved_sac;
+	int saved_sac = 0;
 
 	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table, &trip_table, &dive_site_table);
 
