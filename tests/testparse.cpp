@@ -373,7 +373,7 @@ void TestParse::exportCSVDiveDetails()
 {
 	int saved_sac = 0;
 
-	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table, &trip_table, &dive_site_table);
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test25.xml", &dive_table, &trip_table, &dive_site_table);
 
 	export_dives_xslt("testcsvexportmanual.csv", 0, 0, "xml2manualcsv.xslt", false);
 	export_dives_xslt("testcsvexportmanualimperial.csv", 0, 1, "xml2manualcsv.xslt", false);
