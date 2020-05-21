@@ -17,11 +17,19 @@
   </xsl:variable>
 
   <xsl:template match="/">
+    <xsl:variable name="cylinders">
+      <xsl:call-template name="countCylinders">
+        <xsl:with-param name="line" select="substring-before(substring-after(//SubsurfaceCSV, $lf), $lf)"/>
+        <xsl:with-param name="count" select="'0'"/>
+        <xsl:with-param name="index" select="'10'"/>
+      </xsl:call-template>
+    </xsl:variable>
     <divelog program="subsurface-import" version="2">
       <dives>
         <xsl:call-template name="printLine">
           <xsl:with-param name="line" select="substring-before(substring-after(//SubsurfaceCSV, $lf), $lf)"/>
           <xsl:with-param name="remaining" select="substring-after(substring-after(//SubsurfaceCSV, $lf), $lf)"/>
+          <xsl:with-param name="cylinders" select="$cylinders"/>
         </xsl:call-template>
       </dives>
     </divelog>
@@ -30,16 +38,19 @@
   <xsl:template name="printLine">
     <xsl:param name="line"/>
     <xsl:param name="remaining"/>
+    <xsl:param name="cylinders"/>
 
     <xsl:call-template name="printFields">
       <xsl:with-param name="line" select="$line"/>
       <xsl:with-param name="remaining" select="$remaining"/>
+      <xsl:with-param name="cylinders" select="$cylinders"/>
     </xsl:call-template>
 
     <xsl:if test="$remaining != ''">
       <xsl:call-template name="printLine">
         <xsl:with-param name="line" select="substring-before($remaining, $lf)"/>
         <xsl:with-param name="remaining" select="substring-after($remaining, $lf)"/>
+        <xsl:with-param name="cylinders" select="$cylinders"/>
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
@@ -47,6 +58,7 @@
   <xsl:template name="printFields">
     <xsl:param name="line"/>
     <xsl:param name="remaining"/>
+    <xsl:param name="cylinders"/>
 
     <xsl:variable name="number">
       <xsl:call-template name="getFieldByIndex">
@@ -192,118 +204,24 @@
           </xsl:if>
         </divetemperature>
 
-        <cylinder>
-          <xsl:variable name="size">
-            <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="10"/>
-              <xsl:with-param name="line" select="$line"/>
-            </xsl:call-template>
-          </xsl:variable>
-          <xsl:variable name="start">
-            <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="11"/>
-              <xsl:with-param name="line" select="$line"/>
-            </xsl:call-template>
-          </xsl:variable>
-          <xsl:variable name="end">
-            <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="12"/>
-              <xsl:with-param name="line" select="$line"/>
-            </xsl:call-template>
-          </xsl:variable>
-          <xsl:variable name="o2">
-            <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="13"/>
-              <xsl:with-param name="line" select="$line"/>
-            </xsl:call-template>
-          </xsl:variable>
-          <xsl:variable name="he">
-            <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="14"/>
-              <xsl:with-param name="line" select="$line"/>
-            </xsl:call-template>
-          </xsl:variable>
+        <!-- CYLINDER -->
+        <xsl:call-template name="parseCylinders">
+          <xsl:with-param name="line" select="$line"/>
+          <xsl:with-param name="cylinders" select="$cylinders"/>
+          <xsl:with-param name="count" select="'0'"/>
+          <xsl:with-param name="index" select="'10'"/>
+        </xsl:call-template>
 
-          <!--  ALxxx -> xxx cuft at 3000 psi
-              LPxxx -> xxx cuft at 2400 psi
-              HPxxx -> xxx cuft at 3440 psi -->
-
-          <xsl:if test="$size != ''">
-            <xsl:attribute name="size">
-              <xsl:choose>
-                <xsl:when test="substring($size, 1, 2) = 'AL'">
-                  <xsl:value-of select="format-number((translate($size, translate($size, '0123456789', ''), '') * 14.7 div 3000) div 0.035315, '#.#')"/>
-                </xsl:when>
-                <xsl:when test="substring($size, 1, 2) = 'LP'">
-                  <xsl:value-of select="format-number((translate($size, translate($size, '0123456789', ''), '') * 14.7 div 2400) div 0.035315, '#.#')"/>
-                </xsl:when>
-                <xsl:when test="substring($size, 1, 2) = 'HP'">
-                  <xsl:value-of select="format-number((translate($size, translate($size, '0123456789', ''), '') * 14.7 div 3440) div 0.035315, '#.#')"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:choose>
-                    <xsl:when test="$units = 0">
-                      <xsl:value-of select="$size"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="format-number((translate($size, translate($size, '0123456789', ''), '') * 14.7 div 3000) div 0.035315, '#.#')"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:attribute>
-          </xsl:if>
-          <xsl:if test="substring($size, 1, 2) = 'AL' or substring($size, 1, 2) = 'LP' or substring($size, 1, 2) = 'HP'">
-            <xsl:attribute name="description">
-              <xsl:value-of select="$size"/>
-            </xsl:attribute>
-          </xsl:if>
-          <xsl:if test="$start != ''">
-            <xsl:attribute name="start">
-              <xsl:choose>
-                <xsl:when test="$units = 0">
-                  <xsl:value-of select="$start"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="concat(format-number((translate($start, translate($start, '0123456789', ''), '') div 14.5037738007), '#'), ' bar')"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:attribute>
-          </xsl:if>
-          <xsl:if test="$end != ''">
-            <xsl:attribute name="end">
-              <xsl:choose>
-                <xsl:when test="$units = 0">
-                  <xsl:value-of select="$end"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="concat(format-number((translate($end, translate($end, '0123456789', ''), '') div 14.5037738007), '#'), ' bar')"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:attribute>
-          </xsl:if>
-          <xsl:if test="$o2 != ''">
-            <xsl:attribute name="o2">
-              <xsl:value-of select="$o2"/>
-            </xsl:attribute>
-          </xsl:if>
-          <xsl:if test="$he != ''">
-            <xsl:attribute name="he">
-              <xsl:value-of select="$he"/>
-            </xsl:attribute>
-          </xsl:if>
-        </cylinder>
-
-        <location>
+        <location debug="{$cylinders}">
           <xsl:variable name="gps">
             <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="16"/>
+              <xsl:with-param name="index" select="16 + ($cylinders - 1) * 5"/>
               <xsl:with-param name="line" select="$line"/>
             </xsl:call-template>
           </xsl:variable>
           <xsl:variable name="location">
             <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="15"/>
+              <xsl:with-param name="index" select="15 + ($cylinders - 1) * 5"/>
               <xsl:with-param name="line" select="$line"/>
             </xsl:call-template>
           </xsl:variable>
@@ -319,7 +237,7 @@
 
         <xsl:variable name="dm">
           <xsl:call-template name="getFieldByIndex">
-            <xsl:with-param name="index" select="17"/>
+            <xsl:with-param name="index" select="17 + ($cylinders - 1) * 5"/>
             <xsl:with-param name="line" select="$line"/>
           </xsl:call-template>
         </xsl:variable>
@@ -331,7 +249,7 @@
 
         <xsl:variable name="buddy">
           <xsl:call-template name="getFieldByIndex">
-            <xsl:with-param name="index" select="18"/>
+            <xsl:with-param name="index" select="18 + ($cylinders - 1) * 5"/>
             <xsl:with-param name="line" select="$line"/>
           </xsl:call-template>
         </xsl:variable>
@@ -343,7 +261,7 @@
 
         <xsl:variable name="suit">
           <xsl:call-template name="getFieldByIndex">
-            <xsl:with-param name="index" select="19"/>
+            <xsl:with-param name="index" select="19 + ($cylinders - 1) * 5"/>
             <xsl:with-param name="line" select="$line"/>
           </xsl:call-template>
         </xsl:variable>
@@ -355,7 +273,7 @@
 
         <xsl:variable name="notes">
           <xsl:call-template name="getFieldByIndex">
-            <xsl:with-param name="index" select="22"/>
+            <xsl:with-param name="index" select="22 + ($cylinders - 1) * 5"/>
             <xsl:with-param name="line" select="$line"/>
             <xsl:with-param name="remaining" select="$remaining"/>
           </xsl:call-template>
@@ -368,7 +286,7 @@
 
         <xsl:variable name="weight">
           <xsl:call-template name="getFieldByIndex">
-            <xsl:with-param name="index" select="23"/>
+            <xsl:with-param name="index" select="23 + ($cylinders - 1) * 5"/>
             <xsl:with-param name="line" select="$line"/>
           </xsl:call-template>
         </xsl:variable>
@@ -388,6 +306,155 @@
         </xsl:if>
 
       </dive>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="countCylinders">
+    <xsl:param name="line"/>
+    <xsl:param name="count"/>
+    <xsl:param name="index"/>
+
+    <xsl:variable name="field">
+      <xsl:call-template name="getFieldByIndex">
+        <xsl:with-param name="index" select="$index"/>
+        <xsl:with-param name="line" select="$line"/>
+      </xsl:call-template>
+    </xsl:variable>
+
+    <xsl:choose>
+      <xsl:when test="substring-before($field, ' ') = 'cylinder'">
+        <xsl:call-template name="countCylinders">
+          <xsl:with-param name="line" select="$line"/>
+          <xsl:with-param name="count" select="$count + 1"/>
+          <xsl:with-param name="index" select="$index + 5"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$count"/>
+      </xsl:otherwise>
+    </xsl:choose>
+
+  </xsl:template>
+
+
+  <xsl:template name="parseCylinders">
+    <xsl:param name="line"/>
+    <xsl:param name="cylinders"/>
+    <xsl:param name="count"/>
+    <xsl:param name="index"/>
+
+    <xsl:variable name="field">
+      <xsl:call-template name="getFieldByIndex">
+        <xsl:with-param name="index" select="$index"/>
+        <xsl:with-param name="line" select="$line"/>
+      </xsl:call-template>
+    </xsl:variable>
+
+    <xsl:if test="$count &lt; $cylinders">
+      <cylinder>
+        <xsl:variable name="size">
+          <xsl:call-template name="getFieldByIndex">
+            <xsl:with-param name="index" select="$index"/>
+            <xsl:with-param name="line" select="$line"/>
+          </xsl:call-template>
+        </xsl:variable>
+        <xsl:variable name="start">
+          <xsl:call-template name="getFieldByIndex">
+            <xsl:with-param name="index" select="$index + 1"/>
+            <xsl:with-param name="line" select="$line"/>
+          </xsl:call-template>
+        </xsl:variable>
+        <xsl:variable name="end">
+          <xsl:call-template name="getFieldByIndex">
+            <xsl:with-param name="index" select="$index + 2"/>
+            <xsl:with-param name="line" select="$line"/>
+          </xsl:call-template>
+        </xsl:variable>
+        <xsl:variable name="o2">
+          <xsl:call-template name="getFieldByIndex">
+            <xsl:with-param name="index" select="$index + 3"/>
+            <xsl:with-param name="line" select="$line"/>
+          </xsl:call-template>
+        </xsl:variable>
+        <xsl:variable name="he">
+          <xsl:call-template name="getFieldByIndex">
+            <xsl:with-param name="index" select="$index + 4"/>
+            <xsl:with-param name="line" select="$line"/>
+          </xsl:call-template>
+        </xsl:variable>
+
+        <xsl:if test="$size != ''">
+          <xsl:attribute name="size">
+            <xsl:choose>
+              <xsl:when test="substring($size, 1, 2) = 'AL'">
+                <xsl:value-of select="format-number((translate($size, translate($size, '0123456789', ''), '') * 14.7 div 3000) div 0.035315, '#.#')"/>
+              </xsl:when>
+              <xsl:when test="substring($size, 1, 2) = 'LP'">
+                <xsl:value-of select="format-number((translate($size, translate($size, '0123456789', ''), '') * 14.7 div 2400) div 0.035315, '#.#')"/>
+              </xsl:when>
+              <xsl:when test="substring($size, 1, 2) = 'HP'">
+                <xsl:value-of select="format-number((translate($size, translate($size, '0123456789', ''), '') * 14.7 div 3440) div 0.035315, '#.#')"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:choose>
+                  <xsl:when test="$units = 0">
+                    <xsl:value-of select="$size"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="format-number((translate($size, translate($size, '0123456789', ''), '') * 14.7 div 3000) div 0.035315, '#.#')"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:attribute>
+        </xsl:if>
+        <xsl:if test="substring($size, 1, 2) = 'AL' or substring($size, 1, 2) = 'LP' or substring($size, 1, 2) = 'HP'">
+          <xsl:attribute name="description">
+            <xsl:value-of select="$size"/>
+          </xsl:attribute>
+        </xsl:if>
+        <xsl:if test="$start != ''">
+          <xsl:attribute name="start">
+            <xsl:choose>
+              <xsl:when test="$units = 0">
+                <xsl:value-of select="$start"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat(format-number((translate($start, translate($start, '0123456789', ''), '') div 14.5037738007), '#'), ' bar')"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:attribute>
+        </xsl:if>
+        <xsl:if test="$end != ''">
+          <xsl:attribute name="end">
+            <xsl:choose>
+              <xsl:when test="$units = 0">
+                <xsl:value-of select="$end"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat(format-number((translate($end, translate($end, '0123456789', ''), '') div 14.5037738007), '#'), ' bar')"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:attribute>
+        </xsl:if>
+        <xsl:if test="$o2 != ''">
+          <xsl:attribute name="o2">
+            <xsl:value-of select="$o2"/>
+          </xsl:attribute>
+        </xsl:if>
+        <xsl:if test="$he != ''">
+          <xsl:attribute name="he">
+            <xsl:value-of select="$he"/>
+          </xsl:attribute>
+        </xsl:if>
+      </cylinder>
+
+      <xsl:call-template name="parseCylinders">
+        <xsl:with-param name="line" select="$line"/>
+        <xsl:with-param name="cylinders" select="$cylinders"/>
+        <xsl:with-param name="count" select="$count + 1"/>
+        <xsl:with-param name="index" select="$index + 5"/>
+      </xsl:call-template>
     </xsl:if>
   </xsl:template>
 
