@@ -195,31 +195,31 @@
         <cylinder>
           <xsl:variable name="size">
             <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="8"/>
+              <xsl:with-param name="index" select="10"/>
               <xsl:with-param name="line" select="$line"/>
             </xsl:call-template>
           </xsl:variable>
           <xsl:variable name="start">
             <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="9"/>
+              <xsl:with-param name="index" select="11"/>
               <xsl:with-param name="line" select="$line"/>
             </xsl:call-template>
           </xsl:variable>
           <xsl:variable name="end">
             <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="10"/>
+              <xsl:with-param name="index" select="12"/>
               <xsl:with-param name="line" select="$line"/>
             </xsl:call-template>
           </xsl:variable>
           <xsl:variable name="o2">
             <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="11"/>
+              <xsl:with-param name="index" select="13"/>
               <xsl:with-param name="line" select="$line"/>
             </xsl:call-template>
           </xsl:variable>
           <xsl:variable name="he">
             <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="12"/>
+              <xsl:with-param name="index" select="14"/>
               <xsl:with-param name="line" select="$line"/>
             </xsl:call-template>
           </xsl:variable>
@@ -297,13 +297,13 @@
         <location>
           <xsl:variable name="gps">
             <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="14"/>
+              <xsl:with-param name="index" select="16"/>
               <xsl:with-param name="line" select="$line"/>
             </xsl:call-template>
           </xsl:variable>
           <xsl:variable name="location">
             <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="13"/>
+              <xsl:with-param name="index" select="15"/>
               <xsl:with-param name="line" select="$line"/>
             </xsl:call-template>
           </xsl:variable>
@@ -319,7 +319,7 @@
 
         <xsl:variable name="dm">
           <xsl:call-template name="getFieldByIndex">
-            <xsl:with-param name="index" select="15"/>
+            <xsl:with-param name="index" select="17"/>
             <xsl:with-param name="line" select="$line"/>
           </xsl:call-template>
         </xsl:variable>
@@ -331,7 +331,7 @@
 
         <xsl:variable name="buddy">
           <xsl:call-template name="getFieldByIndex">
-            <xsl:with-param name="index" select="16"/>
+            <xsl:with-param name="index" select="18"/>
             <xsl:with-param name="line" select="$line"/>
           </xsl:call-template>
         </xsl:variable>
@@ -343,7 +343,7 @@
 
         <xsl:variable name="suit">
           <xsl:call-template name="getFieldByIndex">
-            <xsl:with-param name="index" select="17"/>
+            <xsl:with-param name="index" select="19"/>
             <xsl:with-param name="line" select="$line"/>
           </xsl:call-template>
         </xsl:variable>
@@ -355,7 +355,7 @@
 
         <xsl:variable name="notes">
           <xsl:call-template name="getFieldByIndex">
-            <xsl:with-param name="index" select="20"/>
+            <xsl:with-param name="index" select="22"/>
             <xsl:with-param name="line" select="$line"/>
             <xsl:with-param name="remaining" select="$remaining"/>
           </xsl:call-template>
@@ -368,7 +368,7 @@
 
         <xsl:variable name="weight">
           <xsl:call-template name="getFieldByIndex">
-            <xsl:with-param name="index" select="21"/>
+            <xsl:with-param name="index" select="23"/>
             <xsl:with-param name="line" select="$line"/>
           </xsl:call-template>
         </xsl:variable>
