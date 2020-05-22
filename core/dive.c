@@ -3394,7 +3394,7 @@ timestamp_t dive_endtime(const struct dive *dive)
 	return dive->when + dive_totaltime(dive);
 }
 
-bool time_during_dive_with_offset(struct dive *dive, timestamp_t when, timestamp_t offset)
+bool time_during_dive_with_offset(const struct dive *dive, timestamp_t when, timestamp_t offset)
 {
 	timestamp_t start = dive->when;
 	timestamp_t end = dive_endtime(dive);
