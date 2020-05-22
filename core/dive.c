@@ -3401,28 +3401,6 @@ bool time_during_dive_with_offset(struct dive *dive, timestamp_t when, timestamp
 	return start - offset <= when && when <= end + offset;
 }
 
-bool dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset)
-{
-	timestamp_t start = dive->when;
-	timestamp_t end = dive_endtime(dive);
-	return when - offset <= start && end <= when + offset;
-}
-
-/* find the n-th dive that is part of a group of dives within the offset around 'when'.
- *  How is that for a vague definition of what this function should do... */
-struct dive *find_dive_n_near(timestamp_t when, int n, timestamp_t offset)
-{
-	int i, j = 0;
-	struct dive *dive;
-
-	for_each_dive (i, dive) {
-		if (dive_within_time_range(dive, when, offset))
-			if (++j == n)
-				return dive;
-	}
-	return NULL;
-}
-
 timestamp_t get_times()
 {
 	int i;
