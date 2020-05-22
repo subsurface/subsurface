@@ -8,6 +8,7 @@
 #include "desktop-widgets/tab-widgets/maintab.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/mapwidget.h"
+#include "desktop-widgets/preferences/preferencesdialog.h"
 #include "core/qthelper.h"
 #include "core/trip.h"
 #include "qt-models/diveplannermodel.h"
@@ -71,8 +72,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	extraWidgets << new TabDiveSite(this);
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Dive sites"));
 
-	ui.dateEdit->setDisplayFormat(prefs.date_format);
-	ui.timeEdit->setDisplayFormat(prefs.time_format);
+	updateDateTimeFields();
 
 	closeMessage();
 
@@ -85,6 +85,11 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ui.location, &DiveLocationLineEdit::entered, MapWidget::instance(), &MapWidget::centerOnIndex);
 	connect(ui.location, &DiveLocationLineEdit::currentChanged, MapWidget::instance(), &MapWidget::centerOnIndex);
 	connect(ui.location, &DiveLocationLineEdit::editingFinished, this, &MainTab::on_location_diveSiteSelected);
+
+	// One might think that we could listen to the precise property-changed signals of the preferences system.
+	// Alas, this is not the case. When the user switches to system-format, the preferences sends the according
+	// signal. However, the correct date and time format is set by the preferences dialog later. This should be fixed.
+	connect(PreferencesDialog::instance(), &PreferencesDialog::settingsChanged, this, &MainTab::updateDateTimeFields);
 
 	QAction *action = new QAction(tr("Apply changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
@@ -176,6 +181,12 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	new TextHyperlinkEventFilter(ui.notes);//destroyed when ui.notes is destroyed
 
 	ui.diveTripLocation->hide();
+}
+
+void MainTab::updateDateTimeFields()
+{
+	ui.dateEdit->setDisplayFormat(prefs.date_format);
+	ui.timeEdit->setDisplayFormat(prefs.time_format);
 }
 
 void MainTab::hideMessage()
