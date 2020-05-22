@@ -272,7 +272,7 @@ extern bool dive_site_has_gps_location(const struct dive_site *ds);
 extern int dive_has_gps_location(const struct dive *dive);
 extern location_t dive_get_gps_location(const struct dive *d);
 
-extern bool time_during_dive_with_offset(struct dive *dive, timestamp_t when, timestamp_t offset);
+extern bool time_during_dive_with_offset(const struct dive *dive, timestamp_t when, timestamp_t offset);
 
 /* Check if two dive computer entries are the exact same dive (-1=no/0=maybe/1=yes) */
 extern int match_one_dc(const struct divecomputer *a, const struct divecomputer *b);
