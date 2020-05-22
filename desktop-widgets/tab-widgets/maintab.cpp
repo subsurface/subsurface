@@ -598,7 +598,7 @@ void MainTab::on_depth_editingFinished()
 // all dives are shifted by an offset.
 static void shiftTime(QDateTime &dateTime)
 {
-	timestamp_t when = dateTime.toTime_t();
+	timestamp_t when = dateTimeToTimestamp(dateTime);
 	if (current_dive && current_dive->when != when) {
 		timestamp_t offset = when - current_dive->when;
 		Command::shiftTime(getDiveSelection(), (int)offset);

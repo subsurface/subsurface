@@ -709,6 +709,11 @@ QDateTime timestampToDateTime(timestamp_t when)
 	return QDateTime::fromMSecsSinceEpoch(1000 * when, Qt::UTC);
 }
 
+timestamp_t dateTimeToTimestamp(const QDateTime &t)
+{
+	return t.toSecsSinceEpoch();
+}
+
 QString render_seconds_to_string(int seconds)
 {
 	if (seconds % 60 == 0)

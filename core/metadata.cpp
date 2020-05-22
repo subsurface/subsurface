@@ -271,7 +271,7 @@ static bool parseDate(const QString &s_in, timestamp_t &timestamp)
 	if (datetime.isValid()) {
 		// Not knowing any better, we suppose that time is give in UTC
 		datetime.setTimeSpec(Qt::UTC);
-		timestamp = datetime.toMSecsSinceEpoch() / 1000;
+		timestamp = dateTimeToTimestamp(datetime);
 		return true;
 	}
 
@@ -312,7 +312,7 @@ static bool parseDate(const QString &s_in, timestamp_t &timestamp)
 	// Not knowing any better, we suppose that time is give in UTC
 	datetime = QDateTime(date, time, Qt::UTC);
 	if (datetime.isValid()) {
-		timestamp = datetime.toMSecsSinceEpoch() / 1000;
+		timestamp = dateTimeToTimestamp(datetime);
 		return true;
 	}
 
@@ -542,9 +542,9 @@ extern "C" mediatype_t get_metadata(const char *filename_in, metadata *data)
 	// have a standard way of storing this datum), use the file creation date of the file.
 	if (data->timestamp == 0)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-		data->timestamp = QFileInfo(filename).birthTime().toMSecsSinceEpoch() / 1000;
+		data->timestamp = dateTimeToTimestamp(QFileInfo(filename).birthTime());
 #else
-		data->timestamp = QFileInfo(filename).created().toMSecsSinceEpoch() / 1000;
+		data->timestamp = dateTimeToTimestamp(QFileInfo(filename).created());
 #endif
 	return res;
 }
