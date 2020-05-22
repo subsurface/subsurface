@@ -696,10 +696,17 @@ int gettimezoneoffset(timestamp_t when)
 	if (when == 0)
 		dt1 = QDateTime::currentDateTime();
 	else
-		dt1 = QDateTime::fromMSecsSinceEpoch(when * 1000);
+		dt1 = timestampToDateTime(when);
 	dt2 = dt1.toUTC();
 	dt1.setTimeSpec(Qt::UTC);
 	return dt2.secsTo(dt1);
+}
+
+QDateTime timestampToDateTime(timestamp_t when)
+{
+	// Subsurface always uses "local time" as in "whatever was the local time at the location"
+	// so all time stamps have no time zone information and are in UTC
+	return QDateTime::fromMSecsSinceEpoch(1000 * when, Qt::UTC);
 }
 
 QString render_seconds_to_string(int seconds)
@@ -984,8 +991,7 @@ QString get_trip_date_string(timestamp_t when, int nr, bool getday)
 {
 	struct tm tm;
 	utc_mkdate(when, &tm);
-	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000*when,Qt::UTC);
-	localTime.setTimeSpec(Qt::UTC);
+	QDateTime localTime = timestampToDateTime(when);
 
 	QString suffix = " " + gettextFromC::tr("(%n dive(s))", "", nr);
 	if (getday)
