@@ -66,6 +66,7 @@ slots:
 	void displayMessage(QString str);
 	void enableEdition();
 	void escDetected(void);
+	void updateDateTimeFields();
 private:
 	Ui::MainTab ui;
 	bool editMode;
