@@ -63,7 +63,7 @@ QString DiveTripModelBase::tripShortDate(const dive_trip *trip)
 {
 	if (!trip)
 		return QString();
-	QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*trip_date(trip), Qt::UTC);
+	QDateTime firstTime = timestampToDateTime(trip_date(trip));
 	QString firstMonth = firstTime.toString("MMM");
 	return QStringLiteral("%1\n'%2").arg(firstMonth,firstTime.toString("yy"));
 }
@@ -79,10 +79,10 @@ QString DiveTripModelBase::tripTitle(const dive_trip *trip)
 
 	if (title.isEmpty()) {
 		// so use the date range
-		QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*trip_date(trip), Qt::UTC);
+		QDateTime firstTime = timestampToDateTime(trip_date(trip));
 		QString firstMonth = firstTime.toString("MMM");
 		QString firstYear = firstTime.toString("yyyy");
-		QDateTime lastTime = QDateTime::fromMSecsSinceEpoch(1000*trip->dives.dives[0]->when, Qt::UTC);
+		QDateTime lastTime = timestampToDateTime(trip->dives.dives[0]->when);
 		QString lastMonth = lastTime.toString("MMM");
 		QString lastYear = lastTime.toString("yyyy");
 		if (lastMonth == firstMonth && lastYear == firstYear)
@@ -201,8 +201,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 	// variable in the QtQuick list view. That has to be a string because it will try
 	// to do locale-aware sorting. And amazingly this can't be changed.
 	case MobileListModel::DateTimeRole: {
-		QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000 * d->when, Qt::UTC);
-		localTime.setTimeSpec(Qt::UTC);
+		QDateTime localTime = timestampToDateTime(d->when);
 		return QStringLiteral("%1 %2").arg(localTime.date().toString(prefs.date_format_short),
 						   localTime.time().toString(prefs.time_format));
 		}

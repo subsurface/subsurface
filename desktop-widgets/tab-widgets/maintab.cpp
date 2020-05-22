@@ -307,14 +307,6 @@ void MainTab::updateNotes(const struct dive *d)
 	}
 }
 
-static QDateTime timestampToDateTime(timestamp_t when)
-{
-	// Subsurface always uses "local time" as in "whatever was the local time at the location"
-	// so all time stamps have no time zone information and are in UTC
-	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000 * when, Qt::UTC);
-	localTime.setTimeSpec(Qt::UTC);
-	return localTime;
-}
 void MainTab::updateDateTime(const struct dive *d)
 {
 	QDateTime localTime = timestampToDateTime(d->when);
@@ -617,8 +609,7 @@ void MainTab::on_dateEdit_editingFinished()
 {
 	if (ignoreInput || !current_dive)
 		return;
-	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*current_dive->when, Qt::UTC);
-	dateTime.setTimeSpec(Qt::UTC);
+	QDateTime dateTime = timestampToDateTime(current_dive->when);
 	dateTime.setDate(ui.dateEdit->date());
 	shiftTime(dateTime);
 }
@@ -627,8 +618,7 @@ void MainTab::on_timeEdit_editingFinished()
 {
 	if (ignoreInput || !current_dive)
 		return;
-	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*current_dive->when, Qt::UTC);
-	dateTime.setTimeSpec(Qt::UTC);
+	QDateTime dateTime = timestampToDateTime(current_dive->when);
 	dateTime.setTime(ui.timeEdit->time());
 	shiftTime(dateTime);
 }

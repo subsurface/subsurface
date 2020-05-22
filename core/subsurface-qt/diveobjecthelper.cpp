@@ -328,15 +328,13 @@ DiveObjectHelperGrantlee::DiveObjectHelperGrantlee(const struct dive *d) :
 
 QString DiveObjectHelper::date() const
 {
-	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000 * timestamp, Qt::UTC);
-	localTime.setTimeSpec(Qt::UTC);
+	QDateTime localTime = timestampToDateTime(timestamp);
 	return localTime.date().toString(prefs.date_format_short);
 }
 
 QString DiveObjectHelper::time() const
 {
-	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000 * timestamp, Qt::UTC);
-	localTime.setTimeSpec(Qt::UTC);
+	QDateTime localTime = timestampToDateTime(timestamp);
 	return localTime.time().toString(prefs.time_format);
 }
 

@@ -865,7 +865,7 @@ void MainWindow::on_actionReplanDive_triggered()
 	graphics->clearHandlers();
 	setApplicationState(ApplicationState::PlanDive);
 	divePlannerWidget->setReplanButton(true);
-	divePlannerWidget->setupStartTime(QDateTime::fromMSecsSinceEpoch(1000 * current_dive->when, Qt::UTC));
+	divePlannerWidget->setupStartTime(timestampToDateTime(current_dive->when));
 	if (current_dive->surface_pressure.mbar)
 		divePlannerWidget->setSurfacePressure(current_dive->surface_pressure.mbar);
 	if (current_dive->salinity)
