@@ -989,8 +989,6 @@ extern "C" char *get_current_date()
 
 QString get_trip_date_string(timestamp_t when, int nr, bool getday)
 {
-	struct tm tm;
-	utc_mkdate(when, &tm);
 	QDateTime localTime = timestampToDateTime(when);
 
 	QString suffix = " " + gettextFromC::tr("(%n dive(s))", "", nr);
