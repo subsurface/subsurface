@@ -85,7 +85,7 @@ void DivePlannerPointsModel::setupStartTime()
 	if (dive_table.nr) {
 		struct dive *d = get_dive(dive_table.nr - 1);
 		time_t ends = dive_endtime(d);
-		time_t diff = ends - startTime.toTime_t();
+		time_t diff = ends - dateTimeToTimestamp(startTime);
 		if (diff > 0) {
 			startTime = startTime.addSecs(diff + 3600);
 		}
@@ -700,7 +700,7 @@ void DivePlannerPointsModel::setSurfaceSegment(int duration)
 void DivePlannerPointsModel::setStartDate(const QDate &date)
 {
 	startTime.setDate(date);
-	diveplan.when = startTime.toTime_t();
+	diveplan.when = dateTimeToTimestamp(startTime);
 	displayed_dive.when = diveplan.when;
 	emitDataChanged();
 }
@@ -708,7 +708,7 @@ void DivePlannerPointsModel::setStartDate(const QDate &date)
 void DivePlannerPointsModel::setStartTime(const QTime &t)
 {
 	startTime.setTime(t);
-		diveplan.when = startTime.toTime_t();
+		diveplan.when = dateTimeToTimestamp(startTime);
 	displayed_dive.when = diveplan.when;
 	emitDataChanged();
 }

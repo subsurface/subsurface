@@ -169,7 +169,7 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 	// if we are waiting for a position update or
 	// if we have no record stored or if at least the configured minimum
 	// time has passed or we moved at least the configured minimum distance
-	int64_t delta = (int64_t)pos.timestamp().toTime_t() + gettimezoneoffset() - lastTime;
+	int64_t delta = dateTimeToTimestamp(pos.timestamp()) + gettimezoneoffset() - lastTime;
 	if (!nr || waitingForPosition || delta > prefs.time_threshold ||
 	    lastCoord.distanceTo(pos.coordinate()) > prefs.distance_threshold) {
 		QString msg = QStringLiteral("received new position %1 after delta %2 threshold %3 (now %4 last %5)");
@@ -177,7 +177,7 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 		waitingForPosition = false;
 		acquiredPosition();
 		gpsTracker gt;
-		gt.when = pos.timestamp().toTime_t();
+		gt.when = dateTimeToTimestamp(pos.timestamp());
 		gt.when += gettimezoneoffset(gt.when);
 		gt.location = create_location(pos.coordinate().latitude(), pos.coordinate().longitude());
 		addFixToStorage(gt);

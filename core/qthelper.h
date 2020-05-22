@@ -63,6 +63,7 @@ QString getPrintingTemplatePathUser();
 QString getPrintingTemplatePathBundle();
 int gettimezoneoffset(timestamp_t when = 0);
 QDateTime timestampToDateTime(timestamp_t when);
+timestamp_t dateTimeToTimestamp(const QDateTime &t);
 int parseDurationToSeconds(const QString &text);
 int parseLengthToMm(const QString &text);
 int parseTemperatureToMkelvin(const QString &text);

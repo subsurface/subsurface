@@ -908,7 +908,7 @@ parsed:
 			// add a hundred years.
 			if (newDate.addYears(100) < QDateTime::currentDateTime().addYears(1))
 				newDate = newDate.addYears(100);
-			d->dc.when = d->when = newDate.toMSecsSinceEpoch() / 1000;
+			d->dc.when = d->when = dateTimeToTimestamp(newDate);
 			return true;
 		}
 		appendTextToLog("none of our parsing attempts worked for the date string");

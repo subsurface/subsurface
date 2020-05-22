@@ -263,7 +263,7 @@ void DiveSummaryModel::calc(int column, int period)
 	if (startTime == currentTime)
 		start = 0;
 	else
-		start = startTime.toMSecsSinceEpoch() / 1000L + gettimezoneoffset();
+		start = dateTimeToTimestamp(startTime) + gettimezoneoffset();
 
 	// Loop over all dives and sum up data
 	Stats stats = loopDives(start);
