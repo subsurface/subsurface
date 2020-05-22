@@ -90,6 +90,10 @@ void PreferencesLanguage::syncSettings()
 	qPrefLanguage::set_date_format_short(ui->shortDateFormatEntry->text());
 	initUiLanguage();
 
+	// When switching to system defaults, initUiLanguage() will reset the date and time formats.
+	// Therefore, refresh the UI fields to give the user a visual feedback of the new formats.
+	refreshSettings();
+
 	QString qDateTimeWeb = tr("These will be used as is. This might not be what you intended.\nSee http://doc.qt.io/qt-5/qdatetime.html#toString");
 	QRegExp tfillegalchars("[^hHmszaApPt\\s:;\\.,]");
 	if (tfillegalchars.indexIn(ui->timeFormatEntry->currentText()) >= 0)
