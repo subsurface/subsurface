@@ -19,7 +19,7 @@
   <xsl:template match="/">
     <xsl:variable name="cylinders">
       <xsl:call-template name="countCylinders">
-        <xsl:with-param name="line" select="substring-before(substring-after(//SubsurfaceCSV, $lf), $lf)"/>
+        <xsl:with-param name="line" select="substring-before(//SubsurfaceCSV, $lf)"/>
         <xsl:with-param name="count" select="'0'"/>
         <xsl:with-param name="index" select="'10'"/>
       </xsl:call-template>
