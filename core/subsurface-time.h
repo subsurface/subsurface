@@ -11,6 +11,8 @@ extern "C" {
 
 extern timestamp_t utc_mktime(struct tm *tm);
 extern void utc_mkdate(timestamp_t, struct tm *tm);
+extern int utc_year(timestamp_t timestamp);
+extern int utc_weekday(timestamp_t timestamp);
 
 #ifdef __cplusplus
 }

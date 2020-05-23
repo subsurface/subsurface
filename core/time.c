@@ -133,3 +133,33 @@ timestamp_t utc_mktime(struct tm *tm)
 
 	return when - EPOCH_OFFSET;
 }
+
+/*
+ * Extract year from 64-bit timestamp.
+ *
+ * This looks inefficient, since it breaks down into a full
+ * struct tm. However, modern compilers are effective at throwing
+ * out unused calculations. If it turns out to be a bottle neck
+ * we will have to cache a struct tm per dive.
+ */
+int utc_year(timestamp_t timestamp)
+{
+	struct tm tm;
+	utc_mkdate(timestamp, &tm);
+	return tm.tm_year;
+}
+
+/*
+ * Extract day of week from 64-bit timestamp.
+ * Returns 0-6, whereby 0 is Sunday and 6 is Saturday.
+ *
+ * Same comment as for utc_year(): Modern compilers are good
+ * at throwing out unused calculations, so this is more efficient
+ * than it looks.
+ */
+int utc_weekday(timestamp_t timestamp)
+{
+	struct tm tm;
+	utc_mkdate(timestamp, &tm);
+	return tm.tm_wday;
+}
