@@ -558,24 +558,27 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 	bool cloudCredentialsChanged = false;
 	bool noCloud = qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NOCLOUD;
 
+	// email address MUST be lower case or bad things happen
+	QString email = newEmail.toLower();
+
 	// make sure we only have letters, numbers, and +-_. in password and email address
 	QRegularExpression regExp("^[a-zA-Z0-9@.+_-]+$");
 	if (!noCloud) {
 		// in case of NO_CLOUD, the email address + passwd do not care, so do not check it.
 		if (newPassword.isEmpty() ||
 			!regExp.match(newPassword).hasMatch() ||
-			!regExp.match(newEmail).hasMatch()) {
+			!regExp.match(email).hasMatch()) {
 			setStartPageText(RED_FONT + tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.") + END_FONT);
 			return;
 		}
 		// use the same simplistic regex as the backend to check email addresses
 		regExp = QRegularExpression("^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.+_-]+\\.[a-zA-Z0-9]+");
-		if (!regExp.match(newEmail).hasMatch()) {
+		if (!regExp.match(email).hasMatch()) {
 			setStartPageText(RED_FONT + tr("Invalid format for email address") + END_FONT);
 			return;
 		}
 	}
-	if (!same_string(prefs.cloud_storage_email, qPrintable(newEmail))) {
+	if (!same_string(prefs.cloud_storage_email, qPrintable(email))) {
 		cloudCredentialsChanged = true;
 	}
 
@@ -589,11 +592,11 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 		qPrefCloudStorage::set_cloud_verification_status(m_oldStatus);
 	}
 
-	if (!noCloud && !verifyCredentials(newEmail, newPassword, pin)) {
+	if (!noCloud && !verifyCredentials(email, newPassword, pin)) {
 		appendTextToLog("saveCloudCredentials: given cloud credentials didn't verify");
 		return;
 	}
-	qPrefCloudStorage::set_cloud_storage_email(newEmail);
+	qPrefCloudStorage::set_cloud_storage_email(email);
 	qPrefCloudStorage::set_cloud_storage_password(newPassword);
 
 	if (m_oldStatus == qPrefCloudStorage::CS_NOCLOUD && cloudCredentialsChanged && dive_table.nr) {
