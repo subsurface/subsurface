@@ -1,3 +1,4 @@
+Mobile: convert entered email to lower case
 desktop: update date and time fields on maintab if user changes preferences
 mobile: small improvements to usability with dark theme
 Core: improve service selection for BLE, adding white list and black list
