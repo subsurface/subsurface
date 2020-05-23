@@ -336,7 +336,7 @@ int parse_csv_file(const char *filename, char **params, int pnr, const char *csv
 		fprintf(stderr, "(echo '<csv>'; cat %s;echo '</csv>') | xsltproc ", filename);
 		for (i=0; params[i]; i+=2)
 			fprintf(stderr, "--stringparam %s %s ", params[i], params[i+1]);
-		fprintf(stderr, "%s/xslt/csv2xml.xslt -\n", SUBSURFACE_SOURCE);
+		fprintf(stderr, "%s/xslt/%s -\n", SUBSURFACE_SOURCE, csvtemplate);
 	}
 #endif
 	ret = parse_xml_buffer(filename, mem.buffer, mem.size, table, trips, sites, (const char **)params);
