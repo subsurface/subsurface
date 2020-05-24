@@ -142,7 +142,15 @@
           </xsl:attribute>
         </xsl:if>
 
-        <divecomputerid deviceid="ffffffff" model="csv" />
+        <divecomputer deviceid="ffffffff" model="SubsurfaceCSV">
+          <xsl:attribute name="dctype">
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="7"/>
+              <xsl:with-param name="line" select="$line"/>
+            </xsl:call-template>
+          </xsl:attribute>
+        </divecomputer>
+
 
         <depth>
           <xsl:variable name="max">
