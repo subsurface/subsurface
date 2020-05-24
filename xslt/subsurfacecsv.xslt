@@ -238,7 +238,7 @@
           <xsl:with-param name="index" select="'10'"/>
         </xsl:call-template>
 
-        <location debug="{$cylinders}">
+        <location>
           <xsl:variable name="gps">
             <xsl:call-template name="getFieldByIndex">
               <xsl:with-param name="index" select="16 + ($cylinders - 1) * 5"/>
