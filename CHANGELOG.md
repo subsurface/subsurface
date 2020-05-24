@@ -1,3 +1,6 @@
+CSV export: support for multiple cylinders
+CSV import: support for multiple cylinders for Subsurface CSV files
+CSV import: multiple bug fixes for Subsurface CSV files
 desktop: update date and time fields on maintab if user changes preferences
 mobile: small improvements to usability with dark theme
 Core: improve service selection for BLE, adding white list and black list
