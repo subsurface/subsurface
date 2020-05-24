@@ -113,14 +113,14 @@
 
         <xsl:attribute name="tags">
           <xsl:call-template name="getFieldByIndex">
-            <xsl:with-param name="index" select="22"/>
+            <xsl:with-param name="index" select="24 + ($cylinders - 1) * 5"/>
             <xsl:with-param name="line" select="$line"/>
           </xsl:call-template>
         </xsl:attribute>
 
         <xsl:variable name="rating">
           <xsl:call-template name="getFieldByIndex">
-            <xsl:with-param name="index" select="18"/>
+            <xsl:with-param name="index" select="20 + ($cylinders - 1) * 5"/>
             <xsl:with-param name="line" select="$line"/>
           </xsl:call-template>
         </xsl:variable>
@@ -132,7 +132,7 @@
 
         <xsl:variable name="visibility">
           <xsl:call-template name="getFieldByIndex">
-            <xsl:with-param name="index" select="19"/>
+            <xsl:with-param name="index" select="21 + ($cylinders - 1) * 5"/>
             <xsl:with-param name="line" select="$line"/>
           </xsl:call-template>
         </xsl:variable>
@@ -147,13 +147,13 @@
         <depth>
           <xsl:variable name="max">
             <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="4"/>
+              <xsl:with-param name="index" select="5"/>
               <xsl:with-param name="line" select="$line"/>
             </xsl:call-template>
           </xsl:variable>
           <xsl:variable name="mean">
             <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="5"/>
+              <xsl:with-param name="index" select="6"/>
               <xsl:with-param name="line" select="$line"/>
             </xsl:call-template>
           </xsl:variable>
@@ -186,13 +186,13 @@
         <divetemperature>
           <xsl:variable name="air">
             <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="6"/>
+              <xsl:with-param name="index" select="8"/>
               <xsl:with-param name="line" select="$line"/>
             </xsl:call-template>
           </xsl:variable>
           <xsl:variable name="water">
             <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="7"/>
+              <xsl:with-param name="index" select="9"/>
               <xsl:with-param name="line" select="$line"/>
             </xsl:call-template>
           </xsl:variable>
