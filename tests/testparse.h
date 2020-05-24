@@ -26,6 +26,7 @@ private slots:
 	void testParseMerge();
 
 	int parseCSVmanual(int, std::string);
+	void exportSubsurfaceCSV();
 	void exportCSVDiveDetails();
 	int parseCSVprofile(int, std::string);
 	void exportCSVDiveProfile();
