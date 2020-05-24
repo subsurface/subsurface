@@ -256,7 +256,8 @@ void TabDiveInformation::updateData()
 }
 
 // From the index of the water type combo box, set the dive->salinity to an appropriate value
-void TabDiveInformation::on_waterTypeCombo_activated(int index) {
+void TabDiveInformation::on_waterTypeCombo_activated(int index)
+{
 	Q_UNUSED(index)
 	int combobox_salinity = 0;
 	int dc_salinity = current_dc->salinity;
@@ -409,12 +410,16 @@ void TabDiveInformation::on_watertemp_editingFinished()
 		divesEdited(Command::editWaterTemp(parseTemperatureToMkelvin(ui->watertemp->text()), false));
 }
 
-void TabDiveInformation::on_atmPressType_currentIndexChanged(int index) {
+void TabDiveInformation::on_atmPressType_currentIndexChanged(int index)
+{
 	Q_UNUSED(index)
 	updateTextBox(COMBO_CHANGED);
 }
 
-void TabDiveInformation::on_atmPressVal_editingFinished() { updateTextBox(TEXT_EDITED); }
+void TabDiveInformation::on_atmPressVal_editingFinished()
+{
+	updateTextBox(TEXT_EDITED);
+}
 
 void TabDiveInformation::updateTextBox(int event) // Either the text box has been edited or the pressure type has changed.
 {                                       // Either way this gets a numeric value and puts it on the text box atmPressVal,
@@ -463,5 +468,3 @@ void TabDiveInformation::updateTextBox(int event) // Either the text box has bee
 			divesEdited(Command::editAtmPress(atmpress.mbar, false));      // and save the pressure for undo
 	}
 }
-
-
