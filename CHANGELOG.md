@@ -1,3 +1,6 @@
+CSV export: support for multiple cylinders
+CSV import: support for multiple cylinders for Subsurface CSV files
+CSV import: multiple bug fixes for Subsurface CSV files
 Mobile: convert entered email to lower case
 desktop: localize salinity string with respect to thousands separators
 desktop: update date and time fields on maintab if user changes preferences
