@@ -93,6 +93,24 @@
           </xsl:call-template>
         </xsl:attribute>
 
+        <!-- If reading of SAC is added at some point, it is already available in our own CSV import -->
+        <xsl:variable name="sac">
+          <xsl:call-template name="getFieldByIndex">
+            <xsl:with-param name="index" select="4"/>
+            <xsl:with-param name="line" select="$line"/>
+          </xsl:call-template>
+        </xsl:variable>
+        <xsl:attribute name="sac">
+          <xsl:choose>
+            <xsl:when test="$units = 1">
+              <xsl:value-of select="format-number($sac * 0.035315, '#.##')"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="$sac"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
+
         <xsl:attribute name="tags">
           <xsl:call-template name="getFieldByIndex">
             <xsl:with-param name="index" select="22"/>
