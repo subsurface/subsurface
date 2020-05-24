@@ -119,8 +119,8 @@ void TabDiveInformation::updateWaterTypeWidget()
 // Update fields that depend on the dive profile
 void TabDiveInformation::updateProfile()
 {
-	ui->maxcnsText->setText(QString("%1\%").arg(current_dive->maxcns));
-	ui->otuText->setText(QString("%1").arg(current_dive->otu));
+	ui->maxcnsText->setText(QString("%L1\%").arg(current_dive->maxcns));
+	ui->otuText->setText(QString("%L1").arg(current_dive->otu));
 	ui->maximumDepthText->setText(get_depth_string(current_dive->maxdepth, true));
 	ui->averageDepthText->setText(get_depth_string(current_dive->meandepth, true));
 
@@ -343,7 +343,7 @@ void TabDiveInformation::divesChanged(const QVector<dive *> &dives, DiveField fi
 	else
 		salinity_value = current_dive->salinity;
 	ui->waterTypeCombo->setCurrentIndex(updateSalinityComboIndex(salinity_value));
-	ui->salinityText->setText(QString("%1g/ℓ").arg(salinity_value / 10.0));
+	ui->salinityText->setText(QString("%L1g/ℓ").arg(salinity_value / 10.0));
 	// TODO: The profile should recognize itself when the dive mode changed.
 	// It seem awkward to route this via the dive-information tab.
 	if (replot)

@@ -1,3 +1,4 @@
+desktop: localize salinity string with respect to thousands separators
 desktop: update date and time fields on maintab if user changes preferences
 mobile: small improvements to usability with dark theme
 Core: improve service selection for BLE, adding white list and black list
