@@ -402,6 +402,46 @@ void TestParse::exportCSVDiveDetails()
 	clear_dive_file_data();
 }
 
+void TestParse::exportSubsurfaceCSV()
+{
+	int saved_sac = 0;
+	char *params[59];
+	int pnr = 0;
+
+	/* Test SubsurfaceCSV with multiple cylinders */
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table, &trip_table, &dive_site_table);
+
+	export_dives_xslt("testcsvexportmanual-cyl.csv", 0, 0, "xml2manualcsv.xslt", false);
+	export_dives_xslt("testcsvexportmanualimperial-cyl.csv", 0, 1, "xml2manualcsv.xslt", false);
+
+	if (dive_table.nr > 0) {
+		struct dive *dive = dive_table.dives[dive_table.nr - 1];
+		saved_sac = dive->sac;
+	}
+
+	clear_dive_file_data();
+
+	params[pnr++] = strdup("separatorIndex");
+	params[pnr++] = intdup(0);
+	params[pnr++] = strdup("units");
+	params[pnr++] = intdup(1);
+	params[pnr++] = 0;
+	parse_csv_file("testcsvexportmanualimperial-cyl.csv", params, pnr - 1, "SubsurfaceCSV", &dive_table, &trip_table, &dive_site_table);
+
+	// We do not currently support reading SAC, thus faking it
+	if (dive_table.nr > 0) {
+		struct dive *dive = dive_table.dives[dive_table.nr - 1];
+		dive->sac = saved_sac;
+	}
+
+	export_dives_xslt("testcsvexportmanual2-cyl.csv", 0, 0, "xml2manualcsv.xslt", false);
+
+	FILE_COMPARE("testcsvexportmanual2-cyl.csv",
+		     "testcsvexportmanual-cyl.csv");
+
+	clear_dive_file_data();
+}
+
 int TestParse::parseCSVprofile(int units, std::string file)
 {
 	verbose = 1;
@@ -471,6 +511,7 @@ void TestParse::exportUDDF()
 void TestParse::testExport()
 {
 	exportCSVDiveDetails();
+	exportSubsurfaceCSV();
 	exportCSVDiveProfile();
 	exportUDDF();
 }
