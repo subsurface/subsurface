@@ -86,6 +86,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	file.h
 	filterconstraint.cpp
 	filterconstraint.h
+	filterpreset.cpp
+	filterpreset.h
 	format.cpp
 	format.h
 	fulltext.cpp
