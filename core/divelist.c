@@ -7,6 +7,7 @@
 #include "device.h"
 #include "divesite.h"
 #include "dive.h"
+#include "filterpreset.h"
 #include "fulltext.h"
 #include "planner.h"
 #include "qthelper.h"
@@ -1376,6 +1377,7 @@ void clear_dive_file_data()
 	clear_dive(&displayed_dive);
 	clear_device_nodes();
 	clear_events();
+	clear_filter_presets();
 
 	reset_min_datafile_version();
 	clear_git_id();
