@@ -20,6 +20,7 @@ class FilterModelBase;
 #include "ui_urldialog.h"
 #include "ui_divecomponentselection.h"
 #include "ui_listfilter.h"
+#include "ui_addfilterpreset.h"
 #include "core/exif.h"
 #include "core/dive.h"
 
@@ -136,6 +137,18 @@ private:
 	Ui::DiveComponentSelectionDialog ui;
 	struct dive *targetDive;
 	struct dive_components *what;
+};
+
+class AddFilterPresetDialog : public QDialog {
+	Q_OBJECT
+public:
+	explicit AddFilterPresetDialog(QWidget *parent);
+	QString doit(); // returns name of filter preset or empty string if user cancelled the dialog
+private
+slots:
+	void nameChanged(const QString &text);
+private:
+	Ui::AddFilterPresetDialog ui;
 };
 
 class TextHyperlinkEventFilter : public QObject {

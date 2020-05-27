@@ -58,6 +58,46 @@
          <item row="0" column="2" colspan="3">
           <layout class="QHBoxLayout" name="titleLineLayout">
            <item alignment="Qt::AlignLeft">
+            <widget class="QToolButton" name="addConstraintButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Add constraint</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="titleLineSpacer1">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QToolButton" name="addSetButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Save set</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="titleLineSpacer2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </spacer>
+           </item>
+           <item alignment="Qt::AlignLeft">
             <widget class="QToolButton" name="clear">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -96,26 +136,6 @@
               <enum>Qt::ToolButtonTextBesideIcon</enum>
              </property>
             </widget>
-           </item>
-           <item alignment="Qt::AlignLeft">
-            <widget class="QToolButton" name="addConstraintButton">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Add constraint</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="titleLineSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </spacer>
            </item>
           </layout>
          </item>

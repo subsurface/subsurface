@@ -12,6 +12,7 @@
 #include <QClipboard>
 
 #include "core/file.h"
+#include "core/filterpreset.h"
 #include "core/divesite.h"
 #include "desktop-widgets/mainwindow.h"
 #include "core/qthelper.h"
@@ -476,6 +477,31 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 		}
 		clipboard->setText(cliptext);
 	}
+}
+
+AddFilterPresetDialog::AddFilterPresetDialog(QWidget *parent)
+{
+	ui.setupUi(this);
+	connect(ui.name, &QLineEdit::textChanged, this, &AddFilterPresetDialog::nameChanged);
+	connect(ui.buttonBox, &QDialogButtonBox::accepted, this, &AddFilterPresetDialog::accept);
+	connect(ui.buttonBox, &QDialogButtonBox::rejected, this, &AddFilterPresetDialog::reject);
+	nameChanged(ui.name->text());
+}
+
+void AddFilterPresetDialog::nameChanged(const QString &text)
+{
+	QString trimmed = text.trimmed();
+	bool isEmpty = trimmed.isEmpty();
+	bool exists = !isEmpty && filter_preset_id(trimmed) >= 0;
+	ui.duplicateWarning->setVisible(exists);
+	ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!isEmpty);
+}
+
+QString AddFilterPresetDialog::doit()
+{
+	if (exec() == QDialog::Accepted)
+		return ui.name->text().trimmed();
+	return QString();
 }
 
 TextHyperlinkEventFilter::TextHyperlinkEventFilter(QTextEdit *txtEdit) : QObject(txtEdit),
