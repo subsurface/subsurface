@@ -50,14 +50,12 @@ public:
 class RenumberDialog : public QDialog {
 	Q_OBJECT
 public:
-	static RenumberDialog *instance();
-	void renumberOnlySelected(bool selected = true);
+	explicit RenumberDialog(bool selectedOnly, QWidget *parent);
 private
 slots:
 	void buttonClicked(QAbstractButton *button);
 
 private:
-	explicit RenumberDialog(QWidget *parent);
 	Ui::RenumberDialog ui;
 	bool selectedOnly;
 };
