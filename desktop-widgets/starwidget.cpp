@@ -36,7 +36,6 @@ QImage focusedImage(const QImage& coloredImg)
 	return img;
 }
 
-
 int StarWidget::currentStars() const
 {
 	return current;
@@ -91,6 +90,24 @@ void StarWidget::setCurrentStars(int value)
 	emit valueChanged(current);
 }
 
+static QImage grayImage(const QImage &coloredImg)
+{
+	QImage img = coloredImg;
+	for (int i = 0; i < img.width(); ++i) {
+		for (int j = 0; j < img.height(); ++j) {
+			QRgb rgb = img.pixel(i, j);
+			if (!rgb)
+				continue;
+
+			QColor c(rgb);
+			int gray = 204 + (c.red() + c.green() + c.blue()) / 15;
+			img.setPixel(i, j, qRgb(gray, gray, gray));
+		}
+	}
+
+	return img;
+}
+
 StarWidget::StarWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f),
 	current(0),
 	readOnly(false)
@@ -111,24 +128,6 @@ StarWidget::StarWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f),
 		inactiveStar = grayImage(activeStar);
 	}
 	setFocusPolicy(Qt::StrongFocus);
-}
-
-QImage grayImage(const QImage& coloredImg)
-{
-	QImage img = coloredImg;
-	for (int i = 0; i < img.width(); ++i) {
-		for (int j = 0; j < img.height(); ++j) {
-			QRgb rgb = img.pixel(i, j);
-			if (!rgb)
-				continue;
-
-			QColor c(rgb);
-			int gray = 204 + (c.red() + c.green() + c.blue()) / 15;
-			img.setPixel(i, j, qRgb(gray, gray, gray));
-		}
-	}
-
-	return img;
 }
 
 QSize StarWidget::sizeHint() const
