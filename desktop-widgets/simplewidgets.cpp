@@ -124,27 +124,6 @@ void MinMaxAvgWidget::setAvgVisibility(bool visible)
 	avgValue->setVisible(visible);
 }
 
-RenumberDialog *RenumberDialog::instance()
-{
-	static RenumberDialog *self = new RenumberDialog(MainWindow::instance());
-	return self;
-}
-
-void RenumberDialog::renumberOnlySelected(bool selected)
-{
-	if (selected && amount_selected == 1)
-		ui.renumberText->setText(tr("New number"));
-	else
-		ui.renumberText->setText(tr("New starting number"));
-
-	if (selected)
-		ui.groupBox->setTitle(tr("Renumber selected dives"));
-	else
-		ui.groupBox->setTitle(tr("Renumber all dives"));
-
-	selectedOnly = selected;
-}
-
 void RenumberDialog::buttonClicked(QAbstractButton *button)
 {
 	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
@@ -163,7 +142,7 @@ void RenumberDialog::buttonClicked(QAbstractButton *button)
 	}
 }
 
-RenumberDialog::RenumberDialog(QWidget *parent) : QDialog(parent), selectedOnly(false)
+RenumberDialog::RenumberDialog(bool selectedOnlyIn, QWidget *parent) : QDialog(parent), selectedOnly(selectedOnlyIn)
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
@@ -171,6 +150,16 @@ RenumberDialog::RenumberDialog(QWidget *parent) : QDialog(parent), selectedOnly(
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
+
+	if (selectedOnly && amount_selected == 1)
+		ui.renumberText->setText(tr("New number"));
+	else
+		ui.renumberText->setText(tr("New starting number"));
+
+	if (selectedOnly)
+		ui.groupBox->setTitle(tr("Renumber selected dives"));
+	else
+		ui.groupBox->setTitle(tr("Renumber all dives"));
 }
 
 void SetpointDialog::buttonClicked(QAbstractButton *button)

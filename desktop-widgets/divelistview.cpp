@@ -647,8 +647,8 @@ void DiveListView::splitDives()
 
 void DiveListView::renumberDives()
 {
-	RenumberDialog::instance()->renumberOnlySelected();
-	RenumberDialog::instance()->show();
+	RenumberDialog dialog(true, MainWindow::instance());
+	dialog.exec();
 }
 
 void DiveListView::merge_trip(const QModelIndex &a, int offset)
