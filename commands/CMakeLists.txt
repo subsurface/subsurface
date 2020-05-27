@@ -16,6 +16,8 @@ set(SUBSURFACE_GENERIC_COMMANDS_SRCS
 	command_edit_trip.h
 	command_event.cpp
 	command_event.h
+	command_filter.cpp
+	command_filter.h
 	command_pictures.cpp
 	command_pictures.h
 )

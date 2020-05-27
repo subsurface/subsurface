@@ -125,6 +125,11 @@ signals:
 	void picturesRemoved(dive *d, QVector<QString> filenames);
 	void picturesAdded(dive *d, QVector<PictureObj> pics);
 
+	// Filter related signals
+	void filterPresetAdded(int index);
+	void filterPresetRemoved(int index);
+	void filterPresetChanged(int index);
+
 	// This signal is emited every time a command is executed.
 	// This is used to hide an old multi-dives-edited warning message.
 	// This is necessary, so that the user can't click on the "undo" button and undo
