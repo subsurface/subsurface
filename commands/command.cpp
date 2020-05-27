@@ -6,6 +6,7 @@
 #include "command_edit.h"
 #include "command_edit_trip.h"
 #include "command_event.h"
+#include "command_filter.h"
 #include "command_pictures.h"
 
 namespace Command {
@@ -375,6 +376,21 @@ void removePictures(const std::vector<PictureListForDeletion> &pictures)
 void addPictures(const std::vector<PictureListForAddition> &pictures)
 {
 	execute(new AddPictures(pictures));
+}
+
+void createFilterPreset(const QString &name, const FilterData &data)
+{
+	execute(new CreateFilterPreset(name, data));
+}
+
+void removeFilterPreset(int index)
+{
+	execute(new RemoveFilterPreset(index));
+}
+
+void editFilterPreset(int index, const FilterData &data)
+{
+	execute(new EditFilterPreset(index, data));
 }
 
 } // namespace Command

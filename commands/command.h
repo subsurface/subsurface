@@ -9,6 +9,7 @@
 #include <vector>
 
 struct DiveAndLocation;
+struct FilterData;
 
 // We put everything in a namespace, so that we can shorten names without polluting the global namespace
 namespace Command {
@@ -132,6 +133,12 @@ struct PictureListForAddition {
 void setPictureOffset(dive *d, const QString &filename, offset_t offset);
 void removePictures(const std::vector<PictureListForDeletion> &pictures);
 void addPictures(const std::vector<PictureListForAddition> &pictures);
+
+// 8) Filter commands
+
+void createFilterPreset(const QString &name, const FilterData &data);
+void removeFilterPreset(int index);
+void editFilterPreset(int index, const FilterData &data);
 
 } // namespace Command
 
