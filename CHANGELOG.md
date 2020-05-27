@@ -1,3 +1,4 @@
+Mobile: fix missing translations on Android
 CSV export: support for multiple cylinders
 CSV import: support for multiple cylinders for Subsurface CSV files
 CSV import: multiple bug fixes for Subsurface CSV files

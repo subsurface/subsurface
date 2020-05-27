@@ -413,8 +413,8 @@ fi
 
 # now make the translations
 make translations
-mkdir -p assets/translations
-cp -a translations/*.qm assets/translations
+mkdir -p subsurface-mobile-"$ANDROID_ABI"/assets/translations
+cp -a translations/*.qm subsurface-mobile-"$ANDROID_ABI"/assets/translations
 
 # now build Subsurface and use the rest of the command line arguments
 make "$@"
