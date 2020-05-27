@@ -16,6 +16,9 @@ public:
 private
 slots:
 	void reset();
+	void filterPresetAdded(int index);
+	void filterPresetChanged(int index);
+	void filterPresetRemoved(int index);
 public:
 	// there is one global filter preset list, therefore this model is a singleton
 	static FilterPresetModel *instance();
