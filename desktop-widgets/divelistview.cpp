@@ -860,7 +860,8 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 
 void DiveListView::shiftTimes()
 {
-	ShiftTimesDialog::instance()->show();
+	ShiftTimesDialog dialog(MainWindow::instance());
+	dialog.exec();
 }
 
 void DiveListView::loadImages()

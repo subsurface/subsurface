@@ -179,12 +179,6 @@ SetpointDialog::SetpointDialog(struct dive *dIn, int dcNrIn, int seconds) : QDia
 	connect(quit, &QShortcut::activated, MainWindow::instance(), &QWidget::close);
 }
 
-ShiftTimesDialog *ShiftTimesDialog::instance()
-{
-	static ShiftTimesDialog *self = new ShiftTimesDialog(MainWindow::instance());
-	return self;
-}
-
 void ShiftTimesDialog::buttonClicked(QAbstractButton *button)
 {
 	int amount;
@@ -196,10 +190,7 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton *button)
 		if (amount != 0)
 			Command::shiftTime(getDiveSelection(), amount);
 	}
-}
 
-void ShiftTimesDialog::showEvent(QShowEvent*)
-{
 	ui.timeEdit->setTime(QTime(0, 0, 0, 0));
 	when = get_times(); //get time of first selected dive
 	ui.currentTime->setText(get_dive_date_string(when));
