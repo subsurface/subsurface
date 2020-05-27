@@ -124,8 +124,6 @@ private:
 	Ui::URLDialog ui;
 };
 
-class QCalendarWidget;
-
 class DiveComponentSelection : public QDialog {
 	Q_OBJECT
 public:
