@@ -2,9 +2,11 @@
 #include "desktop-widgets/filterconstraintwidget.h"
 #include "desktop-widgets/simplewidgets.h"
 #include "desktop-widgets/mainwindow.h"
+#include "commands/command.h"
 #include "core/qthelper.h"
 #include "core/divelist.h"
 #include "core/settings/qPrefUnit.h"
+#include "core/filterpreset.h"
 
 #include <QDoubleSpinBox>
 
@@ -100,17 +102,36 @@ void FilterWidget2::closeFilter()
 	MainWindow::instance()->setApplicationState(ApplicationState::Default);
 }
 
+FilterData FilterWidget2::createFilterData() const
+{
+	FilterData filterData;
+	filterData.fulltextStringMode = (StringFilterMode)ui.fulltextStringMode->currentIndex();
+	filterData.fullText = ui.fullText->text();
+	filterData.constraints = constraintModel.getConstraints();
+	return filterData;
+}
+
 void FilterWidget2::updateFilter()
 {
 	if (ignoreSignal)
 		return;
 
-	FilterData filterData;
-	filterData.fulltextStringMode = (StringFilterMode)ui.fulltextStringMode->currentIndex();
-	filterData.fullText = ui.fullText->text();
-	filterData.constraints = constraintModel.getConstraints();
+	FilterData filterData = createFilterData();
 	validFilter = filterData.validFilter();
 	DiveFilter::instance()->setFilter(filterData);
+}
+
+void FilterWidget2::on_addSetButton_clicked()
+{
+	AddFilterPresetDialog dialog(this);
+	QString name = dialog.doit();
+	if (name.isEmpty())
+		return;
+	int idx = filter_preset_id(name);
+	if (idx >= 0)
+		Command::editFilterPreset(idx, createFilterData());
+	else
+		Command::createFilterPreset(name, createFilterData());
 }
 
 void FilterWidget2::showEvent(QShowEvent *event)

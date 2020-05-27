@@ -16,6 +16,7 @@ add_subdirectory(preferences)
 
 set (SUBSURFACE_UI
 	about.ui
+	addfilterpreset.ui
 	btdeviceselectiondialog.ui
 	configuredivecomputerdialog.ui
 	divecomponentselection.ui

@@ -33,6 +33,7 @@ private slots:
 	void constraintRemoved(const QModelIndex &parent, int first, int last);
 	void constraintChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles);
 	void constraintsReset();
+	void on_addSetButton_clicked();
 
 private:
 	bool ignoreSignal;
@@ -41,6 +42,7 @@ private:
 	bool validFilter;
 	void addConstraint(filter_constraint_type type);
 	std::vector<std::unique_ptr<FilterConstraintWidget>> constraintWidgets;
+	FilterData createFilterData() const;
 };
 
 #endif
