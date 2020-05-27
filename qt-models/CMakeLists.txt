@@ -21,6 +21,8 @@ set(SUBSURFACE_GENERIC_MODELS_LIB_SRCS
 	divetripmodel.h
 	filterconstraintmodel.cpp
 	filterconstraintmodel.h
+	filterpresetmodel.cpp
+	filterpresetmodel.h
 	maplocationmodel.cpp
 	maplocationmodel.h
 	models.cpp
