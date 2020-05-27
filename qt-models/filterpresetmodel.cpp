@@ -9,6 +9,9 @@ FilterPresetModel::FilterPresetModel()
 {
 	setHeaderDataStrings(QStringList{ "", tr("Name") });
 	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &FilterPresetModel::reset);
+	connect(&diveListNotifier, &DiveListNotifier::filterPresetAdded, this, &FilterPresetModel::filterPresetAdded);
+	connect(&diveListNotifier, &DiveListNotifier::filterPresetRemoved, this, &FilterPresetModel::filterPresetRemoved);
+	connect(&diveListNotifier, &DiveListNotifier::filterPresetChanged, this, &FilterPresetModel::filterPresetChanged);
 }
 
 FilterPresetModel::~FilterPresetModel()
@@ -56,4 +59,22 @@ void FilterPresetModel::reset()
 {
 	beginResetModel();
 	endResetModel();
+}
+
+void FilterPresetModel::filterPresetAdded(int index)
+{
+	beginInsertRows(QModelIndex(), index, index);
+	endInsertRows();
+}
+
+void FilterPresetModel::filterPresetChanged(int i)
+{
+	QModelIndex idx = index(i, 0);
+	dataChanged(idx, idx);
+}
+
+void FilterPresetModel::filterPresetRemoved(int index)
+{
+	beginRemoveRows(QModelIndex(), index, index);
+	endRemoveRows();
 }
