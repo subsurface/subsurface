@@ -5,7 +5,6 @@
 #include <QProcess>
 #include <QFileDialog>
 #include <QShortcut>
-#include <QCalendarWidget>
 #include <QKeyEvent>
 #include <QAction>
 #include <QDesktopServices>
