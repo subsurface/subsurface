@@ -19,200 +19,213 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0">
-    <widget class="QScrollArea" name="scrollArea">
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
+  <layout class="QVBoxLayout" name="gridLayout_2">
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
-     </property>
-     <property name="widgetResizable">
-      <bool>true</bool>
-     </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>486</width>
-        <height>487</height>
-       </rect>
+     <widget class="QScrollArea" name="scrollArea">
+      <attribute name="title">
+       <string>Filter</string>
+      </attribute>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <layout class="QGridLayout" name="constraintTable">
-         <item row="0" column="0" colspan="2">
-          <widget class="QLabel" name="title">
-           <property name="font">
-            <font>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Filter</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2" colspan="3">
-          <layout class="QHBoxLayout" name="titleLineLayout">
-           <item alignment="Qt::AlignLeft">
-            <widget class="QToolButton" name="addConstraintButton">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Add constraint</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="titleLineSpacer1">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QToolButton" name="addSetButton">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Save set</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QToolButton" name="loadSetButton">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Load set</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="titleLineSpacer2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </spacer>
-           </item>
-           <item alignment="Qt::AlignLeft">
-            <widget class="QToolButton" name="clear">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Reset</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>:edit-clear-icon</normaloff>:edit-clear-icon</iconset>
-             </property>
-             <property name="toolButtonStyle">
-              <enum>Qt::ToolButtonTextBesideIcon</enum>
-             </property>
-            </widget>
-           </item>
-           <item alignment="Qt::AlignLeft">
-            <widget class="QToolButton" name="close">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Close</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>:filter-close</normaloff>:filter-close</iconset>
-             </property>
-             <property name="toolButtonStyle">
-              <enum>Qt::ToolButtonTextBesideIcon</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="0" colspan="2" alignment="Qt::AlignLeft">
-          <widget class="QLabel" name="fullTextLabel">
-           <property name="text">
-            <string>Fulltext</string>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2" colspan="3" alignment="Qt::AlignLeft">
-          <layout class="QHBoxLayout" name="fulltextLayout">
-           <item>
-            <widget class="QComboBox" name="fulltextStringMode">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <item>
-              <property name="text">
-               <string>Substring</string>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>486</width>
+         <height>487</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <layout class="QGridLayout" name="constraintTable">
+          <item row="0" column="0" colspan="2">
+           <widget class="QLabel" name="title">
+            <property name="font">
+             <font>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Filter</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2" colspan="3">
+           <layout class="QHBoxLayout" name="titleLineLayout">
+            <item alignment="Qt::AlignLeft">
+             <widget class="QToolButton" name="addConstraintButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
-             </item>
-             <item>
               <property name="text">
-               <string>Starts with</string>
+               <string>Add constraint</string>
               </property>
-             </item>
-             <item>
+             </widget>
+            </item>
+            <item>
+             <spacer name="titleLineSpacer1">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QToolButton" name="addSetButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="text">
-               <string>Full word</string>
+               <string>Save set</string>
               </property>
-             </item>
-            </widget>
-           </item>
-           <item row="1" column="2" colspan="3">
-            <widget class="QLineEdit" name="fullText"/>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="loadSetButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Load set</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="titleLineSpacer2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </spacer>
+            </item>
+            <item alignment="Qt::AlignLeft">
+             <widget class="QToolButton" name="clear">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Reset</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>:edit-clear-icon</normaloff>:edit-clear-icon</iconset>
+              </property>
+              <property name="toolButtonStyle">
+               <enum>Qt::ToolButtonTextBesideIcon</enum>
+              </property>
+             </widget>
+            </item>
+            <item alignment="Qt::AlignLeft">
+             <widget class="QToolButton" name="close">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Close</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>:filter-close</normaloff>:filter-close</iconset>
+              </property>
+              <property name="toolButtonStyle">
+               <enum>Qt::ToolButtonTextBesideIcon</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0" colspan="2" alignment="Qt::AlignLeft">
+           <widget class="QLabel" name="fullTextLabel">
+            <property name="text">
+             <string>Fulltext</string>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2" colspan="3" alignment="Qt::AlignLeft">
+           <layout class="QHBoxLayout" name="fulltextLayout">
+            <item>
+             <widget class="QComboBox" name="fulltextStringMode">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <item>
+               <property name="text">
+                <string>Substring</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Starts with</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Full word</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="1" column="2" colspan="3">
+             <widget class="QLineEdit" name="fullText"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QTableView" name="presetTable">
+      <attribute name="title">
+       <string>Filter sets</string>
+      </attribute>
      </widget>
     </widget>
    </item>

@@ -27,10 +27,16 @@ FilterWidget2::FilterWidget2(QWidget* parent) :
 
 	ui.loadSetButton->setPopupMode(QToolButton::InstantPopup);
 
+	ui.presetTable->setModel(FilterPresetModel::instance());
+	ui.presetTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+	ui.presetTable->setSelectionMode(QAbstractItemView::SingleSelection);
+
 	connect(ui.clear, &QToolButton::clicked, this, &FilterWidget2::clearFilter);
 	connect(ui.close, &QToolButton::clicked, this, &FilterWidget2::closeFilter);
 	connect(ui.fullText, &QLineEdit::textChanged, this, &FilterWidget2::updateFilter);
 	connect(ui.fulltextStringMode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FilterWidget2::updateFilter);
+	connect(ui.presetTable, &QTableView::clicked, this, &FilterWidget2::presetClicked);
+	connect(ui.presetTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &FilterWidget2::presetSelected);
 
 	connect(&constraintModel, &FilterConstraintModel::rowsInserted, this, &FilterWidget2::constraintAdded);
 	connect(&constraintModel, &FilterConstraintModel::rowsRemoved, this, &FilterWidget2::constraintRemoved);
@@ -65,11 +71,20 @@ void FilterWidget2::updatePresetMenu()
 	}
 	ui.loadSetButton->setEnabled(true);
 	for (int i = 0; i < count; ++i) {
-		QModelIndex idx = model->index(i, 0);
+		QModelIndex idx = model->index(i, FilterPresetModel::NAME);
 		QString name = model->data(idx, Qt::DisplayRole).value<QString>();
-		loadFilterPresetMenu->addAction(name, [this,i]() { loadPreset(i); });
+		loadFilterPresetMenu->addAction(name, [this,i,model]() { selectPreset(i); });
 	}
 	ui.loadSetButton->setMenu(loadFilterPresetMenu.get());
+}
+
+void FilterWidget2::selectPreset(int i)
+{
+	QAbstractItemModel *model = FilterPresetModel::instance();
+	QItemSelectionModel *selectionModel = ui.presetTable->selectionModel();
+	QModelIndex idx = model->index(i, 0);
+	selectionModel->reset();
+	selectionModel->select(idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
 }
 
 void FilterWidget2::loadPreset(int index)
@@ -103,6 +118,25 @@ void FilterWidget2::constraintRemoved(const QModelIndex &parent, int first, int 
 	updateFilter();
 }
 
+void FilterWidget2::presetClicked(const QModelIndex &index)
+{
+	if (!index.isValid())
+		return;
+
+	if (index.column() == FilterPresetModel::REMOVE)
+		Command::removeFilterPreset(index.row());
+}
+
+void FilterWidget2::presetSelected(const QItemSelection &selected, const QItemSelection &)
+{
+	if (selected.indexes().isEmpty())
+		return clearFilter();
+	const QModelIndex index = selected.indexes()[0];
+	if (!index.isValid())
+		return clearFilter();
+	loadPreset(index.row());
+}
+
 void FilterWidget2::constraintChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles)
 {
 	// Note: this may appear strange, but we don't update the widget if we get
@@ -126,6 +160,7 @@ void FilterWidget2::constraintsReset()
 void FilterWidget2::clearFilter()
 {
 	ignoreSignal = true; // Prevent signals to force filter recalculation (TODO: check if necessary)
+	ui.presetTable->selectionModel()->reset(); // Note: we use reset(), because that doesn't emit signals.
 	ui.fulltextStringMode->setCurrentIndex((int)StringFilterMode::STARTSWITH);
 	ui.fullText->clear();
 	ignoreSignal = false;
