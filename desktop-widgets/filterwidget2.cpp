@@ -6,9 +6,7 @@
 #include "core/qthelper.h"
 #include "core/divelist.h"
 #include "core/settings/qPrefUnit.h"
-#include "core/filterpreset.h"
-
-#include <QDoubleSpinBox>
+#include "qt-models/filterpresetmodel.h"
 
 FilterWidget2::FilterWidget2(QWidget* parent) :
 	QWidget(parent),
@@ -27,6 +25,8 @@ FilterWidget2::FilterWidget2(QWidget* parent) :
 	ui.addConstraintButton->setPopupMode(QToolButton::InstantPopup);
 	ui.constraintTable->setColumnStretch(4, 1); // The fifth column is were the actual constraint resides - stretch that.
 
+	ui.loadSetButton->setPopupMode(QToolButton::InstantPopup);
+
 	connect(ui.clear, &QToolButton::clicked, this, &FilterWidget2::clearFilter);
 	connect(ui.close, &QToolButton::clicked, this, &FilterWidget2::closeFilter);
 	connect(ui.fullText, &QLineEdit::textChanged, this, &FilterWidget2::updateFilter);
@@ -37,11 +37,46 @@ FilterWidget2::FilterWidget2(QWidget* parent) :
 	connect(&constraintModel, &FilterConstraintModel::dataChanged, this, &FilterWidget2::constraintChanged);
 	connect(&constraintModel, &FilterConstraintModel::modelReset, this, &FilterWidget2::constraintsReset);
 
+	// QDataWidgetMapper might be the more civilized way to keep the menus up to data.
+	// For now, let's be blunt and fully reload the context menu if the presets list changes.
+	// This gives us more flexibility in populating the menus.
+	QAbstractItemModel *presetModel = FilterPresetModel::instance();
+	connect(presetModel, &QAbstractItemModel::rowsInserted, this, &FilterWidget2::updatePresetMenu);
+	connect(presetModel, &QAbstractItemModel::rowsRemoved, this, &FilterWidget2::updatePresetMenu);
+	connect(presetModel, &QAbstractItemModel::dataChanged, this, &FilterWidget2::updatePresetMenu);
+	connect(presetModel, &QAbstractItemModel::modelReset, this, &FilterWidget2::updatePresetMenu);
+
 	clearFilter();
+	updatePresetMenu();
 }
 
 FilterWidget2::~FilterWidget2()
 {
+}
+
+void FilterWidget2::updatePresetMenu()
+{
+	loadFilterPresetMenu.reset(new QMenu);
+	QAbstractItemModel *model = FilterPresetModel::instance();
+	int count = model->rowCount(QModelIndex());
+	if (count == 0) {
+		ui.loadSetButton->setEnabled(false);
+		return;
+	}
+	ui.loadSetButton->setEnabled(true);
+	for (int i = 0; i < count; ++i) {
+		QModelIndex idx = model->index(i, 0);
+		QString name = model->data(idx, Qt::DisplayRole).value<QString>();
+		loadFilterPresetMenu->addAction(name, [this,i]() { loadPreset(i); });
+	}
+	ui.loadSetButton->setMenu(loadFilterPresetMenu.get());
+}
+
+void FilterWidget2::loadPreset(int index)
+{
+	FilterData filter = filter_preset_get(index);
+	setFilterData(filter);
+	updateFilter();
 }
 
 void FilterWidget2::constraintAdded(const QModelIndex &parent, int first, int last)
@@ -109,6 +144,13 @@ FilterData FilterWidget2::createFilterData() const
 	filterData.fullText = ui.fullText->text();
 	filterData.constraints = constraintModel.getConstraints();
 	return filterData;
+}
+
+void FilterWidget2::setFilterData(const FilterData &filterData)
+{
+	ui.fulltextStringMode->setCurrentIndex((int)filterData.fulltextStringMode);
+	ui.fullText->setText(filterData.fullText.originalQuery);
+	constraintModel.reload(filterData.constraints);
 }
 
 void FilterWidget2::updateFilter()
