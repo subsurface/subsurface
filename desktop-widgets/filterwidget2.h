@@ -35,6 +35,8 @@ private slots:
 	void constraintChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles);
 	void constraintsReset();
 	void updatePresetMenu();
+	void presetClicked(const QModelIndex &index);
+	void presetSelected(const QItemSelection &selected, const QItemSelection &);
 	void on_addSetButton_clicked();
 
 private:
@@ -47,6 +49,8 @@ private:
 	FilterData createFilterData() const;
 	void setFilterData(const FilterData &filterData);
 	void loadPreset(int index);
+	void selectPreset(int i);
+	void clearFilterData();
 	std::unique_ptr<QMenu> loadFilterPresetMenu;
 };
 
