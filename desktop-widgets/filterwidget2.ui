@@ -91,6 +91,19 @@
             </widget>
            </item>
            <item>
+            <widget class="QToolButton" name="loadSetButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Load set</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <spacer name="titleLineSpacer2">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>

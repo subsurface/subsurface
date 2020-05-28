@@ -12,6 +12,7 @@
 #include "qt-models/filterconstraintmodel.h"
 
 class FilterConstraintWidget;
+class QMenu;
 
 class FilterWidget2 : public QWidget {
 	Q_OBJECT
@@ -33,6 +34,7 @@ private slots:
 	void constraintRemoved(const QModelIndex &parent, int first, int last);
 	void constraintChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles);
 	void constraintsReset();
+	void updatePresetMenu();
 	void on_addSetButton_clicked();
 
 private:
@@ -43,6 +45,9 @@ private:
 	void addConstraint(filter_constraint_type type);
 	std::vector<std::unique_ptr<FilterConstraintWidget>> constraintWidgets;
 	FilterData createFilterData() const;
+	void setFilterData(const FilterData &filterData);
+	void loadPreset(int index);
+	std::unique_ptr<QMenu> loadFilterPresetMenu;
 };
 
 #endif
