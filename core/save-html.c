@@ -17,7 +17,7 @@
 #include "trip.h"
 #include <stdio.h>
 
-void write_attribute(struct membuffer *b, const char *att_name, const char *value, const char *separator)
+static void write_attribute(struct membuffer *b, const char *att_name, const char *value, const char *separator)
 {
 	if (!value)
 		value = "--";
@@ -26,7 +26,7 @@ void write_attribute(struct membuffer *b, const char *att_name, const char *valu
 	put_format(b, "\"%s", separator);
 }
 
-void save_photos(struct membuffer *b, const char *photos_dir, struct dive *dive)
+static void save_photos(struct membuffer *b, const char *photos_dir, struct dive *dive)
 {
 	if (dive->pictures.nr <= 0)
 		return;
@@ -45,7 +45,7 @@ void save_photos(struct membuffer *b, const char *photos_dir, struct dive *dive)
 	put_string(b, "],");
 }
 
-void write_divecomputers(struct membuffer *b, struct dive *dive)
+static void write_divecomputers(struct membuffer *b, struct dive *dive)
 {
 	put_string(b, "\"divecomputers\":[");
 	struct divecomputer *dc;
@@ -68,14 +68,14 @@ void write_divecomputers(struct membuffer *b, struct dive *dive)
 	put_string(b, "],");
 }
 
-void write_dive_status(struct membuffer *b, struct dive *dive)
+static void write_dive_status(struct membuffer *b, struct dive *dive)
 {
 	put_format(b, "\"sac\":\"%d\",", dive->sac);
 	put_format(b, "\"otu\":\"%d\",", dive->otu);
 	put_format(b, "\"cns\":\"%d\",", dive->cns);
 }
 
-void put_HTML_bookmarks(struct membuffer *b, struct dive *dive)
+static void put_HTML_bookmarks(struct membuffer *b, struct dive *dive)
 {
 	struct event *ev = dive->dc.events;
 
@@ -172,7 +172,7 @@ static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 }
 
 
-void put_HTML_samples(struct membuffer *b, struct dive *dive)
+static void put_HTML_samples(struct membuffer *b, struct dive *dive)
 {
 	int i;
 	put_format(b, "\"maxdepth\":%d,", dive->dc.maxdepth.mm);
@@ -191,7 +191,7 @@ void put_HTML_samples(struct membuffer *b, struct dive *dive)
 	put_string(b, "],");
 }
 
-void put_HTML_coordinates(struct membuffer *b, struct dive *dive)
+static void put_HTML_coordinates(struct membuffer *b, struct dive *dive)
 {
 	struct dive_site *ds = get_dive_site_for_dive(dive);
 	if (!ds)
@@ -323,7 +323,7 @@ void put_HTML_watertemp(struct membuffer *b, struct dive *dive, const char *pre,
 	put_format(b, "%s%.1f %s%s", pre, value, unit, post);
 }
 
-void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
+static void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
 {
 	put_string(b, pre);
 	struct tag_entry *tag = dive->tag_list;
@@ -344,7 +344,7 @@ void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pre, cons
 }
 
 /* if exporting list_only mode, we neglect exporting the samples, bookmarks and cylinders */
-void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_dir, int *dive_no, bool list_only)
+static void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_dir, int *dive_no, bool list_only)
 {
 	put_string(b, "{");
 	put_format(b, "\"number\":%d,", *dive_no);
@@ -384,7 +384,7 @@ void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_d
 	(*dive_no)++;
 }
 
-void write_no_trip(struct membuffer *b, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only, char *sep)
+static void write_no_trip(struct membuffer *b, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only, char *sep)
 {
 	int i;
 	struct dive *dive;
@@ -411,7 +411,7 @@ void write_no_trip(struct membuffer *b, int *dive_no, bool selected_only, const 
 		put_format(b, "]}\n\n");
 }
 
-void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only, char *sep)
+static void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only, char *sep)
 {
 	struct dive *dive;
 	char *separator = "";
@@ -440,7 +440,7 @@ void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, bool selec
 		put_format(b, "]}\n\n");
 }
 
-void write_trips(struct membuffer *b, const char *photos_dir, bool selected_only, const bool list_only)
+static void write_trips(struct membuffer *b, const char *photos_dir, bool selected_only, const bool list_only)
 {
 	int i, dive_no = 0;
 	struct dive *dive;
