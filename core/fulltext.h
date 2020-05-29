@@ -45,6 +45,7 @@ enum class StringFilterMode {
 // A fulltext query. Basically a list of normalized words we search for
 struct FullTextQuery {
 	std::vector<QString> words;
+	QString originalQuery; // Remember original query, which will be written to the log
 	FullTextQuery &operator=(const QString &); // Initialize by assigning a user-provided search string
 	bool doit() const; // true if we should to a fulltext search
 };

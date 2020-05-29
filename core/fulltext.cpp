@@ -278,6 +278,7 @@ FullTextResult FullText::find(const FullTextQuery &q, StringFilterMode mode) con
 
 FullTextQuery &FullTextQuery::operator=(const QString &s)
 {
+	originalQuery = s;
 	words.clear();
 	tokenize(s, words);
 	return *this;
