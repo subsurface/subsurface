@@ -8,8 +8,8 @@ ARG mxe_sha=master
 ENV _ver=${mxe_sha}
 
 # update and set up the packages we need for this cross build
-RUN apt-get update  &&  apt-get upgrade -y
-RUN apt-get install -y \
+RUN apt-get update  &&  apt-get upgrade -y && \
+apt-get install -y \
     autoconf \
     automake \
     autopoint \
@@ -17,6 +17,7 @@ RUN apt-get install -y \
     binutils \
     bison \
     bzip2 \
+    ca-certificates \
     flex \
     g++ \
     g++-multilib \
@@ -28,6 +29,7 @@ RUN apt-get install -y \
     libgdk-pixbuf2.0-dev \
     libltdl-dev \
     libssl-dev \
+    libtool \
     libtool-bin \
     libxml-parser-perl \
     make \
@@ -51,6 +53,10 @@ ADD settings-stage1.mk /win/settings.mk
 RUN cd /win ; git clone git://github.com/mxe/mxe ; \
     cd mxe ; \
     git checkout ${_ver} ;
+# Patch the qtconnectivity build to explicilty enable native-win32-bluetooth and ensure another
+# backend is not picked
+ADD qtconnectivity-1.patch /win/qtconnectivity-1.patch
+RUN mv /win/qtconnectivity-1.patch /win/mxe/src
 RUN mv /win/settings.mk /win/mxe
 RUN cd /win/mxe ; \
     make -j 6 2>&1 | tee build.log ;

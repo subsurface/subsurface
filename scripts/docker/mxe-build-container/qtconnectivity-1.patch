@@ -1,0 +1,12 @@
+diff --git a/src/bluetooth/configure.json b/src/bluetooth/configure.json
+index 3bd95903..0d41d88f 100644
+--- a/src/bluetooth/configure.json
++++ b/src/bluetooth/configure.json
+@@ -63,6 +63,7 @@
+             "purpose": "Uses the native Win32 Bluetooth backend.",
+             "section": "Qt Bluetooth",
+             "autoDetect": false,
++            "enable": true,
+             "output": [ "publicFeature", "feature" ]
+         },
+         "winrt_bt": {

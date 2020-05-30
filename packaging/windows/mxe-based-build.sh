@@ -138,41 +138,6 @@ else
 	touch Release
 fi
 
-# grantlee
-
-cd "$BUILDDIR"
-if [[ ! -d grantlee || -f build.grantlee ]] ; then
-	rm -f build.grantlee
-	mkdir -p grantlee
-	cd grantlee
-	"$MXEBUILDTYPE"-cmake \
-		-DCMAKE_BUILD_TYPE=$RELEASE \
-		-DBUILD_TESTS=OFF \
-		"$BASEDIR"/grantlee
-
-	make $JOBS
-	make install
-fi
-
-# hidapi for libdivecomputer (if available)
-
-if [[ -d "$BASEDIR"/hidapi ]] ; then
-	cd "$BUILDDIR"
-	if [[ ! -d hidapi || -f build.hidapi ]] ; then
-		rm -f build.hidapi
-		mkdir -p hidapi
-		pushd "$BASEDIR"/hidapi
-		bash ./bootstrap
-		popd
-		cd hidapi
-		"$BASEDIR"/hidapi/configure \
-			CC="$MXEBUILDTYPE"-gcc \
-			--host="$MXEBUILDTYPE" \
-			--prefix="$BASEDIR"/"$MXEDIR"/usr/"$MXEBUILDTYPE"
-		make $JOBS
-		make install
-	fi
-fi
 
 
 # libdivecomputer
@@ -284,7 +249,8 @@ done
 # for some reason we aren't installing Qt5Xml.dll and Qt5Location.dll
 # I need to figure out why and fix that, but for now just manually copy that as well
 EXTRA_MANUAL_DEPENDENCIES="$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/bin/Qt5Xml$DLL_SUFFIX.dll \
-$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/bin/Qt5Location$DLL_SUFFIX.dll"
+$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/bin/Qt5Location$DLL_SUFFIX.dll \
+$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/bin/Qt5QmlWorkerScript$DLL_SUFFIX.dll"
 
 for f in $EXTRA_MANUAL_DEPENDENCIES
 do

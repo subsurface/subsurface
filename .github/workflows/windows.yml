@@ -19,20 +19,8 @@ jobs:
 
     - name: get other dependencies
       run: |
-        echo "creating the link from /win/subsurface"
-        cd /win
-        ln -s /__w/subsurface/subsurface .
-        ls -l
-        ls -l subsurface/scripts
-        echo "installing missing container components"
-        apt-get install -y ca-certificates libtool
-        echo "downloading sources for fresh build"
-        bash subsurface/scripts/get-dep-lib.sh single . libzip
-        bash subsurface/scripts/get-dep-lib.sh single . hidapi
-        bash subsurface/scripts/get-dep-lib.sh single . googlemaps
-        bash subsurface/scripts/get-dep-lib.sh single . grantlee
-        bash subsurface/scripts/get-dep-lib.sh single . mdbtools
-
+        echo "Running script to install additional dependancies into container"
+        bash -x subsurface/.github/workflows/scripts/windows-container-prep.sh 2>&1 | tee pre-build.log
     - name: run build
       run: |
         cd /win
