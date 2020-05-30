@@ -320,6 +320,9 @@ Please read through the explanations and instructions in
 packaging/windows/mxe-based-build.sh if you want to build the Windows
 version on your Linux system.
 
+In addition you can use the Docker container the same way that CI builds do modify/test 
+ modifications to the container build environment following instructions in 
+/scripts/docker/mxe-build-container/instructions.md
 
 Building Subsurface on Windows
 ------------------------------
