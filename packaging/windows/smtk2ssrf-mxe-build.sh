@@ -142,32 +142,6 @@ export PKG_CONFIG_PATH_i686_w64_mingw32_shared="$BASEDIR/mxe/usr/i686-w64-mingw3
 export PKG_CONFIG_PATH="$PKG_CONFIG_PATH_i686_w64_mingw32_static":"$PKG_CONFIG_PATH_i686_w64_mingw32_shared"
 
 #
-# mdbtools
-# build from sources. If build fails, fallback to prebuilt mxe binaries.
-#
-echo -e "$BLUE---> Building mdbtools ... $DEFAULT "
-mkdir -p --verbose "$BASEDIR"/mxe/usr/i686-w64-mingw32.static/include
-mkdir -p --verbose "$BASEDIR"/mxe/usr/i686-w64-mingw32.static/lib
-cd "$BUILDDIR"
-[[ -d mdbtools ]] && rm -rf mdbtools
-mkdir -p mdbtools
-cd mdbtools
-if [ ! -f "$BASEDIR"/mdbtools/configure ] ; then
-	( cd "$BASEDIR"/mdbtools
-	autoreconf -v -f -i )
-fi
-"$BASEDIR"/mdbtools/configure CC=i686-w64-mingw32.static-gcc \
-		     --host=i686-w64-mingw32.static \
-		     --prefix="$BASEDIR"/mxe/usr/i686-w64-mingw32.static \
-		     --enable-shared=no \
-		     --disable-man \
-		     --disable-gmdb2
-# hack to make mdbtools build outsource
-ln -vs "$BUILDDIR"/mdbtools/include/mdbver.h "$BASEDIR"/mdbtools/include/mdbver.h
-
-make $JOBS >/dev/null && make install || \
-	echo -e "$RED---> Building mdbtools failed ...$LIGHT_GRAY Trying to build with precompiled mxe binaries$DEFAULT"
-
 # Subsurface
 #
 if [ "$AUTO" = "false" ]; then

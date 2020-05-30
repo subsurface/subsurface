@@ -92,8 +92,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
         set(SMTK_LINK_LIBRARIES ${SMTK_LINK_LIBRARIES} -lssh2 -lz -lpthread)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-        set(SMTK_LINK_LIBRARIES ${SMTK_LINK_LIBRARIES} -lwsock32 -lws2_32 -lole32 -limm32 -lwinmm)
-	remove_definitions(-DUNICODE)
+				remove_definitions(-DUNICODE)
         add_definitions(-mwindows -D_WIN32)
 endif()
 
@@ -109,6 +108,13 @@ set(SMTK_LINK_LIBRARIES ${SMTK_LINK_LIBRARIES} ${SUBSURFACE_LINK_LIBRARIES} ${SS
 source_group("SmartTrak Import libs" FILES ${SMTK_IMPORT_SRCS})
 set(SMTK_IMPORT_TARGET smtk2ssrf)
 add_library(smtk_import STATIC ${SMTK_IMPORT_SRCS})
+
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	# Setting the link target this way resolves an issue with not importing timegettime correctly fron winmm
+	target_link_libraries(smtk_import PRIVATE wsock32 ws2_32 ole32 imm32 winmm)
+endif()
+
 add_executable(${SMTK_IMPORT_TARGET} smtk_standalone.cpp ${SUBSURFACE_RESOURCES})
 
 # We just want CLI mode on Linux. Silently drop it if cross building to Windows.
