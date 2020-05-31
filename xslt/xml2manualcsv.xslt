@@ -306,6 +306,12 @@
       </xsl:choose>
     </xsl:for-each>
 
+    <xsl:if test="count(cylinder) &lt; $cylinders">
+      <xsl:call-template name="emptyCylinder">
+        <xsl:with-param name="count" select="$cylinders - count(cylinder)"/>
+      </xsl:call-template>
+    </xsl:if>
+
     <xsl:choose>
       <!-- Old location format -->
       <xsl:when test="location != ''">
@@ -568,4 +574,31 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
+  <!-- Template to fill in non-existent cylinder info to CSV -->
+  <xsl:template name="emptyCylinder">
+    <xsl:param name="count"/>
+
+    <xsl:if test="$count &gt; 0">
+      <xsl:value-of select="$fs"/>
+      <xsl:text>&quot;</xsl:text>
+      <xsl:text>&quot;</xsl:text>
+      <xsl:value-of select="$fs"/>
+      <xsl:text>&quot;</xsl:text>
+      <xsl:text>&quot;</xsl:text>
+      <xsl:value-of select="$fs"/>
+      <xsl:text>&quot;</xsl:text>
+      <xsl:text>&quot;</xsl:text>
+      <xsl:value-of select="$fs"/>
+      <xsl:text>&quot;</xsl:text>
+      <xsl:text>&quot;</xsl:text>
+      <xsl:value-of select="$fs"/>
+      <xsl:text>&quot;</xsl:text>
+      <xsl:text>&quot;</xsl:text>
+      <xsl:call-template name="emptyCylinder">
+        <xsl:with-param name="count" select="$count - 1"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+
 </xsl:stylesheet>
