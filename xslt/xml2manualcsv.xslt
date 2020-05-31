@@ -38,7 +38,7 @@
           $fs)"/>
 
         <!-- Print cylinder info according to the amount of cylinders in dive -->
-        <xsl:for-each select="dive/cylinder|trip/dive/cylinder">
+        <xsl:for-each select="dive[position()=last()]/cylinder|trip[position()=last()]/dive[position()=last()]/cylinder">
           <xsl:value-of select="concat(
             '&quot;cylinder size (cuft)&quot;',
             $fs,
@@ -100,7 +100,7 @@
           $fs)"/>
 
         <!-- Print cylinder info according to the amount of cylinders in dive -->
-        <xsl:for-each select="dive/cylinder|trip/dive/cylinder">
+        <xsl:for-each select="dive[position()=last()]/cylinder|trip[position()=last()]/dive[position()=last()]/cylinder">
           <xsl:value-of select="concat(
             '&quot;cylinder size (l)&quot;',
             $fs,
