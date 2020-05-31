@@ -240,68 +240,68 @@
       <xsl:choose>
         <xsl:when test="$cylinders &lt; position()"/>
         <xsl:otherwise>
-      <xsl:choose>
-        <xsl:when test="@start|@end != ''">
-          <xsl:apply-templates select="."/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="$fs"/>
-          <xsl:text>&quot;</xsl:text>
           <xsl:choose>
-            <xsl:when test="$units = 1">
-              <xsl:value-of select="concat(format-number((substring-before(@size, ' ') div 14.7 * 3000) * 0.035315, '#.#'), '')"/>
+            <xsl:when test="@start|@end != ''">
+              <xsl:apply-templates select="."/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="substring-before(@size, ' ')"/>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:text>&quot;</xsl:text>
-          <xsl:value-of select="$fs"/>
-          <xsl:text>&quot;</xsl:text>
-          <xsl:choose>
-            <xsl:when test="$units = 1">
+              <xsl:value-of select="$fs"/>
+              <xsl:text>&quot;</xsl:text>
               <xsl:choose>
-                <xsl:when test="substring-before(../divecomputer[1]/sample[@pressure]/@pressure, ' ') &gt; 0">
-                  <xsl:value-of select="concat(format-number((substring-before(../divecomputer[1]/sample[@pressure]/@pressure, ' ') * 14.5037738007), '#'), '')"/>
+                <xsl:when test="$units = 1">
+                  <xsl:value-of select="concat(format-number((substring-before(@size, ' ') div 14.7 * 3000) * 0.035315, '#.#'), '')"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="''"/>
+                  <xsl:value-of select="substring-before(@size, ' ')"/>
                 </xsl:otherwise>
               </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="substring-before(../divecomputer[1]/sample[@pressure]/@pressure, ' ')"/>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:text>&quot;</xsl:text>
-          <xsl:value-of select="$fs"/>
-          <xsl:text>&quot;</xsl:text>
-          <xsl:choose>
-            <xsl:when test="$units = 1">
+              <xsl:text>&quot;</xsl:text>
+              <xsl:value-of select="$fs"/>
+              <xsl:text>&quot;</xsl:text>
               <xsl:choose>
-                <xsl:when test="substring-before(../divecomputer[1]/sample[@pressure][last()]/@pressure, ' ') &gt; 0">
-                  <xsl:value-of select="concat(format-number((substring-before(../divecomputer[1]/sample[@pressure][last()]/@pressure, ' ') * 14.5037738007), '#'), '')"/>
+                <xsl:when test="$units = 1">
+                  <xsl:choose>
+                    <xsl:when test="substring-before(../divecomputer[1]/sample[@pressure]/@pressure, ' ') &gt; 0">
+                      <xsl:value-of select="concat(format-number((substring-before(../divecomputer[1]/sample[@pressure]/@pressure, ' ') * 14.5037738007), '#'), '')"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="''"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="''"/>
+                  <xsl:value-of select="substring-before(../divecomputer[1]/sample[@pressure]/@pressure, ' ')"/>
                 </xsl:otherwise>
               </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="substring-before(../divecomputer[1]/sample[@pressure][last()]/@pressure, ' ')"/>
+              <xsl:text>&quot;</xsl:text>
+              <xsl:value-of select="$fs"/>
+              <xsl:text>&quot;</xsl:text>
+              <xsl:choose>
+                <xsl:when test="$units = 1">
+                  <xsl:choose>
+                    <xsl:when test="substring-before(../divecomputer[1]/sample[@pressure][last()]/@pressure, ' ') &gt; 0">
+                      <xsl:value-of select="concat(format-number((substring-before(../divecomputer[1]/sample[@pressure][last()]/@pressure, ' ') * 14.5037738007), '#'), '')"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="''"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="substring-before(../divecomputer[1]/sample[@pressure][last()]/@pressure, ' ')"/>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:text>&quot;</xsl:text>
+              <xsl:value-of select="$fs"/>
+              <xsl:text>&quot;</xsl:text>
+              <xsl:value-of select="substring-before(@o2, '%')"/>
+              <xsl:text>&quot;</xsl:text>
+              <xsl:value-of select="$fs"/>
+              <xsl:text>&quot;</xsl:text>
+              <xsl:value-of select="substring-before(@he, '%')"/>
+              <xsl:text>&quot;</xsl:text>
             </xsl:otherwise>
           </xsl:choose>
-          <xsl:text>&quot;</xsl:text>
-          <xsl:value-of select="$fs"/>
-          <xsl:text>&quot;</xsl:text>
-          <xsl:value-of select="substring-before(@o2, '%')"/>
-          <xsl:text>&quot;</xsl:text>
-          <xsl:value-of select="$fs"/>
-          <xsl:text>&quot;</xsl:text>
-          <xsl:value-of select="substring-before(@he, '%')"/>
-          <xsl:text>&quot;</xsl:text>
-        </xsl:otherwise>
-      </xsl:choose>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>
