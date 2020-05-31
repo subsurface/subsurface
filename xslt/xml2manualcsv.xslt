@@ -11,6 +11,9 @@
 </xsl:text></xsl:variable>
 
   <xsl:template match="/divelog/dives">
+    <xsl:variable name="cylinders">
+      <xsl:value-of select="count(dive[position()=last()]/cylinder|trip[position()=last()]/dive[position()=last()]/cylinder)"/>
+    </xsl:variable>
     <xsl:choose>
       <xsl:when test="$units = 1">
 
@@ -139,12 +142,16 @@
     </xsl:choose>
     <xsl:text>
 </xsl:text>
-    <xsl:apply-templates select="dive|trip/dive"/>
+    <xsl:apply-templates select="dive|trip/dive">
+      <xsl:with-param name="cylinders" select="$cylinders"/>
+    </xsl:apply-templates>
   </xsl:template>
 
   <xsl:template match="divesites/site/notes"/>
 
   <xsl:template match="dive">
+    <xsl:param name="cylinders"/>
+
     <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="@number"/>
     <xsl:text>&quot;</xsl:text>
@@ -231,6 +238,9 @@
 
     <xsl:for-each select="cylinder">
       <xsl:choose>
+        <xsl:when test="$cylinders &lt; position()"/>
+        <xsl:otherwise>
+      <xsl:choose>
         <xsl:when test="@start|@end != ''">
           <xsl:apply-templates select="."/>
         </xsl:when>
@@ -290,6 +300,8 @@
           <xsl:text>&quot;</xsl:text>
           <xsl:value-of select="substring-before(@he, '%')"/>
           <xsl:text>&quot;</xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>
