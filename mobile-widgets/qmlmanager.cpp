@@ -29,6 +29,7 @@
 #include "core/errorhelper.h"
 #include "core/file.h"
 #include "core/divefilter.h"
+#include "core/filterconstraint.h"
 #include "core/qthelper.h"
 #include "core/qt-gui.h"
 #include "core/git-access.h"
@@ -2084,6 +2085,13 @@ void QMLManager::restartDownload(QAndroidJniObject usbDevice)
 
 #endif
 
+static filter_constraint make_filter_constraint(filter_constraint_type type, const QString &s)
+{
+	filter_constraint res(type);
+	filter_constraint_set_stringlist(res, s);
+	return res;
+}
+
 void QMLManager::setFilter(const QString filterText, int index)
 {
 	QString f = filterText.trimmed();
@@ -2091,15 +2099,17 @@ void QMLManager::setFilter(const QString filterText, int index)
 	if (!f.isEmpty()) {
 		// This is ugly - the indices of the mode are hardcoded!
 		switch(index) {
-			default:
-			case 0: data.mode = FilterData::Mode::FULLTEXT; break;
-			case 1: data.mode = FilterData::Mode::PEOPLE; break;
-			case 2: data.mode = FilterData::Mode::TAGS; break;
-		}
-		if (data.mode == FilterData::Mode::FULLTEXT)
+		default:
+		case 0:
 			data.fullText = f;
-		else
-			data.tags = f.split(",", QString::SkipEmptyParts);
+			break;
+		case 1:
+			data.constraints.push_back(make_filter_constraint(FILTER_CONSTRAINT_PEOPLE, f));
+			break;
+		case 2:
+			data.constraints.push_back(make_filter_constraint(FILTER_CONSTRAINT_TAGS, f));
+			break;
+		}
 	}
 	DiveFilter::instance()->setFilter(data);
 }
