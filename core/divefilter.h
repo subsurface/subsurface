@@ -10,6 +10,8 @@
 #include <QStringList>
 
 struct dive;
+struct dive_trip;
+struct dive_site;
 
 // Structure describing changes of shown status upon applying the filter
 struct ShownChange {
@@ -17,43 +19,6 @@ struct ShownChange {
 	QVector<dive *> newHidden;
 	bool currentChanged;
 };
-
-// The dive filter for mobile is currently much simpler than for desktop.
-// Therefore, for now we have two completely separate implementations.
-// This should be unified in the future.
-#ifdef SUBSURFACE_MOBILE
-
-struct FilterData {
-	// On mobile, we support searching fulltext (all fields), people (buddies and divemasters) and tags
-	enum class Mode {
-		NONE = 0,
-		FULLTEXT = 1,
-		PEOPLE = 2,
-		TAGS = 3
-	};
-
-	Mode mode = Mode::NONE;
-	FullTextQuery fullText; // For fulltext
-	QStringList tags; // For people and tags
-};
-
-class DiveFilter {
-public:
-	static DiveFilter *instance();
-
-	ShownChange update(const QVector<dive *> &dives) const; // Update filter status of given dives and return dives whose status changed
-	ShownChange updateAll() const; // Update filter status of all dives and return dives whose status changed
-	void setFilter(const FilterData &data);
-private:
-	DiveFilter();
-
-	FilterData filterData;
-};
-
-#else
-
-struct dive_trip;
-struct dive_site;
 
 struct FilterData {
 	// The mode ids are chosen such that they can be directly converted from / to combobox indices.
@@ -73,11 +38,13 @@ class DiveFilter {
 public:
 	static DiveFilter *instance();
 
-	bool diveSiteMode() const; // returns true if we're filtering on dive site
+	bool diveSiteMode() const; // returns true if we're filtering on dive site (on mobile always returns false)
+#ifndef SUBSURFACE_MOBILE
 	const QVector<dive_site *> &filteredDiveSites() const;
 	void startFilterDiveSites(QVector<dive_site *> ds);
 	void setFilterDiveSite(QVector<dive_site *> ds);
 	void stopFilterDiveSites();
+#endif
 	void setFilter(const FilterData &data);
 	ShownChange update(const QVector<dive *> &dives) const; // Update filter status of given dives and return dives whose status changed
 	ShownChange updateAll() const; // Update filter status of all dives and return dives whose status changed
@@ -96,6 +63,5 @@ private:
 	// The filter is now not in dive site mode, even if it should
 	int diveSiteRefCount;
 };
-#endif // SUBSURFACE_MOBILE
 
 #endif
