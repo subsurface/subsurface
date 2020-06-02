@@ -825,11 +825,12 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	if ((divemode == CCR || divemode == PSCR) && prefs.dobailout) {
 		divemode = OC;
 		po2 = 0;
+		int bailoutsegment = MAX(prefs.min_switch_duration, 60 * prefs.problemsolvingtime);
 		add_segment(ds, depth_to_bar(depth, dive),
 			get_cylinder(dive, current_cylinder)->gasmix,
-			prefs.min_switch_duration, po2, divemode, prefs.bottomsac);
-		plan_add_segment(diveplan, prefs.min_switch_duration, depth, current_cylinder, po2, false, divemode);
-		clock += prefs.min_switch_duration;
+			bailoutsegment, po2, divemode, prefs.bottomsac);
+		plan_add_segment(diveplan, bailoutsegment, depth, current_cylinder, po2, false, divemode);
+		clock += bailoutsegment;
 		last_segment_min_switch = true;
 	}
 	previous_deco_time = 100000000;
