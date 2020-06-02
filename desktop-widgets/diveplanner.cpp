@@ -606,6 +606,7 @@ void PlannerSettingsWidget::setBackgasBreaks(bool dobreaks)
 void PlannerSettingsWidget::setBailoutVisibility(int mode)
 {
 		ui.bailout->setDisabled(!(mode == CCR || mode == PSCR));
+		ui.sacFactor->setDisabled(mode == CCR);
 }
 
 PlannerDetails::PlannerDetails(QWidget *parent) : QWidget(parent)
