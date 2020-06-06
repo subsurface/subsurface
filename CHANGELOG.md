@@ -1,3 +1,4 @@
+Mobile: add advanved option to import dives from local cloud cache directories
 Mobile: fix broken editing of location, suit, buddy, and dive master
 Mobile: fix missing translations on Android
 CSV export: support for multiple cylinders

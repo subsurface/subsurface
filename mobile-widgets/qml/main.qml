@@ -534,6 +534,14 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					}
 				}
 
+				Kirigami.Action {
+					text: qsTr("Access local cloud cache dirs")
+					onTriggered: {
+						globalDrawer.close()
+						showPage(recoverCache)
+					}
+				}
+
 				/* disable for now
 				Kirigami.Action {
 					text: qsTr("Dive planner")
@@ -822,6 +830,12 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		id: mapPage
 		visible: false
 	}
+
+	RecoverCache {
+		id: recoverCache
+		visible: false
+	}
+
 /* this shouldn't be exposed unless someone will finish the work
 	DivePlannerSetup {
 		id: divePlannerSetupWindow

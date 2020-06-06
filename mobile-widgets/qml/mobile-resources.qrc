@@ -41,6 +41,8 @@
 		<file>ThemeTest.qml</file>
 		<file>TripDetails.qml</file>
 		<file>StartPage.qml</file>
+		<file>RecoverCache.qml</file>
+
 		<file>SsrfCheckBox.qml</file>
 		<file>SsrfSwitch.qml</file>
 		<file>SsrfTextField.qml</file>
