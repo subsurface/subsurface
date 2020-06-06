@@ -403,6 +403,8 @@ void QMLManager::openLocalThenRemote(QString url)
 
 	updateAllGlobalLists();
 	setDiveListProcessing(false);
+	// this could have added a new local cache directory
+	emit cloudCacheListChanged();
 }
 
 // Convenience function to accesss dive directly via its row.
@@ -534,6 +536,9 @@ void QMLManager::finishSetup()
 	}
 	m_initialized = true;
 	emit initializedChanged();
+	// this could have brought in new cache directories, so make sure QML
+	// calls our getter function again and doesn't show us outdated information
+	emit cloudCacheListChanged();
 }
 
 QMLManager::~QMLManager()
@@ -2200,4 +2205,23 @@ void QMLManager::setDiveListProcessing(bool value)
 		emit diveListProcessingChanged();
 	}
 
+}
+
+QStringList QMLManager::cloudCacheList() const
+{
+	QDir localCacheDir(QString("%1/cloudstorage/").arg(system_default_directory()));
+	QStringList dirs = localCacheDir.entryList().filter(QRegExp("...+"));
+	QStringList result;
+	foreach(QString dir, dirs) {
+		QString originsDir = QString("%1/cloudstorage/%2/.git/refs/remotes/origin/").arg(system_default_directory()).arg(dir);
+		QDir remote(originsDir);
+		if (dir == "localrepo") {
+			result << QString("localrepo[master]");
+		} else {
+			foreach(QString branch, remote.entryList().filter(QRegExp("...+"))) {
+				result << QString("%1[%2]").arg(dir).arg(branch);
+			}
+		}
+	}
+	return result;
 }

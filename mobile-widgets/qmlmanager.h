@@ -40,6 +40,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QStringList divemasterList READ divemasterList NOTIFY divemasterListChanged)
 	Q_PROPERTY(QStringList locationList READ locationList NOTIFY locationListChanged)
 	Q_PROPERTY(QStringList cylinderInit READ cylinderInit CONSTANT)
+	Q_PROPERTY(QStringList cloudCacheList READ cloudCacheList NOTIFY cloudCacheListChanged)
 	Q_PROPERTY(QString progressMessage MEMBER m_progressMessage WRITE setProgressMessage NOTIFY progressMessageChanged)
 	Q_PROPERTY(bool btEnabled MEMBER m_btEnabled WRITE setBtEnabled NOTIFY btEnabledChanged)
 
@@ -161,6 +162,7 @@ public:
 	QStringList divemasterList() const;
 	QStringList locationList() const;
 	QStringList cylinderInit() const;
+	QStringList cloudCacheList() const;
 	Q_INVOKABLE void setStatusbarColor(QColor color);
 	void btHostModeChange(QBluetoothLocalDevice::HostMode state);
 	QObject *qmlWindow;
@@ -303,6 +305,7 @@ signals:
 	void buddyListChanged();
 	void divemasterListChanged();
 	void locationListChanged();
+	void cloudCacheListChanged();
 	void waitingForPositionChanged();
 	void pluggedInDeviceNameChanged();
 	void showNonDiveComputersChanged();
@@ -315,7 +318,6 @@ signals:
 	// From upload process
 	void uploadFinish(bool success, const QString &text);
 	void uploadProgress(qreal percentage);
-
 
 private slots:
 	void uploadFinishSlot(bool success, const QString &text, const QByteArray &html);
