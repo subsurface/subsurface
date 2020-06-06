@@ -2207,6 +2207,18 @@ void QMLManager::setDiveListProcessing(bool value)
 
 }
 
+void QMLManager::importCacheRepo(QString repo)
+{
+	struct dive_table table = empty_dive_table;
+	struct trip_table trips = empty_trip_table;
+	struct dive_site_table sites = empty_dive_site_table;
+	QString repoPath = QString("%1/cloudstorage/%2").arg(system_default_directory()).arg(repo);
+	appendTextToLog(QString("importing %1").arg(repoPath));
+	parse_file(qPrintable(repoPath), &table, &trips, &sites);
+	add_imported_dives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS);
+	changesNeedSaving();
+}
+
 QStringList QMLManager::cloudCacheList() const
 {
 	QDir localCacheDir(QString("%1/cloudstorage/").arg(system_default_directory()));

@@ -119,6 +119,7 @@ public:
 	Q_INVOKABLE void setFilter(const QString filterText, int mode);
 	Q_INVOKABLE void selectRow(int row);
 	Q_INVOKABLE void selectSwipeRow(int row);
+	Q_INVOKABLE void importCacheRepo(QString repo);
 
 	static QMLManager *instance();
 	Q_INVOKABLE void registerError(QString error);
