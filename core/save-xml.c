@@ -15,6 +15,8 @@
 #include "dive.h"
 #include "divesite.h"
 #include "errorhelper.h"
+#include "filterconstraint.h"
+#include "filterpreset.h"
 #include "subsurface-string.h"
 #include "subsurface-time.h"
 #include "trip.h"
@@ -609,6 +611,56 @@ int save_dives(const char *filename)
 	return save_dives_logic(filename, false, false);
 }
 
+static void save_filter_presets(struct membuffer *b)
+{
+	int i;
+
+	if (filter_presets_count() <= 0)
+		return;
+	put_format(b, "<filterpresets>\n");
+	for (i = 0; i < filter_presets_count(); i++) {
+		char *name, *fulltext;
+		name = filter_preset_name(i);
+		put_format(b, " <filterpreset");
+		show_utf8(b, name, " name='", "'", 1);
+		put_format(b, ">\n");
+		free(name);
+
+		fulltext = filter_preset_fulltext_query(i);
+		if (!empty_string(fulltext)) {
+			const char *fulltext_mode = filter_preset_fulltext_mode(i);
+			show_utf8(b, fulltext_mode, "  <fulltext mode='", "'>", 1);
+			show_utf8(b, fulltext, "", "</fulltext>\n", 0);
+		}
+		free(fulltext);
+
+		for (int j = 0; j < filter_preset_constraint_count(i); j++) {
+			char *data;
+			const struct filter_constraint *constraint = filter_preset_constraint(i, j);
+			const char *type = filter_constraint_type_to_string(constraint->type);
+			put_format(b, "  <constraint");
+			show_utf8(b, type, " type='", "'", 1);
+			if (filter_constraint_has_string_mode(constraint->type)) {
+				const char *mode = filter_constraint_string_mode_to_string(constraint->string_mode);
+				show_utf8(b, mode, " string_mode='", "'", 1);
+			}
+			if (filter_constraint_has_range_mode(constraint->type)) {
+				const char *mode = filter_constraint_range_mode_to_string(constraint->range_mode);
+				show_utf8(b, mode, " range_mode='", "'", 1);
+			}
+			if (constraint->negate)
+				put_format(b, " negate='1'");
+			put_format(b, ">");
+			data = filter_constraint_data_to_string(constraint);
+			show_utf8(b, data, "", "", 0);
+			free(data);
+			put_format(b, "</constraint>\n");
+		}
+		put_format(b, " </filterpreset>\n");
+	}
+	put_format(b, "</filterpresets>\n");
+}
+
 static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonymize)
 {
 	int i;
@@ -656,6 +708,9 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 	put_format(b, "</divesites>\n<dives>\n");
 	for (i = 0; i < trip_table.nr; ++i)
 		trip_table.trips[i]->saved = 0;
+
+	/* save the filter presets */
+	save_filter_presets(b);
 
 	/* save the dives */
 	for_each_dive(i, dive) {
