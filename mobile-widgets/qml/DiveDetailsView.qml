@@ -519,9 +519,8 @@ Item {
 		TemplateLabelSmall {
 			text: qsTr("Tags:")
 			opacity: 0.6
-			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.columnSpan: 3
-			Layout.maximumWidth: detailsView.col2Width + detailsView.col3Width
+			Layout.maximumWidth: detailsView.gridWidth
 			Layout.bottomMargin: 0
 			color: subsurfaceTheme.textColor
 		}
@@ -532,6 +531,10 @@ Item {
 			id: txtTags
 			text: tags
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			elide: Text.ElideRight
+			maximumLineCount: 3
+			Layout.maximumWidth: detailsView.gridWidth
+			height: Kirigami.Units.gridUnit * 3
 			Layout.columnSpan: 3
 			color: subsurfaceTheme.textColor
 		}
