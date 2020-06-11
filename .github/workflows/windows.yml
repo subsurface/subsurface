@@ -11,7 +11,7 @@ jobs:
   buildInContainer:
     runs-on: ubuntu-latest
     container:
-      image: docker://subsurface/mxe-build-container:1.0
+      image: docker://paulbuxton/mxe-build-container:1.1
 
     steps:
     - name: checkout sources
@@ -20,6 +20,8 @@ jobs:
     - name: get other dependencies
       run: |
         echo "Running script to install additional dependancies into container"
+        cd /win
+        ln -s /__w/subsurface/subsurface .
         bash -x subsurface/.github/workflows/scripts/windows-container-prep.sh 2>&1 | tee pre-build.log
     - name: run build
       run: |
