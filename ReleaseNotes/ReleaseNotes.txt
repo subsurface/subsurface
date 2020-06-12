@@ -2,6 +2,29 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 4.9.5
+~~~~~~~~~~~~~~~~~~~~~~~~~
+new features:
+- CSV export/import: support for multiple cylinders
+- CSV export/import: add support for dive mode
+
+bugfixes:
+- CSV import: multiple bug fixes for Subsurface CSV files
+- localize salinity string with respect to thousands separators
+- update date and time fields on maintab if user changes preferences
+- fix failure to recognize several Aqualung BLE dive computers
+- always include BT/BLE name, even for devices no recognized as dive computer
+- improve service selection for BLE, adding approved list and rejected list
+- filter: fix searching for tags [#2842]
+- fix plotting of thumbnails on profile [#2833]
+- update SAC fields and other statistics when editing cylinders
+- reconnect the variations checkbox in planner
+- fix profile display of planned dives with surface segments
+
+libdivecomputer:
+  - work around Pelagic BLE oddity (Oceanic Pro Plus X and Aqualung i770R)
+  - OSTC3 firmware update improvements
+
 New in _Subsurface_ 4.9.4
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 new features:
