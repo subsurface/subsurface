@@ -112,7 +112,7 @@ debuild -S
 
 #create builds for the newer Ubuntu releases that Launchpad supports
 rel=bionic
-others="eoan focal"
+others="eoan focal xenial"
 for next in $others
 do
 	sed -i "s/${rel}/${next}/g" debian/changelog
