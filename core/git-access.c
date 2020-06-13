@@ -160,10 +160,11 @@ static int check_clean(const char *path, unsigned int status, void *payload)
 	status &= ~GIT_STATUS_CURRENT | GIT_STATUS_IGNORED;
 	if (!status)
 		return 0;
+	SSRF_INFO("git storage: local cache dir %s modified, git status 0x%04x", path, status);
 	if (is_subsurface_cloud)
 		report_error(translate("gettextFromC", "Local cache directory %s corrupted - can't sync with Subsurface cloud storage"), path);
 	else
-		report_error("WARNING: Git cache directory modified (path %s) status %0x", path, status);
+		report_error("WARNING: Git cache directory modified (path %s) status 0x%04x", path, status);
 	return 1;
 }
 
@@ -183,9 +184,10 @@ static int reset_to_remote(git_repository *repo, git_reference *local, const git
 	if (git_repository_is_bare(repo) || git_branch_is_head(local) != 1) {
 		git_reference *out;
 
-		if (git_reference_set_target(&out, local, new_id, "Update to remote"))
+		if (git_reference_set_target(&out, local, new_id, "Update to remote")) {
+			SSRF_INFO("git storage: could not update local cache to newer remote data");
 			return report_error(translate("gettextFromC", "Could not update local cache to newer remote data"));
-
+		}
 		git_reference_free(out);
 
 #ifdef DEBUG
@@ -196,6 +198,7 @@ static int reset_to_remote(git_repository *repo, git_reference *local, const git
 	}
 
 	if (git_object_lookup(&target, repo, new_id, GIT_OBJ_COMMIT)) {
+		SSRF_INFO("git storage: could not look up remote commit");
 		if (is_subsurface_cloud)
 			return report_error(translate("gettextFromC", "Subsurface cloud storage corrupted"));
 		else
@@ -203,6 +206,7 @@ static int reset_to_remote(git_repository *repo, git_reference *local, const git
 	}
 	opts.checkout_strategy = GIT_CHECKOUT_SAFE;
 	if (git_reset(repo, target, GIT_RESET_HARD, &opts)) {
+		SSRF_INFO("git storage: local head checkout failed after update");
 		if (is_subsurface_cloud)
 			return report_error(translate("gettextFromC", "Could not update local cache to newer remote data"));
 		else
@@ -221,6 +225,7 @@ static const int max_auth_attempts = 2;
 static bool exceeded_auth_attempts()
 {
 	if (auth_attempt++ > max_auth_attempts) {
+		SSRF_INFO("git storage: authentication to cloud storage failed");
 		report_error("Authentication to cloud storage failed.");
 		return true;
 	}
@@ -290,7 +295,7 @@ int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payl
 {
 	UNUSED(payload);
 	if (verbose)
-		SSRF_INFO("certificate callback for host %s with validity %d\n", host, valid);
+		SSRF_INFO("git storage: certificate callback for host %s with validity %d\n", host, valid);
 	if (same_string(host, "cloud.subsurface-divelog.org") && cert->cert_type == GIT_CERT_X509) {
 		// for some reason the LetsEncrypt certificate makes libgit2 throw up on some
 		// platforms but not on others
@@ -326,10 +331,12 @@ static int update_remote(git_repository *repo, git_remote *origin, git_reference
 	opts.callbacks.certificate_check = certificate_check_cb;
 
 	if (git_remote_push(origin, &refspec, &opts)) {
+		const char *msg = giterr_last()->message;
+		SSRF_INFO("git storage: unable to update remote with current local cache state, error: %s", msg);
 		if (is_subsurface_cloud)
 			return report_error(translate("gettextFromC", "Could not update Subsurface cloud storage, try again later"));
 		else
-			return report_error("Unable to update remote with current local cache state (%s)", giterr_last()->message);
+			return report_error("Unable to update remote with current local cache state (%s)", msg);
 	}
 	return 0;
 }
@@ -350,7 +357,7 @@ static int try_to_git_merge(git_repository *repo, git_reference **local_p, git_r
 		outlocal[40] = outremote[40] = 0;
 		git_oid_fmt(outlocal, local_id);
 		git_oid_fmt(outremote, remote_id);
-		SSRF_INFO("trying to merge local SHA %s remote SHA %s\n", outlocal, outremote);
+		SSRF_INFO("git storage: trying to merge local SHA %s remote SHA %s\n", outlocal, outremote);
 	}
 
 	git_merge_init_options(&merge_options, GIT_MERGE_OPTIONS_VERSION);
@@ -358,31 +365,31 @@ static int try_to_git_merge(git_repository *repo, git_reference **local_p, git_r
 	merge_options.file_favor = GIT_MERGE_FILE_FAVOR_UNION;
 	merge_options.rename_threshold = 100;
 	if (git_commit_lookup(&local_commit, repo, local_id)) {
-		SSRF_INFO("Remote storage and local data diverged. Error: can't get commit (%s)", giterr_last()->message);
+		SSRF_INFO("git storage: remote storage and local data diverged. Error: can't get commit (%s)", giterr_last()->message);
 		goto diverged_error;
 	}
 	if (git_commit_tree(&local_tree, local_commit)) {
-		SSRF_INFO("Remote storage and local data diverged. Error: failed local tree lookup (%s)", giterr_last()->message);
+		SSRF_INFO("git storage: remote storage and local data diverged. Error: failed local tree lookup (%s)", giterr_last()->message);
 		goto diverged_error;
 	}
 	if (git_commit_lookup(&remote_commit, repo, remote_id)) {
-		SSRF_INFO("Remote storage and local data diverged. Error: can't get commit (%s)", giterr_last()->message);
+		SSRF_INFO("git storage: remote storage and local data diverged. Error: can't get commit (%s)", giterr_last()->message);
 		goto diverged_error;
 	}
 	if (git_commit_tree(&remote_tree, remote_commit)) {
-		SSRF_INFO("Remote storage and local data diverged. Error: failed local tree lookup (%s)", giterr_last()->message);
+		SSRF_INFO("git storage: remote storage and local data diverged. Error: failed local tree lookup (%s)", giterr_last()->message);
 		goto diverged_error;
 	}
 	if (git_commit_lookup(&base_commit, repo, base)) {
-		SSRF_INFO("Remote storage and local data diverged. Error: can't get commit (%s)", giterr_last()->message);
+		SSRF_INFO("git storage: remote storage and local data diverged. Error: can't get commit (%s)", giterr_last()->message);
 		goto diverged_error;
 	}
 	if (git_commit_tree(&base_tree, base_commit)) {
-		SSRF_INFO("Remote storage and local data diverged. Error: failed base tree lookup (%s)", giterr_last()->message);
+		SSRF_INFO("git storage: remote storage and local data diverged. Error: failed base tree lookup (%s)", giterr_last()->message);
 		goto diverged_error;
 	}
 	if (git_merge_trees(&merged_index, repo, base_tree, local_tree, remote_tree, &merge_options)) {
-		SSRF_INFO("Remote storage and local data diverged. Error: merge failed (%s)", giterr_last()->message);
+		SSRF_INFO("git storage: remote storage and local data diverged. Error: merge failed (%s)", giterr_last()->message);
 		// this is the one where I want to report more detail to the user - can't quite explain why
 		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: merge failed (%s)"), giterr_last()->message);
 	}
@@ -396,20 +403,20 @@ static int try_to_git_merge(git_repository *repo, git_reference **local_p, git_r
 		while (git_index_conflict_next(&ancestor, &ours, &theirs, iter)
 		       != GIT_ITEROVER) {
 			/* Mark this conflict as resolved */
-			SSRF_INFO("conflict in %s / %s / %s -- ",
+			SSRF_INFO("git storage: conflict in %s / %s / %s -- ",
 				ours ? ours->path : "-",
 				theirs ? theirs->path : "-",
 				ancestor ? ancestor->path : "-");
 			if ((!ours && theirs && ancestor) ||
 			    (ours && !theirs && ancestor)) {
 				// the file was removed on one side or the other - just remove it
-				SSRF_INFO("looks like a delete on one side; removing the file from the index\n");
+				SSRF_INFO("git storage: looks like a delete on one side; removing the file from the index\n");
 				error = git_index_remove(merged_index, ours ? ours->path : theirs->path, GIT_INDEX_STAGE_ANY);
 			} else if (ancestor) {
 				error = git_index_conflict_remove(merged_index, ours ? ours->path : theirs ? theirs->path : ancestor->path);
 			}
 			if (error) {
-				SSRF_INFO("error at conflict resplution (%s)", giterr_last()->message);
+				SSRF_INFO("git storage: error at conflict resolution (%s)", giterr_last()->message);
 			}
 		}
 		git_index_conflict_cleanup(merged_index);
@@ -446,7 +453,7 @@ static int try_to_git_merge(git_repository *repo, git_reference **local_p, git_r
 	set_git_id(&commit_oid);
 	git_signature_free(author);
 	if (verbose)
-		SSRF_INFO("Successfully merged repositories");
+		SSRF_INFO("git storage: successfully merged repositories");
 	free_buffer(&msg);
 	return 0;
 
@@ -464,11 +471,13 @@ write_error:
 static int cleanup_local_cache(const char *remote_url, const char *branch)
 {
 	char *backup_path = move_local_cache(remote_url, branch);
+	SSRF_INFO("git storage: problems with local cache, moved to %s", backup_path);
 	report_error(translate("gettextFromC", "Problems with local cache of Subsurface cloud data"));
 	report_error(translate("gettextFromC", "Moved cache data to %s. Please try the operation again."), backup_path);
 	free(backup_path);
 	return -1;
 }
+
 static int try_to_update(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote,
 			 const char *remote_url, const char *branch, enum remote_transport rt)
 {
@@ -485,6 +494,7 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	// Dirty modified state in the working tree? We're not going
 	// to update either way
 	if (git_status_foreach(repo, check_clean, NULL)) {
+		SSRF_INFO("git storage: local cache is dirty, skipping update");
 		if (is_subsurface_cloud)
 			goto cloud_data_error;
 		else
@@ -494,6 +504,8 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	remote_id = git_reference_target(remote);
 
 	if (!local_id || !remote_id) {
+		local_id && SSRF_INFO("git storage: unable to get local SHA");
+		remote_id && SSRF_INFO("git storage: unable to get remote SHA");
 		if (is_subsurface_cloud)
 			goto cloud_data_error;
 		else
@@ -505,6 +517,7 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 		// so instead merge this as merging a commit into a repo - git_merge() appears to do that
 		// but needs testing and cleanup afterwards
 		//
+		SSRF_INFO("git storage: no common commit between local and remote branches");
 		if (is_subsurface_cloud)
 			goto cloud_data_error;
 		else
@@ -512,6 +525,8 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	}
 	/* Is the remote strictly newer? Use it */
 	if (git_oid_equal(&base, local_id)) {
+		if (verbose)
+			SSRF_INFO("git storage: remote is newer than local, update local");
 		git_storage_update_progress(translate("gettextFromC", "Update local storage to match cloud storage"));
 		return reset_to_remote(repo, local, remote_id);
 	}
@@ -519,12 +534,13 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	/* Is the local repo the more recent one? See if we can update upstream */
 	if (git_oid_equal(&base, remote_id)) {
 		if (verbose)
-			SSRF_INFO("local is newer than remote, update remote\n");
+			SSRF_INFO("git storage: local is newer than remote, update remote");
 		git_storage_update_progress(translate("gettextFromC", "Push local changes to cloud storage"));
 		return update_remote(repo, origin, local, remote, rt);
 	}
 	/* Merging a bare repository always needs user action */
 	if (git_repository_is_bare(repo)) {
+		SSRF_INFO("git storage: local is bare and has diverged from remote; user action needed");
 		if (is_subsurface_cloud)
 			goto cloud_data_error;
 		else
@@ -532,6 +548,7 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	}
 	/* Merging will definitely need the head branch too */
 	if (git_branch_is_head(local) != 1) {
+		SSRF_INFO("git storage: local branch is not HEAD, cannot merge");
 		if (is_subsurface_cloud)
 			goto cloud_data_error;
 		else
@@ -562,6 +579,7 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 		SSRF_INFO("git storage: check remote status\n");
 
 	if (git_branch_lookup(&local_ref, repo, branch, GIT_BRANCH_LOCAL)) {
+		SSRF_INFO("git storage: branch %s is missing in local repo", branch);
 		if (is_subsurface_cloud)
 			return cleanup_local_cache(remote, branch);
 		else
@@ -570,6 +588,7 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 	if (git_branch_upstream(&remote_ref, local_ref)) {
 		/* so there is no upstream branch for our branch; that's a problem.
 		 * let's push our branch */
+		SSRF_INFO("git storage: branch %s is missing in remote, pushing branch", branch);
 		git_strarray refspec;
 		git_reference_list(&refspec, repo);
 		git_push_options opts = GIT_PUSH_OPTIONS_INIT;
@@ -611,7 +630,7 @@ void delete_remote_branch(git_repository *repo, const char *remote, const char *
 		git_config_delete_entry(conf, "http.proxy");
 	}
 	if (git_remote_lookup(&origin, repo, "origin")) {
-		SSRF_INFO("Repository '%s' origin lookup failed (%s)", remote, giterr_last() ? giterr_last()->message : "(unspecified)");
+		SSRF_INFO("git storage: repository '%s' origin lookup failed (%s)", remote, giterr_last() ? giterr_last()->message : "(unspecified)");
 		return;
 	}
 	/* fetch the remote state */
@@ -620,7 +639,7 @@ void delete_remote_branch(git_repository *repo, const char *remote, const char *
 	f_opts.callbacks.credentials = credential_https_cb;
 	error = git_remote_fetch(origin, NULL, &f_opts, NULL);
 	if (error) {
-		SSRF_INFO("remote fetch failed (%s)\n", giterr_last() ? giterr_last()->message : "authentication failed");
+		SSRF_INFO("git storage: remote fetch failed (%s)\n", giterr_last() ? giterr_last()->message : "authentication failed");
 		return;
 	}
 	/* delete the remote branch by pushing to ":refs/heads/<branch>" */
@@ -634,8 +653,8 @@ void delete_remote_branch(git_repository *repo, const char *remote, const char *
 	error = git_remote_push(origin, &refspec, &p_opts);
 	free(branch_ref);
 	if (error) {
-		SSRF_INFO("Unable to delete branch '%s'", branch);
-		SSRF_INFO("error was (%s)\n", giterr_last() ? giterr_last()->message : "(unspecified)");
+		SSRF_INFO("git storage: unable to delete branch '%s'", branch);
+		SSRF_INFO("git storage: error was (%s)\n", giterr_last() ? giterr_last()->message : "(unspecified)");
 	}
 	git_remote_free(origin);
 	return;
@@ -650,21 +669,21 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 
 	if (git_local_only) {
 		if (verbose)
-			SSRF_INFO("don't sync with remote - read from cache only\n");
+			SSRF_INFO("git storage: don't sync with remote - read from cache only\n");
 		return 0;
 	}
 	if (verbose)
-		SSRF_INFO("sync with remote %s[%s]\n", remote, branch);
+		SSRF_INFO("git storage: sync with remote %s[%s]\n", remote, branch);
 	git_storage_update_progress(translate("gettextFromC", "Sync with cloud storage"));
 	git_repository_config(&conf, repo);
 	if (rt == RT_HTTPS && getProxyString(&proxy_string)) {
 		if (verbose)
-			SSRF_INFO("set proxy to \"%s\"\n", proxy_string);
+			SSRF_INFO("git storage: set proxy to \"%s\"\n", proxy_string);
 		git_config_set_string(conf, "http.proxy", proxy_string);
 		free(proxy_string);
 	} else {
 		if (verbose)
-			SSRF_INFO("delete proxy setting\n");
+			SSRF_INFO("git storage: delete proxy setting\n");
 		git_config_delete_entry(conf, "http.proxy");
 	}
 
@@ -674,13 +693,16 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 	 */
 	error = git_remote_lookup(&origin, repo, "origin");
 	if (error) {
+		const char *msg = giterr_last()->message;
+		SSRF_INFO("git storage: repo %s origin lookup failed with: %s", remote, msg);
 		if (!is_subsurface_cloud)
-			report_error("Repository '%s' origin lookup failed (%s)", remote, giterr_last()->message);
+			report_error("Repository '%s' origin lookup failed (%s)", remote, msg);
 		return 0;
 	}
 
 	if (is_subsurface_cloud && !canReachCloudServer()) {
 		// this is not an error, just a warning message, so return 0
+		SSRF_INFO("git storage: cannot connect to remote server");
 		report_error("Cannot connect to cloud server, working with local copy");
 		git_storage_update_progress(translate("gettextFromC", "Can't reach cloud server, working with local data"));
 		return 0;
@@ -703,10 +725,8 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 			report_error("Cannot sync with cloud server, working with offline copy");
 		else
 			report_error("Unable to fetch remote '%s'", remote);
-		if (verbose)
-			// If we returned GIT_EUSER during authentication, giterr_last() returns NULL
-			SSRF_INFO("remote fetch failed (%s)\n",
-				giterr_last() ? giterr_last()->message : "authentication failed");
+		// If we returned GIT_EUSER during authentication, giterr_last() returns NULL
+		SSRF_INFO("git storage: remote fetch failed (%s)\n", giterr_last() ? giterr_last()->message : "authentication failed");
 		// Since we failed to sync with online repository, enter offline mode
 		git_local_only = true;
 		error = 0;
@@ -729,10 +749,12 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 
 	error = git_repository_open(&repo, localdir);
 	if (error) {
+		const char *msg = giterr_last()->message;
+		SSRF_INFO("git storage: unable to open local cache at %s: %s", localdir, msg);
 		if (is_subsurface_cloud)
 			(void)cleanup_local_cache(remote, branch);
 		else
-			report_error("Unable to open git cache repository at %s: %s", localdir, giterr_last()->message);
+			report_error("Unable to open git cache repository at %s: %s", localdir, msg);
 		return NULL;
 	}
 
@@ -742,7 +764,7 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 		if (!git_branch_name(&name, head)) {
 			if (strcmp(name, branch)) {
 				char *branchref = format_string("refs/heads/%s", branch);
-				SSRF_INFO("Setting cache branch from '%s' to '%s'", name, branch);
+				SSRF_INFO("git storage: setting cache branch from '%s' to '%s'", name, branch);
 				git_repository_set_head(repo, branchref);
 				free(branchref);
 			}
@@ -765,19 +787,19 @@ static int repository_create_cb(git_repository **out, const char *path, int bare
 	int ret = git_repository_init(out, path, bare);
 	if (ret != 0) {
 		if (verbose)
-			SSRF_INFO("Initializing git repository failed\n");
+			SSRF_INFO("git storage: initializing git repository failed\n");
 		return ret;
 	}
 
 	git_repository_config(&conf, *out);
 	if (getProxyString(&proxy_string)) {
 		if (verbose)
-			SSRF_INFO("set proxy to \"%s\"\n", proxy_string);
+			SSRF_INFO("git storage: set proxy to \"%s\"\n", proxy_string);
 		git_config_set_string(conf, "http.proxy", proxy_string);
 		free(proxy_string);
 	} else {
 		if (verbose)
-			SSRF_INFO("delete proxy setting\n");
+			SSRF_INFO("git storage: delete proxy setting\n");
 		git_config_delete_entry(conf, "http.proxy");
 	}
 	return ret;
@@ -843,18 +865,21 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	opts.fetch_opts.callbacks.certificate_check = certificate_check_cb;
 
 	opts.checkout_branch = branch;
-	if (is_subsurface_cloud && !canReachCloudServer())
+	if (is_subsurface_cloud && !canReachCloudServer()) {
+		SSRF_INFO("git storage: cannot reach remote server");
 		return 0;
+	}
 	if (verbose > 1)
 		SSRF_INFO("git storage: calling git_clone()\n");
 	error = git_clone(&cloned_repo, remote, localdir, &opts);
 	if (verbose > 1)
-		SSRF_INFO("git storage: returned from git_clone() with error %d\n", error);
+		SSRF_INFO("git storage: returned from git_clone() with return value %d\n", error);
 	if (error) {
+		SSRF_INFO("git storage: clone of %s failed", remote);
 		char *msg = "";
 		if (giterr_last()) {
 			 msg = giterr_last()->message;
-			 SSRF_INFO("error message was %s\n", msg);
+			 SSRF_INFO("git storage: error message was %s\n", msg);
 		}
 		char *pattern = format_string("reference 'refs/remotes/origin/%s' not found", branch);
 		// it seems that we sometimes get 'Reference' and sometimes 'reference'
@@ -863,7 +888,7 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 			 * to our cloud storage and the branch doesn't exist.
 			 * So we need to create the branch and push it to the remote */
 			if (verbose)
-				SSRF_INFO("remote repo didn't include our branch\n");
+				SSRF_INFO("git storage: remote repo didn't include our branch\n");
 			cloned_repo = create_and_push_remote(localdir, remote, branch);
 #if !defined(DEBUG) && !defined(SUBSURFACE_MOBILE)
 		} else if (is_subsurface_cloud) {
@@ -894,7 +919,7 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 	enum remote_transport rt = url_to_remote_transport(remote);
 
 	if (verbose > 1) {
-		SSRF_INFO("git_remote_repo: accessing %s\n", remote);
+		SSRF_INFO("git storage: accessing %s\n", remote);
 	}
 	git_storage_update_progress(translate("gettextFromC", "Synchronising data file"));
 	/* Do we already have a local cache? */
@@ -1077,7 +1102,7 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 
 	if (subsurface_stat(loc, &st) < 0 || !S_ISDIR(st.st_mode)) {
 		if (verbose)
-			SSRF_INFO("loc %s wasn't found or is not a directory\n", loc);
+			SSRF_INFO("git storage: loc %s wasn't found or is not a directory\n", loc);
 		free(loc);
 		free(branch);
 		return dummy_git_repository;
