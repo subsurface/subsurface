@@ -263,9 +263,11 @@ private:
 	bool checkDuration(const DiveObjectHelper &myDive, struct dive *d, QString duration);
 	bool checkDepth(const DiveObjectHelper &myDive, struct dive *d, QString depth);
 	bool currentGitLocalOnly;
+	bool localChanges;
 	QString m_progressMessage;
 	bool m_btEnabled;
 	void updateAllGlobalLists();
+	void updateHaveLocalChanges(bool status);
 
 	location_t getGps(QString &gps);
 	QString m_pluggedInDeviceName;
