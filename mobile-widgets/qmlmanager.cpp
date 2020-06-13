@@ -733,6 +733,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		appendTextToLog(QStringLiteral("%1 dives loaded after importing nocloud local storage").arg(dive_table.nr));
 		noCloudToCloud = false;
 		mark_divelist_changed(true);
+		emit syncStateChanged();
 		saveChangesLocal();
 		if (git_local_only == false) {
 			appendTextToLog(QStringLiteral("taking things back offline now that storage is synced"));
@@ -1292,6 +1293,7 @@ void QMLManager::changesNeedSaving()
 	// on iOS
 	// on all other platforms we just save the changes and be done with it
 	mark_divelist_changed(true);
+	emit syncStateChanged();
 #if defined(Q_OS_IOS)
 	saveChangesLocal();
 #else
@@ -2251,4 +2253,15 @@ QStringList QMLManager::cloudCacheList() const
 void QMLManager::updateHaveLocalChanges(bool status)
 {
 	localChanges = status;
+	emit syncStateChanged();
+}
+
+// show the state of the dive list
+QString QMLManager::getSyncState() const
+{
+	if (unsavedChanges())
+		return tr("(unsaved changes in memory)");
+	if (localChanges)
+		return tr("(changes synced locally)");
+	return tr("(synced with cloud)");
 }

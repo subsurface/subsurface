@@ -60,6 +60,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QString redoText READ getRedoText NOTIFY redoTextChanged) // this is a read-only property
 	Q_PROPERTY(bool diveListProcessing MEMBER m_diveListProcessing  WRITE setDiveListProcessing NOTIFY diveListProcessingChanged)
 	Q_PROPERTY(bool initialized MEMBER m_initialized NOTIFY initializedChanged)
+	Q_PROPERTY(QString syncState READ getSyncState NOTIFY syncStateChanged)
 
 public:
 	QMLManager();
@@ -174,6 +175,8 @@ public:
 	qPrefCloudStorage::cloud_status oldStatus() const;
 	void setOldStatus(const qPrefCloudStorage::cloud_status value);
 	void rememberOldStatus();
+
+	QString getSyncState() const;
 
 public slots:
 	void appInitialized();
@@ -317,6 +320,7 @@ signals:
 	void undoTextChanged();
 	void redoTextChanged();
 	void restartDownloadSignal();
+	void syncStateChanged();
 
 	// From upload process
 	void uploadFinish(bool success, const QString &text);
