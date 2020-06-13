@@ -195,7 +195,7 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 											mbar_to_atm(cyl.type.workingpressure.mbar));
 					}
 				}
-				if (tank.gasmix != i) { // we don't handle this, yet
+				if (tank.gasmix != DC_GASMIX_UNKNOWN && tank.gasmix != i) { // we don't handle this, yet
 					shown_warning = true;
 					report_error("gasmix %d for tank %d doesn't match", tank.gasmix, i);
 				}
