@@ -32,6 +32,7 @@
 #include <QScrollBar>
 #include <QTextBlock>
 #include <QPainter>
+#include <QPainterPath>
 #include <QApplication>
 #include <QStyle>
 #include <QStyleOptionFocusRect>
