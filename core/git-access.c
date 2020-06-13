@@ -37,6 +37,7 @@ bool git_local_only = true;
 #else
 bool git_local_only = false;
 #endif
+bool git_remote_sync_successful = false;
 
 
 int (*update_progress_cb)(const char *) = NULL;
@@ -606,6 +607,7 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 		git_reference_free(remote_ref);
 	}
 	git_reference_free(local_ref);
+	git_remote_sync_successful = (error == 0);
 	return error;
 }
 
@@ -942,6 +944,8 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 		git_local_only = false;
 		ret = create_local_repo(localdir, remote, branch, rt);
 		git_local_only = glo;
+		if (ret)
+			git_remote_sync_successful = true;
 		return ret;
 	}
 
@@ -1032,6 +1036,9 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 	struct stat st;
 	git_repository *repo;
 	char *loc, *branch;
+
+	/* we are looking at a new potential remote, but we haven't synced with it */
+	git_remote_sync_successful = false;
 
 	flen = strlen(filename);
 	if (!flen || filename[--flen] != ']')
