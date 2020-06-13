@@ -304,6 +304,9 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	// get updates to the undo/redo texts
 	connect(Command::getUndoStack(), &QUndoStack::undoTextChanged, this, &QMLManager::undoTextChanged);
 	connect(Command::getUndoStack(), &QUndoStack::redoTextChanged, this, &QMLManager::redoTextChanged);
+
+	// we start out with clean data
+	updateHaveLocalChanges(false);
 }
 
 void QMLManager::applicationStateChanged(Qt::ApplicationState state)
@@ -401,6 +404,8 @@ void QMLManager::openLocalThenRemote(QString url)
 	if (git_local_only && qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_NOCLOUD)
 		appendTextToLog(QStringLiteral("have cloud credentials, but user asked not to connect to network"));
 
+	// if we were unable to sync with the remote, we assume that there are local changes
+	updateHaveLocalChanges(!git_remote_sync_successful);
 	updateAllGlobalLists();
 	setDiveListProcessing(false);
 	// this could have added a new local cache directory
@@ -527,6 +532,7 @@ void QMLManager::finishSetup()
 		} else {
 			// successfully opened the local file, now add thigs to the dive list
 			consumeFinishedLoad();
+			updateHaveLocalChanges(true);
 			appendTextToLog(QString("working in no-cloud mode, finished loading %1 dives from %2").arg(dive_table.nr).arg(existing_filename));
 		}
 	} else {
@@ -718,6 +724,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		consumeFinishedLoad();
 	}
 	setLoadFromCloud(true);
+
 	// if we came from local storage mode, let's merge the local data into the local cache
 	// for the remote data - which then later gets merged with the remote data if necessary
 	if (noCloudToCloud) {
@@ -732,6 +739,8 @@ void QMLManager::loadDivesWithValidCredentials()
 			git_local_only = true;
 		}
 	}
+	// if we successfully synced with the cloud, update that status
+	updateHaveLocalChanges(!git_remote_sync_successful);
 	// if we got here just for an initial connection to the cloud, reset to offline
 	if (currentGitLocalOnly) {
 		currentGitLocalOnly = false;
@@ -1346,6 +1355,7 @@ void QMLManager::saveChangesLocal()
 		}
 		mark_divelist_changed(false);
 		Command::setClean();
+		updateHaveLocalChanges(true);
 	} else {
 		appendTextToLog("local save requested with no unsaved changes");
 	}
@@ -2236,4 +2246,9 @@ QStringList QMLManager::cloudCacheList() const
 		}
 	}
 	return result;
+}
+
+void QMLManager::updateHaveLocalChanges(bool status)
+{
+	localChanges = status;
 }
