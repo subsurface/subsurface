@@ -9,6 +9,7 @@
 #include "core/color.h"
 #include "core/downloadfromdcthread.h" // for fill_computer_list
 #include "core/errorhelper.h"
+#include "core/parse.h"
 #include "core/qt-gui.h"
 #include "core/qthelper.h"
 #include "core/subsurfacestartup.h"

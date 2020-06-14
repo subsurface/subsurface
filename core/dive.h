@@ -275,10 +275,6 @@ extern bool time_during_dive_with_offset(const struct dive *dive, timestamp_t wh
 /* Check if two dive computer entries are the exact same dive (-1=no/0=maybe/1=yes) */
 extern int match_one_dc(const struct divecomputer *a, const struct divecomputer *b);
 
-extern void parse_xml_init(void);
-extern int parse_xml_buffer(const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites, const char **params);
-extern void parse_xml_exit(void);
-
 extern int save_dives(const char *filename);
 extern int save_dives_logic(const char *filename, bool select_only, bool anonymize);
 extern int save_dive(FILE *f, struct dive *dive, bool anonymize);
