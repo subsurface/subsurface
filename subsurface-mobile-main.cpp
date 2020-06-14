@@ -9,6 +9,7 @@
 #include "core/dive.h"
 #include "core/color.h"
 #include "core/downloadfromdcthread.h"
+#include "core/parse.h"
 #include "core/qt-gui.h"
 #include "core/qthelper.h"
 #include "core/subsurfacestartup.h"
