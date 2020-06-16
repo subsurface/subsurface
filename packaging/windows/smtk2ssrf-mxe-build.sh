@@ -35,13 +35,13 @@
 # smtk2ssrf-mxe-build.sh -i
 # should be used.
 #
-# smtk2ssrf-mxe-build.sh -i -t master
+# smtk2ssrf-mxe-build.sh -i -t main
 # This will build a release installer of smtk2ssrf placed in a directory under
 # the win-build directory where it has been launched, named smtk-import. It will
-# build git latest master regardless of subsurface's cross built version.
+# build git latest from the default branch regardless of subsurface's cross built version.
 #
 # smtk2ssrf-mxe-build.sh -b debug
-# This will build *just* a windows binary (no packing) of the latest master.
+# This will build *just* a windows binary (no packing) of the latest default branch.
 # Use with care, this flag *must* match subsurface's build one.
 #
 # smtk2ssrf-mxe-build.sh -i -t v4.6.4 -b relase -d /mnt/data
@@ -172,10 +172,10 @@ make $JOBS >/dev/null && make install || \
 #
 if [ "$AUTO" = "false" ]; then
 	cd "$BASEDIR/subsurface"
-	git reset --hard master && echo -e "$BLUE---> Uncommited changes to Subsurface (if any) dropped$DEFAULT"
-	git checkout master
+	git reset --hard main && echo -e "$BLUE---> Uncommited changes to Subsurface (if any) dropped$DEFAULT"
+	git checkout main
 	if [ ! -z "$GITREPO" ]; then
-		git pull --rebase "$GITREPO" master || aborting "git pull failed, Subsurface not updated"
+		git pull --rebase "$GITREPO" main || aborting "git pull failed, Subsurface not updated"
 	else
 		git pull --rebase || aborting "git pull failed, Subsurface not updated"
 	fi
