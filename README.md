@@ -1,4 +1,4 @@
-# Subsurface [![Build Status](https://travis-ci.org/Subsurface-divelog/subsurface.svg?branch=master)](https://travis-ci.org/Subsurface-divelog/subsurface)
+# Subsurface [![Build Status](https://travis-ci.org/Subsurface-divelog/subsurface.svg?branch=main)](https://travis-ci.org/Subsurface-divelog/subsurface)
 
 This is the README file for Subsurface 4.9.5
 

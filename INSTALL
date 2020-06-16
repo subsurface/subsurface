@@ -21,7 +21,7 @@ repository:
     git clone http://github.com/Subsurface/subsurface.git
 
 You keep it updated by doing:
-    git checkout master
+    git checkout main
     git pull -r
     
    

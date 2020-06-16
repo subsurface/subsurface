@@ -402,4 +402,4 @@ match ExtraWhitespace /\s\+$\| \+\ze\t/
 ```
 
 [1]: http://doc.qt.io/qt-5/qstring.html#manipulating-string-data
-[2]: https://github.com/Subsurface/subsurface/blob/master/core/membuffer.h
+[2]: https://github.com/Subsurface/subsurface/blob/main/core/membuffer.h
