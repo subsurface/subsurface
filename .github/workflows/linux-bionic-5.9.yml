@@ -2,10 +2,10 @@ name: Ubuntu 18.04 / Qt 5.9
 on:
   push:
     branches:
-    - master
+    - main
   pull_request:
     branches:
-    - master
+    - main
 
 jobs:
   buildOnBionic:

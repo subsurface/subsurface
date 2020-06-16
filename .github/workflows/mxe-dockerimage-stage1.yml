@@ -26,10 +26,10 @@ jobs:
       run: |
         v=${{ env.VERSION }}
         s=".stage1"
-        b=${{ github.ref }} # -BRANCH suffix, unless the branch is master
+        b=${{ github.ref }} # -BRANCH suffix, unless the branch is main
         b=${b/refs\/heads\//}
         b=${b,,} # the name needs to be all lower case
-        if [ $b = "master" ] ; then b="" ; else b="-$b" ; fi
+        if [ $b = "main" ] ; then b="" ; else b="-$b" ; fi
         echo "::set-env name=NAME::subsurface/mxe-build-container${b}:${v}${s}"
 
     - name: Build and Publish stage 1 Docker image to Dockerhub

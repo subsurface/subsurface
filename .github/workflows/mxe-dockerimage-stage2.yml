@@ -16,15 +16,15 @@ jobs:
         ref: ${{ github.event.client_payload.target_branch }}
 
       # Grab the version from the event name that we were triggered by and add ".stage1" to find the docker image to start FROM
-      # And create the NAME of the final docker image (including the branch if not master)
+      # And create the NAME of the final docker image (including the branch if not main)
     - name: set env
       run: |
         v=${{ github.event.action }}
         s=".stage1"
-        b=${{ github.event.client_payload.target_branch }} # -BRANCH suffix, unless the branch is master
+        b=${{ github.event.client_payload.target_branch }} # -BRANCH suffix, unless the branch is main
         b=${b/refs\/heads\//}
         b=${b,,} # the name needs to be all lower case
-        if [ "$b" = "master" ] || [ "$b" = "" ] ; then b="" ; else b="-$b" ; fi
+        if [ "$b" = "main" ] || [ "$b" = "" ] ; then b="" ; else b="-$b" ; fi
         echo "::set-env name=VERSION::${v}${s}"
         echo "::set-env name=NAME::subsurface/mxe-build-container${b}:${v}"
 
