@@ -283,21 +283,13 @@ ble_packet_open(dc_iostream_t **iostream, dc_context_t *context, const char* dev
 	void *io = NULL;
 
 	static const dc_custom_cbs_t callbacks = {
-		qt_ble_set_timeout, /* set_timeout */
-		NULL, /* set_break */
-		NULL, /* set_dtr */
-		NULL, /* set_rts */
-		NULL, /* get_lines */
-		NULL, /* get_received */
-		NULL, /* configure */
-		qt_ble_poll, /* poll */
-		qt_ble_read, /* read */
-		qt_ble_write, /* write */
-		qt_ble_ioctl, /* ioctl */
-		NULL, /* flush */
-		NULL, /* purge */
-		qt_custom_sleep, /* sleep */
-		qt_ble_close, /* close */
+		.set_timeout	= qt_ble_set_timeout,
+		.poll		= qt_ble_poll,
+		.read		= qt_ble_read,
+		.write		= qt_ble_write,
+		.ioctl		= qt_ble_ioctl,
+		.sleep		= qt_custom_sleep,
+		.close		= qt_ble_close,
 	};
 
 	rc = qt_ble_open(&io, context, devaddr, (dc_user_device_t *) userdata);
@@ -317,21 +309,15 @@ rfcomm_stream_open(dc_iostream_t **iostream, dc_context_t *context, const char* 
 	qt_serial_t *io = NULL;
 
 	static const dc_custom_cbs_t callbacks = {
-		qt_serial_set_timeout, /* set_timeout */
-		NULL, /* set_break */
-		NULL, /* set_dtr */
-		NULL, /* set_rts */
-		NULL, /* get_lines */
-		qt_serial_get_available, /* get_received */
-		NULL, /* configure */
-		qt_serial_poll, /* poll */
-		qt_serial_read, /* read */
-		qt_serial_write, /* write */
-		qt_serial_ioctl, /* ioctl */
-		NULL, /* flush */
-		qt_serial_purge, /* purge */
-		qt_custom_sleep, /* sleep */
-		qt_serial_close, /* close */
+		.set_timeout	= qt_serial_set_timeout,
+		.get_available	= qt_serial_get_available,
+		.poll		= qt_serial_poll,
+		.read		= qt_serial_read,
+		.write		= qt_serial_write,
+		.ioctl		= qt_serial_ioctl,
+		.purge		= qt_serial_purge,
+		.sleep		= qt_custom_sleep,
+		.close		= qt_serial_close,
 	};
 
 	rc = qt_serial_open(&io, context, devaddr);

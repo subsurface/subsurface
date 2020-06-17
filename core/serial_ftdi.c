@@ -78,7 +78,7 @@ typedef struct ftdi_serial_t {
 	unsigned int parity;
 } ftdi_serial_t;
 
-static dc_status_t serial_ftdi_get_received (void *io, size_t *value)
+static dc_status_t serial_ftdi_get_available (void *io, size_t *value)
 {
 	ftdi_serial_t *device = io;
 
@@ -471,7 +471,7 @@ static dc_status_t serial_ftdi_purge (void *io, dc_direction_t queue)
 		return DC_STATUS_INVALIDARGS;
 
 	size_t input;
-	serial_ftdi_get_received (io, &input);
+	serial_ftdi_get_available (io, &input);
 	INFO (device->context, "Flush: queue=%u, input=%lu, output=%i", queue, input,
 	      serial_ftdi_get_transmitted (device));
 
@@ -557,20 +557,17 @@ dc_status_t ftdi_open(dc_iostream_t **iostream, dc_context_t *context)
 	void *io = NULL;
 
 	static const dc_custom_cbs_t callbacks = {
-		serial_ftdi_set_timeout, /* set_timeout */
-		NULL, /* set_latency */
-		serial_ftdi_set_break, /* set_break */
-		serial_ftdi_set_dtr, /* set_dtr */
-		serial_ftdi_set_rts, /* set_rts */
-		NULL, /* get_lines */
-		serial_ftdi_get_received, /* get_received */
-		serial_ftdi_configure, /* configure */
-		serial_ftdi_read, /* read */
-		serial_ftdi_write, /* write */
-		NULL, /* flush */
-		serial_ftdi_purge, /* purge */
-		serial_ftdi_sleep, /* sleep */
-		serial_ftdi_close, /* close */
+		.set_timeout	= serial_ftdi_set_timeout,
+		.set_break	= serial_ftdi_set_break,
+		.set_dtr	= serial_ftdi_set_dtr,
+		.set_rts	= serial_ftdi_set_rts,
+		.get_available	= serial_ftdi_get_available,
+		.configure	= serial_ftdi_configure,
+		.read		= serial_ftdi_read,
+		.write		= serial_ftdi_write,
+		.purge		= serial_ftdi_purge,
+		.sleep		= serial_ftdi_sleep,
+		.close		= serial_ftdi_close,
 	};
 
 	INFO(device->contxt, "%s", "in ftdi_open");

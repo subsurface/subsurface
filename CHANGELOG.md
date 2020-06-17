@@ -1,3 +1,4 @@
+core: fix crashes when using user space FTDI driver
 mobile: add information about the cloud sync state to the Subsurface plate in the menu
 
 ---
