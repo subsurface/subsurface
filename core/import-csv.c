@@ -104,7 +104,8 @@ static char *parse_dan_new_line(char *buf, const char *NL)
 
 static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, const char *tag);
 static int parse_dan_format(const char *filename, char **params, int pnr, struct dive_table *table,
-			    struct trip_table *trips, struct dive_site_table *sites)
+			    struct trip_table *trips, filter_preset_table_t *filter_presets,
+			    struct dive_site_table *sites)
 {
 	int ret = 0, i;
 	size_t end_ptr = 0;
@@ -214,7 +215,7 @@ static int parse_dan_format(const char *filename, char **params, int pnr, struct
 				}
 			}
 			params[pnr_local] = NULL;
-			ret |= parse_xml_buffer(filename, "<csv></csv>", 11, table, trips, sites, (const char **)params);
+			ret |= parse_xml_buffer(filename, "<csv></csv>", 11, table, trips, sites, filter_presets, (const char **)params);
 			continue;
 		}
 
@@ -271,7 +272,7 @@ static int parse_dan_format(const char *filename, char **params, int pnr, struct
 		if (try_to_xslt_open_csv(filename, &mem_csv, "csv"))
 			return -1;
 
-		ret |= parse_xml_buffer(filename, mem_csv.buffer, mem_csv.size, table, trips, sites, (const char **)params);
+		ret |= parse_xml_buffer(filename, mem_csv.buffer, mem_csv.size, table, trips, sites, filter_presets, (const char **)params);
 		end_ptr += ptr - (char *)mem_csv.buffer;
 		free(mem_csv.buffer);
 	}
@@ -284,7 +285,8 @@ static int parse_dan_format(const char *filename, char **params, int pnr, struct
 }
 
 int parse_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate,
-		   struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+		   struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
+		   filter_preset_table_t *filter_presets)
 {
 	int ret, i;
 	struct memblock mem;
@@ -304,7 +306,7 @@ int parse_csv_file(const char *filename, char **params, int pnr, const char *csv
 
 	mem.size = 0;
 	if (!strcmp("DL7", csvtemplate)) {
-		return parse_dan_format(filename, params, pnr, table, trips, sites);
+		return parse_dan_format(filename, params, pnr, table, trips, sites, filter_presets);
 	} else if (strcmp(params[0], "date")) {
 		time(&now);
 		timep = localtime(&now);
@@ -339,7 +341,7 @@ int parse_csv_file(const char *filename, char **params, int pnr, const char *csv
 		fprintf(stderr, "%s/xslt/%s -\n", SUBSURFACE_SOURCE, csvtemplate);
 	}
 #endif
-	ret = parse_xml_buffer(filename, mem.buffer, mem.size, table, trips, sites, (const char **)params);
+	ret = parse_xml_buffer(filename, mem.buffer, mem.size, table, trips, sites, filter_presets, (const char **)params);
 
 	free(mem.buffer);
 	for (i = 0; params[i]; i += 2)
@@ -806,15 +808,15 @@ int parse_txt_file(const char *filename, const char *csv, struct dive_table *tab
 
 #define SBPARAMS 40
 static int parse_seabear_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate,
-				  struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
-int parse_seabear_log(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+				  struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites, filter_preset_table_t *filter_presets);
+int parse_seabear_log(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites, filter_preset_table_t *filter_presets)
 {
 	char *params[SBPARAMS];
 	int pnr = 0;
 
 	pnr = parse_seabear_header(filename, params, pnr);
 
-	if (parse_seabear_csv_file(filename, params, pnr, "csv", table, trips, sites) < 0) {
+	if (parse_seabear_csv_file(filename, params, pnr, "csv", table, trips, sites, filter_presets) < 0) {
 		return -1;
 	}
 
@@ -823,7 +825,8 @@ int parse_seabear_log(const char *filename, struct dive_table *table, struct tri
 
 
 static int parse_seabear_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate,
-				  struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+				  struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
+				  filter_preset_table_t *filter_presets)
 {
 	int ret, i;
 	struct memblock mem;
@@ -942,7 +945,7 @@ static int parse_seabear_csv_file(const char *filename, char **params, int pnr, 
 		fprintf(stderr, "xslt/csv2xml.xslt\n");
 	}
 
-	ret = parse_xml_buffer(filename, mem.buffer, mem.size, table, trips, sites, (const char **)params);
+	ret = parse_xml_buffer(filename, mem.buffer, mem.size, table, trips, sites, filter_presets, (const char **)params);
 	free(mem.buffer);
 	for (i = 0; params[i]; i += 2)
 		free(params[i + 1]);
@@ -950,7 +953,8 @@ static int parse_seabear_csv_file(const char *filename, char **params, int pnr, 
 	return ret;
 }
 
-int parse_manual_file(const char *filename, char **params, int pnr, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+int parse_manual_file(const char *filename, char **params, int pnr, struct dive_table *table, struct trip_table *trips,
+		      struct dive_site_table *sites, filter_preset_table_t *filter_presets)
 {
 	struct memblock mem;
 	time_t now;
@@ -989,7 +993,7 @@ int parse_manual_file(const char *filename, char **params, int pnr, struct dive_
 		fprintf(stderr, "%s/xslt/manualcsv2xml.xslt -\n", SUBSURFACE_SOURCE);
 	}
 #endif
-	ret = parse_xml_buffer(filename, mem.buffer, mem.size, table, trips, sites, (const char **)params);
+	ret = parse_xml_buffer(filename, mem.buffer, mem.size, table, trips, sites, filter_presets, (const char **)params);
 
 	free(mem.buffer);
 	for (i = 0; i < pnr - 2; ++i)

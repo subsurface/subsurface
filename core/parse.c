@@ -31,6 +31,7 @@ void free_parser_state(struct parser_state *state)
 	free_dive(state->cur_dive);
 	free_trip(state->cur_trip);
 	free_dive_site(state->cur_dive_site);
+	free_filter_preset(state->cur_filter);
 	free((void *)state->cur_extra_data.key);
 	free((void *)state->cur_extra_data.value);
 	free((void *)state->cur_settings.dc.model);
@@ -39,6 +40,12 @@ void free_parser_state(struct parser_state *state)
 	free((void *)state->cur_settings.dc.firmware);
 	free(state->country);
 	free(state->city);
+	free(state->fulltext);
+	free(state->fulltext_string_mode);
+	free(state->filter_constraint_type);
+	free(state->filter_constraint_string_mode);
+	free(state->filter_constraint_range_mode);
+	free(state->filter_constraint);
 }
 
 /*
@@ -223,7 +230,64 @@ void dive_site_end(struct parser_state *state)
 	state->cur_dive_site = NULL;
 }
 
-// now we need to add the code to parse the parts of the divesite enry
+void filter_preset_start(struct parser_state *state)
+{
+	if (state->cur_filter)
+		return;
+	state->cur_filter = alloc_filter_preset();
+}
+
+void filter_preset_end(struct parser_state *state)
+{
+	add_filter_preset_to_table(state->cur_filter, state->filter_presets);
+	free_filter_preset(state->cur_filter);
+	state->cur_filter = NULL;
+}
+
+void fulltext_start(struct parser_state *state)
+{
+	if (!state->cur_filter)
+		return;
+	state->in_fulltext = true;
+}
+
+void fulltext_end(struct parser_state *state)
+{
+	if (!state->in_fulltext)
+		return;
+	filter_preset_set_fulltext(state->cur_filter, state->fulltext, state->fulltext_string_mode);
+	free(state->fulltext);
+	free(state->fulltext_string_mode);
+	state->fulltext = NULL;
+	state->fulltext_string_mode = NULL;
+	state->in_fulltext = false;
+}
+
+void filter_constraint_start(struct parser_state *state)
+{
+	if (!state->cur_filter)
+		return;
+	state->in_filter_constraint = true;
+}
+
+void filter_constraint_end(struct parser_state *state)
+{
+	if (!state->in_filter_constraint)
+		return;
+	filter_preset_add_constraint(state->cur_filter, state->filter_constraint_type, state->filter_constraint_string_mode,
+				     state->filter_constraint_range_mode, state->filter_constraint_negate, state->filter_constraint);
+	free(state->filter_constraint_type);
+	free(state->filter_constraint_string_mode);
+	free(state->filter_constraint_range_mode);
+	free(state->filter_constraint);
+
+	state->filter_constraint_type = NULL;
+	state->filter_constraint_string_mode = NULL;
+	state->filter_constraint_range_mode = NULL;
+	state->filter_constraint_negate = false;
+	state->filter_constraint = NULL;
+	state->in_filter_constraint = false;
+}
 
 void dive_start(struct parser_state *state)
 {
@@ -456,4 +520,3 @@ int atoi_n(char *ptr, unsigned int len)
 	}
 	return 0;
 }
-

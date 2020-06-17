@@ -530,7 +530,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 
 	showProgressBar();
 	QByteArray fileNamePtr = QFile::encodeName(filename);
-	if (!parse_file(fileNamePtr.data(), &dive_table, &trip_table, &dive_site_table))
+	if (!parse_file(fileNamePtr.data(), &dive_table, &trip_table, &dive_site_table, &filter_preset_table))
 		setCurrentFile(fileNamePtr.data());
 	process_loaded_dives();
 	hideProgressBar();
@@ -1549,10 +1549,11 @@ void MainWindow::importFiles(const QStringList fileNames)
 	struct dive_table table = empty_dive_table;
 	struct trip_table trips = empty_trip_table;
 	struct dive_site_table sites = empty_dive_site_table;
+	filter_preset_table_t filter_presets;
 
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		parse_file(fileNamePtr.data(), &table, &trips, &sites);
+		parse_file(fileNamePtr.data(), &table, &trips, &sites, &filter_presets);
 	}
 	QString source = fileNames.size() == 1 ? fileNames[0] : tr("multiple files");
 	Command::importDives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS, source);
@@ -1569,7 +1570,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	showProgressBar();
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		if (!parse_file(fileNamePtr.data(), &dive_table, &trip_table, &dive_site_table)) {
+		if (!parse_file(fileNamePtr.data(), &dive_table, &trip_table, &dive_site_table, &filter_preset_table)) {
 			setCurrentFile(fileNamePtr.data());
 			addRecentFile(fileNamePtr, false);
 		}
@@ -1646,7 +1647,7 @@ void MainWindow::on_actionImportDiveSites_triggered()
 
 	for (const QString &s: fileNames) {
 		QByteArray fileNamePtr = QFile::encodeName(s);
-		parse_file(fileNamePtr.data(), &table, &trips, &sites);
+		parse_file(fileNamePtr.data(), &table, &trips, &sites, &filter_preset_table);
 	}
 	// The imported dive sites still have pointers to imported dives - remove them
 	for (int i = 0; i < sites.nr; ++i)

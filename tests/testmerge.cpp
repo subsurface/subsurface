@@ -25,9 +25,10 @@ void TestMerge::testMergeEmpty()
 	struct dive_table table = empty_dive_table;
 	struct trip_table trips = empty_trip_table;
 	struct dive_site_table sites = empty_dive_site_table;
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &table, &trips, &sites), 0);
+	filter_preset_table_t filter_presets;
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &table, &trips, &sites, &filter_presets), 0);
 	add_imported_dives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS);
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test48.xml", &table, &trips, &sites), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test48.xml", &table, &trips, &sites, &filter_presets), 0);
 	add_imported_dives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS);
 	QCOMPARE(save_dives("./testmerge47+48.ssrf"), 0);
 	QFile org(SUBSURFACE_TEST_DATA "/dives/test47+48.xml");
@@ -51,9 +52,10 @@ void TestMerge::testMergeBackwards()
 	struct dive_table table = empty_dive_table;
 	struct trip_table trips = empty_trip_table;
 	struct dive_site_table sites = empty_dive_site_table;
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test48.xml", &table, &trips, &sites), 0);
+	filter_preset_table_t filter_presets;
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test48.xml", &table, &trips, &sites, &filter_presets), 0);
 	add_imported_dives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS);
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &table, &trips, &sites), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &table, &trips, &sites, &filter_presets), 0);
 	add_imported_dives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS);
 	QCOMPARE(save_dives("./testmerge47+48.ssrf"), 0);
 	QFile org(SUBSURFACE_TEST_DATA "/dives/test48+47.xml");
