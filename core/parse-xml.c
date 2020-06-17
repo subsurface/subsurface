@@ -1416,6 +1416,50 @@ static void try_to_fill_dive_site(struct parser_state *state, const char *name, 
 	nonmatch("divesite", name, buf);
 }
 
+static void try_to_fill_filter(struct filter_preset *filter, const char *name, char *buf)
+{
+	start_match("filterpreset", name, buf);
+
+	char *s = NULL;
+	if (MATCH("name", utf8_string, &s)) {
+		filter_preset_set_name(filter, s);
+		free(s);
+		return;
+	}
+
+	nonmatch("filterpreset", name, buf);
+}
+
+static void try_to_fill_fulltext(const char *name, char *buf, struct parser_state *state)
+{
+	start_match("fulltext", name, buf);
+
+	if (MATCH("mode", utf8_string, &state->fulltext_string_mode))
+		return;
+	if (MATCH("fulltext", utf8_string, &state->fulltext))
+		return;
+
+	nonmatch("fulltext", name, buf);
+}
+
+static void try_to_fill_filter_constraint(const char *name, char *buf, struct parser_state *state)
+{
+	start_match("fulltext", name, buf);
+
+	if (MATCH("type", utf8_string, &state->filter_constraint_type))
+		return;
+	if (MATCH("string_mode", utf8_string, &state->filter_constraint_string_mode))
+		return;
+	if (MATCH("range_mode", utf8_string, &state->filter_constraint_range_mode))
+		return;
+	if (MATCH("negate", get_bool, &state->filter_constraint_negate))
+		return;
+	if (MATCH("constraint", utf8_string, &state->filter_constraint))
+		return;
+
+	nonmatch("fulltext", name, buf);
+}
+
 static bool entry(const char *name, char *buf, struct parser_state *state)
 {
 	if (!strncmp(name, "version.program", sizeof("version.program") - 1) ||
@@ -1433,6 +1477,18 @@ static bool entry(const char *name, char *buf, struct parser_state *state)
 	}
 	if (state->cur_dive_site) {
 		try_to_fill_dive_site(state, name, buf);
+		return true;
+	}
+	if (state->in_filter_constraint) {
+		try_to_fill_filter_constraint(name, buf, state);
+		return true;
+	}
+	if (state->in_fulltext) {
+		try_to_fill_fulltext(name, buf, state);
+		return true;
+	}
+	if (state->cur_filter) {
+		try_to_fill_filter(state->cur_filter, name, buf);
 		return true;
 	}
 	if (!state->cur_event.deleted) {
@@ -1567,6 +1623,9 @@ static struct nesting {
 	  { "divecomputerid", dc_settings_start, dc_settings_end },
 	  { "settings", settings_start, settings_end },
 	  { "site", dive_site_start, dive_site_end },
+	  { "filterpreset", filter_preset_start, filter_preset_end },
+	  { "fulltext", fulltext_start, fulltext_end },
+	  { "constraint", filter_constraint_start, filter_constraint_end },
 	  { "dive", dive_start, dive_end },
 	  { "Dive", dive_start, dive_end },
 	  { "trip", trip_start, trip_end },
@@ -1662,7 +1721,7 @@ static const char *preprocess_divelog_de(const char *buffer)
 
 int parse_xml_buffer(const char *url, const char *buffer, int size,
 		     struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-		     const char **params)
+		     filter_preset_table_t *filter_presets, const char **params)
 {
 	UNUSED(size);
 	xmlDoc *doc;
@@ -1674,6 +1733,7 @@ int parse_xml_buffer(const char *url, const char *buffer, int size,
 	state.target_table = table;
 	state.trips = trips;
 	state.sites = sites;
+	state.filter_presets = filter_presets;
 	doc = xmlReadMemory(res, strlen(res), url, NULL, 0);
 	if (!doc)
 		doc = xmlReadMemory(res, strlen(res), url, "latin1", 0);

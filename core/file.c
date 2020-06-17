@@ -76,7 +76,8 @@ out:
 }
 
 
-static void zip_read(struct zip_file *file, const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+static void zip_read(struct zip_file *file, const char *filename, struct dive_table *table, struct trip_table *trips,
+		     struct dive_site_table *sites, filter_preset_table_t *filter_presets)
 {
 	int size = 1024, n, read = 0;
 	char *mem = malloc(size);
@@ -87,11 +88,12 @@ static void zip_read(struct zip_file *file, const char *filename, struct dive_ta
 		mem = realloc(mem, size);
 	}
 	mem[read] = 0;
-	(void) parse_xml_buffer(filename, mem, read, table, trips, sites, NULL);
+	(void) parse_xml_buffer(filename, mem, read, table, trips, sites, filter_presets, NULL);
 	free(mem);
 }
 
-int try_to_open_zip(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+int try_to_open_zip(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
+		    filter_preset_table_t *filter_presets)
 {
 	int success = 0;
 	/* Grr. libzip needs to re-open the file, it can't take a buffer */
@@ -106,7 +108,7 @@ int try_to_open_zip(const char *filename, struct dive_table *table, struct trip_
 			/* skip parsing the divelogs.de pictures */
 			if (strstr(zip_get_name(zip, index, 0), "pictures/"))
 				continue;
-			zip_read(file, filename, table, trips, sites);
+			zip_read(file, filename, table, trips, sites, filter_presets);
 			zip_fclose(file);
 			success++;
 		}
@@ -125,7 +127,6 @@ static int db_test_func(void *param, int columns, char **data, char **column)
 	UNUSED(column);
 	return *data[0] == '0';
 }
-
 
 static int try_to_open_db(const char *filename, struct memblock *mem, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
 {
@@ -225,7 +226,8 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
  * Followed by the data values (all comma-separated, all one long line).
  */
 static int open_by_filename(const char *filename, const char *fmt, struct memblock *mem,
-			    struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+			    struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
+			    filter_preset_table_t *filter_presets)
 {
 	// hack to be able to provide a comment for the translated string
 	static char *csv_warning = QT_TRANSLATE_NOOP3("gettextFromC",
@@ -234,7 +236,7 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 
 	/* Suunto Dive Manager files: SDE, ZIP; divelogs.de files: DLD */
 	if (!strcasecmp(fmt, "SDE") || !strcasecmp(fmt, "ZIP") || !strcasecmp(fmt, "DLD"))
-		return try_to_open_zip(filename, table, trips, sites);
+		return try_to_open_zip(filename, table, trips, sites, filter_presets);
 
 	/* CSV files */
 	if (!strcasecmp(fmt, "CSV"))
@@ -255,17 +257,18 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 	return 0;
 }
 
-static int parse_file_buffer(const char *filename, struct memblock *mem, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+static int parse_file_buffer(const char *filename, struct memblock *mem, struct dive_table *table,
+			     struct trip_table *trips, struct dive_site_table *sites, filter_preset_table_t *filter_presets)
 {
 	int ret;
 	char *fmt = strrchr(filename, '.');
-	if (fmt && (ret = open_by_filename(filename, fmt + 1, mem, table, trips, sites)) != 0)
+	if (fmt && (ret = open_by_filename(filename, fmt + 1, mem, table, trips, sites, filter_presets)) != 0)
 		return ret;
 
 	if (!mem->size || !mem->buffer)
 		return report_error("Out of memory parsing file %s\n", filename);
 
-	return parse_xml_buffer(filename, mem->buffer, mem->size, table, trips, sites, NULL);
+	return parse_xml_buffer(filename, mem->buffer, mem->size, table, trips, sites, filter_presets, NULL);
 }
 
 int check_git_sha(const char *filename, struct git_repository **git_p, const char **branch_p)
@@ -302,7 +305,7 @@ int check_git_sha(const char *filename, struct git_repository **git_p, const cha
 	return 1;
 }
 
-int parse_file(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+int parse_file(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites, filter_preset_table_t *filter_presets)
 {
 	struct git_repository *git;
 	const char *branch = NULL;
@@ -372,7 +375,7 @@ int parse_file(const char *filename, struct dive_table *table, struct trip_table
 		return 0;
 	}
 
-	ret = parse_file_buffer(filename, &mem, table, trips, sites);
+	ret = parse_file_buffer(filename, &mem, table, trips, sites, filter_presets);
 	free(mem.buffer);
 	return ret;
 }

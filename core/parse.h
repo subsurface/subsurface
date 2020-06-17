@@ -5,6 +5,7 @@
 #define MAX_EVENT_NAME 128
 
 #include "dive.h" // for struct event!
+#include "filterpreset.h"
 
 #include <sqlite3.h>
 
@@ -51,11 +52,21 @@ struct parser_state {
 	struct dive_trip *cur_trip;		/* owning */
 	struct sample *cur_sample;		/* non-owning */
 	struct picture cur_picture;		/* owning */
+	struct filter_preset *cur_filter;	/* owning */
+	char *fulltext;				/* owning */
+	char *fulltext_string_mode;		/* owning */
+	char *filter_constraint_type;		/* owning */
+	char *filter_constraint_string_mode;	/* owning */
+	char *filter_constraint_range_mode;	/* owning */
+	bool filter_constraint_negate;
+	char *filter_constraint;		/* owning */
 	char *country, *city;			/* owning */
 	int taxonomy_category, taxonomy_origin;
 
 	bool in_settings;
 	bool in_userid;
+	bool in_fulltext;
+	bool in_filter_constraint;
 	struct tm cur_tm;
 	int lastcylinderindex, next_o2_sensor;
 	int o2pressure_sensor;
@@ -65,6 +76,7 @@ struct parser_state {
 	struct dive_table *target_table;	/* non-owning */
 	struct trip_table *trips;		/* non-owning */
 	struct dive_site_table *sites;		/* non-owning */
+	filter_preset_table_t *filter_presets;	/* non-owning */
 
 	sqlite3 *sql_handle;			/* for SQL based parsers */
 	event_allocation_t event_allocation;
@@ -100,6 +112,12 @@ void dive_site_start(struct parser_state *state);
 void dive_site_end(struct parser_state *state);
 void dive_start(struct parser_state *state);
 void dive_end(struct parser_state *state);
+void filter_preset_start(struct parser_state *state);
+void filter_preset_end(struct parser_state *state);
+void filter_constraint_start(struct parser_state *state);
+void filter_constraint_end(struct parser_state *state);
+void fulltext_start(struct parser_state *state);
+void fulltext_end(struct parser_state *state);
 void trip_start(struct parser_state *state);
 void trip_end(struct parser_state *state);
 void picture_start(struct parser_state *state);
@@ -121,7 +139,8 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 int atoi_n(char *ptr, unsigned int len);
 
 void parse_xml_init(void);
-int parse_xml_buffer(const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites, const char **params);
+int parse_xml_buffer(const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
+		     filter_preset_table_t *filter_presets, const char **params);
 void parse_xml_exit(void);
 int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
 int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
