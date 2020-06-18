@@ -284,10 +284,18 @@ ble_packet_open(dc_iostream_t **iostream, dc_context_t *context, const char* dev
 
 	static const dc_custom_cbs_t callbacks = {
 		.set_timeout	= qt_ble_set_timeout,
+		.set_break	= nullptr,
+		.set_dtr	= nullptr,
+		.set_rts	= nullptr,
+		.get_lines	= nullptr,
+		.get_available	= nullptr,
+		.configure	= nullptr,
 		.poll		= qt_ble_poll,
 		.read		= qt_ble_read,
 		.write		= qt_ble_write,
 		.ioctl		= qt_ble_ioctl,
+		.flush		= nullptr,
+		.purge		= nullptr,
 		.sleep		= qt_custom_sleep,
 		.close		= qt_ble_close,
 	};
@@ -310,11 +318,17 @@ rfcomm_stream_open(dc_iostream_t **iostream, dc_context_t *context, const char* 
 
 	static const dc_custom_cbs_t callbacks = {
 		.set_timeout	= qt_serial_set_timeout,
+		.set_break	= nullptr,
+		.set_dtr	= nullptr,
+		.set_rts	= nullptr,
+		.get_lines	= nullptr,
 		.get_available	= qt_serial_get_available,
+		.configure	= nullptr,
 		.poll		= qt_serial_poll,
 		.read		= qt_serial_read,
 		.write		= qt_serial_write,
 		.ioctl		= qt_serial_ioctl,
+		.flush		= nullptr,
 		.purge		= qt_serial_purge,
 		.sleep		= qt_custom_sleep,
 		.close		= qt_serial_close,
