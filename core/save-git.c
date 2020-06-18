@@ -18,6 +18,8 @@
 
 #include "dive.h"
 #include "divesite.h"
+#include "filterconstraint.h"
+#include "filterpreset.h"
 #include "subsurface-string.h"
 #include "trip.h"
 #include "device.h"
@@ -916,6 +918,87 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 	}
 }
 
+/*
+ * Format a filter constraint line to the membuffer b.
+ * The format is
+ *	constraint type "type of the constraint" [stringmode "string mode"] [rangemode "rangemode"] [negate] data "data of the constraint".
+ * where brackets indicate optional blocks.
+ * For possible types and how data is interpreted see core/filterconstraint.[c|h]
+ * Whether stringmode or rangemode exist depends on the type of the constraint.
+ * Any constraint can be negated.
+ */
+static void format_one_filter_constraint(int preset_id, int constraint_id, struct membuffer *b)
+{
+	const struct filter_constraint *constraint = filter_preset_constraint(preset_id, constraint_id);
+	const char *type = filter_constraint_type_to_string(constraint->type);
+	char *data;
+
+	show_utf8(b, "constraint type=", type, "");
+	if (filter_constraint_has_string_mode(constraint->type)) {
+		const char *mode = filter_constraint_string_mode_to_string(constraint->string_mode);
+		show_utf8(b, " stringmode=", mode, "");
+	}
+	if (filter_constraint_has_range_mode(constraint->type)) {
+		const char *mode = filter_constraint_range_mode_to_string(constraint->range_mode);
+		show_utf8(b, " rangemode=", mode, "");
+	}
+	if (constraint->negate)
+		put_format(b, " negate");
+	data = filter_constraint_data_to_string(constraint);
+	show_utf8(b, " data=", data, "\n");
+	free(data);
+}
+
+/*
+ * Write a filter constraint to the membuffer b.
+ * Each line starts with a type, which is either "name", "fulltext" or "constraint".
+ * There must be one "name" entry, zero or ont "fulltext" entries and an arbitrary number of "contraint" entries.
+ * The "name" entry gives the name of the filter constraint.
+ * The "fulltext" entry has the format
+ *	fulltext mode "fulltext mode" query "the query as entered by the user"
+ * The format of the "constraint" entry is described in the format_one_filter_constraint() function.
+ */
+static void format_one_filter_preset(int preset_id, struct membuffer *b)
+{
+	char *name, *fulltext;
+
+	name = filter_preset_name(preset_id);
+	show_utf8(b, "name ", name, "\n");
+	free(name);
+
+	fulltext = filter_preset_fulltext_query(preset_id);
+	if (!empty_string(fulltext)) {
+		show_utf8(b, "fulltext mode=", filter_preset_fulltext_mode(preset_id), "");
+		show_utf8(b, " query=", fulltext, "\n");
+	}
+
+	for (int i = 0; i < filter_preset_constraint_count(preset_id); i++)
+		format_one_filter_constraint(preset_id, i, b);
+}
+
+static void save_filter_presets(git_repository *repo, struct dir *tree)
+{
+	struct membuffer dirname = { 0 };
+	struct dir *filter_dir;
+	put_format(&dirname, "02-Filterpresets");
+	filter_dir = new_directory(repo, tree, &dirname);
+	free_buffer(&dirname);
+
+	for (int i = 0; i < filter_presets_count(); i++)
+	{
+		struct membuffer preset_name = { 0 };
+		struct membuffer preset_buffer = { 0 };
+
+		put_format(&preset_name, "Preset-%03d", i);
+		format_one_filter_preset(i, &preset_buffer);
+
+		blob_insert(repo, filter_dir, &preset_buffer, mb_cstring(&preset_name));
+
+		free_buffer(&preset_name);
+		free_buffer(&preset_buffer);
+	}
+}
+
 static int create_git_tree(git_repository *repo, struct dir *root, bool select_only, bool cached_ok)
 {
 	int i;
@@ -926,6 +1009,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 	save_settings(repo, root);
 
 	save_divesites(repo, root);
+	save_filter_presets(repo, root);
 
 	for (i = 0; i < trip_table.nr; ++i)
 		trip_table.trips[i]->saved = 0;
