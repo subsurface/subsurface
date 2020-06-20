@@ -2,6 +2,12 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 4.9.6
+~~~~~~~~~~~~~~~~~~~~~~~~~
+bugfixes:
+- fix crashes when using user space FTDI driver
+- re-enable user space FTDI in the Mac binaries
+
 New in _Subsurface_ 4.9.5
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 new features:
