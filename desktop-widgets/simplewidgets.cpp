@@ -10,6 +10,7 @@
 #include <QDesktopServices>
 #include <QToolTip>
 #include <QClipboard>
+#include <QCompleter>
 
 #include "core/file.h"
 #include "core/filterpreset.h"
@@ -486,6 +487,16 @@ AddFilterPresetDialog::AddFilterPresetDialog(QWidget *parent)
 	connect(ui.buttonBox, &QDialogButtonBox::accepted, this, &AddFilterPresetDialog::accept);
 	connect(ui.buttonBox, &QDialogButtonBox::rejected, this, &AddFilterPresetDialog::reject);
 	nameChanged(ui.name->text());
+
+	// Create a completer so that the user can easily overwrite existing presets.
+	QStringList presets;
+	int count = filter_presets_count();
+	presets.reserve(count);
+	for (int i = 0; i < count; ++i)
+		presets.push_back(filter_preset_name_qstring(i));
+	QCompleter *completer = new QCompleter(presets, this);
+	completer->setCaseSensitivity(Qt::CaseInsensitive);
+	ui.name->setCompleter(completer);
 }
 
 void AddFilterPresetDialog::nameChanged(const QString &text)
