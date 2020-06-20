@@ -34,11 +34,20 @@ struct git_parser_state {
 	struct divecomputer *active_dc;
 	struct dive *active_dive;
 	dive_trip_t *active_trip;
+	char *fulltext_mode;
+	char *fulltext_query;
+	char *filter_constraint_type;
+	char *filter_constraint_string_mode;
+	char *filter_constraint_range_mode;
+	bool filter_constraint_negate;
+	char *filter_constraint_data;
 	struct picture active_pic;
 	struct dive_site *active_site;
+	struct filter_preset *active_filter;
 	struct dive_table *table;
 	struct trip_table *trips;
 	struct dive_site_table *sites;
+	filter_preset_table_t *filter_presets;
 	int o2pressure_sensor;
 };
 
@@ -1096,6 +1105,114 @@ static void picture_parser(char *line, struct membuffer *str, struct git_parser_
 	match_action(line, str, state, picture_action, ARRAY_SIZE(picture_action));
 }
 
+static void parse_filter_preset_constraint_keyvalue(void *_state, const char *key, const char *value)
+{
+	struct git_parser_state *state = _state;
+	if (!strcmp(key, "type")) {
+		free(state->filter_constraint_type);
+		state->filter_constraint_type = strdup(value);
+		return;
+	}
+	if (!strcmp(key, "rangemode")) {
+		free(state->filter_constraint_range_mode);
+		state->filter_constraint_range_mode = strdup(value);
+		return;
+	}
+	if (!strcmp(key, "stringmode")) {
+		free(state->filter_constraint_string_mode);
+		state->filter_constraint_string_mode = strdup(value);
+		return;
+	}
+	if (!strcmp(key, "negate")) {
+		state->filter_constraint_negate = true;
+		return;
+	}
+	if (!strcmp(key, "data")) {
+		free(state->filter_constraint_data);
+		state->filter_constraint_data = strdup(value);
+		return;
+	}
+
+	report_error("Unknown filter preset constraint key/value pair (%s/%s)", key, value);
+}
+
+static void parse_filter_preset_constraint(char *line, struct membuffer *str, struct git_parser_state *state)
+{
+	for (;;) {
+		char c;
+		while (isspace(c = *line))
+			line++;
+		if (!c)
+			break;
+		line = parse_keyvalue_entry(parse_filter_preset_constraint_keyvalue, state, line, str);
+	}
+
+	filter_preset_add_constraint(state->active_filter, state->filter_constraint_type, state->filter_constraint_string_mode,
+				     state->filter_constraint_range_mode, state->filter_constraint_negate, state->filter_constraint_data);
+	free(state->filter_constraint_type);
+	free(state->filter_constraint_string_mode);
+	free(state->filter_constraint_range_mode);
+	free(state->filter_constraint_data);
+	state->filter_constraint_type = NULL;
+	state->filter_constraint_string_mode = NULL;
+	state->filter_constraint_range_mode = NULL;
+	state->filter_constraint_negate = false;
+	state->filter_constraint_data = NULL;
+}
+
+static void parse_filter_preset_fulltext_keyvalue(void *_state, const char *key, const char *value)
+{
+	struct git_parser_state *state = _state;
+	if (!strcmp(key, "mode")) {
+		free(state->fulltext_mode);
+		state->fulltext_mode = strdup(value);
+		return;
+	}
+	if (!strcmp(key, "query")) {
+		free(state->fulltext_query);
+		state->fulltext_query = strdup(value);
+		return;
+	}
+
+	report_error("Unknown filter preset fulltext key/value pair (%s/%s)", key, value);
+}
+
+static void parse_filter_preset_fulltext(char *line, struct membuffer *str, struct git_parser_state *state)
+{
+	for (;;) {
+		char c;
+		while (isspace(c = *line))
+			line++;
+		if (!c)
+			break;
+		line = parse_keyvalue_entry(parse_filter_preset_fulltext_keyvalue, state, line, str);
+	}
+
+	filter_preset_set_fulltext(state->active_filter, state->fulltext_query, state->fulltext_mode);
+	free(state->fulltext_mode);
+	free(state->fulltext_query);
+	state->fulltext_mode = NULL;
+	state->fulltext_query = NULL;
+}
+
+static void parse_filter_preset_name(char *line, struct membuffer *str, struct git_parser_state *state)
+{
+	UNUSED(line);
+	filter_preset_set_name(state->active_filter, detach_cstring(str));
+}
+
+/* These need to be sorted! */
+struct keyword_action filter_preset_action[] = {
+#undef D
+#define D(x) { #x, parse_filter_preset_ ## x }
+	D(constraint), D(fulltext), D(name)
+};
+
+static void filter_preset_parser(char *line, struct membuffer *str, struct git_parser_state *state)
+{
+	match_action(line, str, state, filter_preset_action, ARRAY_SIZE(filter_preset_action));
+}
+
 /*
  * We have a very simple line-based interface, with the small
  * complication that lines can have strings in the middle, and
@@ -1446,6 +1563,9 @@ static int walk_tree_directory(const char *root, const git_tree_entry *entry, st
 	if (!strcmp(name, "01-Divesites"))
 		return GIT_WALK_OK;
 
+	if (!strcmp(name, "02-Filterpresets"))
+		return GIT_WALK_OK;
+
 	while (isdigit(c = name[digits]))
 		digits++;
 
@@ -1618,6 +1738,24 @@ static int parse_picture_entry(struct git_parser_state *state, const git_tree_en
 	return 0;
 }
 
+static int parse_filter_preset(struct git_parser_state *state, const git_tree_entry *entry)
+{
+	git_blob *blob = git_tree_entry_blob(state->repo, entry);
+	if (!blob)
+		return report_error("Unable to read filter preset file");
+
+	state->active_filter = alloc_filter_preset();
+	for_each_line(blob, filter_preset_parser, state);
+
+	git_blob_free(blob);
+
+	add_filter_preset_to_table(state->active_filter, state->filter_presets);
+	free_filter_preset(state->active_filter);
+	state->active_filter = NULL;
+
+	return 0;
+}
+
 static int walk_tree_file(const char *root, const git_tree_entry *entry, struct git_parser_state *state)
 {
 	struct dive *dive = state->active_dive;
@@ -1635,6 +1773,10 @@ static int walk_tree_file(const char *root, const git_tree_entry *entry, struct 
 			return parse_divecomputer_entry(state, entry, name + 12);
 		if (dive && !strncmp(name, "Dive", 4))
 			return parse_dive_entry(state, entry, name + 4);
+		break;
+	case 'P':
+		if (!strncmp(name, "Preset-", 7))
+			return parse_filter_preset(state, entry);
 		break;
 	case 'S':
 		if (!strncmp(name, "Site", 4))
@@ -1736,7 +1878,8 @@ const char *get_sha(git_repository *repo, const char *branch)
  * If it is a git repository, we return zero for success,
  * or report an error and return 1 if the load failed.
  */
-int git_load_dives(struct git_repository *repo, const char *branch, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+int git_load_dives(struct git_repository *repo, const char *branch, struct dive_table *table, struct trip_table *trips,
+		   struct dive_site_table *sites, filter_preset_table_t *filter_presets)
 {
 	int ret;
 	struct git_parser_state state = { 0 };
@@ -1744,6 +1887,7 @@ int git_load_dives(struct git_repository *repo, const char *branch, struct dive_
 	state.table = table;
 	state.trips = trips;
 	state.sites = sites;
+	state.filter_presets = filter_presets;
 
 	if (repo == dummy_git_repository)
 		return report_error("Unable to open git repository at '%s'", branch);
