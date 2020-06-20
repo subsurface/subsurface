@@ -52,7 +52,10 @@ RUN mkdir -p /win
 ADD settings-stage1.mk /win/settings.mk
 RUN cd /win ; git clone git://github.com/mxe/mxe ; \
     cd mxe ; \
-    git checkout ${_ver} ; 
+    git checkout ${_ver} ;
+# Patch the qtconnectivity build to enable native-win32-bluetooth
+ADD qtconnectivity-1.patch /win/qtconnectivity-1.patch
+RUN mv /win/qtconnectivity-1.patch /win/mxe/src
 RUN mv /win/settings.mk /win/mxe
 RUN cd /win/mxe ; \
     make -j 6 2>&1 | tee build.log ;
