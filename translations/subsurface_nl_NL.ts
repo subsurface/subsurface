@@ -49,7 +49,7 @@
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="240"/>
         <source>Remote Bluetooth device selection</source>
-        <translation>Extern Bluetooth toestel selecteren </translation>
+        <translation>Extern Bluetooth apparaat selecteren </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="22"/>
@@ -76,7 +76,7 @@
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="244"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="26"/>
         <source>Local Bluetooth device details</source>
-        <translation>Details voor lokaal Bluetooth toestel</translation>
+        <translation>Details voor lokaal Bluetooth apparaat</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="75"/>
@@ -119,7 +119,7 @@
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="249"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="27"/>
         <source>Select device:</source>
-        <translation>Kies toestel:</translation>
+        <translation>Kies apparaat:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="172"/>
@@ -128,7 +128,7 @@
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="250"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="32"/>
         <source>Discovered devices</source>
-        <translation>Gevonden toestellen</translation>
+        <translation>Gevonden apparaten</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="193"/>
@@ -168,7 +168,7 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="224"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.ui" line="224"/>
         <source>Show all BT devices</source>
-        <translation>Toon alle BT toestellen</translation>
+        <translation>Toon alle BT apparaten</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="242"/>
@@ -198,25 +198,25 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="101"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="101"/>
         <source>Trying to turn on the local Bluetooth device...</source>
-        <translation>Probeer het lokale Bluetooth toestel aan te zetten...</translation>
+        <translation>Probeert het lokale Bluetooth apparaat in te schakelen...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="104"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="104"/>
         <source>Trying to turn off the local Bluetooth device...</source>
-        <translation>Probeer het lokale Bluetooth toestel uit te zetten...</translation>
+        <translation>Probeert het lokale Bluetooth apparaat uit te schakelen...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="132"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="132"/>
         <source>Remote devices list was cleared.</source>
-        <translation>Lijst met externe toestellen is leeg gemaakt.</translation>
+        <translation>Lijst met externe apparaten is gewist.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="144"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="144"/>
         <source>Scanning for remote devices...</source>
-        <translation>Externe toestellen zoeken...</translation>
+        <translation>Zoeken naar externe apparaten...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="157"/>
@@ -229,7 +229,7 @@
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="167"/>
         <source>The local Bluetooth device was %1.</source>
         <extracomment>%1 will be replaced with &quot;turned on&quot; or &quot;turned off&quot;</extracomment>
-        <translation>Het lokale Bluetooth toestel was %1.</translation>
+        <translation>Het lokale Bluetooth apparaat was %1.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="168"/>
@@ -283,7 +283,7 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="231"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="231"/>
         <source>The device %1 can be used for connection. You can press the Save button.</source>
-        <translation>Toestel %1 kan gebruikt worden voor connectie. Druk op de Opslaan knop.</translation>
+        <translation>Apparaat %1 kan gebruikt worden voor connectie. Druk op de Opslaan knop.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="244"/>
@@ -291,19 +291,19 @@
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="244"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="353"/>
         <source>The device %1 must be paired in order to be used. Please use the context menu for pairing options.</source>
-        <translation>Toestel %1 moet gekoppeld worden om te kunnen gebruiken. Gebruik het context menu voor koppeling-opties.</translation>
+        <translation>Apparaat %1 moet worden gekoppeld om te kunnen worden gebruikt. Gebruik het contextmenu voor koppelingsopties.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="250"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="250"/>
         <source>A device needs a non-zero address for a connection.</source>
-        <translation>Een toestel heeft en niet-nul adres nodig voor verbinding.</translation>
+        <translation>Een apparaat heeft een niet-nul adres nodig voor een verbinding.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="270"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="270"/>
         <source>The local device was changed.</source>
-        <translation>Het lokale toestel is veranderd.</translation>
+        <translation>Het lokale apparaat is gewijzigd.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="286"/>
@@ -321,49 +321,49 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="303"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="303"/>
         <source>Trying to pair device %1</source>
-        <translation>Probeer toestel %1 te koppelen</translation>
+        <translation>Probeert apparaat %1 te koppelen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="307"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="307"/>
         <source>Trying to unpair device %1</source>
-        <translation>Probeer toestel %1 te ontkoppelen</translation>
+        <translation>Probeert apparaat %1 te ontkoppelen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="319"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="319"/>
         <source>Device %1 was unpaired.</source>
-        <translation>Toestel %1 was ontkoppeld.</translation>
+        <translation>Apparaat %1 is ontkoppeld.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="326"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="326"/>
         <source>Device %1 was paired.</source>
-        <translation>Toestel %1 was gekoppeld.</translation>
+        <translation>Apparaat %1 is gekoppeld.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="331"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="331"/>
         <source>Device %1 was paired and is authorized.</source>
-        <translation>Toestel %1 is gekoppeld en toegestaan.</translation>
+        <translation>Apparaat %1 is gekoppeld en toegestaan.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="356"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="356"/>
         <source>The device %1 can now be used for connection. You can press the Save button.</source>
-        <translation>Toestel %1 kan gebruikt worden voor connectie. Druk op de Opslaan knop.</translation>
+        <translation>Apparaat %1 kan gebruikt worden voor connectie. Druk op de Opslaan knop.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="368"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="368"/>
         <source>Local device error: %1.</source>
-        <translation>Lokaal toestel fout: %1.</translation>
+        <translation>Lokaal apparaat fout: %1.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="369"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="369"/>
         <source>Pairing error. If the remote device requires a custom PIN code, please try to pair the devices using your operating system. </source>
-        <translation>Koppel fout. Als het externe toestel een specifieke PIN code vereist, probeer dan te koppelen via het besturingssysteem.</translation>
+        <translation>Koppelingsfout. Als het externe apparaat een aangepaste PIN code vereist, probeer dan de apparaten te koppelen via het besturingssysteem.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="371"/>
@@ -381,7 +381,7 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="383"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="383"/>
         <source>Writing to or reading from the device resulted in an error.</source>
-        <translation>Lezen van of schrijven naar het toestel faalt.</translation>
+        <translation>Schrijven naar of lezen van het apparaat faalde.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="386"/>
@@ -393,7 +393,7 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="390"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="390"/>
         <source>Device discovery error: %1.</source>
-        <translation>Toestel vind-fout: %1.</translation>
+        <translation>Fout bij apparaatdetectie: %1.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="441"/>
@@ -411,7 +411,7 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="487"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/btdeviceselectiondialog.cpp" line="487"/>
         <source>The device discovery agent was not created because the %1 address does not match the physical adapter address of any local Bluetooth device.</source>
-        <translation>De vind-agent was niet aangemaakt omdat het %1 adres niet overeenkomt met het fysieke adapter adres van enig lokaal Bluetooth toestel.</translation>
+        <translation>De apparaatdetectie agent is niet aangemaakt omdat het %1 adres niet overeenkomt met het fysieke adapteradres van een lokaal Bluetooth apparaat.</translation>
     </message>
 </context>
 <context>
@@ -1258,19 +1258,19 @@
         <location filename="../core/configuredivecomputer.cpp" line="556"/>
         <location filename="../tmp/Subsurface-4.9.4/core/configuredivecomputer.cpp" line="556"/>
         <source>Setting successfully written to device</source>
-        <translation>Instelling bewaard op het toestel</translation>
+        <translation>Instelling bewaard op het apparaat</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="565"/>
         <location filename="../tmp/Subsurface-4.9.4/core/configuredivecomputer.cpp" line="565"/>
         <source>Device firmware successfully updated</source>
-        <translation>Firmware van het toestel succesvol aangepast</translation>
+        <translation>Firmware van apparaat succesvol bijgewerkt</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="574"/>
         <location filename="../tmp/Subsurface-4.9.4/core/configuredivecomputer.cpp" line="574"/>
         <source>Device settings successfully reset</source>
-        <translation>Instellingen van het toestel teruggezet</translation>
+        <translation>Apparaatinstellingen zijn teruggezet</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="590"/>
@@ -1299,7 +1299,7 @@
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/configuredivecomputerdialog.ui" line="22"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2536"/>
         <source>Device or mount point</source>
-        <translation>Device of mountpoint</translation>
+        <translation>Apparaat of mountpoint</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="47"/>
@@ -1334,21 +1334,21 @@
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/configuredivecomputerdialog.ui" line="90"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2542"/>
         <source>Read settings from backup file or from device before writing to the device</source>
-        <translation>Instellingen lezen van een backup bestand of van het toestel vóór het bewaren in een backup bestand</translation>
+        <translation>Lees instellingen van een backup bestand of van het apparaat vóór het schrijven naar het apparaat</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="93"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/configuredivecomputerdialog.ui" line="93"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2544"/>
         <source>Save changes to device</source>
-        <translation>Aanpassingen opslaan op het toestel</translation>
+        <translation>Wijzigingen opslaan op het apparaat</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="116"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/configuredivecomputerdialog.ui" line="116"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2546"/>
         <source>Read settings from backup file or from device before writing to a backup file</source>
-        <translation>Instellingen lezen van een backup bestand of van het toestel vóór het bewaren in een backup bestand</translation>
+        <translation>Lees instellingen van een backup bestand of van het apparaat vóór het schrijven naar een backup bestand</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="119"/>
@@ -2536,7 +2536,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2712"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2890"/>
         <source>Reset device to default settings</source>
-        <translation>Toestel instellen met standaardinstellingen </translation>
+        <translation>Reset apparaat naar standaardinstellingen </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1393"/>
@@ -3144,19 +3144,19 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1490"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/configuredivecomputerdialog.cpp" line="1490"/>
         <source>Connecting to device...</source>
-        <translation>Verbinden met toestel...</translation>
+        <translation>Verbinden met apparaat...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1516"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/configuredivecomputerdialog.cpp" line="1516"/>
         <source>Connected to device</source>
-        <translation>Verbonden met toestel</translation>
+        <translation>Verbonden met apparaat</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1536"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/configuredivecomputerdialog.cpp" line="1536"/>
         <source>Disconnected from device</source>
-        <translation>Verbinding met toestel verbroken</translation>
+        <translation>Verbinding met apparaat verbroken</translation>
     </message>
 </context>
 <context>
@@ -3549,7 +3549,7 @@ duikcomputer wilt verwijderen?</translation>
         <location filename="../qt-models/divecomputermodel.cpp" line="9"/>
         <location filename="../tmp/Subsurface-4.9.4/qt-models/divecomputermodel.cpp" line="9"/>
         <source>Device ID</source>
-        <translation>Toestel ID</translation>
+        <translation>Apparaat ID</translation>
     </message>
     <message>
         <location filename="../qt-models/divecomputermodel.cpp" line="9"/>
@@ -6620,7 +6620,7 @@ Bestaande duikstek</translation>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/downloadfromdivecomputer.ui" line="52"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="318"/>
         <source>Force download of all dives</source>
-        <translation>Forceer download van alle duiken</translation>
+        <translation>Forceer downloaden van alle duiken</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="59"/>
@@ -6655,7 +6655,7 @@ Bestaande duikstek</translation>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/downloadfromdivecomputer.ui" line="97"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="324"/>
         <source>Select a remote Bluetooth device.</source>
-        <translation>Selecteer een extern Bluetooth toestel.</translation>
+        <translation>Selecteer een extern Bluetooth apparaat.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="100"/>
@@ -6678,7 +6678,7 @@ Bestaande duikstek</translation>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/downloadfromdivecomputer.ui" line="121"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="329"/>
         <source>Device or mount point</source>
-        <translation>Device of mountpoint</translation>
+        <translation>Apparaat of mountpoint</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="135"/>
@@ -9037,7 +9037,7 @@ Mogelijk ontbreken de QML modules QtPositioning en QtLocation!</translation>
 If your device uses Bluetooth, do the same preparations as for a logbook download before continuing with the update</source>
         <translation>
 
-Als je toestel Bluetooth gebruikt, doe de gelijke voorbereidingen als voor een logboek download voordat je verder gaat met de update</translation>
+Als uw apparaat Bluetooth gebruikt, doe dezelfde voorbereidingen als voor het downloaden van een logboek voordat u doorgaat met de update</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="302"/>
@@ -11926,7 +11926,7 @@ Bestanden met onjuiste datum/tijd</translation>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="34"/>
         <location filename="../tmp/Subsurface-4.9.4/mobile-widgets/qml/StartPage.qml" line="34"/>
         <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.&lt;br/&gt;&lt;br/&gt;If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) and a password of your choice (letters and numbers).&lt;br/&gt;&lt;br/&gt;To use Subsurface-mobile only with local data on this device, select the no cloud button above.</source>
-        <translation>Voer je cloud rechten in om Subsurface-mobile met Subsurface cloud opslag te gebruiken.&lt;br/&gt;&lt;br/&gt;Als dit de eerste keer is dat je de Subsurface cloud opslag gebruikt, voer een geldig e-mailadres in (in kleine letters) en een wachtwoord naar keuze (letters en cijfers).&lt;br/&gt;&lt;br/&gt;Klik de &quot;Geen cloud&quot; knop hierboven om Subsurface-mobile alleen met de lokale data op dit toestel te gebruiken.</translation>
+        <translation>Voer je cloud rechten in om Subsurface-mobile met Subsurface cloud opslag te gebruiken.&lt;br/&gt;&lt;br/&gt;Als dit de eerste keer is dat je de Subsurface cloud opslag gebruikt, voer een geldig e-mailadres in (in kleine letters) en een wachtwoord naar keuze (letters en cijfers).&lt;br/&gt;&lt;br/&gt;Klik de &quot;Geen cloud&quot; knop hierboven om Subsurface-mobile alleen met de lokale data op dit apparaat te gebruiken.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="47"/>
@@ -14542,7 +14542,7 @@ Maximum</translation>
         <location filename="../tmp/Subsurface-4.9.4/core/libdivecomputer.c" line="1422"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.</source>
-        <translation>Fout bij openen van device %s %s (%s).
+        <translation>Fout bij openen van apparaat %s %s (%s).
 Vaak is het, om software fouten te vinden, nuttig om de logbestanden aan de ontwikkelaars te sturen. Deze kunnen in het &quot;Over&quot; scherm naar het klembord worden gekopieerd.</translation>
     </message>
     <message>
@@ -14551,9 +14551,9 @@ Vaak is het, om software fouten te vinden, nuttig om de logbestanden aan de ontw
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, a libdivecomputer logfile will be useful.
 You can create this logfile by selecting the corresponding checkbox in the download dialog.</source>
-        <translation>Fout bij openen van device %s %s (%s).
-Vaak is het, om software fouten te vinden, nuttig om een libdivecomputer log bestand te maken.
-Dit log bestand kan worden aangemaakt door het selecteren van het juiste keuzeveld.</translation>
+        <translation>Fout bij openen van apparaat %s %s (%s).
+Vaak is het, om software fouten te vinden, nuttig om een libdivecomputer logbestand te maken.
+Dit logbestand kan worden aangemaakt door het selecteren van het juiste keuzeveld.</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1433"/>
