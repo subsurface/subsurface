@@ -1,8 +1,6 @@
 #ifndef FILTERWIDGET_2_H
 #define FILTERWIDGET_2_H
 
-#include <QHideEvent>
-#include <QShowEvent>
 
 #include <vector>
 #include <memory>
@@ -13,6 +11,8 @@
 
 class FilterConstraintWidget;
 class QMenu;
+class QHideEvent;
+class QShowEvent;
 
 class FilterWidget2 : public QWidget {
 	Q_OBJECT
