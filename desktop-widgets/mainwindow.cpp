@@ -1536,7 +1536,7 @@ void MainWindow::setTitle()
 	}
 
 	QString unsaved = (unsavedChanges() ? " *" : "");
-	QString shown = QString(" (%1)").arg(filterWidget2.shownText());
+	QString shown = QString(" (%1)").arg(DiveFilter::instance()->shownText());
 	setWindowTitle("Subsurface: " + displayedFilename(existing_filename) + unsaved + shown);
 }
 

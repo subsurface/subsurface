@@ -38,6 +38,7 @@ class DiveFilter {
 public:
 	static DiveFilter *instance();
 
+	QString shownText() const;
 	bool diveSiteMode() const; // returns true if we're filtering on dive site (on mobile always returns false)
 #ifndef SUBSURFACE_MOBILE
 	const QVector<dive_site *> &filteredDiveSites() const;

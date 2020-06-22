@@ -2,6 +2,7 @@
 
 #include "divefilter.h"
 #include "divelist.h" // for filter_dive
+#include "gettextfromc.h"
 #include "qthelper.h"
 #include "subsurface-qt/divelistnotifier.h"
 #ifndef SUBSURFACE_MOBILE
@@ -150,6 +151,14 @@ bool DiveFilter::diveSiteMode() const
 	return false;
 }
 #endif
+
+QString DiveFilter::shownText() const
+{
+	if (diveSiteMode() || filterData.validFilter())
+		return gettextFromC::tr("%L1/%L2 shown").arg(shown_dives).arg(dive_table.nr);
+	else
+		return gettextFromC::tr("%L1 dives").arg(dive_table.nr);
+}
 
 void DiveFilter::setFilter(const FilterData &data)
 {
