@@ -20,7 +20,6 @@ class FilterWidget2 : public QWidget {
 public:
 	explicit FilterWidget2(QWidget *parent = 0);
 	~FilterWidget2();
-	QString shownText();
 
 protected:
 	void hideEvent(QHideEvent *event) override;
@@ -43,7 +42,6 @@ private:
 	bool ignoreSignal;
 	Ui::FilterWidget2 ui;
 	FilterConstraintModel constraintModel;
-	bool validFilter;
 	void addConstraint(filter_constraint_type type);
 	std::vector<std::unique_ptr<FilterConstraintWidget>> constraintWidgets;
 	FilterData createFilterData() const;

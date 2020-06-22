@@ -10,8 +10,7 @@
 
 FilterWidget2::FilterWidget2(QWidget* parent) :
 	QWidget(parent),
-	ignoreSignal(false),
-	validFilter(false)
+	ignoreSignal(false)
 {
 	ui.setupUi(this);
 
@@ -194,7 +193,6 @@ void FilterWidget2::updateFilter()
 		return;
 
 	FilterData filterData = createFilterData();
-	validFilter = filterData.validFilter();
 	DiveFilter::instance()->setFilter(filterData);
 }
 
@@ -226,12 +224,4 @@ void FilterWidget2::hideEvent(QHideEvent *event)
 void FilterWidget2::addConstraint(filter_constraint_type type)
 {
 	constraintModel.addConstraint(type);
-}
-
-QString FilterWidget2::shownText()
-{
-	if (validFilter)
-		return tr("%L1/%L2 shown").arg(shown_dives).arg(dive_table.nr);
-	else
-		return tr("%L1 dives").arg(dive_table.nr);
 }
