@@ -53,7 +53,8 @@ ADD settings-stage1.mk /win/settings.mk
 RUN cd /win ; git clone git://github.com/mxe/mxe ; \
     cd mxe ; \
     git checkout ${_ver} ;
-# Patch the qtconnectivity build to enable native-win32-bluetooth
+# Patch the qtconnectivity build to explicilty enable native-win32-bluetooth and ensure another
+# backend is not picked
 ADD qtconnectivity-1.patch /win/qtconnectivity-1.patch
 RUN mv /win/qtconnectivity-1.patch /win/mxe/src
 RUN mv /win/settings.mk /win/mxe

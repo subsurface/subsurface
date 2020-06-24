@@ -9,4 +9,3 @@ pushd $SCRIPTPATH
 docker build -t subsurface/mxe-build-container:$VERSION --build-arg=mxe_sha=1ee37f8 -f Dockerfile-stage1 .
 docker build -t subsurface/mxe-build-container:$VERSION --build-arg=VERSION=$VERSION -f Dockerfile-stage2 .
 popd
- 
