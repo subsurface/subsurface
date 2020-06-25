@@ -107,6 +107,9 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	} else if (btName == "COSMIQ") {
 		vendor = "Deepblu";
 		product = "Cosmiq+";
+	} else if (btName.startsWith("S1")) {
+		vendor = "Oceans";
+		product = "S1";
 	}
 
 	// check if we found a known dive computer
