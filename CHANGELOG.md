@@ -1,3 +1,4 @@
+desktop: fix broken merging of dives with multiple cylinders
 mobile: add information about the cloud sync state to the Subsurface plate in the menu
 
 ---

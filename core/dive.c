@@ -2204,15 +2204,16 @@ static int different_manual_pressures(const cylinder_t *a, const cylinder_t *b)
  * same cylinder use (ie OC/Diluent/Oxygen), and if pressures
  * have been added manually they need to match.
  */
-static int match_cylinder(const cylinder_t *cyl, const struct dive *dive, const bool *used)
+static int match_cylinder(const cylinder_t *cyl, const struct dive *dive, const bool *try_match)
 {
 	int i;
 
 	for (i = 0; i < dive->cylinders.nr; i++) {
 		const cylinder_t *target;
 
-		if (!used[i])
+		if (!try_match[i])
 			continue;
+
 		target = get_cylinder(dive, i);
 		if (!same_gasmix(cyl->gasmix, target->gasmix))
 			continue;
@@ -2232,36 +2233,57 @@ static int match_cylinder(const cylinder_t *cyl, const struct dive *dive, const 
  * use, but we might want to fill in any missing cylinder details
  * in 'a' if we had it from 'b'.
  */
-static void merge_one_cylinder(struct cylinder_table *t, const cylinder_t *a, const cylinder_t *b)
+static void merge_one_cylinder(cylinder_t *a, const cylinder_t *b)
 {
-	cylinder_t *res = add_empty_cylinder(t);
-	res->type.size.mliter = a->type.size.mliter ?
-		a->type.size.mliter : b->type.size.mliter;
-	res->type.workingpressure.mbar = a->type.workingpressure.mbar ?
-		a->type.workingpressure.mbar : b->type.workingpressure.mbar;
-	res->type.description = !empty_string(a->type.description) ?
-		copy_string(a->type.description) : copy_string(b->type.description);
-	res->gasmix = a->gasmix;
-	res->start.mbar = a->start.mbar ?
-		a->start.mbar : b->start.mbar;
-	res->end.mbar = a->end.mbar ?
-		a->end.mbar : b->end.mbar;
+	if (!a->type.size.mliter)
+		a->type.size.mliter = b->type.size.mliter;
+	if (!a->type.workingpressure.mbar)
+		a->type.workingpressure.mbar = b->type.workingpressure.mbar;
+	if (empty_string(a->type.description))
+		a->type.description = copy_string(b->type.description);
+	if (!a->start.mbar)
+		a->start.mbar = b->start.mbar;
+	if (!a->end.mbar)
+		a->end.mbar = b->end.mbar;
 
 	if (a->sample_start.mbar && b->sample_start.mbar)
-		res->sample_start.mbar = a->sample_start.mbar > b->sample_start.mbar ?  a->sample_start.mbar : b->sample_start.mbar;
-	else
-		res->sample_start.mbar = 0;
+		a->sample_start.mbar = a->sample_start.mbar > b->sample_start.mbar ?  a->sample_start.mbar : b->sample_start.mbar;
 	if (a->sample_end.mbar && b->sample_end.mbar)
-		res->sample_end.mbar = a->sample_end.mbar < b->sample_end.mbar ?  a->sample_end.mbar : b->sample_end.mbar;
-	else
-		res->sample_end.mbar = 0;
+		a->sample_end.mbar = a->sample_end.mbar < b->sample_end.mbar ?  a->sample_end.mbar : b->sample_end.mbar;
 
-	res->depth = a->depth;
-	res->manually_added = a->manually_added;
-	res->gas_used.mliter = a->gas_used.mliter + b->gas_used.mliter;
-	res->deco_gas_used.mliter = a->deco_gas_used.mliter + b->deco_gas_used.mliter;
-	res->bestmix_o2 = a->bestmix_o2 && b->bestmix_o2;
-	res->bestmix_he = a->bestmix_he && b->bestmix_he;
+	/* Really? */
+	a->gas_used.mliter += b->gas_used.mliter;
+	a->deco_gas_used.mliter += b->deco_gas_used.mliter;
+	a->bestmix_o2 = a->bestmix_o2 && b->bestmix_o2;
+	a->bestmix_he = a->bestmix_he && b->bestmix_he;
+}
+
+static bool cylinder_has_data(const cylinder_t *cyl)
+{
+	return !cyl->type.size.mliter &&
+	       !cyl->type.workingpressure.mbar &&
+	       !cyl->type.description &&
+	       !cyl->gasmix.o2.permille &&
+	       !cyl->gasmix.he.permille &&
+	       !cyl->start.mbar &&
+	       !cyl->end.mbar &&
+	       !cyl->sample_start.mbar &&
+	       !cyl->sample_end.mbar &&
+	       !cyl->gas_used.mliter &&
+	       !cyl->deco_gas_used.mliter;
+}
+
+static bool cylinder_in_use(const struct dive *dive, int idx)
+{
+	if (idx < 0 || idx >= dive->cylinders.nr)
+		return false;
+
+	/* This tests for gaschange events or pressure changes */
+	if (is_cylinder_used(dive, idx))
+		return true;
+
+	/* This tests for typenames or gas contents */
+	return cylinder_has_data(get_cylinder(dive, idx));
 }
 
 /*
@@ -2278,70 +2300,71 @@ static void merge_cylinders(struct dive *res, const struct dive *a, const struct
 			    int mapping_a[], int mapping_b[])
 {
 	int i;
-	bool *used_in_a = malloc(a->cylinders.nr * sizeof(bool));
-	bool *used_in_b = malloc(b->cylinders.nr * sizeof(bool));
+	int max_cylinders = a->cylinders.nr + b->cylinders.nr;
+	bool *used_in_a = malloc(max_cylinders * sizeof(bool));
+	bool *used_in_b = malloc(max_cylinders * sizeof(bool));
+	bool *try_to_match = malloc(max_cylinders * sizeof(bool));
 
 	/* First, clear all cylinders in destination */
 	clear_cylinder_table(&res->cylinders);
 
-	/* Calculate usage map of cylinders */
-	for (i = 0; i < a->cylinders.nr; i++) {
-		used_in_a[i] = is_cylinder_used(a, i);
+	/* Clear all cylinder mappings */
+	for (i = 0; i < a->cylinders.nr; i++)
 		mapping_a[i] = -1;
-	}
-
-	for (i = 0; i < b->cylinders.nr; i++) {
-		used_in_b[i] = is_cylinder_used(b, i);
+	for (i = 0; i < b->cylinders.nr; i++)
 		mapping_b[i] = -1;
+
+	/* Calculate usage map of cylinders, clear matching map */
+	for (i = 0; i < max_cylinders; i++) {
+		used_in_a[i] = cylinder_in_use(a, i);
+		used_in_b[i] = cylinder_in_use(b, i);
+		try_to_match[i] = false;
 	}
 
-	/* For each cylinder in 'b', try to match up things */
+	/*
+	 * For each cylinder in 'a' that is used, copy it to 'res'.
+	 * These are also potential matches for 'b' to use.
+	 */
+	for (i = 0; i < max_cylinders; i++) {
+		int res_nr = res->cylinders.nr;
+		if (!used_in_a[i])
+			continue;
+		mapping_a[i] = res_nr;
+		try_to_match[res_nr] = true;
+		add_cloned_cylinder(&res->cylinders, *get_cylinder(a, i));
+	}
+
+	/*
+	 * For each cylinder in 'b' that is used, try to match it
+	 * with an existing cylinder in 'res' from 'a'
+	 */
 	for (i = 0; i < b->cylinders.nr; i++) {
 		int j;
 
 		if (!used_in_b[i])
 			continue;
 
-		j = match_cylinder(get_cylinder(b, i), a, used_in_a);
-		if (j < 0)
-			continue;
+		j = match_cylinder(get_cylinder(b, i), res, try_to_match);
 
-		/*
-		 * If we had a successful match, we:
-		 *
-		 *  - try to merge individual cylinder data from both cases
-		 *
-		 *  - save that in the mapping table
-		 *
-		 *  - remove it from the used array so that it will not be used later
-		 *
-		 *  - mark as needing renumbering if the index changed
-		 */
-		mapping_b[i] = res->cylinders.nr;
-		mapping_a[j] = res->cylinders.nr;
-		used_in_a[i] = false;
-		used_in_b[j] = false;
-		merge_one_cylinder(&res->cylinders, get_cylinder(a, j), get_cylinder(b, i));
-	}
-
-	/* Now copy all the used cylinders from 'a' that are used but have not been matched */
-	for (i = 0; i < a->cylinders.nr; i++) {
-		if (used_in_a[i]) {
-			mapping_a[i] = res->weightsystems.nr;
-			add_cloned_cylinder(&res->cylinders, *get_cylinder(a, i));
-		}
-	}
-
-	/* Finally, copy all the used cylinders from 'b' that are used but have not been matched */
-	for (i = 0; i < b->cylinders.nr; i++) {
-		if (used_in_b[i]) {
-			mapping_b[i] = res->weightsystems.nr;
+		/* No match? Add it to the result */
+		if (j < 0) {
+			int res_nr = res->cylinders.nr;
+			mapping_b[i] = res_nr;
 			add_cloned_cylinder(&res->cylinders, *get_cylinder(b, i));
+			continue;
 		}
+
+		/* Otherwise, merge the result to the one we found */
+		mapping_b[i] = j;
+		merge_one_cylinder(get_cylinder(res,j), get_cylinder(b, i));
+
+		/* Don't match the same target more than once */
+		try_to_match[j] = false;
 	}
 
 	free(used_in_a);
 	free(used_in_b);
+	free(try_to_match);
 }
 
 /* Check whether a weightsystem table contains a given weightsystem */
