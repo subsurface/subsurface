@@ -410,6 +410,19 @@ dc_status_t BLEObject::select_preferred_service(void)
 		return DC_STATUS_IO;
 	}
 
+	bool hasread = false;
+	bool haswrite = false;
+	foreach (const QLowEnergyCharacteristic &c, preferred->characteristics()) {
+		if (is_read_characteristic(c) && !hasread) {
+			qDebug() <<  "  Reading from " << c.uuid();
+			hasread = true;
+		}
+		if (is_write_characteristic(c) && !haswrite) {
+			qDebug() <<  "  Writing to " << c.uuid();
+			haswrite = true;
+		}
+	}
+
 	connect(preferred, &QLowEnergyService::stateChanged, this, &BLEObject::serviceStateChanged);
 	connect(preferred, &QLowEnergyService::characteristicChanged, this, &BLEObject::characteristcStateChanged);
 	connect(preferred, &QLowEnergyService::characteristicWritten, this, &BLEObject::characteristicWritten);
