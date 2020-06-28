@@ -32,6 +32,7 @@ struct FilterData {
 	StringFilterMode fulltextStringMode = StringFilterMode::STARTSWITH;
 	std::vector<filter_constraint> constraints;
 	bool validFilter() const;
+	bool operator==(const FilterData &) const;
 };
 
 class DiveFilter {

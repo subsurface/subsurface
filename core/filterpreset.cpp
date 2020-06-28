@@ -133,8 +133,9 @@ FilterData filter_preset_get(int preset)
 	return filter_preset_table[preset].data;
 }
 
-int filter_preset_add(const QString &name, const FilterData &d)
+int filter_preset_add(const QString &nameIn, const FilterData &d)
 {
+	QString name = get_unique_preset_name(nameIn, filter_preset_table);
 	return filter_preset_add_to_table(name, d, filter_preset_table);
 }
 

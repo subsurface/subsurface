@@ -458,7 +458,7 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton *button)
 		struct dive_site_table sites = empty_dive_site_table;
 		filter_preset_table_t filter_presets;
 		parse_file(QFile::encodeName(zipFile.fileName()), &table, &trips, &sites, &filter_presets);
-		Command::importDives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS, QStringLiteral("divelogs.de"));
+		Command::importDives(&table, &trips, &sites, nullptr, IMPORT_MERGE_ALL_TRIPS, QStringLiteral("divelogs.de"));
 
 		/* store last entered user/pass in config */
 		qPrefCloudStorage::set_divelogde_user(ui.userID->text());

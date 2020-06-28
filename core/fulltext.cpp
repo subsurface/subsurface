@@ -18,7 +18,6 @@ struct full_text_cache {
 class FullText {
 	std::map<QString, std::vector<dive *>> words; // Dives that belong to each word
 public:
-
 	void populate(); // Rebuild from current dive_table
 	void registerDive(struct dive *d); // Note: can be called repeatedly
 	void unregisterDive(struct dive *d); // Note: can be called repeatedly

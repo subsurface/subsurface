@@ -194,7 +194,7 @@ void DiveImportedModel::recordDives(int flags)
 	std::pair<struct dive_table, struct dive_site_table> tables = consumeTables();
 	if (tables.first.nr > 0) {
 		auto data = thread.data();
-		Command::importDives(&tables.first, nullptr, &tables.second, flags, data->devName());
+		Command::importDives(&tables.first, nullptr, &tables.second, nullptr, flags, data->devName());
 	} else {
 		clear_dive_site_table(&tables.second);
 	}

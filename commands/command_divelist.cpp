@@ -469,7 +469,8 @@ void AddDive::undoit()
 	setSelection(selection, currentDive);
 }
 
-ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, struct dive_site_table *sites, int flags, const QString &source)
+ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, struct dive_site_table *sites,
+			 filter_preset_table_t *filter_presets, int flags, const QString &source)
 {
 	setText(Command::Base::tr("import %n dive(s) from %1", "", dives->nr).arg(source));
 
@@ -509,6 +510,22 @@ ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, str
 	divesAndSitesToRemove.dives.reserve(dives_to_remove.nr);
 	for (int i = 0; i < dives_to_remove.nr; ++i)
 		divesAndSitesToRemove.dives.push_back(dives_to_remove.dives[i]);
+
+	// When encountering filter presets with equal names, check whether they are
+	// the same. If they are, ignore them.
+	if (filter_presets) {
+		for (const filter_preset &preset: *filter_presets) {
+			QString name = preset.name;
+			auto it = std::find_if(filter_preset_table.begin(), filter_preset_table.end(),
+					       [&name](const filter_preset &preset) { return preset.name == name; });
+			if (it != filter_preset_table.end() && it->data == preset.data)
+				continue;
+			filterPresetsToAdd.emplace_back(preset.name, preset.data);
+		}
+
+		// Consume the table for analogy with the other tables.
+		filter_presets->clear();
+	}
 }
 
 bool ImportDives::workToBeDone()
@@ -532,6 +549,13 @@ void ImportDives::redoit()
 
 	// Remember dives and sites to remove
 	divesAndSitesToRemove = std::move(divesAndSitesToRemoveNew);
+
+	// Add new filter presets
+	for (auto &it: filterPresetsToAdd) {
+		filterPresetsToRemove.push_back(filter_preset_add(it.first, it.second));
+		emit diveListNotifier.filterPresetAdded(filterPresetsToRemove.back());
+	}
+	filterPresetsToAdd.clear();
 }
 
 void ImportDives::undoit()
@@ -547,6 +571,18 @@ void ImportDives::undoit()
 
 	// ...and restore the selection
 	setSelection(selection, currentDive);
+
+	// Remove filter presets. Do this in reverse order.
+	for (auto it = filterPresetsToRemove.rbegin(); it != filterPresetsToRemove.rend(); ++it) {
+		int index = *it;
+		QString oldName = filter_preset_name_qstring(index);
+		FilterData oldData = filter_preset_get(index);
+		filter_preset_delete(index);
+		emit diveListNotifier.filterPresetRemoved(index);
+		filterPresetsToAdd.emplace_back(oldName, oldData);
+	}
+	filterPresetsToRemove.clear();
+	std::reverse(filterPresetsToAdd.begin(), filterPresetsToAdd.end());
 }
 
 DeleteDive::DeleteDive(const QVector<struct dive*> &divesToDeleteIn)

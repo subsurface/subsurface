@@ -5,6 +5,7 @@
 #define COMMAND_DIVELIST_H
 
 #include "command_base.h"
+#include "core/filterpreset.h"
 
 #include <QVector>
 
@@ -97,7 +98,8 @@ private:
 class ImportDives : public DiveListBase {
 public:
 	// Note: dives and trips are consumed - after the call they will be empty.
-	ImportDives(struct dive_table *dives, struct trip_table *trips, struct dive_site_table *sites, int flags, const QString &source);
+	ImportDives(struct dive_table *dives, struct trip_table *trips, struct dive_site_table *sites,
+		    filter_preset_table_t *filter_presets, int flags, const QString &source);
 private:
 	void undoit() override;
 	void redoit() override;
@@ -109,11 +111,14 @@ private:
 
 	// For redo
 	std::vector<OwningDiveSitePtr>	sitesToAdd;
+	std::vector<std::pair<QString,FilterData>>
+					filterPresetsToAdd;
 
 	// For undo
 	std::vector<dive_site *>	sitesToRemove;
-	std::vector<dive *>	selection;
-	dive *			currentDive;
+	std::vector<dive *>		selection;
+	dive				*currentDive;
+	std::vector<int>		filterPresetsToRemove;
 };
 
 class DeleteDive : public DiveListBase {
