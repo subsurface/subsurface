@@ -86,6 +86,7 @@ struct filter_constraint {
 	filter_constraint(const filter_constraint &);
 	filter_constraint &operator=(const filter_constraint &);
 	~filter_constraint();
+	bool operator==(const filter_constraint &f2) const;
 #endif
 };
 

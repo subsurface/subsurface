@@ -602,6 +602,22 @@ filter_constraint &filter_constraint::operator=(const filter_constraint &c)
 	return *this;
 }
 
+bool filter_constraint::operator==(const filter_constraint &f2) const
+{
+	if (type != f2.type || string_mode != f2.string_mode || range_mode != f2.range_mode || negate != f2.negate)
+		return false;
+	if (filter_constraint_is_timestamp(type))
+		return data.timestamp_range.from == f2.data.timestamp_range.from &&
+		       data.timestamp_range.to == f2.data.timestamp_range.to;
+	else if (filter_constraint_is_string(type))
+		return *data.string_list == *(f2.data.string_list);
+	else if (filter_constraint_is_multiple_choice(type))
+		return data.multiple_choice == f2.data.multiple_choice;
+	else
+		return data.numerical_range.from == f2.data.numerical_range.from &&
+		       data.numerical_range.to == f2.data.numerical_range.to;
+}
+
 filter_constraint::~filter_constraint()
 {
 	if (filter_constraint_is_string(type))

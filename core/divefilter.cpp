@@ -22,6 +22,12 @@ static void updateDiveStatus(dive *d, bool newStatus, ShownChange &change)
 	}
 }
 
+bool FilterData::operator==(const FilterData &f2) const
+{
+	return fullText.originalQuery == f2.fullText.originalQuery &&
+	       fulltextStringMode == f2.fulltextStringMode &&
+	       constraints == f2.constraints;
+}
 
 bool FilterData::validFilter() const
 {
