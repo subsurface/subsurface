@@ -109,12 +109,12 @@ extern int get_maxdepth(const struct plot_info *pi);
 
 static inline int get_plot_pressure_data(const struct plot_info *pi, int idx, enum plot_pressure sensor, int cylinder)
 {
-	return pi->pressures[cylinder * pi->nr + idx].data[sensor];
+	return pi->pressures[cylinder + idx * pi->nr_cylinders].data[sensor];
 }
 
 static inline void set_plot_pressure_data(struct plot_info *pi, int idx, enum plot_pressure sensor, int cylinder, int value)
 {
-	pi->pressures[cylinder * pi->nr + idx].data[sensor] = value;
+	pi->pressures[cylinder + idx * pi->nr_cylinders].data[sensor] = value;
 }
 
 static inline int get_plot_sensor_pressure(const struct plot_info *pi, int idx, int cylinder)
