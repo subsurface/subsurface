@@ -512,6 +512,7 @@ static void populate_plot_entries(struct dive *dive, struct divecomputer *dc, st
 	int idx, maxtime, nr, i;
 	int lastdepth, lasttime, lasttemp = 0;
 	struct plot_data *plot_data;
+	struct plot_pressure_data *final_pressure_data;
 	struct event *ev = dc->events;
 	maxtime = pi->maxtime;
 
@@ -642,7 +643,20 @@ static void populate_plot_entries(struct dive *dive, struct divecomputer *dc, st
 	/* Add two final surface events */
 	plot_data[idx++].sec = lasttime + 1;
 	plot_data[idx++].sec = lasttime + 2;
+
+	/* We probably used less plot_data entries than needed.
+	 * "pi->nr" is the number of the allocated entries and "idx" is the number
+	 * of needed entries. Now, let's alloc an array of the actually needed size
+	 * and continue using that.
+	 */
+	final_pressure_data = calloc(idx * (size_t)pi->nr_cylinders, sizeof(struct plot_pressure_data));
+	for (int i = 0; i < pi->nr_cylinders; ++i) {
+		for (int j = 0; j < idx; ++j)
+			final_pressure_data[i * idx + j] = pi->pressures[i * pi->nr + j];
+	}
+	free(pi->pressures);
 	pi->nr = idx;
+	pi->pressures = final_pressure_data;
 }
 
 /*
