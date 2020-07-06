@@ -158,6 +158,7 @@ QString GpsLocation::currentPosition()
 void GpsLocation::newPosition(QGeoPositionInfo pos)
 {
 	int64_t lastTime = 0;
+	int64_t thisTime = dateTimeToTimestamp(pos.timestamp()) + gettimezoneoffset();
 	QGeoCoordinate lastCoord;
 	int nr = m_trackers.count();
 	if (nr) {
@@ -169,7 +170,7 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 	// if we are waiting for a position update or
 	// if we have no record stored or if at least the configured minimum
 	// time has passed or we moved at least the configured minimum distance
-	int64_t delta = dateTimeToTimestamp(pos.timestamp()) + gettimezoneoffset() - lastTime;
+	int64_t delta = thisTime - lastTime;
 	if (!nr || waitingForPosition || delta > prefs.time_threshold ||
 	    lastCoord.distanceTo(pos.coordinate()) > prefs.distance_threshold) {
 		QString msg = QStringLiteral("received new position %1 after delta %2 threshold %3 (now %4 last %5)");
@@ -177,12 +178,11 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 		waitingForPosition = false;
 		acquiredPosition();
 		gpsTracker gt;
-		gt.when = dateTimeToTimestamp(pos.timestamp());
-		gt.when += gettimezoneoffset(gt.when);
+		gt.when = thisTime;
 		gt.location = create_location(pos.coordinate().latitude(), pos.coordinate().longitude());
 		addFixToStorage(gt);
 		gpsTracker gtNew = m_trackers.last();
-		qDebug() << "newest fix is now at" << timestampToDateTime(gtNew.when - gettimezoneoffset(gtNew.when)).toString();
+		qDebug() << "newest fix is now at" << timestampToDateTime(gtNew.when - gettimezoneoffset()).toString();
 	}
 }
 
