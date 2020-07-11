@@ -133,7 +133,7 @@ QString GpsLocation::currentPosition()
 	if (!hasLocationsSource())
 		return tr("Unknown GPS location (no GPS source)");
 	if (m_trackers.count()) {
-		QDateTime lastFixTime =	timestampToDateTime(m_trackers.lastKey() - gettimezoneoffset(m_trackers.lastKey()));
+		QDateTime lastFixTime =	timestampToDateTime(m_trackers.lastKey() + gettimezoneoffset());
 		QDateTime now = QDateTime::currentDateTime();
 		int delta = lastFixTime.secsTo(now);
 		qDebug() << "lastFixTime" << lastFixTime.toString() << "now" << now.toString() << "delta" << delta;
