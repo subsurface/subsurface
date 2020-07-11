@@ -663,8 +663,12 @@ bool CylindersModel::updateBestMixes()
 	/* This slot is called when the bottom pO2 and END preferences are updated, we want to
 	 * emit dataChanged so MOD and MND are refreshed, even if the gas mix hasn't been changed */
 	if (gasUpdated)
-		emit dataChanged(createIndex(0, 0), createIndex(d->cylinders.nr - 1, COLUMNS - 1));
+		emitDataChanged();
 	return gasUpdated;
+}
+
+void CylindersModel::emitDataChanged() {
+	emit dataChanged(createIndex(0, 0), createIndex(d->cylinders.nr - 1, COLUMNS - 1));
 }
 
 void CylindersModel::cylindersReset(const QVector<dive *> &dives)

@@ -126,7 +126,7 @@ void PlannerShared::set_o2narcotic(bool value)
 {
 	qPrefDivePlanner::set_o2narcotic(value);
 	DivePlannerPointsModel::instance()->emitDataChanged();
-	DivePlannerPointsModel::instance()->cylindersModel()->updateBestMixes();
+	DivePlannerPointsModel::instance()->cylindersModel()->emitDataChanged();
 }
 
 double PlannerShared::bottompo2()

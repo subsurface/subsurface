@@ -49,6 +49,7 @@ public:
 	void moveAtFirst(int cylid);
 	QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 	bool updateBestMixes();
+	void emitDataChanged();
 	bool cylinderUsed(int i) const;
 
 signals:
