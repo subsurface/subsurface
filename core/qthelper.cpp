@@ -624,7 +624,7 @@ QString get_pressure_string(pressure_t pressure, bool showunit)
 
 QString get_salinity_string(int salinity)
 {
-        return QStringLiteral("%L1%2").arg(salinity / 10.0).arg(gettextFromC::tr("g/ℓ"));
+	return QStringLiteral("%L1%2").arg(salinity / 10.0).arg(gettextFromC::tr("g/ℓ"));
 }
 
 QString get_water_type_string(int salinity)
@@ -690,13 +690,10 @@ QString getPrintingTemplatePathBundle()
 	return path;
 }
 
-int gettimezoneoffset(timestamp_t when)
+int gettimezoneoffset()
 {
 	QDateTime dt1, dt2;
-	if (when == 0)
-		dt1 = QDateTime::currentDateTime();
-	else
-		dt1 = timestampToDateTime(when);
+	dt1 = QDateTime::currentDateTime();
 	dt2 = dt1.toUTC();
 	dt1.setTimeSpec(Qt::UTC);
 	return dt2.secsTo(dt1);
