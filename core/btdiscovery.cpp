@@ -58,11 +58,12 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	} else if (btName.startsWith("Suunto D5")) {
 		vendor = "Suunto";
 		product = "D5";
-	} else if (btName.startsWith("G2")  || btName.startsWith("Aladin") || btName.startsWith("HUD")) {
+	} else if (btName.startsWith("G2")  || btName.startsWith("Aladin") || btName.startsWith("HUD") || btName.startsWith("A1")) {
 		vendor = "Scubapro";
 		if (btName.startsWith("G2")) product = "G2";
 		if (btName.startsWith("HUD")) product = "G2 HUD";
 		if (btName.startsWith("Aladin")) product = "Aladin Sport Matrix";
+		if (btName.startsWith("A1")) product = "Aladin A1";
 	} else if (btName.startsWith("Mares")) {
 		vendor = "Mares";
 		// we don't know which of the dive computers it is,
