@@ -320,8 +320,7 @@ Kirigami.Page {
 			TemplateButton {
 				id: download
 				text: qsTr("Download")
-				enabled: comboVendor.currentIndex != -1 && comboProduct.currentIndex != -1 &&
-					 comboConnection.currentIndex != -1
+				enabled: comboVendor.currentIndex != -1 && comboProduct.currentIndex != -1 && comboConnection.currentIndex != -1
 				onClicked: {
 					text = qsTr("Retry")
 
