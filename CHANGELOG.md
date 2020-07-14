@@ -1,3 +1,6 @@
+mobile: disable download button if no connection is selected
+mobile: fix incorrect time stamps on GPS track points created via location service
+core: correctly recognize A1 as BLE dive computer
 planner: Honor the "O2 narcotic" preference when computing MND
 desktop: fix broken merging of dives with multiple cylinders
 mobile: add information about the cloud sync state to the Subsurface plate in the menu
