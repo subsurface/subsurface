@@ -67,6 +67,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/pictureobj.cpp \
 	../../core/import-suunto.c \
 	../../core/import-shearwater.c \
+	../../core/import-seac.c \
 	../../core/import-cobalt.c \
 	../../core/import-divinglog.c \
 	../../core/import-csv.c \

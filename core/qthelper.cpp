@@ -5,7 +5,6 @@
 #include "core/settings/qPrefUpdateManager.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "subsurface-string.h"
-#include "subsurface-string.h"
 #include "gettextfromc.h"
 #include "statistics.h"
 #include "membuffer.h"
@@ -947,6 +946,12 @@ QString get_dive_date_string(timestamp_t when)
 	QDateTime ts;
 	ts.setMSecsSinceEpoch(when * 1000L);
 	return loc.toString(ts.toUTC(), QString(prefs.date_format) + " " + prefs.time_format);
+}
+
+// Get local seconds since Epoch from ISO formatted UTC date time + offset string
+extern "C" time_t get_dive_datetime_from_isostring(char *when) {
+	QDateTime divetime = QDateTime::fromString(when, Qt::ISODate);
+	return (time_t)(divetime.toSecsSinceEpoch());
 }
 
 QString get_short_dive_date_string(timestamp_t when)
