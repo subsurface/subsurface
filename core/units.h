@@ -230,6 +230,11 @@ static inline unsigned long C_to_mkelvin(double c)
 	return lrint(c * 1000 + ZERO_C_IN_MKELVIN);
 }
 
+static inline unsigned long cC_to_mkelvin(double c)
+{
+	return lrint(c * 10 + ZERO_C_IN_MKELVIN);
+}
+
 static inline double psi_to_bar(double psi)
 {
 	return psi / 14.5037738;

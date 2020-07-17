@@ -5,6 +5,7 @@
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
 #include "core/pref.h"
+#include "subsurface-time.h"
 
 struct picture;
 
@@ -147,6 +148,7 @@ const char *subsurface_user_agent();
 enum deco_mode decoMode();
 int parse_seabear_header(const char *filename, char **params, int pnr);
 char *get_current_date();
+time_t get_dive_datetime_from_isostring(char *when);
 void print_qt_versions();
 void lock_planner();
 void unlock_planner();

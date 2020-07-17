@@ -136,6 +136,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 	char shearwater_cloud_test[] = "select count(*) from sqlite_master where type='table' and name='SyncV3MetadataDiveLog' and sql like '%CreatedDevice%'";
 	char cobalt_test[] = "select count(*) from sqlite_master where type='table' and name='TrackPoints' and sql like '%DepthPressure%'";
 	char divinglog_test[] = "select count(*) from sqlite_master where type='table' and name='DBInfo' and sql like '%PrgName%'";
+	char seacsync_test[] = "select count(*) from sqlite_master where type='table' and name='dive_data' and sql like '%ndl_tts_s%'";
 	int retval;
 
 	retval = sqlite3_open(filename, &handle);
@@ -192,6 +193,15 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 		sqlite3_close(handle);
 		return retval;
 	}
+
+	/* Testing if DB schema resembles Seac database format */
+	retval = sqlite3_exec(handle, seacsync_test, &db_test_func, 0, NULL);
+	if (!retval) {
+		retval = parse_seac_buffer(handle, filename, mem->buffer, mem->size, table, trips, sites);
+		sqlite3_close(handle);
+		return retval;
+	}
+
 
 	sqlite3_close(handle);
 

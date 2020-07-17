@@ -110,6 +110,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	import-divinglog.c
 	import-shearwater.c
 	import-suunto.c
+	import-seac.c
 	libdivecomputer.c
 	libdivecomputer.h
 	liquivision.c
