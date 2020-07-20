@@ -151,7 +151,7 @@ cmake   -DBTSUPPORT=OFF \
 	build
 cd build || aborting "Couldn't cd into $SSRF_PATH/build directory"
 make clean
-make "$JOBS" || STATUS=1
+LIBRARY_PATH=$INSTALL_ROOT/lib make "$JOBS" || STATUS=1
 
 # Restore initial state of subsurface building system:
 echo "----> Restoring Subsurface tree state"
