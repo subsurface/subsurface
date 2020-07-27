@@ -111,6 +111,9 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	} else if (btName.startsWith("S1")) {
 		vendor = "Oceans";
 		product = "S1";
+	} else if (btName.startsWith("McLean Extreme")) {
+		vendor = "McLean";
+		product = "Extreme";
 	}
 
 	// check if we found a known dive computer
