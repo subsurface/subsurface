@@ -2,21 +2,32 @@
 
 use CGI;
 
+$CGI::POST_MAX = 1024 * 1024 * 10;
+
 # Change this to the correct path to binary.
 my $smtk2ssrf = "../build/smtk2ssrf";
+my $logfile = '/tmp/smtk2ssrf.log';
 
 my $q = CGI->new;
 
 if ($q->upload("uploaded_file")) {
         my $original_filename = $q->param("uploaded_file");
+        my $converted = `$smtk2ssrf $tmp_filename -`;
         my $tmp_filename = $q->tmpFileName($original_filename);
         my $new_filename = $original_filename;
         $new_filename =~ s/.*[\/\\]//;
         $new_filename =~ s/\..*$/.ssrf/;
 
-        print "Content-Disposition: attachment; filename=\"$new_filename\"\n";
-        print "Content-type: subsurface/xml\n\n";
-        system "$smtk2ssrf $tmp_filename -";
+	if (length($converted) > 5) {
+
+	        print "Content-Disposition: attachment; filename=\"$new_filename\"\n";
+		print "Content-type: subsurface/xml\n\n";
+		print $converted;
+	} else {
+		print "Content-type: text/html\n\n";
+		print "<H1>Conversion failed</H1>";
+		print 'Please contact <a href=mailto:helling@atdotde.de>Robert Helling (robert@thetheoreticaldiver.org)</a> if the problem persits.';
+	}
 } else {
         print "Content-type: text/html\n\n";
 
