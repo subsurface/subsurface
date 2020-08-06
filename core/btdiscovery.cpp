@@ -38,6 +38,7 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		    btName.startsWith("Petrel") ||
 		    btName.startsWith("Perdix") ||
 		    btName.startsWith("Teric") ||
+		    btName.startsWith("Peregrine") ||
 		    btName.startsWith("NERD")) {
 		vendor = "Shearwater";
 		// both the Petrel and Petrel 2 identify as "Petrel" as BT/BLE device
@@ -47,6 +48,7 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		if (btName.startsWith("Perdix")) product = "Perdix";
 		if (btName.startsWith("Predator")) product = "Predator";
 		if (btName.startsWith("Teric")) product = "Teric";
+		if (btName.startsWith("Peregrine")) product = "Peregrine";
 		if (btName.startsWith("NERD")) product = "Nerd"; // next line might override this
 		if (btName.startsWith("NERD 2")) product = "Nerd 2";
 	} else if (btName.startsWith("EON Steel")) {
