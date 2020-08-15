@@ -1103,10 +1103,11 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 			if (state != "add" && !is_cylinder_used(d, i))
 				continue;
 
-			get_or_create_cylinder(d, i)->start.mbar = parsePressureToMbar(startpressure[j]);
-			get_cylinder(d, i)->end.mbar = parsePressureToMbar(endpressure[j]);
-			if (get_cylinder(d, i)->end.mbar > get_cylinder(d, i)->start.mbar)
-				get_cylinder(d, i)->end.mbar = get_cylinder(d, i)->start.mbar;
+			cylinder_t *cyl = get_or_create_cylinder(d, i);
+			cyl->start.mbar = parsePressureToMbar(startpressure[j]);
+			cyl->end.mbar = parsePressureToMbar(endpressure[j]);
+			if (cyl->end.mbar > cyl->start.mbar)
+				cyl->end.mbar = cyl->start.mbar;
 
 			j++;
 		}
