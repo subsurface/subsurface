@@ -84,25 +84,25 @@ Item {
 		}
 		if (usedCyl[1] != null) {
 			usedCyl[1] = cylinderBox1.currentText
-			usedGas[1] = txtGasMix0.text
+			usedGas[1] = txtGasMix1.text
 			startpressure[1] = txtStartPressure1.text
 			endpressure[1] = txtEndPressure1.text
 		}
 		if (usedCyl[2] != null) {
 			usedCyl[2] = cylinderBox2.currentText
-			usedGas[2] = txtGasMix0.text
+			usedGas[2] = txtGasMix2.text
 			startpressure[2] = txtStartPressure2.text
 			endpressure[2] = txtEndPressure2.text
 		}
 		if (usedCyl[3] != null) {
 			usedCyl[3] = cylinderBox3.currentText
-			usedGas[3] = txtGasMix0.text
+			usedGas[3] = txtGasMix3.text
 			startpressure[3] = txtStartPressure3.text
 			endpressure[3] = txtEndPressure3.text
 		}
 		if (usedCyl[4] != null) {
 			usedCyl[4] = cylinderBox4.currentText
-			usedGas[4] = txtGasMix0.text
+			usedGas[4] = txtGasMix4.text
 			startpressure[4] = txtStartPressure4.text
 			endpressure[4] = txtEndPressure4.text
 		}
