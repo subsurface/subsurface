@@ -829,10 +829,16 @@ int parsePressureToMbar(const QString &text)
 {
 	int mbar;
 	QString numOnly = text;
-	numOnly.replace(",", ".").remove(QRegExp("[^0-9.]"));
+	// different locales use different symbols as group separator or decimal separator
+	// (I think it's usually '.' and ',' - but maybe there are others?)
+	// let's use Qt's help to get the parsing right
+	QString validNumberCharacters("0-9");
+	validNumberCharacters += loc.decimalPoint();
+	validNumberCharacters += loc.groupSeparator();
+	numOnly.remove(QRegExp(QString("[^%1]").arg(validNumberCharacters)));
 	if (numOnly.isEmpty())
 		return 0;
-	double number = numOnly.toDouble();
+	double number = loc.toDouble(numOnly);
 	if (text.contains(gettextFromC::tr("bar"), Qt::CaseInsensitive)) {
 		mbar = lrint(number * 1000);
 	} else if (text.contains(gettextFromC::tr("psi"), Qt::CaseInsensitive)) {
