@@ -128,6 +128,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	int plansamples = dc->samples <= 100 ? dc->samples : 100;
 	int j = 0;
 	int cylinderid = 0;
+
 	last_sp.mbar = 0;
 	for (int i = 0; i < plansamples - 1; i++) {
 		if (dc->last_manual_time.seconds && dc->last_manual_time.seconds > 120 && lasttime.seconds >= dc->last_manual_time.seconds)
@@ -145,7 +146,11 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 		}
 		if (samplecount) {
 			cylinderid = get_cylinderid_at_time(d, dc, lasttime);
-			if (newtime.seconds - lastrecordedtime.seconds > 10) {
+			duration_t nexttime = newtime;
+			++nexttime.seconds;
+			if (newtime.seconds - lastrecordedtime.seconds > 10 || cylinderid == get_cylinderid_at_time(d, dc, nexttime)) {
+				if (newtime.seconds == lastrecordedtime.seconds)
+					newtime.seconds += 10;
 				current_divemode = get_current_divemode(dc, newtime.seconds - 1, &evd, &current_divemode);
 				addStop(depthsum / samplecount, newtime.seconds, cylinderid, last_sp.mbar, true, current_divemode);
 				lastrecordedtime = newtime;
