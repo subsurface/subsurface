@@ -1126,9 +1126,9 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 {
 	int i, j, nr, start_renumbering_at = 0;
 	struct dive_trip *trip_import, *new_trip;
-	int preexisting;
 	bool sequence_changed = false;
 	bool new_dive_has_number = false;
+	bool last_old_dive_is_numbered;
 
 	/* If the caller didn't pass an import_trip_table because all
 	 * dives are tripless, provide a local table. This may be
@@ -1175,8 +1175,6 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 	 * if tripless dives should be added to a new trip. */
 	if (!(flags & IMPORT_ADD_TO_NEW_TRIP))
 		autogroup_dives(import_table, import_trip_table);
-
-	preexisting = dive_table.nr; /* Remember old size for renumbering */
 
 	/* If dive sites already exist, use the existing versions. */
 	for (i = 0; i  < import_sites_table->nr; i++) {
@@ -1264,14 +1262,16 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 
 	/* If new dives were only added at the end, renumber the added dives.
 	 * But only if
-	 *	- The last dive in the old dive table had a number itself.
+	 *	- The last dive in the old dive table had a number itself (if there is a last dive).
 	 *	- None of the new dives has a number.
 	 */
-	nr = dive_table.nr > 0 ? dive_table.dives[dive_table.nr - 1]->number : 0;
+	last_old_dive_is_numbered = dive_table.nr == 0 || dive_table.dives[dive_table.nr - 1]->number > 0;
+
 	/* We counted the number of merged dives that were added to dives_to_add.
 	 * Skip those. Since sequence_changed is false all added dives are *after*
 	 * all merged dives. */
-	if (!sequence_changed && nr >= preexisting && !new_dive_has_number) {
+	if (!sequence_changed && last_old_dive_is_numbered && !new_dive_has_number) {
+		nr = dive_table.nr > 0 ? dive_table.dives[dive_table.nr - 1]->number : 0;
 		for (i = start_renumbering_at; i < dives_to_add->nr; i++)
 			dives_to_add->dives[i]->number = ++nr;
 	}
