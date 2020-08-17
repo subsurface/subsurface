@@ -1,3 +1,4 @@
+core: fix renumbering of imported dives [#2731]
 mobile: fix editing tank information
 mobile: disable download button if no connection is selected
 mobile: fix incorrect time stamps on GPS track points created via location service
