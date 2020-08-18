@@ -94,12 +94,21 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	} else if (btName.contains(QRegularExpression("^FR\\d{6}$"))) {
 		vendor = "Aqualung";
 		product = "i550C";
-	} else if (btName.contains(QRegularExpression("^ER\\d{6}$"))) {
-		vendor = "Oceanic";
-		product = "Pro Plus X";
 	} else if (btName.contains(QRegularExpression("^FS\\d{6}$"))) {
 		vendor = "Oceanic";
 		product = "Geo 4.0";
+	} else if (btName.contains(QRegularExpression("^FT\\d{6}$"))) {
+		vendor = "Oceanic";
+		product = "Veo 4.0";
+	} else if (btName.contains(QRegularExpression("^FU\\d{6}$"))) {
+		vendor = "Sherwood";
+		product = "Wisdom 4";
+	} else if (btName.contains(QRegularExpression("^FV\\d{6}$"))) {
+		vendor = "Oceanic";
+		product = "ProPlus 4";
+	} else if (btName.contains(QRegularExpression("^ER\\d{6}$"))) {
+		vendor = "Oceanic";
+		product = "Pro Plus X";
 	} else if (btName.contains(QRegularExpression("^DS\\d{6}"))) {
 		// The Ratio bluetooth name looks like the Pelagic ones,
 		// but that seems to be just happenstance.
@@ -114,6 +123,9 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	} else if (btName.startsWith("McLean Extreme")) {
 		vendor = "McLean";
 		product = "Extreme";
+	} else if (btName.startsWith("DiveComputer")) {
+		vendor = "Tecdiving";
+		product = "DiveComputer.eu";
 	}
 
 	// check if we found a known dive computer
