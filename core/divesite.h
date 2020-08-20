@@ -88,4 +88,7 @@ Q_DECLARE_METATYPE(dive_site *);
 
 #endif
 
+/* iterators for C++ */
+MAKE_TABLE_ITERATORS(dive_site_table, struct dive_site *, dive_sites)
+
 #endif // DIVESITE_H

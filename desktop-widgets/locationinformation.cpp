@@ -524,13 +524,10 @@ void DiveLocationLineEdit::refreshDiveSiteCache()
 
 static struct dive_site *get_dive_site_name_start_which_str(const QString &str)
 {
-	struct dive_site *ds;
-	int i;
-	for_each_dive_site (i, ds, &dive_site_table) {
+	for (dive_site *ds: dive_site_table) {
 		QString dsName(ds->name);
-		if (dsName.toLower().startsWith(str.toLower())) {
+		if (dsName.toLower().startsWith(str.toLower()))
 			return ds;
-		}
 	}
 	return NULL;
 }

@@ -285,8 +285,7 @@ std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly)
 	}
 
 	res.reserve(dive_site_table.nr);
-	for (int i = 0; i < dive_site_table.nr; i++) {
-		struct dive_site *ds = get_dive_site(i, &dive_site_table);
+	for (dive_site *ds: dive_site_table) {
 		if (dive_site_is_empty(ds))
 			continue;
 		if (selectedOnly && !is_dive_site_selected(ds))
@@ -295,10 +294,8 @@ std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly)
 	}
 #else
 	/* walk the dive site list */
-	int i;
-	const struct dive_site *ds;
-	for_each_dive_site (i, ds, &dive_site_table)
-		res.push_back(get_dive_site(i, &dive_site_table));
+	for (const dive_site *ds: dive_site_table)
+		res.push_back(ds);
 #endif
 	return res;
 }

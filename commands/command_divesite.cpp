@@ -97,9 +97,7 @@ ImportDiveSites::ImportDiveSites(struct dive_site_table *sites, const QString &s
 {
 	setText(Command::Base::tr("import dive sites from %1").arg(source));
 
-	for (int i = 0; i < sites->nr; ++i) {
-		struct dive_site *new_ds = sites->dive_sites[i];
-
+	for (dive_site *new_ds: *sites) {
 		// Don't import dive sites that already exist. Currently we only check for
 		// the same name. We might want to be smarter here and merge dive site data, etc.
 		struct dive_site *old_ds = get_same_dive_site(new_ds);
@@ -152,8 +150,7 @@ void DeleteDiveSites::undo()
 PurgeUnusedDiveSites::PurgeUnusedDiveSites()
 {
 	setText(Command::Base::tr("purge unused dive sites"));
-	for (int i = 0; i < dive_site_table.nr; ++i) {
-		dive_site *ds = dive_site_table.dive_sites[i];
+	for (dive_site *ds: dive_site_table) {
 		if (ds->dives.nr == 0)
 			sitesToRemove.push_back(ds);
 	}

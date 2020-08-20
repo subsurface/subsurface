@@ -1647,8 +1647,8 @@ void MainWindow::on_actionImportDiveSites_triggered()
 		parse_file(fileNamePtr.data(), &table, &trips, &sites);
 	}
 	// The imported dive sites still have pointers to imported dives - remove them
-	for (int i = 0; i < sites.nr; ++i)
-		sites.dive_sites[i]->dives.nr = 0;
+	for (dive_site *ds: sites)
+		ds->dives.nr = 0;
 
 	// Now we can clear the imported dives and trips.
 	clear_dive_table(&table);

@@ -489,8 +489,8 @@ ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, str
 
 	// Add sites to the divesToAdd.sites structure
 	divesToAdd.sites.reserve(sites_to_add.nr);
-	for (int i = 0; i < sites_to_add.nr; ++i)
-		divesToAdd.sites.emplace_back(sites_to_add.dive_sites[i]);
+	for (dive_site *ds: sites_to_add)
+		divesToAdd.sites.emplace_back(ds);
 
 	// Add dives to the divesToAdd.dives structure
 	divesToAdd.dives.reserve(dives_to_add.nr);
