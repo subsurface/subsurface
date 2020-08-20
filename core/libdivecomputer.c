@@ -25,6 +25,7 @@
 
 #include <libdivecomputer/version.h>
 #include <libdivecomputer/usbhid.h>
+#include <libdivecomputer/usb.h>
 #include <libdivecomputer/serial.h>
 #include <libdivecomputer/irda.h>
 
@@ -1269,14 +1270,83 @@ unsigned int get_supported_transports(device_data_t *data)
 	return supported;
 }
 
+static dc_status_t usbhid_device_open(dc_iostream_t **iostream, dc_context_t *context, device_data_t *data)
+{
+	dc_status_t rc;
+	dc_iterator_t *iterator = NULL;
+	dc_usbhid_device_t *device = NULL;
+
+	// Discover the usbhid device.
+	dc_usbhid_iterator_new (&iterator, context, data->descriptor);
+	while (dc_iterator_next (iterator, &device) == DC_STATUS_SUCCESS)
+		break;
+	dc_iterator_free (iterator);
+
+	if (!device)
+		return DC_STATUS_NODEVICE;
+
+	dev_info(data, "Opening USB HID device for %04x:%04x",
+		dc_usbhid_device_get_vid(device),
+		dc_usbhid_device_get_pid(device));
+	rc = dc_usbhid_open(iostream, context, device);
+	dc_usbhid_device_free(device);
+	return rc;
+}
+
+static dc_status_t usb_device_open(dc_iostream_t **iostream, dc_context_t *context, device_data_t *data)
+{
+	dc_status_t rc;
+	dc_iterator_t *iterator = NULL;
+	dc_usb_device_t *device = NULL;
+
+	// Discover the usb device.
+	dc_usb_iterator_new (&iterator, context, data->descriptor);
+	while (dc_iterator_next (iterator, &device) == DC_STATUS_SUCCESS)
+		break;
+	dc_iterator_free (iterator);
+
+	if (!device)
+		return DC_STATUS_NODEVICE;
+
+	dev_info(data, "Opening USB device for %04x:%04x",
+		dc_usb_device_get_vid(device),
+		dc_usb_device_get_pid(device));
+	rc = dc_usb_open(iostream, context, device);
+	dc_usb_device_free(device);
+	return rc;
+}
+
+static dc_status_t irda_device_open(dc_iostream_t **iostream, dc_context_t *context, device_data_t *data)
+{
+	unsigned int address = 0;
+	dc_iterator_t *iterator = NULL;
+	dc_irda_device_t *device = NULL;
+
+	// Try to find the IRDA address
+	dc_irda_iterator_new (&iterator, context, data->descriptor);
+	while (dc_iterator_next (iterator, &device) == DC_STATUS_SUCCESS) {
+		address = dc_irda_device_get_address (device);
+		dc_irda_device_free (device);
+		break;
+	}
+	dc_iterator_free (iterator);
+
+	// If that fails, use the device name. This will
+	// use address 0 if it's not a number.
+	if (!address)
+		address = strtoul(data->devname, NULL, 0);
+
+	dev_info(data, "Opening IRDA address %u", address);
+	return dc_irda_open(&data->iostream, context, address, 1);
+}
+
 dc_status_t divecomputer_device_open(device_data_t *data)
 {
 	dc_status_t rc;
-	dc_descriptor_t *descriptor = data->descriptor;
 	dc_context_t *context = data->context;
 	unsigned int transports, supported;
 
-	transports = dc_descriptor_get_transports(descriptor);
+	transports = dc_descriptor_get_transports(data->descriptor);
 	supported = get_supported_transports(data);
 
 	transports &= supported;
@@ -1304,29 +1374,17 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 #endif
 
 	if (transports & DC_TRANSPORT_USBHID) {
-		// Discover the usbhid device.
-		dc_iterator_t *iterator = NULL;
-		dc_usbhid_device_t *device = NULL;
-		dc_usbhid_iterator_new (&iterator, context, descriptor);
-		while (dc_iterator_next (iterator, &device) == DC_STATUS_SUCCESS)
-			break;
-		dc_iterator_free (iterator);
-
-		if (device) {
-			dev_info(data, "Opening USB HID device for %04x:%04x",
-				dc_usbhid_device_get_vid(device),
-				dc_usbhid_device_get_pid(device));
-			rc = dc_usbhid_open(&data->iostream, context, device);
-			dc_usbhid_device_free(device);
-			if (rc == DC_STATUS_SUCCESS)
-				return rc;
-		}
+		dev_info(data, "Connecting to USB HID device");
+		rc = usbhid_device_open(&data->iostream, context, data);
+		if (rc == DC_STATUS_SUCCESS)
+			return rc;
 	}
 
-	/* The dive computer backend does this all internally */
 	if (transports & DC_TRANSPORT_USB) {
-		dev_info(data, "Opening native USB device");
-		return DC_STATUS_SUCCESS;
+		dev_info(data, "Connecting to native USB device");
+		rc = usb_device_open(&data->iostream, context, data);
+		if (rc == DC_STATUS_SUCCESS)
+			return rc;
 	}
 
 	if (transports & DC_TRANSPORT_SERIAL) {
@@ -1346,23 +1404,8 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 	}
 
 	if (transports & DC_TRANSPORT_IRDA) {
-		unsigned int address = 0;
-
-		dc_iterator_t *iterator = NULL;
-		dc_irda_device_t *device = NULL;
-		dc_irda_iterator_new (&iterator, context, descriptor);
-		while (dc_iterator_next (iterator, &device) == DC_STATUS_SUCCESS) {
-			address = dc_irda_device_get_address (device);
-			dc_irda_device_free (device);
-			break;
-		}
-		dc_iterator_free (iterator);
-
-		if (!address)
-			address = strtoul(data->devname, NULL, 0);
-
-		dev_info(data, "Opening IRDA address %u", address);
-		rc = dc_irda_open(&data->iostream, context, address, 1);
+		dev_info(data, "Connecting to IRDA device");
+		rc = irda_device_open(&data->iostream, context, data);
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 	}
