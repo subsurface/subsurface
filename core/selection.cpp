@@ -54,10 +54,7 @@ extern "C" void deselect_dive(struct dive *dive)
 
 extern "C" struct dive *first_selected_dive()
 {
-	int idx;
-	struct dive *d;
-
-	for_each_dive (idx, d) {
+	for (dive *d: dive_table) {
 		if (d->selected)
 			return d;
 	}
@@ -66,10 +63,9 @@ extern "C" struct dive *first_selected_dive()
 
 extern "C" struct dive *last_selected_dive()
 {
-	int idx;
-	struct dive *d, *ret = NULL;
+	struct dive *ret = NULL;
 
-	for_each_dive (idx, d) {
+	for (dive *d: dive_table) {
 		if (d->selected)
 			ret = d;
 	}
@@ -78,8 +74,6 @@ extern "C" struct dive *last_selected_dive()
 
 extern "C" bool consecutive_selected()
 {
-	struct dive *d;
-	int i;
 	bool consecutive = true;
 	bool firstfound = false;
 	bool lastfound = false;
@@ -87,7 +81,7 @@ extern "C" bool consecutive_selected()
 	if (amount_selected == 0 || amount_selected == 1)
 		return true;
 
-	for_each_dive(i, d) {
+	for (dive *d: dive_table) {
 		if (d->selected) {
 			if (!firstfound)
 				firstfound = true;
@@ -103,11 +97,8 @@ extern "C" bool consecutive_selected()
 #if DEBUG_SELECTION_TRACKING
 extern "C" void dump_selection(void)
 {
-	int i;
-	struct dive *dive;
-
 	printf("currently selected are %u dives:", amount_selected);
-	for_each_dive(i, dive) {
+	for (struct dive *dive: dive_table) {
 		if (dive->selected)
 			printf(" %d", i);
 	}
@@ -162,10 +153,8 @@ void setSelection(const std::vector<dive *> &selection, dive *currentDive)
 		trip_table.trips[i]->selected = false;
 
 	// TODO: We might want to keep track of selected dives in a more efficient way!
-	int i;
-	dive *d;
 	amount_selected = 0; // We recalculate amount_selected
-	for_each_dive(i, d) {
+	for (dive *d: dive_table) {
 		// We only modify dives that are currently visible.
 		if (d->hidden_by_filter) {
 			d->selected = false; // Note, not necessary, just to be sure
@@ -216,9 +205,7 @@ std::vector<dive *> getDiveSelection()
 	std::vector<dive *> res;
 	res.reserve(amount_selected);
 
-	int i;
-	dive *d;
-	for_each_dive(i, d) {
+	for (dive *d: dive_table) {
 		if (d->selected)
 			res.push_back(d);
 	}
@@ -271,9 +258,7 @@ extern "C" void clear_selection(void)
 	current_dive = nullptr;
 	amount_selected = 0;
 	amount_trips_selected = 0;
-	int i;
-	struct dive *dive;
-	for_each_dive (i, dive)
+	for (struct dive *dive: dive_table)
 		dive->selected = false;
 	for (int i = 0; i < trip_table.nr; ++i)
 		trip_table.trips[i]->selected = false;

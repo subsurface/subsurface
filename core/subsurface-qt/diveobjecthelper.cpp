@@ -236,9 +236,7 @@ static void addStringToSortedList(QStringList &l, const char *s)
 QStringList getFullCylinderList()
 {
 	QStringList cylinders;
-	struct dive *d;
-	int i = 0;
-	for_each_dive (i, d) {
+	for (dive *d: dive_table) {
 		for (int j = 0; j < d->cylinders.nr; j++)
 			addStringToSortedList(cylinders, get_cylinder(d, j)->type.description);
 	}

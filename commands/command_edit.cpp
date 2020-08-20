@@ -59,9 +59,7 @@ static std::vector<dive *> getDives(bool currentDiveOnly)
 				    : std::vector<dive *> { };
 
 	std::vector<dive *> res;
-	struct dive *d;
-	int i;
-	for_each_dive (i, d) {
+	for (dive *d: dive_table) {
 		if (d->selected)
 			res.push_back(d);
 	}

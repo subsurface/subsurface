@@ -13,7 +13,6 @@
 #include "gettext.h"
 #include "git-access.h"
 #include "selection.h"
-#include "table.h"
 #include "trip.h"
 
 /* This flag is set to true by operations that are not implemented in the

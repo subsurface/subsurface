@@ -3,6 +3,7 @@
 #define DIVELIST_H
 
 #include "units.h"
+#include "table.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -70,5 +71,8 @@ void move_dive_table(struct dive_table *src, struct dive_table *dst);
 #ifdef __cplusplus
 }
 #endif
+
+/* iterators for C++ */
+MAKE_TABLE_ITERATORS(dive_table, struct dive *, dives)
 
 #endif // DIVELIST_H

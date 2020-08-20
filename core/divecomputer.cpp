@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "divecomputer.h"
 #include "dive.h"
+#include "divelist.h"
 #include "errorhelper.h"
 #include "core/settings/qPrefDiveComputer.h"
 #include "subsurface-string.h"
@@ -103,9 +104,7 @@ extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *
 	for (const DiveComputerNode &node : values) {
 		bool found = false;
 		if (select_only) {
-			int j;
-			struct dive *d;
-			for_each_dive (j, d) {
+			for (dive *d: dive_table) {
 				struct divecomputer *dc;
 				if (!d->selected)
 					continue;

@@ -18,14 +18,12 @@
 #if !defined(SUBSURFACE_MOBILE)
 void exportProfile(QString filename, bool selected_only)
 {
-	struct dive *dive;
-	int i;
 	int count = 0;
 	if (!filename.endsWith(".png", Qt::CaseInsensitive))
 		filename = filename.append(".png");
 	QFileInfo fi(filename);
 
-	for_each_dive (i, dive) {
+	for (struct dive *dive: dive_table) {
 		if (selected_only && !dive->selected)
 			continue;
 		if (count)
@@ -40,11 +38,9 @@ void export_TeX(const char *filename, bool selected_only, bool plain)
 {
 	FILE *f;
 	QDir texdir = QFileInfo(filename).dir();
-	struct dive *dive;
 	const struct units *units = get_units();
 	const char *unit;
 	const char *ssrf;
-	int i;
 	bool need_pagebreak = false;
 
 	struct membuffer buf = {};
@@ -89,7 +85,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain)
 
 	put_format(&buf, "\n%%%%%%%%%% Begin Dive Data: %%%%%%%%%%\n");
 
-	for_each_dive (i, dive) {
+	for (struct dive *dive: dive_table) {
 		if (selected_only && !dive->selected)
 			continue;
 
@@ -239,14 +235,12 @@ void export_TeX(const char *filename, bool selected_only, bool plain)
 void export_depths(const char *filename, bool selected_only)
 {
 	FILE *f;
-	struct dive *dive;
 	depth_t depth;
-	int i;
 	const char *unit = NULL;
 
 	struct membuffer buf = {};
 
-	for_each_dive (i, dive) {
+	for (struct dive *dive: dive_table) {
 		if (selected_only && !dive->selected)
 			continue;
 

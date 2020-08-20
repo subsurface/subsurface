@@ -101,26 +101,24 @@ ShownChange DiveFilter::updateAll() const
 	dive *old_current = current_dive;
 
 	ShownChange res;
-	int i;
-	dive *d;
 	switch (filterData.mode) {
 	default:
 	case FilterData::Mode::NONE:
-		for_each_dive(i, d)
+		for (dive *d: dive_table)
 			updateDiveStatus(d, true, res);
 		break;
 	case FilterData::Mode::FULLTEXT: {
 		FullTextResult ft = fulltext_find_dives(filterData.fullText, StringFilterMode::STARTSWITH);
-		for_each_dive(i, d)
+		for (dive *d: dive_table)
 			updateDiveStatus(d, ft.dive_matches(d), res);
 		break;
 	}
 	case FilterData::Mode::PEOPLE:
-		for_each_dive(i, d)
+		for (dive *d: dive_table)
 			updateDiveStatus(d, hasPersons(filterData.tags, d), res);
 		break;
 	case FilterData::Mode::TAGS:
-		for_each_dive(i, d)
+		for (dive *d: dive_table)
 			updateDiveStatus(d, hasTags(filterData.tags, d), res);
 		break;
 	}
@@ -167,22 +165,20 @@ ShownChange DiveFilter::updateAll() const
 	dive *old_current = current_dive;
 
 	ShownChange res;
-	int i;
-	dive *d;
 	// There are three modes: divesite, fulltext, normal
 	if (diveSiteMode()) {
-		for_each_dive(i, d) {
+		for (dive *d: dive_table) {
 			bool newStatus = dive_sites.contains(d->dive_site);
 			updateDiveStatus(d, newStatus, res);
 		}
 	} else if (filterData.fullText.doit()) {
 		FullTextResult ft = fulltext_find_dives(filterData.fullText, filterData.fulltextStringMode);
-		for_each_dive(i, d) {
+		for (dive *d: dive_table) {
 			bool newStatus = ft.dive_matches(d) && showDive(d);
 			updateDiveStatus(d, newStatus, res);
 		}
 	} else {
-		for_each_dive(i, d) {
+		for (dive *d: dive_table) {
 			bool newStatus = showDive(d);
 			updateDiveStatus(d, newStatus, res);
 		}

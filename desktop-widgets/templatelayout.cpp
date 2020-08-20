@@ -139,13 +139,11 @@ QString TemplateLayout::generate()
 
 	QVariantList diveList;
 
-	struct dive *dive;
 	if (in_planner()) {
 		diveList.append(QVariant::fromValue(DiveObjectHelperGrantlee(&displayed_dive)));
 		emit progressUpdated(100.0);
 	} else {
-		int i;
-		for_each_dive (i, dive) {
+		for (struct dive *dive: dive_table) {
 			//TODO check for exporting selected dives only
 			if (!dive->selected && printOptions->print_selected)
 				continue;

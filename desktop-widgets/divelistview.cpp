@@ -504,9 +504,7 @@ void DiveListView::selectionChangeDone()
 		// the core list directly. In my tests, this went down from 700 to 0 ms!
 		QVector<dive_site *> selectedSites;
 		selectedSites.reserve(amount_selected);
-		int i;
-		dive *d;
-		for_each_dive(i, d) {
+		for (dive *d: dive_table) {
 			if (d->selected && !d->hidden_by_filter && d->dive_site && !selectedSites.contains(d->dive_site))
 				selectedSites.push_back(d->dive_site);
 		}
@@ -603,14 +601,12 @@ static bool can_merge(const struct dive *a, const struct dive *b, enum asked_use
 
 void DiveListView::mergeDives()
 {
-	int i;
-	struct dive *d;
 	enum asked_user have_asked = NOTYET;
 
 	// Collect a vector of batches of dives to merge (i.e. a vector of vector of dives)
 	QVector<QVector<dive *>> merge_batches;
 	QVector<dive *> current_batch;
-	for_each_dive (i, d) {
+	for (dive *d: dive_table) {
 		if (!d->selected)
 			continue;
 		if (current_batch.empty()) {
@@ -632,12 +628,9 @@ void DiveListView::mergeDives()
 
 void DiveListView::splitDives()
 {
-	int i;
-	struct dive *dive;
-
 	// Let's collect the dives to be split first, so that we don't catch newly inserted dives!
 	QVector<struct dive *> dives;
-	for_each_dive (i, dive) {
+	for (struct dive *dive: dive_table) {
 		if (dive->selected)
 			dives.append(dive);
 	}
@@ -676,10 +669,8 @@ void DiveListView::mergeTripBelow()
 void DiveListView::removeFromTrip()
 {
 	//TODO: move this to C-code.
-	int i;
-	struct dive *d;
 	QVector<dive *> divesToRemove;
-	for_each_dive (i, d) {
+	for (dive *d: dive_table) {
 		if (d->selected && d->divetrip)
 			divesToRemove.append(d);
 	}
@@ -692,9 +683,8 @@ void DiveListView::newTripAbove()
 	if (!d) // shouldn't happen as we only are setting up this action if this is a dive
 		return;
 	//TODO: port to c-code.
-	int idx;
 	QVector<dive *> dives;
-	for_each_dive (idx, d) {
+	for (dive *d: dive_table) {
 		if (d->selected)
 			dives.append(d);
 	}
@@ -734,8 +724,7 @@ void DiveListView::addToTrip(int delta)
 
 	QVector<dive *> dives;
 	if (d->selected) { // there are possibly other selected dives that we should add
-		int idx;
-		for_each_dive (idx, d) {
+		for (dive *d: dive_table) {
 			if (d->selected)
 				dives.append(d);
 		}
@@ -759,9 +748,8 @@ void DiveListView::deleteDive()
 	if (!d)
 		return;
 
-	int i;
 	QVector<struct dive*> deletedDives;
-	for_each_dive (i, d) {
+	for (dive *d: dive_table) {
 		if (d->selected)
 			deletedDives.append(d);
 	}

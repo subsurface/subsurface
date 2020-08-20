@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/divesummarymodel.h"
 #include "core/dive.h"
+#include "core/divelist.h"
 #include "core/qthelper.h"
 
 #include <QLocale>
@@ -159,10 +160,8 @@ static void calculateDive(struct dive *dive, Stats &stats)
 static Stats loopDives(timestamp_t start)
 {
 	Stats stats;
-	struct dive *dive;
-	int i;
 
-	for_each_dive (i, dive) {
+	for (struct dive *dive: dive_table) {
 		// check if dive is newer than primaryStart (add to first column)
 		if (dive->when > start)
 			calculateDive(dive, stats);

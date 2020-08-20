@@ -717,8 +717,7 @@ void DiveTripModelTree::populate()
 	// we want this to be two calls as the second text is overwritten below by the lines starting with "\r"
 	uiNotification(QObject::tr("populate data model"));
 	uiNotification(QObject::tr("start processing"));
-	for (int i = 0; i < dive_table.nr; ++i) {
-		dive *d = get_dive(i);
+	for (dive *d: dive_table) {
 		update_cylinder_related_info(d);
 		if (d->hidden_by_filter)
 			continue;
@@ -1217,8 +1216,8 @@ static QVector<dive *> getDivesForSite(struct dive_site *ds)
 	QVector<dive *> diveSiteDives;
 	diveSiteDives.reserve(ds->dives.nr);
 
-	for (int i = 0; i < ds->dives.nr; ++i)
-		diveSiteDives.push_back(ds->dives.dives[i]);
+	for (dive *d: ds->dives)
+		diveSiteDives.push_back(d);
 
 	return diveSiteDives;
 }
@@ -1481,8 +1480,7 @@ void DiveTripModelList::populate()
 {
 	// Fill model
 	items.reserve(dive_table.nr);
-	for (int i = 0; i < dive_table.nr; ++i) {
-		dive *d = get_dive(i);
+	for (dive *d: dive_table) {
 		if (d->hidden_by_filter)
 			continue;
 		items.push_back(d);

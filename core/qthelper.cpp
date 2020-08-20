@@ -290,12 +290,9 @@ bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_te
 QList<int> getDivesInTrip(dive_trip_t *trip)
 {
 	QList<int> ret;
-	int i;
-	struct dive *d;
-	for_each_dive (i, d) {
-		if (d->divetrip == trip) {
+	for (dive *d: dive_table) {
+		if (d->divetrip == trip)
 			ret.push_back(get_divenr(d));
-		}
 	}
 	return ret;
 }
@@ -388,10 +385,9 @@ static bool lessThan(const QPair<QString, int> &a, const QPair<QString, int> &b)
 
 QVector<QPair<QString, int>> selectedDivesGasUsed()
 {
-	int i, j;
-	struct dive *d;
+	int j;
 	QMap<QString, int> gasUsed;
-	for_each_dive (i, d) {
+	for (dive *d: dive_table) {
 		if (!d->selected)
 			continue;
 		volume_t *diveGases = get_gas_used(d);

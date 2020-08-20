@@ -220,7 +220,6 @@ int GpsLocation::getGpsNum() const
 
 std::vector<DiveAndLocation> GpsLocation::getLocations()
 {
-	int i;
 	int last = 0;
 	int cnt = m_trackers.count();
 	std::vector<DiveAndLocation> fixes;
@@ -231,8 +230,7 @@ std::vector<DiveAndLocation> GpsLocation::getLocations()
 	QList<struct gpsTracker> gpsTable = m_trackers.values();
 
 	// now walk the dive table and see if we can fill in missing gps data
-	struct dive *d;
-	for_each_dive(i, d) {
+	for (dive *d: dive_table) {
 		if (dive_has_gps_location(d))
 			continue;
 		for (int j = last; j < cnt; j++) {

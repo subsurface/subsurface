@@ -87,9 +87,7 @@ void DivePictureModel::updateDivePictures()
 		Thumbnailer::instance()->clearWorkQueue();
 	}
 
-	int i;
-	struct dive *dive;
-	for_each_dive (i, dive) {
+	for (struct dive *dive: dive_table) {
 		if (dive->selected) {
 			size_t first = pictures.size();
 			FOR_EACH_PICTURE(dive)

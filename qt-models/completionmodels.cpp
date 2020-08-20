@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/completionmodels.h"
 #include "core/dive.h"
+#include "core/divelist.h"
 #include "core/tag.h"
 #include <QSet>
 #include <QString>
@@ -9,9 +10,7 @@
 	void Class::updateModel()                              \
 	{                                                      \
 		QStringList list;                              \
-		struct dive *dive;                             \
-		int i = 0;                                     \
-		for_each_dive (i, dive)                        \
+		for (struct dive *dive: dive_table)            \
 		{                                              \
 			QString buddy(dive->diveStructMember); \
 			if (!list.contains(buddy)) {           \
@@ -26,9 +25,7 @@
 	void Class::updateModel()                                                                \
 	{                                                                                        \
 		QSet<QString> set;                                                               \
-		struct dive *dive;                                                               \
-		int i = 0;                                                                       \
-		for_each_dive (i, dive)                                                          \
+		for (struct dive *dive: dive_table)                                              \
 		{                                                                                \
 			QString buddy(dive->diveStructMember);                                   \
 			foreach (const QString &value, buddy.split(",", QString::SkipEmptyParts)) \

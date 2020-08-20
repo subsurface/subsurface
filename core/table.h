@@ -110,4 +110,31 @@
 		src->array_name = NULL;						\
 	}
 
+/* Iterators for C++ code. Note: Iterators must be defined outside of 'extern "C"'
+ * context, because they need function signature overloading */
+#ifdef __cplusplus
+#define MAKE_TABLE_ITERATORS(table_type, item_type, array_name)			\
+static inline item_type *begin(struct table_type &table)			\
+{										\
+	return &table.array_name[0];						\
+}										\
+										\
+static inline item_type *end(struct table_type &table)				\
+{										\
+	return &table.array_name[table.nr];					\
+}										\
+										\
+static inline item_type const *begin(const struct table_type &table)		\
+{										\
+	return &table.array_name[0];						\
+}										\
+										\
+static inline item_type const *end(const struct table_type &table)		\
+{										\
+	return &table.array_name[table.nr];					\
+}
+#else
+#define MAKE_TABLE_ITERATORS(table_type, item_type, array_name)
+#endif
+
 #endif
