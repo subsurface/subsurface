@@ -357,7 +357,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	// First, we make a shallow copy of the old cylinder. Then we modify the fields inside that copy.
 	// At the end, we either place an EditCylinder undo command (EquipmentTab) or copy the cylinder back (planner).
 	// Yes, this is not ideal, but the pragmatic thing to do for now.
-	cylinder_t cyl = d->cylinders.cylinders[row];
+	cylinder_t cyl = *get_cylinder(d, row);
 
 	if (index.column() != TYPE && !changed)
 		return false;
@@ -467,7 +467,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		// In the planner - simply overwrite the cylinder in the dive with the modified cylinder.
 		// We have only made a shallow copy, therefore copy the new cylinder first.
 		cylinder_t copy = clone_cylinder(cyl);
-		std::swap(copy, d->cylinders.cylinders[row]);
+		std::swap(copy, *get_cylinder(d, row));
 		free_cylinder(copy);
 		dataChanged(index, index);
 	} else {

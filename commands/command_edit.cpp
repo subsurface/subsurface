@@ -668,7 +668,7 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 		// 2) For cylinders that do not yet exist in the destination dive, we set the pressures to 0, i.e. unset.
 		//    Moreover, for these we set the manually_added flag, because they weren't downloaded from a DC.
 		for (int i = 0; i < d->cylinders.nr && i < cylinders.nr; ++i) {
-			const cylinder_t &src = d->cylinders.cylinders[i];
+			const cylinder_t &src = *get_cylinder(d, i);
 			cylinder_t &dst = cylinders.cylinders[i];
 			dst.gasmix = src.gasmix;
 			dst.start = src.start;
@@ -1112,7 +1112,7 @@ static bool same_cylinder_with_flags(const cylinder_t &cyl1, const cylinder_t &c
 static int find_cylinder_index(const struct dive *d, const cylinder_t &cyl, int sameCylinderFlags)
 {
 	for (int idx = 0; idx < d->cylinders.nr; ++idx) {
-		if (same_cylinder_with_flags(cyl, d->cylinders.cylinders[idx], sameCylinderFlags))
+		if (same_cylinder_with_flags(cyl, *get_cylinder(d, idx), sameCylinderFlags))
 			return idx;
 	}
 	return -1;
@@ -1126,7 +1126,7 @@ EditCylinderBase::EditCylinderBase(int index, bool currentDiveOnly, bool nonProt
 		dives.clear();
 		return;
 	}
-	const cylinder_t &orig = current->cylinders.cylinders[index];
+	const cylinder_t &orig = *get_cylinder(current, index);
 
 	std::vector<dive *> divesNew;
 	divesNew.reserve(dives.size());
@@ -1139,7 +1139,7 @@ EditCylinderBase::EditCylinderBase(int index, bool currentDiveOnly, bool nonProt
 			continue;
 		divesNew.push_back(d);
 		indexes.push_back(idx);
-		cyl.push_back(clone_cylinder(d->cylinders.cylinders[idx]));
+		cyl.push_back(clone_cylinder(*get_cylinder(d, idx)));
 	}
 	dives = std::move(divesNew);
 }
@@ -1258,7 +1258,7 @@ EditCylinder::EditCylinder(int index, cylinder_t cylIn, EditCylinderType typeIn,
 void EditCylinder::redo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
-		std::swap(dives[i]->cylinders.cylinders[indexes[i]], cyl[i]);
+		std::swap(*get_cylinder(dives[i], indexes[i]), cyl[i]);
 		update_cylinder_related_info(dives[i]);
 		emit diveListNotifier.cylinderEdited(dives[i], indexes[i]);
 		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
