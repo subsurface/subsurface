@@ -141,7 +141,7 @@ static const struct uud_match serial_service_uuids[] = {
 	{ "98ae7120-e62e-11e3-badd-0002a5d5c51b", "Suunto (EON Steel/Core, G5)" },
 	{ "cb3c4555-d670-4670-bc20-b61dbc851e9a", "Pelagic (i770R, i200C, Pro Plus X, Geo 4.0)" },
 	{ "fdcdeaaa-295d-470e-bf15-04217b7aa0a0", "ScubaPro G2"},
-	{ "fe25c237-0ece-443c-b0aa-e02033e7029d", "Shearwater (Perdix/Teric)" },
+	{ "fe25c237-0ece-443c-b0aa-e02033e7029d", "Shearwater (Perdix/Teric/Peregrine)" },
 	{ NULL, }
 };
 
