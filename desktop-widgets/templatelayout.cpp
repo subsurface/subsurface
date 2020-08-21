@@ -131,11 +131,6 @@ QString TemplateLayout::generate()
 	int totalWork = getTotalWork(printOptions);
 
 	QString htmlContent;
-	Grantlee::Engine engine(this);
-	Grantlee::registerMetaType<template_options>();
-	Grantlee::registerMetaType<print_options>();
-	Grantlee::registerMetaType<CylinderObjectHelper>(); // TODO: Remove when grantlee supports Q_GADGET
-	Grantlee::registerMetaType<DiveObjectHelperGrantlee>(); // TODO: Remove when grantlee supports Q_GADGET
 
 	QVariantList diveList;
 
@@ -154,12 +149,7 @@ QString TemplateLayout::generate()
 			emit progressUpdated(lrint(progress * 100.0 / totalWork));
 		}
 	}
-	Grantlee::Context c;
-	c.insert("dives", diveList);
-	c.insert("template_options", QVariant::fromValue(*templateOptions));
-	c.insert("print_options", QVariant::fromValue(*printOptions));
 
-	/* don't use the Grantlee loader API */
 	QString templateContents = readTemplate(printOptions->p_template);
 
 	QHash<QString, QVariant> options;
@@ -173,40 +163,11 @@ QString TemplateLayout::generate()
 	parser(tokens, pos, out, options);
 	htmlContent = out.readAll();
 	return htmlContent;
-
-	QString preprocessed = preprocessTemplate(templateContents);
-
-	/* create the template from QString; is this thing allocating memory? */
-	Grantlee::Template t = engine.newTemplate(preprocessed, printOptions->p_template);
-	if (!t || t->error()) {
-		qDebug() << "Can't load template";
-		return htmlContent;
-	}
-
-	htmlContent = t->render(&c);
-
-	if (t->error()) {
-		qDebug() << "Can't render template";
-	}
-	return htmlContent;
 }
 
 QString TemplateLayout::generateStatistics()
 {
 	QString htmlContent;
-	Grantlee::Engine engine(this);
-
-	QSharedPointer<Grantlee::FileSystemTemplateLoader> m_templateLoader =
-		QSharedPointer<Grantlee::FileSystemTemplateLoader>(new Grantlee::FileSystemTemplateLoader());
-	m_templateLoader->setTemplateDirs(QStringList() << getPrintingTemplatePathUser() + QDir::separator() + QString("statistics"));
-	engine.addTemplateLoader(m_templateLoader);
-
-	Grantlee::registerMetaType<YearInfo>();
-	Grantlee::registerMetaType<template_options>();
-	Grantlee::registerMetaType<print_options>();
-	Grantlee::registerMetaType<CylinderObjectHelper>(); // TODO: Remove when grantlee supports Q_GADGET
-	Grantlee::registerMetaType<DiveObjectHelperGrantlee>(); // TODO: Remove when grantlee supports Q_GADGET
-
 	QVariantList years;
 
 	int i = 0;
@@ -218,16 +179,6 @@ QString TemplateLayout::generateStatistics()
 		i++;
 	}
 
-	Grantlee::Context c;
-	c.insert("years", years);
-	c.insert("template_options", QVariant::fromValue(*templateOptions));
-	c.insert("print_options", QVariant::fromValue(*printOptions));
-
-	Grantlee::Template t = engine.loadByName(printOptions->p_template);
-	if (!t || t->error()) {
-		qDebug() << "Can't load template";
-		return htmlContent;
-	}
 	QString templateFile = QString("statistics") + QDir::separator() + printOptions->p_template;
 	QString templateContents = readTemplate(templateFile);
 
@@ -241,17 +192,6 @@ QString TemplateLayout::generateStatistics()
 	int pos = 0;
 	parser(tokens, pos, out, options);
 	htmlContent = out.readAll();
-	return htmlContent;
-
-
-	htmlContent = t->render(&c);
-
-	if (t->error()) {
-		qDebug() << "Can't render template";
-		return htmlContent;
-	}
-
-	emit progressUpdated(100);
 	return htmlContent;
 }
 
