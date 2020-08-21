@@ -16,6 +16,13 @@ void find_all_templates();
 void set_bundled_templates_as_read_only();
 void copy_bundled_templates(QString src, QString dst, QStringList *templateBackupList);
 
+enum token_t {LITERAL, FORSTART, FORSTOP, BLOCKSTART, BLOCKSTOP, IFSTART, IFSTOP, PARSERERROR};
+
+struct token {
+	enum token_t type;
+	QString contents;
+};
+
 extern QList<QString> grantlee_templates, grantlee_statistics_templates;
 
 class TemplateLayout : public QObject {
@@ -30,6 +37,12 @@ public:
 private:
 	print_options *printOptions;
 	template_options *templateOptions;
+	QList<token> lexer(QString input);
+	void parser(QList<token> tokenList, int &pos, QTextStream &out, QHash<QString, QVariant> options);
+	QVariant getValue(QString list, QString property, QVariant option);
+	QString translate(QString s, QHash<QString, QVariant> options);
+
+
 
 signals:
 	void progressUpdated(int value);
