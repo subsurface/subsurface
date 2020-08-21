@@ -398,15 +398,6 @@ void BTDiscovery::discoverAddress(QString address)
 	QString btAddress;
 	btAddress = extractBluetoothAddress(address);
 
-#if defined(Q_OS_MACOS)
-	// macOS appears to need a fresh scan if we want to switch devices
-	static QString lastAddress;
-	if (lastAddress != address) {
-		btDeviceInfo.clear();
-		discoveryAgent->stop();
-		lastAddress = address;
-	}
-#endif
 	if (!btDeviceInfo.keys().contains(address) && !discoveryAgent->isActive()) {
 		qDebug() << "restarting discovery agent";
 		discoveryAgent->start();
