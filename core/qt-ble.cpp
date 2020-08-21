@@ -563,13 +563,27 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, dc_user_
 	// Note that ble takes ownership of controller and henceforth deleting ble will
 	// take care of deleting controller.
 	BLEObject *ble = new BLEObject(controller, user_device);
-	ble->connect(controller, SIGNAL(serviceDiscovered(QBluetoothUuid)), SLOT(addService(QBluetoothUuid)));
-
-	qDebug() << "  .. discovering services";
+	// we used to call our addService function the moment a service was discovered, but that
+	// could cause us to try to discover the details of a characteristic while we were still serching
+	// for services, which can cause a failure in the Qt BLE stack.
+	// While that actual error was likely caused by a bug in BLE implementation of a dive computer,
+	// the underlying issue still seems worth addressing.
+	// Finish discovering the services, then add all those services and discover their characteristics.
+	ble->connect(controller, &QLowEnergyController::discoveryFinished, [=] {
+		qDebug() << "finished service discovery, start discovering characteristics";
+		foreach(QBluetoothUuid s, controller->services()) {
+			ble->addService(s);
+		}
+	});
+	ble->connect(controller, QOverload<QLowEnergyController::Error>::of(&QLowEnergyController::error), [=](QLowEnergyController::Error newError) {
+		qDebug() << "controler discovery error" << controller->errorString() << newError;
+	});
 
 	controller->discoverServices();
 
 	WAITFOR(controller->state() != QLowEnergyController::DiscoveringState, BLE_TIMEOUT);
+	if (controller->state() == QLowEnergyController::DiscoveringState)
+		qDebug() << "  .. even after waiting for the full BLE timeout, controller is still in discovering state";
 
 	qDebug() << " .. done discovering services";
 
