@@ -35,8 +35,6 @@ static QString getFormattedCylinder(const struct dive *dive, int idx)
 {
 	const cylinder_t *cyl = get_cylinder(dive, idx);
 	const char *desc = cyl->type.description;
-	if (!desc && idx > 0)
-		return QString();
 	QString fmt = desc ? QString(desc) : gettextFromC::tr("unknown");
 	fmt += ", " + get_volume_string(cyl->type.size, true);
 	fmt += ", " + get_pressure_string(cyl->type.workingpressure, true);
