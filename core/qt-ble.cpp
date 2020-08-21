@@ -215,8 +215,16 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 
 	auto service = controller->createServiceObject(newService, this);
 	if (service) {
-		qDebug() << " .. starting discovery";
+		// provide some visibility into what's happening in the log
+		service->connect(service, &QLowEnergyService::stateChanged,[=](QLowEnergyService::ServiceState newState) {
+			qDebug() << "   .. service state changed to" << newState;
+		});
+		service->connect(service, QOverload<QLowEnergyService::ServiceError>::of(&QLowEnergyService::error),
+				 [=](QLowEnergyService::ServiceError newError) {
+			qDebug() << "error discovering service details" << newError;
+		});
 		services.append(service);
+		qDebug() << "starting service characteristics discovery";
 		service->discoverDetails();
 	}
 }
@@ -360,6 +368,8 @@ dc_status_t BLEObject::select_preferred_service(void)
 	// Wait for each service to finish discovering
 	foreach (const QLowEnergyService *s, services) {
 		WAITFOR(s->state() != QLowEnergyService::DiscoveringServices, BLE_TIMEOUT);
+		if (s->state() == QLowEnergyService::DiscoveringServices)
+			qDebug() << " .. service " << s->serviceUuid() << "still hasn't completed discovery - trouble ahead";
 	}
 
 	// Print out the services for debugging
