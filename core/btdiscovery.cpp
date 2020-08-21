@@ -404,6 +404,14 @@ void BTDiscovery::discoverAddress(QString address)
 	}
 }
 
+void BTDiscovery::stopAgent()
+{
+	if (!discoveryAgent)
+		return;
+	qDebug() << "---> stopping the discovery agent";
+	discoveryAgent->stop();
+}
+
 bool isBluetoothAddress(const QString &address)
 {
 	return extractBluetoothAddress(address) != QString();
@@ -442,8 +450,10 @@ void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo)
 
 QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr)
 {
-	if (btDeviceInfo.contains(devaddr))
+	if (btDeviceInfo.contains(devaddr)) {
+		BTDiscovery::instance()->stopAgent();
 		return btDeviceInfo[devaddr];
+	}
 	if(!btDeviceInfo.keys().contains(devaddr)) {
 		qDebug() << "still looking scan is still running, we should just wait for a few moments";
 		// wait for a maximum of 30 more seconds
@@ -451,8 +461,10 @@ QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr)
 		QElapsedTimer timer;
 		timer.start();
 		do {
-			if (btDeviceInfo.keys().contains(devaddr))
+			if (btDeviceInfo.keys().contains(devaddr)) {
+				BTDiscovery::instance()->stopAgent();
 				return btDeviceInfo[devaddr];
+			}
 			QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 			QThread::msleep(100);
 		} while (timer.elapsed() < 30000);
