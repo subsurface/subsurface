@@ -339,17 +339,35 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 			}
 			break;
 		case RUNTIME:
-			p.time = value.toInt() * 60;
+		{
+			int secs = value.toInt() * 60;
+			i = index.row();
+			int duration = secs;
+			if (i)
+				duration -= divepoints[i-1].time;
+			// Make sure segments have a minimal duration
+			if (duration <= 0)
+				secs += 10 - duration;
+			p.time = secs;
+			while (++i < divepoints.size())
+				if (divepoints[i].time < divepoints[i - 1].time + 10)
+					divepoints[i].time = divepoints[i - 1].time + 10;
+		}
 			break;
 		case DURATION:
-			i = index.row();
-			if (i)
-				shift = divepoints[i].time - divepoints[i - 1].time - value.toInt() * 60;
-			else
-				shift = divepoints[i].time - value.toInt() * 60;
-			while (i < divepoints.size())
-				divepoints[i++].time -= shift;
-			break;
+		{
+				int secs = value.toInt() * 60;
+				if (!secs)
+					secs = 10;
+				i = index.row();
+				if (i)
+					shift = divepoints[i].time - divepoints[i - 1].time - secs;
+				else
+					shift = divepoints[i].time - secs;
+				while (i < divepoints.size())
+					divepoints[i++].time -= shift;
+		}
+				break;
 		case CCSETPOINT: {
 			int po2 = 0;
 			QByteArray gasv = value.toByteArray();
