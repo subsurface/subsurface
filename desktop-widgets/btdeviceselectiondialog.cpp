@@ -235,9 +235,12 @@ void BtDeviceSelectionDialog::currentItemChanged(QListWidgetItem *item, QListWid
 	bool enableSaveButton = true;
 
 #if !defined(Q_OS_WIN)
-	// On other platforms than Windows we can obtain the pairing status so if the devices are not paired we disable the button
-	// except on MacOS for those devices that only give us a Uuid and not and address (as we have no pairing status for those, either)
-	if (!remoteDeviceInfo.address().isNull()) {
+	// On platforms other than Windows we can obtain the pairing status so if the devices are non-BLE devices
+	// and not paired we disable the button
+	// on MacOS some devices (including all BLE devices) only give us a Uuid and not and address; for those
+	// we have no pairing status, either
+	if (!remoteDeviceInfo.address().isNull() &&
+	    remoteDeviceInfo.coreConfigurations() != QBluetoothDeviceInfo::LowEnergyCoreConfiguration) {
 		QBluetoothLocalDevice::Pairing pairingStatus = localDevice->pairingStatus(remoteDeviceInfo.address());
 
 		if (pairingStatus == QBluetoothLocalDevice::Unpaired) {
