@@ -44,7 +44,9 @@ void PrintOptions::setup()
 
 	connect(ui.printInColor, SIGNAL(clicked(bool)), this, SLOT(printInColorClicked(bool)));
 	connect(ui.printSelected, SIGNAL(clicked(bool)), this, SLOT(printSelectedClicked(bool)));
-
+	connect(ui.resolution, QOverload<int>::of(&QSpinBox::valueChanged), [this](int value) {
+		printOptions->resolution = value;
+	});
 	hasSetupSlots = true;
 }
 
