@@ -171,6 +171,7 @@ void PrintDialog::createPrinterObj()
 	// create a new printer object
 	if (!printer) {
 		qprinter = new QPrinter();
+		qprinter->setResolution(printOptions.resolution);
 		qprinter->setOrientation((QPrinter::Orientation)printOptions.landscape);
 		printer = new Printer(qprinter, &printOptions, &templateOptions, Printer::PRINT);
 	}

@@ -15,6 +15,7 @@ struct print_options {
 	bool print_selected;
 	bool color_selected;
 	bool landscape;
+	int resolution;
 };
 
 struct template_options {
