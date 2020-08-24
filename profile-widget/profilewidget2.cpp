@@ -1399,6 +1399,18 @@ struct int ProfileWidget2::getEntryFromPos(QPointF pos)
 #endif
 
 #ifndef SUBSURFACE_MOBILE
+/// Prints cylinder information for display.
+/// eg : "Cyl 1 (AL80 EAN32)"
+static QString printCylinderDescription(int i, const cylinder_t *cylinder)
+{
+	QString label = gettextFromC::tr("Cyl") + QString(" %1").arg(i+1);
+	if( cylinder != NULL ) {
+		QString mix = get_gas_string(cylinder->gasmix);
+		label += QString(" (%2 %3)").arg(cylinder->type.description).arg(mix);
+	}
+	return label;
+}
+
 void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 {
 	if (currentState == ADD || currentState == PLAN) {
@@ -1440,12 +1452,25 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	QPointF scenePos = mapToScene(mapFromGlobal(event->globalPos()));
 	qreal sec_val = timeAxis->valueAt(scenePos);
 	int seconds = (sec_val < 0.0) ? 0 : (int)sec_val;
-	if (current_dive && current_dive->cylinders.nr > 1) {
+	DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem);
+
+	// Add or edit Gas Change
+	if (current_dive && item && event_is_gaschange(item->getEvent())) {
+		int eventTime = item->getEvent()->time.seconds;
+		QMenu *gasChange = m.addMenu(tr("Edit Gas Change"));
+		for (int i = 0; i < current_dive->cylinders.nr; i++) {
+			const cylinder_t *cylinder = get_cylinder(current_dive, i);
+			QString label = printCylinderDescription(i, cylinder);
+			gasChange->addAction(label, [this, i, eventTime] { changeGas(i, eventTime); });
+		}
+	} else if (current_dive && current_dive->cylinders.nr > 1) {
 		// if we have more than one gas, offer to switch to another one
 		QMenu *gasChange = m.addMenu(tr("Add gas change"));
-		for (int i = 0; i < current_dive->cylinders.nr; i++)
-			gasChange->addAction(QString(current_dive->cylinders.cylinders[i].type.description) + tr(" (cyl. %1)").arg(i + 1),
-					     [this, i, seconds] { changeGas(i, seconds); });
+		for (int i = 0; i < current_dive->cylinders.nr; i++) {
+			const cylinder_t *cylinder = get_cylinder(current_dive, i);
+			QString label = printCylinderDescription(i, cylinder);
+			gasChange->addAction(label, [this, i, seconds] { changeGas(i, seconds); });
+		}
 	}
 	m.addAction(tr("Add setpoint change"), [this, seconds]() { ProfileWidget2::addSetpointChange(seconds); });
 	m.addAction(tr("Add bookmark"), [this, seconds]() { addBookmark(seconds); });
