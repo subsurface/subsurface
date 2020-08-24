@@ -1,3 +1,4 @@
+desktop: add an "Edit Gas Change" right-click option [#2910]
 core: add support for Shearwater Peregrine (requires firmware V79 or newer)
 core: fix renumbering of imported dives [#2731]
 mobile: fix editing tank information
