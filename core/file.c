@@ -338,8 +338,20 @@ int parse_file(const char *filename, struct dive_table *table, struct trip_table
 
 	/* DataTrak/Wlog */
 	if (fmt && !strcasecmp(fmt + 1, "LOG")) {
-		ret = datatrak_import(&mem, table, trips, sites);
+		struct memblock wl_mem;
+		const char *t = strrchr(filename, '.');
+		char *wl_name = memcpy(calloc(t - filename + 1, 1), filename, t - filename);
+		wl_name = realloc(wl_name, strlen(wl_name) + 5);
+		wl_name = strcat(wl_name, ".add");
+		if((ret = readfile(wl_name, &wl_mem)) < 0) {
+			fprintf(stderr, "No file %s found. No WLog extensions.\n", wl_name);
+			ret = datatrak_import(&mem, NULL, table, trips, sites);
+		} else {
+			ret = datatrak_import(&mem, &wl_mem, table, trips, sites);
+			free(wl_mem.buffer);
+		}
 		free(mem.buffer);
+		free(wl_name);
 		return ret;
 	}
 

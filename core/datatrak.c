@@ -124,6 +124,23 @@ static int dtrak_prepare_data(int model, device_data_t *dev_data)
 }
 
 /*
+ * Return a default name for a tank based on it's size.
+ * Just get the first in the user's list for given size.
+ * Reaching the end of the list means there is no tank of this size.
+ */
+static char *cyl_type_by_size(int size)
+{
+	struct tank_info_t *ti = tank_info;
+
+	while (ti->ml != size && ti < tank_info + MAX_TANK_INFO)
+		ti++;
+	if (ti == tank_info + MAX_TANK_INFO)
+		return "";
+	else
+		return copy_string(ti->name);
+}
+
+/*
  * Reads the size of a datatrak profile from actual position in buffer *ptr,
  * zero padds it with a faked header and inserts the model number for
  * libdivecomputer parsing. Puts the completed buffer in a pre-allocated
@@ -320,7 +337,7 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 	if (tmp_2bytes != 0x7FFF) {
 		cylinder_t cyl = empty_cylinder;
 		cyl.type.size.mliter = tmp_2bytes * 10;
-		cyl.type.description = "";
+		cyl.type.description = cyl_type_by_size(tmp_2bytes * 10);
 		cyl.start.mbar = 200000;
 		cyl.gasmix.he.permille = 0;
 		cyl.gasmix.o2.permille = 210;
@@ -562,10 +579,104 @@ bail:
 	return NULL;
 }
 /*
+ * Parses the header of the .add file, returns the number of dives in
+ * the archive (must be the same than number of dives in .log file).
+ */
+static unsigned int wlog_header_parser (struct memblock *mem)
+{
+	int tmp;
+	unsigned char *runner = (unsigned char *) mem->buffer;
+	if (!runner)
+		return -1;
+	tmp = (runner[1] << 8) + runner[0];
+	if (tmp == 0x0252) {
+		runner += 8;
+		tmp = (runner[1] << 8) + runner[0];
+		return tmp;
+	} else {
+		fprintf(stderr, "Error, not a Wlog .add file\n");
+		return -1;
+	}
+}
+
+static void wlog_compl_parser(struct memblock *wl_mem, struct dive *dt_dive, int dcount)
+{
+	int strlong = 256, tmp = 0, offset = 12 + (dcount * 850),
+	    pos_weight =  offset + 256,
+	    pos_viz = offset + 258,
+	    pos_tank_init = offset + 266,
+	    pos_suit = offset + 268;
+	char *wlog_notes = NULL, *wlog_suit = NULL, *buffer = NULL;
+	unsigned char *runner = (unsigned char *) wl_mem->buffer;
+
+	/*
+	 * Extended notes string. Fixed length 256 bytes. 0 padded if not complete
+	 */
+	if (*(runner + offset)) {
+		wlog_notes = calloc(strlong + 1, 1);
+		wlog_notes = memcpy(wlog_notes, runner + offset, 256);
+		wlog_notes = to_utf8((unsigned char *) wlog_notes);
+	}
+	if (dt_dive->notes && wlog_notes) {
+		buffer = calloc (strlen(dt_dive->notes) + strlen(wlog_notes) + 1, 1);
+		sprintf(buffer, "%s%s", dt_dive->notes, wlog_notes);
+		free(dt_dive->notes);
+		dt_dive->notes = copy_string(buffer);
+	} else if (wlog_notes) {
+		dt_dive->notes = copy_string(wlog_notes);
+	}
+	free(buffer);
+	free(wlog_notes);
+
+	/*
+	 * Weight in Kg * 100
+	 */
+	tmp = (runner[pos_weight + 1] << 8) + runner[pos_weight];
+	if (tmp != 0x7fff) {
+		weightsystem_t ws = { {lrint(tmp * 10)}, QT_TRANSLATE_NOOP("gettextFromC", "unknown") };
+		add_cloned_weightsystem(&dt_dive->weightsystems, ws);
+	}
+
+	/*
+	 * Visibility in m * 100.  Arbitrarily choosed to be 5 stars if >= 25m and
+	 * then assign a star for each 5 meters, resulting 0 stars if < 5 m
+	 */
+	tmp = (runner[pos_viz + 1] << 8) + runner[pos_viz];
+	if (tmp != 0x7fff) {
+		tmp = tmp > 2500 ? 2500 / 100 : tmp / 100;
+		dt_dive->visibility = (int) floor(tmp / 5);
+	}
+
+	/*
+	 * Tank initial pressure in bar * 100
+	 * If we know initial pressure, rework end pressure.
+	 */
+	tmp = (runner[pos_tank_init + 1] << 8) + runner[pos_tank_init];
+	if (tmp != 0x7fff) {
+		get_cylinder(dt_dive, 0)->start.mbar = tmp * 10;
+		get_cylinder(dt_dive, 0)->end.mbar =  get_cylinder(dt_dive, 0)->start.mbar - lrint(get_cylinder(dt_dive, 0)->gas_used.mliter / get_cylinder(dt_dive, 0)->type.size.mliter) * 1000;
+	}
+
+	/*
+	 * Dive suit, fixed length of 26 bytes, zero padded if shorter.
+	 * Expected to be preferred by the user if he did the work of setting it.
+	 */
+	strlong = 26;
+	if (*(runner + pos_suit)) {
+		wlog_suit = calloc(strlong, 1);
+		wlog_suit = memcpy(wlog_suit, runner + pos_suit, strlong);
+		wlog_suit = to_utf8((unsigned char *) wlog_suit);
+	}
+	if (wlog_suit)
+		dt_dive->suit = copy_string(wlog_suit);
+	free(wlog_suit);
+}
+
+/*
  * Main function call from file.c memblock is allocated (and freed) there.
  * If parsing is aborted due to errors, stores correctly parsed dives.
  */
-int datatrak_import(struct memblock *mem, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+int datatrak_import(struct memblock *mem, struct memblock *wl_mem, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
 {
 	UNUSED(trips);
 	unsigned char *runner;
@@ -579,6 +690,16 @@ int datatrak_import(struct memblock *mem, struct dive_table *table, struct trip_
 		report_error(translate("gettextFromC", "[Error] File is not a DataTrak file. Aborted"));
 		goto bail;
 	}
+	// Verify WLog .add file, Beginning sequence and Nº dives
+	if(wl_mem) {
+		int compl_dives_n = wlog_header_parser(wl_mem);
+		if (compl_dives_n != numdives) {
+			report_error("ERROR: Not the same number of dives in .log %d and .add file %d.\nWill not parse .add file", numdives , compl_dives_n);
+			free(wl_mem->buffer);
+			wl_mem->buffer = NULL;
+			wl_mem = NULL;
+		}
+	}
 	// Point to the expected begining of 1st. dive data
 	runner = (unsigned char *)mem->buffer;
 	JUMP(runner, 12);
@@ -588,6 +709,8 @@ int datatrak_import(struct memblock *mem, struct dive_table *table, struct trip_
 		struct dive *ptdive = alloc_dive();
 
 		runner = dt_dive_parser(runner, ptdive, sites, maxbuf);
+		if (wl_mem)
+			wlog_compl_parser(wl_mem, ptdive, i);
 		if (runner == NULL) {
 			report_error(translate("gettextFromC", "Error: no dive"));
 			free(ptdive);
