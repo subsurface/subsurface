@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "subsurface-time.h"
+#include "subsurface-string.h"
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 /*
  * The date handling internally works in seconds since
@@ -162,4 +165,51 @@ int utc_weekday(timestamp_t timestamp)
 	struct tm tm;
 	utc_mkdate(timestamp, &tm);
 	return tm.tm_wday;
+}
+
+/*
+ * Try to parse datetime of the form "YYYY-MM-DD hh:mm:ss" or as
+ * an 64-bit decimal and return 64-bit timestamp. On failure or
+ * if passed an empty string, return 0.
+ */
+extern timestamp_t parse_datetime(const char *s)
+{
+	int y, m, d;
+	int hr, min, sec;
+	struct tm tm;
+
+	if (empty_string(s))
+		return 0;
+	if (sscanf(s, "%d-%d-%d %d:%d:%d", &y, &m, &d, &hr, &min, &sec) != 6) {
+		char *endptr;
+		timestamp_t res = strtoull(s, &endptr, 10);
+		return *endptr == '\0' ? res : 0;
+	}
+
+	tm.tm_year = y;
+	tm.tm_mon = m - 1;
+	tm.tm_mday = d;
+	tm.tm_hour = hr;
+	tm.tm_min = min;
+	tm.tm_sec = sec;
+	return utc_mktime(&tm);
+}
+
+/*
+ * Format 64-bit timestamp in the form "YYYY-MM-DD hh:mm:ss".
+ * Returns the empty string for timestamp = 0
+ */
+extern char *format_datetime(timestamp_t timestamp)
+{
+	char buf[32];
+	struct tm tm;
+
+	if (!timestamp)
+		return strdup("");
+
+	utc_mkdate(timestamp, &tm);
+	snprintf(buf, sizeof(buf), "%04u-%02u-%02u %02u:%02u:%02u",
+		 tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+
+	return strdup(buf);
 }
