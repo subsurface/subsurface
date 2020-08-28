@@ -148,7 +148,7 @@ static void calculateDive(struct dive *dive, Stats &stats)
 
 	// EAN dive ?
 	for (int j = 0; j < dive->cylinders.nr; ++j) {
-		if (dive->cylinders.cylinders[j].gasmix.o2.permille > 210) {
+		if (get_cylinder(dive, j)->gasmix.o2.permille > 210) {
 			stats.divesEAN++;
 			break;
 		}

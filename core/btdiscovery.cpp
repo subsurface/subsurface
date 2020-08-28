@@ -38,6 +38,7 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		    btName.startsWith("Petrel") ||
 		    btName.startsWith("Perdix") ||
 		    btName.startsWith("Teric") ||
+		    btName.startsWith("Peregrine") ||
 		    btName.startsWith("NERD")) {
 		vendor = "Shearwater";
 		// both the Petrel and Petrel 2 identify as "Petrel" as BT/BLE device
@@ -47,6 +48,7 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		if (btName.startsWith("Perdix")) product = "Perdix";
 		if (btName.startsWith("Predator")) product = "Predator";
 		if (btName.startsWith("Teric")) product = "Teric";
+		if (btName.startsWith("Peregrine")) product = "Peregrine";
 		if (btName.startsWith("NERD")) product = "Nerd"; // next line might override this
 		if (btName.startsWith("NERD 2")) product = "Nerd 2";
 	} else if (btName.startsWith("EON Steel")) {
@@ -94,12 +96,21 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	} else if (btName.contains(QRegularExpression("^FR\\d{6}$"))) {
 		vendor = "Aqualung";
 		product = "i550C";
-	} else if (btName.contains(QRegularExpression("^ER\\d{6}$"))) {
-		vendor = "Oceanic";
-		product = "Pro Plus X";
 	} else if (btName.contains(QRegularExpression("^FS\\d{6}$"))) {
 		vendor = "Oceanic";
 		product = "Geo 4.0";
+	} else if (btName.contains(QRegularExpression("^FT\\d{6}$"))) {
+		vendor = "Oceanic";
+		product = "Veo 4.0";
+	} else if (btName.contains(QRegularExpression("^FU\\d{6}$"))) {
+		vendor = "Sherwood";
+		product = "Wisdom 4";
+	} else if (btName.contains(QRegularExpression("^FV\\d{6}$"))) {
+		vendor = "Oceanic";
+		product = "ProPlus 4";
+	} else if (btName.contains(QRegularExpression("^ER\\d{6}$"))) {
+		vendor = "Oceanic";
+		product = "Pro Plus X";
 	} else if (btName.contains(QRegularExpression("^DS\\d{6}"))) {
 		// The Ratio bluetooth name looks like the Pelagic ones,
 		// but that seems to be just happenstance.
@@ -111,6 +122,12 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	} else if (btName.startsWith("S1")) {
 		vendor = "Oceans";
 		product = "S1";
+	} else if (btName.startsWith("McLean Extreme")) {
+		vendor = "McLean";
+		product = "Extreme";
+	} else if (btName.startsWith("DiveComputer")) {
+		vendor = "Tecdiving";
+		product = "DiveComputer.eu";
 	}
 
 	// check if we found a known dive computer
@@ -381,19 +398,18 @@ void BTDiscovery::discoverAddress(QString address)
 	QString btAddress;
 	btAddress = extractBluetoothAddress(address);
 
-#if defined(Q_OS_MACOS)
-	// macOS appears to need a fresh scan if we want to switch devices
-	static QString lastAddress;
-	if (lastAddress != address) {
-		btDeviceInfo.clear();
-		discoveryAgent->stop();
-		lastAddress = address;
-	}
-#endif
 	if (!btDeviceInfo.keys().contains(address) && !discoveryAgent->isActive()) {
 		qDebug() << "restarting discovery agent";
 		discoveryAgent->start();
 	}
+}
+
+void BTDiscovery::stopAgent()
+{
+	if (!discoveryAgent)
+		return;
+	qDebug() << "---> stopping the discovery agent";
+	discoveryAgent->stop();
 }
 
 bool isBluetoothAddress(const QString &address)
@@ -434,8 +450,10 @@ void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo)
 
 QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr)
 {
-	if (btDeviceInfo.contains(devaddr))
+	if (btDeviceInfo.contains(devaddr)) {
+		BTDiscovery::instance()->stopAgent();
 		return btDeviceInfo[devaddr];
+	}
 	if(!btDeviceInfo.keys().contains(devaddr)) {
 		qDebug() << "still looking scan is still running, we should just wait for a few moments";
 		// wait for a maximum of 30 more seconds
@@ -443,8 +461,10 @@ QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr)
 		QElapsedTimer timer;
 		timer.start();
 		do {
-			if (btDeviceInfo.keys().contains(devaddr))
+			if (btDeviceInfo.keys().contains(devaddr)) {
+				BTDiscovery::instance()->stopAgent();
 				return btDeviceInfo[devaddr];
+			}
 			QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 			QThread::msleep(100);
 		} while (timer.elapsed() < 30000);

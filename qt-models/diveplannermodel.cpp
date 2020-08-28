@@ -128,6 +128,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	int plansamples = dc->samples <= 100 ? dc->samples : 100;
 	int j = 0;
 	int cylinderid = 0;
+
 	last_sp.mbar = 0;
 	for (int i = 0; i < plansamples - 1; i++) {
 		if (dc->last_manual_time.seconds && dc->last_manual_time.seconds > 120 && lasttime.seconds >= dc->last_manual_time.seconds)
@@ -145,7 +146,11 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 		}
 		if (samplecount) {
 			cylinderid = get_cylinderid_at_time(d, dc, lasttime);
-			if (newtime.seconds - lastrecordedtime.seconds > 10) {
+			duration_t nexttime = newtime;
+			++nexttime.seconds;
+			if (newtime.seconds - lastrecordedtime.seconds > 10 || cylinderid == get_cylinderid_at_time(d, dc, nexttime)) {
+				if (newtime.seconds == lastrecordedtime.seconds)
+					newtime.seconds += 10;
 				current_divemode = get_current_divemode(dc, newtime.seconds - 1, &evd, &current_divemode);
 				addStop(depthsum / samplecount, newtime.seconds, cylinderid, last_sp.mbar, true, current_divemode);
 				lastrecordedtime = newtime;
@@ -334,17 +339,35 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 			}
 			break;
 		case RUNTIME:
-			p.time = value.toInt() * 60;
+		{
+			int secs = value.toInt() * 60;
+			i = index.row();
+			int duration = secs;
+			if (i)
+				duration -= divepoints[i-1].time;
+			// Make sure segments have a minimal duration
+			if (duration <= 0)
+				secs += 10 - duration;
+			p.time = secs;
+			while (++i < divepoints.size())
+				if (divepoints[i].time < divepoints[i - 1].time + 10)
+					divepoints[i].time = divepoints[i - 1].time + 10;
+		}
 			break;
 		case DURATION:
-			i = index.row();
-			if (i)
-				shift = divepoints[i].time - divepoints[i - 1].time - value.toInt() * 60;
-			else
-				shift = divepoints[i].time - value.toInt() * 60;
-			while (i < divepoints.size())
-				divepoints[i++].time -= shift;
-			break;
+		{
+				int secs = value.toInt() * 60;
+				if (!secs)
+					secs = 10;
+				i = index.row();
+				if (i)
+					shift = divepoints[i].time - divepoints[i - 1].time - secs;
+				else
+					shift = divepoints[i].time - secs;
+				while (i < divepoints.size())
+					divepoints[i++].time -= shift;
+		}
+				break;
 		case CCSETPOINT: {
 			int po2 = 0;
 			QByteArray gasv = value.toByteArray();

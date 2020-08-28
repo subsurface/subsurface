@@ -141,7 +141,7 @@ static const struct uud_match serial_service_uuids[] = {
 	{ "98ae7120-e62e-11e3-badd-0002a5d5c51b", "Suunto (EON Steel/Core, G5)" },
 	{ "cb3c4555-d670-4670-bc20-b61dbc851e9a", "Pelagic (i770R, i200C, Pro Plus X, Geo 4.0)" },
 	{ "fdcdeaaa-295d-470e-bf15-04217b7aa0a0", "ScubaPro G2"},
-	{ "fe25c237-0ece-443c-b0aa-e02033e7029d", "Shearwater (Perdix/Teric)" },
+	{ "fe25c237-0ece-443c-b0aa-e02033e7029d", "Shearwater (Perdix/Teric/Peregrine)" },
 	{ NULL, }
 };
 
@@ -215,8 +215,16 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 
 	auto service = controller->createServiceObject(newService, this);
 	if (service) {
-		qDebug() << " .. starting discovery";
+		// provide some visibility into what's happening in the log
+		service->connect(service, &QLowEnergyService::stateChanged,[=](QLowEnergyService::ServiceState newState) {
+			qDebug() << "   .. service state changed to" << newState;
+		});
+		service->connect(service, QOverload<QLowEnergyService::ServiceError>::of(&QLowEnergyService::error),
+				 [=](QLowEnergyService::ServiceError newError) {
+			qDebug() << "error discovering service details" << newError;
+		});
 		services.append(service);
+		qDebug() << "starting service characteristics discovery";
 		service->discoverDetails();
 	}
 }
@@ -360,6 +368,8 @@ dc_status_t BLEObject::select_preferred_service(void)
 	// Wait for each service to finish discovering
 	foreach (const QLowEnergyService *s, services) {
 		WAITFOR(s->state() != QLowEnergyService::DiscoveringServices, BLE_TIMEOUT);
+		if (s->state() == QLowEnergyService::DiscoveringServices)
+			qDebug() << " .. service " << s->serviceUuid() << "still hasn't completed discovery - trouble ahead";
 	}
 
 	// Print out the services for debugging
@@ -553,13 +563,27 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, dc_user_
 	// Note that ble takes ownership of controller and henceforth deleting ble will
 	// take care of deleting controller.
 	BLEObject *ble = new BLEObject(controller, user_device);
-	ble->connect(controller, SIGNAL(serviceDiscovered(QBluetoothUuid)), SLOT(addService(QBluetoothUuid)));
-
-	qDebug() << "  .. discovering services";
+	// we used to call our addService function the moment a service was discovered, but that
+	// could cause us to try to discover the details of a characteristic while we were still serching
+	// for services, which can cause a failure in the Qt BLE stack.
+	// While that actual error was likely caused by a bug in BLE implementation of a dive computer,
+	// the underlying issue still seems worth addressing.
+	// Finish discovering the services, then add all those services and discover their characteristics.
+	ble->connect(controller, &QLowEnergyController::discoveryFinished, [=] {
+		qDebug() << "finished service discovery, start discovering characteristics";
+		foreach(QBluetoothUuid s, controller->services()) {
+			ble->addService(s);
+		}
+	});
+	ble->connect(controller, QOverload<QLowEnergyController::Error>::of(&QLowEnergyController::error), [=](QLowEnergyController::Error newError) {
+		qDebug() << "controler discovery error" << controller->errorString() << newError;
+	});
 
 	controller->discoverServices();
 
 	WAITFOR(controller->state() != QLowEnergyController::DiscoveringState, BLE_TIMEOUT);
+	if (controller->state() == QLowEnergyController::DiscoveringState)
+		qDebug() << "  .. even after waiting for the full BLE timeout, controller is still in discovering state";
 
 	qDebug() << " .. done discovering services";
 

@@ -1962,20 +1962,15 @@ static void merge_events(struct dive *d, struct divecomputer *res,
 		const int *cylinders_map;
 		int event_offset;
 
-		if (!b) {
-			*p = clone_event(a);
-			event_renumber(*p, cylinders_map1);
-			break;
-		}
-		if (!a) {
-			*p = clone_event(b);
-			(*p)->time.seconds += offset;
-			event_renumber(*p, cylinders_map2);
-			break;
-		}
+		if (!b)
+			goto pick_a;
+
+		if (!a)
+			goto pick_b;
+
 		s = sort_event(a, b, a->time.seconds, b->time.seconds + offset);
 
-		/* Identical events? Just skip one of them (we pick a) */
+		/* Identical events? Just skip one of them (we skip a) */
 		if (!s) {
 			a = a->next;
 			continue;
@@ -1983,11 +1978,13 @@ static void merge_events(struct dive *d, struct divecomputer *res,
 
 		/* Otherwise, pick the one that sorts first */
 		if (s < 0) {
+pick_a:
 			pick = a;
 			a = a->next;
 			event_offset = 0;
 			cylinders_map = cylinders_map1;
 		} else {
+pick_b:
 			pick = b;
 			b = b->next;
 			event_offset = offset;

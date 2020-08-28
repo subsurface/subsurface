@@ -10,7 +10,7 @@
 #include <QAbstractListModel>
 #include <QSortFilterProxyModel>
 
-class dive_site;
+struct dive_site;
 
 class LocationInformationWidget : public QGroupBox {
 	Q_OBJECT
