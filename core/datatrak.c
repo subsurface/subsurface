@@ -582,7 +582,7 @@ bail:
  * Parses the header of the .add file, returns the number of dives in
  * the archive (must be the same than number of dives in .log file).
  */
-static unsigned int wlog_header_parser (struct memblock *mem)
+static int wlog_header_parser (struct memblock *mem)
 {
 	int tmp;
 	unsigned char *runner = (unsigned char *) mem->buffer;
