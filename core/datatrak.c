@@ -588,10 +588,9 @@ static int wlog_header_parser (struct memblock *mem)
 	unsigned char *runner = (unsigned char *) mem->buffer;
 	if (!runner)
 		return -1;
-	tmp = (runner[1] << 8) + runner[0];
-	if (tmp == 0x0252) {
+	if (!memcmp(runner, "\x52\x02", 2)) {
 		runner += 8;
-		tmp = (runner[1] << 8) + runner[0];
+		tmp = (int) two_bytes_to_int(runner[1], runner[0]);
 		return tmp;
 	} else {
 		fprintf(stderr, "Error, not a Wlog .add file\n");
@@ -631,7 +630,7 @@ static void wlog_compl_parser(struct memblock *wl_mem, struct dive *dt_dive, int
 	/*
 	 * Weight in Kg * 100
 	 */
-	tmp = (runner[pos_weight + 1] << 8) + runner[pos_weight];
+	tmp = (int) two_bytes_to_int(runner[pos_weight + 1], runner[pos_weight]);
 	if (tmp != 0x7fff) {
 		weightsystem_t ws = { {lrint(tmp * 10)}, QT_TRANSLATE_NOOP("gettextFromC", "unknown") };
 		add_cloned_weightsystem(&dt_dive->weightsystems, ws);
@@ -641,7 +640,7 @@ static void wlog_compl_parser(struct memblock *wl_mem, struct dive *dt_dive, int
 	 * Visibility in m * 100.  Arbitrarily choosed to be 5 stars if >= 25m and
 	 * then assign a star for each 5 meters, resulting 0 stars if < 5 m
 	 */
-	tmp = (runner[pos_viz + 1] << 8) + runner[pos_viz];
+	tmp = (int) two_bytes_to_int(runner[pos_viz + 1], runner[pos_viz]);
 	if (tmp != 0x7fff) {
 		tmp = tmp > 2500 ? 2500 / 100 : tmp / 100;
 		dt_dive->visibility = (int) floor(tmp / 5);
@@ -651,7 +650,7 @@ static void wlog_compl_parser(struct memblock *wl_mem, struct dive *dt_dive, int
 	 * Tank initial pressure in bar * 100
 	 * If we know initial pressure, rework end pressure.
 	 */
-	tmp = (runner[pos_tank_init + 1] << 8) + runner[pos_tank_init];
+	tmp = (int) two_bytes_to_int(runner[pos_tank_init + 1], runner[pos_tank_init]);
 	if (tmp != 0x7fff) {
 		get_cylinder(dt_dive, 0)->start.mbar = tmp * 10;
 		get_cylinder(dt_dive, 0)->end.mbar =  get_cylinder(dt_dive, 0)->start.mbar - lrint(get_cylinder(dt_dive, 0)->gas_used.mliter / get_cylinder(dt_dive, 0)->type.size.mliter) * 1000;
