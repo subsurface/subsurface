@@ -137,7 +137,7 @@ static char *cyl_type_by_size(int size)
 	if (ti == tank_info + MAX_TANK_INFO)
 		return "";
 	else
-		return copy_string(ti->name);
+		return ti->name;
 }
 
 /*
