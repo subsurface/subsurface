@@ -128,7 +128,7 @@ static int dtrak_prepare_data(int model, device_data_t *dev_data)
  * Just get the first in the user's list for given size.
  * Reaching the end of the list means there is no tank of this size.
  */
-static char *cyl_type_by_size(int size)
+static const char *cyl_type_by_size(int size)
 {
 	struct tank_info_t *ti = tank_info;
 
