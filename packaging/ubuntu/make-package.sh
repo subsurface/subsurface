@@ -99,7 +99,7 @@ rev=$(($rev+1))
 	fi
 done
 
-# we need to do this for each Ubuntu release we support - right now the oldest is 16.04/Xenial
+# we need to do this for each Ubuntu release we support - right now the oldest is 18.04/Bionic
 if [[ "$GITREVISION" = "" ]] ; then
 	dch -v $VERSION-$rev~bionic -D bionic -M -m "Next release build - please check https://subsurface-divelog.org/category/news/ for details"
 else
@@ -112,7 +112,7 @@ debuild -S
 
 #create builds for the newer Ubuntu releases that Launchpad supports
 rel=bionic
-others="eoan focal"
+others="focal groovy"
 for next in $others
 do
 	sed -i "s/${rel}/${next}/g" debian/changelog
