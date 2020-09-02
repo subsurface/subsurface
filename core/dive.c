@@ -38,6 +38,8 @@ const char *divemode_text_ui[] = {
 // For writing/reading files.
 const char *divemode_text[] = {"OC", "CCR", "PSCR", "Freedive"};
 
+static int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int salinity);
+
 /*
  * Adding a cylinder pressure sample field is not quite as trivial as it
  * perhaps should be.
@@ -3688,10 +3690,20 @@ int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null)
 	return mbar;
 }
 
+/* This returns the conversion factor that you need to multiply
+ * a (relative) depth in mm to obtain a (relative) pressure in mbar.
+ * As everywhere in Subsurface, the expected unit of a salinity is
+ * g/10l such that sea water has a salinity of 10300
+ */
+static double salinity_to_specific_weight(int salinity)
+{
+	return salinity * 0.981 / 100000.0;
+}
+
 /* Pa = N/m^2 - so we determine the weight (in N) of the mass of 10m
  * of water (and use standard salt water at 1.03kg per liter if we don't know salinity)
  * and add that to the surface pressure (or to 1013 if that's unknown) */
-int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int salinity)
+static int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int salinity)
 {
 	double specific_weight;
 	int mbar = surface_pressure.mbar;
@@ -3702,8 +3714,8 @@ int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int salinity
 		salinity = SEAWATER_SALINITY;
 	if (salinity < 500)
 		salinity += FRESHWATER_SALINITY;
-	specific_weight = salinity / 10000.0 * 0.981;
-	mbar += lrint(depth / 10.0 * specific_weight);
+	specific_weight = salinity_to_specific_weight(salinity);
+	mbar += lrint(depth * specific_weight);
 	return mbar;
 }
 
@@ -3728,13 +3740,11 @@ double depth_to_atm(int depth, const struct dive *dive)
  * take care of this, but the Uemis we support natively */
 int rel_mbar_to_depth(int mbar, const struct dive *dive)
 {
-	int cm;
-	double specific_weight = SEAWATER_SALINITY * 0.981 / 10000.0;
+	double specific_weight = salinity_to_specific_weight(SEAWATER_SALINITY);
 	if (dive->dc.salinity)
-		specific_weight = dive->dc.salinity / 10000.0 * 0.981;
+		specific_weight = salinity_to_specific_weight(dive->dc.salinity);
 	/* whole mbar gives us cm precision */
-	cm = (int)lrint(mbar / specific_weight);
-	return cm * 10;
+	return (int)lrint(mbar / specific_weight);
 }
 
 int mbar_to_depth(int mbar, const struct dive *dive)
