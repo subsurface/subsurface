@@ -895,6 +895,8 @@ void MainWindow::on_actionDivePlanner_triggered()
 		divePlannerSettingsWidget->setBailoutVisibility(current_dive->dc.divemode);
 		if (current_dive->salinity)
 			divePlannerWidget->setSalinity(current_dive->salinity);
+		else	// No salinity means salt water
+			divePlannerWidget->setSalinity(SEAWATER_SALINITY);
 	}
 	divePlannerWidget->setReplanButton(false);
 }

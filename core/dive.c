@@ -3729,7 +3729,7 @@ double depth_to_atm(int depth, const struct dive *dive)
 int rel_mbar_to_depth(int mbar, const struct dive *dive)
 {
 	int cm;
-	double specific_weight = 1.03 * 0.981;
+	double specific_weight = SEAWATER_SALINITY * 0.981 / 10000.0;
 	if (dive->dc.salinity)
 		specific_weight = dive->dc.salinity / 10000.0 * 0.981;
 	/* whole mbar gives us cm precision */
