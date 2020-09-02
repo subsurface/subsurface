@@ -313,12 +313,15 @@ void LocationInformationWidget::on_diveSiteDistance_textChanged(const QString &s
 
 void LocationInformationWidget::reverseGeocode()
 {
+	dive_site *ds = diveSite; /* Save local copy; possibility of user closing the widget while reverseGeoLookup is running (see #2930) */
 	location_t location = parseGpsText(ui.diveSiteCoordinates->text());
-	if (!diveSite || !has_location(&location))
+	if (!ds || !has_location(&location))
 		return;
 	taxonomy_data taxonomy = { 0, 0 };
 	reverseGeoLookup(location.lat, location.lon, &taxonomy);
-	Command::editDiveSiteTaxonomy(diveSite, taxonomy);
+	if (ds != diveSite)
+		return;
+	Command::editDiveSiteTaxonomy(ds, taxonomy);
 }
 
 DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject *) : currentLocation(zero_location)
