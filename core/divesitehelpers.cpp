@@ -22,7 +22,8 @@
 #include <QTimer>
 #include <memory>
 
-void reverseGeoLookup(degrees_t latitude, degrees_t longitude, taxonomy_data *taxonomy)
+/** Performs a REST get request to a service returning a JSON object. */
+static QJsonObject doAsyncRESTGetRequest(const QString& url, int msTimeout)
 {
 	// By making the QNetworkAccessManager static and local to this function,
 	// only one manager exists for all geo-lookups and it is only initialized
@@ -30,16 +31,13 @@ void reverseGeoLookup(degrees_t latitude, degrees_t longitude, taxonomy_data *ta
 	static QNetworkAccessManager rgl;
 	QNetworkRequest request;
 	QEventLoop loop;
-	QString geonamesURL("http://api.geonames.org/findNearbyPlaceNameJSON?lang=%1&lat=%2&lng=%3&radius=50&username=dirkhh");
-	QString geonamesOceanURL("http://api.geonames.org/oceanJSON?lang=%1&lat=%2&lng=%3&radius=50&username=dirkhh");
 	QTimer timer;
 
 	request.setRawHeader("Accept", "text/json");
 	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
 	QObject::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
 
-	// first check the findNearbyPlaces API from geonames - that should give us country, state, city
-	request.setUrl(geonamesURL.arg(getUiLanguage().section(QRegExp("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0));
+	request.setUrl(url);
 
 	// By using a std::unique_ptr<>, we can exit from the function at any point
 	// and the reply will be freed. Likewise, when overwriting the pointer with
@@ -48,119 +46,95 @@ void reverseGeoLookup(degrees_t latitude, degrees_t longitude, taxonomy_data *ta
 	std::unique_ptr<QNetworkReply> reply(rgl.get(request));
 	timer.setSingleShot(true);
 	QObject::connect(&*reply, SIGNAL(finished()), &loop, SLOT(quit()));
-	timer.start(5000);   // 5 secs. timeout
+	timer.start(msTimeout);
 	loop.exec();
 
-	if (timer.isActive()) {
-		timer.stop();
-		if (reply->error() > 0) {
-			report_error("got error accessing geonames.org: %s", qPrintable(reply->errorString()));
-			return;
-		}
-		int v = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-		if (v < 200 || v >= 300)
-			return;
-		QByteArray fullReply = reply->readAll();
-		QJsonParseError errorObject;
-		QJsonDocument jsonDoc = QJsonDocument::fromJson(fullReply, &errorObject);
-		if (errorObject.error != QJsonParseError::NoError) {
-			report_error("error parsing geonames.org response: %s", qPrintable(errorObject.errorString()));
-			return;
-		}
-		QJsonObject obj = jsonDoc.object();
-		QVariant geoNamesObject = obj.value("geonames").toVariant();
-		QVariantList geoNames = geoNamesObject.toList();
-		if (geoNames.count() > 0) {
-			QVariantMap firstData = geoNames.at(0).toMap();
-			int ri = 0, l3 = -1, lt = -1;
-			if (taxonomy->category == NULL) {
-				taxonomy->category = alloc_taxonomy();
-			} else {
-				// clear out the data (except for the ocean data)
-				int ocean;
-				if ((ocean = taxonomy_index_for_category(taxonomy, TC_OCEAN)) > 0) {
-					taxonomy->category[0] = taxonomy->category[ocean];
-					taxonomy->nr = 1;
-				} else {
-					// ocean is -1 if there is no such entry, and we didn't copy above
-					// if ocean is 0, so the following gets us the correct count
-					taxonomy->nr = ocean + 1;
-				}
-			}
-			// get all the data - OCEAN is special, so start at COUNTRY
-			for (int j = TC_COUNTRY; j < TC_NR_CATEGORIES; j++) {
-				if (firstData[taxonomy_api_names[j]].isValid()) {
-					taxonomy->category[ri].category = j;
-					taxonomy->category[ri].origin = taxonomy_origin::GEOCODED;
-					free((void *)taxonomy->category[ri].value);
-					taxonomy->category[ri].value = copy_qstring(firstData[taxonomy_api_names[j]].toString());
-					ri++;
-				}
-			}
-			taxonomy->nr = ri;
-			l3 = taxonomy_index_for_category(taxonomy, TC_ADMIN_L3);
-			lt = taxonomy_index_for_category(taxonomy, TC_LOCALNAME);
-			if (l3 == -1 && lt != -1) {
-				// basically this means we did get a local name (what we call town), but just like most places
-				// we didn't get an adminName_3 - which in some regions is the actual city that town belongs to,
-				// then we copy the town into the city
-				taxonomy->category[ri].value = copy_string(taxonomy->category[lt].value);
-				taxonomy->category[ri].origin = taxonomy_origin::GEOCOPIED;
-				taxonomy->category[ri].category = TC_ADMIN_L3;
-				taxonomy->nr++;
-			}
-		} else {
-			report_error("geonames.org did not provide reverse lookup information");
-			qDebug() << "no reverse geo lookup; geonames returned\n" << fullReply;
-		}
-	} else {
-		report_error("timeout accessing geonames.org");
+	if (!timer.isActive()) {
+		report_error("timeout accessing %s", qPrintable(url));
 		QObject::disconnect(&*reply, SIGNAL(finished()), &loop, SLOT(quit()));
 		reply->abort();
+		return QJsonObject{};
 	}
-	// next check the oceans API to figure out the body of water
-	request.setUrl(geonamesOceanURL.arg(getUiLanguage().section(QRegExp("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0));
-	reply.reset(rgl.get(request)); // Note: frees old reply.
-	QObject::connect(&*reply, SIGNAL(finished()), &loop, SLOT(quit()));
-	timer.start(5000);   // 5 secs. timeout
-	loop.exec();
-	if (timer.isActive()) {
-		timer.stop();
-		if (reply->error() > 0) {
-			report_error("got error accessing oceans API of geonames.org: %s", qPrintable(reply->errorString()));
-			return;
-		}
-		int v = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-		if (v < 200 || v >= 300)
-			return;
-		QByteArray fullReply = reply->readAll();
-		QJsonParseError errorObject;
-		QJsonDocument jsonDoc = QJsonDocument::fromJson(fullReply, &errorObject);
-		if (errorObject.error != QJsonParseError::NoError) {
-			report_error("error parsing geonames.org response: %s", qPrintable(errorObject.errorString()));
-			return;
-		}
-		QJsonObject obj = jsonDoc.object();
-		QVariant oceanObject = obj.value("ocean").toVariant();
-		QVariantMap oceanName = oceanObject.toMap();
-		if (oceanName["name"].isValid()) {
-			int idx;
-			if (taxonomy->category == NULL)
-				taxonomy->category = alloc_taxonomy();
-			idx = taxonomy_index_for_category(taxonomy, TC_OCEAN);
-			if (idx == -1)
-				idx = taxonomy->nr;
-			if (idx < TC_NR_CATEGORIES) {
-				taxonomy->category[idx].category = TC_OCEAN;
-				taxonomy->category[idx].origin = taxonomy_origin::GEOCODED;
-				taxonomy->category[idx].value = copy_qstring(oceanName["name"].toString());
-				if (idx == taxonomy->nr)
-					taxonomy->nr++;
+
+	timer.stop();
+	if (reply->error() > 0) {
+		report_error("got error accessing %s: %s", qPrintable(url), qPrintable(reply->errorString()));
+		return QJsonObject{};
+	}
+	int v = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	if (v < 200 || v >= 300) {
+		return QJsonObject{};
+	}
+	QByteArray fullReply = reply->readAll();
+	QJsonParseError errorObject;
+	QJsonDocument jsonDoc = QJsonDocument::fromJson(fullReply, &errorObject);
+	if (errorObject.error != QJsonParseError::NoError) {
+		report_error("error parsing JSON response: %s", qPrintable(errorObject.errorString()));
+		return QJsonObject{};
+	}
+	// Success, return JSON response from server
+	return jsonDoc.object();
+}
+
+/// Performs a reverse-geo-lookup of the coordinates and returns the taxonomy data.
+taxonomy_data reverseGeoLookup(degrees_t latitude, degrees_t longitude)
+{
+	const QString geonamesNearbyURL = QStringLiteral("http://api.geonames.org/findNearbyJSON?lang=%1&lat=%2&lng=%3&radius=50&username=dirkhh");
+	const QString geonamesNearbyPlaceNameURL = QStringLiteral("http://api.geonames.org/findNearbyPlaceNameJSON?lang=%1&lat=%2&lng=%3&radius=50&username=dirkhh");
+	const QString geonamesOceanURL = QStringLiteral("http://api.geonames.org/oceanJSON?lang=%1&lat=%2&lng=%3&radius=50&username=dirkhh");
+
+	QString url;
+	QJsonObject obj;
+	taxonomy_data taxonomy = { 0, alloc_taxonomy() };
+
+	// check the oceans API to figure out the body of water
+	url = geonamesOceanURL.arg(getUiLanguage().section(QRegExp("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0);
+	obj = doAsyncRESTGetRequest(url, 5000); // 5 secs. timeout
+	QVariantMap oceanName = obj.value("ocean").toVariant().toMap();
+	if (oceanName["name"].isValid()) {
+		taxonomy.category[0].category = TC_OCEAN;
+		taxonomy.category[0].origin = taxonomy_origin::GEOCODED;
+		taxonomy.category[0].value = copy_qstring(oceanName["name"].toString());
+		taxonomy.nr = 1;
+	}
+
+	// check the findNearbyPlaces API from geonames - that should give us country, state, city
+	url = geonamesNearbyPlaceNameURL.arg(getUiLanguage().section(QRegExp("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0);
+	obj = doAsyncRESTGetRequest(url, 5000); // 5 secs. timeout
+	QVariantList geoNames = obj.value("geonames").toVariant().toList();
+	if (geoNames.count() == 0) {
+		// check the findNearby API from geonames if the previous search came up empty - that should give us country, state, location
+		url = geonamesNearbyURL.arg(getUiLanguage().section(QRegExp("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0);
+		obj = doAsyncRESTGetRequest(url, 5000); // 5 secs. timeout
+		geoNames = obj.value("geonames").toVariant().toList();
+	}
+	if (geoNames.count() > 0) {
+		QVariantMap firstData = geoNames.at(0).toMap();
+
+		// fill out all the data - start at COUNTRY since we already got OCEAN above
+		for (int idx = TC_COUNTRY; idx < TC_NR_CATEGORIES; idx++) {
+			if (firstData[taxonomy_api_names[idx]].isValid()) {
+				taxonomy.category[taxonomy.nr].category = idx;
+				taxonomy.category[taxonomy.nr].origin = taxonomy_origin::GEOCODED;
+				taxonomy.category[taxonomy.nr].value = copy_qstring(firstData[taxonomy_api_names[idx]].toString());
+				taxonomy.nr++;
 			}
 		}
+		int l3 = taxonomy_index_for_category(&taxonomy, TC_ADMIN_L3);
+		int lt = taxonomy_index_for_category(&taxonomy, TC_LOCALNAME);
+		if (l3 == -1 && lt != -1) {
+			// basically this means we did get a local name (what we call town), but just like most places
+			// we didn't get an adminName_3 - which in some regions is the actual city that town belongs to,
+			// then we copy the town into the city
+			taxonomy.category[taxonomy.nr].category = TC_ADMIN_L3;
+			taxonomy.category[taxonomy.nr].origin = taxonomy_origin::GEOCOPIED;
+			taxonomy.category[taxonomy.nr].value = copy_string(taxonomy.category[lt].value);
+			taxonomy.nr++;
+		}
 	} else {
-		report_error("timeout accessing geonames.org");
-		QObject::disconnect(&*reply, SIGNAL(finished()), &loop, SLOT(quit()));
-		reply->abort();
+		report_error("geonames.org did not provide reverse lookup information");
+		//qDebug() << "no reverse geo lookup; geonames returned\n" << fullReply;
 	}
+
+	return taxonomy;
 }
