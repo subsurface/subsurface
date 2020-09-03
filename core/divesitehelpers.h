@@ -5,8 +5,8 @@
 #include "taxonomy.h"
 #include "units.h"
 
-// Perform a reverse geo-lookup and put data in the provided taxonomy field.
-// Original data with the exception of OCEAN will be overwritten.
-void reverseGeoLookup(degrees_t latitude, degrees_t longitude, taxonomy_data *taxonomy);
+/// Performs a reverse geo-lookup and returns the data.
+/// It is up to the caller to merge the data with any existing data.
+taxonomy_data reverseGeoLookup(degrees_t latitude, degrees_t longitude);
 
 #endif // DIVESITEHELPERS_H

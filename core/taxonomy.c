@@ -42,7 +42,7 @@ void free_taxonomy(struct taxonomy_data *t)
 	}
 }
 
-void copy_taxonomy(struct taxonomy_data *orig, struct taxonomy_data *copy)
+void copy_taxonomy(const struct taxonomy_data *orig, struct taxonomy_data *copy)
 {
 	if (orig->category == NULL) {
 		free_taxonomy(copy);
@@ -63,7 +63,7 @@ void copy_taxonomy(struct taxonomy_data *orig, struct taxonomy_data *copy)
 	}
 }
 
-int taxonomy_index_for_category(struct taxonomy_data *t, enum taxonomy_category cat)
+int taxonomy_index_for_category(const struct taxonomy_data *t, enum taxonomy_category cat)
 {
 	for (int i = 0; i < t->nr; i++)
 		if (t->category[i].category == cat)

@@ -317,10 +317,12 @@ void LocationInformationWidget::reverseGeocode()
 	location_t location = parseGpsText(ui.diveSiteCoordinates->text());
 	if (!ds || !has_location(&location))
 		return;
-	taxonomy_data taxonomy = { 0, 0 };
-	reverseGeoLookup(location.lat, location.lon, &taxonomy);
-	if (ds != diveSite)
+	taxonomy_data taxonomy = reverseGeoLookup(location.lat, location.lon);
+	if (ds != diveSite) {
+		free_taxonomy(&taxonomy);
 		return;
+	}
+	// This call transfers ownership of the taxonomy memory into an EditDiveSiteTaxonomy object
 	Command::editDiveSiteTaxonomy(ds, taxonomy);
 }
 
