@@ -105,7 +105,7 @@ void taxonomy_set_category(struct taxonomy_data *t, enum taxonomy_category categ
 		}
 		idx = t->nr++;
 	}
-	t->category[idx].value = value;
+	t->category[idx].value = strdup(value);
 	t->category[idx].origin = origin;
 	t->category[idx].category = category;
 }
