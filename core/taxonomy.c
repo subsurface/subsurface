@@ -81,7 +81,7 @@ const char *taxonomy_get_country(struct taxonomy_data *t)
 	return NULL;
 }
 
-void taxonomy_set_country(struct taxonomy_data *t, const char *country, enum taxonomy_origin origin)
+void taxonomy_set_category(struct taxonomy_data *t, enum taxonomy_category category, const char *value, enum taxonomy_origin origin)
 {
 	int idx = -1;
 
@@ -90,7 +90,7 @@ void taxonomy_set_country(struct taxonomy_data *t, const char *country, enum tax
 		t->category = alloc_taxonomy();
 
 	for (int i = 0; i < t->nr; i++) {
-		if (t->category[i].category == TC_COUNTRY) {
+		if (t->category[i].category == category) {
 			free((void *)t->category[i].value);
 			t->category[i].value = NULL;
 			idx = i;
@@ -100,13 +100,18 @@ void taxonomy_set_country(struct taxonomy_data *t, const char *country, enum tax
 	if (idx == -1) {
 		if (t->nr == TC_NR_CATEGORIES - 1) {
 			// can't add another one
-			fprintf(stderr, "Error adding country taxonomy\n");
+			fprintf(stderr, "Error adding taxonomy category\n");
 			return;
 		}
 		idx = t->nr++;
 	}
-	t->category[idx].value = country;
+	t->category[idx].value = value;
 	t->category[idx].origin = origin;
-	t->category[idx].category = TC_COUNTRY;
+	t->category[idx].category = category;
+}
+
+void taxonomy_set_country(struct taxonomy_data *t, const char *country, enum taxonomy_origin origin)
+{
 	fprintf(stderr, "%s: set the taxonomy country to %s\n", __func__, country);
+	taxonomy_set_category(t, TC_COUNTRY, country, origin);
 }
