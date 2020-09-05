@@ -268,7 +268,7 @@ bool EditDiveSiteCountry::workToBeDone()
 void EditDiveSiteCountry::redo()
 {
 	QString old = taxonomy_get_country(&ds->taxonomy);
-	taxonomy_set_country(&ds->taxonomy, copy_qstring(value), taxonomy_origin::GEOMANUAL);
+	taxonomy_set_country(&ds->taxonomy, qPrintable(value), taxonomy_origin::GEOMANUAL);
 	value = old;
 	emit diveListNotifier.diveSiteChanged(ds, LocationInformationModel::TAXONOMY); // Inform frontend of changed dive site.
 }
