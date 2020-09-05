@@ -65,9 +65,10 @@ void copy_taxonomy(const struct taxonomy_data *orig, struct taxonomy_data *copy)
 
 int taxonomy_index_for_category(const struct taxonomy_data *t, enum taxonomy_category cat)
 {
-	for (int i = 0; i < t->nr; i++)
+	for (int i = 0; i < t->nr; i++) {
 		if (t->category[i].category == cat)
 			return i;
+	}
 	return -1;
 }
 
@@ -90,6 +91,8 @@ void taxonomy_set_country(struct taxonomy_data *t, const char *country, enum tax
 
 	for (int i = 0; i < t->nr; i++) {
 		if (t->category[i].category == TC_COUNTRY) {
+			free((void *)t->category[i].value);
+			t->category[i].value = NULL;
 			idx = i;
 			break;
 		}
