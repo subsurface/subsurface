@@ -404,12 +404,12 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	for (int i = 0; i < 3; i++) {
 		if (prefs.geocoding.category[i] == TC_NONE)
 			continue;
-		int idx = taxonomy_index_for_category(&ds->taxonomy, prefs.geocoding.category[i]);
-		if (idx == -1)
+		const char *value = taxonomy_get_value(&ds->taxonomy, prefs.geocoding.category[i]);
+		if (empty_string(value))
 			continue;
 		if(!bottomText.isEmpty())
 			bottomText += " / ";
-		bottomText += QString(ds->taxonomy.category[idx].value);
+		bottomText += QString(value);
 	}
 
 	if (bottomText.isEmpty())
