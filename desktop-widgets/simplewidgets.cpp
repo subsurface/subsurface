@@ -480,9 +480,10 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 	}
 }
 
-AddFilterPresetDialog::AddFilterPresetDialog(QWidget *parent)
+AddFilterPresetDialog::AddFilterPresetDialog(const QString &defaultName, QWidget *parent)
 {
 	ui.setupUi(this);
+	ui.name->setText(defaultName);
 	connect(ui.name, &QLineEdit::textChanged, this, &AddFilterPresetDialog::nameChanged);
 	connect(ui.buttonBox, &QDialogButtonBox::accepted, this, &AddFilterPresetDialog::accept);
 	connect(ui.buttonBox, &QDialogButtonBox::rejected, this, &AddFilterPresetDialog::reject);

@@ -198,7 +198,15 @@ void FilterWidget2::updateFilter()
 
 void FilterWidget2::on_addSetButton_clicked()
 {
-	AddFilterPresetDialog dialog(this);
+	// If there is a selected item, suggest that to the user.
+	// Thus, if the user selects an item and modify the filter,
+	// they can simply overwrite the preset.
+	QString selectedPreset;
+	QModelIndexList selection = ui.presetTable->selectionModel()->selectedRows();
+	if (selection.size() == 1)
+		selectedPreset = filter_preset_name_qstring(selection[0].row());
+
+	AddFilterPresetDialog dialog(selectedPreset, this);
 	QString name = dialog.doit();
 	if (name.isEmpty())
 		return;
