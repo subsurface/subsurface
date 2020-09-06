@@ -3560,12 +3560,6 @@ static void delete_divecomputer(struct dive *d, int num)
 			free_dc(dc);
 		}
 	}
-
-	/* If this is the currently displayed dive, we might have to adjust
-	 * the currently displayed dive computer. */
-	if (d == current_dive && dc_number >= number_of_computers(d))
-		dc_number--;
-	invalidate_dive_cache(d);
 }
 
 /* Clone a dive and delete goven dive computer */
