@@ -885,7 +885,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 	setApplicationState(ApplicationState::PlanDive);
 
 	graphics->setPlanState();
-	dc_number = 1;
+	dc_number = 0;
 
 	// create a simple starting dive, using the first gas from the just copied cylinders
 	DivePlannerPointsModel::instance()->createSimpleDive();
