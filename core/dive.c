@@ -3787,12 +3787,7 @@ struct dive_site *get_dive_site_for_dive(const struct dive *dive)
 const char *get_dive_country(const struct dive *dive)
 {
 	struct dive_site *ds = dive->dive_site;
-	if (ds) {
-		int idx = taxonomy_index_for_category(&ds->taxonomy, TC_COUNTRY);
-		if (idx >= 0)
-			return ds->taxonomy.category[idx].value;
-	}
-	return NULL;
+	return ds ? taxonomy_get_country(&ds->taxonomy) : NULL;
 }
 
 const char *get_dive_location(const struct dive *dive)
