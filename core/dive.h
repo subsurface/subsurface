@@ -248,7 +248,6 @@ extern struct divecomputer *get_dive_dc(struct dive *dive, int nr);
 extern timestamp_t dive_endtime(const struct dive *dive);
 
 extern struct dive *make_first_dc(const struct dive *d, int dc_number);
-extern int count_divecomputers(const struct dive *d);
 extern struct dive *clone_delete_divecomputer(const struct dive *d, int dc_number);
 void split_divecomputer(const struct dive *src, int num, struct dive **out1, struct dive **out2);
 
