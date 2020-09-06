@@ -3573,7 +3573,6 @@ struct dive *clone_delete_divecomputer(const struct dive *d, int dc_number)
 
 	/* make a new unique id, since we still can't handle two equal ids */
 	res->id = dive_getUniqID();
-	invalidate_dive_cache(res);
 
 	delete_divecomputer(res, dc_number);
 
