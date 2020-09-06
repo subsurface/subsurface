@@ -162,6 +162,7 @@ void FilterWidget2::clearFilter()
 	ui.presetTable->selectionModel()->reset(); // Note: we use reset(), because that doesn't emit signals.
 	ui.fulltextStringMode->setCurrentIndex((int)StringFilterMode::STARTSWITH);
 	ui.fullText->clear();
+	ui.presetTable->clearSelection();
 	ignoreSignal = false;
 	constraintModel.reload({}); // Causes a filter reload
 }
