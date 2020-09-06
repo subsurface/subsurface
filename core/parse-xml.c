@@ -1377,12 +1377,12 @@ static void try_to_fill_trip(dive_trip_t *dive_trip, const char *name, char *buf
 }
 
 /* We're processing a divesite entry - try to fill the components */
-static void try_to_fill_dive_site(struct dive_site *ds, const char *name, char *buf)
+static void try_to_fill_dive_site(struct parser_state *state, const char *name, char *buf)
 {
-	start_match("divesite", name, buf);
+	struct dive_site *ds = state->cur_dive_site;
+	char *taxonomy_value = NULL;
 
-	if (ds->taxonomy.category == NULL)
-		ds->taxonomy.category = alloc_taxonomy();
+	start_match("divesite", name, buf);
 
 	if (MATCH("uuid", hex_value, &ds->uuid))
 		return;
@@ -1394,13 +1394,22 @@ static void try_to_fill_dive_site(struct dive_site *ds, const char *name, char *
 		return;
 	if (MATCH("gps", gps_location, ds))
 		return;
-	if (MATCH("cat.geo", get_index, (int *)&ds->taxonomy.category[ds->taxonomy.nr].category))
+	if (MATCH("cat.geo", get_index, &state->taxonomy_category))
 		return;
-	if (MATCH("origin.geo", get_index, (int *)&ds->taxonomy.category[ds->taxonomy.nr].origin))
+	if (MATCH("origin.geo", get_index, &state->taxonomy_origin))
 		return;
-	if (MATCH("value.geo", utf8_string, &ds->taxonomy.category[ds->taxonomy.nr].value)) {
-		if (ds->taxonomy.nr < TC_NR_CATEGORIES)
-			ds->taxonomy.nr++;
+	if (MATCH("value.geo", utf8_string, &taxonomy_value)) {
+		/* The code assumes that "value.geo" comes last, which is against
+		 * the expectations of an XML file. Let's at least make sure that
+		 * cat and origin have been set! */
+		if (state->taxonomy_category < 0 || state->taxonomy_origin < 0) {
+			report_error("Warning: taxonomy value without origin or category");
+		} else {
+			taxonomy_set_category(&ds->taxonomy, state->taxonomy_category,
+					      taxonomy_value, state->taxonomy_origin);
+		}
+		state->taxonomy_category = state->taxonomy_origin = -1;
+		free(taxonomy_value);
 		return;
 	}
 
@@ -1423,7 +1432,7 @@ static bool entry(const char *name, char *buf, struct parser_state *state)
 		return true;
 	}
 	if (state->cur_dive_site) {
-		try_to_fill_dive_site(state->cur_dive_site, name, buf);
+		try_to_fill_dive_site(state, name, buf);
 		return true;
 	}
 	if (!state->cur_event.deleted) {

@@ -85,18 +85,14 @@ taxonomy_data reverseGeoLookup(degrees_t latitude, degrees_t longitude)
 
 	QString url;
 	QJsonObject obj;
-	taxonomy_data taxonomy = { 0, alloc_taxonomy() };
+	taxonomy_data taxonomy = { 0, 0 };
 
 	// check the oceans API to figure out the body of water
 	url = geonamesOceanURL.arg(getUiLanguage().section(QRegExp("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0);
 	obj = doAsyncRESTGetRequest(url, 5000); // 5 secs. timeout
 	QVariantMap oceanName = obj.value("ocean").toVariant().toMap();
-	if (oceanName["name"].isValid()) {
-		taxonomy.category[0].category = TC_OCEAN;
-		taxonomy.category[0].origin = taxonomy_origin::GEOCODED;
-		taxonomy.category[0].value = copy_qstring(oceanName["name"].toString());
-		taxonomy.nr = 1;
-	}
+	if (oceanName["name"].isValid())
+		taxonomy_set_category(&taxonomy, TC_OCEAN, qPrintable(oceanName["name"].toString()), taxonomy_origin::GEOCODED);
 
 	// check the findNearbyPlaces API from geonames - that should give us country, state, city
 	url = geonamesNearbyPlaceNameURL.arg(getUiLanguage().section(QRegExp("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0);
@@ -114,10 +110,8 @@ taxonomy_data reverseGeoLookup(degrees_t latitude, degrees_t longitude)
 		// fill out all the data - start at COUNTRY since we already got OCEAN above
 		for (int idx = TC_COUNTRY; idx < TC_NR_CATEGORIES; idx++) {
 			if (firstData[taxonomy_api_names[idx]].isValid()) {
-				taxonomy.category[taxonomy.nr].category = idx;
-				taxonomy.category[taxonomy.nr].origin = taxonomy_origin::GEOCODED;
-				taxonomy.category[taxonomy.nr].value = copy_qstring(firstData[taxonomy_api_names[idx]].toString());
-				taxonomy.nr++;
+				QString value = firstData[taxonomy_api_names[idx]].toString();
+				taxonomy_set_category(&taxonomy, (taxonomy_category)idx, qPrintable(value), taxonomy_origin::GEOCODED);
 			}
 		}
 		int l3 = taxonomy_index_for_category(&taxonomy, TC_ADMIN_L3);
@@ -126,10 +120,7 @@ taxonomy_data reverseGeoLookup(degrees_t latitude, degrees_t longitude)
 			// basically this means we did get a local name (what we call town), but just like most places
 			// we didn't get an adminName_3 - which in some regions is the actual city that town belongs to,
 			// then we copy the town into the city
-			taxonomy.category[taxonomy.nr].category = TC_ADMIN_L3;
-			taxonomy.category[taxonomy.nr].origin = taxonomy_origin::GEOCOPIED;
-			taxonomy.category[taxonomy.nr].value = copy_string(taxonomy.category[lt].value);
-			taxonomy.nr++;
+			taxonomy_set_category(&taxonomy, TC_ADMIN_L3, taxonomy.category[lt].value, taxonomy_origin::GEOCOPIED);
 		}
 	} else {
 		report_error("geonames.org did not provide reverse lookup information");

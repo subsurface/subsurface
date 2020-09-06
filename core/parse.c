@@ -203,6 +203,8 @@ void dive_site_start(struct parser_state *state)
 {
 	if (state->cur_dive_site)
 		return;
+	state->taxonomy_category = -1;
+	state->taxonomy_origin = -1;
 	state->cur_dive_site = calloc(1, sizeof(struct dive_site));
 }
 
@@ -210,10 +212,6 @@ void dive_site_end(struct parser_state *state)
 {
 	if (!state->cur_dive_site)
 		return;
-	if (state->cur_dive_site->taxonomy.nr == 0) {
-		free(state->cur_dive_site->taxonomy.category);
-		state->cur_dive_site->taxonomy.category = NULL;
-	}
 	if (state->cur_dive_site->uuid) {
 		struct dive_site *ds = alloc_or_get_dive_site(state->cur_dive_site->uuid, state->sites);
 		merge_dive_site(ds, state->cur_dive_site);
