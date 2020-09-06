@@ -83,26 +83,19 @@ const char *taxonomy_get_country(struct taxonomy_data *t)
 
 void taxonomy_set_category(struct taxonomy_data *t, enum taxonomy_category category, const char *value, enum taxonomy_origin origin)
 {
-	int idx = -1;
+	int idx = taxonomy_index_for_category(t, category);
 
-	// make sure we have taxonomy data allocated
-	alloc_taxonomy_table(t);
-
-	for (int i = 0; i < t->nr; i++) {
-		if (t->category[i].category == category) {
-			free((void *)t->category[i].value);
-			t->category[i].value = NULL;
-			idx = i;
-			break;
-		}
-	}
-	if (idx == -1) {
+	if (idx < 0) {
+		alloc_taxonomy_table(t); // make sure we have taxonomy data allocated
 		if (t->nr == TC_NR_CATEGORIES - 1) {
 			// can't add another one
 			fprintf(stderr, "Error adding taxonomy category\n");
 			return;
 		}
 		idx = t->nr++;
+	} else {
+		free((void *)t->category[idx].value);
+		t->category[idx].value = NULL;
 	}
 	t->category[idx].value = strdup(value);
 	t->category[idx].origin = origin;
