@@ -26,9 +26,10 @@ char *taxonomy_api_names[TC_NR_CATEGORIES] = {
 	"adminName3"
 };
 
-struct taxonomy *alloc_taxonomy()
+static void alloc_taxonomy_table(struct taxonomy_data *t)
 {
-	return calloc(TC_NR_CATEGORIES, sizeof(struct taxonomy));
+	if (!t->category)
+		t->category = calloc(TC_NR_CATEGORIES, sizeof(struct taxonomy));
 }
 
 void free_taxonomy(struct taxonomy_data *t)
@@ -47,8 +48,7 @@ void copy_taxonomy(const struct taxonomy_data *orig, struct taxonomy_data *copy)
 	if (orig->category == NULL) {
 		free_taxonomy(copy);
 	} else {
-		if (copy->category == NULL)
-			copy->category = alloc_taxonomy();
+		alloc_taxonomy_table(copy);
 		for (int i = 0; i < TC_NR_CATEGORIES; i++) {
 			if (i < copy->nr) {
 				free((void *)copy->category[i].value);
@@ -86,8 +86,7 @@ void taxonomy_set_category(struct taxonomy_data *t, enum taxonomy_category categ
 	int idx = -1;
 
 	// make sure we have taxonomy data allocated
-	if (!t->category)
-		t->category = alloc_taxonomy();
+	alloc_taxonomy_table(t);
 
 	for (int i = 0; i < t->nr; i++) {
 		if (t->category[i].category == category) {

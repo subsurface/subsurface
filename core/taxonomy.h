@@ -39,7 +39,6 @@ struct taxonomy_data {
 	struct taxonomy *category;
 };
 
-struct taxonomy *alloc_taxonomy();
 void free_taxonomy(struct taxonomy_data *t);
 void copy_taxonomy(const struct taxonomy_data *orig, struct taxonomy_data *copy);
 int taxonomy_index_for_category(const struct taxonomy_data *t, enum taxonomy_category cat);
