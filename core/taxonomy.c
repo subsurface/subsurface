@@ -72,13 +72,15 @@ int taxonomy_index_for_category(const struct taxonomy_data *t, enum taxonomy_cat
 	return -1;
 }
 
-const char *taxonomy_get_country(struct taxonomy_data *t)
+const char *taxonomy_get_value(const struct taxonomy_data *t, enum taxonomy_category cat)
 {
-	for (int i = 0; i < t->nr; i++) {
-		if (t->category[i].category == TC_COUNTRY)
-			return t->category[i].value;
-	}
-	return NULL;
+	int idx = taxonomy_index_for_category(t, cat);
+	return idx >= 0 ? t->category[idx].value : NULL;
+}
+
+const char *taxonomy_get_country(const struct taxonomy_data *t)
+{
+	return taxonomy_get_value(t, TC_COUNTRY);
 }
 
 void taxonomy_set_category(struct taxonomy_data *t, enum taxonomy_category category, const char *value, enum taxonomy_origin origin)
