@@ -142,7 +142,7 @@ private:
 class AddFilterPresetDialog : public QDialog {
 	Q_OBJECT
 public:
-	explicit AddFilterPresetDialog(QWidget *parent);
+	explicit AddFilterPresetDialog(const QString &defaultName, QWidget *parent);
 	QString doit(); // returns name of filter preset or empty string if user cancelled the dialog
 private
 slots:
