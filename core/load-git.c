@@ -309,15 +309,10 @@ static void parse_site_gps(char *line, struct membuffer *str, struct git_parser_
 
 static void parse_site_geo(char *line, struct membuffer *str, struct git_parser_state *state)
 {
-	if (state->active_site->taxonomy.category == NULL)
-		state->active_site->taxonomy.category = alloc_taxonomy();
-	int nr = state->active_site->taxonomy.nr;
-	if (nr < TC_NR_CATEGORIES) {
-		struct taxonomy *t = &state->active_site->taxonomy.category[nr];
-		t->value = detach_cstring(str);
-		sscanf(line, "cat %d origin %d \"", &t->category, (int *)&t->origin);
-		state->active_site->taxonomy.nr++;
-	}
+	int origin;
+	int category;
+	sscanf(line, "cat %d origin %d \"", &category, &origin);
+	taxonomy_set_category(&state->active_site->taxonomy , category, mb_cstring(str), origin);
 }
 
 static char *remove_from_front(struct membuffer *str, int len)

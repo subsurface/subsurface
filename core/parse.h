@@ -52,6 +52,7 @@ struct parser_state {
 	struct sample *cur_sample;		/* non-owning */
 	struct picture cur_picture;		/* owning */
 	char *country, *city;			/* owning */
+	int taxonomy_category, taxonomy_origin;
 
 	bool in_settings;
 	bool in_userid;
