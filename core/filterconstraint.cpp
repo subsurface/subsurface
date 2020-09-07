@@ -567,8 +567,8 @@ filter_constraint::filter_constraint(const char *type_in, const char *string_mod
 		range_mode = filter_constraint_range_mode_from_string(range_mode_in);
 	if (filter_constraint_is_timestamp(type)) {
 		QStringList l = s.split(',');
-		data.timestamp_range.from = l[0].toLongLong();
-		data.timestamp_range.to = l.size() >= 2 ? l[1].toLongLong() : 0;
+		data.timestamp_range.from = parse_datetime(qPrintable(l[0]));
+		data.timestamp_range.to = l.size() >= 2 ? parse_datetime(qPrintable(l[1])) : 0;
 	} else if (filter_constraint_is_string(type)) {
 		// TODO: this obviously breaks if the strings contain ",".
 		// That is currently not supported by the UI, but one day we might
@@ -628,8 +628,11 @@ extern "C" char *filter_constraint_data_to_string(const filter_constraint *c)
 {
 	QString s;
 	if (filter_constraint_is_timestamp(c->type)) {
-		s = QString::number(c->data.timestamp_range.from) + ',' +
-		    QString::number(c->data.timestamp_range.to);
+		char *from_s = format_datetime(c->data.timestamp_range.from);
+		char *to_s = format_datetime(c->data.timestamp_range.to);
+		s = QString(from_s) + ',' + QString(to_s);
+		free(from_s);
+		free(to_s);
 	} else if (filter_constraint_is_string(c->type)) {
 		// TODO: this obviously breaks if the strings contain ",".
 		// That is currently not supported by the UI, but one day we might
