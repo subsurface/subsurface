@@ -60,6 +60,17 @@
         <xsl:value-of select="concat(maxTime, ' min')"/>
       </xsl:attribute>
 
+      <xsl:variable name="timeMultiplier">
+        <xsl:choose>
+          <xsl:when test="diveLogRecords/diveLogRecord[1]/currentTime &gt; 100">
+            <xsl:value-of select="'1000'"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="'1'"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+
       <depth>
         <xsl:attribute name="max">
           <xsl:choose>
@@ -122,7 +133,7 @@
               <xsl:attribute name="time">
                 <xsl:call-template name="sec2time">
                   <xsl:with-param name="timeSec">
-                    <xsl:value-of select="currentTime"/>
+                    <xsl:value-of select="currentTime div $timeMultiplier"/>
                   </xsl:with-param>
                 </xsl:call-template>
               </xsl:attribute>
@@ -141,7 +152,7 @@
             <xsl:attribute name="time">
               <xsl:call-template name="sec2time">
                 <xsl:with-param name="timeSec">
-                  <xsl:value-of select="currentTime"/>
+                  <xsl:value-of select="currentTime div $timeMultiplier"/>
                 </xsl:with-param>
               </xsl:call-template>
             </xsl:attribute>
