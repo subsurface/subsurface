@@ -483,7 +483,7 @@ int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *
 	state.sites = sites;
 	state.sql_handle = handle;
 
-	char get_dives[] = "select l.number,strftime('%s', DiveDate),location||' / '||site,buddy,notes,imperialUnits,maxDepth,maxTime,startSurfacePressure,computerSerial,computerModel,d.diveId,l.sampleRateMs FROM dive_details AS d JOIN dive_logs AS l ON d.diveId=l.diveId";
+	char get_dives[] = "select l.number,strftime('%s', DiveDate),location||' / '||site,buddy,notes,imperialUnits,maxDepth,DiveLengthTime,startSurfacePressure,computerSerial,computerModel,d.diveId,l.sampleRateMs FROM dive_details AS d JOIN dive_logs AS l ON d.diveId=l.diveId";
 
 	retval = sqlite3_exec(handle, get_dives, &shearwater_cloud_dive, &state, NULL);
 	free_parser_state(&state);
