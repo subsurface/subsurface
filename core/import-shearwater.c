@@ -171,13 +171,20 @@ static int shearwater_ai_profile_sample(void *param, int columns, char **data, c
 		}
 	}
 
-	/* Weird unit conversion but seems to produce correct results.
-	 * Also missing values seems to be reported as a 4092 (564 bar) */
-	if (data[7] && atoi(data[7]) != 4092) {
-		state->cur_sample->pressure[0].mbar = psi_to_mbar(atoi(data[7])) * 2;
+	/*
+	 * I have seen sample log where the sample pressure had to be multiplied by 2. However,
+	 * currently this seems to be corrected in ShearWater, so we are no longer taking this into
+	 * account.
+	 *
+	 * Also, missing values might be nowadays 8184, even though an old log I have received has
+	 * 8190. Thus discarding values over 8180 here.
+	 */
+
+	if (data[7] && atoi(data[7]) < 8180) {
+		state->cur_sample->pressure[0].mbar = psi_to_mbar(atoi(data[7]));
 	}
-	if (data[8] && atoi(data[8]) != 4092)
-		state->cur_sample->pressure[1].mbar = psi_to_mbar(atoi(data[8])) * 2;
+	if (data[8] && atoi(data[8]) < 8180)
+		state->cur_sample->pressure[1].mbar = psi_to_mbar(atoi(data[8]));
 	sample_end(state);
 
 	return 0;
