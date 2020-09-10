@@ -1,3 +1,4 @@
+desktop: do substring search for equipment types
 planner: properly initialize salinity
 desktop: add an "Edit Gas Change" right-click option [#2910]
 core: add support for Shearwater Peregrine (requires firmware V79 or newer)
