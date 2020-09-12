@@ -85,6 +85,20 @@
              </spacer>
             </item>
             <item>
+             <widget class="QLabel" name="currentSetLabel">
+              <property name="text">
+               <string>Current set:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="currentSet">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QToolButton" name="addSetButton">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">

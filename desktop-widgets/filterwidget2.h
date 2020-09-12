@@ -50,6 +50,8 @@ private:
 	void selectPreset(int i);
 	void clearFilterData();
 	std::unique_ptr<QMenu> loadFilterPresetMenu;
+	int selectedPreset() const; // returns -1 of no preset is selected
+	void updatePresetLabel();
 };
 
 #endif
