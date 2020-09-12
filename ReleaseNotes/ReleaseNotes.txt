@@ -12,8 +12,9 @@ New in _Subsurface_ 4.9.7
 - core: fix broken merging of dives with multiple cylinders
 - planner: properly initialize salinity
 - planner: handle zero length segments gracefully when replanning
-- planner: Honor the "O2 narcotic" preference when computing MND
-- core: Add parser for SeacSync db. Currently only Seac Action uses SeacSync program.
+- planner: honor the "O2 narcotic" preference when computing MND
+- import: add parser for SeacSync db. Currently only Seac Action uses SeacSync program.
+- import: fix a copule of bugs on Shearwater Cloud import
 
 dive computer support:
 - add support for Shearwater Peregrine (requires firmware V81 or newer)
