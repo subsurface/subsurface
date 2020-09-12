@@ -89,8 +89,10 @@ void FilterWidget2::selectPreset(int i)
 
 void FilterWidget2::loadPreset(int index)
 {
+	ignoreSignal = true; // When reloading the filter UI, we get numerous constraintChanged signals. Ignore them.
 	FilterData filter = filter_preset_get(index);
 	setFilterData(filter);
+	ignoreSignal = false;
 	presetModified = false;
 	updateFilter();
 }
