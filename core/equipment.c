@@ -127,7 +127,7 @@ void add_weightsystem_description(const weightsystem_t *weightsystem)
 
 weightsystem_t clone_weightsystem(weightsystem_t ws)
 {
-	weightsystem_t res = { ws.weight, copy_string(ws.description) };
+	weightsystem_t res = { ws.weight, copy_string(ws.description), ws.auto_filled };
 	return res;
 }
 
