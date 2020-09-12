@@ -4,4 +4,3 @@
 TabBase::TabBase(QWidget *parent) : QWidget(parent)
 {
 }
-

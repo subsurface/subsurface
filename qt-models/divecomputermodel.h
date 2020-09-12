@@ -33,6 +33,7 @@ private:
 class DiveComputerSortedModel : public QSortFilterProxyModel {
 public:
 	using QSortFilterProxyModel::QSortFilterProxyModel;
+	void remove(const QModelIndex &index);
 private:
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const;
 };

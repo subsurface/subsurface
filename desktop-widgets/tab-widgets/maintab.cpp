@@ -34,6 +34,7 @@
 #include "TabDivePhotos.h"
 #include "TabDiveStatistics.h"
 #include "TabDiveSite.h"
+#include "TabDiveComputer.h"
 
 #include <QCompleter>
 #include <QSettings>
@@ -71,6 +72,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Extra Info"));
 	extraWidgets << new TabDiveSite(this);
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Dive sites"));
+	extraWidgets << new TabDiveComputer(this);
+	ui.tabWidget->addTab(extraWidgets.last(), tr("Device names"));
 
 	updateDateTimeFields();
 
@@ -348,11 +351,12 @@ void MainTab::updateDiveInfo()
 	if (editMode || MainWindow::instance()->graphics->isPlanner())
 		return;
 
-	// If there is no current dive, disable all widgets except the last, which is the dive site tab.
-	// TODO: Conceptually, the dive site tab shouldn't even be a tab here!
+	// If there is no current dive, disable all widgets except the last two,
+	// which are the dive site tab and the dive computer tabs.
+	// TODO: Conceptually, these two shouldn't even be a tabs here!
 	bool enabled = current_dive != nullptr;
 	ui.notesTab->setEnabled(enabled);
-	for (int i = 0; i < extraWidgets.size() - 1; ++i)
+	for (int i = 0; i < extraWidgets.size() - 2; ++i)
 		extraWidgets[i]->setEnabled(enabled);
 
 	ignoreInput = true; // don't trigger on changes to the widgets
