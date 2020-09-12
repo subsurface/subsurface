@@ -50,9 +50,10 @@ typedef struct
 {
 	weight_t weight;
 	const char *description; /* "integrated", "belt", "ankle" */
+	bool auto_filled; /* weight was automatically derived from the type */
 } weightsystem_t;
 
-static const weightsystem_t empty_weightsystem = { { 0 }, 0 };
+static const weightsystem_t empty_weightsystem = { { 0 }, 0, false };
 
 /* Table of weightsystems. Attention: this stores weightsystems,
  * *not* pointers * to weightsystems. This has two crucial
