@@ -164,14 +164,8 @@ source_group("Subsurface Interface" FILES ${SUBSURFACE_INTERFACE})
 
 # the yearly statistics widget.
 set(SUBSURFACE_STATISTICS_LIB_SRCS
-	statistics/monthstatistics.cpp
-	statistics/monthstatistics.h
-	statistics/statisticsbar.cpp
-	statistics/statisticsbar.h
 	statistics/statisticswidget.cpp
 	statistics/statisticswidget.h
-	statistics/yearstatistics.cpp
-	statistics/yearstatistics.h
 )
 source_group("Subsurface Statistics" FILES ${SUBSURFACE_STATISTICS_LIB_SRCS})
 
