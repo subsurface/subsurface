@@ -2,11 +2,21 @@
 #include "qt-models/divecomputermodel.h"
 #include "core/dive.h"
 #include "core/divelist.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 
 DiveComputerModel::DiveComputerModel(QObject *parent) : CleanerTableModel(parent),
 	dcs(device_table.devices)
 {
+	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &DiveComputerModel::update);
 	setHeaderDataStrings(QStringList() << "" << tr("Model") << tr("Device ID") << tr("Nickname"));
+	update();
+}
+
+void DiveComputerModel::update()
+{
+	beginResetModel();
+	dcs = device_table.devices;
+	endResetModel();
 }
 
 QVariant DiveComputerModel::data(const QModelIndex &index, int role) const

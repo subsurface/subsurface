@@ -25,6 +25,7 @@ public:
 public
 slots:
 	void remove(const QModelIndex &index);
+	void update();
 
 private:
 	std::vector<device> dcs;
