@@ -67,4 +67,3 @@ GpsListModel *GpsListModel::instance()
 	static GpsListModel self;
 	return &self;
 }
-
