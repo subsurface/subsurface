@@ -28,7 +28,7 @@ protected:
 private slots:
 	void clearFilter();
 	void closeFilter();
-	void updateFilter();
+	void filterChanged();
 	void constraintAdded(const QModelIndex &parent, int first, int last);
 	void constraintRemoved(const QModelIndex &parent, int first, int last);
 	void constraintChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles);
@@ -40,11 +40,13 @@ private slots:
 
 private:
 	bool ignoreSignal;
+	bool presetModified;
 	Ui::FilterWidget2 ui;
 	FilterConstraintModel constraintModel;
 	void addConstraint(filter_constraint_type type);
 	std::vector<std::unique_ptr<FilterConstraintWidget>> constraintWidgets;
 	FilterData createFilterData() const;
+	void updateFilter();
 	void setFilterData(const FilterData &filterData);
 	void loadPreset(int index);
 	void selectPreset(int i);
