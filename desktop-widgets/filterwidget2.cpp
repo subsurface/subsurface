@@ -10,7 +10,8 @@
 
 FilterWidget2::FilterWidget2(QWidget* parent) :
 	QWidget(parent),
-	ignoreSignal(false)
+	ignoreSignal(false),
+	presetModified(false)
 {
 	ui.setupUi(this);
 
@@ -32,8 +33,8 @@ FilterWidget2::FilterWidget2(QWidget* parent) :
 
 	connect(ui.clear, &QToolButton::clicked, this, &FilterWidget2::clearFilter);
 	connect(ui.close, &QToolButton::clicked, this, &FilterWidget2::closeFilter);
-	connect(ui.fullText, &QLineEdit::textChanged, this, &FilterWidget2::updateFilter);
-	connect(ui.fulltextStringMode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FilterWidget2::updateFilter);
+	connect(ui.fullText, &QLineEdit::textChanged, this, &FilterWidget2::filterChanged);
+	connect(ui.fulltextStringMode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FilterWidget2::filterChanged);
 	connect(ui.presetTable, &QTableView::clicked, this, &FilterWidget2::presetClicked);
 	connect(ui.presetTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &FilterWidget2::presetSelected);
 
@@ -90,6 +91,7 @@ void FilterWidget2::loadPreset(int index)
 {
 	FilterData filter = filter_preset_get(index);
 	setFilterData(filter);
+	presetModified = false;
 	updateFilter();
 }
 
@@ -104,7 +106,7 @@ void FilterWidget2::constraintAdded(const QModelIndex &parent, int first, int la
 		QModelIndex idx = constraintModel.index(i, 0);
 		constraintWidgets.emplace(constraintWidgets.begin() + i, new FilterConstraintWidget(&constraintModel, idx, ui.constraintTable));
 	}
-	updateFilter();
+	filterChanged();
 }
 
 void FilterWidget2::constraintRemoved(const QModelIndex &parent, int first, int last)
@@ -114,7 +116,7 @@ void FilterWidget2::constraintRemoved(const QModelIndex &parent, int first, int 
 	constraintWidgets.erase(constraintWidgets.begin() + first, constraintWidgets.begin() + last + 1);
 	for (int i = first; i < (int)constraintWidgets.size(); ++i)
 		constraintWidgets[i]->moveToRow(i);
-	updateFilter();
+	filterChanged();
 }
 
 void FilterWidget2::presetClicked(const QModelIndex &index)
@@ -128,7 +130,6 @@ void FilterWidget2::presetClicked(const QModelIndex &index)
 
 void FilterWidget2::presetSelected(const QItemSelection &selected, const QItemSelection &)
 {
-	updatePresetLabel();
 	if (selected.indexes().isEmpty())
 		return clearFilter();
 	const QModelIndex index = selected.indexes()[0];
@@ -143,7 +144,7 @@ void FilterWidget2::constraintChanged(const QModelIndex &topLeft, const QModelIn
 	// a constraint-changed signal from the model. The reason being that the user
 	// is currently editing the constraint and we don't want to bother them by
 	// overwriting strings with canonicalized data.
-	updateFilter();
+	filterChanged();
 }
 
 void FilterWidget2::constraintsReset()
@@ -160,8 +161,8 @@ void FilterWidget2::constraintsReset()
 void FilterWidget2::clearFilter()
 {
 	ignoreSignal = true; // Prevent signals to force filter recalculation (TODO: check if necessary)
+	presetModified = false;
 	ui.presetTable->selectionModel()->reset(); // Note: we use reset(), because that doesn't emit signals.
-	updatePresetLabel();
 	ui.fulltextStringMode->setCurrentIndex((int)StringFilterMode::STARTSWITH);
 	ui.fullText->clear();
 	ui.presetTable->clearSelection();
@@ -190,6 +191,12 @@ void FilterWidget2::setFilterData(const FilterData &filterData)
 	constraintModel.reload(filterData.constraints);
 }
 
+void FilterWidget2::filterChanged()
+{
+	presetModified = true;
+	updateFilter();
+}
+
 void FilterWidget2::updateFilter()
 {
 	if (ignoreSignal)
@@ -197,6 +204,7 @@ void FilterWidget2::updateFilter()
 
 	FilterData filterData = createFilterData();
 	DiveFilter::instance()->setFilter(filterData);
+	updatePresetLabel();
 }
 
 int FilterWidget2::selectedPreset() const
@@ -209,8 +217,11 @@ void FilterWidget2::updatePresetLabel()
 {
 	int presetId = selectedPreset();
 	QString text;
-	if (presetId >= 0)
+	if (presetId >= 0) {
 		text = filter_preset_name_qstring(presetId);
+		if (presetModified)
+			text += " (" + tr("modified") + ")";
+	}
 	ui.currentSet->setText(text);
 }
 
@@ -231,6 +242,8 @@ void FilterWidget2::on_addSetButton_clicked()
 		Command::editFilterPreset(idx, createFilterData());
 	else
 		Command::createFilterPreset(name, createFilterData());
+	presetModified = false;
+	updatePresetLabel();
 }
 
 void FilterWidget2::showEvent(QShowEvent *event)
