@@ -11,7 +11,7 @@
 ![Build Status](https://github.com/subsurface/subsurface/workflows/Ubuntu%2018.04%20/%20Qt%205.9/badge.svg) 
 ![Build Status](https://github.com/subsurface/subsurface/workflows/Ubuntu%2019.10%20/%20Qt%205.12/badge.svg) 
 
-This is the README file for Subsurface 4.9.6
+This is the README file for Subsurface 4.9.7
 
 Please check the `ReleaseNotes.txt` for details about new features and
 changes since Subsurface 4.9.5 (and earlier versions).
@@ -20,8 +20,7 @@ Subsurface can be found at http://subsurface-divelog.org
 
 Our user forum is at http://subsurface-divelog.org/user-forum/
 
-Report bugs and issues at
-https://github.com/Subsurface/subsurface/issues
+Report bugs and issues at https://github.com/Subsurface/subsurface/issues
 
 License: GPLv2
 
@@ -50,10 +49,10 @@ development version) you can either get this via git or the release tar
 ball. After cloning run the following command:
 
 ```
-git checkout v4.9.6  (or whatever the last release is)
+git checkout v4.9.7  (or whatever the last release is)
 ```
 
-or download a tarball from http://subsurface-divelog.org/downloads/Subsurface-4.9.6.tgz
+or download a tarball from http://subsurface-divelog.org/downloads/Subsurface-4.9.7.tgz
 
 Detailed build instructions can be found in the INSTALL file.
 
@@ -87,7 +86,7 @@ $ open Subsurface.app
 ```
 
 Native builds on Windows are not really supported (the official Windows
-installers are both cross-built on Linux).
+installers are cross-built on Linux).
 
 You can give a data file as command line argument, or (once you have
 set this up in the Preferences) Subsurface picks a default file for
@@ -95,8 +94,9 @@ you when started from the desktop or without an argument.
 
 If you have a dive computer supported by libdivecomputer, you can just
 select "Import from Divecomputer" from the "Import" menu, select which
-dive computer you have (and where it is connected if you need to), and
-hit "OK".
+dive computer you have (and where it is connected if you need to - note
+that there's a special selection for Bluetooth dive computers), and click
+on "Download".
 
 The latest list of supported dive computers can be found in the file
 SupportedDivecomputers.txt.
@@ -121,7 +121,7 @@ mailing list).
 Either way, if you don't sign off your patches, we will not accept them.
 This means adding a line that says "Signed-off-by: Name <email>" at the
 end of each commit, indicating that you wrote the code and have the right
-to pass it on as an open source patch.
+to pass it on as an open source patch under the GPLv2 license.
 
 See: http://developercertificate.org/
 

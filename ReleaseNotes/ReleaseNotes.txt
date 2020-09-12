@@ -2,6 +2,23 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 4.9.7
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- equipment: don't overwrite already set weights when changing weight type [#2938]
+- equipment: do substring search for equipment types
+- profile: add an "Edit Gas Change" right-click option [#2910]
+- profile: improve resolution in printing and export
+- core: fix renumbering of imported dives [#2731]
+- core: fix broken merging of dives with multiple cylinders
+- planner: properly initialize salinity
+- planner: handle zero length segments gracefully when replanning
+- planner: Honor the "O2 narcotic" preference when computing MND
+- core: Add parser for SeacSync db. Currently only Seac Action uses SeacSync program.
+
+dive computer support:
+- add support for Shearwater Peregrine (requires firmware V81 or newer)
+- add automatic recognition of more BLE dive computers
+
 New in _Subsurface_ 4.9.6
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 bugfixes:
