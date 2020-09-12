@@ -1,3 +1,4 @@
+desktop: don't overwrite already set weights when changing weight type [#2938]
 desktop: do substring search for equipment types
 planner: properly initialize salinity
 desktop: add an "Edit Gas Change" right-click option [#2910]

@@ -86,11 +86,16 @@ void WeightModel::setTempWS(int row, weightsystem_t ws)
 	// It is really hard to get the editor-close-hints and setModelData calls under
 	// control. Therefore, if the row is set to the already existing entry, don't
 	// enter temporary mode.
-	if (same_string(d->weightsystems.weightsystems[row].description, ws.description)) {
+	const weightsystem_t &oldWS = d->weightsystems.weightsystems[row];
+	if (same_string(oldWS.description, ws.description)) {
 		free_weightsystem(ws);
 	} else {
 		tempRow = row;
 		tempWS = ws;
+
+		// If the user had already set a weight, don't overwrite that
+		if (oldWS.weight.grams)
+			tempWS.weight = oldWS.weight;
 	}
 	dataChanged(index(row, TYPE), index(row, WEIGHT));
 }
