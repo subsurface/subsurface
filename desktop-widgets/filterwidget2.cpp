@@ -128,6 +128,7 @@ void FilterWidget2::presetClicked(const QModelIndex &index)
 
 void FilterWidget2::presetSelected(const QItemSelection &selected, const QItemSelection &)
 {
+	updatePresetLabel();
 	if (selected.indexes().isEmpty())
 		return clearFilter();
 	const QModelIndex index = selected.indexes()[0];
@@ -160,6 +161,7 @@ void FilterWidget2::clearFilter()
 {
 	ignoreSignal = true; // Prevent signals to force filter recalculation (TODO: check if necessary)
 	ui.presetTable->selectionModel()->reset(); // Note: we use reset(), because that doesn't emit signals.
+	updatePresetLabel();
 	ui.fulltextStringMode->setCurrentIndex((int)StringFilterMode::STARTSWITH);
 	ui.fullText->clear();
 	ui.presetTable->clearSelection();
@@ -197,15 +199,28 @@ void FilterWidget2::updateFilter()
 	DiveFilter::instance()->setFilter(filterData);
 }
 
+int FilterWidget2::selectedPreset() const
+{
+	QModelIndexList selection = ui.presetTable->selectionModel()->selectedRows();
+	return selection.size() >= 1 ? selection[0].row() : -1;
+}
+
+void FilterWidget2::updatePresetLabel()
+{
+	int presetId = selectedPreset();
+	QString text;
+	if (presetId >= 0)
+		text = filter_preset_name_qstring(presetId);
+	ui.currentSet->setText(text);
+}
+
 void FilterWidget2::on_addSetButton_clicked()
 {
 	// If there is a selected item, suggest that to the user.
 	// Thus, if the user selects an item and modify the filter,
 	// they can simply overwrite the preset.
-	QString selectedPreset;
-	QModelIndexList selection = ui.presetTable->selectionModel()->selectedRows();
-	if (selection.size() == 1)
-		selectedPreset = filter_preset_name_qstring(selection[0].row());
+	int presetId = selectedPreset();
+	QString selectedPreset = presetId >= 0 ? filter_preset_name_qstring(presetId) : QString();
 
 	AddFilterPresetDialog dialog(selectedPreset, this);
 	QString name = dialog.doit();
