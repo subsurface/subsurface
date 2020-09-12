@@ -58,10 +58,10 @@ static int shearwater_changes(void *param, int columns, char **data, char **colu
 		o2 = 1000;
 
 	// Find the cylinder index
-	int i;
+	int index;
 	bool found = false;
-	for (i = 0; i < state->cur_dive->cylinders.nr; ++i) {
-		const cylinder_t *cyl = get_cylinder(state->cur_dive, i);
+	for (index = 0; index < state->cur_dive->cylinders.nr; ++index) {
+		const cylinder_t *cyl = get_cylinder(state->cur_dive, index);
 		if (cyl->gasmix.o2.permille == o2 && cyl->gasmix.he.permille == he) {
 			found = true;
 			break;
@@ -75,7 +75,7 @@ static int shearwater_changes(void *param, int columns, char **data, char **colu
 		cylinder_end(state);
 	}
 
-	add_gas_switch_event(state->cur_dive, get_dc(state), state->sample_rate ? atoi(data[0]) / state->sample_rate * 10 : atoi(data[0]), state->cur_dive->cylinders.nr - 1);
+	add_gas_switch_event(state->cur_dive, get_dc(state), state->sample_rate ? atoi(data[0]) / state->sample_rate * 10 : atoi(data[0]), index);
 	return 0;
 }
 
