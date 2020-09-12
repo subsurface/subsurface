@@ -113,3 +113,11 @@ bool DiveComputerSortedModel::lessThan(const QModelIndex &i1, const QModelIndex 
 			return sortHelper(i1, i2, DiveComputerModel::MODEL, DiveComputerModel::ID);
 	}
 }
+
+void DiveComputerSortedModel::remove(const QModelIndex &index)
+{
+	int row = mapToSource(index).row();
+	if (row < 0 || row >= (int)device_table.devices.size())
+		return;
+	device_table.devices.erase(device_table.devices.begin() + row);
+}
