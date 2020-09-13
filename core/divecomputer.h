@@ -11,7 +11,6 @@ public:
 	bool operator==(const DiveComputerNode &a) const;
 	bool operator!=(const DiveComputerNode &a) const;
 	bool operator<(const DiveComputerNode &a) const;
-	bool changesValues(const DiveComputerNode &b) const;
 	void showchanges(const QString &n, const QString &s, const QString &f) const;
 	QString model;
 	uint32_t deviceId;
