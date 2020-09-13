@@ -57,15 +57,13 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	datatrak.h
 	deco.c
 	deco.h
-	device.c
+	device.cpp
 	device.h
 	devicedetails.cpp
 	devicedetails.h
 	display.h
 	dive.c
 	dive.h
-	divecomputer.cpp
-	divecomputer.h
 	divefilter.cpp
 	divefilter.h
 	divelist.c

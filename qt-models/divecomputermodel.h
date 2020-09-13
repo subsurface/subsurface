@@ -3,7 +3,7 @@
 #define DIVECOMPUTERMODEL_H
 
 #include "qt-models/cleanertablemodel.h"
-#include "core/divecomputer.h"
+#include "core/device.h"
 
 class DiveComputerModel : public CleanerTableModel {
 	Q_OBJECT
