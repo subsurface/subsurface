@@ -280,6 +280,20 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	# because that always requires the latest OS (how stupid is that - and they consider it a
 	# feature). So we painfully need to build the dependencies ourselves.
 	cd "$SRC"
+
+	./${SRC_DIR}/scripts/get-dep-lib.sh single . libz
+	pushd libz
+	# no, don't install pkgconfig files in .../libs/share/pkgconf - that's just weird
+	sed -i .bak 's/share\/pkgconfig/pkgconfig/' CMakeLists.txt
+	mkdir -p build
+	cd build
+	cmake "$OLDER_MAC_CMAKE" -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" \
+		-DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" \
+		..
+	make -j4
+	make install
+	popd
+
 	./${SRC_DIR}/scripts/get-dep-lib.sh single . libcurl
 	pushd libcurl
 	bash ./buildconf
@@ -377,6 +391,17 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	mkdir -p build
 	cd build
 	CFLAGS="$OLDER_MAC" ../configure --prefix="$INSTALL_ROOT" --disable-examples
+	make -j4
+	make install
+	popd
+
+	./${SRC_DIR}/scripts/get-dep-lib.sh single . libftdi1
+	pushd libftdi1
+	mkdir -p build
+	cd build
+	cmake "$OLDER_MAC_CMAKE" -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" \
+		-DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" \
+		..
 	make -j4
 	make install
 	popd
