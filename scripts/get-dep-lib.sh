@@ -2,6 +2,7 @@
 #
 
 # set version of 3rd party libraries
+CURRENT_LIBZ="v1.2.11"
 CURRENT_LIBZIP="rel-1-5-1"
 CURRENT_LIBGIT2="v0.26.0"
 CURRENT_HIDAPI="hidapi-0.7.0"
@@ -176,6 +177,9 @@ for package in "${PACKAGES[@]}" ; do
 			;;
 		openssl)
 			git_checkout_library openssl $CURRENT_OPENSSL https://github.com/openssl/openssl.git
+			;;
+		libz)
+			git_checkout_library libz $CURRENT_LIBZ https://github.com/madler/zlib.git
 			;;
 		libzip)
 			git_checkout_library libzip $CURRENT_LIBZIP https://github.com/nih-at/libzip.git
