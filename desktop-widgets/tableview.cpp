@@ -60,7 +60,10 @@ TableView::TableView(QWidget *parent) : QGroupBox(parent)
 		iconSize = btnSize - 2*min_gap;
 	}
 	plusBtn->setIconSize(QSize(iconSize, iconSize));
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+	// with Qt 5.15, this leads to an inoperable button
 	plusBtn->resize(btnSize, btnSize);
+#endif
 	connect(plusBtn, SIGNAL(clicked(bool)), this, SIGNAL(addButtonClicked()));
 }
 
