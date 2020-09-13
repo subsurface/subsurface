@@ -18,7 +18,19 @@ VERSION=$(cd ${DIR}/subsurface; ./scripts/get-version linux)
 # first build and install Subsurface and then clean up the staging area
 # make sure we didn't lose the minimum OS version
 rm -rf ./Subsurface.app
-cmake -DCMAKE_OSX_DEPLOYMENT_TARGET=10.11 -DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk .
+if [ -d /Developer/SDKs ] ; then
+	SDKROOT=/Developer/SDKs
+elif [ -d /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs ] ; then
+	SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+else
+	echo "Cannot find SDK sysroot (usually /Developer/SDKs or"
+	echo "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs)"
+	exit 1;
+fi
+BASESDK=$(ls $SDKROOT | grep "MacOSX10\.1.\.sdk" | head -1 | sed -e "s/MacOSX//;s/\.sdk//")
+OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/"
+export PKG_CONFIG_PATH=${DIR}/install-root/lib/pkgconfig:$PKG_CONFIG_PATH
+cmake $OLDER_MAC_CMAKE .
 LIBRARY_PATH=${DIR}/install-root/lib make -j8
 LIBRARY_PATH=${DIR}/install-root/lib make install
 
