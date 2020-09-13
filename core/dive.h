@@ -360,7 +360,6 @@ extern void invalidate_dive_cache(struct dive *dc);
 
 extern void clear_events(void);
 
-extern void set_dc_nickname(struct dive *dive);
 extern void set_autogroup(bool value);
 extern int total_weight(const struct dive *);
 
