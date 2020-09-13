@@ -26,17 +26,6 @@ bool DiveComputerNode::operator<(const DiveComputerNode &a) const
 	return std::tie(model, deviceId) < std::tie(a.model, a.deviceId);
 }
 
-bool DiveComputerNode::changesValues(const DiveComputerNode &b) const
-{
-	if (model != b.model || deviceId != b.deviceId) {
-		qDebug("DiveComputerNodes were not for the same DC");
-		return false;
-	}
-	return (firmware != b.firmware) ||
-	       (serialNumber != b.serialNumber) ||
-	       (nickName != b.nickName);
-}
-
 const DiveComputerNode *DiveComputerList::getExact(const QString &m, uint32_t d)
 {
 	auto it = std::lower_bound(dcs.begin(), dcs.end(), DiveComputerNode{m, d, {}, {}, {}});
