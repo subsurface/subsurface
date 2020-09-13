@@ -24,8 +24,6 @@ public:
 	const DiveComputerNode *getExact(const QString &m, uint32_t d);
 	const DiveComputerNode *get(const QString &m);
 	void addDC(QString m, uint32_t d, QString n = QString(), QString s = QString(), QString f = QString());
-	DiveComputerNode matchDC(const QString &m, uint32_t d);
-	DiveComputerNode matchModel(const QString &m);
 
 	// Keep the dive computers in a vector sorted by (model, deviceId)
 	QVector<DiveComputerNode> dcs;
