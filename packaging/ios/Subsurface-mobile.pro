@@ -36,7 +36,6 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/checkcloudconnection.cpp \
 	../../core/color.cpp \
 	../../core/configuredivecomputer.cpp \
-	../../core/divecomputer.cpp \
 	../../core/divelogexportlogic.cpp \
 	../../core/divesitehelpers.cpp \
 	../../core/errorhelper.c \
@@ -52,7 +51,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/subsurfacestartup.c \
 	../../core/ios.cpp \
 	../../core/profile.c \
-	../../core/device.c \
+	../../core/device.cpp \
 	../../core/dive.c \
 	../../core/divefilter.cpp \
 	../../core/divelist.c \
@@ -217,7 +216,6 @@ HEADERS += \
 	../../core/datatrak.h \
 	../../core/deco.h \
 	../../core/display.h \
-	../../core/divecomputer.h \
 	../../core/divefilter.h \
 	../../core/divelist.h \
 	../../core/divelogexportlogic.h \
@@ -232,7 +230,6 @@ HEADERS += \
 	../../core/metrics.h \
 	../../core/qt-gui.h \
 	../../core/selection.h \
-	../../core/divecomputer.h \
 	../../core/sha1.h \
 	../../core/strndup.h \
 	../../core/subsurfacestartup.h \
