@@ -448,6 +448,10 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 		# and with Qt 5.11 we need another library that isn't copied by macdeployqt
 		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/lib/QtPositioningQuick.framework ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks)")
 	endif()
+	if(NOT Qt5Core_VERSION VERSION_LESS 5.14.0)
+		# and with Qt 5.14 we need another library that isn't always copied by macdeployqt
+		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/lib/QtQmlWorkerScript.framework ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks)")
+	endif()
 	if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtQuick ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
 		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtGraphicalEffects ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
