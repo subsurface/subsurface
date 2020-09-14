@@ -240,16 +240,16 @@ bool DiveComputerNode::operator<(const DiveComputerNode &a) const
 	return std::tie(model, deviceId) < std::tie(a.model, a.deviceId);
 }
 
-static const DiveComputerNode *getDCExact(const QVector<DiveComputerNode> &dcs, const QString &m, uint32_t d)
+static const DiveComputerNode *getDCExact(const QVector<DiveComputerNode> &dcs, const divecomputer *dc)
 {
-	auto it = std::lower_bound(dcs.begin(), dcs.end(), DiveComputerNode{m, d, {}, {}, {}});
-	return it != dcs.end() && it->model == m && it->deviceId == d ? &*it : NULL;
+	auto it = std::lower_bound(dcs.begin(), dcs.end(), DiveComputerNode{dc->model, dc->deviceid, {}, {}, {}});
+	return it != dcs.end() && it->model == dc->model && it->deviceId == dc->deviceid ? &*it : NULL;
 }
 
-static const DiveComputerNode *getDC(const QVector<DiveComputerNode> &dcs, const QString &m)
+static const DiveComputerNode *getDC(const QVector<DiveComputerNode> &dcs, const divecomputer *dc)
 {
-	auto it = std::lower_bound(dcs.begin(), dcs.end(), DiveComputerNode{m, 0, {}, {}, {}});
-	return it != dcs.end() && it->model == m ? &*it : NULL;
+	auto it = std::lower_bound(dcs.begin(), dcs.end(), DiveComputerNode{dc->model, 0, {}, {}, {}});
+	return it != dcs.end() && it->model == dc->model ? &*it : NULL;
 }
 
 void DiveComputerNode::showchanges(const QString &n, const QString &s, const QString &f) const
@@ -345,9 +345,9 @@ extern "C" void set_dc_nickname(struct dive *dive)
 
 	for_each_dc (dive, dc) {
 		if (!empty_string(dc->model) && dc->deviceid &&
-		    !getDCExact(dcList.dcs, dc->model, dc->deviceid)) {
+		    !getDCExact(dcList.dcs, dc)) {
 			// we don't have this one, yet
-			const DiveComputerNode *existNode = getDC(dcList.dcs, dc->model);
+			const DiveComputerNode *existNode = getDC(dcList.dcs, dc);
 			if (existNode) {
 				// we already have this model but a different deviceid
 				QString simpleNick(dc->model);
@@ -365,7 +365,7 @@ extern "C" void set_dc_nickname(struct dive *dive)
 
 QString get_dc_nickname(const struct divecomputer *dc)
 {
-	const DiveComputerNode *existNode = getDCExact(dcList.dcs, dc->model, dc->deviceid);
+	const DiveComputerNode *existNode = getDCExact(dcList.dcs, dc);
 
 	if (existNode && !existNode->nickName.isEmpty())
 		return existNode->nickName;
