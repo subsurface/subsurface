@@ -239,13 +239,13 @@ bool DiveComputerNode::operator<(const DiveComputerNode &a) const
 	return std::tie(model, deviceId) < std::tie(a.model, a.deviceId);
 }
 
-const DiveComputerNode *DiveComputerList::getExact(const QString &m, uint32_t d)
+static const DiveComputerNode *getDCExact(const QVector<DiveComputerNode> &dcs, const QString &m, uint32_t d)
 {
 	auto it = std::lower_bound(dcs.begin(), dcs.end(), DiveComputerNode{m, d, {}, {}, {}});
 	return it != dcs.end() && it->model == m && it->deviceId == d ? &*it : NULL;
 }
 
-const DiveComputerNode *DiveComputerList::get(const QString &m)
+static const DiveComputerNode *getDC(const QVector<DiveComputerNode> &dcs, const QString &m)
 {
 	auto it = std::lower_bound(dcs.begin(), dcs.end(), DiveComputerNode{m, 0, {}, {}, {}});
 	return it != dcs.end() && it->model == m ? &*it : NULL;
@@ -261,7 +261,7 @@ void DiveComputerNode::showchanges(const QString &n, const QString &s, const QSt
 		qDebug("new firmware version %s for DC model %s deviceId 0x%x", qPrintable(f), qPrintable(model), deviceId);
 }
 
-void DiveComputerList::addDC(QString m, uint32_t d, QString n, QString s, QString f)
+static void addDC(QVector<DiveComputerNode> &dcs, const QString &m, uint32_t d, const QString &n, const QString &s, const QString &f)
 {
 	if (m.isEmpty() || d == 0)
 		return;
@@ -284,7 +284,7 @@ void DiveComputerList::addDC(QString m, uint32_t d, QString n, QString s, QStrin
 
 extern "C" void create_device_node(const char *model, uint32_t deviceid, const char *serial, const char *firmware, const char *nickname)
 {
-	dcList.addDC(model, deviceid, nickname, serial, firmware);
+	addDC(dcList.dcs, model, deviceid, nickname, serial, firmware);
 }
 
 extern "C" void clear_device_nodes()
@@ -348,9 +348,9 @@ extern "C" void set_dc_nickname(struct dive *dive)
 
 	for_each_dc (dive, dc) {
 		if (!empty_string(dc->model) && dc->deviceid &&
-		    !dcList.getExact(dc->model, dc->deviceid)) {
+		    !getDCExact(dcList.dcs, dc->model, dc->deviceid)) {
 			// we don't have this one, yet
-			const DiveComputerNode *existNode = dcList.get(dc->model);
+			const DiveComputerNode *existNode = getDC(dcList.dcs, dc->model);
 			if (existNode) {
 				// we already have this model but a different deviceid
 				QString simpleNick(dc->model);
@@ -358,9 +358,9 @@ extern "C" void set_dc_nickname(struct dive *dive)
 					simpleNick.append(" (unknown deviceid)");
 				else
 					simpleNick.append(" (").append(QString::number(dc->deviceid, 16)).append(")");
-				dcList.addDC(dc->model, dc->deviceid, simpleNick);
+				addDC(dcList.dcs, dc->model, dc->deviceid, simpleNick, {}, {});
 			} else {
-				dcList.addDC(dc->model, dc->deviceid);
+				addDC(dcList.dcs, dc->model, dc->deviceid, {}, {}, {});
 			}
 		}
 	}
@@ -368,7 +368,7 @@ extern "C" void set_dc_nickname(struct dive *dive)
 
 QString get_dc_nickname(const struct divecomputer *dc)
 {
-	const DiveComputerNode *existNode = dcList.getExact(dc->model, dc->deviceid);
+	const DiveComputerNode *existNode = getDCExact(dcList.dcs, dc->model, dc->deviceid);
 
 	if (existNode && !existNode->nickName.isEmpty())
 		return existNode->nickName;

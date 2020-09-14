@@ -26,8 +26,7 @@ extern void clear_device_nodes();
 
 #include <QString>
 #include <QVector>
-class DiveComputerNode {
-public:
+struct DiveComputerNode {
 	bool operator==(const DiveComputerNode &a) const;
 	bool operator!=(const DiveComputerNode &a) const;
 	bool operator<(const DiveComputerNode &a) const;
@@ -39,12 +38,7 @@ public:
 	QString nickName;
 };
 
-class DiveComputerList {
-public:
-	const DiveComputerNode *getExact(const QString &m, uint32_t d);
-	const DiveComputerNode *get(const QString &m);
-	void addDC(QString m, uint32_t d, QString n = QString(), QString s = QString(), QString f = QString());
-
+struct DiveComputerList {
 	// Keep the dive computers in a vector sorted by (model, deviceId)
 	QVector<DiveComputerNode> dcs;
 };
