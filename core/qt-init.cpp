@@ -86,11 +86,13 @@ void init_qt_late()
 #else
 	translationLocation = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
 #endif
-	if (qtTranslator.load(loc, "qt", "_", translationLocation)) {
+	if (qtTranslator.load(loc, "qtbase", "_", translationLocation) ||
+	    qtTranslator.load(loc, "qtbase", "_", getSubsurfaceDataPath("translations")) ||
+	    qtTranslator.load(loc, "qtbase", "_", getSubsurfaceDataPath("../translations"))) {
 		application->installTranslator(&qtTranslator);
 	} else {
-		if (verbose && uiLang != "en_US" && uiLang != "en-US")
-			qDebug() << "can't find Qt localization for locale" << uiLang << "searching in" << translationLocation;
+		if (uiLang != "en_US" && uiLang != "en-US")
+			qDebug() << "can't find Qt base localization for locale" << uiLang << "searching in" << translationLocation;
 	}
 	if (ssrfTranslator.load(loc, "subsurface", "_") ||
 	    ssrfTranslator.load(loc, "subsurface", "_", translationLocation) ||
