@@ -101,11 +101,11 @@ void BLEObject::writeCompleted(const QLowEnergyDescriptor&, const QByteArray&)
 	desc_written++;
 }
 
-struct uud_match {
+struct uuid_match {
 	const char *uuid, *details;
 };
 
-static const char *match_service(const QBluetoothUuid &service, const struct uud_match *array)
+static const char *match_service(const QBluetoothUuid &service, const struct uuid_match *array)
 {
 	const char *uuid;
 
@@ -134,7 +134,7 @@ static const char *match_service(const QBluetoothUuid &service, const struct uud
 // not like legacy BT didn't have a standard serial encapsulation.
 // Oh. It did, didn't it?
 //
-static const struct uud_match serial_service_uuids[] = {
+static const struct uuid_match serial_service_uuids[] = {
 	{ "0000fefb-0000-1000-8000-00805f9b34fb", "Heinrichs-Weikamp" },
 	{ "544e326b-5b72-c6b0-1c46-41c1bc448118", "Mares BlueLink Pro" },
 	{ "6e400001-b5a3-f393-e0a9-e50e24dcca9e", "Nordic Semi UART" },
@@ -150,7 +150,7 @@ static const struct uud_match serial_service_uuids[] = {
 // that a service is NOT a serial service because we've seen that
 // people use it for firmware upgrades.
 //
-static const struct uud_match upgrade_service_uuids[] = {
+static const struct uuid_match upgrade_service_uuids[] = {
 	{ "00001530-1212-efde-1523-785feabcd123", "Nordic Upgrade" },
 	{ "9e5d1e47-5c13-43a0-8635-82ad38a1386f", "Broadcom Upgrade #1" },
 	{ "a86abc2d-d44c-442e-99f7-80059a873e36", "Broadcom Upgrade #2" },
