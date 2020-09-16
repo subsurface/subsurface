@@ -105,12 +105,12 @@ struct uuid_match {
 	const char *uuid, *details;
 };
 
-static const char *match_service(const QBluetoothUuid &service, const struct uuid_match *array)
+static const char *match_uuid_list(const QBluetoothUuid &match, const struct uuid_match *array)
 {
 	const char *uuid;
 
 	while ((uuid = array->uuid) != NULL) {
-		if (service == QUuid(uuid))
+		if (match == QUuid(uuid))
 			return array->details;
 		array++;
 	}
@@ -159,12 +159,12 @@ static const struct uuid_match upgrade_service_uuids[] = {
 
 static const char *is_known_serial_service(const QBluetoothUuid &service)
 {
-	return match_service(service, serial_service_uuids);
+	return match_uuid_list(service, serial_service_uuids);
 }
 
 static const char *is_known_bad_service(const QBluetoothUuid &service)
 {
-	return match_service(service, upgrade_service_uuids);
+	return match_uuid_list(service, upgrade_service_uuids);
 }
 
 void BLEObject::addService(const QBluetoothUuid &newService)
@@ -247,9 +247,32 @@ BLEObject::~BLEObject()
 	delete controller;
 }
 
+/*
+ * The McLean Extreme has just one vendor service, but then inside that
+ * service it has several characteristics, and it's not obvious which
+ * ones are the read/write ones.
+ *
+ * So just make sure to skip the ones we don't want.
+ *
+ * The proper ones are:
+ *
+ *   Microchip service UUID:  49535343-fe7d-4ae5-8fa9-9fafd205e455
+ *            TX characteristic: 49535343-1e4d-4bd9-ba61-23c647249616
+ *            RX characteristic: 49535343-8841-43f4-a8d4-ecbe34729bb3
+ */
+static const struct uuid_match skip_characteristics[] = {
+	{ "49535343-6daa-4d02-abf6-19569aca69fe", "McLean Extreme Avoid" },
+	{ "49535343-aca3-481c-91ec-d85e28a60318", "McLean Extreme Avoid" },
+	{ "49535343-026e-3a9b-954c-97daef17e26e", "McLean Extreme Avoid" },
+	{ "49535343-4c8a-39b3-2f49-511cff073b7e", "McLean Extreme Avoid" },
+	{ NULL, }
+};
+
 // a write characteristic needs Write or WriteNoResponse
 static bool is_write_characteristic(const QLowEnergyCharacteristic &c)
 {
+	if (match_uuid_list(c.uuid(), skip_characteristics))
+		return false;
 	return c.properties() &
 		 (QLowEnergyCharacteristic::Write |
 		  QLowEnergyCharacteristic::WriteNoResponse);
@@ -259,6 +282,8 @@ static bool is_write_characteristic(const QLowEnergyCharacteristic &c)
 // a descriptor to enable it
 static bool is_read_characteristic(const QLowEnergyCharacteristic &c)
 {
+	if (match_uuid_list(c.uuid(), skip_characteristics))
+		return false;
 	return !c.descriptors().empty() &&
 		(c.properties() &
 		  (QLowEnergyCharacteristic::Notify |
