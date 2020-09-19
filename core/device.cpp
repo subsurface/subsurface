@@ -2,6 +2,7 @@
 #include "ssrf.h"
 #include "dive.h"
 #include "subsurface-string.h"
+#include "qthelper.h" // for copy_qstring
 #include "device.h"
 #include "errorhelper.h" // for verbose flag
 #include "core/settings/qPrefDiveComputer.h"
@@ -190,34 +191,6 @@ extern "C" void fake_dc(struct divecomputer *dc)
 	/* Even that didn't work? Give up, there's something wrong */
 }
 
-static void match_id(void *_dc, const char *model, uint32_t deviceid,
-		     const char *, const char *serial, const char *firmware)
-{
-	struct divecomputer *dc = (divecomputer *)_dc;
-
-	if (dc->deviceid != deviceid)
-		return;
-	if (!model || !dc->model || strcmp(dc->model, model))
-		return;
-
-	if (serial && !dc->serial)
-		dc->serial = strdup(serial);
-	if (firmware && !dc->fw_version)
-		dc->fw_version = strdup(firmware);
-}
-
-/*
- * When setting the device ID, we also fill in the
- * serial number and firmware version data
- */
-extern "C" void set_dc_deviceid(struct divecomputer *dc, unsigned int deviceid)
-{
-	if (deviceid) {
-		dc->deviceid = deviceid;
-		call_for_each_dc(dc, match_id, false);
-	}
-}
-
 DiveComputerList dcList;
 
 bool DiveComputerNode::operator==(const DiveComputerNode &a) const
@@ -249,6 +222,31 @@ static const DiveComputerNode *getDC(const QVector<DiveComputerNode> &dcs, const
 {
 	auto it = std::lower_bound(dcs.begin(), dcs.end(), DiveComputerNode{dc->model, 0, {}, {}, {}});
 	return it != dcs.end() && it->model == dc->model ? &*it : NULL;
+}
+
+/*
+ * When setting the device ID, we also fill in the
+ * serial number and firmware version data
+ */
+extern "C" void set_dc_deviceid(struct divecomputer *dc, unsigned int deviceid)
+{
+	if (!deviceid)
+		return;
+
+	dc->deviceid = deviceid;
+
+	// Serial and firmware can only be deduced if we know the model
+	if (!dc->model)
+		return;
+
+	const DiveComputerNode *node = getDCExact(dcList.dcs, dc);
+	if (!node)
+		return;
+
+	if (!node->serialNumber.isEmpty() && empty_string(dc->serial))
+		dc->serial = copy_qstring(node->serialNumber);
+	if (!node->firmware.isEmpty() && empty_string(dc->fw_version))
+		dc->fw_version = copy_qstring(node->firmware);
 }
 
 void DiveComputerNode::showchanges(const QString &n, const QString &s, const QString &f) const
