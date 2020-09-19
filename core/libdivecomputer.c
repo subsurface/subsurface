@@ -28,6 +28,7 @@
 #include <libdivecomputer/usb.h>
 #include <libdivecomputer/serial.h>
 #include <libdivecomputer/irda.h>
+#include <libdivecomputer/bluetooth.h>
 
 #include "libdivecomputer.h"
 #include "core/version.h"
@@ -1340,6 +1341,30 @@ static dc_status_t irda_device_open(dc_iostream_t **iostream, dc_context_t *cont
 	return dc_irda_open(&data->iostream, context, address, 1);
 }
 
+static dc_status_t bluetooth_device_open(dc_iostream_t **iostream, dc_context_t *context, device_data_t *data)
+{
+	dc_bluetooth_address_t address = 0;
+	dc_iterator_t *iterator = NULL;
+	dc_bluetooth_device_t *device = NULL;
+
+	// Try to find the rfcomm device address
+	dc_bluetooth_iterator_new (&iterator, context, data->descriptor);
+	while (dc_iterator_next (iterator, &device) == DC_STATUS_SUCCESS) {
+		address = dc_bluetooth_device_get_address (device);
+		dc_bluetooth_device_free (device);
+		break;
+	}
+	dc_iterator_free (iterator);
+
+	if (!address) {
+		report_error("No rfcomm device found");
+		return DC_STATUS_NODEVICE;
+	}
+
+	dev_info(data, "Opening rfcomm address %u", address);
+	return dc_bluetooth_open(&data->iostream, context, address, 0);
+}
+
 dc_status_t divecomputer_device_open(device_data_t *data)
 {
 	dc_status_t rc;
@@ -1358,7 +1383,7 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 #ifdef BT_SUPPORT
 	if (transports & DC_TRANSPORT_BLUETOOTH) {
 		dev_info(data, "Opening rfcomm stream %s", data->devname);
-		rc = rfcomm_stream_open(&data->iostream, context, data->devname);
+		rc = bluetooth_device_open(&data->iostream, context, data);
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 	}
