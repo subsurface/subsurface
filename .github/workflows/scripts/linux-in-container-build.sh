@@ -10,6 +10,10 @@ export PATH=$QT_ROOT/bin:$PATH # Make sure correct qmake is found on the $PATH f
 export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
 export Grantlee5_ROOT=/__w/subsurface/subsurface/install-root
 
+echo "--------------------------------------------------------------"
+echo "install missing packages"
+apt install -y libbluetooth-dev
+
 # the container currently has things under / that need to be under /__w/subsurface/subsurface instead
 cp -a /appdir /__w/subsurface/
 cp -a /install-root /__w/subsurface/

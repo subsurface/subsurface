@@ -43,6 +43,7 @@ BuildRequires:	netpbm-devel
 BuildRequires:	openssl-devel
 BuildRequires:	libsqlite3x-devel
 BuildRequires:	libusbx-devel
+BuildRequires:	bluez-libs-devel
 BuildRequires:	qt5-qtbase-devel
 BuildRequires:	qt5-qttools-devel
 BuildRequires:	qt5-qtwebkit-devel
@@ -62,6 +63,7 @@ BuildRequires:	update-desktop-files
 BuildRequires:	libopenssl-devel
 BuildRequires:	sqlite3-devel
 BuildRequires:	libusb-1_0-devel
+BuildRequires:	bluez-devel
 BuildRequires:	libqt5-qtbase-devel
 BuildRequires:	libqt5-qtsvg-devel
 BuildRequires:	libqt5-linguist
