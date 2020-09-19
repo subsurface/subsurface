@@ -1383,7 +1383,12 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 #ifdef BT_SUPPORT
 	if (transports & DC_TRANSPORT_BLUETOOTH) {
 		dev_info(data, "Opening rfcomm stream %s", data->devname);
+#if defined(__ANDROID__) || defined(__APPLE__)
+		// we don't have BT on iOS in the first place, so this is for Android and macOS
+		rc = rfcomm_stream_open(&data->iostream, context, data->devname);
+#else
 		rc = bluetooth_device_open(&data->iostream, context, data);
+#endif
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 	}
