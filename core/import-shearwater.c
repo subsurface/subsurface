@@ -87,8 +87,20 @@ static int shearwater_profile_sample(void *param, int columns, char **data, char
 	int d6, d7;
 
 	sample_start(state);
-	if (data[0])
-		state->cur_sample->time.seconds = state->sample_rate ? atoi(data[0]) / state->sample_rate * 10 : atoi(data[0]);
+
+	/*
+	 * If we have sample_rate, we use self calculated sample number
+	 * to count the sample time.
+	 * If we do not have sample_rate, we try to use the sample time
+	 * provided by Shearwater as is.
+	 */
+
+	if (data[9] && state->sample_rate)
+		state->cur_sample->time.seconds = atoi(data[9]) * state->sample_rate;
+	else if (data[0])
+		state->cur_sample->time.seconds = atoi(data[0]);
+
+
 	if (data[1])
 		state->cur_sample->depth.mm = state->metric ? lrint(strtod_flags(data[1], NULL, 0) * 1000) : feet_to_mm(strtod_flags(data[1], NULL, 0));
 	if (data[2])
@@ -138,8 +150,19 @@ static int shearwater_ai_profile_sample(void *param, int columns, char **data, c
 	int d6, d9;
 
 	sample_start(state);
-	if (data[0])
-		state->cur_sample->time.seconds = state->sample_rate ? atoi(data[0]) / state->sample_rate * 10 : atoi(data[0]);
+
+	/*
+	 * If we have sample_rate, we use self calculated sample number
+	 * to count the sample time.
+	 * If we do not have sample_rate, we try to use the sample time
+	 * provided by Shearwater as is.
+	 */
+
+	if (data[11] && state->sample_rate)
+		state->cur_sample->time.seconds = atoi(data[11]) * state->sample_rate;
+	else if (data[0])
+		state->cur_sample->time.seconds = atoi(data[0]);
+
 	if (data[1])
 		state->cur_sample->depth.mm = state->metric ? lrint(strtod_flags(data[1], NULL, 0) * 1000) : feet_to_mm(strtod_flags(data[1], NULL, 0));
 	if (data[2])
@@ -329,8 +352,17 @@ static int shearwater_cloud_dive(void *param, int columns, char **data, char **c
 	int retval = 0;
 	struct parser_state *state = (struct parser_state *)param;
 	sqlite3 *handle = state->sql_handle;
-	char get_profile_template[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,firstStopDepth,firstStopTime from dive_log_records where diveLogId=%ld";
-	char get_profile_template_ai[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,aiSensor0_PressurePSI,aiSensor1_PressurePSI,firstStopDepth,firstStopTime from dive_log_records where diveLogId = %ld and currentTime > 0";
+
+	/*
+	 * Since Shearwater reported sample time can be totally bogus,
+	 * we need to calculate the sample number by ourselves. The
+	 * calculated sample number is multiplied by sample interval
+	 * giving us correct sample time.
+	 */
+
+	char get_profile_template[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,firstStopDepth,firstStopTime,(select count(0) from dive_log_records r where r.id < d.id and r.diveLogId = %ld and r.currentTime > 0) as row from dive_log_records d where d.diveLogId=%ld and d.currentTime > 0";
+	char get_profile_template_ai[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,aiSensor0_PressurePSI,aiSensor1_PressurePSI,firstStopDepth,firstStopTime,(select count(0) from dive_log_records r where r.id < d.id and r.diveLogId = %ld and r.currentTime > 0) as row from dive_log_records d where d.diveLogId = %ld and d.currentTime > 0";
+
 	char get_cylinder_template[] = "select fractionO2 / 100,fractionHe / 100 from dive_log_records where diveLogId = %ld group by fractionO2,fractionHe";
 	char get_first_gas_template[] = "select currentTime, fractionO2 / 100, fractionHe / 100 from dive_log_records where diveLogId = %ld limit 1";
 	char get_changes_template[] = "select a.currentTime,a.fractionO2 / 100,a.fractionHe /100 from dive_log_records as a,dive_log_records as b where (a.id - 1) = b.id and (a.fractionO2 != b.fractionO2 or a.fractionHe != b.fractionHe) and a.diveLogId=b.divelogId and a.diveLogId = %ld and a.fractionO2 > 0 and b.fractionO2 > 0";
@@ -436,10 +468,10 @@ static int shearwater_cloud_dive(void *param, int columns, char **data, char **c
 		return 1;
 	}
 
-	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template_ai, dive_id);
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template_ai, dive_id, dive_id);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_ai_profile_sample, state, NULL);
 	if (retval != SQLITE_OK) {
-		snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, dive_id);
+		snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, dive_id, dive_id);
 		retval = sqlite3_exec(handle, get_buffer, &shearwater_profile_sample, state, NULL);
 		if (retval != SQLITE_OK) {
 			fprintf(stderr, "%s", "Database query shearwater_profile_sample failed.\n");
@@ -498,7 +530,7 @@ int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *
 	state.sites = sites;
 	state.sql_handle = handle;
 
-	char get_dives[] = "select l.number,strftime('%s', DiveDate),location||' / '||site,buddy,notes,imperialUnits,maxDepth,DiveLengthTime,startSurfacePressure,computerSerial,computerModel,d.diveId,l.sampleRateMs FROM dive_details AS d JOIN dive_logs AS l ON d.diveId=l.diveId";
+	char get_dives[] = "select l.number,strftime('%s', DiveDate),location||' / '||site,buddy,notes,imperialUnits,maxDepth,DiveLengthTime,startSurfacePressure,computerSerial,computerModel,d.diveId,l.sampleRateMs / 1000 FROM dive_details AS d JOIN dive_logs AS l ON d.diveId=l.diveId";
 
 	retval = sqlite3_exec(handle, get_dives, &shearwater_cloud_dive, &state, NULL);
 	free_parser_state(&state);
