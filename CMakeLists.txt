@@ -154,6 +154,9 @@ endif()
 pkg_config_library(LIBZIP libzip REQUIRED)
 
 if(NOT ANDROID)
+	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+		pkg_config_library(BLUEZ bluez REQUIRED)
+	endif()
 	pkg_config_library(LIBUSB libusb-1.0 QUIET)
 endif()
 
