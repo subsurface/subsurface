@@ -10,6 +10,8 @@ New in _Subsurface_ 4.9.7
 - profile: improve resolution in printing and export
 - core: fix renumbering of imported dives [#2731]
 - core: fix broken merging of dives with multiple cylinders
+- bluetooth/rfcomm: fix broken classic BT downloads on Linux and Windows; macOS is still broken
+- media: read timestamp from mvhd atom of QuickTime/MP4 style videos
 - planner: properly initialize salinity
 - planner: handle zero length segments gracefully when replanning
 - planner: honor the "O2 narcotic" preference when computing MND
@@ -17,6 +19,7 @@ New in _Subsurface_ 4.9.7
 - import: fix a copule of bugs on Shearwater Cloud import
 
 dive computer support:
+- fix Shearwater parser to support PNF on Petrel dive computers
 - add support for Shearwater Peregrine (requires firmware V81 or newer)
 - add support for Aqualung: i470TC
 - add support for Liquivision Kaon, Lynx, Xen, Xeo
