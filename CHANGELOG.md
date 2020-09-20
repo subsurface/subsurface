@@ -1,3 +1,4 @@
+- make sure current dive is selected [#2961]
 - update filter status when loading file [#2961]
 
 ---

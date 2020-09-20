@@ -119,7 +119,10 @@ extern "C" void dump_selection(void)
 // or a newly selected dive. In both cases, try to select the
 // dive that is newer that is newer than the given date.
 // This mimics the old behavior when the current dive changed.
-static void setClosestCurrentDive(timestamp_t when, const std::vector<dive *> &selection)
+// If a current dive outside of the selection was set, add
+// it to the list of selected dives, so that we never end up
+// in a situation where we display a non-selected dive.
+static void setClosestCurrentDive(timestamp_t when, const std::vector<dive *> &selection, QVector<dive *> &divesToSelect)
 {
 	// Start from back until we get the first dive that is before
 	// the supposed-to-be selected dive. (Note: this mimics the
@@ -144,6 +147,8 @@ static void setClosestCurrentDive(timestamp_t when, const std::vector<dive *> &s
 	// return null, but that just means unsetting the current dive (as no
 	// dive is visible anyway).
 	current_dive = find_next_visible_dive(when);
+	if (current_dive)
+		divesToSelect.push_back(current_dive);
 }
 
 // Reset the selection to the dives of the "selection" vector and send the appropriate signals.
@@ -194,7 +199,7 @@ void setSelection(const std::vector<dive *> &selection, dive *currentDive)
 	current_dive = currentDive;
 	if (current_dive && !currentDive->selected) {
 		// Current not visible -> find a different dive.
-		setClosestCurrentDive(currentDive->when, selection);
+		setClosestCurrentDive(currentDive->when, selection, divesToSelect);
 	}
 
 	// Send the new selection
