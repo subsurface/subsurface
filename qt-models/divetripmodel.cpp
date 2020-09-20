@@ -714,6 +714,8 @@ DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent
 
 void DiveTripModelTree::populate()
 {
+	DiveFilter::instance()->updateAll(); // The data was reset - update filter status. TODO: should this really be done here?
+
 	// we want this to be two calls as the second text is overwritten below by the lines starting with "\r"
 	uiNotification(QObject::tr("populate data model"));
 	uiNotification(QObject::tr("start processing"));
@@ -1479,6 +1481,8 @@ DiveTripModelList::DiveTripModelList(QObject *parent) : DiveTripModelBase(parent
 
 void DiveTripModelList::populate()
 {
+	DiveFilter::instance()->updateAll(); // The data was reset - update filter status. TODO: should this really be done here?
+
 	// Fill model
 	items.reserve(dive_table.nr);
 	for (int i = 0; i < dive_table.nr; ++i) {
