@@ -10,6 +10,8 @@ New in _Subsurface_ 4.9.7
 - profile: improve resolution in printing and export
 - core: fix renumbering of imported dives [#2731]
 - core: fix broken merging of dives with multiple cylinders
+- core: make sure current dive is always selected [#2961]
+- core: update filter status when loading dive list [#2961]
 - bluetooth/rfcomm: fix broken classic BT downloads on Linux and Windows; macOS is still broken
 - media: read timestamp from mvhd atom of QuickTime/MP4 style videos
 - planner: properly initialize salinity
