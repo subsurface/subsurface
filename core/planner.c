@@ -830,7 +830,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 			get_cylinder(dive, current_cylinder)->gasmix,
 			bailoutsegment, po2, divemode, prefs.bottomsac);
 		plan_add_segment(diveplan, bailoutsegment, depth, current_cylinder, po2, false, divemode);
-		clock += bailoutsegment;
+		bottom_time += bailoutsegment;
 		last_segment_min_switch = true;
 	}
 	previous_deco_time = 100000000;
