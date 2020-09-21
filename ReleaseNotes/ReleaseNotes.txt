@@ -19,6 +19,7 @@ New in _Subsurface_ 4.9.7
 - planner: honor the "O2 narcotic" preference when computing MND
 - import: add parser for SeacSync db. Currently only Seac Action uses SeacSync program.
 - import: fix a copule of bugs on Shearwater Cloud import
+- translation: make sure water salinity strings are translated again [#2966]
 
 dive computer support:
 - fix Shearwater parser to support PNF on Petrel dive computers

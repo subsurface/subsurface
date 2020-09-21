@@ -111,4 +111,5 @@ void init_qt_late()
 	} else {
 		qDebug() << "can't find Subsurface localization for locale" << uiLang;
 	}
+	setupTranslatedStrings();
 }

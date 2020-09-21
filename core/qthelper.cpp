@@ -443,6 +443,16 @@ QString getUiLanguage()
 	return prefs.locale.lang_locale;
 }
 
+// the water types need to match the watertypes enum
+// since the translations aren't loaded until after the app starts, we can't simply initialize
+// that variable as a const, we need to have an init function that does this at runtime.
+QStringList waterTypes;
+
+void setupTranslatedStrings() {
+	waterTypes = QStringList() << gettextFromC::tr("Fresh") << gettextFromC::tr("Brackish") << gettextFromC::tr("EN13319") << gettextFromC::tr("Salt") << gettextFromC::tr("Use DC");
+	qDebug() << "water types" << waterTypes;
+}
+
 /* TOOD: Move this to SettingsObjectWrapper, and also fix this complexity.
  * gezus.
  */
@@ -1177,11 +1187,6 @@ QString localFilePath(const QString &originalFilename)
 	QMutexLocker locker(&hashOfMutex);
 	return localFilenameOf.value(originalFilename, originalFilename);
 }
-
-// the water types need to match the watertypes enum
-const QStringList waterTypes = {
-	gettextFromC::tr("Fresh"), gettextFromC::tr("Brackish"), gettextFromC::tr("EN13319"), gettextFromC::tr("Salt"), gettextFromC::tr("Use DC")
-};
 
 // TODO: Apparently Qt has no simple way of listing the supported video
 // codecs? Do we have to query them by hand using QMediaPlayer::hasSupport()?
