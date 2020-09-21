@@ -14306,7 +14306,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="120"/>
         <source>DPI resolution</source>
-        <translation type="unfinished"/>
+        <translation>רזולוציית DPI</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="132"/>
@@ -14517,7 +14517,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1463"/>
         <source>Edit Gas Change</source>
-        <translation type="unfinished"/>
+        <translation>ערוך שינוי גז</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1471"/>
@@ -14929,19 +14929,19 @@ Please export this template to a different file.</source>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="2264"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="2263"/>
         <source>(unsaved changes in memory)</source>
-        <translation type="unfinished"/>
+        <translation>(שינויים בזיכרון שלא נשמרו)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="2266"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="2265"/>
         <source>(changes synced locally)</source>
-        <translation type="unfinished"/>
+        <translation>(שינויים מסונכרנים באופן מקומי)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="2267"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="2266"/>
         <source>(synced with cloud)</source>
-        <translation type="unfinished"/>
+        <translation>(מסונכרן עם הענן)</translation>
     </message>
 </context>
 <context>

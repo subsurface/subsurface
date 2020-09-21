@@ -51,7 +51,7 @@
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/About.qml" line="62"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/About.qml" line="62"/>
         <source>Copy logs to clipboard</source>
-        <translation>Copia i log nella clipboard</translation>
+        <translation>Copia i log negli appunti</translation>
     </message>
 </context>
 <context>
@@ -220,7 +220,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/btdeviceselectiondialog.ui" line="221"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/btdeviceselectiondialog.ui" line="221"/>
         <source>even if not recognized as dive computer</source>
-        <translation type="unfinished"/>
+        <translation>anche se non riconosciuti come computer da immersione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="224"/>
@@ -228,7 +228,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/btdeviceselectiondialog.ui" line="224"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/btdeviceselectiondialog.ui" line="224"/>
         <source>Show all BT devices</source>
-        <translation>Mostra i dispositivi BT</translation>
+        <translation>Mostra tutti i dispositivi BT</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="242"/>
@@ -718,7 +718,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogimportdialog.cpp" line="70"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="70"/>
         <source>Mode</source>
-        <translation type="unfinished"/>
+        <translation>Modalità</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="70"/>
@@ -958,7 +958,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Sample setpoint</source>
-        <translation>Setpoint campione</translation>
+        <translation>Setpoint</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
@@ -982,7 +982,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Ritmo cardiaco</translation>
     </message>
 </context>
 <context>
@@ -1113,7 +1113,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divelist.cpp" line="904"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divelist.cpp" line="904"/>
         <source>move dive computer to front</source>
-        <translation type="unfinished"/>
+        <translation>sposta computer subacqueo in cima</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="910"/>
@@ -1225,7 +1225,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divesite.cpp" line="396"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divesite.cpp" line="396"/>
         <source>apply GPS fixes</source>
-        <translation type="unfinished"/>
+        <translation>applica correzioni GPS</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="133"/>
@@ -1253,7 +1253,7 @@
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="135"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="525"/>
         <source>Edit %1 (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Modifica %1 (%n immersione)</numerusform><numerusform>Modifica %1 (%n immersioni)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="195"/>
@@ -1309,7 +1309,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="231"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="231"/>
         <source>surge</source>
-        <translation type="unfinished"/>
+        <translation>mare lungo</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="237"/>
@@ -1317,7 +1317,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="237"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="237"/>
         <source>chill</source>
-        <translation type="unfinished"/>
+        <translation>vento</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="253"/>
@@ -1381,7 +1381,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="452"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="452"/>
         <source>dive mode</source>
-        <translation type="unfinished"/>
+        <translation>modalità immersione</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="458"/>
@@ -1397,7 +1397,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="588"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="588"/>
         <source>tags</source>
-        <translation type="unfinished"/>
+        <translation>tag</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="606"/>
@@ -1421,7 +1421,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="747"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="747"/>
         <source>Paste onto %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Incolla in %n immersione</numerusform><numerusform>Incolla in %n immersioni</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="823"/>
@@ -1453,7 +1453,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="872"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="872"/>
         <source>Add weight (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Aggiungi peso (%n immersione)</numerusform><numerusform>Aggiungi peso (%n immersioni)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="956"/>
@@ -1469,7 +1469,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="958"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="958"/>
         <source>Remove weight (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Rimuovi peso (%n immersione)</numerusform><numerusform>Rimuovi peso (%n immersioni)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="987"/>
@@ -1485,7 +1485,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="989"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="989"/>
         <source>Edit weight (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Rimuovi peso (%n immersione)</numerusform><numerusform>Modifica peso (%n immersioni)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="1289"/>
@@ -1516,7 +1516,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_pictures.cpp" line="20"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_pictures.cpp" line="20"/>
         <source>Change media time</source>
-        <translation type="unfinished"/>
+        <translation>Cambia tempo del media</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_pictures.cpp" line="139"/>
@@ -1537,7 +1537,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_pictures.cpp" line="187"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_pictures.cpp" line="187"/>
         <source>add %n pictures(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>aggiungi %n immagine</numerusform><numerusform>aggiungi %n immagini</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1556,7 +1556,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="1044"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="1044"/>
         <source>Add cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Aggiungi bombola (%n immersione)</numerusform><numerusform>Aggiungi bombola (%n immersioni)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1578,7 +1578,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_event.cpp" line="72"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_event.cpp" line="72"/>
         <source>Add dive mode switch to %1</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi passaggio a modalità %1</translation>
     </message>
 </context>
 <context>
@@ -1608,7 +1608,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="1215"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="1215"/>
         <source>Edit cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Modifica bombola (%n immersione)</numerusform><numerusform>Modifica bombola (%n immersioni)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1627,7 +1627,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="1165"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="1165"/>
         <source>Remove cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Rimuovi bombola (%n immersione)</numerusform><numerusform>Rimuovi bombola (%n immersioni)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1638,7 +1638,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_event.cpp" line="113"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_event.cpp" line="113"/>
         <source>Remove %1 event</source>
-        <translation type="unfinished"/>
+        <translation>Rimuovi evento %1</translation>
     </message>
 </context>
 <context>
@@ -1676,7 +1676,7 @@
         <location filename="../tmp/Subsurface-4.9.5/core/configuredivecomputer.cpp" line="547"/>
         <location filename="../tmp/Subsurface-4.9.6/core/configuredivecomputer.cpp" line="547"/>
         <source>Dive computer details read successfully</source>
-        <translation>Dettagli del computer letti correttamente</translation>
+        <translation>Dettagli del computer subacqueo letti correttamente</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="556"/>
@@ -2117,7 +2117,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2740"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2904"/>
         <source>Sync dive computer time with PC</source>
-        <translation>Sincronizza l&apos;ora del computer con il PC</translation>
+        <translation>Sincronizza l&apos;ora del computer subacqueo con il PC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="424"/>
@@ -2459,7 +2459,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2764"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2922"/>
         <source>Decotype</source>
-        <translation>Decotype</translation>
+        <translation>Tipo deco</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="656"/>
@@ -2600,7 +2600,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2771"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2930"/>
         <source>Last deco</source>
-        <translation>Ultima deco</translation>
+        <translation>Ultima decompressione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="749"/>
@@ -2762,7 +2762,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2782"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2934"/>
         <source>Bottom gas consumption</source>
-        <translation>Consumo del gas di fondo</translation>
+        <translation>Consumo di fondo della miscela</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="884"/>
@@ -2781,7 +2781,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2783"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2935"/>
         <source>Deco gas consumption</source>
-        <translation>consumo del gas decompressivo</translation>
+        <translation>Consumo di miscela in decompressione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="892"/>
@@ -2800,7 +2800,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2865"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3018"/>
         <source>Gas settings</source>
-        <translation>Impostazioni dei gas</translation>
+        <translation>Impostazioni miscele</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="935"/>
@@ -2970,7 +2970,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2803"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2957"/>
         <source>Gas 1</source>
-        <translation>Gas 1</translation>
+        <translation>Miscela 1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="960"/>
@@ -2989,7 +2989,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2805"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2959"/>
         <source>Gas 2</source>
-        <translation>Gas 2</translation>
+        <translation>Miscela 2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="965"/>
@@ -3008,7 +3008,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2807"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2961"/>
         <source>Gas 3</source>
-        <translation>Gas 3</translation>
+        <translation>Miscela 3</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="970"/>
@@ -3027,7 +3027,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2809"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2963"/>
         <source>Gas 4</source>
-        <translation>Gas 4</translation>
+        <translation>Miscela 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="975"/>
@@ -3046,7 +3046,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2811"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2965"/>
         <source>Gas 5</source>
-        <translation>Gas 5</translation>
+        <translation>Miscela 5</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1040"/>
@@ -3933,7 +3933,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="2384"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2856"/>
         <source>O₂ in calibration gas</source>
-        <translation>O₂ nel gas di calibrazione</translation>
+        <translation>O₂ nella miscela di calibrazione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2408"/>
@@ -3970,7 +3970,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="2881"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2912"/>
         <source>Travel gas consumption</source>
-        <translation>Consumo del gas da viaggio</translation>
+        <translation>Consumo di miscela in viaggio</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2904"/>
@@ -4015,7 +4015,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="3486"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3013"/>
         <source>Setpoint fallback</source>
-        <translation>Setpoint fallback</translation>
+        <translation>Setpoint di fallback</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3589"/>
@@ -4214,7 +4214,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/configuredivecomputerdialog.cpp" line="1366"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.cpp" line="1366"/>
         <source>Backup dive computer settings</source>
-        <translation>Backup delle impostazioni del computer</translation>
+        <translation>Backup delle impostazioni del computer subacqueo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1367"/>
@@ -4268,7 +4268,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/configuredivecomputerdialog.cpp" line="1387"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.cpp" line="1387"/>
         <source>Restore dive computer settings</source>
-        <translation>Ripristina le impostazioni del computer</translation>
+        <translation>Ripristina le impostazioni del computer subacqueo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1393"/>
@@ -4576,7 +4576,7 @@
         <location filename="../tmp/Subsurface-4.9.5/qt-models/cylindermodel.cpp" line="265"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/cylindermodel.cpp" line="265"/>
         <source>This gas is in use. Only cylinders that are not used in the dive can be removed.</source>
-        <translation>Questo gas è in uso. Solo le bombole che non sono in uso nell&apos;immersione possono essere rimosse.</translation>
+        <translation>Questa miscela è in uso. Solo le bombole che non sono in uso nell&apos;immersione possono essere rimosse.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="267"/>
@@ -4592,7 +4592,7 @@
         <location filename="../tmp/Subsurface-4.9.5/qt-models/cylindermodel.cpp" line="278"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/cylindermodel.cpp" line="278"/>
         <source>Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.</source>
-        <translation>Profondità del cambio gas. Calcolata a partire dalla pO₂ in deco scelta nelle preferenze o impostata manualmente.</translation>
+        <translation>Profondità di cambio miscela. Calcolata a partire dalla pO₂ di decompressione scelta nelle preferenze o impostata manualmente.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="280"/>
@@ -4832,7 +4832,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divecomputermanagementdialog.ui" line="17"/>
         <location filename="../subsurface/desktop-widgets/ui_divecomputermanagementdialog.h" line="65"/>
         <source>Edit dive computer nicknames</source>
-        <translation>Modifica gli alias dei computer</translation>
+        <translation>Modifica gli alias dei computer subacquei</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomputermanagementdialog.cpp" line="42"/>
@@ -4840,7 +4840,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divecomputermanagementdialog.cpp" line="42"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divecomputermanagementdialog.cpp" line="42"/>
         <source>Remove the selected dive computer?</source>
-        <translation>Rimuovere il computer selezionato?</translation>
+        <translation>Rimuovere il computer subacqueo selezionato?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomputermanagementdialog.cpp" line="43"/>
@@ -4850,7 +4850,7 @@
         <source>Are you sure that you want to 
  remove the selected dive computer?</source>
         <translation>Sei sicuro di volere cancellare
-il computer selezionato?</translation>
+il computer subacqueo selezionato?</translation>
     </message>
 </context>
 <context>
@@ -4885,7 +4885,7 @@ il computer selezionato?</translation>
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divecomputermodel.cpp" line="36"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divecomputermodel.cpp" line="36"/>
         <source>Clicking here will remove this dive computer.</source>
-        <translation>Cliccando qui si rimuoverà il computer.</translation>
+        <translation>Cliccando qui si rimuoverà il computer subacqueo.</translation>
     </message>
 </context>
 <context>
@@ -5011,7 +5011,7 @@ il computer selezionato?</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveDetailsEdit.qml" line="139"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetailsEdit.qml" line="139"/>
         <source>Dive number:</source>
-        <translation type="unfinished"/>
+        <translation>N. immersione:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="149"/>
@@ -5141,7 +5141,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetailsEdit.qml" line="541"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetailsEdit.qml" line="605"/>
         <source>Gas mix:</source>
-        <translation>Gas mix:</translation>
+        <translation>Miscela di riserva:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="370"/>
@@ -5256,7 +5256,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveDetailsView.qml" line="38"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetailsView.qml" line="38"/>
         <source>&lt;unnamed dive site&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;unnamed dive site&gt;</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="106"/>
@@ -5486,7 +5486,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="184"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="184"/>
         <source>&lt;unnamed dive site&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;unnamed dive site&gt;</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="252"/>
@@ -5494,7 +5494,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="252"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="252"/>
         <source>Remove dive %1 from trip</source>
-        <translation type="unfinished"/>
+        <translation>Rimuovi immersione %1 dal viaggio</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="260"/>
@@ -5502,7 +5502,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="260"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="260"/>
         <source>Add dive %1 to trip above</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi immersione %1 al viaggio sopra</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="268"/>
@@ -5510,7 +5510,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="268"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="268"/>
         <source>Add dive %1 to trip below</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi immersione %1 al viaggio sotto</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="276"/>
@@ -5518,7 +5518,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="276"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="276"/>
         <source>Create trip with dive %1</source>
-        <translation type="unfinished"/>
+        <translation>Crea viaggio con l&apos;immersione %1</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="285"/>
@@ -5558,7 +5558,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="306"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="306"/>
         <source>Edit trip details</source>
-        <translation type="unfinished"/>
+        <translation>Modifica i dettagli del viaggio</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="318"/>
@@ -5582,7 +5582,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="339"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="339"/>
         <source>Please tap the &apos;+&apos; button to add a dive (or download dives from a supported dive computer)</source>
-        <translation>Premi il tasto &apos;+&apos; per una nuova immersione (o scarica le immersioni da un computer supportato)</translation>
+        <translation>Premi il tasto &apos;+&apos; per una nuova immersione (o scarica le immersioni da un computer subacqueo supportato)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="345"/>
@@ -5606,7 +5606,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="354"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="354"/>
         <source>Please wait, updating the dive list</source>
-        <translation type="unfinished"/>
+        <translation>Attendere prego, sto aggiornando la lista immersioni</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="400"/>
@@ -5622,7 +5622,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="401"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="401"/>
         <source>People</source>
-        <translation type="unfinished"/>
+        <translation>Persone</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="402"/>
@@ -5638,7 +5638,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="460"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="460"/>
         <source>Download dives</source>
-        <translation type="unfinished"/>
+        <translation>Scarica immersioni</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="470"/>
@@ -5654,7 +5654,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="480"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="480"/>
         <source>Filter dives</source>
-        <translation type="unfinished"/>
+        <translation>Filtra immersioni</translation>
     </message>
 </context>
 <context>
@@ -5745,7 +5745,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="836"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="836"/>
         <source>Mark dive(s) valid</source>
-        <translation type="unfinished"/>
+        <translation>Segna immersioni come valide</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="838"/>
@@ -5793,7 +5793,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="846"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="846"/>
         <source>Load media from file(s)</source>
-        <translation type="unfinished"/>
+        <translation>Carica media da file</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="847"/>
@@ -5801,7 +5801,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="847"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="847"/>
         <source>Load media from web</source>
-        <translation type="unfinished"/>
+        <translation>Carica media da web</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="873"/>
@@ -5809,7 +5809,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="873"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="873"/>
         <source>Open media files</source>
-        <translation type="unfinished"/>
+        <translation>Carica file media</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="876"/>
@@ -5817,7 +5817,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="876"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="876"/>
         <source>Media files</source>
-        <translation type="unfinished"/>
+        <translation>File media</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="877"/>
@@ -5825,7 +5825,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="877"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="877"/>
         <source>Image files</source>
-        <translation type="unfinished"/>
+        <translation>File immagine</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="878"/>
@@ -5833,7 +5833,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="878"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="878"/>
         <source>Video files</source>
-        <translation type="unfinished"/>
+        <translation>File video</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="879"/>
@@ -5841,7 +5841,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="879"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="879"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Tutti i file</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="943"/>
@@ -5849,7 +5849,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="943"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="943"/>
         <source>%1 does not appear to be an image</source>
-        <translation type="unfinished"/>
+        <translation>%1 non sembra un&apos;immagine</translation>
     </message>
 </context>
 <context>
@@ -5930,7 +5930,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.ui" line="140"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="387"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Opzioni</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="156"/>
@@ -5957,7 +5957,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.ui" line="175"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="391"/>
         <source>Anonymize</source>
-        <translation type="unfinished"/>
+        <translation>Anonimizza</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="186"/>
@@ -5975,7 +5975,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.ui" line="198"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="375"/>
         <source>Subsurface &amp;XML</source>
-        <translation>Subsurface &amp;XML</translation>
+        <translation>&amp;XML di Subsurface</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="211"/>
@@ -5983,7 +5983,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.ui" line="211"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.ui" line="211"/>
         <source>Subsurface dive sites XML</source>
-        <translation type="unfinished"/>
+        <translation>XML di Subsurface per i siti di immersione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="227"/>
@@ -6018,7 +6018,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.ui" line="260"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.ui" line="260"/>
         <source>CSV summary dive details</source>
-        <translation type="unfinished"/>
+        <translation>Dettagli dell&apos;immersione in formato CSV</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="270"/>
@@ -6026,7 +6026,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.ui" line="270"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.ui" line="270"/>
         <source>CSV Dive computer dive profile</source>
-        <translation type="unfinished"/>
+        <translation>Profilo da computer subacqueo in formato CSV</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="280"/>
@@ -6068,7 +6068,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.ui" line="320"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.ui" line="320"/>
         <source>LaTeX</source>
-        <translation type="unfinished"/>
+        <translation>LaTeX</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="330"/>
@@ -6277,7 +6277,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.cpp" line="87"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.cpp" line="87"/>
         <source>Comma separated values describing the dive profile as downloaded from dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Descrizione del profilo dell&apos;immersione scaricato dal computer subacqueo, con i campi separati da virgole</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="89"/>
@@ -6285,7 +6285,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.cpp" line="89"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.cpp" line="89"/>
         <source>Comma separated values of the dive information. This includes most of the dive details but no profile information.</source>
-        <translation>Valori separati da virgole che includono la maggior parte delle informazioni di immersione ma non include il profilo di immersione.</translation>
+        <translation>La maggior parte delle informazioni di immersione (ma non il profilo) con i campi separati da virgole</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="91"/>
@@ -6325,7 +6325,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.cpp" line="99"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.cpp" line="99"/>
         <source>Subsurface dive sites native XML format.</source>
-        <translation type="unfinished"/>
+        <translation>Formato XML nativo di Subsurface per i siti di immersione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="101"/>
@@ -6349,7 +6349,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.cpp" line="105"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.cpp" line="105"/>
         <source>Write dive as LaTeX macros to file.</source>
-        <translation type="unfinished"/>
+        <translation>Esporta l&apos;immersione come macro LaTeX in un file</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="107"/>
@@ -6357,7 +6357,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.cpp" line="107"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.cpp" line="107"/>
         <source>Write the profile image as PNG file.</source>
-        <translation type="unfinished"/>
+        <translation>Esporta il profilo come immagine in un file PNG</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="109"/>
@@ -6433,7 +6433,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.cpp" line="167"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.cpp" line="167"/>
         <source>Export Subsurface XML</source>
-        <translation>Esporta Subsurface XML</translation>
+        <translation>Esporta XML di Subsurface</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="168"/>
@@ -6453,7 +6453,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.cpp" line="176"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.cpp" line="176"/>
         <source>Export Subsurface dive sites XML</source>
-        <translation type="unfinished"/>
+        <translation>Esporta siti di immersione nel formato XML di Subsurface</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="186"/>
@@ -6485,7 +6485,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.cpp" line="194"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.cpp" line="194"/>
         <source>Save profile image</source>
-        <translation type="unfinished"/>
+        <translation>Salva immagine del profilo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="198"/>
@@ -6493,7 +6493,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.cpp" line="198"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.cpp" line="198"/>
         <source>Save profile data</source>
-        <translation type="unfinished"/>
+        <translation>Salva dati del profilo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="204"/>
@@ -6696,7 +6696,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="697"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="822"/>
         <source>Sample sensor1 pO₂</source>
-        <translation>Valore campione sensore1 pO2</translation>
+        <translation>pO₂ sensore1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="699"/>
@@ -6708,7 +6708,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="699"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="824"/>
         <source>Sample sensor2 pO₂</source>
-        <translation>Valore campione sensore2 pO2</translation>
+        <translation>pO₂ sensore2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="701"/>
@@ -6720,7 +6720,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="701"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="826"/>
         <source>Sample sensor3 pO₂</source>
-        <translation>Valore campione sensore3 pO2</translation>
+        <translation>pO₂ sensore3</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="703"/>
@@ -6792,7 +6792,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="713"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="840"/>
         <source>Sample setpoint</source>
-        <translation>Sample setpoint</translation>
+        <translation>Setpoint</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="717"/>
@@ -6886,7 +6886,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="723"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="952"/>
         <source>Mode</source>
-        <translation type="unfinished"/>
+        <translation>Modalità</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="724"/>
@@ -7106,7 +7106,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogimportdialog.cpp" line="838"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="838"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Ritmo cardiaco</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="1023"/>
@@ -7114,7 +7114,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogimportdialog.cpp" line="1023"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="1023"/>
         <source>multiple files</source>
-        <translation type="unfinished"/>
+        <translation>file multipli</translation>
     </message>
 </context>
 <context>
@@ -7289,7 +7289,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/qt-models/diveplannermodel.cpp" line="404"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/diveplannermodel.cpp" line="404"/>
         <source>Used gas</source>
-        <translation>Gas utilizzato</translation>
+        <translation>Miscela utilizzata</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="429"/>
@@ -7297,7 +7297,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/qt-models/diveplannermodel.cpp" line="406"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/diveplannermodel.cpp" line="406"/>
         <source>CC setpoint</source>
-        <translation>CC setpoint</translation>
+        <translation>Setpoint CC</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="431"/>
@@ -7356,7 +7356,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
         <source> m/min</source>
-        <translation type="unfinished"/>
+        <translation>m/min</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
@@ -7364,7 +7364,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
         <source> ft/min</source>
-        <translation type="unfinished"/>
+        <translation>piedi/min</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
@@ -7388,7 +7388,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="15"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="15"/>
         <source> BAR</source>
-        <translation type="unfinished"/>
+        <translation>bar</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="15"/>
@@ -7396,7 +7396,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="15"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="15"/>
         <source> PSI</source>
-        <translation type="unfinished"/>
+        <translation>psi</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="40"/>
@@ -7460,7 +7460,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="123"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="123"/>
         <source>Surface to the bottom</source>
-        <translation type="unfinished"/>
+        <translation>Dalla superficie al fondo</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="140"/>
@@ -7516,7 +7516,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="174"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="174"/>
         <source>Bailout: Deco on OC</source>
-        <translation type="unfinished"/>
+        <translation>Passaggio a deco in circuito aperto</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="180"/>
@@ -7532,7 +7532,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="189"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="189"/>
         <source>Reserve gas</source>
-        <translation>Gas di riserva</translation>
+        <translation>Miscela di riserva</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="207"/>
@@ -7604,7 +7604,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="286"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="286"/>
         <source>Last stop at ??</source>
-        <translation type="unfinished"/>
+        <translation>Ultima sosta a ??</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="291"/>
@@ -7612,7 +7612,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="291"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="291"/>
         <source>Plan backgas breaks</source>
-        <translation>Pianifica i break in backgas</translation>
+        <translation>Pianifica le soste con backgas</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="300"/>
@@ -7636,7 +7636,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="325"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="325"/>
         <source>Surface segment</source>
-        <translation type="unfinished"/>
+        <translation>Segmento in superficie</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="343"/>
@@ -7644,7 +7644,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="343"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="343"/>
         <source>Gas options</source>
-        <translation>Impostazioni gas</translation>
+        <translation>Impostazioni miscela</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="352"/>
@@ -7660,7 +7660,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="370"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="370"/>
         <source>Deco SAC</source>
-        <translation>CAS in deco</translation>
+        <translation>CAS in decompressione</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="388"/>
@@ -7692,7 +7692,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="418"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="418"/>
         <source>Bottom pO2</source>
-        <translation type="unfinished"/>
+        <translation>pO2 di fondo</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="433"/>
@@ -7700,7 +7700,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="433"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="433"/>
         <source>Deco pO2</source>
-        <translation type="unfinished"/>
+        <translation>pO2 di decompressione</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="448"/>
@@ -7716,7 +7716,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="464"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="464"/>
         <source>O2 narcotic</source>
-        <translation type="unfinished"/>
+        <translation>O2 narcotico</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="474"/>
@@ -7775,7 +7775,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerView.qml" line="11"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerView.qml" line="11"/>
         <source>Dive planner view</source>
-        <translation type="unfinished"/>
+        <translation>Vista pianificatore di immersioni</translation>
     </message>
 </context>
 <context>
@@ -8100,7 +8100,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveSummary.qml" line="18"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveSummary.qml" line="18"/>
         <source>Dive summary</source>
-        <translation type="unfinished"/>
+        <translation>Riepilogo immersione</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="51"/>
@@ -8116,7 +8116,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveSummary.qml" line="52"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveSummary.qml" line="52"/>
         <source>1 month</source>
-        <translation type="unfinished"/>
+        <translation>1 mese</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="53"/>
@@ -8124,7 +8124,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveSummary.qml" line="53"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveSummary.qml" line="53"/>
         <source>3 months</source>
-        <translation type="unfinished"/>
+        <translation>3 mesi</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="54"/>
@@ -8132,7 +8132,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveSummary.qml" line="54"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveSummary.qml" line="54"/>
         <source>6 months</source>
-        <translation type="unfinished"/>
+        <translation>6 mesi</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="55"/>
@@ -8140,7 +8140,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveSummary.qml" line="55"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveSummary.qml" line="55"/>
         <source>1 year</source>
-        <translation type="unfinished"/>
+        <translation>1 anno</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="59"/>
@@ -8148,7 +8148,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveSummary.qml" line="59"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveSummary.qml" line="59"/>
         <source>last dive:</source>
-        <translation type="unfinished"/>
+        <translation>ultima immersione:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="69"/>
@@ -8156,7 +8156,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveSummary.qml" line="69"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveSummary.qml" line="69"/>
         <source>first dive:</source>
-        <translation type="unfinished"/>
+        <translation>prima immersione:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="85"/>
@@ -8215,7 +8215,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divesummarymodel.cpp" line="86"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesummarymodel.cpp" line="86"/>
         <source>EAN dives</source>
-        <translation type="unfinished"/>
+        <translation>Immersioni con aria arricchita</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="87"/>
@@ -8223,7 +8223,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divesummarymodel.cpp" line="87"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesummarymodel.cpp" line="87"/>
         <source>Deep dives (&gt; 39 m)</source>
-        <translation type="unfinished"/>
+        <translation>Immersioni profonde (&gt; 39 m)</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="88"/>
@@ -8231,7 +8231,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divesummarymodel.cpp" line="88"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesummarymodel.cpp" line="88"/>
         <source>Dive plan(s)</source>
-        <translation type="unfinished"/>
+        <translation>Piani di immersione</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="89"/>
@@ -8247,7 +8247,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divesummarymodel.cpp" line="90"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesummarymodel.cpp" line="90"/>
         <source>Max Time</source>
-        <translation type="unfinished"/>
+        <translation>Tempo messimo</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="91"/>
@@ -8255,7 +8255,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divesummarymodel.cpp" line="91"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesummarymodel.cpp" line="91"/>
         <source>Avg time</source>
-        <translation type="unfinished"/>
+        <translation>Tempo medio</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="92"/>
@@ -8271,7 +8271,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divesummarymodel.cpp" line="93"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesummarymodel.cpp" line="93"/>
         <source>Avg max depth</source>
-        <translation type="unfinished"/>
+        <translation>Profondità massima media</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="94"/>
@@ -8306,7 +8306,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divetripmodel.cpp" line="75"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="75"/>
         <source>(%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>(%n immersione)</numerusform><numerusform>(%n immersioni)</numerusform></translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="77"/>
@@ -8314,7 +8314,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divetripmodel.cpp" line="77"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="77"/>
         <source>(%L1 shown)</source>
-        <translation type="unfinished"/>
+        <translation>(%L1 mostrate)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="125"/>
@@ -8434,7 +8434,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="325"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="434"/>
         <source>Temp.(°%1)</source>
-        <translation type="unfinished"/>
+        <translation>Temp. (°%1)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="327"/>
@@ -8518,7 +8518,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="402"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="442"/>
         <source>Gas</source>
-        <translation>Gas</translation>
+        <translation>Miscela</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="337"/>
@@ -8594,7 +8594,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="345"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="454"/>
         <source>Media before/during/after dive</source>
-        <translation type="unfinished"/>
+        <translation>Media prima/durante/dopo l&apos;immersione</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="347"/>
@@ -8690,7 +8690,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divetripmodel.cpp" line="412"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="412"/>
         <source>Media</source>
-        <translation type="unfinished"/>
+        <translation>Media</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="486"/>
@@ -8823,7 +8823,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divesiteimportdialog.ui" line="14"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divesiteimportdialog.ui" line="14"/>
         <source>Select dive sites to import</source>
-        <translation type="unfinished"/>
+        <translation>Seleziona siti di immersione da importare</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divesiteimportdialog.ui" line="58"/>
@@ -8891,7 +8891,8 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesiteimportmodel.cpp" line="36"/>
         <source>Nearest
 Existing Site</source>
-        <translation type="unfinished"/>
+        <translation>Sito di uscita
+Più vicino</translation>
     </message>
     <message>
         <location filename="../qt-models/divesiteimportmodel.cpp" line="38"/>
@@ -8899,7 +8900,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divesiteimportmodel.cpp" line="38"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesiteimportmodel.cpp" line="38"/>
         <source>Distance</source>
-        <translation type="unfinished"/>
+        <translation>Distanza</translation>
     </message>
 </context>
 <context>
@@ -8954,7 +8955,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/downloadfromdivecomputer.cpp" line="349"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/downloadfromdivecomputer.cpp" line="349"/>
         <source>Find Garmin dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Trova computer Garmin</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="375"/>
@@ -9030,7 +9031,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/downloadfromdivecomputer.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="317"/>
         <source>Download from dive computer</source>
-        <translation>Scarica dal computer</translation>
+        <translation>Scarica dal computer subacqueo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="52"/>
@@ -9226,7 +9227,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="16"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="16"/>
         <source>Dive Computer</source>
-        <translation>Computer per immersioni</translation>
+        <translation>Computer subacqueo</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="22"/>
@@ -9250,7 +9251,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="91"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="91"/>
         <source> Dive Computer:</source>
-        <translation>Computer:</translation>
+        <translation>Computer subacqueo:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="130"/>
@@ -9266,7 +9267,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="218"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="218"/>
         <source> Previously used dive computers: </source>
-        <translation type="unfinished"/>
+        <translation>Computer subacquei utilizzati in precedenza</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="325"/>
@@ -9314,7 +9315,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="412"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="412"/>
         <source>force downloading all dives</source>
-        <translation type="unfinished"/>
+        <translation>Forza scaricamento di tutte le immersioni</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="440"/>
@@ -9322,7 +9323,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="441"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="441"/>
         <source>Please wait while we record these dives...</source>
-        <translation type="unfinished"/>
+        <translation>Attendere prego, sto registrando le immersioni...</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="455"/>
@@ -9368,7 +9369,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="11"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="11"/>
         <source>Export Divelog information</source>
-        <translation type="unfinished"/>
+        <translation>Esporta informazioni log</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="43"/>
@@ -9376,7 +9377,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="43"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="43"/>
         <source>Export credentials</source>
-        <translation type="unfinished"/>
+        <translation>Esporta credenziali</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="48"/>
@@ -9392,7 +9393,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="58"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="58"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Password:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="73"/>
@@ -9400,7 +9401,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="73"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="73"/>
         <source>Private</source>
-        <translation type="unfinished"/>
+        <translation>Privato</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="88"/>
@@ -9424,7 +9425,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="139"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="139"/>
         <source>Export Subsurface XML</source>
-        <translation>Esporta Subsurface XML</translation>
+        <translation>Esporta XML di Subsurface</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="144"/>
@@ -9440,7 +9441,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="148"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="148"/>
         <source>Export Subsurface dive sites XML</source>
-        <translation type="unfinished"/>
+        <translation>Esporta siti di immersione nel formato XML di Subsurface</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="152"/>
@@ -9448,7 +9449,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="152"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="152"/>
         <source>Subsurface dive sites native XML format.</source>
-        <translation type="unfinished"/>
+        <translation>Formato XML nativo di Subsurface per i siti di immersione</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="156"/>
@@ -9456,7 +9457,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="156"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="156"/>
         <source>Export UDDF</source>
-        <translation type="unfinished"/>
+        <translation>Esporta UDDF</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="160"/>
@@ -9472,7 +9473,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="164"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="164"/>
         <source>Upload divelogs.de</source>
-        <translation type="unfinished"/>
+        <translation>Carica su divelogs.de</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="167"/>
@@ -9488,7 +9489,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="171"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="171"/>
         <source>Upload DiveShare</source>
-        <translation type="unfinished"/>
+        <translation>Carica su DiveShare</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="174"/>
@@ -9504,7 +9505,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="195"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="195"/>
         <source>Anonymize</source>
-        <translation type="unfinished"/>
+        <translation>Anonimizza</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="198"/>
@@ -9512,7 +9513,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="198"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="198"/>
         <source>Next</source>
-        <translation type="unfinished"/>
+        <translation>Prossimo</translation>
     </message>
 </context>
 <context>
@@ -9602,7 +9603,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="459"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="587"/>
         <source>Substring</source>
-        <translation type="unfinished"/>
+        <translation>Sottostringa</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="47"/>
@@ -9634,7 +9635,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="464"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="592"/>
         <source>Starts with</source>
-        <translation type="unfinished"/>
+        <translation>Comincia con</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="52"/>
@@ -9662,7 +9663,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="443"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="469"/>
         <source>Exact</source>
-        <translation type="unfinished"/>
+        <translation>Esatto</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="63"/>
@@ -9690,7 +9691,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="173"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="213"/>
         <source>Max</source>
-        <translation type="unfinished"/>
+        <translation>Max</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="84"/>
@@ -9710,7 +9711,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="233"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="477"/>
         <source>Min</source>
-        <translation type="unfinished"/>
+        <translation>Min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="107"/>
@@ -9770,7 +9771,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="521"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="540"/>
         <source>All of</source>
-        <translation type="unfinished"/>
+        <translation>Tutti</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="200"/>
@@ -9798,7 +9799,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="526"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="545"/>
         <source>Any of</source>
-        <translation type="unfinished"/>
+        <translation>Uno o più</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="205"/>
@@ -9826,7 +9827,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="531"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="550"/>
         <source>None of</source>
-        <translation type="unfinished"/>
+        <translation>Nessuno</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="220"/>
@@ -9834,7 +9835,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/filterwidget2.ui" line="220"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="220"/>
         <source>People</source>
-        <translation type="unfinished"/>
+        <translation>Persone</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="256"/>
@@ -9842,7 +9843,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/filterwidget2.ui" line="256"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="256"/>
         <source>Planned</source>
-        <translation type="unfinished"/>
+        <translation>Pianificate</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="288"/>
@@ -9923,7 +9924,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/filterwidget2.ui" line="565"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="565"/>
         <source>Close filters</source>
-        <translation type="unfinished"/>
+        <translation>Chiudi filtri</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="579"/>
@@ -9939,7 +9940,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/filterwidget2.ui" line="597"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="597"/>
         <source>Full word</source>
-        <translation type="unfinished"/>
+        <translation>Parola intera</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="608"/>
@@ -9955,7 +9956,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/filterwidget2.cpp" line="296"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.cpp" line="296"/>
         <source>%L1/%L2 shown</source>
-        <translation type="unfinished"/>
+        <translation>%L1/%L2 mostrate</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.cpp" line="298"/>
@@ -9963,7 +9964,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/filterwidget2.cpp" line="298"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.cpp" line="298"/>
         <source>%L1 dives</source>
-        <translation type="unfinished"/>
+        <translation>%L1 immersioni</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_filterwidget.h" line="121"/>
@@ -9985,7 +9986,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/findmovedimagesdialog.ui" line="23"/>
         <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="154"/>
         <source>Find moved media files</source>
-        <translation type="unfinished"/>
+        <translation>Trova file media spostati</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="37"/>
@@ -9994,7 +9995,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/findmovedimagesdialog.ui" line="37"/>
         <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="155"/>
         <source>Found media files</source>
-        <translation type="unfinished"/>
+        <translation>File media trovati</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="71"/>
@@ -10057,7 +10058,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/findmovedimagesdialog.cpp" line="255"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/findmovedimagesdialog.cpp" line="255"/>
         <source>No matching media files found</source>
-        <translation type="unfinished"/>
+        <translation>Nessun file media corrispondente trovato</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="267"/>
@@ -10065,7 +10066,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/findmovedimagesdialog.cpp" line="267"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/findmovedimagesdialog.cpp" line="267"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; media files at their current place.</source>
-        <translation type="unfinished"/>
+        <translation>Trovati &lt;b&gt;%1&lt;/b&gt; file media nella posizione corrente.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="269"/>
@@ -10073,7 +10074,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/findmovedimagesdialog.cpp" line="269"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/findmovedimagesdialog.cpp" line="269"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; media files at new locations:</source>
-        <translation type="unfinished"/>
+        <translation>Trovati &lt;b&gt;%1&lt;/b&gt; file media in nuove posizioni:</translation>
     </message>
 </context>
 <context>
@@ -10084,7 +10085,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/core/configuredivecomputerthreads.cpp" line="2227"/>
         <location filename="../tmp/Subsurface-4.9.6/core/configuredivecomputerthreads.cpp" line="2227"/>
         <source>This feature is not yet available for the selected dive computer.</source>
-        <translation>Questa funzionalità non è ancora disponibile per il computer selezionato.</translation>
+        <translation>Questa funzionalità non è ancora disponibile per il computer subacqueo selezionato.</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputerthreads.cpp" line="2232"/>
@@ -10168,7 +10169,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="23"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="23"/>
         <source>Get dive coordinates from GPS</source>
-        <translation type="unfinished"/>
+        <translation>Recupera coordinate dell&apos;immersione da GPS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="44"/>
@@ -10176,7 +10177,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="44"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="44"/>
         <source>Synchronise the dive and the GPS track</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizza immersione e traccia GPS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="85"/>
@@ -10184,7 +10185,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="85"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="85"/>
         <source>GPS track date </source>
-        <translation type="unfinished"/>
+        <translation>Data traccia GPS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="99"/>
@@ -10192,7 +10193,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="99"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="99"/>
         <source>Dive date </source>
-        <translation type="unfinished"/>
+        <translation>Data immersione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="107"/>
@@ -10200,7 +10201,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="107"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="107"/>
         <source>Start and end times:</source>
-        <translation type="unfinished"/>
+        <translation>Ore di inizio e fine:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="138"/>
@@ -10208,7 +10209,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="138"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="138"/>
         <source>   GPS   </source>
-        <translation type="unfinished"/>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="146"/>
@@ -10216,7 +10217,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="146"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="146"/>
         <source>   Dive   </source>
-        <translation type="unfinished"/>
+        <translation>Immersione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="154"/>
@@ -10224,7 +10225,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="154"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="154"/>
         <source>Start:  </source>
-        <translation type="unfinished"/>
+        <translation>Inizio:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="179"/>
@@ -10232,7 +10233,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="179"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="179"/>
         <source>End:  </source>
-        <translation type="unfinished"/>
+        <translation>Fine:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="283"/>
@@ -10240,7 +10241,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="283"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="283"/>
         <source>International time zone correction</source>
-        <translation type="unfinished"/>
+        <translation>Correzione fuso orario</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="308"/>
@@ -10248,7 +10249,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="308"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="308"/>
         <source>By how many hours did the international time zone at the dive site differ from UTC (also regarded as Greenwich Mean Time)? Normally one would specify this value in whole hours (h:00):</source>
-        <translation type="unfinished"/>
+        <translation>Di quante ore differivano l&apos;ora di Greenwhich (UTC) e il fuso orario del sito di immersione? Normalmente è un numero intero di ore, specificato come &quot;h:00&quot;:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="374"/>
@@ -10292,7 +10293,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="408"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="408"/>
         <source>Equipment time settings correction</source>
-        <translation type="unfinished"/>
+        <translation>Correzione degli orari impostati sull&apos;attrezzatura</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="433"/>
@@ -10300,7 +10301,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="433"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="433"/>
         <source>This setting deals with differences in time settings between the GPS and the dive computer that recorded the dive. Ensure that the GPS equipment and your dive computer show the same local time. If not, adjust the time of the GPS earlier or later to coincide with that of the dive (h:min):</source>
-        <translation type="unfinished"/>
+        <translation>Questa impostazione corregge la differenza tra l&apos;ora impostata sul GPS e quella sul computer subacqueo che ha registrato l&apos;immersione. Assicurati che il GPS e il tuo computer subacqueo mostrino la stessa ora locale. Se così non fosse, inserisci la differenza tra l&apos;ora del GPS e quella dell&apos;immersione (h:min):</translation>
     </message>
 </context>
 <context>
@@ -10469,7 +10470,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/locationinformation.ui" line="78"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/locationinformation.ui" line="78"/>
         <source>Load dive coordinates from GPS file</source>
-        <translation type="unfinished"/>
+        <translation>Carica coordinate dell&apos;immersione da file GPS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="81"/>
@@ -10477,7 +10478,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/locationinformation.ui" line="81"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/locationinformation.ui" line="81"/>
         <source>Use GPS file</source>
-        <translation type="unfinished"/>
+        <translation>Usa file GPS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="89"/>
@@ -10503,7 +10504,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/locationinformation.ui" line="114"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/locationinformation.ui" line="114"/>
         <source>Near dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Siti di immersione vicini</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="122"/>
@@ -10511,7 +10512,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/locationinformation.ui" line="122"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/locationinformation.ui" line="122"/>
         <source>Show dive sites in the range of:</source>
-        <translation type="unfinished"/>
+        <translation>Mostra siti di immersione in un raggio di:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="176"/>
@@ -10566,7 +10567,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divelocationmodel.cpp" line="63"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divelocationmodel.cpp" line="63"/>
         <source># of dives</source>
-        <translation type="unfinished"/>
+        <translation>N. immersioni</translation>
     </message>
     <message>
         <location filename="../qt-models/divelocationmodel.cpp" line="103"/>
@@ -10574,7 +10575,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divelocationmodel.cpp" line="103"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divelocationmodel.cpp" line="103"/>
         <source>Click here to edit the divesite.</source>
-        <translation type="unfinished"/>
+        <translation>Clicca qui per modificare il sito</translation>
     </message>
     <message>
         <location filename="../qt-models/divelocationmodel.cpp" line="104"/>
@@ -10582,7 +10583,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divelocationmodel.cpp" line="104"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divelocationmodel.cpp" line="104"/>
         <source>Clicking here will remove this divesite.</source>
-        <translation type="unfinished"/>
+        <translation>Clicca qui per rimuovere questo sito</translation>
     </message>
 </context>
 <context>
@@ -10617,7 +10618,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/locationinformation.cpp" line="253"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/locationinformation.cpp" line="253"/>
         <source>Select GPS file to open</source>
-        <translation type="unfinished"/>
+        <translation>Scegli file GPS da aprire</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="255"/>
@@ -10625,7 +10626,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/locationinformation.cpp" line="255"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/locationinformation.cpp" line="255"/>
         <source>GPS files (*.gpx *.GPX)</source>
-        <translation type="unfinished"/>
+        <translation>File GPS (*.gpx *.GPX)</translation>
     </message>
 </context>
 <context>
@@ -10705,7 +10706,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/maintab.ui" line="147"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/maintab.ui" line="147"/>
         <source>Duration (h:mm)</source>
-        <translation type="unfinished"/>
+        <translation>Durata (h:mm)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="231"/>
@@ -10809,7 +10810,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/maintab.cpp" line="69"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/maintab.cpp" line="69"/>
         <source>Media</source>
-        <translation type="unfinished"/>
+        <translation>Media</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="71"/>
@@ -10825,7 +10826,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/maintab.cpp" line="73"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/maintab.cpp" line="73"/>
         <source>Dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Siti di immersione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="94"/>
@@ -10909,7 +10910,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/maintab.cpp" line="559"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/maintab.cpp" line="559"/>
         <source>Warning: edited %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Attenzione: %1 immersioni modificate</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="492"/>
@@ -11126,7 +11127,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="234"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="552"/>
         <source>Import from &amp;dive computer</source>
-        <translation>Importa &amp;dal computer</translation>
+        <translation>Importa &amp;da computer subacqueo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="242"/>
@@ -11234,7 +11235,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="327"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="564"/>
         <source>P&amp;revious DC</source>
-        <translation>Computer precedente</translation>
+        <translation>Computer &amp;precedente</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="335"/>
@@ -11243,7 +11244,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="335"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="565"/>
         <source>&amp;Next DC</source>
-        <translation>&amp;Prossimo computer</translation>
+        <translation>Computer &amp;successivo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="343"/>
@@ -11305,7 +11306,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/mainwindow.ui" line="386"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="386"/>
         <source>&amp;Import dive sites</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Importa siti di immersione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="389"/>
@@ -11313,7 +11314,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/mainwindow.ui" line="389"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="389"/>
         <source>Import dive sites from other users</source>
-        <translation type="unfinished"/>
+        <translation>Importa siti di immersione da altri utenti</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="397"/>
@@ -11375,7 +11376,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/mainwindow.ui" line="432"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="432"/>
         <source>Change settings on &amp;dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Cambia impostazioni sul &amp;computer subacqueo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="443"/>
@@ -11528,7 +11529,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="635"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="601"/>
         <source>Toggle gas bar</source>
-        <translation>Mostra la barra dei gas</translation>
+        <translation>Mostra la barra miscela</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="643"/>
@@ -11573,7 +11574,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="679"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="607"/>
         <source>&amp;Find moved media files</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Trova file media spostati</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="684"/>
@@ -11629,7 +11630,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="719"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="722"/>
         <source>Toggle deco information</source>
-        <translation type="unfinished"/>
+        <translation>Mostra/nascondi informazioni decompressione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="587"/>
@@ -11785,7 +11786,7 @@ In caso negativo, il Cloud verrá sincronizzato solo alla prossima operazione di
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/mainwindow.cpp" line="733"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="733"/>
         <source>Please save or cancel the current dive edit before quiting the application.</source>
-        <translation type="unfinished"/>
+        <translation>Occorre salvare o annullare le modifiche prima di uscire dall&apos;applicazione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="765"/>
@@ -12041,7 +12042,7 @@ In caso negativo, il Cloud verrá sincronizzato solo alla prossima operazione di
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/mainwindow.cpp" line="1223"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1223"/>
         <source>Dive site files</source>
-        <translation type="unfinished"/>
+        <translation>File sito di immersione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1240"/>
@@ -12089,7 +12090,7 @@ In caso negativo, il Cloud verrá sincronizzato solo alla prossima operazione di
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/mainwindow.cpp" line="1517"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1517"/>
         <source>[cloud storage for] %1</source>
-        <translation>[memoria cloud per] %1</translation>
+        <translation>[spazio di memorizzazione cloud per] %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1557"/>
@@ -12101,7 +12102,7 @@ In caso negativo, il Cloud verrá sincronizzato solo alla prossima operazione di
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1555"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1657"/>
         <source>multiple files</source>
-        <translation type="unfinished"/>
+        <translation>file multipli</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1585"/>
@@ -12135,7 +12136,7 @@ Subsurface ha già cercato di convertire i dati in maniera automatica ma sarebbe
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/mainwindow.cpp" line="1635"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1635"/>
         <source>Open dive site file</source>
-        <translation type="unfinished"/>
+        <translation>Apri file sito di immersione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1786"/>
@@ -12254,7 +12255,7 @@ Potrebbero mancare i moduli QML QtPositioning e QtLocation!</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/configuredivecomputerdialog.cpp" line="298"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.cpp" line="298"/>
         <source>You should update the firmware on your dive computer: you have version %1 but the latest stable version is %2</source>
-        <translation>Dovresti aggiornare il firmware sul tuo computer: hai la versione %1 ma la versione stabile più recente è %2</translation>
+        <translation>Dovresti aggiornare il firmware sul tuo computer subacqueo: hai la versione %1 ma la versione stabile più recente è %2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="301"/>
@@ -12401,7 +12402,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/diveplanner.cpp" line="557"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/diveplanner.cpp" line="558"/>
         <source>cuft/min</source>
-        <translation>cuft/min</translation>
+        <translation>ft³/min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="566"/>
@@ -12452,7 +12453,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.cpp" line="119"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.cpp" line="119"/>
         <source>Subsurface cloud storage</source>
-        <translation>Memoria cloud di Subsurface</translation>
+        <translation>Spazio di memorizzazione cloud di Subsurface</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="41"/>
@@ -12500,7 +12501,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.ui" line="110"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.ui" line="110"/>
         <source>To create a new cloud account:</source>
-        <translation type="unfinished"/>
+        <translation>Per creare un nuovo account cloud:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="120"/>
@@ -12508,7 +12509,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.ui" line="120"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.ui" line="120"/>
         <source>1) Enter an email address and a novel password that Subsurface will use to initialise the dive log in the cloud. Click Apply to send the above email address and password to the (remote) cloud server.</source>
-        <translation type="unfinished"/>
+        <translation>1) Inserire un indirizzo email e una password che Subsurface utilizzerà per creare il log cloud. Cliccare Applica per mandare l&apos;indirizzo email e la password al server cloud remoto.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="130"/>
@@ -12516,7 +12517,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.ui" line="130"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.ui" line="130"/>
         <source>2) The server responds by sending a verification PIN to the above email address (This is the only occasion that Subsurface uses the email address provided above). The above dialog now has a new PIN text box, not visible previously.</source>
-        <translation type="unfinished"/>
+        <translation>2) Il server risponde inviando un PIN di verifica all&apos;indirizzo email; questa è l&apos;unica occasione in cui Subsurface usa l&apos;indirizzo. Nella finestra di dialogo compare un campo, non visibile in precedenza, in cui inserire il PIN.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="140"/>
@@ -12524,7 +12525,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.ui" line="140"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.ui" line="140"/>
         <source>3) Enter the PIN in the corresponding text box in the above dialog (this field is only visible while the server is waiting for email address confirmation). Click Apply again. The Subsurface cloud storage account will be marked as verified and the Subsurface cloud storage service is initialised for use.</source>
-        <translation type="unfinished"/>
+        <translation>3) Inserire il PIN nella finestra di dialogo; il campo è visibile solo se il server sta aspettando la conferma dell&apos;indirizzo email. Cliccare Applica di nuovo. L&apos;account sul cloud Subsurface verrà segnato come verificato e lo spazio di memorizzazione cloud è pronto per essere utilizzato.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="10"/>
@@ -12532,7 +12533,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.cpp" line="10"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.cpp" line="10"/>
         <source>Cloud</source>
-        <translation type="unfinished"/>
+        <translation>Cloud</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="47"/>
@@ -12560,7 +12561,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.cpp" line="73"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.cpp" line="87"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation>Email e password per la memoria cloud possono contenere solo lettere, numeri, &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, e &apos;+&apos;.</translation>
+        <translation>Email e password per lo spazio di memorizzazione cloud possono contenere solo lettere, numeri, &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, e &apos;+&apos;.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="113"/>
@@ -12568,7 +12569,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.cpp" line="113"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.cpp" line="113"/>
         <source>Subsurface cloud storage (credentials verified)</source>
-        <translation>Memoria cloud di Subsurface (credenziali verificate)</translation>
+        <translation>Spazio di memorizzazione cloud di Subsurface (credenziali verificate)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="115"/>
@@ -12576,7 +12577,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.cpp" line="115"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.cpp" line="115"/>
         <source>Subsurface cloud storage (incorrect password)</source>
-        <translation>Memoria cloud di Subsurface (password errata)</translation>
+        <translation>Spazio di memorizzazione cloud di Subsurface (password errata)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="117"/>
@@ -12584,7 +12585,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.cpp" line="117"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.cpp" line="117"/>
         <source>Subsurface cloud storage (PIN required)</source>
-        <translation>Memoria cloud di Subsurface (PIN richiesto)</translation>
+        <translation>Spazio di memorizzazione cloud di Subsurface (PIN richiesto)</translation>
     </message>
 </context>
 <context>
@@ -12603,7 +12604,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_dc.ui" line="24"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_dc.ui" line="24"/>
         <source>DIVE COMPUTER</source>
-        <translation type="unfinished"/>
+        <translation>Computer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="39"/>
@@ -12611,7 +12612,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_dc.ui" line="39"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_dc.ui" line="39"/>
         <source>Delete connections</source>
-        <translation type="unfinished"/>
+        <translation>Elimina connessioni</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="53"/>
@@ -12619,7 +12620,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_dc.ui" line="53"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_dc.ui" line="53"/>
         <source>When importing dives from a dive computer (DC), Subsurface remembers the connection(s), showing them as selectable buttons in the Download panel. This is useful for DCs using Bluetooth for communication. In order to clear all this information, click on the button below. After clearing the information the buttons on the Download panel disappear and it is necessary to establish new connection(s) with dive computer(s) before importing dives again.</source>
-        <translation type="unfinished"/>
+        <translation>Quando le immersioni vengono importate da un computer subacqueo, Subsurface ricorda le connessioni e le mostra come bottoni nella schermata di scaricamento. Questo è utile se il computer comunica via Bluetooth. Cliccare il bottone qua sotto per cancellare queste informazioni; i bottoni nella schermata di scaricamento scompariranno e le connessioni con i computer andranno ristabilite prima di poter importare di nuovo le immersioni.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="61"/>
@@ -12627,7 +12628,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_dc.ui" line="61"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_dc.ui" line="61"/>
         <source>Delete all dive computer connections</source>
-        <translation type="unfinished"/>
+        <translation>Cancella tutte le connessioni con i computer subacquei.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
@@ -12635,7 +12636,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
         <source>Dive download</source>
-        <translation type="unfinished"/>
+        <translation>Scarica immersione</translation>
     </message>
 </context>
 <context>
@@ -12655,7 +12656,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_defaults.ui" line="21"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_defaults.ui" line="21"/>
         <source>Font for lists and tables</source>
-        <translation type="unfinished"/>
+        <translation>Font per liste e tabelle</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="31"/>
@@ -12707,7 +12708,9 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_defaults.cpp" line="15"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_defaults.cpp" line="15"/>
         <source>Display</source>
-        <translation type="unfinished"/>
+        <translation>Attenzione!
+Non tutti i file media hanno una data compresa tra 30 minuti
+prima dell&apos;inizio e 30 minuti dopo la fine dell&apos;immersione selezionata</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="330"/>
@@ -12722,22 +12725,22 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="334"/>
         <source>Default dive log file</source>
-        <translation>File del log delle immersioni di default</translation>
+        <translation>File del log delle immersioni predefinito</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="335"/>
         <source>&amp;No default file</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Nessun file predefinito</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="336"/>
         <source>&amp;Local default file</source>
-        <translation>File di default &amp;locale</translation>
+        <translation>File predefinito &amp;locale</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="337"/>
         <source>Clo&amp;ud storage default file</source>
-        <translation>File di default della memoria clo&amp;ud</translation>
+        <translation>File predefinito della memoria clo&amp;ud</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="338"/>
@@ -12773,32 +12776,32 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="347"/>
         <source>Video thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>Thumbnail video</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="348"/>
         <source>ffmpeg executable</source>
-        <translation type="unfinished"/>
+        <translation>Eseguibile ffmpeg</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="350"/>
         <source>Extract at position</source>
-        <translation type="unfinished"/>
+        <translation>Estrai a questa posizione</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="351"/>
         <source>Extract video thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>Estrai thumbnail video</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="353"/>
         <source>Clear settings</source>
-        <translation type="unfinished"/>
+        <translation>Cancella impostazioni</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="354"/>
         <source>Reset remembered dive computers</source>
-        <translation type="unfinished"/>
+        <translation>Cancella i computer memorizzati</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="355"/>
@@ -12833,7 +12836,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_equipment.ui" line="24"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_equipment.ui" line="24"/>
         <source>CYLINDERS</source>
-        <translation type="unfinished"/>
+        <translation>BOMBOLE</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="32"/>
@@ -12841,7 +12844,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_equipment.ui" line="32"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_equipment.ui" line="32"/>
         <source>Default cylinder in the Cylinders table of the Equipment tab</source>
-        <translation type="unfinished"/>
+        <translation>Bombola di default nella tabella Bombole della tab Attrezzatura</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="48"/>
@@ -12849,7 +12852,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_equipment.ui" line="48"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_equipment.ui" line="48"/>
         <source>Select a default cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Scegli la bombola di default</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="68"/>
@@ -12857,7 +12860,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_equipment.ui" line="68"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_equipment.ui" line="68"/>
         <source>Show unused cylinders in the Cylinders table of the Equipment tab</source>
-        <translation type="unfinished"/>
+        <translation>Mostra bombole non utilizzate nella tabella Bombole della tab Attrezzatura</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.cpp" line="12"/>
@@ -12885,7 +12888,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_georeference.ui" line="24"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_georeference.ui" line="24"/>
         <source>Reverse dive site lookup format</source>
-        <translation type="unfinished"/>
+        <translation>Formato per la ricerca inversa del sito di immersione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_georeference.ui" line="38"/>
@@ -12893,7 +12896,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_georeference.ui" line="38"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_georeference.ui" line="38"/>
         <source>Selecting the blue globe icon to the right of Location in the Notes tab opens the Edit Dive Site panel. There, an icon to the right of the dive site coordinates allows reverse lookup of the dive site. This finds the country and closest town to the divesite and adds them as dive site tags above the dive site name in the Notes tab. The combo boxes below allow one to select the order in which these tags are shown in the Notes tab. This requires an Internet connection.</source>
-        <translation type="unfinished"/>
+        <translation>Nella tab Note, l&apos;icona blu a forma di mondo sulla destra del luogo apre la finestra &quot;Modifica sito di immersione&quot;. Lì l&apos;icona a destra delle coordinate del sito attiva (se è disponibile una connessione a Internet) la ricerca inversa del sito di immersione, che trova il paese e la città più vicina al sito di immersione e le aggiunge come tag nella tab Note. Le impostazioni qua sotto permettono di scegliere l&apos;ordine in cui i tag sono mostrati nella tab Note.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_georeference.ui" line="65"/>
@@ -13029,7 +13032,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_graph.ui" line="138"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="349"/>
         <source>Dive planner default setpoint</source>
-        <translation>Dive planner default setpoint</translation>
+        <translation>Setpoint predefinito nel pianificatore di immersione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="161"/>
@@ -13047,7 +13050,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_graph.ui" line="168"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="352"/>
         <source>Show CCR setpoints when viewing pO₂</source>
-        <translation>Mostra i setpoint CCR quando osservi la pO₂</translation>
+        <translation>Mostra i setpoint CCR insieme alla pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="175"/>
@@ -13233,7 +13236,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="375"/>
         <source>Recalculate thumbnails if older than media file</source>
-        <translation type="unfinished"/>
+        <translation>Ricalcola thumbnail più vecchie del file media</translation>
     </message>
 </context>
 <context>
@@ -13254,7 +13257,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_language.ui" line="26"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="179"/>
         <source>UI language</source>
-        <translation>Linguaggio dell&apos;interfaccia grafica</translation>
+        <translation>Lingua per l&apos;interfaccia grafica</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="32"/>
@@ -13295,7 +13298,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="183"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="192"/>
         <source>Use UI language default</source>
-        <translation>Linguaggio dell&apos;interfaccia grafica di default</translation>
+        <translation>Usa la lingua di default per l&apos;interfaccia grafica</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="90"/>
@@ -13425,7 +13428,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_log.ui" line="21"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_log.ui" line="21"/>
         <source>DIVE LOG</source>
-        <translation type="unfinished"/>
+        <translation>LOG IMMERSIONI</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="44"/>
@@ -13441,7 +13444,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_log.ui" line="53"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_log.ui" line="53"/>
         <source>&amp;No default file</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Nessun file di default</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="60"/>
@@ -13449,7 +13452,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_log.ui" line="60"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_log.ui" line="60"/>
         <source>&amp;Local default file</source>
-        <translation>File di default &amp;locale</translation>
+        <translation>File predefinito &amp;locale</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="67"/>
@@ -13457,7 +13460,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_log.ui" line="67"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_log.ui" line="67"/>
         <source>Clo&amp;ud storage default file</source>
-        <translation>File di default della memoria clo&amp;ud</translation>
+        <translation>File  predefinito della memoria clo&amp;ud</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="76"/>
@@ -13489,7 +13492,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_log.ui" line="111"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_log.ui" line="111"/>
         <source>In the Dive List, show dives that you have marked as invalid, e.g. pool dives</source>
-        <translation type="unfinished"/>
+        <translation>Nella Lista Immersioni, mostra immersioni segnate come non valide, ad es. immersioni in piscina</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="119"/>
@@ -13497,7 +13500,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_log.ui" line="119"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_log.ui" line="119"/>
         <source>In the Information tab, show tools for recording wave height, surge and chill during a dive</source>
-        <translation type="unfinished"/>
+        <translation>Nella tab Informazioni, mostra i campi per l&apos;altezza delle onde, il mare lungo e il vento sul luogo di immersione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="127"/>
@@ -13505,7 +13508,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_log.ui" line="127"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_log.ui" line="127"/>
         <source>In the Dive Profile, show mean depth</source>
-        <translation type="unfinished"/>
+        <translation>Nel Profilo d&apos;Immersione, mostra la profondità media</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="135"/>
@@ -13513,7 +13516,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_log.ui" line="135"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_log.ui" line="135"/>
         <source>In the Information tab, allow editing of water salinity</source>
-        <translation type="unfinished"/>
+        <translation>Nella tab Informazioni, permetti modifiche alla salinità dell&apos;acqua</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="15"/>
@@ -13521,7 +13524,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_log.cpp" line="15"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_log.cpp" line="15"/>
         <source> Dive log</source>
-        <translation type="unfinished"/>
+        <translation>Log immersioni</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="28"/>
@@ -13556,7 +13559,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_media.ui" line="24"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_media.ui" line="24"/>
         <source>UPDATE THUMBNAILS</source>
-        <translation type="unfinished"/>
+        <translation>AGGIORNA THUMBNAIL</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="38"/>
@@ -13564,7 +13567,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_media.ui" line="38"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_media.ui" line="38"/>
         <source>Photographs or videos are sometimes edited after being uploaded and linked to Subsurface. If a photo is therefore more recent than its original thumbnail, checking the checkbox below will allow creating a new thumbnail after the media has been edited.</source>
-        <translation type="unfinished"/>
+        <translation>Fotografie o video vengono a volte ritoccate dopo essere state caricate e collegate con Subsurface. Se una foto è più nuova della thumbnail originale, spuntare questa casella permetterà di creare nuove thumbnail a partire dai media modificati.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="46"/>
@@ -13572,7 +13575,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_media.ui" line="46"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_media.ui" line="46"/>
         <source>Recalculate thumbnail if older than media file</source>
-        <translation type="unfinished"/>
+        <translation>Ricalcola thumbnail più vecchie del file media</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="68"/>
@@ -13580,7 +13583,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_media.ui" line="68"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_media.ui" line="68"/>
         <source>VIDEOS</source>
-        <translation type="unfinished"/>
+        <translation>VIDEO</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="76"/>
@@ -13588,7 +13591,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_media.ui" line="76"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_media.ui" line="76"/>
         <source>Video thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>Thumbnail video</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="98"/>
@@ -13604,7 +13607,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_media.ui" line="106"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_media.ui" line="106"/>
         <source>Extract video thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>Estrai thumbnail video</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="114"/>
@@ -13612,7 +13615,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_media.ui" line="114"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_media.ui" line="114"/>
         <source>Path to ffmpeg:</source>
-        <translation type="unfinished"/>
+        <translation>Percorso di ffmpeg:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="126"/>
@@ -13636,7 +13639,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_media.ui" line="150"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_media.ui" line="150"/>
         <source>Extract at position</source>
-        <translation type="unfinished"/>
+        <translation>Estrai a questa posizione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.cpp" line="14"/>
@@ -13644,7 +13647,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_media.cpp" line="14"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_media.cpp" line="14"/>
         <source>Media</source>
-        <translation type="unfinished"/>
+        <translation>Media</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.cpp" line="39"/>
@@ -13660,7 +13663,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_media.cpp" line="39"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_media.cpp" line="39"/>
         <source>Couldn&apos;t execute ffmpeg at given location. Thumbnailing will not work.</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile eseguire ffmpeg dalla posizione indicata. Le thumbnail non verranno estratte</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.cpp" line="45"/>
@@ -13668,7 +13671,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_media.cpp" line="45"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_media.cpp" line="45"/>
         <source>Select ffmpeg executable</source>
-        <translation type="unfinished"/>
+        <translation>Selezione eseguibile ffmpge</translation>
     </message>
 </context>
 <context>
@@ -13688,7 +13691,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_network.ui" line="20"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_network.ui" line="20"/>
         <source>If your Internet access is through a proxy server, provide details for using that proxy</source>
-        <translation type="unfinished"/>
+        <translation>Se il tuo accesso a Internet passa da un server proxy, fornisci i dettagli del proxy</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="32"/>
@@ -13793,7 +13796,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="241"/>
         <source>Subsurface cloud storage</source>
-        <translation>Memoria cloud di Subsurface</translation>
+        <translation>Spazio di memorizzazione cloud di Subsurface</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="245"/>
@@ -13832,7 +13835,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_reset.ui" line="39"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_reset.ui" line="39"/>
         <source>Selecting this button will reset all preferences to their default values</source>
-        <translation type="unfinished"/>
+        <translation>Selezionare questo bottone riporterà tutte le impostazioni ai loro valori predefiniti</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_reset.ui" line="50"/>
@@ -13840,7 +13843,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_reset.ui" line="50"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_reset.ui" line="50"/>
         <source>Reset all preferences</source>
-        <translation type="unfinished"/>
+        <translation>Annulla preferenze</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_reset.cpp" line="6"/>
@@ -13848,7 +13851,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_reset.cpp" line="6"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_reset.cpp" line="6"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Annulla</translation>
     </message>
 </context>
 <context>
@@ -14219,7 +14222,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/printdialog.cpp" line="112"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/printdialog.cpp" line="112"/>
         <source>Export Html</source>
-        <translation type="unfinished"/>
+        <translation>Esporta HTML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printdialog.cpp" line="125"/>
@@ -14235,7 +14238,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/printdialog.cpp" line="196"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/printdialog.cpp" line="196"/>
         <source>Filename to export html to</source>
-        <translation type="unfinished"/>
+        <translation>Nome file per esportazione HTML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printdialog.cpp" line="198"/>
@@ -14243,7 +14246,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/printdialog.cpp" line="197"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/printdialog.cpp" line="197"/>
         <source>Html file</source>
-        <translation type="unfinished"/>
+        <translation>File HTML</translation>
     </message>
 </context>
 <context>
@@ -14305,7 +14308,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="120"/>
         <source>DPI resolution</source>
-        <translation type="unfinished"/>
+        <translation>Risoluzione (punti per pollice)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="132"/>
@@ -14471,7 +14474,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/profile-widget/profilewidget2.cpp" line="816"/>
         <location filename="../tmp/Subsurface-4.9.6/profile-widget/profilewidget2.cpp" line="816"/>
         <source>Unknown dive computer</source>
-        <translation>Computer sconosciuto</translation>
+        <translation>Computer subacqueo sconosciuto</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="823"/>
@@ -14503,7 +14506,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/profile-widget/profilewidget2.cpp" line="1431"/>
         <location filename="../tmp/Subsurface-4.9.6/profile-widget/profilewidget2.cpp" line="1431"/>
         <source>Delete this dive computer</source>
-        <translation>Cancella questo computer</translation>
+        <translation>Cancella questo computer subacqueo</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1447"/>
@@ -14516,7 +14519,7 @@ Per favore esporta questo modello in un file diverso.</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1463"/>
         <source>Edit Gas Change</source>
-        <translation type="unfinished"/>
+        <translation>Modifica il cambio gas</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1471"/>
@@ -14698,7 +14701,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="384"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="387"/>
         <source>Processing %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Sto elaborando %1 immersioni</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="389"/>
@@ -14758,7 +14761,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="576"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="582"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation>Email e password per la memoria cloud possono contenere solo lettere, numeri, &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, e &apos;+&apos;.</translation>
+        <translation>Email e password per lo spazio di memorizzazione cloud possono contenere solo lettere, numeri, &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, e &apos;+&apos;.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="588"/>
@@ -14774,7 +14777,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="623"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="629"/>
         <source>Attempting to open cloud storage with new credentials</source>
-        <translation>Sto cercando di aprire la memoria cloud con le nuove credenziali</translation>
+        <translation>Sto cercando di aprire lo spazio di memorizzazione cloud con le nuove credenziali</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="641"/>
@@ -14798,7 +14801,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="658"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="664"/>
         <source>Incorrect email / password combination</source>
-        <translation type="unfinished"/>
+        <translation>Combinazione di email e password sbagliata</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="669"/>
@@ -14806,7 +14809,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="663"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="669"/>
         <source>Cloud credentials require verification PIN</source>
-        <translation type="unfinished"/>
+        <translation>Le credenziali cloud richiedono un PIN di verifica</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="672"/>
@@ -14814,7 +14817,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="666"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="672"/>
         <source>Incorrect PIN, please try again</source>
-        <translation type="unfinished"/>
+        <translation>PIN non corretto, riprova</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="677"/>
@@ -14822,7 +14825,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="671"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="677"/>
         <source>PIN accepted, credentials verified</source>
-        <translation type="unfinished"/>
+        <translation>PIN accettato, le credenziali sono state verificate</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="686"/>
@@ -14830,7 +14833,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="680"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="686"/>
         <source>Cloud storage error: %1</source>
-        <translation>Errore cloud storage: %1</translation>
+        <translation>Errore spazio di memorizzazione cloud: %1</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="731"/>
@@ -14854,7 +14857,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="789"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="799"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
-        <translation>Memoria cloud aperta con successo. Non ho trovato immersioni.</translation>
+        <translation>Spazio di memorizzazione cloud aperto con successo. Non ho trovato immersioni.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="984"/>
@@ -14922,25 +14925,25 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="1794"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="1806"/>
         <source>no default cylinder</source>
-        <translation type="unfinished"/>
+        <translation>no default cylinder</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="2264"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="2263"/>
         <source>(unsaved changes in memory)</source>
-        <translation type="unfinished"/>
+        <translation>(modifiche in memoria non salvate)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="2266"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="2265"/>
         <source>(changes synced locally)</source>
-        <translation type="unfinished"/>
+        <translation>(modifiche sincronizzate localmente)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="2267"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="2266"/>
         <source>(synced with cloud)</source>
-        <translation type="unfinished"/>
+        <translation>(sincronizzato con cloud)</translation>
     </message>
 </context>
 <context>
@@ -14975,7 +14978,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.6/core/fulltext.cpp" line="156"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="748"/>
         <source>%1 dives processed</source>
-        <translation type="unfinished"/>
+        <translation>%1 immersioni elaborate</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="197"/>
@@ -14983,7 +14986,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divesummarymodel.cpp" line="197"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesummarymodel.cpp" line="197"/>
         <source>no dives in period</source>
-        <translation type="unfinished"/>
+        <translation>nessuna immersione in queste date</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="718"/>
@@ -15006,7 +15009,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.6/core/configuredivecomputerthreads.cpp" line="2129"/>
         <location filename="../tmp/Subsurface-4.9.6/core/configuredivecomputerthreads.cpp" line="2153"/>
         <source>This feature is not yet available for the selected dive computer.</source>
-        <translation>Questa funzionalità non è ancora disponibile per questo computer.</translation>
+        <translation>Questa funzionalità non è ancora disponibile per questo computer subacqueo.</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputerthreads.cpp" line="2131"/>
@@ -15144,7 +15147,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/setpoint.ui" line="43"/>
         <location filename="../subsurface/desktop-widgets/ui_setpoint.h" line="83"/>
         <source>New setpoint (0 for OC)</source>
-        <translation>Nuovo setpoint (0 for OC)</translation>
+        <translation>Nuovo setpoint (0 per CA)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="61"/>
@@ -15284,7 +15287,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="106"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="106"/>
         <source>Dive computers</source>
-        <translation type="unfinished"/>
+        <translation>Computer subacquei</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="114"/>
@@ -15292,7 +15295,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="114"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="114"/>
         <source>Forget remembered dive computers</source>
-        <translation type="unfinished"/>
+        <translation>Dimentica computer subacquei memorizzati</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="119"/>
@@ -15300,7 +15303,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="119"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="119"/>
         <source>Forget</source>
-        <translation type="unfinished"/>
+        <translation>Dimentica</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="134"/>
@@ -15316,7 +15319,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="141"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="141"/>
         <source>Color theme</source>
-        <translation type="unfinished"/>
+        <translation>Tema colori</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="154"/>
@@ -15348,7 +15351,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="167"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="167"/>
         <source>background</source>
-        <translation type="unfinished"/>
+        <translation>sfondo</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="179"/>
@@ -15356,7 +15359,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="179"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="179"/>
         <source>text</source>
-        <translation type="unfinished"/>
+        <translation>testo</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="193"/>
@@ -15364,7 +15367,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="193"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="193"/>
         <source>primary</source>
-        <translation type="unfinished"/>
+        <translation>primario</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="207"/>
@@ -15372,7 +15375,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="207"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="207"/>
         <source>primary text</source>
-        <translation type="unfinished"/>
+        <translation>testo primario</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="221"/>
@@ -15380,7 +15383,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="221"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="221"/>
         <source>darker primary</source>
-        <translation type="unfinished"/>
+        <translation>primario scuro</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="235"/>
@@ -15388,7 +15391,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="235"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="235"/>
         <source>darker primary text</source>
-        <translation type="unfinished"/>
+        <translation>testo primario scuro</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="249"/>
@@ -15396,7 +15399,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="249"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="249"/>
         <source>light primary</source>
-        <translation type="unfinished"/>
+        <translation>primario chiaro</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="263"/>
@@ -15404,7 +15407,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="263"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="263"/>
         <source>light primary text</source>
-        <translation type="unfinished"/>
+        <translation>testo primario chiaro</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="280"/>
@@ -15412,7 +15415,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="280"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="280"/>
         <source>secondary text</source>
-        <translation type="unfinished"/>
+        <translation>testo secondario</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="294"/>
@@ -15420,7 +15423,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="294"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="294"/>
         <source>drawer</source>
-        <translation type="unfinished"/>
+        <translation>cassetto</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="305"/>
@@ -15428,7 +15431,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="305"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="305"/>
         <source>Font size</source>
-        <translation type="unfinished"/>
+        <translation>Dimensione testo</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="316"/>
@@ -15436,7 +15439,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="316"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="316"/>
         <source>smaller</source>
-        <translation type="unfinished"/>
+        <translation>più piccolo</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="324"/>
@@ -15444,7 +15447,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="324"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="324"/>
         <source>regular</source>
-        <translation type="unfinished"/>
+        <translation>regolare</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="332"/>
@@ -15452,7 +15455,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="332"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="332"/>
         <source>larger</source>
-        <translation type="unfinished"/>
+        <translation>più grande</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="346"/>
@@ -15500,7 +15503,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="401"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="401"/>
         <source>meters</source>
-        <translation type="unfinished"/>
+        <translation>metri</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="409"/>
@@ -15612,7 +15615,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="501"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="501"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Avanzato</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="510"/>
@@ -15620,7 +15623,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="510"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="510"/>
         <source>GPS location service</source>
-        <translation type="unfinished"/>
+        <translation>Servizio locazione GPS</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="518"/>
@@ -15644,7 +15647,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="551"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="551"/>
         <source>Bluetooth</source>
-        <translation type="unfinished"/>
+        <translation>Bluetooth</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="559"/>
@@ -15654,7 +15657,9 @@ Per favore esporta questo modello in un file diverso.</translation>
         <source>Temporarily show all bluetooth devices 
 even if not recognized as dive computers.
 Please report DCs that need this setting</source>
-        <translation type="unfinished"/>
+        <translation>Mostra temporaneamente tutti i dispositive Bluetooth, anche
+quelli non riconosciuti come computer subacquei. Per favore
+segnalate i computer che necessitano di questa impostazione.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="581"/>
@@ -15670,7 +15675,7 @@ Please report DCs that need this setting</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="589"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="589"/>
         <source>Show only one column in Portrait mode</source>
-        <translation type="unfinished"/>
+        <translation>Mostra una sola colonna in orientamento verticale</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="611"/>
@@ -15745,7 +15750,9 @@ Please report DCs that need this setting</source>
         <source>Warning!
 Not all media files have timestamps in the range between
 30 minutes before the start and 30 minutes after the end of any selected dive.</source>
-        <translation type="unfinished"/>
+        <translation>Attenzione!
+Non tutti i file media hanno una data compresa tra 30 minuti
+prima dell&apos;inizio e 30 minuti dopo la fine dell&apos;immersione selezionata</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="137"/>
@@ -15754,7 +15761,7 @@ Not all media files have timestamps in the range between
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/shiftimagetimes.ui" line="137"/>
         <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="202"/>
         <source>Load media files even if the time does not match the dive time</source>
-        <translation type="unfinished"/>
+        <translation>Carica file media anche se date e ore non corrispondono con l&apos;immersione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="186"/>
@@ -15763,7 +15770,7 @@ Not all media files have timestamps in the range between
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/shiftimagetimes.ui" line="186"/>
         <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="204"/>
         <source>To compute the offset between the clocks of your dive computer and your camera use your camera to take a picture of your dive compuer displaying the current time. Download that image to your computer and press this button.</source>
-        <translation>Per calcolare la differenza dell&apos;orologio del tuo computer e della tua fotocamera, fai una foto al tuo computer che mostra l&apos;orologio. Scarica questa immagina sul tuo computer e premi questo bottone.</translation>
+        <translation>Per calcolare la differenza dell&apos;orologio del tuo computer subacqueo e della tua fotocamera, fai una foto al tuo computer che mostra l&apos;orologio. Scarica questa immagina sul tuo computer e premi questo bottone.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="196"/>
@@ -16054,7 +16061,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/StartPage.qml" line="34"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/StartPage.qml" line="34"/>
         <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.&lt;br/&gt;&lt;br/&gt;If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) and a password of your choice (letters and numbers).&lt;br/&gt;&lt;br/&gt;To use Subsurface-mobile only with local data on this device, select the no cloud button above.</source>
-        <translation>Per utilizzare Subsurface-mobile con il Subsurface cloud storage, inserisci le tue credenziali per il cloud.&lt;br/&gt;&lt;br/&gt;Se questa è la prima volta che usi la memoria cloud di Subsurface, inserisci un indirizzo email valido (tutte lettere minuscole) e una password (lettere e numeri).&lt;br/&gt;&lt;br/&gt;Per usare Subsurface-mobile solo con i dati locali su questo dispositivo, seleziona il tasto no cloud in alto.</translation>
+        <translation>Per utilizzare Subsurface-mobile con lo spazio di memorizzazione cloud di Subsurface, inserisci le tue credenziali per il cloud.&lt;br/&gt;&lt;br/&gt;Se questa è la prima volta che usi la memoria cloud di Subsurface, inserisci un indirizzo email valido (tutte lettere minuscole) e una password (lettere e numeri).&lt;br/&gt;&lt;br/&gt;Per usare Subsurface-mobile solo con i dati locali su questo dispositivo, seleziona il tasto no cloud in alto.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="47"/>
@@ -16117,7 +16124,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/about.cpp" line="20"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/about.cpp" line="20"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2020&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Software multi-piattaforma per immersioni&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger e altri, 2011-2020&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/about.cpp" line="20"/>
@@ -16197,7 +16204,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="189"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="189"/>
         <source>Warning: edited %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Attenzione: %1 immersioni modificate</translation>
     </message>
 </context>
 <context>
@@ -16229,7 +16236,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="63"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="63"/>
         <source>DIVE</source>
-        <translation type="unfinished"/>
+        <translation>IMMERSIONE</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="71"/>
@@ -16280,7 +16287,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="209"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="209"/>
         <source>GAS</source>
-        <translation type="unfinished"/>
+        <translation>MISCELA</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="217"/>
@@ -16288,7 +16295,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="217"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="217"/>
         <source>Gas name</source>
-        <translation type="unfinished"/>
+        <translation>Nome miscela</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="245"/>
@@ -16297,7 +16304,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="245"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="304"/>
         <source>Gas consumed</source>
-        <translation>Gas consumati</translation>
+        <translation>Miscela consumata</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="273"/>
@@ -16332,7 +16339,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="364"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="364"/>
         <source>ENVIRONMENT</source>
-        <translation type="unfinished"/>
+        <translation>AMBIENTE</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="372"/>
@@ -16358,7 +16365,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="436"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="436"/>
         <source>Water type/Density</source>
-        <translation type="unfinished"/>
+        <translation>Tipo/densità acqua</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="473"/>
@@ -16366,7 +16373,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="473"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="473"/>
         <source>Atm. pressure/Altitude</source>
-        <translation type="unfinished"/>
+        <translation>Pressione atm./altitudine</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="506"/>
@@ -16374,7 +16381,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="506"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="506"/>
         <source>Surface waves</source>
-        <translation type="unfinished"/>
+        <translation>Onde in superficie</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="537"/>
@@ -16382,7 +16389,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="537"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="537"/>
         <source>Large</source>
-        <translation type="unfinished"/>
+        <translation>Grandi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="544"/>
@@ -16406,7 +16413,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="586"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="586"/>
         <source>Bad</source>
-        <translation type="unfinished"/>
+        <translation>Cattive</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="593"/>
@@ -16414,7 +16421,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="593"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="593"/>
         <source>Good</source>
-        <translation type="unfinished"/>
+        <translation>Buone</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="604"/>
@@ -16422,7 +16429,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="604"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="604"/>
         <source>Current</source>
-        <translation type="unfinished"/>
+        <translation>Corrente</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="635"/>
@@ -16434,7 +16441,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="635"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="684"/>
         <source>Strong</source>
-        <translation type="unfinished"/>
+        <translation>Forte</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="642"/>
@@ -16446,7 +16453,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="642"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="691"/>
         <source>Weak</source>
-        <translation type="unfinished"/>
+        <translation>Debole</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="653"/>
@@ -16454,7 +16461,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="653"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="653"/>
         <source>Surge</source>
-        <translation type="unfinished"/>
+        <translation>Mare lungo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="702"/>
@@ -16462,7 +16469,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="702"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="702"/>
         <source>Chill</source>
-        <translation type="unfinished"/>
+        <translation>Vento</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="733"/>
@@ -16470,7 +16477,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="733"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="733"/>
         <source>Freezing</source>
-        <translation type="unfinished"/>
+        <translation>Freddo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="740"/>
@@ -16478,14 +16485,14 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="740"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="740"/>
         <source>Comfy</source>
-        <translation type="unfinished"/>
+        <translation>Confortevole</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="27"/>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="27"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="27"/>
         <source>Use DC</source>
-        <translation type="unfinished"/>
+        <translation>Usa computer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="51"/>
@@ -16509,7 +16516,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="98"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="98"/>
         <source>Warning: edited %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Attenzione: %1 immersioni modificate</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="147"/>
@@ -16575,7 +16582,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="302"/>
         <source>Gases used</source>
-        <translation>Gas utilizzati</translation>
+        <translation>Miscele utilizzate</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="316"/>
@@ -16596,22 +16603,22 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="26"/>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="30"/>
         <source>use dc</source>
-        <translation type="unfinished"/>
+        <translation>usa computer</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="30"/>
         <source>Fresh</source>
-        <translation type="unfinished"/>
+        <translation>Dolce</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="30"/>
         <source>Salty</source>
-        <translation type="unfinished"/>
+        <translation>Salmastra</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="30"/>
         <source>Salt</source>
-        <translation type="unfinished"/>
+        <translation>Salata</translation>
     </message>
 </context>
 <context>
@@ -16640,7 +16647,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="56"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="56"/>
         <source>Load media from file(s)</source>
-        <translation type="unfinished"/>
+        <translation>Carica media da file</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="57"/>
@@ -16648,7 +16655,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="57"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="57"/>
         <source>Load media file(s) from web</source>
-        <translation type="unfinished"/>
+        <translation>Carica media da web</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="59"/>
@@ -16656,7 +16663,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="59"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="59"/>
         <source>Delete selected media files</source>
-        <translation type="unfinished"/>
+        <translation>Cancella file media selezionati</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="60"/>
@@ -16664,7 +16671,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="60"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="60"/>
         <source>Delete all media files</source>
-        <translation type="unfinished"/>
+        <translation>Cancella tutti i file media</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="61"/>
@@ -16672,7 +16679,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="61"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="61"/>
         <source>Open folder of selected media files</source>
-        <translation type="unfinished"/>
+        <translation>Apri cartella con i file media selezionati</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="62"/>
@@ -16688,7 +16695,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="63"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="63"/>
         <source>Save dive data as subtitles</source>
-        <translation type="unfinished"/>
+        <translation>Salva informazioni immersione come sottotitoli</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="156"/>
@@ -16696,7 +16703,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="156"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="156"/>
         <source>Deleting media files</source>
-        <translation type="unfinished"/>
+        <translation>Cancellazione file media</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="156"/>
@@ -16704,7 +16711,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="156"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="156"/>
         <source>Are you sure you want to delete all media files?</source>
-        <translation type="unfinished"/>
+        <translation>Sei sicuro di voler cancellare tutti i file media?</translation>
     </message>
 </context>
 <context>
@@ -16719,7 +16726,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveSite.cpp" line="15"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveSite.cpp" line="15"/>
         <source>Dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Siti di immersione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.ui" line="22"/>
@@ -16735,7 +16742,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveSite.ui" line="49"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveSite.ui" line="49"/>
         <source>Purge unused dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Elimina siti di immersione non usati</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="56"/>
@@ -16743,7 +16750,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveSite.cpp" line="56"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveSite.cpp" line="56"/>
         <source>Delete dive site?</source>
-        <translation type="unfinished"/>
+        <translation>Cancella sito di immersione?</translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="57"/>
@@ -16752,7 +16759,9 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveSite.cpp" line="57"/>
         <source>This dive site has %n dive(s). Do you really want to delete it?
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Questo sito ha %n immersione. Sei sicuro di volerlo cancellare?
+</numerusform><numerusform>Questo sito ha %n immersioni. Sei sicuro di volerlo cancellare?
+</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="74"/>
@@ -16834,7 +16843,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="159"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="203"/>
         <source>Gas consumption</source>
-        <translation>Consumo gas </translation>
+        <translation>Consumo di miscela</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="12"/>
@@ -17009,7 +17018,7 @@ Files with inappropriate date/time</source>
 mixed from Air and using:
 </source>
         <translation>Questi gas possono essere
-mixati con aria e usando:
+miscelati con aria e usando:
 </translation>
     </message>
     <message>
@@ -17440,7 +17449,7 @@ mixati con aria e usando:
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/TripDetails.qml" line="15"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/TripDetails.qml" line="15"/>
         <source>Trip details</source>
-        <translation type="unfinished"/>
+        <translation>Dettagli del viaggio</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/TripDetails.qml" line="55"/>
@@ -17464,7 +17473,7 @@ mixati con aria e usando:
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/TripDetails.qml" line="84"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/TripDetails.qml" line="84"/>
         <source>Edit trip details</source>
-        <translation type="unfinished"/>
+        <translation>Modifica i dettagli del viaggio</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/TripDetails.qml" line="97"/>
@@ -17472,7 +17481,7 @@ mixati con aria e usando:
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/TripDetails.qml" line="97"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/TripDetails.qml" line="97"/>
         <source>Trip location:</source>
-        <translation type="unfinished"/>
+        <translation>Luogo del viaggio:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/TripDetails.qml" line="111"/>
@@ -17501,7 +17510,7 @@ mixati con aria e usando:
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/urldialog.ui" line="52"/>
         <location filename="../subsurface/desktop-widgets/ui_urldialog.h" line="58"/>
         <source>Enter URL for media files</source>
-        <translation type="unfinished"/>
+        <translation>Inserisci URL dei file media</translation>
     </message>
 </context>
 <context>
@@ -17725,7 +17734,7 @@ Se non vuoi che Subsurface continui a controllare scegli Rifiuta.</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/videoframeextractor.cpp" line="93"/>
         <location filename="../tmp/Subsurface-4.9.6/core/videoframeextractor.cpp" line="93"/>
         <source>ffmpeg failed to start - video thumbnail creation suspended. To enable video thumbnailing, set working executable in preferences.</source>
-        <translation type="unfinished"/>
+        <translation>ffmpeg non è partito - la creazione delle thumbnail video è stata sospesa. Per attivare la creazione delle thumbnail imposta nelle preferenze il percorso di un eseguibile funzionante.</translation>
     </message>
     <message>
         <location filename="../core/videoframeextractor.cpp" line="97"/>
@@ -17733,7 +17742,7 @@ Se non vuoi che Subsurface continui a controllare scegli Rifiuta.</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/videoframeextractor.cpp" line="97"/>
         <location filename="../tmp/Subsurface-4.9.6/core/videoframeextractor.cpp" line="97"/>
         <source>Failed waiting for ffmpeg - video thumbnail creation suspended. To enable video thumbnailing, set working executable in preferences.</source>
-        <translation type="unfinished"/>
+        <translation>errore in attesa della conclusione di ffmpeg - la creazione delle thumbnail video è stata sospesa. Per attivare la creazione delle thumbnail imposta nelle preferenze il percorso di un eseguibile funzionante.</translation>
     </message>
 </context>
 <context>
@@ -17885,7 +17894,7 @@ Se non vuoi che Subsurface continui a controllare scegli Rifiuta.</translation>
         <location filename="../tmp/Subsurface-4.9.6/core/configuredivecomputerthreads.cpp" line="2177"/>
         <location filename="../tmp/Subsurface-4.9.6/core/configuredivecomputerthreads.cpp" line="2200"/>
         <source>This feature is not yet available for the selected dive computer.</source>
-        <translation>Questa funzionalità non è ancora disponibile per il computer selezionato.</translation>
+        <translation>Questa funzionalità non è ancora disponibile per il computer subacqueo selezionato.</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputerthreads.cpp" line="2179"/>
@@ -18008,7 +18017,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/yearlystatisticsmodel.cpp" line="153"/>
         <source>
 Average maximum</source>
-        <translation type="unfinished"/>
+        <translation>Prof. massima media</translation>
     </message>
     <message>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="156"/>
@@ -18076,7 +18085,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/yearlystatisticsmodel.cpp" line="237"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/yearlystatisticsmodel.cpp" line="255"/>
         <source>%1 - %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2</translation>
     </message>
 </context>
 <context>
@@ -18154,7 +18163,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.6/core/cochran.c" line="383"/>
         <location filename="../tmp/Subsurface-4.9.6/core/libdivecomputer.c" line="245"/>
         <source>deco stop</source>
-        <translation>deco stop</translation>
+        <translation>sosta decompressione</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="334"/>
@@ -18258,7 +18267,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.6/core/libdivecomputer.c" line="269"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="54"/>
         <source>gaschange</source>
-        <translation>cambio gas</translation>
+        <translation>cambio miscela</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="368"/>
@@ -18418,7 +18427,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.6/core/datatrak.c" line="370"/>
         <location filename="../tmp/Subsurface-4.9.6/core/tag.c" line="20"/>
         <source>deco</source>
-        <translation>deco</translation>
+        <translation>decompressione</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="389"/>
@@ -18530,7 +18539,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/datatrak.c" line="413"/>
         <location filename="../tmp/Subsurface-4.9.6/core/datatrak.c" line="413"/>
         <source>search</source>
-        <translation>cerca</translation>
+        <translation>ricerca</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="437"/>
@@ -18620,7 +18629,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/datatrak.c" line="531"/>
         <location filename="../tmp/Subsurface-4.9.6/core/datatrak.c" line="531"/>
         <source>[Error] Out of memory for dive %d. Abort parsing.</source>
-        <translation>[Errore] Out of memory per l&apos;immersione %d. Interrompo la lettura.</translation>
+        <translation>[Errore] Memoria esaurita per l&apos;immersione %d. Interrompo la lettura.</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="635"/>
@@ -18813,7 +18822,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/divelogexportlogic.cpp" line="153"/>
         <location filename="../tmp/Subsurface-4.9.6/core/divelogexportlogic.cpp" line="153"/>
         <source>Cannot find a folder called &apos;theme&apos; in the standard locations</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile trovare una cartella &apos;theme&apos; nei percorsi standard</translation>
     </message>
     <message>
         <location filename="../core/divesite-helper.cpp" line="21"/>
@@ -18841,7 +18850,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/equipment.c" line="74"/>
         <location filename="../tmp/Subsurface-4.9.6/core/equipment.c" line="74"/>
         <source>OC-gas</source>
-        <translation>OC-gas</translation>
+        <translation>Miscela C.A.</translation>
     </message>
     <message>
         <location filename="../core/equipment.c" line="74"/>
@@ -18986,7 +18995,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/git-access.c" line="85"/>
         <location filename="../tmp/Subsurface-4.9.6/core/git-access.c" line="86"/>
         <source>Checkout from storage (%lu/%lu)</source>
-        <translation>Checkout dallo storage (%lu/%lu)</translation>
+        <translation>Checkout dallo spazio di memorizzazione (%lu/%lu)</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="117"/>
@@ -18994,7 +19003,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/git-access.c" line="116"/>
         <location filename="../tmp/Subsurface-4.9.6/core/git-access.c" line="117"/>
         <source>Transfer from storage (%d/%d)</source>
-        <translation>Trasferimento dallo storage (%d/%d)</translation>
+        <translation>Trasferimento dallo spazio di memorizzazione (%d/%d)</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="129"/>
@@ -19002,7 +19011,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/git-access.c" line="128"/>
         <location filename="../tmp/Subsurface-4.9.6/core/git-access.c" line="129"/>
         <source>Transfer to storage (%d/%d)</source>
-        <translation>Trasferimento allo storage (%d/%d)</translation>
+        <translation>Trasferimento allo spazio di memorizzazione (%d/%d)</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="166"/>
@@ -19010,7 +19019,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/git-access.c" line="164"/>
         <location filename="../tmp/Subsurface-4.9.6/core/git-access.c" line="166"/>
         <source>Local cache directory %s corrupted - can&apos;t sync with Subsurface cloud storage</source>
-        <translation>La cartella della cache locale %s è corrotta - non è possibile sincronizzare con la memoria cloud di Subsurface</translation>
+        <translation>La cartella della cache locale %s è corrotta - non è possibile sincronizzare con lo spazio di memorizzazione cloud di Subsurface</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="190"/>
@@ -19030,7 +19039,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/git-access.c" line="200"/>
         <location filename="../tmp/Subsurface-4.9.6/core/git-access.c" line="204"/>
         <source>Subsurface cloud storage corrupted</source>
-        <translation>Memoria cloud di Subsurface corrotta</translation>
+        <translation>Spazio di memorizzazione cloud di Subsurface corrotto</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="338"/>
@@ -19038,7 +19047,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/git-access.c" line="330"/>
         <location filename="../tmp/Subsurface-4.9.6/core/git-access.c" line="338"/>
         <source>Could not update Subsurface cloud storage, try again later</source>
-        <translation>Non ho potuto aggiornare la memoria cloud di Subsurface, riprovare più tardi</translation>
+        <translation>Non ho potuto aggiornare lo spazio di memorizzazione cloud di Subsurface, riprovare più tardi</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="395"/>
@@ -19078,7 +19087,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/git-access.c" line="467"/>
         <location filename="../tmp/Subsurface-4.9.6/core/git-access.c" line="476"/>
         <source>Problems with local cache of Subsurface cloud data</source>
-        <translation>Problemi con la cache locale della memoria cloud Subsurface</translation>
+        <translation>Problemi con la cache locale dello spazio di memorizzazione cloud Subsurface</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="477"/>
@@ -19094,7 +19103,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/git-access.c" line="515"/>
         <location filename="../tmp/Subsurface-4.9.6/core/git-access.c" line="531"/>
         <source>Update local storage to match cloud storage</source>
-        <translation>Aggiornamento storage locale con lo storage cloud</translation>
+        <translation>Aggiornamento memoria locale dallo spazio di memorizzazione cloud</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="539"/>
@@ -19102,7 +19111,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/git-access.c" line="523"/>
         <location filename="../tmp/Subsurface-4.9.6/core/git-access.c" line="539"/>
         <source>Push local changes to cloud storage</source>
-        <translation>Trasferimento delle modifiche locali allo storage cloud</translation>
+        <translation>Trasferimento delle modifiche locali allo spazio di memorizzazione cloud</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="559"/>
@@ -19110,7 +19119,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/git-access.c" line="541"/>
         <location filename="../tmp/Subsurface-4.9.6/core/git-access.c" line="559"/>
         <source>Try to merge local changes into cloud storage</source>
-        <translation>Tentativo di unire le modifiche locali allo storage cloud</translation>
+        <translation>Tentativo di unire le modifiche locali allo spazio di memorizzazione cloud</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="603"/>
@@ -19118,7 +19127,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/git-access.c" line="583"/>
         <location filename="../tmp/Subsurface-4.9.6/core/git-access.c" line="603"/>
         <source>Store data into cloud storage</source>
-        <translation>Memorizza i dati nello storage cloud</translation>
+        <translation>Memorizza i dati nello spazio di memorizzazione cloud</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="679"/>
@@ -19126,7 +19135,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/git-access.c" line="658"/>
         <location filename="../tmp/Subsurface-4.9.6/core/git-access.c" line="679"/>
         <source>Sync with cloud storage</source>
-        <translation>Sincronizzazione con lo storage cloud</translation>
+        <translation>Sincronizzazione con lo spazio di memorizzazione cloud</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="709"/>
@@ -19150,7 +19159,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/git-access.c" line="717"/>
         <location filename="../tmp/Subsurface-4.9.6/core/git-access.c" line="739"/>
         <source>Done syncing with cloud storage</source>
-        <translation>Sincronizzazione con lo storage cloud riuscita</translation>
+        <translation>Sincronizzazione con lo spazio di memorizzazione cloud riuscita</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="897"/>
@@ -19158,7 +19167,7 @@ Media</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/git-access.c" line="870"/>
         <location filename="../tmp/Subsurface-4.9.6/core/git-access.c" line="897"/>
         <source>Error connecting to Subsurface cloud storage</source>
-        <translation>Errore nella connessione alla memoria cloud di Subsurface</translation>
+        <translation>Errore nella connessione allo spazio di memorizzazione cloud di Subsurface</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="900"/>
@@ -19649,7 +19658,7 @@ Puoi crearne uno selezionando il corrispondente checkbox nella maschera di downl
         <location filename="../tmp/Subsurface-4.9.6/core/ostctools.c" line="121"/>
         <location filename="../tmp/Subsurface-4.9.6/core/ostctools.c" line="152"/>
         <source>Unknown DC in dive %d</source>
-        <translation>Computer da immersione sconosciuto nella immersione %d</translation>
+        <translation>Computer subacqueo sconosciuto nell&apos;immersione %d</translation>
     </message>
     <message>
         <location filename="../core/ostctools.c" line="164"/>
@@ -19692,7 +19701,7 @@ Puoi crearne uno selezionando il corrispondente checkbox nella maschera di downl
         <location filename="../tmp/Subsurface-4.9.5/core/planner.c" line="876"/>
         <location filename="../tmp/Subsurface-4.9.6/core/planner.c" line="876"/>
         <source>Can&apos;t find gas %s</source>
-        <translation>Non trovo il gas %s</translation>
+        <translation>Non trovo la miscela %s</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="1157"/>
@@ -19784,7 +19793,7 @@ Puoi crearne uno selezionando il corrispondente checkbox nella maschera di downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="79"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="79"/>
         <source>DISCLAIMER / WARNING: THIS IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
-        <translation type="unfinished"/>
+        <translation>ESONERO DI RESPONSABILITÀ: QUESTA REALIZZAZIONE DELL&apos;ALGORITMO %s E IL DEL RELATIVO PIANIFICATORE DI IMMERSIONI HA RICEVUTO DEI TEST LIMITATI. RACCOMANDIAMO CON FORZA DI NON PIANIFICARE IMMERSIONI SOLAMENTE SULLA BASE DI QUESTI RISULTATI.</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="89"/>
@@ -19924,7 +19933,7 @@ Puoi crearne uno selezionando il corrispondente checkbox nella maschera di downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="180"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="180"/>
         <source>gas</source>
-        <translation>gas</translation>
+        <translation>miscela</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="234"/>
@@ -20020,7 +20029,7 @@ Puoi crearne uno selezionando il corrispondente checkbox nella maschera di downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="387"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="387"/>
         <source>Switch gas to %s (SP = %.1fbar)</source>
-        <translation>Cambio gas a %s (SP = %.1fbar)</translation>
+        <translation>Passa alla miscela %s (SP = %.1fbar)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="389"/>
@@ -20028,7 +20037,7 @@ Puoi crearne uno selezionando il corrispondente checkbox nella maschera di downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="389"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="389"/>
         <source>Switch gas to %s</source>
-        <translation>Passa al gas %s</translation>
+        <translation>Passa alla miscela %s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="418"/>
@@ -20094,7 +20103,9 @@ Puoi crearne uno selezionando il corrispondente checkbox nella maschera di downl
         <source>ATM pressure: %dmbar (%d%s)&lt;br/&gt;
 &lt;/div&gt;
 </source>
-        <translation type="unfinished"/>
+        <translation>Pressione atmosferica: %dmbar (%d%s)&lt;br/&gt;
+&lt;/div&gt;
+</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="456"/>
@@ -20102,7 +20113,7 @@ Puoi crearne uno selezionando il corrispondente checkbox nella maschera di downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="456"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="456"/>
         <source>Gas consumption (CCR legs excluded):</source>
-        <translation>Consumo del gas (CCR legs escluse):</translation>
+        <translation>Consumo di miscela (tratti CCR esclusi):</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="458"/>
@@ -20118,7 +20129,7 @@ Puoi crearne uno selezionando il corrispondente checkbox nella maschera di downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="487"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="487"/>
         <source>this is more gas than available in the specified cylinder!</source>
-        <translation>il gas necessario è superiore a quello disponibile nella bombola</translation>
+        <translation>questa quantità di miscela è superiore a quella disponibile nella bombola</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="493"/>
@@ -20126,7 +20137,7 @@ Puoi crearne uno selezionando il corrispondente checkbox nella maschera di downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="493"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="493"/>
         <source>not enough reserve for gas sharing on ascent!</source>
-        <translation>riserva di gas non sufficiente per la condivisione in risalita</translation>
+        <translation>riserva di miscela non sufficiente per la condivisione in risalita</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="518"/>
@@ -20134,7 +20145,7 @@ Puoi crearne uno selezionando il corrispondente checkbox nella maschera di downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="518"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="518"/>
         <source>Minimum gas</source>
-        <translation>Minimum gas</translation>
+        <translation>Miscela minima</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="519"/>
@@ -20158,7 +20169,7 @@ Puoi crearne uno selezionando il corrispondente checkbox nella maschera di downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="532"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="532"/>
         <source>required minimum gas for ascent already exceeding start pressure of cylinder!</source>
-        <translation>minimum gas necessario per la risalita maggiore della pressione della bombola!</translation>
+        <translation>la quantità di miscela necessaria è superiore a quella disponibile nella bombola</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="537"/>
@@ -20206,7 +20217,7 @@ Puoi crearne uno selezionando il corrispondente checkbox nella maschera di downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="597"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="597"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
-        <translation>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</translation>
+        <translation>valore elevato di pO₂ %.2f at %d:%02u con miscela %s alla profondità %.*f %s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="608"/>
@@ -20214,7 +20225,7 @@ Puoi crearne uno selezionando il corrispondente checkbox nella maschera di downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="608"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="608"/>
         <source>low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
-        <translation>Valore pO₂ basso %.2f a %d:%02u con il gas %s aalla profondità %.*f %s</translation>
+        <translation>valore basso di pO₂ %.2f at %d:%02u con miscela %s alla profondità %.*f %s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1442"/>
@@ -20286,7 +20297,8 @@ D:%.1f%s
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1466"/>
         <source>pO₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>pO₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1468"/>
@@ -20295,7 +20307,8 @@ D:%.1f%s
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1468"/>
         <source>SCR ΔpO₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>SCR ΔpO₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1471"/>
@@ -20304,7 +20317,8 @@ D:%.1f%s
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1471"/>
         <source>pN₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>pN₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1473"/>
@@ -20387,7 +20401,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1516"/>
         <source>Deco: %umin @ %.0f%s
 </source>
-        <translation>Deco: %umin @ %.0f%s
+        <translation>Decompressione: %umin @ %.0f%s
 </translation>
     </message>
     <message>
@@ -20397,7 +20411,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1519"/>
         <source>Deco: unknown time @ %.0f%s
 </source>
-        <translation>Deco: tempo sconosciuto @ %.0f%s
+        <translation>Decompressione: tempo sconosciuto @ %.0f%s
 </translation>
     </message>
     <message>
@@ -20407,7 +20421,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1523"/>
         <source>In deco
 </source>
-        <translation>In deco
+        <translation>In decompressione
 </translation>
     </message>
     <message>
@@ -20437,7 +20451,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1531"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
-        <translation>Deco: %umin @ %.0f%s (calc)
+        <translation>Decompressione: %umin @ %.0f%s (calc)
 </translation>
     </message>
     <message>
@@ -20447,7 +20461,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1539"/>
         <source>In deco (calc)
 </source>
-        <translation>In deco (calc)
+        <translation>In deco mpressione(calc)
 </translation>
     </message>
     <message>
@@ -20507,7 +20521,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1556"/>
         <source>GF %d%%
 </source>
-        <translation type="unfinished"/>
+        <translation>FG %d%%
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1558"/>
@@ -20516,7 +20531,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1558"/>
         <source>Surface GF %.0f%%
 </source>
-        <translation type="unfinished"/>
+        <translation>FG superficie %.0f%%
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1561"/>
@@ -20584,7 +20600,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/profile.c" line="1677"/>
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1677"/>
         <source>ΔT:%d:%02dmin</source>
-        <translation type="unfinished"/>
+        <translation>ΔT:%d:%02dmin</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1681"/>
@@ -20592,7 +20608,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/profile.c" line="1681"/>
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1681"/>
         <source>%s ΔD:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ΔD:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1685"/>
@@ -20600,7 +20616,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/profile.c" line="1685"/>
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1685"/>
         <source>%s ↓D:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↓D:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1689"/>
@@ -20608,7 +20624,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/profile.c" line="1689"/>
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1689"/>
         <source>%s ↑D:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↑D:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1693"/>
@@ -20617,7 +20633,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1693"/>
         <source>%s øD:%.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>%s øD:%.1f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1697"/>
@@ -20625,7 +20642,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/profile.c" line="1697"/>
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1697"/>
         <source>%s ↓V:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↓V:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1701"/>
@@ -20633,7 +20650,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/profile.c" line="1701"/>
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1701"/>
         <source>%s ↑V:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↑V:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1705"/>
@@ -20641,7 +20658,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/profile.c" line="1705"/>
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1705"/>
         <source>%s øV:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s øV:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1712"/>
@@ -20649,7 +20666,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/profile.c" line="1712"/>
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1712"/>
         <source>%s ΔP:%d%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ΔP:%d%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1737"/>
@@ -20892,7 +20909,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/qthelper.cpp" line="627"/>
         <location filename="../tmp/Subsurface-4.9.6/core/qthelper.cpp" line="627"/>
         <source>g/ℓ</source>
-        <translation type="unfinished"/>
+        <translation>g/ℓ</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="864"/>
@@ -20932,7 +20949,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.6/core/qthelper.cpp" line="977"/>
         <location filename="../tmp/Subsurface-4.9.6/core/qthelper.cpp" line="982"/>
         <source>no dives</source>
-        <translation type="unfinished"/>
+        <translation>nessuna immersione</translation>
     </message>
     <message numerus="yes">
         <location filename="../core/qthelper.cpp" line="1007"/>
@@ -20947,14 +20964,14 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/qthelper.cpp" line="1175"/>
         <location filename="../tmp/Subsurface-4.9.6/core/qthelper.cpp" line="1175"/>
         <source>Fresh</source>
-        <translation type="unfinished"/>
+        <translation>Dolce</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1183"/>
         <location filename="../tmp/Subsurface-4.9.5/core/qthelper.cpp" line="1175"/>
         <location filename="../tmp/Subsurface-4.9.6/core/qthelper.cpp" line="1175"/>
         <source>Brackish</source>
-        <translation type="unfinished"/>
+        <translation>Salmastra</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1183"/>
@@ -20968,14 +20985,14 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/qthelper.cpp" line="1175"/>
         <location filename="../tmp/Subsurface-4.9.6/core/qthelper.cpp" line="1175"/>
         <source>Salt</source>
-        <translation type="unfinished"/>
+        <translation>Salata</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1183"/>
         <location filename="../tmp/Subsurface-4.9.5/core/qthelper.cpp" line="1175"/>
         <location filename="../tmp/Subsurface-4.9.6/core/qthelper.cpp" line="1175"/>
         <source>Use DC</source>
-        <translation type="unfinished"/>
+        <translation>Usa computer</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1231"/>
@@ -21163,7 +21180,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/save-html.c" line="523"/>
         <location filename="../tmp/Subsurface-4.9.6/core/save-html.c" line="523"/>
         <source>Current</source>
-        <translation type="unfinished"/>
+        <translation>Corrente</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="524"/>
@@ -21171,7 +21188,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/save-html.c" line="524"/>
         <location filename="../tmp/Subsurface-4.9.6/core/save-html.c" line="524"/>
         <source>Surge</source>
-        <translation type="unfinished"/>
+        <translation>Mare lungo</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="525"/>
@@ -21179,7 +21196,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/save-html.c" line="525"/>
         <location filename="../tmp/Subsurface-4.9.6/core/save-html.c" line="525"/>
         <source>Chill</source>
-        <translation type="unfinished"/>
+        <translation>Vento</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="526"/>
@@ -21447,7 +21464,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/save-html.c" line="562"/>
         <location filename="../tmp/Subsurface-4.9.6/core/save-html.c" line="562"/>
         <source>Gas</source>
-        <translation>Gas</translation>
+        <translation>Miscela</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="563"/>
@@ -21503,7 +21520,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/save-xml.c" line="772"/>
         <location filename="../tmp/Subsurface-4.9.6/core/save-xml.c" line="772"/>
         <source>Failed to save dives to %s (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile salvare le immersioni su %s (%s)</translation>
     </message>
     <message>
         <location filename="../core/save-xml.c" line="888"/>
@@ -21511,7 +21528,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/save-xml.c" line="888"/>
         <location filename="../tmp/Subsurface-4.9.6/core/save-xml.c" line="888"/>
         <source>Failed to save divesites to %s (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile salvare i siti di immersione su %s (%s)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="147"/>
@@ -21519,7 +21536,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/statistics.c" line="147"/>
         <location filename="../tmp/Subsurface-4.9.6/core/statistics.c" line="147"/>
         <source>All (by type stats)</source>
-        <translation>Tutti (dalle statistiche per tipo)</translation>
+        <translation>Tutti (per statistiche di tipo)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="158"/>
@@ -21527,7 +21544,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/statistics.c" line="158"/>
         <location filename="../tmp/Subsurface-4.9.6/core/statistics.c" line="158"/>
         <source>All (by max depth stats)</source>
-        <translation type="unfinished"/>
+        <translation>Tutti (per profondità massima)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="161"/>
@@ -21535,7 +21552,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/statistics.c" line="161"/>
         <location filename="../tmp/Subsurface-4.9.6/core/statistics.c" line="161"/>
         <source>All (by min. temp stats)</source>
-        <translation type="unfinished"/>
+        <translation>Tutti (per temperatura minima)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="229"/>
@@ -21543,7 +21560,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/statistics.c" line="229"/>
         <location filename="../tmp/Subsurface-4.9.6/core/statistics.c" line="229"/>
         <source>All (by trip stats)</source>
-        <translation>Tutti (dalle statistiche dei viaggi)</translation>
+        <translation>Tutti (per statistiche di viaggio)</translation>
     </message>
     <message>
         <location filename="../core/subsurfacestartup.c" line="120"/>
@@ -21785,9 +21802,9 @@ EADD: %d%s / %.1fg/ℓ
         <source>Uemis Zurich: the file system is almost full.
 Disconnect/reconnect the dive computer
 and click &apos;Retry&apos;</source>
-        <translation>Uemis Zurich: il file system è quasi pieno.
-Sconnetti/riconnetti il computer
-e clicca &apos;Riprova&apos;</translation>
+        <translation>Uemis Zurich: il file system è quasi pieno
+Disconnettere e riconnettere il computer
+subacqueo e cliccare su Riprova</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="36"/>
@@ -21798,8 +21815,8 @@ e clicca &apos;Riprova&apos;</translation>
 Disconnect/reconnect the dive computer
 and click Retry</source>
         <translation>Uemis Zurich: il file system è pieno
-Disconnettere e riconnette il computer
-e cliccare su Riprova</translation>
+Disconnettere e riconnettere il computer
+subacqueo e cliccare su Riprova</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="37"/>
@@ -22057,7 +22074,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/uemis.c" line="227"/>
         <location filename="../tmp/Subsurface-4.9.6/core/uemis.c" line="227"/>
         <source>Max deco time warning</source>
-        <translation>Avviso della massima deco raggiunta</translation>
+        <translation>Avviso per raggiungimento massimo tempo deco</translation>
     </message>
     <message>
         <location filename="../core/uemis.c" line="229"/>
@@ -22493,7 +22510,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/main.qml" line="277"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="292"/>
         <source>Download from DC</source>
-        <translation>Download dal computer di immersione</translation>
+        <translation>Download da computer subacqueo</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="304"/>
@@ -22533,7 +22550,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/main.qml" line="328"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="343"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
-        <translation>Disabilitando la sincronizzazione con il cloud i dati saranno memorizzati localmente. Molto utile in caso di mancanza di rete. Scegliere &apos;sincronizzazione manuale&apos; se si vuole trasferire i propri dati nella memoria cloud.</translation>
+        <translation>Disabilitando la sincronizzazione con il cloud i dati saranno memorizzati localmente. Molto utile in caso di mancanza di rete. Scegliere &apos;sincronizzazione manuale&apos; se si vuole trasferire i propri dati nello spazio di memorizzazione cloud.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="353"/>
@@ -22541,7 +22558,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/main.qml" line="338"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="353"/>
         <source>Dive summary</source>
-        <translation type="unfinished"/>
+        <translation>Riepilogo immersione</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="364"/>
@@ -22621,7 +22638,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/main.qml" line="454"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="469"/>
         <source>Show user manual</source>
-        <translation type="unfinished"/>
+        <translation>Mostra manuale utente</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="478"/>
@@ -22629,7 +22646,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/main.qml" line="463"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="478"/>
         <source>Ask for support</source>
-        <translation type="unfinished"/>
+        <translation>Chiedi supporto</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="482"/>
@@ -22645,7 +22662,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/main.qml" line="477"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="492"/>
         <source>Reset forgotten Subsurface Cloud password</source>
-        <translation type="unfinished"/>
+        <translation>Resetta password dimenticata per Subsurface Cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="503"/>
@@ -22681,7 +22698,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="530"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="532"/>
         <source>Test notification text</source>
-        <translation type="unfinished"/>
+        <translation>Testo di prova notifica</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="536"/>
@@ -22697,7 +22714,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/main.qml" line="529"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="544"/>
         <source>Enable verbose logging (currently: %1)</source>
-        <translation type="unfinished"/>
+        <translation>Abilita log dettagliato (attualmente: %1)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="546"/>
@@ -22705,7 +22722,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/main.qml" line="531"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="546"/>
         <source>Not persistent</source>
-        <translation type="unfinished"/>
+        <translation>Non persistente</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="553"/>
@@ -22720,7 +22737,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/main.qml" line="748"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="763"/>
         <source>Subsurface-mobile starting up</source>
-        <translation type="unfinished"/>
+        <translation>Avvio di Subsurface-mobile</translation>
     </message>
 </context>
 <context>
@@ -22917,7 +22934,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="293"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="578"/>
         <source>Postpone gas change if a stop is not required</source>
-        <translation>Rimanda il cambio gas se una sosta non è richiesta</translation>
+        <translation>Rimanda il cambio di miscela se una sosta non è richiesta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="296"/>
@@ -22985,7 +23002,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="352"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="586"/>
         <source>Plan backgas breaks</source>
-        <translation>Pianifica i break in backgas</translation>
+        <translation>Pianifica le soste in backgas</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="372"/>
@@ -23093,7 +23110,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="512"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="597"/>
         <source>Reserve gas</source>
-        <translation>Gas di riserva</translation>
+        <translation>Miscela di riserva</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="522"/>
@@ -23101,7 +23118,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/plannerSettings.ui" line="522"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="522"/>
         <source>Bailout: Deco on OC</source>
-        <translation type="unfinished"/>
+        <translation>Passaggio a deco in circuito aperto</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="529"/>
@@ -23109,7 +23126,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/plannerSettings.ui" line="529"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="529"/>
         <source>Surface segment</source>
-        <translation type="unfinished"/>
+        <translation>Segmento in superficie</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="546"/>
@@ -23118,7 +23135,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="546"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="603"/>
         <source>Gas options</source>
-        <translation>Impostazioni gas</translation>
+        <translation>Impostazioni miscela</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="567"/>
@@ -23240,7 +23257,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="735"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="610"/>
         <source>Used to calculate best mix. Select best mix depth in &apos;Available gases&apos; table by entering gas depth, followed by &quot;B&quot; (best trimix mix) or &quot;BN&quot; (best nitrox mix)</source>
-        <translation>Usato per calcolare la best mix. Seleziona la profondità della best mix nella tabella dei  &apos;gas disponibili&apos; seguita da &quot;B&quot; (trimix best mix) oppure &quot;BN&quot; (nitrox best mix)</translation>
+        <translation>Usato per calcolare la best mix. Seleziona la profondità della best mix nella tabella delle miscele disponibili, seguita da &quot;B&quot; (trimix best mix) oppure &quot;BN&quot; (nitrox best mix)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="738"/>
@@ -23329,7 +23346,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/plannerSettings.ui" line="837"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="837"/>
         <source>Treat oxygen as narcotic when computing best mix</source>
-        <translation type="unfinished"/>
+        <translation>Tratta l&apos;ossigeno come narcotico nel calcolo della miscela migliore</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="840"/>
@@ -23337,7 +23354,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/plannerSettings.ui" line="840"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="840"/>
         <source>O₂ narcotic</source>
-        <translation type="unfinished"/>
+        <translation>O₂ narcotico</translation>
     </message>
 </context>
 <context>
@@ -23364,7 +23381,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/core/uploadDiveLogsDE.cpp" line="76"/>
         <location filename="../tmp/Subsurface-4.9.6/core/uploadDiveLogsDE.cpp" line="76"/>
         <source>Stylesheet to export to divelogs.de is not found</source>
-        <translation type="unfinished"/>
+        <translation>Non trovo il foglio di stile per esportare a divelogs.de</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="86"/>
@@ -23404,7 +23421,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/core/uploadDiveLogsDE.cpp" line="213"/>
         <location filename="../tmp/Subsurface-4.9.6/core/uploadDiveLogsDE.cpp" line="213"/>
         <source>Uploading dives</source>
-        <translation type="unfinished"/>
+        <translation>Sto caricando le immersioni</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="294"/>
@@ -23448,7 +23465,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/core/uploadDiveLogsDE.cpp" line="323"/>
         <location filename="../tmp/Subsurface-4.9.6/core/uploadDiveLogsDE.cpp" line="323"/>
         <source>divelogs.de not responding</source>
-        <translation type="unfinished"/>
+        <translation>divelogs.de non risponde</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="336"/>
@@ -23456,7 +23473,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/core/uploadDiveLogsDE.cpp" line="336"/>
         <location filename="../tmp/Subsurface-4.9.6/core/uploadDiveLogsDE.cpp" line="336"/>
         <source>network error %1</source>
-        <translation type="unfinished"/>
+        <translation>errore di rete %1</translation>
     </message>
 </context>
 <context>
@@ -23475,7 +23492,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/core/uploadDiveShare.cpp" line="97"/>
         <location filename="../tmp/Subsurface-4.9.6/core/uploadDiveShare.cpp" line="97"/>
         <source>dive-share.com not responding</source>
-        <translation type="unfinished"/>
+        <translation>dive-share.com non risponde</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveShare.cpp" line="110"/>
@@ -23483,7 +23500,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/core/uploadDiveShare.cpp" line="110"/>
         <location filename="../tmp/Subsurface-4.9.6/core/uploadDiveShare.cpp" line="110"/>
         <source>network error %1</source>
-        <translation type="unfinished"/>
+        <translation>errore di rete %1</translation>
     </message>
 </context>
 </TS>

@@ -5786,7 +5786,7 @@ GPS actual:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="845"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="845"/>
         <source>Split selected dives</source>
-        <translation>Divide las inmersiones seleccionadas</translation>
+        <translation>Dividir las inmersiones seleccionadas</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="846"/>
@@ -14306,7 +14306,7 @@ Visita http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="120"/>
         <source>DPI resolution</source>
-        <translation type="unfinished"/>
+        <translation>Resolución DPI</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="132"/>
@@ -14517,7 +14517,7 @@ Por favor, exporta esta plantilla a un archivo distinto.</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1463"/>
         <source>Edit Gas Change</source>
-        <translation type="unfinished"/>
+        <translation>Editar cambio de gas</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1471"/>
@@ -14930,19 +14930,19 @@ Por favor, copia el archivo de registro e informa.</translation>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="2264"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="2263"/>
         <source>(unsaved changes in memory)</source>
-        <translation type="unfinished"/>
+        <translation>(cambios en memoria no guardados)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="2266"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="2265"/>
         <source>(changes synced locally)</source>
-        <translation type="unfinished"/>
+        <translation>(cambios sincronizados localmente)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="2267"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="2266"/>
         <source>(synced with cloud)</source>
-        <translation type="unfinished"/>
+        <translation>(sincronizado con la nube)</translation>
     </message>
 </context>
 <context>

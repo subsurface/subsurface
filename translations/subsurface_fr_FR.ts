@@ -9603,7 +9603,7 @@ le plus près</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="459"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="587"/>
         <source>Substring</source>
-        <translation type="unfinished"/>
+        <translation>Contient</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="47"/>
@@ -9940,7 +9940,7 @@ le plus près</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/filterwidget2.ui" line="597"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="597"/>
         <source>Full word</source>
-        <translation type="unfinished"/>
+        <translation>Mot complet</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="608"/>
@@ -12842,7 +12842,7 @@ Si votre périphérique utilise le Bluetooth, effectuez la même préparation qu
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_equipment.ui" line="32"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_equipment.ui" line="32"/>
         <source>Default cylinder in the Cylinders table of the Equipment tab</source>
-        <translation type="unfinished"/>
+        <translation>Bloc par défaut dans la table des blocs dans l&apos;onglet Équipement</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="48"/>
@@ -12850,7 +12850,7 @@ Si votre périphérique utilise le Bluetooth, effectuez la même préparation qu
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_equipment.ui" line="48"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_equipment.ui" line="48"/>
         <source>Select a default cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Sélectionner le bloc par défaut</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="68"/>
@@ -12858,7 +12858,7 @@ Si votre périphérique utilise le Bluetooth, effectuez la même préparation qu
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_equipment.ui" line="68"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_equipment.ui" line="68"/>
         <source>Show unused cylinders in the Cylinders table of the Equipment tab</source>
-        <translation type="unfinished"/>
+        <translation>Afficher les blocs inutilisés dans l&apos;onglet des Équipements</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.cpp" line="12"/>
@@ -12886,7 +12886,7 @@ Si votre périphérique utilise le Bluetooth, effectuez la même préparation qu
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_georeference.ui" line="24"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_georeference.ui" line="24"/>
         <source>Reverse dive site lookup format</source>
-        <translation type="unfinished"/>
+        <translation>Recherche geo inversée</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_georeference.ui" line="38"/>
@@ -13214,7 +13214,7 @@ Si votre périphérique utilise le Bluetooth, effectuez la même préparation qu
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_graph.cpp" line="12"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_graph.cpp" line="12"/>
         <source>Tech setup</source>
-        <translation type="unfinished"/>
+        <translation>Plongée Tech</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="372"/>
@@ -13557,7 +13557,7 @@ Voir http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_media.ui" line="24"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_media.ui" line="24"/>
         <source>UPDATE THUMBNAILS</source>
-        <translation type="unfinished"/>
+        <translation>Mettre à jour les vignettes</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="38"/>
@@ -13833,7 +13833,7 @@ Voir http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_reset.ui" line="39"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_reset.ui" line="39"/>
         <source>Selecting this button will reset all preferences to their default values</source>
-        <translation type="unfinished"/>
+        <translation>Cliquer sur ce bouton remettra à zéro toutes les préférences</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_reset.ui" line="50"/>
@@ -14907,7 +14907,7 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="1368"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="1380"/>
         <source>Fatal error: cannot save data file. Please copy log file and report.</source>
-        <translation type="unfinished"/>
+        <translation>Erreur fatale: Impossible de sauvegarder les fichier. Copiez le journal et le rapport.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1582"/>
@@ -14929,19 +14929,19 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="2264"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="2263"/>
         <source>(unsaved changes in memory)</source>
-        <translation type="unfinished"/>
+        <translation>(changements non sauvegardés en mémoire)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="2266"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="2265"/>
         <source>(changes synced locally)</source>
-        <translation type="unfinished"/>
+        <translation>(changements synchronisés localement)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="2267"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="2266"/>
         <source>(synced with cloud)</source>
-        <translation type="unfinished"/>
+        <translation>(synchronisé avec le cloud)</translation>
     </message>
 </context>
 <context>
@@ -15036,7 +15036,7 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/RecoverCache.qml" line="8"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/RecoverCache.qml" line="17"/>
         <source>Cloud Cache Import</source>
-        <translation type="unfinished"/>
+        <translation>Import du cache Cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/RecoverCache.qml" line="38"/>
@@ -16337,7 +16337,7 @@ Fichiers avec dates/heures incorrectes</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="364"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="364"/>
         <source>ENVIRONMENT</source>
-        <translation type="unfinished"/>
+        <translation>ENVIRONNEMENT</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="372"/>
@@ -16427,7 +16427,7 @@ Fichiers avec dates/heures incorrectes</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="604"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="604"/>
         <source>Current</source>
-        <translation>Actuel</translation>
+        <translation>Courant</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="635"/>
@@ -20968,7 +20968,7 @@ EADD : %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/qthelper.cpp" line="1175"/>
         <location filename="../tmp/Subsurface-4.9.6/core/qthelper.cpp" line="1175"/>
         <source>Brackish</source>
-        <translation type="unfinished"/>
+        <translation>Saumâtre</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1183"/>
@@ -22719,7 +22719,7 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/main.qml" line="531"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="546"/>
         <source>Not persistent</source>
-        <translation type="unfinished"/>
+        <translation>Non persistant</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="553"/>
@@ -23351,7 +23351,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/plannerSettings.ui" line="840"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="840"/>
         <source>O₂ narcotic</source>
-        <translation type="unfinished"/>
+        <translation>O₂ narcotique</translation>
     </message>
 </context>
 <context>
@@ -23362,7 +23362,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/core/uploadDiveLogsDE.cpp" line="54"/>
         <location filename="../tmp/Subsurface-4.9.6/core/uploadDiveLogsDE.cpp" line="54"/>
         <source>Cannot prepare dives, none selected?</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de préparer les plongées. Aucune sélectionnée ?</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="71"/>
