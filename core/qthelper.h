@@ -38,7 +38,7 @@ int getCloudURL(QString &filename);
 bool parseGpsText(const QString &gps_text, double *latitude, double *longitude);
 void init_proxy();
 QString getUUID();
-extern const QStringList waterTypes;
+QStringList getWaterTypesAsString();
 extern const QStringList videoExtensionsList;
 QStringList mediaExtensionFilters();
 QStringList imageExtensionFilters();
