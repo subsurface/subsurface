@@ -27,7 +27,7 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 	QStringList atmPressTypes { "mbar", get_depth_unit() ,tr("Use DC")};
 	ui->atmPressType->insertItems(0, atmPressTypes);
 	pressTypeIndex = 0;
-	ui->waterTypeCombo->insertItems(0, waterTypes);
+	ui->waterTypeCombo->insertItems(0, getWaterTypesAsString());
 
 	// This needs to be the same order as enum dive_comp_type in dive.h!
 	QStringList types;

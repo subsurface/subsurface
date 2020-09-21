@@ -626,16 +626,34 @@ QString get_salinity_string(int salinity)
 	return QStringLiteral("%L1%2").arg(salinity / 10.0).arg(gettextFromC::tr("g/ℓ"));
 }
 
+// the water types need to match the watertypes enum
+static const char *waterTypes[] = {
+	QT_TRANSLATE_NOOP("gettextFromC", "Fresh"),
+	QT_TRANSLATE_NOOP("gettextFromC", "Brackish"),
+	QT_TRANSLATE_NOOP("gettextFromC", "EN13319"),
+	QT_TRANSLATE_NOOP("gettextFromC", "Salt"),
+	QT_TRANSLATE_NOOP("gettextFromC", "Use DC")
+};
+
 QString get_water_type_string(int salinity)
 {
 	if (salinity < 10050)
-		return waterTypes[FRESHWATER];
+		return gettextFromC::tr(waterTypes[FRESHWATER]);
 	else if (salinity < 10190)
-		return waterTypes[BRACKISHWATER];
+		return gettextFromC::tr(waterTypes[BRACKISHWATER]);
 	else if (salinity < 10210)
-		return waterTypes[EN13319WATER];
+		return gettextFromC::tr(waterTypes[EN13319WATER]);
 	else
-		return waterTypes[SALTWATER];
+		return gettextFromC::tr(waterTypes[SALTWATER]);
+}
+
+QStringList getWaterTypesAsString()
+{
+	QStringList res;
+	res.reserve(std::end(waterTypes) - std::begin(waterTypes)); // Waiting for C++17's std::size()
+	for (const char *t: waterTypes)
+		res.push_back(gettextFromC::tr(t));
+	return res;
 }
 
 QString getSubsurfaceDataPath(QString folderToFind)
@@ -1177,11 +1195,6 @@ QString localFilePath(const QString &originalFilename)
 	QMutexLocker locker(&hashOfMutex);
 	return localFilenameOf.value(originalFilename, originalFilename);
 }
-
-// the water types need to match the watertypes enum
-const QStringList waterTypes = {
-	gettextFromC::tr("Fresh"), gettextFromC::tr("Brackish"), gettextFromC::tr("EN13319"), gettextFromC::tr("Salt"), gettextFromC::tr("Use DC")
-};
 
 // TODO: Apparently Qt has no simple way of listing the supported video
 // codecs? Do we have to query them by hand using QMediaPlayer::hasSupport()?
