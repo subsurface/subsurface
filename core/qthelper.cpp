@@ -626,8 +626,17 @@ QString get_salinity_string(int salinity)
 	return QStringLiteral("%L1%2").arg(salinity / 10.0).arg(gettextFromC::tr("g/ℓ"));
 }
 
+const QStringList &getWaterTypesAsString()
+{
+	static QStringList waterTypes = {
+		gettextFromC::tr("Fresh"), gettextFromC::tr("Brackish"), gettextFromC::tr("EN13319"), gettextFromC::tr("Salt"), gettextFromC::tr("Use DC")
+	};
+	return waterTypes;
+}
+
 QString get_water_type_string(int salinity)
 {
+	const QStringList &waterTypes = getWaterTypesAsString();
 	if (salinity < 10050)
 		return waterTypes[FRESHWATER];
 	else if (salinity < 10190)
@@ -1177,11 +1186,6 @@ QString localFilePath(const QString &originalFilename)
 	QMutexLocker locker(&hashOfMutex);
 	return localFilenameOf.value(originalFilename, originalFilename);
 }
-
-// the water types need to match the watertypes enum
-const QStringList waterTypes = {
-	gettextFromC::tr("Fresh"), gettextFromC::tr("Brackish"), gettextFromC::tr("EN13319"), gettextFromC::tr("Salt"), gettextFromC::tr("Use DC")
-};
 
 // TODO: Apparently Qt has no simple way of listing the supported video
 // codecs? Do we have to query them by hand using QMediaPlayer::hasSupport()?
