@@ -505,8 +505,10 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	remote_id = git_reference_target(remote);
 
 	if (!local_id || !remote_id) {
-		local_id && SSRF_INFO("git storage: unable to get local SHA");
-		remote_id && SSRF_INFO("git storage: unable to get remote SHA");
+		if (!local_id)
+			SSRF_INFO("git storage: unable to get local SHA");
+		if (!remote_id)
+			SSRF_INFO("git storage: unable to get remote SHA");
 		if (is_subsurface_cloud)
 			goto cloud_data_error;
 		else
