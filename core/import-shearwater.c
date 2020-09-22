@@ -394,7 +394,7 @@ static int shearwater_cloud_dive(void *param, int columns, char **data, char **c
 		state->cur_dive->dc.maxdepth.mm = state->metric ? lrint(strtod_flags(data[6], NULL, 0) * 1000) : feet_to_mm(strtod_flags(data[6], NULL, 0));
 
 	if (data[7])
-		state->cur_dive->dc.duration.seconds = atoi(data[7]) * 60;
+		state->cur_dive->dc.duration.seconds = atoi(data[7]);
 
 	if (data[8])
 		state->cur_dive->dc.surface_pressure.mbar = atoi(data[8]);
