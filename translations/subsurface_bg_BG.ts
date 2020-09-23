@@ -718,7 +718,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogimportdialog.cpp" line="70"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="70"/>
         <source>Mode</source>
-        <translation type="unfinished"/>
+        <translation>Режим</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="70"/>
@@ -1516,28 +1516,28 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_pictures.cpp" line="20"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_pictures.cpp" line="20"/>
         <source>Change media time</source>
-        <translation type="unfinished"/>
+        <translation>Промени типа на медия</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_pictures.cpp" line="139"/>
         <location filename="../tmp/Subsurface-4.9.5/commands/command_pictures.cpp" line="139"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_pictures.cpp" line="139"/>
         <source>remove %n pictures(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>премахни %n картинка(картинки)</numerusform><numerusform>премахни %n картинка(картинки)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_pictures.cpp" line="172"/>
         <location filename="../tmp/Subsurface-4.9.5/commands/command_pictures.cpp" line="172"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_pictures.cpp" line="172"/>
         <source>unnamed dive site</source>
-        <translation type="unfinished"/>
+        <translation>Място за гмуркане без име</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_pictures.cpp" line="187"/>
         <location filename="../tmp/Subsurface-4.9.5/commands/command_pictures.cpp" line="187"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_pictures.cpp" line="187"/>
         <source>add %n pictures(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>добави %n картинка(картинки)</numerusform><numerusform>добави %n картинка(картинки)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -6886,7 +6886,7 @@ GPS позиция:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="723"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="952"/>
         <source>Mode</source>
-        <translation type="unfinished"/>
+        <translation>Режим</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="724"/>
@@ -11786,7 +11786,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/mainwindow.cpp" line="733"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="733"/>
         <source>Please save or cancel the current dive edit before quiting the application.</source>
-        <translation type="unfinished"/>
+        <translation>Моля запишете или отменете текущата редакция на гмуркане преди да затворите приложението.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="765"/>
@@ -14305,7 +14305,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="120"/>
         <source>DPI resolution</source>
-        <translation type="unfinished"/>
+        <translation>DPI резолюция</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="132"/>
@@ -14516,7 +14516,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1463"/>
         <source>Edit Gas Change</source>
-        <translation type="unfinished"/>
+        <translation>Редактирайте промяна на газа</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1471"/>
@@ -14928,19 +14928,19 @@ Please export this template to a different file.</source>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="2264"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="2263"/>
         <source>(unsaved changes in memory)</source>
-        <translation type="unfinished"/>
+        <translation>(незаписани промени в паметта)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="2266"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="2265"/>
         <source>(changes synced locally)</source>
-        <translation type="unfinished"/>
+        <translation>(промените синхронизирани локално)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="2267"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="2266"/>
         <source>(synced with cloud)</source>
-        <translation type="unfinished"/>
+        <translation>(синхронизиране с облака)</translation>
     </message>
 </context>
 <context>
@@ -15035,14 +15035,14 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/RecoverCache.qml" line="8"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/RecoverCache.qml" line="17"/>
         <source>Cloud Cache Import</source>
-        <translation type="unfinished"/>
+        <translation>Импорт на облаков кеш</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/RecoverCache.qml" line="38"/>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/RecoverCache.qml" line="38"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/RecoverCache.qml" line="38"/>
         <source>import data from the given cache repo</source>
-        <translation type="unfinished"/>
+        <translation>Импорт на данни от дадена кеш репозитория</translation>
     </message>
 </context>
 <context>
@@ -16120,7 +16120,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/about.cpp" line="20"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/about.cpp" line="20"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2020&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;мулти-платформен, гмуркачески регистър софтуер&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Линус Торвалдс, Дърк Хондел, Томаз Канабрава, Бертхолд Щогер и други, 2011-2020&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/about.cpp" line="20"/>
@@ -16488,7 +16488,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="27"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="27"/>
         <source>Use DC</source>
-        <translation type="unfinished"/>
+        <translation>Използвай ГК</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="51"/>
@@ -20905,7 +20905,7 @@ EADD: %d%s / %.1fгр./л.
         <location filename="../tmp/Subsurface-4.9.5/core/qthelper.cpp" line="627"/>
         <location filename="../tmp/Subsurface-4.9.6/core/qthelper.cpp" line="627"/>
         <source>g/ℓ</source>
-        <translation type="unfinished"/>
+        <translation>г/л</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="864"/>
@@ -20967,7 +20967,7 @@ EADD: %d%s / %.1fгр./л.
         <location filename="../tmp/Subsurface-4.9.5/core/qthelper.cpp" line="1175"/>
         <location filename="../tmp/Subsurface-4.9.6/core/qthelper.cpp" line="1175"/>
         <source>Brackish</source>
-        <translation type="unfinished"/>
+        <translation>Сладникава вода</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1183"/>
@@ -20988,7 +20988,7 @@ EADD: %d%s / %.1fгр./л.
         <location filename="../tmp/Subsurface-4.9.5/core/qthelper.cpp" line="1175"/>
         <location filename="../tmp/Subsurface-4.9.6/core/qthelper.cpp" line="1175"/>
         <source>Use DC</source>
-        <translation type="unfinished"/>
+        <translation>Използвай ГК</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1231"/>
@@ -22725,7 +22725,7 @@ Uemis Zurich включен ли е правилно?</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/main.qml" line="538"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="553"/>
         <source>Access local cloud cache dirs</source>
-        <translation type="unfinished"/>
+        <translation>Достъп до директории за локален облаков кеш</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="763"/>

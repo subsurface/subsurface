@@ -574,7 +574,7 @@
         <location filename="../tmp/Subsurface-4.9.5/core/checkcloudconnection.cpp" line="58"/>
         <location filename="../tmp/Subsurface-4.9.6/core/checkcloudconnection.cpp" line="58"/>
         <source>Waiting for cloud connection (%n second(s) passed)</source>
-        <translation><numerusform>Väntar på molnkontakt (%n sekund passerad)</numerusform><numerusform>Väntar på anslutning till molntjänst (%n sekund(er) passerade)</numerusform></translation>
+        <translation><numerusform>Väntar på anslutning till cloud-tjänst (%n sekund(er) passerade)</numerusform><numerusform>Väntar på anslutning till cloud-tjänst (%n sekund(er) passerade)</numerusform></translation>
     </message>
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="65"/>
@@ -582,7 +582,7 @@
         <location filename="../tmp/Subsurface-4.9.5/core/checkcloudconnection.cpp" line="65"/>
         <location filename="../tmp/Subsurface-4.9.6/core/checkcloudconnection.cpp" line="65"/>
         <source>Cloud connection failed</source>
-        <translation>Anslutning till molnlagringstjänsten misslyckades</translation>
+        <translation>Anslutning till Subsurface Cloud misslyckades</translation>
     </message>
 </context>
 <context>
@@ -593,7 +593,7 @@
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/CloudCredentials.qml" line="43"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/CloudCredentials.qml" line="43"/>
         <source>Cloud credentials</source>
-        <translation>Inställningar molnlagringstjänst</translation>
+        <translation>Inställningar Subsurface Cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="49"/>
@@ -676,7 +676,7 @@
         <location filename="../tmp/Subsurface-4.9.5/core/cloudstorage.cpp" line="65"/>
         <location filename="../tmp/Subsurface-4.9.6/core/cloudstorage.cpp" line="65"/>
         <source>Cloud account verification required, enter PIN in preferences</source>
-        <translation>Verifiering av konto för molntjänst krävs, ange PIN under inställningar</translation>
+        <translation>Verifiering av konto för cloud-tjänst krävs, ange PIN under inställningar</translation>
     </message>
 </context>
 <context>
@@ -5463,7 +5463,7 @@ GPS-position:</translation>
         <location filename="../tmp/Subsurface-4.9.5/qt-models/diveimportedmodel.cpp" line="72"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/diveimportedmodel.cpp" line="72"/>
         <source>min</source>
-        <translation>Min</translation>
+        <translation>min</translation>
     </message>
 </context>
 <context>
@@ -5590,7 +5590,7 @@ GPS-position:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="345"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="345"/>
         <source>Cloud credentials</source>
-        <translation>Inställningar molnlagringstjänst</translation>
+        <translation>Inställningar Subsurface Cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="354"/>
@@ -9031,7 +9031,7 @@ Existerande dykplats</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/downloadfromdivecomputer.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="317"/>
         <source>Download from dive computer</source>
-        <translation>Ladda ned från dykdator</translation>
+        <translation>Ladda ner från dykdator</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="52"/>
@@ -9040,7 +9040,7 @@ Existerande dykplats</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/downloadfromdivecomputer.ui" line="52"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="318"/>
         <source>Force download of all dives</source>
-        <translation>Tvinga hämtning av alla dyk</translation>
+        <translation>Tvingad nedladdning av samtliga dyk</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="59"/>
@@ -9058,7 +9058,7 @@ Existerande dykplats</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/downloadfromdivecomputer.ui" line="69"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="320"/>
         <source>Always prefer downloaded dives</source>
-        <translation>Föredra alltid hämtad dykinformation</translation>
+        <translation>Föredra alltid nedladdad dykinformation</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="76"/>
@@ -9136,7 +9136,7 @@ Existerande dykplats</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/downloadfromdivecomputer.ui" line="142"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="332"/>
         <source>Download into new trip</source>
-        <translation>Hämta och skapa ny resa</translation>
+        <translation>Ladda ned och skapa ny resa</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="149"/>
@@ -9170,7 +9170,7 @@ Existerande dykplats</translation>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="469"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="334"/>
         <source>Download</source>
-        <translation>Ladda ner</translation>
+        <translation>Ladda ned</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="265"/>
@@ -9315,7 +9315,7 @@ Existerande dykplats</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="412"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="412"/>
         <source>force downloading all dives</source>
-        <translation>Tvinga hämtning av alla dyk</translation>
+        <translation>Tvingad nedladdning av samtliga dyk</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="440"/>
@@ -9719,7 +9719,7 @@ Existerande dykplats</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/filterwidget2.ui" line="107"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="107"/>
         <source>Air Temp</source>
-        <translation>Lufttemp</translation>
+        <translation>Lufttemperatur</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="121"/>
@@ -9940,7 +9940,7 @@ Existerande dykplats</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/filterwidget2.ui" line="597"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="597"/>
         <source>Full word</source>
-        <translation>Helord</translation>
+        <translation>Hela ord</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="608"/>
@@ -11583,7 +11583,7 @@ Existerande dykplats</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="684"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="608"/>
         <source>Open c&amp;loud storage</source>
-        <translation>&amp;Öppna molnlagring</translation>
+        <translation>&amp;Öppna molntjänst</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="689"/>
@@ -11592,7 +11592,7 @@ Existerande dykplats</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="689"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="609"/>
         <source>Save to clo&amp;ud storage</source>
-        <translation>Spara &amp;till molnlagring</translation>
+        <translation>Spara &amp;till molntjänst</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="694"/>
@@ -11618,7 +11618,7 @@ Existerande dykplats</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/mainwindow.ui" line="707"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="707"/>
         <source>Cloud stora&amp;ge online</source>
-        <translation>Molnlagrin&amp;g ansluten</translation>
+        <translation>Ansluten till &amp;cloud-lagring</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="719"/>
@@ -11630,7 +11630,7 @@ Existerande dykplats</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="719"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="722"/>
         <source>Toggle deco information</source>
-        <translation>Växla deco-information</translation>
+        <translation>Slå på/av deco-information</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="587"/>
@@ -11762,8 +11762,8 @@ skriver över utskriftsmallen vid start.</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="605"/>
         <source>You have unsaved changes. Do you want to commit them to the cloud storage?
 If answering no, the cloud will only be synced on next call to &quot;Open cloud storage&quot; or &quot;Save to cloud storage&quot;.</source>
-        <translation>Du har ändringar som inte har sparats. Vill du skicka ändringar till platsen för molnlagring?
-Om du svarar Nej kommer förändringarna synkroniseras nästa gång du väljer &quot;Öppna molnlagring&quot; eller &quot;Spara till molnlagring&quot;.</translation>
+        <translation>Du har ändringar som inte har sparats. Vill du skicka ändringar till Subsurface Cloud?
+Om du svarar Nej kommer förändringarna synkroniseras nästa gång du väljer &quot;Öppna molntjänst&quot; eller &quot;Spara till molntjänst&quot;.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="615"/>
@@ -11771,7 +11771,7 @@ Om du svarar Nej kommer förändringarna synkroniseras nästa gång du väljer &
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/mainwindow.cpp" line="615"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="615"/>
         <source>Failure taking cloud storage online</source>
-        <translation>Misslyckades med att aktivera molnlagringstjänsten</translation>
+        <translation>Misslyckades med anslutning till molntjänsten</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="672"/>
@@ -12164,7 +12164,7 @@ Subsurface har redan försökt att fylla i data korrekt men kontrollera dina dyk
     <message>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="613"/>
         <source>Cloud storage online</source>
-        <translation>Molnlagring uppkopplad</translation>
+        <translation>Ansluten till molntjänst</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="620"/>
@@ -12509,7 +12509,7 @@ Om din enhet använder Bluetooth, genomför samma förberedelser som vid nerladd
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.ui" line="120"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.ui" line="120"/>
         <source>1) Enter an email address and a novel password that Subsurface will use to initialise the dive log in the cloud. Click Apply to send the above email address and password to the (remote) cloud server.</source>
-        <translation>1) Skriv in en e-postadress och ett nytt lösenord som Subsurface kan använda för att initiera dykloggen. Klicka på spara för att skicka e-postadress och lösenord till molntjänsten.</translation>
+        <translation>1) Skriv in en e-postadress och ett lösenord som Subsurface kan använda för att initiera en dyklogg i Subsurface Cloud. Klicka sedan på spara för att skicka e-postadress och lösenord till molntjänsten.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="130"/>
@@ -12517,7 +12517,7 @@ Om din enhet använder Bluetooth, genomför samma förberedelser som vid nerladd
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.ui" line="130"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.ui" line="130"/>
         <source>2) The server responds by sending a verification PIN to the above email address (This is the only occasion that Subsurface uses the email address provided above). The above dialog now has a new PIN text box, not visible previously.</source>
-        <translation>2) Servern svarar med att skicka en PIN-kod för verifiering till angiven e-postadress (Detta är det enda tillfället där Subsurface kommer att använda e-postadressen).  </translation>
+        <translation>2) Servern svarar med att skicka en PIN-kod för verifiering till angiven e-postadress (Detta är det enda tillfället Subsurface kommer att använda angiven e-postadress för kommunikation).  </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="140"/>
@@ -12525,7 +12525,7 @@ Om din enhet använder Bluetooth, genomför samma förberedelser som vid nerladd
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.ui" line="140"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.ui" line="140"/>
         <source>3) Enter the PIN in the corresponding text box in the above dialog (this field is only visible while the server is waiting for email address confirmation). Click Apply again. The Subsurface cloud storage account will be marked as verified and the Subsurface cloud storage service is initialised for use.</source>
-        <translation>3) Ange PIN-kod i motsvarande textruta i ovanstående dialogbox (fältet är endast synligt under tiden tjänsten väntar på bekräftelse av en e-postadress). Klicka på spara igen. Kontot för Subsurface kommer sedan markeras som verifierat och Subsurface molntjänst initieras för användning.</translation>
+        <translation>3) Ange PIN-kod i motsvarande textruta i ovanstående dialogbox (fältet är endast synligt under tiden tjänsten väntar på bekräftelse av en e-postadress). Klicka på spara igen. Kontot för Subsurface Cloud kommer sedan markeras som verifierat och tjänsten initieras för användning.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="10"/>
@@ -12620,7 +12620,7 @@ Om din enhet använder Bluetooth, genomför samma förberedelser som vid nerladd
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_dc.ui" line="53"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_dc.ui" line="53"/>
         <source>When importing dives from a dive computer (DC), Subsurface remembers the connection(s), showing them as selectable buttons in the Download panel. This is useful for DCs using Bluetooth for communication. In order to clear all this information, click on the button below. After clearing the information the buttons on the Download panel disappear and it is necessary to establish new connection(s) with dive computer(s) before importing dives again.</source>
-        <translation>Vid import av dyk från en dykdator (DC) så kommer Subsurface att komma ihåg anslutningen och sedan visa anslutningar som valbara knappar under Nerladdningspaneln. Det är användbart för dykdatorer som använder Bluetooth för kommunikation. För att rensa all information, klicka på knappen nedan. Efter rensning av informationen kommer knapparna på Nerladdningspanelen att försvinna och det är nödvändigt  att etablera en ny anslutning med dykdator(er) innan import av dyk kan ske igen. </translation>
+        <translation>Vid import av dyk från en dykdator (DC) så kommer Subsurface att komma ihåg anslutningen och sedan visa anslutningar som valbara knappar under panelen för nedladdning. Det är användbart för dykdatorer som använder Bluetooth för kommunikation. För att glömma all information, klicka på knappen nedan. Efter rensning av informationen kommer knapparna på panelen att försvinna och det är nödvändigt att etablera en ny anslutning med din dykdator innan importering av dyk kan ske igen. </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="61"/>
@@ -12636,7 +12636,7 @@ Om din enhet använder Bluetooth, genomför samma förberedelser som vid nerladd
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
         <source>Dive download</source>
-        <translation>Ladda ner dyk</translation>
+        <translation>Dykdator</translation>
     </message>
 </context>
 <context>
@@ -12708,7 +12708,7 @@ Om din enhet använder Bluetooth, genomför samma förberedelser som vid nerladd
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_defaults.cpp" line="15"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_defaults.cpp" line="15"/>
         <source>Display</source>
-        <translation>Skärm</translation>
+        <translation>Utseende</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="330"/>
@@ -12842,7 +12842,7 @@ Om din enhet använder Bluetooth, genomför samma förberedelser som vid nerladd
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_equipment.ui" line="32"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_equipment.ui" line="32"/>
         <source>Default cylinder in the Cylinders table of the Equipment tab</source>
-        <translation>Standardflaska i flasktabellen under fliken Utrustning</translation>
+        <translation>Förvald flaska i flasktabellen under fliken Utrustning</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="48"/>
@@ -12850,7 +12850,7 @@ Om din enhet använder Bluetooth, genomför samma förberedelser som vid nerladd
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_equipment.ui" line="48"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_equipment.ui" line="48"/>
         <source>Select a default cylinder</source>
-        <translation>Välj en standardflaska</translation>
+        <translation>Välj en förvald flaska</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="68"/>
@@ -12858,7 +12858,7 @@ Om din enhet använder Bluetooth, genomför samma förberedelser som vid nerladd
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_equipment.ui" line="68"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_equipment.ui" line="68"/>
         <source>Show unused cylinders in the Cylinders table of the Equipment tab</source>
-        <translation>Under fliken Utrustning, visa oanvända flaskor i flasktabellen</translation>
+        <translation>Visa oanvända flaskor i flasktabellen under fliken Utrustning</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.cpp" line="12"/>
@@ -13314,7 +13314,7 @@ Om din enhet använder Bluetooth, genomför samma förberedelser som vid nerladd
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_language.ui" line="93"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="187"/>
         <source>Short format</source>
-        <translation>Kort format</translation>
+        <translation>Förkortat format</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="113"/>
@@ -13490,7 +13490,7 @@ Se https://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_log.ui" line="111"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_log.ui" line="111"/>
         <source>In the Dive List, show dives that you have marked as invalid, e.g. pool dives</source>
-        <translation>I Dyklistan, visa dyk som är markerade som ogiltiga, i.e. pooldyk</translation>
+        <translation>Visa dyk som är markerade som ogiltiga i Dyklistan, i.e. pooldyk</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="119"/>
@@ -13498,7 +13498,7 @@ Se https://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_log.ui" line="119"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_log.ui" line="119"/>
         <source>In the Information tab, show tools for recording wave height, surge and chill during a dive</source>
-        <translation>Under fliken Information, tillåt redigering av våghöjd, svall och kyleffekt under ett dyk</translation>
+        <translation>Tillåt redigering av våghöjd, svall och kyleffekt under fliken Information</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="127"/>
@@ -13514,7 +13514,7 @@ Se https://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_log.ui" line="135"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_log.ui" line="135"/>
         <source>In the Information tab, allow editing of water salinity</source>
-        <translation>Under fliken Information, tillåt redigering av vattnets salthalt</translation>
+        <translation>Tillåt redigering av vattnets salthalt under fliken Information</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="15"/>
@@ -13597,7 +13597,7 @@ Se https://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_media.ui" line="98"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_media.ui" line="98"/>
         <source>One can view video files through thumbnail(s) in the Media tab, created using the external program FFmpeg which needs to be installed on your machine. Check the checkbox below to allow this. Then, in the text box below, specify the path to FFmpeg. In Linux, a typical path is:  /usr/bin/ffmpeg. If FFmpeg is installed in the system area of your computer, just type ffmpeg in the text box below. For more info see Appendix F of the User Manual.</source>
-        <translation>Det är möjligt att visa videor med hjälp av miniatyrer i fliken Media, under förutsättning att de är skapade genom att använda det externa programmet FFmpeg som behöver vara installerat på din dator. Markera kryssrutan nedan för att möjliggöra det för att sedan, i textrutan nedan, specificera sökvägen till FFmpeg. I Linux är en typisk genväg: /usr/bin/ffmpeg. Om FFmpeg är installerat under en standardsökväg i systemet, skriv bara in ffmpeg i textrutan nedan. För mer information se Appendix F av användarmanualen.</translation>
+        <translation>Det är möjligt att visa videor med hjälp av miniatyrer i fliken Media under förutsättning att de är skapade med det externa programmet FFmpeg. Markera kryssrutan nedan för att möjliggöra funktionen. Specificera sedan sökvägen till FFmpeg, som behöver vara installerat på din dator, i textrutan nedan. I Linux är en vanlig genväg: /usr/bin/ffmpeg. Om FFmpeg är installerat under en standardsökväg i systemet, skriv bara in ffmpeg i textrutan nedan. För mer information se Appendix F av användarmanualen.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="106"/>
@@ -13814,7 +13814,7 @@ Se https://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="255"/>
         <source>Save Password locally?</source>
-        <translation>Spara lösenord lokalt?</translation>
+        <translation>Spara lösenord lokalt</translation>
     </message>
 </context>
 <context>
@@ -13833,7 +13833,7 @@ Se https://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_reset.ui" line="39"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_reset.ui" line="39"/>
         <source>Selecting this button will reset all preferences to their default values</source>
-        <translation>Genom att trycka på knappen kommer alla inställningar återställas till förvalen</translation>
+        <translation>Genom att trycka på knappen nedan kommer alla inställningar i applikationen att återställas till förvalen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_reset.ui" line="50"/>
@@ -14807,7 +14807,7 @@ Vänligen exportera mallen till en ny fil.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="663"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="669"/>
         <source>Cloud credentials require verification PIN</source>
-        <translation>Autentiseringsuppgifter för moln kräver verifiering med PIN</translation>
+        <translation>Autentiseringsuppgifter för cloud-tjänst kräver verifiering med PIN</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="672"/>
@@ -14847,7 +14847,7 @@ Vänligen exportera mallen till en ny fil.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="769"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="779"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
-        <translation>Misslyckades med att ansluta till molntjänsten, återgår till lokalt läge</translation>
+        <translation>Misslyckades med att ansluta till Subsurface Cloud, återgår till lokalt läge</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="799"/>
@@ -15666,7 +15666,7 @@ som kräver den här inställningen</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="581"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="581"/>
         <source>Display</source>
-        <translation>Skärm</translation>
+        <translation>Utseende</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="589"/>
@@ -16607,7 +16607,7 @@ Filer med felaktig datum/tid</translation>
     <message>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="30"/>
         <source>Fresh</source>
-        <translation>Söt</translation>
+        <translation>Sött</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="30"/>
@@ -17560,7 +17560,7 @@ mixas av luft och:
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/updatemanager.cpp" line="79"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/updatemanager.cpp" line="79"/>
         <source>A new version of Subsurface is available.&lt;br/&gt;Click on:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; to download it.</source>
-        <translation>En ny version av Subsurface finns tillgänglig.&lt;br/&gt;Klicka på:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; för att ladda ner den.</translation>
+        <translation>En ny version av Subsurface finns tillgänglig.&lt;br/&gt;Klicka på:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; för att ladda ned uppdateringen.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="85"/>
@@ -17601,8 +17601,8 @@ mixas av luft och:
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/updatemanager.cpp" line="114"/>
         <source>Subsurface is checking every two weeks if a new version is available. 
 If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
-        <translation>Subsurface kollar varannan vecka om det har kommit en ny version.
-Om du inte vill att Subsurface skall göra det, vänligen klicka på Avstå</translation>
+        <translation>Subsurface kontrollerar varannan vecka om det finns en ny version av programvaran tillgänglig.
+Om du inte vill att Subsurface ska fortsätta med kontrollen, vänligen klicka på Avslå</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="116"/>
@@ -17610,7 +17610,7 @@ Om du inte vill att Subsurface skall göra det, vänligen klicka på Avstå</tra
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/updatemanager.cpp" line="116"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/updatemanager.cpp" line="116"/>
         <source>Decline</source>
-        <translation>Avstå</translation>
+        <translation>Avslå</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="117"/>
@@ -20960,14 +20960,14 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/qthelper.cpp" line="1175"/>
         <location filename="../tmp/Subsurface-4.9.6/core/qthelper.cpp" line="1175"/>
         <source>Fresh</source>
-        <translation>Söt</translation>
+        <translation>Sött</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1183"/>
         <location filename="../tmp/Subsurface-4.9.5/core/qthelper.cpp" line="1175"/>
         <location filename="../tmp/Subsurface-4.9.6/core/qthelper.cpp" line="1175"/>
         <source>Brackish</source>
-        <translation>Bräkt</translation>
+        <translation>Bräckt</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1183"/>

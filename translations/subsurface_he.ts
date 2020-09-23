@@ -42,7 +42,7 @@
 2011-2020</source>
         <translation>גרסה: %1
 
-© צוות פיתח של Subsurface
+© צוות הפיתוח של Subsurface
 2011-2020</translation>
     </message>
     <message>
@@ -203,7 +203,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/btdeviceselectiondialog.ui" line="206"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="253"/>
         <source>Force LE</source>
-        <translation>אלץ BLE</translation>
+        <translation>אלץ מצב LE</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="211"/>
@@ -220,7 +220,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/btdeviceselectiondialog.ui" line="221"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/btdeviceselectiondialog.ui" line="221"/>
         <source>even if not recognized as dive computer</source>
-        <translation>גם עם לא מזוהה כמחשב צלילה</translation>
+        <translation>גם אם לא מזוהה כמחשב צלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="224"/>
@@ -343,7 +343,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/btdeviceselectiondialog.cpp" line="318"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/btdeviceselectiondialog.cpp" line="338"/>
         <source>UNPAIRED</source>
-        <translation>נותק</translation>
+        <translation>מנותק</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="190"/>
@@ -359,7 +359,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/btdeviceselectiondialog.cpp" line="323"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/btdeviceselectiondialog.cpp" line="336"/>
         <source>PAIRED</source>
-        <translation>חובר</translation>
+        <translation>מחובר</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="193"/>
@@ -375,7 +375,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/btdeviceselectiondialog.cpp" line="328"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/btdeviceselectiondialog.cpp" line="337"/>
         <source>AUTHORIZED_PAIRED</source>
-        <translation>מורשה מחובר</translation>
+        <translation>מורשה ומחובר</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="208"/>
@@ -563,7 +563,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/btdeviceselectiondialog.cpp" line="487"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/btdeviceselectiondialog.cpp" line="487"/>
         <source>The device discovery agent was not created because the %1 address does not match the physical adapter address of any local Bluetooth device.</source>
-        <translation>סוכן גילוי המכשירים לא נוצר מכיוון שהכתובת %1 אינה תואמת את כתובת המתאם הפיסית של אף אחד מהתקני בלוטות&apos; המקומיים.</translation>
+        <translation>סוכן גילוי המכשירים לא נוצר מכיוון שהכתובת %1 אינה תואמת את כתובת המתאם הפיסית של אף אחד מהתקני הבלוטות&apos; המקומיים.</translation>
     </message>
 </context>
 <context>
@@ -601,7 +601,7 @@
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/CloudCredentials.qml" line="49"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/CloudCredentials.qml" line="49"/>
         <source>Email</source>
-        <translation>אימייל</translation>
+        <translation>דוא&quot;ל</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="65"/>
@@ -609,7 +609,7 @@
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/CloudCredentials.qml" line="65"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/CloudCredentials.qml" line="65"/>
         <source>Password</source>
-        <translation>סיסמא</translation>
+        <translation>סיסמה</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="83"/>
@@ -665,7 +665,7 @@
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/CloudCredentials.qml" line="151"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/CloudCredentials.qml" line="151"/>
         <source>Forgot password?</source>
-        <translation>שכחת את הסיסמא?</translation>
+        <translation>שכחת את הסיסמה?</translation>
     </message>
 </context>
 <context>
@@ -846,7 +846,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogimportdialog.cpp" line="72"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="72"/>
         <source>O₂</source>
-        <translation>חמצן</translation>
+        <translation>O₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="72"/>
@@ -854,7 +854,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogimportdialog.cpp" line="72"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="72"/>
         <source>He</source>
-        <translation>הליום</translation>
+        <translation>He</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="72"/>
@@ -894,7 +894,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogimportdialog.cpp" line="72"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="72"/>
         <source>Sample CNS</source>
-        <translation>אחוז CNS של דגימה</translation>
+        <translation>CNS של דגימה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="72"/>
@@ -918,7 +918,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <source>Sample stopdepth</source>
-        <translation>עומק תכנת עצירה של דגימה</translation>
+        <translation>עומק חניה של הדגימה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
@@ -926,7 +926,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <source>Sample pressure</source>
-        <translation>לחץ של דגימה</translation>
+        <translation>לחץ דגימה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
@@ -982,7 +982,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Sample heartrate</source>
-        <translation>דגימה דופק</translation>
+        <translation>קצב לב דגימה</translation>
     </message>
 </context>
 <context>
@@ -1025,7 +1025,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divelist.cpp" line="474"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divelist.cpp" line="474"/>
         <source>import %n dive(s) from %1</source>
-        <translation><numerusform>ייבוא צלילה אחד מתוך %1</numerusform><numerusform>ייבוא %n צלילות מתוך %1</numerusform><numerusform>ייבוא %n צלילות מתוך %1</numerusform><numerusform>ייבוא %n צלילות מתוך %1</numerusform></translation>
+        <translation><numerusform>ייבוא צלילה אחד מתוך %1</numerusform><numerusform>ייבוא %n צלילות מתוך %1</numerusform><numerusform>ייבוא %n צלילות מתוך %1</numerusform><numerusform>יבוא %n צלילות מתוך %1</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="555"/>
@@ -1041,7 +1041,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divelist.cpp" line="591"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divelist.cpp" line="591"/>
         <source>shift time of %n dives</source>
-        <translation><numerusform>הזיז זמן של צלילה אחד</numerusform><numerusform>הזיז זמן של %n צלילות</numerusform><numerusform>הזיז זמן של %n צלילות</numerusform><numerusform>הזיז זמן של %n צלילות</numerusform></translation>
+        <translation><numerusform>הזיז זמן של צלילה אחד</numerusform><numerusform>הזיז זמן של %n צלילות</numerusform><numerusform>הזיז זמן של %n צלילות</numerusform><numerusform>הזז זמן של %n צלילות</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="639"/>
@@ -1065,7 +1065,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divelist.cpp" line="703"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divelist.cpp" line="703"/>
         <source>remove autogenerated trips</source>
-        <translation>הסר טיולים מגונרתים אוטומטיים</translation>
+        <translation>הסר טיולים שיוצרו אוטומטית</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="715"/>
@@ -1073,7 +1073,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divelist.cpp" line="715"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divelist.cpp" line="715"/>
         <source>add %n dives to trip</source>
-        <translation><numerusform>הוסיף צלילה לטיול</numerusform><numerusform>הוסיף %n צלילות לטיול</numerusform><numerusform>הוסיף %n צלילות לטיול</numerusform><numerusform>הוסיף %n צלילות לטיול</numerusform></translation>
+        <translation><numerusform>הוסיף צלילה לטיול</numerusform><numerusform>הוסיף %n צלילות לטיול</numerusform><numerusform>הוסיף %n צלילות לטיול</numerusform><numerusform>הוסף %n צלילות לטיול</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="722"/>
@@ -1113,7 +1113,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divelist.cpp" line="904"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divelist.cpp" line="904"/>
         <source>move dive computer to front</source>
-        <translation>הזיז מחשב צלילה קדימה</translation>
+        <translation>הזז מחשב צלילה קדימה</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="910"/>
@@ -1129,7 +1129,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divelist.cpp" line="915"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divelist.cpp" line="915"/>
         <source>merge dive</source>
-        <translation>מיזוג צלילה</translation>
+        <translation>מזג צלילה</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="78"/>
@@ -1137,7 +1137,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divesite.cpp" line="78"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divesite.cpp" line="78"/>
         <source>add dive site</source>
-        <translation>הוסיף אתר צלילה</translation>
+        <translation>הוסף אתר צלילה</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="100"/>
@@ -1145,7 +1145,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divesite.cpp" line="100"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divesite.cpp" line="100"/>
         <source>import dive sites from %1</source>
-        <translation>ייבוא אתרי צלילה מ-%1</translation>
+        <translation>יבא אתרי צלילה מ-%1</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divesite.cpp" line="136"/>
@@ -1169,7 +1169,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divesite.cpp" line="191"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divesite.cpp" line="191"/>
         <source>Edit dive site name</source>
-        <translation>ערך שם של אתר צלילה</translation>
+        <translation>ערוך שם של אתר צלילה</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="214"/>
@@ -1177,7 +1177,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divesite.cpp" line="214"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divesite.cpp" line="214"/>
         <source>Edit dive site description</source>
-        <translation>ערך תיאור של אתר צלילה</translation>
+        <translation>ערוך תיאור של אתר צלילה</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="237"/>
@@ -1185,7 +1185,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divesite.cpp" line="237"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divesite.cpp" line="237"/>
         <source>Edit dive site notes</source>
-        <translation>ערוך הערות אתר לצלול</translation>
+        <translation>ערוך הערות של אתר צלילה</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="260"/>
@@ -1193,7 +1193,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divesite.cpp" line="260"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divesite.cpp" line="260"/>
         <source>Edit dive site country</source>
-        <translation>ערך מדינה של אתר צלילה</translation>
+        <translation>ערוך מדינה של אתר צלילה</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="285"/>
@@ -1201,7 +1201,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divesite.cpp" line="285"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divesite.cpp" line="285"/>
         <source>Edit dive site location</source>
-        <translation>ערך מיקום של אתר צלילה</translation>
+        <translation>ערוך מיקום של אתר צלילה</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="314"/>
@@ -1209,7 +1209,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divesite.cpp" line="314"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divesite.cpp" line="314"/>
         <source>Edit dive site taxonomy</source>
-        <translation>עריך הטקסונומיה אתר צלילה</translation>
+        <translation>ערוך קיטלוג אתר צלילה</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="342"/>
@@ -1217,7 +1217,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divesite.cpp" line="342"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divesite.cpp" line="342"/>
         <source>merge dive sites</source>
-        <translation>מיזוג אתרי צלילה</translation>
+        <translation>מזג אתרי צלילה</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="396"/>
@@ -1241,7 +1241,7 @@
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="523"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit_trip.cpp" line="18"/>
         <source>Edit %1</source>
-        <translation>ערֿך %1</translation>
+        <translation>ערוך %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="135"/>
@@ -1253,7 +1253,7 @@
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="135"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="525"/>
         <source>Edit %1 (%n dive(s))</source>
-        <translation><numerusform>ערך %1 (צלילה אחד)</numerusform><numerusform>ערך %1 (%n צלילות)</numerusform><numerusform>ערך %1 (%n צלילות)</numerusform><numerusform>ערך %1 (%n צלילות)</numerusform></translation>
+        <translation><numerusform>ערך %1 (צלילה אחד)</numerusform><numerusform>ערך %1 (%n צלילות)</numerusform><numerusform>ערך %1 (%n צלילות)</numerusform><numerusform>ערוך %1 (%n צלילות)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="195"/>
@@ -1293,7 +1293,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="219"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="219"/>
         <source>wavesize</source>
-        <translation>גודל גלים</translation>
+        <translation>גובה גלים</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="225"/>
@@ -1309,7 +1309,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="231"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="231"/>
         <source>surge</source>
-        <translation>תנועת גלים</translation>
+        <translation>סחף</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="237"/>
@@ -1381,7 +1381,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="452"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="452"/>
         <source>dive mode</source>
-        <translation>מוד צלילה</translation>
+        <translation>סוג צלילה</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="458"/>
@@ -1397,7 +1397,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="588"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="588"/>
         <source>tags</source>
-        <translation>תג</translation>
+        <translation>תגיות</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="606"/>
@@ -1453,7 +1453,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="872"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="872"/>
         <source>Add weight (%n dive(s))</source>
-        <translation><numerusform>הוסיף משקל %1 (%n צלילות) </numerusform><numerusform>הוסיף משקל %1 (%n צלילות) </numerusform><numerusform>הוסיף משקל %1 (%n צלילות) </numerusform><numerusform>הוסיף משקל %1 (%n צלילות) </numerusform></translation>
+        <translation><numerusform>הוסיף משקל %1 (%n צלילות) </numerusform><numerusform>הוסיף משקל %1 (%n צלילות) </numerusform><numerusform>הוסיף משקל %1 (%n צלילות) </numerusform><numerusform>הוסף משקל %1 (%n צלילות) </numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="956"/>
@@ -1461,7 +1461,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="956"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="956"/>
         <source>Remove weight</source>
-        <translation>הוריד משקל</translation>
+        <translation>הורד משקל</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="958"/>
@@ -1469,7 +1469,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="958"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="958"/>
         <source>Remove weight (%n dive(s))</source>
-        <translation><numerusform>הוריד משקל %1 (%n צלילות) </numerusform><numerusform>הוריד משקל %1 (%n צלילות) </numerusform><numerusform>הוריד משקל %1 (%n צלילות) </numerusform><numerusform>הוריד משקל %1 (%n צלילות) </numerusform></translation>
+        <translation><numerusform>הוריד משקל %1 (%n צלילות) </numerusform><numerusform>הוריד משקל %1 (%n צלילות) </numerusform><numerusform>הוריד משקל %1 (%n צלילות) </numerusform><numerusform>הורד משקל %1 (%n צלילות) </numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="987"/>
@@ -1477,7 +1477,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="987"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="987"/>
         <source>Edit weight</source>
-        <translation>עדקון משקל</translation>
+        <translation>ערוך משקל</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="989"/>
@@ -1485,7 +1485,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="989"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="989"/>
         <source>Edit weight (%n dive(s))</source>
-        <translation><numerusform>עריכת משקל %1 (%n צלילות) </numerusform><numerusform>עריכת משקל %1 (%n צלילות) </numerusform><numerusform>עריכת משקל %1 (%n צלילות) </numerusform><numerusform>עריכת משקל %1 (%n צלילות) </numerusform></translation>
+        <translation><numerusform>עריכת משקל %1 (%n צלילות) </numerusform><numerusform>עריכת משקל %1 (%n צלילות) </numerusform><numerusform>עריכת משקל %1 (%n צלילות) </numerusform><numerusform>ערוך משקל %1 (%n צלילות) </numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="1289"/>
@@ -1493,7 +1493,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="1289"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="1289"/>
         <source>Edit dive [%1]</source>
-        <translation>עריכת צלילה [%1]</translation>
+        <translation>ערוך צלילה [%1]</translation>
     </message>
     <message>
         <location filename="../commands/command_edit_trip.cpp" line="53"/>
@@ -1556,7 +1556,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="1044"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="1044"/>
         <source>Add cylinder (%n dive(s))</source>
-        <translation><numerusform>הוסיף מיכל %1 (%n צלילות)</numerusform><numerusform>הוסיף מיכל %1 (%n צלילות)</numerusform><numerusform>הוסיף מיכל %1 (%n צלילות)</numerusform><numerusform>הוסיף מיכל %1 (%n צלילות)</numerusform></translation>
+        <translation><numerusform>הוסיף מיכל %1 (%n צלילות)</numerusform><numerusform>הוסיף מיכל %1 (%n צלילות)</numerusform><numerusform>הוסיף מיכל %1 (%n צלילות)</numerusform><numerusform>הוסף מיכל %1 (%n צלילות)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1567,7 +1567,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_event.cpp" line="66"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_event.cpp" line="66"/>
         <source>Add bookmark</source>
-        <translation>הוספת סימנייה</translation>
+        <translation>הוסף סימנייה</translation>
     </message>
 </context>
 <context>
@@ -1578,7 +1578,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_event.cpp" line="72"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_event.cpp" line="72"/>
         <source>Add dive mode switch to %1</source>
-        <translation>הוסף מתג מצב צלילה ל-%1</translation>
+        <translation>הוסף שינוי מצב צלילה ל-%1</translation>
     </message>
 </context>
 <context>
@@ -1638,7 +1638,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_event.cpp" line="113"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_event.cpp" line="113"/>
         <source>Remove %1 event</source>
-        <translation>הסר %1 האירוע </translation>
+        <translation>הסר אירוע %1 </translation>
     </message>
 </context>
 <context>
@@ -1660,7 +1660,7 @@
         <location filename="../tmp/Subsurface-4.9.5/core/configuredivecomputer.cpp" line="183"/>
         <location filename="../tmp/Subsurface-4.9.6/core/configuredivecomputer.cpp" line="183"/>
         <source>Could not save the backup file %1. Error Message: %2</source>
-        <translation>לא ניתן לשמור קובץ גיבוי %1. התרעה: %2</translation>
+        <translation>לא ניתן לשמור קובץ גיבוי %1. התראה: %2</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="199"/>
@@ -1836,7 +1836,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="163"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2551"/>
         <source>Save libdivecomputer logfile</source>
-        <translation>שמור קובץ log של libdivecomputer</translation>
+        <translation>שמור קובץ לוג של libdivecomputer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="170"/>
@@ -2071,7 +2071,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2708"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2886"/>
         <source>Date format</source>
-        <translation>פורמט תאריך</translation>
+        <translation>מבנה תאריך</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="399"/>
@@ -2135,7 +2135,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="434"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2581"/>
         <source>kg/ℓ</source>
-        <translation>קילוגרם לליטר</translation>
+        <translation>kg/ℓ</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="463"/>
@@ -2206,7 +2206,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2907"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3050"/>
         <source>s</source>
-        <translation>שניות</translation>
+        <translation>ש</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="506"/>
@@ -2260,7 +2260,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2910"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2921"/>
         <source>m</source>
-        <translation>מטרים</translation>
+        <translation>מ&apos;</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="573"/>
@@ -2506,7 +2506,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="666"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2598"/>
         <source>ZH-L16 CC</source>
-        <translation>ZH-L16 מערכת סגורה</translation>
+        <translation>ZH-L16 CC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="671"/>
@@ -2534,7 +2534,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="676"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2600"/>
         <source>L16-GF OC</source>
-        <translation>L16 - גרדיאנט - מערכת פתוחה</translation>
+        <translation>L16-GF OC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="681"/>
@@ -2543,7 +2543,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="681"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2601"/>
         <source>L16-GF CC</source>
-        <translation>L16 - גרדיאנט - מערכת סגורה</translation>
+        <translation>L16-GF CC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="686"/>
@@ -2552,7 +2552,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="686"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2602"/>
         <source>PSCR-GF</source>
-        <translation>מערכת חצי סגורה - גרדיאנט</translation>
+        <translation>PSCR-GF</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="694"/>
@@ -2600,7 +2600,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2771"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2930"/>
         <source>Last deco</source>
-        <translation>דקו אחרון</translation>
+        <translation>חניית דקו אחרונה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="749"/>
@@ -2652,7 +2652,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2611"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2776"/>
         <source>Saturation</source>
-        <translation>רויה</translation>
+        <translation>רוויה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="792"/>
@@ -2743,7 +2743,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2937"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2938"/>
         <source>ℓ/min</source>
-        <translation>ליטר לדקה</translation>
+        <translation>ליטר\דקה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="877"/>
@@ -2834,7 +2834,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2946"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2969"/>
         <source>%O₂</source>
-        <translation>אחוז חמצן</translation>
+        <translation>%O₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="940"/>
@@ -2868,7 +2868,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2948"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2971"/>
         <source>%He</source>
-        <translation>אחוז הליום</translation>
+        <translation>%He</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="945"/>
@@ -3065,7 +3065,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2826"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2980"/>
         <source>Dil 1</source>
-        <translation>גז ממהל 1</translation>
+        <translation>מדלל 1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1045"/>
@@ -3084,7 +3084,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2828"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2982"/>
         <source>Dil 2</source>
-        <translation>גז ממהל 2</translation>
+        <translation>מדלל 2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1050"/>
@@ -3103,7 +3103,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2830"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2984"/>
         <source>Dil 3</source>
-        <translation>גז ממהל 3</translation>
+        <translation>מדלל 3</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1055"/>
@@ -3122,7 +3122,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2832"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2986"/>
         <source>Dil 4</source>
-        <translation>גז ממהל 4</translation>
+        <translation>מדלל 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1060"/>
@@ -3141,7 +3141,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2834"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2988"/>
         <source>Dil 5</source>
-        <translation>גז ממהל 5</translation>
+        <translation>מדלל 5</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1095"/>
@@ -3270,7 +3270,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2863"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3016"/>
         <source>pO₂ max</source>
-        <translation>pO₂ מרבי</translation>
+        <translation>pO₂ מירבי</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1175"/>
@@ -3541,7 +3541,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="1393"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2713"/>
         <source>230LSB/Gauss</source>
-        <translation>230LSB ל-גאוס</translation>
+        <translation>230LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1398"/>
@@ -3550,7 +3550,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="1398"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2714"/>
         <source>330LSB/Gauss</source>
-        <translation>330LSB ל-גאוס</translation>
+        <translation>330LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1403"/>
@@ -3559,7 +3559,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="1403"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2715"/>
         <source>390LSB/Gauss</source>
-        <translation>390LSB ל-גאוס</translation>
+        <translation>390LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1408"/>
@@ -3568,7 +3568,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="1408"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2716"/>
         <source>440LSB/Gauss</source>
-        <translation>440LSB ל-גאוס</translation>
+        <translation>440LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1413"/>
@@ -3577,7 +3577,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="1413"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2717"/>
         <source>660LSB/Gauss</source>
-        <translation>660LSB ל-גאוס</translation>
+        <translation>660LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1418"/>
@@ -3586,7 +3586,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="1418"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2718"/>
         <source>820LSB/Gauss</source>
-        <translation>820LSB ל-גאוס</translation>
+        <translation>820LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1423"/>
@@ -3595,7 +3595,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="1423"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2719"/>
         <source>1090LSB/Gauss</source>
-        <translation>1090LSB ל-גאוס</translation>
+        <translation>1090LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1428"/>
@@ -3604,7 +3604,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="1428"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2720"/>
         <source>1370LSB/Gauss</source>
-        <translation>1370LSB ל-גאוס</translation>
+        <translation>1370LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1462"/>
@@ -3613,7 +3613,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="1462"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2722"/>
         <source>Compass gain</source>
-        <translation>כיול מצפן</translation>
+        <translation>סטיית מצפן</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1472"/>
@@ -3790,7 +3790,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2753"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2939"/>
         <source>Always show pO₂</source>
-        <translation>הצג תמיד לחץ חלקי של חמצן</translation>
+        <translation>הצג תמיד לחץ חמצן</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1753"/>
@@ -3850,7 +3850,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="2000"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2778"/>
         <source>Right button sensitivity</source>
-        <translation>רגישות לחצן ימינית</translation>
+        <translation>רגישות לחצן ימני</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2007"/>
@@ -4061,7 +4061,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3029"/>
         <source>P0 (none)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation>P0 (בלי)</translation>
+        <translation>P0 (ללא)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3754"/>
@@ -4071,7 +4071,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3030"/>
         <source>P1 (medium)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation>P1 (בינוני)</translation>
+        <translation>P1 (בינונית)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3759"/>
@@ -4081,7 +4081,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3031"/>
         <source>P2 (high)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation>P2 (גבוה)</translation>
+        <translation>P2 (גבוהה)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3767"/>
@@ -4326,7 +4326,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/configuredivecomputerdialog.cpp" line="1464"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.cpp" line="1464"/>
         <source>Choose file for dive computer download logfile</source>
-        <translation>בחר קובץ להורדת log מחשב הצלילה</translation>
+        <translation>בחר קובץ להורדת לוג מחשב הצלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1465"/>
@@ -4377,7 +4377,7 @@
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/CopySettings.qml" line="26"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/CopySettings.qml" line="26"/>
         <source>Selection for copy-paste</source>
-        <translation>בחירה עבור העתקה הדבק</translation>
+        <translation>בחירה עבור העתק-הדבק</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="36"/>
@@ -4512,7 +4512,7 @@
         <location filename="../tmp/Subsurface-4.9.5/qt-models/cylindermodel.cpp" line="21"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/cylindermodel.cpp" line="21"/>
         <source>O₂%</source>
-        <translation>אחוז חמצן</translation>
+        <translation>O₂%</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="21"/>
@@ -4520,7 +4520,7 @@
         <location filename="../tmp/Subsurface-4.9.5/qt-models/cylindermodel.cpp" line="21"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/cylindermodel.cpp" line="21"/>
         <source>He%</source>
-        <translation>אחוז הליום</translation>
+        <translation>He%</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="22"/>
@@ -4528,7 +4528,7 @@
         <location filename="../tmp/Subsurface-4.9.5/qt-models/cylindermodel.cpp" line="22"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/cylindermodel.cpp" line="22"/>
         <source>Deco switch at</source>
-        <translation>מעבר  דקו ב-</translation>
+        <translation>החלפה ב-</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="22"/>
@@ -4560,7 +4560,7 @@
         <location filename="../tmp/Subsurface-4.9.5/qt-models/cylindermodel.cpp" line="53"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/cylindermodel.cpp" line="53"/>
         <source>cuft</source>
-        <translation>cuft</translation>
+        <translation>רגל מעוקב</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="57"/>
@@ -4717,7 +4717,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divecomponentselection.ui" line="52"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divecomponentselection.ui" line="52"/>
         <source>Which components would you like to copy?</source>
-        <translation>איזו רחיבים הינך רוצה להעתיק?</translation>
+        <translation>אילו רכיבים הינך רוצה להעתיק?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="73"/>
@@ -4815,7 +4815,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divecomponentselection.ui" line="146"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divecomponentselection.ui" line="146"/>
         <source>You can paste these to another dive or as text to another application.</source>
-        <translation>ניתן להדביק אותם לצלילה אחרת או לטקסט ליישום אחר.</translation>
+        <translation>ניתן להדביק אותם לצלילה אחרת או כטקסט ליישום אחר.</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="140"/>
@@ -4903,7 +4903,7 @@
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveDetails.qml" line="63"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetails.qml" line="63"/>
         <source>Remove this dive from trip</source>
-        <translation>הסר צלילה/צלילות מטיול</translation>
+        <translation>הסר צלילה מטיול</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="72"/>
@@ -4911,7 +4911,7 @@
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveDetails.qml" line="72"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetails.qml" line="72"/>
         <source>Add dive to trip above</source>
-        <translation>הוסף צלילה/צלילות לטיול למעלה</translation>
+        <translation>הוסף צלילה לטיול למעלה</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="81"/>
@@ -4919,7 +4919,7 @@
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveDetails.qml" line="81"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetails.qml" line="81"/>
         <source>Add dive to trip below</source>
-        <translation>הוסף צלילה/צלילות לטיול למטה</translation>
+        <translation>הוסף צלילה לטיול למטה</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="90"/>
@@ -4935,7 +4935,7 @@
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveDetails.qml" line="96"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetails.qml" line="96"/>
         <source>Mark dive as valid</source>
-        <translation>סמן את הצלילה כתקינות</translation>
+        <translation>סמן את הצלילה כתקינה</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="96"/>
@@ -4943,7 +4943,7 @@
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveDetails.qml" line="96"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetails.qml" line="96"/>
         <source>Mark dive as invalid</source>
-        <translation>סמן את הצלילה כלא תקינות</translation>
+        <translation>סמן את הצלילה כלא תקינה</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="101"/>
@@ -5100,7 +5100,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveDetailsEdit.qml" line="306"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetailsEdit.qml" line="306"/>
         <source>Divemaster:</source>
-        <translation>מדריך צלילה:</translation>
+        <translation>דייבמאסטר:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="327"/>
@@ -5116,7 +5116,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveDetailsEdit.qml" line="341"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetailsEdit.qml" line="341"/>
         <source>Cylinder1:</source>
-        <translation>מיכל1:</translation>
+        <translation>מיכל 1:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="356"/>
@@ -5196,7 +5196,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveDetailsEdit.qml" line="397"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetailsEdit.qml" line="397"/>
         <source>Cylinder2:</source>
-        <translation>מיכל2:</translation>
+        <translation>מיכל 2:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="460"/>
@@ -5204,7 +5204,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveDetailsEdit.qml" line="460"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetailsEdit.qml" line="460"/>
         <source>Cylinder3:</source>
-        <translation>מיכל3:</translation>
+        <translation>מיכל 3:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="523"/>
@@ -5212,7 +5212,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveDetailsEdit.qml" line="523"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetailsEdit.qml" line="523"/>
         <source>Cylinder4:</source>
-        <translation>מיכל4:</translation>
+        <translation>מיכל 4:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="587"/>
@@ -5220,7 +5220,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveDetailsEdit.qml" line="587"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetailsEdit.qml" line="587"/>
         <source>Cylinder5:</source>
-        <translation>מיכל5:</translation>
+        <translation>מיכל 5:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="650"/>
@@ -5335,7 +5335,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveDetailsView.qml" line="474"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetailsView.qml" line="474"/>
         <source>Divemaster:</source>
-        <translation>מדריך צלילה:</translation>
+        <translation>דייבמאסטר:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="482"/>
@@ -5525,7 +5525,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="285"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="285"/>
         <source>Mark dive as valid</source>
-        <translation>סמן את הצלילה כתקינות</translation>
+        <translation>סמן את הצלילה כתקינה</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="285"/>
@@ -5533,7 +5533,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="285"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="285"/>
         <source>Mark dive as invalid</source>
-        <translation>סמן את הצלילה כלא תקינות</translation>
+        <translation>סמן את הצלילה כלא תקינה</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="291"/>
@@ -5541,7 +5541,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="291"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="291"/>
         <source>Delete dive</source>
-        <translation>מחיקת צלילה</translation>
+        <translation>מחק צלילה</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="297"/>
@@ -5557,7 +5557,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="306"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="306"/>
         <source>Edit trip details</source>
-        <translation>תעדקן נתוני הטיול</translation>
+        <translation>ערוך פרטי הטיול</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="318"/>
@@ -5597,7 +5597,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="354"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="354"/>
         <source>No dives in dive list</source>
-        <translation>אין צלילות ברשימת צלילה</translation>
+        <translation>אין צלילות ברשימת צלילות</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="354"/>
@@ -5605,7 +5605,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="354"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="354"/>
         <source>Please wait, updating the dive list</source>
-        <translation>המתן, מתקן רשימת הצלילות</translation>
+        <translation>המתן, מעדכן רשימת צלילות</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="400"/>
@@ -5637,7 +5637,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="460"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="460"/>
         <source>Download dives</source>
-        <translation>הוריד צלילות</translation>
+        <translation>הורד צלילות</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="470"/>
@@ -5688,7 +5688,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="807"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="807"/>
         <source>Remove dive(s) from trip</source>
-        <translation>הסר צלילה/צלילות מטיול</translation>
+        <translation>הסר צלילות מטיול</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="808"/>
@@ -5704,7 +5704,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="823"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="823"/>
         <source>Add dive(s) to trip immediately above</source>
-        <translation>הוסף צלילה/צלילות לטיול למעלה</translation>
+        <translation>הוסף צלילות לטיול למעלה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="825"/>
@@ -5712,7 +5712,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="825"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="825"/>
         <source>Add dive(s) to trip immediately below</source>
-        <translation>הוסף צלילה/צלילות לטיול למטה</translation>
+        <translation>הוסף צלילות לטיול למטה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="829"/>
@@ -5720,7 +5720,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="829"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="829"/>
         <source>Merge trip with trip above</source>
-        <translation>אגד את הטיול עם הטיול למעלה</translation>
+        <translation>אחד את הטיול עם הטיול למעלה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="830"/>
@@ -5728,7 +5728,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="830"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="830"/>
         <source>Merge trip with trip below</source>
-        <translation>אגד את הטיול עם הטיול למטה</translation>
+        <translation>אחד את הטיול עם הטיול למטה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="834"/>
@@ -5736,7 +5736,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="834"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="834"/>
         <source>Delete dive(s)</source>
-        <translation>מחיקת צלילה/צלילות</translation>
+        <translation>מחק צלילות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="836"/>
@@ -5760,7 +5760,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="841"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="841"/>
         <source>Merge selected dives</source>
-        <translation>אגד צלילות הנבחרות</translation>
+        <translation>אחד את הצלילות הנבחרות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="843"/>
@@ -5768,7 +5768,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="843"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="843"/>
         <source>Renumber dive(s)</source>
-        <translation>מספר צלילה/צלילות מחדש</translation>
+        <translation>מספר צלילות מחדש</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="844"/>
@@ -5792,7 +5792,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="846"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="846"/>
         <source>Load media from file(s)</source>
-        <translation>טען מדיה מקב(צים)</translation>
+        <translation>טען מדיה מקבצים</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="847"/>
@@ -5956,7 +5956,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.ui" line="175"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="391"/>
         <source>Anonymize</source>
-        <translation>אנונימי</translation>
+        <translation>הפוך לאנונימי</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="186"/>
@@ -6121,7 +6121,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.ui" line="441"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="397"/>
         <source>All di&amp;ves</source>
-        <translation>כל הצלילות</translation>
+        <translation>כל &amp;הצלילות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="451"/>
@@ -6238,7 +6238,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.ui" line="548"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="411"/>
         <source>Theme</source>
-        <translation>סגנון</translation>
+        <translation>ערכת נושא</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="559"/>
@@ -6251,7 +6251,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.cpp" line="116"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.cpp" line="116"/>
         <source>Light</source>
-        <translation>אור</translation>
+        <translation>בהיר</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="564"/>
@@ -6500,7 +6500,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.cpp" line="204"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.cpp" line="204"/>
         <source>Export HTML files as</source>
-        <translation>יצוא קובצי HTML כ-</translation>
+        <translation>יצוא קבצי HTML כ-</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="219"/>
@@ -6508,7 +6508,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.cpp" line="219"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.cpp" line="219"/>
         <source>Please wait, exporting...</source>
-        <translation>אנא המתן, יצוא ...</translation>
+        <translation>אנא המתן, מייצא ...</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="379"/>
@@ -6611,7 +6611,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.ui" line="155"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="169"/>
         <source>Drag the tags above to each corresponding column below</source>
-        <translation>גרור את התגים מעל כל עמודה מקבילה למטה</translation>
+        <translation>גרור את התגים מעל לכל עמודה מתאימה למטה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="375"/>
@@ -6767,7 +6767,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="709"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="834"/>
         <source>Sample stopdepth</source>
-        <translation>עומק תכנת עצירה של דגימה</translation>
+        <translation>עומק תחנת עצירה של דגימה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="711"/>
@@ -6791,7 +6791,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="713"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="840"/>
         <source>Sample setpoint</source>
-        <translation>נקודה קבוע של דגימה</translation>
+        <translation>נקודה קבועה של דגימה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="717"/>
@@ -6957,7 +6957,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="729"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="988"/>
         <source>O₂</source>
-        <translation>חמצן</translation>
+        <translation>O₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="730"/>
@@ -6969,7 +6969,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="730"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="990"/>
         <source>He</source>
-        <translation>הליום</translation>
+        <translation>He</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="731"/>
@@ -7105,7 +7105,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogimportdialog.cpp" line="838"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="838"/>
         <source>Sample heartrate</source>
-        <translation>דגימה דופק</translation>
+        <translation>קצב לב דגימה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="1023"/>
@@ -7161,7 +7161,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/diveplanner.ui" line="144"/>
         <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="205"/>
         <source>m</source>
-        <translation>מטרים</translation>
+        <translation>מ&apos;</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="166"/>
@@ -7215,7 +7215,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/diveplanner.ui" line="221"/>
         <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="215"/>
         <source>kg/ℓ</source>
-        <translation>קילוגרם לליטר</translation>
+        <translation>kg/ℓ</translation>
     </message>
 </context>
 <context>
@@ -7226,7 +7226,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerEdit.qml" line="11"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerEdit.qml" line="11"/>
         <source>Dive planner edit</source>
-        <translation>עדקון תכנון צלילה</translation>
+        <translation>עדכון תכנון צלילה</translation>
     </message>
 </context>
 <context>
@@ -7320,7 +7320,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/qt-models/diveplannermodel.cpp" line="1109"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/diveplannermodel.cpp" line="1109"/>
         <source>m</source>
-        <translation>מטרים</translation>
+        <translation>מ&apos;</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="1135"/>
@@ -7355,7 +7355,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
         <source> m/min</source>
-        <translation>מטרים לדקה</translation>
+        <translation>מ&apos;\דקה</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
@@ -7363,7 +7363,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
         <source> ft/min</source>
-        <translation>רגל לדקה</translation>
+        <translation>רגל\דקה</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
@@ -7371,7 +7371,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
         <source> l/min</source>
-        <translation>ליטר לדקה</translation>
+        <translation>ליטר\דקה</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
@@ -7379,7 +7379,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
         <source> cuft/min</source>
-        <translation>רגל מעוקב לדקה</translation>
+        <translation>רגל מעוקב\דקה</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="15"/>
@@ -7451,7 +7451,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="119"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="119"/>
         <source>Descent</source>
-        <translation>ירידה</translation>
+        <translation>העמקה</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="123"/>
@@ -7683,7 +7683,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DivePlannerSetup.qml" line="411"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DivePlannerSetup.qml" line="411"/>
         <source> min</source>
-        <translation> דקה</translation>
+        <translation> דקות</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="418"/>
@@ -7825,7 +7825,7 @@ GPS הנוכחי:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/diveplanner.cpp" line="269"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/diveplanner.cpp" line="269"/>
         <source>kg/ℓ</source>
-        <translation>קילוגרם לליטר</translation>
+        <translation>kg/ℓ</translation>
     </message>
 </context>
 <context>
@@ -8108,7 +8108,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveSummary.qml" line="51"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveSummary.qml" line="51"/>
         <source>All</source>
-        <translation>כולם</translation>
+        <translation>הכל</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="52"/>
@@ -8116,7 +8116,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveSummary.qml" line="52"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveSummary.qml" line="52"/>
         <source>1 month</source>
-        <translation>חודש 1</translation>
+        <translation>חודש</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="53"/>
@@ -8140,7 +8140,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveSummary.qml" line="55"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveSummary.qml" line="55"/>
         <source>1 year</source>
-        <translation>שנה 1</translation>
+        <translation>שנה</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="59"/>
@@ -8223,7 +8223,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divesummarymodel.cpp" line="87"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesummarymodel.cpp" line="87"/>
         <source>Deep dives (&gt; 39 m)</source>
-        <translation>צצלילות עמוקות (39+ מטרים)</translation>
+        <translation>צלילות עמוקות (39+ מ&apos;)</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="88"/>
@@ -8231,7 +8231,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divesummarymodel.cpp" line="88"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesummarymodel.cpp" line="88"/>
         <source>Dive plan(s)</source>
-        <translation>תוכניות צלילה/צלילות</translation>
+        <translation>תוכניות צלילה</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="89"/>
@@ -8247,7 +8247,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divesummarymodel.cpp" line="90"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesummarymodel.cpp" line="90"/>
         <source>Max Time</source>
-        <translation>זמן מקסימאלי</translation>
+        <translation>זמן מירבי</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="91"/>
@@ -8279,7 +8279,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divesummarymodel.cpp" line="94"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesummarymodel.cpp" line="94"/>
         <source>Min SAC</source>
-        <translation>SAC מינימלית</translation>
+        <translation>SAC מזערי</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="95"/>
@@ -8287,7 +8287,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divesummarymodel.cpp" line="95"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesummarymodel.cpp" line="95"/>
         <source>Max SAC</source>
-        <translation>SAC מירבית</translation>
+        <translation>SAC מירבי</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="96"/>
@@ -8314,7 +8314,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divetripmodel.cpp" line="77"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="77"/>
         <source>(%L1 shown)</source>
-        <translation>(%L1 הוצג)</translation>
+        <translation>(%L1 מוצג)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="125"/>
@@ -8394,7 +8394,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="321"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="430"/>
         <source>m</source>
-        <translation>מטרים</translation>
+        <translation>מ&apos;</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="321"/>
@@ -8470,7 +8470,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="327"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="436"/>
         <source>lbs</source>
-        <translation>ליברות</translation>
+        <translation>פאונד</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="329"/>
@@ -8542,7 +8542,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="337"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="446"/>
         <source>/min</source>
-        <translation>לדקה</translation>
+        <translation>\דקה</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="339"/>
@@ -8566,7 +8566,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divetripmodel.cpp" line="341"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="341"/>
         <source>Max. CNS</source>
-        <translation>רעילות שיורית מירבית</translation>
+        <translation>Max. CNS</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="343"/>
@@ -8654,7 +8654,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divetripmodel.cpp" line="394"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="394"/>
         <source>Temp.</source>
-        <translation>טמפ</translation>
+        <translation>טמפ.</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="396"/>
@@ -8682,7 +8682,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="408"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="450"/>
         <source>Max CNS</source>
-        <translation>רעילות שייורית מקסימלית</translation>
+        <translation>Max CNS</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="412"/>
@@ -8698,7 +8698,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divetripmodel.cpp" line="486"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="486"/>
         <source>finish populating data store</source>
-        <translation>סיים את חנות הנתונים</translation>
+        <translation>סיים את הפצת הנתונים</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="488"/>
@@ -8823,7 +8823,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divesiteimportdialog.ui" line="14"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divesiteimportdialog.ui" line="14"/>
         <source>Select dive sites to import</source>
-        <translation>בחור אתר צלילה לייבוא</translation>
+        <translation>בחר אתר צלילה לייבא</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divesiteimportdialog.ui" line="58"/>
@@ -8891,8 +8891,8 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesiteimportmodel.cpp" line="36"/>
         <source>Nearest
 Existing Site</source>
-        <translation>הקרוב ביותר
-אתר קיים</translation>
+        <translation>אתר קיים
+קרוב ביותר</translation>
     </message>
     <message>
         <location filename="../qt-models/divesiteimportmodel.cpp" line="38"/>
@@ -9235,7 +9235,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="22"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="22"/>
         <source>Bluetooth is not enabled</source>
-        <translation>Bluetooth לא מופעל</translation>
+        <translation>בלוטות&apos; לא מופעל</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="55"/>
@@ -9267,7 +9267,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="218"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="218"/>
         <source> Previously used dive computers: </source>
-        <translation>מחשבי צלילה שהשומשו בעבר:</translation>
+        <translation>מחשבי צלילה שהיו בשימוש בעבר:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="325"/>
@@ -9323,7 +9323,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="441"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="441"/>
         <source>Please wait while we record these dives...</source>
-        <translation>נה המתן, שומר צלילות...</translation>
+        <translation>אנא המתן, שומר צלילות...</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="455"/>
@@ -9358,7 +9358,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/core/downloadfromdcthread.cpp" line="97"/>
         <location filename="../tmp/Subsurface-4.9.6/core/downloadfromdcthread.cpp" line="97"/>
         <source>No new dives downloaded from dive computer</source>
-        <translation>אין צלילות חדשות שהורדו מהמחשב לצלול</translation>
+        <translation>אין צלילות חדשות שהורדו ממחשב הצלילה</translation>
     </message>
 </context>
 <context>
@@ -9505,7 +9505,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="195"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="195"/>
         <source>Anonymize</source>
-        <translation>אנונימי</translation>
+        <translation>הפוך לאנונימי</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="198"/>
@@ -9691,7 +9691,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="173"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="213"/>
         <source>Max</source>
-        <translation>מקסימום</translation>
+        <translation>מקס.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="84"/>
@@ -9711,7 +9711,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="233"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="477"/>
         <source>Min</source>
-        <translation>מינימום</translation>
+        <translation>מזערי</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="107"/>
@@ -9843,7 +9843,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/filterwidget2.ui" line="256"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="256"/>
         <source>Planned</source>
-        <translation>מתכנון</translation>
+        <translation>מתוכנן</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="288"/>
@@ -9956,7 +9956,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/filterwidget2.cpp" line="296"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.cpp" line="296"/>
         <source>%L1/%L2 shown</source>
-        <translation>%L1/%L2 הוגצ</translation>
+        <translation>%L1/%L2 הוצג</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.cpp" line="298"/>
@@ -9995,7 +9995,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/findmovedimagesdialog.ui" line="37"/>
         <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="155"/>
         <source>Found media files</source>
-        <translation>קבצי מדיה שנמצו</translation>
+        <translation>קבצי מדיה שנמצאו</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="71"/>
@@ -10004,7 +10004,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/findmovedimagesdialog.ui" line="71"/>
         <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="157"/>
         <source>Match only media files in selected dive(s)</source>
-        <translation>התאם רק קובצי מדיה בצלילה שנבחר(ה/ו) </translation>
+        <translation>התאם רק קבצי מדיה בצלילות שנבחרו</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="95"/>
@@ -10058,7 +10058,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/findmovedimagesdialog.cpp" line="255"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/findmovedimagesdialog.cpp" line="255"/>
         <source>No matching media files found</source>
-        <translation>לא נמצאו קובצי מדיה תואמים</translation>
+        <translation>לא נמצאו קבצי מדיה תואמים</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="267"/>
@@ -10169,7 +10169,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="23"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="23"/>
         <source>Get dive coordinates from GPS</source>
-        <translation>ייבוא מיקום צלילה מ-GPS</translation>
+        <translation>יבוא מיקום צלילה מ-GPS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="44"/>
@@ -10249,7 +10249,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="308"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="308"/>
         <source>By how many hours did the international time zone at the dive site differ from UTC (also regarded as Greenwich Mean Time)? Normally one would specify this value in whole hours (h:00):</source>
-        <translation>כמה שעות אזור הזמן הבינלאומי באתר הצלילה שונה מ- UTC (נקרא גם זמן ממוצע של גריניץ &apos;)? בדרך כלל ניתן לציין ערך זה בשעות שלמות (שעות:00):</translation>
+        <translation>מה הפרש השעות של אזור הזמן הבינלאומי באתר הצלילה מ-UTC (נקרא גם זמן גריניץ&apos;)? בדרך כלל ניתן לציין ערך זה בשעות שלמות (00:שעות):</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="374"/>
@@ -10470,7 +10470,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/locationinformation.ui" line="78"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/locationinformation.ui" line="78"/>
         <source>Load dive coordinates from GPS file</source>
-        <translation> תען מיקום צלילה מקובץ GPS </translation>
+        <translation> טען מיקום צלילה מקובץ GPS </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="81"/>
@@ -10487,7 +10487,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/locationinformation.ui" line="89"/>
         <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="196"/>
         <source>Reverse geo lookup</source>
-        <translation>בדיקה גיאוגרפית הפוכה</translation>
+        <translation>חיפוש גיאוגרפי הפוך</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="92"/>
@@ -10610,7 +10610,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/locationinformation.cpp" line="64"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/locationinformation.cpp" line="64"/>
         <source>Merge into current site</source>
-        <translation>מיזוג לתוך אתר הנוכחי</translation>
+        <translation>מזג לתוך אתר הנוכחי</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="253"/>
@@ -10894,7 +10894,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/maintab.cpp" line="528"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/maintab.cpp" line="528"/>
         <source>Discard the changes?</source>
-        <translation>בטל שינוים?</translation>
+        <translation>בטל שינויים?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="529"/>
@@ -10910,7 +10910,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/maintab.cpp" line="559"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/maintab.cpp" line="559"/>
         <source>Warning: edited %1 dives</source>
-        <translation>עזהרה: הוערך %1 צלילות</translation>
+        <translation>אזהרה: %1 צלילות נערכו</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="492"/>
@@ -11064,7 +11064,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="182"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="541"/>
         <source>Sa&amp;ve as</source>
-        <translation>שמור בשם</translation>
+        <translation>שמור &amp;בשם</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="185"/>
@@ -11289,7 +11289,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="375"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="570"/>
         <source>&amp;Import log files</source>
-        <translation>יבא קובץ יומן צלילה</translation>
+        <translation>יבוא קובץ יומן צלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="378"/>
@@ -11298,7 +11298,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="378"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="572"/>
         <source>Import divelog files from other applications</source>
-        <translation>יבא קובץ יומן צלילה מתוכנה אחרת</translation>
+        <translation>יבוא קובץ יומן צלילה מתוכנה אחרת</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="386"/>
@@ -11306,7 +11306,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/mainwindow.ui" line="386"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="386"/>
         <source>&amp;Import dive sites</source>
-        <translation>ייבוא אתרי צלילה</translation>
+        <translation>יבוא אתרי צלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="389"/>
@@ -11314,7 +11314,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/mainwindow.ui" line="389"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="389"/>
         <source>Import dive sites from other users</source>
-        <translation>ייבוא אתרי צלילה ממשתמשים אחרים</translation>
+        <translation>יבוא אתרי צלילה ממשתמשים אחרים</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="397"/>
@@ -11520,7 +11520,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="623"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="600"/>
         <source>Toggle media</source>
-        <translation>הצג/הסתיר מדיה</translation>
+        <translation>הצג/הסתר מדיה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="635"/>
@@ -11574,7 +11574,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="679"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="607"/>
         <source>&amp;Find moved media files</source>
-        <translation>מצה קבצי מדיה שהוזז</translation>
+        <translation>מצא קבצי מדיה שהוזזו</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="684"/>
@@ -11630,7 +11630,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="719"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.ui" line="722"/>
         <source>Toggle deco information</source>
-        <translation>הצג/הסתיר מידע דקו</translation>
+        <translation>הצג/הסתר מידע דקו</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="587"/>
@@ -12082,7 +12082,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/mainwindow.cpp" line="1516"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1516"/>
         <source>[local cache for] %1</source>
-        <translation>[עותק מקומי עבור] %1</translation>
+        <translation>[עותק מטמון מקומי עבור] %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1519"/>
@@ -12119,7 +12119,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1584"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
-        <translation>אתה פתחת קובץ נתונים מגירסה ישנה יותר של Subsurface. אנו ממליצים לך לקרוא את המדריך כדי ללמוד על השינויים בגרסה החדשה, במיוחד על ניהול אתר צלילה שהשתנה רבות.
+        <translation>פתחת קובץ נתונים מגירסה ישנה יותר של Subsurface. אנו ממליצים לך לקרוא את המדריך כדי ללמוד על השינויים בגרסה החדשה, במיוחד על ניהול אתר צלילה שהשתנה רבות.
 Subsurface כבר ניסתה לאכלס מראש את הנתונים אבל כדאי לבחון את מערכת ניהול אתרי הצלילה החדשה ולוודא שהכל נראה תקין.</translation>
     </message>
     <message>
@@ -12174,7 +12174,7 @@ Subsurface כבר ניסתה לאכלס מראש את הנתונים אבל כד
     <message>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/mainwindow.cpp" line="1714"/>
         <source>Please, first finish the current edition before trying to do another.</source>
-        <translation>ראשית סיים את המהדורה הנוכחית לפני יצירת אחרת.</translation>
+        <translation>ראשית סיים את עריכה נוכחית לפני יצירת אחרת.</translation>
     </message>
 </context>
 <context>
@@ -12196,7 +12196,7 @@ Subsurface כבר ניסתה לאכלס מראש את הנתונים אבל כד
         <location filename="../tmp/Subsurface-4.9.5/map-widget/qml/MapWidget.qml" line="255"/>
         <location filename="../tmp/Subsurface-4.9.6/map-widget/qml/MapWidget.qml" line="255"/>
         <source>Drag the selected dive location</source>
-        <translation>גרר את מיקום הצלילה הנבחר</translation>
+        <translation>גרור את מיקום הצלילה הנבחר</translation>
     </message>
 </context>
 <context>
@@ -12255,7 +12255,7 @@ The QML modules QtPositioning and QtLocation could be missing!</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/configuredivecomputerdialog.cpp" line="298"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.cpp" line="298"/>
         <source>You should update the firmware on your dive computer: you have version %1 but the latest stable version is %2</source>
-        <translation>מומלץ לעדכן את הקושחה במחשב הצלילה: נמשה גרסה %1, אך הגרסה העדכני זה %2</translation>
+        <translation>מומלץ לעדכן את הקושחה במחשב הצלילה: קיימת גרסה %1, אך הגרסה העדכנית היא %2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="301"/>
@@ -12318,7 +12318,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/diveplanner.cpp" line="544"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/diveplanner.cpp" line="544"/>
         <source>ft/min</source>
-        <translation>רגל לדקה</translation>
+        <translation>רגל\דקה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="545"/>
@@ -12358,7 +12358,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/diveplanner.cpp" line="550"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/diveplanner.cpp" line="550"/>
         <source>m/min</source>
-        <translation>מטרים לדקה</translation>
+        <translation>מ&apos;\דקה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="551"/>
@@ -12366,7 +12366,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/diveplanner.cpp" line="551"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/diveplanner.cpp" line="551"/>
         <source>Last stop at 6m</source>
-        <translation>עצירה אחרונה ב6 מ&apos;</translation>
+        <translation>עצירה אחרונה ב6- מ&apos;</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="552"/>
@@ -12390,7 +12390,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/diveplanner.cpp" line="554"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/diveplanner.cpp" line="554"/>
         <source>m</source>
-        <translation>מטרים</translation>
+        <translation>מ&apos;</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="557"/>
@@ -12402,7 +12402,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/diveplanner.cpp" line="557"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/diveplanner.cpp" line="558"/>
         <source>cuft/min</source>
-        <translation>רגל מעוקב לדקה</translation>
+        <translation>רגל מעוקב\דקה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="566"/>
@@ -12414,7 +12414,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/diveplanner.cpp" line="566"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/diveplanner.cpp" line="567"/>
         <source>ℓ/min</source>
-        <translation>ליטר לדקה</translation>
+        <translation>ליטר\דקה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="576"/>
@@ -12469,7 +12469,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.ui" line="48"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.ui" line="48"/>
         <source>Password</source>
-        <translation>סיסמא</translation>
+        <translation>סיסמה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="55"/>
@@ -12477,7 +12477,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.ui" line="55"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.ui" line="55"/>
         <source>Verification PIN</source>
-        <translation>אימות מספר זיהוי אישי</translation>
+        <translation>PIN אימות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="62"/>
@@ -12509,7 +12509,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.ui" line="120"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.ui" line="120"/>
         <source>1) Enter an email address and a novel password that Subsurface will use to initialise the dive log in the cloud. Click Apply to send the above email address and password to the (remote) cloud server.</source>
-        <translation>1) הזן כתובת דוא&quot;ל וסיסמא חדשה שתשתמש ב- Subsurface כדי לאתחל את יומן הצלילה בענן. לחץ על החל כדי לשלוח את כתובת הדוא&quot;ל והסיסמה לעיל לשרת הענן (המרוחק).</translation>
+        <translation>1) הזן כתובת דוא&quot;ל וסיסמה חדשה שתשתמש ב- Subsurface כדי לאתחל את יומן הצלילה בענן. לחץ על החל כדי לשלוח את כתובת הדוא&quot;ל והסיסמה לעיל לשרת הענן (המרוחק).</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="130"/>
@@ -12525,7 +12525,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.ui" line="140"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.ui" line="140"/>
         <source>3) Enter the PIN in the corresponding text box in the above dialog (this field is only visible while the server is waiting for email address confirmation). Click Apply again. The Subsurface cloud storage account will be marked as verified and the Subsurface cloud storage service is initialised for use.</source>
-        <translation>3) הזן את ה- PIN בתיבת הטקסט המתאימה בתיבת הדו-שיח שלעיל (שדה זה גלוי רק כאשר השרת ממתין לאישור כתובת דוא&quot;ל). לחץ שוב על החל. חשבון אחסון הענן של Suburface יסומן כמאומת ושירות האחסון בענן של Suburface מאתחל לשימוש.</translation>
+        <translation>3) הזן את ה-PIN בתיבת הטקסט המתאימה בתיבת הדו-שיח שלעיל (שדה זה גלוי רק כאשר השרת ממתין לאישור כתובת דוא&quot;ל). לחץ שוב על החל. חשבון אחסון הענן של Suburface יסומן כמאומת ושירות האחסון בענן של Suburface מאותחל לשימוש.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="10"/>
@@ -12541,7 +12541,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.cpp" line="47"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.cpp" line="47"/>
         <source>Change ignored. Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation>מהתעלם מהשינוי. אימייל וסיסמת אחסון של ענן יכולים להיות מורכבים אותיות, מספרים ו- &apos;&apos;, &apos;-&apos;, &apos;_&apos; ו- &apos;+&apos; בלבד.</translation>
+        <translation>מהתעלם מהשינוי. דוא&quot;ל וסיסמת אחסון של ענן יכולים להיות מורכבים אותיות, מספרים, &apos;.&apos;, &apos;-&apos;, &apos;_&apos; ו-&apos;+&apos; בלבד.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="51"/>
@@ -12549,7 +12549,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.cpp" line="51"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.cpp" line="51"/>
         <source>Change ignored. Cloud storage email and new password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation>מהתעלם מהשינוי. אימייל וסיסמת אחסון חדשים של ענן יכולים להיות מורכבים אותיות, מספרים ו- &apos;&apos;, &apos;-&apos;, &apos;_&apos; ו- &apos;+&apos; בלבד.</translation>
+        <translation>מהתעלם מהשינוי. דוא&quot;ל וסיסמת אחסון חדשים של ענן יכולים להיות מורכבים אותיות, מספרים, &apos;.&apos;, &apos;-&apos;, &apos;_&apos; ו-&apos;+&apos; בלבד.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="73"/>
@@ -12561,7 +12561,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.cpp" line="73"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.cpp" line="87"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation>דואר אלקטרוני וסיסמא לאחסון בענן יכולים מורכבים רק מאותיות, מספרים, &apos;.&apos; &apos;-&apos;, &apos;_&apos;, ו &apos;+&apos;.</translation>
+        <translation>דואר אלקטרוני וסיסמה לאחסון בענן יכולים מורכבים רק מאותיות, מספרים, &apos;.&apos; &apos;-&apos;, &apos;_&apos;, ו-&apos;+&apos; בלבד.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="113"/>
@@ -12620,7 +12620,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_dc.ui" line="53"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_dc.ui" line="53"/>
         <source>When importing dives from a dive computer (DC), Subsurface remembers the connection(s), showing them as selectable buttons in the Download panel. This is useful for DCs using Bluetooth for communication. In order to clear all this information, click on the button below. After clearing the information the buttons on the Download panel disappear and it is necessary to establish new connection(s) with dive computer(s) before importing dives again.</source>
-        <translation>בעת ייבוא צלילות ממחשב צלילה (DC), Subsurface זוכרת את החיבורים והצגה ככפתורים הניתנים לבחירה בלוח ההורדה. זה שימושי עבור מכשירי DC שמשמשים Bluetooth לתקשורת. כדי לנקות את כל המידע הזה, לחץ על הכפתור למטה. לאחר ניקוי המידע הכפתורים בלוח ההורדה נעלמים ונדרש ליצור חיבורים חדשים למחשבי צלילה לפני ייבוא צלילות שוב.</translation>
+        <translation>בעת ייבוא צלילות ממחשב צלילה (DC), Subsurface זוכרת את החיבורים והצגה ככפתורים הניתנים לבחירה בלוח ההורדה. אפשרות זו שימושית עבור מחשבי צלילה המשתמשים בבלוטות&apos; לתקשורת. כדי לנקות מידע זה, לחץ על הכפתור למטה. לאחר ניקוי המידע הכפתורים בלוח ההורדה נעלמים ונדרש ליצור חיבורים חדשים למחשבי צלילה לפני יבוא צלילות שוב.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="61"/>
@@ -12636,7 +12636,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
         <source>Dive download</source>
-        <translation>הוריד צלילה</translation>
+        <translation>הורד צלילה</translation>
     </message>
 </context>
 <context>
@@ -12799,7 +12799,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="354"/>
         <source>Reset remembered dive computers</source>
-        <translation>אפס את מחשבי הצלילה שנזכרו</translation>
+        <translation>אפס את מחשבי הצלילה המוכרים</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="355"/>
@@ -12886,7 +12886,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_georeference.ui" line="24"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_georeference.ui" line="24"/>
         <source>Reverse dive site lookup format</source>
-        <translation>חיפוש אפוח מאתרי צלילה</translation>
+        <translation>חיפוש הפוך של אתרי צלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_georeference.ui" line="38"/>
@@ -12894,7 +12894,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_georeference.ui" line="38"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_georeference.ui" line="38"/>
         <source>Selecting the blue globe icon to the right of Location in the Notes tab opens the Edit Dive Site panel. There, an icon to the right of the dive site coordinates allows reverse lookup of the dive site. This finds the country and closest town to the divesite and adds them as dive site tags above the dive site name in the Notes tab. The combo boxes below allow one to select the order in which these tags are shown in the Notes tab. This requires an Internet connection.</source>
-        <translation>בחירת סמל הגלובוס הכחול מימין למיקום בכרטיסייה הערות פותחת את החלונית עריכת צלילה. שם, אייקון מימין לקואורדינטות של אתר הצלילה מאפשר בדיקה הפוכה של אתר הצלילה. זה מוצא את המדינה והעיירה הקרובה ביותר לצלילת הצלילה ומוסיף אותם כתגי אתר צלילה מעל שם אתר הצלילה בכרטיסייה הערות. תיבות המשולבות שלהלן מאפשרות לבחור לבחור את הסדר בו יוצגו תגים אלה בכרטיסייה הערות. זה דורש חיבור לאינטרנט.</translation>
+        <translation>בחירת סמל הגלובוס הכחול מימין למיקום בכרטיסייה הערות פותחת את חלונית עריכת הצלילה. שם, האייקון מימין לקואורדינטות של אתר הצלילה מאפשר בדיקה הפוכה של אתר הצלילה. אפשרות זו מוצאת את המדינה והעיר הקרובה ביותר לאתר הצלילה ומוסיפה אותם כתגים מעל שם אתר הצלילה בכרטיסיית הערות. תיבות המשולבות שלהלן מאפשרות לבחור לבחור את הסדר בו יוצגו תגים אלה בכרטיסיית הערות. אפשרות זו דורשת חיבור לאינטרנט.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_georeference.ui" line="65"/>
@@ -12908,7 +12908,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_georeference.h" line="107"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_georeference.h" line="108"/>
         <source>/</source>
-        <translation>/</translation>
+        <translation>\</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_georeference.cpp" line="10"/>
@@ -12951,7 +12951,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_graph.ui" line="29"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="339"/>
         <source>Threshold for pO₂ (minimum, maximum)</source>
-        <translation>גבול ל-pO₂ (מינימום, מקסימום)</translation>
+        <translation>גבול ל-pO₂ (מזערי, מירבי)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="39"/>
@@ -12994,7 +12994,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_graph.ui" line="65"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="342"/>
         <source>Threshold for pN₂ (maximum only)</source>
-        <translation>גבול ל-pN₂ (מקסימום בלבד)</translation>
+        <translation>גבול ל-pN₂ (מירבי בלבד)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="88"/>
@@ -13003,7 +13003,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_graph.ui" line="88"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="344"/>
         <source>Threshold for pHe (maximum only)</source>
-        <translation>גבול ל-pHe (מקסימום בלבד)</translation>
+        <translation>גבול ל-pHe (מירבי בלבד)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="111"/>
@@ -13012,7 +13012,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_graph.ui" line="111"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="346"/>
         <source>pO₂ in calculating MOD (maximum only )</source>
-        <translation>pO₂ לחישוב MOD (מקסימום בלבד)</translation>
+        <translation>pO₂ לחישוב MOD (מירבי בלבד)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="131"/>
@@ -13075,7 +13075,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_graph.ui" line="192"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="355"/>
         <source>ℓ/min</source>
-        <translation>ליטר לדקה</translation>
+        <translation>ליטר\דקה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="202"/>
@@ -13214,7 +13214,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_graph.cpp" line="12"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_graph.cpp" line="12"/>
         <source>Tech setup</source>
-        <translation>הגדרת טכני</translation>
+        <translation>הגדרות טכני</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="372"/>
@@ -13323,7 +13323,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_language.ui" line="113"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="189"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Preferred date format. Commonly used fields are&lt;/p&gt;&lt;p&gt;d (day of month)&lt;/p&gt;&lt;p&gt;ddd (abbr. day name)&lt;/p&gt;&lt;p&gt;M (month number)&lt;/p&gt;&lt;p&gt;MMM (abbr. month name)&lt;/p&gt;&lt;p&gt;yy/yyyy (2/4 digit year)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;פורמט תאריך מועדף. בשימוש נפוץ שדות&lt;/p&gt;&lt;p&gt;d (יום בחודש)&lt;/p&gt;&lt;p&gt;ddd ( מקוצרשם של יום)&lt;/p&gt;&lt;p&gt;M (מספר חודש)&lt;/p&gt;&lt;p&gt;MMM (שם של חודש מקוצר)&lt;/p&gt;&lt;p&gt;yy/yyyy (שנה בת 2 או 4 ספרות)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;פורמט תאריך מועדף. בשימוש נפוץ שדות&lt;/p&gt;&lt;p&gt;d (יום בחודש)&lt;/p&gt;&lt;p&gt;ddd ( שם יום מקוצר)&lt;/p&gt;&lt;p&gt;M (מספר חודש)&lt;/p&gt;&lt;p&gt;MMM (שם חודש מקוצר)&lt;/p&gt;&lt;p&gt;yy/yyyy (שנה בת 2 או 4 ספרות)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="132"/>
@@ -13341,7 +13341,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_language.ui" line="151"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="194"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Preferred time format&lt;/p&gt;&lt;p&gt;Commonly used format specifiers are&lt;/p&gt;&lt;p&gt;h (hours in 12h format)&lt;/p&gt;&lt;p&gt;H (hours in 24h format)&lt;/p&gt;&lt;p&gt;mm (2 digit minutes)&lt;/p&gt;&lt;p&gt;ss (2 digit seconds)&lt;/p&gt;&lt;p&gt;t/tt (a/p or am/pm)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;פורמט זמן מועדף&lt;/p&gt;&lt;p&gt;שימוש נפוץ שדות&lt;/p&gt;&lt;p&gt;h (שעות בפורמט 12h)&lt;/p&gt;&lt;p&gt;H (שעות בפורמט 24h)&lt;/p&gt;&lt;p&gt;mm (דקות ב-2 ספרות)&lt;/p&gt;&lt;p&gt;ss (שניות ב-2 ספרות)&lt;/p&gt;&lt;p&gt;t/tt (a/p או am/pm)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;פורמט זמן מועדף&lt;/p&gt;&lt;p&gt;שדות בשימוש נפוץ&lt;/p&gt;&lt;p&gt;h (שעות בפורמט 12h)&lt;/p&gt;&lt;p&gt;H (שעות בפורמט 24h)&lt;/p&gt;&lt;p&gt;mm (דקות ב-2 ספרות)&lt;/p&gt;&lt;p&gt;ss (שניות ב-2 ספרות)&lt;/p&gt;&lt;p&gt;t/tt (a/p או am/pm)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="13"/>
@@ -13365,7 +13365,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_language.cpp" line="75"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_language.cpp" line="75"/>
         <source>To correctly load a new language you must restart Subsurface.</source>
-        <translation>כדי לטעון שפה חדשה בצורה נכונה עליך להפעיל מחדש את Subsurface.</translation>
+        <translation>כדי לטעון ממשק בשפה חדשה בצורה נכונה עליך להפעיל מחדש את Subsurface.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="97"/>
@@ -13396,7 +13396,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_language.cpp" line="101"/>
         <source>Non-special character(s) in time format.
 </source>
-        <translation>תו(ים) ללא משמעות בפורמט הזמן.
+        <translation>תווים ללא משמעות בפורמט הזמן.
 </translation>
     </message>
     <message>
@@ -13406,7 +13406,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_language.cpp" line="107"/>
         <source>Non-special character(s) in date format.
 </source>
-        <translation>תו(ים) ללא משמעות בפורמט התאריך.
+        <translation>תווים ללא משמעות בפורמט התאריך.
 </translation>
     </message>
 </context>
@@ -13490,7 +13490,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_log.ui" line="111"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_log.ui" line="111"/>
         <source>In the Dive List, show dives that you have marked as invalid, e.g. pool dives</source>
-        <translation>ברשימת הצלילה, הצג צלילות שסימנת כלא תקפות, למשל. צלילות בריכה</translation>
+        <translation>ברשימת הצלילות, הצג צלילות שסימנת כלא תקפות, למשל: צלילות בריכה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="119"/>
@@ -13498,7 +13498,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_log.ui" line="119"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_log.ui" line="119"/>
         <source>In the Information tab, show tools for recording wave height, surge and chill during a dive</source>
-        <translation>בלשונית מידע, הצג כלים להקלטת גובה גל, גל וצינה במהלך צלילה</translation>
+        <translation>בלשונית מידע, הצג כלים לעדכון גובה גל, סחף וקור במהלך צלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="127"/>
@@ -13506,7 +13506,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_log.ui" line="127"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_log.ui" line="127"/>
         <source>In the Dive Profile, show mean depth</source>
-        <translation>הצג עומק מדיאני בפרופיל צלילה</translation>
+        <translation>הצג עומק ממוצע בפרופיל צלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="135"/>
@@ -13613,7 +13613,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_media.ui" line="114"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_media.ui" line="114"/>
         <source>Path to ffmpeg:</source>
-        <translation>נתוב ל-ffmpeg:</translation>
+        <translation>נתיב ל-ffmpeg:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="126"/>
@@ -13669,7 +13669,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_media.cpp" line="45"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_media.cpp" line="45"/>
         <source>Select ffmpeg executable</source>
-        <translation>בחור קובץ הרצה של ffmpeg</translation>
+        <translation>בחר קובץ הרצה של ffmpeg</translation>
     </message>
 </context>
 <context>
@@ -13735,7 +13735,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="239"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="246"/>
         <source>Password</source>
-        <translation>סיסמא</translation>
+        <translation>סיסמה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="134"/>
@@ -13784,7 +13784,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_network.cpp" line="17"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_network.cpp" line="17"/>
         <source>SOCKS proxy</source>
-        <translation>שרת SOCKS פרוקסי</translation>
+        <translation>שרת פרוקסי SOCKS</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="234"/>
@@ -13804,7 +13804,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="247"/>
         <source>Verification PIN</source>
-        <translation>אימות מספר זיהוי אישי</translation>
+        <translation>PIN אימות</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="248"/>
@@ -13833,7 +13833,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_reset.ui" line="39"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_reset.ui" line="39"/>
         <source>Selecting this button will reset all preferences to their default values</source>
-        <translation>לחיצת בקפתור זה ייאפס את כל ההגדרות לערך ברירת המחדל שלהן</translation>
+        <translation>לחיצת על כפתור זה תאפס את כל ההגדרות לערך ברירת המחדל שלהן</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_reset.ui" line="50"/>
@@ -13841,7 +13841,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_reset.ui" line="50"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_reset.ui" line="50"/>
         <source>Reset all preferences</source>
-        <translation>אפס כל העגדרות</translation>
+        <translation>אפס כל ההגדרות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_reset.cpp" line="6"/>
@@ -14050,7 +14050,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_units.ui" line="194"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="367"/>
         <source>lbs</source>
-        <translation>ליברה</translation>
+        <translation>פאונד</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="207"/>
@@ -14068,7 +14068,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_units.ui" line="213"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="369"/>
         <source>Ascent/descent speed denominator</source>
-        <translation>מקדם עליה וירידה</translation>
+        <translation>מקדם עליה והעמקה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="220"/>
@@ -14131,7 +14131,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_units.ui" line="264"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="376"/>
         <source>mm (for dives shorter than 1 hour), hh:mm (otherwise)</source>
-        <translation>דקות (לצלילות קצרות מ-1 שעות), שעות:דקות (אחרת)</translation>
+        <translation>דקות (לצלילות קצרות משעה), שעות:דקות (אחרת)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="274"/>
@@ -14306,7 +14306,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="120"/>
         <source>DPI resolution</source>
-        <translation>רזולוציית DPI</translation>
+        <translation>רזולוצייה ב-DPI</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="132"/>
@@ -14371,7 +14371,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/printoptions.cpp" line="194"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/printoptions.cpp" line="226"/>
         <source>Read-only template!</source>
-        <translation>תבנית לקריה בלבד!</translation>
+        <translation>תבנית לקריאה בלבד!</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="134"/>
@@ -14389,7 +14389,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/printoptions.cpp" line="148"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/printoptions.cpp" line="148"/>
         <source>Import template file</source>
-        <translation>יבא קובץ תבנית</translation>
+        <translation>יבוא קובץ תבנית</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="151"/>
@@ -14464,7 +14464,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/profile-widget/profilewidget2.cpp" line="814"/>
         <location filename="../tmp/Subsurface-4.9.6/profile-widget/profilewidget2.cpp" line="814"/>
         <source>Manually added dive</source>
-        <translation>צלילה הוזן ידנית</translation>
+        <translation>צלילה שהוזנה ידנית</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="819"/>
@@ -14496,7 +14496,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/profile-widget/profilewidget2.cpp" line="1429"/>
         <location filename="../tmp/Subsurface-4.9.6/profile-widget/profilewidget2.cpp" line="1429"/>
         <source>Make first dive computer</source>
-        <translation>בחר מחשב צלילה ראשונה</translation>
+        <translation>בחר כמחשב צלילה ראשון</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1446"/>
@@ -14759,7 +14759,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="576"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="582"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation>דואר אלקטרוני וסיסמא לאחסון בענן יכולים מורכבים רק מאותיות, מספרים, &apos;.&apos; &apos;-&apos;, &apos;_&apos;, ו &apos;+&apos;.</translation>
+        <translation>דואר אלקטרוני וסיסמה לאחסון בענן יכולים מורכבים רק מאותיות, מספרים, &apos;.&apos; &apos;-&apos;, &apos;_&apos;, ו-&apos;+&apos;.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="588"/>
@@ -14775,7 +14775,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="623"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="629"/>
         <source>Attempting to open cloud storage with new credentials</source>
-        <translation>מנסה להתחבר לענן עם זיהוי חדש</translation>
+        <translation>מנסה להתחבר לענן עם פרטי זיהוי חדשים</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="641"/>
@@ -14783,7 +14783,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="635"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="641"/>
         <source>Testing cloud credentials</source>
-        <translation>בודק זיהוי לענן</translation>
+        <translation>בודק פרטי זיהוי לענן</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="658"/>
@@ -14791,7 +14791,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="652"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="658"/>
         <source>No response from cloud server to validate the credentials</source>
-        <translation>אין תגובה משרת ענן כדי לאמת את האישורים</translation>
+        <translation>אין תגובה משרת ענן כדי לאמת את פרטי הזיהוי</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="664"/>
@@ -14799,7 +14799,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="658"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="664"/>
         <source>Incorrect email / password combination</source>
-        <translation>כתובת מייל או סיסמה לא נכונים</translation>
+        <translation>דוא&quot;ל או סיסמה לא נכונים</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="669"/>
@@ -14907,7 +14907,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="1368"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="1380"/>
         <source>Fatal error: cannot save data file. Please copy log file and report.</source>
-        <translation>שגיאה אנושה: לא ניתן לשמור קובץ נתונים. אנא העתק קובץ יומן ודווח.</translation>
+        <translation>שגיאה קריטית: לא ניתן לשמור קובץ נתונים. אנא העתק קובץ יומן ודווח.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1582"/>
@@ -15036,14 +15036,14 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/RecoverCache.qml" line="8"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/RecoverCache.qml" line="17"/>
         <source>Cloud Cache Import</source>
-        <translation>ייבוא מעותק משנה בענן</translation>
+        <translation>יבוא מעותק מטמון בענן</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/RecoverCache.qml" line="38"/>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/RecoverCache.qml" line="38"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/RecoverCache.qml" line="38"/>
         <source>import data from the given cache repo</source>
-        <translation>ייבא נתונים מעותק משנה בענן הרצוי</translation>
+        <translation>יבא נתונים מעותק מטמון בענן הרצוי</translation>
     </message>
 </context>
 <context>
@@ -15112,7 +15112,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/core/configuredivecomputerthreads.cpp" line="2250"/>
         <location filename="../tmp/Subsurface-4.9.6/core/configuredivecomputerthreads.cpp" line="2250"/>
         <source>Reset settings failed!</source>
-        <translation>אפוס ההגדרות נכשל!</translation>
+        <translation>איפוס ההגדרות נכשל!</translation>
     </message>
 </context>
 <context>
@@ -15145,7 +15145,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/setpoint.ui" line="43"/>
         <location filename="../subsurface/desktop-widgets/ui_setpoint.h" line="83"/>
         <source>New setpoint (0 for OC)</source>
-        <translation>נקודה קבוע חדשה (0 למערכת פתוחה)</translation>
+        <translation>נקודה קבועה חדשה (0 למערכת פתוחה)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="61"/>
@@ -15229,7 +15229,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="42"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="42"/>
         <source>Email</source>
-        <translation>דואר אלקטרוני</translation>
+        <translation>דוא&quot;ל</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="45"/>
@@ -15293,7 +15293,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="114"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="114"/>
         <source>Forget remembered dive computers</source>
-        <translation>תשכח מחשבים צלולים זכורים</translation>
+        <translation>שכח מחשבים צלולים מוכרים</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="119"/>
@@ -15317,7 +15317,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="141"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="141"/>
         <source>Color theme</source>
-        <translation>לוח צבעים</translation>
+        <translation>ערכת צבעים</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="154"/>
@@ -15437,7 +15437,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="316"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="316"/>
         <source>smaller</source>
-        <translation>יותר קטן</translation>
+        <translation>קטן יותר</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="324"/>
@@ -15453,7 +15453,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="332"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="332"/>
         <source>larger</source>
-        <translation>יותר גדול</translation>
+        <translation>גדול יותר</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="346"/>
@@ -15605,7 +15605,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="489"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="489"/>
         <source>lbs</source>
-        <translation>ליברות</translation>
+        <translation>פאונד</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="501"/>
@@ -15655,8 +15655,8 @@ Please export this template to a different file.</source>
         <source>Temporarily show all bluetooth devices 
 even if not recognized as dive computers.
 Please report DCs that need this setting</source>
-        <translation> הצג את כל התקני Bluetooth
-גם אם לא מוכר כמחשבים צלילה
+        <translation> הצג את כל התקני בלוטות&apos;
+גם אם לא מוכרים כמחשבי צלילה
 אנא דווח על מחשבי צלילה הזקוקים להגדרה זו</translation>
     </message>
     <message>
@@ -15710,7 +15710,7 @@ Please report DCs that need this setting</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/shiftimagetimes.ui" line="34"/>
         <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="195"/>
         <source>Shift times of image(s) by</source>
-        <translation>הזז זמני (תמונה/תמונות) ב-</translation>
+        <translation>הזז זמני תמונות ב-</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="95"/>
@@ -15749,8 +15749,8 @@ Please report DCs that need this setting</source>
 Not all media files have timestamps in the range between
 30 minutes before the start and 30 minutes after the end of any selected dive.</source>
         <translation>אזהרה!
-לא כל קבצי המדיה יש חותמות זמן בטווח שבין
-30 דקות לפני תחילת ו 30 דקות לאחר סיום הצלילה שנבחרה.</translation>
+לא לכל קבצי המדיה יש חותמות זמן בטווח שבין
+30 דקות לפני תחילת הצלילה שנבחרה ו-30 דקות לאחריה.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="137"/>
@@ -15988,7 +15988,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/smtk-import/smrtk2ssrfc_window.ui" line="270"/>
         <location filename="../tmp/Subsurface-4.9.6/smtk-import/smrtk2ssrfc_window.ui" line="270"/>
         <source>Import</source>
-        <translation>יבא</translation>
+        <translation>יבוא</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="295"/>
@@ -16122,12 +16122,12 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/about.cpp" line="20"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/about.cpp" line="20"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2020&lt;/span&gt;</source>
-        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;תוכנה יומן צלילה רב פלטפורמה&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava,Berthold Stoeger, ואחרים, 2011-2020&lt;/span&gt;</translation>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;תוכנת יומן צלילה לפלטפורמות מרובות&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava,Berthold Stoeger, ואחרים, 2011-2020&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/about.cpp" line="20"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2020&lt;/span&gt;</source>
-        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;תוכנה יומן צלילה רב פלטפורמה&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, ואחרים, 2011-2020&lt;/span&gt;</translation>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;תוכנת יומן צלילה לפלטפורמות מרובות&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, ואחרים, 2011-2020&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -16202,7 +16202,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="189"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="189"/>
         <source>Warning: edited %1 dives</source>
-        <translation>עזהרה: הוערך %1 צלילות</translation>
+        <translation>אזהרה: %1 צלילות נערכו</translation>
     </message>
 </context>
 <context>
@@ -16371,7 +16371,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="473"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="473"/>
         <source>Atm. pressure/Altitude</source>
-        <translation>לחץ אטמ׳/גובע</translation>
+        <translation>לחץ אטמ׳/גובה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="506"/>
@@ -16379,7 +16379,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="506"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="506"/>
         <source>Surface waves</source>
-        <translation>גלים בפני המים</translation>
+        <translation>גלים על פני המים</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="537"/>
@@ -16514,7 +16514,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="98"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="98"/>
         <source>Warning: edited %1 dives</source>
-        <translation>עזהרה: הוערך %1 צלילות</translation>
+        <translation>אזהרה: %1 צלילות נערכו</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="147"/>
@@ -16522,7 +16522,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="147"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="147"/>
         <source>/min</source>
-        <translation>לדקה</translation>
+        <translation>\דקה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="154"/>
@@ -16685,7 +16685,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="62"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="62"/>
         <source>Recalculate selected thumbnails</source>
-        <translation>חשב מחדש גרסה מוקתנת של תמונות שנבחר</translation>
+        <translation>חשב מחדש גרסה מוקטנת של תמונות שנבחרו</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="63"/>
@@ -16740,7 +16740,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveSite.ui" line="49"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveSite.ui" line="49"/>
         <source>Purge unused dive sites</source>
-        <translation>טיהור אתרי צלילה שאינם בשימוש</translation>
+        <translation>מחיקת אתרי צלילה שאינם בשימוש</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="56"/>
@@ -16947,7 +16947,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="91"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="95"/>
         <source>/min</source>
-        <translation>לדקה</translation>
+        <translation>\דקה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="112"/>
@@ -17473,7 +17473,7 @@ mixed from Air and using:
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/TripDetails.qml" line="84"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/TripDetails.qml" line="84"/>
         <source>Edit trip details</source>
-        <translation>תעדקן נתוני הטיול</translation>
+        <translation>ערוך פרטי הטיול</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/TripDetails.qml" line="97"/>
@@ -17481,7 +17481,7 @@ mixed from Air and using:
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/TripDetails.qml" line="97"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/TripDetails.qml" line="97"/>
         <source>Trip location:</source>
-        <translation>מיקום טיול</translation>
+        <translation>מיקום טיול:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/TripDetails.qml" line="111"/>
@@ -17510,7 +17510,7 @@ mixed from Air and using:
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/urldialog.ui" line="52"/>
         <location filename="../subsurface/desktop-widgets/ui_urldialog.h" line="58"/>
         <source>Enter URL for media files</source>
-        <translation>הזן כתובת אתר עבור קובצי מדיה</translation>
+        <translation>הזן כתובת אתר עבור קבצי מדיה</translation>
     </message>
 </context>
 <context>
@@ -17529,7 +17529,7 @@ mixed from Air and using:
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/updatemanager.cpp" line="60"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/updatemanager.cpp" line="60"/>
         <source>Subsurface was unable to check for updates.</source>
-        <translation>Subsurface לא היה מסוגל לבדוק אם יש עדכונים.</translation>
+        <translation>Subsurface לא הצליח לבדוק אם יש עדכונים.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="65"/>
@@ -17577,7 +17577,7 @@ mixed from Air and using:
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/updatemanager.cpp" line="86"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/updatemanager.cpp" line="86"/>
         <source>Latest version is %1, please check %2 our download page %3 for information in how to update.</source>
-        <translation>הגרסה האחרונה היא %1, אנא בדוק %2 בדף ההורדה שלנו %3 למידע כיצד לעדכן.</translation>
+        <translation>הגרסה האחרונה היא %1, אנא בדוק %2 בדף ההורדה שלנו %3 פרטים כיצד לעדכן.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="96"/>
@@ -17602,8 +17602,8 @@ mixed from Air and using:
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/updatemanager.cpp" line="114"/>
         <source>Subsurface is checking every two weeks if a new version is available. 
 If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
-        <translation>Subsurface בודקת כל שבועיים אם זמינה גרסה חדשה. 
-אם אתה לא רוצה ש-Subsurface תמשיך לבדוק, אנא לחץ על &apos;דחה&apos;.</translation>
+        <translation>Subsurface בודקת כל שבועיים אם גרסה חדשה זמינה. 
+אם אינך רוצה ש-Subsurface תמשיך לבדוק, אנא לחץ על &apos;דחה&apos;.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="116"/>
@@ -17827,7 +17827,7 @@ If you don&apos;t want Subsurface to continue checking, please click Decline.</s
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/webservices.ui" line="92"/>
         <location filename="../subsurface/desktop-widgets/ui_webservices.h" line="136"/>
         <source>Password</source>
-        <translation>סיסמא</translation>
+        <translation>סיסמה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/webservices.ui" line="106"/>
@@ -18036,7 +18036,7 @@ Average maximum</source>
         <source>
 Minimum</source>
         <translation>
-מינימום</translation>
+מזערי</translation>
     </message>
     <message>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="159"/>
@@ -18054,7 +18054,7 @@ Minimum</source>
         <source>
 Maximum</source>
         <translation>
-מקסימום</translation>
+מירבי</translation>
     </message>
     <message>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="162"/>
@@ -18220,7 +18220,7 @@ Maximum</source>
         <location filename="../tmp/Subsurface-4.9.6/core/cochran.c" line="351"/>
         <location filename="../tmp/Subsurface-4.9.6/core/libdivecomputer.c" line="262"/>
         <source>maxdepth</source>
-        <translation>עומק מקס&apos;</translation>
+        <translation>עומק מירבי</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="356"/>
@@ -18496,7 +18496,7 @@ Maximum</source>
         <location filename="../tmp/Subsurface-4.9.5/core/datatrak.c" line="405"/>
         <location filename="../tmp/Subsurface-4.9.6/core/datatrak.c" line="405"/>
         <source>instruction</source>
-        <translation>מודרך</translation>
+        <translation>הדרכה</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="424"/>
@@ -18588,7 +18588,7 @@ Maximum</source>
         <location filename="../tmp/Subsurface-4.9.6/core/datatrak.c" line="426"/>
         <location filename="../tmp/Subsurface-4.9.6/core/tag.c" line="19"/>
         <source>photo</source>
-        <translation>תצלום</translation>
+        <translation>צילום</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="445"/>
@@ -18612,7 +18612,7 @@ Maximum</source>
         <location filename="../tmp/Subsurface-4.9.5/core/datatrak.c" line="462"/>
         <location filename="../tmp/Subsurface-4.9.6/core/datatrak.c" line="462"/>
         <source>Datatrak/Wlog notes</source>
-        <translation>הערות מ-</translation>
+        <translation>הערות מ-Datatrak/Wlog</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="522"/>
@@ -18831,7 +18831,7 @@ Maximum</source>
         <location filename="../tmp/Subsurface-4.9.5/core/divesite-helper.cpp" line="21"/>
         <location filename="../tmp/Subsurface-4.9.6/core/divesite-helper.cpp" line="21"/>
         <source>No dive site layout categories set in preferences!</source>
-        <translation>לא מוגדר קטגוריות של פריסת אתר צלילה בהגדרות!</translation>
+        <translation>לא מוגדרות קטגוריות של פריסת אתר צלילה בהעדפות!</translation>
     </message>
     <message>
         <location filename="../core/divesite-helper.cpp" line="29"/>
@@ -18952,7 +18952,7 @@ Maximum</source>
         <location filename="../tmp/Subsurface-4.9.6/core/file.c" line="221"/>
         <source>Cannot open CSV file %s; please use Import log file dialog</source>
         <comment>'Import log file' should be the same text as corresponding label in Import menu</comment>
-        <translation>אין אפשרות לפתוח קובץ CSV %s; אנא השתמש בדאילוג יבוא קובץ יומן צלילה</translation>
+        <translation>אין אפשרות לפתוח קובץ CSV %s; אנא השתמש בדיאלוג יבוא קובץ יומן צלילה</translation>
     </message>
     <message>
         <location filename="../core/file.c" line="329"/>
@@ -18980,7 +18980,7 @@ Maximum</source>
         <location filename="../tmp/Subsurface-4.9.6/core/import-csv.c" line="861"/>
         <location filename="../tmp/Subsurface-4.9.6/core/ostctools.c" line="55"/>
         <source>Failed to read &apos;%s&apos;</source>
-        <translation>קריאה מ&apos;%s&apos; נכשלה</translation>
+        <translation>קריאה מ-&apos;%s&apos; נכשלה</translation>
     </message>
     <message>
         <location filename="../core/file.c" line="331"/>
@@ -19136,7 +19136,7 @@ Maximum</source>
         <location filename="../tmp/Subsurface-4.9.5/core/git-access.c" line="658"/>
         <location filename="../tmp/Subsurface-4.9.6/core/git-access.c" line="679"/>
         <source>Sync with cloud storage</source>
-        <translation>לסנכרן עם איחסון בענן</translation>
+        <translation>לסנכרן עם אחסון בענן</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="709"/>
@@ -19308,7 +19308,7 @@ Maximum</source>
         <location filename="../tmp/Subsurface-4.9.5/core/libdivecomputer.c" line="253"/>
         <location filename="../tmp/Subsurface-4.9.6/core/libdivecomputer.c" line="253"/>
         <source>surface</source>
-        <translation>שטח</translation>
+        <translation>פני המים</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="255"/>
@@ -19437,7 +19437,7 @@ Maximum</source>
         <location filename="../tmp/Subsurface-4.9.5/core/libdivecomputer.c" line="660"/>
         <location filename="../tmp/Subsurface-4.9.6/core/libdivecomputer.c" line="660"/>
         <source>Error parsing the maxdepth</source>
-        <translation>שגיאה בקריאת עומק מקסימלי</translation>
+        <translation>שגיאה בקריאת עומק מירבי</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="675"/>
@@ -19517,7 +19517,7 @@ Maximum</source>
         <location filename="../tmp/Subsurface-4.9.5/core/libdivecomputer.c" line="831"/>
         <location filename="../tmp/Subsurface-4.9.6/core/libdivecomputer.c" line="831"/>
         <source>Already downloaded dive at %s</source>
-        <translation>כבר הורד צלילה ב-%s</translation>
+        <translation>כבר הורדה צלילה ב-%s</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1072"/>
@@ -19533,7 +19533,7 @@ Maximum</source>
         <location filename="../tmp/Subsurface-4.9.5/core/libdivecomputer.c" line="1093"/>
         <location filename="../tmp/Subsurface-4.9.6/core/libdivecomputer.c" line="1093"/>
         <source>model=%s firmware=%u serial=%u</source>
-        <translation>מודל=%s קושחה=%u מספר סידורי=%u</translation>
+        <translation>דגם=%s קושחה=%u מספר סידורי=%u</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1160"/>
@@ -19594,8 +19594,8 @@ In most cases, in order to debug this issue, it is useful to send the developers
 In most cases, in order to debug this issue, a libdivecomputer logfile will be useful.
 You can create this logfile by selecting the corresponding checkbox in the download dialog.</source>
         <translation>שגיאה בפתיחה של% s% s (% s).
-ברוב המקרים, כדי debug בעיה זו, יומן logdile יהיה שימושי.
-ניתן ליצור קובץ logfile זה על-ידי בחירה בתיבת הסימון המתאימה בתיבת הדו-שיח להורדה.</translation>
+ברוב המקרים, כדי לדבג בעיה זו, יומן libdivecomputer יהיה שימושי.
+ניתן ליצור קובץ יומן זה על-ידי סימון תיבת הסימון המתאימה בתיבת הדו-שיח &quot;הורדה&quot;.</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1476"/>
@@ -19639,7 +19639,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.5/core/load-git.c" line="1715"/>
         <location filename="../tmp/Subsurface-4.9.6/core/load-git.c" line="1715"/>
         <source>Load dives from local cache</source>
-        <translation>טען צלילות מקובץ מקומי</translation>
+        <translation>טען צלילות מקובץ מטמון מקומי</translation>
     </message>
     <message>
         <location filename="../core/load-git.c" line="1714"/>
@@ -19659,7 +19659,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.6/core/ostctools.c" line="121"/>
         <location filename="../tmp/Subsurface-4.9.6/core/ostctools.c" line="152"/>
         <source>Unknown DC in dive %d</source>
-        <translation>מחשב צלילה לא מוקר בצלילה %d</translation>
+        <translation>מחשב צלילה לא מוכר בצלילה %d</translation>
     </message>
     <message>
         <location filename="../core/ostctools.c" line="164"/>
@@ -19793,7 +19793,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="79"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="79"/>
         <source>DISCLAIMER / WARNING: THIS IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
-        <translation>כתב ויתור / אזהרה: זה יישום של אלגוריתם %s ויישום תכנון צלילה המתבסס עליו שבוצעו עליהם רק כמות מוגבלת של בדיקות. אנו ממליצים בחום לא לתכנן צלילות מבוססות רק על פי התוצאות שכאן.</translation>
+        <translation>כתב ויתור / אזהרה: ליישום זה של אלגוריתם %s ומתכנן הצלילה המתבסס עליו בוצעו רק כמות מוגבלת של בדיקות. אנו ממליצים בחום לא לתכנן צלילות מבוססות רק על פי התוצאות שכאן.</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="89"/>
@@ -19873,7 +19873,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="142"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="142"/>
         <source>dive plan&lt;/b&gt; (overlapping dives detected)</source>
-        <translation>תוכנית צלילה&lt;/b&gt; (צלילות חופפות זוהה)</translation>
+        <translation>תוכנית צלילה&lt;/b&gt; (צלילות חופפות זוהו)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="149"/>
@@ -19889,7 +19889,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="157"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="157"/>
         <source>dive plan&lt;/b&gt; (surface interval </source>
-        <translation>תכנון צלילה&lt;/b&gt;(זמן מעל פני המים</translation>
+        <translation>תכנון צלילה&lt;/b&gt;(זמן הפסקה</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="159"/>
@@ -19941,7 +19941,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="234"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="234"/>
         <source>%s to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
-        <translation>%s ל-%.*f %s ב-%d:%02d דקות - זמן צלילה %d:%02u ב-%s (SP = %.1fבר)</translation>
+        <translation>%s ל-%.*f %s ב-%d:%02d דקות - זמן צלילה %d:%02u ב-%s (SP = %.1fbar)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="235"/>
@@ -19953,7 +19953,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="235"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="243"/>
         <source>Ascend</source>
-        <translation>לעלות</translation>
+        <translation>עליה</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="235"/>
@@ -19965,7 +19965,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="235"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="243"/>
         <source>Descend</source>
-        <translation>לרדת</translation>
+        <translation>העמקה</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="242"/>
@@ -19982,7 +19982,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="257"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar CCR)</source>
         <translation>המתן ב- %.*f %s ל- %d:%02d דקות - זמן בצלילה
-%d:%02u על %s (SP = %.1f בר CCR)</translation>
+%d:%02u על %s (SP = %.1fbar CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="264"/>
@@ -20030,7 +20030,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="387"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="387"/>
         <source>Switch gas to %s (SP = %.1fbar)</source>
-        <translation>מעבר גז ל- %s (SP = %.1f בר)</translation>
+        <translation>עבור לגז %s (SP = %.1fbar)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="389"/>
@@ -20038,7 +20038,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="389"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="389"/>
         <source>Switch gas to %s</source>
-        <translation>לעבור לגז s%</translation>
+        <translation>עבור לגז s%</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="418"/>
@@ -20146,7 +20146,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="518"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="518"/>
         <source>Minimum gas</source>
-        <translation>גז מינימלי</translation>
+        <translation>כמות גז מזערית</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="519"/>
@@ -20170,7 +20170,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="532"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="532"/>
         <source>required minimum gas for ascent already exceeding start pressure of cylinder!</source>
-        <translation>גז מינימלי הנדרש עבור העלייה כבר עולה על הלחץ ההתחלתי של המיכל!</translation>
+        <translation>כמות גז מזערית הנדרשת עבור העלייה כבר עולה על הלחץ ההתחלתי של המיכל!</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="537"/>
@@ -20210,7 +20210,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="566"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="566"/>
         <source>Isobaric counterdiffusion conditions exceeded</source>
-        <translation>חריגה מתנאיי ICD</translation>
+        <translation>חריגה מתנאי ICD</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="597"/>
@@ -20287,7 +20287,7 @@ D: %.1f%s
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1464"/>
         <source>CNS: %u%%
 </source>
-        <translation>רעילות שייורית מקסימלית %u%%
+        <translation>CNS: %u%%
 </translation>
     </message>
     <message>
@@ -20381,7 +20381,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1508"/>
         <source>Safety stop: %umin @ %.0f%s
 </source>
-        <translation>חנת בטיחות: %umin @ %.0f%s
+        <translation>חניית בטיחות: %umin @ %.0f%s
 </translation>
     </message>
     <message>
@@ -20391,7 +20391,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1511"/>
         <source>Safety stop: unknown time @ %.0f%s
 </source>
-        <translation>תחנת בטיחות: זמן לא ידוע @ %.0f%s
+        <translation>חניית בטיחות: זמן לא ידוע @ %.0f%s
 </translation>
     </message>
     <message>
@@ -20674,7 +20674,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/profile.c" line="1737"/>
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1737"/>
         <source>%s SAC:%.*f%s/min</source>
-        <translation>%s SAC:%.*f%s/דקה</translation>
+        <translation>%s SAC:%.*f%s\דקה</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="70"/>
@@ -20778,7 +20778,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.6/core/qthelper.cpp" line="1273"/>
         <location filename="../tmp/Subsurface-4.9.6/core/units.c" line="106"/>
         <source>m</source>
-        <translation>מטר</translation>
+        <translation>מ&apos;</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="536"/>
@@ -20858,7 +20858,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.6/core/units.c" line="162"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="191"/>
         <source>lbs</source>
-        <translation>lbs</translation>
+        <translation>פאונד</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="578"/>
@@ -21164,7 +21164,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/save-html.c" line="521"/>
         <location filename="../tmp/Subsurface-4.9.6/core/save-html.c" line="521"/>
         <source>WaveSize</source>
-        <translation>גודל גלים</translation>
+        <translation>גובה גלים</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="522"/>
@@ -21316,7 +21316,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/save-html.c" line="542"/>
         <location filename="../tmp/Subsurface-4.9.6/core/save-html.c" line="542"/>
         <source>Min. depth</source>
-        <translation>עומק מינימלי</translation>
+        <translation>עומק מזערי</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="543"/>
@@ -21332,7 +21332,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/save-html.c" line="544"/>
         <location filename="../tmp/Subsurface-4.9.6/core/save-html.c" line="544"/>
         <source>Average SAC</source>
-        <translation>צריכת גז ממוצע</translation>
+        <translation>צריכת גז ממוצעת</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="545"/>
@@ -21364,7 +21364,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/save-html.c" line="548"/>
         <location filename="../tmp/Subsurface-4.9.6/core/save-html.c" line="548"/>
         <source>Min. temp.</source>
-        <translation>טמפ&apos; מינימלי</translation>
+        <translation>טמפ&apos; מזערית</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="549"/>
@@ -21372,7 +21372,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/save-html.c" line="549"/>
         <location filename="../tmp/Subsurface-4.9.6/core/save-html.c" line="549"/>
         <source>Max. temp.</source>
-        <translation>טמפ&apos; מקסימלית</translation>
+        <translation>טמפ&apos; מירבית</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="550"/>
@@ -21544,7 +21544,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/statistics.c" line="158"/>
         <location filename="../tmp/Subsurface-4.9.6/core/statistics.c" line="158"/>
         <source>All (by max depth stats)</source>
-        <translation>הכל (לפי נתוני עומק מרביים)</translation>
+        <translation>הכל (לפי נתוני עומק מירביים)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="161"/>
@@ -21552,7 +21552,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/statistics.c" line="161"/>
         <location filename="../tmp/Subsurface-4.9.6/core/statistics.c" line="161"/>
         <source>All (by min. temp stats)</source>
-        <translation>הכל (לפי טמפ מינימלי)</translation>
+        <translation>הכל (לפי טמפ מזערית)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="229"/>
@@ -21664,7 +21664,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/tag.c" line="14"/>
         <location filename="../tmp/Subsurface-4.9.6/core/tag.c" line="14"/>
         <source>boat</source>
-        <translation>ספינה</translation>
+        <translation>סירה</translation>
     </message>
     <message>
         <location filename="../core/tag.c" line="14"/>
@@ -21768,7 +21768,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/taxonomy.c" line="12"/>
         <location filename="../tmp/Subsurface-4.9.6/core/taxonomy.c" line="12"/>
         <source>State</source>
-        <translation>מדינה</translation>
+        <translation>ארץ</translation>
     </message>
     <message>
         <location filename="../core/taxonomy.c" line="13"/>
@@ -21994,7 +21994,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../tmp/Subsurface-4.9.5/core/uemis.c" line="203"/>
         <location filename="../tmp/Subsurface-4.9.6/core/uemis.c" line="203"/>
         <source>Speed alarm</source>
-        <translation>אזעקת מהירות</translation>
+        <translation>התרעת מהירות</translation>
     </message>
     <message>
         <location filename="../core/uemis.c" line="206"/>
@@ -22018,7 +22018,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../tmp/Subsurface-4.9.5/core/uemis.c" line="211"/>
         <location filename="../tmp/Subsurface-4.9.6/core/uemis.c" line="211"/>
         <source>pO₂ ascend warning</source>
-        <translation>אזהרת pO₂ לעלייה</translation>
+        <translation>אזהרת pO₂ לעליה</translation>
     </message>
     <message>
         <location filename="../core/uemis.c" line="213"/>
@@ -22026,7 +22026,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../tmp/Subsurface-4.9.5/core/uemis.c" line="213"/>
         <location filename="../tmp/Subsurface-4.9.6/core/uemis.c" line="213"/>
         <source>pO₂ ascend alarm</source>
-        <translation>אזעקת pO₂ לעליה</translation>
+        <translation>התרעת pO₂ לעליה</translation>
     </message>
     <message>
         <location filename="../core/uemis.c" line="217"/>
@@ -22146,7 +22146,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../tmp/Subsurface-4.9.5/core/units.c" line="134"/>
         <location filename="../tmp/Subsurface-4.9.6/core/units.c" line="134"/>
         <source>m/min</source>
-        <translation>מטרים לדקה</translation>
+        <translation>מ&apos;\דקה</translation>
     </message>
     <message>
         <location filename="../core/units.c" line="136"/>
@@ -22154,7 +22154,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../tmp/Subsurface-4.9.5/core/units.c" line="136"/>
         <location filename="../tmp/Subsurface-4.9.6/core/units.c" line="136"/>
         <source>m/s</source>
-        <translation>מטרים לשניה</translation>
+        <translation>מ&apos;\שניה</translation>
     </message>
     <message>
         <location filename="../core/units.c" line="141"/>
@@ -22162,7 +22162,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../tmp/Subsurface-4.9.5/core/units.c" line="141"/>
         <location filename="../tmp/Subsurface-4.9.6/core/units.c" line="141"/>
         <source>ft/min</source>
-        <translation>רגל לדקה</translation>
+        <translation>רגל\דקה</translation>
     </message>
     <message>
         <location filename="../core/units.c" line="143"/>
@@ -22170,7 +22170,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../tmp/Subsurface-4.9.5/core/units.c" line="143"/>
         <location filename="../tmp/Subsurface-4.9.6/core/units.c" line="143"/>
         <source>ft/s</source>
-        <translation>רגל לשניה</translation>
+        <translation>רגל\שניה</translation>
     </message>
     <message>
         <location filename="../core/worldmap-save.c" line="45"/>
@@ -22327,7 +22327,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divetripmodel.cpp" line="180"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="180"/>
         <source>/min</source>
-        <translation>לדקה</translation>
+        <translation>\דקה</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="256"/>
@@ -22383,7 +22383,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../tmp/Subsurface-4.9.5/smtk-import/smartrak.c" line="255"/>
         <location filename="../tmp/Subsurface-4.9.6/smtk-import/smartrak.c" line="255"/>
         <source>ShipType</source>
-        <translation>סוג של ספינה</translation>
+        <translation>סוג ספינה</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="258"/>
@@ -22566,7 +22566,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/main.qml" line="349"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="364"/>
         <source>Export</source>
-        <translation>יצא</translation>
+        <translation>יצוא</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="376"/>
@@ -22654,7 +22654,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/main.qml" line="467"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="482"/>
         <source>failed to open email client, please manually create support email to support@subsurface-divelog.org - the logs have been copied to the clipboard and can be pasted into that email.</source>
-        <translation>לא הצליח לפתוח לקוח דוא&quot;ל, אנא צור ידנית דוא&quot;ל תמיכה לכתובת support@subsurface-divelog.org - היומנים הועתקו ללוח וניתן להדביק אותם בדוא&quot;ל.</translation>
+        <translation>לא הצליח לפתוח תוכנת דוא&quot;ל, אנא צור ידנית דוא&quot;ל לתמיכה בכתובת support@subsurface-divelog.org - היומנים הועתקו ללוח וניתן להדביק אותם בדוא&quot;ל.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="492"/>
@@ -22714,7 +22714,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/main.qml" line="529"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="544"/>
         <source>Enable verbose logging (currently: %1)</source>
-        <translation>אפשר רישום מפורת (כרגע: %1)</translation>
+        <translation>אפשר רישום מפורט (כרגע: %1)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="546"/>
@@ -22729,7 +22729,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/main.qml" line="538"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="553"/>
         <source>Access local cloud cache dirs</source>
-        <translation>גש לעותק משנה בענן המקומיות</translation>
+        <translation>גש לעותק מטמון בענן המקומי</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="763"/>
@@ -22823,7 +22823,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="104"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="563"/>
         <source>below 75% avg. depth</source>
-        <translation>מתחת 75% עומק ממוצע</translation>
+        <translation>מתחת ל-75% עומק ממוצע</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="111"/>
@@ -22852,7 +22852,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="570"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="573"/>
         <source>m/min</source>
-        <translation>מטרים לדקה</translation>
+        <translation>מ&apos;\דקה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="121"/>
@@ -22897,7 +22897,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="187"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="572"/>
         <source>surface to the bottom</source>
-        <translation>פני המים לקרקעית</translation>
+        <translation>מפני המים לקרקעית</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="240"/>
@@ -23162,7 +23162,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="595"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="619"/>
         <source>In diveplan, list transitions or treat them as implicit</source>
-        <translation>בתכנית צלילה, לרשום מעברים או להתייחס אליהם כמובלעת</translation>
+        <translation>בתכנית צלילה, לרשום מעברים או להתייחס אליהם כמשתמעים</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="598"/>
@@ -23180,7 +23180,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="605"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="623"/>
         <source>In dive plan, show runtime (absolute time) of stops</source>
-        <translation>בתכנית צלילה, ריצת תכנית (זמן מוחלט) של תחנות</translation>
+        <translation>בתכנית צלילה, הצג זמן (מוחלט) של תחנות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="608"/>
@@ -23239,7 +23239,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="604"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="607"/>
         <source>ℓ/min</source>
-        <translation>ליטר לדקה</translation>
+        <translation>ליטר\דקה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="657"/>
@@ -23266,7 +23266,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="738"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="612"/>
         <source>m</source>
-        <translation>מטרים</translation>
+        <translation>מ&apos;</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="754"/>
@@ -23320,7 +23320,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="789"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="637"/>
         <source>Used to calculate minimum gas. Consider two divers with possibly increased SAC after OoG event.</source>
-        <translation>משמש לחישוב גז מינימלי. קחו לדוגמה שני צוללנים עם SAC מוגברת לאחר האירוע גמר גזים.</translation>
+        <translation>משמש לחישוב כמות גז מזערית. לדוגמה שני צוללים עם SAC מוגבר לאחר אירוע גמר גזים.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="811"/>
@@ -23338,7 +23338,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="818"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="641"/>
         <source>Used to calculate minimum gas. Additional time at max. depth after OoG event.</source>
-        <translation>משמש לחישוב גז מינימלי. זמן נוסף בעומק מקסימלי לאחר אירוע גמר גז.</translation>
+        <translation>משמש לחישוב כמות גז מזערית. זמן נוסף בעומק מירבי לאחר אירוע גמר גז.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="837"/>
@@ -23346,7 +23346,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/plannerSettings.ui" line="837"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/plannerSettings.ui" line="837"/>
         <source>Treat oxygen as narcotic when computing best mix</source>
-        <translation>להתיחץ לחמצן כנרקוטי כשמחשבים תערובת אופטימלי</translation>
+        <translation>התייחס לחמצן כנרקוטי כשמחושבת תערובת אופטימלית</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="840"/>
@@ -23373,7 +23373,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/core/uploadDiveLogsDE.cpp" line="71"/>
         <location filename="../tmp/Subsurface-4.9.6/core/uploadDiveLogsDE.cpp" line="71"/>
         <source>building zip file to upload</source>
-        <translation>יצירת קובץ zip בכדי לעלות</translation>
+        <translation>יצירת קובץ zip להעלאה</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="76"/>
@@ -23381,7 +23381,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/core/uploadDiveLogsDE.cpp" line="76"/>
         <location filename="../tmp/Subsurface-4.9.6/core/uploadDiveLogsDE.cpp" line="76"/>
         <source>Stylesheet to export to divelogs.de is not found</source>
-        <translation>Stylesheet כדי לייצא divelogs.de לא נמצא</translation>
+        <translation>קובץ תבנית ליצוא ל-divelogs.de לא נמצא</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="86"/>

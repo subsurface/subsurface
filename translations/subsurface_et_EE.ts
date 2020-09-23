@@ -102,7 +102,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/btdeviceselectiondialog.cpp" line="26"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/btdeviceselectiondialog.cpp" line="26"/>
         <source>Local Bluetooth device details</source>
-        <translation type="unfinished"/>
+        <translation>Lokaalse Bluetooth seadme detailid</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="75"/>
@@ -294,7 +294,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/btdeviceselectiondialog.cpp" line="144"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/btdeviceselectiondialog.cpp" line="144"/>
         <source>Scanning for remote devices...</source>
-        <translation type="unfinished"/>
+        <translation>Skaneerin väliseid seadmeid...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="157"/>
@@ -302,7 +302,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/btdeviceselectiondialog.cpp" line="157"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/btdeviceselectiondialog.cpp" line="157"/>
         <source>Scanning finished successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Skaneerimine lõppes edukalt.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="167"/>
@@ -1009,7 +1009,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_base.cpp" line="65"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_base.cpp" line="65"/>
         <source>all dives</source>
-        <translation type="unfinished"/>
+        <translation>kõik sukeldumised</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="405"/>
@@ -1017,7 +1017,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divelist.cpp" line="405"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divelist.cpp" line="405"/>
         <source>add dive</source>
-        <translation type="unfinished"/>
+        <translation>lisa sukeldumine</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="474"/>
@@ -1121,7 +1121,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divelist.cpp" line="910"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divelist.cpp" line="910"/>
         <source>delete dive computer</source>
-        <translation type="unfinished"/>
+        <translation>kustuta sukeldumiskompuuter</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="915"/>
@@ -1129,7 +1129,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divelist.cpp" line="915"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divelist.cpp" line="915"/>
         <source>merge dive</source>
-        <translation type="unfinished"/>
+        <translation>ühenda sukeldumine</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="78"/>
@@ -1137,7 +1137,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divesite.cpp" line="78"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divesite.cpp" line="78"/>
         <source>add dive site</source>
-        <translation type="unfinished"/>
+        <translation>lisa sukeldumiskoht</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="100"/>
@@ -1169,7 +1169,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divesite.cpp" line="191"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divesite.cpp" line="191"/>
         <source>Edit dive site name</source>
-        <translation type="unfinished"/>
+        <translation>Muuda sukeldumiskoha nime</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="214"/>
@@ -1193,7 +1193,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_divesite.cpp" line="260"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_divesite.cpp" line="260"/>
         <source>Edit dive site country</source>
-        <translation type="unfinished"/>
+        <translation>Muuda sukeldumiskoha riik</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="285"/>
@@ -1261,7 +1261,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="195"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="195"/>
         <source>notes</source>
-        <translation type="unfinished"/>
+        <translation>märkused</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="201"/>
@@ -1269,7 +1269,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="201"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="201"/>
         <source>suit</source>
-        <translation type="unfinished"/>
+        <translation>ülikond</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="207"/>
@@ -1285,7 +1285,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="213"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="213"/>
         <source>visibility</source>
-        <translation type="unfinished"/>
+        <translation>nähtavus</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="219"/>
@@ -1293,7 +1293,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="219"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="219"/>
         <source>wavesize</source>
-        <translation type="unfinished"/>
+        <translation>laine kõrgus</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="225"/>
@@ -1301,7 +1301,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="225"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="225"/>
         <source>current</source>
-        <translation type="unfinished"/>
+        <translation>hoovus</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="231"/>
@@ -1325,7 +1325,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="253"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="253"/>
         <source>air temperature</source>
-        <translation type="unfinished"/>
+        <translation>õhu temp</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="272"/>
@@ -1333,7 +1333,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="272"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="272"/>
         <source>water temperature</source>
-        <translation type="unfinished"/>
+        <translation>vee  temp</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="288"/>
@@ -1341,7 +1341,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="288"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="288"/>
         <source>salinity</source>
-        <translation type="unfinished"/>
+        <translation>soolsus</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="304"/>
@@ -1349,7 +1349,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="304"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="304"/>
         <source>Atm. pressure</source>
-        <translation type="unfinished"/>
+        <translation>Õhurõhk</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="323"/>
@@ -1357,7 +1357,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="323"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="323"/>
         <source>duration</source>
-        <translation type="unfinished"/>
+        <translation>kestus</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="342"/>
@@ -1365,7 +1365,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="342"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="342"/>
         <source>depth</source>
-        <translation type="unfinished"/>
+        <translation>sügavus</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="359"/>
@@ -1373,7 +1373,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="359"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="359"/>
         <source>dive site</source>
-        <translation type="unfinished"/>
+        <translation>sukeldumiskoht</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="452"/>
@@ -1405,7 +1405,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="606"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="606"/>
         <source>buddies</source>
-        <translation type="unfinished"/>
+        <translation>semud</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="624"/>
@@ -1437,7 +1437,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="823"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="823"/>
         <source>Edit profile</source>
-        <translation type="unfinished"/>
+        <translation>muuda profili</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="870"/>
@@ -1445,7 +1445,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="870"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="870"/>
         <source>Add weight</source>
-        <translation type="unfinished"/>
+        <translation>Lisa raskus</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="872"/>
@@ -1619,7 +1619,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="1163"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="1163"/>
         <source>Remove cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Eemalda balloon</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1165"/>
@@ -1638,7 +1638,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_event.cpp" line="113"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_event.cpp" line="113"/>
         <source>Remove %1 event</source>
-        <translation type="unfinished"/>
+        <translation>Eemalda %1 sündmus</translation>
     </message>
 </context>
 <context>
@@ -1863,7 +1863,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="214"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2558"/>
         <source>OSTC Mk2/2N/2C</source>
-        <translation type="unfinished"/>
+        <translation>OSTC Mk2/2N/2C</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="223"/>
@@ -1872,7 +1872,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="223"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2560"/>
         <source>OSTC 2/3/Sport/Plus/cR</source>
-        <translation type="unfinished"/>
+        <translation>OSTC 2/3/Sport/Plus/cR</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="232"/>
@@ -1881,7 +1881,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="232"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2562"/>
         <source>OSTC 4</source>
-        <translation type="unfinished"/>
+        <translation>OSTC 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="241"/>
@@ -3988,7 +3988,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/configuredivecomputerdialog.ui" line="3034"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2927"/>
         <source>VPM</source>
-        <translation type="unfinished"/>
+        <translation>VPM</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3174"/>
@@ -4651,7 +4651,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/simplewidgets.cpp" line="447"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/simplewidgets.cpp" line="447"/>
         <source>Visibility: </source>
-        <translation type="unfinished"/>
+        <translation>Nähtavus:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="449"/>
@@ -4660,7 +4660,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/simplewidgets.cpp" line="449"/>
         <source>Notes:
 </source>
-        <translation type="unfinished"/>
+        <translation>Märkused:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="451"/>
@@ -4668,7 +4668,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/simplewidgets.cpp" line="451"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/simplewidgets.cpp" line="451"/>
         <source>Suit: </source>
-        <translation type="unfinished"/>
+        <translation>Ülikond:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="453"/>
@@ -4685,7 +4685,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/simplewidgets.cpp" line="463"/>
         <source>Cylinders:
 </source>
-        <translation type="unfinished"/>
+        <translation>Balloonid:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="471"/>
@@ -4694,7 +4694,7 @@
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/simplewidgets.cpp" line="471"/>
         <source>Weights:
 </source>
-        <translation type="unfinished"/>
+        <translation>Raskused:</translation>
     </message>
 </context>
 <context>
@@ -5814,7 +5814,7 @@ asukohta:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="876"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="876"/>
         <source>Media files</source>
-        <translation type="unfinished"/>
+        <translation>Meediafailid</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="877"/>
@@ -5822,7 +5822,7 @@ asukohta:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="877"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="877"/>
         <source>Image files</source>
-        <translation type="unfinished"/>
+        <translation>Pildifailid</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="878"/>
@@ -5830,7 +5830,7 @@ asukohta:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="878"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="878"/>
         <source>Video files</source>
-        <translation type="unfinished"/>
+        <translation>Videofailid</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="879"/>
@@ -5838,7 +5838,7 @@ asukohta:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelistview.cpp" line="879"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelistview.cpp" line="879"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Kõik failid</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="943"/>
@@ -7195,7 +7195,7 @@ asukohta:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/diveplanner.ui" line="190"/>
         <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="209"/>
         <source>EN13319</source>
-        <translation type="unfinished"/>
+        <translation>EN13319</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="195"/>
@@ -8118,7 +8118,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveSummary.qml" line="52"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveSummary.qml" line="52"/>
         <source>1 month</source>
-        <translation type="unfinished"/>
+        <translation>1 kuu</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="53"/>
@@ -8126,7 +8126,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveSummary.qml" line="53"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveSummary.qml" line="53"/>
         <source>3 months</source>
-        <translation type="unfinished"/>
+        <translation>3 kuud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="54"/>
@@ -8134,7 +8134,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveSummary.qml" line="54"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveSummary.qml" line="54"/>
         <source>6 months</source>
-        <translation type="unfinished"/>
+        <translation>6 kuud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="55"/>
@@ -8142,7 +8142,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveSummary.qml" line="55"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveSummary.qml" line="55"/>
         <source>1 year</source>
-        <translation type="unfinished"/>
+        <translation>1 aasta</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="59"/>
@@ -9394,7 +9394,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="58"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="58"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Salasõna:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="73"/>
@@ -9664,7 +9664,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="443"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="469"/>
         <source>Exact</source>
-        <translation type="unfinished"/>
+        <translation>Täpne</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="63"/>
@@ -9692,7 +9692,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="173"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="213"/>
         <source>Max</source>
-        <translation type="unfinished"/>
+        <translation>Max</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="84"/>
@@ -9712,7 +9712,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="233"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="477"/>
         <source>Min</source>
-        <translation type="unfinished"/>
+        <translation>Min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="107"/>
@@ -11849,7 +11849,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1159"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1201"/>
         <source>Cochran</source>
-        <translation type="unfinished"/>
+        <translation>Cochran</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1162"/>
@@ -11861,7 +11861,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1160"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1203"/>
         <source>DiveLogs.de</source>
-        <translation type="unfinished"/>
+        <translation>DiveLogs.de</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1163"/>
@@ -11873,7 +11873,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1161"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1204"/>
         <source>JDiveLog</source>
-        <translation type="unfinished"/>
+        <translation>JDiveLog</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1164"/>
@@ -11885,7 +11885,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1162"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1205"/>
         <source>Liquivision</source>
-        <translation type="unfinished"/>
+        <translation>Liquivision</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1165"/>
@@ -11897,7 +11897,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1163"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1206"/>
         <source>Suunto</source>
-        <translation type="unfinished"/>
+        <translation>Suunto</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1166"/>
@@ -11909,7 +11909,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1164"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1207"/>
         <source>UDCF</source>
-        <translation type="unfinished"/>
+        <translation>UDCF</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1167"/>
@@ -11933,7 +11933,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1166"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1209"/>
         <source>XML</source>
-        <translation type="unfinished"/>
+        <translation>XML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1169"/>
@@ -11945,7 +11945,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1167"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1210"/>
         <source>Divesoft</source>
-        <translation type="unfinished"/>
+        <translation>Divesoft</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1170"/>
@@ -11993,7 +11993,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1171"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1214"/>
         <source>OSTCtools</source>
-        <translation type="unfinished"/>
+        <translation>OSTCtools</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1174"/>
@@ -12005,7 +12005,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1172"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="1215"/>
         <source>DAN DL7</source>
-        <translation type="unfinished"/>
+        <translation>DAN DL7</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1204"/>
@@ -12221,7 +12221,7 @@ Subsurface has already tried to pre-populate the data but it might be worth whil
         <location filename="../tmp/Subsurface-4.9.5/map-widget/qml/MapWidgetContextMenu.qml" line="18"/>
         <location filename="../tmp/Subsurface-4.9.6/map-widget/qml/MapWidgetContextMenu.qml" line="18"/>
         <source>Open in Google Maps</source>
-        <translation type="unfinished"/>
+        <translation>Ava Google Mapis</translation>
     </message>
 </context>
 <context>
@@ -12938,7 +12938,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_graph.ui" line="29"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="339"/>
         <source>Threshold for pO₂ (minimum, maximum)</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ piirmäärad (min, max)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="39"/>
@@ -12981,7 +12981,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_graph.ui" line="65"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="342"/>
         <source>Threshold for pN₂ (maximum only)</source>
-        <translation type="unfinished"/>
+        <translation>pN₂ piirmäär (ainult max)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="88"/>
@@ -12990,7 +12990,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_graph.ui" line="88"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="344"/>
         <source>Threshold for pHe (maximum only)</source>
-        <translation type="unfinished"/>
+        <translation>pHe piirmäär (ainult max)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="111"/>
@@ -13184,7 +13184,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_graph.ui" line="321"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="369"/>
         <source>&amp;VPM-B</source>
-        <translation type="unfinished"/>
+        <translation>&amp;VPM-B</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="341"/>
@@ -13565,7 +13565,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_media.ui" line="68"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_media.ui" line="68"/>
         <source>VIDEOS</source>
-        <translation type="unfinished"/>
+        <translation>VIDEOD</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="76"/>
@@ -14487,7 +14487,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/profile-widget/profilewidget2.cpp" line="1431"/>
         <location filename="../tmp/Subsurface-4.9.6/profile-widget/profilewidget2.cpp" line="1431"/>
         <source>Delete this dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Kustuta see sukeldumiskompuuter</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1447"/>
@@ -15228,7 +15228,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="50"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="50"/>
         <source>Change</source>
-        <translation type="unfinished"/>
+        <translation>Muuda</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="53"/>
@@ -15268,7 +15268,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="106"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="106"/>
         <source>Dive computers</source>
-        <translation type="unfinished"/>
+        <translation>Sukeldumiskompuutrid</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="114"/>
@@ -15316,7 +15316,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="155"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="155"/>
         <source>Pink</source>
-        <translation type="unfinished"/>
+        <translation>Roosa</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="156"/>
@@ -15324,7 +15324,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="156"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="156"/>
         <source>Dark</source>
-        <translation type="unfinished"/>
+        <translation>Tume</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="167"/>
@@ -15332,7 +15332,7 @@ Please export this template to a different file.</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Settings.qml" line="167"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Settings.qml" line="167"/>
         <source>background</source>
-        <translation type="unfinished"/>
+        <translation>Taust</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="179"/>
@@ -15790,7 +15790,7 @@ Not all media files have timestamps in the range between
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/simplewidgets.cpp" line="238"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/simplewidgets.cpp" line="238"/>
         <source>Image files</source>
-        <translation type="unfinished"/>
+        <translation>Pildifailid</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="319"/>
@@ -16357,7 +16357,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="506"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="506"/>
         <source>Surface waves</source>
-        <translation type="unfinished"/>
+        <translation>Pinnalained</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="537"/>
@@ -16365,7 +16365,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="537"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="537"/>
         <source>Large</source>
-        <translation type="unfinished"/>
+        <translation>Suur</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="544"/>
@@ -16373,7 +16373,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="544"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="544"/>
         <source>Small</source>
-        <translation type="unfinished"/>
+        <translation>Väike</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="555"/>
@@ -16389,7 +16389,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="586"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="586"/>
         <source>Bad</source>
-        <translation type="unfinished"/>
+        <translation>Halb</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="593"/>
@@ -16397,7 +16397,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="593"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="593"/>
         <source>Good</source>
-        <translation type="unfinished"/>
+        <translation>Hea</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="604"/>
@@ -16405,7 +16405,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="604"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="604"/>
         <source>Current</source>
-        <translation type="unfinished"/>
+        <translation>Hoovus</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="635"/>
@@ -16417,7 +16417,7 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="635"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/tab-widgets/TabDiveInformation.ui" line="684"/>
         <source>Strong</source>
-        <translation type="unfinished"/>
+        <translation>Tugev</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="642"/>
@@ -18423,7 +18423,7 @@ Max</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/datatrak.c" line="376"/>
         <location filename="../tmp/Subsurface-4.9.6/core/datatrak.c" line="376"/>
         <source>fresh water</source>
-        <translation type="unfinished"/>
+        <translation>magevesi</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="395"/>
@@ -19154,7 +19154,7 @@ Max</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/git-access.c" line="899"/>
         <location filename="../tmp/Subsurface-4.9.6/core/git-access.c" line="926"/>
         <source>Synchronising data file</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin andmefaili</translation>
     </message>
     <message>
         <location filename="../core/gpslocation.h" line="14"/>
@@ -19702,7 +19702,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="55"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="55"/>
         <source>&amp;#916;He</source>
-        <translation type="unfinished"/>
+        <translation>&amp;#916;He</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="56"/>
@@ -19710,7 +19710,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="56"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="56"/>
         <source>&amp;#916;N&amp;#8322;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;#916;N&amp;#8322;</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="57"/>
@@ -19718,7 +19718,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="57"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="57"/>
         <source>max &amp;#916;N&amp;#8322;</source>
-        <translation type="unfinished"/>
+        <translation>max &amp;#916;N&amp;#8322;</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="72"/>
@@ -19774,7 +19774,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.5/core/plannernotes.c" line="90"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="90"/>
         <source>BUHLMANN</source>
-        <translation type="unfinished"/>
+        <translation>BUHLMANN</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="124"/>
@@ -19918,7 +19918,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="235"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="243"/>
         <source>Ascend</source>
-        <translation type="unfinished"/>
+        <translation>tõus</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="235"/>
@@ -19986,7 +19986,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="330"/>
         <location filename="../tmp/Subsurface-4.9.6/core/plannernotes.c" line="353"/>
         <source>(SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>(SP = %.1fbar CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="387"/>
@@ -20209,7 +20209,8 @@ D: %.1f%s
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1449"/>
         <source>P: %d%s (%s)
 </source>
-        <translation type="unfinished"/>
+        <translation>P: %d%s (%s)
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1453"/>
@@ -20258,7 +20259,8 @@ D: %.1f%s
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1466"/>
         <source>pO₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>pO₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1468"/>
@@ -20267,7 +20269,8 @@ D: %.1f%s
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1468"/>
         <source>SCR ΔpO₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>SCR ΔpO₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1471"/>
@@ -20276,7 +20279,8 @@ D: %.1f%s
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1471"/>
         <source>pN₂: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>pN₂: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1473"/>
@@ -20306,7 +20310,9 @@ D: %.1f%s
         <source>EAD: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
-        <translation type="unfinished"/>
+        <translation>EAD: %d%s
+EADD: %d%s / %.1fg/ℓ
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1491"/>
@@ -20316,7 +20322,9 @@ EADD: %d%s / %.1fg/ℓ
         <source>END: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
-        <translation type="unfinished"/>
+        <translation>END: %d%s
+EADD: %d%s / %.1fg/ℓ
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1496"/>
@@ -20468,7 +20476,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1556"/>
         <source>GF %d%%
 </source>
-        <translation type="unfinished"/>
+        <translation>GF %d%%
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1558"/>
@@ -20514,7 +20523,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1576"/>
         <source>heart rate: %d
 </source>
-        <translation type="unfinished"/>
+        <translation>pulss: %d
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1578"/>
@@ -20549,7 +20559,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/profile.c" line="1681"/>
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1681"/>
         <source>%s ΔD:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ΔD:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1685"/>
@@ -20557,7 +20567,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/profile.c" line="1685"/>
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1685"/>
         <source>%s ↓D:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↓D:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1689"/>
@@ -20565,7 +20575,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/profile.c" line="1689"/>
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1689"/>
         <source>%s ↑D:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↑D:%.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1693"/>
@@ -20574,7 +20584,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1693"/>
         <source>%s øD:%.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>%s øD:%.1f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1697"/>
@@ -20582,7 +20593,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/profile.c" line="1697"/>
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1697"/>
         <source>%s ↓V:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↓V:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1701"/>
@@ -20590,7 +20601,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/profile.c" line="1701"/>
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1701"/>
         <source>%s ↑V:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ↑V:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1705"/>
@@ -20598,7 +20609,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/profile.c" line="1705"/>
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1705"/>
         <source>%s øV:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s øV:%.2f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1712"/>
@@ -20606,7 +20617,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/profile.c" line="1712"/>
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1712"/>
         <source>%s ΔP:%d%s</source>
-        <translation type="unfinished"/>
+        <translation>%s ΔP:%d%s</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1737"/>
@@ -20614,7 +20625,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/profile.c" line="1737"/>
         <location filename="../tmp/Subsurface-4.9.6/core/profile.c" line="1737"/>
         <source>%s SAC:%.*f%s/min</source>
-        <translation type="unfinished"/>
+        <translation>%s SAC:%.*f%s/min</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="70"/>
@@ -20849,7 +20860,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/qthelper.cpp" line="627"/>
         <location filename="../tmp/Subsurface-4.9.6/core/qthelper.cpp" line="627"/>
         <source>g/ℓ</source>
-        <translation type="unfinished"/>
+        <translation>g/ℓ</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="864"/>
@@ -20918,7 +20929,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/qthelper.cpp" line="1175"/>
         <location filename="../tmp/Subsurface-4.9.6/core/qthelper.cpp" line="1175"/>
         <source>EN13319</source>
-        <translation type="unfinished"/>
+        <translation>EN13319</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1183"/>
@@ -21104,7 +21115,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/save-html.c" line="521"/>
         <location filename="../tmp/Subsurface-4.9.6/core/save-html.c" line="521"/>
         <source>WaveSize</source>
-        <translation type="unfinished"/>
+        <translation>Laine kõrgus</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="522"/>
@@ -21120,7 +21131,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/save-html.c" line="523"/>
         <location filename="../tmp/Subsurface-4.9.6/core/save-html.c" line="523"/>
         <source>Current</source>
-        <translation type="unfinished"/>
+        <translation>Hoovus</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="524"/>

@@ -383,7 +383,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/btdeviceselectiondialog.cpp" line="208"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/btdeviceselectiondialog.cpp" line="208"/>
         <source>%1 (%2)   [State: %3]</source>
-        <translation>%1 (%2) [Toestand: %3]</translation>
+        <translation>%1 (%2)   [Status: %3]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="231"/>

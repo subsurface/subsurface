@@ -5614,7 +5614,7 @@ del GPS:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="400"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="400"/>
         <source>Fulltext</source>
-        <translation type="unfinished"/>
+        <translation>full-text</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="401"/>
@@ -8698,7 +8698,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divetripmodel.cpp" line="486"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="486"/>
         <source>finish populating data store</source>
-        <translation type="unfinished"/>
+        <translation>ultimato il popolamento dell&apos;archivio dati</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="488"/>
@@ -8706,7 +8706,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divetripmodel.cpp" line="488"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="488"/>
         <source>setting up internal data structures</source>
-        <translation type="unfinished"/>
+        <translation>sto configurando le strutture-dati interne</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="491"/>
@@ -8714,12 +8714,12 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divetripmodel.cpp" line="491"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="491"/>
         <source>done setting up internal data structures</source>
-        <translation type="unfinished"/>
+        <translation>strutture-dati interne configurate</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.9.4/qt-models/divetripmodel.cpp" line="499"/>
         <source>setting up dive sites</source>
-        <translation type="unfinished"/>
+        <translation>sto configurando i siti d&apos;immersione</translation>
     </message>
 </context>
 <context>
@@ -9875,7 +9875,7 @@ Più vicino</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/filterwidget2.ui" line="347"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="347"/>
         <source>Reset / close</source>
-        <translation type="unfinished"/>
+        <translation>Reset / Chiudi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="354"/>
@@ -9932,7 +9932,7 @@ Più vicino</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/filterwidget2.ui" line="579"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="579"/>
         <source>Fulltext</source>
-        <translation type="unfinished"/>
+        <translation>full-text</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="597"/>
@@ -10004,7 +10004,7 @@ Più vicino</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/findmovedimagesdialog.ui" line="71"/>
         <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="157"/>
         <source>Match only media files in selected dive(s)</source>
-        <translation type="unfinished"/>
+        <translation>Associa solo i file-media delle immersioni selezionate</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="95"/>
@@ -10034,7 +10034,7 @@ Più vicino</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/findmovedimagesdialog.cpp" line="174"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/findmovedimagesdialog.cpp" line="174"/>
         <source>Traverse media directories</source>
-        <translation type="unfinished"/>
+        <translation>Visualizza contenuto cartelle dei media</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="180"/>
@@ -12691,7 +12691,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_defaults.ui" line="84"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_defaults.ui" line="84"/>
         <source>In some actions, e.g. when zooming the dive profile, the changing axis values are animated. Select the speed with which this animation should occur (maximum = 500):</source>
-        <translation type="unfinished"/>
+        <translation>In alcuni casi, ad esempio zumando il profilo dell&apos;immersione, i valori mostrati sui due assi cambiano con un&apos;animazione. Scegliere la velocità desiderata per questa animazione (max = 500)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="94"/>
@@ -13631,7 +13631,7 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_media.ui" line="142"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_media.ui" line="142"/>
         <source>One can specify te relative position within the video from where the thumbnail is retrieved. Use the slider below do do that.</source>
-        <translation type="unfinished"/>
+        <translation>E&apos; possibile indicare la posizione relativa nel video da cui è estratta l&apos;anteprima, Usa il cursore sottostante per farlo.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="150"/>
@@ -14909,7 +14909,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qmlmanager.cpp" line="1368"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qmlmanager.cpp" line="1380"/>
         <source>Fatal error: cannot save data file. Please copy log file and report.</source>
-        <translation type="unfinished"/>
+        <translation>Errore grave: impossibile salvare i dati su file. Si prega di copiare i file di log e inviarli.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1582"/>
@@ -14954,7 +14954,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.5/core/fulltext.cpp" line="150"/>
         <location filename="../tmp/Subsurface-4.9.6/core/fulltext.cpp" line="150"/>
         <source>Create full text index</source>
-        <translation type="unfinished"/>
+        <translation>Crea un indice Full Text</translation>
     </message>
     <message>
         <location filename="../core/fulltext.cpp" line="151"/>
@@ -14966,7 +14966,7 @@ Per favore esporta questo modello in un file diverso.</translation>
         <location filename="../tmp/Subsurface-4.9.6/core/fulltext.cpp" line="151"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="719"/>
         <source>start processing</source>
-        <translation type="unfinished"/>
+        <translation>avvia l&apos;elaborazione</translation>
     </message>
     <message>
         <location filename="../core/fulltext.cpp" line="156"/>
@@ -21164,7 +21164,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../tmp/Subsurface-4.9.5/core/save-html.c" line="521"/>
         <location filename="../tmp/Subsurface-4.9.6/core/save-html.c" line="521"/>
         <source>WaveSize</source>
-        <translation type="unfinished"/>
+        <translation>Altezza delle onde</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="522"/>
@@ -22654,7 +22654,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/main.qml" line="467"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/main.qml" line="482"/>
         <source>failed to open email client, please manually create support email to support@subsurface-divelog.org - the logs have been copied to the clipboard and can be pasted into that email.</source>
-        <translation type="unfinished"/>
+        <translation>impossibile aprire l&apos;applicazione di posta elettronica: si prega di inviare manualmente una richiesta di supporto a support@subsurface-divelog.org; i log sono già stati copiati in memoria e possono essere comodamente incollati nella mail.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="492"/>
@@ -23365,7 +23365,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/core/uploadDiveLogsDE.cpp" line="54"/>
         <location filename="../tmp/Subsurface-4.9.6/core/uploadDiveLogsDE.cpp" line="54"/>
         <source>Cannot prepare dives, none selected?</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile elaborare le immersioni: ne hai selezionata almeno una?</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="71"/>
@@ -23373,7 +23373,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/core/uploadDiveLogsDE.cpp" line="71"/>
         <location filename="../tmp/Subsurface-4.9.6/core/uploadDiveLogsDE.cpp" line="71"/>
         <source>building zip file to upload</source>
-        <translation type="unfinished"/>
+        <translation>preparo il file zip per l&apos;upload</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="76"/>
@@ -23389,7 +23389,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/core/uploadDiveLogsDE.cpp" line="86"/>
         <location filename="../tmp/Subsurface-4.9.6/core/uploadDiveLogsDE.cpp" line="86"/>
         <source>Failed to create zip file for upload: %s</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile creare il file zip per l&apos;upload: %s</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="148"/>

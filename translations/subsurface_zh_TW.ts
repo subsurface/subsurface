@@ -718,7 +718,7 @@
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogimportdialog.cpp" line="70"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="70"/>
         <source>Mode</source>
-        <translation type="unfinished"/>
+        <translation>模式</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="70"/>
@@ -1516,28 +1516,28 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_pictures.cpp" line="20"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_pictures.cpp" line="20"/>
         <source>Change media time</source>
-        <translation type="unfinished"/>
+        <translation>變更媒體時間</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_pictures.cpp" line="139"/>
         <location filename="../tmp/Subsurface-4.9.5/commands/command_pictures.cpp" line="139"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_pictures.cpp" line="139"/>
         <source>remove %n pictures(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>移除 %n 照片(多筆)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_pictures.cpp" line="172"/>
         <location filename="../tmp/Subsurface-4.9.5/commands/command_pictures.cpp" line="172"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_pictures.cpp" line="172"/>
         <source>unnamed dive site</source>
-        <translation type="unfinished"/>
+        <translation>未命名潛點</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_pictures.cpp" line="187"/>
         <location filename="../tmp/Subsurface-4.9.5/commands/command_pictures.cpp" line="187"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_pictures.cpp" line="187"/>
         <source>add %n pictures(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>新增 %n 照片(多筆)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1556,7 +1556,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="1044"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="1044"/>
         <source>Add cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>新增氣瓶 (%n 潛水(多筆))</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1578,7 +1578,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_event.cpp" line="72"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_event.cpp" line="72"/>
         <source>Add dive mode switch to %1</source>
-        <translation type="unfinished"/>
+        <translation>新增潛水模式至 %1</translation>
     </message>
 </context>
 <context>
@@ -1589,7 +1589,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_event.cpp" line="78"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_event.cpp" line="78"/>
         <source>Add set point change</source>
-        <translation type="unfinished"/>
+        <translation>增加設置點變更</translation>
     </message>
 </context>
 <context>
@@ -1600,7 +1600,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="1213"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="1213"/>
         <source>Edit cylinder</source>
-        <translation type="unfinished"/>
+        <translation>修改氣瓶</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1215"/>
@@ -1608,7 +1608,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="1215"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="1215"/>
         <source>Edit cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>修改氣瓶 (%n 潛水(多筆))</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1619,7 +1619,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="1163"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="1163"/>
         <source>Remove cylinder</source>
-        <translation type="unfinished"/>
+        <translation>移除氣瓶</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1165"/>
@@ -1627,7 +1627,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_edit.cpp" line="1165"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_edit.cpp" line="1165"/>
         <source>Remove cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>移除氣瓶 (%n 潛水(多筆))</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1638,7 +1638,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_event.cpp" line="113"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_event.cpp" line="113"/>
         <source>Remove %1 event</source>
-        <translation type="unfinished"/>
+        <translation>移除 %1 事件</translation>
     </message>
 </context>
 <context>
@@ -1649,7 +1649,7 @@
         <location filename="../tmp/Subsurface-4.9.5/commands/command_event.cpp" line="85"/>
         <location filename="../tmp/Subsurface-4.9.6/commands/command_event.cpp" line="85"/>
         <source>Rename bookmark to %1</source>
-        <translation type="unfinished"/>
+        <translation>變更書籤名稱至 %1</translation>
     </message>
 </context>
 <context>
@@ -4928,7 +4928,7 @@
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveDetails.qml" line="90"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetails.qml" line="90"/>
         <source>Create trip with dive</source>
-        <translation type="unfinished"/>
+        <translation>從潛水記錄建立旅程</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="96"/>
@@ -4936,7 +4936,7 @@
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveDetails.qml" line="96"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetails.qml" line="96"/>
         <source>Mark dive as valid</source>
-        <translation type="unfinished"/>
+        <translation>標示潛水有效</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="96"/>
@@ -4944,7 +4944,7 @@
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveDetails.qml" line="96"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveDetails.qml" line="96"/>
         <source>Mark dive as invalid</source>
-        <translation type="unfinished"/>
+        <translation>標示潛水無效</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="101"/>
@@ -5518,7 +5518,7 @@ GPS位置:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="276"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="276"/>
         <source>Create trip with dive %1</source>
-        <translation type="unfinished"/>
+        <translation>從 %1 潛水記錄建立旅程</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="285"/>
@@ -5526,7 +5526,7 @@ GPS位置:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="285"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="285"/>
         <source>Mark dive as valid</source>
-        <translation type="unfinished"/>
+        <translation>標示潛水為有效</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="285"/>
@@ -5534,7 +5534,7 @@ GPS位置:</translation>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveList.qml" line="285"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveList.qml" line="285"/>
         <source>Mark dive as invalid</source>
-        <translation type="unfinished"/>
+        <translation>標示潛水無效</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="291"/>
@@ -6018,7 +6018,7 @@ GPS位置:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.ui" line="260"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.ui" line="260"/>
         <source>CSV summary dive details</source>
-        <translation type="unfinished"/>
+        <translation>CSV 潛水日誌細節</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="270"/>
@@ -6026,7 +6026,7 @@ GPS位置:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.ui" line="270"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.ui" line="270"/>
         <source>CSV Dive computer dive profile</source>
-        <translation type="unfinished"/>
+        <translation>CSV 潛水電腦摘要</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="280"/>
@@ -6034,7 +6034,7 @@ GPS位置:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.ui" line="280"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.ui" line="280"/>
         <source>CSV Computed Profile Panel data</source>
-        <translation type="unfinished"/>
+        <translation>CSV 潛水日誌欄位資料</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="290"/>
@@ -6277,7 +6277,7 @@ GPS位置:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.cpp" line="87"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.cpp" line="87"/>
         <source>Comma separated values describing the dive profile as downloaded from dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>描述下載的潛水摘要時，請以逗號分隔資料。</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="89"/>
@@ -6365,7 +6365,7 @@ GPS位置:</translation>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/divelogexportdialog.cpp" line="109"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogexportdialog.cpp" line="109"/>
         <source>Write the computed Profile Panel data to a CSV file.</source>
-        <translation type="unfinished"/>
+        <translation>寫入摘要欄位資料至 CSV 檔案.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="147"/>
@@ -6886,7 +6886,7 @@ GPS位置:</translation>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="723"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/divelogimportdialog.cpp" line="952"/>
         <source>Mode</source>
-        <translation type="unfinished"/>
+        <translation>模式</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="724"/>
@@ -8148,7 +8148,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveSummary.qml" line="59"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveSummary.qml" line="59"/>
         <source>last dive:</source>
-        <translation type="unfinished"/>
+        <translation>最後潛水: </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="69"/>
@@ -8156,7 +8156,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DiveSummary.qml" line="69"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DiveSummary.qml" line="69"/>
         <source>first dive:</source>
-        <translation type="unfinished"/>
+        <translation>最初潛水: </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="85"/>
@@ -8215,7 +8215,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divesummarymodel.cpp" line="86"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesummarymodel.cpp" line="86"/>
         <source>EAN dives</source>
-        <translation type="unfinished"/>
+        <translation>EAN 潛水</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="87"/>
@@ -8223,7 +8223,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divesummarymodel.cpp" line="87"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesummarymodel.cpp" line="87"/>
         <source>Deep dives (&gt; 39 m)</source>
-        <translation type="unfinished"/>
+        <translation>深潛 (&gt; 39 m)</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="88"/>
@@ -8231,7 +8231,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divesummarymodel.cpp" line="88"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divesummarymodel.cpp" line="88"/>
         <source>Dive plan(s)</source>
-        <translation type="unfinished"/>
+        <translation>潛水計畫(多筆)</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="89"/>
@@ -8698,7 +8698,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divetripmodel.cpp" line="486"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="486"/>
         <source>finish populating data store</source>
-        <translation type="unfinished"/>
+        <translation>結束資料填滿</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="488"/>
@@ -8706,7 +8706,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divetripmodel.cpp" line="488"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="488"/>
         <source>setting up internal data structures</source>
-        <translation type="unfinished"/>
+        <translation>建立內部資料結構</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="491"/>
@@ -8714,12 +8714,12 @@ p, li { white-space: pre-wrap; }
         <location filename="../tmp/Subsurface-4.9.5/qt-models/divetripmodel.cpp" line="491"/>
         <location filename="../tmp/Subsurface-4.9.6/qt-models/divetripmodel.cpp" line="491"/>
         <source>done setting up internal data structures</source>
-        <translation type="unfinished"/>
+        <translation>完成建立內部資料結構</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.9.4/qt-models/divetripmodel.cpp" line="499"/>
         <source>setting up dive sites</source>
-        <translation type="unfinished"/>
+        <translation>建立潛點資料</translation>
     </message>
 </context>
 <context>
@@ -9323,7 +9323,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="441"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/DownloadFromDiveComputer.qml" line="441"/>
         <source>Please wait while we record these dives...</source>
-        <translation type="unfinished"/>
+        <translation>我們正在記錄潛水資料，請稍後...</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="455"/>
@@ -9369,7 +9369,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="11"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="11"/>
         <source>Export Divelog information</source>
-        <translation type="unfinished"/>
+        <translation>匯出潛水日誌資訊</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="43"/>
@@ -9377,7 +9377,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="43"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="43"/>
         <source>Export credentials</source>
-        <translation type="unfinished"/>
+        <translation>匯出認證</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="48"/>
@@ -9401,7 +9401,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="73"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="73"/>
         <source>Private</source>
-        <translation type="unfinished"/>
+        <translation>私人</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="88"/>
@@ -9457,7 +9457,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="156"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="156"/>
         <source>Export UDDF</source>
-        <translation type="unfinished"/>
+        <translation>匯出 UDDF</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="160"/>
@@ -9473,7 +9473,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="164"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="164"/>
         <source>Upload divelogs.de</source>
-        <translation type="unfinished"/>
+        <translation>上傳至 divelogs.de</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="167"/>
@@ -9489,7 +9489,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="171"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="171"/>
         <source>Upload DiveShare</source>
-        <translation type="unfinished"/>
+        <translation>上傳至 DiveShare</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="174"/>
@@ -9513,7 +9513,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/mobile-widgets/qml/Export.qml" line="198"/>
         <location filename="../tmp/Subsurface-4.9.6/mobile-widgets/qml/Export.qml" line="198"/>
         <source>Next</source>
-        <translation type="unfinished"/>
+        <translation>下一個</translation>
     </message>
 </context>
 <context>
@@ -9603,7 +9603,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="459"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="587"/>
         <source>Substring</source>
-        <translation type="unfinished"/>
+        <translation>擷取字串</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="47"/>
@@ -9635,7 +9635,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="464"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="592"/>
         <source>Starts with</source>
-        <translation type="unfinished"/>
+        <translation>開始自</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="52"/>
@@ -9663,7 +9663,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="443"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="469"/>
         <source>Exact</source>
-        <translation type="unfinished"/>
+        <translation>精確</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="63"/>
@@ -9940,7 +9940,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/filterwidget2.ui" line="597"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/filterwidget2.ui" line="597"/>
         <source>Full word</source>
-        <translation type="unfinished"/>
+        <translation>全字</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget2.ui" line="608"/>
@@ -10169,7 +10169,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="23"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="23"/>
         <source>Get dive coordinates from GPS</source>
-        <translation type="unfinished"/>
+        <translation>取得潛點 GPS 位置</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="44"/>
@@ -10177,7 +10177,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="44"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="44"/>
         <source>Synchronise the dive and the GPS track</source>
-        <translation type="unfinished"/>
+        <translation>與 GPS 軌跡同步潛水記錄</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="85"/>
@@ -10185,7 +10185,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="85"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="85"/>
         <source>GPS track date </source>
-        <translation type="unfinished"/>
+        <translation>GPS 軌跡日期</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="99"/>
@@ -10193,7 +10193,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="99"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="99"/>
         <source>Dive date </source>
-        <translation type="unfinished"/>
+        <translation>潛水日期</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="107"/>
@@ -10201,7 +10201,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="107"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="107"/>
         <source>Start and end times:</source>
-        <translation type="unfinished"/>
+        <translation>開始與結束時間:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="138"/>
@@ -10217,7 +10217,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="146"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="146"/>
         <source>   Dive   </source>
-        <translation type="unfinished"/>
+        <translation>潛水</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="154"/>
@@ -10225,7 +10225,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="154"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="154"/>
         <source>Start:  </source>
-        <translation type="unfinished"/>
+        <translation>開始:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="179"/>
@@ -10233,7 +10233,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="179"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="179"/>
         <source>End:  </source>
-        <translation type="unfinished"/>
+        <translation>結束:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="283"/>
@@ -10241,7 +10241,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="283"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="283"/>
         <source>International time zone correction</source>
-        <translation type="unfinished"/>
+        <translation>校正國際時區</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="308"/>
@@ -10249,7 +10249,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="308"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="308"/>
         <source>By how many hours did the international time zone at the dive site differ from UTC (also regarded as Greenwich Mean Time)? Normally one would specify this value in whole hours (h:00):</source>
-        <translation type="unfinished"/>
+        <translation>與UTC (格林威治時間) 相差多少小時？正常以小時格式設定 (h:00):</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="374"/>
@@ -10293,7 +10293,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="408"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="408"/>
         <source>Equipment time settings correction</source>
-        <translation type="unfinished"/>
+        <translation>校正裝備時間設定</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="433"/>
@@ -10301,7 +10301,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/importgps.ui" line="433"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/importgps.ui" line="433"/>
         <source>This setting deals with differences in time settings between the GPS and the dive computer that recorded the dive. Ensure that the GPS equipment and your dive computer show the same local time. If not, adjust the time of the GPS earlier or later to coincide with that of the dive (h:min):</source>
-        <translation type="unfinished"/>
+        <translation>GPS 軌跡時間設定與潛水電腦記錄不同。請確認 GPS 裝置與你的潛水電腦顯示相同的本地時間。如果不同，請調整 GPS 時間較早或較晚來符合潛水記錄 (h:min):</translation>
     </message>
 </context>
 <context>
@@ -10470,7 +10470,7 @@ Existing Site</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/locationinformation.ui" line="78"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/locationinformation.ui" line="78"/>
         <source>Load dive coordinates from GPS file</source>
-        <translation type="unfinished"/>
+        <translation>自 GPS 軌跡載入潛點位置</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="81"/>
@@ -11785,7 +11785,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/mainwindow.cpp" line="733"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/mainwindow.cpp" line="733"/>
         <source>Please save or cancel the current dive edit before quiting the application.</source>
-        <translation type="unfinished"/>
+        <translation>在關閉程式前，請儲存或取消此次潛水的編輯。</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="765"/>
@@ -12500,7 +12500,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_cloud.ui" line="110"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_cloud.ui" line="110"/>
         <source>To create a new cloud account:</source>
-        <translation type="unfinished"/>
+        <translation>創建新的雲端帳號:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="120"/>
@@ -12627,7 +12627,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/preferences/preferences_dc.ui" line="61"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/preferences/preferences_dc.ui" line="61"/>
         <source>Delete all dive computer connections</source>
-        <translation type="unfinished"/>
+        <translation>移除所有潛水電腦連結</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
@@ -16119,12 +16119,12 @@ Files with inappropriate date/time</source>
         <location filename="../tmp/Subsurface-4.9.5/desktop-widgets/about.cpp" line="20"/>
         <location filename="../tmp/Subsurface-4.9.6/desktop-widgets/about.cpp" line="20"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2020&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;跨平台潛水日誌軟體&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, 與其他協助者, 繁中翻譯Kunhui Chih, 2011-2020&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../tmp/Subsurface-4.9.4/desktop-widgets/about.cpp" line="20"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2020&lt;/span&gt;</source>
-        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;跨平台潛水日誌軟體&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava 與其他協助者, 2011-2020&lt;/span&gt;</translation>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;跨平台潛水日誌軟體&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava 與其他協助者, 繁中翻譯Kunhui Chih, 2011-2020&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
