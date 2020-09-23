@@ -538,9 +538,6 @@ static ShownChange updateShownAll()
 
 void DiveTripModelBase::currentChanged()
 {
-	if (oldCurrent == current_dive)
-		return;
-
 	// On Desktop we use a signal to forward current-dive changed, on mobile we use ROLE_CURRENT.
 	// TODO: Unify - use the role for both.
 #if defined(SUBSURFACE_MOBILE)
@@ -549,11 +546,13 @@ void DiveTripModelBase::currentChanged()
 		QModelIndex oldIdx = diveToIdx(oldCurrent);
 		dataChanged(oldIdx, oldIdx, roles);
 	}
-	if (current_dive) {
+	if (current_dive && oldCurrent != current_dive) {
 		QModelIndex newIdx = diveToIdx(current_dive);
 		dataChanged(newIdx, newIdx, roles);
 	}
 #else
+	if (oldCurrent == current_dive)
+		return;
 	if (current_dive) {
 		QModelIndex newIdx = diveToIdx(current_dive);
 		emit currentDiveChanged(newIdx);

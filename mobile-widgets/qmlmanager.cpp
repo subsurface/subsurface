@@ -1414,7 +1414,7 @@ void QMLManager::selectDive(int id)
 			amount_selected++;
 	}
 	if (amount_selected == 0)
-		qWarning("QManager::selectDive() called with unknown id");
+		qWarning("QManager::selectDive() called with unknown id %d",id);
 }
 
 void QMLManager::deleteDive(int id)
