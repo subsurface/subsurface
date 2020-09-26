@@ -1,5 +1,6 @@
-Use pO2 from prefernces for MOD display in equipment tab
-mobile: fix manually adding dives in the past [#2971]
+- Use pO2 from prefernces for MOD display in equipment tab
+- filter: more flexible filtering system based on individual constraints
+- mobile: fix manually adding dives in the past [#2971]
 
 ---
 * Always add new entries at the very top of this file above other existing entries and this note.
