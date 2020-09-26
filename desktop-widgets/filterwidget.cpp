@@ -1,4 +1,4 @@
-#include "desktop-widgets/filterwidget2.h"
+#include "desktop-widgets/filterwidget.h"
 #include "desktop-widgets/filterconstraintwidget.h"
 #include "desktop-widgets/simplewidgets.h"
 #include "desktop-widgets/mainwindow.h"
@@ -8,7 +8,7 @@
 #include "core/settings/qPrefUnit.h"
 #include "qt-models/filterpresetmodel.h"
 
-FilterWidget2::FilterWidget2(QWidget* parent) :
+FilterWidget::FilterWidget(QWidget* parent) :
 	QWidget(parent),
 	ignoreSignal(false),
 	presetModified(false)
@@ -31,36 +31,36 @@ FilterWidget2::FilterWidget2(QWidget* parent) :
 	ui.presetTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui.presetTable->setSelectionMode(QAbstractItemView::SingleSelection);
 
-	connect(ui.clear, &QToolButton::clicked, this, &FilterWidget2::clearFilter);
-	connect(ui.close, &QToolButton::clicked, this, &FilterWidget2::closeFilter);
-	connect(ui.fullText, &QLineEdit::textChanged, this, &FilterWidget2::filterChanged);
-	connect(ui.fulltextStringMode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FilterWidget2::filterChanged);
-	connect(ui.presetTable, &QTableView::clicked, this, &FilterWidget2::presetClicked);
-	connect(ui.presetTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &FilterWidget2::presetSelected);
+	connect(ui.clear, &QToolButton::clicked, this, &FilterWidget::clearFilter);
+	connect(ui.close, &QToolButton::clicked, this, &FilterWidget::closeFilter);
+	connect(ui.fullText, &QLineEdit::textChanged, this, &FilterWidget::filterChanged);
+	connect(ui.fulltextStringMode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FilterWidget::filterChanged);
+	connect(ui.presetTable, &QTableView::clicked, this, &FilterWidget::presetClicked);
+	connect(ui.presetTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &FilterWidget::presetSelected);
 
-	connect(&constraintModel, &FilterConstraintModel::rowsInserted, this, &FilterWidget2::constraintAdded);
-	connect(&constraintModel, &FilterConstraintModel::rowsRemoved, this, &FilterWidget2::constraintRemoved);
-	connect(&constraintModel, &FilterConstraintModel::dataChanged, this, &FilterWidget2::constraintChanged);
-	connect(&constraintModel, &FilterConstraintModel::modelReset, this, &FilterWidget2::constraintsReset);
+	connect(&constraintModel, &FilterConstraintModel::rowsInserted, this, &FilterWidget::constraintAdded);
+	connect(&constraintModel, &FilterConstraintModel::rowsRemoved, this, &FilterWidget::constraintRemoved);
+	connect(&constraintModel, &FilterConstraintModel::dataChanged, this, &FilterWidget::constraintChanged);
+	connect(&constraintModel, &FilterConstraintModel::modelReset, this, &FilterWidget::constraintsReset);
 
 	// QDataWidgetMapper might be the more civilized way to keep the menus up to data.
 	// For now, let's be blunt and fully reload the context menu if the presets list changes.
 	// This gives us more flexibility in populating the menus.
 	QAbstractItemModel *presetModel = FilterPresetModel::instance();
-	connect(presetModel, &QAbstractItemModel::rowsInserted, this, &FilterWidget2::updatePresetMenu);
-	connect(presetModel, &QAbstractItemModel::rowsRemoved, this, &FilterWidget2::updatePresetMenu);
-	connect(presetModel, &QAbstractItemModel::dataChanged, this, &FilterWidget2::updatePresetMenu);
-	connect(presetModel, &QAbstractItemModel::modelReset, this, &FilterWidget2::updatePresetMenu);
+	connect(presetModel, &QAbstractItemModel::rowsInserted, this, &FilterWidget::updatePresetMenu);
+	connect(presetModel, &QAbstractItemModel::rowsRemoved, this, &FilterWidget::updatePresetMenu);
+	connect(presetModel, &QAbstractItemModel::dataChanged, this, &FilterWidget::updatePresetMenu);
+	connect(presetModel, &QAbstractItemModel::modelReset, this, &FilterWidget::updatePresetMenu);
 
 	clearFilter();
 	updatePresetMenu();
 }
 
-FilterWidget2::~FilterWidget2()
+FilterWidget::~FilterWidget()
 {
 }
 
-void FilterWidget2::updatePresetMenu()
+void FilterWidget::updatePresetMenu()
 {
 	loadFilterPresetMenu.reset(new QMenu);
 	QAbstractItemModel *model = FilterPresetModel::instance();
@@ -78,7 +78,7 @@ void FilterWidget2::updatePresetMenu()
 	ui.loadSetButton->setMenu(loadFilterPresetMenu.get());
 }
 
-void FilterWidget2::selectPreset(int i)
+void FilterWidget::selectPreset(int i)
 {
 	QAbstractItemModel *model = FilterPresetModel::instance();
 	QItemSelectionModel *selectionModel = ui.presetTable->selectionModel();
@@ -87,7 +87,7 @@ void FilterWidget2::selectPreset(int i)
 	selectionModel->select(idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
 }
 
-void FilterWidget2::loadPreset(int index)
+void FilterWidget::loadPreset(int index)
 {
 	ignoreSignal = true; // When reloading the filter UI, we get numerous constraintChanged signals. Ignore them.
 	FilterData filter = filter_preset_get(index);
@@ -97,7 +97,7 @@ void FilterWidget2::loadPreset(int index)
 	updateFilter();
 }
 
-void FilterWidget2::constraintAdded(const QModelIndex &parent, int first, int last)
+void FilterWidget::constraintAdded(const QModelIndex &parent, int first, int last)
 {
 	if (parent.isValid() || last < first)
 		return; // We only support one level
@@ -111,7 +111,7 @@ void FilterWidget2::constraintAdded(const QModelIndex &parent, int first, int la
 	filterChanged();
 }
 
-void FilterWidget2::constraintRemoved(const QModelIndex &parent, int first, int last)
+void FilterWidget::constraintRemoved(const QModelIndex &parent, int first, int last)
 {
 	if (parent.isValid() || last < first)
 		return; // We only support one level
@@ -121,7 +121,7 @@ void FilterWidget2::constraintRemoved(const QModelIndex &parent, int first, int 
 	filterChanged();
 }
 
-void FilterWidget2::presetClicked(const QModelIndex &index)
+void FilterWidget::presetClicked(const QModelIndex &index)
 {
 	if (!index.isValid())
 		return;
@@ -130,7 +130,7 @@ void FilterWidget2::presetClicked(const QModelIndex &index)
 		Command::removeFilterPreset(index.row());
 }
 
-void FilterWidget2::presetSelected(const QItemSelection &selected, const QItemSelection &)
+void FilterWidget::presetSelected(const QItemSelection &selected, const QItemSelection &)
 {
 	if (selected.indexes().isEmpty())
 		return clearFilter();
@@ -140,7 +140,7 @@ void FilterWidget2::presetSelected(const QItemSelection &selected, const QItemSe
 	loadPreset(index.row());
 }
 
-void FilterWidget2::constraintChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles)
+void FilterWidget::constraintChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles)
 {
 	// Note: this may appear strange, but we don't update the widget if we get
 	// a constraint-changed signal from the model. The reason being that the user
@@ -149,7 +149,7 @@ void FilterWidget2::constraintChanged(const QModelIndex &topLeft, const QModelIn
 	filterChanged();
 }
 
-void FilterWidget2::constraintsReset()
+void FilterWidget::constraintsReset()
 {
 	constraintWidgets.clear();
 	int count = constraintModel.rowCount(QModelIndex());
@@ -160,7 +160,7 @@ void FilterWidget2::constraintsReset()
 	updateFilter();
 }
 
-void FilterWidget2::clearFilter()
+void FilterWidget::clearFilter()
 {
 	ignoreSignal = true; // Prevent signals to force filter recalculation (TODO: check if necessary)
 	presetModified = false;
@@ -172,12 +172,12 @@ void FilterWidget2::clearFilter()
 	constraintModel.reload({}); // Causes a filter reload
 }
 
-void FilterWidget2::closeFilter()
+void FilterWidget::closeFilter()
 {
 	MainWindow::instance()->setApplicationState(ApplicationState::Default);
 }
 
-FilterData FilterWidget2::createFilterData() const
+FilterData FilterWidget::createFilterData() const
 {
 	FilterData filterData;
 	filterData.fulltextStringMode = (StringFilterMode)ui.fulltextStringMode->currentIndex();
@@ -186,20 +186,20 @@ FilterData FilterWidget2::createFilterData() const
 	return filterData;
 }
 
-void FilterWidget2::setFilterData(const FilterData &filterData)
+void FilterWidget::setFilterData(const FilterData &filterData)
 {
 	ui.fulltextStringMode->setCurrentIndex((int)filterData.fulltextStringMode);
 	ui.fullText->setText(filterData.fullText.originalQuery);
 	constraintModel.reload(filterData.constraints);
 }
 
-void FilterWidget2::filterChanged()
+void FilterWidget::filterChanged()
 {
 	presetModified = true;
 	updateFilter();
 }
 
-void FilterWidget2::updateFilter()
+void FilterWidget::updateFilter()
 {
 	if (ignoreSignal)
 		return;
@@ -209,13 +209,13 @@ void FilterWidget2::updateFilter()
 	updatePresetLabel();
 }
 
-int FilterWidget2::selectedPreset() const
+int FilterWidget::selectedPreset() const
 {
 	QModelIndexList selection = ui.presetTable->selectionModel()->selectedRows();
 	return selection.size() >= 1 ? selection[0].row() : -1;
 }
 
-void FilterWidget2::updatePresetLabel()
+void FilterWidget::updatePresetLabel()
 {
 	int presetId = selectedPreset();
 	QString text;
@@ -227,7 +227,7 @@ void FilterWidget2::updatePresetLabel()
 	ui.currentSet->setText(text);
 }
 
-void FilterWidget2::on_addSetButton_clicked()
+void FilterWidget::on_addSetButton_clicked()
 {
 	// If there is a selected item, suggest that to the user.
 	// Thus, if the user selects an item and modify the filter,
@@ -248,19 +248,19 @@ void FilterWidget2::on_addSetButton_clicked()
 	updatePresetLabel();
 }
 
-void FilterWidget2::showEvent(QShowEvent *event)
+void FilterWidget::showEvent(QShowEvent *event)
 {
 	QWidget::showEvent(event);
 	ui.fullText->setFocus();
 	updateFilter();
 }
 
-void FilterWidget2::hideEvent(QHideEvent *event)
+void FilterWidget::hideEvent(QHideEvent *event)
 {
 	QWidget::hideEvent(event);
 }
 
-void FilterWidget2::addConstraint(filter_constraint_type type)
+void FilterWidget::addConstraint(filter_constraint_type type)
 {
 	constraintModel.addConstraint(type);
 }

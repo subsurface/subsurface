@@ -18,7 +18,7 @@
 #include "ui_mainwindow.h"
 #include "ui_plannerDetails.h"
 #include "desktop-widgets/notificationwidget.h"
-#include "desktop-widgets/filterwidget2.h"
+#include "desktop-widgets/filterwidget.h"
 #include "core/applicationstate.h"
 #include "core/gpslocation.h"
 #include "core/dive.h"
@@ -174,7 +174,7 @@ slots:
 
 private:
 	Ui::MainWindow ui;
-	FilterWidget2 filterWidget2;
+	FilterWidget filterWidget;
 	QAction *actionNextDive;
 	QAction *actionPreviousDive;
 	QAction *undoAction;

@@ -182,7 +182,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	registerApplicationState(ApplicationState::EditDiveSite, { { diveSiteEdit, FLAG_NONE }, { profileContainer, FLAG_DISABLED },
 								   { diveList, FLAG_DISABLED }, { mapWidget, FLAG_NONE } });
 	registerApplicationState(ApplicationState::FilterDive, { { mainTab.get(), FLAG_NONE }, { profileContainer, FLAG_NONE },
-								 { diveList, FLAG_NONE },      { &filterWidget2, FLAG_NONE } });
+								 { diveList, FLAG_NONE },      { &filterWidget, FLAG_NONE } });
 	setApplicationState(ApplicationState::Default);
 
 	setWindowIcon(QIcon(":subsurface-icon"));

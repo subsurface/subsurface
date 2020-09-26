@@ -1,11 +1,10 @@
-#ifndef FILTERWIDGET_2_H
-#define FILTERWIDGET_2_H
-
+#ifndef FILTERWIDGET_H
+#define FILTERWIDGET_H
 
 #include <vector>
 #include <memory>
 
-#include "ui_filterwidget2.h"
+#include "ui_filterwidget.h"
 #include "core/divefilter.h"
 #include "qt-models/filterconstraintmodel.h"
 
@@ -14,12 +13,12 @@ class QMenu;
 class QHideEvent;
 class QShowEvent;
 
-class FilterWidget2 : public QWidget {
+class FilterWidget : public QWidget {
 	Q_OBJECT
 
 public:
-	explicit FilterWidget2(QWidget *parent = 0);
-	~FilterWidget2();
+	explicit FilterWidget(QWidget *parent = 0);
+	~FilterWidget();
 
 protected:
 	void hideEvent(QHideEvent *event) override;
@@ -41,7 +40,7 @@ private slots:
 private:
 	bool ignoreSignal;
 	bool presetModified;
-	Ui::FilterWidget2 ui;
+	Ui::FilterWidget ui;
 	FilterConstraintModel constraintModel;
 	void addConstraint(filter_constraint_type type);
 	std::vector<std::unique_ptr<FilterConstraintWidget>> constraintWidgets;

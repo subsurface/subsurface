@@ -27,7 +27,7 @@ set (SUBSURFACE_UI
 	diveplanner.ui
 	diveshareexportdialog.ui
 	downloadfromdivecomputer.ui
-	filterwidget2.ui
+	filterwidget.ui
 	findmovedimagesdialog.ui
 	importgps.ui
 	listfilter.ui
@@ -80,8 +80,8 @@ set(SUBSURFACE_INTERFACE
 	downloadfromdivecomputer.h
 	filterconstraintwidget.cpp
 	filterconstraintwidget.h
-	filterwidget2.cpp
-	filterwidget2.h
+	filterwidget.cpp
+	filterwidget.h
 	findmovedimagesdialog.cpp
 	findmovedimagesdialog.h
 	groupedlineedit.cpp
