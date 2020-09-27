@@ -1,11 +1,9 @@
 # Subsurface 
 
-![Build Status](https://github.com/subsurface/subsurface/workflows/Android/badge.svg)
-
+![Build Status](https://github.com/subsurface/subsurface/workflows/Windows/badge.svg)
 ![Build Status](https://github.com/subsurface/subsurface/workflows/Mac/badge.svg) 
 ![Build Status](https://github.com/subsurface/subsurface/workflows/iOS/badge.svg)
-
-![Build Status](https://github.com/subsurface/subsurface/workflows/Windows/badge.svg)
+![Build Status](https://github.com/subsurface/subsurface/workflows/Android/badge.svg)
 
 ![Build Status](https://github.com/subsurface/subsurface/workflows/Ubuntu%2014.04%20/%20Qt%205.12%20for%20AppImage/badge.svg)
 ![Build Status](https://github.com/subsurface/subsurface/workflows/Ubuntu%2018.04%20/%20Qt%205.9/badge.svg) 
