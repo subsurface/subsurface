@@ -138,12 +138,12 @@ Building the development version of Subsurface under Linux
 
 On Fedora you need
 
-sudo dnf install git gcc-c++ make autoconf automake libtool cmake \
-	libzip-devel libxml2-devel libxslt-devel libsqlite3x-devel \
-	libudev-devel libusbx-devel libcurl-devel libssh2-devel \
-	qt5-qtbase-devel qt5-qtdeclarative-devel qt5-qtscript-devel \
-	qt5-qtwebkit-devel qt5-qtsvg-devel qt5-qttools-devel \
-	qt5-qtconnectivity-devel qt5-qtlocation-devel
+sudo dnf install autoconf automake bluez-libs-devel cmake gcc-c++ git \
+	libcurl-devel libsqlite3x-devel libssh2-devel libtool libudev-devel \
+	libusbx-devel libxml2-devel libxslt-devel libzlib-devel make \
+	qt5-qtbase-devel qt5-qtconnectivity-devel qt5-qtdeclarative-devel \
+	qt5-qtlocation-devel qt5-qtscript-devel qt5-qtsvg-devel \
+	qt5-qttools-devel qt5-qtwebkit-devel redhat-rpm-config
 
 Note that beginning with Fedora 22, you should be using the dnf command instead
 as yum is being deprecated.
@@ -181,19 +181,19 @@ sudo apt install \
 	qtdeclarative5-private-dev qtlocation5-dev qtpositioning5-dev \
 	qtscript5-dev qttools5-dev qttools5-dev-tools qtquickcontrols2-5-dev
 
-On Raspberry Pi (Raspian Stretch and Ubuntu Mate 16.04.2) this seems to work
+On Raspberry Pi (Raspian Buster and Ubuntu Mate 20.04.1) this seems to work
 
 sudo apt install \
-	autoconf automake cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
-	libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev libqt5webkit5-dev \
-	libsqlite3-dev libssh2-1-dev libssl-dev libssl-dev \
-	libtool libusb-1.0-0-dev libxml2-dev libxslt1-dev libzip-dev make \
-	pkg-config qml-module-qtlocation qml-module-qtpositioning \
-	qml-module-qtquick2 qt5-default qt5-qmake qtchooser \
-	qtconnectivity5-dev qtlocation5-dev qtpositioning5-dev qtscript5-dev \
-	qttools5-dev qttools5-dev-tools
+	autoconf automake cmake g++ git libbluetooth-dev libcrypto++-dev \
+        libcurl4-gnutls-dev libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \
+        libqt5webkit5-dev libsqlite3-dev libssh2-1-dev libssl-dev libtool \
+        libusb-1.0-0-dev libxml2-dev libxslt1-dev libzip-dev make pkg-config \
+        qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick2 \
+        qt5-default qt5-qmake qtchooser qtconnectivity5-dev qtdeclarative5-dev \
+        qtdeclarative5-private-dev qtlocation5-dev qtpositioning5-dev \
+        qtscript5-dev qttools5-dev qttools5-dev-tools
 
-Note that on Ubuntu Mate 16.04.2 on the Raspberry Pi, you may need to configure
+Note that on Ubuntu Mate on the Raspberry Pi, you may need to configure
 some swap space in order for the build to complete successfully. There is no
 swap space configured by default. See the dphys-swapfile package.
 
