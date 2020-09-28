@@ -4,9 +4,9 @@
 # Copyright (c) 2014-2020 Dirk Hohndel
 #
 
-%define latestVersion 4.9.3.1464
+%define latestVersion 4.9.7.6
 
-%define gitVersion 1464
+%define gitVersion 6
 
 
 Name:           subsurfacedaily
@@ -29,7 +29,7 @@ BuildRequires:	libtool
 BuildRequires:	cmake
 %if 0%{?suse_version}
 # kde4-filesystem needed for some folders not owned (% {_datadir}/icons/hicolor and others)
-BuildRequires:  kde4-filesystem
+BuildRequires:  kf5-filesystem
 %endif
 BuildRequires:	libzip-devel
 BuildRequires:	libxml2-devel
@@ -37,7 +37,14 @@ BuildRequires:	libxslt-devel
 BuildRequires:	libssh2-devel
 BuildRequires:	libcurl-devel
 BuildRequires:  libgit2-devel
+%if  0%{?fedora_version} >= 30
+# current Fedora has Grantlee under a different name
+# and F32 has a weird conflict with different boost-regex versions
+BuildRequires:	grantlee-qt5-devel
+BuildRequires:  boost-regex
+%else
 BuildRequires:	grantlee5-devel
+%endif
 %if  0%{?fedora_version} || 0%{?rhel_version} || 0%{?centos_version}
 BuildRequires:	netpbm-devel
 BuildRequires:	openssl-devel
