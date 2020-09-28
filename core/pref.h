@@ -138,6 +138,7 @@ struct preferences {
 	// ********** LocationService **********
 	int time_threshold;
 	int distance_threshold;
+	int store_gps_cloud;
 
 	// ********** Network **********
 	bool        proxy_auth;

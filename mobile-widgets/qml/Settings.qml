@@ -618,14 +618,40 @@ TemplatePage {
 				TemplateLabel {
 					text: qsTr("Display Developer menu")
 					Layout.fillWidth: true
-					//Layout.preferredWidth: gridWidth * 0.75
 				}
 				SsrfSwitch {
-					id: developerButton
 					checked: PrefDisplay.show_developer
-					//sLayout.preferredWidth: gridWidth * 0.25
 					onClicked: {
 						PrefDisplay.show_developer = checked
+					}
+				}
+			}
+			TemplateLine {
+				visible: sectionAdvanced.isExpanded
+			}
+			GridLayout {
+				id: gpsToCloud
+				visible: sectionAdvanced.isExpanded
+				width: parent.width
+				columns: 2
+				TemplateLabel {
+					text: qsTr("GPS data")
+					font.pointSize: subsurfaceTheme.headingPointSize
+					font.weight: Font.Light
+					Layout.topMargin: Kirigami.Units.largeSpacing
+					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+					Layout.columnSpan: 2
+				}
+				TemplateLabel {
+					text: qsTr("Store data to cloud")
+					Layout.fillWidth: true
+				}
+				SsrfSwitch {
+					checked: manager.storeGpsToCoud()
+					onClicked: {
+						manager.setStoreGpsToCloud(checked)
+						if (checked)
+							manager.saveChangesCloud(true)
 					}
 				}
 			}

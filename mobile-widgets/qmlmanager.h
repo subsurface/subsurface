@@ -241,6 +241,8 @@ public slots:
 	QString getProductVendorConnectionIdx(android_usb_serial_device_descriptor descriptor);
 #endif
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
+	int storeGpsToCloud();
+	void setStoreGpsToCloud(int value);
 
 private:
 	BuddyCompletionModel buddyModel;

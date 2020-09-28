@@ -916,6 +916,29 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 	}
 }
 
+#if defined(SUBSURFACE_MOBILE)
+// from gpslocation.cpp
+extern const char *gpsGetString(int idx, const char **name);
+
+static void save_gps(git_repository *repo, struct dir *tree)
+{
+	struct membuffer b = { 0 };
+	int i = 0;
+	const char *string;
+	const char *name = NULL;
+	do {
+		string = gpsGetString(i++, &name);
+		if (string) {
+			put_string(&b, string);
+			show_utf8(&b, " name ", name, "\n");
+			free((void *)string);
+			free((void *)name);
+		}
+	} while (string != NULL);
+	blob_insert(repo, tree, &b, "02-Gps");
+}
+#endif
+
 static int create_git_tree(git_repository *repo, struct dir *root, bool select_only, bool cached_ok)
 {
 	int i;
@@ -926,6 +949,10 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 	save_settings(repo, root);
 
 	save_divesites(repo, root);
+
+#if defined(SUBSURFACE_MOBILE)
+	save_gps(repo, root);
+#endif
 
 	for (i = 0; i < trip_table.nr; ++i)
 		trip_table.trips[i]->saved = 0;

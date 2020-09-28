@@ -93,6 +93,7 @@ struct preferences default_prefs = {
 	.vpmb_conservatism = 3,
 	.distance_threshold = 100,
 	.time_threshold = 300,
+	.store_gps_cloud = 0,
 #if defined(SUBSURFACE_MOBILE)
 	.cloud_timeout = 10,
 #else

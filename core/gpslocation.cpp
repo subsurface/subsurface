@@ -49,6 +49,11 @@ bool GpsLocation::hasInstance()
 	return m_Instance != NULL;
 }
 
+QSettings *GpsLocation::getSettings()
+{
+	return geoSettings;
+}
+
 GpsLocation::~GpsLocation()
 {
 	m_Instance = NULL;
@@ -404,6 +409,23 @@ void GpsLocation::deleteGpsFix(qint64 when)
 }
 
 #ifdef SUBSURFACE_MOBILE
+extern "C"
+const char *gpsGetString(int idx, const char **name)
+{
+	// check if we are supposed to store the data to the cloud and return
+	// the nth GPS fix, if it exists
+	if (!name || !prefs.store_gps_cloud ||
+	    !GpsLocation::hasInstance() || GpsLocation::instance()->getGpsNum() <= idx)
+		return NULL;
+	QSettings *geoSettings = GpsLocation::instance()->getSettings();
+	QString text = QString("when %1 lat %2 lon %3").arg(geoSettings->value(QStringLiteral("gpsFix%1_time").arg(idx)).toString())
+			.arg(geoSettings->value(QStringLiteral("gpsFix%1_lat").arg(idx)).toString())
+			.arg(geoSettings->value(QStringLiteral("gpsFix%1_lon").arg(idx)).toString());
+	QString fixName = geoSettings->value(QStringLiteral("gpsFix%1_name").arg(idx)).toString();
+	*name = strdup(fixName.toUtf8().constData());
+	return strdup(text.toUtf8().constData());
+}
+
 void GpsLocation::clearGpsData()
 {
 	m_trackers.clear();

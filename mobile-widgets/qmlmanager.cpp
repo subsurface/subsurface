@@ -2266,3 +2266,16 @@ QString QMLManager::getSyncState() const
 		return tr("(changes synced locally)");
 	return tr("(synced with cloud)");
 }
+
+void QMLManager::setStoreGpsToCloud(int value)
+{
+	prefs.store_gps_cloud = value;
+	if (value)
+		// that's not really true, but this way the Gps section gets written
+		mark_divelist_changed(true);
+}
+
+int QMLManager::storeGpsToCloud()
+{
+	return prefs.store_gps_cloud;
+}
