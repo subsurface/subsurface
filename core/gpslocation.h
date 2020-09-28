@@ -69,7 +69,6 @@ public slots:
 	void newPosition(QGeoPositionInfo pos);
 	void updateTimeout();
 	void positionSourceError(QGeoPositionInfoSource::Error error);
-	void postError(QNetworkReply::NetworkError error);
 	void setGpsTimeThreshold(int seconds);
 #ifdef SUBSURFACE_MOBILE
 	void clearGpsData();

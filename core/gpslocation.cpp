@@ -411,8 +411,3 @@ void GpsLocation::clearGpsData()
 	geoSettings->sync();
 }
 #endif
-
-void GpsLocation::postError(QNetworkReply::NetworkError)
-{
-	status(QStringLiteral("error when sending a GPS fix: %1").arg(reply->errorString()));
-}
