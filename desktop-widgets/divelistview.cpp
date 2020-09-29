@@ -24,6 +24,7 @@
 #include "core/metrics.h"
 #include "desktop-widgets/simplewidgets.h"
 #include "desktop-widgets/mapwidget.h"
+#include "desktop-widgets/tripselectiondialog.h"
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent),
 	currentLayout(DiveTripModelBase::TREE),
@@ -650,6 +651,16 @@ void DiveListView::splitDives()
 		Command::splitDives(d, duration_t{-1});
 }
 
+void DiveListView::addDivesToTrip()
+{
+	TripSelectionDialog dialog(MainWindow::instance());
+	dive_trip *t = dialog.getTrip();
+	std::vector<dive *> dives = getDiveSelection();
+	if (!t || dives.empty())
+		return;
+	Command::addDivesToTrip(QVector<dive *>::fromStdVector(dives), t);
+}
+
 void DiveListView::renumberDives()
 {
 	RenumberDialog dialog(true, MainWindow::instance());
@@ -845,6 +856,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	if (amount_selected > 1 && consecutive_selected())
 		popup.addAction(tr("Merge selected dives"), this, &DiveListView::mergeDives);
 	if (amount_selected >= 1) {
+		popup.addAction(tr("Add dive(s) to arbitrary trip"), this, &DiveListView::addDivesToTrip);
 		popup.addAction(tr("Renumber dive(s)"), this, &DiveListView::renumberDives);
 		popup.addAction(tr("Shift dive times"), this, &DiveListView::shiftTimes);
 		popup.addAction(tr("Split selected dives"), this, &DiveListView::splitDives);
