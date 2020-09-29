@@ -43,6 +43,7 @@ public:
 		int productIdx;
 	};
 
+	void btDeviceDiscoveryFinished();
 	void btDeviceDiscovered(const QBluetoothDeviceInfo &device);
 	void btDeviceDiscoveredMain(const btPairedDevice &device, bool fromPaired);
 	bool btAvailable() const;
