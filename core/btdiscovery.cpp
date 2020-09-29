@@ -184,7 +184,15 @@ void BTDiscovery::BTDiscoveryReDiscover()
 #if !defined(Q_OS_ANDROID)
 		if (discoveryAgent == nullptr) {
 			discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
+			discoveryAgent->setLowEnergyDiscoveryTimeout(3 * 60 * 1000); // search for three minutes
 			connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &BTDiscovery::btDeviceDiscovered);
+			connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished, this, &BTDiscovery::btDeviceDiscoveryFinished);
+			connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::canceled, this, &BTDiscovery::btDeviceDiscoveryFinished);
+			connect(discoveryAgent, QOverload<QBluetoothDeviceDiscoveryAgent::Error>::of(&QBluetoothDeviceDiscoveryAgent::error),
+				[this](QBluetoothDeviceDiscoveryAgent::Error error){
+					qDebug() << "device discovery received error" << discoveryAgent->errorString();
+				});
+			qDebug() << "discovery methods" << (int)QBluetoothDeviceDiscoveryAgent::supportedDiscoveryMethods();
 		}
 		qDebug() << "starting BLE discovery";
 		discoveryAgent->start();
@@ -245,6 +253,15 @@ QString markBLEAddress(const QBluetoothDeviceInfo *device)
 	bool isBle = flags == QBluetoothDeviceInfo::LowEnergyCoreConfiguration;
 
 	return btDeviceAddress(device, isBle);
+}
+
+void BTDiscovery::btDeviceDiscoveryFinished()
+{
+	qDebug() << "BT/BLE finished discovery";
+	QList<QBluetoothDeviceInfo> devList = discoveryAgent->discoveredDevices();
+	for (QBluetoothDeviceInfo device: devList) {
+		qDebug() << device.name() << device.address().toString();
+	}
 }
 
 void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
