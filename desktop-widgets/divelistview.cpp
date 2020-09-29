@@ -2,22 +2,17 @@
 /*
  * divelistview.cpp
  *
- * classes for the divelist of Subsurface
+ * class for the divelist of Subsurface
  *
  */
 #include "qt-models/filtermodels.h"
 #include "desktop-widgets/modeldelegates.h"
 #include "desktop-widgets/mainwindow.h"
-#include "desktop-widgets/divepicturewidget.h"
 #include "core/selection.h"
-#include "core/divefilter.h"
-#include "core/divesite.h" // for dive_site_table. TODO: remove once adding pictures is undoified
 #include <unistd.h>
 #include <QSettings>
 #include <QKeyEvent>
 #include <QFileDialog>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
 #include <QStandardPaths>
 #include <QMessageBox>
 #include <QHeaderView>
@@ -26,7 +21,6 @@
 #include "core/qthelper.h"
 #include "core/trip.h"
 #include "desktop-widgets/divelistview.h"
-#include "qt-models/divepicturemodel.h"
 #include "core/metrics.h"
 #include "desktop-widgets/simplewidgets.h"
 #include "desktop-widgets/mapwidget.h"
