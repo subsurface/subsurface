@@ -194,7 +194,7 @@ void BTDiscovery::BTDiscoveryReDiscover()
 		// So behaviour is same on Linux/Bluez stack and
 		// Android/Java stack with respect to discovery
 		for (int i = 0; i < btPairedDevices.length(); i++)
-			btDeviceDiscoveredMain(btPairedDevices[i]);
+			btDeviceDiscoveredMain(btPairedDevices[i], true);
 #endif
 		for (int i = 0; i < btPairedDevices.length(); i++)
 			qDebug() << "Paired =" << btPairedDevices[i].name << btPairedDevices[i].address;
@@ -268,10 +268,10 @@ void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 	saveBtDeviceInfo(btDeviceAddress(&device, false), device);
 #endif
 
-	btDeviceDiscoveredMain(this_d);
+	btDeviceDiscoveredMain(this_d, false);
 }
 
-void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device)
+void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device, bool fromPaired)
 {
 	btVendorProduct btVP;
 
@@ -282,7 +282,7 @@ void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device)
 	else
 		newDevice = device.name;
 
-	qDebug() << "Found new device:" << newDevice << device.address;
+	qDebug() << (fromPaired ? "Paired device" : "Discovered new device:") << newDevice << device.address;
 	if (newDC) {
 		QString vendor = dc_descriptor_get_vendor(newDC);
 		qDebug() << "this could be a " + vendor + " " + newDevice;

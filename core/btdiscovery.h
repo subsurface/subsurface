@@ -44,7 +44,7 @@ public:
 	};
 
 	void btDeviceDiscovered(const QBluetoothDeviceInfo &device);
-	void btDeviceDiscoveredMain(const btPairedDevice &device);
+	void btDeviceDiscoveredMain(const btPairedDevice &device, bool fromPaired);
 	bool btAvailable() const;
 	void showNonDiveComputers(bool show);
 	void stopAgent();
