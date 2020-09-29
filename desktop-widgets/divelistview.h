@@ -50,6 +50,7 @@ slots:
 	void mergeDives();
 	void splitDives();
 	void renumberDives();
+	void addDivesToTrip();
 	void shiftTimes();
 	void diveSelectionChanged(const QVector<QModelIndex> &indices);
 	void currentDiveChanged(QModelIndex index);
