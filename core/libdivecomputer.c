@@ -607,6 +607,15 @@ static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_fie
 		char *line = (char *) str->value;
 		location_t location;
 
+		/* Do we already have a divesite? */
+		if (dive->dive_site) {
+			/*
+			 * "GPS1" always takes precedence, anything else
+			 * we'll just pick the first "GPS*" that matches.
+			 */
+			if (strcmp(str->desc, "GPS1") != 0)
+				return;
+		}
 		parse_location(line, &location);
 
 		if (location.lat.udeg && location.lon.udeg) {
