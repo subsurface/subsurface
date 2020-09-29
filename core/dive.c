@@ -3628,8 +3628,9 @@ int get_depth_at_time(const struct divecomputer *dc, unsigned int time)
 fraction_t best_o2(depth_t depth, const struct dive *dive)
 {
 	fraction_t fo2;
+	int po2 = in_planner() ? prefs.bottompo2 : prefs.modpO2 * 1000;
 
-	fo2.permille = (prefs.bottompo2 * 100 / depth_to_mbar(depth.mm, dive)) * 10;	//use integer arithmetic to round down to nearest percent
+	fo2.permille = (po2 * 100 / depth_to_mbar(depth.mm, dive)) * 10;	//use integer arithmetic to round down to nearest percent
 	// Don't permit >100% O2
 	if (fo2.permille > 1000)
 		fo2.permille = 1000;

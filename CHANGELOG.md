@@ -1,3 +1,4 @@
+Use pO2 from prefernces for MOD display in equipment tab
 mobile: fix manually adding dives in the past [#2971]
 
 ---
