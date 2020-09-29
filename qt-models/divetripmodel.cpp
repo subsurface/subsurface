@@ -119,14 +119,10 @@ QVariant DiveTripModelBase::tripData(const dive_trip *trip, int column, int role
 		switch (column) {
 		case DiveTripModelBase::NR:
 			QString shownText;
-			bool oneDayTrip = trip_is_single_day(trip);
 			int countShown = trip_shown_dives(trip);
 			if (countShown < trip->dives.nr)
 				shownText = tr("(%1 shown)").arg(countShown);
-			if (!empty_string(trip->location))
-				return QString(trip->location) + ", " + get_trip_date_string(trip_date(trip), trip->dives.nr, oneDayTrip) + " "+ shownText;
-			else
-				return get_trip_date_string(trip_date(trip), trip->dives.nr, oneDayTrip) + shownText;
+			return get_trip_string(trip) + " " + shownText;
 		}
 	}
 

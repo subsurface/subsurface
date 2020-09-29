@@ -8,6 +8,7 @@
 #include "subsurface-time.h"
 
 struct picture;
+struct dive_trip;
 
 // 1) Types
 
@@ -79,7 +80,7 @@ QString get_dive_date_string(timestamp_t when);
 QString get_first_dive_date_string();
 QString get_last_dive_date_string();
 QString get_short_dive_date_string(timestamp_t when);
-QString get_trip_date_string(timestamp_t when, int nr, bool getday);
+QString get_trip_string(const dive_trip *trip);
 QString getUiLanguage();
 void initUiLanguage();
 QLocale getLocale();
