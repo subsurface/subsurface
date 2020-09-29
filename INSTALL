@@ -199,10 +199,12 @@ swap space configured by default. See the dphys-swapfile package.
 
 On PCLinuxOS you appear to need the following packages
 
-su -c "apt-get install -y autoconf automake cmake libtool gcc-c++ git \
-lib64usb1.0-devel lib64zip-devel lib64qt5webkitwidgets-devel qttools5 \
-qttranslations5 lib64qt5xml-devel lib64qt5test-devel lib64qtscript-devel \
-lib64qt5svg-devel lib64qt5concurrent-devel lib64qt5bluetooth-devel"
+su -c "apt-get install -y autoconf automake cmake gcc-c++ git libtool  \
+lib64bluez-devel lib64qt5bluetooth-devel lib64qt5concurrent-devel \
+lib64qt5help-devel lib64qt5location-devel lib64qt5quicktest-devel \
+lib64qt5quickwidgets-devel lib64qt5script-devel lib64qt5svg-devel \
+lib64qt5test-devel lib64qt5webkitwidgets-devel lib64qt5xml-devel \
+lib64ssh2-devel lib64usb1.0-devel lib64zip-devel qttools5 qttranslations5"
 
 In order to build Subsurface, use the supplied build script. This should
 work on most systems that have all the prerequisite packages installed.
