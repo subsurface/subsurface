@@ -4,6 +4,7 @@
 #include "subsurface-string.h"
 #include "device.h"
 #include "errorhelper.h" // for verbose flag
+#include "selection.h"
 #include "core/settings/qPrefDiveComputer.h"
 
 /*
@@ -305,12 +306,8 @@ extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *
 	for (const DiveComputerNode &node : values) {
 		bool found = false;
 		if (select_only) {
-			int j;
-			struct dive *d;
-			for_each_dive (j, d) {
+			for (dive *d: getDiveSelection()) {
 				struct divecomputer *dc;
-				if (!d->selected)
-					continue;
 				for_each_dc (d, dc) {
 					if (dc->deviceid == node.deviceId) {
 						found = true;

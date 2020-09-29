@@ -5,6 +5,7 @@
 #include "core/imagedownloader.h"
 #include "core/picture.h"
 #include "core/qthelper.h"
+#include "core/selection.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "commands/command.h"
 
@@ -87,19 +88,15 @@ void DivePictureModel::updateDivePictures()
 		Thumbnailer::instance()->clearWorkQueue();
 	}
 
-	int i;
-	struct dive *dive;
-	for_each_dive (i, dive) {
-		if (dive->selected) {
-			size_t first = pictures.size();
-			FOR_EACH_PICTURE(dive)
-				pictures.push_back(PictureEntry(dive, *picture));
+	for (struct dive *dive: getDiveSelection()) {
+		size_t first = pictures.size();
+		FOR_EACH_PICTURE(dive)
+			pictures.push_back(PictureEntry(dive, *picture));
 
-			// Sort pictures of this dive by offset.
-			// Thus, the list will be sorted by (dive, offset).
-			std::sort(pictures.begin() + first, pictures.end(),
-				  [](const PictureEntry &a, const PictureEntry &b) { return a.offsetSeconds < b.offsetSeconds; });
-		}
+		// Sort pictures of this dive by offset.
+		// Thus, the list will be sorted by (dive, offset).
+		std::sort(pictures.begin() + first, pictures.end(),
+			  [](const PictureEntry &a, const PictureEntry &b) { return a.offsetSeconds < b.offsetSeconds; });
 	}
 
 	updateThumbnails();
