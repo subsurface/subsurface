@@ -1018,15 +1018,23 @@ extern "C" char *get_current_date()
 	return copy_qstring(current_date);
 }
 
-QString get_trip_date_string(timestamp_t when, int nr, bool getday)
+QString get_trip_string(const dive_trip *trip)
 {
+	if (!trip)
+		return QString();
+
+	int nr = trip->dives.nr;
+	timestamp_t when = trip_date(trip);
+	bool getday = trip_is_single_day(trip);
+
 	QDateTime localTime = timestampToDateTime(when);
 
+	QString prefix = !empty_string(trip->location) ? QString(trip->location) + ", " : QString();
 	QString suffix = " " + gettextFromC::tr("(%n dive(s))", "", nr);
 	if (getday)
-		return loc.toString(localTime, prefs.date_format) + suffix;
+		return prefix + loc.toString(localTime, prefs.date_format) + suffix;
 	else
-		return loc.toString(localTime, "MMM yyyy") + suffix;
+		return prefix + loc.toString(localTime, "MMM yyyy") + suffix;
 }
 
 static QMutex hashOfMutex;
