@@ -609,16 +609,12 @@ static bool can_merge(const struct dive *a, const struct dive *b, enum asked_use
 
 void DiveListView::mergeDives()
 {
-	int i;
-	struct dive *d;
 	enum asked_user have_asked = NOTYET;
 
 	// Collect a vector of batches of dives to merge (i.e. a vector of vector of dives)
 	QVector<QVector<dive *>> merge_batches;
 	QVector<dive *> current_batch;
-	for_each_dive (i, d) {
-		if (!d->selected)
-			continue;
+	for (dive *d: getDiveSelection()) {
 		if (current_batch.empty()) {
 			current_batch.append(d);
 		} else if (can_merge(current_batch.back(), d, &have_asked)) {
@@ -638,16 +634,7 @@ void DiveListView::mergeDives()
 
 void DiveListView::splitDives()
 {
-	int i;
-	struct dive *dive;
-
-	// Let's collect the dives to be split first, so that we don't catch newly inserted dives!
-	QVector<struct dive *> dives;
-	for_each_dive (i, dive) {
-		if (dive->selected)
-			dives.append(dive);
-	}
-	for (struct dive *d: dives)
+	for (struct dive *d: getDiveSelection())
 		Command::splitDives(d, duration_t{-1});
 }
 
@@ -748,15 +735,7 @@ void DiveListView::addToTrip(int delta)
 		// no dive, no trip? get me out of here
 		return;
 
-	QVector<dive *> dives;
-	if (d->selected) { // there are possibly other selected dives that we should add
-		int idx;
-		for_each_dive (idx, d) {
-			if (d->selected)
-				dives.append(d);
-		}
-	}
-	Command::addDivesToTrip(dives, trip);
+	Command::addDivesToTrip(QVector<dive *>::fromStdVector(getDiveSelection()), trip);
 }
 
 void DiveListView::markDiveInvalid()
@@ -775,13 +754,7 @@ void DiveListView::deleteDive()
 	if (!d)
 		return;
 
-	int i;
-	QVector<struct dive*> deletedDives;
-	for_each_dive (i, d) {
-		if (d->selected)
-			deletedDives.append(d);
-	}
-	Command::deleteDive(deletedDives);
+	Command::deleteDive(QVector<dive *>::fromStdVector(getDiveSelection()));
 }
 
 void DiveListView::contextMenuEvent(QContextMenuEvent *event)

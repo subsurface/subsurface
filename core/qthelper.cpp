@@ -19,6 +19,7 @@
 #include "exif.h"
 #include "file.h"
 #include "picture.h"
+#include "selection.h"
 #include "tag.h"
 #include "trip.h"
 #include "imagedownloader.h"
@@ -387,12 +388,9 @@ static bool lessThan(const QPair<QString, int> &a, const QPair<QString, int> &b)
 
 QVector<QPair<QString, int>> selectedDivesGasUsed()
 {
-	int i, j;
-	struct dive *d;
+	int j;
 	QMap<QString, int> gasUsed;
-	for_each_dive (i, d) {
-		if (!d->selected)
-			continue;
+	for (dive *d: getDiveSelection()) {
 		volume_t *diveGases = get_gas_used(d);
 		for (j = 0; j < d->cylinders.nr; j++) {
 			if (diveGases[j].mliter) {
