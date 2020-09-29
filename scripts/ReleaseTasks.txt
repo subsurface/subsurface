@@ -10,4 +10,6 @@ Copy Windows installers and AppImages from GitHub to new and old webserver (for 
 
 Add date to release announcement draft and move to the corresponding _posts directories
 Update links on website
+- index pages in all languages
+- download pages in all languages
 Post to Scubaboard
