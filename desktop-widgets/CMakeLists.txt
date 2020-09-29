@@ -43,6 +43,7 @@ set (SUBSURFACE_UI
 	shifttimes.ui
 	tableview.ui
 	templateedit.ui
+	tripselectiodialog.ui
 	urldialog.ui
 	webservices.ui
 	tab-widgets/maintab.ui
@@ -130,6 +131,8 @@ set(SUBSURFACE_INTERFACE
 	tagwidget.h
 	textedit.cpp
 	textedit.h
+	tripselectiondialog.cpp
+	tripselectiondialog.h
 	updatemanager.cpp
 	updatemanager.h
 )
