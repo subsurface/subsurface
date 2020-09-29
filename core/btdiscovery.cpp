@@ -181,7 +181,7 @@ void BTDiscovery::BTDiscoveryReDiscover()
 	if (1) {
 #endif
 		m_btValid = true;
-#if !defined(Q_OS_ANDROID)
+
 		if (discoveryAgent == nullptr) {
 			discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
 			discoveryAgent->setLowEnergyDiscoveryTimeout(3 * 60 * 1000); // search for three minutes
@@ -194,18 +194,22 @@ void BTDiscovery::BTDiscoveryReDiscover()
 				});
 			qDebug() << "discovery methods" << (int)QBluetoothDeviceDiscoveryAgent::supportedDiscoveryMethods();
 		}
+#if defined(Q_OS_ANDROID)
+		// on Android, we cannot scan for classic devices - we just get the paired ones
 		qDebug() << "starting BLE discovery";
-		discoveryAgent->start();
-#else
+		discoveryAgent->start(QBluetoothDeviceDiscoveryAgent::LowEnergyMethod);
 		getBluetoothDevices();
 		// and add the paired devices to the internal data
 		// So behaviour is same on Linux/Bluez stack and
 		// Android/Java stack with respect to discovery
 		for (int i = 0; i < btPairedDevices.length(); i++)
 			btDeviceDiscoveredMain(btPairedDevices[i], true);
-#endif
+#else
+		qDebug() << "starting BT/BLE discovery";
+		discoveryAgent->start();
 		for (int i = 0; i < btPairedDevices.length(); i++)
 			qDebug() << "Paired =" << btPairedDevices[i].name << btPairedDevices[i].address;
+#endif
 
 #if defined(Q_OS_IOS) || (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID))
 		QTimer timer;
