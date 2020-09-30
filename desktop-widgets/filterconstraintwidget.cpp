@@ -45,7 +45,9 @@ static QListWidget *makeMultipleChoice(const QModelIndex &index, int role)
 		return nullptr;
 	QListWidget *res = new QListWidget;
 	res->addItems(list);
+	res->setSizePolicy(QSizePolicy::Maximum,QSizePolicy::Maximum);
 	res->setSelectionMode(QAbstractItemView::ExtendedSelection);
+	res->setFixedSize(res->sizeHintForColumn(0) + 2 * res->frameWidth(), res->sizeHintForRow(0) * res->count() + 2 * res->frameWidth());
 	return res;
 }
 
