@@ -110,6 +110,18 @@ void put_vformat(struct membuffer *b, const char *fmt, va_list args)
 		len = vsnprintf(target, room, fmt, copy);
 		va_end(copy);
 
+		// Buggy C library?
+		if (len < 0) {
+			// We have to just give up at some point
+			if (room > 1000)
+				return;
+
+			// We don't know how big an area we should ask for,
+			// so just expand our allocation by 50%
+			room = room * 3 / 2;
+			continue;
+		}
+
 		if (len < room) {
 			b->len += len;
 			return;
