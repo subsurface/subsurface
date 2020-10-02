@@ -77,3 +77,20 @@ bool gasmix_is_air(struct gasmix gasmix)
 	int he = gasmix.he.permille;
 	return (he == 0) && (o2 == 0 || ((o2 >= O2_IN_AIR - 1) && (o2 <= O2_IN_AIR + 1)));
 }
+
+static fraction_t make_fraction(int i)
+{
+	fraction_t res;
+	res.permille = i;
+	return res;
+}
+
+fraction_t get_gas_component_fraction(struct gasmix mix, enum gas_component component)
+{
+	switch (component) {
+	case O2: return make_fraction(get_o2(mix));
+	case N2: return make_fraction(get_n2(mix));
+	case HE: return make_fraction(get_he(mix));
+	default: return make_fraction(0);
+	}
+}
