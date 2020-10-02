@@ -20,7 +20,8 @@ enum filter_constraint_units {
 	FILTER_CONSTRAINT_TEMPERATURE_UNIT,
 	FILTER_CONSTRAINT_WEIGHT_UNIT,
 	FILTER_CONSTRAINT_VOLUMETRIC_FLOW_UNIT,
-	FILTER_CONSTRAINT_DENSITY_UNIT
+	FILTER_CONSTRAINT_DENSITY_UNIT,
+	FILTER_CONSTRAINT_PERCENTAGE_UNIT
 };
 
 static struct type_description {
@@ -66,6 +67,9 @@ static struct type_description {
 	{ FILTER_CONSTRAINT_LOCATION, "location", QT_TRANSLATE_NOOP("gettextFromC", "location"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 	{ FILTER_CONSTRAINT_WEIGHT_TYPE, "weight_type", QT_TRANSLATE_NOOP("gettextFromC", "weight type"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 	{ FILTER_CONSTRAINT_CYLINDER_TYPE, "cylinder_type", QT_TRANSLATE_NOOP("gettextFromC", "cylinder type"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
+	{ FILTER_CONSTRAINT_CYLINDER_N2, "cylinder_n2", QT_TRANSLATE_NOOP("gettextFromC", "gas N₂ content"), false, true, false, FILTER_CONSTRAINT_PERCENTAGE_UNIT, 1, false, false },
+	{ FILTER_CONSTRAINT_CYLINDER_O2, "cylinder_o2", QT_TRANSLATE_NOOP("gettextFromC", "gas O₂ content"), false, true, false, FILTER_CONSTRAINT_PERCENTAGE_UNIT, 1, false, false },
+	{ FILTER_CONSTRAINT_CYLINDER_HE, "cylinder_he", QT_TRANSLATE_NOOP("gettextFromC", "gas He content"), false, true, false, FILTER_CONSTRAINT_PERCENTAGE_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_SUIT, "suit", QT_TRANSLATE_NOOP("gettextFromC", "suit"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 	{ FILTER_CONSTRAINT_NOTES, "notes", QT_TRANSLATE_NOOP("gettextFromC", "notes"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 };
@@ -283,6 +287,8 @@ QString filter_constraint_get_unit(enum filter_constraint_type type)
 		return get_volume_unit() + "/min";
 	case FILTER_CONSTRAINT_DENSITY_UNIT:
 		return "g/ℓ";
+	case FILTER_CONSTRAINT_PERCENTAGE_UNIT:
+		return "%";
 	}
 }
 
@@ -307,6 +313,8 @@ static int display_to_base_unit(double f, enum filter_constraint_type type)
 		return prefs.units.volume == units::LITER ? lrint(f * 1000.0) : lrint(cuft_to_l(f) * 1000.0);
 	case FILTER_CONSTRAINT_DENSITY_UNIT:
 		return lrint(f * 10.0); // Yippie, only "sane" units for density (g/l)
+	case FILTER_CONSTRAINT_PERCENTAGE_UNIT:
+		return lrint(f * 10.0); // Display percent, store permille
 	}
 }
 
@@ -331,6 +339,8 @@ static double base_to_display_unit(int i, enum filter_constraint_type type)
 		return prefs.units.volume == units::LITER ? (double)i / 1000.0 : ml_to_cuft(i);
 	case FILTER_CONSTRAINT_DENSITY_UNIT:
 		return (double)i / 10.0; // Yippie, only "sane" units for density (g/l)
+	case FILTER_CONSTRAINT_PERCENTAGE_UNIT:
+		return (double)i / 10.0; // Display percent, store permille
 	}
 }
 
@@ -496,7 +506,7 @@ filter_constraint::filter_constraint(filter_constraint_type typeIn) :
 		data.numerical_range.to = year;
 	} else {
 		// For numerical data let's try to find sensible defaults based on the unit.
-		// Obviously, these are arbitrary and we might want to save them.
+		// Obviously, these are arbitrary and we might want to save the user supplied values.
 		switch (type_to_unit(type)) {
 		case FILTER_CONSTRAINT_NO_UNIT:
 		default:
@@ -532,6 +542,11 @@ filter_constraint::filter_constraint(filter_constraint_type typeIn) :
 			// Water density: 1000-1027 g/l
 			data.numerical_range.from = 1000 * 10;
 			data.numerical_range.to = 1027 * 10;
+			break;
+		case FILTER_CONSTRAINT_PERCENTAGE_UNIT:
+			// Percentage: 0-100%
+			data.numerical_range.from = 0 * 10;
+			data.numerical_range.to = 100 * 10;
 			break;
 		}
 	}
@@ -909,6 +924,16 @@ static bool check_numerical_range_non_zero(const filter_constraint &c, int v)
 	return check_numerical_range(c, v);
 }
 
+static bool check_gas_range(const filter_constraint &c, const struct dive *d, gas_component component)
+{
+	for (int i = 0; i < d->cylinders.nr; ++i) {
+		const cylinder_t &cyl = d->cylinders.cylinders[i];
+		if (check_numerical_range(c, get_gas_component_fraction(cyl.gasmix, component).permille))
+			return true;
+	}
+	return false;
+}
+
 static long days_since_epoch(timestamp_t timestamp)
 {
 	return timestamp / (3600 * 24);
@@ -1075,6 +1100,12 @@ bool filter_constraint_match_dive(const filter_constraint &c, const struct dive 
 		return has_weight_type(c, d);
 	case FILTER_CONSTRAINT_CYLINDER_TYPE:
 		return has_cylinder_type(c, d);
+	case FILTER_CONSTRAINT_CYLINDER_N2:
+		return check_gas_range(c, d, N2);
+	case FILTER_CONSTRAINT_CYLINDER_O2:
+		return check_gas_range(c, d, O2);
+	case FILTER_CONSTRAINT_CYLINDER_HE:
+		return check_gas_range(c, d, HE);
 	case FILTER_CONSTRAINT_SUIT:
 		return has_suits(c, d);
 	case FILTER_CONSTRAINT_NOTES:
