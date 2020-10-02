@@ -448,10 +448,21 @@ void DiveListView::mouseReleaseEvent(QMouseEvent *event)
 
 void DiveListView::keyPressEvent(QKeyEvent *event)
 {
-	// Hook into cursor-up and cursor-down events and update selection if necessary.
-	// See comment in mouseReleaseEvent()
-	if (event->key() != Qt::Key_Down && event->key() != Qt::Key_Up)
-		return QTreeView::keyPressEvent(event);
+	// Hook into key events that change the selection (i.e. cursor-up, cursor-down,
+	// page-up, page-down, home and end) and update selection if necessary.
+	// See comment in mouseReleaseEvent().
+	switch (event->key()) {
+		case Qt::Key_Up:
+		case Qt::Key_Down:
+		case Qt::Key_PageUp:
+		case Qt::Key_PageDown:
+		case Qt::Key_Home:
+		case Qt::Key_End:
+			break;
+		default:
+			return QTreeView::keyPressEvent(event);
+	}
+
 	QModelIndexList selectionBefore = selectionModel()->selectedRows();
 	QTreeView::keyPressEvent(event);
 	QModelIndexList selectionAfter = selectionModel()->selectedRows();
