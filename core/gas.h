@@ -43,12 +43,18 @@ static inline int get_he(struct gasmix mix)
 	return mix.he.permille;
 }
 
+static inline int get_n2(struct gasmix mix)
+{
+	return 1000 - get_o2(mix) - get_he(mix);
+}
+
 struct gas_pressures {
 	double o2, n2, he;
 };
 
 extern void sanitize_gasmix(struct gasmix *mix);
 extern int gasmix_distance(struct gasmix a, struct gasmix b);
+extern fraction_t get_gas_component_fraction(struct gasmix mix, enum gas_component component);
 
 extern bool gasmix_is_air(struct gasmix gasmix);
 
