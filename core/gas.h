@@ -10,6 +10,8 @@ extern "C" {
 #include <stdbool.h>
 #endif
 
+enum gas_component { N2, HE, O2 };
+
 // o2 == 0 && he == 0 -> air
 // o2 < 0 -> invalid
 struct gasmix {

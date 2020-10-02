@@ -30,7 +30,6 @@
 #include "planner.h"
 #include "qthelper.h"
 
-enum inertgas { N2, HE };
 #define cube(x) (x * x * x)
 
 // Subsurface until v4.6.2 appeared to produce marginally less conservative plans than our benchmarks.
@@ -293,7 +292,7 @@ double tissue_tolerance_calc(struct deco_state *ds, const struct dive *dive, dou
 /*
  * Return Buehlmann factor for a particular period and tissue index.
  */
-static double factor(int period_in_seconds, int ci, enum inertgas gas)
+static double factor(int period_in_seconds, int ci, enum gas_component gas)
 {
 	if (period_in_seconds == 1) {
 		if (gas == N2)
