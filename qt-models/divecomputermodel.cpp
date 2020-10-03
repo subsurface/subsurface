@@ -4,7 +4,7 @@
 #include "core/divelist.h"
 
 DiveComputerModel::DiveComputerModel(QObject *parent) : CleanerTableModel(parent),
-	dcs(dcList.dcs)
+	dcs(device_table.devices)
 {
 	setHeaderDataStrings(QStringList() << "" << tr("Model") << tr("Device ID") << tr("Nickname"));
 }
@@ -13,7 +13,7 @@ QVariant DiveComputerModel::data(const QModelIndex &index, int role) const
 {
 	if (index.row() < 0 || index.row() >= dcs.size())
 		return QVariant();
-	const DiveComputerNode &node = dcs[index.row()];
+	const device &node = dcs[index.row()];
 
 	if (role == Qt::DisplayRole || role == Qt::EditRole) {
 		switch (index.column()) {
@@ -58,7 +58,7 @@ bool DiveComputerModel::setData(const QModelIndex &index, const QVariant &value,
 	if (index.row() < 0 || index.row() >= dcs.size())
 		return false;
 
-	DiveComputerNode &node = dcs[index.row()];
+	device &node = dcs[index.row()];
 	node.nickName = value.toString();
 	emit dataChanged(index, index);
 	return true;
@@ -75,7 +75,7 @@ void DiveComputerModel::remove(const QModelIndex &index)
 
 void DiveComputerModel::keepWorkingList()
 {
-	if (dcList.dcs != dcs)
+	if (device_table.devices != dcs)
 		mark_divelist_changed(true);
-	dcList.dcs = dcs;
+	device_table.devices = dcs;
 }

@@ -26,7 +26,7 @@ slots:
 	void remove(const QModelIndex &index);
 
 private:
-	QVector<DiveComputerNode> dcs;
+	QVector<device> dcs;
 };
 
 #endif

@@ -192,9 +192,9 @@ extern "C" void fake_dc(struct divecomputer *dc)
 	/* Even that didn't work? Give up, there's something wrong */
 }
 
-DiveComputerList dcList;
+struct device_table device_table;
 
-bool DiveComputerNode::operator==(const DiveComputerNode &a) const
+bool device::operator==(const device &a) const
 {
 	return model == a.model &&
 	       deviceId == a.deviceId &&
@@ -203,25 +203,25 @@ bool DiveComputerNode::operator==(const DiveComputerNode &a) const
 	       nickName == a.nickName;
 }
 
-bool DiveComputerNode::operator!=(const DiveComputerNode &a) const
+bool device::operator!=(const device &a) const
 {
 	return !(*this == a);
 }
 
-bool DiveComputerNode::operator<(const DiveComputerNode &a) const
+bool device::operator<(const device &a) const
 {
 	return std::tie(model, deviceId) < std::tie(a.model, a.deviceId);
 }
 
-static const DiveComputerNode *getDCExact(const QVector<DiveComputerNode> &dcs, const divecomputer *dc)
+static const device *getDCExact(const QVector<device> &dcs, const divecomputer *dc)
 {
-	auto it = std::lower_bound(dcs.begin(), dcs.end(), DiveComputerNode{dc->model, dc->deviceid, {}, {}, {}});
+	auto it = std::lower_bound(dcs.begin(), dcs.end(), device{dc->model, dc->deviceid, {}, {}, {}});
 	return it != dcs.end() && it->model == dc->model && it->deviceId == dc->deviceid ? &*it : NULL;
 }
 
-static const DiveComputerNode *getDC(const QVector<DiveComputerNode> &dcs, const divecomputer *dc)
+static const device *getDC(const QVector<device> &dcs, const divecomputer *dc)
 {
-	auto it = std::lower_bound(dcs.begin(), dcs.end(), DiveComputerNode{dc->model, 0, {}, {}, {}});
+	auto it = std::lower_bound(dcs.begin(), dcs.end(), device{dc->model, 0, {}, {}, {}});
 	return it != dcs.end() && it->model == dc->model ? &*it : NULL;
 }
 
@@ -240,7 +240,7 @@ extern "C" void set_dc_deviceid(struct divecomputer *dc, unsigned int deviceid)
 	if (!dc->model)
 		return;
 
-	const DiveComputerNode *node = getDCExact(dcList.dcs, dc);
+	const device *node = getDCExact(device_table.devices, dc);
 	if (!node)
 		return;
 
@@ -250,7 +250,7 @@ extern "C" void set_dc_deviceid(struct divecomputer *dc, unsigned int deviceid)
 		dc->fw_version = copy_qstring(node->firmware);
 }
 
-void DiveComputerNode::showchanges(const QString &n, const QString &s, const QString &f) const
+void device::showchanges(const QString &n, const QString &s, const QString &f) const
 {
 	if (nickName != n && !n.isEmpty())
 		qDebug("new nickname %s for DC model %s deviceId 0x%x", qPrintable(n), qPrintable(model), deviceId);
@@ -260,11 +260,11 @@ void DiveComputerNode::showchanges(const QString &n, const QString &s, const QSt
 		qDebug("new firmware version %s for DC model %s deviceId 0x%x", qPrintable(f), qPrintable(model), deviceId);
 }
 
-static void addDC(QVector<DiveComputerNode> &dcs, const QString &m, uint32_t d, const QString &n, const QString &s, const QString &f)
+static void addDC(QVector<device> &dcs, const QString &m, uint32_t d, const QString &n, const QString &s, const QString &f)
 {
 	if (m.isEmpty() || d == 0)
 		return;
-	auto it = std::lower_bound(dcs.begin(), dcs.end(), DiveComputerNode{m, d, {}, {}, {}});
+	auto it = std::lower_bound(dcs.begin(), dcs.end(), device{m, d, {}, {}, {}});
 	if (it != dcs.end() && it->model == m && it->deviceId == d) {
 		// debugging: show changes
 		if (verbose)
@@ -277,21 +277,21 @@ static void addDC(QVector<DiveComputerNode> &dcs, const QString &m, uint32_t d, 
 		if (!f.isEmpty())
 			it->firmware = f;
 	} else {
-		dcs.insert(it, DiveComputerNode{m, d, s, f, n});
+		dcs.insert(it, device{m, d, s, f, n});
 	}
 }
 
 extern "C" void create_device_node(const char *model, uint32_t deviceid, const char *serial, const char *firmware, const char *nickname)
 {
-	addDC(dcList.dcs, model, deviceid, nickname, serial, firmware);
+	addDC(device_table.devices, model, deviceid, nickname, serial, firmware);
 }
 
 extern "C" void clear_device_nodes()
 {
-	dcList.dcs.clear();
+	device_table.devices.clear();
 }
 
-static bool compareDCById(const DiveComputerNode &a, const DiveComputerNode &b)
+static bool compareDCById(const device &a, const device &b)
 {
 	return a.deviceId < b.deviceId;
 }
@@ -299,9 +299,9 @@ static bool compareDCById(const DiveComputerNode &a, const DiveComputerNode &b)
 extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *, uint32_t, const char *, const char *, const char *),
 				  bool select_only)
 {
-	QVector<DiveComputerNode> values = dcList.dcs;
+	QVector<device> values = device_table.devices;
 	std::sort(values.begin(), values.end(), compareDCById);
-	for (const DiveComputerNode &node : values) {
+	for (const device &node : values) {
 		bool found = false;
 		if (select_only) {
 			for (dive *d: getDiveSelection()) {
@@ -343,9 +343,9 @@ extern "C" void set_dc_nickname(struct dive *dive)
 
 	for_each_dc (dive, dc) {
 		if (!empty_string(dc->model) && dc->deviceid &&
-		    !getDCExact(dcList.dcs, dc)) {
+		    !getDCExact(device_table.devices, dc)) {
 			// we don't have this one, yet
-			const DiveComputerNode *existNode = getDC(dcList.dcs, dc);
+			const device *existNode = getDC(device_table.devices, dc);
 			if (existNode) {
 				// we already have this model but a different deviceid
 				QString simpleNick(dc->model);
@@ -353,9 +353,9 @@ extern "C" void set_dc_nickname(struct dive *dive)
 					simpleNick.append(" (unknown deviceid)");
 				else
 					simpleNick.append(" (").append(QString::number(dc->deviceid, 16)).append(")");
-				addDC(dcList.dcs, dc->model, dc->deviceid, simpleNick, {}, {});
+				addDC(device_table.devices, dc->model, dc->deviceid, simpleNick, {}, {});
 			} else {
-				addDC(dcList.dcs, dc->model, dc->deviceid, {}, {}, {});
+				addDC(device_table.devices, dc->model, dc->deviceid, {}, {}, {});
 			}
 		}
 	}
@@ -363,7 +363,7 @@ extern "C" void set_dc_nickname(struct dive *dive)
 
 QString get_dc_nickname(const struct divecomputer *dc)
 {
-	const DiveComputerNode *existNode = getDCExact(dcList.dcs, dc);
+	const device *existNode = getDCExact(device_table.devices, dc);
 
 	if (existNode && !existNode->nickName.isEmpty())
 		return existNode->nickName;
