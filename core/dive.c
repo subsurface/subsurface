@@ -2228,6 +2228,39 @@ static int match_cylinder(const cylinder_t *cyl, const struct dive *dive, const 
 }
 
 /*
+ * Function used to merge manually set start or end pressures. This
+ * is used to merge cylinders when merging dives. We store up to two
+ * values for start _and_ end pressures: one derived from samples and
+ * one entered manually, whereby the latter takes precedence. It may
+ * happen that the user merges two dives where one has a manual,
+ * the other only a sample-derived pressure. In such a case we want to
+ * supplement the non-existing manual value by a sample derived one.
+ * Otherwise, the merged dive would end up with incomplete pressure
+ * information.
+ * The last argument to the function specifies whether the larger
+ * or smaller value of the two dives should be returned. Obviously,
+ * for the starting pressure we want the larger and for the ending
+ * pressure the smaller value.
+ */
+static pressure_t merge_pressures(pressure_t a, pressure_t sample_a, pressure_t b, pressure_t sample_b, bool take_min)
+{
+	if (!a.mbar && !b.mbar)
+		return a;
+	if (!a.mbar)
+		a = sample_a;
+	if (!b.mbar)
+		b = sample_b;
+	if (!a.mbar)
+		a = b;
+	if (!b.mbar)
+		b = a;
+	if (take_min && a.mbar < b.mbar)
+		return a;
+	else
+		return b;
+}
+
+/*
  * We matched things up so that they have the same gasmix and
  * use, but we might want to fill in any missing cylinder details
  * in 'a' if we had it from 'b'.
@@ -2240,10 +2273,12 @@ static void merge_one_cylinder(cylinder_t *a, const cylinder_t *b)
 		a->type.workingpressure.mbar = b->type.workingpressure.mbar;
 	if (empty_string(a->type.description))
 		a->type.description = copy_string(b->type.description);
-	if (!a->start.mbar)
-		a->start.mbar = b->start.mbar;
-	if (!a->end.mbar)
-		a->end.mbar = b->end.mbar;
+
+	/* If either cylinder has manually entered pressures, try to merge them.
+	 * Use pressures from divecomputer samples if only one cylinder has such a value.
+	 * Yes, this is an actual use case we encountered. */
+	a->start = merge_pressures(a->start, a->sample_start, b->start, b->sample_start, false);
+	a->end = merge_pressures(a->end, a->sample_end, b->end, b->sample_end, true);
 
 	if (a->sample_start.mbar && b->sample_start.mbar)
 		a->sample_start.mbar = a->sample_start.mbar > b->sample_start.mbar ?  a->sample_start.mbar : b->sample_start.mbar;
