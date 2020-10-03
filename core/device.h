@@ -26,10 +26,10 @@ extern void clear_device_nodes();
 
 #include <QString>
 #include <QVector>
-struct DiveComputerNode {
-	bool operator==(const DiveComputerNode &a) const;
-	bool operator!=(const DiveComputerNode &a) const;
-	bool operator<(const DiveComputerNode &a) const;
+struct device {
+	bool operator==(const device &a) const;
+	bool operator!=(const device &a) const;
+	bool operator<(const device &a) const;
 	void showchanges(const QString &n, const QString &s, const QString &f) const;
 	QString model;
 	uint32_t deviceId;
@@ -38,13 +38,13 @@ struct DiveComputerNode {
 	QString nickName;
 };
 
-struct DiveComputerList {
+struct device_table {
 	// Keep the dive computers in a vector sorted by (model, deviceId)
-	QVector<DiveComputerNode> dcs;
+	QVector<device> devices;
 };
 
 QString get_dc_nickname(const struct divecomputer *dc);
-extern DiveComputerList dcList;
+extern struct device_table device_table;
 
 #endif
 
