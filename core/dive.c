@@ -2276,14 +2276,11 @@ static void merge_one_cylinder(cylinder_t *a, const cylinder_t *b)
 
 	/* If either cylinder has manually entered pressures, try to merge them.
 	 * Use pressures from divecomputer samples if only one cylinder has such a value.
-	 * Yes, this is an actual use case we encountered. */
+	 * Yes, this is an actual use case we encountered.
+	 * Note that we don't merge the sample-derived pressure values, as this is
+	 * perfomed after merging in fixup_dive() */
 	a->start = merge_pressures(a->start, a->sample_start, b->start, b->sample_start, false);
 	a->end = merge_pressures(a->end, a->sample_end, b->end, b->sample_end, true);
-
-	if (a->sample_start.mbar && b->sample_start.mbar)
-		a->sample_start.mbar = a->sample_start.mbar > b->sample_start.mbar ?  a->sample_start.mbar : b->sample_start.mbar;
-	if (a->sample_end.mbar && b->sample_end.mbar)
-		a->sample_end.mbar = a->sample_end.mbar < b->sample_end.mbar ?  a->sample_end.mbar : b->sample_end.mbar;
 
 	/* Really? */
 	a->gas_used.mliter += b->gas_used.mliter;
