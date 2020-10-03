@@ -169,9 +169,10 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(closeKey, &QShortcut::activated, plannerModel, &DivePlannerPointsModel::cancelPlan);
 
 	// This makes shure the spinbox gets a setMinimum(0) on it so we can't have negative time or depth.
-	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::DEPTH, new SpinBoxDelegate(0, INT_MAX, 1, this));
+	// Limit segments to a depth of 1000 m/3300 ft and a duration of 100 h. Setting the limit for
+	// the depth will be done in settingChanged() since this depends on the chosen units.
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::RUNTIME, new SpinBoxDelegate(0, INT_MAX, 1, this));
-	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::DURATION, new SpinBoxDelegate(0, INT_MAX, 1, this));
+	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::DURATION, new SpinBoxDelegate(0, 6000, 1, this));
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::CCSETPOINT, new DoubleSpinBoxDelegate(0, 2, 0.1, this));
 
 	/* set defaults. */
@@ -227,15 +228,19 @@ void DivePlannerWidget::setSalinity(int salinity)
 void DivePlannerWidget::settingsChanged()
 {
 	// Adopt units
+	int maxDepth;
 	if (get_units()->length == units::FEET) {
 		ui.atmHeight->setSuffix("ft");
 		ui.atmHeight->setMinimum(-300);
 		ui.atmHeight->setMaximum(10000);
+		maxDepth = 3300;
 	} else {
 		ui.atmHeight->setSuffix(("m"));
 		ui.atmHeight->setMinimum(-100);
 		ui.atmHeight->setMaximum(3000);
+		maxDepth = 1000;
 	}
+	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::DEPTH, new SpinBoxDelegate(0, maxDepth, 1, this));
 	ui.atmHeight->blockSignals(true);
 	ui.atmHeight->setValue((int) get_depth_units((int) pressure_to_altitude(DivePlannerPointsModel::instance()->getSurfacePressure()), NULL,NULL));
 	ui.atmHeight->blockSignals(false);
@@ -553,7 +558,7 @@ void PlannerSettingsWidget::settingsChanged()
 		ui.asc6toSurf->setText(tr("6m to surface"));
 		ui.bestmixEND->setSuffix(tr("m"));
 	}
-	if(get_units()->volume == units::CUFT) {
+	if (get_units()->volume == units::CUFT) {
 		ui.bottomSAC->setSuffix(tr("cuft/min"));
 		ui.decoStopSAC->setSuffix(tr("cuft/min"));
 		ui.bottomSAC->setDecimals(2);
@@ -572,7 +577,7 @@ void PlannerSettingsWidget::settingsChanged()
 		ui.bottomSAC->setValue(PlannerShared::bottomsac());
 		ui.decoStopSAC->setValue(PlannerShared::decosac());
 	}
-	if(get_units()->pressure == units::BAR) {
+	if (get_units()->pressure == units::BAR) {
 		ui.reserve_gas->setSuffix(tr("bar"));
 		ui.reserve_gas->setSingleStep(1);
 		ui.reserve_gas->setValue(prefs.reserve_gas / 1000);
