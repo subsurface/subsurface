@@ -2685,60 +2685,103 @@ The dives in the *Dive List* can be filtered, selecting only some
 of the dives based on attributes such as dive tags, dive site, divemaster or buddy.
 For instance, filtering lets you list the dives during a particular year at a specific
 dive site, or otherwise the cave dives with a particular buddy. Filtering can be performed
-based on any information in the _Information Panel_.
+based on virtually any information in the *Info* panel.
 
 To open the filter, select _Log ->  Filter divelist_ from the main menu. This replaces the
 _Dive Map Panel_ with a _Filter Panel_. The top window bar contains the number of dives that satisfy the
-current selections of the filter (see image below).
+current criteria of the filter (see image below).
 
 image::images/FilterWindowBar.jpg["Figure: Filter Window Bar",align="center"]
 
-When opened, the filter contains default values that include all the dives in the _Dive list_. Filter the
-_Dive list_ by either changing some of the default values in the panel, or by typing specific
-values or words in any of the text boxes. For instance, in the image below the open circuit dives using
-a drysuit at a specific location (Simonstad) are shown in the _Dive list_. There is no button to
-activate the filter action: the action of typing text into a textbox or specifying a range
-in any of the fields automatically performs the filtering.
+By default a full-text specification for filtering is shown. For instance, if one typed the word "shark" into the
+_Full-text_ box, all dives are shown that have the word "shark" in any of the text fields in the *Info* panel,
+including the _Notes_, the _Tags_ and _Location_. One can select whether the search phrase (e.g. "shark") must be
+a complete word, the starting part of a word (e.g. "SharkLife") or any part of a word (e.g. "whalesharks"). See the image below.
 
-During filtering the Dive Mode (Open circuit, CCR, pSCR, Freedive) is added to the tag list of a dive, allowing
-only specific types of dive (e.g. CCR) to be selected in the tag attribute of the filter. This is
-useful for rebreather divers and free divers who also do some open circuit diving.
+image::images/FilterFullText.png["Figure: Filter: Full Text Filter",align="center"]
 
-image::images/FilterPanel.jpg["Figure: Filter panel",align="center"]
 
-The top text box is a full-text filter: dives are searched in their entirety (notes and all other fields) for the word(s) in the text box. Let us assume the text box contains the word "whale". There are three ways the dive contents is filtered: 1) Starts with: all words starting with the text in the text box are used to filter the dive list. This means that a dive containing the word "whaleshark" is included in the divelist. 2) Substring: dives with all words that _include_ the text in the full text search box are included in the list. If the full-text box contains "shark", dives containing the word "whaleshark" are also included in the dive list. 3) Full word: filtering is performed strictly using the word in the full-text box. If the full-text box contains "shark", dives containing "whaleshark" are NOT included in the dive list. However if a dive contains "bull shark" it is included in the dive list.
+==== Defining Constraints
 
-For the fields in the lower half of the panel the filter criteria can be any of the following:
+However, filtering can be performed in a much more precise way by adding constraints to the filter panel.
+Clicking the _Load Constraints_ button (located near the top left-hand of the filter panel) brings up a list of
+the terms that could be selected for filtering the *Dive List*.
 
-1) Using different text boxes in the _Filter panel_ performs an AND operator on different attributes. For example,
-   typing "Peter" for the Persons attribute and "Sipadan" for the Location attribute results in a dive list containing
-   all dives with Peter at Sipadan.
+image::images/FilterConstraints.png["Figure: Filter:Constraints list",align="center"]
 
-2) Within a single attribute the "All of" criterion implements an AND operator. For the _People_ attribute in
-   the image below, the filtered dive list contains the dives for which BOTH Bob Smith AND Stefan Schultz
-   were listed as dive buddies/divemaster based on the People information in the _Info Panel_.
+For instance, selecting the constraint "Location" from this list adds a line to
+the filter panel for specifying the location constraint. For instance, typing "Sodwana" into the Locality
+text box brings up all the dives for which the dive location was given as Sodwana. There are two combo-boxes
+associated with the Location constraint. Selecting "is not" from the first combobox allows showing all the dives
+that were NOT performed at Sodwana. The second combobox operates in a similar way to that of the Full-text filter
+as described above (first part of word, complete word, contains-word). Constraints can be refined in one of two ways:
 
-3) The "Any of" criterion implements an OR operator. For the _Location_ attribute in the image below,
-   the filtered dive list contains dives performed EITHER at Simonstad OR at Hout Bay.
+image::images/FilterOR.png["Figure: Filter: OR operation",align="center"]
 
-4) The "None of" criterion implements a NOT function. For the _Suit_ attribute in the image below,
-   the dive list EXCLUDES all the dives during which a drysuit was used.
+ 1. Filtering dives at more than one site: I may wish to list dives at Sodwana *as well as* at Aliwal (a logical OR operation).
+In this case type both dive sites into the text box, separated by a comma (see image below).
 
-5) Empty field. For the _Tags_ and _Notes_ attributes in the image below, an empty text box results
-   in these attributes being not being considered during filtering.
 
-image::images/FilterOptions.jpg["Figure: Filter options",align="center"]
+ 2. Filtering some dive at a dive site: I may wish to list only the dives at 2 Mile Reef at Sodwana. However the
+way I entered the dive locations for dives was not consistent (some cases "2 Mile Reef Sodwana", other cases 
+"Sodwana 2 mile reef"). In that case add a Location constraint, select "with substring" from the combobox and specify "Sodwana". Then add a second
+Location constraint, select "with substring" from the combobox and type "2 mile Reef") in the location text box
+(see image below). This is a logical AND operation. The same principles apply to all constraints
+selectable from the constraints list.
 
-At the top of the _Filter Panel_ the *yellow up-arrow* is used for resetting the filter to show all dives,
-and a *red button* with white cross closes the filter panel.
+image::images/FilterAND.png["Figure: Filter: AND operation",align="center"]
 
-IMPORTANT: The filter action can only be stopped by using the _Reset Filter_ button (yellow up-arrow) or
-by manually clearing all the filter text boxes. Closing the _Filter Panel_ does not terminate
+We may wish to refine our selection of dives to show in the *Dive List*. Let's say we wish to show dives for which the water
+temperature was  18 °C or higher. Select "Water Temp." from the list of constraints. A line containing this new constraint is added to the filter
+panel. Select "at least" from the combobox on this line and type "18" in the appropriate text box. Below is an image with constraints defined to filter dives at Sodwana with water temperatures at 18 °C or higher.
+
+image::images/Filter:LocTemp.png["Figure: Filter:  Stage 2 Filter set construction",align="center"]
+
+In order to refine our filter we may wish to show only dives on a Tuesday. Select "week day" from the list of constraints. A line
+containing this new constraint is added to the filter panel with a dropdown list of days that are selectable. Select "Tuesday" from the
+list. The image below shows a filter that selects dives at Sodwana on Tuesdays with the water temperature at or above 18 °C.
+
+image::images/Filter:LocTempWeek.png["Figure: Filter: Stage 3 Filter set construction",align="center"]
+
+As a last step in refining our filter we may wish to add another constraint specifying visibility of at least three stars. Select
+"visibility" from the list of constraints. A new line is added to the filter panel, allowing us to select the number of stars
+we require. In this case click on the third star and ensure that the combobox shows "at least". We have now filtered for all dives
+at Sodwana on a Tuesday with water temperature at or above 18 °C and with a 3-star or better visibility.
+
+image::images/Filter:LocTempWeekVis.png["Figure: Filter: Stage 4 Filter set construction",align="center"]
+
+Clearly it is possible to construct highly refined filters. The examples above show only a tiny fraction of the possibilities
+in creating filters.
+
+*Deleting a constraint:* A constraint can be removed from the filter by clicking the appropriate dustbin icon on the left of the filter panel.
+
+==== Filter Sets
+
+We need to define a new term: "Filter sets". A "Filter set" is a combination of constraints that have been defined to form a
+filter, as in our example above. Specifying a filter set (as above) can take some time and experimentation, and we may wish
+to save this set for later use. Save the set by clicking the button "Save set". A text box opens to provide a name for this set.
+Provide a set name, click the OK button and the set is now permanently saved as part of the overall dive log.
+
+If you wish to access the filter set on a later date, click the button "Load set". This provides a list of sets that
+have been saved. Select the set you wish to use. It is loaded into the filter panel, showing the name of the set in the top
+line of the panel immediately following "Current set:"
+
+Filter sets can be deleted by selecting the "Filter sets" tab in the Filter Panel and by clicking on the dustbin icon on the left
+of the appropriate filter set name.
+
+
+==== Closing the filter panel
+
+The filter action can only be stopped by using the _Reset_ button (yellow up-arrow) or
+by manually deleting any full-text specification as well as all the constraints with associated dustbin icons.
+Closing the _Filter Panel_ does not terminate
 filtering: the filtered dive list remains unchanged. This is obvious from the top bar of the _Subsurface_
 window indicating that only some of all the dives are shown. Closing the _Filter Panel_ activates the _Map Panel_,
 allowing viewing the map locations of the filtered dive list. For instance one might wish to filter on
 Bob Smith as a buddy. Closing the _Filter Panel_ allows viewing the map locations where Bob Smith was a buddy.
-To re-open the _Filter Panel_ in this case, select _Log ->  Filter divelist_ from the _Main Menu_.
+To re-open the _Filter Panel_ in this case, select _Log ->  Filter divelist_ from the _Main Menu_. To switch
+off filtering and exit the _Filter Panel_, click on _Reset_ and then on _Close_.
+
 
 == Organizing the logbook (Manipulating groups of dives)
 
