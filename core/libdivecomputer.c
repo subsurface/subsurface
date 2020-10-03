@@ -431,6 +431,9 @@ static void dev_info(device_data_t *devdata, const char *fmt, ...)
 	vsnprintf(buffer, sizeof(buffer), fmt, ap);
 	va_end(ap);
 	progress_bar_text = buffer;
+	if (verbose)
+		INFO(0, "dev_info: %s\n", buffer);
+
 	if (progress_callback)
 		(*progress_callback)(buffer);
 }
@@ -1292,9 +1295,10 @@ static dc_status_t usbhid_device_open(dc_iostream_t **iostream, dc_context_t *co
 		break;
 	dc_iterator_free (iterator);
 
-	if (!device)
+	if (!device) {
+		ERROR(context, "didn't find HID device\n");
 		return DC_STATUS_NODEVICE;
-
+	}
 	dev_info(data, "Opening USB HID device for %04x:%04x",
 		dc_usbhid_device_get_vid(device),
 		dc_usbhid_device_get_pid(device));
