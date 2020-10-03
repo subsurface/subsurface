@@ -19,6 +19,7 @@ enum filter_constraint_units {
 	FILTER_CONSTRAINT_DURATION_UNIT,
 	FILTER_CONSTRAINT_TEMPERATURE_UNIT,
 	FILTER_CONSTRAINT_WEIGHT_UNIT,
+	FILTER_CONSTRAINT_VOLUME_UNIT,
 	FILTER_CONSTRAINT_VOLUMETRIC_FLOW_UNIT,
 	FILTER_CONSTRAINT_DENSITY_UNIT,
 	FILTER_CONSTRAINT_PERCENTAGE_UNIT
@@ -67,6 +68,7 @@ static struct type_description {
 	{ FILTER_CONSTRAINT_LOCATION, "location", QT_TRANSLATE_NOOP("gettextFromC", "location"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 	{ FILTER_CONSTRAINT_WEIGHT_TYPE, "weight_type", QT_TRANSLATE_NOOP("gettextFromC", "weight type"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 	{ FILTER_CONSTRAINT_CYLINDER_TYPE, "cylinder_type", QT_TRANSLATE_NOOP("gettextFromC", "cylinder type"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
+	{ FILTER_CONSTRAINT_CYLINDER_SIZE, "cylinder_size", QT_TRANSLATE_NOOP("gettextFromC", "cylinder size"), false, true, false, FILTER_CONSTRAINT_VOLUME_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_CYLINDER_N2, "cylinder_n2", QT_TRANSLATE_NOOP("gettextFromC", "gas N₂ content"), false, true, false, FILTER_CONSTRAINT_PERCENTAGE_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_CYLINDER_O2, "cylinder_o2", QT_TRANSLATE_NOOP("gettextFromC", "gas O₂ content"), false, true, false, FILTER_CONSTRAINT_PERCENTAGE_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_CYLINDER_HE, "cylinder_he", QT_TRANSLATE_NOOP("gettextFromC", "gas He content"), false, true, false, FILTER_CONSTRAINT_PERCENTAGE_UNIT, 1, false, false },
@@ -283,6 +285,8 @@ QString filter_constraint_get_unit(enum filter_constraint_type type)
 		return get_temp_unit();
 	case FILTER_CONSTRAINT_WEIGHT_UNIT:
 		return get_weight_unit();
+	case FILTER_CONSTRAINT_VOLUME_UNIT:
+		return get_volume_unit();
 	case FILTER_CONSTRAINT_VOLUMETRIC_FLOW_UNIT:
 		return get_volume_unit() + "/min";
 	case FILTER_CONSTRAINT_DENSITY_UNIT:
@@ -309,6 +313,7 @@ static int display_to_base_unit(double f, enum filter_constraint_type type)
 		return prefs.units.temperature == units::CELSIUS ? C_to_mkelvin(f) : F_to_mkelvin(f);
 	case FILTER_CONSTRAINT_WEIGHT_UNIT:
 		return prefs.units.weight == units::KG ? lrint(f * 1000.0) : lbs_to_grams(f);
+	case FILTER_CONSTRAINT_VOLUME_UNIT:
 	case FILTER_CONSTRAINT_VOLUMETRIC_FLOW_UNIT:
 		return prefs.units.volume == units::LITER ? lrint(f * 1000.0) : lrint(cuft_to_l(f) * 1000.0);
 	case FILTER_CONSTRAINT_DENSITY_UNIT:
@@ -335,6 +340,7 @@ static double base_to_display_unit(int i, enum filter_constraint_type type)
 		return prefs.units.temperature == units::CELSIUS ? mkelvin_to_C(i) : mkelvin_to_F(i);
 	case FILTER_CONSTRAINT_WEIGHT_UNIT:
 		return prefs.units.weight == units::KG ? (double)i / 1000.0 : grams_to_lbs(i);
+	case FILTER_CONSTRAINT_VOLUME_UNIT:
 	case FILTER_CONSTRAINT_VOLUMETRIC_FLOW_UNIT:
 		return prefs.units.volume == units::LITER ? (double)i / 1000.0 : ml_to_cuft(i);
 	case FILTER_CONSTRAINT_DENSITY_UNIT:
@@ -537,6 +543,11 @@ filter_constraint::filter_constraint(filter_constraint_type typeIn) :
 			// SAC: 0-10 l/min
 			data.numerical_range.from = 0 * 1000;
 			data.numerical_range.to = 10 * 1000;
+			break;
+		case FILTER_CONSTRAINT_VOLUME_UNIT:
+			// Cylinder size: 1-100 l
+			data.numerical_range.from = 0 * 1000;
+			data.numerical_range.to = 100 * 1000;
 			break;
 		case FILTER_CONSTRAINT_DENSITY_UNIT:
 			// Water density: 1000-1027 g/l
@@ -924,6 +935,16 @@ static bool check_numerical_range_non_zero(const filter_constraint &c, int v)
 	return check_numerical_range(c, v);
 }
 
+static bool check_cylinder_size(const filter_constraint &c, const struct dive *d)
+{
+	for (int i = 0; i < d->cylinders.nr; ++i) {
+		const cylinder_t &cyl = d->cylinders.cylinders[i];
+		if (cyl.type.size.mliter && check_numerical_range(c, cyl.type.size.mliter))
+			return true;
+	}
+	return false;
+}
+
 static bool check_gas_range(const filter_constraint &c, const struct dive *d, gas_component component)
 {
 	for (int i = 0; i < d->cylinders.nr; ++i) {
@@ -1100,6 +1121,8 @@ bool filter_constraint_match_dive(const filter_constraint &c, const struct dive 
 		return has_weight_type(c, d);
 	case FILTER_CONSTRAINT_CYLINDER_TYPE:
 		return has_cylinder_type(c, d);
+	case FILTER_CONSTRAINT_CYLINDER_SIZE:
+		return check_cylinder_size(c, d);
 	case FILTER_CONSTRAINT_CYLINDER_N2:
 		return check_gas_range(c, d, N2);
 	case FILTER_CONSTRAINT_CYLINDER_O2:
