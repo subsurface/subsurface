@@ -58,6 +58,27 @@ static void updateRememberedDCs()
 	qPrefDiveComputer::set_device1(qPrefDiveComputer::device());
 }
 
+#define NUMTRANSPORTS 7
+static QString transportStringTable[NUMTRANSPORTS] = {
+	QStringLiteral("SERIAL"),
+	QStringLiteral("USB"),
+	QStringLiteral("USBHID"),
+	QStringLiteral("IRDA"),
+	QStringLiteral("BT"),
+	QStringLiteral("BLE"),
+	QStringLiteral("USBSTORAGE"),
+};
+
+static QString getTransportString(unsigned int transport)
+{
+	QString ts;
+	for (int i = 0; i < NUMTRANSPORTS; i++) {
+		if (transport & 1 << i)
+			ts += transportStringTable[i] + ", ";
+	}
+	ts.chop(2);
+	return ts;
+}
 
 DownloadThread::DownloadThread() : downloadTable({ 0 }),
 	diveSiteTable({ 0 }),
@@ -76,7 +97,16 @@ void DownloadThread::run()
 		qDebug() << "No download possible when DC type is unknown";
 		return;
 	}
-	qDebug() << "Starting download from " << (internalData->bluetooth_mode ? "BT" : internalData->devname);
+	// get the list of transports that this device supports and filter depending on Bluetooth option
+	unsigned int transports = dc_descriptor_get_transports(internalData->descriptor);
+	if (internalData->bluetooth_mode)
+		transports &= (DC_TRANSPORT_BLE | DC_TRANSPORT_BLUETOOTH);
+	else
+		transports &= ~(DC_TRANSPORT_BLE | DC_TRANSPORT_BLUETOOTH);
+	if (transports == DC_TRANSPORT_USBHID)
+		internalData->devname = "";
+
+	qDebug() << "Starting download from " << getTransportString(transports);
 	qDebug() << "downloading" << (internalData->force_download ? "all" : "only new") << "dives";
 	clear_dive_table(&downloadTable);
 	clear_dive_site_table(&diveSiteTable);
@@ -162,28 +192,6 @@ void fill_computer_list()
 #endif
 
 	std::sort(vendorList.begin(), vendorList.end());
-}
-
-#define NUMTRANSPORTS 7
-static QString transportStringTable[NUMTRANSPORTS] = {
-	QStringLiteral("SERIAL"),
-	QStringLiteral("USB"),
-	QStringLiteral("USBHID"),
-	QStringLiteral("IRDA"),
-	QStringLiteral("BT"),
-	QStringLiteral("BLE"),
-	QStringLiteral("USBSTORAGE"),
-};
-
-static QString getTransportString(unsigned int transport)
-{
-	QString ts;
-	for (int i = 0; i < NUMTRANSPORTS; i++) {
-		if (transport & 1 << i)
-			ts += transportStringTable[i] + ", ";
-	}
-	ts.chop(2);
-	return ts;
 }
 
 void show_computer_list()
