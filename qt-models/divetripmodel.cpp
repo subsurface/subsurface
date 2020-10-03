@@ -1325,8 +1325,8 @@ void DiveTripModelTree::divesMovedBetweenTrips(dive_trip *from, dive_trip *to, b
 	// Cheating!
 	// Unfortunately, removing the dives means that their selection is lost.
 	// Thus, remember the selection and re-add it later.
-	divesAdded(to, createTo, dives);
 	divesDeletedInternal(from, deleteFrom, dives); // Use internal version to keep current dive
+	divesAdded(to, createTo, dives);
 }
 
 void DiveTripModelTree::divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives)
