@@ -543,7 +543,6 @@ static uint32_t calculate_diveid(const unsigned char *fingerprint, unsigned int 
 	return csum[0];
 }
 
-#ifdef DC_FIELD_STRING
 static uint32_t calculate_string_hash(const char *str)
 {
 	return calculate_diveid((const unsigned char *)str, strlen(str));
@@ -624,7 +623,6 @@ static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_fie
 		}
 	}
 }
-#endif
 
 static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devdata, struct dive *dive)
 {
@@ -727,7 +725,6 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	if (rc == DC_STATUS_SUCCESS)
 		dive->dc.surface_pressure.mbar = lrint(surface_pressure * 1000.0);
 
-#ifdef DC_FIELD_STRING
 	// The dive parsing may give us more device information
 	int idx;
 	for (idx = 0; idx < 100; idx++) {
@@ -739,7 +736,6 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 			break;
 		parse_string_field(devdata, dive, &str);
 	}
-#endif
 
 	dc_divemode_t divemode;
 	rc = dc_parser_get_field(parser, DC_FIELD_DIVEMODE, 0, &divemode);
