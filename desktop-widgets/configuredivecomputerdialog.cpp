@@ -111,21 +111,20 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 
 	deviceDetails = new DeviceDetails(this);
 	config = new ConfigureDiveComputer();
-	connect(config, SIGNAL(progress(int)), ui.progressBar, SLOT(setValue(int)));
-	connect(config, SIGNAL(error(QString)), this, SLOT(configError(QString)));
-	connect(config, SIGNAL(message(QString)), this, SLOT(configMessage(QString)));
-	connect(config, SIGNAL(deviceDetailsChanged(DeviceDetails *)),
-		this, SLOT(deviceDetailsReceived(DeviceDetails *)));
-	connect(ui.retrieveDetails, SIGNAL(clicked()), this, SLOT(readSettings()));
-	connect(ui.resetButton, SIGNAL(clicked()), this, SLOT(resetSettings()));
-	connect(ui.resetButton_4, SIGNAL(clicked()), this, SLOT(resetSettings()));
+	connect(config, &ConfigureDiveComputer::progress, ui.progressBar, &QProgressBar::setValue);
+	connect(config, &ConfigureDiveComputer::error, this, &ConfigureDiveComputerDialog::configError);
+	connect(config, &ConfigureDiveComputer::message, this, &ConfigureDiveComputerDialog::configMessage);
+	connect(config, &ConfigureDiveComputer::deviceDetailsChanged, this, &ConfigureDiveComputerDialog::deviceDetailsReceived);
+	connect(ui.retrieveDetails, &QPushButton::clicked, this, &ConfigureDiveComputerDialog::readSettings);
+	connect(ui.resetButton, &QPushButton::clicked, this, &ConfigureDiveComputerDialog::resetSettings);
+	connect(ui.resetButton_4, &QPushButton::clicked, this, &ConfigureDiveComputerDialog::resetSettings);
 	ui.chooseLogFile->setEnabled(ui.logToFile->isChecked());
-	connect(ui.chooseLogFile, SIGNAL(clicked()), this, SLOT(pickLogFile()));
-	connect(ui.logToFile, SIGNAL(stateChanged(int)), this, SLOT(checkLogFile(int)));
-	connect(ui.connectButton, SIGNAL(clicked()), this, SLOT(dc_open()));
-	connect(ui.disconnectButton, SIGNAL(clicked()), this, SLOT(dc_close()));
+	connect(ui.chooseLogFile, &QToolButton::clicked, this, &ConfigureDiveComputerDialog::pickLogFile);
+	connect(ui.logToFile, &QCheckBox::stateChanged, this, &ConfigureDiveComputerDialog::checkLogFile);
+	connect(ui.connectButton, &QPushButton::clicked, this, &ConfigureDiveComputerDialog::dc_open);
+	connect(ui.disconnectButton, &QPushButton::clicked, this, &ConfigureDiveComputerDialog::dc_close);
 #ifdef BT_SUPPORT
-	connect(ui.bluetoothMode, SIGNAL(clicked(bool)), this, SLOT(selectRemoteBluetoothDevice()));
+	connect(ui.bluetoothMode, &QPushButton::clicked, this, &ConfigureDiveComputerDialog::selectRemoteBluetoothDevice);
 #else
 	ui.bluetoothMode->setVisible(false);
 #endif
@@ -248,7 +247,7 @@ OstcFirmwareCheck::OstcFirmwareCheck(QString product) : parent(0)
 	} else { // not one of the known dive computers
 		return;
 	}
-	connect(&manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(parseOstcFwVersion(QNetworkReply *)));
+	connect(&manager, &QNetworkAccessManager::finished, this, &OstcFirmwareCheck::parseOstcFwVersion);
 	QNetworkRequest download(url);
 	manager.get(download);
 }
@@ -259,7 +258,7 @@ void OstcFirmwareCheck::parseOstcFwVersion(QNetworkReply *reply)
 	int firstOpenBracket = parse.indexOf('[');
 	int firstCloseBracket = parse.indexOf(']');
 	latestFirmwareAvailable = parse.mid(firstOpenBracket + 1, firstCloseBracket - firstOpenBracket - 1);
-	disconnect(&manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(parseOstcFwVersion(QNetworkReply *)));
+	disconnect(&manager, &QNetworkAccessManager::finished, this, &OstcFirmwareCheck::parseOstcFwVersion);
 }
 
 void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data)
@@ -325,7 +324,7 @@ void OstcFirmwareCheck::upgradeFirmware()
 	if (storeFirmware.isEmpty())
 		return;
 
-	connect(&manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(saveOstcFirmware(QNetworkReply *)));
+	connect(&manager, &QNetworkAccessManager::finished, this, &OstcFirmwareCheck::saveOstcFirmware);
 	QNetworkRequest download(latestFirmwareHexFile);
 	manager.get(download);
 }
@@ -344,9 +343,9 @@ void OstcFirmwareCheck::saveOstcFirmware(QNetworkReply *reply)
 	dialog->setCancelButton(0);
 	dialog->setAutoClose(true);
 	ConfigureDiveComputer *config = new ConfigureDiveComputer();
-	connect(config, SIGNAL(message(QString)), dialog, SLOT(setLabelText(QString)));
-	connect(config, SIGNAL(error(QString)), dialog, SLOT(setLabelText(QString)));
-	connect(config, SIGNAL(progress(int)), dialog, SLOT(setValue(int)));
+	connect(config, &ConfigureDiveComputer::message, dialog, &QProgressDialog::setLabelText);
+	connect(config, &ConfigureDiveComputer::error, dialog, &QProgressDialog::setLabelText);
+	connect(config, &ConfigureDiveComputer::progress, dialog, &QProgressDialog::setValue);
 	config->dc_open(&devData);
 	config->startFirmwareUpdate(storeFirmware, &devData);
 }

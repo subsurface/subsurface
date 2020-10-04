@@ -124,7 +124,7 @@ private:
 #endif
 };
 
-class OstcFirmwareCheck : QObject {
+class OstcFirmwareCheck : public QObject {
 	Q_OBJECT
 public:
 	explicit OstcFirmwareCheck(QString product);
