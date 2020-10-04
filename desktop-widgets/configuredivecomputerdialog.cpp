@@ -347,7 +347,6 @@ void OstcFirmwareCheck::saveOstcFirmware(QNetworkReply *reply)
 	connect(config, SIGNAL(message(QString)), dialog, SLOT(setLabelText(QString)));
 	connect(config, SIGNAL(error(QString)), dialog, SLOT(setLabelText(QString)));
 	connect(config, SIGNAL(progress(int)), dialog, SLOT(setValue(int)));
-	connect(dialog, SIGNAL(finished(int)), config, SLOT(dc_close()));
 	config->dc_open(&devData);
 	config->startFirmwareUpdate(storeFirmware, &devData);
 }
