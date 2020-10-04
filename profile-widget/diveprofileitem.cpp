@@ -415,7 +415,7 @@ void DivePercentageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 			const struct event *ev = NULL;
 			int sec = dataModel->index(i, DivePlotDataModel::TIME).data().toInt();
 			gasmix = get_gasmix(&displayed_dive, displayed_dc, sec, &ev, gasmix);
-			int inert = 1000 - get_o2(gasmix);
+			int inert = get_n2(gasmix) + get_he(gasmix);
 			mypen.setBrush(QBrush(ColorScale(value, inert)));
 			painter->setPen(mypen);
 			painter->drawLine(poly[i - 1], poly[i]);
