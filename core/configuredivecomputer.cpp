@@ -20,6 +20,13 @@ ConfigureDiveComputer::ConfigureDiveComputer() : readThread(0),
 	setState(INITIAL);
 }
 
+void ConfigureDiveComputer::connectThreadSignals(DeviceThread *thread)
+{
+	connect(thread, &DeviceThread::finished, this, &ConfigureDiveComputer::readThreadFinished, Qt::QueuedConnection);
+	connect(thread, &DeviceThread::error, this, &ConfigureDiveComputer::setError);
+	connect(thread, &DeviceThread::progress, this, &ConfigureDiveComputer::progressEvent, Qt::QueuedConnection);
+}
+
 void ConfigureDiveComputer::readSettings(device_data_t *data)
 {
 	setState(READING);
@@ -28,12 +35,8 @@ void ConfigureDiveComputer::readSettings(device_data_t *data)
 		readThread->deleteLater();
 
 	readThread = new ReadSettingsThread(this, data);
-	connect(readThread, SIGNAL(finished()),
-		this, SLOT(readThreadFinished()), Qt::QueuedConnection);
-	connect(readThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
-	connect(readThread, SIGNAL(devicedetails(DeviceDetails *)), this,
-		SIGNAL(deviceDetailsChanged(DeviceDetails *)));
-	connect(readThread, SIGNAL(progress(int)), this, SLOT(progressEvent(int)), Qt::QueuedConnection);
+	connectThreadSignals(readThread);
+	connect(readThread, &ReadSettingsThread::devicedetails, this, &ConfigureDiveComputer::deviceDetailsChanged);
 
 	readThread->start();
 }
@@ -46,10 +49,7 @@ void ConfigureDiveComputer::saveDeviceDetails(DeviceDetails *details, device_dat
 		writeThread->deleteLater();
 
 	writeThread = new WriteSettingsThread(this, data);
-	connect(writeThread, SIGNAL(finished()),
-		this, SLOT(writeThreadFinished()), Qt::QueuedConnection);
-	connect(writeThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
-	connect(writeThread, SIGNAL(progress(int)), this, SLOT(progressEvent(int)), Qt::QueuedConnection);
+	connectThreadSignals(writeThread);
 
 	writeThread->setDeviceDetails(details);
 	writeThread->start();
@@ -498,10 +498,7 @@ void ConfigureDiveComputer::startFirmwareUpdate(QString fileName, device_data_t 
 		firmwareThread->deleteLater();
 
 	firmwareThread = new FirmwareUpdateThread(this, data, fileName);
-	connect(firmwareThread, SIGNAL(finished()),
-		this, SLOT(firmwareThreadFinished()), Qt::QueuedConnection);
-	connect(firmwareThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
-	connect(firmwareThread, SIGNAL(progress(int)), this, SLOT(progressEvent(int)), Qt::QueuedConnection);
+	connectThreadSignals(firmwareThread);
 
 	firmwareThread->start();
 }
@@ -514,10 +511,7 @@ void ConfigureDiveComputer::resetSettings(device_data_t *data)
 		resetThread->deleteLater();
 
 	resetThread = new ResetSettingsThread(this, data);
-	connect(resetThread, SIGNAL(finished()),
-		this, SLOT(resetThreadFinished()), Qt::QueuedConnection);
-	connect(resetThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
-	connect(resetThread, SIGNAL(progress(int)), this, SLOT(progressEvent(int)), Qt::QueuedConnection);
+	connectThreadSignals(resetThread);
 
 	resetThread->start();
 }

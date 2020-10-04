@@ -55,6 +55,7 @@ private:
 	WriteSettingsThread *writeThread;
 	ResetSettingsThread *resetThread;
 	FirmwareUpdateThread *firmwareThread;
+	void connectThreadSignals(DeviceThread *thread);
 	void setState(states newState);
 private
 slots:
