@@ -1114,10 +1114,9 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 		if (!strcmp(devdata->vendor, "Suunto"))
 			serial = fixup_suunto_versions(devdata, devinfo);
 		devdata->deviceid = calculate_sha1(devinfo->model, devinfo->firmware, serial);
-		/* really, serial and firmware version are NOT numbers. We'll try to save them here
+		/* really, firmware version is NOT a number. We'll try to save it here
 		 * in something that might work, but this really needs to be handled with the
 		 * DC_FIELD_STRING interface instead */
-		devdata->libdc_serial = devinfo->serial;
 		devdata->libdc_firmware = devinfo->firmware;
 
 		lookup_fingerprint(device, devdata);

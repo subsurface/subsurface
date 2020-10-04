@@ -36,7 +36,7 @@ typedef struct dc_user_device_t
 	const char *model, *btname;
 	unsigned char *fingerprint;
 	unsigned int fsize, fdiveid;
-	uint32_t libdc_firmware, libdc_serial;
+	uint32_t libdc_firmware;
 	uint32_t deviceid, diveid;
 	dc_device_t *device;
 	dc_context_t *context;
