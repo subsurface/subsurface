@@ -2,11 +2,11 @@
 #include "ssrf.h"
 #include "dive.h"
 #include "subsurface-string.h"
-#include "qthelper.h" // for copy_qstring
 #include "device.h"
 #include "errorhelper.h" // for verbose flag
 #include "selection.h"
 #include "core/settings/qPrefDiveComputer.h"
+#include <QString> // for QString::number
 
 /*
  * Good fake dive profiles are hard.
@@ -238,29 +238,29 @@ extern "C" void set_dc_deviceid(struct divecomputer *dc, unsigned int deviceid)
 	if (!node)
 		return;
 
-	if (!node->serialNumber.isEmpty() && empty_string(dc->serial)) {
+	if (!node->serialNumber.empty() && empty_string(dc->serial)) {
 		free((void *)dc->serial);
-		dc->serial = copy_qstring(node->serialNumber);
+		dc->serial = strdup(node->serialNumber.c_str());
 	}
-	if (!node->firmware.isEmpty() && empty_string(dc->fw_version)) {
+	if (!node->firmware.empty() && empty_string(dc->fw_version)) {
 		free((void *)dc->fw_version);
-		dc->fw_version = copy_qstring(node->firmware);
+		dc->fw_version = strdup(node->firmware.c_str());
 	}
 }
 
-void device::showchanges(const QString &n, const QString &s, const QString &f) const
+void device::showchanges(const std::string &n, const std::string &s, const std::string &f) const
 {
-	if (nickName != n && !n.isEmpty())
-		qDebug("new nickname %s for DC model %s deviceId 0x%x", qPrintable(n), qPrintable(model), deviceId);
-	if (serialNumber != s && !s.isEmpty())
-		qDebug("new serial number %s for DC model %s deviceId 0x%x", qPrintable(s), qPrintable(model), deviceId);
-	if (firmware != f && !f.isEmpty())
-		qDebug("new firmware version %s for DC model %s deviceId 0x%x", qPrintable(f), qPrintable(model), deviceId);
+	if (nickName != n && !n.empty())
+		qDebug("new nickname %s for DC model %s deviceId 0x%x", n.c_str(), model.c_str(), deviceId);
+	if (serialNumber != s && !s.empty())
+		qDebug("new serial number %s for DC model %s deviceId 0x%x", s.c_str(), model.c_str(), deviceId);
+	if (firmware != f && !f.empty())
+		qDebug("new firmware version %s for DC model %s deviceId 0x%x", f.c_str(), model.c_str(), deviceId);
 }
 
-static void addDC(QVector<device> &dcs, const QString &m, uint32_t d, const QString &n, const QString &s, const QString &f)
+static void addDC(QVector<device> &dcs, const std::string &m, uint32_t d, const std::string &n, const std::string &s, const std::string &f)
 {
-	if (m.isEmpty() || d == 0)
+	if (m.empty() || d == 0)
 		return;
 	auto it = std::lower_bound(dcs.begin(), dcs.end(), device{m, d, {}, {}, {}});
 	if (it != dcs.end() && it->model == m && it->deviceId == d) {
@@ -268,11 +268,11 @@ static void addDC(QVector<device> &dcs, const QString &m, uint32_t d, const QStr
 		if (verbose)
 			it->showchanges(n, s, f);
 		// Update any non-existent fields from the old entry
-		if (!n.isEmpty())
+		if (!n.empty())
 			it->nickName = n;
-		if (!s.isEmpty())
+		if (!s.empty())
 			it->serialNumber = s;
-		if (!f.isEmpty())
+		if (!f.empty())
 			it->firmware = f;
 	} else {
 		dcs.insert(it, device{m, d, s, f, n});
@@ -281,7 +281,7 @@ static void addDC(QVector<device> &dcs, const QString &m, uint32_t d, const QStr
 
 extern "C" void create_device_node(const char *model, uint32_t deviceid, const char *serial, const char *firmware, const char *nickname)
 {
-	addDC(device_table.devices, model, deviceid, nickname, serial, firmware);
+	addDC(device_table.devices, model ?: "", deviceid, nickname ?: "", serial ?: "", firmware ?: "");
 }
 
 extern "C" void clear_device_nodes()
@@ -310,8 +310,8 @@ extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *
 			found = true;
 		}
 		if (found)
-			callback(f, qPrintable(node.model), node.deviceId, qPrintable(node.nickName),
-						 qPrintable(node.serialNumber), qPrintable(node.firmware));
+			callback(f, node.model.c_str(), node.deviceId, node.nickName.c_str(),
+						 node.serialNumber.c_str(), node.firmware.c_str());
 	}
 }
 
@@ -333,14 +333,14 @@ extern "C" void set_dc_nickname(struct dive *dive)
 			// we don't have this one, yet
 			auto it = std::find_if(device_table.devices.begin(), device_table.devices.end(),
 					       [dc] (const device &dev)
-					       { return !strcasecmp(qPrintable(dev.model), dc->model); });
+					       { return !strcasecmp(dev.model.c_str(), dc->model); });
 			if (it != device_table.devices.end()) {
 				// we already have this model but a different deviceid
-				QString simpleNick(dc->model);
+				std::string simpleNick(dc->model);
 				if (dc->deviceid == 0)
-					simpleNick.append(" (unknown deviceid)");
+					simpleNick += " (unknown deviceid)";
 				else
-					simpleNick.append(" (").append(QString::number(dc->deviceid, 16)).append(")");
+					simpleNick += " (" + QString::number(dc->deviceid, 16).toStdString() + ")";
 				addDC(device_table.devices, dc->model, dc->deviceid, simpleNick, {}, {});
 			} else {
 				addDC(device_table.devices, dc->model, dc->deviceid, {}, {}, {});
@@ -349,12 +349,12 @@ extern "C" void set_dc_nickname(struct dive *dive)
 	}
 }
 
-QString get_dc_nickname(const struct divecomputer *dc)
+const char *get_dc_nickname(const struct divecomputer *dc)
 {
 	const device *existNode = getDCExact(device_table.devices, dc);
 
-	if (existNode && !existNode->nickName.isEmpty())
-		return existNode->nickName;
+	if (existNode && !existNode->nickName.empty())
+		return existNode->nickName.c_str();
 	else
 		return dc->model;
 }

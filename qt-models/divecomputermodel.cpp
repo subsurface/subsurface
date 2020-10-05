@@ -20,9 +20,9 @@ QVariant DiveComputerModel::data(const QModelIndex &index, int role) const
 		case ID:
 			return QString("0x").append(QString::number(node.deviceId, 16));
 		case MODEL:
-			return node.model;
+			return QString::fromStdString(node.model);
 		case NICKNAME:
-			return node.nickName;
+			return QString::fromStdString(node.nickName);
 		}
 	}
 
@@ -59,7 +59,7 @@ bool DiveComputerModel::setData(const QModelIndex &index, const QVariant &value,
 		return false;
 
 	device &node = dcs[index.row()];
-	node.nickName = value.toString();
+	node.nickName = value.toString().toStdString();
 	emit dataChanged(index, index);
 	return true;
 }
