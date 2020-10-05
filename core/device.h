@@ -16,6 +16,7 @@ extern void create_device_node(const char *model, uint32_t deviceid, const char 
 extern void call_for_each_dc(void *f, void (*callback)(void *, const char *, uint32_t,
 						       const char *, const char *, const char *), bool select_only);
 extern void clear_device_nodes();
+const char *get_dc_nickname(const struct divecomputer *dc);
 
 #ifdef __cplusplus
 }
@@ -24,18 +25,18 @@ extern void clear_device_nodes();
 // Functions and global variables that are only available to C++ code
 #ifdef __cplusplus
 
-#include <QString>
+#include <string>
 #include <QVector>
 struct device {
 	bool operator==(const device &a) const;
 	bool operator!=(const device &a) const;
 	bool operator<(const device &a) const;
-	void showchanges(const QString &n, const QString &s, const QString &f) const;
-	QString model;
+	void showchanges(const std::string &n, const std::string &s, const std::string &f) const;
+	std::string model;
 	uint32_t deviceId;
-	QString serialNumber;
-	QString firmware;
-	QString nickName;
+	std::string serialNumber;
+	std::string firmware;
+	std::string nickName;
 };
 
 struct device_table {
@@ -43,7 +44,6 @@ struct device_table {
 	QVector<device> devices;
 };
 
-QString get_dc_nickname(const struct divecomputer *dc);
 extern struct device_table device_table;
 
 #endif
