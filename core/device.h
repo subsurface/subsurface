@@ -45,8 +45,7 @@ const char *device_get_nickname(const struct device *dev);
 #include <string>
 #include <vector>
 struct device {
-	bool operator==(const device &a) const;
-	bool operator!=(const device &a) const;
+	bool operator==(const device &a) const; // TODO: remove, once devices are integrated in the undo system
 	bool operator<(const device &a) const;
 	void showchanges(const std::string &n, const std::string &s, const std::string &f) const;
 	std::string model;

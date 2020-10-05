@@ -203,11 +203,6 @@ bool device::operator==(const device &a) const
 	       nickName == a.nickName;
 }
 
-bool device::operator!=(const device &a) const
-{
-	return !(*this == a);
-}
-
 bool device::operator<(const device &a) const
 {
 	return std::tie(deviceId, model) < std::tie(a.deviceId, a.model);
