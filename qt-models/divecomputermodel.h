@@ -27,7 +27,7 @@ slots:
 	void remove(const QModelIndex &index);
 
 private:
-	QVector<device> dcs;
+	std::vector<device> dcs;
 };
 
 class DiveComputerSortedModel : public QSortFilterProxyModel {
