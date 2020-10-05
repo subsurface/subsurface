@@ -238,10 +238,14 @@ extern "C" void set_dc_deviceid(struct divecomputer *dc, unsigned int deviceid)
 	if (!node)
 		return;
 
-	if (!node->serialNumber.isEmpty() && empty_string(dc->serial))
+	if (!node->serialNumber.isEmpty() && empty_string(dc->serial)) {
+		free((void *)dc->serial);
 		dc->serial = copy_qstring(node->serialNumber);
-	if (!node->firmware.isEmpty() && empty_string(dc->fw_version))
+	}
+	if (!node->firmware.isEmpty() && empty_string(dc->fw_version)) {
+		free((void *)dc->fw_version);
 		dc->fw_version = copy_qstring(node->firmware);
+	}
 }
 
 void device::showchanges(const QString &n, const QString &s, const QString &f) const
