@@ -552,25 +552,6 @@ static uint32_t calculate_string_hash(const char *str)
 }
 
 /*
- * Find an existing device ID for this device model and serial number
- */
-static void dc_match_serial(void *_dc, const char *model, uint32_t deviceid, const char *nickname, const char *serial, const char *firmware)
-{
-	UNUSED(nickname);
-	UNUSED(firmware);
-
-	struct divecomputer *dc = _dc;
-
-	if (!deviceid)
-		return;
-	if (!dc->model || !model || strcasecmp(dc->model, model))
-		return;
-	if (!dc->serial || !serial || strcasecmp(dc->serial, serial))
-		return;
-	dc->deviceid = deviceid;
-}
-
-/*
  * Set the serial number.
  *
  * This also sets the device ID by looking for existing devices that
@@ -581,8 +562,12 @@ static void dc_match_serial(void *_dc, const char *model, uint32_t deviceid, con
  */
 static void set_dc_serial(struct divecomputer *dc, const char *serial)
 {
+	const struct device *device;
+
 	dc->serial = serial;
-	call_for_each_dc(dc, dc_match_serial, false);
+	if ((device = get_device_for_dc(&device_table, dc)) != NULL)
+		dc->deviceid = device_get_id(device);
+
 	if (!dc->deviceid)
 		dc->deviceid = calculate_string_hash(serial);
 }
