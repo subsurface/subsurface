@@ -213,8 +213,9 @@ bool device::operator<(const device &a) const
 	return std::tie(deviceId, model) < std::tie(a.deviceId, a.model);
 }
 
-static const device *getDCExact(const std::vector<device> &dcs, const divecomputer *dc)
+const struct device *get_device_for_dc(const struct device_table *table, const struct divecomputer *dc)
 {
+	const std::vector<device> &dcs = table->devices;
 	auto it = std::lower_bound(dcs.begin(), dcs.end(), device{dc->model, dc->deviceid, {}, {}, {}});
 	return it != dcs.end() && it->model == dc->model && it->deviceId == dc->deviceid ? &*it : NULL;
 }
@@ -234,7 +235,7 @@ extern "C" void set_dc_deviceid(struct divecomputer *dc, unsigned int deviceid)
 	if (!dc->model)
 		return;
 
-	const device *node = getDCExact(device_table.devices, dc);
+	const device *node = get_device_for_dc(&device_table, dc);
 	if (!node)
 		return;
 
@@ -329,7 +330,7 @@ extern "C" void set_dc_nickname(struct dive *dive)
 
 	for_each_dc (dive, dc) {
 		if (!empty_string(dc->model) && dc->deviceid &&
-		    !getDCExact(device_table.devices, dc)) {
+		    !get_device_for_dc(&device_table, dc)) {
 			// we don't have this one, yet
 			auto it = std::find_if(device_table.devices.begin(), device_table.devices.end(),
 					       [dc] (const device &dev)
@@ -351,7 +352,7 @@ extern "C" void set_dc_nickname(struct dive *dive)
 
 const char *get_dc_nickname(const struct divecomputer *dc)
 {
-	const device *existNode = getDCExact(device_table.devices, dc);
+	const device *existNode = get_device_for_dc(&device_table, dc);
 
 	if (existNode && !existNode->nickName.empty())
 		return existNode->nickName.c_str();

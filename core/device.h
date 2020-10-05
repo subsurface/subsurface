@@ -26,6 +26,8 @@ extern void call_for_each_dc(void *f, void (*callback)(void *, const char *, uin
 extern void clear_device_nodes();
 const char *get_dc_nickname(const struct divecomputer *dc);
 
+extern const struct device *get_device_for_dc(const struct device_table *table, const struct divecomputer *dc);
+
 // struct device accessors for C-code. The returned strings are not stable!
 const char *device_get_model(const struct device *dev);
 const uint32_t device_get_id(const struct device *dev);
