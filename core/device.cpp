@@ -213,7 +213,7 @@ bool device::operator<(const device &a) const
 	return std::tie(deviceId, model) < std::tie(a.deviceId, a.model);
 }
 
-static const device *getDCExact(const QVector<device> &dcs, const divecomputer *dc)
+static const device *getDCExact(const std::vector<device> &dcs, const divecomputer *dc)
 {
 	auto it = std::lower_bound(dcs.begin(), dcs.end(), device{dc->model, dc->deviceid, {}, {}, {}});
 	return it != dcs.end() && it->model == dc->model && it->deviceId == dc->deviceid ? &*it : NULL;
@@ -258,7 +258,7 @@ void device::showchanges(const std::string &n, const std::string &s, const std::
 		qDebug("new firmware version %s for DC model %s deviceId 0x%x", f.c_str(), model.c_str(), deviceId);
 }
 
-static void addDC(QVector<device> &dcs, const std::string &m, uint32_t d, const std::string &n, const std::string &s, const std::string &f)
+static void addDC(std::vector<device> &dcs, const std::string &m, uint32_t d, const std::string &n, const std::string &s, const std::string &f)
 {
 	if (m.empty() || d == 0)
 		return;

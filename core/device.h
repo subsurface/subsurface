@@ -26,7 +26,7 @@ const char *get_dc_nickname(const struct divecomputer *dc);
 #ifdef __cplusplus
 
 #include <string>
-#include <QVector>
+#include <vector>
 struct device {
 	bool operator==(const device &a) const;
 	bool operator!=(const device &a) const;
@@ -41,7 +41,7 @@ struct device {
 
 struct device_table {
 	// Keep the dive computers in a vector sorted by (model, deviceId)
-	QVector<device> devices;
+	std::vector<device> devices;
 };
 
 extern struct device_table device_table;

@@ -11,7 +11,7 @@ DiveComputerModel::DiveComputerModel(QObject *parent) : CleanerTableModel(parent
 
 QVariant DiveComputerModel::data(const QModelIndex &index, int role) const
 {
-	if (index.row() < 0 || index.row() >= dcs.size())
+	if (index.row() < 0 || index.row() >= (int)dcs.size())
 		return QVariant();
 	const device &node = dcs[index.row()];
 
@@ -55,7 +55,7 @@ Qt::ItemFlags DiveComputerModel::flags(const QModelIndex &index) const
 bool DiveComputerModel::setData(const QModelIndex &index, const QVariant &value, int)
 {
 	// We should test if the role == Qt::EditRole
-	if (index.row() < 0 || index.row() >= dcs.size())
+	if (index.row() < 0 || index.row() >= (int)dcs.size())
 		return false;
 
 	device &node = dcs[index.row()];
@@ -66,10 +66,10 @@ bool DiveComputerModel::setData(const QModelIndex &index, const QVariant &value,
 
 void DiveComputerModel::remove(const QModelIndex &index)
 {
-	if (index.row() < 0 || index.row() >= dcs.size())
+	if (index.row() < 0 || index.row() >= (int)dcs.size())
 		return;
 	beginRemoveRows(QModelIndex(), index.row(), index.row());
-	dcs.remove(index.row());
+	dcs.erase(dcs.begin() + index.row());
 	endRemoveRows();
 }
 
