@@ -358,3 +358,40 @@ const char *get_dc_nickname(const struct divecomputer *dc)
 	else
 		return dc->model;
 }
+
+extern "C" int nr_devices(const struct device_table *table)
+{
+	return (int)table->devices.size();
+}
+
+extern "C" const struct device *get_device(const struct device_table *table, int i)
+{
+	if (i < 0 || i > nr_devices(table))
+		return NULL;
+	return &table->devices[i];
+}
+
+extern "C" const char *device_get_model(const struct device *dev)
+{
+	return dev ? dev->model.c_str() : NULL;
+}
+
+extern "C" const uint32_t device_get_id(const struct device *dev)
+{
+	return dev ? dev->deviceId : -1;
+}
+
+extern "C" const char *device_get_serial(const struct device *dev)
+{
+	return dev ? dev->serialNumber.c_str() : NULL;
+}
+
+extern "C" const char *device_get_firmware(const struct device *dev)
+{
+	return dev ? dev->firmware.c_str() : NULL;
+}
+
+extern "C" const char *device_get_nickname(const struct device *dev)
+{
+	return dev ? dev->nickName.c_str() : NULL;
+}
