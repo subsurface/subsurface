@@ -285,27 +285,24 @@ extern "C" void clear_device_nodes()
 	device_table.devices.clear();
 }
 
+/* Returns whether the given device is used by a selected dive. */
+extern "C" bool device_used_by_selected_dive(const struct device *dev)
+{
+	for (dive *d: getDiveSelection()) {
+		struct divecomputer *dc;
+		for_each_dc (d, dc) {
+			if (dc->deviceid == dev->deviceId)
+				return true;
+		}
+	}
+	return false;
+}
+
 extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *, uint32_t, const char *, const char *, const char *),
 				  bool select_only)
 {
-	for (const device &node : device_table.devices) {
-		bool found = false;
-		if (select_only) {
-			for (dive *d: getDiveSelection()) {
-				struct divecomputer *dc;
-				for_each_dc (d, dc) {
-					if (dc->deviceid == node.deviceId) {
-						found = true;
-						break;
-					}
-				}
-				if (found)
-					break;
-			}
-		} else {
-			found = true;
-		}
-		if (found)
+	for (const device &node: device_table.devices) {
+		if (!select_only || device_used_by_selected_dive(&node))
 			callback(f, node.model.c_str(), node.deviceId, node.nickName.c_str(),
 						 node.serialNumber.c_str(), node.firmware.c_str());
 	}
