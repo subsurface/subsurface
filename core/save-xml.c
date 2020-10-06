@@ -574,23 +574,23 @@ static void save_trip(struct membuffer *b, dive_trip_t *trip, bool anonymize)
 	put_format(b, "</trip>\n");
 }
 
-static void save_one_device(void *_f, const char *model, uint32_t deviceid,
-			    const char *nickname, const char *serial_nr, const char *firmware)
+static void save_one_device(struct membuffer *b, const struct device *d)
 {
-	struct membuffer *b = _f;
+	const char *model = device_get_model(d);
+	const char *nickname = device_get_nickname(d);
+	const char *serial_nr = device_get_serial(d);
+	const char *firmware = device_get_firmware(d);
 
 	/* Nicknames that are empty or the same as the device model are not interesting */
-	if (nickname) {
-		if (!*nickname || !strcmp(model, nickname))
+	if (empty_string(nickname) || !strcmp(model, nickname))
 			nickname = NULL;
-	}
 
 	/* Serial numbers that are empty are not interesting */
-	if (serial_nr && !*serial_nr)
+	if (empty_string(serial_nr))
 		serial_nr = NULL;
 
 	/* Firmware strings that are empty are not interesting */
-	if (firmware && !*firmware)
+	if (empty_string(firmware))
 		firmware = NULL;
 
 	/* Do we have anything interesting about this dive computer to save? */
@@ -599,7 +599,7 @@ static void save_one_device(void *_f, const char *model, uint32_t deviceid,
 
 	put_format(b, "<divecomputerid");
 	show_utf8(b, model, " model='", "'", 1);
-	put_format(b, " deviceid='%08x'", deviceid);
+	put_format(b, " deviceid='%08x'", device_get_id(d));
 	show_utf8(b, serial_nr, " serial='", "'", 1);
 	show_utf8(b, firmware, " firmware='", "'", 1);
 	show_utf8(b, nickname, " nickname='", "'", 1);
@@ -670,7 +670,11 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 	put_format(b, "<divelog program='subsurface' version='%d'>\n<settings>\n", DATAFORMAT_VERSION);
 
 	/* save the dive computer nicknames, if any */
-	call_for_each_dc(b, save_one_device, select_only);
+	for (int i = 0; i < nr_devices(&device_table); i++) {
+		const struct device *d = get_device(&device_table, i);
+		if (!select_only || device_used_by_selected_dive(d))
+			save_one_device(b, d);
+	}
 	if (autogroup)
 		put_format(b, "  <autogroup state='1' />\n");
 	put_format(b, "</settings>\n");
