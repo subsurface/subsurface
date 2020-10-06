@@ -11,6 +11,7 @@ extern "C" {
 struct divecomputer;
 struct device;
 struct device_table;
+struct dive_table;
 
 // global device table
 extern struct device_table device_table;
@@ -25,6 +26,7 @@ extern void call_for_each_dc(void *f, void (*callback)(void *, const char *, uin
 						       const char *, const char *, const char *), bool select_only);
 extern void clear_device_nodes();
 const char *get_dc_nickname(const struct divecomputer *dc);
+extern bool device_used_by_selected_dive(const struct device *dev);
 
 extern const struct device *get_device_for_dc(const struct device_table *table, const struct divecomputer *dc);
 
