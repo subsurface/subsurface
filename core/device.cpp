@@ -298,16 +298,6 @@ extern "C" bool device_used_by_selected_dive(const struct device *dev)
 	return false;
 }
 
-extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *, uint32_t, const char *, const char *, const char *),
-				  bool select_only)
-{
-	for (const device &node: device_table.devices) {
-		if (!select_only || device_used_by_selected_dive(&node))
-			callback(f, node.model.c_str(), node.deviceId, node.nickName.c_str(),
-						 node.serialNumber.c_str(), node.firmware.c_str());
-	}
-}
-
 extern "C" int is_default_dive_computer_device(const char *name)
 {
 	return qPrefDiveComputer::device() == name;
