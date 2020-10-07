@@ -154,7 +154,6 @@ fi
 # normally this script builds the desktop version in subsurface/build
 # if the first argument is "-mobile" then build Subsurface-mobile in "$BUILD_PREFIX"build-mobile
 # if the first argument is "-both" then build both in subsurface/build and "$BUILD_PREFIX"build-mobile
-BUILDGRANTLEE=0
 
 if [ "$BUILD_MOBILE" = "1" ] ; then
 	echo "building Subsurface-mobile in ${SRC_DIR}/build-mobile"
@@ -171,9 +170,6 @@ if [ "$BUILD_DESKTOP" = "1" ] ; then
 	BUILDDIRS+=( "${BUILD_PREFIX}build" )
 	if [ "$BUILD_WITH_WEBKIT" = "1" ] ; then
 		PRINTING="-DNO_PRINTING=OFF"
-		if [ "$QUICK" != "1" ] ; then
-			BUILDGRANTLEE=1
-		fi
 	else
 		PRINTING="-DNO_PRINTING=ON"
 	fi
@@ -484,22 +480,6 @@ if [ "$BUILD_WITH_WEBKIT" = "1" ]; then
 	EXTRA_OPTS="-DNO_USERMANUAL=OFF"
 else
 	EXTRA_OPTS="-DNO_USERMANUAL=ON"
-fi
-
-if [ "$BUILDGRANTLEE" = "1" ] ; then
-	# build grantlee
-	cd "$SRC"
-	./${SRC_DIR}/scripts/get-dep-lib.sh single . grantlee
-	pushd grantlee
-	mkdir -p build
-	cd build
-	cmake "$OLDER_MAC_CMAKE" -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" \
-		-DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" \
-		-DBUILD_TESTS=NO \
-		"$SRC"/grantlee
-	make -j4
-	make install
-	popd
 fi
 
 if [ "$QUICK" != "1" ] ; then
