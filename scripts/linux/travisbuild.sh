@@ -33,9 +33,8 @@ grep -A1 RESULT\ :\ TestParsePerformance subsurface/build/tests/Testing/Temporar
 # set up the appdir
 mkdir -p appdir/usr/plugins/
 
-# mv googlemaps and Grantlee plugins into place
+# mv googlemaps plugins into place
 mv appdir/usr/usr/local/Qt*/plugins/* appdir/usr/plugins # the usr/usr is not a typo - that's where it ends up
-mv appdir/usr/lib/grantlee/ appdir/usr/plugins/
 rm -rf appdir/usr/home/ appdir/usr/include/ appdir/usr/share/man/ # No need to ship developer and man files as part of the AppImage
 rm -rf appdir/usr/usr appdir/usr/lib/cmake appdir/usr/lib/pkgconfig
 
@@ -65,8 +64,6 @@ cp -f subsurface/smtk-import/smtk2ssrf.desktop smtk2ssrf_appdir/
 cp -f install-root/bin/smtk2ssrf smtk2ssrf_appdir/usr/bin/
 cp -f install-root/lib/libdivecomputer.so.0 smtk2ssrf_appdir/usr/lib/
 cp -f install-root/lib/libgit2* smtk2ssrf_appdir/usr/lib/
-# Why is Grantlee needed? We have built subsurface without printing support!!!
-cp -f install-root/lib/libGrantlee* smtk2ssrf_appdir/usr/lib/
 cp -rf appdir/usr/plugins/{bearer,iconengines,imageformats,platforms,xcbglintegrations} smtk2ssrf_appdir/usr/plugins
 
 ./linuxdeployqt*.AppImage ./smtk2ssrf_appdir/smtk2ssrf.desktop -bundle-non-qt-libs -verbose=2

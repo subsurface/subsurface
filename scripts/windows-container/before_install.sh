@@ -23,7 +23,6 @@ autoreconf --install
 # the intended layout as seen inside the container is
 # /win/subsurface # sources that we are testing
 #     /win32      # binaries that are build
-#     /grantlee
 #     /libzip
 #     /hidapi
 #     /googlemaps
@@ -46,7 +45,6 @@ docker exec -t builder apt-get install -y ca-certificates libtool
 docker exec -t builder bash subsurface/scripts/get-dep-lib.sh single . libzip
 docker exec -t builder bash subsurface/scripts/get-dep-lib.sh single . hidapi
 docker exec -t builder bash subsurface/scripts/get-dep-lib.sh single . googlemaps
-docker exec -t builder bash subsurface/scripts/get-dep-lib.sh single . grantlee
 
 # smtk2ssrf build
 docker exec -t builder bash subsurface/scripts/get-dep-lib.sh single . mdbtools
