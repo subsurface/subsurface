@@ -8,7 +8,6 @@ set -e
 
 export PATH=$QT_ROOT/bin:$PATH # Make sure correct qmake is found on the $PATH for linuxdeployqt
 export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
-export Grantlee5_ROOT=/__w/subsurface/subsurface/install-root
 
 echo "--------------------------------------------------------------"
 echo "install missing packages"
@@ -40,9 +39,8 @@ export QT_DEBUG_PLUGINS=1
 # set up the appdir
 mkdir -p appdir/usr/plugins/
 
-# mv googlemaps and Grantlee plugins into place
+# mv googlemaps plugins into place
 mv appdir/usr/usr/local/Qt/5.12.4/gcc_64/plugins/* appdir/usr/plugins  # the usr/usr is not a typo, that's where it ends up
-mv appdir/usr/lib/grantlee/ appdir/usr/plugins/
 rm -rf appdir/usr/home/ appdir/usr/include/ appdir/usr/share/man/ # No need to ship developer and man files as part of the AppImage
 rm -rf appdir/usr/usr appdir/usr/lib/cmake appdir/usr/lib/pkgconfig
 cp /ssllibs/libssl.so appdir/usr/lib/libssl.so.1.1
