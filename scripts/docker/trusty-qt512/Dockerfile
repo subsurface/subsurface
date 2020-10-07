@@ -73,9 +73,9 @@ RUN cd /openssl-OpenSSL_1_1_1   && \
 RUN apt-get remove -y libqt5core5a libqt5dbus5 libqt5gui5 ruby openssh-client
 
 # now build Subsurface once to populate the dependencies we don't get from
-# Ubuntu but that aren't really part of Subsurface (libgit, grantlee, googlemaps)
+# Ubuntu but that aren't really part of Subsurface (libgit, googlemaps)
 RUN git clone git://github.com/Subsurface/subsurface
 RUN bash -e -x ./subsurface/scripts/build.sh -desktop -create-appdir -build-with-webkit
 
 # remove the source, but keep the install-root
-RUN rm -rf subsurface libgit2 googlemaps grantlee
+RUN rm -rf subsurface libgit2 googlemaps
