@@ -44,7 +44,6 @@
 # Something like this:
 #
 # ~/src/mxe                    <- MXE git with Qt5, automake (see above)
-#      /grantlee               <- Grantlee 5.0.0 sources from git
 #      /subsurface             <- current subsurface git
 #      /googlemaps             <- Google Maps plugin for QtLocation from git
 #      /hidapi                 <- HIDAPI library for libdivecomputer

@@ -154,7 +154,6 @@ Section
 #    File /r Documentation
 #    File /r translations
 #    File /r printing_templates
-#    File /r grantlee
     File *.dll
     File subsurface.ico
     File qt.conf
@@ -206,7 +205,6 @@ Section "Uninstall"
     RMDir /r "$INSTDIR\plugins"
 #    RMDir /r "$INSTDIR\Documentation"
 #    RMDir /r "$INSTDIR\printing_templates"
-#    RMDir /r "$INSTDIR\grantlee"
     RMDir "$INSTDIR"
 
     # Remove shortcuts

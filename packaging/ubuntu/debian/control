@@ -38,7 +38,6 @@ Build-Depends: asciidoc,
 	       qml-module-qtquick2,
                libcurl4-openssl-dev,
                qtconnectivity5-dev,
-               libgrantlee5-dev,
                subsurface-qt-private-headers
 Standards-Version: 3.9.7
 Homepage: http://subsurface-divelog.org
