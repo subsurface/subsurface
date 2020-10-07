@@ -600,10 +600,19 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				*/
 			}
 		] // end actions
-		Image {
-			fillMode: Image.PreserveAspectFit
-			source: "qrc:///icons/" + (subsurfaceTheme.currentTheme !== "" ? subsurfaceTheme.currentTheme : "Blue") + "_gps.svg"
-			visible: locationServiceEnabled
+		Row {
+			spacing: Kirigami.Units.smallSpacing
+			Image {
+				id: ls_logo
+				fillMode: Image.PreserveAspectFit
+				source: "qrc:///icons/" + (subsurfaceTheme.currentTheme !== "" ? subsurfaceTheme.currentTheme : "Blue") + "_gps.svg"
+				visible: locationServiceEnabled
+			}
+			Text {
+				text: qsTr("Background location service active")
+				visible: locationServiceEnabled
+				anchors.verticalCenter: ls_logo.verticalCenter
+			}
 		}
 	}
 
