@@ -3,7 +3,7 @@
 # installer on Travis
 #
 # working directory is assumed to be the directory including all the
-# source directories (subsurface, googlemaps, grantlee, etc)
+# source directories (subsurface, googlemaps, etc)
 # in order to be compatible with the assumed layout in the MXE script, we
 # need to create the secondary build directory
 

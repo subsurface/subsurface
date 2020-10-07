@@ -59,15 +59,6 @@ echo "Get googlemaps"
 cd ${TRAVIS_BUILD_DIR}/..
 git clone https://github.com/Subsurface/googlemaps.git
 
-echo "Get Grantlee"
-cd ${TRAVIS_BUILD_DIR}/..
-git clone https://github.com/steveire/grantlee.git
-cd grantlee
-if ! git checkout v5.0.0 ; then
-	echo "can't check out v5.0.0 of grantlee -- giving up"
-	exit 1
-fi
-
 echo "Get mdbtools"
 cd ${TRAVIS_BUILD_DIR}/..
 git clone https://github.com/brianb/mdbtools.git
