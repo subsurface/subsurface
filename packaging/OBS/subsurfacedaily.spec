@@ -37,14 +37,6 @@ BuildRequires:	libxslt-devel
 BuildRequires:	libssh2-devel
 BuildRequires:	libcurl-devel
 BuildRequires:  libgit2-devel
-%if  0%{?fedora_version} >= 30
-# current Fedora has Grantlee under a different name
-# and F32 has a weird conflict with different boost-regex versions
-BuildRequires:	grantlee-qt5-devel
-BuildRequires:  boost-regex
-%else
-BuildRequires:	grantlee5-devel
-%endif
 %if  0%{?fedora_version} || 0%{?rhel_version} || 0%{?centos_version}
 BuildRequires:	netpbm-devel
 BuildRequires:	openssl-devel
