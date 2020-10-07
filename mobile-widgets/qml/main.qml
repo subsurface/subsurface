@@ -423,6 +423,10 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					onTriggered: {
 						globalDrawer.close();
 						locationServiceEnabled = !locationServiceEnabled
+						if (locationServiceEnabled) {
+							locationWarning.open()
+						}
+
 					}
 				}
 			},
@@ -762,6 +766,40 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					// if we were started with a dive computer plugged in,
 					// immediately switch to download page
 					showDownloadForPluggedInDevice()
+			}
+		}
+	}
+
+	Kirigami.OverlaySheet {
+		id: locationWarning
+		ColumnLayout {
+			width: locationWarning.width - Kirigami.Units.gridUnit
+			spacing: Kirigami.Units.gridUnit
+			TemplateTitle {
+				Layout.alignment: Qt.AlignHCenter
+				title: qsTr("Location Service Enabled")
+			}
+			Text {
+				Layout.fillWidth: true
+				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+				text: qsTr("This service collects location data to enable you to track the GPS coordinates of your dives. " +
+					   "This will attempt to continue to collect location data, even if the app is closed or your phone screen locked.")
+			}
+			Text {
+				Layout.fillWidth: true
+				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+				text: qsTr("The location data are not used in way, except when you apply the location data to the dives in your dive list on this device.")
+			}
+			Text {
+				Layout.fillWidth: true
+				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+				text: qsTr("By default, the location data are never transferred to the cloud or to any other service. However, in order to allow debugging " +
+					   "of location data related issues, you can explicitly enable storing those location data in the cloud by enabling the corresponding option in the advanced settings.")
+			}
+			TemplateButton {
+				Layout.alignment: Qt.AlignHCenter
+				text: qsTr("Understood")
+				onClicked: { locationWarning.close() }
 			}
 		}
 	}
