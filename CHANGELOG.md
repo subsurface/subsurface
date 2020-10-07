@@ -1,5 +1,6 @@
 - macOS: fix issue with HID dive computers like Suunto Eon Core/Steel [#2999]
 - windows: add missing modern Vista theme
+- mobile: add location service warning as required by Google Play
 - desktop: allow adding dives to arbitrary trips
 - core: improve merging of cylinder pressures [#2884]
 - desktop: respect page-up, page-down, home and end keys for selection change [#2957]
