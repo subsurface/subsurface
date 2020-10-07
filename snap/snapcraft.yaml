@@ -132,7 +132,6 @@ parts:
     - build-essential
     - libcurl4-gnutls-dev
     - libftdi1-dev
-    - libgrantlee5-dev
     - libgit2-dev
     - libqt5svg5-dev
     - libqt5webkit5-dev
@@ -159,7 +158,6 @@ parts:
     - libdb5.3
     - libftdi1-2
     - libgit2-26
-    - libgrantlee-templates5
     - libqt5bluetooth5
     - libqt5concurrent5
     - libqt5core5a
