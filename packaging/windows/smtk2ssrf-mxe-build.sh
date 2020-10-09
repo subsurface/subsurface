@@ -170,6 +170,7 @@ mkdir -p smtk-import && echo -e "$BLUE---> Created new$LIGHT_GRAY $BUILDDIR/smtk
 # first copy the Qt plugins in place
 QT_PLUGIN_DIRECTORIES="$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/iconengines \
 $BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/imageformats \
+$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/styles \
 $BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/platforms"
 
 # This comes from subsurface's mxe-based-build.sh. I'm not sure it is necessary

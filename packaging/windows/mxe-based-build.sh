@@ -206,6 +206,7 @@ QT_PLUGIN_DIRECTORIES="$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/plugins/iconen
 $BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/plugins/imageformats \
 $BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/plugins/platforms \
 $BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/plugins/geoservices \
+$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/plugins/styles \
 $BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/plugins/printsupport"
 
 STAGING_DIR=$BUILDDIR/subsurface/staging
