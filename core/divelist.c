@@ -826,7 +826,7 @@ void process_loaded_dives()
 	for_each_dive(i, dive) {
 		if (!dive->hidden_by_filter)
 			shown_dives++;
-		set_dc_nickname(dive);
+		set_dc_nickname(dive, &device_table);
 	}
 
 	sort_dive_table(&dive_table);
@@ -1161,12 +1161,13 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 	/* check if we need a nickname for the divecomputer for newly downloaded dives;
 	 * since we know they all came from the same divecomputer we just check for the
 	 * first one */
-	if (flags & IMPORT_IS_DOWNLOADED)
-		set_dc_nickname(import_table->dives[0]);
-	else
+	if (flags & IMPORT_IS_DOWNLOADED) {
+		set_dc_nickname(import_table->dives[0], &device_table);
+	} else {
 		/* they aren't downloaded, so record / check all new ones */
 		for (i = 0; i < import_table->nr; i++)
-			set_dc_nickname(import_table->dives[i]);
+			set_dc_nickname(import_table->dives[i], &device_table);
+	}
 
 	/* Sort the table of dives to be imported and combine mergable dives */
 	sort_dive_table(import_table);
@@ -1375,7 +1376,7 @@ void clear_dive_file_data()
 	}
 
 	clear_dive(&displayed_dive);
-	clear_device_nodes();
+	clear_device_nodes(&device_table);
 	clear_events();
 	clear_filter_presets();
 

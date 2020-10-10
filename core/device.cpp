@@ -219,7 +219,7 @@ const struct device *get_device_for_dc(const struct device_table *table, const s
  * When setting the device ID, we also fill in the
  * serial number and firmware version data
  */
-extern "C" void set_dc_deviceid(struct divecomputer *dc, unsigned int deviceid)
+extern "C" void set_dc_deviceid(struct divecomputer *dc, unsigned int deviceid, const struct device_table *device_table)
 {
 	if (!deviceid)
 		return;
@@ -230,7 +230,7 @@ extern "C" void set_dc_deviceid(struct divecomputer *dc, unsigned int deviceid)
 	if (!dc->model)
 		return;
 
-	const device *node = get_device_for_dc(&device_table, dc);
+	const device *node = get_device_for_dc(device_table, dc);
 	if (!node)
 		return;
 
@@ -275,14 +275,14 @@ static void addDC(std::vector<device> &dcs, const std::string &m, uint32_t d, co
 	}
 }
 
-extern "C" void create_device_node(const char *model, uint32_t deviceid, const char *serial, const char *firmware, const char *nickname)
+extern "C" void create_device_node(struct device_table *device_table, const char *model, uint32_t deviceid, const char *serial, const char *firmware, const char *nickname)
 {
-	addDC(device_table.devices, model ?: "", deviceid, nickname ?: "", serial ?: "", firmware ?: "");
+	addDC(device_table->devices, model ?: "", deviceid, nickname ?: "", serial ?: "", firmware ?: "");
 }
 
-extern "C" void clear_device_nodes()
+extern "C" void clear_device_nodes(struct device_table *device_table)
 {
-	device_table.devices.clear();
+	device_table->devices.clear();
 }
 
 /* Returns whether the given device is used by a selected dive. */
@@ -303,7 +303,7 @@ extern "C" int is_default_dive_computer_device(const char *name)
 	return qPrefDiveComputer::device() == name;
 }
 
-extern "C" void set_dc_nickname(struct dive *dive)
+extern "C" void set_dc_nickname(struct dive *dive, struct device_table *device_table)
 {
 	if (!dive)
 		return;
@@ -312,21 +312,21 @@ extern "C" void set_dc_nickname(struct dive *dive)
 
 	for_each_dc (dive, dc) {
 		if (!empty_string(dc->model) && dc->deviceid &&
-		    !get_device_for_dc(&device_table, dc)) {
+		    !get_device_for_dc(device_table, dc)) {
 			// we don't have this one, yet
-			auto it = std::find_if(device_table.devices.begin(), device_table.devices.end(),
+			auto it = std::find_if(device_table->devices.begin(), device_table->devices.end(),
 					       [dc] (const device &dev)
 					       { return !strcasecmp(dev.model.c_str(), dc->model); });
-			if (it != device_table.devices.end()) {
+			if (it != device_table->devices.end()) {
 				// we already have this model but a different deviceid
 				std::string simpleNick(dc->model);
 				if (dc->deviceid == 0)
 					simpleNick += " (unknown deviceid)";
 				else
 					simpleNick += " (" + QString::number(dc->deviceid, 16).toStdString() + ")";
-				addDC(device_table.devices, dc->model, dc->deviceid, simpleNick, {}, {});
+				addDC(device_table->devices, dc->model, dc->deviceid, simpleNick, {}, {});
 			} else {
-				addDC(device_table.devices, dc->model, dc->deviceid, {}, {}, {});
+				addDC(device_table->devices, dc->model, dc->deviceid, {}, {}, {});
 			}
 		}
 	}

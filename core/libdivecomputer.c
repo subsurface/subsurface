@@ -931,7 +931,7 @@ static unsigned int fixup_suunto_versions(device_data_t *devdata, const dc_event
 			 (devinfo->firmware >> 8) & 0xff,
 			 (devinfo->firmware >> 0) & 0xff);
 	}
-	create_device_node(devdata->model, devdata->deviceid, serial_nr, firmware, "");
+	create_device_node(&device_table, devdata->model, devdata->deviceid, serial_nr, firmware, "");
 
 	return serial;
 }
