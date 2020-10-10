@@ -210,7 +210,7 @@ bool device::operator!=(const device &a) const
 
 bool device::operator<(const device &a) const
 {
-	return std::tie(model, deviceId) < std::tie(a.model, a.deviceId);
+	return std::tie(deviceId, model) < std::tie(a.deviceId, a.model);
 }
 
 static const device *getDCExact(const QVector<device> &dcs, const divecomputer *dc)
@@ -291,17 +291,10 @@ extern "C" void clear_device_nodes()
 	device_table.devices.clear();
 }
 
-static bool compareDCById(const device &a, const device &b)
-{
-	return a.deviceId < b.deviceId;
-}
-
 extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *, uint32_t, const char *, const char *, const char *),
 				  bool select_only)
 {
-	QVector<device> values = device_table.devices;
-	std::sort(values.begin(), values.end(), compareDCById);
-	for (const device &node : values) {
+	for (const device &node : device_table.devices) {
 		bool found = false;
 		if (select_only) {
 			for (dive *d: getDiveSelection()) {
