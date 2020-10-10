@@ -712,7 +712,7 @@ static void parse_dc_date(char *line, struct membuffer *str, struct git_parser_s
 { UNUSED(str); update_date(&state->active_dc->when, line); }
 
 static void parse_dc_deviceid(char *line, struct membuffer *str, struct git_parser_state *state)
-{ UNUSED(str); set_dc_deviceid(state->active_dc, get_hex(line)); }
+{ UNUSED(str); set_dc_deviceid(state->active_dc, get_hex(line), &device_table); }
 
 static void parse_dc_diveid(char *line, struct membuffer *str, struct git_parser_state *state)
 { UNUSED(str); state->active_dc->diveid = get_hex(line); }
@@ -1000,7 +1000,7 @@ static void parse_settings_divecomputerid(char *line, struct membuffer *str, str
 			break;
 		line = parse_keyvalue_entry(parse_divecomputerid_keyvalue, &id, line, str);
 	}
-	create_device_node(id.model, id.deviceid, id.serial, id.firmware, id.nickname);
+	create_device_node(&device_table, id.model, id.deviceid, id.serial, id.firmware, id.nickname);
 }
 
 static void parse_picture_filename(char *line, struct membuffer *str, struct git_parser_state *state)

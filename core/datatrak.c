@@ -565,7 +565,7 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 		dt_dive->dc.deviceid = 0;
 	else
 		dt_dive->dc.deviceid = 0xffffffff;
-	create_device_node(dt_dive->dc.model, dt_dive->dc.deviceid, "", "", dt_dive->dc.model);
+	create_device_node(&device_table, dt_dive->dc.model, dt_dive->dc.deviceid, "", "", dt_dive->dc.model);
 	dt_dive->dc.next = NULL;
 	if (!is_SCR && dt_dive->cylinders.nr > 0) {
 		get_cylinder(dt_dive, 0)->end.mbar = get_cylinder(dt_dive, 0)->start.mbar -
