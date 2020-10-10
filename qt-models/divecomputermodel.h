@@ -4,6 +4,7 @@
 
 #include "qt-models/cleanertablemodel.h"
 #include "core/device.h"
+#include <QSortFilterProxyModel>
 
 class DiveComputerModel : public CleanerTableModel {
 	Q_OBJECT
@@ -27,6 +28,13 @@ slots:
 
 private:
 	QVector<device> dcs;
+};
+
+class DiveComputerSortedModel : public QSortFilterProxyModel {
+public:
+	using QSortFilterProxyModel::QSortFilterProxyModel;
+private:
+	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const;
 };
 
 #endif

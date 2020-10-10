@@ -79,3 +79,37 @@ void DiveComputerModel::keepWorkingList()
 		mark_divelist_changed(true);
 	device_table.devices = dcs;
 }
+
+// Convenience function to access alternative columns
+static QString getData(const QModelIndex &idx, int col)
+{
+	const QAbstractItemModel *model = idx.model();
+	QModelIndex idx2 = model->index(idx.row(), col, idx.parent());
+	return model->data(idx2).toString();
+}
+
+// Helper function: sort data pointed to by the given indexes.
+// For equal data, sort by two alternative rows.
+// All sorting is by case-insensitive string comparison.
+static bool sortHelper(const QModelIndex &i1, const QModelIndex &i2, int altRow1, int altRow2)
+{
+	if(int cmp = i1.data().toString().compare(i2.data().toString()))
+		return cmp < 0;
+	if(int cmp = getData(i1, altRow1).compare(getData(i2, altRow1)))
+		return cmp < 0;
+	return getData(i1, altRow2).compare(getData(i2, altRow2)) < 0;
+}
+
+bool DiveComputerSortedModel::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
+{
+	// We assume that i1.column() == i2.column()
+	switch (i1.column()) {
+		case DiveComputerModel::ID:
+			return sortHelper(i1, i2, DiveComputerModel::MODEL, DiveComputerModel::NICKNAME);
+		case DiveComputerModel::MODEL:
+		default:
+			return sortHelper(i1, i2, DiveComputerModel::ID, DiveComputerModel::NICKNAME);
+		case DiveComputerModel::NICKNAME:
+			return sortHelper(i1, i2, DiveComputerModel::MODEL, DiveComputerModel::ID);
+	}
+}

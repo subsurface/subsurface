@@ -20,7 +20,9 @@ DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget *parent, Qt::
 void DiveComputerManagementDialog::init()
 {
 	model.reset(new DiveComputerModel);
-	ui.tableView->setModel(model.data());
+	proxyModel.setSourceModel(model.get());
+	ui.tableView->setModel(&proxyModel);
+	ui.tableView->setSortingEnabled(true);
 	ui.tableView->resizeColumnsToContents();
 	ui.tableView->setColumnWidth(DiveComputerModel::REMOVE, 22);
 	layout()->activate();
