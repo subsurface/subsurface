@@ -175,8 +175,10 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	endif()
 	list(APPEND QT_EXTRA_COMPONENTS QuickWidgets)
 	remove_definitions(-DSUBSURFACE_MOBILE)
-	# I hate the double negation
-	if(NOT NO_PRINTING)
+	if(NO_PRINTING)
+		message(STATUS "building without printing support")
+		add_definitions(-DNO_PRINTING)
+	else()
 		LIST(APPEND QT_EXTRA_COMPONENTS PrintSupport)
 		# Because Qt5WebKitWidgets isn't a part of the "regular" Qt5, we can't get it the normal way
 		find_package(Qt5WebKitWidgets REQUIRED)
