@@ -145,8 +145,6 @@ sudo dnf install autoconf automake bluez-libs-devel cmake gcc-c++ git \
 	qt5-qtlocation-devel qt5-qtscript-devel qt5-qtsvg-devel \
 	qt5-qttools-devel qt5-qtwebkit-devel redhat-rpm-config
 
-Note that beginning with Fedora 22, you should be using the dnf command instead
-as yum is being deprecated.
 
 Package names are sadly different on OpenSUSE
 
@@ -169,6 +167,14 @@ sudo apt install \
 	qtdeclarative5-private-dev qtlocation5-dev qtpositioning5-dev \
 	qtscript5-dev qttools5-dev qttools5-dev-tools
 
+In order to build and run mobile-on-desktop, you also need
+
+sudo apt install \
+	qtquickcontrols2-5-dev qml-module-qtquick-window2 qml-module-qtquick-dialogs \
+	qml-module-qtquick-layouts qml-module-qtquick-controls2 qml-module-qtquick-templates2 \
+	qml-module-qtgraphicaleffects qml-module-qtqml-models2 qml-module-qtquick-controls
+
+
 Package names for Ubuntu 20.04
 
 sudo apt install \
@@ -179,19 +185,35 @@ sudo apt install \
 	qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick2 \
 	qt5-default qt5-qmake qtchooser qtconnectivity5-dev qtdeclarative5-dev \
 	qtdeclarative5-private-dev qtlocation5-dev qtpositioning5-dev \
-	qtscript5-dev qttools5-dev qttools5-dev-tools qtquickcontrols2-5-dev
+	qtscript5-dev qttools5-dev qttools5-dev-tools
+
+In order to build and run mobile-on-desktop, you also need
+
+sudo apt install \
+	qtquickcontrols2-5-dev qml-module-qtquick-window2 qml-module-qtquick-dialogs \
+	qml-module-qtquick-layouts qml-module-qtquick-controls2 qml-module-qtquick-templates2 \
+	qml-module-qtgraphicaleffects qml-module-qtqml-models2 qml-module-qtquick-controls
+
 
 On Raspberry Pi (Raspian Buster and Ubuntu Mate 20.04.1) this seems to work
 
 sudo apt install \
 	autoconf automake cmake g++ git libbluetooth-dev libcrypto++-dev \
-        libcurl4-gnutls-dev libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \
-        libqt5webkit5-dev libsqlite3-dev libssh2-1-dev libssl-dev libtool \
-        libusb-1.0-0-dev libxml2-dev libxslt1-dev libzip-dev make pkg-config \
-        qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick2 \
-        qt5-default qt5-qmake qtchooser qtconnectivity5-dev qtdeclarative5-dev \
-        qtdeclarative5-private-dev qtlocation5-dev qtpositioning5-dev \
-        qtscript5-dev qttools5-dev qttools5-dev-tools
+	libcurl4-gnutls-dev libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \
+	libqt5webkit5-dev libsqlite3-dev libssh2-1-dev libssl-dev libtool \
+	libusb-1.0-0-dev libxml2-dev libxslt1-dev libzip-dev make pkg-config \
+	qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick2 \
+	qt5-default qt5-qmake qtchooser qtconnectivity5-dev qtdeclarative5-dev \
+	qtdeclarative5-private-dev qtlocation5-dev qtpositioning5-dev \
+	qtscript5-dev qttools5-dev qttools5-dev-tools
+
+In order to build and run mobile-on-desktop, you also need
+
+sudo apt install \
+	qtquickcontrols2-5-dev qml-module-qtquick-window2 qml-module-qtquick-dialogs \
+	qml-module-qtquick-layouts qml-module-qtquick-controls2 qml-module-qtquick-templates2 \
+	qml-module-qtgraphicaleffects qml-module-qtqml-models2 qml-module-qtquick-controls
+
 
 Note that on Ubuntu Mate on the Raspberry Pi, you may need to configure
 some swap space in order for the build to complete successfully. There is no
