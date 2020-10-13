@@ -42,12 +42,12 @@
         <location filename="../desktop-widgets/addfilterpreset.ui" line="17"/>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="43"/>
         <source>Save filter set</source>
-        <translation type="unfinished"/>
+        <translation>Spara filteruppsättning</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="64"/>
         <source>Warning: this will overwrite an existing filter set.</source>
-        <translation type="unfinished"/>
+        <translation>Varning: ett sparat filter kommer att skrivas över.</translation>
     </message>
 </context>
 <context>
@@ -947,17 +947,17 @@
     <message>
         <location filename="../commands/command_filter.cpp" line="28"/>
         <source>Create filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Skapa förinställt filter %1</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="49"/>
         <source>Delete filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Ta bort förinställt filter %1</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="71"/>
         <source>Edit filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Redigera förinställt filter %1</translation>
     </message>
     <message>
         <location filename="../commands/command_pictures.cpp" line="20"/>
@@ -3476,7 +3476,7 @@ GPS-position:</translation>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="832"/>
         <source>Add dive(s) to arbitrary trip</source>
-        <translation type="unfinished"/>
+        <translation>Lägg till dyk till resa</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="833"/>
@@ -3735,7 +3735,7 @@ GPS-position:</translation>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="489"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="401"/>
         <source>Font</source>
-        <translation>Font</translation>
+        <translation>Typsnitt</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="499"/>
@@ -5761,7 +5761,7 @@ Existerande dykplats</translation>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="148"/>
         <source>Click to remove this constraint</source>
-        <translation type="unfinished"/>
+        <translation>Klicka kommer att ta bort detta villkor</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="181"/>
@@ -5779,7 +5779,7 @@ Existerande dykplats</translation>
     <message>
         <location filename="../qt-models/filterpresetmodel.cpp" line="47"/>
         <source>Clicking here will remove this filter set.</source>
-        <translation type="unfinished"/>
+        <translation>Klicka här tar bort filteruppsättningen</translation>
     </message>
 </context>
 <context>
@@ -5799,22 +5799,22 @@ Existerande dykplats</translation>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="76"/>
         <source>Add constraint</source>
-        <translation type="unfinished"/>
+        <translation>Lägg till villkor</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="90"/>
         <source>Current set:</source>
-        <translation type="unfinished"/>
+        <translation>Nuvarande uppsättning:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="110"/>
         <source>Save set</source>
-        <translation type="unfinished"/>
+        <translation>Spara filter</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="123"/>
         <source>Load set</source>
-        <translation type="unfinished"/>
+        <translation>Ladda filter</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="143"/>
@@ -5839,7 +5839,7 @@ Existerande dykplats</translation>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="206"/>
         <source>Starts with</source>
-        <translation>Startar med</translation>
+        <translation>Börjar med</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="211"/>
@@ -5849,12 +5849,12 @@ Existerande dykplats</translation>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="241"/>
         <source>Filter sets</source>
-        <translation type="unfinished"/>
+        <translation>Filteruppsättningar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.cpp" line="225"/>
         <source>modified</source>
-        <translation type="unfinished"/>
+        <translation>redigerad</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_listfilter.h" line="83"/>
@@ -7600,13 +7600,13 @@ Om din enhet använder Bluetooth, genomför samma förberedelser som vid nerladd
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="21"/>
         <source>Font for lists and tables</source>
-        <translation>Font för lister och tabeller</translation>
+        <translation>Typsnitt för listor och tabeller</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="31"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="331"/>
         <source>Font</source>
-        <translation>Font</translation>
+        <translation>Typsnitt</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="53"/>
@@ -9089,7 +9089,7 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1090"/>
         <source>weight</source>
-        <translation>Vikt</translation>
+        <translation>vikt</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1383"/>
@@ -10498,7 +10498,7 @@ mixas av luft och:
         <location filename="../desktop-widgets/templateedit.ui" line="104"/>
         <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="457"/>
         <source>Font</source>
-        <translation>Font</translation>
+        <translation>Typsnitt</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="112"/>
@@ -11631,12 +11631,12 @@ Maximum</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="41"/>
         <source>date time</source>
-        <translation type="unfinished"/>
+        <translation>datum &amp; klockslag</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="42"/>
         <source>time of day</source>
-        <translation type="unfinished"/>
+        <translation>klockslag</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="43"/>
@@ -11692,7 +11692,7 @@ Maximum</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="55"/>
         <source>weight</source>
-        <translation>Vikt</translation>
+        <translation>vikt</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="56"/>
@@ -11707,7 +11707,7 @@ Maximum</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="58"/>
         <source>water density</source>
-        <translation type="unfinished"/>
+        <translation>vattendensitet</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="59"/>
@@ -11718,12 +11718,12 @@ Maximum</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="61"/>
         <source>logged</source>
-        <translation type="unfinished"/>
+        <translation>är loggat</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="62"/>
         <source>planned</source>
-        <translation type="unfinished"/>
+        <translation>är planerat</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="64"/>
@@ -11748,32 +11748,32 @@ Maximum</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="69"/>
         <source>weight type</source>
-        <translation type="unfinished"/>
+        <translation>viktsystem</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="70"/>
         <source>cylinder type</source>
-        <translation type="unfinished"/>
+        <translation>flasktyp</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="71"/>
         <source>cylinder size</source>
-        <translation type="unfinished"/>
+        <translation>flaskstorlek</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="72"/>
         <source>gas N₂ content</source>
-        <translation type="unfinished"/>
+        <translation>gas N₂ innehåll</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="73"/>
         <source>gas O₂ content</source>
-        <translation type="unfinished"/>
+        <translation>gas O₂ innehåll</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="74"/>
         <source>gas He content</source>
-        <translation type="unfinished"/>
+        <translation>gas He innehåll</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="75"/>
@@ -11788,62 +11788,62 @@ Maximum</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="84"/>
         <source>starting with</source>
-        <translation type="unfinished"/>
+        <translation>börjar med</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="85"/>
         <source>with substring</source>
-        <translation type="unfinished"/>
+        <translation>innehåller delsträng</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="86"/>
         <source>exactly</source>
-        <translation type="unfinished"/>
+        <translation>är exakt</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="95"/>
         <source>equal to</source>
-        <translation type="unfinished"/>
+        <translation>är lika med</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="95"/>
         <source>at</source>
-        <translation type="unfinished"/>
+        <translation>vid</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="96"/>
         <source>at most</source>
-        <translation type="unfinished"/>
+        <translation>är högst</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="96"/>
         <source>before</source>
-        <translation type="unfinished"/>
+        <translation>innan</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="97"/>
         <source>at least</source>
-        <translation type="unfinished"/>
+        <translation>är minst</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="97"/>
         <source>after</source>
-        <translation type="unfinished"/>
+        <translation>efter</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="98"/>
         <source>in range</source>
-        <translation type="unfinished"/>
+        <translation>är inom intervall</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="102"/>
         <source>is</source>
-        <translation type="unfinished"/>
+        <translation>som</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="103"/>
         <source>is not</source>
-        <translation type="unfinished"/>
+        <translation>som inte</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="409"/>

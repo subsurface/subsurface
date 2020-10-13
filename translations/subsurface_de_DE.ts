@@ -41,12 +41,12 @@
         <location filename="../desktop-widgets/addfilterpreset.ui" line="17"/>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="43"/>
         <source>Save filter set</source>
-        <translation type="unfinished"/>
+        <translation>Filtereinstellungen speichern</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="64"/>
         <source>Warning: this will overwrite an existing filter set.</source>
-        <translation type="unfinished"/>
+        <translation>Achtung: Dies überschreibt eine bestehende Filtereinstellung.</translation>
     </message>
 </context>
 <context>
@@ -946,17 +946,17 @@
     <message>
         <location filename="../commands/command_filter.cpp" line="28"/>
         <source>Create filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Erstelle Filter-Voreinstellung %1</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="49"/>
         <source>Delete filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Lösche Filter-Voreinstellung %1</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="71"/>
         <source>Edit filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Bearbeite Filter-Voreinstellung %1</translation>
     </message>
     <message>
         <location filename="../commands/command_pictures.cpp" line="20"/>
@@ -3473,7 +3473,7 @@ Position verwenden</translation>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="832"/>
         <source>Add dive(s) to arbitrary trip</source>
-        <translation type="unfinished"/>
+        <translation>Tauchgänge zu wählbarer Reise hinzufügen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="833"/>
@@ -5757,7 +5757,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="148"/>
         <source>Click to remove this constraint</source>
-        <translation type="unfinished"/>
+        <translation>Klicken, um diese Bedingung zu löschen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="181"/>
@@ -5775,7 +5775,7 @@ Existing Site</source>
     <message>
         <location filename="../qt-models/filterpresetmodel.cpp" line="47"/>
         <source>Clicking here will remove this filter set.</source>
-        <translation type="unfinished"/>
+        <translation>Löschen dieser Filtereinstellung</translation>
     </message>
 </context>
 <context>
@@ -5795,22 +5795,22 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="76"/>
         <source>Add constraint</source>
-        <translation type="unfinished"/>
+        <translation>Bedingung hinzufügen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="90"/>
         <source>Current set:</source>
-        <translation type="unfinished"/>
+        <translation>Momentane Einstellung:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="110"/>
         <source>Save set</source>
-        <translation type="unfinished"/>
+        <translation>Einstellung speichern</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="123"/>
         <source>Load set</source>
-        <translation type="unfinished"/>
+        <translation>Einstellung laden</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="143"/>
@@ -5845,7 +5845,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="241"/>
         <source>Filter sets</source>
-        <translation type="unfinished"/>
+        <translation>Filter-Einstellungen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.cpp" line="225"/>
@@ -11648,7 +11648,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="47"/>
         <source>wave size</source>
-        <translation type="unfinished"/>
+        <translation>Wellenhöhe</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="48"/>
@@ -11673,7 +11673,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="53"/>
         <source>max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Max. Tiefe</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="54"/>
@@ -11694,7 +11694,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="57"/>
         <source>air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Lufttemperatur</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="58"/>
@@ -11740,7 +11740,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="69"/>
         <source>weight type</source>
-        <translation type="unfinished"/>
+        <translation>Gewichtstyp</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="70"/>
@@ -11755,17 +11755,17 @@ Durchschnitt</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="72"/>
         <source>gas N₂ content</source>
-        <translation type="unfinished"/>
+        <translation>N₂-Anteil im Gas</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="73"/>
         <source>gas O₂ content</source>
-        <translation type="unfinished"/>
+        <translation>O₂-Anteil im Gas</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="74"/>
         <source>gas He content</source>
-        <translation type="unfinished"/>
+        <translation>He-Anteil im Gas</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="75"/>
@@ -11790,7 +11790,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="86"/>
         <source>exactly</source>
-        <translation type="unfinished"/>
+        <translation>genau</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="95"/>
@@ -11800,7 +11800,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="95"/>
         <source>at</source>
-        <translation type="unfinished"/>
+        <translation>bei</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="96"/>

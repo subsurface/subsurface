@@ -5854,7 +5854,7 @@ Più vicino</translation>
     <message>
         <location filename="../desktop-widgets/filterwidget.cpp" line="225"/>
         <source>modified</source>
-        <translation type="unfinished"/>
+        <translation>modificato</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_listfilter.h" line="83"/>

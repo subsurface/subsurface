@@ -5,18 +5,19 @@
         <location filename="../mobile-widgets/qml/About.qml" line="10"/>
         <location filename="../mobile-widgets/qml/About.qml" line="20"/>
         <source>About Subsurface-mobile</source>
-        <translation type="unfinished"/>
+        <translation>O Subsurface-mobile</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="37"/>
         <source>A mobile version of the free Subsurface divelog software.
 </source>
-        <translation type="unfinished"/>
+        <translation>Mobilna verzija besplatnog programa Subsurface.
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="38"/>
         <source>View your dive logs while on the go.</source>
-        <translation type="unfinished"/>
+        <translation>Pogledajte svoje urone dok ste u pokretu.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="49"/>
@@ -24,12 +25,15 @@
 
 © Subsurface developer team
 2011-2020</source>
-        <translation type="unfinished"/>
+        <translation>Verzija: %1
+
+© Subsurface razvojni tim
+2011-2020</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
         <source>Copy logs to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopirati zapisnike u međuspremnik</translation>
     </message>
 </context>
 <context>
@@ -38,12 +42,12 @@
         <location filename="../desktop-widgets/addfilterpreset.ui" line="17"/>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="43"/>
         <source>Save filter set</source>
-        <translation type="unfinished"/>
+        <translation>Spremi skup filtera</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="64"/>
         <source>Warning: this will overwrite an existing filter set.</source>
-        <translation type="unfinished"/>
+        <translation>Upozorenje: ovo će zamijeniti postojeći set filtera.</translation>
     </message>
 </context>
 <context>
@@ -52,14 +56,14 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="240"/>
         <source>Remote Bluetooth device selection</source>
-        <translation type="unfinished"/>
+        <translation>Odabir udaljenog Bluetooth uređaja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="22"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="35"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="241"/>
         <source>Save</source>
-        <translation type="unfinished"/>
+        <translation>Spremi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="35"/>
@@ -73,274 +77,274 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="26"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="244"/>
         <source>Local Bluetooth device details</source>
-        <translation type="unfinished"/>
+        <translation>Pojedinosti lokalnog Bluetooth uređaja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="75"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="245"/>
         <source>Name: </source>
-        <translation type="unfinished"/>
+        <translation>Ime:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="89"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="28"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="246"/>
         <source>Address:</source>
-        <translation type="unfinished"/>
+        <translation>Adresa:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="118"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="30"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="247"/>
         <source>Bluetooth powered on</source>
-        <translation type="unfinished"/>
+        <translation>Bluetooth uključen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="140"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="31"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="248"/>
         <source>Turn on/off</source>
-        <translation type="unfinished"/>
+        <translation>Uključiti/isključiti</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="150"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="27"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="249"/>
         <source>Select device:</source>
-        <translation type="unfinished"/>
+        <translation>Odaberi uređaj:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="172"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="32"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="250"/>
         <source>Discovered devices</source>
-        <translation type="unfinished"/>
+        <translation>Otkriveni uređaji</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="193"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="251"/>
         <source>Bluetooth mode</source>
-        <translation type="unfinished"/>
+        <translation>Način BT</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="201"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="252"/>
         <source>Auto</source>
-        <translation type="unfinished"/>
+        <translation>Automatski</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="206"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="253"/>
         <source>Force LE</source>
-        <translation type="unfinished"/>
+        <translation>Light izdanje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="211"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="254"/>
         <source>Force classical</source>
-        <translation type="unfinished"/>
+        <translation>Klasično</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="221"/>
         <source>even if not recognized as dive computer</source>
-        <translation type="unfinished"/>
+        <translation>čak i kada nije prepoznat(o) kao ronilačko računalo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="224"/>
         <source>Show all BT devices</source>
-        <translation type="unfinished"/>
+        <translation>Pokaži sve BT uređaje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="242"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="33"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="256"/>
         <source>Scan</source>
-        <translation type="unfinished"/>
+        <translation>Traži</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="255"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="34"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="257"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Obriši</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="29"/>
         <source>Name:</source>
-        <translation type="unfinished"/>
+        <translation>Ime:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="101"/>
         <source>Trying to turn on the local Bluetooth device...</source>
-        <translation type="unfinished"/>
+        <translation>Pokušavam uključiti lokalni BT uređaj…</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="104"/>
         <source>Trying to turn off the local Bluetooth device...</source>
-        <translation type="unfinished"/>
+        <translation>Pokušavam isključiti lokalni BT uređaj…</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="132"/>
         <source>Remote devices list was cleared.</source>
-        <translation type="unfinished"/>
+        <translation>Lista udaljenih uređaja je obrisana.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="144"/>
         <source>Scanning for remote devices...</source>
-        <translation type="unfinished"/>
+        <translation>Tražim udaljene uređaje…</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="157"/>
         <source>Scanning finished successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Pretraga uspješno dovršena.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="167"/>
         <source>The local Bluetooth device was %1.</source>
         <extracomment>%1 will be replaced with &quot;turned on&quot; or &quot;turned off&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Lokalni BT uređaj je %1.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="168"/>
         <source>turned on</source>
-        <translation type="unfinished"/>
+        <translation>uključen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="168"/>
         <source>turned off</source>
-        <translation type="unfinished"/>
+        <translation>isključen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="186"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="321"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="341"/>
         <source>UNPAIRED</source>
-        <translation type="unfinished"/>
+        <translation>NEUPARENO</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="190"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="326"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="339"/>
         <source>PAIRED</source>
-        <translation type="unfinished"/>
+        <translation>UPARENO</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="193"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="331"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="340"/>
         <source>AUTHORIZED_PAIRED</source>
-        <translation type="unfinished"/>
+        <translation>AUTORIZIRANO_UPARENO</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="208"/>
         <source>%1 (%2)   [State: %3]</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)   [stanje: %3]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="231"/>
         <source>The device %1 can be used for connection. You can press the Save button.</source>
-        <translation type="unfinished"/>
+        <translation>Uređaj %1 se može koristiti za spajanje. Možete pritisnuti dugme Spremi.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="247"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="356"/>
         <source>The device %1 must be paired in order to be used. Please use the context menu for pairing options.</source>
-        <translation type="unfinished"/>
+        <translation>Uređaj %1 se mora upariti. Koristite kontekstualni izbornik za opcije uparivanja.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="253"/>
         <source>A device needs a non-zero address for a connection.</source>
-        <translation type="unfinished"/>
+        <translation>Uređaj zahtijeva (ne-nula) adresu za spajanje.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="273"/>
         <source>The local device was changed.</source>
-        <translation type="unfinished"/>
+        <translation>Lokalni uređaj je promijenjen.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="289"/>
         <source>Pair</source>
-        <translation type="unfinished"/>
+        <translation>Upari</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="290"/>
         <source>Remove pairing</source>
-        <translation type="unfinished"/>
+        <translation>Odpari</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="306"/>
         <source>Trying to pair device %1</source>
-        <translation type="unfinished"/>
+        <translation>Pokušaj uparivanja uređaja %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="310"/>
         <source>Trying to unpair device %1</source>
-        <translation type="unfinished"/>
+        <translation>Pokušaj odparivanja uređaja %1.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="322"/>
         <source>Device %1 was unpaired.</source>
-        <translation type="unfinished"/>
+        <translation>Uređaj %1 je odparen.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="329"/>
         <source>Device %1 was paired.</source>
-        <translation type="unfinished"/>
+        <translation>Uređaj %1 je uparen.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="334"/>
         <source>Device %1 was paired and is authorized.</source>
-        <translation type="unfinished"/>
+        <translation>Uređaj %1 je uparen i autoriziran.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="359"/>
         <source>The device %1 can now be used for connection. You can press the Save button.</source>
-        <translation type="unfinished"/>
+        <translation>Uređaj %1 sada može biti korišten za spajanje. Možete pritisnuti dugme Spremi.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="371"/>
         <source>Local device error: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Greška lokalnog uređaja: %1.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="372"/>
         <source>Pairing error. If the remote device requires a custom PIN code, please try to pair the devices using your operating system. </source>
-        <translation type="unfinished"/>
+        <translation>Greška uparivanja. Ako udaljeni uređaj zahtijeva PIN, pokušajte upariti uređaje kroz operativni sustav.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="374"/>
         <source>Unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Nepoznata greška</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="383"/>
         <source>The Bluetooth adaptor is powered off, power it on before doing discovery.</source>
-        <translation type="unfinished"/>
+        <translation>BT je isključen. Uključite ga prije otkrivanja uređaja.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="386"/>
         <source>Writing to or reading from the device resulted in an error.</source>
-        <translation type="unfinished"/>
+        <translation>Čitanje s ili pisanje na uređaj je generiralo grešku.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="389"/>
         <source>An unknown error has occurred.</source>
-        <translation type="unfinished"/>
+        <translation>Došlo je do nepoznate pogreške.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="393"/>
         <source>Device discovery error: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Greška otkrivanja uređaja: %1.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="444"/>
         <source>Not available</source>
-        <translation type="unfinished"/>
+        <translation>Nije raspoloživo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="451"/>
         <source>The local Bluetooth adapter cannot be accessed.</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće pristupiti lokalnom BT uređaju.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="490"/>
@@ -353,12 +357,12 @@
     <message numerus="yes">
         <location filename="../core/checkcloudconnection.cpp" line="58"/>
         <source>Waiting for cloud connection (%n second(s) passed)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Čekam vezu s oblakom (%n sekunda prošla)</numerusform><numerusform>Čekam vezu s oblakom (%n sekunde prošla)</numerusform><numerusform>Čekam vezu s oblakom (%n sekundi prošlo)</numerusform></translation>
     </message>
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="65"/>
         <source>Cloud connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Neuspješna veza s oblakom</translation>
     </message>
 </context>
 <context>
@@ -366,12 +370,12 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="43"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Vjerodajnice za oblak</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="49"/>
         <source>Email</source>
-        <translation type="unfinished"/>
+        <translation>e-pošta</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="65"/>
@@ -381,37 +385,37 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="83"/>
         <source>PIN</source>
-        <translation type="unfinished"/>
+        <translation>PIN </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="100"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>Registracija</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="111"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Poništi</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="114"/>
         <source>Check credentials...</source>
-        <translation type="unfinished"/>
+        <translation>Provjeri vjerodajnice...</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="127"/>
         <source>Sign-in or Register</source>
-        <translation type="unfinished"/>
+        <translation>Prijava ili registracija</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="138"/>
         <source>No cloud mode</source>
-        <translation type="unfinished"/>
+        <translation>Način bez oblaka</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="151"/>
         <source>Forgot password?</source>
-        <translation type="unfinished"/>
+        <translation>Zaboravljena lozinka?</translation>
     </message>
 </context>
 <context>
@@ -419,7 +423,7 @@
     <message>
         <location filename="../core/cloudstorage.cpp" line="65"/>
         <source>Cloud account verification required, enter PIN in preferences</source>
-        <translation type="unfinished"/>
+        <translation>Potrebna verifikacija računa u oblaku, unesite PIN u postavkama</translation>
     </message>
 </context>
 <context>
@@ -427,7 +431,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="71"/>
         <source>Dive #</source>
-        <translation type="unfinished"/>
+        <translation>Uron #</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="71"/>
@@ -447,7 +451,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="71"/>
         <source>Mode</source>
-        <translation type="unfinished"/>
+        <translation>Način</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="71"/>
@@ -457,7 +461,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="71"/>
         <source>GPS</source>
-        <translation type="unfinished"/>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="71"/>
@@ -467,27 +471,27 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="71"/>
         <source>Cyl. size</source>
-        <translation type="unfinished"/>
+        <translation>Vel. boce</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="71"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Početni tlak</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="72"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Završni tlak</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="72"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Maks. dubina</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="72"/>
         <source>Avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Prosječna dubina</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="72"/>
@@ -497,7 +501,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="72"/>
         <source>Buddy</source>
-        <translation>Buddy</translation>
+        <translation>Partner</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="72"/>
@@ -512,87 +516,87 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="72"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Oznake</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="72"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temp. zraka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="72"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temp. vode</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <source>O₂</source>
-        <translation type="unfinished"/>
+        <translation>O₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <source>He</source>
-        <translation type="unfinished"/>
+        <translation>He</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>Vrijeme uzrorkovanja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>Dubina uzorkovanja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <source>Sample temperature</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <source>Sample pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <source>Sample CNS</source>
-        <translation type="unfinished"/>
+        <translation>CNS segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <source>Sample NDL</source>
-        <translation type="unfinished"/>
+        <translation>ne-deko vrijeme segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Sample TTS</source>
-        <translation type="unfinished"/>
+        <translation>vrijeme do površine</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Sample stopdepth</source>
-        <translation type="unfinished"/>
+        <translation>dubina zastanka segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Sample pressure</source>
-        <translation type="unfinished"/>
+        <translation>tlak u boci segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Sample sensor1 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>senzor1 pO₂  segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Sample sensor2 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>senzor2 pO₂  segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Sample sensor3 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>senzor3 pO₂ segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
@@ -612,7 +616,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Puls</translation>
     </message>
 </context>
 <context>
@@ -620,195 +624,195 @@
     <message>
         <location filename="../commands/command_base.cpp" line="45"/>
         <source>&amp;Undo</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Poništi</translation>
     </message>
     <message>
         <location filename="../commands/command_base.cpp" line="50"/>
         <source>&amp;Redo</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Ponovi</translation>
     </message>
     <message>
         <location filename="../commands/command_base.cpp" line="65"/>
         <source>all dives</source>
-        <translation type="unfinished"/>
+        <translation>svi uroni</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="405"/>
         <source>add dive</source>
-        <translation type="unfinished"/>
+        <translation>dodaj uron</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="475"/>
         <source>import %n dive(s) from %1</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>uvezi %n zaron iz %1</numerusform><numerusform>uvezi %n zarona iz %1</numerusform><numerusform>uvezi %n zarona iz %1</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="591"/>
         <source>delete %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>obriši %n zaron</numerusform><numerusform>obriši %n zarona</numerusform><numerusform>obriši %n zarona</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="627"/>
         <source>shift time of %n dives</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>pomakni vrijeme za %n zaron</numerusform><numerusform>pomakni vrijeme za %n zarona</numerusform><numerusform>pomakni vrijeme za %n zarona</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="675"/>
         <source>renumber %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>renumeriraj %n zaron</numerusform><numerusform>renumeriraj %n zarona</numerusform><numerusform>renumeriraj %n zarona</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="727"/>
         <source>remove %n dive(s) from trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>ukloni %n zaron iz putovanja</numerusform><numerusform>ukloni %n zarona iz putovanja</numerusform><numerusform>ukloni %n urona iz grupe</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="739"/>
         <source>remove autogenerated trips</source>
-        <translation type="unfinished"/>
+        <translation>ukloni automatski generirane grupe</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="751"/>
         <source>add %n dives to trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>dodaj %n zaron u putovanje</numerusform><numerusform>dodaj %n zarona u putovanje</numerusform><numerusform>dodaj %n urona u grupu</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="758"/>
         <source>create trip</source>
-        <translation type="unfinished"/>
+        <translation>stvori grupu</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="771"/>
         <source>autogroup dives</source>
-        <translation type="unfinished"/>
+        <translation>autogrupiraj urone</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="866"/>
         <source>split dive</source>
-        <translation type="unfinished"/>
+        <translation>podijeli uron</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="884"/>
         <source>split dive computer</source>
-        <translation type="unfinished"/>
+        <translation>podijeli računalo</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="940"/>
         <source>move dive computer to front</source>
-        <translation type="unfinished"/>
+        <translation>pomakni računalo naprijed</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="946"/>
         <source>delete dive computer</source>
-        <translation type="unfinished"/>
+        <translation>obriši računalo</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="951"/>
         <source>merge dive</source>
-        <translation type="unfinished"/>
+        <translation>spoji zaron</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="78"/>
         <source>add dive site</source>
-        <translation type="unfinished"/>
+        <translation>dodaj lokaciju</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="100"/>
         <source>import dive sites from %1</source>
-        <translation type="unfinished"/>
+        <translation>uvezi lokaciju/e iz %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divesite.cpp" line="136"/>
         <source>delete %n dive site(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>obriši %n lokaciju</numerusform><numerusform>obriši %n lokacije</numerusform><numerusform>obriši %n lokacija</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="156"/>
         <source>purge unused dive sites</source>
-        <translation type="unfinished"/>
+        <translation>obriši nekorištene lokacije</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="191"/>
         <source>Edit dive site name</source>
-        <translation type="unfinished"/>
+        <translation>Uredi naziv lokacije</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="214"/>
         <source>Edit dive site description</source>
-        <translation type="unfinished"/>
+        <translation>Uredi opis lokacije</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="237"/>
         <source>Edit dive site notes</source>
-        <translation type="unfinished"/>
+        <translation>Uredi napomene lokacije</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="260"/>
         <source>Edit dive site country</source>
-        <translation type="unfinished"/>
+        <translation>Uredi državu lokacije</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="285"/>
         <source>Edit dive site location</source>
-        <translation type="unfinished"/>
+        <translation>Uredi mjesto lokacije</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="314"/>
         <source>Edit dive site taxonomy</source>
-        <translation type="unfinished"/>
+        <translation>Uredi taksonomiju lokacije</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="342"/>
         <source>merge dive sites</source>
-        <translation type="unfinished"/>
+        <translation>spoji lokacije</translation>
     </message>
     <message>
         <location filename="../commands/command_divesite.cpp" line="396"/>
         <source>apply GPS fixes</source>
-        <translation type="unfinished"/>
+        <translation>primijeni GPS oznake</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="133"/>
         <location filename="../commands/command_edit.cpp" line="523"/>
         <location filename="../commands/command_edit_trip.cpp" line="18"/>
         <source>Edit %1</source>
-        <translation type="unfinished"/>
+        <translation>Uredi %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="135"/>
         <location filename="../commands/command_edit.cpp" line="525"/>
         <source>Edit %1 (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Uredi %1 /(%n uron)</numerusform><numerusform>Uredi %1 /(%n urona)</numerusform><numerusform>Uredi %1 /(%n urona)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="195"/>
         <source>notes</source>
-        <translation type="unfinished"/>
+        <translation>napomene</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="201"/>
         <source>suit</source>
-        <translation type="unfinished"/>
+        <translation>odijelo</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="207"/>
         <source>rating</source>
-        <translation type="unfinished"/>
+        <translation>ocjena</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="213"/>
         <source>visibility</source>
-        <translation type="unfinished"/>
+        <translation>vidljivost</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="219"/>
         <source>wavesize</source>
-        <translation type="unfinished"/>
+        <translation>visina vala</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="225"/>
         <source>current</source>
-        <translation type="unfinished"/>
+        <translation>struja</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="231"/>
@@ -823,37 +827,37 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="253"/>
         <source>air temperature</source>
-        <translation type="unfinished"/>
+        <translation>temperatura zraka</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="272"/>
         <source>water temperature</source>
-        <translation type="unfinished"/>
+        <translation>temperatura vode</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="288"/>
         <source>salinity</source>
-        <translation type="unfinished"/>
+        <translation>slanost</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="304"/>
         <source>Atm. pressure</source>
-        <translation type="unfinished"/>
+        <translation>Atm. tlak</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="323"/>
         <source>duration</source>
-        <translation type="unfinished"/>
+        <translation>trajanje</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="342"/>
         <source>depth</source>
-        <translation type="unfinished"/>
+        <translation>dubina</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="359"/>
         <source>dive site</source>
-        <translation type="unfinished"/>
+        <translation>lokacija</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="452"/>
@@ -868,112 +872,112 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="588"/>
         <source>tags</source>
-        <translation type="unfinished"/>
+        <translation>ozanke</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="606"/>
         <source>buddies</source>
-        <translation type="unfinished"/>
+        <translation>parovi</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="624"/>
         <source>dive master</source>
-        <translation type="unfinished"/>
+        <translation>voditelj</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="747"/>
         <source>Paste onto %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Zalijepi na %n uron</numerusform><numerusform>Zalijepi na %n urona</numerusform><numerusform>Zalijepi na %n urona</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="823"/>
         <source>Replan dive</source>
-        <translation type="unfinished"/>
+        <translation>Re-planiraj uron</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="823"/>
         <source>Edit profile</source>
-        <translation type="unfinished"/>
+        <translation>Uredi profil</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="870"/>
         <source>Add weight</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj olova</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="872"/>
         <source>Add weight (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Dodaj olova (%n urona)</numerusform><numerusform>Dodaj olova (%n urona)</numerusform><numerusform>Dodaj olova (%n urona)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="956"/>
         <source>Remove weight</source>
-        <translation type="unfinished"/>
+        <translation>Ukloni olova</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="958"/>
         <source>Remove weight (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Ukloni olova (%n urona)</numerusform><numerusform>Ukloni olova (%n urona)</numerusform><numerusform>Ukloni olova (%n urona)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="987"/>
         <source>Edit weight</source>
-        <translation type="unfinished"/>
+        <translation>Uredi težinu</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="989"/>
         <source>Edit weight (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Uredi težinu (%n uron)</numerusform><numerusform>Uredi težinu (%n urona)</numerusform><numerusform>Uredi težinu (%n urona)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="1289"/>
         <source>Edit dive [%1]</source>
-        <translation type="unfinished"/>
+        <translation>Uredi uron [%1]</translation>
     </message>
     <message>
         <location filename="../commands/command_edit_trip.cpp" line="53"/>
         <source>trip location</source>
-        <translation type="unfinished"/>
+        <translation>lokacija grupe</translation>
     </message>
     <message>
         <location filename="../commands/command_edit_trip.cpp" line="75"/>
         <source>trip notes</source>
-        <translation type="unfinished"/>
+        <translation>napomene grupe</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="28"/>
         <source>Create filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Stvori skup filtera %1</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="49"/>
         <source>Delete filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Obriši skup filtera %1</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="71"/>
         <source>Edit filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Uredi skup filtera %1</translation>
     </message>
     <message>
         <location filename="../commands/command_pictures.cpp" line="20"/>
         <source>Change media time</source>
-        <translation type="unfinished"/>
+        <translation>Promijeni vrijeme medija</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_pictures.cpp" line="139"/>
         <source>remove %n pictures(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>ukloni %n sliku</numerusform><numerusform>ukloni %n slike</numerusform><numerusform>ukloni %n slika</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_pictures.cpp" line="172"/>
         <source>unnamed dive site</source>
-        <translation type="unfinished"/>
+        <translation>neimenovana lokacija</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_pictures.cpp" line="187"/>
         <source>add %n pictures(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>dodaj %1 slika</numerusform><numerusform>dodaj %1 slike</numerusform><numerusform>dodaj %1 slika</numerusform></translation>
     </message>
 </context>
 <context>
@@ -981,12 +985,12 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="1042"/>
         <source>Add cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj bocu</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1044"/>
         <source>Add cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Dodaj bocu (%n zaron)</numerusform><numerusform>Dodaj bocu (%n zarona)</numerusform><numerusform>Dodaj bocu (%n zarona)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -994,7 +998,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="66"/>
         <source>Add bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj oznaku</translation>
     </message>
 </context>
 <context>
@@ -1010,7 +1014,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="78"/>
         <source>Add set point change</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj set point promjenu</translation>
     </message>
 </context>
 <context>
@@ -1018,12 +1022,12 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="1213"/>
         <source>Edit cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Uredi bocu</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1215"/>
         <source>Edit cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Uredi bocu (%n uron)</numerusform><numerusform>Uredi bocu (%n urona)</numerusform><numerusform>Uredi bocu (%n urona)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1031,12 +1035,12 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="1163"/>
         <source>Remove cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Ukloni bocu</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="1165"/>
         <source>Remove cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Ukloni bocu (%n uron)</numerusform><numerusform>Ukloni bocu (%n urona)</numerusform><numerusform>Ukloni bocu (%n urona)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1044,7 +1048,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="113"/>
         <source>Remove %1 event</source>
-        <translation type="unfinished"/>
+        <translation>Ukloni %1 događaj</translation>
     </message>
 </context>
 <context>
@@ -1052,7 +1056,7 @@
     <message>
         <location filename="../commands/command_event.cpp" line="85"/>
         <source>Rename bookmark to %1</source>
-        <translation type="unfinished"/>
+        <translation>Preimenuj oznaku u %1</translation>
     </message>
 </context>
 <context>
@@ -1060,32 +1064,32 @@
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="183"/>
         <source>Could not save the backup file %1. Error Message: %2</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće spremiti sig. kopiju %1. Greška: %2</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="199"/>
         <source>Could not open backup file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće otvoriti sig. kopiju: %1</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="541"/>
         <source>Dive computer details read successfully</source>
-        <translation type="unfinished"/>
+        <translation>Detalji računala uspješno učitani</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="550"/>
         <source>Setting successfully written to device</source>
-        <translation type="unfinished"/>
+        <translation>Uspješno spremanje postavke u računalo </translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="559"/>
         <source>Device firmware successfully updated</source>
-        <translation type="unfinished"/>
+        <translation>Uspješno ažuriranje firmvera računala</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="568"/>
         <source>Device settings successfully reset</source>
-        <translation type="unfinished"/>
+        <translation>Postavke uređaja vraćene na zadane</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="584"/>
@@ -1095,7 +1099,7 @@
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="603"/>
         <source>Could not a establish connection to the dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće spajanje s računalom</translation>
     </message>
 </context>
 <context>
@@ -1104,7 +1108,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2535"/>
         <source>Configure dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Konfiguriraj računalo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="22"/>
@@ -1116,25 +1120,25 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="47"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2537"/>
         <source>Connect via Bluetooth</source>
-        <translation type="unfinished"/>
+        <translation>Spoji putem BT-a</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="54"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2538"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Spoji</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="64"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2539"/>
         <source>Disconnect</source>
-        <translation type="unfinished"/>
+        <translation>Odspoji</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="80"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2540"/>
         <source>Retrieve available details</source>
-        <translation type="unfinished"/>
+        <translation>Učitaj s računala</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="90"/>
@@ -1146,7 +1150,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="93"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2544"/>
         <source>Save changes to device</source>
-        <translation type="unfinished"/>
+        <translation>Spremi u računalo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="116"/>
@@ -1158,61 +1162,61 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="119"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2548"/>
         <source>Backup</source>
-        <translation type="unfinished"/>
+        <translation>Sig. kopija</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="129"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2549"/>
         <source>Restore backup</source>
-        <translation type="unfinished"/>
+        <translation>Vrati sig. kopiju</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="139"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2550"/>
         <source>Update firmware</source>
-        <translation type="unfinished"/>
+        <translation>Ažuriraj firmver</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="163"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2551"/>
         <source>Save libdivecomputer logfile</source>
-        <translation type="unfinished"/>
+        <translation>Spremi libdivecomputer zapisnik</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="170"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2552"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>…</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="177"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2553"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Poništi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="214"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2558"/>
         <source>OSTC Mk2/2N/2C</source>
-        <translation type="unfinished"/>
+        <translation>OSTC Mk2/2N/2C</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="223"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2560"/>
         <source>OSTC 2/3/Sport/Plus/cR</source>
-        <translation type="unfinished"/>
+        <translation>OSTC 2/3/Sport/Plus/cR</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="232"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2562"/>
         <source>OSTC 4</source>
-        <translation type="unfinished"/>
+        <translation>OSTC 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="241"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2564"/>
         <source>Suunto Vyper family</source>
-        <translation type="unfinished"/>
+        <translation>Suunto Vyper obitelj</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="262"/>
@@ -1224,7 +1228,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2911"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3055"/>
         <source>Basic settings</source>
-        <translation type="unfinished"/>
+        <translation>Osnovno</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="268"/>
@@ -1236,7 +1240,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2879"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3024"/>
         <source>Serial No.</source>
-        <translation type="unfinished"/>
+        <translation>Serijski broj</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="278"/>
@@ -1246,7 +1250,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2745"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2908"/>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation>Vrijeme</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="305"/>
@@ -1258,7 +1262,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2880"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3025"/>
         <source>Firmware version</source>
-        <translation type="unfinished"/>
+        <translation>Verzija firmvera</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="315"/>
@@ -1270,7 +1274,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2892"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3027"/>
         <source>Custom text</source>
-        <translation type="unfinished"/>
+        <translation>Slobodni unos</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="338"/>
@@ -1278,7 +1282,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2571"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3023"/>
         <source>Number of dives</source>
-        <translation type="unfinished"/>
+        <translation>Broj urona</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="345"/>
@@ -1288,7 +1292,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2742"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2906"/>
         <source>Show safety stop</source>
-        <translation type="unfinished"/>
+        <translation>Prikaži sigurnosni zastanak</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="359"/>
@@ -1296,7 +1300,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2573"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2734"/>
         <source>Sampling rate</source>
-        <translation type="unfinished"/>
+        <translation>Vrijeme uzorkovanja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="388"/>
@@ -1306,25 +1310,25 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2708"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2886"/>
         <source>Date format</source>
-        <translation type="unfinished"/>
+        <translation>Format datuma</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="399"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2575"/>
         <source>MM/DD/YY</source>
-        <translation type="unfinished"/>
+        <translation>MM/DD/GG</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="404"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2576"/>
         <source>DD/MM/YY</source>
-        <translation type="unfinished"/>
+        <translation>DD/MM/GG</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="409"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2577"/>
         <source>YY/MM/DD</source>
-        <translation type="unfinished"/>
+        <translation>GG/MM/DD</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="417"/>
@@ -1334,19 +1338,19 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2740"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2904"/>
         <source>Sync dive computer time with PC</source>
-        <translation type="unfinished"/>
+        <translation>sinkroniziraj s vremenom na računalu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="424"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2580"/>
         <source>Salinity</source>
-        <translation type="unfinished"/>
+        <translation>Salinitet</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="434"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2581"/>
         <source>kg/ℓ</source>
-        <translation type="unfinished"/>
+        <translation>kg/ℓ</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="463"/>
@@ -1356,7 +1360,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2746"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2909"/>
         <source>Start Depth</source>
-        <translation type="unfinished"/>
+        <translation>od dubine</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="470"/>
@@ -1364,7 +1368,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2583"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2743"/>
         <source>End Depth</source>
-        <translation type="unfinished"/>
+        <translation>do dubine</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="477"/>
@@ -1372,7 +1376,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2584"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2747"/>
         <source>Reset Depth</source>
-        <translation type="unfinished"/>
+        <translation>resetiraj dubinu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="487"/>
@@ -1384,7 +1388,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2907"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3050"/>
         <source>s</source>
-        <translation type="unfinished"/>
+        <translation>s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="506"/>
@@ -1418,7 +1422,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2790"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2944"/>
         <source>Advanced settings</source>
-        <translation type="unfinished"/>
+        <translation>Napredno</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="579"/>
@@ -1426,7 +1430,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2590"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2754"/>
         <source>Alt GF can be selected underwater</source>
-        <translation type="unfinished"/>
+        <translation>AltGF se može odabrati pod vodom</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="586"/>
@@ -1434,7 +1438,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2591"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2761"/>
         <source>Desaturation</source>
-        <translation type="unfinished"/>
+        <translation>Desaturacija</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="596"/>
@@ -1444,7 +1448,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2755"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2915"/>
         <source>Future TTS</source>
-        <translation type="unfinished"/>
+        <translation>Budući TTS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="603"/>
@@ -1492,7 +1496,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2923"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2932"/>
         <source>%</source>
-        <translation type="unfinished"/>
+        <translation>%</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="645"/>
@@ -1502,7 +1506,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2764"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2922"/>
         <source>Decotype</source>
-        <translation type="unfinished"/>
+        <translation>Model dekompresije</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="656"/>
@@ -1512,7 +1516,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2767"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2925"/>
         <source>ZH-L16</source>
-        <translation type="unfinished"/>
+        <translation>ZH-L16</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="661"/>
@@ -1522,13 +1526,13 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2727"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2895"/>
         <source>Gauge</source>
-        <translation type="unfinished"/>
+        <translation>Gauge</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="666"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2598"/>
         <source>ZH-L16 CC</source>
-        <translation type="unfinished"/>
+        <translation>ZH-L16 CC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="671"/>
@@ -1538,25 +1542,25 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2728"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2896"/>
         <source>Apnea</source>
-        <translation type="unfinished"/>
+        <translation>Apneja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="676"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2600"/>
         <source>L16-GF OC</source>
-        <translation type="unfinished"/>
+        <translation>L16-GF OC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="681"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2601"/>
         <source>L16-GF CC</source>
-        <translation type="unfinished"/>
+        <translation>L16-GF CC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="686"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2602"/>
         <source>PSCR-GF</source>
-        <translation type="unfinished"/>
+        <translation>PSCR-GF</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="694"/>
@@ -1580,7 +1584,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2771"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2930"/>
         <source>Last deco</source>
-        <translation type="unfinished"/>
+        <translation>Zadnja dubina za deko</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="749"/>
@@ -1590,7 +1594,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2773"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2931"/>
         <source>Alt GFLow</source>
-        <translation type="unfinished"/>
+        <translation>Alt GFLow</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="775"/>
@@ -1600,7 +1604,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2775"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2933"/>
         <source>Alt GFHigh</source>
-        <translation type="unfinished"/>
+        <translation>Alt GFHigh</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="782"/>
@@ -1608,7 +1612,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2611"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2776"/>
         <source>Saturation</source>
-        <translation type="unfinished"/>
+        <translation>Saturacija</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="792"/>
@@ -1618,7 +1622,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2759"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2919"/>
         <source>GFHigh</source>
-        <translation type="unfinished"/>
+        <translation>GFHigh</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="815"/>
@@ -1628,7 +1632,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2757"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2917"/>
         <source>GFLow</source>
-        <translation type="unfinished"/>
+        <translation>GFLow</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="838"/>
@@ -1636,7 +1640,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2616"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2780"/>
         <source>Graphical speed indicator</source>
-        <translation type="unfinished"/>
+        <translation>Grafički indikator brzine</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="845"/>
@@ -1654,7 +1658,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2937"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2938"/>
         <source>ℓ/min</source>
-        <translation type="unfinished"/>
+        <translation>ℓ/min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="877"/>
@@ -1664,7 +1668,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2782"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2934"/>
         <source>Bottom gas consumption</source>
-        <translation type="unfinished"/>
+        <translation>Potrošnja na dubini</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="884"/>
@@ -1674,7 +1678,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2783"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2935"/>
         <source>Deco gas consumption</source>
-        <translation type="unfinished"/>
+        <translation>Potrošnja na deku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="892"/>
@@ -1684,7 +1688,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2865"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3018"/>
         <source>Gas settings</source>
-        <translation type="unfinished"/>
+        <translation>Postavke plinova</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="935"/>
@@ -1700,7 +1704,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2946"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2969"/>
         <source>%O₂</source>
-        <translation type="unfinished"/>
+        <translation>%O₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="940"/>
@@ -1716,7 +1720,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2948"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2971"/>
         <source>%He</source>
-        <translation type="unfinished"/>
+        <translation>%He</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="945"/>
@@ -1754,7 +1758,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2975"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2994"/>
         <source>Change depth</source>
-        <translation type="unfinished"/>
+        <translation>od dubine</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="955"/>
@@ -1764,7 +1768,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2803"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2957"/>
         <source>Gas 1</source>
-        <translation type="unfinished"/>
+        <translation>Plin 1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="960"/>
@@ -1774,7 +1778,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2805"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2959"/>
         <source>Gas 2</source>
-        <translation type="unfinished"/>
+        <translation>Plin 2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="965"/>
@@ -1784,7 +1788,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2807"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2961"/>
         <source>Gas 3</source>
-        <translation type="unfinished"/>
+        <translation>Plin 3</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="970"/>
@@ -1794,7 +1798,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2809"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2963"/>
         <source>Gas 4</source>
-        <translation type="unfinished"/>
+        <translation>Plin 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="975"/>
@@ -1804,7 +1808,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2811"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2965"/>
         <source>Gas 5</source>
-        <translation type="unfinished"/>
+        <translation>Plin 5</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1040"/>
@@ -1814,7 +1818,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2826"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2980"/>
         <source>Dil 1</source>
-        <translation type="unfinished"/>
+        <translation>Dil 1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1045"/>
@@ -1824,7 +1828,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2828"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2982"/>
         <source>Dil 2</source>
-        <translation type="unfinished"/>
+        <translation>Dil 2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1050"/>
@@ -1834,7 +1838,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2830"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2984"/>
         <source>Dil 3</source>
-        <translation type="unfinished"/>
+        <translation>Dil 3</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1055"/>
@@ -1844,7 +1848,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2832"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2986"/>
         <source>Dil 4</source>
-        <translation type="unfinished"/>
+        <translation>Dil 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1060"/>
@@ -1854,7 +1858,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2834"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2988"/>
         <source>Dil 5</source>
-        <translation type="unfinished"/>
+        <translation>Dil 5</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1095"/>
@@ -1864,7 +1868,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2838"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2992"/>
         <source>Setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Setpoint</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1105"/>
@@ -1874,7 +1878,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2845"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2999"/>
         <source>SP 1</source>
-        <translation type="unfinished"/>
+        <translation>SP 1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1110"/>
@@ -1884,7 +1888,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2847"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3001"/>
         <source>SP 2</source>
-        <translation type="unfinished"/>
+        <translation>SP 2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1115"/>
@@ -1894,7 +1898,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2849"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3003"/>
         <source>SP 3</source>
-        <translation type="unfinished"/>
+        <translation>SP 3</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1136"/>
@@ -1910,7 +1914,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3014"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3015"/>
         <source>cbar</source>
-        <translation type="unfinished"/>
+        <translation>cbar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1168"/>
@@ -1920,7 +1924,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2863"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3016"/>
         <source>pO₂ max</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ max</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1175"/>
@@ -1930,7 +1934,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2864"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3017"/>
         <source>pO₂ min</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1201"/>
@@ -1938,7 +1942,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2688"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2866"/>
         <source>Eco</source>
-        <translation type="unfinished"/>
+        <translation>Eco</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1206"/>
@@ -1946,7 +1950,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2689"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2867"/>
         <source>Medium</source>
-        <translation type="unfinished"/>
+        <translation>Srednje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1211"/>
@@ -1954,7 +1958,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2690"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2868"/>
         <source>High</source>
-        <translation type="unfinished"/>
+        <translation>Visoko</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1230"/>
@@ -1962,7 +1966,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2693"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2871"/>
         <source>English</source>
-        <translation type="unfinished"/>
+        <translation>engleski</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1235"/>
@@ -1970,7 +1974,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2694"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2872"/>
         <source>German</source>
-        <translation type="unfinished"/>
+        <translation>njemački</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1240"/>
@@ -1978,7 +1982,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2695"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2873"/>
         <source>French</source>
-        <translation type="unfinished"/>
+        <translation>francuski</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1245"/>
@@ -1986,7 +1990,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2696"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2874"/>
         <source>Italian</source>
-        <translation type="unfinished"/>
+        <translation>talijanski</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1254"/>
@@ -1994,7 +1998,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2698"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2876"/>
         <source>m/°C</source>
-        <translation type="unfinished"/>
+        <translation>m/°C</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1259"/>
@@ -2002,7 +2006,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2699"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2877"/>
         <source>ft/°F</source>
-        <translation type="unfinished"/>
+        <translation>ft/°F</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1301"/>
@@ -2010,7 +2014,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2703"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2881"/>
         <source>MMDDYY</source>
-        <translation type="unfinished"/>
+        <translation>MMDDGG</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1306"/>
@@ -2018,7 +2022,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2704"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2882"/>
         <source>DDMMYY</source>
-        <translation type="unfinished"/>
+        <translation>DDMMGG</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1311"/>
@@ -2026,7 +2030,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2705"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2883"/>
         <source>YYMMDD</source>
-        <translation type="unfinished"/>
+        <translation>GGMMDD</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1326"/>
@@ -2034,7 +2038,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2707"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2885"/>
         <source>Language</source>
-        <translation type="unfinished"/>
+        <translation>Jezik</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1346"/>
@@ -2042,7 +2046,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2709"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2887"/>
         <source>Brightness</source>
-        <translation type="unfinished"/>
+        <translation>Svjetlina</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1356"/>
@@ -2060,7 +2064,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2711"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2889"/>
         <source>Salinity (0-5%)</source>
-        <translation type="unfinished"/>
+        <translation>Salinitet (0 - 5 ‰)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1379"/>
@@ -2068,61 +2072,61 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2712"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2890"/>
         <source>Reset device to default settings</source>
-        <translation type="unfinished"/>
+        <translation>Vrati na početne postavke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1393"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2713"/>
         <source>230LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>230LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1398"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2714"/>
         <source>330LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>330LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1403"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2715"/>
         <source>390LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>390LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1408"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2716"/>
         <source>440LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>440LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1413"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2717"/>
         <source>660LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>660LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1418"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2718"/>
         <source>820LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>820LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1423"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2719"/>
         <source>1090LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>1090LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1428"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2720"/>
         <source>1370LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>1370LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1462"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2722"/>
         <source>Compass gain</source>
-        <translation type="unfinished"/>
+        <translation>magentski dobitak</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1472"/>
@@ -2132,7 +2136,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2891"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3040"/>
         <source>Computer model</source>
-        <translation type="unfinished"/>
+        <translation>Model</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1497"/>
@@ -2140,7 +2144,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2725"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2893"/>
         <source>OC</source>
-        <translation type="unfinished"/>
+        <translation>OC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1502"/>
@@ -2148,7 +2152,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2726"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2894"/>
         <source>CC</source>
-        <translation type="unfinished"/>
+        <translation>CC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1520"/>
@@ -2156,13 +2160,13 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2730"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2898"/>
         <source>Dive mode</source>
-        <translation type="unfinished"/>
+        <translation>Vrsta ronjenja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1531"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2731"/>
         <source>2s</source>
-        <translation type="unfinished"/>
+        <translation>2 s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1536"/>
@@ -2170,7 +2174,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2732"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3034"/>
         <source>10s</source>
-        <translation type="unfinished"/>
+        <translation>10 s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1555"/>
@@ -2178,7 +2182,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2735"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2899"/>
         <source>Standard</source>
-        <translation type="unfinished"/>
+        <translation>Standardno</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1560"/>
@@ -2186,7 +2190,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2736"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2900"/>
         <source>Red</source>
-        <translation type="unfinished"/>
+        <translation>Crveno</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1565"/>
@@ -2194,7 +2198,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2737"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2901"/>
         <source>Green</source>
-        <translation type="unfinished"/>
+        <translation>Zeleno</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1570"/>
@@ -2202,7 +2206,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2738"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2902"/>
         <source>Blue</source>
-        <translation type="unfinished"/>
+        <translation>Plavo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1585"/>
@@ -2210,13 +2214,13 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2741"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2905"/>
         <source>Dive mode color</source>
-        <translation type="unfinished"/>
+        <translation>Boja osvjetljenja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1725"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2752"/>
         <source>Left button sensitivity</source>
-        <translation type="unfinished"/>
+        <translation>Osjetljivost lijeve tipke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1732"/>
@@ -2224,7 +2228,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2753"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2939"/>
         <source>Always show pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Uvijek prikaži pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1753"/>
@@ -2232,7 +2236,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2756"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2916"/>
         <source>Pressure sensor offset</source>
-        <translation type="unfinished"/>
+        <translation>Odmak osjetnika za tlak</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1884"/>
@@ -2240,7 +2244,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2766"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2924"/>
         <source>mbar</source>
-        <translation type="unfinished"/>
+        <translation>mbar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1906"/>
@@ -2248,31 +2252,31 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2768"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2926"/>
         <source>ZH-L16+GF</source>
-        <translation type="unfinished"/>
+        <translation>ZH-L16+GF</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1993"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2777"/>
         <source>Flip screen</source>
-        <translation type="unfinished"/>
+        <translation>Preokreni zaslon</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2000"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2778"/>
         <source>Right button sensitivity</source>
-        <translation type="unfinished"/>
+        <translation>Osjetljivost desne tipke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2007"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2779"/>
         <source>MOD warning</source>
-        <translation type="unfinished"/>
+        <translation>MOD upozorenje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2021"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2781"/>
         <source>Dynamic ascent rate</source>
-        <translation type="unfinished"/>
+        <translation>Dinamička brzina izrona</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2106"/>
@@ -2280,7 +2284,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2788"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2942"/>
         <source>Temperature sensor offset</source>
-        <translation type="unfinished"/>
+        <translation>Odmak osjetnika za temperaturu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2113"/>
@@ -2288,7 +2292,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2789"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2943"/>
         <source>°C</source>
-        <translation type="unfinished"/>
+        <translation>°C</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2371"/>
@@ -2296,7 +2300,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2851"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3005"/>
         <source>SP 4</source>
-        <translation type="unfinished"/>
+        <translation>SP 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2376"/>
@@ -2304,13 +2308,13 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2853"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3007"/>
         <source>SP 5</source>
-        <translation type="unfinished"/>
+        <translation>SP 5</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2384"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2856"/>
         <source>O₂ in calibration gas</source>
-        <translation type="unfinished"/>
+        <translation>O₂ u kalibracijskom plinu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2408"/>
@@ -2318,7 +2322,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2858"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3010"/>
         <source>Fixed setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Fiskni setpoint</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2413"/>
@@ -2326,37 +2330,37 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2859"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3011"/>
         <source>Sensor</source>
-        <translation type="unfinished"/>
+        <translation>Osjetnik</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2881"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2912"/>
         <source>Travel gas consumption</source>
-        <translation type="unfinished"/>
+        <translation>Potrošnja putnog plina</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2904"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2914"/>
         <source>Button sensitivity</source>
-        <translation type="unfinished"/>
+        <translation>Osjetljivost tipki</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3034"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2927"/>
         <source>VPM</source>
-        <translation type="unfinished"/>
+        <translation>VPM</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3174"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2940"/>
         <source>VPM conservatism</source>
-        <translation type="unfinished"/>
+        <translation>VPM konzervativnost</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3181"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2941"/>
         <source>+</source>
-        <translation type="unfinished"/>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3486"/>
@@ -2368,13 +2372,13 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3589"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3019"/>
         <source>Safety level</source>
-        <translation type="unfinished"/>
+        <translation>Razina sigurnosti</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3615"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3021"/>
         <source>Altitude range</source>
-        <translation type="unfinished"/>
+        <translation>Nadmorska visina</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3622"/>
@@ -2386,106 +2390,106 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3702"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3026"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Maks. dubina</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3749"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3029"/>
         <source>P0 (none)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P0 (ništa)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3754"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3030"/>
         <source>P1 (medium)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P1 (srednje)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3759"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3031"/>
         <source>P2 (high)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P2 (visoko)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3767"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3033"/>
         <source>Sample rate</source>
-        <translation type="unfinished"/>
+        <translation>Vrijeme uzorkovanja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3780"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3035"/>
         <source>20s</source>
-        <translation type="unfinished"/>
+        <translation>20 s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3785"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3036"/>
         <source>30s</source>
-        <translation type="unfinished"/>
+        <translation>30 s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3790"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3037"/>
         <source>60s</source>
-        <translation type="unfinished"/>
+        <translation>60 s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3798"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3039"/>
         <source>Total dive time</source>
-        <translation type="unfinished"/>
+        <translation>Ukupno vrijeme ronjenja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3836"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3042"/>
         <source>24h</source>
-        <translation type="unfinished"/>
+        <translation>24h</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3841"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3043"/>
         <source>12h</source>
-        <translation type="unfinished"/>
+        <translation>12h</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3849"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3045"/>
         <source>Time format</source>
-        <translation type="unfinished"/>
+        <translation>Format vremena</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3864"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3047"/>
         <source>Imperial</source>
-        <translation type="unfinished"/>
+        <translation>Imperijalne</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3869"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3048"/>
         <source>Metric</source>
-        <translation type="unfinished"/>
+        <translation>Metričke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3887"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3051"/>
         <source>Light</source>
-        <translation type="unfinished"/>
+        <translation>Osvjetljenje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3904"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3052"/>
         <source>Depth alarm</source>
-        <translation type="unfinished"/>
+        <translation>Alarm dubine</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3924"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3054"/>
         <source>Time alarm</source>
-        <translation type="unfinished"/>
+        <translation>Alarm vremena</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="893"/>
@@ -2495,95 +2499,97 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1364"/>
         <source>Backup dive computer settings</source>
-        <translation type="unfinished"/>
+        <translation>Sig. kopija postavki računala</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1365"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1386"/>
         <source>Backup files</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke sig. kopije</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1369"/>
         <source>XML backup error</source>
-        <translation type="unfinished"/>
+        <translation>Greška XML sig. kopije</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1370"/>
         <source>An error occurred while saving the backup file.
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Greška kod spremanja sig. kopije.
+%1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1373"/>
         <source>Backup succeeded</source>
-        <translation type="unfinished"/>
+        <translation>Sig. kopija uspješna</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1374"/>
         <source>Your settings have been saved to: %1</source>
-        <translation type="unfinished"/>
+        <translation>Postavke spremljene u: %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1385"/>
         <source>Restore dive computer settings</source>
-        <translation type="unfinished"/>
+        <translation>Vrati postavke računala</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1391"/>
         <source>XML restore error</source>
-        <translation type="unfinished"/>
+        <translation>Greška XML vraćanja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1392"/>
         <source>An error occurred while restoring the backup file.
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Greška kod vraćanja sig. kopije.
+%1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1396"/>
         <source>Restore succeeded</source>
-        <translation type="unfinished"/>
+        <translation>Vraćanje uspješno</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1397"/>
         <source>Your settings have been restored successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Postavke uspješno vraćene.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1407"/>
         <source>Select firmware file</source>
-        <translation type="unfinished"/>
+        <translation>Odaberi firmver datoteku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1408"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Sve datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1462"/>
         <source>Choose file for dive computer download logfile</source>
-        <translation type="unfinished"/>
+        <translation>Odaberi datoteku za spremanje zapisnika</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1463"/>
         <source>Log files</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka zapisnika</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1488"/>
         <source>Connecting to device...</source>
-        <translation type="unfinished"/>
+        <translation>Spajanje s uređajem…</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1514"/>
         <source>Connected to device</source>
-        <translation type="unfinished"/>
+        <translation>Spojeno s uređajem</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1534"/>
         <source>Disconnected from device</source>
-        <translation type="unfinished"/>
+        <translation>Odspojenno od uređaja</translation>
     </message>
 </context>
 <context>
@@ -2591,17 +2597,17 @@
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="14"/>
         <source>Copy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Kopiraj Postavke</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="26"/>
         <source>Selection for copy-paste</source>
-        <translation type="unfinished"/>
+        <translation>Odabir za kopiranje-ljepljenje</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="36"/>
         <source>Dive site</source>
-        <translation type="unfinished"/>
+        <translation>Lokacija</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="48"/>
@@ -2616,7 +2622,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="72"/>
         <source>Buddy</source>
-        <translation>Buddy</translation>
+        <translation>Partner</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="84"/>
@@ -2636,7 +2642,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="120"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Oznake</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="132"/>
@@ -2646,7 +2652,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="144"/>
         <source>Weights</source>
-        <translation type="unfinished"/>
+        <translation>Olova</translation>
     </message>
 </context>
 <context>
@@ -2664,48 +2670,48 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="21"/>
         <source>Work press.</source>
-        <translation type="unfinished"/>
+        <translation>Radni tlak</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="21"/>
         <location filename="../qt-models/cylindermodel.cpp" line="33"/>
         <source>Start press.</source>
-        <translation type="unfinished"/>
+        <translation>Početni tlak</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="21"/>
         <source>End press.</source>
-        <translation type="unfinished"/>
+        <translation>Završni tlak</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="21"/>
         <source>O₂%</source>
-        <translation type="unfinished"/>
+        <translation>% O₂</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="21"/>
         <source>He%</source>
-        <translation type="unfinished"/>
+        <translation>% He</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="22"/>
         <source>Deco switch at</source>
-        <translation type="unfinished"/>
+        <translation>Deko promjena na</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="22"/>
         <source>Bot. MOD</source>
-        <translation type="unfinished"/>
+        <translation>Bottom MOD</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="22"/>
         <source>MND</source>
-        <translation type="unfinished"/>
+        <translation>MND</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="22"/>
         <source>Use</source>
-        <translation type="unfinished"/>
+        <translation>Koristi</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="53"/>
@@ -2715,32 +2721,32 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="57"/>
         <source>ℓ</source>
-        <translation type="unfinished"/>
+        <translation>ℓ</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="265"/>
         <source>This gas is in use. Only cylinders that are not used in the dive can be removed.</source>
-        <translation type="unfinished"/>
+        <translation>Ovaj se plin koristi. Samo boce koje se ne koriste mogu biti uklonjene.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="267"/>
         <source>Clicking here will remove this cylinder.</source>
-        <translation type="unfinished"/>
+        <translation>Ovaj odabir će ukloniti bocu.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="278"/>
         <source>Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.</source>
-        <translation type="unfinished"/>
+        <translation>Dubina zamjene deko plina. Izračunato koristeći deko pO₂ vrijendosti, osim ako nije ručno postavljeno.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="280"/>
         <source>Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to &apos;*&apos; for best O₂% for max. depth.</source>
-        <translation type="unfinished"/>
+        <translation>Izračunato koristeći Bottom pO₂ vrijednosti. Promjenom MOD mijenja se O₂%, postavljen na &apos;*&apos; za najbolji O₂% za mask. dubinu.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="282"/>
         <source>Calculated using Best Mix END preference. Setting MND adjusts He%, set to &apos;*&apos; for best He% for max. depth.</source>
-        <translation type="unfinished"/>
+        <translation>Izračunato koristeći Best Mix END vrijednosti. Promjenom MND mijenja se He%, postavljen na &apos;*&apos; za nabolji He% za maks. dubinu.</translation>
     </message>
 </context>
 <context>
@@ -2748,55 +2754,58 @@
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="441"/>
         <source>Dive site: </source>
-        <translation type="unfinished"/>
+        <translation>Lokacija:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="443"/>
         <source>Dive master: </source>
-        <translation type="unfinished"/>
+        <translation>Voditelj:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="445"/>
         <source>Buddy: </source>
-        <translation type="unfinished"/>
+        <translation>Partner:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="447"/>
         <source>Rating: </source>
-        <translation type="unfinished"/>
+        <translation>Ocjena:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="449"/>
         <source>Visibility: </source>
-        <translation type="unfinished"/>
+        <translation>Vidljivost:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="451"/>
         <source>Notes:
 </source>
-        <translation type="unfinished"/>
+        <translation>Napomene:
+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="453"/>
         <source>Suit: </source>
-        <translation type="unfinished"/>
+        <translation>Odijelo:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="455"/>
         <source>Tags: </source>
-        <translation type="unfinished"/>
+        <translation>Oznake:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="465"/>
         <source>Cylinders:
 </source>
-        <translation type="unfinished"/>
+        <translation>Boce:
+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="473"/>
         <source>Weights:
 </source>
-        <translation type="unfinished"/>
+        <translation>Olova:
+</translation>
     </message>
 </context>
 <context>
@@ -2805,30 +2814,30 @@
         <location filename="../desktop-widgets/divecomponentselection.ui" line="23"/>
         <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="139"/>
         <source>Component selection</source>
-        <translation type="unfinished"/>
+        <translation>Odabir komponenti</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="52"/>
         <source>Which components would you like to copy?</source>
-        <translation type="unfinished"/>
+        <translation>Koje komponente želite kopirati</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="73"/>
         <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="145"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Oznake</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="80"/>
         <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="146"/>
         <source>Weights</source>
-        <translation type="unfinished"/>
+        <translation>Olova</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="87"/>
         <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="141"/>
         <source>Dive site</source>
-        <translation type="unfinished"/>
+        <translation>Lokacija</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="94"/>
@@ -2846,7 +2855,7 @@
         <location filename="../desktop-widgets/divecomponentselection.ui" line="108"/>
         <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="149"/>
         <source>Buddy</source>
-        <translation>Buddy</translation>
+        <translation>Partner</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="115"/>
@@ -2875,12 +2884,12 @@
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="146"/>
         <source>You can paste these to another dive or as text to another application.</source>
-        <translation type="unfinished"/>
+        <translation>Možete ih zalijepiti u drugi uron ili kao tekst u drugu aplikaciju.</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="140"/>
         <source>Which components would you like to copy</source>
-        <translation type="unfinished"/>
+        <translation>Koje komponente želite kopirati</translation>
     </message>
 </context>
 <context>
@@ -2889,18 +2898,19 @@
         <location filename="../desktop-widgets/divecomputermanagementdialog.ui" line="17"/>
         <location filename="../subsurface/desktop-widgets/ui_divecomputermanagementdialog.h" line="65"/>
         <source>Edit dive computer nicknames</source>
-        <translation type="unfinished"/>
+        <translation>Promijeniti nadimke računala</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomputermanagementdialog.cpp" line="42"/>
         <source>Remove the selected dive computer?</source>
-        <translation type="unfinished"/>
+        <translation>Obrisati odabrano računalo?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomputermanagementdialog.cpp" line="43"/>
         <source>Are you sure that you want to 
  remove the selected dive computer?</source>
-        <translation type="unfinished"/>
+        <translation>Jeste li sigurni da želite 
+ obrisati odabrano računalo?</translation>
     </message>
 </context>
 <context>
@@ -2913,17 +2923,17 @@
     <message>
         <location filename="../qt-models/divecomputermodel.cpp" line="9"/>
         <source>Device ID</source>
-        <translation type="unfinished"/>
+        <translation>ID uređaja</translation>
     </message>
     <message>
         <location filename="../qt-models/divecomputermodel.cpp" line="9"/>
         <source>Nickname</source>
-        <translation>Naziv uređaja</translation>
+        <translation>Nadimak</translation>
     </message>
     <message>
         <location filename="../qt-models/divecomputermodel.cpp" line="36"/>
         <source>Clicking here will remove this dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Ovaj odabir će ukloniti računalo</translation>
     </message>
 </context>
 <context>
@@ -2931,47 +2941,47 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="53"/>
         <source>Dive details</source>
-        <translation type="unfinished"/>
+        <translation>Detalji urona</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="63"/>
         <source>Remove this dive from trip</source>
-        <translation type="unfinished"/>
+        <translation>Ukloni ovaj uron iz grupe</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="72"/>
         <source>Add dive to trip above</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj uron u grupu iznad</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="81"/>
         <source>Add dive to trip below</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj uron u grupu ispod</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="90"/>
         <source>Create trip with dive</source>
-        <translation type="unfinished"/>
+        <translation>Stvori grupu s uronom</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="96"/>
         <source>Mark dive as valid</source>
-        <translation type="unfinished"/>
+        <translation>Označi uron valjanim</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="96"/>
         <source>Mark dive as invalid</source>
-        <translation type="unfinished"/>
+        <translation>Označi uron nevaljanim</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="101"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Poništi</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="107"/>
         <source>Redo</source>
-        <translation type="unfinished"/>
+        <translation>Ponovi</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="221"/>
@@ -2981,17 +2991,17 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="229"/>
         <source>Cancel edit</source>
-        <translation type="unfinished"/>
+        <translation>Poništi uređivanje</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="239"/>
         <source>Show on map</source>
-        <translation type="unfinished"/>
+        <translation>Prikaži na karti</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="255"/>
         <source>Save edits</source>
-        <translation type="unfinished"/>
+        <translation>Spremi pojedinosti</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="255"/>
@@ -3004,7 +3014,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="139"/>
         <source>Dive number:</source>
-        <translation type="unfinished"/>
+        <translation>Uron broj:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="149"/>
@@ -3014,18 +3024,19 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="158"/>
         <source>Location:</source>
-        <translation type="unfinished"/>
+        <translation>Lokacija:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="180"/>
         <source>Coordinates:</source>
-        <translation type="unfinished"/>
+        <translation>Koordinate:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="192"/>
         <source>Use current
 GPS location:</source>
-        <translation type="unfinished"/>
+        <translation>Koristi trenutnu 
+GPS lokaciju:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="214"/>
@@ -3035,32 +3046,32 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="226"/>
         <source>Duration:</source>
-        <translation type="unfinished"/>
+        <translation>Trajanje:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="239"/>
         <source>Air Temp:</source>
-        <translation type="unfinished"/>
+        <translation>Temp. zraka:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="251"/>
         <source>Water Temp:</source>
-        <translation type="unfinished"/>
+        <translation>Temp. vode:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="263"/>
         <source>Suit:</source>
-        <translation type="unfinished"/>
+        <translation>Odijelo:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="285"/>
         <source>Buddy:</source>
-        <translation type="unfinished"/>
+        <translation>Partner:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="306"/>
         <source>Divemaster:</source>
-        <translation type="unfinished"/>
+        <translation>Voditelj:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="327"/>
@@ -3070,7 +3081,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="341"/>
         <source>Cylinder1:</source>
-        <translation type="unfinished"/>
+        <translation>Boca1:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="356"/>
@@ -3079,7 +3090,7 @@ GPS location:</source>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="541"/>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="605"/>
         <source>Gas mix:</source>
-        <translation type="unfinished"/>
+        <translation>Mješavina:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="370"/>
@@ -3088,7 +3099,7 @@ GPS location:</source>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="557"/>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="621"/>
         <source>Start Pressure:</source>
-        <translation type="unfinished"/>
+        <translation>Početni tlak:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="383"/>
@@ -3097,42 +3108,42 @@ GPS location:</source>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="572"/>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="636"/>
         <source>End Pressure:</source>
-        <translation type="unfinished"/>
+        <translation>Završni tlak:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="397"/>
         <source>Cylinder2:</source>
-        <translation type="unfinished"/>
+        <translation>Boca2:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="460"/>
         <source>Cylinder3:</source>
-        <translation type="unfinished"/>
+        <translation>Boca3:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="523"/>
         <source>Cylinder4:</source>
-        <translation type="unfinished"/>
+        <translation>Boca4:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="587"/>
         <source>Cylinder5:</source>
-        <translation type="unfinished"/>
+        <translation>Boca5:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="650"/>
         <source>Rating:</source>
-        <translation type="unfinished"/>
+        <translation>Ocjena:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="664"/>
         <source>Visibility:</source>
-        <translation type="unfinished"/>
+        <translation>Vidljivost:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="679"/>
         <source>Notes:</source>
-        <translation type="unfinished"/>
+        <translation>Napomene:</translation>
     </message>
 </context>
 <context>
@@ -3140,67 +3151,67 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="38"/>
         <source>&lt;unnamed dive site&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;unnamed dive site&gt;</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="106"/>
         <source>Rating:</source>
-        <translation type="unfinished"/>
+        <translation>Ocjena:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="159"/>
         <source>Visibility:</source>
-        <translation type="unfinished"/>
+        <translation>Vidljivost:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="353"/>
         <source>No profile to show</source>
-        <translation type="unfinished"/>
+        <translation>Nema profila za prikaz</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="359"/>
         <source>Suit:</source>
-        <translation type="unfinished"/>
+        <translation>Odijelo:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="366"/>
         <source>Air Temp:</source>
-        <translation type="unfinished"/>
+        <translation>Temp. zraka:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="373"/>
         <source>Water Temp:</source>
-        <translation type="unfinished"/>
+        <translation>Temp. vode:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="415"/>
         <source>Cylinder:</source>
-        <translation type="unfinished"/>
+        <translation>Boca:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="423"/>
         <source>Weight:</source>
-        <translation>Težina:</translation>
+        <translation>Olova:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="431"/>
         <source>SAC:</source>
-        <translation type="unfinished"/>
+        <translation>SAC:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="474"/>
         <source>Divemaster:</source>
-        <translation type="unfinished"/>
+        <translation>Voditelj:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="482"/>
         <source>Buddy:</source>
-        <translation type="unfinished"/>
+        <translation>Partner:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="520"/>
         <source>Tags:</source>
-        <translation type="unfinished"/>
+        <translation>Oznake:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="556"/>
@@ -3213,27 +3224,27 @@ GPS location:</source>
     <message>
         <location filename="../profile-widget/diveeventitem.cpp" line="187"/>
         <source> (cyl. %1)</source>
-        <translation type="unfinished"/>
+        <translation> (boca %1)</translation>
     </message>
     <message>
         <location filename="../profile-widget/diveeventitem.cpp" line="191"/>
         <source>ICD</source>
-        <translation type="unfinished"/>
+        <translation>ICD</translation>
     </message>
     <message>
         <location filename="../profile-widget/diveeventitem.cpp" line="192"/>
         <source>ΔHe</source>
-        <translation type="unfinished"/>
+        <translation>ΔHe</translation>
     </message>
     <message>
         <location filename="../profile-widget/diveeventitem.cpp" line="193"/>
         <source>ΔN₂</source>
-        <translation type="unfinished"/>
+        <translation>ΔN₂</translation>
     </message>
     <message>
         <location filename="../profile-widget/diveeventitem.cpp" line="213"/>
         <source>Manual switch to OC</source>
-        <translation type="unfinished"/>
+        <translation>Ručni prijelaz na OC</translation>
     </message>
     <message>
         <location filename="../profile-widget/diveeventitem.cpp" line="215"/>
@@ -3253,7 +3264,7 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveimportedmodel.cpp" line="38"/>
         <source>Date/time</source>
-        <translation type="unfinished"/>
+        <translation>Datum/vrijeme</translation>
     </message>
     <message>
         <location filename="../qt-models/diveimportedmodel.cpp" line="40"/>
@@ -3268,7 +3279,7 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveimportedmodel.cpp" line="72"/>
         <source>h</source>
-        <translation type="unfinished"/>
+        <translation>h</translation>
     </message>
     <message>
         <location filename="../qt-models/diveimportedmodel.cpp" line="72"/>
@@ -3282,42 +3293,42 @@ GPS location:</source>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="13"/>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="337"/>
         <source>Dive list</source>
-        <translation type="unfinished"/>
+        <translation>Lista urona</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="184"/>
         <source>&lt;unnamed dive site&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;unnamed dive site&gt;</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="252"/>
         <source>Remove dive %1 from trip</source>
-        <translation type="unfinished"/>
+        <translation>Ukloni uron %1 iz grupe</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="260"/>
         <source>Add dive %1 to trip above</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj uron %1 u grupu iznad</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="268"/>
         <source>Add dive %1 to trip below</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj uron %1 u grupu ispod</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="276"/>
         <source>Create trip with dive %1</source>
-        <translation type="unfinished"/>
+        <translation>Kreiraj grupu s uronom %1</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="285"/>
         <source>Mark dive as valid</source>
-        <translation type="unfinished"/>
+        <translation>Označi uron valjanim</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="285"/>
         <source>Mark dive as invalid</source>
-        <translation type="unfinished"/>
+        <translation>Označi zaron nevaljanim</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="291"/>
@@ -3327,62 +3338,62 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="297"/>
         <source>Show on map</source>
-        <translation type="unfinished"/>
+        <translation>Prikaži na karti</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="306"/>
         <source>Edit trip details</source>
-        <translation type="unfinished"/>
+        <translation>Izmjena pojedinosti grupe</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="318"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Poništi</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="324"/>
         <source>Redo</source>
-        <translation type="unfinished"/>
+        <translation>Ponovi</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="339"/>
         <source>Please tap the &apos;+&apos; button to add a dive (or download dives from a supported dive computer)</source>
-        <translation type="unfinished"/>
+        <translation>Dodirni &apos;+&apos; za dodati uron (ili preuzmi urone iz podržanog računala)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="345"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Vjerodajnice za oblak</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="354"/>
         <source>No dives in dive list</source>
-        <translation type="unfinished"/>
+        <translation>Nema urona na popisu</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="354"/>
         <source>Please wait, updating the dive list</source>
-        <translation type="unfinished"/>
+        <translation>Molim pričekajte, ažuriranje liste urona</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="400"/>
         <source>Fulltext</source>
-        <translation type="unfinished"/>
+        <translation>Punitekst</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="401"/>
         <source>People</source>
-        <translation type="unfinished"/>
+        <translation>Ljudi</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="402"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Oznake</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="460"/>
         <source>Download dives</source>
-        <translation type="unfinished"/>
+        <translation>Preuzmi urone</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="470"/>
@@ -3392,7 +3403,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="480"/>
         <source>Filter dives</source>
-        <translation type="unfinished"/>
+        <translation>Filtriraj urone</translation>
     </message>
 </context>
 <context>
@@ -3400,37 +3411,37 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="786"/>
         <source>Expand all</source>
-        <translation>Otvori sve</translation>
+        <translation>Proširi sve</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="788"/>
         <source>Collapse all</source>
-        <translation>Zatvori sve grupe</translation>
+        <translation>Sažmi sve</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="792"/>
         <source>Collapse others</source>
-        <translation type="unfinished"/>
+        <translation>Sažmi ostale</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="796"/>
         <source>Remove dive(s) from trip</source>
-        <translation type="unfinished"/>
+        <translation>Obriši uron(e) iz grupe</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="797"/>
         <source>Create new trip above</source>
-        <translation>Kreiraj novu grupu iznad</translation>
+        <translation>Stvori novu grupu iznad</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="812"/>
         <source>Add dive(s) to trip immediately above</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj uron(e) u gornju grupu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="814"/>
         <source>Add dive(s) to trip immediately below</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj uron(e) u donju grupu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="818"/>
@@ -3445,82 +3456,82 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="823"/>
         <source>Delete dive(s)</source>
-        <translation type="unfinished"/>
+        <translation>Obriši uron(e)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="825"/>
         <source>Mark dive(s) valid</source>
-        <translation type="unfinished"/>
+        <translation>Označi uron(e) valjanima</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="827"/>
         <source>Mark dive(s) invalid</source>
-        <translation type="unfinished"/>
+        <translation>Označi uron(e) nevaljanima</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="830"/>
         <source>Merge selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Spoji odabrane urone</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="832"/>
         <source>Add dive(s) to arbitrary trip</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj uron(e) proizvoljnoj grupi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="833"/>
         <source>Renumber dive(s)</source>
-        <translation type="unfinished"/>
+        <translation>Renumeriraj uron(e)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="834"/>
         <source>Shift dive times</source>
-        <translation type="unfinished"/>
+        <translation>Pomakni vrijeme urona</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="835"/>
         <source>Split selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Razdijeli odabrane urone</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="836"/>
         <source>Load media from file(s)</source>
-        <translation type="unfinished"/>
+        <translation>Učitaj medije iz datoteka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="837"/>
         <source>Load media from web</source>
-        <translation type="unfinished"/>
+        <translation>Učitaj medije s weba</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="863"/>
         <source>Open media files</source>
-        <translation type="unfinished"/>
+        <translation>Otvori medijske datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="866"/>
         <source>Media files</source>
-        <translation type="unfinished"/>
+        <translation>Medijske datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="867"/>
         <source>Image files</source>
-        <translation type="unfinished"/>
+        <translation>Slikovne datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="868"/>
         <source>Video files</source>
-        <translation type="unfinished"/>
+        <translation>Video datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="869"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Sve datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="933"/>
         <source>%1 does not appear to be an image</source>
-        <translation type="unfinished"/>
+        <translation>%1 nije slika</translation>
     </message>
 </context>
 <context>
@@ -3528,12 +3539,12 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="400"/>
         <source>Create a new dive site, copying relevant information from the current dive.</source>
-        <translation type="unfinished"/>
+        <translation>Stvori novu lokaciju, kopiraj detalje iz trenutne lokacije.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="401"/>
         <source>Create a new dive site with this name</source>
-        <translation type="unfinished"/>
+        <translation>Stvori novu lokaciju s ovim nazivom</translation>
     </message>
 </context>
 <context>
@@ -3542,19 +3553,19 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="372"/>
         <source>Export dive log files</source>
-        <translation type="unfinished"/>
+        <translation>Izvezi dnevnik ronjenja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="44"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="392"/>
         <source>General export</source>
-        <translation type="unfinished"/>
+        <translation>Opći izvoz</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="108"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="384"/>
         <source>Selection</source>
-        <translation type="unfinished"/>
+        <translation>Odabir</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="117"/>
@@ -3562,395 +3573,395 @@ GPS location:</source>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="385"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="395"/>
         <source>Selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Odabrani uroni</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="127"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="386"/>
         <source>All dives</source>
-        <translation type="unfinished"/>
+        <translation>Svi uroni</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="140"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="387"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Opcije</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="156"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="388"/>
         <source>Metric</source>
-        <translation type="unfinished"/>
+        <translation>Metričke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="161"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="389"/>
         <source>Imperial</source>
-        <translation type="unfinished"/>
+        <translation>Imperijalne</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="175"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="391"/>
         <source>Anonymize</source>
-        <translation type="unfinished"/>
+        <translation>Anonimiziraj</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="186"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="374"/>
         <source>Export format</source>
-        <translation type="unfinished"/>
+        <translation>Format izvoza</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="198"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="375"/>
         <source>Subsurface &amp;XML</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface &amp;XML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="211"/>
         <source>Subsurface dive sites XML</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface lokacije XML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="227"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="376"/>
         <source>UDDF</source>
-        <translation type="unfinished"/>
+        <translation>UDDF</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="240"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="377"/>
         <source>di&amp;velogs.de</source>
-        <translation type="unfinished"/>
+        <translation>di&amp;velogs.de</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="250"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="378"/>
         <source>DiveShare</source>
-        <translation type="unfinished"/>
+        <translation>DiveShare</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="260"/>
         <source>CSV summary dive details</source>
-        <translation type="unfinished"/>
+        <translation>CSV detalji urona</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="270"/>
         <source>CSV Dive computer dive profile</source>
-        <translation type="unfinished"/>
+        <translation>CSV računalni profil ronjenja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="280"/>
         <source>CSV Computed Profile Panel data</source>
-        <translation type="unfinished"/>
+        <translation>CSV izračunati Profil Panel podaci</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="290"/>
         <source>Dive profile</source>
-        <translation type="unfinished"/>
+        <translation>Profil ronjenja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="300"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="381"/>
         <source>Worldmap</source>
-        <translation type="unfinished"/>
+        <translation>Karta svijeta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="310"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="382"/>
         <source>TeX</source>
-        <translation type="unfinished"/>
+        <translation>TeX</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="320"/>
         <source>LaTeX</source>
-        <translation type="unfinished"/>
+        <translation>LaTeX</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="330"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="383"/>
         <source>I&amp;mage depths</source>
-        <translation type="unfinished"/>
+        <translation>Dubi&amp;ne slika</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="372"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="415"/>
         <source>HTML</source>
-        <translation type="unfinished"/>
+        <translation>HTML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="390"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="393"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Opće postavke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="396"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="394"/>
         <source>Subsurface numbers</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface brojevi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="425"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="396"/>
         <source>Export yearly statistics</source>
-        <translation type="unfinished"/>
+        <translation>Izvezi godišnju statistiku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="441"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="397"/>
         <source>All di&amp;ves</source>
-        <translation type="unfinished"/>
+        <translation>Svi uroni&amp;</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="451"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="398"/>
         <source>Export list only</source>
-        <translation type="unfinished"/>
+        <translation>Izvezi samo popis</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="458"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="399"/>
         <source>Export photos</source>
-        <translation type="unfinished"/>
+        <translation>Izvezi slike</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="474"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="400"/>
         <source>Style options</source>
-        <translation type="unfinished"/>
+        <translation>Opcije stila</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="489"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="401"/>
         <source>Font</source>
-        <translation type="unfinished"/>
+        <translation>Font</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="499"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="402"/>
         <source>Font size</source>
-        <translation type="unfinished"/>
+        <translation>Veličina slova</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="510"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="403"/>
         <source>8</source>
-        <translation type="unfinished"/>
+        <translation>8</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="515"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="404"/>
         <source>10</source>
-        <translation type="unfinished"/>
+        <translation>10</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="520"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="405"/>
         <source>12</source>
-        <translation type="unfinished"/>
+        <translation>12</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="525"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="406"/>
         <source>14</source>
-        <translation type="unfinished"/>
+        <translation>14</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="530"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="407"/>
         <source>16</source>
-        <translation type="unfinished"/>
+        <translation>16</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="535"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="408"/>
         <source>18</source>
-        <translation type="unfinished"/>
+        <translation>18</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="540"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="409"/>
         <source>20</source>
-        <translation type="unfinished"/>
+        <translation>20</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="548"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="411"/>
         <source>Theme</source>
-        <translation type="unfinished"/>
+        <translation>Tema</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="559"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="116"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="412"/>
         <source>Light</source>
-        <translation type="unfinished"/>
+        <translation>Svijetla</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="564"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="413"/>
         <source>Sand</source>
-        <translation type="unfinished"/>
+        <translation>Pijesak</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="85"/>
         <source>Generic format that is used for data exchange between a variety of diving related programs.</source>
-        <translation type="unfinished"/>
+        <translation>Generički format koji se koristi za razmjenu podataka između različitih ronilačkih programa. </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="87"/>
         <source>Comma separated values describing the dive profile as downloaded from dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Vrijednosti odvojene zarezom (CSV) koje opisuju uron kako je preuzet iz računala.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="89"/>
         <source>Comma separated values of the dive information. This includes most of the dive details but no profile information.</source>
-        <translation type="unfinished"/>
+        <translation>Vrijednosti odvojene zarezom (CSV) urona. Ovo uključuje većinu detalja zarone, ali ne i profil ronjenja.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="91"/>
         <source>Send the dive data to divelogs.de website.</source>
-        <translation type="unfinished"/>
+        <translation>Pošalji podatke o uronima web stranici divelogs.de</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="93"/>
         <source>Send the dive data to dive-share.appspot.com website.</source>
-        <translation type="unfinished"/>
+        <translation>Pošalji podatke o uronima web stranici dive-share.appspot.com</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="95"/>
         <source>HTML export of the dive locations, visualized on a world map.</source>
-        <translation type="unfinished"/>
+        <translation>HTML izvoz ronilačkih lokacija prikazanih na karti svijeta.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="97"/>
         <source>Subsurface native XML format.</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface nativni XML format.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="99"/>
         <source>Subsurface dive sites native XML format.</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface lokacije nativni XML format.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="101"/>
         <source>Write depths of images to file.</source>
-        <translation type="unfinished"/>
+        <translation>Spremi dubine slika u datoteku.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="103"/>
         <source>Write dive as TeX macros to file.</source>
-        <translation type="unfinished"/>
+        <translation>Spremi uron kao TeX makro u datoteku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="105"/>
         <source>Write dive as LaTeX macros to file.</source>
-        <translation type="unfinished"/>
+        <translation>Spremi uron kao LaTeX makro u datoteku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="107"/>
         <source>Write the profile image as PNG file.</source>
-        <translation type="unfinished"/>
+        <translation>Spremi profil ronjenja kao PNG datoteku.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="109"/>
         <source>Write the computed Profile Panel data to a CSV file.</source>
-        <translation type="unfinished"/>
+        <translation>Spremi izračunate Profil Panel podatke u CSV datoteku.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="147"/>
         <source>Export UDDF file as</source>
-        <translation type="unfinished"/>
+        <translation>Izvezi UDDF datoteku kao</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="148"/>
         <source>UDDF files</source>
-        <translation type="unfinished"/>
+        <translation>UDDF datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="151"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="155"/>
         <source>Export CSV file as</source>
-        <translation type="unfinished"/>
+        <translation>Izvezi CSV datoteku kao</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="152"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="156"/>
         <source>CSV files</source>
-        <translation type="unfinished"/>
+        <translation>CSV datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="162"/>
         <source>Export world map</source>
-        <translation type="unfinished"/>
+        <translation>Izvezi kartu svijeta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="163"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="205"/>
         <source>HTML files</source>
-        <translation type="unfinished"/>
+        <translation>HTML datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="167"/>
         <source>Export Subsurface XML</source>
-        <translation type="unfinished"/>
+        <translation>Izvezi Subsurface XML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="168"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="177"/>
         <source>Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="176"/>
         <source>Export Subsurface dive sites XML</source>
-        <translation type="unfinished"/>
+        <translation>Izvezi Subsurface lokacije XML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="186"/>
         <source>Save image depths</source>
-        <translation type="unfinished"/>
+        <translation>Spremi dubine slika</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="190"/>
         <source>Export to TeX file</source>
-        <translation type="unfinished"/>
+        <translation>Izvezi u TeX datoteku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="190"/>
         <source>TeX files</source>
-        <translation type="unfinished"/>
+        <translation>TeX datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="194"/>
         <source>Save profile image</source>
-        <translation type="unfinished"/>
+        <translation>Spremi sliku profila</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="198"/>
         <source>Save profile data</source>
-        <translation type="unfinished"/>
+        <translation>Spremi podatke profila</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="204"/>
         <source>Export HTML files as</source>
-        <translation type="unfinished"/>
+        <translation>Izvezi HTML datoteke kao</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="219"/>
         <source>Please wait, exporting...</source>
-        <translation type="unfinished"/>
+        <translation>Izvoz, molim pričekajte…</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="379"/>
         <source>CSV dive profile</source>
-        <translation type="unfinished"/>
+        <translation>CSV profil ronjenja</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="380"/>
         <source>CSV dive details</source>
-        <translation type="unfinished"/>
+        <translation>CSV detalji urona</translation>
     </message>
 </context>
 <context>
@@ -3959,55 +3970,55 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="157"/>
         <source>Import dive log file</source>
-        <translation type="unfinished"/>
+        <translation>Uvezi dnevnik ronjenja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="89"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="158"/>
         <source>dd.mm.yyyy</source>
-        <translation type="unfinished"/>
+        <translation>dd.mm.gggg</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="94"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="159"/>
         <source>mm/dd/yyyy</source>
-        <translation type="unfinished"/>
+        <translation>mm/dd/gggg</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="99"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="160"/>
         <source>yyyy-mm-dd</source>
-        <translation type="unfinished"/>
+        <translation>gggg-mm-dd</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="108"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="162"/>
         <source>Seconds</source>
-        <translation type="unfinished"/>
+        <translation>Sekunde</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="113"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="163"/>
         <source>Minutes</source>
-        <translation type="unfinished"/>
+        <translation>Minute</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="118"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="164"/>
         <source>Minutes:seconds</source>
-        <translation type="unfinished"/>
+        <translation>Minute:sekunde</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="127"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="166"/>
         <source>Metric</source>
-        <translation type="unfinished"/>
+        <translation>Metričke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="132"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="167"/>
         <source>Imperial</source>
-        <translation type="unfinished"/>
+        <translation>Imperijalne</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="155"/>
@@ -4031,73 +4042,73 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="815"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="942"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>Vrijeme segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="692"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="817"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>Dubina segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="694"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="819"/>
         <source>Sample temperature</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="696"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="821"/>
         <source>Sample pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="698"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="823"/>
         <source>Sample sensor1 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>senzor1 pO₂  segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="700"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="825"/>
         <source>Sample sensor2 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>senzor2 pO₂  segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="702"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="827"/>
         <source>Sample sensor3 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>senzor3 pO₂ segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="704"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="829"/>
         <source>Sample CNS</source>
-        <translation type="unfinished"/>
+        <translation>CNS segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="706"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="831"/>
         <source>Sample NDL</source>
-        <translation type="unfinished"/>
+        <translation>ne-deko vrijeme segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="708"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="833"/>
         <source>Sample TTS</source>
-        <translation type="unfinished"/>
+        <translation>vrijeme do površine segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="710"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="835"/>
         <source>Sample stopdepth</source>
-        <translation type="unfinished"/>
+        <translation>dubina zastanka segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="712"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="837"/>
         <source>Sample pressure</source>
-        <translation type="unfinished"/>
+        <translation>tlak u boci segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="714"/>
@@ -4110,7 +4121,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="813"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="946"/>
         <source>Dive #</source>
-        <translation type="unfinished"/>
+        <translation>Uron #</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="719"/>
@@ -4136,61 +4147,61 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="722"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="960"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Maks. dubina</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="723"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="962"/>
         <source>Avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Prosječna dubina</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="724"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="954"/>
         <source>Mode</source>
-        <translation type="unfinished"/>
+        <translation>Način</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="725"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="994"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temp. zraka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="726"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="996"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temp. vode</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="727"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="984"/>
         <source>Cyl. size</source>
-        <translation type="unfinished"/>
+        <translation>Vel. boce</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="728"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="986"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Početni tlak</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="729"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="988"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Završni tlak</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="730"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="990"/>
         <source>O₂</source>
-        <translation type="unfinished"/>
+        <translation>O₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="731"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="992"/>
         <source>He</source>
-        <translation type="unfinished"/>
+        <translation>He</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="732"/>
@@ -4202,7 +4213,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="733"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="958"/>
         <source>GPS</source>
-        <translation type="unfinished"/>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="734"/>
@@ -4214,7 +4225,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="735"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="966"/>
         <source>Buddy</source>
-        <translation>Buddy</translation>
+        <translation>Partner</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="736"/>
@@ -4252,17 +4263,17 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="741"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="974"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Oznake</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="839"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Puls</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="1025"/>
         <source>multiple files</source>
-        <translation type="unfinished"/>
+        <translation>višestruke datoteke</translation>
     </message>
 </context>
 <context>
@@ -4271,25 +4282,25 @@ GPS location:</source>
         <location filename="../desktop-widgets/diveplanner.ui" line="74"/>
         <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="201"/>
         <source>Planned dive time</source>
-        <translation type="unfinished"/>
+        <translation>Planirano vrijeme ronjenja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="117"/>
         <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="202"/>
         <source>Altitude</source>
-        <translation type="unfinished"/>
+        <translation>Nadmorska visina</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="124"/>
         <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="203"/>
         <source>ATM pressure</source>
-        <translation type="unfinished"/>
+        <translation>Atm. tlak</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="131"/>
         <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="204"/>
         <source>Water type</source>
-        <translation type="unfinished"/>
+        <translation>Voda</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="144"/>
@@ -4301,37 +4312,37 @@ GPS location:</source>
         <location filename="../desktop-widgets/diveplanner.ui" line="166"/>
         <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="206"/>
         <source>mbar</source>
-        <translation type="unfinished"/>
+        <translation>mbar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="180"/>
         <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="207"/>
         <source>Fresh water</source>
-        <translation type="unfinished"/>
+        <translation>slatka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="185"/>
         <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="208"/>
         <source>Sea water</source>
-        <translation type="unfinished"/>
+        <translation>slana</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="190"/>
         <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="209"/>
         <source>EN13319</source>
-        <translation type="unfinished"/>
+        <translation>EN13319</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="195"/>
         <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="210"/>
         <source>Custom</source>
-        <translation type="unfinished"/>
+        <translation>korisnički definirano</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="221"/>
         <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="215"/>
         <source>kg/ℓ</source>
-        <translation type="unfinished"/>
+        <translation>kg/ℓ</translation>
     </message>
 </context>
 <context>
@@ -4339,7 +4350,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="11"/>
         <source>Dive planner edit</source>
-        <translation type="unfinished"/>
+        <translation>Uređivanje planiranja</translation>
     </message>
 </context>
 <context>
@@ -4347,7 +4358,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerManager.qml" line="11"/>
         <source>Dive planner manager</source>
-        <translation type="unfinished"/>
+        <translation>Upravitelj planiranja</translation>
     </message>
 </context>
 <context>
@@ -4360,17 +4371,17 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="297"/>
         <source>cyl.</source>
-        <translation type="unfinished"/>
+        <translation>Boca</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="421"/>
         <source>Final depth</source>
-        <translation type="unfinished"/>
+        <translation>Krajnja dubina</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="423"/>
         <source>Run time</source>
-        <translation type="unfinished"/>
+        <translation>Protek vremena</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="425"/>
@@ -4380,17 +4391,17 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="427"/>
         <source>Used gas</source>
-        <translation type="unfinished"/>
+        <translation>Potrošeni plin</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="429"/>
         <source>CC setpoint</source>
-        <translation type="unfinished"/>
+        <translation>CC setpoint</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="431"/>
         <source>Dive mode</source>
-        <translation type="unfinished"/>
+        <translation>Vrsta ronjenja</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="1126"/>
@@ -4410,7 +4421,7 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="1182"/>
         <source>Stop times</source>
-        <translation type="unfinished"/>
+        <translation>Stop vremena</translation>
     </message>
 </context>
 <context>
@@ -4418,37 +4429,37 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="11"/>
         <source>Dive planner setup</source>
-        <translation type="unfinished"/>
+        <translation>Podešavanje planiranja</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
         <source> m/min</source>
-        <translation type="unfinished"/>
+        <translation> m/min</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
         <source> ft/min</source>
-        <translation type="unfinished"/>
+        <translation> ft/min</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
         <source> l/min</source>
-        <translation type="unfinished"/>
+        <translation>ℓ/min</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
         <source> cuft/min</source>
-        <translation type="unfinished"/>
+        <translation> cuft/min</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="15"/>
         <source> BAR</source>
-        <translation type="unfinished"/>
+        <translation>bar</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="15"/>
         <source> PSI</source>
-        <translation type="unfinished"/>
+        <translation>psi</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="40"/>
@@ -4458,37 +4469,37 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="50"/>
         <source>Ascent</source>
-        <translation type="unfinished"/>
+        <translation>Izron</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="54"/>
         <source>below 75% avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>ispod 75 % prosj. dubine</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="70"/>
         <source>75% to 50% avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>50 - 75 % prosj. dubine</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="86"/>
         <source>50% avg. depth to 6m</source>
-        <translation type="unfinished"/>
+        <translation>6 m - 50 % prosj. dubine</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="102"/>
         <source>6m to surface</source>
-        <translation type="unfinished"/>
+        <translation>površina - 6 m</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="119"/>
         <source>Descent</source>
-        <translation type="unfinished"/>
+        <translation>Zaron</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="123"/>
         <source>Surface to the bottom</source>
-        <translation type="unfinished"/>
+        <translation>Površina do dna</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="140"/>
@@ -4498,84 +4509,84 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="150"/>
         <source>Planning</source>
-        <translation type="unfinished"/>
+        <translation>Planiranje</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="159"/>
         <source>Dive mode</source>
-        <translation type="unfinished"/>
+        <translation>Vrsta ronjenja</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="165"/>
         <source>Open circuit</source>
-        <translation type="unfinished"/>
+        <translation>Otvoreni krug (OC)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="166"/>
         <source>CCR</source>
-        <translation type="unfinished"/>
+        <translation>Zatvoreni krug (CCR)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="167"/>
         <source>pSCR</source>
-        <translation type="unfinished"/>
+        <translation>pSCR</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="174"/>
         <source>Bailout: Deco on OC</source>
-        <translation type="unfinished"/>
+        <translation>Bailout: Deko na OC</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="180"/>
         <source>Recreational mode</source>
-        <translation type="unfinished"/>
+        <translation>Rekreativni mod</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="189"/>
         <source>Reserve gas</source>
-        <translation type="unfinished"/>
+        <translation>Rezervni plin</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="207"/>
         <source>Safety stop</source>
-        <translation type="unfinished"/>
+        <translation>Sigurnosni zastanak</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="217"/>
         <source>Bühlmann deco</source>
-        <translation type="unfinished"/>
+        <translation>Bühlmann deko</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="226"/>
         <source>GFLow</source>
-        <translation type="unfinished"/>
+        <translation>GFLow</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="243"/>
         <source>GFHigh</source>
-        <translation type="unfinished"/>
+        <translation>GFHigh</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="260"/>
         <source>VPM-B deco</source>
-        <translation type="unfinished"/>
+        <translation>VPM-B deco</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="269"/>
         <source>Conservatism level</source>
-        <translation type="unfinished"/>
+        <translation>Razina konzervativnosti</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="278"/>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="317"/>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="333"/>
         <source>+</source>
-        <translation type="unfinished"/>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="286"/>
         <source>Last stop at ??</source>
-        <translation type="unfinished"/>
+        <translation>Zadnji zastanak na ??</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="291"/>
@@ -4585,37 +4596,37 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="300"/>
         <source>Only switch at required stops</source>
-        <translation type="unfinished"/>
+        <translation>Promjena samo na zadanim zastancima</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="309"/>
         <source>Min switch time</source>
-        <translation type="unfinished"/>
+        <translation>Min. vrijeme za promjenu</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="325"/>
         <source>Surface segment</source>
-        <translation type="unfinished"/>
+        <translation>Površinski segment</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="343"/>
         <source>Gas options</source>
-        <translation type="unfinished"/>
+        <translation>Opcije plinova</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="352"/>
         <source>Bottom SAC</source>
-        <translation>SAC</translation>
+        <translation>Dubinska potrošnja</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="370"/>
         <source>Deco SAC</source>
-        <translation type="unfinished"/>
+        <translation>Deko potrošnja</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="388"/>
         <source>SAC factor</source>
-        <translation type="unfinished"/>
+        <translation>SAC faktor</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="403"/>
@@ -4655,27 +4666,27 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="480"/>
         <source>Display runtime</source>
-        <translation type="unfinished"/>
+        <translation>Prikaži runtime</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="487"/>
         <source>Display segment duration</source>
-        <translation type="unfinished"/>
+        <translation>Prikaži trajanje segmenta</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="494"/>
         <source>Display transitions in deco</source>
-        <translation type="unfinished"/>
+        <translation>Prikaži tranzicije u deku</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="501"/>
         <source>Verbatim dive plan</source>
-        <translation type="unfinished"/>
+        <translation>Doslovni plan ronjenja</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="508"/>
         <source>Display plan variations</source>
-        <translation type="unfinished"/>
+        <translation>Prikaži varijacije plana</translation>
     </message>
 </context>
 <context>
@@ -4683,7 +4694,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerView.qml" line="11"/>
         <source>Dive planner view</source>
-        <translation type="unfinished"/>
+        <translation>Prikaz planiranja urona</translation>
     </message>
 </context>
 <context>
@@ -4691,7 +4702,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="117"/>
         <source>Dive planner points</source>
-        <translation type="unfinished"/>
+        <translation>Točke planiranja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="123"/>
@@ -4701,7 +4712,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="124"/>
         <source>Add cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj bocu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="154"/>
@@ -4711,12 +4722,12 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="164"/>
         <source>Save new</source>
-        <translation type="unfinished"/>
+        <translation>Spremi novo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="274"/>
         <source>kg/ℓ</source>
-        <translation type="unfinished"/>
+        <translation>kg/ℓ</translation>
     </message>
 </context>
 <context>
@@ -4744,87 +4755,87 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="126"/>
         <source>Color</source>
-        <translation type="unfinished"/>
+        <translation>Boja</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="128"/>
         <source>User entered</source>
-        <translation type="unfinished"/>
+        <translation>Korisnički uneseno</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="130"/>
         <source>Pressure S</source>
-        <translation type="unfinished"/>
+        <translation>Tlak S</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="132"/>
         <source>Pressure I</source>
-        <translation type="unfinished"/>
+        <translation>Tlak I</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="134"/>
         <source>Ceiling</source>
-        <translation type="unfinished"/>
+        <translation>Strop</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="136"/>
         <source>SAC</source>
-        <translation>SAC</translation>
+        <translation>potrošnja</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="138"/>
         <source>pN₂</source>
-        <translation type="unfinished"/>
+        <translation>pN₂</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="140"/>
         <source>pHe</source>
-        <translation type="unfinished"/>
+        <translation>pHe</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="142"/>
         <source>pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="144"/>
         <source>Setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Setpoint</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="146"/>
         <source>Sensor 1</source>
-        <translation type="unfinished"/>
+        <translation>Senzor 1</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="148"/>
         <source>Sensor 2</source>
-        <translation type="unfinished"/>
+        <translation>Senzor 2</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="150"/>
         <source>Sensor 3</source>
-        <translation type="unfinished"/>
+        <translation>Senzor 3</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="152"/>
         <source>Ambient pressure</source>
-        <translation type="unfinished"/>
+        <translation>Amb. temperatura</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="154"/>
         <source>Heart rate</source>
-        <translation type="unfinished"/>
+        <translation>Puls</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="156"/>
         <source>Gradient factor</source>
-        <translation type="unfinished"/>
+        <translation>Gradijent faktor</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="158"/>
         <source>Mean depth @ s</source>
-        <translation type="unfinished"/>
+        <translation>Prosječna dubina @ s</translation>
     </message>
 </context>
 <context>
@@ -4833,25 +4844,25 @@ GPS location:</source>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="178"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Dijalog</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="61"/>
         <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="179"/>
         <source>User ID</source>
-        <translation type="unfinished"/>
+        <translation>ID korisnika</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="75"/>
         <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="183"/>
         <source>⌫</source>
-        <translation type="unfinished"/>
+        <translation>⌫</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="82"/>
         <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="184"/>
         <source>Get user ID</source>
-        <translation type="unfinished"/>
+        <translation>Dohvati ID korisnika</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="91"/>
@@ -4869,7 +4880,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="107"/>
         <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="189"/>
         <source>Keep dives private</source>
-        <translation type="unfinished"/>
+        <translation>Čuvaj urone privatnima</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="129"/>
@@ -4885,7 +4896,11 @@ GPS location:</source>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Oxygen-Sans'; font-size:7pt; font-weight:600; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Oxygen-Sans&apos;; font-size:7pt; font-weight:600; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -4893,47 +4908,47 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="18"/>
         <source>Dive summary</source>
-        <translation type="unfinished"/>
+        <translation>Sažetak urona</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="51"/>
         <source>All</source>
-        <translation type="unfinished"/>
+        <translation>Svi</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="52"/>
         <source>1 month</source>
-        <translation type="unfinished"/>
+        <translation>1 mjesec</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="53"/>
         <source>3 months</source>
-        <translation type="unfinished"/>
+        <translation>3 mjeseca</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="54"/>
         <source>6 months</source>
-        <translation type="unfinished"/>
+        <translation>6 mjeseci</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="55"/>
         <source>1 year</source>
-        <translation type="unfinished"/>
+        <translation>1 godina</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="59"/>
         <source>last dive:</source>
-        <translation type="unfinished"/>
+        <translation>zadnji uron:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="69"/>
         <source>first dive:</source>
-        <translation type="unfinished"/>
+        <translation>prvi uron:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="85"/>
         <source>Refresh</source>
-        <translation type="unfinished"/>
+        <translation>Osvježi</translation>
     </message>
 </context>
 <context>
@@ -4941,7 +4956,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="67"/>
         <source>Number of dives</source>
-        <translation type="unfinished"/>
+        <translation>Broj urona</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="68"/>
@@ -4956,7 +4971,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="70"/>
         <source>SAC</source>
-        <translation>SAC</translation>
+        <translation>potrošnja</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="85"/>
@@ -4966,57 +4981,57 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="86"/>
         <source>EAN dives</source>
-        <translation type="unfinished"/>
+        <translation>EAN uroni</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="87"/>
         <source>Deep dives (&gt; 39 m)</source>
-        <translation type="unfinished"/>
+        <translation>Duboki uroni (&gt; 39 m)</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="88"/>
         <source>Dive plan(s)</source>
-        <translation type="unfinished"/>
+        <translation>Plan(ovi)</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="89"/>
         <source>Total time</source>
-        <translation type="unfinished"/>
+        <translation>Ukupno vrijeme</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="90"/>
         <source>Max Time</source>
-        <translation type="unfinished"/>
+        <translation>Maks. vrijeme</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="91"/>
         <source>Avg time</source>
-        <translation type="unfinished"/>
+        <translation>Prosječno vrijeme</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="92"/>
         <source>Max depth</source>
-        <translation type="unfinished"/>
+        <translation>Maks. dubina</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="93"/>
         <source>Avg max depth</source>
-        <translation type="unfinished"/>
+        <translation>Prosječna maks. dubina</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="94"/>
         <source>Min SAC</source>
-        <translation>Min SAC</translation>
+        <translation>Min. potrošnja</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="95"/>
         <source>Max SAC</source>
-        <translation>Max SAC</translation>
+        <translation>Maks. potrošnja</translation>
     </message>
     <message>
         <location filename="../qt-models/divesummarymodel.cpp" line="96"/>
         <source>Avg SAC</source>
-        <translation>Prosj. SAC</translation>
+        <translation>Prosj. potrošnja</translation>
     </message>
 </context>
 <context>
@@ -5024,17 +5039,17 @@ p, li { white-space: pre-wrap; }
     <message numerus="yes">
         <location filename="../qt-models/divetripmodel.cpp" line="75"/>
         <source>(%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>(%n zaron)</numerusform><numerusform>(%n zarona)</numerusform><numerusform>(%n zarona)</numerusform></translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="77"/>
         <source>(%L1 shown)</source>
-        <translation type="unfinished"/>
+        <translation>(%L1 prikazan)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="124"/>
         <source>(%1 shown)</source>
-        <translation type="unfinished"/>
+        <translation>(%1 prikazan)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="311"/>
@@ -5061,7 +5076,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="317"/>
         <location filename="../qt-models/divetripmodel.cpp" line="426"/>
         <source>Depth(%1)</source>
-        <translation type="unfinished"/>
+        <translation>Dubina(%1)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="317"/>
@@ -5086,13 +5101,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="321"/>
         <location filename="../qt-models/divetripmodel.cpp" line="430"/>
         <source>Temp.(°%1)</source>
-        <translation type="unfinished"/>
+        <translation>Temp.(°%1)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="323"/>
         <location filename="../qt-models/divetripmodel.cpp" line="432"/>
         <source>Weight(%1)</source>
-        <translation type="unfinished"/>
+        <translation>Olova(%1)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="323"/>
@@ -5125,19 +5140,19 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="398"/>
         <location filename="../qt-models/divetripmodel.cpp" line="438"/>
         <source>Gas</source>
-        <translation type="unfinished"/>
+        <translation>Plin</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="333"/>
         <location filename="../qt-models/divetripmodel.cpp" line="442"/>
         <source>SAC(%1)</source>
-        <translation type="unfinished"/>
+        <translation>potrošnja(%1)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="333"/>
         <location filename="../qt-models/divetripmodel.cpp" line="442"/>
         <source>/min</source>
-        <translation type="unfinished"/>
+        <translation>/min</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="335"/>
@@ -5156,26 +5171,26 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="406"/>
         <location filename="../qt-models/divetripmodel.cpp" line="448"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Oznake</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="341"/>
         <location filename="../qt-models/divetripmodel.cpp" line="450"/>
         <source>Media before/during/after dive</source>
-        <translation type="unfinished"/>
+        <translation>Mediji prije/tijekom/nakon urona</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="343"/>
         <location filename="../qt-models/divetripmodel.cpp" line="410"/>
         <source>Country</source>
-        <translation type="unfinished"/>
+        <translation>Država</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="345"/>
         <location filename="../qt-models/divetripmodel.cpp" line="412"/>
         <location filename="../qt-models/divetripmodel.cpp" line="452"/>
         <source>Buddy</source>
-        <translation>Buddy</translation>
+        <translation>Partner</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="347"/>
@@ -5192,7 +5207,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="390"/>
         <source>Temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temp.</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="392"/>
@@ -5202,18 +5217,18 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="400"/>
         <source>SAC</source>
-        <translation>SAC</translation>
+        <translation>potrošnja</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="404"/>
         <location filename="../qt-models/divetripmodel.cpp" line="446"/>
         <source>Max CNS</source>
-        <translation type="unfinished"/>
+        <translation>Maks. CNS</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="408"/>
         <source>Media</source>
-        <translation type="unfinished"/>
+        <translation>Medij</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="482"/>
@@ -5237,54 +5252,55 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="250"/>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="415"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Gotovo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="273"/>
         <source>Uploading dive list...</source>
-        <translation type="unfinished"/>
+        <translation>Učitavanje liste urona…</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="293"/>
         <source>Downloading dive list...</source>
-        <translation type="unfinished"/>
+        <translation>Preuzimanje liste urona…</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="334"/>
         <source>Downloading %1 dives...</source>
-        <translation type="unfinished"/>
+        <translation>Preuzimanje %1 urona…</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="368"/>
         <source>Download finished - %1</source>
-        <translation type="unfinished"/>
+        <translation>Preuzimanje dovršeno - %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="382"/>
         <source>Problem with download</source>
-        <translation type="unfinished"/>
+        <translation>Problem s preuzimanjem</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="383"/>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="393"/>
         <source>The archive could not be opened:
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće ovoriti arhivu:
+%1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="392"/>
         <source>Corrupted download</source>
-        <translation type="unfinished"/>
+        <translation>Oštećena preuzeta datoteka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="426"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Greška: %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="435"/>
         <source>Transferring data...</source>
-        <translation type="unfinished"/>
+        <translation>Prijenos podataka…</translation>
     </message>
 </context>
 <context>
@@ -5292,27 +5308,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/divesiteimportdialog.ui" line="14"/>
         <source>Select dive sites to import</source>
-        <translation type="unfinished"/>
+        <translation>Odaberi lokacije za uvoz</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divesiteimportdialog.ui" line="58"/>
         <source>Select all</source>
-        <translation type="unfinished"/>
+        <translation>Označi sve</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divesiteimportdialog.ui" line="65"/>
         <source>Unselect all</source>
-        <translation type="unfinished"/>
+        <translation>Odznači sve</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divesiteimportdialog.ui" line="102"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>U redu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divesiteimportdialog.ui" line="109"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Poništi</translation>
     </message>
 </context>
 <context>
@@ -5320,7 +5336,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divesiteimportmodel.cpp" line="30"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Ime</translation>
     </message>
     <message>
         <location filename="../qt-models/divesiteimportmodel.cpp" line="32"/>
@@ -5330,18 +5346,19 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divesiteimportmodel.cpp" line="34"/>
         <source>Country</source>
-        <translation type="unfinished"/>
+        <translation>Država</translation>
     </message>
     <message>
         <location filename="../qt-models/divesiteimportmodel.cpp" line="36"/>
         <source>Nearest
 Existing Site</source>
-        <translation type="unfinished"/>
+        <translation>Najbliža
+Postojeća lokacija</translation>
     </message>
     <message>
         <location filename="../qt-models/divesiteimportmodel.cpp" line="38"/>
         <source>Distance</source>
-        <translation type="unfinished"/>
+        <translation>Udaljenost</translation>
     </message>
 </context>
 <context>
@@ -5349,18 +5366,18 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="86"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Preuzmi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="90"/>
         <source>Choose Bluetooth download mode</source>
-        <translation type="unfinished"/>
+        <translation>Preuzimanje pomoću BT</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="202"/>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="205"/>
         <source>Connecting to dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Spajanje na računalo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="300"/>
@@ -5370,52 +5387,52 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="349"/>
         <source>Find Uemis dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Pronađi Uemis računalo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="349"/>
         <source>Find Garmin dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Pronađi Garmin računalo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="375"/>
         <source>Cancel download</source>
-        <translation type="unfinished"/>
+        <translation>Otkaži preuzimanje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="454"/>
         <source>Choose file for dive computer download logfile</source>
-        <translation type="unfinished"/>
+        <translation>Odaberi datoteku za spremanje zapisnika</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="455"/>
         <source>Log files</source>
-        <translation type="unfinished"/>
+        <translation>Zapisnici</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="468"/>
         <source>Warning</source>
-        <translation type="unfinished"/>
+        <translation>Upozorenje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="469"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
-        <translation type="unfinished"/>
+        <translation>Spremanje libdivecomputer istovara NEĆE preuzeti urone u listu urona.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="480"/>
         <source>Choose file for dive computer binary dump file</source>
-        <translation type="unfinished"/>
+        <translation>Odaberi datoteku za istovar binarne datoteke iz računala.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="481"/>
         <source>Dump files</source>
-        <translation type="unfinished"/>
+        <translation>Istovarne datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="509"/>
         <source>Retry download</source>
-        <translation type="unfinished"/>
+        <translation>Ponovno pokušaj preuzimanje</translation>
     </message>
 </context>
 <context>
@@ -5424,7 +5441,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="317"/>
         <source>Download from dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Preuzmi s računala</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="52"/>
@@ -5436,31 +5453,31 @@ Existing Site</source>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="59"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="319"/>
         <source>Dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Računalo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="69"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="320"/>
         <source>Always prefer downloaded dives</source>
-        <translation type="unfinished"/>
+        <translation>Uvijek preferiraj preuzete urone</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="76"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="321"/>
         <source>Save libdivecomputer logfile</source>
-        <translation type="unfinished"/>
+        <translation>Spremi libdivecomputer zapisnik</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="90"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="322"/>
         <source>Choose Bluetooth download mode</source>
-        <translation type="unfinished"/>
+        <translation>Preuzimanje pomoću BT</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="97"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="324"/>
         <source>Select a remote Bluetooth device.</source>
-        <translation type="unfinished"/>
+        <translation>Odabir udaljenog BT uređaja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="100"/>
@@ -5472,7 +5489,7 @@ Existing Site</source>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="328"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="330"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>…</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="121"/>
@@ -5484,19 +5501,19 @@ Existing Site</source>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="135"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="331"/>
         <source>Vendor</source>
-        <translation type="unfinished"/>
+        <translation>Dobavljač</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="142"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="332"/>
         <source>Download into new trip</source>
-        <translation type="unfinished"/>
+        <translation>Preuzmi u novu grupu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="149"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="333"/>
         <source>Save libdivecomputer dumpfile</source>
-        <translation type="unfinished"/>
+        <translation>Spremi libdivecomputer istovar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="211"/>
@@ -5506,68 +5523,68 @@ Existing Site</source>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="468"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="334"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Preuzmi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="265"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="336"/>
         <source>Downloaded dives</source>
-        <translation type="unfinished"/>
+        <translation>Preuzeti uroni</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="275"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="337"/>
         <source>Select all</source>
-        <translation type="unfinished"/>
+        <translation>Označi sve</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="282"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="338"/>
         <source>Unselect all</source>
-        <translation type="unfinished"/>
+        <translation>Odznači sve</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="323"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="339"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>U redu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="330"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="353"/>
         <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="340"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Poništi</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="16"/>
         <source>Dive Computer</source>
-        <translation type="unfinished"/>
+        <translation>Računalo</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="22"/>
         <source>Bluetooth is not enabled</source>
-        <translation type="unfinished"/>
+        <translation>BT nije omogućen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="55"/>
         <source> Vendor name: </source>
-        <translation type="unfinished"/>
+        <translation>Naziv dobavljača</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="91"/>
         <source> Dive Computer:</source>
-        <translation type="unfinished"/>
+        <translation>Računalo:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="130"/>
         <source> Connection:</source>
-        <translation type="unfinished"/>
+        <translation>Veza: </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="218"/>
         <source> Previously used dive computers: </source>
-        <translation type="unfinished"/>
+        <translation>Prethodno korištena računala:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="325"/>
@@ -5582,42 +5599,42 @@ Existing Site</source>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="371"/>
         <source>Rescan</source>
-        <translation type="unfinished"/>
+        <translation>Ponovno skeniraj</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="387"/>
         <source> Downloaded dives</source>
-        <translation type="unfinished"/>
+        <translation>Preuzeti uroni</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="388"/>
         <source>Info:</source>
-        <translation type="unfinished"/>
+        <translation>Info:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="411"/>
         <source>force downloading all dives</source>
-        <translation type="unfinished"/>
+        <translation>prisli preuzimanje svih urona</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="440"/>
         <source>Please wait while we record these dives...</source>
-        <translation type="unfinished"/>
+        <translation>Molimo pričekajte dok snimimo ove zarone…</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="455"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Prihvati</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="481"/>
         <source>Select All</source>
-        <translation type="unfinished"/>
+        <translation>Označi sve</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="490"/>
         <source>Unselect All</source>
-        <translation type="unfinished"/>
+        <translation>Odznači sve</translation>
     </message>
 </context>
 <context>
@@ -5625,7 +5642,7 @@ Existing Site</source>
     <message>
         <location filename="../core/downloadfromdcthread.cpp" line="127"/>
         <source>No new dives downloaded from dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Nema novih zarona na računalu</translation>
     </message>
 </context>
 <context>
@@ -5633,97 +5650,97 @@ Existing Site</source>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="11"/>
         <source>Export Divelog information</source>
-        <translation type="unfinished"/>
+        <translation>Izvezi dnevnik ronjenja</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="43"/>
         <source>Export credentials</source>
-        <translation type="unfinished"/>
+        <translation>Vjerodajnice za izvoz</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="48"/>
         <source>User ID</source>
-        <translation type="unfinished"/>
+        <translation>ID korisnika</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="58"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Lozinka:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="73"/>
         <source>Private</source>
-        <translation type="unfinished"/>
+        <translation>Privatno</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="88"/>
         <source>Export</source>
-        <translation type="unfinished"/>
+        <translation>Izvoz</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="107"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Poništi</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="139"/>
         <source>Export Subsurface XML</source>
-        <translation type="unfinished"/>
+        <translation>Izvezi Subsurface XML</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="144"/>
         <source>Subsurface native XML format.</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface nativni XML format.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="148"/>
         <source>Export Subsurface dive sites XML</source>
-        <translation type="unfinished"/>
+        <translation>Izvezi Subsurface lokacije XML</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="152"/>
         <source>Subsurface dive sites native XML format.</source>
-        <translation type="unfinished"/>
+        <translation>Nativni format Subsurface lokacija XML</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="156"/>
         <source>Export UDDF</source>
-        <translation type="unfinished"/>
+        <translation>Izvezi UDDF</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="160"/>
         <source>Generic format that is used for data exchange between a variety of diving related programs.</source>
-        <translation type="unfinished"/>
+        <translation>Generički format koji se koristi za razmjenu podataka između različitih ronilačkih programa. </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="164"/>
         <source>Upload divelogs.de</source>
-        <translation type="unfinished"/>
+        <translation>Prenesi na divelogs.de</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="167"/>
         <source>Send the dive data to divelogs.de website.</source>
-        <translation type="unfinished"/>
+        <translation>Prenesi podatke urona na web stranicu divelogs.de</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="171"/>
         <source>Upload DiveShare</source>
-        <translation type="unfinished"/>
+        <translation>Prensi na DiveShare</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="174"/>
         <source>Send the dive data to dive-share.appspot.com website.</source>
-        <translation type="unfinished"/>
+        <translation>Prensi podatke o uronima na web stranicu dive-share.appspot.com</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="195"/>
         <source>Anonymize</source>
-        <translation type="unfinished"/>
+        <translation>Anonimiziraj</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="198"/>
         <source>Next</source>
-        <translation type="unfinished"/>
+        <translation>Seljedeće</translation>
     </message>
 </context>
 <context>
@@ -5731,12 +5748,12 @@ Existing Site</source>
     <message>
         <location filename="../qt-models/divecomputerextradatamodel.cpp" line="10"/>
         <source>Key</source>
-        <translation type="unfinished"/>
+        <translation>Ključ</translation>
     </message>
     <message>
         <location filename="../qt-models/divecomputerextradatamodel.cpp" line="10"/>
         <source>Value</source>
-        <translation type="unfinished"/>
+        <translation>Vrijednost</translation>
     </message>
 </context>
 <context>
@@ -5744,12 +5761,12 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="148"/>
         <source>Click to remove this constraint</source>
-        <translation type="unfinished"/>
+        <translation>Ovaj odabir će ukloniti ovo ograničenje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="181"/>
         <source>and</source>
-        <translation type="unfinished"/>
+        <translation>i</translation>
     </message>
 </context>
 <context>
@@ -5757,12 +5774,12 @@ Existing Site</source>
     <message>
         <location filename="../qt-models/filterpresetmodel.cpp" line="10"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Ime</translation>
     </message>
     <message>
         <location filename="../qt-models/filterpresetmodel.cpp" line="47"/>
         <source>Clicking here will remove this filter set.</source>
-        <translation type="unfinished"/>
+        <translation>Ovaj odabir će ukloniti ovaj set filtera.</translation>
     </message>
 </context>
 <context>
@@ -5771,7 +5788,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/filterwidget.ui" line="20"/>
         <location filename="../subsurface/desktop-widgets/ui_listfilter.h" line="82"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="30"/>
@@ -5782,27 +5799,27 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="76"/>
         <source>Add constraint</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj ograničenje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="90"/>
         <source>Current set:</source>
-        <translation type="unfinished"/>
+        <translation>Trenutni set:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="110"/>
         <source>Save set</source>
-        <translation type="unfinished"/>
+        <translation>Spremi set</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="123"/>
         <source>Load set</source>
-        <translation type="unfinished"/>
+        <translation>Učitaj set</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="143"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Resetiraj</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="163"/>
@@ -5812,52 +5829,52 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="179"/>
         <source>Fulltext</source>
-        <translation type="unfinished"/>
+        <translation>Punitekst</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="201"/>
         <source>Substring</source>
-        <translation type="unfinished"/>
+        <translation>Podstring</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="206"/>
         <source>Starts with</source>
-        <translation type="unfinished"/>
+        <translation>Počinje s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="211"/>
         <source>Full word</source>
-        <translation type="unfinished"/>
+        <translation>Puna riječ</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="241"/>
         <source>Filter sets</source>
-        <translation type="unfinished"/>
+        <translation>Set filtera</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.cpp" line="225"/>
         <source>modified</source>
-        <translation type="unfinished"/>
+        <translation>promijenjeno</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_listfilter.h" line="83"/>
         <source>Text label</source>
-        <translation type="unfinished"/>
+        <translation>Tekst. ozanka</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_listfilter.h" line="84"/>
         <source>Filter this list</source>
-        <translation type="unfinished"/>
+        <translation>Filtriraj ovaj popis</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_listfilter.h" line="86"/>
         <source>Negate filter</source>
-        <translation type="unfinished"/>
+        <translation>Negiraj filter</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_listfilter.h" line="88"/>
         <source>¬</source>
-        <translation type="unfinished"/>
+        <translation>¬</translation>
     </message>
 </context>
 <context>
@@ -5865,17 +5882,17 @@ Existing Site</source>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_filterwidget.h" line="118"/>
         <source>Reset filters</source>
-        <translation type="unfinished"/>
+        <translation>Resetiraj filtere</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_filterwidget.h" line="121"/>
         <source>Show/hide filters</source>
-        <translation type="unfinished"/>
+        <translation>Prikaži/sakri filtere</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_filterwidget.h" line="124"/>
         <source>Close and reset filters</source>
-        <translation type="unfinished"/>
+        <translation>Zatvori i resetiraj filtere</translation>
     </message>
 </context>
 <context>
@@ -5884,13 +5901,13 @@ Existing Site</source>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="23"/>
         <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="154"/>
         <source>Find moved media files</source>
-        <translation type="unfinished"/>
+        <translation>Pronađi premještene medijske datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="37"/>
         <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="155"/>
         <source>Found media files</source>
-        <translation type="unfinished"/>
+        <translation>Nađene medijske datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="71"/>
@@ -5902,44 +5919,44 @@ Existing Site</source>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="95"/>
         <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="159"/>
         <source>Scanning:</source>
-        <translation type="unfinished"/>
+        <translation>Skeniranje:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="121"/>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="241"/>
         <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="161"/>
         <source>Select folder and scan</source>
-        <translation type="unfinished"/>
+        <translation>Odaberi mapu i skeniraj</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="174"/>
         <source>Traverse media directories</source>
-        <translation type="unfinished"/>
+        <translation>Prijeđi po medijskim mapama</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="180"/>
         <source>Stop scanning</source>
-        <translation type="unfinished"/>
+        <translation>Zaustavi skeniranje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="251"/>
         <source>Scanning cancelled - results may be incomplete</source>
-        <translation type="unfinished"/>
+        <translation>Skeniranje otkazano - rezultati možda nisu potpuni</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="255"/>
         <source>No matching media files found</source>
-        <translation type="unfinished"/>
+        <translation>Nije nađena odgovarajuća medijska datoteka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="267"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; media files at their current place.</source>
-        <translation type="unfinished"/>
+        <translation>Nađena &lt;b&gt;%1&lt;/b&gt; medijska datoteka na svom mjestu.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="269"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; media files at new locations:</source>
-        <translation type="unfinished"/>
+        <translation>Nađena &lt;b&gt;%1&lt;/b&gt; medijska datoteka na novom mjestu:</translation>
     </message>
 </context>
 <context>
@@ -5947,12 +5964,12 @@ Existing Site</source>
     <message>
         <location filename="../core/configuredivecomputerthreads.cpp" line="2227"/>
         <source>This feature is not yet available for the selected dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Za odabrano računalo ta mogućnosti još nije dostupna.</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputerthreads.cpp" line="2232"/>
         <source>Firmware update failed!</source>
-        <translation type="unfinished"/>
+        <translation>Neuspješno ažuriranje firmvera!</translation>
     </message>
 </context>
 <context>
@@ -5960,7 +5977,7 @@ Existing Site</source>
     <message>
         <location filename="../qt-models/models.cpp" line="37"/>
         <source>cyl.</source>
-        <translation type="unfinished"/>
+        <translation>Boca</translation>
     </message>
 </context>
 <context>
@@ -5968,27 +5985,27 @@ Existing Site</source>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="14"/>
         <source>GPS Fixes</source>
-        <translation type="unfinished"/>
+        <translation>GPS pozicije</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="30"/>
         <source>Date: </source>
-        <translation type="unfinished"/>
+        <translation>Datum:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="42"/>
         <source>Name: </source>
-        <translation type="unfinished"/>
+        <translation>Ime:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="54"/>
         <source>Latitude: </source>
-        <translation type="unfinished"/>
+        <translation>Zem. širina</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="65"/>
         <source>Longitude: </source>
-        <translation type="unfinished"/>
+        <translation>Zem. dužina</translation>
     </message>
 </context>
 <context>
@@ -5996,7 +6013,7 @@ Existing Site</source>
     <message>
         <location filename="../core/gpslocation.cpp" line="134"/>
         <source>Unknown GPS location (no GPS source)</source>
-        <translation type="unfinished"/>
+        <translation>Nepoznata GPS lokacija (nema GPS izvora)</translation>
     </message>
 </context>
 <context>
@@ -6004,75 +6021,75 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="23"/>
         <source>Get dive coordinates from GPS</source>
-        <translation type="unfinished"/>
+        <translation>Dohvati koordinate urona iz GPS-a</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="44"/>
         <source>Synchronise the dive and the GPS track</source>
-        <translation type="unfinished"/>
+        <translation>Sinhroniziraj uron i GPS putanju</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="85"/>
         <source>GPS track date </source>
-        <translation type="unfinished"/>
+        <translation>Datum GPS putanje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="99"/>
         <source>Dive date </source>
-        <translation type="unfinished"/>
+        <translation>Datum urona</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="107"/>
         <source>Start and end times:</source>
-        <translation type="unfinished"/>
+        <translation>Početno i završno vrijeme:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="138"/>
         <source>   GPS   </source>
-        <translation type="unfinished"/>
+        <translation>   GPS   </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="146"/>
         <source>   Dive   </source>
-        <translation type="unfinished"/>
+        <translation>Uron</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="154"/>
         <source>Start:  </source>
-        <translation type="unfinished"/>
+        <translation>Početak:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="179"/>
         <source>End:  </source>
-        <translation type="unfinished"/>
+        <translation>Kraj:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="283"/>
         <source>International time zone correction</source>
-        <translation type="unfinished"/>
+        <translation>Ispravak međunarodne vremenske zone</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="308"/>
         <source>By how many hours did the international time zone at the dive site differ from UTC (also regarded as Greenwich Mean Time)? Normally one would specify this value in whole hours (h:00):</source>
-        <translation type="unfinished"/>
+        <translation>Za koliko se sati međunarodna vremenska zona na mjestu urona razlikuje od koordiniranog svjetskog vriemena (UTC-a)? Ovu se vrijednost unosi kao puni sat (h:00):</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="374"/>
         <location filename="../desktop-widgets/importgps.ui" line="499"/>
         <source>h:mm</source>
-        <translation type="unfinished"/>
+        <translation>h:mm</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="385"/>
         <location filename="../desktop-widgets/importgps.ui" line="510"/>
         <source>Earlier</source>
-        <translation type="unfinished"/>
+        <translation>prije</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="393"/>
         <location filename="../desktop-widgets/importgps.ui" line="518"/>
         <source>Later</source>
-        <translation type="unfinished"/>
+        <translation>poslije</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="408"/>
@@ -6103,27 +6120,27 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/listfilter.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/listfilter.ui" line="40"/>
         <source>Text label</source>
-        <translation type="unfinished"/>
+        <translation>Tekst. ozanak</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/listfilter.ui" line="50"/>
         <source>Filter this list</source>
-        <translation type="unfinished"/>
+        <translation>Filtriraj ovaj popis</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/listfilter.ui" line="57"/>
         <source>Negate filter</source>
-        <translation type="unfinished"/>
+        <translation>Negiraj filter</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/listfilter.ui" line="60"/>
         <source>¬</source>
-        <translation type="unfinished"/>
+        <translation>¬</translation>
     </message>
 </context>
 <context>
@@ -6131,32 +6148,32 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/modeldelegates.cpp" line="423"/>
         <source> (same GPS fix)</source>
-        <translation type="unfinished"/>
+        <translation> (ista GPS pozicija)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/modeldelegates.cpp" line="428"/>
         <source> (~%1 away</source>
-        <translation type="unfinished"/>
+        <translation> (~%1 dalje</translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/modeldelegates.cpp" line="429"/>
         <source>, %n dive(s) here)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>, %n uron ovjde)</numerusform><numerusform>, %n urona ovjde)</numerusform><numerusform>, %n urona ovjde)</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/modeldelegates.cpp" line="434"/>
         <source>(no existing GPS data, add GPS fix from this dive)</source>
-        <translation type="unfinished"/>
+        <translation>(nem GPS pozicija, dodajte GPS poziciju iz ovog urona)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/modeldelegates.cpp" line="436"/>
         <source>(no GPS data)</source>
-        <translation type="unfinished"/>
+        <translation>(nema GPS pozicija)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/modeldelegates.cpp" line="438"/>
         <source>Pick site: </source>
-        <translation type="unfinished"/>
+        <translation>Odaberi mjesto:</translation>
     </message>
 </context>
 <context>
@@ -6171,13 +6188,13 @@ Existing Site</source>
         <location filename="../desktop-widgets/locationinformation.ui" line="29"/>
         <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="191"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Ime</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="36"/>
         <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="192"/>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Opis</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="43"/>
@@ -6189,61 +6206,61 @@ Existing Site</source>
         <location filename="../desktop-widgets/locationinformation.ui" line="67"/>
         <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="194"/>
         <source>Coordinates</source>
-        <translation type="unfinished"/>
+        <translation>Koordinate</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="78"/>
         <source>Load dive coordinates from GPS file</source>
-        <translation type="unfinished"/>
+        <translation>Učitaj koordinate urona iz GPS datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="81"/>
         <source>Use GPS file</source>
-        <translation type="unfinished"/>
+        <translation>Koristi GPS datoteku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="89"/>
         <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="196"/>
         <source>Reverse geo lookup</source>
-        <translation type="unfinished"/>
+        <translation>Obrnuta pretraga geolokacije</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="92"/>
         <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="198"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>…</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="114"/>
         <source>Near dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Blizu ronilačkih lokacija</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="122"/>
         <source>Show dive sites in the range of:</source>
-        <translation type="unfinished"/>
+        <translation>Prikaži lokacije unutar:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="176"/>
         <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="200"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Oznake</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="190"/>
         <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="202"/>
         <source>Country</source>
-        <translation type="unfinished"/>
+        <translation>Država</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="199"/>
         <source>Dive sites on same coordinates</source>
-        <translation type="unfinished"/>
+        <translation>Lokacije na istim koordinatama</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="204"/>
         <source>Update location on map</source>
-        <translation type="unfinished"/>
+        <translation>Ažuriraj lokaciju na mapi</translation>
     </message>
 </context>
 <context>
@@ -6251,27 +6268,27 @@ Existing Site</source>
     <message>
         <location filename="../qt-models/divelocationmodel.cpp" line="59"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Ime</translation>
     </message>
     <message>
         <location filename="../qt-models/divelocationmodel.cpp" line="61"/>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Opis</translation>
     </message>
     <message>
         <location filename="../qt-models/divelocationmodel.cpp" line="63"/>
         <source># of dives</source>
-        <translation type="unfinished"/>
+        <translation>broj urona</translation>
     </message>
     <message>
         <location filename="../qt-models/divelocationmodel.cpp" line="103"/>
         <source>Click here to edit the divesite.</source>
-        <translation type="unfinished"/>
+        <translation>Ovaj odabir za izmjenu lokacije</translation>
     </message>
     <message>
         <location filename="../qt-models/divelocationmodel.cpp" line="104"/>
         <source>Clicking here will remove this divesite.</source>
-        <translation type="unfinished"/>
+        <translation>Ovaj odabir za uklanjanje lokacije</translation>
     </message>
 </context>
 <context>
@@ -6279,27 +6296,27 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="32"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Gotovo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="35"/>
         <source>Dive site management</source>
-        <translation type="unfinished"/>
+        <translation>Upravljanje lokacijama</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="64"/>
         <source>Merge into current site</source>
-        <translation type="unfinished"/>
+        <translation>Suoji u trenutnu lokaciju</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="253"/>
         <source>Select GPS file to open</source>
-        <translation type="unfinished"/>
+        <translation>Odabir GPS datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="255"/>
         <source>GPS files (*.gpx *.GPX)</source>
-        <translation type="unfinished"/>
+        <translation>GPS datoteke (*.gpx *.GPX)</translation>
     </message>
 </context>
 <context>
@@ -6307,7 +6324,7 @@ Existing Site</source>
     <message>
         <location filename="../mobile-widgets/qml/Log.qml" line="14"/>
         <source>Application Log</source>
-        <translation type="unfinished"/>
+        <translation>Aplikacijski zapisni</translation>
     </message>
 </context>
 <context>
@@ -6316,7 +6333,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="491"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="30"/>
@@ -6349,7 +6366,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="147"/>
         <source>Duration (h:mm)</source>
-        <translation type="unfinished"/>
+        <translation>Trajanje (h:mm)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="231"/>
@@ -6363,13 +6380,13 @@ Existing Site</source>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="271"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="503"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>…</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="268"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="501"/>
         <source>Edit dive site</source>
-        <translation type="unfinished"/>
+        <translation>Uređivanje lokacije</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="303"/>
@@ -6381,13 +6398,13 @@ Existing Site</source>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="313"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="505"/>
         <source>Buddy</source>
-        <translation>Buddy</translation>
+        <translation>Partner</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="349"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="509"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Oznake</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="397"/>
@@ -6404,7 +6421,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="65"/>
         <source>Information</source>
-        <translation type="unfinished"/>
+        <translation>Info</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="67"/>
@@ -6414,68 +6431,68 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="69"/>
         <source>Media</source>
-        <translation type="unfinished"/>
+        <translation>Medij</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="71"/>
         <source>Extra Info</source>
-        <translation type="unfinished"/>
+        <translation>Dodatni info</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="73"/>
         <source>Dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Lokacije</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="94"/>
         <source>Apply changes</source>
-        <translation type="unfinished"/>
+        <translation>Primjeni promjene</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="98"/>
         <source>Discard changes</source>
-        <translation type="unfinished"/>
+        <translation>Odbaci promjene</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="102"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>U redu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="106"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Poništi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="225"/>
         <source>This dive is being edited.</source>
-        <translation type="unfinished"/>
+        <translation>Ovaj uron se uređuje.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="375"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="403"/>
         <source>Trip notes</source>
-        <translation type="unfinished"/>
+        <translation>Napomene grupe</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="397"/>
         <source>Trip location</source>
-        <translation type="unfinished"/>
+        <translation>Lokacija grupe</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="528"/>
         <source>Discard the changes?</source>
-        <translation type="unfinished"/>
+        <translation>Odbaci promjene?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="529"/>
         <source>You are about to discard your changes.</source>
-        <translation type="unfinished"/>
+        <translation>Želite li odbaciti promjene?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="559"/>
         <source>Warning: edited %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Upozorenje: promijenjeno %1 zarona</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="492"/>
@@ -6485,12 +6502,12 @@ Existing Site</source>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="495"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temp. zraka</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="496"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temp. vode</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="507"/>
@@ -6505,7 +6522,7 @@ Existing Site</source>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="510"/>
         <source>Dive mode</source>
-        <translation type="unfinished"/>
+        <translation>Vrsta ronjenja</translation>
     </message>
 </context>
 <context>
@@ -6514,43 +6531,43 @@ Existing Site</source>
         <location filename="../desktop-widgets/mainwindow.ui" line="67"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="614"/>
         <source>&amp;File</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Datoteka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="88"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="615"/>
         <source>&amp;Log</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Zapisnik</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="104"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="616"/>
         <source>&amp;View</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Pogled</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="120"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="617"/>
         <source>&amp;Help</source>
-        <translation type="unfinished"/>
+        <translation>P%omoć</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="128"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="618"/>
         <source>&amp;Import</source>
-        <translation type="unfinished"/>
+        <translation>%Uvoz</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="137"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="619"/>
         <source>&amp;Edit</source>
-        <translation type="unfinished"/>
+        <translation>%Uređivanje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="149"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="529"/>
         <source>&amp;New logbook</source>
-        <translation type="unfinished"/>
+        <translation>%Npvi dnevnik ronjenja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="152"/>
@@ -6562,26 +6579,26 @@ Existing Site</source>
         <location filename="../desktop-widgets/mainwindow.ui" line="160"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="533"/>
         <source>&amp;Open logbook</source>
-        <translation type="unfinished"/>
+        <translation>%Otvori dnevnik ronjenja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="163"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="481"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="535"/>
         <source>Open</source>
-        <translation type="unfinished"/>
+        <translation>Otvori</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="171"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="537"/>
         <source>&amp;Save</source>
-        <translation type="unfinished"/>
+        <translation>%Spremi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="174"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="539"/>
         <source>Save</source>
-        <translation type="unfinished"/>
+        <translation>Spremi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="182"/>
@@ -6872,7 +6889,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/mainwindow.ui" line="587"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="597"/>
         <source>Toggle SAC rate</source>
-        <translation>SAC</translation>
+        <translation>Promjena stope potrošnje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="599"/>
@@ -6914,13 +6931,13 @@ Existing Site</source>
         <location filename="../desktop-widgets/mainwindow.ui" line="663"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="605"/>
         <source>&amp;Undo</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Poništi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="671"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="606"/>
         <source>&amp;Redo</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Ponovi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="679"/>
@@ -6970,7 +6987,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/mainwindow.cpp" line="765"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="856"/>
         <source>Warning</source>
-        <translation type="unfinished"/>
+        <translation>Upozorenje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="594"/>
@@ -7001,7 +7018,7 @@ can overwrite them on startup.</source>
         <location filename="../desktop-widgets/mainwindow.cpp" line="519"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1402"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
-        <translation type="unfinished"/>
+        <translation>Spremite ili odbacite trenutni uron prije otvaranja nove datoteke.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="478"/>
@@ -7012,7 +7029,7 @@ can overwrite them on startup.</source>
         <location filename="../desktop-widgets/mainwindow.cpp" line="482"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1787"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Poništi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="592"/>
@@ -7023,7 +7040,7 @@ can overwrite them on startup.</source>
         <location filename="../desktop-widgets/mainwindow.cpp" line="604"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1246"/>
         <source>Save changes?</source>
-        <translation type="unfinished"/>
+        <translation>Spremi promjene?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="605"/>
@@ -7077,7 +7094,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../desktop-widgets/mainwindow.cpp" line="1202"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1431"/>
         <source>Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1161"/>
@@ -7119,7 +7136,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../desktop-widgets/mainwindow.cpp" line="1167"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1210"/>
         <source>UDDF</source>
-        <translation type="unfinished"/>
+        <translation>UDDF</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1168"/>
@@ -7172,7 +7189,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../desktop-widgets/mainwindow.cpp" line="1218"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1230"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Sve datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1225"/>
@@ -7213,7 +7230,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../desktop-widgets/mainwindow.cpp" line="1558"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1660"/>
         <source>multiple files</source>
-        <translation type="unfinished"/>
+        <translation>višestruke datotek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1586"/>
@@ -7337,7 +7354,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="302"/>
         <source>Update firmware</source>
-        <translation type="unfinished"/>
+        <translation>Ažuriranje firmvera</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="304"/>
@@ -7395,12 +7412,12 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="557"/>
         <source>50% avg. depth to 6m</source>
-        <translation type="unfinished"/>
+        <translation>50 % prosj. dubine do 6 m</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="558"/>
         <source>6m to surface</source>
-        <translation type="unfinished"/>
+        <translation>površina - 6 m</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="559"/>
@@ -7417,7 +7434,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../desktop-widgets/diveplanner.cpp" line="571"/>
         <location filename="../desktop-widgets/diveplanner.cpp" line="572"/>
         <source>ℓ/min</source>
-        <translation type="unfinished"/>
+        <translation>ℓ/min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="581"/>
@@ -7435,7 +7452,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="32"/>
@@ -7530,7 +7547,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="24"/>
@@ -7564,7 +7581,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="329"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="21"/>
@@ -7575,13 +7592,13 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="31"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="331"/>
         <source>Font</source>
-        <translation type="unfinished"/>
+        <translation>Font</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="53"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="332"/>
         <source>Font size</source>
-        <translation type="unfinished"/>
+        <translation>Veličina slova</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="68"/>
@@ -7649,7 +7666,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="340"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="349"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>…</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="341"/>
@@ -7715,7 +7732,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="24"/>
@@ -7749,7 +7766,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../desktop-widgets/preferences/preferences_georeference.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_georeference.h" line="105"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_georeference.ui" line="24"/>
@@ -7786,7 +7803,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="337"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="20"/>
@@ -7874,7 +7891,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="192"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="355"/>
         <source>ℓ/min</source>
-        <translation type="unfinished"/>
+        <translation>ℓ/min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="202"/>
@@ -7910,7 +7927,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="245"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="362"/>
         <source>GFHigh</source>
-        <translation type="unfinished"/>
+        <translation>GFHigh</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="255"/>
@@ -7930,19 +7947,19 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="365"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="370"/>
         <source>%</source>
-        <translation type="unfinished"/>
+        <translation>%</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="288"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="366"/>
         <source>Conservatism level</source>
-        <translation type="unfinished"/>
+        <translation>Razina konzervativnosti</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="298"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="367"/>
         <source>+</source>
-        <translation type="unfinished"/>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="314"/>
@@ -7960,7 +7977,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="341"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="371"/>
         <source>GFLow</source>
-        <translation type="unfinished"/>
+        <translation>GFLow</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.cpp" line="12"/>
@@ -7994,7 +8011,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="178"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="26"/>
@@ -8018,7 +8035,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="74"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="182"/>
         <source>Date format</source>
-        <translation type="unfinished"/>
+        <translation>Format datuma</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="80"/>
@@ -8050,7 +8067,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="132"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="191"/>
         <source>Time format</source>
-        <translation type="unfinished"/>
+        <translation>Format vremena</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="151"/>
@@ -8061,7 +8078,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="13"/>
         <source>Language</source>
-        <translation type="unfinished"/>
+        <translation>jezik</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="74"/>
@@ -8103,7 +8120,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="21"/>
@@ -8143,7 +8160,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="98"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>…</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="111"/>
@@ -8178,7 +8195,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="28"/>
         <source>Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface datoteke</translation>
     </message>
 </context>
 <context>
@@ -8186,7 +8203,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="24"/>
@@ -8231,7 +8248,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="126"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>…</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="142"/>
@@ -8246,12 +8263,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.cpp" line="14"/>
         <source>Media</source>
-        <translation type="unfinished"/>
+        <translation>Medij</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.cpp" line="39"/>
         <source>Warning</source>
-        <translation type="unfinished"/>
+        <translation>Upozorenje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.cpp" line="39"/>
@@ -8270,7 +8287,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="233"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="20"/>
@@ -8375,7 +8392,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_reset.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_reset.ui" line="39"/>
@@ -8390,7 +8407,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_reset.cpp" line="6"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Resetiraj</translation>
     </message>
 </context>
 <context>
@@ -8399,7 +8416,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="346"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="20"/>
@@ -8423,7 +8440,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="40"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="350"/>
         <source>Imperial</source>
-        <translation type="unfinished"/>
+        <translation>Imperijalne</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="47"/>
@@ -8543,13 +8560,13 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="220"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="370"/>
         <source>Minutes</source>
-        <translation type="unfinished"/>
+        <translation>Minute</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="227"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="371"/>
         <source>Seconds</source>
-        <translation type="unfinished"/>
+        <translation>Sekunde</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="237"/>
@@ -8721,7 +8738,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../desktop-widgets/printoptions.ui" line="171"/>
         <location filename="../subsurface/desktop-widgets/ui_printoptions.h" line="177"/>
         <source>Export</source>
-        <translation type="unfinished"/>
+        <translation>Izvoz</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="178"/>
@@ -8752,7 +8769,7 @@ Please export this template to a different file.</source>
         <location filename="../desktop-widgets/printoptions.cpp" line="151"/>
         <location filename="../desktop-widgets/printoptions.cpp" line="182"/>
         <source>HTML files</source>
-        <translation type="unfinished"/>
+        <translation>HTML datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="161"/>
@@ -8841,7 +8858,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1478"/>
         <source>Add bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj oznaku</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1479"/>
@@ -9037,7 +9054,7 @@ Please export this template to a different file.</source>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="986"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="987"/>
         <source>h</source>
-        <translation type="unfinished"/>
+        <translation>h</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="986"/>
@@ -9123,7 +9140,7 @@ Please export this template to a different file.</source>
         <location filename="../core/configuredivecomputerthreads.cpp" line="2129"/>
         <location filename="../core/configuredivecomputerthreads.cpp" line="2153"/>
         <source>This feature is not yet available for the selected dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Za odabrano računalo ta mogućnosti još nije dostupna.</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputerthreads.cpp" line="2131"/>
@@ -9198,7 +9215,7 @@ Please export this template to a different file.</source>
         <location filename="../desktop-widgets/searchbar.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/ui_searchbar.h" line="120"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
 </context>
 <context>
@@ -9252,12 +9269,12 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="19"/>
         <source>No cloud mode</source>
-        <translation type="unfinished"/>
+        <translation>Način bez oblaka</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="24"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Opće postavke</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="34"/>
@@ -9267,7 +9284,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="42"/>
         <source>Email</source>
-        <translation type="unfinished"/>
+        <translation>e-pošta</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="45"/>
@@ -9297,7 +9314,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="82"/>
         <source>Cylinder:</source>
-        <translation type="unfinished"/>
+        <translation>Boca:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="106"/>
@@ -9317,7 +9334,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="134"/>
         <source>Theme</source>
-        <translation type="unfinished"/>
+        <translation>Tema</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="141"/>
@@ -9327,7 +9344,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="154"/>
         <source>Blue</source>
-        <translation type="unfinished"/>
+        <translation>Plavo</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="155"/>
@@ -9392,7 +9409,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="305"/>
         <source>Font size</source>
-        <translation type="unfinished"/>
+        <translation>Veličina slova</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="316"/>
@@ -9417,12 +9434,12 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="352"/>
         <source>Metric</source>
-        <translation type="unfinished"/>
+        <translation>Metričke</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="362"/>
         <source>Imperial</source>
-        <translation type="unfinished"/>
+        <translation>Imperijalne</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="372"/>
@@ -9575,19 +9592,19 @@ Please report DCs that need this setting</source>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="95"/>
         <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="196"/>
         <source>h:mm</source>
-        <translation type="unfinished"/>
+        <translation>h:mm</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="105"/>
         <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="197"/>
         <source>Earlier</source>
-        <translation type="unfinished"/>
+        <translation>Ranije</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="112"/>
         <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="198"/>
         <source>Later</source>
-        <translation type="unfinished"/>
+        <translation>Kasnije</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="128"/>
@@ -9635,7 +9652,7 @@ Not all media files have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="240"/>
         <source>Image files</source>
-        <translation type="unfinished"/>
+        <translation>Slikovne datoteke</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="321"/>
@@ -9702,19 +9719,19 @@ Files with inappropriate date/time</source>
         <location filename="../desktop-widgets/shifttimes.ui" line="126"/>
         <location filename="../subsurface/desktop-widgets/ui_shifttimes.h" line="142"/>
         <source>h:mm</source>
-        <translation type="unfinished"/>
+        <translation>h:mm</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shifttimes.ui" line="136"/>
         <location filename="../subsurface/desktop-widgets/ui_shifttimes.h" line="143"/>
         <source>Earlier</source>
-        <translation type="unfinished"/>
+        <translation>Ranije</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shifttimes.ui" line="143"/>
         <location filename="../subsurface/desktop-widgets/ui_shifttimes.h" line="144"/>
         <source>Later</source>
-        <translation type="unfinished"/>
+        <translation>Kasnije</translation>
     </message>
 </context>
 <context>
@@ -9774,7 +9791,7 @@ Files with inappropriate date/time</source>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="56"/>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="67"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Sve datoteke</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="66"/>
@@ -9784,7 +9801,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="67"/>
         <source>Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface datoteke</translation>
     </message>
 </context>
 <context>
@@ -9858,12 +9875,12 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="50"/>
         <source>Add cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj bocu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="53"/>
         <source>Weights</source>
-        <translation type="unfinished"/>
+        <translation>Olova</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="54"/>
@@ -9873,17 +9890,17 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="57"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>U redu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="61"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Poništi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="189"/>
         <source>Warning: edited %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Upozorenje: promijenjeno %1 zarona</translation>
     </message>
 </context>
 <context>
@@ -9892,7 +9909,7 @@ Files with inappropriate date/time</source>
         <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveExtraInfo.h" line="49"/>
         <source>Extra Info</source>
-        <translation type="unfinished"/>
+        <translation>Dodatni info</translation>
     </message>
 </context>
 <context>
@@ -9901,7 +9918,7 @@ Files with inappropriate date/time</source>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="297"/>
         <source>Information</source>
-        <translation type="unfinished"/>
+        <translation>Info</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="63"/>
@@ -9911,7 +9928,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="71"/>
         <source>Dive mode</source>
-        <translation type="unfinished"/>
+        <translation>Vrsta ronjenja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="95"/>
@@ -9928,13 +9945,13 @@ Files with inappropriate date/time</source>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="151"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="312"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Maks. dubina</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="180"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="314"/>
         <source>Avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Prosječna dubina</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="209"/>
@@ -9956,7 +9973,7 @@ Files with inappropriate date/time</source>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="273"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="306"/>
         <source>SAC</source>
-        <translation>SAC</translation>
+        <translation>potrošnja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="301"/>
@@ -9979,13 +9996,13 @@ Files with inappropriate date/time</source>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="372"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="318"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temp. zraka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="401"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="320"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temp. vode</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="436"/>
@@ -10072,28 +10089,28 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="51"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>U redu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="54"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Poništi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="98"/>
         <source>Warning: edited %1 dives</source>
-        <translation type="unfinished"/>
+        <translation>Upozorenje: promijenjeno %1 zarona</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="147"/>
         <source>/min</source>
-        <translation type="unfinished"/>
+        <translation>/min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="154"/>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="172"/>
         <source>h</source>
-        <translation type="unfinished"/>
+        <translation>h</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="154"/>
@@ -10139,7 +10156,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="324"/>
         <source>Water type</source>
-        <translation type="unfinished"/>
+        <translation>Voda</translation>
     </message>
 </context>
 <context>
@@ -10159,7 +10176,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="56"/>
         <source>Load media from file(s)</source>
-        <translation type="unfinished"/>
+        <translation>Učitaj medije iz datoteka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="57"/>
@@ -10208,7 +10225,7 @@ Files with inappropriate date/time</source>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.ui" line="14"/>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="15"/>
         <source>Dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Lokacije</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.ui" line="22"/>
@@ -10248,13 +10265,13 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="73"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Maks. dubina</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="85"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="196"/>
         <source>SAC</source>
-        <translation>SAC</translation>
+        <translation>potrošnja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="97"/>
@@ -10266,7 +10283,7 @@ Files with inappropriate date/time</source>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="109"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="198"/>
         <source>Total time</source>
-        <translation type="unfinished"/>
+        <translation>Ukupno vrijeme</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="128"/>
@@ -10289,17 +10306,17 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="12"/>
         <source>Highest total SAC of a dive</source>
-        <translation type="unfinished"/>
+        <translation>Najveća ukupna potrošnja urona</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="13"/>
         <source>Lowest total SAC of a dive</source>
-        <translation type="unfinished"/>
+        <translation>Najniža ukupna potrošnja urona</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="14"/>
         <source>Average total SAC of all selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Prosječna ukupna potrošnja odabranog urona</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="15"/>
@@ -10346,7 +10363,7 @@ Files with inappropriate date/time</source>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="91"/>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="95"/>
         <source>/min</source>
-        <translation type="unfinished"/>
+        <translation>/min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="112"/>
@@ -10354,7 +10371,7 @@ Files with inappropriate date/time</source>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="120"/>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="121"/>
         <source>h</source>
-        <translation type="unfinished"/>
+        <translation>h</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="112"/>
@@ -10382,17 +10399,17 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="146"/>
         <source>He</source>
-        <translation type="unfinished"/>
+        <translation>He</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="150"/>
         <source>and</source>
-        <translation type="unfinished"/>
+        <translation>i</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="152"/>
         <source>O₂</source>
-        <translation type="unfinished"/>
+        <translation>O₂</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="195"/>
@@ -10416,7 +10433,7 @@ mixed from Air and using:
     <message>
         <location filename="../qt-models/tankinfomodel.cpp" line="88"/>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Opis</translation>
     </message>
     <message>
         <location filename="../qt-models/tankinfomodel.cpp" line="88"/>
@@ -10453,7 +10470,7 @@ mixed from Air and using:
         <location filename="../desktop-widgets/templateedit.ui" line="104"/>
         <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="457"/>
         <source>Font</source>
-        <translation type="unfinished"/>
+        <translation>Font</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="112"/>
@@ -10489,7 +10506,7 @@ mixed from Air and using:
         <location filename="../desktop-widgets/templateedit.ui" line="144"/>
         <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="464"/>
         <source>Font size</source>
-        <translation type="unfinished"/>
+        <translation>Veličina slova</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="165"/>
@@ -10519,7 +10536,7 @@ mixed from Air and using:
         <location filename="../desktop-widgets/templateedit.ui" line="188"/>
         <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="469"/>
         <source>Custom</source>
-        <translation type="unfinished"/>
+        <translation>korisnički definirano</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="200"/>
@@ -10652,7 +10669,7 @@ mixed from Air and using:
     <message>
         <location filename="../profile-widget/divetooltipitem.cpp" line="137"/>
         <source>Information</source>
-        <translation type="unfinished"/>
+        <translation>Info</translation>
     </message>
 </context>
 <context>
@@ -10660,32 +10677,32 @@ mixed from Air and using:
     <message>
         <location filename="../mobile-widgets/qml/TripDetails.qml" line="15"/>
         <source>Trip details</source>
-        <translation type="unfinished"/>
+        <translation>Pojedinosti grupe</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/TripDetails.qml" line="55"/>
         <source>Save edits</source>
-        <translation type="unfinished"/>
+        <translation>Spremi pojedinosti</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/TripDetails.qml" line="64"/>
         <source>Cancel edit</source>
-        <translation type="unfinished"/>
+        <translation>Poništi uređivanje</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/TripDetails.qml" line="84"/>
         <source>Edit trip details</source>
-        <translation type="unfinished"/>
+        <translation>Izmjena pojedinosti grupe</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/TripDetails.qml" line="97"/>
         <source>Trip location:</source>
-        <translation type="unfinished"/>
+        <translation>Lokacija grupe:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/TripDetails.qml" line="111"/>
         <source>Trip notes</source>
-        <translation type="unfinished"/>
+        <translation>Napomene grupe</translation>
     </message>
 </context>
 <context>
@@ -10693,7 +10710,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/tripselectiondialog.ui" line="17"/>
         <source>Select trip</source>
-        <translation type="unfinished"/>
+        <translation>Odaberi grupu</translation>
     </message>
 </context>
 <context>
@@ -10702,7 +10719,7 @@ mixed from Air and using:
         <location filename="../desktop-widgets/urldialog.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/ui_urldialog.h" line="57"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Dijalog</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/urldialog.ui" line="52"/>
@@ -10777,7 +10794,7 @@ If you don&apos;t want Subsurface to continue checking, please click Decline.</s
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="117"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Prihvati</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="119"/>
@@ -10890,7 +10907,7 @@ If you don&apos;t want Subsurface to continue checking, please click Decline.</s
     <message>
         <location filename="../qt-models/weightsysteminfomodel.cpp" line="77"/>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Opis</translation>
     </message>
     <message>
         <location filename="../qt-models/weightsysteminfomodel.cpp" line="77"/>
@@ -10922,13 +10939,13 @@ If you don&apos;t want Subsurface to continue checking, please click Decline.</s
         <location filename="../desktop-widgets/webservices.ui" line="44"/>
         <location filename="../subsurface/desktop-widgets/ui_webservices.h" line="132"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Preuzmi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/webservices.ui" line="68"/>
         <location filename="../subsurface/desktop-widgets/ui_webservices.h" line="133"/>
         <source>User ID</source>
-        <translation type="unfinished"/>
+        <translation>ID korisnika</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/webservices.ui" line="85"/>
@@ -10956,7 +10973,7 @@ If you don&apos;t want Subsurface to continue checking, please click Decline.</s
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="101"/>
         <source>Transferring data...</source>
-        <translation type="unfinished"/>
+        <translation>Prijenos podataka...</translation>
     </message>
 </context>
 <context>
@@ -10983,7 +11000,7 @@ If you don&apos;t want Subsurface to continue checking, please click Decline.</s
         <location filename="../core/configuredivecomputerthreads.cpp" line="2177"/>
         <location filename="../core/configuredivecomputerthreads.cpp" line="2200"/>
         <source>This feature is not yet available for the selected dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Za odabrano računalo ta mogućnosti još nije dostupna.</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputerthreads.cpp" line="2179"/>
@@ -10998,7 +11015,7 @@ If you don&apos;t want Subsurface to continue checking, please click Decline.</s
     <message>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="65"/>
         <source>h</source>
-        <translation type="unfinished"/>
+        <translation>h</translation>
     </message>
     <message>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="65"/>
@@ -11017,7 +11034,8 @@ If you don&apos;t want Subsurface to continue checking, please click Decline.</s
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="132"/>
         <source>Year 
  &gt; Month / Trip</source>
-        <translation type="unfinished"/>
+        <translation>Godina
+ &gt; Mjesec / Grupa</translation>
     </message>
     <message>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="135"/>
@@ -11080,7 +11098,8 @@ Maximum</source>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="162"/>
         <source>SAC (%1)
  Average</source>
-        <translation type="unfinished"/>
+        <translation>potrošnja (%1)
+ Prosjek</translation>
     </message>
     <message>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="171"/>
@@ -11164,7 +11183,7 @@ Maximum</source>
         <location filename="../core/cochran.c" line="402"/>
         <location filename="../core/libdivecomputer.c" line="266"/>
         <source>pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="363"/>
@@ -11404,17 +11423,17 @@ Maximum</source>
     <message>
         <location filename="../core/dive.c" line="32"/>
         <source>Open circuit</source>
-        <translation type="unfinished"/>
+        <translation>Otvoreni krug (OC)</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="33"/>
         <source>CCR</source>
-        <translation type="unfinished"/>
+        <translation>Zatvoreni krug (CCR)</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="34"/>
         <source>pSCR</source>
-        <translation type="unfinished"/>
+        <translation>pSCR</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="35"/>
@@ -11448,7 +11467,7 @@ Maximum</source>
         <location filename="../qt-models/divetripmodel.cpp" line="208"/>
         <location filename="../qt-models/divetripmodel.cpp" line="210"/>
         <source>h</source>
-        <translation type="unfinished"/>
+        <translation>h</translation>
     </message>
     <message>
         <location filename="../core/divelogexportlogic.cpp" line="57"/>
@@ -11486,7 +11505,7 @@ Maximum</source>
         <location filename="../core/divesite-helper.cpp" line="29"/>
         <location filename="../core/save-html.c" line="530"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Oznake</translation>
     </message>
     <message>
         <location filename="../core/equipment.c" line="74"/>
@@ -11595,7 +11614,7 @@ Maximum</source>
     <message>
         <location filename="../core/filterconstraint.cpp" line="46"/>
         <source>rating</source>
-        <translation type="unfinished"/>
+        <translation>ocjena</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="47"/>
@@ -11605,12 +11624,12 @@ Maximum</source>
     <message>
         <location filename="../core/filterconstraint.cpp" line="48"/>
         <source>current</source>
-        <translation type="unfinished"/>
+        <translation>struja</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="49"/>
         <source>visibility</source>
-        <translation type="unfinished"/>
+        <translation>vidljivost</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="50"/>
@@ -11631,7 +11650,7 @@ Maximum</source>
         <location filename="../core/filterconstraint.cpp" line="54"/>
         <location filename="../core/plannernotes.c" line="176"/>
         <source>duration</source>
-        <translation type="unfinished"/>
+        <translation>trajanje</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="55"/>
@@ -11657,7 +11676,7 @@ Maximum</source>
         <location filename="../core/filterconstraint.cpp" line="59"/>
         <location filename="../core/plannernotes.c" line="521"/>
         <source>SAC</source>
-        <translation>SAC</translation>
+        <translation>potrošnja</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="61"/>
@@ -11677,7 +11696,7 @@ Maximum</source>
     <message>
         <location filename="../core/filterconstraint.cpp" line="66"/>
         <source>tags</source>
-        <translation type="unfinished"/>
+        <translation>ozanke</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="67"/>
@@ -11722,12 +11741,12 @@ Maximum</source>
     <message>
         <location filename="../core/filterconstraint.cpp" line="75"/>
         <source>suit</source>
-        <translation type="unfinished"/>
+        <translation>odijelo</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="76"/>
         <source>notes</source>
-        <translation type="unfinished"/>
+        <translation>napomene</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="84"/>
@@ -12203,7 +12222,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
     <message>
         <location filename="../core/libdivecomputer.c" line="1514"/>
         <source>No new dives downloaded from dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Nema novih zarona na računalu</translation>
     </message>
     <message>
         <location filename="../core/load-git.c" line="184"/>
@@ -12371,7 +12390,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
     <message>
         <location filename="../core/plannernotes.c" line="174"/>
         <source>depth</source>
-        <translation type="unfinished"/>
+        <translation>dubina</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="180"/>
@@ -12487,7 +12506,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
     <message>
         <location filename="../core/plannernotes.c" line="458"/>
         <source>Gas consumption (based on SAC</source>
-        <translation type="unfinished"/>
+        <translation>potrošnja plina (bazirana na SAC)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="487"/>
@@ -12578,7 +12597,8 @@ D: %.1f%s
         <location filename="../core/profile.c" line="1462"/>
         <source>SAC: %.*f%s/min
 </source>
-        <translation type="unfinished"/>
+        <translation>potrošnja: %.*f%s/min
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1464"/>
@@ -12817,7 +12837,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/profile.c" line="1737"/>
         <source>%s SAC:%.*f%s/min</source>
-        <translation type="unfinished"/>
+        <translation>%s potrošnja: %.*f%s/min</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="71"/>
@@ -12939,7 +12959,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/qthelper.cpp" line="631"/>
         <source>EN13319</source>
-        <translation type="unfinished"/>
+        <translation>EN13319</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="632"/>
@@ -13037,12 +13057,12 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="509"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temp. zraka</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="510"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temp. vode</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="511"/>
@@ -13062,7 +13082,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="514"/>
         <source>Trips</source>
-        <translation type="unfinished"/>
+        <translation>Grupe</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="515"/>
@@ -13117,7 +13137,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="528"/>
         <source>Buddy</source>
-        <translation>Buddy</translation>
+        <translation>Partner</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="529"/>
@@ -13149,7 +13169,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="537"/>
         <source>Total time</source>
-        <translation type="unfinished"/>
+        <translation>Ukupno vrijeme</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="538"/>
@@ -13179,7 +13199,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="543"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Maks. dubina</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="544"/>
@@ -13189,12 +13209,12 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="545"/>
         <source>Min. SAC</source>
-        <translation type="unfinished"/>
+        <translation>min. potrošnja</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="546"/>
         <source>Max. SAC</source>
-        <translation type="unfinished"/>
+        <translation>maks. potrošnja</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="547"/>
@@ -13219,12 +13239,12 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="553"/>
         <source>Dive #</source>
-        <translation type="unfinished"/>
+        <translation>Uron #</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="554"/>
         <source>Dive profile</source>
-        <translation type="unfinished"/>
+        <translation>Profil ronjenja</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="555"/>
@@ -13255,17 +13275,17 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="560"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Početni tlak</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="561"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Završni tlak</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="562"/>
         <source>Gas</source>
-        <translation type="unfinished"/>
+        <translation>PLin</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="563"/>
@@ -13280,17 +13300,17 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="566"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Ime</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="567"/>
         <source>Value</source>
-        <translation type="unfinished"/>
+        <translation>Vrijednost</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="568"/>
         <source>Coordinates</source>
-        <translation type="unfinished"/>
+        <translation>Koordinate</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="569"/>
@@ -13325,7 +13345,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/statistics.c" line="229"/>
         <source>All (by trip stats)</source>
-        <translation type="unfinished"/>
+        <translation>Sve (po stat. grupe)</translation>
     </message>
     <message>
         <location filename="../core/subsurfacestartup.c" line="120"/>
@@ -13450,7 +13470,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/taxonomy.c" line="11"/>
         <source>Country</source>
-        <translation type="unfinished"/>
+        <translation>Država</translation>
     </message>
     <message>
         <location filename="../core/taxonomy.c" line="12"/>
@@ -13685,7 +13705,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../core/units.c" line="60"/>
         <source>ℓ</source>
-        <translation type="unfinished"/>
+        <translation>ℓ</translation>
     </message>
     <message>
         <location filename="../core/units.c" line="134"/>
@@ -13720,7 +13740,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../core/worldmap-save.c" line="49"/>
         <source>Duration:</source>
-        <translation type="unfinished"/>
+        <translation>Trajanje:</translation>
     </message>
     <message>
         <location filename="../core/worldmap-save.c" line="53"/>
@@ -13740,12 +13760,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../core/worldmap-save.c" line="61"/>
         <source>Location:</source>
-        <translation type="unfinished"/>
+        <translation>Lokacija:</translation>
     </message>
     <message>
         <location filename="../core/worldmap-save.c" line="65"/>
         <source>Notes:</source>
-        <translation type="unfinished"/>
+        <translation>Napomene:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="64"/>
@@ -13805,7 +13825,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="176"/>
         <source>/min</source>
-        <translation type="unfinished"/>
+        <translation>/min</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="256"/>
@@ -13845,7 +13865,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../smtk-import/smartrak.c" line="258"/>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation>Duljina</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="258"/>
@@ -13875,7 +13895,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../smtk-import/smartrak.c" line="332"/>
         <source>Altitude</source>
-        <translation type="unfinished"/>
+        <translation>Nadmorska visina</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="332"/>
@@ -13893,7 +13913,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="257"/>
         <source>Dive list</source>
-        <translation type="unfinished"/>
+        <translation>LIsta urona</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="268"/>
@@ -13946,12 +13966,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="353"/>
         <source>Dive summary</source>
-        <translation type="unfinished"/>
+        <translation>Sažetak urona</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="364"/>
         <source>Export</source>
-        <translation type="unfinished"/>
+        <translation>Izvoz</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="376"/>
@@ -14066,7 +14086,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../desktop-widgets/plannerDetails.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerDetails.h" line="92"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerDetails.ui" line="43"/>
@@ -14101,7 +14121,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="560"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="74"/>
@@ -14113,13 +14133,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="95"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="562"/>
         <source>Ascent</source>
-        <translation type="unfinished"/>
+        <translation>Izron</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="104"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="563"/>
         <source>below 75% avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>ispod 75 % prosj. dubine</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="111"/>
@@ -14139,25 +14159,25 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="121"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="565"/>
         <source>75% to 50% avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>75 - 50 % prosj. dubine</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="138"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="567"/>
         <source>50% avg. depth to 6m</source>
-        <translation type="unfinished"/>
+        <translation>50 % prosj. dubine do 6 m</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="155"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="569"/>
         <source>6m to surface</source>
-        <translation type="unfinished"/>
+        <translation>površina - 6 m</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="175"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="571"/>
         <source>Descent</source>
-        <translation type="unfinished"/>
+        <translation>Zaron</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="187"/>
@@ -14169,7 +14189,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="240"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="574"/>
         <source>Planning</source>
-        <translation type="unfinished"/>
+        <translation>Planiranje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="261"/>
@@ -14191,7 +14211,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="296"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="580"/>
         <source>Only switch at required stops</source>
-        <translation type="unfinished"/>
+        <translation>Promjena samo na zadanim zastancima</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="303"/>
@@ -14203,7 +14223,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="310"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="600"/>
         <source>+</source>
-        <translation type="unfinished"/>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="320"/>
@@ -14211,7 +14231,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="583"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="594"/>
         <source>%</source>
-        <translation type="unfinished"/>
+        <translation>%</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="333"/>
@@ -14244,13 +14264,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="399"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="582"/>
         <source>GFLow</source>
-        <translation type="unfinished"/>
+        <translation>GFLow</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="409"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="581"/>
         <source>GFHigh</source>
-        <translation type="unfinished"/>
+        <translation>GFHigh</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="419"/>
@@ -14262,59 +14282,59 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="422"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="593"/>
         <source>Recreational mode</source>
-        <translation type="unfinished"/>
+        <translation>Rekreativni mod</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="429"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="599"/>
         <source>Conservatism level</source>
-        <translation type="unfinished"/>
+        <translation>Razina konzervativnosti</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="439"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="595"/>
         <source>VPM-B deco</source>
-        <translation type="unfinished"/>
+        <translation>VPM-B deco</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="449"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="598"/>
         <source>Safety stop</source>
-        <translation type="unfinished"/>
+        <translation>Sigurnosni zastanak</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="495"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="602"/>
         <source>Dive mode</source>
-        <translation type="unfinished"/>
+        <translation>Vrsta ronjenja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="502"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="596"/>
         <source>Bühlmann deco</source>
-        <translation type="unfinished"/>
+        <translation>Bühlmann deko</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="512"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="597"/>
         <source>Reserve gas</source>
-        <translation type="unfinished"/>
+        <translation>Rezervni plin</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="522"/>
         <source>Bailout: Deco on OC</source>
-        <translation type="unfinished"/>
+        <translation>Bailout: Deko na OC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="529"/>
         <source>Surface segment</source>
-        <translation type="unfinished"/>
+        <translation>Površinski segment</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="546"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="603"/>
         <source>Gas options</source>
-        <translation type="unfinished"/>
+        <translation>Opcije plinova</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="567"/>
@@ -14326,7 +14346,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="588"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="617"/>
         <source>Verbatim dive plan</source>
-        <translation type="unfinished"/>
+        <translation>Doslovni plan ronjenja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="595"/>
@@ -14338,7 +14358,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="598"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="621"/>
         <source>Display transitions in deco</source>
-        <translation type="unfinished"/>
+        <translation>Prikaži tranzicije u deku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="605"/>
@@ -14350,7 +14370,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="608"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="625"/>
         <source>Display runtime</source>
-        <translation type="unfinished"/>
+        <translation>Prikaži runtime</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="618"/>
@@ -14362,7 +14382,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="621"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="629"/>
         <source>Display segment duration</source>
-        <translation type="unfinished"/>
+        <translation>Prikaži trajanje segmenta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="631"/>
@@ -14374,7 +14394,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="634"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="633"/>
         <source>Display plan variations</source>
-        <translation type="unfinished"/>
+        <translation>Prikaži varijacije plana</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="644"/>
@@ -14382,13 +14402,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="604"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="607"/>
         <source>ℓ/min</source>
-        <translation type="unfinished"/>
+        <translation>ℓ/min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="657"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="605"/>
         <source>Deco SAC</source>
-        <translation type="unfinished"/>
+        <translation>Deko potrošnja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="735"/>
@@ -14406,7 +14426,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="754"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="613"/>
         <source>Bottom SAC</source>
-        <translation>SAC</translation>
+        <translation>Dubinska potrošnja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="761"/>
@@ -14430,7 +14450,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="782"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="635"/>
         <source>SAC factor</source>
-        <translation type="unfinished"/>
+        <translation>SAC faktor</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="789"/>

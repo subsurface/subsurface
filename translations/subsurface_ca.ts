@@ -42,12 +42,12 @@
         <location filename="../desktop-widgets/addfilterpreset.ui" line="17"/>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="43"/>
         <source>Save filter set</source>
-        <translation type="unfinished"/>
+        <translation>Desa el conjunt de filtres</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="64"/>
         <source>Warning: this will overwrite an existing filter set.</source>
-        <translation type="unfinished"/>
+        <translation>Avís: això sobreescriurà un conjunt de filtres existent.</translation>
     </message>
 </context>
 <context>
@@ -947,17 +947,17 @@
     <message>
         <location filename="../commands/command_filter.cpp" line="28"/>
         <source>Create filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Crea el filtre preestablert %1</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="49"/>
         <source>Delete filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Suprimeix el filtre preestablert %1</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="71"/>
         <source>Edit filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Edita el filtre preestablert %1</translation>
     </message>
     <message>
         <location filename="../commands/command_pictures.cpp" line="20"/>
@@ -3476,7 +3476,7 @@ GPS actual:</translation>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="832"/>
         <source>Add dive(s) to arbitrary trip</source>
-        <translation type="unfinished"/>
+        <translation>Afegeix la/es immersió/ons a un viatge arbitrari</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="833"/>
@@ -5766,7 +5766,7 @@ relacionats amb el busseig.</translation>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="148"/>
         <source>Click to remove this constraint</source>
-        <translation type="unfinished"/>
+        <translation>Feu clic per a eliminar aquesta restricció</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="181"/>
@@ -5784,7 +5784,7 @@ relacionats amb el busseig.</translation>
     <message>
         <location filename="../qt-models/filterpresetmodel.cpp" line="47"/>
         <source>Clicking here will remove this filter set.</source>
-        <translation type="unfinished"/>
+        <translation>En fer clic aquí, s&apos;eliminarà aquest conjunt de filtres.</translation>
     </message>
 </context>
 <context>
@@ -5804,22 +5804,22 @@ relacionats amb el busseig.</translation>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="76"/>
         <source>Add constraint</source>
-        <translation type="unfinished"/>
+        <translation>Afegeix una restricció</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="90"/>
         <source>Current set:</source>
-        <translation type="unfinished"/>
+        <translation>Conjunt actual:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="110"/>
         <source>Save set</source>
-        <translation type="unfinished"/>
+        <translation>Desa el conjunt</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="123"/>
         <source>Load set</source>
-        <translation type="unfinished"/>
+        <translation>Carrega un conjunt</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="143"/>
@@ -5854,12 +5854,12 @@ relacionats amb el busseig.</translation>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="241"/>
         <source>Filter sets</source>
-        <translation type="unfinished"/>
+        <translation>Filtra els conjunts</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.cpp" line="225"/>
         <source>modified</source>
-        <translation type="unfinished"/>
+        <translation>modificat</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_listfilter.h" line="83"/>
@@ -10035,7 +10035,7 @@ Fitxers amb una data/hora inapropiada</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="436"/>
         <source>Water type/Density</source>
-        <translation>Tipus d&apos;aigua/Densitat</translation>
+        <translation>Tipus/Densitat de l&apos;aigua</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="473"/>
@@ -10739,7 +10739,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/tripselectiondialog.ui" line="17"/>
         <source>Select trip</source>
-        <translation type="unfinished"/>
+        <translation>Selecciona un viatge</translation>
     </message>
 </context>
 <context>
@@ -11629,27 +11629,27 @@ Màxim</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="40"/>
         <source>date</source>
-        <translation type="unfinished"/>
+        <translation>data</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="41"/>
         <source>date time</source>
-        <translation type="unfinished"/>
+        <translation>data i hora</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="42"/>
         <source>time of day</source>
-        <translation type="unfinished"/>
+        <translation>hora del dia</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="43"/>
         <source>year</source>
-        <translation type="unfinished"/>
+        <translation>any</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="44"/>
         <source>week day</source>
-        <translation type="unfinished"/>
+        <translation>dia de la setmana</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="46"/>
@@ -11659,7 +11659,7 @@ Màxim</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="47"/>
         <source>wave size</source>
-        <translation type="unfinished"/>
+        <translation>grandària de l&apos;onada</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="48"/>
@@ -11684,7 +11684,7 @@ Màxim</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="53"/>
         <source>max. depth</source>
-        <translation type="unfinished"/>
+        <translation>prof. màxima</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="54"/>
@@ -11700,17 +11700,17 @@ Màxim</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="56"/>
         <source>water temp.</source>
-        <translation type="unfinished"/>
+        <translation>temp. de l&apos;aigua</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="57"/>
         <source>air temp.</source>
-        <translation type="unfinished"/>
+        <translation>temp. de l&apos;aire</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="58"/>
         <source>water density</source>
-        <translation type="unfinished"/>
+        <translation>Densitat de l&apos;aigua</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="59"/>
@@ -11721,12 +11721,12 @@ Màxim</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="61"/>
         <source>logged</source>
-        <translation type="unfinished"/>
+        <translation>s&apos;ha iniciat la sessió</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="62"/>
         <source>planned</source>
-        <translation type="unfinished"/>
+        <translation>està planificada</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="64"/>
@@ -11741,42 +11741,42 @@ Màxim</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="67"/>
         <source>people</source>
-        <translation type="unfinished"/>
+        <translation>persones</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="68"/>
         <source>location</source>
-        <translation type="unfinished"/>
+        <translation>ubicació</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="69"/>
         <source>weight type</source>
-        <translation type="unfinished"/>
+        <translation>tipus de llast</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="70"/>
         <source>cylinder type</source>
-        <translation type="unfinished"/>
+        <translation>tipus d&apos;ampolla</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="71"/>
         <source>cylinder size</source>
-        <translation type="unfinished"/>
+        <translation>mida de l&apos;ampolla</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="72"/>
         <source>gas N₂ content</source>
-        <translation type="unfinished"/>
+        <translation>contingut de gas N₂</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="73"/>
         <source>gas O₂ content</source>
-        <translation type="unfinished"/>
+        <translation>contingut de gas O₂</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="74"/>
         <source>gas He content</source>
-        <translation type="unfinished"/>
+        <translation>contingut de gas He</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="75"/>
@@ -11791,97 +11791,97 @@ Màxim</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="84"/>
         <source>starting with</source>
-        <translation type="unfinished"/>
+        <translation>comença amb</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="85"/>
         <source>with substring</source>
-        <translation type="unfinished"/>
+        <translation>amb una subcadena</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="86"/>
         <source>exactly</source>
-        <translation type="unfinished"/>
+        <translation>exactament</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="95"/>
         <source>equal to</source>
-        <translation type="unfinished"/>
+        <translation>igual que</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="95"/>
         <source>at</source>
-        <translation type="unfinished"/>
+        <translation>a</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="96"/>
         <source>at most</source>
-        <translation type="unfinished"/>
+        <translation>com a màxim</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="96"/>
         <source>before</source>
-        <translation type="unfinished"/>
+        <translation>abans</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="97"/>
         <source>at least</source>
-        <translation type="unfinished"/>
+        <translation>al menys</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="97"/>
         <source>after</source>
-        <translation type="unfinished"/>
+        <translation>després</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="98"/>
         <source>in range</source>
-        <translation type="unfinished"/>
+        <translation>en l&apos;interval</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="102"/>
         <source>is</source>
-        <translation type="unfinished"/>
+        <translation>és</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="103"/>
         <source>is not</source>
-        <translation type="unfinished"/>
+        <translation>no és</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="409"/>
         <source>Sunday</source>
-        <translation type="unfinished"/>
+        <translation>Diumenge</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="410"/>
         <source>Monday</source>
-        <translation type="unfinished"/>
+        <translation>Dilluns</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="411"/>
         <source>Tuesday</source>
-        <translation type="unfinished"/>
+        <translation>Dimarts</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="412"/>
         <source>Wednesday</source>
-        <translation type="unfinished"/>
+        <translation>Dimecres</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="413"/>
         <source>Thursday</source>
-        <translation type="unfinished"/>
+        <translation>Dijous</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="414"/>
         <source>Friday</source>
-        <translation type="unfinished"/>
+        <translation>Divendres</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="415"/>
         <source>Saturday</source>
-        <translation type="unfinished"/>
+        <translation>Dissabte</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="86"/>
