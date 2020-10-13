@@ -317,11 +317,6 @@ extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *
 	}
 }
 
-extern "C" int is_default_dive_computer(const char *vendor, const char *product)
-{
-	return qPrefDiveComputer::vendor() == vendor && qPrefDiveComputer::product() == product;
-}
-
 extern "C" int is_default_dive_computer_device(const char *name)
 {
 	return qPrefDiveComputer::device() == name;

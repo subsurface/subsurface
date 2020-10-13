@@ -30,7 +30,6 @@ extern struct divecomputer *select_dc(struct dive *);
 extern unsigned int dc_number;
 
 extern int is_default_dive_computer_device(const char *);
-extern int is_default_dive_computer(const char *, const char *);
 
 typedef void (*device_callback_t)(const char *name, void *userdata);
 
