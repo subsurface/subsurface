@@ -219,12 +219,6 @@ static const device *getDCExact(const QVector<device> &dcs, const divecomputer *
 	return it != dcs.end() && it->model == dc->model && it->deviceId == dc->deviceid ? &*it : NULL;
 }
 
-static const device *getDC(const QVector<device> &dcs, const divecomputer *dc)
-{
-	auto it = std::lower_bound(dcs.begin(), dcs.end(), device{dc->model, 0, {}, {}, {}});
-	return it != dcs.end() && it->model == dc->model ? &*it : NULL;
-}
-
 /*
  * When setting the device ID, we also fill in the
  * serial number and firmware version data
@@ -338,8 +332,10 @@ extern "C" void set_dc_nickname(struct dive *dive)
 		if (!empty_string(dc->model) && dc->deviceid &&
 		    !getDCExact(device_table.devices, dc)) {
 			// we don't have this one, yet
-			const device *existNode = getDC(device_table.devices, dc);
-			if (existNode) {
+			auto it = std::find_if(device_table.devices.begin(), device_table.devices.end(),
+					       [dc] (const device &dev)
+					       { return !strcasecmp(qPrintable(dev.model), dc->model); });
+			if (it != device_table.devices.end()) {
 				// we already have this model but a different deviceid
 				QString simpleNick(dc->model);
 				if (dc->deviceid == 0)
