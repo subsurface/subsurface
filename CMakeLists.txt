@@ -428,8 +428,10 @@ if(ANDROID)
 	endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(APP_BUNDLE_DIR "${SUBSURFACE_TARGET}.app")
-	set(EXTRA_MACDEPLOY_ARGS "-qmldir=${APP_BUNDLE_DIR}/Contents/Resources/qml ")
-	set(MACDEPLOY_ARGS "${EXTRA_MACDEPLOY_ARGS}-executable=${APP_BUNDLE_DIR}/Contents/MacOS/${SUBSURFACE_TARGET} -always-overwrite -libpath=${CMAKE_SOURCE_DIR}/../install-root/lib")
+	# macdeployqt simplifies a lot of this process, but still doesn't get everything right
+	# - it misses a couple of resources and frameworks
+	# - it seems to always deploy the SQL plugins (even though they aren't needed)
+	set(MACDEPLOY_ARGS "-qmldir=${APP_BUNDLE_DIR}/Contents/Resources/qml -appstore-compliant -verbose=0 -executable=${APP_BUNDLE_DIR}/Contents/MacOS/${SUBSURFACE_TARGET} -always-overwrite -libpath=${CMAKE_SOURCE_DIR}/../install-root/lib")
 	set(RESOURCEDIR ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources)
 	set(PLUGINDIR ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/PlugIns)
 	install(DIRECTORY Documentation/images DESTINATION ${RESOURCEDIR}/share/Documentation)
@@ -440,23 +442,27 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	install(FILES ${QTTRANSLATIONS} DESTINATION ${RESOURCEDIR}/translations)
 	install(FILES ${CMAKE_SOURCE_DIR}/gpl-2.0.txt DESTINATION ${RESOURCEDIR})
 	install(CODE "execute_process(COMMAND mkdir -p ${RESOURCEDIR}/qml)")
-	
 	install(CODE "execute_process(COMMAND mkdir -p ${PLUGINDIR}/geoservices)")
 	install(CODE "execute_process(COMMAND cp ${_qt5Core_install_prefix}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
 	install(CODE "execute_process(COMMAND cp ${CMAKE_SOURCE_DIR}/../install-root/${_qt5Core_install_prefix}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
 	# this is a hack - but I don't know how else to find the macdeployqt program if it's not in the PATH
 	string(REPLACE moc macdeployqt MACDEPLOYQT ${QT_MOC_EXECUTABLE})
 	install(CODE "execute_process(COMMAND ${MACDEPLOYQT} ${APP_BUNDLE_DIR} -no-strip ${MACDEPLOY_ARGS})")
+	# the next hack is here to delete the sqlite plugin that get's installed even though it isn't needed
+	install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/PlugIns/sqldrivers)")
 	# and another hack to get the QML Components in the right place
+	install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml/{QtQuick.2,QtLocation,QtPositioning})")
 	install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtQuick.2 ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
 	install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtLocation ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
 	install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtPositioning ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
 	if(NOT Qt5Core_VERSION VERSION_LESS 5.11.0)
 		# and with Qt 5.11 we need another library that isn't copied by macdeployqt
+		install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtPositioningQuick.framework)")
 		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/lib/QtPositioningQuick.framework ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks)")
 	endif()
 	if(NOT Qt5Core_VERSION VERSION_LESS 5.14.0)
 		# and with Qt 5.14 we need another library that isn't always copied by macdeployqt
+		install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtQmlWorkerScript.framework)")
 		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/lib/QtQmlWorkerScript.framework ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks)")
 	endif()
 	if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
