@@ -1,3 +1,4 @@
+- macOS: fix issue with HID dive computers like Suunto Eon Core/Steel [#2999]
 - windows: add missing modern Vista theme
 - desktop: allow adding dives to arbitrary trips
 - core: improve merging of cylinder pressures [#2884]
