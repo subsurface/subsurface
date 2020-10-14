@@ -5,7 +5,6 @@
 CURRENT_LIBZ="v1.2.11"
 CURRENT_LIBZIP="rel-1-5-1"
 CURRENT_LIBGIT2="v0.26.0"
-CURRENT_HIDAPI="hidapi-0.7.0"
 CURRENT_LIBCURL="curl-7_54_1"
 CURRENT_LIBUSB="v1.0.21"
 CURRENT_OPENSSL="OpenSSL_1_1_0h"
@@ -169,7 +168,7 @@ for package in "${PACKAGES[@]}" ; do
 			git_checkout_library googlemaps master https://github.com/Subsurface/googlemaps.git
 			;;
 		hidapi)
-			git_checkout_library hidapi master https://github.com/signal11/hidapi.git
+			git_checkout_library hidapi master https://github.com/libusb/hidapi.git
 			;;
 		kirigami)
 			git_checkout_library kirigami $CURRENT_KIRIGAMI https://github.com/KDE/kirigami.git
