@@ -314,10 +314,9 @@ extern "C" void set_dc_nickname(struct dive *dive, struct device_table *device_t
 		if (!empty_string(dc->model) && dc->deviceid &&
 		    !get_device_for_dc(device_table, dc)) {
 			// we don't have this one, yet
-			auto it = std::find_if(device_table->devices.begin(), device_table->devices.end(),
-					       [dc] (const device &dev)
-					       { return !strcasecmp(dev.model.c_str(), dc->model); });
-			if (it != device_table->devices.end()) {
+			if (std::any_of(device_table->devices.begin(), device_table->devices.end(),
+				        [dc] (const device &dev)
+				        { return !strcasecmp(dev.model.c_str(), dc->model); })) {
 				// we already have this model but a different deviceid
 				std::string simpleNick(dc->model);
 				if (dc->deviceid == 0)
