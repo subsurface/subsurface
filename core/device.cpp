@@ -205,7 +205,12 @@ bool device::operator==(const device &a) const
 
 bool device::operator<(const device &a) const
 {
-	return std::tie(deviceId, model) < std::tie(a.deviceId, a.model);
+	if (deviceId != a.deviceId)
+		return deviceId < a.deviceId;
+
+	// Use strcoll to compare model-strings, since these might be unicode
+	// and therefore locale dependent? Let's hope that not, but who knows?
+	return strcoll(model.c_str(), a.model.c_str()) < 0;
 }
 
 const struct device *get_device_for_dc(const struct device_table *table, const struct divecomputer *dc)
