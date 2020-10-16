@@ -104,8 +104,8 @@ static char *parse_dan_new_line(char *buf, const char *NL)
 
 static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, const char *tag);
 static int parse_dan_format(const char *filename, char **params, int pnr, struct dive_table *table,
-			    struct trip_table *trips, filter_preset_table_t *filter_presets,
-			    struct dive_site_table *sites)
+			    struct trip_table *trips, struct dive_site_table *sites,
+			    filter_preset_table_t *filter_presets)
 {
 	int ret = 0, i;
 	size_t end_ptr = 0;
