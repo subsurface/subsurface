@@ -18,7 +18,7 @@ void addDive(dive *d, bool autogroup, bool newNumber)
 }
 
 void importDives(struct dive_table *dives, struct trip_table *trips, struct dive_site_table *sites,
-		 filter_preset_table_t *presets, int flags, const QString &source)
+		 struct filter_preset_table *presets, int flags, const QString &source)
 {
 	execute(new ImportDives(dives, trips, sites, presets, flags, source));
 }

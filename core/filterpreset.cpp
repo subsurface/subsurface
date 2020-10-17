@@ -3,7 +3,7 @@
 #include "qthelper.h"
 #include "subsurface-string.h"
 
-std::vector<filter_preset> filter_preset_table;
+struct filter_preset_table filter_preset_table;
 
 extern "C" void clear_filter_presets(void)
 {
@@ -74,7 +74,7 @@ extern "C" void filter_preset_set_name(struct filter_preset *preset, const char 
 	preset->name = name;
 }
 
-static int filter_preset_add_to_table(const QString &name, const FilterData &d, filter_preset_table_t &table)
+static int filter_preset_add_to_table(const QString &name, const FilterData &d, struct filter_preset_table &table)
 {
 	// std::lower_bound does a binary search - the vector must be sorted.
 	filter_preset newEntry { name, d };
@@ -86,7 +86,7 @@ static int filter_preset_add_to_table(const QString &name, const FilterData &d, 
 }
 
 // Take care that the name doesn't already exist by adding numbers
-static QString get_unique_preset_name(const QString &orig, const filter_preset_table_t &table)
+static QString get_unique_preset_name(const QString &orig, const struct filter_preset_table &table)
 {
 	QString res = orig;
 	int count = 2;
@@ -99,7 +99,7 @@ static QString get_unique_preset_name(const QString &orig, const filter_preset_t
 	return res;
 }
 
-extern "C" void add_filter_preset_to_table(const struct filter_preset *preset, filter_preset_table_t *table)
+extern "C" void add_filter_preset_to_table(const struct filter_preset *preset, struct filter_preset_table *table)
 {
 	QString name = get_unique_preset_name(preset->name, *table);
 	filter_preset_add_to_table(name, preset->data, *table);

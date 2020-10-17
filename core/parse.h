@@ -73,10 +73,10 @@ struct parser_state {
 	int sample_rate;
 	struct extra_data cur_extra_data;
 	struct units xml_parsing_units;
-	struct dive_table *target_table;	/* non-owning */
-	struct trip_table *trips;		/* non-owning */
-	struct dive_site_table *sites;		/* non-owning */
-	filter_preset_table_t *filter_presets;	/* non-owning */
+	struct dive_table *target_table;		/* non-owning */
+	struct trip_table *trips;			/* non-owning */
+	struct dive_site_table *sites;			/* non-owning */
+	struct filter_preset_table *filter_presets;	/* non-owning */
 
 	sqlite3 *sql_handle;			/* for SQL based parsers */
 	event_allocation_t event_allocation;
@@ -140,7 +140,7 @@ int atoi_n(char *ptr, unsigned int len);
 
 void parse_xml_init(void);
 int parse_xml_buffer(const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-		     filter_preset_table_t *filter_presets, const char **params);
+		     struct filter_preset_table *filter_presets, const char **params);
 void parse_xml_exit(void);
 int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
 int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);

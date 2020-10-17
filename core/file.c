@@ -77,7 +77,7 @@ out:
 
 
 static void zip_read(struct zip_file *file, const char *filename, struct dive_table *table, struct trip_table *trips,
-		     struct dive_site_table *sites, filter_preset_table_t *filter_presets)
+		     struct dive_site_table *sites, struct filter_preset_table *filter_presets)
 {
 	int size = 1024, n, read = 0;
 	char *mem = malloc(size);
@@ -93,7 +93,7 @@ static void zip_read(struct zip_file *file, const char *filename, struct dive_ta
 }
 
 int try_to_open_zip(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-		    filter_preset_table_t *filter_presets)
+		    struct filter_preset_table *filter_presets)
 {
 	int success = 0;
 	/* Grr. libzip needs to re-open the file, it can't take a buffer */
@@ -227,7 +227,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
  */
 static int open_by_filename(const char *filename, const char *fmt, struct memblock *mem,
 			    struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-			    filter_preset_table_t *filter_presets)
+			    struct filter_preset_table *filter_presets)
 {
 	// hack to be able to provide a comment for the translated string
 	static char *csv_warning = QT_TRANSLATE_NOOP3("gettextFromC",
@@ -258,7 +258,7 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 }
 
 static int parse_file_buffer(const char *filename, struct memblock *mem, struct dive_table *table,
-			     struct trip_table *trips, struct dive_site_table *sites, filter_preset_table_t *filter_presets)
+			     struct trip_table *trips, struct dive_site_table *sites, struct filter_preset_table *filter_presets)
 {
 	int ret;
 	char *fmt = strrchr(filename, '.');
@@ -305,7 +305,7 @@ int check_git_sha(const char *filename, struct git_repository **git_p, const cha
 	return 1;
 }
 
-int parse_file(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites, filter_preset_table_t *filter_presets)
+int parse_file(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites, struct filter_preset_table *filter_presets)
 {
 	struct git_repository *git;
 	const char *branch = NULL;
