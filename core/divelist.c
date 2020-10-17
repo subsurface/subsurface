@@ -1376,7 +1376,7 @@ void clear_dive_file_data()
 	}
 
 	clear_dive(&displayed_dive);
-	clear_device_nodes(&device_table);
+	clear_device_table(&device_table);
 	clear_events();
 	clear_filter_presets();
 
