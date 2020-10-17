@@ -9,6 +9,8 @@
 
 #include <sqlite3.h>
 
+struct xml_params;
+
 typedef union {
 	struct event event;
 	char allocation[sizeof(struct event) + MAX_EVENT_NAME];
@@ -140,7 +142,7 @@ int atoi_n(char *ptr, unsigned int len);
 
 void parse_xml_init(void);
 int parse_xml_buffer(const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-		     struct filter_preset_table *filter_presets, const char **params);
+		     struct filter_preset_table *filter_presets, const struct xml_params *params);
 void parse_xml_exit(void);
 int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
 int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);

@@ -13,6 +13,7 @@
 #include "core/dive.h"
 #include "core/divelist.h"
 
+struct xml_params;
 namespace Ui {
 	class DiveLogImportDialog;
 }
@@ -87,8 +88,8 @@ slots:
 	void loadFileContentsSeperatorSelected(int value);
 	void loadFileContentsKnownTypesSelected(int value);
 	void loadFileContents(int value, enum whatChanged triggeredBy);
-	int setup_csv_params(QStringList r, char **params, int pnr);
-	int parseTxtHeader(QString fileName, char **params, int pnr);
+	void setup_csv_params(QStringList r, xml_params &params);
+	void parseTxtHeader(QString fileName, xml_params &params);
 
 private:
 	bool selector;

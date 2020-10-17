@@ -32,11 +32,12 @@
 #include "picture.h"
 #include "qthelper.h"
 #include "tag.h"
+#include "xmlparams.h"
 
 int quit, force_root;
 int last_xml_version = -1;
 
-static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params);
+static xmlDoc *test_xslt_transforms(xmlDoc *doc, const struct xml_params *params);
 
 const struct units SI_units = SI_UNITS;
 const struct units IMPERIAL_units = IMPERIAL_UNITS;
@@ -1721,7 +1722,7 @@ static const char *preprocess_divelog_de(const char *buffer)
 
 int parse_xml_buffer(const char *url, const char *buffer, int size,
 		     struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-		     struct filter_preset_table *filter_presets, const char **params)
+		     struct filter_preset_table *filter_presets, const struct xml_params *params)
 {
 	UNUSED(size);
 	xmlDoc *doc;
@@ -2308,7 +2309,7 @@ static struct xslt_files {
 	  { NULL, }
   };
 
-static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params)
+static xmlDoc *test_xslt_transforms(xmlDoc *doc, const struct xml_params *params)
 {
 	struct xslt_files *info = xslt_files;
 	xmlDoc *transformed;
@@ -2341,7 +2342,7 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params)
 			report_error(translate("gettextFromC", "Can't open stylesheet %s"), info->file);
 			return doc;
 		}
-		transformed = xsltApplyStylesheet(xslt, doc, params);
+		transformed = xsltApplyStylesheet(xslt, doc, xml_params_get(params));
 		xmlFreeDoc(doc);
 		xsltFreeStylesheet(xslt);
 

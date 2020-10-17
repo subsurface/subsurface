@@ -9,6 +9,7 @@
 
 struct picture;
 struct dive_trip;
+struct xml_params;
 
 // 1) Types
 
@@ -148,7 +149,7 @@ char *hashfile_name_string();
 char *picturedir_string();
 const char *subsurface_user_agent();
 enum deco_mode decoMode();
-int parse_seabear_header(const char *filename, char **params, int pnr);
+void parse_seabear_header(const char *filename, struct xml_params *params);
 char *get_current_date();
 time_t get_dive_datetime_from_isostring(char *when);
 void print_qt_versions();

@@ -29,6 +29,7 @@
 #include "qthelper.h"
 #include "gettext.h"
 #include "tag.h"
+#include "xmlparams.h"
 
 /*
  * We're outputting utf8 in xml.
@@ -834,7 +835,17 @@ int save_dives_logic(const char *filename, const bool select_only, bool anonymiz
 	return error;
 }
 
+
+static int export_dives_xslt_doit(const char *filename, struct xml_params *params, bool selected, int units, const char *export_xslt, bool anonymize);
 int export_dives_xslt(const char *filename, const bool selected, const int units, const char *export_xslt, bool anonymize)
+{
+	struct xml_params *params = alloc_xml_params();
+	int ret = export_dives_xslt_doit(filename, params, selected, units, export_xslt, anonymize);
+	free_xml_params(params);
+	return ret;
+}
+
+static int export_dives_xslt_doit(const char *filename, struct xml_params *params, bool selected, int units, const char *export_xslt, bool anonymize)
 {
 	FILE *f;
 	struct membuffer buf = { 0 };
@@ -842,9 +853,6 @@ int export_dives_xslt(const char *filename, const bool selected, const int units
 	xsltStylesheetPtr xslt = NULL;
 	xmlDoc *transformed;
 	int res = 0;
-	char *params[3];
-	int pnr = 0;
-	char unitstr[3];
 
 	if (verbose)
 		fprintf(stderr, "export_dives_xslt with stylesheet %s\n", export_xslt);
@@ -870,12 +878,9 @@ int export_dives_xslt(const char *filename, const bool selected, const int units
 	if (!xslt)
 		return report_error("Failed to open export conversion stylesheet");
 
-	snprintf(unitstr, 3, "%d", units);
-	params[pnr++] = "units";
-	params[pnr++] = unitstr;
-	params[pnr++] = NULL;
+	xml_params_add_int(params, "units", units);
 
-	transformed = xsltApplyStylesheet(xslt, doc, (const char **)params);
+	transformed = xsltApplyStylesheet(xslt, doc, xml_params_get(params));
 	xmlFreeDoc(doc);
 
 	/* Write the transformed export to file */
