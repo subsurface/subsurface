@@ -8,6 +8,7 @@
 #include "core/parse.h"
 #include "core/qthelper.h"
 #include "core/subsurface-string.h"
+#include "core/xmlparams.h"
 #include <QTextStream>
 
 /* We have to use a macro since QCOMPARE
@@ -53,62 +54,35 @@ int TestParse::parseCSV(int units, std::string file)
 	//
 	// CSV import should work
 	verbose = 1;
-	char *params[55];
-	int pnr = 0;
+	xml_params params;
 
-	params[pnr++] = strdup("numberField");
-	params[pnr++] = intdup(0);
-	params[pnr++] = strdup("dateField");
-	params[pnr++] = intdup(1);
-	params[pnr++] = strdup("timeField");
-	params[pnr++] = intdup(2);
-	params[pnr++] = strdup("durationField");
-	params[pnr++] = intdup(3);
-	params[pnr++] = strdup("locationField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("gpsField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("maxDepthField");
-	params[pnr++] = intdup(4);
-	params[pnr++] = strdup("meanDepthField");
-	params[pnr++] = intdup(5);
-	params[pnr++] = strdup("divemasterField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("buddyField");
-	params[pnr++] = intdup(6);
-	params[pnr++] = strdup("suitField");
-	params[pnr++] = intdup(7);
-	params[pnr++] = strdup("notesField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("weightField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("tagsField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("separatorIndex");
-	params[pnr++] = intdup(0);
-	params[pnr++] = strdup("units");
-	params[pnr++] = intdup(units);
-	params[pnr++] = strdup("datefmt");
-	params[pnr++] = intdup(1);
-	params[pnr++] = strdup("durationfmt");
-	params[pnr++] = intdup(2);
-	params[pnr++] = strdup("cylindersizeField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("startpressureField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("endpressureField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("o2Field");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("heField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("airtempField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("watertempField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = NULL;
+	xml_params_add_int(&params, "numberField", 0);
+	xml_params_add_int(&params, "dateField", 1);
+	xml_params_add_int(&params, "timeField", 2);
+	xml_params_add_int(&params, "durationField", 3);
+	xml_params_add_int(&params, "locationField", -1);
+	xml_params_add_int(&params, "gpsField", -1);
+	xml_params_add_int(&params, "maxDepthField", 4);
+	xml_params_add_int(&params, "meanDepthField", 5);
+	xml_params_add_int(&params, "divemasterField", -1);
+	xml_params_add_int(&params, "buddyField", 6);
+	xml_params_add_int(&params, "suitField", 7);
+	xml_params_add_int(&params, "notesField", -1);
+	xml_params_add_int(&params, "weightField", -1);
+	xml_params_add_int(&params, "tagsField", -1);
+	xml_params_add_int(&params, "separatorIndex", 0);
+	xml_params_add_int(&params, "units", units);
+	xml_params_add_int(&params, "datefmt", 1);
+	xml_params_add_int(&params, "durationfmt", 2);
+	xml_params_add_int(&params, "cylindersizeField", -1);
+	xml_params_add_int(&params, "startpressureField", -1);
+	xml_params_add_int(&params, "endpressureField", -1);
+	xml_params_add_int(&params, "o2Field", -1);
+	xml_params_add_int(&params, "heField", -1);
+	xml_params_add_int(&params, "airtempField", -1);
+	xml_params_add_int(&params, "watertempField", -1);
 
-	return parse_manual_file(file.c_str(), params, pnr - 1, &dive_table, &trip_table, &dive_site_table, &filter_preset_table);
+	return parse_manual_file(file.c_str(), &params, &dive_table, &trip_table, &dive_site_table, &filter_preset_table);
 }
 
 int TestParse::parseDivingLog()
@@ -179,45 +153,27 @@ void TestParse::testParseDM5()
 
 void TestParse::testParseHUDC()
 {
-	char *params[37];
-	int pnr = 0;
+	xml_params params;
 
-	params[pnr++] = strdup("timeField");
-	params[pnr++] = intdup(0);
-	params[pnr++] = strdup("depthField");
-	params[pnr++] = intdup(1);
-	params[pnr++] = strdup("tempField");
-	params[pnr++] = intdup(5);
-	params[pnr++] = strdup("po2Field");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("o2sensor1Field");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("o2sensor2Field");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("o2sensor3Field");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("cnsField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("ndlField");
-	params[pnr++] = intdup(2);
-	params[pnr++] = strdup("ttsField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("stopdepthField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("pressureField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("setpointField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("separatorIndex");
-	params[pnr++] = intdup(2);
-	params[pnr++] = strdup("units");
-	params[pnr++] = intdup(0);
-	params[pnr++] = strdup("hw");
-	params[pnr++] = strdup("\"DC text\"");
-	params[pnr++] = NULL;
+	xml_params_add_int(&params, "timeField", 0);
+	xml_params_add_int(&params, "depthField", 1);
+	xml_params_add_int(&params, "tempField", 5);
+	xml_params_add_int(&params, "po2Field", -1);
+	xml_params_add_int(&params, "o2sensor1Field", -1);
+	xml_params_add_int(&params, "o2sensor2Field", -1);
+	xml_params_add_int(&params, "o2sensor3Field", -1);
+	xml_params_add_int(&params, "cnsField", -1);
+	xml_params_add_int(&params, "ndlField", 2);
+	xml_params_add_int(&params, "ttsField", -1);
+	xml_params_add_int(&params, "stopdepthField", -1);
+	xml_params_add_int(&params, "pressureField", -1);
+	xml_params_add_int(&params, "setpointField", -1);
+	xml_params_add_int(&params, "separatorIndex", 2);
+	xml_params_add_int(&params, "units", 0);
+	xml_params_add(&params, "hw", "\"DC text\"");
 
 	QCOMPARE(parse_csv_file(SUBSURFACE_TEST_DATA "/dives/TestDiveSeabearHUDC.csv",
-				params, pnr - 1, "csv", &dive_table, &trip_table, &dive_site_table, &filter_preset_table),
+				&params, "csv", &dive_table, &trip_table, &dive_site_table, &filter_preset_table),
 		 0);
 
 	QCOMPARE(dive_table.nr, 1);
@@ -306,67 +262,39 @@ void TestParse::testParseMerge()
 int TestParse::parseCSVmanual(int units, std::string file)
 {
 	verbose = 1;
-	char *params[59];
-	int pnr = 0;
+	xml_params params;
 
 	// Numbers are column numbers
-	params[pnr++] = strdup("numberField");
-	params[pnr++] = intdup(0);
-	params[pnr++] = strdup("dateField");
-	params[pnr++] = intdup(1);
-	params[pnr++] = strdup("timeField");
-	params[pnr++] = intdup(2);
-	params[pnr++] = strdup("durationField");
-	params[pnr++] = intdup(3);
+	xml_params_add_int(&params, "numberField", 0);
+	xml_params_add_int(&params, "dateField", 1);
+	xml_params_add_int(&params, "timeField", 2);
+	xml_params_add_int(&params, "durationField", 3);
 	// 4 Will be SAC, once we add support for reading it
-	params[pnr++] = strdup("maxDepthField");
-	params[pnr++] = intdup(5);
-	params[pnr++] = strdup("meanDepthField");
-	params[pnr++] = intdup(6);
-	params[pnr++] = strdup("modeField");
-	params[pnr++] = intdup(7);
-	params[pnr++] = strdup("airtempField");
-	params[pnr++] = intdup(8);
-	params[pnr++] = strdup("watertempField");
-	params[pnr++] = intdup(9);
-	params[pnr++] = strdup("cylindersizeField");
-	params[pnr++] = intdup(10);
-	params[pnr++] = strdup("startpressureField");
-	params[pnr++] = intdup(11);
-	params[pnr++] = strdup("endpressureField");
-	params[pnr++] = intdup(12);
-	params[pnr++] = strdup("o2Field");
-	params[pnr++] = intdup(13);
-	params[pnr++] = strdup("heField");
-	params[pnr++] = intdup(14);
-	params[pnr++] = strdup("locationField");
-	params[pnr++] = intdup(15);
-	params[pnr++] = strdup("gpsField");
-	params[pnr++] = intdup(16);
-	params[pnr++] = strdup("divemasterField");
-	params[pnr++] = intdup(17);
-	params[pnr++] = strdup("buddyField");
-	params[pnr++] = intdup(18);
-	params[pnr++] = strdup("suitField");
-	params[pnr++] = intdup(19);
-	params[pnr++] = strdup("notesField");
-	params[pnr++] = intdup(22);
-	params[pnr++] = strdup("weightField");
-	params[pnr++] = intdup(23);
-	params[pnr++] = strdup("tagsField");
-	params[pnr++] = intdup(24);
+	xml_params_add_int(&params, "maxDepthField", 5);
+	xml_params_add_int(&params, "meanDepthField", 6);
+	xml_params_add_int(&params, "modeField", 7);
+	xml_params_add_int(&params, "airtempField", 8);
+	xml_params_add_int(&params, "watertempField", 9);
+	xml_params_add_int(&params, "cylindersizeField", 10);
+	xml_params_add_int(&params, "startpressureField", 11);
+	xml_params_add_int(&params, "endpressureField", 12);
+	xml_params_add_int(&params, "o2Field", 13);
+	xml_params_add_int(&params, "heField", 14);
+	xml_params_add_int(&params, "locationField", 15);
+	xml_params_add_int(&params, "gpsField", 16);
+	xml_params_add_int(&params, "divemasterField", 17);
+	xml_params_add_int(&params, "buddyField", 18);
+	xml_params_add_int(&params, "suitField", 19);
+	xml_params_add_int(&params, "notesField", 22);
+	xml_params_add_int(&params, "weightField", 23);
+	xml_params_add_int(&params, "tagsField", 24);
 	// Numbers are indices of possible options
-	params[pnr++] = strdup("separatorIndex");
-	params[pnr++] = intdup(0);
-	params[pnr++] = strdup("datefmt");
-	params[pnr++] = intdup(2);
-	params[pnr++] = strdup("durationfmt");
-	params[pnr++] = intdup(2);
-	params[pnr++] = strdup("units");
-	params[pnr++] = intdup(units);
-	params[pnr++] = NULL;
+	xml_params_add_int(&params, "separatorIndex", 0);
+	xml_params_add_int(&params, "datefmt", 2);
+	xml_params_add_int(&params, "durationfmt", 2);
+	xml_params_add_int(&params, "units", units);
 
-	return parse_manual_file(file.c_str(), params, pnr - 1, &dive_table, &trip_table, &dive_site_table, &filter_preset_table);
+	return parse_manual_file(file.c_str(), &params, &dive_table, &trip_table, &dive_site_table, &filter_preset_table);
 }
 
 void TestParse::exportCSVDiveDetails()
@@ -405,8 +333,7 @@ void TestParse::exportCSVDiveDetails()
 void TestParse::exportSubsurfaceCSV()
 {
 	int saved_sac = 0;
-	char *params[59];
-	int pnr = 0;
+	xml_params params;
 
 	/* Test SubsurfaceCSV with multiple cylinders */
 	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table, &trip_table, &dive_site_table, &filter_preset_table);
@@ -421,12 +348,9 @@ void TestParse::exportSubsurfaceCSV()
 
 	clear_dive_file_data();
 
-	params[pnr++] = strdup("separatorIndex");
-	params[pnr++] = intdup(0);
-	params[pnr++] = strdup("units");
-	params[pnr++] = intdup(1);
-	params[pnr++] = 0;
-	parse_csv_file("testcsvexportmanualimperial-cyl.csv", params, pnr - 1, "SubsurfaceCSV", &dive_table, &trip_table, &dive_site_table, &filter_preset_table);
+	xml_params_add_int(&params, "separatorIndex", 0);
+	xml_params_add_int(&params, "units", 1);
+	parse_csv_file("testcsvexportmanualimperial-cyl.csv", &params, "SubsurfaceCSV", &dive_table, &trip_table, &dive_site_table, &filter_preset_table);
 
 	// We do not currently support reading SAC, thus faking it
 	if (dive_table.nr > 0) {
@@ -445,32 +369,21 @@ void TestParse::exportSubsurfaceCSV()
 int TestParse::parseCSVprofile(int units, std::string file)
 {
 	verbose = 1;
-	char *params[55];
-	int pnr = 0;
+	xml_params params;
 
 	// Numbers are column numbers
-	params[pnr++] = strdup("numberField");
-	params[pnr++] = intdup(0);
-	params[pnr++] = strdup("dateField");
-	params[pnr++] = intdup(1);
-	params[pnr++] = strdup("starttimeField");
-	params[pnr++] = intdup(2);
-	params[pnr++] = strdup("timeField");
-	params[pnr++] = intdup(3);
-	params[pnr++] = strdup("depthField");
-	params[pnr++] = intdup(4);
-	params[pnr++] = strdup("tempField");
-	params[pnr++] = intdup(5);
-	params[pnr++] = strdup("pressureField");
-	params[pnr++] = intdup(6);
+	xml_params_add_int(&params, "numberField", 0);
+	xml_params_add_int(&params, "dateField", 1);
+	xml_params_add_int(&params, "starttimeField", 2);
+	xml_params_add_int(&params, "timeField", 3);
+	xml_params_add_int(&params, "depthField", 4);
+	xml_params_add_int(&params, "tempField", 5);
+	xml_params_add_int(&params, "pressureField", 6);
 	// Numbers are indices of possible options
-	params[pnr++] = strdup("datefmt");
-	params[pnr++] = intdup(2);
-	params[pnr++] = strdup("units");
-	params[pnr++] = intdup(units);
-	params[pnr++] = NULL;
+	xml_params_add_int(&params, "datefmt", 2);
+	xml_params_add_int(&params, "units", units);
 
-	return parse_csv_file(file.c_str(), params, pnr - 1, "csv", &dive_table, &trip_table, &dive_site_table, &filter_preset_table);
+	return parse_csv_file(file.c_str(), &params, "csv", &dive_table, &trip_table, &dive_site_table, &filter_preset_table);
 }
 
 void TestParse::exportCSVDiveProfile()
@@ -518,54 +431,32 @@ void TestParse::testExport()
 
 void TestParse::parseDL7()
 {
-	char *params[51];
-	int pnr = 0;
+	xml_params params;
 
-	params[pnr++] = strdup("dateField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("datefmt");
-	params[pnr++] = intdup(0);
-	params[pnr++] = strdup("starttimeField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("numberField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("timeField");
-	params[pnr++] = intdup(1);
-	params[pnr++] = strdup("depthField");
-	params[pnr++] = intdup(2);
-	params[pnr++] = strdup("tempField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("po2Field");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("o2sensor1Field");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("o2sensor2Field");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("o2sensor3Field");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("cnsField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("ndlField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("ttsField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("stopdepthField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("pressureField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("setpointField");
-	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("separatorIndex");
-	params[pnr++] = intdup(3);
-	params[pnr++] = strdup("units");
-	params[pnr++] = intdup(0);
-	params[pnr++] = strdup("hw");
-	params[pnr++] = strdup("DL7");
-	params[pnr++] = 0;
+	xml_params_add_int(&params, "dateField", -1);
+	xml_params_add_int(&params, "datefmt", 0);
+	xml_params_add_int(&params, "starttimeField", -1);
+	xml_params_add_int(&params, "numberField", -1);
+	xml_params_add_int(&params, "timeField", 1);
+	xml_params_add_int(&params, "depthField", 2);
+	xml_params_add_int(&params, "tempField", -1);
+	xml_params_add_int(&params, "po2Field", -1);
+	xml_params_add_int(&params, "o2sensor1Field", -1);
+	xml_params_add_int(&params, "o2sensor2Field", -1);
+	xml_params_add_int(&params, "o2sensor3Field", -1);
+	xml_params_add_int(&params, "cnsField", -1);
+	xml_params_add_int(&params, "ndlField", -1);
+	xml_params_add_int(&params, "ttsField", -1);
+	xml_params_add_int(&params, "stopdepthField", -1);
+	xml_params_add_int(&params, "pressureField", -1);
+	xml_params_add_int(&params, "setpointField", -1);
+	xml_params_add_int(&params, "separatorIndex", 3);
+	xml_params_add_int(&params, "units", 0);
+	xml_params_add(&params, "hw", "DL7");
 
 	clear_dive_file_data();
 	QCOMPARE(parse_csv_file(SUBSURFACE_TEST_DATA "/dives/DL7.zxu",
-				params, pnr - 1, "DL7", &dive_table, &trip_table, &dive_site_table, &filter_preset_table),
+				&params, "DL7", &dive_table, &trip_table, &dive_site_table, &filter_preset_table),
 		 0);
 	QCOMPARE(dive_table.nr, 3);
 

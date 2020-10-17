@@ -23,6 +23,7 @@
 #include "tag.h"
 #include "trip.h"
 #include "imagedownloader.h"
+#include "xmlparams.h"
 #include <QFile>
 #include <QRegExp>
 #include <QDir>
@@ -1474,7 +1475,7 @@ QString getUUID()
 	return uuidString;
 }
 
-int parse_seabear_header(const char *filename, char **params, int pnr)
+void parse_seabear_header(const char *filename, struct xml_params *params)
 {
 	QFile f(filename);
 
@@ -1487,8 +1488,8 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 
 	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 		if (parseLine.contains("//DIVE NR: ")) {
-			params[pnr++] = strdup("diveNro");
-			params[pnr++] = copy_qstring(parseLine.replace(QString::fromLatin1("//DIVE NR: "), QString::fromLatin1("")));
+			xml_params_add(params, "diveNro",
+				       qPrintable(parseLine.replace(QString::fromLatin1("//DIVE NR: "), QString::fromLatin1(""))));
 			break;
 		}
 	}
@@ -1502,8 +1503,9 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 
 	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 		if (parseLine.contains("//Hardware Version: ")) {
-			params[pnr++] = strdup("hw");
-			params[pnr++] = copy_qstring(parseLine.replace(QString::fromLatin1("//Hardware Version: "), QString::fromLatin1("\"Seabear ")).trimmed().append("\""));
+			xml_params_add(params, "hw",
+				       qPrintable(parseLine.replace(QString::fromLatin1("//Hardware Version: "),
+						  QString::fromLatin1("\"Seabear ")).trimmed().append("\"")));
 			break;
 		}
 	}
@@ -1515,8 +1517,8 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 
 	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 		if (parseLine.contains("//Log interval: ")) {
-			params[pnr++] = strdup("delta");
-			params[pnr++] = copy_qstring(parseLine.remove(QString::fromLatin1("//Log interval: ")).trimmed().remove(QString::fromLatin1(" s")));
+			xml_params_add(params, "delta",
+				       qPrintable(parseLine.remove(QString::fromLatin1("//Log interval: ")).trimmed().remove(QString::fromLatin1(" s"))));
 			break;
 		}
 	}
@@ -1530,8 +1532,8 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 		QString needle = "//Mode: ";
 		if (parseLine.contains(needle)) {
-			params[pnr++] = strdup("diveMode");
-			params[pnr++] = copy_qstring(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\""));
+			xml_params_add(params, "diveMode",
+				       qPrintable(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"")));
 		}
 	}
 	f.seek(0);
@@ -1543,8 +1545,8 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 		QString needle = "//Firmware Version: ";
 		if (parseLine.contains(needle)) {
-			params[pnr++] = strdup("Firmware");
-			params[pnr++] = copy_qstring(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\""));
+			xml_params_add(params, "Firmware",
+				       qPrintable(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"")));
 		}
 	}
 	f.seek(0);
@@ -1552,8 +1554,8 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 		QString needle = "//Serial number: ";
 		if (parseLine.contains(needle)) {
-			params[pnr++] = strdup("Serial");
-			params[pnr++] = copy_qstring(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\""));
+			xml_params_add(params, "Serial",
+				       qPrintable(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"")));
 		}
 	}
 	f.seek(0);
@@ -1561,8 +1563,8 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 		QString needle = "//GF: ";
 		if (parseLine.contains(needle)) {
-			params[pnr++] = strdup("GF");
-			params[pnr++] = copy_qstring(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\""));
+			xml_params_add(params, "GF",
+				       qPrintable(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"")));
 		}
 	}
 	f.seek(0);
@@ -1580,36 +1582,26 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 	unsigned short index = 0;
 	for (const QString &columnText: currColumns) {
 		if (columnText == "Time") {
-			params[pnr++] = strdup("timeField");
-			params[pnr++] = intdup(index++);
+			xml_params_add_int(params, "timeField", index++);
 		} else if (columnText == "Depth") {
-			params[pnr++] = strdup("depthField");
-			params[pnr++] = intdup(index++);
+			xml_params_add_int(params, "depthField", index++);
 		} else if (columnText == "Temperature") {
-			params[pnr++] = strdup("tempField");
-			params[pnr++] = intdup(index++);
+			xml_params_add_int(params, "tempField", index++);
 		} else if (columnText == "NDT") {
-			params[pnr++] = strdup("ndlField");
-			params[pnr++] = intdup(index++);
+			xml_params_add_int(params, "ndlField", index++);
 		} else if (columnText == "TTS") {
-			params[pnr++] = strdup("ttsField");
-			params[pnr++] = intdup(index++);
+			xml_params_add_int(params, "ttsField", index++);
 		} else if (columnText == "pO2_1") {
-			params[pnr++] = strdup("o2sensor1Field");
-			params[pnr++] = intdup(index++);
+			xml_params_add_int(params, "o2sensor1Field", index++);
 		} else if (columnText == "pO2_2") {
-			params[pnr++] = strdup("o2sensor2Field");
-			params[pnr++] = intdup(index++);
+			xml_params_add_int(params, "o2sensor2Field", index++);
 		} else if (columnText == "pO2_3") {
-			params[pnr++] = strdup("o2sensor3Field");
-			params[pnr++] = intdup(index++);
+			xml_params_add_int(params, "o2sensor3Field", index++);
 		} else if (columnText == "Ceiling") {
 			/* TODO: Add support for dive computer reported ceiling*/
-			params[pnr++] = strdup("ceilingField");
-			params[pnr++] = intdup(index++);
+			xml_params_add_int(params, "ceilingField", index++);
 		} else if (columnText == "Tank pressure") {
-			params[pnr++] = strdup("pressureField");
-			params[pnr++] = intdup(index++);
+			xml_params_add_int(params, "pressureField", index++);
 		} else {
 			// We do not know about this value
 			qDebug() << "Seabear import found an un-handled field: " << columnText;
@@ -1617,16 +1609,12 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 	}
 
 	/* Separator is ';' and the index for that in DiveLogImportDialog constructor is 2 */
-	params[pnr++] = strdup("separatorIndex");
-	params[pnr++] = intdup(2);
+	xml_params_add_int(params, "separatorIndex", 2);
 
 	/* And metric units */
-	params[pnr++] = strdup("units");
-	params[pnr++] = intdup(0);
+	xml_params_add_int(params, "units", 0);
 
-	params[pnr] = NULL;
 	f.close();
-	return pnr;
 }
 
 char *intdup(int index)

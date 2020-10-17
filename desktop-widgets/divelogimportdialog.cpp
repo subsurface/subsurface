@@ -15,6 +15,7 @@
 #include "core/divesite.h"
 #include "core/trip.h"
 #include "core/import-csv.h"
+#include "core/xmlparams.h"
 
 static QString subsurface_mimedata = "subsurface/csvcolumns";
 static QString subsurface_index = "subsurface/csvindex";
@@ -801,64 +802,37 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			resultModel->setData(resultModel->index(0, i),headers.at(i),Qt::EditRole);
 }
 
-int DiveLogImportDialog::setup_csv_params(QStringList r, char **params, int pnr)
+void DiveLogImportDialog::setup_csv_params(QStringList r, xml_params &params)
 {
-	params[pnr++] = strdup("dateField");
-	params[pnr++] = intdup(r.indexOf(tr("Date")));
-	params[pnr++] = strdup("datefmt");
-	params[pnr++] = intdup(ui->DateFormat->currentIndex());
-	params[pnr++] = strdup("starttimeField");
-	params[pnr++] = intdup(r.indexOf(tr("Time")));
-	params[pnr++] = strdup("numberField");
-	params[pnr++] = intdup(r.indexOf(tr("Dive #")));
-	params[pnr++] = strdup("timeField");
-	params[pnr++] = intdup(r.indexOf(tr("Sample time")));
-	params[pnr++] = strdup("depthField");
-	params[pnr++] = intdup(r.indexOf(tr("Sample depth")));
-	params[pnr++] = strdup("tempField");
-	params[pnr++] = intdup(r.indexOf(tr("Sample temperature")));
-	params[pnr++] = strdup("po2Field");
-	params[pnr++] = intdup(r.indexOf(tr("Sample pO₂")));
-	params[pnr++] = strdup("o2sensor1Field");
-	params[pnr++] = intdup(r.indexOf(tr("Sample sensor1 pO₂")));
-	params[pnr++] = strdup("o2sensor2Field");
-	params[pnr++] = intdup(r.indexOf(tr("Sample sensor2 pO₂")));
-	params[pnr++] = strdup("o2sensor3Field");
-	params[pnr++] = intdup(r.indexOf(tr("Sample sensor3 pO₂")));
-	params[pnr++] = strdup("cnsField");
-	params[pnr++] = intdup(r.indexOf(tr("Sample CNS")));
-	params[pnr++] = strdup("ndlField");
-	params[pnr++] = intdup(r.indexOf(tr("Sample NDL")));
-	params[pnr++] = strdup("ttsField");
-	params[pnr++] = intdup(r.indexOf(tr("Sample TTS")));
-	params[pnr++] = strdup("stopdepthField");
-	params[pnr++] = intdup(r.indexOf(tr("Sample stopdepth")));
-	params[pnr++] = strdup("pressureField");
-	params[pnr++] = intdup(r.indexOf(tr("Sample pressure")));
-	params[pnr++] = strdup("heartBeat");
-	params[pnr++] = intdup(r.indexOf(tr("Sample heartrate")));
-	params[pnr++] = strdup("setpointField");
-	params[pnr++] = intdup(r.indexOf(tr("Sample setpoint")));
-	params[pnr++] = strdup("visibilityField");
-	params[pnr++] = intdup(r.indexOf(tr("Visibility")));
-	params[pnr++] = strdup("ratingField");
-	params[pnr++] = intdup(r.indexOf(tr("Rating")));
-	params[pnr++] = strdup("separatorIndex");
-	params[pnr++] = intdup(ui->CSVSeparator->currentIndex());
-	params[pnr++] = strdup("units");
-	params[pnr++] = intdup(ui->CSVUnits->currentIndex());
-	if (hw.length()) {
-		params[pnr++] = strdup("hw");
-		params[pnr++] = copy_qstring(hw);
-	} else if (ui->knownImports->currentText().length() > 0) {
-		params[pnr++] = strdup("hw");
-		params[pnr++] = copy_qstring(ui->knownImports->currentText().prepend("\"").append("\""));
-	}
-	params[pnr++] = NULL;
-
-	return pnr;
+	xml_params_add_int(&params, "dateField", r.indexOf(tr("Date")));
+	xml_params_add_int(&params, "datefmt", ui->DateFormat->currentIndex());
+	xml_params_add_int(&params, "starttimeField", r.indexOf(tr("Time")));
+	xml_params_add_int(&params, "numberField", r.indexOf(tr("Dive #")));
+	xml_params_add_int(&params, "timeField", r.indexOf(tr("Sample time")));
+	xml_params_add_int(&params, "depthField", r.indexOf(tr("Sample depth")));
+	xml_params_add_int(&params, "tempField", r.indexOf(tr("Sample temperature")));
+	xml_params_add_int(&params, "po2Field", r.indexOf(tr("Sample pO₂")));
+	xml_params_add_int(&params, "o2sensor1Field", r.indexOf(tr("Sample sensor1 pO₂")));
+	xml_params_add_int(&params, "o2sensor2Field", r.indexOf(tr("Sample sensor2 pO₂")));
+	xml_params_add_int(&params, "o2sensor3Field", r.indexOf(tr("Sample sensor3 pO₂")));
+	xml_params_add_int(&params, "cnsField", r.indexOf(tr("Sample CNS")));
+	xml_params_add_int(&params, "ndlField", r.indexOf(tr("Sample NDL")));
+	xml_params_add_int(&params, "ttsField", r.indexOf(tr("Sample TTS")));
+	xml_params_add_int(&params, "stopdepthField", r.indexOf(tr("Sample stopdepth")));
+	xml_params_add_int(&params, "pressureField", r.indexOf(tr("Sample pressure")));
+	xml_params_add_int(&params, "heartBeat", r.indexOf(tr("Sample heartrate")));
+	xml_params_add_int(&params, "setpointField", r.indexOf(tr("Sample setpoint")));
+	xml_params_add_int(&params, "visibilityField", r.indexOf(tr("Visibility")));
+	xml_params_add_int(&params, "ratingField", r.indexOf(tr("Rating")));
+	xml_params_add_int(&params, "separatorIndex", ui->CSVSeparator->currentIndex());
+	xml_params_add_int(&params, "units", ui->CSVUnits->currentIndex());
+	if (hw.length())
+		xml_params_add(&params, "hw", qPrintable(hw));
+	else if (ui->knownImports->currentText().length() > 0)
+		xml_params_add(&params, "hw", qPrintable(ui->knownImports->currentText().prepend("\"").append("\"")));
 }
-int DiveLogImportDialog::parseTxtHeader(QString fileName, char **params, int pnr)
+
+void DiveLogImportDialog::parseTxtHeader(QString fileName, xml_params &params)
 {
 	QFile f(fileName);
 	QString date;
@@ -897,11 +871,8 @@ int DiveLogImportDialog::parseTxtHeader(QString fileName, char **params, int pnr
 	}
 	f.close();
 
-	params[pnr++] = strdup("date");
-	params[pnr++] = strdup(date.toLatin1());
-	params[pnr++] = strdup("time");
-	params[pnr++] = strdup(time.toLatin1());
-	return pnr;
+	xml_params_add(&params, "date", qPrintable(date));
+	xml_params_add(&params, "time", qPrintable(time));
 }
 
 void DiveLogImportDialog::on_buttonBox_accepted()
@@ -919,20 +890,17 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				QPair<QString, QString> pair = poseidonFileNames(fileNames[i]);
 				parse_txt_file(qPrintable(pair.second), qPrintable(pair.first), &table, &trips, &sites);
 			} else {
-				char *params[50];
-				int pnr = 0;
+				xml_params params;
 
 				QRegExp apdRe("^.*[/\\][0-9a-zA-Z]*_([0-9]{6})_([0-9]{6})\\.apd");
 				if (txtLog) {
-					pnr = parseTxtHeader(fileNames[i], params, pnr);
+					parseTxtHeader(fileNames[i], params);
 				} else if (apdRe.exactMatch(fileNames[i])) {
-					params[pnr++] = strdup("date");
-					params[pnr++] = strdup("20" + apdRe.cap(1).toLatin1());
-					params[pnr++] = strdup("time");
-					params[pnr++] = strdup("1" + apdRe.cap(2).toLatin1());
+					xml_params_add(&params, "date", qPrintable("20" + apdRe.cap(1)));
+					xml_params_add(&params, "time", qPrintable("1" + apdRe.cap(2)));
 				}
-				pnr = setup_csv_params(r, params, pnr);
-				parse_csv_file(qPrintable(fileNames[i]), params, pnr - 1,
+				setup_csv_params(r, params);
+				parse_csv_file(qPrintable(fileNames[i]), &params,
 						specialCSV.contains(ui->knownImports->currentIndex()) ? qPrintable(CSVApps[ui->knownImports->currentIndex()].name) : "csv",
 						&table, &trips, &sites, &filter_presets);
 			}
@@ -940,82 +908,49 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 	} else {
 		for (int i = 0; i < fileNames.size(); ++i) {
 			if (r.indexOf(tr("Sample time")) < 0) {
-				char *params[61];
-				int pnr = 0;
-				params[pnr++] = strdup("numberField");
-				params[pnr++] = intdup(r.indexOf(tr("Dive #")));
-				params[pnr++] = strdup("dateField");
-				params[pnr++] = intdup(r.indexOf(tr("Date")));
-				params[pnr++] = strdup("timeField");
-				params[pnr++] = intdup(r.indexOf(tr("Time")));
-				params[pnr++] = strdup("durationField");
-				params[pnr++] = intdup(r.indexOf(tr("Duration")));
-				params[pnr++] = strdup("modeField");
-				params[pnr++] = intdup(r.indexOf(tr("Mode")));
-				params[pnr++] = strdup("locationField");
-				params[pnr++] = intdup(r.indexOf(tr("Location")));
-				params[pnr++] = strdup("gpsField");
-				params[pnr++] = intdup(r.indexOf(tr("GPS")));
-				params[pnr++] = strdup("maxDepthField");
-				params[pnr++] = intdup(r.indexOf(tr("Max. depth")));
-				params[pnr++] = strdup("meanDepthField");
-				params[pnr++] = intdup(r.indexOf(tr("Avg. depth")));
-				params[pnr++] = strdup("divemasterField");
-				params[pnr++] = intdup(r.indexOf(tr("Divemaster")));
-				params[pnr++] = strdup("buddyField");
-				params[pnr++] = intdup(r.indexOf(tr("Buddy")));
-				params[pnr++] = strdup("suitField");
-				params[pnr++] = intdup(r.indexOf(tr("Suit")));
-				params[pnr++] = strdup("notesField");
-				params[pnr++] = intdup(r.indexOf(tr("Notes")));
-				params[pnr++] = strdup("weightField");
-				params[pnr++] = intdup(r.indexOf(tr("Weight")));
-				params[pnr++] = strdup("tagsField");
-				params[pnr++] = intdup(r.indexOf(tr("Tags")));
-				params[pnr++] = strdup("separatorIndex");
-				params[pnr++] = intdup(ui->CSVSeparator->currentIndex());
-				params[pnr++] = strdup("units");
-				params[pnr++] = intdup(ui->CSVUnits->currentIndex());
-				params[pnr++] = strdup("datefmt");
-				params[pnr++] = intdup(ui->DateFormat->currentIndex());
-				params[pnr++] = strdup("durationfmt");
-				params[pnr++] = intdup(ui->DurationFormat->currentIndex());
-				params[pnr++] = strdup("cylindersizeField");
-				params[pnr++] = intdup(r.indexOf(tr("Cyl. size")));
-				params[pnr++] = strdup("startpressureField");
-				params[pnr++] = intdup(r.indexOf(tr("Start pressure")));
-				params[pnr++] = strdup("endpressureField");
-				params[pnr++] = intdup(r.indexOf(tr("End pressure")));
-				params[pnr++] = strdup("o2Field");
-				params[pnr++] = intdup(r.indexOf(tr("O₂")));
-				params[pnr++] = strdup("heField");
-				params[pnr++] = intdup(r.indexOf(tr("He")));
-				params[pnr++] = strdup("airtempField");
-				params[pnr++] = intdup(r.indexOf(tr("Air temp.")));
-				params[pnr++] = strdup("watertempField");
-				params[pnr++] = intdup(r.indexOf(tr("Water temp.")));
-				params[pnr++] = strdup("visibilityField");
-				params[pnr++] = intdup(r.indexOf(tr("Visibility")));
-				params[pnr++] = strdup("ratingField");
-				params[pnr++] = intdup(r.indexOf(tr("Rating")));
-				params[pnr++] = NULL;
+				xml_params params;
+				xml_params_add_int(&params, "numberField", r.indexOf(tr("Dive #")));
+				xml_params_add_int(&params, "dateField", r.indexOf(tr("Date")));
+				xml_params_add_int(&params, "timeField", r.indexOf(tr("Time")));
+				xml_params_add_int(&params, "durationField", r.indexOf(tr("Duration")));
+				xml_params_add_int(&params, "modeField", r.indexOf(tr("Mode")));
+				xml_params_add_int(&params, "locationField", r.indexOf(tr("Location")));
+				xml_params_add_int(&params, "gpsField", r.indexOf(tr("GPS")));
+				xml_params_add_int(&params, "maxDepthField", r.indexOf(tr("Max. depth")));
+				xml_params_add_int(&params, "meanDepthField", r.indexOf(tr("Avg. depth")));
+				xml_params_add_int(&params, "divemasterField", r.indexOf(tr("Divemaster")));
+				xml_params_add_int(&params, "buddyField", r.indexOf(tr("Buddy")));
+				xml_params_add_int(&params, "suitField", r.indexOf(tr("Suit")));
+				xml_params_add_int(&params, "notesField", r.indexOf(tr("Notes")));
+				xml_params_add_int(&params, "weightField", r.indexOf(tr("Weight")));
+				xml_params_add_int(&params, "tagsField", r.indexOf(tr("Tags")));
+				xml_params_add_int(&params, "separatorIndex", ui->CSVSeparator->currentIndex());
+				xml_params_add_int(&params, "units", ui->CSVUnits->currentIndex());
+				xml_params_add_int(&params, "datefmt", ui->DateFormat->currentIndex());
+				xml_params_add_int(&params, "durationfmt", ui->DurationFormat->currentIndex());
+				xml_params_add_int(&params, "cylindersizeField", r.indexOf(tr("Cyl. size")));
+				xml_params_add_int(&params, "startpressureField", r.indexOf(tr("Start pressure")));
+				xml_params_add_int(&params, "endpressureField", r.indexOf(tr("End pressure")));
+				xml_params_add_int(&params, "o2Field", r.indexOf(tr("O₂")));
+				xml_params_add_int(&params, "heField", r.indexOf(tr("He")));
+				xml_params_add_int(&params, "airtempField", r.indexOf(tr("Air temp.")));
+				xml_params_add_int(&params, "watertempField", r.indexOf(tr("Water temp.")));
+				xml_params_add_int(&params, "visibilityField", r.indexOf(tr("Visibility")));
+				xml_params_add_int(&params, "ratingField", r.indexOf(tr("Rating")));
 
-				parse_manual_file(qPrintable(fileNames[i]), params, pnr - 1, &table, &trips, &sites, &filter_presets);
+				parse_manual_file(qPrintable(fileNames[i]), &params, &table, &trips, &sites, &filter_presets);
 			} else {
-				char *params[53];
-				int pnr = 0;
+				xml_params params;
 
 				QRegExp apdRe("^.*[/\\][0-9a-zA-Z]*_([0-9]{6})_([0-9]{6})\\.apd");
 				if (txtLog) {
-					pnr = parseTxtHeader(fileNames[i], params, pnr);
+					parseTxtHeader(fileNames[i], params);
 				} else if (apdRe.exactMatch(fileNames[i])) {
-					params[pnr++] = strdup("date");
-					params[pnr++] = strdup("20" + apdRe.cap(1).toLatin1());
-					params[pnr++] = strdup("time");
-					params[pnr++] = strdup("1" + apdRe.cap(2).toLatin1());
+					xml_params_add(&params, "date", qPrintable("20" + apdRe.cap(1)));
+					xml_params_add(&params, "time", qPrintable("1" + apdRe.cap(2)));
 				}
-				pnr = setup_csv_params(r, params, pnr);
-				parse_csv_file(qPrintable(fileNames[i]), params, pnr - 1,
+				setup_csv_params(r, params);
+				parse_csv_file(qPrintable(fileNames[i]), &params,
 						specialCSV.contains(ui->knownImports->currentIndex()) ? qPrintable(CSVApps[ui->knownImports->currentIndex()].name) : "csv",
 						&table, &trips, &sites, &filter_presets);
 			}
