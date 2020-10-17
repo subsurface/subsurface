@@ -1644,10 +1644,11 @@ void MainWindow::on_actionImportDiveSites_triggered()
 	struct dive_table table = empty_dive_table;
 	struct trip_table trips = empty_trip_table;
 	struct dive_site_table sites = empty_dive_site_table;
+	struct filter_preset_table filter_presets;
 
 	for (const QString &s: fileNames) {
 		QByteArray fileNamePtr = QFile::encodeName(s);
-		parse_file(fileNamePtr.data(), &table, &trips, &sites, &filter_preset_table);
+		parse_file(fileNamePtr.data(), &table, &trips, &sites, &filter_presets);
 	}
 	// The imported dive sites still have pointers to imported dives - remove them
 	for (int i = 0; i < sites.nr; ++i)
