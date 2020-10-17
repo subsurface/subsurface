@@ -451,7 +451,7 @@ void QMLManager::mergeLocalRepo()
 	struct dive_table table = empty_dive_table;
 	struct trip_table trips = empty_trip_table;
 	struct dive_site_table sites = empty_dive_site_table;
-	filter_preset_table_t filter_presets;
+	struct filter_preset_table filter_presets;
 	parse_file(qPrintable(nocloud_localstorage()), &table, &trips, &sites, &filter_presets);
 	add_imported_dives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS);
 }
@@ -2236,7 +2236,7 @@ void QMLManager::importCacheRepo(QString repo)
 	struct dive_table table = empty_dive_table;
 	struct trip_table trips = empty_trip_table;
 	struct dive_site_table sites = empty_dive_site_table;
-	filter_preset_table_t filter_presets;
+	struct filter_preset_table filter_presets;
 	QString repoPath = QString("%1/cloudstorage/%2").arg(system_default_directory()).arg(repo);
 	appendTextToLog(QString("importing %1").arg(repoPath));
 	parse_file(qPrintable(repoPath), &table, &trips, &sites, &filter_presets);

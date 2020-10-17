@@ -24,14 +24,14 @@ extern "C" {
 #endif
 
 int parse_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate, struct dive_table *table,
-		   struct trip_table *trips, struct dive_site_table *sites, filter_preset_table_t *filter_presets);
+		   struct trip_table *trips, struct dive_site_table *sites, struct filter_preset_table *filter_presets);
 int try_to_open_csv(struct memblock *mem, enum csv_format type, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
 int parse_txt_file(const char *filename, const char *csv, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
 
 int parse_seabear_log(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-		     filter_preset_table_t *filter_presets);
+		     struct filter_preset_table *filter_presets);
 int parse_manual_file(const char *filename, char **params, int pnr, struct dive_table *table, struct trip_table *trips,
-		      struct dive_site_table *sites, filter_preset_table_t *filter_presets);
+		      struct dive_site_table *sites, struct filter_preset_table *filter_presets);
 
 #ifdef __cplusplus
 }

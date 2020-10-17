@@ -470,7 +470,7 @@ void AddDive::undoit()
 }
 
 ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, struct dive_site_table *sites,
-			 filter_preset_table_t *filter_presets, int flags, const QString &source)
+			 struct filter_preset_table *filter_presets, int flags, const QString &source)
 {
 	setText(Command::Base::tr("import %n dive(s) from %1", "", dives->nr).arg(source));
 

@@ -99,7 +99,7 @@ class ImportDives : public DiveListBase {
 public:
 	// Note: dives and trips are consumed - after the call they will be empty.
 	ImportDives(struct dive_table *dives, struct trip_table *trips, struct dive_site_table *sites,
-		    filter_preset_table_t *filter_presets, int flags, const QString &source);
+		    struct filter_preset_table *filter_presets, int flags, const QString &source);
 private:
 	void undoit() override;
 	void redoit() override;

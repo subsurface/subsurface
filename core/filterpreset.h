@@ -24,12 +24,18 @@ struct filter_preset {
 	FilterData data;
 };
 
-using filter_preset_table_t = std::vector<filter_preset>;
-extern filter_preset_table_t filter_preset_table;
+// Subclassing standard library containers is generally
+// not recommended. However, this makes interaction with
+// C-code easier and since we don't add any member functions,
+// this is not a problem.
+struct filter_preset_table : public std::vector<filter_preset>
+{
+};
+
+extern struct filter_preset_table filter_preset_table;
 #else
 struct filter_preset;
 struct filter_preset_table;
-typedef struct filter_preset_table filter_preset_table_t;
 #endif
 
 
@@ -49,7 +55,7 @@ extern struct filter_preset *alloc_filter_preset();
 extern void free_filter_preset(const struct filter_preset *preset);
 extern void filter_preset_set_name(struct filter_preset *preset, const char *name);
 extern void filter_preset_set_fulltext(struct filter_preset *preset, const char *fulltext, const char *fulltext_string_mode);
-extern void add_filter_preset_to_table(const struct filter_preset *preset, filter_preset_table_t *table);
+extern void add_filter_preset_to_table(const struct filter_preset *preset, struct filter_preset_table *table);
 extern void filter_preset_add_constraint(struct filter_preset *preset, const char *type, const char *string_mode,
 					 const char *range_mode, bool negate, const char *data); // called by the parser, therefore data passed as strings.
 

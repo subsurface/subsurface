@@ -105,7 +105,7 @@ static char *parse_dan_new_line(char *buf, const char *NL)
 static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, const char *tag);
 static int parse_dan_format(const char *filename, char **params, int pnr, struct dive_table *table,
 			    struct trip_table *trips, struct dive_site_table *sites,
-			    filter_preset_table_t *filter_presets)
+			    struct filter_preset_table *filter_presets)
 {
 	int ret = 0, i;
 	size_t end_ptr = 0;
@@ -286,7 +286,7 @@ static int parse_dan_format(const char *filename, char **params, int pnr, struct
 
 int parse_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate,
 		   struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-		   filter_preset_table_t *filter_presets)
+		   struct filter_preset_table *filter_presets)
 {
 	int ret, i;
 	struct memblock mem;
@@ -808,8 +808,8 @@ int parse_txt_file(const char *filename, const char *csv, struct dive_table *tab
 
 #define SBPARAMS 40
 static int parse_seabear_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate,
-				  struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites, filter_preset_table_t *filter_presets);
-int parse_seabear_log(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites, filter_preset_table_t *filter_presets)
+				  struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites, struct filter_preset_table *filter_presets);
+int parse_seabear_log(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites, struct filter_preset_table *filter_presets)
 {
 	char *params[SBPARAMS];
 	int pnr = 0;
@@ -826,7 +826,7 @@ int parse_seabear_log(const char *filename, struct dive_table *table, struct tri
 
 static int parse_seabear_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate,
 				  struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-				  filter_preset_table_t *filter_presets)
+				  struct filter_preset_table *filter_presets)
 {
 	int ret, i;
 	struct memblock mem;
@@ -954,7 +954,7 @@ static int parse_seabear_csv_file(const char *filename, char **params, int pnr, 
 }
 
 int parse_manual_file(const char *filename, char **params, int pnr, struct dive_table *table, struct trip_table *trips,
-		      struct dive_site_table *sites, filter_preset_table_t *filter_presets)
+		      struct dive_site_table *sites, struct filter_preset_table *filter_presets)
 {
 	struct memblock mem;
 	time_t now;

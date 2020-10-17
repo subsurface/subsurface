@@ -1549,7 +1549,7 @@ void MainWindow::importFiles(const QStringList fileNames)
 	struct dive_table table = empty_dive_table;
 	struct trip_table trips = empty_trip_table;
 	struct dive_site_table sites = empty_dive_site_table;
-	filter_preset_table_t filter_presets;
+	struct filter_preset_table filter_presets;
 
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
