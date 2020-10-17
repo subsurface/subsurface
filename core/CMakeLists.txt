@@ -189,6 +189,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	worldmap-options.h
 	worldmap-save.c
 	worldmap-save.h
+	xmlparams.cpp
+	xmlparams.h
 	xmp_parser.cpp
 	xmp_parser.h
 
