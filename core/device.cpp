@@ -203,6 +203,11 @@ bool device::operator==(const device &a) const
 	       nickName == a.nickName;
 }
 
+static bool same_device(const device &dev1, const device &dev2)
+{
+	return dev1.deviceId == dev2.deviceId && strcoll(dev1.model.c_str(), dev2.model.c_str()) == 0;
+}
+
 bool device::operator<(const device &a) const
 {
 	if (deviceId != a.deviceId)
@@ -216,8 +221,9 @@ bool device::operator<(const device &a) const
 const struct device *get_device_for_dc(const struct device_table *table, const struct divecomputer *dc)
 {
 	const std::vector<device> &dcs = table->devices;
-	auto it = std::lower_bound(dcs.begin(), dcs.end(), device{dc->model, dc->deviceid, {}, {}, {}});
-	return it != dcs.end() && it->model == dc->model && it->deviceId == dc->deviceid ? &*it : NULL;
+	device dev { dc->model, dc->deviceid, {}, {}, {} };
+	auto it = std::lower_bound(dcs.begin(), dcs.end(), dev);
+	return it != dcs.end() && same_device(*it, dev) ? &*it : NULL;
 }
 
 /*
@@ -263,8 +269,9 @@ static void addDC(std::vector<device> &dcs, const std::string &m, uint32_t d, co
 {
 	if (m.empty() || d == 0)
 		return;
-	auto it = std::lower_bound(dcs.begin(), dcs.end(), device{m, d, {}, {}, {}});
-	if (it != dcs.end() && it->model == m && it->deviceId == d) {
+	device dev { m, d, {}, {}, {} };
+	auto it = std::lower_bound(dcs.begin(), dcs.end(), dev);
+	if (it != dcs.end() && same_device(*it, dev)) {
 		// debugging: show changes
 		if (verbose)
 			it->showchanges(n, s, f);
