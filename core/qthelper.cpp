@@ -1617,15 +1617,6 @@ void parse_seabear_header(const char *filename, struct xml_params *params)
 	f.close();
 }
 
-char *intdup(int index)
-{
-	char tmpbuf[21];
-
-	snprintf(tmpbuf, sizeof(tmpbuf) - 2, "%d", index);
-	tmpbuf[20] = 0;
-	return strdup(tmpbuf);
-}
-
 extern "C" void print_qt_versions()
 {
 	printf("%s\n", qPrintable(QStringLiteral("built with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion())));
