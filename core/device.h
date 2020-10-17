@@ -39,6 +39,10 @@ const char *device_get_serial(const struct device *dev);
 const char *device_get_firmware(const struct device *dev);
 const char *device_get_nickname(const struct device *dev);
 
+// for C code that needs to alloc/free a device table. (Let's try to get rid of those)
+extern struct device_table *alloc_device_table();
+extern void free_device_table(struct device_table *devices);
+
 #ifdef __cplusplus
 }
 #endif

@@ -1,11 +1,11 @@
 #ifndef DIVEIMPORTEDMODEL_H
 #define DIVEIMPORTEDMODEL_H
 
-#include <QAbstractTableModel>
-#include <vector>
+#include "core/device.h"
 #include "core/divesite.h"
 #include "core/divelist.h"
 #include "core/downloadfromdcthread.h"
+#include <QAbstractTableModel>
 
 class DiveImportedModel : public QAbstractTableModel
 {
@@ -23,7 +23,7 @@ public:
 	Q_INVOKABLE void clearTable();
 	QHash<int, QByteArray> roleNames() const;
 	void deleteDeselected();
-	std::pair<struct dive_table, struct dive_site_table> consumeTables(); // Returns dives and sites and resets model.
+	std::tuple<struct dive_table, struct dive_site_table, struct device_table> consumeTables(); // Returns downloaded tables and resets model.
 
 	int numDives() const;
 	Q_INVOKABLE void recordDives(int flags = IMPORT_PREFER_IMPORTED | IMPORT_IS_DOWNLOADED);
@@ -48,6 +48,7 @@ private:
 	std::vector<char> checkStates; // char instead of bool to avoid silly pessimization of std::vector.
 	struct dive_table diveTable;
 	struct dive_site_table sitesTable;
+	struct device_table deviceTable;
 };
 
 #endif

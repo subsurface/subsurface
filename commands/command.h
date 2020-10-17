@@ -3,7 +3,6 @@
 #define COMMAND_H
 
 #include "core/dive.h"
-#include "core/filterpreset.h"
 #include "core/pictureobj.h"
 #include <QVector>
 #include <QAction>
@@ -11,6 +10,8 @@
 
 struct DiveAndLocation;
 struct FilterData;
+struct filter_preset_table;
+struct device_table;
 
 // We put everything in a namespace, so that we can shorten names without polluting the global namespace
 namespace Command {
@@ -33,7 +34,8 @@ QString changesMade();			// return a string with the texts from all commands on 
 // insertion position.
 void addDive(dive *d, bool autogroup, bool newNumber);
 void importDives(struct dive_table *dives, struct trip_table *trips,
-		 struct dive_site_table *sites, struct filter_preset_table *filter_presets,
+		 struct dive_site_table *sites, struct device_table *devices,
+		 struct filter_preset_table *filter_presets,
 		 int flags, const QString &source); // The tables are consumed!
 void deleteDive(const QVector<struct dive*> &divesToDelete);
 void shiftTime(const std::vector<dive *> &changedDives, int amount);

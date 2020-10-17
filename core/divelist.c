@@ -999,18 +999,22 @@ static bool merge_dive_tables(struct dive_table *dives_from, struct dive_table *
 /* Merge the dives of the trip "from" and the dive_table "dives_from" into the trip "to"
  * and dive_table "dives_to". If "prefer_imported" is true, dive data of "from" takes
  * precedence */
-void add_imported_dives(struct dive_table *import_table, struct trip_table *import_trip_table, struct dive_site_table *import_sites_table, int flags)
+void add_imported_dives(struct dive_table *import_table, struct trip_table *import_trip_table,
+			struct dive_site_table *import_sites_table, struct device_table *import_device_table,
+			int flags)
 {
 	int i, idx;
 	struct dive_table dives_to_add = empty_dive_table;
 	struct dive_table dives_to_remove = empty_dive_table;
 	struct trip_table trips_to_add = empty_trip_table;
 	struct dive_site_table dive_sites_to_add = empty_dive_site_table;
+	struct device_table *devices_to_add = alloc_device_table();
 
 	/* Process imported dives and generate lists of dives
 	 * to-be-added and to-be-removed */
-	process_imported_dives(import_table, import_trip_table, import_sites_table, flags,
-			       &dives_to_add, &dives_to_remove, &trips_to_add, &dive_sites_to_add);
+	process_imported_dives(import_table, import_trip_table, import_sites_table, import_device_table,
+			       flags, &dives_to_add, &dives_to_remove, &trips_to_add,
+			       &dive_sites_to_add, devices_to_add);
 
 	/* Add new dives to trip and site to get reference count correct. */
 	for (i = 0; i < dives_to_add.nr; i++) {
@@ -1045,10 +1049,18 @@ void add_imported_dives(struct dive_table *import_table, struct trip_table *impo
 		register_dive_site(dive_sites_to_add.dive_sites[i]);
 	dive_sites_to_add.nr = 0;
 
+	/* Add new devices */
+	for (i = 0; i < nr_devices(devices_to_add); i++) {
+		const struct device *dev = get_device(devices_to_add, i);
+		add_to_device_table(&device_table, dev);
+	}
+
 	/* We might have deleted the old selected dive.
 	 * Choose the newest dive as selected (if any) */
 	current_dive = dive_table.nr > 0 ? dive_table.dives[dive_table.nr - 1] : NULL;
 	mark_divelist_changed(true);
+
+	free_device_table(devices_to_add);
 
 	/* Inform frontend of reset data. This should reset all the models. */
 	emit_reset_signal();
@@ -1088,11 +1100,12 @@ bool try_to_merge_trip(struct dive_trip *trip_import, struct dive_table *import_
 }
 
 /* Process imported dives: take a table of dives to be imported and
- * generate four lists:
+ * generate five lists:
  *	1) Dives to be added
  *	2) Dives to be removed
  *	3) Trips to be added
  *	4) Dive sites to be added
+ *	5) Devices to be added
  * The dives to be added are owning (i.e. the caller is responsible
  * for freeing them).
  * The dives, trips and sites in "import_table", "import_trip_table"
@@ -1120,10 +1133,12 @@ bool try_to_merge_trip(struct dive_trip *trip_import, struct dive_table *import_
  *   to a trip will be added to a newly generated trip.
  */
 void process_imported_dives(struct dive_table *import_table, struct trip_table *import_trip_table,
-			    struct dive_site_table *import_sites_table, int flags,
+			    struct dive_site_table *import_sites_table, struct device_table *import_device_table,
+			    int flags,
 			    /* output parameters: */
 			    struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
-			    struct trip_table *trips_to_add, struct dive_site_table *sites_to_add)
+			    struct trip_table *trips_to_add, struct dive_site_table *sites_to_add,
+			    struct device_table *devices_to_add)
 {
 	int i, j, nr, start_renumbering_at = 0;
 	struct dive_trip *trip_import, *new_trip;
@@ -1143,6 +1158,7 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 	clear_dive_table(dives_to_remove);
 	clear_trip_table(trips_to_add);
 	clear_dive_site_table(sites_to_add);
+	clear_device_table(devices_to_add);
 
 	/* Check if any of the new dives has a number. This will be
 	 * important later to decide if we want to renumber the added
@@ -1158,15 +1174,22 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 	if (!import_table->nr)
 		return;
 
+	/* Add only the devices that we don't know about yet. */
+	for (i = 0; i < nr_devices(import_device_table); i++) {
+		const struct device *dev = get_device(import_device_table, i);
+		if (!device_exists(&device_table, dev))
+			add_to_device_table(devices_to_add, dev);
+	}
+
 	/* check if we need a nickname for the divecomputer for newly downloaded dives;
 	 * since we know they all came from the same divecomputer we just check for the
 	 * first one */
 	if (flags & IMPORT_IS_DOWNLOADED) {
-		set_dc_nickname(import_table->dives[0], &device_table);
+		set_dc_nickname(import_table->dives[0], devices_to_add);
 	} else {
 		/* they aren't downloaded, so record / check all new ones */
 		for (i = 0; i < import_table->nr; i++)
-			set_dc_nickname(import_table->dives[i], &device_table);
+			set_dc_nickname(import_table->dives[i], devices_to_add);
 	}
 
 	/* Sort the table of dives to be imported and combine mergable dives */
