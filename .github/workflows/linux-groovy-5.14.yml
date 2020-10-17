@@ -1,0 +1,69 @@
+name: Ubuntu 20.10 / Qt 5.14
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  buildInContainer:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:20.10
+
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v1
+
+    - name: get container ready for build
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "update distro and install dependencies"
+
+        apt-get update
+        apt-get upgrade -y
+        DEBIAN_FRONTEND=noninteractive apt-get install -y -q --force-yes \
+        autoconf automake cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
+        libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \
+        libqt5webkit5-dev libsqlite3-dev libssh2-1-dev libssl-dev libssl-dev \
+        libtool libusb-1.0-0-dev libxml2-dev libxslt1-dev libzip-dev make \
+        pkg-config qml-module-qtlocation qml-module-qtpositioning \
+        qml-module-qtquick2 qt5-default qt5-qmake qtchooser qtconnectivity5-dev \
+        qtdeclarative5-dev qtdeclarative5-private-dev qtlocation5-dev \
+        qtpositioning5-dev qtscript5-dev qttools5-dev qttools5-dev-tools \
+        qtquickcontrols2-5-dev xvfb libbluetooth-dev
+
+    - name: build Subsurface-mobile
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "building mobile"
+
+        cd ..
+        bash -e -x subsurface/scripts/build.sh -mobile
+
+    - name: test mobile build
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "running tests for mobile"
+
+        cd build-mobile
+        xvfb-run --auto-servernum make check
+
+    - name: build Subsurface
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "building desktop"
+
+        # now build for the desktop version (including WebKit)
+        cd ..
+        bash -e -x subsurface/scripts/build.sh -desktop -build-with-webkit
+
+    - name: test desktop build
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "running tests for desktop"
+        cd build
+        xvfb-run --auto-servernum make check
+
