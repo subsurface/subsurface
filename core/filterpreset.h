@@ -28,7 +28,8 @@ using filter_preset_table_t = std::vector<filter_preset>;
 extern filter_preset_table_t filter_preset_table;
 #else
 struct filter_preset;
-typedef void filter_preset_table_t;
+struct filter_preset_table;
+typedef struct filter_preset_table filter_preset_table_t;
 #endif
 
 
