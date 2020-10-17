@@ -4,7 +4,7 @@ QT += qml quick quickcontrols2 widgets positioning concurrent svg bluetooth
 
 DEFINES += SUBSURFACE_MOBILE BT_SUPPORT BLE_SUPPORT
 
-CONFIG += c++11
+CONFIG += c++17
 
 QMAKE_TARGET_BUNDLE_PREFIX = org.subsurface-divelog
 QMAKE_BUNDLE = subsurface-mobile
