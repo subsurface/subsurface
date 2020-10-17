@@ -23,7 +23,7 @@ extern void set_dc_nickname(struct dive *dive, struct device_table *table);
 extern void create_device_node(struct device_table *table, const char *model, uint32_t deviceid, const char *serial, const char *firmware, const char *nickname);
 extern int nr_devices(const struct device_table *table);
 extern const struct device *get_device(const struct device_table *table, int i);
-extern void clear_device_nodes(struct device_table *table);
+extern void clear_device_table(struct device_table *table);
 const char *get_dc_nickname(const struct divecomputer *dc);
 extern bool device_used_by_selected_dive(const struct device *dev);
 

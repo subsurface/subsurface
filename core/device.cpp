@@ -285,7 +285,7 @@ extern "C" void create_device_node(struct device_table *device_table, const char
 	addDC(device_table->devices, model ?: "", deviceid, nickname ?: "", serial ?: "", firmware ?: "");
 }
 
-extern "C" void clear_device_nodes(struct device_table *device_table)
+extern "C" void clear_device_table(struct device_table *device_table)
 {
 	device_table->devices.clear();
 }
