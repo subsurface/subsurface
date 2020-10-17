@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testparseperformance.h"
+#include "core/device.h"
 #include "core/divesite.h"
 #include "core/trip.h"
 #include "core/file.h"
@@ -63,7 +64,8 @@ void TestParsePerformance::parseSsrf()
 		return;
 	}
 	QBENCHMARK {
-		parse_file(SUBSURFACE_TEST_DATA "/dives/large-anon.ssrf", &dive_table, &trip_table, &dive_site_table, &filter_preset_table);
+		parse_file(SUBSURFACE_TEST_DATA "/dives/large-anon.ssrf", &dive_table, &trip_table,
+			   &dive_site_table, &device_table, &filter_preset_table);
 	}
 }
 
@@ -74,12 +76,14 @@ void TestParsePerformance::parseGit()
 
 	// first parse this once to populate the local cache - this way network
 	// effects don't dominate the parse time
-	parse_file(LARGE_TEST_REPO "[git]", &dive_table, &trip_table, &dive_site_table, &filter_preset_table);
+	parse_file(LARGE_TEST_REPO "[git]", &dive_table, &trip_table, &dive_site_table,
+		   &device_table, &filter_preset_table);
 
 	cleanup();
 
 	QBENCHMARK {
-		parse_file(LARGE_TEST_REPO "[git]", &dive_table, &trip_table, &dive_site_table, &filter_preset_table);
+		parse_file(LARGE_TEST_REPO "[git]", &dive_table, &trip_table, &dive_site_table,
+			   &device_table, &filter_preset_table);
 	}
 }
 

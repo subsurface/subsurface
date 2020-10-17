@@ -1722,7 +1722,8 @@ static const char *preprocess_divelog_de(const char *buffer)
 
 int parse_xml_buffer(const char *url, const char *buffer, int size,
 		     struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-		     struct filter_preset_table *filter_presets, const struct xml_params *params)
+		     struct device_table *devices, struct filter_preset_table *filter_presets,
+		     const const struct xml_params *params)
 {
 	UNUSED(size);
 	xmlDoc *doc;
@@ -1734,6 +1735,7 @@ int parse_xml_buffer(const char *url, const char *buffer, int size,
 	state.target_table = table;
 	state.trips = trips;
 	state.sites = sites;
+	state.devices = devices;
 	state.filter_presets = filter_presets;
 	doc = xmlReadMemory(res, strlen(res), url, NULL, 0);
 	if (!doc)
@@ -1776,7 +1778,8 @@ static timestamp_t parse_dlf_timestamp(unsigned char *buffer)
 	return offset + 946684800;
 }
 
-int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *table, struct trip_table *trips,
+		     struct dive_site_table *sites, struct device_table *devices)
 {
 	unsigned char *ptr = buffer;
 	unsigned char event;
@@ -1800,6 +1803,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 	state.target_table = table;
 	state.trips = trips;
 	state.sites = sites;
+	state.devices = devices;
 
 	// Check for the correct file magic
 	if (ptr[0] != 'D' || ptr[1] != 'i' || ptr[2] != 'v' || ptr[3] != 'E')
