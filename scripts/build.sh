@@ -265,9 +265,12 @@ else
 		# maybe there's a system version that's new enough?
 		# Ugh that's uggly - read the ultimate filename, split at the last 'o' which gets us ".0.26.3" or ".1.0.0"
 		# since that starts with a dot, the field numbers in the cut need to be one higher
-		LIBGIT=$(realpath $(ldconfig -p | grep libgit2\\.so\\. | cut -d\  -f4) | awk -Fo '{ print $NF }')
-		LIBGITMAJ=$(echo $LIBGIT | cut -d. -f2)
-		LIBGIT=$(echo $LIBGIT | cut -d. -f3)
+		LDCONFIG=$(PATH=/sbin:/usr/sbin:$PATH which ldconfig)
+		if [ ! -z "$LDCONFIG" ] ; then
+			LIBGIT=$(realpath $("$LDCONFIG" -p | grep libgit2\\.so\\. | cut -d\  -f4) | awk -Fo '{ print $NF }')
+			LIBGITMAJ=$(echo $LIBGIT | cut -d. -f2)
+			LIBGIT=$(echo $LIBGIT | cut -d. -f3)
+		fi
 	fi
 fi
 
