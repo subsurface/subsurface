@@ -28,6 +28,9 @@ const char *get_dc_nickname(const struct divecomputer *dc);
 extern bool device_used_by_selected_dive(const struct device *dev);
 
 extern const struct device *get_device_for_dc(const struct device_table *table, const struct divecomputer *dc);
+extern bool device_exists(const struct device_table *table, const struct device *dev);
+extern void add_to_device_table(struct device_table *table, const struct device *dev);
+extern void remove_device(struct device_table *table, const struct device *dev);
 
 // struct device accessors for C-code. The returned strings are not stable!
 const char *device_get_model(const struct device *dev);
