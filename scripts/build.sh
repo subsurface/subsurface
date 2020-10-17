@@ -449,6 +449,8 @@ if [ "$PLATFORM" = Darwin ] ; then
 fi
 make -j4
 make install
+# make sure we know where the libdivecomputer.a was installed - sometimes it ends up in lib64, sometimes in lib
+STATIC_LIBDC="$INSTALL_ROOT/$(grep ^libdir Makefile | cut -d/ -f2)/libdivecomputer.a"
 
 if [ "$PLATFORM" = Darwin ] ; then
 	if [ -z "$CMAKE_PREFIX_PATH" ] ; then
@@ -530,7 +532,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		-DSUBSURFACE_TARGET_EXECUTABLE="$SUBSURFACE_EXECUTABLE" \
 		"$LIBGIT_ARGS" \
 		-DLIBDIVECOMPUTER_INCLUDE_DIR="$INSTALL_ROOT"/include \
-		-DLIBDIVECOMPUTER_LIBRARIES="$INSTALL_ROOT"/lib/libdivecomputer.a \
+		-DLIBDIVECOMPUTER_LIBRARIES="$STATIC_LIBDC" \
 		-DCMAKE_PREFIX_PATH="$CMAKE_PREFIX_PATH" \
 		-DBTSUPPORT="$BTSUPPORT" \
 		-DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" \
