@@ -460,7 +460,7 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton *button)
 		struct device_table devices;
 		struct filter_preset_table filter_presets;
 		parse_file(QFile::encodeName(zipFile.fileName()), &table, &trips, &sites, &devices, &filter_presets);
-		Command::importDives(&table, &trips, &sites, nullptr, IMPORT_MERGE_ALL_TRIPS, QStringLiteral("divelogs.de"));
+		Command::importDives(&table, &trips, &sites, &devices, nullptr, IMPORT_MERGE_ALL_TRIPS, QStringLiteral("divelogs.de"));
 
 		/* store last entered user/pass in config */
 		qPrefCloudStorage::set_divelogde_user(ui.userID->text());

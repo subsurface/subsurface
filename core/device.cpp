@@ -416,3 +416,13 @@ extern "C" const char *device_get_nickname(const struct device *dev)
 {
 	return dev ? dev->nickName.c_str() : NULL;
 }
+
+extern "C" struct device_table *alloc_device_table()
+{
+	return new struct device_table;
+}
+
+extern "C" void free_device_table(struct device_table *devices)
+{
+	delete devices;
+}

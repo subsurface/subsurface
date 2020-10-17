@@ -18,9 +18,10 @@ void addDive(dive *d, bool autogroup, bool newNumber)
 }
 
 void importDives(struct dive_table *dives, struct trip_table *trips, struct dive_site_table *sites,
-		 struct filter_preset_table *presets, int flags, const QString &source)
+		 struct device_table *devices, struct filter_preset_table *presets,
+		 int flags, const QString &source)
 {
-	execute(new ImportDives(dives, trips, sites, presets, flags, source));
+	execute(new ImportDives(dives, trips, sites, devices, presets, flags, source));
 }
 
 void deleteDive(const QVector<struct dive*> &divesToDelete)

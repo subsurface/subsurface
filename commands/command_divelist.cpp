@@ -470,7 +470,8 @@ void AddDive::undoit()
 }
 
 ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, struct dive_site_table *sites,
-			 struct filter_preset_table *filter_presets, int flags, const QString &source)
+			 struct device_table *devices, struct filter_preset_table *filter_presets, int flags,
+			 const QString &source)
 {
 	setText(Command::Base::tr("import %n dive(s) from %1", "", dives->nr).arg(source));
 
@@ -481,7 +482,9 @@ ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, str
 	struct dive_table dives_to_remove = empty_dive_table;
 	struct trip_table trips_to_add = empty_trip_table;
 	struct dive_site_table sites_to_add = empty_dive_site_table;
-	process_imported_dives(dives, trips, sites, flags, &dives_to_add, &dives_to_remove, &trips_to_add, &sites_to_add);
+	process_imported_dives(dives, trips, sites, devices, flags,
+			       &dives_to_add, &dives_to_remove, &trips_to_add,
+			       &sites_to_add, &devicesToAddAndRemove);
 
 	// Add trips to the divesToAdd.trips structure
 	divesToAdd.trips.reserve(trips_to_add.nr);
@@ -550,6 +553,12 @@ void ImportDives::redoit()
 	// Remember dives and sites to remove
 	divesAndSitesToRemove = std::move(divesAndSitesToRemoveNew);
 
+	// Add devices
+	for (const device &dev: devicesToAddAndRemove.devices) {
+		int idx = add_to_device_table(&device_table, &dev);
+		emit diveListNotifier.deviceAdded(idx);
+	}
+
 	// Add new filter presets
 	for (auto &it: filterPresetsToAdd) {
 		filterPresetsToRemove.push_back(filter_preset_add(it.first, it.second));
@@ -571,6 +580,13 @@ void ImportDives::undoit()
 
 	// ...and restore the selection
 	setSelection(selection, currentDive);
+
+	// Remove devices
+	for (const device &dev: devicesToAddAndRemove.devices) {
+		int idx = remove_device(&device_table, &dev);
+		if (idx >= 0)
+			emit diveListNotifier.deviceDeleted(idx);
+	}
 
 	// Remove filter presets. Do this in reverse order.
 	for (auto it = filterPresetsToRemove.rbegin(); it != filterPresetsToRemove.rend(); ++it) {

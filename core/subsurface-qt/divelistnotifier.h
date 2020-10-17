@@ -10,6 +10,8 @@
 
 #include <QObject>
 
+struct device;
+
 // Dive and trip fields that can be edited. Use bit fields so that we can pass multiple fields at once.
 // Provides an inlined flag-based constructur because sadly C-style designated initializers are only supported since C++20.
 struct DiveField {
@@ -124,6 +126,10 @@ signals:
 	void pictureOffsetChanged(dive *d, QString filename, offset_t offset);
 	void picturesRemoved(dive *d, QVector<QString> filenames);
 	void picturesAdded(dive *d, QVector<PictureObj> pics);
+
+	// Devices related signals
+	void deviceAdded(int index);
+	void deviceDeleted(int index);
 
 	// Filter related signals
 	void filterPresetAdded(int index);
