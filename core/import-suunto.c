@@ -290,7 +290,8 @@ static int dm4_dive(void *param, int columns, char **data, char **column)
 }
 
 int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
-		     struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+		     struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
+		     struct device_table *devices)
 {
 	UNUSED(buffer);
 	UNUSED(size);
@@ -303,6 +304,7 @@ int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buffer, int s
 	state.target_table = table;
 	state.trips = trips;
 	state.sites = sites;
+	state.devices = devices;
 	state.sql_handle = handle;
 
 	/* StartTime is converted from Suunto's nano seconds to standard
@@ -560,7 +562,8 @@ static int dm5_dive(void *param, int columns, char **data, char **column)
 }
 
 int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
-		     struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+		     struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
+		     struct device_table *devices)
 {
 	UNUSED(buffer);
 	UNUSED(size);
@@ -573,6 +576,7 @@ int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buffer, int s
 	state.target_table = table;
 	state.trips = trips;
 	state.sites = sites;
+	state.devices = devices;
 	state.sql_handle = handle;
 
 	/* StartTime is converted from Suunto's nano seconds to standard

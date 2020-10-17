@@ -78,6 +78,7 @@ struct parser_state {
 	struct dive_table *target_table;		/* non-owning */
 	struct trip_table *trips;			/* non-owning */
 	struct dive_site_table *sites;			/* non-owning */
+	struct device_table *devices;			/* non-owning */
 	struct filter_preset_table *filter_presets;	/* non-owning */
 
 	sqlite3 *sql_handle;			/* for SQL based parsers */
@@ -142,16 +143,24 @@ int atoi_n(char *ptr, unsigned int len);
 
 void parse_xml_init(void);
 int parse_xml_buffer(const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-		     struct filter_preset_table *filter_presets, const struct xml_params *params);
+		     struct device_table *devices, struct filter_preset_table *filter_presets, const struct xml_params *params);
 void parse_xml_exit(void);
-int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
-int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
-int parse_seac_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
-int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
-int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
-int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
-int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
-int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
+int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips,
+		     struct dive_site_table *sites, struct device_table *devices);
+int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips,
+		     struct dive_site_table *sites, struct device_table *devices);
+int parse_seac_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips,
+		      struct dive_site_table *sites, struct device_table *devices);
+int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips,
+			    struct dive_site_table *sites, struct device_table *devices);
+int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips,
+				  struct dive_site_table *sites, struct device_table *devices);
+int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips,
+			struct dive_site_table *sites, struct device_table *devices);
+int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, struct trip_table *trips,
+			   struct dive_site_table *sites, struct device_table *devices);
+int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *table, struct trip_table *trips,
+		     struct dive_site_table *sites, struct device_table *devices);
 #ifdef __cplusplus
 }
 #endif

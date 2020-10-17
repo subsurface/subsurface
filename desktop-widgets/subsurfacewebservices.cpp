@@ -5,6 +5,7 @@
 #include "core/settings/qPrefCloudStorage.h"
 #include "desktop-widgets/mainwindow.h"
 #include "commands/command.h"
+#include "core/device.h"
 #include "core/divesite.h"
 #include "core/trip.h"
 #include "core/errorhelper.h"
@@ -456,8 +457,9 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton *button)
 		struct dive_table table = empty_dive_table;
 		struct trip_table trips = empty_trip_table;
 		struct dive_site_table sites = empty_dive_site_table;
+		struct device_table devices;
 		struct filter_preset_table filter_presets;
-		parse_file(QFile::encodeName(zipFile.fileName()), &table, &trips, &sites, &filter_presets);
+		parse_file(QFile::encodeName(zipFile.fileName()), &table, &trips, &sites, &devices, &filter_presets);
 		Command::importDives(&table, &trips, &sites, nullptr, IMPORT_MERGE_ALL_TRIPS, QStringLiteral("divelogs.de"));
 
 		/* store last entered user/pass in config */

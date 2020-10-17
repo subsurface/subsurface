@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testAirPressure.h"
+#include "core/device.h"
 #include "core/dive.h"
 #include "core/divesite.h"
 #include "core/trip.h"
@@ -19,7 +20,8 @@ void TestAirPressure::get_dives()
 	struct dive *dive;
 	verbose = 1;
 
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/TestAtmPress.xml", &dive_table, &trip_table, &dive_site_table, &filter_preset_table), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/TestAtmPress.xml", &dive_table, &trip_table,
+			    &dive_site_table, &device_table, &filter_preset_table), 0);
 	dive = get_dive(0);
 	dive->selected = true;
 	QVERIFY(dive != NULL);
@@ -54,7 +56,8 @@ void TestAirPressure::testWriteReadBackAirPressure()
 	dive->surface_pressure.mbar = ap;
 	QCOMPARE(save_dives("./testout.ssrf"), 0);
 	clear_dive_file_data();
-	QCOMPARE(parse_file("./testout.ssrf", &dive_table, &trip_table, &dive_site_table, &filter_preset_table), 0);
+	QCOMPARE(parse_file("./testout.ssrf", &dive_table, &trip_table, &dive_site_table,
+			    &device_table, &filter_preset_table), 0);
 	dive = get_dive(0);
 	QVERIFY(dive != NULL);
 	dive->selected = true;

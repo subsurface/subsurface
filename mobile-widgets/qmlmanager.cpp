@@ -353,7 +353,7 @@ void QMLManager::openLocalThenRemote(QString url)
 	 * we try to open this), parse_file (which is called by openAndMaybeSync) will ALWAYS connect
 	 * to the remote and populate the cache.
 	 * Otherwise parse_file will respect the git_local_only flag and only update if that isn't set */
-	int error = parse_file(encodedFilename.constData(), &dive_table, &trip_table, &dive_site_table, &filter_preset_table);
+	int error = parse_file(encodedFilename.constData(), &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
 	if (error) {
 		/* there can be 2 reasons for this:
 		 * 1) we have cloud credentials, but there is no local repo (yet).
@@ -452,7 +452,7 @@ void QMLManager::mergeLocalRepo()
 	struct trip_table trips = empty_trip_table;
 	struct dive_site_table sites = empty_dive_site_table;
 	struct filter_preset_table filter_presets;
-	parse_file(qPrintable(nocloud_localstorage()), &table, &trips, &sites, &filter_presets);
+	parse_file(qPrintable(nocloud_localstorage()), &table, &trips, &sites, &device_table, &filter_presets);
 	add_imported_dives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS);
 }
 
@@ -526,7 +526,7 @@ void QMLManager::finishSetup()
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 		saveCloudCredentials(qPrefCloudStorage::cloud_storage_email(), qPrefCloudStorage::cloud_storage_password(), qPrefCloudStorage::cloud_storage_pin());
 		appendTextToLog(tr("working in no-cloud mode"));
-		int error = parse_file(existing_filename, &dive_table, &trip_table, &dive_site_table, &filter_preset_table);
+		int error = parse_file(existing_filename, &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
 		if (error) {
 			// we got an error loading the local file
 			setNotificationText(tr("Error parsing local storage, giving up"));
@@ -710,7 +710,7 @@ void QMLManager::loadDivesWithValidCredentials()
 			error = git_load_dives(git, branch, &dive_table, &trip_table, &dive_site_table, &filter_preset_table);
 		} else {
 			appendTextToLog(QString("didn't receive valid git repo, try again"));
-			error = parse_file(fileNamePrt.data(), &dive_table, &trip_table, &dive_site_table, &filter_preset_table);
+			error = parse_file(fileNamePrt.data(), &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
 		}
 		setDiveListProcessing(false);
 		if (!error) {
@@ -2236,10 +2236,11 @@ void QMLManager::importCacheRepo(QString repo)
 	struct dive_table table = empty_dive_table;
 	struct trip_table trips = empty_trip_table;
 	struct dive_site_table sites = empty_dive_site_table;
+	struct device_table devices;
 	struct filter_preset_table filter_presets;
 	QString repoPath = QString("%1/cloudstorage/%2").arg(system_default_directory()).arg(repo);
 	appendTextToLog(QString("importing %1").arg(repoPath));
-	parse_file(qPrintable(repoPath), &table, &trips, &sites, &filter_presets);
+	parse_file(qPrintable(repoPath), &table, &trips, &sites, &devices, &filter_presets);
 	add_imported_dives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS);
 	changesNeedSaving();
 }

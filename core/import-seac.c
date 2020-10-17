@@ -260,7 +260,8 @@ static int seac_dive(void *param, int columns, char **data, char **column)
  * table, to read in the sample values.
  */
 int parse_seac_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
-		     struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+		     struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
+		     struct device_table *devices)
 {
 	UNUSED(buffer);
 	UNUSED(size);
@@ -273,6 +274,7 @@ int parse_seac_buffer(sqlite3 *handle, const char *url, const char *buffer, int 
 	state.target_table = table;
 	state.trips = trips;
 	state.sites = sites;
+	state.devices = devices;
 	state.sql_handle = handle;
 
 	const char *get_dives = "SELECT dive_number, device_sn, date, timezone, time, elapsed_surface_time, dive_type, start_mode, water_type, comment, total_dive_time, max_depth, firmware_version FROM headers_dive";

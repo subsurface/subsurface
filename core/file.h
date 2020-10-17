@@ -13,6 +13,7 @@ struct memblock {
 };
 
 struct trip_table;
+struct device_table;
 struct dive_site_table;
 struct dive_table;
 struct zip;
@@ -26,8 +27,10 @@ extern int datatrak_import(struct memblock *mem, struct memblock *wl_mem, struct
 extern void ostctools_import(const char *file, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
 
 extern int readfile(const char *filename, struct memblock *mem);
-extern int parse_file(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites, struct filter_preset_table *filter_presets);
-extern int try_to_open_zip(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites, struct filter_preset_table *filter_presets);
+extern int parse_file(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
+		      struct device_table *devices, struct filter_preset_table *filter_presets);
+extern int try_to_open_zip(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
+			   struct device_table *devices, struct filter_preset_table *filter_presets);
 
 // Platform specific functions
 extern int subsurface_rename(const char *path, const char *newpath);
