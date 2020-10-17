@@ -114,7 +114,7 @@ fi
 echo "Building in $BUILDDIR ..."
 
 export PATH="$BASEDIR"/"$MXEDIR"/usr/bin:$PATH:"$BASEDIR"/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/bin/
-export CXXFLAGS=-std=c++11
+export CXXFLAGS=-std=c++17
 
 if [[ "$1" == "debug" ]] ; then
 	RELEASE="Debug"
