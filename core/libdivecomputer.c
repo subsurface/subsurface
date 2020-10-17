@@ -1354,7 +1354,7 @@ static dc_status_t bluetooth_device_open(dc_iostream_t **iostream, dc_context_t 
 		return DC_STATUS_NODEVICE;
 	}
 
-	dev_info(data, "Opening rfcomm address %u", address);
+	dev_info(data, "Opening rfcomm address %llu", address);
 	return dc_bluetooth_open(&data->iostream, context, address, 0);
 }
 
