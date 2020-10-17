@@ -451,8 +451,9 @@ void QMLManager::mergeLocalRepo()
 	struct dive_table table = empty_dive_table;
 	struct trip_table trips = empty_trip_table;
 	struct dive_site_table sites = empty_dive_site_table;
+	struct device_table devices;
 	struct filter_preset_table filter_presets;
-	parse_file(qPrintable(nocloud_localstorage()), &table, &trips, &sites, &device_table, &filter_presets);
+	parse_file(qPrintable(nocloud_localstorage()), &table, &trips, &sites, &devices, &filter_presets);
 	add_imported_dives(&table, &trips, &sites, IMPORT_MERGE_ALL_TRIPS);
 }
 

@@ -218,12 +218,18 @@ bool device::operator<(const device &a) const
 	return strcoll(model.c_str(), a.model.c_str()) < 0;
 }
 
-const struct device *get_device_for_dc(const struct device_table *table, const struct divecomputer *dc)
+extern "C" const struct device *get_device_for_dc(const struct device_table *table, const struct divecomputer *dc)
 {
 	const std::vector<device> &dcs = table->devices;
 	device dev { dc->model, dc->deviceid, {}, {}, {} };
 	auto it = std::lower_bound(dcs.begin(), dcs.end(), dev);
 	return it != dcs.end() && same_device(*it, dev) ? &*it : NULL;
+}
+
+extern "C" bool device_exists(const struct device_table *device_table, const struct device *dev)
+{
+	auto it = std::lower_bound(device_table->devices.begin(), device_table->devices.end(), *dev);
+	return it != device_table->devices.end() && same_device(*it, *dev);
 }
 
 /*
@@ -290,6 +296,20 @@ static void addDC(std::vector<device> &dcs, const std::string &m, uint32_t d, co
 extern "C" void create_device_node(struct device_table *device_table, const char *model, uint32_t deviceid, const char *serial, const char *firmware, const char *nickname)
 {
 	addDC(device_table->devices, model ?: "", deviceid, nickname ?: "", serial ?: "", firmware ?: "");
+}
+
+/* Does not check for duplicates! */
+extern "C" void add_to_device_table(struct device_table *device_table, const struct device *dev)
+{
+	auto it = std::lower_bound(device_table->devices.begin(), device_table->devices.end(), *dev);
+	device_table->devices.insert(it, *dev);
+}
+
+extern "C" void remove_device(struct device_table *device_table, const struct device *dev)
+{
+	auto it = std::lower_bound(device_table->devices.begin(), device_table->devices.end(), *dev);
+	if (it != device_table->devices.end() && same_device(*it, *dev))
+		device_table->devices.erase(it);
 }
 
 extern "C" void clear_device_table(struct device_table *device_table)
