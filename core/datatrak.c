@@ -159,7 +159,8 @@ static dc_status_t dt_libdc_buffer(unsigned char *ptr, int prf_length, int dc_mo
  * Parses a mem buffer extracting its data and filling a subsurface's dive structure.
  * Returns a pointer to last position in buffer, or NULL on failure.
  */
-static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct dive_site_table *sites, long maxbuf)
+static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct dive_site_table *sites,
+				     struct device_table *devices, long maxbuf)
 {
 	int  rc, profile_length, libdc_model;
 	char *tmp_notes_str = NULL;
@@ -565,7 +566,7 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 		dt_dive->dc.deviceid = 0;
 	else
 		dt_dive->dc.deviceid = 0xffffffff;
-	create_device_node(&device_table, dt_dive->dc.model, dt_dive->dc.deviceid, "", "", dt_dive->dc.model);
+	create_device_node(devices, dt_dive->dc.model, dt_dive->dc.deviceid, "", "", dt_dive->dc.model);
 	dt_dive->dc.next = NULL;
 	if (!is_SCR && dt_dive->cylinders.nr > 0) {
 		get_cylinder(dt_dive, 0)->end.mbar = get_cylinder(dt_dive, 0)->start.mbar -
@@ -578,6 +579,7 @@ bail:
 	free(devdata);
 	return NULL;
 }
+
 /*
  * Parses the header of the .add file, returns the number of dives in
  * the archive (must be the same than number of dives in .log file).
@@ -675,7 +677,8 @@ static void wlog_compl_parser(struct memblock *wl_mem, struct dive *dt_dive, int
  * Main function call from file.c memblock is allocated (and freed) there.
  * If parsing is aborted due to errors, stores correctly parsed dives.
  */
-int datatrak_import(struct memblock *mem, struct memblock *wl_mem, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+int datatrak_import(struct memblock *mem, struct memblock *wl_mem, struct dive_table *table, struct trip_table *trips,
+		    struct dive_site_table *sites, struct device_table *devices)
 {
 	UNUSED(trips);
 	unsigned char *runner;
@@ -707,7 +710,7 @@ int datatrak_import(struct memblock *mem, struct memblock *wl_mem, struct dive_t
 	while ((i < numdives) && ((long) runner < maxbuf)) {
 		struct dive *ptdive = alloc_dive();
 
-		runner = dt_dive_parser(runner, ptdive, sites, maxbuf);
+		runner = dt_dive_parser(runner, ptdive, sites, devices, maxbuf);
 		if (wl_mem)
 			wlog_compl_parser(wl_mem, ptdive, i);
 		if (runner == NULL) {

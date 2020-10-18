@@ -830,7 +830,8 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf,
 	if (MATCH("model", utf8_string, &dc->model))
 		return;
 	if (MATCH("deviceid", hex_value, &deviceid)) {
-		set_dc_deviceid(dc, deviceid, &device_table);
+		set_dc_deviceid(dc, deviceid, &device_table); // prefer already known serial/firmware over those from the loaded log
+		set_dc_deviceid(dc, deviceid, state->devices);
 		return;
 	}
 	if (MATCH("diveid", hex_value, &dc->diveid))

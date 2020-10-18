@@ -23,7 +23,8 @@ extern "C" {
 #endif
 extern int try_to_open_cochran(const char *filename, struct memblock *mem, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
 extern int try_to_open_liquivision(const char *filename, struct memblock *mem, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
-extern int datatrak_import(struct memblock *mem, struct memblock *wl_mem, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
+extern int datatrak_import(struct memblock *mem, struct memblock *wl_mem, struct dive_table *table, struct trip_table *trips,
+			   struct dive_site_table *sites, struct device_table *devices);
 extern void ostctools_import(const char *file, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites);
 
 extern int readfile(const char *filename, struct memblock *mem);
