@@ -826,7 +826,7 @@ void process_loaded_dives()
 	for_each_dive(i, dive) {
 		if (!dive->hidden_by_filter)
 			shown_dives++;
-		set_dc_nickname(dive, &device_table);
+		add_devices_of_dive(dive, &device_table);
 	}
 
 	sort_dive_table(&dive_table);
@@ -1185,11 +1185,11 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 	 * since we know they all came from the same divecomputer we just check for the
 	 * first one */
 	if (flags & IMPORT_IS_DOWNLOADED) {
-		set_dc_nickname(import_table->dives[0], devices_to_add);
+		add_devices_of_dive(import_table->dives[0], devices_to_add);
 	} else {
 		/* they aren't downloaded, so record / check all new ones */
 		for (i = 0; i < import_table->nr; i++)
-			set_dc_nickname(import_table->dives[i], devices_to_add);
+			add_devices_of_dive(import_table->dives[i], devices_to_add);
 	}
 
 	/* Sort the table of dives to be imported and combine mergable dives */
