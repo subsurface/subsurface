@@ -713,7 +713,12 @@ static void parse_dc_date(char *line, struct membuffer *str, struct git_parser_s
 { UNUSED(str); update_date(&state->active_dc->when, line); }
 
 static void parse_dc_deviceid(char *line, struct membuffer *str, struct git_parser_state *state)
-{ UNUSED(str); set_dc_deviceid(state->active_dc, get_hex(line), &device_table); }
+{
+	UNUSED(str);
+	int id = get_hex(line);
+	set_dc_deviceid(state->active_dc, id, &device_table); // prefer already known serial/firmware over those from the loaded log
+	set_dc_deviceid(state->active_dc, id, state->devices);
+}
 
 static void parse_dc_diveid(char *line, struct membuffer *str, struct git_parser_state *state)
 { UNUSED(str); state->active_dc->diveid = get_hex(line); }
@@ -984,9 +989,8 @@ static void parse_divecomputerid_keyvalue(void *_cid, const char *key, const cha
  * it can have multiple strings (but see the tag parsing for another example of
  * that) in addition to the non-string entries.
  */
-static void parse_settings_divecomputerid(char *line, struct membuffer *str, struct git_parser_state *_unused)
+static void parse_settings_divecomputerid(char *line, struct membuffer *str, struct git_parser_state *state)
 {
-	UNUSED(_unused);
 	struct divecomputerid id = { pop_cstring(str, line) };
 
 	/* Skip the '"' that stood for the model string */
@@ -1001,7 +1005,7 @@ static void parse_settings_divecomputerid(char *line, struct membuffer *str, str
 			break;
 		line = parse_keyvalue_entry(parse_divecomputerid_keyvalue, &id, line, str);
 	}
-	create_device_node(&device_table, id.model, id.deviceid, id.serial, id.firmware, id.nickname);
+	create_device_node(state->devices, id.model, id.deviceid, id.serial, id.firmware, id.nickname);
 }
 
 static void parse_picture_filename(char *line, struct membuffer *str, struct git_parser_state *state)
@@ -1699,7 +1703,7 @@ static int parse_settings_entry(struct git_parser_state *state, const git_tree_e
 	git_blob *blob = git_tree_entry_blob(state->repo, entry);
 	if (!blob)
 		return report_error("Unable to read settings file");
-	for_each_line(blob, settings_parser, NULL);
+	for_each_line(blob, settings_parser, state);
 	git_blob_free(blob);
 	return 0;
 }

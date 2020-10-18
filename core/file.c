@@ -361,9 +361,9 @@ int parse_file(const char *filename, struct dive_table *table, struct trip_table
 		wl_name = strcat(wl_name, ".add");
 		if((ret = readfile(wl_name, &wl_mem)) < 0) {
 			fprintf(stderr, "No file %s found. No WLog extensions.\n", wl_name);
-			ret = datatrak_import(&mem, NULL, table, trips, sites);
+			ret = datatrak_import(&mem, NULL, table, trips, sites, devices);
 		} else {
-			ret = datatrak_import(&mem, &wl_mem, table, trips, sites);
+			ret = datatrak_import(&mem, &wl_mem, table, trips, sites, devices);
 			free(wl_mem.buffer);
 		}
 		free(mem.buffer);
