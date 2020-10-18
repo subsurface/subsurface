@@ -342,12 +342,12 @@ extern "C" int is_default_dive_computer_device(const char *name)
 	return qPrefDiveComputer::device() == name;
 }
 
-extern "C" void set_dc_nickname(struct dive *dive, struct device_table *device_table)
+extern "C" void add_devices_of_dive(const struct dive *dive, struct device_table *device_table)
 {
 	if (!dive)
 		return;
 
-	struct divecomputer *dc;
+	const struct divecomputer *dc;
 
 	for_each_dc (dive, dc) {
 		if (!empty_string(dc->model) && dc->deviceid &&

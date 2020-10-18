@@ -19,7 +19,7 @@ extern struct device_table device_table;
 extern void fake_dc(struct divecomputer *dc);
 extern void set_dc_deviceid(struct divecomputer *dc, unsigned int deviceid, const struct device_table *table);
 
-extern void set_dc_nickname(struct dive *dive, struct device_table *table);
+extern void add_devices_of_dive(const struct dive *dive, struct device_table *table);
 extern void create_device_node(struct device_table *table, const char *model, uint32_t deviceid, const char *serial, const char *firmware, const char *nickname);
 extern int nr_devices(const struct device_table *table);
 extern const struct device *get_device(const struct device_table *table, int i);
