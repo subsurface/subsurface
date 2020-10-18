@@ -47,6 +47,7 @@ struct git_parser_state {
 	struct dive_table *table;
 	struct trip_table *trips;
 	struct dive_site_table *sites;
+	struct device_table *devices;
 	struct filter_preset_table *filter_presets;
 	int o2pressure_sensor;
 };
@@ -1879,7 +1880,7 @@ const char *get_sha(git_repository *repo, const char *branch)
  * or report an error and return 1 if the load failed.
  */
 int git_load_dives(struct git_repository *repo, const char *branch, struct dive_table *table, struct trip_table *trips,
-		   struct dive_site_table *sites, struct filter_preset_table *filter_presets)
+		   struct dive_site_table *sites, struct device_table *devices, struct filter_preset_table *filter_presets)
 {
 	int ret;
 	struct git_parser_state state = { 0 };
@@ -1887,6 +1888,7 @@ int git_load_dives(struct git_repository *repo, const char *branch, struct dive_
 	state.table = table;
 	state.trips = trips;
 	state.sites = sites;
+	state.devices = devices;
 	state.filter_presets = filter_presets;
 
 	if (repo == dummy_git_repository)

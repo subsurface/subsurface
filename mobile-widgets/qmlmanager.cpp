@@ -708,7 +708,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		}
 		if (git != dummy_git_repository) {
 			appendTextToLog(QString("have repository and branch %1").arg(branch));
-			error = git_load_dives(git, branch, &dive_table, &trip_table, &dive_site_table, &filter_preset_table);
+			error = git_load_dives(git, branch, &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
 		} else {
 			appendTextToLog(QString("didn't receive valid git repo, try again"));
 			error = parse_file(fileNamePrt.data(), &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
