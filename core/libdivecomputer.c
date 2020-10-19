@@ -564,7 +564,7 @@ static void set_dc_serial(struct divecomputer *dc, const char *serial)
 {
 	const struct device *device;
 
-	dc->serial = serial;
+	dc->serial = strdup(serial);
 	if ((device = get_device_for_dc(&device_table, dc)) != NULL)
 		dc->deviceid = device_get_id(device);
 
@@ -723,6 +723,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		if (!str.desc || !str.value)
 			break;
 		parse_string_field(devdata, dive, &str);
+		free((void *)str.value); // libdc gives us copies of the value-string.
 	}
 
 	dc_divemode_t divemode;
