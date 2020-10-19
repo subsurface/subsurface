@@ -1593,10 +1593,6 @@ static void fixup_no_o2sensors(struct divecomputer *dc)
 
 static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 {
-	/* Add device information to table */
-	if (dc->deviceid && (dc->serial || dc->fw_version))
-		create_device_node(&device_table, dc->model, dc->deviceid, dc->serial, dc->fw_version, "");
-
 	/* Fixup duration and mean depth */
 	fixup_dc_duration(dc);
 
