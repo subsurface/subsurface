@@ -560,12 +560,15 @@ static uint32_t calculate_string_hash(const char *str)
  * If no existing device ID exists, create a new by hashing the serial
  * number string.
  */
-static void set_dc_serial(struct divecomputer *dc, const char *serial)
+static void set_dc_serial(struct divecomputer *dc, const char *serial, const device_data_t *devdata)
 {
 	const struct device *device;
 
 	dc->serial = strdup(serial);
-	if ((device = get_device_for_dc(&device_table, dc)) != NULL)
+	if ((device = get_device_for_dc(&device_table, dc)) != NULL)	// prefer already known ID over downloaded ID.
+		dc->deviceid = device_get_id(device);
+
+	if (!dc->deviceid && (device = get_device_for_dc(devdata->devices, dc)) != NULL)
 		dc->deviceid = device_get_id(device);
 
 	if (!dc->deviceid)
@@ -582,7 +585,7 @@ static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_fie
 	}
 	add_extra_data(&dive->dc, str->desc, str->value);
 	if (!strcmp(str->desc, "Serial")) {
-		set_dc_serial(&dive->dc, str->value);
+		set_dc_serial(&dive->dc, str->value, devdata);
 		return;
 	}
 	if (!strcmp(str->desc, "FW Version")) {
@@ -932,7 +935,7 @@ static unsigned int fixup_suunto_versions(device_data_t *devdata, const dc_event
 			 (devinfo->firmware >> 8) & 0xff,
 			 (devinfo->firmware >> 0) & 0xff);
 	}
-	create_device_node(&device_table, devdata->model, devdata->deviceid, serial_nr, firmware, "");
+	create_device_node(devdata->devices, devdata->model, devdata->deviceid, serial_nr, firmware, "");
 
 	return serial;
 }
