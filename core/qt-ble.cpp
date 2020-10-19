@@ -229,7 +229,7 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 	}
 }
 
-BLEObject::BLEObject(QLowEnergyController *c, dc_user_device_t *d)
+BLEObject::BLEObject(QLowEnergyController *c, device_data_t *d)
 {
 	controller = c;
 	device = d;
@@ -520,13 +520,13 @@ dc_status_t BLEObject::setupHwTerminalIo(const QList<QLowEnergyCharacteristic> &
 // Bluez is broken, and doesn't have a sane way to query
 // whether to use a random address or not. So we have to
 // fake it.
-static int use_random_address(dc_user_device_t *user_device)
+static int use_random_address(device_data_t *user_device)
 {
 	return IS_SHEARWATER(user_device) || IS_GARMIN(user_device);
 }
 #endif
 
-dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, dc_user_device_t *user_device)
+dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_data_t *user_device)
 {
 	debugCounter = 0;
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));

@@ -300,7 +300,7 @@ ble_packet_open(dc_iostream_t **iostream, dc_context_t *context, const char* dev
 		.close		= qt_ble_close,
 	};
 
-	rc = qt_ble_open(&io, context, devaddr, (dc_user_device_t *) userdata);
+	rc = qt_ble_open(&io, context, devaddr, (device_data_t *) userdata);
 	if (rc != DC_STATUS_SUCCESS) {
 		return rc;
 	}
