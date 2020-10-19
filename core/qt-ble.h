@@ -18,7 +18,7 @@ class BLEObject : public QObject
 	Q_OBJECT
 
 public:
-	BLEObject(QLowEnergyController *c, dc_user_device_t *);
+	BLEObject(QLowEnergyController *c, device_data_t *);
 	~BLEObject();
 	inline void set_timeout(int value) { timeout = value; }
 	dc_status_t write(const void* data, size_t size, size_t *actual);
@@ -50,7 +50,7 @@ private:
 	QLowEnergyService *preferred = nullptr;
 	QList<QByteArray> receivedPackets;
 	bool isCharacteristicWritten;
-	dc_user_device_t *device;
+	device_data_t *device;
 	unsigned int hw_credit = 0;
 	unsigned int desc_written = 0;
 	int timeout;
@@ -65,7 +65,7 @@ private:
 
 
 extern "C" {
-dc_status_t qt_ble_open(void **io, dc_context_t *context, const char *devaddr, dc_user_device_t *user_device);
+dc_status_t qt_ble_open(void **io, dc_context_t *context, const char *devaddr, device_data_t *user_device);
 dc_status_t qt_ble_set_timeout(void *io, int timeout);
 dc_status_t qt_ble_poll(void *io, int timeout);
 dc_status_t qt_ble_read(void *io, void* data, size_t size, size_t *actual);

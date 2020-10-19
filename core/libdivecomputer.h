@@ -29,8 +29,7 @@ extern "C" {
 struct dive;
 struct dive_computer;
 
-typedef struct dc_user_device_t
-{
+typedef struct {
 	dc_descriptor_t *descriptor;
 	const char *vendor, *product, *devname;
 	const char *model, *btname;
