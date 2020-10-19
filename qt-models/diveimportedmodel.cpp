@@ -129,6 +129,7 @@ void DiveImportedModel::downloadThreadFinished()
 	// Move the table data from thread to model
 	move_dive_table(&thread.downloadTable, &diveTable);
 	move_dive_site_table(&thread.diveSiteTable, &sitesTable);
+	deviceTable = std::move(thread.deviceTable);
 
 	checkStates.resize(diveTable.nr);
 	std::fill(checkStates.begin(), checkStates.end(), true);

@@ -28,6 +28,7 @@ extern "C" {
 
 struct dive;
 struct dive_computer;
+struct devices;
 
 typedef struct {
 	dc_descriptor_t *descriptor;
@@ -47,6 +48,7 @@ typedef struct {
 	FILE *libdc_logfile;
 	struct dive_table *download_table;
 	struct dive_site_table *sites;
+	struct device_table *devices;
 	void *androidUsbDeviceDescriptor;
 } device_data_t;
 

@@ -92,6 +92,7 @@ void DownloadThread::run()
 	internalData->descriptor = descriptorLookup[m_data->vendor().toLower() + m_data->product().toLower()];
 	internalData->download_table = &downloadTable;
 	internalData->sites = &diveSiteTable;
+	internalData->devices = &deviceTable;
 	internalData->btname = strdup(m_data->devBluetoothName().toUtf8());
 	if (!internalData->descriptor) {
 		qDebug() << "No download possible when DC type is unknown";
@@ -110,6 +111,7 @@ void DownloadThread::run()
 	qDebug() << "downloading" << (internalData->force_download ? "all" : "only new") << "dives";
 	clear_dive_table(&downloadTable);
 	clear_dive_site_table(&diveSiteTable);
+	clear_device_table(&deviceTable);
 
 	Q_ASSERT(internalData->download_table != nullptr);
 	const char *errorText;

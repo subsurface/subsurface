@@ -177,6 +177,8 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 	char is_nitrox = 0, is_O2 = 0, is_SCR = 0;
 
 	device_data_t *devdata = calloc(1, sizeof(device_data_t));
+	devdata->sites = sites;
+	devdata->devices = devices;
 
 	/*
 	 * Parse byte to byte till next dive entry
