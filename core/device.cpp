@@ -299,17 +299,24 @@ extern "C" void create_device_node(struct device_table *device_table, const char
 }
 
 /* Does not check for duplicates! */
-extern "C" void add_to_device_table(struct device_table *device_table, const struct device *dev)
+extern "C" int add_to_device_table(struct device_table *device_table, const struct device *dev)
 {
 	auto it = std::lower_bound(device_table->devices.begin(), device_table->devices.end(), *dev);
+	int idx = it - device_table->devices.begin();
 	device_table->devices.insert(it, *dev);
+	return idx;
 }
 
-extern "C" void remove_device(struct device_table *device_table, const struct device *dev)
+extern "C" int remove_device(struct device_table *device_table, const struct device *dev)
 {
 	auto it = std::lower_bound(device_table->devices.begin(), device_table->devices.end(), *dev);
-	if (it != device_table->devices.end() && same_device(*it, *dev))
+	if (it != device_table->devices.end() && same_device(*it, *dev)) {
+		int idx = it - device_table->devices.begin();
 		device_table->devices.erase(it);
+		return idx;
+	} else {
+		return -1;
+	}
 }
 
 extern "C" void clear_device_table(struct device_table *device_table)
