@@ -1,13 +1,16 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/divecomputermodel.h"
+#include "commands/command.h"
 #include "core/dive.h"
 #include "core/divelist.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
-DiveComputerModel::DiveComputerModel(QObject *parent) : CleanerTableModel(parent),
-	dcs(device_table.devices)
+DiveComputerModel::DiveComputerModel(QObject *parent) : CleanerTableModel(parent)
 {
 	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &DiveComputerModel::update);
+	connect(&diveListNotifier, &DiveListNotifier::deviceAdded, this, &DiveComputerModel::deviceAdded);
+	connect(&diveListNotifier, &DiveListNotifier::deviceDeleted, this, &DiveComputerModel::deviceDeleted);
+	connect(&diveListNotifier, &DiveListNotifier::deviceEdited, this, &DiveComputerModel::deviceEdited);
 	setHeaderDataStrings(QStringList() << "" << tr("Model") << tr("Device ID") << tr("Nickname"));
 	update();
 }
@@ -15,15 +18,15 @@ DiveComputerModel::DiveComputerModel(QObject *parent) : CleanerTableModel(parent
 void DiveComputerModel::update()
 {
 	beginResetModel();
-	dcs = device_table.devices;
 	endResetModel();
 }
 
 QVariant DiveComputerModel::data(const QModelIndex &index, int role) const
 {
-	if (index.row() < 0 || index.row() >= (int)dcs.size())
+	const device *dev = get_device(&device_table, index.row());
+	if (dev == nullptr)
 		return QVariant();
-	const device &node = dcs[index.row()];
+	const device &node = *dev;
 
 	if (role == Qt::DisplayRole || role == Qt::EditRole) {
 		switch (index.column()) {
@@ -51,7 +54,24 @@ QVariant DiveComputerModel::data(const QModelIndex &index, int role) const
 
 int DiveComputerModel::rowCount(const QModelIndex&) const
 {
-	return dcs.size();
+	return (int)device_table.devices.size();
+}
+
+void DiveComputerModel::deviceAdded(int idx)
+{
+	beginInsertRows(QModelIndex(), idx, idx);
+	endInsertRows();
+}
+
+void DiveComputerModel::deviceDeleted(int idx)
+{
+	beginRemoveRows(QModelIndex(), idx, idx);
+	endRemoveRows();
+}
+
+void DiveComputerModel::deviceEdited(int idx)
+{
+	dataChanged(index(idx, REMOVE), index(idx, NICKNAME));
 }
 
 Qt::ItemFlags DiveComputerModel::flags(const QModelIndex &index) const
@@ -65,29 +85,16 @@ Qt::ItemFlags DiveComputerModel::flags(const QModelIndex &index) const
 bool DiveComputerModel::setData(const QModelIndex &index, const QVariant &value, int)
 {
 	// We should test if the role == Qt::EditRole
-	if (index.row() < 0 || index.row() >= (int)dcs.size())
-		return false;
-
-	device &node = dcs[index.row()];
-	node.nickName = value.toString().toStdString();
-	emit dataChanged(index, index);
+	Command::editDeviceNickname(index.row(), value.toString());
 	return true;
 }
 
 void DiveComputerModel::remove(const QModelIndex &index)
 {
-	if (index.row() < 0 || index.row() >= (int)dcs.size())
+	int row = index.row();
+	if (row < 0 || row >= (int)device_table.devices.size())
 		return;
-	beginRemoveRows(QModelIndex(), index.row(), index.row());
-	dcs.erase(dcs.begin() + index.row());
-	endRemoveRows();
-}
-
-void DiveComputerModel::keepWorkingList()
-{
-	if (device_table.devices != dcs)
-		mark_divelist_changed(true);
-	device_table.devices = dcs;
+	Command::removeDevice(index.row());
 }
 
 // Convenience function to access alternative columns
@@ -129,5 +136,5 @@ void DiveComputerSortedModel::remove(const QModelIndex &index)
 	int row = mapToSource(index).row();
 	if (row < 0 || row >= (int)device_table.devices.size())
 		return;
-	device_table.devices.erase(device_table.devices.begin() + row);
+	Command::removeDevice(row);
 }

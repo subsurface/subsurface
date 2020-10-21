@@ -20,15 +20,14 @@ public:
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
-	void keepWorkingList();
 
-public
+private
 slots:
 	void remove(const QModelIndex &index);
 	void update();
-
-private:
-	std::vector<device> dcs;
+	void deviceAdded(int idx);
+	void deviceDeleted(int idx);
+	void deviceEdited(int idx);
 };
 
 class DiveComputerSortedModel : public QSortFilterProxyModel {
