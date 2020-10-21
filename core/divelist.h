@@ -26,8 +26,6 @@ extern struct dive_table dive_table;
 #define DATAFORMAT_VERSION 3
 
 extern void update_cylinder_related_info(struct dive *);
-extern void mark_divelist_changed(bool);
-extern int unsaved_changes(void);
 extern int init_decompression(struct deco_state *ds, struct dive *dive);
 
 /* divelist core logic functions */

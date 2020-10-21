@@ -93,6 +93,23 @@ static void appendTextToLogStandalone(const char *text)
 		self->appendTextToLog(QString(text));
 }
 
+// This flag is set to true by operations that are not implemented in the
+// undo system. It is therefore only cleared on save and load.
+static bool dive_list_changed = false;
+
+void mark_divelist_changed(bool changed)
+{
+	if (dive_list_changed == changed)
+		return;
+	dive_list_changed = changed;
+	updateWindowTitle();
+}
+
+int unsaved_changes()
+{
+	return dive_list_changed;
+}
+
 // this callback is used from the uiNotification() function
 // the detour via callback allows us to keep the core code independent from QMLManager
 // I'm not sure it makes sense to have three different progress callbacks,
@@ -455,6 +472,7 @@ void QMLManager::mergeLocalRepo()
 	struct filter_preset_table filter_presets;
 	parse_file(qPrintable(nocloud_localstorage()), &table, &trips, &sites, &devices, &filter_presets);
 	add_imported_dives(&table, &trips, &sites, &devices, IMPORT_MERGE_ALL_TRIPS);
+	mark_divelist_changed(true);
 }
 
 void QMLManager::copyAppLogToClipboard()
