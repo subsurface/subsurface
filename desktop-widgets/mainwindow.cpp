@@ -570,14 +570,6 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 	setFileClean();
 }
 
-// Currently we have two markers for unsaved changes:
-// 1) unsaved_changes() returns true for non-undoable changes.
-// 2) Command::isClean() returns false for undoable changes.
-static bool unsavedChanges()
-{
-	return unsaved_changes() || !Command::isClean();
-}
-
 void MainWindow::on_actionCloudOnline_triggered()
 {
 	bool isOffline = !ui.actionCloudOnline->isChecked();
@@ -597,7 +589,7 @@ void MainWindow::on_actionCloudOnline_triggered()
 	git_local_only = isOffline;
 	if (!isOffline) {
 		// User requests to go online. Try to sync cloud storage
-		if (unsavedChanges()) {
+		if (!Command::isClean()) {
 			// If there are unsaved changes, ask the user if they want to save them.
 			// If they don't, they have to sync manually.
 			if (QMessageBox::warning(this, tr("Save changes?"),
@@ -625,7 +617,7 @@ bool MainWindow::okToClose(QString message)
 		QMessageBox::warning(this, tr("Warning"), message);
 		return false;
 	}
-	if (unsavedChanges() && askSaveChanges() == false)
+	if (!Command::isClean() && askSaveChanges() == false)
 		return false;
 
 	return true;
@@ -1303,7 +1295,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		return;
 	}
 
-	if (unsavedChanges() && (askSaveChanges() == false)) {
+	if (!Command::isClean() && (askSaveChanges() == false)) {
 		event->ignore();
 		return;
 	}
@@ -1528,7 +1520,7 @@ void MainWindow::setTitle()
 		return;
 	}
 
-	QString unsaved = (unsavedChanges() ? " *" : "");
+	QString unsaved = (!Command::isClean() ? " *" : "");
 	QString shown = QString(" (%1)").arg(DiveFilter::instance()->shownText());
 	setWindowTitle("Subsurface: " + displayedFilename(existing_filename) + unsaved + shown);
 }
