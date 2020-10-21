@@ -17,10 +17,6 @@
 #include "table.h"
 #include "trip.h"
 
-/* This flag is set to true by operations that are not implemented in the
- * undo system. It is therefore only cleared on save and load. */
-static bool dive_list_changed = false;
-
 bool autogroup = false;
 
 void set_autogroup(bool value)
@@ -803,19 +799,6 @@ bool filter_dive(struct dive *d, bool shown)
 	return changed;
 }
 
-void mark_divelist_changed(bool changed)
-{
-	if (dive_list_changed == changed)
-		return;
-	dive_list_changed = changed;
-	updateWindowTitle();
-}
-
-int unsaved_changes()
-{
-	return dive_list_changed;
-}
-
 void process_loaded_dives()
 {
 	int i;
@@ -1058,7 +1041,6 @@ void add_imported_dives(struct dive_table *import_table, struct trip_table *impo
 	/* We might have deleted the old selected dive.
 	 * Choose the newest dive as selected (if any) */
 	current_dive = dive_table.nr > 0 ? dive_table.dives[dive_table.nr - 1] : NULL;
-	mark_divelist_changed(true);
 
 	free_device_table(devices_to_add);
 
