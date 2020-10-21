@@ -37,7 +37,6 @@
 #include "core/settings/qPrefTechnicalDetails.h"
 
 #include "desktop-widgets/about.h"
-#include "desktop-widgets/divecomputermanagementdialog.h"
 #include "desktop-widgets/divelistview.h"
 #include "desktop-widgets/divelogexportdialog.h"
 #include "desktop-widgets/divelogimportdialog.h"
@@ -746,12 +745,6 @@ void MainWindow::on_actionDownloadDC_triggered()
 void MainWindow::on_actionDivelogs_de_triggered()
 {
 	DivelogsDeWebServices::instance()->downloadDives();
-}
-
-void MainWindow::on_actionEditDeviceNames_triggered()
-{
-	DiveComputerManagementDialog::instance()->init();
-	DiveComputerManagementDialog::instance()->show();
 }
 
 bool MainWindow::plannerStateClean()

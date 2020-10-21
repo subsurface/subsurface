@@ -96,7 +96,6 @@
     <addaction name="actionRenumber"/>
     <addaction name="actionAutoGroup"/>
     <addaction name="separator"/>
-    <addaction name="actionEditDeviceNames"/>
     <addaction name="actionFilterTags"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -235,11 +234,6 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+D</string>
-   </property>
-  </action>
-  <action name="actionEditDeviceNames">
-   <property name="text">
-    <string>Edit device &amp;names</string>
    </property>
   </action>
   <action name="actionAddDive">
