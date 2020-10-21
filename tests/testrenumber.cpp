@@ -23,8 +23,6 @@ void TestRenumber::testMerge()
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47b.xml", &table, &trips, &sites, &devices, &filter_presets), 0);
 	add_imported_dives(&table, &trips, &sites, &devices, IMPORT_MERGE_ALL_TRIPS);
 	QCOMPARE(dive_table.nr, 1);
-	QCOMPARE(unsaved_changes(), 1);
-	mark_divelist_changed(false);
 }
 
 void TestRenumber::testMergeAndAppend()
@@ -37,7 +35,6 @@ void TestRenumber::testMergeAndAppend()
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47c.xml", &table, &trips, &sites, &devices, &filter_presets), 0);
 	add_imported_dives(&table, &trips, &sites, &devices, IMPORT_MERGE_ALL_TRIPS);
 	QCOMPARE(dive_table.nr, 2);
-	QCOMPARE(unsaved_changes(), 1);
 	struct dive *d = get_dive(1);
 	QVERIFY(d != NULL);
 	if (d)
