@@ -567,7 +567,7 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 		return;
 
 	setCurrentFile(qPrintable(filename));
-	setFileClean();
+	Command::setClean();
 }
 
 void MainWindow::on_actionCloudOnline_triggered()
@@ -623,12 +623,6 @@ bool MainWindow::okToClose(QString message)
 	return true;
 }
 
-void MainWindow::setFileClean()
-{
-	mark_divelist_changed(false);
-	Command::setClean();
-}
-
 void MainWindow::closeCurrentFile()
 {
 	/* free the dives and trips */
@@ -640,7 +634,7 @@ void MainWindow::closeCurrentFile()
 	if (!existing_filename)
 		setTitle();
 	disableShortcuts();
-	setFileClean();
+	Command::setClean();
 }
 
 void MainWindow::updateCloudOnlineStatus()
@@ -1444,7 +1438,7 @@ int MainWindow::file_save_as(void)
 		return -1;
 
 	setCurrentFile(qPrintable(filename));
-	setFileClean();
+	Command::setClean();
 	addRecentFile(filename, true);
 	return 0;
 }
@@ -1481,7 +1475,7 @@ int MainWindow::file_save(void)
 	}
 	if (is_cloud)
 		hideProgressBar();
-	setFileClean();
+	Command::setClean();
 	addRecentFile(QString(existing_filename), true);
 	return 0;
 }

@@ -198,7 +198,6 @@ private:
 	void writeSettings();
 	int file_save();
 	int file_save_as();
-	void setFileClean();
 	void beginChangeState(CurrentState s);
 	void saveSplitterSizes();
 	void toggleCollapsible(bool toggle);
