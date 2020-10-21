@@ -36,22 +36,10 @@ DiveComputerManagementDialog *DiveComputerManagementDialog::instance()
 
 void DiveComputerManagementDialog::tryRemove(const QModelIndex &index)
 {
-	if (index.column() != DiveComputerModel::REMOVE)
-		return;
-
-	QMessageBox::StandardButton response = QMessageBox::question(
-	    this, TITLE_OR_TEXT(
-		      tr("Remove the selected dive computer?"),
-		      tr("Are you sure that you want to \n remove the selected dive computer?")),
-	    QMessageBox::Ok | QMessageBox::Cancel);
-
-	if (response == QMessageBox::Ok)
-		model->remove(index);
 }
 
 void DiveComputerManagementDialog::accept()
 {
-	model->keepWorkingList();
 	hide();
 	close();
 }
