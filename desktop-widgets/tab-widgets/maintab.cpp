@@ -32,7 +32,7 @@
 #include "TabDiveExtraInfo.h"
 #include "TabDiveInformation.h"
 #include "TabDivePhotos.h"
-#include "TabDiveStatistics.h"
+#include "stats-widget/TabDiveStatistics.h"
 #include "TabDiveSite.h"
 
 #include <QCompleter>
