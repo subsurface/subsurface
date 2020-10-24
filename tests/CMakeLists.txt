@@ -50,6 +50,9 @@ endif()
 
 # Helper function TEST used to created rules to build, link, install and run tests
 function(TEST NAME FILE)
+	if(DEFINED ARGV2)
+		set(CFGARG "CONFIGURATIONS" ${ARGV2})
+	endif()
 	get_filename_component(HDR "${FILE}" NAME_WE)
 	add_executable(${NAME} ${FILE} ${HDR}.h)
 	target_link_libraries(
@@ -70,7 +73,7 @@ function(TEST NAME FILE)
 		# Run test using wine
 		if(WINE_PROGRAM)
 			add_test(
-				NAME ${NAME}
+				NAME ${NAME} ${CFGARG}
 				COMMAND "$<TARGET_FILE:${NAME}>"
 				WORKING_DIRECTORY ${WINDOWS_STAGING_TESTS}
 				)
@@ -80,7 +83,7 @@ function(TEST NAME FILE)
 			set_tests_properties(${NAME} PROPERTIES DEPENDS PrepareTests)
 		endif()
 	else()
-		add_test(NAME ${NAME} COMMAND  $<TARGET_FILE:${NAME}>)
+		add_test(NAME ${NAME} ${CFGARG} COMMAND  $<TARGET_FILE:${NAME}>)
 	endif()
 endfunction()
 
@@ -112,7 +115,7 @@ TEST(TestDiveSiteDuplication testdivesiteduplication.cpp)
 TEST(TestRenumber testrenumber.cpp)
 # this keeps randomly failing and I don't understand why
 # too many false positives, so disabling this test for now
-TEST(TestGitStorage testgitstorage.cpp)
+TEST(TestGitStorage testgitstorage.cpp storageconfig)
 TEST(TestPicture testpicture.cpp)
 TEST(TestMerge testmerge.cpp)
 TEST(TestTagList testtaglist.cpp)
@@ -150,7 +153,6 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestProfile
 	TestGpsCoords
 	TestParse
-	# TestGitStorage
 	TestPlan
 	TestAirPressure
 	TestDiveSiteDuplication
