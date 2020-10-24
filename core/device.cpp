@@ -319,6 +319,13 @@ extern "C" int remove_device(struct device_table *device_table, const struct dev
 	}
 }
 
+extern "C" void remove_from_device_table(struct device_table *device_table, int idx)
+{
+	if (idx < 0 || idx >= (int)device_table->devices.size())
+		return;
+	device_table->devices.erase(device_table->devices.begin() + idx);
+}
+
 extern "C" void clear_device_table(struct device_table *device_table)
 {
 	device_table->devices.clear();

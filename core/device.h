@@ -32,6 +32,7 @@ extern const struct device *get_device_for_dc(const struct device_table *table, 
 extern bool device_exists(const struct device_table *table, const struct device *dev);
 extern int add_to_device_table(struct device_table *table, const struct device *dev); // returns index
 extern int remove_device(struct device_table *table, const struct device *dev); // returns index or -1 if not found
+extern void remove_from_device_table(struct device_table *table, int idx);
 
 // struct device accessors for C-code. The returned strings are not stable!
 const char *device_get_model(const struct device *dev);
