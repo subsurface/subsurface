@@ -23,7 +23,6 @@ public:
 
 private
 slots:
-	void remove(const QModelIndex &index);
 	void update();
 	void deviceAdded(int idx);
 	void deviceDeleted(int idx);
