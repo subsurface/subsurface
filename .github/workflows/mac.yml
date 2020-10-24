@@ -39,6 +39,7 @@ jobs:
         export QT_ROOT=${GITHUB_WORKSPACE}/Qt/5.13.0/clang_64
         export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
         cd ${GITHUB_WORKSPACE}/build-mobile/tests
+        ./TestGitStorage -v2
         make check
 
     - name: build Subsurface
@@ -65,5 +66,6 @@ jobs:
         export QT_ROOT=${GITHUB_WORKSPACE}/Qt/5.13.0/clang_64
         export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
         cd ${GITHUB_WORKSPACE}/build/tests
+        ./TestGitStorage -v2
         make check
 
