@@ -716,6 +716,8 @@ void DiveTripModelTree::populate()
 	uiNotification(QObject::tr("start processing"));
 	for (int i = 0; i < dive_table.nr; ++i) {
 		dive *d = get_dive(i);
+		if (!d) // should never happen
+			continue;
 		update_cylinder_related_info(d);
 		if (d->hidden_by_filter)
 			continue;
@@ -1482,7 +1484,7 @@ void DiveTripModelList::populate()
 	items.reserve(dive_table.nr);
 	for (int i = 0; i < dive_table.nr; ++i) {
 		dive *d = get_dive(i);
-		if (d->hidden_by_filter)
+		if (!d || d->hidden_by_filter)
 			continue;
 		items.push_back(d);
 	}
