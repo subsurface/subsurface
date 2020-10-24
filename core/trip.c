@@ -74,10 +74,12 @@ bool is_trip_before_after(const struct dive *dive, bool before)
 {
 	int idx = get_idx_by_uniq_id(dive->id);
 	if (before) {
-		if (idx > 0 && get_dive(idx - 1)->divetrip)
+		const struct dive *d = get_dive(idx - 1);
+		if (d && d->divetrip)
 			return true;
 	} else {
-		if (idx < dive_table.nr - 1 && get_dive(idx + 1)->divetrip)
+		const struct dive *d = get_dive(idx + 1);
+		if (d && d->divetrip)
 			return true;
 	}
 	return false;
