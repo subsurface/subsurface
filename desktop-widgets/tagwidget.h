@@ -18,7 +18,6 @@ public:
 	void clear();
 	void setCursorPosition(int position);
 	void wheelEvent(QWheelEvent *event);
-	void fixPopupPosition(int delta);
 public
 slots:
 	void reparse();

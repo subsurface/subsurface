@@ -196,14 +196,6 @@ void TagWidget::wheelEvent(QWheelEvent *event)
 	}
 }
 
-void TagWidget::fixPopupPosition(int delta)
-{
-	if(m_completer->popup()->isVisible()){
-		QRect toGlobal = m_completer->popup()->geometry();
-		m_completer->popup()->setGeometry(toGlobal.x(), toGlobal.y() + delta +10, toGlobal.width(), toGlobal.height());
-	}
-}
-
 // Since we capture enter / return / tab, we never send an editingFinished() signal.
 // Therefore, override the focusOutEvent()
 void TagWidget::focusOutEvent(QFocusEvent *ev)
