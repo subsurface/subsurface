@@ -161,7 +161,15 @@ void GroupedLineEdit::keyPressEvent(QKeyEvent *e)
 
 void GroupedLineEdit::paintEvent(QPaintEvent *e)
 {
-	QTextLine line = document()->findBlock(0).layout()->lineAt(0);
+	// Do some sanity checks. Without these, the code may crash if
+	// the user manages to scroll the text box by drag&drop actions.
+	const QTextBlock &block = document()->findBlock(0);
+	if (block.lineCount() <= 0)
+		return QPlainTextEdit::paintEvent(e);
+	const QTextLayout *layout = block.layout();
+	if (layout->lineCount() <= 0)
+		return QPlainTextEdit::paintEvent(e);
+	QTextLine line = layout->lineAt(0);
 	QPainter painter(viewport());
 
 	painter.setRenderHint(QPainter::Antialiasing, true);
