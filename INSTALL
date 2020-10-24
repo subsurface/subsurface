@@ -140,10 +140,11 @@ On Fedora you need
 
 sudo dnf install autoconf automake bluez-libs-devel cmake gcc-c++ git \
 	libcurl-devel libsqlite3x-devel libssh2-devel libtool libudev-devel \
-	libusbx-devel libxml2-devel libxslt-devel libzlib-devel make \
+	libusbx-devel libxml2-devel libxslt-devel make \
 	qt5-qtbase-devel qt5-qtconnectivity-devel qt5-qtdeclarative-devel \
 	qt5-qtlocation-devel qt5-qtscript-devel qt5-qtsvg-devel \
-	qt5-qttools-devel qt5-qtwebkit-devel redhat-rpm-config
+	qt5-qttools-devel qt5-qtwebkit-devel redhat-rpm-config \
+	bluez-libs-devel libgit2-devel libzip-devel
 
 
 Package names are sadly different on OpenSUSE
@@ -153,7 +154,8 @@ sudo zypper install git gcc-c++ make autoconf automake libtool cmake libzip-deve
 	libqt5-linguist-devel libqt5-qttools-devel libQt5WebKitWidgets-devel \
 	libqt5-qtbase-devel libQt5WebKit5-devel libqt5-qtsvg-devel \
 	libqt5-qtscript-devel libqt5-qtdeclarative-devel \
-	libqt5-qtconnectivity-devel libqt5-qtlocation-devel libcurl-devel
+	libqt5-qtconnectivity-devel libqt5-qtlocation-devel libcurl-devel \
+	bluez-devel libgit2-devel
 
 On Debian Buster this seems to work
 
