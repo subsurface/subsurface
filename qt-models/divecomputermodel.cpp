@@ -89,14 +89,6 @@ bool DiveComputerModel::setData(const QModelIndex &index, const QVariant &value,
 	return true;
 }
 
-void DiveComputerModel::remove(const QModelIndex &index)
-{
-	int row = index.row();
-	if (row < 0 || row >= (int)device_table.devices.size())
-		return;
-	Command::removeDevice(index.row());
-}
-
 // Convenience function to access alternative columns
 static QString getData(const QModelIndex &idx, int col)
 {
