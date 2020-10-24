@@ -1,3 +1,4 @@
+- desktop: fix crash on drag&drop into tag widgets [#3030]
 - macOS: fix issue with HID dive computers like Suunto Eon Core/Steel [#2999]
 - windows: add missing modern Vista theme
 - mobile: add location service warning as required by Google Play
