@@ -41,5 +41,6 @@ jobs:
         # and now run the tests - with Qt 5.9 we can only run the desktop flavor
         echo "------------------------------------"
         echo "run tests"
-        cd build
+        cd build/tests
+        xvfb-run --auto-servernum ./TestGitStorage -v2
         xvfb-run --auto-servernum make check
