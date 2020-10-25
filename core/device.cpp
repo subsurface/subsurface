@@ -392,6 +392,13 @@ extern "C" const struct device *get_device(const struct device_table *table, int
 	return &table->devices[i];
 }
 
+extern "C" struct device *get_device_mutable(struct device_table *table, int i)
+{
+	if (i < 0 || i > nr_devices(table))
+		return NULL;
+	return &table->devices[i];
+}
+
 extern "C" const char *device_get_model(const struct device *dev)
 {
 	return dev ? dev->model.c_str() : NULL;

@@ -17,6 +17,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../map-widget/qmlmapwidgethelper.cpp \
 	../../commands/command_base.cpp \
 	../../commands/command.cpp \
+	../../commands/command_device.cpp \
 	../../commands/command_divelist.cpp \
 	../../commands/command_divesite.cpp \
 	../../commands/command_edit.cpp \
@@ -190,6 +191,7 @@ INCLUDEPATH += ../../../install-root/ios/include/ \
 HEADERS += \
 	../../commands/command_base.h \
 	../../commands/command.h \
+	../../commands/command_device.h \
 	../../commands/command_divelist.h \
 	../../commands/command_divesite.h \
 	../../commands/command_edit.h \

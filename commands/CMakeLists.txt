@@ -6,6 +6,8 @@ set(SUBSURFACE_GENERIC_COMMANDS_SRCS
 	command_base.h
 	command.cpp
 	command.h
+	command_device.cpp
+	command_device.h
 	command_divelist.cpp
 	command_divelist.h
 	command_divesite.cpp

@@ -130,6 +130,7 @@ signals:
 	// Devices related signals
 	void deviceAdded(int index);
 	void deviceDeleted(int index);
+	void deviceEdited(int index);
 
 	// Filter related signals
 	void filterPresetAdded(int index);

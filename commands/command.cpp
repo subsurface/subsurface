@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "command.h"
+#include "command_device.h"
 #include "command_divelist.h"
 #include "command_divesite.h"
 #include "command_edit.h"
@@ -378,6 +379,16 @@ void removePictures(const std::vector<PictureListForDeletion> &pictures)
 void addPictures(const std::vector<PictureListForAddition> &pictures)
 {
 	execute(new AddPictures(pictures));
+}
+
+void removeDevice(int idx)
+{
+	execute(new RemoveDevice(idx));
+}
+
+void editDeviceNickname(int idx, const QString &nickname)
+{
+	execute(new EditDeviceNickname(idx, nickname));
 }
 
 void createFilterPreset(const QString &name, const FilterData &data)
