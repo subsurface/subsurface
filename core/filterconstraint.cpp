@@ -1059,7 +1059,7 @@ static bool check_year_range(const filter_constraint &c, const struct dive *d)
 
 static bool check_multiple_choice(const filter_constraint &c, int v)
 {
-	bool has_bit = c.data.multiple_choice & (1 << v);
+	bool has_bit = c.data.multiple_choice & (1ULL << v);
 	return has_bit != c.negate;
 }
 

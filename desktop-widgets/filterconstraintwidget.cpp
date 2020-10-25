@@ -324,7 +324,7 @@ void FilterConstraintWidget::update()
 	if (multipleChoice) {
 		uint64_t bits = idx.data(FilterConstraintModel::MULTIPLE_CHOICE_ROLE).value<uint64_t>();
 		for (int i = 0; i < multipleChoice->count(); ++i)
-			multipleChoice->item(i)->setSelected(bits & (1 << i));
+			multipleChoice->item(i)->setSelected(bits & (1ULL << i));
 	}
 
 	// Update the unit strings in case the locale was changed
@@ -392,9 +392,11 @@ void FilterConstraintWidget::multipleChoiceEdited()
 	uint64_t bits = 0;
 	for (const QModelIndex &idx: multipleChoice->selectionModel()->selectedIndexes()) {
 		int row = idx.row();
-		if (row >= 64)
+		if (row >= 64) {
 			qWarning("FilterConstraint: multiple-choice with more than 64 entries not supported");
-		bits |= 1 << row;
+			continue;
+		}
+		bits |= 1ULL << row;
 	}
 	QModelIndex idx = model->index(row, 0);
 	model->setData(idx, qulonglong(bits), FilterConstraintModel::MULTIPLE_CHOICE_ROLE);
