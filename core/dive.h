@@ -127,11 +127,6 @@ extern depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, 
 
 extern bool autogroup;
 
-extern int quit, force_root, ignore_bt;
-#ifdef SUBSURFACE_MOBILE_DESKTOP
-extern char *testqml;
-#endif
-
 extern struct dive displayed_dive;
 extern unsigned int dc_number;
 extern struct dive *current_dive;

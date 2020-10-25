@@ -21,6 +21,7 @@
 #include "qt-models/mobilelistmodel.h"
 #include "profile-widget/qmlprofile.h"
 #include "core/downloadfromdcthread.h"
+#include "core/subsurfacestartup.h" // for testqml
 #include "qt-models/diveimportedmodel.h"
 #include "mobile-widgets/qml/kirigami/src/kirigamiplugin.h"
 #else

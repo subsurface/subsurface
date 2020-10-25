@@ -36,6 +36,7 @@
 #include "core/cloudstorage.h"
 #include "core/membuffer.h"
 #include "core/downloadfromdcthread.h"
+#include "core/subsurfacestartup.h" // for ignore_bt flag
 #include "core/subsurface-string.h"
 #include "core/pref.h"
 #include "core/selection.h"
