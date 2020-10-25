@@ -10,6 +10,7 @@
 #include "event.h"
 #include "filterpreset.h"
 #include "fulltext.h"
+#include "interpolate.h"
 #include "planner.h"
 #include "qthelper.h"
 #include "gettext.h"

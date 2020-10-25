@@ -15,6 +15,7 @@
 #include "errorhelper.h"
 #include "event.h"
 #include "extradata.h"
+#include "interpolate.h"
 #include "qthelper.h"
 #include "membuffer.h"
 #include "picture.h"
