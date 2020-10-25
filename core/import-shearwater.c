@@ -14,6 +14,8 @@
 #include "membuffer.h"
 #include "gettext.h"
 
+#include <stdlib.h>
+
 static int shearwater_cylinders(void *param, int columns, char **data, char **column)
 {
 	UNUSED(columns);

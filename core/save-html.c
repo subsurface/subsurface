@@ -17,7 +17,9 @@
 #include "tag.h"
 #include "subsurface-time.h"
 #include "trip.h"
+
 #include <stdio.h>
+#include <string.h>
 
 static void write_attribute(struct membuffer *b, const char *att_name, const char *value, const char *separator)
 {

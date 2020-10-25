@@ -4,18 +4,12 @@
 
 // dive and dive computer related structures and helpers
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <time.h>
-#include <math.h>
-#include <string.h>
-#include <stdio.h>
-
 #include "divemode.h"
 #include "divecomputer.h"
 #include "equipment.h"
 #include "picture.h"
+
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -6,18 +6,20 @@
  * void calculate_stats_summary(struct stats_summary *out, bool selected_only);
  * void calculate_stats_selected(stats_t *stats_selection);
  */
-#include "gettext.h"
-#include <string.h>
-#include <ctype.h>
 
+#include "statistics.h"
 #include "dive.h"
 #include "display.h"
 #include "event.h"
+#include "gettext.h"
 #include "sample.h"
 #include "subsurface-time.h"
 #include "trip.h"
-#include "statistics.h"
 #include "units.h"
+
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 static void process_temperatures(struct dive *dp, stats_t *stats)
 {

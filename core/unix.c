@@ -7,7 +7,7 @@
 #include "subsurface-string.h"
 #include "display.h"
 #include "membuffer.h"
-#include <string.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <dirent.h>
 #include <fnmatch.h>

@@ -15,6 +15,8 @@
 #include "gettext.h"
 #include "tag.h"
 
+#include <stdlib.h>
+
 static int dm4_events(void *param, int columns, char **data, char **column)
 {
 	UNUSED(columns);
