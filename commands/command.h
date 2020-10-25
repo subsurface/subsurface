@@ -138,7 +138,12 @@ void setPictureOffset(dive *d, const QString &filename, offset_t offset);
 void removePictures(const std::vector<PictureListForDeletion> &pictures);
 void addPictures(const std::vector<PictureListForAddition> &pictures);
 
-// 8) Filter commands
+// 8) Device commands
+
+void removeDevice(int idx);
+void editDeviceNickname(int idx, const QString &nickname);
+
+// 9) Filter commands
 
 void createFilterPreset(const QString &name, const FilterData &data);
 void removeFilterPreset(int index);
