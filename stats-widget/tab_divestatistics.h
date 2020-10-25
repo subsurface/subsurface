@@ -2,7 +2,7 @@
 #ifndef TAB_DIVE_STATISTICS_H
 #define TAB_DIVE_STATISTICS_H
 
-#include "TabBase.h"
+#include "desktop-widgets/tab-widgets/TabBase.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
 namespace Ui {

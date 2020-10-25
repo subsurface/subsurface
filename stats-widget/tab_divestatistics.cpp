@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
-#include "TabDiveStatistics.h"
-#include "ui_TabDiveStatistics.h"
+#include "tab_divestatistics.h"
+#include "ui_tab_divestatistics.h"
 
 #include "core/qthelper.h"
 #include "core/selection.h"
