@@ -55,6 +55,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/device.cpp \
 	../../core/dive.c \
 	../../core/divefilter.cpp \
+	../../core/event.c \
 	../../core/filterconstraint.cpp \
 	../../core/filterpreset.cpp \
 	../../core/divelist.c \
@@ -202,6 +203,7 @@ HEADERS += \
 	../../core/device.h \
 	../../core/devicedetails.h \
 	../../core/dive.h \
+	../../core/event.h \
 	../../core/git-access.h \
 	../../core/gpslocation.h \
 	../../core/imagedownloader.h \

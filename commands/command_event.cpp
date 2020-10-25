@@ -2,6 +2,7 @@
 
 #include "command_event.h"
 #include "core/dive.h"
+#include "core/event.h"
 #include "core/selection.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "core/libdivecomputer.h"

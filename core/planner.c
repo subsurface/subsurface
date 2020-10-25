@@ -15,6 +15,7 @@
 #include "subsurface-string.h"
 #include "deco.h"
 #include "errorhelper.h"
+#include "event.h"
 #include "planner.h"
 #include "subsurface-time.h"
 #include "gettext.h"

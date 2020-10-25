@@ -6,7 +6,6 @@
 
 #include "command_base.h"
 
-
 // We put everything in a namespace, so that we can shorten names without polluting the global namespace
 namespace Command {
 

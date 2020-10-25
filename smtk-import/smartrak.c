@@ -30,6 +30,7 @@
 #include "core/subsurface-string.h"
 #include "core/gettext.h"
 #include "core/divelist.h"
+#include "core/event.h"
 #include "core/libdivecomputer.h"
 #include "core/divesite.h"
 #include "core/membuffer.h"

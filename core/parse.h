@@ -4,7 +4,9 @@
 
 #define MAX_EVENT_NAME 128
 
-#include "dive.h" // for struct event!
+#include "event.h"
+#include "picture.h"
+#include "dive.h" // for "struct extra_data"
 #include "filterpreset.h"
 
 #include <sqlite3.h>

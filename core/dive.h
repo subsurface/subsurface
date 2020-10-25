@@ -20,40 +20,13 @@
 extern "C" {
 #endif
 
+struct event;
+
 extern int last_xml_version;
 
 extern const char *cylinderuse_text[NUM_GAS_USE];
 extern const char *divemode_text_ui[];
 extern const char *divemode_text[];
-
-/*
- * Events are currently based straight on what libdivecomputer gives us.
- *  We need to wrap these into our own events at some point to remove some of the limitations.
- */
-struct event {
-	struct event *next;
-	duration_t time;
-	int type;
-	/* This is the annoying libdivecomputer format. */
-	int flags, value;
-	/* .. and this is our "extended" data for some event types */
-	union {
-		enum divemode_t divemode; // for divemode change events
-		/*
-		 * NOTE! The index may be -1, which means "unknown". In that
-		 * case, the get_cylinder_index() function will give the best
-		 * match with the cylinders in the dive based on gasmix.
-		 */
-		struct { // for gas switch events
-			int index;
-			struct gasmix mix;
-		} gas;
-	};
-	bool deleted;
-	char name[];
-};
-
-extern int event_is_gaschange(const struct event *ev);
 
 extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, struct gasmix mix, double po2, enum divemode_t dctype);
 
@@ -323,21 +296,16 @@ extern int split_dive(const struct dive *dive, struct dive **new1, struct dive *
 extern int split_dive_at_time(const struct dive *dive, duration_t time, struct dive **new1, struct dive **new2);
 extern struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset, bool prefer_downloaded, struct dive_trip **trip, struct dive_site **site);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded);
-extern struct event *clone_event(const struct event *src_ev);
 extern void copy_events(const struct divecomputer *s, struct divecomputer *d);
 extern void copy_events_until(const struct dive *sd, struct dive *dd, int time);
-extern void free_events(struct event *ev);
 extern void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_only);
 extern void copy_samples(const struct divecomputer *s, struct divecomputer *d);
 extern bool is_cylinder_used(const struct dive *dive, int idx);
 extern bool is_cylinder_prot(const struct dive *dive, int idx);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
-extern struct event *create_event(unsigned int time, int type, int flags, int value, const char *name);
 extern struct event *create_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx);
-extern struct event *clone_event_rename(const struct event *ev, const char *name);
 extern void add_event_to_dc(struct divecomputer *dc, struct event *ev);
 extern void swap_event(struct divecomputer *dc, struct event *from, struct event *to);
-extern bool same_event(const struct event *a, const struct event *b);
 extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name);
 extern void remove_event_from_dc(struct divecomputer *dc, struct event *event);
 extern void update_event_name(struct dive *d, struct event *event, const char *name);
@@ -350,10 +318,7 @@ extern int nr_weightsystems(const struct dive *dive);
 
 /* UI related protopypes */
 
-extern void remember_event(const char *eventname);
 extern void invalidate_dive_cache(struct dive *dc);
-
-extern void clear_events(void);
 
 extern void set_autogroup(bool value);
 extern int total_weight(const struct dive *);
@@ -369,10 +334,6 @@ extern void subsurface_command_line_exit(int *, char ***);
 
 extern bool is_dc_planner(const struct divecomputer *dc);
 extern bool has_planned(const struct dive *dive, bool planned);
-
-/* Since C doesn't have parameter-based overloading, two versions of get_next_event. */
-extern const struct event *get_next_event(const struct event *event, const char *name);
-extern struct event *get_next_event_mutable(struct event *event, const char *name);
 
 /* Get gasmixes at increasing timestamps.
  * In "evp", pass a pointer to a "struct event *" which is NULL-initialized on first invocation.

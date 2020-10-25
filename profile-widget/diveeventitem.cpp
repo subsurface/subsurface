@@ -3,6 +3,7 @@
 #include "qt-models/diveplotdatamodel.h"
 #include "profile-widget/divecartesianaxis.h"
 #include "profile-widget/animationfunctions.h"
+#include "core/event.h"
 #include "core/libdivecomputer.h"
 #include "core/profile.h"
 #include "core/gettextfromc.h"
@@ -11,9 +12,6 @@
 #include "core/subsurface-string.h"
 
 #define DEPTH_NOT_FOUND (-2342)
-
-extern struct ev_select *ev_namelist;
-extern int evn_used;
 
 DiveEventItem::DiveEventItem(QGraphicsItem *parent) : DivePixmapItem(parent),
 	vAxis(NULL),

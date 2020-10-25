@@ -2,6 +2,7 @@
 #include "testplan.h"
 #include "core/deco.h"
 #include "core/dive.h"
+#include "core/event.h"
 #include "core/planner.h"
 #include "core/qthelper.h"
 #include "core/subsurfacestartup.h"

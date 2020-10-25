@@ -80,11 +80,6 @@ struct plot_data {
 	bool icd_warning;
 };
 
-struct ev_select {
-	char *ev_name;
-	bool plot_ev;
-};
-
 extern void compare_samples(struct plot_info *p1, int idx1, int idx2, char *buf, int bufsize, bool sum);
 extern void init_plot_info(struct plot_info *pi);
 extern void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast, const struct deco_state *planner_ds);

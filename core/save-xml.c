@@ -21,6 +21,7 @@
 #include "subsurface-time.h"
 #include "trip.h"
 #include "device.h"
+#include "event.h"
 #include "file.h"
 #include "membuffer.h"
 #include "picture.h"
