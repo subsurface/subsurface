@@ -28,8 +28,6 @@ extern const char *cylinderuse_text[NUM_GAS_USE];
 extern const char *divemode_text_ui[];
 extern const char *divemode_text[];
 
-extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, struct gasmix mix, double po2, enum divemode_t dctype);
-
 /* Linear interpolation between 'a' and 'b', when we are 'part'way into the 'whole' distance from a to b */
 static inline int interpolate(int a, int b, int part, int whole)
 {
