@@ -175,7 +175,6 @@ extern int legacy_format_o2pressures(const struct dive *dive, const struct divec
 
 extern bool dive_less_than(const struct dive *a, const struct dive *b);
 extern bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b);
-extern void sort_dive_table(struct dive_table *table);
 extern struct dive *fixup_dive(struct dive *dive);
 extern pressure_t calculate_surface_pressure(const struct dive *dive);
 extern pressure_t un_fixup_surface_pressure(const struct dive *d);
