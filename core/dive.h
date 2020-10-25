@@ -206,14 +206,9 @@ extern void invalidate_dive_cache(struct dive *dc);
 extern void set_autogroup(bool value);
 extern int total_weight(const struct dive *);
 
-#define DIVE_ERROR_PARSE 1
-#define DIVE_ERROR_PLAN 2
-
 const char *monthname(int mon);
 
 extern const char *existing_filename;
-extern void subsurface_command_line_init(int *, char ***);
-extern void subsurface_command_line_exit(int *, char ***);
 
 extern bool has_planned(const struct dive *dive, bool planned);
 
