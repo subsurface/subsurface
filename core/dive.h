@@ -233,6 +233,4 @@ Q_DECLARE_METATYPE(struct dive *);
 
 #endif
 
-#include "pref.h"
-
 #endif // DIVE_H
