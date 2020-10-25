@@ -13,14 +13,14 @@ class FilterModelBase;
 #include <QTextEdit>
 #include <stdint.h>
 
-#include "ui_renumber.h"
-#include "ui_setpoint.h"
-#include "ui_shifttimes.h"
-#include "ui_shiftimagetimes.h"
-#include "ui_urldialog.h"
-#include "ui_divecomponentselection.h"
-#include "ui_listfilter.h"
-#include "ui_addfilterpreset.h"
+#include "desktop-widgets/ui_renumber.h"
+#include "desktop-widgets/ui_setpoint.h"
+#include "desktop-widgets/ui_shifttimes.h"
+#include "desktop-widgets/ui_shiftimagetimes.h"
+#include "desktop-widgets/ui_urldialog.h"
+#include "desktop-widgets/ui_divecomponentselection.h"
+#include "desktop-widgets/ui_listfilter.h"
+#include "desktop-widgets/ui_addfilterpreset.h"
 #include "core/exif.h"
 #include "core/dive.h"
 
