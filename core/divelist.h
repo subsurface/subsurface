@@ -25,6 +25,7 @@ extern struct dive_table dive_table;
 /* this is used for both git and xml format */
 #define DATAFORMAT_VERSION 3
 
+extern void sort_dive_table(struct dive_table *table);
 extern void update_cylinder_related_info(struct dive *);
 extern void mark_divelist_changed(bool);
 extern int unsaved_changes(void);
