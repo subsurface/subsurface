@@ -957,7 +957,7 @@ static void format_one_filter_constraint(int preset_id, int constraint_id, struc
 /*
  * Write a filter constraint to the membuffer b.
  * Each line starts with a type, which is either "name", "fulltext" or "constraint".
- * There must be one "name" entry, zero or ont "fulltext" entries and an arbitrary number of "contraint" entries.
+ * There must be one "name" entry, zero or one "fulltext" entries and an arbitrary number of "contraint" entries.
  * The "name" entry gives the name of the filter constraint.
  * The "fulltext" entry has the format
  *	fulltext mode "fulltext mode" query "the query as entered by the user"
@@ -976,6 +976,7 @@ static void format_one_filter_preset(int preset_id, struct membuffer *b)
 		show_utf8(b, "fulltext mode=", filter_preset_fulltext_mode(preset_id), "");
 		show_utf8(b, " query=", fulltext, "\n");
 	}
+	free(fulltext);
 
 	for (int i = 0; i < filter_preset_constraint_count(preset_id); i++)
 		format_one_filter_constraint(preset_id, i, b);
