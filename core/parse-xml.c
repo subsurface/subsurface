@@ -1724,7 +1724,7 @@ static const char *preprocess_divelog_de(const char *buffer)
 int parse_xml_buffer(const char *url, const char *buffer, int size,
 		     struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
 		     struct device_table *devices, struct filter_preset_table *filter_presets,
-		     const const struct xml_params *params)
+		     const struct xml_params *params)
 {
 	UNUSED(size);
 	xmlDoc *doc;
