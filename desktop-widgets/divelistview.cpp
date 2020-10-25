@@ -563,7 +563,7 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 			select_dives_in_trip(trip);
 			if (model->rowCount(index)) {
 				QItemSelection selection;
-				selection.select(index.child(0, 0), index.child(model->rowCount(index) - 1, 0));
+				selection.select(model->index(0, 0, index), model->index(model->rowCount(index) - 1, 0, index));
 				selectionModel()->select(selection, QItemSelectionModel::Select | QItemSelectionModel::Rows);
 				selectionModel()->setCurrentIndex(index, QItemSelectionModel::Select | QItemSelectionModel::NoUpdate);
 				if (!isExpanded(index))
