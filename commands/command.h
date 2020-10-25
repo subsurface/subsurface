@@ -4,6 +4,7 @@
 
 #include "core/dive.h"
 #include "core/pictureobj.h"
+#include "core/taxonomy.h"
 #include <QVector>
 #include <QAction>
 #include <vector>

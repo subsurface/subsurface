@@ -16,6 +16,7 @@
 #include "dive.h"
 #include "display.h"
 #include "divelist.h"
+#include "pref.h"
 #include "subsurface-string.h"
 #include "table.h"
 
