@@ -139,6 +139,17 @@
 //	v.clear(v);				// Reset the vector to zero length. If the elements weren't release()d,
 //						// the pointed-to dives are freed with free_dive()
 
+// Qt is making their containers a lot harder to integrate with std::vector
+template<typename T>
+QVector<T> stdToQt(const std::vector<T> &v)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+	return QVector<T>(v.begin(), v.end());
+#else
+	return QVector<T>::fromStdVector(v);
+#endif
+}
+
 // We put everything in a namespace, so that we can shorten names without polluting the global namespace
 namespace Command {
 

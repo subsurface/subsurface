@@ -659,7 +659,7 @@ void ShiftTime::redoit()
 		sort_dive_table(&trip->dives); // Keep the trip-table in order
 
 	// Send signals
-	QVector<dive *> dives = QVector<dive *>::fromStdVector(diveList);
+	QVector<dive *> dives = stdToQt<dive *>(diveList);
 	emit diveListNotifier.divesTimeChanged(timeChanged, dives);
 	emit diveListNotifier.divesChanged(dives, DiveField::DATETIME);
 

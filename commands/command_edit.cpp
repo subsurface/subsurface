@@ -155,12 +155,7 @@ void EditBase<T>::undo()
 
 	// Send signals.
 	DiveField id = fieldId();
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-	emit diveListNotifier.divesChanged(QVector<dive *>(dives.begin(), dives.end()), id);
-#else
-	emit diveListNotifier.divesChanged(QVector<dive *>::fromStdVector(dives), id);
-#endif
-
+	emit diveListNotifier.divesChanged(stdToQt<dive *>(dives), id);
 	setSelection(selectedDives, current);
 }
 
@@ -551,11 +546,7 @@ void EditTagsBase::undo()
 
 	// Send signals.
 	DiveField id = fieldId();
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-	emit diveListNotifier.divesChanged(QVector<dive *>(dives.begin(), dives.end()), id);
-#else
-	emit diveListNotifier.divesChanged(QVector<dive *>::fromStdVector(dives), id);
-#endif
+	emit diveListNotifier.divesChanged(stdToQt<dive *>(dives), id);
 	setSelection(selectedDives, current);
 }
 
