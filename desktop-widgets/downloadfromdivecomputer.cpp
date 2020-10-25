@@ -19,7 +19,7 @@
 #include <QTimer>
 #include <QUndoStack>
 
-DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f),
+DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent) : QDialog(parent, QFlag(0)),
 	downloading(false),
 	previousLast(0),
 	timer(new QTimer(this)),

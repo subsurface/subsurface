@@ -25,7 +25,7 @@ class BTDiscovery;
 class DownloadFromDCWidget : public QDialog {
 	Q_OBJECT
 public:
-	explicit DownloadFromDCWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
+	explicit DownloadFromDCWidget(QWidget *parent = 0);
 	void reject();
 
 	enum states {

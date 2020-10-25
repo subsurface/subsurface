@@ -43,7 +43,7 @@ private:
 class DivePlannerWidget : public QWidget {
 	Q_OBJECT
 public:
-	explicit DivePlannerWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
+	explicit DivePlannerWidget(QWidget *parent = 0);
 	void setReplanButton(bool replan);
 public
 slots:
@@ -67,7 +67,7 @@ private:
 class PlannerSettingsWidget : public QWidget {
 	Q_OBJECT
 public:
-	explicit PlannerSettingsWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
+	explicit PlannerSettingsWidget(QWidget *parent = 0);
 	~PlannerSettingsWidget();
 public
 slots:

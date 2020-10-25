@@ -108,7 +108,7 @@ static QImage grayImage(const QImage &coloredImg)
 	return img;
 }
 
-StarWidget::StarWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f),
+StarWidget::StarWidget(QWidget *parent) : QWidget(parent, QFlag(0)),
 	current(0),
 	readOnly(false)
 {

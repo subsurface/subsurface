@@ -11,7 +11,7 @@ enum StarConfig {
 class StarWidget : public QWidget {
 	Q_OBJECT
 public:
-	explicit StarWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
+	explicit StarWidget(QWidget *parent = 0);
 	int currentStars() const;
 
 	QSize sizeHint() const override;

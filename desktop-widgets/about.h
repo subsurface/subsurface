@@ -9,7 +9,7 @@ class SubsurfaceAbout : public QDialog {
 	Q_OBJECT
 
 public:
-	explicit SubsurfaceAbout(QWidget *parent = 0, Qt::WindowFlags f = 0);
+	explicit SubsurfaceAbout(QWidget *parent = 0);
 private
 slots:
 	void on_licenseButton_clicked();
