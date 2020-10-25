@@ -270,7 +270,7 @@ QVariant ColumnNameResult::data(const QModelIndex &index, int role) const
 {
 	if (!index.isValid())
 		return QVariant();
-	if (role == Qt::BackgroundColorRole)
+	if (role == Qt::BackgroundRole)
 		if (index.row() == 0)
 			return QVariant(AIR_BLUE_TRANS);
 
