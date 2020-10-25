@@ -7,6 +7,7 @@
 #include "device.h"
 #include "divesite.h"
 #include "dive.h"
+#include "event.h"
 #include "filterpreset.h"
 #include "fulltext.h"
 #include "planner.h"

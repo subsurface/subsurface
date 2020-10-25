@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/profilewidget2.h"
 #include "qt-models/diveplotdatamodel.h"
+#include "core/event.h"
 #include "core/subsurface-string.h"
 #include "core/qthelper.h"
 #include "core/picture.h"
@@ -1376,10 +1377,6 @@ void ProfileWidget2::setPlanState()
 	setBackgroundBrush(QColor("#D7E3EF"));
 }
 #endif
-
-extern struct ev_select *ev_namelist;
-extern int evn_allocated;
-extern int evn_used;
 
 bool ProfileWidget2::isPlanner()
 {

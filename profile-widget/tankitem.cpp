@@ -2,6 +2,7 @@
 #include "profile-widget/tankitem.h"
 #include "qt-models/diveplotdatamodel.h"
 #include "profile-widget/divetextitem.h"
+#include "core/event.h"
 #include "core/profile.h"
 #include <QPen>
 

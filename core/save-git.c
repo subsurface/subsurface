@@ -24,6 +24,7 @@
 #include "trip.h"
 #include "device.h"
 #include "errorhelper.h"
+#include "event.h"
 #include "membuffer.h"
 #include "git-access.h"
 #include "version.h"

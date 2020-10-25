@@ -77,6 +77,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	divesitehelpers.h
 	downloadfromdcthread.cpp
 	downloadfromdcthread.h
+	event.c
+	event.h
 	equipment.c
 	equipment.h
 	errorhelper.c

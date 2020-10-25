@@ -20,6 +20,7 @@
 
 #include "ssrf.h"
 #include "dive.h"
+#include "event.h"
 #include "display.h"
 #include "profile.h"
 #include "gaspressures.h"

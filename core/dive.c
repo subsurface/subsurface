@@ -13,6 +13,7 @@
 #include "divelist.h"
 #include "divesite.h"
 #include "errorhelper.h"
+#include "event.h"
 #include "qthelper.h"
 #include "membuffer.h"
 #include "picture.h"
@@ -20,7 +21,6 @@
 #include "trip.h"
 #include "structured_list.h"
 #include "fulltext.h"
-
 
 /* one could argue about the best place to have this variable -
  * it's used in the UI, but it seems to make the most sense to have it
@@ -123,58 +123,6 @@ int legacy_format_o2pressures(const struct dive *dive, const struct divecomputer
 	return o2sensor < 0 ? 256 : o2sensor;
 }
 
-int event_is_gaschange(const struct event *ev)
-{
-	return ev->type == SAMPLE_EVENT_GASCHANGE ||
-		ev->type == SAMPLE_EVENT_GASCHANGE2;
-}
-
-bool event_is_divemodechange(const struct event *ev)
-{
-	return same_string(ev->name, "modechange");
-}
-
-struct event *create_event(unsigned int time, int type, int flags, int value, const char *name)
-{
-	int gas_index = -1;
-	struct event *ev;
-	unsigned int size, len = strlen(name);
-
-	size = sizeof(*ev) + len + 1;
-	ev = malloc(size);
-	if (!ev)
-		return NULL;
-	memset(ev, 0, size);
-	memcpy(ev->name, name, len);
-	ev->time.seconds = time;
-	ev->type = type;
-	ev->flags = flags;
-	ev->value = value;
-
-	/*
-	 * Expand the events into a sane format. Currently
-	 * just gas switches
-	 */
-	switch (type) {
-	case SAMPLE_EVENT_GASCHANGE2:
-		/* High 16 bits are He percentage */
-		ev->gas.mix.he.permille = (value >> 16) * 10;
-
-		/* Extension to the GASCHANGE2 format: cylinder index in 'flags' */
-		/* TODO: verify that gas_index < num_cylinders. */
-		if (flags > 0)
-			gas_index = flags-1;
-	/* Fallthrough */
-	case SAMPLE_EVENT_GASCHANGE:
-		/* Low 16 bits are O2 percentage */
-		ev->gas.mix.o2.permille = (value & 0xffff) * 10;
-		ev->gas.index = gas_index;
-		break;
-	}
-
-	return ev;
-}
-
 /* warning: does not test idx for validity */
 struct event *create_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx)
 {
@@ -193,11 +141,6 @@ struct event *create_gas_switch_event(struct dive *dive, struct divecomputer *dc
 	ev->gas.index = idx;
 	ev->gas.mix = mix;
 	return ev;
-}
-
-struct event *clone_event_rename(const struct event *ev, const char *name)
-{
-	return create_event(ev->time.seconds, ev->type, ev->flags, ev->value, name);
 }
 
 void add_event_to_dc(struct divecomputer *dc, struct event *ev)
@@ -251,19 +194,6 @@ void swap_event(struct divecomputer *dc, struct event *from, struct event *to)
 			break;
 		}
 	}
-}
-
-bool same_event(const struct event *a, const struct event *b)
-{
-	if (a->time.seconds != b->time.seconds)
-		return 0;
-	if (a->type != b->type)
-		return 0;
-	if (a->flags != b->flags)
-		return 0;
-	if (a->value != b->value)
-		return 0;
-	return !strcmp(a->name, b->name);
 }
 
 /* Remove given event from dive computer. Does *not* free the event. */
@@ -545,22 +475,6 @@ void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_compo
 		copy_weights(&s->weightsystems, &d->weightsystems);
 }
 #undef CONDITIONAL_COPY_STRING
-
-struct event *clone_event(const struct event *src_ev)
-{
-	struct event *ev;
-	if (!src_ev)
-		return NULL;
-
-	size_t size = sizeof(*src_ev) + strlen(src_ev->name) + 1;
-	ev = (struct event*) malloc(size);
-	if (!ev)
-		exit(1);
-	memcpy(ev, src_ev, size);
-	ev->next = NULL;
-
-	return ev;
-}
 
 /* copies all events in this dive computer */
 void copy_events(const struct divecomputer *s, struct divecomputer *d)
@@ -2809,15 +2723,6 @@ struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded
 	res = merge_dives(a, b, 0, prefer_downloaded, NULL, &site);
 	res->dive_site = site; /* Caller has to call add_dive_to_dive_site()! */
 	return res;
-}
-
-void free_events(struct event *ev)
-{
-	while (ev) {
-		struct event *next = ev->next;
-		free(ev);
-		ev = next;
-	}
 }
 
 static void free_extra_data(struct extra_data *ed)

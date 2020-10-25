@@ -9,9 +9,10 @@
 #include <assert.h>
 
 #include "dive.h"
-#include "subsurface-string.h"
 #include "display.h"
 #include "divelist.h"
+#include "event.h"
+#include "subsurface-string.h"
 
 #include "profile.h"
 #include "gaspressures.h"
@@ -113,41 +114,6 @@ int get_maxdepth(const struct plot_info *pi)
 	}
 	md += lrint(pi->maxpp * 9000);
 	return md;
-}
-
-/* collect all event names and whether we display them */
-struct ev_select *ev_namelist;
-int evn_allocated;
-int evn_used;
-
-void clear_events(void)
-{
-	for (int i = 0; i < evn_used; i++)
-		free(ev_namelist[i].ev_name);
-	evn_used = 0;
-}
-
-void remember_event(const char *eventname)
-{
-	int i = 0, len;
-
-	if (!eventname || (len = strlen(eventname)) == 0)
-		return;
-	while (i < evn_used) {
-		if (!strncmp(eventname, ev_namelist[i].ev_name, len))
-			return;
-		i++;
-	}
-	if (evn_used == evn_allocated) {
-		evn_allocated += 10;
-		ev_namelist = realloc(ev_namelist, evn_allocated * sizeof(struct ev_select));
-		if (!ev_namelist)
-			/* we are screwed, but let's just bail out */
-			return;
-	}
-	ev_namelist[evn_used].ev_name = strdup(eventname);
-	ev_namelist[evn_used].plot_ev = true;
-	evn_used++;
 }
 
 /* UNUSED! */
