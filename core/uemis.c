@@ -14,6 +14,7 @@
 
 #include "uemis.h"
 #include "divesite.h"
+#include "sample.h"
 #include <libdivecomputer/parser.h>
 #include <libdivecomputer/version.h>
 

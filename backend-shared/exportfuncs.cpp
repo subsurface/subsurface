@@ -13,6 +13,7 @@
 #include "core/divefilter.h"
 #include "core/divesite.h"
 #include "core/picture.h"
+#include "core/sample.h"
 #include "exportfuncs.h"
 
 #if !defined(SUBSURFACE_MOBILE)

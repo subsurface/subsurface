@@ -7,6 +7,7 @@
 #include "qt-models/models.h"
 #include "core/device.h"
 #include "core/qthelper.h"
+#include "core/sample.h"
 #include "core/settings/qPrefDivePlanner.h"
 #include "core/settings/qPrefUnit.h"
 #if !defined(SUBSURFACE_TESTING)

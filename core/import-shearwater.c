@@ -6,6 +6,7 @@
 
 #include "ssrf.h"
 #include "dive.h"
+#include "sample.h"
 #include "subsurface-string.h"
 #include "parse.h"
 #include "divelist.h"

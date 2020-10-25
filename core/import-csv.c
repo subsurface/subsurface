@@ -2,13 +2,14 @@
 #include <errno.h>
 #include <libdivecomputer/parser.h>
 
+#include "dive.h"
 #include "errorhelper.h"
 #include "ssrf.h"
 #include "subsurface-string.h"
 #include "divelist.h"
 #include "file.h"
 #include "parse.h"
-#include "subsurface-time.h"
+#include "sample.h"
 #include "divelist.h"
 #include "gettext.h"
 #include "import-csv.h"

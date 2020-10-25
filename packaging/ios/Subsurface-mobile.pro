@@ -55,6 +55,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/profile.c \
 	../../core/device.cpp \
 	../../core/dive.c \
+	../../core/divecomputer.c \
 	../../core/divefilter.cpp \
 	../../core/event.c \
 	../../core/filterconstraint.cpp \
@@ -69,6 +70,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/parse.c \
 	../../core/picture.c \
 	../../core/pictureobj.cpp \
+	../../core/sample.c \
 	../../core/import-suunto.c \
 	../../core/import-shearwater.c \
 	../../core/import-seac.c \
@@ -205,7 +207,9 @@ HEADERS += \
 	../../core/device.h \
 	../../core/devicedetails.h \
 	../../core/dive.h \
+	../../core/divecomputer.h \
 	../../core/event.h \
+	../../core/extradata.h \
 	../../core/git-access.h \
 	../../core/gpslocation.h \
 	../../core/imagedownloader.h \
@@ -242,6 +246,7 @@ HEADERS += \
 	../../core/membuffer.h \
 	../../core/metrics.h \
 	../../core/qt-gui.h \
+	../../core/sample.h \
 	../../core/selection.h \
 	../../core/sha1.h \
 	../../core/strndup.h \

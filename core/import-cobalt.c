@@ -5,10 +5,12 @@
 #endif
 
 #include "ssrf.h"
+#include "dive.h"
 #include "divesite.h"
 #include "gas.h"
-#include "subsurface-string.h"
 #include "parse.h"
+#include "sample.h"
+#include "subsurface-string.h"
 #include "divelist.h"
 #include "device.h"
 #include "membuffer.h"
