@@ -107,7 +107,7 @@ void DiveHandler::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	emit released();
 }
 
-DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f)
+DivePlannerWidget::DivePlannerWidget(QWidget *parent) : QWidget(parent, QFlag(0))
 {
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	CylindersModel *cylinders = DivePlannerPointsModel::instance()->cylindersModel();
@@ -214,7 +214,7 @@ void DivePlannerWidget::setSalinity(int salinity)
 			break;
 		}
 	}
-	
+
 	if (!mapped) {
 		/* Assign to last element "custom" in combo box */
 		ui.waterType->setItemData(ui.waterType->count()-1, salinity);
@@ -425,7 +425,7 @@ void DivePlannerWidget::printDecoPlan()
 	MainWindow::instance()->printPlan();
 }
 
-PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f)
+PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent) : QWidget(parent, QFlag(0))
 {
 	ui.setupUi(this);
 

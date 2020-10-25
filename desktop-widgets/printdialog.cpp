@@ -17,8 +17,8 @@
 
 template_options::color_palette_struct ssrf_colors, almond_colors, blueshades_colors, custom_colors;
 
-PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) :
-	QDialog(parent, f),
+PrintDialog::PrintDialog(QWidget *parent) :
+	QDialog(parent, QFlag(0)),
 	printer(NULL),
 	qprinter(NULL)
 {

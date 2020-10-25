@@ -16,7 +16,7 @@ class QHttpMultiPart;
 class WebServices : public QDialog {
 	Q_OBJECT
 public:
-	explicit WebServices(QWidget *parent = 0, Qt::WindowFlags f = 0);
+	explicit WebServices(QWidget *parent = 0);
 	void hidePassword();
 	void hideUpload();
 	void hideDownload();
@@ -66,7 +66,7 @@ slots:
 	void uploadStatus(const QString &text);
 
 private:
-	explicit DivelogsDeWebServices(QWidget *parent = 0, Qt::WindowFlags f = 0);
+	explicit DivelogsDeWebServices(QWidget *parent = 0);
 	void setStatusText(int status);
 	void download_dialog_traverse_xml(xmlNodePtr node, unsigned int *download_status);
 	unsigned int download_dialog_parse_response(const QByteArray &length);

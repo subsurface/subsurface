@@ -39,7 +39,7 @@
 #define PATH_MAX 4096
 #endif
 
-WebServices::WebServices(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f), reply(0)
+WebServices::WebServices(QWidget *parent) : QDialog(parent, QFlag(0)), reply(0)
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
@@ -252,7 +252,7 @@ void DivelogsDeWebServices::prepareDivesForUpload(bool selected)
 	exec();
 }
 
-DivelogsDeWebServices::DivelogsDeWebServices(QWidget *parent, Qt::WindowFlags f) : WebServices(parent, f),
+DivelogsDeWebServices::DivelogsDeWebServices(QWidget *parent) : WebServices(parent),
 	uploadMode(false)
 {
 	// should DivelogDE user and pass be stored in the prefs struct or something?

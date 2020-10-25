@@ -5,7 +5,7 @@
 #include <QUrl>
 #include <QShortcut>
 
-SubsurfaceAbout::SubsurfaceAbout(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
+SubsurfaceAbout::SubsurfaceAbout(QWidget *parent) : QDialog(parent, QFlag(0))
 {
 	ui.setupUi(this);
 
