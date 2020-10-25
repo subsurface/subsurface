@@ -34,7 +34,7 @@ void PreferencesMedia::checkFfmpegExecutable()
 	// Try to execute ffmpeg. But wait at most 2 sec for startup and execution
 	// so that the UI doesn't hang unnecessarily.
 	QProcess ffmpeg;
-	ffmpeg.start(s);
+	ffmpeg.start(s, QStringList());
 	if (!ffmpeg.waitForStarted(2000) || !ffmpeg.waitForFinished(3000))
 		QMessageBox::warning(this, tr("Warning"), tr("Couldn't execute ffmpeg at given location. Thumbnailing will not work."));
 }
