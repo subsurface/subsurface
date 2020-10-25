@@ -17,6 +17,7 @@
 #include <QMessageBox>
 #include <QHeaderView>
 #include "commands/command.h"
+#include "commands/command_base.h"
 #include "core/errorhelper.h"
 #include "core/qthelper.h"
 #include "core/trip.h"
@@ -645,7 +646,7 @@ void DiveListView::addDivesToTrip()
 	std::vector<dive *> dives = getDiveSelection();
 	if (!t || dives.empty())
 		return;
-	Command::addDivesToTrip(QVector<dive *>::fromStdVector(dives), t);
+	Command::addDivesToTrip(stdToQt<dive *>(dives), t);
 }
 
 void DiveListView::renumberDives()
@@ -734,8 +735,8 @@ void DiveListView::addToTrip(int delta)
 	if (!trip || !d)
 		// no dive, no trip? get me out of here
 		return;
-
-	Command::addDivesToTrip(QVector<dive *>::fromStdVector(getDiveSelection()), trip);
+	std::vector<dive *> dives = getDiveSelection();
+	Command::addDivesToTrip(stdToQt<dive *>(dives), trip);
 }
 
 void DiveListView::markDiveInvalid()
@@ -753,8 +754,7 @@ void DiveListView::deleteDive()
 	struct dive *d = contextMenuIndex.data(DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
 	if (!d)
 		return;
-
-	Command::deleteDive(QVector<dive *>::fromStdVector(getDiveSelection()));
+	Command::deleteDive(stdToQt<dive *>(getDiveSelection()));
 }
 
 void DiveListView::contextMenuEvent(QContextMenuEvent *event)
