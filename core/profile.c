@@ -12,6 +12,7 @@
 #include "display.h"
 #include "divelist.h"
 #include "event.h"
+#include "sample.h"
 #include "subsurface-string.h"
 
 #include "profile.h"

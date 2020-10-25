@@ -9,6 +9,7 @@
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
 #include "core/membuffer.h"
+#include "core/sample.h"
 #include "core/subsurface-string.h"
 
 #define DEPTH_NOT_FOUND (-2342)

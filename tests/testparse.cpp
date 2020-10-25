@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testparse.h"
 #include "core/device.h"
+#include "core/dive.h"
 #include "core/divesite.h"
 #include "core/errorhelper.h"
 #include "core/trip.h"

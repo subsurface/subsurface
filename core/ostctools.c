@@ -8,6 +8,7 @@
 #include "subsurface-string.h"
 #include "gettext.h"
 #include "dive.h"
+#include "extradata.h"
 #include "file.h"
 #include "libdivecomputer.h"
 

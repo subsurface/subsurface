@@ -13,6 +13,7 @@
 #include "event.h"
 #include "file.h"
 #include "picture.h"
+#include "sample.h"
 #include "tag.h"
 #include "subsurface-time.h"
 #include "trip.h"

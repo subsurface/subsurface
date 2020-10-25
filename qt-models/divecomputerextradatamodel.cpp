@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/divecomputerextradatamodel.h"
-#include "core/dive.h"
+#include "core/divecomputer.h"
+#include "core/extradata.h"
 #include "core/metrics.h"
-
 
 ExtraDataModel::ExtraDataModel(QObject *parent) : CleanerTableModel(parent)
 {

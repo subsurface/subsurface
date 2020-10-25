@@ -12,6 +12,7 @@
 #include "ssrf.h"
 #include "dive.h"
 #include "divelist.h" // for init_decompression()
+#include "sample.h"
 #include "subsurface-string.h"
 #include "deco.h"
 #include "errorhelper.h"

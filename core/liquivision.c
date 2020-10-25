@@ -5,6 +5,7 @@
 #include "divesite.h"
 #include "dive.h"
 #include "file.h"
+#include "sample.h"
 #include "strndup.h"
 
 // Convert bytes into an INT

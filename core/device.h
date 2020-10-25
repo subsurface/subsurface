@@ -16,7 +16,6 @@ struct dive_table;
 // global device table
 extern struct device_table device_table;
 
-extern void fake_dc(struct divecomputer *dc);
 extern void set_dc_deviceid(struct divecomputer *dc, unsigned int deviceid, const struct device_table *table);
 
 extern void add_devices_of_dive(const struct dive *dive, struct device_table *table);

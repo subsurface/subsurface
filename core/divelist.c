@@ -15,6 +15,7 @@
 #include "gettext.h"
 #include "git-access.h"
 #include "selection.h"
+#include "sample.h"
 #include "table.h"
 #include "trip.h"
 

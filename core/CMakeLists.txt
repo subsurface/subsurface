@@ -64,6 +64,9 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	display.h
 	dive.c
 	dive.h
+	divecomputer.c
+	divecomputer.h
+	dive.h
 	divefilter.cpp
 	divefilter.h
 	divelist.c
@@ -84,6 +87,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	errorhelper.c
 	exif.cpp
 	exif.h
+	extradata.h
 	file.c
 	file.h
 	filterconstraint.cpp
@@ -144,6 +148,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	qt-init.cpp
 	qthelper.cpp
 	qthelper.h
+	sample.c
+	sample.h
 	save-git.c
 	save-html.c
 	save-html.h

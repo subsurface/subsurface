@@ -21,6 +21,7 @@
 
 #include "gettext.h"
 
+#include "dive.h"
 #include "divesite.h"
 #include "errorhelper.h"
 #include "subsurface-string.h"
@@ -31,6 +32,7 @@
 #include "membuffer.h"
 #include "picture.h"
 #include "qthelper.h"
+#include "sample.h"
 #include "tag.h"
 #include "xmlparams.h"
 

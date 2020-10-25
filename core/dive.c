@@ -14,9 +14,11 @@
 #include "divesite.h"
 #include "errorhelper.h"
 #include "event.h"
+#include "extradata.h"
 #include "qthelper.h"
 #include "membuffer.h"
 #include "picture.h"
+#include "sample.h"
 #include "tag.h"
 #include "trip.h"
 #include "structured_list.h"
@@ -39,47 +41,6 @@ const char *divemode_text_ui[] = {
 const char *divemode_text[] = {"OC", "CCR", "PSCR", "Freedive"};
 
 static int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int salinity);
-
-/*
- * Adding a cylinder pressure sample field is not quite as trivial as it
- * perhaps should be.
- *
- * We try to keep the same sensor index for the same sensor, so that even
- * if the dive computer doesn't give pressure information for every sample,
- * we don't move pressure information around between the different sensor
- * indices.
- *
- * The "prepare_sample()" function will always copy the sensor indices
- * from the previous sample, so the indices are pre-populated (but the
- * pressures obviously are not)
- */
-void add_sample_pressure(struct sample *sample, int sensor, int mbar)
-{
-	int idx;
-
-	if (!mbar)
-		return;
-
-	/* Do we already have a slot for this sensor */
-	for (idx = 0; idx < MAX_SENSORS; idx++) {
-		if (sensor != sample->sensor[idx])
-			continue;
-		sample->pressure[idx].mbar = mbar;
-		return;
-	}
-
-	/* Pick the first unused index if we couldn't reuse one */
-	for (idx = 0; idx < MAX_SENSORS; idx++) {
-		if (sample->pressure[idx].mbar)
-			continue;
-		sample->sensor[idx] = sensor;
-		sample->pressure[idx].mbar = mbar;
-		return;
-	}
-
-	/* We do not have enough slots for the pressure samples. */
-	/* Should we warn the user about dropping pressure data? */
-}
 
 /*
  * The legacy format for sample pressures has a single pressure
@@ -143,32 +104,6 @@ struct event *create_gas_switch_event(struct dive *dive, struct divecomputer *dc
 	return ev;
 }
 
-void add_event_to_dc(struct divecomputer *dc, struct event *ev)
-{
-	struct event **p;
-
-	p = &dc->events;
-
-	/* insert in the sorted list of events */
-	while (*p && (*p)->time.seconds <= ev->time.seconds)
-		p = &(*p)->next;
-	ev->next = *p;
-	*p = ev;
-}
-
-struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name)
-{
-	struct event *ev = create_event(time, type, flags, value, name);
-
-	if (!ev)
-		return NULL;
-
-	add_event_to_dc(dc, ev);
-
-	remember_event(name);
-	return ev;
-}
-
 void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx)
 {
 	/* sanity check so we don't crash */
@@ -181,31 +116,6 @@ void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int second
 	}
 	struct event *ev = create_gas_switch_event(dive, dc, seconds, idx);
 	add_event_to_dc(dc, ev);
-}
-
-/* Substitutes an event in a divecomputer for another. No reordering is performed! */
-void swap_event(struct divecomputer *dc, struct event *from, struct event *to)
-{
-	for (struct event **ep = &dc->events; *ep; ep = &(*ep)->next) {
-		if (*ep == from) {
-			to->next = from->next;
-			*ep = to;
-			from->next = NULL; // For good measure.
-			break;
-		}
-	}
-}
-
-/* Remove given event from dive computer. Does *not* free the event. */
-void remove_event_from_dc(struct divecomputer *dc, struct event *event)
-{
-	for (struct event **ep = &dc->events; *ep; ep = &(*ep)->next) {
-		if (*ep == event) {
-			*ep = event->next;
-			event->next = NULL; // For good measure.
-			break;
-		}
-	}
 }
 
 /* since the name is an array as part of the structure (how silly is that?) we
@@ -230,43 +140,6 @@ void update_event_name(struct dive *d, struct event *event, const char *name)
 	add_event(dc, event->time.seconds, event->type, event->flags, event->value, name);
 	free(remove);
 	invalidate_dive_cache(d);
-}
-
-void add_extra_data(struct divecomputer *dc, const char *key, const char *value)
-{
-	struct extra_data **ed = &dc->extra_data;
-
-	while (*ed)
-		ed = &(*ed)->next;
-	*ed = malloc(sizeof(struct extra_data));
-	if (*ed) {
-		(*ed)->key = strdup(key);
-		(*ed)->value = strdup(value);
-		(*ed)->next = NULL;
-	}
-}
-
-/* Find the divemode at time 'time' (in seconds) into the dive. Sequentially step through the divemode-change events,
- * saving the dive mode for each event. When the events occur AFTER 'time' seconds, the last stored divemode
- * is returned. This function is self-tracking, relying on setting the event pointer 'evp' so that, in each iteration
- * that calls this function, the search does not have to begin at the first event of the dive */
-enum divemode_t get_current_divemode(const struct divecomputer *dc, int time, const struct event **evp, enum divemode_t *divemode)
-{
-	const struct event *ev = *evp;
-	if (dc) {
-		if (*divemode == UNDEF_COMP_TYPE) {
-			*divemode = dc->divemode;
-			ev = get_next_event(dc->events, "modechange");
-		}
-	} else {
-		ev = NULL;
-	}
-	while (ev && ev->time.seconds < time) {
-		*divemode = (enum divemode_t) ev->value;
-		ev = get_next_event(ev->next, "modechange");
-	}
-	*evp = ev;
-	return *divemode;
 }
 
 struct gasmix get_gasmix_from_event(const struct dive *dive, const struct event *ev)
@@ -303,9 +176,6 @@ struct dive *alloc_dive(void)
 	dive->id = dive_getUniqID();
 	return dive;
 }
-
-static void free_dc(struct divecomputer *dc);
-static void free_dc_contents(struct divecomputer *dc);
 
 /* copy an element in a list of dive computer extra data */
 static void copy_extra_data(struct extra_data *sed, struct extra_data *ded)
@@ -344,14 +214,6 @@ static void copy_dc_renumber(struct dive *d, const struct divecomputer *sdc, str
 		ddc = ddc->next;
 	}
 	ddc->next = NULL;
-}
-
-/* The first divecomputer is embedded in the dive structure. Free its data but not
- * the structure itself. For all remainding dcs in the list, free data *and* structures. */
-void free_dive_dcs(struct divecomputer *dc)
-{
-	free_dc_contents(dc);
-	STRUCTURED_LIST_FREE(struct divecomputer, dc->next, free_dc);
 }
 
 static void free_dive_structures(struct dive *d)
@@ -476,24 +338,6 @@ void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_compo
 }
 #undef CONDITIONAL_COPY_STRING
 
-/* copies all events in this dive computer */
-void copy_events(const struct divecomputer *s, struct divecomputer *d)
-{
-	const struct event *ev;
-	struct event **pev;
-	if (!s || !d)
-		return;
-	ev = s->events;
-	pev = &d->events;
-	while (ev != NULL) {
-		struct event *new_ev = clone_event(ev);
-		*pev = new_ev;
-		pev = &new_ev->next;
-		ev = ev->next;
-	}
-	*pev = NULL;
-}
-
 /* copies all events from all dive computers before a given time
    this is used when editing a dive in the planner to preserve the events
    of the old dive */
@@ -542,81 +386,6 @@ void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_only)
 	}
 }
 
-void copy_samples(const struct divecomputer *s, struct divecomputer *d)
-{
-	/* instead of carefully copying them one by one and calling add_sample
-	 * over and over again, let's just copy the whole blob */
-	if (!s || !d)
-		return;
-	int nr = s->samples;
-	d->samples = nr;
-	d->alloc_samples = nr;
-	// We expect to be able to read the memory in the other end of the pointer
-	// if its a valid pointer, so don't expect malloc() to return NULL for
-	// zero-sized malloc, do it ourselves.
-	d->sample = NULL;
-
-	if(!nr)
-		return;
-
-	d->sample = malloc(nr * sizeof(struct sample));
-	if (d->sample)
-		memcpy(d->sample, s->sample, nr * sizeof(struct sample));
-}
-
-/* make room for num samples; if not enough space is available, the sample
- * array is reallocated and the existing samples are copied. */
-void alloc_samples(struct divecomputer *dc, int num)
-{
-	if (num > dc->alloc_samples) {
-		dc->alloc_samples = (num * 3) / 2 + 10;
-		dc->sample = realloc(dc->sample, dc->alloc_samples * sizeof(struct sample));
-		if (!dc->sample)
-			dc->samples = dc->alloc_samples = 0;
-	}
-}
-
-void free_samples(struct divecomputer *dc)
-{
-	if (dc) {
-		free(dc->sample);
-		dc->sample = 0;
-		dc->samples = 0;
-		dc->alloc_samples = 0;
-	}
-}
-
-struct sample *prepare_sample(struct divecomputer *dc)
-{
-	if (dc) {
-		int nr = dc->samples;
-		struct sample *sample;
-		alloc_samples(dc, nr + 1);
-		if (!dc->sample)
-			return NULL;
-		sample = dc->sample + nr;
-		memset(sample, 0, sizeof(*sample));
-
-		// Copy the sensor numbers - but not the pressure values
-		// from the previous sample if any.
-		if (nr) {
-			for (int idx = 0; idx < MAX_SENSORS; idx++)
-				sample->sensor[idx] = sample[-1].sensor[idx];
-		}
-		// Init some values with -1
-		sample->bearing.degrees = -1;
-		sample->ndl.seconds = -1;
-
-		return sample;
-	}
-	return NULL;
-}
-
-void finish_sample(struct divecomputer *dc)
-{
-	dc->samples++;
-}
-
 /*
  * So when we re-calculate maxdepth and meandepth, we will
  * not override the old numbers if they are close to the
@@ -650,40 +419,6 @@ static void update_temperature(temperature_t *temperature, int new)
 
 		if (abs(old - new) > 1000)
 			temperature->mkelvin = new;
-	}
-}
-
-/*
- * Calculate how long we were actually under water, and the average
- * depth while under water.
- *
- * This ignores any surface time in the middle of the dive.
- */
-void fixup_dc_duration(struct divecomputer *dc)
-{
-	int duration, i;
-	int lasttime, lastdepth, depthtime;
-
-	duration = 0;
-	lasttime = 0;
-	lastdepth = 0;
-	depthtime = 0;
-	for (i = 0; i < dc->samples; i++) {
-		struct sample *sample = dc->sample + i;
-		int time = sample->time.seconds;
-		int depth = sample->depth.mm;
-
-		/* We ignore segments at the surface */
-		if (depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD) {
-			duration += time - lasttime;
-			depthtime += (time - lasttime) * (depth + lastdepth) / 2;
-		}
-		lastdepth = depth;
-		lasttime = time;
-	}
-	if (duration) {
-		dc->duration.seconds = duration;
-		dc->meandepth.mm = (depthtime + duration / 2) / duration;
 	}
 }
 
@@ -1129,47 +864,10 @@ static void fixup_duration(struct dive *dive)
 	dive->duration.seconds = duration.seconds;
 }
 
-/*
- * What do the dive computers say the water temperature is?
- * (not in the samples, but as dc property for dcs that support that)
- */
-unsigned int dc_watertemp(const struct divecomputer *dc)
-{
-	int sum = 0, nr = 0;
-
-	do {
-		if (dc->watertemp.mkelvin) {
-			sum += dc->watertemp.mkelvin;
-			nr++;
-		}
-	} while ((dc = dc->next) != NULL);
-	if (!nr)
-		return 0;
-	return (sum + nr / 2) / nr;
-}
-
 static void fixup_watertemp(struct dive *dive)
 {
 	if (!dive->watertemp.mkelvin)
 		dive->watertemp.mkelvin = dc_watertemp(&dive->dc);
-}
-
-/*
- * What do the dive computers say the air temperature is?
- */
-unsigned int dc_airtemp(const struct divecomputer *dc)
-{
-	int sum = 0, nr = 0;
-
-	do {
-		if (dc->airtemp.mkelvin) {
-			sum += dc->airtemp.mkelvin;
-			nr++;
-		}
-	} while ((dc = dc->next) != NULL);
-	if (!nr)
-		return 0;
-	return (sum + nr / 2) / nr;
 }
 
 static void fixup_airtemp(struct dive *dive)
@@ -1582,18 +1280,6 @@ struct dive *fixup_dive(struct dive *dive)
 #define MERGE_MIN(res, a, b, n) res->n = (a->n) ? (b->n) ? MIN(a->n, b->n) : (a->n) : (b->n)
 #define MERGE_TXT(res, a, b, n, sep) res->n = merge_text(a->n, b->n, sep)
 #define MERGE_NONZERO(res, a, b, n) res->n = a->n ? a->n : b->n
-
-struct sample *add_sample(const struct sample *sample, int time, struct divecomputer *dc)
-{
-	struct sample *p = prepare_sample(dc);
-
-	if (p) {
-		*p = *sample;
-		p->time.seconds = time;
-		finish_sample(dc);
-	}
-	return p;
-}
 
 /*
  * This is like add_sample(), but if the distance from the last sample
@@ -2538,35 +2224,6 @@ static int similar(unsigned long a, unsigned long b, unsigned long expected)
 }
 
 /*
- * Match two dive computer entries against each other, and
- * tell if it's the same dive. Return 0 if "don't know",
- * positive for "same dive" and negative for "definitely
- * not the same dive"
- */
-int match_one_dc(const struct divecomputer *a, const struct divecomputer *b)
-{
-	/* Not same model? Don't know if matching.. */
-	if (!a->model || !b->model)
-		return 0;
-	if (strcasecmp(a->model, b->model))
-		return 0;
-
-	/* Different device ID's? Don't know */
-	if (a->deviceid != b->deviceid)
-		return 0;
-
-	/* Do we have dive IDs? */
-	if (!a->diveid || !b->diveid)
-		return 0;
-
-	/*
-	 * If they have different dive ID's on the same
-	 * dive computer, that's a definite "same or not"
-	 */
-	return a->diveid == b->diveid && a->when == b->when ? 1 : -1;
-}
-
-/*
  * Match every dive computer against each other to see if
  * we have a matching dive.
  *
@@ -2678,28 +2335,6 @@ struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded
 	res = merge_dives(a, b, 0, prefer_downloaded, NULL, &site);
 	res->dive_site = site; /* Caller has to call add_dive_to_dive_site()! */
 	return res;
-}
-
-static void free_extra_data(struct extra_data *ed)
-{
-	free((void *)ed->key);
-	free((void *)ed->value);
-}
-
-static void free_dc_contents(struct divecomputer *dc)
-{
-	free(dc->sample);
-	free((void *)dc->model);
-	free((void *)dc->serial);
-	free((void *)dc->fw_version);
-	free_events(dc->events);
-	STRUCTURED_LIST_FREE(struct extra_data, dc->extra_data, free_extra_data);
-}
-
-static void free_dc(struct divecomputer *dc)
-{
-	free_dc_contents(dc);
-	free(dc);
 }
 
 static int same_sample(struct sample *a, struct sample *b)
@@ -2884,11 +2519,6 @@ static void join_dive_computers(struct dive *d, struct divecomputer *res,
 	copy_dc_renumber(d, b, tmp->next, cylinders_map_b);
 
 	remove_redundant_dc(res, prefer_downloaded);
-}
-
-bool is_dc_planner(const struct divecomputer *dc)
-{
-	return same_string(dc->model, "planned dive");
 }
 
 // Does this dive have a dive computer for which is_dc_planner has value planned
@@ -3484,20 +3114,6 @@ void split_divecomputer(const struct dive *src, int num, struct dive **out1, str
 	} else {
 		*out1 = *out2 = NULL;
 	}
-}
-
-/* helper function to make it easier to work with our structures
- * we don't interpolate here, just use the value from the last sample up to that time */
-int get_depth_at_time(const struct divecomputer *dc, unsigned int time)
-{
-	int depth = 0;
-	if (dc && dc->sample)
-		for (int i = 0; i < dc->samples; i++) {
-			if (dc->sample[i].time.seconds > time)
-				break;
-			depth = dc->sample[i].depth.mm;
-		}
-	return depth;
 }
 
 //Calculate O2 in best mix

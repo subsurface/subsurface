@@ -5,11 +5,13 @@
 #define MAX_EVENT_NAME 128
 
 #include "event.h"
-#include "picture.h"
-#include "dive.h" // for "struct extra_data"
+#include "equipment.h" // for cylinder_t
+#include "extradata.h"
 #include "filterpreset.h"
+#include "picture.h"
 
 #include <sqlite3.h>
+#include <time.h>
 
 struct xml_params;
 

@@ -13,6 +13,7 @@
 #include "dive.h"
 #include "display.h"
 #include "event.h"
+#include "sample.h"
 #include "subsurface-time.h"
 #include "trip.h"
 #include "statistics.h"

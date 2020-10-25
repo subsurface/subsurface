@@ -7,10 +7,12 @@
 #include <unistd.h>
 #include <libdivecomputer/parser.h>
 
+#include "parse.h"
+#include "dive.h"
 #include "divesite.h"
 #include "errorhelper.h"
+#include "sample.h"
 #include "subsurface-string.h"
-#include "parse.h"
 #include "picture.h"
 #include "trip.h"
 #include "device.h"
