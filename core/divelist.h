@@ -70,6 +70,8 @@ int get_dive_id_closest_to(timestamp_t when);
 void clear_dive_file_data();
 void clear_dive_table(struct dive_table *table);
 void move_dive_table(struct dive_table *src, struct dive_table *dst);
+struct dive *unregister_dive(int idx);
+extern void delete_single_dive(int idx);
 
 #ifdef __cplusplus
 }

@@ -127,9 +127,6 @@ extern depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, 
 
 extern bool autogroup;
 
-struct dive *unregister_dive(int idx);
-extern void delete_single_dive(int idx);
-
 extern int quit, force_root, ignore_bt;
 #ifdef SUBSURFACE_MOBILE_DESKTOP
 extern char *testqml;
