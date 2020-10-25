@@ -16,6 +16,8 @@
 #define STATS_MAX_TEMP 40		/* Max temp for stats bucket is 40C */
 #define STATS_TEMP_BUCKET 5 /* Size of buckets for temp range */
 
+struct dive;
+
 typedef struct
 {
 	int period;

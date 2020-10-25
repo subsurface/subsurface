@@ -26,6 +26,8 @@
 #include "gaspressures.h"
 #include "pref.h"
 
+#include <stdlib.h>
+
 /*
  * simple structure to track the beginning and end tank pressure as
  * well as the integral of depth over time spent while we have no
