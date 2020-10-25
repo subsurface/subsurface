@@ -602,9 +602,11 @@ static int wlog_header_parser (struct memblock *mem)
 	}
 }
 
+#define NOTES_LENGTH 256
+#define SUIT_LENGTH 26
 static void wlog_compl_parser(struct memblock *wl_mem, struct dive *dt_dive, int dcount)
 {
-	int strlong = 256, tmp = 0, offset = 12 + (dcount * 850),
+	int tmp = 0, offset = 12 + (dcount * 850),
 	    pos_weight =  offset + 256,
 	    pos_viz = offset + 258,
 	    pos_tank_init = offset + 266,
@@ -616,9 +618,10 @@ static void wlog_compl_parser(struct memblock *wl_mem, struct dive *dt_dive, int
 	 * Extended notes string. Fixed length 256 bytes. 0 padded if not complete
 	 */
 	if (*(runner + offset)) {
-		wlog_notes = calloc(strlong + 1, 1);
-		wlog_notes = memcpy(wlog_notes, runner + offset, 256);
-		wlog_notes = to_utf8((unsigned char *) wlog_notes);
+		char wlog_notes_temp[NOTES_LENGTH + 1];
+		wlog_notes_temp[NOTES_LENGTH] = 0;
+		(void)memcpy(wlog_notes_temp, runner + offset, NOTES_LENGTH);
+		wlog_notes = to_utf8((unsigned char *) wlog_notes_temp);
 	}
 	if (dt_dive->notes && wlog_notes) {
 		buffer = calloc (strlen(dt_dive->notes) + strlen(wlog_notes) + 1, 1);
@@ -664,11 +667,11 @@ static void wlog_compl_parser(struct memblock *wl_mem, struct dive *dt_dive, int
 	 * Dive suit, fixed length of 26 bytes, zero padded if shorter.
 	 * Expected to be preferred by the user if he did the work of setting it.
 	 */
-	strlong = 26;
 	if (*(runner + pos_suit)) {
-		wlog_suit = calloc(strlong, 1);
-		wlog_suit = memcpy(wlog_suit, runner + pos_suit, strlong);
-		wlog_suit = to_utf8((unsigned char *) wlog_suit);
+		char wlog_suit_temp[SUIT_LENGTH + 1];
+		wlog_suit_temp[SUIT_LENGTH] = 0;
+		(void)memcpy(wlog_suit_temp, runner + pos_suit, SUIT_LENGTH);
+		wlog_suit = to_utf8((unsigned char *) wlog_suit_temp);
 	}
 	if (wlog_suit)
 		dt_dive->suit = copy_string(wlog_suit);
