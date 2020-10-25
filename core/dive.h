@@ -17,7 +17,6 @@ extern "C" {
 
 extern int last_xml_version;
 
-extern const char *cylinderuse_text[NUM_GAS_USE];
 extern const char *divemode_text_ui[];
 extern const char *divemode_text[];
 

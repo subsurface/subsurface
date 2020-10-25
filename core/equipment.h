@@ -11,6 +11,7 @@ extern "C" {
 struct dive;
 
 enum cylinderuse {OC_GAS, DILUENT, OXYGEN, NOT_USED, NUM_GAS_USE}; // The different uses for cylinders
+extern const char *cylinderuse_text[NUM_GAS_USE];
 
 typedef struct
 {
