@@ -301,10 +301,10 @@ add_subdirectory(profile-widget)
 add_subdirectory(map-widget)
 add_subdirectory(mobile-widgets)
 add_subdirectory(backend-shared)
-add_subdirectory(stats-widget)
 
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	add_subdirectory(desktop-widgets)
+	add_subdirectory(stats-widget)
 endif()
 
 # create the executables
