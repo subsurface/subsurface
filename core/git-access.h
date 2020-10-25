@@ -5,6 +5,10 @@
 #include "git2.h"
 #include "filterpreset.h"
 
+struct dive_table;
+struct dive_site_table;
+struct trip_table;
+
 #ifdef __cplusplus
 extern "C" {
 #else
