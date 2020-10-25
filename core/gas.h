@@ -2,6 +2,7 @@
 #ifndef GAS_H
 #define GAS_H
 
+#include "divemode.h"
 #include "units.h"
 
 #ifdef __cplusplus
@@ -55,6 +56,7 @@ struct gas_pressures {
 extern void sanitize_gasmix(struct gasmix *mix);
 extern int gasmix_distance(struct gasmix a, struct gasmix b);
 extern fraction_t get_gas_component_fraction(struct gasmix mix, enum gas_component component);
+extern void fill_pressures(struct gas_pressures *pressures, double amb_pressure, struct gasmix mix, double po2, enum divemode_t dctype);
 
 extern bool gasmix_is_air(struct gasmix gasmix);
 
