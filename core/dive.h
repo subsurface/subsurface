@@ -260,8 +260,6 @@ extern void subsurface_console_init(void);
 extern void subsurface_console_exit(void);
 extern bool subsurface_user_is_root(void);
 
-extern timestamp_t get_times();
-
 extern struct dive *alloc_dive(void);
 extern void free_dive(struct dive *);
 extern void free_dive_dcs(struct divecomputer *dc);

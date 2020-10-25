@@ -3311,18 +3311,6 @@ bool time_during_dive_with_offset(const struct dive *dive, timestamp_t when, tim
 	return start - offset <= when && when <= end + offset;
 }
 
-timestamp_t get_times()
-{
-	int i;
-	struct dive *dive;
-
-	for_each_dive (i, dive) {
-		if (dive->selected)
-			break;
-	}
-	return dive->when;
-}
-
 /* this sets a usually unused copy of the preferences with the units
  * that were active the last time the dive list was saved to git storage
  * (this isn't used in XML files); storing the unit preferences in the

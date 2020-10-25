@@ -193,9 +193,11 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton *button)
 	}
 
 	ui.timeEdit->setTime(QTime(0, 0, 0, 0));
-	when = get_times(); //get time of first selected dive
-	ui.currentTime->setText(get_dive_date_string(when));
-	ui.shiftedTime->setText(get_dive_date_string(when));
+	dive *d = first_selected_dive();
+	if (d) {
+		ui.currentTime->setText(get_dive_date_string(d->when));
+		ui.shiftedTime->setText(get_dive_date_string(d->when));
+	}
 }
 
 void ShiftTimesDialog::changeTime()
