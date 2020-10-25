@@ -199,6 +199,7 @@ HEADERS += \
 	../../commands/command_edit_trip.h \
 	../../commands/command_filter.h \
 	../../commands/command_pictures.h \
+	../../core/interpolate.h \
 	../../core/libdivecomputer.h \
 	../../core/cloudstorage.h \
 	../../core/configuredivecomputerthreads.h \

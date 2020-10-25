@@ -17,6 +17,7 @@
 #include "deco.h"
 #include "errorhelper.h"
 #include "event.h"
+#include "interpolate.h"
 #include "planner.h"
 #include "subsurface-time.h"
 #include "gettext.h"

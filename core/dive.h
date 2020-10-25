@@ -21,17 +21,6 @@ extern const char *cylinderuse_text[NUM_GAS_USE];
 extern const char *divemode_text_ui[];
 extern const char *divemode_text[];
 
-/* Linear interpolation between 'a' and 'b', when we are 'part'way into the 'whole' distance from a to b */
-static inline int interpolate(int a, int b, int part, int whole)
-{
-	/* It is doubtful that we actually need floating point for this, but whatever */
-	if (whole) {
-		double x = (double)a * (whole - part) + (double)b * part;
-		return (int)lrint(x / whole);
-	}
-	return (a+b)/2;
-}
-
 struct dive_site;
 struct dive_site_table;
 struct dive_table;
