@@ -36,7 +36,6 @@
 #include "tag.h"
 #include "xmlparams.h"
 
-int quit, force_root;
 int last_xml_version = -1;
 
 static xmlDoc *test_xslt_transforms(xmlDoc *doc, const struct xml_params *params);

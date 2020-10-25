@@ -9,6 +9,10 @@ extern "C" {
 #endif
 
 extern bool imported;
+extern int quit, force_root, ignore_bt;
+#ifdef SUBSURFACE_MOBILE_DESKTOP
+extern char *testqml;
+#endif
 
 void setup_system_prefs(void);
 void parse_argument(const char *arg);

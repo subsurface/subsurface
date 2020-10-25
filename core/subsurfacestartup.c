@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include <string.h>
 #include "errorhelper.h"
-#include "dive.h" // for quit and force_root
 #include "gettext.h"
 #include "qthelper.h"
 #include "git-access.h"
@@ -103,7 +102,7 @@ struct preferences default_prefs = {
 	.extract_video_thumbnails_position = 20,		// The first fifth seems like a reasonable place
 };
 
-int ignore_bt;
+int quit, force_root, ignore_bt;
 #ifdef SUBSURFACE_MOBILE_DESKTOP
 char *testqml = NULL;
 #endif
