@@ -819,7 +819,7 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
 	} else if (!strcmp(tag, "altitude")) {
 		uemis_get_index(val, &dive->dc.surface_pressure.mbar);
 	} else if (!strcmp(tag, "f32Weight")) {
-		weightsystem_t ws;
+		weightsystem_t ws = empty_weightsystem;
 		uemis_get_weight(val, &ws, dive->dc.diveid);
 		add_cloned_weightsystem(&dive->weightsystems, ws);
 	} else if (!strcmp(tag, "notes")) {
