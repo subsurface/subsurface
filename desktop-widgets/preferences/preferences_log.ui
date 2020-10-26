@@ -170,37 +170,5 @@
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>velocitySlider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>velocitySpinBox</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>437</x>
-     <y>299</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>531</x>
-     <y>301</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>velocitySpinBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>velocitySlider</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>547</x>
-     <y>274</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>482</x>
-     <y>276</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
 </ui>
