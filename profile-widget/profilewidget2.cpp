@@ -1822,12 +1822,12 @@ int ProfileWidget2::fixHandlerIndex(DiveHandler *activeHandler)
 	if (index > 0 && index < handles.count() - 1) {
 		DiveHandler *before = handles[index - 1];
 		if (before->pos().x() > activeHandler->pos().x()) {
-			handles.swap(index, index - 1);
+			std::swap(handles[index], handles[index - 1]);
 			return index - 1;
 		}
 		DiveHandler *after = handles[index + 1];
 		if (after->pos().x() < activeHandler->pos().x()) {
-			handles.swap(index, index + 1);
+			std::swap(handles[index], handles[index + 1]);
 			return index + 1;
 		}
 	}
