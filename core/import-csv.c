@@ -281,7 +281,7 @@ int parse_csv_file(const char *filename, struct xml_params *params, const char *
 		   struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
 		   struct device_table *devices, struct filter_preset_table *filter_presets)
 {
-	int ret, i;
+	int ret;
 	struct memblock mem;
 	time_t now;
 	struct tm *timep = NULL;
@@ -326,7 +326,7 @@ int parse_csv_file(const char *filename, struct xml_params *params, const char *
 #ifndef SUBSURFACE_MOBILE
 	if (verbose >= 2) {
 		fprintf(stderr, "(echo '<csv>'; cat %s;echo '</csv>') | xsltproc ", filename);
-		for (i = 0; i < xml_params_count(params); i++)
+		for (int i = 0; i < xml_params_count(params); i++)
 			fprintf(stderr, "--stringparam %s %s ", xml_params_get_key(params, i), xml_params_get_value(params, i));
 		fprintf(stderr, "%s/xslt/%s -\n", SUBSURFACE_SOURCE, csvtemplate);
 	}
@@ -950,7 +950,7 @@ int parse_manual_file(const char *filename, struct xml_params *params, struct di
 	struct tm *timep;
 	char curdate[9];
 	char curtime[6];
-	int ret, i;
+	int ret;
 
 
 	time(&now);
@@ -974,7 +974,7 @@ int parse_manual_file(const char *filename, struct xml_params *params, struct di
 #ifndef SUBSURFACE_MOBILE
 	if (verbose >= 2) {
 		fprintf(stderr, "(echo '<manualCSV>'; cat %s;echo '</manualCSV>') | xsltproc ", filename);
-		for (i = 0; i < xml_params_count(params); i++)
+		for (int i = 0; i < xml_params_count(params); i++)
 			fprintf(stderr, "--stringparam %s %s ", xml_params_get_key(params, i), xml_params_get_value(params, i));
 		fprintf(stderr, "%s/xslt/manualcsv2xml.xslt -\n", SUBSURFACE_SOURCE);
 	}
