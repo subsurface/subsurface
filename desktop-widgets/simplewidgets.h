@@ -6,12 +6,14 @@ class MinMaxAvgWidgetPrivate;
 class QAbstractButton;
 class QNetworkReply;
 class FilterModelBase;
+struct dive;
+struct dive_components;
 
+#include "core/units.h"
 #include <QWidget>
 #include <QGroupBox>
 #include <QDialog>
 #include <QTextEdit>
-#include <stdint.h>
 
 #include "ui_renumber.h"
 #include "ui_setpoint.h"
@@ -21,9 +23,6 @@ class FilterModelBase;
 #include "ui_divecomponentselection.h"
 #include "ui_listfilter.h"
 #include "ui_addfilterpreset.h"
-#include "core/exif.h"
-#include "core/dive.h"
-
 
 class MinMaxAvgWidget : public QWidget {
 	Q_OBJECT
