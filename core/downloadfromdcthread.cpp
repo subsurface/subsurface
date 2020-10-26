@@ -18,7 +18,7 @@ static QString str_error(const char *fmt, ...)
 {
 	va_list args;
 	va_start(args, fmt);
-	const QString str = QString().vsprintf(fmt, args);
+	const QString str = QString().vasprintf(fmt, args);
 	va_end(args);
 
 	return str;
