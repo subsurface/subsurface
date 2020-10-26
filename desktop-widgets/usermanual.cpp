@@ -97,7 +97,7 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 	setLayout(vboxLayout);
 }
 
-void UserManual::search(QString text, QWebPage::FindFlags flags = 0)
+void UserManual::search(QString text, QWebPage::FindFlags flags = QFlag(0))
 {
 	if (userManual->findText(text, QWebPage::FindWrapsAroundDocument | flags) || text.length() == 0) {
 		searchBar->setStyleSheet("");
