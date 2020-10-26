@@ -113,7 +113,11 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	comboDelegate->view()->installEventFilter(const_cast<QObject *>(qobject_cast<const QObject *>(this)));
 	QAbstractItemView *comboPopup = comboDelegate->lineEdit()->completer()->popup();
 	comboPopup->setMouseTracking(true);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+	connect(comboDelegate, &QComboBox::textHighlighted, this, &ComboBoxDelegate::testActivationString);
+#else
 	connect(comboDelegate, QOverload<const QString &>::of(&QComboBox::highlighted), this, &ComboBoxDelegate::testActivationString);
+#endif
 	connect(comboDelegate, QOverload<int>::of(&QComboBox::activated), this, &ComboBoxDelegate::fakeActivation);
 	connect(comboPopup, &QAbstractItemView::entered, this, &ComboBoxDelegate::testActivationIndex);
 	connect(comboPopup, &QAbstractItemView::activated, this, &ComboBoxDelegate::fakeActivation);
