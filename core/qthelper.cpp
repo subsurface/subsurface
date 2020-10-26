@@ -1260,9 +1260,15 @@ QString get_taglist_string(struct tag_entry *tag_list)
 	return ret;
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+#define SKIP_EMPTY Qt::SkipEmptyParts
+#else
+#define SKIP_EMPTY QString::SkipEmptyParts
+#endif
+
 QStringList stringToList(const QString &s)
 {
-	QStringList res = s.split(",", QString::SkipEmptyParts);
+	QStringList res = s.split(",", SKIP_EMPTY);
 	for (QString &str: res)
 		str = str.trimmed();
 	return res;

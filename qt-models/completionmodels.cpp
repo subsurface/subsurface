@@ -22,6 +22,12 @@
 		setStringList(list);                           \
 	}
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+#define SKIP_EMPTY Qt::SkipEmptyParts
+#else
+#define SKIP_EMPTY QString::SkipEmptyParts
+#endif
+
 #define CREATE_CSV_UPDATE_METHOD(Class, diveStructMember)                                        \
 	void Class::updateModel()                                                                \
 	{                                                                                        \
@@ -31,7 +37,7 @@
 		for_each_dive (i, dive)                                                          \
 		{                                                                                \
 			QString buddy(dive->diveStructMember);                                   \
-			foreach (const QString &value, buddy.split(",", QString::SkipEmptyParts)) \
+			foreach (const QString &value, buddy.split(",", SKIP_EMPTY))             \
 			{                                                                        \
 				set.insert(value.trimmed());                                     \
 			}                                                                        \

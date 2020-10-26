@@ -25,6 +25,12 @@ enum filter_constraint_units {
 	FILTER_CONSTRAINT_PERCENTAGE_UNIT
 };
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+#define SKIP_EMPTY Qt::SkipEmptyParts
+#else
+#define SKIP_EMPTY QString::SkipEmptyParts
+#endif
+
 static struct type_description {
 	filter_constraint_type type;
 	const char *token;		// untranslated token, which will be written to the log and should not contain spaces
@@ -680,7 +686,7 @@ void filter_constraint_set_stringlist(filter_constraint &c, const QString &s)
 		return;
 	}
 	c.data.string_list->clear();
-	for (const QString &s: s.split(",", QString::SkipEmptyParts))
+	for (const QString &s: s.split(",", SKIP_EMPTY))
 		c.data.string_list->push_back(s.trimmed());
 }
 
@@ -859,9 +865,9 @@ static bool has_tags(const filter_constraint &c, const struct dive *d)
 static bool has_people(const filter_constraint &c, const struct dive *d)
 {
 	QStringList dive_people;
-	for (const QString &s: QString(d->buddy).split(",", QString::SkipEmptyParts))
+	for (const QString &s: QString(d->buddy).split(",", SKIP_EMPTY))
 		dive_people.push_back(s.trimmed());
-	for (const QString &s: QString(d->divemaster).split(",", QString::SkipEmptyParts))
+	for (const QString &s: QString(d->divemaster).split(",", SKIP_EMPTY))
 		dive_people.push_back(s.trimmed());
 	return check(c, dive_people);
 }
