@@ -1340,7 +1340,8 @@ static dc_status_t irda_device_open(dc_iostream_t **iostream, dc_context_t *cont
 	return dc_irda_open(&data->iostream, context, address, 1);
 }
 
-static dc_status_t bluetooth_device_open(dc_iostream_t **iostream, dc_context_t *context, device_data_t *data)
+#if defined(BT_SUPPORT) && !defined(__ANDROID__) && !defined(__APPLE__)
+static dc_status_t bluetooth_device_open(dc_context_t *context, device_data_t *data)
 {
 	dc_bluetooth_address_t address = 0;
 	dc_iterator_t *iterator = NULL;
@@ -1363,6 +1364,7 @@ static dc_status_t bluetooth_device_open(dc_iostream_t **iostream, dc_context_t 
 	dev_info(data, "Opening rfcomm address %llu", address);
 	return dc_bluetooth_open(&data->iostream, context, address, 0);
 }
+#endif
 
 dc_status_t divecomputer_device_open(device_data_t *data)
 {
@@ -1386,7 +1388,7 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 		// we don't have BT on iOS in the first place, so this is for Android and macOS
 		rc = rfcomm_stream_open(&data->iostream, context, data->devname);
 #else
-		rc = bluetooth_device_open(&data->iostream, context, data);
+		rc = bluetooth_device_open(context, data);
 #endif
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
