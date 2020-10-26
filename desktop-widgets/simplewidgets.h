@@ -24,29 +24,6 @@ struct dive_components;
 #include "ui_listfilter.h"
 #include "ui_addfilterpreset.h"
 
-class MinMaxAvgWidget : public QWidget {
-	Q_OBJECT
-	QLabel *avgIco, *avgValue;
-	QLabel *minIco, *minValue;
-	QLabel *maxIco, *maxValue;
-public:
-	MinMaxAvgWidget(QWidget *parent);
-	double minimum() const;
-	double maximum() const;
-	double average() const;
-	void setMinimum(double minimum);
-	void setMaximum(double maximum);
-	void setAverage(double average);
-	void setMinimum(const QString &minimum);
-	void setMaximum(const QString &maximum);
-	void setAverage(const QString &average);
-	void overrideMinToolTipText(const QString &newTip);
-	void overrideAvgToolTipText(const QString &newTip);
-	void overrideMaxToolTipText(const QString &newTip);
-	void setAvgVisibility(bool visible);
-	void clear();
-};
-
 class RenumberDialog : public QDialog {
 	Q_OBJECT
 public:
