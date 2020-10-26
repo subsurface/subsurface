@@ -1022,7 +1022,11 @@ void ProfileWidget2::wheelEvent(QWheelEvent *event)
 		scale(1.0 / zoomFactor, 1.0 / zoomFactor);
 		zoomLevel--;
 	}
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+	scrollViewTo(event->position().toPoint());
+#else
 	scrollViewTo(event->pos());
+#endif
 	toolTipItem->setPos(mapToScene(toolTipPos));
 }
 
