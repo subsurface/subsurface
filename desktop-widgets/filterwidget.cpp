@@ -73,7 +73,7 @@ void FilterWidget::updatePresetMenu()
 	for (int i = 0; i < count; ++i) {
 		QModelIndex idx = model->index(i, FilterPresetModel::NAME);
 		QString name = model->data(idx, Qt::DisplayRole).value<QString>();
-		loadFilterPresetMenu->addAction(name, [this,i,model]() { selectPreset(i); });
+		loadFilterPresetMenu->addAction(name, [this,i]() { selectPreset(i); });
 	}
 	ui.loadSetButton->setMenu(loadFilterPresetMenu.get());
 }
