@@ -24,7 +24,7 @@
 
 class QAction;
 class DiveObjectHelper;
-class DiveSiteChange; // An obscure implementation artifact - remove in due course.
+struct DiveSiteChange; // An obscure implementation artifact - remove in due course.
 
 class QMLManager : public QObject {
 	Q_OBJECT
