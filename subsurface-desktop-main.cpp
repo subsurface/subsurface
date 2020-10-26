@@ -79,13 +79,6 @@ int main(int argc, char **argv)
 #else
 	git_libgit2_init();
 #endif
-	/*
-	 * Initialize the random number generator - not really secure as
-	 * this is based only on current time, but it should not matter
-	 * that much in our context. Moreover this is better than
-	 * the constant numbers we used to get before.
-	 */
-	qsrand(time(NULL));
 	setup_system_prefs();
 	copy_prefs(&default_prefs, &prefs);
 	fill_computer_list();
