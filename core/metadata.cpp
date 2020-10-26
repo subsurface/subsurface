@@ -12,6 +12,12 @@
 #define UINT64_MAX (~0ULL)
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+#define SKIP_EMPTY Qt::SkipEmptyParts
+#else
+#define SKIP_EMPTY QString::SkipEmptyParts
+#endif
+
 // The following functions fetch an arbitrary-length _unsigned_ integer from either
 // a file or a memory location in big-endian or little-endian mode. The size of the
 // integer is passed via a template argument [e.g. getBE<uint16_t>(...)].
@@ -287,7 +293,7 @@ static bool parseDate(const QString &s_in, timestamp_t &timestamp)
 	}
 
 	// I've also seen "Weekday Mon  Day hh:mm:ss yyyy"(!)
-	QStringList items = s.split(' ', QString::SkipEmptyParts);
+	QStringList items = s.split(' ', SKIP_EMPTY);
 	if (items.size() < 4)
 		return false;
 

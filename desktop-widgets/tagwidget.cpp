@@ -39,6 +39,12 @@ void TagWidget::setCompleter(QCompleter *completer)
 	connect(m_completer, SIGNAL(highlighted(QString)), this, SLOT(completionHighlighted(QString)));
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+#define SKIP_EMPTY Qt::SkipEmptyParts
+#else
+#define SKIP_EMPTY QString::SkipEmptyParts
+#endif
+
 QPair<int, int> TagWidget::getCursorTagPosition()
 {
 	int i = 0, start = 0, end = 0;
@@ -71,7 +77,7 @@ void TagWidget::highlight()
 {
 	removeAllBlocks();
 	int lastPos = 0;
-	const auto l = text().split(QChar(','), QString::SkipEmptyParts);
+	const auto l = text().split(QChar(','), SKIP_EMPTY);
 	for (const QString &s: l) {
 		QString trimmed = s.trimmed();
 		if (trimmed.isEmpty())

@@ -629,6 +629,12 @@ QString TextHyperlinkEventFilter::tryToFormulateUrl(QTextCursor *cursor)
 	return stringMeetsOurUrlRequirements(maybeUrlStr) ? maybeUrlStr : QString();
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+#define SKIP_EMPTY Qt::SkipEmptyParts
+#else
+#define SKIP_EMPTY QString::SkipEmptyParts
+#endif
+
 QString TextHyperlinkEventFilter::fromCursorTilWhitespace(QTextCursor *cursor, bool searchBackwards)
 {
 	// fromCursorTilWhitespace calls cursor->movePosition repeatedly, while
@@ -666,7 +672,7 @@ QString TextHyperlinkEventFilter::fromCursorTilWhitespace(QTextCursor *cursor, b
 		  "mn.abcd." for the url (wrong). So we have to go to 'i', to
 		  capture "mn.abcd.edu " (with trailing space), and then clean it up.
 		*/
-		QStringList list = grownText.split(QRegExp("\\s"), QString::SkipEmptyParts);
+		QStringList list = grownText.split(QRegExp("\\s"), SKIP_EMPTY);
 		if (!list.isEmpty()) {
 			result = list[0];
 		}
