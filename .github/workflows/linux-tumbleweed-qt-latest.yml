@@ -1,4 +1,4 @@
-name: openSUSE 15.2 / Qt 5.15
+name: openSUSE/Tumbleweed / Qt latest
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ jobs:
   buildInContainer:
     runs-on: ubuntu-latest
     container:
-      image: opensuse/leap:15.2
+      image: opensuse/tumbleweed:latest
 
     steps:
     - name: checkout sources
