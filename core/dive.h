@@ -95,7 +95,7 @@ struct dive_components {
 extern bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc, int idx);
 extern int explicit_first_cylinder(const struct dive *dive, const struct divecomputer *dc);
 
-extern fraction_t best_o2(depth_t depth, const struct dive *dive);
+extern fraction_t best_o2(depth_t depth, const struct dive *dive, bool in_planner);
 extern fraction_t best_he(depth_t depth, const struct dive *dive, bool o2narcotic, fraction_t fo2);
 
 extern int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null);

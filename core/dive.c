@@ -3118,10 +3118,10 @@ void split_divecomputer(const struct dive *src, int num, struct dive **out1, str
 }
 
 //Calculate O2 in best mix
-fraction_t best_o2(depth_t depth, const struct dive *dive)
+fraction_t best_o2(depth_t depth, const struct dive *dive, bool in_planner)
 {
 	fraction_t fo2;
-	int po2 = in_planner() ? prefs.bottompo2 : prefs.modpO2 * 1000;
+	int po2 = in_planner ? prefs.bottompo2 : prefs.modpO2 * 1000;
 
 	fo2.permille = (po2 * 100 / depth_to_mbar(depth.mm, dive)) * 10;	//use integer arithmetic to round down to nearest percent
 	// Don't permit >100% O2
