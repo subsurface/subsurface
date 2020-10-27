@@ -67,112 +67,110 @@
          <property name="verticalSpacing">
           <number>0</number>
          </property>
-         <item row="1" column="0">
-          <widget class="QGroupBox" name="groupBoxb">
-           <property name="title">
-            <string>Max. depth</string>
-           </property>
-           <layout class="QHBoxLayout" name="statsDepthLayout">
-            <item>
-             <widget class="MinMaxAvgWidget" name="depthLimits" native="true"/>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QGroupBox" name="groupBox_4b">
-           <property name="title">
-            <string>SAC</string>
-           </property>
-           <layout class="QHBoxLayout" name="statsSacLayout">
-            <item>
-             <widget class="MinMaxAvgWidget" name="sacLimits" native="true"/>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QGroupBox" name="groupBox_8b">
-           <property name="title">
-            <string>Temperature</string>
-           </property>
-           <layout class="QHBoxLayout" name="statsTempLayout">
-            <item>
-             <widget class="MinMaxAvgWidget" name="tempLimits" native="true"/>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QGroupBox" name="groupBox_11b">
-           <property name="title">
-            <string>Total time</string>
-           </property>
-           <layout class="QHBoxLayout" name="statsTotalTimeLayout">
-            <item>
-             <widget class="QLabel" name="totalTimeAllText">
-              <property name="text">
-               <string/>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
+         
+         
          <item row="0" column="0">
-          <widget class="QGroupBox" name="groupBox_14">
-           <property name="title">
-            <string>Duration</string>
+          <widget class="QLabel" name="yVarLabel">
+           <property name="text">
+            <string>Vertical axis</string>
            </property>
-           <layout class="QHBoxLayout" name="statsDurationLayout">
-            <item>
-             <widget class="MinMaxAvgWidget" name="timeLimits" native="true"/>
-            </item>
-           </layout>
           </widget>
          </item>
-         <item row="2" column="1">
-          <widget class="QGroupBox" name="groupBox_7b">
-           <property name="title">
-            <string>Dives</string>
+         <item row="1" column="0">
+            <widget class="QComboBox" name="yVarName">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>     
+           </widget>
+          </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="spacer1">
+           <property name="text">
+            <string> </string>
            </property>
-           <layout class="QHBoxLayout" name="statsDivesLayout">
-            <item>
-             <widget class="QLabel" name="divesAllText">
-              <property name="text">
-               <string/>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
           </widget>
          </item>
-         <item row="1" column="2" rowspan="2">
-          <widget class="QGroupBox" name="groupBox_13">
-           <property name="title">
-            <string>Gas consumption</string>
-           </property>
-           <layout class="QHBoxLayout" name="statsGasConsumptionLayout">
-            <item>
-             <widget class="QLabel" name="gasConsumption">
-              <property name="text">
-               <string/>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
+
          <item row="3" column="0">
+          <widget class="QLabel" name="xVarLabel">
+           <property name="text">
+            <string>Horizontal axis</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+           <widget class="QComboBox" name="xVarName">
+           </widget>
+          </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="spacer2">
+           <property name="text">
+            <string> </string>
+           </property>
+          </widget>
+         </item>
+
+
+         <item row="6" column="0">
+          <widget class="QLabel" name="cCodedLabel">
+           <property name="text">
+            <string>Coded variable</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+           <widget class="QComboBox" name="cCodedName">
+           </widget>
+          </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="spacer3">
+           <property name="text">
+            <string> </string>
+           </property>
+          </widget>
+         </item>
+
+
+         <item row="9" column="0">
+          <widget class="QLabel" name="graphTypeLabel">
+           <property name="text">
+            <string>Graph type</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="0">
+           <widget class="QComboBox" name="graphType">
+           </widget>
+          </item>
+         <item row="11" column="0">
+          <widget class="QLabel" name="spacer4">
+           <property name="text">
+            <string> </string>
+           </property>
+          </widget>
+         </item>
+
+
+         <item row="12" column="0">
+          <widget class="QLabel" name="xVarLabel">
+           <property name="text">
+            <string> </string>
+           </property>
+          </widget>
+         </item>
+         
+         <item row="13" column="0">
+          <widget class="QPushButton" name="createGraphButton">
+           <property name="text">
+            <string>Create graph</string>
+           </property>
+          </widget>
+         </item>
+
+         <item row="14" column="0">
           <spacer name="verticalSpacer_2">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -185,6 +183,22 @@
            </property>
           </spacer>
          </item>
+
+         <item row="0" column="1" rowspan="15">
+         
+
+
+           <widget class="QQuickWidget" name="graphImage">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>     
+          </widget>
+         </item>
+
+         
         </layout>
        </item>
       </layout>
@@ -193,14 +207,7 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>MinMaxAvgWidget</class>
-   <extends>QWidget</extends>
-   <header>desktop-widgets/simplewidgets.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
+ <customwidgets/>
  <resources/>
  <connections/>
 </ui>

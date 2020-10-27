@@ -13,7 +13,7 @@ class FilterModelBase;
 #include <QTextEdit>
 #include <stdint.h>
 
-#include "ui_renumber.h"
+#include "desktop-widgets/ui_renumber.h"
 #include "ui_setpoint.h"
 #include "ui_shifttimes.h"
 #include "ui_shiftimagetimes.h"

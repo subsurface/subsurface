@@ -1,0 +1,7 @@
+<RCC>
+	<qresource prefix="/qml">
+		<file>stats-widget.qml</file>
+	</qresource>
+
+
+</RCC>

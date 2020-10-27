@@ -4,6 +4,8 @@
 
 #include "desktop-widgets/tab-widgets/TabBase.h"
 #include "core/subsurface-qt/divelistnotifier.h"
+#include <QGraphicsScene>
+#include <QtCharts>
 
 namespace Ui {
 	class TabDiveStatistics;
@@ -18,11 +20,13 @@ public:
 	void clear() override;
 
 private slots:
-	void divesChanged(const QVector<dive *> &dives, DiveField field);
-	void cylinderChanged(dive *d);
-
+	void on_createGraphButton_clicked();
 private:
 	Ui::TabDiveStatistics *ui;
+	QGraphicsScene *scene;
+	QGraphicsRectItem *rectangle;
+	const QUrl urlStatsWidget= QUrl(QStringLiteral("qrc:/qml/stats-widget.qml"));
+
 };
 
 #endif

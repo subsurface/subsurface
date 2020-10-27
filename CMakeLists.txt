@@ -173,7 +173,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	else()
 		set(SUBSURFACE_TARGET subsurface)
 	endif()
-	list(APPEND QT_EXTRA_COMPONENTS QuickWidgets)
+	list(APPEND QT_EXTRA_COMPONENTS QuickWidgets Charts)
 	remove_definitions(-DSUBSURFACE_MOBILE)
 	if(NO_PRINTING)
 		message(STATUS "building without printing support")
@@ -286,6 +286,7 @@ endif()
 #set up the subsurface_link_libraries variable
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES})
 qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc map-widget/qml/map-widget.qrc)
+qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc stats-widget/qml/stats-widget.qrc)
 
 # hack to build successfully on LGTM
 if(DEFINED ENV{LGTM_SRC})
