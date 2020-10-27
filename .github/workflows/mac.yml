@@ -14,7 +14,7 @@ jobs:
     - name: checkout sources
       uses: actions/checkout@v1
     - name: setup Homebrew
-      run: brew install autoconf automake libtool xz hidapi libusb libxml2 libxslt libzip openssl pkg-config libgit2 libssh2 libjpg libpng
+      run: brew install autoconf automake libtool xz hidapi libusb libxml2 libxslt libzip openssl pkg-config libgit2 libssh2 libjpg libpng libmtp
     - name: set our Qt build
       run: |
         mkdir -p Qt/5.13.0

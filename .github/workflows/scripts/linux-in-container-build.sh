@@ -11,7 +11,7 @@ export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
 
 echo "--------------------------------------------------------------"
 echo "install missing packages"
-apt install -y libbluetooth-dev
+apt install -y libbluetooth-dev libmtp-dev
 
 # the container currently has things under / that need to be under /__w/subsurface/subsurface instead
 cp -a /appdir /__w/subsurface/
