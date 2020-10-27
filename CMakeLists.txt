@@ -156,6 +156,7 @@ if(NOT ANDROID)
 		pkg_config_library(BLUEZ bluez REQUIRED)
 	endif()
 	pkg_config_library(LIBUSB libusb-1.0 QUIET)
+	pkg_config_library(LIBMTP libmtp QUIET)
 endif()
 
 include_directories(.
@@ -284,7 +285,7 @@ if(NOT ANDROID)
 endif()
 
 #set up the subsurface_link_libraries variable
-set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES})
+set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES} ${LIBMTP_LIBRARIES})
 qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc map-widget/qml/map-widget.qrc)
 
 # hack to build successfully on LGTM
