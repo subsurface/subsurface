@@ -7,6 +7,7 @@
 #include "display.h"
 #include "file.h"
 #include "errorhelper.h"
+#include "subsurfacesysinfo.h"
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x500
 #include <windows.h>
@@ -22,8 +23,6 @@ const char non_standard_system_divelist_default_font[] = "Calibri";
 const char current_system_divelist_default_font[] = "Segoe UI";
 const char *system_divelist_default_font = non_standard_system_divelist_default_font;
 double system_divelist_default_font_size = -1;
-
-extern bool isWin7Or8();
 
 void subsurface_OS_pref_setup(void)
 {
