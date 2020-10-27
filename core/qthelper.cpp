@@ -8,7 +8,6 @@
 #include "gettextfromc.h"
 #include "statistics.h"
 #include "membuffer.h"
-#include "subsurfacesysinfo.h"
 #include "version.h"
 #include "errorhelper.h"
 #include "planner.h"
@@ -40,6 +39,9 @@
 #include <QProgressDialog>	// TODO: remove with convertThumbnails()
 #include <cstdarg>
 #include <cstdint>
+#ifdef Q_OS_UNIX
+#include <sys/utsname.h>
+#endif
 
 #include <libxslt/documents.h>
 
@@ -420,11 +422,19 @@ QString getUserAgent()
 #else
 	QString userAgent = QString("Subsurface:%1:").arg(subsurface_canonical_version());
 #endif
-	userAgent.append(SubsurfaceSysInfo::prettyOsName().replace(':', ' ') + ":");
-	arch = SubsurfaceSysInfo::buildCpuArchitecture().replace(':', ' ');
+	QString prettyOsName = QSysInfo::prettyProductName();
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC) && !defined(Q_OS_ANDROID)
+	// QSysInfo::kernelType() returns lowercase ("linux" instead of "Linux")
+	struct utsname u;
+	if (uname(&u) == 0)
+		prettyOsName = QString::fromLatin1(u.sysname) + QLatin1String(" (") + prettyOsName + QLatin1Char(')');
+#endif
+
+	userAgent.append(prettyOsName.replace(':', ' ') + ":");
+	arch = QSysInfo::buildCpuArchitecture().replace(':', ' ');
 	userAgent.append(arch);
 	if (arch == "i386")
-		userAgent.append("/" + SubsurfaceSysInfo::currentCpuArchitecture());
+		userAgent.append("/" + QSysInfo::currentCpuArchitecture());
 	userAgent.append(":" + getUiLanguage());
 	return userAgent;
 
