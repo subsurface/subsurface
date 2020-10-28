@@ -2,16 +2,14 @@
 
 This document assumes you have alreay installed docker and have checked out subsurface according to the instructions in the INSTALL document.
 
-If you are just wantint to build with the current mxe build container then starting from the folder above subsurface run
+If you just want to build with the current mxe build container then starting from the folder above subsurface run
 
 ```bash
-docker run -v $PWD/win32:/win/win32 -v $PWD/subsurface:/win/subsurface --name=mybuilder -w /win -d subsurface/mxe-build-container:1.x /bin/sleep 60m
+docker run -v $PWD/win32:/win/win32 -v $PWD/subsurface:/win/subsurface --name=mybuilder -w /win -d subsurface/mxe-build-container:x.y /bin/sleep 60m
 ```
 
-replacing the x in the mxe-build-container tag with the current version e.g.
-```bash
-docker run -v $PWD/win32:/win/win32 -v $PWD/subsurface:/win/subsurface --name=mybuilder -w /win -d subsurface/mxe-build-container:1.0 /bin/sleep 60m
-```
+replacing the x.y in the mxe-build-container tag with the current version e.g. 2.0
+
 Next you need to prep the container by installing some prerequisites
 
 ```bash
