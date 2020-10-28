@@ -9,9 +9,6 @@
 #define MAINTAB_H
 
 #include <QTabWidget>
-#include <QDialog>
-#include <QMap>
-#include <QUuid>
 
 #include "ui_maintab.h"
 #include "qt-models/completionmodels.h"
