@@ -5,3 +5,4 @@
 echo "downloading sources for fresh build"
 bash subsurface/scripts/get-dep-lib.sh single . libzip
 bash subsurface/scripts/get-dep-lib.sh single . googlemaps
+bash subsurface/scripts/get-dep-lib.sh single . libmtp
