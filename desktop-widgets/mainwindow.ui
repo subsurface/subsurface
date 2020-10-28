@@ -97,6 +97,7 @@
     <addaction name="actionAutoGroup"/>
     <addaction name="separator"/>
     <addaction name="actionFilterTags"/>
+    <addaction name="actionStats"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -107,6 +108,7 @@
     <addaction name="actionViewProfile"/>
     <addaction name="actionViewInfo"/>
     <addaction name="actionViewMap"/>
+    <addaction name="actionViewStats"/>
     <addaction name="separator"/>
     <addaction name="actionYearlyStatistics"/>
     <addaction name="actionPreviousDC"/>
@@ -638,6 +640,14 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionStats">
+   <property name="text">
+    <string>Dive statistics</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+T</string>
    </property>
   </action>
   <action name="profTissues">

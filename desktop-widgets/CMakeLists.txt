@@ -40,6 +40,7 @@ set (SUBSURFACE_UI
 	setpoint.ui
 	shiftimagetimes.ui
 	shifttimes.ui
+	statswidget.ui
 	tableview.ui
 	templateedit.ui
 	tripselectiodialog.ui
@@ -104,6 +105,8 @@ set(SUBSURFACE_INTERFACE
 	simplewidgets.cpp
 	simplewidgets.h
 	starwidget.cpp
+	statswidget.h
+	statswidget.cpp
 	starwidget.h
 	subsurfacewebservices.cpp
 	subsurfacewebservices.h
