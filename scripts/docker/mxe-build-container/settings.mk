@@ -3,23 +3,31 @@
 
 # This variable controls the number of compilation processes
 # within one package ("intra-package parallelism").
-JOBS := 2
+JOBS := 8
 
 # This variable controls the targets that will build.
-MXE_TARGETS :=  i686-w64-mingw32.shared
+MXE_TARGETS :=  x86_64-w64-mingw32.shared
 
 # The three lines below makes `make` build these "local packages" instead of all packages.
-LOCAL_PKG_LIST := curl \
-                  hidapi \
-                  libftdi1 \
-                  libgit2 \
-                  libusb1 \
+# The ordering of the list appears weird, but this seems to help to get the build done
+# faster on a massively parallel machine to get some of the bottleneck packages built as
+# early as possible
+LOCAL_PKG_LIST := gcc \
+                  openssl \
+                  libmysqlclient \
+                  postgresql \
+                  qtbase \
+                  qtwebkit \
+                  nsis \
+                  curl \
                   libxml2 \
                   libxslt \
                   libzip \
+                  libusb1 \
+                  hidapi \
+                  libgit2 \
+                  libftdi1 \
                   mdbtools \
-                  nsis \
-                  qtbase \
                   qtconnectivity \
                   qtdeclarative \
                   qtimageformats \
@@ -27,13 +35,10 @@ LOCAL_PKG_LIST := curl \
                   qtmultimedia \
                   qtquickcontrols \
                   qtquickcontrols2 \
-                  qtscript \
+                  qtcharts \
                   qtsvg \
                   qttools \
                   qttranslations \
-                  qtwebkit \
-                  qtwebview \
                   zstd
 .DEFAULT local-pkg-list:
 local-pkg-list: $(LOCAL_PKG_LIST)
-

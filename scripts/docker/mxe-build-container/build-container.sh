@@ -2,10 +2,13 @@
 set -x
 set -e
 
+# known good MXE sha
+MXE_SHA="8966a64"
 SCRIPTPATH=$(dirname $0)
 
-export VERSION=1.1
+# version of the docker image
+VERSION=2.0
+
 pushd $SCRIPTPATH
-docker build -t subsurface/mxe-build-container:$VERSION --build-arg=mxe_sha=1ee37f8 -f Dockerfile-stage1 .
-docker build -t subsurface/mxe-build-container:$VERSION --build-arg=VERSION=$VERSION -f Dockerfile-stage2 .
+docker build --squash -t subsurface/mxe-build-container:$VERSION --build-arg=mxe_sha=$MXE_SHA -f Dockerfile .
 popd
