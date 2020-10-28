@@ -12,4 +12,3 @@ void setAppState(ApplicationState state)
 {
 	appState = state;
 }
-

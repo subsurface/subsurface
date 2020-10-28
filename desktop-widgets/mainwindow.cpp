@@ -50,6 +50,7 @@
 #include "desktop-widgets/tab-widgets/maintab.h"
 #include "desktop-widgets/updatemanager.h"
 #include "desktop-widgets/simplewidgets.h"
+#include "desktop-widgets/statswidget.h"
 #include "commands/command.h"
 
 #include "profile-widget/profilewidget2.h"
@@ -141,6 +142,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	graphics = new ProfileWidget2(this);
 	MapWidget *mapWidget = MapWidget::instance();
 	plannerWidgets.reset(new PlannerWidgets);
+	StatsWidget *statistics = new StatsWidget(this);
 
 	// what is a sane order for those icons? we should have the ones the user is
 	// most likely to want towards the top so they are always visible
@@ -183,6 +185,8 @@ MainWindow::MainWindow() : QMainWindow(),
 								   { diveList, FLAG_DISABLED }, { mapWidget, FLAG_NONE } });
 	registerApplicationState(ApplicationState::FilterDive, { { mainTab.get(), FLAG_NONE }, { profileContainer, FLAG_NONE },
 								 { diveList, FLAG_NONE },      { &filterWidget, FLAG_NONE } });
+	registerApplicationState(ApplicationState::Statistics, { { statistics, FLAG_NONE }, { profileContainer, FLAG_NONE },
+								 { diveList, FLAG_DISABLED },   { &filterWidget, FLAG_NONE } });
 	setApplicationState(ApplicationState::Default);
 
 	setWindowIcon(QIcon(":subsurface-icon"));
@@ -1593,6 +1597,15 @@ void MainWindow::on_actionFilterTags_triggered()
 		showFilterIfEnabled();
 }
 
+void MainWindow::on_actionStats_triggered()
+{
+	setApplicationState(getAppState() == ApplicationState::Statistics ? ApplicationState::Default : ApplicationState::Statistics);
+	toggleCollapsible(true);
+	ui.topSplitter->setSizes({ EXPANDED, COLLAPSED });
+	ui.mainSplitter->setSizes({ EXPANDED, EXPANDED });
+	ui.bottomSplitter->setSizes({ EXPANDED, EXPANDED });
+}
+
 void MainWindow::showFilterIfEnabled()
 {
 	if (getAppState() == ApplicationState::FilterDive) {
@@ -1642,6 +1655,11 @@ void MainWindow::setApplicationState(ApplicationState state)
 	setQuadrant(quadrants.topRight, ui.topRight);
 	setQuadrant(quadrants.bottomLeft, ui.bottomLeft);
 	setQuadrant(quadrants.bottomRight, ui.bottomRight);
+
+	// The statistics view does its own thing with respect to visibility
+	// of quadrants. So in case we leave that state, change to the
+	// original visibility of the quadrants.
+	enterState(this->state);
 }
 
 void MainWindow::showProgressBar()
