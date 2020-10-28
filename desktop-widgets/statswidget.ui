@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StatsWidget</class>
+ <widget class="QWidget" name="Statistics">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>555</width>
+    <height>848</height>
+   </rect>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <layout class="QVBoxLayout" name="headerLayout">
+     <item>
+      <widget class="QToolButton" name="close">
+       <property name="text">
+        <string>Close</string>
+       </property>
+       <property name="icon">
+        <iconset><normaloff>:filter-close</normaloff>:filter-close</iconset>
+       </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextBesideIcon</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="var1Group">
+       <property name="title">
+        <string>Base variable</string>
+       </property>
+       <layout class="QVBoxLayout" name="var1Layout">
+        <item>
+         <widget class="QComboBox" name="var1" />
+        </item>
+        <item>
+         <widget class="QLabel" name="var1BinnerLabel">
+          <property name="text">
+           <string>Binning</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="var1Binner" />
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="var2Group">
+       <property name="title">
+        <string>Data</string>
+       </property>
+       <layout class="QVBoxLayout" name="var2Layout">
+        <item>
+         <widget class="QComboBox" name="var2" />
+        </item>
+        <item>
+         <widget class="QLabel" name="var2BinnerLabel">
+          <property name="text">
+           <string>Binning</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="var2Binner" />
+        </item>
+        <item>
+         <widget class="QLabel" name="var2OperationLabel">
+          <property name="text">
+           <string>Operation</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="var2Operation" />
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="chartGroup">
+       <property name="title">
+        <string>Chart</string>
+       </property>
+       <layout class="QVBoxLayout" name="chartLayout">
+        <item>
+         <widget class="QComboBox" name="chartType" />
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="features" />
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="StatsView" name="stats">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>StatsView</class>
+   <extends>QQuickWidget</extends>
+   <header>stats/statsview.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../subsurface.qrc"/>
+ </resources>
+ <connections/>
+</ui>
