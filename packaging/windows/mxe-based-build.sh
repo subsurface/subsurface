@@ -153,6 +153,28 @@ if [ ! -f libdivecomputer/configure ] ; then
 	autoreconf --install
 fi
 
+# build libmtp as that isn't available via MXE
+cd "$BUILDDIR"
+if [[ ! -d libmtp || -f build.libmtp ]] ; then
+	rm -f build.libmtp
+	cd "$BASEDIR/libmtp"
+	export NOCONFIGURE=1
+	# crudely disable the interactive part of autogen.sh
+	sed --in-place=.bak 's/read IN/IN="N"/;s/echo "Auto/#echo "Auto/' autogen.sh
+	bash autogen.sh
+	mv autogen.sh.bak autogen.sh
+	cd "$BUILDDIR"
+	mkdir -p libmtp
+	cd libmtp
+	"$BASEDIR"/libmtp/configure \
+		CC="$MXEBUILDTYPE"-gcc \
+		--host="$MXEBUILDTYPE" \
+		--enable-shared \
+		--prefix="$BASEDIR"/"$MXEDIR"/usr/"$MXEBUILDTYPE"
+	make $JOBS
+	make install
+fi
+
 cd "$BUILDDIR"
 CURRENT_SHA=$(cd "$BASEDIR"/subsurface/libdivecomputer ; git describe)
 PREVIOUS_SHA=$(cat "libdivecomputer.SHA" 2>/dev/null || echo)
