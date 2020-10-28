@@ -28,7 +28,7 @@
     !define MUI_ICON "subsurface.ico"
 
     # Default installation folder
-    InstallDir "$PROGRAMFILES\Subsurface"
+    InstallDir "$PROGRAMFILES64\Subsurface"
 
     # Get installation folder from registry if available
     InstallDirRegKey HKCU "Software\Subsurface" ""
