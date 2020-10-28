@@ -16,7 +16,6 @@
 #include "core/selection.h"
 #include "profile-widget/profilewidget2.h"
 #include "desktop-widgets/diveplanner.h"
-#include "core/divesitehelpers.h"
 #include "qt-models/divecomputerextradatamodel.h"
 #include "qt-models/divelocationmodel.h"
 #include "qt-models/filtermodels.h"
@@ -37,12 +36,9 @@
 #include "TabDiveComputer.h"
 
 #include <QCompleter>
-#include <QSettings>
 #include <QScrollBar>
 #include <QShortcut>
 #include <QMessageBox>
-#include <QDesktopServices>
-#include <QStringList>
 
 struct Completers {
 	QCompleter *divemaster;
