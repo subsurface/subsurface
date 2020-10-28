@@ -17,6 +17,7 @@ CURRENT_KIRIGAMI="v5.62.0"
 CURRENT_BREEZE_ICONS="4daac191fb33c8c03bba8356db9767816cb8ee02"
 CURRENT_MDBTOOLS="master"
 CURRENT_QT_ANDROID_CMAKE="master"
+CURRENT_LIBMTP="master"
 
 # Checkout library from git
 # Ensure specified version is checked out,
@@ -154,6 +155,9 @@ for package in "${PACKAGES[@]}" ; do
 			;;
 		libusb)
 			git_checkout_library libusb $CURRENT_LIBUSB https://github.com/libusb/libusb.git
+			;;
+		libmtp)
+			git_checkout_library libmtp $CURRENT_LIBMTP https://github.com/libmtp/libmtp.git
 			;;
 		libxml2)
 			git_checkout_library libxml2 $CURRENT_LIBXML2 https://github.com/GNOME/libxml2.git
