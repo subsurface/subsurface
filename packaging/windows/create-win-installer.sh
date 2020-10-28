@@ -9,15 +9,16 @@ cd /__w
 bash subsurface/.github/workflows/scripts/windows-container-prep.sh
 
 # remove artifact from prior builds
-rm mdbtools/include/mdbver.h
+rm -f mdbtools/include/mdbver.h
 
 # build the installer
-rm -rf win32
-mkdir win32
-cd win32
+rm -rf win64
+mkdir win64
+cd win64
 
 # build Subsurface and then smtk2ssrf
-export MXEBUILDTYPE=i686-w64-mingw32.shared
+export MXEBUILDTYPE=x86_64-w64-mingw32.shared
+export PATH=/win/mxe/usr/bin:$PATH
 bash -ex ../subsurface/packaging/windows/mxe-based-build.sh installer
 mv subsurface/subsurface-*.exe /__w
 
