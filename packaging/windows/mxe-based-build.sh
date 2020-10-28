@@ -17,7 +17,7 @@
 # JOBS := 1
 #
 # # This variable controls the targets that will build.
-# MXE_TARGETS :=  i686-w64-mingw32.shared.posix.dw2
+# MXE_TARGETS :=  x86_64-w64-mingw32.shared
 #
 # # Uncomment the next line if you want to do debug builds later
 # # qtbase_CONFIGURE_OPTS=-debug-and-release
@@ -101,7 +101,7 @@ EXECDIR=`pwd`
 BASEDIR=$(cd "$EXECDIR/.."; pwd)
 BUILDDIR=$(cd "$EXECDIR"; pwd)
 MXEDIR=${MXEDIR:-mxe}
-MXEBUILDTYPE=${MXEBUILDTYPE:-i686-w64-mingw32.shared.posix.dw2}
+MXEBUILDTYPE=${MXEBUILDTYPE:-x86_64-w64-mingw32.shared}
 
 echo $BUILDDIR
 
