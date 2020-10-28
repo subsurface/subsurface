@@ -12,6 +12,7 @@ enum class ApplicationState {
 	EditPlannedDive,
 	EditDiveSite,
 	FilterDive,
+	Statistics,
 	Count
 };
 
