@@ -11,6 +11,7 @@ public:
 private
 slots:
 	void closeStats();
+	void plot();
 private:
 	Ui::StatsWidget ui;
 };

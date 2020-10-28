@@ -12,33 +12,56 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QToolButton" name="close">
-     <property name="text">
-      <string>Close</string>
-     </property>
-     <property name="icon">
-      <iconset><normaloff>:filter-close</normaloff>:filter-close</iconset>
-     </property>
-     <property name="toolButtonStyle">
-      <enum>Qt::ToolButtonTextBesideIcon</enum>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="headerLayout">
+     <item>
+      <widget class="QToolButton" name="close">
+       <property name="text">
+        <string>Close</string>
+       </property>
+       <property name="icon">
+        <iconset><normaloff>:filter-close</normaloff>:filter-close</iconset>
+       </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextBesideIcon</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="plot">
+       <property name="text">
+        <string>Plot</string>
+       </property>
+      </widget>
+     </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </spacer>
+      </item>
+    </layout>
    </item>
    <item>
-    <widget class="QToolButton" name="stats">
+    <widget class="StatsView" name="stats">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="text">
-      <string>Placeholder</string>
-     </property>
     </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>StatsView</class>
+   <extends>QQuickWidget</extends>
+   <header>stats/statsview.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../subsurface.qrc"/>
  </resources>
