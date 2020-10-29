@@ -135,11 +135,11 @@ case "$RELEASE" in
 				;;
 esac
 
-export PATH="$BASEDIR"/mxe/usr/bin:$PATH:"$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/bin/
+export PATH="$BASEDIR"/mxe/usr/bin:$PATH:"$BASEDIR"/mxe/usr/x86_64-w64-mingw32.shared/qt5/bin/
 export CXXFLAGS=-std=c++17
-export PKG_CONFIG_PATH_i686_w64_mingw32_static="$BASEDIR/mxe/usr/i686-w64-mingw32.static/lib/pkgconfig"
-export PKG_CONFIG_PATH_i686_w64_mingw32_shared="$BASEDIR/mxe/usr/i686-w64-mingw32.shared/lib/pkgconfig"
-export PKG_CONFIG_PATH="$PKG_CONFIG_PATH_i686_w64_mingw32_static":"$PKG_CONFIG_PATH_i686_w64_mingw32_shared"
+export PKG_CONFIG_PATH_x86_64_w64_mingw32_static="$BASEDIR/mxe/usr/x86_64-w64-mingw32.static/lib/pkgconfig"
+export PKG_CONFIG_PATH_x86_64_w64_mingw32_shared="$BASEDIR/mxe/usr/x86_64-w64-mingw32.shared/lib/pkgconfig"
+export PKG_CONFIG_PATH="$PKG_CONFIG_PATH_x86_64_w64_mingw32_static":"$PKG_CONFIG_PATH_x86_64_w64_mingw32_shared"
 
 #
 # Subsurface
@@ -168,14 +168,14 @@ rm -rf smtk-import && echo -e "$BLUE---> Deleted$LIGHT_GRAY $BUILDDIR/smtk-impor
 mkdir -p smtk-import && echo -e "$BLUE---> Created new$LIGHT_GRAY $BUILDDIR/smtk-import folder$DEFAULT"
 
 # first copy the Qt plugins in place
-QT_PLUGIN_DIRECTORIES="$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/iconengines \
-$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/imageformats \
-$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/styles \
-$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/platforms"
+QT_PLUGIN_DIRECTORIES="$BASEDIR/mxe/usr/x86_64-w64-mingw32.shared/qt5/plugins/iconengines \
+$BASEDIR/mxe/usr/x86_64-w64-mingw32.shared/qt5/plugins/imageformats \
+$BASEDIR/mxe/usr/x86_64-w64-mingw32.shared/qt5/plugins/styles \
+$BASEDIR/mxe/usr/x86_64-w64-mingw32.shared/qt5/plugins/platforms"
 
 # This comes from subsurface's mxe-based-build.sh. I'm not sure it is necessary
 # but, well, it doesn't hurt.
-EXTRA_MANUAL_DEPENDENCIES="$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Xml$DLL_SUFFIX.dll"
+EXTRA_MANUAL_DEPENDENCIES="$BASEDIR/mxe/usr/x86_64-w64-mingw32.shared/qt5/bin/Qt5Xml$DLL_SUFFIX.dll"
 
 STAGING_DIR=$BUILDDIR/smtk-import/staging
 
@@ -195,12 +195,12 @@ cd "$BUILDDIR"/smtk-import
 mkdir -p staging
 
 echo -e "$BLUE---> Building CMakeCache.txt$DEFAULT"
-i686-w64-mingw32.shared-cmake \
-	-DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+x86_64-w64-mingw32.shared-cmake \
+	-DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/mxe/usr/x86_64-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
 	-DPKG_CONFIG_EXECUTABLE="/usr/bin/pkg-config" \
-	-DCMAKE_PREFIX_PATH="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5 \
+	-DCMAKE_PREFIX_PATH="$BASEDIR"/mxe/usr/x86_64-w64-mingw32.shared/qt5 \
 	-DCMAKE_BUILD_TYPE=$RELEASE \
-	-DMAKENSIS=i686-w64-mingw32.shared-makensis \
+	-DMAKENSIS=x86_64-w64-mingw32.shared-makensis \
 	-DSSRF_CORELIB="$BUILDDIR"/subsurface/core/libsubsurface_corelib.a \
 	"$BASEDIR"/subsurface/smtk-import
 
