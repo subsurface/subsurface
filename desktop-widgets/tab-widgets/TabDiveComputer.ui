@@ -12,7 +12,11 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="TableView" name="table"/>
+    <widget class="TableView" name="table">
+     <property name="title">
+      <string>Dive Computers</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
