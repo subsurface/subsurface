@@ -15,7 +15,6 @@
 
 #define COMBO_CHANGED 0
 #define TEXT_EDITED 1
-#define CSS_SET_HEADING_BLUE "QLabel { color: mediumblue;} "
 
 TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(new Ui::TabDiveInformation())
 {
@@ -35,12 +34,8 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 		types.append(gettextFromC::tr(divemode_text_ui[i]));
 	ui->diveType->insertItems(0, types);
 	connect(ui->diveType, SIGNAL(currentIndexChanged(int)), this, SLOT(diveModeChanged(int)));
-	QString CSSSetSmallLabel = "QLabel { color: mediumblue; font-size: " +                           // Using label height
+	QString CSSSetSmallLabel = "QLabel { font-size: " +                           // Using label height
 		QString::number((int)(0.5 + ui->diveHeadingLabel->geometry().height() * 0.66)) + "px;}"; // .. set CSS font size of star widget subscripts
-	ui->scrollAreaWidgetContents_3->setStyleSheet("QGroupBox::title { color: mediumblue;} ");
-	ui->diveHeadingLabel->setStyleSheet(CSS_SET_HEADING_BLUE);
-	ui->gasHeadingLabel->setStyleSheet(CSS_SET_HEADING_BLUE);
-	ui->environmentHeadingLabel->setStyleSheet(CSS_SET_HEADING_BLUE);
 	ui->groupBox_visibility->setStyleSheet(CSSSetSmallLabel);
 	ui->groupBox_current->setStyleSheet(CSSSetSmallLabel);
 	ui->groupBox_wavesize->setStyleSheet(CSSSetSmallLabel);
