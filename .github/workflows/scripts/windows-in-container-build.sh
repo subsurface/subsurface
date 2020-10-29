@@ -14,7 +14,7 @@ mkdir -p win32
 cd win32
 
 # build Subsurface and then smtk2ssrf
-export MXEBUILDTYPE=i686-w64-mingw32.shared
+export MXEBUILDTYPE=x86_64-w64-mingw32.shared
 bash -ex ../subsurface/packaging/windows/mxe-based-build.sh installer
 
 # the strange two step move is in order to get predictable names to use
