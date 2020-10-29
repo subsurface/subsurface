@@ -23,9 +23,10 @@ private slots:
 	void on_createGraphButton_clicked();
 private:
 	Ui::TabDiveStatistics *ui;
-	QGraphicsScene *scene;
-	QGraphicsRectItem *rectangle;
-	const QUrl urlStatsWidget= QUrl(QStringLiteral("qrc:/qml/stats-widget.qml"));
+//	QGraphicsScene *scene;
+//	QGraphicsRectItem *rectangle;
+	const QUrl urlHistogramWidget= QUrl(QStringLiteral("qrc:/qml/histogram.qml"));
+	const QUrl urlXygraphWidget= QUrl(QStringLiteral("qrc:/qml/xygraph.qml"));
 
 };
 

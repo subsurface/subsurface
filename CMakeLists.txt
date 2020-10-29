@@ -286,7 +286,8 @@ endif()
 #set up the subsurface_link_libraries variable
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES})
 qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc map-widget/qml/map-widget.qrc)
-qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc stats-widget/qml/stats-widget.qrc)
+qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc stats-widget/qml/histogram.qrc)
+qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc stats-widget/qml/xygraph.qrc)
 
 # hack to build successfully on LGTM
 if(DEFINED ENV{LGTM_SRC})

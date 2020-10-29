@@ -7,6 +7,7 @@
 #include "core/statistics.h"
 #include <QQuickView>
 #include <QtQuick>
+#include <QWidget>
 
 
 TabDiveStatistics::TabDiveStatistics(QWidget *parent) : TabBase(parent), ui(new Ui::TabDiveStatistics())
@@ -34,6 +35,9 @@ TabDiveStatistics::TabDiveStatistics(QWidget *parent) : TabBase(parent), ui(new 
 		ui->xVarName->addItem(varxs[i]);
 	for (int i = 0; i<6; i++)
 		ui->cCodedName->addItem(cCode[i]);
+	ui->graphImage->setResizeMode(QQuickWidget::SizeRootObjectToView);
+//	const QUrl urlHistogramWidget= QUrl(QStringLiteral("qrc:/qml/histogram.qml"));
+
 }
 
 TabDiveStatistics::~TabDiveStatistics()
@@ -72,13 +76,16 @@ void TabDiveStatistics::updateData()
 {
 
 }
-	
+
 void TabDiveStatistics::on_createGraphButton_clicked() 
 {
-
-	ui->graphImage->setSource(QUrl(urlStatsWidget));
+	if(ui->yVarName->currentIndex() == 0)
+		ui->graphImage->setSource(QUrl(urlHistogramWidget));
+	else
+		if (ui->yVarName->currentIndex() == 2)
+			ui->graphImage->setSource(QUrl(urlXygraphWidget));
+	
 	ui->graphImage->show();
-
 }
 
 
