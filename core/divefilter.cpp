@@ -101,6 +101,12 @@ DiveFilter::DiveFilter() : diveSiteRefCount(0)
 {
 }
 
+void DiveFilter::diveRemoved(const dive *d) const
+{
+	if (!d->hidden_by_filter)
+		--shown_dives;
+}
+
 bool DiveFilter::showDive(const struct dive *d) const
 {
 	if (d->invalid && !prefs.display_invalid_dives)
