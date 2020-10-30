@@ -786,22 +786,6 @@ void delete_single_dive(int idx)
 	delete_dive_from_table(&dive_table, idx);
 }
 
-int shown_dives = 0;
-bool filter_dive(struct dive *d, bool shown)
-{
-	bool old_shown, changed;
-	if (!d)
-		return false;
-	old_shown = !d->hidden_by_filter;
-	d->hidden_by_filter = !shown;
-	if (!shown && d->selected)
-		deselect_dive(d);
-	changed = old_shown != shown;
-	if (changed)
-		shown_dives += shown - old_shown;
-	return changed;
-}
-
 void process_loaded_dives()
 {
 	int i;
@@ -1375,7 +1359,6 @@ void clear_dive_file_data()
 	while (dive_table.nr)
 		delete_single_dive(0);
 	current_dive = NULL;
-	shown_dives = 0;
 	while (dive_site_table.nr)
 		delete_dive_site(get_dive_site(0, &dive_site_table), &dive_site_table);
 	if (trip_table.nr != 0) {

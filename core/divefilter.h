@@ -13,6 +13,8 @@ struct dive;
 struct dive_trip;
 struct dive_site;
 
+extern int shown_dives;
+
 // Structure describing changes of shown status upon applying the filter
 struct ShownChange {
 	QVector<dive *> newShown;
