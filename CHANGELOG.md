@@ -1,3 +1,5 @@
+- add Garmin Descent Mk2/Mk2i support for Linux, macOS, and 64bit Windows
+- desktop: add 64bit Windows build
 - desktop: make device management undoable
 - desktop: fix crash on drag&drop into tag widgets [#3030]
 - macOS: fix issue with HID dive computers like Suunto Eon Core/Steel [#2999]
