@@ -130,7 +130,7 @@ DivesAndTripsToAdd DiveListBase::removeDives(DivesAndSitesToRemove &divesAndSite
 	sitesToAdd.reserve(divesAndSitesToDelete.sites.size());
 
 	// Remember old number of shown dives
-	int oldShown = shown_dives;
+	int oldShown = DiveFilter::instance()->shownDives();
 
 	// Make sure that the dive list is sorted. The added dives will be sent in a signal
 	// and the recipients assume that the dives are sorted the same way as they are
@@ -164,7 +164,7 @@ DivesAndTripsToAdd DiveListBase::removeDives(DivesAndSitesToRemove &divesAndSite
 		emit diveListNotifier.divesDeleted(trip, deleteTrip, divesInTrip);
 	});
 
-	if (oldShown != shown_dives)
+	if (oldShown != DiveFilter::instance()->shownDives())
 		emit diveListNotifier.numShownChanged();
 
 	return { std::move(divesToAdd), std::move(tripsToAdd), std::move(sitesToAdd) };

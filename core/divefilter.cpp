@@ -13,10 +13,8 @@
 #include "qt-models/filtermodels.h"
 #endif
 
-int shown_dives = 0;
-
 // Set filter status of dive and return whether it has been changed
-static bool setFilterStatus(struct dive *d, bool shown)
+bool DiveFilter::setFilterStatus(struct dive *d, bool shown) const
 {
 	bool old_shown, changed;
 	if (!d)
@@ -31,7 +29,7 @@ static bool setFilterStatus(struct dive *d, bool shown)
 	return changed;
 }
 
-static void updateDiveStatus(dive *d, bool newStatus, ShownChange &change)
+void DiveFilter::updateDiveStatus(dive *d, bool newStatus, ShownChange &change) const
 {
 	if (setFilterStatus(d, newStatus)) {
 		if (newStatus)
@@ -199,6 +197,11 @@ QString DiveFilter::shownText() const
 		return gettextFromC::tr("%L1/%L2 shown").arg(shown_dives).arg(dive_table.nr);
 	else
 		return gettextFromC::tr("%L1 dives").arg(dive_table.nr);
+}
+
+int DiveFilter::shownDives() const
+{
+	return shown_dives;
 }
 
 void DiveFilter::setFilter(const FilterData &data)

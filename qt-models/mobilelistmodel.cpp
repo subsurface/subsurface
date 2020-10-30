@@ -58,7 +58,7 @@ QHash<int, QByteArray> MobileListModelBase::roleNames() const
 
 int MobileListModel::shown() const
 {
-	return shown_dives;
+	return DiveFilter::instance()->shownDives();
 }
 
 int MobileListModelBase::columnCount(const QModelIndex &parent) const

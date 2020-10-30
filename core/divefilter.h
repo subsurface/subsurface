@@ -13,8 +13,6 @@ struct dive;
 struct dive_trip;
 struct dive_site;
 
-extern int shown_dives;
-
 // Structure describing changes of shown status upon applying the filter
 struct ShownChange {
 	QVector<dive *> newShown;
@@ -43,6 +41,7 @@ public:
 
 	void reset();
 	QString shownText() const;
+	int shownDives() const;
 	bool diveSiteMode() const; // returns true if we're filtering on dive site (on mobile always returns false)
 #ifndef SUBSURFACE_MOBILE
 	const QVector<dive_site *> &filteredDiveSites() const;
@@ -57,9 +56,12 @@ public:
 private:
 	DiveFilter();
 	bool showDive(const struct dive *d) const; // Should that dive be shown?
+	bool setFilterStatus(struct dive *d, bool shown) const;
+	void updateDiveStatus(dive *d, bool newStatus, ShownChange &change) const;
 
 	QVector<dive_site *> dive_sites;
 	FilterData filterData;
+	mutable int shown_dives;
 
 	// We use ref-counting for the dive site mode. The reason is that when switching
 	// between two tabs that both need dive site mode, the following course of
