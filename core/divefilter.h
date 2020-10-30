@@ -51,6 +51,7 @@ public:
 	void setFilter(const FilterData &data);
 	ShownChange update(const QVector<dive *> &dives) const; // Update filter status of given dives and return dives whose status changed
 	ShownChange updateAll() const; // Update filter status of all dives and return dives whose status changed
+	void diveRemoved(const dive *dive) const; // Dive was removed; update count accordingly
 private:
 	DiveFilter();
 	bool showDive(const struct dive *d) const; // Should that dive be shown?

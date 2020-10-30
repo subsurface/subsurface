@@ -48,8 +48,7 @@ DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<OwningTripPtr> &t
 	if (idx < 0)
 		qWarning("Deletion of unknown dive!");
 
-	if (!d->hidden_by_filter)
-		--shown_dives;
+	DiveFilter::instance()->diveRemoved(d);
 
 	res.dive.reset(unregister_dive(idx));		// Remove dive from backend
 
