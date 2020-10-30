@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-# build Subsurface for Win32
+# build Subsurface for Windows
 #
 # this file assumes that you have installed MXE on your system
 # and installed a number of dependencies as well.
@@ -153,26 +153,30 @@ if [ ! -f libdivecomputer/configure ] ; then
 	autoreconf --install
 fi
 
-# build libmtp as that isn't available via MXE
-cd "$BUILDDIR"
-if [[ ! -d libmtp || -f build.libmtp ]] ; then
-	rm -f build.libmtp
-	cd "$BASEDIR/libmtp"
-	export NOCONFIGURE=1
-	# crudely disable the interactive part of autogen.sh
-	sed --in-place=.bak 's/read IN/IN="N"/;s/echo "Auto/#echo "Auto/' autogen.sh
-	bash autogen.sh
-	mv autogen.sh.bak autogen.sh
+# if this is a 64bit build then build libmtp as that isn't available via MXE
+# for 32bit builds the library currently fails to build, so support for
+# MTP devices (right now just the Garmin Descent Mk2/Mk2i) is not available on 32bit Windows
+if [ "$MXEBUILDTYPE" = "x86_64-w64-mingw32.shared" ] ; then
 	cd "$BUILDDIR"
-	mkdir -p libmtp
-	cd libmtp
-	"$BASEDIR"/libmtp/configure \
-		CC="$MXEBUILDTYPE"-gcc \
-		--host="$MXEBUILDTYPE" \
-		--enable-shared \
-		--prefix="$BASEDIR"/"$MXEDIR"/usr/"$MXEBUILDTYPE"
-	make $JOBS
-	make install
+	if [[ ! -d libmtp || -f build.libmtp ]] ; then
+		rm -f build.libmtp
+		cd "$BASEDIR/libmtp"
+		export NOCONFIGURE=1
+		# crudely disable the interactive part of autogen.sh
+		sed --in-place=.bak 's/read IN/IN="N"/;s/echo "Auto/#echo "Auto/' autogen.sh
+		bash autogen.sh
+		mv autogen.sh.bak autogen.sh
+		cd "$BUILDDIR"
+		mkdir -p libmtp
+		cd libmtp
+		"$BASEDIR"/libmtp/configure \
+			CC="$MXEBUILDTYPE"-gcc \
+			--host="$MXEBUILDTYPE" \
+			--enable-shared \
+			--prefix="$BASEDIR"/"$MXEDIR"/usr/"$MXEBUILDTYPE"
+		make $JOBS
+		make install
+	fi
 fi
 
 cd "$BUILDDIR"
