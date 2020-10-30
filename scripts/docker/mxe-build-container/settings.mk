@@ -6,7 +6,7 @@
 JOBS := 8
 
 # This variable controls the targets that will build.
-MXE_TARGETS :=  x86_64-w64-mingw32.shared
+MXE_TARGETS :=  x86_64-w64-mingw32.shared i686-w64-mingw32.shared
 
 # The three lines below makes `make` build these "local packages" instead of all packages.
 # The ordering of the list appears weird, but this seems to help to get the build done
