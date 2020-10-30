@@ -209,3 +209,20 @@ void DiveFilter::setFilter(const FilterData &data)
 	filterData = data;
 	emit diveListNotifier.filterReset();
 }
+
+std::vector<dive *> DiveFilter::visibleDives() const
+{
+	if (shown_dives <= 0)
+		return {};
+
+	std::vector<dive *> res;
+	res.reserve(shown_dives);
+
+	int i;
+	dive *d;
+	for_each_dive(i, d) {
+		if (!d->hidden_by_filter)
+			res.push_back(d);
+	}
+	return res;
+}
