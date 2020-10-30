@@ -807,13 +807,9 @@ void process_loaded_dives()
 	int i;
 	struct dive *dive;
 
-	/* Register dive computer nick names and count shown dives. */
-	shown_dives = 0;
-	for_each_dive(i, dive) {
-		if (!dive->hidden_by_filter)
-			shown_dives++;
+	/* Register dive computer nick names. */
+	for_each_dive(i, dive)
 		add_devices_of_dive(dive, &device_table);
-	}
 
 	sort_dive_table(&dive_table);
 	sort_trip_table(&trip_table);
@@ -823,7 +819,7 @@ void process_loaded_dives()
 
 	fulltext_populate();
 
-	/* Inform frontend of reset data. This should reset all the models. */
+	/* Inform frontend of reset data. This should reset all the models and the filter. */
 	emit_reset_signal();
 }
 
