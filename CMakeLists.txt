@@ -275,7 +275,7 @@ if(ANDROID)
 	# our Qt installation. This is ugly, but it works.
 	set(CMAKE_FIND_ROOT_PATH "/;${CMAKE_FIND_ROOT_PATH}")
 endif()
-set(QT_FIND_COMPONENTS Core Concurrent Widgets Network Svg Positioning Quick Location ${QT_EXTRA_COMPONENTS})
+set(QT_FIND_COMPONENTS Core Concurrent Widgets Network Svg Positioning Quick Location Charts ${QT_EXTRA_COMPONENTS})
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	find_package(Qt5 5.9.1 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
