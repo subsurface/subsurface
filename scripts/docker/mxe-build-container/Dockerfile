@@ -72,3 +72,4 @@ RUN cd /win/mxe ; \
     make MXE_TARGETS=x86_64-w64-mingw32.static glib mdbtools -j 6 2>&1 | tee -a mxe-build.log ;
 
 RUN apt-get remove -y bison flex gperf libc6-dev-i386 libgdk-pixbuf2.0-dev libxml-parser-perl python ruby xz-utils scons && rm -rf /var/lib/apt/lists/*
+RUN rm -rf /win/mxe/pkg /win/mxe/log / win/mxe/docs
