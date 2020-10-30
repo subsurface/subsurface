@@ -43,6 +43,7 @@ public:
 	QString shownText() const;
 	int shownDives() const;
 	bool diveSiteMode() const; // returns true if we're filtering on dive site (on mobile always returns false)
+	std::vector<dive *> visibleDives() const;
 #ifndef SUBSURFACE_MOBILE
 	const QVector<dive_site *> &filteredDiveSites() const;
 	void startFilterDiveSites(QVector<dive_site *> ds);
