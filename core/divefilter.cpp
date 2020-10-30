@@ -52,6 +52,16 @@ ShownChange DiveFilter::update(const QVector<dive *> &dives) const
 	return res;
 }
 
+void DiveFilter::reset()
+{
+	int i;
+	dive *d;
+	shown_dives = dive_table.nr;
+	for_each_dive(i, d)
+		d->hidden_by_filter = false;
+	updateAll();
+}
+
 ShownChange DiveFilter::updateAll() const
 {
 	dive *old_current = current_dive;
