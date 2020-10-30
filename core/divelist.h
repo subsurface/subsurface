@@ -13,7 +13,6 @@ struct trip_table;
 struct dive_site_table;
 struct device_table;
 struct deco_state;
-extern int shown_dives;
 
 struct dive_table {
 	int nr, allocated;
@@ -53,7 +52,6 @@ extern void insert_dive(struct dive_table *table, struct dive *d);
 extern void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
 extern int get_divenr(const struct dive *dive);
 extern int remove_dive(const struct dive *dive, struct dive_table *table);
-extern bool filter_dive(struct dive *d, bool shown); /* returns true if status changed */
 extern int get_dive_nr_at_idx(int idx);
 extern void set_dive_nr_for_current_dive();
 extern timestamp_t get_surface_interval(timestamp_t when);
