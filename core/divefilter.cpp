@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "divefilter.h"
-#include "divelist.h" // for filter_dive
+#include "divelist.h"
 #include "gettextfromc.h"
 #include "qthelper.h"
+#include "selection.h"
 #include "subsurface-qt/divelistnotifier.h"
 #if !defined(SUBSURFACE_MOBILE) && !defined(SUBSURFACE_DOWNLOADER)
 #include "desktop-widgets/mapwidget.h"
@@ -12,9 +13,27 @@
 #include "qt-models/filtermodels.h"
 #endif
 
+int shown_dives = 0;
+
+// Set filter status of dive and return whether it has been changed
+static bool setFilterStatus(struct dive *d, bool shown)
+{
+	bool old_shown, changed;
+	if (!d)
+		return false;
+	old_shown = !d->hidden_by_filter;
+	d->hidden_by_filter = !shown;
+	if (!shown && d->selected)
+		deselect_dive(d);
+	changed = old_shown != shown;
+	if (changed)
+		shown_dives += shown - old_shown;
+	return changed;
+}
+
 static void updateDiveStatus(dive *d, bool newStatus, ShownChange &change)
 {
-	if (filter_dive(d, newStatus)) {
+	if (setFilterStatus(d, newStatus)) {
 		if (newStatus)
 			change.newShown.push_back(d);
 		else
