@@ -7,6 +7,8 @@ include_directories(.
 set(SUBSURFACE_STATS_SRCS
 	statsview.h
 	statsview.cpp
+	statstypes.h
+	statstypes.cpp
 )
 
 source_group("Subsurface statistics sourcecode" FILES ${SUBSURFACE_STATS_SRCS})
