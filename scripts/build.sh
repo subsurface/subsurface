@@ -394,6 +394,16 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	make install
 	popd
 
+	./${SRC_DIR}/scripts/get-dep-lib.sh single . libmtp
+	pushd libmtp
+	echo 'N' | NOCONFIGURE="1" bash ./autogen.sh
+	mkdir -p build
+	cd build
+	CFLAGS="$OLDER_MAC" ../configure --prefix="$INSTALL_ROOT"
+	make -j4
+	make install
+	popd
+
 	./${SRC_DIR}/scripts/get-dep-lib.sh single . libftdi1
 	pushd libftdi1
 	mkdir -p build
