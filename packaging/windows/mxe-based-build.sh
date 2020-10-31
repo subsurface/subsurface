@@ -162,10 +162,7 @@ if [ "$MXEBUILDTYPE" = "x86_64-w64-mingw32.shared" ] ; then
 		rm -f build.libmtp
 		cd "$BASEDIR/libmtp"
 		export NOCONFIGURE=1
-		# crudely disable the interactive part of autogen.sh
-		sed --in-place=.bak 's/read IN/IN="N"/;s/echo "Auto/#echo "Auto/' autogen.sh
-		bash autogen.sh
-		mv autogen.sh.bak autogen.sh
+		echo 'N' | bash autogen.sh
 		cd "$BUILDDIR"
 		mkdir -p libmtp
 		cd libmtp
