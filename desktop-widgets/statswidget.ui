@@ -10,9 +10,9 @@
     <height>848</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <layout class="QHBoxLayout" name="headerLayout">
+    <layout class="QVBoxLayout" name="headerLayout">
      <item>
       <widget class="QToolButton" name="close">
        <property name="text">
@@ -27,19 +27,72 @@
       </widget>
      </item>
      <item>
+      <widget class="QLabel" name="chartTypeLabel">
+       <property name="text">
+        <string>Chart type</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="chartType">
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="chartSubType">
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="firstAxisLabel">
+       <property name="text">
+        <string>First axis</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="firstAxis">
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="firstAxisBin">
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="firstAxisOperation">
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="secondAxisLabel">
+       <property name="text">
+        <string>Second axis</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="secondAxis">
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="secondAxisBin">
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="secondAxisOperation">
+      </widget>
+     </item>
+     <item>
       <widget class="QToolButton" name="plot">
        <property name="text">
         <string>Plot</string>
        </property>
       </widget>
      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </spacer>
-      </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </spacer>
+     </item>
     </layout>
    </item>
    <item>
