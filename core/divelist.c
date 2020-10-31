@@ -857,6 +857,10 @@ static void merge_imported_dives(struct dive_table *table)
 			merged->dive_site = NULL;
 			add_dive_to_dive_site(merged, ds);
 		}
+		unregister_dive_from_dive_site(prev);
+		unregister_dive_from_dive_site(dive);
+		unregister_dive_from_trip(prev);
+		unregister_dive_from_trip(dive);
 
 		/* Overwrite the first of the two dives and remove the second */
 		free_dive(prev);
