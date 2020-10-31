@@ -11,6 +11,9 @@ public:
 private
 slots:
 	void closeStats();
+	void chartTypeChanged(int);
+	void firstAxisChanged(int);
+	void secondAxisChanged(int);
 	void plot();
 private:
 	Ui::StatsWidget ui;
