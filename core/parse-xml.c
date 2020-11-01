@@ -1223,7 +1223,10 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 {
 	char *hash = NULL;
 	cylinder_t *cyl = dive->cylinders.nr > 0 ? get_cylinder(dive, dive->cylinders.nr - 1) : NULL;
+	weightsystem_t *ws = dive->weightsystems.nr > 0 ?
+		&dive->weightsystems.weightsystems[dive->weightsystems.nr - 1] : NULL;
 	pressure_t p;
+	weight_t w;
 	start_match("dive", name, buf);
 
 	switch (state->import_source) {
@@ -1326,12 +1329,18 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 		return;
 	if (MATCH_STATE("airpressure.dive", pressure, &dive->surface_pressure))
 		return;
-	if (MATCH("description.weightsystem", utf8_string, &dive->weightsystems.weightsystems[dive->weightsystems.nr - 1].description))
+	if (ws) {
+		if (MATCH("description.weightsystem", utf8_string, &ws->description))
+			return;
+		if (MATCH_STATE("weight.weightsystem", weight, &ws->weight))
+			return;
+	}
+	if (MATCH_STATE("weight", weight, &w)) {
+		weightsystem_t ws = empty_weightsystem;
+		ws.weight = w;
+		add_cloned_weightsystem(&dive->weightsystems, ws);
 		return;
-	if (MATCH_STATE("weight.weightsystem", weight, &dive->weightsystems.weightsystems[dive->weightsystems.nr - 1].weight))
-		return;
-	if (MATCH_STATE("weight", weight, &dive->weightsystems.weightsystems[dive->weightsystems.nr - 1].weight))
-		return;
+	}
 	if (cyl) {
 		if (MATCH("size.cylinder", cylindersize, &cyl->type.size))
 			return;
