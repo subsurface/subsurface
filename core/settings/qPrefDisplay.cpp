@@ -55,6 +55,7 @@ void qPrefDisplay::loadSync(bool doSync)
 	disk_mobile_scale(doSync);
 	disk_display_invalid_dives(doSync);
 	disk_show_developer(doSync);
+	disk_headerstyle_color(doSync);
 	if (!doSync) {
 		load_tooltip_position();
 		load_theme();
@@ -174,6 +175,29 @@ void qPrefDisplay::setCorrectFont()
 	qApp->setFont(defaultFont);
 
 	prefs.display_invalid_dives = qPrefPrivate::propValue(keyFromGroupAndName(group, "displayinvalid"), default_prefs.display_invalid_dives).toBool();
+}
+
+void qPrefDisplay::set_headerstyle_color(enum headerstyle_color_values value)
+{
+	if (value != prefs.headerstyle_color) {
+		prefs.headerstyle_color = value;
+		disk_headerstyle_color(true);
+		emit instance()->headerstyle_colorChanged(value);
+	}
+}
+
+void qPrefDisplay::disk_headerstyle_color(bool doSync)
+{
+	static enum headerstyle_color_values current_state;
+	if (doSync) {
+		if (current_state != prefs.headerstyle_color) {
+			current_state = prefs.headerstyle_color;
+			qPrefPrivate::propSetValue(keyFromGroupAndName(group, "headerstyle_color"), prefs.headerstyle_color, default_prefs.headerstyle_color);
+		}
+	} else {
+		prefs.headerstyle_color = (enum headerstyle_color_values)qPrefPrivate::propValue(keyFromGroupAndName(group, "headerstyle_color"), default_prefs.headerstyle_color).toInt();
+		current_state = prefs.headerstyle_color;
+	}
 }
 
 HANDLE_PROP_QSTRING(Display, "FileDialog/LastDir", lastDir);

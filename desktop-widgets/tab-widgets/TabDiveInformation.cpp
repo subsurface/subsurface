@@ -23,7 +23,18 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &TabDiveInformation::cylinderChanged);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &TabDiveInformation::cylinderChanged);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &TabDiveInformation::cylinderChanged);
+
+	// Put together appropriate CSS stylesheets: NB: Colors below in same order as the enum in prefs.h
+	QStringList colors = { "mediumblue", "lightblue", "black" };	// If using dark theme, set color appropriately
+	QString colorText = colors[prefs.headerstyle_color];
+
+	QString lastpart = colorText + " ;}";
+	QString CSSLabelColor = "QLabel { color: " + lastpart;
+	QString CSSTitleColor = "QGroupBox::title { color: " + lastpart ;
 	QStringList atmPressTypes { "mbar", get_depth_unit() ,tr("Use DC")};
+	QString CSSSetSmallLabel = "QLabel { color: ";
+	CSSSetSmallLabel.append(colorText + "; font-size: ");
+	CSSSetSmallLabel.append(QString::number((int)(0.5 + ui->diveHeadingLabel->geometry().height() * 0.66)) + "px;}");
 	ui->atmPressType->insertItems(0, atmPressTypes);
 	pressTypeIndex = 0;
 	ui->waterTypeCombo->insertItems(0, getWaterTypesAsString());
@@ -34,8 +45,10 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 		types.append(gettextFromC::tr(divemode_text_ui[i]));
 	ui->diveType->insertItems(0, types);
 	connect(ui->diveType, SIGNAL(currentIndexChanged(int)), this, SLOT(diveModeChanged(int)));
-	QString CSSSetSmallLabel = "QLabel { font-size: " +                           // Using label height
-		QString::number((int)(0.5 + ui->diveHeadingLabel->geometry().height() * 0.66)) + "px;}"; // .. set CSS font size of star widget subscripts
+	ui->scrollAreaWidgetContents_3->setStyleSheet(CSSTitleColor);
+	ui->diveHeadingLabel->setStyleSheet(CSSLabelColor);
+	ui->gasHeadingLabel->setStyleSheet(CSSLabelColor);
+	ui->environmentHeadingLabel->setStyleSheet(CSSLabelColor);
 	ui->groupBox_visibility->setStyleSheet(CSSSetSmallLabel);
 	ui->groupBox_current->setStyleSheet(CSSSetSmallLabel);
 	ui->groupBox_wavesize->setStyleSheet(CSSSetSmallLabel);
@@ -55,7 +68,7 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 	updateWaterTypeWidget();
 	QPixmap warning (":salinity-warning-icon");
 	ui->salinityOverWrittenIcon->setPixmap(warning);
-	ui->salinityOverWrittenIcon->setToolTip("Water type differs from that of dc");
+	ui->salinityOverWrittenIcon->setToolTip(CSSSetSmallLabel);
 	ui->salinityOverWrittenIcon->setToolTipDuration(2500);
 	ui->salinityOverWrittenIcon->setVisible(false);
 }
