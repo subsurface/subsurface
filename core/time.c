@@ -98,7 +98,7 @@ void utc_mkdate(timestamp_t timestamp, struct tm *tm)
 	tm->tm_mon = m;
 }
 
-timestamp_t utc_mktime(struct tm *tm)
+timestamp_t utc_mktime(const struct tm *tm)
 {
 	static const int mdays[] = {
 		0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334
