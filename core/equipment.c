@@ -317,6 +317,19 @@ void set_weightsystem(struct dive *dive, int idx, weightsystem_t ws)
 	dive->weightsystems.weightsystems[idx] = clone_weightsystem(ws);
 }
 
+weightsystem_t *get_or_create_weightsystem(struct dive *d, int idx)
+{
+	if (idx < 0) {
+		fprintf(stderr, "Warning: accessing invalid weightsystem %d\n", idx);
+		return NULL;
+	}
+	while (idx >= d->weightsystems.nr) {
+		weightsystem_t ws = empty_weightsystem;
+		add_cloned_weightsystem(&d->weightsystems, ws);
+	}
+	return &d->weightsystems.weightsystems[idx];
+}
+
 /* when planning a dive we need to make sure that all cylinders have a sane depth assigned
  * and if we are tracking gas consumption the pressures need to be reset to start = end = workingpressure */
 void reset_cylinders(struct dive *dive, bool track_gas)

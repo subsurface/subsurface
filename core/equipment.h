@@ -78,6 +78,7 @@ extern weightsystem_t clone_weightsystem(weightsystem_t ws);
 extern void free_weightsystem(weightsystem_t ws);
 extern void copy_cylinder_types(const struct dive *s, struct dive *d);
 extern void add_cloned_weightsystem(struct weightsystem_table *t, weightsystem_t ws);
+extern weightsystem_t *get_or_create_weightsystem(struct dive *d, int idx);
 extern cylinder_t clone_cylinder(cylinder_t cyl);
 extern void free_cylinder(cylinder_t cyl);
 extern cylinder_t *add_empty_cylinder(struct cylinder_table *t);
