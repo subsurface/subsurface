@@ -66,6 +66,12 @@ enum unit_system_values {
 	PERSONALIZE
 };
 
+enum headerstyle_color_values {
+	MEDIUMBLUE,
+	LIGHTBLUE,
+	BLACK
+};
+
 // ********** PREFERENCES **********
 // This struct is kept global for all of ssrf
 // most of the fields are loaded from git as
@@ -100,11 +106,12 @@ struct preferences {
 	dive_computer_prefs_t dive_computer4;
 
 	// ********** Display *************
-	bool        display_invalid_dives;
-	const char *divelist_font;
-	double      font_size;
-	double      mobile_scale;
-	bool        show_developer;
+	bool                          display_invalid_dives;
+	const char                   *divelist_font;
+	double                        font_size;
+	double                        mobile_scale;
+	bool                          show_developer;
+	enum headerstyle_color_values headerstyle_color;
 
 	// ********** Equipment tab *******
 	const char *default_cylinder;
