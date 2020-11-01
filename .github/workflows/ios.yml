@@ -9,8 +9,10 @@ on:
 
 jobs:
   mobileBuild:
-    runs-on: macOS-latest
+    runs-on: macOS-10.15
     steps:
+    - name: switch to Xcode 11
+      run: sudo xcode-select -s "/Applications/Xcode_11.7.app"
     - name: checkout sources
       uses: actions/checkout@v1
     - name: setup Homebrew
