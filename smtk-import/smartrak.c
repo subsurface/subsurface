@@ -35,6 +35,7 @@
 #include "core/divesite.h"
 #include "core/membuffer.h"
 #include "core/tag.h"
+#include "core/device.h"
 
 /* SmartTrak version, constant for every single file */
 int smtk_version;
@@ -863,19 +864,35 @@ static dc_descriptor_t *get_data_descriptor(int data_model, dc_family_t data_fam
  * DC.  dc_family_t is certainly known *only* if it is Aladin/Memomouse family
  * otherwise it will be known after get_data_descriptor call.
  */
-static int prepare_data(int data_model, dc_family_t dc_fam, device_data_t *dev_data)
+static int prepare_data(int data_model, char *serial, dc_family_t dc_fam, device_data_t *dev_data)
 {
 	dev_data->device = NULL;
 	dev_data->context = NULL;
+	if (!data_model){
+		dev_data->model = copy_string("manually added dive");
+		dev_data->descriptor = NULL;
+		dev_data->deviceid = 0;
+		return DC_STATUS_NODEVICE;
+	}
 	dev_data->descriptor = get_data_descriptor(data_model, dc_fam);
 	if (dev_data->descriptor) {
 		dev_data->vendor = dc_descriptor_get_vendor(dev_data->descriptor);
 		dev_data->product = dc_descriptor_get_product(dev_data->descriptor);
 		dev_data->model = smtk_concat_str(dev_data->model, "", "%s %s", dev_data->vendor, dev_data->product);
+		dev_data->deviceid = (uint32_t) lrint(strtod(serial, NULL));
 		return DC_STATUS_SUCCESS;
 	} else {
+		dev_data->model = copy_string("unsupported dive computer");
+		dev_data->deviceid = (uint32_t) lrint(strtod(serial, NULL));
 		return DC_STATUS_UNSUPPORTED;
 	}
+}
+
+static void device_data_free(device_data_t *dev_data)
+{
+	free((void *) dev_data->model);
+	dc_descriptor_free(dev_data->descriptor);
+	free(dev_data);
 }
 
 /*
@@ -919,6 +936,7 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 	MdbColumn *col[MDB_MAX_COLS];
 	char *bound_values[MDB_MAX_COLS];
 	int i, dc_model, *bound_lens[MDB_MAX_COLS];
+	struct device_table *devices = alloc_device_table();
 
 	// Set an european style locale to work date/time conversion
 	setlocale(LC_TIME, "POSIX");
@@ -988,16 +1006,14 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		 * dive and parse it with libdivecomputer
 		 */
 		dc_model = lrint(strtod(bound_values[coln(DCMODEL)], NULL)) & 0xFF;
-		if (dc_model && *bound_lens[coln(LOG)]) {
+		if (*bound_lens[coln(LOG)]) {
 			hdr_buffer = mdb_ole_read_full(mdb, col[coln(LOG)], &hdr_length);
 			if (hdr_length > 0 && hdr_length < 20)	// We have a profile but it's imported from datatrak
 				dc_fam = DC_FAMILY_UWATEC_ALADIN;
-			rc = prepare_data(dc_model, dc_fam, devdata);
-		} else {
-			rc = DC_STATUS_NODEVICE;
 		}
-		smtkdive->dc.model = devdata->model;
-		smtkdive->dc.serial = copy_string(col[coln(DCNUMBER)]->bind_ptr);
+		rc = prepare_data(dc_model, copy_string(col[coln(DCNUMBER)]->bind_ptr), dc_fam, devdata);
+		smtkdive->dc.deviceid = devdata->deviceid;
+		smtkdive->dc.model = copy_string(devdata->model);
 		if (rc == DC_STATUS_SUCCESS && *bound_lens[coln(PROFILE)]) {
 			prf_buffer = mdb_ole_read_full(mdb, col[coln(PROFILE)], &prf_length);
 			if (prf_length > 0) {
@@ -1096,7 +1112,8 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		smtkdive->notes = smtk_concat_str(smtkdive->notes, "\n", "%s", col[coln(REMARKS)]->bind_ptr);
 
 		record_dive_to_table(smtkdive, divetable);
-		free(devdata);
+		add_devices_of_dive(smtkdive, devices);
+		device_data_free(devdata);
 	}
 	mdb_free_tabledef(mdb_table);
 	mdb_free_catalog(mdb_clon);
