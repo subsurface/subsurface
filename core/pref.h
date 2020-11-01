@@ -66,6 +66,12 @@ enum unit_system_values {
 	PERSONALIZE
 };
 
+enum darkmode_colour_values {
+	MEDIUMBLUE,
+	LIGHTBLUE,
+	BLACK
+};
+
 // ********** PREFERENCES **********
 // This struct is kept global for all of ssrf
 // most of the fields are loaded from git as
@@ -105,6 +111,7 @@ struct preferences {
 	double      font_size;
 	double      mobile_scale;
 	bool        show_developer;
+	enum darkmode_colour_values darkmode_colour;
 
 	// ********** Equipment tab *******
 	const char *default_cylinder;

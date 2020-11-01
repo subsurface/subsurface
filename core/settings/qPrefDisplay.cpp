@@ -55,6 +55,7 @@ void qPrefDisplay::loadSync(bool doSync)
 	disk_mobile_scale(doSync);
 	disk_display_invalid_dives(doSync);
 	disk_show_developer(doSync);
+	disk_darkmode_colour(doSync);
 	if (!doSync) {
 		load_tooltip_position();
 		load_theme();
@@ -174,6 +175,29 @@ void qPrefDisplay::setCorrectFont()
 	qApp->setFont(defaultFont);
 
 	prefs.display_invalid_dives = qPrefPrivate::propValue(keyFromGroupAndName(group, "displayinvalid"), default_prefs.display_invalid_dives).toBool();
+}
+
+void qPrefDisplay::set_darkmode_colour(enum darkmode_colour_values value)
+{
+	if (value != prefs.darkmode_colour) {
+		prefs.darkmode_colour = value;
+		disk_darkmode_colour(true);
+		emit instance()->darkmode_colourChanged(value);
+	}
+}
+
+void qPrefDisplay::disk_darkmode_colour(bool doSync) \
+{ 
+	static enum darkmode_colour_values current_state; 
+	if (doSync) { 
+		if (current_state != prefs.darkmode_colour) { 
+			current_state = prefs.darkmode_colour; 
+			qPrefPrivate::propSetValue(keyFromGroupAndName(group, "darkmode_colour"), prefs.darkmode_colour, default_prefs.darkmode_colour); 
+		} 
+	} else { 
+		prefs.darkmode_colour = (enum darkmode_colour_values)qPrefPrivate::propValue(keyFromGroupAndName(group, "darkmode_colour"), default_prefs.darkmode_colour).toInt(); 
+		current_state = prefs.darkmode_colour; 
+	} 
 }
 
 HANDLE_PROP_QSTRING(Display, "FileDialog/LastDir", lastDir);
