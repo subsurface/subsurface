@@ -73,6 +73,9 @@
              <property name="text">
               <string>Suit</string>
              </property>
+             <property name="isHeader" stdset="0">
+              <bool>true</bool>
+             </property>
             </widget>
             <widget class="QLineEdit" name="suit">
              <property name="readOnly">

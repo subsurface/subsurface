@@ -72,6 +72,9 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	extraWidgets << new TabDiveComputer(this);
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Device names"));
 
+	// call colorsChanged() for the initial setup now that the extraWidgets are loaded
+	colorsChanged();
+
 	updateDateTimeFields();
 
 	closeMessage();
@@ -701,8 +704,32 @@ void MainTab::clearTabs()
 		widget->clear();
 }
 
+// setup the colors of 'header' elements in the tab widget
 void MainTab::colorsChanged()
 {
+	// Put together appropriate CSS stylesheets: NB: colors below in same order as the enum in prefs.h
+	QStringList colors = { "mediumblue", "lightblue", "black" };	// If using dark theme, set color appropriately
+	QString colorText = colors[prefs.headerstyle_color];
+
+	QString lastpart = colorText + " ;}";
+
+	// only set the color if the widget is enabled
+	QString CSSLabelcolor = "QLabel:enabled { color: " + lastpart;
+	QString CSSTitlecolor = "QGroupBox::title:enabled { color: " + lastpart ;
+
+	// apply to all the group boxes
+	QList<QGroupBox *>groupBoxes = this->findChildren<QGroupBox *>();
+	for (QGroupBox *gb: groupBoxes)
+		gb->setStyleSheet(QString(CSSTitlecolor));
+
+	// apply to all labels that are marked as headers in the .ui file
+	QList<QLabel *>labels = this->findChildren<QLabel *>();
+	for (QLabel *ql: labels) {
+		if (ql->property("isHeader").toBool())
+			ql->setStyleSheet(QString(CSSLabelcolor));
+	}
+
+	// finally call the individual updateUi() functions so they can overwrite these style sheets
 	for (TabBase *widget: extraWidgets)
 		widget->updateUi();
 }

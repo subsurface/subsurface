@@ -249,23 +249,15 @@ void TabDiveInformation::updateUi()
 	QStringList colors = { "mediumblue", "lightblue", "black" };	// If using dark theme, set color appropriately
 	QString colorText = colors[prefs.headerstyle_color];
 
-	QString lastpart = colorText + " ;}";
-	QString CSSLabelcolor = "QLabel { color: " + lastpart;
-	QString CSSTitlecolor = "QGroupBox::title { color: " + lastpart ;
-	QString CSSSetSmallLabel = "QLabel { color: ";
+	QString CSSSetSmallLabel = "QLabel:enabled { color: ";
 	CSSSetSmallLabel.append(colorText + "; font-size: ");
 	CSSSetSmallLabel.append(QString::number((int)(0.5 + ui->diveHeadingLabel->geometry().height() * 0.66)) + "px;}");
-	ui->scrollAreaWidgetContents_3->setStyleSheet(CSSTitlecolor);
-	ui->diveHeadingLabel->setStyleSheet(CSSLabelcolor);
-	ui->gasHeadingLabel->setStyleSheet(CSSLabelcolor);
-	ui->environmentHeadingLabel->setStyleSheet(CSSLabelcolor);
-	ui->groupBox_visibility->setStyleSheet(CSSSetSmallLabel);
-	ui->groupBox_current->setStyleSheet(CSSSetSmallLabel);
-	ui->groupBox_wavesize->setStyleSheet(CSSSetSmallLabel);
-	ui->groupBox_surge->setStyleSheet(CSSSetSmallLabel);
-	ui->groupBox_chill->setStyleSheet(CSSSetSmallLabel);
-	ui->salinityOverWrittenIcon->setToolTip(CSSSetSmallLabel);
-
+	ui->groupBox_visibility->setStyleSheet(ui->groupBox_visibility->styleSheet() + CSSSetSmallLabel);
+	ui->groupBox_current->setStyleSheet(ui->groupBox_current->styleSheet() + CSSSetSmallLabel);
+	ui->groupBox_wavesize->setStyleSheet(ui->groupBox_wavesize->styleSheet() + CSSSetSmallLabel);
+	ui->groupBox_surge->setStyleSheet(ui->groupBox_surge->styleSheet() + CSSSetSmallLabel);
+	ui->groupBox_chill->setStyleSheet(ui->groupBox_chill->styleSheet() + CSSSetSmallLabel);
+	ui->salinityOverWrittenIcon->setToolTip(ui->salinityOverWrittenIcon->styleSheet() + CSSSetSmallLabel);
 }
 
 // From the index of the water type combo box, set the dive->salinity to an appropriate value
