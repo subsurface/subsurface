@@ -24,17 +24,7 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &TabDiveInformation::cylinderChanged);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &TabDiveInformation::cylinderChanged);
 
-	// Put together appropriate CSS stylesheets: NB: Colors below in same order as the enum in prefs.h
-	QStringList colors = { "mediumblue", "lightblue", "black" };	// If using dark theme, set color appropriately
-	QString colorText = colors[prefs.headerstyle_color];
-
-	QString lastpart = colorText + " ;}";
-	QString CSSLabelColor = "QLabel { color: " + lastpart;
-	QString CSSTitleColor = "QGroupBox::title { color: " + lastpart ;
 	QStringList atmPressTypes { "mbar", get_depth_unit() ,tr("Use DC")};
-	QString CSSSetSmallLabel = "QLabel { color: ";
-	CSSSetSmallLabel.append(colorText + "; font-size: ");
-	CSSSetSmallLabel.append(QString::number((int)(0.5 + ui->diveHeadingLabel->geometry().height() * 0.66)) + "px;}");
 	ui->atmPressType->insertItems(0, atmPressTypes);
 	pressTypeIndex = 0;
 	ui->waterTypeCombo->insertItems(0, getWaterTypesAsString());
@@ -45,15 +35,6 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 		types.append(gettextFromC::tr(divemode_text_ui[i]));
 	ui->diveType->insertItems(0, types);
 	connect(ui->diveType, SIGNAL(currentIndexChanged(int)), this, SLOT(diveModeChanged(int)));
-	ui->scrollAreaWidgetContents_3->setStyleSheet(CSSTitleColor);
-	ui->diveHeadingLabel->setStyleSheet(CSSLabelColor);
-	ui->gasHeadingLabel->setStyleSheet(CSSLabelColor);
-	ui->environmentHeadingLabel->setStyleSheet(CSSLabelColor);
-	ui->groupBox_visibility->setStyleSheet(CSSSetSmallLabel);
-	ui->groupBox_current->setStyleSheet(CSSSetSmallLabel);
-	ui->groupBox_wavesize->setStyleSheet(CSSSetSmallLabel);
-	ui->groupBox_surge->setStyleSheet(CSSSetSmallLabel);
-	ui->groupBox_chill->setStyleSheet(CSSSetSmallLabel);
 	if (!prefs.extraEnvironmentalDefault) // if extraEnvironmental preference is turned off
 		showCurrentWidget(false, 0);  // Show current star widget at lefthand side
 	QAction *action = new QAction(tr("OK"), this);
@@ -68,7 +49,6 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 	updateWaterTypeWidget();
 	QPixmap warning (":salinity-warning-icon");
 	ui->salinityOverWrittenIcon->setPixmap(warning);
-	ui->salinityOverWrittenIcon->setToolTip(CSSSetSmallLabel);
 	ui->salinityOverWrittenIcon->setToolTipDuration(2500);
 	ui->salinityOverWrittenIcon->setVisible(false);
 }
@@ -241,7 +221,7 @@ void TabDiveInformation::updateData()
 		if (prefs.salinityEditDefault) {   //If edit-salinity is enabled then set correct water type in combobox:
 			ui->waterTypeCombo->setCurrentIndex(updateSalinityComboIndex(salinity_value));
 		} else {         // If water salinity is not editable: show water type as a text label
-                        ui->waterTypeText->setText(get_water_type_string(salinity_value));
+			ui->waterTypeText->setText(get_water_type_string(salinity_value));
 		}
 		ui->salinityText->setText(get_salinity_string(salinity_value));
 	} else {
@@ -261,6 +241,31 @@ void TabDiveInformation::updateData()
 		showCurrentWidget(true, 2);   // Show current star widget at 3rd position
 	else
 		showCurrentWidget(false, 0);  // Show current star widget at lefthand side
+}
+
+void TabDiveInformation::updateUi()
+{
+	// Put together appropriate CSS stylesheets: NB: colors below in same order as the enum in prefs.h
+	QStringList colors = { "mediumblue", "lightblue", "black" };	// If using dark theme, set color appropriately
+	QString colorText = colors[prefs.headerstyle_color];
+
+	QString lastpart = colorText + " ;}";
+	QString CSSLabelcolor = "QLabel { color: " + lastpart;
+	QString CSSTitlecolor = "QGroupBox::title { color: " + lastpart ;
+	QString CSSSetSmallLabel = "QLabel { color: ";
+	CSSSetSmallLabel.append(colorText + "; font-size: ");
+	CSSSetSmallLabel.append(QString::number((int)(0.5 + ui->diveHeadingLabel->geometry().height() * 0.66)) + "px;}");
+	ui->scrollAreaWidgetContents_3->setStyleSheet(CSSTitlecolor);
+	ui->diveHeadingLabel->setStyleSheet(CSSLabelcolor);
+	ui->gasHeadingLabel->setStyleSheet(CSSLabelcolor);
+	ui->environmentHeadingLabel->setStyleSheet(CSSLabelcolor);
+	ui->groupBox_visibility->setStyleSheet(CSSSetSmallLabel);
+	ui->groupBox_current->setStyleSheet(CSSSetSmallLabel);
+	ui->groupBox_wavesize->setStyleSheet(CSSSetSmallLabel);
+	ui->groupBox_surge->setStyleSheet(CSSSetSmallLabel);
+	ui->groupBox_chill->setStyleSheet(CSSSetSmallLabel);
+	ui->salinityOverWrittenIcon->setToolTip(CSSSetSmallLabel);
+
 }
 
 // From the index of the water type combo box, set the dive->salinity to an appropriate value

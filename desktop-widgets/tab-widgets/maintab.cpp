@@ -34,6 +34,7 @@
 #include "TabDiveStatistics.h"
 #include "TabDiveSite.h"
 #include "TabDiveComputer.h"
+#include "core/settings/qPrefDisplay.h"
 
 #include <QCompleter>
 #include <QScrollBar>
@@ -89,7 +90,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	// Alas, this is not the case. When the user switches to system-format, the preferences sends the according
 	// signal. However, the correct date and time format is set by the preferences dialog later. This should be fixed.
 	connect(PreferencesDialog::instance(), &PreferencesDialog::settingsChanged, this, &MainTab::updateDateTimeFields);
-
+	connect(qPrefDisplay::instance(), &qPrefDisplay::headerstyle_colorChanged, this, &MainTab::colorsChanged);
 	QAction *action = new QAction(tr("Apply changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
 	ui.diveNotesMessage->addAction(action);
@@ -698,4 +699,10 @@ void MainTab::clearTabs()
 {
 	for (auto widget: extraWidgets)
 		widget->clear();
+}
+
+void MainTab::colorsChanged()
+{
+	for (TabBase *widget: extraWidgets)
+		widget->updateUi();
 }

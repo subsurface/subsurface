@@ -4,3 +4,7 @@
 TabBase::TabBase(QWidget *parent) : QWidget(parent)
 {
 }
+
+void TabBase::updateUi()
+{
+}
