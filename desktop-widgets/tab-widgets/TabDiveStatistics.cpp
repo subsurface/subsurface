@@ -112,7 +112,7 @@ void TabDiveStatistics::updateData()
 	bool is_freedive = current_dive && current_dive->dc.divemode == FREEDIVE;
 	ui->divesAllText->setText(QString::number(stats_selection.selection_size));
 	ui->totalTimeAllText->setText(get_dive_duration_string(stats_selection.total_time.seconds, tr("h"), tr("min"), tr("sec"), " ", is_freedive));
-	
+
 	int seconds = stats_selection.total_time.seconds;
 	if (stats_selection.selection_size)
 		seconds /= stats_selection.selection_size;

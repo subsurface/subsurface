@@ -64,6 +64,7 @@ slots:
 	void enableEdition();
 	void escDetected(void);
 	void updateDateTimeFields();
+	void colorsChanged();
 private:
 	Ui::MainTab ui;
 	bool editMode;
