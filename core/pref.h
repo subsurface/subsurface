@@ -87,7 +87,7 @@ struct preferences {
 	int animation_speed;
 
 	// ********** CloudStorage **********
-	bool       cloud_auto_sync;
+	bool        cloud_auto_sync;
 	const char *cloud_base_url;
 	const char *cloud_git_url;
 	const char *cloud_storage_email;
@@ -135,11 +135,11 @@ struct preferences {
 	geocoding_prefs_t geocoding;
 
 	// ********** Language **********
-	const char *    date_format;
+	const char     *date_format;
 	bool            date_format_override;
-	const char *    date_format_short;
+	const char     *date_format_short;
 	locale_prefs_t  locale; //: TODO: move the rest of locale based info here.
-	const char *    time_format;
+	const char     *time_format;
 	bool            time_format_override;
 
 	// ********** LocationService **********
