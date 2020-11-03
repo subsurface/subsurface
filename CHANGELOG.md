@@ -1,3 +1,4 @@
+- desktop: improve the appearance in dark mode
 - add Garmin Descent Mk2/Mk2i support for Linux, macOS, and 64bit Windows
 - desktop: add 64bit Windows build
 - desktop: make device management undoable
