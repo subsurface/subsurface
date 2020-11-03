@@ -404,6 +404,39 @@ void StatsView::plot(int type, int subTypeIdx,
 	}
 }
 
+int initValueAxis(QtCharts::QValueAxis *axis, int count)
+{
+	// TODO: Let the acceptable number of ticks depend on the size of the graph.
+	int numTicksMin = 5;
+	int numTicksMax = 8;
+	int max, numTicks;
+
+	// A fixed number of ticks is not nice if the maximum count not divisible
+	// by this number. In the worst case, our maximum count may be prime.
+	// Therefore make the maximum divisible by the number of ticks.
+	// This is algorithm is very stupid: it increases the maximum until it is
+	// a multiple of a "nice" number of ticks.
+	if (count <= numTicksMin) {
+		max = count;
+		numTicks = count + 1;
+	} else {
+		for (max = count; ; ++max) {
+			for (numTicks = numTicksMin; numTicks <= numTicksMax; ++numTicks) {
+				if (max % numTicks == 0)
+					goto found_ticks;
+			}
+		}
+	found_ticks:
+		++numTicks; // There is one more tick than sections.
+	}
+
+	axis->setLabelFormat("%.0f");
+	axis->setTitleText(StatsView::tr("No. dives"));
+	axis->setRange(0, max);
+	axis->setTickCount(numTicks);
+	return max;
+}
+
 void StatsView::plotBarChart(const std::vector<dive *> &dives,
 			     ChartSubType subType,
 			     const StatsType *categoryType, const StatsBinner *categoryBinner,
@@ -464,10 +497,7 @@ void StatsView::plotBarChart(const std::vector<dive *> &dives,
 
 	QValueAxis *valAxis = makeAxis<QValueAxis>();
 	int maxVal = isStacked ? maxCategoryCount : maxCount;
-	valAxis->setRange(0, maxVal);
-	valAxis->setLabelsVisible(true);
-	valAxis->setLabelFormat(QStringLiteral("%.1f"));
-	valAxis->setTitleText(tr("No. dives"));
+	initValueAxis(valAxis, maxVal);
 
 	QAbstractBarSeries *series;
 	switch (subType) {
@@ -596,8 +626,6 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 		catAxis->setTitleText(categoryType->nameWithBinnerUnit(*categoryBinner));
 
 		QValueAxis *valAxis = makeAxis<QValueAxis>();
-		valAxis->setLabelFormat("%.1f");
-		valAxis->setTitleText(tr("No. dives"));
 
 		QAbstractBarSeries *series;
 		if (subType == ChartSubType::Vertical)
@@ -616,7 +644,7 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 			*set << count;
 		}
 
-		valAxis->setRange(0, maxCount);
+		initValueAxis(valAxis, maxCount);
 
 		series->append(set);
 		hideLegend();
@@ -740,11 +768,8 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	catAxis->setLabelsPosition(QCategoryAxis::AxisLabelsPositionOnValue);
 	catAxis->setTitleText(categoryType->nameWithUnit());
 
-	double chartHeight = maxCategoryCount * (1.0 + barTopSpace);
 	QValueAxis *valAxis = makeAxis<QValueAxis>();
-	valAxis->setRange(0, chartHeight);
-	valAxis->setLabelFormat(QStringLiteral("%.1f"));
-	valAxis->setTitleText(tr("No. dives"));
+	double chartHeight = initValueAxis(valAxis, maxCategoryCount);
 
 	bool isHorizontal = subType == ChartSubType::Horizontal;
 	QAbstractAxis *xAxis = catAxis;
