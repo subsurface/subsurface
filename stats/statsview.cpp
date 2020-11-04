@@ -727,6 +727,25 @@ void StatsView::addBar(double lowerBound, double upperBound, double height, cons
 	series->setUpperSeries(upper);
 }
 
+static void initHistogramAxis(QtCharts::QCategoryAxis *axis, const std::vector<std::pair<QString, double>> &labels, int maxLabels)
+{
+	using QtCharts::QCategoryAxis;
+
+	if (labels.size() < 2) // Less than two makes no sense -> there must be at least one category
+		return;
+	if (maxLabels <= 1)
+		maxLabels = 2;
+
+	axis->setMin(labels.front().second);
+	axis->setMax(labels.back().second);
+	axis->setStartValue(labels.front().second);
+	int step = ((int)labels.size() - 1) / maxLabels + 1;
+	for (int i = 0; i < (int)labels.size(); i += step) {
+		axis->append(labels[i].first, labels[i].second);
+	}
+	axis->setLabelsPosition(QCategoryAxis::AxisLabelsPositionOnValue);
+}
+
 void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 					ChartSubType subType,
 					const StatsType *categoryType, const StatsBinner *categoryBinner)
@@ -747,31 +766,30 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 		return;
 
 	int maxCategoryCount = 0;
-	QCategoryAxis *catAxis = makeAxis<QCategoryAxis>();
 	LabelDisambiguator labeler;
-	double lowerBound = categoryBinner->lowerBoundToFloat(*categoryBins.front().bin);
-	catAxis->setMin(lowerBound);
-	catAxis->setStartValue(lowerBound);
+	std::vector<std::pair<QString, double>> labelValues;
 	for (auto const &[bin, count]: categoryBins) {
 		if (count > maxCategoryCount)
 			maxCategoryCount = count;
 		QString label = categoryBinner->formatLowerBound(*bin);
 		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
-		catAxis->append(labeler.transmogrify(label), lowerBound);
+		labelValues.emplace_back(labeler.transmogrify(label), lowerBound);
 	}
 
 	const StatsBin &lastBin = *categoryBins.back().bin;
 	QString lastLabel = categoryBinner->formatUpperBound(lastBin);
 	double upperBound = categoryBinner->upperBoundToFloat(lastBin);
-	catAxis->append(labeler.transmogrify(lastLabel), upperBound);
-	catAxis->setMax(upperBound);
-	catAxis->setLabelsPosition(QCategoryAxis::AxisLabelsPositionOnValue);
+	labelValues.emplace_back(labeler.transmogrify(lastLabel), upperBound);
+
+	QCategoryAxis *catAxis = makeAxis<QCategoryAxis>();
+	bool isHorizontal = subType == ChartSubType::Horizontal;
+	int maxLabels = isHorizontal ? 10 : 15;
+	initHistogramAxis(catAxis, labelValues, maxLabels);
 	catAxis->setTitleText(categoryType->nameWithUnit());
 
 	QValueAxis *valAxis = makeAxis<QValueAxis>();
 	double chartHeight = initValueAxis(valAxis, maxCategoryCount);
 
-	bool isHorizontal = subType == ChartSubType::Horizontal;
 	QAbstractAxis *xAxis = catAxis;
 	QAbstractAxis *yAxis = valAxis;
 	if (isHorizontal)
@@ -818,26 +836,26 @@ void StatsView::plotHistogramChart(const std::vector<dive *> &dives,
 	if (categoryBins.empty())
 		return;
 
-	QCategoryAxis *catAxis = makeAxis<QCategoryAxis>();
 	LabelDisambiguator labeler;
-	double lowerBound = categoryBinner->lowerBoundToFloat(*categoryBins.front().bin);
-	catAxis->setMin(lowerBound);
-	catAxis->setStartValue(lowerBound);
 	std::vector<double> values;
 	values.reserve(categoryBins.size());
+	std::vector<std::pair<QString, double>> labelValues;
 	for (auto const &[bin, dives]: categoryBins) {
 		QString label = categoryBinner->formatLowerBound(*bin);
 		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
-		catAxis->append(labeler.transmogrify(label), lowerBound);
+		labelValues.emplace_back(labeler.transmogrify(label), lowerBound);
 		values.push_back(valueType->applyOperation(dives, valueAxisOperation));
 	}
 
 	const StatsBin &lastBin = *categoryBins.back().bin;
-	QString lastLabel = categoryBinner->formatUpperBound(lastBin);
+	QString lastLabel = labeler.transmogrify(categoryBinner->formatUpperBound(lastBin));
 	double upperBound = categoryBinner->upperBoundToFloat(lastBin);
-	catAxis->append(labeler.transmogrify(lastLabel), upperBound);
-	catAxis->setMax(upperBound);
-	catAxis->setLabelsPosition(QCategoryAxis::AxisLabelsPositionOnValue);
+	labelValues.emplace_back(labeler.transmogrify(lastLabel), upperBound);
+
+	bool isHorizontal = subType == ChartSubType::Horizontal;
+	int maxLabels = isHorizontal ? 10 : 15;
+	QCategoryAxis *catAxis = makeAxis<QCategoryAxis>();
+	initHistogramAxis(catAxis, labelValues, maxLabels);
 	catAxis->setTitleText(categoryType->nameWithUnit());
 
 	double maxValue = *std::max_element(values.begin(), values.end());
@@ -848,7 +866,6 @@ void StatsView::plotHistogramChart(const std::vector<dive *> &dives,
 	valAxis->setLabelFormat(makeFormatString(valueType->decimals()));
 	valAxis->setTitleText(valueType->nameWithUnit());
 
-	bool isHorizontal = subType == ChartSubType::Horizontal;
 	QAbstractAxis *xAxis = catAxis;
 	QAbstractAxis *yAxis = valAxis;
 	if (isHorizontal)
