@@ -785,7 +785,7 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 
 	if (categoryType->type() == StatsType::Type::Numeric) {
 		double average = categoryType->average(dives);
-		double median = categoryType->median(dives);
+		double median = categoryType->quartiles(dives).q2;
 		QPen averagePen(Qt::green);
 		averagePen.setWidth(2);
 		QPen medianPen(Qt::black);

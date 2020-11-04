@@ -221,10 +221,8 @@ double StatsType::averageTimeWeighted(const std::vector<dive *> &dives) const
 	return weight_count > 0.0 ? sum / weight_count : 0.0;
 }
 
-double StatsType::median(const std::vector<dive *> &dives) const
+std::vector<double> StatsType::values(const std::vector<dive *> &dives) const
 {
-	if (dives.empty())
-		return 0.0;
 	std::vector<double> vec;
 	vec.reserve(dives.size());
 	for (const dive *d: dives) {
@@ -234,9 +232,50 @@ double StatsType::median(const std::vector<dive *> &dives) const
 		vec.push_back(v);
 	}
 	std::sort(vec.begin(), vec.end());
+	return vec;
+}
+
+// Small helper to calculate quartiles - section of intervals of
+// two consecutive elements in a vector. It's not strictly correct
+// to interpolate linearly. However, on the one hand we don't know
+// the actual distribution, on the other hand for a discrete
+// distribution the quartiles are ranges. So what should we do?
+static double q1(const double *v)
+{
+	return (3.0*v[0] + v[1]) / 4.0;
+}
+static double q2(const double *v)
+{
+	return (v[0] + v[1]) / 2.0;
+}
+static double q3(const double *v)
+{
+	return (v[0] + 3.0*v[1]) / 4.0;
+}
+
+StatsQuartiles StatsType::quartiles(const std::vector<dive *> &dives) const
+{
+	return quartiles(values(dives));
+}
+
+// This expects the value vector to be sorted!
+StatsQuartiles StatsType::quartiles(const std::vector<double> &vec)
+{
 	size_t s = vec.size();
-	return s % 2 == 0 ? (vec[s/2 - 1] + vec[s/2]) / 2.0
-			  : vec[s/2];
+	if (s == 0)
+		return { 0.0, 0.0, 0.0, 0.0, 0.0 };
+	switch (s % 4) {
+	default:
+		// gcc doesn't recognize that we catch all possible values. disappointing.
+	case 0:
+		return { vec[0], q3(&vec[s/4 - 1]), q2(&vec[s/2 - 1]), q1(&vec[s - s/4 - 1]), vec[s - 1] };
+	case 1:
+		return { vec[0], vec[s/4], vec[s/2], vec[s - s/4 - 1], vec[s - 1] };
+	case 2:
+		return { vec[0], q1(&vec[s/4]), q2(&vec[s/2 - 1]), q3(&vec[s - s/4 - 2]), vec[s - 1] };
+	case 3:
+		return { vec[0], q2(&vec[s/4]), vec[s/2], q2(&vec[s - s/4 - 2]), vec[s - 1] };
+	}
 }
 
 double StatsType::sum(const std::vector<dive *> &dives) const
@@ -254,7 +293,7 @@ double StatsType::applyOperation(const std::vector<dive *> &dives, StatsOperatio
 {
 	switch (op) {
 	case StatsOperation::Median:
-		return median(dives);
+		return quartiles(dives).q2;
 	case StatsOperation::Average:
 		return average(dives);
 	case StatsOperation::TimeWeightedAverage:
