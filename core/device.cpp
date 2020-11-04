@@ -37,7 +37,7 @@ bool device::operator<(const device &a) const
 extern "C" const struct device *get_device_for_dc(const struct device_table *table, const struct divecomputer *dc)
 {
 	const std::vector<device> &dcs = table->devices;
-	device dev { dc->model, dc->deviceid, {}, {}, {} };
+	device dev { dc->model ?: "", dc->deviceid, {}, {}, {} };
 	auto it = std::lower_bound(dcs.begin(), dcs.end(), dev);
 	return it != dcs.end() && same_device(*it, dev) ? &*it : NULL;
 }
@@ -60,7 +60,7 @@ extern "C" void set_dc_deviceid(struct divecomputer *dc, unsigned int deviceid, 
 	dc->deviceid = deviceid;
 
 	// Serial and firmware can only be deduced if we know the model
-	if (!dc->model)
+	if (empty_string(dc->model))
 		return;
 
 	const device *node = get_device_for_dc(device_table, dc);
