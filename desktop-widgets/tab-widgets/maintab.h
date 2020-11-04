@@ -78,6 +78,8 @@ private:
 	dive_trip *currentTrip;
 	QList<TabBase*> extraWidgets;
 	void divesEdited(int num); // Opens a warning window if more than one dive was edited
+	void changeEvent(QEvent *ev) override;
+	bool isDark;
 };
 
 #endif // MAINTAB_H

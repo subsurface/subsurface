@@ -243,14 +243,10 @@ void TabDiveInformation::updateData()
 		showCurrentWidget(false, 0);  // Show current star widget at lefthand side
 }
 
-void TabDiveInformation::updateUi()
+void TabDiveInformation::updateUi(QString titleColor)
 {
-	// Put together appropriate CSS stylesheets: NB: colors below in same order as the enum in prefs.h
-	QStringList colors = { "mediumblue", "lightblue", "black" };	// If using dark theme, set color appropriately
-	QString colorText = colors[prefs.headerstyle_color];
-
 	QString CSSSetSmallLabel = "QLabel:enabled { color: ";
-	CSSSetSmallLabel.append(colorText + "; font-size: ");
+	CSSSetSmallLabel.append(titleColor + "; font-size: ");
 	CSSSetSmallLabel.append(QString::number((int)(0.5 + ui->diveHeadingLabel->geometry().height() * 0.66)) + "px;}");
 	ui->groupBox_visibility->setStyleSheet(ui->groupBox_visibility->styleSheet() + CSSSetSmallLabel);
 	ui->groupBox_current->setStyleSheet(ui->groupBox_current->styleSheet() + CSSSetSmallLabel);

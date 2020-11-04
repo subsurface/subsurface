@@ -13,7 +13,7 @@ public:
 	TabBase(QWidget *parent = 0);
 	virtual void updateData() = 0;
 	virtual void clear() = 0;
-	virtual void updateUi();
+	virtual void updateUi(QString titleColor);
 };
 
 #endif

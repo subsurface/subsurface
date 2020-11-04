@@ -16,7 +16,7 @@ public:
 	~TabDiveInformation();
 	void updateData() override;
 	void clear() override;
-	void updateUi() override;
+	void updateUi(QString titleColor) override;
 private slots:
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
 	void cylinderChanged(dive *d);

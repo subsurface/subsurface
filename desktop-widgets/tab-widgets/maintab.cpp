@@ -47,6 +47,12 @@ struct Completers {
 	QCompleter *tags;
 };
 
+static bool paletteIsDark(const QPalette &p)
+{
+	// we consider a palette dark if the text color is lighter than the windows background
+	return p.window().color().valueF() < p.windowText().color().valueF();
+}
+
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	editMode(false),
 	ignoreInput(false),
@@ -71,6 +77,9 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Dive sites"));
 	extraWidgets << new TabDiveComputer(this);
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Device names"));
+
+	// make sure we know if this is a light or dark mode
+	isDark = paletteIsDark(palette());
 
 	// call colorsChanged() for the initial setup now that the extraWidgets are loaded
 	colorsChanged();
@@ -704,13 +713,24 @@ void MainTab::clearTabs()
 		widget->clear();
 }
 
+void MainTab::changeEvent(QEvent *ev)
+{
+	if (ev->type() == QEvent::PaletteChange) {
+		// check if this is a light or dark mode
+		bool dark = paletteIsDark(palette());
+		if (dark != isDark) {
+			// things have changed, so setup the colors correctly
+			isDark = dark;
+			colorsChanged();
+		}
+	}
+	QTabWidget::changeEvent(ev);
+}
+
 // setup the colors of 'header' elements in the tab widget
 void MainTab::colorsChanged()
 {
-	// Put together appropriate CSS stylesheets: NB: colors below in same order as the enum in prefs.h
-	QStringList colors = { "mediumblue", "lightblue", "black" };	// If using dark theme, set color appropriately
-	QString colorText = colors[prefs.headerstyle_color];
-
+	QString colorText = isDark ? QStringLiteral("lightblue") : QStringLiteral("mediumblue");
 	QString lastpart = colorText + " ;}";
 
 	// only set the color if the widget is enabled
@@ -731,5 +751,5 @@ void MainTab::colorsChanged()
 
 	// finally call the individual updateUi() functions so they can overwrite these style sheets
 	for (TabBase *widget: extraWidgets)
-		widget->updateUi();
+		widget->updateUi(colorText);
 }

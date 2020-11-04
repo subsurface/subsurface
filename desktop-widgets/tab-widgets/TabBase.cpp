@@ -5,6 +5,7 @@ TabBase::TabBase(QWidget *parent) : QWidget(parent)
 {
 }
 
-void TabBase::updateUi()
+void TabBase::updateUi(QString titleColor)
 {
+	Q_UNUSED(titleColor)
 }
