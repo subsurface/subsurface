@@ -49,6 +49,7 @@ TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(ne
 	updateWaterTypeWidget();
 	QPixmap warning (":salinity-warning-icon");
 	ui->salinityOverWrittenIcon->setPixmap(warning);
+	ui->salinityOverWrittenIcon->setToolTip("Water type differs from that of dc");
 	ui->salinityOverWrittenIcon->setToolTipDuration(2500);
 	ui->salinityOverWrittenIcon->setVisible(false);
 }

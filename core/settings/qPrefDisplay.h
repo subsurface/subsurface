@@ -8,7 +8,6 @@
 
 class qPrefDisplay : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(enum headerstyle_color_values headerstyle_color READ headerstyle_color WRITE set_headerstyle_color NOTIFY headerstyle_colorChanged)
 	Q_PROPERTY(int animation_speed READ animation_speed WRITE set_animation_speed NOTIFY animation_speedChanged)
 	Q_PROPERTY(QString divelist_font READ divelist_font WRITE set_divelist_font NOTIFY divelist_fontChanged)
 	Q_PROPERTY(double font_size READ font_size WRITE set_font_size NOTIFY font_sizeChanged)
@@ -36,7 +35,6 @@ public:
 	static void sync() { loadSync(true); }
 
 public:
-	static enum headerstyle_color_values headerstyle_color() { return prefs.headerstyle_color; }
 	static int animation_speed() { return prefs.animation_speed; }
 	static QString divelist_font() { return prefs.divelist_font; }
 	static double font_size() { return prefs.font_size; }
@@ -56,7 +54,6 @@ public:
 	static bool singleColumnPortrait() { return st_singleColumnPortrait; }
 
 public slots:
-	static void set_headerstyle_color(enum headerstyle_color_values value);
 	static void set_animation_speed(int value);
 	static void set_divelist_font(const QString &value);
 	static void set_font_size(double value);
@@ -76,7 +73,6 @@ public slots:
 	static void set_singleColumnPortrait(bool value);
 
 signals:
-	void headerstyle_colorChanged(enum headerstyle_color_values value);
 	void animation_speedChanged(int value);
 	void divelist_fontChanged(const QString &value);
 	void font_sizeChanged(double value);
@@ -99,7 +95,6 @@ private:
 	qPrefDisplay() {}
 
 	// functions to load/sync variable with disk
-	static void disk_headerstyle_color(bool doSync);
 	static void disk_animation_speed(bool doSync);
 	static void disk_divelist_font(bool doSync);
 	static void disk_font_size(bool doSync);

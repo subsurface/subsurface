@@ -120,77 +120,6 @@
    </item>
 
    <item>
-    <widget class="QGroupBox" name="groupBox_headerstyle">
-     <property name="title">
-      <string>Header text colors</string>
-     </property>
-     <layout class="QVBoxLayout" name="headerModeLayout_4">
-      <property name="margin">
-       <number>5</number>
-      </property>
-
-      <item>
-       <widget class="QLabel" name="label_help_header">
-        <property name="toolTip">
-         <string extracomment="Help info header"/>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Depending on the display mode, sometimes the blue text used in headers in the various information panes is not clearly visible. Select a color that fits the current theme of your computer. For dark mode, select either Light Blue or Black (rendered white using a dark theme). The default is Medium Blue.</string>
-        </property>
-       </widget>
-      </item>
-
-      <item>  
-       <layout class="QHBoxLayout" name="darkmodeLayout_5">
-
-         <item>
-          <widget class="QRadioButton" name="mediumblue_text">
-           <property name="text">
-            <string>Medium Blue</string>
-           </property>
-          </widget>
-         </item>
-
-         <item>
-          <widget class="QRadioButton" name="lightblue_text">
-           <property name="text">
-            <string>Light Blue</string>
-           </property>
-          </widget>
-         </item>
-
-         <item>
-          <widget class="QRadioButton" name="black_text">
-           <property name="text">
-            <string>Black</string>
-           </property>
-          </widget>
-         </item>
-
-        </layout>
-      </item>
-
-      </layout>
-    </widget>
-   </item>
-
-   <item>
-    <spacer name="verticalSpacer_3">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>0</width>
-       <height>195</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-      <item>
     <spacer name="verticalSpacer_2">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -203,10 +132,8 @@
      </property>
     </spacer>
    </item>
-
   </layout>
  </widget>
-
  <resources/>
  <connections>
   <connection>

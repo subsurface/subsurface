@@ -24,7 +24,6 @@ PreferencesDefaults::~PreferencesDefaults()
 
 void PreferencesDefaults::refreshSettings()
 {
-	prefs.headerstyle_color == BLACK ? ui->black_text->setChecked(true) : (prefs.headerstyle_color == LIGHTBLUE ? ui->lightblue_text->setChecked(true) : ui->mediumblue_text->setChecked(true));
 	ui->font->setCurrentFont(qPrefDisplay::divelist_font());
 	ui->fontsize->setValue(qPrefDisplay::font_size());
 	ui->velocitySlider->setValue(qPrefDisplay::animation_speed());
@@ -36,6 +35,4 @@ void PreferencesDefaults::syncSettings()
 	qPrefDisplay::set_divelist_font(ui->font->currentFont().toString());
 	qPrefDisplay::set_font_size(ui->fontsize->value());
 	qPrefDisplay::set_animation_speed(ui->velocitySlider->value());
-	qPrefDisplay::set_headerstyle_color(ui->black_text->isChecked() ? BLACK : (ui->lightblue_text->isChecked() ? LIGHTBLUE : MEDIUMBLUE));
-
 }
