@@ -788,7 +788,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			Text {
 				Layout.fillWidth: true
 				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-				text: qsTr("The location data are not used in way, except when you apply the location data to the dives in your dive list on this device.")
+				text: qsTr("The location data are not used in any way, except when you apply the location data to the dives in your dive list on this device.")
 			}
 			Text {
 				Layout.fillWidth: true
