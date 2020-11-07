@@ -81,11 +81,14 @@ TableView::~TableView()
 		s.remove("");
 	} else if (ui.tableView->model()) {
 		for (int i = 0; i < ui.tableView->model()->columnCount(); i++) {
-			if (ui.tableView->columnWidth(i) == defaultColumnWidth(i))
+			if (ui.tableView->columnWidth(i) == defaultColumnWidth(i)) {
 				s.remove(QString("colwidth%1").arg(i));
-			else
+			} else {
 				s.setValue(QString("colwidth%1").arg(i), ui.tableView->columnWidth(i));
+			}
 		}
+	} else {
+		qWarning("TableView %s without model", qPrintable(objectName()));
 	}
 	s.endGroup();
 }

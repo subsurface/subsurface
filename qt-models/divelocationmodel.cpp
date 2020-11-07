@@ -215,7 +215,7 @@ bool DiveSiteSortedModel::lessThan(const QModelIndex &i1, const QModelIndex &i2)
 	}
 }
 
-DiveSiteSortedModel::DiveSiteSortedModel()
+DiveSiteSortedModel::DiveSiteSortedModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
 	setSourceModel(LocationInformationModel::instance());
 }

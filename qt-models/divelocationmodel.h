@@ -49,7 +49,7 @@ private:
 	bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 #endif // SUBSURFACE_MOBILE
 public:
-	DiveSiteSortedModel();
+	DiveSiteSortedModel(QObject *parent = nullptr);
 	QStringList allSiteNames() const;
 	void setFilter(const QString &text);
 	struct dive_site *getDiveSite(const QModelIndex &idx);

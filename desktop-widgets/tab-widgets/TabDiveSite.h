@@ -4,7 +4,8 @@
 
 #include "TabBase.h"
 #include "ui_TabDiveSite.h"
-#include "qt-models/divelocationmodel.h"
+
+class DiveSiteSortedModel;
 
 class TabDiveSite : public TabBase {
 	Q_OBJECT
@@ -22,7 +23,7 @@ private slots:
 	void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 private:
 	Ui::TabDiveSite ui;
-	DiveSiteSortedModel model;
+	DiveSiteSortedModel *model;
 	QVector<dive_site *> selectedDiveSites();
 	void hideEvent(QHideEvent *) override;
 	void showEvent(QShowEvent *) override;
