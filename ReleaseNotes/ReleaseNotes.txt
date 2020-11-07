@@ -2,6 +2,23 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 4.9.8
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- filter: more flexible filtering system based on individual constraints
+- desktop: improve the appearance in dark mode
+- desktop: fix crash on drag&drop into tag widgets [#3030]
+- desktop: allow adding dives to arbitrary trips
+- desktop: respect page-up, page-down, home and end keys for selection change [#2957]
+- equipment: use pO2 from prefernces for MOD display
+- core: make device management undoable
+- core: improve merging of cylinder pressures [#2884]
+- Windows: add separate 32bit and 64bit builds - the 32bit build does NOT support the Garmin Descent Mk2/Mk2i
+- Windows: add missing modern Vista theme
+- macOS: fix issue with HID dive computers like Suunto Eon Core/Steel [#2999]
+
+dive computer support:
+- add Garmin Descent Mk2/Mk2i support for Linux, macOS, and 64bit Windows
+
 New in _Subsurface_ 4.9.7
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - equipment: don't overwrite already set weights when changing weight type [#2938]
