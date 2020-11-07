@@ -30,6 +30,8 @@ FilterWidget::FilterWidget(QWidget* parent) :
 	ui.presetTable->setModel(FilterPresetModel::instance());
 	ui.presetTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui.presetTable->setSelectionMode(QAbstractItemView::SingleSelection);
+	ui.presetTable->horizontalHeader()->setStretchLastSection(true);
+	ui.presetTable->resizeColumnsToContents();
 
 	connect(ui.clear, &QToolButton::clicked, this, &FilterWidget::clearFilter);
 	connect(ui.close, &QToolButton::clicked, this, &FilterWidget::closeFilter);
