@@ -12,8 +12,10 @@
 TabDiveSite::TabDiveSite(QWidget *parent) : TabBase(parent)
 {
 	ui.setupUi(this);
+
+	model = new DiveSiteSortedModel(this);
 	ui.diveSites->setTitle(tr("Dive sites"));
-	ui.diveSites->setModel(&model);
+	ui.diveSites->setModel(model);
 	// Default: sort by name
 	ui.diveSites->view()->sortByColumn(LocationInformationModel::NAME, Qt::AscendingOrder);
 	ui.diveSites->view()->setSortingEnabled(true);
@@ -44,7 +46,7 @@ void TabDiveSite::clear()
 
 void TabDiveSite::diveSiteClicked(const QModelIndex &index)
 {
-	struct dive_site *ds = model.getDiveSite(index);
+	struct dive_site *ds = model->getDiveSite(index);
 	if (!ds)
 		return;
 	switch (index.column()) {
@@ -80,7 +82,7 @@ void TabDiveSite::diveSiteAdded(struct dive_site *, int idx)
 	if (idx < 0)
 		return;
 	QModelIndex globalIdx = LocationInformationModel::instance()->index(idx, LocationInformationModel::NAME);
-	QModelIndex localIdx = model.mapFromSource(globalIdx);
+	QModelIndex localIdx = model->mapFromSource(globalIdx);
 	ui.diveSites->view()->setCurrentIndex(localIdx);
 	ui.diveSites->view()->edit(localIdx);
 }
@@ -91,7 +93,7 @@ void TabDiveSite::diveSiteChanged(struct dive_site *ds, int field)
 	if (idx < 0)
 		return;
 	QModelIndex globalIdx = LocationInformationModel::instance()->index(idx, field);
-	QModelIndex localIdx = model.mapFromSource(globalIdx);
+	QModelIndex localIdx = model->mapFromSource(globalIdx);
 	ui.diveSites->view()->scrollTo(localIdx);
 }
 
@@ -102,7 +104,7 @@ void TabDiveSite::on_purgeUnused_clicked()
 
 void TabDiveSite::on_filterText_textChanged(const QString &text)
 {
-	model.setFilter(text);
+	model->setFilter(text);
 }
 
 QVector<dive_site *> TabDiveSite::selectedDiveSites()
@@ -111,7 +113,7 @@ QVector<dive_site *> TabDiveSite::selectedDiveSites()
 	QVector<dive_site *> sites;
 	sites.reserve(indices.size());
 	for (const QModelIndex &idx: indices) {
-		struct dive_site *ds = model.getDiveSite(idx);
+		struct dive_site *ds = model->getDiveSite(idx);
 		sites.append(ds);
 	}
 	return sites;

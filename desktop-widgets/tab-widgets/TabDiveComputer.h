@@ -4,7 +4,8 @@
 
 #include "TabBase.h"
 #include "ui_TabDiveComputer.h"
-#include "qt-models/divecomputermodel.h"
+
+class DiveComputerSortedModel;
 
 class TabDiveComputer : public TabBase {
 	Q_OBJECT
@@ -16,8 +17,7 @@ public slots:
 	void tableClicked(const QModelIndex &index);
 private:
 	Ui::TabDiveComputer ui;
-	DiveComputerModel model;
-	DiveComputerSortedModel sortedModel;
+	DiveComputerSortedModel *sortedModel;
 };
 
 #endif

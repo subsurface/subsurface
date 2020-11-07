@@ -1,12 +1,17 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "TabDiveComputer.h"
 #include "ui_TabDiveExtraInfo.h"
+#include "qt-models/divecomputermodel.h"
 
 TabDiveComputer::TabDiveComputer(QWidget *parent) : TabBase(parent)
 {
 	ui.setupUi(this);
-	sortedModel.setSourceModel(&model);
-	ui.devices->setModel(&sortedModel);
+
+	DiveComputerModel *model = new DiveComputerModel(this);
+	sortedModel = new DiveComputerSortedModel(this);
+
+	sortedModel->setSourceModel(model);
+	ui.devices->setModel(sortedModel);
 	ui.devices->view()->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui.devices->view()->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui.devices->view()->setSortingEnabled(true);
@@ -29,5 +34,5 @@ void TabDiveComputer::tableClicked(const QModelIndex &index)
 		return;
 
 	if (index.column() == DiveComputerModel::REMOVE)
-		sortedModel.remove(index);
+		sortedModel->remove(index);
 }
