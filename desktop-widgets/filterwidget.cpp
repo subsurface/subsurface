@@ -77,6 +77,10 @@ void FilterWidget::updatePresetMenu()
 	for (int i = 0; i < count; ++i) {
 		QModelIndex idx = model->index(i, FilterPresetModel::NAME);
 		QString name = model->data(idx, Qt::DisplayRole).value<QString>();
+		// QAction constructor tries to be clever and interprets an ampersand
+		// in the text as a shortcut indicator; manually work around that in order to
+		// have labels like "Amy & Bob" work
+		name.replace("&", "&&");
 		loadFilterPresetMenu->addAction(name, [this,i]() { selectPreset(i); });
 	}
 	ui.loadSetButton->setMenu(loadFilterPresetMenu.get());
