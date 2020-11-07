@@ -33,6 +33,8 @@ FilterWidget::FilterWidget(QWidget* parent) :
 	ui.presetTable->horizontalHeader()->setStretchLastSection(true);
 	ui.presetTable->resizeColumnsToContents();
 
+	ui.currentSet->setTextFormat(Qt::PlainText);
+
 	connect(ui.clear, &QToolButton::clicked, this, &FilterWidget::clearFilter);
 	connect(ui.close, &QToolButton::clicked, this, &FilterWidget::closeFilter);
 	connect(ui.fullText, &QLineEdit::textChanged, this, &FilterWidget::filterChanged);
