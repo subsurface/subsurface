@@ -179,7 +179,7 @@ void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remote
 	// On Windows we cannot obtain the pairing status so we set only the name and the address of the device
 	QString deviceLabel = QString("%1 (%2)").arg(remoteDeviceInfo.name(),
 						     remoteDeviceInfo.address().toString());
-	QColor pairingColor = QColor(Qt::white);
+	QColor pairingColor = QColor(Qt::gray);
 #else
 	// By default we use the status label and the color for the UNPAIRED state
 	QColor pairingColor = QColor("#F1A9A0");
@@ -202,7 +202,7 @@ void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remote
 	if (!remoteDeviceInfo.deviceUuid().isNull()) {
 		// we have only a Uuid, no address, so show that and reset the pairing color
 		deviceLabel = QString("%1 (%2)").arg(remoteDeviceInfo.name(),remoteDeviceInfo.deviceUuid().toString());
-		pairingColor = QColor(Qt::white);
+		pairingColor =  QColor(Qt::gray);
 	} else
 #endif
 	deviceLabel = tr("%1 (%2)   [State: %3]").arg(remoteDeviceInfo.name(),
