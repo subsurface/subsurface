@@ -6,12 +6,13 @@ TabDiveComputer::TabDiveComputer(QWidget *parent) : TabBase(parent)
 {
 	ui.setupUi(this);
 	sortedModel.setSourceModel(&model);
-	ui.table->setModel(&sortedModel);
-	ui.table->view()->setSelectionBehavior(QAbstractItemView::SelectRows);
-	ui.table->view()->setSelectionMode(QAbstractItemView::SingleSelection);
-	ui.table->view()->setSortingEnabled(true);
-	ui.table->view()->sortByColumn(DiveComputerModel::MODEL, Qt::AscendingOrder);
-	connect(ui.table, &TableView::itemClicked, this, &TabDiveComputer::tableClicked);
+	ui.devices->setModel(&sortedModel);
+	ui.devices->view()->setSelectionBehavior(QAbstractItemView::SelectRows);
+	ui.devices->view()->setSelectionMode(QAbstractItemView::SingleSelection);
+	ui.devices->view()->setSortingEnabled(true);
+	ui.devices->view()->sortByColumn(DiveComputerModel::MODEL, Qt::AscendingOrder);
+	ui.devices->view()->horizontalHeader()->setStretchLastSection(true);
+	connect(ui.devices, &TableView::itemClicked, this, &TabDiveComputer::tableClicked);
 }
 
 void TabDiveComputer::updateData()
