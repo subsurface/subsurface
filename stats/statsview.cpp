@@ -985,7 +985,7 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 		double height = count;
 		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
 		double upperBound = categoryBinner->upperBoundToFloat(*bin);
-		addBar(lowerBound, upperBound, height, QBrush(Qt::blue), QPen(Qt::red), xAxis, yAxis, isHorizontal);
+		addBar(lowerBound, upperBound, height, QBrush(Qt::blue), QPen(Qt::white), xAxis, yAxis, isHorizontal);
 	}
 
 	if (categoryType->type() == StatsType::Type::Numeric) {
@@ -993,7 +993,7 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 		double median = categoryType->quartiles(dives).q2;
 		QPen averagePen(Qt::green);
 		averagePen.setWidth(2);
-		QPen medianPen(Qt::black);
+		QPen medianPen(Qt::red);
 		medianPen.setWidth(2);
 		addLineMarker(average, 0.0, chartHeight, averagePen, xAxis, yAxis, isHorizontal);
 		addLineMarker(median, 0.0, chartHeight, medianPen, xAxis, yAxis, isHorizontal);
@@ -1046,7 +1046,7 @@ void StatsView::plotHistogramBarChart(const std::vector<dive *> &dives,
 		double height = values[i++];
 		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
 		double upperBound = categoryBinner->upperBoundToFloat(*bin);
-		addBar(lowerBound, upperBound, height, QBrush(Qt::blue), QPen(Qt::red), xAxis, yAxis, isHorizontal);
+		addBar(lowerBound, upperBound, height, QBrush(Qt::blue), QPen(Qt::white), xAxis, yAxis, isHorizontal);
 	}
 
 	hideLegend();
