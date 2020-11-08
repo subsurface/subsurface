@@ -1030,9 +1030,9 @@ AddCylinder::AddCylinder(bool currentDiveOnly) :
 	if (dives.empty())
 		return;
 	else if (dives.size() == 1)
-		setText(tr("Add cylinder"));
+		setText(Command::Base::tr("Add cylinder"));
 	else
-		setText(tr("Add cylinder (%n dive(s))", "", dives.size()));
+		setText(Command::Base::tr("Add cylinder (%n dive(s))", "", dives.size()));
 	cyl = create_new_cylinder(dives[0]);
 }
 
@@ -1151,9 +1151,9 @@ RemoveCylinder::RemoveCylinder(int index, bool currentDiveOnly) :
 	EditCylinderBase(index, currentDiveOnly, true, SAME_TYPE | SAME_PRESS | SAME_GAS)
 {
 	if (dives.size() == 1)
-		setText(tr("Remove cylinder"));
+		setText(Command::Base::tr("Remove cylinder"));
 	else
-		setText(tr("Remove cylinder (%n dive(s))", "", dives.size()));
+		setText(Command::Base::tr("Remove cylinder (%n dive(s))", "", dives.size()));
 }
 
 void RemoveCylinder::undo()
@@ -1201,9 +1201,9 @@ EditCylinder::EditCylinder(int index, cylinder_t cylIn, EditCylinderType typeIn,
 		return;
 
 	if (dives.size() == 1)
-		setText(tr("Edit cylinder"));
+		setText(Command::Base::tr("Edit cylinder"));
 	else
-		setText(tr("Edit cylinder (%n dive(s))", "", dives.size()));
+		setText(Command::Base::tr("Edit cylinder (%n dive(s))", "", dives.size()));
 
 	// Try to untranslate the cylinder type
 	QString description = cylIn.type.description;

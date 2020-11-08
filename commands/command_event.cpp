@@ -64,26 +64,26 @@ void AddEventBase::undoit()
 AddEventBookmark::AddEventBookmark(struct dive *d, int dcNr, int seconds) :
 	AddEventBase(d, dcNr, create_event(seconds, SAMPLE_EVENT_BOOKMARK, 0, 0, "bookmark"))
 {
-	setText(tr("Add bookmark"));
+	setText(Command::Base::tr("Add bookmark"));
 }
 
 AddEventDivemodeSwitch::AddEventDivemodeSwitch(struct dive *d, int dcNr, int seconds, int divemode) :
 	AddEventBase(d, dcNr, create_event(seconds, SAMPLE_EVENT_BOOKMARK, 0, divemode, QT_TRANSLATE_NOOP("gettextFromC", "modechange")))
 {
-	setText(tr("Add dive mode switch to %1").arg(gettextFromC::tr(divemode_text_ui[divemode])));
+	setText(Command::Base::tr("Add dive mode switch to %1").arg(gettextFromC::tr(divemode_text_ui[divemode])));
 }
 
 AddEventSetpointChange::AddEventSetpointChange(struct dive *d, int dcNr, int seconds, pressure_t pO2) :
 	AddEventBase(d, dcNr, create_event(seconds, SAMPLE_EVENT_PO2, 0, pO2.mbar, QT_TRANSLATE_NOOP("gettextFromC", "SP change")))
 {
-	setText(tr("Add set point change")); // TODO: format pO2 value in bar or psi.
+	setText(Command::Base::tr("Add set point change")); // TODO: format pO2 value in bar or psi.
 }
 
 RenameEvent::RenameEvent(struct dive *d, int dcNr, struct event *ev, const char *name) : EventBase(d, dcNr),
 	eventToAdd(clone_event_rename(ev, name)),
 	eventToRemove(ev)
 {
-	setText(tr("Rename bookmark to %1").arg(name));
+	setText(Command::Base::tr("Rename bookmark to %1").arg(name));
 }
 
 bool RenameEvent::workToBeDone()
@@ -111,7 +111,7 @@ RemoveEvent::RemoveEvent(struct dive *d, int dcNr, struct event *ev) : EventBase
 	cylinder(ev->type == SAMPLE_EVENT_GASCHANGE2 || ev->type == SAMPLE_EVENT_GASCHANGE ?
 		 ev->gas.index : -1)
 {
-	setText(tr("Remove %1 event").arg(ev->name));
+	setText(Command::Base::tr("Remove %1 event").arg(ev->name));
 }
 
 bool RemoveEvent::workToBeDone()
