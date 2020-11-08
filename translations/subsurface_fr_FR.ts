@@ -940,6 +940,36 @@
         <translation><numerusform>Modifier le lestage (%n plongée)</numerusform><numerusform>Modifier le lestage (%n plongées)</numerusform></translation>
     </message>
     <message>
+        <location filename="../commands/command_edit.cpp" line="1033"/>
+        <source>Add cylinder</source>
+        <translation>Ajouter un bloc</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1035"/>
+        <source>Add cylinder (%n dive(s))</source>
+        <translation><numerusform>Ajouter le bloc (%n plongée)</numerusform><numerusform>Ajouter le bloc (%n plongées)</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1154"/>
+        <source>Remove cylinder</source>
+        <translation>Supprimer le bloc</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1156"/>
+        <source>Remove cylinder (%n dive(s))</source>
+        <translation><numerusform>Supprimer le bloc (%n plongée)</numerusform><numerusform>Supprimer le bloc (%n plongées)</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1204"/>
+        <source>Edit cylinder</source>
+        <translation>Modifier le bloc</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1206"/>
+        <source>Edit cylinder (%n dive(s))</source>
+        <translation><numerusform>Modifier le bloc (%n plongée)</numerusform><numerusform>Modifier le bloc (%n plongées)</numerusform></translation>
+    </message>
+    <message>
         <location filename="../commands/command_edit.cpp" line="1280"/>
         <source>Edit dive [%1]</source>
         <translation>Editer la plongée [%1]</translation>
@@ -953,6 +983,31 @@
         <location filename="../commands/command_edit_trip.cpp" line="75"/>
         <source>trip notes</source>
         <translation>notes de voyage</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="67"/>
+        <source>Add bookmark</source>
+        <translation>Ajouter un signet</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="73"/>
+        <source>Add dive mode switch to %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="79"/>
+        <source>Add set point change</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="86"/>
+        <source>Rename bookmark to %1</source>
+        <translation>Modifier le nom du signet en %1</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="114"/>
+        <source>Remove %1 event</source>
+        <translation>Supprimer %1 évènement</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="28"/>
@@ -988,85 +1043,6 @@
         <location filename="../commands/command_pictures.cpp" line="187"/>
         <source>add %n pictures(s)</source>
         <translation><numerusform>ajouter une image</numerusform><numerusform>ajouter %n images</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1033"/>
-        <source>Add cylinder</source>
-        <translation>Ajouter un bloc</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1035"/>
-        <source>Add cylinder (%n dive(s))</source>
-        <translation><numerusform>Ajouter le bloc (%n plongée)</numerusform><numerusform>Ajouter le bloc (%n plongées)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="67"/>
-        <source>Add bookmark</source>
-        <translation>Ajouter un signet</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="73"/>
-        <source>Add dive mode switch to %1</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="79"/>
-        <source>Add set point change</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1204"/>
-        <source>Edit cylinder</source>
-        <translation>Modifier le bloc</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1206"/>
-        <source>Edit cylinder (%n dive(s))</source>
-        <translation><numerusform>Modifier le bloc (%n plongée)</numerusform><numerusform>Modifier le bloc (%n plongées)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1154"/>
-        <source>Remove cylinder</source>
-        <translation>Supprimer le bloc</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1156"/>
-        <source>Remove cylinder (%n dive(s))</source>
-        <translation><numerusform>Supprimer le bloc (%n plongée)</numerusform><numerusform>Supprimer le bloc (%n plongées)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="114"/>
-        <source>Remove %1 event</source>
-        <translation>Supprimer %1 évènement</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="86"/>
-        <source>Rename bookmark to %1</source>
-        <translation>Modifier le nom du signet en %1</translation>
     </message>
 </context>
 <context>
@@ -5849,7 +5825,7 @@ le plus près</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/filterwidget.cpp" line="225"/>
+        <location filename="../desktop-widgets/filterwidget.cpp" line="232"/>
         <source>modified</source>
         <translation type="unfinished"/>
     </message>
@@ -6335,8 +6311,8 @@ le plus près</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="30"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="454"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="417"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="442"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="425"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="450"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="511"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="512"/>
         <source>Notes</source>
@@ -6367,7 +6343,7 @@ le plus près</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="244"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="441"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="449"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="498"/>
         <source>Location</source>
         <translation>Lieu</translation>
@@ -6410,89 +6386,89 @@ le plus près</translation>
         <translation>Évaluation</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="61"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="66"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="513"/>
         <source>Equipment</source>
         <translation>Équipement</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="63"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="68"/>
         <source>Information</source>
         <translation>Informations</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="65"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="70"/>
         <source>Statistics</source>
         <translation>Statistiques</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="67"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="72"/>
         <source>Media</source>
         <translation>Média</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="69"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="74"/>
         <source>Extra Info</source>
         <translation>Extra Info</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="71"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="76"/>
         <source>Dive sites</source>
         <translation>Sites de plongée</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="73"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="78"/>
         <source>Device names</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="97"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
         <source>Apply changes</source>
         <translation>Appliquer les modifications</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="101"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="109"/>
         <source>Discard changes</source>
         <translation>Annuler les modifications</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="113"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="109"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="117"/>
         <source>Undo</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="228"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="236"/>
         <source>This dive is being edited.</source>
         <translation>Cette plongée est en cours d&apos;édition.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="379"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="407"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="387"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="415"/>
         <source>Trip notes</source>
         <translation>Notes de voyage</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="401"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="409"/>
         <source>Trip location</source>
         <translation>Lieu du voyage</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="532"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="540"/>
         <source>Discard the changes?</source>
         <translation>Abandonner les modifications ?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="533"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="541"/>
         <source>You are about to discard your changes.</source>
         <translation>Vous perdrez les modifications non enregistrées.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="563"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="571"/>
         <source>Warning: edited %1 dives</source>
         <translation>Attention : %1 plongées modifiées</translation>
     </message>
@@ -7631,31 +7607,6 @@ Si votre périphérique utilise le Bluetooth, effectuez la même préparation qu
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="346"/>
         <source>Speed</source>
         <translation>Vitesse</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="125"/>
-        <source>Header text colors</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="141"/>
-        <source>Depending on the display mode, sometimes the blue text used in headers in the various information panes is not clearly visible. Select a color that fits the current theme of your computer. For dark mode, select either Light Blue or Black (rendered white using a dark theme). The default is Medium Blue.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="152"/>
-        <source>Medium Blue</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="160"/>
-        <source>Light Blue</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="168"/>
-        <source>Black</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="15"/>
@@ -10154,39 +10105,39 @@ Fichiers avec dates/heures incorrectes</translation>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="86"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="87"/>
         <source>Warning: edited %1 dives</source>
         <translation>Attention : %1 plongées modifiées</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="135"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="136"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
         <source>sec</source>
         <translation>sec</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>d</source>
         <translation>j</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="229"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="230"/>
         <source>unknown</source>
         <translation>inconnu</translation>
     </message>
@@ -10280,7 +10231,7 @@ Fichiers avec dates/heures incorrectes</translation>
     <name>TabDiveSite</name>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.ui" line="14"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="15"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="17"/>
         <source>Dive sites</source>
         <translation>Sites de plongée</translation>
     </message>
@@ -10295,19 +10246,19 @@ Fichiers avec dates/heures incorrectes</translation>
         <translation>Purger les sites de plongées inutilisés</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="56"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="58"/>
         <source>Delete dive site?</source>
         <translation>Supprimer le site de plongée?</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="57"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="59"/>
         <source>This dive site has %n dive(s). Do you really want to delete it?
 </source>
         <translation><numerusform>Le site de plongée a %n plongée. Voulez-vous vraiment les supprimer ?</numerusform><numerusform>Le site de plongée a %n plongées. Voulez-vous vraiment les supprimer ?
 </numerusform></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="74"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="76"/>
         <source>New dive site</source>
         <translation>Nouveau site de plongée</translation>
     </message>
@@ -10321,42 +10272,45 @@ Fichiers avec dates/heures incorrectes</translation>
         <translation>Statistiques</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="73"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="74"/>
         <source>Max. depth</source>
         <translation>Profondeur maximale</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="85"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="196"/>
-        <source>SAC</source>
-        <translation>Consommation d&apos;air (SAC)</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="97"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="197"/>
-        <source>Temperature</source>
-        <translation>Température</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="109"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="198"/>
-        <source>Total time</source>
-        <translation>Durée totale</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="128"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="200"/>
         <source>Duration</source>
         <translation>Durée</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="140"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="201"/>
-        <source>Dives</source>
-        <translation>Plongées</translation>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="120"/>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="197"/>
+        <source>Temperature</source>
+        <translation>Température</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="159"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="143"/>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="196"/>
+        <source>SAC</source>
+        <translation>Consommation d&apos;air (SAC)</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="177"/>
+        <source>All selected dives</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="196"/>
+        <source>Total number of dives selected :</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="218"/>
+        <source>Total duration of selected dives :</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="258"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="203"/>
         <source>Gas consumption</source>
         <translation>Consommation de gaz</translation>
@@ -10475,6 +10429,16 @@ mélangés à partir de l&apos;air et en utilisant :
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="195"/>
         <source>Depth</source>
         <translation>Profondeur</translation>
+    </message>
+    <message>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="198"/>
+        <source>Total time</source>
+        <translation>Durée totale</translation>
+    </message>
+    <message>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="201"/>
+        <source>Dives</source>
+        <translation>Plongées</translation>
     </message>
 </context>
 <context>
@@ -14214,7 +14178,7 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="791"/>
-        <source>The location data are not used in way, except when you apply the location data to the dives in your dive list on this device.</source>
+        <source>The location data are not used in any way, except when you apply the location data to the dives in your dive list on this device.</source>
         <translation type="unfinished"/>
     </message>
     <message>

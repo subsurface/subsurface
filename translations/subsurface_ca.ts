@@ -639,12 +639,12 @@
     <message>
         <location filename="../commands/command_device.cpp" line="14"/>
         <source>Delete device %1 (0x%2)</source>
-        <translation type="unfinished"/>
+        <translation>Suprimeix el dispositiu %1 (0x%2)</translation>
     </message>
     <message>
         <location filename="../commands/command_device.cpp" line="43"/>
         <source>Set nickname of device %1 (0x%2) to %3</source>
-        <translation type="unfinished"/>
+        <translation>Estableix el sobrenom del dispositiu %1 (0x%2) a %3</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="405"/>
@@ -940,6 +940,36 @@
         <translation><numerusform>Edita el llast (%n immersió)</numerusform><numerusform>Edita el llast (%n immersions)</numerusform></translation>
     </message>
     <message>
+        <location filename="../commands/command_edit.cpp" line="1033"/>
+        <source>Add cylinder</source>
+        <translation>Afegeix una ampolla</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1035"/>
+        <source>Add cylinder (%n dive(s))</source>
+        <translation><numerusform>Afegeix una ampolla (%n immersió)</numerusform><numerusform>Afegeix una ampolla (%n immersions)</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1154"/>
+        <source>Remove cylinder</source>
+        <translation>Suprimeix l&apos;ampolla</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1156"/>
+        <source>Remove cylinder (%n dive(s))</source>
+        <translation><numerusform>Suprimeix l&apos;ampolla (%n immersió)</numerusform><numerusform>Suprimeix l&apos;ampolla (%n immersions)</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1204"/>
+        <source>Edit cylinder</source>
+        <translation>Edita l&apos;ampolla</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1206"/>
+        <source>Edit cylinder (%n dive(s))</source>
+        <translation><numerusform>Edita l&apos;ampolla (%n immersió)</numerusform><numerusform>Edita l&apos;ampolla (%n immersions)</numerusform></translation>
+    </message>
+    <message>
         <location filename="../commands/command_edit.cpp" line="1280"/>
         <source>Edit dive [%1]</source>
         <translation>Edita la immersió [%1]</translation>
@@ -953,6 +983,31 @@
         <location filename="../commands/command_edit_trip.cpp" line="75"/>
         <source>trip notes</source>
         <translation>notes del viatge</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="67"/>
+        <source>Add bookmark</source>
+        <translation>Afegeix una adreça d&apos;interès</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="73"/>
+        <source>Add dive mode switch to %1</source>
+        <translation>Afegeix un canvi del mode de busseig a %1</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="79"/>
+        <source>Add set point change</source>
+        <translation>Afegeix un canvi de punt d&apos;ajust</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="86"/>
+        <source>Rename bookmark to %1</source>
+        <translation>Reanomena l&apos;adreça d&apos;interès a %1</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="114"/>
+        <source>Remove %1 event</source>
+        <translation>Elimina l&apos;esdeveniment %1</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="28"/>
@@ -988,85 +1043,6 @@
         <location filename="../commands/command_pictures.cpp" line="187"/>
         <source>add %n pictures(s)</source>
         <translation><numerusform>afegeix %n imatge</numerusform><numerusform>afegeix %n imatges</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1033"/>
-        <source>Add cylinder</source>
-        <translation>Afegeix una ampolla</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1035"/>
-        <source>Add cylinder (%n dive(s))</source>
-        <translation><numerusform>Afegeix una ampolla (%n immersió)</numerusform><numerusform>Afegeix una ampolla (%n immersions)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="67"/>
-        <source>Add bookmark</source>
-        <translation>Afegeix una adreça d&apos;interès</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="73"/>
-        <source>Add dive mode switch to %1</source>
-        <translation>Afegeix un canvi del mode de busseig a %1</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="79"/>
-        <source>Add set point change</source>
-        <translation>Afegeix un canvi de punt d&apos;ajust</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1204"/>
-        <source>Edit cylinder</source>
-        <translation>Edita l&apos;ampolla</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1206"/>
-        <source>Edit cylinder (%n dive(s))</source>
-        <translation><numerusform>Edita l&apos;ampolla (%n immersió)</numerusform><numerusform>Edita l&apos;ampolla (%n immersions)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1154"/>
-        <source>Remove cylinder</source>
-        <translation>Suprimeix l&apos;ampolla</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1156"/>
-        <source>Remove cylinder (%n dive(s))</source>
-        <translation><numerusform>Suprimeix l&apos;ampolla (%n immersió)</numerusform><numerusform>Suprimeix l&apos;ampolla (%n immersions)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="114"/>
-        <source>Remove %1 event</source>
-        <translation>Elimina l&apos;esdeveniment %1</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="86"/>
-        <source>Rename bookmark to %1</source>
-        <translation>Reanomena l&apos;adreça d&apos;interès a %1</translation>
     </message>
 </context>
 <context>
@@ -5854,7 +5830,7 @@ relacionats amb el busseig.</translation>
         <translation>Filtra els conjunts</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/filterwidget.cpp" line="225"/>
+        <location filename="../desktop-widgets/filterwidget.cpp" line="232"/>
         <source>modified</source>
         <translation>modificat</translation>
     </message>
@@ -6340,8 +6316,8 @@ relacionats amb el busseig.</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="30"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="454"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="417"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="442"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="425"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="450"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="511"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="512"/>
         <source>Notes</source>
@@ -6372,7 +6348,7 @@ relacionats amb el busseig.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="244"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="441"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="449"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="498"/>
         <source>Location</source>
         <translation>Ubicació</translation>
@@ -6415,89 +6391,89 @@ relacionats amb el busseig.</translation>
         <translation>Valoració</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="61"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="66"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="513"/>
         <source>Equipment</source>
         <translation>Equipament</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="63"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="68"/>
         <source>Information</source>
         <translation>Informació</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="65"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="70"/>
         <source>Statistics</source>
         <translation>Estadístiques</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="67"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="72"/>
         <source>Media</source>
         <translation>Suport</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="69"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="74"/>
         <source>Extra Info</source>
         <translation>Info. addicional</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="71"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="76"/>
         <source>Dive sites</source>
         <translation>Punts d&apos;immersió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="73"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="78"/>
         <source>Device names</source>
-        <translation type="unfinished"/>
+        <translation>Noms de dispositiu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="97"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
         <source>Apply changes</source>
         <translation>Aplica els canvis</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="101"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="109"/>
         <source>Discard changes</source>
         <translation>Descarta els canvis</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="113"/>
         <source>OK</source>
         <translation>D&apos;acord</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="109"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="117"/>
         <source>Undo</source>
         <translation>Desfés</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="228"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="236"/>
         <source>This dive is being edited.</source>
         <translation>Aquesta immersió s&apos;està editant.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="379"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="407"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="387"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="415"/>
         <source>Trip notes</source>
         <translation>Notes del viatge</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="401"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="409"/>
         <source>Trip location</source>
         <translation>Ubicació del viatge</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="532"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="540"/>
         <source>Discard the changes?</source>
         <translation>Descarto els canvis?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="533"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="541"/>
         <source>You are about to discard your changes.</source>
         <translation>Esteu a punt de descartar els vostres canvis.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="563"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="571"/>
         <source>Warning: edited %1 dives</source>
         <translation>Avís: s&apos;han editat %1 immersions</translation>
     </message>
@@ -7636,31 +7612,6 @@ Si el vostre dispositiu usa Bluetooth, feu els mateixos preparatius que per a ba
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="346"/>
         <source>Speed</source>
         <translation>Velocitat</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="125"/>
-        <source>Header text colors</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="141"/>
-        <source>Depending on the display mode, sometimes the blue text used in headers in the various information panes is not clearly visible. Select a color that fits the current theme of your computer. For dark mode, select either Light Blue or Black (rendered white using a dark theme). The default is Medium Blue.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="152"/>
-        <source>Medium Blue</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="160"/>
-        <source>Light Blue</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="168"/>
-        <source>Black</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="15"/>
@@ -9914,7 +9865,7 @@ Fitxers amb una data/hora inapropiada</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveComputer.ui" line="17"/>
         <source>Dive Computers</source>
-        <translation type="unfinished"/>
+        <translation>Ordinadors de busseig</translation>
     </message>
 </context>
 <context>
@@ -10159,39 +10110,39 @@ Fitxers amb una data/hora inapropiada</translation>
         <translation>Desfés</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="86"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="87"/>
         <source>Warning: edited %1 dives</source>
         <translation>Avís: s&apos;han editat %1 immersions</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="135"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="136"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>min</source>
         <translation> min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
         <source>sec</source>
         <translation>seg</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>d</source>
         <translation>d</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="229"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="230"/>
         <source>unknown</source>
         <translation>Desconegut</translation>
     </message>
@@ -10285,7 +10236,7 @@ Fitxers amb una data/hora inapropiada</translation>
     <name>TabDiveSite</name>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.ui" line="14"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="15"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="17"/>
         <source>Dive sites</source>
         <translation>Punts d&apos;immersió</translation>
     </message>
@@ -10300,18 +10251,18 @@ Fitxers amb una data/hora inapropiada</translation>
         <translation>Purga els punts d&apos;immersió no emprats</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="56"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="58"/>
         <source>Delete dive site?</source>
         <translation>Suprimeixo el punt d&apos;immersió?</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="57"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="59"/>
         <source>This dive site has %n dive(s). Do you really want to delete it?
 </source>
         <translation><numerusform>Aquest punt d&apos;immersió té %n immersió. Segur que voleu suprimir-lo?</numerusform><numerusform>Aquest punt d&apos;immersió té %n immersions. Segur que voleu suprimir-lo?</numerusform></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="74"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="76"/>
         <source>New dive site</source>
         <translation>Punt d&apos;immersió nou</translation>
     </message>
@@ -10325,42 +10276,45 @@ Fitxers amb una data/hora inapropiada</translation>
         <translation>Estadístiques</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="73"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="74"/>
         <source>Max. depth</source>
         <translation>Profunditat màx.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="85"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="196"/>
-        <source>SAC</source>
-        <translation>CAS</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="97"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="197"/>
-        <source>Temperature</source>
-        <translation>Temperatura</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="109"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="198"/>
-        <source>Total time</source>
-        <translation>Temps total</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="128"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="200"/>
         <source>Duration</source>
         <translation>Durada</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="140"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="201"/>
-        <source>Dives</source>
-        <translation>Immersions</translation>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="120"/>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="197"/>
+        <source>Temperature</source>
+        <translation>Temperatura</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="159"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="143"/>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="196"/>
+        <source>SAC</source>
+        <translation>CAS</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="177"/>
+        <source>All selected dives</source>
+        <translation>Totes les immersions seleccionades</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="196"/>
+        <source>Total number of dives selected :</source>
+        <translation>Nombre total d&apos;immersions seleccionades:</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="218"/>
+        <source>Total duration of selected dives :</source>
+        <translation>Durada total de les immersions seleccionades:</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="258"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="203"/>
         <source>Gas consumption</source>
         <translation>Consum de gas</translation>
@@ -10478,6 +10432,16 @@ mixed from Air and using:
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="195"/>
         <source>Depth</source>
         <translation>Profunditat</translation>
+    </message>
+    <message>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="198"/>
+        <source>Total time</source>
+        <translation>Temps total</translation>
+    </message>
+    <message>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="201"/>
+        <source>Dives</source>
+        <translation>Immersions</translation>
     </message>
 </context>
 <context>
@@ -14107,12 +14071,12 @@ Està connectat correctament el Uemis Zurich?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="422"/>
         <source>Disable background location service</source>
-        <translation type="unfinished"/>
+        <translation>Inhabilita el servei d&apos;ubicació en segon pla</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="422"/>
         <source>Run background location service</source>
-        <translation type="unfinished"/>
+        <translation>Executa el servei d&apos;ubicació en segon pla</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="437"/>
@@ -14198,27 +14162,27 @@ Està connectat correctament el Uemis Zurich?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="780"/>
         <source>Location Service Enabled</source>
-        <translation type="unfinished"/>
+        <translation>El servei d&apos;ubicació està habilitat</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="785"/>
         <source>This service collects location data to enable you to track the GPS coordinates of your dives. This will attempt to continue to collect location data, even if the app is closed or your phone screen locked.</source>
-        <translation type="unfinished"/>
+        <translation>Aquest servei recopila les dades d&apos;ubicació per a permetre seguir les coordenades GPS de les immersions. Això intentarà continuar recopilant les dades d&apos;ubicació, fins i tot si l&apos;aplicació està tancada o la pantalla del telèfon bloquejada.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="791"/>
-        <source>The location data are not used in way, except when you apply the location data to the dives in your dive list on this device.</source>
-        <translation type="unfinished"/>
+        <source>The location data are not used in any way, except when you apply the location data to the dives in your dive list on this device.</source>
+        <translation>Les dades d&apos;ubicació no s&apos;usaran de cap manera, excepte quan s&apos;apliquin les dades d&apos;ubicació a les immersions en la vostra llista d&apos;immersions en aquest dispositiu.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="796"/>
         <source>By default, the location data are never transferred to the cloud or to any other service. However, in order to allow debugging of location data related issues, you can explicitly enable storing those location data in the cloud by enabling the corresponding option in the advanced settings.</source>
-        <translation type="unfinished"/>
+        <translation>Per manera predeterminada, les dades d&apos;ubicació mai es transferiran al núvol ni a cap altre servei. No obstant això, per a permetre la depuració de problemes relacionats amb les dades d&apos;ubicació, podreu habilitar explícitament l&apos;emmagatzematge d&apos;aquestes dades d&apos;ubicació en el núvol habilitant l&apos;opció corresponent en els ajustaments avançats.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="801"/>
         <source>Understood</source>
-        <translation type="unfinished"/>
+        <translation>Entès</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="810"/>

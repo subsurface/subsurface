@@ -940,6 +940,36 @@
         <translation><numerusform>Modifică greutatea (%n scufundare(i))</numerusform><numerusform>Modifică greutatea (%n scufundare(i))</numerusform><numerusform>Modifică greutatea (%n scufundare(i))</numerusform></translation>
     </message>
     <message>
+        <location filename="../commands/command_edit.cpp" line="1033"/>
+        <source>Add cylinder</source>
+        <translation>Adaugă butelie</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1035"/>
+        <source>Add cylinder (%n dive(s))</source>
+        <translation><numerusform>Adaugă butelie (%n scufundare(i))</numerusform><numerusform>Adaugă butelie (%n scufundare(i))</numerusform><numerusform>Adaugă butelie (%n scufundare(i))</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1154"/>
+        <source>Remove cylinder</source>
+        <translation>Șterge butelie</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1156"/>
+        <source>Remove cylinder (%n dive(s))</source>
+        <translation><numerusform>Șterge butelie (%n sufundare(i))</numerusform><numerusform>Șterge butelie (%n sufundare(i))</numerusform><numerusform>Șterge butelie (%n sufundare(i))</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1204"/>
+        <source>Edit cylinder</source>
+        <translation>Modifică butelie</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1206"/>
+        <source>Edit cylinder (%n dive(s))</source>
+        <translation><numerusform>Modifică butelie (%n scufundare(i))</numerusform><numerusform>Modifică butelie (%n scufundare(i))</numerusform><numerusform>Modifică butelie (%n scufundare(i))</numerusform></translation>
+    </message>
+    <message>
         <location filename="../commands/command_edit.cpp" line="1280"/>
         <source>Edit dive [%1]</source>
         <translation>Modifică scufundarea [%1]</translation>
@@ -953,6 +983,31 @@
         <location filename="../commands/command_edit_trip.cpp" line="75"/>
         <source>trip notes</source>
         <translation>notițe excursie</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="67"/>
+        <source>Add bookmark</source>
+        <translation>Adaugă marcaj</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="73"/>
+        <source>Add dive mode switch to %1</source>
+        <translation>Adaugă buton mod scufundare la  %1</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="79"/>
+        <source>Add set point change</source>
+        <translation>Adaugă schimbare set poiint</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="86"/>
+        <source>Rename bookmark to %1</source>
+        <translation>Redenumește bookmark la %1</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="114"/>
+        <source>Remove %1 event</source>
+        <translation>Șterge %1 eveniment</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="28"/>
@@ -988,85 +1043,6 @@
         <location filename="../commands/command_pictures.cpp" line="187"/>
         <source>add %n pictures(s)</source>
         <translation><numerusform>adaugă %n imagine(i)</numerusform><numerusform>adaugă %n imagine(i)</numerusform><numerusform>adaugă %n imagine(i)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1033"/>
-        <source>Add cylinder</source>
-        <translation>Adaugă butelie</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1035"/>
-        <source>Add cylinder (%n dive(s))</source>
-        <translation><numerusform>Adaugă butelie (%n scufundare(i))</numerusform><numerusform>Adaugă butelie (%n scufundare(i))</numerusform><numerusform>Adaugă butelie (%n scufundare(i))</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="67"/>
-        <source>Add bookmark</source>
-        <translation>Adaugă marcaj</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="73"/>
-        <source>Add dive mode switch to %1</source>
-        <translation>Adaugă buton mod scufundare la  %1</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="79"/>
-        <source>Add set point change</source>
-        <translation>Adaugă schimbare set poiint</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1204"/>
-        <source>Edit cylinder</source>
-        <translation>Modifică butelie</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1206"/>
-        <source>Edit cylinder (%n dive(s))</source>
-        <translation><numerusform>Modifică butelie (%n scufundare(i))</numerusform><numerusform>Modifică butelie (%n scufundare(i))</numerusform><numerusform>Modifică butelie (%n scufundare(i))</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1154"/>
-        <source>Remove cylinder</source>
-        <translation>Șterge butelie</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1156"/>
-        <source>Remove cylinder (%n dive(s))</source>
-        <translation><numerusform>Șterge butelie (%n sufundare(i))</numerusform><numerusform>Șterge butelie (%n sufundare(i))</numerusform><numerusform>Șterge butelie (%n sufundare(i))</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="114"/>
-        <source>Remove %1 event</source>
-        <translation>Șterge %1 eveniment</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="86"/>
-        <source>Rename bookmark to %1</source>
-        <translation>Redenumește bookmark la %1</translation>
     </message>
 </context>
 <context>
@@ -5849,7 +5825,7 @@ Existentă</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/filterwidget.cpp" line="225"/>
+        <location filename="../desktop-widgets/filterwidget.cpp" line="232"/>
         <source>modified</source>
         <translation type="unfinished"/>
     </message>
@@ -6335,8 +6311,8 @@ Existentă</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="30"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="454"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="417"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="442"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="425"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="450"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="511"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="512"/>
         <source>Notes</source>
@@ -6367,7 +6343,7 @@ Existentă</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="244"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="441"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="449"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="498"/>
         <source>Location</source>
         <translation>Locație</translation>
@@ -6410,89 +6386,89 @@ Existentă</translation>
         <translation>Rating</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="61"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="66"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="513"/>
         <source>Equipment</source>
         <translation>Echipament</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="63"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="68"/>
         <source>Information</source>
         <translation>Informații</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="65"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="70"/>
         <source>Statistics</source>
         <translation>Statistici</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="67"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="72"/>
         <source>Media</source>
         <translation>Media</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="69"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="74"/>
         <source>Extra Info</source>
         <translation>Informații suplimentare</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="71"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="76"/>
         <source>Dive sites</source>
         <translation>Locații scufundări</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="73"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="78"/>
         <source>Device names</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="97"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
         <source>Apply changes</source>
         <translation>Aplică modificările</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="101"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="109"/>
         <source>Discard changes</source>
         <translation>Renunță la modificări</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="113"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="109"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="117"/>
         <source>Undo</source>
         <translation>Anulează</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="228"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="236"/>
         <source>This dive is being edited.</source>
         <translation>Această scufundare este editată.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="379"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="407"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="387"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="415"/>
         <source>Trip notes</source>
         <translation>Notițe excursie</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="401"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="409"/>
         <source>Trip location</source>
         <translation>Locație excursie</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="532"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="540"/>
         <source>Discard the changes?</source>
         <translation>Renunțați la modificări?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="533"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="541"/>
         <source>You are about to discard your changes.</source>
         <translation>Sunteți pe cale să renunțați la modificări.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="563"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="571"/>
         <source>Warning: edited %1 dives</source>
         <translation>Avertisment: s-au editat %1 scufundări</translation>
     </message>
@@ -7631,31 +7607,6 @@ Dacă dispozitivul dvs. folosește Bluetooth, faceți aceleași pregatiri ca și
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="346"/>
         <source>Speed</source>
         <translation>Viteza</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="125"/>
-        <source>Header text colors</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="141"/>
-        <source>Depending on the display mode, sometimes the blue text used in headers in the various information panes is not clearly visible. Select a color that fits the current theme of your computer. For dark mode, select either Light Blue or Black (rendered white using a dark theme). The default is Medium Blue.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="152"/>
-        <source>Medium Blue</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="160"/>
-        <source>Light Blue</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="168"/>
-        <source>Black</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="15"/>
@@ -10154,39 +10105,39 @@ Fisiere cu data/ora neconforme</translation>
         <translation>Anulează</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="86"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="87"/>
         <source>Warning: edited %1 dives</source>
         <translation>Avertisment: s-au editat %1 scufundări</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="135"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="136"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
         <source>sec</source>
         <translation>sec</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>d</source>
         <translation>d</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="229"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="230"/>
         <source>unknown</source>
         <translation>necunoscut</translation>
     </message>
@@ -10280,7 +10231,7 @@ Fisiere cu data/ora neconforme</translation>
     <name>TabDiveSite</name>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.ui" line="14"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="15"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="17"/>
         <source>Dive sites</source>
         <translation>Locații scufundări</translation>
     </message>
@@ -10295,12 +10246,12 @@ Fisiere cu data/ora neconforme</translation>
         <translation>Șterge locațiile de scufundare nefolosite</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="56"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="58"/>
         <source>Delete dive site?</source>
         <translation>Șterge locație scufundare?</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="57"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="59"/>
         <source>This dive site has %n dive(s). Do you really want to delete it?
 </source>
         <translation><numerusform>Aceata locație are %n scufundare(i). Dorești cu siguranță ștergerea?
@@ -10309,7 +10260,7 @@ Fisiere cu data/ora neconforme</translation>
 </numerusform></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="74"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="76"/>
         <source>New dive site</source>
         <translation>Locație de scufundare nouă</translation>
     </message>
@@ -10323,42 +10274,45 @@ Fisiere cu data/ora neconforme</translation>
         <translation>Statistici</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="73"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="74"/>
         <source>Max. depth</source>
         <translation>Adâncime maximă</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="85"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="196"/>
-        <source>SAC</source>
-        <translation>SAC</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="97"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="197"/>
-        <source>Temperature</source>
-        <translation>Temperatură</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="109"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="198"/>
-        <source>Total time</source>
-        <translation>Timp total</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="128"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="200"/>
         <source>Duration</source>
         <translation>Durată</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="140"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="201"/>
-        <source>Dives</source>
-        <translation>Scufundări</translation>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="120"/>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="197"/>
+        <source>Temperature</source>
+        <translation>Temperatură</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="159"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="143"/>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="196"/>
+        <source>SAC</source>
+        <translation>SAC</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="177"/>
+        <source>All selected dives</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="196"/>
+        <source>Total number of dives selected :</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="218"/>
+        <source>Total duration of selected dives :</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="258"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="203"/>
         <source>Gas consumption</source>
         <translation>Gaz consumat</translation>
@@ -10476,6 +10430,16 @@ mixate cu aer și folosite:</translation>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="195"/>
         <source>Depth</source>
         <translation>Adâncime</translation>
+    </message>
+    <message>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="198"/>
+        <source>Total time</source>
+        <translation>Timp total</translation>
+    </message>
+    <message>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="201"/>
+        <source>Dives</source>
+        <translation>Scufundări</translation>
     </message>
 </context>
 <context>
@@ -14214,7 +14178,7 @@ Este conectat corect dispozitivul Uemis Zurich?</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="791"/>
-        <source>The location data are not used in way, except when you apply the location data to the dives in your dive list on this device.</source>
+        <source>The location data are not used in any way, except when you apply the location data to the dives in your dive list on this device.</source>
         <translation type="unfinished"/>
     </message>
     <message>

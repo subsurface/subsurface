@@ -42,12 +42,12 @@
         <location filename="../desktop-widgets/addfilterpreset.ui" line="17"/>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="43"/>
         <source>Save filter set</source>
-        <translation type="unfinished"/>
+        <translation>Tallenna suotimet</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="64"/>
         <source>Warning: this will overwrite an existing filter set.</source>
-        <translation type="unfinished"/>
+        <translation>Varoitus: tämä ylikirjoittaa vanhat suotimet</translation>
     </message>
 </context>
 <context>
@@ -639,12 +639,12 @@
     <message>
         <location filename="../commands/command_device.cpp" line="14"/>
         <source>Delete device %1 (0x%2)</source>
-        <translation type="unfinished"/>
+        <translation>Poista laite %1 (0x%2)</translation>
     </message>
     <message>
         <location filename="../commands/command_device.cpp" line="43"/>
         <source>Set nickname of device %1 (0x%2) to %3</source>
-        <translation type="unfinished"/>
+        <translation>Aseta laitteen %1 (0x%2) lempinimi: %3</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="405"/>
@@ -940,6 +940,36 @@
         <translation><numerusform>Muokkaa painoa (%n sukellus)</numerusform><numerusform>Muokkaa painoa (%n sukellusta)</numerusform></translation>
     </message>
     <message>
+        <location filename="../commands/command_edit.cpp" line="1033"/>
+        <source>Add cylinder</source>
+        <translation>Lisää säiliö</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1035"/>
+        <source>Add cylinder (%n dive(s))</source>
+        <translation><numerusform>Lisää säiliö (%n sukellus)</numerusform><numerusform>Lisää säiliö (%n sukellusta)</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1154"/>
+        <source>Remove cylinder</source>
+        <translation>Poista säiliö</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1156"/>
+        <source>Remove cylinder (%n dive(s))</source>
+        <translation><numerusform>Poista säiliö (%n sukellus)</numerusform><numerusform>Poista säiliö (%n sukellusta)</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1204"/>
+        <source>Edit cylinder</source>
+        <translation>Muokkaa säiliötä</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1206"/>
+        <source>Edit cylinder (%n dive(s))</source>
+        <translation><numerusform>Muokkaa säiliötä (%n sukellus)</numerusform><numerusform>Muokkaa säiliötä (%n sukellusta)</numerusform></translation>
+    </message>
+    <message>
         <location filename="../commands/command_edit.cpp" line="1280"/>
         <source>Edit dive [%1]</source>
         <translation>Muokkaa sukellusta [%1]</translation>
@@ -955,19 +985,44 @@
         <translation>matkan muistiinpanot</translation>
     </message>
     <message>
+        <location filename="../commands/command_event.cpp" line="67"/>
+        <source>Add bookmark</source>
+        <translation>Lisää kirjanmerkki</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="73"/>
+        <source>Add dive mode switch to %1</source>
+        <translation>Lisää sukellustyypin vaihto %1:ksi</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="79"/>
+        <source>Add set point change</source>
+        <translation>Aseta setpoint-muutos</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="86"/>
+        <source>Rename bookmark to %1</source>
+        <translation>Vaihda kirjanmerkki %1:ksi</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="114"/>
+        <source>Remove %1 event</source>
+        <translation>Poista %1 tapahtuma</translation>
+    </message>
+    <message>
         <location filename="../commands/command_filter.cpp" line="28"/>
         <source>Create filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Luo suotimien esiasetus %1</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="49"/>
         <source>Delete filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Poista suotimien esiasetus %1</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="71"/>
         <source>Edit filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Muokkaa suotimen %1 esiasetusta</translation>
     </message>
     <message>
         <location filename="../commands/command_pictures.cpp" line="20"/>
@@ -988,85 +1043,6 @@
         <location filename="../commands/command_pictures.cpp" line="187"/>
         <source>add %n pictures(s)</source>
         <translation><numerusform>lisää %n kuva</numerusform><numerusform>lisää %n kuvaa</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1033"/>
-        <source>Add cylinder</source>
-        <translation>Lisää säiliö</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1035"/>
-        <source>Add cylinder (%n dive(s))</source>
-        <translation><numerusform>Lisää säiliö (%n sukellus)</numerusform><numerusform>Lisää säiliö (%n sukellusta)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="67"/>
-        <source>Add bookmark</source>
-        <translation>Lisää kirjanmerkki</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="73"/>
-        <source>Add dive mode switch to %1</source>
-        <translation>Lisää sukellustyypin vaihto %1:ksi</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="79"/>
-        <source>Add set point change</source>
-        <translation>Aseta setpoint-muutos</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1204"/>
-        <source>Edit cylinder</source>
-        <translation>Muokkaa säiliötä</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1206"/>
-        <source>Edit cylinder (%n dive(s))</source>
-        <translation><numerusform>Muokkaa säiliötä (%n sukellus)</numerusform><numerusform>Muokkaa säiliötä (%n sukellusta)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1154"/>
-        <source>Remove cylinder</source>
-        <translation>Poista säiliö</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1156"/>
-        <source>Remove cylinder (%n dive(s))</source>
-        <translation><numerusform>Poista säiliö (%n sukellus)</numerusform><numerusform>Poista säiliö (%n sukellusta)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="114"/>
-        <source>Remove %1 event</source>
-        <translation>Poista %1 tapahtuma</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="86"/>
-        <source>Rename bookmark to %1</source>
-        <translation>Vaihda kirjanmerkki %1:ksi</translation>
     </message>
 </context>
 <context>
@@ -3472,7 +3448,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="832"/>
         <source>Add dive(s) to arbitrary trip</source>
-        <translation type="unfinished"/>
+        <translation>Lisää sukellus valitsemaasi retkeen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="833"/>
@@ -5757,7 +5733,7 @@ Olemassaoleva kohde</translation>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="148"/>
         <source>Click to remove this constraint</source>
-        <translation type="unfinished"/>
+        <translation>Klikkaa poistaaksesi tämä rajoite</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="181"/>
@@ -5775,7 +5751,7 @@ Olemassaoleva kohde</translation>
     <message>
         <location filename="../qt-models/filterpresetmodel.cpp" line="47"/>
         <source>Clicking here will remove this filter set.</source>
-        <translation type="unfinished"/>
+        <translation>Klikkaus täällä poistaa tämän suodinjoukon</translation>
     </message>
 </context>
 <context>
@@ -5795,22 +5771,22 @@ Olemassaoleva kohde</translation>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="76"/>
         <source>Add constraint</source>
-        <translation type="unfinished"/>
+        <translation>Lisää rajoite</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="90"/>
         <source>Current set:</source>
-        <translation type="unfinished"/>
+        <translation>Nykyinen joukko:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="110"/>
         <source>Save set</source>
-        <translation type="unfinished"/>
+        <translation>Tallenna joukko</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="123"/>
         <source>Load set</source>
-        <translation type="unfinished"/>
+        <translation>Lataa joukko</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="143"/>
@@ -5845,12 +5821,12 @@ Olemassaoleva kohde</translation>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="241"/>
         <source>Filter sets</source>
-        <translation type="unfinished"/>
+        <translation>Suodinjoukot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/filterwidget.cpp" line="225"/>
+        <location filename="../desktop-widgets/filterwidget.cpp" line="232"/>
         <source>modified</source>
-        <translation type="unfinished"/>
+        <translation>muokattu</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_listfilter.h" line="83"/>
@@ -6334,8 +6310,8 @@ Olemassaoleva kohde</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="30"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="454"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="417"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="442"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="425"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="450"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="511"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="512"/>
         <source>Notes</source>
@@ -6366,7 +6342,7 @@ Olemassaoleva kohde</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="244"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="441"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="449"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="498"/>
         <source>Location</source>
         <translation>Kohde</translation>
@@ -6409,89 +6385,89 @@ Olemassaoleva kohde</translation>
         <translation>Yleisarvio</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="61"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="66"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="513"/>
         <source>Equipment</source>
         <translation>Varusteet</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="63"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="68"/>
         <source>Information</source>
         <translation>Tiedot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="65"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="70"/>
         <source>Statistics</source>
         <translation>Tilastot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="67"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="72"/>
         <source>Media</source>
         <translation>Media</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="69"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="74"/>
         <source>Extra Info</source>
         <translation>Lisätiedot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="71"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="76"/>
         <source>Dive sites</source>
         <translation>Sukelluskohde</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="73"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="78"/>
         <source>Device names</source>
-        <translation type="unfinished"/>
+        <translation>Laitenimet</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="97"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
         <source>Apply changes</source>
         <translation>Hyväksy muutokset</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="101"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="109"/>
         <source>Discard changes</source>
         <translation>Hylkää muutokset</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="113"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="109"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="117"/>
         <source>Undo</source>
         <translation>Peruuta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="228"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="236"/>
         <source>This dive is being edited.</source>
         <translation>Tätä sukellusta muokataan.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="379"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="407"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="387"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="415"/>
         <source>Trip notes</source>
         <translation>Matkan muistiinpanot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="401"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="409"/>
         <source>Trip location</source>
         <translation>Matkakohde</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="532"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="540"/>
         <source>Discard the changes?</source>
         <translation>Hylätäänkö muutokset?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="533"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="541"/>
         <source>You are about to discard your changes.</source>
         <translation>Olet hylkäämässä muutoksesi.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="563"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="571"/>
         <source>Warning: edited %1 dives</source>
         <translation>Varoitus: muokattu %1 sukellusta</translation>
     </message>
@@ -7630,31 +7606,6 @@ Mikäli laitteesi käyttää Bluetoothia, tee samat toimenpiteet kuin lokia lada
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="346"/>
         <source>Speed</source>
         <translation>Nopeus</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="125"/>
-        <source>Header text colors</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="141"/>
-        <source>Depending on the display mode, sometimes the blue text used in headers in the various information panes is not clearly visible. Select a color that fits the current theme of your computer. For dark mode, select either Light Blue or Black (rendered white using a dark theme). The default is Medium Blue.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="152"/>
-        <source>Medium Blue</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="160"/>
-        <source>Light Blue</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="168"/>
-        <source>Black</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="15"/>
@@ -9906,7 +9857,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveComputer.ui" line="17"/>
         <source>Dive Computers</source>
-        <translation type="unfinished"/>
+        <translation>Sukellustietokoneet</translation>
     </message>
 </context>
 <context>
@@ -10151,39 +10102,39 @@ Files with inappropriate date/time</source>
         <translation>Peruuta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="86"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="87"/>
         <source>Warning: edited %1 dives</source>
         <translation>Varoitus: muokattu %1 sukellusta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="135"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="136"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>h</source>
         <translation>t</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
         <source>sec</source>
         <translation>sek</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>d</source>
         <translation>p</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="229"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="230"/>
         <source>unknown</source>
         <translation>tuntematon</translation>
     </message>
@@ -10277,7 +10228,7 @@ Files with inappropriate date/time</source>
     <name>TabDiveSite</name>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.ui" line="14"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="15"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="17"/>
         <source>Dive sites</source>
         <translation>Sukelluskohteet</translation>
     </message>
@@ -10292,12 +10243,12 @@ Files with inappropriate date/time</source>
         <translation>Poista käyttämättömät sukelluskohteet</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="56"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="58"/>
         <source>Delete dive site?</source>
         <translation>Poistetaanko sukelluskohde?</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="57"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="59"/>
         <source>This dive site has %n dive(s). Do you really want to delete it?
 </source>
         <translation><numerusform>Kohteessa on %n suekllus. Haluatko varmasti positaa sen?
@@ -10305,7 +10256,7 @@ Files with inappropriate date/time</source>
 </numerusform></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="74"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="76"/>
         <source>New dive site</source>
         <translation>Uusi sukelluskohde</translation>
     </message>
@@ -10319,42 +10270,45 @@ Files with inappropriate date/time</source>
         <translation>Tilastot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="73"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="74"/>
         <source>Max. depth</source>
         <translation>Suurin syvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="85"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="196"/>
-        <source>SAC</source>
-        <translation>Pintakulutus</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="97"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="197"/>
-        <source>Temperature</source>
-        <translation>Lämpötila</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="109"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="198"/>
-        <source>Total time</source>
-        <translation>Kokonaisaika</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="128"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="200"/>
         <source>Duration</source>
         <translation>Kesto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="140"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="201"/>
-        <source>Dives</source>
-        <translation>Sukelluksia</translation>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="120"/>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="197"/>
+        <source>Temperature</source>
+        <translation>Lämpötila</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="159"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="143"/>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="196"/>
+        <source>SAC</source>
+        <translation>Pintakulutus</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="177"/>
+        <source>All selected dives</source>
+        <translation>Kaikki valitut sukellukset</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="196"/>
+        <source>Total number of dives selected :</source>
+        <translation>Valittuja sukelluksia yhteensä:</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="218"/>
+        <source>Total duration of selected dives :</source>
+        <translation>Valittujen sukellusten kesto yhteensä:</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="258"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="203"/>
         <source>Gas consumption</source>
         <translation>Kaasun kulutus</translation>
@@ -10473,6 +10427,16 @@ sekoittaa ilmasta ja käyttäen:
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="195"/>
         <source>Depth</source>
         <translation>Syvyys</translation>
+    </message>
+    <message>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="198"/>
+        <source>Total time</source>
+        <translation>Kokonaisaika</translation>
+    </message>
+    <message>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="201"/>
+        <source>Dives</source>
+        <translation>Sukelluksia</translation>
     </message>
 </context>
 <context>
@@ -10768,7 +10732,7 @@ sekoittaa ilmasta ja käyttäen:
     <message>
         <location filename="../desktop-widgets/tripselectiondialog.ui" line="17"/>
         <source>Select trip</source>
-        <translation type="unfinished"/>
+        <translation>Valitse retki</translation>
     </message>
 </context>
 <context>
@@ -11663,22 +11627,22 @@ Keski</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="47"/>
         <source>date time</source>
-        <translation type="unfinished"/>
+        <translation>päivä aika</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="48"/>
         <source>time of day</source>
-        <translation type="unfinished"/>
+        <translation>vuorokaudenaika</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="49"/>
         <source>year</source>
-        <translation type="unfinished"/>
+        <translation>vuosi</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="50"/>
         <source>week day</source>
-        <translation type="unfinished"/>
+        <translation>viikonpäivä</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="52"/>
@@ -11688,7 +11652,7 @@ Keski</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="53"/>
         <source>wave size</source>
-        <translation type="unfinished"/>
+        <translation>aallon koko</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="54"/>
@@ -11713,7 +11677,7 @@ Keski</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="59"/>
         <source>max. depth</source>
-        <translation type="unfinished"/>
+        <translation>suurin syvyys</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="60"/>
@@ -11729,17 +11693,17 @@ Keski</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="62"/>
         <source>water temp.</source>
-        <translation type="unfinished"/>
+        <translation>veden lämpötila</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="63"/>
         <source>air temp.</source>
-        <translation type="unfinished"/>
+        <translation>ilman lämpötila</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="64"/>
         <source>water density</source>
-        <translation type="unfinished"/>
+        <translation>veden tiiviys</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="65"/>
@@ -11750,12 +11714,12 @@ Keski</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="67"/>
         <source>logged</source>
-        <translation type="unfinished"/>
+        <translation>lokitettu</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="68"/>
         <source>planned</source>
-        <translation type="unfinished"/>
+        <translation>suunniteltu</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="70"/>
@@ -11770,7 +11734,7 @@ Keski</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="73"/>
         <source>people</source>
-        <translation type="unfinished"/>
+        <translation>ihmiset</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="74"/>
@@ -11780,32 +11744,32 @@ Keski</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="75"/>
         <source>weight type</source>
-        <translation type="unfinished"/>
+        <translation>painon tyyppi</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="76"/>
         <source>cylinder type</source>
-        <translation type="unfinished"/>
+        <translation>säiliön tyyppi</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="77"/>
         <source>cylinder size</source>
-        <translation type="unfinished"/>
+        <translation>säiliön koko</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="78"/>
         <source>gas N₂ content</source>
-        <translation type="unfinished"/>
+        <translation>seoksen N₂ pitoisuus</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="79"/>
         <source>gas O₂ content</source>
-        <translation type="unfinished"/>
+        <translation>seoksen O₂ pitoisuus</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="80"/>
         <source>gas He content</source>
-        <translation type="unfinished"/>
+        <translation>seoksen He pitoisuus</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="81"/>
@@ -11820,97 +11784,97 @@ Keski</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="90"/>
         <source>starting with</source>
-        <translation type="unfinished"/>
+        <translation>aloitetaan</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="91"/>
         <source>with substring</source>
-        <translation type="unfinished"/>
+        <translation>alimerkkijonolla</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="92"/>
         <source>exactly</source>
-        <translation type="unfinished"/>
+        <translation>tasan</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="101"/>
         <source>equal to</source>
-        <translation type="unfinished"/>
+        <translation>yhtäsuuri</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="101"/>
         <source>at</source>
-        <translation type="unfinished"/>
+        <translation>tasan</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="102"/>
         <source>at most</source>
-        <translation type="unfinished"/>
+        <translation>korkeintaan</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="102"/>
         <source>before</source>
-        <translation type="unfinished"/>
+        <translation>ennen</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="103"/>
         <source>at least</source>
-        <translation type="unfinished"/>
+        <translation>vähintään</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="103"/>
         <source>after</source>
-        <translation type="unfinished"/>
+        <translation>jälkeen</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="104"/>
         <source>in range</source>
-        <translation type="unfinished"/>
+        <translation>välillä</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="108"/>
         <source>is</source>
-        <translation type="unfinished"/>
+        <translation>on</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="109"/>
         <source>is not</source>
-        <translation type="unfinished"/>
+        <translation>ei ole</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="415"/>
         <source>Sunday</source>
-        <translation type="unfinished"/>
+        <translation>sunnuntai</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="416"/>
         <source>Monday</source>
-        <translation type="unfinished"/>
+        <translation>maanantai</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="417"/>
         <source>Tuesday</source>
-        <translation type="unfinished"/>
+        <translation>tiistai</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="418"/>
         <source>Wednesday</source>
-        <translation type="unfinished"/>
+        <translation>keskiviikko</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="419"/>
         <source>Thursday</source>
-        <translation type="unfinished"/>
+        <translation>torstai</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="420"/>
         <source>Friday</source>
-        <translation type="unfinished"/>
+        <translation>perjantai</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="421"/>
         <source>Saturday</source>
-        <translation type="unfinished"/>
+        <translation>lauantai</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="86"/>
@@ -14110,12 +14074,12 @@ Onko Uemis Zurich kytketty oikein?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="422"/>
         <source>Disable background location service</source>
-        <translation type="unfinished"/>
+        <translation>Keskeytä sijannin taustapalvelu</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="422"/>
         <source>Run background location service</source>
-        <translation type="unfinished"/>
+        <translation>Käytä sijainnin taustapalvelua</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="437"/>
@@ -14201,27 +14165,27 @@ Onko Uemis Zurich kytketty oikein?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="780"/>
         <source>Location Service Enabled</source>
-        <translation type="unfinished"/>
+        <translation>Sijaintipalvelu käynnissä</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="785"/>
         <source>This service collects location data to enable you to track the GPS coordinates of your dives. This will attempt to continue to collect location data, even if the app is closed or your phone screen locked.</source>
-        <translation type="unfinished"/>
+        <translation>Tämä palvelu kerää sijaintitietoa, jotta näet sukelluksen koordinaatit. Sijaintitietoa pyritään keräämään vaikka sovellus suljetaan tai ruutu lukitaan.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="791"/>
-        <source>The location data are not used in way, except when you apply the location data to the dives in your dive list on this device.</source>
+        <source>The location data are not used in any way, except when you apply the location data to the dives in your dive list on this device.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="796"/>
         <source>By default, the location data are never transferred to the cloud or to any other service. However, in order to allow debugging of location data related issues, you can explicitly enable storing those location data in the cloud by enabling the corresponding option in the advanced settings.</source>
-        <translation type="unfinished"/>
+        <translation>Oletuksena sijaintitietoa ei kopioida mihinkään palveluun. Voit kuitenkin ottaa sijaintitiedon jakamisen käyttöön edistyneistä asetuksista ongelmien selvittämisen avuksi.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="801"/>
         <source>Understood</source>
-        <translation type="unfinished"/>
+        <translation>Ymmärretty</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="810"/>

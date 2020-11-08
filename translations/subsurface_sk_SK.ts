@@ -936,6 +936,36 @@
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
+        <location filename="../commands/command_edit.cpp" line="1033"/>
+        <source>Add cylinder</source>
+        <translation>Pridaj fľašu</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1035"/>
+        <source>Add cylinder (%n dive(s))</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1154"/>
+        <source>Remove cylinder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1156"/>
+        <source>Remove cylinder (%n dive(s))</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1204"/>
+        <source>Edit cylinder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1206"/>
+        <source>Edit cylinder (%n dive(s))</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
         <location filename="../commands/command_edit.cpp" line="1280"/>
         <source>Edit dive [%1]</source>
         <translation type="unfinished"/>
@@ -948,6 +978,31 @@
     <message>
         <location filename="../commands/command_edit_trip.cpp" line="75"/>
         <source>trip notes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="67"/>
+        <source>Add bookmark</source>
+        <translation>Pridať Bookmark</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="73"/>
+        <source>Add dive mode switch to %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="79"/>
+        <source>Add set point change</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="86"/>
+        <source>Rename bookmark to %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="114"/>
+        <source>Remove %1 event</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -984,85 +1039,6 @@
         <location filename="../commands/command_pictures.cpp" line="187"/>
         <source>add %n pictures(s)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1033"/>
-        <source>Add cylinder</source>
-        <translation>Pridaj fľašu</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1035"/>
-        <source>Add cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="67"/>
-        <source>Add bookmark</source>
-        <translation>Pridať Bookmark</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="73"/>
-        <source>Add dive mode switch to %1</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="79"/>
-        <source>Add set point change</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1204"/>
-        <source>Edit cylinder</source>
-        <translation type="unfinished"/>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1206"/>
-        <source>Edit cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1154"/>
-        <source>Remove cylinder</source>
-        <translation type="unfinished"/>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1156"/>
-        <source>Remove cylinder (%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="114"/>
-        <source>Remove %1 event</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="86"/>
-        <source>Rename bookmark to %1</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5836,7 +5812,7 @@ Existing Site</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/filterwidget.cpp" line="225"/>
+        <location filename="../desktop-widgets/filterwidget.cpp" line="232"/>
         <source>modified</source>
         <translation type="unfinished"/>
     </message>
@@ -6322,8 +6298,8 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="30"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="454"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="417"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="442"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="425"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="450"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="511"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="512"/>
         <source>Notes</source>
@@ -6354,7 +6330,7 @@ Existing Site</source>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="244"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="441"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="449"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="498"/>
         <source>Location</source>
         <translation>Miesto</translation>
@@ -6397,89 +6373,89 @@ Existing Site</source>
         <translation>Hodnotenie</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="61"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="66"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="513"/>
         <source>Equipment</source>
         <translation>Výstroj</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="63"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="68"/>
         <source>Information</source>
         <translation>Informácie</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="65"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="70"/>
         <source>Statistics</source>
         <translation>Štatistika</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="67"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="72"/>
         <source>Media</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="69"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="74"/>
         <source>Extra Info</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="71"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="76"/>
         <source>Dive sites</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="73"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="78"/>
         <source>Device names</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="97"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
         <source>Apply changes</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="101"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="109"/>
         <source>Discard changes</source>
         <translation>Vymazať zmeny</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="113"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="109"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="117"/>
         <source>Undo</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="228"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="236"/>
         <source>This dive is being edited.</source>
         <translation>Tento ponor sa edituje.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="379"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="407"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="387"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="415"/>
         <source>Trip notes</source>
         <translation>Poznámky</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="401"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="409"/>
         <source>Trip location</source>
         <translation>Lokalita</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="532"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="540"/>
         <source>Discard the changes?</source>
         <translation>Vymazať zmeny?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="533"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="541"/>
         <source>You are about to discard your changes.</source>
         <translation>Chystáš sa vymazať zmeny.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="563"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="571"/>
         <source>Warning: edited %1 dives</source>
         <translation type="unfinished"/>
     </message>
@@ -7604,31 +7580,6 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="346"/>
         <source>Speed</source>
         <translation>Rýchlosť</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="125"/>
-        <source>Header text colors</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="141"/>
-        <source>Depending on the display mode, sometimes the blue text used in headers in the various information panes is not clearly visible. Select a color that fits the current theme of your computer. For dark mode, select either Light Blue or Black (rendered white using a dark theme). The default is Medium Blue.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="152"/>
-        <source>Medium Blue</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="160"/>
-        <source>Light Blue</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="168"/>
-        <source>Black</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="15"/>
@@ -10118,39 +10069,39 @@ Files with inappropriate date/time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="86"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="87"/>
         <source>Warning: edited %1 dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="135"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="136"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>h</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
         <source>sec</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>d</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="229"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="230"/>
         <source>unknown</source>
         <translation>neznámy</translation>
     </message>
@@ -10244,7 +10195,7 @@ Files with inappropriate date/time</source>
     <name>TabDiveSite</name>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.ui" line="14"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="15"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="17"/>
         <source>Dive sites</source>
         <translation type="unfinished"/>
     </message>
@@ -10259,18 +10210,18 @@ Files with inappropriate date/time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="56"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="58"/>
         <source>Delete dive site?</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="57"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="59"/>
         <source>This dive site has %n dive(s). Do you really want to delete it?
 </source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="74"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="76"/>
         <source>New dive site</source>
         <translation type="unfinished"/>
     </message>
@@ -10284,42 +10235,45 @@ Files with inappropriate date/time</source>
         <translation>Štatistika</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="73"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="74"/>
         <source>Max. depth</source>
         <translation>Max. hĺbka</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="85"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="196"/>
-        <source>SAC</source>
-        <translation>Spotreba plynu</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="97"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="197"/>
-        <source>Temperature</source>
-        <translation>Teplota</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="109"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="198"/>
-        <source>Total time</source>
-        <translation>Celkový čas</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="128"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="200"/>
         <source>Duration</source>
         <translation>Dĺžka (min)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="140"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="201"/>
-        <source>Dives</source>
-        <translation>Ponory</translation>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="120"/>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="197"/>
+        <source>Temperature</source>
+        <translation>Teplota</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="159"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="143"/>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="196"/>
+        <source>SAC</source>
+        <translation>Spotreba plynu</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="177"/>
+        <source>All selected dives</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="196"/>
+        <source>Total number of dives selected :</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="218"/>
+        <source>Total duration of selected dives :</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="258"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="203"/>
         <source>Gas consumption</source>
         <translation>Spotreba plynu</translation>
@@ -10438,6 +10392,16 @@ vytvorene zo vzduchu a:
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="195"/>
         <source>Depth</source>
         <translation>Hĺbka</translation>
+    </message>
+    <message>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="198"/>
+        <source>Total time</source>
+        <translation>Celkový čas</translation>
+    </message>
+    <message>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="201"/>
+        <source>Dives</source>
+        <translation>Ponory</translation>
     </message>
 </context>
 <context>
@@ -14139,7 +14103,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="791"/>
-        <source>The location data are not used in way, except when you apply the location data to the dives in your dive list on this device.</source>
+        <source>The location data are not used in any way, except when you apply the location data to the dives in your dive list on this device.</source>
         <translation type="unfinished"/>
     </message>
     <message>

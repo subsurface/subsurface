@@ -42,12 +42,12 @@
         <location filename="../desktop-widgets/addfilterpreset.ui" line="17"/>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="43"/>
         <source>Save filter set</source>
-        <translation type="unfinished"/>
+        <translation>Filterset opslaan</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="64"/>
         <source>Warning: this will overwrite an existing filter set.</source>
-        <translation type="unfinished"/>
+        <translation>Waarschuwing: hierdoor wordt een bestaande filterset overschreven.</translation>
     </message>
 </context>
 <context>
@@ -639,12 +639,12 @@
     <message>
         <location filename="../commands/command_device.cpp" line="14"/>
         <source>Delete device %1 (0x%2)</source>
-        <translation type="unfinished"/>
+        <translation>Apparaat %1 (0x%2) verwijderen</translation>
     </message>
     <message>
         <location filename="../commands/command_device.cpp" line="43"/>
         <source>Set nickname of device %1 (0x%2) to %3</source>
-        <translation type="unfinished"/>
+        <translation>De bijnaam van apparaat %1 (0x%2) instellen op %3</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="405"/>
@@ -940,6 +940,36 @@
         <translation><numerusform>Gewicht bewerken (%n duik)</numerusform><numerusform>Gewicht bewerken (%n duiken)</numerusform></translation>
     </message>
     <message>
+        <location filename="../commands/command_edit.cpp" line="1033"/>
+        <source>Add cylinder</source>
+        <translation>Fles toevoegen</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1035"/>
+        <source>Add cylinder (%n dive(s))</source>
+        <translation><numerusform>Fles toevoegen (%n duik)</numerusform><numerusform>Fles toevoegen (%n duiken)</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1154"/>
+        <source>Remove cylinder</source>
+        <translation>Fles verwijderen</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1156"/>
+        <source>Remove cylinder (%n dive(s))</source>
+        <translation><numerusform>Fles verwijderen (%n duik)</numerusform><numerusform>Fles verwijderen (%n duiken)</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1204"/>
+        <source>Edit cylinder</source>
+        <translation>Fles bewerken</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="1206"/>
+        <source>Edit cylinder (%n dive(s))</source>
+        <translation><numerusform>Fles bewerken (%n duik)</numerusform><numerusform>Fles bewerken (%n duiken)</numerusform></translation>
+    </message>
+    <message>
         <location filename="../commands/command_edit.cpp" line="1280"/>
         <source>Edit dive [%1]</source>
         <translation>Bewerk duik [%1]</translation>
@@ -955,19 +985,44 @@
         <translation>trip notities</translation>
     </message>
     <message>
+        <location filename="../commands/command_event.cpp" line="67"/>
+        <source>Add bookmark</source>
+        <translation>Bladwijzer toevoegen</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="73"/>
+        <source>Add dive mode switch to %1</source>
+        <translation>Duikmodus wissel naar %1 toevoegen</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="79"/>
+        <source>Add set point change</source>
+        <translation>Setpoint wissel toevoegen</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="86"/>
+        <source>Rename bookmark to %1</source>
+        <translation>Bladwijzer naar %1 hernoemen</translation>
+    </message>
+    <message>
+        <location filename="../commands/command_event.cpp" line="114"/>
+        <source>Remove %1 event</source>
+        <translation>Gebeurtenis %1 verwijderen</translation>
+    </message>
+    <message>
         <location filename="../commands/command_filter.cpp" line="28"/>
         <source>Create filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Filter preset %1 maken</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="49"/>
         <source>Delete filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Filter preset %1 verwijderen</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="71"/>
         <source>Edit filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Filter preset %1 bewerken</translation>
     </message>
     <message>
         <location filename="../commands/command_pictures.cpp" line="20"/>
@@ -988,85 +1043,6 @@
         <location filename="../commands/command_pictures.cpp" line="187"/>
         <source>add %n pictures(s)</source>
         <translation><numerusform>%n afbeelding toevoegen</numerusform><numerusform>%n afbeeldingen toevoegen</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1033"/>
-        <source>Add cylinder</source>
-        <translation>Fles toevoegen</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1035"/>
-        <source>Add cylinder (%n dive(s))</source>
-        <translation><numerusform>Fles toevoegen (%n duik)</numerusform><numerusform>Fles toevoegen (%n duiken)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="67"/>
-        <source>Add bookmark</source>
-        <translation>Bladwijzer toevoegen</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="73"/>
-        <source>Add dive mode switch to %1</source>
-        <translation>Duikmodus wissel naar %1 toevoegen</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="79"/>
-        <source>Add set point change</source>
-        <translation>Setpoint wissel toevoegen</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1204"/>
-        <source>Edit cylinder</source>
-        <translation>Fles bewerken</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1206"/>
-        <source>Edit cylinder (%n dive(s))</source>
-        <translation><numerusform>Fles bewerken (%n duik)</numerusform><numerusform>Fles bewerken (%n duiken)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_edit.cpp" line="1154"/>
-        <source>Remove cylinder</source>
-        <translation>Fles verwijderen</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1156"/>
-        <source>Remove cylinder (%n dive(s))</source>
-        <translation><numerusform>Fles verwijderen (%n duik)</numerusform><numerusform>Fles verwijderen (%n duiken)</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="114"/>
-        <source>Remove %1 event</source>
-        <translation>Gebeurtenis %1 verwijderen</translation>
-    </message>
-</context>
-<context>
-    <name>Command</name>
-    <message>
-        <location filename="../commands/command_event.cpp" line="86"/>
-        <source>Rename bookmark to %1</source>
-        <translation>Bladwijzer naar %1 hernoemen</translation>
     </message>
 </context>
 <context>
@@ -3473,7 +3449,7 @@ GPS locatie:</translation>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="832"/>
         <source>Add dive(s) to arbitrary trip</source>
-        <translation type="unfinished"/>
+        <translation>Duik(en) toevoegen aan een willekeurige trip</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="833"/>
@@ -5758,7 +5734,7 @@ Bestaande duikstek</translation>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="148"/>
         <source>Click to remove this constraint</source>
-        <translation type="unfinished"/>
+        <translation>Klik om dit criterium te verwijderen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="181"/>
@@ -5776,7 +5752,7 @@ Bestaande duikstek</translation>
     <message>
         <location filename="../qt-models/filterpresetmodel.cpp" line="47"/>
         <source>Clicking here will remove this filter set.</source>
-        <translation type="unfinished"/>
+        <translation>Hier klikken verwijderd deze filterset.</translation>
     </message>
 </context>
 <context>
@@ -5796,22 +5772,22 @@ Bestaande duikstek</translation>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="76"/>
         <source>Add constraint</source>
-        <translation type="unfinished"/>
+        <translation>Criterium toevoegen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="90"/>
         <source>Current set:</source>
-        <translation type="unfinished"/>
+        <translation>Huidige set:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="110"/>
         <source>Save set</source>
-        <translation type="unfinished"/>
+        <translation>Set opslaan</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="123"/>
         <source>Load set</source>
-        <translation type="unfinished"/>
+        <translation>Set laden</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="143"/>
@@ -5846,12 +5822,12 @@ Bestaande duikstek</translation>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="241"/>
         <source>Filter sets</source>
-        <translation type="unfinished"/>
+        <translation>Filtersets</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/filterwidget.cpp" line="225"/>
+        <location filename="../desktop-widgets/filterwidget.cpp" line="232"/>
         <source>modified</source>
-        <translation type="unfinished"/>
+        <translation>gewijzigd</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_listfilter.h" line="83"/>
@@ -6335,8 +6311,8 @@ Bestaande duikstek</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="30"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="454"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="417"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="442"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="425"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="450"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="511"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="512"/>
         <source>Notes</source>
@@ -6367,7 +6343,7 @@ Bestaande duikstek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="244"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="441"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="449"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="498"/>
         <source>Location</source>
         <translation>Locatie</translation>
@@ -6410,89 +6386,89 @@ Bestaande duikstek</translation>
         <translation>Waardering</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="61"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="66"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="513"/>
         <source>Equipment</source>
         <translation>Uitrusting</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="63"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="68"/>
         <source>Information</source>
         <translation>Informatie</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="65"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="70"/>
         <source>Statistics</source>
         <translation>Statistieken</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="67"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="72"/>
         <source>Media</source>
         <translation>Media</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="69"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="74"/>
         <source>Extra Info</source>
         <translation>Extra Informatie</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="71"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="76"/>
         <source>Dive sites</source>
         <translation>Duikstekken</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="73"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="78"/>
         <source>Device names</source>
-        <translation type="unfinished"/>
+        <translation>Apparaatnamen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="97"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
         <source>Apply changes</source>
         <translation>Wijzigingen toepassen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="101"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="109"/>
         <source>Discard changes</source>
         <translation>Wijzigingen verwijderen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="113"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="109"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="117"/>
         <source>Undo</source>
         <translation>Ongedaan maken</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="228"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="236"/>
         <source>This dive is being edited.</source>
         <translation>Deze duik wordt bewerkt.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="379"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="407"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="387"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="415"/>
         <source>Trip notes</source>
         <translation>Trip notities</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="401"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="409"/>
         <source>Trip location</source>
         <translation>Trip locatie</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="532"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="540"/>
         <source>Discard the changes?</source>
         <translation>Wijzigingen niet opslaan?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="533"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="541"/>
         <source>You are about to discard your changes.</source>
         <translation>U staat op het punt wijzigingen te verwijderen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="563"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="571"/>
         <source>Warning: edited %1 dives</source>
         <translation>Waarschuwing: %1 duiken bewerkt</translation>
     </message>
@@ -7631,31 +7607,6 @@ Als uw apparaat Bluetooth gebruikt, doe dezelfde voorbereidingen als voor het do
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="346"/>
         <source>Speed</source>
         <translation>Snelheid</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="125"/>
-        <source>Header text colors</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="141"/>
-        <source>Depending on the display mode, sometimes the blue text used in headers in the various information panes is not clearly visible. Select a color that fits the current theme of your computer. For dark mode, select either Light Blue or Black (rendered white using a dark theme). The default is Medium Blue.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="152"/>
-        <source>Medium Blue</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="160"/>
-        <source>Light Blue</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="168"/>
-        <source>Black</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="15"/>
@@ -9909,7 +9860,7 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveComputer.ui" line="17"/>
         <source>Dive Computers</source>
-        <translation type="unfinished"/>
+        <translation>Duikcomputers</translation>
     </message>
 </context>
 <context>
@@ -10154,39 +10105,39 @@ Bestanden met onjuiste datum/tijd</translation>
         <translation>Ongedaan maken</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="86"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="87"/>
         <source>Warning: edited %1 dives</source>
         <translation>Waarschuwing: %1 duiken bewerkt</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="135"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="136"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="142"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
         <source>sec</source>
         <translation>sec</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="160"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
         <source>d</source>
         <translation>d</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="229"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="230"/>
         <source>unknown</source>
         <translation>onbekend</translation>
     </message>
@@ -10280,7 +10231,7 @@ Bestanden met onjuiste datum/tijd</translation>
     <name>TabDiveSite</name>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveSite.ui" line="14"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="15"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="17"/>
         <source>Dive sites</source>
         <translation>Duikstekken</translation>
     </message>
@@ -10295,12 +10246,12 @@ Bestanden met onjuiste datum/tijd</translation>
         <translation>Ongebruikte duikstekken verwijderen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="56"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="58"/>
         <source>Delete dive site?</source>
         <translation>Duikstek verwijderen?</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="57"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="59"/>
         <source>This dive site has %n dive(s). Do you really want to delete it?
 </source>
         <translation><numerusform>Deze duikstek heeft %n duik. Echt verwijderen?
@@ -10308,7 +10259,7 @@ Bestanden met onjuiste datum/tijd</translation>
 </numerusform></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="74"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveSite.cpp" line="76"/>
         <source>New dive site</source>
         <translation>Nieuwe duikstek</translation>
     </message>
@@ -10322,42 +10273,45 @@ Bestanden met onjuiste datum/tijd</translation>
         <translation>Statistieken</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="73"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="74"/>
         <source>Max. depth</source>
         <translation>Max. diepte</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="85"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="196"/>
-        <source>SAC</source>
-        <translation>Gasverbruik</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="97"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="197"/>
-        <source>Temperature</source>
-        <translation>Temperatuur</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="109"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="198"/>
-        <source>Total time</source>
-        <translation>Totale tijd</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="128"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="200"/>
         <source>Duration</source>
         <translation>Duur</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="140"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="201"/>
-        <source>Dives</source>
-        <translation>Duiken</translation>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="120"/>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="197"/>
+        <source>Temperature</source>
+        <translation>Temperatuur</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="159"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="143"/>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="196"/>
+        <source>SAC</source>
+        <translation>Gasverbruik</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="177"/>
+        <source>All selected dives</source>
+        <translation>Alle geselecteerde duiken</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="196"/>
+        <source>Total number of dives selected :</source>
+        <translation>Totaal aantal duiken geselecteerd:</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="218"/>
+        <source>Total duration of selected dives :</source>
+        <translation>Totale duur van geselecteerde duiken:</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="258"/>
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="203"/>
         <source>Gas consumption</source>
         <translation>Gasverbruik</translation>
@@ -10476,6 +10430,16 @@ worden uit lucht en:
         <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="195"/>
         <source>Depth</source>
         <translation>Diepte</translation>
+    </message>
+    <message>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="198"/>
+        <source>Total time</source>
+        <translation>Totale tijd</translation>
+    </message>
+    <message>
+        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="201"/>
+        <source>Dives</source>
+        <translation>Duiken</translation>
     </message>
 </context>
 <context>
@@ -10771,7 +10735,7 @@ worden uit lucht en:
     <message>
         <location filename="../desktop-widgets/tripselectiondialog.ui" line="17"/>
         <source>Select trip</source>
-        <translation type="unfinished"/>
+        <translation>Selecteer trip</translation>
     </message>
 </context>
 <context>
@@ -11666,22 +11630,22 @@ Maximum</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="47"/>
         <source>date time</source>
-        <translation type="unfinished"/>
+        <translation>datum tijd</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="48"/>
         <source>time of day</source>
-        <translation type="unfinished"/>
+        <translation>tijdstip</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="49"/>
         <source>year</source>
-        <translation type="unfinished"/>
+        <translation>jaar</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="50"/>
         <source>week day</source>
-        <translation type="unfinished"/>
+        <translation>weekdag</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="52"/>
@@ -11691,7 +11655,7 @@ Maximum</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="53"/>
         <source>wave size</source>
-        <translation type="unfinished"/>
+        <translation>golfhoogte</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="54"/>
@@ -11716,7 +11680,7 @@ Maximum</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="59"/>
         <source>max. depth</source>
-        <translation type="unfinished"/>
+        <translation>max. diepte</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="60"/>
@@ -11732,17 +11696,17 @@ Maximum</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="62"/>
         <source>water temp.</source>
-        <translation type="unfinished"/>
+        <translation>water temp.</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="63"/>
         <source>air temp.</source>
-        <translation type="unfinished"/>
+        <translation>lucht temp.</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="64"/>
         <source>water density</source>
-        <translation type="unfinished"/>
+        <translation>waterdichtheid</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="65"/>
@@ -11753,12 +11717,12 @@ Maximum</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="67"/>
         <source>logged</source>
-        <translation type="unfinished"/>
+        <translation>gelogd</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="68"/>
         <source>planned</source>
-        <translation type="unfinished"/>
+        <translation>gepland</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="70"/>
@@ -11773,7 +11737,7 @@ Maximum</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="73"/>
         <source>people</source>
-        <translation type="unfinished"/>
+        <translation>personen</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="74"/>
@@ -11783,32 +11747,32 @@ Maximum</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="75"/>
         <source>weight type</source>
-        <translation type="unfinished"/>
+        <translation>gewichtstype</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="76"/>
         <source>cylinder type</source>
-        <translation type="unfinished"/>
+        <translation>flestype</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="77"/>
         <source>cylinder size</source>
-        <translation type="unfinished"/>
+        <translation>flesgrootte</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="78"/>
         <source>gas N₂ content</source>
-        <translation type="unfinished"/>
+        <translation>gasinhoud N₂</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="79"/>
         <source>gas O₂ content</source>
-        <translation type="unfinished"/>
+        <translation>gasinhoud O₂</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="80"/>
         <source>gas He content</source>
-        <translation type="unfinished"/>
+        <translation>gasinhoud He</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="81"/>
@@ -11823,97 +11787,97 @@ Maximum</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="90"/>
         <source>starting with</source>
-        <translation type="unfinished"/>
+        <translation>begint met</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="91"/>
         <source>with substring</source>
-        <translation type="unfinished"/>
+        <translation>komt voor in</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="92"/>
         <source>exactly</source>
-        <translation type="unfinished"/>
+        <translation>exact</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="101"/>
         <source>equal to</source>
-        <translation type="unfinished"/>
+        <translation>gelijk aan</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="101"/>
         <source>at</source>
-        <translation type="unfinished"/>
+        <translation>op</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="102"/>
         <source>at most</source>
-        <translation type="unfinished"/>
+        <translation>hoogstens</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="102"/>
         <source>before</source>
-        <translation type="unfinished"/>
+        <translation>voor</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="103"/>
         <source>at least</source>
-        <translation type="unfinished"/>
+        <translation>minstens</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="103"/>
         <source>after</source>
-        <translation type="unfinished"/>
+        <translation>na</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="104"/>
         <source>in range</source>
-        <translation type="unfinished"/>
+        <translation>in bereik</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="108"/>
         <source>is</source>
-        <translation type="unfinished"/>
+        <translation>is</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="109"/>
         <source>is not</source>
-        <translation type="unfinished"/>
+        <translation>is niet</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="415"/>
         <source>Sunday</source>
-        <translation type="unfinished"/>
+        <translation>Zondag</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="416"/>
         <source>Monday</source>
-        <translation type="unfinished"/>
+        <translation>Maandag</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="417"/>
         <source>Tuesday</source>
-        <translation type="unfinished"/>
+        <translation>Dinsdag</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="418"/>
         <source>Wednesday</source>
-        <translation type="unfinished"/>
+        <translation>Woensdag</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="419"/>
         <source>Thursday</source>
-        <translation type="unfinished"/>
+        <translation>Donderdag</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="420"/>
         <source>Friday</source>
-        <translation type="unfinished"/>
+        <translation>Vrijdag</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="421"/>
         <source>Saturday</source>
-        <translation type="unfinished"/>
+        <translation>Zaterdag</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="86"/>
@@ -14114,12 +14078,12 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="422"/>
         <source>Disable background location service</source>
-        <translation type="unfinished"/>
+        <translation>Achtergrond locatieservice uitschakelen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="422"/>
         <source>Run background location service</source>
-        <translation type="unfinished"/>
+        <translation>Start locatieservice op de achtergrond</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="437"/>
@@ -14205,27 +14169,27 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="780"/>
         <source>Location Service Enabled</source>
-        <translation type="unfinished"/>
+        <translation>Locatieservice ingeschakeld</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="785"/>
         <source>This service collects location data to enable you to track the GPS coordinates of your dives. This will attempt to continue to collect location data, even if the app is closed or your phone screen locked.</source>
-        <translation type="unfinished"/>
+        <translation>Deze service verzamelt locatiegegevens zodat u de GPS-coördinaten van uw duiken kunt volgen. Hiermee wordt geprobeerd locatiegegevens te blijven verzamelen, zelfs als de app is gesloten of uw telefoonscherm is vergrendeld.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="791"/>
-        <source>The location data are not used in way, except when you apply the location data to the dives in your dive list on this device.</source>
-        <translation type="unfinished"/>
+        <source>The location data are not used in any way, except when you apply the location data to the dives in your dive list on this device.</source>
+        <translation>De locatiegegevens worden op geen enkele manier gebruikt, behalve wanneer u de locatiegegevens toepast op de duiken in uw duiklijst op dit apparaat.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="796"/>
         <source>By default, the location data are never transferred to the cloud or to any other service. However, in order to allow debugging of location data related issues, you can explicitly enable storing those location data in the cloud by enabling the corresponding option in the advanced settings.</source>
-        <translation type="unfinished"/>
+        <translation>Standaard worden de locatiegegevens nooit overgedragen naar de cloud of naar een andere service. Om foutopsporing van locatiegegevens gerelateerde problemen mogelijk te maken, kunt u het opslaan van die locatiegegevens in de cloud expliciet inschakelen door de overeenkomstige optie in te schakelen in de geavanceerde instellingen.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="801"/>
         <source>Understood</source>
-        <translation type="unfinished"/>
+        <translation>Akkoord</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="810"/>
