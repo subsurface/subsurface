@@ -989,7 +989,7 @@ Nyomd meg a mentés gombot.</translation>
     </message>
 </context>
 <context>
-    <name>Command::AddCylinder</name>
+    <name>Command</name>
     <message>
         <location filename="../commands/command_edit.cpp" line="1033"/>
         <source>Add cylinder</source>
@@ -1002,7 +1002,7 @@ Nyomd meg a mentés gombot.</translation>
     </message>
 </context>
 <context>
-    <name>Command::AddEventBookmark</name>
+    <name>Command</name>
     <message>
         <location filename="../commands/command_event.cpp" line="67"/>
         <source>Add bookmark</source>
@@ -1010,7 +1010,7 @@ Nyomd meg a mentés gombot.</translation>
     </message>
 </context>
 <context>
-    <name>Command::AddEventDivemodeSwitch</name>
+    <name>Command</name>
     <message>
         <location filename="../commands/command_event.cpp" line="73"/>
         <source>Add dive mode switch to %1</source>
@@ -1018,7 +1018,7 @@ Nyomd meg a mentés gombot.</translation>
     </message>
 </context>
 <context>
-    <name>Command::AddEventSetpointChange</name>
+    <name>Command</name>
     <message>
         <location filename="../commands/command_event.cpp" line="79"/>
         <source>Add set point change</source>
@@ -1026,7 +1026,7 @@ Nyomd meg a mentés gombot.</translation>
     </message>
 </context>
 <context>
-    <name>Command::EditCylinder</name>
+    <name>Command</name>
     <message>
         <location filename="../commands/command_edit.cpp" line="1204"/>
         <source>Edit cylinder</source>
@@ -1039,7 +1039,7 @@ Nyomd meg a mentés gombot.</translation>
     </message>
 </context>
 <context>
-    <name>Command::RemoveCylinder</name>
+    <name>Command</name>
     <message>
         <location filename="../commands/command_edit.cpp" line="1154"/>
         <source>Remove cylinder</source>
@@ -1052,7 +1052,7 @@ Nyomd meg a mentés gombot.</translation>
     </message>
 </context>
 <context>
-    <name>Command::RemoveEvent</name>
+    <name>Command</name>
     <message>
         <location filename="../commands/command_event.cpp" line="114"/>
         <source>Remove %1 event</source>
@@ -1060,7 +1060,7 @@ Nyomd meg a mentés gombot.</translation>
     </message>
 </context>
 <context>
-    <name>Command::RenameEvent</name>
+    <name>Command</name>
     <message>
         <location filename="../commands/command_event.cpp" line="86"/>
         <source>Rename bookmark to %1</source>

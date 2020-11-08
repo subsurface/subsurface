@@ -35,7 +35,7 @@
     </message>
 </context>
 <context>
-    <name>Command::AddDivesToTrip</name>
+    <name>Command</name>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="709"/>
         <source>add %n dives to trip</source>
@@ -46,7 +46,7 @@
     </message>
 </context>
 <context>
-    <name>Command::DeleteDive</name>
+    <name>Command</name>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="549"/>
         <source>delete %n dive(s)</source>
@@ -57,7 +57,7 @@
     </message>
 </context>
 <context>
-    <name>Command::DeleteDiveSites</name>
+    <name>Command</name>
     <message numerus="yes">
         <location filename="../commands/command_divesite.cpp" line="136"/>
         <source>delete %n dive site(s)</source>
@@ -68,7 +68,7 @@
     </message>
 </context>
 <context>
-    <name>Command::ImportDives</name>
+    <name>Command</name>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="468"/>
         <source>import %n dive(s) from %1</source>
@@ -79,7 +79,7 @@
     </message>
 </context>
 <context>
-    <name>Command::RemoveDivesFromTrip</name>
+    <name>Command</name>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="685"/>
         <source>remove %n dive(s) from trip</source>
@@ -90,7 +90,7 @@
     </message>
 </context>
 <context>
-    <name>Command::RenumberDives</name>
+    <name>Command</name>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="633"/>
         <source>renumber %n dive(s)</source>
@@ -101,7 +101,7 @@
     </message>
 </context>
 <context>
-    <name>Command::ShiftTime</name>
+    <name>Command</name>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="585"/>
         <source>shift time of %n dives</source>
