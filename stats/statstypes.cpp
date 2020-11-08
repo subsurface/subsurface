@@ -304,6 +304,21 @@ double StatsType::applyOperation(const std::vector<dive *> &dives, StatsOperatio
 	}
 }
 
+std::vector<std::pair<double,double>> StatsType::scatter(const StatsType &t2, const std::vector<dive *> &dives) const
+{
+	std::vector<std::pair<double,double>> res;
+	res.reserve(dives.size());
+	for (const dive *d: dives) {
+		double v1 = toFloat(d);
+		double v2 = t2.toFloat(d);
+		if (is_invalid_value(v1) || is_invalid_value(v2))
+			continue;
+		res.emplace_back(v1, v2);
+	}
+	std::sort(res.begin(), res.end());
+	return res;
+}
+
 // Silly template, which spares us defining type() member functions.
 template<StatsType::Type t>
 struct StatsTypeTemplate : public StatsType {

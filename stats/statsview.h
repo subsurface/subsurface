@@ -8,11 +8,15 @@
 struct dive;
 struct StatsType;
 struct StatsBinner;
+struct StatsBin;
 
 namespace QtCharts {
 	class QAbstractAxis;
 	class QAbstractSeries;
+	class QBarCategoryAxis;
+	class QCategoryAxis;
 	class QLegend;
+	class QValueAxis;
 }
 
 enum class ChartSubType : int;
@@ -51,13 +55,17 @@ private:
 	void plotDiscreteCountChart(const std::vector<dive *> &dives,
 				    ChartSubType subType,
 				    const StatsType *categoryType, const StatsBinner *categoryBinner);
+	void plotDiscreteScatter(const std::vector<dive *> &dives,
+				 const StatsType *categoryType, const StatsBinner *categoryBinner,
+				 const StatsType *valueType);
 	void plotHistogramCountChart(const std::vector<dive *> &dives,
 				     ChartSubType subType,
 				     const StatsType *categoryType, const StatsBinner *categoryBinner);
-	void plotHistogramChart(const std::vector<dive *> &dives,
-				ChartSubType subType,
-				const StatsType *categoryType, const StatsBinner *categoryBinner,
-				const StatsType *valueType, StatsOperation valueAxisOperation);
+	void plotHistogramBarChart(const std::vector<dive *> &dives,
+				   ChartSubType subType,
+				   const StatsType *categoryType, const StatsBinner *categoryBinner,
+				   const StatsType *valueType, StatsOperation valueAxisOperation);
+	void plotScatter(const std::vector<dive *> &dives, const StatsType *categoryType, const StatsType *valueType);
 	void setTitle(const QString &);
 	QtCharts::QLegend *getLegend();
 	void showLegend();
@@ -69,6 +77,14 @@ private:
 	template <typename T>
 	T *addSeries(const QString &name, QtCharts::QAbstractAxis *xAxis, QtCharts::QAbstractAxis *yAxis);
 	QtCharts::QAbstractSeries *addSeriesHelper(const QString &name, int type, QtCharts::QAbstractAxis *xAxis, QtCharts::QAbstractAxis *yAxis);
+
+	template<typename T>
+	QtCharts::QBarCategoryAxis *createCategoryAxis(const StatsBinner &binner, const std::vector<T> &bins);
+	template<typename T>
+	QtCharts::QCategoryAxis *createHistogramAxis(const StatsBinner &binner,
+						     const std::vector<T> &bins,
+						     bool isHorizontal);
+	QtCharts::QValueAxis *createValueAxis(double min, double max, int decimals, bool isHorizontal);
 
 	// Helper functions to add feature to the chart
 	void addLineMarker(double pos, double low, double high, const QPen &pen,
