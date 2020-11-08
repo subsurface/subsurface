@@ -172,6 +172,8 @@ void calculate_stats_summary(struct stats_summary *out, bool selected_only)
 			continue;
 		if (dp->invalid)
 			continue;
+		if (dp->hidden_by_filter)
+			continue;
 		process_dive(dp, &stats);
 
 		/* yearly statistics */
