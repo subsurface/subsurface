@@ -12,6 +12,7 @@
 #include <QHorizontalBarSeries>
 #include <QHorizontalStackedBarSeries>
 #include <QLineSeries>
+#include <QLocale>
 #include <QPieSeries>
 #include <QScatterSeries>
 #include <QStackedBarSeries>
@@ -695,10 +696,20 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 	if (categoryBins.empty())
 		return;
 
+	int total = 0;
+	for (const auto &[bin, count]: categoryBins)
+		total += count;
+
 	if (subType == ChartSubType::Pie) {
 		QPieSeries *series = addSeries<QtCharts::QPieSeries>(categoryType->name(), nullptr, nullptr);
+		QLocale loc;
 		for (auto const &[bin, count]: categoryBins) {
-			QPieSlice *slice = new QPieSlice(categoryBinner->format(*bin), count);
+			double percentage = count * 100.0 / total;
+			QString label = QString("%1 (%2: %3\%)").arg(
+						categoryBinner->format(*bin),
+						loc.toString(count),
+						loc.toString(percentage, 'f', 1));
+			QPieSlice *slice = new QPieSlice(label, count);
 			slice->setLabelVisible(true);
 			series->append(slice);
 		}
