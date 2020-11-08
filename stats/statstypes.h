@@ -101,6 +101,7 @@ struct StatsType {
 	static StatsQuartiles quartiles(const std::vector<double> &values);
 	StatsQuartiles quartiles(const std::vector<dive *> &dives) const;
 	std::vector<double> values(const std::vector<dive *> &dives) const;
+	std::vector<std::pair<double,double>> scatter(const StatsType &t2, const std::vector<dive *> &dives) const;
 	double sum(const std::vector<dive *> &dives) const;
 	double applyOperation(const std::vector<dive *> &dives, StatsOperation op) const;
 private:

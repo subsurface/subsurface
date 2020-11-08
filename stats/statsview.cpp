@@ -13,6 +13,7 @@
 #include <QHorizontalStackedBarSeries>
 #include <QLineSeries>
 #include <QPieSeries>
+#include <QScatterSeries>
 #include <QStackedBarSeries>
 #include <QValueAxis>
 
@@ -48,8 +49,11 @@ enum class ChartTypeId {
 	DiscreteBar,
 	DiscreteValue,
 	DiscreteCount,
+	DiscreteScatter,
 	HistogramCount,
-	Histogram
+	HistogramBar,
+	HistogramBox,
+	ScatterPlot
 };
 
 static const struct ChartType {
@@ -97,6 +101,17 @@ static const struct ChartType {
 		{ ChartSubType::Vertical, ChartSubType::Horizontal, ChartSubType::Pie }
 	},
 	{
+		ChartTypeId::DiscreteScatter,
+		QT_TRANSLATE_NOOP("StatsTranslations", "Discrete scatter"),
+		stats_types,	// supports all types as first axis
+		stats_numeric_types,	// supports numeric types as second axis, since we want to average, etc
+		true,
+		false,
+		false,
+		false,
+		{ }
+	},
+	{
 		ChartTypeId::HistogramCount,
 		QT_TRANSLATE_NOOP("StatsTranslations", "Histogram counts"),
 		stats_continuous_types,	// supports continuous types as first axis
@@ -108,8 +123,8 @@ static const struct ChartType {
 		{ ChartSubType::Vertical, ChartSubType::Horizontal }
 	},
 	{
-		ChartTypeId::Histogram,
-		QT_TRANSLATE_NOOP("StatsTranslations", "Histogram value"),
+		ChartTypeId::HistogramBar,
+		QT_TRANSLATE_NOOP("StatsTranslations", "Histogram bar"),
 		stats_continuous_types,	// supports continuous types as first axis
 		stats_numeric_types,	// supports numeric types as second axis, since we want to average, etc
 		true,
@@ -117,6 +132,28 @@ static const struct ChartType {
 		false,
 		true,
 		{ ChartSubType::Vertical, ChartSubType::Horizontal }
+	},
+	{
+		ChartTypeId::HistogramBox,
+		QT_TRANSLATE_NOOP("StatsTranslations", "Histogram box"),
+		stats_continuous_types,	// supports continuous types as first axis
+		stats_numeric_types,	// supports numeric types as second axis, since we want to average, etc
+		true,
+		false,
+		false,
+		false,
+		{ ChartSubType::Vertical, ChartSubType::Horizontal }
+	},
+	{
+		ChartTypeId::ScatterPlot,
+		QT_TRANSLATE_NOOP("StatsTranslations", "Scatter plot"),
+		stats_numeric_types,	// plot any numeric type against any other numeric type
+		stats_numeric_types,	// for time-based charts, there is a different plot
+		false,
+		false,
+		false,
+		false,
+		{ }
 	}
 };
 
@@ -282,6 +319,8 @@ template<> constexpr int series_type_id<QtCharts::QLineSeries>()
 { return QtCharts::QAbstractSeries::SeriesTypeLine; }
 template<> constexpr int series_type_id<QtCharts::QPieSeries>()
 { return QtCharts::QAbstractSeries::SeriesTypePie; }
+template<> constexpr int series_type_id<QtCharts::QScatterSeries>()
+{ return QtCharts::QAbstractSeries::SeriesTypeScatter; }
 
 // Helper function to add a series to a QML ChartView.
 // Sadly, accessing QML from C++ is maliciously cumbersome.
@@ -393,18 +432,22 @@ void StatsView::plot(int type, int subTypeIdx,
 				      secondAxisType->idxToOperation(secondAxisOperation));
 	case ChartTypeId::DiscreteCount:
 		return plotDiscreteCountChart(dives, subType, firstAxisType, firstAxisBinner);
+	case ChartTypeId::DiscreteScatter:
+		return plotDiscreteScatter(dives, firstAxisType, firstAxisBinner, secondAxisType);
 	case ChartTypeId::HistogramCount:
 		return plotHistogramCountChart(dives, subType, firstAxisType, firstAxisBinner);
-	case ChartTypeId::Histogram:
-		return plotHistogramChart(dives, subType, firstAxisType, firstAxisBinner, secondAxisType,
-					  secondAxisType->idxToOperation(secondAxisOperation));
+	case ChartTypeId::HistogramBar:
+		return plotHistogramBarChart(dives, subType, firstAxisType, firstAxisBinner, secondAxisType,
+					     secondAxisType->idxToOperation(secondAxisOperation));
+	case ChartTypeId::ScatterPlot:
+		return plotScatter(dives, firstAxisType, secondAxisType);
 	default:
 		qWarning("Unknown chart type: %d", (int)t->id);
 		return;
 	}
 }
 
-int initValueAxis(QtCharts::QValueAxis *axis, int count)
+static int initCountAxis(QtCharts::QValueAxis *axis, int count)
 {
 	// TODO: Let the acceptable number of ticks depend on the size of the graph.
 	int numTicksMin = 5;
@@ -437,6 +480,17 @@ int initValueAxis(QtCharts::QValueAxis *axis, int count)
 	return max;
 }
 
+template<typename T>
+QtCharts::QBarCategoryAxis *StatsView::createCategoryAxis(const StatsBinner &binner, const std::vector<T> &bins)
+{
+	using QtCharts::QBarCategoryAxis;
+
+	QBarCategoryAxis *axis = makeAxis<QBarCategoryAxis>();
+	for (const auto &[bin, dummy]: bins)
+		axis->append(binner.format(*bin));
+	return axis;
+}
+
 void StatsView::plotBarChart(const std::vector<dive *> &dives,
 			     ChartSubType subType,
 			     const StatsType *categoryType, const StatsBinner *categoryBinner,
@@ -452,7 +506,6 @@ void StatsView::plotBarChart(const std::vector<dive *> &dives,
 
 	setTitle(valueType->nameWithBinnerUnit(*valueBinner));
 
-	QStringList categoryNames;
 	std::vector<StatsBinDives> categoryBins = categoryBinner->bin_dives(dives, false);
 
 	// The problem here is that for different dive sets of the category
@@ -466,8 +519,6 @@ void StatsView::plotBarChart(const std::vector<dive *> &dives,
 	int maxCount = 0;
 	int maxCategoryCount = 0;
 	for (const auto &[bin, dives]: categoryBins) {
-		categoryNames.push_back(categoryBinner->format(*bin));
-
 		int categoryCount = 0;
 		for (auto &[vbin, count]: valueBinner->count_dives(dives, false)) {
 			// Note: we assume that the bins are sorted!
@@ -491,13 +542,12 @@ void StatsView::plotBarChart(const std::vector<dive *> &dives,
 
 	bool isStacked = subType == ChartSubType::VerticalStacked || subType == ChartSubType::HorizontalStacked;
 
-	QBarCategoryAxis *catAxis = makeAxis<QBarCategoryAxis>();
-	catAxis->append(categoryNames);
+	QBarCategoryAxis *catAxis = createCategoryAxis(*categoryBinner, categoryBins);
 	catAxis->setTitleText(categoryType->nameWithUnit());
 
 	QValueAxis *valAxis = makeAxis<QValueAxis>();
 	int maxVal = isStacked ? maxCategoryCount : maxCount;
-	initValueAxis(valAxis, maxVal);
+	initCountAxis(valAxis, maxVal);
 
 	QAbstractBarSeries *series;
 	switch (subType) {
@@ -533,6 +583,45 @@ static QString makeFormatString(int decimals)
 	return QStringLiteral("%.%1f").arg(decimals < 0 ? 0 : decimals);
 }
 
+QtCharts::QValueAxis *StatsView::createValueAxis(double min, double max, int decimals, bool isHorizontal)
+{
+	using QtCharts::QValueAxis;
+
+	// Avoid degenerate cases
+	if (max - min < 0.0001) {
+		max = 0.5;
+		min = -0.5;
+	}
+	// TODO: Let the acceptable number of ticks depend on the size of the graph and font.
+	int numTicks = isHorizontal ? 8 : 10;
+
+	QValueAxis *axis = makeAxis<QValueAxis>();
+	axis->setRange(min, max);
+
+	// Use full decimal increments:w
+	double height = max - min;
+	double inc = height / numTicks;
+	double digits = floor(log10(inc));
+	int digits_int = lrint(digits);
+	double digits_factor = pow(10.0, digits);
+	int inc_int = std::max((int)ceil(inc / digits_factor), 1);
+	// Do "nice" increments: 1, 2, 4, 5.
+	if (inc_int > 5)
+		inc_int = 10;
+	if (inc_int == 3)
+		inc_int = 5;
+	inc = inc_int * digits_factor;
+	if (-digits_int > decimals)
+		decimals = -digits_int;
+
+	axis->setLabelFormat(makeFormatString(decimals));
+	axis->setLabelFormat(makeFormatString(decimals));
+	axis->setTickInterval(inc);
+	axis->setTickAnchor(0.0);
+	axis->setTickType(QValueAxis::TicksDynamic);
+	return axis;
+}
+
 void StatsView::plotValueChart(const std::vector<dive *> &dives,
 			       ChartSubType subType,
 			       const StatsType *categoryType, const StatsBinner *categoryBinner,
@@ -556,36 +645,29 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 		return;
 
 	std::vector<double> values;
-	QStringList categoryNames;
 	values.reserve(categoryBins.size());
-	for (auto const &[bin, dives]: categoryBins) {
-		categoryNames.push_back(categoryBinner->format(*bin));
+	for (auto const &[bin, dives]: categoryBins)
 		values.push_back(valueType->applyOperation(dives, valueAxisOperation));
-	}
-	QBarCategoryAxis *catAxis = makeAxis<QBarCategoryAxis>();
-	catAxis->append(categoryNames);
+	QBarCategoryAxis *catAxis = createCategoryAxis(*categoryBinner, categoryBins);
 	catAxis->setTitleText(categoryType->nameWithUnit());
 
+	bool isHorizontal = subType == ChartSubType::Horizontal;
 	double maxValue = *std::max_element(values.begin(), values.end());
 	double chartHeight = maxValue * (1.0 + barTopSpace);
-	QValueAxis *valAxis = makeAxis<QValueAxis>();
-	// TODO: round axis labels to "nice" numbers.
-	valAxis->setRange(0, chartHeight);
-	valAxis->setLabelFormat(makeFormatString(valueType->decimals()));
+	QValueAxis *valAxis = createValueAxis(0.0, chartHeight, valueType->decimals(), isHorizontal);
 	valAxis->setTitleText(valueType->nameWithUnit());
 
 	QAbstractBarSeries *series;
-	if (subType == ChartSubType::Vertical)
-		series = addSeries<QtCharts::QBarSeries>(valueType->name(), catAxis, valAxis);
-	else
+	if (isHorizontal)
 		series = addSeries<QtCharts::QHorizontalBarSeries>(valueType->name(), valAxis, catAxis);
+	else
+		series = addSeries<QtCharts::QBarSeries>(valueType->name(), catAxis, valAxis);
 	if (!series)
 		return;
 
 	QBarSet *set = new QBarSet(QString());
-	for (double value: values) {
+	for (double value: values)
 		*set << value;
-	}
 	series->append(set);
 
 	hideLegend();
@@ -644,11 +726,94 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 			*set << count;
 		}
 
-		initValueAxis(valAxis, maxCount);
+		initCountAxis(valAxis, maxCount);
 
 		series->append(set);
 		hideLegend();
 	}
+}
+
+static std::pair<double, double> getMinMaxValue(const std::vector<std::vector<double>> &values)
+{
+	if (values.empty())
+		return { 0.0, 0.0 };
+	double min = 1e14, max = 0.0;
+	for (const std::vector<double> &v: values) {
+		if (v.empty())
+			continue;
+		if (v.front() < min)
+			min = v.front();
+		if (v.back() > max)
+			max = v.back();
+	}
+	return { min, max };
+}
+
+static std::pair<double, double> getMinMaxValue(const std::vector<std::pair<double, double>> &values)
+{
+	if (values.empty())
+		return { 0.0, 0.0 };
+	double min = 1e14, max = 0.0;
+	for (auto [dummy, v]: values) {
+		if (v < min)
+			min = v;
+		if (v > max)
+			max = v;
+	}
+	return { min, max };
+}
+
+void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
+				    const StatsType *categoryType, const StatsBinner *categoryBinner,
+				    const StatsType *valueType)
+{
+	using QtCharts::QBarCategoryAxis;
+	using QtCharts::QScatterSeries;
+	using QtCharts::QValueAxis;
+
+	if (!categoryBinner)
+		return;
+
+	setTitle(valueType->name());
+
+	std::vector<StatsBinDives> categoryBins = categoryBinner->bin_dives(dives, false);
+
+	// If there is nothing to display, quit
+	if (categoryBins.empty())
+		return;
+
+	QBarCategoryAxis *catAxis = createCategoryAxis(*categoryBinner, categoryBins);
+	catAxis->setTitleText(categoryType->name());
+
+	std::vector<std::vector<double>> values;
+	values.reserve(categoryBins.size());
+	for (const auto &[dummy, dives]: categoryBins)
+		values.push_back(valueType->values(dives));
+
+	auto [minValue, maxValue] = getMinMaxValue(values);
+
+	double chartTop = maxValue * (1.0 + barTopSpace);
+	double chartBottom = minValue * (1.0 - barTopSpace);
+	QValueAxis *valAxis = createValueAxis(chartBottom, chartTop, valueType->decimals(), false);
+	valAxis->setTitleText(valueType->nameWithUnit());
+
+	QScatterSeries *series = addSeries<QScatterSeries>(valueType->name(), catAxis, valAxis);
+	QScatterSeries *quartileSeries = addSeries<QScatterSeries>(valueType->name(), catAxis, valAxis);
+	quartileSeries->setMarkerShape(QScatterSeries::MarkerShapeRectangle);
+	quartileSeries->setColor(Qt::red);
+
+	double x = 0.0;
+	for (const std::vector<double> &array: values) {
+		for (double v: array)
+			series->append(x, v);
+		StatsQuartiles quartiles = StatsType::quartiles(array);
+		quartileSeries->append(x, quartiles.q1);
+		quartileSeries->append(x, quartiles.q2);
+		quartileSeries->append(x, quartiles.q3);
+		x += 1.0;
+	}
+
+	hideLegend();
 }
 
 // A small helper class that makes strings unique. We need this,
@@ -746,6 +911,44 @@ static void initHistogramAxis(QtCharts::QCategoryAxis *axis, const std::vector<s
 	axis->setLabelsPosition(QCategoryAxis::AxisLabelsPositionOnValue);
 }
 
+// Yikes, we get our data in different kinds of (bin, value) pairs.
+// To create a category axis from this, we have to templatify the function.
+template<typename T>
+QtCharts::QCategoryAxis *StatsView::createHistogramAxis(const StatsBinner &binner, const std::vector<T> &bins, bool isHorizontal)
+{
+	using QtCharts::QCategoryAxis;
+
+	LabelDisambiguator labeler;
+	std::vector<std::pair<QString, double>> labelValues;
+	for (auto const &[bin, dummy]: bins) {
+		QString label = binner.formatLowerBound(*bin);
+		double lowerBound = binner.lowerBoundToFloat(*bin);
+		labelValues.emplace_back(labeler.transmogrify(label), lowerBound);
+	}
+
+	const StatsBin &lastBin = *bins.back().bin;
+	QString lastLabel = binner.formatUpperBound(lastBin);
+	double upperBound = binner.upperBoundToFloat(lastBin);
+	labelValues.emplace_back(labeler.transmogrify(lastLabel), upperBound);
+
+	QCategoryAxis *catAxis = makeAxis<QCategoryAxis>();
+	int maxLabels = isHorizontal ? 10 : 15;
+	initHistogramAxis(catAxis, labelValues, maxLabels);
+
+	return catAxis;
+}
+
+template<typename T>
+double getMaxVal(const std::vector<T> &bins)
+{
+	double res = 0;
+	for (auto const &[dummy, val]: bins) {
+		if (val > res)
+			res = val;
+	}
+	return res;
+}
+
 void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 					ChartSubType subType,
 					const StatsType *categoryType, const StatsBinner *categoryBinner)
@@ -765,30 +968,14 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	if (categoryBins.empty())
 		return;
 
-	int maxCategoryCount = 0;
-	LabelDisambiguator labeler;
-	std::vector<std::pair<QString, double>> labelValues;
-	for (auto const &[bin, count]: categoryBins) {
-		if (count > maxCategoryCount)
-			maxCategoryCount = count;
-		QString label = categoryBinner->formatLowerBound(*bin);
-		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
-		labelValues.emplace_back(labeler.transmogrify(label), lowerBound);
-	}
-
-	const StatsBin &lastBin = *categoryBins.back().bin;
-	QString lastLabel = categoryBinner->formatUpperBound(lastBin);
-	double upperBound = categoryBinner->upperBoundToFloat(lastBin);
-	labelValues.emplace_back(labeler.transmogrify(lastLabel), upperBound);
-
-	QCategoryAxis *catAxis = makeAxis<QCategoryAxis>();
 	bool isHorizontal = subType == ChartSubType::Horizontal;
-	int maxLabels = isHorizontal ? 10 : 15;
-	initHistogramAxis(catAxis, labelValues, maxLabels);
+	QCategoryAxis *catAxis = createHistogramAxis(*categoryBinner, categoryBins, isHorizontal);
 	catAxis->setTitleText(categoryType->nameWithUnit());
 
+	double maxCategoryCount = getMaxVal(categoryBins);
+
 	QValueAxis *valAxis = makeAxis<QValueAxis>();
-	double chartHeight = initValueAxis(valAxis, maxCategoryCount);
+	double chartHeight = initCountAxis(valAxis, lrint(maxCategoryCount));
 
 	QAbstractAxis *xAxis = catAxis;
 	QAbstractAxis *yAxis = valAxis;
@@ -815,10 +1002,10 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	hideLegend();
 }
 
-void StatsView::plotHistogramChart(const std::vector<dive *> &dives,
-				   ChartSubType subType,
-				   const StatsType *categoryType, const StatsBinner *categoryBinner,
-				   const StatsType *valueType, StatsOperation valueAxisOperation)
+void StatsView::plotHistogramBarChart(const std::vector<dive *> &dives,
+				      ChartSubType subType,
+				      const StatsType *categoryType, const StatsBinner *categoryBinner,
+				      const StatsType *valueType, StatsOperation valueAxisOperation)
 {
 	using QtCharts::QAbstractAxis;
 	using QtCharts::QCategoryAxis;
@@ -836,34 +1023,18 @@ void StatsView::plotHistogramChart(const std::vector<dive *> &dives,
 	if (categoryBins.empty())
 		return;
 
-	LabelDisambiguator labeler;
-	std::vector<double> values;
-	values.reserve(categoryBins.size());
-	std::vector<std::pair<QString, double>> labelValues;
-	for (auto const &[bin, dives]: categoryBins) {
-		QString label = categoryBinner->formatLowerBound(*bin);
-		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
-		labelValues.emplace_back(labeler.transmogrify(label), lowerBound);
-		values.push_back(valueType->applyOperation(dives, valueAxisOperation));
-	}
-
-	const StatsBin &lastBin = *categoryBins.back().bin;
-	QString lastLabel = labeler.transmogrify(categoryBinner->formatUpperBound(lastBin));
-	double upperBound = categoryBinner->upperBoundToFloat(lastBin);
-	labelValues.emplace_back(labeler.transmogrify(lastLabel), upperBound);
-
 	bool isHorizontal = subType == ChartSubType::Horizontal;
-	int maxLabels = isHorizontal ? 10 : 15;
-	QCategoryAxis *catAxis = makeAxis<QCategoryAxis>();
-	initHistogramAxis(catAxis, labelValues, maxLabels);
+	QCategoryAxis *catAxis = createHistogramAxis(*categoryBinner, categoryBins, isHorizontal);
 	catAxis->setTitleText(categoryType->nameWithUnit());
 
+	std::vector<double> values;
+	values.reserve(categoryBins.size());
+	for (const auto &[dummy, dives]: categoryBins)
+		values.push_back(valueType->applyOperation(dives, valueAxisOperation));
 	double maxValue = *std::max_element(values.begin(), values.end());
+
 	double chartHeight = maxValue * (1.0 + barTopSpace);
-	QValueAxis *valAxis = makeAxis<QValueAxis>();
-	// TODO: round axis labels to "nice" numbers.
-	valAxis->setRange(0, chartHeight);
-	valAxis->setLabelFormat(makeFormatString(valueType->decimals()));
+	QValueAxis *valAxis = createValueAxis(0.0, chartHeight, valueType->decimals(), isHorizontal);
 	valAxis->setTitleText(valueType->nameWithUnit());
 
 	QAbstractAxis *xAxis = catAxis;
@@ -876,6 +1047,76 @@ void StatsView::plotHistogramChart(const std::vector<dive *> &dives,
 		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
 		double upperBound = categoryBinner->upperBoundToFloat(*bin);
 		addBar(lowerBound, upperBound, height, QBrush(Qt::blue), QPen(Qt::red), xAxis, yAxis, isHorizontal);
+	}
+
+	hideLegend();
+}
+
+// Returns the coefficients [a,b] of the line y = ax + b
+// If case of an undetermined regression or one with infinite slope, returns [nan, nan]
+static std::pair<double, double> linear_regression(const std::vector<std::pair<double, double>> &v)
+{
+	const double NaN = std::numeric_limits<double>::quiet_NaN();
+	if (v.empty())
+		return { NaN, NaN };
+
+	// First, calculate the x and y average
+	double avg_x = 0.0, avg_y = 0.0;
+	for (auto [x, y]: v) {
+		avg_x += x;
+		avg_y += y;
+	}
+	avg_x /= (double)v.size();
+	avg_y /= (double)v.size();
+
+	double num = 0.0, denom = 0.0;
+	for (auto [x, y]: v) {
+		num += (x - avg_x) * (y - avg_y);
+		denom += (x - avg_x) * (x - avg_x);
+	}
+	if (fabs(denom) < 1e-10)
+		return { NaN, NaN };
+	double a = num / denom;
+	double b = avg_y - a * avg_x;
+	return { a, b };
+}
+
+void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsType *categoryType, const StatsType *valueType)
+{
+	using QtCharts::QLineSeries;
+	using QtCharts::QScatterSeries;
+	using QtCharts::QValueAxis;
+
+	setTitle(StatsTranslations::tr("%1 vs. %2").arg(valueType->name(), categoryType->name()));
+
+	std::vector<std::pair<double, double>> points = categoryType->scatter(*valueType, dives);
+	if (points.empty())
+		return;
+
+	double minX = points.front().first;
+	double maxX = points.back().first;
+	auto [minY, maxY] = getMinMaxValue(points);
+
+	QValueAxis *axisX = createValueAxis(minX, maxX, categoryType->decimals(), true);
+	axisX->setTitleText(categoryType->nameWithUnit());
+
+	double chartTop = maxY * (1.0 + barTopSpace);
+	double chartBottom = minY * (1.0 - barTopSpace);
+	QValueAxis *axisY = createValueAxis(chartBottom, chartTop, valueType->decimals(), false);
+	axisY->setTitleText(valueType->nameWithUnit());
+
+	QScatterSeries *series = addSeries<QScatterSeries>(valueType->name(), axisX, axisY);
+
+	for (auto [x, y]: points)
+		series->append(x, y);
+
+	// y = ax + b
+	auto [a, b] = linear_regression(points);
+	if (!std::isnan(a)) {
+		QLineSeries *series = addSeries<QLineSeries>(QString(), axisX, axisY);
+		series->setPen(QPen(Qt::red));
+		series->append(axisX->min(), a * axisX->min() + b);
+		series->append(axisX->max(), a * axisX->max() + b);
 	}
 
 	hideLegend();
