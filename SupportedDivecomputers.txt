@@ -10,7 +10,7 @@ Cressi: Cartesio, Drake, Edy, Giotto, Goa, Leonardo, Newton
 Deepblu: Cosmiq+
 Dive Rite: NiTek Q, NiTek Trio
 DiveSystem: Orca, iDive DAN, iDive Deep, iDive Easy, iDive Free, iDive Pro, iDive Reb, iDive Stealth, iDive Tech, iDive X3M
-Garmin: Descent Mk1
+Garmin: Descent Mk1, Descent Mk2/Mk2i
 Genesis: React Pro, React Pro White
 Heinrichs Weikamp: Frog, OSTC, OSTC 2, OSTC 2 TR, OSTC 2C, OSTC 2N, OSTC 3, OSTC 4, OSTC Mk2, OSTC Plus, OSTC Sport, OSTC cR
 Hollis: DG02, DG03, TX1
@@ -21,7 +21,7 @@ Oceanic: Atom 1.0, Atom 2.0, Atom 3.0, Atom 3.1, Datamask, F10, F11, Geo, Geo 2.
 Oceans: S1
 Ratio: iDive Color Deep, iDive Color Easy, iDive Color Fancy, iDive Color Free, iDive Color Pro, iDive Color Reb, iDive Color Tech+, iDive Deep, iDive Easy, iDive Fancy, iDive Free, iDive Pro, iDive Reb, iDive Tech+, iX3M GPS Deep, iX3M GPS Easy, iX3M GPS Fancy, iX3M GPS Pro , iX3M GPS Reb, iX3M GPS Tech+, iX3M Pro Deep, iX3M Pro Easy, iX3M Pro Fancy, iX3M Pro Pro, iX3M Pro Reb, iX3M Pro Tech+
 Reefnet: Sensus, Sensus Pro, Sensus Ultra
-Scubapro: Aladin A1, Aladin H Matrix, Aladin Sport Matrix, Aladin Square, Chromis, G2, G2 Console, G2 HUD, Mantis, Mantis 2, Meridian, XTender 5
+Scubapro: Aladin A1, Aladin A2, Aladin H Matrix, Aladin Sport Matrix, Aladin Square, Chromis, G2, G2 Console, G2 HUD, Mantis, Mantis 2, Meridian, XTender 5
 Seabaer: T1, H3, HUDC
 Seac: Guru, Jack
 Seemann: XP5
