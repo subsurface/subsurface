@@ -9999,7 +9999,7 @@ Filer med felaktig datum/tid</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="370"/>
         <source>ENVIRONMENT</source>
-        <translation>MILJÖ</translation>
+        <translation>OMGIVNING</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="381"/>

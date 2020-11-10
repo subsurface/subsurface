@@ -639,12 +639,12 @@
     <message>
         <location filename="../commands/command_device.cpp" line="14"/>
         <source>Delete device %1 (0x%2)</source>
-        <translation type="unfinished"/>
+        <translation>מחק מכשיר %1 (0x%2)</translation>
     </message>
     <message>
         <location filename="../commands/command_device.cpp" line="43"/>
         <source>Set nickname of device %1 (0x%2) to %3</source>
-        <translation type="unfinished"/>
+        <translation>הגדר את הכינוי של המכשיר %1 (0x%2) ל-%3</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="405"/>
@@ -6420,7 +6420,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="78"/>
         <source>Device names</source>
-        <translation type="unfinished"/>
+        <translation>שם מכשיר</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
@@ -9861,7 +9861,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveComputer.ui" line="17"/>
         <source>Dive Computers</source>
-        <translation type="unfinished"/>
+        <translation>מחשבי צלילה</translation>
     </message>
 </context>
 <context>
@@ -10301,17 +10301,17 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="177"/>
         <source>All selected dives</source>
-        <translation type="unfinished"/>
+        <translation>כל הצלילות שנבחרו</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="196"/>
         <source>Total number of dives selected :</source>
-        <translation type="unfinished"/>
+        <translation>מספר הצלילות הכולל שנבחר:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="218"/>
         <source>Total duration of selected dives :</source>
-        <translation type="unfinished"/>
+        <translation>משך הזמן הכולל של הצלילות שנבחרו:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="258"/>
@@ -14082,12 +14082,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="422"/>
         <source>Disable background location service</source>
-        <translation type="unfinished"/>
+        <translation>בטל שירות מיקום</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="422"/>
         <source>Run background location service</source>
-        <translation type="unfinished"/>
+        <translation>הפעל שירות מיקום ברקע</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="437"/>
@@ -14173,27 +14173,27 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="780"/>
         <source>Location Service Enabled</source>
-        <translation type="unfinished"/>
+        <translation>שירות מיקום מופעל</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="785"/>
         <source>This service collects location data to enable you to track the GPS coordinates of your dives. This will attempt to continue to collect location data, even if the app is closed or your phone screen locked.</source>
-        <translation type="unfinished"/>
+        <translation>שירות זה אוסף נתוני מיקום כדי לאפשר לך לעקוב אחר קואורדינטות ה- GPS של הצלילות שלך. פעולה זו תנסה להמשיך לאסוף נתוני מיקום, גם אם האפליקציה סגורה או שמסך הטלפון שלך נעול.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="791"/>
         <source>The location data are not used in any way, except when you apply the location data to the dives in your dive list on this device.</source>
-        <translation type="unfinished"/>
+        <translation>לא נעשה שימוש בנתוני המיקום בשום צורה שהיא, למעט כאשר אתה מחיל את נתוני המיקום על הצלילות ברשימת הצלילה שלך במכשיר זה.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="796"/>
         <source>By default, the location data are never transferred to the cloud or to any other service. However, in order to allow debugging of location data related issues, you can explicitly enable storing those location data in the cloud by enabling the corresponding option in the advanced settings.</source>
-        <translation type="unfinished"/>
+        <translation>כברירת מחדל, נתוני המיקום לעולם לא מועברים לענן או לשירות אחר. עם זאת, על מנת לאפשר איתור באגים בבעיות הקשורות לנתוני מיקום, באפשרותך לאפשר במפורש אחסון נתוני מיקום אלה בענן על ידי הפעלת האפשרות המתאימה בהגדרות המתקדמות.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="801"/>
         <source>Understood</source>
-        <translation type="unfinished"/>
+        <translation>הבנתי</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="810"/>

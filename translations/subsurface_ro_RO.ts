@@ -42,12 +42,12 @@
         <location filename="../desktop-widgets/addfilterpreset.ui" line="17"/>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="43"/>
         <source>Save filter set</source>
-        <translation type="unfinished"/>
+        <translation>Salvează set filtre</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="64"/>
         <source>Warning: this will overwrite an existing filter set.</source>
-        <translation type="unfinished"/>
+        <translation>Atenție: aceasta va suprascrie un set filtre existent</translation>
     </message>
 </context>
 <context>
@@ -639,12 +639,12 @@
     <message>
         <location filename="../commands/command_device.cpp" line="14"/>
         <source>Delete device %1 (0x%2)</source>
-        <translation type="unfinished"/>
+        <translation>Șterge dispozitiv %1 (0x%2)</translation>
     </message>
     <message>
         <location filename="../commands/command_device.cpp" line="43"/>
         <source>Set nickname of device %1 (0x%2) to %3</source>
-        <translation type="unfinished"/>
+        <translation>Setează nume al dispozitivului %1 (0x%2) în %3</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="405"/>
@@ -1012,17 +1012,17 @@
     <message>
         <location filename="../commands/command_filter.cpp" line="28"/>
         <source>Create filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Creează filtru presetat %1</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="49"/>
         <source>Delete filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Șterge filtru presetat %1</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="71"/>
         <source>Edit filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Editează filtru presetat $1</translation>
     </message>
     <message>
         <location filename="../commands/command_pictures.cpp" line="20"/>
@@ -3449,7 +3449,7 @@ GPS curenta:</translation>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="832"/>
         <source>Add dive(s) to arbitrary trip</source>
-        <translation type="unfinished"/>
+        <translation>Adaugă scufundare(i) la excursie arbitrară</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="833"/>
@@ -5734,7 +5734,7 @@ Existentă</translation>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="148"/>
         <source>Click to remove this constraint</source>
-        <translation type="unfinished"/>
+        <translation>Click pentru a șterge această constantă</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="181"/>
@@ -5752,7 +5752,7 @@ Existentă</translation>
     <message>
         <location filename="../qt-models/filterpresetmodel.cpp" line="47"/>
         <source>Clicking here will remove this filter set.</source>
-        <translation type="unfinished"/>
+        <translation>Apăsînd aici va șterge acest set de filtre</translation>
     </message>
 </context>
 <context>
@@ -5772,22 +5772,22 @@ Existentă</translation>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="76"/>
         <source>Add constraint</source>
-        <translation type="unfinished"/>
+        <translation>Adaugă constantă</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="90"/>
         <source>Current set:</source>
-        <translation type="unfinished"/>
+        <translation>Set actual:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="110"/>
         <source>Save set</source>
-        <translation type="unfinished"/>
+        <translation>Salvează set</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="123"/>
         <source>Load set</source>
-        <translation type="unfinished"/>
+        <translation>Încarcă set</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="143"/>
@@ -5822,12 +5822,12 @@ Existentă</translation>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="241"/>
         <source>Filter sets</source>
-        <translation type="unfinished"/>
+        <translation>Seturi filtre</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.cpp" line="232"/>
         <source>modified</source>
-        <translation type="unfinished"/>
+        <translation>modificat</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_listfilter.h" line="83"/>
@@ -6419,7 +6419,7 @@ Existentă</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="78"/>
         <source>Device names</source>
-        <translation type="unfinished"/>
+        <translation>Nume dispozitive</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
@@ -9860,7 +9860,7 @@ Fisiere cu data/ora neconforme</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveComputer.ui" line="17"/>
         <source>Dive Computers</source>
-        <translation type="unfinished"/>
+        <translation>Computere scufundare</translation>
     </message>
 </context>
 <context>
@@ -10299,17 +10299,17 @@ Fisiere cu data/ora neconforme</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="177"/>
         <source>All selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Toate scufundările selectate</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="196"/>
         <source>Total number of dives selected :</source>
-        <translation type="unfinished"/>
+        <translation>Număr total de scufundări selectate:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="218"/>
         <source>Total duration of selected dives :</source>
-        <translation type="unfinished"/>
+        <translation>Durată totală a scufundărilor selectate:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="258"/>
@@ -10735,7 +10735,7 @@ mixate cu aer și folosite:</translation>
     <message>
         <location filename="../desktop-widgets/tripselectiondialog.ui" line="17"/>
         <source>Select trip</source>
-        <translation type="unfinished"/>
+        <translation>Selectează excursie:</translation>
     </message>
 </context>
 <context>
@@ -11630,22 +11630,22 @@ Medie</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="47"/>
         <source>date time</source>
-        <translation type="unfinished"/>
+        <translation>Dată timp</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="48"/>
         <source>time of day</source>
-        <translation type="unfinished"/>
+        <translation>Ora zilei</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="49"/>
         <source>year</source>
-        <translation type="unfinished"/>
+        <translation>an</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="50"/>
         <source>week day</source>
-        <translation type="unfinished"/>
+        <translation>ziua săptămînii</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="52"/>
@@ -11655,7 +11655,7 @@ Medie</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="53"/>
         <source>wave size</source>
-        <translation type="unfinished"/>
+        <translation>dimensiune val</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="54"/>
@@ -11680,7 +11680,7 @@ Medie</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="59"/>
         <source>max. depth</source>
-        <translation type="unfinished"/>
+        <translation>adîncime max.</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="60"/>
@@ -11696,17 +11696,17 @@ Medie</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="62"/>
         <source>water temp.</source>
-        <translation type="unfinished"/>
+        <translation>temperatură apă</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="63"/>
         <source>air temp.</source>
-        <translation type="unfinished"/>
+        <translation>temperatură aer</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="64"/>
         <source>water density</source>
-        <translation type="unfinished"/>
+        <translation>densitate apă</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="65"/>
@@ -11717,12 +11717,12 @@ Medie</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="67"/>
         <source>logged</source>
-        <translation type="unfinished"/>
+        <translation>logat</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="68"/>
         <source>planned</source>
-        <translation type="unfinished"/>
+        <translation>planificat</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="70"/>
@@ -11737,7 +11737,7 @@ Medie</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="73"/>
         <source>people</source>
-        <translation type="unfinished"/>
+        <translation>oameni</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="74"/>
@@ -11747,32 +11747,32 @@ Medie</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="75"/>
         <source>weight type</source>
-        <translation type="unfinished"/>
+        <translation>tip val</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="76"/>
         <source>cylinder type</source>
-        <translation type="unfinished"/>
+        <translation>tip butelie</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="77"/>
         <source>cylinder size</source>
-        <translation type="unfinished"/>
+        <translation>dimensiune butelie</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="78"/>
         <source>gas N₂ content</source>
-        <translation type="unfinished"/>
+        <translation>conținut  N₂ gaz</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="79"/>
         <source>gas O₂ content</source>
-        <translation type="unfinished"/>
+        <translation>conținut O₂ gaz</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="80"/>
         <source>gas He content</source>
-        <translation type="unfinished"/>
+        <translation>conținut He gaz</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="81"/>
@@ -11787,97 +11787,97 @@ Medie</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="90"/>
         <source>starting with</source>
-        <translation type="unfinished"/>
+        <translation>începînd cu</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="91"/>
         <source>with substring</source>
-        <translation type="unfinished"/>
+        <translation>cu subtext</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="92"/>
         <source>exactly</source>
-        <translation type="unfinished"/>
+        <translation>exact</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="101"/>
         <source>equal to</source>
-        <translation type="unfinished"/>
+        <translation>egal cu</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="101"/>
         <source>at</source>
-        <translation type="unfinished"/>
+        <translation>la</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="102"/>
         <source>at most</source>
-        <translation type="unfinished"/>
+        <translation>cel mult</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="102"/>
         <source>before</source>
-        <translation type="unfinished"/>
+        <translation>înainte</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="103"/>
         <source>at least</source>
-        <translation type="unfinished"/>
+        <translation>cel puțin</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="103"/>
         <source>after</source>
-        <translation type="unfinished"/>
+        <translation>după</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="104"/>
         <source>in range</source>
-        <translation type="unfinished"/>
+        <translation>în plaja</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="108"/>
         <source>is</source>
-        <translation type="unfinished"/>
+        <translation>este</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="109"/>
         <source>is not</source>
-        <translation type="unfinished"/>
+        <translation>nu este</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="415"/>
         <source>Sunday</source>
-        <translation type="unfinished"/>
+        <translation>Duminică</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="416"/>
         <source>Monday</source>
-        <translation type="unfinished"/>
+        <translation>Luni</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="417"/>
         <source>Tuesday</source>
-        <translation type="unfinished"/>
+        <translation>Marți</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="418"/>
         <source>Wednesday</source>
-        <translation type="unfinished"/>
+        <translation>Miercuri</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="419"/>
         <source>Thursday</source>
-        <translation type="unfinished"/>
+        <translation>Joi</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="420"/>
         <source>Friday</source>
-        <translation type="unfinished"/>
+        <translation>Vineri</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="421"/>
         <source>Saturday</source>
-        <translation type="unfinished"/>
+        <translation>Sîmbătă</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="86"/>
@@ -14078,12 +14078,12 @@ Este conectat corect dispozitivul Uemis Zurich?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="422"/>
         <source>Disable background location service</source>
-        <translation type="unfinished"/>
+        <translation>Dezactivează localizarea în background</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="422"/>
         <source>Run background location service</source>
-        <translation type="unfinished"/>
+        <translation>Porneste localizarea în background</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="437"/>
@@ -14169,27 +14169,27 @@ Este conectat corect dispozitivul Uemis Zurich?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="780"/>
         <source>Location Service Enabled</source>
-        <translation type="unfinished"/>
+        <translation>Serviciu localizare pornit</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="785"/>
         <source>This service collects location data to enable you to track the GPS coordinates of your dives. This will attempt to continue to collect location data, even if the app is closed or your phone screen locked.</source>
-        <translation type="unfinished"/>
+        <translation>Acest dispozitiv colectează datele de localizarte pentru a îți da posibilitatea sa urmarești coordonatele GPS ale scufundărilor tale. Va continua să încerce să colecteze datele de localizare, chiar dacă applicația este închisă sau ecranul telefonului tău este blocat.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="791"/>
         <source>The location data are not used in any way, except when you apply the location data to the dives in your dive list on this device.</source>
-        <translation type="unfinished"/>
+        <translation>Datele de localizare nu sunt folosite în nici un mod, cu excepția cînd tu aplici aceste date la scufundările din lista ta pe acest dispozitiv.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="796"/>
         <source>By default, the location data are never transferred to the cloud or to any other service. However, in order to allow debugging of location data related issues, you can explicitly enable storing those location data in the cloud by enabling the corresponding option in the advanced settings.</source>
-        <translation type="unfinished"/>
+        <translation>Implicit, datele de localizare nu sunt transferate niciodată în cloud sau în alt dispozitiv. Cu toate acestea, în scopul depanării defectelor legate de serviciul de localizare, poți explicit activa stocarea acestor date în cloud activînd opțiunea corespunzătoare in setări avansate.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="801"/>
         <source>Understood</source>
-        <translation type="unfinished"/>
+        <translation>Am înteles</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="810"/>

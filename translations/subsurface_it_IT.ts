@@ -11999,7 +11999,7 @@ Media</translation>
     <message>
         <location filename="../core/git-access.c" line="928"/>
         <source>Synchronising data file</source>
-        <translation>Sincronizzazione dei dadi in corso</translation>
+        <translation>Sincronizzazione dei dati in corso</translation>
     </message>
     <message>
         <location filename="../core/gpslocation.h" line="14"/>
