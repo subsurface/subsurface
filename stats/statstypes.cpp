@@ -927,6 +927,94 @@ struct SACType : public StatsTypeTemplate<StatsType::Type::Numeric> {
 	}
 };
 
+// ============ Water and air temperature, binned in 2, 5, 10, 20 °C/°F bins ============
+
+// We use the same binner for °C and °F. We simply output the current temperature unit.
+struct TemperatureBinner : public IntRangeBinner<TemperatureBinner, IntBin> {
+	bool air;
+	TemperatureBinner(int bin_size, bool air) :
+		IntRangeBinner(bin_size),
+		air(air)
+	{
+	}
+	using IntRangeBinner::IntRangeBinner;
+	QString name() const override {
+		QLocale loc;
+		return StatsTranslations::tr("in %1 %2 steps").arg(loc.toString(bin_size),
+								   get_temp_unit());
+	}
+	QString unitSymbol() const override {
+		return get_temp_unit();
+	}
+	int to_bin_value(const struct dive *d) const {
+		temperature_t t = air ? d->airtemp : d->watertemp;
+		if (t.mkelvin <= 0)
+			return invalid_value<int>();
+		int temp = (int)floor(prefs.units.temperature == units::CELSIUS ?
+				mkelvin_to_C(t.mkelvin) : mkelvin_to_F(t.mkelvin));
+		return temp / bin_size;
+	}
+};
+
+TemperatureBinner water_temperature_binner2(2, false);
+TemperatureBinner water_temperature_binner5(5, false);
+TemperatureBinner water_temperature_binner10(10, false);
+TemperatureBinner water_temperature_binner20(20, false);
+TemperatureBinner air_temperature_binner2(2, true);
+TemperatureBinner air_temperature_binner5(5, true);
+TemperatureBinner air_temperature_binner10(10, true);
+TemperatureBinner air_temperature_binner20(20, true);
+
+struct TemperatureType : public StatsTypeTemplate<StatsType::Type::Numeric> {
+	// Generate 2, 5, 10 and 20-units binners in the constructor
+	TemperatureBinner b2, b5, b10, b20;
+	TemperatureType(bool air) : b2(2, air), b5(5, air), b10(10, air), b20(20, air)
+	{
+	}
+	QString unitSymbol() const override {
+		return get_temp_unit();
+	}
+	int decimals() const override {
+		return 1;
+	}
+	double tempToFloat(temperature_t t) const {
+		if (t.mkelvin <= 0)
+			return invalid_value<double>();
+		return prefs.units.temperature == units::CELSIUS ?
+				mkelvin_to_C(t.mkelvin) : mkelvin_to_F(t.mkelvin);
+	}
+	std::vector<const StatsBinner *> binners() const override {
+		return { &b2, &b5, &b10, &b20 };
+	}
+	std::vector<StatsOperation> supportedOperations() const override {
+		return { StatsOperation::Median, StatsOperation::Average, StatsOperation::TimeWeightedAverage };
+	}
+};
+
+struct WaterTemperatureType : TemperatureType {
+	WaterTemperatureType() : TemperatureType(false)
+	{
+	}
+	QString name() const override {
+		return StatsTranslations::tr("Water temperature");
+	}
+	double toFloat(const dive *d) const override {
+		return tempToFloat(d->watertemp);
+	}
+};
+
+struct AirTemperatureType : TemperatureType {
+	AirTemperatureType() : TemperatureType(true)
+	{
+	}
+	QString name() const override {
+		return StatsTranslations::tr("Air temperature");
+	}
+	double toFloat(const dive *d) const override {
+		return tempToFloat(d->airtemp);
+	}
+};
+
 // ============ Dive mode ============
 
 struct DiveModeBinner : public SimpleBinner<DiveModeBinner, IntBin> {
@@ -1018,18 +1106,24 @@ static DateType date_type;
 static DepthType depth_type;
 static DurationType duration_type;
 static SACType sac_type;
+static WaterTemperatureType water_temperature_type;
+static AirTemperatureType air_temperature_type;
 static DiveModeType dive_mode_type;
 static BuddyType buddy_type;
 static SuitType suit_type;
 static LocationType location_type;
 const std::vector<const StatsType *> stats_types = {
-	&date_type, &depth_type, &duration_type, &sac_type, &dive_mode_type, &buddy_type, &suit_type, &location_type
+	&date_type, &depth_type, &duration_type, &sac_type,
+	&water_temperature_type, &air_temperature_type,
+	&dive_mode_type, &buddy_type, &suit_type, &location_type
 };
 
 const std::vector<const StatsType *> stats_continuous_types = {
-	&date_type, &depth_type, &duration_type, &sac_type
+	&date_type, &depth_type, &duration_type, &sac_type,
+	&water_temperature_type, &air_temperature_type
 };
 
 const std::vector<const StatsType *> stats_numeric_types = {
-	&depth_type, &duration_type, &sac_type
+	&depth_type, &duration_type, &sac_type,
+	&water_temperature_type, &air_temperature_type
 };
