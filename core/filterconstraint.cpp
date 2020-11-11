@@ -686,8 +686,8 @@ void filter_constraint_set_stringlist(filter_constraint &c, const QString &s)
 		return;
 	}
 	c.data.string_list->clear();
-	for (const QString &s: s.split(",", SKIP_EMPTY))
-		c.data.string_list->push_back(s.trimmed());
+	for (const QString &part: s.split(",", SKIP_EMPTY))
+		c.data.string_list->push_back(part.trimmed());
 }
 
 void filter_constraint_set_timestamp_from(filter_constraint &c, timestamp_t from)
