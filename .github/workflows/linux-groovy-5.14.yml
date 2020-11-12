@@ -49,7 +49,7 @@ jobs:
         echo "running tests for mobile"
 
         cd build-mobile/tests
-        xvfb-run --auto-servernum ./TestGitStorage -v2
+        # xvfb-run --auto-servernum ./TestGitStorage -v2
         xvfb-run --auto-servernum make check
 
     - name: build Subsurface
@@ -66,6 +66,6 @@ jobs:
         echo "--------------------------------------------------------------"
         echo "running tests for desktop"
         cd build/tests
-        xvfb-run --auto-servernum ./TestGitStorage -v2
+        # xvfb-run --auto-servernum ./TestGitStorage -v2
         xvfb-run --auto-servernum make check
 

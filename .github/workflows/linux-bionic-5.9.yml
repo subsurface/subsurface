@@ -42,5 +42,5 @@ jobs:
         echo "------------------------------------"
         echo "run tests"
         cd build/tests
-        xvfb-run --auto-servernum ./TestGitStorage -v2
+        # xvfb-run --auto-servernum ./TestGitStorage -v2
         xvfb-run --auto-servernum make check
