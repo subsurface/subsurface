@@ -50,6 +50,7 @@ PrintDialog::PrintDialog(QWidget *parent) :
 	printOptions.color_selected = s.value("color_selected", true).toBool();
 	printOptions.landscape = s.value("landscape", false).toBool();
 	printOptions.p_template = s.value("template_selected", "one_dive.html").toString();
+	printOptions.resolution = s.value("resolution", 600).toInt();
 	templateOptions.font_index = s.value("font", 0).toInt();
 	templateOptions.font_size = s.value("font_size", 9).toDouble();
 	templateOptions.color_palette_index = s.value("color_palette", SSRF_COLORS).toInt();
@@ -150,6 +151,7 @@ void PrintDialog::onFinished()
 	s.setValue("print_selected", printOptions.print_selected);
 	s.setValue("color_selected", printOptions.color_selected);
 	s.setValue("template_selected", printOptions.p_template);
+	s.setValue("resolution", printOptions.resolution);
 
 	// save template settings
 	s.setValue("font", templateOptions.font_index);

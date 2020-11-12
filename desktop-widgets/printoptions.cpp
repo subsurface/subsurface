@@ -38,6 +38,9 @@ void PrintOptions::setup()
 	ui.printInColor->setChecked(printOptions->color_selected);
 	ui.printSelected->setChecked(printOptions->print_selected);
 
+	// resolution
+	ui.resolution->setValue(printOptions->resolution);
+
 	// connect slots only once
 	if (hasSetupSlots)
 		return;
