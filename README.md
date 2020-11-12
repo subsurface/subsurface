@@ -9,10 +9,10 @@
 ![Build Status](https://github.com/subsurface/subsurface/workflows/Ubuntu%2018.04%20/%20Qt%205.9/badge.svg) 
 ![Build Status](https://github.com/subsurface/subsurface/workflows/Ubuntu%2019.10%20/%20Qt%205.12/badge.svg) 
 
-This is the README file for Subsurface 4.9.8
+This is the README file for Subsurface 4.9.9
 
 Please check the `ReleaseNotes.txt` for details about new features and
-changes since Subsurface 4.9.7 (and earlier versions).
+changes since Subsurface 4.9.8 (and earlier versions).
 
 Subsurface can be found at http://subsurface-divelog.org
 
@@ -47,10 +47,10 @@ development version) you can either get this via git or the release tar
 ball. After cloning run the following command:
 
 ```
-git checkout v4.9.8  (or whatever the last release is)
+git checkout v4.9.9  (or whatever the last release is)
 ```
 
-or download a tarball from http://subsurface-divelog.org/downloads/Subsurface-4.9.8.tgz
+or download a tarball from http://subsurface-divelog.org/downloads/Subsurface-4.9.9.tgz
 
 Detailed build instructions can be found in the INSTALL file.
 

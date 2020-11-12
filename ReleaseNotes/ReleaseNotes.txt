@@ -2,6 +2,12 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 4.9.9
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- desktop: avoid potential crash in print previews
+- desktop: ensure that newly added people are available in autocompleters
+- Windows: avoid crash when setting filter values for tag-style fields
+
 New in _Subsurface_ 4.9.8
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - filter: more flexible filtering system based on individual constraints
