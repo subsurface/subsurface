@@ -261,12 +261,18 @@ void MainTab::divesChanged(const QVector<dive *> &dives, DiveField field)
 	}
 	if (field.divesite)
 		updateDiveSite(current_dive);
-	if (field.tags)
+	if (field.tags) {
+		tagModel.updateModel(); // TODO: Don't do this here
 		ui.tagWidget->setText(get_taglist_string(current_dive->tag_list));
-	if (field.buddy)
+	}
+	if (field.buddy) {
+		buddyModel.updateModel(); // TODO: Don't do this here
 		ui.buddy->setText(current_dive->buddy);
-	if (field.divemaster)
+	}
+	if (field.divemaster) {
+		diveMasterModel.updateModel(); // TODO: Don't do this here
 		ui.divemaster->setText(current_dive->divemaster);
+	}
 
 	// If duration or depth changed, the profile needs to be replotted
 	if (field.duration || field.depth)
