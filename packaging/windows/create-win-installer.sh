@@ -31,14 +31,15 @@ bash -ex ../subsurface/packaging/windows/smtk2ssrf-mxe-build.sh -a -i
 
 mv smtk-import/smtk2ssrf-$VERSION.exe /__w
 
-# build the 32bit installer
-cd /__w
-rm -rf win32
-mkdir win32
-cd win32
+if [ "$1" != "-64only" ] ; then
+	# build the 32bit installer
+	cd /__w
+	rm -rf win32
+	mkdir win32
+	cd win32
 
-# build Subsurface and then smtk2ssrf
-export MXEBUILDTYPE=i686-w64-mingw32.shared
-bash -ex ../subsurface/packaging/windows/mxe-based-build.sh installer
-mv subsurface/subsurface-$VERSION.exe /__w/subsurface-32bit-$VERSION.exe
-
+	# build Subsurface and then smtk2ssrf
+	export MXEBUILDTYPE=i686-w64-mingw32.shared
+	bash -ex ../subsurface/packaging/windows/mxe-based-build.sh installer
+	mv subsurface/subsurface-$VERSION.exe /__w/subsurface-32bit-$VERSION.exe
+fi
