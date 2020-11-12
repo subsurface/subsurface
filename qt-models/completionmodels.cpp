@@ -5,51 +5,50 @@
 #include <QSet>
 #include <QString>
 
-#define CREATE_UPDATE_METHOD(Class, diveStructMember)          \
-	void Class::updateModel()                              \
-	{                                                      \
-		QStringList list;                              \
-		struct dive *dive;                             \
-		int i = 0;                                     \
-		for_each_dive (i, dive)                        \
-		{                                              \
-			QString buddy(dive->diveStructMember); \
-			if (!list.contains(buddy)) {           \
-				list.append(buddy);            \
-			}                                      \
-		}                                              \
-		std::sort(list.begin(), list.end());           \
-		setStringList(list);                           \
-	}
-
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 #define SKIP_EMPTY Qt::SkipEmptyParts
 #else
 #define SKIP_EMPTY QString::SkipEmptyParts
 #endif
 
-#define CREATE_CSV_UPDATE_METHOD(Class, diveStructMember)                                        \
-	void Class::updateModel()                                                                \
-	{                                                                                        \
-		QSet<QString> set;                                                               \
-		struct dive *dive;                                                               \
-		int i = 0;                                                                       \
-		for_each_dive (i, dive)                                                          \
-		{                                                                                \
-			QString buddy(dive->diveStructMember);                                   \
-			foreach (const QString &value, buddy.split(",", SKIP_EMPTY))             \
-			{                                                                        \
-				set.insert(value.trimmed());                                     \
-			}                                                                        \
-		}                                                                                \
-		QStringList setList = set.values();                                              \
-		std::sort(setList.begin(), setList.end());                                       \
-		setStringList(setList);                                                     \
+static QStringList getCSVList(char *dive::*item)
+{
+	QSet<QString> set;
+	struct dive *dive;
+	int i = 0;
+	for_each_dive (i, dive) {
+		QString str(dive->*item);
+		for (const QString &value: str.split(",", SKIP_EMPTY))
+			set.insert(value.trimmed());
 	}
+	QStringList setList = set.values();
+	std::sort(setList.begin(), setList.end());
+	return setList;
+}
 
-CREATE_CSV_UPDATE_METHOD(BuddyCompletionModel, buddy);
-CREATE_CSV_UPDATE_METHOD(DiveMasterCompletionModel, divemaster);
-CREATE_UPDATE_METHOD(SuitCompletionModel, suit);
+void BuddyCompletionModel::updateModel()
+{
+	setStringList(getCSVList(&dive::buddy));
+}
+
+void DiveMasterCompletionModel::updateModel()
+{
+	setStringList(getCSVList(&dive::divemaster));
+}
+
+void SuitCompletionModel::updateModel()
+{
+	QStringList list;
+	struct dive *dive;
+	int i = 0;
+	for_each_dive (i, dive) {
+		QString suit(dive->suit);
+		if (!list.contains(suit))
+			list.append(suit);
+	}
+	std::sort(list.begin(), list.end());
+	setStringList(list);
+}
 
 void TagCompletionModel::updateModel()
 {
