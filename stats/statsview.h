@@ -15,6 +15,7 @@ namespace QtCharts {
 	class QAbstractSeries;
 	class QBarCategoryAxis;
 	class QCategoryAxis;
+	class QChart;
 	class QLegend;
 	class QValueAxis;
 }
@@ -44,6 +45,7 @@ public:
 	static QStringList getSecondAxisOperations(int chartType, int firstAxis, int secondAxis);
 private:
 	void reset(); // clears all series and axes
+	void addAxes(QtCharts::QAbstractAxis *x, QtCharts::QAbstractAxis *y); // Add new x- and y-axis
 	void plotBarChart(const std::vector<dive *> &dives,
 			  ChartSubType subType,
 			  const StatsType *categoryType, const StatsBinner *categoryBinner,
@@ -67,7 +69,6 @@ private:
 				   const StatsType *valueType, StatsOperation valueAxisOperation);
 	void plotScatter(const std::vector<dive *> &dives, const StatsType *categoryType, const StatsType *valueType);
 	void setTitle(const QString &);
-	QtCharts::QLegend *getLegend();
 	void showLegend();
 	void hideLegend();
 
@@ -75,8 +76,8 @@ private:
 	T *makeAxis();
 
 	template <typename T>
-	T *addSeries(const QString &name, QtCharts::QAbstractAxis *xAxis, QtCharts::QAbstractAxis *yAxis);
-	QtCharts::QAbstractSeries *addSeriesHelper(const QString &name, int type, QtCharts::QAbstractAxis *xAxis, QtCharts::QAbstractAxis *yAxis);
+	T *addSeries(const QString &name);
+	void initSeries(QtCharts::QAbstractSeries *series, const QString &name);
 
 	template<typename T>
 	QtCharts::QBarCategoryAxis *createCategoryAxis(const StatsBinner &binner, const std::vector<T> &bins);
@@ -87,12 +88,10 @@ private:
 	QtCharts::QValueAxis *createValueAxis(double min, double max, int decimals, bool isHorizontal);
 
 	// Helper functions to add feature to the chart
-	void addLineMarker(double pos, double low, double high, const QPen &pen,
-			   QtCharts::QAbstractAxis *axisX, QtCharts::QAbstractAxis *axisY,
-			   bool isHorizontal);
-	void addBar(double from, double to, double height, const QBrush &brush, const QPen &pen,
-		    QtCharts::QAbstractAxis *xAxis, QtCharts::QAbstractAxis *yAxis, bool isHorizontal);
+	void addLineMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal);
+	void addBar(double from, double to, double height, const QBrush &brush, const QPen &pen, bool isHorizontal);
 
+	QtCharts::QChart *chart;
 	std::vector<std::unique_ptr<QtCharts::QAbstractAxis>> axes;
 };
 
