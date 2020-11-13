@@ -7,6 +7,7 @@
 #include <QBarCategoryAxis>
 #include <QBarSet>
 #include <QBarSeries>
+#include <QBoxPlotSeries>
 #include <QCategoryAxis>
 #include <QChart>
 #include <QHorizontalBarSeries>
@@ -50,10 +51,10 @@ enum class ChartTypeId {
 	DiscreteBar,
 	DiscreteValue,
 	DiscreteCount,
+	DiscreteBox,
 	DiscreteScatter,
 	HistogramCount,
 	HistogramBar,
-	HistogramBox,
 	ScatterPlot
 };
 
@@ -102,6 +103,17 @@ static const struct ChartType {
 		{ ChartSubType::Vertical, ChartSubType::Horizontal, ChartSubType::Pie }
 	},
 	{
+		ChartTypeId::DiscreteBox,
+		QT_TRANSLATE_NOOP("StatsTranslations", "Discrete box"),
+		stats_types,		// supports all types as first axis
+		stats_numeric_types,	// supports numeric types as second axis, since we want to calculate quartiles
+		true,
+		false,
+		false,
+		false,
+		{ }
+	},
+	{
 		ChartTypeId::DiscreteScatter,
 		QT_TRANSLATE_NOOP("StatsTranslations", "Discrete scatter"),
 		stats_types,	// supports all types as first axis
@@ -132,17 +144,6 @@ static const struct ChartType {
 		false,
 		false,
 		true,
-		{ ChartSubType::Vertical, ChartSubType::Horizontal }
-	},
-	{
-		ChartTypeId::HistogramBox,
-		QT_TRANSLATE_NOOP("StatsTranslations", "Histogram box"),
-		stats_continuous_types,	// supports continuous types as first axis
-		stats_numeric_types,	// supports numeric types as second axis, since we want to average, etc
-		true,
-		false,
-		false,
-		false,
 		{ ChartSubType::Vertical, ChartSubType::Horizontal }
 	},
 	{
@@ -421,6 +422,8 @@ void StatsView::plot(int type, int subTypeIdx,
 				      secondAxisType->idxToOperation(secondAxisOperation));
 	case ChartTypeId::DiscreteCount:
 		return plotDiscreteCountChart(dives, subType, firstAxisType, firstAxisBinner);
+	case ChartTypeId::DiscreteBox:
+		return plotDiscreteBoxChart(dives, firstAxisType, firstAxisBinner, secondAxisType);
 	case ChartTypeId::DiscreteScatter:
 		return plotDiscreteScatter(dives, firstAxisType, firstAxisBinner, secondAxisType);
 	case ChartTypeId::HistogramCount:
@@ -707,7 +710,7 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 		}
 		showLegend();
 	} else {
-		QBarCategoryAxis *catAxis = makeAxis<QBarCategoryAxis>();
+		QBarCategoryAxis *catAxis = createCategoryAxis(*categoryBinner, categoryBins);
 		catAxis->setTitleText(categoryType->nameWithBinnerUnit(*categoryBinner));
 
 		QValueAxis *valAxis = makeAxis<QValueAxis>();
@@ -726,7 +729,6 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 		int maxCount = 0;
 		QBarSet *set = new QBarSet(QString());
 		for (auto const &[bin, count]: categoryBins) {
-			catAxis->append(categoryBinner->format(*bin));
 			if (count > maxCount)
 				maxCount = count;
 			*set << count;
@@ -767,6 +769,66 @@ static std::pair<double, double> getMinMaxValue(const std::vector<std::pair<doub
 			max = v;
 	}
 	return { min, max };
+}
+
+static std::pair<double, double> getMinMaxValue(const std::vector<StatsQuartiles> &values)
+{
+	if (values.empty())
+		return { 0.0, 0.0 };
+	double min = 1e14, max = 0.0;
+	for (const StatsQuartiles &v: values) {
+		if (v.min < min)
+			min = v.min;
+		if (v.max > max)
+			max = v.max;
+	}
+	return { min, max };
+}
+
+void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,
+				     const StatsType *categoryType, const StatsBinner *categoryBinner,
+				     const StatsType *valueType)
+{
+	using QtCharts::QBoxPlotSeries;
+	using QtCharts::QBoxSet;
+	using QtCharts::QBarCategoryAxis;
+	using QtCharts::QValueAxis;
+
+	if (!categoryBinner)
+		return;
+
+	setTitle(valueType->name());
+
+	std::vector<StatsBinDives> categoryBins = categoryBinner->bin_dives(dives, false);
+
+	// If there is nothing to display, quit
+	if (categoryBins.empty())
+		return;
+
+	QBarCategoryAxis *catAxis = createCategoryAxis(*categoryBinner, categoryBins);
+	catAxis->setTitleText(categoryType->nameWithBinnerUnit(*categoryBinner));
+
+	std::vector<StatsQuartiles> quartiles;
+	quartiles.reserve(categoryBins.size());
+	for (const auto &[bin, dives]: categoryBins)
+		quartiles.push_back(valueType->quartiles(dives));
+
+	auto [minY, maxY] = getMinMaxValue(quartiles);
+	double chartTop = maxY * (1.0 + barTopSpace);
+	double chartBottom = minY * (1.0 - barTopSpace);
+	QValueAxis *valueAxis = createValueAxis(chartBottom, chartTop, valueType->decimals(), false);
+	valueAxis->setTitleText(valueType->nameWithUnit());
+
+	addAxes(catAxis, valueAxis);
+
+	QBoxPlotSeries *series = addSeries<QBoxPlotSeries>(valueType->name());
+
+	for (const StatsQuartiles &q: quartiles) {
+		QBoxSet *set = new QBoxSet(q.min, q.q1, q.q2, q.q3, q.max);
+		series->append(set);
+	}
+
+	hideLegend();
 }
 
 void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
