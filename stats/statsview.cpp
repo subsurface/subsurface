@@ -293,83 +293,63 @@ QStringList StatsView::getSecondAxisOperations(int chartType, int firstAxis, int
 
 static const QUrl urlStatsView = QUrl(QStringLiteral("qrc:/qml/statsview.qml"));
 
+// We use QtQuick's ChartView so that we can show the statistics on mobile.
+// However, accessing the ChartView from C++ is maliciously cumbersome and
+// the full QChart interface is not exported. Fortunately, the interface
+// leaks the QChart object: We can create a dummy-series and access the chart
+// object via the chart() accessor function. By creating a "PieSeries", the
+// ChartView does not automatically add axes.
+static QtCharts::QChart *getChart(QQuickItem *item)
+{
+	QtCharts::QAbstractSeries *abstract_series;
+	if (!item)
+		return nullptr;
+	if (!QMetaObject::invokeMethod(item, "createSeries", Qt::AutoConnection,
+				       Q_RETURN_ARG(QtCharts::QAbstractSeries *, abstract_series),
+				       Q_ARG(int, QtCharts::QAbstractSeries::SeriesTypePie),
+				       Q_ARG(QString, QString()))) {
+		qWarning("Couldn't call createSeries()");
+		return nullptr;
+	}
+	QtCharts::QChart *res = abstract_series->chart();
+	res->removeSeries(abstract_series);
+	delete abstract_series;
+	return res;
+}
+
 StatsView::StatsView(QWidget *parent) : QQuickWidget(parent)
 {
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
 	setSource(urlStatsView);
+	chart = getChart(rootObject());
 }
 
 StatsView::~StatsView()
 {
 }
 
-// Convenience templates that turn a series-type into a series-id.
-// TODO: Qt should provide that, no? Let's inspect the docs more closely...
-template<typename Series> constexpr int series_type_id();
-template<> constexpr int series_type_id<QtCharts::QAreaSeries>()
-{ return QtCharts::QAbstractSeries::SeriesTypeArea; }
-template<> constexpr int series_type_id<QtCharts::QBarSeries>()
-{ return QtCharts::QAbstractSeries::SeriesTypeBar; }
-template<> constexpr int series_type_id<QtCharts::QStackedBarSeries>()
-{ return QtCharts::QAbstractSeries::SeriesTypeStackedBar; }
-template<> constexpr int series_type_id<QtCharts::QHorizontalBarSeries>()
-{ return QtCharts::QAbstractSeries::SeriesTypeHorizontalBar; }
-template<> constexpr int series_type_id<QtCharts::QHorizontalStackedBarSeries>()
-{ return QtCharts::QAbstractSeries::SeriesTypeHorizontalStackedBar; }
-template<> constexpr int series_type_id<QtCharts::QLineSeries>()
-{ return QtCharts::QAbstractSeries::SeriesTypeLine; }
-template<> constexpr int series_type_id<QtCharts::QPieSeries>()
-{ return QtCharts::QAbstractSeries::SeriesTypePie; }
-template<> constexpr int series_type_id<QtCharts::QScatterSeries>()
-{ return QtCharts::QAbstractSeries::SeriesTypeScatter; }
-
-// Helper function to add a series to a QML ChartView.
-// Sadly, accessing QML from C++ is maliciously cumbersome.
-template<typename Type>
-Type *StatsView::addSeries(const QString &name, QtCharts::QAbstractAxis *xAxis, QtCharts::QAbstractAxis *yAxis)
+void StatsView::initSeries(QtCharts::QAbstractSeries *series, const QString &name)
 {
-	QtCharts::QAbstractSeries *abstract_series = addSeriesHelper(name, series_type_id<Type>(), xAxis, yAxis);
-	Type *res = qobject_cast<Type *>(abstract_series);
-	if (!res)
-		qWarning("Couldn't cast abstract series to %s", typeid(Type).name());
-
-	return res;
-}
-
-QtCharts::QAbstractSeries *StatsView::addSeriesHelper(const QString &name, int type, QtCharts::QAbstractAxis *xAxis, QtCharts::QAbstractAxis *yAxis)
-{
-	using QtCharts::QAbstractSeries;
-	using QtCharts::QAbstractAxis;
-
-	QQuickItem *chart = rootObject();
-	QAbstractSeries *abstract_series;
-	if (!QMetaObject::invokeMethod(chart, "createSeries", Qt::AutoConnection,
-				       Q_RETURN_ARG(QAbstractSeries *, abstract_series),
-				       Q_ARG(int, type),
-				       Q_ARG(QString, name),
-				       Q_ARG(QAbstractAxis *, xAxis),
-				       Q_ARG(QAbstractAxis *, yAxis))) {
-		qWarning("Couldn't call createSeries()");
-		return nullptr;
+	series->setName(name);
+	chart->addSeries(series);
+	if (axes.size() >= 2) {
+		// Not all charts have axes (e.g. Pie charts)
+		series->attachAxis(axes[0].get());
+		series->attachAxis(axes[1].get());
 	}
-
-	return abstract_series;
 }
 
-QtCharts::QLegend *StatsView::getLegend()
+template<typename Type>
+Type *StatsView::addSeries(const QString &name)
 {
-	using QtCharts::QLegend;
-	QQuickItem *chart = rootObject();
-	QVariant v = chart->property("legend");
-	QLegend *legend = v.value<QLegend *>();
-	if (!legend)
-		qWarning("Couldn't get legend");
-	return legend;
+	Type *res = new Type;
+	initSeries(res, name);
+	return res;
 }
 
 void StatsView::showLegend()
 {
-	QtCharts::QLegend *legend = getLegend();
+	QtCharts::QLegend *legend = chart->legend();
 	if (!legend)
 		return;
 	legend->setVisible(true);
@@ -378,7 +358,7 @@ void StatsView::showLegend()
 
 void StatsView::hideLegend()
 {
-	QtCharts::QLegend *legend = getLegend();
+	QtCharts::QLegend *legend = chart->legend();
 	if (!legend)
 		return;
 	legend->setVisible(false);
@@ -386,8 +366,7 @@ void StatsView::hideLegend()
 
 void StatsView::setTitle(const QString &s)
 {
-	QQuickItem *chart = rootObject();
-	chart->setProperty("title", s);
+	chart->setTitle(s);
 }
 
 template <typename T>
@@ -398,10 +377,17 @@ T *StatsView::makeAxis()
 	return res;
 }
 
+void StatsView::addAxes(QtCharts::QAbstractAxis *x, QtCharts::QAbstractAxis *y)
+{
+	chart->addAxis(x, Qt::AlignBottom);
+	chart->addAxis(y, Qt::AlignLeft);
+}
+
 void StatsView::reset()
 {
-	QQuickItem *chart = rootObject();
-	QMetaObject::invokeMethod(chart, "removeAllSeries", Qt::AutoConnection);
+	if (!chart)
+		return;
+	chart->removeAllSeries();
 	axes.clear();
 }
 
@@ -409,6 +395,8 @@ void StatsView::plot(int type, int subTypeIdx,
 		     int firstAxis, int firstAxisBin, int firstAxisOperation,
 		     int secondAxis, int secondAxisBin, int secondAxisOperation)
 {
+	if (!chart)
+		return;
 	reset();
 
 	const ChartType *t = idxToChartType(type);
@@ -550,24 +538,27 @@ void StatsView::plotBarChart(const std::vector<dive *> &dives,
 	int maxVal = isStacked ? maxCategoryCount : maxCount;
 	initCountAxis(valAxis, maxVal);
 
+	bool isHorizontal = subType == ChartSubType::Horizontal || subType == ChartSubType::HorizontalStacked;
+	if (isHorizontal)
+		addAxes(valAxis, catAxis);
+	else
+		addAxes(catAxis, valAxis);
 	QAbstractBarSeries *series;
 	switch (subType) {
 	default:
 	case ChartSubType::Vertical:
-		series = addSeries<QtCharts::QBarSeries>(valueType->name(), catAxis, valAxis);
+		series = addSeries<QtCharts::QBarSeries>(valueType->name());
 		break;
 	case ChartSubType::VerticalStacked:
-		series = addSeries<QtCharts::QStackedBarSeries>(valueType->name(), catAxis, valAxis);
+		series = addSeries<QtCharts::QStackedBarSeries>(valueType->name());
 		break;
 	case ChartSubType::Horizontal:
-		series = addSeries<QtCharts::QHorizontalBarSeries>(valueType->name(), valAxis, catAxis);
+		series = addSeries<QtCharts::QHorizontalBarSeries>(valueType->name());
 		break;
 	case ChartSubType::HorizontalStacked:
-		series = addSeries<QtCharts::QHorizontalStackedBarSeries>(valueType->name(), valAxis, catAxis);
+		series = addSeries<QtCharts::QHorizontalStackedBarSeries>(valueType->name());
 		break;
 	}
-	if (!series)
-		return;
 
 	for (auto &[vbin, counts]: vbin_counts) {
 		QBarSet *set = new QBarSet(valueBinner->format(*vbin));
@@ -659,12 +650,13 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 	valAxis->setTitleText(valueType->nameWithUnit());
 
 	QAbstractBarSeries *series;
-	if (isHorizontal)
-		series = addSeries<QtCharts::QHorizontalBarSeries>(valueType->name(), valAxis, catAxis);
-	else
-		series = addSeries<QtCharts::QBarSeries>(valueType->name(), catAxis, valAxis);
-	if (!series)
-		return;
+	if (isHorizontal) {
+		addAxes(valAxis, catAxis);
+		series = addSeries<QtCharts::QHorizontalBarSeries>(valueType->name());
+	} else {
+		addAxes(catAxis, valAxis);
+		series = addSeries<QtCharts::QBarSeries>(valueType->name());
+	}
 
 	QBarSet *set = new QBarSet(QString());
 	for (double value: values)
@@ -701,7 +693,7 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 		total += count;
 
 	if (subType == ChartSubType::Pie) {
-		QPieSeries *series = addSeries<QtCharts::QPieSeries>(categoryType->name(), nullptr, nullptr);
+		QPieSeries *series = addSeries<QtCharts::QPieSeries>(categoryType->name());
 		QLocale loc;
 		for (auto const &[bin, count]: categoryBins) {
 			double percentage = count * 100.0 / total;
@@ -721,10 +713,13 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 		QValueAxis *valAxis = makeAxis<QValueAxis>();
 
 		QAbstractBarSeries *series;
-		if (subType == ChartSubType::Vertical)
-			series = addSeries<QtCharts::QBarSeries>(categoryType->name(), catAxis, valAxis);
-		else
-			series = addSeries<QtCharts::QHorizontalBarSeries>(categoryType->name(), valAxis, catAxis);
+		if (subType == ChartSubType::Vertical) {
+			addAxes(catAxis, valAxis);
+			series = addSeries<QtCharts::QBarSeries>(categoryType->name());
+		} else {
+			addAxes(valAxis, catAxis);
+			series = addSeries<QtCharts::QHorizontalBarSeries>(categoryType->name());
+		}
 		if (!series)
 			return;
 
@@ -808,8 +803,9 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 	QValueAxis *valAxis = createValueAxis(chartBottom, chartTop, valueType->decimals(), false);
 	valAxis->setTitleText(valueType->nameWithUnit());
 
-	QScatterSeries *series = addSeries<QScatterSeries>(valueType->name(), catAxis, valAxis);
-	QScatterSeries *quartileSeries = addSeries<QScatterSeries>(valueType->name(), catAxis, valAxis);
+	addAxes(catAxis, valAxis);
+	QScatterSeries *series = addSeries<QScatterSeries>(valueType->name());
+	QScatterSeries *quartileSeries = addSeries<QScatterSeries>(valueType->name());
 	quartileSeries->setMarkerShape(QScatterSeries::MarkerShapeRectangle);
 	quartileSeries->setColor(Qt::red);
 
@@ -852,13 +848,11 @@ QString LabelDisambiguator::transmogrify(const QString &s)
 	}
 }
 
-void StatsView::addLineMarker(double pos, double low, double high, const QPen &pen,
-			      QtCharts::QAbstractAxis *axisX, QtCharts::QAbstractAxis *axisY,
-			      bool isHorizontal)
+void StatsView::addLineMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal)
 {
 	using QtCharts::QLineSeries;
 
-	QLineSeries *series = addSeries<QLineSeries>(QString(), axisX, axisY);
+	QLineSeries *series = addSeries<QLineSeries>(QString());
 	if(!series)
 		return;
 	if (isHorizontal) {
@@ -872,15 +866,12 @@ void StatsView::addLineMarker(double pos, double low, double high, const QPen &p
 }
 
 
-void StatsView::addBar(double lowerBound, double upperBound, double height, const QBrush &brush, const QPen &pen,
-		       QtCharts::QAbstractAxis *xAxis, QtCharts::QAbstractAxis *yAxis, bool isHorizontal)
+void StatsView::addBar(double lowerBound, double upperBound, double height, const QBrush &brush, const QPen &pen, bool isHorizontal)
 {
 	using QtCharts::QAreaSeries;
 	using QtCharts::QLineSeries;
 
-	QAreaSeries *series = addSeries<QAreaSeries>(QString(), xAxis, yAxis);
-	if (!series)
-		return;
+	QAreaSeries *series = addSeries<QAreaSeries>(QString());
 	QLineSeries *lower = new QLineSeries;
 	QLineSeries *upper = new QLineSeries;
 	double delta = (upperBound - lowerBound) * histogramBarWidth;
@@ -992,11 +983,13 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	QAbstractAxis *yAxis = valAxis;
 	if (isHorizontal)
 		std::swap(xAxis, yAxis);
+	addAxes(xAxis, yAxis);
+
 	for (auto const &[bin, count]: categoryBins) {
 		double height = count;
 		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
 		double upperBound = categoryBinner->upperBoundToFloat(*bin);
-		addBar(lowerBound, upperBound, height, QBrush(Qt::blue), QPen(Qt::white), xAxis, yAxis, isHorizontal);
+		addBar(lowerBound, upperBound, height, QBrush(Qt::blue), QPen(Qt::white), isHorizontal);
 	}
 
 	if (categoryType->type() == StatsType::Type::Numeric) {
@@ -1006,8 +999,8 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 		averagePen.setWidth(2);
 		QPen medianPen(Qt::red);
 		medianPen.setWidth(2);
-		addLineMarker(average, 0.0, chartHeight, averagePen, xAxis, yAxis, isHorizontal);
-		addLineMarker(median, 0.0, chartHeight, medianPen, xAxis, yAxis, isHorizontal);
+		addLineMarker(average, 0.0, chartHeight, averagePen, isHorizontal);
+		addLineMarker(median, 0.0, chartHeight, medianPen, isHorizontal);
 	}
 
 	hideLegend();
@@ -1052,12 +1045,14 @@ void StatsView::plotHistogramBarChart(const std::vector<dive *> &dives,
 	QAbstractAxis *yAxis = valAxis;
 	if (isHorizontal)
 		std::swap(xAxis, yAxis);
+	addAxes(xAxis, yAxis);
+
 	int i = 0;
 	for (auto const &[bin, count]: categoryBins) {
 		double height = values[i++];
 		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
 		double upperBound = categoryBinner->upperBoundToFloat(*bin);
-		addBar(lowerBound, upperBound, height, QBrush(Qt::blue), QPen(Qt::white), xAxis, yAxis, isHorizontal);
+		addBar(lowerBound, upperBound, height, QBrush(Qt::blue), QPen(Qt::white), isHorizontal);
 	}
 
 	hideLegend();
@@ -1116,7 +1111,8 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsType *c
 	QValueAxis *axisY = createValueAxis(chartBottom, chartTop, valueType->decimals(), false);
 	axisY->setTitleText(valueType->nameWithUnit());
 
-	QScatterSeries *series = addSeries<QScatterSeries>(valueType->name(), axisX, axisY);
+	addAxes(axisX, axisY);
+	QScatterSeries *series = addSeries<QScatterSeries>(valueType->name());
 
 	for (auto [x, y]: points)
 		series->append(x, y);
@@ -1124,7 +1120,7 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsType *c
 	// y = ax + b
 	auto [a, b] = linear_regression(points);
 	if (!std::isnan(a)) {
-		QLineSeries *series = addSeries<QLineSeries>(QString(), axisX, axisY);
+		QLineSeries *series = addSeries<QLineSeries>(QString());
 		series->setPen(QPen(Qt::red));
 		series->append(axisX->min(), a * axisX->min() + b);
 		series->append(axisX->max(), a * axisX->max() + b);
