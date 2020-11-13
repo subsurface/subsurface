@@ -3253,7 +3253,11 @@ depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, int rou
 	int maxambient = prefs.o2narcotic ?
 					(int)lrint(ppo2n2.mbar / (1 - get_he(mix) / 1000.0))
 			      :
-					(int)lrint(ppo2n2.mbar * N2_IN_AIR / get_n2(mix));
+					get_n2(mix) > 0 ?
+						(int)lrint(ppo2n2.mbar * N2_IN_AIR / get_n2(mix))
+					:
+						// Actually: Infinity
+						1000000;
 	rounded_depth.mm = (int)lrint(((double)mbar_to_depth(maxambient, dive)) / roundto) * roundto;
 	return rounded_depth;
 }
