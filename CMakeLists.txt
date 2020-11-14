@@ -52,8 +52,8 @@ option(FTDISUPPORT "enable support for libftdi based serial" OFF)
 # Options regarding What should we build on subsurface
 option(MAKE_TESTS "Make the tests" ON)
 
-SET(SUBSURFACE_TARGET_EXECUTABLE "DesktopExecutable" CACHE STRING "The type of application, DesktopExecutable or MobileExecutable")
-LIST(APPEND SUBSURFACE_ACCEPTED_EXECUTABLES  "DesktopExecutable" "MobileExecutable")
+SET(SUBSURFACE_TARGET_EXECUTABLE "DesktopExecutable" CACHE STRING "The type of application, DesktopExecutable, MobileExecutable, or DownloaderExecutable")
+LIST(APPEND SUBSURFACE_ACCEPTED_EXECUTABLES  "DesktopExecutable" "MobileExecutable" "DownloaderExecutable")
 SET_PROPERTY(CACHE SUBSURFACE_TARGET_EXECUTABLE PROPERTY STRINGS ${SUBSURFACE_ACCEPTED_EXECUTABLES})
 
 #verify if Platform is correct and warn on wxit with example.
@@ -199,6 +199,11 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 
 	message(STATUS "Building Subsurface-mobile requires BT support")
 	set(BTSUPPORT ON)
+elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
+	set(SUBSURFACE_TARGET subsurface-downloader)
+	set(BTSUPPORT ON)
+	add_definitions(-DSUBSURFACE_DOWNLOADER)
+	message(STATUS "building the embedded Subsurface-downloader app")
 endif()
 
 if(ANDROID)
@@ -269,13 +274,17 @@ endif()
 set(QT_FIND_COMPONENTS Core Concurrent Widgets Network Svg Positioning Quick Location ${QT_EXTRA_COMPONENTS})
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	find_package(Qt5 5.9.1 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
-else()
+elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	# Kirigami 5.62 and newer require at least Qt 5.12
 	if(ANDROID)
 		find_package(Qt5 5.12 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools)
 	else()
 		find_package(Qt5 5.12 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
 	endif()
+elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
+	# let's pick a version that's not ancient
+	find_package(Qt5 5.12 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS})
+	set(MAKE_TESTS OFF)
 endif()
 foreach(_QT_COMPONENT ${QT_FIND_COMPONENTS})
 	list(APPEND QT_LIBRARIES Qt5::${_QT_COMPONENT})
@@ -286,7 +295,9 @@ endif()
 
 #set up the subsurface_link_libraries variable
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES} ${LIBMTP_LIBRARIES})
-qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc map-widget/qml/map-widget.qrc)
+if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
+	qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc map-widget/qml/map-widget.qrc)
+endif()
 
 # hack to build successfully on LGTM
 if(DEFINED ENV{LGTM_SRC})
@@ -294,13 +305,17 @@ if(DEFINED ENV{LGTM_SRC})
 endif()
 
 # include translations
+if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 add_subdirectory(translations)
+endif()
 add_subdirectory(core)
 add_subdirectory(qt-models)
 add_subdirectory(commands)
+if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 add_subdirectory(profile-widget)
 add_subdirectory(map-widget)
 add_subdirectory(mobile-widgets)
+endif()
 add_subdirectory(backend-shared)
 
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
@@ -370,6 +385,17 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	add_dependencies(subsurface_profile subsurface_generated_ui)
 	add_dependencies(subsurface_models_desktop subsurface_generated_ui)
 	add_dependencies(subsurface_generated_ui version)
+elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
+	set(DOWNLOADER_APP
+		subsurface-downloader-main.cpp
+	)
+	source_group("Downloader App" FILES ${DOWNLOADER_APP})
+	add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${DOWNLOADER_APP} ${SUBSURFACE_RESOURCES})
+	target_link_libraries(
+		${SUBSURFACE_TARGET}
+		subsurface_corelib
+		${SUBSURFACE_LINK_LIBRARIES}
+	)
 endif()
 
 add_dependencies(subsurface_corelib version)

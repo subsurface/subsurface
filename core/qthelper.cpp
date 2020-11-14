@@ -419,6 +419,8 @@ QString getUserAgent()
 	// replace all other ':' with ' ' so that this is easy to parse
 #ifdef SUBSURFACE_MOBILE
 	QString userAgent = QString("Subsurface-mobile:%1(%2):").arg(subsurface_mobile_version()).arg(subsurface_canonical_version());
+#elif SUBSURFACE_DOWNLOADER
+	QString userAgent = QString("Subsurface-downloader:%1:").arg(subsurface_canonical_version());
 #else
 	QString userAgent = QString("Subsurface:%1:").arg(subsurface_canonical_version());
 #endif

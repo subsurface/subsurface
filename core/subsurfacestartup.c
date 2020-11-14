@@ -132,7 +132,11 @@ void print_version()
 	static bool version_printed = false;
 	if (version_printed)
 		return;
+#if defined(SUBSURFACE_DOWNLOADER)
+	printf("Subsurface-downloader v%s,\n", subsurface_git_version());
+#else
 	printf("Subsurface v%s,\n", subsurface_git_version());
+#endif
 	printf("built with libdivecomputer v%s\n", dc_version(NULL));
 	print_qt_versions();
 	int git_maj, git_min, git_rev;
