@@ -965,11 +965,14 @@ void StatsView::addLineMarker(double pos, double low, double high, const QPen &p
 }
 
 
-void StatsView::addBar(double lowerBound, double upperBound, double height, const QBrush &brush, const QPen &pen, bool isHorizontal,
+void StatsView::addBar(double lowerBound, double upperBound, double height, bool isHorizontal,
 		       const std::vector<QString> &label)
 {
 	using QtCharts::QAreaSeries;
 	using QtCharts::QLineSeries;
+
+	QBrush brush(Qt::blue);
+	QPen pen(Qt::white);
 
 	QAreaSeries *series = addSeries<QAreaSeries>(QString());
 	QLineSeries *lower = new QLineSeries;
@@ -1159,7 +1162,7 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 		double upperBound = categoryBinner->upperBoundToFloat(*bin);
 		std::vector<QString> label = makePercentageLabels(count, total, isHorizontal);
 
-		addBar(lowerBound, upperBound, height, QBrush(Qt::blue), QPen(Qt::white), isHorizontal, label);
+		addBar(lowerBound, upperBound, height, isHorizontal, label);
 	}
 
 	if (categoryType->type() == StatsType::Type::Numeric) {
@@ -1224,7 +1227,7 @@ void StatsView::plotHistogramBarChart(const std::vector<dive *> &dives,
 		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
 		double upperBound = categoryBinner->upperBoundToFloat(*bin);
 		QString label = QString("%L1").arg(height, 0, 'f', decimals);
-		addBar(lowerBound, upperBound, height, QBrush(Qt::blue), QPen(Qt::white), isHorizontal, {label});
+		addBar(lowerBound, upperBound, height, isHorizontal, {label});
 	}
 
 	hideLegend();

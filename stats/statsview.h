@@ -94,7 +94,7 @@ private:
 
 	// Helper functions to add feature to the chart
 	void addLineMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal);
-	void addBar(double from, double to, double height, const QBrush &brush, const QPen &pen, bool isHorizontal,
+	void addBar(double from, double to, double height, bool isHorizontal,
 		    const std::vector<QString> &label);
 
 	// A label that is composed of multiple lines
