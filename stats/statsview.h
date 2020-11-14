@@ -19,6 +19,7 @@ namespace QtCharts {
 	class QLegend;
 	class QValueAxis;
 }
+class QGraphicsSimpleTextItem;
 
 enum class ChartSubType : int;
 enum class StatsOperation : int;
@@ -43,6 +44,8 @@ public:
 	static QStringList getSecondAxisTypes(int chartType, int firstAxis);
 	static QStringList getSecondAxisBins(int chartType, int firstAxis, int secondAxis);
 	static QStringList getSecondAxisOperations(int chartType, int firstAxis, int secondAxis);
+private slots:
+	void plotAreaChanged(const QRectF &plotArea);
 private:
 	void reset(); // clears all series and axes
 	void addAxes(QtCharts::QAbstractAxis *x, QtCharts::QAbstractAxis *y); // Add new x- and y-axis
@@ -91,10 +94,23 @@ private:
 
 	// Helper functions to add feature to the chart
 	void addLineMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal);
-	void addBar(double from, double to, double height, const QBrush &brush, const QPen &pen, bool isHorizontal);
+	void addBar(double from, double to, double height, const QBrush &brush, const QPen &pen, bool isHorizontal,
+		    const std::vector<QString> &label);
+
+	// A label that is composed of multiple lines
+	struct BarLabel {
+		std::vector<std::unique_ptr<QGraphicsSimpleTextItem>> items;
+		double value, height; // Position and size of bar in graph
+		double totalWidth, totalHeight; // Size of the item
+		bool isHorizontal;
+		QtCharts::QAbstractSeries *series; // In case we ever support charts with multiple axes
+		BarLabel(const std::vector<QString> &labels, double value, double height, bool isHorizontal, QtCharts::QAbstractSeries *series);
+		void updatePosition();
+	};
 
 	QtCharts::QChart *chart;
 	std::vector<std::unique_ptr<QtCharts::QAbstractAxis>> axes;
+	std::vector<BarLabel> barLabels;
 };
 
 #endif
