@@ -565,6 +565,8 @@ void ImportDives::redoit()
 		emit diveListNotifier.filterPresetAdded(filterPresetsToRemove.back());
 	}
 	filterPresetsToAdd.clear();
+
+	emit diveListNotifier.divesImported();
 }
 
 void ImportDives::undoit()
