@@ -1280,12 +1280,34 @@ void StatsView::plotHistogramBarChart(const std::vector<dive *> &dives,
 	hideLegend();
 }
 
+static bool is_linear_regression(int sample_size, double cov, double sx2, double sy2)
+{
+	// One point never, two points always form a line
+	if (sample_size < 2)
+		return false;
+	if (sample_size <= 2)
+		return true;
+
+	const double tval[] = { 12.709, 4.303, 3.182, 2.776, 2.571, 2.447, 2.201, 2.120, 2.080,  2.056, 2.021, 1.960,  1.960 };
+	const int t_df[] =    { 1,      2,     3,     4,     5,     6,     11,    16,    21,     26,    40,    100,   100000 };
+	int df = sample_size - 2;   // Following is the one-tailed t-value at p < 0.05 and [sample_size - 2] degrees of freedom for the dive data:
+	double t = (cov / sx2) / sqrt(((sy2 - cov * cov / sx2) / (double)df) / sx2);
+	for (int i = std::size(tval) - 2; i >= 0; i--) {   // We do linear interpolation rather than having a large lookup table.
+		if (df >= t_df[i]) {    // Look up the appropriate reference t-value at p < 0.05 and df degrees of freedom
+			double t_lookup = tval[i] - (tval[i] - tval[i+1]) * (df - t_df[i]) / (t_df[i+1] - t_df[i]);
+			return abs(t) >= t_lookup;
+		}
+	}
+
+	return true; // can't happen, as we tested for sample_size above.
+}
+
 // Returns the coefficients [a,b] of the line y = ax + b
 // If case of an undetermined regression or one with infinite slope, returns [nan, nan]
 static std::pair<double, double> linear_regression(const std::vector<std::pair<double, double>> &v)
 {
 	const double NaN = std::numeric_limits<double>::quiet_NaN();
-	if (v.empty())
+	if (v.size() < 2)
 		return { NaN, NaN };
 
 	// First, calculate the x and y average
@@ -1297,14 +1319,18 @@ static std::pair<double, double> linear_regression(const std::vector<std::pair<d
 	avg_x /= (double)v.size();
 	avg_y /= (double)v.size();
 
-	double num = 0.0, denom = 0.0;
+	double cov = 0.0, sx2 = 0.0, sy2 = 0.0;
 	for (auto [x, y]: v) {
-		num += (x - avg_x) * (y - avg_y);
-		denom += (x - avg_x) * (x - avg_x);
+		cov += (x - avg_x) * (y - avg_y);
+		sx2 += (x - avg_x) * (x - avg_x);
+		sy2 += (y - avg_y) * (y - avg_y);
 	}
-	if (fabs(denom) < 1e-10)
+
+	bool is_linear = is_linear_regression((int)v.size(), cov, sx2, sy2);
+
+	if (fabs(sx2) < 1e-10 || !is_linear) // If t is not statistically significant, do not plot the regression line.
 		return { NaN, NaN };
-	double a = num / denom;
+	double a = cov / sx2;
 	double b = avg_y - a * avg_x;
 	return { a, b };
 }
