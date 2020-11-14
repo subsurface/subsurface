@@ -25,10 +25,7 @@ class MainTab : public QTabWidget {
 public:
 	MainTab(QWidget *parent = 0);
 	void clearTabs();
-	void reload();
-	void initialUiSetup();
 	bool isEditing();
-	void updateCoordinatesText(qreal lat, qreal lon);
 	void refreshDisplayedDiveSite();
 	void nextInputField(QKeyEvent *event);
 	void stealFocus();

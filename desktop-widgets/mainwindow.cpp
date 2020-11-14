@@ -406,8 +406,6 @@ MainWindow *MainWindow::instance()
 // This gets called after one or more dives were added, edited or downloaded for a dive computer
 void MainWindow::refreshDisplay()
 {
-	mainTab->reload();
-
 	setApplicationState(ApplicationState::Default);
 	diveList->setEnabled(true);
 	diveList->setFocus();
