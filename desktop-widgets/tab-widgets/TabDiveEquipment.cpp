@@ -127,7 +127,6 @@ void TabDiveEquipment::updateData()
 {
 	cylindersModel->updateDive(current_dive);
 	weightModel->updateDive(current_dive);
-	suitModel.updateModel();
 
 	ui.cylinders->view()->hideColumn(CylindersModel::DEPTH);
 	bool is_ccr = current_dive && get_dive_dc(current_dive, dc_number)->divemode == CCR;

@@ -452,9 +452,9 @@ void QMLManager::selectSwipeRow(int row)
 
 void QMLManager::updateAllGlobalLists()
 {
-	buddyModel.updateModel(); emit buddyListChanged();
-	suitModel.updateModel(); emit suitListChanged();
-	divemasterModel.updateModel(); emit divemasterListChanged();
+	emit buddyListChanged();
+	emit suitListChanged();
+	emit divemasterListChanged();
 	// TODO: It would be nice if we could export the list of locations via model/view instead of a Q_PROPERTY
 	emit locationListChanged();
 }
