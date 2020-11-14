@@ -5,7 +5,7 @@
 #include "gettextfromc.h"
 #include "qthelper.h"
 #include "subsurface-qt/divelistnotifier.h"
-#ifndef SUBSURFACE_MOBILE
+#if !defined(SUBSURFACE_MOBILE) && !defined(SUBSURFACE_DOWNLOADER)
 #include "desktop-widgets/mapwidget.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/divelistview.h"
@@ -103,7 +103,7 @@ bool DiveFilter::showDive(const struct dive *d) const
 			   [d] (const filter_constraint &c) { return filter_constraint_match_dive(c, d); });
 }
 
-#ifndef SUBSURFACE_MOBILE
+#if !defined(SUBSURFACE_MOBILE) && !defined(SUBSURFACE_DOWNLOADER)
 void DiveFilter::startFilterDiveSites(QVector<dive_site *> ds)
 {
 	if (++diveSiteRefCount > 1) {
