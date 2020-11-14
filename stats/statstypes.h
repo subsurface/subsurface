@@ -23,8 +23,8 @@ struct dive;
 // Operations that can be performed on numeric types
 enum class StatsOperation : int {
 	Median = 0,
-	Average,
-	TimeWeightedAverage,
+	Mean,
+	TimeWeightedMean,
 	Sum
 };
 
@@ -96,8 +96,8 @@ struct StatsType {
 	QStringList supportedOperationNames() const; // Only for numeric types
 	StatsOperation idxToOperation(int idx) const;
 	static QString operationName(StatsOperation);
-	double average(const std::vector<dive *> &dives) const;
-	double averageTimeWeighted(const std::vector<dive *> &dives) const;
+	double mean(const std::vector<dive *> &dives) const;
+	double meanTimeWeighted(const std::vector<dive *> &dives) const;
 	static StatsQuartiles quartiles(const std::vector<double> &values);
 	StatsQuartiles quartiles(const std::vector<dive *> &dives) const;
 	std::vector<double> values(const std::vector<dive *> &dives) const;
