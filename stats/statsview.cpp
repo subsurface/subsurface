@@ -85,7 +85,7 @@ static const struct ChartType {
 		ChartTypeId::DiscreteValue,
 		QT_TRANSLATE_NOOP("StatsTranslations", "Discrete value"),
 		stats_types,		// supports all types as first axis
-		stats_numeric_types,	// supports numeric types as second axis, since we want to average, etc
+		stats_numeric_types,	// supports numeric types as second axis, since we want to calculate the mean, etc
 		true,
 		false,
 		false,
@@ -118,7 +118,7 @@ static const struct ChartType {
 		ChartTypeId::DiscreteScatter,
 		QT_TRANSLATE_NOOP("StatsTranslations", "Discrete scatter"),
 		stats_types,	// supports all types as first axis
-		stats_numeric_types,	// supports numeric types as second axis, since we want to average, etc
+		stats_numeric_types,	// supports numeric types as second axis, since we want to calculate the mean, etc
 		true,
 		false,
 		false,
@@ -140,7 +140,7 @@ static const struct ChartType {
 		ChartTypeId::HistogramBar,
 		QT_TRANSLATE_NOOP("StatsTranslations", "Histogram bar"),
 		stats_continuous_types,	// supports continuous types as first axis
-		stats_numeric_types,	// supports numeric types as second axis, since we want to average, etc
+		stats_numeric_types,	// supports numeric types as second axis, since we want to calculate the mean, etc
 		true,
 		false,
 		false,
@@ -1163,13 +1163,13 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	}
 
 	if (categoryType->type() == StatsType::Type::Numeric) {
-		double average = categoryType->average(dives);
+		double mean = categoryType->mean(dives);
 		double median = categoryType->quartiles(dives).q2;
-		QPen averagePen(Qt::green);
-		averagePen.setWidth(2);
+		QPen meanPen(Qt::green);
+		meanPen.setWidth(2);
 		QPen medianPen(Qt::red);
 		medianPen.setWidth(2);
-		addLineMarker(average, 0.0, chartHeight, averagePen, isHorizontal);
+		addLineMarker(mean, 0.0, chartHeight, meanPen, isHorizontal);
 		addLineMarker(median, 0.0, chartHeight, medianPen, isHorizontal);
 	}
 

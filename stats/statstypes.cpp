@@ -161,8 +161,8 @@ std::vector<StatsOperation> StatsType::supportedOperations() const
 // Attn: The order must correspond to the StatsOperation enum
 static const char *operation_names[] = {
 	QT_TRANSLATE_NOOP("StatsTranslations", "Median"),
-	QT_TRANSLATE_NOOP("StatsTranslations", "Average"),
-	QT_TRANSLATE_NOOP("StatsTranslations", "Time-weighted Avg."),
+	QT_TRANSLATE_NOOP("StatsTranslations", "Mean"),
+	QT_TRANSLATE_NOOP("StatsTranslations", "Time-weighted mean"),
 	QT_TRANSLATE_NOOP("StatsTranslations", "Sum")
 };
 
@@ -193,7 +193,7 @@ QString StatsType::operationName(StatsOperation op)
 								 : operation_names[(int)op];
 }
 
-double StatsType::average(const std::vector<dive *> &dives) const
+double StatsType::mean(const std::vector<dive *> &dives) const
 {
 	double sum = 0.0;
 	double count = 0.0;
@@ -207,7 +207,7 @@ double StatsType::average(const std::vector<dive *> &dives) const
 	return count > 0.0 ? sum / count : 0.0;
 }
 
-double StatsType::averageTimeWeighted(const std::vector<dive *> &dives) const
+double StatsType::meanTimeWeighted(const std::vector<dive *> &dives) const
 {
 	double sum = 0.0;
 	double weight_count = 0.0;
@@ -294,10 +294,10 @@ double StatsType::applyOperation(const std::vector<dive *> &dives, StatsOperatio
 	switch (op) {
 	case StatsOperation::Median:
 		return quartiles(dives).q2;
-	case StatsOperation::Average:
-		return average(dives);
-	case StatsOperation::TimeWeightedAverage:
-		return averageTimeWeighted(dives);
+	case StatsOperation::Mean:
+		return mean(dives);
+	case StatsOperation::TimeWeightedMean:
+		return meanTimeWeighted(dives);
 	case StatsOperation::Sum:
 		return sum(dives);
 	default: return 0.0;
@@ -774,7 +774,7 @@ struct DepthType : public StatsTypeTemplate<StatsType::Type::Numeric> {
 							   : mm_to_feet(d->maxdepth.mm);
 	}
 	std::vector<StatsOperation> supportedOperations() const override {
-		return { StatsOperation::Median, StatsOperation::Average, StatsOperation::Sum };
+		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::Sum };
 	}
 };
 
@@ -832,7 +832,7 @@ struct DurationType : public StatsTypeTemplate<StatsType::Type::Numeric> {
 		return d->duration.seconds / 60.0;
 	}
 	std::vector<StatsOperation> supportedOperations() const override {
-		return { StatsOperation::Median, StatsOperation::Average, StatsOperation::Sum };
+		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::Sum };
 	}
 };
 
@@ -923,7 +923,7 @@ struct SACType : public StatsTypeTemplate<StatsType::Type::Numeric> {
 							    ml_to_cuft(d->sac);
 	}
 	std::vector<StatsOperation> supportedOperations() const override {
-		return { StatsOperation::Median, StatsOperation::Average, StatsOperation::TimeWeightedAverage };
+		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::TimeWeightedMean };
 	}
 };
 
@@ -987,7 +987,7 @@ struct TemperatureType : public StatsTypeTemplate<StatsType::Type::Numeric> {
 		return { &b2, &b5, &b10, &b20 };
 	}
 	std::vector<StatsOperation> supportedOperations() const override {
-		return { StatsOperation::Median, StatsOperation::Average, StatsOperation::TimeWeightedAverage };
+		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::TimeWeightedMean };
 	}
 };
 
