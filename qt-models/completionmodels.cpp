@@ -3,13 +3,30 @@
 #include "core/dive.h"
 #include "core/tag.h"
 #include <QSet>
-#include <QString>
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 #define SKIP_EMPTY Qt::SkipEmptyParts
 #else
 #define SKIP_EMPTY QString::SkipEmptyParts
 #endif
+
+CompletionModelBase::CompletionModelBase()
+{
+	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &CompletionModelBase::updateModel);
+	connect(&diveListNotifier, &DiveListNotifier::divesImported, this, &CompletionModelBase::updateModel);
+	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &CompletionModelBase::divesChanged);
+}
+
+void CompletionModelBase::updateModel()
+{
+	setStringList(getStrings());
+}
+
+void CompletionModelBase::divesChanged(const QVector<dive *> &, DiveField field)
+{
+	if (relevantDiveField(field))
+		updateModel();
+}
 
 static QStringList getCSVList(char *dive::*item)
 {
@@ -26,17 +43,27 @@ static QStringList getCSVList(char *dive::*item)
 	return setList;
 }
 
-void BuddyCompletionModel::updateModel()
+QStringList BuddyCompletionModel::getStrings()
 {
-	setStringList(getCSVList(&dive::buddy));
+	return getCSVList(&dive::buddy);
 }
 
-void DiveMasterCompletionModel::updateModel()
+bool BuddyCompletionModel::relevantDiveField(const DiveField &f)
 {
-	setStringList(getCSVList(&dive::divemaster));
+	return f.buddy;
 }
 
-void SuitCompletionModel::updateModel()
+QStringList DiveMasterCompletionModel::getStrings()
+{
+	return getCSVList(&dive::divemaster);
+}
+
+bool DiveMasterCompletionModel::relevantDiveField(const DiveField &f)
+{
+	return f.divemaster;
+}
+
+QStringList SuitCompletionModel::getStrings()
 {
 	QStringList list;
 	struct dive *dive;
@@ -47,18 +74,29 @@ void SuitCompletionModel::updateModel()
 			list.append(suit);
 	}
 	std::sort(list.begin(), list.end());
-	setStringList(list);
+	return list;
 }
 
-void TagCompletionModel::updateModel()
+bool SuitCompletionModel::relevantDiveField(const DiveField &f)
+{
+	return f.suit;
+}
+
+QStringList TagCompletionModel::getStrings()
 {
 	if (g_tag_list == NULL)
-		return;
+		return {};
 	QStringList list;
 	struct tag_entry *current_tag_entry = g_tag_list;
 	while (current_tag_entry != NULL) {
 		list.append(QString(current_tag_entry->tag->name));
 		current_tag_entry = current_tag_entry->next;
 	}
-	setStringList(list);
+	std::sort(list.begin(), list.end());
+	return list;
+}
+
+bool TagCompletionModel::relevantDiveField(const DiveField &f)
+{
+	return f.tags;
 }
