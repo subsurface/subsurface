@@ -189,6 +189,10 @@ static void print_help()
 	printf("\n --user=<test>         Choose configuration space for user <test>");
 #ifdef SUBSURFACE_MOBILE_DESKTOP
 	printf("\n --testqml=<dir>       Use QML files from <dir> instead of QML resources");
+#elif SUBSURFACE_DOWNLOADER
+	printf("\n --dc-vendor=vendor    Set the dive computer to download from");
+	printf("\n --dc-product=product  Set the dive computer to download from");
+	printf("\n --device=device       Set the device to download from");
 #endif
 	printf("\n --cloud-timeout=<nr>  Set timeout for cloud connection (0 < timeout < 60)\n\n");
 }
@@ -248,7 +252,20 @@ void parse_argument(const char *arg)
 				++force_root;
 				return;
 			}
-#ifdef SUBSURFACE_MOBILE_DESKTOP
+#if SUBSURFACE_DOWNLOADER
+			if (strncmp(arg, "--dc-vendor=", sizeof("--dc-vendor=") - 1) == 0) {
+				prefs.dive_computer.vendor = strdup(arg + sizeof("--dc-vendor=") - 1);
+				return;
+			}
+			if (strncmp(arg, "--dc-product=", sizeof("--dc-product=") - 1) == 0) {
+				prefs.dive_computer.product = strdup(arg + sizeof("--dc-product=") - 1);
+				return;
+			}
+			if (strncmp(arg, "--device=", sizeof("--device=") - 1) == 0) {
+				prefs.dive_computer.device = strdup(arg + sizeof("--device=") - 1);
+				return;
+			}
+#elif SUBSURFACE_MOBILE_DESKTOP
 			if (strncmp(arg, "--testqml=", sizeof("--testqml=") - 1) == 0) {
 				testqml = malloc(strlen(arg) - sizeof("--testqml=") + 1);
 				strcpy(testqml, arg + sizeof("--testqml=") - 1);

@@ -8,6 +8,7 @@
 #include "core/settings/qPref.h"
 #include "core/tag.h"
 #include "core/dive.h"
+#include "core/subsurface-string.h"
 
 #include <QApplication>
 #include <QLoggingCategory>
@@ -85,8 +86,10 @@ int main(int argc, char **argv)
 		qDebug() << "loading dive data from" << files;
 	print_files();
 	if (!quit) {
-		// do something
-		;
+		if (!empty_string(prefs.dive_computer.vendor) && !empty_string(prefs.dive_computer.product) && !empty_string(prefs.dive_computer.device)) {
+			// download from that dive computer
+			printf("Downloading dives from %s %s (via %s)\n", prefs.dive_computer.vendor, prefs.dive_computer.product, prefs.dive_computer.device);
+		}
 	}
 	taglist_free(g_tag_list);
 	parse_xml_exit();
