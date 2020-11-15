@@ -393,6 +393,9 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 	add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${DOWNLOADER_APP} ${SUBSURFACE_RESOURCES})
 	target_link_libraries(
 		${SUBSURFACE_TARGET}
+		subsurface_backend_shared
+		subsurface_models_downloader
+		subsurface_commands
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES}
 	)

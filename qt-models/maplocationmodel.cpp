@@ -3,7 +3,7 @@
 #include "divelocationmodel.h"
 #include "core/divesite.h"
 #include "core/divefilter.h"
-#ifndef SUBSURFACE_MOBILE
+#if !defined(SUBSURFACE_MOBILE) && !defined(SUBSURFACE_DOWNLOADER)
 #include "qt-models/filtermodels.h"
 #include "desktop-widgets/mapwidget.h"
 #endif
@@ -20,7 +20,7 @@ MapLocation::MapLocation(struct dive_site *dsIn, QGeoCoordinate coordIn, QString
 // Simplify this!
 static bool inEditMode()
 {
-#ifdef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_MOBILE) || defined(SUBSURFACE_DOWNLOADER)
 	return false;
 #else
 	return MapWidget::instance()->editMode();
@@ -127,7 +127,7 @@ void MapLocationModel::reload(QObject *map)
 
 	QMap<QString, MapLocation *> locationNameMap;
 
-#ifdef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_MOBILE) || defined(SUBSURFACE_DOWNLOADER)
 	bool diveSiteMode = false;
 #else
 	// In dive site mode (that is when either editing a dive site or on
