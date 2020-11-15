@@ -91,6 +91,7 @@ private:
 						     const std::vector<T> &bins,
 						     bool isHorizontal);
 	QtCharts::QValueAxis *createValueAxis(double min, double max, int decimals, bool isHorizontal);
+	QtCharts::QValueAxis *createCountAxis(int count, bool isHorizontal);
 
 	// Helper functions to add feature to the chart
 	void addLineMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal);
