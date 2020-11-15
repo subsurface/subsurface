@@ -192,6 +192,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		set(SUBSURFACE_TARGET subsurface-mobile)
 	endif()
 	list(APPEND QT_EXTRA_COMPONENTS QuickControls2)
+	list(APPEND QT_EXTRA_COMPONENTS QuickWidgets)
 	add_definitions(-DSUBSURFACE_MOBILE)
 
 	# add definition to seperate mobile for devices and for desktop
