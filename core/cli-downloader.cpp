@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QUndoStack>
 
-extern "C"
+
 void cliDownloader(const char *vendor, const char *product, const char *device)
 {
 	DiveImportedModel *diveImportedModel = new DiveImportedModel();

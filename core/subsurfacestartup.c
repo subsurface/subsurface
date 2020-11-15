@@ -10,6 +10,8 @@
 #include "git-access.h"
 #include "libdivecomputer/version.h"
 
+extern void show_computer_list();
+
 struct preferences prefs, git_prefs;
 struct preferences default_prefs = {
 	.cloud_base_url = "https://cloud.subsurface-divelog.org/",
@@ -152,6 +154,7 @@ void print_files()
 	const char *filename, *local_git;
 
 	printf("\nFile locations:\n\n");
+	printf("Cloud email:%s\n", prefs.cloud_storage_email);
 	if (!empty_string(prefs.cloud_storage_email) && !empty_string(prefs.cloud_storage_password)) {
 		filename = cloud_url();
 
@@ -263,6 +266,10 @@ void parse_argument(const char *arg)
 			}
 			if (strncmp(arg, "--device=", sizeof("--device=") - 1) == 0) {
 				prefs.dive_computer.device = strdup(arg + sizeof("--device=") - 1);
+				return;
+			}
+			if (strncmp(arg, "--list-dc", sizeof("--list-dc") - 1) == 0) {
+				show_computer_list();
 				return;
 			}
 #elif SUBSURFACE_MOBILE_DESKTOP

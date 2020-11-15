@@ -17,6 +17,7 @@
 
 static bool filesOnCommandLine = false;
 static void messageHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
+extern void cliDownloader(const char *vendor, const char *product, const char *device);
 
 int main(int argc, char **argv)
 {
@@ -51,6 +52,7 @@ int main(int argc, char **argv)
 	copy_prefs(&default_prefs, &prefs);
 
 	// now handle the arguments
+	fill_computer_list();
 	for (i = 1; i < arguments.length(); i++) {
 		QString a = arguments.at(i);
 		if (a.isEmpty())
@@ -66,7 +68,6 @@ int main(int argc, char **argv)
 			files.push_back(a);
 		}
 	}
-	fill_computer_list();
 	parse_xml_init();
 	taglist_init_global();
 
@@ -89,6 +90,7 @@ int main(int argc, char **argv)
 		if (!empty_string(prefs.dive_computer.vendor) && !empty_string(prefs.dive_computer.product) && !empty_string(prefs.dive_computer.device)) {
 			// download from that dive computer
 			printf("Downloading dives from %s %s (via %s)\n", prefs.dive_computer.vendor, prefs.dive_computer.product, prefs.dive_computer.device);
+			cliDownloader(prefs.dive_computer.vendor, prefs.dive_computer.product, prefs.dive_computer.device);
 		}
 	}
 	taglist_free(g_tag_list);
