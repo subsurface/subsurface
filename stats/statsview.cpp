@@ -448,39 +448,6 @@ void StatsView::plot(int type, int subTypeIdx,
 	}
 }
 
-static int initCountAxis(QtCharts::QValueAxis *axis, int count)
-{
-	// TODO: Let the acceptable number of ticks depend on the size of the graph.
-	int numTicksMin = 5;
-	int numTicksMax = 8;
-	int max, numTicks;
-
-	// A fixed number of ticks is not nice if the maximum count not divisible
-	// by this number. In the worst case, our maximum count may be prime.
-	// Therefore make the maximum divisible by the number of ticks.
-	// This is algorithm is very stupid: it increases the maximum until it is
-	// a multiple of a "nice" number of ticks.
-	if (count <= numTicksMin) {
-		max = count;
-		numTicks = count + 1;
-	} else {
-		for (max = count; ; ++max) {
-			for (numTicks = numTicksMin; numTicks <= numTicksMax; ++numTicks) {
-				if (max % numTicks == 0)
-					goto found_ticks;
-			}
-		}
-	found_ticks:
-		++numTicks; // There is one more tick than sections.
-	}
-
-	axis->setLabelFormat("%.0f");
-	axis->setTitleText(StatsView::tr("No. dives"));
-	axis->setRange(0, max);
-	axis->setTickCount(numTicks);
-	return max;
-}
-
 template<typename T>
 QtCharts::QBarCategoryAxis *StatsView::createCategoryAxis(const StatsBinner &binner, const std::vector<T> &bins)
 {
@@ -542,15 +509,14 @@ void StatsView::plotBarChart(const std::vector<dive *> &dives,
 	}
 
 	bool isStacked = subType == ChartSubType::VerticalStacked || subType == ChartSubType::HorizontalStacked;
+	bool isHorizontal = subType == ChartSubType::Horizontal || subType == ChartSubType::HorizontalStacked;
 
 	QBarCategoryAxis *catAxis = createCategoryAxis(*categoryBinner, categoryBins);
 	catAxis->setTitleText(categoryType->nameWithBinnerUnit(*categoryBinner));
 
-	QValueAxis *valAxis = makeAxis<QValueAxis>();
 	int maxVal = isStacked ? maxCategoryCount : maxCount;
-	initCountAxis(valAxis, maxVal);
+	QValueAxis *valAxis = createCountAxis(maxVal, isHorizontal);
 
-	bool isHorizontal = subType == ChartSubType::Horizontal || subType == ChartSubType::HorizontalStacked;
 	if (isHorizontal)
 		addAxes(valAxis, catAxis);
 	else
@@ -587,6 +553,50 @@ static QString makeFormatString(int decimals)
 	return QStringLiteral("%.%1f").arg(decimals < 0 ? 0 : decimals);
 }
 
+QtCharts::QValueAxis *StatsView::createCountAxis(int count, bool isHorizontal)
+{
+	using QtCharts::QValueAxis;
+
+	// TODO: Let the acceptable number of ticks depend on the size of the graph and font.
+	int numTicks = isHorizontal ? 8 : 10;
+
+	QValueAxis *axis = makeAxis<QValueAxis>();
+
+	// Get estimate of step size
+	if (count <= 0)
+		count = 1;
+	int step = count / numTicks;
+	if (step <= 0)
+		step = 1;
+
+	// Get the significant first or first two digits
+	int scale = 1;
+	int significant = step;
+	while (significant > 25) {
+		significant /= 10;
+		scale *= 10;
+	}
+
+	for (int increment: { 1, 2, 4, 5, 10, 15, 20, 25 }) {
+		if (increment >= significant) {
+			significant = increment;
+			break;
+		}
+	}
+	step = significant * scale;
+
+	// Make maximum an integer number of steps, equal or greater than the needed counts
+	int num = (count - 1) / step + 1;
+	int max = num * step;
+	numTicks = num + 1; // There is one more tick than steps
+
+	axis->setLabelFormat("%.0f");
+	axis->setTitleText(StatsView::tr("No. dives"));
+	axis->setRange(0, max);
+	axis->setTickCount(numTicks);
+	return axis;
+}
+
 QtCharts::QValueAxis *StatsView::createValueAxis(double min, double max, int decimals, bool isHorizontal)
 {
 	using QtCharts::QValueAxis;
@@ -602,7 +612,7 @@ QtCharts::QValueAxis *StatsView::createValueAxis(double min, double max, int dec
 	QValueAxis *axis = makeAxis<QValueAxis>();
 	axis->setRange(min, max);
 
-	// Use full decimal increments:w
+	// Use full decimal increments
 	double height = max - min;
 	double inc = height / numTicks;
 	double digits = floor(log10(inc));
@@ -703,6 +713,17 @@ static std::vector<QString> makePercentageLabels(int count, int total, bool isHo
 		return { countString, percentageString };
 }
 
+template<typename T>
+static int getMaxCount(const std::vector<T> &bins)
+{
+	int res = 0;
+	for (auto const &[dummy, val]: bins) {
+		if (val > res)
+			res = val;
+	}
+	return res;
+}
+
 void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 				      ChartSubType subType,
 				      const StatsType *categoryType, const StatsBinner *categoryBinner)
@@ -745,10 +766,12 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 		QBarCategoryAxis *catAxis = createCategoryAxis(*categoryBinner, categoryBins);
 		catAxis->setTitleText(categoryType->nameWithBinnerUnit(*categoryBinner));
 
-		QValueAxis *valAxis = makeAxis<QValueAxis>();
+		bool isHorizontal = subType != ChartSubType::Vertical;
+
+		int maxCount = getMaxCount(categoryBins);
+		QValueAxis *valAxis = createCountAxis(maxCount, isHorizontal);
 
 		QAbstractBarSeries *series;
-		bool isHorizontal = subType != ChartSubType::Vertical;
 		if (isHorizontal) {
 			addAxes(valAxis, catAxis);
 			series = addSeries<QtCharts::QHorizontalBarSeries>(categoryType->name());
@@ -759,19 +782,14 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 		if (!series)
 			return;
 
-		int maxCount = 0;
 		QBarSet *set = new QBarSet(QString());
 		double pos = 0.0;
 		for (auto const &[bin, count]: categoryBins) {
-			if (count > maxCount)
-				maxCount = count;
 			*set << count;
 			std::vector<QString> label = makePercentageLabels(count, total, isHorizontal);
 			barLabels.emplace_back(label, pos, count, isHorizontal, series);
 			pos += 1.0;
 		}
-
-		initCountAxis(valAxis, maxCount);
 
 		series->append(set);
 		hideLegend();
@@ -1110,17 +1128,6 @@ QtCharts::QCategoryAxis *StatsView::createHistogramAxis(const StatsBinner &binne
 	return catAxis;
 }
 
-template<typename T>
-double getMaxVal(const std::vector<T> &bins)
-{
-	double res = 0;
-	for (auto const &[dummy, val]: bins) {
-		if (val > res)
-			res = val;
-	}
-	return res;
-}
-
 void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 					ChartSubType subType,
 					const StatsType *categoryType, const StatsBinner *categoryBinner)
@@ -1144,11 +1151,11 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	QCategoryAxis *catAxis = createHistogramAxis(*categoryBinner, categoryBins, isHorizontal);
 	catAxis->setTitleText(categoryType->nameWithBinnerUnit(*categoryBinner));
 
-	double maxCategoryCount = getMaxVal(categoryBins);
+	int maxCategoryCount = getMaxCount(categoryBins);
 	int total = getTotalCount(categoryBins);
 
-	QValueAxis *valAxis = makeAxis<QValueAxis>();
-	double chartHeight = initCountAxis(valAxis, lrint(maxCategoryCount));
+	QValueAxis *valAxis = createCountAxis(maxCategoryCount, isHorizontal);
+	double chartHeight = valAxis->max();
 
 	QAbstractAxis *xAxis = catAxis;
 	QAbstractAxis *yAxis = valAxis;
