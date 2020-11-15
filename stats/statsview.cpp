@@ -28,7 +28,6 @@ static constexpr size_t array_size(const T (&)[N])
 }
 
 // Constants that control the graph layouts
-static const double barTopSpace = 0.05; // 0.01 = one percent more than needed for longest bar
 static const double histogramBarWidth = 0.8; // 1.0 = full width of category
 
 enum class ChartSubType {
@@ -610,7 +609,6 @@ QtCharts::QValueAxis *StatsView::createValueAxis(double min, double max, int dec
 	int numTicks = isHorizontal ? 8 : 10;
 
 	QValueAxis *axis = makeAxis<QValueAxis>();
-	axis->setRange(min, max);
 
 	// Use full decimal increments
 	double height = max - min;
@@ -629,9 +627,22 @@ QtCharts::QValueAxis *StatsView::createValueAxis(double min, double max, int dec
 		decimals = -digits_int;
 
 	axis->setLabelFormat(makeFormatString(decimals));
+#if 0
+	// For Qt >= 5.12 we can use tick-interval and anchor. However,
+	// I am not sure that this is actually better than setting the
+	// limits such that we get nice numbers.
+	axis->setRange(min, max);
 	axis->setTickInterval(inc);
 	axis->setTickAnchor(0.0);
 	axis->setTickType(QValueAxis::TicksDynamic);
+#else
+	double actMin = floor(min /  inc) * inc;
+	double actMax = ceil(max /  inc) * inc;
+	int num = lrint((actMax - actMin) / inc);
+	axis->setRange(actMin, actMax);
+	axis->setTickCount(num + 1);
+#endif
+
 	return axis;
 }
 
@@ -666,9 +677,8 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 
 	bool isHorizontal = subType == ChartSubType::Horizontal;
 	double maxValue = *std::max_element(values.begin(), values.end());
-	double chartHeight = maxValue * (1.0 + barTopSpace);
 	int decimals = valueType->decimals();
-	QValueAxis *valAxis = createValueAxis(0.0, chartHeight, valueType->decimals(), isHorizontal);
+	QValueAxis *valAxis = createValueAxis(0.0, maxValue, valueType->decimals(), isHorizontal);
 	valAxis->setTitleText(valueType->nameWithUnit());
 
 	QAbstractBarSeries *series;
@@ -869,9 +879,7 @@ void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,
 		quartiles.push_back(valueType->quartiles(dives));
 
 	auto [minY, maxY] = getMinMaxValue(quartiles);
-	double chartTop = maxY * (1.0 + barTopSpace);
-	double chartBottom = minY * (1.0 - barTopSpace);
-	QValueAxis *valueAxis = createValueAxis(chartBottom, chartTop, valueType->decimals(), false);
+	QValueAxis *valueAxis = createValueAxis(minY, maxY, valueType->decimals(), false);
 	valueAxis->setTitleText(valueType->nameWithUnit());
 
 	addAxes(catAxis, valueAxis);
@@ -915,9 +923,7 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 
 	auto [minValue, maxValue] = getMinMaxValue(values);
 
-	double chartTop = maxValue * (1.0 + barTopSpace);
-	double chartBottom = minValue * (1.0 - barTopSpace);
-	QValueAxis *valAxis = createValueAxis(chartBottom, chartTop, valueType->decimals(), false);
+	QValueAxis *valAxis = createValueAxis(minValue, maxValue, valueType->decimals(), false);
 	valAxis->setTitleText(valueType->nameWithUnit());
 
 	addAxes(catAxis, valAxis);
@@ -1217,9 +1223,8 @@ void StatsView::plotHistogramBarChart(const std::vector<dive *> &dives,
 		values.push_back(valueType->applyOperation(dives, valueAxisOperation));
 	double maxValue = *std::max_element(values.begin(), values.end());
 
-	double chartHeight = maxValue * (1.0 + barTopSpace);
 	int decimals = valueType->decimals();
-	QValueAxis *valAxis = createValueAxis(0.0, chartHeight, decimals, isHorizontal);
+	QValueAxis *valAxis = createValueAxis(0.0, maxValue, decimals, isHorizontal);
 	valAxis->setTitleText(valueType->nameWithUnit());
 
 	QAbstractAxis *xAxis = catAxis;
@@ -1288,9 +1293,7 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsType *c
 	QValueAxis *axisX = createValueAxis(minX, maxX, categoryType->decimals(), true);
 	axisX->setTitleText(categoryType->nameWithUnit());
 
-	double chartTop = maxY * (1.0 + barTopSpace);
-	double chartBottom = minY * (1.0 - barTopSpace);
-	QValueAxis *axisY = createValueAxis(chartBottom, chartTop, valueType->decimals(), false);
+	QValueAxis *axisY = createValueAxis(minY, maxY, valueType->decimals(), false);
 	axisY->setTitleText(valueType->nameWithUnit());
 
 	addAxes(axisX, axisY);
