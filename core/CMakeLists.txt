@@ -20,6 +20,10 @@ if(FTDISUPPORT)
 	set(SERIAL_FTDI serial_ftdi.c)
 endif()
 
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
+	set(DOWNLOADER cli-downloader.cpp)
+endif()
+
 if(BTSUPPORT)
 	add_definitions(-DBT_SUPPORT)
 	set(BT_SRC_FILES desktop-widgets/btdeviceselectiondialog.cpp)
@@ -252,6 +256,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	${SERIAL_FTDI}
 	${PLATFORM_SRC}
 	${BT_CORE_SRC_FILES}
+	${DOWNLOADER}
 )
 source_group("Subsurface Core" FILES ${SUBSURFACE_CORE_LIB_SRCS})
 
