@@ -73,4 +73,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	add_library(subsurface_models_mobile STATIC ${SUBSURFACE_GENERIC_MODELS_LIB_SRCS}
 		${SUBSURFACE_MOBILE_MODELS_LIB_SRCS})
 	target_link_libraries(subsurface_models_mobile ${QT_LIBRARIES})
+elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
+	add_library(subsurface_models_downloader STATIC ${SUBSURFACE_GENERIC_MODELS_LIB_SRCS})
+	target_link_libraries(subsurface_models_downloader ${QT_LIBRARIES})
 endif()
