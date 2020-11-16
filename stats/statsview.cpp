@@ -723,6 +723,16 @@ static std::vector<QString> makePercentageLabels(int count, int total, bool isHo
 		return { countString, percentageString };
 }
 
+static QString makePiePercentageLabel(const QString &bin, int count, int total)
+{
+	QLocale loc;
+	double percentage = count * 100.0 / total;
+	return QString("%1 (%2: %3\%)").arg(
+			bin,
+			loc.toString(count),
+			loc.toString(percentage, 'f', 1));
+}
+
 template<typename T>
 static int getMaxCount(const std::vector<T> &bins)
 {
@@ -760,14 +770,39 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 
 	if (subType == ChartSubType::Pie) {
 		QPieSeries *series = addSeries<QtCharts::QPieSeries>(categoryType->name());
-		QLocale loc;
+
+		// The Pie chart becomes very slow for a big number of slices.
+		// Moreover, it is unreadable. Therefore, subsume slices under a
+		// certain percentage as "other". But draw a minimum number of slices
+		// so that we never get a pie only of "other".
+		// This is heuristics, which might have to be optimized.
+		const int smallest_slice_percentage = 2; // Smaller than 2% = others. That makes at most 50 slices.
+		const int min_slices = 10; // Try to draw at least 10 slices.
+		std::sort(categoryBins.begin(), categoryBins.end(),
+			  [](const StatsBinCount &item1, const StatsBinCount &item2)
+			  { return item1.count > item2.count; }); // Note: reverse sort.
+		auto it = std::find_if(categoryBins.begin(), categoryBins.end(),
+				       [total, smallest_slice_percentage](const StatsBinCount &item)
+				       { return item.count * 100 / total < smallest_slice_percentage; });
+		if (it - categoryBins.begin() < min_slices)
+			it = categoryBins.begin() + std::min(min_slices, (int)categoryBins.size());
+
+		// Sum counts of "other" bins.
+		int otherCount = 0;
+		for (auto it2 = it; it2 != categoryBins.end(); ++it2)
+			otherCount += it2->count;
+
+		categoryBins.erase(it, categoryBins.end()); // Delete "other" bins
+
 		for (auto const &[bin, count]: categoryBins) {
-			double percentage = count * 100.0 / total;
-			QString label = QString("%1 (%2: %3\%)").arg(
-						categoryBinner->format(*bin),
-						loc.toString(count),
-						loc.toString(percentage, 'f', 1));
+			QString label = makePiePercentageLabel(categoryBinner->format(*bin), count, total);
 			QPieSlice *slice = new QPieSlice(label, count);
+			slice->setLabelVisible(true);
+			series->append(slice);
+		}
+		if (otherCount) {
+			QString label = makePiePercentageLabel(StatsTranslations::tr("other"), otherCount, total);
+			QPieSlice *slice = new QPieSlice(label, otherCount);
 			slice->setLabelVisible(true);
 			series->append(slice);
 		}
