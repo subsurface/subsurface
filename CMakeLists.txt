@@ -287,7 +287,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	endif()
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 	# let's pick a version that's not ancient
-	find_package(Qt5 5.12 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS})
+	find_package(Qt5 5.11 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS})
 	set(MAKE_TESTS OFF)
 endif()
 foreach(_QT_COMPONENT ${QT_FIND_COMPONENTS})
