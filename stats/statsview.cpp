@@ -29,6 +29,7 @@ static constexpr size_t array_size(const T (&)[N])
 
 // Constants that control the graph layouts
 static const double histogramBarWidth = 0.8; // 1.0 = full width of category
+static const QColor barColor(0x66, 0xb2, 0xff);
 
 enum class ChartSubType {
 	Vertical = 0,
@@ -691,6 +692,7 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 	}
 
 	QBarSet *set = new QBarSet(QString());
+	set->setColor(barColor);
 	double pos = 0.0;
 	for (double value: values) {
 		*set << value;
@@ -716,7 +718,7 @@ static std::vector<QString> makePercentageLabels(int count, int total, bool isHo
 {
 	double percentage = count * 100.0 / total;
 	QString countString = QString("%L1").arg(count);
-	QString percentageString = QString("(%L1%)").arg(percentage, 0, 'f', 1);
+	QString percentageString = QString("%L1%").arg(percentage, 0, 'f', 1);
 	if (isHorizontal)
 		return { QString("%1 %2").arg(countString, percentageString) };
 	else
@@ -828,6 +830,8 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 			return;
 
 		QBarSet *set = new QBarSet(QString());
+		set->setColor(barColor);
+
 		double pos = 0.0;
 		for (auto const &[bin, count]: categoryBins) {
 			*set << count;
@@ -1033,7 +1037,7 @@ void StatsView::addBar(double lowerBound, double upperBound, double height, bool
 	using QtCharts::QAreaSeries;
 	using QtCharts::QLineSeries;
 
-	QBrush brush(Qt::blue);
+	QBrush brush("#66B2FF");
 	QPen pen(Qt::white);
 
 	QAreaSeries *series = addSeries<QAreaSeries>(QString());
