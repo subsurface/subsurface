@@ -967,6 +967,8 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 	quartileSeries->setMarkerShape(QScatterSeries::MarkerShapeRectangle);
 	quartileSeries->setColor(Qt::red);
 	series->setBorderColor(Qt::blue);
+	series->setMarkerSize(10);
+	quartileSeries->setMarkerSize(10);
 
 	double x = 0.0;
 	for (const std::vector<double> &array: values) {
