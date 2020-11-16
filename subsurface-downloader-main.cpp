@@ -33,7 +33,7 @@ int main(int argc, char **argv)
 
 	int i;
 	bool no_filenames = true;
-	std::unique_ptr<QApplication> app(new QApplication(argc, argv));
+	std::unique_ptr<QCoreApplication> app(new QCoreApplication(argc, argv));
 	QStringList files;
 	QStringList importedFiles;
 	QStringList arguments = QCoreApplication::arguments();
