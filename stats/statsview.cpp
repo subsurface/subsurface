@@ -1368,6 +1368,9 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsType *c
 	QScatterSeries *series = addSeries<QScatterSeries>(valueType->name());
 	series->setMarkerSize(10);
 	series->setBorderColor(Qt::blue);
+	QPen dotpen(Qt::blue);
+	dotpen.setWidth(0);
+	series->setPen(dotpen);
 
 	for (auto [x, y]: points)
 		series->append(x, y);
