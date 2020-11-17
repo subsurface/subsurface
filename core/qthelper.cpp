@@ -107,11 +107,11 @@ QString printGPSCoords(const location_t *location)
 		lonmin = (lon % 1000000U) * 60U;
 		latsec = (latmin % 1000000) * 60;
 		lonsec = (lonmin % 1000000) * 60;
-		result.asprintf("%u°%02d\'%06.3f\"%s %u°%02d\'%06.3f\"%s",
+		result = QString::asprintf("%u°%02d\'%06.3f\"%s %u°%02d\'%06.3f\"%s",
 			       latdeg, latmin / 1000000, latsec / 1000000, qPrintable(lath),
 			       londeg, lonmin / 1000000, lonsec / 1000000, qPrintable(lonh));
 	} else {
-		result.asprintf("%f %f", (double) lat / 1000000.0, (double) lon / 1000000.0);
+		result = QString::asprintf("%f %f", (double) lat / 1000000.0, (double) lon / 1000000.0);
 	}
 	return result;
 }
