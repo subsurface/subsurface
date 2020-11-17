@@ -129,7 +129,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/settings/qPrefUpdateManager.cpp \
 	../../core/subsurface-qt/cylinderobjecthelper.cpp \
 	../../core/subsurface-qt/diveobjecthelper.cpp \
-	../../core/subsurface-qt/DiveListNotifier.cpp \
+	../../core/subsurface-qt/divelistnotifier.cpp \
 	../../backend-shared/exportfuncs.cpp \
 	../../backend-shared/plannershared.cpp \
 	../../mobile-widgets/qmlinterface.cpp \
