@@ -652,8 +652,6 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 			       const StatsType *categoryType, const StatsBinner *categoryBinner,
 			       const StatsType *valueType, StatsOperation valueAxisOperation)
 {
-	using QtCharts::QBarSet;
-	using QtCharts::QAbstractBarSeries;
 	using QtCharts::QBarCategoryAxis;
 	using QtCharts::QValueAxis;
 
@@ -682,25 +680,17 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 	QValueAxis *valAxis = createValueAxis(0.0, maxValue, valueType->decimals(), isHorizontal);
 	valAxis->setTitleText(valueType->nameWithUnit());
 
-	QAbstractBarSeries *series;
-	if (isHorizontal) {
+	if (isHorizontal)
 		addAxes(valAxis, catAxis);
-		series = addSeries<QtCharts::QHorizontalBarSeries>(valueType->name());
-	} else {
+	else
 		addAxes(catAxis, valAxis);
-		series = addSeries<QtCharts::QBarSeries>(valueType->name());
-	}
 
-	QBarSet *set = new QBarSet(QString());
-	set->setColor(barColor);
 	double pos = 0.0;
 	for (double value: values) {
-		*set << value;
 		std::vector<QString> label = { QString("%L1").arg(value, 0, 'f', decimals) };
-		barLabels.emplace_back(label, pos, value, isHorizontal, series);
+		addBar(pos - 0.5, pos + 0.5, value, isHorizontal, label);
 		pos += 1.0;
 	}
-	series->append(set);
 
 	hideLegend();
 }
@@ -750,9 +740,7 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 				      ChartSubType subType,
 				      const StatsType *categoryType, const StatsBinner *categoryBinner)
 {
-	using QtCharts::QAbstractBarSeries;
 	using QtCharts::QBarCategoryAxis;
-	using QtCharts::QBarSet;
 	using QtCharts::QPieSeries;
 	using QtCharts::QPieSlice;
 	using QtCharts::QValueAxis;
@@ -818,29 +806,18 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 		int maxCount = getMaxCount(categoryBins);
 		QValueAxis *valAxis = createCountAxis(maxCount, isHorizontal);
 
-		QAbstractBarSeries *series;
-		if (isHorizontal) {
+		if (isHorizontal)
 			addAxes(valAxis, catAxis);
-			series = addSeries<QtCharts::QHorizontalBarSeries>(categoryType->name());
-		} else {
+		else
 			addAxes(catAxis, valAxis);
-			series = addSeries<QtCharts::QBarSeries>(categoryType->name());
-		}
-		if (!series)
-			return;
-
-		QBarSet *set = new QBarSet(QString());
-		set->setColor(barColor);
 
 		double pos = 0.0;
 		for (auto const &[bin, count]: categoryBins) {
-			*set << count;
 			std::vector<QString> label = makePercentageLabels(count, total, isHorizontal);
-			barLabels.emplace_back(label, pos, count, isHorizontal, series);
+			addBar(pos - 0.5, pos + 0.5, (double)count, isHorizontal, label);
 			pos += 1.0;
 		}
 
-		series->append(set);
 		hideLegend();
 	}
 }
