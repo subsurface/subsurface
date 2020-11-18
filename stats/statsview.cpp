@@ -647,6 +647,68 @@ QtCharts::QValueAxis *StatsView::createValueAxis(double min, double max, int dec
 	return axis;
 }
 
+// These templates are used to extract min and max y-values of various lists.
+// A bit too convoluted for my tastes - can we make that simpler?
+static std::pair<double, double> getMinMaxValueBase(const std::vector<double> &values)
+{
+	// Attention: this supposes that the list is sorted!
+	return values.empty() ? std::make_pair(0.0, 0.0) : std::make_pair(values.front(), values.back());
+}
+static std::pair<double, double> getMinMaxValueBase(double v)
+{
+	return { v, v };
+}
+static std::pair<double, double> getMinMaxValueBase(const StatsQuartiles &q)
+{
+	return { q.min, q.max };
+}
+template <typename T1, typename T2>
+static std::pair<double, double> getMinMaxValueBase(const std::pair<T1, T2> &p)
+{
+	return getMinMaxValueBase(p.second);
+}
+template <typename T>
+static std::pair<double, double> getMinMaxValueBase(const StatsBinValue<T> &v)
+{
+	return getMinMaxValueBase(v.value);
+}
+
+template <typename T>
+static void updateMinMax(double &min, double &max, const T &v)
+{
+	const auto [mi, ma] = getMinMaxValueBase(v);
+	if (mi < min)
+		min = mi;
+	if (ma > max)
+		max = ma;
+}
+
+// Sadly, this case has to be specialized, because empty-vector elements need special treatment.
+static std::pair<double, double> getMinMaxValue(const std::vector<std::vector<double>> &values)
+{
+	double min = 1e14, max = 0.0;
+	bool found = false;
+	for (const std::vector<double> &v: values) {
+		if (v.empty())
+			continue;
+		found = true;
+		updateMinMax(min, max, v);
+	}
+	return found ? std::make_pair(min, max) : std::make_pair(0.0, 0.0);
+}
+
+template <typename T>
+static std::pair<double, double> getMinMaxValue(const std::vector<T> &values)
+{
+	if (values.empty())
+		return { 0.0, 0.0 };
+	double min = 1e14, max = 0.0;
+	for (const T &v: values) {
+		updateMinMax(min, max, v);
+	}
+	return { min, max };
+}
+
 void StatsView::plotValueChart(const std::vector<dive *> &dives,
 			       ChartSubType subType,
 			       const StatsType *categoryType, const StatsBinner *categoryBinner,
@@ -661,21 +723,17 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 	setTitle(QStringLiteral("%1 (%2)").arg(valueType->name(),
 					       StatsType::operationName(valueAxisOperation)));
 
-	std::vector<StatsBinDives> categoryBins = categoryBinner->bin_dives(dives, false);
+	std::vector<StatsBinVal> categoryBins = valueType->bin_value(*categoryBinner, dives, valueAxisOperation, false);
 
 	// If there is nothing to display, quit
 	if (categoryBins.empty())
 		return;
 
-	std::vector<double> values;
-	values.reserve(categoryBins.size());
-	for (auto const &[bin, dives]: categoryBins)
-		values.push_back(valueType->applyOperation(dives, valueAxisOperation));
 	QBarCategoryAxis *catAxis = createCategoryAxis(*categoryBinner, categoryBins);
 	catAxis->setTitleText(categoryType->nameWithBinnerUnit(*categoryBinner));
 
 	bool isHorizontal = subType == ChartSubType::Horizontal;
-	double maxValue = *std::max_element(values.begin(), values.end());
+	const auto [minValue, maxValue] = getMinMaxValue(categoryBins);
 	int decimals = valueType->decimals();
 	QValueAxis *valAxis = createValueAxis(0.0, maxValue, valueType->decimals(), isHorizontal);
 	valAxis->setTitleText(valueType->nameWithUnit());
@@ -686,9 +744,11 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 		addAxes(catAxis, valAxis);
 
 	double pos = 0.0;
-	for (double value: values) {
-		std::vector<QString> label = { QString("%L1").arg(value, 0, 'f', decimals) };
-		addBar(pos - 0.5, pos + 0.5, value, isHorizontal, label);
+	for (auto &[bin, value]: categoryBins) {
+		if (!std::isnan(value)) {
+			std::vector<QString> label = { QString("%L1").arg(value, 0, 'f', decimals) };
+			addBar(pos - 0.5, pos + 0.5, value, isHorizontal, label);
+		}
 		pos += 1.0;
 	}
 
@@ -822,50 +882,6 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 	}
 }
 
-static std::pair<double, double> getMinMaxValue(const std::vector<std::vector<double>> &values)
-{
-	if (values.empty())
-		return { 0.0, 0.0 };
-	double min = 1e14, max = 0.0;
-	for (const std::vector<double> &v: values) {
-		if (v.empty())
-			continue;
-		if (v.front() < min)
-			min = v.front();
-		if (v.back() > max)
-			max = v.back();
-	}
-	return { min, max };
-}
-
-static std::pair<double, double> getMinMaxValue(const std::vector<std::pair<double, double>> &values)
-{
-	if (values.empty())
-		return { 0.0, 0.0 };
-	double min = 1e14, max = 0.0;
-	for (auto [dummy, v]: values) {
-		if (v < min)
-			min = v;
-		if (v > max)
-			max = v;
-	}
-	return { min, max };
-}
-
-static std::pair<double, double> getMinMaxValue(const std::vector<StatsQuartiles> &values)
-{
-	if (values.empty())
-		return { 0.0, 0.0 };
-	double min = 1e14, max = 0.0;
-	for (const StatsQuartiles &v: values) {
-		if (v.min < min)
-			min = v.min;
-		if (v.max > max)
-			max = v.max;
-	}
-	return { min, max };
-}
-
 void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,
 				     const StatsType *categoryType, const StatsBinner *categoryBinner,
 				     const StatsType *valueType)
@@ -880,7 +896,7 @@ void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,
 
 	setTitle(valueType->name());
 
-	std::vector<StatsBinDives> categoryBins = categoryBinner->bin_dives(dives, false);
+	std::vector<StatsBinQuartiles> categoryBins = valueType->bin_quartiles(*categoryBinner, dives, false);
 
 	// If there is nothing to display, quit
 	if (categoryBins.empty())
@@ -889,12 +905,7 @@ void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,
 	QBarCategoryAxis *catAxis = createCategoryAxis(*categoryBinner, categoryBins);
 	catAxis->setTitleText(categoryType->nameWithBinnerUnit(*categoryBinner));
 
-	std::vector<StatsQuartiles> quartiles;
-	quartiles.reserve(categoryBins.size());
-	for (const auto &[bin, dives]: categoryBins)
-		quartiles.push_back(valueType->quartiles(dives));
-
-	auto [minY, maxY] = getMinMaxValue(quartiles);
+	auto [minY, maxY] = getMinMaxValue(categoryBins);
 	QValueAxis *valueAxis = createValueAxis(minY, maxY, valueType->decimals(), false);
 	valueAxis->setTitleText(valueType->nameWithUnit());
 
@@ -902,8 +913,9 @@ void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,
 
 	QBoxPlotSeries *series = addSeries<QBoxPlotSeries>(valueType->name());
 
-	for (const StatsQuartiles &q: quartiles) {
-		QBoxSet *set = new QBoxSet(q.min, q.q1, q.q2, q.q3, q.max);
+	for (const auto &[bin, q]: categoryBins) {
+		QBoxSet *set = q.isValid() ? new QBoxSet(q.min, q.q1, q.q2, q.q3, q.max)
+					   : new QBoxSet;
 		series->append(set);
 	}
 
@@ -956,9 +968,11 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 		for (double v: array)
 			series->append(x, v);
 		StatsQuartiles quartiles = StatsType::quartiles(array);
-		quartileSeries->append(x, quartiles.q1);
-		quartileSeries->append(x, quartiles.q2);
-		quartileSeries->append(x, quartiles.q3);
+		if (quartiles.isValid()) {
+			quartileSeries->append(x, quartiles.q1);
+			quartileSeries->append(x, quartiles.q2);
+			quartileSeries->append(x, quartiles.q3);
+		}
 		x += 1.0;
 	}
 
@@ -1200,12 +1214,16 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	if (categoryType->type() == StatsType::Type::Numeric) {
 		double mean = categoryType->mean(dives);
 		double median = categoryType->quartiles(dives).q2;
-		QPen meanPen(Qt::green);
-		meanPen.setWidth(2);
-		QPen medianPen(Qt::red);
-		medianPen.setWidth(2);
-		addLineMarker(mean, 0.0, chartHeight, meanPen, isHorizontal);
-		addLineMarker(median, 0.0, chartHeight, medianPen, isHorizontal);
+		if (!std::isnan(mean)) {
+			QPen meanPen(Qt::green);
+			meanPen.setWidth(2);
+			addLineMarker(mean, 0.0, chartHeight, meanPen, isHorizontal);
+		}
+		if (!std::isnan(median)) {
+			QPen medianPen(Qt::red);
+			medianPen.setWidth(2);
+			addLineMarker(median, 0.0, chartHeight, medianPen, isHorizontal);
+		}
 	}
 
 	hideLegend();
@@ -1226,7 +1244,7 @@ void StatsView::plotHistogramBarChart(const std::vector<dive *> &dives,
 	setTitle(QStringLiteral("%1 (%2)").arg(valueType->name(),
 					       StatsType::operationName(valueAxisOperation)));
 
-	std::vector<StatsBinDives> categoryBins = categoryBinner->bin_dives(dives, true);
+	std::vector<StatsBinVal> categoryBins = valueType->bin_value(*categoryBinner, dives, valueAxisOperation, true);
 
 	// If there is nothing to display, quit
 	if (categoryBins.empty())
@@ -1236,11 +1254,7 @@ void StatsView::plotHistogramBarChart(const std::vector<dive *> &dives,
 	QCategoryAxis *catAxis = createHistogramAxis(*categoryBinner, categoryBins, isHorizontal);
 	catAxis->setTitleText(categoryType->nameWithBinnerUnit(*categoryBinner));
 
-	std::vector<double> values;
-	values.reserve(categoryBins.size());
-	for (const auto &[dummy, dives]: categoryBins)
-		values.push_back(valueType->applyOperation(dives, valueAxisOperation));
-	double maxValue = *std::max_element(values.begin(), values.end());
+	auto [minValue, maxValue] = getMinMaxValue(categoryBins);
 
 	int decimals = valueType->decimals();
 	QValueAxis *valAxis = createValueAxis(0.0, maxValue, decimals, isHorizontal);
@@ -1253,12 +1267,14 @@ void StatsView::plotHistogramBarChart(const std::vector<dive *> &dives,
 	addAxes(xAxis, yAxis);
 
 	int i = 0;
-	for (auto const &[bin, count]: categoryBins) {
-		double height = values[i++];
-		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
-		double upperBound = categoryBinner->upperBoundToFloat(*bin);
-		QString label = QString("%L1").arg(height, 0, 'f', decimals);
-		addBar(lowerBound, upperBound, height, isHorizontal, {label});
+	for (auto const &[bin, height]: categoryBins) {
+		if (!std::isnan(height)) {
+			double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
+			double upperBound = categoryBinner->upperBoundToFloat(*bin);
+			QString label = QString("%L1").arg(height, 0, 'f', decimals);
+			addBar(lowerBound, upperBound, height, isHorizontal, {label});
+		}
+		++i;
 	}
 
 	hideLegend();
