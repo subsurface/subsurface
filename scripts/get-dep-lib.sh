@@ -7,7 +7,7 @@ CURRENT_LIBZIP="rel-1-5-1"
 CURRENT_LIBGIT2="v1.0.1"
 CURRENT_LIBCURL="curl-7_54_1"
 CURRENT_LIBUSB="v1.0.21"
-CURRENT_OPENSSL="OpenSSL_1_1_0h"
+CURRENT_OPENSSL="OpenSSL_1_1_1h"
 CURRENT_LIBSSH2="libssh2-1.8.0"
 CURRENT_XSLT="v1.1.34"
 CURRENT_SQLITE="3190200"
@@ -103,7 +103,7 @@ fi
 
 # FIX FOR ANDROID,
 if [ "$PLATFORM" == "singleAndroid" ] ; then
-	CURRENT_OPENSSL="OpenSSL_1_1_1d"
+	CURRENT_OPENSSL="OpenSSL_1_1_1h"
 # If changing the openSSL version here, make sure to change it in packaging/android/variables.sh also.
 fi
 # no curl and old libs (never version breaks)
