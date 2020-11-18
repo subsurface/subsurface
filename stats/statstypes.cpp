@@ -219,7 +219,7 @@ double StatsType::mean(const std::vector<dive *> &dives) const
 		sum += v;
 		count += 1.0;
 	}
-	return count > 0.0 ? sum / count : 0.0;
+	return count > 0.0 ? sum / count : invalid_value<double>();
 }
 
 double StatsType::meanTimeWeighted(const std::vector<dive *> &dives) const
@@ -233,7 +233,7 @@ double StatsType::meanTimeWeighted(const std::vector<dive *> &dives) const
 		sum += v * d->duration.seconds;
 		weight_count += d->duration.seconds;
 	}
-	return weight_count > 0.0 ? sum / weight_count : 0.0;
+	return weight_count > 0.0 ? sum / weight_count : invalid_value<double>();
 }
 
 std::vector<double> StatsType::values(const std::vector<dive *> &dives) const
@@ -315,7 +315,7 @@ double StatsType::applyOperation(const std::vector<dive *> &dives, StatsOperatio
 		return meanTimeWeighted(dives);
 	case StatsOperation::Sum:
 		return sum(dives);
-	default: return 0.0;
+	default: return invalid_value<double>();
 	}
 }
 
@@ -334,16 +334,18 @@ std::vector<std::pair<double,double>> StatsType::scatter(const StatsType &t2, co
 	return res;
 }
 
-std::vector<StatsBinQuartiles> StatsType::bin_quartiles(const StatsBinner &binner, const std::vector<dive *> &dives, bool fill_empty) const
+template <typename T, typename DivesToValueFunc>
+std::vector<StatsBinValue<T>> bin_convert(const StatsType &type, const StatsBinner &binner, const std::vector<dive *> &dives,
+					  bool fill_empty, DivesToValueFunc func)
 {
 	std::vector<StatsBinDives> bin_dives = binner.bin_dives(dives, fill_empty);
-	std::vector<StatsBinQuartiles> res;
+	std::vector<StatsBinValue<T>> res;
 	res.reserve(bin_dives.size());
 	for (auto &[bin, dives]: bin_dives) {
-		StatsQuartiles q = quartiles(dives);
-		if (is_invalid_value(q) && (res.empty() || !fill_empty))
+		T v = func(dives);
+		if (is_invalid_value(v) && (res.empty() || !fill_empty))
 			continue;
-		res.push_back({ std::move(bin), q });
+		res.push_back({ std::move(bin), v });
 	}
 	if (res.empty())
 		return res;
@@ -355,6 +357,19 @@ std::vector<StatsBinQuartiles> StatsType::bin_quartiles(const StatsBinner &binne
 		--it;
 	res.erase(it + 1, res.end());
 	return res;
+}
+
+std::vector<StatsBinQuartiles> StatsType::bin_quartiles(const StatsBinner &binner, const std::vector<dive *> &dives, bool fill_empty) const
+{
+	return bin_convert<StatsQuartiles>(*this, binner, dives, fill_empty,
+					   [this](const std::vector<dive *> &d) { return quartiles(d); });
+}
+
+std::vector<StatsBinVal> StatsType::bin_value(const StatsBinner &binner, const std::vector<dive *> &dives,
+					      StatsOperation op, bool fill_empty) const
+{
+	return bin_convert<double>(*this, binner, dives, fill_empty,
+				   [this, op](const std::vector<dive *> &d) { return applyOperation(d, op); });
 }
 
 // Silly template, which spares us defining type() member functions.
