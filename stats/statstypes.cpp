@@ -382,34 +382,43 @@ auto pair_lower_bound(std::vector<std::pair<T1, T2>> &v, const T1 &value)
 				});
 }
 
-// Add a dive to a vector of (value, dive_list) pairs. If the value doesn't yet
-// exist, create a new entry in the vector.
-template<typename T>
-using ValueDiveListPair = std::pair<T, std::vector<dive *>>;
-template<typename T>
-void add_dive_to_value_bin(std::vector<ValueDiveListPair<T>> &v, const T &value, dive *d)
+// Register a dive in a (bin_value, value) pair. The second value can be
+// anything, for example a count or a list of dives. If the bin does not
+// exist, it is created. The add_dive_func() function increase the second
+// value accordingly.
+template<typename BinValueType, typename ValueType, typename AddDiveFunc>
+void register_bin_value(std::vector<std::pair<BinValueType, ValueType>> &v,
+			const BinValueType &bin,
+			AddDiveFunc add_dive_func)
 {
 	// Does that value already exist?
-	auto it = pair_lower_bound(v, value);
-	if (it != v.end() && it->first == value)
-		it->second.push_back(d);	// Bin exists -> add dive!
-	else
-		v.insert(it, { value, { d }});	// Bin does not exist -> insert at proper location.
+	auto it = pair_lower_bound(v, bin);
+	if (it == v.end() || it->first != bin)
+		it = v.insert(it, { bin, ValueType() });	// Bin does not exist -> insert at proper location.
+	add_dive_func(it->second);				// Register dive
 }
 
-// Increase count in a vector of (value, count) pairs. If the value doesn't yet
-// exist, create a new entry in the vector.
-template<typename T>
-using ValueCountPair = std::pair<T, int>;
-template<typename T>
-void increment_count_bin(std::vector<ValueCountPair<T>> &v, const T &value)
+// Turn a (bin-value, value)-pair vector into a (bin, value)-pair vector.
+// The values are moved out of the first vectors.
+// If fill_empty is true, missing bins will be completed with a default constructed
+// value.
+template<typename Bin, typename Binner, typename BinValueType, typename ValueType>
+std::vector<StatsBinValue<ValueType>>
+value_vector_to_bin_vector(const Binner &binner, std::vector<std::pair<BinValueType, ValueType>> &value_bins,
+						      bool fill_empty)
 {
-	// Does that value already exist?
-	auto it = pair_lower_bound(v, value);
-	if (it != v.end() && it->first == value)
-		++it->second;			// Bin exists -> increment count!
-	else
-		v.insert(it, { value, 1 });	// Bin does not exist -> insert at proper location.
+	std::vector<StatsBinValue<ValueType>> res;
+	res.reserve(value_bins.size());
+	for (const auto &[bin_value, value]: value_bins) {
+		StatsBinPtr b = std::make_unique<Bin>(bin_value);
+		if (fill_empty && !res.empty()) {
+			// Add empty bins, if any
+			for (StatsBinPtr &bin: binner.bins_between(*res.back().bin, *b))
+				res.push_back({ std::move(bin), ValueType() });
+		}
+		res.push_back({ std::move(b), std::move(value)});
+	}
+	return res;
 }
 
 template<typename Binner, typename Bin>
@@ -417,28 +426,18 @@ std::vector<StatsBinDives> SimpleBinner<Binner, Bin>::bin_dives(const std::vecto
 {
 	// First, collect a value / dives vector and then produce the final vector
 	// out of that. I wonder if that is permature optimization?
-	using Pair = ValueDiveListPair<Type>;
+	using Pair = std::pair<Type, std::vector<dive *>>;
 	std::vector<Pair> value_bins;
 	for (dive *d: dives) {
 		Type value = derived().to_bin_value(d);
 		if (is_invalid_value(value))
 			continue;
-		add_dive_to_value_bin(value_bins, value, d);
+		register_bin_value(value_bins, value,
+				   [d](std::vector<dive *> &v) { v.push_back(d); });
 	}
 
 	// Now, turn that into our result array with allocated bin objects.
-	std::vector<StatsBinDives> res;
-	res.reserve(value_bins.size());
-	for (const Pair &pair: value_bins) {
-		StatsBinPtr b = std::make_unique<Bin>(pair.first);
-		if (fill_empty && !res.empty()) {
-			// Add empty bins, if any
-			for (StatsBinPtr &bin: bins_between(*res.back().bin, *b))
-				res.push_back({ std::move(bin), {}});
-		}
-		res.push_back({ std::move(b), std::move(pair.second)});
-	}
-	return res;
+	return value_vector_to_bin_vector<Bin>(*this, value_bins, fill_empty);
 }
 
 template<typename Binner, typename Bin>
@@ -452,22 +451,11 @@ std::vector<StatsBinCount> SimpleBinner<Binner, Bin>::count_dives(const std::vec
 		Type value = derived().to_bin_value(d);
 		if (is_invalid_value(value))
 			continue;
-		increment_count_bin(value_bins, value);
+		register_bin_value(value_bins, value, [](int &i){ ++i; });
 	}
 
 	// Now, turn that into our result array with allocated bin objects.
-	std::vector<StatsBinCount> res;
-	res.reserve(value_bins.size());
-	for (const Pair &pair: value_bins) {
-		StatsBinPtr b = std::make_unique<Bin>(pair.first);
-		if (fill_empty && !res.empty()) {
-			// Add empty bins, if any
-			for (StatsBinPtr &bin: bins_between(*res.back().bin, *b))
-				res.push_back({ std::move(bin), 0});
-		}
-		res.push_back({ std::move(b), pair.second});
-	}
-	return res;
+	return value_vector_to_bin_vector<Bin>(*this, value_bins, fill_empty);
 }
 
 // A simple binner (see above) that works on continuous (or numeric) types
@@ -577,22 +565,19 @@ std::vector<StatsBinDives> StringBinner<Binner, Bin>::bin_dives(const std::vecto
 {
 	// First, collect a value / dives vector and then produce the final vector
 	// out of that. I wonder if that is permature optimization?
-	using Pair = ValueDiveListPair<QString>;
+	using Pair = std::pair<QString, std::vector<dive *>>;
 	std::vector<Pair> value_bins;
 	for (dive *d: dives) {
 		for (const QString &s: derived().to_string_list(d)) {
 			if (is_invalid_value(s))
 				continue;
-			add_dive_to_value_bin(value_bins, s, d);
+			register_bin_value(value_bins, s,
+					   [d](std::vector<dive *> &v) { v.push_back(d); });
 		}
 	}
 
 	// Now, turn that into our result array with allocated bin objects.
-	std::vector<StatsBinDives> res;
-	res.reserve(value_bins.size());
-	for (const Pair &pair: value_bins)
-		res.push_back({ std::make_unique<Bin>(pair.first), std::move(pair.second)});
-	return res;
+	return value_vector_to_bin_vector<Bin>(*this, value_bins, false);
 }
 
 template<typename Binner, typename Bin>
@@ -606,16 +591,12 @@ std::vector<StatsBinCount> StringBinner<Binner, Bin>::count_dives(const std::vec
 		for (const QString &s: derived().to_string_list(d)) {
 			if (is_invalid_value(s))
 				continue;
-			increment_count_bin(value_bins, s);
+			register_bin_value(value_bins, s, [](int &i){ ++i; });
 		}
 	}
 
 	// Now, turn that into our result array with allocated bin objects.
-	std::vector<StatsBinCount> res;
-	res.reserve(value_bins.size());
-	for (const Pair &pair: value_bins)
-		res.push_back({ std::make_unique<Bin>(pair.first), pair.second});
-	return res;
+	return value_vector_to_bin_vector<Bin>(*this, value_bins, false);
 }
 
 // ============ The date of the dive by year, quarter or month ============
