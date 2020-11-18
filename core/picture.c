@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "picture.h"
 #include "dive.h"
+#if !defined(SUBSURFACE_MOBILE)
 #include "metadata.h"
+#endif
 #include "subsurface-string.h"
 #include "table.h"
 #include <stdlib.h>
@@ -116,6 +118,7 @@ static bool dive_check_picture_time(const struct dive *d, timestamp_t timestamp)
 	return time_from_dive(d, timestamp) < D30MIN;
 }
 
+#if !defined(SUBSURFACE_MOBILE)
 /* Creates a picture and indicates the dive to which this picture should be added.
  * The caller is responsible for actually adding the picture to the dive.
  * If no appropriate dive was found, no picture is created and NULL is returned.
@@ -153,3 +156,4 @@ bool picture_check_valid_time(timestamp_t timestamp, int shift_time)
 			return true;
 	return false;
 }
+#endif
