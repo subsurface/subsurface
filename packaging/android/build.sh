@@ -1,5 +1,11 @@
 #!/bin/bash
 #
+# THIS IS OBSOLETE AN ONLY WORKS UP TO Qt 5.13
+# for now keeping it around for reference
+
+
+
+#
 # Filesystem layout considerations...
 # for this explanation I assume that your Subsurface sources are in
 # ~/src/subsurface

@@ -1,0 +1,27 @@
+<RCC>
+	<qresource prefix="/">
+		<file alias="subsurface_bg_BG.qm">translation-assets/subsurface_bg_BG.qm</file>
+		<file alias="subsurface_cd.qm">translation-assets/subsurface_cs.qm</file>
+		<file alias="subsurface_da_DK.qm">translation-assets/subsurface_da_DK.qm</file>
+		<file alias="subsurface_de_CH">translation-assets/subsurface_de_CH.qm</file>
+		<file alias="subsurface_de_DE">translation-assets/subsurface_de_DE.qm</file>
+		<file alias="subsurface_en_GB">translation-assets/subsurface_en_GB.qm</file>
+		<file alias="subsurface_en_US">translation-assets/subsurface_en_US.qm</file>
+		<file alias="subsurface_es_ES">translation-assets/subsurface_es_ES.qm</file>
+		<file alias="subsurface_et_EE">translation-assets/subsurface_et_EE.qm</file>
+		<file alias="subsurface_fi_FI">translation-assets/subsurface_fi_FI.qm</file>
+		<file alias="subsurface_fr_FR">translation-assets/subsurface_fr_FR.qm</file>
+		<file alias="subsurface_he">translation-assets/subsurface_he.qm</file>
+		<file alias="subsurface_it_IT">translation-assets/subsurface_it_IT.qm</file>
+		<file alias="subsurface_nb_NO">translation-assets/subsurface_nb_NO.qm</file>
+		<file alias="subsurface_nl_NL">translation-assets/subsurface_nl_NL.qm</file>
+		<file alias="subsurface_pl_PL">translation-assets/subsurface_pl_PL.qm</file>
+		<file alias="subsurface_pt_BR">translation-assets/subsurface_pt_BR.qm</file>
+		<file alias="subsurface_pt_PT">translation-assets/subsurface_pt_PT.qm</file>
+		<file alias="subsurface_ro_RO">translation-assets/subsurface_ro_RO.qm</file>
+		<file alias="subsurface_ru_RU">translation-assets/subsurface_ru_RU.qm</file>
+		<file alias="subsurface_sk_SK">translation-assets/subsurface_sk_SK.qm</file>
+		<file alias="subsurface_sv_SE">translation-assets/subsurface_sv_SE.qm</file>
+		<file alias="subsurface_zh_TW">translation-assets/subsurface_zh_TW.qm</file>
+	</qresource>
+</RCC>
