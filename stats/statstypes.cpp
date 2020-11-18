@@ -40,6 +40,11 @@ template<> QString invalid_value<QString>()
 {
 	return QString();
 }
+template<> StatsQuartiles invalid_value<StatsQuartiles>()
+{
+	double NaN = std::numeric_limits<double>::quiet_NaN();
+	return { NaN, NaN, NaN, NaN, NaN };
+}
 
 static bool is_invalid_value(int i)
 {
@@ -65,6 +70,16 @@ static bool is_invalid_value(const year_quarter &)
 static bool is_invalid_value(const dive_site *d)
 {
 	return !d;
+}
+
+static bool is_invalid_value(const StatsQuartiles &q)
+{
+	return std::isnan(q.min);
+}
+
+bool StatsQuartiles::isValid() const
+{
+	return !is_invalid_value(*this);
 }
 
 // First, let's define the virtual destructors of our base classes
@@ -263,7 +278,7 @@ StatsQuartiles StatsType::quartiles(const std::vector<double> &vec)
 {
 	size_t s = vec.size();
 	if (s == 0)
-		return { 0.0, 0.0, 0.0, 0.0, 0.0 };
+		return invalid_value<StatsQuartiles>();
 	switch (s % 4) {
 	default:
 		// gcc doesn't recognize that we catch all possible values. disappointing.
@@ -316,6 +331,29 @@ std::vector<std::pair<double,double>> StatsType::scatter(const StatsType &t2, co
 		res.emplace_back(v1, v2);
 	}
 	std::sort(res.begin(), res.end());
+	return res;
+}
+
+std::vector<StatsBinQuartiles> StatsType::bin_quartiles(const StatsBinner &binner, const std::vector<dive *> &dives, bool fill_empty) const
+{
+	std::vector<StatsBinDives> bin_dives = binner.bin_dives(dives, fill_empty);
+	std::vector<StatsBinQuartiles> res;
+	res.reserve(bin_dives.size());
+	for (auto &[bin, dives]: bin_dives) {
+		StatsQuartiles q = quartiles(dives);
+		if (is_invalid_value(q) && (res.empty() || !fill_empty))
+			continue;
+		res.push_back({ std::move(bin), q });
+	}
+	if (res.empty())
+		return res;
+
+	// Check if we added invalid items at the end.
+	// Note: we added at least one valid item.
+	auto it = res.end() - 1;
+	while (it != res.begin() && is_invalid_value(it->value))
+		--it;
+	res.erase(it + 1, res.end());
 	return res;
 }
 

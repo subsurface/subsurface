@@ -33,6 +33,7 @@ struct StatsQuartiles {
 	double min;
 	double q1, q2, q3;
 	double max;
+	bool isValid() const;
 };
 
 struct StatsBin {
@@ -52,6 +53,7 @@ struct StatsBinValue {
 };
 using StatsBinDives = StatsBinValue<std::vector<dive *>>;
 using StatsBinCount = StatsBinValue<int>;
+using StatsBinQuartiles = StatsBinValue<StatsQuartiles>;
 
 struct StatsBinner {
 	virtual ~StatsBinner();
@@ -88,6 +90,7 @@ struct StatsType {
 	virtual QString unitSymbol() const; // For numeric types - by default returns empty string
 	virtual int decimals() const; // For numeric types: numbers of decimals to display on axes. Defaults to 0.
 	virtual std::vector<const StatsBinner *> binners() const = 0; // Note: may depend on current locale!
+	std::vector<StatsBinQuartiles> bin_quartiles(const StatsBinner &binner, const std::vector<dive *> &dives, bool fill_empty) const;
 	const StatsBinner *getBinner(int idx) const; // Handles out of bounds gracefully (returns first binner)
 	QString nameWithUnit() const;
 	QString nameWithBinnerUnit(const StatsBinner &) const;
