@@ -1,16 +1,14 @@
 #!/bin/bash
 # When changing Qt version remember to update the 
 # qt-installer-noninteractive file as well.
-QT_VERSION=5.13
-LATEST_QT=5.13.2
-NDK_VERSION=r18b
-SDK_VERSION=4333796
-ANDROID_BUILDTOOLS_REVISION=28.0.3
+QT_VERSION=5.15
+LATEST_QT=5.15.1
+NDK_VERSION=21.3.6528147
+ANDROID_BUILDTOOLS_REVISION=29.0.3
 ANDROID_PLATFORM_LEVEL=21
 ANDROID_PLATFORM=android-21
-ANDROID_PLATFORMS=android-27
-ANDROID_NDK=android-ndk-${NDK_VERSION}
-ANDROID_SDK=android-sdk-linux
+ANDROID_PLATFORMS=android-29
+ANDROID_NDK=ndk/${NDK_VERSION}
 # OpenSSL also has an entry in get-dep-lib.sh line 103
 # that needs to be updated as well.
-OPENSSL_VERSION=1.1.1d
+OPENSSL_VERSION=1.1.1h

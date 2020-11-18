@@ -1,5 +1,10 @@
 #!/bin/bash -eu
 
+# THIS IS OBSOLETE AN ONLY WORKS UP TO Qt 5.13
+# for now keeping it around for reference
+
+
+
 # run this in the top level folder you want to create Android binaries in
 #
 # it seems that with Qt5.7 (and later) and current cmake there is an odd bug where
