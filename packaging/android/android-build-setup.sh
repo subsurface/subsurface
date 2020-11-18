@@ -13,7 +13,6 @@ if [ "$(uname)" != Linux ] ; then
 fi
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null && pwd )"
-export SUBSURFACE_SOURCE="$SCRIPTDIR"/../..
 
 # these are the current versions for Qt, Android SDK & NDK:
 source "$SCRIPTDIR"/variables.sh
@@ -45,13 +44,14 @@ fi
 # first we need to get the Android SDK and NDK
 export JAVA_HOME=/usr
 export ANDROID_HOME=$(pwd)
-export PATH=$ANDROID_HOME/cmdline-tools/bin:/usr/local/bin:/bin
+export PATH=$ANDROID_HOME/cmdline-tools/bin:/usr/local/bin:/bin:/usr/bin
 rm -rf cmdline-tools/latest
-sdkmanager --sdk_root="$ANDROID_HOME" "ndk;$NDK_VERSION" "cmdline-tools;latest" "platform-tools" "platforms;$ANDROID_PLATFORMS" "build-tools;$ANDROID_BUILDTOOLS_REVISION"
-echo "yyyyyyyy" | sdkmanager --sdk_root=/android --licenses
+yes | sdkmanager --sdk_root="$ANDROID_HOME" "ndk;$NDK_VERSION" "cmdline-tools;latest" "platform-tools" "platforms;$ANDROID_PLATFORMS" "build-tools;$ANDROID_BUILDTOOLS_REVISION"
+yes | sdkmanager --sdk_root=/android --licenses
 
 # next check that Qt is installed
 if [ ! -d "$LATEST_QT" ] ; then
+	pip3 install aqtinstall
 	aqt install -O /android "$LATEST_QT" linux android -m qtcharts
 fi
 
