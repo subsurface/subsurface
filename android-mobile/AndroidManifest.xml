@@ -2,17 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.subsurfacedivelog.mobile"
     android:installLocation="auto"
-    android:versionCode="@BUILD_NR@"
-    android:versionName="@SUBSURFACE_MOBILE_VERSION@" >
+    android:versionCode="-- %%INSERT_VERSION_CODE%% --"
+    android:versionName="-- %%INSERT_VERSION_NAME%% --" >
 
     <application
         android:name="org.qtproject.qt5.android.bindings.QtApplication"
         android:hardwareAccelerated="true"
         android:label="@string/app_name"
+        android:extractNativeLibs="true"
         android:icon="@drawable/subsurface_mobile_icon" >
         <activity
             android:name="org.subsurfacedivelog.mobile.SubsurfaceMobileActivity"
-            android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|locale|fontScale|keyboard|keyboardHidden|navigation"
+            android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
             android:launchMode="singleTop"
@@ -43,12 +44,6 @@
             <meta-data
                 android:name="android.app.bundle_local_qt_libs"
                 android:value="-- %%BUNDLE_LOCAL_QT_LIBS%% --" />
-            <meta-data
-                android:name="android.app.bundled_in_lib_resource_id"
-                android:resource="@array/bundled_in_lib" />
-            <meta-data
-                android:name="android.app.bundled_in_assets_resource_id"
-                android:resource="@array/bundled_in_assets" />
             <!-- Run with local libs -->
             <meta-data
                 android:name="android.app.use_local_qt_libs"
@@ -56,9 +51,9 @@
             <meta-data
                 android:name="android.app.libs_prefix"
                 android:value="/data/local/tmp/qt/" />
-            <meta-data
-                android:name="android.app.load_local_libs"
-                android:value="-- %%INSERT_LOCAL_LIBS%% --" />
+	    <meta-data
+                android:name="android.app.load_local_libs_resource_id"
+                android:resource="@array/load_local_libs"/>
             <meta-data
                 android:name="android.app.load_local_jars"
                 android:value="-- %%INSERT_LOCAL_JARS%% --" />
