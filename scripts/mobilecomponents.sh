@@ -84,6 +84,12 @@ sed -i -e "s/width: backgroundRect/enabled: root.enabled;    width: backgroundRe
 
 patch -p0 < $SRC/subsurface/scripts/kirigami.diff
 
+# with Qt5.15 the readonly properties are failing on Android. So let's
+# patch those out
+for qml in $(grep -l -R readonly\  .); do
+	sed -i -e "s/readonly //" $qml
+done
+
 popd
 
 echo org.kde.plasma.kirigami synced from upstream
