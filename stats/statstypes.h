@@ -44,15 +44,14 @@ struct StatsBin {
 
 using StatsBinPtr = std::unique_ptr<StatsBin>;
 
-struct StatsBinDives {
+// A bin and an arbitrarily associated value, e.g. a count or a list of dives.
+template<typename T>
+struct StatsBinValue {
 	StatsBinPtr bin;
-	std::vector<dive *> dives;
+	T value;
 };
-
-struct StatsBinCount {
-	StatsBinPtr bin;
-	int count;
-};
+using StatsBinDives = StatsBinValue<std::vector<dive *>>;
+using StatsBinCount = StatsBinValue<int>;
 
 struct StatsBinner {
 	virtual ~StatsBinner();

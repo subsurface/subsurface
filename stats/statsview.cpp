@@ -770,17 +770,17 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 		const int min_slices = 10; // Try to draw at least 10 slices.
 		std::sort(categoryBins.begin(), categoryBins.end(),
 			  [](const StatsBinCount &item1, const StatsBinCount &item2)
-			  { return item1.count > item2.count; }); // Note: reverse sort.
+			  { return item1.value > item2.value; }); // Note: reverse sort.
 		auto it = std::find_if(categoryBins.begin(), categoryBins.end(),
 				       [total, smallest_slice_percentage](const StatsBinCount &item)
-				       { return item.count * 100 / total < smallest_slice_percentage; });
+				       { return item.value * 100 / total < smallest_slice_percentage; });
 		if (it - categoryBins.begin() < min_slices)
 			it = categoryBins.begin() + std::min(min_slices, (int)categoryBins.size());
 
 		// Sum counts of "other" bins.
 		int otherCount = 0;
 		for (auto it2 = it; it2 != categoryBins.end(); ++it2)
-			otherCount += it2->count;
+			otherCount += it2->value;
 
 		categoryBins.erase(it, categoryBins.end()); // Delete "other" bins
 
