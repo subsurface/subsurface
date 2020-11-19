@@ -11,7 +11,7 @@ jobs:
   buildInContainer:
     runs-on: ubuntu-latest
     container:
-      image: docker://subsurface/android-build-container:5.13.12
+      image: docker://subsurface/android-build-container:5.15.1
 
     steps:
     - name: checkout sources
@@ -19,24 +19,16 @@ jobs:
 
     - name: run build
       run: |
-        cd ..
-        ln -s /android/Qt .
-        ln -s /android/android-ndk-r18b .
-        ln -s /android/android-sdk-linux .
+        # this is rather awkward, but it allows us to use the preinstalled
+        # Android and Qt versions with relative paths
+        cd $GITHUB_WORKSPACE/..
+        ln -s /android/5.15.* .
+        ln -s /android/build-tools .
+        ln -s /android/cmdline-tools .
+        ln -s /android/ndk .
+        ln -s /android/platform-tools .
+        ln -s /android/platforms .
+        ln -s /android/tools .
         ls -l
-        bash -x subsurface/packaging/android/android-build-wrapper.sh
-        cp /__w/subsurface/subsurface-mobile-build-arm64/*mobile*/build/outputs/apk/debug/subsurface-mobile-arm64-v8a-debug.apk ${GITHUB_WORKSPACE}/Subsurface-mobile.arm64.apk
-        cp /__w/subsurface/subsurface-mobile-build-arm/*mobile*/build/outputs/apk/debug/subsurface-mobile-armeabi-v7a-debug.apk ${GITHUB_WORKSPACE}/Subsurface-mobile.apk
+        bash -x ./subsurface/packaging/android/qmake-build.sh
 
-    - name: prepare PR artifacts
-      if: github.event_name == 'pull_request'
-      run: |
-        mkdir -p Android-artifacts
-        mv Subsurface-mobile.apk Subsurface-mobile.arm64.apk Android-artifacts
-
-    - name: PR artifacts
-      if: github.event_name == 'pull_request'
-      uses: actions/upload-artifact@master
-      with:
-        name: Android-artifacts
-        path: Android-artifacts
