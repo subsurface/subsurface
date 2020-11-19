@@ -37,6 +37,7 @@ source $SUBSURFACE_SOURCE/packaging/android/variables.sh
 # directory hierarchy as the SDK and NDK
 export ANDROID_NDK_ROOT="$SUBSURFACE_SOURCE/../$ANDROID_NDK"
 export ANDROID_SDK_ROOT="$SUBSURFACE_SOURCE/.."
+export JAVA_OPTS="-Dsun.jnu.encoding=UTF-8 -Dfile.encoding=UTF-8"
 
 QUICK=""
 ARCHITECTURES=""
