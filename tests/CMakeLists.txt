@@ -116,7 +116,10 @@ TEST(TestRenumber testrenumber.cpp)
 # this keeps randomly failing and I don't understand why
 # too many false positives, so disabling this test for now
 TEST(TestGitStorage testgitstorage.cpp storageconfig)
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 TEST(TestPicture testpicture.cpp)
+set(TEST_PICTURE TestPicture)
+endif()
 TEST(TestMerge testmerge.cpp)
 TEST(TestTagList testtaglist.cpp)
 
@@ -157,7 +160,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestAirPressure
 	TestDiveSiteDuplication
 	TestRenumber
-	TestPicture
+	${TEST_PICTURE}
 	TestMerge
 	TestTagList
 	${TEST_PLANNER_SHARED}
