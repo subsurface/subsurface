@@ -348,7 +348,7 @@ popd
 
 # call qmake to set up the build
 echo "Run qmake to setup the Subsurface-mobile build for all architectures"
-$QMAKE BUILD_NR="$BUILDNR" BUILD_VERSION_NAME="$SUBSURFACE_MOBILE_VERSION" ANDROID_ABIS="$BUILD_ABIS" "$SUBSURFACE_SOURCE"/Subsurface-mobile-android.pro
+$QMAKE BUILD_NR="$BUILDNR" BUILD_VERSION_NAME="$SUBSURFACE_MOBILE_VERSION" ANDROID_ABIS="$BUILD_ABIS" "$SUBSURFACE_SOURCE"/Subsurface-mobile.pro
 
 
 # if this isn't just a quick rebuild compile the translations
