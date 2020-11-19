@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick quickcontrols2 widgets positioning concurrent svg bluetooth androidextras
+QT += qml quick quickcontrols2 widgets positioning concurrent svg bluetooth 
 
 DEFINES += SUBSURFACE_MOBILE BT_SUPPORT BLE_SUPPORT
 
@@ -46,7 +46,6 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/file.c \
 	core/fulltext.cpp \
 	core/subsurfacestartup.c \
-	core/android.cpp \
 	core/profile.c \
 	core/device.cpp \
 	core/dive.c \
@@ -76,7 +75,6 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/statistics.c \
 	core/worldmap-save.c \
 	core/libdivecomputer.c \
-	core/serial_usb_android.cpp \
 	core/version.c \
 	core/save-git.c \
 	core/datatrak.c \
@@ -162,37 +160,6 @@ SOURCES += subsurface-mobile-main.cpp \
 	profile-widget/divelineitem.cpp \
 	profile-widget/diverectitem.cpp \
 	profile-widget/divetextitem.cpp
-
-RESOURCES += mobile-widgets/qml/mobile-resources.qrc \
-		map-widget/qml/map-widget.qrc \
-		packaging/android/translations.qrc
-
-# at link time our CWD is parallel to the install-root
-LIBS += ../install-root-$${QT_ARCH}/lib/libdivecomputer.a \
-	../install-root-$${QT_ARCH}/lib/libgit2.a \
-	../install-root-$${QT_ARCH}/lib/libzip.a \
-	../install-root-$${QT_ARCH}/lib/libxslt.a \
-	../install-root-$${QT_ARCH}/lib/libxml2.a \
-	../install-root-$${QT_ARCH}/lib/libsqlite3.a \
-	../install-root-$${QT_ARCH}/lib/libssl_1_1.so \
-	../install-root-$${QT_ARCH}/lib/libcrypto_1_1.so \
-	../googlemaps-build/libqtgeoservices_googlemaps_$${QT_ARCH}.so
-
-# ensure that the openssl libraries are bundled into the app
-ANDROID_EXTRA_LIBS += \
-	../install-root-$${QT_ARCH}/lib/libcrypto_1_1.so \
-	../install-root-$${QT_ARCH}/lib/libssl_1_1.so
-
-INCLUDEPATH += ../install-root-$${QT_ARCH}/include/ \
-	../install-root/lib/libzip/include \
-	../install-root-$${QT_ARCH}/include/libxstl \
-	../install-root-$${QT_ARCH}/include/libxml2 \
-	../install-root-$${QT_ARCH}/include/libexstl \
-	../install-root-$${QT_ARCH}/include/openssl \
-	. \
-	core \
-	mobile-widgets/qml/kirigami/src/libkirigami
-
 
 HEADERS += \
 	commands/command_base.h \
@@ -332,13 +299,79 @@ HEADERS += \
 
 include(mobile-widgets/qml/kirigami/kirigami.pri)
 
-android {
-    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-mobile
-    ANDROID_VERSION_CODE = $$BUILD_NR
-    ANDROID_VERSION_NAME = $$BUILD_VERSION_NAME
+RESOURCES += mobile-widgets/qml/mobile-resources.qrc \
+		map-widget/qml/map-widget.qrc
 
-    DISTFILES += \
-        android-build/AndroidManifest.xml \
-        android-build/build.gradle \
-        android-build/res/values/libs.xml
+android {
+	SOURCES += core/android.cpp \
+		core/serial_usb_android.cpp
+	RESOURCES += packaging/android/translations.qrc
+	QT += androidextras
+	ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-mobile
+	ANDROID_VERSION_CODE = $$BUILD_NR
+	ANDROID_VERSION_NAME = $$BUILD_VERSION_NAME
+
+	DISTFILES += \
+		android-build/AndroidManifest.xml \
+		android-build/build.gradle \
+		android-build/res/values/libs.xml
+
+	# at link time our CWD is parallel to the install-root
+	LIBS += ../install-root-$${QT_ARCH}/lib/libdivecomputer.a \
+		../install-root-$${QT_ARCH}/lib/libgit2.a \
+		../install-root-$${QT_ARCH}/lib/libzip.a \
+		../install-root-$${QT_ARCH}/lib/libxslt.a \
+		../install-root-$${QT_ARCH}/lib/libxml2.a \
+		../install-root-$${QT_ARCH}/lib/libsqlite3.a \
+		../install-root-$${QT_ARCH}/lib/libssl_1_1.so \
+		../install-root-$${QT_ARCH}/lib/libcrypto_1_1.so \
+		../googlemaps-build/libqtgeoservices_googlemaps_$${QT_ARCH}.so
+
+	# ensure that the openssl libraries are bundled into the app
+	ANDROID_EXTRA_LIBS += \
+		../install-root-$${QT_ARCH}/lib/libcrypto_1_1.so \
+		../install-root-$${QT_ARCH}/lib/libssl_1_1.so
+
+	INCLUDEPATH += ../install-root-$${QT_ARCH}/include/ \
+		../install-root/lib/libzip/include \
+		../install-root-$${QT_ARCH}/include/libxstl \
+		../install-root-$${QT_ARCH}/include/libxml2 \
+		../install-root-$${QT_ARCH}/include/libexstl \
+		../install-root-$${QT_ARCH}/include/openssl \
+		. \
+		core \
+		mobile-widgets/qml/kirigami/src/libkirigami
+}
+
+ios {
+	SOURCES += core/ios.cpp
+	RESOURCES += packaging/ios/translations.qrc
+	QMAKE_IOS_DEPLOYMENT_TARGET = 10.0
+	QMAKE_TARGET_BUNDLE_PREFIX = org.subsurface-divelog
+	QMAKE_BUNDLE = subsurface-mobile
+	QMAKE_INFO_PLIST = packaging/ios/Info.plist
+	QMAKE_ASSET_CATALOGS += packaging/ios/storeIcon.xcassets
+	app_launch_images.files = packaging/ios/SubsurfaceMobileLaunch.xib $$files(packaging/ios/SubsurfaceMobileLaunchImage*.png)
+	images.files = icons/subsurface-mobile-icon.png
+	QMAKE_BUNDLE_DATA += app_launch_images images
+
+	LIBS += ../install-root/ios/lib/libdivecomputer.a \
+		../install-root/ios/lib/libgit2.a \
+		../install-root/ios/lib/libzip.a \
+		../install-root/ios/lib/libxslt.a \
+		../googlemaps/build-ios/libqtgeoservices_googlemaps.a \
+		-liconv \
+		-lsqlite3 \
+		-lxml2
+
+	INCLUDEPATH += ../install-root/ios/include/ \
+		../install-root/lib/libzip/include \
+		../install-root/ios/include/libxstl \
+		../install-root/ios/include/libexstl \
+		../install-root/ios/include/openssl \
+		. \
+		./core \
+		./mobile-widgets/qml/kirigami/src/libkirigami \
+		/usr/include/libxml2
+
 }
