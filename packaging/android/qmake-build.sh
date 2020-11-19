@@ -110,14 +110,29 @@ QMAKE=$QT5_ANDROID/android/bin/qmake
 echo $QMAKE
 $QMAKE -query
 
-
-# if we are just doing a quick rebuild, don't bother with any of the dependencies
-
-# autoconf based libraries are harder
 export TOOLCHAIN="$ANDROID_NDK_ROOT"/toolchains/llvm/prebuilt/linux-x86_64
 PATH=$TOOLCHAIN/bin:$PATH
 export ANDROID_NDK_HOME=$ANDROID_NDK_ROOT  # redundant, but that's what openssl wants
 
+# make sure we have the font that we need for OnePlus phones due to https://bugreports.qt.io/browse/QTBUG-69494
+if [ ! -f "$SUBSURFACE_SOURCE"/android-mobile/Roboto-Regular.ttf ] ; then
+       cp "$ANDROID_SDK_ROOT"/platforms/"$ANDROID_PLATFORMS"/data/fonts/Roboto-Regular.ttf "$SUBSURFACE_SOURCE"/android-mobile || exit 1
+fi
+
+# next, make sure that the libdivecomputer sources are downloaded and
+# ready for autoconfig
+pushd "$SUBSURFACE_SOURCE"
+if [ ! -d libdivecomputer/src ] ; then
+	git submodule init
+	git submodule update
+fi
+if [ ! -f libdivecomputer/configure ] ; then
+	cd libdivecomputer
+	autoreconf -i
+fi
+popd
+
+# autoconf based libraries are harder
 # build default architectures, or the given one?
 if [ "$ARCHITECTURES" = "" ] ; then
 	ARCHITECTURES="armv7a aarch64"
