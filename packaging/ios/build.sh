@@ -275,9 +275,9 @@ fi
 pushd "$SUBSURFACE_SOURCE"/translations
 SRCS=$(ls ./*.ts | grep -v source)
 popd
-mkdir -p build-ios/translations
+mkdir -p "$SUBSURFACE_SOURCE"/packaging/ios/build-ios/translations
 for src in $SRCS; do
-	"$IOS_QT"/"$QT_VERSION"/ios/bin/lrelease "$SUBSURFACE_SOURCE"/translations/"$src" -qm build-ios/translations/"${src/.ts/.qm}"
+	"$IOS_QT"/"$QT_VERSION"/ios/bin/lrelease "$SUBSURFACE_SOURCE"/translations/"$src" -qm "$SUBSURFACE_SOURCE"/packaging/ios/build-ios/translations/"${src/.ts/.qm}"
 done
 
 # in order to be able to use xcode without going through Qt Creator
