@@ -113,24 +113,6 @@ $QMAKE -query
 
 # if we are just doing a quick rebuild, don't bother with any of the dependencies
 
-if [ "$QUICK" = "" ] ; then
-
-	# build google maps plugin
-	# this is the easy one as it uses qmake which ensures things get built for all platforms, etc
-	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . googlemaps
-	QT_PLUGINS_PATH=$($QMAKE -query QT_INSTALL_PLUGINS)
-	GOOGLEMAPS_BIN=libqtgeoservices_googlemaps.so
-	if [ ! -e "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] || [ googlemaps/.git/HEAD -nt "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] ; then
-	    mkdir -p googlemaps-build
-	    pushd googlemaps-build
-	    $QMAKE ../googlemaps/googlemaps.pro
-	    make -j4
-	#    $QMAKE -install qinstall -exe $GOOGLEMAPS_BIN "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN
-            make install
-	    popd
-	fi
-fi
-
 # autoconf based libraries are harder
 export TOOLCHAIN="$ANDROID_NDK_ROOT"/toolchains/llvm/prebuilt/linux-x86_64
 PATH=$TOOLCHAIN/bin:$PATH
@@ -326,16 +308,25 @@ for ARCH in $ARCHITECTURES ; do
 	echo "====================================="
 done # ARCH
 
-#"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . qt-android-cmake
-# the Qt Android cmake addon runs androiddeployqt with '--verbose' which
-# is, err, rather verbose. Let's not do that.
-#sed -i -e 's/--verbose//' qt-android-cmake/AddQtAndroidApk.cmake
-
-# if this isn't just a quick rebuild, pull kirigami, icons, etc
+# if this isn't just a quick rebuild, pull kirigami, icons, etc, and finally build the Googlemaps plugin
 if [ "$QUICK" = "" ] ; then
 	pushd "$SUBSURFACE_SOURCE"
 	bash ./scripts/mobilecomponents.sh
 	popd
+
+	# build google maps plugin
+	# this is the easy one as it uses qmake which ensures things get built for all platforms, etc
+	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . googlemaps
+	QT_PLUGINS_PATH=$($QMAKE -query QT_INSTALL_PLUGINS)
+	GOOGLEMAPS_BIN=libqtgeoservices_googlemaps.so
+	if [ ! -e "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] || [ googlemaps/.git/HEAD -nt "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] ; then
+	    mkdir -p googlemaps-build
+	    pushd googlemaps-build
+	    $QMAKE ANDROID_ABIS="$BUILD_ABIS" ../googlemaps/googlemaps.pro
+	    make -j4
+            make install
+	    popd
+	fi
 fi
 
 # set up the final build
