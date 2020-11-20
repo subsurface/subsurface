@@ -306,6 +306,7 @@ android {
 	SOURCES += core/android.cpp \
 		core/serial_usb_android.cpp
 	RESOURCES += packaging/android/translations.qrc
+	RESOURCES += android-mobile/font.qrc
 	QT += androidextras
 	ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-mobile
 	ANDROID_VERSION_CODE = $$BUILD_NR
