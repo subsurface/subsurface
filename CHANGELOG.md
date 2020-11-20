@@ -1,5 +1,3 @@
-- core: fix missing GPS coordinate strings in the UI
-- core: Gracefully handle infinte MND for oxygen
 - mobile: add location service warning as required by Google Play
 - mobile: fix manually adding dives in the past [#2971]
 

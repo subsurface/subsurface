@@ -2,6 +2,11 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 4.9.10
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+- core: fix missing GPS coordinate strings in the UI
+- core: Gracefully handle infinte MND for oxygen
+
 New in _Subsurface_ 4.9.9
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - desktop: avoid potential crash in print previews
