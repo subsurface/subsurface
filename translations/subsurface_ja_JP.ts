@@ -11,7 +11,8 @@
         <location filename="../mobile-widgets/qml/About.qml" line="37"/>
         <source>A mobile version of the free Subsurface divelog software.
 </source>
-        <translation type="unfinished"/>
+        <translation>このアプリは無料ダイビングログブック Subsurface。
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="38"/>
@@ -24,7 +25,10 @@
 
 © Subsurface developer team
 2011-2020</source>
-        <translation type="unfinished"/>
+        <translation>バージョン：%1
+
+© Subsurface 開発チーム
+2011-2020</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
@@ -366,7 +370,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="43"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>クラウド公開鍵</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="49"/>
@@ -386,7 +390,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="100"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>新規登録</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="111"/>
@@ -396,12 +400,12 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="114"/>
         <source>Check credentials...</source>
-        <translation type="unfinished"/>
+        <translation>公開鍵を確認する...</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="127"/>
         <source>Sign-in or Register</source>
-        <translation type="unfinished"/>
+        <translation>ログイン・新規登録</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="138"/>
@@ -411,7 +415,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="151"/>
         <source>Forgot password?</source>
-        <translation type="unfinished"/>
+        <translation>パスワードを忘れた？</translation>
     </message>
 </context>
 <context>
@@ -537,22 +541,22 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>サンプリング時間</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>サンプリング深度</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Sample temperature</source>
-        <translation type="unfinished"/>
+        <translation>サンプリング温度</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Sample pO₂</source>
-        <translation type="unfinished"/>
+        <translation>サンプリング pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
@@ -1488,7 +1492,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2764"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2922"/>
         <source>Decotype</source>
-        <translation type="unfinished"/>
+        <translation>減圧種類</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="656"/>
@@ -1566,7 +1570,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2771"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2930"/>
         <source>Last deco</source>
-        <translation type="unfinished"/>
+        <translation>最後の減圧</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="749"/>
@@ -1660,7 +1664,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2783"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2935"/>
         <source>Deco gas consumption</source>
-        <translation type="unfinished"/>
+        <translation>減圧ガス消費量</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="892"/>
@@ -2676,7 +2680,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="22"/>
         <source>Deco switch at</source>
-        <translation type="unfinished"/>
+        <translation>...に減圧ガス交換する</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="22"/>
@@ -2716,7 +2720,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="278"/>
         <source>Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.</source>
-        <translation type="unfinished"/>
+        <translation>減圧ガスの交換深度。マニュアル設定時以外、预置減圧 pO₂ 使用で計算する。</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="280"/>
@@ -3326,7 +3330,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="345"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>クラウド公開鍵</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="354"/>
@@ -4005,25 +4009,25 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="812"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="912"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>サンプリング時間</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="694"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="813"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>サンプリング深度</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="696"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="814"/>
         <source>Sample temperature</source>
-        <translation type="unfinished"/>
+        <translation>サンプリング温度</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="698"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="815"/>
         <source>Sample pO₂</source>
-        <translation type="unfinished"/>
+        <translation>サンプリング pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="700"/>
@@ -4497,7 +4501,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="174"/>
         <source>Bailout: Deco on OC</source>
-        <translation type="unfinished"/>
+        <translation>緊急: OC 減圧</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="180"/>
@@ -4517,7 +4521,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="217"/>
         <source>Bühlmann deco</source>
-        <translation type="unfinished"/>
+        <translation>Bühlmann 減圧</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="226"/>
@@ -4532,7 +4536,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="260"/>
         <source>VPM-B deco</source>
-        <translation type="unfinished"/>
+        <translation>VPM-B 減圧</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="269"/>
@@ -4584,7 +4588,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="370"/>
         <source>Deco SAC</source>
-        <translation type="unfinished"/>
+        <translation>減圧 SAC</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="388"/>
@@ -4609,7 +4613,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="433"/>
         <source>Deco pO2</source>
-        <translation type="unfinished"/>
+        <translation>減圧 pO2</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="448"/>
@@ -6934,7 +6938,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/mainwindow.ui" line="713"/>
         <location filename="../desktop-widgets/mainwindow.ui" line="716"/>
         <source>Toggle deco information</source>
-        <translation type="unfinished"/>
+        <translation>減圧情報を切り替える</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="594"/>
@@ -11130,7 +11134,7 @@ Maximum</source>
         <location filename="../core/cochran.c" line="384"/>
         <location filename="../core/libdivecomputer.c" line="249"/>
         <source>deco stop</source>
-        <translation type="unfinished"/>
+        <translation>減圧停止</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="335"/>
@@ -11265,7 +11269,7 @@ Maximum</source>
         <location filename="../core/datatrak.c" line="390"/>
         <location filename="../core/tag.c" line="20"/>
         <source>deco</source>
-        <translation type="unfinished"/>
+        <translation>減圧</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="392"/>
@@ -12650,19 +12654,22 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/profile.c" line="1484"/>
         <source>Deco: %umin @ %.0f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>減圧: %umin @ %.0f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1487"/>
         <source>Deco: unknown time @ %.0f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>減圧: 未知の時間 @ %.0f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1491"/>
         <source>In deco
 </source>
-        <translation type="unfinished"/>
+        <translation>減圧中
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1493"/>
@@ -12680,13 +12687,15 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/profile.c" line="1499"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
-        <translation type="unfinished"/>
+        <translation>減圧: %umin @ %.0f%s (calc)
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1507"/>
         <source>In deco (calc)
 </source>
-        <translation type="unfinished"/>
+        <translation>減圧中 (calc)
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1510"/>
@@ -14298,7 +14307,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="439"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="595"/>
         <source>VPM-B deco</source>
-        <translation type="unfinished"/>
+        <translation>VPM-B 減圧</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="449"/>
@@ -14316,7 +14325,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="502"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="596"/>
         <source>Bühlmann deco</source>
-        <translation type="unfinished"/>
+        <translation>Bühlmann 減圧</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="512"/>
@@ -14327,7 +14336,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="522"/>
         <source>Bailout: Deco on OC</source>
-        <translation type="unfinished"/>
+        <translation>緊急: OC減壓</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="529"/>
@@ -14412,7 +14421,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="657"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="605"/>
         <source>Deco SAC</source>
-        <translation type="unfinished"/>
+        <translation>減圧 SAC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="735"/>
@@ -14448,7 +14457,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="775"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="634"/>
         <source>Deco pO₂</source>
-        <translation type="unfinished"/>
+        <translation>減圧中 pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="782"/>

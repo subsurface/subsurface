@@ -14175,7 +14175,7 @@ O Uemis Zurich está correctamente ligado?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="791"/>
         <source>The location data are not used in any way, except when you apply the location data to the dives in your dive list on this device.</source>
-        <translation type="unfinished"/>
+        <translation>Os dados de localização não são usados de forma alguma, excepto quando aplicar esses dados aos mergulhos da lista de mergulhos existente neste dispositivo.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="796"/>

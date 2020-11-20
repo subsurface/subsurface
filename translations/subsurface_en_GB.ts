@@ -14179,7 +14179,7 @@ Is the Uemis Zurich plugged in correctly?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="791"/>
         <source>The location data are not used in any way, except when you apply the location data to the dives in your dive list on this device.</source>
-        <translation type="unfinished"/>
+        <translation>The location data are not used in any way, except when you apply the location data to the dives in your dive list on this device.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="796"/>

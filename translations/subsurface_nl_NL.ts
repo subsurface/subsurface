@@ -264,12 +264,12 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="289"/>
         <source>Pair</source>
-        <translation>Koppel</translation>
+        <translation>Koppelen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="290"/>
         <source>Remove pairing</source>
-        <translation>Ontkoppel</translation>
+        <translation>Ontkoppelen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="306"/>
@@ -329,7 +329,7 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="389"/>
         <source>An unknown error has occurred.</source>
-        <translation>Een onbekende fout trad op</translation>
+        <translation>Er is een onbekende fout opgetreden.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="393"/>
@@ -344,7 +344,7 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="451"/>
         <source>The local Bluetooth adapter cannot be accessed.</source>
-        <translation>Geen toegang tot het lokale Bluetooth toestel.</translation>
+        <translation>Geen toegang tot de lokale Bluetooth adapter.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="490"/>
@@ -5937,7 +5937,7 @@ Bestaande duikstek</translation>
     <message>
         <location filename="../core/configuredivecomputerthreads.cpp" line="2227"/>
         <source>This feature is not yet available for the selected dive computer.</source>
-        <translation>Deze functie is nog niet beschikbaar voor de geselecteerde duikcomputer</translation>
+        <translation>Deze functie is nog niet beschikbaar voor de geselecteerde duikcomputer.</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputerthreads.cpp" line="2232"/>
@@ -6465,7 +6465,7 @@ Bestaande duikstek</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="541"/>
         <source>You are about to discard your changes.</source>
-        <translation>U staat op het punt wijzigingen te verwijderen</translation>
+        <translation>U staat op het punt wijzigingen te annuleren.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="571"/>
@@ -8267,7 +8267,7 @@ Zie http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.cpp" line="39"/>
         <source>Couldn&apos;t execute ffmpeg at given location. Thumbnailing will not work.</source>
-        <translation>Kan ffmpeg niet uitvoeren vanaf de opgegeven locatie: Thumbnails worden niet gemaakt </translation>
+        <translation>Kan ffmpeg niet uitvoeren vanaf de opgegeven locatie: Thumbnails worden niet gemaakt.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.cpp" line="45"/>
@@ -8889,7 +8889,7 @@ Exporteer naar een ander bestand.</translation>
         <location filename="../profile-widget/profilewidget2.cpp" line="1533"/>
         <location filename="../profile-widget/profilewidget2.cpp" line="1540"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
-        <translation>Druk aanpassen van cilinder %1 (nu geïnterpoleerd als %2)</translation>
+        <translation>Druk aanpassen van fles %1 (nu geïnterpoleerd als %2)</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1555"/>
@@ -10810,7 +10810,7 @@ worden uit lucht en:
         <source>Subsurface is checking every two weeks if a new version is available. 
 If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
         <translation>Subsurface controleert iedere 2 weken of er een nieuwe versie beschikbaar is.
-Als je dit niet wilt, selecteer Weiger.</translation>
+Als je dit niet wilt, selecteer Weigeren.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="116"/>
