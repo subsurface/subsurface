@@ -17,9 +17,9 @@ set(TRANSLATION_FILES
 	subsurface_et_EE.ts
 	subsurface_fi_FI.ts
 	subsurface_fr_FR.ts
-	subsurface_it_IT.ts
 	subsurface_he.ts
-	subsurface_lv_LV.ts
+	subsurface_hr_HR.ts
+	subsurface_it_IT.ts
 	subsurface_nb_NO.ts
 	subsurface_nl_NL.ts
 	subsurface_pl_PL.ts
@@ -29,7 +29,6 @@ set(TRANSLATION_FILES
 	subsurface_ru_RU.ts
 	subsurface_sk_SK.ts
 	subsurface_sv_SE.ts
-	subsurface_tr.ts
 	subsurface_zh_TW.ts
 )
 
@@ -37,6 +36,23 @@ set(US_EN_PLURALS subsurface_en_US.ts)
 
 # disabled translations as they are below 40%:
 #	subsurface_hu.ts
+#	subsurface_lv_LV.ts
+#	subsurface_tr.ts
+
+# new translations that didn't make it far enough:
+#	subsurface_af.ts
+#	subsurface_ar.ts
+#	subsurface_hi_IN.ts
+#	subsurface_hu.ts
+#	subsurface_id.ts
+#	subsurface_ja_JP.ts
+#	subsurface_sl.ts
+#	subsurface_sw_KE.ts
+#	subsurface_te.ts
+#	subsurface_th.ts
+#	subsurface_vi.ts
+#	subsurface_zh_CN.ts
+
 
 qt5_add_translation(TRANSLATIONS ${TRANSLATION_FILES} ${US_EN_PLURALS})
 set(TRANSLATIONS ${TRANSLATIONS} PARENT_SCOPE)
