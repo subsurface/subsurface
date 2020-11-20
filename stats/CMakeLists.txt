@@ -5,6 +5,8 @@ include_directories(.
 )
 
 set(SUBSURFACE_STATS_SRCS
+	scatterseries.h
+	scatterseries.cpp
 	statsview.h
 	statsview.cpp
 	statstypes.h

@@ -19,7 +19,10 @@ namespace QtCharts {
 	class QLegend;
 	class QValueAxis;
 }
+class QGraphicsLineItem;
+class QGraphicsPixmapItem;
 class QGraphicsSimpleTextItem;
+class ScatterSeries;
 
 enum class ChartSubType : int;
 enum class StatsOperation : int;
@@ -82,6 +85,7 @@ private:
 
 	template <typename T>
 	T *addSeries(const QString &name);
+	ScatterSeries *addScatterSeries(const QString &name);
 	void initSeries(QtCharts::QAbstractSeries *series, const QString &name);
 
 	template<typename T>
@@ -109,9 +113,20 @@ private:
 		void updatePosition();
 	};
 
+	// A short line used to mark quartiles
+	struct QuartileMarker {
+		std::unique_ptr<QGraphicsLineItem> item;
+		QtCharts::QAbstractSeries *series; // In case we ever support charts with multiple axes
+		double pos, value;
+		QuartileMarker(double pos, double value, QtCharts::QAbstractSeries *series);
+		void updatePosition();
+	};
+
 	QtCharts::QChart *chart;
 	std::vector<std::unique_ptr<QtCharts::QAbstractAxis>> axes;
 	std::vector<BarLabel> barLabels;
+	std::vector<std::unique_ptr<ScatterSeries>> scatterSeries;
+	std::vector<QuartileMarker> quartileMarkers;
 };
 
 #endif
