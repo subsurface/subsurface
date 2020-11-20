@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "statsview.h"
 #include "statstypes.h"
+#include "scatterseries.h"
 #include "core/divefilter.h"
 #include <QQuickItem>
 #include <QAreaSeries>
@@ -15,8 +16,8 @@
 #include <QHorizontalStackedBarSeries>
 #include <QLineSeries>
 #include <QLocale>
+#include <QPainter>
 #include <QPieSeries>
-#include <QScatterSeries>
 #include <QStackedBarSeries>
 #include <QValueAxis>
 
@@ -30,6 +31,8 @@ static constexpr size_t array_size(const T (&)[N])
 // Constants that control the graph layouts
 static const double histogramBarWidth = 0.8; // 1.0 = full width of category
 static const QColor barColor(0x66, 0xb2, 0xff);
+static const QColor quartileMarkerColor(Qt::red);
+static const double quartileMarkerSize = 15;
 
 enum class ChartSubType {
 	Vertical = 0,
@@ -335,6 +338,10 @@ void StatsView::plotAreaChanged(const QRectF &)
 {
 	for (BarLabel &label: barLabels)
 		label.updatePosition();
+	for (auto &series: scatterSeries)
+		series->updatePositions();
+	for (QuartileMarker &marker: quartileMarkers)
+		marker.updatePosition();
 }
 
 void StatsView::initSeries(QtCharts::QAbstractSeries *series, const QString &name)
@@ -354,6 +361,12 @@ Type *StatsView::addSeries(const QString &name)
 	Type *res = new Type;
 	initSeries(res, name);
 	return res;
+}
+
+ScatterSeries *StatsView::addScatterSeries(const QString &name)
+{
+	scatterSeries.emplace_back(addSeries<ScatterSeries>(name));
+	return scatterSeries.back().get();
 }
 
 void StatsView::showLegend()
@@ -397,6 +410,8 @@ void StatsView::reset()
 	if (!chart)
 		return;
 	barLabels.clear();
+	scatterSeries.clear();
+	quartileMarkers.clear();
 	chart->removeAllSeries();
 	axes.clear();
 }
@@ -955,13 +970,7 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 	valAxis->setTitleText(valueType->nameWithUnit());
 
 	addAxes(catAxis, valAxis);
-	QScatterSeries *series = addSeries<QScatterSeries>(valueType->name());
-	QScatterSeries *quartileSeries = addSeries<QScatterSeries>(valueType->name());
-	quartileSeries->setMarkerShape(QScatterSeries::MarkerShapeRectangle);
-	quartileSeries->setColor(Qt::red);
-	series->setBorderColor(Qt::blue);
-	series->setMarkerSize(10);
-	quartileSeries->setMarkerSize(10);
+	ScatterSeries *series = addScatterSeries(valueType->name());
 
 	double x = 0.0;
 	for (const std::vector<double> &array: values) {
@@ -969,9 +978,9 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 			series->append(x, v);
 		StatsQuartiles quartiles = StatsType::quartiles(array);
 		if (quartiles.isValid()) {
-			quartileSeries->append(x, quartiles.q1);
-			quartileSeries->append(x, quartiles.q2);
-			quartileSeries->append(x, quartiles.q3);
+			quartileMarkers.emplace_back(x, quartiles.q1, series);
+			quartileMarkers.emplace_back(x, quartiles.q2, series);
+			quartileMarkers.emplace_back(x, quartiles.q3, series);
 		}
 		x += 1.0;
 	}
@@ -1120,6 +1129,25 @@ void StatsView::BarLabel::updatePosition()
 			pos.ry() += rect.height();
 		}
 	}
+}
+
+StatsView::QuartileMarker::QuartileMarker(double pos, double value, QtCharts::QAbstractSeries *series) :
+	item(new QGraphicsLineItem(series->chart())),
+	series(series),
+	pos(pos),
+	value(value)
+{
+	item->setZValue(10.0); // ? What is a sensible value here ?
+	item->setPen(QPen(quartileMarkerColor, 2.0));
+	updatePosition();
+}
+
+void StatsView::QuartileMarker::updatePosition()
+{
+	QtCharts::QChart *chart = series->chart();
+	QPointF center = chart->mapToPosition(QPointF(pos, value), series);
+	item->setLine(center.x() - quartileMarkerSize / 2.0, center.y(),
+		      center.x() + quartileMarkerSize / 2.0, center.y());
 }
 
 static void initHistogramAxis(QtCharts::QCategoryAxis *axis, const std::vector<std::pair<QString, double>> &labels, int maxLabels)
@@ -1358,12 +1386,7 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsType *c
 	axisY->setTitleText(valueType->nameWithUnit());
 
 	addAxes(axisX, axisY);
-	QScatterSeries *series = addSeries<QScatterSeries>(valueType->name());
-	series->setMarkerSize(10);
-	series->setBorderColor(Qt::blue);
-	QPen dotpen(Qt::blue);
-	dotpen.setWidth(0);
-	series->setPen(dotpen);
+	ScatterSeries *series = addScatterSeries(valueType->name());
 
 	for (auto [x, y]: points)
 		series->append(x, y);
