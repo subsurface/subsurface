@@ -127,6 +127,19 @@ private:
 	std::vector<BarLabel> barLabels;
 	std::vector<std::unique_ptr<ScatterSeries>> scatterSeries;
 	std::vector<QuartileMarker> quartileMarkers;
+	ScatterSeries *highlightedScatterSeries;	// scatter series with highlighted element
+
+	// This is unfortunate: we can't derive from QChart, because the chart is allocated by QML.
+	// Therefore, we have to listen to hover events using an events-filter.
+	// Probably we should try to get rid of the QML ChartView.
+	struct EventFilter : public QObject {
+		StatsView *view;
+		EventFilter(StatsView *view) : view(view) {}
+	private:
+		bool eventFilter(QObject *o, QEvent *event);
+	} eventFilter;
+	friend EventFilter;
+	void hover(QPointF pos);
 };
 
 #endif

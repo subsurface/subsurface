@@ -12,6 +12,7 @@
 #include <QCategoryAxis>
 #include <QChart>
 #include <QGraphicsSimpleTextItem>
+#include <QGraphicsSceneHoverEvent>
 #include <QHorizontalBarSeries>
 #include <QHorizontalStackedBarSeries>
 #include <QLineSeries>
@@ -322,12 +323,27 @@ static QtCharts::QChart *getChart(QQuickItem *item)
 	return res;
 }
 
-StatsView::StatsView(QWidget *parent) : QQuickWidget(parent)
+bool StatsView::EventFilter::eventFilter(QObject *o, QEvent *event)
+{
+	if (event->type() == QEvent::GraphicsSceneHoverMove) {
+		QGraphicsSceneHoverEvent *hover = static_cast<QGraphicsSceneHoverEvent *>(event);
+		view->hover(hover->pos());
+		return true;
+	}
+	return QObject::eventFilter(o, event);
+}
+
+StatsView::StatsView(QWidget *parent) : QQuickWidget(parent),
+	highlightedScatterSeries(nullptr),
+	eventFilter(this)
 {
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
 	setSource(urlStatsView);
 	chart = getChart(rootObject());
 	connect(chart, &QtCharts::QChart::plotAreaChanged, this, &StatsView::plotAreaChanged);
+
+	chart->installEventFilter(&eventFilter);
+	chart->setAcceptHoverEvents(true);
 }
 
 StatsView::~StatsView()
@@ -342,6 +358,30 @@ void StatsView::plotAreaChanged(const QRectF &)
 		series->updatePositions();
 	for (QuartileMarker &marker: quartileMarkers)
 		marker.updatePosition();
+}
+
+void StatsView::hover(QPointF pos)
+{
+	// Get closest scatter item
+	ScatterSeries *nextSeries = nullptr;
+	int nextItem = -1;
+	double nextDistance = 1e14;
+	for (auto &series: scatterSeries) {
+		auto [dist, index] = series->getClosest(pos);
+		if (index >= 0 && dist < nextDistance) {
+			nextSeries = series.get();
+			nextItem = index;
+			nextDistance = dist;
+		}
+	}
+
+	// If there was a different series with a highlighted item - unhighlight it
+	if (highlightedScatterSeries && nextSeries != highlightedScatterSeries)
+		highlightedScatterSeries->highlight(-1);
+
+	highlightedScatterSeries = nextSeries;
+	if (highlightedScatterSeries)
+		highlightedScatterSeries->highlight(nextItem);
 }
 
 void StatsView::initSeries(QtCharts::QAbstractSeries *series, const QString &name)
@@ -409,6 +449,7 @@ void StatsView::reset()
 {
 	if (!chart)
 		return;
+	highlightedScatterSeries = nullptr;
 	barLabels.clear();
 	scatterSeries.clear();
 	quartileMarkers.clear();
