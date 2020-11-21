@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "statstypes.h"
+#include "statstranslations.h"
 #include "core/dive.h"
 #include "core/divemode.h"
 #include "core/divesite.h"

@@ -116,10 +116,4 @@ extern const std::vector<const StatsType *> stats_types;
 extern const std::vector<const StatsType *> stats_continuous_types; // includes numeric types
 extern const std::vector<const StatsType *> stats_numeric_types; // types that support averaging, etc
 
-// Dummy object for our translations
-class StatsTranslations : public QObject
-{
-	Q_OBJECT
-};
-
 #endif

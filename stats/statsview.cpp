@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "statsview.h"
+#include "statstranslations.h"
 #include "statstypes.h"
 #include "scatterseries.h"
 #include "core/divefilter.h"
