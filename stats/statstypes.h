@@ -84,6 +84,12 @@ struct StatsScatterItem {
 	dive *d;
 };
 
+// A value and a dive
+struct StatsValue {
+	double v;
+	dive *d;
+};
+
 struct StatsType {
 	enum class Type {
 		Discrete,
@@ -97,6 +103,7 @@ struct StatsType {
 	virtual QString unitSymbol() const; // For numeric types - by default returns empty string
 	virtual int decimals() const; // For numeric types: numbers of decimals to display on axes. Defaults to 0.
 	virtual std::vector<const StatsBinner *> binners() const = 0; // Note: may depend on current locale!
+	virtual QString diveCategories(const dive *d) const; // Only for discrete types
 	std::vector<StatsBinQuartiles> bin_quartiles(const StatsBinner &binner, const std::vector<dive *> &dives, bool fill_empty) const;
 	std::vector<StatsBinVal> bin_value(const StatsBinner &binner, const std::vector<dive *> &dives, StatsOperation op, bool fill_empty) const;
 	const StatsBinner *getBinner(int idx) const; // Handles out of bounds gracefully (returns first binner)
@@ -108,9 +115,9 @@ struct StatsType {
 	static QString operationName(StatsOperation);
 	double mean(const std::vector<dive *> &dives) const; // Returns NaN for empty list
 	double meanTimeWeighted(const std::vector<dive *> &dives) const; // Returns NaN for empty list
-	static StatsQuartiles quartiles(const std::vector<double> &values); // Returns invalid quartiles for empty list
+	static StatsQuartiles quartiles(const std::vector<StatsValue> &values); // Returns invalid quartiles for empty list
 	StatsQuartiles quartiles(const std::vector<dive *> &dives) const; // Only for numeric types
-	std::vector<double> values(const std::vector<dive *> &dives) const; // Only for numeric types
+	std::vector<StatsValue> values(const std::vector<dive *> &dives) const; // Only for numeric types
 	QString valueWithUnit(const dive *d) const; // Only for numeric types
 	std::vector<StatsScatterItem> scatter(const StatsType &t2, const std::vector<dive *> &dives) const;
 	double sum(const std::vector<dive *> &dives) const; // Returns 0.0 for empty list
