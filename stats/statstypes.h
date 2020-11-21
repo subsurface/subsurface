@@ -78,6 +78,12 @@ struct StatsBinner {
 	virtual std::vector<StatsBinPtr> bins_between(const StatsBin &bin1, const StatsBin &bin2) const;
 };
 
+// A scatter item is two values and a dive
+struct StatsScatterItem {
+	double x, y;
+	dive *d;
+};
+
 struct StatsType {
 	enum class Type {
 		Discrete,
@@ -103,9 +109,10 @@ struct StatsType {
 	double mean(const std::vector<dive *> &dives) const; // Returns NaN for empty list
 	double meanTimeWeighted(const std::vector<dive *> &dives) const; // Returns NaN for empty list
 	static StatsQuartiles quartiles(const std::vector<double> &values); // Returns invalid quartiles for empty list
-	StatsQuartiles quartiles(const std::vector<dive *> &dives) const;
-	std::vector<double> values(const std::vector<dive *> &dives) const;
-	std::vector<std::pair<double,double>> scatter(const StatsType &t2, const std::vector<dive *> &dives) const;
+	StatsQuartiles quartiles(const std::vector<dive *> &dives) const; // Only for numeric types
+	std::vector<double> values(const std::vector<dive *> &dives) const; // Only for numeric types
+	QString valueWithUnit(const dive *d) const; // Only for numeric types
+	std::vector<StatsScatterItem> scatter(const StatsType &t2, const std::vector<dive *> &dives) const;
 	double sum(const std::vector<dive *> &dives) const; // Returns 0.0 for empty list
 private:
 	virtual double toFloat(const struct dive *d) const; // For numeric types - if dive doesn't have that value, returns NaN
