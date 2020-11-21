@@ -20,12 +20,15 @@ class QGraphicsPixmapItem;
 
 class ScatterSeries : public QtCharts::QScatterSeries {
 public:
+	ScatterSeries();
+
 	// A short line used to mark quartiles
 	struct Item {
 		std::unique_ptr<QGraphicsPixmapItem> item;
 		double pos, value;
 		Item(QtCharts::QChart *chart, ScatterSeries *series, double pos, double value);
 		void updatePosition(QtCharts::QChart *chart, ScatterSeries *series);
+		void highlight(bool highlight);
 	};
 
 	// Call if chart geometry changed
@@ -33,8 +36,18 @@ public:
 
 	// Note: this expects that all items are added with increasing pos!
 	void append(double pos, double value);
+
+	// Get closest item. Returns square of distance as double and item index.
+	// If the index is -1, no item is inside the range.
+	// Super weird: this function can't be const, because QChart::mapToValue takes
+	// a non-const reference!?
+	std::pair<double, int> getClosest(const QPointF &f);
+
+	// Highlight item when hovering over item
+	void highlight(int index);
 private:
 	std::vector<Item> items;
+	int highlighted; // -1: no item highlighted
 };
 
 #endif
