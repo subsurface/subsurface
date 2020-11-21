@@ -137,6 +137,11 @@ QString StatsType::unitSymbol() const
 	return {};
 }
 
+QString StatsType::diveCategories(const dive *) const
+{
+	return QString();
+}
+
 int StatsType::decimals() const
 {
 	return 0;
@@ -237,17 +242,19 @@ double StatsType::meanTimeWeighted(const std::vector<dive *> &dives) const
 	return weight_count > 0.0 ? sum / weight_count : invalid_value<double>();
 }
 
-std::vector<double> StatsType::values(const std::vector<dive *> &dives) const
+std::vector<StatsValue> StatsType::values(const std::vector<dive *> &dives) const
 {
-	std::vector<double> vec;
+	std::vector<StatsValue> vec;
 	vec.reserve(dives.size());
-	for (const dive *d: dives) {
+	for (dive *d: dives) {
 		double v = toFloat(d);
 		if (is_invalid_value(v))
 			continue;
-		vec.push_back(v);
+		vec.push_back({ v, d });
 	}
-	std::sort(vec.begin(), vec.end());
+	std::sort(vec.begin(), vec.end(),
+		  [](const StatsValue &v1, const StatsValue &v2)
+		  { return v1.v < v2.v; });
 	return vec;
 }
 
@@ -266,17 +273,17 @@ QString StatsType::valueWithUnit(const dive *d) const
 // to interpolate linearly. However, on the one hand we don't know
 // the actual distribution, on the other hand for a discrete
 // distribution the quartiles are ranges. So what should we do?
-static double q1(const double *v)
+static double q1(const StatsValue *v)
 {
-	return (3.0*v[0] + v[1]) / 4.0;
+	return (3.0*v[0].v + v[1].v) / 4.0;
 }
-static double q2(const double *v)
+static double q2(const StatsValue *v)
 {
-	return (v[0] + v[1]) / 2.0;
+	return (v[0].v + v[1].v) / 2.0;
 }
-static double q3(const double *v)
+static double q3(const StatsValue *v)
 {
-	return (v[0] + 3.0*v[1]) / 4.0;
+	return (v[0].v + 3.0*v[1].v) / 4.0;
 }
 
 StatsQuartiles StatsType::quartiles(const std::vector<dive *> &dives) const
@@ -285,7 +292,7 @@ StatsQuartiles StatsType::quartiles(const std::vector<dive *> &dives) const
 }
 
 // This expects the value vector to be sorted!
-StatsQuartiles StatsType::quartiles(const std::vector<double> &vec)
+StatsQuartiles StatsType::quartiles(const std::vector<StatsValue> &vec)
 {
 	size_t s = vec.size();
 	if (s == 0)
@@ -294,13 +301,13 @@ StatsQuartiles StatsType::quartiles(const std::vector<double> &vec)
 	default:
 		// gcc doesn't recognize that we catch all possible values. disappointing.
 	case 0:
-		return { vec[0], q3(&vec[s/4 - 1]), q2(&vec[s/2 - 1]), q1(&vec[s - s/4 - 1]), vec[s - 1] };
+		return { vec[0].v, q3(&vec[s/4 - 1]), q2(&vec[s/2 - 1]), q1(&vec[s - s/4 - 1]), vec[s - 1].v };
 	case 1:
-		return { vec[0], vec[s/4], vec[s/2], vec[s - s/4 - 1], vec[s - 1] };
+		return { vec[0].v, vec[s/4].v, vec[s/2].v, vec[s - s/4 - 1].v, vec[s - 1].v };
 	case 2:
-		return { vec[0], q1(&vec[s/4]), q2(&vec[s/2 - 1]), q3(&vec[s - s/4 - 2]), vec[s - 1] };
+		return { vec[0].v, q1(&vec[s/4]), q2(&vec[s/2 - 1]), q3(&vec[s - s/4 - 2]), vec[s - 1].v };
 	case 3:
-		return { vec[0], q2(&vec[s/4]), vec[s/2], q2(&vec[s - s/4 - 2]), vec[s - 1] };
+		return { vec[0].v, q2(&vec[s/4]), vec[s/2].v, q2(&vec[s - s/4 - 2]), vec[s - 1].v };
 	}
 }
 
@@ -1079,6 +1086,11 @@ struct DiveModeType : public StatsTypeTemplate<StatsType::Type::Discrete> {
 	QString name() const override {
 		return StatsTranslations::tr("Dive mode");
 	}
+	QString diveCategories(const dive *d) const override {
+		int mode = (int)d->dc.divemode;
+		return mode >= 0 && mode < NUM_DIVEMODE ?
+			QString(divemode_text_ui[mode]) : QString();
+	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &dive_mode_binner };
 	}
@@ -1102,6 +1114,13 @@ struct BuddyType : public StatsTypeTemplate<StatsType::Type::Discrete> {
 	QString name() const override {
 		return StatsTranslations::tr("Buddies");
 	}
+	QString diveCategories(const dive *d) const override {
+		QString buddy = QString(d->buddy).trimmed();
+		QString divemaster = QString(d->divemaster).trimmed();
+		if (!buddy.isEmpty() && !divemaster.isEmpty())
+			buddy += ", ";
+		return buddy + divemaster;
+	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &buddy_binner };
 	}
@@ -1119,6 +1138,9 @@ static SuitBinner suit_binner;
 struct SuitType : public StatsTypeTemplate<StatsType::Type::Discrete> {
 	QString name() const override {
 		return StatsTranslations::tr("Suit type");
+	}
+	QString diveCategories(const dive *d) const override {
+		return QString(d->suit);
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &suit_binner };
@@ -1143,6 +1165,9 @@ static LocationBinner location_binner;
 struct LocationType : public StatsTypeTemplate<StatsType::Type::Discrete> {
 	QString name() const override {
 		return StatsTranslations::tr("Dive site");
+	}
+	QString diveCategories(const dive *d) const override {
+		return d->dive_site ? d->dive_site->name : "-";
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &location_binner };
