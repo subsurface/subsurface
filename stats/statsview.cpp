@@ -404,9 +404,10 @@ Type *StatsView::addSeries(const QString &name)
 	return res;
 }
 
-ScatterSeries *StatsView::addScatterSeries(const QString &name)
+ScatterSeries *StatsView::addScatterSeries(const QString &name, const StatsType &typeX, const StatsType &typeY)
 {
-	scatterSeries.emplace_back(addSeries<ScatterSeries>(name));
+	scatterSeries.emplace_back(new ScatterSeries(typeX, typeY));
+	initSeries(scatterSeries.back().get(), name);
 	return scatterSeries.back().get();
 }
 
@@ -704,12 +705,14 @@ QtCharts::QValueAxis *StatsView::createValueAxis(double min, double max, int dec
 	return axis;
 }
 
+const double NaN = std::numeric_limits<double>::quiet_NaN();
+
 // These templates are used to extract min and max y-values of various lists.
 // A bit too convoluted for my tastes - can we make that simpler?
-static std::pair<double, double> getMinMaxValueBase(const std::vector<double> &values)
+static std::pair<double, double> getMinMaxValueBase(const std::vector<StatsValue> &values)
 {
 	// Attention: this supposes that the list is sorted!
-	return values.empty() ? std::make_pair(0.0, 0.0) : std::make_pair(values.front(), values.back());
+	return values.empty() ? std::make_pair(NaN, NaN) : std::make_pair(values.front().v, values.back().v);
 }
 static std::pair<double, double> getMinMaxValueBase(double v)
 {
@@ -718,6 +721,10 @@ static std::pair<double, double> getMinMaxValueBase(double v)
 static std::pair<double, double> getMinMaxValueBase(const StatsQuartiles &q)
 {
 	return { q.min, q.max };
+}
+static std::pair<double, double> getMinMaxValueBase(const StatsScatterItem &s)
+{
+	return { s.y, s.y };
 }
 template <typename T1, typename T2>
 static std::pair<double, double> getMinMaxValueBase(const std::pair<T1, T2> &p)
@@ -734,24 +741,10 @@ template <typename T>
 static void updateMinMax(double &min, double &max, const T &v)
 {
 	const auto [mi, ma] = getMinMaxValueBase(v);
-	if (mi < min)
+	if (!std::isnan(mi) && mi < min)
 		min = mi;
-	if (ma > max)
+	if (!std::isnan(ma) && ma > max)
 		max = ma;
-}
-
-// Sadly, this case has to be specialized, because empty-vector elements need special treatment.
-static std::pair<double, double> getMinMaxValue(const std::vector<std::vector<double>> &values)
-{
-	double min = 1e14, max = 0.0;
-	bool found = false;
-	for (const std::vector<double> &v: values) {
-		if (v.empty())
-			continue;
-		found = true;
-		updateMinMax(min, max, v);
-	}
-	return found ? std::make_pair(min, max) : std::make_pair(0.0, 0.0);
 }
 
 template <typename T>
@@ -1001,7 +994,7 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 	QBarCategoryAxis *catAxis = createCategoryAxis(*categoryBinner, categoryBins);
 	catAxis->setTitleText(categoryType->nameWithBinnerUnit(*categoryBinner));
 
-	std::vector<std::vector<double>> values;
+	std::vector<std::vector<StatsValue>> values;
 	values.reserve(categoryBins.size());
 	for (const auto &[dummy, dives]: categoryBins)
 		values.push_back(valueType->values(dives));
@@ -1012,12 +1005,12 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 	valAxis->setTitleText(valueType->nameWithUnit());
 
 	addAxes(catAxis, valAxis);
-	ScatterSeries *series = addScatterSeries(valueType->name());
+	ScatterSeries *series = addScatterSeries(valueType->name(), *categoryType, *valueType);
 
 	double x = 0.0;
-	for (const std::vector<double> &array: values) {
-		for (double v: array)
-			series->append(x, v);
+	for (const std::vector<StatsValue> &array: values) {
+		for (auto [v, d]: array)
+			series->append(d, x, v);
 		StatsQuartiles quartiles = StatsType::quartiles(array);
 		if (quartiles.isValid()) {
 			quartileMarkers.emplace_back(x, quartiles.q1, series);
@@ -1374,15 +1367,14 @@ static bool is_linear_regression(int sample_size, double cov, double sx2, double
 
 // Returns the coefficients [a,b] of the line y = ax + b
 // If case of an undetermined regression or one with infinite slope, returns [nan, nan]
-static std::pair<double, double> linear_regression(const std::vector<std::pair<double, double>> &v)
+static std::pair<double, double> linear_regression(const std::vector<StatsScatterItem> &v)
 {
-	const double NaN = std::numeric_limits<double>::quiet_NaN();
 	if (v.size() < 2)
 		return { NaN, NaN };
 
 	// First, calculate the x and y average
 	double avg_x = 0.0, avg_y = 0.0;
-	for (auto [x, y]: v) {
+	for (auto [x, y, d]: v) {
 		avg_x += x;
 		avg_y += y;
 	}
@@ -1390,7 +1382,7 @@ static std::pair<double, double> linear_regression(const std::vector<std::pair<d
 	avg_y /= (double)v.size();
 
 	double cov = 0.0, sx2 = 0.0, sy2 = 0.0;
-	for (auto [x, y]: v) {
+	for (auto [x, y, d]: v) {
 		cov += (x - avg_x) * (y - avg_y);
 		sx2 += (x - avg_x) * (x - avg_x);
 		sy2 += (y - avg_y) * (y - avg_y);
@@ -1413,12 +1405,12 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsType *c
 
 	setTitle(StatsTranslations::tr("%1 vs. %2").arg(valueType->name(), categoryType->name()));
 
-	std::vector<std::pair<double, double>> points = categoryType->scatter(*valueType, dives);
+	std::vector<StatsScatterItem> points = categoryType->scatter(*valueType, dives);
 	if (points.empty())
 		return;
 
-	double minX = points.front().first;
-	double maxX = points.back().first;
+	double minX = points.front().x;
+	double maxX = points.back().x;
 	auto [minY, maxY] = getMinMaxValue(points);
 
 	QValueAxis *axisX = createValueAxis(minX, maxX, categoryType->decimals(), true);
@@ -1428,10 +1420,10 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsType *c
 	axisY->setTitleText(valueType->nameWithUnit());
 
 	addAxes(axisX, axisY);
-	ScatterSeries *series = addScatterSeries(valueType->name());
+	ScatterSeries *series = addScatterSeries(valueType->name(), *categoryType, *valueType);
 
-	for (auto [x, y]: points)
-		series->append(x, y);
+	for (auto [x, y, dive]: points)
+		series->append(dive, x, y);
 
 	// y = ax + b
 	auto [a, b] = linear_regression(points);

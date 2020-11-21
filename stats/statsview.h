@@ -85,7 +85,7 @@ private:
 
 	template <typename T>
 	T *addSeries(const QString &name);
-	ScatterSeries *addScatterSeries(const QString &name);
+	ScatterSeries *addScatterSeries(const QString &name, const StatsType &typeX, const StatsType &typeY);
 	void initSeries(QtCharts::QAbstractSeries *series, const QString &name);
 
 	template<typename T>
