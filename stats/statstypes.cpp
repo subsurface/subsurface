@@ -251,6 +251,16 @@ std::vector<double> StatsType::values(const std::vector<dive *> &dives) const
 	return vec;
 }
 
+QString StatsType::valueWithUnit(const dive *d) const
+{
+	QLocale loc;
+	double v = toFloat(d);
+	if (is_invalid_value(v))
+		return QStringLiteral("-");
+	return QString("%1 %2").arg(loc.toString(v, 'f', decimals()),
+				    unitSymbol());
+}
+
 // Small helper to calculate quartiles - section of intervals of
 // two consecutive elements in a vector. It's not strictly correct
 // to interpolate linearly. However, on the one hand we don't know
@@ -320,18 +330,20 @@ double StatsType::applyOperation(const std::vector<dive *> &dives, StatsOperatio
 	}
 }
 
-std::vector<std::pair<double,double>> StatsType::scatter(const StatsType &t2, const std::vector<dive *> &dives) const
+std::vector<StatsScatterItem> StatsType::scatter(const StatsType &t2, const std::vector<dive *> &dives) const
 {
-	std::vector<std::pair<double,double>> res;
+	std::vector<StatsScatterItem> res;
 	res.reserve(dives.size());
-	for (const dive *d: dives) {
+	for (dive *d: dives) {
 		double v1 = toFloat(d);
 		double v2 = t2.toFloat(d);
 		if (is_invalid_value(v1) || is_invalid_value(v2))
 			continue;
-		res.emplace_back(v1, v2);
+		res.push_back({ v1, v2, d });
 	}
-	std::sort(res.begin(), res.end());
+	std::sort(res.begin(), res.end(),
+		  [](const StatsScatterItem &i1, const StatsScatterItem &i2)
+		  { return std::tie(i1.x, i1.y) < std::tie(i2.x, i2.y); }); // use std::tie() for lexicographical comparison
 	return res;
 }
 
