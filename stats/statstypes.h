@@ -45,6 +45,12 @@ struct StatsBin {
 
 using StatsBinPtr = std::unique_ptr<StatsBin>;
 
+// A value and a dive
+struct StatsValue {
+	double v;
+	dive *d;
+};
+
 // A bin and an arbitrarily associated value, e.g. a count or a list of dives.
 template<typename T>
 struct StatsBinValue {
@@ -52,6 +58,7 @@ struct StatsBinValue {
 	T value;
 };
 using StatsBinDives = StatsBinValue<std::vector<dive *>>;
+using StatsBinValues = StatsBinValue<std::vector<StatsValue>>;
 using StatsBinCount = StatsBinValue<int>;
 using StatsBinQuartiles = StatsBinValue<StatsQuartiles>;
 using StatsBinVal = StatsBinValue<double>;
@@ -84,12 +91,6 @@ struct StatsScatterItem {
 	dive *d;
 };
 
-// A value and a dive
-struct StatsValue {
-	double v;
-	dive *d;
-};
-
 struct StatsType {
 	enum class Type {
 		Discrete,
@@ -106,6 +107,7 @@ struct StatsType {
 	virtual QString diveCategories(const dive *d) const; // Only for discrete types
 	std::vector<StatsBinQuartiles> bin_quartiles(const StatsBinner &binner, const std::vector<dive *> &dives, bool fill_empty) const;
 	std::vector<StatsBinVal> bin_value(const StatsBinner &binner, const std::vector<dive *> &dives, StatsOperation op, bool fill_empty) const;
+	std::vector<StatsBinValues> bin_values(const StatsBinner &binner, const std::vector<dive *> &dives, bool fill_empty) const;
 	const StatsBinner *getBinner(int idx) const; // Handles out of bounds gracefully (returns first binner)
 	QString nameWithUnit() const;
 	QString nameWithBinnerUnit(const StatsBinner &) const;

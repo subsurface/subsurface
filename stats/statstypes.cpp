@@ -73,6 +73,11 @@ static bool is_invalid_value(const dive_site *d)
 	return !d;
 }
 
+static bool is_invalid_value(const std::vector<StatsValue> &v)
+{
+	return v.empty();
+}
+
 static bool is_invalid_value(const StatsQuartiles &q)
 {
 	return std::isnan(q.min);
@@ -390,6 +395,12 @@ std::vector<StatsBinVal> StatsType::bin_value(const StatsBinner &binner, const s
 {
 	return bin_convert<double>(*this, binner, dives, fill_empty,
 				   [this, op](const std::vector<dive *> &d) { return applyOperation(d, op); });
+}
+
+std::vector<StatsBinValues> StatsType::bin_values(const StatsBinner &binner, const std::vector<dive *> &dives, bool fill_empty) const
+{
+	return bin_convert<std::vector<StatsValue>>(*this, binner, dives, fill_empty,
+						    [this](const std::vector<dive *> &d) { return values(d); });
 }
 
 // Silly template, which spares us defining type() member functions.
