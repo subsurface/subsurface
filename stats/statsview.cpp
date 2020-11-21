@@ -985,7 +985,7 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 
 	setTitle(valueType->name());
 
-	std::vector<StatsBinDives> categoryBins = categoryBinner->bin_dives(dives, false);
+	std::vector<StatsBinValues> categoryBins = valueType->bin_values(*categoryBinner, dives, false);
 
 	// If there is nothing to display, quit
 	if (categoryBins.empty())
@@ -994,12 +994,7 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 	QBarCategoryAxis *catAxis = createCategoryAxis(*categoryBinner, categoryBins);
 	catAxis->setTitleText(categoryType->nameWithBinnerUnit(*categoryBinner));
 
-	std::vector<std::vector<StatsValue>> values;
-	values.reserve(categoryBins.size());
-	for (const auto &[dummy, dives]: categoryBins)
-		values.push_back(valueType->values(dives));
-
-	auto [minValue, maxValue] = getMinMaxValue(values);
+	auto [minValue, maxValue] = getMinMaxValue(categoryBins);
 
 	QValueAxis *valAxis = createValueAxis(minValue, maxValue, valueType->decimals(), false);
 	valAxis->setTitleText(valueType->nameWithUnit());
@@ -1008,7 +1003,7 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 	ScatterSeries *series = addScatterSeries(valueType->name(), *categoryType, *valueType);
 
 	double x = 0.0;
-	for (const std::vector<StatsValue> &array: values) {
+	for (const auto &[bin, array]: categoryBins) {
 		for (auto [v, d]: array)
 			series->append(d, x, v);
 		StatsQuartiles quartiles = StatsType::quartiles(array);
