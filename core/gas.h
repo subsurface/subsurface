@@ -67,6 +67,7 @@ extern fraction_t get_gas_component_fraction(struct gasmix mix, enum gas_compone
 extern void fill_pressures(struct gas_pressures *pressures, double amb_pressure, struct gasmix mix, double po2, enum divemode_t dctype);
 
 extern bool gasmix_is_air(struct gasmix gasmix);
+extern bool gasmix_is_invalid(struct gasmix mix);
 extern enum gastype gasmix_to_type(struct gasmix mix);
 extern const char *gastype_name(enum gastype type);
 

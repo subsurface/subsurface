@@ -4,6 +4,7 @@
 #include "core/dive.h"
 #include "core/divemode.h"
 #include "core/divesite.h"
+#include "core/gas.h"
 #include "core/pref.h"
 #include "core/qthelper.h" // for get_depth_unit() et al.
 #include "core/subsurface-time.h"
@@ -73,6 +74,34 @@ static bool is_invalid_value(const dive_site *d)
 	return !d;
 }
 
+
+struct gas_bin_t {
+	enum class Type {
+		Air,
+		Oxygen,
+		EAN,
+		Trimix
+	} type;
+	int o2, he;
+	static gas_bin_t air() {
+		return { Type::Air, 0, 0 };
+	}
+	static gas_bin_t oxygen() {
+		return { Type::Oxygen, 0, 0 };
+	}
+	static gas_bin_t ean(int o2) {
+		return { Type::EAN, o2, 0 };
+	}
+	static gas_bin_t trimix(int o2, int h2) {
+		return { Type::Trimix, o2, h2 };
+	}
+};
+
+static bool is_invalid_value(const gas_bin_t &)
+{
+	return false;
+}
+
 static bool is_invalid_value(const std::vector<StatsValue> &v)
 {
 	return v.empty();
@@ -86,6 +115,36 @@ static bool is_invalid_value(const StatsQuartiles &q)
 bool StatsQuartiles::isValid() const
 {
 	return !is_invalid_value(*this);
+}
+
+// Define an ordering for gas types
+// invalid < air < ean (including oxygen) < trimix
+// The latter two are sorted by (helium, oxygen)
+static bool operator<(const gas_bin_t &t1, const gas_bin_t &t2)
+{
+	if (t1.type != t2.type)
+		return (int)t1.type < (int)t2.type;
+	switch (t1.type) {
+	default:
+	case gas_bin_t::Type::Oxygen:
+	case gas_bin_t::Type::Air:
+		return false;
+	case gas_bin_t::Type::EAN:
+		return t1.o2 < t2.o2;
+	case gas_bin_t::Type::Trimix:
+		return std::tie(t1.o2, t1.he) < std::tie(t2.o2, t2.he);
+	}
+}
+
+static bool operator==(const gas_bin_t &t1, const gas_bin_t &t2)
+{
+	return std::tie(t1.type, t1.o2, t1.he) ==
+	       std::tie(t2.type, t2.o2, t2.he);
+}
+
+static bool operator!=(const gas_bin_t &t1, const gas_bin_t &t2)
+{
+	return !operator==(t1, t2);
 }
 
 // First, let's define the virtual destructors of our base classes
@@ -427,6 +486,7 @@ struct SimpleBin : public StatsBin {
 };
 using IntBin = SimpleBin<int>;
 using StringBin = SimpleBin<QString>;
+using GasTypeBin = SimpleBin<gas_bin_t>;
 
 // A general binner template that works on trivial bins that are based
 // on a type that is equality and less-than comparable. The derived class
@@ -626,36 +686,39 @@ std::vector<StatsBinPtr> SimpleContinuousBinner<Binner, Bin>::bins_between(const
 	return res;
 }
 
-// A binner that works on string-based bins whereby each dive can
-// produce multiple strings (e.g. dive buddies). The binner must
-// feature a to_string_list() function that produces a vector of
-// QStrings and bins that can be constructed from QStrings.
-// Other than that, see SimpleBinner.
+// A binner template for discrete types that where each dive can belong to
+// multiple bins. The bin-type must be less-than comparable. The derived class
+// must possess:
+//  - A to_bin_values() function that turns a dive into a value from
+//    which the bins can be constructed.
+// The bins must possess:
+//  - A member variable "value" of the type it is constructed with.
 template<typename Binner, typename Bin>
-struct StringBinner : public StatsBinner {
+struct MultiBinner : public StatsBinner {
 public:
+	using Type = decltype(Bin::value);
 	std::vector<StatsBinDives> bin_dives(const std::vector<dive *> &dives, bool fill_empty) const override;
 	std::vector<StatsBinCount> count_dives(const std::vector<dive *> &dives, bool fill_empty) const override;
 	const Binner &derived() const {
 		return static_cast<const Binner &>(*this);
 	}
-	QString format(const StatsBin &bin) const override {
-		return dynamic_cast<const Bin &>(bin).value;
+	const Bin &derived_bin(const StatsBin &bin) const {
+		return dynamic_cast<const Bin &>(bin);
 	}
 };
 
 template<typename Binner, typename Bin>
-std::vector<StatsBinDives> StringBinner<Binner, Bin>::bin_dives(const std::vector<dive *> &dives, bool) const
+std::vector<StatsBinDives> MultiBinner<Binner, Bin>::bin_dives(const std::vector<dive *> &dives, bool) const
 {
 	// First, collect a value / dives vector and then produce the final vector
 	// out of that. I wonder if that is permature optimization?
-	using Pair = std::pair<QString, std::vector<dive *>>;
+	using Pair = std::pair<Type, std::vector<dive *>>;
 	std::vector<Pair> value_bins;
 	for (dive *d: dives) {
-		for (const QString &s: derived().to_string_list(d)) {
-			if (is_invalid_value(s))
+		for (const Type &val: derived().to_bin_values(d)) {
+			if (is_invalid_value(val))
 				continue;
-			register_bin_value(value_bins, s,
+			register_bin_value(value_bins, val,
 					   [d](std::vector<dive *> &v) { v.push_back(d); });
 		}
 	}
@@ -665,14 +728,14 @@ std::vector<StatsBinDives> StringBinner<Binner, Bin>::bin_dives(const std::vecto
 }
 
 template<typename Binner, typename Bin>
-std::vector<StatsBinCount> StringBinner<Binner, Bin>::count_dives(const std::vector<dive *> &dives, bool) const
+std::vector<StatsBinCount> MultiBinner<Binner, Bin>::count_dives(const std::vector<dive *> &dives, bool) const
 {
 	// First, collect a value / counts vector and then produce the final vector
 	// out of that. I wonder if that is permature optimization?
-	using Pair = std::pair<QString, int>;
+	using Pair = std::pair<Type, int>;
 	std::vector<Pair> value_bins;
 	for (const dive *d: dives) {
-		for (const QString &s: derived().to_string_list(d)) {
+		for (const Type &s: derived().to_bin_values(d)) {
 			if (is_invalid_value(s))
 				continue;
 			register_bin_value(value_bins, s, [](int &i){ ++i; });
@@ -682,6 +745,19 @@ std::vector<StatsBinCount> StringBinner<Binner, Bin>::count_dives(const std::vec
 	// Now, turn that into our result array with allocated bin objects.
 	return value_vector_to_bin_vector<Bin>(*this, value_bins, false);
 }
+
+// A binner that works on string-based bins whereby each dive can
+// produce multiple strings (e.g. dive buddies). The binner must
+// feature a to_bin_values() function that produces a vector of
+// QStrings and bins that can be constructed from QStrings.
+// Other than that, see SimpleBinner.
+template<typename Binner, typename Bin>
+struct StringBinner : public MultiBinner<Binner, Bin> {
+public:
+	QString format(const StatsBin &bin) const override {
+		return dynamic_cast<const Bin &>(bin).value;
+	}
+};
 
 // ============ The date of the dive by year, quarter or month ============
 // (Note that calendar week is defined differently in different parts of the world and therefore omitted for now)
@@ -1002,7 +1078,6 @@ struct TemperatureBinner : public IntRangeBinner<TemperatureBinner, IntBin> {
 		air(air)
 	{
 	}
-	using IntRangeBinner::IntRangeBinner;
 	QString name() const override {
 		QLocale loc;
 		return StatsTranslations::tr("in %1 %2 steps").arg(loc.toString(bin_size),
@@ -1110,7 +1185,7 @@ struct DiveModeType : public StatsTypeTemplate<StatsType::Type::Discrete> {
 // ============ Buddy (including dive guides) ============
 
 struct BuddyBinner : public StringBinner<BuddyBinner, StringBin> {
-	std::vector<QString> to_string_list(const dive *d) const {
+	std::vector<QString> to_bin_values(const dive *d) const {
 		std::vector<QString> dive_people;
 		for (const QString &s: QString(d->buddy).split(",", SKIP_EMPTY))
 			dive_people.push_back(s.trimmed());
@@ -1137,10 +1212,234 @@ struct BuddyType : public StatsTypeTemplate<StatsType::Type::Discrete> {
 	}
 };
 
+// ============ Gas type, in 2%, 5%, 10% and 20% steps  ============
+// This is a bit convoluted: We differentiate between four types: air, pure oxygen, EAN and trimix
+// The latter two are binned in x% steps. The problem is that we can't use the "simple binner",
+// because a dive can have more than one cylinder. Moreover, the string-binner might not be optimal
+// because we don't want to format a string for every gas types, when there are thousands of dives!
+// Note: when the same dive has multiple cylinders that fall inside a bin, that cylinder will
+// only be counted once. Thus, depending on the bin size, the number of entries may change!
+// In addition to a binner with percent-steps also provide a general-type binner (air, nitrox, etc.)
+
+// bin gasmix with size given in percent
+struct gas_bin_t bin_gasmix(struct gasmix mix, int size)
+{
+	if (gasmix_is_air(mix))
+		return gas_bin_t::air();
+	if (mix.o2.permille == 1000)
+		return gas_bin_t::oxygen();
+	return mix.he.permille == 0 ?
+		gas_bin_t::ean(mix.o2.permille / 10 / size * size) :
+		gas_bin_t::trimix(mix.o2.permille / 10 / size * size,
+				 mix.he.permille / 10 / size * size);
+}
+
+struct GasTypeBinner : public MultiBinner<GasTypeBinner, GasTypeBin> {
+	int bin_size;
+	GasTypeBinner(int size)
+		: bin_size(size)
+	{
+	}
+	QString name() const override {
+		return StatsTranslations::tr("in %1% steps").arg(bin_size);
+	}
+	std::vector<gas_bin_t> to_bin_values(const dive *d) const {
+		std::vector<gas_bin_t> res;
+		res.reserve(d->cylinders.nr);
+		for (int i = 0; i < d->cylinders.nr; ++i) {
+			struct gasmix mix = d->cylinders.cylinders[i].gasmix;
+			if (gasmix_is_invalid(mix))
+				continue;
+			struct gas_bin_t type = bin_gasmix(mix, bin_size);
+			// Add dive to each bin only once.
+			if (std::find(res.begin(), res.end(), type) == res.end())
+				res.push_back(type);
+		}
+		return res;
+	}
+	QString format(const StatsBin &bin) const override {
+		gas_bin_t type = derived_bin(bin).value;
+		QLocale loc;
+		switch (type.type) {
+		default:
+		case gas_bin_t::Type::Air:
+			return StatsTranslations::tr("Air");
+		case gas_bin_t::Type::Oxygen:
+			return StatsTranslations::tr("Oxygen");
+		case gas_bin_t::Type::EAN:
+			return StatsTranslations::tr("EAN%1–%2").arg(loc.toString(type.o2),
+								     loc.toString(type.o2 + bin_size - 1));
+		case gas_bin_t::Type::Trimix:
+			return StatsTranslations::tr("%1/%2–%3/%4").arg(loc.toString(type.o2),
+									loc.toString(type.he),
+									loc.toString(type.o2 + bin_size - 1),
+									loc.toString(type.he + bin_size - 1));
+		}
+	}
+};
+
+struct GasTypeGeneralBinner : public MultiBinner<GasTypeGeneralBinner, IntBin> {
+	using MultiBinner::MultiBinner;
+	QString name() const override {
+		return StatsTranslations::tr("General");
+	}
+	std::vector<int> to_bin_values(const dive *d) const {
+		std::vector<int> res;
+		res.reserve(d->cylinders.nr);
+		for (int i = 0; i < d->cylinders.nr; ++i) {
+			struct gasmix mix = d->cylinders.cylinders[i].gasmix;
+			if (gasmix_is_invalid(mix))
+				continue;
+			res.push_back(gasmix_to_type(mix));
+		}
+		return res;
+	}
+	QString format(const StatsBin &bin) const override {
+		int type = derived_bin(bin).value;
+		return gastype_name((gastype)type);
+	}
+};
+
+static GasTypeGeneralBinner gas_type_general_binner;
+static GasTypeBinner gas_type_binner2(2);
+static GasTypeBinner gas_type_binner5(5);
+static GasTypeBinner gas_type_binner10(10);
+static GasTypeBinner gas_type_binner20(20);
+
+struct GasTypeType : public StatsTypeTemplate<StatsType::Type::Discrete> {
+	QString name() const override {
+		return StatsTranslations::tr("Gas type");
+	}
+	QString diveCategories(const dive *d) const override {
+		QString res;
+		std::vector<gasmix> mixes;	// List multiple cylinders only once
+		mixes.reserve(d->cylinders.nr);
+		for (int i = 0; i < d->cylinders.nr; ++i) {
+			struct gasmix mix = d->cylinders.cylinders[i].gasmix;
+			if (gasmix_is_invalid(mix))
+				continue;
+			if (std::find_if(mixes.begin(), mixes.end(),
+					 [mix] (gasmix mix2)
+					 { return same_gasmix(mix, mix2); }) != mixes.end())
+				continue;
+			mixes.push_back(mix);
+			if (!res.isEmpty())
+				res += ", ";
+			res += get_gas_string(mix);
+		}
+		return res;
+	}
+	std::vector<const StatsBinner *> binners() const override {
+		return { &gas_type_general_binner,
+			 &gas_type_binner2, &gas_type_binner5, &gas_type_binner10, &gas_type_binner20 };
+	}
+};
+
+// ============ O2 and H2 content, binned in 2, 5, 10, 20 % bins ============
+
+// Get the gas content in permille of a dive, based on two flags:
+//  - he: get he content, otherwise o2
+//  - max_he: get cylinder with maximum he content, otherwise with maximum o2 content
+static int get_gas_content(const struct dive *d, bool he, bool max_he)
+{
+	if (d->cylinders.nr <= 0)
+		return invalid_value<int>();
+	// If sorting be He, the second sort criterion is O2 descending, because
+	// we are interested in the "bottom gas": highest He and lowest O2.
+	auto comp = max_he ? [] (const cylinder_t &c1, const cylinder_t &c2)
+				{ return std::make_tuple(get_he(c1.gasmix), -get_o2(c1.gasmix)) <
+					 std::make_tuple(get_he(c2.gasmix), -get_o2(c2.gasmix)); }
+			   : [] (const cylinder_t &c1, const cylinder_t &c2)
+				{ return get_o2(c1.gasmix) < get_o2(c2.gasmix); };
+	auto it = std::max_element(d->cylinders.cylinders, d->cylinders.cylinders + d->cylinders.nr, comp);
+	return he ? get_he(it->gasmix) : get_o2(it->gasmix);
+}
+
+// We use the same binner for all gas contents
+struct GasContentBinner : public IntRangeBinner<GasContentBinner, IntBin> {
+	bool he; // true if this returns He content, otherwise O2
+	bool max_he; // true if this takes the gas with maximum helium, otherwise maximum O2
+	GasContentBinner(int bin_size, bool he, bool max_he) : IntRangeBinner(bin_size),
+		he(he), max_he(max_he)
+	{
+	}
+	QString name() const override {
+		return StatsTranslations::tr("In %L1% steps").arg(bin_size);
+	}
+	QString unitSymbol() const override {
+		return "%";
+	}
+	int to_bin_value(const struct dive *d) const {
+		int res = get_gas_content(d, he, max_he);
+		// Convert to percent and then bin, but take care not to mangle the invalid value.
+		return is_invalid_value(res) ? res : res / 10 / bin_size;
+	}
+};
+
+struct GasContentType : public StatsTypeTemplate<StatsType::Type::Numeric> {
+
+	// In the constructor, generate binners with 2, 5, 10 and 20% bins.
+	GasContentBinner b1, b2, b3, b4;
+	bool he, max_he;
+	GasContentType(bool he, bool max_he) :
+		b1(2, he, max_he), b2(5, he, max_he),
+		b3(10, he, max_he), b4(20, he, max_he),
+		he(he), max_he(max_he)
+	{
+	}
+	std::vector<const StatsBinner *> binners() const override {
+		return { &b1, &b2, &b3, &b4 };
+	}
+	QString unitSymbol() const override {
+		return "%";
+	}
+	int decimals() const override {
+		return 1;
+	}
+	std::vector<StatsOperation> supportedOperations() const override {
+		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::TimeWeightedMean };
+	}
+	double toFloat(const dive *d) const override {
+		int res = get_gas_content(d, he, max_he);
+		// Attn: we have to turn invalid-int into invalid-float.
+		// Perhaps we should signal invalid with an std::optional kind of object?
+		if (is_invalid_value(res))
+			return invalid_value<double>();
+		return res / 10.0;
+	}
+};
+
+struct GasContentO2Type : GasContentType {
+	GasContentO2Type() : GasContentType(false, false)
+	{
+	}
+	QString name() const override {
+		return StatsTranslations::tr("O₂ (max)");
+	}
+};
+
+struct GasContentO2HeMaxType : GasContentType {
+	GasContentO2HeMaxType() : GasContentType(false, true)
+	{
+	}
+	QString name() const override {
+		return StatsTranslations::tr("O₂ (bottom gas)");
+	}
+};
+
+struct GasContentHeType : GasContentType {
+	GasContentHeType() : GasContentType(true, true)
+	{
+	}
+	QString name() const override {
+		return StatsTranslations::tr("He (max)");
+	}
+};
+
 // ============ Suit  ============
 
 struct SuitBinner : public StringBinner<SuitBinner, StringBin> {
-	std::vector<QString> to_string_list(const dive *d) const {
+	std::vector<QString> to_bin_values(const dive *d) const {
 		return { QString(d->suit) };
 	}
 };
@@ -1193,20 +1492,27 @@ static WaterTemperatureType water_temperature_type;
 static AirTemperatureType air_temperature_type;
 static DiveModeType dive_mode_type;
 static BuddyType buddy_type;
+static GasTypeType gas_type_type;
+static GasContentO2Type gas_content_o2_type;
+static GasContentO2HeMaxType gas_content_o2_he_max_type;
+static GasContentHeType gas_content_he_type;
 static SuitType suit_type;
 static LocationType location_type;
 const std::vector<const StatsType *> stats_types = {
 	&date_type, &depth_type, &duration_type, &sac_type,
 	&water_temperature_type, &air_temperature_type,
-	&dive_mode_type, &buddy_type, &suit_type, &location_type
+	&gas_content_o2_type, &gas_content_o2_he_max_type, &gas_content_he_type,
+	&dive_mode_type, &buddy_type, &gas_type_type, &suit_type, &location_type
 };
 
 const std::vector<const StatsType *> stats_continuous_types = {
 	&date_type, &depth_type, &duration_type, &sac_type,
-	&water_temperature_type, &air_temperature_type
+	&water_temperature_type, &air_temperature_type,
+	&gas_content_o2_he_max_type, &gas_content_o2_he_max_type, &gas_content_he_type
 };
 
 const std::vector<const StatsType *> stats_numeric_types = {
 	&depth_type, &duration_type, &sac_type,
-	&water_temperature_type, &air_temperature_type
+	&water_temperature_type, &air_temperature_type,
+	&gas_content_o2_type, &gas_content_o2_he_max_type, &gas_content_he_type
 };
