@@ -10,11 +10,13 @@ void cliDownloader(const char *vendor, const char *product, const char *device)
 	DiveImportedModel *diveImportedModel = new DiveImportedModel();
 	DiveImportedModel::connect(diveImportedModel, &DiveImportedModel::downloadFinished, [] {
 		// do something useful at the end of the download
+		printf("Finished\n");
 	});
 
 	auto data = diveImportedModel->thread.data();
 	data->setVendor(vendor);
 	data->setProduct(product);
+	data->setBluetoothMode(false);
 	if (data->vendor() == "Uemis") {
 		char *colon;
 		char *devname = strdup(device);
@@ -29,7 +31,7 @@ void cliDownloader(const char *vendor, const char *product, const char *device)
 
 	// some assumptiond - should all be configurable
 	data->setForceDownload(false);
-	data->setSaveLog(false);
+	data->setSaveLog(true);
 	data->setSaveDump(false);
 
 	// before we start, remember where the dive_table ended
