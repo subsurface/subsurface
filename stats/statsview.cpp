@@ -874,18 +874,27 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 		// The Pie chart becomes very slow for a big number of slices.
 		// Moreover, it is unreadable. Therefore, subsume slices under a
 		// certain percentage as "other". But draw a minimum number of slices
-		// so that we never get a pie only of "other".
+		// until we reach 50% so that we never get a pie only of "other".
 		// This is heuristics, which might have to be optimized.
 		const int smallest_slice_percentage = 2; // Smaller than 2% = others. That makes at most 50 slices.
-		const int min_slices = 10; // Try to draw at least 10 slices.
+		const int min_slices = 10; // Try to draw at least 10 slices until we reach 50%
 		std::sort(categoryBins.begin(), categoryBins.end(),
 			  [](const StatsBinCount &item1, const StatsBinCount &item2)
 			  { return item1.value > item2.value; }); // Note: reverse sort.
 		auto it = std::find_if(categoryBins.begin(), categoryBins.end(),
 				       [total, smallest_slice_percentage](const StatsBinCount &item)
 				       { return item.value * 100 / total < smallest_slice_percentage; });
-		if (it - categoryBins.begin() < min_slices)
-			it = categoryBins.begin() + std::min(min_slices, (int)categoryBins.size());
+		if (it - categoryBins.begin() < min_slices) {
+			// Take minimum amount of slices below 50%...
+			int sum = 0;
+			for (auto it2 = categoryBins.begin(); it2 != it; ++it2)
+				sum += it2->value;
+
+			while(it != categoryBins.end() &&
+			      sum * 2 < total &&
+			      it - categoryBins.begin() < min_slices)
+				sum += it->value;
+		}
 
 		// Sum counts of "other" bins.
 		int otherCount = 0;
