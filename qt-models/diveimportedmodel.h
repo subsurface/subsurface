@@ -28,6 +28,7 @@ public:
 	int numDives() const;
 	Q_INVOKABLE void recordDives(int flags = IMPORT_PREFER_IMPORTED | IMPORT_IS_DOWNLOADED);
 	Q_INVOKABLE void startDownload();
+	Q_INVOKABLE void waitForDownload();
 
 	DownloadThread thread;
 public
