@@ -329,9 +329,14 @@ android {
 		../googlemaps-build/libqtgeoservices_googlemaps_$${QT_ARCH}.so
 
 	# ensure that the openssl libraries are bundled into the app
+	# for some reason doing so with dollar dollar { QT_ARCH } (like what works
+	# above for the link time case) doesn not work for the EXTRA_LIBS case.
+	# so stupidly do it explicitly
 	ANDROID_EXTRA_LIBS += \
-		../install-root-$${QT_ARCH}/lib/libcrypto_1_1.so \
-		../install-root-$${QT_ARCH}/lib/libssl_1_1.so
+		../install-root-arm64-v8a/lib/libcrypto_1_1.so \
+		../install-root-arm64-v8a/lib/libssl_1_1.so \
+		../install-root-armeabi-v7a/lib/libcrypto_1_1.so \
+		../install-root-armeabi-v7a/lib/libssl_1_1.so
 
 	INCLUDEPATH += ../install-root-$${QT_ARCH}/include/ \
 		../install-root/lib/libzip/include \
