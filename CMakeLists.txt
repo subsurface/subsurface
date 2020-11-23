@@ -392,6 +392,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 	set(DOWNLOADER_APP
 		subsurface-downloader-main.cpp
+		cli-downloader.cpp
 	)
 	source_group("Downloader App" FILES ${DOWNLOADER_APP})
 	add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${DOWNLOADER_APP} ${SUBSURFACE_RESOURCES})
