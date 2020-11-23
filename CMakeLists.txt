@@ -328,25 +328,29 @@ endif()
 
 # create the executables
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
+	# set up Kirigami using KDE ECM
+	# that's available as kde-extra-cmake-modules on Homebrew, on all Linux flavors
+	# Android and iOS are built via qmake, Windows build of Subsurface-mobile isn't supported
+	find_package(ECM REQUIRED CONFIG)
+	set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH})
+	set(BREEZEICONS_DIR mobile-widgets/3rdparty/breeze-icons/)
+
+	SET(QML_IMPORT_PATH ${QML_IMPORT_PATH} ${CMAKE_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami/src ${CMAKE_SOURCE_DIR}/mobile-widgets/qml)
+	add_subdirectory(mobile-widgets/3rdparty)
+	include_directories(${CMAKE_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami/src)
+	include(${CMAKE_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami/KF5Kirigami2Macros.cmake)
+
 	set(MOBILE_SRC
 		subsurface-mobile-main.cpp
 		subsurface-helper.cpp
 	)
-	include_directories(${CMAKE_SOURCE_DIR}/mobile-widgets/qml/kirigami/src/libkirigami)
-	add_definitions(-DKIRIGAMI_BUILD_TYPE_STATIC)
 	qt5_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
-	qt5_add_resources(MOBILE_RESOURCES mobile-widgets/qml/kirigami/kirigami.qrc)
-	# When building the mobile application in Android, link it and Qt will do the rest, when doing the mobile application on Desktop, create an executable.
-	if(ANDROID)
-		qt5_add_resources(MOBILE_RESOURCES android-mobile/font.qrc)
-		add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${MOBILE_SRC} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
-	else()
-		# the following is split across two commands since in cmake 3.12 this would result
-		# in a non-sensical "no sources given to target" error if done all as one set of
-		# arguments to the add_executable() call
-		add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES})
-		target_sources(${SUBSURFACE_TARGET} PUBLIC ${MOBILE_SRC} ${MOBILE_RESOURCES})
-	endif()
+
+	# the following is split across two commands since in cmake 3.12 this would result
+	# in a non-sensical "no sources given to target" error if done all as one set of
+	# arguments to the add_executable() call
+	add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES})
+	target_sources(${SUBSURFACE_TARGET} PUBLIC ${MOBILE_SRC} ${MOBILE_RESOURCES})
 	target_link_libraries(
 		${SUBSURFACE_TARGET}
 		subsurface_mobile
@@ -356,6 +360,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		subsurface_models_mobile
 		subsurface_commands
 		subsurface_corelib
+		kirigamiplugin
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
