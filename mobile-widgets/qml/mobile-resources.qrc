@@ -96,33 +96,7 @@
 		<file alias="icons/ic_sort.svg">icons/ic_sort_24px.svg</file>
 		<file alias="icons/trip_details.svg">icons/local_offer.svg</file>
 
-		<!-- ********** kirigami icons ********** -->
-		<file alias="icons/application-menu.svg">kirigami/icons/application-menu.svg</file>
-		<file alias="icons/dialog-cancel.svg">kirigami/icons/dialog-cancel.svg</file>
-		<file alias="icons/distribute-horizontal-x.svg">kirigami/icons/distribute-horizontal-x.svg</file>
-		<file alias="icons/document-edit.svg">kirigami/icons/document-edit.svg</file>
-		<file alias="icons/document-save.svg">kirigami/icons/document-save.svg</file>
-		<file alias="icons/go-up.svg">kirigami/icons/go-up.svg</file>
-		<file alias="icons/gps.svg">kirigami/icons/gps.svg</file>
-		<file alias="icons/handle-left.svg">kirigami/icons/handle-left.svg</file>
-		<file alias="icons/handle-right.svg">kirigami/icons/handle-right.svg</file>
-		<file alias="icons/map-globe.svg">kirigami/icons/map-globe.svg</file>
-		<file alias="icons/list-add.svg">kirigami/icons/list-add.svg</file>
-		<file alias="icons/overflow-menu.svg">kirigami/icons/overflow-menu.svg</file>
-		<file alias="icons/trash-empty.svg">kirigami/icons/trash-empty.svg</file>
-		<file alias="icons/edit-copy.svg">kirigami/icons/edit-copy.svg</file>
-		<file alias="icons/edit-paste.svg">kirigami/icons/edit-paste.svg</file>
-		<file alias="icons/view-readermode.svg">kirigami/icons/view-readermode.svg</file>
 	</qresource>
-
-	<qresource prefix="/">
-		<!-- ********** kirigami icons ********** -->
-		<file alias="/org/kde/kirigami/templates/private/go-next-symbolic">kirigami/icons/go-next.svg</file>
-		<file alias="/org/kde/kirigami/templates/private/go-previous-symbolic">kirigami/icons/go-previous.svg</file>
-		<file alias="go-next-symbolic">kirigami/icons/go-next.svg</file>
-		<file alias="go-previous-symbolic">kirigami/icons/go-previous.svg</file>
-	</qresource>
-
 
 	<qresource prefix="/xslt">
 		<!-- ********** xslt ********** -->

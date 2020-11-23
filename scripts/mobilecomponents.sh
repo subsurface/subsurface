@@ -14,6 +14,17 @@ if [ ! -d "$SRC/subsurface" ] || [ ! -d "mobile-widgets" ] || [ ! -d "core" ] ; 
 	exit 1
 fi
 
+# completely changing the Kirigami build, going down the path that the
+# Kirigami developers favor, which is to install Kirigami and Breeze in
+# a 3rdparty folder within our sources
+./scripts/get-dep-lib.sh single "$SRC"/subsurface/mobile-widgets/3rdparty kirigami
+./scripts/get-dep-lib.sh single "$SRC"/subsurface/mobile-widgets/3rdparty breeze-icons
+
+
+exit 0
+
+
+
 # now bring in the latest Kirigami mobile components plus a couple of icons that we need
 # first, get the latest from upstream
 # yes, this is a bit overkill as we clone a lot of stuff for just a few files, but this way
@@ -64,7 +75,7 @@ sed -i -e "s/width: backgroundRect/enabled: root.enabled;    width: backgroundRe
 # double defined symbols in our setting. I would like a nicer fix for this
 # issue, but failed to find one. For example, not adding the resource in
 # our build causes the qrc file not to be generated. Manual generation
-# of the resource file (using rcc) introduces the double symbols again. 
+# of the resource file (using rcc) introduces the double symbols again.
 # so it seems some Kirigami weirdness (but their staticcmake example compiles
 # correctly).
 
