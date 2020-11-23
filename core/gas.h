@@ -22,6 +22,14 @@ struct gasmix {
 static const struct gasmix gasmix_invalid = { { -1 }, { -1 } };
 static const struct gasmix gasmix_air = { { 0 }, { 0 } };
 
+enum gastype {
+	GASTYPE_AIR,
+	GASTYPE_NITROX,
+	GASTYPE_NORMOXIC,
+	GASTYPE_TRIMIX,
+	GASTYPE_COUNT
+};
+
 struct icd_data { // This structure provides communication between function isobaric_counterdiffusion() and the calling software.
 	int dN2;      // The change in fraction (permille) of nitrogen during the change
 	int dHe;      // The change in fraction (permille) of helium during the change
@@ -59,6 +67,8 @@ extern fraction_t get_gas_component_fraction(struct gasmix mix, enum gas_compone
 extern void fill_pressures(struct gas_pressures *pressures, double amb_pressure, struct gasmix mix, double po2, enum divemode_t dctype);
 
 extern bool gasmix_is_air(struct gasmix gasmix);
+extern enum gastype gasmix_to_type(struct gasmix mix);
+extern const char *gastype_name(enum gastype type);
 
 #ifdef __cplusplus
 }

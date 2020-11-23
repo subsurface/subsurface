@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "gas.h"
 #include "pref.h"
+#include "gettext.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -138,4 +139,27 @@ void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, 
 			pressures->n2 = get_n2(mix) / 1000.0 * amb_pressure;
 		}
 	}
+}
+
+enum gastype gasmix_to_type(struct gasmix mix)
+{
+	if (gasmix_is_air(mix))
+		return GASTYPE_AIR;
+	if (mix.he.permille == 0)
+		return mix.o2.permille >= 230 ? GASTYPE_NITROX : GASTYPE_AIR;
+	return mix.he.permille <= 300 ? GASTYPE_NORMOXIC : GASTYPE_TRIMIX;
+}
+
+static const char *gastype_names[] = {
+	QT_TRANSLATE_NOOP("gettextFromC", "Air"),
+	QT_TRANSLATE_NOOP("gettextFromC", "Nitrox"),
+	QT_TRANSLATE_NOOP("gettextFromC", "Normoxic"),
+	QT_TRANSLATE_NOOP("gettextFromC", "Trimix")
+};
+
+const char *gastype_name(enum gastype type)
+{
+	if (type < 0 || type >= GASTYPE_COUNT)
+		return "";
+	return translate("gettextFromC", gastype_names[type]);
 }
