@@ -31,11 +31,6 @@ PreferencesDialog* PreferencesDialog::instance()
 	return self;
 }
 
-void PreferencesDialog::emitSettingsChanged()
-{
-	emit settingsChanged();
-}
-
 PreferencesDialog::PreferencesDialog()
 {
 	//FIXME: This looks wrong.
