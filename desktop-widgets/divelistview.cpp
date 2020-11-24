@@ -679,15 +679,7 @@ void DiveListView::mergeTripBelow()
 
 void DiveListView::removeFromTrip()
 {
-	//TODO: move this to C-code.
-	int i;
-	struct dive *d;
-	QVector<dive *> divesToRemove;
-	for_each_dive (i, d) {
-		if (d->selected && d->divetrip)
-			divesToRemove.append(d);
-	}
-	Command::removeDivesFromTrip(divesToRemove);
+	Command::removeDivesFromTrip(stdToQt(getDiveSelection()));
 }
 
 void DiveListView::newTripAbove()
@@ -695,14 +687,7 @@ void DiveListView::newTripAbove()
 	struct dive *d = contextMenuIndex.data(DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
 	if (!d) // shouldn't happen as we only are setting up this action if this is a dive
 		return;
-	//TODO: port to c-code.
-	int idx;
-	QVector<dive *> dives;
-	for_each_dive (idx, d) {
-		if (d->selected)
-			dives.append(d);
-	}
-	Command::createTrip(dives);
+	Command::createTrip(stdToQt(getDiveSelection()));
 }
 
 void DiveListView::addToTripBelow()
