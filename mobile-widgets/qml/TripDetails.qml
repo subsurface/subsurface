@@ -81,9 +81,9 @@ Kirigami.Page {
 			TemplateLabel {
 				Layout.columnSpan: 2
 				id: title
-			text: qsTr("Edit trip details")
-			font.pointSize: subsurfaceTheme.titlePointSize
-			font.bold: true
+				text: qsTr("Edit trip details")
+				font.pointSize: subsurfaceTheme.titlePointSize
+				font.bold: true
 			}
 			Rectangle {
 				id: spacer
