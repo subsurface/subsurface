@@ -740,8 +740,14 @@ void TripBase::undoit()
 	redoit();
 }
 
-RemoveDivesFromTrip::RemoveDivesFromTrip(const QVector<dive *> &divesToRemove)
+RemoveDivesFromTrip::RemoveDivesFromTrip(const QVector<dive *> &divesToRemoveIn)
 {
+	// Filter out dives outside of trip. Note: This is in a separate loop to get the command-description right.
+	QVector<dive *> divesToRemove;
+	for (dive *d: divesToRemoveIn) {
+		if (d->divetrip)
+			divesToRemove.push_back(d);
+	}
 	setText(QStringLiteral("%1 [%2]").arg(Command::Base::tr("remove %n dive(s) from trip", "", divesToRemove.size())).arg(getListOfDives(divesToRemove)));
 	divesToMove.divesToMove.reserve(divesToRemove.size());
 	for (dive *d: divesToRemove) {
