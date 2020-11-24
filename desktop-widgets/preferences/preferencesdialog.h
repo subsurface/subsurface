@@ -18,7 +18,6 @@ public:
 	~PreferencesDialog();
 	void addPreferencePage(AbstractPreferencesWidget *page);
 	void refreshPages();
-	void emitSettingsChanged();
 	void defaultsRequested();
 signals:
 	void settingsChanged();
