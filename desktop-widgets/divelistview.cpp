@@ -61,6 +61,32 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent),
 	for (int i = DiveTripModelBase::NR; i < DiveTripModelBase::COLUMNS; i++)
 		calculateInitialColumnWidth(i);
 	setColumnWidths();
+
+	QSettings s;
+	s.beginGroup("DiveListColumnState");
+	for (int i = 0; i < model()->columnCount(); i++) {
+		QString title = QString("%1").arg(model()->headerData(i, Qt::Horizontal).toString());
+		QString settingName = QString("showColumn%1").arg(i);
+		QAction *a = new QAction(title, header());
+		bool showHeaderFirstRun = !(i == DiveTripModelBase::MAXCNS ||
+					    i == DiveTripModelBase::GAS ||
+					    i == DiveTripModelBase::OTU ||
+					    i == DiveTripModelBase::TEMPERATURE ||
+					    i == DiveTripModelBase::TOTALWEIGHT ||
+					    i == DiveTripModelBase::SUIT ||
+					    i == DiveTripModelBase::CYLINDER ||
+					    i == DiveTripModelBase::SAC ||
+					    i == DiveTripModelBase::TAGS);
+		bool shown = s.value(settingName, showHeaderFirstRun).toBool();
+		a->setCheckable(true);
+		a->setChecked(shown);
+		a->setProperty("index", i);
+		a->setProperty("settingName", settingName);
+		connect(a, SIGNAL(triggered(bool)), this, SLOT(toggleColumnVisibilityByIndex()));
+		header()->addAction(a);
+		setColumnHidden(i, !shown);
+	}
+	s.endGroup();
 }
 
 DiveListView::~DiveListView()
@@ -353,44 +379,10 @@ void DiveListView::reload()
 void DiveListView::settingsChanged()
 {
 	update();
-	reloadHeaderActions();
-}
 
-void DiveListView::reloadHeaderActions()
-{
-	// Populate the context menu of the headers that will show
-	// the menu to show / hide columns.
-	if (!header()->actions().size()) {
-		QSettings s;
-		s.beginGroup("DiveListColumnState");
-		for (int i = 0; i < model()->columnCount(); i++) {
-			QString title = QString("%1").arg(model()->headerData(i, Qt::Horizontal).toString());
-			QString settingName = QString("showColumn%1").arg(i);
-			QAction *a = new QAction(title, header());
-			bool showHeaderFirstRun = !(i == DiveTripModelBase::MAXCNS ||
-						    i == DiveTripModelBase::GAS ||
-						    i == DiveTripModelBase::OTU ||
-						    i == DiveTripModelBase::TEMPERATURE ||
-						    i == DiveTripModelBase::TOTALWEIGHT ||
-						    i == DiveTripModelBase::SUIT ||
-						    i == DiveTripModelBase::CYLINDER ||
-						    i == DiveTripModelBase::SAC ||
-						    i == DiveTripModelBase::TAGS);
-			bool shown = s.value(settingName, showHeaderFirstRun).toBool();
-			a->setCheckable(true);
-			a->setChecked(shown);
-			a->setProperty("index", i);
-			a->setProperty("settingName", settingName);
-			connect(a, SIGNAL(triggered(bool)), this, SLOT(toggleColumnVisibilityByIndex()));
-			header()->addAction(a);
-			setColumnHidden(i, !shown);
-		}
-		s.endGroup();
-	} else {
-		for (int i = 0; i < model()->columnCount(); i++) {
-			QString title = QString("%1").arg(model()->headerData(i, Qt::Horizontal).toString());
-			header()->actions()[i]->setText(title);
-		}
+	for (int i = 0; i < model()->columnCount(); i++) {
+		QString title = model()->headerData(i, Qt::Horizontal).toString();
+		header()->actions()[i]->setText(title);
 	}
 }
 

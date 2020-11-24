@@ -219,8 +219,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	graphics->setEmptyState();
 	initialUiSetup();
 	readSettings();
-	diveList->reload();
-	diveList->reloadHeaderActions();
 	diveList->setFocus();
 	MapWidget::instance()->reload();
 	diveList->expand(diveList->model()->index(0, 0));

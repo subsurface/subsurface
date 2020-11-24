@@ -34,7 +34,6 @@ signals:
 public
 slots:
 	void settingsChanged();
-	void reloadHeaderActions();
 private
 slots:
 	void toggleColumnVisibilityByIndex();
