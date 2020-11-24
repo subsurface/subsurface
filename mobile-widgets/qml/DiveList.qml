@@ -12,7 +12,7 @@ Kirigami.ScrollablePage {
 	objectName: "DiveList"
 	title: qsTr("Dive list")
 	verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-	property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
+	property int dlHorizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
 	property QtObject diveListModel: null
 
 	supportsRefreshing: true
@@ -129,7 +129,7 @@ Kirigami.ScrollablePage {
 						anchors {
 							verticalCenter: parent.verticalCenter
 							left: dateBox.right
-							leftMargin: horizontalPadding * 2
+							leftMargin: dlHorizontalPadding * 2
 							right: parent.right
 						}
 						color: subsurfaceTheme.lightPrimaryTextColor
@@ -190,7 +190,7 @@ Kirigami.ScrollablePage {
 								color: selected ? subsurfaceTheme.darkerPrimaryTextColor : subsurfaceTheme.textColor
 								anchors {
 									left: parent.left
-									leftMargin: horizontalPadding * 2
+									leftMargin: dlHorizontalPadding * 2
 									topMargin: Kirigami.Units.smallSpacing / 2
 									top: parent.top
 									right: parent.right
