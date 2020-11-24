@@ -27,7 +27,8 @@ Kirigami.Page {
 
 	function resetState() {
 		// make sure we have the right width and reset focus / state if there aren't any unsaved changes
-		width = parent.width
+		if (parent)
+			width = parent.width
 		if (tripLocation === tripLocationField.text && tripNotes === tripNotesField.text) {
 			tripLocationField.focus = false
 			tripNotesField.focus = false
