@@ -217,30 +217,30 @@ if(ANDROID)
 	list(APPEND QT_EXTRA_COMPONENTS AndroidExtras)
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -llog)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-        # add pthread to the end of the library list on Linux
-        # this is only needed on Ubuntu
-        # but shouldn't hurt on other Linux versions
-        # in some builds we appear to be missing libz for some strange reason...
-        set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lz -lpthread)
+	# add pthread to the end of the library list on Linux
+	# this is only needed on Ubuntu
+	# but shouldn't hurt on other Linux versions
+	# in some builds we appear to be missing libz for some strange reason...
+	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lz -lpthread)
 
-        # Test for ARM processor (Raspberry Pi) and add libGLESv2 if found
-        if (CMAKE_SYSTEM_PROCESSOR STREQUAL "armv7l" OR CMAKE_SYSTEM_PROCESSOR STREQUAL "armv6l")
-                message (STATUS "Found ARM processor. Adding libGLESv2")
-                set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lGLESv2)
-                set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-        endif()
+	# Test for ARM processor (Raspberry Pi) and add libGLESv2 if found
+	if (CMAKE_SYSTEM_PROCESSOR STREQUAL "armv7l" OR CMAKE_SYSTEM_PROCESSOR STREQUAL "armv6l")
+		message (STATUS "Found ARM processor. Adding libGLESv2")
+		set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lGLESv2)
+		set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+	endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-        execute_process(
-                COMMAND sh scripts/get-version linux
-                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-                OUTPUT_VARIABLE SSRF_VERSION_STRING
-                OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
-        find_library(APP_SERVICES_LIBRARY ApplicationServices)
-        find_library(HID_LIB HidApi)
-        set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${HID_LIB})
-        set(EXTRA_LIBS ${APP_SERVICES_LIBRARY})
-        set(ICON_FILE ${CMAKE_SOURCE_DIR}/packaging/macosx/Subsurface.icns)
+	execute_process(
+		COMMAND sh scripts/get-version linux
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+		OUTPUT_VARIABLE SSRF_VERSION_STRING
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+	)
+	find_library(APP_SERVICES_LIBRARY ApplicationServices)
+	find_library(HID_LIB HidApi)
+	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${HID_LIB})
+	set(EXTRA_LIBS ${APP_SERVICES_LIBRARY})
+	set(ICON_FILE ${CMAKE_SOURCE_DIR}/packaging/macosx/Subsurface.icns)
 	if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		set(MACOSX_BUNDLE_INFO_STRING "Subsurface-mobile")
 		set(MACOSX_BUNDLE_BUNDLE_NAME "Subsurface-mobile")
@@ -250,16 +250,16 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	endif()
 	set(MACOSX_BUNDLE_ICON_FILE Subsurface.icns)
 	set(MACOSX_BUNDLE_GUI_IDENTIFIER "org.subsurface-divelog")
-        set(MACOSX_BUNDLE_BUNDLE_VERSION "${SSRF_VERSION_STRING}")
-        set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${SSRF_VERSION_STRING}")
-        set(MACOSX_BUNDLE_LONG_VERSION_STRING "${SSRF_VERSION_STRING}")
-        set(MACOSX_BUNDLE_COPYRIGHT "Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger and others")
-        set_source_files_properties(${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
-        set(SUBSURFACE_PKG MACOSX_BUNDLE ${ICON_FILE})
+	set(MACOSX_BUNDLE_BUNDLE_VERSION "${SSRF_VERSION_STRING}")
+	set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${SSRF_VERSION_STRING}")
+	set(MACOSX_BUNDLE_LONG_VERSION_STRING "${SSRF_VERSION_STRING}")
+	set(MACOSX_BUNDLE_COPYRIGHT "Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger and others")
+	set_source_files_properties(${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+	set(SUBSURFACE_PKG MACOSX_BUNDLE ${ICON_FILE})
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-        set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lwsock32 -lws2_32)
-        remove_definitions(-DUNICODE)
-        add_definitions(-mwindows -D_WIN32)
+	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lwsock32 -lws2_32)
+	remove_definitions(-DUNICODE)
+	add_definitions(-mwindows -D_WIN32)
 endif()
 
 if(BTSUPPORT)
@@ -369,11 +369,11 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 		subsurface-helper.cpp
 	)
 	source_group("Subsurface App" FILES ${SUBSURFACE_APP})
-        if(ANDROID)
-                add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
-        else()
-                add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
-        endif()
+	if(ANDROID)
+		add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+	else()
+		add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+	endif()
 
 	target_link_libraries(
 		${SUBSURFACE_TARGET}
@@ -594,7 +594,7 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	install(DIRECTORY theme DESTINATION share/subsurface)
 	install(DIRECTORY printing_templates DESTINATION share/subsurface)
 	install(FILES ${TRANSLATIONS} DESTINATION share/subsurface/translations)
-        install(TARGETS ${SUBSURFACE_TARGET} DESTINATION bin)
+	install(TARGETS ${SUBSURFACE_TARGET} DESTINATION bin)
 endif()
 
 if (MAKE_TESTS)
