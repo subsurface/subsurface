@@ -24,7 +24,6 @@
 #include <QStackedWidget>
 #include <QDialogButtonBox>
 #include <QAbstractButton>
-#include <QDebug>
 
 PreferencesDialog *PreferencesDialog::instance()
 {
@@ -80,7 +79,12 @@ PreferencesDialog::PreferencesDialog()
 	pages.push_back(new PreferencesReset);
 	std::sort(pages.begin(), pages.end(), abstractpreferenceswidget_lessthan);
 
-	refreshPages();
+	for (AbstractPreferencesWidget *page: pages) {
+		QListWidgetItem *item = new QListWidgetItem(page->icon(), page->name());
+		pagesList->addItem(item);
+		pagesStack->addWidget(page);
+		page->refreshSettings();
+	}
 
 	connect(pagesList, &QListWidget::currentRowChanged,
 		pagesStack, &QStackedWidget::setCurrentIndex);
@@ -106,21 +110,8 @@ void PreferencesDialog::buttonClicked(QAbstractButton* btn)
 
 void PreferencesDialog::refreshPages()
 {
-	// Remove things
-	pagesList->clear();
-	while(pagesStack->count()) {
-		QWidget *curr = pagesStack->widget(0);
-		pagesStack->removeWidget(curr);
-		curr->setParent(0);
-	}
-
-	// Read things
-	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
-		QListWidgetItem *item = new QListWidgetItem(page->icon(), page->name());
-		pagesList->addItem(item);
-		pagesStack->addWidget(page);
+	for (AbstractPreferencesWidget *page: pages)
 		page->refreshSettings();
-	}
 }
 
 void PreferencesDialog::applyRequested(bool closeIt)
@@ -136,18 +127,14 @@ void PreferencesDialog::applyRequested(bool closeIt)
 
 void PreferencesDialog::cancelRequested()
 {
-	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
-		page->refreshSettings();
-	}
+	refreshPages();
 	reject();
 }
 
 void PreferencesDialog::defaultsRequested()
 {
 	copy_prefs(&default_prefs, &prefs);
-	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
-		page->refreshSettings();
-	}
+	refreshPages();
 	emit diveListNotifier.settingsChanged();
 	accept();
 }
