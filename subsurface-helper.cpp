@@ -23,7 +23,7 @@
 #include "core/downloadfromdcthread.h"
 #include "core/subsurfacestartup.h" // for testqml
 #include "qt-models/diveimportedmodel.h"
-#include "mobile-widgets/qml/kirigami/src/kirigamiplugin.h"
+#include "kirigamiplugin.h"
 #else
 #include "desktop-widgets/mainwindow.h"
 #endif
@@ -39,6 +39,8 @@ QObject *qqWindowObject = NULL;
 // Forward declaration
 static void register_qml_types(QQmlEngine *);
 static void register_meta_types();
+
+Q_IMPORT_PLUGIN(KirigamiPlugin)
 
 void init_ui()
 {
@@ -101,6 +103,7 @@ void run_ui()
 		if (importPath.contains("MacOS"))
 			engine.addImportPath(importPath.replace("MacOS", "Frameworks"));
 	}
+	engine.addImportPath("qrc://");
 	qDebug() << "QML import path" << engine.importPathList();
 #endif // __APPLE__ not Q_OS_IOS
 	engine.addImportPath("qrc://imports");
