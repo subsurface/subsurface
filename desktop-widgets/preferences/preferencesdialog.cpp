@@ -84,6 +84,7 @@ PreferencesDialog::PreferencesDialog()
 		pagesList->addItem(item);
 		pagesStack->addWidget(page);
 		page->refreshSettings();
+		connect(page, &AbstractPreferencesWidget::settingsChanged, &diveListNotifier, &DiveListNotifier::settingsChanged);
 	}
 
 	connect(pagesList, &QListWidget::currentRowChanged,
@@ -116,10 +117,8 @@ void PreferencesDialog::refreshPages()
 
 void PreferencesDialog::applyRequested(bool closeIt)
 {
-	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
-		connect(page, &AbstractPreferencesWidget::settingsChanged, &diveListNotifier, &DiveListNotifier::settingsChanged, Qt::UniqueConnection);
+	for (AbstractPreferencesWidget *page: pages)
 		page->syncSettings();
-	}
 	emit diveListNotifier.settingsChanged();
 	if (closeIt)
 		accept();
