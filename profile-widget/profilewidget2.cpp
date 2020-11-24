@@ -31,8 +31,8 @@
 #include "core/qthelper.h"
 #include "core/gettextfromc.h"
 #include "core/imagedownloader.h"
-#include "core/subsurface-qt/divelistnotifier.h"
 #endif
+#include "core/subsurface-qt/divelistnotifier.h"
 
 #include <libdivecomputer/parser.h>
 #include <QScrollBar>
@@ -46,9 +46,6 @@
 
 #ifndef QT_NO_DEBUG
 #include <QTableView>
-#endif
-#ifndef SUBSURFACE_MOBILE
-#include "desktop-widgets/preferences/preferencesdialog.h"
 #endif
 #include <QtWidgets>
 

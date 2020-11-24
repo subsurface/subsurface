@@ -16,6 +16,7 @@
 #include "preferences_reset.h"
 
 #include "core/qthelper.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -25,7 +26,7 @@
 #include <QAbstractButton>
 #include <QDebug>
 
-PreferencesDialog* PreferencesDialog::instance()
+PreferencesDialog *PreferencesDialog::instance()
 {
 	static PreferencesDialog *self = new PreferencesDialog();
 	return self;
@@ -130,10 +131,10 @@ void PreferencesDialog::refreshPages()
 void PreferencesDialog::applyRequested(bool closeIt)
 {
 	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
-		connect(page, &AbstractPreferencesWidget::settingsChanged, this, &PreferencesDialog::settingsChanged, Qt::UniqueConnection);
+		connect(page, &AbstractPreferencesWidget::settingsChanged, &diveListNotifier, &DiveListNotifier::settingsChanged, Qt::UniqueConnection);
 		page->syncSettings();
 	}
-	emit settingsChanged();
+	emit diveListNotifier.settingsChanged();
 	if (closeIt)
 		accept();
 }
@@ -152,6 +153,6 @@ void PreferencesDialog::defaultsRequested()
 	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
 		page->refreshSettings();
 	}
-	emit settingsChanged();
+	emit diveListNotifier.settingsChanged();
 	accept();
 }

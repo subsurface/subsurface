@@ -87,6 +87,7 @@ TankInfoModel::TankInfoModel()
 {
 	setHeaderDataStrings(QStringList() << tr("Description") << tr("ml") << tr("bar"));
 	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &TankInfoModel::update);
+	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &TankInfoModel::update);
 	update();
 }
 

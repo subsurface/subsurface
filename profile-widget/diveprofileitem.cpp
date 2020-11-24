@@ -5,22 +5,18 @@
 #include "profile-widget/divetextitem.h"
 #include "profile-widget/animationfunctions.h"
 #include "core/profile.h"
-#ifndef SUBSURFACE_MOBILE
-#include "desktop-widgets/preferences/preferencesdialog.h"
-#endif
 #include "qt-models/diveplannermodel.h"
 #include "core/qthelper.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefLog.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include "libdivecomputer/parser.h"
 #include "profile-widget/profilewidget2.h"
 
 AbstractProfilePolygonItem::AbstractProfilePolygonItem() : QObject(), QGraphicsPolygonItem(), hAxis(NULL), vAxis(NULL), dataModel(NULL), hDataColumn(-1), vDataColumn(-1)
 {
 	setCacheMode(DeviceCoordinateCache);
-#ifndef SUBSURFACE_MOBILE
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
-#endif
+	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &AbstractProfilePolygonItem::settingsChanged);
 }
 
 void AbstractProfilePolygonItem::settingsChanged()

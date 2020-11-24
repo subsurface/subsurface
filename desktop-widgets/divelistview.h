@@ -33,6 +33,7 @@ signals:
 	void divesSelected();
 public
 slots:
+	void settingsChanged();
 	void reloadHeaderActions();
 private
 slots:

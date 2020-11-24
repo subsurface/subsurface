@@ -9,6 +9,7 @@
 #include "desktop-widgets/modeldelegates.h"
 #include "desktop-widgets/mainwindow.h"
 #include "core/selection.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include <unistd.h>
 #include <QSettings>
 #include <QKeyEvent>
@@ -39,6 +40,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent),
 	setModel(m);
 	connect(m, &MultiFilterSortModel::selectionChanged, this, &DiveListView::diveSelectionChanged);
 	connect(m, &MultiFilterSortModel::currentDiveChanged, this, &DiveListView::currentDiveChanged);
+	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &DiveListView::settingsChanged);
 
 	setSortingEnabled(true);
 	setContextMenuPolicy(Qt::DefaultContextMenu);
@@ -346,6 +348,12 @@ void DiveListView::reload()
 			setAnimated(true);
 		}
 	}
+}
+
+void DiveListView::settingsChanged()
+{
+	update();
+	reloadHeaderActions();
 }
 
 void DiveListView::reloadHeaderActions()

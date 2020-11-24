@@ -4,8 +4,8 @@
 #include "core/pref.h"
 #include "core/qthelper.h"
 #include "core/settings/qPrefDisplay.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #ifndef SUBSURFACE_MOBILE
-#include "desktop-widgets/preferences/preferencesdialog.h"
 #include "core/dive.h" // for displayed_dive
 #include "commands/command.h"
 #endif
@@ -50,9 +50,7 @@ DivePictureItem::DivePictureItem(QGraphicsItem *parent): DivePixmapItem(parent),
 	setFlag(ItemIgnoresTransformations);
 	setAcceptHoverEvents(true);
 	setScale(0.2);
-#ifndef SUBSURFACE_MOBILE
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
-#endif
+	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &DivePictureItem::settingsChanged);
 
 	canvas->setPen(Qt::NoPen);
 	canvas->setBrush(QColor(Qt::white));

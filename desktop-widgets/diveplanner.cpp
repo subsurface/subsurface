@@ -6,6 +6,7 @@
 #include "core/qthelper.h"
 #include "core/units.h"
 #include "core/settings/qPrefDivePlanner.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include "core/gettextfromc.h"
 #include "backend-shared/plannershared.h"
 
@@ -174,6 +175,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent) : QWidget(parent, QFlag(0)
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::RUNTIME, new SpinBoxDelegate(0, INT_MAX, 1, this));
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::DURATION, new SpinBoxDelegate(0, 6000, 1, this));
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::CCSETPOINT, new DoubleSpinBoxDelegate(0, 2, 0.1, this));
+
+	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &DivePlannerWidget::settingsChanged);
 
 	/* set defaults. */
 	ui.ATMPressure->setValue(1013);
@@ -506,6 +509,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent) : QWidget(parent, 
 	connect(ui.bestmixEND, QOverload<int>::of(&QSpinBox::valueChanged), &PlannerShared::set_bestmixend);
 	connect(ui.bottomSAC, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &PlannerShared::set_bottomsac);
 	connect(ui.decoStopSAC, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &PlannerShared::set_decosac);
+	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &PlannerSettingsWidget::settingsChanged);
 
 	settingsChanged();
 	ui.gflow->setValue(prefs.gflow);
