@@ -32,6 +32,11 @@ PreferencesDialog *PreferencesDialog::instance()
 	return self;
 }
 
+static bool abstractpreferenceswidget_lessthan(const AbstractPreferencesWidget *p1, const AbstractPreferencesWidget *p2)
+{
+	return p1->positionHeight() < p2->positionHeight();
+}
+
 PreferencesDialog::PreferencesDialog()
 {
 	//FIXME: This looks wrong.
@@ -61,18 +66,19 @@ PreferencesDialog::PreferencesDialog()
 
 	setLayout(v);
 
-	addPreferencePage(new PreferencesLanguage());
-	addPreferencePage(new PreferencesGeoreference());
-	addPreferencePage(new PreferencesDefaults());
-	addPreferencePage(new PreferencesUnits());
-	addPreferencePage(new PreferencesGraph());
-	addPreferencePage(new PreferencesNetwork());
-	addPreferencePage(new PreferencesCloud());
-	addPreferencePage(new PreferencesEquipment());
-	addPreferencePage(new PreferencesMedia());
-	addPreferencePage(new PreferencesDc());
-	addPreferencePage(new PreferencesLog());
-	addPreferencePage(new PreferencesReset());
+	pages.push_back(new PreferencesLanguage);
+	pages.push_back(new PreferencesGeoreference);
+	pages.push_back(new PreferencesDefaults);
+	pages.push_back(new PreferencesUnits);
+	pages.push_back(new PreferencesGraph);
+	pages.push_back(new PreferencesNetwork);
+	pages.push_back(new PreferencesCloud);
+	pages.push_back(new PreferencesEquipment);
+	pages.push_back(new PreferencesMedia);
+	pages.push_back(new PreferencesDc);
+	pages.push_back(new PreferencesLog);
+	pages.push_back(new PreferencesReset);
+	std::sort(pages.begin(), pages.end(), abstractpreferenceswidget_lessthan);
 
 	refreshPages();
 
@@ -96,17 +102,6 @@ void PreferencesDialog::buttonClicked(QAbstractButton* btn)
 	case QDialogButtonBox::ResetRole : defaultsRequested(); return;
 	default: return;
 	}
-}
-
-bool abstractpreferenceswidget_lessthan(AbstractPreferencesWidget *p1, AbstractPreferencesWidget *p2)
-{
-	return p1->positionHeight() < p2->positionHeight();
-}
-
-void PreferencesDialog::addPreferencePage(AbstractPreferencesWidget *page)
-{
-	pages.push_back(page);
-	std::sort(pages.begin(), pages.end(), abstractpreferenceswidget_lessthan);
 }
 
 void PreferencesDialog::refreshPages()

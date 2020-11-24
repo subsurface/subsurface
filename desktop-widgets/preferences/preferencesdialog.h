@@ -16,7 +16,6 @@ class PreferencesDialog : public QDialog {
 public:
 	static PreferencesDialog* instance();
 	~PreferencesDialog();
-	void addPreferencePage(AbstractPreferencesWidget *page);
 	void refreshPages();
 	void defaultsRequested();
 private:
