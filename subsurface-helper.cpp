@@ -105,9 +105,9 @@ void run_ui()
 		if (importPath.contains("MacOS"))
 			engine.addImportPath(importPath.replace("MacOS", "Frameworks"));
 	}
-	engine.addImportPath("qrc://");
-	qDebug() << "QML import path" << engine.importPathList();
 #endif // __APPLE__ not Q_OS_IOS
+	// this is frustrating, but we appear to need different import paths on different OSs
+	engine.addImportPath(":");
 	engine.addImportPath("qrc://imports");
 	QSortFilterProxyModel *gpsSortModel = new QSortFilterProxyModel(nullptr);
 	gpsSortModel->setSourceModel(GpsListModel::instance());
