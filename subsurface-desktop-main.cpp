@@ -6,7 +6,6 @@
 #include <string.h>
 #include <time.h>
 
-#include "core/color.h"
 #include "core/downloadfromdcthread.h" // for fill_computer_list
 #include "core/errorhelper.h"
 #include "core/parse.h"
@@ -15,11 +14,7 @@
 #include "core/subsurfacestartup.h"
 #include "core/settings/qPref.h"
 #include "core/tag.h"
-#include "desktop-widgets/diveplanner.h"
 #include "desktop-widgets/mainwindow.h"
-#include "desktop-widgets/preferences/preferencesdialog.h"
-#include "desktop-widgets/tab-widgets/maintab.h"
-#include "profile-widget/profilewidget2.h"
 
 #include <QApplication>
 #include <QLoggingCategory>

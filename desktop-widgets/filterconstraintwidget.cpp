@@ -2,7 +2,7 @@
 #include "filterconstraintwidget.h"
 #include "starwidget.h"
 #include "core/pref.h"
-#include "desktop-widgets/preferences/preferencesdialog.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include "qt-models/cleanertablemodel.h" // for trashIcon()
 #include "qt-models/filterconstraintmodel.h"
 
@@ -225,7 +225,7 @@ FilterConstraintWidget::FilterConstraintWidget(FilterConstraintModel *modelIn, c
 	rangeLayout->addStretch();
 
 	// Update the widget if the settings changed to reflect new units.
-	connect(PreferencesDialog::instance(), &PreferencesDialog::settingsChanged, this, &FilterConstraintWidget::update);
+	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &FilterConstraintWidget::update);
 
 	addToLayout();
 	update();
