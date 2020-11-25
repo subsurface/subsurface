@@ -1,0 +1,42 @@
+From c0c5903023e24387e509d1e28ca4915d81a30319 Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Tue, 24 Nov 2020 20:52:18 -0800
+Subject: [PATCH 01/11] global drawer: expose pop() function
+
+This allows us to implement our own back button.
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ src/controls/GlobalDrawer.qml | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/src/controls/GlobalDrawer.qml b/src/controls/GlobalDrawer.qml
+index b7163b70..da576177 100644
+--- a/src/controls/GlobalDrawer.qml
++++ b/src/controls/GlobalDrawer.qml
+@@ -232,6 +232,13 @@ OverlayDrawer {
+      */
+     property bool isMenu: false
+ 
++    /**
++     * pop: function
++     *
++     * Point to the pop function of the stackView inside the scrollView in order to be able to implement the Back button in the caller
++     */
++    function pop() { stackView.pop() }
++
+     /**
+      * Notifies that the banner has been clicked
+      */
+@@ -278,6 +285,8 @@ OverlayDrawer {
+             topMargin: headerParent.height + headerParent.y
+         }
+ 
++	function pop() { stackView.pop() }
++
+         Flickable {
+             id: mainFlickable
+             contentWidth: width
+-- 
+2.25.1
+

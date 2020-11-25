@@ -1,0 +1,42 @@
+From 5e745f7a02fd967dbfabeba0871025b1513ce1d4 Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Wed, 25 Nov 2020 13:51:35 -0800
+Subject: [PATCH 05/11] breadcrumbs: get better font size
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ src/controls/Units.qml                                   | 5 +++++
+ src/controls/private/globaltoolbar/BreadcrumbControl.qml | 1 +
+ 2 files changed, 6 insertions(+)
+
+diff --git a/src/controls/Units.qml b/src/controls/Units.qml
+index 615228a2..f957046f 100644
+--- a/src/controls/Units.qml
++++ b/src/controls/Units.qml
+@@ -105,6 +105,11 @@ QtObject {
+      */
+     readonly property int wheelScrollLines: 3
+ 
++    /**
++     * Use this to hardcode the font size of the global toolbar that Kirigami gets wrong
++     */
++    property double defaultFontSize: fontMetrics.font.pixelSize
++
+     /**
+      * metrics used by the default font
+      */
+diff --git a/src/controls/private/globaltoolbar/BreadcrumbControl.qml b/src/controls/private/globaltoolbar/BreadcrumbControl.qml
+index ad80d222..c45db280 100644
+--- a/src/controls/private/globaltoolbar/BreadcrumbControl.qml
++++ b/src/controls/private/globaltoolbar/BreadcrumbControl.qml
+@@ -69,6 +69,7 @@ Flickable {
+                     }
+                     Kirigami.Heading {
+                         Layout.leftMargin: Kirigami.Units.largeSpacing
++                        font.pixelSize: Math.max(1, Kirigami.Units.defaultFontSize)
+                         color: Kirigami.Theme.textColor
+                         verticalAlignment: Text.AlignVCenter
+                         wrapMode: Text.NoWrap
+-- 
+2.25.1
+

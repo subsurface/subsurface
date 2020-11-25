@@ -1,0 +1,35 @@
+From d3243df32cae73201d93da366893c969ef574e8f Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Sat, 12 Dec 2020 10:48:24 -0800
+Subject: [PATCH 09/11] qmake build: add missing sizegroup source/header
+
+This seems to have been missed in commit bbca96262e ("Introduce SizeGroup").
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ kirigami.pri | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/kirigami.pri b/kirigami.pri
+index 65a77646..35c4a34d 100644
+--- a/kirigami.pri
++++ b/kirigami.pri
+@@ -26,6 +26,7 @@ HEADERS     += $$PWD/src/kirigamiplugin.h \
+                $$PWD/src/wheelhandler.h \
+                $$PWD/src/shadowedrectangle.h \
+                $$PWD/src/shadowedtexture.h \
++               $$PWD/src/sizegroup.h \
+                $$PWD/src/pagerouter.h \
+                $$PWD/src/pagepool.h \
+                $$PWD/src/avatar.h \
+@@ -57,6 +58,7 @@ SOURCES     += $$PWD/src/kirigamiplugin.cpp \
+                $$PWD/src/wheelhandler.cpp \
+                $$PWD/src/shadowedrectangle.cpp \
+                $$PWD/src/shadowedtexture.cpp \
++               $$PWD/src/sizegroup.cpp \
+                $$PWD/src/pagerouter.cpp \
+                $$PWD/src/pagepool.cpp \
+                $$PWD/src/avatar.cpp \
+-- 
+2.25.1
+

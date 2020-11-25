@@ -1,0 +1,35 @@
+From a110673e4a98dca385a0e500493e86dcdcd6ddf1 Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Tue, 24 Nov 2020 20:52:28 -0800
+Subject: [PATCH 02/11] global drawer: disable built-in back button
+
+It's really ugly, let's do our own.
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ src/controls/GlobalDrawer.qml | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/controls/GlobalDrawer.qml b/src/controls/GlobalDrawer.qml
+index da576177..e2a6d391 100644
+--- a/src/controls/GlobalDrawer.qml
++++ b/src/controls/GlobalDrawer.qml
+@@ -464,6 +464,7 @@ OverlayDrawer {
+                         property int level: 0
+                         Layout.maximumHeight: Layout.minimumHeight
+ 
++/* the Kirigami back item is ugly - we prefer to do our own
+                         BasicListItem {
+                             id: backItem
+                             visible: level > 0
+@@ -482,6 +483,7 @@ OverlayDrawer {
+                             sequence: backItem.MnemonicData.sequence
+                             onActivated: backItem.clicked()
+                         }
++*/
+ 
+                         Repeater {
+                             id: actionsRepeater
+-- 
+2.25.1
+

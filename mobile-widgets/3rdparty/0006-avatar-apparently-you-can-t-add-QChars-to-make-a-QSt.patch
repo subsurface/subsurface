@@ -1,0 +1,54 @@
+From 078197bac6507633833f5275e4ef333975766896 Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Thu, 26 Nov 2020 19:35:40 +0000
+Subject: [PATCH 06/11] avatar: apparently you can't add QChars to make a
+ QString
+
+I'm a bit surprised that a bug like this would make it into a release.
+That makes me think that there's something wrong with the way we compile
+this on Android.
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ kirigami.pri   | 14 +++++++-------
+ src/avatar.cpp |  2 +-
+ 2 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/kirigami.pri b/kirigami.pri
+index 6012f1b9..65a77646 100644
+--- a/kirigami.pri
++++ b/kirigami.pri
+@@ -70,10 +70,10 @@ API_VER=1.0
+ 
+ RESOURCES += $$PWD/kirigami.qrc $$PWD/src/scenegraph/shaders/shaders.qrc
+ 
+-exists($$_PRO_FILE_PWD_/kirigami-icons.qrc) {
+-    message("Using icons QRC file shipped by the project")
+-    RESOURCES += $$_PRO_FILE_PWD_/kirigami-icons.qrc
+-} else {
+-    message("Using icons QRCfile shipped in kirigami")
+-    RESOURCES += $$PWD/kirigami-icons.qrc
+-}
++# exists($$_PRO_FILE_PWD_/kirigami-icons.qrc) {
++#     message("Using icons QRC file shipped by the project")
++#     RESOURCES += $$_PRO_FILE_PWD_/kirigami-icons.qrc
++# } else {
++#     message("Using icons QRCfile shipped in kirigami")
++#     RESOURCES += $$PWD/kirigami-icons.qrc
++# }
+diff --git a/src/avatar.cpp b/src/avatar.cpp
+index 13ab2825..d660c635 100644
+--- a/src/avatar.cpp
++++ b/src/avatar.cpp
+@@ -49,7 +49,7 @@ QString AvatarPrivate::initialsFromString(const QString& string)
+             return QString(first.front());
+         }
+         // "FirstName" "LastName" -> "FL"
+-        return first.front() + last.front();
++        return QString(first.front()) + last.front();
+     // "OneName"
+     } else {
+         // "OneName" -> "O"
+-- 
+2.25.1
+

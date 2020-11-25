@@ -1,0 +1,57 @@
+From cc0022ca9f4541c2a9f9f42598e2df411753b0ef Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Wed, 16 Dec 2020 14:58:10 -0800
+Subject: [PATCH 11/11] ensure forward / backward arrows are rendered
+
+For inexplicable reasons, on iOS (and macOS) the go-next / go-previous icons
+aren't found without the explicit path.
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ src/controls/private/GlobalDrawerActionItem.qml          | 2 +-
+ src/controls/private/globaltoolbar/BreadcrumbControl.qml | 2 +-
+ src/controls/templates/ApplicationHeader.qml             | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/controls/private/GlobalDrawerActionItem.qml b/src/controls/private/GlobalDrawerActionItem.qml
+index cb1e5f37..f18d0a3a 100644
+--- a/src/controls/private/GlobalDrawerActionItem.qml
++++ b/src/controls/private/GlobalDrawerActionItem.qml
+@@ -73,7 +73,7 @@ AbstractListItem {
+             opacity: 0.7
+             selected: listItem.checked || listItem.pressed
+             Layout.preferredWidth: Layout.preferredHeight
+-            source: (LayoutMirroring.enabled ? "go-next-symbolic-rtl" : "go-next-symbolic")
++            source: (LayoutMirroring.enabled ? ":/go-next-symbolic-rtl" : ":/go-next-symbolic")
+             visible: (!isExpandible || root.collapsed) && !listItem.isSeparator && modelData.hasOwnProperty("children") && modelData.children!==undefined && modelData.children.length > 0
+         }
+     }
+diff --git a/src/controls/private/globaltoolbar/BreadcrumbControl.qml b/src/controls/private/globaltoolbar/BreadcrumbControl.qml
+index c45db280..8d3613fb 100644
+--- a/src/controls/private/globaltoolbar/BreadcrumbControl.qml
++++ b/src/controls/private/globaltoolbar/BreadcrumbControl.qml
+@@ -65,7 +65,7 @@ Flickable {
+                         Layout.preferredWidth: Layout.preferredHeight
+                         isMask: true
+                         color: Kirigami.Theme.textColor
+-                        source: LayoutMirroring.enabled ? "go-next-symbolic-rtl" : "go-next-symbolic"
++                        source: LayoutMirroring.enabled ? ":/go-next-symbolic-rtl" : ":/go-next-symbolic"
+                     }
+                     Kirigami.Heading {
+                         Layout.leftMargin: Kirigami.Units.largeSpacing
+diff --git a/src/controls/templates/ApplicationHeader.qml b/src/controls/templates/ApplicationHeader.qml
+index daad0a29..3c4b32f8 100644
+--- a/src/controls/templates/ApplicationHeader.qml
++++ b/src/controls/templates/ApplicationHeader.qml
+@@ -69,7 +69,7 @@ AbstractApplicationHeader {
+                 height: Units.iconSizes.small
+                 width: height
+                 selected: header.background && header.background.color && header.background.color === Theme.highlightColor
+-                source: titleList.isTabBar ? "" : (LayoutMirroring.enabled ? "go-next-symbolic-rtl" : "go-next-symbolic")
++                source: titleList.isTabBar ? "" : (LayoutMirroring.enabled ? ":/go-next-symbolic-rtl" : ":/go-next-symbolic")
+             }
+ 
+             Heading {
+-- 
+2.25.1
+
