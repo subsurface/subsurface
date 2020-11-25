@@ -19,6 +19,11 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QShortcut>
+#ifndef NO_PRINTING
+#include <QPrintDialog>
+#include <QPrinter>
+#include <QBuffer>
+#endif
 
 #define TIME_INITIAL_MAX 30
 
@@ -149,7 +154,6 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent) : QWidget(parent, QFlag(0)
 	connect(cylinders, &CylindersModel::dataChanged, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
 	connect(cylinders, &CylindersModel::rowsInserted, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
 	connect(cylinders, &CylindersModel::rowsRemoved, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
-	connect(plannerModel, &DivePlannerPointsModel::calculatedPlanNotes, MainWindow::instance(), &MainWindow::setPlanNotes);
 
 
 	ui.tableWidget->setBtnToolTip(tr("Add dive data point"));
@@ -181,6 +185,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent) : QWidget(parent, QFlag(0)
 	/* set defaults. */
 	ui.ATMPressure->setValue(1013);
 	ui.atmHeight->setValue(0);
+
+	settingsChanged();
 
 	setMinimumWidth(0);
 	setMinimumHeight(0);
@@ -423,11 +429,6 @@ void PlannerSettingsWidget::disableBackgasBreaks(bool enabled)
 	}
 }
 
-void DivePlannerWidget::printDecoPlan()
-{
-	MainWindow::instance()->printPlan();
-}
-
 PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent) : QWidget(parent, QFlag(0))
 {
 	ui.setupUi(this);
@@ -603,10 +604,6 @@ void PlannerSettingsWidget::settingsChanged()
 	ui.descRate->setSuffix(vs);
 }
 
-void PlannerSettingsWidget::printDecoPlan()
-{
-}
-
 void PlannerSettingsWidget::setBackgasBreaks(bool dobreaks)
 {
 	PlannerShared::set_doo2breaks(dobreaks);
@@ -621,4 +618,111 @@ void PlannerSettingsWidget::setBailoutVisibility(int mode)
 PlannerDetails::PlannerDetails(QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
+#ifdef NO_PRINTING
+	ui.printPlan->hide();
+#endif
+}
+
+void PlannerDetails::setPlanNotes(QString plan)
+{
+	ui.divePlanOutput->setHtml(plan);
+}
+
+PlannerWidgets::PlannerWidgets()
+{
+	connect(plannerDetails.printPlan(), &QPushButton::pressed, this, &PlannerWidgets::printDecoPlan);
+	connect(DivePlannerPointsModel::instance(), &DivePlannerPointsModel::calculatedPlanNotes,
+		&plannerDetails, &PlannerDetails::setPlanNotes);
+}
+
+void PlannerWidgets::planDive()
+{
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
+
+	MainWindow::instance()->graphics->setPlanState();
+	dc_number = 0;
+
+	// create a simple starting dive, using the first gas from the just copied cylinders
+	DivePlannerPointsModel::instance()->createSimpleDive();
+
+	// plan the dive in the same mode as the currently selected one
+	if (current_dive) {
+		plannerSettingsWidget.setDiveMode(current_dive->dc.divemode);
+		plannerSettingsWidget.setBailoutVisibility(current_dive->dc.divemode);
+		if (current_dive->salinity)
+			plannerWidget.setSalinity(current_dive->salinity);
+		else	// No salinity means salt water
+			plannerWidget.setSalinity(SEAWATER_SALINITY);
+	}
+	plannerWidget.setReplanButton(false);
+}
+
+void PlannerWidgets::replanDive()
+{
+	DivePlannerPointsModel::instance()->clear();
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
+
+	MainWindow::instance()->graphics->setPlanState();
+	MainWindow::instance()->graphics->clearHandlers();
+
+	plannerWidget.setReplanButton(true);
+	plannerWidget.setupStartTime(timestampToDateTime(current_dive->when));
+	if (current_dive->surface_pressure.mbar)
+		plannerWidget.setSurfacePressure(current_dive->surface_pressure.mbar);
+	if (current_dive->salinity)
+		plannerWidget.setSalinity(current_dive->salinity);
+	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
+	reset_cylinders(&displayed_dive, true);
+	DivePlannerPointsModel::instance()->cylindersModel()->updateDive(&displayed_dive);
+}
+
+void PlannerWidgets::printDecoPlan()
+{
+#ifndef NO_PRINTING
+	char *disclaimer = get_planner_disclaimer_formatted();
+	// Prepend a logo and a disclaimer to the plan.
+	// Save the old plan so that it can be restored at the end of the function.
+	QString origPlan = plannerDetails.divePlanOutput()->toHtml();
+	QString diveplan = QStringLiteral("<img height=50 src=\":subsurface-icon\"> ") +
+			   QString(disclaimer) + origPlan;
+	free(disclaimer);
+
+	QPrinter printer;
+	QPrintDialog *dialog = new QPrintDialog(&printer, MainWindow::instance());
+	dialog->setWindowTitle(tr("Print runtime table"));
+	if (dialog->exec() != QDialog::Accepted)
+		return;
+
+	/* render the profile as a pixmap that is inserted as base64 data into a HTML <img> tag
+	 * make it fit a page width defined by 2 cm margins via QTextDocument->print() (cannot be changed?)
+	 * the height of the profile is 40% of the page height.
+	 */
+	QSizeF renderSize = printer.pageRect(QPrinter::Inch).size();
+	const qreal marginsInch = 1.57480315; // = (2 x 2cm) / 2.45cm/inch
+	renderSize.setWidth((renderSize.width() - marginsInch) * printer.resolution());
+	renderSize.setHeight(((renderSize.height() - marginsInch) * printer.resolution()) / 2.5);
+
+	QPixmap pixmap(renderSize.toSize());
+	QPainter painter(&pixmap);
+	painter.setRenderHint(QPainter::Antialiasing);
+	painter.setRenderHint(QPainter::SmoothPixmapTransform);
+
+	ProfileWidget2 *profile = MainWindow::instance()->graphics;
+	QSize origSize = profile->size();
+	profile->resize(renderSize.toSize());
+	profile->setPrintMode(true);
+	profile->render(&painter);
+	profile->resize(origSize);
+	profile->setPrintMode(false);
+
+	QByteArray byteArray;
+	QBuffer buffer(&byteArray);
+	pixmap.save(&buffer, "PNG");
+	QString profileImage = QString("<img src=\"data:image/png;base64,") + byteArray.toBase64() + "\"/><br><br>";
+	diveplan = profileImage + diveplan;
+
+	plannerDetails.divePlanOutput()->setHtml(diveplan);
+	plannerDetails.divePlanOutput()->print(&printer);
+	plannerDetails.divePlanOutput()->setHtml(origPlan); // restore original plan
+#endif
 }

@@ -53,7 +53,6 @@ slots:
 	void heightChanged(const int height);
 	void waterTypeChanged(const int index);
 	void customSalinityChanged(double density);
-	void printDecoPlan();
 	void setSurfacePressure(int surface_pressure);
 	void setSalinity(int salinity);
 private:
@@ -72,7 +71,6 @@ public:
 public
 slots:
 	void settingsChanged();
-	void printDecoPlan();
 	void setBackgasBreaks(bool dobreaks);
 	void disableDecoElements(int mode);
 	void disableBackgasBreaks(bool enabled);
@@ -92,10 +90,28 @@ public:
 	explicit PlannerDetails(QWidget *parent = 0);
 	QPushButton *printPlan() const { return ui.printPlan; }
 	QTextEdit *divePlanOutput() const { return ui.divePlanOutput; }
-	QLabel *divePlannerOutputLabel() const { return ui.divePlanOutputLabel; }
+public
+slots:
+	void setPlanNotes(QString plan);
 
 private:
 	Ui::plannerDetails ui;
+};
+
+// The planner widgets make up three quadrants
+class PlannerWidgets : public QObject {
+	Q_OBJECT
+public:
+	PlannerWidgets();
+	void planDive();
+	void replanDive();
+public
+slots:
+	void printDecoPlan();
+public:
+	DivePlannerWidget plannerWidget;
+	PlannerSettingsWidget plannerSettingsWidget;
+	PlannerDetails plannerDetails;
 };
 
 #endif // DIVEPLANNER_H
