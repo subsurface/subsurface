@@ -331,7 +331,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	# set up Kirigami using KDE ECM
 	# that's available as kde-extra-cmake-modules on Homebrew, on all Linux flavors
 	# Android and iOS are built via qmake, Windows build of Subsurface-mobile isn't supported
-	find_package(ECM REQUIRED CONFIG)
+	find_package(ECM REQUIRED CONFIG PATHS ${CMAKE_CURRENT_SOURCE_DIR}/mobile-widgets/3rdparty/ECM)
 	set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH})
 	set(BREEZEICONS_DIR mobile-widgets/3rdparty/breeze-icons/)
 
