@@ -1352,6 +1352,7 @@ void ProfileWidget2::setPlanState()
 	if (currentState == PLAN)
 		return;
 
+	clearHandlers();
 	setProfileState();
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
