@@ -252,12 +252,14 @@ private:
 	void calculatePictureYPositions();
 	void updateDurationLine(PictureEntry &e);
 	void updateThumbnailPaintOrder();
+#endif
 
 	QList<DiveHandler *> handles;
+#ifndef SUBSURFACE_MOBILE
 	void repositionDiveHandlers();
 	int fixHandlerIndex(DiveHandler *activeHandler);
-	friend class DiveHandler;
 #endif
+	friend class DiveHandler;
 	QHash<Qt::Key, QAction *> actionsForKeys;
 	bool shouldCalculateMaxTime;
 	bool shouldCalculateMaxDepth;

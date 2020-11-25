@@ -6,6 +6,8 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	divecartesianaxis.h
 	diveeventitem.cpp
 	diveeventitem.h
+	divehandler.cpp
+	divehandler.h
 	divelineitem.cpp
 	divelineitem.h
 	divepixmapitem.cpp

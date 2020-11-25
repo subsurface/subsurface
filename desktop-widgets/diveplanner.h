@@ -2,40 +2,13 @@
 #ifndef DIVEPLANNER_H
 #define DIVEPLANNER_H
 
-#include <QGraphicsPathItem>
 #include <QAbstractTableModel>
 #include <QAbstractButton>
 #include <QDateTime>
-#include <QSignalMapper>
-#include <QElapsedTimer>
 
 class QListView;
 class QModelIndex;
 class DivePlannerPointsModel;
-
-class DiveHandler : public QObject, public QGraphicsEllipseItem {
-	Q_OBJECT
-public:
-	DiveHandler();
-
-protected:
-	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
-	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-	void mousePressEvent(QGraphicsSceneMouseEvent *event);
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-signals:
-	void moved();
-	void clicked();
-	void released();
-private:
-	int parentIndex();
-public
-slots:
-	void selfRemove();
-	void changeGas();
-private:
-	QElapsedTimer t;
-};
 
 #include "ui_diveplanner.h"
 
