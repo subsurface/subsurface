@@ -1,0 +1,26 @@
+From 4c364152dcff6de56c8356922f48c2c069c71ef2 Mon Sep 17 00:00:00 2001
+From: Marco Martin <notmart@gmail.com>
+Date: Mon, 14 Dec 2020 11:07:06 +0100
+Subject: [PATCH 10/11] don't use ?? yet
+
+---
+ src/controls/AbstractApplicationItem.qml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/controls/AbstractApplicationItem.qml b/src/controls/AbstractApplicationItem.qml
+index 718ecd6e..fecc431a 100644
+--- a/src/controls/AbstractApplicationItem.qml
++++ b/src/controls/AbstractApplicationItem.qml
+@@ -191,7 +191,8 @@ Item {
+             menuBar.position = T.DialogButtonBox.Footer
+         }
+         menuBar.width = Qt.binding(() => root.contentItem.width)
+-        menuBar.y = Qt.binding(() => -menuBar.height - (root.header.height ?? 0))
++        //FIXME: (root.header.height ?? 0) when we can depend from 5.15
++        menuBar.y = Qt.binding(() => -menuBar.height - (root.header.height ? root.header.height : 0))
+     }
+ 
+    /**
+-- 
+2.25.1
+

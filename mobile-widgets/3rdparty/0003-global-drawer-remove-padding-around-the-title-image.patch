@@ -1,0 +1,38 @@
+From 14fa735a07bab109cb3f1d5a00aba1fe7e2e6382 Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Wed, 25 Nov 2020 09:43:00 -0800
+Subject: [PATCH 03/11] global drawer: remove padding around the title image
+
+This looks simply odd - no idea why that's there.
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ src/controls/GlobalDrawer.qml | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/src/controls/GlobalDrawer.qml b/src/controls/GlobalDrawer.qml
+index e2a6d391..456854b5 100644
+--- a/src/controls/GlobalDrawer.qml
++++ b/src/controls/GlobalDrawer.qml
+@@ -365,17 +365,13 @@ OverlayDrawer {
+                 ColumnLayout {
+                     id: topContent
+                     spacing: 0
+-                    Layout.alignment: Qt.AlignHCenter
+-                    Layout.leftMargin: root.leftPadding
+-                    Layout.rightMargin: root.rightPadding
+                     Layout.bottomMargin: Units.smallSpacing
+-                    Layout.topMargin: root.topPadding
+                     Layout.fillWidth: true
+                     Layout.fillHeight: true
+                     Layout.preferredHeight: implicitHeight * opacity
+                     //NOTE: why this? just Layout.fillWidth: true doesn't seem sufficient
+                     //as items are added only after this column creation
+-                    Layout.minimumWidth: parent.width - root.leftPadding - root.rightPadding
++                    Layout.minimumWidth: parent.width
+                     visible: children.length > 0 && childrenRect.height > 0 && opacity > 0
+                     opacity: !root.collapsed || showTopContentWhenCollapsed
+                     Behavior on opacity {
+-- 
+2.25.1
+
