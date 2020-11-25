@@ -1,0 +1,25 @@
+<RCC>
+	<qresource prefix="/">
+		<!-- ********** Breeze icons that we use (directly or through Kirigami)  ********** -->
+		<file alias="/org/kde/kirigami/templates/private/go-next-symbolic">breeze-icons/icons/actions/24/go-next.svg</file>
+		<file alias="/org/kde/kirigami/templates/private/go-previous-symbolic">breeze-icons/icons/actions/24/go-previous.svg</file>
+		<file alias="go-next-symbolic">breeze-icons/icons/actions/24/go-next.svg</file>
+		<file alias="go-previous-symbolic">breeze-icons/icons/actions/24/go-previous.svg</file>
+		<file alias="icons/application-menu.svg">breeze-icons/icons/actions/24/application-menu.svg</file>
+		<file alias="icons/dialog-cancel.svg">breeze-icons/icons/actions/24/dialog-cancel.svg</file>
+		<file alias="icons/distribute-horizontal-x.svg">breeze-icons/icons/actions/24/distribute-horizontal-x.svg</file>
+		<file alias="icons/document-edit.svg">breeze-icons/icons-dark/actions/24/document-edit.svg</file>
+		<file alias="icons/document-save.svg">breeze-icons/icons-dark/actions/24/document-save.svg</file>
+		<file alias="icons/go-up.svg">breeze-icons/icons/actions/24/go-up.svg</file>
+		<file alias="icons/gps.svg">breeze-icons/icons/actions/22/gps.svg</file>
+		<file alias="icons/handle-left.svg">breeze-icons/icons/actions/22/handle-left.svg</file>
+		<file alias="icons/handle-right.svg">breeze-icons/icons/actions/22/handle-right.svg</file>
+		<file alias="icons/map-globe.svg">breeze-icons/icons/actions/22/map-globe.svg</file>
+		<file alias="icons/list-add.svg">breeze-icons/icons/actions/24/list-add.svg</file>
+		<file alias="icons/overflow-menu.svg">breeze-icons/icons/actions/22/overflow-menu.svg</file>
+		<file alias="icons/trash-empty.svg">breeze-icons/icons/actions/24/trash-empty.svg</file>
+		<file alias="icons/edit-copy.svg">breeze-icons/icons/actions/24/edit-copy.svg</file>
+		<file alias="icons/edit-paste.svg">breeze-icons/icons/actions/24/edit-paste.svg</file>
+		<file alias="icons/view-readermode.svg">breeze-icons/icons/actions/16/view-readermode.svg</file>
+	</qresource>
+</RCC>
