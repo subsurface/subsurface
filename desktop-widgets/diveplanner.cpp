@@ -663,7 +663,6 @@ void PlannerWidgets::replanDive()
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 
 	MainWindow::instance()->graphics->setPlanState();
-	MainWindow::instance()->graphics->clearHandlers();
 
 	plannerWidget.setReplanButton(true);
 	plannerWidget.setupStartTime(timestampToDateTime(current_dive->when));
