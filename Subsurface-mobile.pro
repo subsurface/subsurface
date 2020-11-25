@@ -299,8 +299,6 @@ HEADERS += \
 	profile-widget/diverectitem.h \
 	profile-widget/divetextitem.h
 
-include(mobile-widgets/qml/kirigami/kirigami.pri)
-
 RESOURCES += mobile-widgets/qml/mobile-resources.qrc \
 		map-widget/qml/map-widget.qrc
 
@@ -321,6 +319,7 @@ android {
 
 	# at link time our CWD is parallel to the install-root
 	LIBS += ../install-root-$${QT_ARCH}/lib/libdivecomputer.a \
+		../install-root-$${QT_ARCH}/lib/qml/org/kde/kirigami.2/libkirigamiplugin.a \
 		../install-root-$${QT_ARCH}/lib/libgit2.a \
 		../install-root-$${QT_ARCH}/lib/libzip.a \
 		../install-root-$${QT_ARCH}/lib/libxslt.a \
@@ -348,7 +347,7 @@ android {
 		../install-root-$${QT_ARCH}/include/openssl \
 		. \
 		core \
-		mobile-widgets/qml/kirigami/src/libkirigami
+		mobile-widgets/3rdparty/kirigami/src
 }
 
 ios {
@@ -379,7 +378,7 @@ ios {
 		../install-root/ios/include/openssl \
 		. \
 		./core \
-		./mobile-widgets/qml/kirigami/src/libkirigami \
+		./mobile-widgets/3rdparty/kirigami/src/libkirigami \
 		/usr/include/libxml2
 
 }
