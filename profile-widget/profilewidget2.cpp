@@ -12,6 +12,7 @@
 #include "profile-widget/diveeventitem.h"
 #include "profile-widget/divetextitem.h"
 #include "profile-widget/divetooltipitem.h"
+#include "profile-widget/divehandler.h"
 #include "core/planner.h"
 #include "core/device.h"
 #include "profile-widget/ruleritem.h"
@@ -23,7 +24,6 @@
 #include "core/divelist.h"
 #include "core/errorhelper.h"
 #ifndef SUBSURFACE_MOBILE
-#include "desktop-widgets/diveplanner.h"
 #include "desktop-widgets/simplewidgets.h"
 #include "desktop-widgets/divepicturewidget.h"
 #include "desktop-widgets/mainwindow.h"
@@ -1003,6 +1003,16 @@ void ProfileWidget2::scale(qreal sx, qreal sy)
 #endif
 }
 
+bool ProfileWidget2::isPointOutOfBoundaries(const QPointF &point) const
+{
+	double xpos = timeAxis->valueAt(point);
+	double ypos = profileYAxis->valueAt(point);
+	return xpos > timeAxis->maximum() ||
+	       xpos < timeAxis->minimum() ||
+	       ypos > profileYAxis->maximum() ||
+	       ypos < profileYAxis->minimum();
+}
+
 #ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::wheelEvent(QWheelEvent *event)
 {
@@ -1039,16 +1049,6 @@ void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
 		int milimeters = lrint(profileYAxis->valueAt(mappedPos) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
 		plannerModel->addStop(milimeters, minutes * 60, -1, 0, true, UNDEF_COMP_TYPE);
 	}
-}
-
-bool ProfileWidget2::isPointOutOfBoundaries(const QPointF &point) const
-{
-	double xpos = timeAxis->valueAt(point);
-	double ypos = profileYAxis->valueAt(point);
-	return xpos > timeAxis->maximum() ||
-	       xpos < timeAxis->minimum() ||
-	       ypos > profileYAxis->maximum() ||
-	       ypos < profileYAxis->minimum();
 }
 
 void ProfileWidget2::scrollViewTo(const QPoint &pos)
