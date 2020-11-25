@@ -35,10 +35,8 @@ class QWebView;
 class QSettings;
 class UpdateManager;
 class UserManual;
-class DivePlannerWidget;
+class PlannerWidgets;
 class ProfileWidget2;
-class PlannerDetails;
-class PlannerSettingsWidget;
 class LocationInformationWidget;
 
 typedef std::pair<QByteArray, QVariant> WidgetProperty;
@@ -73,7 +71,6 @@ public:
 	void loadFiles(const QStringList files);
 	void importFiles(const QStringList importFiles);
 	void setToolButtonsEnabled(bool enabled);
-	void printPlan();
 	void setApplicationState(ApplicationState state);
 	bool inPlanner();
 	NotificationWidget *getNotificationWidget();
@@ -82,10 +79,8 @@ public:
 	void editDiveSite(dive_site *ds);
 
 	std::unique_ptr<MainTab> mainTab;
-	PlannerDetails *plannerDetails;
-	PlannerSettingsWidget *divePlannerSettingsWidget;
+	std::unique_ptr<PlannerWidgets> plannerWidgets;
 	ProfileWidget2 *graphics;
-	DivePlannerWidget *divePlannerWidget;
 	DiveListView *diveList;
 private
 slots:
@@ -164,7 +159,6 @@ slots:
 	void planCanceled();
 	void planCreated();
 	void setEnabledToolbar(bool arg1);
-	void setPlanNotes(QString plan);
 	// Some shortcuts like "change DC" or "copy/paste dive components"
 	// should only be enabled when the profile's visible.
 	void disableShortcuts(bool disablePaste = true);
