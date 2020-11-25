@@ -66,6 +66,9 @@ void run_ui()
 {
 #ifdef SUBSURFACE_MOBILE
 #if defined(Q_OS_ANDROID)
+	// according to the documentation this is required on Android, but nowhere else
+	KirigamiPlugin::getInstance().registerTypes();
+	// work around an odd interaction between the OnePlus flavor of Android and Qt font handling
 	if (getAndroidHWInfo().contains("/OnePlus/")) {
 		QFontDatabase db;
 		int id = QFontDatabase::addApplicationFont(":/fonts/Roboto-Regular.ttf");
@@ -91,7 +94,6 @@ void run_ui()
 	// Register qml interface classes
 	QMLInterface::setup(ctxt);
 	register_qml_types(&engine);
-	KirigamiPlugin::getInstance().registerTypes();
 #if defined(__APPLE__) && !defined(Q_OS_IOS)
 	// when running the QML UI on a Mac the deployment of the QML Components seems
 	// to fail and the search path for the components is rather odd - simply the
