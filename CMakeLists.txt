@@ -346,6 +346,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	)
 	qt5_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
 	qt5_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/icons.qrc)
+	qt5_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/kirigami/src/scenegraph/shaders/shaders.qrc)
 
 	# the following is split across two commands since in cmake 3.12 this would result
 	# in a non-sensical "no sources given to target" error if done all as one set of
