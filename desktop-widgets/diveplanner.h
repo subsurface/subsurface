@@ -9,7 +9,6 @@
 #include <QSignalMapper>
 #include <QElapsedTimer>
 
-
 class QListView;
 class QModelIndex;
 class DivePlannerPointsModel;
