@@ -19,7 +19,13 @@ fi
 # a 3rdparty folder within our sources
 ./scripts/get-dep-lib.sh single "$SRC"/subsurface/mobile-widgets/3rdparty kirigami
 ./scripts/get-dep-lib.sh single "$SRC"/subsurface/mobile-widgets/3rdparty breeze-icons
+./scripts/get-dep-lib.sh single "$SRC"/subsurface/mobile-widgets/3rdparty extra-cmake-modules
 
+# now install the ECM to keep things more contained, install into 3rdparty/ECM
+mkdir -p "$SRC"/subsurface/mobile-widgets/3rdparty/ECM
+cd "$SRC"/subsurface/mobile-widgets/3rdparty/ECM
+cmake -DSHARE_INSTALL_DIR=.. ../extra-cmake-modules
+make install
 
 exit 0
 

@@ -177,6 +177,9 @@ for package in "${PACKAGES[@]}" ; do
 		kirigami)
 			git_checkout_library kirigami $CURRENT_KIRIGAMI https://github.com/KDE/kirigami.git
 			;;
+		extra-cmake-modules) # we want this intentionally at the same version as kirigami
+			git_checkout_library extra-cmake-modules $CURRENT_KIRIGAMI https://github.com/KDE/extra-cmake-modules.git
+			;;
 		openssl)
 			git_checkout_library openssl $CURRENT_OPENSSL https://github.com/openssl/openssl.git
 			;;
