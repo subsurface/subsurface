@@ -271,7 +271,7 @@ Kirigami.ApplicationWindow {
 						name: ":/go-previous-symbolic"
 					}
 					text: qsTr("Back")
-					onTriggered: globalDrawer.scrollViewItem.pop()
+					onTriggered: globalDrawer.pop()
 				}
 				Kirigami.Action {
 					icon {
@@ -380,7 +380,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						name: ":/go-previous-symbolic"
 					}
 					text: qsTr("Back")
-					onTriggered: globalDrawer.scrollViewItem.pop()
+					onTriggered: globalDrawer.pop()
 				}
 				Kirigami.Action {
 					icon {
@@ -453,7 +453,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						name: ":/go-previous-symbolic"
 					}
 					text: qsTr("Back")
-					onTriggered: globalDrawer.scrollViewItem.pop()
+					onTriggered: globalDrawer.pop()
 				}
 				Kirigami.Action {
 					icon {
@@ -511,7 +511,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						name: ":/go-previous-symbolic"
 					}
 					text: qsTr("Back")
-					onTriggered: globalDrawer.scrollViewItem.pop()
+					onTriggered: globalDrawer.pop()
 				}
 				Kirigami.Action {
 					text: qsTr("App log")
@@ -570,7 +570,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 							name: ":/go-previous-symbolic"
 						}
 						text: qsTr("Back")
-						onTriggered: globalDrawer.scrollViewItem.pop()
+						onTriggered: globalDrawer.pop()
 					}
 					Kirigami.Action {
 						text: qsTr("Setup")
