@@ -308,7 +308,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(graphics, &ProfileWidget2::disableShortcuts, this, &MainWindow::disableShortcuts);
 	connect(graphics, &ProfileWidget2::enableShortcuts, this, &MainWindow::enableShortcuts);
 	connect(graphics, &ProfileWidget2::editCurrentDive, this, &MainWindow::editCurrentDive);
-	connect(graphics, &ProfileWidget2::updateDiveInfo, mainTab.get(), &MainTab::updateDiveInfo);
 
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, graphics, &ProfileWidget2::settingsChanged);
 

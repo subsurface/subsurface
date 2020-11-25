@@ -97,7 +97,6 @@ signals:
 	void enableToolbar(bool enable);
 	void enableShortcuts();
 	void disableShortcuts(bool paste);
-	void updateDiveInfo();
 	void editCurrentDive();
 	void dateTimeChangedItems();
 
