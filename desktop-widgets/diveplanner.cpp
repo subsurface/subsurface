@@ -16,7 +16,6 @@
 #include "qt-models/diveplannermodel.h"
 
 #include <QGraphicsSceneMouseEvent>
-#include <QMessageBox>
 #include <QSettings>
 #include <QShortcut>
 #ifndef NO_PRINTING
@@ -24,11 +23,6 @@
 #include <QPrinter>
 #include <QBuffer>
 #endif
-
-#define TIME_INITIAL_MAX 30
-
-#define MAX_DEPTH M_OR_FT(150, 450)
-#define MIN_DEPTH M_OR_FT(20, 60)
 
 DiveHandler::DiveHandler() : QGraphicsEllipseItem()
 {
