@@ -100,31 +100,6 @@ TemplateLayout::TemplateLayout(print_options *printOptions, template_options *te
 	this->templateOptions = templateOptions;
 }
 
-/* a HTML pre-processor stage. acts like a compatibility layer
- * between some Grantlee variables and DiveObjectHelperGrantlee Q_PROPERTIES:
- *	dive.weights -> dive.weightList
- * 	dive.weight# -> dive.weights.#
- *	dive.cylinders -> dive.cylinderList
- * 	dive.cylinder# -> dive.cylinders.#
- * The Grantlee parser works with a single or no space next to the variable
- * markers - e.g. '{{ var }}'. We're graceful and support an arbitrary number of
- * whitespace. */
-static QRegularExpression weightsRegExp(R"({{\*?([A-Za-z]+[A-Za-z0-9]*).weights\s*}})");
-static QRegularExpression weightRegExp(R"({{\*?([A-Za-z]+[A-Za-z0-9]*).weight(\d+)\s*}})");
-static QRegularExpression cylindersRegExp(R"({{\*?([A-Za-z]+[A-Za-z0-9]*).cylinders\s*}})");
-static QRegularExpression cylinderRegExp(R"({{\s*([A-Za-z]+[A-Za-z0-9]*).cylinder(\d+)\s*}})");
-static QString preprocessTemplate(const QString &in)
-{
-	QString out = in;
-
-	out.replace(weightsRegExp, QStringLiteral(R"({{\1.weightList}})"));
-	out.replace(weightRegExp, QStringLiteral(R"({{\1.weights.\2}})"));
-	out.replace(cylindersRegExp, QStringLiteral(R"({{\1.cylinderList}})"));
-	out.replace(cylindersRegExp, QStringLiteral(R"({{\1.cylinders.\2}})"));
-
-	return out;
-}
-
 QString TemplateLayout::generate()
 {
 	int progress = 0;
