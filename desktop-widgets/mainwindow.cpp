@@ -1552,9 +1552,6 @@ void MainWindow::turnOffNdlTts()
 	qPrefTechnicalDetails::set_calcndltts(false);
 }
 
-#undef TOOLBOX_PREF_PROFILE
-#undef PERF_PROFILE
-
 void MainWindow::on_actionExport_triggered()
 {
 	DiveLogExportDialog diveLogExport;
