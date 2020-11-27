@@ -37,4 +37,5 @@ void cliDownloader(const char *vendor, const char *product, const char *device)
 	// before we start, remember where the dive_table ended
 	diveImportedModel->startDownload();
 	diveImportedModel->waitForDownload();
+	diveImportedModel->recordDives();
 }

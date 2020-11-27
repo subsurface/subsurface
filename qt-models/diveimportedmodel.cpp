@@ -147,6 +147,7 @@ void DiveImportedModel::startDownload()
 void DiveImportedModel::waitForDownload()
 {
 	thread.wait();
+	downloadThreadFinished();
 }
 
 std::tuple<struct dive_table, struct dive_site_table, struct device_table> DiveImportedModel::consumeTables()
