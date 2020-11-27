@@ -133,6 +133,27 @@ if [ ! -f libdivecomputer/configure ] ; then
 fi
 popd
 
+# if this isn't just a quick rebuild, pull kirigami, icons, etc, and finally build the Googlemaps plugin
+if [ "$QUICK" = "" ] ; then
+	pushd "$SUBSURFACE_SOURCE"
+	bash -x ./scripts/mobilecomponents.sh
+	popd
+
+	# build google maps plugin
+	# this is the easy one as it uses qmake which ensures things get built for all platforms, etc
+	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . googlemaps
+	QT_PLUGINS_PATH=$($QMAKE -query QT_INSTALL_PLUGINS)
+	GOOGLEMAPS_BIN=libqtgeoservices_googlemaps.so
+	if [ ! -e "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] || [ googlemaps/.git/HEAD -nt "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] ; then
+	    mkdir -p googlemaps-build
+	    pushd googlemaps-build
+	    $QMAKE ANDROID_ABIS="$BUILD_ABIS" ../googlemaps/googlemaps.pro
+	    make -j4
+            make install
+	    popd
+	fi
+fi
+
 # autoconf based libraries are harder
 # build default architectures, or the given one?
 if [ "$ARCHITECTURES" = "" ] ; then
@@ -158,7 +179,6 @@ for ARCH in $ARCHITECTURES ; do
 	BUILD_ABIS="$BUILD_ABIS $ANDROID_ABI"
 
 	export TARGET=$ARCH-linux-android
-
 	export AR=$TOOLCHAIN/bin/$BINUTIL_ARCH-linux-android$EABI-ar
 	export AS=$TOOLCHAIN/bin/$BINUTIL_ARCH-linux-android$EABI-as
 	export CC=$TOOLCHAIN/bin/$TARGET$EABI$ANDROID_PLATFORM_LEVEL-clang
@@ -309,6 +329,23 @@ for ARCH in $ARCHITECTURES ; do
 
 	fi # QUICK
 
+	# on Android I can't make an integrated build work, so let's build Kirigami separately?
+	mkdir -p "$BUILDROOT"/kirigami-build-"$ARCH"
+	pushd "$BUILDROOT"/kirigami-build-"$ARCH"
+			cmake \
+				-DANDROID="1" \
+				-DANDROID_ABI="$ANDROID_ABI" \
+				-DBUILD_SHARED_LIBS="OFF" \
+				-DBUILD_EXAMPLES="OFF" \
+				-DCMAKE_PREFIX_PATH=/android/5.15.1/android/lib/cmake \
+				-DCMAKE_C_COMPILER="$CC" \
+				-DCMAKE_LINKER="$CC" \
+				-DCMAKE_INSTALL_PREFIX="$PREFIX" \
+				"$SUBSURFACE_SOURCE"/mobile-widgets/3rdparty/kirigami
+			make
+			make install
+	popd
+
 	CURRENT_SHA=$(cd "$SUBSURFACE_SOURCE"/libdivecomputer ; git describe)
 	PREVIOUS_SHA=$(cat "libdivecomputer-${ARCH}.SHA" 2>/dev/null || echo)
 	if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" ] || [ ! -e "$PKG_CONFIG_PATH/libdivecomputer.pc" ] ; then
@@ -324,27 +361,6 @@ for ARCH in $ARCHITECTURES ; do
 	echo "====================================="
 done # ARCH
 
-# if this isn't just a quick rebuild, pull kirigami, icons, etc, and finally build the Googlemaps plugin
-if [ "$QUICK" = "" ] ; then
-	pushd "$SUBSURFACE_SOURCE"
-	bash ./scripts/mobilecomponents.sh
-	popd
-
-	# build google maps plugin
-	# this is the easy one as it uses qmake which ensures things get built for all platforms, etc
-	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . googlemaps
-	QT_PLUGINS_PATH=$($QMAKE -query QT_INSTALL_PLUGINS)
-	GOOGLEMAPS_BIN=libqtgeoservices_googlemaps.so
-	if [ ! -e "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] || [ googlemaps/.git/HEAD -nt "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] ; then
-	    mkdir -p googlemaps-build
-	    pushd googlemaps-build
-	    $QMAKE ANDROID_ABIS="$BUILD_ABIS" ../googlemaps/googlemaps.pro
-	    make -j4
-            make install
-	    popd
-	fi
-fi
-
 # set up the final build
 pushd "$BUILDROOT"/subsurface-mobile-build
 rm -rf android-build
@@ -356,7 +372,6 @@ popd
 # call qmake to set up the build
 echo "Run qmake to setup the Subsurface-mobile build for all architectures"
 $QMAKE BUILD_NR="$BUILDNR" BUILD_VERSION_NAME="$SUBSURFACE_MOBILE_VERSION" ANDROID_ABIS="$BUILD_ABIS" "$SUBSURFACE_SOURCE"/Subsurface-mobile.pro
-
 
 # if this isn't just a quick rebuild compile the translations
 if [ "$QUICK" = "" ] ; then
