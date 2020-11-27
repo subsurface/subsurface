@@ -1,0 +1,47 @@
+How to set up a Raspberry Pi to use as a Subsurface downloader
+
+1) Get an image file for RaspianPi
+
+2) Set up your local network according to https://www.raspberrypi.org/documentation/configuration/wireless/headless.md
+You also need to create a file named "ssh" in the boot partition to enable the ssh server. Set the hostname to subsurfacepi
+
+3) apt-get install some more packages. On my pi, the packages listed in downloader_packages are installed, you can install them with
+sudo xargs -a downloader_packages apt install
+
+4) Clone the subsurface repository and build it as for any Debian based system: Run build.sh, then cd to the build directory, run
+ccamke .
+and select SUBSURFACE_TARGET_EXECUTABLE as DownloaderExecutable and make once more
+
+5) Add the following lines to /etc/apache2/sites-available/000-default.conf
+
+        ScriptAlias /pi-cgi-bin/ /home/pi/cgi-bin/
+        <Directory "/home/pi/cgi-bin">
+                AllowOverride None
+                Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+                Order allow,deny
+                Require all granted
+        </Directory>
+        <Directory "/usr/lib/cgi-bin">
+                AllowOverride None
+                Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+and restart apache2
+
+6) copy ~/src/subsurface/scripts/downloader.pl to /usr/lib/cgi-bin and run
+sudo chmod a+x /usr/lib/cgi-bin/downloader.pl
+It should then be there when you direct your browser to
+subsurfacepi.local/cgi-bin/downloader.pl
+
+7) Give the www user access to the serial interface
+sudo adduser pi dialout
+and restart apache2
+
+8) Create a directory to store the data
+sudo mkdir /opt/ssrf/
+sudo touch /opt/ssrf/ssrf.conf
+sudo chown -R www-data.www-data /opt/ssrf
+
+9) If you want to use the pi with an iPhone where the iPhone provides the internet connectivity, follow https://gist.github.com/antronic/157e047cdefa98b3150195c2eacb56b8
