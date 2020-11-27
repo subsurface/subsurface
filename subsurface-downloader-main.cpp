@@ -9,6 +9,8 @@
 #include "core/tag.h"
 #include "core/dive.h"
 #include "core/subsurface-string.h"
+#include "core/file.h"
+#include "core/trip.h"
 
 #include <QApplication>
 #include <QLoggingCategory>
@@ -37,6 +39,12 @@ int main(int argc, char **argv)
 	QStringList files;
 	QStringList importedFiles;
 	QStringList arguments = QCoreApplication::arguments();
+	struct dive_table dive_table = empty_dive_table;
+	struct dive_site_table sites = empty_dive_site_table;
+	struct device_table devices;
+	struct filter_preset_table presets;
+
+
 
 	const char *default_directory = system_default_directory();
 	const char *default_filename = system_default_filename();
@@ -83,8 +91,10 @@ int main(int argc, char **argv)
 		}
 	}
 	filesOnCommandLine = !files.isEmpty() || !importedFiles.isEmpty();
-	if (!files.isEmpty())
+	if (!files.isEmpty()) {
 		qDebug() << "loading dive data from" << files;
+		parse_file(qPrintable(files.first()), &dive_table, &trip_table, &sites, &devices, &presets);
+	}
 	print_files();
 	if (!quit) {
 		if (!empty_string(prefs.dive_computer.vendor) && !empty_string(prefs.dive_computer.product) && !empty_string(prefs.dive_computer.device)) {
@@ -93,6 +103,7 @@ int main(int argc, char **argv)
 			cliDownloader(prefs.dive_computer.vendor, prefs.dive_computer.product, prefs.dive_computer.device);
 		}
 	}
+	save_dives(qPrintable(files.first()));
 	taglist_free(g_tag_list);
 	parse_xml_exit();
 	free((void *)default_directory);
