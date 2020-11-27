@@ -52,11 +52,11 @@ yes | sdkmanager --sdk_root=/android --licenses
 # next check that Qt is installed
 if [ ! -d "$LATEST_QT" ] ; then
 	pip3 install aqtinstall
-	aqt install -O /android "$LATEST_QT" linux android -m qtcharts
+	$HOME/.local/bin/aqt install -O /android "$LATEST_QT" linux android -m qtcharts
 fi
 
 # now that we have an NDK, copy the font that we need for OnePlus phones
 # due to https://bugreports.qt.io/browse/QTBUG-69494
-cp "$ANDROID_HOME"/platforms/"$ANDROID_PLATFORMS"/data/fonts/Roboto-Regular.ttf "$SUBSURFACE_SOURCE"/android-mobile || exit 1
+cp "$ANDROID_HOME"/platforms/"$ANDROID_PLATFORMS"/data/fonts/Roboto-Regular.ttf "$SCRIPTDIR"/../../android-mobile || exit 1
 
 echo "things are set up for the Android build"
