@@ -305,8 +305,14 @@ RESOURCES += mobile-widgets/qml/mobile-resources.qrc \
 android {
 	SOURCES += core/android.cpp \
 		core/serial_usb_android.cpp
-	RESOURCES += packaging/android/translations.qrc
-	RESOURCES += android-mobile/font.qrc
+
+	# ironically, we appear to need to include the Kirigami shaders here
+	# as they aren't found when we assume that they are part of the
+	# libkirigami library
+	RESOURCES += packaging/android/translations.qrc \
+		android-mobile/font.qrc \
+		mobile-widgets/3rdparty/icons.qrc \
+		mobile-widgets/3rdparty/kirigami/src/scenegraph/shaders/shaders.qrc
 	QT += androidextras
 	ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-mobile
 	ANDROID_VERSION_CODE = $$BUILD_NR
