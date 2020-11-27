@@ -1,61 +1,70 @@
-Tool repo to crosscompile subsurface to android-arm
----------------------------------------------------
+over-simplistic instructions to building the Android package from source
+------------------------------------------------------------------------
 
-Dependencies:
+The easiest way to build things is using our container:
 
-1. android_sdk, android_ndk and Qt for android. See step 0.
-2. cmake
-3. ant
-4. Java JDK
-5. working adb is recommended
-6. dependencies of libdivecomputer and subsurface -
-   visit http://subsurface.hohndel.org/documentation/building/
+mkdir $HOME/src
+cd $HOME/src
+git clone git://github.com/subsurface/subsurface
+cd subsurface
+git checkout version or branch you are testing
+cd ..
+sudo docker run -v $HOME/src/subsurface:/android/subsurface -w /android --name=android-builder-docker -d subsurface/android-build-container:5.15.1 /bin/sleep 60m
+sudo docker exec -t android-builder-docker git config --global user.email "ci@subsurface-divelog.org"
+sudo docker exec -t android-builder-docker git config --global user.name "Subsurface CI"
+sudo docker exec -t android-builder-docker apt-get install --reinstall cpp-7 gcc-7-base libgcc-7-dev libcc1-0 gcc-7
+sudo docker exec -t android-builder-docker /bin/bash -x ./subsurface/packaging/android/qmake-build.sh
 
-By far the easiest way to do this is using the Android build container which is
-used to create the official builds. That has all the dependencies ready and
-makes things a lot easier.
 
-Run the docker image: docker://subsurface/android-builder:5.13.10
+alternatively you can build locally without the help of our container.
 
-Check out the sources inside the container, make sure the following links
-are available in parallel to the source directory
+Setup your build environment on a Ubuntu 20.04 Linux box
 
-        ln -s /android/Qt .
-        ln -s /android/android-ndk-r18b .
-        ln -s /android/android-sdk-linux .
+I think these packages should be enough:
+sudo apt-get update
+sudo apt-get install -y \
+    autoconf \
+    automake \
+    cmake \
+    git \
+    libtool-bin \
+    make \
+    wget \
+    unzip \
+    python \
+    python3-pip \
+    bzip2 \
+    pkg-config \
+    libx11-xcb1 \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    openjdk-8-jdk \
+    curl \
+    coreutils \
+    p7zip-full
 
-and run the build wrapper from the directory above the source directory
+sudo mkdir /android
+sudo chown `id -un` /android
+cd /android
+wget https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip
+unzip commandlinetools-linux-*.zip
 
-        bash -x subsurface/packaging/android/android-build-wrapper.sh
+git clone git://github.com/subsurface/subsurface
 
-This should create a pair of unsigned but otherwise working APKs (for 32 and 64
-bit ARM).
+# now get the SDK, NDK, Qt, everything that's needed
+bash /android/subsurface/packaging/android/android-build-setup.sh
 
-Alternatively, steps to install using your own Linux machine:
+Once this has completed, you should have a working build environment.
 
-Step 0.
-Grab..
-Android ndk from: http://developer.android.com/tools/sdk/ndk/index.html
-Android sdk from: http://developer.android.com/sdk/index.html#download
-And QT for android from: http://qt-project.org/downloads
+bash -x subsurface/packaging/android/qmake-build.sh
 
-Step 1.
-Extract and install these into known directories.
-Have a look in the top of build.sh for where the cross build tool expects
-them. By default thats is: ../../../android-ndk-r9d ../../../android-sdk-linux
-and ../../../Qt/5.5 (or Qt/5.6)
+should build a working .aab as well as a .apk that can be installed on
+your attached device:
 
-Step 2.
-Run bash build.sh in the terminal. By default it builds for arm but you
-can pass x86 as first arg to build.sh to have it build for x86. Nice when
-debugging in a fast emulator.
-The script will download and build the whole dependency chain.
+./platform-tools/adb  install ./subsurface-mobile-build/android-build/build/outputs/apk/debug/android-build-debug.apk
 
-After this, subsurface will be built for android.
+Note that since you don't have the same signing key that I have,
+you'll have to uninstalled the 'official' Subsurface-mobile binary in
+order for this to work. And likewise you have to uninstall yours
+before you'll be able to install an official binary again.
 
-The output folder is subsurface-build-arm/android_build and your newly
-created apk shows up as:
-subsurface-build-arm/android_build/bin/QtApp-debug.apk
-
-Where the x86 apk shows up when built for x86 is left as a exercise for the
-reader.
