@@ -27,6 +27,26 @@
       </widget>
      </item>
      <item>
+      <widget class="QLabel" name="var1Label">
+       <property name="text">
+        <string>Plot against</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="var1" />
+     </item>
+     <item>
+      <widget class="QLabel" name="var2Label">
+       <property name="text">
+        <string>Variable</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="var2" />
+     </item>
+     <item>
       <widget class="QLabel" name="chartTypeLabel">
        <property name="text">
         <string>Chart type</string>
@@ -34,57 +54,28 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="chartType">
-      </widget>
+      <widget class="QComboBox" name="chartType" />
      </item>
      <item>
-      <widget class="QComboBox" name="chartSubType">
-      </widget>
+      <widget class="QLabel" name="var1BinnerLabel" />
      </item>
      <item>
-      <widget class="QLabel" name="firstAxisLabel">
-       <property name="text">
-        <string>First axis</string>
-       </property>
-      </widget>
+      <widget class="QComboBox" name="var1Binner" />
      </item>
      <item>
-      <widget class="QComboBox" name="firstAxis">
-      </widget>
+      <widget class="QLabel" name="var2BinnerLabel" />
      </item>
      <item>
-      <widget class="QComboBox" name="firstAxisBin">
-      </widget>
+      <widget class="QComboBox" name="var2Binner" />
      </item>
      <item>
-      <widget class="QComboBox" name="firstAxisOperation">
-      </widget>
+      <widget class="QLabel" name="var2OperationLabel" />
      </item>
      <item>
-      <widget class="QLabel" name="secondAxisLabel">
-       <property name="text">
-        <string>Second axis</string>
-       </property>
-      </widget>
+      <widget class="QComboBox" name="var2Operation" />
      </item>
      <item>
-      <widget class="QComboBox" name="secondAxis">
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="secondAxisBin">
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="secondAxisOperation">
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="plot">
-       <property name="text">
-        <string>Plot</string>
-       </property>
-      </widget>
+      <layout class="QVBoxLayout" name="features" />
      </item>
      <item>
       <spacer name="verticalSpacer">

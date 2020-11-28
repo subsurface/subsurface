@@ -9,6 +9,8 @@ set(SUBSURFACE_STATS_SRCS
 	scatterseries.cpp
 	statsview.h
 	statsview.cpp
+	statsstate.h
+	statsstate.cpp
 	statstranslations.h
 	statstypes.h
 	statstypes.cpp
