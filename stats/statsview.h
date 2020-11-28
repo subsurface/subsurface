@@ -9,6 +9,7 @@ struct dive;
 struct StatsType;
 struct StatsBinner;
 struct StatsBin;
+struct StatsState;
 
 namespace QtCharts {
 	class QAbstractAxis;
@@ -34,19 +35,7 @@ public:
 	~StatsView();
 
 	// Integers are indexes of the combobox entries retrieved with the functions below
-	void plot(int type, int subType,
-		  int firstAxis, int firstAxisBin, int firstAxisOperation,
-		  int secondAxis, int secondAxisBin, int secondAxisOperation);
-
-	// Functions to construct the UI comboboxes
-	static QStringList getChartTypes();
-	static QStringList getChartSubTypes(int chartType);
-	static QStringList getFirstAxisTypes(int chartType);
-	static QStringList getFirstAxisBins(int chartType, int firstAxis);
-	static QStringList getFirstAxisOperations(int chartType, int secondAxis);
-	static QStringList getSecondAxisTypes(int chartType, int firstAxis);
-	static QStringList getSecondAxisBins(int chartType, int firstAxis, int secondAxis);
-	static QStringList getSecondAxisOperations(int chartType, int firstAxis, int secondAxis);
+	void plot(const StatsState &state);
 private slots:
 	void plotAreaChanged(const QRectF &plotArea);
 private:
@@ -70,7 +59,8 @@ private:
 				 const StatsType *valueType);
 	void plotHistogramCountChart(const std::vector<dive *> &dives,
 				     ChartSubType subType,
-				     const StatsType *categoryType, const StatsBinner *categoryBinner);
+				     const StatsType *categoryType, const StatsBinner *categoryBinner,
+				     bool showMedian, bool showMean);
 	void plotHistogramBarChart(const std::vector<dive *> &dives,
 				   ChartSubType subType,
 				   const StatsType *categoryType, const StatsBinner *categoryBinner,

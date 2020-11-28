@@ -2,20 +2,103 @@
 #include "statswidget.h"
 #include "mainwindow.h"
 #include "stats/statsview.h"
+#include <QCheckBox>
 
 StatsWidget::StatsWidget(QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
 
 	connect(ui.close, &QToolButton::clicked, this, &StatsWidget::closeStats);
-	connect(ui.plot, &QToolButton::clicked, this, &StatsWidget::plot);
 
-	ui.chartType->addItems(StatsView::getChartTypes());
 	connect(ui.chartType, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::chartTypeChanged);
-	connect(ui.firstAxis, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::firstAxisChanged);
-	connect(ui.secondAxis, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::secondAxisChanged);
+	connect(ui.var1, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::var1Changed);
+	connect(ui.var2, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::var2Changed);
+	connect(ui.var1Binner, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::var1BinnerChanged);
+	connect(ui.var2Binner, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::var2BinnerChanged);
+	connect(ui.var2Operation, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::var2OperationChanged);
+}
 
-	chartTypeChanged(0);
+// Initialize QComboBox with list of variables
+static void setVariableList(QComboBox *combo, const StatsState::VariableList &list)
+{
+	combo->clear();
+	for (const StatsState::Variable &v: list.variables)
+		combo->addItem(v.name, QVariant(v.id));
+	combo->setCurrentIndex(list.selected);
+}
+
+// Initialize QComboBox with list of charts
+static void setChartList(QComboBox *combo, const StatsState::ChartList &list)
+{
+	QIcon warn = QIcon::fromTheme("dialog-warning");
+	combo->clear();
+	for (const StatsState::Chart &c: list.charts) {
+		if (c.warning)
+			combo->addItem(warn, c.name, QVariant(c.id));
+		else
+			combo->addItem(c.name, QVariant(c.id));
+	}
+	combo->setCurrentIndex(list.selected);
+}
+
+// Initialize QComboBox and QLabel of binners. Hide if there are no binners.
+static void setBinList(QLabel *label, QComboBox *combo, const QString &varName, const StatsState::BinnerList &list)
+{
+	combo->clear();
+	if (list.binners.empty()) {
+		label->hide();
+		combo->hide();
+		return;
+	}
+
+	label->show();
+	combo->show();
+	label->setText(StatsWidget::tr("%1 binning").arg(varName));
+
+	for (const QString &s: list.binners)
+		combo->addItem(s);
+	combo->setCurrentIndex(list.selected);
+}
+
+// Initialize QComboBox and QLabel of operations. Hide if there are no operations.
+static void setOperationList(QLabel *label, QComboBox *combo, const QString &varName, const StatsState::VariableList &list)
+{
+	combo->clear();
+	if (list.variables.empty()) {
+		label->hide();
+		combo->hide();
+		return;
+	}
+
+	label->show();
+	combo->show();
+	label->setText(StatsWidget::tr("%1 operation").arg(varName));
+
+	setVariableList(combo, list);
+}
+
+void StatsWidget::updateUi()
+{
+	StatsState::UIState uiState = state.getUIState();
+	setVariableList(ui.var1, uiState.var1);
+	setVariableList(ui.var2, uiState.var2);
+	setChartList(ui.chartType, uiState.charts);
+	setBinList(ui.var1BinnerLabel, ui.var1Binner, uiState.var1Name, uiState.binners1);
+	setBinList(ui.var2BinnerLabel, ui.var2Binner, uiState.var2Name, uiState.binners2);
+	setOperationList(ui.var2OperationLabel, ui.var2Operation, uiState.var2Name, uiState.operations2);
+
+	// Add checkboxes for additional features
+	features.clear();
+	for (const StatsState::Feature &f: uiState.features) {
+		features.emplace_back(new QCheckBox(f.name));
+		QCheckBox *check = features.back().get();
+		check->setChecked(f.selected);
+		int id = f.id;
+		connect(check, &QCheckBox::stateChanged, [this,id] (int state) { featureChanged(id, state); });
+		ui.features->addWidget(check);
+	}
+
+	ui.stats->plot(state);
 }
 
 void StatsWidget::closeStats()
@@ -23,103 +106,50 @@ void StatsWidget::closeStats()
 	MainWindow::instance()->setApplicationState(ApplicationState::Default);
 }
 
-void StatsWidget::plot()
-{
-	ui.stats->plot(
-		ui.chartType->currentIndex(),
-		ui.chartSubType->currentIndex(),
-		ui.firstAxis->currentIndex(),
-		ui.firstAxisBin->currentIndex(),
-		ui.firstAxisOperation->currentIndex(),
-		ui.secondAxis->currentIndex(),
-		ui.secondAxisBin->currentIndex(),
-		ui.secondAxisOperation->currentIndex()
-	);
-}
-
 void StatsWidget::chartTypeChanged(int idx)
 {
-	QStringList subTypes = StatsView::getChartSubTypes(idx);
-	ui.chartSubType->clear();
-	if (subTypes.isEmpty()) {
-		ui.chartSubType->hide();
-	} else {
-		ui.chartSubType->addItems(subTypes);
-		ui.chartSubType->show();
-	}
-
-	QStringList firstAxisTypes = StatsView::getFirstAxisTypes(idx);
-	ui.firstAxis->clear();
-	if (firstAxisTypes.isEmpty()) {
-		ui.firstAxis->hide();
-		ui.firstAxisBin->hide();
-		ui.firstAxisOperation->hide();
-		ui.secondAxis->hide();
-		ui.secondAxisBin->hide();
-		ui.secondAxisOperation->hide();
-		return;
-	}
-
-	ui.firstAxis->addItems(firstAxisTypes);
-	ui.firstAxis->show();
-	firstAxisChanged(0);
+	state.chartChanged(ui.chartType->itemData(idx).toInt());
+	updateUi();
 }
 
-void StatsWidget::firstAxisChanged(int idx)
+void StatsWidget::var1Changed(int idx)
 {
-	int chartType = ui.chartType->currentIndex();
-	QStringList firstAxisBins = StatsView::getFirstAxisBins(chartType, idx);
-	ui.firstAxisBin->clear();
-	if (firstAxisBins.size() <= 1) {
-		ui.firstAxisBin->hide();
-	} else {
-		ui.firstAxisBin->addItems(firstAxisBins);
-		ui.firstAxisBin->show();
-	}
-
-	QStringList firstAxisOperations = StatsView::getFirstAxisOperations(chartType, idx);
-	ui.firstAxisOperation->clear();
-	if (firstAxisOperations.size() <= 1) {
-		ui.firstAxisOperation->hide();
-	} else {
-		ui.firstAxisOperation->addItems(firstAxisOperations);
-		ui.firstAxisOperation->show();
-	}
-
-	QStringList secondAxisTypes = StatsView::getSecondAxisTypes(chartType, idx);
-	ui.secondAxis->clear();
-	if (secondAxisTypes.isEmpty()) {
-		ui.secondAxis->hide();
-		ui.secondAxisBin->hide();
-		ui.secondAxisOperation->hide();
-		return;
-	}
-
-	ui.secondAxis->addItems(secondAxisTypes);
-	ui.secondAxis->show();
-	secondAxisChanged(0);
+	state.var1Changed(ui.var1->itemData(idx).toInt());
+	updateUi();
 }
 
-void StatsWidget::secondAxisChanged(int idx)
+void StatsWidget::var2Changed(int idx)
 {
-	int chartType = ui.chartType->currentIndex();
-	int firstAxisType = ui.firstAxis->currentIndex();
-	QStringList secondAxisBins = StatsView::getSecondAxisBins(chartType, firstAxisType, idx);
-	ui.secondAxisBin->clear();
-	if (secondAxisBins.size() <= 1) {
-		ui.secondAxisBin->hide();
-	} else {
-		ui.secondAxisBin->addItems(secondAxisBins);
-		ui.secondAxisBin->show();
-	}
+	state.var2Changed(ui.var2->itemData(idx).toInt());
+	updateUi();
+}
 
-	QStringList secondAxisOperations = StatsView::getSecondAxisOperations(chartType, firstAxisType, idx);
-	ui.secondAxisOperation->clear();
-	if (secondAxisOperations.size() <= 1) {
-		ui.secondAxisOperation->hide();
-	} else {
-		ui.secondAxisOperation->addItems(secondAxisOperations);
-		ui.secondAxisOperation->show();
-	}
+void StatsWidget::var1BinnerChanged(int idx)
+{
+	state.binner1Changed(idx);
+	updateUi();
+}
 
+void StatsWidget::var2BinnerChanged(int idx)
+{
+	state.binner2Changed(idx);
+	updateUi();
+}
+
+void StatsWidget::var2OperationChanged(int idx)
+{
+	state.var2OperationChanged(ui.var2Operation->itemData(idx).toInt());
+	updateUi();
+}
+
+void StatsWidget::featureChanged(int idx, bool status)
+{
+	state.featureChanged(idx, status);
+	updateUi();
+}
+
+void StatsWidget::showEvent(QShowEvent *e)
+{
+	updateUi();
+	QWidget::showEvent(e);
 }

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "statsview.h"
+#include "statsstate.h"
 #include "statstranslations.h"
 #include "statstypes.h"
 #include "scatterseries.h"
@@ -23,280 +24,11 @@
 #include <QStackedBarSeries>
 #include <QValueAxis>
 
-// Some of our compilers do not support std::size(). Roll our own for now.
-template <typename T, size_t N>
-static constexpr size_t array_size(const T (&)[N])
-{
-	return N;
-}
-
 // Constants that control the graph layouts
 static const double histogramBarWidth = 0.8; // 1.0 = full width of category
 static const QColor barColor(0x66, 0xb2, 0xff);
 static const QColor quartileMarkerColor(Qt::red);
 static const double quartileMarkerSize = 15;
-
-enum class ChartSubType {
-	Vertical = 0,
-	VerticalStacked,
-	Horizontal,
-	HorizontalStacked,
-	Pie
-};
-
-// Attn: The order must correspond to the enum above
-static const char *chart_subtype_names[] = {
-	QT_TRANSLATE_NOOP("StatsTranslations", "Vertical"),
-	QT_TRANSLATE_NOOP("StatsTranslations", "Vertical stacked"),
-	QT_TRANSLATE_NOOP("StatsTranslations", "Horizontal"),
-	QT_TRANSLATE_NOOP("StatsTranslations", "Horizontal stacked"),
-	QT_TRANSLATE_NOOP("StatsTranslations", "Pie")
-};
-
-enum class ChartTypeId {
-	DiscreteBar,
-	DiscreteValue,
-	DiscreteCount,
-	DiscreteBox,
-	DiscreteScatter,
-	HistogramCount,
-	HistogramBar,
-	ScatterPlot
-};
-
-static const struct ChartType {
-	ChartTypeId id;
-	const char *name;
-	const std::vector<const StatsType *> &firstAxisTypes;
-	const std::vector<const StatsType *> &secondAxisTypes;	// empty if no second axis supported
-	bool firstAxisBinned;
-	bool secondAxisBinned;
-	bool firstAxisHasOperations;
-	bool secondAxisHasOperations;
-	const std::vector<ChartSubType> subtypes;
-} chart_types[] = {
-	{
-		ChartTypeId::DiscreteBar,
-		QT_TRANSLATE_NOOP("StatsTranslations", "Discrete bar"),
-		stats_types,	// supports all types as first axis
-		stats_types,	// supports all types as second axis
-		true,
-		true,
-		false,
-		false,
-		{ ChartSubType::Vertical, ChartSubType::VerticalStacked, ChartSubType::Horizontal, ChartSubType::HorizontalStacked }
-	},
-	{
-		ChartTypeId::DiscreteValue,
-		QT_TRANSLATE_NOOP("StatsTranslations", "Discrete value"),
-		stats_types,		// supports all types as first axis
-		stats_numeric_types,	// supports numeric types as second axis, since we want to calculate the mean, etc
-		true,
-		false,
-		false,
-		true,
-		{ ChartSubType::Vertical, ChartSubType::Horizontal }
-	},
-	{
-		ChartTypeId::DiscreteCount,
-		QT_TRANSLATE_NOOP("StatsTranslations", "Discrete count"),
-		stats_types,	// supports all types as first axis
-		{},		// no second axis
-		true,
-		false,
-		false,
-		false,
-		{ ChartSubType::Vertical, ChartSubType::Horizontal, ChartSubType::Pie }
-	},
-	{
-		ChartTypeId::DiscreteBox,
-		QT_TRANSLATE_NOOP("StatsTranslations", "Discrete box"),
-		stats_types,		// supports all types as first axis
-		stats_numeric_types,	// supports numeric types as second axis, since we want to calculate quartiles
-		true,
-		false,
-		false,
-		false,
-		{ }
-	},
-	{
-		ChartTypeId::DiscreteScatter,
-		QT_TRANSLATE_NOOP("StatsTranslations", "Discrete scatter"),
-		stats_types,	// supports all types as first axis
-		stats_numeric_types,	// supports numeric types as second axis, since we want to calculate the mean, etc
-		true,
-		false,
-		false,
-		false,
-		{ }
-	},
-	{
-		ChartTypeId::HistogramCount,
-		QT_TRANSLATE_NOOP("StatsTranslations", "Histogram counts"),
-		stats_continuous_types,	// supports continuous types as first axis
-		{},			// no second axis
-		true,
-		false,
-		false,
-		false,
-		{ ChartSubType::Vertical, ChartSubType::Horizontal }
-	},
-	{
-		ChartTypeId::HistogramBar,
-		QT_TRANSLATE_NOOP("StatsTranslations", "Histogram bar"),
-		stats_continuous_types,	// supports continuous types as first axis
-		stats_numeric_types,	// supports numeric types as second axis, since we want to calculate the mean, etc
-		true,
-		false,
-		false,
-		true,
-		{ ChartSubType::Vertical, ChartSubType::Horizontal }
-	},
-	{
-		ChartTypeId::ScatterPlot,
-		QT_TRANSLATE_NOOP("StatsTranslations", "Scatter plot"),
-		stats_numeric_types,	// plot any numeric type against any other numeric type
-		stats_numeric_types,	// for time-based charts, there is a different plot
-		false,
-		false,
-		false,
-		false,
-		{ }
-	}
-};
-
-// returns null on out-of-bound
-static const ChartType *idxToChartType(int idx)
-{
-	return idx < 0 || idx >= (int)array_size(chart_types) ?
-		nullptr : &chart_types[idx];
-}
-
-// returns null on out-of-bound
-static const StatsType *idxToFirstAxisType(int chartType, int firstAxis)
-{
-	const ChartType *t = idxToChartType(chartType);
-	return !t || firstAxis < 0 || firstAxis >= (int)t->firstAxisTypes.size() ?
-		nullptr : t->firstAxisTypes[firstAxis];
-}
-
-QStringList StatsView::getChartTypes()
-{
-	QStringList res;
-	res.reserve(array_size(chart_types));
-	for (const ChartType &t: chart_types)
-		res.push_back(StatsTranslations::tr(t.name));
-	return res;
-}
-
-QStringList StatsView::getChartSubTypes(int chartType)
-{
-	const ChartType *t = idxToChartType(chartType);
-	if (!t)
-		return {};
-
-	QStringList res;
-	res.reserve(t->subtypes.size());
-	for (ChartSubType subtype: t->subtypes)
-		res.push_back(StatsTranslations::tr(chart_subtype_names[(int)subtype]));
-	return res;
-}
-
-QStringList StatsView::getFirstAxisTypes(int chartType)
-{
-	const ChartType *t = idxToChartType(chartType);
-	if (!t)
-		return {};
-
-	QStringList res;
-	res.reserve(t->firstAxisTypes.size());
-	for (const StatsType *type: t->firstAxisTypes)
-		res.push_back(type->name());
-	return res;
-}
-
-static QStringList statsTypeToBinnerNames(const StatsType *t)
-{
-	if (!t)
-		return {};
-	std::vector<const StatsBinner *> binners = t->binners();
-	QStringList res;
-	res.reserve(binners.size());
-	for (const StatsBinner *binner: binners)
-		res.push_back(binner->name());
-	return res;
-}
-
-QStringList StatsView::getFirstAxisBins(int chartType, int firstAxis)
-{
-	const ChartType *t = idxToChartType(chartType);
-	if (!t || !t->firstAxisBinned)
-		return {};
-	return statsTypeToBinnerNames(idxToFirstAxisType(chartType, firstAxis));
-}
-
-QStringList StatsView::getFirstAxisOperations(int chartType, int firstAxis)
-{
-	const ChartType *t = idxToChartType(chartType);
-	const StatsType *first = idxToFirstAxisType(chartType, firstAxis);
-	if (!t || !t->firstAxisHasOperations || !first)
-		return {};
-	return first->supportedOperationNames();
-}
-
-// Getting the second axis is a bit special: it removes the first axis
-// from the list, as plotting the same value against itself makes no sense.
-static std::vector<const StatsType *> calcSecondAxisTypes(int chartType, int firstAxis)
-{
-	const ChartType *t = idxToChartType(chartType);
-	const StatsType *first = idxToFirstAxisType(chartType, firstAxis);
-	if (!t || !first)
-		return {};
-	const std::vector<const StatsType *> &types = t->secondAxisTypes;
-	std::vector<const StatsType *> res;
-	res.reserve(types.size());
-	for (const StatsType *t: types) {
-		if (t != first)
-			res.push_back(t);
-	}
-	return res;
-}
-
-// returns null on out-of-bound
-static const StatsType *idxToSecondAxisType(int chartType, int firstAxis, int secondAxis)
-{
-	std::vector<const StatsType *> secondAxisTypes = calcSecondAxisTypes(chartType, firstAxis);
-	return secondAxis < 0 || secondAxis >= (int)secondAxisTypes.size() ?
-		nullptr : secondAxisTypes[secondAxis];
-}
-
-QStringList StatsView::getSecondAxisTypes(int chartType, int firstAxis)
-{
-	std::vector<const StatsType *> types = calcSecondAxisTypes(chartType, firstAxis);
-	QStringList res;
-	res.reserve(types.size());
-	for (const StatsType *t: types)
-		res.push_back(t->name());
-
-	return res;
-}
-
-QStringList StatsView::getSecondAxisBins(int chartType, int firstAxis, int secondAxis)
-{
-	const ChartType *t = idxToChartType(chartType);
-	if (!t || !t->secondAxisBinned)
-		return {};
-	return statsTypeToBinnerNames(idxToSecondAxisType(chartType, firstAxis, secondAxis));
-}
-
-QStringList StatsView::getSecondAxisOperations(int chartType, int firstAxis, int secondAxis)
-{
-	const ChartType *t = idxToChartType(chartType);
-	const StatsType *second = idxToSecondAxisType(chartType, firstAxis, secondAxis);
-	if (!t || !t->secondAxisHasOperations || !second)
-		return {};
-	return second->supportedOperationNames();
-}
 
 static const QUrl urlStatsView = QUrl(QStringLiteral("qrc:/qml/statsview.qml"));
 
@@ -459,49 +191,34 @@ void StatsView::reset()
 	axes.clear();
 }
 
-void StatsView::plot(int type, int subTypeIdx,
-		     int firstAxis, int firstAxisBin, int firstAxisOperation,
-		     int secondAxis, int secondAxisBin, int secondAxisOperation)
+void StatsView::plot(const StatsState &state)
 {
-	if (!chart)
+	if (!chart || !state.var1)
 		return;
 	reset();
 
-	const ChartType *t = idxToChartType(type);
-	const StatsType *firstAxisType = idxToFirstAxisType(type, firstAxis);
-	const StatsType *secondAxisType = idxToSecondAxisType(type, firstAxis, secondAxis);
-	if (!t || !firstAxisType)
-		return;
-	if (t->secondAxisTypes.size() > 0 && !secondAxisType)
-		return;
-
-	ChartSubType subType = subTypeIdx >= 0 && subTypeIdx < (int)t->subtypes.size() ?
-		t->subtypes[subTypeIdx] : ChartSubType::Vertical;
-	const StatsBinner *firstAxisBinner = t->firstAxisBinned ? firstAxisType->getBinner(firstAxisBin) : nullptr;
-	const StatsBinner *secondAxisBinner = t->secondAxisBinned ? secondAxisType->getBinner(secondAxisBin) : nullptr;
-
 	const std::vector<dive *> dives = DiveFilter::instance()->visibleDives();
-	switch (t->id) {
-	case ChartTypeId::DiscreteBar:
-		return plotBarChart(dives, subType, firstAxisType, firstAxisBinner, secondAxisType, secondAxisBinner);
-	case ChartTypeId::DiscreteValue:
-		return plotValueChart(dives, subType, firstAxisType, firstAxisBinner, secondAxisType,
-				      secondAxisType->idxToOperation(secondAxisOperation));
-	case ChartTypeId::DiscreteCount:
-		return plotDiscreteCountChart(dives, subType, firstAxisType, firstAxisBinner);
-	case ChartTypeId::DiscreteBox:
-		return plotDiscreteBoxChart(dives, firstAxisType, firstAxisBinner, secondAxisType);
-	case ChartTypeId::DiscreteScatter:
-		return plotDiscreteScatter(dives, firstAxisType, firstAxisBinner, secondAxisType);
-	case ChartTypeId::HistogramCount:
-		return plotHistogramCountChart(dives, subType, firstAxisType, firstAxisBinner);
-	case ChartTypeId::HistogramBar:
-		return plotHistogramBarChart(dives, subType, firstAxisType, firstAxisBinner, secondAxisType,
-					     secondAxisType->idxToOperation(secondAxisOperation));
-	case ChartTypeId::ScatterPlot:
-		return plotScatter(dives, firstAxisType, secondAxisType);
+	switch (state.type) {
+	case ChartType::DiscreteBar:
+		return plotBarChart(dives, state.subtype, state.var1, state.var1Binner, state.var2, state.var2Binner);
+	case ChartType::DiscreteValue:
+		return plotValueChart(dives, state.subtype, state.var1, state.var1Binner, state.var2,
+				      state.var2Operation);
+	case ChartType::DiscreteCount:
+		return plotDiscreteCountChart(dives, state.subtype, state.var1, state.var1Binner);
+	case ChartType::DiscreteBox:
+		return plotDiscreteBoxChart(dives, state.var1, state.var1Binner, state.var2);
+	case ChartType::DiscreteScatter:
+		return plotDiscreteScatter(dives, state.var1, state.var1Binner, state.var2);
+	case ChartType::HistogramCount:
+		return plotHistogramCountChart(dives, state.subtype, state.var1, state.var1Binner, state.median, state.mean);
+	case ChartType::HistogramBar:
+		return plotHistogramBarChart(dives, state.subtype, state.var1, state.var1Binner, state.var2,
+					     state.var2Operation);
+	case ChartType::ScatterPlot:
+		return plotScatter(dives, state.var1, state.var2);
 	default:
-		qWarning("Unknown chart type: %d", (int)t->id);
+		qWarning("Unknown chart type: %d", (int)state.type);
 		return;
 	}
 }
@@ -1236,7 +953,8 @@ QtCharts::QCategoryAxis *StatsView::createHistogramAxis(const StatsBinner &binne
 
 void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 					ChartSubType subType,
-					const StatsType *categoryType, const StatsBinner *categoryBinner)
+					const StatsType *categoryType, const StatsBinner *categoryBinner,
+					bool showMedian, bool showMean)
 {
 	using QtCharts::QAbstractAxis;
 	using QtCharts::QCategoryAxis;
@@ -1279,17 +997,19 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	}
 
 	if (categoryType->type() == StatsType::Type::Numeric) {
-		double mean = categoryType->mean(dives);
-		double median = categoryType->quartiles(dives).q2;
-		if (!std::isnan(mean)) {
+		if (showMean) {
+			double mean = categoryType->mean(dives);
 			QPen meanPen(Qt::green);
 			meanPen.setWidth(2);
-			addLineMarker(mean, 0.0, chartHeight, meanPen, isHorizontal);
+			if (!std::isnan(mean))
+				addLineMarker(mean, 0.0, chartHeight, meanPen, isHorizontal);
 		}
-		if (!std::isnan(median)) {
+		if (showMedian) {
+			double median = categoryType->quartiles(dives).q2;
 			QPen medianPen(Qt::red);
 			medianPen.setWidth(2);
-			addLineMarker(median, 0.0, chartHeight, medianPen, isHorizontal);
+			if (!std::isnan(median))
+				addLineMarker(median, 0.0, chartHeight, medianPen, isHorizontal);
 		}
 	}
 

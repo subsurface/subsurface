@@ -858,7 +858,7 @@ struct DateMonthBinner : public SimpleContinuousBinner<DateMonthBinner, DateMont
 static DateYearBinner date_year_binner;
 static DateQuarterBinner date_quarter_binner;
 static DateMonthBinner date_month_binner;
-struct DateType : public StatsTypeTemplate<StatsType::Type::Discrete> {
+struct DateType : public StatsTypeTemplate<StatsType::Type::Continuous> {
 	QString name() const {
 		return StatsTranslations::tr("Date");
 	}
@@ -1503,16 +1503,4 @@ const std::vector<const StatsType *> stats_types = {
 	&water_temperature_type, &air_temperature_type,
 	&gas_content_o2_type, &gas_content_o2_he_max_type, &gas_content_he_type,
 	&dive_mode_type, &buddy_type, &gas_type_type, &suit_type, &location_type
-};
-
-const std::vector<const StatsType *> stats_continuous_types = {
-	&date_type, &depth_type, &duration_type, &sac_type,
-	&water_temperature_type, &air_temperature_type,
-	&gas_content_o2_he_max_type, &gas_content_o2_he_max_type, &gas_content_he_type
-};
-
-const std::vector<const StatsType *> stats_numeric_types = {
-	&depth_type, &duration_type, &sac_type,
-	&water_temperature_type, &air_temperature_type,
-	&gas_content_o2_type, &gas_content_o2_he_max_type, &gas_content_he_type
 };

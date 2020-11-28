@@ -25,7 +25,8 @@ enum class StatsOperation : int {
 	Median = 0,
 	Mean,
 	TimeWeightedMean,
-	Sum
+	Sum,
+	Invalid
 };
 
 // For median and quartiles.
@@ -129,7 +130,5 @@ private:
 };
 
 extern const std::vector<const StatsType *> stats_types;
-extern const std::vector<const StatsType *> stats_continuous_types; // includes numeric types
-extern const std::vector<const StatsType *> stats_numeric_types; // types that support averaging, etc
 
 #endif
