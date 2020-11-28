@@ -26,7 +26,8 @@ print $q->h1("Subsurface");
 printf "Reading config file $config_file\n";
 open CONF, $config_file || die "Cannot read $config_file:$!";
 while (<CONF>) {
-  if (/^\s*(\w+)\s*=\s*(\w.*)$/) {
+  s/#.*$//;
+  if (/^\s*(\w+)\s*=\s*(\S.*)$/) {
     $conf{$1} = $2;
   }
 }
@@ -37,7 +38,7 @@ my %dcs;
 
 print $q->start_form();
 
-my $action = $q->param("action");
+my $action = $q->param("action") || "start";
 
 if ($action eq "config") {
 
@@ -62,7 +63,7 @@ if ($action eq "config") {
 
   print $q->hidden(-name => "Manufacturer", -default => $q->param("Manufacturer"));
   print "Select ",$q->param("Manufacturer")," model:";
-  print $q->popup_menu("Product", $dcs{$q->param("Manufacturer")});
+  print $q->popup_menu(-name => "Product", -values => $dcs{$q->param("Manufacturer")}, -default => $conf{lastProduct});
   &next_action("setproduct")
     
 } elsif ($action eq "setproduct") {
@@ -73,20 +74,92 @@ if ($action eq "config") {
   print $q->hidden(-name => "Product", -default => $q->param("Product"));
 
   opendir DIR, "/dev";
-  my @devices = map {"/dev/$_"} (grep {!/^\./} (readdir DIR));
+  my @devices = sort {$a cmp $b} map {"/dev/$_"} (grep {/ttyUSB|ttyS|ttyACM|rfcom/} grep {!/^\./} (readdir DIR));
   closedir DIR;
-  print "Select mount point:";
-  print $q->popup_menu(-name => "Mount point", -values => \@devices);
+
+  open MOUNTS, "/proc/mounts";
+  while (<MOUNTS>) {
+    my ($device, $mountpoint) = split /\s/;
+    if ($device =~ /dev/) {
+      push @devices, $mountpoint;
+    }
+  }
+  close MOUNTS;
+  
+  print $q->popup_menu(-name => "Mount point", -values => \@devices, -default => $conf{lastMountpoint});
   &next_action("startdownload");
 
 } elsif ($action eq "startdownload") {
 
+  $conf{lastManufacturer} = $q->param("Manufacturer");
+  $conf{lastProduct} = $q->param("Product");
+  $conf{lastMountpoint} = $q->param("Mount point");
+  &write_conf;
+
+  &run_download;
+  &next_action("start");
+} else {
+
+  # This is the mode we start up in
+  
+  print "Select dive computer manufacturer:";
+  print $q->popup_menu(-name => "Manufacturer", -values => [sort keys %dcs], -default => $conf{lastManufacturer});
+  &next_action("setmanufacturer")
+}
+
+
+print $q->br(),$q->submit(-name => "  OK  ");
+print $q->end_form();
+
+print $q->br(), $q->a({-href => $q->url() . "?action=config"}, "Configure cloud credentials");
+
+sub load_supported_dcs {
+  open IN, "/home/pi/src/subsurface/build/subsurface-downloader --list-dc|";
+  
+  while(<IN>) {
+    last if /Supported dive computers:/;
+  }
+  while(<IN>) {
+    last unless /\S/;
+
+    my ($manufacturer, $products) = /"([^:]+):\s+([^"]+)"/;
+
+    next unless defined $products;
+    $products =~ s/\([^\)]*\)//g;
+    my @products  = split /,\s*/, $products;
+    $dcs{$manufacturer} = \@products;
+
+  }
+  close IN;
+}
+
+
+sub write_conf {
+  print "Writing config file\n";
+  open CONFW, ">$config_file" || die "Cannot write $config_file:$!";
+  foreach my $key (keys %conf) {
+    print CONFW "$key = $conf{$key}\n";
+  }
+  close CONFW;
+  print "Done\n";
+}
+
+sub next_action {
+  my $next = shift;
+  $q->param(action => $next);
+  print $q->hidden(
+		   -name => "action",
+		   -value => $next);
+  return;
+}
+
+sub run_download {
   # Do the actual download
-
+  
   my $repo;
-
+  
   # Does the repo exist?
-
+  
   if (-d $git_dir) {
 
     # ... yes, pull latest version
@@ -130,55 +203,4 @@ if ($action eq "config") {
   print $q->pre($repo->run("checkout", $conf{username}));
   print "Push changes to cloud";
   print $q->pre($repo->run("push", "origin", $conf{username}));
-  &next_action("start");
-} else {
-
-  # This is the mode we start up in
-  
-  print "Select dive computer manufacturer:";
-  print $q->popup_menu("Manufacturer", [sort keys %dcs]);
-  &next_action("setmanufacturer")
-}
-
-
-print $q->br(),$q->submit(-name => "  OK  ");
-print $q->end_form();
-
-print $q->br(), $q->a({-href => $q->url() . "?action=config"}, "Configure cloud credentials");
-
-sub load_supported_dcs {
-  open IN, "/home/pi/src/subsurface/build/subsurface-downloader --list-dc|";
-  
-  while(<IN>) {
-    last if /Supported dive computers:/;
-  }
-  while(<IN>) {
-    last unless /\S/;
-    my ($manufacturer, $products) = /"([^:]+):\s+([^"]+)"/;
-    
-    $products =~ s/\([^\)]*\)//g;
-    my @products  = split /,\s*/, $products;
-    $dcs{$manufacturer} = \@products;
-  }
-  close IN;
-}
-
-
-sub write_conf {
-  print "Writing config file\n";
-  open CONFW, ">$config_file" || die "Cannot write $config_file:$!";
-  foreach my $key (keys %conf) {
-    print CONFW "$key = $conf{$key}\n";
-  }
-  close CONFW;
-  print "Done\n";
-}
-
-sub next_action {
-  my $next = shift;
-  $q->param(action => $next);
-  print $q->hidden(
-		   -name => "action",
-		   -value => $next);
-  return;
 }
