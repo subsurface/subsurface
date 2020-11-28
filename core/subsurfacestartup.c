@@ -270,7 +270,7 @@ void parse_argument(const char *arg)
 			}
 			if (strncmp(arg, "--list-dc", sizeof("--list-dc") - 1) == 0) {
 				show_computer_list();
-				return;
+				exit(0);
 			}
 #elif SUBSURFACE_MOBILE_DESKTOP
 			if (strncmp(arg, "--testqml=", sizeof("--testqml=") - 1) == 0) {
