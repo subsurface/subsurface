@@ -91,6 +91,7 @@ public:
 	const StatsType *var2;		// Dependent variable (nullptr: count)
 	ChartType type;
 	ChartSubType subtype;
+	bool labels;
 	bool median;
 	bool mean;
 	const StatsBinner *var1Binner;	// nullptr: undefined

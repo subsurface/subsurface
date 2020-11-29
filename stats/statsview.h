@@ -48,10 +48,10 @@ private:
 	void plotValueChart(const std::vector<dive *> &dives,
 			    ChartSubType subType,
 			    const StatsType *categoryType, const StatsBinner *categoryBinner,
-			    const StatsType *valueType, StatsOperation valueAxisOperation);
+			    const StatsType *valueType, StatsOperation valueAxisOperation, bool labels);
 	void plotDiscreteCountChart(const std::vector<dive *> &dives,
 				    ChartSubType subType,
-				    const StatsType *categoryType, const StatsBinner *categoryBinner);
+				    const StatsType *categoryType, const StatsBinner *categoryBinner, bool labels);
 	void plotDiscreteBoxChart(const std::vector<dive *> &dives,
 				  const StatsType *categoryType, const StatsBinner *categoryBinner, const StatsType *valueType);
 	void plotDiscreteScatter(const std::vector<dive *> &dives,
@@ -60,11 +60,11 @@ private:
 	void plotHistogramCountChart(const std::vector<dive *> &dives,
 				     ChartSubType subType,
 				     const StatsType *categoryType, const StatsBinner *categoryBinner,
-				     bool showMedian, bool showMean);
+				     bool labels, bool showMedian, bool showMean);
 	void plotHistogramBarChart(const std::vector<dive *> &dives,
 				   ChartSubType subType,
 				   const StatsType *categoryType, const StatsBinner *categoryBinner,
-				   const StatsType *valueType, StatsOperation valueAxisOperation);
+				   const StatsType *valueType, StatsOperation valueAxisOperation, bool labels);
 	void plotScatter(const std::vector<dive *> &dives, const StatsType *categoryType, const StatsType *valueType);
 	void setTitle(const QString &);
 	void showLegend();

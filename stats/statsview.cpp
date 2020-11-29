@@ -203,18 +203,19 @@ void StatsView::plot(const StatsState &state)
 		return plotBarChart(dives, state.subtype, state.var1, state.var1Binner, state.var2, state.var2Binner);
 	case ChartType::DiscreteValue:
 		return plotValueChart(dives, state.subtype, state.var1, state.var1Binner, state.var2,
-				      state.var2Operation);
+				      state.var2Operation, state.labels);
 	case ChartType::DiscreteCount:
-		return plotDiscreteCountChart(dives, state.subtype, state.var1, state.var1Binner);
+		return plotDiscreteCountChart(dives, state.subtype, state.var1, state.var1Binner, state.labels);
 	case ChartType::DiscreteBox:
 		return plotDiscreteBoxChart(dives, state.var1, state.var1Binner, state.var2);
 	case ChartType::DiscreteScatter:
 		return plotDiscreteScatter(dives, state.var1, state.var1Binner, state.var2);
 	case ChartType::HistogramCount:
-		return plotHistogramCountChart(dives, state.subtype, state.var1, state.var1Binner, state.median, state.mean);
+		return plotHistogramCountChart(dives, state.subtype, state.var1, state.var1Binner,
+					       state.labels, state.median, state.mean);
 	case ChartType::HistogramBar:
 		return plotHistogramBarChart(dives, state.subtype, state.var1, state.var1Binner, state.var2,
-					     state.var2Operation);
+					     state.var2Operation, state.labels);
 	case ChartType::ScatterPlot:
 		return plotScatter(dives, state.var1, state.var2);
 	default:
@@ -479,7 +480,8 @@ static std::pair<double, double> getMinMaxValue(const std::vector<T> &values)
 void StatsView::plotValueChart(const std::vector<dive *> &dives,
 			       ChartSubType subType,
 			       const StatsType *categoryType, const StatsBinner *categoryBinner,
-			       const StatsType *valueType, StatsOperation valueAxisOperation)
+			       const StatsType *valueType, StatsOperation valueAxisOperation,
+			       bool labels)
 {
 	using QtCharts::QBarCategoryAxis;
 	using QtCharts::QValueAxis;
@@ -513,7 +515,8 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 	double pos = 0.0;
 	for (auto &[bin, value]: categoryBins) {
 		if (!std::isnan(value)) {
-			std::vector<QString> label = { QString("%L1").arg(value, 0, 'f', decimals) };
+			std::vector<QString> label = labels ? std::vector<QString>()
+							    : std::vector<QString>{ QString("%L1").arg(value, 0, 'f', decimals) };
 			addBar(pos - 0.5, pos + 0.5, value, isHorizontal, label);
 		}
 		pos += 1.0;
@@ -565,7 +568,8 @@ static int getMaxCount(const std::vector<T> &bins)
 
 void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 				      ChartSubType subType,
-				      const StatsType *categoryType, const StatsBinner *categoryBinner)
+				      const StatsType *categoryType, const StatsBinner *categoryBinner,
+				      bool labels)
 {
 	using QtCharts::QBarCategoryAxis;
 	using QtCharts::QPieSeries;
@@ -649,7 +653,8 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 
 		double pos = 0.0;
 		for (auto const &[bin, count]: categoryBins) {
-			std::vector<QString> label = makePercentageLabels(count, total, isHorizontal);
+			std::vector<QString> label = labels ? makePercentageLabels(count, total, isHorizontal)
+							    : std::vector<QString>();
 			addBar(pos - 0.5, pos + 0.5, (double)count, isHorizontal, label);
 			pos += 1.0;
 		}
@@ -971,7 +976,7 @@ QtCharts::QCategoryAxis *StatsView::createHistogramAxis(const StatsBinner &binne
 void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 					ChartSubType subType,
 					const StatsType *categoryType, const StatsBinner *categoryBinner,
-					bool showMedian, bool showMean)
+					bool labels, bool showMedian, bool showMean)
 {
 	using QtCharts::QAbstractAxis;
 	using QtCharts::QCategoryAxis;
@@ -1008,7 +1013,8 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 		double height = count;
 		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
 		double upperBound = categoryBinner->upperBoundToFloat(*bin);
-		std::vector<QString> label = makePercentageLabels(count, total, isHorizontal);
+		std::vector<QString> label = labels ? makePercentageLabels(count, total, isHorizontal)
+						    : std::vector<QString>();
 
 		addBar(lowerBound, upperBound, height, isHorizontal, label);
 	}
@@ -1036,7 +1042,8 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 void StatsView::plotHistogramBarChart(const std::vector<dive *> &dives,
 				      ChartSubType subType,
 				      const StatsType *categoryType, const StatsBinner *categoryBinner,
-				      const StatsType *valueType, StatsOperation valueAxisOperation)
+				      const StatsType *valueType, StatsOperation valueAxisOperation,
+				      bool labels)
 {
 	using QtCharts::QAbstractAxis;
 	using QtCharts::QCategoryAxis;
@@ -1075,7 +1082,7 @@ void StatsView::plotHistogramBarChart(const std::vector<dive *> &dives,
 		if (!std::isnan(height)) {
 			double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
 			double upperBound = categoryBinner->upperBoundToFloat(*bin);
-			QString label = QString("%L1").arg(height, 0, 'f', decimals);
+			QString label = labels ? QString("%L1").arg(height, 0, 'f', decimals) : QString();
 			addBar(lowerBound, upperBound, height, isHorizontal, {label});
 		}
 		++i;
