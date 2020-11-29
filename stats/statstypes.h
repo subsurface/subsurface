@@ -80,6 +80,7 @@ struct StatsBinner {
 	virtual QString formatUpperBound(const StatsBin &bin) const; // Only for continuous types
 	virtual double lowerBoundToFloat(const StatsBin &bin) const; // Only for continuous types
 	virtual double upperBoundToFloat(const StatsBin &bin) const; // Only for continuous types
+	virtual bool preferBin(const StatsBin &bin) const; // Prefer to show this bins tick if bins are omitted. Default to true.
 
 	// Only for continuous and numeric types
 	// Note: this will crash with an exception if passed incompatible bins!

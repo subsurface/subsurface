@@ -906,7 +906,11 @@ void StatsView::QuartileMarker::updatePosition()
 		      center.x() + quartileMarkerSize / 2.0, center.y());
 }
 
-static void initHistogramAxis(QtCharts::QCategoryAxis *axis, const std::vector<std::pair<QString, double>> &labels, int maxLabels)
+// Initialize a histogram axis with the given labels. Labels are specified as (name, value, recommended) triplets.
+// If labels are skipped, try to skip it in such a way that a recommended label is shown.
+// The one example where this is relevant is the quarterly bins, which are formated as (2019, q1, q2, q3, 2020, ...).
+// There, we obviously want to show the years and not the quarters.
+static void initHistogramAxis(QtCharts::QCategoryAxis *axis, const std::vector<std::tuple<QString, double, bool>> &labels, int maxLabels)
 {
 	using QtCharts::QCategoryAxis;
 
@@ -915,12 +919,24 @@ static void initHistogramAxis(QtCharts::QCategoryAxis *axis, const std::vector<s
 	if (maxLabels <= 1)
 		maxLabels = 2;
 
-	axis->setMin(labels.front().second);
-	axis->setMax(labels.back().second);
-	axis->setStartValue(labels.front().second);
+	axis->setMin(std::get<1>(labels.front()));
+	axis->setMax(std::get<1>(labels.back()));
+	axis->setStartValue(std::get<1>(labels.front()));
 	int step = ((int)labels.size() - 1) / maxLabels + 1;
-	for (int i = 0; i < (int)labels.size(); i += step)
-		axis->append(labels[i].first, labels[i].second);
+	int first = 0;
+	if (step > 1) {
+		for (int i = 0; i < (int)labels.size(); ++i) {
+			const auto &[name, value, recommended] = labels[i];
+			if (recommended) {
+				first = i % step;
+				break;
+			}
+		}
+	}
+	for (int i = first; i < (int)labels.size(); i += step) {
+		const auto &[name, value, recommended] = labels[i];
+		axis->append(name, value);
+	}
 	axis->setLabelsPosition(QCategoryAxis::AxisLabelsPositionOnValue);
 }
 
@@ -932,23 +948,24 @@ QtCharts::QCategoryAxis *StatsView::createHistogramAxis(const StatsBinner &binne
 	using QtCharts::QCategoryAxis;
 
 	LabelDisambiguator labeler;
-	std::vector<std::pair<QString, double>> labelValues;
+	std::vector<std::tuple<QString, double, bool>> labels;
 	for (auto const &[bin, dummy]: bins) {
 		QString label = binner.formatLowerBound(*bin);
 		double lowerBound = binner.lowerBoundToFloat(*bin);
-		labelValues.emplace_back(labeler.transmogrify(label), lowerBound);
+		bool prefer = binner.preferBin(*bin);
+		labels.emplace_back(labeler.transmogrify(label), lowerBound, prefer);
 	}
 
 	const StatsBin &lastBin = *bins.back().bin;
 	QString lastLabel = binner.formatUpperBound(lastBin);
 	double upperBound = binner.upperBoundToFloat(lastBin);
-	labelValues.emplace_back(labeler.transmogrify(lastLabel), upperBound);
+	labels.emplace_back(labeler.transmogrify(lastLabel), upperBound, false);
 
-	QCategoryAxis *catAxis = makeAxis<QCategoryAxis>();
+	QCategoryAxis *axis = makeAxis<QCategoryAxis>();
 	int maxLabels = isHorizontal ? 10 : 15;
-	initHistogramAxis(catAxis, labelValues, maxLabels);
+	initHistogramAxis(axis, labels, maxLabels);
 
-	return catAxis;
+	return axis;
 }
 
 void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,

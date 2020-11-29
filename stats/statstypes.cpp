@@ -190,6 +190,11 @@ double StatsBinner::upperBoundToFloat(const StatsBin &bin) const
 	return 0.0;
 }
 
+bool StatsBinner::preferBin(const StatsBin &bin) const
+{
+	return true;
+}
+
 // Default implementation for discrete types: there are no bins between discrete bins.
 std::vector<StatsBinPtr> StatsBinner::bins_between(const StatsBin &bin1, const StatsBin &bin2) const
 {
@@ -808,6 +813,11 @@ struct DateQuarterBinner : public SimpleContinuousBinner<DateQuarterBinner, Date
 	double lowerBoundToFloatBase(year_quarter value) const {
 		return date_to_double(value.first, (value.second - 1) * 3, 0);
 	}
+	// Prefer bins that show full years
+	bool preferBin(const StatsBin &bin) const override {
+		year_quarter value = derived_bin(bin).value;
+		return value.second == 1;
+	}
 	year_quarter to_bin_value(const dive *d) const {
 		struct tm tm;
 		utc_mkdate(d->when, &tm);
@@ -834,13 +844,19 @@ struct DateMonthBinner : public SimpleContinuousBinner<DateMonthBinner, DateMont
 	QString name() const override {
 		return StatsTranslations::tr("Monthly");
 	}
+	// Output year for fill years, month otherwise
 	QString format(const StatsBin &bin) const override {
 		year_month value = derived_bin(bin).value;
-		return StatsTranslations::tr("%1 %2").arg(QString(monthname(value.second)),
-							  QString::number(value.first));
+		return value.second == 0 ? QString::number(value.first)
+					 : QString(monthname(value.second));
 	}
 	double lowerBoundToFloatBase(year_quarter value) const {
 		return date_to_double(value.first, value.second, 0);
+	}
+	// Prefer bins that show full years
+	bool preferBin(const StatsBin &bin) const override {
+		year_month value = derived_bin(bin).value;
+		return value.second == 0;
 	}
 	year_month to_bin_value(const dive *d) const {
 		struct tm tm;
