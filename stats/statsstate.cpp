@@ -19,8 +19,9 @@ enum class SupportedVariable {
 	Numeric
 };
 
-static const int ChartFeatureMedian = 1 << 0;
-static const int ChartFeatureMean =   1 << 1;
+static const int ChartFeatureLabels = 1 << 0;
+static const int ChartFeatureMedian = 1 << 1;
+static const int ChartFeatureMean =   1 << 2;
 
 static const struct ChartTypeDesc {
 	ChartType id;
@@ -47,7 +48,7 @@ static const struct ChartTypeDesc {
 		SupportedVariable::Count,
 		false,
 		{ ChartSubType::Vertical, ChartSubType::Horizontal },
-		ChartFeatureMedian | ChartFeatureMean
+		ChartFeatureLabels | ChartFeatureMedian | ChartFeatureMean
 	},
 	{
 		ChartType::HistogramBar,
@@ -56,7 +57,7 @@ static const struct ChartTypeDesc {
 		SupportedVariable::Numeric,
 		true,
 		{ ChartSubType::Vertical, ChartSubType::Horizontal },
-		0
+		ChartFeatureLabels
 	},
 	{
 		ChartType::DiscreteScatter,
@@ -83,7 +84,7 @@ static const struct ChartTypeDesc {
 		SupportedVariable::Numeric,
 		true,
 		{ ChartSubType::Vertical, ChartSubType::Horizontal },
-		0
+		ChartFeatureLabels
 	},
 	{
 		ChartType::DiscreteCount,
@@ -92,7 +93,7 @@ static const struct ChartTypeDesc {
 		SupportedVariable::Count,
 		false,
 		{ ChartSubType::Pie, ChartSubType::Vertical, ChartSubType::Horizontal },
-		0
+		ChartFeatureLabels
 	},
 	{
 		ChartType::DiscreteBox,
@@ -122,6 +123,7 @@ StatsState::StatsState() :
 	var2(nullptr),
 	type(ChartType::DiscreteBar),
 	subtype(ChartSubType::Pie),
+	labels(true),
 	median(false),
 	mean(false),
 	var1Binner(nullptr),
@@ -290,9 +292,11 @@ static StatsState::VariableList createOperationsList(bool hasOperations, const S
 	return res;
 }
 
-std::vector<StatsState::Feature> createFeaturesList(int chartFeatures, bool median, bool mean)
+std::vector<StatsState::Feature> createFeaturesList(int chartFeatures, bool labels, bool median, bool mean)
 {
 	std::vector<StatsState::Feature> res;
+	if (chartFeatures & ChartFeatureLabels)
+		res.push_back({ StatsTranslations::tr("labels"), ChartFeatureLabels, labels });
 	if (chartFeatures & ChartFeatureMedian)
 		res.push_back({ StatsTranslations::tr("median"), ChartFeatureMedian, median });
 	if (chartFeatures & ChartFeatureMean)
@@ -311,7 +315,7 @@ StatsState::UIState StatsState::getUIState() const
 	res.binners1 = createBinnerList(var1Binned, var1, var1Binner);
 	res.binners2 = createBinnerList(var2Binned, var2, var2Binner);
 	res.operations2 = createOperationsList(var2HasOperations, var2, var2Operation);
-	res.features = createFeaturesList(chartFeatures, median, mean);
+	res.features = createFeaturesList(chartFeatures, labels, median, mean);
 	return res;
 }
 
@@ -363,7 +367,9 @@ void StatsState::chartChanged(int id)
 
 void StatsState::featureChanged(int id, bool state)
 {
-	if (id == ChartFeatureMedian)
+	if (id == ChartFeatureLabels)
+		labels = state;
+	else if (id == ChartFeatureMedian)
 		median = state;
 	else if (id == ChartFeatureMean)
 		mean = state;
@@ -449,7 +455,7 @@ void StatsState::validate(bool varChanged)
 	chartFeatures = desc.features;
 	// Median and mean currently only if first variable is numeric
 	if (!var1 || var1->type() != StatsType::Type::Numeric)
-		chartFeatures = false;
+		chartFeatures &= ~(ChartFeatureMedian | ChartFeatureMean);
 
 	// Check that the binners and operation are valid
 	validateBinner(var1Binner, var1, var1Binned);
