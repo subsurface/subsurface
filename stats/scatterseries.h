@@ -14,7 +14,8 @@ namespace QtCharts {
 	class QChart;
 }
 class QGraphicsPixmapItem;
-class StatsType;
+class InformationBox;
+struct StatsType;
 struct dive;
 
 // We derive from a proper scatter series to get access to the map-to
@@ -24,6 +25,7 @@ struct dive;
 class ScatterSeries : public QtCharts::QScatterSeries {
 public:
 	ScatterSeries(const StatsType &typeX, const StatsType &typeY);
+	~ScatterSeries();
 
 	// Call if chart geometry changed
 	void updatePositions();
@@ -49,18 +51,7 @@ private:
 		void highlight(bool highlight);
 	};
 
-	// Information window showing data of highlighted dive
-	struct Information : QGraphicsRectItem {
-		Information(QtCharts::QChart *chart);
-		void set(const dive *d, QPointF pos, const StatsType &typeX, const StatsType &typeY);
-	private:
-		double width, height;
-		void addLine(const QString &s);
-		void addDataLine(const StatsType &type, const dive *d);
-		std::vector<std::unique_ptr<QGraphicsSimpleTextItem>> textItems;
-	};
-
-	std::unique_ptr<Information> information;
+	std::unique_ptr<InformationBox> information;
 	std::vector<Item> items;
 	int highlighted; // -1: no item highlighted
 	const StatsType &typeX;
