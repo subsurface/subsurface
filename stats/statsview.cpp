@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "statsview.h"
+#include "barseries.h"
+#include "scatterseries.h"
 #include "statsstate.h"
 #include "statstranslations.h"
 #include "statstypes.h"
@@ -25,8 +27,6 @@
 #include <QValueAxis>
 
 // Constants that control the graph layouts
-static const double histogramBarWidth = 0.8; // 1.0 = full width of category
-static const QColor barColor(0x66, 0xb2, 0xff);
 static const QColor quartileMarkerColor(Qt::red);
 static const double quartileMarkerSize = 15;
 
@@ -68,6 +68,7 @@ bool StatsView::EventFilter::eventFilter(QObject *o, QEvent *event)
 
 StatsView::StatsView(QWidget *parent) : QQuickWidget(parent),
 	highlightedScatterSeries(nullptr),
+	highlightedBarSeries(nullptr),
 	eventFilter(this)
 {
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
@@ -85,9 +86,9 @@ StatsView::~StatsView()
 
 void StatsView::plotAreaChanged(const QRectF &)
 {
-	for (BarLabel &label: barLabels)
-		label.updatePosition();
 	for (auto &series: scatterSeries)
+		series->updatePositions();
+	for (auto &series: barSeries)
 		series->updatePositions();
 	for (QuartileMarker &marker: quartileMarkers)
 		marker.updatePosition();
@@ -95,6 +96,9 @@ void StatsView::plotAreaChanged(const QRectF &)
 
 void StatsView::hover(QPointF pos)
 {
+	// Currently, we don't support scatter and bar series in the same plot.
+	// Therefore, treat these cases separately.
+
 	// Get closest scatter item
 	ScatterSeries *nextSeries = nullptr;
 	int nextItem = -1;
@@ -115,6 +119,25 @@ void StatsView::hover(QPointF pos)
 	highlightedScatterSeries = nextSeries;
 	if (highlightedScatterSeries)
 		highlightedScatterSeries->highlight(nextItem);
+
+	// For bar series, we simply take the first bar under the mouse, as
+	// bars shouldn't overlap.
+	nextItem = -1;
+	BarSeries *nextBarSeries = nullptr;
+	for (auto &series: barSeries) {
+		if ((nextItem = series->getItemUnderMouse(pos)) >= 0) {
+			nextBarSeries = series.get();
+			break;
+		}
+	}
+
+	// If there was a different series with a highlighted item - unhighlight it
+	if (highlightedBarSeries && nextBarSeries != highlightedBarSeries)
+		highlightedBarSeries->highlight(-1);
+
+	highlightedBarSeries = nextBarSeries;
+	if (highlightedBarSeries)
+		highlightedBarSeries->highlight(nextItem);
 }
 
 void StatsView::initSeries(QtCharts::QAbstractSeries *series, const QString &name)
@@ -141,6 +164,13 @@ ScatterSeries *StatsView::addScatterSeries(const QString &name, const StatsType 
 	scatterSeries.emplace_back(new ScatterSeries(typeX, typeY));
 	initSeries(scatterSeries.back().get(), name);
 	return scatterSeries.back().get();
+}
+
+BarSeries *StatsView::addBarSeries(const QString &name, bool horizontal)
+{
+	barSeries.emplace_back(new BarSeries(horizontal));
+	initSeries(barSeries.back().get(), name);
+	return barSeries.back().get();
 }
 
 void StatsView::showLegend()
@@ -184,8 +214,8 @@ void StatsView::reset()
 	if (!chart)
 		return;
 	highlightedScatterSeries = nullptr;
-	barLabels.clear();
 	scatterSeries.clear();
+	barSeries.clear();
 	quartileMarkers.clear();
 	chart->removeAllSeries();
 	axes.clear();
@@ -513,11 +543,12 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 		addAxes(catAxis, valAxis);
 
 	double pos = 0.0;
+	BarSeries *series = addBarSeries(QString(), isHorizontal);
 	for (auto &[bin, value]: categoryBins) {
 		if (!std::isnan(value)) {
 			std::vector<QString> label = labels ? std::vector<QString>()
 							    : std::vector<QString>{ QString("%L1").arg(value, 0, 'f', decimals) };
-			addBar(pos - 0.5, pos + 0.5, value, isHorizontal, label);
+			series->append(pos - 0.5, pos + 0.5, value, label);
 		}
 		pos += 1.0;
 	}
@@ -652,10 +683,11 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 			addAxes(catAxis, valAxis);
 
 		double pos = 0.0;
+		BarSeries *series = addBarSeries(QString(), isHorizontal);
 		for (auto const &[bin, count]: categoryBins) {
 			std::vector<QString> label = labels ? makePercentageLabels(count, total, isHorizontal)
 							    : std::vector<QString>();
-			addBar(pos - 0.5, pos + 0.5, (double)count, isHorizontal, label);
+			series->append(pos - 0.5, pos + 0.5, (double)count, label);
 			pos += 1.0;
 		}
 
@@ -791,107 +823,6 @@ void StatsView::addLineMarker(double pos, double low, double high, const QPen &p
 	series->setPen(pen);
 }
 
-
-void StatsView::addBar(double lowerBound, double upperBound, double height, bool isHorizontal,
-		       const std::vector<QString> &label)
-{
-	using QtCharts::QAreaSeries;
-	using QtCharts::QLineSeries;
-
-	QBrush brush("#66B2FF");
-	QPen pen(Qt::white);
-
-	QAreaSeries *series = addSeries<QAreaSeries>(QString());
-	QLineSeries *lower = new QLineSeries;
-	QLineSeries *upper = new QLineSeries;
-	double delta = (upperBound - lowerBound) * histogramBarWidth;
-	double from = (lowerBound + upperBound - delta) / 2.0;
-	double to = (lowerBound + upperBound + delta) / 2.0;
-	if (isHorizontal) {
-		lower->append(0.0, from);
-		lower->append(0.0, to);
-		upper->append(height, from);
-		upper->append(height, to);
-	} else {
-		lower->append(from, 0.0);
-		lower->append(to, 0.0);
-		upper->append(from, height);
-		upper->append(to, height);
-	}
-	series->setBrush(brush);
-	series->setPen(pen);
-	series->setLowerSeries(lower);
-	series->setUpperSeries(upper);
-
-	// Add label if provided
-	if (!label.empty()) {
-		double mid = (from + to) / 2.0;
-		barLabels.emplace_back(label, mid, height, isHorizontal, series);
-	}
-}
-
-StatsView::BarLabel::BarLabel(const std::vector<QString> &labels,
-			      double value, double height,
-			      bool isHorizontal, QtCharts::QAbstractSeries *series) :
-	value(value), height(height),
-	totalWidth(0.0), totalHeight(0.0),
-	isHorizontal(isHorizontal), series(series)
-{
-	items.reserve(labels.size());
-	for (const QString &label: labels) {
-		items.emplace_back(new QGraphicsSimpleTextItem(series->chart()));
-		items.back()->setText(label);
-		items.back()->setZValue(10.0); // ? What is a sensible value here ?
-		QRectF rect = items.back()->boundingRect();
-		if (rect.width() > totalWidth)
-			totalWidth = rect.width();
-		totalHeight += rect.height();
-	}
-	updatePosition();
-}
-
-void StatsView::BarLabel::updatePosition()
-{
-	QtCharts::QChart *chart = series->chart();
-	if (!isHorizontal) {
-		QPointF pos = chart->mapToPosition(QPointF(value, height), series);
-		QPointF lowPos = chart->mapToPosition(QPointF(value, 0.0), series);
-		// Attention: the lower position is at the bottom and therefore has the higher y-coordinate on the screen. Ugh.
-		double barHeight = lowPos.y() - pos.y();
-		// Heuristics: if the label fits nicely into the bar (bar height is at least twice the label height),
-		// then put the label in the middle of the bar. Otherwise, put it on top of the bar.
-		if (barHeight >= 2.0 * totalHeight)
-			pos.ry() = lowPos.y() - (barHeight + totalHeight) / 2.0;
-		else
-			pos.ry() -= totalHeight + 2.0; // Leave two pixels(?) space
-		for (auto &it: items) {
-			QPointF itemPos = pos;
-			QRectF rect = it->boundingRect();
-			itemPos.rx() -= rect.width() / 2.0;
-			it->setPos(itemPos);
-			pos.ry() += rect.height();
-		}
-	} else {
-		QPointF pos = chart->mapToPosition(QPointF(height, value), series);
-		QPointF lowPos = chart->mapToPosition(QPointF(0.0, value), series);
-		double barWidth = pos.x() - lowPos.x();
-		// Heuristics: if the label fits nicely into the bar (bar width is at least twice the label height),
-		// then put the label in the middle of the bar. Otherwise, put it to the right of the bar.
-		if (barWidth >= 2.0 * totalWidth)
-			pos.rx() = lowPos.x() + (barWidth - totalWidth) / 2.0;
-		else
-			pos.rx() += totalWidth / 2.0 + 2.0; // Leave two pixels(?) space
-		pos.ry() -= totalHeight / 2.0;
-		for (auto &it: items) {
-			QPointF itemPos = pos;
-			QRectF rect = it->boundingRect();
-			itemPos.rx() -= rect.width() / 2.0;
-			it->setPos(itemPos);
-			pos.ry() += rect.height();
-		}
-	}
-}
-
 StatsView::QuartileMarker::QuartileMarker(double pos, double value, QtCharts::QAbstractSeries *series) :
 	item(new QGraphicsLineItem(series->chart())),
 	series(series),
@@ -1009,6 +940,7 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 		std::swap(xAxis, yAxis);
 	addAxes(xAxis, yAxis);
 
+	BarSeries *series = addBarSeries(QString(), isHorizontal);
 	for (auto const &[bin, count]: categoryBins) {
 		double height = count;
 		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
@@ -1016,7 +948,7 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 		std::vector<QString> label = labels ? makePercentageLabels(count, total, isHorizontal)
 						    : std::vector<QString>();
 
-		addBar(lowerBound, upperBound, height, isHorizontal, label);
+		series->append(lowerBound, upperBound, height, label);
 	}
 
 	if (categoryType->type() == StatsType::Type::Numeric) {
@@ -1077,15 +1009,14 @@ void StatsView::plotHistogramBarChart(const std::vector<dive *> &dives,
 		std::swap(xAxis, yAxis);
 	addAxes(xAxis, yAxis);
 
-	int i = 0;
+	BarSeries *series = addBarSeries(QString(), isHorizontal);
 	for (auto const &[bin, height]: categoryBins) {
 		if (!std::isnan(height)) {
 			double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
 			double upperBound = categoryBinner->upperBoundToFloat(*bin);
 			QString label = labels ? QString("%L1").arg(height, 0, 'f', decimals) : QString();
-			addBar(lowerBound, upperBound, height, isHorizontal, {label});
+			series->append(lowerBound, upperBound, height, { label });
 		}
-		++i;
 	}
 
 	hideLegend();
