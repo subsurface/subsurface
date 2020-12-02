@@ -179,7 +179,7 @@ void ScatterSeries::highlight(int index)
 			text.push_back(dataInfo(typeX, item.d));
 			text.push_back(dataInfo(typeY, item.d));
 		}
-		information->setText(std::move(text), pos);
+		information->setText(text, pos);
 	} else {
 		information.reset();
 	}

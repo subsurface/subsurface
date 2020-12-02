@@ -170,6 +170,13 @@ QString StatsBinner::name() const
 	return QStringLiteral("N/A"); // Some dummy string that should never reach the UI
 }
 
+QString StatsBinner::formatWithUnit(const StatsBin &bin) const
+{
+	QString unit = unitSymbol();
+	QString name = format(bin);
+	return unit.isEmpty() ? name : QStringLiteral("%1 %2").arg(name, unit);
+}
+
 QString StatsBinner::formatLowerBound(const StatsBin &bin) const
 {
 	return QStringLiteral("N/A"); // Some dummy string that should never reach the UI

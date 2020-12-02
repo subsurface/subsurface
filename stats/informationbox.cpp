@@ -12,7 +12,7 @@ InformationBox::InformationBox(QtCharts::QChart *chart) : QGraphicsRectItem(char
 	setBrush(informationColor);
 }
 
-void InformationBox::setText(std::vector<QString> text, QPointF pos)
+void InformationBox::setText(const std::vector<QString> &text, QPointF pos)
 {
 	width = height = 0.0;
 	textItems.clear();
