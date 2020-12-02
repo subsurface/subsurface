@@ -14,6 +14,7 @@ enum class ChartType {
 	DiscreteCount,
 	DiscreteBox,
 	DiscreteScatter,
+	Pie,
 	HistogramCount,
 	HistogramBar,
 	ScatterPlot
@@ -23,8 +24,7 @@ enum class ChartSubType {
 	Vertical = 0,
 	VerticalStacked,
 	Horizontal,
-	HorizontalStacked,
-	Pie
+	HorizontalStacked
 };
 
 struct StatsType;
