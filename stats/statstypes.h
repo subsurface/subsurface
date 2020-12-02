@@ -76,6 +76,7 @@ struct StatsBinner {
 
 	// Note: these functions will crash with an exception if passed incompatible bins!
 	virtual QString format(const StatsBin &bin) const = 0;
+	QString formatWithUnit(const StatsBin &bin) const;
 	virtual QString formatLowerBound(const StatsBin &bin) const; // Only for continuous types
 	virtual QString formatUpperBound(const StatsBin &bin) const; // Only for continuous types
 	virtual double lowerBoundToFloat(const StatsBin &bin) const; // Only for continuous types

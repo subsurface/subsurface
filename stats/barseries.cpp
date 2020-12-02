@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "barseries.h"
+#include "informationbox.h"
 #include "statstranslations.h"
 #include "statstypes.h"
 #include <QChart>
@@ -12,6 +13,10 @@ static const QColor barHighlightedColor(Qt::yellow);
 static const QColor barHighlightedBorderColor(0xaa, 0xaa, 0x22);
 
 BarSeries::BarSeries(bool horizontal) : horizontal(horizontal), highlighted(-1)
+{
+}
+
+BarSeries::~BarSeries()
 {
 }
 
@@ -76,11 +81,13 @@ void BarSeries::BarLabel::updatePosition(QtCharts::QChart *chart, QtCharts::QAbs
 	}
 }
 
-BarSeries::Item::Item(QtCharts::QChart *chart, BarSeries *series, double lowerBound, double upperBound, double value, bool horizontal) :
+BarSeries::Item::Item(QtCharts::QChart *chart, BarSeries *series, double lowerBound, double upperBound, double value,
+		      std::vector<QString> info, bool horizontal) :
 	item(new QGraphicsRectItem(chart)),
 	lowerBound(lowerBound),
 	upperBound(upperBound),
-	value(value)
+	value(value),
+	info(std::move(info))
 {
 	item->setZValue(5.0); // ? What is a sensible value here ?
 	highlight(false);
@@ -115,10 +122,10 @@ void BarSeries::Item::updatePosition(QtCharts::QChart *chart, BarSeries *series,
 	item->setRect(QRectF(topLeft, bottomRight));
 }
 
-void BarSeries::append(double lowerBound, double upperBound, double value, const std::vector<QString> &label)
+void BarSeries::append(double lowerBound, double upperBound, double value, const std::vector<QString> &label, std::vector<QString> info)
 {
 	QtCharts::QChart *c = chart();
-	items.emplace_back(c, this, lowerBound, upperBound, value, horizontal);
+	items.emplace_back(c, this, lowerBound, upperBound, value, std::move(info), horizontal);
 	// Add label if provided
 	if (!label.empty()) {
 		double mid = (lowerBound + upperBound) / 2.0;
@@ -147,10 +154,14 @@ int BarSeries::getItemUnderMouse(const QPointF &point)
 }
 
 // Highlight item when hovering over item
-void BarSeries::highlight(int index)
+void BarSeries::highlight(int index, QPointF pos)
 {
-	if (index == highlighted)
+	if (index == highlighted) {
+		if (information)
+			information->setPos(pos);
 		return;
+	}
+
 	// Unhighlight old highlighted item (if any)
 	if (highlighted >= 0 && highlighted < (int)items.size())
 		items[highlighted].highlight(false);
@@ -160,5 +171,10 @@ void BarSeries::highlight(int index)
 	if (highlighted >= 0 && highlighted < (int)items.size()) {
 		Item &item = items[highlighted];
 		item.highlight(true);
+		if (!information)
+			information.reset(new InformationBox(chart()));
+		information->setText(item.info, pos);
+	} else {
+		information.reset();
 	}
 }

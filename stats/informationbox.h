@@ -16,7 +16,7 @@ struct dive;
 // Information window showing data of highlighted dive
 struct InformationBox : QGraphicsRectItem {
 	InformationBox(QtCharts::QChart *chart);
-	void setText(std::vector<QString> text, QPointF pos);
+	void setText(const std::vector<QString> &text, QPointF pos);
 	void setPos(QPointF pos);
 private:
 	QtCharts::QChart *chart;

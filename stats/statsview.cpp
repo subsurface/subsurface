@@ -133,11 +133,11 @@ void StatsView::hover(QPointF pos)
 
 	// If there was a different series with a highlighted item - unhighlight it
 	if (highlightedBarSeries && nextBarSeries != highlightedBarSeries)
-		highlightedBarSeries->highlight(-1);
+		highlightedBarSeries->highlight(-1, pos);
 
 	highlightedBarSeries = nextBarSeries;
 	if (highlightedBarSeries)
-		highlightedBarSeries->highlight(nextItem);
+		highlightedBarSeries->highlight(nextItem, pos);
 }
 
 void StatsView::initSeries(QtCharts::QAbstractSeries *series, const QString &name)
@@ -507,6 +507,32 @@ static std::pair<double, double> getMinMaxValue(const std::vector<T> &values)
 	return { min, max };
 }
 
+// Format information in a count-based bar chart.
+// Essentially, the name of the bin and the number and percentages of dives.
+static std::vector<QString> makeCountInfo(const StatsBinner &binner, const StatsBin &bin,
+					  const QString &axisName, int count, int total)
+{
+	double percentage = count * 100.0 / total;
+	QString countString = QString("%L1").arg(count);
+	QString percentageString = QString("%L1%").arg(percentage, 0, 'f', 1);
+	QString totalString = QString("%L1").arg(total);
+	return {
+		QStringLiteral("%1: %2").arg(axisName, binner.formatWithUnit(bin)),
+		QStringLiteral("%1 (%2 of %3) dives").arg(countString, percentageString, totalString)
+	};
+}
+
+// Format information in a value bar chart: the name of the bin and the value with unit.
+static std::vector<QString> makeValueInfo(const StatsBinner &binner, const StatsBin &bin,
+					  const QString &axisName, const QString &valueName,
+					  const QString &value, const QString &unit)
+{
+	return {
+		QStringLiteral("%1: %2").arg(axisName, binner.formatWithUnit(bin)),
+		QString("%1: %2 %3").arg(valueName, value, unit)
+	};
+}
+
 void StatsView::plotValueChart(const std::vector<dive *> &dives,
 			       ChartSubType subType,
 			       const StatsType *categoryType, const StatsBinner *categoryBinner,
@@ -519,8 +545,8 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 	if (!categoryBinner)
 		return;
 
-	setTitle(QStringLiteral("%1 (%2)").arg(valueType->name(),
-					       StatsType::operationName(valueAxisOperation)));
+	QString valueName = QStringLiteral("%1 (%2)").arg(valueType->name(), StatsType::operationName(valueAxisOperation));
+	setTitle(valueName);
 
 	std::vector<StatsBinVal> categoryBins = valueType->bin_value(*categoryBinner, dives, valueAxisOperation, false);
 
@@ -544,11 +570,15 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 
 	double pos = 0.0;
 	BarSeries *series = addBarSeries(QString(), isHorizontal);
-	for (auto &[bin, value]: categoryBins) {
-		if (!std::isnan(value)) {
-			std::vector<QString> label = labels ? std::vector<QString>()
-							    : std::vector<QString>{ QString("%L1").arg(value, 0, 'f', decimals) };
-			series->append(pos - 0.5, pos + 0.5, value, label);
+	QString unit = valueType->unitSymbol();
+	for (auto &[bin, height]: categoryBins) {
+		if (!std::isnan(height)) {
+			QString value = QString("%L1").arg(height, 0, 'f', decimals);
+			std::vector<QString> label = labels ? std::vector<QString> { value }
+							    : std::vector<QString>();
+			series->append(pos - 0.5, pos + 0.5, height, label,
+				       makeValueInfo(*categoryBinner, *bin, categoryType->name(),
+						     valueName, value, unit));
 		}
 		pos += 1.0;
 	}
@@ -687,7 +717,9 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 		for (auto const &[bin, count]: categoryBins) {
 			std::vector<QString> label = labels ? makePercentageLabels(count, total, isHorizontal)
 							    : std::vector<QString>();
-			series->append(pos - 0.5, pos + 0.5, (double)count, label);
+			std::vector<QString> info = makeCountInfo(*categoryBinner, *bin, categoryType->name(),
+								  count, total);
+			series->append(pos - 0.5, pos + 0.5, (double)count, label, std::move(info));
 			pos += 1.0;
 		}
 
@@ -948,7 +980,9 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 		std::vector<QString> label = labels ? makePercentageLabels(count, total, isHorizontal)
 						    : std::vector<QString>();
 
-		series->append(lowerBound, upperBound, height, label);
+		std::vector<QString> info = makeCountInfo(*categoryBinner, *bin, categoryType->name(),
+							  count, total);
+		series->append(lowerBound, upperBound, height, label, std::move(info));
 	}
 
 	if (categoryType->type() == StatsType::Type::Numeric) {
@@ -984,8 +1018,8 @@ void StatsView::plotHistogramBarChart(const std::vector<dive *> &dives,
 	if (!categoryBinner)
 		return;
 
-	setTitle(QStringLiteral("%1 (%2)").arg(valueType->name(),
-					       StatsType::operationName(valueAxisOperation)));
+	QString valueName = QStringLiteral("%1 (%2)").arg(valueType->name(), StatsType::operationName(valueAxisOperation));
+	setTitle(valueName);
 
 	std::vector<StatsBinVal> categoryBins = valueType->bin_value(*categoryBinner, dives, valueAxisOperation, true);
 
@@ -1010,12 +1044,17 @@ void StatsView::plotHistogramBarChart(const std::vector<dive *> &dives,
 	addAxes(xAxis, yAxis);
 
 	BarSeries *series = addBarSeries(QString(), isHorizontal);
+	QString unit = valueType->unitSymbol();
 	for (auto const &[bin, height]: categoryBins) {
 		if (!std::isnan(height)) {
 			double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
 			double upperBound = categoryBinner->upperBoundToFloat(*bin);
-			QString label = labels ? QString("%L1").arg(height, 0, 'f', decimals) : QString();
-			series->append(lowerBound, upperBound, height, { label });
+			QString value = QString("%L1").arg(height, 0, 'f', decimals);
+			std::vector<QString> label = labels ? std::vector<QString> { value }
+							    : std::vector<QString>();
+			series->append(lowerBound, upperBound, height, label,
+				       makeValueInfo(*categoryBinner, *bin, categoryType->name(),
+						     valueName, value, unit));
 		}
 	}
 

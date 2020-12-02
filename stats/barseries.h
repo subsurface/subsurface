@@ -14,6 +14,7 @@ namespace QtCharts {
 	class QAbstractAxis;
 	class QChart;
 }
+class InformationBox;
 class StatsType;
 
 // We derive from a proper scatter series to get access to the map-to
@@ -24,6 +25,7 @@ class BarSeries : public QtCharts::QScatterSeries {
 public:
 	// If the horizontal flag is true, independent variable is plotted on the y-axis.
 	BarSeries(bool horizontal);
+	~BarSeries();
 
 	// Call if chart geometry changed
 	void updatePositions();
@@ -31,13 +33,13 @@ public:
 	// Note: this expects that all items are added with increasing pos
 	// and that no bar is inside another bar, i.e. lowerBound and upperBound
 	// are ordered identically.
-	void append(double lowerBound, double upperBound, double value, const std::vector<QString> &label);
+	void append(double lowerBound, double upperBound, double value, const std::vector<QString> &label, std::vector<QString> info);
 
 	// Get item under mous pointer, or -1 if none
 	int getItemUnderMouse(const QPointF &f);
 
 	// Highlight item when hovering over item
-	void highlight(int index);
+	void highlight(int index, QPointF pos);
 private:
 	// A label that is composed of multiple lines
 	struct BarLabel {
@@ -52,11 +54,14 @@ private:
 	struct Item {
 		std::unique_ptr<QGraphicsRectItem> item;
 		double lowerBound, upperBound, value;
-		Item(QtCharts::QChart *chart, BarSeries *series, double lowerBound, double upperBound, double value, bool horizontal);
+		std::vector<QString> info; // Textual information
+		Item(QtCharts::QChart *chart, BarSeries *series, double lowerBound, double upperBound, double value,
+		     std::vector<QString> info, bool horizontal);
 		void updatePosition(QtCharts::QChart *chart, BarSeries *series, bool horizontal);
 		void highlight(bool highlight);
 	};
 
+	std::unique_ptr<InformationBox> information;
 	std::vector<Item> items;
 	std::vector<BarLabel> barLabels;
 	bool horizontal;
