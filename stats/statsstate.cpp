@@ -9,7 +9,6 @@ static const char *chart_subtype_names[] = {
 	QT_TRANSLATE_NOOP("StatsTranslations", "Vertical stacked"),
 	QT_TRANSLATE_NOOP("StatsTranslations", "Horizontal"),
 	QT_TRANSLATE_NOOP("StatsTranslations", "Horizontal stacked"),
-	QT_TRANSLATE_NOOP("StatsTranslations", "Pie")
 };
 
 enum class SupportedVariable {
@@ -92,7 +91,7 @@ static const struct ChartTypeDesc {
 		SupportedVariable::Categorical,
 		SupportedVariable::Count,
 		false,
-		{ ChartSubType::Pie, ChartSubType::Vertical, ChartSubType::Horizontal },
+		{ ChartSubType::Vertical, ChartSubType::Horizontal },
 		ChartFeatureLabels
 	},
 	{
@@ -100,6 +99,15 @@ static const struct ChartTypeDesc {
 		QT_TRANSLATE_NOOP("StatsTranslations", "Categorical box"),
 		SupportedVariable::Categorical,
 		SupportedVariable::Numeric,
+		false,
+		{ },
+		0
+	},
+	{
+		ChartType::Pie,
+		QT_TRANSLATE_NOOP("StatsTranslations", "Pie"),
+		SupportedVariable::Categorical,
+		SupportedVariable::Count,
 		false,
 		{ },
 		0
@@ -122,7 +130,7 @@ StatsState::StatsState() :
 	var1(stats_types[0]),
 	var2(nullptr),
 	type(ChartType::DiscreteBar),
-	subtype(ChartSubType::Pie),
+	subtype(ChartSubType::Vertical),
 	labels(true),
 	median(false),
 	mean(false),
@@ -446,7 +454,7 @@ void StatsState::validate(bool varChanged)
 
 	// Check if the current subtype is supported by the chart
 	if (std::find(desc.subtypes.begin(), desc.subtypes.end(), subtype) == desc.subtypes.end())
-		subtype = desc.subtypes.empty() ? ChartSubType::Pie : desc.subtypes[0];
+		subtype = desc.subtypes.empty() ? ChartSubType::Horizontal : desc.subtypes[0];
 
 	var1Binned = desc.var1 == SupportedVariable::Categorical || desc.var1 == SupportedVariable::Continuous;
 	var2Binned = desc.var2 == SupportedVariable::Categorical || desc.var2 == SupportedVariable::Continuous;

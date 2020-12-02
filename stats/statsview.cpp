@@ -236,6 +236,8 @@ void StatsView::plot(const StatsState &state)
 				      state.var2Operation, state.labels);
 	case ChartType::DiscreteCount:
 		return plotDiscreteCountChart(dives, state.subtype, state.var1, state.var1Binner, state.labels);
+	case ChartType::Pie:
+		return plotPieChart(dives, state.var1, state.var1Binner);
 	case ChartType::DiscreteBox:
 		return plotDiscreteBoxChart(dives, state.var1, state.var1Binner, state.var2);
 	case ChartType::DiscreteScatter:
@@ -633,8 +635,6 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 				      bool labels)
 {
 	using QtCharts::QBarCategoryAxis;
-	using QtCharts::QPieSeries;
-	using QtCharts::QPieSlice;
 	using QtCharts::QValueAxis;
 
 	if (!categoryBinner)
@@ -649,82 +649,100 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 		return;
 
 	int total = getTotalCount(categoryBins);
+	QBarCategoryAxis *catAxis = createCategoryAxis(*categoryBinner, categoryBins);
+	catAxis->setTitleText(categoryType->nameWithBinnerUnit(*categoryBinner));
 
-	if (subType == ChartSubType::Pie) {
-		QPieSeries *series = addSeries<QtCharts::QPieSeries>(categoryType->name());
+	bool isHorizontal = subType != ChartSubType::Vertical;
 
-		// The Pie chart becomes very slow for a big number of slices.
-		// Moreover, it is unreadable. Therefore, subsume slices under a
-		// certain percentage as "other". But draw a minimum number of slices
-		// until we reach 50% so that we never get a pie only of "other".
-		// This is heuristics, which might have to be optimized.
-		const int smallest_slice_percentage = 2; // Smaller than 2% = others. That makes at most 50 slices.
-		const int min_slices = 10; // Try to draw at least 10 slices until we reach 50%
-		std::sort(categoryBins.begin(), categoryBins.end(),
-			  [](const StatsBinCount &item1, const StatsBinCount &item2)
-			  { return item1.value > item2.value; }); // Note: reverse sort.
-		auto it = std::find_if(categoryBins.begin(), categoryBins.end(),
-				       [total, smallest_slice_percentage](const StatsBinCount &item)
-				       { return item.value * 100 / total < smallest_slice_percentage; });
-		if (it - categoryBins.begin() < min_slices) {
-			// Take minimum amount of slices below 50%...
-			int sum = 0;
-			for (auto it2 = categoryBins.begin(); it2 != it; ++it2)
-				sum += it2->value;
+	int maxCount = getMaxCount(categoryBins);
+	QValueAxis *valAxis = createCountAxis(maxCount, isHorizontal);
 
-			while(it != categoryBins.end() &&
-			      sum * 2 < total &&
-			      it - categoryBins.begin() < min_slices)
-				sum += it->value;
-		}
+	if (isHorizontal)
+		addAxes(valAxis, catAxis);
+	else
+		addAxes(catAxis, valAxis);
 
-		// Sum counts of "other" bins.
-		int otherCount = 0;
-		for (auto it2 = it; it2 != categoryBins.end(); ++it2)
-			otherCount += it2->value;
-
-		categoryBins.erase(it, categoryBins.end()); // Delete "other" bins
-
-		for (auto const &[bin, count]: categoryBins) {
-			QString label = makePiePercentageLabel(categoryBinner->format(*bin), count, total);
-			QPieSlice *slice = new QPieSlice(label, count);
-			slice->setLabelVisible(true);
-			series->append(slice);
-		}
-		if (otherCount) {
-			QString label = makePiePercentageLabel(StatsTranslations::tr("other"), otherCount, total);
-			QPieSlice *slice = new QPieSlice(label, otherCount);
-			slice->setLabelVisible(true);
-			series->append(slice);
-		}
-		showLegend();
-	} else {
-		QBarCategoryAxis *catAxis = createCategoryAxis(*categoryBinner, categoryBins);
-		catAxis->setTitleText(categoryType->nameWithBinnerUnit(*categoryBinner));
-
-		bool isHorizontal = subType != ChartSubType::Vertical;
-
-		int maxCount = getMaxCount(categoryBins);
-		QValueAxis *valAxis = createCountAxis(maxCount, isHorizontal);
-
-		if (isHorizontal)
-			addAxes(valAxis, catAxis);
-		else
-			addAxes(catAxis, valAxis);
-
-		double pos = 0.0;
-		BarSeries *series = addBarSeries(QString(), isHorizontal);
-		for (auto const &[bin, count]: categoryBins) {
-			std::vector<QString> label = labels ? makePercentageLabels(count, total, isHorizontal)
-							    : std::vector<QString>();
-			std::vector<QString> info = makeCountInfo(*categoryBinner, *bin, categoryType->name(),
-								  count, total);
-			series->append(pos - 0.5, pos + 0.5, (double)count, label, std::move(info));
-			pos += 1.0;
-		}
-
-		hideLegend();
+	double pos = 0.0;
+	BarSeries *series = addBarSeries(QString(), isHorizontal);
+	for (auto const &[bin, count]: categoryBins) {
+		std::vector<QString> label = labels ? makePercentageLabels(count, total, isHorizontal)
+						    : std::vector<QString>();
+		std::vector<QString> info = makeCountInfo(*categoryBinner, *bin, categoryType->name(),
+							  count, total);
+		series->append(pos - 0.5, pos + 0.5, (double)count, label, std::move(info));
+		pos += 1.0;
 	}
+
+	hideLegend();
+}
+
+void StatsView::plotPieChart(const std::vector<dive *> &dives,
+			     const StatsType *categoryType, const StatsBinner *categoryBinner)
+{
+	using QtCharts::QPieSeries;
+	using QtCharts::QPieSlice;
+
+	if (!categoryBinner)
+		return;
+
+	setTitle(categoryType->nameWithBinnerUnit(*categoryBinner));
+
+	std::vector<StatsBinCount> categoryBins = categoryBinner->count_dives(dives, false);
+
+	// If there is nothing to display, quit
+	if (categoryBins.empty())
+		return;
+
+	int total = getTotalCount(categoryBins);
+	QPieSeries *series = addSeries<QtCharts::QPieSeries>(categoryType->name());
+
+	// The Pie chart becomes very slow for a big number of slices.
+	// Moreover, it is unreadable. Therefore, subsume slices under a
+	// certain percentage as "other". But draw a minimum number of slices
+	// until we reach 50% so that we never get a pie only of "other".
+	// This is heuristics, which might have to be optimized.
+	const int smallest_slice_percentage = 2; // Smaller than 2% = others. That makes at most 50 slices.
+	const int min_slices = 10; // Try to draw at least 10 slices until we reach 50%
+	std::sort(categoryBins.begin(), categoryBins.end(),
+		  [](const StatsBinCount &item1, const StatsBinCount &item2)
+		  { return item1.value > item2.value; }); // Note: reverse sort.
+	auto it = std::find_if(categoryBins.begin(), categoryBins.end(),
+			       [total, smallest_slice_percentage](const StatsBinCount &item)
+			       { return item.value * 100 / total < smallest_slice_percentage; });
+	if (it - categoryBins.begin() < min_slices) {
+		// Take minimum amount of slices below 50%...
+		int sum = 0;
+		for (auto it2 = categoryBins.begin(); it2 != it; ++it2)
+			sum += it2->value;
+
+		while(it != categoryBins.end() &&
+		      sum * 2 < total &&
+		      it - categoryBins.begin() < min_slices) {
+			sum += it->value;
+			++it;
+		}
+	}
+
+	// Sum counts of "other" bins.
+	int otherCount = 0;
+	for (auto it2 = it; it2 != categoryBins.end(); ++it2)
+		otherCount += it2->value;
+
+	categoryBins.erase(it, categoryBins.end()); // Delete "other" bins
+
+	for (auto const &[bin, count]: categoryBins) {
+		QString label = makePiePercentageLabel(categoryBinner->format(*bin), count, total);
+		QPieSlice *slice = new QPieSlice(label, count);
+		slice->setLabelVisible(true);
+		series->append(slice);
+	}
+	if (otherCount) {
+		QString label = makePiePercentageLabel(StatsTranslations::tr("other"), otherCount, total);
+		QPieSlice *slice = new QPieSlice(label, otherCount);
+		slice->setLabelVisible(true);
+		series->append(slice);
+	}
+	showLegend();
 }
 
 void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,

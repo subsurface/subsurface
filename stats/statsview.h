@@ -53,6 +53,8 @@ private:
 	void plotDiscreteCountChart(const std::vector<dive *> &dives,
 				    ChartSubType subType,
 				    const StatsType *categoryType, const StatsBinner *categoryBinner, bool labels);
+	void plotPieChart(const std::vector<dive *> &dives,
+			  const StatsType *categoryType, const StatsBinner *categoryBinner);
 	void plotDiscreteBoxChart(const std::vector<dive *> &dives,
 				  const StatsType *categoryType, const StatsBinner *categoryBinner, const StatsType *valueType);
 	void plotDiscreteScatter(const std::vector<dive *> &dives,
