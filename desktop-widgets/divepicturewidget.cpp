@@ -1,19 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/divepicturewidget.h"
-#include "qt-models/divepicturemodel.h"
 #include "core/metrics.h"
-#include "core/dive.h"
-#include "core/divelist.h"
-#include <unistd.h>
-#include <QFuture>
-#include <QDir>
-#include <QCryptographicHash>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include "desktop-widgets/mainwindow.h"
 #include "core/qthelper.h"
-#include <QStandardPaths>
-#include <QtWidgets>
+#include <QDrag>
+#include <QMimeData>
+#include <QMouseEvent>
+#include <QPixmap>
 
 DivePictureWidget::DivePictureWidget(QWidget *parent) : QListView(parent)
 {
