@@ -1202,6 +1202,61 @@ struct AirTemperatureType : TemperatureType {
 	}
 };
 
+// ============ Weight, binned in 1, 2, 5, 10 m or 2, 4, 10 or 20 ft bins ============
+
+struct WeightBinner : public IntRangeBinner<WeightBinner, IntBin> {
+	bool metric;
+	WeightBinner(int bin_size, bool metric) : IntRangeBinner(bin_size), metric(metric)
+	{
+	}
+	QString name() const override {
+		QLocale loc;
+		return StatsTranslations::tr("in %1 %2 steps").arg(loc.toString(bin_size),
+								   get_weight_unit());
+	}
+	QString unitSymbol() const override {
+		return get_weight_unit();
+	}
+	int to_bin_value(const dive *d) const {
+		return metric ? total_weight(d) / 1000 / bin_size
+			      : lrint(grams_to_lbs(total_weight(d))) / bin_size;
+	}
+};
+
+static WeightBinner weight_binner_1kg(1, true);
+static WeightBinner weight_binner_2kg(2, true);
+static WeightBinner weight_binner_5kg(5, true);
+static WeightBinner weight_binner_10kg(10, true);
+static WeightBinner weight_binner_2lbs(2, false);
+static WeightBinner weight_binner_5lbs(4, false);
+static WeightBinner weight_binner_10lbs(10, false);
+static WeightBinner weight_binner_20lbs(20, false);
+
+struct WeightType : public StatsTypeTemplate<StatsType::Type::Numeric> {
+	QString name() const override {
+		return StatsTranslations::tr("Weight");
+	}
+	QString unitSymbol() const override {
+		return get_weight_unit();
+	}
+	int decimals() const override {
+		return prefs.units.weight == units::KG ? 1 : 0;
+	}
+	std::vector<const StatsBinner *> binners() const override {
+		if (prefs.units.weight == units::KG)
+			return { &weight_binner_1kg, &weight_binner_2kg, &weight_binner_5kg, &weight_binner_10kg };
+		else
+			return { &weight_binner_2lbs, &weight_binner_5lbs, &weight_binner_10lbs, &weight_binner_20lbs };
+	}
+	double toFloat(const dive *d) const override {
+		return prefs.units.weight == units::KG ? total_weight(d) / 1000.0
+						       : grams_to_lbs(total_weight(d));
+	}
+	std::vector<StatsOperation> supportedOperations() const override {
+		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::Sum };
+	}
+};
+
 // ============ Dive mode ============
 
 struct DiveModeBinner : public SimpleBinner<DiveModeBinner, IntBin> {
@@ -1595,6 +1650,7 @@ static DurationType duration_type;
 static SACType sac_type;
 static WaterTemperatureType water_temperature_type;
 static AirTemperatureType air_temperature_type;
+static WeightType weight_type;
 static DiveModeType dive_mode_type;
 static BuddyType buddy_type;
 static GasTypeType gas_type_type;
@@ -1607,7 +1663,7 @@ static CylinderTypeType cylinder_type_type;
 static LocationType location_type;
 const std::vector<const StatsType *> stats_types = {
 	&date_type, &depth_type, &duration_type, &sac_type,
-	&water_temperature_type, &air_temperature_type,
+	&water_temperature_type, &air_temperature_type, &weight_type,
 	&gas_content_o2_type, &gas_content_o2_he_max_type, &gas_content_he_type,
 	&dive_mode_type, &buddy_type, &gas_type_type, &suit_type,
 	&weightsystem_type, &cylinder_type_type, &location_type
