@@ -30,5 +30,7 @@ jobs:
         ln -s /android/platforms .
         ln -s /android/tools .
         ls -l
+        git config --global user.email "ci@subsurface-divelog.org"
+        git config --global user.name "Subsurface CI"
         bash -x ./subsurface/packaging/android/qmake-build.sh
 

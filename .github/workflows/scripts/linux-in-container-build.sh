@@ -18,12 +18,6 @@ cp -a /appdir /__w/subsurface/
 cp -a /install-root /__w/subsurface/
 
 echo "--------------------------------------------------------------"
-echo "building mobile"
-
-# first make sure that no one broke Subsurface-mobile
-bash -e -x subsurface/scripts/build.sh -mobile -quick
-
-echo "--------------------------------------------------------------"
 echo "building desktop"
 
 # now build our AppImage

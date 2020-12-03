@@ -28,7 +28,8 @@ jobs:
         export PATH=$QT_ROOT/bin:$PATH
         export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
         DIR=$(pwd)
-
+        git config --global user.email "ci@subsurface-divelog.org"
+        git config --global user.name "Subsurface CI"
         # first build Subsurface-mobile to ensure this didn't get broken
         bash -e -x ./subsurface/scripts/build.sh -mobile
 

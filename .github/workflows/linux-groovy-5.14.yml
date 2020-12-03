@@ -39,7 +39,8 @@ jobs:
       run: |
         echo "--------------------------------------------------------------"
         echo "building mobile"
-
+        git config --global user.email "ci@subsurface-divelog.org"
+        git config --global user.name "Subsurface CI"
         cd ..
         bash -e -x subsurface/scripts/build.sh -mobile
 
