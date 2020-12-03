@@ -341,6 +341,7 @@ for ARCH in $ARCHITECTURES ; do
 				-DCMAKE_C_COMPILER="$CC" \
 				-DCMAKE_LINKER="$CC" \
 				-DCMAKE_INSTALL_PREFIX="$PREFIX" \
+				-DECM_DIR="$SUBSURFACE_SOURCE"/mobile-widgets/3rdparty/ECM \
 				"$SUBSURFACE_SOURCE"/mobile-widgets/3rdparty/kirigami
 			make
 			make install
