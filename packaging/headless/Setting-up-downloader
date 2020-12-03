@@ -5,8 +5,11 @@ How to set up a Raspberry Pi to use as a Subsurface downloader
 2) Set up your local network according to https://www.raspberrypi.org/documentation/configuration/wireless/headless.md
 You also need to create a file named "ssh" in the boot partition to enable the ssh server. Set the hostname to subsurfacepi
 
-3) apt-get install some more packages. On my pi, the packages listed in downloader_packages are installed, you can install them with
-sudo xargs -a downloader_packages apt install
+3) Install additional packages with their dependencies
+
+sudo apt-get install cmake-curses-gui debsums gvfs-bin ifuse ipheth-utils libcrypto++-dev libcurl4-openssl-dev libgit2-dev \
+libimobiledevice-utils libmtp-dev libqt5svg5-dev libqt5webkit5-dev libxslt1-dev libzip-dev qml-module-qtlocation \
+qml-module-qtpositioning qml-module-qtquick2 qt5-default qtconnectivity5-dev qtdeclarative5-private-dev qtpositioning5-dev qtscript5-dev 
 
 4) Clone the subsurface repository and build it as for any Debian based system: Run build.sh, then cd to the build directory, run
 ccamke .
@@ -27,6 +30,11 @@ and select SUBSURFACE_TARGET_EXECUTABLE as DownloaderExecutable and make once mo
                 Order allow,deny
                 Allow from all
         </Directory>
+	ScriptAlias / /usr/lib/cgi-bin/downloader.pl
+
+activate the CGI Modules
+
+sudo ln -s /etc/apache2/mods-available/cgi* /etc/apache2/mods-enabled/
 
 and restart apache2
 
