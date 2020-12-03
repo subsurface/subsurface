@@ -23,6 +23,26 @@ static const constexpr double NaN = std::numeric_limits<double>::quiet_NaN();
 using year_quarter = std::pair<unsigned short, unsigned short>;
 using year_month = std::pair<unsigned short, unsigned short>;
 
+// Small helper template: add an item to an unsorted vector, if its not already there.
+template<typename T>
+static void add_to_vector_unique(std::vector<T> &v, const T &item)
+{
+	if (std::find(v.begin(), v.end(), item) == v.end())
+		v.push_back(item);
+}
+
+// Small helper: make a comma separeted list of a vector of QStrings
+static QString join_strings(const std::vector<QString> &v)
+{
+	QString res;
+	for (const QString &s: v) {
+		if (!res.isEmpty())
+			res += ", ";
+		res += s;
+	}
+	return res;
+}
+
 // Note: usually I dislike functions defined inside class/struct
 // declarations ("Java style"). However, for brevity this is done
 // in this rather template-heavy source file more or less consistently.
@@ -1277,10 +1297,8 @@ struct GasTypeBinner : public MultiBinner<GasTypeBinner, GasTypeBin> {
 			struct gasmix mix = d->cylinders.cylinders[i].gasmix;
 			if (gasmix_is_invalid(mix))
 				continue;
-			struct gas_bin_t type = bin_gasmix(mix, bin_size);
 			// Add dive to each bin only once.
-			if (std::find(res.begin(), res.end(), type) == res.end())
-				res.push_back(type);
+			add_to_vector_unique(res, bin_gasmix(mix, bin_size));
 		}
 		return res;
 	}
@@ -1463,7 +1481,7 @@ struct GasContentHeType : GasContentType {
 	}
 };
 
-// ============ Suit  ============
+// ============ Suit ============
 
 struct SuitBinner : public StringBinner<SuitBinner, StringBin> {
 	std::vector<QString> to_bin_values(const dive *d) const {
@@ -1484,7 +1502,67 @@ struct SuitType : public StatsTypeTemplate<StatsType::Type::Discrete> {
 	}
 };
 
-// ============ Location (including trip location)  ============
+// ============ Weightsystem ============
+
+static std::vector<QString> weightsystems(const dive *d)
+{
+	std::vector<QString> res;
+	res.reserve(d->weightsystems.nr);
+	for (int i = 0; i < d->weightsystems.nr; ++i)
+		add_to_vector_unique(res, QString(d->weightsystems.weightsystems[i].description).trimmed());
+	return res;
+}
+
+struct WeightsystemBinner : public StringBinner<WeightsystemBinner, StringBin> {
+	std::vector<QString> to_bin_values(const dive *d) const {
+		return weightsystems(d);
+	}
+};
+
+static WeightsystemBinner weightsystem_binner;
+struct WeightsystemType : public StatsTypeTemplate<StatsType::Type::Discrete> {
+	QString name() const override {
+		return StatsTranslations::tr("Weightsystem");
+	}
+	QString diveCategories(const dive *d) const override {
+		return join_strings(weightsystems(d));
+	}
+	std::vector<const StatsBinner *> binners() const override {
+		return { &weightsystem_binner };
+	}
+};
+
+// ============ Cylinder types ============
+
+static std::vector<QString> cylinder_types(const dive *d)
+{
+	std::vector<QString> res;
+	res.reserve(d->cylinders.nr);
+	for (int i = 0; i < d->cylinders.nr; ++i)
+		add_to_vector_unique(res, QString(d->cylinders.cylinders[i].type.description).trimmed());
+	return res;
+}
+
+struct CylinderTypeBinner : public StringBinner<CylinderTypeBinner, StringBin> {
+	std::vector<QString> to_bin_values(const dive *d) const {
+		return cylinder_types(d);
+	}
+};
+
+static CylinderTypeBinner cylinder_type_binner;
+struct CylinderTypeType : public StatsTypeTemplate<StatsType::Type::Discrete> {
+	QString name() const override {
+		return StatsTranslations::tr("Cylinder type");
+	}
+	QString diveCategories(const dive *d) const override {
+		return join_strings(cylinder_types(d));
+	}
+	std::vector<const StatsBinner *> binners() const override {
+		return { &cylinder_type_binner };
+	}
+};
+
+// ============ Location (including trip location) ============
 
 using LocationBin = SimpleBin<const dive_site *>;
 
@@ -1524,10 +1602,13 @@ static GasContentO2Type gas_content_o2_type;
 static GasContentO2HeMaxType gas_content_o2_he_max_type;
 static GasContentHeType gas_content_he_type;
 static SuitType suit_type;
+static WeightsystemType weightsystem_type;
+static CylinderTypeType cylinder_type_type;
 static LocationType location_type;
 const std::vector<const StatsType *> stats_types = {
 	&date_type, &depth_type, &duration_type, &sac_type,
 	&water_temperature_type, &air_temperature_type,
 	&gas_content_o2_type, &gas_content_o2_he_max_type, &gas_content_he_type,
-	&dive_mode_type, &buddy_type, &gas_type_type, &suit_type, &location_type
+	&dive_mode_type, &buddy_type, &gas_type_type, &suit_type,
+	&weightsystem_type, &cylinder_type_type, &location_type
 };
