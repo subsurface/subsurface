@@ -133,6 +133,22 @@ if [ ! -f libdivecomputer/configure ] ; then
 fi
 popd
 
+# build default architectures, or the given one?
+if [ "$ARCHITECTURES" = "" ] ; then
+	ARCHITECTURES="armv7a aarch64"
+fi
+
+# it would of course be too easy to use these terms consistently, so let's not
+# no where do we support x86 style Android builds - there aren't any relevant devices
+for ARCH in $ARCHITECTURES ; do
+	if [ "$ARCH" = "armv7a" ] ; then
+		ANDROID_ABI="armeabi-v7a"
+	else
+		ANDROID_ABI="arm64-v8a"
+	fi
+	BUILD_ABIS="$BUILD_ABIS $ANDROID_ABI"
+done
+
 # if this isn't just a quick rebuild, pull kirigami, icons, etc, and finally build the Googlemaps plugin
 if [ "$QUICK" = "" ] ; then
 	pushd "$SUBSURFACE_SOURCE"
@@ -155,11 +171,6 @@ if [ "$QUICK" = "" ] ; then
 fi
 
 # autoconf based libraries are harder
-# build default architectures, or the given one?
-if [ "$ARCHITECTURES" = "" ] ; then
-	ARCHITECTURES="armv7a aarch64"
-fi
-
 for ARCH in $ARCHITECTURES ; do
 	echo "START building libraries for $ARCH"
 	echo "====================================="
@@ -176,7 +187,6 @@ for ARCH in $ARCHITECTURES ; do
 		OPENSSL_ARCH="arm64"
 		ANDROID_ABI="arm64-v8a"
 	fi
-	BUILD_ABIS="$BUILD_ABIS $ANDROID_ABI"
 
 	export TARGET=$ARCH-linux-android
 	export AR=$TOOLCHAIN/bin/$BINUTIL_ARCH-linux-android$EABI-ar
