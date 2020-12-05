@@ -24,6 +24,7 @@ class QGraphicsLineItem;
 class QGraphicsPixmapItem;
 class QGraphicsSimpleTextItem;
 class BarSeries;
+class BoxSeries;
 class ScatterSeries;
 
 enum class ChartSubType : int;
@@ -80,6 +81,7 @@ private:
 	T *addSeries(const QString &name);
 	ScatterSeries *addScatterSeries(const QString &name, const StatsType &typeX, const StatsType &typeY);
 	BarSeries *addBarSeries(const QString &name, bool horizontal);
+	BoxSeries *addBoxSeries(const QString &name, const QString &unit, int decimals);
 	void initSeries(QtCharts::QAbstractSeries *series, const QString &name);
 
 	template<typename T>
@@ -107,9 +109,11 @@ private:
 	std::vector<std::unique_ptr<QtCharts::QAbstractAxis>> axes;
 	std::vector<std::unique_ptr<ScatterSeries>> scatterSeries;
 	std::vector<std::unique_ptr<BarSeries>> barSeries;
+	std::vector<std::unique_ptr<BoxSeries>> boxSeries;
 	std::vector<QuartileMarker> quartileMarkers;
 	ScatterSeries *highlightedScatterSeries;	// scatter series with highlighted element
 	BarSeries *highlightedBarSeries;		// bar series with highlighted element
+	BoxSeries *highlightedBoxSeries;		// box series with highlighted element
 
 	// This is unfortunate: we can't derive from QChart, because the chart is allocated by QML.
 	// Therefore, we have to listen to hover events using an events-filter.
@@ -122,6 +126,9 @@ private:
 	} eventFilter;
 	friend EventFilter;
 	void hover(QPointF pos);
+	// Generic code to handle the highlighting of a series element
+	template<typename Series>
+	void handleHover(const std::vector<std::unique_ptr<Series>> &series, Series *&highlighted, QPointF pos);
 };
 
 #endif

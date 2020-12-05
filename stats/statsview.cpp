@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "statsview.h"
 #include "barseries.h"
+#include "boxseries.h"
 #include "scatterseries.h"
 #include "statsstate.h"
 #include "statstranslations.h"
@@ -8,14 +9,11 @@
 #include "scatterseries.h"
 #include "core/divefilter.h"
 #include <QQuickItem>
-#include <QAreaSeries>
 #include <QBarCategoryAxis>
 #include <QBarSet>
 #include <QBarSeries>
-#include <QBoxPlotSeries>
 #include <QCategoryAxis>
 #include <QChart>
-#include <QGraphicsSimpleTextItem>
 #include <QGraphicsSceneHoverEvent>
 #include <QHorizontalBarSeries>
 #include <QHorizontalStackedBarSeries>
@@ -69,6 +67,7 @@ bool StatsView::EventFilter::eventFilter(QObject *o, QEvent *event)
 StatsView::StatsView(QWidget *parent) : QQuickWidget(parent),
 	highlightedScatterSeries(nullptr),
 	highlightedBarSeries(nullptr),
+	highlightedBoxSeries(nullptr),
 	eventFilter(this)
 {
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
@@ -90,13 +89,39 @@ void StatsView::plotAreaChanged(const QRectF &)
 		series->updatePositions();
 	for (auto &series: barSeries)
 		series->updatePositions();
+	for (auto &series: boxSeries)
+		series->updatePositions();
 	for (QuartileMarker &marker: quartileMarkers)
 		marker.updatePosition();
 }
 
+// Generic code to handle the highlighting of a series element
+template<typename Series>
+void StatsView::handleHover(const std::vector<std::unique_ptr<Series>> &series, Series *&highlighted, QPointF pos)
+{
+	// For bar series, we simply take the first bar under the mouse, as
+	// bars shouldn't overlap.
+	int nextItem = -1;
+	Series *nextSeries = nullptr;
+	for (auto &series: series) {
+		if ((nextItem = series->getItemUnderMouse(pos)) >= 0) {
+			nextSeries = series.get();
+			break;
+		}
+	}
+
+	// If there was a different series with a highlighted item - unhighlight it
+	if (highlighted && nextSeries != highlighted)
+		highlighted->highlight(-1, pos);
+
+	highlighted = nextSeries;
+	if (highlighted)
+		highlighted->highlight(nextItem, pos);
+}
+
 void StatsView::hover(QPointF pos)
 {
-	// Currently, we don't support scatter and bar series in the same plot.
+	// Currently, we don't different series in the same plot.
 	// Therefore, treat these cases separately.
 
 	// Get closest scatter item
@@ -120,24 +145,8 @@ void StatsView::hover(QPointF pos)
 	if (highlightedScatterSeries)
 		highlightedScatterSeries->highlight(nextItem);
 
-	// For bar series, we simply take the first bar under the mouse, as
-	// bars shouldn't overlap.
-	nextItem = -1;
-	BarSeries *nextBarSeries = nullptr;
-	for (auto &series: barSeries) {
-		if ((nextItem = series->getItemUnderMouse(pos)) >= 0) {
-			nextBarSeries = series.get();
-			break;
-		}
-	}
-
-	// If there was a different series with a highlighted item - unhighlight it
-	if (highlightedBarSeries && nextBarSeries != highlightedBarSeries)
-		highlightedBarSeries->highlight(-1, pos);
-
-	highlightedBarSeries = nextBarSeries;
-	if (highlightedBarSeries)
-		highlightedBarSeries->highlight(nextItem, pos);
+	handleHover(barSeries, highlightedBarSeries, pos);
+	handleHover(boxSeries, highlightedBoxSeries, pos);
 }
 
 void StatsView::initSeries(QtCharts::QAbstractSeries *series, const QString &name)
@@ -171,6 +180,13 @@ BarSeries *StatsView::addBarSeries(const QString &name, bool horizontal)
 	barSeries.emplace_back(new BarSeries(horizontal));
 	initSeries(barSeries.back().get(), name);
 	return barSeries.back().get();
+}
+
+BoxSeries *StatsView::addBoxSeries(const QString &name, const QString &unit, int decimals)
+{
+	boxSeries.emplace_back(new BoxSeries(name, unit, decimals));
+	initSeries(boxSeries.back().get(), name);
+	return boxSeries.back().get();
 }
 
 void StatsView::showLegend()
@@ -214,8 +230,11 @@ void StatsView::reset()
 	if (!chart)
 		return;
 	highlightedScatterSeries = nullptr;
+	highlightedBarSeries = nullptr;
+	highlightedBoxSeries = nullptr;
 	scatterSeries.clear();
 	barSeries.clear();
+	boxSeries.clear();
 	quartileMarkers.clear();
 	chart->removeAllSeries();
 	axes.clear();
@@ -749,8 +768,6 @@ void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,
 				     const StatsType *categoryType, const StatsBinner *categoryBinner,
 				     const StatsType *valueType)
 {
-	using QtCharts::QBoxPlotSeries;
-	using QtCharts::QBoxSet;
 	using QtCharts::QBarCategoryAxis;
 	using QtCharts::QValueAxis;
 
@@ -774,12 +791,13 @@ void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,
 
 	addAxes(catAxis, valueAxis);
 
-	QBoxPlotSeries *series = addSeries<QBoxPlotSeries>(valueType->name());
+	BoxSeries *series = addBoxSeries(valueType->name(), valueType->unitSymbol(), valueType->decimals());
 
-	for (const auto &[bin, q]: categoryBins) {
-		QBoxSet *set = q.isValid() ? new QBoxSet(q.min, q.q1, q.q2, q.q3, q.max)
-					   : new QBoxSet;
-		series->append(set);
+	double pos = 0.0;
+	for (auto &[bin, q]: categoryBins) {
+		if (q.isValid())
+			series->append(pos - 0.5, pos + 0.5, q, categoryBinner->formatWithUnit(*bin));
+		pos += 1.0;
 	}
 
 	hideLegend();

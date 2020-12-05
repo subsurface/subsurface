@@ -7,6 +7,8 @@ include_directories(.
 set(SUBSURFACE_STATS_SRCS
 	barseries.h
 	barseries.cpp
+	boxseries.h
+	boxseries.cpp
 	informationbox.h
 	informationbox.cpp
 	scatterseries.h
