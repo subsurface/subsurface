@@ -84,7 +84,8 @@ private:
 	template <typename T>
 	T *addSeries(const QString &name);
 	ScatterSeries *addScatterSeries(const QString &name, const StatsType &typeX, const StatsType &typeY);
-	BarSeries *addBarSeries(const QString &name, bool horizontal);
+	BarSeries *addBarSeries(const QString &name, bool horizontal, const QString &categoryName,
+				const StatsType *valueType);
 	BoxSeries *addBoxSeries(const QString &name, const QString &unit, int decimals);
 	void initSeries(QtCharts::QAbstractSeries *series, const QString &name);
 
