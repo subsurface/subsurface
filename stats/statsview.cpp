@@ -267,6 +267,8 @@ void StatsView::plot(const StatsState &state)
 	case ChartType::HistogramBar:
 		return plotHistogramBarChart(dives, state.subtype, state.var1, state.var1Binner, state.var2,
 					     state.var2Operation, state.labels);
+	case ChartType::HistogramBox:
+		return plotHistogramBoxChart(dives, state.var1, state.var1Binner, state.var2);
 	case ChartType::ScatterPlot:
 		return plotScatter(dives, state.var1, state.var2);
 	default:
@@ -1092,6 +1094,46 @@ void StatsView::plotHistogramBarChart(const std::vector<dive *> &dives,
 				       makeValueInfo(*categoryBinner, *bin, categoryType->name(),
 						     valueName, value, unit));
 		}
+	}
+
+	hideLegend();
+}
+
+void StatsView::plotHistogramBoxChart(const std::vector<dive *> &dives,
+				      const StatsType *categoryType, const StatsBinner *categoryBinner,
+				      const StatsType *valueType)
+{
+	using QtCharts::QCategoryAxis;
+	using QtCharts::QValueAxis;
+
+	if (!categoryBinner)
+		return;
+
+	setTitle(valueType->name());
+
+	std::vector<StatsBinQuartiles> categoryBins = valueType->bin_quartiles(*categoryBinner, dives, true);
+
+	// If there is nothing to display, quit
+	if (categoryBins.empty())
+		return;
+
+	QCategoryAxis *catAxis = createHistogramAxis(*categoryBinner, categoryBins, false);
+	catAxis->setTitleText(categoryType->nameWithBinnerUnit(*categoryBinner));
+
+	auto [minY, maxY] = getMinMaxValue(categoryBins);
+	QValueAxis *valueAxis = createValueAxis(minY, maxY, valueType->decimals(), false);
+	valueAxis->setTitleText(valueType->nameWithUnit());
+
+	addAxes(catAxis, valueAxis);
+
+	BoxSeries *series = addBoxSeries(valueType->name(), valueType->unitSymbol(), valueType->decimals());
+
+	for (auto &[bin, q]: categoryBins) {
+		if (!q.isValid())
+			continue;
+		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
+		double upperBound = categoryBinner->upperBoundToFloat(*bin);
+		series->append(lowerBound, upperBound, q, categoryBinner->formatWithUnit(*bin));
 	}
 
 	hideLegend();

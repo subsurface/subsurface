@@ -69,6 +69,8 @@ private:
 				   ChartSubType subType,
 				   const StatsType *categoryType, const StatsBinner *categoryBinner,
 				   const StatsType *valueType, StatsOperation valueAxisOperation, bool labels);
+	void plotHistogramBoxChart(const std::vector<dive *> &dives,
+				   const StatsType *categoryType, const StatsBinner *categoryBinner, const StatsType *valueType);
 	void plotScatter(const std::vector<dive *> &dives, const StatsType *categoryType, const StatsType *valueType);
 	void setTitle(const QString &);
 	void showLegend();
