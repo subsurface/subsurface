@@ -8,6 +8,7 @@
 #include "statstypes.h"
 #include "scatterseries.h"
 #include "core/divefilter.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include <QQuickItem>
 #include <QBarCategoryAxis>
 #include <QBarSet>
@@ -74,6 +75,7 @@ StatsView::StatsView(QWidget *parent) : QQuickWidget(parent),
 	setSource(urlStatsView);
 	chart = getChart(rootObject());
 	connect(chart, &QtCharts::QChart::plotAreaChanged, this, &StatsView::plotAreaChanged);
+	connect(&diveListNotifier, &DiveListNotifier::numShownChanged, this, &StatsView::replotIfVisible);
 
 	chart->installEventFilter(&eventFilter);
 	chart->setAcceptHoverEvents(true);
@@ -93,6 +95,12 @@ void StatsView::plotAreaChanged(const QRectF &)
 		series->updatePositions();
 	for (QuartileMarker &marker: quartileMarkers)
 		marker.updatePosition();
+}
+
+void StatsView::replotIfVisible()
+{
+	if (isVisible())
+		plot(state);
 }
 
 // Generic code to handle the highlighting of a series element
@@ -240,8 +248,9 @@ void StatsView::reset()
 	axes.clear();
 }
 
-void StatsView::plot(const StatsState &state)
+void StatsView::plot(const StatsState &stateIn)
 {
+	state = stateIn;
 	if (!chart || !state.var1)
 		return;
 	reset();

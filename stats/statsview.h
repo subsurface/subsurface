@@ -2,6 +2,7 @@
 #ifndef STATS_VIEW_H
 #define STATS_VIEW_H
 
+#include "statsstate.h"
 #include <memory>
 #include <QQuickWidget>
 
@@ -39,6 +40,7 @@ public:
 	void plot(const StatsState &state);
 private slots:
 	void plotAreaChanged(const QRectF &plotArea);
+	void replotIfVisible();
 private:
 	void reset(); // clears all series and axes
 	void addAxes(QtCharts::QAbstractAxis *x, QtCharts::QAbstractAxis *y); // Add new x- and y-axis
@@ -106,6 +108,7 @@ private:
 		void updatePosition();
 	};
 
+	StatsState state;
 	QtCharts::QChart *chart;
 	std::vector<std::unique_ptr<QtCharts::QAbstractAxis>> axes;
 	std::vector<std::unique_ptr<ScatterSeries>> scatterSeries;
