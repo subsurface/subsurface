@@ -17,6 +17,7 @@ enum class ChartType {
 	Pie,
 	HistogramCount,
 	HistogramBar,
+	HistogramBox,
 	ScatterPlot
 };
 

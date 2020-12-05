@@ -59,6 +59,15 @@ static const struct ChartTypeDesc {
 		ChartFeatureLabels
 	},
 	{
+		ChartType::HistogramBox,
+		QT_TRANSLATE_NOOP("StatsTranslations", "Box"),
+		SupportedVariable::Continuous,
+		SupportedVariable::Numeric,
+		false,
+		{ },
+		0
+	},
+	{
 		ChartType::DiscreteScatter,
 		QT_TRANSLATE_NOOP("StatsTranslations", "Categorical scatter"),
 		SupportedVariable::Categorical,
