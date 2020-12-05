@@ -29,6 +29,18 @@ enum class StatsOperation : int {
 	Invalid
 };
 
+// Results of the above operations
+struct StatsOperationResults {
+	int count;
+	double median;
+	double mean;
+	double timeWeightedMean;
+	double sum;
+	StatsOperationResults(); // Initialize to invalid (e.g. no dives)
+	bool isValid() const;
+	double get(StatsOperation op) const;
+};
+
 // For median and quartiles.
 struct StatsQuartiles {
 	double min;
@@ -62,7 +74,7 @@ using StatsBinDives = StatsBinValue<std::vector<dive *>>;
 using StatsBinValues = StatsBinValue<std::vector<StatsValue>>;
 using StatsBinCount = StatsBinValue<int>;
 using StatsBinQuartiles = StatsBinValue<StatsQuartiles>;
-using StatsBinVal = StatsBinValue<double>;
+using StatsBinOp = StatsBinValue<StatsOperationResults>;
 
 struct StatsBinner {
 	virtual ~StatsBinner();
@@ -109,7 +121,7 @@ struct StatsType {
 	virtual std::vector<const StatsBinner *> binners() const = 0; // Note: may depend on current locale!
 	virtual QString diveCategories(const dive *d) const; // Only for discrete types
 	std::vector<StatsBinQuartiles> bin_quartiles(const StatsBinner &binner, const std::vector<dive *> &dives, bool fill_empty) const;
-	std::vector<StatsBinVal> bin_value(const StatsBinner &binner, const std::vector<dive *> &dives, StatsOperation op, bool fill_empty) const;
+	std::vector<StatsBinOp> bin_operations(const StatsBinner &binner, const std::vector<dive *> &dives, bool fill_empty) const;
 	std::vector<StatsBinValues> bin_values(const StatsBinner &binner, const std::vector<dive *> &dives, bool fill_empty) const;
 	const StatsBinner *getBinner(int idx) const; // Handles out of bounds gracefully (returns first binner)
 	QString nameWithUnit() const;
@@ -119,16 +131,14 @@ struct StatsType {
 	StatsOperation idxToOperation(int idx) const;
 	static QString operationName(StatsOperation);
 	double mean(const std::vector<dive *> &dives) const; // Returns NaN for empty list
-	double meanTimeWeighted(const std::vector<dive *> &dives) const; // Returns NaN for empty list
 	static StatsQuartiles quartiles(const std::vector<StatsValue> &values); // Returns invalid quartiles for empty list
 	StatsQuartiles quartiles(const std::vector<dive *> &dives) const; // Only for numeric types
 	std::vector<StatsValue> values(const std::vector<dive *> &dives) const; // Only for numeric types
 	QString valueWithUnit(const dive *d) const; // Only for numeric types
 	std::vector<StatsScatterItem> scatter(const StatsType &t2, const std::vector<dive *> &dives) const;
-	double sum(const std::vector<dive *> &dives) const; // Returns 0.0 for empty list
 private:
 	virtual double toFloat(const struct dive *d) const; // For numeric types - if dive doesn't have that value, returns NaN
-	double applyOperation(const std::vector<dive *> &dives, StatsOperation op) const;
+	StatsOperationResults applyOperations(const std::vector<dive *> &dives) const;
 };
 
 extern const std::vector<const StatsType *> stats_types;

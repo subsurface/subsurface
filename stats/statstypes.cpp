@@ -94,6 +94,10 @@ static bool is_invalid_value(const dive_site *d)
 	return !d;
 }
 
+static bool is_invalid_value(const StatsOperationResults &res)
+{
+	return !res.isValid();
+}
 
 struct gas_bin_t {
 	enum class Type {
@@ -312,30 +316,8 @@ QString StatsType::operationName(StatsOperation op)
 
 double StatsType::mean(const std::vector<dive *> &dives) const
 {
-	double sum = 0.0;
-	double count = 0.0;
-	for (const dive *d: dives) {
-		double v = toFloat(d);
-		if (is_invalid_value(v))
-			continue;
-		sum += v;
-		count += 1.0;
-	}
-	return count > 0.0 ? sum / count : invalid_value<double>();
-}
-
-double StatsType::meanTimeWeighted(const std::vector<dive *> &dives) const
-{
-	double sum = 0.0;
-	double weight_count = 0.0;
-	for (const dive *d: dives) {
-		double v = toFloat(d);
-		if (is_invalid_value(v))
-			continue;
-		sum += v * d->duration.seconds;
-		weight_count += d->duration.seconds;
-	}
-	return weight_count > 0.0 ? sum / weight_count : invalid_value<double>();
+	StatsOperationResults res = applyOperations(dives);
+	return res.isValid() ? res.mean : invalid_value<double>();
 }
 
 std::vector<StatsValue> StatsType::values(const std::vector<dive *> &dives) const
@@ -407,28 +389,48 @@ StatsQuartiles StatsType::quartiles(const std::vector<StatsValue> &vec)
 	}
 }
 
-double StatsType::sum(const std::vector<dive *> &dives) const
+StatsOperationResults StatsType::applyOperations(const std::vector<dive *> &dives) const
 {
-	double res = 0.0;
-	for (const dive *d: dives) {
-		double v = toFloat(d);
-		if (!is_invalid_value(v))
-			res += v;
+	StatsOperationResults res;
+	std::vector<StatsValue> val = values(dives);
+
+	double sumTime = 0.0;
+	res.count = (int)val.size();
+	res.median = quartiles(val).q2;
+
+	if (res.count <= 0)
+		return res;
+
+	for (auto [v, d]: val) {
+		res.sum += v;
+		res.mean += v;
+		sumTime += d->duration.seconds;
+		res.timeWeightedMean += v * d->duration.seconds;
 	}
+
+	res.mean /= res.count;
+	res.timeWeightedMean /= sumTime;
 	return res;
 }
 
-double StatsType::applyOperation(const std::vector<dive *> &dives, StatsOperation op) const
+StatsOperationResults::StatsOperationResults() :
+	count(0), median(0.0), mean(0.0), timeWeightedMean(0.0), sum(0.0)
+{
+}
+
+bool StatsOperationResults::isValid() const
+{
+	return count > 0;
+}
+
+double StatsOperationResults::get(StatsOperation op) const
 {
 	switch (op) {
-	case StatsOperation::Median:
-		return quartiles(dives).q2;
-	case StatsOperation::Mean:
-		return mean(dives);
-	case StatsOperation::TimeWeightedMean:
-		return meanTimeWeighted(dives);
-	case StatsOperation::Sum:
-		return sum(dives);
+	case StatsOperation::Median: return median;
+	case StatsOperation::Mean: return mean;
+	case StatsOperation::TimeWeightedMean: return timeWeightedMean;
+	case StatsOperation::Sum: return sum;
+	case StatsOperation::Invalid:
 	default: return invalid_value<double>();
 	}
 }
@@ -481,11 +483,10 @@ std::vector<StatsBinQuartiles> StatsType::bin_quartiles(const StatsBinner &binne
 					   [this](const std::vector<dive *> &d) { return quartiles(d); });
 }
 
-std::vector<StatsBinVal> StatsType::bin_value(const StatsBinner &binner, const std::vector<dive *> &dives,
-					      StatsOperation op, bool fill_empty) const
+std::vector<StatsBinOp> StatsType::bin_operations(const StatsBinner &binner, const std::vector<dive *> &dives, bool fill_empty) const
 {
-	return bin_convert<double>(*this, binner, dives, fill_empty,
-				   [this, op](const std::vector<dive *> &d) { return applyOperation(d, op); });
+	return bin_convert<StatsOperationResults>(*this, binner, dives, fill_empty,
+						  [this](const std::vector<dive *> &d) { return applyOperations(d); });
 }
 
 std::vector<StatsBinValues> StatsType::bin_values(const StatsBinner &binner, const std::vector<dive *> &dives, bool fill_empty) const
