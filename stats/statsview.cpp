@@ -392,14 +392,43 @@ static QString makeFormatString(int decimals)
 	return QStringLiteral("%.%1f").arg(decimals < 0 ? 0 : decimals);
 }
 
+// Guess the number of tick marks based on example strings.
+// We will use minimum and maximum values, which are not necessarily the
+// maximum-size strings especially, when using proportional fonts or for
+// categorical data. Therefore, try to err on the safe side by adding enough
+// margins.
+int StatsView::guessNumTicks(const QtCharts::QAbstractAxis *axis, const std::vector<QString> &strings, bool isHorizontal) const
+{
+	QFont font = axis->labelsFont();
+	QFontMetrics fm(font);
+	int minSize = fm.height();
+	for (const QString &s: strings) {
+		QSize size = fm.size(Qt::TextSingleLine, s);
+		int needed = isHorizontal ? size.width() : size.height();
+		if (needed > minSize)
+			minSize = needed;
+	}
+
+	// Add space between labels
+	if (isHorizontal)
+		minSize = minSize * 3 / 2;
+	else
+		minSize *= 2;
+	QRectF chartSize = chart->plotArea();
+	double availableSpace = isHorizontal ? chartSize.width() : chartSize.height();
+	int numTicks = lrint(availableSpace / minSize);
+	return std::max(numTicks, 2);
+}
+
 QtCharts::QValueAxis *StatsView::createCountAxis(int count, bool isHorizontal)
 {
 	using QtCharts::QValueAxis;
 
-	// TODO: Let the acceptable number of ticks depend on the size of the graph and font.
-	int numTicks = isHorizontal ? 8 : 10;
-
 	QValueAxis *axis = makeAxis<QValueAxis>();
+
+	QLocale loc;
+	QString countString = loc.toString(count);
+	int numTicks = guessNumTicks(axis, { countString }, isHorizontal);
 
 	// Get estimate of step size
 	if (count <= 0)
@@ -445,10 +474,13 @@ QtCharts::QValueAxis *StatsView::createValueAxis(double min, double max, int dec
 		max = 0.5;
 		min = -0.5;
 	}
-	// TODO: Let the acceptable number of ticks depend on the size of the graph and font.
-	int numTicks = isHorizontal ? 8 : 10;
 
 	QValueAxis *axis = makeAxis<QValueAxis>();
+
+	QLocale loc;
+	QString minString = loc.toString(min, 'f', decimals);
+	QString maxString = loc.toString(max, 'f', decimals);
+	int numTicks = guessNumTicks(axis, { minString, maxString}, isHorizontal);
 
 	// Use full decimal increments
 	double height = max - min;
@@ -910,14 +942,17 @@ void StatsView::QuartileMarker::updatePosition()
 // If labels are skipped, try to skip it in such a way that a recommended label is shown.
 // The one example where this is relevant is the quarterly bins, which are formated as (2019, q1, q2, q3, 2020, ...).
 // There, we obviously want to show the years and not the quarters.
-static void initHistogramAxis(QtCharts::QCategoryAxis *axis, const std::vector<std::tuple<QString, double, bool>> &labels, int maxLabels)
+void StatsView::initHistogramAxis(QtCharts::QCategoryAxis *axis, const std::vector<std::tuple<QString, double, bool>> &labels, bool isHorizontal) const
 {
 	using QtCharts::QCategoryAxis;
 
 	if (labels.size() < 2) // Less than two makes no sense -> there must be at least one category
 		return;
-	if (maxLabels <= 1)
-		maxLabels = 2;
+	std::vector<QString> strings;
+	strings.reserve(labels.size());
+	for (auto &[name, value, recommended]: labels)
+		strings.push_back(name);
+	int maxLabels = guessNumTicks(axis, strings, isHorizontal);
 
 	axis->setMin(std::get<1>(labels.front()));
 	axis->setMax(std::get<1>(labels.back()));
@@ -962,8 +997,7 @@ QtCharts::QCategoryAxis *StatsView::createHistogramAxis(const StatsBinner &binne
 	labels.emplace_back(labeler.transmogrify(lastLabel), upperBound, false);
 
 	QCategoryAxis *axis = makeAxis<QCategoryAxis>();
-	int maxLabels = isHorizontal ? 10 : 15;
-	initHistogramAxis(axis, labels, maxLabels);
+	initHistogramAxis(axis, labels, isHorizontal);
 
 	return axis;
 }
