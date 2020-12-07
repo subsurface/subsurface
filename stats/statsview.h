@@ -7,26 +7,22 @@
 #include <QQuickWidget>
 
 struct dive;
-struct StatsType;
 struct StatsBinner;
 struct StatsBin;
 struct StatsState;
+struct StatsType;
 
 namespace QtCharts {
 	class QAbstractAxis;
 	class QAbstractSeries;
 	class QBarCategoryAxis;
-	class QCategoryAxis;
 	class QChart;
-	class QLegend;
-	class QValueAxis;
 }
 class QGraphicsLineItem;
-class QGraphicsPixmapItem;
-class QGraphicsSimpleTextItem;
 class BarSeries;
 class BoxSeries;
 class ScatterSeries;
+class StatsAxis;
 
 enum class ChartSubType : int;
 enum class StatsOperation : int;
@@ -78,8 +74,8 @@ private:
 	void showLegend();
 	void hideLegend();
 
-	template <typename T>
-	T *makeAxis();
+	template <typename T, class... Args>
+	T *createAxis(Args&&... args);
 
 	template <typename T>
 	T *addSeries(const QString &name);
@@ -90,15 +86,11 @@ private:
 	void initSeries(QtCharts::QAbstractSeries *series, const QString &name);
 
 	template<typename T>
-	QtCharts::QBarCategoryAxis *createCategoryAxis(const StatsBinner &binner, const std::vector<T> &bins);
+	QtCharts::QBarCategoryAxis *createCategoryAxis(const StatsBinner &binner, const std::vector<T> &bins, bool isHorizontal);
 	template<typename T>
-	QtCharts::QCategoryAxis *createHistogramAxis(const StatsBinner &binner,
+	QtCharts::QAbstractAxis *createHistogramAxis(const StatsBinner &binner,
 						     const std::vector<T> &bins,
 						     bool isHorizontal);
-	QtCharts::QValueAxis *createValueAxis(double min, double max, int decimals, bool isHorizontal);
-	QtCharts::QValueAxis *createCountAxis(int count, bool isHorizontal);
-	void initHistogramAxis(QtCharts::QCategoryAxis *axis, const std::vector<std::tuple<QString, double, bool>> &labels, bool isHorizontal) const;
-	int guessNumTicks(const QtCharts::QAbstractAxis *axis, const std::vector<QString> &strings, bool isHorizontal) const;
 
 	// Helper functions to add feature to the chart
 	void addLineMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal);
@@ -114,7 +106,7 @@ private:
 
 	StatsState state;
 	QtCharts::QChart *chart;
-	std::vector<std::unique_ptr<QtCharts::QAbstractAxis>> axes;
+	std::vector<std::unique_ptr<StatsAxis>> axes;
 	std::vector<std::unique_ptr<ScatterSeries>> scatterSeries;
 	std::vector<std::unique_ptr<BarSeries>> barSeries;
 	std::vector<std::unique_ptr<BoxSeries>> boxSeries;
