@@ -13,6 +13,8 @@ set(SUBSURFACE_STATS_SRCS
 	informationbox.cpp
 	scatterseries.h
 	scatterseries.cpp
+	statsaxis.h
+	statsaxis.cpp
 	statsview.h
 	statsview.cpp
 	statsstate.h
