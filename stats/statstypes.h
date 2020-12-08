@@ -143,4 +143,7 @@ private:
 
 extern const std::vector<const StatsType *> stats_types;
 
+// Helper function for date-based variables
+extern double date_to_double(int year, int month, int day);
+
 #endif

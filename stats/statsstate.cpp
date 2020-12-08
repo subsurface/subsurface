@@ -34,7 +34,7 @@ static const struct ChartTypeDesc {
 	{
 		ChartType::ScatterPlot,
 		QT_TRANSLATE_NOOP("StatsTranslations", "Scatter"),
-		SupportedVariable::Numeric,
+		SupportedVariable::Continuous,
 		SupportedVariable::Numeric,
 		false,
 		{ },
@@ -465,7 +465,7 @@ void StatsState::validate(bool varChanged)
 	if (std::find(desc.subtypes.begin(), desc.subtypes.end(), subtype) == desc.subtypes.end())
 		subtype = desc.subtypes.empty() ? ChartSubType::Horizontal : desc.subtypes[0];
 
-	var1Binned = desc.var1 == SupportedVariable::Categorical || desc.var1 == SupportedVariable::Continuous;
+	var1Binned = type != ChartType::ScatterPlot;
 	var2Binned = desc.var2 == SupportedVariable::Categorical || desc.var2 == SupportedVariable::Continuous;
 	var2HasOperations = desc.var2HasOperations;
 

@@ -910,6 +910,9 @@ struct DateType : public StatsTypeTemplate<StatsType::Type::Continuous> {
 	QString name() const {
 		return StatsTranslations::tr("Date");
 	}
+	double toFloat(const dive *d) const override {
+		return d->when / 86400.0;
+	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &date_year_binner, &date_quarter_binner, &date_month_binner };
 	}
