@@ -145,7 +145,6 @@ void CountAxis::updateLabels(const QtCharts::QChart *chart)
 	numTicks = num + 1; // There is one more tick than steps
 
 	setLabelFormat("%.0f");
-	setTitleText(StatsTranslations::tr("No. dives"));
 	setRange(0, max);
 	setTickCount(numTicks);
 }
