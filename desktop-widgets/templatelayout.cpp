@@ -280,7 +280,8 @@ QString TemplateLayout::translate(QString s, QHash<QString, QVariant> options)
 		QString obname = match.captured(1);
 		QString memname = match.captured(2);
 		out +=  s.mid(last, match.capturedStart() - last);
-		QVariant value = getValue(obname, memname, options.value(obname));
+		QString listname = options.contains("typeof:" + obname) ? options.value("typeof:" + obname).value<QString>() : obname;
+		QVariant value = getValue(listname, memname, options.value(obname));
 		out += value.toString();
 		last = match.capturedEnd();
 		match = var.match(s, last);
@@ -312,6 +313,7 @@ void TemplateLayout::parser(QList<token> tokenList, int &pos, QTextStream &out, 
 			if (match.hasMatch()) {
 				QString itemname = match.captured(1);
 				QString listname = match.captured(2);
+				options["typeof:" + itemname] = listname;
 				QString buffer;
 				QTextStream capture(&buffer);
 				QVariantList list = options[listname].value<QVariantList>();
@@ -322,16 +324,21 @@ void TemplateLayout::parser(QList<token> tokenList, int &pos, QTextStream &out, 
 					options[itemname] = item;
 					options["forloopiterator"] = i + 1;
 					pos = savepos;
-					if (listname == "dives")
-						options["cylinders"] = QVariant::fromValue(item.value<DiveObjectHelperGrantlee>().cylinderList());
+					if (listname == "dives") {
+						options["cylinderObjects"] = QVariant::fromValue(item.value<DiveObjectHelperGrantlee>().cylinderObjects);
+						options["cylinders"] = QVariant::fromValue(item.value<DiveObjectHelperGrantlee>().cylinders);
+					}
 					parser(tokenList, pos, capture, options);
 					options.remove(itemname);
 					options.remove("forloopiterator");
-					if (listname == "dives")
+					if (listname == "dives") {
+						options.remove("cylinderObjects");
 						options.remove("cylinders");
+					}
 					if (olditerator.isValid())
 						options["forloopiterator"] = olditerator;
 				}
+				options.remove("typeof:" + itemname);
 				out << capture.readAll();
 			} else {
 				out << "PARSING ERROR: '" << argument << "'";
@@ -444,7 +451,11 @@ QVariant TemplateLayout::getValue(QString list, QString property, QVariant optio
 		} else if (property == "max_sac") {
 			return get_volume_string(object.year->max_sac);
 		}
-	} else if (list == "cylinder") {
+	} else if (list == "cylinders") {
+		if (property == "description") {
+			return option.value<QString>();
+		}
+	} else if (list == "cylinderObjects") {
 		CylinderObjectHelper object = option.value<CylinderObjectHelper>();
 		if (property == "description") {
 			return object.description;
@@ -459,7 +470,7 @@ QVariant TemplateLayout::getValue(QString list, QString property, QVariant optio
 		} else if (property == "gasMix") {
 			return object.gasMix;
 		}
-	} else if (list == "dive") {
+	} else if (list == "dives") {
 		DiveObjectHelperGrantlee object = option.value<DiveObjectHelperGrantlee>();
 		if (property == "number") {
 			return object.number;
