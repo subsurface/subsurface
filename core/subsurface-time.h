@@ -18,6 +18,8 @@ extern int utc_weekday(timestamp_t timestamp);
 extern timestamp_t parse_datetime(const char *s); /* returns 0 on error */
 extern char *format_datetime(timestamp_t timestamp); /* ownership of string passed to caller */
 
+extern const char *monthname(int mon);
+
 #ifdef __cplusplus
 }
 #endif

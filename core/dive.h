@@ -204,8 +204,6 @@ extern void invalidate_dive_cache(struct dive *dc);
 extern void set_autogroup(bool value);
 extern int total_weight(const struct dive *);
 
-const char *monthname(int mon);
-
 extern const char *existing_filename;
 
 extern bool has_planned(const struct dive *dive, bool planned);
