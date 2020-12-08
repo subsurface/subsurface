@@ -13,15 +13,16 @@ struct StatsState;
 struct StatsType;
 
 namespace QtCharts {
-	class QAbstractAxis;
 	class QAbstractSeries;
-	class QBarCategoryAxis;
 	class QChart;
 }
 class QGraphicsLineItem;
 class BarSeries;
 class BoxSeries;
 class ScatterSeries;
+class CategoryAxis;
+class CountAxis;
+class HistogramAxis;
 class StatsAxis;
 
 enum class ChartSubType : int;
@@ -40,7 +41,7 @@ private slots:
 	void replotIfVisible();
 private:
 	void reset(); // clears all series and axes
-	void addAxes(QtCharts::QAbstractAxis *x, QtCharts::QAbstractAxis *y); // Add new x- and y-axis
+	void addAxes(StatsAxis *x, StatsAxis *y); // Add new x- and y-axis
 	void plotBarChart(const std::vector<dive *> &dives,
 			  ChartSubType subType,
 			  const StatsType *categoryType, const StatsBinner *categoryBinner,
@@ -75,7 +76,7 @@ private:
 	void hideLegend();
 
 	template <typename T, class... Args>
-	T *createAxis(Args&&... args);
+	T *createAxis(const QString &title, Args&&... args);
 
 	template <typename T>
 	T *addSeries(const QString &name);
@@ -86,11 +87,12 @@ private:
 	void initSeries(QtCharts::QAbstractSeries *series, const QString &name);
 
 	template<typename T>
-	QtCharts::QBarCategoryAxis *createCategoryAxis(const StatsBinner &binner, const std::vector<T> &bins, bool isHorizontal);
+	CategoryAxis *createCategoryAxis(const QString &title, const StatsBinner &binner,
+					 const std::vector<T> &bins, bool isHorizontal);
 	template<typename T>
-	QtCharts::QAbstractAxis *createHistogramAxis(const StatsBinner &binner,
-						     const std::vector<T> &bins,
-						     bool isHorizontal);
+	HistogramAxis *createHistogramAxis(const QString &title, const StatsBinner &binner,
+					   const std::vector<T> &bins, bool isHorizontal);
+	CountAxis *createCountAxis(int maxVal, bool isHorizontal);
 
 	// Helper functions to add feature to the chart
 	void addLineMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal);
