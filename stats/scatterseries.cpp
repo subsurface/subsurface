@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "scatterseries.h"
 #include "informationbox.h"
+#include "statscolors.h"
 #include "statstranslations.h"
 #include "statstypes.h"
 #include "core/dive.h"
@@ -11,10 +12,6 @@
 #include <QGraphicsPixmapItem>
 #include <QPainter>
 
-static const QColor scatterItemColor(0x66, 0xb2, 0xff);
-static const QColor scatterItemBorderColor(Qt::blue);
-static const QColor scatterItemHighlightedColor(Qt::yellow);
-static const QColor scatterItemHighlightedBorderColor(0xaa, 0xaa, 0x22);
 static const int scatterItemDiameter = 10;
 static const int scatterItemBorder = 1;
 
@@ -52,10 +49,8 @@ static std::unique_ptr<QPixmap> scatterPixmapHighlightedPtr;
 static const QPixmap &scatterPixmap(bool highlight)
 {
 	if (!scatterPixmapPtr) {
-		scatterPixmapPtr.reset(new QPixmap(createScatterPixmap(scatterItemColor,
-								       scatterItemBorderColor)));
-		scatterPixmapHighlightedPtr.reset(new QPixmap(createScatterPixmap(scatterItemHighlightedColor,
-										  scatterItemHighlightedBorderColor)));
+		scatterPixmapPtr.reset(new QPixmap(createScatterPixmap(fillColor, ::borderColor)));
+		scatterPixmapHighlightedPtr.reset(new QPixmap(createScatterPixmap(highlightedColor, highlightedBorderColor)));
 	}
 	return highlight ? *scatterPixmapHighlightedPtr : *scatterPixmapPtr;
 }

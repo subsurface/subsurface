@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "boxseries.h"
 #include "informationbox.h"
+#include "statscolors.h"
 #include "statstranslations.h"
 #include <QChart>
 #include <QLocale>
@@ -8,10 +9,6 @@
 // Constants that control the bar layout
 static const double boxWidth = 0.8; // 1.0 = full width of category
 static const int boxBorderWidth = 2;
-static const QColor boxColor(0x66, 0xb2, 0xff);
-static const QColor boxBorderColor(0x33, 0x66, 0xa0);
-static const QColor boxHighlightedColor(Qt::yellow);
-static const QColor boxHighlightedBorderColor(0xaa, 0xaa, 0x22);
 
 BoxSeries::BoxSeries(const QString &variable, const QString &unit, int decimals) :
 	variable(variable), unit(unit), decimals(decimals), highlighted(-1)
@@ -47,8 +44,8 @@ BoxSeries::Item::~Item()
 
 void BoxSeries::Item::highlight(bool highlight)
 {
-	QBrush brush = highlight ? QBrush(boxHighlightedColor) : QBrush(boxColor);
-	QPen pen = highlight ? QPen(boxHighlightedBorderColor, boxBorderWidth) : QPen(boxBorderColor, boxBorderWidth);
+	QBrush brush = highlight ? QBrush(highlightedColor) : QBrush(fillColor);
+	QPen pen = highlight ? QPen(highlightedBorderColor, boxBorderWidth) : QPen(::borderColor, boxBorderWidth);
 	box.setBrush(brush);
 	box.setPen(pen);
 	topWhisker.setPen(pen);
