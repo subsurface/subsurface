@@ -270,7 +270,7 @@ void StatsView::plot(const StatsState &stateIn)
 	case ChartType::DiscreteBox:
 		return plotDiscreteBoxChart(dives, state.var1, state.var1Binner, state.var2);
 	case ChartType::DiscreteScatter:
-		return plotDiscreteScatter(dives, state.var1, state.var1Binner, state.var2);
+		return plotDiscreteScatter(dives, state.var1, state.var1Binner, state.var2, state.quartiles);
 	case ChartType::HistogramCount:
 		return plotHistogramCountChart(dives, state.subtype, state.var1, state.var1Binner,
 					       state.labels, state.median, state.mean);
@@ -696,7 +696,7 @@ void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,
 
 void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 				    const StatsType *categoryType, const StatsBinner *categoryBinner,
-				    const StatsType *valueType)
+				    const StatsType *valueType, bool quartiles)
 {
 	if (!categoryBinner)
 		return;
@@ -724,11 +724,13 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 	for (const auto &[bin, array]: categoryBins) {
 		for (auto [v, d]: array)
 			series->append(d, x, v);
-		StatsQuartiles quartiles = StatsType::quartiles(array);
-		if (quartiles.isValid()) {
-			quartileMarkers.emplace_back(x, quartiles.q1, series);
-			quartileMarkers.emplace_back(x, quartiles.q2, series);
-			quartileMarkers.emplace_back(x, quartiles.q3, series);
+		if (quartiles) {
+			StatsQuartiles quartiles = StatsType::quartiles(array);
+			if (quartiles.isValid()) {
+				quartileMarkers.emplace_back(x, quartiles.q1, series);
+				quartileMarkers.emplace_back(x, quartiles.q2, series);
+				quartileMarkers.emplace_back(x, quartiles.q3, series);
+			}
 		}
 		x += 1.0;
 	}

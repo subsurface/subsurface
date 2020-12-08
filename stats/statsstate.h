@@ -95,6 +95,7 @@ public:
 	bool labels;
 	bool median;
 	bool mean;
+	bool quartiles;
 	const StatsBinner *var1Binner;	// nullptr: undefined
 	const StatsBinner *var2Binner;	// nullptr: undefined
 	StatsOperation var2Operation;
