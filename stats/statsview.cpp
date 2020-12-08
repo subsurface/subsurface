@@ -746,31 +746,6 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 	hideLegend();
 }
 
-// A small helper class that makes strings unique. We need this,
-// because QCategoryAxis can only handle unique category names.
-// Disambiguate strings by adding unicode zero-width spaces.
-// Keep track of a list of strings and how many spaces have to
-// be added.
-class LabelDisambiguator {
-	using Pair = std::pair<QString, int>;
-	std::vector<Pair> entries;
-public:
-	QString transmogrify(const QString &s);
-};
-
-QString LabelDisambiguator::transmogrify(const QString &s)
-{
-	auto it = std::find_if(entries.begin(), entries.end(),
-			       [&s](const Pair &p) { return p.first == s; });
-	if (it == entries.end()) {
-		entries.emplace_back(s, 0);
-		return s;
-	}  else {
-		++(it->second);
-		return s + QString(it->second, QChar(0x200b));
-	}
-}
-
 void StatsView::addLineMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal)
 {
 	using QtCharts::QLineSeries;
@@ -812,19 +787,18 @@ void StatsView::QuartileMarker::updatePosition()
 template<typename T>
 QtCharts::QAbstractAxis *StatsView::createHistogramAxis(const StatsBinner &binner, const std::vector<T> &bins, bool isHorizontal)
 {
-	LabelDisambiguator labeler;
 	std::vector<HistogramAxisEntry> labels;
 	for (auto const &[bin, dummy]: bins) {
 		QString label = binner.formatLowerBound(*bin);
 		double lowerBound = binner.lowerBoundToFloat(*bin);
 		bool prefer = binner.preferBin(*bin);
-		labels.push_back({ labeler.transmogrify(label), lowerBound, prefer });
+		labels.push_back({ label, lowerBound, prefer });
 	}
 
 	const StatsBin &lastBin = *bins.back().bin;
 	QString lastLabel = binner.formatUpperBound(lastBin);
 	double upperBound = binner.upperBoundToFloat(lastBin);
-	labels.push_back({ labeler.transmogrify(lastLabel), upperBound, false });
+	labels.push_back({ lastLabel, upperBound, false });
 
 	return createAxis<HistogramAxis>(std::move(labels), isHorizontal);
 }
@@ -1046,7 +1020,6 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsType *c
 {
 	using QtCharts::QLineSeries;
 	using QtCharts::QScatterSeries;
-	using QtCharts::QValueAxis;
 
 	setTitle(StatsTranslations::tr("%1 vs. %2").arg(valueType->name(), categoryType->name()));
 
@@ -1058,13 +1031,15 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsType *c
 	double maxX = points.back().x;
 	auto [minY, maxY] = getMinMaxValue(points);
 
-	QValueAxis *axisX = createAxis<ValueAxis>(minX, maxX, categoryType->decimals(), true);
-	axisX->setTitleText(categoryType->nameWithUnit());
+	StatsAxis *axisX = categoryType->type() == StatsType::Type::Continuous ?
+		static_cast<StatsAxis *>(createAxis<DateAxis>(minX, maxX, true)) :
+		static_cast<StatsAxis *>(createAxis<ValueAxis>(minX, maxX, categoryType->decimals(), true));
+	axisX->qaxis()->setTitleText(categoryType->nameWithUnit());
 
-	QValueAxis *axisY = createAxis<ValueAxis>(minY, maxY, valueType->decimals(), false);
-	axisY->setTitleText(valueType->nameWithUnit());
+	StatsAxis *axisY = createAxis<ValueAxis>(minY, maxY, valueType->decimals(), false);
+	axisY->qaxis()->setTitleText(valueType->nameWithUnit());
 
-	addAxes(axisX, axisY);
+	addAxes(axisX->qaxis(), axisY->qaxis());
 	ScatterSeries *series = addScatterSeries(valueType->name(), *categoryType, *valueType);
 
 	for (auto [x, y, dive]: points)
@@ -1073,10 +1048,11 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsType *c
 	// y = ax + b
 	auto [a, b] = linear_regression(points);
 	if (!std::isnan(a)) {
+		auto [minx, maxx] = axisX->minMax();
 		QLineSeries *series = addSeries<QLineSeries>(QString());
 		series->setPen(QPen(Qt::red));
-		series->append(axisX->min(), a * axisX->min() + b);
-		series->append(axisX->max(), a * axisX->max() + b);
+		series->append(minx, a * minx + b);
+		series->append(maxx, a * maxx + b);
 	}
 
 	hideLegend();

@@ -17,6 +17,8 @@ public:
 	virtual ~StatsAxis();
 	virtual void updateLabels(const QtCharts::QChart *chart) = 0;
 	virtual QtCharts::QAbstractAxis *qaxis() = 0;
+	// Returns minimum and maximum of shown range, not of data points.
+	virtual std::pair<double, double> minMax() const;
 protected:
 	StatsAxis(bool horizontal);
 	int guessNumTicks(const QtCharts::QChart *chart, const QtCharts::QAbstractAxis *axis, const std::vector<QString> &strings) const;
@@ -41,9 +43,10 @@ private:
 	double min, max;
 	int decimals;
 	void updateLabels(const QtCharts::QChart *chart) override;
+	std::pair<double, double> minMax() const override;
 };
 
-class CountAxis : public StatsAxisTemplate<QtCharts::QValueAxis> {
+class CountAxis : public ValueAxis {
 public:
 	CountAxis(int count, bool horizontal);
 private:
@@ -69,7 +72,13 @@ public:
 	HistogramAxis(std::vector<HistogramAxisEntry> bin_values, bool horizontal);
 private:
 	void updateLabels(const QtCharts::QChart *chart) override;
+	std::pair<double, double> minMax() const override;
 	std::vector<HistogramAxisEntry> bin_values;
+};
+
+class DateAxis : public HistogramAxis {
+public:
+	DateAxis(double from, double to, bool horizontal);
 };
 
 #endif
