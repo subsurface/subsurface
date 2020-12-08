@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "barseries.h"
 #include "informationbox.h"
+#include "statscolors.h"
 #include "statstranslations.h"
 #include "statstypes.h"
 #include <QChart>
@@ -8,10 +9,6 @@
 
 // Constants that control the bar layout
 static const double barWidth = 0.8; // 1.0 = full width of category
-static const QColor barColor(0x66, 0xb2, 0xff);
-static const QColor barBorderColor(0x66, 0xb2, 0xff);
-static const QColor barHighlightedColor(Qt::yellow);
-static const QColor barHighlightedBorderColor(0xaa, 0xaa, 0x22);
 
 BarSeries::BarSeries(bool horizontal, const QString &categoryName, const StatsType *valueType) :
 	horizontal(horizontal), categoryName(categoryName), valueType(valueType), highlighted(-1)
@@ -101,11 +98,11 @@ BarSeries::Item::Item(QtCharts::QChart *chart, BarSeries *series, double lowerBo
 void BarSeries::Item::highlight(bool highlight)
 {
 	if (highlight) {
-		item->setBrush(QBrush(barHighlightedColor));
-		item->setPen(QPen(barHighlightedBorderColor));
+		item->setBrush(QBrush(highlightedColor));
+		item->setPen(QPen(highlightedBorderColor));
 	} else {
-		item->setBrush(QBrush(barColor));
-		item->setPen(QPen(barBorderColor));
+		item->setBrush(QBrush(fillColor));
+		item->setPen(QPen(::borderColor));
 	}
 }
 
