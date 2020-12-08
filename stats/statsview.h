@@ -59,7 +59,7 @@ private:
 				  const StatsType *categoryType, const StatsBinner *categoryBinner, const StatsType *valueType);
 	void plotDiscreteScatter(const std::vector<dive *> &dives,
 				 const StatsType *categoryType, const StatsBinner *categoryBinner,
-				 const StatsType *valueType);
+				 const StatsType *valueType, bool quartiles);
 	void plotHistogramCountChart(const std::vector<dive *> &dives,
 				     ChartSubType subType,
 				     const StatsType *categoryType, const StatsBinner *categoryBinner,
