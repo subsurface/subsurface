@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "subsurface-time.h"
 #include "subsurface-string.h"
+#include "gettext.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -212,4 +213,14 @@ extern char *format_datetime(timestamp_t timestamp)
 		 tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 
 	return strdup(buf);
+}
+
+/* Turn month (0-12) into three-character short name */
+const char *monthname(int mon)
+{
+	static const char month_array[12][4] = {
+		QT_TRANSLATE_NOOP("gettextFromC", "Jan"), QT_TRANSLATE_NOOP("gettextFromC", "Feb"), QT_TRANSLATE_NOOP("gettextFromC", "Mar"), QT_TRANSLATE_NOOP("gettextFromC", "Apr"), QT_TRANSLATE_NOOP("gettextFromC", "May"), QT_TRANSLATE_NOOP("gettextFromC", "Jun"),
+		QT_TRANSLATE_NOOP("gettextFromC", "Jul"), QT_TRANSLATE_NOOP("gettextFromC", "Aug"), QT_TRANSLATE_NOOP("gettextFromC", "Sep"), QT_TRANSLATE_NOOP("gettextFromC", "Oct"), QT_TRANSLATE_NOOP("gettextFromC", "Nov"), QT_TRANSLATE_NOOP("gettextFromC", "Dec"),
+	};
+	return translate("gettextFromC", month_array[mon]);
 }
