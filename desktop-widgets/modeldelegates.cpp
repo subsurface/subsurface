@@ -217,9 +217,11 @@ void TankInfoDelegate::setModelData(QWidget *, QAbstractItemModel *, const QMode
 {
 	QAbstractItemModel *mymodel = currCombo.model;
 	TankInfoModel *tanks = TankInfoModel::instance();
-	QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, currCombo.activeText, 1, Qt::MatchFixedString | Qt::MatchWrap);
+	QString cylinderName = currCombo.activeText.trimmed();
+	if (cylinderName.isEmpty())
+		return;
+	QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cylinderName, 1, Qt::MatchFixedString | Qt::MatchWrap);
 	int row;
-	QString cylinderName = currCombo.activeText;
 	if (matches.isEmpty()) {
 		tanks->insertRows(tanks->rowCount(), 1);
 		tanks->setData(tanks->index(tanks->rowCount() - 1, 0), currCombo.activeText);
