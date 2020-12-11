@@ -251,9 +251,6 @@ void reset_tank_info_table(struct tank_info_table *table)
 {
 	clear_tank_info_table(table);
 
-	/* Need an empty entry for the no-cylinder case */
-	add_tank_info_metric(table, "", 0, 0);
-
 	/* Size-only metric cylinders */
 	add_tank_info_metric(table, "10.0ℓ", 10000, 0);
 	add_tank_info_metric(table, "11.1ℓ", 11100, 0);

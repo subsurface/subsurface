@@ -218,8 +218,10 @@ void TankInfoDelegate::setModelData(QWidget *, QAbstractItemModel *, const QMode
 	QAbstractItemModel *mymodel = currCombo.model;
 	TankInfoModel *tanks = TankInfoModel::instance();
 	QString cylinderName = currCombo.activeText.trimmed();
-	if (cylinderName.isEmpty())
+	if (cylinderName.isEmpty()) {
+		mymodel->setData(IDX(CylindersModel::TYPE), cylinderName, CylindersModel::TEMP_ROLE);
 		return;
+	}
 	QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cylinderName, 1, Qt::MatchFixedString | Qt::MatchWrap);
 	int row;
 	if (matches.isEmpty()) {
