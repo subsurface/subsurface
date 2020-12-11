@@ -61,7 +61,6 @@
      </layout>
     </widget>
    </item>
-
    <item>
     <widget class="QCheckBox" name="display_unused_tanks">
      <property name="text">
@@ -69,7 +68,13 @@
      </property>
     </widget>
    </item>
-
+   <item>
+    <widget class="QCheckBox" name="display_default_tank_infos">
+     <property name="text">
+      <string>Show default cylinder sizes in the cylinders selection of the equipment tab</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">

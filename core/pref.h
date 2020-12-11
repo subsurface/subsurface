@@ -109,6 +109,7 @@ struct preferences {
 	// ********** Equipment tab *******
 	const char *default_cylinder;
 	bool        display_unused_tanks;
+	bool        display_default_tank_infos;
 
 	// ********** General **********
 	bool        auto_recalculate_thumbnails;
