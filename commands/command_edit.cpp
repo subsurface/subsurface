@@ -1207,9 +1207,9 @@ EditCylinder::EditCylinder(int index, cylinder_t cylIn, EditCylinderType typeIn,
 
 	// Try to untranslate the cylinder type
 	QString description = cylIn.type.description;
-	for (int i = 0; i < MAX_TANK_INFO && tank_info[i].name; ++i) {
-		if (gettextFromC::tr(tank_info[i].name) == description) {
-			description = tank_info[i].name;
+	for (int i = 0; i < tank_info_table.nr; ++i) {
+		if (gettextFromC::tr(tank_info_table.infos[i].name) == description) {
+			description = tank_info_table.infos[i].name;
 			break;
 		}
 	}

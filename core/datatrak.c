@@ -130,14 +130,12 @@ static int dtrak_prepare_data(int model, device_data_t *dev_data)
  */
 static const char *cyl_type_by_size(int size)
 {
-	struct tank_info_t *ti = tank_info;
-
-	while (ti->ml != size && ti < tank_info + MAX_TANK_INFO)
-		ti++;
-	if (ti == tank_info + MAX_TANK_INFO)
-		return "";
-	else
-		return ti->name;
+	for (int i = 0; i < tank_info_table.nr; ++i) {
+		const struct tank_info *ti = &tank_info_table.infos[i];
+		if (ti->ml == size)
+			return ti->name;
+	}
+	return "";
 }
 
 /*

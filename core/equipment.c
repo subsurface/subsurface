@@ -51,6 +51,11 @@ void copy_cylinders(const struct cylinder_table *s, struct cylinder_table *d)
 		add_cloned_cylinder(d, s->cylinders[i]);
 }
 
+static void free_tank_info(struct tank_info info)
+{
+	free((void *)info.name);
+}
+
 /* weightsystem table functions */
 //static MAKE_GET_IDX(weightsystem_table, weightsystem_t, weightsystems)
 static MAKE_GROW_TABLE(weightsystem_table, weightsystem_t, weightsystems)
@@ -71,6 +76,12 @@ static MAKE_REMOVE_FROM(cylinder_table, cylinders)
 //MAKE_REMOVE(cylinder_table, cylinder_t, cylinder)
 MAKE_CLEAR_TABLE(cylinder_table, cylinders, cylinder)
 
+/* tank_info table functions */
+static MAKE_GROW_TABLE(tank_info_table, tank_info_t, infos)
+static MAKE_ADD_TO(tank_info_table, tank_info_t, infos)
+//static MAKE_REMOVE_FROM(tank_info_table, infos)
+MAKE_CLEAR_TABLE(tank_info_table, infos, tank_info)
+
 const char *cylinderuse_text[NUM_GAS_USE] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "OC-gas"), QT_TRANSLATE_NOOP("gettextFromC", "diluent"), QT_TRANSLATE_NOOP("gettextFromC", "oxygen"), QT_TRANSLATE_NOOP("gettextFromC", "not used")
 };
@@ -84,25 +95,32 @@ int cylinderuse_from_text(const char *text)
 	return -1;
 }
 
+/* Add a metric or an imperial tank info structure. Copies the passed-in string. */
+void add_tank_info_metric(struct tank_info_table *table, const char *name, int ml, int bar)
+{
+	struct tank_info info = { strdup(name), .ml = ml, .bar = bar };
+	add_to_tank_info_table(table, table->nr, info);
+}
+
+void add_tank_info_imperial(struct tank_info_table *table, const char *name, int cuft, int psi)
+{
+	struct tank_info info = { strdup(name), .cuft = cuft, .psi = psi };
+	add_to_tank_info_table(table, table->nr, info);
+}
+
 /* placeholders for a few functions that we need to redesign for the Qt UI */
 void add_cylinder_description(const cylinder_type_t *type)
 {
-	const char *desc;
-	int i;
-
-	desc = type->description;
-	if (!desc)
+	const char *desc = type->description;
+	if (empty_string(desc))
 		return;
-	for (i = 0; i < MAX_TANK_INFO && tank_info[i].name != NULL; i++) {
-		if (strcmp(tank_info[i].name, desc) == 0)
+	for (int i = 0; i < tank_info_table.nr; i++) {
+		if (strcmp(tank_info_table.infos[i].name, desc) == 0)
 			return;
 	}
-	if (i < MAX_TANK_INFO) {
-		// FIXME: leaked on exit
-		tank_info[i].name = strdup(desc);
-		tank_info[i].ml = type->size.mliter;
-		tank_info[i].bar = type->workingpressure.mbar / 1000;
-	}
+	// FIXME: leaked on exit
+	add_tank_info_metric(&tank_info_table, desc, type->size.mliter,
+			     type->workingpressure.mbar / 1000);
 }
 
 void add_weightsystem_description(const weightsystem_t *weightsystem)
@@ -229,62 +247,63 @@ int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table *cylin
  * we should pick up any other names from the dive
  * logs directly.
  */
-struct tank_info_t tank_info[MAX_TANK_INFO] = {
+struct tank_info_table tank_info_table;
+void reset_tank_info_table(struct tank_info_table *table)
+{
+	clear_tank_info_table(table);
+
 	/* Need an empty entry for the no-cylinder case */
-	{ "", },
+	add_tank_info_metric(table, "", 0, 0);
 
 	/* Size-only metric cylinders */
-	{ "10.0ℓ", .ml = 10000 },
-	{ "11.1ℓ", .ml = 11100 },
+	add_tank_info_metric(table, "10.0ℓ", 10000, 0);
+	add_tank_info_metric(table, "11.1ℓ", 11100, 0);
 
 	/* Most common AL cylinders */
-	{ "AL40", .cuft = 40, .psi = 3000 },
-	{ "AL50", .cuft = 50, .psi = 3000 },
-	{ "AL63", .cuft = 63, .psi = 3000 },
-	{ "AL72", .cuft = 72, .psi = 3000 },
-	{ "AL80", .cuft = 80, .psi = 3000 },
-	{ "AL100", .cuft = 100, .psi = 3300 },
+	add_tank_info_metric(table, "AL40", 40, 3000);
+	add_tank_info_metric(table, "AL50", 50, 3000);
+	add_tank_info_metric(table, "AL63", 63, 3000);
+	add_tank_info_metric(table, "AL72", 72, 3000);
+	add_tank_info_metric(table, "AL80", 80, 3000);
+	add_tank_info_metric(table, "AL100", 100, 3300);
 
 	/* Metric AL cylinders */
-	{ "ALU7", .ml = 7000, .bar = 200 },
+	add_tank_info_metric(table, "ALU7", 7000, 200);
 
 	/* Somewhat common LP steel cylinders */
-	{ "LP85", .cuft = 85, .psi = 2640 },
-	{ "LP95", .cuft = 95, .psi = 2640 },
-	{ "LP108", .cuft = 108, .psi = 2640 },
-	{ "LP121", .cuft = 121, .psi = 2640 },
+	add_tank_info_imperial(table, "LP85", 85, 2640);
+	add_tank_info_imperial(table, "LP95", 95, 2640);
+	add_tank_info_imperial(table, "LP108", 108, 2640);
+	add_tank_info_imperial(table, "LP121", 121, 2640);
 
 	/* Somewhat common HP steel cylinders */
-	{ "HP65", .cuft = 65, .psi = 3442 },
-	{ "HP80", .cuft = 80, .psi = 3442 },
-	{ "HP100", .cuft = 100, .psi = 3442 },
-	{ "HP117", .cuft = 117, .psi = 3442 },
-	{ "HP119", .cuft = 119, .psi = 3442 },
-	{ "HP130", .cuft = 130, .psi = 3442 },
+	add_tank_info_imperial(table, "HP65", 65, 3442);
+	add_tank_info_imperial(table, "HP80", 80, 3442);
+	add_tank_info_imperial(table, "HP100", 100, 3442);
+	add_tank_info_imperial(table, "HP117", 117, 3442);
+	add_tank_info_imperial(table, "HP119", 119, 3442);
+	add_tank_info_imperial(table, "HP130", 130, 3442);
 
 	/* Common European steel cylinders */
-	{ "3ℓ 232 bar", .ml = 3000, .bar = 232 },
-	{ "3ℓ 300 bar", .ml = 3000, .bar = 300 },
-	{ "10ℓ 200 bar", .ml = 10000, .bar = 200 },
-	{ "10ℓ 232 bar", .ml = 10000, .bar = 232 },
-	{ "10ℓ 300 bar", .ml = 10000, .bar = 300 },
-	{ "12ℓ 200 bar", .ml = 12000, .bar = 200 },
-	{ "12ℓ 232 bar", .ml = 12000, .bar = 232 },
-	{ "12ℓ 300 bar", .ml = 12000, .bar = 300 },
-	{ "15ℓ 200 bar", .ml = 15000, .bar = 200 },
-	{ "15ℓ 232 bar", .ml = 15000, .bar = 232 },
-	{ "D7 300 bar", .ml = 14000, .bar = 300 },
-	{ "D8.5 232 bar", .ml = 17000, .bar = 232 },
-	{ "D12 232 bar", .ml = 24000, .bar = 232 },
-	{ "D13 232 bar", .ml = 26000, .bar = 232 },
-	{ "D15 232 bar", .ml = 30000, .bar = 232 },
-	{ "D16 232 bar", .ml = 32000, .bar = 232 },
-	{ "D18 232 bar", .ml = 36000, .bar = 232 },
-	{ "D20 232 bar", .ml = 40000, .bar = 232 },
-
-	/* We'll fill in more from the dive log dynamically */
-	{ NULL, }
-};
+	add_tank_info_metric(table, "3ℓ 232 bar", 3000, 232);
+	add_tank_info_metric(table, "3ℓ 300 bar", 3000, 300);
+	add_tank_info_metric(table, "10ℓ 200 bar", 10000, 200);
+	add_tank_info_metric(table, "10ℓ 232 bar", 10000, 232);
+	add_tank_info_metric(table, "10ℓ 300 bar", 10000, 300);
+	add_tank_info_metric(table, "12ℓ 200 bar", 12000, 200);
+	add_tank_info_metric(table, "12ℓ 232 bar", 12000, 232);
+	add_tank_info_metric(table, "12ℓ 300 bar", 12000, 300);
+	add_tank_info_metric(table, "15ℓ 200 bar", 15000, 200);
+	add_tank_info_metric(table, "15ℓ 232 bar", 15000, 232);
+	add_tank_info_metric(table, "D7 300 bar", 14000, 300);
+	add_tank_info_metric(table, "D8.5 232 bar", 17000, 232);
+	add_tank_info_metric(table, "D12 232 bar", 24000, 232);
+	add_tank_info_metric(table, "D13 232 bar", 26000, 232);
+	add_tank_info_metric(table, "D15 232 bar", 30000, 232);
+	add_tank_info_metric(table, "D16 232 bar", 32000, 232);
+	add_tank_info_metric(table, "D18 232 bar", 36000, 232);
+	add_tank_info_metric(table, "D20 232 bar", 40000, 232);
+}
 
 /*
  * We hardcode the most common weight system types
@@ -402,30 +421,27 @@ cylinder_t *get_or_create_cylinder(struct dive *d, int idx)
 void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl)
 {
 	const char *cyl_name = prefs.default_cylinder;
-	struct tank_info_t *ti = tank_info;
 	pressure_t pO2 = {.mbar = lrint(prefs.modpO2 * 1000.0)};
 
 	if (!cyl_name)
 		return;
-	while (ti->name != NULL && ti < tank_info + MAX_TANK_INFO) {
-		if (strcmp(ti->name, cyl_name) == 0)
-			break;
-		ti++;
+	for (int i = 0; i < tank_info_table.nr; ++i) {
+		struct tank_info *ti = &tank_info_table.infos[i];
+		if (strcmp(ti->name, cyl_name) == 0) {
+			cyl->type.description = strdup(ti->name);
+			if (ti->ml) {
+				cyl->type.size.mliter = ti->ml;
+				cyl->type.workingpressure.mbar = ti->bar * 1000;
+			} else {
+				cyl->type.workingpressure.mbar = psi_to_mbar(ti->psi);
+				if (ti->psi)
+					cyl->type.size.mliter = lrint(cuft_to_l(ti->cuft) * 1000 / bar_to_atm(psi_to_bar(ti->psi)));
+			}
+			// MOD of air
+			cyl->depth = gas_mod(cyl->gasmix, pO2, dive, 1);
+			return;
+		}
 	}
-	if (ti->name == NULL)
-		/* didn't find it */
-		return;
-	cyl->type.description = strdup(ti->name);
-	if (ti->ml) {
-		cyl->type.size.mliter = ti->ml;
-		cyl->type.workingpressure.mbar = ti->bar * 1000;
-	} else {
-		cyl->type.workingpressure.mbar = psi_to_mbar(ti->psi);
-		if (ti->psi)
-			cyl->type.size.mliter = lrint(cuft_to_l(ti->cuft) * 1000 / bar_to_atm(psi_to_bar(ti->psi)));
-	}
-	// MOD of air
-	cyl->depth = gas_mod(cyl->gasmix, pO2, dive, 1);
 }
 
 cylinder_t create_new_cylinder(const struct dive *d)

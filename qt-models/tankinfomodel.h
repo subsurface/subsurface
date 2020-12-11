@@ -22,13 +22,9 @@ public:
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
-	void clear();
 public
 slots:
 	void update();
-
-private:
-	int rows;
 };
 
 #endif

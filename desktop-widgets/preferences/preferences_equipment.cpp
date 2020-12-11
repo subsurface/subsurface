@@ -24,9 +24,10 @@ void PreferencesEquipment::refreshSettings()
 {
 	ui->display_unused_tanks->setChecked(prefs.display_unused_tanks);
 	ui->default_cylinder->clear();
-	for (int i = 0; i < MAX_TANK_INFO && tank_info[i].name != NULL; i++) {
-		ui->default_cylinder->addItem(tank_info[i].name);
-		if (qPrefEquipment::default_cylinder() == tank_info[i].name)
+	for (int i = 0; i < tank_info_table.nr; i++) {
+		const tank_info &ti = tank_info_table.infos[i];
+		ui->default_cylinder->addItem(ti.name);
+		if (qPrefEquipment::default_cylinder() == ti.name)
 			ui->default_cylinder->setCurrentIndex(i);
 	}
 }

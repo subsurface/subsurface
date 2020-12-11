@@ -77,6 +77,7 @@ int main(int argc, char **argv)
 	setup_system_prefs();
 	copy_prefs(&default_prefs, &prefs);
 	fill_computer_list();
+	reset_tank_info_table(&tank_info_table);
 	parse_xml_init();
 	taglist_init_global();
 	init_ui();
