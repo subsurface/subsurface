@@ -480,6 +480,14 @@ QVariant TemplateLayout::getValue(QString list, QString property, QVariant optio
 			return object.rating;
 		} else if (property == "visibility") {
 			return object.visibility;
+		} else if (property == "wavesize") {
+			return object.wavesize;
+		} else if (property == "current") {
+			return object.current;
+		} else if (property == "surge") {
+			return object.surge;
+		} else if (property == "chill") {
+			return object.chill;
 		} else if (property == "date") {
 			return object.date();
 		} else if (property == "time") {
