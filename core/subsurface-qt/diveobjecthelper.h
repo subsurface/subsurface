@@ -15,6 +15,10 @@ class DiveObjectHelper {
 	Q_PROPERTY(int id MEMBER id CONSTANT)
 	Q_PROPERTY(int rating MEMBER rating CONSTANT)
 	Q_PROPERTY(int visibility MEMBER visibility CONSTANT)
+	Q_PROPERTY(int wavesize MEMBER wavesize CONSTANT)
+	Q_PROPERTY(int current MEMBER current CONSTANT)
+	Q_PROPERTY(int surge MEMBER surge CONSTANT)
+	Q_PROPERTY(int chill MEMBER chill CONSTANT)
 	Q_PROPERTY(QString date READ date CONSTANT)
 	Q_PROPERTY(QString time READ time CONSTANT)
 	Q_PROPERTY(int timestamp MEMBER timestamp CONSTANT)
@@ -53,6 +57,10 @@ public:
 	int id;
 	int rating;
 	int visibility;
+	int wavesize;
+	int current;
+	int surge;
+	int chill;
 	QString date() const;
 	timestamp_t timestamp;
 	QString time() const;
