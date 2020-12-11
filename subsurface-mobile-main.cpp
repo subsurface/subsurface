@@ -86,6 +86,7 @@ int main(int argc, char **argv)
 	qPref::sync();
 
 	free_prefs();
+	clear_tank_info_table(&tank_info_table);
 	return 0;
 }
 

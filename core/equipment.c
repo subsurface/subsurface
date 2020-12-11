@@ -118,7 +118,6 @@ void add_cylinder_description(const cylinder_type_t *type)
 		if (strcmp(tank_info_table.infos[i].name, desc) == 0)
 			return;
 	}
-	// FIXME: leaked on exit
 	add_tank_info_metric(&tank_info_table, desc, type->size.mliter,
 			     type->workingpressure.mbar / 1000);
 }
