@@ -50,6 +50,7 @@ struct preferences default_prefs = {
 	.display_invalid_dives = false,
 	.show_sac = false,
 	.display_unused_tanks = false,
+	.display_default_tank_infos = true,
 	.show_average_depth = true,
 	.show_icd = false,
 	.ascrate75 = 9000 / 60,

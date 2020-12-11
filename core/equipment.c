@@ -246,11 +246,8 @@ int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table *cylin
  * we should pick up any other names from the dive
  * logs directly.
  */
-struct tank_info_table tank_info_table;
-void reset_tank_info_table(struct tank_info_table *table)
+static void add_default_tank_infos(struct tank_info_table *table)
 {
-	clear_tank_info_table(table);
-
 	/* Size-only metric cylinders */
 	add_tank_info_metric(table, "10.0ℓ", 10000, 0);
 	add_tank_info_metric(table, "11.1ℓ", 11100, 0);
@@ -299,6 +296,23 @@ void reset_tank_info_table(struct tank_info_table *table)
 	add_tank_info_metric(table, "D16 232 bar", 32000, 232);
 	add_tank_info_metric(table, "D18 232 bar", 36000, 232);
 	add_tank_info_metric(table, "D20 232 bar", 40000, 232);
+}
+
+struct tank_info_table tank_info_table;
+void reset_tank_info_table(struct tank_info_table *table)
+{
+	clear_tank_info_table(table);
+	if (prefs.display_default_tank_infos)
+		add_default_tank_infos(table);
+
+	/* Add cylinders from dive list */
+	for (int i = 0; i < dive_table.nr; ++i) {
+		const struct dive *dive = dive_table.dives[i];
+		for (int j = 0; j < dive->cylinders.nr; j++) {
+			const cylinder_t *cyl = get_cylinder(dive, j);
+			add_cylinder_description(&cyl->type);
+		}
+	}
 }
 
 /*
