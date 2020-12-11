@@ -8,7 +8,7 @@ on:
     - master
 
 jobs:
-  buildInContainer:
+  buildOpenSUSElatest:
     runs-on: ubuntu-latest
     container:
       image: opensuse/tumbleweed:latest

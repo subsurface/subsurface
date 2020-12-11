@@ -8,7 +8,7 @@ on:
     - master
 
 jobs:
-  desktopBuild:
+  buildMac:
     runs-on: macOS-latest
     steps:
     - name: checkout sources

@@ -8,7 +8,7 @@ on:
     - master
 
 jobs:
-  mobileBuild:
+  iOSBuild:
     runs-on: macOS-10.15
     steps:
     - name: switch to Xcode 11
