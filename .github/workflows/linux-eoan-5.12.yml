@@ -1,4 +1,4 @@
-name: Ubuntu 19.10 / Qt 5.12
+name: Ubuntu 20.04 / Qt 5.12
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ jobs:
   buildInContainer:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:19.10
+      image: ubuntu:20.04
 
     steps:
     - name: checkout sources
