@@ -241,8 +241,8 @@ QStringList getFullCylinderList()
 			addStringToSortedList(cylinders, get_cylinder(d, j)->type.description);
 	}
 
-	for (int ti = 0; ti < MAX_TANK_INFO; ti++)
-		addStringToSortedList(cylinders, tank_info[ti].name);
+	for (int ti = 0; ti < tank_info_table.nr; ti++)
+		addStringToSortedList(cylinders, tank_info_table.infos[ti].name);
 
 	return cylinders;
 }

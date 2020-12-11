@@ -13,8 +13,9 @@ TankInfoModel *TankInfoModel::instance()
 
 bool TankInfoModel::insertRows(int, int count, const QModelIndex &parent)
 {
-	beginInsertRows(parent, rowCount(), rowCount());
-	rows += count;
+	beginInsertRows(parent, rowCount(), rowCount() + count - 1);
+	for (int i = 0; i < count; ++i)
+		add_tank_info_metric(&tank_info_table, "", 0, 0);
 	endInsertRows();
 	return true;
 }
@@ -23,64 +24,55 @@ bool TankInfoModel::setData(const QModelIndex &index, const QVariant &value, int
 {
 	//WARN Seems wrong, we need to check for role == Qt::EditRole
 
-	if (index.row() < 0 || index.row() > MAX_TANK_INFO - 1)
+	if (index.row() < 0 || index.row() >= tank_info_table.nr )
 		return false;
 
-	struct tank_info_t *info = &tank_info[index.row()];
+	struct tank_info &info = tank_info_table.infos[index.row()];
 	switch (index.column()) {
 	case DESCRIPTION:
-		info->name = strdup(value.toByteArray().data());
+		free((void *)info.name);
+		info.name = strdup(value.toByteArray().data());
 		break;
 	case ML:
-		info->ml = value.toInt();
+		info.ml = value.toInt();
 		break;
 	case BAR:
-		info->bar = value.toInt();
+		info.bar = value.toInt();
 		break;
 	}
 	emit dataChanged(index, index);
 	return true;
 }
 
-void TankInfoModel::clear()
-{
-}
-
 QVariant TankInfoModel::data(const QModelIndex &index, int role) const
 {
-	QVariant ret;
-	if (!index.isValid() || index.row() < 0 || index.row() > MAX_TANK_INFO - 1) {
-		return ret;
-	}
-	if (role == Qt::FontRole) {
+	if (!index.isValid() || index.row() < 0 || index.row() >= tank_info_table.nr)
+		return QVariant();
+	if (role == Qt::FontRole)
 		return defaultModelFont();
-	}
 	if (role == Qt::DisplayRole || role == Qt::EditRole) {
-		struct tank_info_t *info = &tank_info[index.row()];
-		int ml = info->ml;
-		double bar = (info->psi) ? psi_to_bar(info->psi) : info->bar;
+		const struct tank_info &info = tank_info_table.infos[index.row()];
+		int ml = info.ml;
+		double bar = (info.psi) ? psi_to_bar(info.psi) : info.bar;
 
-		if (info->cuft && info->psi)
-			ml = lrint(cuft_to_l(info->cuft) * 1000 / bar_to_atm(bar));
+		if (info.cuft && info.psi)
+			ml = lrint(cuft_to_l(info.cuft) * 1000 / bar_to_atm(bar));
 
 		switch (index.column()) {
 		case BAR:
-			ret = bar * 1000;
-			break;
+			return bar * 1000;
 		case ML:
-			ret = ml;
-			break;
+			return ml;
 		case DESCRIPTION:
-			ret = QString(info->name);
-			break;
+			return info.name;
 		}
 	}
-	return ret;
+	return QVariant();
 }
 
 int TankInfoModel::rowCount(const QModelIndex&) const
 {
-	return rows;
+	return tank_info_table.nr;
 }
 
 TankInfoModel::TankInfoModel()
@@ -93,8 +85,5 @@ TankInfoModel::TankInfoModel()
 void TankInfoModel::update()
 {
 	beginResetModel();
-	rows = 0;
-	for (struct tank_info_t *info = tank_info; info->name && info < tank_info + MAX_TANK_INFO; info++, rows++)
-		;
 	endResetModel();
 }

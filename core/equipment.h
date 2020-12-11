@@ -68,7 +68,6 @@ struct weightsystem_table {
 	weightsystem_t *weightsystems;
 };
 
-#define MAX_TANK_INFO (100)
 #define MAX_WS_INFO (100)
 
 extern int cylinderuse_from_text(const char *text);
@@ -110,11 +109,21 @@ extern void add_cylinder(struct cylinder_table *, int idx, cylinder_t cyl);
 void get_gas_string(struct gasmix gasmix, char *text, int len);
 const char *gasname(struct gasmix gasmix);
 
-struct tank_info_t {
+typedef struct tank_info {
 	const char *name;
 	int cuft, ml, psi, bar;
+} tank_info_t;
+
+struct tank_info_table {
+	int nr, allocated;
+	struct tank_info *infos;
 };
-extern struct tank_info_t tank_info[MAX_TANK_INFO];
+
+extern struct tank_info_table tank_info_table;
+extern void reset_tank_info_table(struct tank_info_table *table);
+extern void clear_tank_info_table(struct tank_info_table *table);
+extern void add_tank_info_metric(struct tank_info_table *table, const char *name, int ml, int bar);
+extern void add_tank_info_imperial(struct tank_info_table *table, const char *name, int cuft, int psi);
 
 struct ws_info_t {
 	const char *name;

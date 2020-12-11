@@ -1156,20 +1156,20 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	// info for first cylinder
 	if (myDive.getCylinder != usedCylinder) {
 		diveChanged = true;
-		unsigned long i;
 		int size = 0, wp = 0, j = 0, k = 0;
 		for (j = 0; k < usedCylinder.length(); j++) {
 			if (state != "add" && !is_cylinder_used(d, j))
 				continue;
 
-			for (i = 0; i < MAX_TANK_INFO && tank_info[i].name != NULL; i++) {
-				if (tank_info[i].name == usedCylinder[k] ) {
-					if (tank_info[i].ml > 0){
-						size = tank_info[i].ml;
-						wp = tank_info[i].bar * 1000;
+			for (int i = 0; i < tank_info_table.nr; i++) {
+				const tank_info &ti = tank_info_table.infos[i];
+				if (ti.name == usedCylinder[k] ) {
+					if (ti.ml > 0){
+						size = ti.ml;
+						wp = ti.bar * 1000;
 					} else {
-						size = (int) (cuft_to_l(tank_info[i].cuft) * 1000 / bar_to_atm(psi_to_bar(tank_info[i].psi)));
-						wp = psi_to_mbar(tank_info[i].psi);
+						size = (int) (cuft_to_l(ti.cuft) * 1000 / bar_to_atm(psi_to_bar(ti.psi)));
+						wp = psi_to_mbar(ti.psi);
 					}
 					break;
 				}
@@ -1816,8 +1816,8 @@ QStringList QMLManager::cylinderInit() const
 		}
 	}
 
-	for (unsigned long ti = 0; ti < MAX_TANK_INFO && tank_info[ti].name != NULL; ti++) {
-		QString cyl = tank_info[ti].name;
+	for (int ti = 0; ti < tank_info_table.nr; ti++) {
+		QString cyl = tank_info_table.infos[ti].name;
 		if (cyl == "")
 			continue;
 		cylinders << cyl;
