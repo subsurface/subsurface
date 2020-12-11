@@ -32,5 +32,8 @@ jobs:
         ls -l
         git config --global user.email "ci@subsurface-divelog.org"
         git config --global user.name "Subsurface CI"
+        # it turns out our build container doesn't have a native compiler
+        # yet ECM needs that
+        apt-get install --reinstall cpp-7 gcc-7-base libgcc-7-dev libcc1-0 gcc-7
         bash -x ./subsurface/packaging/android/qmake-build.sh
 
