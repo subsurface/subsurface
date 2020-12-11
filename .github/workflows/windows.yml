@@ -8,7 +8,7 @@ on:
     - master
 
 jobs:
-  buildInContainer:
+  buildWindows:
     runs-on: ubuntu-latest
     container:
       image: docker://subsurface/mxe-build-container:2.0

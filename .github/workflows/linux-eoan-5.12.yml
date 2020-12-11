@@ -8,7 +8,7 @@ on:
     - master
 
 jobs:
-  buildInContainer:
+  buildUbuntuEoan:
     runs-on: ubuntu-latest
     container:
       image: ubuntu:20.04

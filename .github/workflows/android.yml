@@ -8,7 +8,7 @@ on:
     - master
 
 jobs:
-  buildInContainer:
+  buildAndroid:
     runs-on: ubuntu-latest
     container:
       image: docker://subsurface/android-build-container:5.15.1
