@@ -284,7 +284,7 @@ int parse_csv_file(const char *filename, struct xml_params *params, const char *
 	int ret;
 	struct memblock mem;
 	time_t now;
-	struct tm *timep = NULL;
+	struct tm timep;
 	char tmpbuf[MAXCOLDIGITS];
 
 	/* Increase the limits for recursion and variables on XSLT
@@ -302,15 +302,15 @@ int parse_csv_file(const char *filename, struct xml_params *params, const char *
 		return parse_dan_format(filename, params, table, trips, sites, devices, filter_presets);
 	} else if (strcmp(xml_params_get_key(params, 0), "date")) {
 		time(&now);
-		timep = localtime(&now);
+		localtime_r(&now, &timep);
 
-		strftime(tmpbuf, MAXCOLDIGITS, "%Y%m%d", timep);
+		strftime(tmpbuf, MAXCOLDIGITS, "%Y%m%d", &timep);
 		xml_params_add(params, "date", tmpbuf);
 
 		/* As the parameter is numeric, we need to ensure that the leading zero
 		 * is not discarded during the transform, thus prepend time with 1 */
 
-		strftime(tmpbuf, MAXCOLDIGITS, "1%H%M", timep);
+		strftime(tmpbuf, MAXCOLDIGITS, "1%H%M", &timep);
 		xml_params_add(params, "time", tmpbuf);
 	}
 
@@ -823,7 +823,7 @@ static int parse_seabear_csv_file(const char *filename, struct xml_params *param
 	int ret, i;
 	struct memblock mem;
 	time_t now;
-	struct tm *timep = NULL;
+	struct tm timep;
 	char *ptr, *ptr_old = NULL;
 	char *NL = NULL;
 	char tmpbuf[MAXCOLDIGITS];
@@ -836,14 +836,14 @@ static int parse_seabear_csv_file(const char *filename, struct xml_params *param
 #endif
 
 	time(&now);
-	timep = localtime(&now);
+	localtime_r(&now, &timep);
 
-	strftime(tmpbuf, MAXCOLDIGITS, "%Y%m%d", timep);
+	strftime(tmpbuf, MAXCOLDIGITS, "%Y%m%d", &timep);
 	xml_params_add(params, "date", tmpbuf);
 
 	/* As the parameter is numeric, we need to ensure that the leading zero
 	* is not discarded during the transform, thus prepend time with 1 */
-	strftime(tmpbuf, MAXCOLDIGITS, "1%H%M", timep);
+	strftime(tmpbuf, MAXCOLDIGITS, "1%H%M", &timep);
 	xml_params_add(params, "time", tmpbuf);
 
 	if (filename == NULL)
@@ -947,19 +947,19 @@ int parse_manual_file(const char *filename, struct xml_params *params, struct di
 {
 	struct memblock mem;
 	time_t now;
-	struct tm *timep;
+	struct tm timep;
 	char curdate[9];
 	char curtime[6];
 	int ret;
 
 
 	time(&now);
-	timep = localtime(&now);
-	strftime(curdate, DATESTR, "%Y%m%d", timep);
+	localtime_r(&now, &timep);
+	strftime(curdate, DATESTR, "%Y%m%d", &timep);
 
 	/* As the parameter is numeric, we need to ensure that the leading zero
 	* is not discarded during the transform, thus prepend time with 1 */
-	strftime(curtime, TIMESTR, "1%H%M", timep);
+	strftime(curtime, TIMESTR, "1%H%M", &timep);
 
 	xml_params_add(params, "date", curdate);
 	xml_params_add(params, "time", curtime);

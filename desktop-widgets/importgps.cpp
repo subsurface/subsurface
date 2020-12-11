@@ -47,6 +47,7 @@ void  ImportGPS::updateUI()
 	int dive_day, gps_day;
 	char datestr[50];
 	QString problemString = "";
+	struct tm timep;
 
 	utc_mkdate(coords.start_track, &time); // Display GPS date and local start and end times of track:
 	gps_day = time.tm_mday;
@@ -60,7 +61,8 @@ void  ImportGPS::updateUI()
 	utc_mkdate(coords.start_dive, &time); // Display dive date and start and end times of dive:
 	dive_day = time.tm_mday;
 	datestr[0] = 0x0;
-	strftime(datestr, sizeof(datestr), "%A %d %B ", localtime(&(coords.start_dive))); // dive date
+	localtime_r(&(coords.start_dive), &timep);
+	strftime(datestr, sizeof(datestr), "%A %d %B ", &timep); // dive date
 	ui.diveDateLabel->setText("Dive date = " + QString(datestr) + QString::number(time.tm_year));
 	ui.startTimeSyncLabel->setText( QString::number(time.tm_hour) + ":" + QString("%1").arg(time.tm_min, 2, 10, QChar('0'))); // dive start time
 	utc_mkdate(coords.end_dive, &time);
