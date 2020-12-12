@@ -173,7 +173,6 @@ private:
 	UserManual *helpView;
 #endif
 	CurrentState state;
-	CurrentState stateBeforeEdit;
 	QString filter_open();
 	QString filter_import();
 	QString filter_import_dive_sites();
