@@ -22,8 +22,8 @@ public:
 private:
 	QPaintDevice *paintDevice;
 	QWebView *webView;
-	print_options *printOptions;
-	template_options *templateOptions;
+	const print_options &printOptions;
+	const template_options &templateOptions;
 	QSize pageSize;
 	PrintMode printMode;
 	int done;
@@ -36,7 +36,7 @@ private slots:
 	void templateProgessUpdated(int value);
 
 public:
-	Printer(QPaintDevice *paintDevice, print_options *printOptions, template_options *templateOptions, PrintMode printMode);
+	Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode);
 	~Printer();
 	void print();
 	void previewOnePage();
