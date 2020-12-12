@@ -106,11 +106,11 @@ QString TemplateLayout::generate()
 
 	QString htmlContent;
 
-	QVariantList diveList;
+	State state;
 
 	struct dive *dive;
 	if (in_planner()) {
-		diveList.append(QVariant::fromValue(DiveObjectHelperGrantlee(&displayed_dive)));
+		state.dives.append(DiveObjectHelperGrantlee(&displayed_dive));
 		emit progressUpdated(100.0);
 	} else {
 		int i;
@@ -118,7 +118,7 @@ QString TemplateLayout::generate()
 			//TODO check for exporting selected dives only
 			if (!dive->selected && printOptions.print_selected)
 				continue;
-			diveList.append(QVariant::fromValue(DiveObjectHelperGrantlee(dive)));
+			state.dives.append(DiveObjectHelperGrantlee(dive));
 			progress++;
 			emit progressUpdated(lrint(progress * 100.0 / totalWork));
 		}
@@ -126,15 +126,11 @@ QString TemplateLayout::generate()
 
 	QString templateContents = readTemplate(printOptions.p_template);
 
-	QHash<QString, QVariant> options;
-	options["print_options"] = QVariant::fromValue(printOptions);
-	options["template_options"] = QVariant::fromValue(templateOptions);
-	options["dives"] = QVariant::fromValue(diveList);
 	QList<token> tokens = lexer(templateContents);
 	QString buffer;
 	QTextStream out(&buffer);
 	int pos = 0;
-	parser(tokens, pos, out, options);
+	parser(tokens, pos, out, state);
 	htmlContent = out.readAll();
 	return htmlContent;
 }
@@ -142,29 +138,26 @@ QString TemplateLayout::generate()
 QString TemplateLayout::generateStatistics()
 {
 	QString htmlContent;
-	QVariantList years;
+
+	State state;
 
 	int i = 0;
 	stats_summary_auto_free stats;
 	calculate_stats_summary(&stats, false);
 	while (stats.stats_yearly != NULL && stats.stats_yearly[i].period) {
 		YearInfo year{ &stats.stats_yearly[i] };
-		years.append(QVariant::fromValue(year));
+		state.years.append(year);
 		i++;
 	}
 
 	QString templateFile = QString("statistics") + QDir::separator() + printOptions.p_template;
 	QString templateContents = readTemplate(templateFile);
 
-	QHash<QString, QVariant> options;
-	options["print_options"] = QVariant::fromValue(printOptions);
-	options["template_options"] = QVariant::fromValue(templateOptions);
-	options["years"] = QVariant::fromValue(years);
 	QList<token> tokens = lexer(templateContents);
 	QString buffer;
 	QTextStream out(&buffer);
 	int pos = 0;
-	parser(tokens, pos, out, options);
+	parser(tokens, pos, out, state);
 	htmlContent = out.readAll();
 	return htmlContent;
 }
@@ -270,7 +263,7 @@ QList<token> TemplateLayout::lexer(QString input)
 
 static QRegularExpression var(R"(\{\{\s*(\w+)\.(\w+)\s*(\|\s*(\w+))?\s*\}\})");	// Look for {{ stuff.stuff|stuff }}
 
-QString TemplateLayout::translate(QString s, QHash<QString, QVariant> options)
+QString TemplateLayout::translate(QString s, State &state)
 {
 	QString out;
 	int last = 0;
@@ -279,8 +272,8 @@ QString TemplateLayout::translate(QString s, QHash<QString, QVariant> options)
 		QString obname = match.captured(1);
 		QString memname = match.captured(2);
 		out +=  s.mid(last, match.capturedStart() - last);
-		QString listname = options.contains("typeof:" + obname) ? options.value("typeof:" + obname).value<QString>() : obname;
-		QVariant value = getValue(listname, memname, options.value(obname));
+		QString listname = state.types.value(obname, obname);
+		QVariant value = getValue(listname, memname, state);
 		out += value.toString();
 		last = match.capturedEnd();
 		match = var.match(s, last);
@@ -292,12 +285,31 @@ QString TemplateLayout::translate(QString s, QHash<QString, QVariant> options)
 static QRegularExpression forloop(R"(\s*(\w+)\s+in\s+(\w+))");	// Look for "VAR in LISTNAME"
 static QRegularExpression ifstatement(R"(forloop\.counter\|\s*divisibleby\:\s*(\d+))");	// Look for forloop.counter|divisibleby: NUMBER
 
-void TemplateLayout::parser(QList<token> tokenList, int &pos, QTextStream &out, QHash<QString, QVariant> options)
+template<typename V, typename T>
+void TemplateLayout::parser_for(QList<token> tokenList, int &pos, QTextStream &out, State &state,
+				const V &data, const T *&act)
+{
+	const T *old = act;
+	int i = 1; // Loop iterators start at one
+	int olditerator = state.forloopiterator;
+	int savepos = pos;
+	for (const T &item: data) {
+		act = &item;
+		state.forloopiterator = i;
+		pos = savepos;
+		++i;
+		parser(tokenList, pos, out, state);
+	}
+	act = old;
+	state.forloopiterator = olditerator;
+}
+
+void TemplateLayout::parser(QList<token> tokenList, int &pos, QTextStream &out, State &state)
 {
 	while (pos < tokenList.length()) {
 		switch (tokenList[pos].type) {
 		case LITERAL:
-			out << translate(tokenList[pos].contents, options);
+			out << translate(tokenList[pos].contents, state);
 			++pos;
 			break;
 		case BLOCKSTART:
@@ -312,32 +324,25 @@ void TemplateLayout::parser(QList<token> tokenList, int &pos, QTextStream &out, 
 			if (match.hasMatch()) {
 				QString itemname = match.captured(1);
 				QString listname = match.captured(2);
-				options["typeof:" + itemname] = listname;
+				state.types[itemname] = listname;
 				QString buffer;
 				QTextStream capture(&buffer);
-				QVariantList list = options[listname].value<QVariantList>();
-				int savepos = pos;
-				for (int i = 0; i < list.size(); ++i) {
-					QVariant item = list.at(i);
-					QVariant olditerator = options["forloopiterator"];
-					options[itemname] = item;
-					options["forloopiterator"] = i + 1;
-					pos = savepos;
-					if (listname == "dives") {
-						options["cylinderObjects"] = QVariant::fromValue(item.value<DiveObjectHelperGrantlee>().cylinderObjects);
-						options["cylinders"] = QVariant::fromValue(item.value<DiveObjectHelperGrantlee>().cylinders);
-					}
-					parser(tokenList, pos, capture, options);
-					options.remove(itemname);
-					options.remove("forloopiterator");
-					if (listname == "dives") {
-						options.remove("cylinderObjects");
-						options.remove("cylinders");
-					}
-					if (olditerator.isValid())
-						options["forloopiterator"] = olditerator;
+				if (listname == "years") {
+					parser_for(tokenList, pos, capture, state, state.years, state.currentYear);
+				} else if (listname == "dives") {
+					parser_for(tokenList, pos, capture, state, state.dives, state.currentDive);
+				} else if (listname == "cylinders") {
+					if (state.currentDive)
+						parser_for(tokenList, pos, capture, state, state.currentDive->cylinders, state.currentCylinder);
+					else
+						qWarning("cylinders loop outside of dive");
+				} else if (listname == "cylinderObjects") {
+					if (state.currentDive)
+						parser_for(tokenList, pos, capture, state, state.currentDive->cylinderObjects, state.currentCylinderObject);
+					else
+						qWarning("cylinderObjects loop outside of dive");
 				}
-				options.remove("typeof:" + itemname);
+				state.types.remove(itemname);
 				out << capture.readAll();
 			} else {
 				out << "PARSING ERROR: '" << argument << "'";
@@ -353,9 +358,9 @@ void TemplateLayout::parser(QList<token> tokenList, int &pos, QTextStream &out, 
 				int divisor = match.captured(1).toInt();
 				QString buffer;
 				QTextStream capture(&buffer);
-				int counter = options["forloopiterator"].toInt();
-				parser(tokenList, pos, capture, options);
-				if (!(counter  % divisor))
+				int counter = std::max(0, state.forloopiterator);
+				parser(tokenList, pos, capture, state);
+				if (!(counter % divisor))
 					out << capture.readAll();
 			} else {
 				out << "PARSING ERROR: '" << argument << "'";
@@ -373,12 +378,11 @@ void TemplateLayout::parser(QList<token> tokenList, int &pos, QTextStream &out, 
 	}
 }
 
-QVariant TemplateLayout::getValue(QString list, QString property, QVariant option)
+QVariant TemplateLayout::getValue(QString list, QString property, const State &state)
 {
 	if (list == "template_options") {
-		template_options object = option.value<template_options>();
 		if (property == "font") {
-			switch (object.font_index) {
+			switch (templateOptions.font_index) {
 			case 0:
 				return "Arial, Helvetica, sans-serif";
 			case 1:
@@ -391,35 +395,36 @@ QVariant TemplateLayout::getValue(QString list, QString property, QVariant optio
 				return "Verdana, Geneva, sans-serif";
 			}
 		} else if (property == "borderwidth") {
-			return object.border_width;
+			return templateOptions.border_width;
 		} else if (property == "font_size") {
-			return object.font_size / 9.0;
+			return templateOptions.font_size / 9.0;
 		} else if (property == "line_spacing") {
-			return object.line_spacing;
+			return templateOptions.line_spacing;
 		} else if (property == "color1") {
-			return object.color_palette.color1.name();
+			return templateOptions.color_palette.color1.name();
 		} else if (property == "color2") {
-			return object.color_palette.color2.name();
+			return templateOptions.color_palette.color2.name();
 		} else if (property == "color3") {
-			return object.color_palette.color3.name();
+			return templateOptions.color_palette.color3.name();
 		} else if (property == "color4") {
-			return object.color_palette.color4.name();
+			return templateOptions.color_palette.color4.name();
 		} else if (property == "color5") {
-			return object.color_palette.color5.name();
+			return templateOptions.color_palette.color5.name();
 		} else if (property == "color6") {
-			return object.color_palette.color6.name();
+			return templateOptions.color_palette.color6.name();
 		}
 	} else if (list ==  "print_options") {
-		print_options object = option.value<print_options>();
 		if (property == "grayscale") {
-			if (object.color_selected) {
+			if (printOptions.color_selected) {
 				return "";
 			} else {
 				return "-webkit-filter: grayscale(100%)";
 			}
 		}
-	} else if (list =="year") {
-		YearInfo object = option.value<YearInfo>();
+	} else if (list =="years") {
+		if (!state.currentYear)
+			return QVariant();
+		const YearInfo &object = *state.currentYear;
 		if (property == "year") {
 			return object.year->period;
 		} else if (property == "dives") {
@@ -451,11 +456,13 @@ QVariant TemplateLayout::getValue(QString list, QString property, QVariant optio
 			return get_volume_string(object.year->max_sac);
 		}
 	} else if (list == "cylinders") {
-		if (property == "description") {
-			return option.value<QString>();
+		if (state.currentCylinder && property == "description") {
+			return *state.currentCylinder;
 		}
 	} else if (list == "cylinderObjects") {
-		CylinderObjectHelper object = option.value<CylinderObjectHelper>();
+		if (!state.currentCylinderObject)
+			return QVariant();
+		const CylinderObjectHelper &object = *state.currentCylinderObject;
 		if (property == "description") {
 			return object.description;
 		} else if (property == "size") {
@@ -470,7 +477,9 @@ QVariant TemplateLayout::getValue(QString list, QString property, QVariant optio
 			return object.gasMix;
 		}
 	} else if (list == "dives") {
-		DiveObjectHelperGrantlee object = option.value<DiveObjectHelperGrantlee>();
+		if (!state.currentDive)
+			return QVariant();
+		const DiveObjectHelperGrantlee &object = *state.currentDive;
 		if (property == "number") {
 			return object.number;
 		} else if (property == "id") {
