@@ -125,7 +125,6 @@ for ARCH in $ARCHS; do
 	declare -x CXXFLAGS="$CFLAGS"
 	declare -x LDFLAGS="$CFLAGS -lsqlite3 -lpthread -lc++ -L$SDK_DIR/usr/lib -fembed-bitcode"
 
-
 	# openssl build stuff.
 	export DEVELOPER=$(xcode-select --print-path)\
 	export IPHONEOS_SDK_VERSION=$(xcrun --sdk iphoneos --show-sdk-version)
@@ -261,13 +260,33 @@ if [ "$DEBUGRELEASE" != "Release" ] ; then
 fi
 popd
 
+# build Kirigami
+mkdir -p "$PARENT_DIR"/kirigami-build
+pushd "$PARENT_DIR"/kirigami-build
+"$IOS_QT"/"$QT_VERSION"/ios/bin/qmake "$SUBSURFACE_SOURCE"/mobile-widgets/3rdparty/kirigami/kirigami.pro CONFIG+=release
+make
+#make install
+if [ "$DEBUGRELEASE" != "Release" ] ; then
+	"$IOS_QT"/"$QT_VERSION"/ios/bin/qmake "$SUBSURFACE_SOURCE"/mobile-widgets/3rdparty/kirigami/kirigami.pro CONFIG+=debug
+	make clean
+	make
+	#make install
+fi
+# since the install prefix for qmake is rather weirdly implemented, let's copy things by hand into the multiarch destination
+mkdir -p "$INSTALL_ROOT"/../lib/qml/
+cp -a org "$INSTALL_ROOT"/../lib/qml/
+popd
+
 # now combine the libraries into fat libraries
 ARCH_ROOT=$PARENT_DIR/install-root/ios
 cp -a "$ARCH_ROOT"/x86_64/* "$ARCH_ROOT"
 if [ "$TARGET" = "iphoneos" ] ; then
 	pushd "$ARCH_ROOT"/lib
 	for LIB in $(find . -type f -name \*.a); do
-		lipo "$ARCH_ROOT"/armv7/lib/"$LIB" "$ARCH_ROOT"/arm64/lib/"$LIB" "$ARCH_ROOT"/x86_64/lib/"$LIB" -create -output "$LIB"
+		# libkirigamiplugin is already a fat library
+		if grep -v -q "kirigami" <<< "$LIB" ; then
+			lipo "$ARCH_ROOT"/armv7/lib/"$LIB" "$ARCH_ROOT"/arm64/lib/"$LIB" "$ARCH_ROOT"/x86_64/lib/"$LIB" -create -output "$LIB"
+		fi
 	done
 	popd
 fi
