@@ -51,9 +51,9 @@ private:
 	const print_options &printOptions;
 	const template_options &templateOptions;
 	QList<token> lexer(QString input);
-	void parser(QList<token> tokenList, int &pos, QTextStream &out, State &state);
+	void parser(QList<token> tokenList, int from, int to, QTextStream &out, State &state);
 	template<typename V, typename T>
-	void parser_for(QList<token> tokenList, int &pos, QTextStream &out, State &state, const V &data, const T *&act);
+	void parser_for(QList<token> tokenList, int from, int to, QTextStream &out, State &state, const V &data, const T *&act);
 	QVariant getValue(QString list, QString property, const State &state);
 	QString translate(QString s, State &state);
 
