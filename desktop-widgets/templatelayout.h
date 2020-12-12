@@ -24,6 +24,10 @@ struct token {
 
 extern QList<QString> grantlee_templates, grantlee_statistics_templates;
 
+struct YearInfo {
+	stats_t *year;
+};
+
 class TemplateLayout : public QObject {
 	Q_OBJECT
 public:
@@ -34,23 +38,27 @@ public:
 	static void writeTemplate(QString template_name, QString grantlee_template);
 
 private:
+	struct State {
+		QList<DiveObjectHelperGrantlee> dives;
+		QList<YearInfo> years;
+		QMap<QString, QString> types;
+		int forloopiterator = -1;
+		const DiveObjectHelperGrantlee *currentDive = nullptr;
+		const YearInfo *currentYear = nullptr;
+		const QString *currentCylinder = nullptr;
+		const CylinderObjectHelper *currentCylinderObject = nullptr;
+	};
 	const print_options &printOptions;
 	const template_options &templateOptions;
 	QList<token> lexer(QString input);
-	void parser(QList<token> tokenList, int &pos, QTextStream &out, QHash<QString, QVariant> options);
-	QVariant getValue(QString list, QString property, QVariant option);
-	QString translate(QString s, QHash<QString, QVariant> options);
+	void parser(QList<token> tokenList, int &pos, QTextStream &out, State &state);
+	template<typename V, typename T>
+	void parser_for(QList<token> tokenList, int &pos, QTextStream &out, State &state, const V &data, const T *&act);
+	QVariant getValue(QString list, QString property, const State &state);
+	QString translate(QString s, State &state);
 
 signals:
 	void progressUpdated(int value);
 };
-
-struct YearInfo {
-	stats_t *year;
-};
-
-Q_DECLARE_METATYPE(template_options)
-Q_DECLARE_METATYPE(print_options)
-Q_DECLARE_METATYPE(YearInfo)
 
 #endif
