@@ -129,8 +129,7 @@ QString TemplateLayout::generate()
 	QList<token> tokens = lexer(templateContents);
 	QString buffer;
 	QTextStream out(&buffer);
-	int pos = 0;
-	parser(tokens, pos, out, state);
+	parser(tokens, 0, tokens.size(), out, state);
 	htmlContent = out.readAll();
 	return htmlContent;
 }
@@ -156,8 +155,7 @@ QString TemplateLayout::generateStatistics()
 	QList<token> tokens = lexer(templateContents);
 	QString buffer;
 	QTextStream out(&buffer);
-	int pos = 0;
-	parser(tokens, pos, out, state);
+	parser(tokens, 0, tokens.size(), out, state);
 	htmlContent = out.readAll();
 	return htmlContent;
 }
@@ -286,35 +284,47 @@ static QRegularExpression forloop(R"(\s*(\w+)\s+in\s+(\w+))");	// Look for "VAR 
 static QRegularExpression ifstatement(R"(forloop\.counter\|\s*divisibleby\:\s*(\d+))");	// Look for forloop.counter|divisibleby: NUMBER
 
 template<typename V, typename T>
-void TemplateLayout::parser_for(QList<token> tokenList, int &pos, QTextStream &out, State &state,
+void TemplateLayout::parser_for(QList<token> tokenList, int from, int to, QTextStream &out, State &state,
 				const V &data, const T *&act)
 {
 	const T *old = act;
 	int i = 1; // Loop iterators start at one
 	int olditerator = state.forloopiterator;
-	int savepos = pos;
 	for (const T &item: data) {
 		act = &item;
-		state.forloopiterator = i;
-		pos = savepos;
-		++i;
-		parser(tokenList, pos, out, state);
+		state.forloopiterator = i++;
+		parser(tokenList, from, to, out, state);
 	}
 	act = old;
 	state.forloopiterator = olditerator;
 }
 
-void TemplateLayout::parser(QList<token> tokenList, int &pos, QTextStream &out, State &state)
+// Find end of for or if block. Keeps track of nested blocks.
+// Pos should point one past the starting tag.
+// Returns -1 if no matching end tag found.
+static int findEnd(const QList<token> &tokenList, int from, int to, token_t start, token_t end)
 {
-	while (pos < tokenList.length()) {
+	int depth = 1;
+	for (int pos = from; pos < to; ++pos) {
+		if (tokenList[pos].type == start) {
+			++depth;
+		} else if (tokenList[pos].type == end) {
+			if (--depth <= 0)
+				return pos;
+		}
+	}
+	return -1;
+}
+
+void TemplateLayout::parser(QList<token> tokenList, int from, int to, QTextStream &out, State &state)
+{
+	for (int pos = from; pos < to; ++pos) {
 		switch (tokenList[pos].type) {
 		case LITERAL:
 			out << translate(tokenList[pos].contents, state);
-			++pos;
 			break;
 		case BLOCKSTART:
 		case BLOCKSTOP:
-			++pos;
 			break;
 		case FORSTART:
 		{
@@ -327,23 +337,31 @@ void TemplateLayout::parser(QList<token> tokenList, int &pos, QTextStream &out, 
 				state.types[itemname] = listname;
 				QString buffer;
 				QTextStream capture(&buffer);
+				int loop_end = findEnd(tokenList, pos, to, FORSTART, FORSTOP);
+				if (loop_end < 0) {
+					out << "UNMATCHED FOR: '" << argument << "'";
+					break;
+				}
 				if (listname == "years") {
-					parser_for(tokenList, pos, capture, state, state.years, state.currentYear);
+					parser_for(tokenList, pos, loop_end, capture, state, state.years, state.currentYear);
 				} else if (listname == "dives") {
-					parser_for(tokenList, pos, capture, state, state.dives, state.currentDive);
+					parser_for(tokenList, pos, loop_end, capture, state, state.dives, state.currentDive);
 				} else if (listname == "cylinders") {
 					if (state.currentDive)
-						parser_for(tokenList, pos, capture, state, state.currentDive->cylinders, state.currentCylinder);
+						parser_for(tokenList, pos, loop_end, capture, state, state.currentDive->cylinders, state.currentCylinder);
 					else
 						qWarning("cylinders loop outside of dive");
 				} else if (listname == "cylinderObjects") {
 					if (state.currentDive)
-						parser_for(tokenList, pos, capture, state, state.currentDive->cylinderObjects, state.currentCylinderObject);
+						parser_for(tokenList, pos, loop_end, capture, state, state.currentDive->cylinderObjects, state.currentCylinderObject);
 					else
 						qWarning("cylinderObjects loop outside of dive");
+				} else {
+					qWarning("unknown loop: %s", qPrintable(listname));
 				}
 				state.types.remove(itemname);
 				out << capture.readAll();
+				pos = loop_end;
 			} else {
 				out << "PARSING ERROR: '" << argument << "'";
 			}
@@ -355,13 +373,20 @@ void TemplateLayout::parser(QList<token> tokenList, int &pos, QTextStream &out, 
 			++pos;
 			QRegularExpressionMatch match = ifstatement.match(argument);
 			if (match.hasMatch()) {
+				int if_end = findEnd(tokenList, pos, to, IFSTART, IFSTOP);
+				if (if_end < 0) {
+					out << "UNMATCHED IF: '" << argument << "'";
+					break;
+				}
 				int divisor = match.captured(1).toInt();
-				QString buffer;
-				QTextStream capture(&buffer);
 				int counter = std::max(0, state.forloopiterator);
-				parser(tokenList, pos, capture, state);
-				if (!(counter % divisor))
+				if (!(counter % divisor)) {
+					QString buffer;
+					QTextStream capture(&buffer);
+					parser(tokenList, pos, if_end, capture, state);
 					out << capture.readAll();
+				}
+				pos = if_end;
 			} else {
 				out << "PARSING ERROR: '" << argument << "'";
 			}
@@ -369,11 +394,10 @@ void TemplateLayout::parser(QList<token> tokenList, int &pos, QTextStream &out, 
 			break;
 		case FORSTOP:
 		case IFSTOP:
-			++pos;
+			out << "UNEXPECTED END: " << tokenList[pos].contents;
 			return;
 		case PARSERERROR:
 			out << "PARSING ERROR";
-			++pos;
 		}
 	}
 }
