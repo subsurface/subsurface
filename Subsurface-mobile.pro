@@ -372,6 +372,7 @@ ios {
 		../install-root/ios/lib/libgit2.a \
 		../install-root/ios/lib/libzip.a \
 		../install-root/ios/lib/libxslt.a \
+		../install-root/ios/lib/qml/org/kde/kirigami.2/libkirigamiplugin.a \
 		../googlemaps/build-ios/libqtgeoservices_googlemaps.a \
 		-liconv \
 		-lsqlite3 \
