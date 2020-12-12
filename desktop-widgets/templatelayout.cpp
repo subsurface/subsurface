@@ -9,9 +9,9 @@
 
 QList<QString> grantlee_templates, grantlee_statistics_templates;
 
-int getTotalWork(print_options *printOptions)
+int getTotalWork(const print_options &printOptions)
 {
-	if (printOptions->print_selected) {
+	if (printOptions.print_selected) {
 		// return the correct number depending on all/selected dives
 		// but don't return 0 as we might divide by this number
 		return amount_selected && !in_planner() ? amount_selected : 1;
@@ -94,10 +94,9 @@ void copy_bundled_templates(QString src, QString dst, QStringList *templateBacku
 	}
 }
 
-TemplateLayout::TemplateLayout(print_options *printOptions, template_options *templateOptions)
+TemplateLayout::TemplateLayout(const print_options &printOptions, const template_options &templateOptions) :
+	printOptions(printOptions), templateOptions(templateOptions)
 {
-	this->printOptions = printOptions;
-	this->templateOptions = templateOptions;
 }
 
 QString TemplateLayout::generate()
@@ -117,7 +116,7 @@ QString TemplateLayout::generate()
 		int i;
 		for_each_dive (i, dive) {
 			//TODO check for exporting selected dives only
-			if (!dive->selected && printOptions->print_selected)
+			if (!dive->selected && printOptions.print_selected)
 				continue;
 			diveList.append(QVariant::fromValue(DiveObjectHelperGrantlee(dive)));
 			progress++;
@@ -125,11 +124,11 @@ QString TemplateLayout::generate()
 		}
 	}
 
-	QString templateContents = readTemplate(printOptions->p_template);
+	QString templateContents = readTemplate(printOptions.p_template);
 
 	QHash<QString, QVariant> options;
-	options["print_options"] = QVariant::fromValue(*printOptions);
-	options["template_options"] = QVariant::fromValue(*templateOptions);
+	options["print_options"] = QVariant::fromValue(printOptions);
+	options["template_options"] = QVariant::fromValue(templateOptions);
 	options["dives"] = QVariant::fromValue(diveList);
 	QList<token> tokens = lexer(templateContents);
 	QString buffer;
@@ -154,12 +153,12 @@ QString TemplateLayout::generateStatistics()
 		i++;
 	}
 
-	QString templateFile = QString("statistics") + QDir::separator() + printOptions->p_template;
+	QString templateFile = QString("statistics") + QDir::separator() + printOptions.p_template;
 	QString templateContents = readTemplate(templateFile);
 
 	QHash<QString, QVariant> options;
-	options["print_options"] = QVariant::fromValue(*printOptions);
-	options["template_options"] = QVariant::fromValue(*templateOptions);
+	options["print_options"] = QVariant::fromValue(printOptions);
+	options["template_options"] = QVariant::fromValue(templateOptions);
 	options["years"] = QVariant::fromValue(years);
 	QList<token> tokens = lexer(templateContents);
 	QString buffer;

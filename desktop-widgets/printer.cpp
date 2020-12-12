@@ -12,15 +12,15 @@
 #include <QWebElement>
 #include "profile-widget/profilewidget2.h"
 
-Printer::Printer(QPaintDevice *paintDevice, print_options *printOptions, template_options *templateOptions,  PrintMode printMode)
+Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode) :
+	paintDevice(paintDevice),
+	webView(new QWebView),
+	printOptions(printOptions),
+	templateOptions(templateOptions),
+	printMode(printMode),
+	done(0),
+	dpi(0)
 {
-	this->paintDevice = paintDevice;
-	this->printOptions = printOptions;
-	this->templateOptions = templateOptions;
-	this->printMode = printMode;
-	dpi = 0;
-	done = 0;
-	webView = new QWebView();
 }
 
 Printer::~Printer()
@@ -36,7 +36,7 @@ void Printer::putProfileImage(QRect profilePlaceholder, QRect viewPort, QPainter
 	QRect pos(x, y, profilePlaceholder.width(), profilePlaceholder.height());
 	profile->plotDive(dive, true, true);
 
-	if (!printOptions->color_selected) {
+	if (!printOptions.color_selected) {
 		QImage image(pos.width(), pos.height(), QImage::Format_ARGB32);
 		QPainter imgPainter(&image);
 		imgPainter.setRenderHint(QPainter::Antialiasing);
@@ -85,7 +85,7 @@ void Printer::flowRender()
 		} else {
 			// fill the page with background color
 			QRect fullPage(0, 0, pageSize.width(), pageSize.height());
-			QBrush fillBrush(templateOptions->color_palette.color1);
+			QBrush fillBrush(templateOptions.color_palette.color1);
 			painter.fillRect(fullPage, fillBrush);
 			QRegion reigon(0, 0, pageSize.width(), end - start);
 			viewPort.setRect(0, start, pageSize.width(), end - start);
@@ -111,7 +111,7 @@ void Printer::flowRender()
 	}
 	// render the remianing page
 	QRect fullPage(0, 0, pageSize.width(), pageSize.height());
-	QBrush fillBrush(templateOptions->color_palette.color1);
+	QBrush fillBrush(templateOptions.color_palette.color1);
 	painter.fillRect(fullPage, fillBrush);
 	QRegion reigon(0, 0, pageSize.width(), end - start);
 	webView->page()->mainFrame()->render(&painter, QWebFrame::ContentsLayer, reigon);
@@ -130,7 +130,7 @@ void Printer::render(int Pages = 0)
 
 	// apply printing settings to profile
 	profile->setFrameStyle(QFrame::NoFrame);
-	profile->setPrintMode(true, !printOptions->color_selected);
+	profile->setPrintMode(true, !printOptions.color_selected);
 	profile->setToolTipVisibile(false);
 	qPrefDisplay::set_animation_speed(0);
 
@@ -195,16 +195,16 @@ void Printer::templateProgessUpdated(int value)
 	emit progessUpdated(done);
 }
 
-QString Printer::exportHtml() {
+QString Printer::exportHtml()
+{
 	TemplateLayout t(printOptions, templateOptions);
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
 	QString html;
 
-	if (printOptions->type == print_options::DIVELIST) {
+	if (printOptions.type == print_options::DIVELIST)
 		html = t.generate();
-	} else if (printOptions->type == print_options::STATISTICS ) {
+	else if (printOptions.type == print_options::STATISTICS )
 		html = t.generateStatistics();
-	}
 
 	// TODO: write html to file
 	return html;
@@ -231,17 +231,15 @@ void Printer::print()
 	webView->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
 
 	// export border width with at least 1 pixel
-	// templateOptions->borderwidth = std::max(1, pageSize.width() / 1000);
-	if (printOptions->type == print_options::DIVELIST) {
+	// templateOptions.borderwidth = std::max(1, pageSize.width() / 1000);
+	if (printOptions.type == print_options::DIVELIST)
 		webView->setHtml(t.generate());
-	} else if (printOptions->type == print_options::STATISTICS ) {
+	else if (printOptions.type == print_options::STATISTICS )
 		webView->setHtml(t.generateStatistics());
-	}
-	if (printOptions->color_selected && printerPtr->colorMode()) {
+	if (printOptions.color_selected && printerPtr->colorMode())
 		printerPtr->setColorMode(QPrinter::Color);
-	} else {
+	else
 		printerPtr->setColorMode(QPrinter::GrayScale);
-	}
 	// apply user settings
 	int divesPerPage;
 
@@ -270,12 +268,11 @@ void Printer::previewOnePage()
 		pageSize.setWidth(paintDevice->width());
 		webView->page()->setViewportSize(pageSize);
 		// initialize the border settings
-		// templateOptions->border_width = std::max(1, pageSize.width() / 1000);
-		if (printOptions->type == print_options::DIVELIST) {
+		// templateOptions.border_width = std::max(1, pageSize.width() / 1000);
+		if (printOptions.type == print_options::DIVELIST)
 			webView->setHtml(t.generate());
-		} else if (printOptions->type == print_options::STATISTICS ) {
+		else if (printOptions.type == print_options::STATISTICS )
 			webView->setHtml(t.generateStatistics());
-		}
 		bool ok;
 		int divesPerPage = webView->page()->mainFrame()->findFirstElement("body").attribute("data-numberofdives").toInt(&ok);
 		if (!ok) {

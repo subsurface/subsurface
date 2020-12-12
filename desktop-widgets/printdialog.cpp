@@ -87,7 +87,7 @@ PrintDialog::PrintDialog(QWidget *parent) :
 	}
 
 	// create a print options object and pass our options struct
-	optionsWidget = new PrintOptions(this, &printOptions, &templateOptions);
+	optionsWidget = new PrintOptions(this, printOptions, templateOptions);
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	setLayout(layout);
@@ -175,7 +175,7 @@ void PrintDialog::createPrinterObj()
 		qprinter = new QPrinter();
 		qprinter->setResolution(printOptions.resolution);
 		qprinter->setOrientation((QPrinter::Orientation)printOptions.landscape);
-		printer = new Printer(qprinter, &printOptions, &templateOptions, Printer::PRINT);
+		printer = new Printer(qprinter, printOptions, templateOptions, Printer::PRINT);
 	}
 }
 

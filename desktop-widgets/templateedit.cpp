@@ -8,27 +8,27 @@
 #include <QButtonGroup>
 #include <QColorDialog>
 
-TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, struct template_options *templateOptions) :
+TemplateEdit::TemplateEdit(QWidget *parent, const print_options &printOptions, template_options &templateOptions) :
 	QDialog(parent),
-	ui(new Ui::TemplateEdit)
+	ui(new Ui::TemplateEdit),
+	printOptions(printOptions),
+	templateOptions(templateOptions)
 {
 	ui->setupUi(this);
-	this->templateOptions = templateOptions;
-	newTemplateOptions = *templateOptions;
-	this->printOptions = printOptions;
+	newTemplateOptions = templateOptions;
 
 	// restore the settings and init the UI
-	ui->fontSelection->setCurrentIndex(templateOptions->font_index);
-	ui->fontsize->setValue(lrint(templateOptions->font_size));
-	ui->colorpalette->setCurrentIndex(templateOptions->color_palette_index);
-	ui->linespacing->setValue(templateOptions->line_spacing);
-	ui->borderwidth->setValue(templateOptions->border_width);
+	ui->fontSelection->setCurrentIndex(templateOptions.font_index);
+	ui->fontsize->setValue(lrint(templateOptions.font_size));
+	ui->colorpalette->setCurrentIndex(templateOptions.color_palette_index);
+	ui->linespacing->setValue(templateOptions.line_spacing);
+	ui->borderwidth->setValue(templateOptions.border_width);
 
-	grantlee_template = TemplateLayout::readTemplate(printOptions->p_template);
-	if (printOptions->type == print_options::DIVELIST)
-		grantlee_template = TemplateLayout::readTemplate(printOptions->p_template);
-	else if (printOptions->type == print_options::STATISTICS)
-		grantlee_template = TemplateLayout::readTemplate(QString::fromUtf8("statistics") + QDir::separator() + printOptions->p_template);
+	grantlee_template = TemplateLayout::readTemplate(printOptions.p_template);
+	if (printOptions.type == print_options::DIVELIST)
+		grantlee_template = TemplateLayout::readTemplate(printOptions.p_template);
+	else if (printOptions.type == print_options::STATISTICS)
+		grantlee_template = TemplateLayout::readTemplate(QString::fromUtf8("statistics") + QDir::separator() + printOptions.p_template);
 
 	// gui
 	btnGroup = new QButtonGroup;
@@ -58,7 +58,7 @@ void TemplateEdit::updatePreview()
 	int height = ui->label->height();
 	QPixmap map(width * 2, height * 2);
 	map.fill(QColor::fromRgb(255, 255, 255));
-	Printer printer(&map, printOptions, &newTemplateOptions, Printer::PREVIEW);
+	Printer printer(&map, printOptions, newTemplateOptions, Printer::PREVIEW);
 	printer.previewOnePage();
 	ui->label->setPixmap(map.scaled(width, height, Qt::IgnoreAspectRatio));
 
@@ -81,11 +81,11 @@ void TemplateEdit::updatePreview()
 	ui->colorpalette->setCurrentIndex(newTemplateOptions.color_palette_index);
 
 	// update grantlee template string
-	grantlee_template = TemplateLayout::readTemplate(printOptions->p_template);
-	if (printOptions->type == print_options::DIVELIST)
-		grantlee_template = TemplateLayout::readTemplate(printOptions->p_template);
-	else if (printOptions->type == print_options::STATISTICS)
-		grantlee_template = TemplateLayout::readTemplate(QString::fromUtf8("statistics") + QDir::separator() + printOptions->p_template);
+	grantlee_template = TemplateLayout::readTemplate(printOptions.p_template);
+	if (printOptions.type == print_options::DIVELIST)
+		grantlee_template = TemplateLayout::readTemplate(printOptions.p_template);
+	else if (printOptions.type == print_options::STATISTICS)
+		grantlee_template = TemplateLayout::readTemplate(QString::fromUtf8("statistics") + QDir::separator() + printOptions.p_template);
 }
 
 void TemplateEdit::on_fontsize_valueChanged(int font_size)
@@ -137,7 +137,7 @@ void TemplateEdit::on_colorpalette_currentIndexChanged(int index)
 
 void TemplateEdit::saveSettings()
 {
-	if ((*templateOptions) != newTemplateOptions || grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
+	if (templateOptions != newTemplateOptions || grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
 		QMessageBox msgBox(this);
 		QString message = tr("Do you want to save your changes?");
 		bool templateChanged = false;
@@ -147,16 +147,16 @@ void TemplateEdit::saveSettings()
 		msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
 		msgBox.setDefaultButton(QMessageBox::Cancel);
 		if (msgBox.exec() == QMessageBox::Save) {
-			*templateOptions = newTemplateOptions;
+			templateOptions = newTemplateOptions;
 			if (templateChanged) {
-				TemplateLayout::writeTemplate(printOptions->p_template, ui->plainTextEdit->toPlainText());
-				if (printOptions->type == print_options::DIVELIST)
-					TemplateLayout::writeTemplate(printOptions->p_template, ui->plainTextEdit->toPlainText());
-				else if (printOptions->type == print_options::STATISTICS)
-					TemplateLayout::writeTemplate(QString::fromUtf8("statistics") + QDir::separator() + printOptions->p_template, ui->plainTextEdit->toPlainText());
+				TemplateLayout::writeTemplate(printOptions.p_template, ui->plainTextEdit->toPlainText());
+				if (printOptions.type == print_options::DIVELIST)
+					TemplateLayout::writeTemplate(printOptions.p_template, ui->plainTextEdit->toPlainText());
+				else if (printOptions.type == print_options::STATISTICS)
+					TemplateLayout::writeTemplate(QString::fromUtf8("statistics") + QDir::separator() + printOptions.p_template, ui->plainTextEdit->toPlainText());
 			}
-			if (templateOptions->color_palette_index == CUSTOM)
-				custom_colors = templateOptions->color_palette;
+			if (templateOptions.color_palette_index == CUSTOM)
+				custom_colors = templateOptions.color_palette;
 		}
 	}
 }

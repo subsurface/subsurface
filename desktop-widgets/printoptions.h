@@ -64,14 +64,14 @@ class PrintOptions : public QWidget {
 	Q_OBJECT
 
 public:
-	explicit PrintOptions(QWidget *parent, struct print_options *printOpt, struct template_options *templateOpt);
+	explicit PrintOptions(QWidget *parent, print_options &printOpt, template_options &templateOpt);
 	void setup();
 	QString getSelectedTemplate();
 
 private:
 	Ui::PrintOptions ui;
-	struct print_options *printOptions = nullptr;
-	struct template_options *templateOptions = nullptr;
+	print_options &printOptions;
+	template_options &templateOptions;
 	bool hasSetupSlots;
 	QString lastImportExportTemplate;
 	void setupTemplates();
