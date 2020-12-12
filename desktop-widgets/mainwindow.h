@@ -41,9 +41,6 @@ class PlannerDetails;
 class PlannerSettingsWidget;
 class LocationInformationWidget;
 
-typedef std::pair<QByteArray, QVariant> WidgetProperty;
-typedef QVector<WidgetProperty> PropertyList;
-
 class MainWindow : public QMainWindow {
 	Q_OBJECT
 public:
