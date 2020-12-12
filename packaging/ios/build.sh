@@ -60,9 +60,9 @@ fi
 GITVERSION=$(cd "$SUBSURFACE_SOURCE" ; git describe --abbrev=12)
 CANONICALVERSION=$(echo $GITVERSION | sed -e 's/-g.*$// ; s/^v//' | sed -e 's/-/./')
 MOBILEVERSION=$(grep MOBILE "$SUBSURFACE_SOURCE"/cmake/Modules/version.cmake | cut -d\" -f 2)
-echo "#define GIT_VERSION_STRING \"$GITVERSION\"" > ssrf-version.h
-echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" >> ssrf-version.h
-echo "#define MOBILE_VERSION_STRING \"$MOBILEVERSION\"" >> ssrf-version.h
+echo "#define GIT_VERSION_STRING \"$GITVERSION\"" > "$SUBSURFACE_SOURCE"/ssrf-version.h
+echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" >> "$SUBSURFACE_SOURCE"/ssrf-version.h
+echo "#define MOBILE_VERSION_STRING \"$MOBILEVERSION\"" >> "$SUBSURFACE_SOURCE"/ssrf-version.h
 
 BUNDLE=org.subsurface-divelog.subsurface-mobile
 if [ "${IOS_BUNDLE_PRODUCT_IDENTIFIER}" != "" ] ; then
@@ -314,10 +314,12 @@ for BUILD_NOW in $BUILD_LOOP; do
 	else
 		DRCONFIG="release"
 	fi
+	cd "$PARENT_DIR"
 	BUILDX=build-Subsurface-mobile-Qt_$(echo "$QT_VERSION" | tr .  _)_for_iOS-"$BUILD_NOW"
 	mkdir -p "$BUILDX"
 	pushd "$BUILDX"
-	ln -s ../ssrf-version.h .
+	rm -f ssrf-version.h
+	ln -s "$SUBSURFACE_SOURCE"/ssrf-version.h .
 	"$IOS_QT"/"$QT_VERSION"/ios/bin/qmake "$SUBSURFACE_SOURCE"/Subsurface-mobile.pro \
 		-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=$DRCONFIG
 
