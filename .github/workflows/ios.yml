@@ -25,8 +25,7 @@ jobs:
         xzcat Qt-5.14.1-ios.tar.xz | tar -x -C $HOME/Qt -f -
     - name: build Subsurface-mobile for iOS
       run: |
-        mkdir -p $HOME/build
-        cd $HOME/build
+        cd $GITHUB_WORKSPACE/..
         ln -s $HOME/Qt Qt
         echo "build for simulator"
         bash -x $GITHUB_WORKSPACE/packaging/ios/build.sh -simulator
