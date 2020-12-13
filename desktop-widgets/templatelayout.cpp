@@ -144,8 +144,7 @@ QString TemplateLayout::generateStatistics()
 	stats_summary_auto_free stats;
 	calculate_stats_summary(&stats, false);
 	while (stats.stats_yearly != NULL && stats.stats_yearly[i].period) {
-		YearInfo year{ &stats.stats_yearly[i] };
-		state.years.append(year);
+		state.years.append(&stats.stats_yearly[i]);
 		i++;
 	}
 
@@ -448,36 +447,36 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 	} else if (list =="years") {
 		if (!state.currentYear)
 			return QVariant();
-		const YearInfo &object = *state.currentYear;
+		const stats_t *object = *state.currentYear;
 		if (property == "year") {
-			return object.year->period;
+			return object->period;
 		} else if (property == "dives") {
-			return object.year->selection_size;
+			return object->selection_size;
 		} else if (property == "min_temp") {
-			return object.year->min_temp.mkelvin == 0 ? "0" : get_temperature_string(object.year->min_temp, true);
+			return object->min_temp.mkelvin == 0 ? "0" : get_temperature_string(object->min_temp, true);
 		} else if (property == "max_temp") {
-			return object.year->max_temp.mkelvin == 0 ? "0" : get_temperature_string(object.year->max_temp, true);
+			return object->max_temp.mkelvin == 0 ? "0" : get_temperature_string(object->max_temp, true);
 		} else if (property == "total_time") {
-			return get_dive_duration_string(object.year->total_time.seconds, gettextFromC::tr("h"),
+			return get_dive_duration_string(object->total_time.seconds, gettextFromC::tr("h"),
 							gettextFromC::tr("min"), gettextFromC::tr("sec"), " ");
 		} else if (property == "avg_time") {
-			return get_minutes(object.year->total_time.seconds / object.year->selection_size);
+			return get_minutes(object->total_time.seconds / object->selection_size);
 		} else if (property == "shortest_time") {
-			return get_minutes(object.year->shortest_time.seconds);
+			return get_minutes(object->shortest_time.seconds);
 		} else if (property == "longest_time") {
-			return get_minutes(object.year->longest_time.seconds);
+			return get_minutes(object->longest_time.seconds);
 		} else if (property == "avg_depth") {
-			return get_depth_string(object.year->avg_depth);
+			return get_depth_string(object->avg_depth);
 		} else if (property == "min_depth") {
-			return get_depth_string(object.year->min_depth);
+			return get_depth_string(object->min_depth);
 		} else if (property == "max_depth") {
-			return get_depth_string(object.year->max_depth);
+			return get_depth_string(object->max_depth);
 		} else if (property == "avg_sac") {
-			return get_volume_string(object.year->avg_sac);
+			return get_volume_string(object->avg_sac);
 		} else if (property == "min_sac") {
-			return get_volume_string(object.year->min_sac);
+			return get_volume_string(object->min_sac);
 		} else if (property == "max_sac") {
-			return get_volume_string(object.year->max_sac);
+			return get_volume_string(object->max_sac);
 		}
 	} else if (list == "cylinders") {
 		if (state.currentCylinder && property == "description") {
