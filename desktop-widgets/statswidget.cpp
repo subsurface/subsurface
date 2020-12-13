@@ -3,6 +3,72 @@
 #include "mainwindow.h"
 #include "stats/statsview.h"
 #include <QCheckBox>
+#include <QPainter>
+#include <QStyledItemDelegate>
+
+class ChartItemDelegate : public QStyledItemDelegate {
+private:
+	void paint(QPainter *painter, const QStyleOptionViewItem &option,
+		   const QModelIndex &index) const override;
+	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+};
+
+// Number of pixels that non-toplevel items are indented
+static int indent(const QFontMetrics &fm)
+{
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
+	return 4 * fm.width('-');
+#else
+	return 4 * fm.horizontalAdvance('-');
+#endif
+}
+
+void ChartItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
+			      const QModelIndex &index) const
+{
+	QFont font = index.data(Qt::FontRole).value<QFont>();
+	QFontMetrics fm(font);
+	QString name = index.data(ChartListModel::ChartNameRole).value<QString>();
+	painter->setFont(font);
+	QRect rect = option.rect;
+	if (option.state & QStyle::State_Selected) {
+		painter->save();
+		painter->setBrush(option.palette.highlight());
+		painter->setPen(Qt::NoPen);
+		painter->drawRect(rect);
+		painter->restore();
+	}
+	bool isHeader = index.data(ChartListModel::IsHeaderRole).value<bool>();
+	if (!isHeader) {
+		QFontMetrics fm(font);
+		rect.translate(indent(fm), 0);
+	}
+	QPixmap icon = index.data(ChartListModel::PixmapRole).value<QPixmap>();
+	if (!icon.isNull()) {
+		painter->drawPixmap(rect.topLeft(), icon);
+		rect.setX(rect.x() + icon.size().width());
+	}
+
+	painter->drawText(rect, name);
+}
+
+QSize ChartItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+	QFont font = index.data(Qt::FontRole).value<QFont>();
+	QFontMetrics fm(font);
+	QString name = index.data(ChartListModel::ChartNameRole).value<QString>();
+	QPixmap icon = index.data(ChartListModel::PixmapRole).value<QPixmap>();
+	QSize size = fm.size(Qt::TextSingleLine, name);
+	bool isHeader = index.data(ChartListModel::IsHeaderRole).value<bool>();
+	if (!isHeader)
+		size += QSize(indent(fm), 0);
+	if (!icon.isNull()) {
+		QSize iconSize = icon.size();
+		size = QSize(size.width() + iconSize.width(),
+			     std::min(size.height(), iconSize.height()));
+	}
+	return fm.size(Qt::TextSingleLine, name);
+}
 
 StatsWidget::StatsWidget(QWidget *parent) : QWidget(parent)
 {
@@ -10,6 +76,7 @@ StatsWidget::StatsWidget(QWidget *parent) : QWidget(parent)
 
 	connect(ui.close, &QToolButton::clicked, this, &StatsWidget::closeStats);
 
+	ui.chartType->setModel(&charts);
 	connect(ui.chartType, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::chartTypeChanged);
 	connect(ui.var1, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::var1Changed);
 	connect(ui.var2, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::var2Changed);
@@ -24,20 +91,6 @@ static void setVariableList(QComboBox *combo, const StatsState::VariableList &li
 	combo->clear();
 	for (const StatsState::Variable &v: list.variables)
 		combo->addItem(v.name, QVariant(v.id));
-	combo->setCurrentIndex(list.selected);
-}
-
-// Initialize QComboBox with list of charts
-static void setChartList(QComboBox *combo, const StatsState::ChartList &list)
-{
-	QIcon warn = QIcon::fromTheme("dialog-warning");
-	combo->clear();
-	for (const StatsState::Chart &c: list.charts) {
-		if (c.warning)
-			combo->addItem(warn, c.name, QVariant(c.id));
-		else
-			combo->addItem(c.name, QVariant(c.id));
-	}
 	combo->setCurrentIndex(list.selected);
 }
 
@@ -82,7 +135,9 @@ void StatsWidget::updateUi()
 	StatsState::UIState uiState = state.getUIState();
 	setVariableList(ui.var1, uiState.var1);
 	setVariableList(ui.var2, uiState.var2);
-	setChartList(ui.chartType, uiState.charts);
+	int pos = charts.update(uiState.charts);
+	ui.chartType->setCurrentIndex(pos);
+	ui.chartType->setItemDelegate(new ChartItemDelegate);
 	setBinList(ui.var1BinnerLabel, ui.var1Binner, uiState.var1Name, uiState.binners1);
 	setBinList(ui.var2BinnerLabel, ui.var2Binner, uiState.var2Name, uiState.binners2);
 	setOperationList(ui.var2OperationLabel, ui.var2Operation, uiState.var2Name, uiState.operations2);

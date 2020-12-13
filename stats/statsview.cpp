@@ -351,7 +351,7 @@ void StatsView::plotBarChart(const std::vector<dive *> &dives,
 	}
 
 	bool isStacked = subType == ChartSubType::VerticalStacked || subType == ChartSubType::HorizontalStacked;
-	bool isHorizontal = subType == ChartSubType::Horizontal || subType == ChartSubType::HorizontalStacked;
+	bool isHorizontal = subType == ChartSubType::HorizontalGrouped || subType == ChartSubType::HorizontalStacked;
 
 	CategoryAxis *catAxis = createCategoryAxis(categoryType->nameWithBinnerUnit(*categoryBinner),
 						   *categoryBinner, categoryBins, !isHorizontal);
@@ -366,13 +366,13 @@ void StatsView::plotBarChart(const std::vector<dive *> &dives,
 	QAbstractBarSeries *series;
 	switch (subType) {
 	default:
-	case ChartSubType::Vertical:
+	case ChartSubType::VerticalGrouped:
 		series = addSeries<QtCharts::QBarSeries>(valueType->name());
 		break;
 	case ChartSubType::VerticalStacked:
 		series = addSeries<QtCharts::QStackedBarSeries>(valueType->name());
 		break;
-	case ChartSubType::Horizontal:
+	case ChartSubType::HorizontalGrouped:
 		series = addSeries<QtCharts::QHorizontalBarSeries>(valueType->name());
 		break;
 	case ChartSubType::HorizontalStacked:

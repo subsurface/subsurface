@@ -23,9 +23,14 @@ enum class ChartType {
 
 enum class ChartSubType {
 	Vertical = 0,
+	VerticalGrouped,
 	VerticalStacked,
 	Horizontal,
-	HorizontalStacked
+	HorizontalGrouped,
+	HorizontalStacked,
+	Dots,
+	Box,
+	Pie
 };
 
 struct StatsType;
@@ -48,6 +53,7 @@ public:
 	};
 	struct Chart {
 		QString name;
+		QString subtypeName;
 		int id;
 		bool warning;		// Not recommended for that combination
 	};
