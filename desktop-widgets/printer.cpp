@@ -31,7 +31,7 @@ Printer::~Printer()
 }
 
 void Printer::putProfileImage(const QRect &profilePlaceholder, const QRect &viewPort, QPainter *painter,
-			      struct dive *dive, QPointer<ProfileWidget2> profile)
+			      struct dive *dive, ProfileWidget2 *profile)
 {
 	int x = profilePlaceholder.x() - viewPort.x();
 	int y = profilePlaceholder.y() - viewPort.y();
@@ -125,7 +125,7 @@ void Printer::flowRender()
 void Printer::render(int Pages = 0)
 {
 	// keep original preferences
-	QPointer<ProfileWidget2> profile = MainWindow::instance()->graphics;
+	ProfileWidget2 *profile = MainWindow::instance()->graphics;
 	int profileFrameStyle = profile->frameStyle();
 	int animationOriginal = qPrefDisplay::animation_speed();
 	double fontScale = profile->getFontPrintScale();

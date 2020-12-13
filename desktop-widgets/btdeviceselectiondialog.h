@@ -4,7 +4,6 @@
 
 #include <QDialog>
 #include <QListWidgetItem>
-#include <QPointer>
 #include <QtBluetooth/QBluetoothLocalDevice>
 #include <QtBluetooth/QBluetoothDeviceDiscoveryAgent>
 
