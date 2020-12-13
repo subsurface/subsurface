@@ -5,6 +5,7 @@
 #include "core/pref.h"
 #include "core/subsurface-time.h"
 #include <math.h> // for lrint
+#include <numeric>
 #include <QChart>
 #include <QFontMetrics>
 #include <QLocale>
@@ -185,7 +186,7 @@ QString LabelDisambiguator::transmogrify(const QString &s)
 }
 
 HistogramAxis::HistogramAxis(std::vector<HistogramAxisEntry> bins, bool horizontal) : StatsAxisTemplate(horizontal),
-	bin_values(bins)
+	bin_values(std::move(bins))
 {
 	if (bin_values.size() < 2) // Less than two makes no sense -> there must be at least one category
 		return;
@@ -194,6 +195,17 @@ HistogramAxis::HistogramAxis(std::vector<HistogramAxisEntry> bins, bool horizont
 	for (HistogramAxisEntry &entry: bin_values)
 		entry.name = labeler.transmogrify(entry.name);
 
+	// The caller can declare some bin labels as preferred, when there are
+	// two many labels to show all. Try to infer the preferred step size
+	// by finding to consecutive preferred labels. This supposes that
+	// the preferred labels are equi-distant and that the caller does not
+	// use large prime (or nearly prime) steps.
+	auto it1 = std::find_if(bin_values.begin(), bin_values.end(),
+				[](const HistogramAxisEntry &e) { return e.recommended; });
+	auto next_it = it1 == bin_values.end() ? it1 : std::next(it1);
+	auto it2 = std::find_if(next_it, bin_values.end(),
+				[](const HistogramAxisEntry &e) { return e.recommended; });
+	preferred_step = it2 == bin_values.end() ? 1 : it2 - it1;
 	setMin(bin_values.front().value);
 	setMax(bin_values.back().value);
 	setStartValue(bin_values.front().value);
@@ -229,6 +241,19 @@ void HistogramAxis::updateLabels(const QtCharts::QChart *chart)
 	int maxLabels = guessNumTicks(chart, this, strings);
 
 	int step = ((int)bin_values.size() - 1) / maxLabels + 1;
+	if (step < preferred_step) {
+		if (step * 2 > preferred_step)  {
+			step = preferred_step;
+		} else {
+			int gcd = std::gcd(step, preferred_step);
+			while (preferred_step % step != 0)
+				step += gcd;
+		}
+	} else if (step > preferred_step) {
+		int remainder = (step + preferred_step) % preferred_step;
+		if (remainder != 0)
+			step = step + preferred_step - remainder;
+	}
 	int first = 0;
 	if (step > 1) {
 		for (int i = 0; i < (int)bin_values.size(); ++i) {
