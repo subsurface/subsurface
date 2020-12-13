@@ -4,11 +4,11 @@
 
 #ifndef NO_PRINTING
 #include <QDialog>
-#include <QPrinter>
-#include "printoptions.h"
-#include "printer.h"
 #include "templateedit.h"
+#include "printoptions.h"
 
+class Printer;
+class QPrinter;
 class QProgressBar;
 class PrintOptions;
 class PrintLayout;

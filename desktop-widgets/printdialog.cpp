@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "printdialog.h"
-#include "printoptions.h"
-#include "mainwindow.h"
+#include "printer.h"
+#include "core/pref.h"
+#include "core/dive.h" // for existing_filename
 
 #ifndef NO_PRINTING
 #include <QProgressBar>
+#include <QPrinter>
 #include <QPrintPreviewDialog>
 #include <QPrintDialog>
 #include <QFileDialog>

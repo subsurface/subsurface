@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "printer.h"
+#include "mainwindow.h"
 #include "templatelayout.h"
 #include "core/statistics.h"
 #include "core/qthelper.h"
@@ -7,6 +8,7 @@
 
 #include <algorithm>
 #include <QPainter>
+#include <QPrinter>
 #include <QtWebKitWidgets>
 #include <QWebElementCollection>
 #include <QWebElement>
@@ -28,7 +30,8 @@ Printer::~Printer()
 	delete webView;
 }
 
-void Printer::putProfileImage(QRect profilePlaceholder, QRect viewPort, QPainter *painter, struct dive *dive, QPointer<ProfileWidget2> profile)
+void Printer::putProfileImage(const QRect &profilePlaceholder, const QRect &viewPort, QPainter *painter,
+			      struct dive *dive, QPointer<ProfileWidget2> profile)
 {
 	int x = profilePlaceholder.x() - viewPort.x();
 	int y = profilePlaceholder.y() - viewPort.y();
