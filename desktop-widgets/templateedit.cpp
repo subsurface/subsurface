@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "templateedit.h"
-#include "printoptions.h"
+#include "templatelayout.h"
 #include "printer.h"
 #include "ui_templateedit.h"
 
 #include <QMessageBox>
 #include <QButtonGroup>
 #include <QColorDialog>
+#include <QDir>
 
 TemplateEdit::TemplateEdit(QWidget *parent, const print_options &printOptions, template_options &templateOptions) :
 	QDialog(parent),
