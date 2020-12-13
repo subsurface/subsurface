@@ -1,11 +1,16 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <QFileDevice>
 #include <QRegularExpression>
-#include <list>
+#include <QTextStream>
 
 #include "templatelayout.h"
+#include "mainwindow.h"
+#include "printoptions.h"
 #include "core/divelist.h"
 #include "core/selection.h"
+#include "core/qthelper.h"
+#include "core/subsurface-qt/diveobjecthelper.h"
+#include "core/subsurface-qt/cylinderobjecthelper.h" // TODO: remove once grantlee supports Q_GADGET objects
 
 QList<QString> grantlee_templates, grantlee_statistics_templates;
 

@@ -3,7 +3,7 @@
 #define TEMPLATEEDIT_H
 
 #include <QDialog>
-#include "templatelayout.h"
+#include "printoptions.h"
 
 namespace Ui {
 class TemplateEdit;

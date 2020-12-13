@@ -2,13 +2,14 @@
 #ifndef TEMPLATELAYOUT_H
 #define TEMPLATELAYOUT_H
 
-#include <QStringList>
-#include "mainwindow.h"
-#include "printoptions.h"
 #include "core/statistics.h"
-#include "core/qthelper.h"
-#include "core/subsurface-qt/diveobjecthelper.h"
-#include "core/subsurface-qt/cylinderobjecthelper.h" // TODO: remove once grantlee supports Q_GADGET objects
+#include <QStringList>
+
+class DiveObjectHelperGrantlee;
+class CylinderObjectHelper;
+struct print_options;
+struct template_options;
+class QTextStream;
 
 int getTotalWork(const print_options &printOptions);
 void find_all_templates();
