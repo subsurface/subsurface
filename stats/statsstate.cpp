@@ -5,10 +5,15 @@
 
 // Attn: The order must correspond to the enum above
 static const char *chart_subtype_names[] = {
-	QT_TRANSLATE_NOOP("StatsTranslations", "Vertical"),
-	QT_TRANSLATE_NOOP("StatsTranslations", "Vertical stacked"),
-	QT_TRANSLATE_NOOP("StatsTranslations", "Horizontal"),
-	QT_TRANSLATE_NOOP("StatsTranslations", "Horizontal stacked"),
+	QT_TRANSLATE_NOOP("StatsTranslations", "vertical"),
+	QT_TRANSLATE_NOOP("StatsTranslations", "grouped vertical"),
+	QT_TRANSLATE_NOOP("StatsTranslations", "stacked vertical"),
+	QT_TRANSLATE_NOOP("StatsTranslations", "horizontal"),
+	QT_TRANSLATE_NOOP("StatsTranslations", "grouped horizontal"),
+	QT_TRANSLATE_NOOP("StatsTranslations", "stacked horizontal"),
+	QT_TRANSLATE_NOOP("StatsTranslations", "data points"),
+	QT_TRANSLATE_NOOP("StatsTranslations", "box-whisker"),
+	QT_TRANSLATE_NOOP("StatsTranslations", "piechart"),
 };
 
 enum class SupportedVariable {
@@ -34,11 +39,11 @@ static const struct ChartTypeDesc {
 } chart_types[] = {
 	{
 		ChartType::ScatterPlot,
-		QT_TRANSLATE_NOOP("StatsTranslations", "Scatter"),
+		QT_TRANSLATE_NOOP("StatsTranslations", "Scattergraph"),
 		SupportedVariable::Continuous,
 		SupportedVariable::Numeric,
 		false,
-		{ },
+		{ ChartSubType::Dots },
 		0
 	},
 	{
@@ -61,30 +66,21 @@ static const struct ChartTypeDesc {
 	},
 	{
 		ChartType::HistogramBox,
-		QT_TRANSLATE_NOOP("StatsTranslations", "Box"),
+		QT_TRANSLATE_NOOP("StatsTranslations", "Histogram"),
 		SupportedVariable::Continuous,
 		SupportedVariable::Numeric,
 		false,
-		{ },
+		{ ChartSubType::Box },
 		0
 	},
 	{
 		ChartType::DiscreteScatter,
-		QT_TRANSLATE_NOOP("StatsTranslations", "Categorical scatter"),
+		QT_TRANSLATE_NOOP("StatsTranslations", "Categorical"),
 		SupportedVariable::Categorical,
 		SupportedVariable::Numeric,
 		false,
-		{ },
+		{ ChartSubType::Dots },
 		ChartFeatureQuartiles
-	},
-	{
-		ChartType::DiscreteBar,
-		QT_TRANSLATE_NOOP("StatsTranslations", "Bar"),
-		SupportedVariable::Categorical,
-		SupportedVariable::Categorical,
-		false,
-		{ ChartSubType::Vertical, ChartSubType::VerticalStacked, ChartSubType::Horizontal, ChartSubType::HorizontalStacked },
-		0
 	},
 	{
 		ChartType::DiscreteValue,
@@ -106,20 +102,29 @@ static const struct ChartTypeDesc {
 	},
 	{
 		ChartType::DiscreteBox,
-		QT_TRANSLATE_NOOP("StatsTranslations", "Categorical box"),
+		QT_TRANSLATE_NOOP("StatsTranslations", "Categorical"),
 		SupportedVariable::Categorical,
 		SupportedVariable::Numeric,
 		false,
-		{ },
+		{ ChartSubType::Box },
 		0
 	},
 	{
 		ChartType::Pie,
-		QT_TRANSLATE_NOOP("StatsTranslations", "Pie"),
+		QT_TRANSLATE_NOOP("StatsTranslations", "Categorical"),
 		SupportedVariable::Categorical,
 		SupportedVariable::Count,
 		false,
-		{ },
+		{ ChartSubType::Pie },
+		0
+	},
+	{
+		ChartType::DiscreteBar,
+		QT_TRANSLATE_NOOP("StatsTranslations", "Barchart"),
+		SupportedVariable::Categorical,
+		SupportedVariable::Categorical,
+		false,
+		{ ChartSubType::VerticalGrouped, ChartSubType::VerticalStacked, ChartSubType::HorizontalGrouped, ChartSubType::HorizontalStacked },
 		0
 	}
 };
@@ -178,11 +183,6 @@ static StatsState::VariableList createVariableList(const StatsType *selected, bo
 
 // This is a bit lame: we pass Chart/SubChart as an integer to the UI,
 // by placing one in the lower and one in the upper 16 bit of a 32 bit integer.
-static int toInt(ChartType type)
-{
-	return (int)type << 16;
-}
-
 static int toInt(ChartType type, ChartSubType subtype)
 {
 	return ((int)type << 16) | (int)subtype;
@@ -252,18 +252,12 @@ static StatsState::ChartList createChartList(const StatsType *var1, const StatsT
 	res.selected = -1;
 	for (auto [desc, warn]: validCharts(var1, var2)) {
 		QString name = StatsTranslations::tr(desc.name);
-		if (desc.subtypes.empty()) {
-			if (selectedType == desc.id)
-				res.selected = (int)res.charts.size();
-			res.charts.push_back({ name, toInt(desc.id), warn });
-		} else {
-			for (ChartSubType subtype: desc.subtypes) {
-				if (selectedType == desc.id && selectedSubType == subtype)
-					res.selected = (int)res.charts.size();
-				QString fullname = QString("%1 %2").arg(name,
-									StatsTranslations::tr(chart_subtype_names[(int)subtype]));
-				res.charts.push_back({ fullname , toInt(desc.id, subtype), warn });
-			}
+		for (ChartSubType subtype: desc.subtypes) {
+			int id = toInt(desc.id, subtype);
+			if (selectedType == desc.id && selectedSubType == subtype)
+				res.selected = id;
+			QString subtypeName = StatsTranslations::tr(chart_subtype_names[(int)subtype]);
+			res.charts.push_back({ name, subtypeName, toInt(desc.id, subtype), warn });
 		}
 	}
 

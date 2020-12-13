@@ -3,6 +3,7 @@
 #define STATSWIDGET_H
 
 #include "stats/statsstate.h"
+#include "stats/chartlistmodel.h"
 #include "ui_statswidget.h"
 #include <vector>
 #include <memory>
@@ -28,6 +29,9 @@ private:
 	StatsState state;
 	void updateUi();
 	std::vector<std::unique_ptr<QCheckBox>> features;
+
+	ChartListModel charts;
+	//QStringListModel charts;
 	void showEvent(QShowEvent *) override;
 };
 
