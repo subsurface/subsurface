@@ -32,7 +32,7 @@ private:
 	void render(int Pages);
 	void flowRender();
 	void putProfileImage(const QRect &box, const QRect &viewPort, QPainter *painter,
-			     struct dive *dive, QPointer<ProfileWidget2> profile);
+			     struct dive *dive, ProfileWidget2 *profile);
 
 private slots:
 	void templateProgessUpdated(int value);
