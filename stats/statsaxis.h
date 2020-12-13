@@ -74,6 +74,7 @@ private:
 	void updateLabels(const QtCharts::QChart *chart) override;
 	std::pair<double, double> minMax() const override;
 	std::vector<HistogramAxisEntry> bin_values;
+	int preferred_step;
 };
 
 class DateAxis : public HistogramAxis {
