@@ -24,10 +24,6 @@ struct token {
 
 extern QList<QString> grantlee_templates, grantlee_statistics_templates;
 
-struct YearInfo {
-	stats_t *year;
-};
-
 class TemplateLayout : public QObject {
 	Q_OBJECT
 public:
@@ -40,11 +36,11 @@ public:
 private:
 	struct State {
 		QList<DiveObjectHelperGrantlee> dives;
-		QList<YearInfo> years;
+		QList<stats_t *> years;
 		QMap<QString, QString> types;
 		int forloopiterator = -1;
 		const DiveObjectHelperGrantlee *currentDive = nullptr;
-		const YearInfo *currentYear = nullptr;
+		const stats_t * const *currentYear = nullptr;
 		const QString *currentCylinder = nullptr;
 		const CylinderObjectHelper *currentCylinderObject = nullptr;
 	};
