@@ -143,3 +143,24 @@ QStringList formatFullCylinderList()
 	return cylinders;
 }
 
+static QString formattedCylinder(const struct dive *dive, int idx)
+{
+	const cylinder_t *cyl = get_cylinder(dive, idx);
+	const char *desc = cyl->type.description;
+	QString fmt = desc ? QString(desc) : gettextFromC::tr("unknown");
+	fmt += ", " + get_volume_string(cyl->type.size, true);
+	fmt += ", " + get_pressure_string(cyl->type.workingpressure, true);
+	fmt += ", " + get_pressure_string(cyl->start, false) + " - " + get_pressure_string(cyl->end, true);
+	fmt += ", " + get_gas_string(cyl->gasmix);
+	return fmt;
+}
+
+QStringList formatCylinders(const dive *d)
+{
+	QStringList cylinders;
+	for (int i = 0; i < d->cylinders.nr; i++) {
+		QString cyl = formattedCylinder(d, i);
+		cylinders << cyl;
+	}
+	return cylinders;
+}
