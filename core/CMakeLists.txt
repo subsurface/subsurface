@@ -164,6 +164,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	statistics.c
 	statistics.h
 	strndup.h
+	string-format.h
+	string-format.cpp
 	strtod.c
 	subsurface-string.h
 	subsurfacestartup.c

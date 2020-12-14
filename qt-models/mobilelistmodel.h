@@ -186,14 +186,4 @@ private:
 	MobileSwipeModel sm;
 };
 
-// Helper functions - these are actually defined in DiveObjectHelper.cpp. Why declare them here?
-QString formatSac(const dive *d);
-QString formatNotes(const dive *d);
-QString format_gps_decimal(const dive *d);
-QStringList formatGetCylinder(const dive *d);
-QStringList getStartPressure(const dive *d);
-QStringList getEndPressure(const dive *d);
-QStringList getFirstGas(const dive *d);
-QStringList getFullCylinderList();
-
 #endif
