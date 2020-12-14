@@ -30,18 +30,6 @@ static QString getFormattedWeight(const struct dive *dive, int idx)
 	return fmt;
 }
 
-static QString getFormattedCylinder(const struct dive *dive, int idx)
-{
-	const cylinder_t *cyl = get_cylinder(dive, idx);
-	const char *desc = cyl->type.description;
-	QString fmt = desc ? QString(desc) : gettextFromC::tr("unknown");
-	fmt += ", " + get_volume_string(cyl->type.size, true);
-	fmt += ", " + get_pressure_string(cyl->type.workingpressure, true);
-	fmt += ", " + get_pressure_string(cyl->start, false) + " - " + get_pressure_string(cyl->end, true);
-	fmt += ", " + get_gas_string(cyl->gasmix);
-	return fmt;
-}
-
 static QString formatGas(const dive *d)
 {
 	/*WARNING: here should be the gastlist, returned
@@ -87,27 +75,6 @@ static QStringList formatWeights(const dive *d)
 		weights << w;
 	}
 	return weights;
-}
-
-QStringList formatCylinders(const dive *d)
-{
-	QStringList cylinders;
-	for (int i = 0; i < d->cylinders.nr; i++) {
-		QString cyl = getFormattedCylinder(d, i);
-		cylinders << cyl;
-	}
-	return cylinders;
-}
-
-static QVector<CylinderObjectHelper> makeCylinderObjects(const dive *d)
-{
-	QVector<CylinderObjectHelper> res;
-	for (int i = 0; i < d->cylinders.nr; i++) {
-		//Don't add blank cylinders, only those that have been defined.
-		if (get_cylinder(d, i)->type.description)
-			res.append(CylinderObjectHelper(get_cylinder(d, i))); // no emplace for QVector. :(
-	}
-	return res;
 }
 
 QString formatDiveSalinity(const dive *d)
@@ -179,16 +146,6 @@ DiveObjectHelper::DiveObjectHelper(const struct dive *d) :
 	fprintf(stderr, "\n\nCalling DiveObjectHelper constructor for dive %d - call #%d\n", d->number, ++callCounter);
 	backtrace_symbols_fd(array, size, STDERR_FILENO);
 #endif /* defined(DEBUG_DOH) */
-}
-
-DiveObjectHelperGrantlee::DiveObjectHelperGrantlee()
-{
-}
-
-DiveObjectHelperGrantlee::DiveObjectHelperGrantlee(const struct dive *d) :
-	DiveObjectHelper(d),
-	cylinderObjects(makeCylinderObjects(d))
-{
 }
 
 QString DiveObjectHelper::date() const

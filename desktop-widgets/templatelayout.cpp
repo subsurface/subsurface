@@ -9,6 +9,7 @@
 #include "core/divelist.h"
 #include "core/selection.h"
 #include "core/qthelper.h"
+#include "core/string-format.h"
 #include "core/subsurface-qt/diveobjecthelper.h"
 #include "core/subsurface-qt/cylinderobjecthelper.h" // TODO: remove once grantlee supports Q_GADGET objects
 
@@ -115,7 +116,7 @@ QString TemplateLayout::generate()
 
 	struct dive *dive;
 	if (in_planner()) {
-		state.dives.append(DiveObjectHelperGrantlee(&displayed_dive));
+		state.dives.append(&displayed_dive);
 		emit progressUpdated(100.0);
 	} else {
 		int i;
@@ -123,7 +124,7 @@ QString TemplateLayout::generate()
 			//TODO check for exporting selected dives only
 			if (!dive->selected && printOptions.print_selected)
 				continue;
-			state.dives.append(DiveObjectHelperGrantlee(dive));
+			state.dives.append(dive);
 			progress++;
 			emit progressUpdated(lrint(progress * 100.0 / totalWork));
 		}
@@ -320,6 +321,15 @@ static int findEnd(const QList<token> &tokenList, int from, int to, token_t star
 	return -1;
 }
 
+static std::vector<const cylinder_t *> cylinderList(const dive *d)
+{
+	std::vector<const cylinder_t *> res;
+	res.reserve(d->cylinders.nr);
+	for (int i = 0; i < d->cylinders.nr; ++i)
+		res.push_back(&d->cylinders.cylinders[i]);
+	return res;
+}
+
 void TemplateLayout::parser(QList<token> tokenList, int from, int to, QTextStream &out, State &state)
 {
 	for (int pos = from; pos < to; ++pos) {
@@ -352,12 +362,12 @@ void TemplateLayout::parser(QList<token> tokenList, int from, int to, QTextStrea
 					parser_for(tokenList, pos, loop_end, capture, state, state.dives, state.currentDive);
 				} else if (listname == "cylinders") {
 					if (state.currentDive)
-						parser_for(tokenList, pos, loop_end, capture, state, state.currentDive->cylinders, state.currentCylinder);
+						parser_for(tokenList, pos, loop_end, capture, state, formatCylinders(*state.currentDive), state.currentCylinder);
 					else
 						qWarning("cylinders loop outside of dive");
 				} else if (listname == "cylinderObjects") {
 					if (state.currentDive)
-						parser_for(tokenList, pos, loop_end, capture, state, state.currentDive->cylinderObjects, state.currentCylinderObject);
+						parser_for(tokenList, pos, loop_end, capture, state, cylinderList(*state.currentDive), state.currentCylinderObject);
 					else
 						qWarning("cylinderObjects loop outside of dive");
 				} else {
@@ -490,7 +500,7 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 	} else if (list == "cylinderObjects") {
 		if (!state.currentCylinderObject)
 			return QVariant();
-		const CylinderObjectHelper &object = *state.currentCylinderObject;
+		const CylinderObjectHelper object(*state.currentCylinderObject);
 		if (property == "description") {
 			return object.description;
 		} else if (property == "size") {
@@ -507,7 +517,7 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 	} else if (list == "dives") {
 		if (!state.currentDive)
 			return QVariant();
-		const DiveObjectHelperGrantlee &object = *state.currentDive;
+		const DiveObjectHelper object(*state.currentDive);
 		if (property == "number") {
 			return object.number;
 		} else if (property == "id") {
@@ -572,8 +582,6 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 			return object.cylinderList();
 		} else if (property == "cylinders") {
 			return object.cylinders;
-		} else if (property == "cylinderObjects") {
-			return QVariant::fromValue(object.cylinderObjects);
 		} else if (property == "maxcns") {
 			return object.maxcns;
 		} else if (property == "otu") {
