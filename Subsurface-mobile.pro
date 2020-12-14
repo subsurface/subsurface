@@ -89,6 +89,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/membuffer.c \
 	core/selection.cpp \
 	core/sha1.c \
+	core/string-format.c \
 	core/strtod.c \
 	core/tag.c \
 	core/taxonomy.c \
@@ -222,6 +223,7 @@ HEADERS += \
 	core/selection.h \
 	core/sha1.h \
 	core/strndup.h \
+	core/string-format.h \
 	core/subsurfacestartup.h \
 	core/subsurfacesysinfo.h \
 	core/taxonomy.h \

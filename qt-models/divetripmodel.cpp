@@ -3,6 +3,7 @@
 #include "core/divefilter.h"
 #ifdef SUBSURFACE_MOBILE
 #include "qt-models/mobilelistmodel.h"
+#include "core/string-format.h"
 #endif
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
@@ -225,11 +226,11 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 	case MobileListModel::DiveSiteRole: return QVariant::fromValue(d->dive_site);
 	case MobileListModel::CylinderRole: return formatGetCylinder(d).join(", ");
 	case MobileListModel::GetCylinderRole: return formatGetCylinder(d);
-	case MobileListModel::CylinderListRole: return getFullCylinderList();
+	case MobileListModel::CylinderListRole: return formatFullCylinderList();
 	case MobileListModel::SingleWeightRole: return d->weightsystems.nr <= 1;
-	case MobileListModel::StartPressureRole: return getStartPressure(d);
-	case MobileListModel::EndPressureRole: return getEndPressure(d);
-	case MobileListModel::FirstGasRole: return getFirstGas(d);
+	case MobileListModel::StartPressureRole: return formatStartPressure(d);
+	case MobileListModel::EndPressureRole: return formatEndPressure(d);
+	case MobileListModel::FirstGasRole: return formatFirstGas(d);
 	case MobileListModel::SelectedRole: return d->selected;
 	case MobileListModel::DiveInTripRole: return d->divetrip != NULL;
 	case MobileListModel::IsInvalidRole: return d->invalid;
