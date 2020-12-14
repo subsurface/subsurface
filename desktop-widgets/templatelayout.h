@@ -3,9 +3,9 @@
 #define TEMPLATELAYOUT_H
 
 #include "core/statistics.h"
+#include "core/equipment.h"
 #include <QStringList>
 
-class DiveObjectHelperGrantlee;
 class CylinderObjectHelper;
 struct print_options;
 struct template_options;
@@ -36,14 +36,14 @@ public:
 
 private:
 	struct State {
-		QList<DiveObjectHelperGrantlee> dives;
+		QList<const dive *> dives;
 		QList<stats_t *> years;
 		QMap<QString, QString> types;
 		int forloopiterator = -1;
-		const DiveObjectHelperGrantlee *currentDive = nullptr;
+		const dive * const *currentDive = nullptr;
 		const stats_t * const *currentYear = nullptr;
 		const QString *currentCylinder = nullptr;
-		const CylinderObjectHelper *currentCylinderObject = nullptr;
+		const cylinder_t * const *currentCylinderObject = nullptr;
 	};
 	const print_options &printOptions;
 	const template_options &templateOptions;

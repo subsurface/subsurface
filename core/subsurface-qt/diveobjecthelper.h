@@ -96,20 +96,6 @@ public:
 	QString waterType;
 };
 
-// This is an extended version of DiveObjectHelper that also keeps track of cylinder data.
-// It is used by grantlee to display structured cylinder data.
-// Note: this grantlee feature is undocumented. If there turns out to be no users, we might
-// want to remove this class.
-class DiveObjectHelperGrantlee : public DiveObjectHelper {
-	Q_GADGET
-	Q_PROPERTY(QVector<CylinderObjectHelper> cylinderObjects MEMBER cylinderObjects CONSTANT)
-public:
-	DiveObjectHelperGrantlee();
-	DiveObjectHelperGrantlee(const struct dive *dive);
-	QVector<CylinderObjectHelper> cylinderObjects;
-};
-
 Q_DECLARE_METATYPE(DiveObjectHelper)
-Q_DECLARE_METATYPE(DiveObjectHelperGrantlee)
 
 #endif

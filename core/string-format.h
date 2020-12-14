@@ -15,5 +15,6 @@ QStringList formatStartPressure(const dive *d);
 QStringList formatEndPressure(const dive *d);
 QStringList formatFirstGas(const dive *d);
 QStringList formatFullCylinderList();
+QStringList formatCylinders(const dive *d);
 
 #endif
