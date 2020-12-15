@@ -48,7 +48,6 @@
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "core/settings/qPrefUnit.h"
-#include "core/subsurface-qt/diveobjecthelper.h"
 #include "core/trip.h"
 #include "backend-shared/exportfuncs.h"
 #include "core/worldmap-save.h"
