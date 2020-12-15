@@ -6,7 +6,6 @@
 #include "core/equipment.h"
 #include <QStringList>
 
-class CylinderObjectHelper;
 struct print_options;
 struct template_options;
 class QTextStream;
