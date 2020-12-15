@@ -2,7 +2,7 @@
 #ifndef DIVE_QOBJECT_H
 #define DIVE_QOBJECT_H
 
-#include "cylinderobjecthelper.h"
+#include "core/units.h"
 #include <QObject>
 #include <QString>
 #include <QStringList>
