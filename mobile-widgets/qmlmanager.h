@@ -261,10 +261,10 @@ private:
 	QString m_notificationText;
 	qreal m_lastDevicePixelRatio;
 	QElapsedTimer timer;
-	bool checkDate(const DiveObjectHelper &myDive, struct dive *d, QString date);
-	bool checkLocation(DiveSiteChange &change, const DiveObjectHelper &myDive, struct dive *d, QString location, QString gps);
-	bool checkDuration(const DiveObjectHelper &myDive, struct dive *d, QString duration);
-	bool checkDepth(const DiveObjectHelper &myDive, struct dive *d, QString depth);
+	bool checkDate(struct dive *d, QString date);
+	bool checkLocation(DiveSiteChange &change, struct dive *d, QString location, QString gps);
+	bool checkDuration(struct dive *d, QString duration);
+	bool checkDepth(struct dive *d, QString depth);
 	bool currentGitLocalOnly;
 	bool localChanges;
 	QString m_progressMessage;

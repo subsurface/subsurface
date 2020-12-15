@@ -197,11 +197,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 	// We have to return a QString as trip-id, because that will be used as section
 	// variable in the QtQuick list view. That has to be a string because it will try
 	// to do locale-aware sorting. And amazingly this can't be changed.
-	case MobileListModel::DateTimeRole: {
-		QDateTime localTime = timestampToDateTime(d->when);
-		return QStringLiteral("%1 %2").arg(localTime.date().toString(prefs.date_format_short),
-						   localTime.time().toString(prefs.time_format));
-		}
+	case MobileListModel::DateTimeRole: return formatDiveDateTime(d);
 	case MobileListModel::IdRole: return d->id;
 	case MobileListModel::NumberRole: return d->number;
 	case MobileListModel::LocationRole: return get_dive_location(d);

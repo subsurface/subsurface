@@ -38,6 +38,7 @@
 #include "core/downloadfromdcthread.h"
 #include "core/subsurfacestartup.h" // for ignore_bt flag
 #include "core/subsurface-string.h"
+#include "core/string-format.h"
 #include "core/pref.h"
 #include "core/selection.h"
 #include "core/ssrf.h"
@@ -851,9 +852,9 @@ static void setupDivesite(DiveSiteChange &res, struct dive *d, struct dive_site 
 	res.changed = true;
 }
 
-bool QMLManager::checkDate(const DiveObjectHelper &myDive, struct dive *d, QString date)
+bool QMLManager::checkDate(struct dive *d, QString date)
 {
-	QString oldDate = myDive.date() + " " + myDive.time();
+	QString oldDate = formatDiveDateTime(d);
 	if (date != oldDate) {
 		QDateTime newDate;
 		// what a pain - Qt will not parse dates if the day of the week is incorrect
@@ -956,12 +957,13 @@ parsed:
 	return false;
 }
 
-bool QMLManager::checkLocation(DiveSiteChange &res, const DiveObjectHelper &myDive, struct dive *d, QString location, QString gps)
+bool QMLManager::checkLocation(DiveSiteChange &res, struct dive *d, QString location, QString gps)
 {
 	struct dive_site *ds = get_dive_site_for_dive(d);
 	bool changed = false;
-	qDebug() << "checkLocation" << location << "gps" << gps << "dive had" << myDive.location << "gps" << myDive.gas;
-	if (myDive.location != location) {
+	QString oldLocation = get_dive_location(d);
+	qDebug() << "checkLocation" << location << "gps" << gps << "dive had" << oldLocation << "gps" << formatDiveGPS(d);
+	if (oldLocation != location) {
 		ds = get_dive_site_by_name(qPrintable(location), &dive_site_table);
 		if (!ds && !location.isEmpty()) {
 			res.createdDs.reset(alloc_dive_site_with_name(qPrintable(location)));
@@ -974,7 +976,7 @@ bool QMLManager::checkLocation(DiveSiteChange &res, const DiveObjectHelper &myDi
 	// now make sure that the GPS coordinates match - if the user changed the name but not
 	// the GPS coordinates, this still does the right thing as the now new dive site will
 	// have no coordinates, so the coordinates from the edit screen will get added
-	if (myDive.gps != gps) {
+	if (formatDiveGPS(d) != gps) {
 		double lat, lon;
 		if (parseGpsText(gps, &lat, &lon)) {
 			qDebug() << "parsed GPS, using it";
@@ -999,9 +1001,9 @@ bool QMLManager::checkLocation(DiveSiteChange &res, const DiveObjectHelper &myDi
 	return changed | res.changed;
 }
 
-bool QMLManager::checkDuration(const DiveObjectHelper &myDive, struct dive *d, QString duration)
+bool QMLManager::checkDuration(struct dive *d, QString duration)
 {
-	if (myDive.duration != duration) {
+	if (formatDiveDuration(d) != duration) {
 		int h = 0, m = 0, s = 0;
 		QRegExp r1(QStringLiteral("(\\d*)\\s*%1[\\s,:]*(\\d*)\\s*%2[\\s,:]*(\\d*)\\s*%3").arg(tr("h")).arg(tr("min")).arg(tr("sec")), Qt::CaseInsensitive);
 		QRegExp r2(QStringLiteral("(\\d*)\\s*%1[\\s,:]*(\\d*)\\s*%2").arg(tr("h")).arg(tr("min")), Qt::CaseInsensitive);
@@ -1038,9 +1040,9 @@ bool QMLManager::checkDuration(const DiveObjectHelper &myDive, struct dive *d, Q
 	return false;
 }
 
-bool QMLManager::checkDepth(const DiveObjectHelper &myDive, dive *d, QString depth)
+bool QMLManager::checkDepth(dive *d, QString depth)
 {
-	if (myDive.depth != depth) {
+	if (get_depth_string(d->dc.maxdepth.mm, true, true) != depth) {
 		int depthValue = parseLengthToMm(depth);
 		// the QML code should stop negative depth, but massively huge depth can make
 		// the profile extremely slow or even run out of memory and crash, so keep
@@ -1072,7 +1074,6 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	Command::OwningDivePtr d_ptr(alloc_dive()); // Automatically delete dive if we exit early!
 	dive *d = d_ptr.get();
 	copy_dive(orig, d);
-	DiveObjectHelper myDive(d);
 
 	// notes comes back as rich text - let's convert this into plain text
 	QTextDocument doc;
@@ -1081,28 +1082,28 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 
 	bool diveChanged = false;
 
-	diveChanged = checkDate(myDive, d, date);
+	diveChanged = checkDate(d, date);
 
 	DiveSiteChange dsChange;
-	diveChanged |= checkLocation(dsChange, myDive, d, location, gps);
+	diveChanged |= checkLocation(dsChange, d, location, gps);
 
-	diveChanged |= checkDuration(myDive, d, duration);
+	diveChanged |= checkDuration(d, duration);
 
-	diveChanged |= checkDepth(myDive, d, depth);
+	diveChanged |= checkDepth(d, depth);
 
-	if (QString::number(myDive.number) != number) {
+	if (QString::number(d->number) != number) {
 		diveChanged = true;
 		d->number = number.toInt();
 	}
-	if (myDive.airTemp != airtemp) {
+	if (get_temperature_string(d->airtemp, true) != airtemp) {
 		diveChanged = true;
 		d->airtemp.mkelvin = parseTemperatureToMkelvin(airtemp);
 	}
-	if (myDive.waterTemp != watertemp) {
+	if (get_temperature_string(d->watertemp, true) != watertemp) {
 		diveChanged = true;
 		d->watertemp.mkelvin = parseTemperatureToMkelvin(watertemp);
 	}
-	if (myDive.sumWeight != weight) {
+	if (formatSumWeight(d) != weight) {
 		diveChanged = true;
 		// not sure what we'd do if there was more than one weight system
 		// defined - for now just ignore that case
@@ -1119,7 +1120,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		startpressure = QStringList();
 	if (endpressure == QStringList(QString()))
 		endpressure = QStringList();
-	if (myDive.startPressure != startpressure || myDive.endPressure != endpressure) {
+	if (formatStartPressure(d) != startpressure || formatEndPressure(d) != endpressure) {
 		diveChanged = true;
 		for ( int i = 0, j = 0 ; j < startpressure.length() && j < endpressure.length() ; i++ ) {
 			if (state != "add" && !is_cylinder_used(d, i))
@@ -1135,7 +1136,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		}
 	}
 	// gasmix for first cylinder
-	if (myDive.firstGas != gasmix) {
+	if (formatFirstGas(d) != gasmix) {
 		for ( int i = 0, j = 0 ; j < gasmix.length() ; i++ ) {
 			if (state != "add" && !is_cylinder_used(d, i))
 				continue;
@@ -1154,7 +1155,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		}
 	}
 	// info for first cylinder
-	if (myDive.getCylinder != usedCylinder) {
+	if (formatGetCylinder(d) != usedCylinder) {
 		diveChanged = true;
 		int size = 0, wp = 0, j = 0, k = 0;
 		for (j = 0; k < usedCylinder.length(); j++) {
@@ -1180,12 +1181,12 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 			k++;
 		}
 	}
-	if (myDive.suit != suit) {
+	if (d->suit != suit) {
 		diveChanged = true;
 		free(d->suit);
 		d->suit = copy_qstring(suit);
 	}
-	if (myDive.buddy != buddy) {
+	if (d->buddy != buddy) {
 		if (buddy.contains(",")){
 			buddy = buddy.replace(QRegExp("\\s*,\\s*"), ", ");
 		}
@@ -1193,7 +1194,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		free(d->buddy);
 		d->buddy = copy_qstring(buddy);
 	}
-	if (myDive.divemaster != diveMaster) {
+	if (d->divemaster != diveMaster) {
 		if (diveMaster.contains(",")){
 			diveMaster = diveMaster.replace(QRegExp("\\s*,\\s*"), ", ");
 		}
@@ -1201,15 +1202,15 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		free(d->divemaster);
 		d->divemaster = copy_qstring(diveMaster);
 	}
-	if (myDive.rating != rating) {
+	if (d->rating != rating) {
 		diveChanged = true;
 		d->rating = rating;
 	}
-	if (myDive.visibility != visibility) {
+	if (d->visibility != visibility) {
 		diveChanged = true;
 		d->visibility = visibility;
 	}
-	if (myDive.notes != notes) {
+	if (formatNotes(d) != notes) {
 		diveChanged = true;
 		free(d->notes);
 		d->notes = copy_qstring(notes);

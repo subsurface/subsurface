@@ -250,3 +250,10 @@ QString formatDiveTime(const dive *d)
 	QDateTime localTime = timestampToDateTime(d->when);
 	return localTime.time().toString(prefs.time_format);
 }
+
+QString formatDiveDateTime(const dive *d)
+{
+	QDateTime localTime = timestampToDateTime(d->when);
+	return QStringLiteral("%1 %2").arg(localTime.date().toString(prefs.date_format_short),
+					   localTime.time().toString(prefs.time_format));
+}
