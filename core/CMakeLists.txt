@@ -244,8 +244,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	settings/qPrefUpdateManager.h
 
 	#Subsurface Qt have the Subsurface structs QObjectified for easy access via QML.
-	subsurface-qt/cylinderobjecthelper.cpp
-	subsurface-qt/cylinderobjecthelper.h
 	subsurface-qt/divelistnotifier.cpp
 	subsurface-qt/divelistnotifier.h
 	subsurface-qt/diveobjecthelper.cpp

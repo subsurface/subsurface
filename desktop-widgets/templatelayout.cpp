@@ -10,7 +10,6 @@
 #include "core/selection.h"
 #include "core/qthelper.h"
 #include "core/string-format.h"
-#include "core/subsurface-qt/cylinderobjecthelper.h" // TODO: remove once grantlee supports Q_GADGET objects
 
 QList<QString> grantlee_templates, grantlee_statistics_templates;
 
@@ -499,19 +498,19 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 	} else if (list == "cylinderObjects") {
 		if (!state.currentCylinderObject)
 			return QVariant();
-		const CylinderObjectHelper object(*state.currentCylinderObject);
+		const cylinder_t *cylinder = *state.currentCylinderObject;
 		if (property == "description") {
-			return object.description;
+			return cylinder->type.description;
 		} else if (property == "size") {
-			return object.size;
+			return get_volume_string(cylinder->type.size, true);
 		} else if (property == "workingPressure") {
-			return object.workingPressure;
+			return get_pressure_string(cylinder->type.workingpressure, true);
 		} else if (property == "startPressure") {
-			return object.startPressure;
+			return get_pressure_string(cylinder->start, true);
 		} else if (property == "endPressure") {
-			return object.endPressure;
+			return get_pressure_string(cylinder->end, true);
 		} else if (property == "gasMix") {
-			return object.gasMix;
+			return get_gas_string(cylinder->gasmix);
 		}
 	} else if (list == "dives") {
 		if (!state.currentDive)
