@@ -14,7 +14,15 @@ QStringList formatGetCylinder(const dive *d);
 QStringList formatStartPressure(const dive *d);
 QStringList formatEndPressure(const dive *d);
 QStringList formatFirstGas(const dive *d);
+QString formatGas(const dive *d);
 QStringList formatFullCylinderList();
 QStringList formatCylinders(const dive *d);
+QString formatSumWeight(const dive *d);
+QString formatWeightList(const dive *d);
+QStringList formatWeights(const dive *d);
+QString formatDiveDuration(const dive *d);
+QString formatDiveGPS(const dive *d);
+QString formatDiveDate(const dive *d);
+QString formatDiveTime(const dive *d);
 
 #endif

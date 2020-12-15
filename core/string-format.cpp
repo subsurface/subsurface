@@ -3,6 +3,7 @@
 #include "divesite.h"
 #include "qthelper.h"
 #include "subsurface-string.h"
+#include <QDateTime>
 #include <QTextDocument>
 
 enum returnPressureSelector { START_PRESSURE, END_PRESSURE };
@@ -163,4 +164,89 @@ QStringList formatCylinders(const dive *d)
 		cylinders << cyl;
 	}
 	return cylinders;
+}
+
+QString formatGas(const dive *d)
+{
+	/*WARNING: here should be the gastlist, returned
+	 * from the get_gas_string function or this is correct?
+	 */
+	QString gas, gases;
+	for (int i = 0; i < d->cylinders.nr; i++) {
+		if (!is_cylinder_used(d, i))
+			continue;
+		gas = get_cylinder(d, i)->type.description;
+		if (!gas.isEmpty())
+			gas += QChar(' ');
+		gas += gasname(get_cylinder(d, i)->gasmix);
+		// if has a description and if such gas is not already present
+		if (!gas.isEmpty() && gases.indexOf(gas) == -1) {
+			if (!gases.isEmpty())
+				gases += QString(" / ");
+			gases += gas;
+		}
+	}
+	return gases;
+}
+
+QString formatSumWeight(const dive *d)
+{
+	return get_weight_string(weight_t { total_weight(d) }, true);
+}
+
+static QString getFormattedWeight(const struct dive *dive, int idx)
+{
+	const weightsystem_t *weight = &dive->weightsystems.weightsystems[idx];
+	if (!weight->description)
+		return QString();
+	QString fmt = QString(weight->description);
+	fmt += ", " + get_weight_string(weight->weight, true);
+	return fmt;
+}
+
+QString formatWeightList(const dive *d)
+{
+	QString weights;
+	for (int i = 0; i < d->weightsystems.nr; i++) {
+		QString w = getFormattedWeight(d, i);
+		if (w.isEmpty())
+			continue;
+		weights += w + "; ";
+	}
+	return weights;
+}
+
+QStringList formatWeights(const dive *d)
+{
+	QStringList weights;
+	for (int i = 0; i < d->weightsystems.nr; i++) {
+		QString w = getFormattedWeight(d, i);
+		if (w.isEmpty())
+			continue;
+		weights << w;
+	}
+	return weights;
+}
+
+QString formatDiveDuration(const dive *d)
+{
+	return get_dive_duration_string(d->duration.seconds,
+					gettextFromC::tr("h"), gettextFromC::tr("min"));
+}
+
+QString formatDiveGPS(const dive *d)
+{
+	return d->dive_site ? printGPSCoords(&d->dive_site->location) : QString();
+}
+
+QString formatDiveDate(const dive *d)
+{
+	QDateTime localTime = timestampToDateTime(d->when);
+	return localTime.date().toString(prefs.date_format_short);
+}
+
+QString formatDiveTime(const dive *d)
+{
+	QDateTime localTime = timestampToDateTime(d->when);
+	return localTime.time().toString(prefs.time_format);
 }

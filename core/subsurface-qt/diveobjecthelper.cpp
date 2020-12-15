@@ -19,64 +19,6 @@
 static int callCounter = 0;
 #endif /* defined(DEBUG_DOH) */
 
-
-static QString getFormattedWeight(const struct dive *dive, int idx)
-{
-	const weightsystem_t *weight = &dive->weightsystems.weightsystems[idx];
-	if (!weight->description)
-		return QString();
-	QString fmt = QString(weight->description);
-	fmt += ", " + get_weight_string(weight->weight, true);
-	return fmt;
-}
-
-static QString formatGas(const dive *d)
-{
-	/*WARNING: here should be the gastlist, returned
-	 * from the get_gas_string function or this is correct?
-	 */
-	QString gas, gases;
-	for (int i = 0; i < d->cylinders.nr; i++) {
-		if (!is_cylinder_used(d, i))
-			continue;
-		gas = get_cylinder(d, i)->type.description;
-		if (!gas.isEmpty())
-			gas += QChar(' ');
-		gas += gasname(get_cylinder(d, i)->gasmix);
-		// if has a description and if such gas is not already present
-		if (!gas.isEmpty() && gases.indexOf(gas) == -1) {
-			if (!gases.isEmpty())
-				gases += QString(" / ");
-			gases += gas;
-		}
-	}
-	return gases;
-}
-
-static QString formatWeightList(const dive *d)
-{
-	QString weights;
-	for (int i = 0; i < d->weightsystems.nr; i++) {
-		QString w = getFormattedWeight(d, i);
-		if (w.isEmpty())
-			continue;
-		weights += w + "; ";
-	}
-	return weights;
-}
-
-static QStringList formatWeights(const dive *d)
-{
-	QStringList weights;
-	for (int i = 0; i < d->weightsystems.nr; i++) {
-		QString w = getFormattedWeight(d, i);
-		if (w.isEmpty())
-			continue;
-		weights << w;
-	}
-	return weights;
-}
-
 QString formatDiveSalinity(const dive *d)
 {
 	int salinity = get_dive_salinity(d);
@@ -105,11 +47,11 @@ DiveObjectHelper::DiveObjectHelper(const struct dive *d) :
 	surge(d->surge),
 	chill(d->chill),
 	timestamp(d->when),
-	location(get_dive_location(d) ? QString::fromUtf8(get_dive_location(d)) : QString()),
-	gps(d->dive_site ? printGPSCoords(&d->dive_site->location) : QString()),
+	location(get_dive_location(d)),
+	gps(formatDiveGPS(d)),
 	gps_decimal(format_gps_decimal(d)),
 	dive_site(QVariant::fromValue(d->dive_site)),
-	duration(get_dive_duration_string(d->duration.seconds, gettextFromC::tr("h"), gettextFromC::tr("min"))),
+	duration(formatDiveDuration(d)),
 	noDive(d->duration.seconds == 0 && d->dc.duration.seconds == 0),
 	depth(get_depth_string(d->dc.maxdepth.mm, true, true)),
 	divemaster(d->divemaster ? d->divemaster : QString()),
@@ -127,7 +69,7 @@ DiveObjectHelper::DiveObjectHelper(const struct dive *d) :
 	cylinders(formatCylinders(d)),
 	maxcns(d->maxcns),
 	otu(d->otu),
-	sumWeight(get_weight_string(weight_t { total_weight(d) }, true)),
+	sumWeight(formatSumWeight(d)),
 	getCylinder(formatGetCylinder(d)),
 	startPressure(formatStartPressure(d)),
 	endPressure(formatEndPressure(d)),
