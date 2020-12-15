@@ -10,7 +10,6 @@
 #include "core/selection.h"
 #include "core/qthelper.h"
 #include "core/string-format.h"
-#include "core/subsurface-qt/diveobjecthelper.h"
 #include "core/subsurface-qt/cylinderobjecthelper.h" // TODO: remove once grantlee supports Q_GADGET objects
 
 QList<QString> grantlee_templates, grantlee_statistics_templates;
@@ -517,85 +516,83 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 	} else if (list == "dives") {
 		if (!state.currentDive)
 			return QVariant();
-		const DiveObjectHelper object(*state.currentDive);
+		const dive *d = *state.currentDive;
 		if (property == "number") {
-			return object.number;
+			return d->number;
 		} else if (property == "id") {
-			return object.id;
+			return d->id;
 		} else if (property == "rating") {
-			return object.rating;
+			return d->rating;
 		} else if (property == "visibility") {
-			return object.visibility;
+			return d->visibility;
 		} else if (property == "wavesize") {
-			return object.wavesize;
+			return d->wavesize;
 		} else if (property == "current") {
-			return object.current;
+			return d->current;
 		} else if (property == "surge") {
-			return object.surge;
+			return d->surge;
 		} else if (property == "chill") {
-			return object.chill;
+			return d->chill;
 		} else if (property == "date") {
-			return object.date();
+			return formatDiveDate(d);
 		} else if (property == "time") {
-			return object.time();
+			return formatDiveTime(d);
 		} else if (property == "timestamp") {
-			return QVariant::fromValue(object.timestamp);
+			return QVariant::fromValue(d->when);
 		} else if (property == "location") {
-			return object.location;
+			return get_dive_location(d);
 		} else if (property == "gps") {
-			return object.gps;
+			return formatDiveGPS(d);
 		} else if (property == "gps_decimal") {
-			return object.gps_decimal;
-		} else if (property == "dive_site") {
-			return object.dive_site;
+			return format_gps_decimal(d);
 		} else if (property == "duration") {
-			return object.duration;
+			return formatDiveDuration(d);
 		} else if (property == "noDive") {
-			return object.noDive;
+			return d->duration.seconds == 0 && d->dc.duration.seconds == 0;
 		} else if (property == "depth") {
-			return object.depth;
+			return get_depth_string(d->dc.maxdepth.mm, true, true);
 		} else if (property == "divemaster") {
-			return object.divemaster;
+			return d->divemaster;
 		} else if (property == "buddy") {
-			return object.buddy;
+			return d->buddy;
 		} else if (property == "airTemp") {
-			return object.airTemp;
+			return get_temperature_string(d->airtemp, true);
 		} else if (property == "waterTemp") {
-			return object.waterTemp;
+			return get_temperature_string(d->watertemp, true);
 		} else if (property == "notes") {
-			return object.notes;
+			return formatNotes(d);
 		} else if (property == "tags") {
-			return object.tags;
+			return get_taglist_string(d->tag_list);
 		} else if (property == "gas") {
-			return object.gas;
+			return formatGas(d);
 		} else if (property == "sac") {
-			return object.sac;
+			return formatSac(d);
 		} else if (property == "weightList") {
-			return object.weightList;
+			return formatWeightList(d);
 		} else if (property == "weights") {
-			return object.weights;
+			return formatWeights(d);
 		} else if (property == "singleWeight") {
-			return object.singleWeight;
+			return d->weightsystems.nr <= 1;
 		} else if (property == "suit") {
-			return object.suit;
+			return d->suit;
 		} else if (property == "cylinderList") {
-			return object.cylinderList();
+			return formatFullCylinderList();
 		} else if (property == "cylinders") {
-			return object.cylinders;
+			return formatCylinders(d);
 		} else if (property == "maxcns") {
-			return object.maxcns;
+			return d->maxcns;
 		} else if (property == "otu") {
-			return object.otu;
+			return d->otu;
 		} else if (property == "sumWeight") {
-			return object.sumWeight;
+			return formatSumWeight(d);
 		} else if (property == "getCylinder") {
-			return object.getCylinder;
+			return formatGetCylinder(d);
 		} else if (property == "startPressure") {
-			return object.startPressure;
+			return formatStartPressure(d);
 		} else if (property == "endPressure") {
-			return object.endPressure;
+			return formatEndPressure(d);
 		} else if (property == "firstGas") {
-			return object.firstGas;
+			return formatFirstGas(d);
 		}
 	}
 	return QVariant();
