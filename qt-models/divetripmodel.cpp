@@ -206,21 +206,21 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 	case MobileListModel::NumberRole: return d->number;
 	case MobileListModel::LocationRole: return get_dive_location(d);
 	case MobileListModel::DepthRole: return get_depth_string(d->dc.maxdepth.mm, true, true);
-	case MobileListModel::DurationRole: return get_dive_duration_string(d->duration.seconds, gettextFromC::tr("h"), gettextFromC::tr("min"));
+	case MobileListModel::DurationRole: return formatDiveDuration(d);
 	case MobileListModel::DepthDurationRole: return QStringLiteral("%1 / %2").arg(get_depth_string(d->dc.maxdepth.mm, true, true),
-								     get_dive_duration_string(d->duration.seconds, gettextFromC::tr("h"), gettextFromC::tr("min")));
+										      formatDiveDuration(d));
 	case MobileListModel::RatingRole: return d->rating;
 	case MobileListModel::VizRole: return d->visibility;
 	case MobileListModel::SuitRole: return d->suit;
 	case MobileListModel::AirTempRole: return get_temperature_string(d->airtemp, true);
 	case MobileListModel::WaterTempRole: return get_temperature_string(d->watertemp, true);
 	case MobileListModel::SacRole: return formatSac(d);
-	case MobileListModel::SumWeightRole: return get_weight_string(weight_t { total_weight(d) }, true);
-	case MobileListModel::DiveMasterRole: return d->divemaster ? d->divemaster : QString();
-	case MobileListModel::BuddyRole: return d->buddy ? d->buddy : QString();
+	case MobileListModel::SumWeightRole: return formatSumWeight(d);
+	case MobileListModel::DiveMasterRole: return d->divemaster;
+	case MobileListModel::BuddyRole: return d->buddy;
 	case MobileListModel::TagsRole: return get_taglist_string(d->tag_list);
 	case MobileListModel::NotesRole: return formatNotes(d);
-	case MobileListModel::GpsRole: return d->dive_site ? printGPSCoords(&d->dive_site->location) : QString();
+	case MobileListModel::GpsRole: return formatDiveGPS(d);
 	case MobileListModel::GpsDecimalRole: return format_gps_decimal(d);
 	case MobileListModel::NoDiveRole: return d->duration.seconds == 0 && d->dc.duration.seconds == 0;
 	case MobileListModel::DiveSiteRole: return QVariant::fromValue(d->dive_site);
