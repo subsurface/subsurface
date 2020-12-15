@@ -300,6 +300,7 @@ HEADERS += \
 	profile-widget/divetextitem.h
 
 RESOURCES += mobile-widgets/qml/mobile-resources.qrc \
+		mobile-widgets/3rdparty/icons.qrc \
 		map-widget/qml/map-widget.qrc
 
 android {
@@ -311,7 +312,6 @@ android {
 	# libkirigami library
 	RESOURCES += packaging/android/translations.qrc \
 		android-mobile/font.qrc \
-		mobile-widgets/3rdparty/icons.qrc \
 		mobile-widgets/3rdparty/kirigami/src/scenegraph/shaders/shaders.qrc
 	QT += androidextras
 	ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-mobile
