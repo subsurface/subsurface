@@ -246,8 +246,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	#Subsurface Qt have the Subsurface structs QObjectified for easy access via QML.
 	subsurface-qt/divelistnotifier.cpp
 	subsurface-qt/divelistnotifier.h
-	subsurface-qt/diveobjecthelper.cpp
-	subsurface-qt/diveobjecthelper.h
 
 	${SERIAL_FTDI}
 	${PLATFORM_SRC}
