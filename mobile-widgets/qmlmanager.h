@@ -23,7 +23,6 @@
 #endif
 
 class QAction;
-class DiveObjectHelper;
 struct DiveSiteChange; // An obscure implementation artifact - remove in due course.
 
 class QMLManager : public QObject {

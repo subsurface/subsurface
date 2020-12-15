@@ -122,7 +122,6 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/settings/qPrefLog.cpp \
 	core/settings/qPrefMedia.cpp \
 	core/settings/qPrefUpdateManager.cpp \
-	core/subsurface-qt/diveobjecthelper.cpp \
 	core/subsurface-qt/divelistnotifier.cpp \
 	backend-shared/exportfuncs.cpp \
 	backend-shared/plannershared.cpp \
@@ -257,7 +256,6 @@ HEADERS += \
 	core/settings/qPrefLog.h \
 	core/settings/qPrefMedia.h \
 	core/settings/qPrefUpdateManager.h \
-	core/subsurface-qt/diveobjecthelper.h \
 	core/subsurface-qt/divelistnotifier.h \
 	backend-shared/exportfuncs.h \
 	backend-shared/plannershared.h \
