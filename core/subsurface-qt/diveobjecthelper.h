@@ -96,6 +96,4 @@ public:
 	QString waterType;
 };
 
-Q_DECLARE_METATYPE(DiveObjectHelper)
-
 #endif
