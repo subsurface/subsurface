@@ -1,8 +1,8 @@
 <RCC>
 	<qresource prefix="/">
 		<!-- ********** Breeze icons that we use (directly or through Kirigami)  ********** -->
-		<file alias="/org/kde/kirigami/templates/private/go-next-symbolic">breeze-icons/icons/actions/24/go-next.svg</file>
-		<file alias="/org/kde/kirigami/templates/private/go-previous-symbolic">breeze-icons/icons/actions/24/go-previous.svg</file>
+		<file alias="/org/kde/kirigami.2/templates/private/go-next-symbolic">breeze-icons/icons/actions/24/go-next.svg</file>
+		<file alias="/org/kde/kirigami.2/templates/private/go-previous-symbolic">breeze-icons/icons/actions/24/go-previous.svg</file>
 		<file alias="go-next-symbolic">breeze-icons/icons/actions/24/go-next.svg</file>
 		<file alias="go-previous-symbolic">breeze-icons/icons/actions/24/go-previous.svg</file>
 		<file alias="icons/application-menu.svg">breeze-icons/icons/actions/24/application-menu.svg</file>
