@@ -45,7 +45,7 @@ Kirigami.ScrollablePage {
 				left: parent.left
 				right: parent.right
 			}
-			height: (isTrip ? 9 : 11) * Kirigami.Units.smallSpacing // delegateInnerItem.height
+			height: isTrip ? 1 + 8 * Kirigami.Units.smallSpacing : 11 * Kirigami.Units.smallSpacing // delegateInnerItem.height
 
 			onSelectedChanged: {
 				console.log("index " + index + " select changed to " + selected)
@@ -134,17 +134,6 @@ Kirigami.ScrollablePage {
 						}
 						color: subsurfaceTheme.lightPrimaryTextColor
 					}
-				}
-				Rectangle {
-					id: headingBottomLine
-					height: visible ? Kirigami.Units.smallSpacing : 0
-					visible: headingBackground.visible
-					anchors {
-						left: parent.left
-						right: parent.right
-						top: headingBackground.bottom
-					}
-					color: "#B2B2B2"
 				}
 
 				Rectangle {
