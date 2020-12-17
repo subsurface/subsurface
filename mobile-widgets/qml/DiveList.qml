@@ -95,10 +95,10 @@ Kirigami.ScrollablePage {
 					visible: isTrip
 					Rectangle {
 						id: dateBox
-						height: 1.8 * Kirigami.Units.gridUnit
-						width: 2.2 * Kirigami.Units.gridUnit
+						height: 1.5 * Kirigami.Units.gridUnit
+						width: 1.8 * Kirigami.Units.gridUnit
 						color: subsurfaceTheme.primaryColor
-						radius: Kirigami.Units.smallSpacing * 2
+						radius: Kirigami.Units.smallSpacing * 1.5
 						antialiasing: true
 						anchors {
 							verticalCenter: parent.verticalCenter
@@ -111,7 +111,7 @@ Kirigami.ScrollablePage {
 							color: subsurfaceTheme.primaryTextColor
 							font.pointSize: subsurfaceTheme.smallPointSize * 0.8
 							lineHeightMode: Text.FixedHeight
-							lineHeight: Kirigami.Units.gridUnit *.8
+							lineHeight: Kirigami.Units.gridUnit *.6
 							horizontalAlignment: Text.AlignHCenter
 							height: contentHeight
 							anchors {
