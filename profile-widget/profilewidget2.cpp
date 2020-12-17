@@ -1318,17 +1318,6 @@ void ProfileWidget2::setProfileState()
 }
 
 #ifndef SUBSURFACE_MOBILE
-void ProfileWidget2::clearHandlers()
-{
-	if (handles.count()) {
-		foreach (DiveHandler *handle, handles) {
-			scene()->removeItem(handle);
-			delete handle;
-		}
-		handles.clear();
-	}
-}
-
 void ProfileWidget2::setToolTipVisibile(bool visible)
 {
 	toolTipItem->setVisible(visible);
@@ -1339,7 +1328,6 @@ void ProfileWidget2::setAddState()
 	if (currentState == ADD)
 		return;
 
-	clearHandlers();
 	setProfileState();
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
@@ -1373,7 +1361,6 @@ void ProfileWidget2::setPlanState()
 	if (currentState == PLAN)
 		return;
 
-	clearHandlers();
 	setProfileState();
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);

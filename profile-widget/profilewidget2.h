@@ -163,9 +163,6 @@ private:
 	void createPPGas(PartialPressureGasItem *item, int verticalColumn, color_index_t color, color_index_t colorAlert,
 			 const double *thresholdSettingsMin, const double *thresholdSettingsMax);
 	void clearPictures();
-#ifndef SUBSURFACE_MOBILE
-	void clearHandlers();
-#endif
 	void plotPicturesInternal(const struct dive *d, bool synchronous);
 	void addDivemodeSwitch(int seconds, int divemode);
 	void addBookmark(int seconds);
