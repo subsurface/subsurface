@@ -1,18 +1,18 @@
-From b23502b18e8170d56a5fdf4d49c923ed674e7f66 Mon Sep 17 00:00:00 2001
+From 72745438d9b03348963e9b9b74ae00117ac97d79 Mon Sep 17 00:00:00 2001
 From: Dirk Hohndel <dirk@hohndel.org>
 Date: Wed, 25 Nov 2020 13:45:32 -0800
-Subject: [PATCH 04/11] action button: make wider for easier use
+Subject: [PATCH] action button: make wider for easier use
 
 And remove the horrible 'dragging the button opens the drawer' user
 experience. That's just unusable on a mobile device.
 
 Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
 ---
- src/controls/private/ActionButton.qml | 77 +++++++++------------------
- 1 file changed, 24 insertions(+), 53 deletions(-)
+ src/controls/private/ActionButton.qml | 81 +++++++++------------------
+ 1 file changed, 26 insertions(+), 55 deletions(-)
 
 diff --git a/src/controls/private/ActionButton.qml b/src/controls/private/ActionButton.qml
-index 030dae51..60dccb8f 100644
+index 030dae51..1d4e4b7a 100644
 --- a/src/controls/private/ActionButton.qml
 +++ b/src/controls/private/ActionButton.qml
 @@ -56,25 +56,9 @@ Item {
@@ -99,15 +99,18 @@ index 030dae51..60dccb8f 100644
              onPressAndHold: {
                  if (!actionUnderMouse) {
                      return;
-@@ -274,7 +223,7 @@ Item {
+@@ -274,9 +223,9 @@ Item {
                          bottomMargin: Units.smallSpacing
                      }
                      enabled: root.leftAction && root.leftAction.enabled
 -                    radius: Units.devicePixelRatio*2
 +                    radius: Units.devicePixelRatio*4
                      height: Units.iconSizes.smallMedium + Units.smallSpacing * 2
-                     width: height + (root.action ? Units.gridUnit*2 : 0)
+-                    width: height + (root.action ? Units.gridUnit*2 : 0)
++                    width: height + (root.action ? Units.gridUnit * 3 : 0)
                      visible: root.leftAction
+ 
+                     readonly property bool pressed: root.leftAction && root.leftAction.enabled && ((mouseArea.actionUnderMouse == root.leftAction && mouseArea.pressed) || root.leftAction.checked)
 @@ -309,6 +258,17 @@ Item {
                              margins: Units.smallSpacing * 2
                          }
@@ -126,6 +129,15 @@ index 030dae51..60dccb8f 100644
                  }
                  //right button
                  Rectangle {
+@@ -323,7 +283,7 @@ Item {
+                     enabled: root.rightAction && root.rightAction.enabled
+                     radius: Units.devicePixelRatio*2
+                     height: Units.iconSizes.smallMedium + Units.smallSpacing * 2
+-                    width: height + (root.action ? Units.gridUnit*2 : 0)
++                    width: height + (root.action ? Units.gridUnit * 3 : 0)
+                     visible: root.rightAction
+                     readonly property bool pressed: root.rightAction && root.rightAction.enabled && ((mouseArea.actionUnderMouse == root.rightAction && mouseArea.pressed) || root.rightAction.checked)
+                     property color baseColor: root.rightAction && root.rightAction.icon && root.rightAction.icon.color && root.rightAction.icon.color != undefined && root.rightAction.icon.color.a > 0 ? root.rightAction.icon.color : Theme.highlightColor
 @@ -355,6 +315,17 @@ Item {
                              margins: Units.smallSpacing * 2
                          }
