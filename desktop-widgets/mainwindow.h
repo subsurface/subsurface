@@ -205,6 +205,7 @@ private:
 	};
 
 	struct Quadrants {
+		bool allowUserChange; // Allow the user to change away from this state
 		Quadrant topLeft;
 		Quadrant topRight;
 		Quadrant bottomLeft;
@@ -213,6 +214,7 @@ private:
 
 	Quadrants applicationState[(size_t)ApplicationState::Count];
 	static void addWidgets(const Quadrant &);
+	bool userMayChangeAppState() const;
 	void setQuadrantWidget(const Quadrant &q, QSplitter *splitter);
 	void registerApplicationState(ApplicationState state, Quadrants q);
 
