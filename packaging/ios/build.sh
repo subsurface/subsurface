@@ -45,9 +45,6 @@ cd ..
 export PARENT_DIR=$PWD
 popd
 
-# prepare build dir
-mkdir -p build-ios
-
 IOS_QT=~/Qt
 QT_VERSION=$(cd "$IOS_QT"; ls -d [1-9]* | awk -F. '{ printf("%02d.%02d.%02d\n", $1,$2,$3); }' | sort -n | tail -1 | sed -e 's/\.0/\./g;s/^0//')
 
@@ -249,8 +246,8 @@ for ARCH in $ARCHS; do
 done
 
 # build googlemaps
-mkdir -p "$PARENT_DIR"/googlemaps/build-ios
-pushd "$PARENT_DIR"/googlemaps/build-ios
+mkdir -p "$PARENT_DIR"/googlemaps-build
+pushd "$PARENT_DIR"/googlemaps-build
 "$IOS_QT"/"$QT_VERSION"/ios/bin/qmake "$PARENT_DIR"/googlemaps/googlemaps.pro CONFIG+=release
 make
 if [ "$DEBUGRELEASE" != "Release" ] ; then
