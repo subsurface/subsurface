@@ -162,7 +162,7 @@ Kirigami.ScrollablePage {
 						}
 						Item {
 							id: diveListEntry
-							height: visible ? 10 * Kirigami.Units.smallSpacing : 0
+							height: visible ? 10 * Kirigami.Units.smallSpacing - 1 : 0
 							anchors {
 								right: parent.right
 								left: leftBarDive.right
