@@ -175,28 +175,28 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	diveSiteEdit.reset(new LocationInformationWidget);
 
-	registerApplicationState(ApplicationState::Default, { { mainTab.get(), FLAG_NONE }, { profileContainer, FLAG_NONE },
-							      { diveList, FLAG_NONE },      { mapWidget, FLAG_NONE } });
-	registerApplicationState(ApplicationState::EditDive, { { mainTab.get(), FLAG_NONE }, { profileContainer, FLAG_NONE },
-							       { diveList, FLAG_NONE },       { mapWidget, FLAG_NONE } });
-	registerApplicationState(ApplicationState::PlanDive, { { &plannerWidgets->plannerWidget, FLAG_NONE },         { profileContainer, FLAG_NONE },
-							       { &plannerWidgets->plannerSettingsWidget, FLAG_NONE }, { &plannerWidgets->plannerDetails, FLAG_NONE } });
-	registerApplicationState(ApplicationState::EditPlannedDive, { { &plannerWidgets->plannerWidget, FLAG_NONE }, { profileContainer, FLAG_NONE },
-								      { diveList, FLAG_NONE },          { mapWidget, FLAG_NONE } });
-	registerApplicationState(ApplicationState::EditDiveSite, { { diveSiteEdit.get(), FLAG_NONE }, { profileContainer, FLAG_DISABLED },
-								   { diveList, FLAG_DISABLED }, { mapWidget, FLAG_NONE } });
-	registerApplicationState(ApplicationState::FilterDive, { { mainTab.get(), FLAG_NONE }, { profileContainer, FLAG_NONE },
-								 { diveList, FLAG_NONE },      { &filterWidget, FLAG_NONE } });
-	registerApplicationState(ApplicationState::Statistics, { { statistics, FLAG_NONE }, { profileContainer, FLAG_NONE },
-								 { diveList, FLAG_DISABLED },   { &filterWidget, FLAG_NONE } });
-	registerApplicationState(ApplicationState::MapMaximized, { { nullptr, FLAG_NONE }, { nullptr, FLAG_NONE },
-								   { nullptr, FLAG_NONE }, { mapWidget, FLAG_NONE } });
-	registerApplicationState(ApplicationState::ProfileMaximized, { { nullptr, FLAG_NONE }, { profileContainer, FLAG_NONE },
-								       { nullptr, FLAG_NONE }, { nullptr, FLAG_NONE } });
-	registerApplicationState(ApplicationState::ListMaximized, { { nullptr, FLAG_NONE },  { nullptr, FLAG_NONE },
-								    { diveList, FLAG_NONE }, { nullptr, FLAG_NONE } });
-	registerApplicationState(ApplicationState::InfoMaximized, { { mainTab.get(), FLAG_NONE }, { nullptr, FLAG_NONE },
-								    { nullptr, FLAG_NONE },       { nullptr, FLAG_NONE } });
+	registerApplicationState(ApplicationState::Default, { true, { mainTab.get(), FLAG_NONE }, { profileContainer, FLAG_NONE },
+								    { diveList, FLAG_NONE },      { mapWidget, FLAG_NONE } });
+	registerApplicationState(ApplicationState::EditDive, { false, { mainTab.get(), FLAG_NONE }, { profileContainer, FLAG_NONE },
+								      { diveList, FLAG_NONE },       { mapWidget, FLAG_NONE } });
+	registerApplicationState(ApplicationState::PlanDive, { false, { &plannerWidgets->plannerWidget, FLAG_NONE },         { profileContainer, FLAG_NONE },
+								      { &plannerWidgets->plannerSettingsWidget, FLAG_NONE }, { &plannerWidgets->plannerDetails, FLAG_NONE } });
+	registerApplicationState(ApplicationState::EditPlannedDive, { true, { &plannerWidgets->plannerWidget, FLAG_NONE }, { profileContainer, FLAG_NONE },
+									    { diveList, FLAG_NONE },          { mapWidget, FLAG_NONE } });
+	registerApplicationState(ApplicationState::EditDiveSite, { false, { diveSiteEdit.get(), FLAG_NONE }, { profileContainer, FLAG_DISABLED },
+									  { diveList, FLAG_DISABLED }, { mapWidget, FLAG_NONE } });
+	registerApplicationState(ApplicationState::FilterDive, { true, { mainTab.get(), FLAG_NONE }, { profileContainer, FLAG_NONE },
+								       { diveList, FLAG_NONE },      { &filterWidget, FLAG_NONE } });
+	registerApplicationState(ApplicationState::Statistics, { true, { statistics, FLAG_NONE }, { profileContainer, FLAG_NONE },
+								       { diveList, FLAG_DISABLED },   { &filterWidget, FLAG_NONE } });
+	registerApplicationState(ApplicationState::MapMaximized, { true, { nullptr, FLAG_NONE }, { nullptr, FLAG_NONE },
+									 { nullptr, FLAG_NONE }, { mapWidget, FLAG_NONE } });
+	registerApplicationState(ApplicationState::ProfileMaximized, { true, { nullptr, FLAG_NONE }, { profileContainer, FLAG_NONE },
+									     { nullptr, FLAG_NONE }, { nullptr, FLAG_NONE } });
+	registerApplicationState(ApplicationState::ListMaximized, { true, { nullptr, FLAG_NONE },  { nullptr, FLAG_NONE },
+									  { diveList, FLAG_NONE }, { nullptr, FLAG_NONE } });
+	registerApplicationState(ApplicationState::InfoMaximized, { true, { mainTab.get(), FLAG_NONE }, { nullptr, FLAG_NONE },
+									  { nullptr, FLAG_NONE },       { nullptr, FLAG_NONE } });
 	restoreSplitterSizes();
 	setApplicationState(ApplicationState::Default);
 
@@ -753,7 +753,7 @@ void MainWindow::planCreated()
 
 void MainWindow::on_actionReplanDive_triggered()
 {
-	if (!plannerStateClean() || !current_dive)
+	if (!plannerStateClean() || !current_dive || !userMayChangeAppState())
 		return;
 	else if (!is_dc_planner(&current_dive->dc)) {
 		if (QMessageBox::warning(this, tr("Warning"), tr("Trying to replan a dive that's not a planned dive."),
@@ -769,7 +769,7 @@ void MainWindow::on_actionReplanDive_triggered()
 
 void MainWindow::on_actionDivePlanner_triggered()
 {
-	if (!plannerStateClean())
+	if (!plannerStateClean() || !userMayChangeAppState())
 		return;
 
 	// put us in PLAN mode
@@ -837,26 +837,36 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 
 void MainWindow::on_actionViewList_triggered()
 {
+	if (!userMayChangeAppState())
+		return;
 	setApplicationState(ApplicationState::ListMaximized);
 }
 
 void MainWindow::on_actionViewProfile_triggered()
 {
+	if (!userMayChangeAppState())
+		return;
 	setApplicationState(ApplicationState::ProfileMaximized);
 }
 
 void MainWindow::on_actionViewInfo_triggered()
 {
+	if (!userMayChangeAppState())
+		return;
 	setApplicationState(ApplicationState::InfoMaximized);
 }
 
 void MainWindow::on_actionViewMap_triggered()
 {
+	if (!userMayChangeAppState())
+		return;
 	setApplicationState(ApplicationState::MapMaximized);
 }
 
 void MainWindow::on_actionViewAll_triggered()
 {
+	if (!userMayChangeAppState())
+		return;
 	setApplicationState(ApplicationState::Default);
 }
 
@@ -1492,7 +1502,7 @@ void MainWindow::on_actionImportDiveSites_triggered()
 void MainWindow::editCurrentDive()
 {
 	// We only allow editing of the profile for manually added dives.
-	if (!current_dive || !same_string(current_dive->dc.model, "manually added dive"))
+	if (!current_dive || !same_string(current_dive->dc.model, "manually added dive") || !userMayChangeAppState())
 		return;
 
 	// This shouldn't be possible, but let's make sure no weird "double editing" takes place.
@@ -1546,11 +1556,15 @@ void MainWindow::on_paste_triggered()
 
 void MainWindow::on_actionFilterTags_triggered()
 {
+	if (!userMayChangeAppState())
+		return;
 	setApplicationState(getAppState() == ApplicationState::FilterDive ? ApplicationState::Default : ApplicationState::FilterDive);
 }
 
 void MainWindow::on_actionStats_triggered()
 {
+	if (!userMayChangeAppState())
+		return;
 	setApplicationState(getAppState() == ApplicationState::Statistics ? ApplicationState::Default : ApplicationState::Statistics);
 }
 
@@ -1584,6 +1598,11 @@ void MainWindow::clearSplitters()
 	clearSplitter(ui.mainSplitter, this);
 }
 
+bool MainWindow::userMayChangeAppState() const
+{
+	return applicationState[(int)getAppState()].allowUserChange;
+}
+
 void MainWindow::setApplicationState(ApplicationState state)
 {
 	if (getAppState() == state)
@@ -1609,6 +1628,14 @@ void MainWindow::setApplicationState(ApplicationState state)
 	}
 
 	restoreSplitterSizes();
+
+	bool allowChange = userMayChangeAppState();
+	ui.actionViewAll->setEnabled(allowChange);
+	ui.actionViewList->setEnabled(allowChange);
+	ui.actionViewProfile->setEnabled(allowChange);
+	ui.actionViewInfo->setEnabled(allowChange);
+	ui.actionViewMap->setEnabled(allowChange);
+	ui.actionFilterTags->setEnabled(allowChange);
 }
 
 void MainWindow::showProgressBar()
