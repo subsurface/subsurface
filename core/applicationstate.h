@@ -13,6 +13,10 @@ enum class ApplicationState {
 	EditDiveSite,
 	FilterDive,
 	Statistics,
+	MapMaximized,
+	ProfileMaximized,
+	ListMaximized,
+	InfoMaximized,
 	Count
 };
 

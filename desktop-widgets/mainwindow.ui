@@ -32,20 +32,6 @@
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
-      <widget class="QSplitter" name="topSplitter">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <widget class="QStackedWidget" name="topLeft"/>
-       <widget class="QStackedWidget" name="topRight"/>
-      </widget>
-      <widget class="QSplitter" name="bottomSplitter">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <widget class="QStackedWidget" name="bottomLeft"/>
-       <widget class="QStackedWidget" name="bottomRight"/>
-      </widget>
      </widget>
     </item>
     <item>

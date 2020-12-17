@@ -125,7 +125,6 @@ MainWindow::MainWindow() : QMainWindow(),
 #ifndef NO_USERMANUAL
 	helpView(0),
 #endif
-	state(VIEWALL),
 	findMovedImagesDialog(nullptr)
 {
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
@@ -135,6 +134,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	Command::init();
 	// Define the States of the Application Here, Currently the states are situations where the different
 	// widgets will change on the mainwindow.
+
+	topSplitter = new QSplitter(Qt::Horizontal);
+	bottomSplitter = new QSplitter(Qt::Horizontal);
 
 	// for the "default" mode
 	mainTab.reset(new MainTab);
@@ -171,7 +173,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	profLayout->addWidget(graphics);
 	profileContainer->setLayout(profLayout);
 
-	diveSiteEdit = new LocationInformationWidget(this);
+	diveSiteEdit.reset(new LocationInformationWidget);
 
 	registerApplicationState(ApplicationState::Default, { { mainTab.get(), FLAG_NONE }, { profileContainer, FLAG_NONE },
 							      { diveList, FLAG_NONE },      { mapWidget, FLAG_NONE } });
@@ -181,12 +183,21 @@ MainWindow::MainWindow() : QMainWindow(),
 							       { &plannerWidgets->plannerSettingsWidget, FLAG_NONE }, { &plannerWidgets->plannerDetails, FLAG_NONE } });
 	registerApplicationState(ApplicationState::EditPlannedDive, { { &plannerWidgets->plannerWidget, FLAG_NONE }, { profileContainer, FLAG_NONE },
 								      { diveList, FLAG_NONE },          { mapWidget, FLAG_NONE } });
-	registerApplicationState(ApplicationState::EditDiveSite, { { diveSiteEdit, FLAG_NONE }, { profileContainer, FLAG_DISABLED },
+	registerApplicationState(ApplicationState::EditDiveSite, { { diveSiteEdit.get(), FLAG_NONE }, { profileContainer, FLAG_DISABLED },
 								   { diveList, FLAG_DISABLED }, { mapWidget, FLAG_NONE } });
 	registerApplicationState(ApplicationState::FilterDive, { { mainTab.get(), FLAG_NONE }, { profileContainer, FLAG_NONE },
 								 { diveList, FLAG_NONE },      { &filterWidget, FLAG_NONE } });
 	registerApplicationState(ApplicationState::Statistics, { { statistics, FLAG_NONE }, { profileContainer, FLAG_NONE },
 								 { diveList, FLAG_DISABLED },   { &filterWidget, FLAG_NONE } });
+	registerApplicationState(ApplicationState::MapMaximized, { { nullptr, FLAG_NONE }, { nullptr, FLAG_NONE },
+								   { nullptr, FLAG_NONE }, { mapWidget, FLAG_NONE } });
+	registerApplicationState(ApplicationState::ProfileMaximized, { { nullptr, FLAG_NONE }, { profileContainer, FLAG_NONE },
+								       { nullptr, FLAG_NONE }, { nullptr, FLAG_NONE } });
+	registerApplicationState(ApplicationState::ListMaximized, { { nullptr, FLAG_NONE },  { nullptr, FLAG_NONE },
+								    { diveList, FLAG_NONE }, { nullptr, FLAG_NONE } });
+	registerApplicationState(ApplicationState::InfoMaximized, { { mainTab.get(), FLAG_NONE }, { nullptr, FLAG_NONE },
+								    { nullptr, FLAG_NONE },       { nullptr, FLAG_NONE } });
+	restoreSplitterSizes();
 	setApplicationState(ApplicationState::Default);
 
 	setWindowIcon(QIcon(":subsurface-icon"));
@@ -367,8 +378,6 @@ void MainWindow::enableDisableOtherDCsActions()
 void MainWindow::setDefaultState()
 {
 	setApplicationState(ApplicationState::Default);
-	if (mainTab->isEditing())
-		ui.bottomLeft->currentWidget()->setEnabled(false);
 }
 
 MainWindow *MainWindow::instance()
@@ -826,52 +835,49 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 	d.exec();
 }
 
-void MainWindow::toggleCollapsible(bool toggle)
-{
-	ui.mainSplitter->setCollapsible(0, toggle);
-	ui.mainSplitter->setCollapsible(1, toggle);
-	ui.topSplitter->setCollapsible(0, toggle);
-	ui.topSplitter->setCollapsible(1, toggle);
-	ui.bottomSplitter->setCollapsible(0, toggle);
-	ui.bottomSplitter->setCollapsible(1, toggle);
-}
-
 void MainWindow::on_actionViewList_triggered()
 {
-	toggleCollapsible(true);
-	beginChangeState(LIST_MAXIMIZED);
-	ui.mainSplitter->setSizes({ COLLAPSED, EXPANDED });
-	showFilterIfEnabled();
+	setApplicationState(ApplicationState::ListMaximized);
 }
 
 void MainWindow::on_actionViewProfile_triggered()
 {
-	toggleCollapsible(true);
-	beginChangeState(PROFILE_MAXIMIZED);
-	ui.topSplitter->setSizes({ COLLAPSED, EXPANDED });
-	ui.mainSplitter->setSizes({ EXPANDED, COLLAPSED });
+	setApplicationState(ApplicationState::ProfileMaximized);
 }
 
 void MainWindow::on_actionViewInfo_triggered()
 {
-	toggleCollapsible(true);
-	beginChangeState(INFO_MAXIMIZED);
-	ui.topSplitter->setSizes({ EXPANDED, COLLAPSED });
-	ui.mainSplitter->setSizes({ EXPANDED, COLLAPSED });
+	setApplicationState(ApplicationState::InfoMaximized);
 }
 
 void MainWindow::on_actionViewMap_triggered()
 {
-	toggleCollapsible(true);
-	beginChangeState(MAP_MAXIMIZED);
-	ui.mainSplitter->setSizes({ COLLAPSED, EXPANDED });
-	ui.bottomSplitter->setSizes({ COLLAPSED, EXPANDED });
+	setApplicationState(ApplicationState::MapMaximized);
 }
 
 void MainWindow::on_actionViewAll_triggered()
 {
-	toggleCollapsible(false);
-	beginChangeState(VIEWALL);
+	setApplicationState(ApplicationState::Default);
+}
+
+void MainWindow::saveSplitterSizes()
+{
+	// Only save splitters if all four quadrants are shown
+	if (ui.mainSplitter->count() < 2 || topSplitter->count() < 2 || bottomSplitter->count() < 2)
+		return;
+
+	QSettings settings;
+	settings.beginGroup("MainWindow");
+	settings.setValue("mainSplitter", ui.mainSplitter->saveState());
+	settings.setValue("topSplitter", topSplitter->saveState());
+	settings.setValue("bottomSplitter", bottomSplitter->saveState());
+}
+
+void MainWindow::restoreSplitterSizes()
+{
+	// Only restore splitters if all four quadrants are shown
+	if (ui.mainSplitter->count() < 2 || topSplitter->count() < 2 || bottomSplitter->count() < 2)
+		return;
 
 	const int appH = qApp->desktop()->size().height();
 	const int appW = qApp->desktop()->size().width();
@@ -884,65 +890,14 @@ void MainWindow::on_actionViewAll_triggered()
 	settings.beginGroup("MainWindow");
 	if (settings.value("mainSplitter").isValid()) {
 		ui.mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
-		ui.topSplitter->restoreState(settings.value("topSplitter").toByteArray());
-		ui.bottomSplitter->restoreState(settings.value("bottomSplitter").toByteArray());
-		if (ui.mainSplitter->sizes().first() == 0 || ui.mainSplitter->sizes().last() == 0)
-			ui.mainSplitter->setSizes(mainSizes);
-		if (ui.topSplitter->sizes().first() == 0 || ui.topSplitter->sizes().last() == 0)
-			ui.topSplitter->setSizes(infoProfileSizes);
-		if (ui.bottomSplitter->sizes().first() == 0 || ui.bottomSplitter->sizes().last() == 0)
-			ui.bottomSplitter->setSizes(listGlobeSizes);
 
+		topSplitter->restoreState(settings.value("topSplitter").toByteArray());
+		bottomSplitter->restoreState(settings.value("bottomSplitter").toByteArray());
 	} else {
 		ui.mainSplitter->setSizes(mainSizes);
-		ui.topSplitter->setSizes(infoProfileSizes);
-		ui.bottomSplitter->setSizes(listGlobeSizes);
+		topSplitter->setSizes(infoProfileSizes);
+		bottomSplitter->setSizes(listGlobeSizes);
 	}
-	ui.mainSplitter->setCollapsible(0, false);
-	ui.mainSplitter->setCollapsible(1, false);
-	ui.topSplitter->setCollapsible(0, false);
-	ui.topSplitter->setCollapsible(1, false);
-	ui.bottomSplitter->setCollapsible(0,false);
-	ui.bottomSplitter->setCollapsible(1,false);
-}
-
-void MainWindow::enterState(CurrentState newState)
-{
-	state = newState;
-	switch (state) {
-	case VIEWALL:
-		on_actionViewAll_triggered();
-		break;
-	case MAP_MAXIMIZED:
-		on_actionViewMap_triggered();
-		break;
-	case INFO_MAXIMIZED:
-		on_actionViewInfo_triggered();
-		break;
-	case LIST_MAXIMIZED:
-		on_actionViewList_triggered();
-		break;
-	case PROFILE_MAXIMIZED:
-		on_actionViewProfile_triggered();
-		break;
-	}
-}
-
-void MainWindow::beginChangeState(CurrentState s)
-{
-	if (state == VIEWALL && state != s) {
-		saveSplitterSizes();
-	}
-	state = s;
-}
-
-void MainWindow::saveSplitterSizes()
-{
-	QSettings settings;
-	settings.beginGroup("MainWindow");
-	settings.setValue("mainSplitter", ui.mainSplitter->saveState());
-	settings.setValue("topSplitter", ui.topSplitter->saveState());
-	settings.setValue("bottomSplitter", ui.bottomSplitter->saveState());
 }
 
 void MainWindow::on_actionPreviousDC_triggered()
@@ -1138,7 +1093,7 @@ void MainWindow::initialUiSetup()
 		restoreState(settings.value("windowState", 0).toByteArray());
 	}
 
-	enterState((CurrentState)settings.value("lastState", 0).toInt());
+	setApplicationState((ApplicationState)settings.value("lastAppState", 0).toInt());
 	settings.endGroup();
 	show();
 }
@@ -1163,9 +1118,8 @@ void MainWindow::writeSettings()
 	settings.setValue("geometry", saveGeometry());
 	settings.setValue("windowState", saveState());
 	settings.setValue("maximized", isMaximized());
-	settings.setValue("lastState", (int)state);
-	if (state == VIEWALL)
-		saveSplitterSizes();
+	settings.setValue("lastState", (int)getAppState());
+	saveSplitterSizes();
 	settings.endGroup();
 }
 
@@ -1593,54 +1547,41 @@ void MainWindow::on_paste_triggered()
 void MainWindow::on_actionFilterTags_triggered()
 {
 	setApplicationState(getAppState() == ApplicationState::FilterDive ? ApplicationState::Default : ApplicationState::FilterDive);
-	if (state == LIST_MAXIMIZED)
-		showFilterIfEnabled();
 }
 
 void MainWindow::on_actionStats_triggered()
 {
 	setApplicationState(getAppState() == ApplicationState::Statistics ? ApplicationState::Default : ApplicationState::Statistics);
-	toggleCollapsible(true);
-	ui.topSplitter->setSizes({ EXPANDED, COLLAPSED });
-	ui.mainSplitter->setSizes({ EXPANDED, EXPANDED });
-	ui.bottomSplitter->setSizes({ EXPANDED, EXPANDED });
-}
-
-void MainWindow::showFilterIfEnabled()
-{
-	if (getAppState() == ApplicationState::FilterDive) {
-		const int appW = qApp->desktop()->size().width();
-		QList<int> profileFilterSizes = { round_int(appW * 0.7), round_int(appW * 0.3) };
-		ui.bottomSplitter->setSizes(profileFilterSizes);
-	} else {
-		ui.bottomSplitter->setSizes({ EXPANDED, COLLAPSED });
-	}
-}
-
-void MainWindow::addWidgets(const Quadrant &q, QStackedWidget *stack)
-{
-	if (q.widget && stack->indexOf(q.widget) == -1)
-		stack->addWidget(q.widget);
 }
 
 void MainWindow::registerApplicationState(ApplicationState state, Quadrants q)
 {
 	applicationState[(int)state] = q;
-	addWidgets(q.topLeft, ui.topLeft);
-	addWidgets(q.topRight, ui.topRight);
-	addWidgets(q.bottomLeft, ui.bottomLeft);
-	addWidgets(q.bottomRight, ui.bottomRight);
 }
 
-void MainWindow::setQuadrant(const Quadrant &q, QStackedWidget *stack)
+void MainWindow::setQuadrantWidget(const Quadrant &q, QSplitter *splitter)
 {
 	if (q.widget) {
-		stack->setCurrentWidget(q.widget);
-		stack->show();
+		splitter->addWidget(q.widget);
+		splitter->setCollapsible(splitter->count() - 1, false);
 		q.widget->setEnabled(!(q.flags & FLAG_DISABLED));
-	} else {
-		stack->hide();
 	}
+}
+
+static void clearSplitter(QSplitter *splitter, QWidget *parent)
+{
+	// Qt's ownership model is absolutely hare-brained.
+	// To remove a widget from a splitter, you reparent it, which
+	// informs the splitter via a signal. Wow.
+	while (splitter->count() > 0)
+		splitter->widget(0)->setParent(parent);
+}
+
+void MainWindow::clearSplitters()
+{
+	clearSplitter(topSplitter, this);
+	clearSplitter(bottomSplitter, this);
+	clearSplitter(ui.mainSplitter, this);
 }
 
 void MainWindow::setApplicationState(ApplicationState state)
@@ -1648,18 +1589,26 @@ void MainWindow::setApplicationState(ApplicationState state)
 	if (getAppState() == state)
 		return;
 
+	saveSplitterSizes();
+
 	setAppState(state);
 
+	clearSplitters();
 	const Quadrants &quadrants = applicationState[(int)state];
-	setQuadrant(quadrants.topLeft, ui.topLeft);
-	setQuadrant(quadrants.topRight, ui.topRight);
-	setQuadrant(quadrants.bottomLeft, ui.bottomLeft);
-	setQuadrant(quadrants.bottomRight, ui.bottomRight);
+	setQuadrantWidget(quadrants.topLeft, topSplitter);
+	setQuadrantWidget(quadrants.topRight, topSplitter);
+	setQuadrantWidget(quadrants.bottomLeft, bottomSplitter);
+	setQuadrantWidget(quadrants.bottomRight, bottomSplitter);
+	if (topSplitter->count() >= 1) {
+		ui.mainSplitter->addWidget(topSplitter);
+		ui.mainSplitter->setCollapsible(ui.mainSplitter->count() - 1, false);
+	}
+	if (bottomSplitter->count() >= 1) {
+		ui.mainSplitter->addWidget(bottomSplitter);
+		ui.mainSplitter->setCollapsible(ui.mainSplitter->count() - 1, false);
+	}
 
-	// The statistics view does its own thing with respect to visibility
-	// of quadrants. So in case we leave that state, change to the
-	// original visibility of the quadrants.
-	enterState(this->state);
+	restoreSplitterSizes();
 }
 
 void MainWindow::showProgressBar()

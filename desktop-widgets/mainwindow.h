@@ -41,19 +41,6 @@ class LocationInformationWidget;
 class MainWindow : public QMainWindow {
 	Q_OBJECT
 public:
-	enum {
-		COLLAPSED,
-		EXPANDED
-	};
-
-	enum CurrentState {
-		VIEWALL,
-		MAP_MAXIMIZED,
-		INFO_MAXIMIZED,
-		PROFILE_MAXIMIZED,
-		LIST_MAXIMIZED
-	};
-
 	MainWindow();
 	~MainWindow();
 	static MainWindow *instance();
@@ -165,6 +152,8 @@ slots:
 private:
 	Ui::MainWindow ui;
 	FilterWidget filterWidget;
+	QSplitter *topSplitter;
+	QSplitter *bottomSplitter;
 	QAction *actionNextDive;
 	QAction *actionPreviousDive;
 	QAction *undoAction;
@@ -172,7 +161,6 @@ private:
 #ifndef NO_USERMANUAL
 	UserManual *helpView;
 #endif
-	CurrentState state;
 	QString filter_open();
 	QString filter_import();
 	QString filter_import_dive_sites();
@@ -188,15 +176,13 @@ private:
 	void writeSettings();
 	int file_save();
 	int file_save_as();
-	void beginChangeState(CurrentState s);
 	void saveSplitterSizes();
-	void toggleCollapsible(bool toggle);
-	void showFilterIfEnabled();
+	void restoreSplitterSizes();
 	void updateLastUsedDir(const QString &s);
-	void enterState(CurrentState);
+	void clearSplitters();
 	bool filesAsArguments;
 	UpdateManager *updateManager;
-	LocationInformationWidget *diveSiteEdit;
+	std::unique_ptr<LocationInformationWidget> diveSiteEdit;
 
 	bool plannerStateClean();
 	void configureToolbar();
@@ -226,8 +212,8 @@ private:
 	};
 
 	Quadrants applicationState[(size_t)ApplicationState::Count];
-	static void setQuadrant(const Quadrant &, QStackedWidget *);
-	static void addWidgets(const Quadrant &, QStackedWidget *);
+	static void addWidgets(const Quadrant &);
+	void setQuadrantWidget(const Quadrant &q, QSplitter *splitter);
 	void registerApplicationState(ApplicationState state, Quadrants q);
 
 	QMenu *connections;
