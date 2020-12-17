@@ -253,12 +253,12 @@ static void add_default_tank_infos(struct tank_info_table *table)
 	add_tank_info_metric(table, "11.1ℓ", 11100, 0);
 
 	/* Most common AL cylinders */
-	add_tank_info_metric(table, "AL40", 40, 3000);
-	add_tank_info_metric(table, "AL50", 50, 3000);
-	add_tank_info_metric(table, "AL63", 63, 3000);
-	add_tank_info_metric(table, "AL72", 72, 3000);
-	add_tank_info_metric(table, "AL80", 80, 3000);
-	add_tank_info_metric(table, "AL100", 100, 3300);
+	add_tank_info_imperial(table, "AL40", 40, 3000);
+	add_tank_info_imperial(table, "AL50", 50, 3000);
+	add_tank_info_imperial(table, "AL63", 63, 3000);
+	add_tank_info_imperial(table, "AL72", 72, 3000);
+	add_tank_info_imperial(table, "AL80", 80, 3000);
+	add_tank_info_imperial(table, "AL100", 100, 3300);
 
 	/* Metric AL cylinders */
 	add_tank_info_metric(table, "ALU7", 7000, 200);
