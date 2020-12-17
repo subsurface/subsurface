@@ -118,7 +118,7 @@ for ARCH in $ARCHS; do
 	declare -x CC=$(xcrun -sdk $SDK_NAME -find clang)
 	declare -x CXX=$(xcrun -sdk $SDK_NAME -find clang++)
 	declare -x LD=$(xcrun -sdk $SDK_NAME -find ld)
-	declare -x CFLAGS="-arch $ARCH_NAME -isysroot $SDK_DIR -miphoneos-version-min=6.0 -I$SDK_DIR/usr/include -fembed-bitcode"
+	declare -x CFLAGS="-arch $ARCH_NAME -isysroot $SDK_DIR -miphoneos-version-min=10.0 -I$SDK_DIR/usr/include -fembed-bitcode"
 	declare -x CXXFLAGS="$CFLAGS"
 	declare -x LDFLAGS="$CFLAGS -lsqlite3 -lpthread -lc++ -L$SDK_DIR/usr/lib -fembed-bitcode"
 
