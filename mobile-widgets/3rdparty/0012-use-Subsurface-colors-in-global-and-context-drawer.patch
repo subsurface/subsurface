@@ -1,0 +1,96 @@
+From a2be0144bd1378769cdf8f49e76d4a4e1fbdf6a6 Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Fri, 18 Dec 2020 12:35:32 -0800
+Subject: [PATCH] use Subsurface colors in global and context drawer
+
+Again, this is not using the Kirigami theming system the way it is
+intended to be used. But for now this works.
+
+Also fixes the odd inconsistency between global and context drawer with
+one of them using the ScrollView from Controls.2, but the other one
+using the ScrollView from Controls.
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ src/controls/ContextDrawer.qml | 8 +++++++-
+ src/controls/GlobalDrawer.qml  | 8 +++-----
+ 2 files changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/src/controls/ContextDrawer.qml b/src/controls/ContextDrawer.qml
+index 0f16d025..6d37ae6b 100644
+--- a/src/controls/ContextDrawer.qml
++++ b/src/controls/ContextDrawer.qml
+@@ -7,6 +7,7 @@
+ import QtQuick 2.1
+ import QtQuick.Layouts 1.2
+ import org.kde.kirigami 2.4
++import QtQuick.Controls 2.2 as QQC2
+ 
+ import "private"
+ import "templates/private"
+@@ -108,6 +109,7 @@ OverlayDrawer {
+     leftPadding: 0
+     rightPadding: 0
+     bottomPadding: 0
++    topPadding: 0
+ 
+     handleVisible: applicationWindow == undefined ? false : applicationWindow().controlsVisible
+ 
+@@ -116,9 +118,13 @@ OverlayDrawer {
+             page.contextualActionsAboutToShow();
+         }
+     }
+-    contentItem: ScrollView {
++    contentItem: QQC2.ScrollView {
+         //this just to create the attached property
+         Theme.inherit: true
++        Theme.backgroundColor: subsurfaceTheme.backgroundColor
++        Theme.textColor: subsurfaceTheme.textColor
++        background: Rectangle { color: Theme.backgroundColor }
++
+         implicitWidth: Units.gridUnit * 20
+         ListView {
+             id: menu
+diff --git a/src/controls/GlobalDrawer.qml b/src/controls/GlobalDrawer.qml
+index 456854b5..ab949fa9 100644
+--- a/src/controls/GlobalDrawer.qml
++++ b/src/controls/GlobalDrawer.qml
+@@ -276,6 +276,9 @@ OverlayDrawer {
+         id: scrollView
+         //ensure the attached property exists
+         Theme.inherit: true
++        Theme.backgroundColor: subsurfaceTheme.backgroundColor
++        Theme.textColor: subsurfaceTheme.textColor
++        background: Rectangle { color: Theme.backgroundColor }
+         anchors.fill: parent
+         implicitWidth: Math.min (Units.gridUnit * 20, root.parent.width * 0.8)
+         QQC2.ScrollBar.horizontal.policy: QQC2.ScrollBar.AlwaysOff
+@@ -338,8 +341,6 @@ OverlayDrawer {
+                 }
+                 RowLayout {
+                     id: headerContainer
+-                    Theme.inherit: false
+-                    Theme.colorSet: Theme.Window
+ 
+                     Layout.fillWidth: true
+                     visible: contentItem && opacity > 0
+@@ -507,8 +508,6 @@ OverlayDrawer {
+                                             mainFlickable.contentY += height
+                                         }
+                                     }
+-                                    Theme.colorSet: drawerItem.visible && !root.modal && !root.collapsed && actionsRepeater.withSections ? Theme.Window : parent.Theme.colorSet
+-                                    backgroundColor: Theme.backgroundColor
+                                 }
+                                 Item {
+                                     id: headerItem
+@@ -518,7 +517,6 @@ OverlayDrawer {
+                                     ListSectionHeader {
+                                         id: sectionHeader
+                                         anchors.fill: parent
+-                                        Theme.colorSet: root.modal ? Theme.View : Theme.Window
+                                         contentItem: RowLayout {
+                                             Icon {
+                                                 height: header.height
+-- 
+2.25.1
+

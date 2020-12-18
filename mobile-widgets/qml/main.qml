@@ -614,6 +614,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			}
 			Text {
 				text: qsTr("Background location service active")
+				color: subsurfaceTheme.primaryTextColor
 				visible: locationServiceEnabled
 				anchors.verticalCenter: ls_logo.verticalCenter
 			}
