@@ -116,6 +116,15 @@ void MapWidget::divesChanged(const QVector<dive *> &, DiveField field)
 		reload();
 }
 
+// Sadly, for reasons out of our control, we can't use a normal singleton for the
+// map widget: In a standard singleton, the object is freed after main() exits.
+// However, if there is an animation running (map zooming), the thread is
+// terminated, when the QApplication object is destroyed, which is before main()
+// exits. The thread has a QQmlAnimationTimer that is freed. However, the map widget
+// then tries to free the object itself, leading to a crash. Clearly, a bug in
+// the QML MapWidget / QtQuick ecosystem.
+// To solve this, the mainwindow will destroy the map widget and in the destructor
+// the reference is cleared. Sad.
 MapWidget::~MapWidget()
 {
 	m_instance = NULL;

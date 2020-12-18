@@ -30,12 +30,14 @@ class DiveTripModel;
 class QItemSelection;
 class DiveListView;
 class MainTab;
+class MapWidget;
 class QWebView;
 class QSettings;
 class UpdateManager;
 class UserManual;
 class PlannerWidgets;
 class ProfileWidget2;
+class StatsWidget;
 class LocationInformationWidget;
 
 class MainWindow : public QMainWindow {
@@ -63,8 +65,11 @@ public:
 
 	std::unique_ptr<MainTab> mainTab;
 	std::unique_ptr<PlannerWidgets> plannerWidgets;
+	std::unique_ptr<StatsWidget> statistics;
 	ProfileWidget2 *graphics;
-	DiveListView *diveList;
+	std::unique_ptr<DiveListView> diveList;
+	std::unique_ptr<QWidget> profileContainer;
+	std::unique_ptr<MapWidget> mapWidget;
 private
 slots:
 	/* file menu action */
@@ -152,8 +157,8 @@ slots:
 private:
 	Ui::MainWindow ui;
 	FilterWidget filterWidget;
-	QSplitter *topSplitter;
-	QSplitter *bottomSplitter;
+	std::unique_ptr<QSplitter> topSplitter;
+	std::unique_ptr<QSplitter> bottomSplitter;
 	QAction *actionNextDive;
 	QAction *actionPreviousDive;
 	QAction *undoAction;
@@ -215,7 +220,7 @@ private:
 	Quadrants applicationState[(size_t)ApplicationState::Count];
 	static void addWidgets(const Quadrant &);
 	bool userMayChangeAppState() const;
-	void setQuadrantWidget(const Quadrant &q, QSplitter *splitter);
+	void setQuadrantWidget(const Quadrant &q, QSplitter &splitter);
 	void registerApplicationState(ApplicationState state, Quadrants q);
 
 	QMenu *connections;

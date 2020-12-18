@@ -135,16 +135,17 @@ MainWindow::MainWindow() : QMainWindow(),
 	// Define the States of the Application Here, Currently the states are situations where the different
 	// widgets will change on the mainwindow.
 
-	topSplitter = new QSplitter(Qt::Horizontal);
-	bottomSplitter = new QSplitter(Qt::Horizontal);
+	topSplitter.reset(new QSplitter(Qt::Horizontal));
+	bottomSplitter.reset(new QSplitter(Qt::Horizontal));
 
 	// for the "default" mode
 	mainTab.reset(new MainTab);
-	diveList = new DiveListView(this);
+	diveList.reset(new DiveListView);
 	graphics = new ProfileWidget2(this);
-	MapWidget *mapWidget = MapWidget::instance();
+	mapWidget.reset(MapWidget::instance()); // Yes, this is ominous see comment in mapwidget.cpp.
 	plannerWidgets.reset(new PlannerWidgets);
-	StatsWidget *statistics = new StatsWidget(this);
+	statistics.reset(new StatsWidget);
+	profileContainer.reset(new QWidget);
 
 	// what is a sane order for those icons? we should have the ones the user is
 	// most likely to want towards the top so they are always visible
@@ -164,7 +165,6 @@ MainWindow::MainWindow() : QMainWindow(),
 		toolBar->addAction(a);
 	toolBar->setOrientation(Qt::Vertical);
 	toolBar->setIconSize(QSize(24,24));
-	QWidget *profileContainer = new QWidget();
 	QHBoxLayout *profLayout = new QHBoxLayout();
 	profLayout->setSpacing(0);
 	profLayout->setMargin(0);
@@ -175,26 +175,26 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	diveSiteEdit.reset(new LocationInformationWidget);
 
-	registerApplicationState(ApplicationState::Default, { true, { mainTab.get(), FLAG_NONE }, { profileContainer, FLAG_NONE },
-								    { diveList, FLAG_NONE },      { mapWidget, FLAG_NONE } });
-	registerApplicationState(ApplicationState::EditDive, { false, { mainTab.get(), FLAG_NONE }, { profileContainer, FLAG_NONE },
-								      { diveList, FLAG_NONE },       { mapWidget, FLAG_NONE } });
-	registerApplicationState(ApplicationState::PlanDive, { false, { &plannerWidgets->plannerWidget, FLAG_NONE },         { profileContainer, FLAG_NONE },
+	registerApplicationState(ApplicationState::Default, { true, { mainTab.get(), FLAG_NONE },  { profileContainer.get(), FLAG_NONE },
+								    { diveList.get(), FLAG_NONE }, { mapWidget.get(), FLAG_NONE } });
+	registerApplicationState(ApplicationState::EditDive, { false, { mainTab.get(), FLAG_NONE },  { profileContainer.get(), FLAG_NONE },
+								      { diveList.get(), FLAG_NONE }, { mapWidget.get(), FLAG_NONE } });
+	registerApplicationState(ApplicationState::PlanDive, { false, { &plannerWidgets->plannerWidget, FLAG_NONE },         { profileContainer.get(), FLAG_NONE },
 								      { &plannerWidgets->plannerSettingsWidget, FLAG_NONE }, { &plannerWidgets->plannerDetails, FLAG_NONE } });
-	registerApplicationState(ApplicationState::EditPlannedDive, { true, { &plannerWidgets->plannerWidget, FLAG_NONE }, { profileContainer, FLAG_NONE },
-									    { diveList, FLAG_NONE },          { mapWidget, FLAG_NONE } });
-	registerApplicationState(ApplicationState::EditDiveSite, { false, { diveSiteEdit.get(), FLAG_NONE }, { profileContainer, FLAG_DISABLED },
-									  { diveList, FLAG_DISABLED }, { mapWidget, FLAG_NONE } });
-	registerApplicationState(ApplicationState::FilterDive, { true, { mainTab.get(), FLAG_NONE }, { profileContainer, FLAG_NONE },
-								       { diveList, FLAG_NONE },      { &filterWidget, FLAG_NONE } });
-	registerApplicationState(ApplicationState::Statistics, { true, { statistics, FLAG_NONE }, { profileContainer, FLAG_NONE },
-								       { diveList, FLAG_DISABLED },   { &filterWidget, FLAG_NONE } });
+	registerApplicationState(ApplicationState::EditPlannedDive, { true, { &plannerWidgets->plannerWidget, FLAG_NONE }, { profileContainer.get(), FLAG_NONE },
+									    { diveList.get(), FLAG_NONE },                 { mapWidget.get(), FLAG_NONE } });
+	registerApplicationState(ApplicationState::EditDiveSite, { false, { diveSiteEdit.get(), FLAG_NONE }, { profileContainer.get(), FLAG_DISABLED },
+									  { diveList.get(), FLAG_DISABLED }, { mapWidget.get(), FLAG_NONE } });
+	registerApplicationState(ApplicationState::FilterDive, { true, { mainTab.get(), FLAG_NONE },  { profileContainer.get(), FLAG_NONE },
+								       { diveList.get(), FLAG_NONE }, { &filterWidget, FLAG_NONE } });
+	registerApplicationState(ApplicationState::Statistics, { true, { statistics.get(), FLAG_NONE }, { nullptr, FLAG_NONE },
+								       { diveList.get(), FLAG_DISABLED },   { &filterWidget, FLAG_NONE } });
 	registerApplicationState(ApplicationState::MapMaximized, { true, { nullptr, FLAG_NONE }, { nullptr, FLAG_NONE },
-									 { nullptr, FLAG_NONE }, { mapWidget, FLAG_NONE } });
-	registerApplicationState(ApplicationState::ProfileMaximized, { true, { nullptr, FLAG_NONE }, { profileContainer, FLAG_NONE },
+									 { nullptr, FLAG_NONE }, { mapWidget.get(), FLAG_NONE } });
+	registerApplicationState(ApplicationState::ProfileMaximized, { true, { nullptr, FLAG_NONE }, { profileContainer.get(), FLAG_NONE },
 									     { nullptr, FLAG_NONE }, { nullptr, FLAG_NONE } });
-	registerApplicationState(ApplicationState::ListMaximized, { true, { nullptr, FLAG_NONE },  { nullptr, FLAG_NONE },
-									  { diveList, FLAG_NONE }, { nullptr, FLAG_NONE } });
+	registerApplicationState(ApplicationState::ListMaximized, { true, { nullptr, FLAG_NONE },        { nullptr, FLAG_NONE },
+									  { diveList.get(), FLAG_NONE }, { nullptr, FLAG_NONE } });
 	registerApplicationState(ApplicationState::InfoMaximized, { true, { mainTab.get(), FLAG_NONE }, { nullptr, FLAG_NONE },
 									  { nullptr, FLAG_NONE },       { nullptr, FLAG_NONE } });
 	restoreSplitterSizes();
@@ -204,7 +204,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	if (!QIcon::hasThemeIcon("window-close")) {
 		QIcon::setThemeName("subsurface");
 	}
-	connect(diveList, &DiveListView::divesSelected, this, &MainWindow::selectionChanged);
+	connect(diveList.get(), &DiveListView::divesSelected, this, &MainWindow::selectionChanged);
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &MainWindow::readSettings);
 	for (int i = 0; i < NUM_RECENT_FILES; i++) {
 		actionsRecent[i] = new QAction(this);
@@ -340,6 +340,8 @@ MainWindow::MainWindow() : QMainWindow(),
 
 MainWindow::~MainWindow()
 {
+	// Remove widgets from the splitters so that they don't delete singletons.
+	clearSplitters();
 	write_hashes();
 	m_Instance = nullptr;
 }
@@ -1573,29 +1575,29 @@ void MainWindow::registerApplicationState(ApplicationState state, Quadrants q)
 	applicationState[(int)state] = q;
 }
 
-void MainWindow::setQuadrantWidget(const Quadrant &q, QSplitter *splitter)
+void MainWindow::setQuadrantWidget(const Quadrant &q, QSplitter &splitter)
 {
 	if (q.widget) {
-		splitter->addWidget(q.widget);
-		splitter->setCollapsible(splitter->count() - 1, false);
+		splitter.addWidget(q.widget);
+		splitter.setCollapsible(splitter.count() - 1, false);
 		q.widget->setEnabled(!(q.flags & FLAG_DISABLED));
 	}
 }
 
-static void clearSplitter(QSplitter *splitter, QWidget *parent)
+static void clearSplitter(QSplitter &splitter)
 {
 	// Qt's ownership model is absolutely hare-brained.
 	// To remove a widget from a splitter, you reparent it, which
 	// informs the splitter via a signal. Wow.
-	while (splitter->count() > 0)
-		splitter->widget(0)->setParent(parent);
+	while (splitter.count() > 0)
+		splitter.widget(0)->setParent(nullptr);
 }
 
 void MainWindow::clearSplitters()
 {
-	clearSplitter(topSplitter, this);
-	clearSplitter(bottomSplitter, this);
-	clearSplitter(ui.mainSplitter, this);
+	clearSplitter(*topSplitter);
+	clearSplitter(*bottomSplitter);
+	clearSplitter(*ui.mainSplitter);
 }
 
 bool MainWindow::userMayChangeAppState() const
@@ -1614,16 +1616,16 @@ void MainWindow::setApplicationState(ApplicationState state)
 
 	clearSplitters();
 	const Quadrants &quadrants = applicationState[(int)state];
-	setQuadrantWidget(quadrants.topLeft, topSplitter);
-	setQuadrantWidget(quadrants.topRight, topSplitter);
-	setQuadrantWidget(quadrants.bottomLeft, bottomSplitter);
-	setQuadrantWidget(quadrants.bottomRight, bottomSplitter);
+	setQuadrantWidget(quadrants.topLeft, *topSplitter);
+	setQuadrantWidget(quadrants.topRight, *topSplitter);
+	setQuadrantWidget(quadrants.bottomLeft, *bottomSplitter);
+	setQuadrantWidget(quadrants.bottomRight, *bottomSplitter);
 	if (topSplitter->count() >= 1) {
-		ui.mainSplitter->addWidget(topSplitter);
+		ui.mainSplitter->addWidget(topSplitter.get());
 		ui.mainSplitter->setCollapsible(ui.mainSplitter->count() - 1, false);
 	}
 	if (bottomSplitter->count() >= 1) {
-		ui.mainSplitter->addWidget(bottomSplitter);
+		ui.mainSplitter->addWidget(bottomSplitter.get());
 		ui.mainSplitter->setCollapsible(ui.mainSplitter->count() - 1, false);
 	}
 
