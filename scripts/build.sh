@@ -100,10 +100,20 @@ while [[ $# -gt 0 ]] ; do
 			# we are building Subsurface
 			BUILD_DESKTOP="1"
 			;;
+		-downloader)
+			# we are building Subsurface
+			BUILD_DOWNLOADER="1"
+			;;
 		-both)
 			# we are building Subsurface and Subsurface-mobile
 			BUILD_MOBILE="1"
 			BUILD_DESKTOP="1"
+			;;
+		-all)
+			# we are building Subsurface and Subsurface-mobile
+			BUILD_MOBILE="1"
+			BUILD_DESKTOP="1"
+			BUILD_DOWNLOADER="1"
 			;;
 		-create-appdir)
 			# we are building an AppImage as by product
@@ -152,19 +162,21 @@ if [ "$PLATFORM" = Darwin ] ; then
 fi
 
 # normally this script builds the desktop version in subsurface/build
-# if the first argument is "-mobile" then build Subsurface-mobile in "$BUILD_PREFIX"build-mobile
-# if the first argument is "-both" then build both in subsurface/build and "$BUILD_PREFIX"build-mobile
+# the user can explicitly pick the builds requested
+# for historic reasons, -both builds mobile and desktop, -all builds the downloader as well
 
 if [ "$BUILD_MOBILE" = "1" ] ; then
 	echo "building Subsurface-mobile in ${SRC_DIR}/build-mobile"
-	BUILDS=( "MobileExecutable" )
-	BUILDDIRS=( "${BUILD_PREFIX}build-mobile" )
-else
-	# if no options are given, build Subsurface
-	BUILD_DESKTOP="1"
+	BUILDS+=( "MobileExecutable" )
+	BUILDDIRS+=( "${BUILD_PREFIX}build-mobile" )
 fi
-
-if [ "$BUILD_DESKTOP" = "1" ] ; then
+if [ "$BUILD_DOWNLOADER" = "1" ] ; then
+	echo "building Subsurface-downloader in ${SRC_DIR}/build-downloader"
+	BUILDS+=( "DownloaderExecutable" )
+	BUILDDIRS+=( "${BUILD_PREFIX}build-downloader" )
+fi
+if [ "$BUILD_DESKTOP" = "1" ] || [ "$BUILDS" = "" ] ; then
+	# if no option is given, we build the desktopb version
 	echo "building Subsurface in ${SRC_DIR}/build"
 	BUILDS+=( "DesktopExecutable" )
 	BUILDDIRS+=( "${BUILD_PREFIX}build" )
