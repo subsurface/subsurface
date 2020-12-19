@@ -35,11 +35,14 @@ jobs:
     - name: build Subsurface
       run: |
         echo "--------------------------------------------------------------"
-        echo "building desktop"
+        echo "building all three binaries"
 
-        # now build for the desktop version (including WebKit)
+        # now build the desktop version (including WebKit), mobile and downloader
+        # the mobile build needs git setup to apply the Kirigami changes
+        git config --global user.email "ci@subsurface-divelog.org"
+        git config --global user.name "Subsurface CI"
         cd ..
-        bash -e -x subsurface/scripts/build.sh -desktop -build-with-webkit
+        bash -e -x subsurface/scripts/build.sh -all -build-with-webkit
 
 # let's not run the tests... to do that, we need to install 'xvfb-run' above
 #   - name: test desktop build
