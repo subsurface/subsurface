@@ -20,6 +20,7 @@ Kirigami.ApplicationWindow {
 	// the documentation claims that the ApplicationWindow should pick up the font set on
 	// the C++ side. But as a matter of fact, it doesn't, unless you add this line:
 	font: Qt.application.font
+	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 
 	pageStack.globalToolBar.style: Kirigami.ApplicationHeaderStyle.Breadcrumb
 	pageStack.globalToolBar.showNavigationButtons: (Kirigami.ApplicationHeaderStyle.ShowBackButton | Kirigami.ApplicationHeaderStyle.ShowForwardButton)
@@ -614,7 +615,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			}
 			Text {
 				text: qsTr("Background location service active")
-				color: subsurfaceTheme.primaryTextColor
+				color: subsurfaceTheme.textColor
 				visible: locationServiceEnabled
 				anchors.verticalCenter: ls_logo.verticalCenter
 			}
@@ -773,6 +774,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	Kirigami.OverlaySheet {
 		id: locationWarning
+		background: Rectangle { color: subsurfaceTheme.backgroundColor }
 		ColumnLayout {
 			width: locationWarning.width - Kirigami.Units.gridUnit
 			spacing: Kirigami.Units.gridUnit
@@ -783,17 +785,20 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			Text {
 				Layout.fillWidth: true
 				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+				color: subsurfaceTheme.textColor
 				text: qsTr("This service collects location data to enable you to track the GPS coordinates of your dives. " +
 					   "This will attempt to continue to collect location data, even if the app is closed or your phone screen locked.")
 			}
 			Text {
 				Layout.fillWidth: true
 				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+				color: subsurfaceTheme.textColor
 				text: qsTr("The location data are not used in any way, except when you apply the location data to the dives in your dive list on this device.")
 			}
 			Text {
 				Layout.fillWidth: true
 				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+				color: subsurfaceTheme.textColor
 				text: qsTr("By default, the location data are never transferred to the cloud or to any other service. However, in order to allow debugging " +
 					   "of location data related issues, you can explicitly enable storing those location data in the cloud by enabling the corresponding option in the advanced settings.")
 			}
@@ -808,6 +813,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	Label {
 		id: textBlock
 		visible: !initialized
+		color: subsurfaceTheme.textColor
 		text: qsTr("Subsurface-mobile starting up")
 		font.pointSize: subsurfaceTheme.headingPointSize
 		topPadding: 2 * Kirigami.Units.gridUnit
