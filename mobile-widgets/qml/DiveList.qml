@@ -14,7 +14,7 @@ Kirigami.ScrollablePage {
 	verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 	property int dlHorizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
 	property QtObject diveListModel: null
-
+	Kirigami.Theme.backgroundColor: subsurfaceTheme.backgroundColor // used for background of left and right action button
 	supportsRefreshing: true
 	onRefreshingChanged: {
 		if (refreshing) {
@@ -456,6 +456,7 @@ Kirigami.ScrollablePage {
 		icon {
 			name: ":/icons/list-add"
 		}
+		color: subsurfaceTheme.primaryTextColor
 		text: qsTr("Add dive")
 		onTriggered: {
 			startAddDive()
@@ -466,6 +467,7 @@ Kirigami.ScrollablePage {
 		icon {
 			name: ":icons/ic_filter_list"
 		}
+		color: subsurfaceTheme.primaryTextColor
 		text: qsTr("Filter dives")
 		onTriggered: {
 			rootItem.filterToggle = !rootItem.filterToggle
