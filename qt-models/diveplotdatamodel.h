@@ -86,9 +86,6 @@ public:
 	double pn2Max();
 	double po2Max();
 	void emitDataChanged();
-#ifndef SUBSURFACE_MOBILE
-	void calculateDecompression();
-#endif
 
 private:
 	struct plot_info pInfo;

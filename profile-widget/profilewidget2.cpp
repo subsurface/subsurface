@@ -111,29 +111,29 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	gasYAxis(new PartialGasPressureAxis(this)),
 	temperatureAxis(new TemperatureAxis(this)),
 	timeAxis(new TimeAxis(this)),
-	diveProfileItem(new DiveProfileItem()),
-	temperatureItem(new DiveTemperatureItem()),
-	meanDepthItem(new DiveMeanDepthItem()),
+	diveProfileItem(new DiveProfileItem(*dataModel)),
+	temperatureItem(new DiveTemperatureItem(*dataModel)),
+	meanDepthItem(new DiveMeanDepthItem(*dataModel)),
 	cylinderPressureAxis(new DiveCartesianAxis(this)),
-	gasPressureItem(new DiveGasPressureItem()),
+	gasPressureItem(new DiveGasPressureItem(*dataModel)),
 	diveComputerText(new DiveTextItem()),
-	reportedCeiling(new DiveReportedCeiling()),
-	pn2GasItem(new PartialPressureGasItem()),
-	pheGasItem(new PartialPressureGasItem()),
-	po2GasItem(new PartialPressureGasItem()),
-	o2SetpointGasItem(new PartialPressureGasItem()),
-	ccrsensor1GasItem(new PartialPressureGasItem()),
-	ccrsensor2GasItem(new PartialPressureGasItem()),
-	ccrsensor3GasItem(new PartialPressureGasItem()),
-	ocpo2GasItem(new PartialPressureGasItem()),
+	reportedCeiling(new DiveReportedCeiling(*dataModel)),
+	pn2GasItem(new PartialPressureGasItem(*dataModel)),
+	pheGasItem(new PartialPressureGasItem(*dataModel)),
+	po2GasItem(new PartialPressureGasItem(*dataModel)),
+	o2SetpointGasItem(new PartialPressureGasItem(*dataModel)),
+	ccrsensor1GasItem(new PartialPressureGasItem(*dataModel)),
+	ccrsensor2GasItem(new PartialPressureGasItem(*dataModel)),
+	ccrsensor3GasItem(new PartialPressureGasItem(*dataModel)),
+	ocpo2GasItem(new PartialPressureGasItem(*dataModel)),
 #ifndef SUBSURFACE_MOBILE
-	diveCeiling(new DiveCalculatedCeiling(this)),
+	diveCeiling(new DiveCalculatedCeiling(*dataModel, this)),
 	decoModelParameters(new DiveTextItem()),
 	heartBeatAxis(new DiveCartesianAxis(this)),
-	heartBeatItem(new DiveHeartrateItem()),
+	heartBeatItem(new DiveHeartrateItem(*dataModel)),
 	percentageAxis(new DiveCartesianAxis(this)),
-	ambPressureItem(new DiveAmbPressureItem()),
-	gflineItem(new DiveGFLineItem()),
+	ambPressureItem(new DiveAmbPressureItem(*dataModel)),
+	gflineItem(new DiveGFLineItem(*dataModel)),
 	mouseFollowerVertical(new DiveLineItem()),
 	mouseFollowerHorizontal(new DiveLineItem()),
 	rulerItem(new RulerItem2()),
@@ -342,10 +342,10 @@ void ProfileWidget2::setupItemOnScene()
 	decoModelParameters->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 	setupItem(diveCeiling, profileYAxis, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
 	for (int i = 0; i < 16; i++) {
-		DiveCalculatedTissue *tissueItem = new DiveCalculatedTissue(this);
+		DiveCalculatedTissue *tissueItem = new DiveCalculatedTissue(*dataModel, this);
 		setupItem(tissueItem, profileYAxis, DivePlotDataModel::TISSUE_1 + i, DivePlotDataModel::TIME, 1 + i);
 		allTissues.append(tissueItem);
-		DivePercentageItem *percentageItem = new DivePercentageItem(i);
+		DivePercentageItem *percentageItem = new DivePercentageItem(*dataModel, i);
 		setupItem(percentageItem, percentageAxis, DivePlotDataModel::PERCENTAGE_1 + i, DivePlotDataModel::TIME, 1 + i);
 		allPercentages.append(percentageItem);
 	}
@@ -542,7 +542,6 @@ void ProfileWidget2::setupItem(AbstractProfilePolygonItem *item, DiveCartesianAx
 {
 	item->setHorizontalAxis(timeAxis);
 	item->setVerticalAxis(vAxis);
-	item->setModel(dataModel);
 	item->setVerticalDataColumn(vData);
 	item->setHorizontalDataColumn(hData);
 	item->setZValue(zValue);
