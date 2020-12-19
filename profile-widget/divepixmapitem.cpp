@@ -31,16 +31,6 @@ void CloseButtonItem::mousePressEvent(QGraphicsSceneMouseEvent *)
 	qgraphicsitem_cast<DivePictureItem*>(parentItem())->removePicture();
 }
 
-void CloseButtonItem::hide()
-{
-	DivePixmapItem::hide();
-}
-
-void CloseButtonItem::show()
-{
-	DivePixmapItem::show();
-}
-
 DivePictureItem::DivePictureItem(QGraphicsItem *parent): DivePixmapItem(parent),
 	canvas(new QGraphicsRectItem(this)),
 	shadow(new QGraphicsRectItem(this)),
