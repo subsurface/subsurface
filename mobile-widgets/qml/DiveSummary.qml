@@ -163,6 +163,7 @@ Kirigami.ScrollablePage {
 				Rectangle {
 					width: headerColumnWidth * 3 - Kirigami.Units.gridUnit * 2
 					height: sectionLabel.height + Kirigami.Units.largeSpacing
+					color: subsurfaceTheme.backgroundColor
 					Label {
 						id: sectionLabel
 						anchors.verticalCenter: parent.verticalCenter
