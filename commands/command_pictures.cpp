@@ -119,7 +119,7 @@ static std::vector<PictureListForDeletion> addPictures(std::vector<PictureListFo
 	return res;
 }
 
-RemovePictures::RemovePictures(const std::vector<PictureListForDeletion> &pictures) : picturesToRemove(pictures)
+RemovePictures::RemovePictures(const std::vector<PictureListForDeletion> &pictures)
 {
 	// Filter out the pictures that don't actually exist. In principle this shouldn't be necessary.
 	// Nevertheless, let's play it save. This has the additional benefit of sorting the pictures
