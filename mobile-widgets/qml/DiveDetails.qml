@@ -58,6 +58,7 @@ Kirigami.Page {
 	bottomPadding: 0
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 	width: rootItem.colWidth
+	Kirigami.Theme.backgroundColor: subsurfaceTheme.backgroundColor
 
 	property QtObject removeDiveFromTripAction: Kirigami.Action {
 		text: qsTr ("Remove this dive from trip")
@@ -222,6 +223,7 @@ Kirigami.Page {
 		icon {
 			name: ":/icons/trash-empty.svg"
 		}
+		color: subsurfaceTheme.primaryTextColor
 		onTriggered: manager.deleteDive(currentItem.modelData.id)
 	}
 
@@ -230,6 +232,7 @@ Kirigami.Page {
 		icon {
 			name: ":/icons/dialog-cancel.svg"
 		}
+		color: subsurfaceTheme.primaryTextColor
 		onTriggered: {
 			endEditMode()
 		}
@@ -240,6 +243,7 @@ Kirigami.Page {
 		icon {
 			name: ":/icons/gps"
 		}
+		color: subsurfaceTheme.primaryTextColor
 		onTriggered: {
 			showMap()
 			mapPage.centerOnDiveSite(currentItem.modelData.diveSite)
