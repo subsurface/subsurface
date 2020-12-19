@@ -24,7 +24,7 @@ void SetPictureOffset::redo()
 {
 	picture *pic = dive_get_picture(d, filename);
 	if (!pic) {
-		fprintf(stderr, "SetPictureOffset::redo(): picture disappeared!");
+		fprintf(stderr, "SetPictureOffset::redo(): picture disappeared!\n");
 		return;
 	}
 	std::swap(pic->offset, offset);
@@ -73,8 +73,8 @@ static std::vector<PictureListForAddition> removePictures(std::vector<PictureLis
 		for (const std::string &fn: list.filenames) {
 			int idx = get_picture_idx(&list.d->pictures, fn.c_str());
 			if (idx < 0) {
-				fprintf(stderr, "removePictures(): picture disappeared!");
-				continue; // Huh? We made sure that this can't happen by filtering out non-existant pictures.
+				fprintf(stderr, "removePictures(): picture disappeared!\n");
+				continue; // Huh? We made sure that this can't happen by filtering out non-existent pictures.
 			}
 			filenames.push_back(QString::fromStdString(fn));
 			toAdd.pics.emplace_back(list.d->pictures.pictures[idx]);
@@ -103,7 +103,7 @@ static std::vector<PictureListForDeletion> addPictures(std::vector<PictureListFo
 		for (const PictureObj &pic: list.pics) {
 			int idx = get_picture_idx(&list.d->pictures, pic.filename.c_str()); // This should *not* already exist!
 			if (idx >= 0) {
-				fprintf(stderr, "addPictures(): picture disappeared!");
+				fprintf(stderr, "addPictures(): picture disappeared!\n");
 				continue; // Huh? We made sure that this can't happen by filtering out existing pictures.
 			}
 			picsForSignal.push_back(pic);
