@@ -2091,17 +2091,19 @@ void ProfileWidget2::updateThumbnail(QString filename, QImage thumbnail, duratio
 }
 
 // Create a PictureEntry object and add its thumbnail to the scene if profile pictures are shown.
-ProfileWidget2::PictureEntry::PictureEntry(offset_t offsetIn, const QString &filenameIn, QGraphicsScene *scene, bool synchronous) : offset(offsetIn),
+ProfileWidget2::PictureEntry::PictureEntry(offset_t offsetIn, const QString &filenameIn, ProfileWidget2 *profile, bool synchronous) : offset(offsetIn),
 	duration(duration_t {0}),
 	filename(filenameIn),
 	thumbnail(new DivePictureItem)
 {
+	QGraphicsScene *scene = profile->scene();
 	int size = Thumbnailer::defaultThumbnailSize();
 	scene->addItem(thumbnail.get());
 	thumbnail->setVisible(prefs.show_pictures_in_profile);
 	QImage img = Thumbnailer::instance()->fetchThumbnail(filename, synchronous).scaled(size, size, Qt::KeepAspectRatio);
 	thumbnail->setPixmap(QPixmap::fromImage(img));
 	thumbnail->setFileUrl(filename);
+	connect(thumbnail.get(), &DivePictureItem::removePicture, profile, &ProfileWidget2::removePicture);
 }
 
 // Define a default sort order for picture-entries: sort lexicographically by timestamp and filename.
@@ -2181,7 +2183,7 @@ void ProfileWidget2::plotPicturesInternal(const struct dive *d, bool synchronous
 	// Note that FOR_EACH_PICTURE handles d being null gracefully.
 	FOR_EACH_PICTURE(d) {
 		if (picture->offset.seconds > 0 && picture->offset.seconds <= d->duration.seconds)
-			pictures.emplace_back(picture->offset, QString(picture->filename), scene(), synchronous);
+			pictures.emplace_back(picture->offset, QString(picture->filename), this, synchronous);
 	}
 	if (pictures.empty())
 		return;
@@ -2220,7 +2222,7 @@ void ProfileWidget2::picturesAdded(dive *d, QVector<PictureObj> pics)
 
 	for (const PictureObj &pic: pics) {
 		if (pic.offset.seconds > 0 && pic.offset.seconds <= d->duration.seconds) {
-			pictures.emplace_back(pic.offset, QString::fromStdString(pic.filename), scene(), false);
+			pictures.emplace_back(pic.offset, QString::fromStdString(pic.filename), this, false);
 			updateThumbnailXPos(pictures.back());
 		}
 	}
@@ -2230,6 +2232,13 @@ void ProfileWidget2::picturesAdded(dive *d, QVector<PictureObj> pics)
 	std::sort(pictures.begin(), pictures.end());
 
 	calculatePictureYPositions();
+}
+
+void ProfileWidget2::removePicture(const QString &fileUrl)
+{
+	struct dive *d = get_dive_by_uniq_id(displayed_dive.id);
+	if (d)
+		Command::removePictures({ { d, { fileUrl.toStdString() } } });
 }
 
 void ProfileWidget2::profileChanged(dive *d)
@@ -2323,7 +2332,7 @@ void ProfileWidget2::pictureOffsetChanged(dive *d, QString filename, offset_t of
 			// The parameters are passed directly to the contructor.
 			// The call returns an iterator to the new element (which might differ from
 			// the old iterator, since the buffer might have been reallocated).
-			newPos = pictures.emplace(newPos, offset, filename, scene(), false);
+			newPos = pictures.emplace(newPos, offset, filename, this, false);
 			updateThumbnailXPos(*newPos);
 			calculatePictureYPositions();
 		}

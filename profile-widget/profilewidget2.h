@@ -118,6 +118,7 @@ slots: // Necessary to call from QAction's signals.
 	void updateThumbnail(QString filename, QImage thumbnail, duration_t duration);
 	void profileChanged(dive *d);
 	void pictureOffsetChanged(dive *d, QString filename, offset_t offset);
+	void removePicture(const QString &fileUrl);
 
 	/* this is called for every move on the handlers. maybe we can speed up this a bit? */
 	void recreatePlannedDive();
@@ -243,7 +244,7 @@ private:
 		std::unique_ptr<DivePictureItem> thumbnail;
 		// For videos with known duration, we represent the duration of the video by a line
 		std::unique_ptr<QGraphicsRectItem> durationLine;
-		PictureEntry (offset_t offsetIn, const QString &filenameIn, QGraphicsScene *scene, bool synchronous);
+		PictureEntry (offset_t offsetIn, const QString &filenameIn, ProfileWidget2 *profile, bool synchronous);
 		bool operator< (const PictureEntry &e) const;
 	};
 	void updateThumbnailXPos(PictureEntry &e);

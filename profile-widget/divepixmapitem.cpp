@@ -5,13 +5,9 @@
 #include "core/qthelper.h"
 #include "core/settings/qPrefDisplay.h"
 #include "core/subsurface-qt/divelistnotifier.h"
-#ifndef SUBSURFACE_MOBILE
-#include "core/dive.h" // for displayed_dive
-#include "commands/command.h"
-#endif
 
 #include <QDesktopServices>
-#include <QGraphicsView>
+#include <QPen>
 #include <QUrl>
 #include <QGraphicsSceneMouseEvent>
 
@@ -28,7 +24,7 @@ CloseButtonItem::CloseButtonItem(QGraphicsItem *parent): DivePixmapItem(parent)
 
 void CloseButtonItem::mousePressEvent(QGraphicsSceneMouseEvent *)
 {
-	qgraphicsitem_cast<DivePictureItem*>(parentItem())->removePicture();
+	emit clicked();
 }
 
 DivePictureItem::DivePictureItem(QGraphicsItem *parent): DivePixmapItem(parent),
@@ -41,6 +37,7 @@ DivePictureItem::DivePictureItem(QGraphicsItem *parent): DivePixmapItem(parent),
 	setAcceptHoverEvents(true);
 	setScale(0.2);
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &DivePictureItem::settingsChanged);
+	connect(button, &CloseButtonItem::clicked, [this] () { emit removePicture(fileUrl); });
 
 	canvas->setPen(Qt::NoPen);
 	canvas->setBrush(QColor(Qt::white));
@@ -107,13 +104,4 @@ void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton)
 		QDesktopServices::openUrl(QUrl::fromLocalFile(localFilePath(fileUrl)));
-}
-
-void DivePictureItem::removePicture()
-{
-#ifndef SUBSURFACE_MOBILE
-	struct dive *d = get_dive_by_uniq_id(displayed_dive.id);
-	if (d)
-		Command::removePictures({ { d, { fileUrl.toStdString() } } });
-#endif
 }
