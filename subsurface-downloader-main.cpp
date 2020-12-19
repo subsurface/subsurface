@@ -11,7 +11,7 @@
 #include "core/subsurface-string.h"
 #include "core/file.h"
 #include "core/trip.h"
-#inclide "core/libdivecomputer.h"
+#include "core/libdivecomputer.h"
 
 #include <QApplication>
 #include <QLoggingCategory>
