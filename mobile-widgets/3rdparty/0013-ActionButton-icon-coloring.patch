@@ -1,0 +1,59 @@
+From ddd8f74f5ca5d696a3bd8742cff66c2e55cc1cb7 Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Sat, 19 Dec 2020 13:58:28 -0800
+Subject: [PATCH] ActionButton icon coloring
+
+The ActionButton code assumes that there is a property 'color' on a
+Kirigami.Action and then uses that to override the color for the icon.
+Unfortunately that property didn't exist - and for strange reason all
+three buttons were implemented using the color of the center button,
+which is kinda weird since they have different backgrounds.
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ src/controls/Action.qml               | 6 ++++++
+ src/controls/private/ActionButton.qml | 4 ++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/src/controls/Action.qml b/src/controls/Action.qml
+index adc1ea3e..7367fc2f 100644
+--- a/src/controls/Action.qml
++++ b/src/controls/Action.qml
+@@ -74,6 +74,12 @@ Controls.Action {
+      */
+     property string tooltip
+ 
++    /**
++     * color: color
++     * used to colorize the icon in the ActionButton
++     */
++    property color color
++
+     /**
+      * children: list<Action>
+      * A list of children actions.
+diff --git a/src/controls/private/ActionButton.qml b/src/controls/private/ActionButton.qml
+index 1d4e4b7a..f216af8d 100644
+--- a/src/controls/private/ActionButton.qml
++++ b/src/controls/private/ActionButton.qml
+@@ -251,7 +251,7 @@ Item {
+                         width: Units.iconSizes.smallMedium
+                         height: width
+                         selected: leftButtonGraphics.pressed
+-                        color: root.action && root.action.color && root.action.color.a > 0 ? root.action.color : (selected ? Theme.highlightedTextColor : Theme.textColor)
++                        color: root.leftAction && root.leftAction.color && root.leftAction.color.a > 0 ? root.leftAction.color : (selected ? Theme.highlightedTextColor : Theme.textColor)
+                         anchors {
+                             left: parent.left
+                             verticalCenter: parent.verticalCenter
+@@ -308,7 +308,7 @@ Item {
+                         width: Units.iconSizes.smallMedium
+                         height: width
+                         selected: rightButtonGraphics.pressed
+-                        color: root.action && root.action.color && root.action.color.a > 0 ? root.action.color : (selected ? Theme.highlightedTextColor : Theme.textColor)
++                        color: root.rightAction && root.rightAction.color && root.rightAction.color.a > 0 ? root.rightAction.color : (selected ? Theme.highlightedTextColor : Theme.textColor)
+                         anchors {
+                             right: parent.right
+                             verticalCenter: parent.verticalCenter
+-- 
+2.25.1
+
