@@ -498,7 +498,7 @@ fi
 
 cd "$SRC"
 
-if [ "$QUICK" != "1" ] ; then
+if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] ; then
 	# build the googlemaps map plugin
 
 	cd "$SRC"
