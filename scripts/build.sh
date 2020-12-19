@@ -180,11 +180,6 @@ if [ "$BUILD_DESKTOP" = "1" ] || [ "$BUILDS" = "" ] ; then
 	echo "building Subsurface in ${SRC_DIR}/build"
 	BUILDS+=( "DesktopExecutable" )
 	BUILDDIRS+=( "${BUILD_PREFIX}build" )
-	if [ "$BUILD_WITH_WEBKIT" = "1" ] ; then
-		PRINTING="-DNO_PRINTING=OFF"
-	else
-		PRINTING="-DNO_PRINTING=ON"
-	fi
 fi
 
 if [[ ! -d "${SRC_DIR}" ]] ; then
@@ -503,12 +498,6 @@ fi
 
 cd "$SRC"
 
-if [ "$BUILD_WITH_WEBKIT" = "1" ]; then
-	EXTRA_OPTS="-DNO_USERMANUAL=OFF"
-else
-	EXTRA_OPTS="-DNO_USERMANUAL=ON"
-fi
-
 if [ "$QUICK" != "1" ] ; then
 	# build the googlemaps map plugin
 
@@ -540,6 +529,12 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	BUILDDIR=${BUILDDIRS[$i]}
 	echo "build $SUBSURFACE_EXECUTABLE in $BUILDDIR"
 
+	if [ "$SUBSURFACE_EXECUTABLE" = "DesktopExecutable" ] && [ "$BUILD_WITH_WEBKIT" = "1" ]; then
+		EXTRA_OPTS="-DNO_USERMANUAL=OFF -DNO_PRINTING=OFF"
+	else
+		EXTRA_OPTS="-DNO_USERMANUAL=ON -DNO_PRINTING=ON"
+	fi
+
 	cd "$SRC"/${SRC_DIR}
 
 	# pull the plasma-mobile components from upstream if building Subsurface-mobile
@@ -561,7 +556,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		-DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" \
 		$LIBGIT2_FROM_PKGCONFIG \
 		-DFORCE_LIBSSH=OFF \
-		$PRINTING $EXTRA_OPTS \
+		$EXTRA_OPTS \
 		"$SRC"/${SRC_DIR}
 
 	if [ "$PLATFORM" = Darwin ] ; then
