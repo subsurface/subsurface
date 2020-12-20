@@ -9,7 +9,7 @@
 #include "profile-widget/divelineitem.h"
 #include "profile-widget/profilewidget2.h"
 
-QPen DiveCartesianAxis::gridPen()
+QPen DiveCartesianAxis::gridPen() const
 {
 	QPen pen;
 	pen.setColor(getColor(TIME_GRID));
@@ -96,7 +96,7 @@ void DiveCartesianAxis::setOrientation(Orientation o)
 	changed = true;
 }
 
-QColor DiveCartesianAxis::colorForValue(double)
+QColor DiveCartesianAxis::colorForValue(double) const
 {
 	return QColor(Qt::black);
 }
@@ -265,7 +265,7 @@ void DiveCartesianAxis::animateChangeLine(const QLineF &newLine)
 	sizeChanged();
 }
 
-QString DiveCartesianAxis::textForValue(double value)
+QString DiveCartesianAxis::textForValue(double value) const
 {
 	return QString("%L1").arg(value, 0, 'g', 4);
 }
@@ -297,7 +297,7 @@ qreal DiveCartesianAxis::valueAt(const QPointF &p) const
 	return fraction * (max - min) + min;
 }
 
-qreal DiveCartesianAxis::posAtValue(qreal value)
+qreal DiveCartesianAxis::posAtValue(qreal value) const
 {
 	QLineF m = line();
 	QPointF p = pos();
@@ -349,14 +349,14 @@ void DiveCartesianAxis::setColor(const QColor &color)
 	setPen(defaultPen);
 }
 
-QString DepthAxis::textForValue(double value)
+QString DepthAxis::textForValue(double value) const
 {
 	if (value == 0)
 		return QString();
 	return get_depth_string(lrint(value), false, false);
 }
 
-QColor DepthAxis::colorForValue(double)
+QColor DepthAxis::colorForValue(double) const
 {
 	return QColor(Qt::red);
 }
@@ -382,12 +382,12 @@ TimeAxis::TimeAxis(ProfileWidget2 *widget) : DiveCartesianAxis(widget)
 {
 }
 
-QColor TimeAxis::colorForValue(double)
+QColor TimeAxis::colorForValue(double) const
 {
 	return QColor(Qt::blue);
 }
 
-QString TimeAxis::textForValue(double value)
+QString TimeAxis::textForValue(double value) const
 {
 	int nr = lrint(value) / 60;
 	if (maximum() < 600)
@@ -409,7 +409,7 @@ TemperatureAxis::TemperatureAxis(ProfileWidget2 *widget) : DiveCartesianAxis(wid
 {
 }
 
-QString TemperatureAxis::textForValue(double value)
+QString TemperatureAxis::textForValue(double value) const
 {
 	return QString::number(mkelvin_to_C((int)value));
 }

@@ -20,7 +20,7 @@ class DiveCartesianAxis : public QObject, public QGraphicsLineItem {
 	Q_PROPERTY(qreal y WRITE setY READ y)
 private:
 	bool printMode;
-	QPen gridPen();
+	QPen gridPen() const;
 public:
 	enum Orientation {
 		TopToBottom,
@@ -41,7 +41,7 @@ public:
 	double maximum() const;
 	double fontLabelScale() const;
 	qreal valueAt(const QPointF &p) const;
-	qreal posAtValue(qreal value);
+	qreal posAtValue(qreal value) const;
 	void setColor(const QColor &color);
 	void setTextColor(const QColor &color);
 	void animateChangeLine(const QLineF &newLine);
@@ -60,8 +60,8 @@ signals:
 
 protected:
 	ProfileWidget2 *profileWidget;
-	virtual QString textForValue(double value);
-	virtual QColor colorForValue(double value);
+	virtual QString textForValue(double value) const;
+	virtual QColor colorForValue(double value) const;
 	Orientation orientation;
 	QList<DiveTextItem *> labels;
 	QList<DiveLineItem *> lines;
@@ -82,8 +82,8 @@ class DepthAxis : public DiveCartesianAxis {
 public:
 	DepthAxis(ProfileWidget2 *widget);
 private:
-	QString textForValue(double value);
-	QColor colorForValue(double value);
+	QString textForValue(double value) const override;
+	QColor colorForValue(double value) const override;
 private
 slots:
 	void settingsChanged();
@@ -95,8 +95,8 @@ public:
 	TimeAxis(ProfileWidget2 *widget);
 	void updateTicks(color_index_t color = TIME_GRID);
 private:
-	QString textForValue(double value);
-	QColor colorForValue(double value);
+	QString textForValue(double value) const override;
+	QColor colorForValue(double value) const override;
 };
 
 class TemperatureAxis : public DiveCartesianAxis {
@@ -104,7 +104,7 @@ class TemperatureAxis : public DiveCartesianAxis {
 public:
 	TemperatureAxis(ProfileWidget2 *widget);
 private:
-	QString textForValue(double value);
+	QString textForValue(double value) const;
 };
 
 class PartialGasPressureAxis : public DiveCartesianAxis {
