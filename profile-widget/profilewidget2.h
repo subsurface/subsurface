@@ -78,7 +78,7 @@ public:
 	void resetZoom();
 	void scale(qreal sx, qreal sy);
 	void plotDive(const struct dive *d, bool force = false, bool clearPictures = false, bool instant = false);
-	void setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *vAxis, int vData, int hData, int zValue);
+	void setupItem(AbstractProfilePolygonItem *item, int zValue);
 	void setPrintMode(bool mode, bool grayscale = false);
 	bool getPrintMode();
 	bool isPointOutOfBoundaries(const QPointF &point) const;
@@ -158,7 +158,7 @@ private:
 	void disconnectTemporaryConnections();
 	struct plot_data *getEntryFromPos(QPointF pos);
 	void addActionShortcut(const Qt::Key shortcut, void (ProfileWidget2::*slot)());
-	void createPPGas(PartialPressureGasItem *item, int verticalColumn, color_index_t color, color_index_t colorAlert,
+	void createPPGas(PartialPressureGasItem *item, color_index_t color, color_index_t colorAlert,
 			 const double *thresholdSettingsMin, const double *thresholdSettingsMax);
 	void clearPictures();
 	void plotPicturesInternal(const struct dive *d, bool synchronous);
