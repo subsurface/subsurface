@@ -109,6 +109,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	dataModel(new DivePlotDataModel(this)),
 	zoomLevel(0),
 	zoomFactor(1.15),
+	isGrayscale(false),
+	printMode(false),
 	background(new DivePixmapItem()),
 	backgroundFile(":poster-icon"),
 #ifndef SUBSURFACE_MOBILE
@@ -126,14 +128,15 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	gasPressureItem(createItem<DiveGasPressureItem>(*cylinderPressureAxis, DivePlotDataModel::TEMPERATURE)),
 	diveComputerText(new DiveTextItem()),
 	reportedCeiling(createItem<DiveReportedCeiling>(*profileYAxis, DivePlotDataModel::CEILING)),
-	pn2GasItem(createItem<PartialPressureGasItem>(*gasYAxis, DivePlotDataModel::PN2)),
-	pheGasItem(createItem<PartialPressureGasItem>(*gasYAxis, DivePlotDataModel::PHE)),
-	po2GasItem(createItem<PartialPressureGasItem>(*gasYAxis, DivePlotDataModel::PO2)),
-	o2SetpointGasItem(createItem<PartialPressureGasItem>(*gasYAxis, DivePlotDataModel::O2SETPOINT)),
-	ccrsensor1GasItem(createItem<PartialPressureGasItem>(*gasYAxis, DivePlotDataModel::CCRSENSOR1)),
-	ccrsensor2GasItem(createItem<PartialPressureGasItem>(*gasYAxis, DivePlotDataModel::CCRSENSOR2)),
-	ccrsensor3GasItem(createItem<PartialPressureGasItem>(*gasYAxis, DivePlotDataModel::CCRSENSOR3)),
-	ocpo2GasItem(createItem<PartialPressureGasItem>(*gasYAxis, DivePlotDataModel::SCR_OC_PO2)),
+	pn2GasItem(createPPGas(DivePlotDataModel::PN2, PN2, PN2_ALERT, NULL, &prefs.pp_graphs.pn2_threshold)),
+	pheGasItem(createPPGas(DivePlotDataModel::PHE, PHE, PHE_ALERT, NULL, &prefs.pp_graphs.phe_threshold)),
+	po2GasItem(createPPGas(DivePlotDataModel::PO2, PO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
+	o2SetpointGasItem(createPPGas(DivePlotDataModel::O2SETPOINT, O2SETPOINT, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
+	ccrsensor1GasItem(createPPGas(DivePlotDataModel::CCRSENSOR1, CCRSENSOR1, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
+	ccrsensor2GasItem(createPPGas(DivePlotDataModel::CCRSENSOR2, CCRSENSOR2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
+	ccrsensor3GasItem(createPPGas(DivePlotDataModel::CCRSENSOR3, CCRSENSOR3, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
+	ocpo2GasItem(createPPGas(DivePlotDataModel::SCR_OC_PO2, SCR_OCPO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
+
 #ifndef SUBSURFACE_MOBILE
 	diveCeiling(createItem<DiveCalculatedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, this)),
 	decoModelParameters(new DiveTextItem()),
@@ -147,8 +150,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	rulerItem(new RulerItem2()),
 #endif
 	tankItem(new TankItem()),
-	isGrayscale(false),
-	printMode(false),
 	shouldCalculateMaxTime(true),
 	shouldCalculateMaxDepth(true),
 	fontPrintScale(1.0)
@@ -367,15 +368,6 @@ void ProfileWidget2::setupItemOnScene()
 	setupItem(diveProfileItem, 0);
 	setupItem(meanDepthItem, 1);
 
-	createPPGas(pn2GasItem, PN2, PN2_ALERT, NULL, &prefs.pp_graphs.pn2_threshold);
-	createPPGas(pheGasItem, PHE, PHE_ALERT, NULL, &prefs.pp_graphs.phe_threshold);
-	createPPGas(po2GasItem, PO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max);
-	createPPGas(o2SetpointGasItem, O2SETPOINT, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max);
-	createPPGas(ccrsensor1GasItem, CCRSENSOR1, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max);
-	createPPGas(ccrsensor2GasItem, CCRSENSOR2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max);
-	createPPGas(ccrsensor3GasItem, CCRSENSOR3, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max);
-	createPPGas(ocpo2GasItem, SCR_OCPO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max);
-
 #undef CREATE_PP_GAS
 #ifndef SUBSURFACE_MOBILE
 
@@ -410,14 +402,16 @@ void ProfileWidget2::replot()
 	plotDive(current_dive, true, false);
 }
 
-void ProfileWidget2::createPPGas(PartialPressureGasItem *item, color_index_t color, color_index_t colorAlert,
-				 const double *thresholdSettingsMin, const double *thresholdSettingsMax)
+PartialPressureGasItem *ProfileWidget2::createPPGas(int column, color_index_t color, color_index_t colorAlert,
+						    const double *thresholdSettingsMin, const double *thresholdSettingsMax)
 {
+	PartialPressureGasItem *item = createItem<PartialPressureGasItem>(*gasYAxis, column);
 	setupItem(item, 0);
 	item->setThresholdSettingsKey(thresholdSettingsMin, thresholdSettingsMax);
 	item->setColors(getColor(color, isGrayscale), getColor(colorAlert, isGrayscale));
 	item->settingsChanged();
 	item->setZValue(99);
+	return item;
 }
 
 void ProfileWidget2::setupItemSizes()

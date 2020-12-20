@@ -159,8 +159,8 @@ private:
 	void disconnectTemporaryConnections();
 	struct plot_data *getEntryFromPos(QPointF pos);
 	void addActionShortcut(const Qt::Key shortcut, void (ProfileWidget2::*slot)());
-	void createPPGas(PartialPressureGasItem *item, color_index_t color, color_index_t colorAlert,
-			 const double *thresholdSettingsMin, const double *thresholdSettingsMax);
+	PartialPressureGasItem *createPPGas(int column, color_index_t color, color_index_t colorAlert,
+					    const double *thresholdSettingsMin, const double *thresholdSettingsMax);
 	void clearPictures();
 	void plotPicturesInternal(const struct dive *d, bool synchronous);
 	void addDivemodeSwitch(int seconds, int divemode);
@@ -178,6 +178,8 @@ private:
 	DivePlotDataModel *dataModel;
 	int zoomLevel;
 	qreal zoomFactor;
+	bool isGrayscale;
+	bool printMode;
 	DivePixmapItem *background;
 	QString backgroundFile;
 #ifndef SUBSURFACE_MOBILE
@@ -223,8 +225,6 @@ private:
 	RulerItem2 *rulerItem;
 #endif
 	TankItem *tankItem;
-	bool isGrayscale;
-	bool printMode;
 
 	QList<QGraphicsSimpleTextItem *> gases;
 
