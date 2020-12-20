@@ -97,10 +97,11 @@ static const double thumbnailBaseZValue = 100.0;
 #endif
 
 template<typename T, class... Args>
-T *ProfileWidget2::createItem(const DiveCartesianAxis &vAxis, int vColumn, Args&&... args)
+T *ProfileWidget2::createItem(const DiveCartesianAxis &vAxis, int vColumn, int z, Args&&... args)
 {
 	T *res = new T(*dataModel, *timeAxis, DivePlotDataModel::TIME, vAxis, vColumn,
 		       std::forward<Args>(args)...);
+	res->setZValue(static_cast<double>(z));
 	return res;
 }
 
@@ -121,13 +122,13 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	gasYAxis(new PartialGasPressureAxis(this)),
 	temperatureAxis(new TemperatureAxis(this)),
 	timeAxis(new TimeAxis(this)),
-	diveProfileItem(createItem<DiveProfileItem>(*profileYAxis, DivePlotDataModel::DEPTH)),
-	temperatureItem(createItem<DiveTemperatureItem>(*temperatureAxis, DivePlotDataModel::TEMPERATURE)),
-	meanDepthItem(createItem<DiveMeanDepthItem>(*profileYAxis, DivePlotDataModel::INSTANT_MEANDEPTH)),
+	diveProfileItem(createItem<DiveProfileItem>(*profileYAxis, DivePlotDataModel::DEPTH, 0)),
+	temperatureItem(createItem<DiveTemperatureItem>(*temperatureAxis, DivePlotDataModel::TEMPERATURE, 1)),
+	meanDepthItem(createItem<DiveMeanDepthItem>(*profileYAxis, DivePlotDataModel::INSTANT_MEANDEPTH, 1)),
 	cylinderPressureAxis(new DiveCartesianAxis(this)),
-	gasPressureItem(createItem<DiveGasPressureItem>(*cylinderPressureAxis, DivePlotDataModel::TEMPERATURE)),
+	gasPressureItem(createItem<DiveGasPressureItem>(*cylinderPressureAxis, DivePlotDataModel::TEMPERATURE, 1)),
 	diveComputerText(new DiveTextItem()),
-	reportedCeiling(createItem<DiveReportedCeiling>(*profileYAxis, DivePlotDataModel::CEILING)),
+	reportedCeiling(createItem<DiveReportedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1)),
 	pn2GasItem(createPPGas(DivePlotDataModel::PN2, PN2, PN2_ALERT, NULL, &prefs.pp_graphs.pn2_threshold)),
 	pheGasItem(createPPGas(DivePlotDataModel::PHE, PHE, PHE_ALERT, NULL, &prefs.pp_graphs.phe_threshold)),
 	po2GasItem(createPPGas(DivePlotDataModel::PO2, PO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
@@ -136,15 +137,14 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	ccrsensor2GasItem(createPPGas(DivePlotDataModel::CCRSENSOR2, CCRSENSOR2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
 	ccrsensor3GasItem(createPPGas(DivePlotDataModel::CCRSENSOR3, CCRSENSOR3, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
 	ocpo2GasItem(createPPGas(DivePlotDataModel::SCR_OC_PO2, SCR_OCPO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
-
 #ifndef SUBSURFACE_MOBILE
-	diveCeiling(createItem<DiveCalculatedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, this)),
+	diveCeiling(createItem<DiveCalculatedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1, this)),
 	decoModelParameters(new DiveTextItem()),
 	heartBeatAxis(new DiveCartesianAxis(this)),
-	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis, DivePlotDataModel::HEARTBEAT)),
+	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis, DivePlotDataModel::HEARTBEAT, 1)),
 	percentageAxis(new DiveCartesianAxis(this)),
-	ambPressureItem(createItem<DiveAmbPressureItem>(*percentageAxis, DivePlotDataModel::AMBPRESSURE)),
-	gflineItem(createItem<DiveGFLineItem>(*percentageAxis, DivePlotDataModel::GFLINE)),
+	ambPressureItem(createItem<DiveAmbPressureItem>(*percentageAxis, DivePlotDataModel::AMBPRESSURE, 1)),
+	gflineItem(createItem<DiveGFLineItem>(*percentageAxis, DivePlotDataModel::GFLINE, 1)),
 	mouseFollowerVertical(new DiveLineItem()),
 	mouseFollowerHorizontal(new DiveLineItem()),
 	rulerItem(new RulerItem2()),
@@ -349,24 +349,13 @@ void ProfileWidget2::setupItemOnScene()
 	decoModelParameters->setX(50);
 	decoModelParameters->setBrush(getColor(PRESSURE_TEXT));
 	decoModelParameters->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
-	setupItem(diveCeiling, 1);
 	for (int i = 0; i < 16; i++) {
-		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileYAxis, DivePlotDataModel::TISSUE_1 + i, this);
-		setupItem(tissueItem, 1 + i);
+		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileYAxis, DivePlotDataModel::TISSUE_1 + i, i + 1, this);
 		allTissues.append(tissueItem);
-		DivePercentageItem *percentageItem = createItem<DivePercentageItem>(*percentageAxis, DivePlotDataModel::PERCENTAGE_1 + i, i);
-		setupItem(percentageItem, 1 + i);
+		DivePercentageItem *percentageItem = createItem<DivePercentageItem>(*percentageAxis, DivePlotDataModel::PERCENTAGE_1 + i, i + 1, i);
 		allPercentages.append(percentageItem);
 	}
-	setupItem(heartBeatItem, 1);
-	setupItem(ambPressureItem, 1);
-	setupItem(gflineItem, 1);
 #endif
-	setupItem(reportedCeiling, 1);
-	setupItem(gasPressureItem, 1);
-	setupItem(temperatureItem, 1);
-	setupItem(diveProfileItem, 0);
-	setupItem(meanDepthItem, 1);
 
 #undef CREATE_PP_GAS
 #ifndef SUBSURFACE_MOBILE
@@ -405,12 +394,10 @@ void ProfileWidget2::replot()
 PartialPressureGasItem *ProfileWidget2::createPPGas(int column, color_index_t color, color_index_t colorAlert,
 						    const double *thresholdSettingsMin, const double *thresholdSettingsMax)
 {
-	PartialPressureGasItem *item = createItem<PartialPressureGasItem>(*gasYAxis, column);
-	setupItem(item, 0);
+	PartialPressureGasItem *item = createItem<PartialPressureGasItem>(*gasYAxis, column, 99);
 	item->setThresholdSettingsKey(thresholdSettingsMin, thresholdSettingsMax);
 	item->setColors(getColor(color, isGrayscale), getColor(colorAlert, isGrayscale));
 	item->settingsChanged();
-	item->setZValue(99);
 	return item;
 }
 
@@ -537,11 +524,6 @@ void ProfileWidget2::setupItemSizes()
 #else
 	itemPos.tankBar.on.setY(86.4);
 #endif
-}
-
-void ProfileWidget2::setupItem(AbstractProfilePolygonItem *item, int zValue)
-{
-	item->setZValue(zValue);
 }
 
 void ProfileWidget2::setupSceneAndFlags()
