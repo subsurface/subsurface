@@ -865,11 +865,6 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 #endif
 }
 
-void ProfileWidget2::dateTimeChanged()
-{
-	emit dateTimeChangedItems();
-}
-
 void ProfileWidget2::actionRequestedReplot(bool)
 {
 	settingsChanged();
