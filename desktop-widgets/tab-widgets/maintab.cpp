@@ -256,7 +256,6 @@ void MainTab::divesChanged(const QVector<dive *> &dives, DiveField field)
 		updateNotes(current_dive);
 	if (field.datetime) {
 		updateDateTime(current_dive);
-		MainWindow::instance()->graphics->dateTimeChanged();
 		DivePlannerPointsModel::instance()->getDiveplan().when = current_dive->when;
 	}
 	if (field.divesite)
