@@ -78,7 +78,6 @@ public:
 	void resetZoom();
 	void scale(qreal sx, qreal sy);
 	void plotDive(const struct dive *d, bool force = false, bool clearPictures = false, bool instant = false);
-	void setupItem(AbstractProfilePolygonItem *item, int zValue);
 	void setPrintMode(bool mode, bool grayscale = false);
 	bool getPrintMode();
 	bool isPointOutOfBoundaries(const QPointF &point) const;
@@ -152,7 +151,7 @@ private:
 	void fixBackgroundPos();
 	void scrollViewTo(const QPoint &pos);
 	void setupSceneAndFlags();
-	template<typename T, class... Args> T *createItem(const DiveCartesianAxis &vAxis, int vColumn, Args&&... args);
+	template<typename T, class... Args> T *createItem(const DiveCartesianAxis &vAxis, int vColumn, int z, Args&&... args);
 	void setupItemSizes();
 	void addItemsToScene();
 	void setupItemOnScene();
