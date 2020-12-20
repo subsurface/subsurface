@@ -96,6 +96,14 @@ static struct _ItemPos {
 static const double thumbnailBaseZValue = 100.0;
 #endif
 
+template<typename T, class... Args>
+T *ProfileWidget2::createItem(const DiveCartesianAxis &vAxis, int vColumn, Args&&... args)
+{
+	T *res = new T(*dataModel, *timeAxis, DivePlotDataModel::TIME, vAxis, vColumn,
+		       std::forward<Args>(args)...);
+	return res;
+}
+
 ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	currentState(INVALID),
 	dataModel(new DivePlotDataModel(this)),
@@ -111,29 +119,29 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	gasYAxis(new PartialGasPressureAxis(this)),
 	temperatureAxis(new TemperatureAxis(this)),
 	timeAxis(new TimeAxis(this)),
-	diveProfileItem(new DiveProfileItem(*dataModel, *timeAxis, DivePlotDataModel::TIME, *profileYAxis, DivePlotDataModel::DEPTH)),
-	temperatureItem(new DiveTemperatureItem(*dataModel, *timeAxis, DivePlotDataModel::TIME, *temperatureAxis, DivePlotDataModel::TEMPERATURE)),
-	meanDepthItem(new DiveMeanDepthItem(*dataModel, *timeAxis, DivePlotDataModel::TIME, *profileYAxis, DivePlotDataModel::INSTANT_MEANDEPTH)),
+	diveProfileItem(createItem<DiveProfileItem>(*profileYAxis, DivePlotDataModel::DEPTH)),
+	temperatureItem(createItem<DiveTemperatureItem>(*temperatureAxis, DivePlotDataModel::TEMPERATURE)),
+	meanDepthItem(createItem<DiveMeanDepthItem>(*profileYAxis, DivePlotDataModel::INSTANT_MEANDEPTH)),
 	cylinderPressureAxis(new DiveCartesianAxis(this)),
-	gasPressureItem(new DiveGasPressureItem(*dataModel, *timeAxis, DivePlotDataModel::TIME, *cylinderPressureAxis, DivePlotDataModel::TEMPERATURE)),
+	gasPressureItem(createItem<DiveGasPressureItem>(*cylinderPressureAxis, DivePlotDataModel::TEMPERATURE)),
 	diveComputerText(new DiveTextItem()),
-	reportedCeiling(new DiveReportedCeiling(*dataModel, *timeAxis, DivePlotDataModel::TIME, *profileYAxis, DivePlotDataModel::CEILING)),
-	pn2GasItem(new PartialPressureGasItem(*dataModel, *timeAxis, DivePlotDataModel::TIME, *gasYAxis, DivePlotDataModel::PN2)),
-	pheGasItem(new PartialPressureGasItem(*dataModel, *timeAxis, DivePlotDataModel::TIME, *gasYAxis, DivePlotDataModel::PHE)),
-	po2GasItem(new PartialPressureGasItem(*dataModel, *timeAxis, DivePlotDataModel::TIME, *gasYAxis, DivePlotDataModel::PO2)),
-	o2SetpointGasItem(new PartialPressureGasItem(*dataModel, *timeAxis, DivePlotDataModel::TIME, *gasYAxis, DivePlotDataModel::O2SETPOINT)),
-	ccrsensor1GasItem(new PartialPressureGasItem(*dataModel, *timeAxis, DivePlotDataModel::TIME, *gasYAxis, DivePlotDataModel::CCRSENSOR1)),
-	ccrsensor2GasItem(new PartialPressureGasItem(*dataModel, *timeAxis, DivePlotDataModel::TIME, *gasYAxis, DivePlotDataModel::CCRSENSOR2)),
-	ccrsensor3GasItem(new PartialPressureGasItem(*dataModel, *timeAxis, DivePlotDataModel::TIME, *gasYAxis, DivePlotDataModel::CCRSENSOR3)),
-	ocpo2GasItem(new PartialPressureGasItem(*dataModel, *timeAxis, DivePlotDataModel::TIME, *gasYAxis, DivePlotDataModel::SCR_OC_PO2)),
+	reportedCeiling(createItem<DiveReportedCeiling>(*profileYAxis, DivePlotDataModel::CEILING)),
+	pn2GasItem(createItem<PartialPressureGasItem>(*gasYAxis, DivePlotDataModel::PN2)),
+	pheGasItem(createItem<PartialPressureGasItem>(*gasYAxis, DivePlotDataModel::PHE)),
+	po2GasItem(createItem<PartialPressureGasItem>(*gasYAxis, DivePlotDataModel::PO2)),
+	o2SetpointGasItem(createItem<PartialPressureGasItem>(*gasYAxis, DivePlotDataModel::O2SETPOINT)),
+	ccrsensor1GasItem(createItem<PartialPressureGasItem>(*gasYAxis, DivePlotDataModel::CCRSENSOR1)),
+	ccrsensor2GasItem(createItem<PartialPressureGasItem>(*gasYAxis, DivePlotDataModel::CCRSENSOR2)),
+	ccrsensor3GasItem(createItem<PartialPressureGasItem>(*gasYAxis, DivePlotDataModel::CCRSENSOR3)),
+	ocpo2GasItem(createItem<PartialPressureGasItem>(*gasYAxis, DivePlotDataModel::SCR_OC_PO2)),
 #ifndef SUBSURFACE_MOBILE
-	diveCeiling(new DiveCalculatedCeiling(*dataModel, *timeAxis, DivePlotDataModel::TIME, *profileYAxis, DivePlotDataModel::CEILING, this)),
+	diveCeiling(createItem<DiveCalculatedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, this)),
 	decoModelParameters(new DiveTextItem()),
 	heartBeatAxis(new DiveCartesianAxis(this)),
-	heartBeatItem(new DiveHeartrateItem(*dataModel, *timeAxis, DivePlotDataModel::TIME, *heartBeatAxis, DivePlotDataModel::HEARTBEAT)),
+	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis, DivePlotDataModel::HEARTBEAT)),
 	percentageAxis(new DiveCartesianAxis(this)),
-	ambPressureItem(new DiveAmbPressureItem(*dataModel, *timeAxis, DivePlotDataModel::TIME, *percentageAxis, DivePlotDataModel::AMBPRESSURE)),
-	gflineItem(new DiveGFLineItem(*dataModel, *timeAxis, DivePlotDataModel::TIME, *percentageAxis, DivePlotDataModel::GFLINE)),
+	ambPressureItem(createItem<DiveAmbPressureItem>(*percentageAxis, DivePlotDataModel::AMBPRESSURE)),
+	gflineItem(createItem<DiveGFLineItem>(*percentageAxis, DivePlotDataModel::GFLINE)),
 	mouseFollowerVertical(new DiveLineItem()),
 	mouseFollowerHorizontal(new DiveLineItem()),
 	rulerItem(new RulerItem2()),
@@ -342,10 +350,10 @@ void ProfileWidget2::setupItemOnScene()
 	decoModelParameters->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 	setupItem(diveCeiling, 1);
 	for (int i = 0; i < 16; i++) {
-		DiveCalculatedTissue *tissueItem = new DiveCalculatedTissue(*dataModel, *timeAxis, DivePlotDataModel::TIME, *profileYAxis, DivePlotDataModel::TISSUE_1 + i, this);
+		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileYAxis, DivePlotDataModel::TISSUE_1 + i, this);
 		setupItem(tissueItem, 1 + i);
 		allTissues.append(tissueItem);
-		DivePercentageItem *percentageItem = new DivePercentageItem(*dataModel, *timeAxis, DivePlotDataModel::TIME, *percentageAxis, DivePlotDataModel::PERCENTAGE_1 + i, i);
+		DivePercentageItem *percentageItem = createItem<DivePercentageItem>(*percentageAxis, DivePlotDataModel::PERCENTAGE_1 + i, i);
 		setupItem(percentageItem, 1 + i);
 		allPercentages.append(percentageItem);
 	}
