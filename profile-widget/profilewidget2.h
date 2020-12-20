@@ -98,11 +98,9 @@ signals:
 	void enableShortcuts();
 	void disableShortcuts(bool paste);
 	void editCurrentDive();
-	void dateTimeChangedItems();
 
 public
 slots: // Necessary to call from QAction's signals.
-	void dateTimeChanged();
 	void settingsChanged();
 	void actionRequestedReplot(bool triggered);
 	void setEmptyState();
