@@ -25,6 +25,7 @@ QMLProfile::QMLProfile(QQuickItem *parent) :
 	m_profileWidget->setFontPrintScale(fontScale);
 	connect(QMLManager::instance(), &QMLManager::sendScreenChanged, this, &QMLProfile::screenChanged);
 	connect(this, &QMLProfile::scaleChanged, this, &QMLProfile::triggerUpdate);
+	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &QMLProfile::divesChanged);
 	setDevicePixelRatio(QMLManager::instance()->lastDevicePixelRatio());
 }
 
@@ -181,4 +182,17 @@ void QMLProfile::setYOffset(qreal value)
 void QMLProfile::screenChanged(QScreen *screen)
 {
 	setDevicePixelRatio(screen->devicePixelRatio());
+}
+
+void QMLProfile::divesChanged(const QVector<dive *> &dives, DiveField)
+{
+	for (struct dive *d: dives) {
+		if (d->id == m_diveId) {
+			qDebug() << "dive #" << d->number << "changed, trigger profile update";
+			m_profileWidget->plotDive(d, true);
+			triggerUpdate();
+			return;
+		}
+	}
+
 }
