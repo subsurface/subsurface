@@ -411,6 +411,7 @@ Kirigami.Page {
 				DiveDetailsView {
 					id: diveDetails
 					width: internalScrollView.width
+					myId: model.id
 				}
 				ScrollBar.vertical: ScrollBar { }
 			}
