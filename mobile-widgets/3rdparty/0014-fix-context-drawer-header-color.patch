@@ -1,0 +1,27 @@
+From ca66227303a93a25fafef89831fa4d49d83e9f9a Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Sun, 20 Dec 2020 16:41:56 -0800
+Subject: [PATCH 14/15] fix context drawer header color
+
+This didn't pick up the Theme text color by default.
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ src/controls/ContextDrawer.qml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/controls/ContextDrawer.qml b/src/controls/ContextDrawer.qml
+index 7c9f6cc6..a824ea23 100644
+--- a/src/controls/ContextDrawer.qml
++++ b/src/controls/ContextDrawer.qml
+@@ -170,6 +170,7 @@ OverlayDrawer {
+                     elide: Text.ElideRight
+                     level: 2
+                     text: root.title
++                    color: Theme.textColor
+                 }
+             }
+             delegate: Column {
+-- 
+2.25.1
+
