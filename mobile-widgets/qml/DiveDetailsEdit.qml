@@ -115,9 +115,6 @@ Item {
 				      endpressure, usedGas, usedCyl,
 				      detailsEdit.rating,
 				      detailsEdit.visibility, state)
-		// trigger the profile to be redrawn
-		QMLProfile.diveId = dive_id
-
 		Qt.inputMethod.hide()
 		// now make sure we directly show the saved dive (this may be a new dive, or it may have moved)
 		clearDetailsEdit()
