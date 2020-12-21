@@ -3,6 +3,7 @@
 #define QMLPROFILE_H
 
 #include "profilewidget2.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 #include <QQuickPaintedItem>
 
 class QMLProfile : public QQuickPaintedItem
@@ -37,6 +38,9 @@ private:
 	qreal m_xOffset, m_yOffset;
 	QScopedPointer<ProfileWidget2> m_profileWidget;
 	void updateProfile();
+
+private slots:
+	void divesChanged(const QVector<dive *> &dives, DiveField);
 
 signals:
 	void rightAlignedChanged();
