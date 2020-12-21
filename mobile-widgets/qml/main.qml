@@ -44,7 +44,8 @@ Kirigami.ApplicationWindow {
 		// to mean that we want to simply over-write the last line, not create a new one
 		if (initialized) {
 			// make sure any old notification is hidden
-			hidePassiveNotification()
+			// hiding notifications is no longer supported????
+			// hidePassiveNotification()
 			if (notificationText !== "") {
 				// there's a risk that we have a >5 second gap in update events;
 				// still, keep the timeout at 5s to avoid odd unchanging notifications
@@ -72,7 +73,8 @@ Kirigami.ApplicationWindow {
 
 	function hideBusy() {
 		busy.running = false
-		hidePassiveNotification()
+		// hiding notifications is no longer supported???
+		// hidePassiveNotification()
 	}
 
 	function returnTopPage() {
