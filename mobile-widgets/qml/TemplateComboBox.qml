@@ -57,8 +57,6 @@ ComboBox {
 	}
 
 	background: Rectangle {
-		implicitWidth: cb.width
-		implicitHeight: cb.height
 		border.color: subsurfaceTheme.darkerPrimaryColor
 		border.width: cb.visualFocus ? 2 : 1
 		color: subsurfaceTheme.backgroundColor
