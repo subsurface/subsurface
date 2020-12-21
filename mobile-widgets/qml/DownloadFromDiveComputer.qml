@@ -54,7 +54,7 @@ Kirigami.Page {
 			TemplateLabel {
 				text: qsTr(" Vendor name: ")
 			}
-			Controls.ComboBox {
+			TemplateComboBox {
 				id: comboVendor
 				Layout.fillWidth: true
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2.5
@@ -66,6 +66,7 @@ Kirigami.Page {
 					contentItem: Text {
 						text: modelData
 						font.pointSize: subsurfaceTheme.regularPointSize
+						color: subsurfaceTheme.textColor
 						verticalAlignment: Text.AlignVCenter
 						elide: Text.ElideRight
 					}
@@ -74,6 +75,7 @@ Kirigami.Page {
 				contentItem: Text {
 					text: comboVendor.displayText
 					font.pointSize: subsurfaceTheme.regularPointSize
+					color: subsurfaceTheme.textColor
 					leftPadding: Kirigami.Units.gridUnit * 0.5
 					horizontalAlignment: Text.AlignLeft
 					verticalAlignment: Text.AlignVCenter
@@ -90,7 +92,7 @@ Kirigami.Page {
 			TemplateLabel {
 				text: qsTr(" Dive Computer:")
 			}
-			Controls.ComboBox {
+			TemplateComboBox {
 				id: comboProduct
 				Layout.fillWidth: true
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2.5
@@ -102,6 +104,7 @@ Kirigami.Page {
 					contentItem: Text {
 						text: modelData
 						font.pointSize: subsurfaceTheme.regularPointSize
+						color: subsurfaceTheme.textColor
 						verticalAlignment: Text.AlignVCenter
 						elide: Text.ElideRight
 					}
@@ -110,6 +113,7 @@ Kirigami.Page {
 				contentItem: Text {
 					text: comboProduct.displayText
 					font.pointSize: subsurfaceTheme.regularPointSize
+					color: subsurfaceTheme.textColor
 					leftPadding: Kirigami.Units.gridUnit * 0.5
 					horizontalAlignment: Text.AlignLeft
 					verticalAlignment: Text.AlignVCenter
@@ -129,7 +133,7 @@ Kirigami.Page {
 			TemplateLabel {
 				text: qsTr(" Connection:")
 			}
-			Controls.ComboBox {
+			TemplateComboBox {
 				id: comboConnection
 				Layout.fillWidth: true
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2.5
@@ -141,6 +145,7 @@ Kirigami.Page {
 					contentItem: Text {
 						text: modelData
 						font.pointSize: subsurfaceTheme.smallPointSize
+						color: subsurfaceTheme.textColor
 						verticalAlignment: Text.AlignVCenter
 						elide: Text.ElideRight
 					}
@@ -149,6 +154,7 @@ Kirigami.Page {
 				contentItem: Text {
 					text: comboConnection.displayText
 					font.pointSize: subsurfaceTheme.smallPointSize
+					color: subsurfaceTheme.textColor
 					leftPadding: Kirigami.Units.gridUnit * 0.5
 					horizontalAlignment: Text.AlignLeft
 					verticalAlignment: Text.AlignVCenter
@@ -171,7 +177,7 @@ Kirigami.Page {
 					dc1.enabled = dc2.enabled = dc3.enabled = dc4.enabled = true
 					for (var i = 1; i < 5; i++) {
 						switch (i) {
-						        case 1:
+							case 1:
 								curVendor = PrefDiveComputer.vendor1
 								curProduct = PrefDiveComputer.product1
 								curDevice = PrefDiveComputer.device1
@@ -233,7 +239,7 @@ Kirigami.Page {
 			}
 			function disableDC(inx) {
 				switch (inx) {
-				        case 1:
+					case 1:
 						dc1.enabled = false
 						break;
 					case 2:
