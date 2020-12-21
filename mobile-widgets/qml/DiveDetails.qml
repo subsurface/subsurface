@@ -223,7 +223,7 @@ Kirigami.Page {
 		icon {
 			name: ":/icons/trash-empty.svg"
 		}
-		color: subsurfaceTheme.primaryTextColor
+		color: subsurfaceTheme.textColor
 		onTriggered: manager.deleteDive(currentItem.modelData.id)
 	}
 
@@ -232,7 +232,7 @@ Kirigami.Page {
 		icon {
 			name: ":/icons/dialog-cancel.svg"
 		}
-		color: subsurfaceTheme.primaryTextColor
+		color: subsurfaceTheme.textColor
 		onTriggered: {
 			endEditMode()
 		}
@@ -243,7 +243,7 @@ Kirigami.Page {
 		icon {
 			name: ":/icons/gps"
 		}
-		color: subsurfaceTheme.primaryTextColor
+		color: subsurfaceTheme.textColor
 		onTriggered: {
 			showMap()
 			mapPage.centerOnDiveSite(currentItem.modelData.diveSite)

@@ -457,7 +457,7 @@ Kirigami.ScrollablePage {
 		icon {
 			name: ":/icons/list-add"
 		}
-		color: subsurfaceTheme.primaryTextColor
+		color: subsurfaceTheme.textColor
 		text: qsTr("Add dive")
 		onTriggered: {
 			startAddDive()
@@ -468,7 +468,7 @@ Kirigami.ScrollablePage {
 		icon {
 			name: ":icons/ic_filter_list"
 		}
-		color: subsurfaceTheme.primaryTextColor
+		color: subsurfaceTheme.textColor
 		text: qsTr("Filter dives")
 		onTriggered: {
 			rootItem.filterToggle = !rootItem.filterToggle
