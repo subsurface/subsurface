@@ -264,7 +264,7 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.ComboBox {
+			TemplateComboBox {
 				id: suitBox
 				editable: true
 				flat: true
@@ -286,7 +286,7 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.ComboBox {
+			TemplateComboBox {
 				id: buddyBox
 				editable: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
@@ -307,7 +307,7 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.ComboBox {
+			TemplateComboBox {
 				id: divemasterBox
 				editable: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
@@ -342,7 +342,7 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.ComboBox {
+			TemplateComboBox {
 				id: cylinderBox0
 				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
@@ -398,7 +398,7 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.ComboBox {
+			TemplateComboBox {
 				visible: usedCyl[1] != null ? true : false
 				id: cylinderBox1
 				flat: true
@@ -461,7 +461,7 @@ Item {
 				color: subsurfaceTheme.textColor
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			Controls.ComboBox {
+			TemplateComboBox {
 				visible: usedCyl[2] != null ? true : false
 				id: cylinderBox2
 				currentIndex: find(usedCyl[2])
@@ -524,7 +524,7 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.ComboBox {
+			TemplateComboBox {
 				visible: usedCyl[3] != null ? true : false
 				id: cylinderBox3
 				currentIndex: find(usedCyl[3])
@@ -588,7 +588,7 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			Controls.ComboBox {
+			TemplateComboBox {
 				visible: usedCyl[4] != null ? true : false
 				id: cylinderBox4
 				currentIndex: find(usedCyl[4])
