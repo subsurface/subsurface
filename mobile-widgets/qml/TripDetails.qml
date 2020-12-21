@@ -116,6 +116,7 @@ Kirigami.Page {
 				id: tripNotesField
 				text: tripNotes
 				textFormat: TextEdit.PlainText
+				color: subsurfaceTheme.textColor
 				Layout.columnSpan: 2
 				Layout.fillWidth: true
 				Layout.fillHeight: true
