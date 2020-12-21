@@ -1,0 +1,38 @@
+From a569abff442664f3832817d8f1af0e0f27e8be38 Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Sun, 20 Dec 2020 16:47:22 -0800
+Subject: [PATCH 15/15] make the passiveNotification easier to read
+
+Having it overlap the action button was kind of annoying, but worse, the
+0.6 opacity made it really hard to read.
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ src/controls/templates/private/PassiveNotification.qml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/controls/templates/private/PassiveNotification.qml b/src/controls/templates/private/PassiveNotification.qml
+index e3176764..a6caf4a5 100644
+--- a/src/controls/templates/private/PassiveNotification.qml
++++ b/src/controls/templates/private/PassiveNotification.qml
+@@ -24,7 +24,7 @@ Controls.Popup {
+     id: root
+ 
+     x: Math.round(parent.width/2 - width/2)
+-    y: parent.height - height - Kirigami.Units.smallSpacing
++    y: parent.height - height - 3 * Kirigami.Units.gridUnit // don't draw over the action button
+     implicitWidth: Math.max(background ? background.implicitWidth : 0,
+                             contentWidth + leftPadding + rightPadding) + leftInset + rightInset
+     implicitHeight: Math.max(background ? background.implicitHeight : 0 ,
+@@ -197,7 +197,7 @@ Controls.Popup {
+                 }
+                 radius: Kirigami.Units.smallSpacing * 2
+                 color: Kirigami.Theme.backgroundColor
+-                opacity: 0.6
++                opacity: 0.8
+             }
+         }
+     }
+-- 
+2.25.1
+
