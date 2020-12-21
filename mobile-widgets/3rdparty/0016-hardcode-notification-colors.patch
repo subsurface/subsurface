@@ -1,0 +1,37 @@
+From bc5f1e89ab035c8ec1112d2efb5ce6277cd56e44 Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Mon, 21 Dec 2020 13:42:10 -0800
+Subject: [PATCH] hardcode notification colors
+
+Clearly I do not understand how the Kirigami theming is supposed to
+work. Giving up.
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ src/controls/templates/private/PassiveNotification.qml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/controls/templates/private/PassiveNotification.qml b/src/controls/templates/private/PassiveNotification.qml
+index a6caf4a5..ceb57aca 100644
+--- a/src/controls/templates/private/PassiveNotification.qml
++++ b/src/controls/templates/private/PassiveNotification.qml
+@@ -171,6 +171,7 @@ Controls.Popup {
+ 
+                 Controls.Label {
+                     id: label
++                    color: subsurfaceTheme.primaryTextColor
+                     Layout.maximumWidth: Math.min(root.parent.width - Kirigami.Units.largeSpacing * 4, implicitWidth)
+                     elide: Text.ElideRight
+                     wrapMode: Text.WordWrap
+@@ -196,7 +197,7 @@ Controls.Popup {
+                     yOffset: 2
+                 }
+                 radius: Kirigami.Units.smallSpacing * 2
+-                color: Kirigami.Theme.backgroundColor
++                color: subsurfaceTheme.primaryColor
+                 opacity: 0.8
+             }
+         }
+-- 
+2.25.1
+
