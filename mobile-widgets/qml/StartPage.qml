@@ -17,7 +17,7 @@ Kirigami.ScrollablePage {
 			Layout.topMargin: 0
 			property int headingLevel: 3
 		}
-		Controls.Label {
+		TemplateLabel {
 			id: messageArea
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.gridUnit
@@ -25,7 +25,7 @@ Kirigami.ScrollablePage {
 			text: manager.startPageText
 			wrapMode: Text.WordWrap
 		}
-		Controls.Label {
+		TemplateLabel {
 			id: explanationTextBasic
 			visible: Backend.cloud_verification_status !== Enums.CS_NEED_TO_VERIFY
 			Layout.fillWidth: true
@@ -38,7 +38,7 @@ Kirigami.ScrollablePage {
 				"the no cloud button above.")
 			wrapMode: Text.WordWrap
 		}
-		Controls.Label {
+		TemplateLabel {
 			id: explanationTextPin
 			visible: Backend.cloud_verification_status === Enums.CS_NEED_TO_VERIFY
 			Layout.fillWidth: true

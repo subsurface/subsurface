@@ -43,16 +43,16 @@ Item {
 			text: qsTr("Cloud credentials")
 			level: headingLevel
 			Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+			color: subsurfaceTheme.textColor
 		}
 
-		Controls.Label {
+		TemplateLabelSmall {
 			text: qsTr("Email")
 			visible: !showPin
-			font.pointSize: subsurfaceTheme.smallPointSize
 			color: subsurfaceTheme.secondaryTextColor
 		}
 
-		Controls.TextField {
+		TemplateTextField {
 			id: login
 			text: PrefCloudStorage.cloud_storage_email
 			visible: !showPin
@@ -61,14 +61,13 @@ Item {
 					  Qt.ImhNoAutoUppercase
 		}
 
-		Controls.Label {
+		TemplateLabelSmall {
 			text: qsTr("Password")
 			visible: !showPin
-			font.pointSize: subsurfaceTheme.smallPointSize
 			color: subsurfaceTheme.secondaryTextColor
 		}
 
-		Controls.TextField {
+		TemplateTextField {
 			id: password
 			text: PrefCloudStorage.cloud_storage_password
 			visible: !showPin
@@ -79,11 +78,11 @@ Item {
 			Layout.fillWidth: true
 		}
 
-		Controls.Label {
+		TemplateLabel {
 			text: qsTr("PIN")
 			visible: showPin
 		}
-		Controls.TextField {
+		TemplateTextField {
 			id: pin
 			text: ""
 			Layout.fillWidth: true
@@ -147,6 +146,7 @@ Item {
 			}
 		}
 		TemplateButton {
+			Layout.margins: Kirigami.Units.smallSpacing
 			id: signin_forgot_password
 			text: qsTr("Forgot password?")
 			onClicked: {
