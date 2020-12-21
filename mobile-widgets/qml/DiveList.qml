@@ -397,12 +397,13 @@ Kirigami.ScrollablePage {
 					manager.setFilter(sitefilter.text, currentIndex)
 				}
 			}
-			Controls.TextField  {
+			TemplateTextField  {
 				id: sitefilter
 				verticalAlignment: TextInput.AlignVCenter
 				Layout.fillWidth: true
 				text: ""
 				placeholderText: sitefilterMode.currentText
+				placeholderTextColor: subsurfaceTheme.secondaryTextColor
 				onAccepted: {
 					manager.setFilter(text, sitefilterMode.currentIndex)
 				}
@@ -414,7 +415,7 @@ Kirigami.ScrollablePage {
 					}
 				}
 			}
-			Controls.Label {
+			TemplateLabel {
 				id: numShown
 				verticalAlignment: Text.AlignVCenter
 				text: diveModel.shown
