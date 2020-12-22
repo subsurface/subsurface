@@ -102,6 +102,7 @@ T *ProfileWidget2::createItem(const DiveCartesianAxis &vAxis, int vColumn, int z
 	T *res = new T(*dataModel, *timeAxis, DivePlotDataModel::TIME, vAxis, vColumn,
 		       std::forward<Args>(args)...);
 	res->setZValue(static_cast<double>(z));
+	profileItems.push_back(res);
 	return res;
 }
 
@@ -237,34 +238,19 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(gasYAxis);
 	scene()->addItem(temperatureAxis);
 	scene()->addItem(timeAxis);
-	scene()->addItem(diveProfileItem);
 	scene()->addItem(cylinderPressureAxis);
-	scene()->addItem(temperatureItem);
-	scene()->addItem(meanDepthItem);
-	scene()->addItem(gasPressureItem);
 	// I cannot seem to figure out if an object that I find with itemAt() on the scene
 	// is the object I am looking for - my guess is there's a simple way in Qt to do that
 	// but nothing I tried worked.
 	// so instead this adds a special magic key/value pair to the object to mark it
 	diveComputerText->setData(SUBSURFACE_OBJ_DATA, SUBSURFACE_OBJ_DC_TEXT);
 	scene()->addItem(diveComputerText);
-	scene()->addItem(reportedCeiling);
 	scene()->addItem(tankItem);
-	scene()->addItem(pn2GasItem);
-	scene()->addItem(pheGasItem);
-	scene()->addItem(po2GasItem);
-	scene()->addItem(o2SetpointGasItem);
-	scene()->addItem(ccrsensor1GasItem);
-	scene()->addItem(ccrsensor2GasItem);
-	scene()->addItem(ccrsensor3GasItem);
-	scene()->addItem(ocpo2GasItem);
 #ifndef SUBSURFACE_MOBILE
 	scene()->addItem(toolTipItem);
-	scene()->addItem(diveCeiling);
 	scene()->addItem(decoModelParameters);
 	scene()->addItem(percentageAxis);
 	scene()->addItem(heartBeatAxis);
-	scene()->addItem(heartBeatItem);
 	scene()->addItem(rulerItem);
 	scene()->addItem(rulerItem->sourceNode());
 	scene()->addItem(rulerItem->destNode());
@@ -274,16 +260,9 @@ void ProfileWidget2::addItemsToScene()
 	pen.setWidth(0);
 	mouseFollowerHorizontal->setPen(pen);
 	mouseFollowerVertical->setPen(pen);
-
-	Q_FOREACH (DiveCalculatedTissue *tissue, allTissues) {
-		scene()->addItem(tissue);
-	}
-	Q_FOREACH (DivePercentageItem *percentage, allPercentages) {
-		scene()->addItem(percentage);
-	}
-	scene()->addItem(ambPressureItem);
-	scene()->addItem(gflineItem);
 #endif
+	for (AbstractProfilePolygonItem *item: profileItems)
+		scene()->addItem(item);
 }
 
 void ProfileWidget2::setupItemOnScene()
