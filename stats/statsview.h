@@ -44,7 +44,7 @@ private:
 	void plotBarChart(const std::vector<dive *> &dives,
 			  ChartSubType subType,
 			  const StatsType *categoryType, const StatsBinner *categoryBinner,
-			  const StatsType *valueType, const StatsBinner *valueBinner);
+			  const StatsType *valueType, const StatsBinner *valueBinner, bool labels);
 	void plotValueChart(const std::vector<dive *> &dives,
 			    ChartSubType subType,
 			    const StatsType *categoryType, const StatsBinner *categoryBinner,
@@ -63,10 +63,14 @@ private:
 				     ChartSubType subType,
 				     const StatsType *categoryType, const StatsBinner *categoryBinner,
 				     bool labels, bool showMedian, bool showMean);
-	void plotHistogramBarChart(const std::vector<dive *> &dives,
-				   ChartSubType subType,
-				   const StatsType *categoryType, const StatsBinner *categoryBinner,
-				   const StatsType *valueType, StatsOperation valueAxisOperation, bool labels);
+	void plotHistogramValueChart(const std::vector<dive *> &dives,
+				     ChartSubType subType,
+				     const StatsType *categoryType, const StatsBinner *categoryBinner,
+				     const StatsType *valueType, StatsOperation valueAxisOperation, bool labels);
+	void plotHistogramStackedChart(const std::vector<dive *> &dives,
+				       ChartSubType subType,
+				       const StatsType *categoryType, const StatsBinner *categoryBinner,
+				       const StatsType *valueType, const StatsBinner *valueBinner, bool labels);
 	void plotHistogramBoxChart(const std::vector<dive *> &dives,
 				   const StatsType *categoryType, const StatsBinner *categoryBinner, const StatsType *valueType);
 	void plotScatter(const std::vector<dive *> &dives, const StatsType *categoryType, const StatsType *valueType);
@@ -80,8 +84,9 @@ private:
 	template <typename T>
 	T *addSeries(const QString &name);
 	ScatterSeries *addScatterSeries(const QString &name, const StatsType &typeX, const StatsType &typeY);
-	BarSeries *addBarSeries(const QString &name, bool horizontal, const QString &categoryName,
-				const StatsType *valueType);
+	BarSeries *addBarSeries(const QString &name, bool horizontal, bool stacked,
+				const QString &categoryName, const StatsType *valueType,
+				std::vector<QString> valueBinNames);
 	BoxSeries *addBoxSeries(const QString &name, const QString &unit, int decimals);
 	void initSeries(QtCharts::QAbstractSeries *series, const QString &name);
 

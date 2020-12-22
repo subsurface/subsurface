@@ -15,6 +15,16 @@
 static const int scatterItemDiameter = 10;
 static const int scatterItemBorder = 1;
 
+int ScatterSeries::invalidIndex()
+{
+	return -1;
+}
+
+bool ScatterSeries::isValidIndex(int idx)
+{
+	return idx >= 0;
+}
+
 ScatterSeries::ScatterSeries(const StatsType &typeX, const StatsType &typeY)
 	: highlighted(-1), typeX(typeX), typeY(typeY)
 {

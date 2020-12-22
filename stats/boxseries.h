@@ -39,6 +39,8 @@ public:
 
 	// Get item under mous pointer, or -1 if none
 	int getItemUnderMouse(const QPointF &f);
+	static int invalidIndex();
+	static bool isValidIndex(int idx);
 
 	// Highlight item when hovering over item
 	void highlight(int index, QPointF pos);
