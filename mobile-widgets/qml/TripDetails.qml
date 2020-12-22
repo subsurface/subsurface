@@ -14,7 +14,7 @@ Kirigami.Page {
 
 	title: "" !== tripLocation ? tripLocation : qsTr("Trip details")
 	state: "view"
-	padding: Kirigami.largeSpacing
+	padding: Kirigami.Units.largeSpacing
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 	actions.main: saveAction
 	actions.right: cancelAction
