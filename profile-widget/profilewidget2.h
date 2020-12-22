@@ -193,6 +193,7 @@ private:
 	PartialGasPressureAxis *gasYAxis;
 	TemperatureAxis *temperatureAxis;
 	TimeAxis *timeAxis;
+	std::vector<AbstractProfilePolygonItem *> profileItems;
 	DiveProfileItem *diveProfileItem;
 	DiveTemperatureItem *temperatureItem;
 	DiveMeanDepthItem *meanDepthItem;
