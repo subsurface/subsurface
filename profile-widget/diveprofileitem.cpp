@@ -9,7 +9,6 @@
 #include "core/qthelper.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefLog.h"
-#include "core/subsurface-qt/divelistnotifier.h"
 #include "libdivecomputer/parser.h"
 #include "profile-widget/profilewidget2.h"
 
@@ -18,7 +17,6 @@ AbstractProfilePolygonItem::AbstractProfilePolygonItem(const DivePlotDataModel &
 	hAxis(horizontal), vAxis(vertical), dataModel(model), hDataColumn(hColumn), vDataColumn(vColumn)
 {
 	setCacheMode(DeviceCoordinateCache);
-	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &AbstractProfilePolygonItem::settingsChanged);
 	connect(&dataModel, &DivePlotDataModel::dataChanged, this, &AbstractProfilePolygonItem::modelDataChanged);
 	connect(&dataModel, &DivePlotDataModel::rowsAboutToBeRemoved, this, &AbstractProfilePolygonItem::modelDataRemoved);
 	connect(&hAxis, &DiveCartesianAxis::sizeChanged, this, &AbstractProfilePolygonItem::replot);
@@ -29,10 +27,6 @@ AbstractProfilePolygonItem::AbstractProfilePolygonItem(const DivePlotDataModel &
 void AbstractProfilePolygonItem::replot()
 {
 	modelDataChanged();
-}
-
-void AbstractProfilePolygonItem::settingsChanged()
-{
 }
 
 void AbstractProfilePolygonItem::setVisible(bool visible)
@@ -92,7 +86,7 @@ DiveProfileItem::DiveProfileItem(const DivePlotDataModel &model, const DiveCarte
 
 void DiveProfileItem::settingsToggled(bool)
 {
-	settingsChanged();
+	replot();
 }
 
 void DiveProfileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -216,14 +210,6 @@ void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelI
 	}
 }
 
-void DiveProfileItem::settingsChanged()
-{
-	//TODO: Only modelDataChanged() here if we need to rebuild the graph ( for instance,
-	// if the prefs.dcceiling are enabled, but prefs.redceiling is disabled
-	// and only if it changed something. let's not waste cpu cycles repoloting something we don't need to.
-	modelDataChanged();
-}
-
 void DiveProfileItem::plot_depth_sample(struct plot_data *entry, QFlags<Qt::AlignmentFlag> flags, const QColor &color)
 {
 	DiveTextItem *item = new DiveTextItem(this);
@@ -326,7 +312,6 @@ DivePercentageItem::DivePercentageItem(const DivePlotDataModel &model, const Div
 	tissueIndex(i)
 {
 	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::percentagegraphChanged, this, &DivePercentageItem::setVisible);
-	settingsChanged();
 }
 
 void DivePercentageItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
@@ -407,7 +392,6 @@ DiveAmbPressureItem::DiveAmbPressureItem(const DivePlotDataModel &model, const D
 	pen.setCosmetic(true);
 	pen.setWidth(2);
 	setPen(pen);
-	settingsChanged();
 }
 
 void DiveAmbPressureItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
@@ -453,7 +437,6 @@ DiveGFLineItem::DiveGFLineItem(const DivePlotDataModel &model, const DiveCartesi
 	pen.setCosmetic(true);
 	pen.setWidth(2);
 	setPen(pen);
-	settingsChanged();
 }
 
 void DiveGFLineItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
@@ -580,7 +563,6 @@ DiveMeanDepthItem::DiveMeanDepthItem(const DivePlotDataModel &model, const DiveC
 	pen.setWidth(2);
 	setPen(pen);
 	lastRunningSum = 0.0;
-	settingsChanged();
 }
 
 void DiveMeanDepthItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
@@ -844,17 +826,12 @@ void DiveCalculatedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsI
 DiveCalculatedTissue::DiveCalculatedTissue(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn, ProfileWidget2 *widget) :
 	DiveCalculatedCeiling(model, hAxis, hColumn, vAxis, vColumn, widget)
 {
-	settingsChanged();
+	setVisible(true);
 	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::calcalltissuesChanged, this, &DiveCalculatedTissue::setVisible);
 	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::calcceilingChanged, this, &DiveCalculatedTissue::setVisible);
 }
 
 void DiveCalculatedTissue::setVisible(bool)
-{
-	settingsChanged();
-}
-
-void DiveCalculatedTissue::settingsChanged()
 {
 	DiveCalculatedCeiling::setVisible(prefs.calcalltissues && prefs.calcceiling);
 }
@@ -864,7 +841,6 @@ DiveReportedCeiling::DiveReportedCeiling(const DivePlotDataModel &model, const D
 {
 	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::dcceilingChanged, this, &DiveReportedCeiling::setVisible);
 	setVisible(prefs.dcceiling);
-	settingsChanged();
 }
 
 void DiveReportedCeiling::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
