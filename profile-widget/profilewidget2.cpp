@@ -357,7 +357,6 @@ void ProfileWidget2::setupItemOnScene()
 	}
 #endif
 
-#undef CREATE_PP_GAS
 #ifndef SUBSURFACE_MOBILE
 
 	// Visibility Connections
