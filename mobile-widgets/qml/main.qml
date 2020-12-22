@@ -22,6 +22,13 @@ Kirigami.ApplicationWindow {
 	font: Qt.application.font
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 
+	// we want to use our own colors for Kirigami, so let's define our colorset
+	Kirigami.Theme.inherit: false
+	Kirigami.Theme.colorSet: Kirigami.Theme.Button
+	Kirigami.Theme.backgroundColor: subsurfaceTheme.backgroundColor
+	Kirigami.Theme.textColor: subsurfaceTheme.textColor
+
+	// next setup the tab bar on top
 	pageStack.globalToolBar.style: Kirigami.ApplicationHeaderStyle.Breadcrumb
 	pageStack.globalToolBar.showNavigationButtons: (Kirigami.ApplicationHeaderStyle.ShowBackButton | Kirigami.ApplicationHeaderStyle.ShowForwardButton)
 	pageStack.globalToolBar.minimumHeight: 0

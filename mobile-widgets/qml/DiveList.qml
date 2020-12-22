@@ -14,7 +14,12 @@ Kirigami.ScrollablePage {
 	verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 	property int dlHorizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
 	property QtObject diveListModel: null
-	Kirigami.Theme.backgroundColor: subsurfaceTheme.backgroundColor // used for background of left and right action button
+	// we want to use our own colors for Kirigami, so let's define our colorset
+	Kirigami.Theme.inherit: false
+	Kirigami.Theme.colorSet: Kirigami.Theme.Button
+	Kirigami.Theme.backgroundColor: subsurfaceTheme.backgroundColor
+	Kirigami.Theme.textColor: subsurfaceTheme.textColor
+
 	supportsRefreshing: true
 	onRefreshingChanged: {
 		if (refreshing) {
