@@ -16,6 +16,13 @@ Kirigami.Page {
 	state: "view"
 	padding: Kirigami.Units.largeSpacing
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
+
+	// we want to use our own colors for Kirigami, so let's define our colorset
+	Kirigami.Theme.inherit: false
+	Kirigami.Theme.colorSet: Kirigami.Theme.Button
+	Kirigami.Theme.backgroundColor: subsurfaceTheme.backgroundColor
+	Kirigami.Theme.textColor: subsurfaceTheme.textColor
+
 	actions.main: saveAction
 	actions.right: cancelAction
 	onVisibleChanged: {

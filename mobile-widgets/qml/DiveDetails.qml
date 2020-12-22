@@ -58,7 +58,12 @@ Kirigami.Page {
 	bottomPadding: 0
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 	width: rootItem.colWidth
+
+	// we want to use our own colors for Kirigami, so let's define our colorset
+	Kirigami.Theme.inherit: false
+	Kirigami.Theme.colorSet: Kirigami.Theme.Button
 	Kirigami.Theme.backgroundColor: subsurfaceTheme.backgroundColor
+	Kirigami.Theme.textColor: subsurfaceTheme.textColor
 
 	property QtObject removeDiveFromTripAction: Kirigami.Action {
 		text: qsTr ("Remove this dive from trip")
