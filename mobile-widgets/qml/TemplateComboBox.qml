@@ -46,14 +46,16 @@ ComboBox {
 		}
 	}
 
-	contentItem: Text {
+	contentItem: TextField {
+		readOnly: !cb.editable
+		anchors.right: indicator.left
+		anchors.left: cb.left
 		leftPadding: Kirigami.Units.smallSpacing
-		rightPadding: cb.indicator.width + cb.spacing
+		rightPadding: Kirigami.Units.smallSpacing
 		text: cb.displayText
 		font: cb.font
 		color: subsurfaceTheme.textColor
 		verticalAlignment: Text.AlignVCenter
-		elide: Text.ElideRight
 	}
 
 	background: Rectangle {
@@ -61,6 +63,7 @@ ComboBox {
 		border.width: cb.visualFocus ? 2 : 1
 		color: subsurfaceTheme.backgroundColor
 		radius: 2
+		visible: cb.focus
 	}
 
 	popup: Popup {
