@@ -10,6 +10,16 @@
 static const double boxWidth = 0.8; // 1.0 = full width of category
 static const int boxBorderWidth = 2;
 
+int BoxSeries::invalidIndex()
+{
+	return -1;
+}
+
+bool BoxSeries::isValidIndex(int idx)
+{
+	return idx >= 0;
+}
+
 BoxSeries::BoxSeries(const QString &variable, const QString &unit, int decimals) :
 	variable(variable), unit(unit), decimals(decimals), highlighted(-1)
 {

@@ -56,7 +56,7 @@ static const struct ChartTypeDesc {
 		ChartFeatureLabels | ChartFeatureMedian | ChartFeatureMean
 	},
 	{
-		ChartType::HistogramBar,
+		ChartType::HistogramValue,
 		QT_TRANSLATE_NOOP("StatsTranslations", "Histogram"),
 		SupportedVariable::Continuous,
 		SupportedVariable::Numeric,
@@ -72,6 +72,15 @@ static const struct ChartTypeDesc {
 		false,
 		{ ChartSubType::Box },
 		0
+	},
+	{
+		ChartType::HistogramStacked,
+		QT_TRANSLATE_NOOP("StatsTranslations", "Histogram"),
+		SupportedVariable::Continuous,
+		SupportedVariable::Categorical,
+		false,
+		{ ChartSubType::VerticalStacked, ChartSubType::HorizontalStacked },
+		ChartFeatureLabels
 	},
 	{
 		ChartType::DiscreteScatter,
@@ -125,7 +134,7 @@ static const struct ChartTypeDesc {
 		SupportedVariable::Categorical,
 		false,
 		{ ChartSubType::VerticalGrouped, ChartSubType::VerticalStacked, ChartSubType::HorizontalGrouped, ChartSubType::HorizontalStacked },
-		0
+		ChartFeatureLabels
 	}
 };
 

@@ -41,6 +41,8 @@ public:
 
 	// Highlight item when hovering over item
 	void highlight(int index);
+	static int invalidIndex();
+	static bool isValidIndex(int);
 private:
 	struct Item {
 		std::unique_ptr<QGraphicsPixmapItem> item;

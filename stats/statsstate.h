@@ -16,8 +16,9 @@ enum class ChartType {
 	DiscreteScatter,
 	Pie,
 	HistogramCount,
-	HistogramBar,
+	HistogramValue,
 	HistogramBox,
+	HistogramStacked,
 	ScatterPlot
 };
 
