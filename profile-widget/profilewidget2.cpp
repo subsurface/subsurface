@@ -375,7 +375,6 @@ PartialPressureGasItem *ProfileWidget2::createPPGas(int column, color_index_t co
 	PartialPressureGasItem *item = createItem<PartialPressureGasItem>(*gasYAxis, column, 99);
 	item->setThresholdSettingsKey(thresholdSettingsMin, thresholdSettingsMax);
 	item->setColors(getColor(color, isGrayscale), getColor(colorAlert, isGrayscale));
-	item->settingsChanged();
 	return item;
 }
 
