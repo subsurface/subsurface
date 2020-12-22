@@ -39,7 +39,6 @@ public:
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) = 0;
 public
 slots:
-	virtual void settingsChanged();
 	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
 	virtual void modelDataRemoved(const QModelIndex &parent, int from, int to);
 	void replot();
@@ -71,7 +70,6 @@ public:
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex()) override;
 	void settingsToggled(bool toggled);
-	void settingsChanged() override;
 	void plot_depth_sample(struct plot_data *entry, QFlags<Qt::AlignmentFlag> flags, const QColor &color);
 	int maxCeiling(int row);
 
@@ -195,7 +193,6 @@ public:
 	DiveCalculatedTissue(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
 			     const DiveCartesianAxis &vAxis, int vColumn, ProfileWidget2 *profileWidget);
 	void setVisible(bool visible);
-	void settingsChanged() override;
 };
 
 class PartialPressureGasItem : public AbstractProfilePolygonItem {
