@@ -154,7 +154,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Location:")
 			}
-			Controls.ComboBox {
+			TemplateComboBox {
 				id: locationBox
 				editable: true
 				flat: true
