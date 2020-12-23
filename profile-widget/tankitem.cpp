@@ -7,7 +7,8 @@
 
 static const qreal height = 3.0;
 
-TankItem::TankItem() :
+TankItem::TankItem(const DiveCartesianAxis &axis) :
+	hAxis(axis),
 	plotEndTime(-1)
 {
 	QColor red(PERSIANRED1);
@@ -28,7 +29,6 @@ TankItem::TankItem() :
 	trimixGradient.setColorAt(1.0, red);
 	trimix = trimixGradient;
 	air = blue;
-	hAxis = nullptr;
 }
 
 void TankItem::setData(struct plot_info *plotInfo, struct dive *d)
@@ -48,8 +48,8 @@ void TankItem::setData(struct plot_info *plotInfo, struct dive *d)
 
 void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)
 {
-	qreal x = hAxis->posAtValue(startTime);
-	qreal w = hAxis->posAtValue(stopTime) - hAxis->posAtValue(startTime);
+	qreal x = hAxis.posAtValue(startTime);
+	qreal w = hAxis.posAtValue(stopTime) - hAxis.posAtValue(startTime);
 
 	// pick the right gradient, size, position and text
 	QGraphicsRectItem *rect = new QGraphicsRectItem(x, 0, w, height, this);
@@ -105,9 +105,4 @@ void TankItem::replot()
 		ev = get_next_event(ev->next, "gaschange");
 	}
 	createBar(startTime, plotEndTime, gasmix);
-}
-
-void TankItem::setHorizontalAxis(DiveCartesianAxis *horizontal)
-{
-	hAxis = horizontal;
 }

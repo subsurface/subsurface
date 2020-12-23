@@ -150,7 +150,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	mouseFollowerHorizontal(new DiveLineItem()),
 	rulerItem(new RulerItem2()),
 #endif
-	tankItem(new TankItem()),
+	tankItem(new TankItem(*timeAxis)),
 	shouldCalculateMaxTime(true),
 	shouldCalculateMaxDepth(true),
 	fontPrintScale(1.0)
@@ -317,8 +317,6 @@ void ProfileWidget2::setupItemOnScene()
 
 	diveComputerText->setAlignment(Qt::AlignRight | Qt::AlignTop);
 	diveComputerText->setBrush(getColor(TIME_TEXT, isGrayscale));
-
-	tankItem->setHorizontalAxis(timeAxis);
 
 #ifndef SUBSURFACE_MOBILE
 	rulerItem->setAxis(timeAxis, profileYAxis);
