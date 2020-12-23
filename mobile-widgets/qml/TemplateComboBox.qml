@@ -29,12 +29,13 @@ ComboBox {
 		width: Kirigami.Units.gridUnit
 		height: width * 0.66
 		contextType: "2d"
-
 		Connections {
 			target: cb
 			function onPressedChanged() { canvas.requestPaint(); }
 		}
-
+		// if the theme changes, we need to force a repaint of the indicator
+		property color sttc: subsurfaceTheme.textColor
+		onSttcChanged: { requestPaint() }
 		onPaint: {
 			context.reset();
 			context.moveTo(0, 0);
