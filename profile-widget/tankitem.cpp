@@ -7,8 +7,7 @@
 
 static const qreal height = 3.0;
 
-TankItem::TankItem(QObject *parent) :
-	QObject(parent),
+TankItem::TankItem() :
 	plotEndTime(-1)
 {
 	QColor red(PERSIANRED1);
@@ -111,6 +110,4 @@ void TankItem::replot()
 void TankItem::setHorizontalAxis(DiveCartesianAxis *horizontal)
 {
 	hAxis = horizontal;
-	connect(hAxis, SIGNAL(sizeChanged()), this, SLOT(replot()));
-	replot();
 }
