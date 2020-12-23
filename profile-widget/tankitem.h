@@ -2,11 +2,13 @@
 #ifndef TANKITEM_H
 #define TANKITEM_H
 
-#include <QGraphicsItem>
-#include <QBrush>
 #include "profile-widget/divelineitem.h"
-#include "profile-widget/divecartesianaxis.h"
-#include "core/dive.h"
+#include "core/gas.h"
+#include <QGraphicsRectItem>
+#include <QBrush>
+
+struct dive;
+class DiveCartesianAxis;
 
 class TankItem : public QGraphicsRectItem
 {
