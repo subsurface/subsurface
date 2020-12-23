@@ -3,7 +3,6 @@
 #define TANKITEM_H
 
 #include <QGraphicsItem>
-#include <QModelIndex>
 #include <QBrush>
 #include "profile-widget/divelineitem.h"
 #include "profile-widget/divecartesianaxis.h"
@@ -16,12 +15,10 @@ class TankItem : public QObject, public QGraphicsRectItem
 public:
 	explicit TankItem(QObject *parent = 0);
 	void setHorizontalAxis(DiveCartesianAxis *horizontal);
-	void setData(DivePlotDataModel *model, struct plot_info *plotInfo, struct dive *d);
-
-signals:
+	void setData(struct plot_info *plotInfo, struct dive *d);
 
 public slots:
-	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
+	void replot();
 
 private:
 	void createBar(int startTime, int stopTime, struct gasmix gas);
