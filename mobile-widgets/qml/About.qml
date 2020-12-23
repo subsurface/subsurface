@@ -18,6 +18,7 @@ Kirigami.ScrollablePage {
 
 		Kirigami.Heading {
 			text: qsTr("About Subsurface-mobile")
+			color: subsurfaceTheme.textColor
 			Layout.topMargin: Kirigami.Units.gridUnit
 			Layout.alignment: Qt.AlignHCenter
 			Layout.maximumWidth: pageWidth
@@ -37,6 +38,7 @@ Kirigami.ScrollablePage {
 			text: qsTr("A mobile version of the free Subsurface divelog software.\n") +
 				qsTr("View your dive logs while on the go.")
 			level: 4
+			color: subsurfaceTheme.textColor
 			Layout.alignment: Qt.AlignHCenter
 			Layout.topMargin: Kirigami.Units.largeSpacing * 3
 			Layout.maximumWidth: pageWidth
@@ -48,6 +50,7 @@ Kirigami.ScrollablePage {
 		Kirigami.Heading {
 			text: qsTr("Version: %1\n\n© Subsurface developer team\n2011-2020").arg(manager.getVersion())
 			level: 5
+			color: subsurfaceTheme.textColor
 			font.pointSize: subsurfaceTheme.smallPointSize + 1
 			Layout.alignment: Qt.AlignHCenter
 			Layout.topMargin: Kirigami.Units.largeSpacing
