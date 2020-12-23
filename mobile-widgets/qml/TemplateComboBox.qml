@@ -57,6 +57,15 @@ ComboBox {
 		font: cb.font
 		color: subsurfaceTheme.textColor
 		verticalAlignment: Text.AlignVCenter
+		onPressed: {
+			if (readOnly) {
+				if (cb.popup.opened) {
+					cb.popup.close()
+				} else {
+					cb.popup.open()
+				}
+			}
+		}
 	}
 
 	background: Rectangle {
