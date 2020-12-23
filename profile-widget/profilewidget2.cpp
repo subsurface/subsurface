@@ -735,7 +735,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 		ocpo2GasItem->setVisible(false);
 	}
 #endif
-	tankItem->setData(dataModel, &plotInfo, &displayed_dive);
+	tankItem->setData(&plotInfo, &displayed_dive);
 
 	dataModel->emitDataChanged();
 	// The event items are a bit special since we don't know how many events are going to
