@@ -8,20 +8,16 @@
 #include "profile-widget/divecartesianaxis.h"
 #include "core/dive.h"
 
-class TankItem : public QObject, public QGraphicsRectItem
+class TankItem : public QGraphicsRectItem
 {
-	Q_OBJECT
-
 public:
-	explicit TankItem(QObject *parent = 0);
+	explicit TankItem();
 	void setHorizontalAxis(DiveCartesianAxis *horizontal);
 	void setData(struct plot_info *plotInfo, struct dive *d);
 
-public slots:
-	void replot();
-
 private:
 	void createBar(int startTime, int stopTime, struct gasmix gas);
+	void replot();
 	DiveCartesianAxis *hAxis;
 	int plotEndTime;
 	QBrush air, nitrox, oxygen, trimix;
