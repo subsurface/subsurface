@@ -60,11 +60,10 @@ ComboBox {
 	}
 
 	background: Rectangle {
-		border.color: subsurfaceTheme.darkerPrimaryColor
+		border.color: cb.focus ? subsurfaceTheme.darkerPrimaryColor : subsurfaceTheme.backgroundColor
 		border.width: cb.visualFocus ? 2 : 1
-		color: subsurfaceTheme.backgroundColor
+		color: Qt.darker(subsurfaceTheme.backgroundColor, 1.1)
 		radius: 2
-		visible: cb.focus
 	}
 
 	popup: Popup {
