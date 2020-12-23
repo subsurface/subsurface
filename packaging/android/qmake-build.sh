@@ -158,8 +158,13 @@ if [ "$QUICK" = "" ] ; then
 	# build google maps plugin
 	# this is the easy one as it uses qmake which ensures things get built for all platforms, etc
 	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . googlemaps
+	# but unfortunately, on Android (and apparently only on Android) the naming pattern for geoservice
+	# plugins has changed
+	pushd googlemaps
+	sed -i 's/TARGET = qtgeoservices_googlemaps/TARGET = plugins_geoservices_qtgeoservices_googlemaps/' googlemaps.pro
+	popd
 	QT_PLUGINS_PATH=$($QMAKE -query QT_INSTALL_PLUGINS)
-	GOOGLEMAPS_BIN=libqtgeoservices_googlemaps.so
+	GOOGLEMAPS_BIN=libplugins_geoservices_qtgeoservices_googlemaps_arm64-v8a.so
 	if [ ! -e "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] || [ googlemaps/.git/HEAD -nt "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] ; then
 	    mkdir -p googlemaps-build
 	    pushd googlemaps-build

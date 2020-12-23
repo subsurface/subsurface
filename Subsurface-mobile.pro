@@ -331,7 +331,7 @@ android {
 		../install-root-$${QT_ARCH}/lib/libsqlite3.a \
 		../install-root-$${QT_ARCH}/lib/libssl_1_1.so \
 		../install-root-$${QT_ARCH}/lib/libcrypto_1_1.so \
-		../googlemaps-build/libqtgeoservices_googlemaps_$${QT_ARCH}.so
+		../googlemaps-build/libplugins_geoservices_qtgeoservices_googlemaps_$${QT_ARCH}.so
 
 	# ensure that the openssl libraries are bundled into the app
 	# for some reason doing so with dollar dollar { QT_ARCH } (like what works
