@@ -33,7 +33,7 @@ SpinBox {
 		Text {
 			text: "+"
 			font.pixelSize: control.font.pixelSize * 2
-			color: control.enabled ? subsurfaceTheme.textColor : subsurfaceTheme.disabledTextColor
+			color: control.enabled ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.disabledTextColor
 			anchors.fill: parent
 			fontSizeMode: Text.Fit
 			horizontalAlignment: Text.AlignHCenter
@@ -51,7 +51,7 @@ SpinBox {
 		Text {
 			text: "-"
 			font.pixelSize: control.font.pixelSize * 2
-			color: control.enabled ? subsurfaceTheme.textColor : subsurfaceTheme.disabledTextColor
+			color: control.enabled ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.disabledTextColor
 			anchors.fill: parent
 			fontSizeMode: Text.Fit
 			horizontalAlignment: Text.AlignHCenter
