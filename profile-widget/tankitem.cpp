@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/tankitem.h"
-#include "qt-models/diveplotdatamodel.h"
 #include "profile-widget/divetextitem.h"
 #include "core/event.h"
 #include "core/profile.h"
@@ -33,7 +32,7 @@ TankItem::TankItem(QObject *parent) :
 	hAxis = nullptr;
 }
 
-void TankItem::setData(DivePlotDataModel *model, struct plot_info *plotInfo, struct dive *d)
+void TankItem::setData(struct plot_info *plotInfo, struct dive *d)
 {
 	// If there is nothing to plot, quit early.
 	if (plotInfo->nr <= 0) {
@@ -45,10 +44,7 @@ void TankItem::setData(DivePlotDataModel *model, struct plot_info *plotInfo, str
 	struct plot_data *last_entry = &plotInfo->entry[plotInfo->nr - 1];
 	plotEndTime = last_entry->sec;
 
-	// Stay informed of changes to the tanks.
-	connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(modelDataChanged(QModelIndex, QModelIndex)), Qt::UniqueConnection);
-
-	modelDataChanged();
+	replot();
 }
 
 void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)
@@ -79,7 +75,7 @@ void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)
 	label->setZValue(101);
 }
 
-void TankItem::modelDataChanged(const QModelIndex&, const QModelIndex&)
+void TankItem::replot()
 {
 	// We don't have enougth data to calculate things, quit.
 	if (plotEndTime < 0)
@@ -115,6 +111,6 @@ void TankItem::modelDataChanged(const QModelIndex&, const QModelIndex&)
 void TankItem::setHorizontalAxis(DiveCartesianAxis *horizontal)
 {
 	hAxis = horizontal;
-	connect(hAxis, SIGNAL(sizeChanged()), this, SLOT(modelDataChanged()));
-	modelDataChanged();
+	connect(hAxis, SIGNAL(sizeChanged()), this, SLOT(replot()));
+	replot();
 }
