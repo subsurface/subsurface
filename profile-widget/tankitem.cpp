@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/tankitem.h"
+#include "profile-widget/divecartesianaxis.h"
 #include "profile-widget/divetextitem.h"
+#include "core/dive.h"
 #include "core/event.h"
 #include "core/profile.h"
 #include <QPen>
