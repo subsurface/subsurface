@@ -18,10 +18,16 @@ AbstractProfilePolygonItem::AbstractProfilePolygonItem(const DivePlotDataModel &
 {
 	setCacheMode(DeviceCoordinateCache);
 	connect(&dataModel, &DivePlotDataModel::dataChanged, this, &AbstractProfilePolygonItem::modelDataChanged);
-	connect(&dataModel, &DivePlotDataModel::rowsAboutToBeRemoved, this, &AbstractProfilePolygonItem::modelDataRemoved);
 	connect(&hAxis, &DiveCartesianAxis::sizeChanged, this, &AbstractProfilePolygonItem::replot);
 	connect(&vAxis, &DiveCartesianAxis::sizeChanged, this, &AbstractProfilePolygonItem::replot);
 	connect(&vAxis, &DiveCartesianAxis::maxChanged, this, &AbstractProfilePolygonItem::replot);
+}
+
+void AbstractProfilePolygonItem::clear()
+{
+	setPolygon(QPolygonF());
+	qDeleteAll(texts);
+	texts.clear();
 }
 
 void AbstractProfilePolygonItem::replot()
@@ -32,13 +38,6 @@ void AbstractProfilePolygonItem::replot()
 void AbstractProfilePolygonItem::setVisible(bool visible)
 {
 	QGraphicsPolygonItem::setVisible(visible);
-}
-
-void AbstractProfilePolygonItem::modelDataRemoved(const QModelIndex&, int, int)
-{
-	setPolygon(QPolygonF());
-	qDeleteAll(texts);
-	texts.clear();
 }
 
 bool AbstractProfilePolygonItem::shouldCalculateStuff(const QModelIndex &topLeft, const QModelIndex &bottomRight)

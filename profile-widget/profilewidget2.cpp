@@ -1123,6 +1123,8 @@ void ProfileWidget2::setEmptyState()
 	heartBeatAxis->setVisible(false);
 	heartBeatItem->setVisible(false);
 #endif
+	for (AbstractProfilePolygonItem *item: profileItems)
+		item->clear();
 
 #ifndef SUBSURFACE_MOBILE
 	hideAll(allTissues);
