@@ -9,6 +9,7 @@ inline const QColor fillColor(0x44, 0x76, 0xaa);
 inline const QColor borderColor(0x66, 0xb2, 0xff);
 inline const QColor highlightedColor(Qt::yellow);
 inline const QColor highlightedBorderColor(0xaa, 0xaa, 0x22);
+inline const QColor labelColor(Qt::black);
 
 // Colors created using the Chroma.js Color Palette Helper
 // https://vis4.net/palettes/#/14|d|00108c,3ed8ff,ffffe0|ffffe0,ff005e,743535|1|1
