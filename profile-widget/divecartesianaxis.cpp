@@ -361,17 +361,16 @@ QColor DepthAxis::colorForValue(double) const
 	return QColor(Qt::red);
 }
 
-DepthAxis::DepthAxis(ProfileWidget2 *widget) : DiveCartesianAxis(widget)
+DepthAxis::DepthAxis(ProfileWidget2 *widget) : DiveCartesianAxis(widget),
+	unitSystem(prefs.units.length)
 {
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &DepthAxis::settingsChanged);
 	changed = true;
-	settingsChanged();
 }
 
 void DepthAxis::settingsChanged()
 {
-	static int unitSystem = prefs.units.length;
-	if ( unitSystem == prefs.units.length )
+	if (unitSystem == prefs.units.length)
 		return;
 	changed = true;
 	updateTicks();
