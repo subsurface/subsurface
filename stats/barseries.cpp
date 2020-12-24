@@ -44,6 +44,7 @@ BarSeries::BarLabel::BarLabel(QtCharts::QChart *chart, const std::vector<QString
 	items.reserve(labels.size());
 	for (const QString &label: labels) {
 		items.emplace_back(new QGraphicsSimpleTextItem(chart));
+		items.back()->setBrush(QBrush(labelColor));
 		items.back()->setText(label);
 		items.back()->setZValue(10.0); // ? What is a sensible value here ?
 		QRectF rect = items.back()->boundingRect();

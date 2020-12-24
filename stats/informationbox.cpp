@@ -1,4 +1,5 @@
 #include "informationbox.h"
+#include "statscolors.h"
 #include <QChart>
 
 static const QColor informationBorderColor(Qt::black);
@@ -53,6 +54,7 @@ void InformationBox::addLine(const QString &s)
 {
 	textItems.emplace_back(new QGraphicsSimpleTextItem(s, this));
 	QGraphicsSimpleTextItem &item = *textItems.back();
+	item.setBrush(QBrush(labelColor));
 	item.setPos(QPointF(0.0, height));
 	QRectF rect = item.boundingRect();
 	width = std::max(width, rect.width());

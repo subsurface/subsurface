@@ -9,6 +9,7 @@ inline const QColor fillColor(0x44, 0x76, 0xaa);
 inline const QColor borderColor(0x66, 0xb2, 0xff);
 inline const QColor highlightedColor(Qt::yellow);
 inline const QColor highlightedBorderColor(0xaa, 0xaa, 0x22);
+inline const QColor labelColor(Qt::black);
 
 // Colors taken from Qt's QtChart module, which is licensed under GPL
 // Original file: qtcharts/src/charts/themes/chartthemelight_p.h
