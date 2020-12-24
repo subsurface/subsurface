@@ -40,7 +40,6 @@ public:
 public
 slots:
 	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
-	virtual void modelDataRemoved(const QModelIndex &parent, int from, int to);
 	void replot();
 	void setVisible(bool visible);
 
