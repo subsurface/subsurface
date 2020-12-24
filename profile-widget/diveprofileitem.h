@@ -37,10 +37,10 @@ class AbstractProfilePolygonItem : public QObject, public QGraphicsPolygonItem {
 public:
 	AbstractProfilePolygonItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) = 0;
+	void clear();
 public
 slots:
 	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
-	virtual void modelDataRemoved(const QModelIndex &parent, int from, int to);
 	void replot();
 	void setVisible(bool visible);
 
