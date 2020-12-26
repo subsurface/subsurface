@@ -24,6 +24,7 @@ class CategoryAxis;
 class CountAxis;
 class HistogramAxis;
 class StatsAxis;
+class Legend;
 
 enum class ChartSubType : int;
 enum class StatsOperation : int;
@@ -44,7 +45,7 @@ private:
 	void plotBarChart(const std::vector<dive *> &dives,
 			  ChartSubType subType,
 			  const StatsType *categoryType, const StatsBinner *categoryBinner,
-			  const StatsType *valueType, const StatsBinner *valueBinner, bool labels);
+			  const StatsType *valueType, const StatsBinner *valueBinner, bool labels, bool legend);
 	void plotValueChart(const std::vector<dive *> &dives,
 			    ChartSubType subType,
 			    const StatsType *categoryType, const StatsBinner *categoryBinner,
@@ -53,7 +54,7 @@ private:
 				    ChartSubType subType,
 				    const StatsType *categoryType, const StatsBinner *categoryBinner, bool labels);
 	void plotPieChart(const std::vector<dive *> &dives,
-			  const StatsType *categoryType, const StatsBinner *categoryBinner);
+			  const StatsType *categoryType, const StatsBinner *categoryBinner, bool legend);
 	void plotDiscreteBoxChart(const std::vector<dive *> &dives,
 				  const StatsType *categoryType, const StatsBinner *categoryBinner, const StatsType *valueType);
 	void plotDiscreteScatter(const std::vector<dive *> &dives,
@@ -70,13 +71,11 @@ private:
 	void plotHistogramStackedChart(const std::vector<dive *> &dives,
 				       ChartSubType subType,
 				       const StatsType *categoryType, const StatsBinner *categoryBinner,
-				       const StatsType *valueType, const StatsBinner *valueBinner, bool labels);
+				       const StatsType *valueType, const StatsBinner *valueBinner, bool labels, bool legend);
 	void plotHistogramBoxChart(const std::vector<dive *> &dives,
 				   const StatsType *categoryType, const StatsBinner *categoryBinner, const StatsType *valueType);
 	void plotScatter(const std::vector<dive *> &dives, const StatsType *categoryType, const StatsType *valueType);
 	void setTitle(const QString &);
-	void showLegend();
-	void hideLegend();
 
 	template <typename T, class... Args>
 	T *createAxis(const QString &title, Args&&... args);
@@ -116,6 +115,7 @@ private:
 	std::vector<std::unique_ptr<ScatterSeries>> scatterSeries;
 	std::vector<std::unique_ptr<BarSeries>> barSeries;
 	std::vector<std::unique_ptr<BoxSeries>> boxSeries;
+	std::unique_ptr<Legend> legend;
 	std::vector<QuartileMarker> quartileMarkers;
 	ScatterSeries *highlightedScatterSeries;	// scatter series with highlighted element
 	BarSeries *highlightedBarSeries;		// bar series with highlighted element
