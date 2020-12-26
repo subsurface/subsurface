@@ -13,6 +13,8 @@ set(SUBSURFACE_STATS_SRCS
 	chartlistmodel.cpp
 	informationbox.h
 	informationbox.cpp
+	legend.h
+	legend.cpp
 	scatterseries.h
 	scatterseries.cpp
 	statsaxis.h

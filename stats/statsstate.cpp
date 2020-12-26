@@ -24,9 +24,10 @@ enum class SupportedVariable {
 };
 
 static const int ChartFeatureLabels =	 1 << 0;
-static const int ChartFeatureMedian =	 1 << 1;
-static const int ChartFeatureMean =	 1 << 2;
-static const int ChartFeatureQuartiles = 1 << 3;
+static const int ChartFeatureLegend =	 1 << 1;
+static const int ChartFeatureMedian =	 1 << 2;
+static const int ChartFeatureMean =	 1 << 3;
+static const int ChartFeatureQuartiles = 1 << 4;
 
 static const struct ChartTypeDesc {
 	ChartType id;
@@ -80,7 +81,7 @@ static const struct ChartTypeDesc {
 		SupportedVariable::Categorical,
 		false,
 		{ ChartSubType::VerticalStacked, ChartSubType::HorizontalStacked },
-		ChartFeatureLabels
+		ChartFeatureLabels | ChartFeatureLegend
 	},
 	{
 		ChartType::DiscreteScatter,
@@ -125,7 +126,7 @@ static const struct ChartTypeDesc {
 		SupportedVariable::Count,
 		false,
 		{ ChartSubType::Pie },
-		0
+		ChartFeatureLegend
 	},
 	{
 		ChartType::DiscreteBar,
@@ -134,7 +135,7 @@ static const struct ChartTypeDesc {
 		SupportedVariable::Categorical,
 		false,
 		{ ChartSubType::VerticalGrouped, ChartSubType::VerticalStacked, ChartSubType::HorizontalGrouped, ChartSubType::HorizontalStacked },
-		ChartFeatureLabels
+		ChartFeatureLabels | ChartFeatureLegend
 	}
 };
 
@@ -156,6 +157,7 @@ StatsState::StatsState() :
 	type(ChartType::DiscreteBar),
 	subtype(ChartSubType::Vertical),
 	labels(true),
+	legend(true),
 	median(false),
 	mean(false),
 	quartiles(true),
@@ -314,11 +316,13 @@ static StatsState::VariableList createOperationsList(bool hasOperations, const S
 	return res;
 }
 
-static std::vector<StatsState::Feature> createFeaturesList(int chartFeatures, bool labels, bool median, bool mean, bool quartiles)
+static std::vector<StatsState::Feature> createFeaturesList(int chartFeatures, bool labels, bool legend, bool median, bool mean, bool quartiles)
 {
 	std::vector<StatsState::Feature> res;
 	if (chartFeatures & ChartFeatureLabels)
 		res.push_back({ StatsTranslations::tr("labels"), ChartFeatureLabels, labels });
+	if (chartFeatures & ChartFeatureLegend)
+		res.push_back({ StatsTranslations::tr("legend"), ChartFeatureLegend, legend });
 	if (chartFeatures & ChartFeatureMedian)
 		res.push_back({ StatsTranslations::tr("median"), ChartFeatureMedian, median });
 	if (chartFeatures & ChartFeatureMean)
@@ -339,7 +343,7 @@ StatsState::UIState StatsState::getUIState() const
 	res.binners1 = createBinnerList(var1Binned, var1, var1Binner);
 	res.binners2 = createBinnerList(var2Binned, var2, var2Binner);
 	res.operations2 = createOperationsList(var2HasOperations, var2, var2Operation);
-	res.features = createFeaturesList(chartFeatures, labels, median, mean, quartiles);
+	res.features = createFeaturesList(chartFeatures, labels, legend, median, mean, quartiles);
 	return res;
 }
 
@@ -393,6 +397,8 @@ void StatsState::featureChanged(int id, bool state)
 {
 	if (id == ChartFeatureLabels)
 		labels = state;
+	else if (id == ChartFeatureLegend)
+		legend = state;
 	else if (id == ChartFeatureMedian)
 		median = state;
 	else if (id == ChartFeatureMean)

@@ -100,6 +100,7 @@ public:
 	ChartType type;
 	ChartSubType subtype;
 	bool labels;
+	bool legend;
 	bool median;
 	bool mean;
 	bool quartiles;
